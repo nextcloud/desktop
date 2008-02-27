@@ -1,0 +1,43 @@
+project(csync)
+
+# global needed variables
+set(APPLICATION_NAME ${PROJECT_NAME})
+set(APPLICATION_VERSION "0.1")
+
+# where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
+set(CMAKE_MODULE_PATH
+  ${CMAKE_SOURCE_DIR}/cmake/Modules
+)
+
+# add definitions
+include(DefineCMakeDefaults)
+include(DefineCompilerFlags)
+include(DefineInstallationPaths)
+
+include(DefineOptions.cmake)
+
+# add macros
+include(MacroAddPlugin)
+include(MacroEnsureOutOfSourceBuild)
+include(MacroAddCheckTest)
+
+if (WITH_LOG4C)
+  find_package(LOG4C REQUIRED)
+endif (WITH_LOG4C)
+find_package(Check)
+
+include(ConfigureChecks.cmake)
+configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+
+# disallow in-source build
+macro_ensure_out_of_source_build("libcsync requires an out of source build. Please create a separate build directory and run 'cmake path_to_wengophone [options]' there.")
+
+add_subdirectory(iniparser/src)
+add_subdirectory(src)
+add_subdirectory(client)
+add_subdirectory(config)
+add_subdirectory(doc)
+if (CHECK_FOUND)
+  add_subdirectory(tests)
+endif (CHECK_FOUND)
+

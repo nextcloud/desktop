@@ -1,0 +1,6 @@
+INSTALL(
+  FILES
+    csync_log.conf
+  DESTINATION
+    ${DATA_INSTALL_PREFIX}
+)
