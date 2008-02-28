@@ -8,13 +8,14 @@ In order to build csync, you need to install several components:
 
 - A C++ compiler
 - [CMake](http://www.cmake.org/) >= 2.4.4.
-- [check](http://check.sourceforge.net)
-- [log4c](http://log4c.sourceforge.net)
+- [check](http://check.sourceforge.net) >= 0.9.5
+- [log4c](http://log4c.sourceforge.net) >= 1.2
+- [sqlite3](http://log4c.sourceforge.net) >= 3.4
 
 - [libsmbclient](http://www.samba.org)
 
-log4c is a runtime requirements too. check is only for testing
-purposes.
+log4c and sqlite3 are runtime requirements too. libsmbclient is needed for
+the smb plugin.
 
 Note that these version numbers are version we know works correctly. If you
 build and run csync successfully with an older version, please let us know.
