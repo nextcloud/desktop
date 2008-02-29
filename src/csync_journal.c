@@ -20,10 +20,12 @@
  * vim: ts=2 sw=2 et cindent
  */
 
+#define _GNU_SOURCE
 #include <sqlite3.h>
+#include <stdio.h>
 #include <unistd.h>
 
-#include "std/c_string.h"
+#include "std/c_lib.h"
 #include "csync_private.h"
 #include "csync_journal.h"
 
@@ -80,12 +82,34 @@ static int csync_journal_is_empty(CSYNC *ctx) {
 }
 
 int csync_journal_load(CSYNC *ctx, const char *journal) {
+  int rc = -1;
+  char *journal_tmp = NULL;
+
   if (csync_journal_check(journal) < 0) {
-    return -1;
+    rc = -1;
+    goto out;
   }
 
-  if (sqlite3_open(journal, &ctx->internal->_journal) != SQLITE_OK) {
-    return -1;
+  /*
+   * We want a two phase commit for the jounal, so we create a temporary copy
+   * of the database.
+   * The intention is that if something goes wrong we will not loose the
+   * journal.
+   */
+  if (asprintf(&journal_tmp, "%s.ctmp", journal) < 0) {
+    rc = -1;
+    goto out;
+  }
+
+  if (c_copy(journal, journal_tmp, 0644) < 0) {
+    rc = -1;
+    goto out;
+  }
+
+  /* Open the temporary database */
+  if (sqlite3_open(journal_tmp, &ctx->internal->_journal) != SQLITE_OK) {
+    rc = -1;
+    goto out;
   }
 
   if (csync_journal_is_empty(ctx)) {
@@ -95,6 +119,8 @@ int csync_journal_load(CSYNC *ctx, const char *journal) {
     ctx->internal->_journal_exists = 1;
   }
 
+out:
+  SAFE_FREE(journal_tmp);
   return 0;
 }
 

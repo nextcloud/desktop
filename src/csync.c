@@ -154,6 +154,7 @@ int csync_destroy(CSYNC *ctx) {
 
   if (ctx->internal->_journal) {
     sqlite3_close(ctx->internal->_journal);
+    /* TODO if we successfully synchronized, overwrite the original journal */
   }
 
   if (asprintf(&lock, "%s/%s", ctx->options.config_dir, CSYNC_LOCK_FILE) > 0) {
