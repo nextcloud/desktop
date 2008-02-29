@@ -44,26 +44,14 @@ int csync_create(CSYNC **csync) {
     return -1;
   }
 
-  ctx->internal = c_malloc(sizeof(csync_internal_t));
-  if (ctx->internal == NULL) {
-    SAFE_FREE(ctx);
-    errno = ENOMEM;
-    return -1;
-  }
-
   ctx->options.max_depth = MAX_DEPTH;
   ctx->options.max_time_difference = MAX_TIME_DIFFERENCE;
 
   if (asprintf(&ctx->options.config_dir, "%s/%s", getenv("HOME"), CSYNC_CONF_DIR) < 0) {
-    SAFE_FREE(ctx->internal);
     SAFE_FREE(ctx);
     errno = ENOMEM;
     return -1;
   }
-
-  ctx->init = csync_init;
-  ctx->destroy = csync_destroy;
-  ctx->version = csync_version;
 
   *csync = ctx;
   return 0;
@@ -75,13 +63,13 @@ int csync_init(CSYNC *ctx) {
   char *journal = NULL;
   char *lock = NULL;
 
-  if (ctx == NULL || ctx->internal == NULL) {
+  if (ctx == NULL) {
     errno = EBADF;
     return -1;
   }
 
   /* Do not initialize twice */
-  if (ctx->internal->_initialized) {
+  if (ctx->initialized) {
     return 1;
   }
 
@@ -136,7 +124,7 @@ int csync_init(CSYNC *ctx) {
     goto out;
   }
 
-  ctx->internal->_initialized = 1;
+  ctx->initialized = 1;
 
   rc = 0;
 
@@ -152,8 +140,8 @@ int csync_destroy(CSYNC *ctx) {
 
   /* TODO: write journal */
 
-  if (ctx->internal->_journal) {
-    sqlite3_close(ctx->internal->_journal);
+  if (ctx->journal) {
+    sqlite3_close(ctx->journal);
     /* TODO if we successfully synchronized, overwrite the original journal */
   }
 
@@ -165,7 +153,6 @@ int csync_destroy(CSYNC *ctx) {
 
   SAFE_FREE(ctx->options.config_dir);
 
-  SAFE_FREE(ctx->internal);
   SAFE_FREE(ctx);
 
   SAFE_FREE(lock);

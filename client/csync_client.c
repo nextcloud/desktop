@@ -108,8 +108,8 @@ int main(int argc, char **argv) {
     exit(1);
   }
 
-  csync->init(csync);
-  printf("Version: %s\n", csync->version());
+  csync_init(csync);
+  printf("Version: %s\n", csync_version());
 
   if (arguments.update) {
   }
@@ -120,7 +120,7 @@ int main(int argc, char **argv) {
   if (arguments.propagate) {
   }
 
-  csync->destroy(csync);
+  csync_destroy(csync);
 
   return 0;
 }

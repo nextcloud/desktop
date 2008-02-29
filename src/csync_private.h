@@ -33,14 +33,22 @@
 #ifndef _CSYNC_PRIVATE_H
 #define _CSYNC_PRIVATE_H
 
-#define _GNU_SOURCE /* asprintf */
-#include <stdlib.h>
 #include <sqlite3.h>
 
 #include "c_lib.h"
 #include "csync.h"
 
 #include "csync_macros.h"
+
+/**
+ * How deep to scan directories.
+ */
+#define MAX_DEPTH 50
+
+/**
+ * Maximum time difference between two replicas in seconds
+ */
+#define MAX_TIME_DIFFERENCE 10
 
 /**
  * Maximum size of a buffer for transfer
@@ -52,12 +60,22 @@ enum csync_replica_e {
   REMOTE_REPLCIA
 };
 
-struct csync_internal_s {
-  c_rbtree_t *_local;
-  c_rbtree_t *_remote;
-  sqlite3 *_journal;
-  int _journal_exists;
-  int _initialized;
+/**
+ * @brief csync public structure
+ */
+struct csync_s {
+  c_rbtree_t *local;
+  c_rbtree_t *remote;
+  sqlite3 *journal;
+
+  struct {
+    int max_depth;
+    int max_time_difference;
+    char *config_dir;
+  } options;
+
+  int journal_exists;
+  int initialized;
 };
 
 /**

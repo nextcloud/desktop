@@ -45,19 +45,6 @@ extern "C" {
 #define CSYNC_VERSION_PATCH 0
 #define CSYNC_VERSION_STRING "csync version 0.1.0"
 
-#undef __P
-#define __P(protos)   protos
-
-/**
- * How deep to scan directories.
- */
-#define MAX_DEPTH 50
-
-/**
- * Maximum time difference between two replicas in seconds
- */
-#define MAX_TIME_DIFFERENCE 10
-
 /*
  * csync file declarations
  */
@@ -72,50 +59,27 @@ extern "C" {
  * Forward declarations
  */
 struct csync_s; typedef struct csync_s CSYNC;
-struct csync_config_s; typedef struct csync_config_s csync_config_t;
-struct csync_internal_s; typedef struct csync_internal_s csync_internal_t;
-
-/**
- * @brief csync public structure
- */
-struct csync_s {
-  int (*init) __P((CSYNC *));
-  int (*update) __P((CSYNC *));
-  int (*reconcile) __P((CSYNC *));
-  int (*propagate) __P((CSYNC *));
-  int (*destroy) __P((CSYNC *));
-  const char *(*version) __P((void));
-
-  struct {
-    int max_depth;
-    int max_time_difference;
-    char *config_dir;
-  } options;
-
-  csync_internal_t *internal;
-};
-
 
 /**
  * @brief Allocate a csync context.
  *
- * @param ctx context variable to allocate
+ * @param ctx  context variable to allocate
  *
- * @return 0 on success, less than 0 if an error occured with errno set.
+ * @return  0 on success, less than 0 if an error occured with errno set.
  */
-int csync_create __P((CSYNC **));
+int csync_create(CSYNC **csync);
 
-int csync_init __P((CSYNC *));
+int csync_init(CSYNC *ctx);
 
-int csync_update __P((CSYNC *));
+int csync_update(CSYNC *ctx);
 
-int csync_reconcile __P((CSYNC *));
+int csync_reconcile(CSYNC *ctx);
 
-int csync_propagate __P((CSYNC *));
+int csync_propagate(CSYNC *ctx);
 
-int csync_destroy __P((CSYNC *));
+int csync_destroy(CSYNC *ctx);
 
-const char *csync_version __P((void));
+const char *csync_version(void);
 
 #ifdef __cplusplus
 }

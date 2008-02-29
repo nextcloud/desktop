@@ -22,17 +22,17 @@ START_TEST (csync_create_test)
   fail_unless(csync->options.max_time_difference == MAX_TIME_DIFFERENCE, NULL);
   fail_unless(strcmp(csync->options.config_dir, CSYNC_CONF_DIR) > 0, NULL);
 
-  csync->destroy(csync);
+  csync_destroy(csync);
 }
 END_TEST
 
 START_TEST (csync_init_test)
 {
-  fail_unless(csync->init(csync) == 0, NULL);
+  fail_unless(csync_init(csync) == 0, NULL);
 
-  fail_unless(csync->internal->_initialized == 1, NULL);
+  fail_unless(csync->initialized == 1, NULL);
 
-  fail_unless(csync->init(csync) == 1, NULL);
+  fail_unless(csync_init(csync) == 1, NULL);
 }
 END_TEST
 

@@ -107,16 +107,16 @@ int csync_journal_load(CSYNC *ctx, const char *journal) {
   }
 
   /* Open the temporary database */
-  if (sqlite3_open(journal_tmp, &ctx->internal->_journal) != SQLITE_OK) {
+  if (sqlite3_open(journal_tmp, &ctx->journal) != SQLITE_OK) {
     rc = -1;
     goto out;
   }
 
   if (csync_journal_is_empty(ctx)) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "Journal doesn't exist");
-    ctx->internal->_journal_exists = 0;
+    ctx->journal_exists = 0;
   } else {
-    ctx->internal->_journal_exists = 1;
+    ctx->journal_exists = 1;
   }
 
 out:
@@ -146,14 +146,14 @@ c_strlist_t *csync_journal_query(CSYNC *ctx, const char *statement) {
         usleep(100000);
         CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "sqlite3_prepare: BUSY counter: %d", busy_count);
       }
-      err = sqlite3_prepare(ctx->internal->_journal, statement, -1, &stmt, &tail);
+      err = sqlite3_prepare(ctx->journal, statement, -1, &stmt, &tail);
     } while (err == SQLITE_BUSY && busy_count ++ < 120);
 
     if (err != SQLITE_OK) {
       if (err == SQLITE_BUSY) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Gave up waiting for lock to clear");
       }
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "sqlite3_compile error: %s - on query %s", sqlite3_errmsg(ctx->internal->_journal), statement);
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "sqlite3_compile error: %s - on query %s", sqlite3_errmsg(ctx->journal), statement);
       result = c_strlist_new(1);
       break;
     } else {
@@ -202,7 +202,7 @@ c_strlist_t *csync_journal_query(CSYNC *ctx, const char *statement) {
       rc = sqlite3_finalize(stmt);
 
       if (err != SQLITE_DONE && rc != SQLITE_SCHEMA) {
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "sqlite_step error: %s - on query: %s", sqlite3_errmsg(ctx->internal->_journal), statement);
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "sqlite_step error: %s - on query: %s", sqlite3_errmsg(ctx->journal), statement);
         result = c_strlist_new(1);
       }
 
@@ -238,14 +238,14 @@ int csync_journal_insert(CSYNC *ctx, const char *statement) {
         usleep(100000);
         CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "sqlite3_prepare: BUSY counter: %d", busy_count);
       }
-      err = sqlite3_prepare(ctx->internal->_journal, statement, -1, &stmt, &tail);
+      err = sqlite3_prepare(ctx->journal, statement, -1, &stmt, &tail);
     } while (err == SQLITE_BUSY && busy_count++ < 120);
 
     if (err != SQLITE_OK) {
       if (err == SQLITE_BUSY) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Gave up waiting for lock to clear");
       }
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "sqlite3_compile error: %s on query %s", sqlite3_errmsg(ctx->internal->_journal), statement);
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "sqlite3_compile error: %s on query %s", sqlite3_errmsg(ctx->journal), statement);
       break;
     } else {
       busy_count = 0;
@@ -277,7 +277,7 @@ int csync_journal_insert(CSYNC *ctx, const char *statement) {
       rc = sqlite3_finalize(stmt);
 
       if (err != SQLITE_DONE && rc != SQLITE_SCHEMA) {
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "sqlite_step error: %s on insert: %s", sqlite3_errmsg(ctx->internal->_journal), statement);
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "sqlite_step error: %s on insert: %s", sqlite3_errmsg(ctx->journal), statement);
       }
 
       if (rc == SQLITE_SCHEMA) {
@@ -292,6 +292,6 @@ int csync_journal_insert(CSYNC *ctx, const char *statement) {
     }
   } while (rc == SQLITE_SCHEMA && retry_count < 10);
 
-  return sqlite3_last_insert_rowid(ctx->internal->_journal);
+  return sqlite3_last_insert_rowid(ctx->journal);
 }
 
