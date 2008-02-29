@@ -55,10 +55,10 @@ extern "C" {
 #define CSYNC_JOURNAL_FILE "csync_journal.db"
 #define CSYNC_LOCK_FILE "lock"
 
-/*
- * Forward declarations
+/**
+ * csync handle
  */
-struct csync_s; typedef struct csync_s CSYNC;
+typedef struct csync_s CSYNC;
 
 /**
  * @brief Allocate a csync context.
