@@ -63,22 +63,66 @@ struct csync_s; typedef struct csync_s CSYNC;
 /**
  * @brief Allocate a csync context.
  *
- * @param ctx  context variable to allocate
+ * @param csync  The context variable to allocate.
  *
- * @return  0 on success, less than 0 if an error occured with errno set.
+ * @return  0 on success, less than 0 if an error occured.
  */
 int csync_create(CSYNC **csync);
 
+/**
+ * @brief Initialize the file synchronizer.
+ *
+ * This function loads the configuration, the journal and locks the client.
+ *
+ * @param ctx  The context to initialize.
+ *
+ * @return  0 on success, less than 0 if an error occured.
+ */
 int csync_init(CSYNC *ctx);
 
+/**
+ * @brief Update detection
+ *
+ * @param ctx  The context to run the update detection on.
+ *
+ * @return  0 on success, less than 0 if an error occured.
+ */
 int csync_update(CSYNC *ctx);
 
+/**
+ * @brief Reconciliation
+ *
+ * @param ctx  The context to run the reconciliation on.
+ *
+ * @return  0 on success, less than 0 if an error occured.
+ */
 int csync_reconcile(CSYNC *ctx);
 
+/**
+ * @brief Propagation
+ *
+ * @param ctx  The context to run the propagation on.
+ *
+ * @return  0 on success, less than 0 if an error occured.
+ */
 int csync_propagate(CSYNC *ctx);
 
+/**
+ * @brief Destroy the csync context
+ *
+ * Writes the journal, unlocks csync and frees the memory.
+ *
+ * @param ctx  The context to destroy.
+ *
+ * @return  0 on success, less than 0 if an error occured.
+ */
 int csync_destroy(CSYNC *ctx);
 
+/**
+ * @brief Get the csync version.
+ *
+ * @return  The csync version as a string.
+ */
 const char *csync_version(void);
 
 #ifdef __cplusplus
