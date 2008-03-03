@@ -39,7 +39,7 @@
 
 static int csync_lock_create(const char *lockfile) {
   int fd, pid, rc = -1;
-  char *tmpfile = NULL;
+  char *ctmpfile = NULL;
   char *dir = NULL;
   char *buf = NULL;
 
@@ -51,31 +51,31 @@ static int csync_lock_create(const char *lockfile) {
     goto out;
   }
 
-  if (asprintf(&tmpfile, "%s/tmp_lock_XXXXXX", dir) < 0) {
+  if (asprintf(&ctmpfile, "%s/tmp_lock_XXXXXX", dir) < 0) {
     rc = -1;
     goto out;
   }
 
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Create temporary lock file: %s", tmpfile);
-  if ((fd = mkstemp(tmpfile)) < 0) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to create temporary lock file: %s - %s", tmpfile, strerror(errno));
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Create temporary lock file: %s", ctmpfile);
+  if ((fd = mkstemp(ctmpfile)) < 0) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to create temporary lock file: %s - %s", ctmpfile, strerror(errno));
     rc = -1;
     goto out;
   }
 
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Write pid (%d) to temporary lock file: %s", pid, tmpfile);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Write pid (%d) to temporary lock file: %s", pid, ctmpfile);
   pid = asprintf(&buf, "%d\n", pid);
   if (write(fd, buf, pid) == pid) {
     /* Create lock file */
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Create a hardlink from %s to %s.", tmpfile, lockfile);
-    if (link(tmpfile, lockfile) < 0 ) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Create a hardlink from %s to %s.", ctmpfile, lockfile);
+    if (link(ctmpfile, lockfile) < 0 ) {
       /* Oops, alredy locked */
       CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Already locked: %s - %s", lockfile, strerror(errno));
       rc = -1;
       goto out;
     }
   } else {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Can't create %s - %s", tmpfile, strerror(errno));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Can't create %s - %s", ctmpfile, strerror(errno));
     rc = -1;
     goto out;
   }
@@ -84,11 +84,11 @@ static int csync_lock_create(const char *lockfile) {
 
 out:
   close(fd);
-  unlink(tmpfile);
+  unlink(ctmpfile);
 
   SAFE_FREE(buf);
   SAFE_FREE(dir);
-  SAFE_FREE(tmpfile);
+  SAFE_FREE(ctmpfile);
 
   return rc;
 }

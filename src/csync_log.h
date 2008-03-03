@@ -48,7 +48,7 @@
 #endif
 
 #define CSYNC_LOG(priority, fmt, rest...) \
-  csync_log(CSYNC_LOG_CATEGORY_NAME, priority, fmt, ##rest)
+  csync_log((char *) CSYNC_LOG_CATEGORY_NAME, priority, fmt, ##rest)
 
 #ifdef WITH_LOG4C
 #define CSYNC_LOG_PRIORITY_FATAL   LOG4C_PRIORITY_FATAL
