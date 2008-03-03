@@ -16,9 +16,12 @@ include(DefineInstallationPaths)
 
 include(DefineOptions.cmake)
 
+# disallow in-source build
+include(MacroEnsureOutOfSourceBuild)
+macro_ensure_out_of_source_build("${PROJECT_NAME} requires an out of source build. Please create a separate build directory and run 'cmake /path/to/${PROJECT_NAME} [options]' there.")
+
 # add macros
 include(MacroAddPlugin)
-include(MacroEnsureOutOfSourceBuild)
 include(MacroAddCheckTest)
 
 if (WITH_LOG4C)
@@ -29,8 +32,6 @@ find_package(Check)
 include(ConfigureChecks.cmake)
 configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
-# disallow in-source build
-macro_ensure_out_of_source_build("libcsync requires an out of source build. Please create a separate build directory and run 'cmake path_to_wengophone [options]' there.")
 
 add_subdirectory(iniparser/src)
 add_subdirectory(src)
