@@ -21,6 +21,7 @@ macro_ensure_out_of_source_build("${PROJECT_NAME} requires an out of source buil
 
 # add macros
 include(MacroAddPlugin)
+include(MacroCopyFile)
 
 if (WITH_LOG4C)
   find_package(LOG4C REQUIRED)
@@ -29,6 +30,8 @@ find_package(Check)
 
 include(ConfigureChecks.cmake)
 configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+
+macro_copy_file(${CMAKE_CURRENT_SOURCE_DIR}/CTestCustom.cmake ${CMAKE_CURRENT_BINARY_DIR}/CTestCustom.cmake)
 
 add_subdirectory(iniparser/src)
 add_subdirectory(src)
