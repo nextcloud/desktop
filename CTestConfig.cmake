@@ -1,8 +1,14 @@
-SET (UPDATE_TYPE "true")
+set(UPDATE_TYPE "true")
+set(CTEST_CUSTOM_MEMCHECK_IGNORE
+  ${CTEST_CUSTOM_MEMCHECK_IGNORE}
+  check_std_c_jhash
+)
+
 set(CTEST_PROJECT_NAME "csync")
-set(CTEST_DROP_METHOD "xmlrpc" )
-set(CTEST_DROP_SITE "http://csync.org/")
-set(CTEST_DROP_LOCATION "csync")
-set(COMPRESS_SUBMISSON ON)
-#set (CTEST_TRIGGER_SITE "http://${CTEST_DROP_SITE}/cgi-bin/Submit-cSync-TestingResults.pl")
+set(CTEST_NIGHTLY_START_TIME "23:00:00 CET")
+
+set(CTEST_DROP_METHOD "http")
+set(CTEST_DROP_SITE "testing.csync.org")
+set(CTEST_DROP_LOCATION "/submit.php?project=${CTEST_PROJECT_NAME}")
+set(CTEST_DROP_SITE_CDASH TRUE)
 
