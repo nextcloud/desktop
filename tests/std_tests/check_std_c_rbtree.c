@@ -60,7 +60,7 @@ static int visitor(void *obj, void *data) {
 static void destructor(void *data) {
   test_t *freedata = NULL;
 
-  freedata = (void *) data;
+  freedata = (test_t *) data;
   SAFE_FREE(freedata);
 }
 
@@ -71,7 +71,7 @@ static void setup(void) {
 static void setup_complete_tree(void) {
   int i = 0;
 
-  fail_unless(c_rbtree_create(&tree, key_cmp, data_cmp) == 0, NULL);
+  c_rbtree_create(&tree, key_cmp, data_cmp);
   for (i = 0; i < 100; i++) {
     test_t *testdata = NULL;
 
@@ -129,6 +129,8 @@ START_TEST (check_c_rbtree_insert_delete)
   node = c_rbtree_head(tree);
   fail_if(node == NULL, NULL);
 
+  testdata = c_rbtree_node_data(node);
+  SAFE_FREE(testdata);
   fail_unless(c_rbtree_node_delete(node) == 0, NULL);
 
   c_rbtree_free(tree);
@@ -202,6 +204,7 @@ START_TEST (check_c_rbtree_delete)
 {
   int rc = -1, i = 42;
   c_rbnode_t *node = NULL;
+  test_t *freedata = NULL;
 
   rc = c_rbtree_check_sanity(tree);
   fail_unless(rc == 0, "c_rbtree_check_sanity failed with return code %d", rc);
@@ -209,6 +212,8 @@ START_TEST (check_c_rbtree_delete)
   node = c_rbtree_find(tree, (void *) &i);
   fail_if(node == NULL, NULL);
 
+  freedata = (test_t *) c_rbtree_node_data(node);
+  SAFE_FREE(freedata);
   fail_unless(c_rbtree_node_delete(node) == 0, NULL);
 
   rc = c_rbtree_check_sanity(tree);
@@ -234,9 +239,11 @@ START_TEST (check_c_rbtree_walk)
   /* find the node with the key 42 */
   node = c_rbtree_find(tree, (void *) &i);
   fail_if(node == NULL, NULL);
+  SAFE_FREE(testdata);
 
   testdata = (test_t *) c_rbtree_node_data(node);
   fail_unless(testdata->number == 42, NULL);
+
 }
 END_TEST
 
@@ -252,7 +259,7 @@ END_TEST
 #endif
 
 static Suite *make_c_rbtree_suite(void) {
-  Suite *s = suite_create("std:path:c_rbtree");
+  Suite *s = suite_create("std:rbtree");
 
   create_case(s, "check_c_rbtree_create_free", check_c_rbtree_create_free);
   create_case(s, "check_c_rbtree_create_null", check_c_rbtree_create_null);
@@ -271,12 +278,10 @@ int main(void) {
   int nf;
 
   Suite *s = make_c_rbtree_suite();
-  /* Suite *s2 = make_xstrdup_suite(); */
 
   SRunner *sr;
   sr = srunner_create(s);
   /* srunner_set_fork_status(sr, CK_NOFORK); */
-  /* srunner_add_suite(sr, s2); */
   srunner_run_all(sr, CK_VERBOSE);
   nf = srunner_ntests_failed(sr);
   srunner_free(sr);
