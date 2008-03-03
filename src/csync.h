@@ -41,9 +41,9 @@ extern "C" {
  * csync version information
  */
 #define CSYNC_VERSION_MAJOR 0
-#define CSYNC_VERSION_MINOR 1
+#define CSYNC_VERSION_MINOR 42
 #define CSYNC_VERSION_PATCH 0
-#define CSYNC_VERSION_STRING "csync version 0.1.0"
+#define CSYNC_VERSION_STRING "csync version 0.42.0"
 
 /*
  * csync file declarations
