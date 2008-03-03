@@ -184,14 +184,14 @@ int c_rbtree_free(c_rbtree_t *tree);
     if (T) {                                            \
       c_rbnode_t *_c_rbtree_temp;                       \
       while ((_c_rbtree_temp = c_rbtree_head(T))) {     \
-            (DESTRUCTOR)(_c_rbtree_temp->data);         \
-            if (_c_rbtree_temp == c_rbtree_head(T)) {   \
-              c_rbtree_node_delete(_c_rbtree_temp);     \
-            }                                           \
+        (DESTRUCTOR)(_c_rbtree_temp->data);             \
+        if (_c_rbtree_temp == c_rbtree_head(T)) {       \
+          c_rbtree_node_delete(_c_rbtree_temp);         \
+        }                                               \
       }                                                 \
     }                                                   \
     SAFE_FREE(T);                                       \
-  } while (0)
+  } while (0);
 
 /**
  * @brief Inserts a node into a red black tree.
