@@ -1,3 +1,4 @@
+# Last Change: 2008-03-03 11:09:18
 #!/bin/bash
 #
 # Script to build csync on UNIX.
@@ -55,7 +56,7 @@ echo "Usage: `basename $0` [--prefix /install_prefix|--build [debug|final]|--cle
 
 cd ${BUILDDIR}
 
-OPTIONS="--graphviz=${BUILDDIR}/csync.dot"
+OPTIONS="--graphviz=${BUILDDIR}/csync.dot -DUNIT_TESTING=ON"
 
 while test -n "$1"; do
 	PARAM="$1"
