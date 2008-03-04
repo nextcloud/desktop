@@ -51,6 +51,30 @@ START_TEST (check_csync_journal_load)
 }
 END_TEST
 
+START_TEST (check_csync_journal_query_statement)
+{
+  c_strlist_t *result = NULL;
+  result = csync_journal_query(csync, "");
+  fail_unless(result == NULL, NULL);
+  c_strlist_destroy(result);
+
+  result = csync_journal_query(csync, "SELECT;");
+  fail_unless(result != NULL, NULL);
+  c_strlist_destroy(result);
+}
+END_TEST
+
+START_TEST (check_csync_journal_insert_statement)
+{
+  c_strlist_t *result = NULL;
+  result = csync_journal_query(csync, "CREATE TABLE test(key INTEGER, text VARCHAR(10));");
+  c_strlist_destroy(result);
+  fail_unless(csync_journal_insert(csync, "INSERT;") == 0, NULL);
+  fail_unless(csync_journal_insert(csync, "INSERT") == 0, NULL);
+  fail_unless(csync_journal_insert(csync, "") == 0, NULL);
+}
+END_TEST
+
 START_TEST (check_csync_journal_query_create_and_insert_table)
 {
   c_strlist_t *result = NULL;
@@ -87,6 +111,8 @@ static Suite *csync_suite(void) {
 
   create_case(s, "check_csync_journal_check", check_csync_journal_check);
   create_case_fixture(s, "check_csync_journal_load", check_csync_journal_load, setup, teardown);
+  create_case_fixture(s, "check_csync_journal_query_statement", check_csync_journal_query_statement, setup_init, teardown);
+  create_case_fixture(s, "check_csync_journal_insert_statement", check_csync_journal_insert_statement, setup_init, teardown);
   create_case_fixture(s, "check_csync_journal_query_create_and_insert_table", check_csync_journal_query_create_and_insert_table, setup_init, teardown);
   create_case_fixture(s, "check_csync_journal_is_empty", check_csync_journal_is_empty, setup_init, teardown);
 
