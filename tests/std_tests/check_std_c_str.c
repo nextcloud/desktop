@@ -63,7 +63,7 @@ START_TEST (check_c_strlist_add)
   fail_unless(strlist->count == 0, NULL);
 
   for (i = 0; i < strlist->size; i++) {
-    fail_unless(c_strlist_add(strlist, "foobar") == 0, NULL);
+    fail_unless(c_strlist_add(strlist, (char *) "foobar") == 0, NULL);
   }
 
   fail_unless(strlist->count == 42, NULL);

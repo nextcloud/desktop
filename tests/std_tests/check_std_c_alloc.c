@@ -30,7 +30,7 @@ END_TEST
 
 START_TEST (check_c_strdup)
 {
-  char *str = "test";
+  char *str = (char *) "test";
   char *dup;
 
   dup = c_strdup(str);
@@ -40,7 +40,7 @@ START_TEST (check_c_strdup)
 END_TEST
 
 static Suite *make_c_malloc_suite(void) {
-  Suite *s = suite_create("std:path:c_malloc");
+  Suite *s = suite_create("std:alloc:malloc");
 
   create_case(s, "check_c_malloc", check_c_malloc);
   create_case(s, "check_c_malloc_zero", check_c_malloc_zero);
@@ -49,7 +49,7 @@ static Suite *make_c_malloc_suite(void) {
 }
 
 static Suite *make_c_strdup_suite(void) {
-  Suite *s = suite_create("std:path:c_malloc");
+  Suite *s = suite_create("std:alloc:strdup");
 
   create_case(s, "check_c_strdup", check_c_strdup);
 
