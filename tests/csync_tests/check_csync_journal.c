@@ -1,14 +1,20 @@
+#define _GNU_SOURCE /* asprintf */
 #include <string.h>
 
 #include "support.h"
 
-#include "csync_private.h"
-#include "csync_journal.h"
-#include "csync_log.h"
+#include "csync_journal.c"
 
 CSYNC *csync;
+const char *testdb = (char *) "/tmp/check_csync/test.db";
 
 static void setup(void) {
+  csync_create(&csync);
+  SAFE_FREE(csync->options.config_dir);
+  csync->options.config_dir = c_strdup("/tmp/check_csync/");
+}
+
+static void setup_init(void) {
   csync_create(&csync);
   SAFE_FREE(csync->options.config_dir);
   csync->options.config_dir = c_strdup("/tmp/check_csync/");
@@ -19,6 +25,31 @@ static void teardown(void) {
   csync_destroy(csync);
   system("rm -rf /tmp/check_csync");
 }
+
+START_TEST (check_csync_journal_check)
+{
+  system("mkdir -p /tmp/check_csync");
+
+  /* old db */
+  system("echo \"SQLite format 2\" > /tmp/check_csync/test.db");
+  fail_unless(csync_journal_check(testdb) == 0);
+
+  /* db already exists */
+  fail_unless(csync_journal_check(testdb) == 0);
+
+  /* no db exists */
+  system("rm -f /tmp/check_csync/test.db");
+  fail_unless(csync_journal_check(testdb) == 0);
+
+  system("rm -rf /tmp/check_csync");
+}
+END_TEST
+
+START_TEST (check_csync_journal_load)
+{
+  fail_unless(csync_journal_load(csync, testdb) == 0, NULL);
+}
+END_TEST
 
 START_TEST (check_csync_journal_query_create_and_insert_table)
 {
@@ -34,11 +65,30 @@ START_TEST (check_csync_journal_query_create_and_insert_table)
 }
 END_TEST
 
+START_TEST (check_csync_journal_is_empty)
+{
+  c_strlist_t *result = NULL;
+
+  /* we have an empty db */
+  fail_unless(csync_journal_is_empty(csync) == 1, NULL);
+
+  /* add a table and an entry */
+  result = csync_journal_query(csync, "CREATE TABLE metadata(key INTEGER, text VARCHAR(10));");
+  c_strlist_destroy(result);
+  fail_unless(csync_journal_insert(csync, "INSERT INTO metadata (key, text) VALUES (42, 'hello');"), NULL);
+
+  fail_unless(csync_journal_is_empty(csync) == 0, NULL);
+}
+END_TEST
+
 
 static Suite *csync_suite(void) {
   Suite *s = suite_create("csync_journal");
 
-  create_case_fixture(s, "check_csync_journal_query_create_and_insert_table", check_csync_journal_query_create_and_insert_table, setup, teardown);
+  create_case(s, "check_csync_journal_check", check_csync_journal_check);
+  create_case_fixture(s, "check_csync_journal_load", check_csync_journal_load, setup, teardown);
+  create_case_fixture(s, "check_csync_journal_query_create_and_insert_table", check_csync_journal_query_create_and_insert_table, setup_init, teardown);
+  create_case_fixture(s, "check_csync_journal_is_empty", check_csync_journal_is_empty, setup_init, teardown);
 
   return s;
 }

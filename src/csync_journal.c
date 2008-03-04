@@ -20,12 +20,12 @@
  * vim: ts=2 sw=2 et cindent
  */
 
-#define _GNU_SOURCE
+#define _GNU_SOURCE /* asprintf */
 #include <sqlite3.h>
 #include <stdio.h>
 #include <unistd.h>
 
-#include "std/c_lib.h"
+#include "c_lib.h"
 #include "csync_private.h"
 #include "csync_journal.h"
 
