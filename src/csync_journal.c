@@ -230,6 +230,10 @@ int csync_journal_insert(CSYNC *ctx, const char *statement) {
   sqlite3_stmt *stmt;
   const char *tail;
 
+  if (!statement[0]) {
+    return 0;
+  }
+
   do {
     /* compile SQL program into a virtual machine, reattempteing if busy */
     do {
