@@ -41,6 +41,8 @@ START_TEST (check_csync_journal_check)
   system("rm -f /tmp/check_csync/test.db");
   fail_unless(csync_journal_check(testdb) == 0);
 
+  fail_unless(csync_journal_check((char *) "/tmp/check_csync/") < 0);
+
   system("rm -rf /tmp/check_csync");
 }
 END_TEST
