@@ -33,6 +33,7 @@ set(CSYNC_LINK_LIBRARIES
 
 set(csync_SRCS
   csync.c
+  csync_config.c
   csync_journal.c
   csync_lock.c
   csync_util.c

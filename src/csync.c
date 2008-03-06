@@ -29,6 +29,7 @@
 
 #include "c_lib.h"
 #include "csync_private.h"
+#include "csync_config.h"
 #include "csync_lock.h"
 #include "csync_journal.h"
 
@@ -62,6 +63,7 @@ int csync_init(CSYNC *ctx) {
   char *log = NULL;
   char *journal = NULL;
   char *lock = NULL;
+  char *config = NULL;
 
   if (ctx == NULL) {
     errno = EBADF;
@@ -93,7 +95,7 @@ int csync_init(CSYNC *ctx) {
   if (c_isfile(log)) {
     csync_log_load(log);
   } else {
-    if (c_copy(DATADIR "/csync/" CSYNC_LOG_FILE, log, 0644) == 0) {
+    if (c_copy(SYSCONFDIR "/csync/" CSYNC_LOG_FILE, log, 0644) == 0) {
       csync_log_load(log);
     }
   }
@@ -109,7 +111,16 @@ int csync_init(CSYNC *ctx) {
     goto out;
   }
 
-  /* TODO: load config */
+  /* load config file */
+  if (asprintf(&config, "%s/%s", ctx->options.config_dir, CSYNC_CONF_FILE) < 0) {
+    rc = -1;
+    goto out;
+  }
+
+  if (csync_config_load(ctx, config) < 0) {
+    rc = -1;
+    goto out;
+  }
 
   /* TODO: load exclude list */
 
