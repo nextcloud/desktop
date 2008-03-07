@@ -143,6 +143,7 @@ out:
   SAFE_FREE(log);
   SAFE_FREE(lock);
   SAFE_FREE(journal);
+  SAFE_FREE(config);
   return rc;
 }
 
