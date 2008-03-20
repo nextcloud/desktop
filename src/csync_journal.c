@@ -24,6 +24,9 @@
 #include <sqlite3.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #include "c_lib.h"
 #include "csync_private.h"
@@ -33,16 +36,16 @@
 #include "csync_log.h"
 
 static int csync_journal_check(const char *journal) {
-  FILE *fp = NULL;
+  int fd = -1;
   char buf[16] = {0};
   sqlite3 *db = NULL;
 
   /* check db version */
-  fp = fopen(journal, "r");
-  if (fp) {
-    if (fread((void *) buf, (size_t) 16, 1, fp) == 0) {
+  fd = open(journal, O_RDONLY);
+  if (fd >= 0) {
+    if (read(fd, (void *) buf, (size_t) 16) >= 0) {
       buf[16] = '\0';
-      fclose(fp);
+      close(fd);
       if (c_streq(buf, "SQLite format 3")) {
         if (sqlite3_open(journal, &db ) == SQLITE_OK) {
           /* everything is fine */
