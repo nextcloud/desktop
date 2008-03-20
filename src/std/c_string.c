@@ -20,6 +20,7 @@
  * vim: ts=2 sw=2 et cindent
  */
 
+#include <errno.h>
 #include <stdlib.h>
 
 #include "c_string.h"
@@ -47,6 +48,7 @@ c_strlist_t *c_strlist_new(size_t size) {
   c_strlist_t *strlist = NULL;
 
   if (size == 0) {
+    errno = EINVAL;
     return NULL;
   }
 
@@ -55,12 +57,32 @@ c_strlist_t *c_strlist_new(size_t size) {
     return NULL;
   }
 
-  strlist->vector = c_malloc(size * sizeof(char *));
+  strlist->vector = (char **) c_malloc(size * sizeof(char *));
   if (strlist->vector == NULL) {
     SAFE_FREE(strlist);
     return NULL;
   }
   strlist->count = 0;
+  strlist->size = size;
+
+  return strlist;
+}
+
+c_strlist_t *c_strlist_expand(c_strlist_t *strlist, size_t size) {
+  if (strlist == NULL || size == 0) {
+    errno = EINVAL;
+    return NULL;
+  }
+
+  if (strlist->size >= size) {
+    return strlist;
+  }
+
+  strlist->vector = (char **) c_realloc(strlist->vector, size * sizeof(char *));
+  if (strlist->vector == NULL) {
+    return NULL;
+  }
+
   strlist->size = size;
 
   return strlist;

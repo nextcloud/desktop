@@ -74,11 +74,34 @@ START_TEST (check_c_strlist_add)
 }
 END_TEST
 
+START_TEST (check_c_strlist_expand)
+{
+  size_t i = 0;
+  c_strlist_t *strlist = NULL;
+
+  strlist = c_strlist_new(42);
+  fail_if(strlist == NULL, NULL);
+  fail_unless(strlist->size == 42, NULL);
+  fail_unless(strlist->count == 0, NULL);
+
+  strlist = c_strlist_expand(strlist, 84);
+  fail_if(strlist == NULL, NULL);
+  fail_unless(strlist->size == 84, NULL);
+
+  for (i = 0; i < strlist->size; i++) {
+    fail_unless(c_strlist_add(strlist, (char *) "foobar") == 0, NULL);
+  }
+
+  c_strlist_destroy(strlist);
+}
+END_TEST
+
 static Suite *make_std_c_strlist_suite(void) {
   Suite *s = suite_create("std:str:c_stringlist");
 
   create_case(s, "check_c_strlist_new", check_c_strlist_new);
   create_case(s, "check_c_strlist_add", check_c_strlist_add);
+  create_case(s, "check_c_strlist_expand", check_c_strlist_expand);
 
   return s;
 }
@@ -91,6 +114,9 @@ int main(void) {
 
   SRunner *sr;
   sr = srunner_create(s);
+#if 0
+  srunner_set_fork_status(sr, CK_NOFORK);
+#endif
   srunner_add_suite (sr, s2);
   srunner_run_all(sr, CK_VERBOSE);
   nf = srunner_ntests_failed(sr);

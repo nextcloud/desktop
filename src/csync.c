@@ -135,6 +135,8 @@ int csync_init(CSYNC *ctx) {
     goto out;
   }
 
+  /* TODO: load plugins */
+
   ctx->initialized = 1;
 
   rc = 0;

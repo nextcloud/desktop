@@ -75,6 +75,16 @@ int c_streq(const char *a, const char *b);
 c_strlist_t *c_strlist_new(size_t size);
 
 /**
+ * @brief Expand the stringlist
+ *
+ * @param strlist  Stringlist to expand
+ * @param size     New size of the strlinglist to expand
+ *
+ * @return  Pointer to the expanded stringlist. NULL if an error occured.
+ */
+c_strlist_t *c_strlist_expand(c_strlist_t *strlist, size_t size);
+
+/**
  * @brief  Add a string to the stringlist.
  *
  * Duplicates the string and stores it in the stringlist.

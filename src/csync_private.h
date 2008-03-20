@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * vim: ts=2 sw=2 et cindent
+ * vim: ft=c.doxygen ts=2 sw=2 et cindent
  */
 
 /**
@@ -66,6 +66,7 @@ enum csync_replica_e {
 struct csync_s {
   c_rbtree_t *local;
   c_rbtree_t *remote;
+  c_strlist_t *excludes;
   sqlite3 *journal;
 
   struct {
