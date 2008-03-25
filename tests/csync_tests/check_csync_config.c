@@ -50,8 +50,8 @@ int main(void) {
   SRunner *sr;
   sr = srunner_create(s);
 #if 0
-#endif
   srunner_set_fork_status(sr, CK_NOFORK);
+#endif
   srunner_run_all(sr, CK_VERBOSE);
   nf = srunner_ntests_failed(sr);
   srunner_free(sr);
