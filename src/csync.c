@@ -31,6 +31,7 @@
 #include "csync_private.h"
 #include "csync_config.h"
 #include "csync_lock.h"
+#include "csync_exclude.h"
 #include "csync_journal.h"
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.api"
@@ -61,6 +62,7 @@ int csync_create(CSYNC **csync) {
 int csync_init(CSYNC *ctx) {
   int rc;
   char *log = NULL;
+  char *exclude = NULL;
   char *journal = NULL;
   char *lock = NULL;
   char *config = NULL;
@@ -122,7 +124,26 @@ int csync_init(CSYNC *ctx) {
     goto out;
   }
 
-  /* TODO: load exclude list */
+  /* load global exclude list */
+  if (asprintf(&exclude, "%s/csync/%s", SYSCONFDIR, CSYNC_EXCLUDE_FILE) < 0) {
+    rc = -1;
+    goto out;
+  }
+
+  if (csync_exclude_load(ctx, exclude) < 0) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Could not load %s - %s", exclude, strerror(errno));
+  }
+  SAFE_FREE(exclude);
+
+  /* load exclude list */
+  if (asprintf(&exclude, "%s/%s", ctx->options.config_dir, CSYNC_CONF_FILE) < 0) {
+    rc = -1;
+    goto out;
+  }
+
+  if (csync_exclude_load(ctx, exclude) < 0) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Could not load %s - %s", exclude, strerror(errno));
+  }
 
   /* create/load journal */
   if (asprintf(&journal, "%s/%s", ctx->options.config_dir, CSYNC_JOURNAL_FILE) < 0) {
@@ -144,6 +165,7 @@ int csync_init(CSYNC *ctx) {
 out:
   SAFE_FREE(log);
   SAFE_FREE(lock);
+  SAFE_FREE(exclude);
   SAFE_FREE(journal);
   SAFE_FREE(config);
   return rc;
