@@ -94,7 +94,7 @@ c_strlist_t *c_strlist_expand(c_strlist_t *strlist, size_t size);
  *
  * @return  0 on success, less than 0 if an error occured.
  */
-int c_strlist_add(c_strlist_t *strlist, char *string);
+int c_strlist_add(c_strlist_t *strlist, const char *string);
 
 /**
  * @brief Destroy the memory of the stringlist.
