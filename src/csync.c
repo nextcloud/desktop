@@ -181,6 +181,8 @@ int csync_destroy(CSYNC *ctx) {
     /* TODO if we successfully synchronized, overwrite the original journal */
   }
 
+  csync_exclude_destroy(ctx);
+
   if (asprintf(&lock, "%s/%s", ctx->options.config_dir, CSYNC_LOCK_FILE) > 0) {
     csync_lock_remove(lock);
   }

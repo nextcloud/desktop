@@ -81,7 +81,6 @@ int csync_exclude_load(CSYNC *ctx, const char *fname) {
         buf[i] = '\0';
         if (*entry != '#' || *entry == '\n') {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Adding entry: %s", entry);
-          printf("Adding entry: %s\n", entry);
           csync_exclude_add(ctx, entry);
         }
       }

@@ -21,7 +21,6 @@ static void setup_init(void) {
 }
 
 static void teardown(void) {
-  csync_exclude_destroy(csync);
   csync_destroy(csync);
   system("rm -rf /tmp/check_csync");
 }
@@ -66,8 +65,8 @@ int main(void) {
   SRunner *sr;
   sr = srunner_create(s);
 #if 0
-  srunner_set_fork_status(sr, CK_NOFORK);
 #endif
+  srunner_set_fork_status(sr, CK_NOFORK);
   srunner_run_all(sr, CK_VERBOSE);
   nf = srunner_ntests_failed(sr);
   srunner_free(sr);
