@@ -160,12 +160,12 @@ static int _closedir(csync_vio_method_t *dhandle) {
 }
 
 static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
-  smbc_dirent *dirent = NULL;
+  struct smbc_dirent *dirent = NULL;
   smb_dhandle_t *handle = NULL;
 
   handle = (smb_dhandle_t *) dhandle;
 
-  dirent = smbc_opendir(handle->dh);
+  dirent = smbc_readdir(handle->dh);
 
   return NULL;
 }
