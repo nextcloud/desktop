@@ -35,6 +35,7 @@ macro_copy_file(${CMAKE_CURRENT_SOURCE_DIR}/CTestCustom.cmake ${CMAKE_CURRENT_BI
 
 add_subdirectory(iniparser/src)
 add_subdirectory(src)
+add_subdirectory(modules)
 add_subdirectory(client)
 add_subdirectory(config)
 add_subdirectory(doc)

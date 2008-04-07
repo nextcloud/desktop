@@ -36,3 +36,6 @@ macro_add_check_test(check_csync_config csync_tests/check_csync_config.c ${TEST_
 macro_add_check_test(check_csync_exclude csync_tests/check_csync_exclude.c ${TEST_TARGET_LIBRARIES})
 macro_add_check_test(check_csync_journal csync_tests/check_csync_journal.c ${TEST_TARGET_LIBRARIES})
 
+# vio
+macro_add_check_test(check_vio_handle vio_tests/check_vio_handle.c ${TEST_TARGET_LIBRARIES})
+

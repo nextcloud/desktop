@@ -38,6 +38,9 @@ set(csync_SRCS
   csync_journal.c
   csync_lock.c
   csync_util.c
+
+  vio/csync_vio.c
+  vio/csync_vio_handle.c
 )
 
 set(csync_HDRS
