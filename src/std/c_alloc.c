@@ -56,3 +56,16 @@ char *c_strdup(const char *str) {
   return ret;
 }
 
+char *c_strndup(const char *str, size_t size) {
+  char *ret;
+  size_t len;
+  len = strlen(str);
+  if (len > size) {
+    len = size;
+  }
+  ret = (char *) c_malloc(len + 1);
+  strncpy(ret, str, len);
+  ret[size] = '\0';
+  return ret;
+}
+

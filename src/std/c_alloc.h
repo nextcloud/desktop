@@ -97,6 +97,22 @@ void *c_realloc(void *ptr, size_t size);
 char *c_strdup(const char *str);
 
 /**
+ * @brief Duplicate a string.
+ *
+ * The function returns a pointer to a newly allocated string which is a
+ * duplicate of the string str of size bytes.
+ *
+ * @param str   String to duplicate.
+ *
+ * @param size  Size of the string to duplicate.
+ *
+ * @return Returns a pointer to the duplicated string, or NULL if insufficient
+ * memory was available. A terminating null byte '\0' is added.
+ *
+ */
+char *c_strndup(const char *str, size_t size);
+
+/**
  * }@
  */
 #endif /* _C_ALLOC_H */
