@@ -20,8 +20,8 @@
  * vim: ft=c.doxygen ts=2 sw=2 et cindent
  */
 
-#ifndef _CSYNC_VIO_FILE_INFO_H
-#define _CSYNC_VIO_FILE_INFO_H
+#ifndef _CSYNC_VIO_FILE_STAT_H
+#define _CSYNC_VIO_FILE_STAT_H
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -47,26 +47,25 @@ enum csync_vio_file_type_e {
 };
 
 enum csync_vio_file_stat_fields_e {
-  CSYNC_VIO_FILE_INFO_FIELDS_NONE = 0,
-  CSYNC_VIO_FILE_INFO_FIELDS_TYPE = 1 << 0,
-  CSYNC_VIO_FILE_INFO_FIELDS_PERMISSIONS = 1 << 1,
-  CSYNC_VIO_FILE_INFO_FIELDS_FLAGS = 1 << 2,
-  CSYNC_VIO_FILE_INFO_FIELDS_DEVICE = 1 << 3,
-  CSYNC_VIO_FILE_INFO_FIELDS_INODE = 1 << 4,
-  CSYNC_VIO_FILE_INFO_FIELDS_LINK_COUNT = 1 << 5,
-  CSYNC_VIO_FILE_INFO_FIELDS_SIZE = 1 << 6,
-  CSYNC_VIO_FILE_INFO_FIELDS_BLOCK_COUNT = 1 << 7,
-  CSYNC_VIO_FILE_INFO_FIELDS_IO_BLOCK_SIZE = 1 << 8,
-  CSYNC_VIO_FILE_INFO_FIELDS_ATIME = 1 << 9,
-  CSYNC_VIO_FILE_INFO_FIELDS_MTIME = 1 << 10,
-  CSYNC_VIO_FILE_INFO_FIELDS_CTIME = 1 << 11,
-  CSYNC_VIO_FILE_INFO_FIELDS_SYMLINK_NAME = 1 << 12,
-  CSYNC_VIO_FILE_INFO_FIELDS_ACL = 1 << 13,
+  CSYNC_VIO_FILE_STAT_FIELDS_NONE = 0,
+  CSYNC_VIO_FILE_STAT_FIELDS_TYPE = 1 << 0,
+  CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS = 1 << 1,
+  CSYNC_VIO_FILE_STAT_FIELDS_FLAGS = 1 << 2,
+  CSYNC_VIO_FILE_STAT_FIELDS_DEVICE = 1 << 3,
+  CSYNC_VIO_FILE_STAT_FIELDS_INODE = 1 << 4,
+  CSYNC_VIO_FILE_STAT_FIELDS_LINK_COUNT = 1 << 5,
+  CSYNC_VIO_FILE_STAT_FIELDS_SIZE = 1 << 6,
+  CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_COUNT = 1 << 7,
+  CSYNC_VIO_FILE_STAT_FIELDS_IO_BLOCK_SIZE = 1 << 8,
+  CSYNC_VIO_FILE_STAT_FIELDS_ATIME = 1 << 9,
+  CSYNC_VIO_FILE_STAT_FIELDS_MTIME = 1 << 10,
+  CSYNC_VIO_FILE_STAT_FIELDS_CTIME = 1 << 11,
+  CSYNC_VIO_FILE_STAT_FIELDS_SYMLINK_NAME = 1 << 12,
+  CSYNC_VIO_FILE_STAT_FIELDS_ACL = 1 << 13,
 };
 
 
 struct csync_vio_file_stat_s {
-  char *name;
 
   enum csync_vio_file_stat_fields_e fields;
   enum csync_vio_file_type_e type;
@@ -88,6 +87,7 @@ struct csync_vio_file_stat_s {
 
   char *symlink_name;
   void *acl;
+  char *name;
 
   void *reserved1;
   void *reserved2;
