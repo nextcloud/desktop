@@ -25,6 +25,17 @@
 
 #include "c_lib.h"
 #include "vio/csync_vio_module.h"
+#include "vio/csync_vio_file_stat_private.h"
+
+#ifndef NDEBUG
+#define ENABLE_SMB_DEBUG 1
+#endif
+
+#ifdef ENABLE_SMB_DEBUG
+#define DEBUG_SMB(x) printf x
+#else
+#define DEBUG_SMB(x)
+#endif
 
 SMBCCTX *smb_context;
 
@@ -39,6 +50,9 @@ static void get_auth_data_fn(const char *pServer,
   /* FIXME: need to handle non kerberos authentication for libsmbclient
    * here, currently it is only a placeholder so that libsmbclient can be
    * initialized */
+  DEBUG_SMB(("FIXME: %s, %s, %s, %d, %s, %d, %s, %d\n", pServer, pShare, pWorkgroup,
+      maxLenWorkgroup, pUsername, maxLenUsername, pPassword ? "******" : "null", 
+      maxLenPassword));
   return;
 }
 
@@ -162,15 +176,62 @@ static int _closedir(csync_vio_method_t *dhandle) {
 static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
   struct smbc_dirent *dirent = NULL;
   smb_dhandle_t *handle = NULL;
+  csync_vio_file_stat_t *fstat = NULL;
+  struct stat sb;
 
   handle = (smb_dhandle_t *) dhandle;
 
   dirent = smbc_readdir(handle->dh);
+  if (dirent == NULL) {
+    goto err;
+  }
+
+  fstat = csync_vio_file_stat_new();
+  if (fstat == NULL) {
+    goto err;
+  }
+
+  fstat->name = c_strndup(dirent->name, dirent->namelen);
+  fstat->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
+
+  switch (dirent->smbc_type) {
+    case SMBC_FILE_SHARE:
+      fstat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
+      fstat->type = CSYNC_VIO_FILE_TYPE_DIRECTORY;
+      break;
+    case SMBC_WORKGROUP:
+    case SMBC_SERVER:
+    case SMBC_COMMS_SHARE:
+    case SMBC_IPC_SHARE:
+      break;
+    case SMBC_DIR:
+    case SMBC_FILE:
+      if (smbc_stat(handle->path, &sb) < 0) {
+        goto err;
+      }
+
+      fstat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
+      if (dirent->smbc_type == SMBC_DIR) {
+        fstat->type = CSYNC_VIO_FILE_TYPE_DIRECTORY;
+      } else {
+        fstat->type = CSYNC_VIO_FILE_TYPE_REGULAR;
+      }
+      break;
+    default:
+      break;
+  }
+
+  SAFE_FREE(dirent);
+  return fstat;
+
+err:
+  SAFE_FREE(dirent);
+  SAFE_FREE(fstat);
 
   return NULL;
 }
 
-csync_vio_method_t method = {
+csync_vio_method_t _method = {
   .method_table_size = sizeof(csync_vio_method_t),
   .open = _open,
   .creat = _creat,
@@ -180,7 +241,7 @@ csync_vio_method_t method = {
   .lseek = _lseek,
   .opendir = _opendir,
   .closedir = _closedir,
-  .readdir = NULL,
+  .readdir = _readdir,
   .mkdir = NULL,
   .rmdir = NULL,
   .stat = NULL,
@@ -193,6 +254,9 @@ csync_vio_method_t method = {
 
 csync_vio_method_t *vio_module_init(const char *method_name, const char *args) {
   smb_context = smbc_new_context();
+
+  DEBUG_SMB(("csync_smb - method_name: %s\n", method_name));
+  DEBUG_SMB(("csync_smb - args: %s\n", args));
 
   if (smb_context == NULL) {
     fprintf(stderr, "csync_smb: Failed to create new smbc context\n");
@@ -215,16 +279,19 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args) {
 
   smbc_set_context(smb_context);
 
-  return &method;
+  return &_method;
 }
 
 void vio_module_shutdown(csync_vio_method_t *method) {
+  DEBUG_SMB(("csync_smb - method address: %p", method));
+
   if (smb_context != NULL) {
     /*
      * If we have a context, all connections and files will be closed even
      * if they are busy.
      */
     smbc_free_context(smb_context, 1);
+    smb_context = NULL;
   }
 }
 
