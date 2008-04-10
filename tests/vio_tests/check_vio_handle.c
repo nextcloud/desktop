@@ -35,7 +35,7 @@ START_TEST (check_csync_vio_handle_new_null)
   handle = csync_vio_handle_new(NULL, (csync_vio_method_handle_t *) number);
   fail_unless(handle == NULL, NULL);
 
-  handle = csync_vio_handle_new("/tmp", NULL);
+  handle = csync_vio_handle_new((char *) "/tmp", NULL);
   fail_unless(handle == NULL, NULL);
 
   SAFE_FREE(number);
