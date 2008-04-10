@@ -22,7 +22,6 @@
 
 #include "c_lib.h"
 
-#include "vio/csync_vio_handle.h"
 #include "vio/csync_vio_handle_private.h"
 
 csync_vio_handle_t *csync_vio_handle_new(char *uri, csync_vio_method_handle_t *method_handle) {

@@ -23,6 +23,8 @@
 #ifndef _CSYNC_VIO_HANDLE_PRIVATE_H
 #define _CSYNC_VIO_HANDLE_PRIVATE_H
 
+#include "vio/csync_vio_handle.h"
+
 struct csync_vio_handle_s {
   char *uri;
 

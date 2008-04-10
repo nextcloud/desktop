@@ -41,6 +41,7 @@ set(csync_SRCS
 
   vio/csync_vio.c
   vio/csync_vio_handle.c
+  vio/csync_vio_file_stat.c
 )
 
 set(csync_HDRS
