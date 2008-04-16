@@ -1,6 +1,6 @@
 #include "support.h"
 
-#include "vio/csync_vio_file_stat_private.h"
+#include "vio/csync_vio_file_stat.h"
 
 START_TEST (check_csync_vio_file_stat_new)
 {

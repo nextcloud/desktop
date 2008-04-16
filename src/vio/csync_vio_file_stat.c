@@ -21,7 +21,7 @@
  */
 
 #include "c_lib.h"
-#include "vio/csync_vio_file_stat_private.h"
+#include "vio/csync_vio_file_stat.h"
 
 csync_vio_file_stat_t *csync_vio_file_stat_new(void) {
   csync_vio_file_stat_t *file_stat = NULL;

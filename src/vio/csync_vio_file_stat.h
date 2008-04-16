@@ -94,4 +94,8 @@ struct csync_vio_file_stat_s {
   void *reserved3;
 };
 
+csync_vio_file_stat_t *csync_vio_file_stat_new(void);
+
+void csync_vio_file_stat_destroy(csync_vio_file_stat_t *fstat);
+
 #endif /* _CSYNC_VIO_METHOD_H */
