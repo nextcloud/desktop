@@ -25,7 +25,7 @@
 
 #include "c_lib.h"
 #include "vio/csync_vio_module.h"
-#include "vio/csync_vio_file_stat_private.h"
+#include "vio/csync_vio_file_stat.h"
 
 #ifndef NDEBUG
 #define ENABLE_SMB_DEBUG 1
@@ -226,6 +226,120 @@ err:
   return NULL;
 }
 
+static int _mkdir(const char *uri, mode_t mode) {
+  return smbc_mkdir(uri, mode);
+}
+
+static int _rmdir(const char *uri) {
+  return smbc_rmdir(uri);
+}
+
+static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
+  struct stat sb;
+
+  if (smbc_stat(uri, &sb) < 0) {
+    return -1;
+  }
+
+  buf = csync_vio_file_stat_new();
+  if (buf == NULL) {
+    return -1;
+  }
+
+  buf->name = c_basename(uri);
+  if (buf->name == NULL) {
+    csync_vio_file_stat_destroy(buf);
+  }
+  buf->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
+
+  switch(sb.st_mode & S_IFMT) {
+    case S_IFBLK:
+      buf->type = CSYNC_VIO_FILE_TYPE_BLOCK_DEVICE;
+      break;
+    case S_IFCHR:
+      buf->type = CSYNC_VIO_FILE_TYPE_CHARACTER_DEVICE;
+      break;
+    case S_IFDIR:
+      buf->type = CSYNC_VIO_FILE_TYPE_DIRECTORY;
+      break;
+    case S_IFIFO:
+      buf->type = CSYNC_VIO_FILE_TYPE_FIFO;
+      break;
+    case S_IFLNK:
+      buf->type = CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK;
+      break;
+    case S_IFREG:
+      buf->type = CSYNC_VIO_FILE_TYPE_REGULAR;
+      break;
+    case S_IFSOCK:
+      buf->type = CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK;
+    default:
+      buf->type = CSYNC_VIO_FILE_TYPE_UNKNOWN;
+      break;
+  }
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
+
+  buf->mode = sb.st_mode;
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
+
+  if (buf->type == CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK) {
+    /* FIXME: handle symlink */
+    buf->flags = CSYNC_VIO_FILE_FLAGS_SYMLINK;
+  } else {
+    buf->flags = CSYNC_VIO_FILE_FLAGS_NONE;
+  }
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_FLAGS;
+
+  buf->device = sb.st_dev;
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_DEVICE;
+
+  buf->inode = sb.st_ino;
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_INODE;
+
+  buf->link_count = sb.st_nlink;
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_LINK_COUNT;
+
+  buf->size = sb.st_size;
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
+
+  buf->blksize = sb.st_blksize;
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_SIZE;
+
+  buf->blkcount = sb.st_blocks;
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_COUNT;
+
+  buf->atime = sb.st_atime;
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ATIME;
+
+  buf->mtime = sb.st_mtime;
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
+
+  buf->ctime = sb.st_ctime;
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_CTIME;
+
+  return 0;
+}
+
+static int _rename(const char *olduri, const char *newuri) {
+  return smbc_rename(olduri, newuri);
+}
+
+static int _unlink(const char *uri) {
+  return smbc_unlink(uri);
+}
+
+static int _chmod(const char *uri, mode_t mode) {
+  return smbc_chmod(uri, mode);
+}
+
+static int _chown(const char *uri, uid_t owner, gid_t group) {
+  return smbc_chown(uri, owner, group);
+}
+
+static int _utimes(const char *uri, const struct timeval times[2]) {
+  return smbc_utimes(uri, (struct timeval *) &times);
+}
+
 csync_vio_method_t _method = {
   .method_table_size = sizeof(csync_vio_method_t),
   .open = _open,
@@ -237,14 +351,14 @@ csync_vio_method_t _method = {
   .opendir = _opendir,
   .closedir = _closedir,
   .readdir = _readdir,
-  .mkdir = NULL,
-  .rmdir = NULL,
-  .stat = NULL,
-  .rename = NULL,
-  .unlink = NULL,
-  .chmod = NULL,
-  .chwon = NULL,
-  .utimes = NULL
+  .mkdir = _mkdir,
+  .rmdir = _rmdir,
+  .stat = _stat,
+  .rename = _rename,
+  .unlink = _unlink,
+  .chmod = _chmod,
+  .chwon = _chown,
+  .utimes = _utimes
 };
 
 csync_vio_method_t *vio_module_init(const char *method_name, const char *args) {
