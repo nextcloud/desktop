@@ -34,6 +34,7 @@
 #define _C_MACRO_H
 
 #include <stdlib.h>
+#include <string.h>
 
 #ifdef malloc
 #undef malloc
