@@ -176,8 +176,7 @@ static int _closedir(csync_vio_method_t *dhandle) {
 static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
   struct smbc_dirent *dirent = NULL;
   smb_dhandle_t *handle = NULL;
-  csync_vio_file_stat_t *fstat = NULL;
-  struct stat sb;
+  csync_vio_file_stat_t *file_stat = NULL;
 
   handle = (smb_dhandle_t *) dhandle;
 
@@ -186,18 +185,18 @@ static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
     goto err;
   }
 
-  fstat = csync_vio_file_stat_new();
-  if (fstat == NULL) {
+  file_stat = csync_vio_file_stat_new();
+  if (file_stat == NULL) {
     goto err;
   }
 
-  fstat->name = c_strndup(dirent->name, dirent->namelen);
-  fstat->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
+  file_stat->name = c_strndup(dirent->name, dirent->namelen);
+  file_stat->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
 
   switch (dirent->smbc_type) {
     case SMBC_FILE_SHARE:
-      fstat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
-      fstat->type = CSYNC_VIO_FILE_TYPE_DIRECTORY;
+      file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
+      file_stat->type = CSYNC_VIO_FILE_TYPE_DIRECTORY;
       break;
     case SMBC_WORKGROUP:
     case SMBC_SERVER:
@@ -206,15 +205,11 @@ static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
       break;
     case SMBC_DIR:
     case SMBC_FILE:
-      if (smbc_stat(handle->path, &sb) < 0) {
-        goto err;
-      }
-
-      fstat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
+      file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
       if (dirent->smbc_type == SMBC_DIR) {
-        fstat->type = CSYNC_VIO_FILE_TYPE_DIRECTORY;
+        file_stat->type = CSYNC_VIO_FILE_TYPE_DIRECTORY;
       } else {
-        fstat->type = CSYNC_VIO_FILE_TYPE_REGULAR;
+        file_stat->type = CSYNC_VIO_FILE_TYPE_REGULAR;
       }
       break;
     default:
@@ -222,11 +217,11 @@ static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
   }
 
   SAFE_FREE(dirent);
-  return fstat;
+  return file_stat;
 
 err:
   SAFE_FREE(dirent);
-  SAFE_FREE(fstat);
+  SAFE_FREE(file_stat);
 
   return NULL;
 }

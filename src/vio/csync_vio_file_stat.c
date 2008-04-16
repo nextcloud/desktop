@@ -24,22 +24,23 @@
 #include "vio/csync_vio_file_stat_private.h"
 
 csync_vio_file_stat_t *csync_vio_file_stat_new(void) {
-  csync_vio_file_stat_t *fstat = NULL;
+  csync_vio_file_stat_t *file_stat = NULL;
 
-  fstat = (csync_vio_file_stat_t *) c_malloc(sizeof(csync_vio_file_stat_t));
-  if (fstat == NULL) {
+  file_stat = (csync_vio_file_stat_t *) c_malloc(sizeof(csync_vio_file_stat_t));
+  if (file_stat == NULL) {
     return NULL;
   }
 
-  return fstat;
+  return file_stat;
 }
 
-void csync_vio_file_stat_destroy(csync_vio_file_stat_t *fstat) {
+void csync_vio_file_stat_destroy(csync_vio_file_stat_t *file_stat) {
   /* FIXME: free rest */
 
-  if (fstat->fields == CSYNC_VIO_FILE_STAT_FIELDS_SYMLINK_NAME) {
-    SAFE_FREE(fstat->symlink_name);
+  if (file_stat->fields == CSYNC_VIO_FILE_STAT_FIELDS_SYMLINK_NAME) {
+    SAFE_FREE(file_stat->symlink_name);
   }
-  SAFE_FREE(fstat->name);
-  SAFE_FREE(fstat);
+  SAFE_FREE(file_stat->name);
+  SAFE_FREE(file_stat);
 }
+
