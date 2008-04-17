@@ -4,12 +4,12 @@
 
 START_TEST (check_csync_vio_file_stat_new)
 {
-  csync_vio_file_stat_t *stat = NULL;
+  csync_vio_file_stat_t *tstat = NULL;
 
-  stat = csync_vio_file_stat_new();
-  fail_if(stat == NULL, NULL);
+  tstat = csync_vio_file_stat_new();
+  fail_if(tstat == NULL, NULL);
 
-  csync_vio_file_stat_destroy(stat);
+  csync_vio_file_stat_destroy(tstat);
 }
 END_TEST
 
