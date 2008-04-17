@@ -35,6 +35,7 @@
 
 #include <sqlite3.h>
 
+#include "config.h"
 #include "c_lib.h"
 #include "csync.h"
 
@@ -68,6 +69,7 @@ struct csync_s {
   c_rbtree_t *remote;
   c_strlist_t *excludes;
   sqlite3 *journal;
+  void *plugin_handle;
 
   struct {
     int max_depth;

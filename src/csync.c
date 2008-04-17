@@ -25,8 +25,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "config.h"
-
 #include "c_lib.h"
 #include "csync_private.h"
 #include "csync_config.h"
