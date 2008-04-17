@@ -26,11 +26,11 @@
 #include "vio/csync_vio_handle.h"
 #include "vio/csync_vio_file_stat.h"
 
-int csync_vfs_init(void);
-int csync_vfs_shutdown(void);
+int csync_vio_init(void);
+int csync_vio_shutdown(void);
 
-csync_vio_handle_t *csync_vfs_open(const char *uri, int flags, mode_t mode);
-csync_vio_handle_t *csync_vfs_creat(const char *uri, mode_t mode);
+csync_vio_handle_t *csync_vio_open(const char *uri, int flags, mode_t mode);
+csync_vio_handle_t *csync_vio_creat(const char *uri, mode_t mode);
 int csync_vio_close(csync_vio_handle_t *handle);
 ssize_t csync_vio_read(csync_vio_handle_t *fhandle, void *buf, size_t count);
 ssize_t csync_vio_write(csync_vio_handle_t *fhandle, const void *buf, size_t count);
