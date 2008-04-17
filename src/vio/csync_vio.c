@@ -20,8 +20,84 @@
  * vim: ts=2 sw=2 et cindent
  */
 
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+
+#include <stdio.h>
+#include <dlfcn.h> /* dlopen(), dlclose(), dlsym() ... */
+
+#include "csync_private.h"
 #include "vio/csync_vio.h"
 
-int csync_vfs_init(void) {
+#define CSYNC_LOG_CATEGORY_NAME "csync.vio.main"
+#include "csync_log.h"
+
+int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
+  char *path = NULL;
+  char *err = NULL;
+  csync_vio_method_t *m;
+  csync_vio_method_init_fn init_fn;
+
+  if (asprintf(&path, "%s/csync_%s.so", PLUGINDIR, module) < 0) {
+    return -1;
+  }
+  if ((err = dlerror()) == NULL) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "loading %s plugin failed - %s",
+             module, err);
+  }
+
+  ctx->module.handle = dlopen(path, RTLD_LAZY);
+
+  SAFE_FREE(path);
+
+  init_fn = dlsym(ctx->module.handle, "vio_module_init");
+  if ((err = dlerror()) == NULL) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "loading function failed - %s", err);
+    return -1;
+  }
+
+  ctx->module.finish_fn = dlsym(ctx->module.handle, "vio_module_finish");
+  if ((err = dlerror()) == NULL) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "loading function failed - %s", err);
+    return -1;
+  }
+
+  /* get the method struct */
+  m = (*init_fn)(module, args);
+  if (m == NULL) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "module %s return a NULL method", module);
+    return -1;
+  }
+
+  /* Some basic checks */
+  if (m->method_table_size == 0) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "module %s method table size is 0", module);
+    return -1;
+  }
+
+  if (! VIO_METHOD_HAS_FUNC(m, open)) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "module %s has no open fn", module);
+    return -1;
+  }
+
+  if (! VIO_METHOD_HAS_FUNC(m, open)) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "module %s has no stat fn", module);
+    return -1;
+  }
+
+  ctx->module.method = m;
+
   return 0;
 }
+
+void csync_vio_shutdown(CSYNC *ctx) {
+  if (ctx->module.handle != NULL) {
+    dlclose(ctx->module.handle);
+    ctx->module.handle = NULL;
+
+    ctx->module.method = NULL;
+    ctx->module.finish_fn = NULL;
+  }
+}
+

@@ -39,6 +39,7 @@
 #include "c_lib.h"
 #include "csync.h"
 
+#include "vio/csync_vio_method.h"
 #include "csync_macros.h"
 
 /**
@@ -69,7 +70,12 @@ struct csync_s {
   c_rbtree_t *remote;
   c_strlist_t *excludes;
   sqlite3 *journal;
-  void *plugin_handle;
+
+  struct {
+    void *handle;
+    csync_vio_method_t *method;
+    csync_vio_method_finish_fn finish_fn;
+  } module;
 
   struct {
     int max_depth;

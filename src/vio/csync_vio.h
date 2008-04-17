@@ -26,8 +26,8 @@
 #include "vio/csync_vio_handle.h"
 #include "vio/csync_vio_file_stat.h"
 
-int csync_vio_init(void);
-int csync_vio_shutdown(void);
+int csync_vio_init(CSYNC *ctx, const char *module, const char *args);
+void csync_vio_shutdown(CSYNC *ctx);
 
 csync_vio_handle_t *csync_vio_open(const char *uri, int flags, mode_t mode);
 csync_vio_handle_t *csync_vio_creat(const char *uri, mode_t mode);
