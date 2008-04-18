@@ -31,11 +31,11 @@ END_TEST
 START_TEST (check_c_strdup)
 {
   char *str = (char *) "test";
-  char *dup;
+  char *tdup;
 
-  dup = c_strdup(str);
-  fail_unless(strcmp(dup, str) == 0, NULL);
-  free(dup);
+  tdup = c_strdup(str);
+  fail_unless(strcmp(tdup, str) == 0, NULL);
+  free(tdup);
 }
 END_TEST
 

@@ -41,4 +41,5 @@ macro_add_check_test(check_csync_journal csync_tests/check_csync_journal.c ${TES
 # vio
 macro_add_check_test(check_vio_handle vio_tests/check_vio_handle.c ${TEST_TARGET_LIBRARIES})
 macro_add_check_test(check_vio_file_stat vio_tests/check_vio_file_stat.c ${TEST_TARGET_LIBRARIES})
+macro_add_check_test(check_vio vio_tests/check_vio.c ${TEST_TARGET_LIBRARIES})
 
