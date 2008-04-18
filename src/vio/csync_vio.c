@@ -39,26 +39,31 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
   csync_vio_method_t *m;
   csync_vio_method_init_fn init_fn;
 
+#if DEVELOPER
+  if (asprintf(&path, "%s/csync_%s.so", SYSCONFDIR "/modules", module) < 0) {
+#else
   if (asprintf(&path, "%s/csync_%s.so", PLUGINDIR, module) < 0) {
+#endif
     return -1;
   }
-  if ((err = dlerror()) == NULL) {
+  printf("path: %s\n", path);
+
+  ctx->module.handle = dlopen(path, RTLD_LAZY);
+  if ((err = dlerror()) != NULL) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "loading %s plugin failed - %s",
              module, err);
   }
 
-  ctx->module.handle = dlopen(path, RTLD_LAZY);
-
   SAFE_FREE(path);
 
   init_fn = dlsym(ctx->module.handle, "vio_module_init");
-  if ((err = dlerror()) == NULL) {
+  if ((err = dlerror()) != NULL) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "loading function failed - %s", err);
     return -1;
   }
 
-  ctx->module.finish_fn = dlsym(ctx->module.handle, "vio_module_finish");
-  if ((err = dlerror()) == NULL) {
+  ctx->module.finish_fn = dlsym(ctx->module.handle, "vio_module_shutdown");
+  if ((err = dlerror()) != NULL) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "loading function failed - %s", err);
     return -1;
   }
