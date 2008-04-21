@@ -29,27 +29,27 @@
 int csync_vio_init(CSYNC *ctx, const char *module, const char *args);
 void csync_vio_shutdown(CSYNC *ctx);
 
-csync_vio_handle_t *csync_vio_open(const char *uri, int flags, mode_t mode);
-csync_vio_handle_t *csync_vio_creat(const char *uri, mode_t mode);
-int csync_vio_close(csync_vio_handle_t *handle);
-ssize_t csync_vio_read(csync_vio_handle_t *fhandle, void *buf, size_t count);
-ssize_t csync_vio_write(csync_vio_handle_t *fhandle, const void *buf, size_t count);
-off_t csync_vio_seek(csync_vio_handle_t *fhandle, off_t offset, int whence);
+csync_vio_handle_t *csync_vio_open(CSYNC *ctx, const char *uri, int flags, mode_t mode);
+csync_vio_handle_t *csync_vio_creat(CSYNC *ctx, const char *uri, mode_t mode);
+int csync_vio_close(CSYNC *ctx, csync_vio_handle_t *handle);
+ssize_t csync_vio_read(CSYNC *ctx, csync_vio_handle_t *fhandle, void *buf, size_t count);
+ssize_t csync_vio_write(CSYNC *ctx, csync_vio_handle_t *fhandle, const void *buf, size_t count);
+off_t csync_vio_seek(CSYNC *ctx, csync_vio_handle_t *fhandle, off_t offset, int whence);
 
-csync_vio_handle_t *csync_vio_opendir(const char *name);
-int csync_vio_closedir(csync_vio_handle_t *dhandle);
-csync_vio_file_stat_t *csync_vio_readdir(csync_vio_handle_t *dhandle);
+csync_vio_handle_t *csync_vio_opendir(CSYNC *ctx, const char *name);
+int csync_vio_closedir(CSYNC *ctx, csync_vio_handle_t *dhandle);
+csync_vio_file_stat_t *csync_vio_readdir(CSYNC *ctx, csync_vio_handle_t *dhandle);
 
-int csync_vio_mkdir(const char *uri, mode_t mode);
-int csync_vio_rmdir(const char *uri);
+int csync_vio_mkdir(CSYNC *ctx, const char *uri, mode_t mode);
+int csync_vio_rmdir(CSYNC *ctx, const char *uri);
 
-int csync_vio_stat(const char *uri, csync_vio_file_stat_t *buf);
-int csync_vio_rename(const char *olduri, const char *newuri);
-int csync_vio_unlink(const char *uri);
+int csync_vio_stat(CSYNC *ctx, const char *uri, csync_vio_file_stat_t *buf);
+int csync_vio_rename(CSYNC *ctx, const char *olduri, const char *newuri);
+int csync_vio_unlink(CSYNC *ctx, const char *uri);
 
-int csync_vio_chmod(const char *uri, mode_t mode);
-int csync_vio_chown(const char *uri, uid_t owner, gid_t group);
+int csync_vio_chmod(CSYNC *ctx, const char *uri, mode_t mode);
+int csync_vio_chown(CSYNC *ctx, const char *uri, uid_t owner, gid_t group);
 
-int csync_vio_utimes(const char *uri, const struct timeval times[2]);
+int csync_vio_utimes(CSYNC *ctx, const char *uri, const struct timeval times[2]);
 
 #endif /* _CSYNC_VIO_H */

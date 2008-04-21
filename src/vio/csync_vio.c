@@ -29,6 +29,7 @@
 
 #include "csync_private.h"
 #include "vio/csync_vio.h"
+#include "vio/csync_vio_handle_private.h"
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.vio.main"
 #include "csync_log.h"
@@ -46,7 +47,6 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
 #endif
     return -1;
   }
-  printf("path: %s\n", path);
 
   ctx->module.handle = dlopen(path, RTLD_LAZY);
   if ((err = dlerror()) != NULL) {
@@ -106,3 +106,21 @@ void csync_vio_shutdown(CSYNC *ctx) {
   }
 }
 
+csync_vio_handle_t *csync_vio_opendir(CSYNC *ctx, const char *name) {
+  csync_vio_handle_t *h = NULL;
+  csync_vio_method_handle_t *mh = NULL;
+
+  h = csync_vio_handle_new(name, mh);
+  if (h == NULL) {
+    return NULL;
+  }
+
+  if (ctx) {
+    mh = ctx->module.method->opendir(name);
+  } else {
+    /* TODO opendir */
+  }
+  h = csync_vio_handle_new(name, mh);
+
+  return h;
+}

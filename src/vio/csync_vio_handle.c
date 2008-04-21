@@ -24,7 +24,7 @@
 
 #include "vio/csync_vio_handle_private.h"
 
-csync_vio_handle_t *csync_vio_handle_new(char *uri, csync_vio_method_handle_t *method_handle) {
+csync_vio_handle_t *csync_vio_handle_new(const char *uri, csync_vio_method_handle_t *method_handle) {
   csync_vio_handle_t *new = NULL;
 
   if (uri == NULL || method_handle == NULL) {
@@ -36,7 +36,7 @@ csync_vio_handle_t *csync_vio_handle_new(char *uri, csync_vio_method_handle_t *m
     return NULL;
   }
 
-  new->uri = uri;
+  new->uri = c_strdup(uri);
   new->method_handle = method_handle;
 
   return new;

@@ -31,7 +31,7 @@ struct csync_vio_handle_s {
   csync_vio_method_handle_t *method_handle;
 };
 
-csync_vio_handle_t *csync_vio_handle_new(char *uri, csync_vio_method_handle_t *method_handle);
+csync_vio_handle_t *csync_vio_handle_new(const char *uri, csync_vio_method_handle_t *method_handle);
 void csync_vio_handle_destroy(csync_vio_handle_t *handle);
 
 #endif /* _CSYNC_VIO_HANDLE_PRIVATE_H */
