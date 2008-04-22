@@ -159,7 +159,7 @@ static csync_vio_method_handle_t *_opendir(const char *name) {
   return (csync_vio_method_handle_t *) handle;
 }
 
-static int _closedir(csync_vio_method_t *dhandle) {
+static int _closedir(csync_vio_method_handle_t *dhandle) {
   smb_dhandle_t *handle = NULL;
   int rc = -1;
 

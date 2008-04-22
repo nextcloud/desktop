@@ -33,7 +33,7 @@ ssize_t csync_vio_local_write(csync_vio_method_handle_t *fhandle, const void *bu
 off_t csync_vio_local_lseek(csync_vio_method_handle_t *fhandle, off_t offset, int whence);
 
 csync_vio_method_handle_t *csync_vio_local_opendir(const char *name);
-int csync_vio_local_closedir(csync_vio_method_t *dhandle);
+int csync_vio_local_closedir(csync_vio_method_handle_t *dhandle);
 csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_method_handle_t *dhandle);
 
 int csync_vio_local_mkdir(const char *uri, mode_t mode);

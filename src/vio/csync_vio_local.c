@@ -127,7 +127,7 @@ csync_vio_method_handle_t *csync_vio_local_opendir(const char *name) {
   return (csync_vio_method_handle_t *) handle;
 }
 
-int csync_vio_local_closedir(csync_vio_method_t *dhandle) {
+int csync_vio_local_closedir(csync_vio_method_handle_t *dhandle) {
   dhandle_t *handle = NULL;
   int rc = -1;
 
