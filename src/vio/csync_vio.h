@@ -34,7 +34,7 @@ csync_vio_handle_t *csync_vio_creat(CSYNC *ctx, const char *uri, mode_t mode);
 int csync_vio_close(CSYNC *ctx, csync_vio_handle_t *handle);
 ssize_t csync_vio_read(CSYNC *ctx, csync_vio_handle_t *fhandle, void *buf, size_t count);
 ssize_t csync_vio_write(CSYNC *ctx, csync_vio_handle_t *fhandle, const void *buf, size_t count);
-off_t csync_vio_seek(CSYNC *ctx, csync_vio_handle_t *fhandle, off_t offset, int whence);
+off_t csync_vio_lseek(CSYNC *ctx, csync_vio_handle_t *fhandle, off_t offset, int whence);
 
 csync_vio_handle_t *csync_vio_opendir(CSYNC *ctx, const char *name);
 int csync_vio_closedir(CSYNC *ctx, csync_vio_handle_t *dhandle);

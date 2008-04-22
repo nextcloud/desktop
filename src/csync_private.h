@@ -70,6 +70,7 @@ struct csync_s {
   c_rbtree_t *remote;
   c_strlist_t *excludes;
   sqlite3 *journal;
+  enum csync_replica_e replica;
 
   struct {
     void *handle;
