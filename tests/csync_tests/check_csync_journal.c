@@ -9,13 +9,13 @@ CSYNC *csync;
 const char *testdb = (char *) "/tmp/check_csync/test.db";
 
 static void setup(void) {
-  csync_create(&csync);
+  csync_create(&csync, "/tmp/csync1", "/tmp/csync2");
   SAFE_FREE(csync->options.config_dir);
   csync->options.config_dir = c_strdup("/tmp/check_csync/");
 }
 
 static void setup_init(void) {
-  csync_create(&csync);
+  csync_create(&csync, "/tmp/csync1", "/tmp/csync2");
   SAFE_FREE(csync->options.config_dir);
   csync->options.config_dir = c_strdup("/tmp/check_csync/");
   csync_init(csync);

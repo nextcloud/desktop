@@ -37,12 +37,22 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.api"
 #include "csync_log.h"
 
-int csync_create(CSYNC **csync) {
+int csync_create(CSYNC **csync, const char *local, const char *remote) {
   CSYNC *ctx;
 
   ctx = c_malloc(sizeof(CSYNC));
   if (ctx == NULL) {
-    errno = ENOMEM;
+    return -1;
+  }
+
+  ctx->local.uri = c_strdup(local);
+  if (ctx->local.uri == NULL) {
+    return -1;
+  }
+
+  ctx->remote.uri = c_strdup(remote);
+  if (ctx->remote.uri == NULL) {
+    SAFE_FREE(ctx->remote.uri);
     return -1;
   }
 
@@ -50,6 +60,8 @@ int csync_create(CSYNC **csync) {
   ctx->options.max_time_difference = MAX_TIME_DIFFERENCE;
 
   if (asprintf(&ctx->options.config_dir, "%s/%s", getenv("HOME"), CSYNC_CONF_DIR) < 0) {
+    SAFE_FREE(ctx->local.uri);
+    SAFE_FREE(ctx->remote.uri);
     SAFE_FREE(ctx);
     errno = ENOMEM;
     return -1;

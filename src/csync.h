@@ -67,7 +67,7 @@ typedef struct csync_s CSYNC;
  *
  * @return  0 on success, less than 0 if an error occured.
  */
-int csync_create(CSYNC **csync);
+int csync_create(CSYNC **csync, const char *local, const char *remote);
 
 /**
  * @brief Initialize the file synchronizer.

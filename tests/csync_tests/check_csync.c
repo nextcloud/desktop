@@ -7,7 +7,7 @@
 CSYNC *csync;
 
 static void setup(void) {
-  csync_create(&csync);
+  csync_create(&csync, "/tmp/csync1", "/tmp/csync2");
 }
 
 static void teardown(void) {
@@ -16,7 +16,7 @@ static void teardown(void) {
 
 START_TEST (csync_create_test)
 {
-  fail_unless(csync_create(&csync) == 0, NULL);
+  fail_unless(csync_create(&csync, "/tmp/csync1", "/tmp/csync2") == 0, NULL);
 
   fail_unless(csync->options.max_depth == MAX_DEPTH, NULL);
   fail_unless(csync->options.max_time_difference == MAX_TIME_DIFFERENCE, NULL);

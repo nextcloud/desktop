@@ -103,7 +103,7 @@ int main(int argc, char **argv) {
    */
   argp_parse (&argp, argc, argv, 0, 0, &arguments);
 
-  if (csync_create(&csync) < 0) {
+  if (csync_create(&csync, arguments.args[0], arguments.args[1]) < 0) {
     fprintf(stderr, "csync_create: failed\n");
     exit(1);
   }

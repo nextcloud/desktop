@@ -9,7 +9,7 @@
 CSYNC *csync;
 
 static void setup(void) {
-  csync_create(&csync);
+  csync_create(&csync, "/tmp/csync1", "/tmp/csync2");
 }
 
 static void teardown(void) {

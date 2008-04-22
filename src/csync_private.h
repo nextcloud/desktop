@@ -66,11 +66,18 @@ enum csync_replica_e {
  * @brief csync public structure
  */
 struct csync_s {
-  c_rbtree_t *local;
-  c_rbtree_t *remote;
   c_strlist_t *excludes;
   sqlite3 *journal;
-  enum csync_replica_e replica;
+
+  struct {
+    char *uri;
+    c_rbtree_t *tree;
+  } local;
+
+  struct {
+    char *uri;
+    c_rbtree_t *remote;
+  } remote;
 
   struct {
     void *handle;
@@ -83,6 +90,8 @@ struct csync_s {
     int max_time_difference;
     char *config_dir;
   } options;
+
+  enum csync_replica_e replica;
 
   int journal_exists;
   int initialized;
