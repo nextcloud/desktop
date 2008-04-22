@@ -77,7 +77,7 @@ struct csync_vio_method_s {
         csync_method_rename_fn rename;
         csync_method_unlink_fn unlink;
         csync_method_chmod_fn chmod;
-        csync_method_chown_fn chwon;
+        csync_method_chown_fn chown;
         csync_method_utimes_fn utimes;
 };
 

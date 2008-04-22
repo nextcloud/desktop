@@ -357,7 +357,7 @@ csync_vio_method_t _method = {
   .rename = _rename,
   .unlink = _unlink,
   .chmod = _chmod,
-  .chwon = _chown,
+  .chown = _chown,
   .utimes = _utimes
 };
 
