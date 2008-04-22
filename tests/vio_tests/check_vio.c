@@ -10,7 +10,6 @@ CSYNC *csync;
 
 static void setup(void) {
   csync_create(&csync);
-  csync_init(csync);
 }
 
 static void teardown(void) {
