@@ -32,6 +32,8 @@
 #include "csync_exclude.h"
 #include "csync_journal.h"
 
+#include "vio/csync_vio.h"
+
 #define CSYNC_LOG_CATEGORY_NAME "csync.api"
 #include "csync_log.h"
 
@@ -155,6 +157,10 @@ int csync_init(CSYNC *ctx) {
   }
 
   /* TODO: load plugins */
+  if (csync_vio_init(ctx, "smb", "") < 0) {
+    rc = -1;
+    goto out;
+  }
 
   ctx->initialized = 1;
 
@@ -171,6 +177,8 @@ out:
 
 int csync_destroy(CSYNC *ctx) {
   char *lock = NULL;
+
+  csync_vio_shutdown(ctx);
 
   /* TODO: write journal */
 
