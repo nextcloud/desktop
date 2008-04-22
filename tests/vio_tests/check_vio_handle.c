@@ -14,7 +14,7 @@ START_TEST (check_csync_vio_handle_new)
   number = c_malloc(sizeof(int));
   *number = 42;
 
-  handle = csync_vio_handle_new(c_strdup("/tmp"), (csync_vio_method_handle_t *) number);
+  handle = csync_vio_handle_new("/tmp", (csync_vio_method_handle_t *) number);
   fail_if(handle == NULL, NULL);
   fail_unless(strcmp(handle->uri, "/tmp") == 0, NULL);
 
