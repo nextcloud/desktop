@@ -76,7 +76,7 @@ struct csync_s {
 
   struct {
     char *uri;
-    c_rbtree_t *remote;
+    c_rbtree_t *tree;
   } remote;
 
   struct {
