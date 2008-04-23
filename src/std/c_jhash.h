@@ -124,7 +124,7 @@
  *            of the return value.  Every 1-bit and 2-bit delta achieves
  *            avalanche. About 36+6len instructions.
  */
-static inline uint32_t c_jhash(uint8_t *k, uint32_t length, uint32_t initval) {
+static inline uint32_t c_jhash(const uint8_t *k, uint32_t length, uint32_t initval) {
    uint32_t a,b,c,len;
 
    /* Set up the internal state */
@@ -183,7 +183,7 @@ static inline uint32_t c_jhash(uint8_t *k, uint32_t length, uint32_t initval) {
  *            the return value.  No funnels.  Every 1-bit and 2-bit delta
  *            achieves avalanche. About 41+5len instructions.
  */
-static inline uint64_t c_jhash64(uint8_t *k, uint64_t length, uint64_t intval) {
+static inline uint64_t c_jhash64(const uint8_t *k, uint64_t length, uint64_t intval) {
   uint64_t a,b,c,len;
 
   /* Set up the internal state */
