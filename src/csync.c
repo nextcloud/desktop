@@ -32,6 +32,8 @@
 #include "csync_exclude.h"
 #include "csync_journal.h"
 
+#include "csync_update.h"
+
 #include "vio/csync_vio.h"
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.api"
@@ -185,6 +187,14 @@ out:
   SAFE_FREE(journal);
   SAFE_FREE(config);
   return rc;
+}
+
+int csync_update(CSYNC *ctx) {
+
+  ctx->replica = LOCAL_REPLICA;
+  csync_ftw(ctx, ctx->local.uri, csync_walker, MAX_DEPTH);
+
+  return 0;
 }
 
 int csync_destroy(CSYNC *ctx) {

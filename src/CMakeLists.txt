@@ -38,6 +38,7 @@ set(csync_SRCS
   csync_journal.c
   csync_lock.c
   csync_util.c
+  csync_update.c
 
   vio/csync_vio.c
   vio/csync_vio_handle.c

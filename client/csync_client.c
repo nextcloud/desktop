@@ -112,6 +112,7 @@ int main(int argc, char **argv) {
   printf("Version: %s\n", csync_version());
 
   if (arguments.update) {
+    csync_update(csync);
   }
 
   if (arguments.reconcile) {
