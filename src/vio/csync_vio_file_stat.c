@@ -36,6 +36,9 @@ csync_vio_file_stat_t *csync_vio_file_stat_new(void) {
 
 void csync_vio_file_stat_destroy(csync_vio_file_stat_t *file_stat) {
   /* FIXME: free rest */
+  if (file_stat == NULL) {
+    return;
+  }
 
   if (file_stat->fields == CSYNC_VIO_FILE_STAT_FIELDS_SYMLINK_NAME) {
     SAFE_FREE(file_stat->symlink_name);
