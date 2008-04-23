@@ -168,6 +168,10 @@ static int _closedir(csync_vio_method_handle_t *dhandle) {
   smb_dhandle_t *handle = NULL;
   int rc = -1;
 
+  if (dhandle == NULL) {
+    return -1;
+  }
+
   handle = (smb_dhandle_t *) dhandle;
 
   rc = smbc_closedir(handle->dh);

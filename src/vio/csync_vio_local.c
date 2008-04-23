@@ -136,6 +136,10 @@ int csync_vio_local_closedir(csync_vio_method_handle_t *dhandle) {
   dhandle_t *handle = NULL;
   int rc = -1;
 
+  if (dhandle == NULL) {
+    return -1;
+  }
+
   handle = (dhandle_t *) dhandle;
 
   rc = closedir(handle->dh);
