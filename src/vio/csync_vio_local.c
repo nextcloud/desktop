@@ -20,6 +20,7 @@
  * vim: ts=2 sw=2 et cindent
  */
 
+#include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -122,6 +123,10 @@ csync_vio_method_handle_t *csync_vio_local_opendir(const char *name) {
   }
 
   handle->dh = opendir(name);
+  if (handle->dh == NULL) {
+    SAFE_FREE(handle);
+    return NULL;
+  }
   handle->path = c_strdup(name);
 
   return (csync_vio_method_handle_t *) handle;
@@ -148,9 +153,14 @@ csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_method_handle_t *dhandl
 
   handle = (dhandle_t *) dhandle;
 
+  errno = 0;
   dirent = readdir(handle->dh);
   if (dirent == NULL) {
-    goto err;
+    if (errno) {
+      goto err;
+    } else {
+      return NULL;
+    }
   }
 
   file_stat = csync_vio_file_stat_new();
@@ -183,11 +193,9 @@ csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_method_handle_t *dhandl
       break;
   }
 
-  SAFE_FREE(dirent);
   return file_stat;
 
 err:
-  SAFE_FREE(dirent);
   SAFE_FREE(file_stat);
 
   return NULL;
@@ -208,15 +216,7 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
     return -1;
   }
 
-  buf = csync_vio_file_stat_new();
-  if (buf == NULL) {
-    return -1;
-  }
-
-  buf->name = c_basename(uri);
-  if (buf->name == NULL) {
-    csync_vio_file_stat_destroy(buf);
-  }
+  buf->name = c_strdup(uri);
   buf->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
 
   switch(sb.st_mode & S_IFMT) {

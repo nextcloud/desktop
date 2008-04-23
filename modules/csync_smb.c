@@ -20,6 +20,7 @@
  * vim: ts=2 sw=2 et cindent
  */
 
+#include <errno.h>
 #include <stdio.h>
 #include <libsmbclient.h>
 
@@ -154,6 +155,10 @@ static csync_vio_method_handle_t *_opendir(const char *name) {
   }
 
   handle->dh = smbc_opendir(name);
+  if (handle->dh < 0) {
+    SAFE_FREE(handle);
+    return NULL;
+  }
   handle->path = c_strdup(name);
 
   return (csync_vio_method_handle_t *) handle;
@@ -180,9 +185,14 @@ static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
 
   handle = (smb_dhandle_t *) dhandle;
 
+  errno = 0;
   dirent = smbc_readdir(handle->dh);
   if (dirent == NULL) {
-    goto err;
+    if (errno) {
+      goto err;
+    } else {
+      return NULL;
+    }
   }
 
   file_stat = csync_vio_file_stat_new();
@@ -241,12 +251,7 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
     return -1;
   }
 
-  buf = csync_vio_file_stat_new();
-  if (buf == NULL) {
-    return -1;
-  }
-
-  buf->name = c_basename(uri);
+  buf->name = (char *) uri;
   if (buf->name == NULL) {
     csync_vio_file_stat_destroy(buf);
   }
