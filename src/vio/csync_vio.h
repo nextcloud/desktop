@@ -54,6 +54,6 @@ int csync_vio_unlink(CSYNC *ctx, const char *uri);
 int csync_vio_chmod(CSYNC *ctx, const char *uri, mode_t mode);
 int csync_vio_chown(CSYNC *ctx, const char *uri, uid_t owner, gid_t group);
 
-int csync_vio_utimes(CSYNC *ctx, const char *uri, const struct timeval times[2]);
+int csync_vio_utimes(CSYNC *ctx, const char *uri, const struct timeval *times);
 
 #endif /* _CSYNC_VIO_H */

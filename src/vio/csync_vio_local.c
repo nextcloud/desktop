@@ -240,7 +240,7 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
     return -1;
   }
 
-  buf->name = c_strdup(uri);
+  buf->name = c_basename(uri);
   buf->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
 
   switch(sb.st_mode & S_IFMT) {
@@ -327,7 +327,7 @@ int csync_vio_local_chown(const char *uri, uid_t owner, gid_t group) {
   return chown(uri, owner, group);
 }
 
-int csync_vio_local_utimes(const char *uri, const struct timeval times[2]) {
-  return utimes(uri, (struct timeval *) &times);
+int csync_vio_local_utimes(const char *uri, const struct timeval *times) {
+  return utimes(uri, times);
 }
 

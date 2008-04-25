@@ -276,7 +276,7 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
     return -1;
   }
 
-  buf->name = (char *) uri;
+  buf->name = c_basename(uri);
   if (buf->name == NULL) {
     csync_vio_file_stat_destroy(buf);
   }
@@ -366,8 +366,8 @@ static int _chown(const char *uri, uid_t owner, gid_t group) {
   return smbc_chown(uri, owner, group);
 }
 
-static int _utimes(const char *uri, const struct timeval times[2]) {
-  return smbc_utimes(uri, (struct timeval *) &times);
+static int _utimes(const char *uri, const struct timeval *times) {
+  return smbc_utimes(uri, (struct timeval *) times);
 }
 
 csync_vio_method_t _method = {

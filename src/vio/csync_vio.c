@@ -411,7 +411,7 @@ int csync_vio_chown(CSYNC *ctx, const char *uri, uid_t owner, gid_t group) {
   return rc;
 }
 
-int csync_vio_utimes(CSYNC *ctx, const char *uri, const struct timeval times[2]) {
+int csync_vio_utimes(CSYNC *ctx, const char *uri, const struct timeval *times) {
   int rc = -1;
 
   switch(ctx->replica) {

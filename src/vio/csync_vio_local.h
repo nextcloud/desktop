@@ -24,6 +24,7 @@
 #define _CSYNC_VIO_LOCAL_H
 
 #include "vio/csync_vio_method.h"
+#include <sys/time.h>
 
 csync_vio_method_handle_t *csync_vio_local_open(const char *durl, int flags, mode_t mode);
 csync_vio_method_handle_t *csync_vio_local_creat(const char *durl, mode_t mode);
@@ -46,6 +47,6 @@ int csync_vio_local_unlink(const char *uri);
 int csync_vio_local_chmod(const char *uri, mode_t mode);
 int csync_vio_local_chown(const char *uri, uid_t owner, gid_t group);
 
-int csync_vio_local_utimes(const char *uri, const struct timeval times[2]);
+int csync_vio_local_utimes(const char *uri, const struct timeval *times);
 
 #endif /* _CSYNC_VIO_LOCAL_H */
