@@ -24,6 +24,7 @@
 #define _GNU_SOURCE
 #endif
 
+#include <errno.h>
 #include <stdio.h>
 #include <dlfcn.h> /* dlopen(), dlclose(), dlsym() ... */
 
@@ -160,29 +161,39 @@ csync_vio_handle_t *csync_vio_creat(CSYNC *ctx, const char *uri, mode_t mode) {
   return h;
 }
 
-int csync_vio_close(CSYNC *ctx, csync_vio_handle_t *handle) {
+int csync_vio_close(CSYNC *ctx, csync_vio_handle_t *fhandle) {
   int rc = -1;
+
+  if (fhandle == NULL) {
+    errno = EBADF;
+    return -1;
+  }
 
   switch(ctx->replica) {
     case REMOTE_REPLCIA:
-      rc = ctx->module.method->close(handle->method_handle);
+      rc = ctx->module.method->close(fhandle->method_handle);
       break;
     case LOCAL_REPLICA:
-      rc = csync_vio_local_close(handle->method_handle);
+      rc = csync_vio_local_close(fhandle->method_handle);
       break;
     default:
       break;
   }
 
   /* handle->method_handle is free'd by the above close */
-  SAFE_FREE(handle->uri);
-  SAFE_FREE(handle);
+  SAFE_FREE(fhandle->uri);
+  SAFE_FREE(fhandle);
 
   return rc;
 }
 
 ssize_t csync_vio_read(CSYNC *ctx, csync_vio_handle_t *fhandle, void *buf, size_t count) {
   ssize_t rs = 0;
+
+  if (fhandle == NULL) {
+    errno = EBADF;
+    return -1;
+  }
 
   switch(ctx->replica) {
     case REMOTE_REPLCIA:
@@ -200,6 +211,11 @@ ssize_t csync_vio_read(CSYNC *ctx, csync_vio_handle_t *fhandle, void *buf, size_
 
 ssize_t csync_vio_write(CSYNC *ctx, csync_vio_handle_t *fhandle, const void *buf, size_t count) {
   ssize_t rs = 0;
+
+  if (fhandle == NULL) {
+    errno = EBADF;
+    return -1;
+  }
 
   switch(ctx->replica) {
     case REMOTE_REPLCIA:
@@ -257,6 +273,11 @@ csync_vio_handle_t *csync_vio_opendir(CSYNC *ctx, const char *name) {
 
 int csync_vio_closedir(CSYNC *ctx, csync_vio_handle_t *dhandle) {
   int rc = -1;
+
+  if (dhandle == NULL) {
+    errno = EBADF;
+    return -1;
+  }
 
   switch(ctx->replica) {
     case REMOTE_REPLCIA:
