@@ -111,6 +111,12 @@ END_TEST
  * Test file functions (open, read, write, close ...)
  */
 
+START_TEST (check_csync_vio_local_close_null)
+{
+  fail_unless(csync_vio_local_close(NULL) < 0, NULL);
+}
+END_TEST
+
 START_TEST (check_csync_vio_local_creat_close)
 {
   csync_vio_method_handle_t *fh = NULL;
@@ -328,6 +334,7 @@ static Suite *csync_vio_local_suite(void) {
   create_case(s, "check_csync_vio_local_closedir_null", check_csync_vio_local_closedir_null);
   create_case_fixture(s, "check_csync_vio_local_readdir", check_csync_vio_local_readdir, setup_dir, teardown_dir);
 
+  create_case_fixture(s, "check_csync_vio_local_close_null", check_csync_vio_local_close_null, setup_dir, teardown_dir);
   create_case_fixture(s, "check_csync_vio_local_creat_close", check_csync_vio_local_creat_close, setup_dir, teardown_dir);
   create_case_fixture(s, "check_csync_vio_local_open_close", check_csync_vio_local_open_close, setup_file, teardown_dir);
   create_case(s, "check_csync_vio_local_read_null", check_csync_vio_local_read_null);
