@@ -104,6 +104,10 @@ static int _close(csync_vio_method_handle_t *fhandle) {
   int rc = -1;
   smb_fhandle_t *handle = NULL;
 
+  if (fhandle == NULL) {
+    return -1;
+  }
+
   handle = (smb_fhandle_t *) fhandle;
 
   rc = smbc_close(handle->fd);

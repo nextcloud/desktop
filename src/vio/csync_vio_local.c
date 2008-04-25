@@ -72,6 +72,10 @@ int csync_vio_local_close(csync_vio_method_handle_t *fhandle) {
   int rc = -1;
   fhandle_t *handle = NULL;
 
+  if (fhandle == NULL) {
+    return -1;
+  }
+
   handle = (fhandle_t *) fhandle;
 
   rc = close(handle->fd);
