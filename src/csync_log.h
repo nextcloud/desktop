@@ -105,6 +105,9 @@ static LOG4C_INLINE int csync_log_load(const char *path){
 #ifdef WITH_LOG4C
   return (log4c_load(path));
 #else
+  if (path == NULL) {
+    return 0;
+  }
   return 0;
 #endif
 }
@@ -125,9 +128,12 @@ static LOG4C_INLINE int csync_log_fini(){
 static LOG4C_INLINE int csync_log_setappender(char *catName, char *appName) {
 #ifdef WITH_LOG4C
   log4c_category_set_appender(log4c_category_get(catName),log4c_appender_get(appName));
-   return 0;
+  return 0;
 #else
-   return 0;
+  if (catName == NULL || appName == NULL) {
+    return 0;
+  }
+  return 0;
 #endif
 }
 
@@ -143,8 +149,12 @@ static LOG4C_INLINE void csync_log(char *catName, int a_priority, const char* a_
 #else
   va_list va;
   va_start(va, a_format);
+  if (a_priority > 0) {
+    printf("%s - ", catName);
+  }
   vprintf(a_format, va);
   va_end(va);
+  printf("\n");
 #endif
 }
 
