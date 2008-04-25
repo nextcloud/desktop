@@ -73,6 +73,7 @@ int csync_vio_local_close(csync_vio_method_handle_t *fhandle) {
   fhandle_t *handle = NULL;
 
   if (fhandle == NULL) {
+    errno = EBADF;
     return -1;
   }
 
@@ -88,6 +89,11 @@ int csync_vio_local_close(csync_vio_method_handle_t *fhandle) {
 ssize_t csync_vio_local_read(csync_vio_method_handle_t *fhandle, void *buf, size_t count) {
   fhandle_t *handle = NULL;
 
+  if (fhandle == NULL) {
+    errno = EBADF;
+    return (ssize_t) -1;
+  }
+
   handle = (fhandle_t *) fhandle;
 
   return read(handle->fd, buf, count);
@@ -96,6 +102,11 @@ ssize_t csync_vio_local_read(csync_vio_method_handle_t *fhandle, void *buf, size
 ssize_t csync_vio_local_write(csync_vio_method_handle_t *fhandle, const void *buf, size_t count) {
   fhandle_t *handle = NULL;
 
+  if (fhandle == NULL) {
+    errno = EBADF;
+    return (ssize_t) -1;
+  }
+
   handle = (fhandle_t *) fhandle;
 
   return write(handle->fd, (char *) buf, count);
@@ -103,6 +114,10 @@ ssize_t csync_vio_local_write(csync_vio_method_handle_t *fhandle, const void *bu
 
 off_t csync_vio_local_lseek(csync_vio_method_handle_t *fhandle, off_t offset, int whence) {
   fhandle_t *handle = NULL;
+
+  if (fhandle == NULL) {
+    return (off_t) -1;
+  }
 
   handle = (fhandle_t *) fhandle;
 
@@ -141,6 +156,7 @@ int csync_vio_local_closedir(csync_vio_method_handle_t *dhandle) {
   int rc = -1;
 
   if (dhandle == NULL) {
+    errno = EBADF;
     return -1;
   }
 

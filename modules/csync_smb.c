@@ -105,6 +105,7 @@ static int _close(csync_vio_method_handle_t *fhandle) {
   smb_fhandle_t *handle = NULL;
 
   if (fhandle == NULL) {
+    errno = EBADF;
     return -1;
   }
 
@@ -120,6 +121,11 @@ static int _close(csync_vio_method_handle_t *fhandle) {
 static ssize_t _read(csync_vio_method_handle_t *fhandle, void *buf, size_t count) {
   smb_fhandle_t *handle = NULL;
 
+  if (fhandle == NULL) {
+    errno = EBADF;
+    return (ssize_t) -1;
+  }
+
   handle = (smb_fhandle_t *) fhandle;
 
   return smbc_read(handle->fd, buf, count);
@@ -128,6 +134,11 @@ static ssize_t _read(csync_vio_method_handle_t *fhandle, void *buf, size_t count
 static ssize_t _write(csync_vio_method_handle_t *fhandle, const void *buf, size_t count) {
   smb_fhandle_t *handle = NULL;
 
+  if (fhandle == NULL) {
+    errno = EBADF;
+    return (ssize_t) -1;
+  }
+
   handle = (smb_fhandle_t *) fhandle;
 
   return smbc_write(handle->fd, (char *) buf, count);
@@ -135,6 +146,11 @@ static ssize_t _write(csync_vio_method_handle_t *fhandle, const void *buf, size_
 
 static off_t _lseek(csync_vio_method_handle_t *fhandle, off_t offset, int whence) {
   smb_fhandle_t *handle = NULL;
+
+  if (fhandle == NULL) {
+    errno = EBADF;
+    return (off_t) -1;
+  }
 
   handle = (smb_fhandle_t *) fhandle;
 
@@ -173,6 +189,7 @@ static int _closedir(csync_vio_method_handle_t *dhandle) {
   int rc = -1;
 
   if (dhandle == NULL) {
+    errno = EBADF;
     return -1;
   }
 
