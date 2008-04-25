@@ -4,6 +4,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include <errno.h>
+#include <unistd.h>
 
 #include "support.h"
 
@@ -218,6 +219,105 @@ START_TEST (check_csync_vio_local_lseek)
 }
 END_TEST
 
+/*
+ * Test for general functions (stat, chmod, chown, ...)
+ */
+
+START_TEST (check_csync_vio_local_stat_dir)
+{
+  csync_vio_file_stat_t *fs = NULL;
+
+  fs = csync_vio_file_stat_new();
+  fail_if(fs == NULL, NULL);
+
+  fail_unless(csync_vio_local_stat(CSYNC_TEST_DIR, fs) == 0, NULL);
+
+  fail_unless(strcmp(fs->name, "csync") == 0, NULL);
+  fail_unless(fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY, NULL);
+
+  csync_vio_file_stat_destroy(fs);
+}
+END_TEST
+
+START_TEST (check_csync_vio_local_stat_file)
+{
+  csync_vio_file_stat_t *fs = NULL;
+
+  fs = csync_vio_file_stat_new();
+  fail_if(fs == NULL, NULL);
+
+  fail_unless(csync_vio_local_stat(CSYNC_TEST_FILE, fs) == 0, NULL);
+
+  fail_unless(strcmp(fs->name, "file.txt") == 0, NULL);
+  fail_unless(fs->type == CSYNC_VIO_FILE_TYPE_REGULAR, NULL);
+
+  csync_vio_file_stat_destroy(fs);
+}
+END_TEST
+
+START_TEST (check_csync_vio_local_rename_dir)
+{
+  struct stat sb;
+
+  mkdir("test", 0755);
+
+  fail_unless(csync_vio_local_rename("test", "test2") == 0, NULL);
+  fail_unless(lstat("test2", &sb) == 0, NULL);
+}
+END_TEST
+
+START_TEST (check_csync_vio_local_rename_file)
+{
+  struct stat sb;
+
+  fail_unless(csync_vio_local_rename(CSYNC_TEST_FILE, CSYNC_TEST_DIR "file2.txt") == 0, NULL);
+  fail_unless(lstat(CSYNC_TEST_DIR "file2.txt", &sb) == 0, NULL);
+}
+END_TEST
+
+START_TEST (check_csync_vio_local_unlink)
+{
+  struct stat sb;
+
+  fail_unless(csync_vio_local_unlink(CSYNC_TEST_FILE) == 0, NULL);
+  fail_unless(lstat(CSYNC_TEST_FILE, &sb) < 0, NULL);
+}
+END_TEST
+
+START_TEST (check_csync_vio_local_chmod)
+{
+  fail_unless(csync_vio_local_chmod(CSYNC_TEST_FILE, 0777) == 0, NULL);
+}
+END_TEST
+
+START_TEST (check_csync_vio_local_chown)
+{
+  fail_unless(csync_vio_local_chown(CSYNC_TEST_FILE, getuid(), getgid()) == 0, NULL);
+}
+END_TEST
+
+START_TEST (check_csync_vio_local_utimes)
+{
+  struct stat sb;
+  struct timeval times[2];
+  long modtime = 0;
+
+  fail_unless(lstat(CSYNC_TEST_FILE, &sb) == 0, NULL);
+  modtime = sb.st_mtime + 10;
+
+  times[0].tv_sec = modtime;
+  times[0].tv_usec = 0;
+
+  times[1].tv_sec = modtime;
+  times[1].tv_usec = 0;
+
+  fail_unless(csync_vio_local_utimes(CSYNC_TEST_FILE, times) == 0, NULL);
+  fail_unless(lstat(CSYNC_TEST_FILE, &sb) == 0, NULL);
+
+  fail_unless(modtime == sb.st_mtime, NULL);
+}
+END_TEST
+
 static Suite *csync_vio_local_suite(void) {
   Suite *s = suite_create("csync_vio");
 
@@ -236,6 +336,16 @@ static Suite *csync_vio_local_suite(void) {
   create_case(s, "check_csync_vio_local_write_null", check_csync_vio_local_write_null);
   create_case_fixture(s, "check_csync_vio_local_write", check_csync_vio_local_write, setup_dir, teardown_dir);
   create_case_fixture(s, "check_csync_vio_local_lseek", check_csync_vio_local_lseek, setup_file, teardown_dir);
+
+  create_case_fixture(s, "check_csync_vio_local_stat_dir", check_csync_vio_local_stat_dir, setup_dir, teardown_dir);
+  create_case_fixture(s, "check_csync_vio_local_stat_file", check_csync_vio_local_stat_file, setup_file, teardown_dir);
+
+  create_case_fixture(s, "check_csync_vio_local_rename_dir", check_csync_vio_local_rename_dir, setup_dir, teardown_dir);
+  create_case_fixture(s, "check_csync_vio_local_rename_file", check_csync_vio_local_rename_file, setup_file, teardown_dir);
+  create_case_fixture(s, "check_csync_vio_local_unlink", check_csync_vio_local_unlink, setup_file, teardown_dir);
+  create_case_fixture(s, "check_csync_vio_local_chmod", check_csync_vio_local_chmod, setup_file, teardown_dir);
+  create_case_fixture(s, "check_csync_vio_local_chown", check_csync_vio_local_chown, setup_file, teardown_dir);
+  create_case_fixture(s, "check_csync_vio_local_utimes", check_csync_vio_local_utimes, setup_file, teardown_dir);
 
   return s;
 }
