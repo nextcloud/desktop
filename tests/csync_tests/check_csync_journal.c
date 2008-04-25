@@ -3,6 +3,8 @@
 
 #include "support.h"
 
+#define CSYNC_TEST 1
+
 #include "csync_journal.c"
 
 CSYNC *csync;

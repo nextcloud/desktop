@@ -36,6 +36,10 @@
 
 #include "config.h"
 
+#ifdef CSYNC_TEST
+#undef WITH_LOG4C
+#endif
+
 #ifdef WITH_LOG4C
 #include "log4c.h"
 #else
