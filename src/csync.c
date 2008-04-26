@@ -24,6 +24,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 #include "c_lib.h"
 #include "csync_private.h"
@@ -190,9 +191,34 @@ out:
 }
 
 int csync_update(CSYNC *ctx) {
+  time_t start, finish;
 
+  if (ctx == NULL) {
+    errno = EBADF;
+    return -1;
+  }
+
+  time(&start);
   ctx->replica = LOCAL_REPLICA;
-  csync_ftw(ctx, ctx->local.uri, csync_walker, MAX_DEPTH);
+  if (csync_ftw(ctx, ctx->local.uri, csync_walker, MAX_DEPTH) < 0) {
+    return -1;
+  }
+  time(&finish);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+            "Update detection for local replica took %.2f seconds",
+            difftime(finish, start));
+
+#if 0
+  time(&start);
+  ctx->replica = REMOTE_REPLICA;
+  if (csync_ftw(ctx, ctx->remote.uri, csync_walker, MAX_DEPTH) < 0) {
+    return -1;
+  }
+  time(&finish);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+            "Update detection for remote replica took %.2f seconds",
+            difftime(finish, start));
+#endif
 
   return 0;
 }
@@ -214,6 +240,8 @@ int csync_destroy(CSYNC *ctx) {
   if (asprintf(&lock, "%s/%s", ctx->options.config_dir, CSYNC_LOCK_FILE) > 0) {
     csync_lock_remove(lock);
   }
+
+  /* TODO: destroy the rbtree */
 
   csync_log_fini();
 
