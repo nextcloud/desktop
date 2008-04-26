@@ -226,6 +226,11 @@ int csync_update(CSYNC *ctx) {
 int csync_destroy(CSYNC *ctx) {
   char *lock = NULL;
 
+  if (csync == NULL) {
+    errno = EBADF;
+    return -1;
+  }
+
   csync_vio_shutdown(ctx);
 
   /* TODO: write journal */
