@@ -51,14 +51,13 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
   }
 
   ctx->module.handle = dlopen(path, RTLD_LAZY);
+  SAFE_FREE(path);
   if ((err = dlerror()) != NULL) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "loading %s plugin failed - %s",
              module, err);
-    SAFE_FREE(path);
     return -1;
   }
 
-  SAFE_FREE(path);
 
   init_fn = dlsym(ctx->module.handle, "vio_module_init");
   if ((err = dlerror()) != NULL) {
