@@ -226,7 +226,7 @@ int csync_update(CSYNC *ctx) {
 int csync_destroy(CSYNC *ctx) {
   char *lock = NULL;
 
-  if (csync == NULL) {
+  if (ctx == NULL) {
     errno = EBADF;
     return -1;
   }
