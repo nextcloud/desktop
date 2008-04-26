@@ -8,6 +8,7 @@
 
 #include "support.h"
 
+#define CSYNC_TEST 1
 #include "std/c_file.h"
 #include "csync_lock.h"
 
