@@ -28,6 +28,7 @@
 #include <stdio.h>
 
 #include "c_lib.h"
+#include "c_jhash.h"
 #include "csync_update.h"
 #include "csync_exclude.h"
 #include "vio/csync_vio.h"
@@ -36,10 +37,15 @@
 #include "csync_log.h"
 
 static int csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs, const int type) {
+  uint64_t h;
+
   if ((file == NULL) || (fs == NULL)) {
     errno = EINVAL;
     return -1;
   }
+
+  h = c_jhash64((uint8_t *) file, strlen(file), 0);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "jhash for %s is: %lu", file, h);
 
   return 0;
 }
@@ -77,12 +83,13 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs, 
 
   return 0;
 }
+
 /* File tree walker */
 int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn, unsigned int depth) {
   char *filename = NULL;
   char *d_name = NULL;
   csync_vio_handle_t *dh = NULL;
-  csync_vio_file_stat_t *dfs = NULL;
+  csync_vio_file_stat_t *dirent = NULL;
   csync_vio_file_stat_t *fs = NULL;
   int rc = 0;
 
@@ -100,10 +107,10 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn, unsigned int dept
     }
   }
 
-  while ((dfs = csync_vio_readdir(ctx, dh))) {
+  while ((dirent = csync_vio_readdir(ctx, dh))) {
     int flag;
 
-    d_name = dfs->name;
+    d_name = dirent->name;
     if (d_name == NULL) {
       goto error;
     }
@@ -111,12 +118,12 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn, unsigned int dept
     /* skip "." and ".." */
     if (d_name[0] == '.' && (d_name[1] == '\0'
           || (d_name[1] == '.' && d_name[2] == '\0'))) {
-      csync_vio_file_stat_destroy(dfs);
+      csync_vio_file_stat_destroy(dirent);
       continue;
     }
 
     if (asprintf(&filename, "%s/%s", uri, d_name) < 0) {
-      csync_vio_file_stat_destroy(dfs);
+      csync_vio_file_stat_destroy(dirent);
       goto error;
     }
 
@@ -152,12 +159,12 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn, unsigned int dept
       }
     }
     SAFE_FREE(filename);
-    csync_vio_file_stat_destroy(dfs);
+    csync_vio_file_stat_destroy(dirent);
   }
   csync_vio_closedir(ctx, dh);
 
 done:
-  csync_vio_file_stat_destroy(dfs);
+  csync_vio_file_stat_destroy(dirent);
   SAFE_FREE(filename);
   return rc;
 error:
