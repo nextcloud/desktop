@@ -43,7 +43,7 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
   csync_vio_method_init_fn init_fn;
 
 #if DEVELOPER
-  if (asprintf(&path, "%s/csync_%s.so", SYSCONFDIR "/modules", module) < 0) {
+  if (asprintf(&path, "%s/modules/csync_%s.so", SYSCONFDIR, module) < 0) {
 #else
   if (asprintf(&path, "%s/csync_%s.so", PLUGINDIR, module) < 0) {
 #endif
