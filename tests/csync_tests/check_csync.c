@@ -2,6 +2,7 @@
 
 #include "support.h"
 
+#define CSYNC_TEST 1
 #include "csync_private.h"
 
 CSYNC *csync;
@@ -14,7 +15,13 @@ static void teardown(void) {
   csync_destroy(csync);
 }
 
-START_TEST (csync_create_test)
+START_TEST (check_csync_destroy_null)
+{
+  fail_unless(csync_destroy(NULL) < 0, NULL);
+}
+END_TEST
+
+START_TEST (check_csync_create)
 {
   fail_unless(csync_create(&csync, "/tmp/csync1", "/tmp/csync2") == 0, NULL);
 
@@ -22,11 +29,11 @@ START_TEST (csync_create_test)
   fail_unless(csync->options.max_time_difference == MAX_TIME_DIFFERENCE, NULL);
   fail_unless(strcmp(csync->options.config_dir, CSYNC_CONF_DIR) > 0, NULL);
 
-  csync_destroy(csync);
+  fail_unless(csync_destroy(csync) == 0, NULL);
 }
 END_TEST
 
-START_TEST (csync_init_test)
+START_TEST (check_csync_init)
 {
   fail_unless(csync_init(csync) == 0, NULL);
 
@@ -39,8 +46,9 @@ END_TEST
 static Suite *csync_suite(void) {
   Suite *s = suite_create("csync");
 
-  create_case(s, "csync_create_test", csync_create_test);
-  create_case_fixture(s, "csync_init_test", csync_init_test, setup, teardown);
+  create_case(s, "check_csync_destroy_null", check_csync_destroy_null);
+  create_case(s, "check_csync_create", check_csync_create);
+  create_case_fixture(s, "check_csync_init", check_csync_init, setup, teardown);
 
   return s;
 }
