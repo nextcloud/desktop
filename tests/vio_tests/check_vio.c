@@ -124,6 +124,7 @@ START_TEST (check_csync_vio_readdir)
   dirent = csync_vio_readdir(csync, dh);
   fail_if(dirent == NULL, NULL);
 
+  csync_vio_file_stat_destroy(dirent);
   fail_unless(csync_vio_closedir(csync, dh) == 0, NULL);
 }
 END_TEST
