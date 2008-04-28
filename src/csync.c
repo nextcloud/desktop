@@ -213,6 +213,8 @@ int csync_init(CSYNC *ctx) {
     goto out;
   }
 
+  ctx->local.type = LOCAL_REPLICA;
+
   /* check for uri */
   if (fnmatch("*://*", ctx->remote.uri, 0) == 0) {
     size_t len;
@@ -227,11 +229,15 @@ int csync_init(CSYNC *ctx) {
         goto out;
       }
       /* load module */
-      if (csync_vio_init(ctx, module, NULL) < 0) {
-        rc = -1;
+      rc = csync_vio_init(ctx, module, NULL);
+      SAFE_FREE(module);
+      if (rc < 0) {
         goto out;
       }
+      ctx->remote.type = REMOTE_REPLCIA;
     }
+  } else {
+    ctx->remote.type = LOCAL_REPLICA;
   }
 
   if (c_rbtree_create(&ctx->local.tree, key_cmp, data_cmp) < 0) {
@@ -254,7 +260,6 @@ out:
   SAFE_FREE(exclude);
   SAFE_FREE(journal);
   SAFE_FREE(config);
-  SAFE_FREE(module);
   return rc;
 }
 
@@ -267,7 +272,8 @@ int csync_update(CSYNC *ctx) {
   }
 
   time(&start);
-  ctx->replica = LOCAL_REPLICA;
+  ctx->current = LOCAL_REPLICA;
+  ctx->replica = ctx->local.type;
   if (csync_ftw(ctx, ctx->local.uri, csync_walker, MAX_DEPTH) < 0) {
     return -1;
   }
@@ -278,7 +284,8 @@ int csync_update(CSYNC *ctx) {
 
 #if 0
   time(&start);
-  ctx->replica = REMOTE_REPLICA;
+  ctx->current = REMOTE_REPLICA;
+  ctx->replica = ctx->remote.type;
   if (csync_ftw(ctx, ctx->remote.uri, csync_walker, MAX_DEPTH) < 0) {
     return -1;
   }
