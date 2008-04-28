@@ -22,3 +22,33 @@
 
 #include "csync_util.h"
 
+#define CSYNC_LOG_CATEGORY_NAME "csync.util"
+#include "csync_log.h"
+
+struct csync_memstat_s {
+  int size;
+  int resident;
+  int shared;
+  int trs;
+  int drs;
+  int lrs;
+  int dt;
+};
+
+void csync_memstat_check(void) {
+  struct csync_memstat_s m;
+  FILE* fp;
+
+  /* get process memory stats */
+  fp = fopen("/proc/self/statm","r");
+  if (fp == NULL) {
+    return;
+  }
+  fscanf(fp, "%d%d%d%d%d%d%d", &m.size, &m.resident, &m.shared, &m.trs,
+      &m.drs, &m.lrs, &m.dt);
+  fclose(fp);
+
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Memory: %dK total size, %dK resident, %dK shared",
+                 m.size * 4, m.resident * 4, m.shared * 4);
+}
+

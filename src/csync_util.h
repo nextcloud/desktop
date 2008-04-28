@@ -23,4 +23,6 @@
 #ifndef _CSYNC_UTIL_H
 #define _CSYNC_UTIL_H
 
+void csync_memstat_check(void);
+
 #endif /* _CSYNC_UTIL_H */
