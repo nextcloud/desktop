@@ -74,6 +74,7 @@ int csync_exclude_load(CSYNC *ctx, const char *fname) {
   }
   close(fd);
 
+  /* FIXME: Don't add duplicates */
   entry = buf;
   for (i = 0; i < size; i++) {
     if (buf[i] == '\n') {

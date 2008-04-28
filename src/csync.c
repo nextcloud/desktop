@@ -31,9 +31,10 @@
 #include "c_lib.h"
 #include "csync_private.h"
 #include "csync_config.h"
-#include "csync_lock.h"
 #include "csync_exclude.h"
+#include "csync_lock.h"
 #include "csync_journal.h"
+#include "csync_util.h"
 
 #include "csync_update.h"
 
@@ -271,6 +272,8 @@ int csync_update(CSYNC *ctx) {
     return -1;
   }
 
+  csync_memstat_check();
+
   time(&start);
   ctx->current = LOCAL_REPLICA;
   ctx->replica = ctx->local.type;
@@ -281,10 +284,12 @@ int csync_update(CSYNC *ctx) {
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
             "Update detection for local replica took %.2f seconds",
             difftime(finish, start));
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+            "Collected files: %lu", c_rbtree_size(ctx->local.tree));
+  csync_memstat_check();
 
-#if 0
   time(&start);
-  ctx->current = REMOTE_REPLICA;
+  ctx->current = REMOTE_REPLCIA;
   ctx->replica = ctx->remote.type;
   if (csync_ftw(ctx, ctx->remote.uri, csync_walker, MAX_DEPTH) < 0) {
     return -1;
@@ -293,7 +298,9 @@ int csync_update(CSYNC *ctx) {
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
             "Update detection for remote replica took %.2f seconds",
             difftime(finish, start));
-#endif
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+            "Collected files: %lu", c_rbtree_size(ctx->remote.tree));
+  csync_memstat_check();
 
   return 0;
 }
