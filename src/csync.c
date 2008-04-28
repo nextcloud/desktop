@@ -42,18 +42,27 @@
 
 int csync_create(CSYNC **csync, const char *local, const char *remote) {
   CSYNC *ctx;
+  size_t len = 0;
 
   ctx = c_malloc(sizeof(CSYNC));
   if (ctx == NULL) {
     return -1;
   }
 
-  ctx->local.uri = c_strdup(local);
+  /* remove trailing slashes */
+  len = strlen(local);
+  while(len > 0 && local[len - 1] == '/') --len;
+
+  ctx->local.uri = c_strndup(local, len);
   if (ctx->local.uri == NULL) {
     return -1;
   }
 
-  ctx->remote.uri = c_strdup(remote);
+  /* remove trailing slashes */
+  len = strlen(remote);
+  while(len > 0 && remote[len - 1] == '/') --len;
+
+  ctx->remote.uri = c_strndup(remote, len);
   if (ctx->remote.uri == NULL) {
     SAFE_FREE(ctx->remote.uri);
     return -1;
