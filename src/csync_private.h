@@ -121,6 +121,7 @@ typedef struct csync_file_stat_s {
   mode_t mode;
   int nlink;
   time_t modtime;
+  int type;
   enum csync_instructions_e instruction;
   uint64_t phash;
   size_t pathlen;
