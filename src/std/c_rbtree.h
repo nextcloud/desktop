@@ -245,7 +245,7 @@ c_rbnode_t *c_rbtree_tail(c_rbtree_t *tree);
  *
  * @return  The size of the red-black tree.
  */
-#define c_rbtree_size(T) ((T)->size)
+#define c_rbtree_size(T) (T) == NULL ? 0 : ((T)->size)
 
 /**
  * @brief Walk over a red-black tree.
