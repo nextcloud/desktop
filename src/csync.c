@@ -21,7 +21,9 @@
  */
 
 #define _GNU_SOURCE /* asprintf */
+
 #include <errno.h>
+#include <fnmatch.h>
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
@@ -180,10 +182,25 @@ int csync_init(CSYNC *ctx) {
     goto out;
   }
 
-  /* TODO: load plugins */
-  if (csync_vio_init(ctx, "smb", "") < 0) {
-    rc = -1;
-    goto out;
+  /* check for uri */
+  if (fnmatch("*://*", ctx->remote.uri, 0) == 0) {
+    size_t len;
+    len = strstr(ctx->remote.uri, "://") - ctx->remote.uri;
+    /* get protocol */
+    if (len > 0) {
+      char *module = NULL;
+      /* module name */
+      module = c_strndup(ctx->remote.uri, len);
+      if (module == NULL) {
+        rc = -1;
+        goto out;
+      }
+      /* load module */
+      if (csync_vio_init(ctx, module, NULL) < 0) {
+        rc = -1;
+        goto out;
+      }
+    }
   }
 
   ctx->initialized = 1;
@@ -196,6 +213,7 @@ out:
   SAFE_FREE(exclude);
   SAFE_FREE(journal);
   SAFE_FREE(config);
+  SAFE_FREE(module);
   return rc;
 }
 
