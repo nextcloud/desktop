@@ -42,6 +42,37 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.api"
 #include "csync_log.h"
 
+static int key_cmp(const void *key, const void *data) {
+  uint64_t a;
+  csync_file_stat_t *b;
+
+  a = POINTER_TO_INT(key);
+  b = (csync_file_stat_t *) data;
+
+  if (a < b->phash) {
+    return -1;
+  } else if (a > b->phash) {
+    return 1;
+  }
+
+  return 0;
+}
+
+static int data_cmp(const void *key, const void *data) {
+  csync_file_stat_t *a, *b;
+
+  a = (csync_file_stat_t *) key;
+  b = (csync_file_stat_t *) data;
+
+  if (a->phash < b->phash) {
+    return -1;
+  } else if (a->phash > b->phash) {
+    return 1;
+  }
+
+  return 0;
+}
+
 int csync_create(CSYNC **csync, const char *local, const char *remote) {
   CSYNC *ctx;
   size_t len = 0;
@@ -203,6 +234,16 @@ int csync_init(CSYNC *ctx) {
     }
   }
 
+  if (c_rbtree_create(&ctx->local.tree, key_cmp, data_cmp) < 0) {
+    rc = -1;
+    goto out;
+  }
+
+  if (c_rbtree_create(&ctx->remote.tree, key_cmp, data_cmp) < 0) {
+    rc = -1;
+    goto out;
+  }
+
   ctx->initialized = 1;
 
   rc = 0;
@@ -250,6 +291,13 @@ int csync_update(CSYNC *ctx) {
   return 0;
 }
 
+static void tree_destructor(void *data) {
+  csync_file_stat_t *freedata = NULL;
+
+  freedata = (csync_file_stat_t *) data;
+  SAFE_FREE(freedata);
+}
+
 int csync_destroy(CSYNC *ctx) {
   char *lock = NULL;
 
@@ -273,9 +321,16 @@ int csync_destroy(CSYNC *ctx) {
     csync_lock_remove(lock);
   }
 
-  /* TODO: destroy the rbtree */
-
   csync_log_fini();
+
+  /* destroy the rbtrees */
+  if (c_rbtree_size(ctx->local.tree) > 0) {
+    c_rbtree_destroy(ctx->local.tree, tree_destructor);
+  }
+
+  if (c_rbtree_size(ctx->remote.tree) > 0) {
+    c_rbtree_destroy(ctx->remote.tree, tree_destructor);
+  }
 
   c_rbtree_free(ctx->local.tree);
   c_rbtree_free(ctx->remote.tree);
