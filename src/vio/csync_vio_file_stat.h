@@ -61,33 +61,38 @@ enum csync_vio_file_stat_fields_e {
   CSYNC_VIO_FILE_STAT_FIELDS_MTIME = 1 << 10,
   CSYNC_VIO_FILE_STAT_FIELDS_CTIME = 1 << 11,
   CSYNC_VIO_FILE_STAT_FIELDS_SYMLINK_NAME = 1 << 12,
-  CSYNC_VIO_FILE_STAT_FIELDS_ACL = 1 << 13,
+  CSYNC_VIO_FILE_STAT_FIELDS_CHECKSUM = 1 << 13,
+  CSYNC_VIO_FILE_STAT_FIELDS_ACL = 1 << 14,
 };
 
 
 struct csync_vio_file_stat_s {
+  union {
+    char *symlink_name;
+    char *checksum;
+  } u;
 
-  enum csync_vio_file_stat_fields_e fields;
-  enum csync_vio_file_type_e type;
-  mode_t mode;
-
-  enum csync_vio_file_flags_e flags;
-
-  dev_t device;
-  ino_t inode;
-  nlink_t link_count;
-
-  off_t size;
-  off_t blksize;
-  unsigned long blkcount;
+  void *acl;
+  char *name;
 
   time_t atime;
   time_t mtime;
   time_t ctime;
 
-  char *symlink_name;
-  void *acl;
-  char *name;
+  off_t size;
+  off_t blksize;
+  unsigned long blkcount;
+
+  mode_t mode;
+
+  dev_t device;
+  ino_t inode;
+  nlink_t link_count;
+
+  enum csync_vio_file_stat_fields_e fields;
+  enum csync_vio_file_type_e type;
+
+  enum csync_vio_file_flags_e flags;
 
   void *reserved1;
   void *reserved2;
