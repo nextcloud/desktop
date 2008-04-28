@@ -94,6 +94,7 @@ struct csync_s {
     char *config_dir;
   } options;
 
+  enum csync_replica_e current;
   enum csync_replica_e replica;
 
   int journal_exists;
@@ -121,7 +122,7 @@ typedef struct csync_file_stat_s {
   int nlink;
   time_t modtime;
   enum csync_instructions_e instruction;
-  uint64_t pathid;
+  uint64_t phash;
   size_t pathlen;
   char path[1];
 } csync_file_stat_t;
