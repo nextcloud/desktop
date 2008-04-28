@@ -33,6 +33,7 @@
 #ifndef _CSYNC_PRIVATE_H
 #define _CSYNC_PRIVATE_H
 
+#include <stdint.h>
 #include <sqlite3.h>
 
 #include "config.h"
@@ -98,6 +99,32 @@ struct csync_s {
   int journal_exists;
   int initialized;
 };
+
+enum csync_instructions_e {
+  CSYNC_INSTRUCTION_NONE,
+  CSYNC_INSTRUCTION_EVAL,
+  CSYNC_INSTRUCTION_REMOVE,
+  CSYNC_INSTRUCTION_RENAME,
+  CSYNC_INSTRUCTION_NEW,
+  CSYNC_INSTRUCTION_CONFLICT,
+  CSYNC_INSTRUCTION_IGNORE,
+  CSYNC_INSTRUCTION_SYNC,
+  CSYNC_INSTRUCTION_STAT_ERROR,
+  CSYNC_INSTRUCTION_ERROR
+};
+
+typedef struct csync_file_stat_s {
+  ino_t inode;
+  uid_t uid;
+  gid_t gid;
+  mode_t mode;
+  int nlink;
+  time_t modtime;
+  enum csync_instructions_e instruction;
+  uint64_t pathid;
+  size_t pathlen;
+  char path[1];
+} csync_file_stat_t;
 
 /**
  * }@
