@@ -76,7 +76,7 @@ static int csync_journal_is_empty(CSYNC *ctx) {
   int rc = 0;
 
   result = csync_journal_query(ctx, "SELECT COUNT(key) FROM metadata LIMIT 1 OFFSET 0;");
-  if (result && result->count == 0) {
+  if (result == NULL) {
     rc = 1;
   }
   c_strlist_destroy(result);
@@ -264,7 +264,6 @@ c_strlist_t *csync_journal_query(CSYNC *ctx, const char *statement) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Gave up waiting for lock to clear");
       }
       CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "sqlite3_compile error: %s - on query %s", sqlite3_errmsg(ctx->journal.db), statement);
-      result = c_strlist_new(1);
       break;
     } else {
       busy_count = 0;
@@ -289,8 +288,14 @@ c_strlist_t *csync_journal_query(CSYNC *ctx, const char *statement) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "sqlite3_step: MISUSE!!");
         }
 
-        if (err == SQLITE_DONE || err == SQLITE_ERROR) {
-          result = c_strlist_new(1);
+        if (err == SQLITE_DONE) {
+          if (result == NULL) {
+            result = c_strlist_new(1);
+          }
+          break;
+        }
+
+        if (err == SQLITE_ERROR) {
           break;
         }
 
