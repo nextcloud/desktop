@@ -177,6 +177,29 @@ int csync_journal_close(CSYNC *ctx, const char *journal, int jwritten) {
 int csync_journal_create_tables(CSYNC *ctx) {
   c_strlist_t *result = NULL;
 
+  /*
+   * Create temorary table to work on, this speeds up the
+   * creation of the journal.
+   */
+  result = csync_journal_query(ctx,
+      "CREATE TEMPORARY TABLE IF NOT EXISTS metadata_temp("
+      "phash INTEGER(8),"
+      "pathlen INTEGER,"
+      "path VARCHAR(4096),"
+      "inode INTEGER,"
+      "uid INTEGER,"
+      "gid INTEGER,"
+      "mode INTEGER,"
+      "modtime INTEGER(8),"
+      "PRIMARY KEY(phash)"
+      ");"
+      );
+
+  if (result == NULL) {
+    return -1;
+  }
+  c_strlist_destroy(result);
+
   result = csync_journal_query(ctx,
       "CREATE TABLE IF NOT EXISTS metadata("
       "phash INTEGER(8),"
@@ -185,17 +208,17 @@ int csync_journal_create_tables(CSYNC *ctx) {
       "inode INTEGER,"
       "uid INTEGER,"
       "gid INTEGER,"
+      "mode INTEGER,"
       "modtime INTEGER(8),"
       "PRIMARY KEY(phash)"
       ");"
       );
 
   if (result == NULL) {
-    c_strlist_destroy(result);
     return -1;
   }
-
   c_strlist_destroy(result);
+
   return 0;
 }
 
@@ -219,27 +242,42 @@ static int visitor(void *obj, void *data) {
   fs = (csync_file_stat_t *) obj;
   ctx = (CSYNC *) data;
 
-  if (asprintf(&stmt, "INSERT INTO metadata"
-        "(phash, pathlen, path, inode, uid, gid, modtime) VALUES"
-        "(%lu, %zu, '%s', %zu, %d, %d, %lu);",
-        fs->phash,
-        fs->pathlen,
-        fs->path,
-        fs->inode,
-        fs->uid,
-        fs->gid,
-        fs->modtime) < 0) {
+  stmt = sqlite3_mprintf("INSERT INTO metadata_temp"
+    "(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES"
+    "(%lu, %d, '%q', %d, %d, %d, %d, %lu);",
+    fs->phash,
+    fs->pathlen,
+    fs->path,
+    fs->inode,
+    fs->uid,
+    fs->gid,
+    fs->mode,
+    fs->modtime);
+
+  if (stmt == NULL) {
     return -1;
   }
 
   rc = csync_journal_insert(ctx, stmt);
-  SAFE_FREE(stmt);
+  sqlite3_free(stmt);
 
   return rc;
 }
 
 int csync_journal_insert_metadata(CSYNC *ctx) {
-  return c_rbtree_walk(ctx->local.tree, ctx, visitor);
+  c_strlist_t *result = NULL;
+
+  if (c_rbtree_walk(ctx->local.tree, ctx, visitor) < 0) {
+    return -1;
+  }
+
+  if (csync_journal_insert(ctx, "INSERT INTO metadata SELECT * FROM metadata_temp;") < 0) {
+    return -1;
+  }
+
+  result = csync_journal_query(ctx, "DROP TABLE metadata_temp;");
+
+  return 0;
 }
 
 /* query the journal, caller must free the memory */

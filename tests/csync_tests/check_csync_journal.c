@@ -10,12 +10,15 @@ CSYNC *csync;
 const char *testdb = (char *) "/tmp/check_csync/test.db";
 
 static void setup(void) {
+  system("rm -rf /tmp/check_csync");
+  system("mkdir -p /tmp/check_csync");
   csync_create(&csync, "/tmp/csync1", "/tmp/csync2");
   SAFE_FREE(csync->options.config_dir);
   csync->options.config_dir = c_strdup("/tmp/check_csync/");
 }
 
 static void setup_init(void) {
+  system("rm -rf /tmp/check_csync");
   csync_create(&csync, "/tmp/csync1", "/tmp/csync2");
   SAFE_FREE(csync->options.config_dir);
   csync->options.config_dir = c_strdup("/tmp/check_csync/");
@@ -70,11 +73,11 @@ END_TEST
 START_TEST (check_csync_journal_create_error)
 {
   c_strlist_t *result = NULL;
-  result = csync_journal_query(csync, "CREATE TABLE test(key INTEGER, text VARCHAR(10));");
+  result = csync_journal_query(csync, "CREATE TABLE test(phash INTEGER, text VARCHAR(10));");
   fail_if(result == NULL, NULL);
   c_strlist_destroy(result);
 
-  result = csync_journal_query(csync, "CREATE TABLE test(key INTEGER, text VARCHAR(10));");
+  result = csync_journal_query(csync, "CREATE TABLE test(phash INTEGER, text VARCHAR(10));");
   fail_unless(result == NULL, NULL);
   c_strlist_destroy(result);
 }
@@ -83,7 +86,7 @@ END_TEST
 START_TEST (check_csync_journal_insert_statement)
 {
   c_strlist_t *result = NULL;
-  result = csync_journal_query(csync, "CREATE TABLE test(key INTEGER, text VARCHAR(10));");
+  result = csync_journal_query(csync, "CREATE TABLE test(phash INTEGER, text VARCHAR(10));");
   fail_if(result == NULL, NULL);
   c_strlist_destroy(result);
   fail_unless(csync_journal_insert(csync, "INSERT;") == 0, NULL);
@@ -95,9 +98,9 @@ END_TEST
 START_TEST (check_csync_journal_query_create_and_insert_table)
 {
   c_strlist_t *result = NULL;
-  result = csync_journal_query(csync, "CREATE TABLE test(key INTEGER, text VARCHAR(10));");
+  result = csync_journal_query(csync, "CREATE TABLE test(phash INTEGER, text VARCHAR(10));");
   c_strlist_destroy(result);
-  fail_unless(csync_journal_insert(csync, "INSERT INTO test (key, text) VALUES (42, 'hello');"), NULL);
+  fail_unless(csync_journal_insert(csync, "INSERT INTO test (phash, text) VALUES (42, 'hello');"), NULL);
   result = csync_journal_query(csync, "SELECT * FROM test;");
   fail_unless(result->count == 2, NULL);
   fail_unless(strcmp(result->vector[0], "42") == 0, NULL);
@@ -114,9 +117,9 @@ START_TEST (check_csync_journal_is_empty)
   fail_unless(csync_journal_is_empty(csync) == 1, NULL);
 
   /* add a table and an entry */
-  result = csync_journal_query(csync, "CREATE TABLE metadata(key INTEGER, text VARCHAR(10));");
+  result = csync_journal_query(csync, "CREATE TABLE metadata(phash INTEGER, text VARCHAR(10));");
   c_strlist_destroy(result);
-  fail_unless(csync_journal_insert(csync, "INSERT INTO metadata (key, text) VALUES (42, 'hello');"), NULL);
+  fail_unless(csync_journal_insert(csync, "INSERT INTO metadata (phash, text) VALUES (42, 'hello');"), NULL);
 
   fail_unless(csync_journal_is_empty(csync) == 0, NULL);
 }
