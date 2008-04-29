@@ -287,7 +287,7 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   buf->inode = sb.st_ino;
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_INODE;
 
-  buf->link_count = sb.st_nlink;
+  buf->nlink = sb.st_nlink;
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_LINK_COUNT;
 
   buf->uid = sb.st_uid;

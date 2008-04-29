@@ -91,7 +91,7 @@ out:
   st->modtime = fs->mtime;
   st->uid = fs->uid;
   st->gid = fs->gid;
-  st->nlink = fs->link_count;
+  st->nlink = fs->nlink;
   st->type = type;
 
   st->phash = h;

@@ -92,7 +92,7 @@ struct csync_vio_file_stat_s {
 
   dev_t device;
   ino_t inode;
-  nlink_t link_count;
+  nlink_t nlink;
 
   enum csync_vio_file_stat_fields_e fields;
   enum csync_vio_file_type_e type;
