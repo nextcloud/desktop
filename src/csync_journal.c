@@ -127,6 +127,47 @@ out:
   return 0;
 }
 
+int csync_journal_write(CSYNC *ctx) {
+  /* drop tables */
+  if (csync_journal_drop_tables(ctx) < 0) {
+    return -1;
+  }
+
+  /* create tables */
+  if (csync_journal_create_tables(ctx) < 0) {
+    return -1;
+  }
+
+  /* insert metadata */
+  if (csync_journal_insert_metadata(ctx) < 0) {
+    return -1;
+  }
+
+  return 0;
+}
+
+int csync_journal_close(CSYNC *ctx, const char *journal, int jwritten) {
+  char *journal_tmp = NULL;
+  int rc = 0;
+
+  /* close the temporary database */
+  sqlite3_close(ctx->journal.db);
+
+  /* if we successfully synchronized, overwrite the original journal */
+  if (jwritten) {
+    if (asprintf(&journal_tmp, "%s.ctmp", journal) < 0) {
+      return -1;
+    }
+    rc = c_copy(journal_tmp, journal, 0644);
+    if (rc == 0) {
+      unlink(journal_tmp);
+    }
+    SAFE_FREE(journal_tmp);
+  }
+
+  return rc;
+}
+
 int csync_journal_create_tables(CSYNC *ctx) {
   c_strlist_t *result = NULL;
 
@@ -134,13 +175,14 @@ int csync_journal_create_tables(CSYNC *ctx) {
       "CREATE TABLE IF NOT EXISTS metadata("
       "phash INTEGER(8),"
       "pathlen INTEGER,"
-      "path VARCHAR(4096)"
+      "path VARCHAR(4096),"
       "inode INTEGER,"
       "uid INTEGER,"
       "gid INTEGER,"
       "modtime INTEGER(8),"
       "PRIMARY KEY(phash)"
-      ");");
+      ");"
+      );
 
   if (result == NULL) {
     c_strlist_destroy(result);
@@ -151,7 +193,48 @@ int csync_journal_create_tables(CSYNC *ctx) {
   return 0;
 }
 
-/* TODO: void csync_journal_empty_tables(CSYNC *ctx) */
+int csync_journal_drop_tables(CSYNC *ctx) {
+  c_strlist_t *result = NULL;
+
+  result = csync_journal_query(ctx,
+      "DROP TABLE IF EXISTS metadata;"
+      );
+  c_strlist_destroy(result);
+
+  return 0;
+}
+
+static int visitor(void *obj, void *data) {
+  csync_file_stat_t *fs = NULL;
+  CSYNC *ctx = NULL;
+  char *stmt = NULL;
+  int rc = -1;
+
+  fs = (csync_file_stat_t *) obj;
+  ctx = (CSYNC *) data;
+
+  if (asprintf(&stmt, "INSERT INTO metadata"
+        "(phash, pathlen, path, inode, uid, gid, modtime) VALUES"
+        "(%lu, %zu, '%s', %zu, %d, %d, %lu);",
+        fs->phash,
+        fs->pathlen,
+        fs->path,
+        fs->inode,
+        fs->uid,
+        fs->gid,
+        fs->modtime) < 0) {
+    return -1;
+  }
+
+  rc = csync_journal_insert(ctx, stmt);
+  SAFE_FREE(stmt);
+
+  return rc;
+}
+
+int csync_journal_insert_metadata(CSYNC *ctx) {
+  return c_rbtree_walk(ctx->local.tree, ctx, visitor);
+}
 
 /* query the journal, caller must free the memory */
 c_strlist_t *csync_journal_query(CSYNC *ctx, const char *statement) {
@@ -207,6 +290,7 @@ c_strlist_t *csync_journal_query(CSYNC *ctx, const char *statement) {
         }
 
         if (err == SQLITE_DONE || err == SQLITE_ERROR) {
+          result = c_strlist_new(1);
           break;
         }
 

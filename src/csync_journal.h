@@ -51,6 +51,10 @@
  */
 int csync_journal_load(CSYNC *ctx, const char *journal);
 
+int csync_journal_write(CSYNC *ctx);
+
+int csync_journal_close(CSYNC *ctx, const char *journal, int jwritten);
+
 /**
  * @brief A generic Journal query.
  *
@@ -74,6 +78,10 @@ c_strlist_t *csync_journal_query(CSYNC *ctx, const char *statement);
 int csync_journal_insert(CSYNC *ctx, const char *statement);
 
 int csync_journal_create_tables(CSYNC *ctx);
+
+int csync_journal_drop_tables(CSYNC *ctx);
+
+int csync_journal_insert_metadata(CSYNC *ctx);
 
 /**
  * }@
