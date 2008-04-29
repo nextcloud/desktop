@@ -75,7 +75,7 @@ static int csync_journal_is_empty(CSYNC *ctx) {
   c_strlist_t *result = NULL;
   int rc = 0;
 
-  result = csync_journal_query(ctx, "SELECT COUNT(key) FROM metadata LIMIT 1 OFFSET 0;");
+  result = csync_journal_query(ctx, "SELECT COUNT(phash) FROM metadata LIMIT 1 OFFSET 0;");
   if (result == NULL) {
     rc = 1;
   }
