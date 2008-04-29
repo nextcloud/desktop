@@ -316,6 +316,8 @@ static void tree_destructor(void *data) {
 
 int csync_destroy(CSYNC *ctx) {
   char *lock = NULL;
+  char *journal = NULL;
+  int jwritten = 0;
 
   if (ctx == NULL) {
     errno = EBADF;
@@ -324,11 +326,26 @@ int csync_destroy(CSYNC *ctx) {
 
   csync_vio_shutdown(ctx);
 
-  /* TODO: write journal */
-
   if (ctx->journal.db != NULL) {
-    sqlite3_close(ctx->journal.db);
-    /* TODO if we successfully synchronized, overwrite the original journal */
+    /* TODO: temporary define for testing! */
+    ctx->status = CSYNC_DONE;
+
+    if (ctx->status & CSYNC_DONE) {
+      if (csync_journal_write(ctx) == 0) {
+        jwritten = 1;
+      } else {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to write journal: %s",
+            strerror(errno));
+      }
+    }
+    if (asprintf(&journal, "%s/%s", ctx->options.config_dir,
+          CSYNC_JOURNAL_FILE) < 0) {
+
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to close journal: %s",
+          strerror(errno));
+    } else {
+      csync_journal_close(ctx, journal, jwritten);
+    }
   }
 
   csync_exclude_destroy(ctx);
@@ -356,6 +373,7 @@ int csync_destroy(CSYNC *ctx) {
 
   SAFE_FREE(ctx);
 
+  SAFE_FREE(journal);
   SAFE_FREE(lock);
 
   return 0;
