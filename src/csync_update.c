@@ -65,6 +65,11 @@ static int csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fil
   }
   len = strlen(path);
 
+  /* Check if file is excluded */
+  if (csync_excluded(ctx, path)) {
+    return 0;
+  }
+
   h = c_jhash64((uint8_t *) path, len, 0);
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Detect update for %s", path, h);
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, " hash:\t\t%lu", h);
@@ -75,8 +80,11 @@ static int csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fil
   }
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, " stat size:\t%d", sizeof(csync_file_stat_t) + len + 1);
 
-  /* Check if file is excluded */
-  if (csync_excluded(ctx, path)) {
+  /* TODO: Update detection */
+  /* if current replica, search for inode and compare hash */
+
+  /* check hardlink count */
+  if (type == CSYNC_FTW_TYPE_FILE && fs->nlink > 1) {
     st->instruction = CSYNC_INSTRUCTION_IGNORE;
     goto out;
   }
