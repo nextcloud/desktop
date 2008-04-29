@@ -315,6 +315,7 @@ static void tree_destructor(void *data) {
 }
 
 int csync_destroy(CSYNC *ctx) {
+  time_t start, finish;
   char *lock = NULL;
   char *journal = NULL;
   int jwritten = 0;
@@ -331,8 +332,13 @@ int csync_destroy(CSYNC *ctx) {
     ctx->status = CSYNC_DONE;
 
     if (ctx->status & CSYNC_DONE) {
+      time(&start);
       if (csync_journal_write(ctx) == 0) {
         jwritten = 1;
+        time(&finish);
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+            "Writing the journal to disk took %.2f seconds",
+            difftime(finish, start));
       } else {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to write journal: %s",
             strerror(errno));
