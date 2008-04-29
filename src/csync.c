@@ -131,7 +131,7 @@ int csync_init(CSYNC *ctx) {
   }
 
   /* Do not initialize twice */
-  if (ctx->initialized) {
+  if (ctx->status & CSYNC_INIT) {
     return 1;
   }
 
@@ -251,7 +251,7 @@ int csync_init(CSYNC *ctx) {
     goto out;
   }
 
-  ctx->initialized = 1;
+  ctx->status = CSYNC_INIT;
 
   rc = 0;
 
@@ -301,6 +301,8 @@ int csync_update(CSYNC *ctx) {
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
             "Collected files: %lu", c_rbtree_size(ctx->remote.tree));
   csync_memstat_check();
+
+  ctx->status |= CSYNC_UPDATE;
 
   return 0;
 }

@@ -58,6 +58,12 @@
  */
 #define MAX_XFER_BUF_SIZE 16348
 
+#define CSYNC_INIT 1 << 0
+#define CSYNC_UPDATE 1 << 1
+#define CSYNC_RECONCILE 1 << 2
+#define CSYNC_PROPAGATE 1 << 3
+#define CSYNC_DONE (CSYNC_INIT|CSYNC_UPDATE|CSYNC_RECONCILE|CSYNC_PROPAGATE)
+
 enum csync_replica_e {
   LOCAL_REPLICA,
   REMOTE_REPLCIA
@@ -102,7 +108,6 @@ struct csync_s {
   enum csync_replica_e replica;
 
   int status;
-  int initialized;
 };
 
 enum csync_instructions_e {
