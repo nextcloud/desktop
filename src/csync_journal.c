@@ -86,6 +86,7 @@ static int csync_journal_is_empty(CSYNC *ctx) {
 
 int csync_journal_load(CSYNC *ctx, const char *journal) {
   int rc = -1;
+  c_strlist_t *result = NULL;
   char *journal_tmp = NULL;
 
   if (csync_journal_check(journal) < 0) {
@@ -122,9 +123,14 @@ int csync_journal_load(CSYNC *ctx, const char *journal) {
     ctx->journal.exists = 1;
   }
 
+  /* optimization for speeding up SQLite */
+  result = csync_journal_query(ctx, "PRAGMA default_synchronous = OFF;");
+  c_strlist_destroy(result);
+
+  rc = 0;
 out:
   SAFE_FREE(journal_tmp);
-  return 0;
+  return rc;
 }
 
 int csync_journal_write(CSYNC *ctx) {
