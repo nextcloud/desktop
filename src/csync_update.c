@@ -89,9 +89,12 @@ static int csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fil
     goto out;
   }
 
-  /* TODO: Update detection */
-  /* if current replica, search for inode and compare hash */
-  st->instruction = CSYNC_INSTRUCTION_NONE;
+  if (ctx->journal.exists) {
+    st->instruction = CSYNC_INSTRUCTION_NONE;
+  } else  {
+    st->instruction = CSYNC_INSTRUCTION_NEW;
+    goto out;
+  }
 
 out:
   st->inode = fs->inode;
