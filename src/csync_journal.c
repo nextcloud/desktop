@@ -127,9 +127,33 @@ out:
   return 0;
 }
 
-/* TODO: void csync_journal_create_tables(CSYNC *ctx) */
+int csync_journal_create_tables(CSYNC *ctx) {
+  c_strlist_t *result = NULL;
+
+  result = csync_journal_query(ctx,
+      "CREATE TABLE IF NOT EXISTS metadata("
+      "phash INTEGER(8),"
+      "pathlen INTEGER,"
+      "path VARCHAR(4096)"
+      "inode INTEGER,"
+      "uid INTEGER,"
+      "gid INTEGER,"
+      "modtime INTEGER(8),"
+      "PRIMARY KEY(phash)"
+      ");");
+
+  if (result == NULL) {
+    c_strlist_destroy(result);
+    return -1;
+  }
+
+  c_strlist_destroy(result);
+  return 0;
+}
+
 /* TODO: void csync_journal_empty_tables(CSYNC *ctx) */
 
+/* query the journal, caller must free the memory */
 c_strlist_t *csync_journal_query(CSYNC *ctx, const char *statement) {
   int err;
   int rc = 0;

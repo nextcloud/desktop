@@ -108,6 +108,11 @@ START_TEST (check_csync_journal_is_empty)
 }
 END_TEST
 
+START_TEST (check_csync_journal_create_tables)
+{
+  fail_unless(csync_journal_create_tables(csync) == 0, NULL);
+}
+END_TEST
 
 static Suite *csync_suite(void) {
   Suite *s = suite_create("csync_journal");
@@ -118,6 +123,7 @@ static Suite *csync_suite(void) {
   create_case_fixture(s, "check_csync_journal_insert_statement", check_csync_journal_insert_statement, setup_init, teardown);
   create_case_fixture(s, "check_csync_journal_query_create_and_insert_table", check_csync_journal_query_create_and_insert_table, setup_init, teardown);
   create_case_fixture(s, "check_csync_journal_is_empty", check_csync_journal_is_empty, setup_init, teardown);
+  create_case_fixture(s, "check_csync_journal_create_tables", check_csync_journal_create_tables, setup_init, teardown);
 
   return s;
 }

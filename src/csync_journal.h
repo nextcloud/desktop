@@ -73,6 +73,8 @@ c_strlist_t *csync_journal_query(CSYNC *ctx, const char *statement);
  */
 int csync_journal_insert(CSYNC *ctx, const char *statement);
 
+int csync_journal_create_tables(CSYNC *ctx);
+
 /**
  * }@
  */
