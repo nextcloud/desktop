@@ -37,7 +37,7 @@ START_TEST (check_csync_init)
 {
   fail_unless(csync_init(csync) == 0, NULL);
 
-  fail_unless(csync->initialized == 1, NULL);
+  fail_unless((csync->status & CSYNC_INIT) == 1, NULL);
 
   fail_unless(csync_init(csync) == 1, NULL);
 }
