@@ -68,7 +68,11 @@ enum csync_replica_e {
  */
 struct csync_s {
   c_strlist_t *excludes;
-  sqlite3 *journal;
+
+  struct {
+    sqlite3 *db;
+    int exists;
+  } journal;
 
   struct {
     char *uri;
@@ -97,7 +101,7 @@ struct csync_s {
   enum csync_replica_e current;
   enum csync_replica_e replica;
 
-  int journal_exists;
+  int status;
   int initialized;
 };
 

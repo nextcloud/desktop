@@ -324,8 +324,8 @@ int csync_destroy(CSYNC *ctx) {
 
   /* TODO: write journal */
 
-  if (ctx->journal) {
-    sqlite3_close(ctx->journal);
+  if (ctx->journal.db != NULL) {
+    sqlite3_close(ctx->journal.db);
     /* TODO if we successfully synchronized, overwrite the original journal */
   }
 
