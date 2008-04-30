@@ -104,6 +104,10 @@ void csync_exclude_destroy(CSYNC *ctx) {
 int csync_excluded(CSYNC *ctx, const char *path) {
   size_t i;
 
+  if (ctx->excludes == NULL) {
+    return 0;
+  }
+
   if (ctx->excludes->count) {
     for (i = 0; i < ctx->excludes->count; i++) {
       if (fnmatch(ctx->excludes->vector[i], path, 0) == 0) {
