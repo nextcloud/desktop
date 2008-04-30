@@ -32,7 +32,9 @@
 
 #include "csync_private.h"
 #include "csync_exclude.h"
+#include "csync_journal.h"
 #include "csync_update.h"
+#include "csync_util.h"
 
 #include "vio/csync_vio.h"
 
@@ -44,6 +46,7 @@ static int csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fil
   size_t len;
   const char *path = NULL;
   csync_file_stat_t *st = NULL;
+  csync_file_stat_t *tmp = NULL;
 
   if ((file == NULL) || (fs == NULL)) {
     errno = EINVAL;
@@ -90,6 +93,32 @@ static int csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fil
   }
 
   if (ctx->journal.exists) {
+    tmp = csync_journal_get_stat_by_hash(ctx, h);
+    if (tmp == NULL) {
+      /* check if the file has been renamed */
+      if (ctx->current == LOCAL_REPLICA) {
+        tmp = csync_journal_get_stat_by_inode(ctx, fs->inode);
+        if (tmp == NULL) {
+          /* file not found in journal */
+          st->instruction = CSYNC_INSTRUCTION_NEW;
+          goto out;
+        } else {
+          /* inode found so the file has been renamed */
+          st->instruction = CSYNC_INSTRUCTION_RENAME;
+          goto out;
+        }
+      }
+      /* remote and file not found in journal */
+      st->instruction = CSYNC_INSTRUCTION_NEW;
+      goto out;
+    } else {
+      /* we have an update! */
+      if (fs->mtime > tmp->modtime) {
+        st->instruction = CSYNC_INSTRUCTION_SYNC;
+        goto out;
+      }
+      /* FIXME: check mode too? */
+    }
     st->instruction = CSYNC_INSTRUCTION_NONE;
   } else  {
     st->instruction = CSYNC_INSTRUCTION_NEW;
@@ -97,6 +126,8 @@ static int csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fil
   }
 
 out:
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, " instruction:\t%s", csync_instruction_str(st->instruction));
+  SAFE_FREE(tmp);
   st->inode = fs->inode;
   st->mode = fs->mode;
   st->modtime = fs->mtime;
