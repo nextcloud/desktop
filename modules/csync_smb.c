@@ -459,7 +459,7 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args) {
 }
 
 void vio_module_shutdown(csync_vio_method_t *method) {
-  DEBUG_SMB(("csync_smb - method address: %p", method));
+  DEBUG_SMB(("csync_smb - shutdown: %p\n", method));
 
   if (smb_context != NULL) {
     /*
