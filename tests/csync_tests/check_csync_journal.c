@@ -8,6 +8,7 @@
 
 CSYNC *csync;
 const char *testdb = (char *) "/tmp/check_csync/test.db";
+const char *testtmpdb = (char *) "/tmp/check_csync/test.db.ctmp";
 
 static void setup(void) {
   system("rm -rf /tmp/check_csync");
@@ -53,7 +54,31 @@ END_TEST
 
 START_TEST (check_csync_journal_load)
 {
+  struct stat sb;
   fail_unless(csync_journal_load(csync, testdb) == 0, NULL);
+
+  fail_unless(lstat(testtmpdb, &sb) == 0, NULL);
+
+  sqlite3_close(csync->journal.db);
+}
+END_TEST
+
+START_TEST (check_csync_journal_close)
+{
+  struct stat sb;
+  /* journal not written */
+  csync_journal_load(csync, testdb);
+
+  fail_unless(csync_journal_close(csync, testdb, 0) == 0, NULL);
+
+  fail_unless(lstat(testtmpdb, &sb) == 0, NULL);
+
+  csync_journal_load(csync, testdb);
+
+  /* journal written */
+  fail_unless(csync_journal_close(csync, testdb, 1) == 0, NULL);
+
+  fail_unless(lstat(testtmpdb, &sb) < 0, NULL);
 }
 END_TEST
 
@@ -127,7 +152,64 @@ END_TEST
 
 START_TEST (check_csync_journal_create_tables)
 {
+  char *stmt = NULL;
+
   fail_unless(csync_journal_create_tables(csync) == 0, NULL);
+
+  stmt = sqlite3_mprintf("INSERT INTO metadata_temp"
+    "(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES"
+    "(%lu, %d, '%q', %d, %d, %d, %d, %lu);",
+    42,
+    42,
+    "It's a rainy day",
+    42,
+    42,
+    42,
+    42,
+    42);
+
+  fail_if(csync_journal_insert(csync, stmt) < 0, NULL);
+  sqlite3_free(stmt);
+}
+END_TEST
+
+START_TEST (check_csync_journal_drop_tables)
+{
+  fail_unless(csync_journal_drop_tables(csync) == 0, NULL);
+  fail_unless(csync_journal_create_tables(csync) == 0, NULL);
+  fail_unless(csync_journal_drop_tables(csync) == 0, NULL);
+}
+END_TEST
+
+START_TEST (check_csync_journal_insert_metadata)
+{
+  int i = 0;
+  csync_file_stat_t *st;
+
+  for(i = 0; i < 100; i++) {
+    st = c_malloc(sizeof(csync_file_stat_t));
+    st->phash = i;
+
+    fail_unless(c_rbtree_insert(csync->local.tree, (void *) st) == 0, NULL);
+  }
+
+  fail_unless(csync_journal_insert_metadata(csync) == 0, NULL);
+}
+END_TEST
+
+START_TEST (check_csync_journal_write)
+{
+  int i = 0;
+  csync_file_stat_t *st;
+
+  for(i = 0; i < 100; i++) {
+    st = c_malloc(sizeof(csync_file_stat_t));
+    st->phash = i;
+
+    fail_unless(c_rbtree_insert(csync->local.tree, (void *) st) == 0, NULL);
+  }
+
+  fail_unless(csync_journal_write(csync) == 0, NULL);
 }
 END_TEST
 
@@ -136,12 +218,16 @@ static Suite *csync_suite(void) {
 
   create_case(s, "check_csync_journal_check", check_csync_journal_check);
   create_case_fixture(s, "check_csync_journal_load", check_csync_journal_load, setup, teardown);
+  create_case_fixture(s, "check_csync_journal_close", check_csync_journal_close, setup, teardown);
   create_case_fixture(s, "check_csync_journal_query_statement", check_csync_journal_query_statement, setup_init, teardown);
   create_case_fixture(s, "check_csync_journal_create_error", check_csync_journal_create_error, setup_init, teardown);
   create_case_fixture(s, "check_csync_journal_insert_statement", check_csync_journal_insert_statement, setup_init, teardown);
   create_case_fixture(s, "check_csync_journal_query_create_and_insert_table", check_csync_journal_query_create_and_insert_table, setup_init, teardown);
   create_case_fixture(s, "check_csync_journal_is_empty", check_csync_journal_is_empty, setup_init, teardown);
   create_case_fixture(s, "check_csync_journal_create_tables", check_csync_journal_create_tables, setup_init, teardown);
+  create_case_fixture(s, "check_csync_journal_drop_tables", check_csync_journal_drop_tables, setup_init, teardown);
+  create_case_fixture(s, "check_csync_journal_insert_metadata", check_csync_journal_insert_metadata, setup_init, teardown);
+  create_case_fixture(s, "check_csync_journal_write", check_csync_journal_write, setup_init, teardown);
 
   return s;
 }
