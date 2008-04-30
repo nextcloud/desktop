@@ -55,6 +55,7 @@ static int csync_journal_check(const char *journal) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "database corrupted, removing!");
           unlink(journal);
         }
+        sqlite3_close(db);
       } else {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "sqlite version mismatch");
         unlink(journal);
@@ -67,6 +68,7 @@ static int csync_journal_check(const char *journal) {
     sqlite3_close(db);
     return 0;
   }
+  sqlite3_close(db);
 
   return -1;
 }
