@@ -186,6 +186,8 @@ START_TEST (check_csync_journal_insert_metadata)
   int i = 0;
   csync_file_stat_t *st;
 
+  fail_unless(csync_journal_create_tables(csync) == 0, NULL);
+
   for(i = 0; i < 100; i++) {
     st = c_malloc(sizeof(csync_file_stat_t));
     st->phash = i;
