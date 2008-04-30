@@ -281,6 +281,11 @@ int csync_journal_insert_metadata(CSYNC *ctx) {
   }
 
   result = csync_journal_query(ctx, "DROP TABLE metadata_temp;");
+  if (result == NULL) {
+    return -1;
+  }
+
+  c_strlist_destroy(result);
 
   return 0;
 }
