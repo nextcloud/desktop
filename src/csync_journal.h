@@ -55,6 +55,10 @@ int csync_journal_write(CSYNC *ctx);
 
 int csync_journal_close(CSYNC *ctx, const char *journal, int jwritten);
 
+csync_file_stat_t *csync_journal_get_stat_by_hash(CSYNC *ctx, uint64_t phash);
+
+csync_file_stat_t *csync_journal_get_stat_by_inode(CSYNC *ctx, ino_t inode);
+
 /**
  * @brief A generic Journal query.
  *

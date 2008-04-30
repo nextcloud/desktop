@@ -303,6 +303,92 @@ int csync_journal_insert_metadata(CSYNC *ctx) {
   return 0;
 }
 
+csync_file_stat_t *csync_journal_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
+  csync_file_stat_t *st = NULL;
+  c_strlist_t *result = NULL;
+  char *stmt = NULL;
+  size_t len = 0;
+
+  stmt = sqlite3_mprintf("SELECT * FROM metadata WHERE phash='%llu'", phash);
+  if (stmt == NULL) {
+    return NULL;
+  }
+
+  result = csync_journal_query(ctx, stmt);
+  sqlite3_free(stmt);
+  if (result == NULL) {
+    return NULL;
+  }
+
+  if (result->count <= 6) {
+    c_strlist_destroy(result);
+    return NULL;
+  }
+  /* phash, pathlen, path, inode, uid, gid, mode, modtime */
+  len = strlen(result->vector[2]);
+  st = c_malloc(sizeof(csync_file_stat_t) + len + 1);
+  if (st == NULL) {
+    c_strlist_destroy(result);
+    return NULL;
+  }
+  st->phash = strtoull(result->vector[0], NULL, 10);
+  st->pathlen = atoi(result->vector[1]);
+  memcpy(st->path, (len ? result->vector[2] : ""), len + 1);
+  st->inode = atoi(result->vector[3]);
+  st->uid = atoi(result->vector[4]);
+  st->gid = atoi(result->vector[5]);
+  st->mode = atoi(result->vector[6]);
+  st->modtime = strtoul(result->vector[7], NULL, 10);
+
+  c_strlist_destroy(result);
+
+  return st;
+}
+
+csync_file_stat_t *csync_journal_get_stat_by_inode(CSYNC *ctx, ino_t inode) {
+  csync_file_stat_t *st = NULL;
+  c_strlist_t *result = NULL;
+  char *stmt = NULL;
+  size_t len = 0;
+
+  stmt = sqlite3_mprintf("SELECT * FROM metadata WHERE inode='%llu'", inode);
+  if (stmt == NULL) {
+    return NULL;
+  }
+
+  result = csync_journal_query(ctx, stmt);
+  sqlite3_free(stmt);
+  if (result == NULL) {
+    return NULL;
+  }
+
+  if (result->count <= 6) {
+    c_strlist_destroy(result);
+    return NULL;
+  }
+
+  /* phash, pathlen, path, inode, uid, gid, mode, modtime */
+  len = strlen(result->vector[2]);
+  st = c_malloc(sizeof(csync_file_stat_t) + len + 1);
+  if (st == NULL) {
+    c_strlist_destroy(result);
+    return NULL;
+  }
+
+  st->phash = strtoull(result->vector[0], NULL, 10);
+  st->pathlen = atoi(result->vector[1]);
+  memcpy(st->path, (len ? result->vector[2] : ""), len + 1);
+  st->inode = atoi(result->vector[3]);
+  st->uid = atoi(result->vector[4]);
+  st->gid = atoi(result->vector[5]);
+  st->mode = atoi(result->vector[6]);
+  st->modtime = strtoul(result->vector[7], NULL, 10);
+
+  c_strlist_destroy(result);
+
+  return st;
+}
+
 /* query the journal, caller must free the memory */
 c_strlist_t *csync_journal_query(CSYNC *ctx, const char *statement) {
   int err;
