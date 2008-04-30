@@ -215,7 +215,20 @@ int csync_journal_create_tables(CSYNC *ctx) {
       "PRIMARY KEY(phash)"
       ");"
       );
+  if (result == NULL) {
+    return -1;
+  }
+  c_strlist_destroy(result);
 
+  result = csync_journal_query(ctx,
+      "CREATE INDEX metadata_phash ON metadata(phash);");
+  if (result == NULL) {
+    return -1;
+  }
+  c_strlist_destroy(result);
+
+  result = csync_journal_query(ctx,
+      "CREATE INDEX metadata_inode ON metadata(inode);");
   if (result == NULL) {
     return -1;
   }
