@@ -23,6 +23,10 @@
 #ifndef _CSYNC_UTIL_H
 #define _CSYNC_UTIL_H
 
+#include "csync_private.h"
+
+const char *csync_instruction_str(enum csync_instructions_e instr);
+
 void csync_memstat_check(void);
 
 #endif /* _CSYNC_UTIL_H */

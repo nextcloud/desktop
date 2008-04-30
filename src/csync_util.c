@@ -25,6 +25,26 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.util"
 #include "csync_log.h"
 
+typedef struct {
+  const char *instr_str;
+  enum csync_instructions_e instr_code;
+} _instr_code_struct;
+
+static const _instr_code_struct _instr[] =
+{
+  { "CSYNC_INSTRUCTION_NONE", CSYNC_INSTRUCTION_NONE },
+  { "CSYNC_INSTRUCTION_EVAL", CSYNC_INSTRUCTION_EVAL },
+  { "CSYNC_INSTRUCTION_REMOVE", CSYNC_INSTRUCTION_REMOVE },
+  { "CSYNC_INSTRUCTION_RENAME", CSYNC_INSTRUCTION_RENAME },
+  { "CSYNC_INSTRUCTION_NEW", CSYNC_INSTRUCTION_NEW },
+  { "CSYNC_INSTRUCTION_CONFLICT", CSYNC_INSTRUCTION_CONFLICT },
+  { "CSYNC_INSTRUCTION_IGNORE", CSYNC_INSTRUCTION_IGNORE },
+  { "CSYNC_INSTRUCTION_SYNC", CSYNC_INSTRUCTION_SYNC },
+  { "CSYNC_INSTRUCTION_STAT_ERROR", CSYNC_INSTRUCTION_STAT_ERROR },
+  { "CSYNC_INSTRUCTION_ERROR", CSYNC_INSTRUCTION_ERROR },
+  { NULL, CSYNC_INSTRUCTION_ERROR }
+};
+
 struct csync_memstat_s {
   int size;
   int resident;
@@ -34,6 +54,21 @@ struct csync_memstat_s {
   int lrs;
   int dt;
 };
+
+const char *csync_instruction_str(enum csync_instructions_e instr)
+{
+  int idx = 0;
+
+  while (_instr[idx].instr_str != NULL) {
+    if (_instr[idx].instr_code == instr) {
+      return _instr[idx].instr_str;
+    }
+    idx++;
+  }
+
+  return "ERROR!";
+}
+
 
 void csync_memstat_check(void) {
   struct csync_memstat_s m;
