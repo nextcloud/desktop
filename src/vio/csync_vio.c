@@ -106,6 +106,12 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
 
 void csync_vio_shutdown(CSYNC *ctx) {
   if (ctx->module.handle != NULL) {
+    /* shutdown the plugin */
+    if (ctx->module.finish_fn != NULL) {
+      (*ctx->module.finish_fn)(ctx->module.method);
+    }
+
+    /* close the plugin */
     dlclose(ctx->module.handle);
     ctx->module.handle = NULL;
 
