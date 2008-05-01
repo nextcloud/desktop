@@ -33,7 +33,6 @@ configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
 macro_copy_file(${CMAKE_CURRENT_SOURCE_DIR}/CTestCustom.cmake ${CMAKE_CURRENT_BINARY_DIR}/CTestCustom.cmake)
 
-add_subdirectory(iniparser/src)
 add_subdirectory(src)
 add_subdirectory(modules)
 add_subdirectory(client)
