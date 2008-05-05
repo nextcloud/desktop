@@ -27,7 +27,7 @@
 
 #include <csync.h>
 
-const char *argp_program_version = "csync commandline client 0.1";
+const char *argp_program_version = "csync commandline client 0.42";
 const char *argp_program_bug_address = "<csync-devel@csync.org>";
 
 /* Program documentation. */
