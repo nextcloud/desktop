@@ -37,11 +37,16 @@
 /* check time difference between the replicas */
 time_t csync_timediff(CSYNC *ctx) {
   time_t timediff = -1;
-  char *luri, *ruri;
+  char *luri = NULL;
+  char *ruri = NULL;
   csync_vio_handle_t *fp = NULL;
   csync_vio_file_stat_t *st = NULL;
 
   if (asprintf(&luri, "%s/csync_timediff.ctmp", ctx->local.uri) < 0) {
+    goto out;
+  }
+
+  if (asprintf(&ruri, "%s/csync_timediff.ctmp", ctx->remote.uri) < 0) {
     goto out;
   }
 
