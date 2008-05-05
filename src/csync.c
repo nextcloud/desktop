@@ -34,6 +34,7 @@
 #include "csync_exclude.h"
 #include "csync_lock.h"
 #include "csync_journal.h"
+#include "csync_time.h"
 #include "csync_util.h"
 
 #include "csync_update.h"
@@ -119,6 +120,7 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
 
 int csync_init(CSYNC *ctx) {
   int rc;
+  time_t timediff = -1;
   char *log = NULL;
   char *exclude = NULL;
   char *journal = NULL;
@@ -239,6 +241,19 @@ int csync_init(CSYNC *ctx) {
     }
   } else {
     ctx->remote.type = LOCAL_REPLICA;
+  }
+
+  timediff = csync_timediff(ctx);
+  if (timediff > ctx->options.max_time_difference) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL,
+        "Clock skew detected. The time difference is greater than %d seconds!",
+        ctx->options.max_time_difference);
+    rc = -1;
+    goto out;
+  } else if (timediff < 0) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Synchronisation is not possible!");
+    rc = -1;
+    goto out;
   }
 
   if (c_rbtree_create(&ctx->local.tree, key_cmp, data_cmp) < 0) {

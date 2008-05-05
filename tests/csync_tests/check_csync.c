@@ -8,11 +8,15 @@
 CSYNC *csync;
 
 static void setup(void) {
+  system("mkdir -p /tmp/csync1");
+  system("mkdir -p /tmp/csync2");
   csync_create(&csync, "/tmp/csync1", "/tmp/csync2");
 }
 
 static void teardown(void) {
   csync_destroy(csync);
+  system("rm -rf /tmp/csync1");
+  system("rm -rf /tmp/csync2");
 }
 
 START_TEST (check_csync_destroy_null)
@@ -60,6 +64,9 @@ int main(void) {
 
   SRunner *sr;
   sr = srunner_create(s);
+#if 0
+  srunner_set_fork_status(sr, CK_NOFORK);
+#endif
   srunner_run_all(sr, CK_VERBOSE);
   nf = srunner_ntests_failed(sr);
   srunner_free(sr);
