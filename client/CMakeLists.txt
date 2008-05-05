@@ -42,3 +42,9 @@ set_target_properties(
       csync
 )
 
+install(
+  TARGETS
+    csync_client
+  DESTINATION
+  ${BIN_INSTALL_DIR}
+)
