@@ -343,9 +343,6 @@ int csync_destroy(CSYNC *ctx) {
   csync_vio_shutdown(ctx);
 
   if (ctx->journal.db != NULL) {
-    /* TODO: temporary define for testing! */
-    ctx->status = CSYNC_DONE;
-
     if (ctx->status & CSYNC_DONE) {
       time(&start);
       if (csync_journal_write(ctx) == 0) {
@@ -402,5 +399,13 @@ int csync_destroy(CSYNC *ctx) {
 
 const char *csync_version(void) {
   return CSYNC_VERSION_STRING;
+}
+
+void csync_set_status(CSYNC *ctx, int status) {
+  ctx->status = status;
+}
+
+int csync_get_status(CSYNC *ctx) {
+  return ctx->status;
 }
 

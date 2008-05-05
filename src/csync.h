@@ -125,6 +125,9 @@ int csync_destroy(CSYNC *ctx);
  */
 const char *csync_version(void);
 
+void csync_set_status(CSYNC *ctx, int status);
+int csync_get_status(CSYNC *ctx);
+
 #ifdef __cplusplus
 }
 #endif

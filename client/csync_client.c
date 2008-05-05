@@ -40,12 +40,14 @@ static char args_doc[] = "SOURCE DESTINATION";
 static struct argp_option options[] = {
   {"update",   'u', 0,              0, "Run only the update detection", 0},
   {"reconcile",'r', 0,              0, "Run update detection and recoincilation", 0},
+  {"journal",  'j', 0,              0, "Testing only", 0},
   {NULL, 0, 0, 0, NULL, 0}
 };
 
 /* Used by main to communicate with parse_opt. */
 struct argument_s {
   char *args[2]; /* SOURCE and DESTINATION */
+  int journal;
   int update;
   int reconcile;
   int propagate;
@@ -59,11 +61,21 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state) {
   struct argument_s *arguments = state->input;
 
   switch (key) {
+    case 'j':
+      arguments->journal = 1;
+      arguments->update = 1;
+      arguments->reconcile = 0;
+      arguments->propagate = 0;
     case 'u':
+      arguments->journal = 0;
+      arguments->update = 1;
       arguments->reconcile = 0;
       arguments->propagate = 0;
       break;
     case 'r':
+      arguments->journal = 0;
+      arguments->update = 1;
+      arguments->reconcile = 1;
       arguments->propagate = 0;
     case ARGP_KEY_ARG:
       if (state->arg_num >= 2) {
@@ -93,6 +105,7 @@ int main(int argc, char **argv) {
   struct argument_s arguments;
 
   /* Default values. */
+  arguments.journal = 0;
   arguments.update = 1;
   arguments.reconcile = 1;
   arguments.propagate = 1;
@@ -119,6 +132,10 @@ int main(int argc, char **argv) {
   }
 
   if (arguments.propagate) {
+  }
+
+  if (arguments.journal) {
+    csync_set_status(csync, 0xFFFF);
   }
 
   csync_destroy(csync);
