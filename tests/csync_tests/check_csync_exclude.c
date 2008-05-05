@@ -9,27 +9,27 @@
 CSYNC *csync;
 
 static void setup(void) {
-  csync_create(&csync, "/tmp/csync1", "/tmp/csync2");
+  csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
   SAFE_FREE(csync->options.config_dir);
-  csync->options.config_dir = c_strdup("/tmp/check_csync/");
+  csync->options.config_dir = c_strdup("/tmp/check_csync1/");
 }
 
 static void setup_init(void) {
-  csync_create(&csync, "/tmp/csync1", "/tmp/csync2");
+  csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
   SAFE_FREE(csync->options.config_dir);
-  csync->options.config_dir = c_strdup("/tmp/check_csync/");
+  csync->options.config_dir = c_strdup("/tmp/check_csync1");
   csync_exclude_load(csync, SYSCONFDIR "/config/" CSYNC_EXCLUDE_FILE);
 }
 
 static void teardown(void) {
   csync_destroy(csync);
-  system("rm -rf /tmp/check_csync");
+  system("rm -rf /tmp/check_csync1");
 }
 
 START_TEST (check_csync_exclude_add)
 {
-  csync_exclude_add(csync, (const char *) "/tmp/check_csync/*");
-  fail_unless(strcmp(csync->excludes->vector[0], (const char *) "/tmp/check_csync/*") == 0, NULL);
+  csync_exclude_add(csync, (const char *) "/tmp/check_csync1/*");
+  fail_unless(strcmp(csync->excludes->vector[0], (const char *) "/tmp/check_csync1/*") == 0, NULL);
 }
 END_TEST
 

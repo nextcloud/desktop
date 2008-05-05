@@ -12,14 +12,14 @@
 #include "std/c_file.h"
 #include "csync_lock.h"
 
-#define TEST_LOCK "/tmp/csync_lock/test"
+#define TEST_LOCK "/tmp/check_csync/test"
 
 static void setup(void) {
-  system("mkdir -p /tmp/csync_lock");
+  system("mkdir -p /tmp/check_csync");
 }
 
 static void teardown(void) {
-  system("rm -rf /tmp/csync_lock");
+  system("rm -rf /tmp/check_csync");
 }
 
 START_TEST (check_csync_lock)
