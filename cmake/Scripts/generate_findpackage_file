@@ -87,11 +87,16 @@ file.printf("else (#{cmakeLibNames} AND #{cmakeIncDirNames})\n")
 if not pkgconfig.empty?
    file.printf("  # use pkg-config to get the directories and then use these values\n")
    file.printf("  # in the FIND_PATH() and FIND_LIBRARY() calls\n")
-   file.printf("  include(UsePkgConfig)\n\n")
-   file.printf("  pkgconfig(#{pkgconfig} _#{package}IncDir _#{package}LinkDir _#{package}LinkFlags _#{package}Cflags)\n\n")
-   file.printf("  set(#{cmakeDefsName} ${_#{package}Cflags})\n\n")
+   file.printf("  if (${CMAKE_MAJOR_VERSION} EQUAL 2 AND ${CMAKE_MINOR_VERSION} EQUAL 4)\n")
+   file.printf("    include(UsePkgConfig)\n")
+   file.printf("    pkgconfig(#{pkgconfig} _#{package.upcase}_INCLUDEDIR _#{package.upcase}_LIBDIR _#{package.upcase}_LDFLAGS _#{package.upcase}_CFLAGS)\n")
+   file.printf("  else (${CMAKE_MAJOR_VERSION} EQUAL 2 AND ${CMAKE_MINOR_VERSION} EQUAL 4)\n")
+   file.printf("    find_package(PkgConfig)\n")
+   file.printf("    if (PKG_CONFIG_FOUND)\n")
+   file.printf("      pkg_check_modules(_#{package.upcase} #{pkgconfig})\n")
+   file.printf("    endif (PKG_CONFIG_FOUND)\n")
+   file.printf("  endif (${CMAKE_MAJOR_VERSION} EQUAL 2 AND ${CMAKE_MINOR_VERSION} EQUAL 4)\n")
 end
-
 
 file.printf("  find_path(#{cmakeIncDirName}\n")
 file.printf("    NAMES\n")
