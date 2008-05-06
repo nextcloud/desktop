@@ -1,6 +1,3 @@
-# Required cmake version
-cmake_minimum_required(VERSION 2.4.3)
-
 # Always include srcdir and builddir in include path
 # This saves typing ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY} in
 # about every subdir
@@ -18,8 +15,8 @@ set(CMAKE_INCLUDE_DIRECTORIES_PROJECT_BEFORE ON)
 set(CMAKE_COLOR_MAKEFILE ON)
 
 # Define the generic version of the libraries here
-set(GENERIC_LIB_VERSION "2.0.0")
-set(GENERIC_LIB_SOVERSION "2")
+set(GENERIC_LIB_VERSION "0.1.0")
+set(GENERIC_LIB_SOVERSION "0")
 
 # Set the default build type to release with debug info
 if (NOT CMAKE_BUILD_TYPE)
