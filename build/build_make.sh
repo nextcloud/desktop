@@ -1,5 +1,6 @@
-# Last Change: 2008-03-06 17:13:20
 #!/bin/bash
+#
+# Last Change: 2008-05-06 10:12:40
 #
 # Script to build csync on UNIX.
 #
