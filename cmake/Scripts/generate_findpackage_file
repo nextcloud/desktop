@@ -103,7 +103,7 @@ file.printf("    NAMES\n")
 file.printf("      #{header}\n")
 file.printf("    PATHS\n")
 if not pkgconfig.empty?
-   file.printf("      ${_#{package}IncDir}\n")
+   file.printf("      ${_#{package.upcase}_INCLUDEDIR}\n")
 end
 file.printf("      /usr/include\n")
 file.printf("      /usr/local/include\n")
@@ -124,7 +124,7 @@ libs.split(" ").each do |lib|
 	file.printf("      #{lib}\n")
 	file.printf("    PATHS\n")
 	if not pkgconfig.empty?
-		file.printf("      ${_#{package}LinkDir}\n")
+		file.printf("      ${_#{package.upcase}_LIBDIR}\n")
 	end
 	file.printf("      /usr/lib\n")
 	file.printf("      /usr/local/lib\n")
