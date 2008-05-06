@@ -67,12 +67,13 @@ time_t csync_timediff(CSYNC *ctx) {
   }
   timediff = st->mtime;
   csync_vio_file_stat_destroy(st);
+  st = NULL;
 
   /* create temporary file on remote replica */
   ctx->replica = ctx->remote.type;
   fp = csync_vio_creat(ctx, luri, 0644);
   if (fp == NULL) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Unable to create temporary file: %s - %s", luri, strerror(errno));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Unable to create temporary file: %s - %s", ruri, strerror(errno));
     goto out;
   }
   csync_vio_close(ctx, fp);
@@ -80,7 +81,7 @@ time_t csync_timediff(CSYNC *ctx) {
   /* Get the modification time */
   st = csync_vio_file_stat_new();
   if (csync_vio_stat(ctx, luri, st) < 0) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Synchronisation is not possible! %s - %s", luri, strerror(errno));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Synchronisation is not possible! %s - %s", ruri, strerror(errno));
     goto out;
   }
 
