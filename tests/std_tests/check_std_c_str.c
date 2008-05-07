@@ -106,17 +106,24 @@ static Suite *make_std_c_strlist_suite(void) {
   return s;
 }
 
-int main(void) {
+int main(int argc, char **argv) {
+  Suite *s = NULL;
+  Suite *s2 = NULL;
+  SRunner *sr = NULL;
+  struct argument_s arguments;
   int nf;
 
-  Suite *s = make_std_c_streq_suite();
-  Suite *s2 = make_std_c_strlist_suite();
+  ZERO_STRUCT(arguments);
 
-  SRunner *sr;
+  cmdline_parse(argc, argv, &arguments);
+
+  s = make_std_c_streq_suite();
+  s2 = make_std_c_strlist_suite();
+
   sr = srunner_create(s);
-#if 0
-  srunner_set_fork_status(sr, CK_NOFORK);
-#endif
+  if (arguments.nofork) {
+    srunner_set_fork_status(sr, CK_NOFORK);
+  }
   srunner_add_suite (sr, s2);
   srunner_run_all(sr, CK_VERBOSE);
   nf = srunner_ntests_failed(sr);

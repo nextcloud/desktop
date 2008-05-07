@@ -346,7 +346,7 @@ START_TEST (check_csync_vio_utimes)
 }
 END_TEST
 
-static Suite *csync_vio_suite(void) {
+static Suite *make_csync_vio_suite(void) {
   Suite *s = suite_create("csync_vio");
 
   create_case_fixture(s, "check_csync_vio_load", check_csync_vio_load, setup, teardown);
@@ -381,16 +381,22 @@ static Suite *csync_vio_suite(void) {
   return s;
 }
 
-int main(void) {
+int main(int argc, char **argv) {
+  Suite *s = NULL;
+  SRunner *sr = NULL;
+  struct argument_s arguments;
   int nf;
 
-  Suite *s = csync_vio_suite();
+  ZERO_STRUCT(arguments);
 
-  SRunner *sr;
+  cmdline_parse(argc, argv, &arguments);
+
+  s = make_csync_vio_suite();
+
   sr = srunner_create(s);
-#if 0
-  srunner_set_fork_status(sr, CK_NOFORK);
-#endif
+  if (arguments.nofork) {
+    srunner_set_fork_status(sr, CK_NOFORK);
+  }
   srunner_run_all(sr, CK_VERBOSE);
   nf = srunner_ntests_failed(sr);
   srunner_free(sr);

@@ -56,14 +56,24 @@ static Suite *make_c_strdup_suite(void) {
   return s;
 }
 
-int main(void) {
+int main(int argc, char **argv) {
+  Suite *s = NULL;
+  Suite *s2 = NULL;
+  SRunner *sr = NULL;
+  struct argument_s arguments;
   int nf;
 
-  Suite *s = make_c_malloc_suite();
-  Suite *s2 = make_c_strdup_suite();
+  ZERO_STRUCT(arguments);
 
-  SRunner *sr;
+  cmdline_parse(argc, argv, &arguments);
+
+  s = make_c_malloc_suite();
+  s2 = make_c_strdup_suite();
+
   sr = srunner_create(s);
+  if (arguments.nofork) {
+    srunner_set_fork_status(sr, CK_NOFORK);
+  }
   srunner_add_suite (sr, s2);
   srunner_run_all(sr, CK_VERBOSE);
   nf = srunner_ntests_failed(sr);

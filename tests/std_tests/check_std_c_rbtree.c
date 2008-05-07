@@ -274,14 +274,22 @@ static Suite *make_c_rbtree_suite(void) {
   return s;
 }
 
-int main(void) {
+int main(int argc, char **argv) {
+  Suite *s = NULL;
+  SRunner *sr = NULL;
+  struct argument_s arguments;
   int nf;
 
-  Suite *s = make_c_rbtree_suite();
+  ZERO_STRUCT(arguments);
 
-  SRunner *sr;
+  cmdline_parse(argc, argv, &arguments);
+
+  s = make_c_rbtree_suite();
+
   sr = srunner_create(s);
-  /* srunner_set_fork_status(sr, CK_NOFORK); */
+  if (arguments.nofork) {
+    srunner_set_fork_status(sr, CK_NOFORK);
+  }
   srunner_run_all(sr, CK_VERBOSE);
   nf = srunner_ntests_failed(sr);
   srunner_free(sr);
