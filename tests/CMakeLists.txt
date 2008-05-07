@@ -10,7 +10,7 @@ include_directories(
 )
 
 # create test library
-add_library(${SUPPORT_LIBRARY} STATIC support.c)
+add_library(${SUPPORT_LIBRARY} STATIC support.c cmdline.c)
 target_link_libraries(${SUPPORT_LIBRARY} ${CHECK_LIBRARIES} ${CSYNC_LIBRARY} ${CSTDLIB_LIBRARY})
 
 set(TEST_TARGET_LIBRARIES ${SUPPORT_LIBRARY})
