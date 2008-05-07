@@ -46,7 +46,7 @@ static int csync_journal_check(const char *journal) {
   fd = open(journal, O_RDONLY);
   if (fd >= 0) {
     if (read(fd, (void *) buf, (size_t) BUF_SIZE - 1) >= 0) {
-      buf[BUF_SIZE] = '\0';
+      buf[BUF_SIZE - 1] = '\0';
       close(fd);
       if (c_streq(buf, "SQLite format 3")) {
         if (sqlite3_open(journal, &db ) == SQLITE_OK) {
