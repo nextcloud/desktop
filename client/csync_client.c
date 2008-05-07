@@ -38,9 +38,30 @@ static char args_doc[] = "SOURCE DESTINATION";
 
 /* The options we understand. */
 static struct argp_option options[] = {
-  {"update",   'u', 0,              0, "Run only the update detection", 0},
-  {"reconcile",'r', 0,              0, "Run update detection and recoincilation", 0},
-  {"journal",  'j', 0,              0, "Testing only", 0},
+  {
+    .name  = "update",
+    .key   = 'u',
+    .arg   = NULL,
+    .flags = 0,
+    .doc   = "Run only the update detection",
+    .group = 0
+  },
+  {
+    .name  = "reconcile",
+    .key   = 'r',
+    .arg   = NULL,
+    .flags = 0,
+    .doc   = "Run update detection and recoincilation",
+    .group = 0
+  },
+  {
+    .name  = "journal",
+    .key   ='j',
+    .arg   = NULL,
+    .flags = 0,
+    .doc   = "Testing only",
+    .group = 0
+  },
   {NULL, 0, 0, 0, NULL, 0}
 };
 
@@ -66,6 +87,7 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state) {
       arguments->update = 1;
       arguments->reconcile = 0;
       arguments->propagate = 0;
+      break;
     case 'u':
       arguments->journal = 0;
       arguments->update = 1;
@@ -77,6 +99,7 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state) {
       arguments->update = 1;
       arguments->reconcile = 1;
       arguments->propagate = 0;
+      break;
     case ARGP_KEY_ARG:
       if (state->arg_num >= 2) {
         /* Too many arguments. */
@@ -93,6 +116,7 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state) {
     default:
       return ARGP_ERR_UNKNOWN;
   }
+
   return 0;
 }
 
