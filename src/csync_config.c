@@ -32,12 +32,10 @@
 static int csync_config_copy_default (const char *config) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Copy %s/config/%s to %s", SYSCONFDIR,
         CSYNC_CONF_FILE, config);
-#ifdef DEVELOPER
-    if (c_copy(SYSCONFDIR "/config/" CSYNC_CONF_FILE, config, 0644) < 0) {
-#else
     if (c_copy(SYSCONFDIR "/csync/" CSYNC_CONF_FILE, config, 0644) < 0) {
-#endif
-      return -1;
+      if (c_copy(BINARYDIR "/config/" CSYNC_CONF_FILE, config, 0644) < 0) {
+        return -1;
+      }
     }
 
     return 0;

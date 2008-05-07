@@ -37,17 +37,21 @@
 #include "csync_log.h"
 
 int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
+  struct stat sb;
   char *path = NULL;
   char *err = NULL;
   csync_vio_method_t *m = NULL;
   csync_vio_method_init_fn init_fn;
 
-#if DEVELOPER
-  if (asprintf(&path, "%s/modules/csync_%s.so", SYSCONFDIR, module) < 0) {
-#else
   if (asprintf(&path, "%s/csync_%s.so", PLUGINDIR, module) < 0) {
-#endif
     return -1;
+  }
+
+  if (lstat(path, &sb) < 0) {
+    SAFE_FREE(path);
+    if (asprintf(&path, "%s/modules/csync_%s.so", BINARYDIR, module) < 0) {
+      return -1;
+    }
   }
 
   ctx->module.handle = dlopen(path, RTLD_LAZY);

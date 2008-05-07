@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Last Change: 2008-05-06 10:12:40
+# Last Change: 2008-05-07 15:32:57
 #
 # Script to build csync on UNIX.
 #
@@ -94,9 +94,6 @@ while test -n "$1"; do
 		*-prefix)
 			OPTIONS="${OPTIONS} -DCMAKE_INSTALL_PREFIX=${ARG}"
 			shift
-		;;
-		*-developer)
-			OPTIONS="${OPTIONS} -DDEVELOPER=ON"
 		;;
 		----noarg)
 			echo "$ARG does not take an argument"
