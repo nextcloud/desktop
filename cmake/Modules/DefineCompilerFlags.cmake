@@ -34,6 +34,16 @@ if (UNIX AND NOT WIN32)
   string(REGEX REPLACE "[\r\n]" " " ${_lfs_CFLAGS} "${${_lfs_CFLAGS}}")
 
   add_definitions(${_lfs_CFLAGS})
+  add_definitions(-Wall -W -Wmissing-prototypes -Wdeclaration-after-statement)
 
-  add_definitions(-Wall -W -Wmissing-prototypes -Wdeclaration-after-statement -D_FORTIFY_SOURCE=2)
+  check_cxx_compiler_flag("-fstack-protector" WITH_STACK_PROTECTOR)
+  if (WITH_STACK_PROTECTOR)
+    add_definitions(-fstack-protector)
+  endif (WITH_STACK_PROTECTOR)
+
+  check_cxx_compiler_flag("-D_FORTIFY_SOURCE=2" WITH_FORTIFY_SOURCE)
+  if (WITH_FORTIFY_SOURCE)
+    add_definitions(-D_FORTIFY_SOURCE=2)
+  endif (WITH_FORTIFY_SOURCE)
+
 endif (UNIX AND NOT WIN32)
