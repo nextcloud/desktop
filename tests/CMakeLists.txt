@@ -15,8 +15,6 @@ target_link_libraries(${SUPPORT_LIBRARY} ${CHECK_LIBRARIES} ${CSYNC_LIBRARY} ${C
 
 set(TEST_TARGET_LIBRARIES ${SUPPORT_LIBRARY})
 
-add_definitions(-DSOURCEDIR='\"${CMAKE_SOURCE_DIR}\"')
-
 # create tests
 
 # std
