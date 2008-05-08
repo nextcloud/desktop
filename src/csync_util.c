@@ -71,6 +71,7 @@ const char *csync_instruction_str(enum csync_instructions_e instr)
 
 
 void csync_memstat_check(void) {
+  int s = 0;
   struct csync_memstat_s m;
   FILE* fp;
 
@@ -79,9 +80,12 @@ void csync_memstat_check(void) {
   if (fp == NULL) {
     return;
   }
-  fscanf(fp, "%d%d%d%d%d%d%d", &m.size, &m.resident, &m.shared, &m.trs,
+  s = fscanf(fp, "%d%d%d%d%d%d%d", &m.size, &m.resident, &m.shared, &m.trs,
       &m.drs, &m.lrs, &m.dt);
   fclose(fp);
+  if (s == EOF) {
+    return;
+  }
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Memory: %dK total size, %dK resident, %dK shared",
                  m.size * 4, m.resident * 4, m.shared * 4);
