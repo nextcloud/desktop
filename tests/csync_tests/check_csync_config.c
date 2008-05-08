@@ -11,15 +11,15 @@ CSYNC *csync;
 const char *testconf = "/tmp/check_csync1/csync.conf";
 
 static void setup(void) {
-  system("mkdir -p /tmp/check_csync1");
-  csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
+  fail_if(system("mkdir -p /tmp/check_csync1") < 0, "Setup failed");
+  fail_if(csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2") < 0, "Setup failed");
   SAFE_FREE(csync->options.config_dir);
   csync->options.config_dir = c_strdup("/tmp/check_csync1/");
 }
 
 static void teardown(void) {
-  csync_destroy(csync);
-  system("rm -rf /tmp/check_csync");
+  fail_if(csync_destroy(csync) < 0, "Teardown failed");
+  fail_if(system("rm -rf /tmp/check_csync") < 0, "Teardown failed");
 }
 
 START_TEST (check_csync_config_copy_default)

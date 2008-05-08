@@ -17,22 +17,22 @@
 CSYNC *csync;
 
 static void setup(void) {
-  system("rm -rf /tmp/csync/");
+  fail_if(system("rm -rf /tmp/csync/") < 0, "Setup failed");
 }
 
 static void setup_dir(void) {
-  system("rm -rf /tmp/csync/");
-  mkdir(CSYNC_TEST_DIR, 0755);
+  fail_if(system("rm -rf /tmp/csync/") < 0, "Setup failed");
+  fail_if(mkdir(CSYNC_TEST_DIR, 0755) < 0, "Setup failed");
 }
 
 static void setup_file(void) {
-  system("rm -rf /tmp/csync/");
-  mkdir(CSYNC_TEST_DIR, 0755);
-  system("echo \"This is a test\" > /tmp/csync/file.txt");
+  fail_if(system("rm -rf /tmp/csync/") < 0, "Setup failed");
+  fail_if(mkdir(CSYNC_TEST_DIR, 0755) < 0, "Setup failed");
+  fail_if(system("echo \"This is a test\" > /tmp/csync/file.txt") < 0, "Setup failed");
 }
 
 static void teardown_dir(void) {
-  system("rm -rf /tmp/csync/");
+  fail_if(system("rm -rf /tmp/csync/") < 0, "Teardown failed");
 }
 
 /*

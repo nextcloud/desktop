@@ -11,44 +11,45 @@ const char *testdb = (char *) "/tmp/check_csync1/test.db";
 const char *testtmpdb = (char *) "/tmp/check_csync1/test.db.ctmp";
 
 static void setup(void) {
-  system("rm -rf /tmp/check_csync1");
-  system("mkdir -p /tmp/check_csync1");
-  csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
+  fail_if(system("rm -rf /tmp/check_csync1") < 0, "Setup failed");
+  fail_if(system("mkdir -p /tmp/check_csync1") < 0, "Setup failed");
+  fail_if(csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2") < 0, "Setup failed");
   SAFE_FREE(csync->options.config_dir);
   csync->options.config_dir = c_strdup("/tmp/check_csync1/");
 }
 
 static void setup_init(void) {
-  system("rm -rf /tmp/check_csync1");
-  csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
+  fail_if(system("rm -rf /tmp/check_csync1") < 0, "Setup failed");
+  fail_if (system("mkdir -p /tmp/check_csync1") < 0, "Setup failed");
+  fail_if (csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2") < 0, "Setup failed");
   SAFE_FREE(csync->options.config_dir);
   csync->options.config_dir = c_strdup("/tmp/check_csync1/");
   csync_init(csync);
 }
 
 static void teardown(void) {
-  csync_destroy(csync);
-  system("rm -rf /tmp/check_csync1");
+  fail_if(csync_destroy(csync) < 0, "Teardown failed");
+  fail_if(system("rm -rf /tmp/check_csync1") < 0, "Teardown failed");
 }
 
 START_TEST (check_csync_journal_check)
 {
-  system("mkdir -p /tmp/check_csync1");
+  fail_if(system("mkdir -p /tmp/check_csync1") < 0, NULL);
 
   /* old db */
-  system("echo \"SQLite format 2\" > /tmp/check_csync1/test.db");
+  fail_if(system("echo \"SQLite format 2\" > /tmp/check_csync1/test.db") < 0, NULL);
   fail_unless(csync_journal_check(testdb) == 0);
 
   /* db already exists */
   fail_unless(csync_journal_check(testdb) == 0);
 
   /* no db exists */
-  system("rm -f /tmp/check_csync1/test.db");
+  fail_if(system("rm -f /tmp/check_csync1/test.db") < 0, NULL);
   fail_unless(csync_journal_check(testdb) == 0);
 
   fail_unless(csync_journal_check((char *) "/tmp/check_csync1/") < 0);
 
-  system("rm -rf /tmp/check_csync1");
+  fail_if(system("rm -rf /tmp/check_csync1") < 0, NULL);
 }
 END_TEST
 

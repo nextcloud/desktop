@@ -12,12 +12,12 @@ const char *check_dir = "/tmp/check/c_mkdirs//with/check//";
 const char *check_file = "/tmp/check/c_mkdirs/with/check/foobar.txt";
 
 static void setup(void) {
-  c_mkdirs(check_dir, 0755);
-  system("touch /tmp/check/c_mkdirs/with/check/foobar.txt");
+  fail_if(c_mkdirs(check_dir, 0755) < 0, "Setup failed");
+  fail_if(system("touch /tmp/check/c_mkdirs/with/check/foobar.txt") < 0, "Setup failed");
 }
 
 static void teardown(void) {
-  system("rm -rf /tmp/check");
+  fail_if(system("rm -rf /tmp/check") < 0, "Teardown failed");
 }
 
 static int test_dir(const char *path, mode_t mode) {
@@ -42,7 +42,7 @@ START_TEST (check_c_mkdirs_new)
 {
   fail_unless(c_mkdirs(check_dir, 0755) == 0, NULL);
   fail_unless(test_dir(check_dir, 0755) == 0, NULL);
-  system("rm -rf /tmp/check");
+  fail_if(system("rm -rf /tmp/check") < 0, NULL);
 }
 END_TEST
 
@@ -50,7 +50,7 @@ START_TEST (check_c_mkdirs_mode)
 {
   fail_unless(c_mkdirs(check_dir, 0700) == 0, NULL);
   fail_unless(test_dir(check_dir, 0700) == 0, NULL);
-  system("rm -rf /tmp/check");
+  fail_if(system("rm -rf /tmp/check") < 0, NULL);
 }
 END_TEST
 

@@ -65,13 +65,13 @@ static void destructor(void *data) {
 }
 
 static void setup(void) {
-  c_rbtree_create(&tree, key_cmp, data_cmp);
+  fail_if(c_rbtree_create(&tree, key_cmp, data_cmp) < 0, "Setup failed");
 }
 
 static void setup_complete_tree(void) {
   int i = 0;
 
-  c_rbtree_create(&tree, key_cmp, data_cmp);
+  fail_if(c_rbtree_create(&tree, key_cmp, data_cmp) < 0, "Setup failed");
   for (i = 0; i < 100; i++) {
     test_t *testdata = NULL;
 
@@ -80,7 +80,7 @@ static void setup_complete_tree(void) {
 
     testdata->key = i;
 
-    c_rbtree_insert(tree, (void *) testdata);
+    fail_if(c_rbtree_insert(tree, (void *) testdata) < 0, "Setup failed");
   }
 }
 

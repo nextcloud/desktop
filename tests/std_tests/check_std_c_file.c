@@ -30,12 +30,12 @@ static int test_file(const char *path, mode_t mode) {
 }
 
 static void setup(void) {
-  system("mkdir -p /tmp/check");
-  system("echo 42 > /tmp/check/foo.txt");
+  fail_if(system("mkdir -p /tmp/check") < 0, "Setup failed");
+  fail_if(system("echo 42 > /tmp/check/foo.txt") < 0, "Setup failed");
 }
 
 static void teardown(void) {
-  system("rm -rf /tmp/check");
+  fail_if(system("rm -rf /tmp/check") < 0, "Teardown failed");
 }
 
 START_TEST (check_c_copy)

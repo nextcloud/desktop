@@ -8,15 +8,15 @@
 CSYNC *csync;
 
 static void setup(void) {
-  system("mkdir -p /tmp/csync1");
-  system("mkdir -p /tmp/csync2");
-  csync_create(&csync, "/tmp/csync1", "/tmp/csync2");
+  fail_if(system("mkdir -p /tmp/csync1") < 0, "Setup failed");
+  fail_if(system("mkdir -p /tmp/csync2") < 0, "Setup failed");
+  fail_if(csync_create(&csync, "/tmp/csync1", "/tmp/csync2") < 0, "Setup failed");
 }
 
 static void teardown(void) {
-  csync_destroy(csync);
-  system("rm -rf /tmp/csync1");
-  system("rm -rf /tmp/csync2");
+  fail_if(csync_destroy(csync) < 0, "Teardown failed");
+  fail_if(system("rm -rf /tmp/csync1") < 0, "Teardown failed");
+  fail_if(system("rm -rf /tmp/csync2") < 0, "Teardown failed");
 }
 
 START_TEST (check_csync_destroy_null)

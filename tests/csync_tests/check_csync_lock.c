@@ -15,11 +15,11 @@
 #define TEST_LOCK "/tmp/check_csync/test"
 
 static void setup(void) {
-  system("mkdir -p /tmp/check_csync");
+  fail_if(system("mkdir -p /tmp/check_csync") < 0, "Setup failed");
 }
 
 static void teardown(void) {
-  system("rm -rf /tmp/check_csync");
+  fail_if(system("rm -rf /tmp/check_csync") < 0, "Teardown failed");
 }
 
 START_TEST (check_csync_lock)
