@@ -46,7 +46,9 @@ int c_isfile(const char *path) {
 
 /* copy file from src to dst, overwrites dst */
 int c_copy(const char* src, const char *dst, mode_t mode) {
-  int srcfd, dstfd, rc;
+  int srcfd = -1;
+  int dstfd = -1;
+  int rc = -1;
   ssize_t bread, bwritten;
   struct stat sb;
   char buf[MAX_XFER_BUF_SIZE];

@@ -48,9 +48,11 @@ static void csync_exclude_add(CSYNC *ctx, const char *string) {
 
 int csync_exclude_load(CSYNC *ctx, const char *fname) {
   int fd = -1;
-  int i, rc;
+  int i = 0;
+  int rc = -1;
   off_t size;
-  char *buf, *entry;
+  char *buf = NULL;
+  char *entry = NULL;
 
   fd = open(fname, O_RDONLY);
   if (fd < 0) {
