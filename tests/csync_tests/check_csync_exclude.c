@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "support.h"
+#include "config.h"
 
 #define CSYNC_TEST 1
 #include "csync_exclude.c"
@@ -18,7 +19,7 @@ static void setup_init(void) {
   csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
   SAFE_FREE(csync->options.config_dir);
   csync->options.config_dir = c_strdup("/tmp/check_csync1");
-  csync_exclude_load(csync, SYSCONFDIR "/config/" CSYNC_EXCLUDE_FILE);
+  csync_exclude_load(csync, BINARYDIR "/config/" CSYNC_EXCLUDE_FILE);
 }
 
 static void teardown(void) {
@@ -35,7 +36,7 @@ END_TEST
 
 START_TEST (check_csync_exclude_load)
 {
-  fail_unless(csync_exclude_load(csync, SYSCONFDIR "/config/" CSYNC_EXCLUDE_FILE) == 0, NULL);
+  fail_unless(csync_exclude_load(csync, BINARYDIR "/config/" CSYNC_EXCLUDE_FILE) == 0, NULL);
   fail_unless(strcmp(csync->excludes->vector[0], (const char *) ".ccache/*") == 0, NULL);
 }
 END_TEST
