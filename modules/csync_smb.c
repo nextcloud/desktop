@@ -28,14 +28,10 @@
 #include "vio/csync_vio_module.h"
 #include "vio/csync_vio_file_stat.h"
 
-#ifndef NDEBUG
-#define ENABLE_SMB_DEBUG 1
-#endif
-
-#ifdef ENABLE_SMB_DEBUG
-#define DEBUG_SMB(x) printf x
-#else
+#ifdef NDEBUG
 #define DEBUG_SMB(x)
+#else
+#define DEBUG_SMB(x) printf x
 #endif
 
 SMBCCTX *smb_context;
@@ -54,8 +50,16 @@ static void get_auth_data_with_context_fn(SMBCCTX *c,
   /* FIXME: need to handle non kerberos authentication for libsmbclient
    * here, currently it is only a placeholder so that libsmbclient can be
    * initialized */
-  DEBUG_SMB(("FIXME: %p, %s, %s, %s, %d, %s, %d, %s, %d\n", c, srv, shr, wg,
-      wglen, un, unlen, pw ? "******" : "null", pwlen));
+  (void) c;
+  (void) srv;
+  (void) shr;
+  (void) wg;
+  (void) wglen;
+  (void) un;
+  (void) unlen;
+  (void)pw;
+  (void) pwlen;
+
   return;
 }
 #else
@@ -71,9 +75,15 @@ static void get_auth_data_fn(const char *pServer,
   /* FIXME: need to handle non kerberos authentication for libsmbclient
    * here, currently it is only a placeholder so that libsmbclient can be
    * initialized */
-  DEBUG_SMB(("FIXME: %s, %s, %s, %d, %s, %d, %s, %d\n", pServer, pShare, pWorkgroup,
-      maxLenWorkgroup, pUsername, maxLenUsername, pPassword ? "******" : "null", 
-      maxLenPassword));
+  (void) pServer;
+  (void) pShare;
+  (void) pWorkgroup;
+  (void) maxLenWorkgroup;
+  (void) pUsername
+  (void) maxLenUsername
+  (void) pPassword;
+  (void) maxLenPassword;
+
   return;
 }
 #endif
@@ -423,6 +433,8 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args) {
 
   DEBUG_SMB(("csync_smb - method_name: %s\n", method_name));
   DEBUG_SMB(("csync_smb - args: %s\n", args));
+  (void) method_name;
+  (void) args;
 
   if (smb_context == NULL) {
     fprintf(stderr, "csync_smb: Failed to create new smbc context\n");
@@ -459,7 +471,7 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args) {
 }
 
 void vio_module_shutdown(csync_vio_method_t *method) {
-  DEBUG_SMB(("csync_smb - shutdown: %p\n", method));
+  (void) method;
 
   if (smb_context != NULL) {
     /*
