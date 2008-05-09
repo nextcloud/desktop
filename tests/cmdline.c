@@ -30,6 +30,9 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state) {
    */
   struct argument_s *arguments = state->input;
 
+  /* arg is currently not used */
+  (void) arg;
+
   switch (key) {
     case 'n':
       arguments->nofork = 1;
