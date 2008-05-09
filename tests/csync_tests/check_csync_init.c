@@ -12,6 +12,12 @@ static void setup(void) {
   fail_if(csync_create(&csync, "/tmp/csync1", "/tmp/csync2") < 0, "Setup failed");
 }
 
+static void setup_module(void) {
+  fail_if(system("mkdir -p /tmp/csync1") < 0, "Setup failed");
+  fail_if(system("mkdir -p /tmp/csync2") < 0, "Setup failed");
+  fail_if(csync_create(&csync, "/tmp/csync1", "dummy://foo/bar") < 0, "Setup failed");
+}
+
 static void teardown(void) {
   fail_if(csync_destroy(csync) < 0, "Teardown failed");
   fail_if(system("rm -rf /tmp/csync1") < 0, "Teardown failed");
@@ -34,11 +40,22 @@ START_TEST (check_csync_init)
 }
 END_TEST
 
+START_TEST (check_csync_init_module)
+{
+  fail_unless(csync_init(csync) == 0, NULL);
+
+  fail_unless((csync->status & CSYNC_INIT) == 1, NULL);
+
+  fail_unless(csync_init(csync) == 1, NULL);
+}
+END_TEST
+
 static Suite *make_csync_suite(void) {
   Suite *s = suite_create("csync");
 
   create_case_fixture(s, "check_csync_init_null", check_csync_init_null, setup, teardown);
   create_case_fixture(s, "check_csync_init", check_csync_init, setup, teardown);
+  create_case_fixture(s, "check_csync_init_module", check_csync_init_module, setup_module, teardown);
 
   return s;
 }
