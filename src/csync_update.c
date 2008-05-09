@@ -74,7 +74,7 @@ static int csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fil
   }
 
   h = c_jhash64((uint8_t *) path, len, 0);
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Detect update for %s", path, h);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Detect update for %s", path);
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, " hash:\t\t%lu", h);
 
   st = c_malloc(sizeof(csync_file_stat_t) + len + 1);
@@ -83,8 +83,6 @@ static int csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fil
   }
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, " stat size:\t%d", sizeof(csync_file_stat_t) + len + 1);
 
-  /* TODO: Update detection */
-  /* if current replica, search for inode and compare hash */
 
   /* check hardlink count */
   if (type == CSYNC_FTW_TYPE_FILE && fs->nlink > 1) {
@@ -92,6 +90,7 @@ static int csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fil
     goto out;
   }
 
+  /* Update detection */
   if (ctx->journal.exists) {
     tmp = csync_journal_get_stat_by_hash(ctx, h);
     if (tmp == NULL) {
