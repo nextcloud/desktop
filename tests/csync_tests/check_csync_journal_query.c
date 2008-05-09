@@ -12,11 +12,38 @@ const char *testtmpdb = (char *) "/tmp/check_csync1/test.db.ctmp";
 
 static void setup(void) {
   fail_if(system("rm -rf /tmp/check_csync1") < 0, "Setup failed");
-  fail_if (system("mkdir -p /tmp/check_csync1") < 0, "Setup failed");
-  fail_if (csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2") < 0, "Setup failed");
+  fail_if(system("mkdir -p /tmp/check_csync1") < 0, "Setup failed");
+  fail_if(csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2") < 0, "Setup failed");
   SAFE_FREE(csync->options.config_dir);
   csync->options.config_dir = c_strdup("/tmp/check_csync1/");
-  csync_init(csync);
+  fail_if(csync_init(csync) < 0, NULL, "Setup failed");
+}
+
+static void setup_db(void) {
+  char *stmt = NULL;
+
+  fail_if(system("rm -rf /tmp/check_csync1") < 0, "Setup failed");
+  fail_if(system("mkdir -p /tmp/check_csync1") < 0, "Setup failed");
+  fail_if(csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2") < 0, "Setup failed");
+  SAFE_FREE(csync->options.config_dir);
+  csync->options.config_dir = c_strdup("/tmp/check_csync1/");
+  fail_if(csync_init(csync) < 0, NULL, "Setup failed");
+  fail_unless(csync_journal_create_tables(csync) == 0, "Setup failed");
+
+  stmt = sqlite3_mprintf("INSERT INTO metadata"
+    "(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES"
+    "(%lu, %d, '%q', %d, %d, %d, %d, %lu);",
+    42,
+    42,
+    "It's a rainy day",
+    23,
+    42,
+    42,
+    42,
+    42);
+
+  fail_if(csync_journal_insert(csync, stmt) < 0, NULL);
+  sqlite3_free(stmt);
 }
 
 static void teardown(void) {
@@ -158,6 +185,52 @@ START_TEST (check_csync_journal_write)
 }
 END_TEST
 
+START_TEST (check_csync_journal_get_stat_by_hash)
+{
+  csync_file_stat_t *tmp = NULL;
+
+  tmp = csync_journal_get_stat_by_hash(csync, (uint64_t) 42);
+  fail_if(tmp == NULL, NULL);
+
+  fail_unless(tmp->phash == 42, NULL);
+  fail_unless(tmp->inode == 23, NULL);
+
+  SAFE_FREE(tmp);
+}
+END_TEST
+
+START_TEST (check_csync_journal_get_stat_by_hash_not_found)
+{
+  csync_file_stat_t *tmp = NULL;
+
+  tmp = csync_journal_get_stat_by_hash(csync, (uint64_t) 666);
+  fail_unless(tmp == NULL, NULL);
+}
+END_TEST
+
+START_TEST (check_csync_journal_get_stat_by_inode)
+{
+  csync_file_stat_t *tmp = NULL;
+
+  tmp = csync_journal_get_stat_by_inode(csync, (ino_t) 23);
+  fail_if(tmp == NULL, NULL);
+
+  fail_unless(tmp->phash == 42, NULL);
+  fail_unless(tmp->inode == 23, NULL);
+
+  SAFE_FREE(tmp);
+}
+END_TEST
+
+START_TEST (check_csync_journal_get_stat_by_inode_not_found)
+{
+  csync_file_stat_t *tmp = NULL;
+
+  tmp = csync_journal_get_stat_by_inode(csync, (ino_t) 666);
+  fail_unless(tmp == NULL, NULL);
+}
+END_TEST
+
 static Suite *make_csync_suite(void) {
   Suite *s = suite_create("csync_journal");
 
@@ -170,6 +243,10 @@ static Suite *make_csync_suite(void) {
   create_case_fixture(s, "check_csync_journal_drop_tables", check_csync_journal_drop_tables, setup, teardown);
   create_case_fixture(s, "check_csync_journal_insert_metadata", check_csync_journal_insert_metadata, setup, teardown);
   create_case_fixture(s, "check_csync_journal_write", check_csync_journal_write, setup, teardown);
+  create_case_fixture(s, "check_csync_journal_get_stat_by_hash", check_csync_journal_get_stat_by_hash, setup_db, teardown);
+  create_case_fixture(s, "check_csync_journal_get_stat_by_hash_not_found", check_csync_journal_get_stat_by_hash_not_found, setup_db, teardown);
+  create_case_fixture(s, "check_csync_journal_get_stat_by_inode", check_csync_journal_get_stat_by_inode, setup_db, teardown);
+  create_case_fixture(s, "check_csync_journal_get_stat_by_inode_not_found", check_csync_journal_get_stat_by_inode_not_found, setup_db, teardown);
 
   return s;
 }

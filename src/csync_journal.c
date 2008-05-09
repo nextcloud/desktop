@@ -305,6 +305,7 @@ int csync_journal_insert_metadata(CSYNC *ctx) {
   return 0;
 }
 
+/* caller must free the memory */
 csync_file_stat_t *csync_journal_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
   csync_file_stat_t *st = NULL;
   c_strlist_t *result = NULL;
@@ -347,6 +348,7 @@ csync_file_stat_t *csync_journal_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
   return st;
 }
 
+/* caller must free the memory */
 csync_file_stat_t *csync_journal_get_stat_by_inode(CSYNC *ctx, ino_t inode) {
   csync_file_stat_t *st = NULL;
   c_strlist_t *result = NULL;
