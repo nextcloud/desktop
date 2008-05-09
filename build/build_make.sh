@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Last Change: 2008-05-07 15:32:57
+# Last Change: 2008-05-09 11:28:03
 #
 # Script to build csync on UNIX.
 #
@@ -109,14 +109,9 @@ while test -n "$1"; do
 	esac
 done
 
-case ${BUILD_TYPE} in
-	debug)
-		OPTIONS="${OPTIONS} -DCMAKE_BUILD_TYPE=Debug"
-	;;
-	release)
-		OPTIONS="${OPTIONS} -DCMAKE_BUILD_TYPE=Release"
-	;;
-esac
+if [ ${DO_MAKE} -eq 1 ]; then
+	OPTIONS="${OPTIONS} -DCMAKE_BUILD_TYPE=${BUILD_TYPE}"
+fi
 
 if [ -n "${DOVERBOSE}" ]; then
 	OPTIONS="${OPTIONS} -DCMAKE_VERBOSE_MAKEFILE=1"
