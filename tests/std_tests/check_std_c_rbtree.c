@@ -247,6 +247,21 @@ START_TEST (check_c_rbtree_walk)
 }
 END_TEST
 
+START_TEST (check_c_rbtree_dup)
+{
+  int rc = -1;
+  c_rbtree_t *duptree = NULL;
+
+  duptree = c_rbtree_dup(tree);
+  fail_if(duptree == NULL, NULL);
+
+  rc = c_rbtree_check_sanity(duptree);
+  fail_unless(rc == 0, "c_rbtree_check_sanity failed with return code %d", rc);
+
+  c_rbtree_free(duptree);
+}
+END_TEST
+
 #if 0
 START_TEST (check_c_rbtree_x)
 {
@@ -270,6 +285,7 @@ static Suite *make_c_rbtree_suite(void) {
   create_case_fixture(s, "check_c_rbtree_find", check_c_rbtree_find, setup_complete_tree, teardown);
   create_case_fixture(s, "check_c_rbtree_delete", check_c_rbtree_delete, setup_complete_tree, teardown);
   create_case_fixture(s, "check_c_rbtree_walk", check_c_rbtree_walk, setup_complete_tree, teardown);
+  create_case_fixture(s, "check_c_rbtree_dup", check_c_rbtree_dup, setup_complete_tree, teardown);
 
   return s;
 }
