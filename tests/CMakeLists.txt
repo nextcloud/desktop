@@ -28,13 +28,14 @@ macro_add_check_test(check_std_c_str std_tests/check_std_c_str.c ${TEST_TARGET_L
 
 # csync
 macro_add_check_test(check_logger log_tests/check_log.c ${TEST_TARGET_LIBRARIES})
-macro_add_check_test(check_csync csync_tests/check_csync.c ${TEST_TARGET_LIBRARIES})
+macro_add_check_test(check_csync_create csync_tests/check_csync_create.c ${TEST_TARGET_LIBRARIES})
 macro_add_check_test(check_csync_lock csync_tests/check_csync_lock.c ${TEST_TARGET_LIBRARIES})
 macro_add_check_test(check_csync_config csync_tests/check_csync_config.c ${TEST_TARGET_LIBRARIES})
 macro_add_check_test(check_csync_exclude csync_tests/check_csync_exclude.c ${TEST_TARGET_LIBRARIES})
 macro_add_check_test(check_csync_journal csync_tests/check_csync_journal.c ${TEST_TARGET_LIBRARIES})
 macro_add_check_test(check_csync_time csync_tests/check_csync_time.c ${TEST_TARGET_LIBRARIES})
 macro_add_check_test(check_csync_util csync_tests/check_csync_util.c ${TEST_TARGET_LIBRARIES})
+macro_add_check_test(check_csync_init csync_tests/check_csync_init.c ${TEST_TARGET_LIBRARIES})
 
 # vio
 macro_add_check_test(check_vio_handle vio_tests/check_vio_handle.c ${TEST_TARGET_LIBRARIES})
