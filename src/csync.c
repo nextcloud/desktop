@@ -402,6 +402,10 @@ const char *csync_version(void) {
 }
 
 void csync_set_module_auth_callback(CSYNC *ctx, csync_module_auth_callback cb) {
+  if (ctx->status & CSYNC_INIT) {
+    fprintf(stderr, "This function must be called before initialization");
+    exit(1);
+  }
   ctx->auth_callback = cb;
 }
 
