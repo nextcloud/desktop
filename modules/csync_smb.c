@@ -288,11 +288,9 @@ static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
       break;
   }
 
-  SAFE_FREE(dirent);
   return file_stat;
 
 err:
-  SAFE_FREE(dirent);
   SAFE_FREE(file_stat);
 
   return NULL;
