@@ -343,7 +343,7 @@ int csync_destroy(CSYNC *ctx) {
   csync_vio_shutdown(ctx);
 
   if (ctx->journal.db != NULL) {
-    if (ctx->status & CSYNC_DONE) {
+    if (ctx->status == CSYNC_DONE) {
       time(&start);
       if (csync_journal_write(ctx) == 0) {
         jwritten = 1;
