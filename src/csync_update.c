@@ -183,6 +183,8 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs, 
     case CSYNC_FTW_FLAG_DP:
     case CSYNC_FTW_FLAG_SLN:
       break;
+    default:
+      break;
   }
 
   return 0;
@@ -207,6 +209,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn, unsigned int dept
     if (errno == EACCES) {
       return 0;
     } else {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "opendir failed for %s - %s", uri, strerror(errno));
       goto error;
     }
   }
