@@ -23,6 +23,7 @@ set(CLIENT_LINK_LIBRARIES
 
 set(client_SRCS
   csync_client.c
+  csync_auth.c
 )
 
 include_directories(

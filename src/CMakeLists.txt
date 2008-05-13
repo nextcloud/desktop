@@ -53,6 +53,11 @@ set(csync_SRCS
 
 set(csync_HDRS
   csync.h
+  vio/csync_vio.h
+  vio/csync_vio_file_stat.h
+  vio/csync_vio_handle.h
+  vio/csync_vio_method.h
+  vio/csync_vio_module.h
 )
 
 include_directories(

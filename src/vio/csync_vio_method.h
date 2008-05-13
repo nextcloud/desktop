@@ -25,6 +25,7 @@
 
 #include <sys/time.h>
 
+#include "csync.h"
 #include "vio/csync_vio_file_stat.h"
 #include "vio/csync_vio_handle.h"
 
@@ -34,7 +35,7 @@
 
 typedef struct csync_vio_method_s csync_vio_method_t;
 
-typedef csync_vio_method_t *(*csync_vio_method_init_fn)(const char *method_name, const char *config_args);
+typedef csync_vio_method_t *(*csync_vio_method_init_fn)(const char *method_name, const char *config_args, csync_module_auth_callback cb);
 typedef void (*csync_vio_method_finish_fn)(csync_vio_method_t *method);
 
 typedef csync_vio_method_handle_t *(*csync_method_open_fn)(const char *durl, int flags, mode_t mode);

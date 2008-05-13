@@ -20,13 +20,11 @@
  * vim: ft=c.doxygen ts=2 sw=2 et cindent
  */
 
-#ifndef _CSYNC_VIO_MODULE_H
-#define _CSYNC_VIO_MODULE_H
+#ifndef _CSYNC_CLIENT_AUTH_H
+#define _CSYNC_CLIENT_AUTH_H
 
-#include "vio/csync_vio_method.h"
+int csync_text_prompt(const char *prompt, char *buf, size_t len);
 
-extern csync_vio_method_t *vio_module_init (const char *method_name,
-    const char *args, csync_module_auth_callback cb);
-extern void vio_module_shutdown(csync_vio_method_t *method);
+int csync_password_prompt(const char *prompt, char *buf, size_t len, int verify);
 
-#endif /* _CSYNC_VIO_MODULE_H */
+#endif /* _CSYNC_CLIENT_AUTH_H */

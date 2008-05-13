@@ -35,6 +35,7 @@
 #endif
 
 SMBCCTX *smb_context;
+csync_module_auth_callback auth_cb;
 
 #ifdef DEPRECATED_SMBC_INTERFACE
 
@@ -47,18 +48,18 @@ static void get_auth_data_with_context_fn(SMBCCTX *c,
     char *wg, int wglen,
     char *un, int unlen,
     char *pw, int pwlen) {
-  /* FIXME: need to handle non kerberos authentication for libsmbclient
-   * here, currently it is only a placeholder so that libsmbclient can be
-   * initialized */
   (void) c;
-  (void) srv;
   (void) shr;
   (void) wg;
   (void) wglen;
-  (void) un;
-  (void) unlen;
-  (void)pw;
-  (void) pwlen;
+
+  /* Don't authenticate for workgroup listing */
+  if (srv == NULL || srv[0] == '\0') {
+    DEBUG_SMB(("emtpy server name"));
+    return;
+  }
+
+  (*auth_cb) (un, unlen, pw, pwlen);
 
   return;
 }
@@ -72,17 +73,17 @@ static void get_auth_data_fn(const char *pServer,
          char *pWorkgroup, int maxLenWorkgroup,
          char *pUsername, int maxLenUsername,
          char *pPassword, int maxLenPassword) {
-  /* FIXME: need to handle non kerberos authentication for libsmbclient
-   * here, currently it is only a placeholder so that libsmbclient can be
-   * initialized */
-  (void) pServer;
   (void) pShare;
   (void) pWorkgroup;
   (void) maxLenWorkgroup;
-  (void) pUsername
-  (void) maxLenUsername
-  (void) pPassword;
-  (void) maxLenPassword;
+
+  /* Don't authenticate for workgroup listing */
+  if (pServer == NULL || pServer[0] == '\0') {
+    DEBUG_SMB(("emtpy server name"));
+    return;
+  }
+
+  (*auth_cb) (pUsername, maxLenUsername, pPassword, maxLenPassword);
 
   return;
 }
@@ -428,7 +429,8 @@ csync_vio_method_t _method = {
   .utimes = _utimes
 };
 
-csync_vio_method_t *vio_module_init(const char *method_name, const char *args) {
+csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
+    csync_module_auth_callback cb) {
   smb_context = smbc_new_context();
 
   DEBUG_SMB(("csync_smb - method_name: %s\n", method_name));
@@ -440,6 +442,8 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args) {
     fprintf(stderr, "csync_smb: Failed to create new smbc context\n");
     return NULL;
   }
+
+  auth_cb = cb;
 
   /* set debug level and authentication function callback */
 #ifdef DEPRECATED_SMBC_INTERFACE

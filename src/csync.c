@@ -401,6 +401,10 @@ const char *csync_version(void) {
   return CSYNC_VERSION_STRING;
 }
 
+void csync_set_module_auth_callback(CSYNC *ctx, csync_module_auth_callback cb) {
+  ctx->auth_callback = cb;
+}
+
 void csync_set_status(CSYNC *ctx, int status) {
   ctx->status = status;
 }
