@@ -37,7 +37,6 @@ int csync_text_prompt(const char *prompt, char *buf, size_t len) {
 
   /* read the password */
   while (!ok) {
-    fprintf(stdout,"\n");
     fprintf(stdout, "%s", prompt);
     fflush(stdout);
     while (! fgets(buf, len, stdin));
@@ -46,7 +45,6 @@ int csync_text_prompt(const char *prompt, char *buf, size_t len) {
       *ptr = '\0';
     }
     ok = 1;
-    fprintf(stdout,"\n");
   }
 
   /* force termination */
@@ -95,7 +93,6 @@ int csync_password_prompt(const char *prompt, char *buf, size_t len, int verify)
 
   /* read the password */
   while (!ok) {
-    fprintf(stdout,"\n");
     fprintf(stdout, "%s", prompt);
     fflush(stdout);
     while (! fgets(buf, len, stdin));
@@ -123,7 +120,6 @@ int csync_password_prompt(const char *prompt, char *buf, size_t len, int verify)
       }
     }
     ok = 1;
-    fprintf(stdout,"\n");
   }
 
   /* reset terminal */

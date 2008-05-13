@@ -154,8 +154,9 @@ int main(int argc, char **argv) {
     exit(1);
   }
 
-  csync_init(csync);
   csync_set_module_auth_callback(csync, csync_auth_fn);
+  fprintf(stdout,"\n");
+  csync_init(csync);
   printf("Version: %s\n", csync_version());
 
   if (arguments.update) {
