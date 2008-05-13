@@ -59,7 +59,10 @@ static void get_auth_data_with_context_fn(SMBCCTX *c,
     return;
   }
 
-  (*auth_cb) (un, unlen, pw, pwlen);
+  if (auth_cb != NULL) {
+    DEBUG_SMB(("Authentication callback\n"));
+    (*auth_cb) (un, unlen, pw, pwlen);
+  }
 
   return;
 }
@@ -83,7 +86,9 @@ static void get_auth_data_fn(const char *pServer,
     return;
   }
 
-  (*auth_cb) (pUsername, maxLenUsername, pPassword, maxLenPassword);
+  if (auth_cb != NULL) {
+    (*auth_cb) (pUsername, maxLenUsername, pPassword, maxLenPassword);
+  }
 
   return;
 }
@@ -435,6 +440,7 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
 
   DEBUG_SMB(("csync_smb - method_name: %s\n", method_name));
   DEBUG_SMB(("csync_smb - args: %s\n", args));
+  DEBUG_SMB(("csync_smb - callback: %p\n", cb));
   (void) method_name;
   (void) args;
 
