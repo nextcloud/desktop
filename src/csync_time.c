@@ -41,6 +41,15 @@ time_t csync_timediff(CSYNC *ctx) {
   char *ruri = NULL;
   csync_vio_handle_t *fp = NULL;
   csync_vio_file_stat_t *st = NULL;
+  csync_vio_handle_t *dp = NULL;
+
+  /* try to open remote dir to get auth */
+  ctx->replica = ctx->remote.type;
+  dp = csync_vio_opendir(ctx, ctx->remote.uri);
+  if (dp == NULL) {
+    return -1;
+  }
+  csync_vio_closedir(ctx, dp);
 
   if (asprintf(&luri, "%s/csync_timediff.ctmp", ctx->local.uri) < 0) {
     goto out;
@@ -71,7 +80,8 @@ time_t csync_timediff(CSYNC *ctx) {
 
   /* create temporary file on remote replica */
   ctx->replica = ctx->remote.type;
-  fp = csync_vio_creat(ctx, luri, 0644);
+
+  fp = csync_vio_creat(ctx, ruri, 0644);
   if (fp == NULL) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Unable to create temporary file: %s - %s", ruri, strerror(errno));
     goto out;
@@ -80,7 +90,7 @@ time_t csync_timediff(CSYNC *ctx) {
 
   /* Get the modification time */
   st = csync_vio_file_stat_new();
-  if (csync_vio_stat(ctx, luri, st) < 0) {
+  if (csync_vio_stat(ctx, ruri, st) < 0) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Synchronisation is not possible! %s - %s", ruri, strerror(errno));
     goto out;
   }
