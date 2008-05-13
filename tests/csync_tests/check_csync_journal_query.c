@@ -1,3 +1,4 @@
+/* Last Change: 2008-05-14 00:59:10 */
 #define _GNU_SOURCE /* asprintf */
 #include <string.h>
 
@@ -12,7 +13,9 @@ const char *testtmpdb = (char *) "/tmp/check_csync1/test.db.ctmp";
 
 static void setup(void) {
   fail_if(system("rm -rf /tmp/check_csync1") < 0, "Setup failed");
+  fail_if(system("rm -rf /tmp/check_csync2") < 0, "Setup failed");
   fail_if(system("mkdir -p /tmp/check_csync1") < 0, "Setup failed");
+  fail_if(system("mkdir -p /tmp/check_csync2") < 0, "Setup failed");
   fail_if(csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2") < 0, "Setup failed");
   SAFE_FREE(csync->options.config_dir);
   csync->options.config_dir = c_strdup("/tmp/check_csync1/");
