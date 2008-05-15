@@ -104,10 +104,15 @@ time_t csync_timediff(CSYNC *ctx) {
 
 out:
   csync_vio_file_stat_destroy(st);
+
+  ctx->replica = ctx->local.type;
   csync_vio_unlink(ctx, luri);
   SAFE_FREE(luri);
+
+  ctx->replica = ctx->remote.type;
   csync_vio_unlink(ctx, ruri);
   SAFE_FREE(ruri);
+
   return timediff;
 }
 
