@@ -300,10 +300,8 @@ int csync_update(CSYNC *ctx) {
 
   time(&finish);
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Update detection for local replica took %.2f seconds",
-            difftime(finish, start));
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Collected files: %lu", c_rbtree_size(ctx->local.tree));
+            "Update detection for local replica took %.2f seconds walking %lu files.",
+            difftime(finish, start), c_rbtree_size(ctx->local.tree));
   csync_memstat_check();
 
   if (rc < 0) {
@@ -320,10 +318,8 @@ int csync_update(CSYNC *ctx) {
   time(&finish);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Update detection for remote replica took %.2f seconds",
-            difftime(finish, start));
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Collected files: %lu", c_rbtree_size(ctx->remote.tree));
+            "Update detection for remote replica took %.2f seconds walking %lu files.",
+            difftime(finish, start), c_rbtree_size(ctx->remote.tree));
   csync_memstat_check();
 
   if (rc < 0) {
@@ -353,8 +349,8 @@ int csync_reconcile(CSYNC *ctx) {
 
   time(&finish);
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Reconciliation for local replica took %.2f seconds",
-            difftime(finish, start));
+            "Reconciliation for local replica took %.2f seconds visiting %llu files.",
+            difftime(finish, start), c_rbtree_size(ctx->local.tree));
 
   if (rc < 0) {
     return -1;
@@ -369,8 +365,8 @@ int csync_reconcile(CSYNC *ctx) {
 
   time(&finish);
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Reconciliation for local replica took %.2f seconds",
-            difftime(finish, start));
+            "Reconciliation for local replica took %.2f seconds visiting %llu files.",
+            difftime(finish, start), c_rbtree_size(ctx->remote.tree));
 
   if (rc < 0) {
     return -1;
@@ -402,7 +398,7 @@ int csync_destroy(CSYNC *ctx) {
   csync_vio_shutdown(ctx);
 
   if (ctx->journal.db != NULL) {
-    if (ctx->status == CSYNC_DONE) {
+    if (ctx->status >= CSYNC_DONE) {
       time(&start);
       if (csync_journal_write(ctx) == 0) {
         jwritten = 1;
