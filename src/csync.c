@@ -368,7 +368,7 @@ int csync_reconcile(CSYNC *ctx) {
 
   clock_gettime(CLOCK_REALTIME, &finish);
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Reconciliation for local replica took %.2f seconds visiting %llu files.",
+            "Reconciliation for remote replica took %.2f seconds visiting %llu files.",
             csync_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
 
   if (rc < 0) {
