@@ -38,6 +38,7 @@
 #include "csync_util.h"
 
 #include "csync_update.h"
+#include "csync_reconcile.h"
 
 #include "vio/csync_vio.h"
 
@@ -48,7 +49,7 @@ static int key_cmp(const void *key, const void *data) {
   uint64_t a;
   csync_file_stat_t *b;
 
-  a = POINTER_TO_INT(key);
+  a = (uint64_t) key;
   b = (csync_file_stat_t *) data;
 
   if (a < b->phash) {
@@ -330,6 +331,52 @@ int csync_update(CSYNC *ctx) {
   }
 
   ctx->status |= CSYNC_UPDATE;
+
+  return 0;
+}
+
+int csync_reconcile(CSYNC *ctx) {
+  int rc = -1;
+  time_t start, finish;
+
+  if (ctx == NULL) {
+    errno = EBADF;
+    return -1;
+  }
+
+  /* Reconciliation for local replica */
+  time(&start);
+  ctx->current = LOCAL_REPLICA;
+  ctx->replica = ctx->local.type;
+
+  rc = csync_reconcile_updates(ctx);
+
+  time(&finish);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+            "Reconciliation for local replica took %.2f seconds",
+            difftime(finish, start));
+
+  if (rc < 0) {
+    return -1;
+  }
+
+  /* Reconciliation for local replica */
+  time(&start);
+  ctx->current = REMOTE_REPLCIA;
+  ctx->replica = ctx->remote.type;
+
+  rc = csync_reconcile_updates(ctx);
+
+  time(&finish);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+            "Reconciliation for local replica took %.2f seconds",
+            difftime(finish, start));
+
+  if (rc < 0) {
+    return -1;
+  }
+
+  ctx->status |= CSYNC_RECONCILE;
 
   return 0;
 }

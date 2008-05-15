@@ -160,10 +160,15 @@ int main(int argc, char **argv) {
   printf("Version: %s\n", csync_version());
 
   if (arguments.update) {
-    csync_update(csync);
+    if (csync_update(csync) < 0) {
+      goto err;
+    }
   }
 
   if (arguments.reconcile) {
+    if (csync_reconcile(csync) < 0) {
+      goto err;
+    }
   }
 
   if (arguments.propagate) {
@@ -176,5 +181,10 @@ int main(int argc, char **argv) {
   csync_destroy(csync);
 
   return 0;
+err:
+  perror("csync");
+  csync_destroy(csync);
+
+  return 1;
 }
 
