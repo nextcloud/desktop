@@ -29,4 +29,8 @@
 
 time_t csync_timediff(CSYNC *ctx);
 
+struct timespec csync_tsub(struct timespec timespec_1,struct timespec timespec_2);
+
+double csync_secdiff(struct timespec clock_1, struct timespec clock_2);
+
 #endif /* _CSYNC_TIME_H */

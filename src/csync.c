@@ -80,6 +80,8 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
   CSYNC *ctx;
   size_t len = 0;
 
+  printf("%f\n", 1E9);
+
   ctx = c_malloc(sizeof(CSYNC));
   if (ctx == NULL) {
     return -1;
@@ -282,7 +284,7 @@ out:
 
 int csync_update(CSYNC *ctx) {
   int rc = -1;
-  time_t start, finish;
+  struct timespec start, finish;
 
   if (ctx == NULL) {
     errno = EBADF;
@@ -292,16 +294,17 @@ int csync_update(CSYNC *ctx) {
   csync_memstat_check();
 
   /* update detection for local replica */
-  time(&start);
+  clock_gettime(CLOCK_REALTIME, &start);
   ctx->current = LOCAL_REPLICA;
   ctx->replica = ctx->local.type;
 
   rc = csync_ftw(ctx, ctx->local.uri, csync_walker, MAX_DEPTH);
 
-  time(&finish);
+  clock_gettime(CLOCK_REALTIME, &finish);
+
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
             "Update detection for local replica took %.2f seconds walking %lu files.",
-            difftime(finish, start), c_rbtree_size(ctx->local.tree));
+            csync_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
   csync_memstat_check();
 
   if (rc < 0) {
@@ -309,17 +312,17 @@ int csync_update(CSYNC *ctx) {
   }
 
   /* update detection for remote replica */
-  time(&start);
+  clock_gettime(CLOCK_REALTIME, &start);
   ctx->current = REMOTE_REPLCIA;
   ctx->replica = ctx->remote.type;
 
   rc = csync_ftw(ctx, ctx->remote.uri, csync_walker, MAX_DEPTH);
 
-  time(&finish);
+  clock_gettime(CLOCK_REALTIME, &finish);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
             "Update detection for remote replica took %.2f seconds walking %lu files.",
-            difftime(finish, start), c_rbtree_size(ctx->remote.tree));
+            csync_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
   csync_memstat_check();
 
   if (rc < 0) {
@@ -333,7 +336,7 @@ int csync_update(CSYNC *ctx) {
 
 int csync_reconcile(CSYNC *ctx) {
   int rc = -1;
-  time_t start, finish;
+  struct timespec start, finish;
 
   if (ctx == NULL) {
     errno = EBADF;
@@ -341,32 +344,32 @@ int csync_reconcile(CSYNC *ctx) {
   }
 
   /* Reconciliation for local replica */
-  time(&start);
+  clock_gettime(CLOCK_REALTIME, &start);
   ctx->current = LOCAL_REPLICA;
   ctx->replica = ctx->local.type;
 
   rc = csync_reconcile_updates(ctx);
 
-  time(&finish);
+  clock_gettime(CLOCK_REALTIME, &finish);
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
             "Reconciliation for local replica took %.2f seconds visiting %llu files.",
-            difftime(finish, start), c_rbtree_size(ctx->local.tree));
+            csync_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
 
   if (rc < 0) {
     return -1;
   }
 
   /* Reconciliation for local replica */
-  time(&start);
+  clock_gettime(CLOCK_REALTIME, &start);
   ctx->current = REMOTE_REPLCIA;
   ctx->replica = ctx->remote.type;
 
   rc = csync_reconcile_updates(ctx);
 
-  time(&finish);
+  clock_gettime(CLOCK_REALTIME, &finish);
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
             "Reconciliation for local replica took %.2f seconds visiting %llu files.",
-            difftime(finish, start), c_rbtree_size(ctx->remote.tree));
+            csync_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
 
   if (rc < 0) {
     return -1;
@@ -385,7 +388,7 @@ static void tree_destructor(void *data) {
 }
 
 int csync_destroy(CSYNC *ctx) {
-  time_t start, finish;
+  struct timespec start, finish;
   char *lock = NULL;
   char *journal = NULL;
   int jwritten = 0;
@@ -399,13 +402,13 @@ int csync_destroy(CSYNC *ctx) {
 
   if (ctx->journal.db != NULL) {
     if (ctx->status >= CSYNC_DONE) {
-      time(&start);
+      clock_gettime(CLOCK_REALTIME, &start);
       if (csync_journal_write(ctx) == 0) {
         jwritten = 1;
-        time(&finish);
+        clock_gettime(CLOCK_REALTIME, &finish);
         CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
             "Writing the journal to disk took %.2f seconds",
-            difftime(finish, start));
+            csync_secdiff(finish, start));
       } else {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to write journal: %s",
             strerror(errno));
