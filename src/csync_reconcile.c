@@ -143,7 +143,7 @@ static int csync_merge_algorithm_visitor(void *obj, void *data) {
     }
   }
 
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s, instruction: %s", cur->path, csync_instruction_str(cur->instruction));
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: %s", cur->path, csync_instruction_str(cur->instruction));
   return 0;
 }
 

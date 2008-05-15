@@ -74,15 +74,13 @@ static int csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fil
   }
 
   h = c_jhash64((uint8_t *) path, len, 0);
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Detect update for %s", path);
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, " hash:\t\t%lu", h);
 
   st = c_malloc(sizeof(csync_file_stat_t) + len + 1);
   if (st == NULL) {
     return -1;
   }
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, " stat size:\t%d", sizeof(csync_file_stat_t) + len + 1);
-
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - hash %lu, stat %d",
+      path, h, sizeof(csync_file_stat_t) + len + 1);
 
   /* check hardlink count */
   if (type == CSYNC_FTW_TYPE_FILE && fs->nlink > 1) {
@@ -125,7 +123,7 @@ static int csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fil
   }
 
 out:
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, " instruction:\t%s", csync_instruction_str(st->instruction));
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: %s", cur->path, csync_instruction_str(cur->instruction));
   SAFE_FREE(tmp);
   st->inode = fs->inode;
   st->mode = fs->mode;
@@ -167,7 +165,7 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs, 
         case S_IFREG:
         case S_IFLNK:
           /* TODO: handle symbolic links on unix systems */
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Detect update for file: %s", file);
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s", file);
 
           return csync_detect_update(ctx, file, fs, CSYNC_FTW_TYPE_FILE);
           break;
@@ -175,7 +173,7 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs, 
           break;
       }
     case CSYNC_FTW_FLAG_DIR: /* enter directory */
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Detect update for directory: %s", file);
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "directory: %s", file);
 
       return csync_detect_update(ctx, file, fs, CSYNC_FTW_TYPE_DIR);
     case CSYNC_FTW_FLAG_NSTAT: /* not statable file */
@@ -247,7 +245,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn, unsigned int dept
       flag = CSYNC_FTW_FLAG_NSTAT;
     }
 
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Walking %s", filename);
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "walk: %s", filename);
 
     /* Call walker function for each file */
     rc = fn(ctx, filename, fs, flag);
