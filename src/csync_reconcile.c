@@ -76,24 +76,30 @@ static int csync_merge_algorithm_visitor(void *obj, void *data) {
     switch (cur->instruction) {
       /* file on current replica is new */
       case CSYNC_INSTRUCTION_NEW:
-      /* file on current replica has been modified */
-      case CSYNC_INSTRUCTION_EVAL:
         switch (other->instruction) {
           /* file on other replica is new too */
           case CSYNC_INSTRUCTION_NEW:
             if (cur->modtime > other->modtime) {
               cur->instruction = CSYNC_INSTRUCTION_SYNC;
+              other->instruction = CSYNC_INSTRUCTION_NONE;
+            } else if (cur->modtime > other->modtime) {
+              cur->instruction = CSYNC_INSTRUCTION_NONE;
+              other->instruction = CSYNC_INSTRUCTION_SYNC;
+            } else {
+              /* file are equal */
+              cur->instruction = CSYNC_INSTRUCTION_NONE;
+              other->instruction = CSYNC_INSTRUCTION_NONE;
             }
-            cur->instruction = CSYNC_INSTRUCTION_NONE;
             break;
           /* file on other replica has changed too */
           case CSYNC_INSTRUCTION_EVAL:
             /* file on current replica is newer */
             if (cur->modtime > other->modtime) {
               cur->instruction = CSYNC_INSTRUCTION_SYNC;
+            } else {
+              /* file on opposite replica is newer */
+              cur->instruction = CSYNC_INSTRUCTION_REMOVE;
             }
-            /* file on opposite replica is newer */
-            cur->instruction = CSYNC_INSTRUCTION_REMOVE;
             break;
           /* file on the other replica has not been modified */
           case CSYNC_INSTRUCTION_NONE:
@@ -102,6 +108,36 @@ static int csync_merge_algorithm_visitor(void *obj, void *data) {
           default:
             break;
         }
+        break;
+      /* file on current replica has been modified */
+      case CSYNC_INSTRUCTION_EVAL:
+        switch (other->instruction) {
+          /* file on other replica is new too */
+          case CSYNC_INSTRUCTION_NEW:
+            if (cur->modtime > other->modtime) {
+              cur->instruction = CSYNC_INSTRUCTION_SYNC;
+            } else {
+              cur->instruction = CSYNC_INSTRUCTION_NONE;
+            }
+            break;
+          /* file on other replica has changed too */
+          case CSYNC_INSTRUCTION_EVAL:
+            /* file on current replica is newer */
+            if (cur->modtime > other->modtime) {
+              cur->instruction = CSYNC_INSTRUCTION_SYNC;
+            } else {
+              /* file on opposite replica is newer */
+              cur->instruction = CSYNC_INSTRUCTION_REMOVE;
+            }
+            break;
+          /* file on the other replica has not been modified */
+          case CSYNC_INSTRUCTION_NONE:
+            cur->instruction = CSYNC_INSTRUCTION_SYNC;
+            break;
+          default:
+            break;
+        }
+        break;
       default:
         break;
     }
