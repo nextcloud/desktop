@@ -345,12 +345,14 @@ int csync_reconcile(CSYNC *ctx) {
 
   /* Reconciliation for local replica */
   clock_gettime(CLOCK_REALTIME, &start);
+
   ctx->current = LOCAL_REPLICA;
   ctx->replica = ctx->local.type;
 
   rc = csync_reconcile_updates(ctx);
 
   clock_gettime(CLOCK_REALTIME, &finish);
+
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
             "Reconciliation for local replica took %.2f seconds visiting %llu files.",
             csync_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
@@ -361,12 +363,14 @@ int csync_reconcile(CSYNC *ctx) {
 
   /* Reconciliation for local replica */
   clock_gettime(CLOCK_REALTIME, &start);
+
   ctx->current = REMOTE_REPLCIA;
   ctx->replica = ctx->remote.type;
 
   rc = csync_reconcile_updates(ctx);
 
   clock_gettime(CLOCK_REALTIME, &finish);
+
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
             "Reconciliation for remote replica took %.2f seconds visiting %llu files.",
             csync_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
