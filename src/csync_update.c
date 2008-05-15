@@ -113,7 +113,7 @@ static int csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fil
     } else {
       /* we have an update! */
       if (fs->mtime > tmp->modtime) {
-        st->instruction = CSYNC_INSTRUCTION_SYNC;
+        st->instruction = CSYNC_INSTRUCTION_EVAL;
         goto out;
       }
       /* FIXME: check mode too? */
