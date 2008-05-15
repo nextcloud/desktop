@@ -98,7 +98,7 @@ static int csync_merge_algorithm_visitor(void *obj, void *data) {
               cur->instruction = CSYNC_INSTRUCTION_SYNC;
             } else {
               /* file on opposite replica is newer */
-              cur->instruction = CSYNC_INSTRUCTION_REMOVE;
+              cur->instruction = CSYNC_INSTRUCTION_NONE;
             }
             break;
           /* file on the other replica has not been modified */
@@ -127,7 +127,7 @@ static int csync_merge_algorithm_visitor(void *obj, void *data) {
               cur->instruction = CSYNC_INSTRUCTION_SYNC;
             } else {
               /* file on opposite replica is newer */
-              cur->instruction = CSYNC_INSTRUCTION_REMOVE;
+              cur->instruction = CSYNC_INSTRUCTION_NONE;
             }
             break;
           /* file on the other replica has not been modified */
