@@ -123,7 +123,6 @@ static int csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fil
   }
 
 out:
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: %s", st->path, csync_instruction_str(st->instruction));
   SAFE_FREE(tmp);
   st->inode = fs->inode;
   st->mode = fs->mode;
@@ -153,6 +152,7 @@ out:
     default:
       break;
   }
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: %s", st->path, csync_instruction_str(st->instruction));
 
   return 0;
 }
