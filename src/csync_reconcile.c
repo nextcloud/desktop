@@ -82,7 +82,7 @@ static int csync_merge_algorithm_visitor(void *obj, void *data) {
             if (cur->modtime > other->modtime) {
               cur->instruction = CSYNC_INSTRUCTION_SYNC;
               other->instruction = CSYNC_INSTRUCTION_NONE;
-            } else if (cur->modtime > other->modtime) {
+            } else if (cur->modtime < other->modtime) {
               cur->instruction = CSYNC_INSTRUCTION_NONE;
               other->instruction = CSYNC_INSTRUCTION_SYNC;
             } else {
