@@ -80,8 +80,6 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
   CSYNC *ctx;
   size_t len = 0;
 
-  printf("%f\n", 1E9);
-
   ctx = c_malloc(sizeof(CSYNC));
   if (ctx == NULL) {
     return -1;
