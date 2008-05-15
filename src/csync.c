@@ -280,6 +280,7 @@ out:
 }
 
 int csync_update(CSYNC *ctx) {
+  int rc = -1;
   time_t start, finish;
 
   if (ctx == NULL) {
@@ -289,12 +290,13 @@ int csync_update(CSYNC *ctx) {
 
   csync_memstat_check();
 
+  /* update detection for local replica */
   time(&start);
   ctx->current = LOCAL_REPLICA;
   ctx->replica = ctx->local.type;
-  if (csync_ftw(ctx, ctx->local.uri, csync_walker, MAX_DEPTH) < 0) {
-    return -1;
-  }
+
+  rc = csync_ftw(ctx, ctx->local.uri, csync_walker, MAX_DEPTH);
+
   time(&finish);
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
             "Update detection for local replica took %.2f seconds",
@@ -303,19 +305,29 @@ int csync_update(CSYNC *ctx) {
             "Collected files: %lu", c_rbtree_size(ctx->local.tree));
   csync_memstat_check();
 
+  if (rc < 0) {
+    return -1;
+  }
+
+  /* update detection for remote replica */
   time(&start);
   ctx->current = REMOTE_REPLCIA;
   ctx->replica = ctx->remote.type;
-  if (csync_ftw(ctx, ctx->remote.uri, csync_walker, MAX_DEPTH) < 0) {
-    return -1;
-  }
+
+  rc = csync_ftw(ctx, ctx->remote.uri, csync_walker, MAX_DEPTH);
+
   time(&finish);
+
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
             "Update detection for remote replica took %.2f seconds",
             difftime(finish, start));
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
             "Collected files: %lu", c_rbtree_size(ctx->remote.tree));
   csync_memstat_check();
+
+  if (rc < 0) {
+    return -1;
+  }
 
   ctx->status |= CSYNC_UPDATE;
 
