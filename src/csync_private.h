@@ -134,6 +134,7 @@ typedef struct csync_file_stat_s {
   uid_t uid;
   gid_t gid;
   mode_t mode;
+  off_t size;
   int nlink;
   time_t modtime;
   int type;

@@ -126,6 +126,7 @@ out:
   SAFE_FREE(tmp);
   st->inode = fs->inode;
   st->mode = fs->mode;
+  st->size = fs->size;
   st->modtime = fs->mtime;
   st->uid = fs->uid;
   st->gid = fs->gid;
