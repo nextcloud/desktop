@@ -339,6 +339,63 @@ int csync_vio_mkdir(CSYNC *ctx, const char *uri, mode_t mode) {
   return rc;
 }
 
+int csync_vio_mkdirs(CSYNC *ctx, const char *uri, mode_t mode) {
+  int tmp;
+  csync_vio_file_stat_t *st;
+
+  if (uri == NULL) {
+    errno = EINVAL;
+    return -1;
+  }
+
+  st = csync_vio_file_stat_new();
+  if (st == NULL) {
+    return -1;
+  }
+
+  if (csync_vio_stat(ctx, uri, st) == 0) {
+    if (! S_ISDIR(st->mode)) {
+      errno = ENOTDIR;
+      return -1;
+    }
+  }
+  csync_vio_file_stat_destroy(st);
+
+  tmp = strlen(uri);
+  while(tmp > 0 && uri[tmp - 1] == '/') --tmp;
+  while(tmp > 0 && uri[tmp - 1] != '/') --tmp;
+  while(tmp > 0 && uri[tmp - 1] == '/') --tmp;
+
+  if (tmp > 0) {
+    char suburi[tmp + 1];
+    memcpy(suburi, uri, tmp);
+    suburi[tmp] = '\0';
+
+    st = csync_vio_file_stat_new();
+    if (csync_vio_stat(ctx, suburi, st) == 0) {
+      if (! S_ISDIR(st->mode)) {
+        csync_vio_file_stat_destroy(st);
+        errno = ENOTDIR;
+        return -1;
+      }
+    } else if (errno != ENOENT) {
+      csync_vio_file_stat_destroy(st);
+      return -1;
+    } else if (csync_vio_mkdirs(ctx, suburi, mode) < 0) {
+      csync_vio_file_stat_destroy(st);
+      return -1;
+    }
+    csync_vio_file_stat_destroy(st);
+  }
+
+  tmp = csync_vio_mkdir(ctx, uri, mode);
+  if (errno == EEXIST) {
+    return 0;
+  }
+
+  return tmp;
+}
+
 int csync_vio_rmdir(CSYNC *ctx, const char *uri) {
   int rc = -1;
 

@@ -45,6 +45,7 @@ int csync_vio_closedir(CSYNC *ctx, csync_vio_handle_t *dhandle);
 csync_vio_file_stat_t *csync_vio_readdir(CSYNC *ctx, csync_vio_handle_t *dhandle);
 
 int csync_vio_mkdir(CSYNC *ctx, const char *uri, mode_t mode);
+int csync_vio_mkdirs(CSYNC *ctx, const char *uri, mode_t mode);
 int csync_vio_rmdir(CSYNC *ctx, const char *uri);
 
 int csync_vio_stat(CSYNC *ctx, const char *uri, csync_vio_file_stat_t *buf);
