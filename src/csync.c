@@ -39,6 +39,7 @@
 
 #include "csync_update.h"
 #include "csync_reconcile.h"
+#include "csync_propagate.h"
 
 #include "vio/csync_vio.h"
 
@@ -378,6 +379,56 @@ int csync_reconcile(CSYNC *ctx) {
   }
 
   ctx->status |= CSYNC_RECONCILE;
+
+  return 0;
+}
+
+int csync_propagate(CSYNC *ctx) {
+  int rc = -1;
+  struct timespec start, finish;
+
+  if (ctx == NULL) {
+    errno = EBADF;
+    return -1;
+  }
+
+  /* Reconciliation for local replica */
+  clock_gettime(CLOCK_REALTIME, &start);
+
+  ctx->current = LOCAL_REPLICA;
+  ctx->replica = ctx->local.type;
+
+  rc = csync_propapate_files(ctx);
+
+  clock_gettime(CLOCK_REALTIME, &finish);
+
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+            "Propagation for local replica took %.2f seconds visiting %llu files.",
+            csync_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
+
+  if (rc < 0) {
+    return -1;
+  }
+
+  /* Reconciliation for local replica */
+  clock_gettime(CLOCK_REALTIME, &start);
+
+  ctx->current = REMOTE_REPLCIA;
+  ctx->replica = ctx->remote.type;
+
+  rc = csync_propapate_files(ctx);
+
+  clock_gettime(CLOCK_REALTIME, &finish);
+
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+            "Propagation for remote replica took %.2f seconds visiting %llu files.",
+            csync_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
+
+  if (rc < 0) {
+    return -1;
+  }
+
+  ctx->status |= CSYNC_PROPAGATE;
 
   return 0;
 }

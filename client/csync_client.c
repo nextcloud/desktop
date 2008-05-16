@@ -172,6 +172,9 @@ int main(int argc, char **argv) {
   }
 
   if (arguments.propagate) {
+    if (csync_propagate(csync) < 0) {
+      goto err;
+    }
   }
 
   if (arguments.journal) {
