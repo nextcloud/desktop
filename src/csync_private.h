@@ -111,6 +111,11 @@ struct csync_s {
   int status;
 };
 
+enum csync_ftw_type_e {
+  CSYNC_FTW_TYPE_FILE,
+  CSYNC_FTW_TYPE_DIR
+};
+
 enum csync_instructions_e {
   CSYNC_INSTRUCTION_NONE,
   CSYNC_INSTRUCTION_EVAL,
