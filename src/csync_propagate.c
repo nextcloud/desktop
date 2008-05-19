@@ -103,7 +103,7 @@ static int csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   ctx->replica = srep;
   sfp = csync_vio_open(ctx, suri, O_RDONLY, 0);
   if (sfp == NULL) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, error: %s", suri, strerror(errno));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: open, error: %s", suri, strerror(errno));
     rc = 1;
     goto out;
   }
@@ -113,7 +113,7 @@ static int csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   csync_vio_mkdir(ctx, tdir, 0755);
   dfp = csync_vio_creat(ctx, turi, 0644);
   if (dfp == NULL) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, error: %s", duri, strerror(errno));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: creat, error: %s", duri, strerror(errno));
     rc = 1;
     goto out;
   }
@@ -136,6 +136,7 @@ static int csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     bwritten = csync_vio_write(ctx, dfp, buf, MAX_XFER_BUF_SIZE);
 
     if (bwritten < 0 || bread != bwritten) {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: write, error: bread = %d, bwritten = %d", duri, bread, bwritten);
       rc = 1;
       goto out;
     }
@@ -145,20 +146,20 @@ static int csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   ctx->replica = drep;
   tstat = csync_vio_file_stat_new();
   if (csync_vio_stat(ctx, turi, tstat) < 0) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, error: %s", duri, strerror(errno));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: stat, error: %s", duri, strerror(errno));
     rc = 1;
     goto out;
   }
 
   if (st->size != tstat->size) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s - error: incorrect filesize", turi);
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, error: incorrect filesize", turi);
     rc = 1;
     goto out;
   }
 
   /* override original file */
   if (csync_vio_rename(ctx, turi, duri) < 0) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, error: %s", duri, strerror(errno));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: rename, error: %s", duri, strerror(errno));
     rc = 1;
     goto out;
   }
