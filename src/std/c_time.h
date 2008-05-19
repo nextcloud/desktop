@@ -1,5 +1,5 @@
 /*
- * libcsync -- a library to sync a directory with another
+ * c_time - time functions
  *
  * Copyright (c) 2008      by Andreas Schneider <mail@cynapses.org>
  *
@@ -20,13 +20,36 @@
  * vim: ft=c.doxygen ts=2 sw=2 et cindent
  */
 
-#ifndef _CSYNC_TIME_H
-#define _CSYNC_TIME_H
+#ifndef _C_TIME_H
+#define _C_TIME_H
 
 #include <time.h>
 
-#include "csync_private.h"
+/**
+ * @brief Calculate time difference
+ *
+ * The c_tspecdiff function returns the time elapsed between time time1 and time
+ * time0 represented as timespec.
+ *
+ * @param time1 The time.
+ * @param time0 The time.
+ *
+ * @return time elapsed between time1 and time0.
+ */
+struct timespec c_tspecdiff(struct timespec time1, struct timespec time0);
 
-time_t csync_timediff(CSYNC *ctx);
+/**
+ * @brief Calculate time difference.
+ *
+ * The function returns the time elapsed between time clock1 and time
+ * clock0 represented as double (in seconds and milliseconds).
+ *
+ * @param clock1 The time.
+ * @param clock0 The time.
+ *
+ * @return time elapsed between clock1 and clock0 in seconds and
+ *         milliseconds.
+ */
+double c_secdiff(struct timespec clock1, struct timespec clock0);
 
-#endif /* _CSYNC_TIME_H */
+#endif /* _C_TIME_H */
