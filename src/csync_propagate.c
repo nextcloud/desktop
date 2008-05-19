@@ -161,6 +161,7 @@ static int csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   }
 
   /* override original file */
+  ctx->replica = drep;
   if (csync_vio_rename(ctx, turi, duri) < 0) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: rename, error: %s", duri, strerror(errno));
     rc = 1;
@@ -171,9 +172,11 @@ static int csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   times[0].tv_sec = times[1].tv_sec = st->modtime;
   times[0].tv_usec = times[1].tv_usec = 0;
 
+  ctx->replica = drep;
   csync_vio_utimes(ctx, duri, times);
 
   /* sync modes */
+  ctx->replica = drep;
   csync_vio_chmod(ctx, duri, st->mode);
 
   st->instruction = CSYNC_INSTRUCTION_NONE;
@@ -375,6 +378,9 @@ static int csync_propagation_visitor(void *obj, void *data) {
     case CSYNC_FTW_TYPE_FILE:
       switch (st->instruction) {
         case CSYNC_INSTRUCTION_NEW:
+          if (csync_new_file(ctx, st) < 0) {
+            goto err;
+          }
           break;
         case CSYNC_INSTRUCTION_SYNC:
           break;
