@@ -108,9 +108,12 @@ static int csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     goto out;
   }
 
+  /* create directories if needed */
+  ctx->replica = drep;
+  csync_vio_mkdirs(ctx, tdir, 0755);
+
   /* Open the destination file */
   ctx->replica = drep;
-  csync_vio_mkdir(ctx, tdir, 0755);
   dfp = csync_vio_creat(ctx, turi, 0644);
   if (dfp == NULL) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: creat, error: %s", duri, strerror(errno));
