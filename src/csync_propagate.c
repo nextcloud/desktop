@@ -36,9 +36,9 @@
 #include "csync_log.h"
 
 static int csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
-  enum csync_replica_e srep;
-  enum csync_replica_e drep;
-  enum csync_replica_e rep_bak;
+  enum csync_replica_e srep = -1;
+  enum csync_replica_e drep = -1;
+  enum csync_replica_e rep_bak = -1;
 
   char *suri = NULL;
   char *duri = NULL;
