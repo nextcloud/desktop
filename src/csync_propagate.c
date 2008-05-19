@@ -103,6 +103,11 @@ static int csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   ctx->replica = srep;
   sfp = csync_vio_open(ctx, suri, O_RDONLY, 0);
   if (sfp == NULL) {
+    if (errno == ENOMEM) {
+      rc = -1;
+    } else {
+      rc = 1;
+    }
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: open, error: %s", suri, strerror(errno));
     rc = 1;
     goto out;
@@ -116,8 +121,12 @@ static int csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   ctx->replica = drep;
   dfp = csync_vio_creat(ctx, turi, 0644);
   if (dfp == NULL) {
+    if (errno == ENOMEM) {
+      rc = -1;
+    } else {
+      rc = 1;
+    }
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: creat, error: %s", duri, strerror(errno));
-    rc = 1;
     goto out;
   }
 
@@ -149,8 +158,15 @@ static int csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   ctx->replica = drep;
   tstat = csync_vio_file_stat_new();
   if (csync_vio_stat(ctx, turi, tstat) < 0) {
+    switch (errno) {
+      case ENOMEM:
+        rc = -1;
+        break;
+      default:
+        rc = 1;
+        break;
+    }
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: stat, error: %s", duri, strerror(errno));
-    rc = 1;
     goto out;
   }
 
@@ -163,8 +179,15 @@ static int csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   /* override original file */
   ctx->replica = drep;
   if (csync_vio_rename(ctx, turi, duri) < 0) {
+    switch (errno) {
+      case ENOMEM:
+        rc = -1;
+        break;
+      default:
+        rc = 1;
+        break;
+    }
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: rename, error: %s", duri, strerror(errno));
-    rc = 1;
     goto out;
   }
 
@@ -222,6 +245,7 @@ static int csync_sync_file(CSYNC *ctx, csync_file_stat_t *st) {
 
 static int csync_remove_file(CSYNC *ctx, csync_file_stat_t *st) {
   char *uri = NULL;
+  int rc = -1;
 
   switch (ctx->current) {
     case LOCAL_REPLICA:
@@ -238,21 +262,36 @@ static int csync_remove_file(CSYNC *ctx, csync_file_stat_t *st) {
       break;
   }
 
-  csync_vio_unlink(ctx, uri);
+  if (csync_vio_unlink(ctx, uri) < 0) {
+    switch (errno) {
+      case ENOMEM:
+        rc = -1;
+        break;
+      default:
+        rc = 1;
+        break;
+    }
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: unlink, error: %s", uri, strerror(errno));
+    goto out;
+  }
 
   st->instruction = CSYNC_INSTRUCTION_NONE;
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: REMOVED", uri);
 
-  return 0;
+  rc = 0;
+out:
+  SAFE_FREE(uri);
+  return rc;
 }
 
 static int csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
   enum csync_replica_e src;
   enum csync_replica_e dest;
   enum csync_replica_e replica_bak;
-  char *path = NULL;
+  char *uri = NULL;
   struct timeval times[2];
+  int rc = -1;
 
   replica_bak = ctx->replica;
 
@@ -260,14 +299,14 @@ static int csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
     case LOCAL_REPLICA:
       src = ctx->local.type;
       dest = ctx->remote.type;
-      if (asprintf(&path, "%s/%s", ctx->remote.uri, st->path) < 0) {
+      if (asprintf(&uri, "%s/%s", ctx->remote.uri, st->path) < 0) {
         return -1;
       }
       break;
     case REMOTE_REPLCIA:
       src = ctx->remote.type;
       dest = ctx->local.type;
-      if (asprintf(&path, "%s/%s", ctx->local.uri, st->path) < 0) {
+      if (asprintf(&uri, "%s/%s", ctx->local.uri, st->path) < 0) {
         return -1;
       }
       break;
@@ -275,31 +314,44 @@ static int csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
       break;
   }
 
-  /* TODO: check return values and errno */
-
   ctx->replica = dest;
-  csync_vio_mkdirs(ctx, path, 0755);
+  if (csync_vio_mkdirs(ctx, uri, 0755) < 0) {
+    switch (errno) {
+      case ENOMEM:
+        rc = -1;
+        break;
+      default:
+        rc = 1;
+        break;
+    }
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "dir: %s, command: mkdirs, error: %s", uri, strerror(errno));
+    goto out;
+  }
 
   times[0].tv_sec = times[1].tv_sec = st->modtime;
   times[0].tv_usec = times[1].tv_usec = 0;
 
-  csync_vio_utimes(ctx, path, times);
-  csync_vio_chmod(ctx, path, st->mode);
+  csync_vio_utimes(ctx, uri, times);
+  csync_vio_chmod(ctx, uri, st->mode);
 
   st->instruction = CSYNC_INSTRUCTION_NONE;
 
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "dir: %s, instruction: CREATED", path);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "dir: %s, instruction: CREATED", uri);
   ctx->replica = replica_bak;
 
-  return 0;
+  rc = 0;
+out:
+  SAFE_FREE(uri);
+  return rc;
 }
 
 static int csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
   enum csync_replica_e src;
   enum csync_replica_e dest;
   enum csync_replica_e replica_bak;
-  char *path = NULL;
+  char *uri = NULL;
   struct timeval times[2];
+  int rc = -1;
 
   replica_bak = ctx->replica;
 
@@ -307,14 +359,14 @@ static int csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
     case LOCAL_REPLICA:
       src = ctx->local.type;
       dest = ctx->remote.type;
-      if (asprintf(&path, "%s/%s", ctx->remote.uri, st->path) < 0) {
+      if (asprintf(&uri, "%s/%s", ctx->remote.uri, st->path) < 0) {
         return -1;
       }
       break;
     case REMOTE_REPLCIA:
       src = ctx->remote.type;
       dest = ctx->local.type;
-      if (asprintf(&path, "%s/%s", ctx->local.uri, st->path) < 0) {
+      if (asprintf(&uri, "%s/%s", ctx->local.uri, st->path) < 0) {
         return -1;
       }
       break;
@@ -329,28 +381,43 @@ static int csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
   times[0].tv_sec = times[1].tv_sec = st->modtime;
   times[0].tv_usec = times[1].tv_usec = 0;
 
-  csync_vio_utimes(ctx, path, times);
-  csync_vio_chmod(ctx, path, st->mode);
+  csync_vio_utimes(ctx, uri, times);
+  if (csync_vio_chmod(ctx, uri, st->mode) < 0) {
+    switch (errno) {
+      case ENOMEM:
+        rc = -1;
+        break;
+      default:
+        rc = 1;
+        break;
+    }
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "dir: %s, command: mkdirs, error: %s", uri, strerror(errno));
+    goto out;
+  }
 
   st->instruction = CSYNC_INSTRUCTION_NONE;
 
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "dir: %s, instruction: SYNCED", path);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "dir: %s, instruction: SYNCED", uri);
   ctx->replica = replica_bak;
 
-  return 0;
+  rc = 0;
+out:
+  SAFE_FREE(uri);
+  return rc;
 }
 
 static int csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
-  char *path = NULL;
+  char *uri = NULL;
+  int rc = -1;
 
   switch (ctx->current) {
     case LOCAL_REPLICA:
-      if (asprintf(&path, "%s/%s", ctx->local.uri, st->path) < 0) {
+      if (asprintf(&uri, "%s/%s", ctx->local.uri, st->path) < 0) {
         return -1;
       }
       break;
     case REMOTE_REPLCIA:
-      if (asprintf(&path, "%s/%s", ctx->remote.uri, st->path) < 0) {
+      if (asprintf(&uri, "%s/%s", ctx->remote.uri, st->path) < 0) {
         return -1;
       }
       break;
@@ -358,13 +425,30 @@ static int csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
       break;
   }
 
-  csync_vio_rmdir(ctx, path);
+  if (csync_vio_rmdir(ctx, uri) < 0) {
+    switch (errno) {
+      case ENOMEM:
+        rc = -1;
+        break;
+      case ENOTEMPTY:
+        /* TODO: add to dir cleanup list */
+        break;
+      default:
+        rc = 1;
+        break;
+    }
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "dir: %s, command: rmdir, error: %s", uri, strerror(errno));
+    goto out;
+  }
 
   st->instruction = CSYNC_INSTRUCTION_NONE;
 
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "dir: %s, instruction: REMOVED", path);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "dir: %s, instruction: REMOVED", uri);
 
-  return 0;
+  rc = 0;
+out:
+  SAFE_FREE(uri);
+  return rc;
 }
 
 static int csync_propagation_file_visitor(void *obj, void *data) {
@@ -478,3 +562,4 @@ int csync_propapate_files(CSYNC *ctx) {
 
   return 0;
 }
+
