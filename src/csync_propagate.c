@@ -383,8 +383,14 @@ static int csync_propagation_visitor(void *obj, void *data) {
           }
           break;
         case CSYNC_INSTRUCTION_SYNC:
+          if (csync_sync_file(ctx, st) < 0) {
+            goto err;
+          }
           break;
         case CSYNC_INSTRUCTION_REMOVE:
+          if (csync_remove_file(ctx, st) < 0) {
+            goto err;
+          }
           break;
         default:
           break;
