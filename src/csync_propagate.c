@@ -367,7 +367,7 @@ static int csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
   return 0;
 }
 
-static int csync_propagation_visitor(void *obj, void *data) {
+static int csync_propagation_file_visitor(void *obj, void *data) {
   csync_file_stat_t *st = NULL;
   CSYNC *ctx = NULL;
 
@@ -397,6 +397,33 @@ static int csync_propagation_visitor(void *obj, void *data) {
       }
       break;
     case CSYNC_FTW_TYPE_DIR:
+      /*
+       * We have to walk over the files first. If you create or rename a file
+       * in a directory on unix. The modification time of the directory gets
+       * changed.
+       */
+      break;
+    default:
+      break;
+  }
+
+  return 0;
+err:
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "file: %s, error: %s", st->path, strerror(errno));
+  return -1;
+}
+
+static int csync_propagation_dir_visitor(void *obj, void *data) {
+  csync_file_stat_t *st = NULL;
+  CSYNC *ctx = NULL;
+
+  st = (csync_file_stat_t *) obj;
+  ctx = (CSYNC *) data;
+
+  switch(st->type) {
+    case CSYNC_FTW_TYPE_FILE:
+      break;
+    case CSYNC_FTW_TYPE_DIR:
       switch (st->instruction) {
         case CSYNC_INSTRUCTION_NEW:
           if (csync_new_dir(ctx, st) < 0) {
@@ -409,11 +436,9 @@ static int csync_propagation_visitor(void *obj, void *data) {
           }
           break;
         case CSYNC_INSTRUCTION_REMOVE:
-          /*
-           * We have to remove after the propagation,
-           * when the files have been removed and the
-           * dirs are emtpy.
-           */
+          if (csync_remove_dir(ctx, st) < 0) {
+            goto err;
+          }
           break;
         default:
           break;
@@ -443,7 +468,11 @@ int csync_propapate_files(CSYNC *ctx) {
       break;
   }
 
-  if (c_rbtree_walk(tree, (void *) ctx, csync_propagation_visitor) < 0) {
+  if (c_rbtree_walk(tree, (void *) ctx, csync_propagation_file_visitor) < 0) {
+    return -1;
+  }
+
+  if (c_rbtree_walk(tree, (void *) ctx, csync_propagation_dir_visitor) < 0) {
     return -1;
   }
 
