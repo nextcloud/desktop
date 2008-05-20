@@ -36,17 +36,20 @@ c_list_t *c_list_append(c_list_t *list, void *data) {
   c_list_t *new, *last;
 
   new = c_list_alloc();
+  if (new == NULL) {
+    return NULL;
+  }
   new->data = data;
 
-  if (list) {
+  if (list == NULL) {
+    return new;
+  } else {
     last = c_list_last(list);
 
     last->next = new;
     new->prev = last;
 
     return list;
-  } else {
-    return new;
   }
 }
 
@@ -57,9 +60,12 @@ c_list_t *c_list_prepend(c_list_t *list, void *data) {
   c_list_t *new, *first;
 
   new = c_list_alloc();
+  if (new == NULL) {
+    return NULL;
+  }
   new->data = data;
 
-  if (list) {
+  if (list != NULL) {
     first = c_list_first(list);
 
     first->prev = new;
@@ -89,6 +95,9 @@ c_list_t *c_list_insert(c_list_t *list, void *data, long position) {
   }
 
   new = c_list_alloc();
+  if (new == NULL) {
+    return NULL;
+  }
   new->data = data;
 
   /* List is not empty */
@@ -117,10 +126,13 @@ c_list_t *c_list_insert_sorted(c_list_t *list, void *data, c_list_compare_fn fun
   int cmp;
 
   new = c_list_alloc();
+  if (new == NULL) {
+    return NULL;
+  }
   new->data = data;
 
   /* list is empty */
-  if (!list) {
+  if (list == NULL) {
     return new;
   }
 
@@ -185,7 +197,7 @@ c_list_t *c_list_remove(c_list_t *list, void *data) {
 
   temp = list;
 
-  while (temp) {
+  while (temp != NULL) {
     if (temp->data != data) {
       temp = temp->next;
     } else {
@@ -204,7 +216,7 @@ c_list_t *c_list_remove(c_list_t *list, void *data) {
         list = list->next;
       }
 
-      free (temp);
+      SAFE_FREE(temp);
       break;
     }
   }
@@ -220,13 +232,13 @@ void c_list_free(c_list_t *list) {
     c_list_t *temp;
     list = c_list_last(list);
 
-    while (list->prev) {
+    while (list->prev != NULL) {
       temp = list;
       list = list->prev;
 
-      free (temp);
+      SAFE_FREE(temp);
     }
-    free(list);
+    SAFE_FREE(list);
   }
 }
 
@@ -234,10 +246,10 @@ void c_list_free(c_list_t *list) {
  * Gets the next element in a c_list.
  */
 c_list_t *c_list_next(c_list_t *list) {
-  if (list) {
-    return list->next;
-  } else {
+  if (list == NULL) {
     return NULL;
+  } else {
+    return list->next;
   }
 }
 
@@ -245,10 +257,10 @@ c_list_t *c_list_next(c_list_t *list) {
  * Gets the previous element in a c_list.
  */
 c_list_t *c_list_previous(c_list_t *list) {
-  if (list) {
-    return list->prev;
-  } else {
+  if (list == NULL) {
     return NULL;
+  } else {
+    return list->prev;
   }
 }
 
@@ -258,7 +270,7 @@ c_list_t *c_list_previous(c_list_t *list) {
 unsigned long c_list_length(c_list_t *list) {
   unsigned long length = 0;
 
-  if (list) {
+  if (list != NULL) {
     while (list->next) {
       length++;
       list = list->next;
@@ -273,7 +285,7 @@ unsigned long c_list_length(c_list_t *list) {
  */
 c_list_t *c_list_first(c_list_t *list) {
 
-  if (list) {
+  if (list != NULL) {
     while (list->prev) {
       list = list->prev;
     }
@@ -287,7 +299,7 @@ c_list_t *c_list_first(c_list_t *list) {
  */
 c_list_t *c_list_last(c_list_t *list) {
 
-  if (list) {
+  if (list != NULL) {
     while (list->next) {
       list = list->next;
     }
@@ -301,7 +313,7 @@ c_list_t *c_list_last(c_list_t *list) {
  */
 c_list_t *c_list_position(c_list_t *list, long position) {
 
-  while ((position-- > 0) && list) {
+  while ((position-- > 0) && list != NULL) {
     list = list->next;
   }
 
@@ -312,17 +324,17 @@ c_list_t *c_list_position(c_list_t *list, long position) {
  * Finds the element in a c_list_t which contains the given data.
  */
 c_list_t *c_list_find(c_list_t *list, void *data) {
-  if (list) {
-    while (list) {
-      if (list->data == data) {
-        break;
-      }
-      list = list->next;
-    }
-    return list;
+  if (list == NULL) {
+    return NULL;
   }
 
-  return NULL;
+  while (list != NULL) {
+    if (list->data == data) {
+      break;
+    }
+    list = list->next;
+  }
+  return list;
 }
 
 /*
@@ -332,8 +344,8 @@ c_list_t *c_list_find(c_list_t *list, void *data) {
 c_list_t *c_list_find_custom(c_list_t *list, void *data, c_list_compare_fn func) {
   int cmp;
 
-  if (list && func) {
-    while (list) {
+  if (list != NULL && func != NULL) {
+    while (list != NULL) {
       cmp = ((c_list_compare_fn) func) (list->data, data);
       if (cmp == 0) {
         return list;
@@ -346,27 +358,9 @@ c_list_t *c_list_find_custom(c_list_t *list, void *data, c_list_compare_fn func)
 }
 
 /*
- * Sorts the elements of a c_list.
- */
-c_list_t *c_list_sort(c_list_t *list, c_list_compare_fn func) {
-  c_list_t *second;
-  /* list is empty */
-  if (list == NULL) {
-    return NULL;
-  /* list has only one element */
-  } else if (list->next == NULL) {
-    return list;
-  } else {
-    /* split list */
-    second = c_list_split(list);
-    return c_list_merge(c_list_sort(list, func), c_list_sort(second, func), func);
-  }
-}
-
-/*
  * Internal used function to merge 2 lists using a compare function
  */
-c_list_t *c_list_merge(c_list_t *list1, c_list_t *list2, c_list_compare_fn func) {
+static c_list_t *c_list_merge(c_list_t *list1, c_list_t *list2, c_list_compare_fn func) {
   int cmp;
 
   /* lists are emty */
@@ -395,7 +389,7 @@ c_list_t *c_list_merge(c_list_t *list1, c_list_t *list2, c_list_compare_fn func)
 /*
  * Internally used function to split 2 lists.
  */
-c_list_t *c_list_split(c_list_t *list) {
+static c_list_t *c_list_split(c_list_t *list) {
   c_list_t *second;
 
   /* list is empty */
@@ -423,5 +417,24 @@ c_list_t *c_list_split(c_list_t *list) {
     }
     return second;
   }
+}
+
+/*
+ * Sorts the elements of a c_list.
+ */
+c_list_t *c_list_sort(c_list_t *list, c_list_compare_fn func) {
+  c_list_t *second;
+  /* list is empty */
+  if (list == NULL) {
+    return NULL;
+  /* list has only one element */
+  } else if (list->next == NULL) {
+    return list;
+  } else {
+    /* split list */
+    second = c_list_split(list);
+  }
+
+  return c_list_merge(c_list_sort(list, func), c_list_sort(second, func), func);
 }
 

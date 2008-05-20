@@ -270,27 +270,5 @@ c_list_t *c_list_find_custom(c_list_t *list, void *data, c_list_compare_fn func)
  */
 c_list_t *c_list_sort(c_list_t *list, c_list_compare_fn func);
 
-/**
- * Internal used function to merge 2 lists using a compare function
- *
- * @param list1         A pointer to c_list.
- *
- * @param list2         A pointer to c_list.
- *
- * @return              New start of the list, which may have changed, so make
- *                      sure you store the new value.
- */
-c_list_t *c_list_merge(c_list_t *list1, c_list_t *list2, c_list_compare_fn func);
-
-/**
- * Internally used function to split 2 lists.
- *
- * @param list          A pointer to c_list.
- *
- * @return              New start of the list, which may have changed, so make
- *                      sure you store the new value.
- */
-c_list_t *c_list_split(c_list_t *list);
-
 #endif /* _C_LIST_H */
 
