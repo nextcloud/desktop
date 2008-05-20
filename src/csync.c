@@ -495,7 +495,9 @@ int csync_destroy(CSYNC *ctx) {
   }
 
   c_rbtree_free(ctx->local.tree);
+  c_list_free(ctx->local.list);
   c_rbtree_free(ctx->remote.tree);
+  c_list_free(ctx->remote.list);
   SAFE_FREE(ctx->local.uri);
   SAFE_FREE(ctx->remote.uri);
   SAFE_FREE(ctx->options.config_dir);

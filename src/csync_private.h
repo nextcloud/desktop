@@ -84,12 +84,14 @@ struct csync_s {
   struct {
     char *uri;
     c_rbtree_t *tree;
+    c_list_t *list;
     enum csync_replica_e type;
   } local;
 
   struct {
     char *uri;
     c_rbtree_t *tree;
+    c_list_t *list;
     enum csync_replica_e type;
   } remote;
 

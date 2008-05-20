@@ -35,6 +35,15 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.propagator"
 #include "csync_log.h"
 
+static int _csync_cleanup_cmp(const void *a, const void *b) {
+  csync_file_stat_t *st_a, *st_b;
+
+  st_a = (csync_file_stat_t *) a;
+  st_b = (csync_file_stat_t *) b;
+
+  return strcmp(st_a->path, st_b->path);
+}
+
 static int csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   enum csync_replica_e srep = -1;
   enum csync_replica_e drep = -1;
@@ -407,6 +416,7 @@ out:
 }
 
 static int csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
+  c_list_t *list = NULL;
   char *uri = NULL;
   int rc = -1;
 
@@ -431,7 +441,25 @@ static int csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
         rc = -1;
         break;
       case ENOTEMPTY:
-        /* TODO: add to dir cleanup list */
+        switch (ctx->current) {
+          case LOCAL_REPLICA:
+            list = c_list_prepend(ctx->local.list, (void *) st);
+            if (list == NULL) {
+              return -1;
+            }
+            ctx->local.list = list;
+            break;
+          case REMOTE_REPLCIA:
+            list = c_list_prepend(ctx->remote.list, (void *) st);
+            if (list == NULL) {
+              return -1;
+            }
+            ctx->remote.list = list;
+            break;
+          default:
+            break;
+        }
+        rc = 0;
         break;
       default:
         rc = 1;
@@ -449,6 +477,55 @@ static int csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
 out:
   SAFE_FREE(uri);
   return rc;
+}
+
+static int _csync_propagation_cleanup(CSYNC *ctx) {
+  c_list_t *list = NULL;
+  c_list_t *walk = NULL;
+  char *uri = NULL;
+  char *dir = NULL;
+
+  switch (ctx->current) {
+    case LOCAL_REPLICA:
+      list = ctx->local.list;
+      uri = ctx->local.uri;
+      break;
+    case REMOTE_REPLCIA:
+      list = ctx->remote.list;
+      uri = ctx->remote.uri;
+      break;
+    default:
+      break;
+  }
+
+  if (list == NULL) {
+    return 0;
+  }
+
+  list = c_list_sort(list, _csync_cleanup_cmp);
+  if (list == NULL) {
+    return -1;
+  }
+
+  for (walk = c_list_last(list); walk != NULL; walk = c_list_prev(walk)) {
+    csync_file_stat_t *st = NULL;
+
+    st = (csync_file_stat_t *) walk->data;
+
+    if (asprintf(&dir, "%s/%s", uri, st->path) < 0) {
+      return -1;
+    }
+
+    csync_vio_rmdir(ctx, dir);
+
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "dir: %s, instruction: CLEANUP", dir);
+
+    st->instruction = CSYNC_INSTRUCTION_NONE;
+
+    SAFE_FREE(dir);
+  }
+
+  return 0;
 }
 
 static int csync_propagation_file_visitor(void *obj, void *data) {
@@ -557,6 +634,10 @@ int csync_propapate_files(CSYNC *ctx) {
   }
 
   if (c_rbtree_walk(tree, (void *) ctx, csync_propagation_dir_visitor) < 0) {
+    return -1;
+  }
+
+  if (_csync_propagation_cleanup(ctx) < 0) {
     return -1;
   }
 
