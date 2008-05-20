@@ -1,5 +1,6 @@
 #define _GNU_SOURCE /* asprintf */
 #include <string.h>
+#include <unistd.h>
 
 #include "support.h"
 
@@ -58,19 +59,31 @@ END_TEST
 START_TEST (check_csync_journal_close)
 {
   struct stat sb;
+  time_t modtime;
   /* journal not written */
   csync_journal_load(csync, testdb);
 
+  fail_unless(lstat(testdb, &sb) == 0, NULL);
+  modtime = sb.st_mtime;
+
   fail_unless(csync_journal_close(csync, testdb, 0) == 0, NULL);
 
-  fail_unless(lstat(testtmpdb, &sb) == 0, NULL);
+  fail_unless(lstat(testdb, &sb) == 0, NULL);
+  fail_unless(modtime == sb.st_mtime, NULL);
 
   csync_journal_load(csync, testdb);
+
+  fail_unless(lstat(testdb, &sb) == 0, NULL);
+  modtime = sb.st_mtime;
+
+  /* wait a sec or the modtime will be the same */
+  sleep(1);
 
   /* journal written */
   fail_unless(csync_journal_close(csync, testdb, 1) == 0, NULL);
 
-  fail_unless(lstat(testtmpdb, &sb) < 0, NULL);
+  fail_unless(lstat(testdb, &sb) == 0, NULL);
+  fail_unless(modtime < sb.st_mtime, NULL);
 }
 END_TEST
 

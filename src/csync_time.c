@@ -47,7 +47,10 @@ time_t csync_timediff(CSYNC *ctx) {
   ctx->replica = ctx->remote.type;
   dp = csync_vio_opendir(ctx, ctx->remote.uri);
   if (dp == NULL) {
-    return -1;
+    if (csync_vio_mkdir(ctx, ctx->remote.uri, 0755) < 0) {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Unable to create directory on remote uri: %s - %s", luri, strerror(errno));
+      return -1;
+    }
   }
   csync_vio_closedir(ctx, dp);
 
@@ -101,10 +104,15 @@ time_t csync_timediff(CSYNC *ctx) {
 
 out:
   csync_vio_file_stat_destroy(st);
+
+  ctx->replica = ctx->local.type;
   csync_vio_unlink(ctx, luri);
   SAFE_FREE(luri);
+
+  ctx->replica = ctx->remote.type;
   csync_vio_unlink(ctx, ruri);
   SAFE_FREE(ruri);
+
   return timediff;
 }
 

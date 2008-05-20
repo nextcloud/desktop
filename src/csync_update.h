@@ -40,11 +40,6 @@ enum csync_ftw_flags_e {
   CSYNC_FTW_FLAG_SLN		/* Symbolic link naming non-existing file.  */
 };
 
-enum csync_ftw_type_e {
-  CSYNC_FTW_TYPE_FILE,
-  CSYNC_FTW_TYPE_DIR
-};
-
 typedef int (*csync_walker_fn) (CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs, enum csync_ftw_flags_e flag);
 
 int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs, enum csync_ftw_flags_e flag);

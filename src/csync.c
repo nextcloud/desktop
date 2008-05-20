@@ -38,6 +38,8 @@
 #include "csync_util.h"
 
 #include "csync_update.h"
+#include "csync_reconcile.h"
+#include "csync_propagate.h"
 
 #include "vio/csync_vio.h"
 
@@ -48,7 +50,7 @@ static int key_cmp(const void *key, const void *data) {
   uint64_t a;
   csync_file_stat_t *b;
 
-  a = POINTER_TO_INT(key);
+  a = (uint64_t) key;
   b = (csync_file_stat_t *) data;
 
   if (a < b->phash) {
@@ -280,7 +282,8 @@ out:
 }
 
 int csync_update(CSYNC *ctx) {
-  time_t start, finish;
+  int rc = -1;
+  struct timespec start, finish;
 
   if (ctx == NULL) {
     errno = EBADF;
@@ -289,35 +292,143 @@ int csync_update(CSYNC *ctx) {
 
   csync_memstat_check();
 
-  time(&start);
+  /* update detection for local replica */
+  clock_gettime(CLOCK_REALTIME, &start);
   ctx->current = LOCAL_REPLICA;
   ctx->replica = ctx->local.type;
-  if (csync_ftw(ctx, ctx->local.uri, csync_walker, MAX_DEPTH) < 0) {
-    return -1;
-  }
-  time(&finish);
+
+  rc = csync_ftw(ctx, ctx->local.uri, csync_walker, MAX_DEPTH);
+
+  clock_gettime(CLOCK_REALTIME, &finish);
+
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Update detection for local replica took %.2f seconds",
-            difftime(finish, start));
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Collected files: %lu", c_rbtree_size(ctx->local.tree));
+            "Update detection for local replica took %.2f seconds walking %lu files.",
+            c_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
   csync_memstat_check();
 
-  time(&start);
+  if (rc < 0) {
+    return -1;
+  }
+
+  /* update detection for remote replica */
+  clock_gettime(CLOCK_REALTIME, &start);
   ctx->current = REMOTE_REPLCIA;
   ctx->replica = ctx->remote.type;
-  if (csync_ftw(ctx, ctx->remote.uri, csync_walker, MAX_DEPTH) < 0) {
-    return -1;
-  }
-  time(&finish);
+
+  rc = csync_ftw(ctx, ctx->remote.uri, csync_walker, MAX_DEPTH);
+
+  clock_gettime(CLOCK_REALTIME, &finish);
+
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Update detection for remote replica took %.2f seconds",
-            difftime(finish, start));
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Collected files: %lu", c_rbtree_size(ctx->remote.tree));
+            "Update detection for remote replica took %.2f seconds walking %lu files.",
+            c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
   csync_memstat_check();
 
+  if (rc < 0) {
+    return -1;
+  }
+
   ctx->status |= CSYNC_UPDATE;
+
+  return 0;
+}
+
+int csync_reconcile(CSYNC *ctx) {
+  int rc = -1;
+  struct timespec start, finish;
+
+  if (ctx == NULL) {
+    errno = EBADF;
+    return -1;
+  }
+
+  /* Reconciliation for local replica */
+  clock_gettime(CLOCK_REALTIME, &start);
+
+  ctx->current = LOCAL_REPLICA;
+  ctx->replica = ctx->local.type;
+
+  rc = csync_reconcile_updates(ctx);
+
+  clock_gettime(CLOCK_REALTIME, &finish);
+
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+            "Reconciliation for local replica took %.2f seconds visiting %llu files.",
+            c_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
+
+  if (rc < 0) {
+    return -1;
+  }
+
+  /* Reconciliation for local replica */
+  clock_gettime(CLOCK_REALTIME, &start);
+
+  ctx->current = REMOTE_REPLCIA;
+  ctx->replica = ctx->remote.type;
+
+  rc = csync_reconcile_updates(ctx);
+
+  clock_gettime(CLOCK_REALTIME, &finish);
+
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+            "Reconciliation for remote replica took %.2f seconds visiting %llu files.",
+            c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
+
+  if (rc < 0) {
+    return -1;
+  }
+
+  ctx->status |= CSYNC_RECONCILE;
+
+  return 0;
+}
+
+int csync_propagate(CSYNC *ctx) {
+  int rc = -1;
+  struct timespec start, finish;
+
+  if (ctx == NULL) {
+    errno = EBADF;
+    return -1;
+  }
+
+  /* Reconciliation for local replica */
+  clock_gettime(CLOCK_REALTIME, &start);
+
+  ctx->current = LOCAL_REPLICA;
+  ctx->replica = ctx->local.type;
+
+  rc = csync_propapate_files(ctx);
+
+  clock_gettime(CLOCK_REALTIME, &finish);
+
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+            "Propagation for local replica took %.2f seconds visiting %llu files.",
+            c_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
+
+  if (rc < 0) {
+    return -1;
+  }
+
+  /* Reconciliation for local replica */
+  clock_gettime(CLOCK_REALTIME, &start);
+
+  ctx->current = REMOTE_REPLCIA;
+  ctx->replica = ctx->remote.type;
+
+  rc = csync_propapate_files(ctx);
+
+  clock_gettime(CLOCK_REALTIME, &finish);
+
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+            "Propagation for remote replica took %.2f seconds visiting %llu files.",
+            c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
+
+  if (rc < 0) {
+    return -1;
+  }
+
+  ctx->status |= CSYNC_PROPAGATE;
 
   return 0;
 }
@@ -330,7 +441,7 @@ static void tree_destructor(void *data) {
 }
 
 int csync_destroy(CSYNC *ctx) {
-  time_t start, finish;
+  struct timespec start, finish;
   char *lock = NULL;
   char *journal = NULL;
   int jwritten = 0;
@@ -343,14 +454,14 @@ int csync_destroy(CSYNC *ctx) {
   csync_vio_shutdown(ctx);
 
   if (ctx->journal.db != NULL) {
-    if (ctx->status == CSYNC_DONE) {
-      time(&start);
+    if (ctx->status >= CSYNC_DONE) {
+      clock_gettime(CLOCK_REALTIME, &start);
       if (csync_journal_write(ctx) == 0) {
         jwritten = 1;
-        time(&finish);
+        clock_gettime(CLOCK_REALTIME, &finish);
         CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
             "Writing the journal to disk took %.2f seconds",
-            difftime(finish, start));
+            c_secdiff(finish, start));
       } else {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to write journal: %s",
             strerror(errno));
@@ -384,7 +495,9 @@ int csync_destroy(CSYNC *ctx) {
   }
 
   c_rbtree_free(ctx->local.tree);
+  c_list_free(ctx->local.list);
   c_rbtree_free(ctx->remote.tree);
+  c_list_free(ctx->remote.list);
   SAFE_FREE(ctx->local.uri);
   SAFE_FREE(ctx->remote.uri);
   SAFE_FREE(ctx->options.config_dir);
@@ -401,16 +514,99 @@ const char *csync_version(void) {
   return CSYNC_VERSION_STRING;
 }
 
-void csync_set_module_auth_callback(CSYNC *ctx, csync_module_auth_callback cb) {
-  if (ctx->status & CSYNC_INIT) {
-    fprintf(stderr, "This function must be called before initialization");
-    exit(1);
+int csync_add_exclude_list(CSYNC *ctx, const char *path) {
+  if (ctx == NULL || path == NULL) {
+    return -1;
   }
-  ctx->auth_callback = cb;
+
+  return csync_exclude_load(ctx, path);
 }
 
-void csync_set_status(CSYNC *ctx, int status) {
+char *csync_get_config_dir(CSYNC *ctx) {
+  if (ctx == NULL) {
+    return NULL;
+  }
+
+  return ctx->options.config_dir;
+}
+
+int csync_set_config_dir(CSYNC *ctx, const char *path) {
+  if (ctx == NULL || path == NULL) {
+    return -1;
+  }
+
+  SAFE_FREE(ctx->options.config_dir);
+  ctx->options.config_dir = c_strdup(path);
+  if (ctx->options.config_dir == NULL) {
+    return -1;
+  }
+
+  return 0;
+}
+
+int csync_remove_config_dir(CSYNC *ctx) {
+  char *path = NULL;
+
+  if (asprintf(&path, "%s/%s", ctx->options.config_dir, CSYNC_LOG_FILE) < 0) {
+    return -1;
+  }
+  unlink(path);
+  SAFE_FREE(path);
+
+  if (asprintf(&path, "%s/%s", ctx->options.config_dir, CSYNC_CONF_FILE) < 0) {
+    return -1;
+  }
+  unlink(path);
+  SAFE_FREE(path);
+
+  if (asprintf(&path, "%s/%s", ctx->options.config_dir, CSYNC_CONF_FILE) < 0) {
+    return -1;
+  }
+  unlink(path);
+  SAFE_FREE(path);
+
+  if (asprintf(&path, "%s/%s", ctx->options.config_dir, CSYNC_JOURNAL_FILE) < 0) {
+    return -1;
+  }
+  unlink(path);
+  SAFE_FREE(path);
+
+  unlink(ctx->options.config_dir);
+
+  return 0;
+}
+
+int csync_set_module_auth_callback(CSYNC *ctx, csync_module_auth_callback cb) {
+  if (ctx == NULL || cb == NULL) {
+    return -1;
+  }
+
+  if (ctx->status & CSYNC_INIT) {
+    fprintf(stderr, "This function must be called before initialization.");
+    return -1;
+  }
+
+  ctx->auth_callback = cb;
+
+  return 0;
+}
+
+csync_module_auth_callback csync_get_module_auth_callback(CSYNC *ctx) {
+  if (ctx == NULL) {
+    return NULL;
+  }
+
+  return ctx->auth_callback;
+}
+
+int csync_set_status(CSYNC *ctx, int status) {
+  if (ctx == NULL || status < 0) {
+    return -1;
+  }
+
   ctx->status = status;
+
+  return 0;
 }
 
 int csync_get_status(CSYNC *ctx) {

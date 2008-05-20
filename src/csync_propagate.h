@@ -1,5 +1,5 @@
 /*
- * cynapses libc functions
+ * libcsync -- a library to sync a directory with another
  *
  * Copyright (c) 2008      by Andreas Schneider <mail@cynapses.org>
  *
@@ -17,15 +17,12 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * vim: ts=2 sw=2 et cindent
+ * vim: ft=c.doxygen ts=2 sw=2 et cindent
  */
 
-#include "c_macro.h"
-#include "c_alloc.h"
-#include "c_dir.h"
-#include "c_file.h"
-#include "c_list.h"
-#include "c_path.h"
-#include "c_rbtree.h"
-#include "c_string.h"
-#include "c_time.h"
+#ifndef _CSYNC_PROPAGATE_H
+#define _CSYNC_PROPAGATE_H
+
+int csync_propapate_files(CSYNC *ctx);
+
+#endif /* _CSYNC_PROPAGATE_H */

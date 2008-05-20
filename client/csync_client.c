@@ -29,6 +29,11 @@
 
 #include "csync_auth.h"
 
+enum {
+  KEY_DUMMY = 129,
+  KEY_EXCLUDE_FILE
+};
+
 const char *argp_program_version = "csync commandline client 0.42";
 const char *argp_program_bug_address = "<csync-devel@csync.org>";
 
@@ -40,6 +45,14 @@ static char args_doc[] = "SOURCE DESTINATION";
 
 /* The options we understand. */
 static struct argp_option options[] = {
+  {
+    .name  = "backup",
+    .key   = 'b',
+    .arg   = NULL,
+    .flags = 0,
+    .doc   = "Run csync in backup mode. This means that you can make a backup or sync two directories for example",
+    .group = 0
+  },
   {
     .name  = "update",
     .key   = 'u',
@@ -58,10 +71,18 @@ static struct argp_option options[] = {
   },
   {
     .name  = "journal",
-    .key   ='j',
+    .key   = 'j',
     .arg   = NULL,
     .flags = 0,
-    .doc   = "Testing only",
+    .doc   = "Run update detection and write the journal (TESTING ONLY!)",
+    .group = 0
+  },
+  {
+    .name  = "exclude-file",
+    .key   = KEY_EXCLUDE_FILE,
+    .arg   = "<file>",
+    .flags = 0,
+    .doc   = "Add an additional exclude file",
     .group = 0
   },
   {NULL, 0, 0, 0, NULL, 0}
@@ -70,6 +91,8 @@ static struct argp_option options[] = {
 /* Used by main to communicate with parse_opt. */
 struct argument_s {
   char *args[2]; /* SOURCE and DESTINATION */
+  char *exclude_file;
+  int backup;
   int journal;
   int update;
   int reconcile;
@@ -84,6 +107,8 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state) {
   struct argument_s *arguments = state->input;
 
   switch (key) {
+    case 'b':
+      arguments->backup = 1;
     case 'j':
       arguments->journal = 1;
       arguments->update = 1;
@@ -101,6 +126,9 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state) {
       arguments->update = 1;
       arguments->reconcile = 1;
       arguments->propagate = 0;
+      break;
+    case KEY_EXCLUDE_FILE:
+      arguments->exclude_file = strdup(arg);
       break;
     case ARGP_KEY_ARG:
       if (state->arg_num >= 2) {
@@ -138,6 +166,8 @@ int main(int argc, char **argv) {
   struct argument_s arguments;
 
   /* Default values. */
+  arguments.exclude_file = NULL;
+  arguments.backup = 0;
   arguments.journal = 0;
   arguments.update = 1;
   arguments.reconcile = 1;
@@ -156,25 +186,54 @@ int main(int argc, char **argv) {
 
   csync_set_module_auth_callback(csync, csync_auth_fn);
   fprintf(stdout,"\n");
-  csync_init(csync);
-  printf("Version: %s\n", csync_version());
+
+  if (csync_init(csync) < 0) {
+    goto err;
+  }
+
+  if (arguments.backup) {
+    if (csync_set_config_dir(csync, "/tmp/csync_backup") < 0) {
+      goto err;
+    }
+  }
+
+  if (arguments.exclude_file != NULL) {
+    if (csync_add_exclude_list(csync, arguments.exclude_file) < 0) {
+      goto err;
+    }
+  }
 
   if (arguments.update) {
-    csync_update(csync);
+    if (csync_update(csync) < 0) {
+      goto err;
+    }
   }
 
   if (arguments.reconcile) {
+    if (csync_reconcile(csync) < 0) {
+      goto err;
+    }
   }
 
   if (arguments.propagate) {
+    if (csync_propagate(csync) < 0) {
+      goto err;
+    }
   }
 
   if (arguments.journal) {
     csync_set_status(csync, 0xFFFF);
   }
 
+  csync_remove_config_dir(csync);
+
   csync_destroy(csync);
 
   return 0;
+err:
+  perror("csync");
+  csync_destroy(csync);
+
+  return 1;
 }
 

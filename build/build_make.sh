@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Last Change: 2008-05-09 11:28:03
+# Last Change: 2008-05-19 11:03:07
 #
 # Script to build csync on UNIX.
 #
@@ -109,7 +109,7 @@ while test -n "$1"; do
 	esac
 done
 
-if [ ${DO_MAKE} -eq 1 ]; then
+if [ ${DOMAKE} -eq 1 ]; then
 	OPTIONS="${OPTIONS} -DCMAKE_BUILD_TYPE=${BUILD_TYPE}"
 fi
 

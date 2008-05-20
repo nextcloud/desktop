@@ -12,6 +12,7 @@
 #include "vio/csync_vio.h"
 
 #define CSYNC_TEST_DIR "/tmp/csync/"
+#define CSYNC_TEST_DIRS "/tmp/csync/this/is/a/mkdirs/test"
 #define CSYNC_TEST_FILE "/tmp/csync/file.txt"
 
 CSYNC *csync;
@@ -66,6 +67,30 @@ START_TEST (check_csync_vio_mkdir)
   fail_unless(csync_vio_mkdir(csync, CSYNC_TEST_DIR, 0755) == 0, NULL);
 
   fail_unless(lstat(CSYNC_TEST_DIR, &sb) == 0, NULL);
+
+  rmdir(CSYNC_TEST_DIR);
+}
+END_TEST
+
+START_TEST (check_csync_vio_mkdirs)
+{
+  struct stat sb;
+  fail_unless(csync_vio_mkdirs(csync, CSYNC_TEST_DIRS, 0755) == 0, NULL);
+
+  fail_unless(lstat(CSYNC_TEST_DIRS, &sb) == 0, NULL);
+
+  rmdir(CSYNC_TEST_DIR);
+}
+END_TEST
+
+START_TEST (check_csync_vio_mkdirs_some_exist)
+{
+  struct stat sb;
+
+  mkdir("/tmp/csync/this", 0755);
+  fail_unless(csync_vio_mkdirs(csync, CSYNC_TEST_DIRS, 0755) == 0, NULL);
+
+  fail_unless(lstat(CSYNC_TEST_DIRS, &sb) == 0, NULL);
 
   rmdir(CSYNC_TEST_DIR);
 }
@@ -352,6 +377,8 @@ static Suite *make_csync_vio_suite(void) {
   create_case_fixture(s, "check_csync_vio_load", check_csync_vio_load, setup, teardown);
 
   create_case_fixture(s, "check_csync_vio_mkdir", check_csync_vio_mkdir, setup, teardown_dir);
+  create_case_fixture(s, "check_csync_vio_mkdirs", check_csync_vio_mkdirs, setup, teardown_dir);
+  create_case_fixture(s, "check_csync_vio_mkdirs_some_exist", check_csync_vio_mkdirs_some_exist, setup, teardown_dir);
   create_case_fixture(s, "check_csync_vio_rmdir", check_csync_vio_rmdir, setup, teardown_dir);
   create_case_fixture(s, "check_csync_vio_opendir", check_csync_vio_opendir, setup_dir, teardown_dir);
   create_case_fixture(s, "check_csync_vio_opendir_perm", check_csync_vio_opendir_perm, setup, teardown_dir);

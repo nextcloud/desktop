@@ -84,12 +84,14 @@ struct csync_s {
   struct {
     char *uri;
     c_rbtree_t *tree;
+    c_list_t *list;
     enum csync_replica_e type;
   } local;
 
   struct {
     char *uri;
     c_rbtree_t *tree;
+    c_list_t *list;
     enum csync_replica_e type;
   } remote;
 
@@ -111,6 +113,11 @@ struct csync_s {
   int status;
 };
 
+enum csync_ftw_type_e {
+  CSYNC_FTW_TYPE_FILE,
+  CSYNC_FTW_TYPE_DIR
+};
+
 enum csync_instructions_e {
   CSYNC_INSTRUCTION_NONE,
   CSYNC_INSTRUCTION_EVAL,
@@ -129,6 +136,7 @@ typedef struct csync_file_stat_s {
   uid_t uid;
   gid_t gid;
   mode_t mode;
+  off_t size;
   int nlink;
   time_t modtime;
   int type;

@@ -21,9 +21,11 @@ set(cstdlib_SRCS
   c_alloc.c
   c_dir.c
   c_file.c
+  c_list.c
   c_path.c
   c_rbtree.c
   c_string.c
+  c_time.c
 )
 
 include_directories(
