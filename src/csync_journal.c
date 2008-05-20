@@ -163,17 +163,20 @@ int csync_journal_close(CSYNC *ctx, const char *journal, int jwritten) {
   /* close the temporary database */
   sqlite3_close(ctx->journal.db);
 
+  if (asprintf(&journal_tmp, "%s.ctmp", journal) < 0) {
+    return -1;
+  }
+
   /* if we successfully synchronized, overwrite the original journal */
   if (jwritten) {
-    if (asprintf(&journal_tmp, "%s.ctmp", journal) < 0) {
-      return -1;
-    }
     rc = c_copy(journal_tmp, journal, 0644);
     if (rc == 0) {
       unlink(journal_tmp);
     }
-    SAFE_FREE(journal_tmp);
+  } else {
+    unlink(journal_tmp);
   }
+  SAFE_FREE(journal_tmp);
 
   return rc;
 }
