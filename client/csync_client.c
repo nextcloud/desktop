@@ -29,6 +29,11 @@
 
 #include "csync_auth.h"
 
+enum {
+  KEY_DUMMY = 129,
+  KEY_EXCLUDE_FILE
+};
+
 const char *argp_program_version = "csync commandline client 0.42";
 const char *argp_program_bug_address = "<csync-devel@csync.org>";
 
@@ -58,10 +63,18 @@ static struct argp_option options[] = {
   },
   {
     .name  = "journal",
-    .key   ='j',
+    .key   = 'j',
     .arg   = NULL,
     .flags = 0,
-    .doc   = "Testing only",
+    .doc   = "Run update detection and write the journal (TESTING ONLY!)",
+    .group = 0
+  },
+  {
+    .name  = "exclude-file",
+    .key   = KEY_EXCLUDE_FILE,
+    .arg   = "<file>",
+    .flags = 0,
+    .doc   = "Add an additional exclude file",
     .group = 0
   },
   {NULL, 0, 0, 0, NULL, 0}
@@ -70,6 +83,7 @@ static struct argp_option options[] = {
 /* Used by main to communicate with parse_opt. */
 struct argument_s {
   char *args[2]; /* SOURCE and DESTINATION */
+  char *exclude_file;
   int journal;
   int update;
   int reconcile;
@@ -101,6 +115,9 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state) {
       arguments->update = 1;
       arguments->reconcile = 1;
       arguments->propagate = 0;
+      break;
+    case KEY_EXCLUDE_FILE:
+      arguments->exclude_file = strdup(arg);
       break;
     case ARGP_KEY_ARG:
       if (state->arg_num >= 2) {
@@ -156,8 +173,15 @@ int main(int argc, char **argv) {
 
   csync_set_module_auth_callback(csync, csync_auth_fn);
   fprintf(stdout,"\n");
-  csync_init(csync);
-  printf("Version: %s\n", csync_version());
+  if (csync_init(csync) < 0) {
+    goto err;
+  }
+
+  if (arguments.exclude_file != NULL) {
+    if (csync_add_exclude_list(csync, arguments.exclude_file) < 0) {
+      goto err;
+    }
+  }
 
   if (arguments.update) {
     if (csync_update(csync) < 0) {

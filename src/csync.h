@@ -127,9 +127,11 @@ int csync_destroy(CSYNC *ctx);
  */
 const char *csync_version(void);
 
+int csync_add_exclude_list(CSYNC *ctx, const char *path);
+csync_module_auth_callback csync_get_module_auth_callback(CSYNC *ctx);
 void csync_set_module_auth_callback(CSYNC *ctx, csync_module_auth_callback cb);
-void csync_set_status(CSYNC *ctx, int status);
 int csync_get_status(CSYNC *ctx);
+void csync_set_status(CSYNC *ctx, int status);
 
 #ifdef __cplusplus
 }

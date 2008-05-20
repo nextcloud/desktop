@@ -514,12 +514,20 @@ const char *csync_version(void) {
   return CSYNC_VERSION_STRING;
 }
 
+int csync_add_exclude_list(CSYNC *ctx, const char *path) {
+  return csync_exclude_load(ctx, path);
+}
+
 void csync_set_module_auth_callback(CSYNC *ctx, csync_module_auth_callback cb) {
   if (ctx->status & CSYNC_INIT) {
-    fprintf(stderr, "This function must be called before initialization");
+    fprintf(stderr, "This function must be called before initialization.");
     exit(1);
   }
   ctx->auth_callback = cb;
+}
+
+csync_module_auth_callback csync_get_module_auth_callback(CSYNC *ctx) {
+  return ctx->auth_callback;
 }
 
 void csync_set_status(CSYNC *ctx, int status) {
