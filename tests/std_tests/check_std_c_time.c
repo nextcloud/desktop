@@ -2,7 +2,7 @@
 
 #include "support.h"
 
-#include "std/c_path.h"
+#include "std/c_time.h"
 
 START_TEST (check_c_tspecdiff)
 {
