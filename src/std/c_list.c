@@ -33,7 +33,8 @@
  * Adds a new element on to the end of the list.
  */
 c_list_t *c_list_append(c_list_t *list, void *data) {
-  c_list_t *new, *last;
+  c_list_t *new = NULL;
+  c_list_t *last = NULL;
 
   new = c_list_alloc();
   if (new == NULL) {
@@ -57,7 +58,8 @@ c_list_t *c_list_append(c_list_t *list, void *data) {
  * Adds a new element on at the beginning of the list.
  */
 c_list_t *c_list_prepend(c_list_t *list, void *data) {
-  c_list_t *new, *first;
+  c_list_t *new = NULL;
+  c_list_t *first = NULL;
 
   new = c_list_alloc();
   if (new == NULL) {
@@ -79,7 +81,8 @@ c_list_t *c_list_prepend(c_list_t *list, void *data) {
  * Inserts a new element into the list at the given position.
  */
 c_list_t *c_list_insert(c_list_t *list, void *data, long position) {
-  c_list_t *new, *temp;
+  c_list_t *new = NULL;
+  c_list_t *temp = NULL;
 
   /* Handle wrong values for position */
   if (position < 0) {
@@ -122,7 +125,8 @@ c_list_t *c_list_insert(c_list_t *list, void *data, long position) {
  * determine its position.
  */
 c_list_t *c_list_insert_sorted(c_list_t *list, void *data, c_list_compare_fn func) {
-  c_list_t *new, *temp;
+  c_list_t *new = NULL;
+  c_list_t *temp = NULL;
   int cmp;
 
   new = c_list_alloc();
@@ -173,7 +177,7 @@ c_list_t *c_list_insert_sorted(c_list_t *list, void *data, c_list_compare_fn fun
  * Allocates space for one c_list_t element.
  */
 c_list_t *c_list_alloc(void) {
-  c_list_t *list;
+  c_list_t *list = NULL;
 
   list = c_malloc(sizeof(c_list_t));
   if (list == NULL) {
@@ -193,7 +197,7 @@ c_list_t *c_list_alloc(void) {
  * only the first is removed.
  */
 c_list_t *c_list_remove(c_list_t *list, void *data) {
-  c_list_t *temp;
+  c_list_t *temp = NULL;
 
   temp = list;
 
@@ -228,18 +232,21 @@ c_list_t *c_list_remove(c_list_t *list, void *data) {
  * Frees all elements from a c_list.
  */
 void c_list_free(c_list_t *list) {
-  if (list) {
-    c_list_t *temp;
-    list = c_list_last(list);
+  c_list_t *temp = NULL;
 
-    while (list->prev != NULL) {
-      temp = list;
-      list = list->prev;
-
-      SAFE_FREE(temp);
-    }
-    SAFE_FREE(list);
+  if (list == NULL) {
+    return;
   }
+
+  list = c_list_last(list);
+
+  while (list->prev != NULL) {
+    temp = list;
+    list = list->prev;
+
+    SAFE_FREE(temp);
+  }
+  SAFE_FREE(list);
 }
 
 /*
@@ -284,7 +291,6 @@ unsigned long c_list_length(c_list_t *list) {
  * Gets the first element in a c_list
  */
 c_list_t *c_list_first(c_list_t *list) {
-
   if (list != NULL) {
     while (list->prev) {
       list = list->prev;
@@ -298,7 +304,6 @@ c_list_t *c_list_first(c_list_t *list) {
  * Gets the last element in a c_list
  */
 c_list_t *c_list_last(c_list_t *list) {
-
   if (list != NULL) {
     while (list->next) {
       list = list->next;
@@ -312,7 +317,6 @@ c_list_t *c_list_last(c_list_t *list) {
  * Gets the element at the given positon in a c_list
  */
 c_list_t *c_list_position(c_list_t *list, long position) {
-
   while ((position-- > 0) && list != NULL) {
     list = list->next;
   }
@@ -390,18 +394,16 @@ static c_list_t *c_list_merge(c_list_t *list1, c_list_t *list2, c_list_compare_f
  * Internally used function to split 2 lists.
  */
 static c_list_t *c_list_split(c_list_t *list) {
-  c_list_t *second;
+  c_list_t *second = NULL;
 
   /* list is empty */
   if (list == NULL) {
     return NULL;
-
-  /* list has only 1 element */
   } else if (list->next == NULL) {
+  /* list has only 1 element */
     return NULL;
-
-  /* split */
   } else {
+  /* split */
     second = list->next;
     list->next = second->next;
     /* is last element */
@@ -423,12 +425,13 @@ static c_list_t *c_list_split(c_list_t *list) {
  * Sorts the elements of a c_list.
  */
 c_list_t *c_list_sort(c_list_t *list, c_list_compare_fn func) {
-  c_list_t *second;
+  c_list_t *second = NULL;
+
   /* list is empty */
   if (list == NULL) {
     return NULL;
-  /* list has only one element */
   } else if (list->next == NULL) {
+    /* list has only one element */
     return list;
   } else {
     /* split list */
