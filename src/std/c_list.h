@@ -165,16 +165,6 @@ c_list_t *c_list_remove(c_list_t *list, void *data);
 void c_list_free(c_list_t *list);
 
 /**
- * Gets the previous element in a c_list.
- *
- * @param               An element in a c_list.
- *
- * @return              The previous element, or NULL if there are no more
- *                      elements.
- */
-c_list_t *c_list_previous(c_list_t *list);
-
-/**
  * Gets the next element in a c_list.
  *
  * @param               An element in a c_list.
@@ -183,6 +173,16 @@ c_list_t *c_list_previous(c_list_t *list);
  *                      elements.
  */
 c_list_t *c_list_next(c_list_t *list);
+
+/**
+ * Gets the previous element in a c_list.
+ *
+ * @param               An element in a c_list.
+ *
+ * @return              The previous element, or NULL if there are no more
+ *                      elements.
+ */
+c_list_t *c_list_prev(c_list_t *list);
 
 /**
  * Gets the number of elements in a c_list

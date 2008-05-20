@@ -267,7 +267,7 @@ c_list_t *c_list_next(c_list_t *list) {
 /*
  * Gets the previous element in a c_list.
  */
-c_list_t *c_list_previous(c_list_t *list) {
+c_list_t *c_list_prev(c_list_t *list) {
   if (list == NULL) {
     return NULL;
   } else {
