@@ -33,7 +33,7 @@ else (SQLITE3_LIBRARIES AND SQLITE3_INCLUDE_DIRS)
     NAMES
       sqlite3.h
     PATHS
-      ${__SQLITE3_INCLUDEDIR}
+      ${_SQLITE3_INCLUDEDIR}
       /usr/include
       /usr/local/include
       /opt/local/include
