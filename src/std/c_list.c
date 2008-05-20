@@ -199,6 +199,10 @@ c_list_t *c_list_alloc(void) {
 c_list_t *c_list_remove(c_list_t *list, void *data) {
   c_list_t *temp = NULL;
 
+  if (list == NULL || data == NULL) {
+    return NULL;
+  }
+
   temp = list;
 
   while (temp != NULL) {
@@ -275,13 +279,15 @@ c_list_t *c_list_previous(c_list_t *list) {
  * Gets the number of elements in a c_list
  */
 unsigned long c_list_length(c_list_t *list) {
-  unsigned long length = 0;
+  unsigned long length = 1;
 
-  if (list != NULL) {
-    while (list->next) {
-      length++;
-      list = list->next;
-    }
+  if (list == NULL) {
+    return 0;
+  }
+
+  while (list->next) {
+    length++;
+    list = list->next;
   }
 
   return length;
