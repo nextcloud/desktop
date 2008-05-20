@@ -522,20 +522,91 @@ int csync_add_exclude_list(CSYNC *ctx, const char *path) {
   return csync_exclude_load(ctx, path);
 }
 
-void csync_set_module_auth_callback(CSYNC *ctx, csync_module_auth_callback cb) {
+char *csync_get_config_dir(CSYNC *ctx) {
+  if (ctx == NULL) {
+    return NULL;
+  }
+
+  return ctx->options.config_dir;
+}
+
+int csync_set_config_dir(CSYNC *ctx, const char *path) {
+  if (ctx == NULL || path == NULL) {
+    return -1;
+  }
+
+  SAFE_FREE(ctx->options.config_dir);
+  ctx->options.config_dir = c_strdup(path);
+  if (ctx->options.config_dir == NULL) {
+    return -1;
+  }
+
+  return 0;
+}
+
+int csync_remove_config_dir(CSYNC *ctx) {
+  char *path = NULL;
+
+  if (asprintf(&path, "%s/%s", ctx->options.config_dir, CSYNC_LOG_FILE) < 0) {
+    return -1;
+  }
+  unlink(path);
+  SAFE_FREE(path);
+
+  if (asprintf(&path, "%s/%s", ctx->options.config_dir, CSYNC_CONF_FILE) < 0) {
+    return -1;
+  }
+  unlink(path);
+  SAFE_FREE(path);
+
+  if (asprintf(&path, "%s/%s", ctx->options.config_dir, CSYNC_CONF_FILE) < 0) {
+    return -1;
+  }
+  unlink(path);
+  SAFE_FREE(path);
+
+  if (asprintf(&path, "%s/%s", ctx->options.config_dir, CSYNC_JOURNAL_FILE) < 0) {
+    return -1;
+  }
+  unlink(path);
+  SAFE_FREE(path);
+
+  unlink(ctx->options.config_dir);
+
+  return 0;
+}
+
+int csync_set_module_auth_callback(CSYNC *ctx, csync_module_auth_callback cb) {
+  if (ctx == NULL || cb == NULL) {
+    return -1;
+  }
+
   if (ctx->status & CSYNC_INIT) {
     fprintf(stderr, "This function must be called before initialization.");
-    exit(1);
+    return -1;
   }
+
   ctx->auth_callback = cb;
+
+  return 0;
 }
 
 csync_module_auth_callback csync_get_module_auth_callback(CSYNC *ctx) {
+  if (ctx == NULL) {
+    return NULL;
+  }
+
   return ctx->auth_callback;
 }
 
-void csync_set_status(CSYNC *ctx, int status) {
+int csync_set_status(CSYNC *ctx, int status) {
+  if (ctx == NULL || status < 0) {
+    return -1;
+  }
+
   ctx->status = status;
+
+  return 0;
 }
 
 int csync_get_status(CSYNC *ctx) {
