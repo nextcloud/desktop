@@ -22,6 +22,7 @@ macro_add_check_test(check_std_c_alloc std_tests/check_std_c_alloc.c ${TEST_TARG
 macro_add_check_test(check_std_c_dir std_tests/check_std_c_dir.c ${TEST_TARGET_LIBRARIES})
 macro_add_check_test(check_std_c_file std_tests/check_std_c_file.c ${TEST_TARGET_LIBRARIES})
 macro_add_check_test(check_std_c_jhash std_tests/check_std_c_jhash.c ${TEST_TARGET_LIBRARIES})
+macro_add_check_test(check_std_c_list std_tests/check_std_c_list.c ${TEST_TARGET_LIBRARIES})
 macro_add_check_test(check_std_c_path std_tests/check_std_c_path.c ${TEST_TARGET_LIBRARIES})
 macro_add_check_test(check_std_c_rbtree std_tests/check_std_c_rbtree.c ${TEST_TARGET_LIBRARIES})
 macro_add_check_test(check_std_c_str std_tests/check_std_c_str.c ${TEST_TARGET_LIBRARIES})
