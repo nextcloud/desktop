@@ -515,6 +515,10 @@ const char *csync_version(void) {
 }
 
 int csync_add_exclude_list(CSYNC *ctx, const char *path) {
+  if (ctx == NULL || path == NULL) {
+    return -1;
+  }
+
   return csync_exclude_load(ctx, path);
 }
 
