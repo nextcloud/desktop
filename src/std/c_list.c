@@ -323,6 +323,10 @@ c_list_t *c_list_last(c_list_t *list) {
  * Gets the element at the given positon in a c_list
  */
 c_list_t *c_list_position(c_list_t *list, long position) {
+  if (list == NULL) {
+    return NULL;
+  }
+
   while ((position-- > 0) && list != NULL) {
     list = list->next;
   }
