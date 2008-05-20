@@ -44,7 +44,7 @@ static int _csync_cleanup_cmp(const void *a, const void *b) {
   return strcmp(st_a->path, st_b->path);
 }
 
-static int csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
+static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   enum csync_replica_e srep = -1;
   enum csync_replica_e drep = -1;
   enum csync_replica_e rep_bak = -1;
@@ -236,23 +236,23 @@ out:
   return rc;
 }
 
-static int csync_new_file(CSYNC *ctx, csync_file_stat_t *st) {
+static int _csync_new_file(CSYNC *ctx, csync_file_stat_t *st) {
   int rc = -1;
 
-  rc = csync_push_file(ctx, st);
+  rc = _csync_push_file(ctx, st);
 
   return rc;
 }
 
-static int csync_sync_file(CSYNC *ctx, csync_file_stat_t *st) {
+static int _csync_sync_file(CSYNC *ctx, csync_file_stat_t *st) {
   int rc = -1;
 
-  rc = csync_push_file(ctx, st);
+  rc = _csync_push_file(ctx, st);
 
   return rc;
 }
 
-static int csync_remove_file(CSYNC *ctx, csync_file_stat_t *st) {
+static int _csync_remove_file(CSYNC *ctx, csync_file_stat_t *st) {
   char *uri = NULL;
   int rc = -1;
 
@@ -294,7 +294,7 @@ out:
   return rc;
 }
 
-static int csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
+static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
   enum csync_replica_e src;
   enum csync_replica_e dest;
   enum csync_replica_e replica_bak;
@@ -354,7 +354,7 @@ out:
   return rc;
 }
 
-static int csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
+static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
   enum csync_replica_e src;
   enum csync_replica_e dest;
   enum csync_replica_e replica_bak;
@@ -415,7 +415,7 @@ out:
   return rc;
 }
 
-static int csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
+static int _csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
   c_list_t *list = NULL;
   char *uri = NULL;
   int rc = -1;
@@ -528,7 +528,7 @@ static int _csync_propagation_cleanup(CSYNC *ctx) {
   return 0;
 }
 
-static int csync_propagation_file_visitor(void *obj, void *data) {
+static int _csync_propagation_file_visitor(void *obj, void *data) {
   csync_file_stat_t *st = NULL;
   CSYNC *ctx = NULL;
 
@@ -539,17 +539,17 @@ static int csync_propagation_file_visitor(void *obj, void *data) {
     case CSYNC_FTW_TYPE_FILE:
       switch (st->instruction) {
         case CSYNC_INSTRUCTION_NEW:
-          if (csync_new_file(ctx, st) < 0) {
+          if (_csync_new_file(ctx, st) < 0) {
             goto err;
           }
           break;
         case CSYNC_INSTRUCTION_SYNC:
-          if (csync_sync_file(ctx, st) < 0) {
+          if (_csync_sync_file(ctx, st) < 0) {
             goto err;
           }
           break;
         case CSYNC_INSTRUCTION_REMOVE:
-          if (csync_remove_file(ctx, st) < 0) {
+          if (_csync_remove_file(ctx, st) < 0) {
             goto err;
           }
           break;
@@ -574,7 +574,7 @@ err:
   return -1;
 }
 
-static int csync_propagation_dir_visitor(void *obj, void *data) {
+static int _csync_propagation_dir_visitor(void *obj, void *data) {
   csync_file_stat_t *st = NULL;
   CSYNC *ctx = NULL;
 
@@ -587,17 +587,17 @@ static int csync_propagation_dir_visitor(void *obj, void *data) {
     case CSYNC_FTW_TYPE_DIR:
       switch (st->instruction) {
         case CSYNC_INSTRUCTION_NEW:
-          if (csync_new_dir(ctx, st) < 0) {
+          if (_csync_new_dir(ctx, st) < 0) {
             goto err;
           }
           break;
         case CSYNC_INSTRUCTION_SYNC:
-          if (csync_sync_dir(ctx, st) < 0) {
+          if (_csync_sync_dir(ctx, st) < 0) {
             goto err;
           }
           break;
         case CSYNC_INSTRUCTION_REMOVE:
-          if (csync_remove_dir(ctx, st) < 0) {
+          if (_csync_remove_dir(ctx, st) < 0) {
             goto err;
           }
           break;
@@ -629,11 +629,11 @@ int csync_propapate_files(CSYNC *ctx) {
       break;
   }
 
-  if (c_rbtree_walk(tree, (void *) ctx, csync_propagation_file_visitor) < 0) {
+  if (c_rbtree_walk(tree, (void *) ctx, _csync_propagation_file_visitor) < 0) {
     return -1;
   }
 
-  if (c_rbtree_walk(tree, (void *) ctx, csync_propagation_dir_visitor) < 0) {
+  if (c_rbtree_walk(tree, (void *) ctx, _csync_propagation_dir_visitor) < 0) {
     return -1;
   }
 
