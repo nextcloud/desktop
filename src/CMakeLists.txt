@@ -2,7 +2,7 @@ project(libcsync)
 
 add_subdirectory(std)
 
-find_package(Sqlite3 REQUIRED)
+find_package(SQLite3 REQUIRED)
 find_package(Iniparser REQUIRED)
 find_package(Dlfcn REQUIRED)
 find_package(RT REQUIRED)
