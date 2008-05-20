@@ -46,6 +46,14 @@ static char args_doc[] = "SOURCE DESTINATION";
 /* The options we understand. */
 static struct argp_option options[] = {
   {
+    .name  = "backup",
+    .key   = 'b',
+    .arg   = NULL,
+    .flags = 0,
+    .doc   = "Run csync in backup mode. This means that you can make a backup or sync two directories for example",
+    .group = 0
+  },
+  {
     .name  = "update",
     .key   = 'u',
     .arg   = NULL,
@@ -84,6 +92,7 @@ static struct argp_option options[] = {
 struct argument_s {
   char *args[2]; /* SOURCE and DESTINATION */
   char *exclude_file;
+  int backup;
   int journal;
   int update;
   int reconcile;
@@ -98,6 +107,8 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state) {
   struct argument_s *arguments = state->input;
 
   switch (key) {
+    case 'b':
+      arguments->backup = 1;
     case 'j':
       arguments->journal = 1;
       arguments->update = 1;
@@ -155,6 +166,8 @@ int main(int argc, char **argv) {
   struct argument_s arguments;
 
   /* Default values. */
+  arguments.exclude_file = NULL;
+  arguments.backup = 0;
   arguments.journal = 0;
   arguments.update = 1;
   arguments.reconcile = 1;
@@ -173,8 +186,15 @@ int main(int argc, char **argv) {
 
   csync_set_module_auth_callback(csync, csync_auth_fn);
   fprintf(stdout,"\n");
+
   if (csync_init(csync) < 0) {
     goto err;
+  }
+
+  if (arguments.backup) {
+    if (csync_set_config_dir(csync, "/tmp/csync_backup") < 0) {
+      goto err;
+    }
   }
 
   if (arguments.exclude_file != NULL) {
@@ -204,6 +224,8 @@ int main(int argc, char **argv) {
   if (arguments.journal) {
     csync_set_status(csync, 0xFFFF);
   }
+
+  csync_remove_config_dir(csync);
 
   csync_destroy(csync);
 
