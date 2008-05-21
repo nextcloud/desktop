@@ -61,7 +61,7 @@ int csync_config_load(CSYNC *ctx, const char *config) {
       ctx->options.max_depth);
 
   ctx->options.max_time_difference = iniparser_getint(dict,
-      "global:max_time_differcence", MAX_TIME_DIFFERENCE);
+      "global:max_time_difference", MAX_TIME_DIFFERENCE);
   CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Config: max_time_difference = %d",
       ctx->options.max_time_difference);
 
