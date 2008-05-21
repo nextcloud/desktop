@@ -124,7 +124,10 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   /* create directories if needed */
   ctx->replica = drep;
-  csync_vio_mkdirs(ctx, tdir, 0755);
+
+  if (csync_vio_mkdirs(ctx, tdir, 0755) < 0) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "dir: %s, command: mkdirs, error: %s", tdir, strerror(errno));
+  }
 
   /* Open the destination file */
   ctx->replica = drep;
