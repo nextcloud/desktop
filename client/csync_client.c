@@ -50,7 +50,9 @@ static struct argp_option options[] = {
     .key   = 'b',
     .arg   = NULL,
     .flags = 0,
-    .doc   = "Run csync in backup mode. This means that you can make a backup or sync two directories for example",
+    .doc   = "Run csync in backup mode. This is a special mode without a "
+             "journal and a temoporary configuration to sync two replicas. "
+             "This is the non-roaming-home-directory mode.",
     .group = 0
   },
   {
@@ -66,7 +68,7 @@ static struct argp_option options[] = {
     .key   = 'r',
     .arg   = NULL,
     .flags = 0,
-    .doc   = "Run update detection and recoincilation",
+    .doc   = "Run update detection and reconcilation",
     .group = 0
   },
   {
