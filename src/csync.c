@@ -571,6 +571,12 @@ int csync_remove_config_dir(CSYNC *ctx) {
   unlink(path);
   SAFE_FREE(path);
 
+  if (asprintf(&path, "%s/%s.ctmp", ctx->options.config_dir, CSYNC_JOURNAL_FILE) < 0) {
+    return -1;
+  }
+  unlink(path);
+  SAFE_FREE(path);
+
   unlink(ctx->options.config_dir);
 
   return 0;

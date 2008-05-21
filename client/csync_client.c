@@ -109,6 +109,7 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state) {
   switch (key) {
     case 'b':
       arguments->backup = 1;
+      break;
     case 'j':
       arguments->journal = 1;
       arguments->update = 1;
@@ -161,6 +162,7 @@ static void csync_auth_fn(char *usr, size_t usrlen, char *pwd, size_t pwdlen) {
 static struct argp argp = {options, parse_opt, args_doc, doc, NULL, NULL, NULL};
 
 int main(int argc, char **argv) {
+  int rc = 0;
   CSYNC *csync;
 
   struct argument_s arguments;
@@ -187,37 +189,53 @@ int main(int argc, char **argv) {
   csync_set_module_auth_callback(csync, csync_auth_fn);
   fprintf(stdout,"\n");
 
-  if (csync_init(csync) < 0) {
-    goto err;
-  }
-
   if (arguments.backup) {
     if (csync_set_config_dir(csync, "/tmp/csync_backup") < 0) {
-      goto err;
+      perror("csync_set_config_dir");
+      rc = 1;
+      goto out;
     }
+    if (csync_remove_config_dir(csync) < 0) {
+      perror("csync_remove_config_dir");
+    }
+  }
+
+  if (csync_init(csync) < 0) {
+    perror("csync_init");
+    rc = 1;
+    goto out;
   }
 
   if (arguments.exclude_file != NULL) {
     if (csync_add_exclude_list(csync, arguments.exclude_file) < 0) {
-      goto err;
+      fprintf(stderr, "csync_add_exclude_list - %s: %s\n", arguments.exclude_file,
+          strerror(errno));
+      rc = 1;
+      goto out;
     }
   }
 
   if (arguments.update) {
     if (csync_update(csync) < 0) {
-      goto err;
+      perror("csync_update");
+      rc = 1;
+      goto out;
     }
   }
 
   if (arguments.reconcile) {
     if (csync_reconcile(csync) < 0) {
-      goto err;
+      perror("csync_reconcile");
+      rc = 1;
+      goto out;
     }
   }
 
   if (arguments.propagate) {
     if (csync_propagate(csync) < 0) {
-      goto err;
+      perror("csync_propagate");
+      rc = 1;
+      goto out;
     }
   }
 
@@ -225,15 +243,12 @@ int main(int argc, char **argv) {
     csync_set_status(csync, 0xFFFF);
   }
 
-  csync_remove_config_dir(csync);
+out:
+  if (arguments.backup) {
+  }
 
   csync_destroy(csync);
 
-  return 0;
-err:
-  perror("csync");
-  csync_destroy(csync);
-
-  return 1;
+  return rc;
 }
 
