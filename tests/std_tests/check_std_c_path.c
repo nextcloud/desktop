@@ -43,7 +43,16 @@ START_TEST (check_c_basename)
   bname = c_basename(NULL);
   fail_unless((strcmp(bname, ".") == 0), NULL);
   SAFE_FREE(bname);
+}
+END_TEST
 
+START_TEST (check_c_basename_uri)
+{
+  char *bname = NULL;
+
+  bname = c_basename("smb://server/share/dir/");
+  fail_unless((strcmp(bname, "dir") == 0), NULL);
+  SAFE_FREE(bname);
 }
 END_TEST
 
@@ -85,10 +94,21 @@ START_TEST (check_c_dirname)
 }
 END_TEST
 
+START_TEST (check_c_dirname_uri)
+{
+  char *dname;
+
+  dname = c_dirname("smb://server/share/dir");
+  fail_unless((strcmp(dname, "smb://server/share") == 0), "c_dirname = %s\n", dname);
+  SAFE_FREE(dname);
+}
+END_TEST
+
 static Suite *make_std_c_basename_suite(void) {
   Suite *s = suite_create("std:path:c_basename");
 
   create_case(s, "check_c_basename", check_c_basename);
+  create_case(s, "check_c_basename_uri", check_c_basename_uri);
 
   return s;
 }
@@ -97,6 +117,7 @@ static Suite *make_std_c_dirname_suite(void) {
   Suite *s = suite_create("std:path:c_dirname");
 
   create_case(s, "check_c_dirname", check_c_dirname);
+  create_case(s, "check_c_dirname_uri", check_c_dirname_uri);
 
   return s;
 }
