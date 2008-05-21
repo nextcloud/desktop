@@ -241,6 +241,10 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   }
 
   buf->name = c_basename(uri);
+  if (buf->name == NULL) {
+    csync_vio_file_stat_destroy(buf);
+    return -1;
+  }
   buf->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
 
   switch(sb.st_mode & S_IFMT) {
