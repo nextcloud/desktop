@@ -65,6 +65,11 @@ int csync_config_load(CSYNC *ctx, const char *config) {
   CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Config: max_time_difference = %d",
       ctx->options.max_time_difference);
 
+  ctx->options.sync_symbolic_links = iniparser_getboolean(dict,
+      "global:sync_symbolic_links", 0);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Config: sync_symbolic_links = %d",
+      ctx->options.sync_symbolic_links);
+
   iniparser_freedict(dict);
 
   return 0;

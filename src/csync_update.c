@@ -164,11 +164,17 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs, 
     case CSYNC_FTW_FLAG_SLINK:
       switch (fs->mode & S_IFMT) {
         case S_IFREG:
-        case S_IFLNK:
-          /* TODO: handle symbolic links on unix systems */
           CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s", file);
 
           return csync_detect_update(ctx, file, fs, CSYNC_FTW_TYPE_FILE);
+          break;
+        case S_IFLNK:
+          /* TODO: check if plugin supports symlinks */
+          if (ctx->options.sync_symbolic_links) {
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "symlink: %s", file);
+
+            return csync_detect_update(ctx, file, fs, CSYNC_FTW_TYPE_FILE);
+          }
           break;
         default:
           break;

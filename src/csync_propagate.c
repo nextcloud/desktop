@@ -388,8 +388,6 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
 
   ctx->replica = dest;
 
-  /* TODO: check return values */
-
   times[0].tv_sec = times[1].tv_sec = st->modtime;
   times[0].tv_usec = times[1].tv_usec = 0;
 
