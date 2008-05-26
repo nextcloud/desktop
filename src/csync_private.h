@@ -116,6 +116,7 @@ struct csync_s {
 
 enum csync_ftw_type_e {
   CSYNC_FTW_TYPE_FILE,
+  CSYNC_FTW_TYPE_SLINK,
   CSYNC_FTW_TYPE_DIR
 };
 

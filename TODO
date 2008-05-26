@@ -1,0 +1,6 @@
+* Add support to synchronize symbolic links
+  - This needs a lot of work cause we have to check the symlink
+    + Determine if a symlink points outside the current directory tree. They
+      are unsafe to sync.
+    + Null symlinks and absolute symlinks are always unsafe.
+  - Check which is the best way to sync symlinks

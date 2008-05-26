@@ -537,6 +537,8 @@ static int _csync_propagation_file_visitor(void *obj, void *data) {
   ctx = (CSYNC *) data;
 
   switch(st->type) {
+    case CSYNC_FTW_TYPE_SLINK:
+      break;
     case CSYNC_FTW_TYPE_FILE:
       switch (st->instruction) {
         case CSYNC_INSTRUCTION_NEW:
@@ -583,6 +585,9 @@ static int _csync_propagation_dir_visitor(void *obj, void *data) {
   ctx = (CSYNC *) data;
 
   switch(st->type) {
+    case CSYNC_FTW_TYPE_SLINK:
+      /* FIXME: implement symlink support */
+      break;
     case CSYNC_FTW_TYPE_FILE:
       break;
     case CSYNC_FTW_TYPE_DIR:

@@ -161,24 +161,20 @@ out:
 int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs, enum csync_ftw_flags_e flag) {
   switch (flag) {
     case CSYNC_FTW_FLAG_FILE:
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s", file);
+
+      return csync_detect_update(ctx, file, fs, CSYNC_FTW_TYPE_FILE);
+      break;
     case CSYNC_FTW_FLAG_SLINK:
-      switch (fs->mode & S_IFMT) {
-        case S_IFREG:
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s", file);
+      /* FIXME: implement support for symlinks, see csync_propagate.c too */
+#if 0
+      if (ctx->options.sync_symbolic_links) {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "symlink: %s", file);
 
-          return csync_detect_update(ctx, file, fs, CSYNC_FTW_TYPE_FILE);
-          break;
-        case S_IFLNK:
-          /* TODO: check if plugin supports symlinks */
-          if (ctx->options.sync_symbolic_links) {
-            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "symlink: %s", file);
-
-            return csync_detect_update(ctx, file, fs, CSYNC_FTW_TYPE_FILE);
-          }
-          break;
-        default:
-          break;
+        return csync_detect_update(ctx, file, fs, CSYNC_FTW_TYPE_SLINK);
       }
+#endif
+      break;
     case CSYNC_FTW_FLAG_DIR: /* enter directory */
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "directory: %s", file);
 
