@@ -77,6 +77,7 @@ struct csync_s {
   c_strlist_t *excludes;
 
   struct {
+    char *file;
     sqlite3 *db;
     int exists;
   } journal;

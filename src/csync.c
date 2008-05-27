@@ -29,6 +29,7 @@
 #include <time.h>
 
 #include "c_lib.h"
+#include "c_jhash.h"
 #include "csync_private.h"
 #include "csync_config.h"
 #include "csync_exclude.h"
@@ -125,7 +126,6 @@ int csync_init(CSYNC *ctx) {
   time_t timediff = -1;
   char *log = NULL;
   char *exclude = NULL;
-  char *journal = NULL;
   char *lock = NULL;
   char *config = NULL;
 
@@ -208,12 +208,15 @@ int csync_init(CSYNC *ctx) {
   }
 
   /* create/load journal */
-  if (asprintf(&journal, "%s/%s", ctx->options.config_dir, CSYNC_JOURNAL_FILE) < 0) {
+  if (asprintf(&ctx->journal.file, "%s/csync_journal_%lu.db", ctx->options.config_dir,
+        c_jhash64((uint8_t *) ctx->remote.uri, strlen(ctx->remote.uri), 0)) < 0) {
     rc = -1;
     goto out;
   }
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Remote replica: %s", ctx->remote.uri);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Journal file: %s", ctx->journal.file);
 
-  if (csync_journal_load(ctx, journal) < 0) {
+  if (csync_journal_load(ctx, ctx->journal.file) < 0) {
     rc = -1;
     goto out;
   }
@@ -276,7 +279,6 @@ out:
   SAFE_FREE(log);
   SAFE_FREE(lock);
   SAFE_FREE(exclude);
-  SAFE_FREE(journal);
   SAFE_FREE(config);
   return rc;
 }
@@ -443,7 +445,6 @@ static void tree_destructor(void *data) {
 int csync_destroy(CSYNC *ctx) {
   struct timespec start, finish;
   char *lock = NULL;
-  char *journal = NULL;
   int jwritten = 0;
 
   if (ctx == NULL) {
@@ -467,14 +468,7 @@ int csync_destroy(CSYNC *ctx) {
             strerror(errno));
       }
     }
-    if (asprintf(&journal, "%s/%s", ctx->options.config_dir,
-          CSYNC_JOURNAL_FILE) < 0) {
-
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to close journal: %s",
-          strerror(errno));
-    } else {
-      csync_journal_close(ctx, journal, jwritten);
-    }
+    csync_journal_close(ctx, ctx->journal.file, jwritten);
   }
 
   csync_exclude_destroy(ctx);
@@ -501,10 +495,10 @@ int csync_destroy(CSYNC *ctx) {
   SAFE_FREE(ctx->local.uri);
   SAFE_FREE(ctx->remote.uri);
   SAFE_FREE(ctx->options.config_dir);
+  SAFE_FREE(ctx->journal.file);
 
   SAFE_FREE(ctx);
 
-  SAFE_FREE(journal);
   SAFE_FREE(lock);
 
   return 0;
