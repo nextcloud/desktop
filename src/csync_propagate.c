@@ -439,6 +439,7 @@ static int _csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
   if (csync_vio_rmdir(ctx, uri) < 0) {
     switch (errno) {
       case ENOMEM:
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "dir: %s, command: rmdir, error: %s", uri, strerror(errno));
         rc = -1;
         break;
       case ENOTEMPTY:
@@ -463,10 +464,10 @@ static int _csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
         rc = 0;
         break;
       default:
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "dir: %s, command: rmdir, error: %s", uri, strerror(errno));
         rc = 1;
         break;
     }
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "dir: %s, command: rmdir, error: %s", uri, strerror(errno));
     goto out;
   }
 
