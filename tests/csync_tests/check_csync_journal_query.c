@@ -17,8 +17,7 @@ static void setup(void) {
   fail_if(system("mkdir -p /tmp/check_csync1") < 0, "Setup failed");
   fail_if(system("mkdir -p /tmp/check_csync2") < 0, "Setup failed");
   fail_if(csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2") < 0, "Setup failed");
-  SAFE_FREE(csync->options.config_dir);
-  csync->options.config_dir = c_strdup("/tmp/check_csync1/");
+  csync_set_config_dir(csync, "/tmp/check_csync/");
   fail_if(csync_init(csync) < 0, NULL, "Setup failed");
 }
 
@@ -28,8 +27,7 @@ static void setup_db(void) {
   fail_if(system("rm -rf /tmp/check_csync1") < 0, "Setup failed");
   fail_if(system("mkdir -p /tmp/check_csync1") < 0, "Setup failed");
   fail_if(csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2") < 0, "Setup failed");
-  SAFE_FREE(csync->options.config_dir);
-  csync->options.config_dir = c_strdup("/tmp/check_csync1/");
+  csync_set_config_dir(csync, "/tmp/check_csync1/");
   fail_if(csync_init(csync) < 0, NULL, "Setup failed");
   fail_unless(csync_journal_create_tables(csync) == 0, "Setup failed");
 
@@ -51,7 +49,9 @@ static void setup_db(void) {
 
 static void teardown(void) {
   fail_if(csync_destroy(csync) < 0, "Teardown failed");
+  fail_if(system("rm -rf /tmp/check_csync") < 0, "Teardown failed");
   fail_if(system("rm -rf /tmp/check_csync1") < 0, "Teardown failed");
+  fail_if(system("rm -rf /tmp/check_csync2") < 0, "Teardown failed");
 }
 
 
