@@ -193,7 +193,7 @@ int csync_init(CSYNC *ctx) {
   }
 
   if (csync_exclude_load(ctx, exclude) < 0) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Could not load %s - %s", exclude, strerror(errno));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Could not load %s - %s", exclude, strerror(errno));
   }
   SAFE_FREE(exclude);
 
@@ -204,7 +204,7 @@ int csync_init(CSYNC *ctx) {
   }
 
   if (csync_exclude_load(ctx, exclude) < 0) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Could not load %s - %s", exclude, strerror(errno));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Could not load %s - %s", exclude, strerror(errno));
   }
 
   /* create/load journal */
@@ -572,6 +572,15 @@ int csync_remove_config_dir(CSYNC *ctx) {
   SAFE_FREE(path);
 
   unlink(ctx->options.config_dir);
+
+  return 0;
+}
+
+int csync_remove_journal(CSYNC *ctx) {
+  if ((ctx == NULL) || ! (ctx->status & CSYNC_INIT)) {
+    return -1;
+  }
+  unlink(ctx->journal.file);
 
   return 0;
 }

@@ -31,7 +31,8 @@
 
 enum {
   KEY_DUMMY = 129,
-  KEY_EXCLUDE_FILE
+  KEY_EXCLUDE_FILE,
+  KEY_REMOVE_JOURNAL,
 };
 
 const char *argp_program_version = "csync commandline client 0.42";
@@ -46,13 +47,11 @@ static char args_doc[] = "SOURCE DESTINATION";
 /* The options we understand. */
 static struct argp_option options[] = {
   {
-    .name  = "backup",
-    .key   = 'b',
+    .name  = "remove-journal",
+    .key   = KEY_REMOVE_JOURNAL,
     .arg   = NULL,
     .flags = 0,
-    .doc   = "Run csync in backup mode. This is a special mode without a "
-             "journal and a temoporary configuration to sync two replicas. "
-             "This is the non-roaming-home-directory mode.",
+    .doc   = "Remove the journal after synchronization.",
     .group = 0
   },
   {
@@ -94,8 +93,8 @@ static struct argp_option options[] = {
 struct argument_s {
   char *args[2]; /* SOURCE and DESTINATION */
   char *exclude_file;
-  int backup;
-  int journal;
+  int journal_remove;
+  int journal_create;
   int update;
   int reconcile;
   int propagate;
@@ -109,29 +108,29 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state) {
   struct argument_s *arguments = state->input;
 
   switch (key) {
-    case 'b':
-      arguments->backup = 1;
-      break;
     case 'j':
-      arguments->journal = 1;
+      arguments->journal_create = 1;
       arguments->update = 1;
       arguments->reconcile = 0;
       arguments->propagate = 0;
       break;
     case 'u':
-      arguments->journal = 0;
+      arguments->journal_create = 0;
       arguments->update = 1;
       arguments->reconcile = 0;
       arguments->propagate = 0;
       break;
     case 'r':
-      arguments->journal = 0;
+      arguments->journal_create = 0;
       arguments->update = 1;
       arguments->reconcile = 1;
       arguments->propagate = 0;
       break;
     case KEY_EXCLUDE_FILE:
       arguments->exclude_file = strdup(arg);
+      break;
+    case KEY_REMOVE_JOURNAL:
+      arguments->journal_remove = 1;
       break;
     case ARGP_KEY_ARG:
       if (state->arg_num >= 2) {
@@ -171,8 +170,8 @@ int main(int argc, char **argv) {
 
   /* Default values. */
   arguments.exclude_file = NULL;
-  arguments.backup = 0;
-  arguments.journal = 0;
+  arguments.journal_remove = 0;
+  arguments.journal_create = 0;
   arguments.update = 1;
   arguments.reconcile = 1;
   arguments.propagate = 1;
@@ -190,17 +189,6 @@ int main(int argc, char **argv) {
 
   csync_set_module_auth_callback(csync, csync_auth_fn);
   fprintf(stdout,"\n");
-
-  if (arguments.backup) {
-    if (csync_set_config_dir(csync, "/tmp/csync_backup") < 0) {
-      perror("csync_set_config_dir");
-      rc = 1;
-      goto out;
-    }
-    if (csync_remove_config_dir(csync) < 0) {
-      perror("csync_remove_config_dir");
-    }
-  }
 
   if (csync_init(csync) < 0) {
     perror("csync_init");
@@ -241,12 +229,13 @@ int main(int argc, char **argv) {
     }
   }
 
-  if (arguments.journal) {
+  if (arguments.journal_create) {
     csync_set_status(csync, 0xFFFF);
   }
 
 out:
-  if (arguments.backup) {
+  if (arguments.journal_remove) {
+    csync_remove_journal(csync);
   }
 
   csync_destroy(csync);
