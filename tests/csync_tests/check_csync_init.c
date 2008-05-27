@@ -10,15 +10,18 @@ static void setup(void) {
   fail_if(system("mkdir -p /tmp/csync1") < 0, "Setup failed");
   fail_if(system("mkdir -p /tmp/csync2") < 0, "Setup failed");
   fail_if(csync_create(&csync, "/tmp/csync1", "/tmp/csync2") < 0, "Setup failed");
+  fail_if(csync_set_config_dir(csync, "/tmp/check_csync") < 0, "Setup failed");
 }
 
 static void setup_module(void) {
   fail_if(system("mkdir -p /tmp/csync1") < 0, "Setup failed");
   fail_if(system("mkdir -p /tmp/csync2") < 0, "Setup failed");
   fail_if(csync_create(&csync, "/tmp/csync1", "dummy://foo/bar") < 0, "Setup failed");
+  fail_if(csync_set_config_dir(csync, "/tmp/check_csync") < 0, "Setup failed");
 }
 
 static void teardown(void) {
+  fail_if(csync_remove_config_dir(csync) < 0, "Teardown failed");
   fail_if(csync_destroy(csync) < 0, "Teardown failed");
   fail_if(system("rm -rf /tmp/csync1") < 0, "Teardown failed");
   fail_if(system("rm -rf /tmp/csync2") < 0, "Teardown failed");
