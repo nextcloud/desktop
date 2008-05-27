@@ -42,8 +42,9 @@
 #include "csync_log.h"
 
 static int csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs, const int type) {
-  uint64_t h;
-  size_t len;
+  time_t modtime = 0;
+  uint64_t h = 0;
+  size_t len = 0;
   const char *path = NULL;
   csync_file_stat_t *st = NULL;
   csync_file_stat_t *tmp = NULL;
@@ -89,6 +90,8 @@ static int csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fil
   }
 
   /* Update detection */
+  modtime = fs->mtime > fs->ctime ? fs->mtime : fs->ctime;
+
   if (ctx->journal.exists) {
     tmp = csync_journal_get_stat_by_hash(ctx, h);
     if (tmp == NULL) {
@@ -110,7 +113,7 @@ static int csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fil
       goto out;
     } else {
       /* we have an update! */
-      if (fs->mtime > tmp->modtime) {
+      if (modtime > tmp->modtime) {
         st->instruction = CSYNC_INSTRUCTION_EVAL;
         goto out;
       }
@@ -127,7 +130,7 @@ out:
   st->inode = fs->inode;
   st->mode = fs->mode;
   st->size = fs->size;
-  st->modtime = fs->mtime;
+  st->modtime = modtime;
   st->uid = fs->uid;
   st->gid = fs->gid;
   st->nlink = fs->nlink;
