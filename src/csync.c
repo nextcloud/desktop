@@ -135,7 +135,7 @@ int csync_init(CSYNC *ctx) {
   }
 
   /* Do not initialize twice */
-  if (ctx->status & CSYNC_INIT) {
+  if (ctx->status & CSYNC_STATUS_INIT) {
     return 1;
   }
 
@@ -271,7 +271,7 @@ int csync_init(CSYNC *ctx) {
     goto out;
   }
 
-  ctx->status = CSYNC_INIT;
+  ctx->status = CSYNC_STATUS_INIT;
 
   rc = 0;
 
@@ -330,7 +330,7 @@ int csync_update(CSYNC *ctx) {
     return -1;
   }
 
-  ctx->status |= CSYNC_UPDATE;
+  ctx->status |= CSYNC_STATUS_UPDATE;
 
   return 0;
 }
@@ -380,7 +380,7 @@ int csync_reconcile(CSYNC *ctx) {
     return -1;
   }
 
-  ctx->status |= CSYNC_RECONCILE;
+  ctx->status |= CSYNC_STATUS_RECONCILE;
 
   return 0;
 }
@@ -430,7 +430,7 @@ int csync_propagate(CSYNC *ctx) {
     return -1;
   }
 
-  ctx->status |= CSYNC_PROPAGATE;
+  ctx->status |= CSYNC_STATUS_PROPAGATE;
 
   return 0;
 }
@@ -455,7 +455,7 @@ int csync_destroy(CSYNC *ctx) {
   csync_vio_shutdown(ctx);
 
   if (ctx->journal.db != NULL) {
-    if (ctx->status >= CSYNC_DONE) {
+    if (ctx->status >= CSYNC_STATUS_DONE) {
       clock_gettime(CLOCK_REALTIME, &start);
       if (csync_journal_write(ctx) == 0) {
         jwritten = 1;
@@ -577,7 +577,7 @@ int csync_remove_config_dir(CSYNC *ctx) {
 }
 
 int csync_remove_journal(CSYNC *ctx) {
-  if ((ctx == NULL) || ! (ctx->status & CSYNC_INIT)) {
+  if ((ctx == NULL) || ! (ctx->status & CSYNC_STATUS_INIT)) {
     return -1;
   }
   unlink(ctx->journal.file);
@@ -590,7 +590,7 @@ int csync_set_module_auth_callback(CSYNC *ctx, csync_module_auth_callback cb) {
     return -1;
   }
 
-  if (ctx->status & CSYNC_INIT) {
+  if (ctx->status & CSYNC_STATUS_INIT) {
     fprintf(stderr, "This function must be called before initialization.");
     return -1;
   }
