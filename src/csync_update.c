@@ -98,13 +98,13 @@ static int csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fil
       /* check if the file has been renamed */
       if (ctx->current == LOCAL_REPLICA) {
         tmp = csync_journal_get_stat_by_inode(ctx, fs->inode);
-        if (tmp == NULL) {
-          /* file not found in journal */
-          st->instruction = CSYNC_INSTRUCTION_NEW;
-          goto out;
-        } else {
+        if (tmp != NULL && fs->inode == tmp->inode) {
           /* inode found so the file has been renamed */
           st->instruction = CSYNC_INSTRUCTION_RENAME;
+          goto out;
+        } else {
+          /* file not found in journal */
+          st->instruction = CSYNC_INSTRUCTION_NEW;
           goto out;
         }
       }
