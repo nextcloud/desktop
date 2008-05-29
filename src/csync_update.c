@@ -94,7 +94,13 @@ static int csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fil
 
   if (ctx->journal.exists) {
     tmp = csync_journal_get_stat_by_hash(ctx, h);
-    if (tmp == NULL) {
+    if (tmp != NULL && h == tmp->phash) {
+      /* we have an update! */
+      if (modtime > tmp->modtime) {
+        st->instruction = CSYNC_INSTRUCTION_EVAL;
+        goto out;
+      }
+    } else {
       /* check if the file has been renamed */
       if (ctx->current == LOCAL_REPLICA) {
         tmp = csync_journal_get_stat_by_inode(ctx, fs->inode);
@@ -111,13 +117,6 @@ static int csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fil
       /* remote and file not found in journal */
       st->instruction = CSYNC_INSTRUCTION_NEW;
       goto out;
-    } else {
-      /* we have an update! */
-      if (modtime > tmp->modtime) {
-        st->instruction = CSYNC_INSTRUCTION_EVAL;
-        goto out;
-      }
-      /* FIXME: check mode too? */
     }
     st->instruction = CSYNC_INSTRUCTION_NONE;
   } else  {
