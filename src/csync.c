@@ -576,15 +576,6 @@ int csync_remove_config_dir(CSYNC *ctx) {
   return 0;
 }
 
-int csync_remove_journal(CSYNC *ctx) {
-  if ((ctx == NULL) || ! (ctx->status & CSYNC_STATUS_INIT)) {
-    return -1;
-  }
-  unlink(ctx->journal.file);
-
-  return 0;
-}
-
 int csync_set_module_auth_callback(CSYNC *ctx, csync_module_auth_callback cb) {
   if (ctx == NULL || cb == NULL) {
     return -1;
