@@ -91,13 +91,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fi
   /* Update detection */
   if (ctx->journal.exists) {
     tmp = csync_journal_get_stat_by_hash(ctx, h);
-    if (tmp != NULL && h == tmp->phash) {
-      /* we have an update! */
-      if (modtime > tmp->modtime) {
-        st->instruction = CSYNC_INSTRUCTION_EVAL;
-        goto out;
-      }
-    } else {
+    if (tmp == NULL) {
       /* check if the file has been renamed */
       if (ctx->current == LOCAL_REPLICA) {
         tmp = csync_journal_get_stat_by_inode(ctx, fs->inode);
