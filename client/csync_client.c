@@ -20,10 +20,11 @@
  * vim: ts=2 sw=2 et cindent
  */
 
+#include <argp.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <argp.h>
+#include <unistd.h>
 
 #include <csync.h>
 
@@ -164,6 +165,7 @@ static struct argp argp = {options, parse_opt, args_doc, doc, NULL, NULL, NULL};
 
 int main(int argc, char **argv) {
   int rc = 0;
+  char *journal = NULL;
   CSYNC *csync;
 
   struct argument_s arguments;
@@ -205,6 +207,10 @@ int main(int argc, char **argv) {
     }
   }
 
+  if (arguments.journal_remove) {
+    journal = csync_get_journal_file(csync);
+  }
+
   if (arguments.update) {
     if (csync_update(csync) < 0) {
       perror("csync_update");
@@ -234,11 +240,12 @@ int main(int argc, char **argv) {
   }
 
 out:
-  if (arguments.journal_remove) {
-    csync_remove_journal(csync);
-  }
-
   csync_destroy(csync);
+
+  if (arguments.journal_remove && journal != NULL) {
+    unlink(journal);
+    free(journal);
+  }
 
   return rc;
 }

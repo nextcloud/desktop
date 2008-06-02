@@ -133,6 +133,7 @@ int csync_set_config_dir(CSYNC *ctx, const char *path);
 int csync_remove_config_dir(CSYNC *ctx);
 csync_module_auth_callback csync_get_module_auth_callback(CSYNC *ctx);
 int csync_set_module_auth_callback(CSYNC *ctx, csync_module_auth_callback cb);
+char *csync_get_journal_file(CSYNC *ctx);
 int csync_get_status(CSYNC *ctx);
 int csync_set_status(CSYNC *ctx, int status);
 

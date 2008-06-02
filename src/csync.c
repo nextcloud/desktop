@@ -591,6 +591,14 @@ int csync_set_module_auth_callback(CSYNC *ctx, csync_module_auth_callback cb) {
   return 0;
 }
 
+char *csync_get_journal_file(CSYNC *ctx) {
+  if (ctx == NULL) {
+    return NULL;
+  }
+
+  return c_strdup(ctx->journal.file);
+}
+
 csync_module_auth_callback csync_get_module_auth_callback(CSYNC *ctx) {
   if (ctx == NULL) {
     return NULL;
