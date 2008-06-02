@@ -41,7 +41,7 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.updater"
 #include "csync_log.h"
 
-static int csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs, const int type) {
+static int _csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs, const int type) {
   time_t modtime = 0;
   uint64_t h = 0;
   size_t len = 0;
@@ -165,7 +165,7 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs, 
     case CSYNC_FTW_FLAG_FILE:
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s", file);
 
-      return csync_detect_update(ctx, file, fs, CSYNC_FTW_TYPE_FILE);
+      return _csync_detect_update(ctx, file, fs, CSYNC_FTW_TYPE_FILE);
       break;
     case CSYNC_FTW_FLAG_SLINK:
       /* FIXME: implement support for symlinks, see csync_propagate.c too */
@@ -173,14 +173,14 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs, 
       if (ctx->options.sync_symbolic_links) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "symlink: %s", file);
 
-        return csync_detect_update(ctx, file, fs, CSYNC_FTW_TYPE_SLINK);
+        return _csync_detect_update(ctx, file, fs, CSYNC_FTW_TYPE_SLINK);
       }
 #endif
       break;
     case CSYNC_FTW_FLAG_DIR: /* enter directory */
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "directory: %s", file);
 
-      return csync_detect_update(ctx, file, fs, CSYNC_FTW_TYPE_DIR);
+      return _csync_detect_update(ctx, file, fs, CSYNC_FTW_TYPE_DIR);
     case CSYNC_FTW_FLAG_NSTAT: /* not statable file */
     case CSYNC_FTW_FLAG_DNR:
     case CSYNC_FTW_FLAG_DP:

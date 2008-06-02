@@ -61,7 +61,7 @@ int c_rbtree_create(c_rbtree_t **rbtree, c_rbtree_compare_func *key_compare, c_r
   return 0;
 }
 
-static c_rbnode_t *c_rbtree_subtree_dup(const c_rbnode_t *node, c_rbtree_t *new_tree, c_rbnode_t *new_parent) {
+static c_rbnode_t *_rbtree_subtree_dup(const c_rbnode_t *node, c_rbtree_t *new_tree, c_rbnode_t *new_parent) {
   c_rbnode_t *new_node = NULL;
 
   new_node = (c_rbnode_t*) c_malloc(sizeof(c_rbnode_t));
@@ -74,13 +74,13 @@ static c_rbnode_t *c_rbtree_subtree_dup(const c_rbnode_t *node, c_rbtree_t *new_
   if (node->left == NIL) {
     new_node->left = NIL;
   } else {
-    new_node->left = c_rbtree_subtree_dup(node->left, new_tree, new_node);
+    new_node->left = _rbtree_subtree_dup(node->left, new_tree, new_node);
   }
 
   if (node->right == NIL) {
     new_node->right = NIL;
   } else {
-    new_node->right = c_rbtree_subtree_dup(node->right, new_tree, new_node);
+    new_node->right = _rbtree_subtree_dup(node->right, new_tree, new_node);
   }
 
   return new_node;
@@ -94,23 +94,23 @@ c_rbtree_t *c_rbtree_dup(const c_rbtree_t *tree) {
   new_tree->key_compare = tree->key_compare;
   new_tree->data_compare = tree->data_compare;
   new_tree->size = tree->size;
-  new_tree->root = c_rbtree_subtree_dup(tree->root, new_tree, NULL);
+  new_tree->root = _rbtree_subtree_dup(tree->root, new_tree, NULL);
 
   return new_tree;
 }
 
-static int c_rbtree_subtree_free(c_rbnode_t *node) {
+static int _rbtree_subtree_free(c_rbnode_t *node) {
   assert(node);
 
   if (node->left != NIL) {
-    if (c_rbtree_subtree_free(node->left) < 0) {
+    if (_rbtree_subtree_free(node->left) < 0) {
       /* TODO: set errno? ECANCELED? */
       return -1;
     }
   }
 
   if (node->right != NIL) {
-    if (c_rbtree_subtree_free(node->right) < 0) {
+    if (_rbtree_subtree_free(node->right) < 0) {
       /* TODO: set errno? ECANCELED? */
       return -1;
     }
@@ -128,7 +128,7 @@ int c_rbtree_free(c_rbtree_t *tree) {
   }
 
   if (tree->root != NIL) {
-    c_rbtree_subtree_free(tree->root);
+    _rbtree_subtree_free(tree->root);
   }
 
   SAFE_FREE(tree);
@@ -136,7 +136,7 @@ int c_rbtree_free(c_rbtree_t *tree) {
   return 0;
 }
 
-static int c_rbtree_subtree_walk(c_rbnode_t *node, void *data, c_rbtree_visit_func *visitor) {
+static int _rbtree_subtree_walk(c_rbnode_t *node, void *data, c_rbtree_visit_func *visitor) {
   assert(node);
   assert(data);
   assert(visitor);
@@ -145,7 +145,7 @@ static int c_rbtree_subtree_walk(c_rbnode_t *node, void *data, c_rbtree_visit_fu
     return 0;
   }
 
-  if (c_rbtree_subtree_walk(node->left, data, visitor) < 0) {
+  if (_rbtree_subtree_walk(node->left, data, visitor) < 0) {
     return -1;
   }
 
@@ -153,7 +153,7 @@ static int c_rbtree_subtree_walk(c_rbnode_t *node, void *data, c_rbtree_visit_fu
     return -1;
   }
 
-  if (c_rbtree_subtree_walk(node->right, data, visitor) < 0) {
+  if (_rbtree_subtree_walk(node->right, data, visitor) < 0) {
     return -1;
   }
 
@@ -166,14 +166,14 @@ int c_rbtree_walk(c_rbtree_t *tree, void *data, c_rbtree_visit_func *visitor) {
     return -1;
   }
 
-  if (c_rbtree_subtree_walk(tree->root, data, visitor) < 0) {
+  if (_rbtree_subtree_walk(tree->root, data, visitor) < 0) {
     return -1;
   }
 
   return 0;
 }
 
-static c_rbnode_t *c_rbtree_subtree_head(c_rbnode_t *node) {
+static c_rbnode_t *_rbtree_subtree_head(c_rbnode_t *node) {
   assert(node);
 
   if (node == NIL) {
@@ -187,7 +187,7 @@ static c_rbnode_t *c_rbtree_subtree_head(c_rbnode_t *node) {
   return node;
 }
 
-static c_rbnode_t *c_rbtree_subtree_tail(c_rbnode_t *node) {
+static c_rbnode_t *_rbtree_subtree_tail(c_rbnode_t *node) {
   assert(node);
 
   if (node == NIL) {
@@ -209,7 +209,7 @@ c_rbnode_t *c_rbtree_head(c_rbtree_t *tree) {
     return NULL;
   }
 
-  node = c_rbtree_subtree_head(tree->root);
+  node = _rbtree_subtree_head(tree->root);
 
   return node != NIL ? node : NULL;
 }
@@ -222,7 +222,7 @@ c_rbnode_t *c_rbtree_tail(c_rbtree_t *tree) {
     return NULL;
   }
 
-  node = c_rbtree_subtree_tail(tree->root);
+  node = _rbtree_subtree_tail(tree->root);
 
   return node != NIL ? node : NULL;
 }
@@ -237,7 +237,7 @@ c_rbnode_t *c_rbtree_node_next(c_rbnode_t *node) {
 
   if (node->right != NIL) {
     c_rbnode_t *next = NULL;
-    next = c_rbtree_subtree_head(node->right);
+    next = _rbtree_subtree_head(node->right);
 
     return next != NIL ? next : NULL;
   }
@@ -260,7 +260,7 @@ c_rbnode_t *c_rbtree_node_prev(c_rbnode_t *node) {
 
   if (node->left != NIL) {
     c_rbnode_t *prev = NULL;
-    prev = c_rbtree_subtree_tail(node->left);
+    prev = _rbtree_subtree_tail(node->left);
     return prev != NIL ? prev : NULL;
   }
 
@@ -299,7 +299,7 @@ c_rbnode_t *c_rbtree_find(c_rbtree_t *tree, const void *key) {
   return NULL;
 }
 
-static void c_rbtree_subtree_left_rotate(c_rbnode_t *x) {
+static void _rbtree_subtree_left_rotate(c_rbnode_t *x) {
   c_rbnode_t *y = NULL;
 
   assert(x);
@@ -336,7 +336,7 @@ static void c_rbtree_subtree_left_rotate(c_rbnode_t *x) {
 }
 
 /* rotat node x to the right */
-static void c_rbtree_subtree_right_rotate(c_rbnode_t *x) {
+static void _rbtree_subtree_right_rotate(c_rbnode_t *x) {
   c_rbnode_t *y = NULL;
 
   assert(x);
@@ -442,11 +442,11 @@ int c_rbtree_insert(c_rbtree_t *tree, void *data) {
         if (x == x->parent->right) {
           /* make x a left child */
           x = x->parent;
-          c_rbtree_subtree_left_rotate(x);
+          _rbtree_subtree_left_rotate(x);
         }
         x->parent->color = BLACK;
         x->parent->parent->color = RED;
-        c_rbtree_subtree_right_rotate(x->parent->parent);
+        _rbtree_subtree_right_rotate(x->parent->parent);
       }
     } else {
       c_rbnode_t *y = NULL;
@@ -461,11 +461,11 @@ int c_rbtree_insert(c_rbtree_t *tree, void *data) {
         /* uncle is back */
         if (x == x->parent->left) {
           x = x->parent;
-          c_rbtree_subtree_right_rotate(x);
+          _rbtree_subtree_right_rotate(x);
         }
         x->parent->color = BLACK;
         x->parent->parent->color = RED;
-        c_rbtree_subtree_left_rotate(x->parent->parent);
+        _rbtree_subtree_left_rotate(x->parent->parent);
       }
     }
   } /* end while */
@@ -559,7 +559,7 @@ int c_rbtree_node_delete(c_rbnode_t *node) {
         if (w->color == RED) {
           w->color = BLACK;
           x->parent->color = RED;
-          c_rbtree_subtree_left_rotate(x->parent);
+          _rbtree_subtree_left_rotate(x->parent);
           w = x->parent->right;
         }
 
@@ -570,13 +570,13 @@ int c_rbtree_node_delete(c_rbnode_t *node) {
           if (w->right->color == BLACK) {
             w->left->color = BLACK;
             w->color = RED;
-            c_rbtree_subtree_right_rotate(w);
+            _rbtree_subtree_right_rotate(w);
             w = x->parent->right;
           }
           w->color = x->parent->color;
           x->parent->color = BLACK;
           w->right->color = BLACK;
-          c_rbtree_subtree_left_rotate(x->parent);
+          _rbtree_subtree_left_rotate(x->parent);
           x = y->tree->root;
         }
       } else {
@@ -586,7 +586,7 @@ int c_rbtree_node_delete(c_rbnode_t *node) {
         if (w->color == RED) {
           w->color = BLACK;
           x->parent->color = RED;
-          c_rbtree_subtree_right_rotate(x->parent);
+          _rbtree_subtree_right_rotate(x->parent);
           w = x->parent->left;
         }
 
@@ -597,13 +597,13 @@ int c_rbtree_node_delete(c_rbnode_t *node) {
           if (w->left->color == BLACK) {
             w->right->color = BLACK;
             w->color = RED;
-            c_rbtree_subtree_left_rotate(w);
+            _rbtree_subtree_left_rotate(w);
             w = x->parent->left;
           }
           w->color = x->parent->color;
           x->parent->color = BLACK;
           w->left->color = BLACK;
-          c_rbtree_subtree_right_rotate(x->parent);
+          _rbtree_subtree_right_rotate(x->parent);
           x = y->tree->root;
         }
       }
@@ -618,7 +618,7 @@ int c_rbtree_node_delete(c_rbnode_t *node) {
   return 0;
 }
 
-static int c_rbtree_subtree_check_black_height(c_rbnode_t *node) {
+static int _rbtree_subtree_check_black_height(c_rbnode_t *node) {
   int left = 0;
   int right = 0;
 
@@ -628,8 +628,8 @@ static int c_rbtree_subtree_check_black_height(c_rbnode_t *node) {
     return 0;
   }
 
-  left = c_rbtree_subtree_check_black_height(node->left);
-  right = c_rbtree_subtree_check_black_height(node->right);
+  left = _rbtree_subtree_check_black_height(node->left);
+  right = _rbtree_subtree_check_black_height(node->right);
   if (left != right) {
     return -1;
   }
@@ -745,7 +745,7 @@ int c_rbtree_check_sanity(c_rbtree_t *tree) {
     return -18;
   }
 
-  if (c_rbtree_subtree_check_black_height(tree->root) < 0) {
+  if (_rbtree_subtree_check_black_height(tree->root) < 0) {
     return -19;
   }
 

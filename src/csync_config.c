@@ -29,7 +29,7 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.config"
 #include "csync_log.h"
 
-static int csync_config_copy_default (const char *config) {
+static int _csync_config_copy_default (const char *config) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Copy %s/config/%s to %s", SYSCONFDIR,
         CSYNC_CONF_FILE, config);
     if (c_copy(SYSCONFDIR "/csync/" CSYNC_CONF_FILE, config, 0644) < 0) {
@@ -46,7 +46,7 @@ int csync_config_load(CSYNC *ctx, const char *config) {
 
   /* copy default config, if no config exists */
   if (! c_isfile(config)) {
-    if (csync_config_copy_default(config) < 0) {
+    if (_csync_config_copy_default(config) < 0) {
       return -1;
     }
   }

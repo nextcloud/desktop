@@ -29,7 +29,7 @@ static void teardown(void) {
 
 START_TEST (check_csync_exclude_add)
 {
-  csync_exclude_add(csync, (const char *) "/tmp/check_csync1/*");
+  _csync_exclude_add(csync, (const char *) "/tmp/check_csync1/*");
   fail_unless(strcmp(csync->excludes->vector[0], (const char *) "/tmp/check_csync1/*") == 0, NULL);
 }
 END_TEST

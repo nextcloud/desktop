@@ -24,7 +24,7 @@ static void teardown(void) {
 
 START_TEST (check_csync_config_copy_default)
 {
-  fail_unless(csync_config_copy_default(testconf) == 0, NULL);
+  fail_unless(_csync_config_copy_default(testconf) == 0, NULL);
 }
 END_TEST
 

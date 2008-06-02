@@ -47,7 +47,7 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.api"
 #include "csync_log.h"
 
-static int key_cmp(const void *key, const void *data) {
+static int _key_cmp(const void *key, const void *data) {
   uint64_t a;
   csync_file_stat_t *b;
 
@@ -63,7 +63,7 @@ static int key_cmp(const void *key, const void *data) {
   return 0;
 }
 
-static int data_cmp(const void *key, const void *data) {
+static int _data_cmp(const void *key, const void *data) {
   csync_file_stat_t *a, *b;
 
   a = (csync_file_stat_t *) key;
@@ -261,12 +261,12 @@ int csync_init(CSYNC *ctx) {
     goto out;
   }
 
-  if (c_rbtree_create(&ctx->local.tree, key_cmp, data_cmp) < 0) {
+  if (c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp) < 0) {
     rc = -1;
     goto out;
   }
 
-  if (c_rbtree_create(&ctx->remote.tree, key_cmp, data_cmp) < 0) {
+  if (c_rbtree_create(&ctx->remote.tree, _key_cmp, _data_cmp) < 0) {
     rc = -1;
     goto out;
   }
@@ -435,7 +435,7 @@ int csync_propagate(CSYNC *ctx) {
   return 0;
 }
 
-static void tree_destructor(void *data) {
+static void _tree_destructor(void *data) {
   csync_file_stat_t *freedata = NULL;
 
   freedata = (csync_file_stat_t *) data;
@@ -481,11 +481,11 @@ int csync_destroy(CSYNC *ctx) {
 
   /* destroy the rbtrees */
   if (c_rbtree_size(ctx->local.tree) > 0) {
-    c_rbtree_destroy(ctx->local.tree, tree_destructor);
+    c_rbtree_destroy(ctx->local.tree, _tree_destructor);
   }
 
   if (c_rbtree_size(ctx->remote.tree) > 0) {
-    c_rbtree_destroy(ctx->remote.tree, tree_destructor);
+    c_rbtree_destroy(ctx->remote.tree, _tree_destructor);
   }
 
   c_rbtree_free(ctx->local.tree);

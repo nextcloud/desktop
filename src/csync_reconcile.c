@@ -27,7 +27,7 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.reconciler"
 #include "csync_log.h"
 
-static int csync_merge_algorithm_visitor(void *obj, void *data) {
+static int _csync_merge_algorithm_visitor(void *obj, void *data) {
   csync_file_stat_t *cur = NULL;
   csync_file_stat_t *other = NULL;
   CSYNC *ctx = NULL;
@@ -162,7 +162,7 @@ int csync_reconcile_updates(CSYNC *ctx) {
       break;
   }
 
-  rc = c_rbtree_walk(tree, (void *) ctx, csync_merge_algorithm_visitor);
+  rc = c_rbtree_walk(tree, (void *) ctx, _csync_merge_algorithm_visitor);
 
   return 0;
 }

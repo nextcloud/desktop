@@ -374,7 +374,7 @@ c_list_t *c_list_find_custom(c_list_t *list, void *data, c_list_compare_fn func)
 /*
  * Internal used function to merge 2 lists using a compare function
  */
-static c_list_t *c_list_merge(c_list_t *list1, c_list_t *list2, c_list_compare_fn func) {
+static c_list_t *_c_list_merge(c_list_t *list1, c_list_t *list2, c_list_compare_fn func) {
   int cmp;
 
   /* lists are emty */
@@ -387,12 +387,12 @@ static c_list_t *c_list_merge(c_list_t *list1, c_list_t *list2, c_list_compare_f
   cmp = ((c_list_compare_fn) func)(list1->data, list2->data);
   /* compare if it is smaller */
   if (cmp <= 0) {
-    list1->next = c_list_merge(list1->next, list2, func);
+    list1->next = _c_list_merge(list1->next, list2, func);
     if (list1->next) {
       list1->next->prev = list1;
     }return list1;
   } else {
-    list2->next = c_list_merge(list1, list2->next, func);
+    list2->next = _c_list_merge(list1, list2->next, func);
     if (list2->next) {
       list2->next->prev = list2;
     }
@@ -403,7 +403,7 @@ static c_list_t *c_list_merge(c_list_t *list1, c_list_t *list2, c_list_compare_f
 /*
  * Internally used function to split 2 lists.
  */
-static c_list_t *c_list_split(c_list_t *list) {
+static c_list_t *_c_list_split(c_list_t *list) {
   c_list_t *second = NULL;
 
   /* list is empty */
@@ -422,7 +422,7 @@ static c_list_t *c_list_split(c_list_t *list) {
     }
 
     second->prev = NULL;
-    second->next = c_list_split(second->next);
+    second->next = _c_list_split(second->next);
     /* is last element */
     if (second->next) {
       second->next->prev = second;
@@ -445,9 +445,9 @@ c_list_t *c_list_sort(c_list_t *list, c_list_compare_fn func) {
     return list;
   } else {
     /* split list */
-    second = c_list_split(list);
+    second = _c_list_split(list);
   }
 
-  return c_list_merge(c_list_sort(list, func), c_list_sort(second, func), func);
+  return _c_list_merge(c_list_sort(list, func), c_list_sort(second, func), func);
 }
 

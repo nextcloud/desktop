@@ -37,7 +37,7 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.lock"
 #include "csync_log.h"
 
-static int csync_lock_create(const char *lockfile) {
+static int _csync_lock_create(const char *lockfile) {
   int fd, pid, rc = -1;
   char *ctmpfile = NULL;
   char *dir = NULL;
@@ -93,7 +93,7 @@ out:
   return rc;
 }
 
-static pid_t csync_lock_read(const char *lockfile) {
+static pid_t _csync_lock_read(const char *lockfile) {
   char buf[8] = {0};
   int  fd, pid;
 
@@ -133,19 +133,19 @@ static pid_t csync_lock_read(const char *lockfile) {
 
 int csync_lock(const char *lockfile) {
   /* Check if lock already exists. */
-  if (csync_lock_read(lockfile) > 0) {
+  if (_csync_lock_read(lockfile) > 0) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Aborting, another synchronization process is running.");
     return -1;
   }
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Creating lock file: %s", lockfile);
 
-  return csync_lock_create(lockfile);
+  return _csync_lock_create(lockfile);
 }
 
 void csync_lock_remove(const char *lockfile) {
   /* You can't remove the lock if it is from another process */
-  if (csync_lock_read(lockfile) == getpid()) {
+  if (_csync_lock_read(lockfile) == getpid()) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Removing lock file: %s", lockfile);
     if (unlink(lockfile) < 0) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to remove lock %s - %s", lockfile, strerror(errno));

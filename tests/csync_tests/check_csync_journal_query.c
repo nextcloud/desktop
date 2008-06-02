@@ -112,14 +112,14 @@ START_TEST (check_csync_journal_is_empty)
   c_strlist_t *result = NULL;
 
   /* we have an empty db */
-  fail_unless(csync_journal_is_empty(csync) == 1, NULL);
+  fail_unless(_csync_journal_is_empty(csync) == 1, NULL);
 
   /* add a table and an entry */
   result = csync_journal_query(csync, "CREATE TABLE metadata(phash INTEGER, text VARCHAR(10));");
   c_strlist_destroy(result);
   fail_unless(csync_journal_insert(csync, "INSERT INTO metadata (phash, text) VALUES (42, 'hello');"), NULL);
 
-  fail_unless(csync_journal_is_empty(csync) == 0, NULL);
+  fail_unless(_csync_journal_is_empty(csync) == 0, NULL);
 }
 END_TEST
 

@@ -37,7 +37,7 @@
 
 #define BUF_SIZE 16
 
-static int csync_journal_check(const char *journal) {
+static int _csync_journal_check(const char *journal) {
   int fd = -1;
   char buf[BUF_SIZE] = {0};
   sqlite3 *db = NULL;
@@ -75,7 +75,7 @@ static int csync_journal_check(const char *journal) {
   return -1;
 }
 
-static int csync_journal_is_empty(CSYNC *ctx) {
+static int _csync_journal_is_empty(CSYNC *ctx) {
   c_strlist_t *result = NULL;
   int rc = 0;
 
@@ -93,7 +93,7 @@ int csync_journal_load(CSYNC *ctx, const char *journal) {
   c_strlist_t *result = NULL;
   char *journal_tmp = NULL;
 
-  if (csync_journal_check(journal) < 0) {
+  if (_csync_journal_check(journal) < 0) {
     rc = -1;
     goto out;
   }
@@ -120,7 +120,7 @@ int csync_journal_load(CSYNC *ctx, const char *journal) {
     goto out;
   }
 
-  if (csync_journal_is_empty(ctx)) {
+  if (_csync_journal_is_empty(ctx)) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "Journal doesn't exist");
     ctx->journal.exists = 0;
   } else {

@@ -34,7 +34,7 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.exclude"
 #include "csync_log.h"
 
-static void csync_exclude_add(CSYNC *ctx, const char *string) {
+static void _csync_exclude_add(CSYNC *ctx, const char *string) {
   if (ctx->excludes == NULL) {
     ctx->excludes = c_strlist_new(32);
   }
@@ -84,7 +84,7 @@ int csync_exclude_load(CSYNC *ctx, const char *fname) {
         buf[i] = '\0';
         if (*entry != '#' || *entry == '\n') {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Adding entry: %s", entry);
-          csync_exclude_add(ctx, entry);
+          _csync_exclude_add(ctx, entry);
         }
       }
       entry = buf + i + 1;

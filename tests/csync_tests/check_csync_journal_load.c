@@ -30,16 +30,16 @@ START_TEST (check_csync_journal_check)
 
   /* old db */
   fail_if(system("echo \"SQLite format 2\" > /tmp/check_csync1/test.db") < 0, NULL);
-  fail_unless(csync_journal_check(testdb) == 0);
+  fail_unless(_csync_journal_check(testdb) == 0);
 
   /* db already exists */
-  fail_unless(csync_journal_check(testdb) == 0);
+  fail_unless(_csync_journal_check(testdb) == 0);
 
   /* no db exists */
   fail_if(system("rm -f /tmp/check_csync1/test.db") < 0, NULL);
-  fail_unless(csync_journal_check(testdb) == 0);
+  fail_unless(_csync_journal_check(testdb) == 0);
 
-  fail_unless(csync_journal_check((char *) "/tmp/check_csync1/") < 0);
+  fail_unless(_csync_journal_check((char *) "/tmp/check_csync1/") < 0);
 
   fail_if(system("rm -rf /tmp/check_csync1") < 0, NULL);
 }
