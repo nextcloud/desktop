@@ -56,7 +56,9 @@
 /**
  * Maximum size of a buffer for transfer
  */
-#define MAX_XFER_BUF_SIZE 16348
+#ifndef MAX_XFER_BUF_SIZE
+#define MAX_XFER_BUF_SIZE (16 * 1024)
+#endif
 
 #define CSYNC_STATUS_INIT 1 << 0
 #define CSYNC_STATUS_UPDATE 1 << 1

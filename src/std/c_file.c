@@ -51,7 +51,7 @@ int c_copy(const char* src, const char *dst, mode_t mode) {
   int rc = -1;
   ssize_t bread, bwritten;
   struct stat sb;
-  char buf[MAX_XFER_BUF_SIZE];
+  char buf[BUFFER_SIZE];
 
   if (c_streq(src, dst)) {
     return -1;
@@ -88,7 +88,7 @@ int c_copy(const char* src, const char *dst, mode_t mode) {
   }
 
   for (;;) {
-    bread = read(srcfd, buf, MAX_XFER_BUF_SIZE);
+    bread = read(srcfd, buf, BUFFER_SIZE);
     if (bread == 0) {
       /* done */
       break;

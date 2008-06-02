@@ -36,8 +36,8 @@
 
 #include <sys/types.h>
 
-#ifndef MAX_XFER_BUF_SIZE
-#define MAX_XFER_BUF_SIZE 16348
+#ifndef BUFFER_SIZE
+#define BUFFER_SIZE (16 * 1024)
 #endif
 
 /**
