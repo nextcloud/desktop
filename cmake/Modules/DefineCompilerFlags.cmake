@@ -1,11 +1,11 @@
 # define system dependent compiler flags
 
-include(CheckCXXCompilerFlag)
+include(CheckCCompilerFlag)
 
 if (UNIX AND NOT WIN32)
   # with -fPIC
   if (CMAKE_SIZEOF_VOID_P MATCHES "8")
-    check_cxx_compiler_flag("-fPIC" WITH_FPIC)
+    check_c_compiler_flag("-fPIC" WITH_FPIC)
     if (WITH_FPIC)
       add_definitions(-fPIC)
     endif (WITH_FPIC)
@@ -36,12 +36,12 @@ if (UNIX AND NOT WIN32)
   add_definitions(${_lfs_CFLAGS})
   add_definitions(-Wall -W -Wmissing-prototypes -Wdeclaration-after-statement -Wreturn-type -Wunused)
 
-  check_cxx_compiler_flag("-fstack-protector" WITH_STACK_PROTECTOR)
+  check_c_compiler_flag("-fstack-protector" WITH_STACK_PROTECTOR)
   if (WITH_STACK_PROTECTOR)
     add_definitions(-fstack-protector)
   endif (WITH_STACK_PROTECTOR)
 
-  check_cxx_compiler_flag("-D_FORTIFY_SOURCE=2" WITH_FORTIFY_SOURCE)
+  check_c_compiler_flag("-D_FORTIFY_SOURCE=2" WITH_FORTIFY_SOURCE)
   if (WITH_FORTIFY_SOURCE)
     add_definitions(-D_FORTIFY_SOURCE=2)
   endif (WITH_FORTIFY_SOURCE)
