@@ -125,21 +125,29 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   /* create directories if needed */
   ctx->replica = drep;
 
-  if (csync_vio_mkdirs(ctx, tdir, 0755) < 0) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "dir: %s, command: mkdirs, error: %s", tdir, strerror(errno));
-  }
-
   /* Open the destination file */
   ctx->replica = drep;
   dfp = csync_vio_creat(ctx, turi, 0644);
-  if (dfp == NULL) {
-    if (errno == ENOMEM) {
-      rc = -1;
-    } else {
-      rc = 1;
+  while (dfp == NULL) {
+    switch (errno) {
+      case ENOENT:
+        break;
+      case ENOMEM:
+        rc = -1;
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: creat, error: %s", duri, strerror(errno));
+        goto out;
+        break;
+      default:
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: creat, error: %s", duri, strerror(errno));
+        rc = 1;
+        goto out;
+        break;
     }
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: creat, error: %s", duri, strerror(errno));
-    goto out;
+
+    if (csync_vio_mkdirs(ctx, tdir, 0755) < 0) {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "dir: %s, command: mkdirs, error: %s", tdir, strerror(errno));
+    }
+    dfp = csync_vio_creat(ctx, turi, 0644);
   }
 
   /* copy file */
