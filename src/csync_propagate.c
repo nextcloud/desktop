@@ -292,6 +292,7 @@ static int _csync_remove_file(CSYNC *ctx, csync_file_stat_t *st) {
     goto out;
   }
 
+  /* FIXME: We can remove the node from the tree */
   st->instruction = CSYNC_INSTRUCTION_NONE;
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: REMOVED", uri);
@@ -478,6 +479,7 @@ static int _csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
     goto out;
   }
 
+  /* FIXME: we can remove the node form the rbtree */
   st->instruction = CSYNC_INSTRUCTION_NONE;
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "dir: %s, instruction: REMOVED", uri);
@@ -529,6 +531,7 @@ static int _csync_propagation_cleanup(CSYNC *ctx) {
 
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "dir: %s, instruction: CLEANUP", dir);
 
+    /* FIXME: we can remove the node form the rbtree */
     st->instruction = CSYNC_INSTRUCTION_NONE;
 
     SAFE_FREE(dir);
