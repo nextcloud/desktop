@@ -97,17 +97,6 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
       break;
   }
 
-  if (asprintf(&turi, "%s.ctmp", duri) < 0) {
-    rc = -1;
-    goto out;
-  }
-
-  tdir = c_dirname(turi);
-  if (tdir == NULL) {
-    rc = -1;
-    goto out;
-  }
-
   /* Open the source file */
   ctx->replica = srep;
   sfp = csync_vio_open(ctx, suri, O_RDONLY, 0);
@@ -122,8 +111,13 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     goto out;
   }
 
-  /* create directories if needed */
   ctx->replica = drep;
+
+  /* create the temporary file name */
+  if (asprintf(&turi, "%s.ctmp", duri) < 0) {
+    rc = -1;
+    goto out;
+  }
 
   /* Open the destination file */
   ctx->replica = drep;
@@ -142,6 +136,13 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
         rc = 1;
         goto out;
         break;
+    }
+
+    /* get the directory name */
+    tdir = c_dirname(turi);
+    if (tdir == NULL) {
+      rc = -1;
+      goto out;
     }
 
     if (csync_vio_mkdirs(ctx, tdir, 0755) < 0) {
@@ -211,16 +212,16 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     goto out;
   }
 
+  /* sync modes */
+  ctx->replica = drep;
+  csync_vio_chmod(ctx, duri, st->mode);
+
   /* sync time */
   times[0].tv_sec = times[1].tv_sec = st->modtime;
   times[0].tv_usec = times[1].tv_usec = 0;
 
   ctx->replica = drep;
   csync_vio_utimes(ctx, duri, times);
-
-  /* sync modes */
-  ctx->replica = drep;
-  csync_vio_chmod(ctx, duri, st->mode);
 
   st->instruction = CSYNC_INSTRUCTION_NONE;
 
