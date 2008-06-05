@@ -99,7 +99,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   /* Open the source file */
   ctx->replica = srep;
-  sfp = csync_vio_open(ctx, suri, O_RDONLY, 0);
+  sfp = csync_vio_open(ctx, suri, O_RDONLY|O_NOFOLLOW|O_NOATIME, 0);
   if (sfp == NULL) {
     if (errno == ENOMEM) {
       rc = -1;
