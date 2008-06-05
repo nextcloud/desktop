@@ -148,7 +148,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     if (csync_vio_mkdirs(ctx, tdir, 0755) < 0) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "dir: %s, command: mkdirs, error: %s", tdir, strerror(errno));
     }
-    dfp = csync_vio_creat(ctx, turi, 0644);
+    dfp = csync_vio_creat(ctx, turi, st->mode);
   }
 
   /* copy file */
@@ -211,10 +211,6 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: rename, error: %s", duri, strerror(errno));
     goto out;
   }
-
-  /* sync modes */
-  ctx->replica = drep;
-  csync_vio_chmod(ctx, duri, st->mode);
 
   /* sync time */
   times[0].tv_sec = times[1].tv_sec = st->modtime;
