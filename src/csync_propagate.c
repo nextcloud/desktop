@@ -345,11 +345,13 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
     goto out;
   }
 
+  /* The chmod is needed here cause the directory could already exist. */
+  csync_vio_chmod(ctx, uri, st->mode);
+
   times[0].tv_sec = times[1].tv_sec = st->modtime;
   times[0].tv_usec = times[1].tv_usec = 0;
 
   csync_vio_utimes(ctx, uri, times);
-  csync_vio_chmod(ctx, uri, st->mode);
 
   st->instruction = CSYNC_INSTRUCTION_NONE;
 
