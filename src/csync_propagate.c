@@ -123,8 +123,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   /* Open the destination file */
   ctx->replica = drep;
-  dfp = csync_vio_creat(ctx, turi, 0644);
-  while (dfp == NULL) {
+  while ((dfp = csync_vio_open(ctx, turi, O_CREAT|O_EXCL|O_WRONLY, st->mode)) == NULL) {
     switch (errno) {
       case ENOENT:
         break;
@@ -150,7 +149,6 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     if (csync_vio_mkdirs(ctx, tdir, 0755) < 0) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "dir: %s, command: mkdirs, error: %s", tdir, strerror(errno));
     }
-    dfp = csync_vio_creat(ctx, turi, st->mode);
   }
 
   /* copy file */
