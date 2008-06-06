@@ -120,7 +120,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   }
   turi = mktemp(turi);
 
-  /* Open the destination file */
+  /* Create the destination file */
   ctx->replica = drep;
   while ((dfp = csync_vio_open(ctx, turi, O_CREAT|O_EXCL|O_WRONLY, st->mode)) == NULL) {
     switch (errno) {
@@ -128,29 +128,29 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
         turi = mktemp(turi);
         break;
       case ENOENT:
+        /* get the directory name */
+        tdir = c_dirname(turi);
+        if (tdir == NULL) {
+          rc = -1;
+          goto out;
+        }
+
+        if (csync_vio_mkdirs(ctx, tdir, 0755) < 0) {
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "dir: %s, command: mkdirs, error: %s", tdir, strerror(errno));
+        }
         break;
       case ENOMEM:
         rc = -1;
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: creat, error: %s", duri, strerror(errno));
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: open, error: %s", duri, strerror(errno));
         goto out;
         break;
       default:
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: creat, error: %s", duri, strerror(errno));
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: open, error: %s", duri, strerror(errno));
         rc = 1;
         goto out;
         break;
     }
 
-    /* get the directory name */
-    tdir = c_dirname(turi);
-    if (tdir == NULL) {
-      rc = -1;
-      goto out;
-    }
-
-    if (csync_vio_mkdirs(ctx, tdir, 0755) < 0) {
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "dir: %s, command: mkdirs, error: %s", tdir, strerror(errno));
-    }
   }
 
   /* copy file */
