@@ -123,8 +123,13 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   /* Create the destination file */
   ctx->replica = drep;
   while ((dfp = csync_vio_open(ctx, turi, O_CREAT|O_EXCL|O_WRONLY, st->mode)) == NULL) {
+    int count = 0;
     switch (errno) {
       case EEXIST:
+        if (count++ > 10) {
+          rc = 1;
+          goto out;
+        }
         turi = mktemp(turi);
         break;
       case ENOENT:
