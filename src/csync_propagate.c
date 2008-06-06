@@ -114,10 +114,12 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   ctx->replica = drep;
 
   /* create the temporary file name */
-  if (asprintf(&turi, "%s.ctmp", duri) < 0) {
+  if (asprintf(&turi, "%s.XXXXXX", duri) < 0) {
     rc = -1;
     goto out;
   }
+  turi = mktemp(turi);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "file: %s", turi);
 
   /* Open the destination file */
   ctx->replica = drep;
