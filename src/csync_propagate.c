@@ -119,12 +119,14 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     goto out;
   }
   turi = mktemp(turi);
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "file: %s", turi);
 
   /* Open the destination file */
   ctx->replica = drep;
   while ((dfp = csync_vio_open(ctx, turi, O_CREAT|O_EXCL|O_WRONLY, st->mode)) == NULL) {
     switch (errno) {
+      case EEXIST:
+        turi = mktemp(turi);
+        break;
       case ENOENT:
         break;
       case ENOMEM:
