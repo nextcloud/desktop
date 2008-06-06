@@ -238,6 +238,10 @@ out:
 
   csync_vio_file_stat_destroy(tstat);
 
+  if (rc != 0) {
+    csync_vio_unlink(ctx, turi);
+  }
+
   SAFE_FREE(suri);
   SAFE_FREE(duri);
   SAFE_FREE(turi);
