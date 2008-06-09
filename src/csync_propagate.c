@@ -65,6 +65,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   struct timeval times[2];
 
   int rc = -1;
+  int count = 0;
 
   rep_bak = ctx->replica;
 
@@ -122,8 +123,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   /* Create the destination file */
   ctx->replica = drep;
-  while ((dfp = csync_vio_open(ctx, turi, O_CREAT|O_EXCL|O_WRONLY, st->mode)) == NULL) {
-    int count = 0;
+  while ((dfp = csync_vio_open(ctx, turi, O_CREAT|O_EXCL|O_WRONLY|O_NOCTTY, st->mode)) == NULL) {
     switch (errno) {
       case EEXIST:
         if (count++ > 10) {
@@ -182,7 +182,9 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     }
   }
 
-  /* check filesize */
+  /*
+   * Check filesize
+   */
   ctx->replica = drep;
   tstat = csync_vio_file_stat_new();
   if (csync_vio_stat(ctx, turi, tstat) < 0) {
