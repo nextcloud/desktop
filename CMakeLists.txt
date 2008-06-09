@@ -17,6 +17,7 @@ include(DefineCMakeDefaults)
 include(DefineCompilerFlags)
 include(DefineInstallationPaths)
 include(DefineOptions.cmake)
+include(CPackConfig.cmake)
 
 # disallow in-source build
 include(MacroEnsureOutOfSourceBuild)

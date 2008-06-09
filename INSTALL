@@ -23,7 +23,7 @@ build and run csync successfully with an older version, please let us know.
 
 ## Building
 First, you need to configure the compilation, using CMake. Go inside the
-`build` dir.
+`build` dir. Create it if it doesn't exist.
 
 GNU/Linux and MacOS X:
 
