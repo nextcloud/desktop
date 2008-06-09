@@ -20,7 +20,10 @@
  * vim: ts=2 sw=2 et cindent
  */
 
+#ifndef _GNU_SOURCE
 #define _GNU_SOURCE
+#endif
+
 #include <sys/types.h>
 #include <sys/stat.h>
 
