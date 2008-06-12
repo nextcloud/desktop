@@ -200,7 +200,7 @@ int csync_init(CSYNC *ctx) {
   SAFE_FREE(exclude);
 
   /* load exclude list */
-  if (asprintf(&exclude, "%s/%s", ctx->options.config_dir, CSYNC_CONF_FILE) < 0) {
+  if (asprintf(&exclude, "%s/%s", ctx->options.config_dir, CSYNC_EXCLUDE_FILE) < 0) {
     rc = -1;
     goto out;
   }
