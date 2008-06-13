@@ -37,7 +37,7 @@ END_TEST
 START_TEST (check_csync_exclude_load)
 {
   fail_unless(csync_exclude_load(csync, BINARYDIR "/config/" CSYNC_EXCLUDE_FILE) == 0, NULL);
-  fail_unless(strcmp(csync->excludes->vector[0], (const char *) ".ccache/*") == 0, NULL);
+  fail_unless(strcmp(csync->excludes->vector[0], (const char *) ".beagle/*") == 0, NULL);
 }
 END_TEST
 
