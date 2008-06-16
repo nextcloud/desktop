@@ -1,0 +1,13 @@
+ChangeLog
+==========
+
+version 0.42.0 alpha2 (released 2008-06-16)
+
+libcsync:
+  * Peformance improvements
+  * Add more directories to the standard exclude file
+  * Bugfixes
+
+version 0.42.0 alpha1 (released 2008-06-02)
+
+  * Initial release
