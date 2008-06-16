@@ -114,7 +114,6 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
       rc = 1;
     }
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: open, error: %s", suri, strerror(errno));
-    rc = 1;
     goto out;
   }
 
