@@ -66,6 +66,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   int rc = -1;
   int count = 0;
+  int flags = 0;
 
   rep_bak = ctx->replica;
 
@@ -100,7 +101,12 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   /* Open the source file */
   ctx->replica = srep;
-  sfp = csync_vio_open(ctx, suri, O_RDONLY|O_NOFOLLOW|O_NOATIME, 0);
+  flags = O_RDONLY|O_NOFOLLOW;
+  /* O_NOATIME can only be set by the owner of the file or root */
+  if (st->uid == getuid()) {
+    flags |= O_NOATIME;
+  }
+  sfp = csync_vio_open(ctx, suri, O_RDONLY|O_NOFOLLOW, 0);
   if (sfp == NULL) {
     if (errno == ENOMEM) {
       rc = -1;
