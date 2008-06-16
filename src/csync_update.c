@@ -237,13 +237,19 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn, unsigned int dept
 
     fs = csync_vio_file_stat_new();
     if (csync_vio_stat(ctx, filename, fs) == 0) {
-      if (fs->type == CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK) {
-        flag = CSYNC_FTW_FLAG_SLINK;
-      } else if (fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY) {
-        flag = CSYNC_FTW_FLAG_DIR;
-      } else {
-        flag = CSYNC_FTW_FLAG_FILE;
-      }
+      switch (fs->type) {
+        case CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK:
+          flag = CSYNC_FTW_FLAG_SLINK;
+          break;
+        case CSYNC_VIO_FILE_TYPE_DIRECTORY:
+          flag = CSYNC_FTW_FLAG_DIR;
+          break;
+        case CSYNC_VIO_FILE_TYPE_REGULAR:
+          flag = CSYNC_FTW_FLAG_FILE;
+        default:
+          flag = CSYNC_FTW_FLAG_SPEC;
+          break;
+      };
     } else {
       flag = CSYNC_FTW_FLAG_NSTAT;
     }

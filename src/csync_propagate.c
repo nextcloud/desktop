@@ -102,8 +102,8 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   /* Open the source file */
   ctx->replica = srep;
   flags = O_RDONLY|O_NOFOLLOW;
-  /* O_NOATIME can only be set by the owner of the file or root */
-  if (st->uid == getuid()) {
+  /* O_NOATIME can only be set by the owner of the file or the superuser */
+  if (st->uid == getuid() || geteuid() == 0) {
     flags |= O_NOATIME;
   }
   sfp = csync_vio_open(ctx, suri, O_RDONLY|O_NOFOLLOW, 0);

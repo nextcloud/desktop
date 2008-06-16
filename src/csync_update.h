@@ -35,6 +35,7 @@ enum csync_ftw_flags_e {
   CSYNC_FTW_FLAG_DNR,		/* Unreadable directory.  */
   CSYNC_FTW_FLAG_NSTAT,		/* Unstatable file.  */
   CSYNC_FTW_FLAG_SLINK,		/* Symbolic link.  */
+  CSYNC_FTW_FLAG_SPEC,		/* Special file (fifo, ...).  */
   /* These flags are only passed from the `nftw' function.  */
   CSYNC_FTW_FLAG_DP,		/* Directory, all subdirs have been visited. */
   CSYNC_FTW_FLAG_SLN		/* Symbolic link naming non-existing file.  */
