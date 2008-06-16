@@ -106,6 +106,19 @@ int c_strlist_add(c_strlist_t *strlist, const char *string);
 void c_strlist_destroy(c_strlist_t *strlist);
 
 /**
+ * @breif Replace a string with another string in a source string.
+ *
+ * @param src      String to search for pattern.
+ *
+ * @param pattern  Pattern to search for in the source string.
+ *
+ * @param repl     The string which which should replace pattern if found.
+ *
+ * @return  Return a pointer to the source string.
+ */
+char *c_strreplace(char *src, const char *pattern, const char *repl);
+
+/**
  * }@
  */
 #endif /* _C_STR_H */

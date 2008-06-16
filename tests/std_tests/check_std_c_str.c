@@ -96,12 +96,24 @@ START_TEST (check_c_strlist_expand)
 }
 END_TEST
 
+START_TEST (check_c_strreplace)
+{
+  char *str = c_strdup("/home/%(USER)");
+
+  str = c_strreplace(str, "%(USER)", "csync");
+  fail_unless(strcmp(str, "/home/csync") == 0, NULL);
+
+  SAFE_FREE(str);
+}
+END_TEST
+
 static Suite *make_std_c_strlist_suite(void) {
   Suite *s = suite_create("std:str:c_stringlist");
 
   create_case(s, "check_c_strlist_new", check_c_strlist_new);
   create_case(s, "check_c_strlist_add", check_c_strlist_add);
   create_case(s, "check_c_strlist_expand", check_c_strlist_expand);
+  create_case(s, "check_c_strreplace", check_c_strreplace);
 
   return s;
 }
