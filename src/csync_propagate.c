@@ -113,7 +113,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     } else {
       rc = 1;
     }
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: open, error: %s", suri, strerror(errno));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: open(O_RDONLY), error: %s", suri, strerror(errno));
     goto out;
   }
 
@@ -151,11 +151,11 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
         break;
       case ENOMEM:
         rc = -1;
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: open, error: %s", duri, strerror(errno));
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: open(O_CREAT), error: %s", duri, strerror(errno));
         goto out;
         break;
       default:
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: open, error: %s", duri, strerror(errno));
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: open(O_CREAT), error: %s", duri, strerror(errno));
         rc = 1;
         goto out;
         break;
