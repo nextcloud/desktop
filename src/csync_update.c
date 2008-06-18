@@ -244,10 +244,16 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn, unsigned int dept
         case CSYNC_VIO_FILE_TYPE_DIRECTORY:
           flag = CSYNC_FTW_FLAG_DIR;
           break;
-        case CSYNC_VIO_FILE_TYPE_REGULAR:
-          flag = CSYNC_FTW_FLAG_FILE;
-        default:
+        case CSYNC_VIO_FILE_TYPE_BLOCK_DEVICE:
+        case CSYNC_VIO_FILE_TYPE_CHARACTER_DEVICE:
+        case CSYNC_VIO_FILE_TYPE_SOCKET:
           flag = CSYNC_FTW_FLAG_SPEC;
+          break;
+        case CSYNC_VIO_FILE_TYPE_FIFO:
+          flag = CSYNC_FTW_FLAG_SPEC;
+          break;
+        default:
+          flag = CSYNC_FTW_FLAG_FILE;
           break;
       };
     } else {
