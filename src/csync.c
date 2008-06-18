@@ -460,17 +460,23 @@ int csync_destroy(CSYNC *ctx) {
   if (ctx->journal.db != NULL) {
     /* and we have successfully synchronized */
     if (ctx->status >= CSYNC_STATUS_DONE) {
-      clock_gettime(CLOCK_REALTIME, &start);
-      /* write the journal to disk */
-      if (csync_journal_write(ctx) == 0) {
-        jwritten = 1;
-        clock_gettime(CLOCK_REALTIME, &finish);
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Writing the journal to disk took %.2f seconds",
-            c_secdiff(finish, start));
-      } else {
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to write journal: %s",
+      /* merge trees */
+      if (csync_merge_file_trees(ctx) < 0) {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to merge trees: %s",
             strerror(errno));
+      } else {
+        clock_gettime(CLOCK_REALTIME, &start);
+        /* write the journal to disk */
+        if (csync_journal_write(ctx) == 0) {
+          jwritten = 1;
+          clock_gettime(CLOCK_REALTIME, &finish);
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+              "Writing the journal of %llu files to disk took %.2f seconds",
+              c_rbtree_size(ctx->local.tree), c_secdiff(finish, start));
+        } else {
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to write journal: %s",
+              strerror(errno));
+        }
       }
     }
     csync_journal_close(ctx, ctx->journal.file, jwritten);

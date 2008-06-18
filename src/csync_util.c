@@ -20,7 +20,14 @@
  * vim: ts=2 sw=2 et cindent
  */
 
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+
+#include <stdio.h>
+
 #include "csync_util.h"
+#include "vio/csync_vio.h"
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.util"
 #include "csync_log.h"
@@ -89,5 +96,121 @@ void csync_memstat_check(void) {
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Memory: %dK total size, %dK resident, %dK shared",
                  m.size * 4, m.resident * 4, m.shared * 4);
+}
+
+static int _merge_file_trees_visitor(void *obj, void *data) {
+  csync_file_stat_t *fs = NULL;
+  csync_vio_file_stat_t *vst = NULL;
+
+  CSYNC *ctx = NULL;
+  c_rbnode_t *node = NULL;
+
+  char *uri = NULL;
+  int rc = -1;
+
+  fs = (csync_file_stat_t *) obj;
+  ctx = (CSYNC *) data;
+
+  /* search for UPDATED file */
+  if (fs->instruction != CSYNC_INSTRUCTION_UPDATED) {
+    rc = 0;
+    goto out;
+  }
+
+  /* check if the file is new or has been synced */
+  node = c_rbtree_find(ctx->local.tree, (void *) fs->phash);
+  if (node == NULL) {
+    csync_file_stat_t *new = NULL;
+
+    new = c_malloc(sizeof(csync_file_stat_t) + fs->pathlen + 1);
+    if (new == NULL) {
+      rc = -1;
+      goto out;
+    }
+    new = memcpy(new, fs, sizeof(csync_file_stat_t) + fs->pathlen + 1);
+
+    if (c_rbtree_insert(ctx->local.tree, new) < 0) {
+      SAFE_FREE(new);
+      rc = -1;
+      goto out;
+    }
+
+    node = c_rbtree_find(ctx->local.tree, (void *) fs->phash);
+    if (node == NULL) {
+      rc = -1;
+      goto out;
+    }
+  }
+  fs = c_rbtree_node_data(node);
+
+  switch (ctx->current) {
+    case LOCAL_REPLICA:
+      if (asprintf(&uri, "%s/%s", ctx->local.uri, fs->path) < 0) {
+        rc =-1;
+        goto out;
+      }
+      break;
+    case REMOTE_REPLCIA:
+      if (asprintf(&uri, "%s/%s", ctx->remote.uri, fs->path) < 0) {
+        rc = -1;
+        goto out;
+      }
+      break;
+    default:
+      break;
+  }
+
+  /* get file stat of the file on local replica */
+  vst = csync_vio_file_stat_new();
+  if (csync_vio_stat(ctx, uri, vst) < 0) {
+    rc = -1;
+    goto out;
+  }
+
+  /* update file stat */
+  fs->inode = vst->inode;
+  fs->modtime = vst->mtime;
+
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: UPDATED", uri);
+
+  rc = 0;
+out:
+  csync_vio_file_stat_destroy(vst);
+  SAFE_FREE(uri);
+
+  return rc;
+}
+
+/*
+ * merge the local tree with the new files from remote and update the
+ * inode numbers
+ */
+int csync_merge_file_trees(CSYNC *ctx) {
+  int rc = -1;
+
+  /* walk over remote tree, stat on local system */
+  ctx->current = LOCAL_REPLICA;
+  ctx->replica = ctx->local.type;
+
+  rc = c_rbtree_walk(ctx->remote.tree, ctx, _merge_file_trees_visitor);
+  if (rc < 0) {
+    goto out;
+  }
+
+#if 0
+  /* We don't have to merge the remote tree atm. */
+
+  /* walk over local tree, stat on remote system */
+  ctx->current = REMOTE_REPLICA;
+  ctx->replica = ctx->remote.type;
+
+  rc = c_rbtree_walk(ctx->local.tree, ctx, _merge_file_trees_visitor);
+  if (rc < 0) {
+    goto out;
+  }
+#endif
+
+out:
+  return rc;
 }
 
