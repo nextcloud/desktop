@@ -405,7 +405,10 @@ static int _chmod(const char *uri, mode_t mode) {
 }
 
 static int _chown(const char *uri, uid_t owner, gid_t group) {
+#if 0
   return smbc_chown(uri, owner, group);
+#endif
+  return 0;
 }
 
 static int _utimes(const char *uri, const struct timeval *times) {
