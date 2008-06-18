@@ -268,24 +268,28 @@ static int visitor(void *obj, void *data) {
   fs = (csync_file_stat_t *) obj;
   ctx = (CSYNC *) data;
 
-  stmt = sqlite3_mprintf("INSERT INTO metadata_temp"
-    "(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES"
-    "(%lu, %d, '%q', %d, %d, %d, %d, %lu);",
-    fs->phash,
-    fs->pathlen,
-    fs->path,
-    fs->inode,
-    fs->uid,
-    fs->gid,
-    fs->mode,
-    fs->modtime);
+  if (fs->instruction != CSYNC_INSTRUCTION_DELETED) {
+    stmt = sqlite3_mprintf("INSERT INTO metadata_temp"
+      "(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES"
+      "(%lu, %d, '%q', %d, %d, %d, %d, %lu);",
+      fs->phash,
+      fs->pathlen,
+      fs->path,
+      fs->inode,
+      fs->uid,
+      fs->gid,
+      fs->mode,
+      fs->modtime);
 
-  if (stmt == NULL) {
-    return -1;
+    if (stmt == NULL) {
+      return -1;
+    }
+
+    rc = csync_journal_insert(ctx, stmt);
+    sqlite3_free(stmt);
+  } else {
+    rc = 0;
   }
-
-  rc = csync_journal_insert(ctx, stmt);
-  sqlite3_free(stmt);
 
   return rc;
 }

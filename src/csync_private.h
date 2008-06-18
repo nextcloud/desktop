@@ -133,7 +133,10 @@ enum csync_instructions_e {
   CSYNC_INSTRUCTION_IGNORE,
   CSYNC_INSTRUCTION_SYNC,
   CSYNC_INSTRUCTION_STAT_ERROR,
-  CSYNC_INSTRUCTION_ERROR
+  CSYNC_INSTRUCTION_ERROR,
+  /* instructions for the propagator */
+  CSYNC_INSTRUCTION_DELETED,
+  CSYNC_INSTRUCTION_UPDATED
 };
 
 typedef struct csync_file_stat_s {
