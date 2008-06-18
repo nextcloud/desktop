@@ -456,9 +456,12 @@ int csync_destroy(CSYNC *ctx) {
 
   csync_vio_shutdown(ctx);
 
+  /* if we have a journal */
   if (ctx->journal.db != NULL) {
+    /* and we have successfully synchronized */
     if (ctx->status >= CSYNC_STATUS_DONE) {
       clock_gettime(CLOCK_REALTIME, &start);
+      /* write the journal to disk */
       if (csync_journal_write(ctx) == 0) {
         jwritten = 1;
         clock_gettime(CLOCK_REALTIME, &finish);
@@ -473,12 +476,15 @@ int csync_destroy(CSYNC *ctx) {
     csync_journal_close(ctx, ctx->journal.file, jwritten);
   }
 
+  /* clear exclude list */
   csync_exclude_destroy(ctx);
 
+  /* remove the lock file */
   if (asprintf(&lock, "%s/%s", ctx->options.config_dir, CSYNC_LOCK_FILE) > 0) {
     csync_lock_remove(lock);
   }
 
+  /* stop logging */
   csync_log_fini();
 
   /* destroy the rbtrees */
@@ -490,6 +496,7 @@ int csync_destroy(CSYNC *ctx) {
     c_rbtree_destroy(ctx->remote.tree, _tree_destructor);
   }
 
+  /* free memory */
   c_rbtree_free(ctx->local.tree);
   c_list_free(ctx->local.list);
   c_rbtree_free(ctx->remote.tree);
