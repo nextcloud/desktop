@@ -236,7 +236,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   ctx->replica = drep;
   csync_vio_utimes(ctx, duri, times);
 
-  st->instruction = CSYNC_INSTRUCTION_NONE;
+  st->instruction = CSYNC_INSTRUCTION_UPDATED;
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: PUSHED", duri);
 
@@ -377,7 +377,7 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
 
   csync_vio_utimes(ctx, uri, times);
 
-  st->instruction = CSYNC_INSTRUCTION_NONE;
+  st->instruction = CSYNC_INSTRUCTION_UPDATED;
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "dir: %s, instruction: CREATED", uri);
   ctx->replica = replica_bak;
