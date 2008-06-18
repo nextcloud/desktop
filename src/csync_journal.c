@@ -259,7 +259,7 @@ int csync_journal_drop_tables(CSYNC *ctx) {
   return 0;
 }
 
-static int visitor(void *obj, void *data) {
+static int _insert_metadata_visitor(void *obj, void *data) {
   csync_file_stat_t *fs = NULL;
   CSYNC *ctx = NULL;
   char *stmt = NULL;
@@ -297,7 +297,7 @@ static int visitor(void *obj, void *data) {
 int csync_journal_insert_metadata(CSYNC *ctx) {
   c_strlist_t *result = NULL;
 
-  if (c_rbtree_walk(ctx->local.tree, ctx, visitor) < 0) {
+  if (c_rbtree_walk(ctx->local.tree, ctx, _insert_metadata_visitor) < 0) {
     return -1;
   }
 
