@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Last Change: 2008-05-19 11:03:07
+# Last Change: 2008-06-18 14:13:46
 #
 # Script to build csync on UNIX.
 #
@@ -93,6 +93,10 @@ while test -n "$1"; do
 		;;
 		*-prefix)
 			OPTIONS="${OPTIONS} -DCMAKE_INSTALL_PREFIX=${ARG}"
+			shift
+		;;
+		*-sysconfdir)
+			OPTIONS="${OPTIONS} -DSYSCONF_INSTALL_DIR=${ARG}"
 			shift
 		;;
 		----noarg)
