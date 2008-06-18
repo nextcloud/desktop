@@ -187,6 +187,14 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     }
   }
 
+  ctx->replica = srep;
+  csync_vio_close(ctx, sfp);
+  sfp = NULL;
+
+  ctx->replica = drep;
+  csync_vio_close(ctx, dfp);
+  dfp = NULL;
+
   /*
    * Check filesize
    */
