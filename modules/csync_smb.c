@@ -53,14 +53,17 @@ static void get_auth_data_with_context_fn(SMBCCTX *c,
   (void) wg;
   (void) wglen;
 
+  DEBUG_SMB(("csync_smb - user=%s, workgroup=%s, server=%s, share=%s\n",
+        un, wg, srv, shr));
+
   /* Don't authenticate for workgroup listing */
   if (srv == NULL || srv[0] == '\0') {
-    DEBUG_SMB(("emtpy server name"));
+    DEBUG_SMB(("csync_smb - emtpy server name"));
     return;
   }
 
   if (auth_cb != NULL) {
-    DEBUG_SMB(("Authentication callback\n"));
+    DEBUG_SMB(("csync_smb - execute authentication callback\n"));
     (*auth_cb) (un, unlen, pw, pwlen);
   }
 
@@ -80,13 +83,17 @@ static void get_auth_data_fn(const char *pServer,
   (void) pWorkgroup;
   (void) maxLenWorkgroup;
 
+  DEBUG_SMB(("csync_smb - user=%s, workgroup=%s, server=%s, share=%s\n",
+        pUsername, pWorkgroup, pServer, pShare));
+
   /* Don't authenticate for workgroup listing */
   if (pServer == NULL || pServer[0] == '\0') {
-    DEBUG_SMB(("emtpy server name"));
+    DEBUG_SMB(("csync_smb - emtpy server name"));
     return;
   }
 
   if (auth_cb != NULL) {
+    DEBUG_SMB(("csync_smb - execute authentication callback\n"));
     (*auth_cb) (pUsername, maxLenUsername, pPassword, maxLenPassword);
   }
 
@@ -450,7 +457,7 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
   (void) args;
 
   if (smb_context == NULL) {
-    fprintf(stderr, "csync_smb: Failed to create new smbc context\n");
+    fprintf(stderr, "csync_smb - failed to create new smbc context\n");
     return NULL;
   }
 
@@ -466,8 +473,9 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
 #endif
 
   if (smbc_init_context(smb_context) == NULL) {
-    fprintf(stderr, "CSYNC_SMB: Failed to initialize the smbc context");
+    fprintf(stderr, "csync_smb - failed to initialize the smbc context");
     smbc_free_context(smb_context, 0);
+    smb_context = NULL;
     return NULL;
   }
 
@@ -475,10 +483,17 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
  #ifdef DEPRECATED_SMBC_INTERFACE
    smbc_setOptionUseKerberos(smb_context, 1);
    smbc_setOptionFallbackAfterKerberos(smb_context, 1);
+
+  DEBUG_SMB(("csync_smb - use kerberos = %d\n",
+        smbc_getOptionUseKerberos(smb_context)));
+  DEBUG_SMB(("csync_smb - use fallback after kerberos = %d\n",
+        smbc_getOptionFallbackAfterKerberos(smb_context)));
  #else
    smb_context->flags |= (SMB_CTX_FLAG_USE_KERBEROS | SMB_CTX_FLAG_FALLBACK_AFTER_KERBEROS);
  #endif
 #endif
+  DEBUG_SMB(("csync_smb - KRB5CCNAME = %s\n", getenv("KRB5CCNAME") != NULL ?
+        getenv("KRB5CCNAME") : "not set"));
 
   smbc_set_context(smb_context);
 
