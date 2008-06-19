@@ -34,8 +34,8 @@
 #define DEBUG_SMB(x) printf x
 #endif
 
-SMBCCTX *smb_context;
-csync_module_auth_callback auth_cb;
+SMBCCTX *smb_context = NULL;
+csync_module_auth_callback auth_cb = NULL;
 
 #ifdef DEPRECATED_SMBC_INTERFACE
 
