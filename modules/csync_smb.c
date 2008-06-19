@@ -467,31 +467,31 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
 #ifdef DEPRECATED_SMBC_INTERFACE
   smbc_setDebug(smb_context, 0);
   smbc_setFunctionAuthDataWithContext(smb_context, get_auth_data_with_context_fn);
+
+  /* Kerberos support */
+  smbc_setOptionUseKerberos(smb_context, 1);
+  smbc_setOptionFallbackAfterKerberos(smb_context, 1);
+
+  DEBUG_SMB(("csync_smb - use kerberos = %d\n",
+        smbc_getOptionUseKerberos(smb_context)));
+  DEBUG_SMB(("csync_smb - use fallback after kerberos = %d\n",
+        smbc_getOptionFallbackAfterKerberos(smb_context)));
 #else
   smb_context->debug = 0;
   smb_context->callbacks.auth_fn = get_auth_data_fn;
+ #if defined(SMB_CTX_FLAG_USE_KERBEROS) && defined(SMB_CTX_FLAG_FALLBACK_AFTER_KERBEROS)
+  smb_context->flags |= (SMB_CTX_FLAG_USE_KERBEROS | SMB_CTX_FLAG_FALLBACK_AFTER_KERBEROS);
+ #endif
 #endif
 
   if (smbc_init_context(smb_context) == NULL) {
     fprintf(stderr, "csync_smb - failed to initialize the smbc context");
     smbc_free_context(smb_context, 0);
     smb_context = NULL;
+
     return NULL;
   }
 
-#if defined(SMB_CTX_FLAG_USE_KERBEROS) && defined(SMB_CTX_FLAG_FALLBACK_AFTER_KERBEROS)
- #ifdef DEPRECATED_SMBC_INTERFACE
-   smbc_setOptionUseKerberos(smb_context, 1);
-   smbc_setOptionFallbackAfterKerberos(smb_context, 1);
-
-  DEBUG_SMB(("csync_smb - use kerberos = %d\n",
-        smbc_getOptionUseKerberos(smb_context)));
-  DEBUG_SMB(("csync_smb - use fallback after kerberos = %d\n",
-        smbc_getOptionFallbackAfterKerberos(smb_context)));
- #else
-   smb_context->flags |= (SMB_CTX_FLAG_USE_KERBEROS | SMB_CTX_FLAG_FALLBACK_AFTER_KERBEROS);
- #endif
-#endif
   DEBUG_SMB(("csync_smb - KRB5CCNAME = %s\n", getenv("KRB5CCNAME") != NULL ?
         getenv("KRB5CCNAME") : "not set"));
 
