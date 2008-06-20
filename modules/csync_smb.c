@@ -36,6 +36,7 @@
 
 SMBCCTX *smb_context = NULL;
 csync_module_auth_callback auth_cb = NULL;
+int try_krb5 = 1;
 
 #ifdef DEPRECATED_SMBC_INTERFACE
 
@@ -56,6 +57,12 @@ static void get_auth_data_with_context_fn(SMBCCTX *c,
   DEBUG_SMB(("csync_smb - user=%s, workgroup=%s, server=%s, share=%s\n",
         un, wg, srv, shr));
 
+  if (try_krb5 && getenv("KRB5CCNAME")) {
+    try_krb5 = 0;
+
+    return;
+  }
+
   /* Don't authenticate for workgroup listing */
   if (srv == NULL || srv[0] == '\0') {
     DEBUG_SMB(("csync_smb - emtpy server name"));
@@ -69,6 +76,8 @@ static void get_auth_data_with_context_fn(SMBCCTX *c,
 
   DEBUG_SMB(("csync_smb - user=%s, workgroup=%s, server=%s, share=%s\n",
         un, wg, srv, shr));
+
+  try_krb5 = 1;
 
   return;
 }
@@ -89,9 +98,16 @@ static void get_auth_data_fn(const char *pServer,
   DEBUG_SMB(("csync_smb - user=%s, workgroup=%s, server=%s, share=%s\n",
         pUsername, pWorkgroup, pServer, pShare));
 
+  if (try_krb5 && getenv("KRB5CCNAME")) {
+    DEBUG_SMB(("csync_smb - trying kerberos authentication\n"));
+    try_krb5 = 0;
+
+    return;
+  }
+
   /* Don't authenticate for workgroup listing */
   if (pServer == NULL || pServer[0] == '\0') {
-    DEBUG_SMB(("csync_smb - emtpy server name"));
+    DEBUG_SMB(("csync_smb - emtpy server name\n"));
     return;
   }
 
@@ -102,6 +118,8 @@ static void get_auth_data_fn(const char *pServer,
 
   DEBUG_SMB(("csync_smb - user=%s, workgroup=%s, server=%s, share=%s\n",
         pUsername, pWorkgroup, pServer, pShare));
+
+  try_krb5 = 1;
 
   return;
 }
