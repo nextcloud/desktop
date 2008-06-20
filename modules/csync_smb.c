@@ -67,6 +67,9 @@ static void get_auth_data_with_context_fn(SMBCCTX *c,
     (*auth_cb) (un, unlen, pw, pwlen);
   }
 
+  DEBUG_SMB(("csync_smb - user=%s, workgroup=%s, server=%s, share=%s\n",
+        un, wg, srv, shr));
+
   return;
 }
 #else
@@ -96,6 +99,9 @@ static void get_auth_data_fn(const char *pServer,
     DEBUG_SMB(("csync_smb - execute authentication callback\n"));
     (*auth_cb) (pUsername, maxLenUsername, pPassword, maxLenPassword);
   }
+
+  DEBUG_SMB(("csync_smb - user=%s, workgroup=%s, server=%s, share=%s\n",
+        pUsername, pWorkgroup, pServer, pShare));
 
   return;
 }
