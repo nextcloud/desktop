@@ -288,7 +288,7 @@ static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
     }
   }
 
-  file_stat = csync_vio_file_stat_new();
+  file_stat = c_malloc(sizeof(csync_vio_file_stat_t));
   if (file_stat == NULL) {
     goto err;
   }
