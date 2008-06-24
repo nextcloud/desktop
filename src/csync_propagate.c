@@ -181,7 +181,9 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     bwritten = csync_vio_write(ctx, dfp, buf, bread);
 
     if (bwritten < 0 || bread != bwritten) {
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: write, error: bread = %d, bwritten = %d", duri, bread, bwritten);
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+          "file: %s, command: write, error: bread = %d, bwritten = %d - %s",
+          duri, bread, bwritten, strerror(errno));
       rc = 1;
       goto out;
     }
@@ -200,6 +202,12 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
    */
   ctx->replica = drep;
   tstat = csync_vio_file_stat_new();
+  if (tstat == NULL) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: stat, error: %s", turi, strerror(errno));
+    rc = -1;
+    goto out;
+  }
+
   if (csync_vio_stat(ctx, turi, tstat) < 0) {
     switch (errno) {
       case ENOMEM:
@@ -209,12 +217,12 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
         rc = 1;
         break;
     }
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: stat, error: %s", duri, strerror(errno));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: stat, error: %s", turi, strerror(errno));
     goto out;
   }
 
   if (st->size != tstat->size) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, error: incorrect filesize (%d should be %d)", turi, tstat->size, st->size);
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, error: incorrect filesize (size: %d should be %d)", turi, tstat->size, st->size);
     rc = 1;
     goto out;
   }
