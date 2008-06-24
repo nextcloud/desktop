@@ -33,7 +33,7 @@
 enum {
   KEY_DUMMY = 129,
   KEY_EXCLUDE_FILE,
-  KEY_REMOVE_JOURNAL,
+  KEY_DISABLE_JOURNAL,
 };
 
 const char *argp_program_version = "csync commandline client 0.42";
@@ -48,11 +48,11 @@ static char args_doc[] = "SOURCE DESTINATION";
 /* The options we understand. */
 static struct argp_option options[] = {
   {
-    .name  = "remove-journal",
-    .key   = KEY_REMOVE_JOURNAL,
+    .name  = "disable-journal",
+    .key   = KEY_DISABLE_JOURNAL,
     .arg   = NULL,
     .flags = 0,
-    .doc   = "Remove the journal after synchronization.",
+    .doc   = "Disable the usage and creation of a journal.",
     .group = 0
   },
   {
@@ -72,7 +72,7 @@ static struct argp_option options[] = {
     .group = 0
   },
   {
-    .name  = "journal",
+    .name  = "create-journal",
     .key   = 'j',
     .arg   = NULL,
     .flags = 0,
@@ -94,8 +94,8 @@ static struct argp_option options[] = {
 struct argument_s {
   char *args[2]; /* SOURCE and DESTINATION */
   char *exclude_file;
-  int journal_remove;
-  int journal_create;
+  int disable_journal;
+  int create_journal;
   int update;
   int reconcile;
   int propagate;
@@ -110,19 +110,19 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state) {
 
   switch (key) {
     case 'j':
-      arguments->journal_create = 1;
+      arguments->create_journal = 1;
       arguments->update = 1;
       arguments->reconcile = 0;
       arguments->propagate = 0;
       break;
     case 'u':
-      arguments->journal_create = 0;
+      arguments->create_journal = 0;
       arguments->update = 1;
       arguments->reconcile = 0;
       arguments->propagate = 0;
       break;
     case 'r':
-      arguments->journal_create = 0;
+      arguments->create_journal = 0;
       arguments->update = 1;
       arguments->reconcile = 1;
       arguments->propagate = 0;
@@ -130,8 +130,8 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state) {
     case KEY_EXCLUDE_FILE:
       arguments->exclude_file = strdup(arg);
       break;
-    case KEY_REMOVE_JOURNAL:
-      arguments->journal_remove = 1;
+    case KEY_DISABLE_JOURNAL:
+      arguments->disable_journal = 1;
       break;
     case ARGP_KEY_ARG:
       if (state->arg_num >= 2) {
@@ -177,15 +177,14 @@ static struct argp argp = {options, parse_opt, args_doc, doc, NULL, NULL, NULL};
 
 int main(int argc, char **argv) {
   int rc = 0;
-  char *journal = NULL;
   CSYNC *csync;
 
   struct argument_s arguments;
 
   /* Default values. */
   arguments.exclude_file = NULL;
-  arguments.journal_remove = 0;
-  arguments.journal_create = 0;
+  arguments.disable_journal = 0;
+  arguments.create_journal = 0;
   arguments.update = 1;
   arguments.reconcile = 1;
   arguments.propagate = 1;
@@ -201,8 +200,8 @@ int main(int argc, char **argv) {
     exit(1);
   }
 
-  csync_set_module_auth_callback(csync, csync_auth_fn);
-  fprintf(stdout,"\n");
+  csync_set_auth_callback(csync, csync_auth_fn);
+  csync_disable_journal(csync);
 
   if (csync_init(csync) < 0) {
     perror("csync_init");
@@ -217,10 +216,6 @@ int main(int argc, char **argv) {
       rc = 1;
       goto out;
     }
-  }
-
-  if (arguments.journal_remove) {
-    journal = csync_get_journal_file(csync);
   }
 
   if (arguments.update) {
@@ -247,17 +242,12 @@ int main(int argc, char **argv) {
     }
   }
 
-  if (arguments.journal_create) {
+  if (arguments.create_journal) {
     csync_set_status(csync, 0xFFFF);
   }
 
 out:
   csync_destroy(csync);
-
-  if (arguments.journal_remove && journal != NULL) {
-    unlink(journal);
-    free(journal);
-  }
 
   return rc;
 }

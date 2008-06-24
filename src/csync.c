@@ -210,17 +210,19 @@ int csync_init(CSYNC *ctx) {
   }
 
   /* create/load journal */
-  if (asprintf(&ctx->journal.file, "%s/csync_journal_%lu.db", ctx->options.config_dir,
-        c_jhash64((uint8_t *) ctx->remote.uri, strlen(ctx->remote.uri), 0)) < 0) {
-    rc = -1;
-    goto out;
-  }
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Remote replica: %s", ctx->remote.uri);
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Journal file: %s", ctx->journal.file);
+  if (! csync_is_journal_disabled(ctx)) {
+    if (asprintf(&ctx->journal.file, "%s/csync_journal_%lu.db", ctx->options.config_dir,
+          c_jhash64((uint8_t *) ctx->remote.uri, strlen(ctx->remote.uri), 0)) < 0) {
+      rc = -1;
+      goto out;
+    }
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Remote replica: %s", ctx->remote.uri);
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Journal file: %s", ctx->journal.file);
 
-  if (csync_journal_load(ctx, ctx->journal.file) < 0) {
-    rc = -1;
-    goto out;
+    if (csync_journal_load(ctx, ctx->journal.file) < 0) {
+      rc = -1;
+      goto out;
+    }
   }
 
   ctx->local.type = LOCAL_REPLICA;
@@ -553,42 +555,32 @@ int csync_set_config_dir(CSYNC *ctx, const char *path) {
   return 0;
 }
 
-int csync_remove_config_dir(CSYNC *ctx) {
-  char *path = NULL;
-
-  if (asprintf(&path, "%s/%s", ctx->options.config_dir, CSYNC_LOG_FILE) < 0) {
+int csync_enable_journal(CSYNC *ctx) {
+  if (ctx == NULL) {
     return -1;
   }
-  unlink(path);
-  SAFE_FREE(path);
 
-  if (asprintf(&path, "%s/%s", ctx->options.config_dir, CSYNC_CONF_FILE) < 0) {
-    return -1;
-  }
-  unlink(path);
-  SAFE_FREE(path);
-
-  if (asprintf(&path, "%s/%s", ctx->options.config_dir, CSYNC_CONF_FILE) < 0) {
-    return -1;
-  }
-  unlink(path);
-  SAFE_FREE(path);
-
-  if (asprintf(&path, "%s", ctx->journal.file) < 0) {
-    return -1;
-  }
-  unlink(path);
-  SAFE_FREE(path);
-
-  if (asprintf(&path, "%s.ctmp", ctx->journal.file) < 0) {
-    return -1;
-  }
-  unlink(path);
-  SAFE_FREE(path);
-
-  unlink(ctx->options.config_dir);
+  ctx->journal.disabled = 0;
 
   return 0;
+}
+
+int csync_disable_journal(CSYNC *ctx) {
+  if (ctx == NULL) {
+    return -1;
+  }
+
+  ctx->journal.disabled = 1;
+
+  return 0;
+}
+
+int csync_is_journal_disabled(CSYNC *ctx) {
+  if (ctx == NULL) {
+    return -1;
+  }
+
+  return ctx->journal.disabled;
 }
 
 int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb) {

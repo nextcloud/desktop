@@ -82,6 +82,7 @@ struct csync_s {
     char *file;
     sqlite3 *db;
     int exists;
+    int disabled;
   } journal;
 
   struct {
