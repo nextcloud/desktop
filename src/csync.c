@@ -633,6 +633,10 @@ int csync_set_status(CSYNC *ctx, int status) {
 }
 
 int csync_get_status(CSYNC *ctx) {
+  if (ctx == NULL) {
+    return -1;
+  }
+
   return ctx->status;
 }
 
