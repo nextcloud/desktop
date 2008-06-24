@@ -33,7 +33,7 @@
 enum {
   KEY_DUMMY = 129,
   KEY_EXCLUDE_FILE,
-  KEY_DISABLE_JOURNAL,
+  KEY_CREATE_JOURNAL,
 };
 
 const char *argp_program_version = "csync commandline client 0.42";
@@ -49,7 +49,7 @@ static char args_doc[] = "SOURCE DESTINATION";
 static struct argp_option options[] = {
   {
     .name  = "disable-journal",
-    .key   = KEY_DISABLE_JOURNAL,
+    .key   = 'd',
     .arg   = NULL,
     .flags = 0,
     .doc   = "Disable the usage and creation of a journal.",
@@ -73,7 +73,7 @@ static struct argp_option options[] = {
   },
   {
     .name  = "create-journal",
-    .key   = 'j',
+    .key   = KEY_CREATE_JOURNAL,
     .arg   = NULL,
     .flags = 0,
     .doc   = "Run update detection and write the journal (TESTING ONLY!)",
@@ -109,12 +109,6 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state) {
   struct argument_s *arguments = state->input;
 
   switch (key) {
-    case 'j':
-      arguments->create_journal = 1;
-      arguments->update = 1;
-      arguments->reconcile = 0;
-      arguments->propagate = 0;
-      break;
     case 'u':
       arguments->create_journal = 0;
       arguments->update = 1;
@@ -130,8 +124,14 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state) {
     case KEY_EXCLUDE_FILE:
       arguments->exclude_file = strdup(arg);
       break;
-    case KEY_DISABLE_JOURNAL:
+    case 'd':
       arguments->disable_journal = 1;
+      break;
+    case KEY_CREATE_JOURNAL:
+      arguments->create_journal = 1;
+      arguments->update = 1;
+      arguments->reconcile = 0;
+      arguments->propagate = 0;
       break;
     case ARGP_KEY_ARG:
       if (state->arg_num >= 2) {

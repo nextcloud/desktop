@@ -560,6 +560,11 @@ int csync_enable_journal(CSYNC *ctx) {
     return -1;
   }
 
+  if (ctx->status & CSYNC_STATUS_INIT) {
+    fprintf(stderr, "This function must be called before initialization.");
+    return -1;
+  }
+
   ctx->journal.disabled = 0;
 
   return 0;
@@ -567,6 +572,11 @@ int csync_enable_journal(CSYNC *ctx) {
 
 int csync_disable_journal(CSYNC *ctx) {
   if (ctx == NULL) {
+    return -1;
+  }
+
+  if (ctx->status & CSYNC_STATUS_INIT) {
+    fprintf(stderr, "This function must be called before initialization.");
     return -1;
   }
 
