@@ -591,7 +591,7 @@ int csync_remove_config_dir(CSYNC *ctx) {
   return 0;
 }
 
-int csync_set_module_auth_callback(CSYNC *ctx, csync_module_auth_callback cb) {
+int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb) {
   if (ctx == NULL || cb == NULL) {
     return -1;
   }
@@ -614,7 +614,7 @@ char *csync_get_journal_file(CSYNC *ctx) {
   return c_strdup(ctx->journal.file);
 }
 
-csync_module_auth_callback csync_get_module_auth_callback(CSYNC *ctx) {
+csync_auth_callback csync_get_auth_callback(CSYNC *ctx) {
   if (ctx == NULL) {
     return NULL;
   }

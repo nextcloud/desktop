@@ -55,7 +55,7 @@ extern "C" {
 #define CSYNC_JOURNAL_FILE "csync_journal.db"
 #define CSYNC_LOCK_FILE "lock"
 
-typedef void (*csync_module_auth_callback) (char *usr, size_t usrlen, char *pwd, size_t pwlen);
+typedef void (*csync_auth_callback) (char *usr, size_t usrlen, char *pwd, size_t pwlen);
 
 /**
  * csync handle
@@ -131,8 +131,11 @@ int csync_add_exclude_list(CSYNC *ctx, const char *path);
 char *csync_get_config_dir(CSYNC *ctx);
 int csync_set_config_dir(CSYNC *ctx, const char *path);
 int csync_remove_config_dir(CSYNC *ctx);
-csync_module_auth_callback csync_get_module_auth_callback(CSYNC *ctx);
-int csync_set_module_auth_callback(CSYNC *ctx, csync_module_auth_callback cb);
+int csync_enable_journal(CSYNC *ctx);
+int csync_disable_journal(CSYNC *ctx);
+int csync_is_journal_disabled(CSYNC *ctx);
+csync_auth_callback csync_get_auth_callback(CSYNC *ctx);
+int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb);
 char *csync_get_journal_file(CSYNC *ctx);
 int csync_get_status(CSYNC *ctx);
 int csync_set_status(CSYNC *ctx, int status);

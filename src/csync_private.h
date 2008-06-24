@@ -75,7 +75,7 @@ enum csync_replica_e {
  * @brief csync public structure
  */
 struct csync_s {
-  csync_module_auth_callback auth_callback;
+  csync_auth_callback auth_callback;
   c_strlist_t *excludes;
 
   struct {

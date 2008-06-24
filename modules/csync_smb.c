@@ -35,7 +35,7 @@
 #endif
 
 SMBCCTX *smb_context = NULL;
-csync_module_auth_callback auth_cb = NULL;
+csync_auth_callback auth_cb = NULL;
 
 /* Do we build against Samba 3.2 */
 #ifdef DEPRECATED_SMBC_INTERFACE
@@ -483,7 +483,7 @@ csync_vio_method_t _method = {
 };
 
 csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
-    csync_module_auth_callback cb) {
+    csync_auth_callback cb) {
   smb_context = smbc_new_context();
 
   DEBUG_SMB(("csync_smb - method_name: %s\n", method_name));

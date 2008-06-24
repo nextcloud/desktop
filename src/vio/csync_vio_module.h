@@ -26,7 +26,7 @@
 #include "vio/csync_vio_method.h"
 
 extern csync_vio_method_t *vio_module_init (const char *method_name,
-    const char *args, csync_module_auth_callback cb);
+    const char *args, csync_auth_callback cb);
 extern void vio_module_shutdown(csync_vio_method_t *method);
 
 #endif /* _CSYNC_VIO_MODULE_H */

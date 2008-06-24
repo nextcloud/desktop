@@ -193,7 +193,7 @@ csync_vio_method_t _method = {
   .utimes = _utimes
 };
 
-csync_vio_method_t *vio_module_init(const char *method_name, const char *args, csync_module_auth_callback cb) {
+csync_vio_method_t *vio_module_init(const char *method_name, const char *args, csync_auth_callback cb) {
   DEBUG_DUMMY(("csync_dummy - method_name: %s\n", method_name));
   DEBUG_DUMMY(("csync_dummy - args: %s\n", args));
 
