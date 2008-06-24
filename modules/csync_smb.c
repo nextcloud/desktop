@@ -37,6 +37,7 @@
 SMBCCTX *smb_context = NULL;
 csync_module_auth_callback auth_cb = NULL;
 
+/* Do we build against Samba 3.2 */
 #ifdef DEPRECATED_SMBC_INTERFACE
 
 /*
@@ -59,18 +60,20 @@ static void get_auth_data_with_context_fn(SMBCCTX *c,
   DEBUG_SMB(("csync_smb - user=%s, workgroup=%s, server=%s, share=%s\n",
         un, wg, srv, shr));
 
-  if (try_krb5 && getenv("KRB5CCNAME")) {
-    try_krb5 = 0;
-
-    return;
-  }
-
   /* Don't authenticate for workgroup listing */
   if (srv == NULL || srv[0] == '\0') {
     DEBUG_SMB(("csync_smb - emtpy server name"));
     return;
   }
 
+  /* Try kerberos authentication if available */
+  if (try_krb5 && getenv("KRB5CCNAME")) {
+    try_krb5 = 0;
+
+    return;
+  }
+
+  /* Call the passwort prompt */
   if (auth_cb != NULL) {
     DEBUG_SMB(("csync_smb - execute authentication callback\n"));
     (*auth_cb) (un, unlen, pw, pwlen);
@@ -83,7 +86,8 @@ static void get_auth_data_with_context_fn(SMBCCTX *c,
 
   return;
 }
-#else
+
+#else /* DEPRECATED_SMBC_INTERFACE */
 
 /*
  * Authentication callback for libsmbclient
@@ -103,6 +107,13 @@ static void get_auth_data_fn(const char *pServer,
   DEBUG_SMB(("csync_smb - user=%s, workgroup=%s, server=%s, share=%s\n",
         pUsername, pWorkgroup, pServer, pShare));
 
+  /* Don't authenticate for workgroup listing */
+  if (pServer == NULL || pServer[0] == '\0') {
+    DEBUG_SMB(("csync_smb - emtpy server name\n"));
+    return;
+  }
+
+  /* Try kerberos authentication if available */
   if (try_krb5 && getenv("KRB5CCNAME")) {
     DEBUG_SMB(("csync_smb - trying kerberos authentication\n"));
     try_krb5 = 0;
@@ -110,12 +121,7 @@ static void get_auth_data_fn(const char *pServer,
     return;
   }
 
-  /* Don't authenticate for workgroup listing */
-  if (pServer == NULL || pServer[0] == '\0') {
-    DEBUG_SMB(("csync_smb - emtpy server name\n"));
-    return;
-  }
-
+  /* Call the passwort prompt */
   if (auth_cb != NULL) {
     DEBUG_SMB(("csync_smb - execute authentication callback\n"));
     (*auth_cb) (pUsername, maxLenUsername, pPassword, maxLenPassword);
@@ -128,7 +134,8 @@ static void get_auth_data_fn(const char *pServer,
 
   return;
 }
-#endif
+
+#endif /* DEPRECATED_SMBC_INTERFACE */
 
 typedef struct smb_fhandle_s {
   int fd;
