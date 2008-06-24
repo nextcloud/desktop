@@ -36,7 +36,6 @@
 
 SMBCCTX *smb_context = NULL;
 csync_module_auth_callback auth_cb = NULL;
-int try_krb5 = 1;
 
 #ifdef DEPRECATED_SMBC_INTERFACE
 
@@ -49,6 +48,9 @@ static void get_auth_data_with_context_fn(SMBCCTX *c,
     char *wg, int wglen,
     char *un, int unlen,
     char *pw, int pwlen) {
+
+  static int try_krb5 = 1;
+
   (void) c;
   (void) shr;
   (void) wg;
@@ -91,6 +93,9 @@ static void get_auth_data_fn(const char *pServer,
          char *pWorkgroup, int maxLenWorkgroup,
          char *pUsername, int maxLenUsername,
          char *pPassword, int maxLenPassword) {
+
+  static int try_krb5 = 1;
+
   (void) pShare;
   (void) pWorkgroup;
   (void) maxLenWorkgroup;
