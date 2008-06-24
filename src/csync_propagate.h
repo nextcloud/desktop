@@ -23,6 +23,11 @@
 #ifndef _CSYNC_PROPAGATE_H
 #define _CSYNC_PROPAGATE_H
 
+#include <sys/types.h>
+
+#define C_FILE_MODE (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
+#define C_DIR_MODE (S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH)
+
 int csync_propapate_files(CSYNC *ctx);
 
 #endif /* _CSYNC_PROPAGATE_H */

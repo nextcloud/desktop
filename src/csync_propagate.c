@@ -128,7 +128,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   /* Create the destination file */
   ctx->replica = drep;
-  while ((dfp = csync_vio_open(ctx, turi, O_CREAT|O_EXCL|O_WRONLY|O_NOCTTY, st->mode)) == NULL) {
+  while ((dfp = csync_vio_open(ctx, turi, O_CREAT|O_EXCL|O_WRONLY|O_NOCTTY, C_FILE_MODE)) == NULL) {
     switch (errno) {
       case EEXIST:
         if (count++ > 10) {
@@ -145,7 +145,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
           goto out;
         }
 
-        if (csync_vio_mkdirs(ctx, tdir, 0755) < 0) {
+        if (csync_vio_mkdirs(ctx, tdir, C_DIR_MODE) < 0) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "dir: %s, command: mkdirs, error: %s", tdir, strerror(errno));
         }
         break;
@@ -240,6 +240,22 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     }
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: rename, error: %s", duri, strerror(errno));
     goto out;
+  }
+
+  /* set mode only if it is not the default mode */
+  if ((st->mode & 07777) != C_FILE_MODE) {
+    if (csync_vio_chmod(ctx, duri, st->mode) < 0) {
+      switch (errno) {
+        case ENOMEM:
+          rc = -1;
+          break;
+        default:
+          rc = 1;
+          break;
+      }
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: chmod, error: %s", duri, strerror(errno));
+      goto out;
+    }
   }
 
   /* set owner and group if possible */
@@ -369,7 +385,7 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
   }
 
   ctx->replica = dest;
-  if (csync_vio_mkdirs(ctx, uri, 0755) < 0) {
+  if (csync_vio_mkdirs(ctx, uri, C_DIR_MODE) < 0) {
     switch (errno) {
       case ENOMEM:
         rc = -1;
@@ -382,8 +398,21 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
     goto out;
   }
 
-  /* The chmod is needed here cause the directory could already exist. */
-  csync_vio_chmod(ctx, uri, st->mode);
+  /* chmod is if it is not the default mode */
+  if ((st->mode & 07777) != C_DIR_MODE) {
+    if (csync_vio_chmod(ctx, uri, st->mode) < 0) {
+      switch (errno) {
+        case ENOMEM:
+          rc = -1;
+          break;
+        default:
+          rc = 1;
+          break;
+      }
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "dir: %s, command: chmod, error: %s", uri, strerror(errno));
+      goto out;
+    }
+  }
 
   /* set owner and group if possible */
   csync_vio_chown(ctx, uri, st->uid, st->gid);
@@ -435,6 +464,22 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
 
   ctx->replica = dest;
 
+  /* chmod is if it is not the default mode */
+  if ((st->mode & 07777) != C_DIR_MODE) {
+    if (csync_vio_chmod(ctx, uri, st->mode) < 0) {
+      switch (errno) {
+        case ENOMEM:
+          rc = -1;
+          break;
+        default:
+          rc = 1;
+          break;
+      }
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "dir: %s, command: chmod, error: %s", uri, strerror(errno));
+      goto out;
+    }
+  }
+
   /* set owner and group if possible */
   csync_vio_chown(ctx, uri, st->uid, st->gid);
 
@@ -442,18 +487,6 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
   times[0].tv_usec = times[1].tv_usec = 0;
 
   csync_vio_utimes(ctx, uri, times);
-  if (csync_vio_chmod(ctx, uri, st->mode) < 0) {
-    switch (errno) {
-      case ENOMEM:
-        rc = -1;
-        break;
-      default:
-        rc = 1;
-        break;
-    }
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "dir: %s, command: mkdirs, error: %s", uri, strerror(errno));
-    goto out;
-  }
 
   st->instruction = CSYNC_INSTRUCTION_NONE;
 
