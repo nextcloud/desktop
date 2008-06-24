@@ -40,6 +40,14 @@
 
 #define BUF_SIZE 16
 
+void csync_set_journal_exists(CSYNC *ctx, int val) {
+  ctx->journal.exists = val;
+}
+
+int csync_get_journal_exists(CSYNC *ctx) {
+  return ctx->journal.exists;
+}
+
 static int _csync_journal_check(const char *journal) {
   int fd = -1;
   char buf[BUF_SIZE] = {0};
@@ -125,9 +133,9 @@ int csync_journal_load(CSYNC *ctx, const char *journal) {
 
   if (_csync_journal_is_empty(ctx)) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "Journal doesn't exist");
-    ctx->journal.exists = 0;
+    csync_set_journal_exists(ctx, 0);
   } else {
-    ctx->journal.exists = 1;
+    csync_set_journal_exists(ctx, 1);
   }
 
   /* optimization for speeding up SQLite */

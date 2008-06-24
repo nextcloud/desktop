@@ -37,6 +37,10 @@
 #include "c_lib.h"
 #include "csync_private.h"
 
+void csync_set_journal_exists(CSYNC *ctx, int val);
+
+int csync_get_journal_exists(CSYNC *ctx);
+
 /**
  * @brief Load the journal.
  *

@@ -89,7 +89,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fi
   }
 
   /* Update detection */
-  if (ctx->journal.exists) {
+  if (csync_get_journal_exists(ctx)) {
     tmp = csync_journal_get_stat_by_hash(ctx, h);
     if (tmp == NULL) {
       /* check if the file has been renamed */
