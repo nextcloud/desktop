@@ -201,7 +201,9 @@ int main(int argc, char **argv) {
   }
 
   csync_set_auth_callback(csync, csync_auth_fn);
-  csync_disable_journal(csync);
+  if (arguments.disable_journal) {
+    csync_disable_journal(csync);
+  }
 
   if (csync_init(csync) < 0) {
     perror("csync_init");
