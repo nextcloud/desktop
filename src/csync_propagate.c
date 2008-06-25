@@ -132,6 +132,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     switch (errno) {
       case EEXIST:
         if (count++ > 10) {
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: open(O_CREAT), error: max count exceeded", duri);
           rc = 1;
           goto out;
         }
@@ -151,11 +152,11 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
         break;
       case ENOMEM:
         rc = -1;
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: open(O_CREAT), error: %s", duri, strerror(errno));
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: open(O_CREAT), error: %s", turi, strerror(errno));
         goto out;
         break;
       default:
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: open(O_CREAT), error: %s", duri, strerror(errno));
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: open(O_CREAT), error: %s", turi, strerror(errno));
         rc = 1;
         goto out;
         break;
@@ -170,6 +171,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
     if (bread < 0) {
       /* read error */
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: read, error: %s", suri, strerror(errno));
       rc = 1;
       goto out;
     } else if (bread == 0) {
@@ -179,6 +181,9 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
     ctx->replica = drep;
     bwritten = csync_vio_write(ctx, dfp, buf, bread);
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+        "file: %s, command: write, bread = %d, bwritten = %d - %s",
+        turi, bread, bwritten, strerror(errno));
 
     if (bwritten < 0 || bread != bwritten) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
