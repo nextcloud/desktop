@@ -1,9 +1,23 @@
 ChangeLog
 ==========
 
+version 0.42.0 alphar3 (released 2008-06-25)
+
+  libcsync:
+  * Added a tree merger to write a complete journal
+  * Added support to run csync without a journal
+  * Fixed kerberos support in csync_smb module
+  * Fixed closing of files after the copy
+  * Fixed update detection to detect special files (fifo, pipes,
+    char devices, ..)
+  * Fixed O_NOATIME flag on open() if we don't have the permission
+
+  csync:
+  * Add a variable to run csync completely without a journal
+
 version 0.42.0 alpha2 (released 2008-06-16)
 
-libcsync:
+  libcsync:
   * Peformance improvements
   * Add more directories to the standard exclude file
   * Bugfixes
