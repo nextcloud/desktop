@@ -277,16 +277,29 @@ static int _insert_metadata_visitor(void *obj, void *data) {
   ctx = (CSYNC *) data;
 
   if (fs->instruction != CSYNC_INSTRUCTION_DELETED) {
-    /*
-     * The phash needs to be %llu or it segfaults on PPC
-     */
-    stmt = sqlite3_mprintf("INSERT INTO metadata_temp"
-      "(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES"
-      "(%llu, %u, '%q', %u, %u, %u, %u, %lu);",
-      fs->phash,
-      fs->pathlen,
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
+      "SQL statement: INSERT INTO metadata_temp \n"
+      "\t\t\t(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES \n"
+      "\t\t\t(%llu, %lu, %s, %llu, %u, %u, %u, %lu);",
+      (long long unsigned int) fs->phash,
+      (long unsigned int) fs->pathlen,
       fs->path,
-      fs->inode,
+      (long long unsigned int) fs->inode,
+      fs->uid,
+      fs->gid,
+      fs->mode,
+      fs->modtime);
+
+    /*
+     * The phash needs to be long long unsigned int or it segfaults on PPC
+     */
+    stmt = sqlite3_mprintf("INSERT INTO metadata_temp "
+      "(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES "
+      "(%llu, %lu, '%q', %u, %u, %u, %u, %lu);",
+      (long long unsigned int) fs->phash,
+      (long unsigned int) fs->pathlen,
+      fs->path,
+      (long long unsigned int) fs->inode,
       fs->uid,
       fs->gid,
       fs->mode,
@@ -333,7 +346,8 @@ csync_file_stat_t *csync_journal_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
   char *stmt = NULL;
   size_t len = 0;
 
-  stmt = sqlite3_mprintf("SELECT * FROM metadata WHERE phash='%llu'", phash);
+  stmt = sqlite3_mprintf("SELECT * FROM metadata WHERE phash='%llu'",
+      (long long unsigned int) phash);
   if (stmt == NULL) {
     return NULL;
   }
