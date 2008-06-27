@@ -277,9 +277,12 @@ static int _insert_metadata_visitor(void *obj, void *data) {
   ctx = (CSYNC *) data;
 
   if (fs->instruction != CSYNC_INSTRUCTION_DELETED) {
+    /*
+     * The phash needs to be %llu or it segfaults on PPC
+     */
     stmt = sqlite3_mprintf("INSERT INTO metadata_temp"
       "(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES"
-      "(%lu, %d, '%q', %d, %d, %d, %d, %lu);",
+      "(%llu, %u, '%q', %u, %u, %u, %u, %lu);",
       fs->phash,
       fs->pathlen,
       fs->path,
