@@ -309,7 +309,7 @@ int csync_update(CSYNC *ctx) {
   clock_gettime(CLOCK_REALTIME, &finish);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Update detection for local replica took %.2f seconds walking %lu files.",
+            "Update detection for local replica took %.2f seconds walking %zu files.",
             c_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
   csync_memstat_check();
 
@@ -327,7 +327,7 @@ int csync_update(CSYNC *ctx) {
   clock_gettime(CLOCK_REALTIME, &finish);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Update detection for remote replica took %.2f seconds walking %lu files.",
+            "Update detection for remote replica took %.2f seconds walking %zu files.",
             c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
   csync_memstat_check();
 
@@ -360,7 +360,7 @@ int csync_reconcile(CSYNC *ctx) {
   clock_gettime(CLOCK_REALTIME, &finish);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Reconciliation for local replica took %.2f seconds visiting %lu files.",
+            "Reconciliation for local replica took %.2f seconds visiting %zu files.",
             c_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
 
   if (rc < 0) {
@@ -378,7 +378,7 @@ int csync_reconcile(CSYNC *ctx) {
   clock_gettime(CLOCK_REALTIME, &finish);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Reconciliation for remote replica took %.2f seconds visiting %lu files.",
+            "Reconciliation for remote replica took %.2f seconds visiting %zu files.",
             c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
 
   if (rc < 0) {
@@ -410,7 +410,7 @@ int csync_propagate(CSYNC *ctx) {
   clock_gettime(CLOCK_REALTIME, &finish);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Propagation for local replica took %.2f seconds visiting %lu files.",
+            "Propagation for local replica took %.2f seconds visiting %zu files.",
             c_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
 
   if (rc < 0) {
@@ -428,7 +428,7 @@ int csync_propagate(CSYNC *ctx) {
   clock_gettime(CLOCK_REALTIME, &finish);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Propagation for remote replica took %.2f seconds visiting %lu files.",
+            "Propagation for remote replica took %.2f seconds visiting %zu files.",
             c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
 
   if (rc < 0) {
@@ -474,7 +474,7 @@ int csync_destroy(CSYNC *ctx) {
           jwritten = 1;
           clock_gettime(CLOCK_REALTIME, &finish);
           CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-              "Writing the journal of %lu files to disk took %.2f seconds",
+              "Writing the journal of %zu files to disk took %.2f seconds",
               c_rbtree_size(ctx->local.tree), c_secdiff(finish, start));
         } else {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to write journal: %s",
