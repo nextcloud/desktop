@@ -181,9 +181,6 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
     ctx->replica = drep;
     bwritten = csync_vio_write(ctx, dfp, buf, bread);
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-        "file: %s, command: write, bread = %d, bwritten = %d - %s",
-        turi, bread, bwritten, strerror(errno));
 
     if (bwritten < 0 || bread != bwritten) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
