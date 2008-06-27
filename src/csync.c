@@ -53,7 +53,7 @@ static int _key_cmp(const void *key, const void *data) {
   uint64_t a;
   csync_file_stat_t *b;
 
-  a = (uint64_t) key;
+  a = *(uint64_t *) (key);
   b = (csync_file_stat_t *) data;
 
   if (a < b->phash) {
@@ -211,7 +211,7 @@ int csync_init(CSYNC *ctx) {
 
   /* create/load journal */
   if (! csync_is_journal_disabled(ctx)) {
-    if (asprintf(&ctx->journal.file, "%s/csync_journal_%lu.db", ctx->options.config_dir,
+    if (asprintf(&ctx->journal.file, "%s/csync_journal_%llu.db", ctx->options.config_dir,
           c_jhash64((uint8_t *) ctx->remote.uri, strlen(ctx->remote.uri), 0)) < 0) {
       rc = -1;
       goto out;
@@ -359,7 +359,7 @@ int csync_reconcile(CSYNC *ctx) {
   clock_gettime(CLOCK_REALTIME, &finish);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Reconciliation for local replica took %.2f seconds visiting %llu files.",
+            "Reconciliation for local replica took %.2f seconds visiting %lu files.",
             c_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
 
   if (rc < 0) {
@@ -377,7 +377,7 @@ int csync_reconcile(CSYNC *ctx) {
   clock_gettime(CLOCK_REALTIME, &finish);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Reconciliation for remote replica took %.2f seconds visiting %llu files.",
+            "Reconciliation for remote replica took %.2f seconds visiting %lu files.",
             c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
 
   if (rc < 0) {
@@ -409,7 +409,7 @@ int csync_propagate(CSYNC *ctx) {
   clock_gettime(CLOCK_REALTIME, &finish);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Propagation for local replica took %.2f seconds visiting %llu files.",
+            "Propagation for local replica took %.2f seconds visiting %lu files.",
             c_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
 
   if (rc < 0) {
@@ -427,7 +427,7 @@ int csync_propagate(CSYNC *ctx) {
   clock_gettime(CLOCK_REALTIME, &finish);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Propagation for remote replica took %.2f seconds visiting %llu files.",
+            "Propagation for remote replica took %.2f seconds visiting %lu files.",
             c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
 
   if (rc < 0) {

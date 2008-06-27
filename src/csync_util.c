@@ -118,7 +118,7 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
   }
 
   /* check if the file is new or has been synced */
-  node = c_rbtree_find(ctx->local.tree, (void *) fs->phash);
+  node = c_rbtree_find(ctx->local.tree, &fs->phash);
   if (node == NULL) {
     csync_file_stat_t *new = NULL;
 
@@ -135,7 +135,7 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
       goto out;
     }
 
-    node = c_rbtree_find(ctx->local.tree, (void *) fs->phash);
+    node = c_rbtree_find(ctx->local.tree, &fs->phash);
     if (node == NULL) {
       rc = -1;
       goto out;

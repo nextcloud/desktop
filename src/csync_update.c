@@ -44,6 +44,7 @@
 static int _csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs, const int type) {
   uint64_t h = 0;
   size_t len = 0;
+  size_t size = 0;
   const char *path = NULL;
   csync_file_stat_t *st = NULL;
   csync_file_stat_t *tmp = NULL;
@@ -74,13 +75,14 @@ static int _csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fi
   }
 
   h = c_jhash64((uint8_t *) path, len, 0);
+  size = sizeof(csync_file_stat_t) + len + 1;
 
-  st = c_malloc(sizeof(csync_file_stat_t) + len + 1);
+  st = c_malloc(size);
   if (st == NULL) {
     return -1;
   }
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - hash %lu, stat %d",
-      path, h, sizeof(csync_file_stat_t) + len + 1);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - hash %lu, st size: %d",
+      path, h, size);
 
   /* check hardlink count */
   if (type == CSYNC_FTW_TYPE_FILE && fs->nlink > 1) {

@@ -49,7 +49,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
       break;
   }
 
-  node = c_rbtree_find(tree, (void *) cur->phash);
+  node = c_rbtree_find(tree, &cur->phash);
   /* file only found on current replica */
   if (node == NULL) {
     switch(cur->instruction) {
