@@ -51,6 +51,13 @@
 #define CSYNC_LOG_CATEGORY_NAME "root"
 #endif
 
+/* GCC have printf type attribute check.  */
+#ifdef __GNUC__
+#define PRINTF_ATTRIBUTE(a,b) __attribute__ ((__format__ (__printf__, a, b)))
+#else
+#define PRINTF_ATTRIBUTE(a,b)
+#endif /* __GNUC__ */
+
 #define CSYNC_LOG(priority, fmt, rest...) \
   csync_log((char *) CSYNC_LOG_CATEGORY_NAME, priority, fmt, ##rest)
 
@@ -137,6 +144,7 @@ static LOG4C_INLINE int csync_log_setappender(char *catName, char *appName) {
 #endif
 }
 
+static LOG4C_INLINE void csync_log(char *catName, int a_priority, const char* a_format,...) PRINTF_ATTRIBUTE(3, 4);
 static LOG4C_INLINE void csync_log(char *catName, int a_priority, const char* a_format,...) {
 #ifdef WITH_LOG4C
   const log4c_category_t* a_category = log4c_category_get(catName);
