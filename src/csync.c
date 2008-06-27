@@ -211,8 +211,9 @@ int csync_init(CSYNC *ctx) {
 
   /* create/load journal */
   if (! csync_is_journal_disabled(ctx)) {
-    if (asprintf(&ctx->journal.file, "%s/csync_journal_%llu.db", ctx->options.config_dir,
-          c_jhash64((uint8_t *) ctx->remote.uri, strlen(ctx->remote.uri), 0)) < 0) {
+    uint64_t h = c_jhash64((uint8_t *) ctx->remote.uri, strlen(ctx->remote.uri), 0);
+    if (asprintf(&ctx->journal.file, "%s/csync_journal_%llu.db",
+          ctx->options.config_dir, (long long unsigned int) h) < 0) {
       rc = -1;
       goto out;
     }
@@ -473,7 +474,7 @@ int csync_destroy(CSYNC *ctx) {
           jwritten = 1;
           clock_gettime(CLOCK_REALTIME, &finish);
           CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-              "Writing the journal of %llu files to disk took %.2f seconds",
+              "Writing the journal of %lu files to disk took %.2f seconds",
               c_rbtree_size(ctx->local.tree), c_secdiff(finish, start));
         } else {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to write journal: %s",

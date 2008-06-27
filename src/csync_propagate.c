@@ -184,7 +184,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
     if (bwritten < 0 || bread != bwritten) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
-          "file: %s, command: write, error: bread = %d, bwritten = %d - %s",
+          "file: %s, command: write, error: bread = %zu, bwritten = %zu - %s",
           duri, bread, bwritten, strerror(errno));
       rc = 1;
       goto out;
@@ -224,7 +224,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   }
 
   if (st->size != tstat->size) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, error: incorrect filesize (size: %d should be %d)", turi, tstat->size, st->size);
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, error: incorrect filesize (size: %zu should be %zu)", turi, tstat->size, st->size);
     rc = 1;
     goto out;
   }

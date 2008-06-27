@@ -432,7 +432,7 @@ c_strlist_t *csync_journal_query(CSYNC *ctx, const char *statement) {
       if (busy_count) {
         /* sleep 100 msec */
         usleep(100000);
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "sqlite3_prepare: BUSY counter: %d", busy_count);
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "sqlite3_prepare: BUSY counter: %zu", busy_count);
       }
       err = sqlite3_prepare(ctx->journal.db, statement, -1, &stmt, &tail);
     } while (err == SQLITE_BUSY && busy_count ++ < 120);
@@ -458,7 +458,7 @@ c_strlist_t *csync_journal_query(CSYNC *ctx, const char *statement) {
           }
           /* sleep 100 msec */
           usleep(100000);
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "sqlite3_step: BUSY counter: %d", busy_count);
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "sqlite3_step: BUSY counter: %zu", busy_count);
           continue;
         }
 

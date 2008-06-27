@@ -47,7 +47,8 @@ END_TEST
 
 START_TEST (log_null)
 {
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_UNKNOWN, "log %s", NULL);
+  char *z = NULL;
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_UNKNOWN, "log %s", z);
 }
 END_TEST
 

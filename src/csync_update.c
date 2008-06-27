@@ -81,8 +81,8 @@ static int _csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fi
   if (st == NULL) {
     return -1;
   }
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - hash %llu, st size: %d",
-      path, h, size);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - hash %llu, st size: %zu",
+      path, (long long unsigned int) h, size);
 
   /* check hardlink count */
   if (type == CSYNC_FTW_TYPE_FILE && fs->nlink > 1) {
