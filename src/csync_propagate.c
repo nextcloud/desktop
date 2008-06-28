@@ -309,6 +309,7 @@ out:
   csync_vio_file_stat_destroy(tstat);
 
   if (rc != 0) {
+    st->instruction = CSYNC_INSTRUCTION_ERROR;
     csync_vio_unlink(ctx, turi);
   }
 
@@ -375,6 +376,10 @@ static int _csync_remove_file(CSYNC *ctx, csync_file_stat_t *st) {
   rc = 0;
 out:
   SAFE_FREE(uri);
+
+  /* Write to journal, to try again next run. */
+  st->instruction = CSYNC_INSTRUCTION_NONE;
+
   return rc;
 }
 
@@ -453,6 +458,9 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
   rc = 0;
 out:
   SAFE_FREE(uri);
+
+  st->instruction = CSYNC_INSTRUCTION_ERROR;
+
   return rc;
 }
 
@@ -511,7 +519,7 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
 
   csync_vio_utimes(ctx, uri, times);
 
-  st->instruction = CSYNC_INSTRUCTION_NONE;
+  st->instruction = CSYNC_INSTRUCTION_UPDATED;
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "dir: %s, instruction: SYNCED", uri);
   ctx->replica = replica_bak;
@@ -519,6 +527,11 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
   rc = 0;
 out:
   SAFE_FREE(uri);
+
+  if (rc != 0) {
+    st->instruction = CSYNC_INSTRUCTION_ERROR;
+  }
+
   return rc;
 }
 
@@ -584,6 +597,11 @@ static int _csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
   rc = 0;
 out:
   SAFE_FREE(uri);
+
+  if (rc != 0) {
+    st->instruction = CSYNC_INSTRUCTION_NONE;
+  }
+
   return rc;
 }
 
@@ -624,11 +642,14 @@ static int _csync_propagation_cleanup(CSYNC *ctx) {
       return -1;
     }
 
-    csync_vio_rmdir(ctx, dir);
+    if (csync_vio_rmdir(ctx, dir) < 0) {
+      /* Write it back to journal, that we try to delete it next time. */
+      st->instruction = CSYNC_INSTRUCTION_NONE;
+    } else {
+      st->instruction = CSYNC_INSTRUCTION_DELETED;
+    }
 
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "dir: %s, instruction: CLEANUP", dir);
-
-    st->instruction = CSYNC_INSTRUCTION_DELETED;
 
     SAFE_FREE(dir);
   }

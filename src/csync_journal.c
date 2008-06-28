@@ -34,6 +34,7 @@
 #include "c_lib.h"
 #include "csync_private.h"
 #include "csync_journal.h"
+#include "csync_util.h"
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.journal"
 #include "csync_log.h"
@@ -276,43 +277,61 @@ static int _insert_metadata_visitor(void *obj, void *data) {
   fs = (csync_file_stat_t *) obj;
   ctx = (CSYNC *) data;
 
-  if (fs->instruction != CSYNC_INSTRUCTION_DELETED) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
-      "SQL statement: INSERT INTO metadata_temp \n"
-      "\t\t\t(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES \n"
-      "\t\t\t(%llu, %lu, %s, %llu, %u, %u, %u, %lu);",
-      (long long unsigned int) fs->phash,
-      (long unsigned int) fs->pathlen,
-      fs->path,
-      (long long unsigned int) fs->inode,
-      fs->uid,
-      fs->gid,
-      fs->mode,
-      fs->modtime);
-
+  switch (fs->instruction) {
     /*
-     * The phash needs to be long long unsigned int or it segfaults on PPC
+     * Don't write ignored, deleted or files with an error to the journal.
+     * They will be visited on the next synchronization again as a new file.
      */
-    stmt = sqlite3_mprintf("INSERT INTO metadata_temp "
-      "(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES "
-      "(%llu, %lu, '%q', %u, %u, %u, %u, %lu);",
-      (long long unsigned int) fs->phash,
-      (long unsigned int) fs->pathlen,
-      fs->path,
-      (long long unsigned int) fs->inode,
-      fs->uid,
-      fs->gid,
-      fs->mode,
-      fs->modtime);
+    case CSYNC_INSTRUCTION_DELETED:
+    case CSYNC_INSTRUCTION_IGNORE:
+    case CSYNC_INSTRUCTION_ERROR:
+      rc = 0;
+      break;
+    case CSYNC_INSTRUCTION_NONE:
+    /* As we only sync the local tree we need this flag here */
+    case CSYNC_INSTRUCTION_UPDATED:
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
+        "SQL statement: INSERT INTO metadata_temp \n"
+        "\t\t\t(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES \n"
+        "\t\t\t(%llu, %lu, %s, %llu, %u, %u, %u, %lu);",
+        (long long unsigned int) fs->phash,
+        (long unsigned int) fs->pathlen,
+        fs->path,
+        (long long unsigned int) fs->inode,
+        fs->uid,
+        fs->gid,
+        fs->mode,
+        fs->modtime);
 
-    if (stmt == NULL) {
-      return -1;
-    }
+      /*
+       * The phash needs to be long long unsigned int or it segfaults on PPC
+       */
+      stmt = sqlite3_mprintf("INSERT INTO metadata_temp "
+        "(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES "
+        "(%llu, %lu, '%q', %u, %u, %u, %u, %lu);",
+        (long long unsigned int) fs->phash,
+        (long unsigned int) fs->pathlen,
+        fs->path,
+        (long long unsigned int) fs->inode,
+        fs->uid,
+        fs->gid,
+        fs->mode,
+        fs->modtime);
 
-    rc = csync_journal_insert(ctx, stmt);
-    sqlite3_free(stmt);
-  } else {
-    rc = 0;
+      if (stmt == NULL) {
+        return -1;
+      }
+
+      rc = csync_journal_insert(ctx, stmt);
+
+      sqlite3_free(stmt);
+      break;
+    default:
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN,
+          "file: %s, instruction: %s (%d), not added to journal!",
+          fs->path, csync_instruction_str(fs->instruction), fs->instruction);
+      rc = 1;
+      break;
   }
 
   return rc;

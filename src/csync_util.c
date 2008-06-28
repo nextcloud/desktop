@@ -105,6 +105,7 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
   csync_vio_file_stat_t *vst = NULL;
 
   CSYNC *ctx = NULL;
+  c_rbtree_t *tree = NULL;
   c_rbnode_t *node = NULL;
 
   char *uri = NULL;
@@ -119,8 +120,19 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
     goto out;
   }
 
+  switch (ctx->current) {
+    case LOCAL_REPLICA:
+      tree = ctx->local.tree;
+      break;
+    case REMOTE_REPLCIA:
+      tree = ctx->remote.tree;
+      break;
+    default:
+      break;
+  }
+
   /* check if the file is new or has been synced */
-  node = c_rbtree_find(ctx->local.tree, &fs->phash);
+  node = c_rbtree_find(tree, &fs->phash);
   if (node == NULL) {
     csync_file_stat_t *new = NULL;
 
@@ -131,13 +143,13 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
     }
     new = memcpy(new, fs, sizeof(csync_file_stat_t) + fs->pathlen + 1);
 
-    if (c_rbtree_insert(ctx->local.tree, new) < 0) {
+    if (c_rbtree_insert(tree, new) < 0) {
       SAFE_FREE(new);
       rc = -1;
       goto out;
     }
 
-    node = c_rbtree_find(ctx->local.tree, &fs->phash);
+    node = c_rbtree_find(tree, &fs->phash);
     if (node == NULL) {
       rc = -1;
       goto out;
@@ -162,7 +174,7 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
       break;
   }
 
-  /* get file stat of the file on local replica */
+  /* get file stat of the file on the replica */
   vst = csync_vio_file_stat_new();
   if (csync_vio_stat(ctx, uri, vst) < 0) {
     rc = -1;
@@ -175,10 +187,16 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: UPDATED", uri);
 
+  fs->instruction = CSYNC_INSTRUCTION_NONE;
+
   rc = 0;
 out:
   csync_vio_file_stat_destroy(vst);
   SAFE_FREE(uri);
+
+  if (rc != 0) {
+    fs->instruction = CSYNC_INSTRUCTION_ERROR;
+  }
 
   return rc;
 }
