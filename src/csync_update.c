@@ -232,11 +232,13 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn, unsigned int dept
     if (d_name[0] == '.' && (d_name[1] == '\0'
           || (d_name[1] == '.' && d_name[2] == '\0'))) {
       csync_vio_file_stat_destroy(dirent);
+      dirent = NULL;
       continue;
     }
 
     if (asprintf(&filename, "%s/%s", uri, d_name) < 0) {
       csync_vio_file_stat_destroy(dirent);
+      dirent = NULL;
       goto error;
     }
 
@@ -285,6 +287,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn, unsigned int dept
     }
     SAFE_FREE(filename);
     csync_vio_file_stat_destroy(dirent);
+    dirent = NULL;
   }
   csync_vio_closedir(ctx, dh);
 
