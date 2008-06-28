@@ -69,11 +69,6 @@ static int _csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fi
   }
   len = strlen(path);
 
-  /* Check if file is excluded */
-  if (csync_excluded(ctx, path)) {
-    return 0;
-  }
-
   h = c_jhash64((uint8_t *) path, len, 0);
   size = sizeof(csync_file_stat_t) + len + 1;
 
@@ -221,6 +216,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn, unsigned int dept
   }
 
   while ((dirent = csync_vio_readdir(ctx, dh))) {
+    const char *path = NULL;
     int flag;
 
     d_name = dirent->name;
@@ -240,6 +236,26 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn, unsigned int dept
       csync_vio_file_stat_destroy(dirent);
       dirent = NULL;
       goto error;
+    }
+
+    /* Create relative path for checking the exclude list */
+    switch (ctx->current) {
+      case LOCAL_REPLICA:
+        path = filename + strlen(ctx->local.uri) + 1;
+        break;
+      case REMOTE_REPLCIA:
+        path = filename + strlen(ctx->remote.uri) + 1;
+        break;
+      default:
+        break;
+    }
+
+    /* Check if file is excluded */
+    if (csync_excluded(ctx, path)) {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s excluded", path);
+      csync_vio_file_stat_destroy(dirent);
+      dirent = NULL;
+      continue;
     }
 
     fs = csync_vio_file_stat_new();
