@@ -192,11 +192,32 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   }
 
   ctx->replica = srep;
-  csync_vio_close(ctx, sfp);
+  if (csync_vio_close(ctx, sfp) < 0) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+        "file: %s, command: close, error: %s",
+        suri, strerror(errno));
+  }
   sfp = NULL;
 
   ctx->replica = drep;
-  csync_vio_close(ctx, dfp);
+  if (csync_vio_close(ctx, dfp) < 0) {
+    dfp = NULL;
+    switch (errno) {
+      case EDQUOT:
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+            "file: %s, command: close, error: %s",
+            turi, strerror(errno));
+        rc = -1;
+        goto out;
+        break;
+      default:
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+            "file: %s, command: close, error: %s",
+            turi, strerror(errno));
+        rc = 1;
+        break;
+    }
+  }
   dfp = NULL;
 
   /*
