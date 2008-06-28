@@ -84,6 +84,9 @@ static int _csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fi
   CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - hash %llu, st size: %zu",
       path, (long long unsigned int) h, size);
 
+  /* Set instruction by default to none */
+  st->instruction = CSYNC_INSTRUCTION_NONE;
+
   /* check hardlink count */
   if (type == CSYNC_FTW_TYPE_FILE && fs->nlink > 1) {
     st->instruction = CSYNC_INSTRUCTION_IGNORE;
