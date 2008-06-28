@@ -37,14 +37,15 @@ END_TEST
 START_TEST (check_csync_exclude_load)
 {
   fail_unless(csync_exclude_load(csync, BINARYDIR "/config/" CSYNC_EXCLUDE_FILE) == 0, NULL);
-  fail_unless(strcmp(csync->excludes->vector[0], (const char *) ".beagle/*") == 0, NULL);
+  fail_unless(strcmp(csync->excludes->vector[0], (const char *) ".beagle") == 0, NULL);
 }
 END_TEST
 
 START_TEST (check_csync_excluded)
 {
-  fail_unless(csync_excluded(csync, ".kde4/cache-maximegalon/") == 1, NULL);
-  fail_unless(csync_excluded(csync, ".mozilla/plugins/foo.so") == 1, NULL);
+  fail_unless(csync_excluded(csync, ".kde/share/config/kwin.eventsrc") == 0, NULL);
+  fail_unless(csync_excluded(csync, ".kde4/cache-maximegalon/cache1.txt") == 1, NULL);
+  fail_unless(csync_excluded(csync, ".mozilla/plugins") == 1, NULL);
 }
 END_TEST
 
