@@ -100,6 +100,7 @@ ssize_t csync_vio_local_read(csync_vio_method_handle_t *fhandle, void *buf, size
 }
 
 ssize_t csync_vio_local_write(csync_vio_method_handle_t *fhandle, const void *buf, size_t count) {
+  ssize_t n = 0;
   fhandle_t *handle = NULL;
 
   if (fhandle == NULL) {
@@ -109,7 +110,12 @@ ssize_t csync_vio_local_write(csync_vio_method_handle_t *fhandle, const void *bu
 
   handle = (fhandle_t *) fhandle;
 
-  return write(handle->fd, (char *) buf, count);
+  /* safe_write */
+  do {
+    n = write(handle->fd, buf, count);
+  } while (n < 0 && errno == EINTR);
+
+  return n;
 }
 
 off_t csync_vio_local_lseek(csync_vio_method_handle_t *fhandle, off_t offset, int whence) {
