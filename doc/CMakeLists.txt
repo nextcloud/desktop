@@ -19,3 +19,6 @@ include("${CMAKE_MODULE_PATH}/UseDoxygen.cmake" OPTIONAL)
 #  endforeach(_html_FILE ${html_FILES})
 #endif (DOXYGEN_FOUND)
 
+include(UseAsciidoc)
+
+macro_asciidoc2man(csync.txt csync.1)

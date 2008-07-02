@@ -1,0 +1,72 @@
+csync(1)
+========
+
+NAME
+----
+
+csync - A commandline frontent for csync a user level bidirectional file
+synchronizer.
+
+SYNOPSIS
+--------
+
+*csync* ['OPTION'...] 'SOURCE' 'DESTINATION'
+
+DESCRIPTION
+-----------
+
+foobar
+
+OPTIONS
+-------
+
+*--create-journal*::
+    Run update detection and write the journal
+    (TESTING ONLY!)
+*-d, --disable-journal*::
+    Disable the usage and creation of a journal.
+
+*--exclude-file='<file>'*::
+    Add an additional exclude file
+
+*-r, --reconcile*::
+    Run update detection and reconcilation
+
+*-u, --update*::
+    Run only the update detection
+
+*-?, --help*::
+    Print the help list
+
+*-V, --version*::
+    Print program version
+
+EXIT STATUS
+-----------
+*0*::
+    Success
+
+*1*::
+    Failure (syntax or usage error; configuration error;
+    unexpected error).
+
+BUGS
+----
+
+Please report bugs at https://dev.csync.org/.
+
+SEE ALSO
+--------
+
+*libcsync*(7)
+
+AUTHORS
+-------
+
+Andreas Schneider <mail@cynapses.org>
+
+COPYING
+-------
+Copyright \(c) 2006-2008 Andreas Schneider. Free use of this software is
+granted under the terms of the GNU General Public License (GPL).
+
