@@ -1,6 +1,20 @@
 ChangeLog
 ==========
 
+version 0.42.0 alpha4 (released 2008-07-02)
+
+  libcsync:
+  * Added the possibility to run csync completely without a journal
+  * Improved chmod calls during propagation. Most of the time we use the
+    default mode and don't need to call chmod.
+  * Improved the exclude list handling in the file tree walker. This
+    increased the speed of the update detection.
+  * Fixed csync on PPC
+  * Fixed serveral small bugs
+
+  csync:
+  * Added commandline option to run csync completely without a journal
+
 version 0.42.0 alpha3 (released 2008-06-25)
 
   libcsync:
