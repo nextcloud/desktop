@@ -4,12 +4,12 @@ include(CheckCCompilerFlag)
 
 if (UNIX AND NOT WIN32)
   # with -fPIC
-  if (CMAKE_SIZEOF_VOID_P MATCHES "8")
-    check_c_compiler_flag("-fPIC" WITH_FPIC)
-    if (WITH_FPIC)
-      add_definitions(-fPIC)
-    endif (WITH_FPIC)
+  check_c_compiler_flag("-fPIC" WITH_FPIC)
+  if (WITH_FPIC)
+    add_definitions(-fPIC)
+  endif (WITH_FPIC)
 
+  if (CMAKE_SIZEOF_VOID_P MATCHES "8")
     # with large file support
     execute_process(
       COMMAND
