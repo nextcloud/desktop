@@ -8,6 +8,8 @@
 # Redistribution and use is allowed according to the terms of the BSD license.
 # For details see the accompanying COPYING-CMAKE-SCRIPTS file.
 
+include(MacroCopyFile)
+
 macro(MACRO_ASCIIDOC2MAN _a2m_input _a2m_output)
   find_program(A2X
     NAMES
@@ -18,13 +20,13 @@ macro(MACRO_ASCIIDOC2MAN _a2m_input _a2m_output)
   if (A2X)
 
     #message("+++ ${A2X} --doctype=manpage --format=manpage --destination-dir=${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/${_a2m_input}")
+    macro_copy_file(${CMAKE_CURRENT_SOURCE_DIR}/${_a2m_input} ${CMAKE_CURRENT_BINARY_DIR}/${_a2m_input})
+
     execute_process(
       COMMAND
-        ${A2X} --doctype=manpage --format=manpage --destination-dir=${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/${_a2m_input}
-      INPUT_FILE
-        ${CMAKE_CURRENT_SOURCE_DIR}/${_a2m_input}
-      OUTPUT_FILE
-        ${CMAKE_CURRENT_BINARY_DIR}/${_a2m_output}
+        ${A2X} --doctype=manpage --format=manpage ${_a2m_input}
+      WORKING_DIRECTORY
+        ${CMAKE_CURRENT_BINARY_DIR}
       RESULT_VARIABLE
         A2M_MAN_GENERATED
       ERROR_QUIET
