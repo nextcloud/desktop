@@ -7,15 +7,24 @@ NAME
 csync - A commandline frontent for csync a user level bidirectional file
 synchronizer.
 
+
 SYNOPSIS
 --------
 
 *csync* ['OPTION'...] 'SOURCE' 'DESTINATION'
 
+
 DESCRIPTION
 -----------
 
-foobar
+csync is a client only bidirectional file synchronizer. It synchronizes the
+content of 'SOURCE' with 'DESTINATION' and vice versa. The 'DESTINATION' can
+be a local directory or a remote file server.
+
+You can use csync for different things. The intention is to provide Roaming
+Home Directories for Linux but you can use it to synchronize your music
+collection or create a backup of a directory.
+
 
 OPTIONS
 -------
@@ -41,6 +50,7 @@ OPTIONS
 *-V, --version*::
     Print program version
 
+
 EXIT STATUS
 -----------
 *0*::
@@ -50,20 +60,40 @@ EXIT STATUS
     Failure (syntax or usage error; configuration error;
     unexpected error).
 
+
+EXAMPLES
+--------
+
+* csync /home/user /backup/home/user
+
+  Synchronizer two local directories.
+
+* csync /home/user smb://server/share/user
+
+  Synchronize a home directory with a SMB share.
+
+* csync /home/user smb://user:password@server/share/user
+
+  Synchronize a home directory with a SMB share and provide username and
+  password directly.
+
 BUGS
 ----
 
 Please report bugs at https://dev.csync.org/.
+
 
 SEE ALSO
 --------
 
 *libcsync*(7)
 
+
 AUTHORS
 -------
 
 Andreas Schneider <mail@cynapses.org>
+
 
 COPYING
 -------
