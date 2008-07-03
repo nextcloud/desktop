@@ -19,6 +19,20 @@ include("${CMAKE_MODULE_PATH}/UseDoxygen.cmake" OPTIONAL)
 #  endforeach(_html_FILE ${html_FILES})
 #endif (DOXYGEN_FOUND)
 
-include(UseAsciidoc)
+#include(UseAsciidoc)
+#macro_asciidoc2man(csync.txt csync.1)
 
-macro_asciidoc2man(csync.txt csync.1)
+file(GLOB _manpages *.txt)
+add_custom_target(man
+  COMMAND
+    ${CMAKE_CURRENT_SOURCE_DIR}/makeman.sh ${_manpages}
+  WORKING_DIRECTORY
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+install(
+  FILES
+    csync.1
+  DESTINATION
+    ${MAN_INSTALL_DIR}/man1
+)

@@ -1,0 +1,113 @@
+.\"     Title: csync
+.\"    Author: 
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 07/03/2008
+.\"    Manual: 
+.\"    Source: 
+.\"
+.TH "CSYNC" "1" "07/03/2008" "" ""
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.SH "NAME"
+csync - A commandline frontent for csync a user level bidirectional file synchronizer.
+.SH "SYNOPSIS"
+\fBcsync\fR [\fIOPTION\fR\&...] \fISOURCE\fR \fIDESTINATION\fR
+.sp
+.SH "DESCRIPTION"
+csync is a client only bidirectional file synchronizer\. It synchronizes the content of \fISOURCE\fR with \fIDESTINATION\fR and vice versa\. The \fIDESTINATION\fR can be a local directory or a remote file server\.
+.sp
+You can use csync for different things\. The intention is to provide Roaming Home Directories for Linux but you can use it to synchronize your music collection or create a backup of a directory\.
+.sp
+.SH "OPTIONS"
+.PP
+\fB\-\-create\-journal\fR
+.RS 4
+Run update detection and write the journal (TESTING ONLY!)
+.RE
+.PP
+\fB\-d, \-\-disable\-journal\fR
+.RS 4
+Disable the usage and creation of a journal\.
+.RE
+.PP
+\fB\-\-exclude\-file=\fR\fB\fI<file>\fR\fR
+.RS 4
+Add an additional exclude file
+.RE
+.PP
+\fB\-r, \-\-reconcile\fR
+.RS 4
+Run update detection and reconcilation
+.RE
+.PP
+\fB\-u, \-\-update\fR
+.RS 4
+Run only the update detection
+.RE
+.PP
+\fB\-?, \-\-help\fR
+.RS 4
+Print the help list
+.RE
+.PP
+\fB\-V, \-\-version\fR
+.RS 4
+Print program version
+.RE
+.SH "EXIT STATUS"
+.PP
+\fB0\fR
+.RS 4
+Success
+.RE
+.PP
+\fB1\fR
+.RS 4
+Failure (syntax or usage error; configuration error; unexpected error)\.
+.RE
+.SH "EXAMPLES"
+.sp
+.RS 4
+\h'-04'\(bu\h'+03'csync /home/user /backup/home/user
+.sp
+.RS 4
+.nf
+Synchronizer two local directories\.
+.fi
+.RE
+.RE
+.sp
+.RS 4
+\h'-04'\(bu\h'+03'csync /home/user smb://server/share/user
+.sp
+.RS 4
+.nf
+Synchronize a home directory with a SMB share\.
+.fi
+.RE
+.RE
+.sp
+.RS 4
+\h'-04'\(bu\h'+03'csync /home/user smb://user:password@server/share/user
+.sp
+.RS 4
+.nf
+Synchronize a home directory with a SMB share and provide username and
+password directly\.
+.fi
+.RE
+.RE
+.SH "BUGS"
+Please report bugs at https://dev\.csync\.org/\.
+.sp
+.SH "SEE ALSO"
+\fBlibcsync\fR(7)
+.sp
+.SH "AUTHORS"
+Andreas Schneider <mail@cynapses\.org>
+.sp
+.SH "COPYING"
+Copyright \e(c) 2006\-2008 Andreas Schneider\. Free use of this software is granted under the terms of the GNU General Public License (GPL)\.
+.sp
