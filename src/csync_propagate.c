@@ -282,7 +282,9 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   }
 
   /* set owner and group if possible */
-  csync_vio_chown(ctx, duri, st->uid, st->gid);
+  if (geteuid() == 0) {
+    csync_vio_chown(ctx, duri, st->uid, st->gid);
+  }
 
   /* sync time */
   times[0].tv_sec = times[1].tv_sec = st->modtime;
@@ -443,7 +445,9 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
   }
 
   /* set owner and group if possible */
-  csync_vio_chown(ctx, uri, st->uid, st->gid);
+  if (geteuid() == 0) {
+    csync_vio_chown(ctx, uri, st->uid, st->gid);
+  }
 
   times[0].tv_sec = times[1].tv_sec = st->modtime;
   times[0].tv_usec = times[1].tv_usec = 0;
@@ -512,7 +516,9 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
   }
 
   /* set owner and group if possible */
-  csync_vio_chown(ctx, uri, st->uid, st->gid);
+  if (geteuid() == 0) {
+    csync_vio_chown(ctx, uri, st->uid, st->gid);
+  }
 
   times[0].tv_sec = times[1].tv_sec = st->modtime;
   times[0].tv_usec = times[1].tv_usec = 0;
