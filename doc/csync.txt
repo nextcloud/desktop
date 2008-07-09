@@ -29,11 +29,11 @@ collection or create a backup of a directory.
 OPTIONS
 -------
 
-*--create-journal*::
-    Run update detection and write the journal
+*--create-statedb*::
+    Run update detection and write the statedb
     (TESTING ONLY!)
-*-d, --disable-journal*::
-    Disable the usage and creation of a journal.
+*-d, --disable-statedb*::
+    Disable the usage and creation of a statedb.
 
 *--exclude-file='<file>'*::
     Add an additional exclude file

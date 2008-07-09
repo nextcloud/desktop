@@ -24,54 +24,54 @@ static void teardown(void) {
   fail_if(system("rm -rf /tmp/check_csync1") < 0, "Teardown failed");
 }
 
-START_TEST (check_csync_journal_check)
+START_TEST (check_csync_statedb_check)
 {
   fail_if(system("mkdir -p /tmp/check_csync1") < 0, NULL);
 
   /* old db */
   fail_if(system("echo \"SQLite format 2\" > /tmp/check_csync1/test.db") < 0, NULL);
-  fail_unless(_csync_journal_check(testdb) == 0);
+  fail_unless(_csync_statedb_check(testdb) == 0);
 
   /* db already exists */
-  fail_unless(_csync_journal_check(testdb) == 0);
+  fail_unless(_csync_statedb_check(testdb) == 0);
 
   /* no db exists */
   fail_if(system("rm -f /tmp/check_csync1/test.db") < 0, NULL);
-  fail_unless(_csync_journal_check(testdb) == 0);
+  fail_unless(_csync_statedb_check(testdb) == 0);
 
-  fail_unless(_csync_journal_check((char *) "/tmp/check_csync1/") < 0);
+  fail_unless(_csync_statedb_check((char *) "/tmp/check_csync1/") < 0);
 
   fail_if(system("rm -rf /tmp/check_csync1") < 0, NULL);
 }
 END_TEST
 
-START_TEST (check_csync_journal_load)
+START_TEST (check_csync_statedb_load)
 {
   struct stat sb;
-  fail_unless(csync_journal_load(csync, testdb) == 0, NULL);
+  fail_unless(csync_statedb_load(csync, testdb) == 0, NULL);
 
   fail_unless(lstat(testtmpdb, &sb) == 0, NULL);
 
-  sqlite3_close(csync->journal.db);
+  sqlite3_close(csync->statedb.db);
 }
 END_TEST
 
-START_TEST (check_csync_journal_close)
+START_TEST (check_csync_statedb_close)
 {
   struct stat sb;
   time_t modtime;
-  /* journal not written */
-  csync_journal_load(csync, testdb);
+  /* statedb not written */
+  csync_statedb_load(csync, testdb);
 
   fail_unless(lstat(testdb, &sb) == 0, NULL);
   modtime = sb.st_mtime;
 
-  fail_unless(csync_journal_close(csync, testdb, 0) == 0, NULL);
+  fail_unless(csync_statedb_close(csync, testdb, 0) == 0, NULL);
 
   fail_unless(lstat(testdb, &sb) == 0, NULL);
   fail_unless(modtime == sb.st_mtime, NULL);
 
-  csync_journal_load(csync, testdb);
+  csync_statedb_load(csync, testdb);
 
   fail_unless(lstat(testdb, &sb) == 0, NULL);
   modtime = sb.st_mtime;
@@ -79,8 +79,8 @@ START_TEST (check_csync_journal_close)
   /* wait a sec or the modtime will be the same */
   sleep(1);
 
-  /* journal written */
-  fail_unless(csync_journal_close(csync, testdb, 1) == 0, NULL);
+  /* statedb written */
+  fail_unless(csync_statedb_close(csync, testdb, 1) == 0, NULL);
 
   fail_unless(lstat(testdb, &sb) == 0, NULL);
   fail_unless(modtime < sb.st_mtime, NULL);
@@ -88,11 +88,11 @@ START_TEST (check_csync_journal_close)
 END_TEST
 
 static Suite *make_csync_suite(void) {
-  Suite *s = suite_create("csync_journal");
+  Suite *s = suite_create("csync_statedb");
 
-  create_case(s, "check_csync_journal_check", check_csync_journal_check);
-  create_case_fixture(s, "check_csync_journal_load", check_csync_journal_load, setup, teardown);
-  create_case_fixture(s, "check_csync_journal_close", check_csync_journal_close, setup, teardown);
+  create_case(s, "check_csync_statedb_check", check_csync_statedb_check);
+  create_case_fixture(s, "check_csync_statedb_load", check_csync_statedb_load, setup, teardown);
+  create_case_fixture(s, "check_csync_statedb_close", check_csync_statedb_close, setup, teardown);
 
   return s;
 }

@@ -89,14 +89,14 @@ static int _csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fi
   }
 
   /* Update detection */
-  if (csync_get_journal_exists(ctx)) {
-    tmp = csync_journal_get_stat_by_hash(ctx, h);
+  if (csync_get_statedb_exists(ctx)) {
+    tmp = csync_statedb_get_stat_by_hash(ctx, h);
     if (tmp == NULL) {
       /* check if the file has been renamed */
       if (ctx->current == LOCAL_REPLICA) {
-        tmp = csync_journal_get_stat_by_inode(ctx, fs->inode);
+        tmp = csync_statedb_get_stat_by_inode(ctx, fs->inode);
         if (tmp == NULL) {
-          /* file not found in journal */
+          /* file not found in statedb */
           st->instruction = CSYNC_INSTRUCTION_NEW;
           goto out;
         } else {
@@ -105,7 +105,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fi
           goto out;
         }
       }
-      /* remote and file not found in journal */
+      /* remote and file not found in statedb */
       st->instruction = CSYNC_INSTRUCTION_NEW;
       goto out;
     } else {

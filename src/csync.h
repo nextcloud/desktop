@@ -52,7 +52,6 @@ extern "C" {
 #define CSYNC_CONF_FILE "csync.conf"
 #define CSYNC_LOG_FILE "csync_log.conf"
 #define CSYNC_EXCLUDE_FILE "csync_exclude.conf"
-#define CSYNC_JOURNAL_FILE "csync_journal.db"
 #define CSYNC_LOCK_FILE "lock"
 
 typedef void (*csync_auth_callback) (char *usr, size_t usrlen, char *pwd, size_t pwlen);
@@ -74,7 +73,7 @@ int csync_create(CSYNC **csync, const char *local, const char *remote);
 /**
  * @brief Initialize the file synchronizer.
  *
- * This function loads the configuration, the journal and locks the client.
+ * This function loads the configuration, the statedb and locks the client.
  *
  * @param ctx  The context to initialize.
  *
@@ -112,7 +111,7 @@ int csync_propagate(CSYNC *ctx);
 /**
  * @brief Destroy the csync context
  *
- * Writes the journal, unlocks csync and frees the memory.
+ * Writes the statedb, unlocks csync and frees the memory.
  *
  * @param ctx  The context to destroy.
  *
@@ -131,12 +130,12 @@ int csync_add_exclude_list(CSYNC *ctx, const char *path);
 char *csync_get_config_dir(CSYNC *ctx);
 int csync_set_config_dir(CSYNC *ctx, const char *path);
 int csync_remove_config_dir(CSYNC *ctx);
-int csync_enable_journal(CSYNC *ctx);
-int csync_disable_journal(CSYNC *ctx);
-int csync_is_journal_disabled(CSYNC *ctx);
+int csync_enable_statedb(CSYNC *ctx);
+int csync_disable_statedb(CSYNC *ctx);
+int csync_is_statedb_disabled(CSYNC *ctx);
 csync_auth_callback csync_get_auth_callback(CSYNC *ctx);
 int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb);
-char *csync_get_journal_file(CSYNC *ctx);
+char *csync_get_statedb_file(CSYNC *ctx);
 int csync_get_status(CSYNC *ctx);
 int csync_set_status(CSYNC *ctx, int status);
 

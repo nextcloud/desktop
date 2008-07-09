@@ -209,18 +209,18 @@ int csync_init(CSYNC *ctx) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Could not load %s - %s", exclude, strerror(errno));
   }
 
-  /* create/load journal */
-  if (! csync_is_journal_disabled(ctx)) {
+  /* create/load statedb */
+  if (! csync_is_statedb_disabled(ctx)) {
     uint64_t h = c_jhash64((uint8_t *) ctx->remote.uri, strlen(ctx->remote.uri), 0);
-    if (asprintf(&ctx->journal.file, "%s/csync_journal_%llu.db",
+    if (asprintf(&ctx->statedb.file, "%s/csync_statedb_%llu.db",
           ctx->options.config_dir, (long long unsigned int) h) < 0) {
       rc = -1;
       goto out;
     }
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Remote replica: %s", ctx->remote.uri);
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Journal file: %s", ctx->journal.file);
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Statedb: %s", ctx->statedb.file);
 
-    if (csync_journal_load(ctx, ctx->journal.file) < 0) {
+    if (csync_statedb_load(ctx, ctx->statedb.file) < 0) {
       rc = -1;
       goto out;
     }
@@ -459,8 +459,8 @@ int csync_destroy(CSYNC *ctx) {
 
   csync_vio_shutdown(ctx);
 
-  /* if we have a journal */
-  if (ctx->journal.db != NULL) {
+  /* if we have a statedb */
+  if (ctx->statedb.db != NULL) {
     /* and we have successfully synchronized */
     if (ctx->status >= CSYNC_STATUS_DONE) {
       /* merge trees */
@@ -469,20 +469,20 @@ int csync_destroy(CSYNC *ctx) {
             strerror(errno));
       } else {
         clock_gettime(CLOCK_REALTIME, &start);
-        /* write the journal to disk */
-        if (csync_journal_write(ctx) == 0) {
+        /* write the statedb to disk */
+        if (csync_statedb_write(ctx) == 0) {
           jwritten = 1;
           clock_gettime(CLOCK_REALTIME, &finish);
           CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-              "Writing the journal of %zu files to disk took %.2f seconds",
+              "Writing the statedb of %zu files to disk took %.2f seconds",
               c_rbtree_size(ctx->local.tree), c_secdiff(finish, start));
         } else {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to write journal: %s",
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to write statedb: %s",
               strerror(errno));
         }
       }
     }
-    csync_journal_close(ctx, ctx->journal.file, jwritten);
+    csync_statedb_close(ctx, ctx->statedb.file, jwritten);
   }
 
   /* clear exclude list */
@@ -513,7 +513,7 @@ int csync_destroy(CSYNC *ctx) {
   SAFE_FREE(ctx->local.uri);
   SAFE_FREE(ctx->remote.uri);
   SAFE_FREE(ctx->options.config_dir);
-  SAFE_FREE(ctx->journal.file);
+  SAFE_FREE(ctx->statedb.file);
 
   SAFE_FREE(ctx);
 
@@ -556,7 +556,7 @@ int csync_set_config_dir(CSYNC *ctx, const char *path) {
   return 0;
 }
 
-int csync_enable_journal(CSYNC *ctx) {
+int csync_enable_statedb(CSYNC *ctx) {
   if (ctx == NULL) {
     return -1;
   }
@@ -566,12 +566,12 @@ int csync_enable_journal(CSYNC *ctx) {
     return -1;
   }
 
-  ctx->journal.disabled = 0;
+  ctx->statedb.disabled = 0;
 
   return 0;
 }
 
-int csync_disable_journal(CSYNC *ctx) {
+int csync_disable_statedb(CSYNC *ctx) {
   if (ctx == NULL) {
     return -1;
   }
@@ -581,17 +581,17 @@ int csync_disable_journal(CSYNC *ctx) {
     return -1;
   }
 
-  ctx->journal.disabled = 1;
+  ctx->statedb.disabled = 1;
 
   return 0;
 }
 
-int csync_is_journal_disabled(CSYNC *ctx) {
+int csync_is_statedb_disabled(CSYNC *ctx) {
   if (ctx == NULL) {
     return -1;
   }
 
-  return ctx->journal.disabled;
+  return ctx->statedb.disabled;
 }
 
 int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb) {
@@ -609,12 +609,12 @@ int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb) {
   return 0;
 }
 
-char *csync_get_journal_file(CSYNC *ctx) {
+char *csync_get_statedb_file(CSYNC *ctx) {
   if (ctx == NULL) {
     return NULL;
   }
 
-  return c_strdup(ctx->journal.file);
+  return c_strdup(ctx->statedb.file);
 }
 
 csync_auth_callback csync_get_auth_callback(CSYNC *ctx) {

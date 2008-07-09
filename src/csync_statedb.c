@@ -36,49 +36,49 @@
 #include "csync_statedb.h"
 #include "csync_util.h"
 
-#define CSYNC_LOG_CATEGORY_NAME "csync.journal"
+#define CSYNC_LOG_CATEGORY_NAME "csync.statedb"
 #include "csync_log.h"
 
 #define BUF_SIZE 16
 
-void csync_set_journal_exists(CSYNC *ctx, int val) {
-  ctx->journal.exists = val;
+void csync_set_statedb_exists(CSYNC *ctx, int val) {
+  ctx->statedb.exists = val;
 }
 
-int csync_get_journal_exists(CSYNC *ctx) {
-  return ctx->journal.exists;
+int csync_get_statedb_exists(CSYNC *ctx) {
+  return ctx->statedb.exists;
 }
 
-static int _csync_journal_check(const char *journal) {
+static int _csync_statedb_check(const char *statedb) {
   int fd = -1;
   char buf[BUF_SIZE] = {0};
   sqlite3 *db = NULL;
 
   /* check db version */
-  fd = open(journal, O_RDONLY);
+  fd = open(statedb, O_RDONLY);
   if (fd >= 0) {
     if (read(fd, (void *) buf, (size_t) BUF_SIZE - 1) >= 0) {
       buf[BUF_SIZE - 1] = '\0';
       close(fd);
       if (c_streq(buf, "SQLite format 3")) {
-        if (sqlite3_open(journal, &db ) == SQLITE_OK) {
+        if (sqlite3_open(statedb, &db ) == SQLITE_OK) {
           /* everything is fine */
           sqlite3_close(db);
           return 0;
         } else {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "database corrupted, removing!");
-          unlink(journal);
+          unlink(statedb);
         }
         sqlite3_close(db);
       } else {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "sqlite version mismatch");
-        unlink(journal);
+        unlink(statedb);
       }
     }
   }
 
   /* create database */
-  if (sqlite3_open(journal, &db) == SQLITE_OK) {
+  if (sqlite3_open(statedb, &db) == SQLITE_OK) {
     sqlite3_close(db);
     return 0;
   }
@@ -87,11 +87,11 @@ static int _csync_journal_check(const char *journal) {
   return -1;
 }
 
-static int _csync_journal_is_empty(CSYNC *ctx) {
+static int _csync_statedb_is_empty(CSYNC *ctx) {
   c_strlist_t *result = NULL;
   int rc = 0;
 
-  result = csync_journal_query(ctx, "SELECT COUNT(phash) FROM metadata LIMIT 1 OFFSET 0;");
+  result = csync_statedb_query(ctx, "SELECT COUNT(phash) FROM metadata LIMIT 1 OFFSET 0;");
   if (result == NULL) {
     rc = 1;
   }
@@ -100,12 +100,12 @@ static int _csync_journal_is_empty(CSYNC *ctx) {
   return rc;
 }
 
-int csync_journal_load(CSYNC *ctx, const char *journal) {
+int csync_statedb_load(CSYNC *ctx, const char *statedb) {
   int rc = -1;
   c_strlist_t *result = NULL;
-  char *journal_tmp = NULL;
+  char *statedb_tmp = NULL;
 
-  if (_csync_journal_check(journal) < 0) {
+  if (_csync_statedb_check(statedb) < 0) {
     rc = -1;
     goto out;
   }
@@ -114,93 +114,93 @@ int csync_journal_load(CSYNC *ctx, const char *journal) {
    * We want a two phase commit for the jounal, so we create a temporary copy
    * of the database.
    * The intention is that if something goes wrong we will not loose the
-   * journal.
+   * statedb.
    */
-  if (asprintf(&journal_tmp, "%s.ctmp", journal) < 0) {
+  if (asprintf(&statedb_tmp, "%s.ctmp", statedb) < 0) {
     rc = -1;
     goto out;
   }
 
-  if (c_copy(journal, journal_tmp, 0644) < 0) {
+  if (c_copy(statedb, statedb_tmp, 0644) < 0) {
     rc = -1;
     goto out;
   }
 
   /* Open the temporary database */
-  if (sqlite3_open(journal_tmp, &ctx->journal.db) != SQLITE_OK) {
+  if (sqlite3_open(statedb_tmp, &ctx->statedb.db) != SQLITE_OK) {
     rc = -1;
     goto out;
   }
 
-  if (_csync_journal_is_empty(ctx)) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "Journal doesn't exist");
-    csync_set_journal_exists(ctx, 0);
+  if (_csync_statedb_is_empty(ctx)) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "statedb doesn't exist");
+    csync_set_statedb_exists(ctx, 0);
   } else {
-    csync_set_journal_exists(ctx, 1);
+    csync_set_statedb_exists(ctx, 1);
   }
 
   /* optimization for speeding up SQLite */
-  result = csync_journal_query(ctx, "PRAGMA default_synchronous = OFF;");
+  result = csync_statedb_query(ctx, "PRAGMA default_synchronous = OFF;");
   c_strlist_destroy(result);
 
   rc = 0;
 out:
-  SAFE_FREE(journal_tmp);
+  SAFE_FREE(statedb_tmp);
   return rc;
 }
 
-int csync_journal_write(CSYNC *ctx) {
+int csync_statedb_write(CSYNC *ctx) {
   /* drop tables */
-  if (csync_journal_drop_tables(ctx) < 0) {
+  if (csync_statedb_drop_tables(ctx) < 0) {
     return -1;
   }
 
   /* create tables */
-  if (csync_journal_create_tables(ctx) < 0) {
+  if (csync_statedb_create_tables(ctx) < 0) {
     return -1;
   }
 
   /* insert metadata */
-  if (csync_journal_insert_metadata(ctx) < 0) {
+  if (csync_statedb_insert_metadata(ctx) < 0) {
     return -1;
   }
 
   return 0;
 }
 
-int csync_journal_close(CSYNC *ctx, const char *journal, int jwritten) {
-  char *journal_tmp = NULL;
+int csync_statedb_close(CSYNC *ctx, const char *statedb, int jwritten) {
+  char *statedb_tmp = NULL;
   int rc = 0;
 
   /* close the temporary database */
-  sqlite3_close(ctx->journal.db);
+  sqlite3_close(ctx->statedb.db);
 
-  if (asprintf(&journal_tmp, "%s.ctmp", journal) < 0) {
+  if (asprintf(&statedb_tmp, "%s.ctmp", statedb) < 0) {
     return -1;
   }
 
-  /* if we successfully synchronized, overwrite the original journal */
+  /* if we successfully synchronized, overwrite the original statedb */
   if (jwritten) {
-    rc = c_copy(journal_tmp, journal, 0644);
+    rc = c_copy(statedb_tmp, statedb, 0644);
     if (rc == 0) {
-      unlink(journal_tmp);
+      unlink(statedb_tmp);
     }
   } else {
-    unlink(journal_tmp);
+    unlink(statedb_tmp);
   }
-  SAFE_FREE(journal_tmp);
+  SAFE_FREE(statedb_tmp);
 
   return rc;
 }
 
-int csync_journal_create_tables(CSYNC *ctx) {
+int csync_statedb_create_tables(CSYNC *ctx) {
   c_strlist_t *result = NULL;
 
   /*
    * Create temorary table to work on, this speeds up the
-   * creation of the journal.
+   * creation of the statedb.
    */
-  result = csync_journal_query(ctx,
+  result = csync_statedb_query(ctx,
       "CREATE TEMPORARY TABLE IF NOT EXISTS metadata_temp("
       "phash INTEGER(8),"
       "pathlen INTEGER,"
@@ -219,7 +219,7 @@ int csync_journal_create_tables(CSYNC *ctx) {
   }
   c_strlist_destroy(result);
 
-  result = csync_journal_query(ctx,
+  result = csync_statedb_query(ctx,
       "CREATE TABLE IF NOT EXISTS metadata("
       "phash INTEGER(8),"
       "pathlen INTEGER,"
@@ -237,14 +237,14 @@ int csync_journal_create_tables(CSYNC *ctx) {
   }
   c_strlist_destroy(result);
 
-  result = csync_journal_query(ctx,
+  result = csync_statedb_query(ctx,
       "CREATE INDEX metadata_phash ON metadata(phash);");
   if (result == NULL) {
     return -1;
   }
   c_strlist_destroy(result);
 
-  result = csync_journal_query(ctx,
+  result = csync_statedb_query(ctx,
       "CREATE INDEX metadata_inode ON metadata(inode);");
   if (result == NULL) {
     return -1;
@@ -254,10 +254,10 @@ int csync_journal_create_tables(CSYNC *ctx) {
   return 0;
 }
 
-int csync_journal_drop_tables(CSYNC *ctx) {
+int csync_statedb_drop_tables(CSYNC *ctx) {
   c_strlist_t *result = NULL;
 
-  result = csync_journal_query(ctx,
+  result = csync_statedb_query(ctx,
       "DROP TABLE IF EXISTS metadata;"
       );
   if (result == NULL) {
@@ -279,7 +279,7 @@ static int _insert_metadata_visitor(void *obj, void *data) {
 
   switch (fs->instruction) {
     /*
-     * Don't write ignored, deleted or files with an error to the journal.
+     * Don't write ignored, deleted or files with an error to the statedb.
      * They will be visited on the next synchronization again as a new file.
      */
     case CSYNC_INSTRUCTION_DELETED:
@@ -322,13 +322,13 @@ static int _insert_metadata_visitor(void *obj, void *data) {
         return -1;
       }
 
-      rc = csync_journal_insert(ctx, stmt);
+      rc = csync_statedb_insert(ctx, stmt);
 
       sqlite3_free(stmt);
       break;
     default:
       CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN,
-          "file: %s, instruction: %s (%d), not added to journal!",
+          "file: %s, instruction: %s (%d), not added to statedb!",
           fs->path, csync_instruction_str(fs->instruction), fs->instruction);
       rc = 1;
       break;
@@ -337,18 +337,18 @@ static int _insert_metadata_visitor(void *obj, void *data) {
   return rc;
 }
 
-int csync_journal_insert_metadata(CSYNC *ctx) {
+int csync_statedb_insert_metadata(CSYNC *ctx) {
   c_strlist_t *result = NULL;
 
   if (c_rbtree_walk(ctx->local.tree, ctx, _insert_metadata_visitor) < 0) {
     return -1;
   }
 
-  if (csync_journal_insert(ctx, "INSERT INTO metadata SELECT * FROM metadata_temp;") < 0) {
+  if (csync_statedb_insert(ctx, "INSERT INTO metadata SELECT * FROM metadata_temp;") < 0) {
     return -1;
   }
 
-  result = csync_journal_query(ctx, "DROP TABLE metadata_temp;");
+  result = csync_statedb_query(ctx, "DROP TABLE metadata_temp;");
   if (result == NULL) {
     return -1;
   }
@@ -359,7 +359,7 @@ int csync_journal_insert_metadata(CSYNC *ctx) {
 }
 
 /* caller must free the memory */
-csync_file_stat_t *csync_journal_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
+csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
   csync_file_stat_t *st = NULL;
   c_strlist_t *result = NULL;
   char *stmt = NULL;
@@ -371,7 +371,7 @@ csync_file_stat_t *csync_journal_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
     return NULL;
   }
 
-  result = csync_journal_query(ctx, stmt);
+  result = csync_statedb_query(ctx, stmt);
   sqlite3_free(stmt);
   if (result == NULL) {
     return NULL;
@@ -403,7 +403,7 @@ csync_file_stat_t *csync_journal_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
 }
 
 /* caller must free the memory */
-csync_file_stat_t *csync_journal_get_stat_by_inode(CSYNC *ctx, ino_t inode) {
+csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx, ino_t inode) {
   csync_file_stat_t *st = NULL;
   c_strlist_t *result = NULL;
   char *stmt = NULL;
@@ -414,7 +414,7 @@ csync_file_stat_t *csync_journal_get_stat_by_inode(CSYNC *ctx, ino_t inode) {
     return NULL;
   }
 
-  result = csync_journal_query(ctx, stmt);
+  result = csync_statedb_query(ctx, stmt);
   sqlite3_free(stmt);
   if (result == NULL) {
     return NULL;
@@ -447,8 +447,8 @@ csync_file_stat_t *csync_journal_get_stat_by_inode(CSYNC *ctx, ino_t inode) {
   return st;
 }
 
-/* query the journal, caller must free the memory */
-c_strlist_t *csync_journal_query(CSYNC *ctx, const char *statement) {
+/* query the statedb, caller must free the memory */
+c_strlist_t *csync_statedb_query(CSYNC *ctx, const char *statement) {
   int err;
   int rc = 0;
   size_t i = 0;
@@ -467,14 +467,14 @@ c_strlist_t *csync_journal_query(CSYNC *ctx, const char *statement) {
         usleep(100000);
         CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "sqlite3_prepare: BUSY counter: %zu", busy_count);
       }
-      err = sqlite3_prepare(ctx->journal.db, statement, -1, &stmt, &tail);
+      err = sqlite3_prepare(ctx->statedb.db, statement, -1, &stmt, &tail);
     } while (err == SQLITE_BUSY && busy_count ++ < 120);
 
     if (err != SQLITE_OK) {
       if (err == SQLITE_BUSY) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Gave up waiting for lock to clear");
       }
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "sqlite3_compile error: %s - on query %s", sqlite3_errmsg(ctx->journal.db), statement);
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "sqlite3_compile error: %s - on query %s", sqlite3_errmsg(ctx->statedb.db), statement);
       break;
     } else {
       busy_count = 0;
@@ -529,7 +529,7 @@ c_strlist_t *csync_journal_query(CSYNC *ctx, const char *statement) {
       rc = sqlite3_finalize(stmt);
 
       if (err != SQLITE_DONE && rc != SQLITE_SCHEMA) {
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "sqlite_step error: %s - on query: %s", sqlite3_errmsg(ctx->journal.db), statement);
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "sqlite_step error: %s - on query: %s", sqlite3_errmsg(ctx->statedb.db), statement);
         result = c_strlist_new(1);
       }
 
@@ -549,7 +549,7 @@ c_strlist_t *csync_journal_query(CSYNC *ctx, const char *statement) {
   return result;
 }
 
-int csync_journal_insert(CSYNC *ctx, const char *statement) {
+int csync_statedb_insert(CSYNC *ctx, const char *statement) {
   int err;
   int rc = 0;
   int busy_count = 0;
@@ -569,14 +569,14 @@ int csync_journal_insert(CSYNC *ctx, const char *statement) {
         usleep(100000);
         CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "sqlite3_prepare: BUSY counter: %d", busy_count);
       }
-      err = sqlite3_prepare(ctx->journal.db, statement, -1, &stmt, &tail);
+      err = sqlite3_prepare(ctx->statedb.db, statement, -1, &stmt, &tail);
     } while (err == SQLITE_BUSY && busy_count++ < 120);
 
     if (err != SQLITE_OK) {
       if (err == SQLITE_BUSY) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Gave up waiting for lock to clear");
       }
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "sqlite3_compile error: %s on query %s", sqlite3_errmsg(ctx->journal.db), statement);
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "sqlite3_compile error: %s on query %s", sqlite3_errmsg(ctx->statedb.db), statement);
       break;
     } else {
       busy_count = 0;
@@ -608,7 +608,7 @@ int csync_journal_insert(CSYNC *ctx, const char *statement) {
       rc = sqlite3_finalize(stmt);
 
       if (err != SQLITE_DONE && rc != SQLITE_SCHEMA) {
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "sqlite_step error: %s on insert: %s", sqlite3_errmsg(ctx->journal.db), statement);
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "sqlite_step error: %s on insert: %s", sqlite3_errmsg(ctx->statedb.db), statement);
       }
 
       if (rc == SQLITE_SCHEMA) {
@@ -623,6 +623,6 @@ int csync_journal_insert(CSYNC *ctx, const char *statement) {
     }
   } while (rc == SQLITE_SCHEMA && retry_count < 10);
 
-  return sqlite3_last_insert_rowid(ctx->journal.db);
+  return sqlite3_last_insert_rowid(ctx->statedb.db);
 }
 

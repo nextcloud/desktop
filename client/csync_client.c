@@ -33,7 +33,7 @@
 enum {
   KEY_DUMMY = 129,
   KEY_EXCLUDE_FILE,
-  KEY_CREATE_JOURNAL,
+  KEY_CREATE_STATEDB,
 };
 
 const char *argp_program_version = "csync commandline client 0.42";
@@ -48,11 +48,11 @@ static char args_doc[] = "SOURCE DESTINATION";
 /* The options we understand. */
 static struct argp_option options[] = {
   {
-    .name  = "disable-journal",
+    .name  = "disable-statedb",
     .key   = 'd',
     .arg   = NULL,
     .flags = 0,
-    .doc   = "Disable the usage and creation of a journal.",
+    .doc   = "Disable the usage and creation of a statedb.",
     .group = 0
   },
   {
@@ -72,11 +72,11 @@ static struct argp_option options[] = {
     .group = 0
   },
   {
-    .name  = "create-journal",
-    .key   = KEY_CREATE_JOURNAL,
+    .name  = "create-statedb",
+    .key   = KEY_CREATE_STATEDB,
     .arg   = NULL,
     .flags = 0,
-    .doc   = "Run update detection and write the journal (TESTING ONLY!)",
+    .doc   = "Run update detection and write the statedb (TESTING ONLY!)",
     .group = 0
   },
   {
@@ -94,8 +94,8 @@ static struct argp_option options[] = {
 struct argument_s {
   char *args[2]; /* SOURCE and DESTINATION */
   char *exclude_file;
-  int disable_journal;
-  int create_journal;
+  int disable_statedb;
+  int create_statedb;
   int update;
   int reconcile;
   int propagate;
@@ -110,13 +110,13 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state) {
 
   switch (key) {
     case 'u':
-      arguments->create_journal = 0;
+      arguments->create_statedb = 0;
       arguments->update = 1;
       arguments->reconcile = 0;
       arguments->propagate = 0;
       break;
     case 'r':
-      arguments->create_journal = 0;
+      arguments->create_statedb = 0;
       arguments->update = 1;
       arguments->reconcile = 1;
       arguments->propagate = 0;
@@ -125,10 +125,10 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state) {
       arguments->exclude_file = strdup(arg);
       break;
     case 'd':
-      arguments->disable_journal = 1;
+      arguments->disable_statedb = 1;
       break;
-    case KEY_CREATE_JOURNAL:
-      arguments->create_journal = 1;
+    case KEY_CREATE_STATEDB:
+      arguments->create_statedb = 1;
       arguments->update = 1;
       arguments->reconcile = 0;
       arguments->propagate = 0;
@@ -183,8 +183,8 @@ int main(int argc, char **argv) {
 
   /* Default values. */
   arguments.exclude_file = NULL;
-  arguments.disable_journal = 0;
-  arguments.create_journal = 0;
+  arguments.disable_statedb = 0;
+  arguments.create_statedb = 0;
   arguments.update = 1;
   arguments.reconcile = 1;
   arguments.propagate = 1;
@@ -201,8 +201,8 @@ int main(int argc, char **argv) {
   }
 
   csync_set_auth_callback(csync, csync_auth_fn);
-  if (arguments.disable_journal) {
-    csync_disable_journal(csync);
+  if (arguments.disable_statedb) {
+    csync_disable_statedb(csync);
   }
 
   if (csync_init(csync) < 0) {
@@ -244,7 +244,7 @@ int main(int argc, char **argv) {
     }
   }
 
-  if (arguments.create_journal) {
+  if (arguments.create_statedb) {
     csync_set_status(csync, 0xFFFF);
   }
 

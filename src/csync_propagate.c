@@ -379,7 +379,7 @@ static int _csync_remove_file(CSYNC *ctx, csync_file_stat_t *st) {
 out:
   SAFE_FREE(uri);
 
-  /* Write to journal, to try again next run. */
+  /* Write to statedb, to try again next run. */
   st->instruction = CSYNC_INSTRUCTION_NONE;
 
   return rc;
@@ -649,7 +649,7 @@ static int _csync_propagation_cleanup(CSYNC *ctx) {
     }
 
     if (csync_vio_rmdir(ctx, dir) < 0) {
-      /* Write it back to journal, that we try to delete it next time. */
+      /* Write it back to statedb, that we try to delete it next time. */
       st->instruction = CSYNC_INSTRUCTION_NONE;
     } else {
       st->instruction = CSYNC_INSTRUCTION_DELETED;
