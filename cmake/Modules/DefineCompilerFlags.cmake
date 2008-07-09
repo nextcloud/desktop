@@ -34,7 +34,7 @@ if (UNIX AND NOT WIN32)
   string(REGEX REPLACE "[\r\n]" " " ${_lfs_CFLAGS} "${${_lfs_CFLAGS}}")
 
   add_definitions(${_lfs_CFLAGS})
-  add_definitions(-Wall -W -Wmissing-prototypes -Wdeclaration-after-statement -Wreturn-type -Wunused)
+  add_definitions(-Wall -Wextra -Wmissing-prototypes -Wdeclaration-after-statement -Wunused)
 
   check_c_compiler_flag("-fstack-protector" WITH_STACK_PROTECTOR)
   if (WITH_STACK_PROTECTOR)
