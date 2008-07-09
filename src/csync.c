@@ -36,7 +36,7 @@
 #include "csync_config.h"
 #include "csync_exclude.h"
 #include "csync_lock.h"
-#include "csync_journal.h"
+#include "csync_statedb.h"
 #include "csync_time.h"
 #include "csync_util.h"
 

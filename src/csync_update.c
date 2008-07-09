@@ -32,7 +32,7 @@
 
 #include "csync_private.h"
 #include "csync_exclude.h"
-#include "csync_journal.h"
+#include "csync_statedb.h"
 #include "csync_update.h"
 #include "csync_util.h"
 

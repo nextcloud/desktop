@@ -33,7 +33,7 @@
 
 #include "c_lib.h"
 #include "csync_private.h"
-#include "csync_journal.h"
+#include "csync_statedb.h"
 #include "csync_util.h"
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.journal"

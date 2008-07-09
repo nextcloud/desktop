@@ -5,7 +5,7 @@
 #include "support.h"
 
 #define CSYNC_TEST 1
-#include "csync_journal.c"
+#include "csync_statedb.c"
 
 CSYNC *csync;
 const char *testdb = (char *) "/tmp/check_csync1/test.db";

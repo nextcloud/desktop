@@ -34,13 +34,13 @@ macro_add_check_test(check_csync_create csync_tests/check_csync_create.c ${TEST_
 macro_add_check_test(check_csync_lock csync_tests/check_csync_lock.c ${TEST_TARGET_LIBRARIES})
 macro_add_check_test(check_csync_config csync_tests/check_csync_config.c ${TEST_TARGET_LIBRARIES})
 macro_add_check_test(check_csync_exclude csync_tests/check_csync_exclude.c ${TEST_TARGET_LIBRARIES})
-macro_add_check_test(check_csync_journal_load csync_tests/check_csync_journal_load.c ${TEST_TARGET_LIBRARIES})
+macro_add_check_test(check_csync_statedb_load csync_tests/check_csync_statedb_load.c ${TEST_TARGET_LIBRARIES})
 macro_add_check_test(check_csync_time csync_tests/check_csync_time.c ${TEST_TARGET_LIBRARIES})
 macro_add_check_test(check_csync_util csync_tests/check_csync_util.c ${TEST_TARGET_LIBRARIES})
 
 # csync tests which require init
 macro_add_check_test(check_csync_init csync_tests/check_csync_init.c ${TEST_TARGET_LIBRARIES})
-macro_add_check_test(check_csync_journal_query csync_tests/check_csync_journal_query.c ${TEST_TARGET_LIBRARIES})
+macro_add_check_test(check_csync_statedb_query csync_tests/check_csync_statedb_query.c ${TEST_TARGET_LIBRARIES})
 
 # vio
 macro_add_check_test(check_vio_handle vio_tests/check_vio_handle.c ${TEST_TARGET_LIBRARIES})
