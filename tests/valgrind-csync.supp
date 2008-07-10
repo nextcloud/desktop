@@ -1,0 +1,102 @@
+### CHECK
+
+{
+   Still reachable memory in check
+   Memcheck:Leak
+   fun:realloc
+   fun:erealloc
+   fun:list_add_end
+}
+
+{
+   Still reacheable memory in check
+   Memcheck:Leak
+   fun:malloc
+   fun:fdopen
+   fun:tmpfile
+   obj:/usr/lib64/libcheck.so.0.0.0
+}
+
+{
+   Still reacheable memory in check
+   Memcheck:Leak
+   fun:malloc
+   fun:emalloc
+   fun:suite_create
+}
+
+### LOG4C
+
+{
+   Still reacheable memory in log4c
+   Memcheck:Leak
+   fun:calloc
+   fun:sd_hash_*
+}
+
+{
+   Still reacheable memory in log4c
+   Memcheck:Leak
+   fun:calloc
+   fun:sd_factory_*
+}
+
+{
+   Still reacheable memory in log4c
+   Memcheck:Leak
+   fun:calloc
+   fun:log4c_category_*
+   fun:sd_factory_*
+}
+
+{
+   Still reacheable memory in log4c
+   Memcheck:Leak
+   fun:malloc
+   fun:strdup
+   fun:sd_factory_*
+   fun:log4c_category_*
+}
+
+### SQLITE3
+
+{
+   Use of uninitialised value of size 8 in sqlite3_mprintf
+   Memcheck:Value8
+   obj:/usr/lib*/libsqlite3.so*
+   fun:sqlite3_vmprintf
+   fun:sqlite3_mprintf
+   fun:setup_db
+   obj:/usr/lib*/libcheck.so*
+   fun:srunner_run_all
+   fun:main
+}
+
+{
+   Jump depending on uninitialised value in sqlite3_mprintf
+   Memcheck:Cond
+   obj:/usr/lib*/libsqlite3.so*
+   fun:sqlite3_vmprintf
+   fun:sqlite3_mprintf
+   fun:setup_db
+   obj:/usr/lib*/libcheck.so*
+   fun:srunner_run_all
+   fun:main
+}
+
+{
+   Invalid read of size 4 in sqlite3
+   Memcheck:Addr4
+   fun:sqlite3_close
+}
+
+### CSYNC
+
+{
+   glibc dlopen leak
+   Memcheck:Leak
+   fun:calloc
+   obj:/lib*/libdl-2.*.so
+   fun:dlopen
+}
+
