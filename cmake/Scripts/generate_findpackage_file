@@ -131,6 +131,7 @@ libs.split(" ").each do |lib|
 	file.printf("      /opt/local/lib\n")
 	file.printf("      /sw/lib\n")
 	file.printf("  )\n")
+	file.printf("  mark_as_advanced(#{lib.upcase}_LIBRARY)\n")
 end
 
 file.printf("\n")
