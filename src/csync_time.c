@@ -37,6 +37,7 @@
 /* check time difference between the replicas */
 time_t csync_timediff(CSYNC *ctx) {
   time_t timediff = -1;
+  char errbuf[256] = {0};
   char *luri = NULL;
   char *ruri = NULL;
   csync_vio_handle_t *fp = NULL;
@@ -51,7 +52,10 @@ time_t csync_timediff(CSYNC *ctx) {
      * To prevent problems especially with pam_csync we shouldn't try to create the
      * remote directory here. Just fail!
      */
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Access dienied to remote uri: %s - %s", ctx->remote.uri, strerror(errno));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL,
+        "Access dienied to remote uri: %s - %s",
+        ctx->remote.uri,
+        strerror_r(errno, errbuf, sizeof(errbuf)));
     return -1;
   }
   csync_vio_closedir(ctx, dp);
@@ -68,7 +72,10 @@ time_t csync_timediff(CSYNC *ctx) {
   ctx->replica = ctx->local.type;
   fp = csync_vio_creat(ctx, luri, 0644);
   if (fp == NULL) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Unable to create temporary file: %s - %s", luri, strerror(errno));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL,
+        "Unable to create temporary file: %s - %s",
+        luri,
+        strerror_r(errno, errbuf, sizeof(errbuf)));
     goto out;
   }
   csync_vio_close(ctx, fp);
@@ -76,7 +83,10 @@ time_t csync_timediff(CSYNC *ctx) {
   /* Get the modification time */
   st = csync_vio_file_stat_new();
   if (csync_vio_stat(ctx, luri, st) < 0) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Synchronisation is not possible! %s - %s", luri, strerror(errno));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL,
+        "Synchronisation is not possible! %s - %s",
+        luri,
+        strerror_r(errno, errbuf, sizeof(errbuf)));
     goto out;
   }
   timediff = st->mtime;
@@ -88,7 +98,10 @@ time_t csync_timediff(CSYNC *ctx) {
 
   fp = csync_vio_creat(ctx, ruri, 0644);
   if (fp == NULL) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Unable to create temporary file: %s - %s", ruri, strerror(errno));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL,
+        "Unable to create temporary file: %s - %s",
+        ruri,
+        strerror_r(errno, errbuf, sizeof(errbuf)));
     goto out;
   }
   csync_vio_close(ctx, fp);
@@ -96,7 +109,10 @@ time_t csync_timediff(CSYNC *ctx) {
   /* Get the modification time */
   st = csync_vio_file_stat_new();
   if (csync_vio_stat(ctx, ruri, st) < 0) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Synchronisation is not possible! %s - %s", ruri, strerror(errno));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL,
+        "Synchronisation is not possible! %s - %s",
+        ruri,
+        strerror_r(errno, errbuf, sizeof(errbuf)));
     goto out;
   }
 

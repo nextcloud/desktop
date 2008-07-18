@@ -130,6 +130,7 @@ int csync_init(CSYNC *ctx) {
   char *exclude = NULL;
   char *lock = NULL;
   char *config = NULL;
+  char errbuf[256] = {0};
 
   if (ctx == NULL) {
     errno = EBADF;
@@ -195,7 +196,8 @@ int csync_init(CSYNC *ctx) {
   }
 
   if (csync_exclude_load(ctx, exclude) < 0) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Could not load %s - %s", exclude, strerror(errno));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Could not load %s - %s", exclude,
+        strerror_r(errno, errbuf, sizeof(errbuf)));
   }
   SAFE_FREE(exclude);
 
@@ -206,7 +208,8 @@ int csync_init(CSYNC *ctx) {
   }
 
   if (csync_exclude_load(ctx, exclude) < 0) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Could not load %s - %s", exclude, strerror(errno));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Could not load %s - %s", exclude, 
+        strerror_r(errno, errbuf, sizeof(errbuf)));
   }
 
   /* create/load statedb */
@@ -450,6 +453,7 @@ static void _tree_destructor(void *data) {
 int csync_destroy(CSYNC *ctx) {
   struct timespec start, finish;
   char *lock = NULL;
+  char errbuf[256] = {0};
   int jwritten = 0;
 
   if (ctx == NULL) {
@@ -466,7 +470,7 @@ int csync_destroy(CSYNC *ctx) {
       /* merge trees */
       if (csync_merge_file_trees(ctx) < 0) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to merge trees: %s",
-            strerror(errno));
+            strerror_r(errno, errbuf, sizeof(errbuf)));
       } else {
         clock_gettime(CLOCK_REALTIME, &start);
         /* write the statedb to disk */
@@ -478,7 +482,7 @@ int csync_destroy(CSYNC *ctx) {
               c_rbtree_size(ctx->local.tree), c_secdiff(finish, start));
         } else {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to write statedb: %s",
-              strerror(errno));
+              strerror_r(errno, errbuf, sizeof(errbuf)));
         }
       }
     }

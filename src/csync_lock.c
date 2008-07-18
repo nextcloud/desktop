@@ -42,6 +42,7 @@
 
 static int _csync_lock_create(const char *lockfile) {
   int fd, pid, rc = -1;
+  char errbuf[256] = {0};
   char *ctmpfile = NULL;
   char *dir = NULL;
   char *buf = NULL;
@@ -61,7 +62,10 @@ static int _csync_lock_create(const char *lockfile) {
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Create temporary lock file: %s", ctmpfile);
   if ((fd = mkstemp(ctmpfile)) < 0) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to create temporary lock file: %s - %s", ctmpfile, strerror(errno));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+        "Unable to create temporary lock file: %s - %s",
+        ctmpfile,
+        strerror_r(errno, errbuf, sizeof(errbuf)));
     rc = -1;
     goto out;
   }
@@ -73,12 +77,18 @@ static int _csync_lock_create(const char *lockfile) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Create a hardlink from %s to %s.", ctmpfile, lockfile);
     if (link(ctmpfile, lockfile) < 0 ) {
       /* Oops, alredy locked */
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Already locked: %s - %s", lockfile, strerror(errno));
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO,
+          "Already locked: %s - %s",
+          lockfile,
+          strerror_r(errno, errbuf, sizeof(errbuf)));
       rc = -1;
       goto out;
     }
   } else {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Can't create %s - %s", ctmpfile, strerror(errno));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+        "Can't create %s - %s",
+        ctmpfile,
+        strerror_r(errno, errbuf, sizeof(errbuf)));
     rc = -1;
     goto out;
   }
@@ -97,6 +107,7 @@ out:
 }
 
 static pid_t _csync_lock_read(const char *lockfile) {
+  char errbuf[256] = {0};
   char buf[8] = {0};
   int  fd, pid;
 
@@ -117,7 +128,10 @@ static pid_t _csync_lock_read(const char *lockfile) {
   if (!pid || errno == ERANGE) {
      /* Broken lock file */
      if (unlink(lockfile) < 0) {
-       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to remove broken lock %s - %s", lockfile, strerror(errno));
+       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+           "Unable to remove broken lock %s - %s",
+           lockfile,
+           strerror_r(errno, errbuf, sizeof(errbuf)));
      }
      return -1;
   }
@@ -126,7 +140,10 @@ static pid_t _csync_lock_read(const char *lockfile) {
   if (kill(pid, 0) < 0 && errno == ESRCH) {
      /* Process is dead. Remove stale lock. */
      if (unlink(lockfile) < 0) {
-       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to remove stale lock %s - %s", lockfile, strerror(errno));
+       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+           "Unable to remove stale lock %s - %s",
+           lockfile,
+           strerror_r(errno, errbuf, sizeof(errbuf)));
      }
      return -1;
   }
@@ -147,11 +164,15 @@ int csync_lock(const char *lockfile) {
 }
 
 void csync_lock_remove(const char *lockfile) {
+  char errbuf[256] = {0};
   /* You can't remove the lock if it is from another process */
   if (_csync_lock_read(lockfile) == getpid()) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Removing lock file: %s", lockfile);
     if (unlink(lockfile) < 0) {
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to remove lock %s - %s", lockfile, strerror(errno));
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+          "Unable to remove lock %s - %s",
+          lockfile,
+          strerror_r(errno, errbuf, sizeof(errbuf)));
     }
   }
 }

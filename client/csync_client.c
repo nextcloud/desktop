@@ -178,6 +178,7 @@ static struct argp argp = {options, parse_opt, args_doc, doc, NULL, NULL, NULL};
 int main(int argc, char **argv) {
   int rc = 0;
   CSYNC *csync;
+  char errbuf[256] = {0};
 
   struct argument_s arguments;
 
@@ -213,8 +214,9 @@ int main(int argc, char **argv) {
 
   if (arguments.exclude_file != NULL) {
     if (csync_add_exclude_list(csync, arguments.exclude_file) < 0) {
-      fprintf(stderr, "csync_add_exclude_list - %s: %s\n", arguments.exclude_file,
-          strerror(errno));
+      fprintf(stderr, "csync_add_exclude_list - %s: %s\n",
+          arguments.exclude_file,
+          strerror_r(errno, errbuf, sizeof(errbuf)));
       rc = 1;
       goto out;
     }

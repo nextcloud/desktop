@@ -59,6 +59,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   csync_vio_file_stat_t *tstat = NULL;
 
+  char errbuf[256] = {0};
   char buf[MAX_XFER_BUF_SIZE] = {0};
   ssize_t bread = 0;
   ssize_t bwritten = 0;
@@ -113,7 +114,10 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     } else {
       rc = 1;
     }
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: open(O_RDONLY), error: %s", suri, strerror(errno));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+        "file: %s, command: open(O_RDONLY), error: %s",
+        suri,
+        strerror_r(errno, errbuf, sizeof(errbuf)));
     goto out;
   }
 
@@ -147,16 +151,25 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
         }
 
         if (csync_vio_mkdirs(ctx, tdir, C_DIR_MODE) < 0) {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "dir: %s, command: mkdirs, error: %s", tdir, strerror(errno));
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN,
+              "dir: %s, command: mkdirs, error: %s",
+              tdir,
+              strerror_r(errno, errbuf, sizeof(errbuf)));
         }
         break;
       case ENOMEM:
         rc = -1;
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: open(O_CREAT), error: %s", turi, strerror(errno));
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+            "file: %s, command: open(O_CREAT), error: %s",
+            turi,
+            strerror_r(errno, errbuf, sizeof(errbuf)));
         goto out;
         break;
       default:
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: open(O_CREAT), error: %s", turi, strerror(errno));
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+            "file: %s, command: open(O_CREAT), error: %s",
+            turi,
+            strerror_r(errno, errbuf, sizeof(errbuf)));
         rc = 1;
         goto out;
         break;
@@ -171,7 +184,10 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
     if (bread < 0) {
       /* read error */
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: read, error: %s", suri, strerror(errno));
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+          "file: %s, command: read, error: %s",
+          suri,
+          strerror_r(errno, errbuf, sizeof(errbuf)));
       rc = 1;
       goto out;
     } else if (bread == 0) {
@@ -185,7 +201,10 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     if (bwritten < 0 || bread != bwritten) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
           "file: %s, command: write, error: bread = %zu, bwritten = %zu - %s",
-          duri, bread, bwritten, strerror(errno));
+          duri,
+          bread,
+          bwritten,
+          strerror_r(errno, errbuf, sizeof(errbuf)));
       rc = 1;
       goto out;
     }
@@ -195,7 +214,8 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   if (csync_vio_close(ctx, sfp) < 0) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
         "file: %s, command: close, error: %s",
-        suri, strerror(errno));
+        suri,
+        strerror_r(errno, errbuf, sizeof(errbuf)));
   }
   sfp = NULL;
 
@@ -206,14 +226,16 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
       case EDQUOT:
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
             "file: %s, command: close, error: %s",
-            turi, strerror(errno));
+            turi,
+            strerror_r(errno, errbuf, sizeof(errbuf)));
         rc = -1;
         goto out;
         break;
       default:
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
             "file: %s, command: close, error: %s",
-            turi, strerror(errno));
+            turi,
+            strerror_r(errno, errbuf, sizeof(errbuf)));
         rc = 1;
         break;
     }
@@ -226,7 +248,10 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   ctx->replica = drep;
   tstat = csync_vio_file_stat_new();
   if (tstat == NULL) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: stat, error: %s", turi, strerror(errno));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+        "file: %s, command: stat, error: %s",
+        turi,
+        strerror_r(errno, errbuf, sizeof(errbuf)));
     rc = -1;
     goto out;
   }
@@ -240,7 +265,10 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
         rc = 1;
         break;
     }
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: stat, error: %s", turi, strerror(errno));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+        "file: %s, command: stat, error: %s",
+        turi,
+        strerror_r(errno, errbuf, sizeof(errbuf)));
     goto out;
   }
 
@@ -261,7 +289,10 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
         rc = 1;
         break;
     }
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: rename, error: %s", duri, strerror(errno));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+        "file: %s, command: rename, error: %s",
+        duri,
+        strerror_r(errno, errbuf, sizeof(errbuf)));
     goto out;
   }
 
@@ -276,7 +307,10 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
           rc = 1;
           break;
       }
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: chmod, error: %s", duri, strerror(errno));
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+          "file: %s, command: chmod, error: %s",
+          duri,
+          strerror_r(errno, errbuf, sizeof(errbuf)));
       goto out;
     }
   }
@@ -340,6 +374,7 @@ static int _csync_sync_file(CSYNC *ctx, csync_file_stat_t *st) {
 }
 
 static int _csync_remove_file(CSYNC *ctx, csync_file_stat_t *st) {
+  char errbuf[256] = {0};
   char *uri = NULL;
   int rc = -1;
 
@@ -367,7 +402,10 @@ static int _csync_remove_file(CSYNC *ctx, csync_file_stat_t *st) {
         rc = 1;
         break;
     }
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: unlink, error: %s", uri, strerror(errno));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+        "file: %s, command: unlink, error: %s",
+        uri,
+        strerror_r(errno, errbuf, sizeof(errbuf)));
     goto out;
   }
 
@@ -389,6 +427,7 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
   enum csync_replica_e src;
   enum csync_replica_e dest;
   enum csync_replica_e replica_bak;
+  char errbuf[256] = {0};
   char *uri = NULL;
   struct timeval times[2];
   int rc = -1;
@@ -424,7 +463,10 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
         rc = 1;
         break;
     }
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "dir: %s, command: mkdirs, error: %s", uri, strerror(errno));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+        "dir: %s, command: mkdirs, error: %s",
+        uri,
+        strerror_r(errno, errbuf, sizeof(errbuf)));
     goto out;
   }
 
@@ -439,7 +481,10 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
           rc = 1;
           break;
       }
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "dir: %s, command: chmod, error: %s", uri, strerror(errno));
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+          "dir: %s, command: chmod, error: %s",
+          uri,
+          strerror_r(errno, errbuf, sizeof(errbuf)));
       goto out;
     }
   }
@@ -472,6 +517,7 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
   enum csync_replica_e src;
   enum csync_replica_e dest;
   enum csync_replica_e replica_bak;
+  char errbuf[256] = {0};
   char *uri = NULL;
   struct timeval times[2];
   int rc = -1;
@@ -510,7 +556,10 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
           rc = 1;
           break;
       }
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "dir: %s, command: chmod, error: %s", uri, strerror(errno));
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+          "dir: %s, command: chmod, error: %s",
+          uri,
+          strerror_r(errno, errbuf, sizeof(errbuf)));
       goto out;
     }
   }
@@ -543,6 +592,7 @@ out:
 
 static int _csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
   c_list_t *list = NULL;
+  char errbuf[256] = {0};
   char *uri = NULL;
   int rc = -1;
 
@@ -564,7 +614,10 @@ static int _csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
   if (csync_vio_rmdir(ctx, uri) < 0) {
     switch (errno) {
       case ENOMEM:
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "dir: %s, command: rmdir, error: %s", uri, strerror(errno));
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL,
+            "dir: %s, command: rmdir, error: %s",
+            uri,
+            strerror_r(errno, errbuf, sizeof(errbuf)));
         rc = -1;
         break;
       case ENOTEMPTY:
@@ -589,7 +642,10 @@ static int _csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
         rc = 0;
         break;
       default:
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "dir: %s, command: rmdir, error: %s", uri, strerror(errno));
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+            "dir: %s, command: rmdir, error: %s",
+            uri,
+            strerror_r(errno, errbuf, sizeof(errbuf)));
         rc = 1;
         break;
     }
@@ -666,6 +722,7 @@ static int _csync_propagation_cleanup(CSYNC *ctx) {
 static int _csync_propagation_file_visitor(void *obj, void *data) {
   csync_file_stat_t *st = NULL;
   CSYNC *ctx = NULL;
+  char errbuf[256] = {0};
 
   st = (csync_file_stat_t *) obj;
   ctx = (CSYNC *) data;
@@ -707,13 +764,17 @@ static int _csync_propagation_file_visitor(void *obj, void *data) {
 
   return 0;
 err:
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "file: %s, error: %s", st->path, strerror(errno));
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL,
+      "file: %s, error: %s",
+      st->path,
+      strerror_r(errno, errbuf, sizeof(errbuf)));
   return -1;
 }
 
 static int _csync_propagation_dir_visitor(void *obj, void *data) {
   csync_file_stat_t *st = NULL;
   CSYNC *ctx = NULL;
+  char errbuf[256] = {0};
 
   st = (csync_file_stat_t *) obj;
   ctx = (CSYNC *) data;
@@ -751,7 +812,10 @@ static int _csync_propagation_dir_visitor(void *obj, void *data) {
 
   return 0;
 err:
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "file: %s, error: %s", st->path, strerror(errno));
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL,
+      "file: %s, error: %s",
+      st->path,
+      strerror_r(errno, errbuf, sizeof(errbuf)));
   return -1;
 }
 

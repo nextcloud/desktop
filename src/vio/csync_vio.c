@@ -340,7 +340,8 @@ int csync_vio_mkdir(CSYNC *ctx, const char *uri, mode_t mode) {
 }
 
 int csync_vio_mkdirs(CSYNC *ctx, const char *uri, mode_t mode) {
-  int tmp;
+  int tmp = 0;
+  char errbuf[256] = {0};
   csync_vio_file_stat_t *st = NULL;
 
   if (uri == NULL) {
@@ -381,7 +382,7 @@ int csync_vio_mkdirs(CSYNC *ctx, const char *uri, mode_t mode) {
       }
     } else if (errno != ENOENT) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "csync_vio_mkdirs stat failed: %s",
-          strerror(errno));
+          strerror_r(errno, errbuf, sizeof(errbuf)));
       csync_vio_file_stat_destroy(st);
       return -1;
     } else if (csync_vio_mkdirs(ctx, suburi, mode) < 0) {
