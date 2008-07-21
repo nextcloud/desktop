@@ -24,6 +24,7 @@
 #define _GNU_SOURCE
 #endif
 
+#include <errno.h>
 #include <stdio.h>
 
 #include "csync_util.h"
@@ -108,6 +109,7 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
   c_rbtree_t *tree = NULL;
   c_rbnode_t *node = NULL;
 
+  char errbuf[256] = {0};
   char *uri = NULL;
   int rc = -1;
 
@@ -138,6 +140,10 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
 
     new = c_malloc(sizeof(csync_file_stat_t) + fs->pathlen + 1);
     if (new == NULL) {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+          "file: %s, merge malloc, error: %s",
+          fs->path,
+          strerror_r(errno, errbuf, sizeof(errbuf)));
       rc = -1;
       goto out;
     }
@@ -145,6 +151,10 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
 
     if (c_rbtree_insert(tree, new) < 0) {
       SAFE_FREE(new);
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+          "file: %s, rb tree insert, error: %s",
+          fs->path,
+          strerror_r(errno, errbuf, sizeof(errbuf)));
       rc = -1;
       goto out;
     }
@@ -152,6 +162,7 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
     node = c_rbtree_find(tree, &fs->phash);
     if (node == NULL) {
       rc = -1;
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to find node");
       goto out;
     }
   }
@@ -160,13 +171,17 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
   switch (ctx->current) {
     case LOCAL_REPLICA:
       if (asprintf(&uri, "%s/%s", ctx->local.uri, fs->path) < 0) {
-        rc =-1;
+        rc = -1;
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file uri alloc failed: %s",
+            strerror_r(errno, errbuf, sizeof(errbuf)));
         goto out;
       }
       break;
     case REMOTE_REPLCIA:
       if (asprintf(&uri, "%s/%s", ctx->remote.uri, fs->path) < 0) {
         rc = -1;
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file uri alloc failed: %s",
+            strerror_r(errno, errbuf, sizeof(errbuf)));
         goto out;
       }
       break;
@@ -178,6 +193,10 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
   vst = csync_vio_file_stat_new();
   if (csync_vio_stat(ctx, uri, vst) < 0) {
     rc = -1;
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+        "file: %s, updating stat failed, error: %s",
+        uri,
+        strerror_r(errno, errbuf, sizeof(errbuf)));
     goto out;
   }
 
