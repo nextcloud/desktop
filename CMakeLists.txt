@@ -37,6 +37,10 @@ configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
 macro_copy_file(${CMAKE_CURRENT_SOURCE_DIR}/CTestCustom.cmake ${CMAKE_CURRENT_BINARY_DIR}/CTestCustom.cmake)
 
+if (MEM_NULL_TESTS)
+  add_definitions(-DCSYNC_MEM_NULL_TESTS)
+endif (MEM_NULL_TESTS)
+
 add_subdirectory(src)
 add_subdirectory(modules)
 add_subdirectory(client)
@@ -44,6 +48,7 @@ add_subdirectory(config)
 add_subdirectory(doc)
 
 if (CHECK_FOUND AND UNIT_TESTING)
+
   include(MacroAddCheckTest)
   add_subdirectory(tests)
 endif (CHECK_FOUND AND UNIT_TESTING)

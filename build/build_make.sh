@@ -87,6 +87,9 @@ while test -n "$1"; do
 		*-verbose)
 			DOVERBOSE="1"
 		;;
+		*-memtest)
+			OPTIONS="${OPTIONS} -DMEM_NULL_TESTS=ON"
+		;;
 		*-libsuffix)
 			OPTIONS="${OPTIONS} -DLIB_SUFFIX=${ARG}"
 			shift

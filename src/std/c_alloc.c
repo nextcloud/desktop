@@ -29,6 +29,13 @@ void *c_calloc(size_t count, size_t size) {
   if (size == 0 || count == 0) {
     return NULL;
   }
+
+#ifdef CSYNC_MEM_NULL_TESTS
+  if (getenv("CSYNC_NOMEMORY")) {
+    return NULL;
+  }
+#endif /* CSYNC_MEM_NULL_TESTS */
+
 #undef calloc
   return calloc(count, size);
 #define calloc(x,y) DO_NOT_CALL_CALLOC__USE_XCALLOC_INSTEAD
@@ -44,6 +51,13 @@ void *c_malloc(size_t size) {
 }
 
 void *c_realloc(void *ptr, size_t size) {
+
+#ifdef CSYNC_MEM_NULL_TESTS
+  if (getenv("CSYNC_NOMEMORY") == NULL) {
+    return NULL;
+  }
+#endif /* CSYNC_MEM_NULL_TESTS */
+
 #undef realloc
   return realloc(ptr, size);
 #define realloc(x,y) DO_NOT_CALL_REALLOC__USE_XREALLOC_INSTEAD
