@@ -53,7 +53,7 @@ void *c_malloc(size_t size) {
 void *c_realloc(void *ptr, size_t size) {
 
 #ifdef CSYNC_MEM_NULL_TESTS
-  if (getenv("CSYNC_NOMEMORY") == NULL) {
+  if (getenv("CSYNC_NOMEMORY")) {
     return NULL;
   }
 #endif /* CSYNC_MEM_NULL_TESTS */
