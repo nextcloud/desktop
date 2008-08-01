@@ -1,6 +1,10 @@
 #ifndef _SUPPORT_H
 #define _SUPPORT_H
 
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <check.h>
