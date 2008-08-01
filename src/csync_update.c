@@ -26,6 +26,7 @@
 
 #include <errno.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "c_lib.h"
 #include "c_jhash.h"
@@ -54,18 +55,24 @@ static int _csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fi
     return -1;
   }
 
+  path = file;
   switch (ctx->current) {
     case LOCAL_REPLICA:
-      path = file + strlen(ctx->local.uri) + 1;
+      if (strlen(path) <= strlen(ctx->local.uri)) {
+        return -1;
+      }
+      path += strlen(ctx->local.uri) + 1;
       break;
     case REMOTE_REPLCIA:
-      path = file + strlen(ctx->remote.uri) + 1;
+      if (strlen(path) <= strlen(ctx->remote.uri)) {
+        return -1;
+      }
+      path += strlen(ctx->remote.uri) + 1;
       break;
     default:
+      path = NULL;
+      return -1;
       break;
-  }
-  if (path == NULL) {
-    return -1;
   }
   len = strlen(path);
 
