@@ -27,26 +27,21 @@
 # Boston, MA  02110-1301, USA.
 #
 
-print("Name of package: ")
-package=gets.chomp
+require 'readline'
 
-printf("\nYour Name (for copyright): ")
-name=gets.chomp
+package=Readline.readline("Name of package: ")
 
-printf("\nYour mail (for copyright): ")
-email=gets.chomp
+name=Readline.readline("\nYour Name (for copyright): ")
 
-print("\npkgconfig package name (e.g. \"libxml-2.0\", leave empty to skip pkgconfig): ")
-pkgconfig=gets.chomp
+email=Readline.readline("\nYour mail (for copyright): ")
 
-print("\nLook for header (e.g. \"jpeglib.h\" or \"libxml/xpath.h\"): ")
-header=gets.chomp
+pkgconfig=Readline.readline("\npkgconfig package name (e.g. \"libxml-2.0\", leave empty to skip pkgconfig): ")
 
-print("\nLook for header subdir (e.g. \"libxml2\", empty to skip ): ")
-incSubDir=gets.chomp
+header=Readline.readline("\nLook for header (e.g. \"jpeglib.h\" or \"libxml/xpath.h\"): ")
 
-print("\nLook for library (e.g. \"xml2\" or \"avcodec avutil\"): ")
-libs=gets.chomp
+incSubDir=Readline.readline("\nLook for header subdir (e.g. \"libxml2\", empty to skip ): ")
+
+libs=Readline.readline("\nLook for library (e.g. \"xml2\" or \"avcodec avutil\"): ")
 
 t = Time.now
 
