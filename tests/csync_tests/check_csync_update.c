@@ -152,9 +152,9 @@ START_TEST (check_csync_detect_update_db_rename)
 
   fs = csync_vio_file_stat_new();
 
+  stat_init(fs);
   free(fs->name);
   fs->name = c_strdup("wurst.txt");
-  stat_init(fs);
 
   fail_unless(_csync_detect_update(csync, "/tmp/check_csync1/wurst.txt", fs, CSYNC_FTW_TYPE_FILE) == 0, NULL);
 
