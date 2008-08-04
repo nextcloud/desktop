@@ -110,6 +110,7 @@ if not incSubDir.empty?
 	file.printf("      #{incSubDir}\n")
 end
 file.printf("  )\n")
+file.printf("  mark_as_advanced(#{cmakeIncDirName})\n")
 
 file.printf("\n")
 
