@@ -88,6 +88,7 @@ static void teardown(void) {
   c_rbtree_destroy(tree, destructor);
   c_rbtree_free(tree);
   tree = NULL;
+  unsetenv("CSYNC_NOMEMORY");
 }
 
 START_TEST (check_c_rbtree_create_free)
@@ -107,6 +108,16 @@ START_TEST (check_c_rbtree_create_null)
   fail_unless(c_rbtree_create(&tree, key_cmp, NULL) < 0, NULL);
 }
 END_TEST
+
+#ifdef CSYNC_MEM_NULL_TESTS
+START_TEST (check_c_rbtree_create_nomem)
+{
+  setenv("CSYNC_NOMEMORY", "1", 1);
+  fail_unless(c_rbtree_create(&tree, key_cmp, data_cmp) < 0, NULL);
+  unsetenv("CSYNC_NOMEMORY");
+}
+END_TEST
+#endif
 
 START_TEST (check_c_rbtree_free_null)
 {
@@ -137,6 +148,32 @@ START_TEST (check_c_rbtree_insert_delete)
   tree = NULL;
 }
 END_TEST
+
+#ifdef CSYNC_MEM_NULL_TESTS
+START_TEST (check_c_rbtree_insert_nomem)
+{
+
+  c_rbnode_t *node = NULL;
+  test_t *testdata = NULL;
+
+  fail_unless(c_rbtree_create(&tree, key_cmp, data_cmp) == 0, NULL);
+
+  testdata = c_malloc(sizeof(test_t));
+  testdata->key = 42;
+
+  setenv("CSYNC_NOMEMORY", "1", 1);
+  fail_unless(c_rbtree_insert(tree, (void *) testdata) < 0, NULL);
+  fail_unless(errno == ENOMEM, NULL);
+  unsetenv("CSYNC_NOMEMORY");
+
+  testdata = c_rbtree_node_data(node);
+  SAFE_FREE(testdata);
+
+  c_rbtree_free(tree);
+  tree = NULL;
+}
+END_TEST
+#endif
 
 START_TEST (check_c_rbtree_insert_random)
 {
@@ -247,6 +284,37 @@ START_TEST (check_c_rbtree_walk)
 }
 END_TEST
 
+START_TEST (check_c_rbtree_walk_null)
+{
+  int rc = -1, i = 42;
+  test_t *testdata = NULL;
+  c_rbnode_t *node = NULL;
+
+  rc = c_rbtree_check_sanity(tree);
+  fail_unless(rc == 0, "c_rbtree_check_sanity failed with return code %d", rc);
+
+  testdata = (test_t *) c_malloc(sizeof(test_t));
+  testdata->key = 42;
+
+  rc = c_rbtree_walk(NULL, testdata, visitor);
+  fail_unless(rc < 0, NULL);
+  fail_unless(errno == EINVAL, NULL);
+
+  rc = c_rbtree_walk(tree, NULL, visitor);
+  fail_unless(rc < 0, NULL);
+  fail_unless(errno == EINVAL, NULL);
+
+  rc = c_rbtree_walk(tree, testdata, NULL);
+  fail_unless(rc < 0, NULL);
+  fail_unless(errno == EINVAL, NULL);
+
+  /* find the node with the key 42 */
+  node = c_rbtree_find(tree, (void *) &i);
+  fail_if(node == NULL, NULL);
+  SAFE_FREE(testdata);
+}
+END_TEST
+
 START_TEST (check_c_rbtree_dup)
 {
   int rc = -1;
@@ -285,7 +353,13 @@ static Suite *make_c_rbtree_suite(void) {
   create_case_fixture(s, "check_c_rbtree_find", check_c_rbtree_find, setup_complete_tree, teardown);
   create_case_fixture(s, "check_c_rbtree_delete", check_c_rbtree_delete, setup_complete_tree, teardown);
   create_case_fixture(s, "check_c_rbtree_walk", check_c_rbtree_walk, setup_complete_tree, teardown);
+  create_case_fixture(s, "check_c_rbtree_walk_null", check_c_rbtree_walk_null, setup_complete_tree, teardown);
   create_case_fixture(s, "check_c_rbtree_dup", check_c_rbtree_dup, setup_complete_tree, teardown);
+
+#ifdef CSYNC_MEM_NULL_TESTS
+  create_case(s, "check_c_rbtree_create_nomem", check_c_rbtree_create_nomem);
+  create_case(s, "check_c_rbtree_insert_nomem", check_c_rbtree_insert_nomem);
+#endif
 
   return s;
 }

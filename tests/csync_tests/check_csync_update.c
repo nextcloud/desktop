@@ -269,7 +269,6 @@ START_TEST (check_csync_ftw_nomem)
   fail_unless(csync_ftw(csync, "/tmp", csync_walker, MAX_DEPTH) < 0, NULL);
 }
 END_TEST
-
 #endif
 
 static Suite *make_csync_suite(void) {
