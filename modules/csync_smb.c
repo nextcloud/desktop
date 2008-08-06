@@ -293,16 +293,12 @@ static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
   errno = 0;
   dirent = smbc_readdir(handle->dh);
   if (dirent == NULL) {
-    if (errno) {
-      goto err;
-    } else {
-      return NULL;
-    }
+    return NULL;
   }
 
   file_stat = c_malloc(sizeof(csync_vio_file_stat_t));
   if (file_stat == NULL) {
-    goto err;
+    return NULL;
   }
 
   file_stat->name = c_strndup(dirent->name, dirent->namelen);
@@ -332,11 +328,6 @@ static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
   }
 
   return file_stat;
-
-err:
-  SAFE_FREE(file_stat);
-
-  return NULL;
 }
 
 static int _mkdir(const char *uri, mode_t mode) {
