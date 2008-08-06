@@ -57,6 +57,22 @@ START_TEST (check_csync_vio_load)
 }
 END_TEST
 
+START_TEST (check_csync_vio_load_wrong_proto)
+{
+  fail_unless(csync_vio_init(csync, "wrong", NULL) < 0, NULL);
+
+  csync_vio_shutdown(csync);
+}
+END_TEST
+
+START_TEST (check_csync_vio_load_bad_plugin)
+{
+  fail_unless(csync_vio_init(csync, "bad", NULL) < 0, NULL);
+
+  csync_vio_shutdown(csync);
+}
+END_TEST
+
 /*
  * Test directory function
  */
@@ -375,6 +391,8 @@ static Suite *make_csync_vio_suite(void) {
   Suite *s = suite_create("csync_vio");
 
   create_case_fixture(s, "check_csync_vio_load", check_csync_vio_load, setup, teardown);
+  create_case_fixture(s, "check_csync_vio_load_wrong_proto", check_csync_vio_load_wrong_proto, setup, teardown);
+  create_case_fixture(s, "check_csync_vio_load_bad_plugin", check_csync_vio_load_bad_plugin, setup, teardown);
 
   create_case_fixture(s, "check_csync_vio_mkdir", check_csync_vio_mkdir, setup, teardown_dir);
   create_case_fixture(s, "check_csync_vio_mkdirs", check_csync_vio_mkdirs, setup, teardown_dir);
