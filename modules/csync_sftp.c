@@ -47,6 +47,8 @@ int connected;
 SSH_SESSION *ssh_session;
 SFTP_SESSION *sftp_session;
 
+csync_auth_callback auth_cb;
+
 /* parse_uri */
 static const char *uri_prefix = "sftp:";
 static int parse_uri(const char *uri, char **user, char **passwd,
@@ -131,8 +133,6 @@ static int parse_uri(const char *uri, char **user, char **passwd,
     SAFE_FREE(userinfo);
     p += len;
   }
-  DEBUG_SFTP(("user: %s\n", *user));
-  DEBUG_SFTP(("passwd: %s\n", *passwd));
 
   if (*p == '\0') {
     goto decoding;
@@ -179,8 +179,6 @@ static int parse_uri(const char *uri, char **user, char **passwd,
     }
     len = strlen(p);
   }
-  DEBUG_SFTP(("hostname: %s\n", *hostname));
-  DEBUG_SFTP(("port: %s\n", *port));
 
   p += len;
   if (*p == '\0') {
@@ -200,7 +198,6 @@ static int parse_uri(const char *uri, char **user, char **passwd,
     }
     SAFE_FREE(*path);
     *path = d;
-    DEBUG_SFTP(("path: %s\n", *path));
   }
 
   goto decoding;
@@ -218,6 +215,8 @@ static int _sftp_connect(const char *uri) {
   char *host = NULL;
   char *port = NULL;
   char *path = NULL;
+  char un[256] = {0};
+  char pw[256] = {0};
   unsigned char hash[MD5_DIGEST_LEN];
   int rc = -1;
   int auth = SSH_AUTH_ERROR;
@@ -232,6 +231,8 @@ static int _sftp_connect(const char *uri) {
     goto out;
   }
 
+  DEBUG_SFTP(("csync_sftp - conntecting to: %s\n", host));
+
   options = ssh_options_new();
   if (options == NULL) {
     rc = -1;
@@ -239,6 +240,20 @@ static int _sftp_connect(const char *uri) {
   }
 
   /* set the option to connect to the server */
+  ssh_options_allow_ssh1(options, 0);
+  ssh_options_allow_ssh2(options, 1);
+
+  /* set a 10 seconds timeout */
+  ssh_options_set_timeout(options, 10, 0);
+
+  /* don't use compression */
+  ssh_options_set_wanted_algos(options, SSH_COMP_C_S, "none");
+  ssh_options_set_wanted_algos(options, SSH_COMP_S_C, "none");
+
+#if 0
+  ssh_set_verbosity(3);
+#endif
+
   ssh_options_set_host(options, host);
   if (*port) {
     ssh_options_set_port(options, atoi(port));
@@ -250,6 +265,11 @@ static int _sftp_connect(const char *uri) {
 
   /* connect to the server */
   ssh_session = ssh_new();
+  if (ssh_session == NULL) {
+    rc = -1;
+    goto out;
+  }
+
   ssh_set_options(ssh_session, options);
   rc = ssh_connect(ssh_session);
   if (rc < 0) {
@@ -265,29 +285,33 @@ static int _sftp_connect(const char *uri) {
     case SSH_SERVER_KNOWN_OK:
       break;
     case SSH_SERVER_KNOWN_CHANGED:
-      fprintf(stderr, "Host key for server changed : server's one is now :\n");
+      fprintf(stderr, "csync_sftp - host key for server changed : server's one is now :\n");
       ssh_get_pubkey_hash(ssh_session, hash);
-      ssh_print_hexa("Public key hash", hash, MD5_DIGEST_LEN);
-      fprintf(stderr,"For security reason, connection will be stopped\n");
+      ssh_print_hexa("csync_sftp - public key hash", hash, MD5_DIGEST_LEN);
+      fprintf(stderr,"csync_sftp - for security reason, connection will be stopped\n");
       ssh_disconnect(ssh_session);
+      ssh_session = NULL;
       ssh_finalize();
       rc = -1;
       goto out;
       break;
     case SSH_SERVER_FOUND_OTHER:
-      fprintf(stderr, "The host key for this server was not found but an other "
-          "type of key exists.\n");
-      fprintf(stderr, "An attacker might change the default server key to "
-          "confuse your client into thinking the key does not exist\n");
+      fprintf(stderr, "csync_sftp - the host key for this server was not "
+          "found but an other type of key exists.\n");
+      fprintf(stderr, "csync_sftp - an attacker might change the default "
+          "server key to confuse your client into thinking the key does not "
+          "exist\n");
       ssh_disconnect(ssh_session);
+      ssh_session = NULL;
       ssh_finalize();
       rc = -1;
       goto out;
       break;
     case SSH_SERVER_NOT_KNOWN:
-      fprintf(stderr,"The server is unknown. Connect manually to the host "
-          "first to retrieve the public key hash\n");
+      fprintf(stderr,"csync_sftp - the server is unknown. Connect manually to "
+          "the host first to retrieve the public key hash\n");
       ssh_disconnect(ssh_session);
+      ssh_session = NULL;
       ssh_finalize();
       rc = -1;
       goto out;
@@ -295,6 +319,7 @@ static int _sftp_connect(const char *uri) {
     case SSH_SERVER_ERROR:
       fprintf(stderr, "%s", ssh_get_error(ssh_session));
       ssh_disconnect(ssh_session);
+      ssh_session = NULL;
       ssh_finalize();
       rc = -1;
       goto out;
@@ -305,35 +330,70 @@ static int _sftp_connect(const char *uri) {
 
   /* authenticate with the server */
   if (*passwd) {
+    DEBUG_SFTP(("csync_sftp - authenticating with user/password\n"));
     auth = ssh_userauth_password(ssh_session, user, passwd);
     /*
     char username[256] = {0};
     char password[256] = {0};
     */
   } else {
+    DEBUG_SFTP(("csync_sftp - authenticating with pubkey\n"));
     auth = ssh_userauth_autopubkey(ssh_session);
-    if (auth == SSH_AUTH_ERROR) {
-      fprintf(stderr, "Authenticating with pubkey: %s\n", ssh_get_error(ssh_session));
+  }
+
+  switch (auth) {
+    case SSH_AUTH_ERROR:
+      fprintf(stderr, "csync_sftp - authenticating with pubkey: %s\n",
+          ssh_get_error(ssh_session));
+      ssh_disconnect(ssh_session);
+      ssh_session = NULL;
       ssh_finalize();
       rc = -1;
       goto out;
-    }
+      break;
+    case SSH_AUTH_PARTIAL:
+    case SSH_AUTH_INFO:
+    case SSH_AUTH_DENIED:
+      if (*user) {
+        strncpy(un, user, 256);
+      }
+
+      if (auth_cb != NULL) {
+        (*auth_cb) (un, 256, pw, 256);
+      }
+
+      auth = ssh_userauth_password(ssh_session, un, pw);
+
+      if (auth != SSH_AUTH_SUCCESS) {
+        fprintf(stderr,"csync_sftp - authentication failed: %s\n",
+            ssh_get_error(ssh_session));
+        ssh_disconnect(ssh_session);
+        ssh_session = NULL;
+        ssh_finalize();
+        rc = -1;
+        goto out;
+      }
+      break;
+    case SSH_AUTH_SUCCESS:
+      break;
   }
 
-  /* FIXME: call callback */
-
+  DEBUG_SFTP(("csync_sftp - creating sftp channel...\n"));
   /* start the sftp session */
   sftp_session = sftp_new(ssh_session);
   if (sftp_session == NULL) {
+    ssh_say(0, "csync_sftp - sftp error initialising channel: %s\n", ssh_get_error(ssh_session));
     rc = -1;
     goto out;
   }
 
   rc = sftp_init(sftp_session);
   if (rc < 0) {
-    return rc;
+    ssh_say(0, "csync_sftp - error initialising sftp: %s\n", ssh_get_error(ssh_session));
+    goto out;
   }
 
+  DEBUG_SFTP(("csync_sftp - connection established...\n"));
   connected = 1;
   rc = 0;
 out:
@@ -345,9 +405,6 @@ out:
 
   return rc;
 }
-
-csync_vio_method_handle_t *mh = NULL;
-csync_vio_file_stat_t fs;
 
 /*
  * file functions
@@ -369,11 +426,13 @@ static csync_vio_method_handle_t *_open(const char *durl, int flags, mode_t mode
   }
 
   if (parse_uri(durl, &user, &passwd, &host, &port, &path) < 0) {
-    return NULL;
+    mh = NULL;
+    goto out;
   }
 
   mh = (csync_vio_method_handle_t *) sftp_open(sftp_session, path, flags, NULL);
 
+out:
   SAFE_FREE(user);
   SAFE_FREE(passwd);
   SAFE_FREE(host);
@@ -421,7 +480,7 @@ static ssize_t _read(csync_vio_method_handle_t *fhandle, void *buf, size_t count
 }
 
 static ssize_t _write(csync_vio_method_handle_t *fhandle, const void *buf, size_t count) {
-  return sftp_write(fhandle, buf, count);
+  return sftp_write(fhandle, (const void *) buf, count);
 }
 
 static off_t _lseek(csync_vio_method_handle_t *fhandle, off_t offset, int whence) {
@@ -503,48 +562,223 @@ static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
 }
 
 static int _mkdir(const char *uri, mode_t mode) {
-  (void) uri;
+  char *user = NULL;
+  char *passwd = NULL;
+  char *host = NULL;
+  char *port = NULL;
+  char *path = NULL;
+  int rc = -1;
+
+  if (_sftp_connect(uri) < 0) {
+    return -1;
+  }
+
+  if (parse_uri(uri, &user, &passwd, &host, &port, &path) < 0) {
+    return -1;
+  }
+
+  /* FIXME: use SFTP_ATTRIBUTES for the mode */
   (void) mode;
 
-  return 0;
+  rc = sftp_mkdir(sftp_session, path, NULL);
+
+  SAFE_FREE(user);
+  SAFE_FREE(passwd);
+  SAFE_FREE(host);
+  SAFE_FREE(port);
+  SAFE_FREE(path);
+
+  return rc;
 }
 
 static int _rmdir(const char *uri) {
-  (void) uri;
+  char *user = NULL;
+  char *passwd = NULL;
+  char *host = NULL;
+  char *port = NULL;
+  char *path = NULL;
+  int rc = -1;
 
-  return 0;
+  if (_sftp_connect(uri) < 0) {
+    return -1;
+  }
+
+  if (parse_uri(uri, &user, &passwd, &host, &port, &path) < 0) {
+    return -1;
+  }
+
+  /* FIXME: use SFTP_ATTRIBUTES for the mode */
+  rc = sftp_rmdir(sftp_session, path);
+
+  SAFE_FREE(user);
+  SAFE_FREE(passwd);
+  SAFE_FREE(host);
+  SAFE_FREE(port);
+  SAFE_FREE(path);
+
+  return rc;
 }
 
 static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
-  time_t now;
+  SFTP_ATTRIBUTES *attrs;
+  char *user = NULL;
+  char *passwd = NULL;
+  char *host = NULL;
+  char *port = NULL;
+  char *path = NULL;
+  int rc = -1;
 
-  buf->name = c_basename(uri);
+  if (_sftp_connect(uri) < 0) {
+    return -1;
+  }
+
+  if (parse_uri(uri, &user, &passwd, &host, &port, &path) < 0) {
+    return -1;
+  }
+
+  attrs = sftp_lstat(sftp_session, path);
+  if (attrs == NULL) {
+    rc = -1;
+    goto out;
+  }
+
+  buf->name = c_basename(path);
   if (buf->name == NULL) {
+    sftp_attributes_free(attrs);
     csync_vio_file_stat_destroy(buf);
+    goto out;
   }
   buf->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
 
-  time(&now);
-  buf->mtime = now;
+  switch (attrs->type) {
+    case SSH_FILEXFER_TYPE_REGULAR:
+      buf->type = CSYNC_VIO_FILE_TYPE_REGULAR;
+      break;
+    case SSH_FILEXFER_TYPE_DIRECTORY:
+      buf->type = CSYNC_VIO_FILE_TYPE_DIRECTORY;
+      break;
+    case SSH_FILEXFER_TYPE_SYMLINK:
+      buf->type = CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK;
+      break;
+    case SSH_FILEXFER_TYPE_SPECIAL:
+    case SSH_FILEXFER_TYPE_UNKNOWN:
+      buf->type = CSYNC_VIO_FILE_TYPE_UNKNOWN;
+      break;
+  }
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
+
+  buf->mode = attrs->permissions;
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
+
+  if (buf->type == CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK) {
+    /* FIXME: handle symlink */
+    buf->flags = CSYNC_VIO_FILE_FLAGS_SYMLINK;
+  } else {
+    buf->flags = CSYNC_VIO_FILE_FLAGS_NONE;
+  }
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_FLAGS;
+
+  buf->uid = attrs->uid;
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_UID;
+
+  buf->uid = attrs->gid;
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_GID;
+
+  buf->size = attrs->size;
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
+
+  buf->atime = attrs->atime;
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ATIME;
+
+  buf->mtime = attrs->mtime;
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
 
-  return 0;
+  buf->ctime = attrs->createtime;
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_CTIME;
+
+  rc = 0;
+out:
+  SAFE_FREE(user);
+  SAFE_FREE(passwd);
+  SAFE_FREE(host);
+  SAFE_FREE(port);
+  SAFE_FREE(path);
+
+  return rc;
 }
 
 static int _rename(const char *olduri, const char *newuri) {
-  (void) olduri;
-  (void) newuri;
+  char *user = NULL;
+  char *passwd = NULL;
+  char *host = NULL;
+  char *port = NULL;
+  char *oldpath = NULL;
+  char *newpath = NULL;
+  int rc = -1;
 
-  return 0;
+  if (_sftp_connect(olduri) < 0) {
+    return -1;
+  }
+
+  if (parse_uri(olduri, &user, &passwd, &host, &port, &oldpath) < 0) {
+    rc = -1;
+    goto out;
+  }
+
+  SAFE_FREE(user);
+  SAFE_FREE(passwd);
+  SAFE_FREE(host);
+  SAFE_FREE(port);
+
+  if (parse_uri(newuri, &user, &passwd, &host, &port, &newpath) < 0) {
+    rc = -1;
+    goto out;
+  }
+
+  rc = sftp_rename(sftp_session, oldpath, newpath);
+
+out:
+  SAFE_FREE(user);
+  SAFE_FREE(passwd);
+  SAFE_FREE(host);
+  SAFE_FREE(port);
+  SAFE_FREE(oldpath);
+  SAFE_FREE(newpath);
+
+  return rc;
 }
 
 static int _unlink(const char *uri) {
-  (void) uri;
+  char *user = NULL;
+  char *passwd = NULL;
+  char *host = NULL;
+  char *port = NULL;
+  char *path = NULL;
+  int rc = -1;
 
-  return 0;
+  if (_sftp_connect(uri) < 0) {
+    return -1;
+  }
+
+  if (parse_uri(uri, &user, &passwd, &host, &port, &path) < 0) {
+    rc = -1;
+    goto out;
+  }
+
+  rc = sftp_rm(sftp_session, path);
+
+out:
+  SAFE_FREE(user);
+  SAFE_FREE(passwd);
+  SAFE_FREE(host);
+  SAFE_FREE(port);
+  SAFE_FREE(path);
+
+  return rc;
 }
 
 static int _chmod(const char *uri, mode_t mode) {
+  /* FIXME */
   (void) uri;
   (void) mode;
 
@@ -560,10 +794,37 @@ static int _chown(const char *uri, uid_t owner, gid_t group) {
 }
 
 static int _utimes(const char *uri, const struct timeval *times) {
-  (void) uri;
-  (void) times;
+  SFTP_ATTRIBUTES attrs;
+  char *user = NULL;
+  char *passwd = NULL;
+  char *host = NULL;
+  char *port = NULL;
+  char *path = NULL;
+  int rc = -1;
 
-  return 0;
+  if (_sftp_connect(uri) < 0) {
+    return -1;
+  }
+
+  if (parse_uri(uri, &user, &passwd, &host, &port, &path) < 0) {
+    rc = -1;
+    goto out;
+  }
+
+  ZERO_STRUCT(attrs);
+  attrs.atime = attrs.mtime = times[0].tv_sec;
+  attrs.atime_nseconds = attrs.mtime_nseconds = times[0].tv_usec;
+
+  sftp_setstat(sftp_session, path, &attrs);
+
+out:
+  SAFE_FREE(user);
+  SAFE_FREE(passwd);
+  SAFE_FREE(host);
+  SAFE_FREE(port);
+  SAFE_FREE(path);
+
+  return rc;
 }
 
 csync_vio_method_t _method = {
@@ -594,10 +855,21 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args, c
   (void) method_name;
   (void) args;
 
+  auth_cb = cb;
+
   return &_method;
 }
 
 void vio_module_shutdown(csync_vio_method_t *method) {
   (void) method;
+
+  if (sftp_session) {
+    sftp_free(sftp_session);
+  }
+  if (ssh_session) {
+    ssh_disconnect(ssh_session);
+  }
+
+  ssh_finalize();
 }
 
