@@ -76,7 +76,7 @@ static void get_auth_data_with_context_fn(SMBCCTX *c,
   /* Call the passwort prompt */
   if (auth_cb != NULL) {
     DEBUG_SMB(("csync_smb - execute authentication callback\n"));
-    (*auth_cb) (un, unlen, pw, pwlen);
+    (*auth_cb) (un, unlen, pw, pwlen, 0);
   }
 
   DEBUG_SMB(("csync_smb - user=%s, workgroup=%s, server=%s, share=%s\n",

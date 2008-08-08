@@ -50,37 +50,54 @@ SFTP_SESSION *sftp_session;
 csync_auth_callback auth_cb;
 
 static int auth_kbdint(SSH_SESSION *session){
-  char *name, *instruction, *prompt, *ptr;
-  char buffer[128];
-  int err, i, n;
-  char echo;
+  char *name = NULL;
+  char *instruction = NULL;
+  char *prompt = NULL;
+  char *ptr;
+  char user[256] = {0};
+  char passwd[256] = {0};
+  char buffer[128] = {0};
+  int err = SSH_AUTH_ERROR;
 
-  err = ssh_userauth_kbdint(session,NULL,NULL);
-  while (err==SSH_AUTH_INFO){
-    name=ssh_userauth_kbdint_getname(session);
-    instruction=ssh_userauth_kbdint_getinstruction(session);
-    n=ssh_userauth_kbdint_getnprompts(session);
-    if(strlen(name)>0)
-      printf("%s\n",name);
-    if(strlen(instruction)>0)
-      printf("%s\n",instruction);
-    for(i=0;i<n;++i){
-      prompt=ssh_userauth_kbdint_getprompt(session,i,&echo);
-      if(echo){
-        printf("%s",prompt);
-        fgets(buffer,sizeof(buffer),stdin);
-        buffer[sizeof(buffer)-1]=0;
-        if((ptr=strchr(buffer,'\n')))
-          *ptr=0;
-        ssh_userauth_kbdint_setanswer(session,i,buffer);
-        memset(buffer,0,strlen(buffer));
+  err = ssh_userauth_kbdint(session, NULL, NULL);
+  while (err == SSH_AUTH_INFO) {
+    int n = 0;
+    int i = 0;
+
+    name = ssh_userauth_kbdint_getname(session);
+    instruction = ssh_userauth_kbdint_getinstruction(session);
+    n = ssh_userauth_kbdint_getnprompts(session);
+
+    if (strlen(name) > 0) {
+      printf("%s\n", name);
+    }
+
+    if (strlen(instruction) > 0) {
+      printf("%s\n", instruction);
+    }
+
+    for (i = 0; i < n; ++i) {
+      char echo;
+
+      prompt = ssh_userauth_kbdint_getprompt(session, i, &echo);
+      if (echo) {
+        printf("%s", prompt);
+        fgets(buffer, sizeof(buffer), stdin);
+        buffer[sizeof(buffer) - 1] = 0;
+        if ((ptr = strchr(buffer, '\n')))
+          *ptr = 0;
+        ssh_userauth_kbdint_setanswer(session, i, buffer);
+        ZERO_STRUCT(buffer);
       } else {
-        ptr=getpass(prompt);
-        ssh_userauth_kbdint_setanswer(session,i,ptr);
+        (*auth_cb) (user, 255, passwd, 255, 1);
+        ssh_userauth_kbdint_setanswer(session, i, passwd);
       }
     }
-    err=ssh_userauth_kbdint(session,NULL,NULL);
+    err = ssh_userauth_kbdint(session, NULL, NULL);
   }
+
+  ZERO_STRUCT(passwd);
+
   return err;
 }
 
@@ -250,8 +267,6 @@ static int _sftp_connect(const char *uri) {
   char *host = NULL;
   char *port = NULL;
   char *path = NULL;
-  char un[256] = {0};
-  char pw[256] = {0};
   unsigned char hash[MD5_DIGEST_LEN];
   int rc = -1;
   int auth = SSH_AUTH_ERROR;
@@ -366,27 +381,30 @@ static int _sftp_connect(const char *uri) {
   /* authenticate with the server */
   if (*passwd) {
     DEBUG_SFTP(("csync_sftp - authenticating with user/password\n"));
-    DEBUG_SFTP(("csync_sftp - user = %s, password = %s\n", user, passwd));
+    /*
+     * This is tunneled cleartext password authentication and possibly needs
+     * to be allowed by the ssh server. Set 'PasswordAuthentication yes'
+     */
     auth = ssh_userauth_password(ssh_session, user, passwd);
-    DEBUG_SFTP(("csync_sftp - auth = %d\n", auth));
   } else {
     DEBUG_SFTP(("csync_sftp - authenticating with pubkey\n"));
     auth = ssh_userauth_autopubkey(ssh_session);
   }
 
   if (auth == SSH_AUTH_ERROR) {
-      fprintf(stderr, "csync_sftp - authenticating with pubkey: %s\n",
-          ssh_get_error(ssh_session));
-      ssh_disconnect(ssh_session);
-      ssh_session = NULL;
-      ssh_finalize();
-      rc = -1;
-      goto out;
+    fprintf(stderr, "csync_sftp - authenticating with pubkey: %s\n",
+        ssh_get_error(ssh_session));
+    ssh_disconnect(ssh_session);
+    ssh_session = NULL;
+    ssh_finalize();
+    rc = -1;
+    goto out;
   }
 
   if (auth != SSH_AUTH_SUCCESS) {
-    auth = auth_kbdint(ssh_session);
-    if (auth == SSH_AUTH_ERROR) {
+    if (auth_cb != NULL) {
+      auth = auth_kbdint(ssh_session);
+      if (auth == SSH_AUTH_ERROR) {
         fprintf(stderr,"csync_sftp - authentication failed: %s\n",
             ssh_get_error(ssh_session));
         ssh_disconnect(ssh_session);
@@ -395,27 +413,12 @@ static int _sftp_connect(const char *uri) {
         rc = -1;
         goto out;
       }
-  }
-
-  if (auth != SSH_AUTH_SUCCESS) {
-    if (*user) {
-      strncpy(un, user, 256);
-    }
-
-    if (auth_cb != NULL) {
-      (*auth_cb) (un, 256, pw, 256);
-    }
-
-    auth = ssh_userauth_password(ssh_session, un, pw);
-
-    if (auth != SSH_AUTH_SUCCESS) {
-        fprintf(stderr,"csync_sftp - authentication failed: %s\n",
-            ssh_get_error(ssh_session));
-        ssh_disconnect(ssh_session);
-        ssh_session = NULL;
-        ssh_finalize();
-        rc = -1;
-        goto out;
+    } else {
+      ssh_disconnect(ssh_session);
+      ssh_session = NULL;
+      ssh_finalize();
+      rc = -1;
+      goto out;
     }
   }
 
@@ -778,6 +781,8 @@ static int _rename(const char *olduri, const char *newuri) {
     goto out;
   }
 
+  /* FIXME: workaround cause, sftp_rename can't overwrite */
+  sftp_rm(sftp_session, newpath);
   rc = sftp_rename(sftp_session, oldpath, newpath);
 
 out:
@@ -842,7 +847,7 @@ static int _chmod(const char *uri, mode_t mode) {
   attrs.permissions = mode;
   attrs.flags |= SSH_FILEXFER_ATTR_PERMISSIONS;
 
-  sftp_setstat(sftp_session, path, &attrs);
+  rc = sftp_setstat(sftp_session, path, &attrs);
 
 out:
   SAFE_FREE(user);
@@ -877,7 +882,7 @@ static int _chown(const char *uri, uid_t owner, gid_t group) {
   attrs.gid = group;
   attrs.flags |= SSH_FILEXFER_ATTR_OWNERGROUP;
 
-  sftp_setstat(sftp_session, path, &attrs);
+  rc = sftp_setstat(sftp_session, path, &attrs);
 
 out:
   SAFE_FREE(user);

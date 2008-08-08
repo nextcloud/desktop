@@ -54,7 +54,7 @@ extern "C" {
 #define CSYNC_EXCLUDE_FILE "csync_exclude.conf"
 #define CSYNC_LOCK_FILE "lock"
 
-typedef void (*csync_auth_callback) (char *usr, size_t usrlen, char *pwd, size_t pwlen);
+typedef void (*csync_auth_callback) (char *usr, size_t usrlen, char *pwd, size_t pwlen, int pwonly);
 
 /**
  * csync handle
