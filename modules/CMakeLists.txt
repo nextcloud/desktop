@@ -28,12 +28,12 @@ include_directories(
 )
 
 macro_add_plugin(${SMB_PLUGIN} csync_smb.c)
-target_link_libraries(${SMB_PLUGIN} ${LIBSMBCLIENT_LIBRARIES} ${CSTDLIB_LIBRARY})
+target_link_libraries(${SMB_PLUGIN} ${LIBSMBCLIENT_LIBRARIES})
 
 macro_add_plugin(csync_dummy csync_dummy.c)
 
 macro_add_plugin(${SFTP_PLUGIN} csync_sftp.c)
-target_link_libraries(${SFTP_PLUGIN} ${LIBSSH_LIBRARIES} ${CSTDLIB_LIBRARY})
+target_link_libraries(${SFTP_PLUGIN} ${LIBSSH_LIBRARIES})
 
 INSTALL(
   TARGETS
