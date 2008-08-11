@@ -31,38 +31,17 @@
 /** Zero a structure */
 #define ZERO_STRUCT(x) memset((char *)&(x), 0, sizeof(x))
 
-int csync_text_prompt(const char *prompt, char *buf, size_t len) {
-  char *ptr = NULL;
-  int ok = 0;
-
-  /* read the password */
-  while (!ok) {
-    fprintf(stdout, "%s", prompt);
-    fflush(stdout);
-    while (! fgets(buf, len, stdin));
-
-    if ((ptr = strchr(buf, '\n'))) {
-      *ptr = '\0';
-    }
-    ok = 1;
-  }
-
-  /* force termination */
-  buf[len - 1] = 0;
-
-  /* return nonzero if not okay */
-  return !ok;
-}
-
-int csync_password_prompt(const char *prompt, char *buf, size_t len, int verify) {
+int csync_auth(const char *prompt, char *buf, size_t len, int echo, int verify) {
   struct termios attr;
   struct termios old_attr;
   int ok = 0;
   int fd = -1;
   char *ptr = NULL;
+  char tmp[len];
 
   ZERO_STRUCT(attr);
   ZERO_STRUCT(old_attr);
+  ZERO_STRUCT(tmp);
 
   /* get local terminal attributes */
   if (tcgetattr(STDIN_FILENO, &attr) < 0) {
@@ -78,7 +57,9 @@ int csync_password_prompt(const char *prompt, char *buf, size_t len, int verify)
   }
 
   /* disable echo */
-  attr.c_lflag &= ~(ECHO);
+  if (!echo) {
+    attr.c_lflag &= ~(ECHO);
+  }
 
   /* write attributes to terminal */
   if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &attr) < 0) {
@@ -93,13 +74,22 @@ int csync_password_prompt(const char *prompt, char *buf, size_t len, int verify)
 
   /* read the password */
   while (!ok) {
-    fprintf(stdout, "%s", prompt);
+    if (*buf) {
+      fprintf(stdout, "%s: [%s] ", prompt, buf);
+    } else {
+      fprintf(stdout, "%s: ", prompt);
+    }
     fflush(stdout);
-    while (! fgets(buf, len, stdin));
+    while (! fgets(tmp, len, stdin));
 
-    if ((ptr = strchr(buf, '\n'))) {
+    if ((ptr = strchr(tmp, '\n'))) {
       *ptr = '\0';
     }
+
+    if (*tmp) {
+      strncpy(buf, tmp, len);
+    }
+
 
     if (verify) {
       char key_string[len];
@@ -133,7 +123,8 @@ int csync_password_prompt(const char *prompt, char *buf, size_t len, int verify)
   }
 
   /* force termination */
-  buf[len - 1] = 0;
+  buf[len - 1] = '\0';
+  ZERO_STRUCT(tmp);
 
   /* return nonzero if not okay */
   return !ok;

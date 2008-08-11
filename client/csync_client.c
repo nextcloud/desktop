@@ -157,27 +157,6 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state) {
   return 0;
 }
 
-static void csync_auth_fn(char *usr, size_t usrlen, char *pwd, size_t pwdlen, int pwonly) {
-  char tmp[256] = {0};
-
-  if (!pwonly) {
-    /* get username */
-    snprintf(tmp, 255, "Username: [%s] ", usr);
-    csync_text_prompt(tmp, tmp, 255);
-
-    if (tmp[strlen(tmp) - 1] == '\n') {
-      tmp[strlen(tmp) - 1] = '\0';
-    }
-
-    if (tmp[0] != '\0') {
-      strncpy(usr, tmp, usrlen - 1);
-    }
-  }
-
-  /* get password */
-  csync_password_prompt("Password: ", pwd, pwdlen, 0);
-}
-
 /* Our argp parser. */
 static struct argp argp = {options, parse_opt, args_doc, doc, NULL, NULL, NULL};
 
@@ -207,7 +186,7 @@ int main(int argc, char **argv) {
     exit(1);
   }
 
-  csync_set_auth_callback(csync, csync_auth_fn);
+  csync_set_auth_callback(csync, csync_auth);
   if (arguments.disable_statedb) {
     csync_disable_statedb(csync);
   }
