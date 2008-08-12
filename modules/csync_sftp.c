@@ -53,10 +53,7 @@ static int auth_kbdint(SSH_SESSION *session){
   char *name = NULL;
   char *instruction = NULL;
   char *prompt = NULL;
-  char *ptr;
-  char user[256] = {0};
-  char passwd[256] = {0};
-  char buffer[128] = {0};
+  char buffer[256] = {0};
   int err = SSH_AUTH_ERROR;
 
   err = ssh_userauth_kbdint(session, NULL, NULL);
@@ -81,22 +78,17 @@ static int auth_kbdint(SSH_SESSION *session){
 
       prompt = ssh_userauth_kbdint_getprompt(session, i, &echo);
       if (echo) {
-        printf("%s", prompt);
-        fgets(buffer, sizeof(buffer), stdin);
-        buffer[sizeof(buffer) - 1] = 0;
-        if ((ptr = strchr(buffer, '\n')))
-          *ptr = 0;
+        (*auth_cb) (prompt, buffer, sizeof(buffer), 1, 0);
         ssh_userauth_kbdint_setanswer(session, i, buffer);
         ZERO_STRUCT(buffer);
       } else {
-        (*auth_cb) (user, 255, passwd, 255, 1);
-        ssh_userauth_kbdint_setanswer(session, i, passwd);
+        (*auth_cb) ("Password:", buffer, sizeof(buffer), 0, 0);
+        ssh_userauth_kbdint_setanswer(session, i, buffer);
+        ZERO_STRUCT(buffer);
       }
     }
     err = ssh_userauth_kbdint(session, NULL, NULL);
   }
-
-  ZERO_STRUCT(passwd);
 
   return err;
 }
