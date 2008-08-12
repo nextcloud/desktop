@@ -75,9 +75,9 @@ int csync_auth(const char *prompt, char *buf, size_t len, int echo, int verify) 
   /* read the password */
   while (!ok) {
     if (*buf) {
-      fprintf(stdout, "%s: [%s] ", prompt, buf);
+      fprintf(stdout, "%s [%s] ", prompt, buf);
     } else {
-      fprintf(stdout, "%s: ", prompt);
+      fprintf(stdout, "%s ", prompt);
     }
     fflush(stdout);
     while (! fgets(tmp, len, stdin));
@@ -85,6 +85,7 @@ int csync_auth(const char *prompt, char *buf, size_t len, int echo, int verify) 
     if ((ptr = strchr(tmp, '\n'))) {
       *ptr = '\0';
     }
+    fprintf(stdout, "\n");
 
     if (*tmp) {
       strncpy(buf, tmp, len);
@@ -103,7 +104,8 @@ int csync_auth(const char *prompt, char *buf, size_t len, int echo, int verify) 
       if ((ptr = strchr(key_string, '\n'))) {
         *ptr = '\0';
       }
-      if (strcmp(buf ,key_string)) {
+      fprintf(stdout, "\n");
+      if (strcmp(buf, key_string)) {
         printf("\n\07\07Mismatch - try again\n");
         fflush(stdout);
         continue;
