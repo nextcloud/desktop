@@ -93,171 +93,13 @@ static int auth_kbdint(SSH_SESSION *session){
   return err;
 }
 
-/* parse_uri */
-static const char *uri_prefix = "sftp:";
-static int parse_uri(const char *uri, char **user, char **passwd,
-    char **hostname, char **port, char **path) {
-  const char *p = NULL;
-  const char *r = NULL;
-  const char *q = NULL;
-  char *s = NULL;
-  size_t len = 0;
-
-  /* Ensure these returns are at least valid pointers. */
-  *hostname = c_strdup("");
-  *port = c_strdup("");
-  *path = c_strdup("");
-  *user = c_strdup("");
-  *passwd = c_strdup("");
-
-  if (*hostname == NULL || *port == NULL || *path == NULL ||
-      *user == NULL || *passwd == NULL) {
-    return -1;
-  }
-
-  s = c_strdup(uri);
-  if (s == NULL) {
-    return -1;
-  }
-
-  len = strlen(uri_prefix);
-  /* check if we have the right prefix */
-  if (strncmp(s, uri_prefix, len) || (s[len] != '/' && s[len] != '\0')) {
-    goto err;
-  }
-
-  p = s + len;
-
-  if (strncmp(p, "//", 2) == 2) {
-    DEBUG_SFTP(("Invalid path (does not begin with sftp://\n"));
-    goto err;
-  }
-
-  /* Skip the double slash */
-  p += 2;
-
-  if (*p == '\0') {
-    goto decoding;
-  }
-
-  /* check that '@' occurs before '/', if '/' exists at all */
-  q = strchr(p, '@');
-  r = strchr(p, '/');
-  if (q && (!r || q < r)) {
-    char *userinfo = NULL;
-    const char *u;
-    userinfo = c_strndup(p, q - p);
-    if (userinfo == NULL) {
-      goto err;
-    }
-    u = strchr(userinfo, ':');
-    if (u) {
-      SAFE_FREE(*user);
-      *user = c_strndup(userinfo, u - userinfo);
-      if (*user == NULL) {
-        SAFE_FREE(userinfo);
-        goto err;
-      }
-      SAFE_FREE(*passwd);
-      *passwd = c_strdup(u + 1);
-      if (*passwd == NULL) {
-        SAFE_FREE(userinfo);
-        goto err;
-      }
-    } else {
-      SAFE_FREE(*user);
-      *user = c_strdup(userinfo);
-      if (*user == NULL) {
-        SAFE_FREE(userinfo);
-        goto err;
-      }
-    }
-
-    len = strlen(userinfo) + 1;
-    SAFE_FREE(userinfo);
-    p += len;
-  }
-
-  if (*p == '\0') {
-    goto decoding;
-  }
-
-  /* check if we have a path */
-  r = strchr(p, '/');
-  if (r) {
-    char *h = NULL;
-    h = c_strndup(p, r - p);
-    if (h == NULL) {
-      goto err;
-    }
-    /* look for port */
-    q = strchr(h, ':');
-    if (q) {
-      SAFE_FREE(*port);
-      *port = c_strdup(q + 1);
-      if (*port == NULL) {
-        SAFE_FREE(h);
-        goto err;
-      }
-      SAFE_FREE(*hostname);
-      *hostname = c_strndup(h, q - h);
-      if (*hostname == NULL) {
-        SAFE_FREE(h);
-        goto err;
-      }
-    } else {
-      SAFE_FREE(*hostname);
-      *hostname = c_strdup(h);
-      if (*hostname == NULL) {
-        SAFE_FREE(h);
-        goto err;
-      }
-    }
-    len = strlen(h) + 1;
-    SAFE_FREE(h);
-  } else {
-    SAFE_FREE(*hostname);
-    *hostname = c_strdup(p);
-    if (*hostname == NULL) {
-      goto err;
-    }
-    len = strlen(p);
-  }
-
-  p += len;
-  if (*p == '\0') {
-    goto decoding;
-  }
-
-  SAFE_FREE(*path);
-  *path = c_strdup(p);
-  if (*path == NULL) {
-    goto err;
-  }
-
-  if (**path) {
-    char *d = NULL;
-    if (asprintf(&d, "/%s", *path) < 0) {
-      return -1;
-    }
-    SAFE_FREE(*path);
-    *path = d;
-  }
-
-  goto decoding;
-err:
-  SAFE_FREE(s);
-  return -1;
-decoding:
-  return 0;
-}
-
 static int _sftp_connect(const char *uri) {
   SSH_OPTIONS *options = NULL;
+  char *scheme = NULL;
   char *user = NULL;
   char *passwd = NULL;
   char *host = NULL;
-  char *port = NULL;
+  unsigned int port;
   char *path = NULL;
   unsigned char hash[MD5_DIGEST_LEN];
   int rc = -1;
@@ -268,7 +110,7 @@ static int _sftp_connect(const char *uri) {
     return 0;
   }
 
-  rc = parse_uri(uri, &user, &passwd, &host, &port, &path);
+  rc = c_parse_uri(uri, &scheme, &user, &passwd, &host, &port, &path);
   if (rc < 0) {
     goto out;
   }
@@ -297,11 +139,11 @@ static int _sftp_connect(const char *uri) {
 #endif
 
   ssh_options_set_host(options, host);
-  if (*port) {
-    ssh_options_set_port(options, atoi(port));
+  if (port) {
+    ssh_options_set_port(options, port);
   }
 
-  if (*user) {
+  if (user && *user) {
     ssh_options_set_username(options, user);
   }
 
@@ -371,7 +213,7 @@ static int _sftp_connect(const char *uri) {
   }
 
   /* authenticate with the server */
-  if (*passwd) {
+  if (passwd && *passwd) {
     DEBUG_SFTP(("csync_sftp - authenticating with user/password\n"));
     /*
      * This is tunneled cleartext password authentication and possibly needs
@@ -418,14 +260,14 @@ static int _sftp_connect(const char *uri) {
   /* start the sftp session */
   sftp_session = sftp_new(ssh_session);
   if (sftp_session == NULL) {
-    ssh_say(0, "csync_sftp - sftp error initialising channel: %s\n", ssh_get_error(ssh_session));
+    fprintf(stderr, "csync_sftp - sftp error initialising channel: %s\n", ssh_get_error(ssh_session));
     rc = -1;
     goto out;
   }
 
   rc = sftp_init(sftp_session);
   if (rc < 0) {
-    ssh_say(0, "csync_sftp - error initialising sftp: %s\n", ssh_get_error(ssh_session));
+    fprintf(stderr, "csync_sftp - error initialising sftp: %s\n", ssh_get_error(ssh_session));
     goto out;
   }
 
@@ -433,10 +275,10 @@ static int _sftp_connect(const char *uri) {
   connected = 1;
   rc = 0;
 out:
+  SAFE_FREE(scheme);
   SAFE_FREE(user);
   SAFE_FREE(passwd);
   SAFE_FREE(host);
-  SAFE_FREE(port);
   SAFE_FREE(path);
 
   return rc;
@@ -446,66 +288,46 @@ out:
  * file functions
  */
 
-static csync_vio_method_handle_t *_open(const char *durl, int flags, mode_t mode) {
+static csync_vio_method_handle_t *_open(const char *uri, int flags, mode_t mode) {
   SFTP_ATTRIBUTES attrs;
   csync_vio_method_handle_t *mh = NULL;
-  char *user = NULL;
-  char *passwd = NULL;
-  char *host = NULL;
-  char *port = NULL;
   char *path = NULL;
 
   ZERO_STRUCT(attrs);
   attrs.permissions = mode;
   attrs.flags |= SSH_FILEXFER_ATTR_PERMISSIONS;
 
-  if (_sftp_connect(durl) < 0) {
+  if (_sftp_connect(uri) < 0) {
     return NULL;
   }
 
-  if (parse_uri(durl, &user, &passwd, &host, &port, &path) < 0) {
-    mh = NULL;
-    goto out;
+  if (c_parse_uri(uri, NULL, NULL, NULL, NULL, NULL, &path) < 0) {
+    return NULL;
   }
 
   mh = (csync_vio_method_handle_t *) sftp_open(sftp_session, path, flags, &attrs);
 
-out:
-  SAFE_FREE(user);
-  SAFE_FREE(passwd);
-  SAFE_FREE(host);
-  SAFE_FREE(port);
   SAFE_FREE(path);
-
   return mh;
 }
 
-static csync_vio_method_handle_t *_creat(const char *durl, mode_t mode) {
+static csync_vio_method_handle_t *_creat(const char *uri, mode_t mode) {
   csync_vio_method_handle_t *mh = NULL;
-  char *user = NULL;
-  char *passwd = NULL;
-  char *host = NULL;
-  char *port = NULL;
   char *path = NULL;
 
   (void) mode;
 
-  if (_sftp_connect(durl) < 0) {
+  if (_sftp_connect(uri) < 0) {
     return NULL;
   }
 
-  if (parse_uri(durl, &user, &passwd, &host, &port, &path) < 0) {
+  if (c_parse_uri(uri, NULL, NULL, NULL, NULL, NULL, &path) < 0) {
     return NULL;
   }
 
   mh = (csync_vio_method_handle_t *) sftp_open(sftp_session, path, O_CREAT|O_WRONLY|O_TRUNC, NULL);
 
-  SAFE_FREE(user);
-  SAFE_FREE(passwd);
-  SAFE_FREE(host);
-  SAFE_FREE(port);
   SAFE_FREE(path);
-
   return mh;
 }
 
@@ -532,30 +354,21 @@ static off_t _lseek(csync_vio_method_handle_t *fhandle, off_t offset, int whence
  * directory functions
  */
 
-static csync_vio_method_handle_t *_opendir(const char *durl) {
+static csync_vio_method_handle_t *_opendir(const char *uri) {
   csync_vio_method_handle_t *mh = NULL;
-  char *user = NULL;
-  char *passwd = NULL;
-  char *host = NULL;
-  char *port = NULL;
   char *path = NULL;
 
-  if (_sftp_connect(durl) < 0) {
+  if (_sftp_connect(uri) < 0) {
     return NULL;
   }
 
-  if (parse_uri(durl, &user, &passwd, &host, &port, &path) < 0) {
+  if (c_parse_uri(uri, NULL, NULL, NULL, NULL, NULL, &path) < 0) {
     return NULL;
   }
 
   mh = (csync_vio_method_handle_t *) sftp_opendir(sftp_session, path);
 
-  SAFE_FREE(user);
-  SAFE_FREE(passwd);
-  SAFE_FREE(host);
-  SAFE_FREE(port);
   SAFE_FREE(path);
-
   return mh;
 }
 
@@ -601,10 +414,6 @@ static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
 
 static int _mkdir(const char *uri, mode_t mode) {
   SFTP_ATTRIBUTES attrs;
-  char *user = NULL;
-  char *passwd = NULL;
-  char *host = NULL;
-  char *port = NULL;
   char *path = NULL;
   int rc = -1;
 
@@ -612,7 +421,7 @@ static int _mkdir(const char *uri, mode_t mode) {
     return -1;
   }
 
-  if (parse_uri(uri, &user, &passwd, &host, &port, &path) < 0) {
+  if (c_parse_uri(uri, NULL, NULL, NULL, NULL, NULL, &path) < 0) {
     return -1;
   }
 
@@ -622,20 +431,11 @@ static int _mkdir(const char *uri, mode_t mode) {
 
   rc = sftp_mkdir(sftp_session, path, &attrs);
 
-  SAFE_FREE(user);
-  SAFE_FREE(passwd);
-  SAFE_FREE(host);
-  SAFE_FREE(port);
   SAFE_FREE(path);
-
   return rc;
 }
 
 static int _rmdir(const char *uri) {
-  char *user = NULL;
-  char *passwd = NULL;
-  char *host = NULL;
-  char *port = NULL;
   char *path = NULL;
   int rc = -1;
 
@@ -643,27 +443,18 @@ static int _rmdir(const char *uri) {
     return -1;
   }
 
-  if (parse_uri(uri, &user, &passwd, &host, &port, &path) < 0) {
+  if (c_parse_uri(uri, NULL, NULL, NULL, NULL, NULL, &path) < 0) {
     return -1;
   }
 
   rc = sftp_rmdir(sftp_session, path);
 
-  SAFE_FREE(user);
-  SAFE_FREE(passwd);
-  SAFE_FREE(host);
-  SAFE_FREE(port);
   SAFE_FREE(path);
-
   return rc;
 }
 
 static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
   SFTP_ATTRIBUTES *attrs;
-  char *user = NULL;
-  char *passwd = NULL;
-  char *host = NULL;
-  char *port = NULL;
   char *path = NULL;
   int rc = -1;
 
@@ -671,7 +462,7 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
     return -1;
   }
 
-  if (parse_uri(uri, &user, &passwd, &host, &port, &path) < 0) {
+  if (c_parse_uri(uri, NULL, NULL, NULL, NULL, NULL, &path) < 0) {
     return -1;
   }
 
@@ -736,20 +527,12 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
 
   rc = 0;
 out:
-  SAFE_FREE(user);
-  SAFE_FREE(passwd);
-  SAFE_FREE(host);
-  SAFE_FREE(port);
   SAFE_FREE(path);
 
   return rc;
 }
 
 static int _rename(const char *olduri, const char *newuri) {
-  char *user = NULL;
-  char *passwd = NULL;
-  char *host = NULL;
-  char *port = NULL;
   char *oldpath = NULL;
   char *newpath = NULL;
   int rc = -1;
@@ -758,17 +541,12 @@ static int _rename(const char *olduri, const char *newuri) {
     return -1;
   }
 
-  if (parse_uri(olduri, &user, &passwd, &host, &port, &oldpath) < 0) {
+  if (c_parse_uri(olduri, NULL, NULL, NULL, NULL, NULL, &oldpath) < 0) {
     rc = -1;
     goto out;
   }
 
-  SAFE_FREE(user);
-  SAFE_FREE(passwd);
-  SAFE_FREE(host);
-  SAFE_FREE(port);
-
-  if (parse_uri(newuri, &user, &passwd, &host, &port, &newpath) < 0) {
+  if (c_parse_uri(newuri, NULL, NULL, NULL, NULL, NULL, &newpath) < 0) {
     rc = -1;
     goto out;
   }
@@ -778,10 +556,6 @@ static int _rename(const char *olduri, const char *newuri) {
   rc = sftp_rename(sftp_session, oldpath, newpath);
 
 out:
-  SAFE_FREE(user);
-  SAFE_FREE(passwd);
-  SAFE_FREE(host);
-  SAFE_FREE(port);
   SAFE_FREE(oldpath);
   SAFE_FREE(newpath);
 
@@ -789,10 +563,6 @@ out:
 }
 
 static int _unlink(const char *uri) {
-  char *user = NULL;
-  char *passwd = NULL;
-  char *host = NULL;
-  char *port = NULL;
   char *path = NULL;
   int rc = -1;
 
@@ -800,29 +570,18 @@ static int _unlink(const char *uri) {
     return -1;
   }
 
-  if (parse_uri(uri, &user, &passwd, &host, &port, &path) < 0) {
-    rc = -1;
-    goto out;
+  if (c_parse_uri(uri, NULL, NULL, NULL, NULL, NULL, &path) < 0) {
+    return -1;
   }
 
   rc = sftp_rm(sftp_session, path);
 
-out:
-  SAFE_FREE(user);
-  SAFE_FREE(passwd);
-  SAFE_FREE(host);
-  SAFE_FREE(port);
   SAFE_FREE(path);
-
   return rc;
 }
 
 static int _chmod(const char *uri, mode_t mode) {
   SFTP_ATTRIBUTES attrs;
-  char *user = NULL;
-  char *passwd = NULL;
-  char *host = NULL;
-  char *port = NULL;
   char *path = NULL;
   int rc = -1;
 
@@ -830,9 +589,8 @@ static int _chmod(const char *uri, mode_t mode) {
     return -1;
   }
 
-  if (parse_uri(uri, &user, &passwd, &host, &port, &path) < 0) {
-    rc = -1;
-    goto out;
+  if (c_parse_uri(uri, NULL, NULL, NULL, NULL, NULL, &path) < 0) {
+    return -1;
   }
 
   ZERO_STRUCT(attrs);
@@ -841,22 +599,12 @@ static int _chmod(const char *uri, mode_t mode) {
 
   rc = sftp_setstat(sftp_session, path, &attrs);
 
-out:
-  SAFE_FREE(user);
-  SAFE_FREE(passwd);
-  SAFE_FREE(host);
-  SAFE_FREE(port);
   SAFE_FREE(path);
-
   return rc;
 }
 
 static int _chown(const char *uri, uid_t owner, gid_t group) {
   SFTP_ATTRIBUTES attrs;
-  char *user = NULL;
-  char *passwd = NULL;
-  char *host = NULL;
-  char *port = NULL;
   char *path = NULL;
   int rc = -1;
 
@@ -864,9 +612,8 @@ static int _chown(const char *uri, uid_t owner, gid_t group) {
     return -1;
   }
 
-  if (parse_uri(uri, &user, &passwd, &host, &port, &path) < 0) {
-    rc = -1;
-    goto out;
+  if (c_parse_uri(uri, NULL, NULL, NULL, NULL, NULL, &path) < 0) {
+    return -1;
   }
 
   ZERO_STRUCT(attrs);
@@ -876,22 +623,12 @@ static int _chown(const char *uri, uid_t owner, gid_t group) {
 
   rc = sftp_setstat(sftp_session, path, &attrs);
 
-out:
-  SAFE_FREE(user);
-  SAFE_FREE(passwd);
-  SAFE_FREE(host);
-  SAFE_FREE(port);
   SAFE_FREE(path);
-
   return rc;
 }
 
 static int _utimes(const char *uri, const struct timeval *times) {
   SFTP_ATTRIBUTES attrs;
-  char *user = NULL;
-  char *passwd = NULL;
-  char *host = NULL;
-  char *port = NULL;
   char *path = NULL;
   int rc = -1;
 
@@ -899,9 +636,8 @@ static int _utimes(const char *uri, const struct timeval *times) {
     return -1;
   }
 
-  if (parse_uri(uri, &user, &passwd, &host, &port, &path) < 0) {
-    rc = -1;
-    goto out;
+  if (c_parse_uri(uri, NULL, NULL, NULL, NULL, NULL, &path) < 0) {
+    return -1;
   }
 
   ZERO_STRUCT(attrs);
@@ -914,13 +650,7 @@ static int _utimes(const char *uri, const struct timeval *times) {
 
   sftp_setstat(sftp_session, path, &attrs);
 
-out:
-  SAFE_FREE(user);
-  SAFE_FREE(passwd);
-  SAFE_FREE(host);
-  SAFE_FREE(port);
   SAFE_FREE(path);
-
   return rc;
 }
 
