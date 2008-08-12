@@ -36,81 +36,98 @@
  * dirname - parse directory component.
  */
 char *c_dirname (const char *path) {
-  char *newpath;
-  register int length;
+  char *new;
+  register int len;
 
   if (path == NULL || *path == '\0') {
-    newpath = c_strdup(".");
-    return newpath;
+    new = c_strdup(".");
+    return new;
   }
 
-  length = strlen(path);
+  len = strlen(path);
+
   /* Remove trailing slashes */
-  while(length > 0 && path[length - 1] == '/') --length;
+  while(len > 0 && path[len - 1] == '/') --len;
+
   /* We have only slashes */
-  if (length == 0) {
-    newpath = c_strdup("/");
-    return newpath;
+  if (len == 0) {
+    new = c_strdup("/");
+
+    return new;
   }
+
   /* goto next slash */
-  while(length > 0 && path[length - 1] != '/') --length;
-  if (length == 0) {
-    newpath = c_strdup(".");
-    return newpath;
-  } else if (length == 1) {
-    newpath = c_strdup("/");
-    return newpath;
+  while(len > 0 && path[len - 1] != '/') --len;
+
+  if (len == 0) {
+    new = c_strdup(".");
+
+    return new;
+  } else if (len == 1) {
+    new = c_strdup("/");
+
+    return new;
   }
 
   /* Remove slashes again */
-  while(length > 0 && path[length - 1] == '/') --length;
+  while(len > 0 && path[len - 1] == '/') --len;
 
-  newpath = (char *) c_malloc(length + 1);
-  if (newpath == NULL) {
+  new = c_malloc(len + 1);
+
+  if (new == NULL) {
     return NULL;
   }
-  strncpy(newpath, path, length);
-  newpath[length] = '\0';
 
-  return newpath;
+  strncpy(new, path, len);
+  new[len] = '\0';
+
+  return new;
 }
 
 char *c_basename (const char *path) {
-  char *newpath;
-  char *slash;
-  register int length;
+  char *new;
+  const char *s;
+  register int len;
 
   if (path == NULL || *path == '\0') {
-    newpath = c_strdup(".");
-    return newpath;
+    new = c_strdup(".");
+    return new;
   }
 
-  length = strlen(path);
+  len = strlen(path);
   /* Remove trailing slashes */
-  while(length > 0 && path[length - 1] == '/') --length;
-  /* We have only slashes */
-  if (length == 0) {
-    newpath = c_strdup("/");
-    return newpath;
-  }
-  while(length > 0 && path[length - 1] != '/') --length;
+  while(len > 0 && path[len - 1] == '/') --len;
 
-  if (length > 0) {
-    slash = (char *) path + length;
-    length = strlen(slash);
-    while(length > 0 && slash[length - 1] == '/') --length;
-  } else {
-    newpath = c_strdup(path);
-    return newpath;
+  /* We have only slashes */
+  if (len == 0) {
+    new = c_strdup("/");
+
+    return new;
   }
-  newpath = (char *) c_malloc(length + 1);
-  if (newpath == NULL) {
+
+  while(len > 0 && path[len - 1] != '/') --len;
+
+  if (len > 0) {
+    s = path + len;
+    len = strlen(s);
+
+    while(len > 0 && s[len - 1] == '/') --len;
+  } else {
+    new = c_strdup(path);
+
+    return new;
+  }
+
+  new = c_malloc(len + 1);
+
+  if (new == NULL) {
     return NULL;
   }
-  strncpy(newpath, slash, length);
-  newpath[length] = '\0';
 
-  return newpath;
+  strncpy(new, s, len);
+  new[len] = '\0';
+
+  return new;
 }
 
 int c_parse_uri(const char *uri,
