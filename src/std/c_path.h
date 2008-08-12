@@ -1,7 +1,7 @@
 /*
  * cynapses libc functions
  *
- * Copyright (c) 2008 by Andreas Schneider <mail@cynapses.org>
+ * Copyright (c) 2007-2008 by Andreas Schneider <mail@cynapses.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -54,7 +54,7 @@
 char *c_dirname(const char *path);
 
 /**
- * @brief dirname - parse filename component.
+ * @brief basename - parse filename component.
  *
  * basename breaks a null-terminated pathname string into a filename component.
  * c_basename() returns the component following the final '/'.  Trailing '/'
@@ -67,6 +67,30 @@ char *c_dirname(const char *path);
  *          NULL or an empty string, "." is returned.
  */
 char *c_basename (const char *path);
+
+/**
+ * @brief parse a uri and split it into components.
+ *
+ * parse_uri parses an uri in the format
+ *
+ * [<scheme>:][//[<user>[:<password>]@]<host>[:<port>]]/[<path>]
+ *
+ * into its compoments. If you only want a special component,
+ * pass NULL for all other components. All components will be allocated if they have
+ * been found.
+ *
+ * @param uri       The uri to parse.
+ * @param scheme    String for the scheme component
+ * @param user      String for the username component
+ * @param passwd    String for the password component
+ * @param host      String for the password component
+ * @param port      Integer for the port
+ * @param path      String for the path component with a leading slash.
+ *
+ * @return  0 on success, < 0 on error.
+ */
+int c_parse_uri(const char *uri, char **scheme, char **user, char **passwd,
+    char **host, unsigned int *port, char **path);
 
 /**
  * }@
