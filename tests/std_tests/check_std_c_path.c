@@ -1,7 +1,10 @@
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+
 #include <string.h>
 
 #include "support.h"
-
 #include "std/c_path.h"
 
 START_TEST (check_c_basename)
@@ -104,6 +107,44 @@ START_TEST (check_c_dirname_uri)
 }
 END_TEST
 
+START_TEST (check_c_parse_uri)
+{
+  const char *test_scheme = "git+ssh";
+  const char *test_user = "gladiac";
+  const char *test_passwd = "secret";
+  const char *test_host = "git.csync.org";
+  const char *test_path = "/srv/git/csync.git";
+
+  char *uri = NULL;
+
+  char *scheme = NULL;
+  char *user = NULL;
+  char *passwd = NULL;
+  char *host = NULL;
+  unsigned int port;
+  char *path = NULL;
+
+  asprintf(&uri, "%s://%s:%s@%s:22%s",
+      test_scheme, test_user, test_passwd, test_host, test_path);
+
+  fail_unless(c_parse_uri(uri, &scheme, &user, &passwd, &host, &port, &path) == 0, NULL);
+
+  fail_unless(strcmp(test_scheme, scheme) == 0, NULL);
+  fail_unless(strcmp(test_user, user) == 0, NULL);
+  fail_unless(strcmp(test_passwd, passwd) == 0, NULL);
+  fail_unless(strcmp(test_host, host) == 0, NULL);
+  fail_unless(port == 22, NULL);
+  fail_unless(strcmp(test_path, path) == 0, NULL);
+
+  SAFE_FREE(uri);
+  SAFE_FREE(scheme);
+  SAFE_FREE(user);
+  SAFE_FREE(passwd);
+  SAFE_FREE(host);
+  SAFE_FREE(path);
+}
+END_TEST
+
 static Suite *make_std_c_basename_suite(void) {
   Suite *s = suite_create("std:path:c_basename");
 
@@ -122,9 +163,16 @@ static Suite *make_std_c_dirname_suite(void) {
   return s;
 }
 
+static Suite *make_std_c_parse_uri_suite(void) {
+  Suite *s = suite_create("std:path:c_parse_uri");
+
+  create_case(s, "check_c_parse_uri", check_c_parse_uri);
+
+  return s;
+}
+
 int main(int argc, char **argv) {
-  Suite *s = NULL;
-  Suite *s2 = NULL;
+  Suite *s, *s2, *s3;
   SRunner *sr = NULL;
   struct argument_s arguments;
   int nf;
@@ -135,12 +183,14 @@ int main(int argc, char **argv) {
 
   s = make_std_c_basename_suite();
   s2 = make_std_c_dirname_suite();
+  s3 = make_std_c_parse_uri_suite();
 
   sr = srunner_create(s);
   if (arguments.nofork) {
     srunner_set_fork_status(sr, CK_NOFORK);
   }
   srunner_add_suite (sr, s2);
+  srunner_add_suite (sr, s3);
   srunner_run_all(sr, CK_VERBOSE);
   nf = srunner_ntests_failed(sr);
   srunner_free(sr);
