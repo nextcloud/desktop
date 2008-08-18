@@ -137,6 +137,7 @@ static int _sftp_connect(const char *uri) {
 #if 0
   ssh_set_verbosity(3);
 #endif
+  ssh_set_verbosity(1);
 
   ssh_options_set_host(options, host);
   if (port) {
