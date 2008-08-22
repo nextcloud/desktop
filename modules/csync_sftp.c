@@ -135,7 +135,7 @@ static int _sftp_connect(const char *uri) {
   ssh_options_set_wanted_algos(options, SSH_COMP_S_C, "none");
 
 #if 0
-  ssh_set_verbosity(3);
+  ssh_set_verbosity(1);
 #endif
 
   ssh_options_set_host(options, host);
@@ -340,7 +340,7 @@ static ssize_t _read(csync_vio_method_handle_t *fhandle, void *buf, size_t count
 }
 
 static ssize_t _write(csync_vio_method_handle_t *fhandle, const void *buf, size_t count) {
-  return sftp_write(fhandle, (const void *) buf, count);
+  return sftp_write(fhandle, (void *) buf, count);
 }
 
 static off_t _lseek(csync_vio_method_handle_t *fhandle, off_t offset, int whence) {
