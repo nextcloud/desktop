@@ -724,7 +724,6 @@ static int _csync_propagation_cleanup(CSYNC *ctx) {
 static int _csync_propagation_file_visitor(void *obj, void *data) {
   csync_file_stat_t *st = NULL;
   CSYNC *ctx = NULL;
-  char errbuf[256] = {0};
 
   st = (csync_file_stat_t *) obj;
   ctx = (CSYNC *) data;
@@ -766,17 +765,12 @@ static int _csync_propagation_file_visitor(void *obj, void *data) {
 
   return 0;
 err:
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL,
-      "file: %s, error: %s",
-      st->path,
-      strerror_r(errno, errbuf, sizeof(errbuf)));
   return -1;
 }
 
 static int _csync_propagation_dir_visitor(void *obj, void *data) {
   csync_file_stat_t *st = NULL;
   CSYNC *ctx = NULL;
-  char errbuf[256] = {0};
 
   st = (csync_file_stat_t *) obj;
   ctx = (CSYNC *) data;
@@ -814,10 +808,6 @@ static int _csync_propagation_dir_visitor(void *obj, void *data) {
 
   return 0;
 err:
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL,
-      "file: %s, error: %s",
-      st->path,
-      strerror_r(errno, errbuf, sizeof(errbuf)));
   return -1;
 }
 
