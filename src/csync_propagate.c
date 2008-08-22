@@ -223,6 +223,8 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   if (csync_vio_close(ctx, dfp) < 0) {
     dfp = NULL;
     switch (errno) {
+      /* stop if no space left or quota exceeded */
+      case ENOSPC:
       case EDQUOT:
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
             "file: %s, command: close, error: %s",
