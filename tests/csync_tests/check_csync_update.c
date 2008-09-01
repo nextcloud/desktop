@@ -34,29 +34,76 @@ static void teardown_rm(void) {
   fail_if(system("rm -rf /tmp/check_csync2") < 0, "Teardown failed");
 }
 
-static void stat_init(csync_vio_file_stat_t *fs) {
+/* create a file stat, caller must free memory */
+static csync_vio_file_stat_t* create_fstat(const char *name, ino_t inode, nlink_t nlink, time_t mtime) {
+  csync_vio_file_stat_t *fs = NULL;
   time_t t;
 
-  fail_if(fs == NULL, NULL);
+  fs = csync_vio_file_stat_new();
+  if (fs == NULL) {
+    return NULL;
+  }
 
-  fs->name = c_strdup("file.txt");
+  if (name && *name) {
+    fs->name = c_strdup(name);
+  } else {
+    fs->name = c_strdup("file.txt");
+  }
+
+  if (fs->name == NULL) {
+    csync_vio_file_stat_destroy(fs);
+    return NULL;
+  }
+
   fs->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
 
   fs->type = CSYNC_VIO_FILE_TYPE_REGULAR;
-  fs->mode = 0777;
-  fs->inode = 619070;
+  fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
+
+  fs->mode = 0644;
+  fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
+
+  if (inode == 0) {
+    fs->inode = 619070;
+  } else {
+    fs->inode = inode;
+  }
+  fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_INODE;
 
   fs->device = 0;
+
   fs->size = 157459;
-  fs->nlink = 1;
+  fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
+
+  if (nlink == 0) {
+    fs->nlink = 1;
+  } else {
+    fs->nlink = nlink;
+  }
+  fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_LINK_COUNT;
 
   fs->uid = 1000;
+  fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_UID;
+
   fs->gid = 1000;
+  fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_GID;
 
-  fs->blksize = 312;
-  fs->blkcount = 4096;
+  fs->blkcount = 312;
+  fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_COUNT;
 
-  fs->atime = fs->mtime = fs->ctime = time(&t);
+  fs->blksize = 4096;
+  fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_SIZE;
+
+  if (mtime == 0) {
+    fs->atime = fs->ctime = fs->mtime = time(&t);
+  } else {
+    fs->atime = fs->ctime = fs->mtime = mtime;
+  }
+  fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ATIME;
+  fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_CTIME;
+  fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
+
+  return fs;
 }
 
 static int failing_fn(CSYNC *ctx,
@@ -71,14 +118,13 @@ static int failing_fn(CSYNC *ctx,
   return -1;
 }
 
+/* detect a new file */
 START_TEST (check_csync_detect_update)
 {
   csync_file_stat_t *st = NULL;
   csync_vio_file_stat_t *fs = NULL;
 
-  fs = csync_vio_file_stat_new();
-  stat_init(fs);
-  fs->mtime = 1217597845;
+  fs = create_fstat("file.txt", 0, 1, 1217597845);
 
   fail_unless(_csync_detect_update(csync, "/tmp/check_csync1/file.txt", fs, CSYNC_FTW_TYPE_FILE) == 0, NULL);
 
@@ -101,9 +147,7 @@ START_TEST (check_csync_detect_update_db_none)
   csync_file_stat_t *st = NULL;
   csync_vio_file_stat_t *fs = NULL;
 
-  fs = csync_vio_file_stat_new();
-  stat_init(fs);
-  fs->mtime = 1217597845;
+  fs = create_fstat("file.txt", 0, 1, 1217597845);
 
   fail_unless(_csync_detect_update(csync, "/tmp/check_csync1/file.txt", fs, CSYNC_FTW_TYPE_FILE) == 0, NULL);
 
@@ -126,8 +170,7 @@ START_TEST (check_csync_detect_update_db_eval)
   csync_file_stat_t *st = NULL;
   csync_vio_file_stat_t *fs = NULL;
 
-  fs = csync_vio_file_stat_new();
-  stat_init(fs);
+  fs = create_fstat("file.txt", 0, 1, 0);
 
   fail_unless(_csync_detect_update(csync, "/tmp/check_csync1/file.txt", fs, CSYNC_FTW_TYPE_FILE) == 0, NULL);
 
@@ -150,11 +193,7 @@ START_TEST (check_csync_detect_update_db_rename)
   csync_file_stat_t *st = NULL;
   csync_vio_file_stat_t *fs = NULL;
 
-  fs = csync_vio_file_stat_new();
-
-  stat_init(fs);
-  free(fs->name);
-  fs->name = c_strdup("wurst.txt");
+  fs = create_fstat("wurst.txt", 0, 1, 0);
 
   fail_unless(_csync_detect_update(csync, "/tmp/check_csync1/wurst.txt", fs, CSYNC_FTW_TYPE_FILE) == 0, NULL);
 
@@ -177,9 +216,7 @@ START_TEST (check_csync_detect_update_db_new)
   csync_file_stat_t *st = NULL;
   csync_vio_file_stat_t *fs = NULL;
 
-  fs = csync_vio_file_stat_new();
-  stat_init(fs);
-  fs->inode = 42;
+  fs = create_fstat("file.txt", 42000, 1, 0);
 
   fail_unless(_csync_detect_update(csync, "/tmp/check_csync1/file.txt", fs, CSYNC_FTW_TYPE_FILE) == 0, NULL);
 
@@ -203,9 +240,7 @@ START_TEST (check_csync_detect_update_nlink)
   csync_vio_file_stat_t *fs = NULL;
 
   /* create vio file stat with nlink greater than 1 */
-  fs = csync_vio_file_stat_new();
-  stat_init(fs);
-  fs->nlink = 42;
+  fs = create_fstat("file.txt", 0, 7, 0);
 
   /* add it to local tree */
   fail_unless(_csync_detect_update(csync, "/tmp/check_csync1/file.txt", fs, CSYNC_FTW_TYPE_FILE) == 0, NULL);
@@ -221,8 +256,8 @@ END_TEST
 START_TEST (check_csync_detect_update_null)
 {
   csync_vio_file_stat_t *fs = NULL;
-  fs = csync_vio_file_stat_new();
-  stat_init(fs);
+
+  fs = create_fstat("file.txt", 0, 1, 0);
 
   fail_unless(_csync_detect_update(csync, NULL, fs, CSYNC_FTW_TYPE_FILE) < 0, NULL);
   fail_unless(_csync_detect_update(csync, "/tmp/check_csync1/file.txt", NULL, CSYNC_FTW_TYPE_FILE) < 0, NULL);
@@ -253,8 +288,8 @@ END_TEST
 START_TEST (check_csync_detect_update_no_mem)
 {
   csync_vio_file_stat_t *fs = NULL;
-  fs = csync_vio_file_stat_new();
-  stat_init(fs);
+
+  fs = create_fstat("file.txt", 0, 1, 0);
 
   setenv("CSYNC_NOMEMORY", "1", 1);
   fail_unless(_csync_detect_update(csync, "file.txt", fs, CSYNC_FTW_TYPE_FILE) < 0, NULL);
