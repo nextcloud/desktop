@@ -100,6 +100,7 @@ int c_strlist_add(c_strlist_t *strlist, const char *string) {
     }
     strlist->count++;
   } else {
+    errno = ENOBUFS;
     return -1;
   }
 

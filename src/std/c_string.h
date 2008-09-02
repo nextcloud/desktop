@@ -92,7 +92,8 @@ c_strlist_t *c_strlist_expand(c_strlist_t *strlist, size_t size);
  * @param strlist  Stringlist to add the string.
  * @param string   String to add.
  *
- * @return  0 on success, less than 0 if an error occured.
+ * @return  0 on success, less than 0 and errno set if an error occured.
+ *          ENOBUFS if the list is full.
  */
 int c_strlist_add(c_strlist_t *strlist, const char *string);
 
