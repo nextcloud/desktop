@@ -329,6 +329,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   ctx->replica = drep;
   csync_vio_utimes(ctx, duri, times);
 
+  /* set instruction for the statedb merger */
   st->instruction = CSYNC_INSTRUCTION_UPDATED;
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: PUSHED", duri);
@@ -346,6 +347,7 @@ out:
 
   csync_vio_file_stat_destroy(tstat);
 
+  /* set instruction for the statedb merger */
   if (rc != 0) {
     st->instruction = CSYNC_INSTRUCTION_ERROR;
     csync_vio_unlink(ctx, turi);
@@ -411,6 +413,7 @@ static int _csync_remove_file(CSYNC *ctx, csync_file_stat_t *st) {
     goto out;
   }
 
+  /* set instruction for the statedb merger */
   st->instruction = CSYNC_INSTRUCTION_DELETED;
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: REMOVED", uri);
@@ -504,6 +507,7 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
 
   csync_vio_utimes(ctx, uri, times);
 
+  /* set instruction for the statedb merger */
   st->instruction = CSYNC_INSTRUCTION_UPDATED;
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "dir: %s, instruction: CREATED", uri);
@@ -582,6 +586,7 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
 
   csync_vio_utimes(ctx, uri, times);
 
+  /* set instruction for the statedb merger */
   st->instruction = CSYNC_INSTRUCTION_UPDATED;
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "dir: %s, instruction: SYNCED", uri);
@@ -591,6 +596,7 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
 out:
   SAFE_FREE(uri);
 
+  /* set instruction for the statedb merger */
   if (rc != 0) {
     st->instruction = CSYNC_INSTRUCTION_ERROR;
   }
@@ -660,6 +666,7 @@ static int _csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
     goto out;
   }
 
+  /* set instruction for the statedb merger */
   st->instruction = CSYNC_INSTRUCTION_DELETED;
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "dir: %s, instruction: REMOVED", uri);
@@ -668,6 +675,7 @@ static int _csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
 out:
   SAFE_FREE(uri);
 
+  /* set instruction for the statedb merger */
   if (rc != 0) {
     st->instruction = CSYNC_INSTRUCTION_NONE;
   }
