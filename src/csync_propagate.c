@@ -419,8 +419,11 @@ static int _csync_remove_file(CSYNC *ctx, csync_file_stat_t *st) {
 out:
   SAFE_FREE(uri);
 
-  /* Write to statedb, to try again next run. */
-  st->instruction = CSYNC_INSTRUCTION_NONE;
+  /* set instruction for the statedb merger */
+  if (rc != 0) {
+    /* Write file to statedb, to try to sync again on the next run. */
+    st->instruction = CSYNC_INSTRUCTION_NONE;
+  }
 
   return rc;
 }
@@ -510,7 +513,10 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
 out:
   SAFE_FREE(uri);
 
-  st->instruction = CSYNC_INSTRUCTION_ERROR;
+  /* set instruction for the statedb merger */
+  if (rc != 0) {
+    st->instruction = CSYNC_INSTRUCTION_ERROR;
+  }
 
   return rc;
 }
