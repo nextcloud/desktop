@@ -388,7 +388,20 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
     c_strlist_destroy(result);
     return NULL;
   }
-  st->phash = strtoull(result->vector[0], NULL, 10);
+
+  /*
+   * FIXME:
+   * We use an INTEGER(8) which is signed to the phash in the sqlite3 db,
+   * but the phash is an uint64_t. So for some values we get a string like
+   * "1.66514565505016e+19". For such a string strtoull() returns 1.
+   * phash = 1
+   *
+   * st->phash = strtoull(result->vector[0], NULL, 10);
+   */
+
+   /* The query suceeded so use the phash we pass to the function. */
+  st->phash = phash;
+
   st->pathlen = atoi(result->vector[1]);
   memcpy(st->path, (len ? result->vector[2] : ""), len + 1);
   st->inode = atoi(result->vector[3]);

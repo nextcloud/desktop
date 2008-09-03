@@ -98,35 +98,32 @@ static int _csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_fi
   /* Update detection */
   if (csync_get_statedb_exists(ctx)) {
     tmp = csync_statedb_get_stat_by_hash(ctx, h);
-    if (tmp == NULL) {
-      /* check if the file has been renamed */
-      if (ctx->current == LOCAL_REPLICA) {
-        tmp = csync_statedb_get_stat_by_inode(ctx, fs->inode);
-        if (tmp == NULL) {
-          /* file not found in statedb */
-          st->instruction = CSYNC_INSTRUCTION_NEW;
-          goto out;
-        } else {
-          /* inode found so the file has been renamed */
-          st->instruction = CSYNC_INSTRUCTION_RENAME;
-          goto out;
-        }
-      }
-      /* remote and file not found in statedb */
-      st->instruction = CSYNC_INSTRUCTION_NEW;
-      goto out;
-    } else {
+    if (tmp && tmp->phash == h) {
       /* we have an update! */
       if (fs->mtime > tmp->modtime) {
         st->instruction = CSYNC_INSTRUCTION_EVAL;
         goto out;
       }
-      /* FIXME: check mode too? */
+      st->instruction = CSYNC_INSTRUCTION_NONE;
+    } else {
+      /* check if the file has been renamed */
+      if (ctx->current == LOCAL_REPLICA) {
+        tmp = csync_statedb_get_stat_by_inode(ctx, fs->inode);
+        if (tmp && tmp->inode == fs->inode) {
+          /* inode found so the file has been renamed */
+          st->instruction = CSYNC_INSTRUCTION_RENAME;
+          goto out;
+        } else {
+          /* file not found in statedb */
+          st->instruction = CSYNC_INSTRUCTION_NEW;
+          goto out;
+        }
+      }
+      /* remote and file not found in statedb */
+      st->instruction = CSYNC_INSTRUCTION_NEW;
     }
-    st->instruction = CSYNC_INSTRUCTION_NONE;
   } else  {
     st->instruction = CSYNC_INSTRUCTION_NEW;
-    goto out;
   }
 
 out:
