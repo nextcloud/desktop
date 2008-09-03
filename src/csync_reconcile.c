@@ -27,6 +27,19 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.reconciler"
 #include "csync_log.h"
 
+/*
+ * We merge replicas at the file level. The merged replica contains the
+ * superset of files that are on the local machine and server copies of
+ * the replica. In the case where the same file is in both the local
+ * and server copy, the file that was modified most recently is used.
+ * This means that new files are not deleted, and updated versions of
+ * existing files are not overwritten.
+ *
+ * When a file is updated, the merge algorithm compares the destination
+ * file with the the source file. If the destination file is newer
+ * (timestamp is newer), it is not overwritten. If both files, on the
+ * source and the destination, have been changed, the newer file wins.
+ */
 static int _csync_merge_algorithm_visitor(void *obj, void *data) {
   csync_file_stat_t *cur = NULL;
   csync_file_stat_t *other = NULL;
