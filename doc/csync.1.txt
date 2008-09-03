@@ -1,0 +1,102 @@
+csync(1)
+========
+
+NAME
+----
+
+csync - A commandline frontent for csync a user level bidirectional file
+synchronizer.
+
+
+SYNOPSIS
+--------
+
+*csync* ['OPTION'...] 'SOURCE' 'DESTINATION'
+
+
+DESCRIPTION
+-----------
+
+csync is a client only bidirectional file synchronizer. It synchronizes the
+content of 'SOURCE' with 'DESTINATION' and vice versa. The 'DESTINATION' can
+be a local directory or a remote file server.
+
+You can use csync for different things. The intention is to provide Roaming
+Home Directories for Linux but you can use it to synchronize your music
+collection or create a backup of a directory.
+
+
+OPTIONS
+-------
+
+*--create-statedb*::
+    Run update detection and write the statedb
+    (TESTING ONLY!)
+*-d, --disable-statedb*::
+    Disable the usage and creation of a statedb.
+
+*--exclude-file='<file>'*::
+    Add an additional exclude file
+
+*-r, --reconcile*::
+    Run update detection and reconcilation
+
+*-u, --update*::
+    Run only the update detection
+
+*-?, --help*::
+    Print the help list
+
+*-V, --version*::
+    Print program version
+
+
+EXIT STATUS
+-----------
+*0*::
+    Success
+
+*1*::
+    Failure (syntax or usage error; configuration error;
+    unexpected error).
+
+
+EXAMPLES
+--------
+
+* csync /home/user /backup/home/user
+
+  Synchronizer two local directories.
+
+* csync /home/user smb://server/share/user
+
+  Synchronize a home directory with a SMB share.
+
+* csync /home/user smb://user:password@server/share/user
+
+  Synchronize a home directory with a SMB share and provide username and
+  password directly.
+
+BUGS
+----
+
+Please report bugs at https://dev.csync.org/.
+
+
+SEE ALSO
+--------
+
+*libcsync*(7)
+
+
+AUTHORS
+-------
+
+Andreas Schneider <mail@cynapses.org>
+
+
+COPYING
+-------
+Copyright \(c) 2006-2008 Andreas Schneider. Free use of this software is
+granted under the terms of the GNU General Public License (GPL).
+

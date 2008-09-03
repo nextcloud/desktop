@@ -3,6 +3,7 @@
 
 for f in $@; do
   test "${f##*/}" = "CMakeLists.txt" && continue
+  echo -e "\e[32mCreating manpage ${f%.*}\e[0m"
   a2x --doctype=manpage --format=manpage $f
-  rm ${f%.*}.xml
+  rm -f ${f%.*}.xml
 done

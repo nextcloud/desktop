@@ -1,102 +1,77 @@
-csync(1)
-========
-
-NAME
-----
-
-csync - A commandline frontent for csync a user level bidirectional file
-synchronizer.
-
-
-SYNOPSIS
---------
-
-*csync* ['OPTION'...] 'SOURCE' 'DESTINATION'
-
-
-DESCRIPTION
------------
-
-csync is a client only bidirectional file synchronizer. It synchronizes the
-content of 'SOURCE' with 'DESTINATION' and vice versa. The 'DESTINATION' can
-be a local directory or a remote file server.
-
-You can use csync for different things. The intention is to provide Roaming
-Home Directories for Linux but you can use it to synchronize your music
-collection or create a backup of a directory.
-
-
-OPTIONS
--------
-
-*--create-statedb*::
-    Run update detection and write the statedb
-    (TESTING ONLY!)
-*-d, --disable-statedb*::
-    Disable the usage and creation of a statedb.
-
-*--exclude-file='<file>'*::
-    Add an additional exclude file
-
-*-r, --reconcile*::
-    Run update detection and reconcilation
-
-*-u, --update*::
-    Run only the update detection
-
-*-?, --help*::
-    Print the help list
-
-*-V, --version*::
-    Print program version
-
-
-EXIT STATUS
------------
-*0*::
-    Success
-
-*1*::
-    Failure (syntax or usage error; configuration error;
-    unexpected error).
-
-
-EXAMPLES
---------
-
-* csync /home/user /backup/home/user
-
-  Synchronizer two local directories.
-
-* csync /home/user smb://server/share/user
-
-  Synchronize a home directory with a SMB share.
-
-* csync /home/user smb://user:password@server/share/user
-
-  Synchronize a home directory with a SMB share and provide username and
-  password directly.
-
-BUGS
-----
-
-Please report bugs at https://dev.csync.org/.
-
-
-SEE ALSO
---------
-
-*libcsync*(7)
-
-
-AUTHORS
--------
-
+CSYNC User Guide
+================
 Andreas Schneider <mail@cynapses.org>
+:Author Initials: ADS
+
+csync is a file synchronizer for Linux and allows to keep two copies of files
+and directories in sync.  It uses uses widly adopted protocols like smb or sftp
+so that there is no need for a server component of csync.
+
+Introduction
+------------
+
+It is often the case that we have multiple copies (called replicas) of a
+filesystem or part of a filesystem (for example on a notebook and on a desktop
+computer). Changes to each replica are often made independently and as a result
+they do not contain the same information. In that case a file synchronizer is
+used to make them consistent again, without loosing any information.
+
+The goal is to detect conflicting <<X13, updates>> (files which has been modified) and
+propagate non-conflicting updates to each replica.
+
+Basics
+------
+
+Paths
+~~~~~
+TODO
+
+[[X13]]
+What is an update?
+~~~~~~~~~~~~~~~~~~
+TODO
+
+What is a conflict?
+~~~~~~~~~~~~~~~~~~~
+TODO
+
+File Synchronization
+--------------------
+
+Update detection
+~~~~~~~~~~~~~~~~
+TODO
+
+Reconciliation
+~~~~~~~~~~~~~~
+TODO
+
+Propagation
+~~~~~~~~~~~
+TODO
+
+Getting started
+---------------
+
+Installing csync
+~~~~~~~~~~~~~~~~
+
+See the `README` and `INSTALL` files for install prerequisites and
+procedures. Packagers take a look at <<X90, Appendix B: Packager Notes>>.
+
+Using the commandline client
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TODO
+csync /home/csync sftp://TODO:secret@server:port/profile/TODO
+
+The PAM module
+~~~~~~~~~~~~~~
+TODO
 
 
-COPYING
--------
-Copyright \(c) 2006-2008 Andreas Schneider. Free use of this software is
-granted under the terms of the GNU General Public License (GPL).
+[[X90]]
+Appendix A: Packager Notes
+--------------------------
 
+Read the `README` and `INSTALL` files (in the distribution root
+directory).
