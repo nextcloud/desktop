@@ -93,6 +93,8 @@ if not pkgconfig.empty?
    file.printf("  endif (${CMAKE_MAJOR_VERSION} EQUAL 2 AND ${CMAKE_MINOR_VERSION} EQUAL 4)\n")
 end
 
+file.printf("\n")
+
 file.printf("  find_path(#{cmakeIncDirName}\n")
 file.printf("    NAMES\n")
 file.printf("      #{header}\n")
