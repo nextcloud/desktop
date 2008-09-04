@@ -1,7 +1,7 @@
 project(modules)
 
 find_package(Libsmbclient REQUIRED)
-find_package(LIBSSH REQUIRED)
+find_package(LIBSSH)
 
 set(MODULES_PUBLIC_INCLUDE_DIRS
   ${CMAKE_CURRENT_SOURCE_DIR}
@@ -30,21 +30,31 @@ include_directories(
 macro_add_plugin(${SMB_PLUGIN} csync_smb.c)
 target_link_libraries(${SMB_PLUGIN} ${LIBSMBCLIENT_LIBRARIES})
 
+install(
+  TARGETS
+    ${SMB_PLUGIN}
+  DESTINATION
+    ${PLUGIN_INSTALL_DIR}
+)
+
 macro_add_plugin(csync_dummy csync_dummy.c)
 
+if (LIBSSH_FOUND)
 macro_add_plugin(${SFTP_PLUGIN} csync_sftp.c)
 target_link_libraries(${SFTP_PLUGIN} ${LIBSSH_LIBRARIES})
 
-INSTALL(
+install(
   TARGETS
-    ${SMB_PLUGIN}
     ${SFTP_PLUGIN}
   DESTINATION
     ${PLUGIN_INSTALL_DIR}
 )
+endif (LIBSSH_FOUND)
+
 
 # create test file as bad plugin for the vio testcase
 file(WRITE
   ${CMAKE_CURRENT_BINARY_DIR}/csync_bad.so
   "bad plugin"
 )
+
