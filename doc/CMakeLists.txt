@@ -23,3 +23,10 @@ install(
   DESTINATION
     ${MAN_INSTALL_DIR}/man1
 )
+
+install(
+  DIRECTORY
+    userguide
+  DESTINATION
+    ${DATA_INSTALL_DIR}/doc/csync
+)
