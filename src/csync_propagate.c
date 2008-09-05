@@ -132,11 +132,14 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   /* Create the destination file */
   ctx->replica = drep;
-  while ((dfp = csync_vio_open(ctx, turi, O_CREAT|O_EXCL|O_WRONLY|O_NOCTTY, C_FILE_MODE)) == NULL) {
+  while ((dfp = csync_vio_open(ctx, turi, O_CREAT|O_EXCL|O_WRONLY|O_NOCTTY,
+          C_FILE_MODE)) == NULL) {
     switch (errno) {
       case EEXIST:
         if (count++ > 10) {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, command: open(O_CREAT), error: max count exceeded", duri);
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+              "file: %s, command: open(O_CREAT), error: max count exceeded",
+              duri);
           rc = 1;
           goto out;
         }
@@ -275,7 +278,9 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   }
 
   if (st->size != tstat->size) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file: %s, error: incorrect filesize (size: %jd should be %jd)", turi, tstat->size, st->size);
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+        "file: %s, error: incorrect filesize (size: %jd should be %jd)",
+        turi, tstat->size, st->size);
     rc = 1;
     goto out;
   }
