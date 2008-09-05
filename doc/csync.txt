@@ -5,42 +5,101 @@ Andreas Schneider <mail@cynapses.org>
 
 csync is a file synchronizer for Linux and allows to keep two copies of files
 and directories in sync.  It uses uses widly adopted protocols like smb or sftp
-so that there is no need for a server component of csync.
+so that there is no need for a server component of csync. It is a user-level
+program which means there is no need to be a superuser.
 
 Introduction
 ------------
 
 It is often the case that we have multiple copies (called replicas) of a
 filesystem or part of a filesystem (for example on a notebook and on a desktop
-computer). Changes to each replica are often made independently and as a result
-they do not contain the same information. In that case a file synchronizer is
-used to make them consistent again, without loosing any information.
+    computer). Changes to each replica are often made independently and as a
+result they do not contain the same information. In that case a file
+synchronizer is used to make them consistent again, without loosing any
+information.
 
-The goal is to detect conflicting <<X13, updates>> (files which has been modified) and
-propagate non-conflicting updates to each replica.
+The goal is to detect conflicting <<X13, updates>> (files which has been
+    modified) and propagate non-conflicting updates to each replica. If there
+are no conflicts left we are done and the replicas are identical.
 
 Basics
 ------
 
+This section describes some basics you might need to understand how file
+synchronization works.
+
 Paths
 ~~~~~
-TODO
+A path normally refers to a point with a set of files which should be
+synchronized. It is specified relative to the root of the replica. The path is
+just a sequence of names separated by '/'.
+
+NOTE: The path separator is always a forward slash '/', even for Windows.
+
+csync is always using the absolute path. This could be '/home/gladiac' or
+for sftp 'sftp://gladiac:secret@myserver/home/gladiac'.
+
 
 [[X13]]
 What is an update?
 ~~~~~~~~~~~~~~~~~~
-TODO
+The contents of a path could be a file, a directory or a symbolic link
+(symbolic links are not supported yet). To be more precise, if the path refers
+to:
+
+- a regular file, the the contents of the file are the byte stream and the
+  metatdata of the file.
+- a directory, then the content is the metadata of the directory.
+- a symbolic link, then the content is the string where the link points to.
+
+csync keeps a record of each path which has been successfully synchronized. The
+path gets compared with the record and if it has changed since the last
+synchronization, we have an update. This is done by comparing the modification
+or change (modification time of the metadata) time.
 
 What is a conflict?
 ~~~~~~~~~~~~~~~~~~~
-TODO
+A path is conflicting if it fulfills the following conditions:
+
+1. it has been updated in one replica,
+2. it or any of its descendants has been updated on the other replica too, and
+3. its contents in are not identical.
 
 File Synchronization
 --------------------
 
+The main goal of a file synchronizer is correctness. It changes whole or
+separated pieces of a users file system. So a user is not able to monitor the
+complete file synchronization process. So the synchronizer is in a position
+where it can damage the file system. It is important that the implementation
+behaves correctly under all conditions, even if there is an unexpected error
+(for example disk full).
+
+On problem concerning correctness is the handling of conflicts. Each file
+synchronizer tries to propagate conflicting changes to the other replica. At
+the end both replicas should be identical. There are different strategies to
+fulfill these goals.
+
+csync is a 3-phase file synchronizer. The desicion for this design was that
+user interaction should be possible and it should be easy to understand the
+process. The 3 phases are update detection, reconciliation and propagation.
+These will be described in the following sections.
+
 Update detection
 ~~~~~~~~~~~~~~~~
-TODO
+There are differnt strategies to do update detection. csync uses a state-based
+modtime-inode update detector. This means it uses a the modification time to
+detect updates. It doesn't require much resources. A record of each file is
+stored in a database (called statedb) and compared with the current
+modification time during update detection. If the file has changed since the
+last synchronization a instruction is set to evaluate it during the
+reconcilation phase. If we don't have a record for a file we invastigate, it is
+marked as new.
+
+There is a problem to detect names of a file. This is sovled by the record we
+store in the statedb too. If we don't find the file by the name in the database
+we search for the inode number. If the inode number is found then the file has
+been renamed.
 
 Reconciliation
 ~~~~~~~~~~~~~~
