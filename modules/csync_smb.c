@@ -489,7 +489,9 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
     return NULL;
   }
 
-  auth_cb = cb;
+  if (cb != NULL) {
+    auth_cb = cb;
+  }
 
   /* set debug level and authentication function callback */
 #ifdef DEPRECATED_SMBC_INTERFACE
