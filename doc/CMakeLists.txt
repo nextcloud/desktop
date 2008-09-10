@@ -2,6 +2,8 @@
 # Build the documentation
 #
 
+include(UseDoxygen OPTIONAL)
+
 file(GLOB _manpages *.[0-9].txt)
 add_custom_target(man
   COMMAND
