@@ -1,6 +1,20 @@
 ChangeLog
 ==========
 
+version 0.42.0 beta1 (released 2008-09-10)
+
+  libcsync:
+  * Added a sftp module using libssh
+  * Added user guide (just a start)
+  * Added testcase for update detection
+  * Added a function to parse an uri to cstdlib
+  * Updated the manpage
+  * Fixed some segfaults in cstdlib
+  * Fixed some memory leaks
+
+  csync:
+  * Improved the auth callback
+
 version 0.42.0 alpha4 (released 2008-07-02)
 
   libcsync:
