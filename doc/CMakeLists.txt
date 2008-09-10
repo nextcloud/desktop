@@ -28,5 +28,5 @@ install(
   DIRECTORY
     userguide
   DESTINATION
-    ${DATA_INSTALL_DIR}/doc/csync
+    ${SHARE_INSTALL_PREFIX}/doc/csync
 )
