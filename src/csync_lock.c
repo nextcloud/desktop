@@ -41,7 +41,9 @@
 #include "csync_log.h"
 
 static int _csync_lock_create(const char *lockfile) {
-  int fd, pid, rc = -1;
+  int fd = -1;
+  pid_t pid = 0;
+  int rc = -1;
   char errbuf[256] = {0};
   char *ctmpfile = NULL;
   char *dir = NULL;

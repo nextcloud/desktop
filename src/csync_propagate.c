@@ -437,8 +437,8 @@ out:
 }
 
 static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
-  enum csync_replica_e src;
-  enum csync_replica_e dest;
+  enum csync_replica_e src = -1;
+  enum csync_replica_e dest = -1;
   enum csync_replica_e replica_bak;
   char errbuf[256] = {0};
   char *uri = NULL;
@@ -531,8 +531,8 @@ out:
 }
 
 static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
-  enum csync_replica_e src;
-  enum csync_replica_e dest;
+  enum csync_replica_e src = -1;
+  enum csync_replica_e dest = -1;
   enum csync_replica_e replica_bak;
   char errbuf[256] = {0};
   char *uri = NULL;

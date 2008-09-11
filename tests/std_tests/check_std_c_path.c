@@ -124,8 +124,8 @@ START_TEST (check_c_parse_uri)
   unsigned int port;
   char *path = NULL;
 
-  asprintf(&uri, "%s://%s:%s@%s:22%s",
-      test_scheme, test_user, test_passwd, test_host, test_path);
+  fail_if(asprintf(&uri, "%s://%s:%s@%s:22%s",
+      test_scheme, test_user, test_passwd, test_host, test_path) < 0, NULL);
 
   fail_unless(c_parse_uri(uri, &scheme, &user, &passwd, &host, &port, &path) == 0, NULL);
 
