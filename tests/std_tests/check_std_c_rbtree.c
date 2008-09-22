@@ -166,7 +166,6 @@ START_TEST (check_c_rbtree_insert_nomem)
   fail_unless(errno == ENOMEM, NULL);
   unsetenv("CSYNC_NOMEMORY");
 
-  testdata = c_rbtree_node_data(node);
   SAFE_FREE(testdata);
 
   c_rbtree_free(tree);
