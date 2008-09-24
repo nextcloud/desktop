@@ -152,8 +152,6 @@ END_TEST
 #ifdef CSYNC_MEM_NULL_TESTS
 START_TEST (check_c_rbtree_insert_nomem)
 {
-
-  c_rbnode_t *node = NULL;
   test_t *testdata = NULL;
 
   fail_unless(c_rbtree_create(&tree, key_cmp, data_cmp) == 0, NULL);
