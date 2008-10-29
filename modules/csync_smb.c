@@ -125,7 +125,8 @@ static void get_auth_data_fn(const char *pServer,
   /* Call the passwort prompt */
   if (auth_cb != NULL) {
     DEBUG_SMB(("csync_smb - execute authentication callback\n"));
-    (*auth_cb) (pUsername, maxLenUsername, pPassword, maxLenPassword);
+    (*auth_cb) ("Username:", pUsername, maxLenUsername, 1, 0);
+    (*auth_cb) ("Password:", pPassword, maxLenPassword, 0, 0);
   }
 
   DEBUG_SMB(("csync_smb - user=%s, workgroup=%s, server=%s, share=%s\n",
