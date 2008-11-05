@@ -142,10 +142,12 @@ static int _sftp_connect(const char *uri) {
   ssh_options_set_host(options, host);
   if (port) {
     ssh_options_set_port(options, port);
+    DEBUG_SFTP(("csync_sftp - port set to: %d\n", port));
   }
 
   if (user && *user) {
     ssh_options_set_username(options, user);
+    DEBUG_SFTP(("csync_sftp - username set to: %s\n", user));
   }
 
   /* connect to the server */
