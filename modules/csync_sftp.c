@@ -119,6 +119,7 @@ static int _sftp_connect(const char *uri) {
 
   options = ssh_options_new();
   if (options == NULL) {
+    fprintf(stderr, "csync_sftp - error creating options: %s", strerror(errno));
     rc = -1;
     goto out;
   }
@@ -150,6 +151,7 @@ static int _sftp_connect(const char *uri) {
   /* connect to the server */
   ssh_session = ssh_new();
   if (ssh_session == NULL) {
+    fprintf(stderr, "csync_sftp - error creating new connection: %s", strerror(errno));
     rc = -1;
     goto out;
   }
@@ -157,6 +159,7 @@ static int _sftp_connect(const char *uri) {
   ssh_set_options(ssh_session, options);
   rc = ssh_connect(ssh_session);
   if (rc < 0) {
+    fprintf(stderr, "csync_sftp - error connecting to the server: %s", ssh_get_error(ssh_session));
     ssh_disconnect(ssh_session);
     ssh_session = NULL;
     ssh_finalize();
