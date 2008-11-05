@@ -99,7 +99,7 @@ static int _sftp_connect(const char *uri) {
   char *user = NULL;
   char *passwd = NULL;
   char *host = NULL;
-  unsigned int port;
+  unsigned int port = 0;
   char *path = NULL;
   unsigned char hash[MD5_DIGEST_LEN];
   int rc = -1;
