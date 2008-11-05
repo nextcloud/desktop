@@ -119,7 +119,7 @@ static int _sftp_connect(const char *uri) {
 
   options = ssh_options_new();
   if (options == NULL) {
-    fprintf(stderr, "csync_sftp - error creating options: %s", strerror(errno));
+    fprintf(stderr, "csync_sftp - error creating options: %s\n", strerror(errno));
     rc = -1;
     goto out;
   }
@@ -151,7 +151,7 @@ static int _sftp_connect(const char *uri) {
   /* connect to the server */
   ssh_session = ssh_new();
   if (ssh_session == NULL) {
-    fprintf(stderr, "csync_sftp - error creating new connection: %s", strerror(errno));
+    fprintf(stderr, "csync_sftp - error creating new connection: %s\n", strerror(errno));
     rc = -1;
     goto out;
   }
@@ -159,7 +159,7 @@ static int _sftp_connect(const char *uri) {
   ssh_set_options(ssh_session, options);
   rc = ssh_connect(ssh_session);
   if (rc < 0) {
-    fprintf(stderr, "csync_sftp - error connecting to the server: %s", ssh_get_error(ssh_session));
+    fprintf(stderr, "csync_sftp - error connecting to the server: %s\n", ssh_get_error(ssh_session));
     ssh_disconnect(ssh_session);
     ssh_session = NULL;
     ssh_finalize();
@@ -172,7 +172,7 @@ static int _sftp_connect(const char *uri) {
     case SSH_SERVER_KNOWN_OK:
       break;
     case SSH_SERVER_KNOWN_CHANGED:
-      fprintf(stderr, "csync_sftp - host key for server changed : server's one is now :\n");
+      fprintf(stderr, "csync_sftp - host key for server changed : server's one is now:\n");
       ssh_get_pubkey_hash(ssh_session, hash);
       ssh_print_hexa("csync_sftp - public key hash", hash, MD5_DIGEST_LEN);
       fprintf(stderr,"csync_sftp - for security reason, connection will be stopped\n");
@@ -204,7 +204,7 @@ static int _sftp_connect(const char *uri) {
       goto out;
       break;
     case SSH_SERVER_ERROR:
-      fprintf(stderr, "%s", ssh_get_error(ssh_session));
+      fprintf(stderr, "%s\n", ssh_get_error(ssh_session));
       ssh_disconnect(ssh_session);
       ssh_session = NULL;
       ssh_finalize();
