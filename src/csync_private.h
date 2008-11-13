@@ -112,6 +112,11 @@ struct csync_s {
     char *config_dir;
   } options;
 
+  struct {
+    uid_t uid;
+    uid_t euid;
+  } pwd;
+
   enum csync_replica_e current;
   enum csync_replica_e replica;
 

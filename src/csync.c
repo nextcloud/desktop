@@ -29,6 +29,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
+#include <unistd.h>
+#include <sys/types.h>
 
 #include "c_lib.h"
 #include "c_jhash.h"
@@ -110,6 +112,9 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
 
   ctx->options.max_depth = MAX_DEPTH;
   ctx->options.max_time_difference = MAX_TIME_DIFFERENCE;
+
+  ctx->pwd.uid = getuid();
+  ctx->pwd.euid = geteuid();
 
   if (asprintf(&ctx->options.config_dir, "%s/%s", getenv("HOME"), CSYNC_CONF_DIR) < 0) {
     SAFE_FREE(ctx->local.uri);

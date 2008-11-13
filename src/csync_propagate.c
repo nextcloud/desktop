@@ -104,7 +104,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   ctx->replica = srep;
   flags = O_RDONLY|O_NOFOLLOW;
   /* O_NOATIME can only be set by the owner of the file or the superuser */
-  if (st->uid == getuid() || geteuid() == 0) {
+  if (st->uid == ctx->pwd.uid || ctx->pwd.euid == 0) {
     flags |= O_NOATIME;
   }
   sfp = csync_vio_open(ctx, suri, flags, 0);
@@ -321,7 +321,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   }
 
   /* set owner and group if possible */
-  if (geteuid() == 0) {
+  if (ctx->pwd.euid == 0) {
     csync_vio_chown(ctx, duri, st->uid, st->gid);
   }
 
@@ -501,7 +501,7 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
   }
 
   /* set owner and group if possible */
-  if (geteuid() == 0) {
+  if (ctx->pwd.euid == 0) {
     csync_vio_chown(ctx, uri, st->uid, st->gid);
   }
 
@@ -580,7 +580,7 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
   }
 
   /* set owner and group if possible */
-  if (geteuid() == 0) {
+  if (ctx->pwd.euid == 0) {
     csync_vio_chown(ctx, uri, st->uid, st->gid);
   }
 
