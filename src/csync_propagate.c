@@ -121,8 +121,6 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     goto out;
   }
 
-  ctx->replica = drep;
-
   /* create the temporary file name */
   if (asprintf(&turi, "%s.XXXXXX", duri) < 0) {
     rc = -1;
