@@ -393,7 +393,7 @@ int csync_vio_mkdirs(CSYNC *ctx, const char *uri, mode_t mode) {
   }
 
   tmp = csync_vio_mkdir(ctx, uri, mode);
-  if (errno == EEXIST) {
+  if ((tmp < 0) && (errno == EEXIST)) {
     return 0;
   }
 

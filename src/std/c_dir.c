@@ -46,7 +46,7 @@ int c_mkdirs(const char *path, mode_t mode) {
   }
 
   tmp = mkdir(path, mode);
-  if (errno == EEXIST) {
+  if ((tmp < 0) && (errno == EEXIST)) {
     return 0;
   }
 
