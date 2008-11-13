@@ -126,7 +126,12 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     rc = -1;
     goto out;
   }
-  turi = mktemp(turi);
+
+  /* We just want a random file name here, open checks if the file exists. */
+  if (c_tmpname(turi) < 0) {
+    rc = -1;
+    goto out;
+  }
 
   /* Create the destination file */
   ctx->replica = drep;
@@ -141,7 +146,10 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
           rc = 1;
           goto out;
         }
-        turi = mktemp(turi);
+        if (c_tmpname(turi) < 0) {
+          rc = -1;
+          goto out;
+        }
         break;
       case ENOENT:
         /* get the directory name */

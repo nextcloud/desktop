@@ -69,6 +69,19 @@ char *c_dirname(const char *path);
 char *c_basename (const char *path);
 
 /**
+ * @brief Make a temporary filename.
+ *
+ * @param template  Template to replace. The last six characters of template
+ *                  must be XXXXXX and these are replaced with a string that
+ *                  makes the filename more or less unique. Since it will be
+ *                  modified, template must not be a string constant, but
+ *                  should be declared as a character array.
+ *
+ * @return 0 on succes, < 0 on error with errno set.
+ */
+int c_tmpname(char *template);
+
+/**
  * @brief parse a uri and split it into components.
  *
  * parse_uri parses an uri in the format

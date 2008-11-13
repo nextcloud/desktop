@@ -24,10 +24,12 @@
 #define _GNU_SOURCE
 #endif
 
+#include <errno.h>
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "c_alloc.h"
 #include "c_path.h"
@@ -128,6 +130,34 @@ char *c_basename (const char *path) {
   new[len] = '\0';
 
   return new;
+}
+
+int c_tmpname(char *template) {
+  char *tmp = template + strlen(template) - 6;
+  int i = 0;
+
+  if (tmp < template) {
+    goto err;
+  }
+
+  for (i = 0; i < 6; i++) {
+    if (tmp[i] != 'X') {
+      goto err;
+    }
+  }
+
+  srand(time(NULL));
+
+  for (i = 0; i < 6; ++i) {
+    int hexdigit = (rand() >> (i * 5)) & 0x1f;
+    tmp[i] = hexdigit > 9 ? hexdigit + 'a' - 10 : hexdigit + '0';
+  }
+
+  return 0;
+
+err:
+  errno = EINVAL;
+  return -1;
 }
 
 int c_parse_uri(const char *uri,
