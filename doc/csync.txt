@@ -3,10 +3,10 @@ CSYNC User Guide
 Andreas Schneider <mail@cynapses.org>
 :Author Initials: ADS
 
-csync is a file synchronizer for Linux and allows to keep two copies of files
-and directories in sync.  It uses uses widly adopted protocols like smb or sftp
-so that there is no need for a server component of csync. It is a user-level
-program which means there is no need to be a superuser.
+csync is a bidirectional file synchronizer for Linux and allows to keep two
+copies of files and directories in sync.  It uses uses widly adopted protocols
+like smb or sftp so that there is no need for a server component of csync. It
+is a user-level program which means you don't need to be a superuser.
 
 Introduction
 ------------
@@ -96,17 +96,57 @@ last synchronization a instruction is set to evaluate it during the
 reconcilation phase. If we don't have a record for a file we invastigate, it is
 marked as new.
 
-There is a problem to detect names of a file. This is sovled by the record we
+There is a problem to detect renaming of files. This is sovled by the record we
 store in the statedb too. If we don't find the file by the name in the database
 we search for the inode number. If the inode number is found then the file has
 been renamed.
 
 Reconciliation
 ~~~~~~~~~~~~~~
+The most improtant component is the update detector cause the reconciler depends
+on it. The correctness of reconciler is mandatory cause it can damage a
+filesystem. It decides which file:
+
+* keeps untouched
+* has a conflict
+* gets synchronized
+* or gets *deleted*
+
+A wrong decision of the reconciler leads in most cases to a loss of data. So there
+are several conditions a the file synchronizer has to follow.
+
+Specification
+^^^^^^^^^^^^^
+
 TODO
 
 Propagation
 ~~~~~~~~~~~
+
+The next instance of the file synchronizer the propagator. It uses the
+calculated records to apply them on the current replica.
+
+* 2-phase-copy
+* merge trees and write journal
+
+Robustness
+~~~~~~~~~~
+
+TODO
+
+Crash resistance
+^^^^^^^^^^^^^^^^
+
+TODO
+
+Transfer errors
+^^^^^^^^^^^^^^^
+
+TODO
+
+Database loss
+^^^^^^^^^^^^^
+
 TODO
 
 Getting started

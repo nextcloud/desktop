@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 8.2.5" />
+<meta name="generator" content="AsciiDoc 8.2.7" />
 <style type="text/css">
 /* Debug borders */
 p, li, dt, dd, div, pre, h1, h2, h3, h4, h5, h6 {
@@ -26,10 +26,12 @@ a:visited {
 
 em {
   font-style: italic;
+  color: navy;
 }
 
 strong {
   font-weight: bold;
+  color: #083194;
 }
 
 tt {
@@ -69,6 +71,10 @@ hr {
 p {
   margin-top: 0.5em;
   margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
 }
 
 pre {
@@ -123,6 +129,7 @@ div.content { /* Block element content. */
 
 /* Block element titles. */
 div.title, caption.title {
+  color: #527bbd;
   font-family: sans-serif;
   font-weight: bold;
   text-align: left;
@@ -158,13 +165,25 @@ div.listingblock > div.content {
   padding: 0.5em;
 }
 
-div.quoteblock > div.content {
+div.quoteblock {
   padding-left: 2.0em;
 }
-
-div.attribution {
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
   text-align: right;
 }
+
+div.verseblock {
+  padding-left: 2.0em;
+}
+div.verseblock > div.content {
+  white-space: pre;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
 div.verseblock + div.attribution {
   text-align: left;
 }
@@ -187,10 +206,6 @@ div.exampleblock > div.content {
   padding: 0.5em;
 }
 
-div.verseblock div.content {
-  white-space: pre;
-}
-
 div.imageblock div.content { padding-left: 0; }
 div.imageblock img { border: 1px solid silver; }
 span.image img { border-style: none; }
@@ -202,16 +217,19 @@ dl {
 dt {
   margin-top: 0.5em;
   margin-bottom: 0;
-  font-style: italic;
+  font-style: normal;
 }
 dd > *:first-child {
-  margin-top: 0;
+  margin-top: 0.1em;
 }
 
 ul, ol {
     list-style-position: outside;
 }
-div.olist2 ol {
+div.olist > ol {
+  list-style-type: decimal;
+}
+div.olist2 > ol {
   list-style-type: lower-alpha;
 }
 
@@ -231,11 +249,11 @@ div.hlist {
   margin-bottom: 0.8em;
 }
 div.hlist td {
-  padding-bottom: 5px;
+  padding-bottom: 15px;
 }
 td.hlist1 {
   vertical-align: top;
-  font-style: italic;
+  font-style: normal;
   padding-right: 0.8em;
 }
 td.hlist2 {
@@ -279,6 +297,7 @@ div.sidebar-content {
   padding: 0.5em;
 }
 div.sidebar-title, div.image-title {
+  color: #527bbd;
   font-family: sans-serif;
   font-weight: bold;
   margin-top: 0.0em;
@@ -291,8 +310,17 @@ div.listingblock div.content {
   padding: 0.5em;
 }
 
-div.quoteblock-content {
-  padding-left: 2.0em;
+div.quoteblock-attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock-content {
+  white-space: pre;
+}
+div.verseblock-attribution {
+  padding-top: 0.75em;
+  text-align: left;
 }
 
 div.exampleblock-content {
@@ -302,6 +330,14 @@ div.exampleblock-content {
 
 /* IE6 sets dynamically generated links as visited. */
 div#toc a:visited { color: blue; }
+
+/* Because IE6 child selector is broken. */
+div.olist2 ol {
+  list-style-type: lower-alpha;
+}
+div.olist2 div.olist ol {
+  list-style-type: decimal;
+}
 </style>
 <script type="text/javascript">
 /*<![CDATA[*/
@@ -372,6 +408,8 @@ function generateToc(toclevels) {
     div.className = "toclevel" + entry.toclevel;
     toc.appendChild(div);
   }
+  if (entries.length == 0)
+    document.getElementById("header").removeChild(toc);
 }
 /*]]>*/
 </script>
@@ -389,10 +427,10 @@ function generateToc(toclevels) {
 </div>
 <div id="preamble">
 <div class="sectionbody">
-<div class="para"><p>csync is a file synchronizer for Linux and allows to keep two copies of files
-and directories in sync.  It uses uses widly adopted protocols like smb or sftp
-so that there is no need for a server component of csync. It is a user-level
-program which means there is no need to be a superuser.</p></div>
+<div class="para"><p>csync is a bidirectional file synchronizer for Linux and allows to keep two
+copies of files and directories in sync.  It uses uses widly adopted protocols
+like smb or sftp so that there is no need for a server component of csync. It
+is a user-level program which means you don't need to be a superuser.</p></div>
 </div>
 </div>
 <h2 id="_introduction">1. Introduction</h2>
@@ -496,13 +534,62 @@ modification time during update detection. If the file has changed since the
 last synchronization a instruction is set to evaluate it during the
 reconcilation phase. If we don't have a record for a file we invastigate, it is
 marked as new.</p></div>
-<div class="para"><p>There is a problem to detect names of a file. This is sovled by the record we
+<div class="para"><p>There is a problem to detect renaming of files. This is sovled by the record we
 store in the statedb too. If we don't find the file by the name in the database
 we search for the inode number. If the inode number is found then the file has
 been renamed.</p></div>
 <h3 id="_reconciliation">3.2. Reconciliation</h3><div style="clear:left"></div>
+<div class="para"><p>The most improtant component is the update detector cause the reconciler depends
+on it. The correctness of reconciler is mandatory cause it can damage a
+filesystem. It decides which file:</p></div>
+<div class="ilist"><ul>
+<li>
+<p>
+keeps untouched
+</p>
+</li>
+<li>
+<p>
+has a conflict
+</p>
+</li>
+<li>
+<p>
+gets synchronized
+</p>
+</li>
+<li>
+<p>
+or gets <strong>deleted</strong>
+</p>
+</li>
+</ul></div>
+<div class="para"><p>A wrong decision of the reconciler leads in most cases to a loss of data. So there
+are several conditions a the file synchronizer has to follow.</p></div>
+<h4 id="_specification">3.2.1. Specification</h4>
 <div class="para"><p>TODO</p></div>
 <h3 id="_propagation">3.3. Propagation</h3><div style="clear:left"></div>
+<div class="para"><p>The next instance of the file synchronizer the propagator. It uses the
+calculated records to apply them on the current replica.</p></div>
+<div class="ilist"><ul>
+<li>
+<p>
+2-phase-copy
+</p>
+</li>
+<li>
+<p>
+merge trees and write journal
+</p>
+</li>
+</ul></div>
+<h3 id="_robustness">3.4. Robustness</h3><div style="clear:left"></div>
+<div class="para"><p>TODO</p></div>
+<h4 id="_crash_resistance">3.4.1. Crash resistance</h4>
+<div class="para"><p>TODO</p></div>
+<h4 id="_transfer_errors">3.4.2. Transfer errors</h4>
+<div class="para"><p>TODO</p></div>
+<h4 id="_database_loss">3.4.3. Database loss</h4>
 <div class="para"><p>TODO</p></div>
 </div>
 <h2 id="_getting_started">4. Getting started</h2>
@@ -523,7 +610,7 @@ directory).</p></div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2008-09-05 15:43:48 CEST
+Last updated 2008-11-20 12:16:02 CEST
 </div>
 </div>
 </body>
