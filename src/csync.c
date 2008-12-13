@@ -413,7 +413,7 @@ int csync_propagate(CSYNC *ctx) {
   ctx->current = LOCAL_REPLICA;
   ctx->replica = ctx->local.type;
 
-  rc = csync_propapate_files(ctx);
+  rc = csync_propagate_files(ctx);
 
   clock_gettime(CLOCK_REALTIME, &finish);
 
@@ -431,7 +431,7 @@ int csync_propagate(CSYNC *ctx) {
   ctx->current = REMOTE_REPLCIA;
   ctx->replica = ctx->remote.type;
 
-  rc = csync_propapate_files(ctx);
+  rc = csync_propagate_files(ctx);
 
   clock_gettime(CLOCK_REALTIME, &finish);
 

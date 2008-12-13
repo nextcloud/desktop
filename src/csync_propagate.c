@@ -836,7 +836,7 @@ err:
   return -1;
 }
 
-int csync_propapate_files(CSYNC *ctx) {
+int csync_propagate_files(CSYNC *ctx) {
   c_rbtree_t *tree = NULL;
 
   switch (ctx->current) {
