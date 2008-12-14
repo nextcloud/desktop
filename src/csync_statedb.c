@@ -308,7 +308,7 @@ static int _insert_metadata_visitor(void *obj, void *data) {
        */
       stmt = sqlite3_mprintf("INSERT INTO metadata_temp "
         "(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES "
-        "(%llu, %lu, '%q', %u, %u, %u, %u, %lu);",
+        "(%llu, %lu, '%q', %llu, %u, %u, %u, %lu);",
         (long long unsigned int) fs->phash,
         (long unsigned int) fs->pathlen,
         fs->path,
