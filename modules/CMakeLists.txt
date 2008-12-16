@@ -3,6 +3,8 @@ project(modules)
 find_package(Libsmbclient REQUIRED)
 find_package(LIBSSH)
 
+set(PLUGIN_VERSION_INSTALL_DIR "${PLUGIN_INSTALL_DIR}-${LIBRARY_SOVERSION}")
+
 set(MODULES_PUBLIC_INCLUDE_DIRS
   ${CMAKE_CURRENT_SOURCE_DIR}
   CACHE INTERNAL "modules include directories"
@@ -34,7 +36,7 @@ install(
   TARGETS
     ${SMB_PLUGIN}
   DESTINATION
-    ${PLUGIN_INSTALL_DIR}
+    ${PLUGIN_VERSION_INSTALL_DIR}
 )
 
 macro_add_plugin(csync_dummy csync_dummy.c)
@@ -47,7 +49,7 @@ install(
   TARGETS
     ${SFTP_PLUGIN}
   DESTINATION
-    ${PLUGIN_INSTALL_DIR}
+    ${PLUGIN_VERSION_INSTALL_DIR}
 )
 endif (LIBSSH_FOUND)
 

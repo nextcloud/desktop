@@ -79,9 +79,9 @@ set_target_properties(
   ${CSYNC_LIBRARY}
     PROPERTIES
       VERSION
-        0.1.0
+        ${LIBRARY_VERSION}
       SOVERSION
-        0
+        ${LIBRARY_SOVERSION}
 )
 
 INSTALL(
