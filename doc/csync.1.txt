@@ -39,10 +39,12 @@ OPTIONS
     Add an additional exclude file
 
 *-r, --reconcile*::
-    Run update detection and reconcilation
+    Run ONLY update detection and reconcilation
+    This option is for debugging
 
 *-u, --update*::
-    Run only the update detection
+    Run ONLY the update detection
+    This option is for debugging
 
 *-?, --help*::
     Print the help list
