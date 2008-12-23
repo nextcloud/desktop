@@ -462,8 +462,8 @@ csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx, ino_t inode) {
 
 /* query the statedb, caller must free the memory */
 c_strlist_t *csync_statedb_query(CSYNC *ctx, const char *statement) {
-  int err;
-  int rc = 0;
+  int err = SQLITE_OK;
+  int rc = SQLITE_OK;
   size_t i = 0;
   size_t busy_count = 0;
   size_t retry_count = 0;
