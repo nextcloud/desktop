@@ -1,6 +1,11 @@
 ChangeLog
 ==========
 
+version 0.42.0 rc2 (released 2009-01-07)
+  libcsync:
+  * Fixed a bug in the creation of the statedb
+  * Completed userguide
+
 version 0.42.0 rc1 (released 2008-12-04)
   libcsync:
   * Reduced calls of syscall functions.
