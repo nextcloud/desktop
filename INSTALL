@@ -7,10 +7,10 @@
 In order to build csync, you need to install several components:
 
 - A C++ compiler
-- [CMake](http://www.cmake.org/) >= 2.4.4.
+- [CMake](http://www.cmake.org) >= 2.4.4.
 - [check](http://check.sourceforge.net) >= 0.9.5
 - [log4c](http://log4c.sourceforge.net) >= 1.2
-- [sqlite3](http://log4c.sourceforge.net) >= 3.4
+- [sqlite3](http://www.sqlite.org) >= 3.4
 
 - [libsmbclient](http://www.samba.org)
 
