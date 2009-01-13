@@ -112,6 +112,7 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
 
   ctx->options.max_depth = MAX_DEPTH;
   ctx->options.max_time_difference = MAX_TIME_DIFFERENCE;
+  ctx->options.unix_filesystem = 0;
 
   ctx->pwd.uid = getuid();
   ctx->pwd.euid = geteuid();
@@ -270,6 +271,12 @@ int csync_init(CSYNC *ctx) {
     goto out;
   } else if (timediff < 0) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Synchronisation is not possible!");
+    rc = -1;
+    goto out;
+  }
+
+  if (csync_unix_filesystem(ctx) < 0) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Could not detect filesystem type.");
     rc = -1;
     goto out;
   }

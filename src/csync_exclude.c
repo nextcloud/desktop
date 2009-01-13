@@ -105,6 +105,26 @@ void csync_exclude_destroy(CSYNC *ctx) {
 
 int csync_excluded(CSYNC *ctx, const char *path) {
   size_t i;
+  const char *p;
+
+  if (! ctx->options.unix_filesystem) {
+    for (p = path; *p; p++) {
+      switch (*p) {
+        case '/':
+        case '\\':
+        case ':':
+        case '?':
+        case '*':
+        case '"':
+        case '>':
+        case '<':
+        case '|':
+          return 1;
+        default:
+          break;
+      }
+    }
+  }
 
   if (ctx->excludes == NULL) {
     return 0;

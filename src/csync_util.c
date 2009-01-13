@@ -253,3 +253,37 @@ out:
   return rc;
 }
 
+int csync_unix_filesystem(CSYNC *ctx) {
+  int rc = -1;
+  char *uri = NULL;
+  csync_vio_handle_t *fp = NULL;
+
+  ctx->options.unix_filesystem = 0;
+
+  if (asprintf(&uri, "%s/csync_file*test.ctmp", ctx->remote.uri) < 0) {
+    rc = -1;
+    goto out;
+  }
+
+  ctx->replica = ctx->remote.type;
+  fp = csync_vio_creat(ctx, uri, 0644);
+  if (fp == NULL) {
+    rc = 0;
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO,
+        "Disabled unix filesystem synchronization");
+    goto out;
+  }
+  csync_vio_close(ctx, fp);
+
+  ctx->options.unix_filesystem = 1;
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Enabled unix filesystem synchronization");
+
+  rc = 1;
+
+out:
+  csync_vio_unlink(ctx, uri);
+  SAFE_FREE(uri);
+
+  return rc;
+}
+

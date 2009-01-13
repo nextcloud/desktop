@@ -31,4 +31,6 @@ void csync_memstat_check(void);
 
 int csync_merge_file_trees(CSYNC *ctx);
 
+int csync_unix_filesystem(CSYNC *ctx);
+
 #endif /* _CSYNC_UTIL_H */
