@@ -110,7 +110,6 @@ int csync_excluded(CSYNC *ctx, const char *path) {
   if (! ctx->options.unix_filesystem) {
     for (p = path; *p; p++) {
       switch (*p) {
-        case '/':
         case '\\':
         case ':':
         case '?':
