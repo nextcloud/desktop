@@ -109,7 +109,7 @@ struct csync_s {
     int max_depth;
     int max_time_difference;
     int sync_symbolic_links;
-    int unix_filesystem;
+    int unix_extensions;
     char *config_dir;
   } options;
 

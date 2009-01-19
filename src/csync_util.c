@@ -253,12 +253,12 @@ out:
   return rc;
 }
 
-int csync_unix_filesystem(CSYNC *ctx) {
+int csync_unix_extensions(CSYNC *ctx) {
   int rc = -1;
   char *uri = NULL;
   csync_vio_handle_t *fp = NULL;
 
-  ctx->options.unix_filesystem = 0;
+  ctx->options.unix_extensions = 0;
 
   if (asprintf(&uri, "%s/csync_file*test.ctmp", ctx->remote.uri) < 0) {
     rc = -1;
@@ -275,7 +275,7 @@ int csync_unix_filesystem(CSYNC *ctx) {
   }
   csync_vio_close(ctx, fp);
 
-  ctx->options.unix_filesystem = 1;
+  ctx->options.unix_extensions = 1;
   CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Enabled unix filesystem synchronization");
 
   rc = 1;
