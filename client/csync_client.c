@@ -35,8 +35,9 @@
 #include "csync_auth.h"
 
 enum {
-  KEY_DUMMY = 129,
-  KEY_EXCLUDE_FILE,
+  KEY_EXCLUDE_FILE = 129,
+  KEY_TEST_UPDATE,
+  KEY_TEST_RECONCILE,
   KEY_CREATE_STATEDB,
 };
 
@@ -52,6 +53,14 @@ static char args_doc[] = "SOURCE DESTINATION";
 /* The options we understand. */
 static struct argp_option options[] = {
   {
+    .name  = "exclude-file",
+    .key   = KEY_EXCLUDE_FILE,
+    .arg   = "<file>",
+    .flags = 0,
+    .doc   = "Add an additional exclude file",
+    .group = 0
+  },
+  {
     .name  = "disable-statedb",
     .key   = 'd',
     .arg   = NULL,
@@ -60,35 +69,27 @@ static struct argp_option options[] = {
     .group = 0
   },
   {
-    .name  = "update",
-    .key   = 'u',
+    .name  = "dry-run",
+    .key   = KEY_TEST_RECONCILE,
     .arg   = NULL,
     .flags = 0,
-    .doc   = "Run only the update detection",
+    .doc   = "This runs only update detection and reconcilation.",
     .group = 0
   },
   {
-    .name  = "reconcile",
-    .key   = 'r',
-    .arg   = NULL,
-    .flags = 0,
-    .doc   = "Run update detection and reconcilation",
-    .group = 0
-  },
-  {
-    .name  = "create-statedb",
+    .name  = "test-statedb",
     .key   = KEY_CREATE_STATEDB,
     .arg   = NULL,
     .flags = 0,
-    .doc   = "Run update detection and write the statedb (TESTING ONLY!)",
+    .doc   = "Test creation of the statedb. Runs update detection.",
     .group = 0
   },
   {
-    .name  = "exclude-file",
-    .key   = KEY_EXCLUDE_FILE,
-    .arg   = "<file>",
+    .name  = "test-update",
+    .key   = KEY_TEST_UPDATE,
+    .arg   = NULL,
     .flags = 0,
-    .doc   = "Add an additional exclude file",
+    .doc   = "Test the update detection",
     .group = 0
   },
   {NULL, 0, 0, 0, NULL, 0}
@@ -113,13 +114,16 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state) {
   struct argument_s *arguments = state->input;
 
   switch (key) {
-    case 'u':
+    case 'd':
+      arguments->disable_statedb = 1;
+      break;
+    case KEY_TEST_UPDATE:
       arguments->create_statedb = 0;
       arguments->update = 1;
       arguments->reconcile = 0;
       arguments->propagate = 0;
       break;
-    case 'r':
+    case KEY_TEST_RECONCILE:
       arguments->create_statedb = 0;
       arguments->update = 1;
       arguments->reconcile = 1;
@@ -127,9 +131,6 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state) {
       break;
     case KEY_EXCLUDE_FILE:
       arguments->exclude_file = strdup(arg);
-      break;
-    case 'd':
-      arguments->disable_statedb = 1;
       break;
     case KEY_CREATE_STATEDB:
       arguments->create_statedb = 1;
