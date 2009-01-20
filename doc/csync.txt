@@ -271,6 +271,45 @@ following way:
 The remote destination is supported by plugins. By default csync ships with smb
 and sftp support. For more information, see the manpage of csync(1).
 
+Exclude lists
+~~~~~~~~~~~~~
+
+csync provides exclude lists with simple shell wildcard patterns. There is a
+global exclude list, which is normally located in
+'/etc/csync/csync_exclude.conf' and it has already some sane defaults. If you
+run csync the first time, it will create an empty exclude list for the user.
+This file will be '~/.csync/csync_exclude.conf'. If you run both files are used
+and maybe an additional one if you specify it.
+
+The entries in the file are newline separated. Use
+'/etc/csync/csync_exclude.conf' as an example.
+
+Debug messages and dry run
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For log messages csync uses log4c. It is a logging mechanism which uses debug
+levels and categories. There is a config file where you can specify the debug
+level for each component. It is located at '~/.csync/csync_log.conf'.
+
+Available debug priorities are:
+
+* trace
+* debug
+* info
+* warn
+* error
+* fatal
+* none
+
+A more detailed description can be found at the
+link:http://log4c.sourceforge.net/[log4c homepage]. A good introduction can
+be found link:http://logging.apache.org/log4j/1.2/manual.html[here].
+
+To simulate a run of the file synchronizer, you should set the priority to
+'debug' for the categories 'csync.updater' and 'csync.reconciler' in the config
+file '~/.csync/csync_log.conf'. Then run csync with the '--dry-run' option.
+This will only run update detection and reconciliation.
+
 [[X80]]
 The PAM module
 ~~~~~~~~~~~~~~

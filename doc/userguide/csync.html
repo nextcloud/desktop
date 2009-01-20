@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 8.2.7" />
+<meta name="generator" content="AsciiDoc 8.3.3" />
+<title>CSYNC User Guide</title>
 <style type="text/css">
 /* Debug borders */
 p, li, dt, dd, div, pre, h1, h2, h3, h4, h5, h6 {
@@ -218,6 +219,7 @@ dt {
   margin-top: 0.5em;
   margin-bottom: 0;
   font-style: normal;
+  color: navy;
 }
 dd > *:first-child {
   margin-top: 0.1em;
@@ -226,11 +228,27 @@ dd > *:first-child {
 ul, ol {
     list-style-position: outside;
 }
-div.olist > ol {
+ol.arabic {
   list-style-type: decimal;
 }
-div.olist2 > ol {
+ol.loweralpha {
   list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
 }
 
 div.tableblock > table {
@@ -243,21 +261,48 @@ thead {
 tfoot {
   font-weight: bold;
 }
+td > div.verse {
+  white-space: pre;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overriden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
 
-div.hlist {
+
+div.hdlist {
   margin-top: 0.8em;
   margin-bottom: 0.8em;
 }
-div.hlist td {
+div.hdlist tr {
   padding-bottom: 15px;
 }
-td.hlist1 {
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
   vertical-align: top;
   font-style: normal;
   padding-right: 0.8em;
+  color: navy;
 }
-td.hlist2 {
+td.hdlist2 {
   vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
 }
 
 @media print {
@@ -330,14 +375,6 @@ div.exampleblock-content {
 
 /* IE6 sets dynamically generated links as visited. */
 div#toc a:visited { color: blue; }
-
-/* Because IE6 child selector is broken. */
-div.olist2 ol {
-  list-style-type: lower-alpha;
-}
-div.olist2 div.olist ol {
-  list-style-type: decimal;
-}
 </style>
 <script type="text/javascript">
 /*<![CDATA[*/
@@ -413,7 +450,6 @@ function generateToc(toclevels) {
 }
 /*]]>*/
 </script>
-<title>CSYNC User Guide</title>
 </head>
 <body>
 <div id="header">
@@ -427,25 +463,25 @@ function generateToc(toclevels) {
 </div>
 <div id="preamble">
 <div class="sectionbody">
-<div class="para"><p>csync is a lightweight utility to synchronize files between two directories
+<div class="paragraph"><p>csync is a lightweight utility to synchronize files between two directories
 on a system or between multiple systems.</p></div>
-<div class="para"><p>It synchronizes bidirectionally and allows the user to keep two copies of files
+<div class="paragraph"><p>It synchronizes bidirectionally and allows the user to keep two copies of files
 and directories in sync.  csync uses widely adopted protocols, such as smb or
 sftp, so that there is no need for a server component. It is a user-level
-program which means you don't need to be a superuser or administrator.</p></div>
-<div class="para"><p>Together with a Pluggable Authentication Module (PAM), the intent is to provide
+program which means you don&#8217;t need to be a superuser or administrator.</p></div>
+<div class="paragraph"><p>Together with a Pluggable Authentication Module (PAM), the intent is to provide
 Roaming Home Directories for Linux (see <a href="#X80">The PAM Module</a>).</p></div>
 </div>
 </div>
 <h2 id="_introduction">1. Introduction</h2>
 <div class="sectionbody">
-<div class="para"><p>It is often the case that we have multiple copies (called replicas) of a
+<div class="paragraph"><p>It is often the case that we have multiple copies (called replicas) of a
 filesystem or part of a filesystem (for example on a notebook and desktop
 computer). Changes to each replica are often made independently, and as a
 result, they do not contain the same information. In that case, a file
 synchronizer is used to make them consistent again, without losing any
 information.</p></div>
-<div class="para"><p>The goal is to detect conflicting updates (files which have been modified) and
+<div class="paragraph"><p>The goal is to detect conflicting updates (files which have been modified) and
 propagate non-conflicting updates to each replica. If there are no conflicts
 left, we are done, and the replicas are identical. To resolve or handle
 conflicts there are several algorithms available. They are discussed later in
@@ -453,9 +489,9 @@ this documents.</p></div>
 </div>
 <h2 id="_basics">2. Basics</h2>
 <div class="sectionbody">
-<div class="para"><p>This section describes some basics of file synchronization.</p></div>
+<div class="paragraph"><p>This section describes some basics of file synchronization.</p></div>
 <h3 id="_paths">2.1. Paths</h3><div style="clear:left"></div>
-<div class="para"><p>A path normally refers to a point which contains a set of files which should be
+<div class="paragraph"><p>A path normally refers to a point which contains a set of files which should be
 synchronized. It is specified relative to the root of the replica locally, but
 has to be absolute if you use a protocol. The path is just a sequence of names
 separated by <em>/</em>.</p></div>
@@ -467,13 +503,13 @@ separated by <em>/</em>.</p></div>
 <td class="content">The path separator is always a forward slash <em>/</em>, even for Windows.</td>
 </tr></table>
 </div>
-<div class="para"><p>csync always uses the absolute path on remote replicas. This could
+<div class="paragraph"><p>csync always uses the absolute path on remote replicas. This could
 <em>sftp://gladiac:secret@myserver/home/gladiac</em> for sftp.</p></div>
 <h3 id="_what_is_an_update">2.2. What is an update?</h3><div style="clear:left"></div>
-<div class="para"><p>The contents of a path could be a file, a directory or a symbolic link
+<div class="paragraph"><p>The contents of a path could be a file, a directory or a symbolic link
 (symbolic links are not supported yet). To be more precise, if the path refers
 to:</p></div>
-<div class="ilist"><ul>
+<div class="ulist"><ul>
 <li>
 <p>
 a regular file: the contents of the file are the byte stream and the
@@ -491,14 +527,14 @@ a symbolic link: the content is the named file the link points to.
 </p>
 </li>
 </ul></div>
-<div class="para"><p>csync keeps a record of each path which has been successfully synchronized. The
+<div class="paragraph"><p>csync keeps a record of each path which has been successfully synchronized. The
 path gets compared with the record and if it has changed since the last
 synchronization, we have an update. This is done by comparing the modification
 or change (modification time of the metadata) time. This is the way how updates
 are detected.</p></div>
 <h3 id="_what_is_a_conflict">2.3. What is a conflict?</h3><div style="clear:left"></div>
-<div class="para"><p>A path is conflicting if it fulfills the following conditions:</p></div>
-<div class="olist"><ol>
+<div class="paragraph"><p>A path is conflicting if it fulfills the following conditions:</p></div>
+<div class="olist arabic"><ol class="arabic">
 <li>
 <p>
 it has been updated in one replica,
@@ -518,37 +554,37 @@ its contents in are not identical.
 </div>
 <h2 id="_file_synchronization">3. File Synchronization</h2>
 <div class="sectionbody">
-<div class="para"><p>The primary goal of the file synchronizer is correctness.  It may change
+<div class="paragraph"><p>The primary goal of the file synchronizer is correctness.  It may change
 scattered or large parts of the filesystem.  Since this in mostly not monitored
 by the user, and the file synchronizer is in a position to harm the system,
 csync must be safe, even in the case of unexpected errors (e.g. disk full).
 What was done to make csync safe is described in the following sections.</p></div>
-<div class="para"><p>On problem concerning correctness is the handling of conflicts.  Each file
+<div class="paragraph"><p>On problem concerning correctness is the handling of conflicts.  Each file
 synchronizer tries to propagate conflicting changes to the other replica.  At
 the end both replicas should be identical. There are different strategies to
 fulfill these goals.</p></div>
-<div class="para"><p>csync is a three-phase file synchronizer. The decision for this design was that
+<div class="paragraph"><p>csync is a three-phase file synchronizer. The decision for this design was that
 user interaction should be possible and it should be easy to understand the
 process. The three phases are update detection, reconciliation and propagation.
 These will be described in the following sections.</p></div>
 <h3 id="_update_detection">3.1. Update detection</h3><div style="clear:left"></div>
-<div class="para"><p>There are different strategies for update detection.  csync uses a state-based
+<div class="paragraph"><p>There are different strategies for update detection.  csync uses a state-based
 modtime-inode update detector.  This means it uses the modification time to
-detect updates.  It doesn't require many resources.  A record of each file is
+detect updates.  It doesn&#8217;t require many resources.  A record of each file is
 stored in a database (called statedb) and compared with the current
 modification time during update detection. If the file has changed since the
 last synchronization an instruction is set to evaluate it during the
-reconciliation phase. If we don't have a record for a file we investigate, it
+reconciliation phase. If we don&#8217;t have a record for a file we investigate, it
 is marked as new.</p></div>
-<div class="para"><p>It can be difficult to detect renaming of files.  This problem is also solved
-by the record we store in the statedb.  If we don't find the file by the name
+<div class="paragraph"><p>It can be difficult to detect renaming of files.  This problem is also solved
+by the record we store in the statedb.  If we don&#8217;t find the file by the name
 in the database, we search for the inode number. If the inode number is found
 then the file has been renamed.</p></div>
 <h3 id="_reconciliation">3.2. Reconciliation</h3><div style="clear:left"></div>
-<div class="para"><p>The most important component is the update detector, because the reconciler
+<div class="paragraph"><p>The most important component is the update detector, because the reconciler
 depends on it. The correctness of reconciler is mandatory because it can damage
 a filesystem. It decides which file:</p></div>
-<div class="ilist"><ul>
+<div class="ulist"><ul>
 <li>
 <p>
 Stays untouched
@@ -570,46 +606,46 @@ or is <strong>deleted</strong>
 </p>
 </li>
 </ul></div>
-<div class="para"><p>A wrong decision of the reconciler leads in most cases to a loss of data. So
+<div class="paragraph"><p>A wrong decision of the reconciler leads in most cases to a loss of data. So
 there are several conditions which a file synchronizer has to follow.</p></div>
 <h4 id="_algorithms">3.2.1. Algorithms</h4>
-<div class="para"><p>For conflict resolution several different algorithms could be implemented. The
+<div class="paragraph"><p>For conflict resolution several different algorithms could be implemented. The
 most common algorithms are the merge and the conflict algorithm. The first
 is a batch algorithm and the second is one which needs user interaction.</p></div>
 <h5 id="_merge_algorithm">Merge algorithm</h5>
-<div class="para"><p>The merge algorithm is an algorithm which doesn't need any user interaction. It
+<div class="paragraph"><p>The merge algorithm is an algorithm which doesn&#8217;t need any user interaction. It
 is simple and used for example by Microsoft for Roaming Profiles. If it detects
 a conflict (the same file changed on both replicas) then it will use the most
 recent file and overwrite the other. This means you can loose some data, but
 normally you want the latest file.</p></div>
 <h5 id="_conflict_algorithm">Conflict algorithm</h5>
-<div class="para"><p>This is not implemented yet.</p></div>
-<div class="para"><p>If a file has a conflict the user has to decide which file should be used.</p></div>
+<div class="paragraph"><p>This is not implemented yet.</p></div>
+<div class="paragraph"><p>If a file has a conflict the user has to decide which file should be used.</p></div>
 <h3 id="_propagation">3.3. Propagation</h3><div style="clear:left"></div>
-<div class="para"><p>The next instance of the file synchronizer the propagator. It uses the
+<div class="paragraph"><p>The next instance of the file synchronizer the propagator. It uses the
 calculated records to apply them on the current replica.</p></div>
-<div class="para"><p>The propagator uses a two-phase-commit mechanism to simulate an atomic
+<div class="paragraph"><p>The propagator uses a two-phase-commit mechanism to simulate an atomic
 filesystem operation.</p></div>
-<div class="para"><p>In the first phase we copy the file to a temporary file on the opposite
+<div class="paragraph"><p>In the first phase we copy the file to a temporary file on the opposite
 replica. This has the advantage that we can check if file which has been copied
 to the opposite replica has been transfered successfully. If the connection
 gets interrupted during the transfer we still have the original states of the
 file. This means no data will be lost.</p></div>
-<div class="para"><p>In the second phase the file on the opposite replica will be overwritten by
+<div class="paragraph"><p>In the second phase the file on the opposite replica will be overwritten by
 the temporary file.</p></div>
-<div class="para"><p>After a successful propagation we have to merge the trees to reflect the
+<div class="paragraph"><p>After a successful propagation we have to merge the trees to reflect the
 current state of the filesystem tree.  This updated tree will be written as a
 journal into the state database. It will be used during the update detection of
 the next synchronization. See above for a description of the state database
 during synchronization.</p></div>
 <h3 id="_robustness">3.4. Robustness</h3><div style="clear:left"></div>
-<div class="para"><p>This is a very important topic. The file synchronizer should not crash, and if
+<div class="paragraph"><p>This is a very important topic. The file synchronizer should not crash, and if
 it has crashed, there should be no loss of data. To achieve this goal there are
 several mechanisms which will be discussed in the following sections.</p></div>
 <h4 id="_crash_resistance">3.4.1. Crash resistance</h4>
-<div class="para"><p>The synchronization process can be interrupted by different events, this can
+<div class="paragraph"><p>The synchronization process can be interrupted by different events, this can
 be:</p></div>
-<div class="ilist"><ul>
+<div class="ulist"><ul>
 <li>
 <p>
 the system could be halted due to errors.
@@ -636,7 +672,7 @@ various communication errors could occur.
 </p>
 </li>
 </ul></div>
-<div class="para"><p>That no data will be lost due to an event we enforce the following invariant:</p></div>
+<div class="paragraph"><p>That no data will be lost due to an event we enforce the following invariant:</p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -646,74 +682,132 @@ various communication errors could occur.
 original content or its correct final content.</td>
 </tr></table>
 </div>
-<div class="para"><p>This means that the original content can not be incorrect, no data can be lost
+<div class="paragraph"><p>This means that the original content can not be incorrect, no data can be lost
 until we overwrite it after a successful synchronization.  Therefore, each
 interrupted synchronization process is a partial sync and can be continued and
 completed by simply running csync again. The only problem could be an error of
 the filesystem, so we reach this invariant only approximately.</p></div>
 <h4 id="_transfer_errors">3.4.2. Transfer errors</h4>
-<div class="para"><p>With the Two-Phase-Commit we check the file size after the file has transferred
+<div class="paragraph"><p>With the Two-Phase-Commit we check the file size after the file has transferred
 and we are able to detect transfer errors. A more robust approach would be a
 transfer protocol with checksums, but this is not doable at the moment. We may
 add this in the future.</p></div>
-<div class="para"><p>Future filesystems, like btrfs, will help to compare checksums instead of the
+<div class="paragraph"><p>Future filesystems, like btrfs, will help to compare checksums instead of the
 filesize. This will make the synchronization safer. This does not imply that it
 is unsafe now, but checksums are safer than simple filesize checks.</p></div>
 <h4 id="_database_loss">3.4.3. Database loss</h4>
-<div class="para"><p>It is possible that the state database could get corrupted. If this happens,
+<div class="paragraph"><p>It is possible that the state database could get corrupted. If this happens,
 all files get evaluated. In this case the file synchronizer wont delete any
 file, but it could occur that deleted files will be restored from the other
 replica.</p></div>
-<div class="para"><p>To prevent a corruption or loss of the database if an error occurs or the user
+<div class="paragraph"><p>To prevent a corruption or loss of the database if an error occurs or the user
 forces an abort, the synchronizer is working on a copy of the database and will
 use a Two-Phase-Commit to save it at the end.</p></div>
 </div>
 <h2 id="_getting_started">4. Getting started</h2>
 <div class="sectionbody">
 <h3 id="_installing_csync">4.1. Installing csync</h3><div style="clear:left"></div>
-<div class="para"><p>See the <tt>README</tt> and <tt>INSTALL</tt> files for install prerequisites and
+<div class="paragraph"><p>See the <tt>README</tt> and <tt>INSTALL</tt> files for install prerequisites and
 procedures. Packagers should take a look at <a href="#X90">Appendix A: Packager Notes</a>.</p></div>
 <h3 id="_using_the_commandline_client">4.2. Using the commandline client</h3><div style="clear:left"></div>
-<div class="para"><p>The synopsis of the commandline client is</p></div>
+<div class="paragraph"><p>The synopsis of the commandline client is</p></div>
 <div class="literalblock">
 <div class="content">
 <pre><tt>csync [OPTION...] SOURCE DESTINATION</tt></pre>
 </div></div>
-<div class="para"><p>It synchronizes the content of SOURCE with DESTINATION and vice versa. The
+<div class="paragraph"><p>It synchronizes the content of SOURCE with DESTINATION and vice versa. The
 DESTINATION can be a local directory or a remote file server.</p></div>
 <div class="literalblock">
 <div class="content">
 <pre><tt>csync /home/csync scheme://user:password@server:port/full/path</tt></pre>
 </div></div>
 <h4 id="_examples">4.2.1. Examples</h4>
-<div class="para"><p>To synchronize two local directories:</p></div>
+<div class="paragraph"><p>To synchronize two local directories:</p></div>
 <div class="literalblock">
 <div class="content">
 <pre><tt>csync /home/csync/replica1 /home/csync/relplica2</tt></pre>
 </div></div>
-<div class="para"><p>Two synchronizer a local directory with an smb server, use</p></div>
+<div class="paragraph"><p>Two synchronizer a local directory with an smb server, use</p></div>
 <div class="literalblock">
 <div class="content">
 <pre><tt>csync /home/csync smb://rupert.galaxy.site/Users/csync</tt></pre>
 </div></div>
-<div class="para"><p>If you use kerberos, you don't have to specify a username or a password. If you
-don't use kerberos, the commandline client will ask about the user and the
-password.  If you don't want to be prompted, you can specify it on the
+<div class="paragraph"><p>If you use kerberos, you don&#8217;t have to specify a username or a password. If you
+don&#8217;t use kerberos, the commandline client will ask about the user and the
+password.  If you don&#8217;t want to be prompted, you can specify it on the
 commandline:</p></div>
 <div class="literalblock">
 <div class="content">
 <pre><tt>csync /home/csync smb://csync:secret@rupert.galaxy.site/Users/csync</tt></pre>
 </div></div>
-<div class="para"><p>If you use the sftp protocol and want to specify a port, you do it the
+<div class="paragraph"><p>If you use the sftp protocol and want to specify a port, you do it the
 following way:</p></div>
 <div class="literalblock">
 <div class="content">
 <pre><tt>csync /home/csync sftp://csync@krikkit.galaxy.site:2222/home/csync</tt></pre>
 </div></div>
-<div class="para"><p>The remote destination is supported by plugins. By default csync ships with smb
+<div class="paragraph"><p>The remote destination is supported by plugins. By default csync ships with smb
 and sftp support. For more information, see the manpage of <tt>csync(1)</tt>.</p></div>
-<h3 id="X80">4.3. The PAM module</h3><div style="clear:left"></div>
-<div class="para"><p>pam_csync is a PAM module to provide roaming home directories for a user
+<h3 id="_exclude_lists">4.3. Exclude lists</h3><div style="clear:left"></div>
+<div class="paragraph"><p>csync provides exclude lists with simple shell wildcard patterns. There is a
+global exclude list, which is normally located in
+<em>/etc/csync/csync_exclude.conf</em> and it has already some sane defaults. If you
+run csync the first time, it will create an empty exclude list for the user.
+This file will be <em>~/.csync/csync_exclude.conf</em>. If you run both files are used
+and maybe an additional one if you specify it.</p></div>
+<div class="paragraph"><p>The entries in the file are newline separated. Use
+<em>/etc/csync/csync_exclude.conf</em> as an example.</p></div>
+<h3 id="_debug_messages_and_dry_run">4.4. Debug messages and dry run</h3><div style="clear:left"></div>
+<div class="paragraph"><p>For log messages csync uses log4c. It is a logging mechanism which uses debug
+levels and categories. There is a config file where you can specify the debug
+level for each component. It is located at <em>~/.csync/csync_log.conf</em>.</p></div>
+<div class="paragraph"><p>Available debug priorities are:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+trace
+</p>
+</li>
+<li>
+<p>
+debug
+</p>
+</li>
+<li>
+<p>
+info
+</p>
+</li>
+<li>
+<p>
+warn
+</p>
+</li>
+<li>
+<p>
+error
+</p>
+</li>
+<li>
+<p>
+fatal
+</p>
+</li>
+<li>
+<p>
+none
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>A more detailed description can be found at the
+<a href="http://log4c.sourceforge.net/">log4c homepage</a>. A good introduction can
+be found <a href="http://logging.apache.org/log4j/1.2/manual.html">here</a>.</p></div>
+<div class="paragraph"><p>To simulate a run of the file synchronizer, you should set the priority to
+<em>debug</em> for the categories <em>csync.updater</em> and <em>csync.reconciler</em> in the config
+file <em>~/.csync/csync_log.conf</em>. Then run csync with the <em>--dry-run</em> option.
+This will only run update detection and reconciliation.</p></div>
+<h3 id="X80">4.5. The PAM module</h3><div style="clear:left"></div>
+<div class="paragraph"><p>pam_csync is a PAM module to provide roaming home directories for a user
 session. This module is aimed at environments with central file servers where a
 user wishes to store his home directory. The Authentication Module verifies the
 identity of a user and triggers a synchronization with the server on the first
@@ -722,12 +816,12 @@ module pam_csync(8) or pam itself pam(8).</p></div>
 </div>
 <h2 id="X90">5. Appendix A: Packager Notes</h2>
 <div class="sectionbody">
-<div class="para"><p>Read the <tt>README</tt>, <tt>INSTALL</tt> and <tt>FAQ</tt> files (in the distribution root
+<div class="paragraph"><p>Read the <tt>README</tt>, <tt>INSTALL</tt> and <tt>FAQ</tt> files (in the distribution root
 directory).</p></div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2008-12-23 16:42:11 CEST
+Last updated 2009-01-20 17:03:10 CEST
 </div>
 </div>
 </body>
