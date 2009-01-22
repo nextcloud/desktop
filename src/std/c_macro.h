@@ -78,6 +78,12 @@
 /** Free memory and zero the pointer */
 #define SAFE_FREE(x) do { if ((x) != NULL) {free(x); x=NULL;} } while(0)
 
+/** Get the smaller value */
+#define MIN(a,b) ((a) < (b) ? (a) : (b))
+
+/** Get the bigger value */
+#define MAX(a,b) ((a) < (b) ? (b) : (a))
+
 /**
  * }@
  */
