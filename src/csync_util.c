@@ -303,12 +303,12 @@ uint64_t csync_create_statedb_hash(CSYNC *ctx) {
     return 0;
   }
 
-  if ((p = strchr(host, '.'))) {
+  if (host && (p = strchr(host, '.'))) {
     *p = '\0';
   }
 
   /* len + 1 for \0 */
-  snprintf(name, PATH_MAX, "%s%s", host, path);
+  snprintf(name, PATH_MAX, "%s%s", host ? host : "", path);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO,
       "Normalized path for the statedb hash: %s", name);
