@@ -23,6 +23,8 @@
 #ifndef _CSYNC_UTIL_H
 #define _CSYNC_UTIL_H
 
+#include <stdint.h>
+
 #include "csync_private.h"
 
 const char *csync_instruction_str(enum csync_instructions_e instr);
@@ -32,5 +34,8 @@ void csync_memstat_check(void);
 int csync_merge_file_trees(CSYNC *ctx);
 
 int csync_unix_extensions(CSYNC *ctx);
+
+/* Normalize the uri to <host>/<path> */
+uint64_t csync_create_statedb_hash(CSYNC *ctx);
 
 #endif /* _CSYNC_UTIL_H */

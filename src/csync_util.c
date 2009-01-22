@@ -25,8 +25,10 @@
 #endif
 
 #include <errno.h>
+#include <limits.h>
 #include <stdio.h>
 
+#include "c_jhash.h"
 #include "csync_util.h"
 #include "vio/csync_vio.h"
 
@@ -285,5 +287,37 @@ out:
   SAFE_FREE(uri);
 
   return rc;
+}
+
+/* Normalize the uri to <host>/<path> */
+uint64_t csync_create_statedb_hash(CSYNC *ctx) {
+  char *p = NULL;
+  char *host = NULL;
+  char *path = NULL;
+  char name[PATH_MAX] = {0};
+  uint64_t hash = 0;
+
+  if (c_parse_uri(ctx->remote.uri, NULL, NULL, NULL, &host, NULL, &path) < 0) {
+    SAFE_FREE(host);
+    SAFE_FREE(path);
+    return 0;
+  }
+
+  if ((p = strchr(host, '.'))) {
+    *p = '\0';
+  }
+
+  /* len + 1 for \0 */
+  snprintf(name, PATH_MAX, "%s%s", host, path);
+
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO,
+      "Normalized path for the statedb hash: %s", name);
+
+  hash  = c_jhash64((uint8_t *) name, strlen(name), 0);
+
+  SAFE_FREE(host);
+  SAFE_FREE(path);
+
+  return hash;
 }
 

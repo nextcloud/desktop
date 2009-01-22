@@ -33,7 +33,6 @@
 #include <sys/types.h>
 
 #include "c_lib.h"
-#include "c_jhash.h"
 #include "csync_private.h"
 #include "csync_config.h"
 #include "csync_exclude.h"
@@ -220,7 +219,7 @@ int csync_init(CSYNC *ctx) {
 
   /* create/load statedb */
   if (! csync_is_statedb_disabled(ctx)) {
-    uint64_t h = c_jhash64((uint8_t *) ctx->remote.uri, strlen(ctx->remote.uri), 0);
+    uint64_t h = csync_create_statedb_hash(ctx);
     if (asprintf(&ctx->statedb.file, "%s/csync_statedb_%llu.db",
           ctx->options.config_dir, (long long unsigned int) h) < 0) {
       rc = -1;
