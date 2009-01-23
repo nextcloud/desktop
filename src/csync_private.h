@@ -118,7 +118,10 @@ struct csync_s {
     uid_t euid;
   } pwd;
 
+  /* replica we are currently walking */
   enum csync_replica_e current;
+
+  /* replica we want to work on */
   enum csync_replica_e replica;
 
   int status;
