@@ -345,8 +345,6 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: PUSHED", duri);
 
-  ctx->replica = rep_bak;
-
   rc = 0;
 
 out:
@@ -368,6 +366,8 @@ out:
   SAFE_FREE(duri);
   SAFE_FREE(turi);
   SAFE_FREE(tdir);
+
+  ctx->replica = rep_bak;
 
   return rc;
 }
