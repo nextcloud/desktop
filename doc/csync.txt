@@ -27,8 +27,8 @@ information.
 The goal is to detect conflicting updates (files which have been modified) and
 propagate non-conflicting updates to each replica. If there are no conflicts
 left, we are done, and the replicas are identical. To resolve or handle
-conflicts there are several algorithms available. They are discussed later in
-this documents.
+conflicts there are several algorithms available. They will be discussed
+one of the following sections.
 
 Basics
 ------
