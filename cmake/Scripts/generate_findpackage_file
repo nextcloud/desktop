@@ -135,8 +135,7 @@ end
 
 libs.split(" ").each do |lib|
 	file.printf("  if (#{lib.upcase}_LIBRARY)\n")
-	file.printf("    set(#{lib.upcase}_FOUND TRUE)\n")
-	file.printf("    mark_as_advanced(#{lib.upcase}_FOUND)\n")
+	file.printf("    set(#{lib.upcase}_FOUND TRUE CACHE INTERNAL \"Wether the #{lib} library has been found\" FORCE)\n")
 	file.printf("  endif (#{lib.upcase}_LIBRARY)\n")
 	file.printf("\n")
 end
