@@ -38,12 +38,11 @@
  * dirname - parse directory component.
  */
 char *c_dirname (const char *path) {
-  char *new;
-  register int len;
+  char *new = NULL;
+  unsigned int len;
 
   if (path == NULL || *path == '\0') {
-    new = c_strdup(".");
-    return new;
+    return c_strdup(".");
   }
 
   len = strlen(path);
@@ -53,29 +52,22 @@ char *c_dirname (const char *path) {
 
   /* We have only slashes */
   if (len == 0) {
-    new = c_strdup("/");
-
-    return new;
+    return c_strdup("/");
   }
 
   /* goto next slash */
   while(len > 0 && path[len - 1] != '/') --len;
 
   if (len == 0) {
-    new = c_strdup(".");
-
-    return new;
+    return c_strdup(".");
   } else if (len == 1) {
-    new = c_strdup("/");
-
-    return new;
+    return c_strdup("/");
   }
 
   /* Remove slashes again */
   while(len > 0 && path[len - 1] == '/') --len;
 
   new = c_malloc(len + 1);
-
   if (new == NULL) {
     return NULL;
   }
@@ -87,13 +79,12 @@ char *c_dirname (const char *path) {
 }
 
 char *c_basename (const char *path) {
-  char *new;
+  char *new = NULL;
   const char *s;
-  register int len;
+  unsigned int len;
 
   if (path == NULL || *path == '\0') {
-    new = c_strdup(".");
-    return new;
+    return c_strdup(".");
   }
 
   len = strlen(path);
@@ -102,9 +93,7 @@ char *c_basename (const char *path) {
 
   /* We have only slashes */
   if (len == 0) {
-    new = c_strdup("/");
-
-    return new;
+    return c_strdup("/");
   }
 
   while(len > 0 && path[len - 1] != '/') --len;
@@ -115,13 +104,10 @@ char *c_basename (const char *path) {
 
     while(len > 0 && s[len - 1] == '/') --len;
   } else {
-    new = c_strdup(path);
-
-    return new;
+    return c_strdup(path);
   }
 
   new = c_malloc(len + 1);
-
   if (new == NULL) {
     return NULL;
   }
