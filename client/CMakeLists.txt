@@ -1,4 +1,4 @@
-project(client)
+project(client C)
 
 set(CLIENT_PUBLIC_INCLUDE_DIRS
   ${CMAKE_CURRENT_SOURCE_DIR}

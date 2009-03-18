@@ -166,8 +166,13 @@ START_TEST (check_c_jhash64_trials)
           if (k>z) z=k;
           if (k==MAXPAIR) {
              printf("Some bit didn't change: ");
-             printf("%.8lx %.8lx %.8lx %.8lx %.8lx %.8lx  ",
-                    e[0],f[0],g[0],h[0],x[0],y[0]);
+             printf("%.8llx %.8llx %.8llx %.8llx %.8llx %.8llx  ",
+                    (long long unsigned int) e[0],
+                    (long long unsigned int) f[0],
+                    (long long unsigned int) g[0],
+                    (long long unsigned int) h[0],
+                    (long long unsigned int) x[0],
+                    (long long unsigned int) y[0]);
              printf("i %d j %d m %d len %d\n",
                     (uint32_t)i,(uint32_t)j,(uint32_t)m,(uint32_t)hlen);
           }

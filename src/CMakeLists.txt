@@ -1,4 +1,4 @@
-project(libcsync)
+project(libcsync C)
 
 add_subdirectory(std)
 

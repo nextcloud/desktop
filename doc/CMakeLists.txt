@@ -1,4 +1,4 @@
-#
+project(doc C)
 # Build the documentation
 #
 

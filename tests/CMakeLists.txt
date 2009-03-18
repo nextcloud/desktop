@@ -1,4 +1,4 @@
-project(tests)
+project(tests C)
 
 set(SUPPORT_LIBRARY support)
 

@@ -1,4 +1,4 @@
-project(cstdlib)
+project(cstdlib C)
 
 set(CSTDLIB_PUBLIC_INCLUDE_DIRS
   ${CMAKE_CURRENT_SOURCE_DIR}

@@ -1,4 +1,4 @@
-project(modules)
+project(modules C)
 
 find_package(Libsmbclient REQUIRED)
 find_package(LIBSSH)
