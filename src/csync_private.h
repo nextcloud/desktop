@@ -80,6 +80,7 @@ enum csync_replica_e {
  */
 struct csync_s {
   csync_auth_callback auth_callback;
+  void *userdata;
   c_strlist_t *excludes;
 
   struct {

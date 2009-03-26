@@ -31,13 +31,17 @@
 /** Zero a structure */
 #define ZERO_STRUCT(x) memset((char *)&(x), 0, sizeof(x))
 
-int csync_auth(const char *prompt, char *buf, size_t len, int echo, int verify) {
+int csync_auth(const char *prompt, char *buf, size_t len, int echo, int verify,
+    void *userdata) {
   struct termios attr;
   struct termios old_attr;
   int ok = 0;
   int fd = -1;
   char *ptr = NULL;
   char tmp[len];
+
+  /* unused variables */
+  (void) userdata;
 
   ZERO_STRUCT(attr);
   ZERO_STRUCT(old_attr);

@@ -637,6 +637,24 @@ char *csync_get_statedb_file(CSYNC *ctx) {
   return c_strdup(ctx->statedb.file);
 }
 
+void *csync_get_userdata(CSYNC *ctx) {
+  if (ctx == NULL) {
+    return NULL;
+  }
+
+  return ctx->userdata;
+}
+
+int csync_set_userdata(CSYNC *ctx, void *userdata) {
+  if (ctx == NULL) {
+    return -1;
+  }
+
+  ctx->userdata = userdata;
+
+  return 0;
+}
+
 csync_auth_callback csync_get_auth_callback(CSYNC *ctx) {
   if (ctx == NULL) {
     return NULL;

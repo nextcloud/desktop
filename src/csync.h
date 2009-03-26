@@ -66,7 +66,8 @@ extern "C" {
 #define CSYNC_EXCLUDE_FILE "csync_exclude.conf"
 #define CSYNC_LOCK_FILE "lock"
 
-typedef int (*csync_auth_callback) (const char *prompt, char *buf, size_t len, int echo, int verify);
+typedef int (*csync_auth_callback) (const char *prompt, char *buf, size_t len,
+    int echo, int verify, void *userdata);
 
 /**
  * csync handle
@@ -163,6 +164,8 @@ int csync_remove_config_dir(CSYNC *ctx);
 int csync_enable_statedb(CSYNC *ctx);
 int csync_disable_statedb(CSYNC *ctx);
 int csync_is_statedb_disabled(CSYNC *ctx);
+void *csync_get_userdata(CSYNC *ctx);
+int csync_set_userdata(CSYNC *ctx, void *userdata);
 csync_auth_callback csync_get_auth_callback(CSYNC *ctx);
 int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb);
 char *csync_get_statedb_file(CSYNC *ctx);

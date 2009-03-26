@@ -35,7 +35,8 @@
 #endif
 
 SMBCCTX *smb_context = NULL;
-csync_auth_callback auth_cb = NULL;
+csync_auth_callback _authcb = NULL;
+void *_userdata;
 
 /* Do we build against Samba 3.2 */
 #ifdef DEPRECATED_SMBC_INTERFACE
@@ -74,10 +75,10 @@ static void get_auth_data_with_context_fn(SMBCCTX *c,
   }
 
   /* Call the passwort prompt */
-  if (auth_cb != NULL) {
+  if (_authcb != NULL) {
     DEBUG_SMB(("csync_smb - execute authentication callback\n"));
-    (*auth_cb) ("Username:", un, unlen, 1, 0);
-    (*auth_cb) ("Password:", pw, pwlen, 0, 0);
+    (*_authcb) ("Username:", un, unlen, 1, 0, smbc_getOptionUserData(c));
+    (*_authcb) ("Password:", pw, pwlen, 0, 0, smbc_getOptionUserData(c));
   }
 
   DEBUG_SMB(("csync_smb - user=%s, workgroup=%s, server=%s, share=%s\n",
@@ -123,10 +124,10 @@ static void get_auth_data_fn(const char *pServer,
   }
 
   /* Call the passwort prompt */
-  if (auth_cb != NULL) {
+  if (_authcb != NULL) {
     DEBUG_SMB(("csync_smb - execute authentication callback\n"));
-    (*auth_cb) ("Username:", pUsername, maxLenUsername, 1, 0);
-    (*auth_cb) ("Password:", pPassword, maxLenPassword, 0, 0);
+    (*_authcb) ("Username:", pUsername, maxLenUsername, 1, 0);
+    (*_authcb) ("Password:", pPassword, maxLenPassword, 0, 0);
   }
 
   DEBUG_SMB(("csync_smb - user=%s, workgroup=%s, server=%s, share=%s\n",
@@ -476,7 +477,7 @@ csync_vio_method_t _method = {
 };
 
 csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
-    csync_auth_callback cb) {
+    csync_auth_callback cb, void *userdata) {
   smb_context = smbc_new_context();
 
   DEBUG_SMB(("csync_smb - method_name: %s\n", method_name));
@@ -491,12 +492,13 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
   }
 
   if (cb != NULL) {
-    auth_cb = cb;
+    _authcb = cb;
   }
 
   /* set debug level and authentication function callback */
 #ifdef DEPRECATED_SMBC_INTERFACE
   smbc_setDebug(smb_context, 0);
+  smbc_setOptionUserData(smb_context, userdata);
   smbc_setFunctionAuthDataWithContext(smb_context, get_auth_data_with_context_fn);
 
   /* Kerberos support */

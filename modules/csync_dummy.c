@@ -193,13 +193,15 @@ csync_vio_method_t _method = {
   .utimes = _utimes
 };
 
-csync_vio_method_t *vio_module_init(const char *method_name, const char *args, csync_auth_callback cb) {
+csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
+    csync_auth_callback cb, void *userdata) {
   DEBUG_DUMMY(("csync_dummy - method_name: %s\n", method_name));
   DEBUG_DUMMY(("csync_dummy - args: %s\n", args));
 
   (void) method_name;
   (void) args;
   (void) cb;
+  (void) userdata;
 
   mh = (void *) method_name;
   fs.mtime = 42;

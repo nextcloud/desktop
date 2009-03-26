@@ -23,6 +23,7 @@
 #ifndef _CSYNC_CLIENT_AUTH_H
 #define _CSYNC_CLIENT_AUTH_H
 
-int csync_auth(const char *prompt, char *buf, size_t len, int echo, int verify);
+int csync_auth(const char *prompt, char *buf, size_t len, int echo, int verify,
+    void *userdata);
 
 #endif /* _CSYNC_CLIENT_AUTH_H */

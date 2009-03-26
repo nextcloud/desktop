@@ -76,7 +76,8 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
   }
 
   /* get the method struct */
-  m = (*init_fn)(module, args, ctx->auth_callback);
+  m = (*init_fn)(module, args, csync_get_auth_callback(ctx),
+      csync_get_userdata(ctx));
   if (m == NULL) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "module %s returned a NULL method", module);
     return -1;
