@@ -554,7 +554,7 @@ int csync_add_exclude_list(CSYNC *ctx, const char *path) {
   return csync_exclude_load(ctx, path);
 }
 
-char *csync_get_config_dir(CSYNC *ctx) {
+const char *csync_get_config_dir(CSYNC *ctx) {
   if (ctx == NULL) {
     return NULL;
   }
@@ -629,7 +629,7 @@ int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb) {
   return 0;
 }
 
-char *csync_get_statedb_file(CSYNC *ctx) {
+const char *csync_get_statedb_file(CSYNC *ctx) {
   if (ctx == NULL) {
     return NULL;
   }

@@ -157,19 +157,129 @@ int csync_destroy(CSYNC *ctx);
  */
 const char *csync_version(int req_version);
 
+/**
+ * @brief Add an additional exclude list.
+ *
+ * @param ctx           The context to add the exclude list.
+ *
+ * @param path          The path pointing to the file.
+ *
+ * @return              0 on success, less than 0 if an error occured.
+ */
 int csync_add_exclude_list(CSYNC *ctx, const char *path);
-char *csync_get_config_dir(CSYNC *ctx);
+
+/**
+ * @brief Get the config directory.
+ *
+ * @param ctx          The csync context.
+ *
+ * @return             The path of the config directory or NULL on error.
+ */
+const char *csync_get_config_dir(CSYNC *ctx);
+
+/**
+ * @brief Change the config directory.
+ *
+ * @param ctx           The csync context.
+ *
+ * @param path          The path to the new config directory.
+ *
+ * @return              0 on success, less than 0 if an error occured.
+ */
 int csync_set_config_dir(CSYNC *ctx, const char *path);
+
+/**
+ * @brief Remove the complete config directory.
+ *
+ * @param ctx           The csync context.
+ *
+ * @return              0 on success, less than 0 if an error occured.
+ */
 int csync_remove_config_dir(CSYNC *ctx);
+
+/**
+ * @brief Enable the usage of the statedb. It is enabled by default.
+ *
+ * @param ctx           The csync context.
+ *
+ * @return              0 on success, less than 0 if an error occured.
+ */
 int csync_enable_statedb(CSYNC *ctx);
+
+/**
+ * @brief Disable the usage of the statedb. It is enabled by default.
+ *
+ * @param ctx           The csync context.
+ *
+ * @return              0 on success, less than 0 if an error occured.
+ */
 int csync_disable_statedb(CSYNC *ctx);
+
+/**
+ * @brief Check if the statedb usage is enabled.
+ *
+ * @param ctx           The csync context.
+ *
+ * @return              1 if it is enabled, 0 if it is disabled.
+ */
 int csync_is_statedb_disabled(CSYNC *ctx);
+
+/**
+ * @brief Get the userdata saved in the context.
+ *
+ * @param ctx           The csync context.
+ *
+ * @return              The userdata saved in the context, NULL if an error
+ *                      occured.
+ */
 void *csync_get_userdata(CSYNC *ctx);
+
+/**
+ * @brief Save userdata to the context which is passed to the auth
+ * callback function.
+ *
+ * @param ctx           The csync context.
+ *
+ * @param userdata      The userdata to be stored in the context.
+ *
+ * @return              0 on success, less than 0 if an error occured.
+ */
 int csync_set_userdata(CSYNC *ctx, void *userdata);
+
+/**
+ * @brief Get the authentication callback set.
+ *
+ * @param ctx           The csync context.
+ *
+ * @return              The authentication callback set or NULL if an error
+ *                      occured.
+ */
 csync_auth_callback csync_get_auth_callback(CSYNC *ctx);
+
+/**
+ * @brief Set the authentication callback.
+ *
+ * @param ctx           The csync context.
+ *
+ * @param cb            The authentication callback.
+ *
+ * @return              0 on success, less than 0 if an error occured.
+ */
 int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb);
-char *csync_get_statedb_file(CSYNC *ctx);
+
+/**
+ * @brief Get the path of the statedb file used.
+ *
+ * @param ctx           The csync context.
+ *
+ * @return              The path to the statedb file, NULL if an error occured.
+ */
+const char *csync_get_statedb_file(CSYNC *ctx);
+
+/* Used for special modes or debugging */
 int csync_get_status(CSYNC *ctx);
+
+/* Used for special modes or debugging */
 int csync_set_status(CSYNC *ctx, int status);
 
 #ifdef __cplusplus
