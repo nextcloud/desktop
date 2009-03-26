@@ -43,12 +43,12 @@
 #define DEBUG_SFTP(x) printf x
 #endif
 
-int connected;
 SSH_SESSION *ssh_session;
 SFTP_SESSION *sftp_session;
 
 csync_auth_callback _authcb;
 void *_userdata;
+int _connected;
 
 static int _ssh_auth_callback(const char *prompt, char *buf, size_t len,
     int echo, int verify, void *userdata) {
@@ -147,7 +147,7 @@ static int _sftp_connect(const char *uri) {
   int auth = SSH_AUTH_ERROR;
   int state = SSH_SERVER_ERROR;
 
-  if (connected) {
+  if (_connected) {
     return 0;
   }
 
@@ -324,7 +324,7 @@ static int _sftp_connect(const char *uri) {
   }
 
   DEBUG_SFTP(("csync_sftp - connection established...\n"));
-  connected = 1;
+  _connected = 1;
   rc = 0;
 out:
   SAFE_FREE(scheme);
