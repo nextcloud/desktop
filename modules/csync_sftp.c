@@ -47,7 +47,17 @@ int connected;
 SSH_SESSION *ssh_session;
 SFTP_SESSION *sftp_session;
 
-csync_auth_callback auth_cb;
+csync_auth_callback _authcb;
+void *_userdata;
+
+static int _ssh_auth_callback(const char *prompt, char *buf, size_t len,
+    int echo, int verify, void *userdata) {
+  if (_authcb != NULL) {
+    return (*_authcb) (prompt, buf, len, echo, verify, userdata);
+  }
+
+  return -1;
+}
 
 static int auth_kbdint(SSH_SESSION *session){
   char *name = NULL;
@@ -78,11 +88,11 @@ static int auth_kbdint(SSH_SESSION *session){
 
       prompt = ssh_userauth_kbdint_getprompt(session, i, &echo);
       if (echo) {
-        (*auth_cb) (prompt, buffer, sizeof(buffer), 1, 0);
+        (*_authcb) (prompt, buffer, sizeof(buffer), 1, 0, NULL);
         ssh_userauth_kbdint_setanswer(session, i, buffer);
         ZERO_STRUCT(buffer);
       } else {
-        (*auth_cb) ("Password:", buffer, sizeof(buffer), 0, 0);
+        (*_authcb) ("Password:", buffer, sizeof(buffer), 0, 0, NULL);
         ssh_userauth_kbdint_setanswer(session, i, buffer);
         ZERO_STRUCT(buffer);
       }
@@ -91,6 +101,37 @@ static int auth_kbdint(SSH_SESSION *session){
   }
 
   return err;
+}
+
+static int _sftp_portable_to_errno(int sftp_errno) {
+  int rc = 0;
+
+  switch(sftp_errno) {
+    case SSH_FX_OK:
+      break;
+    case SSH_FX_NO_SUCH_FILE:
+    case SSH_FX_NO_SUCH_PATH:
+      rc = ENOENT;
+      break;
+    case SSH_FX_PERMISSION_DENIED:
+      rc = EACCES;
+      break;
+    case SSH_FX_FILE_ALREADY_EXISTS:
+      rc = EEXIST;
+      break;
+    case SSH_FX_INVALID_HANDLE:
+      rc = EBADF;
+      break;
+    case SSH_FX_OP_UNSUPPORTED:
+    case SSH_FX_BAD_MESSAGE:
+      rc = EINVAL;
+      break;
+    default:
+      rc = EIO;
+      break;
+  }
+
+  return rc;
 }
 
 static int _sftp_connect(const char *uri) {
@@ -148,6 +189,10 @@ static int _sftp_connect(const char *uri) {
   if (user && *user) {
     ssh_options_set_username(options, user);
     DEBUG_SFTP(("csync_sftp - username set to: %s\n", user));
+  }
+
+  if (_authcb) {
+    ssh_options_set_auth_callback(options, _ssh_auth_callback, _userdata);
   }
 
   /* connect to the server */
@@ -217,6 +262,8 @@ static int _sftp_connect(const char *uri) {
       break;
   }
 
+  /* TODO: try ssh_userauth_none to get auth methods */
+
   /* authenticate with the server */
   if (passwd && *passwd) {
     DEBUG_SFTP(("csync_sftp - authenticating with user/password\n"));
@@ -227,7 +274,7 @@ static int _sftp_connect(const char *uri) {
     auth = ssh_userauth_password(ssh_session, user, passwd);
   } else {
     DEBUG_SFTP(("csync_sftp - authenticating with pubkey\n"));
-    auth = ssh_userauth_autopubkey(ssh_session);
+    auth = ssh_userauth_autopubkey(ssh_session, NULL);
   }
 
   if (auth == SSH_AUTH_ERROR) {
@@ -241,7 +288,7 @@ static int _sftp_connect(const char *uri) {
   }
 
   if (auth != SSH_AUTH_SUCCESS) {
-    if (auth_cb != NULL) {
+    if (_authcb != NULL) {
       auth = auth_kbdint(ssh_session);
       if (auth == SSH_AUTH_ERROR) {
         fprintf(stderr,"csync_sftp - authentication failed: %s\n",
@@ -294,13 +341,8 @@ out:
  */
 
 static csync_vio_method_handle_t *_open(const char *uri, int flags, mode_t mode) {
-  SFTP_ATTRIBUTES attrs;
   csync_vio_method_handle_t *mh = NULL;
   char *path = NULL;
-
-  ZERO_STRUCT(attrs);
-  attrs.permissions = mode;
-  attrs.flags |= SSH_FILEXFER_ATTR_PERMISSIONS;
 
   if (_sftp_connect(uri) < 0) {
     return NULL;
@@ -310,7 +352,10 @@ static csync_vio_method_handle_t *_open(const char *uri, int flags, mode_t mode)
     return NULL;
   }
 
-  mh = (csync_vio_method_handle_t *) sftp_open(sftp_session, path, flags, &attrs);
+  mh = (csync_vio_method_handle_t *) sftp_open(sftp_session, path, flags, mode);
+  if (mh == NULL) {
+    errno = _sftp_portable_to_errno(sftp_get_error(sftp_session));
+  }
 
   SAFE_FREE(path);
   return mh;
@@ -320,8 +365,6 @@ static csync_vio_method_handle_t *_creat(const char *uri, mode_t mode) {
   csync_vio_method_handle_t *mh = NULL;
   char *path = NULL;
 
-  (void) mode;
-
   if (_sftp_connect(uri) < 0) {
     return NULL;
   }
@@ -330,22 +373,46 @@ static csync_vio_method_handle_t *_creat(const char *uri, mode_t mode) {
     return NULL;
   }
 
-  mh = (csync_vio_method_handle_t *) sftp_open(sftp_session, path, O_CREAT|O_WRONLY|O_TRUNC, NULL);
+  mh = (csync_vio_method_handle_t *) sftp_open(sftp_session, path, O_CREAT|O_WRONLY|O_TRUNC, mode);
+  if (mh == NULL) {
+    errno = _sftp_portable_to_errno(sftp_get_error(sftp_session));
+  }
 
   SAFE_FREE(path);
   return mh;
 }
 
 static int _close(csync_vio_method_handle_t *fhandle) {
-  return sftp_file_close(fhandle);
+  int rc = -1;
+
+  rc = sftp_close(fhandle);
+  if (rc < 0) {
+    errno = _sftp_portable_to_errno(sftp_get_error(sftp_session));
+  }
+
+  return rc;
 }
 
 static ssize_t _read(csync_vio_method_handle_t *fhandle, void *buf, size_t count) {
-  return sftp_read(fhandle, buf, count);
+  int rc = -1;
+
+  rc = sftp_read(fhandle, buf, count);
+  if (rc < 0) {
+    errno = _sftp_portable_to_errno(sftp_get_error(sftp_session));
+  }
+
+  return rc;
 }
 
 static ssize_t _write(csync_vio_method_handle_t *fhandle, const void *buf, size_t count) {
-  return sftp_write(fhandle, (void *) buf, count);
+  int rc = -1;
+
+  rc = sftp_write(fhandle, (void *) buf, count);
+  if (rc < 0) {
+    errno = _sftp_portable_to_errno(sftp_get_error(sftp_session));
+  }
+
+  return rc;
 }
 
 static off_t _lseek(csync_vio_method_handle_t *fhandle, off_t offset, int whence) {
@@ -372,13 +439,23 @@ static csync_vio_method_handle_t *_opendir(const char *uri) {
   }
 
   mh = (csync_vio_method_handle_t *) sftp_opendir(sftp_session, path);
+  if (mh == NULL) {
+    errno = _sftp_portable_to_errno(sftp_get_error(sftp_session));
+  }
 
   SAFE_FREE(path);
   return mh;
 }
 
 static int _closedir(csync_vio_method_handle_t *dhandle) {
-  return sftp_dir_close(dhandle);
+  int rc = -1;
+
+  rc = sftp_closedir(dhandle);
+  if (rc < 0) {
+    errno = _sftp_portable_to_errno(sftp_get_error(sftp_session));
+  }
+
+  return rc;
 }
 
 static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
@@ -388,6 +465,7 @@ static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
   /* TODO: consider adding the _sftp_connect function */
   dirent = sftp_readdir(sftp_session, dhandle);
   if (dirent == NULL) {
+    errno = _sftp_portable_to_errno(sftp_get_error(sftp_session));
     return NULL;
   }
 
@@ -418,7 +496,6 @@ static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
 }
 
 static int _mkdir(const char *uri, mode_t mode) {
-  SFTP_ATTRIBUTES attrs;
   char *path = NULL;
   int rc = -1;
 
@@ -430,11 +507,10 @@ static int _mkdir(const char *uri, mode_t mode) {
     return -1;
   }
 
-  ZERO_STRUCT(attrs);
-  attrs.permissions = mode;
-  attrs.flags |= SSH_FILEXFER_ATTR_PERMISSIONS;
-
-  rc = sftp_mkdir(sftp_session, path, &attrs);
+  rc = sftp_mkdir(sftp_session, path, mode);
+  if (rc < 0) {
+    errno = _sftp_portable_to_errno(sftp_get_error(sftp_session));
+  }
 
   SAFE_FREE(path);
   return rc;
@@ -453,6 +529,9 @@ static int _rmdir(const char *uri) {
   }
 
   rc = sftp_rmdir(sftp_session, path);
+  if (rc < 0) {
+    errno = _sftp_portable_to_errno(sftp_get_error(sftp_session));
+  }
 
   SAFE_FREE(path);
   return rc;
@@ -532,6 +611,9 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
 
   rc = 0;
 out:
+  if (rc < 0) {
+    errno = _sftp_portable_to_errno(sftp_get_error(sftp_session));
+  }
   SAFE_FREE(path);
 
   return rc;
@@ -557,8 +639,11 @@ static int _rename(const char *olduri, const char *newuri) {
   }
 
   /* FIXME: workaround cause, sftp_rename can't overwrite */
-  sftp_rm(sftp_session, newpath);
+  sftp_unlink(sftp_session, newpath);
   rc = sftp_rename(sftp_session, oldpath, newpath);
+  if (rc < 0) {
+    errno = _sftp_portable_to_errno(sftp_get_error(sftp_session));
+  }
 
 out:
   SAFE_FREE(oldpath);
@@ -579,7 +664,10 @@ static int _unlink(const char *uri) {
     return -1;
   }
 
-  rc = sftp_rm(sftp_session, path);
+  rc = sftp_unlink(sftp_session, path);
+  if (rc < 0) {
+    errno = _sftp_portable_to_errno(sftp_get_error(sftp_session));
+  }
 
   SAFE_FREE(path);
   return rc;
@@ -603,6 +691,9 @@ static int _chmod(const char *uri, mode_t mode) {
   attrs.flags |= SSH_FILEXFER_ATTR_PERMISSIONS;
 
   rc = sftp_setstat(sftp_session, path, &attrs);
+  if (rc < 0) {
+    errno = _sftp_portable_to_errno(sftp_get_error(sftp_session));
+  }
 
   SAFE_FREE(path);
   return rc;
@@ -627,6 +718,9 @@ static int _chown(const char *uri, uid_t owner, gid_t group) {
   attrs.flags |= SSH_FILEXFER_ATTR_OWNERGROUP;
 
   rc = sftp_setstat(sftp_session, path, &attrs);
+  if (rc < 0) {
+    errno = _sftp_portable_to_errno(sftp_get_error(sftp_session));
+  }
 
   SAFE_FREE(path);
   return rc;
@@ -653,7 +747,10 @@ static int _utimes(const char *uri, const struct timeval *times) {
   attrs.mtime_nseconds = times[1].tv_usec;
   attrs.flags |= SSH_FILEXFER_ATTR_ACCESSTIME | SSH_FILEXFER_ATTR_MODIFYTIME;
 
-  sftp_setstat(sftp_session, path, &attrs);
+  rc = sftp_setstat(sftp_session, path, &attrs);
+  if (rc < 0) {
+    errno = _sftp_portable_to_errno(sftp_get_error(sftp_session));
+  }
 
   SAFE_FREE(path);
   return rc;
@@ -680,14 +777,16 @@ csync_vio_method_t _method = {
   .utimes = _utimes
 };
 
-csync_vio_method_t *vio_module_init(const char *method_name, const char *args, csync_auth_callback cb) {
+csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
+    csync_auth_callback cb, void *userdata) {
   DEBUG_SFTP(("csync_sftp - method_name: %s\n", method_name));
   DEBUG_SFTP(("csync_sftp - args: %s\n", args));
 
   (void) method_name;
   (void) args;
 
-  auth_cb = cb;
+  _authcb = cb;
+  _userdata = userdata;
 
   return &_method;
 }
