@@ -41,7 +41,8 @@ enum {
   KEY_CREATE_STATEDB,
 };
 
-const char *argp_program_version = "csync commandline client 0.42";
+const char *argp_program_version = "csync commandline client "
+  CSYNC_STRINGIFY(LIBCSYNC_VERSION);
 const char *argp_program_bug_address = "<csync-devel@csync.org>";
 
 /* Program documentation. */

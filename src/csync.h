@@ -37,13 +37,25 @@
 extern "C" {
 #endif
 
-/*
- * csync version information
- */
-#define CSYNC_VERSION_MAJOR 0
-#define CSYNC_VERSION_MINOR 42
-#define CSYNC_VERSION_PATCH 0
-#define CSYNC_VERSION_STRING "csync version 0.42.0"
+#define CSYNC_STRINGIFY(s) CSYNC_TOSTRING(s)
+#define CSYNC_TOSTRING(s) #s
+
+/* libssh version macros */
+#define CSYNC_VERSION_INT(a, b, c) (a << 16 | b << 8 | c)
+#define CSYNC_VERSION_DOT(a, b, c) a ##.## b ##.## c
+#define CSYNC_VERSION(a, b, c) CSYNC_VERSION_DOT(a, b, c)
+
+/* libssh version */
+#define LIBCSYNC_VERSION_MAJOR  0
+#define LIBCSYNC_VERSION_MINOR  42
+#define LIBCSYNC_VERSION_MICRO  0
+
+#define LIBCSYNC_VERSION_INT CSYNC_VERSION_INT(LIBCSYNC_VERSION_MAJOR, \
+                                           LIBCSYNC_VERSION_MINOR, \
+                                           LIBCSYNC_VERSION_MICRO)
+#define LIBCSYNC_VERSION     CSYNC_VERSION(LIBCSYNC_VERSION_MAJOR, \
+                                           LIBCSYNC_VERSION_MINOR, \
+                                           LIBCSYNC_VERSION_MICRO)
 
 /*
  * csync file declarations
@@ -120,11 +132,29 @@ int csync_propagate(CSYNC *ctx);
 int csync_destroy(CSYNC *ctx);
 
 /**
- * @brief Get the csync version.
+ * @brief Check if csync is the required version or get the version
+ * string.
  *
- * @return  The csync version as a string.
+ * @param req_version   The version required.
+ *
+ * @return              If the version of csync is newer than the version
+ *                      required it will return a version string.
+ *                      NULL if the version is older.
+ *
+ * Example:
+ *
+ * @code
+ *  if (csync_version(CSYNC_VERSION_INT(0,42,1)) == NULL) {
+ *    fprintf(stderr, "libcsync version is too old!\n");
+ *    exit(1);
+ *  }
+ *
+ *  if (debug) {
+ *    printf("csync %s\n", csync_version(0));
+ *  }
+ * @endcode
  */
-const char *csync_version(void);
+const char *csync_version(int req_version);
 
 int csync_add_exclude_list(CSYNC *ctx, const char *path);
 char *csync_get_config_dir(CSYNC *ctx);

@@ -537,8 +537,13 @@ int csync_destroy(CSYNC *ctx) {
   return 0;
 }
 
-const char *csync_version(void) {
-  return CSYNC_VERSION_STRING;
+/* Check if csync is the required version or get the version string. */
+const char *csync_version(int req_version) {
+  if (req_version <= LIBCSYNC_VERSION_INT) {
+    return CSYNC_STRINGIFY(LIBCSYNC_VERSION);
+  }
+
+  return NULL;
 }
 
 int csync_add_exclude_list(CSYNC *ctx, const char *path) {
