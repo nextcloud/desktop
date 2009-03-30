@@ -213,6 +213,8 @@ static int _sftp_connect(const char *uri) {
     goto out;
   }
 
+  ssh_get_pubkey_hash(ssh_session, hash);
+
   /* check the server public key hash */
   state = ssh_is_server_known(ssh_session);
   switch (state) {
@@ -220,7 +222,6 @@ static int _sftp_connect(const char *uri) {
       break;
     case SSH_SERVER_KNOWN_CHANGED:
       fprintf(stderr, "csync_sftp - host key for server changed : server's one is now:\n");
-      ssh_get_pubkey_hash(ssh_session, hash);
       ssh_print_hexa("csync_sftp - public key hash", hash, MD5_DIGEST_LEN);
       fprintf(stderr,"csync_sftp - for security reason, connection will be stopped\n");
       ssh_disconnect(ssh_session);
@@ -244,6 +245,62 @@ static int _sftp_connect(const char *uri) {
     case SSH_SERVER_NOT_KNOWN:
       fprintf(stderr,"csync_sftp - the server is unknown. Connect manually to "
           "the host first to retrieve the public key hash\n");
+      if (_authcb) {
+        char *hexa;
+        char *prompt;
+        char buf[4] = {0};
+
+        hexa = ssh_get_hexa(hash, MD5_DIGEST_LEN);
+        if (hexa == NULL) {
+          ssh_disconnect(ssh_session);
+          ssh_session = NULL;
+          ssh_finalize();
+          rc = -1;
+          goto out;
+        }
+
+        if (asprintf(&prompt,
+              "The authenticity of host '%s' can't be established.\n"
+              "RSA key fingerprint is %s.\n"
+              "Are you sure you want to continue connecting (yes/no)?",
+              host, hexa) < 0 ) {
+          free(hexa);
+          ssh_disconnect(ssh_session);
+          ssh_session = NULL;
+          ssh_finalize();
+          rc = -1;
+          goto out;
+        }
+
+        free(hexa);
+
+        if ((*_authcb)(prompt, buf, sizeof(buf), 1, 0, _userdata) < 0) {
+          free(prompt);
+          ssh_disconnect(ssh_session);
+          ssh_session = NULL;
+          ssh_finalize();
+          rc = -1;
+          goto out;
+        }
+
+        free(prompt);
+
+        if (strncasecmp(buf, "yes", 3) != 0) {
+          ssh_disconnect(ssh_session);
+          ssh_session = NULL;
+          ssh_finalize();
+          rc = -1;
+          goto out;
+        }
+
+        if (ssh_write_knownhost(ssh_session) < 0) {
+          ssh_disconnect(ssh_session);
+          ssh_session = NULL;
+          ssh_finalize();
+          rc = -1;
+          goto out;
+        }
+      }
       ssh_disconnect(ssh_session);
       ssh_session = NULL;
       ssh_finalize();
