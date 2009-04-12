@@ -142,7 +142,8 @@ static int _sftp_connect(const char *uri) {
   char *host = NULL;
   unsigned int port = 0;
   char *path = NULL;
-  unsigned char hash[MD5_DIGEST_LEN];
+  unsigned char *hash = NULL;
+  int hlen;
   int rc = -1;
   int auth = SSH_AUTH_ERROR;
   int state = SSH_SERVER_ERROR;
@@ -213,7 +214,15 @@ static int _sftp_connect(const char *uri) {
     goto out;
   }
 
-  ssh_get_pubkey_hash(ssh_session, hash);
+  hlen = ssh_get_pubkey_hash(ssh_session, &hash);
+  if (hlen < 0) {
+    fprintf(stderr, "csync_sftp - error connecting to the server: %s\n",
+        ssh_get_error(ssh_session));
+    ssh_disconnect(ssh_session);
+    ssh_session = NULL;
+    ssh_finalize();
+    goto out;
+  }
 
   /* check the server public key hash */
   state = ssh_is_server_known(ssh_session);
@@ -222,7 +231,7 @@ static int _sftp_connect(const char *uri) {
       break;
     case SSH_SERVER_KNOWN_CHANGED:
       fprintf(stderr, "csync_sftp - host key for server changed : server's one is now:\n");
-      ssh_print_hexa("csync_sftp - public key hash", hash, MD5_DIGEST_LEN);
+      ssh_print_hexa("csync_sftp - public key hash", hash, hlen);
       fprintf(stderr,"csync_sftp - for security reason, connection will be stopped\n");
       ssh_disconnect(ssh_session);
       ssh_session = NULL;
@@ -250,7 +259,7 @@ static int _sftp_connect(const char *uri) {
         char *prompt;
         char buf[4] = {0};
 
-        hexa = ssh_get_hexa(hash, MD5_DIGEST_LEN);
+        hexa = ssh_get_hexa(hash, hlen);
         if (hexa == NULL) {
           ssh_disconnect(ssh_session);
           ssh_session = NULL;
@@ -389,6 +398,7 @@ out:
   SAFE_FREE(passwd);
   SAFE_FREE(host);
   SAFE_FREE(path);
+  SAFE_FREE(hash);
 
   return rc;
 }
