@@ -120,6 +120,24 @@ void c_strlist_destroy(c_strlist_t *strlist);
 char *c_strreplace(char *src, const char *pattern, const char *repl);
 
 /**
+ * @brief Uppercase a string.
+ *
+ * @param  str     The String to uppercase.
+ *
+ * @return The malloced uppered string or NULL on error.
+ */
+char *c_uppercase(const char* str);
+
+/**
+ * @brief Lowercase a string.
+ *
+ * @param  str     The String to lowercase.
+ *
+ * @return The malloced lowered string or NULL on error.
+ */
+char *c_lowercase(const char* str);
+
+/**
  * }@
  */
 #endif /* _C_STR_H */

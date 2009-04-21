@@ -21,6 +21,7 @@
  */
 
 #include <errno.h>
+#include <ctype.h>
 #include <stdlib.h>
 
 #include "c_string.h"
@@ -142,5 +143,35 @@ char *c_strreplace(char *src, const char *pattern, const char *repl) {
   }
 
   return src;
+}
+
+char *c_uppercase(const char* str) {
+  char *new = c_strdup(str);
+  char *p = NULL;
+
+  if((str == NULL) || (new == NULL)) {
+    return NULL;
+  }
+
+  for (p = new; *p; p++) {
+    *p = toupper(*p);
+  }
+
+  return new;
+}
+
+char *c_lowercase(const char* str) {
+  char *new = c_strdup(str);
+  char *p = NULL;
+
+  if((str == NULL) || (new == NULL)) {
+    return NULL;
+  }
+
+  for (p = new; *p; p++) {
+    *p = tolower(*p);
+  }
+
+  return new;
 }
 
