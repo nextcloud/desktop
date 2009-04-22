@@ -116,7 +116,8 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
   ctx->pwd.uid = getuid();
   ctx->pwd.euid = geteuid();
 
-  if (asprintf(&ctx->options.config_dir, "%s/%s", getenv("HOME"), CSYNC_CONF_DIR) < 0) {
+  if (asprintf(&ctx->options.config_dir, "%s/%s", getenv("HOME"),
+        CSYNC_CONF_DIR) < 0) {
     SAFE_FREE(ctx->local.uri);
     SAFE_FREE(ctx->remote.uri);
     SAFE_FREE(ctx);
@@ -207,7 +208,8 @@ int csync_init(CSYNC *ctx) {
   SAFE_FREE(exclude);
 
   /* load exclude list */
-  if (asprintf(&exclude, "%s/%s", ctx->options.config_dir, CSYNC_EXCLUDE_FILE) < 0) {
+  if (asprintf(&exclude, "%s/%s", ctx->options.config_dir,
+        CSYNC_EXCLUDE_FILE) < 0) {
     rc = -1;
     goto out;
   }
@@ -323,8 +325,8 @@ int csync_update(CSYNC *ctx) {
   clock_gettime(CLOCK_REALTIME, &finish);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Update detection for local replica took %.2f seconds walking %zu files.",
-            c_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
+      "Update detection for local replica took %.2f seconds walking %zu files.",
+      c_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
   csync_memstat_check();
 
   if (rc < 0) {
@@ -341,8 +343,9 @@ int csync_update(CSYNC *ctx) {
   clock_gettime(CLOCK_REALTIME, &finish);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Update detection for remote replica took %.2f seconds walking %zu files.",
-            c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
+      "Update detection for remote replica took %.2f seconds "
+      "walking %zu files.",
+      c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
   csync_memstat_check();
 
   if (rc < 0) {
@@ -374,8 +377,8 @@ int csync_reconcile(CSYNC *ctx) {
   clock_gettime(CLOCK_REALTIME, &finish);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Reconciliation for local replica took %.2f seconds visiting %zu files.",
-            c_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
+      "Reconciliation for local replica took %.2f seconds visiting %zu files.",
+      c_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
 
   if (rc < 0) {
     return -1;
@@ -392,8 +395,8 @@ int csync_reconcile(CSYNC *ctx) {
   clock_gettime(CLOCK_REALTIME, &finish);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Reconciliation for remote replica took %.2f seconds visiting %zu files.",
-            c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
+      "Reconciliation for remote replica took %.2f seconds visiting %zu files.",
+      c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
 
   if (rc < 0) {
     return -1;
@@ -424,8 +427,8 @@ int csync_propagate(CSYNC *ctx) {
   clock_gettime(CLOCK_REALTIME, &finish);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Propagation for local replica took %.2f seconds visiting %zu files.",
-            c_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
+      "Propagation for local replica took %.2f seconds visiting %zu files.",
+      c_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
 
   if (rc < 0) {
     return -1;
@@ -442,8 +445,8 @@ int csync_propagate(CSYNC *ctx) {
   clock_gettime(CLOCK_REALTIME, &finish);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Propagation for remote replica took %.2f seconds visiting %zu files.",
-            c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
+      "Propagation for remote replica took %.2f seconds visiting %zu files.",
+      c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
 
   if (rc < 0) {
     return -1;
