@@ -107,6 +107,72 @@ START_TEST (check_c_strreplace)
 }
 END_TEST
 
+START_TEST (check_c_lowercase)
+{
+  char *str;
+
+  str = c_lowercase("LoWeRcASE");
+  fail_unless(strcmp(str, "lowercase") == 0, NULL);
+
+  SAFE_FREE(str);
+}
+END_TEST
+
+START_TEST (check_c_lowercase_empty)
+{
+  char *str;
+
+  str = c_lowercase("");
+  fail_unless(strcmp(str, "") == 0, NULL);
+
+  SAFE_FREE(str);
+}
+END_TEST
+
+START_TEST (check_c_lowercase_null)
+{
+  char *str;
+
+  str = c_lowercase(NULL);
+  fail_unless(str == NULL, NULL);
+
+  SAFE_FREE(str);
+}
+END_TEST
+
+START_TEST (check_c_uppercase)
+{
+  char *str;
+
+  str = c_uppercase("upperCASE");
+  fail_unless(strcmp(str, "UPPERCASE") == 0, NULL);
+
+  SAFE_FREE(str);
+}
+END_TEST
+
+START_TEST (check_c_uppercase_empty)
+{
+  char *str;
+
+  str = c_uppercase("");
+  fail_unless(strcmp(str, "") == 0, NULL);
+
+  SAFE_FREE(str);
+}
+END_TEST
+
+START_TEST (check_c_uppercase_null)
+{
+  char *str;
+
+  str = c_uppercase(NULL);
+  fail_unless(str == NULL, NULL);
+
+  SAFE_FREE(str);
+}
+END_TEST
+
 static Suite *make_std_c_strlist_suite(void) {
   Suite *s = suite_create("std:str:c_stringlist");
 
@@ -114,6 +180,12 @@ static Suite *make_std_c_strlist_suite(void) {
   create_case(s, "check_c_strlist_add", check_c_strlist_add);
   create_case(s, "check_c_strlist_expand", check_c_strlist_expand);
   create_case(s, "check_c_strreplace", check_c_strreplace);
+  create_case(s, "check_c_lowercase", check_c_lowercase);
+  create_case(s, "check_c_lowercase", check_c_lowercase_empty);
+  create_case(s, "check_c_lowercase", check_c_lowercase_null);
+  create_case(s, "check_c_uppercase", check_c_uppercase);
+  create_case(s, "check_c_uppercase", check_c_uppercase_empty);
+  create_case(s, "check_c_uppercase", check_c_uppercase_null);
 
   return s;
 }
