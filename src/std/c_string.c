@@ -146,10 +146,15 @@ char *c_strreplace(char *src, const char *pattern, const char *repl) {
 }
 
 char *c_uppercase(const char* str) {
-  char *new = c_strdup(str);
-  char *p = NULL;
+  char *new;
+  char *p;
 
-  if((str == NULL) || (new == NULL)) {
+  if (str == NULL) {
+    return NULL;
+  }
+
+  new = c_strdup(str);
+  if (new == NULL) {
     return NULL;
   }
 
@@ -161,10 +166,15 @@ char *c_uppercase(const char* str) {
 }
 
 char *c_lowercase(const char* str) {
-  char *new = c_strdup(str);
-  char *p = NULL;
+  char *new;
+  char *p;
 
-  if((str == NULL) || (new == NULL)) {
+  if (str == NULL) {
+    return NULL;
+  }
+
+  new = c_strdup(str);
+  if (new == NULL) {
     return NULL;
   }
 
