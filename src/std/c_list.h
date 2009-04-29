@@ -138,7 +138,8 @@ c_list_t *c_list_insert(c_list_t *list, void *data, long position);
  * @return              New start of the list, which may have changed, so make
  *                      sure you store the new value.
  */
-c_list_t *c_list_insert_sorted(c_list_t *list, void *data, c_list_compare_fn func);
+c_list_t *c_list_insert_sorted(c_list_t *list, void *data,
+    c_list_compare_fn func);
 
 /**
  * Allocates space for one c_list_t element.
@@ -249,7 +250,8 @@ c_list_t *c_list_find(c_list_t *list, void *data);
  *
  * @return              The found element or NULL if it is not found.
  */
-c_list_t *c_list_find_custom(c_list_t *list, void *data, c_list_compare_fn func);
+c_list_t *c_list_find_custom(c_list_t *list, void *data,
+    c_list_compare_fn func);
 
 /**
  * Sorts the elements of a c_list.
@@ -261,9 +263,9 @@ c_list_t *c_list_find_custom(c_list_t *list, void *data, c_list_compare_fn func)
  *
  * @param func          The comparison function used to sort the c_list. This
  *                      function is passed 2 elements of the GList and should
- *                      return 0 if they are equal, a negative value if the first
- *                      element comes before the second, or a positive value if the
- *                      first element comes after the second.
+ *                      return 0 if they are equal, a negative value if the
+ *                      first element comes before the second, or a positive
+ *                      value if the first element comes after the second.
  *
  * @return              New start of the list, which may have changed, so make
  *                      sure you store the new value.
