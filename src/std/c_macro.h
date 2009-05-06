@@ -84,6 +84,9 @@
 /** Get the bigger value */
 #define MAX(a,b) ((a) < (b) ? (b) : (a))
 
+/** Get the size of an array */
+#define ARRAY_SIZE(a) (sizeof(a)/sizeof(a[0]))
+
 /**
  * }@
  */
