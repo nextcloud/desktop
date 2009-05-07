@@ -36,7 +36,7 @@ include(MacroAddPlugin)
 include(MacroCopyFile)
 
 if (WITH_LOG4C)
-  find_package(LOG4C REQUIRED)
+  find_package(Log4C REQUIRED)
 endif (WITH_LOG4C)
 find_package(Check)
 
