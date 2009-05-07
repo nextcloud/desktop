@@ -1,12 +1,12 @@
-# - Try to find Sqlite3
+# - Try to find SQLite3
 # Once done this will define
 #
-#  SQLITE3_FOUND - system has Sqlite3
-#  SQLITE3_INCLUDE_DIRS - the Sqlite3 include directory
-#  SQLITE3_LIBRARIES - Link these to use Sqlite3
-#  SQLITE3_DEFINITIONS - Compiler switches required for using Sqlite3
+#  SQLITE3_FOUND - system has SQLite3
+#  SQLITE3_INCLUDE_DIRS - the SQLite3 include directory
+#  SQLITE3_LIBRARIES - Link these to use SQLite3
+#  SQLITE3_DEFINITIONS - Compiler switches required for using SQLite3
 #
-#  Copyright (c) 2008 Andreas Schneider <mail@cynapses.org>
+#  Copyright (c) 2009 Andreas Schneider <mail@cynapses.org>
 #
 #  Redistribution and use is allowed according to the terms of the New
 #  BSD license.
@@ -29,6 +29,7 @@ else (SQLITE3_LIBRARIES AND SQLITE3_INCLUDE_DIRS)
       pkg_check_modules(_SQLITE3 sqlite3)
     endif (PKG_CONFIG_FOUND)
   endif (${CMAKE_MAJOR_VERSION} EQUAL 2 AND ${CMAKE_MINOR_VERSION} EQUAL 4)
+
   find_path(SQLITE3_INCLUDE_DIR
     NAMES
       sqlite3.h
@@ -39,6 +40,7 @@ else (SQLITE3_LIBRARIES AND SQLITE3_INCLUDE_DIRS)
       /opt/local/include
       /sw/include
   )
+  mark_as_advanced(SQLITE3_INCLUDE_DIR)
 
   find_library(SQLITE3_LIBRARY
     NAMES
@@ -50,9 +52,10 @@ else (SQLITE3_LIBRARIES AND SQLITE3_INCLUDE_DIRS)
       /opt/local/lib
       /sw/lib
   )
+  mark_as_advanced(SQLITE3_LIBRARY)
 
   if (SQLITE3_LIBRARY)
-    set(SQLITE3_FOUND TRUE)
+    set(SQLITE3_FOUND TRUE CACHE INTERNAL "Wether the sqlite3 library has been found" FORCE)
   endif (SQLITE3_LIBRARY)
 
   set(SQLITE3_INCLUDE_DIRS
@@ -71,13 +74,13 @@ else (SQLITE3_LIBRARIES AND SQLITE3_INCLUDE_DIRS)
   endif (SQLITE3_INCLUDE_DIRS AND SQLITE3_LIBRARIES)
 
   if (SQLITE3_FOUND)
-    if (NOT Sqlite3_FIND_QUIETLY)
-      message(STATUS "Found Sqlite3: ${SQLITE3_LIBRARIES}")
-    endif (NOT Sqlite3_FIND_QUIETLY)
+    if (NOT SQLite3_FIND_QUIETLY)
+      message(STATUS "Found SQLite3: ${SQLITE3_LIBRARIES}")
+    endif (NOT SQLite3_FIND_QUIETLY)
   else (SQLITE3_FOUND)
-    if (Sqlite3_FIND_REQUIRED)
-      message(FATAL_ERROR "Could not find Sqlite3")
-    endif (Sqlite3_FIND_REQUIRED)
+    if (SQLite3_FIND_REQUIRED)
+      message(FATAL_ERROR "Could not find SQLite3")
+    endif (SQLite3_FIND_REQUIRED)
   endif (SQLITE3_FOUND)
 
   # show the SQLITE3_INCLUDE_DIRS and SQLITE3_LIBRARIES variables only in the advanced view
