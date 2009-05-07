@@ -1,12 +1,12 @@
-# - Try to find LIBSSH
+# - Try to find LibSSH
 # Once done this will define
 #
-#  LIBSSH_FOUND - system has LIBSSH
-#  LIBSSH_INCLUDE_DIRS - the LIBSSH include directory
-#  LIBSSH_LIBRARIES - Link these to use LIBSSH
-#  LIBSSH_DEFINITIONS - Compiler switches required for using LIBSSH
+#  LIBSSH_FOUND - system has LibSSH
+#  LIBSSH_INCLUDE_DIRS - the LibSSH include directory
+#  LIBSSH_LIBRARIES - Link these to use LibSSH
+#  LIBSSH_DEFINITIONS - Compiler switches required for using LibSSH
 #
-#  Copyright (c) 2008 Andreas Schneider <mail@cynapses.org>
+#  Copyright (c) 2009 Andreas Schneider <mail@cynapses.org>
 #
 #  Redistribution and use is allowed according to the terms of the New
 #  BSD license.
@@ -18,6 +18,7 @@ if (LIBSSH_LIBRARIES AND LIBSSH_INCLUDE_DIRS)
   # in cache already
   set(LIBSSH_FOUND TRUE)
 else (LIBSSH_LIBRARIES AND LIBSSH_INCLUDE_DIRS)
+
   find_path(LIBSSH_INCLUDE_DIR
     NAMES
       libssh/libssh.h
@@ -41,7 +42,7 @@ else (LIBSSH_LIBRARIES AND LIBSSH_INCLUDE_DIRS)
   mark_as_advanced(SSH_LIBRARY)
 
   if (SSH_LIBRARY)
-    set(SSH_FOUND TRUE)
+    set(SSH_FOUND TRUE CACHE INTERNAL "Wether the ssh library has been found" FORCE)
   endif (SSH_LIBRARY)
 
   set(LIBSSH_INCLUDE_DIRS
@@ -60,13 +61,13 @@ else (LIBSSH_LIBRARIES AND LIBSSH_INCLUDE_DIRS)
   endif (LIBSSH_INCLUDE_DIRS AND LIBSSH_LIBRARIES)
 
   if (LIBSSH_FOUND)
-    if (NOT LIBSSH_FIND_QUIETLY)
-      message(STATUS "Found LIBSSH: ${LIBSSH_LIBRARIES}")
-    endif (NOT LIBSSH_FIND_QUIETLY)
+    if (NOT LibSSH_FIND_QUIETLY)
+      message(STATUS "Found LibSSH: ${LIBSSH_LIBRARIES}")
+    endif (NOT LibSSH_FIND_QUIETLY)
   else (LIBSSH_FOUND)
-    if (LIBSSH_FIND_REQUIRED)
-      message(FATAL_ERROR "Could not find LIBSSH")
-    endif (LIBSSH_FIND_REQUIRED)
+    if (LibSSH_FIND_REQUIRED)
+      message(FATAL_ERROR "Could not find LibSSH")
+    endif (LibSSH_FIND_REQUIRED)
   endif (LIBSSH_FOUND)
 
   # show the LIBSSH_INCLUDE_DIRS and LIBSSH_LIBRARIES variables only in the advanced view
