@@ -16,8 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * vim: ft=c.doxygen ts=2 sw=2 et cindent
  */
 
 /**
@@ -95,4 +93,4 @@ int csync_statedb_insert_metadata(CSYNC *ctx);
  * }@
  */
 #endif /* _CSYNC_STATEDB_H */
-
+/* vim: set ft=c.doxygen ts=8 sw=2 et cindent: */

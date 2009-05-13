@@ -16,8 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * vim: ft=c.doxygen ts=2 sw=2 et cindent
  */
 
 #ifndef _CSYNC_UPDATE_H
@@ -47,3 +45,4 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs, 
 int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn, unsigned int depth);
 
 #endif /* _CSYNC_UPDATE_H */
+/* vim: set ft=c.doxygen ts=8 sw=2 et cindent: */

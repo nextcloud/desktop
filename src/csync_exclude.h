@@ -16,8 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * vim: ft=c.doxygen ts=2 sw=2 et cindent
  */
 
 #ifndef _CSYNC_EXCLUDE_H
@@ -51,3 +49,4 @@ void csync_exclude_destroy(CSYNC *ctx);
 int csync_excluded(CSYNC *ctx, const char *path);
 
 #endif /* _CSYNC_EXCLUDE_H */
+/* vim: set ft=c.doxygen ts=8 sw=2 et cindent: */

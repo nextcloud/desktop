@@ -16,8 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * vim: ts=2 sw=2 et cindent
  */
 
 #ifndef _GNU_SOURCE
@@ -321,3 +319,4 @@ uint64_t csync_create_statedb_hash(CSYNC *ctx) {
   return hash;
 }
 
+/* vim: set ts=8 sw=2 et cindent: */

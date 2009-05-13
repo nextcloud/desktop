@@ -16,8 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * vim: ts=2 sw=2 et cindent
  */
 
 #ifndef _GNU_SOURCE
@@ -639,3 +637,4 @@ int csync_statedb_insert(CSYNC *ctx, const char *statement) {
   return sqlite3_last_insert_rowid(ctx->statedb.db);
 }
 
+/* vim: set ts=8 sw=2 et cindent: */
