@@ -18,7 +18,7 @@ if (UNIX AND NOT WIN32)
         _lfs_CFLAGS
       ERROR_QUIET
       OUTPUT_STRIP_TRAILING_WHITESPACE
-  )
+    )
   else (CMAKE_SIZEOF_VOID_P MATCHES "8")
     # with large file support
     execute_process(
