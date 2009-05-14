@@ -17,7 +17,7 @@ static void setup(void) {
 }
 
 static void teardown(void) {
-  fail_if(system("rm -rf /tmp/check") < 0, "Teardown failed");
+  fail_unless(c_rmdirs(check_dir) == 0, "Teardown failed");
 }
 
 static int test_dir(const char *path, mode_t mode) {
@@ -38,19 +38,23 @@ static int test_dir(const char *path, mode_t mode) {
   return -1;
 }
 
-START_TEST (check_c_mkdirs_new)
+START_TEST (check_c_mkdirs_rmdirs)
 {
+  struct stat sb;
   fail_unless(c_mkdirs(check_dir, 0755) == 0, NULL);
   fail_unless(test_dir(check_dir, 0755) == 0, NULL);
-  fail_if(system("rm -rf /tmp/check") < 0, NULL);
+  fail_unless(c_rmdirs(check_dir) == 0, NULL);
+  fail_unless(lstat(check_dir, &sb) < 0, NULL);
 }
 END_TEST
 
 START_TEST (check_c_mkdirs_mode)
 {
+  struct stat sb;
   fail_unless(c_mkdirs(check_dir, 0700) == 0, NULL);
   fail_unless(test_dir(check_dir, 0700) == 0, NULL);
-  fail_if(system("rm -rf /tmp/check") < 0, NULL);
+  fail_unless(c_rmdirs(check_dir) == 0, NULL);
+  fail_unless(lstat(check_dir, &sb) < 0, NULL);
 }
 END_TEST
 
@@ -93,7 +97,7 @@ END_TEST
 static Suite *make_std_c_mkdirs_suite(void) {
   Suite *s = suite_create("std:dir:c_mkdirs");
 
-  create_case(s, "check_c_mkdirs_new", check_c_mkdirs_new);
+  create_case(s, "check_c_mkdirs_rmdirs", check_c_mkdirs_rmdirs);
   create_case(s, "check_c_mkdirs_mode", check_c_mkdirs_mode);
   create_case_fixture(s, "check_c_mkdirs_existing_path", check_c_mkdirs_existing_path, setup, teardown);
   create_case_fixture(s, "check_c_mkdirs_file", check_c_mkdirs_file, setup, teardown);
