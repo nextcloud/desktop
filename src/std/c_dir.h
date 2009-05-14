@@ -61,6 +61,17 @@
 int c_mkdirs(const char *path, mode_t mode);
 
 /**
+ * @brief Remove the directory and subdirectories including the content.
+ *
+ * This removes all directories and files recursivly.
+ *
+ * @param  dir      The directory to remove recusively.
+ *
+ * @return          0 on success, < 0 on error with errno set.
+ */
+int c_rmdirs(const char *dir);
+
+/**
  * @brief Check if a path is a directory.
  *
  * @param path  The path to check.
