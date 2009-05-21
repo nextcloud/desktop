@@ -155,6 +155,8 @@ c_list_t *c_list_alloc(void);
  * @param list          A pointer to c_list.
  *
  * @param data          The data of the element to remove.
+ *
+ * @return              The first element of the list, NULL on error.
  */
 c_list_t *c_list_remove(c_list_t *list, void *data);
 
