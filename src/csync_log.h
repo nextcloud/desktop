@@ -86,6 +86,8 @@
 #define CSYNC_LOG_PRIORITY_UNKNOWN 1000
 #endif
 
+static LOG4C_INLINE void csync_log(char *catName, int a_priority,
+    const char* a_format,...) PRINTF_ATTRIBUTE(3, 4);
 /**
  * @brief The constructor of the logging mechanism
  *
@@ -93,7 +95,7 @@
  */
 static LOG4C_INLINE int csync_log_init() {
 #ifdef WITH_LOG4C
-  return (log4c_init());
+  return log4c_init();
 #else
   return 0;
 #endif
@@ -108,7 +110,7 @@ static LOG4C_INLINE int csync_log_init() {
  **/
 static LOG4C_INLINE int csync_log_load(const char *path){
 #ifdef WITH_LOG4C
-  return (log4c_load(path));
+  return log4c_load(path);
 #else
   if (path == NULL) {
     return 0;
@@ -124,7 +126,7 @@ static LOG4C_INLINE int csync_log_load(const char *path){
  */
 static LOG4C_INLINE int csync_log_fini(){
 #ifdef WITH_LOG4C
-  return(log4c_fini());
+  return log4c_fini();
 #else
   return 0;
 #endif
@@ -132,7 +134,8 @@ static LOG4C_INLINE int csync_log_fini(){
 
 static LOG4C_INLINE int csync_log_setappender(char *catName, char *appName) {
 #ifdef WITH_LOG4C
-  log4c_category_set_appender(log4c_category_get(catName),log4c_appender_get(appName));
+  log4c_category_set_appender(log4c_category_get(catName),
+      log4c_appender_get(appName));
   return 0;
 #else
   if (catName == NULL || appName == NULL) {
@@ -142,8 +145,8 @@ static LOG4C_INLINE int csync_log_setappender(char *catName, char *appName) {
 #endif
 }
 
-static LOG4C_INLINE void csync_log(char *catName, int a_priority, const char* a_format,...) PRINTF_ATTRIBUTE(3, 4);
-static LOG4C_INLINE void csync_log(char *catName, int a_priority, const char* a_format,...) {
+static LOG4C_INLINE void csync_log(char *catName, int a_priority,
+    const char* a_format,...) {
 #ifdef WITH_LOG4C
   const log4c_category_t* a_category = log4c_category_get(catName);
   if (log4c_category_is_priority_enabled(a_category, a_priority)) {
@@ -168,4 +171,5 @@ static LOG4C_INLINE void csync_log(char *catName, int a_priority, const char* a_
  * }@
  */
 #endif /* _CSYNC_LOG_H */
+
 /* vim: set ft=c.doxygen ts=8 sw=2 et cindent: */
