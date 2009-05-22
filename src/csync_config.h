@@ -21,6 +21,17 @@
 #ifndef _CSYNC_CONFIG_H
 #define _CSYNC_CONFIG_H
 
+/**
+ * @internal
+ *
+ * @brief Load the csync configuration.
+ *
+ * @param  ctx          The csync context to use.
+ *
+ * @param  config       The path to the config file.
+ *
+ * @return 0 on success, < 0 on error.
+ */
 int csync_config_load(CSYNC *ctx, const char *config);
 
 #endif /* _CSYNC_X_H */
