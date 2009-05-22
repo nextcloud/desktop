@@ -41,6 +41,8 @@ void csync_exclude_destroy(CSYNC *ctx);
 /**
  * @brief Check if the given path should be excluded.
  *
+ * This excludes also paths which can't be used without unix extensions.
+ *
  * @param ctx   The synchronizer context.
  * @param path  The patch to check.
  *
@@ -49,4 +51,5 @@ void csync_exclude_destroy(CSYNC *ctx);
 int csync_excluded(CSYNC *ctx, const char *path);
 
 #endif /* _CSYNC_EXCLUDE_H */
+
 /* vim: set ft=c.doxygen ts=8 sw=2 et cindent: */
