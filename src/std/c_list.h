@@ -131,7 +131,7 @@ c_list_t *c_list_insert(c_list_t *list, void *data, long position);
  *
  * @param data          The data for the new element.
  *
- * @param func          The function to compare elements in the list. It
+ * @param fn            The function to compare elements in the list. It
  *                      should return a number > 0 if the first parameter comes
  *                      after the second parameter in the sort order.
  *
@@ -139,7 +139,7 @@ c_list_t *c_list_insert(c_list_t *list, void *data, long position);
  *                      sure you store the new value.
  */
 c_list_t *c_list_insert_sorted(c_list_t *list, void *data,
-    c_list_compare_fn func);
+    c_list_compare_fn fn);
 
 /**
  * Allocates space for one c_list_t element.

@@ -125,7 +125,7 @@ c_list_t *c_list_insert(c_list_t *list, void *data, long position) {
  * determine its position.
  */
 c_list_t *c_list_insert_sorted(c_list_t *list, void *data,
-    c_list_compare_fn func) {
+    c_list_compare_fn fn) {
   c_list_t *new;
   c_list_t *temp;
   int cmp;
@@ -142,12 +142,12 @@ c_list_t *c_list_insert_sorted(c_list_t *list, void *data,
   }
 
   temp = list;
-  cmp = ((c_list_compare_fn) func) (data, temp->data);
+  cmp = (fn)(data, temp->data);
 
   while ((temp->next) && (cmp > 0)) {
     temp = temp->next;
 
-    cmp = ((c_list_compare_fn) func) (data, temp->data);
+    cmp = (fn)(data, temp->data);
   }
 
   /* last element */
