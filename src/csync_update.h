@@ -25,6 +25,19 @@
 #include "vio/csync_vio_file_stat.h"
 
 /**
+ * @file csync_update.h
+ *
+ * @brief Update Detection
+ *
+ * TODO
+ *
+ * @defgroup csyncUpdateDetectionInternals csync update detection internals
+ * @ingroup csyncInternalAPI
+ *
+ * @{
+ */
+
+/**
  * Types for files
  */
 enum csync_ftw_flags_e {
