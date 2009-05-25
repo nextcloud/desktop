@@ -40,7 +40,8 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.updater"
 #include "csync_log.h"
 
-static int _csync_detect_update(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs, const int type) {
+static int _csync_detect_update(CSYNC *ctx, const char *file,
+    const csync_vio_file_stat_t *fs, const int type) {
   uint64_t h = 0;
   size_t len = 0;
   size_t size = 0;
@@ -155,12 +156,14 @@ out:
     default:
       break;
   }
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: %s", st->path, csync_instruction_str(st->instruction));
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: %s", st->path,
+      csync_instruction_str(st->instruction));
 
   return 0;
 }
 
-int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs, enum csync_ftw_flags_e flag) {
+int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
+    enum csync_ftw_flags_e flag) {
   switch (flag) {
     case CSYNC_FTW_FLAG_FILE:
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s", file);
@@ -194,7 +197,8 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs, 
 }
 
 /* File tree walker */
-int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn, unsigned int depth) {
+int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
+    unsigned int depth) {
   char errbuf[256] = {0};
   char *filename = NULL;
   char *d_name = NULL;
