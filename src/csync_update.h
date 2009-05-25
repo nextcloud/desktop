@@ -39,10 +39,48 @@ enum csync_ftw_flags_e {
   CSYNC_FTW_FLAG_SLN		/* Symbolic link naming non-existing file.  */
 };
 
-typedef int (*csync_walker_fn) (CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs, enum csync_ftw_flags_e flag);
+typedef int (*csync_walker_fn) (CSYNC *ctx, const char *file,
+    const csync_vio_file_stat_t *fs, enum csync_ftw_flags_e flag);
 
-int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs, enum csync_ftw_flags_e flag);
-int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn, unsigned int depth);
+/**
+ * @brief The walker function to use in the file tree walker.
+ *
+ * @param  ctx          The used csync context.
+ *
+ * @param  file         The file we are researching.
+ *
+ * @param  fs           The stat information we got.
+ *
+ * @param  flag         The flag describing the type of the file.
+ *
+ * @return 0 on success, < 0 on error.
+ */
+int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
+    enum csync_ftw_flags_e flag);
+
+/**
+ * @brief The file tree walker.
+ *
+ * This function walks through the directory tree that is located under the uri
+ * specified. It calls a walker function which is provided as a function pointer
+ * once for each entry in the tree. By default, directories are handled before
+ * the files and subdirectories they contain (pre-order traversal).
+ *
+ * @param  ctx          The csync context to use.
+ *
+ * @param  uri          The uri/path to the directory tree to walk.
+ *
+ * @param  fn           The walker function to call once for each entry.
+ *
+ * @param  depth        The max depth to walk down the tree.
+ *
+ * @return 0 on success, < 0 on error. If fn() returns non-zero, then the tree
+ *         walk is terminated and the value returned by fn() is returned as the
+ *         result.
+ */
+int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
+    unsigned int depth);
 
 #endif /* _CSYNC_UPDATE_H */
+
 /* vim: set ft=c.doxygen ts=8 sw=2 et cindent: */
