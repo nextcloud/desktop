@@ -1,6 +1,15 @@
 ChangeLog
 ==========
 
+version 0.43.0 (released 2009-05-25)
+  * Added SFTP support with libssh 0.3.
+  * Added possibility to pass userdata to the auth function.
+  * Added a better version function.
+  * Fixed CMake build.
+  * Fixed CMake find modules.
+  * Fixed some flaws in cstd functions.
+  * Documented all public functions.
+
 version 0.42.0 (released 2009-02-10)
   * Small fix in the userguide.
 
