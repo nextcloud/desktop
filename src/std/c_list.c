@@ -44,14 +44,14 @@ c_list_t *c_list_append(c_list_t *list, void *data) {
 
   if (list == NULL) {
     return new;
-  } else {
-    last = c_list_last(list);
-
-    last->next = new;
-    new->prev = last;
-
-    return list;
   }
+
+  last = c_list_last(list);
+
+  last->next = new;
+  new->prev = last;
+
+  return list;
 }
 
 /*
@@ -115,9 +115,9 @@ c_list_t *c_list_insert(c_list_t *list, void *data, long position) {
   /*  */
   if (temp == list) {
     return new;
-  } else {
-    return list;
   }
+
+  return list;
 }
 
 /*
@@ -169,9 +169,9 @@ c_list_t *c_list_insert_sorted(c_list_t *list, void *data,
   /* inserted before first */
   if (temp == list) {
     return new;
-  } else {
-    return list;
   }
+
+  return list;
 }
 
 /*
@@ -260,9 +260,9 @@ void c_list_free(c_list_t *list) {
 c_list_t *c_list_next(c_list_t *list) {
   if (list == NULL) {
     return NULL;
-  } else {
-    return list->next;
   }
+
+  return list->next;
 }
 
 /*
@@ -271,9 +271,9 @@ c_list_t *c_list_next(c_list_t *list) {
 c_list_t *c_list_prev(c_list_t *list) {
   if (list == NULL) {
     return NULL;
-  } else {
-    return list->prev;
   }
+
+  return list->prev;
 }
 
 /*
