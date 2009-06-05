@@ -237,7 +237,7 @@ c_list_t *c_list_position(c_list_t *list, long position);
  *
  * @return              The found element or NULL if it is not found.
  */
-c_list_t *c_list_find(c_list_t *list, void *data);
+c_list_t *c_list_find(c_list_t *list, const void *data);
 
 /**
  * Finds an element, using a supplied function to find the desired
@@ -252,8 +252,8 @@ c_list_t *c_list_find(c_list_t *list, void *data);
  *
  * @return              The found element or NULL if it is not found.
  */
-c_list_t *c_list_find_custom(c_list_t *list, void *data,
-    c_list_compare_fn func);
+c_list_t *c_list_find_custom(c_list_t *list, const void *data,
+    c_list_compare_fn fn);
 
 /**
  * Sorts the elements of a c_list.

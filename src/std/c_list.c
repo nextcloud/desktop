@@ -338,7 +338,7 @@ c_list_t *c_list_position(c_list_t *list, long position) {
 /*
  * Finds the element in a c_list_t which contains the given data.
  */
-c_list_t *c_list_find(c_list_t *list, void *data) {
+c_list_t *c_list_find(c_list_t *list, const void *data) {
   if (list == NULL) {
     return NULL;
   }
@@ -356,13 +356,13 @@ c_list_t *c_list_find(c_list_t *list, void *data) {
  * Finds an element, using a supplied function to find the desired
  * element.
  */
-c_list_t *c_list_find_custom(c_list_t *list, void *data,
-    c_list_compare_fn func) {
+c_list_t *c_list_find_custom(c_list_t *list, const void *data,
+    c_list_compare_fn fn) {
   int cmp;
 
-  if (list != NULL && func != NULL) {
+  if (list != NULL && fn != NULL) {
     while (list != NULL) {
-      cmp = ((c_list_compare_fn) func) (list->data, data);
+      cmp = (*fn)(list->data, data);
       if (cmp == 0) {
         return list;
       }
