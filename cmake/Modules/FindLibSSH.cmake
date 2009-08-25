@@ -13,7 +13,6 @@
 #  For details see the accompanying COPYING-CMAKE-SCRIPTS file.
 #
 
-
 if (LIBSSH_LIBRARIES AND LIBSSH_INCLUDE_DIRS)
   # in cache already
   set(LIBSSH_FOUND TRUE)
@@ -28,21 +27,20 @@ else (LIBSSH_LIBRARIES AND LIBSSH_INCLUDE_DIRS)
       /opt/local/include
       /sw/include
   )
-  mark_as_advanced(LIBSSH_INCLUDE_DIR)
 
   find_library(SSH_LIBRARY
     NAMES
       ssh
+      libssh
     PATHS
       /usr/lib
       /usr/local/lib
       /opt/local/lib
       /sw/lib
   )
-  mark_as_advanced(SSH_LIBRARY)
 
   if (SSH_LIBRARY)
-    set(SSH_FOUND TRUE CACHE INTERNAL "Wether the ssh library has been found" FORCE)
+    set(SSH_FOUND TRUE)
   endif (SSH_LIBRARY)
 
   set(LIBSSH_INCLUDE_DIRS
@@ -54,21 +52,27 @@ else (LIBSSH_LIBRARIES AND LIBSSH_INCLUDE_DIRS)
       ${LIBSSH_LIBRARIES}
       ${SSH_LIBRARY}
     )
+
+    if (LibSSH_FIND_VERSION)
+      file(STRINGS ${LIBSSH_INCLUDE_DIR}/libssh/libssh.h LIBSSH_VERSION_MAJOR
+        REGEX "#define[ ]+LIBSSH_VERSION_MAJOR[ ]+[0-9]+")
+      string(REGEX MATCH "[0-9]+" LIBSSH_VERSION_MAJOR ${LIBSSH_VERSION_MAJOR})
+      file(STRINGS ${LIBSSH_INCLUDE_DIR}/libssh/libssh.h LIBSSH_VERSION_MINOR
+        REGEX "#define[ ]+LIBSSH_VERSION_MINOR[ ]+[0-9]+")
+      string(REGEX MATCH "[0-9]+" LIBSSH_VERSION_MINOR ${LIBSSH_VERSION_MINOR})
+      file(STRINGS ${LIBSSH_INCLUDE_DIR}/libssh/libssh.h LIBSSH_VERSION_PATCH
+        REGEX "#define[ ]+LIBSSH_VERSION_MICRO[ ]+[0-9]+")
+      string(REGEX MATCH "[0-9]+" LIBSSH_VERSION_PATCH ${LIBSSH_VERSION_PATCH})
+
+      set(LibSSH_VERSION ${LIBSSH_VERSION_MAJOR}.${LIBSSH_VERSION_MINOR}.${LIBSSH_VERSION_PATCH})
+
+      include(FindPackageVersionCheck)
+      find_package_version_check(LibSSH DEFAULT_MSG)
+    endif (LibSSH_FIND_VERSION)
   endif (SSH_FOUND)
 
-  if (LIBSSH_INCLUDE_DIRS AND LIBSSH_LIBRARIES)
-     set(LIBSSH_FOUND TRUE)
-  endif (LIBSSH_INCLUDE_DIRS AND LIBSSH_LIBRARIES)
-
-  if (LIBSSH_FOUND)
-    if (NOT LibSSH_FIND_QUIETLY)
-      message(STATUS "Found LibSSH: ${LIBSSH_LIBRARIES}")
-    endif (NOT LibSSH_FIND_QUIETLY)
-  else (LIBSSH_FOUND)
-    if (LibSSH_FIND_REQUIRED)
-      message(FATAL_ERROR "Could not find LibSSH")
-    endif (LibSSH_FIND_REQUIRED)
-  endif (LIBSSH_FOUND)
+  include(FindPackageHandleStandardArgs)
+  find_package_handle_standard_args(LibSSH DEFAULT_MSG LIBSSH_LIBRARIES LIBSSH_INCLUDE_DIRS)
 
   # show the LIBSSH_INCLUDE_DIRS and LIBSSH_LIBRARIES variables only in the advanced view
   mark_as_advanced(LIBSSH_INCLUDE_DIRS LIBSSH_LIBRARIES)
