@@ -58,9 +58,9 @@ static int _ssh_auth_callback(const char *prompt, char *buf, size_t len,
 }
 
 static int auth_kbdint(SSH_SESSION *session){
-  char *name = NULL;
-  char *instruction = NULL;
-  char *prompt = NULL;
+  const char *name = NULL;
+  const char *instruction = NULL;
+  const char *prompt = NULL;
   char buffer[256] = {0};
   int err = SSH_AUTH_ERROR;
 
@@ -536,6 +536,7 @@ static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
 
   fs = c_malloc(sizeof(csync_vio_file_stat_t));
   if (fs == NULL) {
+    sftp_attributes_free(dirent);
     return NULL;
   }
 
@@ -557,6 +558,7 @@ static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
       break;
   }
 
+  sftp_attributes_free(dirent);
   return fs;
 }
 
@@ -680,6 +682,7 @@ out:
     errno = _sftp_portable_to_errno(sftp_get_error(sftp_session));
   }
   SAFE_FREE(path);
+  sftp_attributes_free(attrs);
 
   return rc;
 }
