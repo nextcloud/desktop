@@ -121,7 +121,6 @@ libs.split(" ").each do |lib|
 	file.printf("      /opt/local/lib\n")
 	file.printf("      /sw/lib\n")
 	file.printf("  )\n")
-	file.printf("  mark_as_advanced(#{lib.upcase}_LIBRARY)\n")
 	file.printf("\n")
 end
 
@@ -132,13 +131,11 @@ libs.split(" ").each do |lib|
 	file.printf("\n")
 end
 
-
 file.printf("  set(#{cmakeIncDirNames}\n")
 file.printf("    ${#{cmakeIncDirName}}\n")
 file.printf("  )\n")
 
 file.printf("\n")
-
 
 libs.split(" ").each do |lib|
 	file.printf("  if (#{lib.upcase}_FOUND)\n")
@@ -150,13 +147,10 @@ libs.split(" ").each do |lib|
 	file.printf("\n")
 end
 
-
-file.printf("  if (#{cmakeIncDirNames} AND #{cmakeLibNames})\n")
-file.printf("     set(#{cmakeFoundName} TRUE)\n")
-file.printf("  endif (#{cmakeIncDirNames} AND #{cmakeLibNames})\n\n")
-
 file.printf("  include(FindPackageHandleStandardArgs)\n")
 file.printf("  find_package_handle_standard_args(#{package} DEFAULT_MSG #{cmakeLibNames} #{cmakeIncDirNames})\n")
+
+file.printf("\n")
 
 file.printf("  # show the #{cmakeIncDirNames} and #{cmakeLibNames} variables only in the advanced view\n")
 file.printf("  mark_as_advanced(#{cmakeIncDirNames} #{cmakeLibNames})\n\n")
