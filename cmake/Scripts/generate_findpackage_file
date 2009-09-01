@@ -76,21 +76,14 @@ file.printf("\n")
 
 file.printf("if (#{cmakeLibNames} AND #{cmakeIncDirNames})\n")
 file.printf("  # in cache already\n")
-file.printf("  set(#{cmakeFoundName} TRUE)\n")
+file.printf("  set(#{cmakeFoundName} TRUE PARENT_SCOPE)\n")
 file.printf("else (#{cmakeLibNames} AND #{cmakeIncDirNames})\n")
 
 if not pkgconfig.empty?
-   file.printf("  # use pkg-config to get the directories and then use these values\n")
-   file.printf("  # in the FIND_PATH() and FIND_LIBRARY() calls\n")
-   file.printf("  if (${CMAKE_MAJOR_VERSION} EQUAL 2 AND ${CMAKE_MINOR_VERSION} EQUAL 4)\n")
-   file.printf("    include(UsePkgConfig)\n")
-   file.printf("    pkgconfig(#{pkgconfig} _#{package.upcase}_INCLUDEDIR _#{package.upcase}_LIBDIR _#{package.upcase}_LDFLAGS _#{package.upcase}_CFLAGS)\n")
-   file.printf("  else (${CMAKE_MAJOR_VERSION} EQUAL 2 AND ${CMAKE_MINOR_VERSION} EQUAL 4)\n")
-   file.printf("    find_package(PkgConfig)\n")
-   file.printf("    if (PKG_CONFIG_FOUND)\n")
-   file.printf("      pkg_check_modules(_#{package.upcase} #{pkgconfig})\n")
-   file.printf("    endif (PKG_CONFIG_FOUND)\n")
-   file.printf("  endif (${CMAKE_MAJOR_VERSION} EQUAL 2 AND ${CMAKE_MINOR_VERSION} EQUAL 4)\n")
+   file.printf("  find_package(PkgConfig)\n")
+   file.printf("  if (PKG_CONFIG_FOUND)\n")
+   file.printf("    pkg_check_modules(_#{package.upcase} #{pkgconfig})\n")
+   file.printf("  endif (PKG_CONFIG_FOUND)\n")
 end
 
 file.printf("\n")
@@ -112,7 +105,6 @@ if not incSubDir.empty?
 	file.printf("      #{incSubDir}\n")
 end
 file.printf("  )\n")
-file.printf("  mark_as_advanced(#{cmakeIncDirName})\n")
 
 file.printf("\n")
 
@@ -135,7 +127,7 @@ end
 
 libs.split(" ").each do |lib|
 	file.printf("  if (#{lib.upcase}_LIBRARY)\n")
-	file.printf("    set(#{lib.upcase}_FOUND TRUE CACHE INTERNAL \"Wether the #{lib} library has been found\" FORCE)\n")
+	file.printf("    set(#{lib.upcase}_FOUND TRUE PARENT_SCOPE)\n")
 	file.printf("  endif (#{lib.upcase}_LIBRARY)\n")
 	file.printf("\n")
 end
@@ -163,16 +155,8 @@ file.printf("  if (#{cmakeIncDirNames} AND #{cmakeLibNames})\n")
 file.printf("     set(#{cmakeFoundName} TRUE)\n")
 file.printf("  endif (#{cmakeIncDirNames} AND #{cmakeLibNames})\n\n")
 
-file.printf("  if (#{cmakeFoundName})\n")
-file.printf("    if (NOT #{cmakeQuietName})\n")
-file.printf("      message(STATUS \"Found #{package}: ${#{cmakeLibNames}}\")\n")
-file.printf("    endif (NOT #{cmakeQuietName})\n")
-file.printf("  else (#{cmakeFoundName})\n")
-file.printf("    if (#{cmakeRequiredName})\n")
-file.printf("      message(FATAL_ERROR \"Could not find #{package}\")\n")
-file.printf("    endif (#{cmakeRequiredName})\n")
-file.printf("  endif (#{cmakeFoundName})\n\n")
-
+file.printf("  include(FindPackageHandleStandardArgs)\n")
+file.printf("  find_package_handle_standard_args(#{package} DEFAULT_MSG #{cmakeLibNames} #{cmakeIncDirNames})\n")
 
 file.printf("  # show the #{cmakeIncDirNames} and #{cmakeLibNames} variables only in the advanced view\n")
 file.printf("  mark_as_advanced(#{cmakeIncDirNames} #{cmakeLibNames})\n\n")
