@@ -38,29 +38,18 @@ else (LOG4C_LIBRARIES AND LOG4C_INCLUDE_DIRS)
       /opt/local/lib
       /sw/lib
   )
-  mark_as_advanced(LOG4C_LIBRARY)
-
-  if (LOG4C_LIBRARY)
-    set(LOG4C_FOUND TRUE PARENT_SCOPE)
-  endif (LOG4C_LIBRARY)
 
   set(LOG4C_INCLUDE_DIRS
     ${LOG4C_INCLUDE_DIR}
   )
 
-  if (LOG4C_FOUND)
-    set(LOG4C_LIBRARIES
-      ${LOG4C_LIBRARIES}
-      ${LOG4C_LIBRARY}
-    )
-  endif (LOG4C_FOUND)
-
-  if (LOG4C_INCLUDE_DIRS AND LOG4C_LIBRARIES)
-     set(LOG4C_FOUND TRUE)
-  endif (LOG4C_INCLUDE_DIRS AND LOG4C_LIBRARIES)
+  set(LOG4C_LIBRARIES
+    ${LOG4C_LIBRARY}
+  )
 
   include(FindPackageHandleStandardArgs)
   find_package_handle_standard_args(Log4C DEFAULT_MSG LOG4C_LIBRARIES LOG4C_INCLUDE_DIRS)
+
   # show the LOG4C_INCLUDE_DIRS and LOG4C_LIBRARIES variables only in the advanced view
   mark_as_advanced(LOG4C_INCLUDE_DIRS LOG4C_LIBRARIES)
 
