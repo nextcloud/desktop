@@ -38,7 +38,6 @@ include(MacroCopyFile)
 if (WITH_LOG4C)
   find_package(Log4C REQUIRED)
 endif (WITH_LOG4C)
-find_package(Check)
 
 include(ConfigureChecks.cmake)
 configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
@@ -55,8 +54,8 @@ add_subdirectory(client)
 add_subdirectory(config)
 add_subdirectory(doc)
 
+find_package(Check)
 if (CHECK_FOUND AND UNIT_TESTING)
-
   include(MacroAddCheckTest)
   add_subdirectory(tests)
 endif (CHECK_FOUND AND UNIT_TESTING)
