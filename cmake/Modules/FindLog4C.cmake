@@ -16,7 +16,7 @@
 
 if (LOG4C_LIBRARIES AND LOG4C_INCLUDE_DIRS)
   # in cache already
-  set(LOG4C_FOUND TRUE)
+  set(LOG4C_FOUND TRUE PARENT_SCOPE)
 else (LOG4C_LIBRARIES AND LOG4C_INCLUDE_DIRS)
 
   find_path(LOG4C_INCLUDE_DIR
@@ -28,7 +28,6 @@ else (LOG4C_LIBRARIES AND LOG4C_INCLUDE_DIRS)
       /opt/local/include
       /sw/include
   )
-  mark_as_advanced(LOG4C_INCLUDE_DIR)
 
   find_library(LOG4C_LIBRARY
     NAMES
@@ -42,7 +41,7 @@ else (LOG4C_LIBRARIES AND LOG4C_INCLUDE_DIRS)
   mark_as_advanced(LOG4C_LIBRARY)
 
   if (LOG4C_LIBRARY)
-    set(LOG4C_FOUND TRUE CACHE INTERNAL "Wether the log4c library has been found" FORCE)
+    set(LOG4C_FOUND TRUE PARENT_SCOPE)
   endif (LOG4C_LIBRARY)
 
   set(LOG4C_INCLUDE_DIRS
@@ -60,16 +59,8 @@ else (LOG4C_LIBRARIES AND LOG4C_INCLUDE_DIRS)
      set(LOG4C_FOUND TRUE)
   endif (LOG4C_INCLUDE_DIRS AND LOG4C_LIBRARIES)
 
-  if (LOG4C_FOUND)
-    if (NOT Log4C_FIND_QUIETLY)
-      message(STATUS "Found Log4C: ${LOG4C_LIBRARIES}")
-    endif (NOT Log4C_FIND_QUIETLY)
-  else (LOG4C_FOUND)
-    if (Log4C_FIND_REQUIRED)
-      message(FATAL_ERROR "Could not find Log4C")
-    endif (Log4C_FIND_REQUIRED)
-  endif (LOG4C_FOUND)
-
+  include(FindPackageHandleStandardArgs)
+  find_package_handle_standard_args(Log4C DEFAULT_MSG LOG4C_LIBRARIES LOG4C_INCLUDE_DIRS)
   # show the LOG4C_INCLUDE_DIRS and LOG4C_LIBRARIES variables only in the advanced view
   mark_as_advanced(LOG4C_INCLUDE_DIRS LOG4C_LIBRARIES)
 
