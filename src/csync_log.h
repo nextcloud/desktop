@@ -56,8 +56,8 @@
 #define PRINTF_ATTRIBUTE(a,b)
 #endif /* __GNUC__ */
 
-#define CSYNC_LOG(priority, fmt, rest...) \
-  csync_log((char *) CSYNC_LOG_CATEGORY_NAME, priority, fmt, ##rest)
+#define CSYNC_LOG(priority, fmt, ...) \
+  csync_log((char *) CSYNC_LOG_CATEGORY_NAME, priority, fmt, ## __VA_ARGS__)
 
 #ifdef WITH_LOG4C
 #define CSYNC_LOG_PRIORITY_FATAL   LOG4C_PRIORITY_FATAL
