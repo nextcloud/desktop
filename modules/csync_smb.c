@@ -480,9 +480,9 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
 
   DEBUG_SMB(("csync_smb - method_name: %s\n", method_name));
   DEBUG_SMB(("csync_smb - args: %s\n", args));
-  DEBUG_SMB(("csync_smb - callback: %p\n", cb));
   (void) method_name;
   (void) args;
+  (void) cb;
 
   if (smb_context == NULL) {
     fprintf(stderr, "csync_smb - failed to create new smbc context\n");
