@@ -76,7 +76,7 @@ file.printf("\n")
 
 file.printf("if (#{cmakeLibNames} AND #{cmakeIncDirNames})\n")
 file.printf("  # in cache already\n")
-file.printf("  set(#{cmakeFoundName} TRUE PARENT_SCOPE)\n")
+file.printf("  set(#{cmakeFoundName} TRUE)\n")
 file.printf("else (#{cmakeLibNames} AND #{cmakeIncDirNames})\n")
 
 if not pkgconfig.empty?
@@ -124,13 +124,6 @@ libs.split(" ").each do |lib|
 	file.printf("\n")
 end
 
-libs.split(" ").each do |lib|
-	file.printf("  if (#{lib.upcase}_LIBRARY)\n")
-	file.printf("    set(#{lib.upcase}_FOUND TRUE PARENT_SCOPE)\n")
-	file.printf("  endif (#{lib.upcase}_LIBRARY)\n")
-	file.printf("\n")
-end
-
 file.printf("  set(#{cmakeIncDirNames}\n")
 file.printf("    ${#{cmakeIncDirName}}\n")
 file.printf("  )\n")
@@ -138,12 +131,12 @@ file.printf("  )\n")
 file.printf("\n")
 
 libs.split(" ").each do |lib|
-	file.printf("  if (#{lib.upcase}_FOUND)\n")
+	file.printf("  if (#{lib.upcase}_LIBRARY)\n")
 	file.printf("    set(#{cmakeLibNames}\n")
-	file.printf("      ${#{cmakeLibNames}}\n")
-	file.printf("      ${#{lib.upcase}_LIBRARY}\n")
+	file.printf("        ${#{cmakeLibNames}}\n")
+	file.printf("        ${#{lib.upcase}_LIBRARY}\n")
 	file.printf("    )\n")
-	file.printf("  endif (#{lib.upcase}_FOUND)\n")
+	file.printf("  endif (#{lib.upcase}_LIBRARY)\n")
 	file.printf("\n")
 end
 
