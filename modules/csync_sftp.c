@@ -30,6 +30,7 @@
 #include <fcntl.h>
 
 #include <libssh/sftp.h>
+#include <libssh/callbacks.h>
 
 #include "c_lib.h"
 #include "vio/csync_vio_module.h"
@@ -145,6 +146,7 @@ static int _sftp_connect(const char *uri) {
   int rc = -1;
   int auth = SSH_AUTH_ERROR;
   int state = SSH_SERVER_ERROR;
+  int timeout = 10;
 
   if (_connected) {
     return 0;
@@ -157,49 +159,66 @@ static int _sftp_connect(const char *uri) {
 
   DEBUG_SFTP(("csync_sftp - conntecting to: %s\n", host));
 
-  options = ssh_options_new();
-  if (options == NULL) {
-    fprintf(stderr, "csync_sftp - error creating options: %s\n", strerror(errno));
+  /* create the session */
+  _ssh_session = ssh_new();
+  if (_ssh_session == NULL) {
+    fprintf(stderr, "csync_sftp - error creating new connection: %s\n",
+        strerror(errno));
     rc = -1;
     goto out;
   }
 
-  /* set the option to connect to the server */
-  ssh_options_allow_ssh1(options, 0);
-  ssh_options_allow_ssh2(options, 1);
+  rc = ssh_options_set(_ssh_session, SSH_OPTIONS_TIMEOUT, &timeout);
+  if (rc < 0) {
+    fprintf(stderr, "csync_sftp - error setting options: %s\n",
+        strerror(errno));
+    goto out;
+  }
 
-  /* set a 10 seconds timeout */
-  ssh_options_set_timeout(options, 10, 0);
+  rc = ssh_options_set(_ssh_session, SSH_OPTIONS_COMPRESSION_C_S, "none");
+  if (rc < 0) {
+    fprintf(stderr, "csync_sftp - error setting options: %s\n",
+        strerror(errno));
+    goto out;
+  }
 
-  /* don't use compression */
-  ssh_options_set_wanted_algos(options, SSH_COMP_C_S, "none");
-  ssh_options_set_wanted_algos(options, SSH_COMP_S_C, "none");
+  rc = ssh_options_set(_ssh_session, SSH_OPTIONS_COMPRESSION_S_C, "none");
+  if (rc < 0) {
+    fprintf(stderr, "csync_sftp - error setting options: %s\n",
+        strerror(errno));
+    goto out;
+  }
 
-#if 0
-  ssh_set_verbosity(1);
-#endif
+  ssh_options_set(_ssh_session, SSH_OPTIONS_HOST, host);
+  if (rc < 0) {
+    fprintf(stderr, "csync_sftp - error setting options: %s\n",
+        strerror(errno));
+    goto out;
+  }
 
-  ssh_options_set_host(options, host);
   if (port) {
-    ssh_options_set_port(options, port);
+    ssh_options_set(_ssh_session, SSH_OPTIONS_PORT, &port);
+    if (rc < 0) {
+      fprintf(stderr, "csync_sftp - error setting options: %s\n",
+          strerror(errno));
+      goto out;
+    }
     DEBUG_SFTP(("csync_sftp - port set to: %d\n", port));
   }
 
   if (user && *user) {
-    ssh_options_set_username(options, user);
+    ssh_options_set(_ssh_session, SSH_OPTIONS_USER, user);
+    if (rc < 0) {
+      fprintf(stderr, "csync_sftp - error setting options: %s\n",
+          strerror(errno));
+      goto out;
+    }
     DEBUG_SFTP(("csync_sftp - username set to: %s\n", user));
   }
 
   if (_authcb) {
     ssh_options_set_auth_callback(options, _ssh_auth_callback, _userdata);
-  }
-
-  /* connect to the server */
-  _ssh_session = ssh_new();
-  if (_ssh_session == NULL) {
-    fprintf(stderr, "csync_sftp - error creating new connection: %s\n", strerror(errno));
-    rc = -1;
-    goto out;
+    ssh_optio
   }
 
   ssh_set_options(_ssh_session, options);
