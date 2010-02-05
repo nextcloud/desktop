@@ -42,8 +42,9 @@
 #define DEBUG_SFTP(x) printf x
 #endif
 
-SSH_SESSION *_ssh_session;
-SFTP_SESSION *_sftp_session;
+ssh_callbacks _ssh_callbacks;
+ssh_session _ssh_session;
+sftp_session _sftp_session;
 
 csync_auth_callback _authcb;
 void *_userdata;
@@ -58,7 +59,7 @@ static int _ssh_auth_callback(const char *prompt, char *buf, size_t len,
   return -1;
 }
 
-static int auth_kbdint(SSH_SESSION *session){
+static int auth_kbdint(ssh_session session){
   const char *name = NULL;
   const char *instruction = NULL;
   const char *prompt = NULL;
@@ -134,7 +135,6 @@ static int _sftp_portable_to_errno(int sftp_errno) {
 }
 
 static int _sftp_connect(const char *uri) {
-  SSH_OPTIONS *options = NULL;
   char *scheme = NULL;
   char *user = NULL;
   char *passwd = NULL;
@@ -147,6 +147,7 @@ static int _sftp_connect(const char *uri) {
   int auth = SSH_AUTH_ERROR;
   int state = SSH_SERVER_ERROR;
   int timeout = 10;
+  char *verbosity;
 
   if (_connected) {
     return 0;
@@ -216,12 +217,34 @@ static int _sftp_connect(const char *uri) {
     DEBUG_SFTP(("csync_sftp - username set to: %s\n", user));
   }
 
-  if (_authcb) {
-    ssh_options_set_auth_callback(options, _ssh_auth_callback, _userdata);
-    ssh_optio
+  verbosity = getenv("CSYNC_SFTP_LOG_VERBOSITY");
+  if (verbosity) {
+    rc = ssh_options_set(_ssh_session, SSH_OPTIONS_LOG_VERBOSITY_STR, verbosity);
+    if (rc < 0) {
+      goto out;
+    }
   }
 
-  ssh_set_options(_ssh_session, options);
+  /* read ~/.ssh/config */
+  rc = ssh_options_parse_config(_ssh_session, NULL);
+  if (rc < 0) {
+    goto out;
+  }
+
+  _ssh_callbacks = (ssh_callbacks) c_malloc(sizeof(struct ssh_callbacks_struct));
+  if (_ssh_callbacks == NULL) {
+    rc = -1;
+    goto out;
+  }
+  ZERO_STRUCTP(_ssh_callbacks);
+
+  _ssh_callbacks->userdata = _userdata;
+  _ssh_callbacks->auth_function = _ssh_auth_callback;
+
+  ssh_callbacks_init(_ssh_callbacks);
+
+  ssh_set_callbacks(_ssh_session, _ssh_callbacks);
+
   rc = ssh_connect(_ssh_session);
   if (rc < 0) {
     fprintf(stderr, "csync_sftp - error connecting to the server: %s\n", ssh_get_error(_ssh_session));
@@ -543,7 +566,7 @@ static int _closedir(csync_vio_method_handle_t *dhandle) {
 }
 
 static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
-  SFTP_ATTRIBUTES *dirent = NULL;
+  sftp_attributes dirent = NULL;
   csync_vio_file_stat_t *fs = NULL;
 
   /* TODO: consider adding the _sftp_connect function */
@@ -624,7 +647,7 @@ static int _rmdir(const char *uri) {
 }
 
 static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
-  SFTP_ATTRIBUTES *attrs;
+  sftp_attributes attrs;
   char *path = NULL;
   int rc = -1;
 
@@ -761,7 +784,7 @@ static int _unlink(const char *uri) {
 }
 
 static int _chmod(const char *uri, mode_t mode) {
-  SFTP_ATTRIBUTES attrs;
+  struct sftp_attributes_struct attrs;
   char *path = NULL;
   int rc = -1;
 
@@ -787,7 +810,7 @@ static int _chmod(const char *uri, mode_t mode) {
 }
 
 static int _chown(const char *uri, uid_t owner, gid_t group) {
-  SFTP_ATTRIBUTES attrs;
+  struct sftp_attributes_struct attrs;
   char *path = NULL;
   int rc = -1;
 
@@ -814,7 +837,7 @@ static int _chown(const char *uri, uid_t owner, gid_t group) {
 }
 
 static int _utimes(const char *uri, const struct timeval *times) {
-  SFTP_ATTRIBUTES attrs;
+  struct sftp_attributes_struct attrs;
   char *path = NULL;
   int rc = -1;
 
@@ -886,6 +909,9 @@ void vio_module_shutdown(csync_vio_method_t *method) {
   }
   if (_ssh_session) {
     ssh_disconnect(_ssh_session);
+  }
+  if (_ssh_callbacks) {
+    free(_ssh_callbacks);
   }
 
   ssh_finalize();
