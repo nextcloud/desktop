@@ -1,6 +1,14 @@
 ChangeLog
 ==========
 
+version 0.44.0 (released 2010-02-15)
+  * Migrated sftp module to libssh 0.4.
+  * Added more cache entries to the default config.
+  * Added missing requirements.
+  * Fixed build warnings.
+  * Fixed some memory leaks using sftp attributes.
+  * Some code cleanups.
+
 version 0.43.0 (released 2009-05-25)
   * Added SFTP support with libssh 0.3.
   * Added possibility to pass userdata to the auth function.
