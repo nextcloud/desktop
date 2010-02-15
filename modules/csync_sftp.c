@@ -59,14 +59,16 @@ static int _ssh_auth_callback(const char *prompt, char *buf, size_t len,
   return -1;
 }
 
-static int auth_kbdint(ssh_session session) {
+static int auth_kbdint(ssh_session session, const char *user,
+    const char *passwd) {
   const char *name = NULL;
   const char *instruction = NULL;
   const char *prompt = NULL;
   char buffer[256] = {0};
   int err = SSH_AUTH_ERROR;
+  int rc;
 
-  err = ssh_userauth_kbdint(session, NULL, NULL);
+  err = ssh_userauth_kbdint(session, user, NULL);
   while (err == SSH_AUTH_INFO) {
     int n = 0;
     int i = 0;
@@ -89,15 +91,28 @@ static int auth_kbdint(ssh_session session) {
       prompt = ssh_userauth_kbdint_getprompt(session, i, &echo);
       if (echo) {
         (*_authcb) (prompt, buffer, sizeof(buffer), 1, 0, NULL);
-        ssh_userauth_kbdint_setanswer(session, i, buffer);
+        rc = ssh_userauth_kbdint_setanswer(session, i, buffer);
+        if (rc < 0) {
+          return SSH_AUTH_ERROR;
+        }
         ZERO_STRUCT(buffer);
       } else {
-        (*_authcb) ("Password:", buffer, sizeof(buffer), 0, 0, NULL);
-        ssh_userauth_kbdint_setanswer(session, i, buffer);
-        ZERO_STRUCT(buffer);
+        if (passwd != NULL) {
+          rc = ssh_userauth_kbdint_setanswer(session, i, passwd);
+          if (rc < 0) {
+            return SSH_AUTH_ERROR;
+          }
+        } else {
+          (*_authcb) ("Password:", buffer, sizeof(buffer), 0, 0, NULL);
+          rc = ssh_userauth_kbdint_setanswer(session, i, buffer);
+          if (rc < 0) {
+            return SSH_AUTH_ERROR;
+          }
+          ZERO_STRUCT(buffer);
+        }
       }
     }
-    err = ssh_userauth_kbdint(session, NULL, NULL);
+    err = ssh_userauth_kbdint(session, user, NULL);
   }
 
   return err;
@@ -459,7 +474,7 @@ static int _sftp_connect(const char *uri) {
 
     /* Try to authenticate with keyboard interactive */
     if (method & SSH_AUTH_METHOD_INTERACTIVE) {
-      rc = auth_kbdint(_ssh_session);
+      rc = auth_kbdint(_ssh_session, user, passwd);
       if (rc == SSH_AUTH_ERROR) {
         ssh_disconnect(_ssh_session);
         _ssh_session = NULL;
