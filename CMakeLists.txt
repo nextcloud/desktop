@@ -6,13 +6,13 @@ cmake_minimum_required(VERSION 2.4.6)
 # global needed variables
 set(APPLICATION_NAME ${PROJECT_NAME})
 
-set(APPLICATION_VERSION "0.43.0")
+set(APPLICATION_VERSION "0.44.0")
 
 set(APPLICATION_VERSION_MAJOR "0")
-set(APPLICATION_VERSION_MINOR "43")
+set(APPLICATION_VERSION_MINOR "44")
 set(APPLICATION_VERSION_PATCH "0")
 
-set(LIBRARY_VERSION "0.1.1")
+set(LIBRARY_VERSION "0.1.2")
 set(LIBRARY_SOVERSION "0")
 
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
