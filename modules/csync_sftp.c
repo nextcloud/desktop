@@ -270,9 +270,14 @@ static int _sftp_connect(const char *uri) {
     case SSH_SERVER_KNOWN_OK:
       break;
     case SSH_SERVER_KNOWN_CHANGED:
-      fprintf(stderr, "csync_sftp - host key for server changed : server's one is now:\n");
+      fprintf(stderr, "csync_sftp - The host key for this server was "
+            "not found, but another type of key exists.\n"
+            "An attacker might change the default server key to confuse your "
+            "client into thinking the key does not exist.\n"
+            "Please contact your system administrator.\n"
+            "%s\n", ssh_get_error(_ssh_session));
       ssh_print_hexa("csync_sftp - public key hash", hash, hlen);
-      fprintf(stderr,"csync_sftp - for security reason, connection will be stopped\n");
+
       ssh_disconnect(_ssh_session);
       _ssh_session = NULL;
       ssh_finalize();
@@ -285,6 +290,14 @@ static int _sftp_connect(const char *uri) {
       fprintf(stderr, "csync_sftp - an attacker might change the default "
           "server key to confuse your client into thinking the key does not "
           "exist\n");
+      fprintf(stderr, "The host key for the server %s has changed.\n"
+          "This could either mean that DNS SPOOFING is happening or the IP "
+          "address for the host and its host key have changed at the same time.\n"
+          "The fingerprint for the key sent by the remote host is:\n", host);
+          ssh_print_hexa("", hash, hlen);
+          fprintf(stderr, "Please contact your system administrator.\n"
+          "%s\n", ssh_get_error(_ssh_session));
+
       ssh_disconnect(_ssh_session);
       _ssh_session = NULL;
       ssh_finalize();
@@ -292,8 +305,6 @@ static int _sftp_connect(const char *uri) {
       goto out;
       break;
     case SSH_SERVER_NOT_KNOWN:
-      fprintf(stderr,"csync_sftp - the server is unknown. Connect manually to "
-          "the host first to retrieve the public key hash\n");
       if (_authcb) {
         char *hexa;
         char *prompt;
@@ -349,6 +360,9 @@ static int _sftp_connect(const char *uri) {
           rc = -1;
           goto out;
         }
+      } else {
+        fprintf(stderr,"csync_sftp - the server is unknown. Connect manually to "
+            "the host to retrieve the public key hash, then try again.\n");
       }
       ssh_disconnect(_ssh_session);
       _ssh_session = NULL;
@@ -358,6 +372,7 @@ static int _sftp_connect(const char *uri) {
       break;
     case SSH_SERVER_ERROR:
       fprintf(stderr, "%s\n", ssh_get_error(_ssh_session));
+
       ssh_disconnect(_ssh_session);
       _ssh_session = NULL;
       ssh_finalize();
