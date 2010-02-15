@@ -1,7 +1,7 @@
 project(modules C)
 
 find_package(Libsmbclient REQUIRED)
-find_package(LibSSH 0.3.3)
+find_package(LibSSH 0.4.0)
 
 set(PLUGIN_VERSION_INSTALL_DIR "${PLUGIN_INSTALL_DIR}-${LIBRARY_SOVERSION}")
 
