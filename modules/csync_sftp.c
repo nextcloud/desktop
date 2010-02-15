@@ -59,7 +59,7 @@ static int _ssh_auth_callback(const char *prompt, char *buf, size_t len,
   return -1;
 }
 
-static int auth_kbdint(ssh_session session){
+static int auth_kbdint(ssh_session session) {
   const char *name = NULL;
   const char *instruction = NULL;
   const char *prompt = NULL;
@@ -144,9 +144,9 @@ static int _sftp_connect(const char *uri) {
   unsigned char *hash = NULL;
   int hlen;
   int rc = -1;
-  int auth = SSH_AUTH_ERROR;
   int state = SSH_SERVER_ERROR;
   int timeout = 10;
+  int method;
   char *verbosity;
 
   if (_connected) {
@@ -383,8 +383,17 @@ static int _sftp_connect(const char *uri) {
       break;
   }
 
-  /* TODO: try ssh_userauth_none to get auth methods */
+  /* Try to authenticate */
+  rc = ssh_userauth_none(_ssh_session, NULL);
+  if (rc == SSH_AUTH_ERROR) {
+      ssh_disconnect(_ssh_session);
+      _ssh_session = NULL;
+      ssh_finalize();
+      rc = -1;
+      goto out;
+  }
 
+#if 0
   /* authenticate with the server */
   if (passwd && *passwd) {
     DEBUG_SFTP(("csync_sftp - authenticating with user/password\n"));
@@ -426,6 +435,54 @@ static int _sftp_connect(const char *uri) {
       ssh_finalize();
       rc = -1;
       goto out;
+    }
+  }
+
+
+#endif
+  method = ssh_auth_list(_ssh_session);
+
+  while (rc != SSH_AUTH_SUCCESS) {
+    /* Try to authenticate with public key first */
+    if (method & SSH_AUTH_METHOD_PUBLICKEY) {
+      rc = ssh_userauth_autopubkey(_ssh_session, NULL);
+      if (rc == SSH_AUTH_ERROR) {
+        ssh_disconnect(_ssh_session);
+        _ssh_session = NULL;
+        ssh_finalize();
+        rc = -1;
+        goto out;
+      } else if (rc == SSH_AUTH_SUCCESS) {
+        break;
+      }
+    }
+
+    /* Try to authenticate with keyboard interactive */
+    if (method & SSH_AUTH_METHOD_INTERACTIVE) {
+      rc = auth_kbdint(_ssh_session);
+      if (rc == SSH_AUTH_ERROR) {
+        ssh_disconnect(_ssh_session);
+        _ssh_session = NULL;
+        ssh_finalize();
+        rc = -1;
+        goto out;
+      } else if (rc == SSH_AUTH_SUCCESS) {
+        break;
+      }
+    }
+
+    /* Try to authenticate with password */
+    if ((method & SSH_AUTH_METHOD_PASSWORD) && passwd && *passwd) {
+      rc = ssh_userauth_password(_ssh_session, user, passwd);
+      if (rc == SSH_AUTH_ERROR) {
+        ssh_disconnect(_ssh_session);
+        _ssh_session = NULL;
+        ssh_finalize();
+        rc = -1;
+        goto out;
+      } else if (rc == SSH_AUTH_SUCCESS) {
+        break;
+      }
     }
   }
 
