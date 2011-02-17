@@ -18,6 +18,11 @@ public:
     Folder(const QString &path, QObject *parent = 0L);
     virtual ~Folder();
 
+    /**
+     * local folder path
+     */
+    QString path() const;
+
     QAction *openAction() const;
 
     /**
@@ -39,6 +44,9 @@ private:
 private slots:
     void slotChanged(const QString &path);
     void slotOpenFolder();
+
+    void slotSyncStarted();
+    void slotSyncFinished();
 };
 
 }

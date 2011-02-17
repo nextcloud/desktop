@@ -1,11 +1,14 @@
 #include <QMutexLocker>
+#include <QProcess>
 #include "mirall/gitfolder.h"
 
 namespace Mirall {
 
-GitFolder::GitFolder(const QString &path, QObject *parent)
+GitFolder::GitFolder(const QString &path, const QString &_remote, QObject *parent)
     : Folder(path, parent)
+    , _remote(remote)
 {
+    _syncProcess = new QProcess();
 }
 
 GitFolder::~GitFolder()
