@@ -44,7 +44,7 @@ void Application::setupContextMenu()
 {
     QMenu *contextMenu = new QMenu();
     contextMenu->addAction(_actionAddFolder);
-    contextMenu->addAction(_folder->action());
+    contextMenu->addAction(_folder->openAction());
     contextMenu->addSeparator();
     contextMenu->addAction(_actionQuit);
     _tray->setContextMenu(contextMenu);

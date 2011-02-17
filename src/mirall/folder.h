@@ -18,7 +18,7 @@ public:
     Folder(const QString &path, QObject *parent = 0L);
     virtual ~Folder();
 
-    QAction *action() const;
+    QAction *openAction() const;
 
     /**
      * starts a sync operation
@@ -35,7 +35,7 @@ protected:
 private:
     QString _path;
     FolderWatcher *_watcher;
-    QAction *_action;
+    QAction *_openAction;
 private slots:
     void slotChanged(const QString &path);
     void slotOpenFolder();

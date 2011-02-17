@@ -15,17 +15,17 @@ Folder::Folder(const QString &path, QObject *parent)
     : QObject(parent),
       _path(path)
 {
-    _action = new QAction(QIcon(FOLDER_ICON), path, this);
-    QObject::connect(_action, SIGNAL(triggered(bool)), SLOT(slotOpenFolder()));
+    _openAction = new QAction(QIcon(FOLDER_ICON), path, this);
+    QObject::connect(_openAction, SIGNAL(triggered(bool)), SLOT(slotOpenFolder()));
 
     _watcher = new Mirall::FolderWatcher(path, this);
     QObject::connect(_watcher, SIGNAL(folderChanged(const QString &)),
                      SLOT(slotChanged(const QString &)));
 }
 
-QAction * Folder::action() const
+QAction * Folder::openAction() const
 {
-    return _action;
+    return _openAction;
 }
 
 Folder::~Folder()
