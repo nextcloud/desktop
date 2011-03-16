@@ -8,6 +8,7 @@ mirall/application.cpp
 mirall/folder.cpp
 mirall/gitfolder.cpp
 mirall/folderwatcher.cpp
+mirall/inotify.cpp
 main.cpp)
 
 qt4_automoc(${mirall_SRCS})

@@ -1,4 +1,5 @@
 
+
 #ifndef MIRALL_FOLDERWATCHER_H
 #define MIRALL_FOLDERWATCHER_H
 
@@ -6,7 +7,10 @@
 #include <QString>
 #include <QMutex>
 
+#include "mirall/inotify.h"
+
 class QFileSystemWatcher;
+class INotify;
 
 namespace Mirall {
 
@@ -23,6 +27,7 @@ protected slots:
 private:
     QFileSystemWatcher *_watcher;
     QMutex _mutex;
+    INotify *_inotify;
 };
 
 }

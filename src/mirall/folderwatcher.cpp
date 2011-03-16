@@ -1,4 +1,7 @@
 
+// event masks
+#include <sys/inotify.h>
+
 #include <QFileInfo>
 #include <QFileSystemWatcher>
 #include <QFlags>
@@ -7,7 +10,13 @@
 #include <QMutexLocker>
 #include <QStringList>
 
+#include "mirall/inotify.h"
 #include "mirall/folderwatcher.h"
+
+static const uint32_t standard_event_mask =
+    IN_ATTRIB   | IN_CLOSE_WRITE | IN_CREATE     |
+    IN_DELETE   | IN_DELETE_SELF | IN_MOVED_FROM |
+    IN_MOVED_TO | IN_DONT_FOLLOW | IN_ONLYDIR;
 
 namespace Mirall {
 
@@ -41,6 +50,8 @@ FolderWatcher::FolderWatcher(const QString &path, QObject *parent)
     : QObject(parent)
 {
     _watcher = new QFileSystemWatcher(this);
+    _inotify = new INotify(path, standard_event_mask);
+
 
     // watch the path and all subdirectories
     {
