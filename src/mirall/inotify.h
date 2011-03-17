@@ -12,6 +12,7 @@ http://www.gnu.org/licenses/gpl.txt .
 
 #include <QObject>
 #include <QHash>
+#include <QMap>
 #include <QString>
 #include <QThread>
 
@@ -24,12 +25,16 @@ class INotify : public QObject
 
 public:
 
-    INotify(const QString &name, int mask);
+    INotify(int mask);
     ~INotify();
 
     static void initialize();
     static void cleanup();
 
+    void addPath(const QString &name);
+    void removePath(const QString &name);
+
+    QStringList directories() const;
 signals:
 
     void notifyEvent(int mask, const QString &name);
@@ -41,17 +46,20 @@ private:
         QHash<int, INotify*> _map;
     public:
         INotifyThread(int fd);
-        void registerForNotification(INotify*);
+        void registerForNotification(INotify*, int);
         void unregisterForNotification(INotify*);
     protected:
         void run();
     };
 
-    INotify(int wd);
+    //INotify(int wd);
     void fireEvent(int mask, char *name);
     static int s_fd;
     static INotifyThread* s_thread;
-    int _wd;
+
+    // the mask is shared for all paths
+    int _mask;
+    QMap<QString, int> _wds;
 };
 
 }

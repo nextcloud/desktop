@@ -9,8 +9,11 @@ http://www.gnu.org/licenses/gpl.txt .
 
 #include <sys/inotify.h>
 #include <unistd.h>
+#include <QDebug>
+#include <QStringList>
 
 #include "inotify.h"
+
 
 // Buffer Size for read() buffer
 #define BUFFERSIZE 512
@@ -21,17 +24,12 @@ namespace Mirall {
 int INotify::s_fd;
 INotify::INotifyThread* INotify::s_thread;
 
-INotify::INotify(int wd) : _wd(wd)
-{
-}
+//INotify::INotify(int wd) : _wd(wd)
+//{
+//}
 
-INotify::INotify(const QString &path, int mask)
+INotify::INotify(int mask) : _mask(mask)
 {
-    // Add an inotify watch.
-    _wd = inotify_add_watch(s_fd, path.toUtf8().data(), mask);
-
-    // Register for iNotifycation from iNotifier thread.
-    s_thread->registerForNotification(this);
 }
 
 INotify::~INotify()
@@ -39,20 +37,55 @@ INotify::~INotify()
     // Unregister from iNotifier thread.
     s_thread->unregisterForNotification(this);
 
+    // Remove all inotify watchs.
+    QMap<QString, int>::const_iterator it;
+    for (it = _wds.begin(); it != _wds.end(); ++it) {
+        inotify_rm_watch(s_fd, *it);
+    }
+}
+
+void INotify::addPath(const QString &path)
+{
+    // Add an inotify watch.
+    qDebug() << path;
+
+    path.toAscii().constData();
+    return;
+
+
+    int wd = inotify_add_watch(s_fd, path.toAscii().constData(), _mask);
+    _wds[path] = wd;
+
+    // Register for iNotifycation from iNotifier thread.
+    s_thread->registerForNotification(this, wd);
+}
+
+void INotify::removePath(const QString &path)
+{
     // Remove the inotify watch.
-    inotify_rm_watch(s_fd, _wd);
+    inotify_rm_watch(s_fd, _wds[path]);
+}
+
+QStringList INotify::directories() const
+{
+    return _wds.keys();
 }
 
 void
 INotify::INotifyThread::unregisterForNotification(INotify* notifier)
 {
-    _map.remove(notifier->_wd);
+    //_map.remove(notifier->_wd);
+    QHash<int, INotify*>::iterator it;
+    for (it = _map.begin(); it != _map.end(); ++it) {
+        if (it.value() == notifier)
+            _map.remove(it.key());
+    }
 }
 
 void
-INotify::INotifyThread::registerForNotification(INotify* notifier)
+INotify::INotifyThread::registerForNotification(INotify* notifier, int wd)
 {
-    _map[notifier->_wd] = notifier;
+    _map[wd] = notifier;
 }
 
 void

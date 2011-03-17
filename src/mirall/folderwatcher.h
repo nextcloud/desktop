@@ -23,7 +23,8 @@ public:
 signals:
     void folderChanged(const QString &path);
 protected slots:
-    void slotDirectoryChanged(const QString &path);
+    //void slotDirectoryChanged(const QString &path);
+    void slotDirectoryChanged(int mask, const QString &path);
 private:
     QFileSystemWatcher *_watcher;
     QMutex _mutex;

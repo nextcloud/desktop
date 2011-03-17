@@ -50,8 +50,8 @@ FolderWatcher::FolderWatcher(const QString &path, QObject *parent)
     : QObject(parent)
 {
     _watcher = new QFileSystemWatcher(this);
-    _inotify = new INotify(path, standard_event_mask);
-
+    _inotify = new INotify(standard_event_mask);
+    //_inotify->addPath(path);
 
     // watch the path and all subdirectories
     {
@@ -63,11 +63,14 @@ FolderWatcher::FolderWatcher(const QString &path, QObject *parent)
         QStringListIterator subfoldersIt(subfolders);
         while (subfoldersIt.hasNext()) {
             _watcher->addPath(subfoldersIt.next());
+            _inotify->addPath(subfoldersIt.next());
         }
 
     }
-    QObject::connect(_watcher, SIGNAL(directoryChanged(const QString &)),
-                     SLOT(slotDirectoryChanged(const QString &)));
+//    QObject::connect(_watcher, SIGNAL(directoryChanged(const QString &)),
+//                     SLOT(slotDirectoryChanged(const QString &)));
+    QObject::connect(_inotify, SIGNAL(notifyEvent(int, const QString &)),
+                     SLOT(slotDirectoryChanged(int, const QString &)));
 }
 
 FolderWatcher::~FolderWatcher()
@@ -75,22 +78,22 @@ FolderWatcher::~FolderWatcher()
 
 }
 
-void FolderWatcher::slotDirectoryChanged(const QString &path)
+void FolderWatcher::slotDirectoryChanged(int mask, const QString &path)
 {
     QMutexLocker locker(&_mutex);
 
-    qDebug() << "changed: " << path;
+    qDebug() << mask << " : changed: " << path;
 
     qDebug() << "updating subdirectories";
 
-    QStringList watchedFolders(_watcher->directories());
+    QStringList watchedFolders(_inotify->directories());
     QStringListIterator watchedFoldersIt(watchedFolders);
 
     while (watchedFoldersIt.hasNext()) {
         QDir folder (watchedFoldersIt.next());
         if (!folder.exists()){
             qDebug() << "Removing " << folder.path();
-            _watcher->removePath(folder.path());
+            _inotify->removePath(folder.path());
         }
     }
 
@@ -99,7 +102,7 @@ void FolderWatcher::slotDirectoryChanged(const QString &path)
         QDir folder (subfoldersIt.next());
         if (folder.exists() && !watchedFolders.contains(folder.path())) {
             qDebug() << "Adding " << folder.path();
-            _watcher->addPath(folder.path());
+            _inotify->addPath(folder.path());
         }
 
         // Look if some of the subdirectories disappeared
