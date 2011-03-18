@@ -12,7 +12,6 @@ http://www.gnu.org/licenses/gpl.txt .
 
 #include <QObject>
 #include <QHash>
-#include <QMap>
 #include <QString>
 #include <QThread>
 
@@ -53,13 +52,13 @@ private:
     };
 
     //INotify(int wd);
-    void fireEvent(int mask, char *name);
+    void fireEvent(int mask, int wd, char *name);
     static int s_fd;
     static INotifyThread* s_thread;
 
     // the mask is shared for all paths
     int _mask;
-    QMap<QString, int> _wds;
+    QHash<QString, int> _wds;
 };
 
 }

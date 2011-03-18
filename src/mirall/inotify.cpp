@@ -38,17 +38,14 @@ INotify::~INotify()
     s_thread->unregisterForNotification(this);
 
     // Remove all inotify watchs.
-    QMap<QString, int>::const_iterator it;
-    for (it = _wds.begin(); it != _wds.end(); ++it) {
-        inotify_rm_watch(s_fd, *it);
-    }
+    QString key;
+    foreach (key, _wds.keys())
+        inotify_rm_watch(s_fd, _wds.value(key));
 }
 
 void INotify::addPath(const QString &path)
 {
     // Add an inotify watch.
-    qDebug() << path;
-
     path.toAscii().constData();
 
     int wd = inotify_add_watch(s_fd, path.toAscii().constData(), _mask);
@@ -88,9 +85,11 @@ INotify::INotifyThread::registerForNotification(INotify* notifier, int wd)
 }
 
 void
-INotify::fireEvent(int mask, char* name)
+INotify::fireEvent(int mask, int wd, char* name)
 {
-    emit notifyEvent(mask, QString::fromUtf8(name));
+    QString path;
+    foreach (path, _wds.keys(wd))
+        emit notifyEvent(mask, path + "/" + QString::fromUtf8(name));
 }
 
 void
@@ -138,7 +137,7 @@ INotify::INotifyThread::run()
             // with the help of watch descriptor, retrieve, corresponding INotify
             n = _map[event->wd];
             // fire event
-            n->fireEvent(event->mask, event->name);
+            n->fireEvent(event->mask, event->wd, event->name);
             // increment counter
             i += sizeof(struct inotify_event) + event->len;
         }

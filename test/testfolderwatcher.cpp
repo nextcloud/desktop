@@ -29,9 +29,19 @@ void TestFolderWatcher::testFilesAdded()
 
     qDebug() << "Monitored: " << watcher.folders();
 
-    QDir subdir = QDir(tmp.path() + "/sub1/sub2");
-    QVERIFY(subdir.mkpath(tmp.path() + "/sub1/sub2"));
+    QDir subdir = QDir(tmp.path());
+    QSignalSpy spy(&watcher, SIGNAL(folderChanged(const QString &)));
 
+    QVERIFY(subdir.mkpath(tmp.path() + "/sub1/sub2"));
+    QVERIFY(subdir.mkpath(tmp.path() + "/sub2"));
+
+     while (spy.count() == 0)
+         QTest::qWait(200);
+
+    // 2 directory changes
+    QCOMPARE(spy.count(), 2);
+
+    qDebug() << "Monitored: " << watcher.folders();
 }
 
 QTEST_MAIN(TestFolderWatcher)

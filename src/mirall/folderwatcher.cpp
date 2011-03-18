@@ -8,17 +8,13 @@
 #include <QDir>
 #include <QMutexLocker>
 #include <QStringList>
+#include <QTimer>
 
 #include "mirall/inotify.h"
 #include "mirall/folderwatcher.h"
 
 static const uint32_t standard_event_mask =
     IN_MODIFY | IN_ATTRIB | IN_MOVE | IN_CREATE | IN_DELETE | IN_DELETE_SELF | IN_MOVE_SELF | IN_UNMOUNT | IN_ISDIR | IN_DONT_FOLLOW;
-
-// IN_ONESHOT
-//    IN_ATTRIB   | IN_CLOSE_WRITE | IN_CREATE     |
-//    IN_DELETE   | IN_DELETE_SELF | IN_MOVED_FROM |
-//    IN_MOVED_TO | IN_DONT_FOLLOW | IN_ONLYDIR;
 
 namespace Mirall {
 
@@ -48,26 +44,12 @@ static QStringList subFoldersList(QString folder,
     return dirList;
 }
 
-FolderWatcher::FolderWatcher(const QString &path, QObject *parent)
-    : QObject(parent)
+FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
+    : QObject(parent),
+      _root(root)
 {
     _inotify = new INotify(standard_event_mask);
-    _inotify->addPath(path);
-
-    // watch the path and all subdirectories
-    {
-        QMutexLocker locker(&_mutex);
-
-        QStringList subfolders(subFoldersList(path, SubFolderRecursive));
-        if (! subfolders.empty() ) {
-            qDebug() << "adding watchers for " << subfolders;
-
-            QStringListIterator subfoldersIt(subfolders);
-            while (subfoldersIt.hasNext()) {
-                _inotify->addPath(subfoldersIt.next());
-            }
-        }
-    }
+    slotAddFolderRecursive(root);
     QObject::connect(_inotify, SIGNAL(notifyEvent(int, const QString &)),
                      SLOT(slotDirectoryChanged(int, const QString &)));
 }
@@ -82,44 +64,50 @@ QStringList FolderWatcher::folders() const
     return _inotify->directories();
 }
 
-void FolderWatcher::slotDirectoryChanged(int mask, const QString &path)
+void FolderWatcher::slotAddFolderRecursive(const QString &path)
 {
-    QMutexLocker locker(&_mutex);
-
-    qDebug() << mask << " : changed: " << path;
-
-    qDebug() << "updating subdirectories";
-
+    qDebug() << "Recursive adding " << path;
     QStringList watchedFolders(_inotify->directories());
-    QStringListIterator watchedFoldersIt(watchedFolders);
-
-    while (watchedFoldersIt.hasNext()) {
-        QDir folder (watchedFoldersIt.next());
-        if (!folder.exists()){
-            qDebug() << "Removing " << folder.path();
-            _inotify->removePath(folder.path());
-        }
-    }
-
-    //qDebug() << "Removing " << folder.path();
-
+    qDebug() << "currently watching " << watchedFolders;
     QStringListIterator subfoldersIt(subFoldersList(path, SubFolderRecursive));
     while (subfoldersIt.hasNext()) {
         QDir folder (subfoldersIt.next());
         if (folder.exists() && !watchedFolders.contains(folder.path())) {
-            qDebug() << "Adding " << folder.path();
+            qDebug() << "`-> adding " << folder.path();
             _inotify->addPath(folder.path());
         }
         else
-            qDebug() << "discarding " << folder.path();
-
-
-        // Look if some of the subdirectories disappeared
-
-
+            qDebug() << "`-> discarding " << folder.path();
     }
+    qDebug() << "`-> adding " << path;
+    _inotify->addPath(path);
+}
 
+void FolderWatcher::slotDirectoryChanged(int mask, const QString &path)
+{
+    QMutexLocker locker(&_mutex);
 
+    if (mask & IN_CREATE) {
+        qDebug() << "CREATE: " << path;
+        if (QFileInfo(path).isDir()) {
+            slotAddFolderRecursive(path);
+        }
+    }
+    else if (mask & IN_DELETE) {
+        qDebug() << "DELETE: " << path;
+        if (_inotify->directories().contains(path));
+            qDebug() << "`-> removing " << path;
+            _inotify->removePath(path);
+    }
+    else if (mask & IN_MODIFY) {
+        qDebug() << "MODIFIED: " << path;
+    }
+    else if (mask & IN_MOVE) {
+        qDebug() << "MOVE: " << path;
+    }
+    else {
+        qDebug() << "OTHER " << mask << " :" << path;
+    }
     emit folderChanged(path);
 }
 
