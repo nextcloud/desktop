@@ -50,8 +50,6 @@ void INotify::addPath(const QString &path)
     qDebug() << path;
 
     path.toAscii().constData();
-    return;
-
 
     int wd = inotify_add_watch(s_fd, path.toAscii().constData(), _mask);
     _wds[path] = wd;
@@ -64,6 +62,7 @@ void INotify::removePath(const QString &path)
 {
     // Remove the inotify watch.
     inotify_rm_watch(s_fd, _wds[path]);
+    _wds.remove(path);
 }
 
 QStringList INotify::directories() const

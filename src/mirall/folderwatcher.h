@@ -7,9 +7,6 @@
 #include <QString>
 #include <QMutex>
 
-#include "mirall/inotify.h"
-
-class QFileSystemWatcher;
 class INotify;
 
 namespace Mirall {
@@ -20,13 +17,14 @@ Q_OBJECT
 public:
     FolderWatcher(const QString &path, QObject *parent = 0L);
     ~FolderWatcher();
+
+    QStringList folders() const;
+
 signals:
     void folderChanged(const QString &path);
 protected slots:
-    //void slotDirectoryChanged(const QString &path);
     void slotDirectoryChanged(int mask, const QString &path);
 private:
-    QFileSystemWatcher *_watcher;
     QMutex _mutex;
     INotify *_inotify;
 };
