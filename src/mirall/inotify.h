@@ -36,7 +36,7 @@ public:
     QStringList directories() const;
 signals:
 
-    void notifyEvent(int mask, const QString &name);
+    void notifyEvent(int mask, int cookie, const QString &name);
 
 private:
     class INotifyThread : public QThread
@@ -52,7 +52,7 @@ private:
     };
 
     //INotify(int wd);
-    void fireEvent(int mask, int wd, char *name);
+    void fireEvent(int mask, int cookie, int wd, char *name);
     static int s_fd;
     static INotifyThread* s_thread;
 

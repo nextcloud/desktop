@@ -23,7 +23,7 @@ public:
 signals:
     void folderChanged(const QString &path);
 protected slots:
-    void slotDirectoryChanged(int mask, const QString &path);
+    void slotINotifyEvent(int mask, int cookie, const QString &path);
     void slotAddFolderRecursive(const QString &path);
 private:
 

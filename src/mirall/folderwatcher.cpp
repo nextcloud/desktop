@@ -14,7 +14,7 @@
 #include "mirall/folderwatcher.h"
 
 static const uint32_t standard_event_mask =
-    IN_MODIFY | IN_ATTRIB | IN_MOVE | IN_CREATE | IN_DELETE | IN_DELETE_SELF | IN_MOVE_SELF | IN_UNMOUNT | IN_ISDIR | IN_DONT_FOLLOW;
+    IN_CLOSE_WRITE | IN_ATTRIB | IN_MOVE | IN_CREATE | IN_DELETE | IN_DELETE_SELF | IN_MOVE_SELF | IN_UNMOUNT | IN_ONLYDIR | IN_DONT_FOLLOW;
 
 namespace Mirall {
 
@@ -50,8 +50,8 @@ FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
 {
     _inotify = new INotify(standard_event_mask);
     slotAddFolderRecursive(root);
-    QObject::connect(_inotify, SIGNAL(notifyEvent(int, const QString &)),
-                     SLOT(slotDirectoryChanged(int, const QString &)));
+    QObject::connect(_inotify, SIGNAL(notifyEvent(int, int, const QString &)),
+                     SLOT(slotINotifyEvent(int, int, const QString &)));
 }
 
 FolderWatcher::~FolderWatcher()
@@ -66,9 +66,10 @@ QStringList FolderWatcher::folders() const
 
 void FolderWatcher::slotAddFolderRecursive(const QString &path)
 {
-    qDebug() << "Recursive adding " << path;
+    qDebug() << "`-> adding " << path;
+    _inotify->addPath(path);
     QStringList watchedFolders(_inotify->directories());
-    qDebug() << "currently watching " << watchedFolders;
+    //qDebug() << "currently watching " << watchedFolders;
     QStringListIterator subfoldersIt(subFoldersList(path, SubFolderRecursive));
     while (subfoldersIt.hasNext()) {
         QDir folder (subfoldersIt.next());
@@ -79,34 +80,32 @@ void FolderWatcher::slotAddFolderRecursive(const QString &path)
         else
             qDebug() << "`-> discarding " << folder.path();
     }
-    qDebug() << "`-> adding " << path;
-    _inotify->addPath(path);
 }
 
-void FolderWatcher::slotDirectoryChanged(int mask, const QString &path)
+void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
 {
     QMutexLocker locker(&_mutex);
 
     if (mask & IN_CREATE) {
-        qDebug() << "CREATE: " << path;
+        qDebug() << cookie << " CREATE: " << path;
         if (QFileInfo(path).isDir()) {
             slotAddFolderRecursive(path);
         }
     }
     else if (mask & IN_DELETE) {
-        qDebug() << "DELETE: " << path;
+        qDebug() << cookie << " DELETE: " << path;
         if (_inotify->directories().contains(path));
             qDebug() << "`-> removing " << path;
             _inotify->removePath(path);
     }
-    else if (mask & IN_MODIFY) {
-        qDebug() << "MODIFIED: " << path;
+    else if (mask & IN_CLOSE_WRITE) {
+        qDebug() << cookie << " WRITABLE CLOSED: " << path;
     }
     else if (mask & IN_MOVE) {
-        qDebug() << "MOVE: " << path;
+        qDebug() << cookie << " MOVE: " << path;
     }
     else {
-        qDebug() << "OTHER " << mask << " :" << path;
+        qDebug() << cookie << " OTHER " << mask << " :" << path;
     }
     emit folderChanged(path);
 }

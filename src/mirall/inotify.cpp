@@ -16,7 +16,7 @@ http://www.gnu.org/licenses/gpl.txt .
 
 
 // Buffer Size for read() buffer
-#define BUFFERSIZE 512
+#define BUFFERSIZE 2048
 
 namespace Mirall {
 
@@ -85,11 +85,11 @@ INotify::INotifyThread::registerForNotification(INotify* notifier, int wd)
 }
 
 void
-INotify::fireEvent(int mask, int wd, char* name)
+INotify::fireEvent(int mask, int cookie, int wd, char* name)
 {
     QString path;
     foreach (path, _wds.keys(wd))
-        emit notifyEvent(mask, path + "/" + QString::fromUtf8(name));
+        emit notifyEvent(mask, cookie, path + "/" + QString::fromUtf8(name));
 }
 
 void
@@ -135,9 +135,29 @@ INotify::INotifyThread::run()
             // cast an inotify_event
             event = (struct inotify_event*)&buffer[i];
             // with the help of watch descriptor, retrieve, corresponding INotify
+
+            /* ignore some events */
+            if (event && (event->len == 0)) {
+                qDebug() << i << ": len 0 event";
+                continue;
+            }
+            else if (event == NULL) {
+                qDebug() << "NULL event";
+                continue;
+            }
+            else if (event && (IN_IGNORED & event->mask)) {
+                qDebug() << "IGNORE event";
+                continue;
+            }
+
+            if (event && (IN_Q_OVERFLOW & event->mask)) {
+                qDebug() << "OVERFLOW";
+            }
+
             n = _map[event->wd];
+
             // fire event
-            n->fireEvent(event->mask, event->wd, event->name);
+            n->fireEvent(event->mask, event->cookie, event->wd, event->name);
             // increment counter
             i += sizeof(struct inotify_event) + event->len;
         }
