@@ -23,13 +23,18 @@ Folder::Folder(const QString &path, QObject *parent)
                      SLOT(slotChanged(const QString &)));
 }
 
+Folder::~Folder()
+{
+}
+
+QString Folder::path() const
+{
+    return _path;
+}
+
 QAction * Folder::action() const
 {
     return _action;
-}
-
-Folder::~Folder()
-{
 }
 
 void Folder::slotChanged(const QString &path)

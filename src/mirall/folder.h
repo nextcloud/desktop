@@ -18,6 +18,8 @@ public:
     Folder(const QString &path, QObject *parent = 0L);
     virtual ~Folder();
 
+    QString path() const;
+
     QAction *action() const;
 
     /**

@@ -11,6 +11,7 @@ mirall/folderwatcher.cpp
 mirall/gitfolder.cpp
 mirall/inotify.cpp
 mirall/temporarydir.cpp
+mirall/unisonfolder.cpp
 )
 qt4_automoc(${mirall_SRCS})
 
