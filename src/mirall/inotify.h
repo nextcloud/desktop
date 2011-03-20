@@ -45,10 +45,14 @@ private:
         QHash<int, INotify*> _map;
     public:
         INotifyThread(int fd);
+        ~INotifyThread();
         void registerForNotification(INotify*, int);
         void unregisterForNotification(INotify*);
     protected:
         void run();
+    private:
+        size_t _buffer_size;
+        char *_buffer;
     };
 
     //INotify(int wd);

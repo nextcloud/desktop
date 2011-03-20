@@ -8,6 +8,7 @@ http://www.gnu.org/licenses/gpl.txt .
 */
 
 #include <sys/inotify.h>
+#include <cerrno>
 #include <unistd.h>
 #include <QDebug>
 #include <QStringList>
@@ -16,7 +17,7 @@ http://www.gnu.org/licenses/gpl.txt .
 
 
 // Buffer Size for read() buffer
-#define BUFFERSIZE 2048
+#define DEFAULT_READ_BUFFERSIZE 2048
 
 namespace Mirall {
 
@@ -111,8 +112,14 @@ INotify::cleanup()
 
 INotify::INotifyThread::INotifyThread(int fd) : _fd(fd)
 {
+    _buffer_size = DEFAULT_READ_BUFFERSIZE;
+    _buffer = (char *) malloc(_buffer_size);
 }
 
+INotify::INotifyThread::~INotifyThread()
+{
+    free(_buffer);
+}
 
 // Thread routine
 void
@@ -120,28 +127,45 @@ INotify::INotifyThread::run()
 {
     int len;
     struct inotify_event* event;
-    char buffer[BUFFERSIZE];
     INotify* n = NULL;
     int i;
+    int error;
 
-    // read the inotify file descriptor.
-    while((len = read(_fd, buffer, BUFFERSIZE)) > 0)
-    {
+    // main loop
+    while (true) {
+        do {
+            len = read(_fd, _buffer, _buffer_size);
+            error = errno;
+            /**
+             * From inotify documentation:
+             *
+             * The behavior when the buffer given to read(2) is too
+             * small to return information about the next event
+             * depends on the kernel version: in kernels  before 2.6.21,
+             * read(2) returns 0; since kernel 2.6.21, read(2) fails with
+             * the error EINVAL.
+             */
+            if (len < 0 && error == EINVAL)
+            {
+                // double the buffer size
+                qWarning() << "buffer size too small";
+                _buffer_size *= 2;
+                _buffer = (char *) realloc(_buffer, _buffer_size);
+                /* and try again ... */
+                continue;
+            }
+        } while (false);
+
+        /* TODO handle len == 0 */
+
         // reset counter
         i = 0;
         // while there are enough events in the buffer
-        while(i + sizeof(struct inotify_event) < len)
-        {
+        while(i + sizeof(struct inotify_event) < len) {
             // cast an inotify_event
-            event = (struct inotify_event*)&buffer[i];
+            event = (struct inotify_event*)&_buffer[i];
             // with the help of watch descriptor, retrieve, corresponding INotify
-
-            /* ignore some events */
-            if (event && (event->len == 0)) {
-                qDebug() << i << ": len 0 event";
-                continue;
-            }
-            else if (event == NULL) {
+            if (event == NULL) {
                 qDebug() << "NULL event";
                 continue;
             }
@@ -150,14 +174,14 @@ INotify::INotifyThread::run()
                 continue;
             }
 
-            if (event && (IN_Q_OVERFLOW & event->mask)) {
+            if (event && (IN_Q_OVERFLOW & event->mask))
                 qDebug() << "OVERFLOW";
-            }
 
             n = _map[event->wd];
 
             // fire event
-            n->fireEvent(event->mask, event->cookie, event->wd, event->name);
+            if (event->len > 0)
+                n->fireEvent(event->mask, event->cookie, event->wd, event->name);
             // increment counter
             i += sizeof(struct inotify_event) + event->len;
         }
