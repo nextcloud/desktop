@@ -29,6 +29,11 @@ public:
      */
     QStringList folders() const;
 
+    /**
+     * Root path being monitored
+     */
+    QString FolderWatcher::root() const
+
 signals:
     /**
      * Emitted when one of the paths is changed

@@ -59,6 +59,11 @@ FolderWatcher::~FolderWatcher()
 
 }
 
+QString FolderWatcher::root() const
+{
+    return _root;
+}
+
 QStringList FolderWatcher::folders() const
 {
     return _inotify->directories();
