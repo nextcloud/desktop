@@ -12,6 +12,7 @@
 
 #include "mirall/inotify.h"
 #include "mirall/folderwatcher.h"
+#include "mirall/fileutils.h"
 
 static const uint32_t standard_event_mask =
     IN_CLOSE_WRITE | IN_ATTRIB | IN_MOVE | IN_CREATE | IN_DELETE | IN_DELETE_SELF | IN_MOVE_SELF | IN_UNMOUNT | IN_ONLYDIR | IN_DONT_FOLLOW;
@@ -22,31 +23,6 @@ static const uint32_t standard_event_mask =
 
 namespace Mirall {
 
-enum SubFolderListOption {
-    SubFolderNoOptions = 0x0,
-    SubFolderRecursive = 0x1,
-};
-Q_DECLARE_FLAGS(SubFolderListOptions, SubFolderListOption)
-Q_DECLARE_OPERATORS_FOR_FLAGS(SubFolderListOptions)
-
-// Forgive me using a bool as a flag
-static QStringList subFoldersList(QString folder,
-                                  SubFolderListOptions options = SubFolderNoOptions )
-{
-    QDir dir(folder);
-    dir.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
-
-    QFileInfoList list = dir.entryInfoList();
-    QStringList dirList;
-
-    for (int i = 0; i < list.size(); ++i) {
-        QFileInfo fileInfo = list.at(i);
-        dirList << fileInfo.absoluteFilePath();
-        if (options & SubFolderRecursive )
-            dirList << subFoldersList(fileInfo.absoluteFilePath(), options);
-    }
-    return dirList;
-}
 
 FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
     : QObject(parent),
@@ -80,7 +56,7 @@ void FolderWatcher::slotAddFolderRecursive(const QString &path)
     _inotify->addPath(path);
     QStringList watchedFolders(_inotify->directories());
     //qDebug() << "currently watching " << watchedFolders;
-    QStringListIterator subfoldersIt(subFoldersList(path, SubFolderRecursive));
+    QStringListIterator subfoldersIt(FileUtils::subFoldersList(path, FileUtils::SubFolderRecursive));
     while (subfoldersIt.hasNext()) {
         QDir folder (subfoldersIt.next());
         if (folder.exists() && !watchedFolders.contains(folder.path())) {

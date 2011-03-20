@@ -1,3 +1,32 @@
+
+#include "mirall/fileutils.h"
+
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
+#include <QFileInfoList>
+
+namespace Mirall
+{
+
+QStringList FileUtils::subFoldersList(QString folder,
+                                      SubFolderListOptions options)
+{
+    QDir dir(folder);
+    dir.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
+
+    QFileInfoList list = dir.entryInfoList();
+    QStringList dirList;
+
+    for (int i = 0; i < list.size(); ++i) {
+        QFileInfo fileInfo = list.at(i);
+        dirList << fileInfo.absoluteFilePath();
+        if (options & SubFolderRecursive )
+            dirList << subFoldersList(fileInfo.absoluteFilePath(), options);
+    }
+    return dirList;
+}
+
 /*
 Copyright (c) 2009 John Schember <john@nachtimwald.com>
 
@@ -19,17 +48,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
 */
-
-#include "mirall/fileutils.h"
-
-#include <QDir>
-#include <QFile>
-#include <QFileInfo>
-#include <QFileInfoList>
-
-namespace Mirall
-{
-
 bool FileUtils::removeDir(const QString &path)
 {
     bool result = true;
