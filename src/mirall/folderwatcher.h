@@ -4,8 +4,9 @@
 #define MIRALL_FOLDERWATCHER_H
 
 #include <QObject>
-#include <QString>
 #include <QMutex>
+#include <QString>
+#include <QTime>
 
 class INotify;
 
@@ -32,7 +33,7 @@ public:
     /**
      * Root path being monitored
      */
-    QString FolderWatcher::root() const
+    QString root() const;
 
 signals:
     /**
@@ -47,6 +48,7 @@ private:
     QMutex _mutex;
     INotify *_inotify;
     QString _root;
+    QTime _lastEventTime;
 };
 
 }

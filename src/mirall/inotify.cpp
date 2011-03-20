@@ -169,14 +169,6 @@ INotify::INotifyThread::run()
                 qDebug() << "NULL event";
                 continue;
             }
-            else if (event && (IN_IGNORED & event->mask)) {
-                qDebug() << "IGNORE event";
-                continue;
-            }
-
-            if (event && (IN_Q_OVERFLOW & event->mask))
-                qDebug() << "OVERFLOW";
-
             n = _map[event->wd];
 
             // fire event
