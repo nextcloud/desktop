@@ -19,8 +19,8 @@ Folder::Folder(const QString &path, QObject *parent)
     QObject::connect(_action, SIGNAL(triggered(bool)), SLOT(slotOpenFolder()));
 
     _watcher = new Mirall::FolderWatcher(path, this);
-    QObject::connect(_watcher, SIGNAL(folderChanged(const QString &)),
-                     SLOT(slotChanged(const QString &)));
+    QObject::connect(_watcher, SIGNAL(folderChanged(const QStringList &)),
+                     SLOT(slotChanged(const QStringList &)));
 }
 
 Folder::~Folder()
@@ -37,9 +37,10 @@ QAction * Folder::action() const
     return _action;
 }
 
-void Folder::slotChanged(const QString &path)
+void Folder::slotChanged(const QStringList &pathList)
 {
-    //qDebug() << "path " << path << " changed";
+    qDebug() << "Changed >> " << pathList;
+
 }
 
 void Folder::slotOpenFolder()

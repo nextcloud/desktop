@@ -16,6 +16,11 @@ UnisonFolder::~UnisonFolder()
 {
 }
 
+bool UnisonFolder::isSyncing() const
+{
+    return false;
+}
+
 QString UnisonFolder::secondPath() const
 {
     return _secondPath;

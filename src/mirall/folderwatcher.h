@@ -4,10 +4,11 @@
 #define MIRALL_FOLDERWATCHER_H
 
 #include <QObject>
-#include <QMutex>
 #include <QString>
+#include <QStringList>
 #include <QTime>
 
+class QTimer;
 class INotify;
 
 namespace Mirall {
@@ -39,15 +40,18 @@ signals:
     /**
      * Emitted when one of the paths is changed
      */
-    void folderChanged(const QString &path);
+    void folderChanged(const QStringList &pathList);
 
 protected slots:
     void slotINotifyEvent(int mask, int cookie, const QString &path);
     void slotAddFolderRecursive(const QString &path);
+    void slotProcessPaths();
 private:
-    QMutex _mutex;
     INotify *_inotify;
     QString _root;
+    // paths pending to notified
+    QStringList _pendingPathList;
+    QTimer *_processTimer;
     QTime _lastEventTime;
 };
 

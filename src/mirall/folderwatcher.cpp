@@ -19,7 +19,7 @@ static const uint32_t standard_event_mask =
 
 /* minimum amount of seconds between two
    events  to consider it a new event */
-#define MIN_EVENT_INTERVAL_SEC 2
+#define MIN_EVENT_INTERVAL_SEC 5
 
 namespace Mirall {
 
@@ -27,8 +27,12 @@ namespace Mirall {
 FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
     : QObject(parent),
       _root(root),
+      _processTimer(new QTimer(this)),
       _lastEventTime(QTime::currentTime())
 {
+    _processTimer->setSingleShot(true);
+    QObject::connect(_processTimer, SIGNAL(timeout()), this, SLOT(slotProcessPaths()));
+
     _inotify = new INotify(standard_event_mask);
     slotAddFolderRecursive(root);
     QObject::connect(_inotify, SIGNAL(notifyEvent(int, int, const QString &)),
@@ -70,9 +74,6 @@ void FolderWatcher::slotAddFolderRecursive(const QString &path)
 
 void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
 {
-    QMutexLocker locker(&_mutex);
-    QTime eventTime = QTime::currentTime();
-
     if (IN_IGNORED & mask) {
         qDebug() << "IGNORE event";
         return;
@@ -103,15 +104,35 @@ void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
         qDebug() << cookie << " OTHER " << mask << " :" << path;
     }
 
+    _pendingPathList.append(path);
+
+    slotProcessPaths();
+
+    //if (!_processTimer->isActive())
+    //    _processTimer->start();
+}
+
+void FolderWatcher::slotProcessPaths()
+{
+    QTime eventTime = QTime::currentTime();
+
     if (_lastEventTime.secsTo(eventTime) < MIN_EVENT_INTERVAL_SEC) {
-        qDebug() << "Last event happened less than 2 seconds ago...";
+        qDebug() << "Last event happened less than " << MIN_EVENT_INTERVAL_SEC << " seconds ago...";
+        // schedule a forced queue cleanup later
+        if (!_processTimer->isActive())
+            _processTimer->start(MIN_EVENT_INTERVAL_SEC * 1000);
         return;
     }
 
     _lastEventTime = eventTime;
+    QStringList notifyPaths(_pendingPathList);
+    _pendingPathList.clear();
 
-    emit folderChanged(path);
+    emit folderChanged(notifyPaths);
 }
+
+
+
 
 }
 

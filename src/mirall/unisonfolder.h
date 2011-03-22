@@ -18,6 +18,8 @@ public:
 
     virtual void startSync();
 
+    virtual bool isSyncing() const;
+
 private:
     QMutex _syncMutex;
     QProcess *_unison;

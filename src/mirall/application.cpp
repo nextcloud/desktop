@@ -7,7 +7,7 @@
 #include "mirall/constants.h"
 #include "mirall/application.h"
 #include "mirall/folder.h"
-#include "mirall/gitfolder.h"
+#include "mirall/unisonfolder.h"
 #include "mirall/inotify.h"
 
 namespace Mirall {
@@ -17,7 +17,7 @@ Application::Application(int argc, char **argv) :
 {
     INotify::initialize();
 
-    _folder = new GitFolder(QDir::homePath() + "/Mirall", this);
+    _folder = new UnisonFolder(QDir::homePath() + "/Mirall", "/space/tmp/testmirall", this);
     setApplicationName("Mirall");
     setupActions();
     setupSystemTray();
