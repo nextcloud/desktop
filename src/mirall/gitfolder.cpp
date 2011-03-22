@@ -4,7 +4,7 @@
 
 namespace Mirall {
 
-GitFolder::GitFolder(const QString &path, const QString &_remote, QObject *parent)
+GitFolder::GitFolder(const QString &path, const QString &remote, QObject *parent)
     : Folder(path, parent)
     , _remote(remote)
 {

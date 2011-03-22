@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QStringList>
 
 class QAction;
 
@@ -31,6 +32,8 @@ public:
      */
     virtual void startSync() = 0;
 
+    virtual bool isSyncing() const = 0;
+
 signals:
     void syncStarted();
     void syncFinished();
@@ -42,7 +45,7 @@ private:
     FolderWatcher *_watcher;
     QAction *_openAction;
 private slots:
-    void slotChanged(const QString &path);
+    void slotChanged(const QStringList &pathList);
     void slotOpenFolder();
 
     void slotSyncStarted();
