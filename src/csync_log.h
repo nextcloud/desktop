@@ -56,8 +56,16 @@
 #define PRINTF_ATTRIBUTE(a,b)
 #endif /* __GNUC__ */
 
-#define CSYNC_LOG(priority, fmt, ...) \
-  csync_log((char *) CSYNC_LOG_CATEGORY_NAME, priority, fmt, ## __VA_ARGS__)
+/*#define CSYNC_LOG(priority, fmt, ...) \
+  csync_log((char *) CSYNC_LOG_CATEGORY_NAME, priority, fmt, ## __VA_ARGS__)*/
+/*
+ * fix hundreds of these warnings:
+ * csync.c:272:75: warning: ISO C99 requires rest arguments to be used [enabled by default]
+ * The ## token in combination with __VA_ARGS__ is a gcc extension that's not part of ISO C99
+ * http://stackoverflow.com/questions/4100746/suppressing-iso-c99-requires-rest-arguments-to-be-used
+ */
+#define CSYNC_LOG(priority, ...) \
+  csync_log((char *) CSYNC_LOG_CATEGORY_NAME, priority,  __VA_ARGS__)
 
 #ifdef WITH_LOG4C
 #define CSYNC_LOG_PRIORITY_FATAL   LOG4C_PRIORITY_FATAL
