@@ -30,7 +30,7 @@ public:
      * starts a sync operation
      * requests are serialized
      */
-    virtual void startSync() = 0;
+    virtual void startSync(const QStringList &pathList) = 0;
 
     virtual bool isSyncing() const = 0;
 

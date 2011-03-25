@@ -15,6 +15,12 @@ namespace Mirall {
 
 /**
  * Watches a folder and sub folders for changes
+ *
+ * Will notify changed files relative to the root()
+ * directory.
+ *
+ * If too many changes happen in a short time interval,
+ * it will accumulate and be fired together later.
  */
 class FolderWatcher : public QObject
 {

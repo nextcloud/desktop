@@ -43,7 +43,7 @@ QString Folder::path() const
 void Folder::slotChanged(const QStringList &pathList)
 {
     qDebug() << "Changed >> " << pathList;
-
+    startSync(pathList);
 }
 
 void Folder::slotOpenFolder()
