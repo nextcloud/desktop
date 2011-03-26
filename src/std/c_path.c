@@ -413,13 +413,12 @@ C_PATHINFO * c_split_path(const char* pathSrc)
         if (lastSep)
         {
             pathinfo->directory = path;     // Pick up the path
-            //*lastSep++ = '\0';              // Truncate directory
-            //pathinfo->filename = lastSep;   // Pick up name after path 
-            
-            memmove(lastSep + 2, lastSep+1, strlen(lastSep));
-			*(lastSep+1)='\0'; 
-            pathinfo->filename = lastSep+2;
 
+            memmove(lastSep + 1, lastSep, strlen(lastSep));
+            *lastSep++ ='/';
+            *lastSep++ ='\0';  // Truncate directory
+
+            pathinfo->filename = lastSep;  // Pick up name after path 
         }
     
         // Start at the second character of the filename to handle
@@ -440,21 +439,20 @@ C_PATHINFO * c_split_path(const char* pathSrc)
             *extension = '\0';          // Truncate filename
         }
         else
-		{
-			//tmp files from kate/kwrite "somefile~": '~' should be the extension
-			len=strlen(pathinfo->filename);
-			if(len>1)
-			{
-				//printf("%i\n",pathinfo->filename[len-1]);
-				//printf("%i\n",'~');
-				if(pathinfo->filename[len-1]=='~')
-				{
-					//printf("kate file found\n");
-					pathinfo->filename[len-1]='\0'; // Truncate filename
-					pathinfo->extension[0]='~';      
-				}
-			}
-		}
+        {
+            len=strlen(pathinfo->filename);
+            if(len>1)
+            {
+                //tmp files from kate/kwrite "somefile~": '~' should be the extension
+                if(pathinfo->filename[len-1]=='~')
+                {
+                    extension = &pathinfo->filename[len-1];
+                    memmove(extension + 1, extension, strlen(extension));
+                    pathinfo->extension = extension + 1;
+                    *extension = '\0';          // Truncate filename
+                }
+            }
+        }
         
     }
 
