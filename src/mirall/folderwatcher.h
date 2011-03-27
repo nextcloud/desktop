@@ -42,6 +42,31 @@ public:
      */
     QString root() const;
 
+    /**
+     * If true, folderChanged() events are sent
+     * at least as often as eventInterval() seconds.
+     */
+    bool eventsEnabled() const;
+
+    /**
+     * Enabled or disables folderChanged() events.
+     * If disabled, events are accumulated and emptied
+     * the next time a folderChanged() event happens.
+     */
+    void setEventsEnabled(bool enabled);
+
+    /**
+     * The minimum amounts of seconds that will separate
+     * folderChanged() intervals
+     */
+    int eventInterval() const;
+
+    /**
+     * Sets minimum amounts of seconds that will separate
+     * folderChanged() intervals
+     */
+    void setEventInterval(int seconds);
+
 signals:
     /**
      * Emitted when one of the paths is changed
@@ -53,10 +78,12 @@ protected slots:
     void slotAddFolderRecursive(const QString &path);
     void slotProcessPaths();
 private:
+    bool _eventsEnabled;
+    int _eventInterval;
     INotify *_inotify;
     QString _root;
     // paths pending to notified
-    QStringList _pendingPathList;
+    QStringList _pendingPaths;
     QTimer *_processTimer;
     QTime _lastEventTime;
 };

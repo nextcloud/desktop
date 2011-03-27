@@ -22,11 +22,13 @@ public:
 
     virtual void startSync(const QStringList &pathList);
 
-    virtual bool isSyncing() const;
+    virtual bool isBusy() const;
+
 protected slots:
     void slotReadyReadStandardOutput();
     void slotReadyReadStandardError();
     void slotStateChanged(QProcess::ProcessState);
+    void slotFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void slotError(QProcess::ProcessError);
 private:
     QMutex _syncMutex;

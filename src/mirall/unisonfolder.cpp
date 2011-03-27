@@ -22,15 +22,18 @@ UnisonFolder::UnisonFolder(const QString &path, const QString &secondPath, QObje
 
     QObject::connect(_unison, SIGNAL(error(QProcess::ProcessError)),
                      SLOT(slotError(QProcess::ProcessError)));
+
+    QObject::connect(_unison, SIGNAL(finished(int, QProcess::ExitStatus)),
+                     SLOT(slotFinished(int, QProcess::ExitStatus)));
 }
 
 UnisonFolder::~UnisonFolder()
 {
 }
 
-bool UnisonFolder::isSyncing() const
+bool UnisonFolder::isBusy() const
 {
-    return false;
+    return (_unison->state() != QProcess::NotRunning);
 }
 
 QString UnisonFolder::secondPath() const
@@ -41,6 +44,8 @@ QString UnisonFolder::secondPath() const
 void UnisonFolder::startSync(const QStringList &pathList)
 {
     QMutexLocker locker(&_syncMutex);
+
+    emit syncStarted();
 
     QString program = "unison";
     QStringList args;
@@ -57,10 +62,11 @@ void UnisonFolder::startSync(const QStringList &pathList)
     args  << path();
     args  << secondPath();
 
-    emit syncStarted();
-
     _unison->start(program, args);
+}
 
+void UnisonFolder::slotFinished(int exitCode, QProcess::ExitStatus exitStatus)
+{
     emit syncFinished();
 }
 

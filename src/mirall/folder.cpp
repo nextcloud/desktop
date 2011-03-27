@@ -53,11 +53,14 @@ void Folder::slotOpenFolder()
 
 void Folder::slotSyncStarted()
 {
+    // disable events until syncing is done
+    _watcher->setEventsEnabled(false);
     _openAction->setIcon(QIcon(FOLDER_SYNC_ICON));
 }
 
 void Folder::slotSyncFinished()
 {
+    _watcher->setEventsEnabled(true);
     _openAction->setIcon(QIcon(FOLDER_ICON));
 }
 

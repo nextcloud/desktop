@@ -19,13 +19,15 @@ static const uint32_t standard_event_mask =
 
 /* minimum amount of seconds between two
    events  to consider it a new event */
-#define MIN_EVENT_INTERVAL_SEC 5
+#define DEFAULT_EVENT_INTERVAL_SEC 5
 
 namespace Mirall {
 
 
 FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
     : QObject(parent),
+      _eventsEnabled(true),
+      _eventInterval(DEFAULT_EVENT_INTERVAL_SEC),
       _root(root),
       _processTimer(new QTimer(this)),
       _lastEventTime(QTime::currentTime())
@@ -47,6 +49,40 @@ FolderWatcher::~FolderWatcher()
 QString FolderWatcher::root() const
 {
     return _root;
+}
+
+bool FolderWatcher::eventsEnabled() const
+{
+    return _eventsEnabled;
+}
+
+void FolderWatcher::setEventsEnabled(bool enabled)
+{
+    _eventsEnabled = enabled;
+    if (_eventsEnabled) {
+        // schedule a queue cleanup for accumulated events
+        if ( _pendingPaths.empty() )
+            return;
+
+        if (!_processTimer->isActive())
+            _processTimer->start(eventInterval() * 1000);
+    }
+    else
+    {
+        // if we are disabling events, clear any ongoing timer
+        if (_processTimer->isActive())
+            _processTimer->stop();
+    }
+}
+
+int FolderWatcher::eventInterval() const
+{
+    return _eventInterval;
+}
+
+void FolderWatcher::setEventInterval(int seconds)
+{
+    _eventInterval = seconds;
 }
 
 QStringList FolderWatcher::folders() const
@@ -104,29 +140,29 @@ void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
         qDebug() << cookie << " OTHER " << mask << " :" << path;
     }
 
-    _pendingPathList.append(path);
+    _pendingPaths.append(path);
 
     slotProcessPaths();
-
-    //if (!_processTimer->isActive())
-    //    _processTimer->start();
 }
 
 void FolderWatcher::slotProcessPaths()
 {
     QTime eventTime = QTime::currentTime();
 
-    if (_lastEventTime.secsTo(eventTime) < MIN_EVENT_INTERVAL_SEC) {
-        qDebug() << "Last event happened less than " << MIN_EVENT_INTERVAL_SEC << " seconds ago...";
+    if (!eventsEnabled())
+        return;
+
+    if (_lastEventTime.secsTo(eventTime) < eventInterval()) {
+        qDebug() << "Last event happened less than " << eventInterval() << " seconds ago...";
         // schedule a forced queue cleanup later
         if (!_processTimer->isActive())
-            _processTimer->start(MIN_EVENT_INTERVAL_SEC * 1000);
+            _processTimer->start(eventInterval() * 1000);
         return;
     }
 
     _lastEventTime = eventTime;
-    QStringList notifyPaths(_pendingPathList);
-    _pendingPathList.clear();
+    QStringList notifyPaths(_pendingPaths);
+    _pendingPaths.clear();
 
     emit folderChanged(notifyPaths);
 }

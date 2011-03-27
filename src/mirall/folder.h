@@ -32,9 +32,14 @@ public:
      */
     virtual void startSync(const QStringList &pathList) = 0;
 
-    virtual bool isSyncing() const = 0;
+    /**
+     * True if the folder is busy and can't initiate
+     * a synchronization
+     */
+    virtual bool isBusy() const = 0;
 
 signals:
+
     void syncStarted();
     void syncFinished();
 
@@ -44,8 +49,13 @@ private:
     QString _path;
     FolderWatcher *_watcher;
     QAction *_openAction;
-private slots:
+    QStringList _pendingPaths;
+protected slots:
+
+    /* called when the watcher detect a list of changed
+       paths */
     void slotChanged(const QStringList &pathList);
+
     void slotOpenFolder();
 
     void slotSyncStarted();
