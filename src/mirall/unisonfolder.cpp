@@ -23,6 +23,9 @@ UnisonFolder::UnisonFolder(const QString &path, const QString &secondPath, QObje
     QObject::connect(_unison, SIGNAL(error(QProcess::ProcessError)),
                      SLOT(slotError(QProcess::ProcessError)));
 
+    QObject::connect(_unison, SIGNAL(started()),
+                     SLOT(slotStarted()));
+
     QObject::connect(_unison, SIGNAL(finished(int, QProcess::ExitStatus)),
                      SLOT(slotFinished(int, QProcess::ExitStatus)));
 }
@@ -65,31 +68,36 @@ void UnisonFolder::startSync(const QStringList &pathList)
     _unison->start(program, args);
 }
 
+void UnisonFolder::slotStarted()
+{
+    qDebug() << "    * Unison process started ( PID " << _unison->pid() << ")";
+    //qDebug() << _unison->readAllStandardOutput();;
+}
+
 void UnisonFolder::slotFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
+    qDebug() << "    * Unison process finished with status" << exitCode;
     emit syncFinished();
 }
 
 void UnisonFolder::slotReadyReadStandardOutput()
 {
-    qDebug() << _unison->readAllStandardOutput();;
-
+    //qDebug() << _unison->readAllStandardOutput();;
 }
 
 void UnisonFolder::slotReadyReadStandardError()
 {
-    qDebug() << _unison->readAllStandardError();;
-
+    //qDebug() << _unison->readAllStandardError();;
 }
 
 void UnisonFolder::slotStateChanged(QProcess::ProcessState state)
 {
-    qDebug() << "changed: " << state;
+    //qDebug() << "changed: " << state;
 }
 
 void UnisonFolder::slotError(QProcess::ProcessError error)
 {
-    qDebug() << "error: " << error;
+    //qDebug() << "error: " << error;
 }
 
 } // ns

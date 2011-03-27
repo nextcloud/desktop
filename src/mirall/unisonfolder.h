@@ -29,6 +29,7 @@ protected slots:
     void slotReadyReadStandardError();
     void slotStateChanged(QProcess::ProcessState);
     void slotFinished(int exitCode, QProcess::ExitStatus exitStatus);
+    void slotStarted();
     void slotError(QProcess::ProcessError);
 private:
     QMutex _syncMutex;

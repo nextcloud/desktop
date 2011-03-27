@@ -73,9 +73,14 @@ signals:
      */
     void folderChanged(const QStringList &pathList);
 
+protected:
+    void setProcessTimer();
+
 protected slots:
     void slotINotifyEvent(int mask, int cookie, const QString &path);
     void slotAddFolderRecursive(const QString &path);
+    // called when the manually process timer triggers
+    void slotProcessTimerTimeout();
     void slotProcessPaths();
 private:
     bool _eventsEnabled;
@@ -86,6 +91,10 @@ private:
     QStringList _pendingPaths;
     QTimer *_processTimer;
     QTime _lastEventTime;
+
+    // to cancel events that belong to the same action
+    int _lastMask;
+    QString _lastPath;
 };
 
 }

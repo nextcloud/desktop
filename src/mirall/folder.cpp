@@ -24,6 +24,12 @@ Folder::Folder(const QString &path, QObject *parent)
     _watcher = new Mirall::FolderWatcher(path, this);
     QObject::connect(_watcher, SIGNAL(folderChanged(const QStringList &)),
                      SLOT(slotChanged(const QStringList &)));
+
+    QObject::connect(this, SIGNAL(syncStarted()),
+                     SLOT(slotSyncStarted()));
+    QObject::connect(this, SIGNAL(syncFinished()),
+                     SLOT(slotSyncFinished()));
+
 }
 
 QAction * Folder::openAction() const
@@ -42,7 +48,6 @@ QString Folder::path() const
 
 void Folder::slotChanged(const QStringList &pathList)
 {
-    qDebug() << "Changed >> " << pathList;
     startSync(pathList);
 }
 
