@@ -92,7 +92,7 @@ QStringList FolderWatcher::folders() const
 
 void FolderWatcher::slotAddFolderRecursive(const QString &path)
 {
-    qDebug() << "`-> adding " << path;
+    qDebug() << "(+) Watcher:" << path;
     _inotify->addPath(path);
     QStringList watchedFolders(_inotify->directories());
     //qDebug() << "currently watching " << watchedFolders;
@@ -100,11 +100,11 @@ void FolderWatcher::slotAddFolderRecursive(const QString &path)
     while (subfoldersIt.hasNext()) {
         QDir folder (subfoldersIt.next());
         if (folder.exists() && !watchedFolders.contains(folder.path())) {
-            qDebug() << "`-> adding " << folder.path();
+            qDebug() << "(+) Watcher:" << folder.path();
             _inotify->addPath(folder.path());
         }
         else
-            qDebug() << "`-> discarding " << folder.path();
+            qDebug() << "Discarded:" << folder.path();
     }
 }
 
@@ -117,21 +117,22 @@ void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
     _lastPath = path;
 
     // cancel close write events that come after create
-    //if (lastMask == IN_CREATE && mask == IN_CLOSE_WRITE
-    //    && lastPath == path ) {
-    //    return;
-    //}
+    if (lastMask == IN_CREATE && mask == IN_CLOSE_WRITE
+        && lastPath == path ) {
+        return;
+    }
 
     if (IN_IGNORED & mask) {
         //qDebug() << "IGNORE event";
         return;
     }
 
-    if (IN_Q_OVERFLOW & mask)
+    if (IN_Q_OVERFLOW & mask) {
         //qDebug() << "OVERFLOW";
+    }
 
     if (mask & IN_CREATE) {
-        qDebug() << cookie << " CREATE: " << path;
+        //qDebug() << cookie << " CREATE: " << path;
         if (QFileInfo(path).isDir()) {
             slotAddFolderRecursive(path);
         }
@@ -139,7 +140,7 @@ void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
     else if (mask & IN_DELETE) {
         //qDebug() << cookie << " DELETE: " << path;
         if (_inotify->directories().contains(path));
-            qDebug() << "`-> removing " << path;
+            qDebug() << "(-) Watcher:" << path;
             _inotify->removePath(path);
     }
     else if (mask & IN_CLOSE_WRITE) {
