@@ -92,6 +92,7 @@ QStringList FolderWatcher::folders() const
 
 void FolderWatcher::slotAddFolderRecursive(const QString &path)
 {
+    int subdirs = 0;
     qDebug() << "(+) Watcher:" << path;
     _inotify->addPath(path);
     QStringList watchedFolders(_inotify->directories());
@@ -100,12 +101,15 @@ void FolderWatcher::slotAddFolderRecursive(const QString &path)
     while (subfoldersIt.hasNext()) {
         QDir folder (subfoldersIt.next());
         if (folder.exists() && !watchedFolders.contains(folder.path())) {
-            qDebug() << "(+) Watcher:" << folder.path();
+            subdirs++;
+            //qDebug() << "(+) Watcher:" << folder.path();
             _inotify->addPath(folder.path());
         }
         else
-            qDebug() << "Discarded:" << folder.path();
+            qDebug() << "    `-> discarded:" << folder.path();
     }
+    if (subdirs >0)
+        qDebug() << "    `-> and" << subdirs << "subdirectories";
 }
 
 void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
