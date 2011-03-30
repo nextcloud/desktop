@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <unistd.h>
 
 #include <csync.h>
@@ -84,6 +85,14 @@ static struct argp_option options[] = {
     .group = 0
   },
   {
+    .name = "conflict-copys",
+    .key = 'c',
+    .arg = NULL,
+    .flags = 0,
+    .doc = "Create conflict copys if file changed on both sides.",
+    .group = 0    
+  },
+  {
     .name  = "test-update",
     .key   = KEY_TEST_UPDATE,
     .arg   = NULL,
@@ -103,6 +112,7 @@ struct argument_s {
   int update;
   int reconcile;
   int propagate;
+  bool with_conflict_copys;
 };
 
 /* Parse a single option. */
@@ -136,6 +146,9 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state) {
       arguments->update = 1;
       arguments->reconcile = 0;
       arguments->propagate = 0;
+      break;
+    case 'c':
+      arguments->with_conflict_copys = true;
       break;
     case ARGP_KEY_ARG:
       if (state->arg_num >= 2) {
@@ -189,6 +202,11 @@ int main(int argc, char **argv) {
   csync_set_auth_callback(csync, csync_auth);
   if (arguments.disable_statedb) {
     csync_disable_statedb(csync);
+  }
+  
+  if(arguments.with_conflict_copys)
+  {
+    csync_enable_conflictcopys(csync);
   }
 
   if (csync_init(csync) < 0) {
