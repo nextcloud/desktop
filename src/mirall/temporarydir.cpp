@@ -3,6 +3,7 @@
 #include <cstring>
 
 #include <QDebug>
+#include <QDir>
 
 #include "mirall/temporarydir.h"
 #include "mirall/fileutils.h"
@@ -10,16 +11,14 @@
 namespace Mirall
 {
 
-static char dir_template[] = "/tmp/mirall-XXXXXX";
+static QString dirTemplate = QDir::tempPath() + "/mirall-XXXXXX";
 
 TemporaryDir::TemporaryDir()
 {
-    char *tmp = ::mkdtemp(dir_template);
+    char *buff = ::strdup(dirTemplate.toLocal8Bit().data());
+    char *tmp = ::mkdtemp(buff);
     _path = QString((const char *) tmp);
-
-    //qDebug() << "tmp:" << _path;
-    //qDebug() << strerror(errno);
-
+    ::free(buff);
 }
 
 TemporaryDir::~TemporaryDir()
