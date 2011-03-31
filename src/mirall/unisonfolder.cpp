@@ -9,7 +9,8 @@ namespace Mirall {
 UnisonFolder::UnisonFolder(const QString &path, const QString &secondPath, QObject *parent)
     : Folder(path, parent),
       _unison(new QProcess(this)),
-      _secondPath(secondPath)
+      _secondPath(secondPath),
+      _syncCount(0)
 {
     QObject::connect(_unison, SIGNAL(readyReadStandardOutput()),
                      SLOT(slotReadyReadStandardOutput()));
@@ -54,12 +55,18 @@ void UnisonFolder::startSync(const QStringList &pathList)
     QStringList args;
     args << "-ui" << "text";
     args << "-auto" << "-batch";
-    args << "-confirmbigdel";
 
-    // may be we should use a QDir in the API itself?
-    QDir root(path());
-    foreach(QString changedPath, pathList) {
-        args << "-path" << root.relativeFilePath(changedPath);
+    //args << "-confirmbigdel";
+
+    // only use -path in after a full synchronization
+    // already happened, which we do only on the first
+    // sync when the program is started
+    if (_syncCount > 0 ) {
+        // may be we should use a QDir in the API itself?
+        QDir root(path());
+        foreach(QString changedPath, pathList) {
+            args << "-path" << root.relativeFilePath(changedPath);
+        }
     }
 
     args  << path();
@@ -71,6 +78,8 @@ void UnisonFolder::startSync(const QStringList &pathList)
 void UnisonFolder::slotStarted()
 {
     qDebug() << "    * Unison process started ( PID " << _unison->pid() << ")";
+    _syncCount++;
+
     //qDebug() << _unison->readAllStandardOutput();;
 }
 

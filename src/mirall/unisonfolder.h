@@ -35,6 +35,7 @@ private:
     QMutex _syncMutex;
     QProcess *_unison;
     QString _secondPath;
+    int _syncCount;
 };
 
 }
