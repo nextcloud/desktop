@@ -10,8 +10,6 @@
 #include "mirall/temporarydir.h"
 #include "testfolderwatcher.h"
 
-static char dir_template[] = "/tmp/miralXXXXXX";
-
 void TestFolderWatcher::initTestCase()
 {
     Mirall::INotify::initialize();
