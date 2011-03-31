@@ -28,11 +28,14 @@ void TestUnisonFolder::testSyncFiles()
     Mirall::TemporaryDir tmp1;
     Mirall::TemporaryDir tmp2;
 
+    qDebug() << tmp1.path() << tmp2.path();
+
+
     Mirall::UnisonFolder folder(tmp1.path(), tmp2.path(), this);
 
     // create a directory in the first
     QDir(tmp1.path()).mkdir("foo");
-    QTest::qWait(10000);
+    QTest::qWait(1000);
     QVERIFY(QDir(tmp2.path() + "/foo").exists());
 }
 

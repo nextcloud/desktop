@@ -30,7 +30,6 @@ FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
       _eventInterval(DEFAULT_EVENT_INTERVAL_SEC),
       _root(root),
       _processTimer(new QTimer(this)),
-      _lastEventTime(QTime::currentTime()),
       _lastMask(0)
 {
     _processTimer->setSingleShot(true);
@@ -182,7 +181,7 @@ void FolderWatcher::slotProcessPaths()
     if (!eventsEnabled())
         return;
 
-    if (_lastEventTime.secsTo(eventTime) < eventInterval()) {
+    if (!_lastEventTime.isNull() && (_lastEventTime.secsTo(eventTime) < eventInterval())) {
         //qDebug() << "`-> Last event happened less than " << eventInterval() << " seconds ago...";
         // schedule a forced queue cleanup later
         setProcessTimer();
