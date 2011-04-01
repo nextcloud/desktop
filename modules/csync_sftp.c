@@ -141,6 +141,9 @@ static int _sftp_portable_to_errno(int sftp_errno) {
     case SSH_FX_BAD_MESSAGE:
       rc = EINVAL;
       break;
+    case SSH_FX_FAILURE:
+      rc = ENOTEMPTY;
+      break;
     default:
       rc = EIO;
       break;
