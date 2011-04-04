@@ -36,6 +36,9 @@ private:
     QProcess *_unison;
     QString _secondPath;
     int _syncCount;
+
+    QString _lastOutput;
+
 };
 
 }

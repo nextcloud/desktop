@@ -1,7 +1,9 @@
 #include <QDebug>
+#include <QDir>
 #include <QMutexLocker>
 #include <QStringList>
-#include <QDir>
+#include <QTextStream>
+
 #include "mirall/unisonfolder.h"
 
 namespace Mirall {
@@ -56,7 +58,7 @@ void UnisonFolder::startSync(const QStringList &pathList)
     args << "-ui" << "text";
     args << "-auto" << "-batch";
 
-    //args << "-confirmbigdel";
+    args << "-confirmbigdel=false";
 
     // only use -path in after a full synchronization
     // already happened, which we do only on the first
@@ -72,6 +74,7 @@ void UnisonFolder::startSync(const QStringList &pathList)
     args  << path();
     args  << secondPath();
 
+    qDebug() << "    * Unison: will use" << pathList.size() << "path arguments";
     _unison->start(program, args);
 }
 
@@ -86,17 +89,35 @@ void UnisonFolder::slotStarted()
 void UnisonFolder::slotFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
     qDebug() << "    * Unison process finished with status" << exitCode;
+
+    //if (exitCode != 0) {
+    qDebug() << _lastOutput;
+        //}
+
+    // parse a summary from here:
+    //[BGN] Copying zw.png from //piscola//space/store/folder1 to /space/mirall/folder1
+    //[BGN] Deleting gn.png from /space/mirall/folder1
+    //[END] Deleting gn.png
+
+    // from stderr:
+    //Reconciling changes
+    //         <---- new file   Package.h
+
+    _lastOutput.clear();
+
     emit syncFinished();
 }
 
 void UnisonFolder::slotReadyReadStandardOutput()
 {
-    qDebug() << _unison->readAllStandardOutput();;
+    QTextStream stream(&_lastOutput);
+    stream << _unison->readAllStandardOutput();;
 }
 
 void UnisonFolder::slotReadyReadStandardError()
 {
-    //qDebug() << _unison->readAllStandardError();;
+    QTextStream stream(&_lastOutput);
+    stream << _unison->readAllStandardError();;
 }
 
 void UnisonFolder::slotStateChanged(QProcess::ProcessState state)

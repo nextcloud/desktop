@@ -3,6 +3,7 @@
 #ifndef MIRALL_FOLDERWATCHER_H
 #define MIRALL_FOLDERWATCHER_H
 
+#include <QList>
 #include <QObject>
 #include <QString>
 #include <QStringList>
@@ -43,6 +44,14 @@ public:
     QString root() const;
 
     /**
+     * Add an ignore pattern that will not be
+     * notified
+     *
+     * You can use wildcards
+     */
+    void addIgnore(const QString &pattern);
+
+    /**
      * If true, folderChanged() events are sent
      * at least as often as eventInterval() seconds.
      */
@@ -67,6 +76,19 @@ public:
      */
     void setEventInterval(int seconds);
 
+    /**
+     * The minimum amounts of seconds to wait before
+     * doing a full sync to see if the remote changed
+     */
+    int pollInterval() const;
+
+    /**
+     * Sets minimum amounts of seconds that will separate
+     * poll intervals
+     */
+    void setPollInterval(int seconds);
+
+
 signals:
     /**
      * Emitted when one of the paths is changed
@@ -81,20 +103,29 @@ protected slots:
     void slotAddFolderRecursive(const QString &path);
     // called when the manually process timer triggers
     void slotProcessTimerTimeout();
+    void slotPollTimerTimeout();
     void slotProcessPaths();
+
 private:
     bool _eventsEnabled;
     int _eventInterval;
+    int _pollInterval;
+
     INotify *_inotify;
     QString _root;
     // paths pending to notified
     QStringList _pendingPaths;
+
     QTimer *_processTimer;
+    // poll timer for remote syncs
+    QTimer *_pollTimer;
+
     QTime _lastEventTime;
 
     // to cancel events that belong to the same action
     int _lastMask;
     QString _lastPath;
+    QStringList _ignores;
 };
 
 }

@@ -20,25 +20,38 @@ static const uint32_t standard_event_mask =
 /* minimum amount of seconds between two
    events  to consider it a new event */
 #define DEFAULT_EVENT_INTERVAL_SEC 5
+#define DEFAULT_POLL_INTERVAL_SEC 30
 
 namespace Mirall {
-
 
 FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
     : QObject(parent),
       _eventsEnabled(true),
       _eventInterval(DEFAULT_EVENT_INTERVAL_SEC),
+      _pollInterval(DEFAULT_POLL_INTERVAL_SEC),
       _root(root),
       _processTimer(new QTimer(this)),
+      _pollTimer(new QTimer(this)),
       _lastMask(0)
 {
+    // this is not the best place for this
+    addIgnore("/**/.unison*");
+
     _processTimer->setSingleShot(true);
     QObject::connect(_processTimer, SIGNAL(timeout()), this, SLOT(slotProcessTimerTimeout()));
+
+    _pollTimer->setSingleShot(false);
+    _pollTimer->setInterval(pollInterval() * 1000);
+    QObject::connect(_pollTimer, SIGNAL(timeout()), this, SLOT(slotPollTimerTimeout()));
+    _pollTimer->start();
 
     _inotify = new INotify(standard_event_mask);
     slotAddFolderRecursive(root);
     QObject::connect(_inotify, SIGNAL(notifyEvent(int, int, const QString &)),
                      SLOT(slotINotifyEvent(int, int, const QString &)));
+    // do a first synchronization to get changes while
+    // the application was not running
+    setProcessTimer();
 }
 
 FolderWatcher::~FolderWatcher()
@@ -49,6 +62,11 @@ FolderWatcher::~FolderWatcher()
 QString FolderWatcher::root() const
 {
     return _root;
+}
+
+void FolderWatcher::addIgnore(const QString &pattern)
+{
+    _ignores.append(pattern);
 }
 
 bool FolderWatcher::eventsEnabled() const
@@ -84,6 +102,16 @@ void FolderWatcher::setEventInterval(int seconds)
     _eventInterval = seconds;
 }
 
+int FolderWatcher::pollInterval() const
+{
+    return _pollInterval;
+}
+
+void FolderWatcher::setPollInterval(int seconds)
+{
+    _pollInterval = seconds;
+}
+
 QStringList FolderWatcher::folders() const
 {
     return _inotify->directories();
@@ -102,6 +130,16 @@ void FolderWatcher::slotAddFolderRecursive(const QString &path)
         if (folder.exists() && !watchedFolders.contains(folder.path())) {
             subdirs++;
             //qDebug() << "(+) Watcher:" << folder.path();
+            // check that it does not match the ignore list
+            foreach (QString pattern, _ignores) {
+                QRegExp regexp(pattern);
+                regexp.setPatternSyntax(QRegExp::Wildcard);
+                if (regexp.exactMatch(folder.path())) {
+                    qDebug() << "* Not adding" << folder.path();
+                    continue;
+                }
+
+            }
             _inotify->addPath(folder.path());
         }
         else
@@ -137,14 +175,17 @@ void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
     if (mask & IN_CREATE) {
         //qDebug() << cookie << " CREATE: " << path;
         if (QFileInfo(path).isDir()) {
+            //setEventsEnabled(false);
             slotAddFolderRecursive(path);
+            //setEventsEnabled(true);
         }
     }
     else if (mask & IN_DELETE) {
         //qDebug() << cookie << " DELETE: " << path;
-        if (_inotify->directories().contains(path));
+        if (_inotify->directories().contains(path) &&
+            QFileInfo(path).isDir());
             qDebug() << "(-) Watcher:" << path;
-            _inotify->removePath(path);
+        _inotify->removePath(path);
     }
     else if (mask & IN_CLOSE_WRITE) {
         //qDebug() << cookie << " WRITABLE CLOSED: " << path;
@@ -154,6 +195,15 @@ void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
     }
     else {
         //qDebug() << cookie << " OTHER " << mask << " :" << path;
+    }
+
+    foreach (QString pattern, _ignores) {
+        QRegExp regexp(pattern);
+        regexp.setPatternSyntax(QRegExp::Wildcard);
+        if (regexp.exactMatch(path)) {
+            qDebug() << "* Discarded" << path;
+            return;
+        }
     }
 
     _pendingPaths.append(path);
@@ -166,38 +216,45 @@ void FolderWatcher::slotProcessTimerTimeout()
     slotProcessPaths();
 }
 
+void FolderWatcher::slotPollTimerTimeout()
+{
+    qDebug() << "* Polling remote for changes";
+    emit folderChanged(QStringList());
+}
+
 void FolderWatcher::setProcessTimer()
 {
     if (!_processTimer->isActive()) {
-        qDebug() << "* Pending events will be processed in" << eventInterval() << "seconds. (" << _pendingPaths.size() << "events until now )";
-        _processTimer->start(eventInterval() * 1000);
+        qDebug() << "* Pending events will be processed in" << eventInterval() << "seconds (" << QTime::currentTime().addSecs(eventInterval()).toString("HH:mm:ss") << ")." << _pendingPaths.size() << "events until now )";
     }
+    _processTimer->start(eventInterval() * 1000);
 }
 
 void FolderWatcher::slotProcessPaths()
 {
     QTime eventTime = QTime::currentTime();
+    QTime lastEventTime = _lastEventTime;
+    _lastEventTime = eventTime;
 
-    if (!eventsEnabled())
-        return;
-
-    if (!_lastEventTime.isNull() && (_lastEventTime.secsTo(eventTime) < eventInterval())) {
-        //qDebug() << "`-> Last event happened less than " << eventInterval() << " seconds ago...";
-        // schedule a forced queue cleanup later
+    // if the events are disabled or the last event happened
+    // recently eg: copying lot of ifles
+    if (!eventsEnabled() ||
+        ( !lastEventTime.isNull() &&
+          (lastEventTime.secsTo(eventTime) < eventInterval()) ))
+    {
+        // in case this is the last file from a bulk copy
+        // set the process timer again so that we process the
+        // queue we are not processing now
         setProcessTimer();
         return;
     }
 
-    // if the events will be processed because changed files and not
-    // because a forced update, stop any timer.
-    if (_processTimer->isActive())
-        _processTimer->stop();
-
-    _lastEventTime = eventTime;
     QStringList notifyPaths(_pendingPaths);
     _pendingPaths.clear();
+    //qDebug() << lastEventTime << eventTime;
 
     qDebug() << "  * Notify " << notifyPaths.size() << " changed items";
+
     emit folderChanged(notifyPaths);
 }
 

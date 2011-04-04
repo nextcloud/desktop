@@ -44,10 +44,9 @@ signals:
     void syncFinished();
 
 protected:
-
+    FolderWatcher *_watcher;
 private:
     QString _path;
-    FolderWatcher *_watcher;
     QAction *_openAction;
 protected slots:
 

@@ -11,7 +11,8 @@ http://www.gnu.org/licenses/gpl.txt .
 #define MIRALL_INOTIFY_H
 
 #include <QObject>
-#include <QHash>
+#include <QMap>
+#include <QMutex>
 #include <QString>
 #include <QThread>
 
@@ -48,6 +49,9 @@ private:
         ~INotifyThread();
         void registerForNotification(INotify*, int);
         void unregisterForNotification(INotify*);
+        // fireEvent happens from the inotify thread
+        // but addPath comes from the main thread
+        static QMutex s_mutex;
     protected:
         void run();
     private:
@@ -62,7 +66,7 @@ private:
 
     // the mask is shared for all paths
     int _mask;
-    QHash<QString, int> _wds;
+    QMap<QString, int> _wds;
 };
 
 }
