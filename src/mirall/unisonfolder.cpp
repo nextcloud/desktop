@@ -91,7 +91,7 @@ void UnisonFolder::slotFinished(int exitCode, QProcess::ExitStatus exitStatus)
 
 void UnisonFolder::slotReadyReadStandardOutput()
 {
-    //qDebug() << _unison->readAllStandardOutput();;
+    qDebug() << _unison->readAllStandardOutput();;
 }
 
 void UnisonFolder::slotReadyReadStandardError()
