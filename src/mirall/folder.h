@@ -49,7 +49,6 @@ private:
     QString _path;
     FolderWatcher *_watcher;
     QAction *_openAction;
-    QStringList _pendingPaths;
 protected slots:
 
     /* called when the watcher detect a list of changed
