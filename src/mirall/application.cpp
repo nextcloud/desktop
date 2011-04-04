@@ -18,7 +18,8 @@ namespace Mirall {
 
 Application::Application(int argc, char **argv) :
     QApplication(argc, argv),
-    _networkMgr(new QNetworkConfigurationManager(this))
+    _networkMgr(new QNetworkConfigurationManager(this)),
+    _folderSyncCount(0)
 {
     INotify::initialize();
 
@@ -106,6 +107,8 @@ void Application::setupKnownFolders()
 // filename is the name of the file only, it does not include
 // the configuration directory path
 void Application::setupFolderFromConfigFile(const QString &file) {
+    Folder *folder = 0L;
+
     qDebug() << "  ` -> setting up:" << file;
     QSettings settings(folderConfigPath() + "/" + file, QSettings::IniFormat);
 
@@ -127,15 +130,36 @@ void Application::setupFolderFromConfigFile(const QString &file) {
     if (!backend.isNull()) {
         if (backend.toString() == "unison") {
 
-            Folder *folder = new UnisonFolder(path.toString(),
-                                              settings.value("backend:unison/secondPath").toString(),
-                                              this);
-            _folderMap[file] = folder;
+            folder = new UnisonFolder(path.toString(),
+                                      settings.value("backend:unison/secondPath").toString(),
+                                      this);
         }
         else {
             qWarning() << "unknown backend" << backend;
             return;
         }
+    }
+
+    _folderMap[file] = folder;
+    QObject::connect(folder, SIGNAL(syncStarted()), SLOT(slotFolderSyncStarted()));
+    QObject::connect(folder, SIGNAL(syncFinished()), SLOT(slotFolderSyncFinished()));
+}
+
+void Application::slotFolderSyncStarted()
+{
+    _folderSyncCount++;
+
+    if (_folderSyncCount > 0) {
+        _tray->setIcon(QIcon(FOLDER_SYNC_ICON));
+    }
+}
+
+void Application::slotFolderSyncFinished()
+{
+    _folderSyncCount--;
+
+    if (_folderSyncCount < 1) {
+        _tray->setIcon(QIcon(FOLDER_ICON));
     }
 }
 

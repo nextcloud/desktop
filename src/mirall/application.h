@@ -24,6 +24,9 @@ protected slots:
 
     void slotAddFolder();
 
+    void slotFolderSyncStarted();
+    void slotFolderSyncFinished();
+
 protected:
 
     QString folderConfigPath() const;
@@ -48,6 +51,10 @@ private:
     QAction *_actionAddFolder;
     QNetworkConfigurationManager *_networkMgr;
     QString _folderConfigPath;
+
+    // counter tracking number of folders doing a sync
+    int _folderSyncCount;
+
 };
 
 } // namespace Mirall
