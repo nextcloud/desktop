@@ -4,7 +4,8 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include(${QT_USE_FILE})
 
 set(mirall_UI
-mirall/folderwizard.ui
+mirall/folderwizardsourcepage.ui
+mirall/folderwizardtargetpage.ui
 )
 qt4_wrap_ui(mirall_UI_SRCS ${mirall_UI})
 

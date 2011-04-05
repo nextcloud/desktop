@@ -11,6 +11,7 @@ class QNetworkConfigurationManager;
 namespace Mirall {
 
 class Folder;
+class FolderWizard;
 
 class Application : public QApplication
 {
@@ -55,6 +56,7 @@ private:
     // counter tracking number of folders doing a sync
     int _folderSyncCount;
 
+    FolderWizard *_folderWizard;
 };
 
 } // namespace Mirall

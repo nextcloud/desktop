@@ -11,6 +11,7 @@
 #include "mirall/constants.h"
 #include "mirall/application.h"
 #include "mirall/folder.h"
+#include "mirall/folderwizard.h"
 #include "mirall/unisonfolder.h"
 #include "mirall/inotify.h"
 
@@ -24,6 +25,9 @@ Application::Application(int argc, char **argv) :
     INotify::initialize();
 
     setApplicationName("Mirall");
+    setQuitOnLastWindowClosed(false);
+
+    _folderWizard = new FolderWizard();
 
     _folderConfigPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/folders";
 
@@ -89,7 +93,9 @@ void Application::setupContextMenu()
 
 void Application::slotAddFolder()
 {
-    qDebug() << "add a folder here...";
+    if (_folderWizard->exec() == QDialog::Accepted) {
+        qDebug() << "* Folder wizard completed";
+    }
 }
 
 void Application::setupKnownFolders()
