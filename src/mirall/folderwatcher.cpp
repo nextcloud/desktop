@@ -20,7 +20,6 @@ static const uint32_t standard_event_mask =
 /* minimum amount of seconds between two
    events  to consider it a new event */
 #define DEFAULT_EVENT_INTERVAL_SEC 5
-#define DEFAULT_POLL_INTERVAL_SEC 30
 
 namespace Mirall {
 
@@ -28,10 +27,8 @@ FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
     : QObject(parent),
       _eventsEnabled(true),
       _eventInterval(DEFAULT_EVENT_INTERVAL_SEC),
-      _pollInterval(DEFAULT_POLL_INTERVAL_SEC),
       _root(root),
       _processTimer(new QTimer(this)),
-      _pollTimer(new QTimer(this)),
       _lastMask(0)
 {
     // this is not the best place for this
@@ -39,11 +36,6 @@ FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
 
     _processTimer->setSingleShot(true);
     QObject::connect(_processTimer, SIGNAL(timeout()), this, SLOT(slotProcessTimerTimeout()));
-
-    _pollTimer->setSingleShot(false);
-    _pollTimer->setInterval(pollInterval() * 1000);
-    QObject::connect(_pollTimer, SIGNAL(timeout()), this, SLOT(slotPollTimerTimeout()));
-    _pollTimer->start();
 
     _inotify = new INotify(standard_event_mask);
     slotAddFolderRecursive(root);
@@ -92,6 +84,13 @@ void FolderWatcher::setEventsEnabled(bool enabled)
     }
 }
 
+void FolderWatcher::clearPendingEvents()
+{
+    if (_processTimer->isActive())
+        _processTimer->stop();
+    _pendingPaths.clear();
+}
+
 int FolderWatcher::eventInterval() const
 {
     return _eventInterval;
@@ -100,16 +99,6 @@ int FolderWatcher::eventInterval() const
 void FolderWatcher::setEventInterval(int seconds)
 {
     _eventInterval = seconds;
-}
-
-int FolderWatcher::pollInterval() const
-{
-    return _pollInterval;
-}
-
-void FolderWatcher::setPollInterval(int seconds)
-{
-    _pollInterval = seconds;
 }
 
 QStringList FolderWatcher::folders() const
@@ -213,13 +202,8 @@ void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
 void FolderWatcher::slotProcessTimerTimeout()
 {
     qDebug() << "* Scheduled processing of event queue";
-    slotProcessPaths();
-}
-
-void FolderWatcher::slotPollTimerTimeout()
-{
-    qDebug() << "* Polling remote for changes";
-    emit folderChanged(QStringList());
+    if (!_pendingPaths.empty())
+        slotProcessPaths();
 }
 
 void FolderWatcher::setProcessTimer()

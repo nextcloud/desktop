@@ -3,23 +3,33 @@
 #include <QDesktopServices>
 #include <QIcon>
 #include <QMutexLocker>
+#include <QTimer>
 #include <QUrl>
 
 #include "mirall/constants.h"
 #include "mirall/folder.h"
 #include "mirall/folderwatcher.h"
 
+#define DEFAULT_POLL_INTERVAL_SEC 30
+
 namespace Mirall {
 
 Folder::Folder(const QString &path, QObject *parent)
     : QObject(parent),
-      _path(path)
+      _path(path),
+      _pollTimer(new QTimer(this)),
+      _pollInterval(DEFAULT_POLL_INTERVAL_SEC)
 {
     _openAction = new QAction(QIcon(FOLDER_ICON), path, this);
     _openAction->setIconVisibleInMenu(true);
     _openAction->setIcon(QIcon(FOLDER_ICON));
 
     QObject::connect(_openAction, SIGNAL(triggered(bool)), SLOT(slotOpenFolder()));
+
+    _pollTimer->setSingleShot(false);
+    _pollTimer->setInterval(pollInterval() * 1000);
+    QObject::connect(_pollTimer, SIGNAL(timeout()), this, SLOT(slotPollTimerTimeout()));
+    _pollTimer->start();
 
     _watcher = new Mirall::FolderWatcher(path, this);
     QObject::connect(_watcher, SIGNAL(folderChanged(const QStringList &)),
@@ -44,6 +54,23 @@ Folder::~Folder()
 QString Folder::path() const
 {
     return _path;
+}
+
+int Folder::pollInterval() const
+{
+    return _pollInterval;
+}
+
+void Folder::setPollInterval(int seconds)
+{
+    _pollInterval = seconds;
+}
+
+void Folder::slotPollTimerTimeout()
+{
+    qDebug() << "* Polling remote for changes. Ignoring all pending events until now";
+    _watcher->clearPendingEvents();
+    startSync(QStringList());
 }
 
 void Folder::slotChanged(const QStringList &pathList)

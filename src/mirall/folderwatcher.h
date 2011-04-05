@@ -65,6 +65,11 @@ public:
     void setEventsEnabled(bool enabled);
 
     /**
+     * Clear all pending events
+     */
+    void clearPendingEvents();
+
+    /**
      * The minimum amounts of seconds that will separate
      * folderChanged() intervals
      */
@@ -75,19 +80,6 @@ public:
      * folderChanged() intervals
      */
     void setEventInterval(int seconds);
-
-    /**
-     * The minimum amounts of seconds to wait before
-     * doing a full sync to see if the remote changed
-     */
-    int pollInterval() const;
-
-    /**
-     * Sets minimum amounts of seconds that will separate
-     * poll intervals
-     */
-    void setPollInterval(int seconds);
-
 
 signals:
     /**
@@ -103,13 +95,11 @@ protected slots:
     void slotAddFolderRecursive(const QString &path);
     // called when the manually process timer triggers
     void slotProcessTimerTimeout();
-    void slotPollTimerTimeout();
     void slotProcessPaths();
 
 private:
     bool _eventsEnabled;
     int _eventInterval;
-    int _pollInterval;
 
     INotify *_inotify;
     QString _root;
@@ -117,8 +107,6 @@ private:
     QStringList _pendingPaths;
 
     QTimer *_processTimer;
-    // poll timer for remote syncs
-    QTimer *_pollTimer;
 
     QTime _lastEventTime;
 

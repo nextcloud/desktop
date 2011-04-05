@@ -6,6 +6,7 @@
 #include <QStringList>
 
 class QAction;
+class QTimer;
 
 namespace Mirall {
 
@@ -27,8 +28,13 @@ public:
     QAction *openAction() const;
 
     /**
-     * starts a sync operation
-     * requests are serialized
+     * Starts a sync operation
+     *
+     * If the list of changed files is known, it is passed.
+     *
+     * If the list of changed files is empty, the folder
+     * implementation should figure it by itself of
+     * perform a full scan of changes
      */
     virtual void startSync(const QStringList &pathList) = 0;
 
@@ -38,6 +44,19 @@ public:
      */
     virtual bool isBusy() const = 0;
 
+protected:
+    /**
+     * The minimum amounts of seconds to wait before
+     * doing a full sync to see if the remote changed
+     */
+    int pollInterval() const;
+
+    /**
+     * Sets minimum amounts of seconds that will separate
+     * poll intervals
+     */
+    void setPollInterval(int seconds);
+
 signals:
 
     void syncStarted();
@@ -45,10 +64,18 @@ signals:
 
 protected:
     FolderWatcher *_watcher;
+
 private:
+
     QString _path;
     QAction *_openAction;
+    // poll timer for remote syncs
+    QTimer *_pollTimer;
+    int _pollInterval;
+
 protected slots:
+
+    void slotPollTimerTimeout();
 
     /* called when the watcher detect a list of changed
        paths */
