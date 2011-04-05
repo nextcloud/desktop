@@ -52,7 +52,15 @@ Application::Application(int argc, char **argv) :
 
 Application::~Application()
 {
+    qDebug() << "* Mirall shutdown";
     INotify::cleanup();
+
+    delete _networkMgr;
+    delete _tray;
+
+    foreach (Folder *folder, _folderMap) {
+        delete folder;
+    }
 }
 
 QString Application::folderConfigPath() const

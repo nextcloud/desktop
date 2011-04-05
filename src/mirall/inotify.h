@@ -12,7 +12,6 @@ http://www.gnu.org/licenses/gpl.txt .
 
 #include <QObject>
 #include <QMap>
-#include <QMutex>
 #include <QString>
 #include <QThread>
 
@@ -43,7 +42,7 @@ private:
     class INotifyThread : public QThread
     {
         int _fd;
-        QHash<int, INotify*> _map;
+        QMap<int, INotify*> _map;
     public:
         INotifyThread(int fd);
         ~INotifyThread();
@@ -51,7 +50,6 @@ private:
         void unregisterForNotification(INotify*);
         // fireEvent happens from the inotify thread
         // but addPath comes from the main thread
-        static QMutex s_mutex;
     protected:
         void run();
     private:

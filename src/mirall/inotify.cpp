@@ -11,7 +11,6 @@ http://www.gnu.org/licenses/gpl.txt .
 #include <cerrno>
 #include <unistd.h>
 #include <QDebug>
-#include <QMutexLocker>
 #include <QStringList>
 
 #include "inotify.h"
@@ -25,7 +24,6 @@ namespace Mirall {
 // Allocate space for static members of class.
 int INotify::s_fd;
 INotify::INotifyThread* INotify::s_thread;
-QMutex INotify::INotifyThread::s_mutex;
 
 //INotify::INotify(int wd) : _wd(wd)
 //{
@@ -48,7 +46,6 @@ INotify::~INotify()
 
 void INotify::addPath(const QString &path)
 {
-    //QMutexLocker locker(&INotifyThread::s_mutex);
     // Add an inotify watch.
     path.toAscii().constData();
 
@@ -61,7 +58,6 @@ void INotify::addPath(const QString &path)
 
 void INotify::removePath(const QString &path)
 {
-    QMutexLocker locker(&INotifyThread::s_mutex);
     // Remove the inotify watch.
     inotify_rm_watch(s_fd, _wds[path]);
     _wds.remove(path);
@@ -76,8 +72,7 @@ void
 INotify::INotifyThread::unregisterForNotification(INotify* notifier)
 {
     //_map.remove(notifier->_wd);
-    //QMutexLocker locker(&INotifyThread::s_mutex);
-    QHash<int, INotify*>::iterator it;
+    QMap<int, INotify*>::iterator it;
     for (it = _map.begin(); it != _map.end(); ++it) {
         if (it.value() == notifier)
             _map.remove(it.key());
@@ -87,7 +82,6 @@ INotify::INotifyThread::unregisterForNotification(INotify* notifier)
 void
 INotify::INotifyThread::registerForNotification(INotify* notifier, int wd)
 {
-    //QMutexLocker locker(&INotifyThread::s_mutex);
     _map[wd] = notifier;
 }
 
@@ -95,8 +89,6 @@ void
 INotify::fireEvent(int mask, int cookie, int wd, char* name)
 {
     //qDebug() << "****" << name;
-    //QMutexLocker locker(&INotifyThread::s_mutex);
-
     QStringList paths(_wds.keys(wd));
     foreach (QString path, paths)
         emit notifyEvent(mask, cookie, path + "/" + QString::fromUtf8(name));
@@ -179,25 +171,16 @@ INotify::INotifyThread::run()
                 continue;
             }
             n = _map[event->wd];
-            // dont allow addPath removePath clash here
-            {
-                //QThread::msleep(100);
-                // fire event
-                if (event->len > 0) {
-                    //QMutexLocker locker(&s_mutex);
-                    if (n)
-                        n->fireEvent(event->mask, event->cookie, event->wd, event->name);
-                    else
-                    {
-                        qWarning() << "n is NULL";
-                    }
-
-                }
+            // fire event
+            if (event->len > 0) {
+                if (n)
+                    n->fireEvent(event->mask, event->cookie, event->wd, event->name);
+                else
+                    qWarning() << "n is NULL";
 
                 // increment counter
                 i += sizeof(struct inotify_event) + event->len;
             }
-
         }
     }
 }
