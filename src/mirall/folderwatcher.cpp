@@ -32,7 +32,7 @@ static const uint32_t standard_event_mask =
 
 /* minimum amount of seconds between two
    events  to consider it a new event */
-#define DEFAULT_EVENT_INTERVAL_SEC 5
+#define DEFAULT_EVENT_INTERVAL_SEC 3
 
 namespace Mirall {
 
@@ -209,50 +209,27 @@ void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
     }
 
     _pendingPaths.append(path);
-    slotProcessPaths();
+    setProcessTimer();
 }
 
 void FolderWatcher::slotProcessTimerTimeout()
 {
-    qDebug() << "* Scheduled processing of event queue for" << root();
-    if (!_pendingPaths.empty())
-        slotProcessPaths();
+    qDebug() << "* Processing of event queue for" << root();
+    if (!_pendingPaths.empty()) {
+        QStringList notifyPaths(_pendingPaths);
+        _pendingPaths.clear();
+        //qDebug() << lastEventTime << eventTime;
+        qDebug() << "  * Notify" << notifyPaths.size() << "changed items for" << root();
+        emit folderChanged(notifyPaths);
+    }
 }
 
 void FolderWatcher::setProcessTimer()
 {
     if (!_processTimer->isActive()) {
-        qDebug() << "* Pending events for" << root() << "will be processed in" << eventInterval() << "seconds (" << QTime::currentTime().addSecs(eventInterval()).toString("HH:mm:ss") << ")." << _pendingPaths.size() << "events until now )";
+        qDebug() << "* Pending events for" << root() << "will be processed after events stop for" << eventInterval() << "seconds (" << QTime::currentTime().addSecs(eventInterval()).toString("HH:mm:ss") << ")." << _pendingPaths.size() << "events until now )";
     }
     _processTimer->start(eventInterval() * 1000);
-}
-
-void FolderWatcher::slotProcessPaths()
-{
-    QTime eventTime = QTime::currentTime();
-    QTime lastEventTime = _lastEventTime;
-    _lastEventTime = eventTime;
-
-    // if the events are disabled or the last event happened
-    // recently eg: copying lot of ifles
-    if (!eventsEnabled() ||
-        ( !lastEventTime.isNull() &&
-          (lastEventTime.secsTo(eventTime) < eventInterval()) ))
-    {
-        // in case this is the last file from a bulk copy
-        // set the process timer again so that we process the
-        // queue we are not processing now
-        setProcessTimer();
-        return;
-    }
-
-    QStringList notifyPaths(_pendingPaths);
-    _pendingPaths.clear();
-    //qDebug() << lastEventTime << eventTime;
-
-    qDebug() << "  * Notify" << notifyPaths.size() << "changed items for" << root();
-
-    emit folderChanged(notifyPaths);
 }
 
 }
