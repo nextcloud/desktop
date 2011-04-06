@@ -3,15 +3,22 @@
 
 ## Introduction
 
-Mirall synchronizes your folders with another computer. It is a zero-interaction tool. So forget about resolving conflicts. It should work silently and realiably.
+Mirall synchronizes your folders with another computer.
+
+The ultimate goals of Mirall are:
+
+* Network location aware: should not try to sync against your NAS if you are
+  not in the home network
+* It is a zero-interaction tool. So forget about resolving conflicts.
+* It should work silently and realiably.
+
+Mirall is in early stages of development, and may still eat your
+files or hang your computer.
 
 * Current version supports local and remote (SSH) folders.
 * It is powered by the great unison (http://www.cis.upenn.edu/~bcpierce/unison/), however
   the user does not know and other tools will be incorporated to provide other
   functionality.
-
-Mirall is in early stages of development, and may still eat your
-files or hang your computer.
 
 ## Current issues
 
