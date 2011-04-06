@@ -3,8 +3,7 @@
 #define MIRALL_TEST_FOLDERWATCHER_H
 
 #include <QtTest/QtTest>
-
-class Mirall::FolderWatcher;
+#include "mirall/folderwatcher.h"
 
 class TestFolderWatcher : public QObject
 {

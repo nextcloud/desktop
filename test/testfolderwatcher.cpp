@@ -6,7 +6,6 @@
 #include <QDir>
 
 #include "mirall/inotify.h"
-#include "mirall/folderwatcher.h"
 #include "mirall/temporarydir.h"
 #include "testfolderwatcher.h"
 
