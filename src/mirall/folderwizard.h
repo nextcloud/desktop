@@ -60,6 +60,17 @@ private:
 };
 
 
+/**
+ * Available fields registered:
+ *
+ * alias
+ * sourceFolder
+ * local?
+ * remote?
+ * targetLocalFolder
+ * targetSSHFolder
+ *
+ */
 class FolderWizard : public QWizard
 {
     Q_OBJECT

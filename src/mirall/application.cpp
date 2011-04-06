@@ -103,7 +103,29 @@ void Application::slotAddFolder()
 {
     if (_folderWizard->exec() == QDialog::Accepted) {
         qDebug() << "* Folder wizard completed";
+
+        QString alias = _folderWizard->field("alias").toString();
+
+        QSettings settings(folderConfigPath() + "/" + alias, QSettings::IniFormat);
+        settings.setValue("folder/backend", "unison");
+        settings.setValue("folder/path", _folderWizard->field("sourceFolder"));
+
+        if (_folderWizard->field("local?").toBool()) {
+            settings.setValue("backend:unison/secondPath", _folderWizard->field("targetLocalFolder"));
+        }
+        else if (_folderWizard->field("remote?").toBool()) {
+            settings.setValue("backend:unison/secondPath", _folderWizard->field("targetSSHFolder"));
+        }
+        else
+        {
+            qWarning() << "* Folder not local and note remote?";
+            return;
+        }
+        settings.sync();
+        setupFolderFromConfigFile(alias);
     }
+    else
+        qDebug() << "* Folder wizard cancelled";
 }
 
 void Application::setupKnownFolders()

@@ -14,8 +14,8 @@ namespace Mirall
 FolderWizardSourcePage::FolderWizardSourcePage()
 {
     _ui.setupUi(this);
-    registerField("*sourceFolder", _ui.localFolderLineEdit);
-    registerField("*alias", _ui.aliasFolderLineEdit);
+    registerField("sourceFolder*", _ui.localFolderLineEdit);
+    registerField("alias*", _ui.aliasLineEdit);
 }
 
 FolderWizardSourcePage::~FolderWizardSourcePage()
@@ -45,6 +45,10 @@ void FolderWizardSourcePage::on_localFolderLineEdit_textChanged()
 FolderWizardTargetPage::FolderWizardTargetPage()
 {
     _ui.setupUi(this);
+
+    registerField("local?", _ui.localFolderRadioBtn);
+    registerField("remote?", _ui.sshFolderRadioBtn);
+
     registerField("targetLocalFolder", _ui.localFolder2LineEdit);
     registerField("targetSSHFolder", _ui.sshFolderLineEdit);
 }

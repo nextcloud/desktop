@@ -27,7 +27,7 @@ Folder::Folder(const QString &alias, const QString &path, QObject *parent)
 
     QObject::connect(_openAction, SIGNAL(triggered(bool)), SLOT(slotOpenFolder()));
 
-    _pollTimer->setSingleShot(false);
+    _pollTimer->setSingleShot(true);
     _pollTimer->setInterval(pollInterval() * 1000);
     QObject::connect(_pollTimer, SIGNAL(timeout()), this, SLOT(slotPollTimerTimeout()));
     _pollTimer->start();
@@ -74,8 +74,10 @@ void Folder::setPollInterval(int seconds)
 
 void Folder::slotPollTimerTimeout()
 {
-    qDebug() << "* Polling remote for changes. Ignoring all pending events until now";
+    qDebug() << "* Polling" << alias() << "for changes. Ignoring all pending events until now";
     _watcher->clearPendingEvents();
+    qDebug() << "* " << root() << "Poll timer disabled";
+    _pollTimer->stop();
     startSync(QStringList());
 }
 
@@ -100,6 +102,9 @@ void Folder::slotSyncFinished()
 {
     _watcher->setEventsEnabled(true);
     _openAction->setIcon(QIcon(FOLDER_ICON));
+    // reenable the poll timer
+    qDebug() << "* " << root() << "Poll timer enabled";
+    _pollTimer->start();
 }
 
 } // namespace Mirall

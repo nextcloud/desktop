@@ -201,7 +201,7 @@ void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
 
 void FolderWatcher::slotProcessTimerTimeout()
 {
-    qDebug() << "* Scheduled processing of event queue";
+    qDebug() << "* Scheduled processing of event queue for" << root();
     if (!_pendingPaths.empty())
         slotProcessPaths();
 }
@@ -209,7 +209,7 @@ void FolderWatcher::slotProcessTimerTimeout()
 void FolderWatcher::setProcessTimer()
 {
     if (!_processTimer->isActive()) {
-        qDebug() << "* Pending events will be processed in" << eventInterval() << "seconds (" << QTime::currentTime().addSecs(eventInterval()).toString("HH:mm:ss") << ")." << _pendingPaths.size() << "events until now )";
+        qDebug() << "* Pending events for" << root() << "will be processed in" << eventInterval() << "seconds (" << QTime::currentTime().addSecs(eventInterval()).toString("HH:mm:ss") << ")." << _pendingPaths.size() << "events until now )";
     }
     _processTimer->start(eventInterval() * 1000);
 }
@@ -237,7 +237,7 @@ void FolderWatcher::slotProcessPaths()
     _pendingPaths.clear();
     //qDebug() << lastEventTime << eventTime;
 
-    qDebug() << "  * Notify " << notifyPaths.size() << " changed items";
+    qDebug() << "  * Notify" << notifyPaths.size() << "changed items for" << root();
 
     emit folderChanged(notifyPaths);
 }
