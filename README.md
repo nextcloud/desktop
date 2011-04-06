@@ -48,10 +48,7 @@ http://software.opensuse.org/search?q=mirall&baseproject=ALL&lang=en&include_hom
 
 ## Building the source code
 
-You need:
-
-* Qt 4.7
-* cmake
+You need Qt 4.7 and cmake:
 
     mkdir build
     cd build
