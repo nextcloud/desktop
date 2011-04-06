@@ -141,9 +141,6 @@ void Application::slotAddFolder()
                 settings.setValue("folder/onlyThisLAN", onlyThisLAN);
                 if (onlyThisLAN) {
                     settings.setValue("folder/onlyOnline", true);
-                    if (_folderWizard->field("onlyThisLAN?").toBool()) {
-
-                    }
                 }
             }
         }
@@ -209,8 +206,8 @@ void Application::setupFolderFromConfigFile(const QString &file) {
             return;
         }
     }
-    folder->setOnlyOnlineEnabled(settings.value("folder/onlyOnline").toBool());
-    folder->setOnlyThisLANEnabled(settings.value("folder/onlyThisLAN").toBool());
+    folder->setOnlyOnlineEnabled(settings.value("folder/onlyOnline", false).toBool());
+    folder->setOnlyThisLANEnabled(settings.value("folder/onlyThisLAN", false).toBool());
 
     _folderMap[file] = folder;
     QObject::connect(folder, SIGNAL(syncStarted()), SLOT(slotFolderSyncStarted()));

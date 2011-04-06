@@ -35,7 +35,8 @@ Folder::Folder(const QString &alias, const QString &path, QObject *parent)
       _pollInterval(DEFAULT_POLL_INTERVAL_SEC),
       _alias(alias),
       _onlyOnlineEnabled(false),
-      _onlyThisLANEnabled(false)
+      _onlyThisLANEnabled(false),
+      _online(false)
 {
     _openAction = new QAction(QIcon::fromTheme(FOLDER_ICON), path, this);
     _openAction->setIconVisibleInMenu(true);
@@ -56,6 +57,9 @@ Folder::Folder(const QString &alias, const QString &path, QObject *parent)
                      SLOT(slotSyncStarted()));
     QObject::connect(this, SIGNAL(syncFinished()),
                      SLOT(slotSyncFinished()));
+
+    _online = _networkMgr.isOnline();
+    QObject::connect(&_networkMgr, SIGNAL(onlineStateChanged(bool)), SLOT(slotOnlineChanged(bool)));
 
 }
 
@@ -108,18 +112,33 @@ void Folder::setPollInterval(int seconds)
     _pollInterval = seconds;
 }
 
+void Folder::evaluateSync(const QStringList &pathList)
+{
+    if (!_online && onlyOnlineEnabled()) {
+        qDebug() << "*" << alias() << "sync skipped, not online";
+        return;
+    }
+    startSync(pathList);
+}
+
 void Folder::slotPollTimerTimeout()
 {
     qDebug() << "* Polling" << alias() << "for changes. Ignoring all pending events until now";
     _watcher->clearPendingEvents();
-    qDebug() << "* " << path() << "Poll timer disabled";
+    qDebug() << "* " << alias() << "Poll timer disabled";
     _pollTimer->stop();
-    startSync(QStringList());
+    evaluateSync(QStringList());
+}
+
+void Folder::slotOnlineChanged(bool online)
+{
+    qDebug() << "* " << alias() << "is" << (online ? "now online" : "no longer online");
+    _online = online;
 }
 
 void Folder::slotChanged(const QStringList &pathList)
 {
-    startSync(pathList);
+    evaluateSync(pathList);
 }
 
 void Folder::slotOpenFolder()
@@ -139,7 +158,7 @@ void Folder::slotSyncFinished()
     _watcher->setEventsEnabled(true);
     _openAction->setIcon(QIcon::fromTheme(FOLDER_ICON));
     // reenable the poll timer
-    qDebug() << "* " << path() << "Poll timer enabled";
+    qDebug() << "* " << alias() << "Poll timer enabled";
     _pollTimer->start();
 }
 

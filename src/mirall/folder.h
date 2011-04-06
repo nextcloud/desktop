@@ -15,6 +15,7 @@
 #ifndef MIRALL_FOLDER_H
 #define MIRALL_FOLDER_H
 
+#include <QNetworkConfigurationManager>
 #include <QObject>
 #include <QString>
 #include <QStringList>
@@ -108,6 +109,12 @@ protected:
 
 private:
 
+    /**
+     * Starts a sync (calling startSync)
+     * if the policies allow for it
+     */
+    void evaluateSync(const QStringList &pathList);
+
     QString _path;
     QAction *_openAction;
     // poll timer for remote syncs
@@ -116,8 +123,11 @@ private:
     QString _alias;
     bool _onlyOnlineEnabled;
     bool _onlyThisLANEnabled;
-
+    QNetworkConfigurationManager _networkMgr;
+    bool _online;
 protected slots:
+
+    void slotOnlineChanged(bool online);
 
     void slotPollTimerTimeout();
 
