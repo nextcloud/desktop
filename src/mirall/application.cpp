@@ -20,7 +20,8 @@ namespace Mirall {
 Application::Application(int argc, char **argv) :
     QApplication(argc, argv),
     _networkMgr(new QNetworkConfigurationManager(this)),
-    _folderSyncCount(0)
+    _folderSyncCount(0),
+    _contextMenu(0)
 {
     INotify::initialize();
 
@@ -85,18 +86,19 @@ void Application::setupSystemTray()
 
 void Application::setupContextMenu()
 {
-    QMenu *contextMenu = new QMenu();
-    contextMenu->addAction(_actionAddFolder);
+    delete _contextMenu;
+    _contextMenu = new QMenu();
+    _contextMenu->addAction(_actionAddFolder);
 
     // here all folders should be added
     foreach (Folder *folder, _folderMap) {
-        contextMenu->addAction(folder->openAction());
+        _contextMenu->addAction(folder->openAction());
     }
 
-    contextMenu->addSeparator();
+    _contextMenu->addSeparator();
 
-    contextMenu->addAction(_actionQuit);
-    _tray->setContextMenu(contextMenu);
+    _contextMenu->addAction(_actionQuit);
+    _tray->setContextMenu(_contextMenu);
 }
 
 void Application::slotAddFolder()
@@ -123,6 +125,7 @@ void Application::slotAddFolder()
         }
         settings.sync();
         setupFolderFromConfigFile(alias);
+        setupContextMenu();
     }
     else
         qDebug() << "* Folder wizard cancelled";

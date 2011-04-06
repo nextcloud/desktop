@@ -5,6 +5,7 @@
 #include <QHash>
 
 class QAction;
+class QMenu;
 class QSystemTrayIcon;
 class QNetworkConfigurationManager;
 
@@ -57,6 +58,10 @@ private:
     int _folderSyncCount;
 
     FolderWizard *_folderWizard;
+
+    // tray's menu
+    QMenu *_contextMenu;
+
 };
 
 } // namespace Mirall
