@@ -35,9 +35,9 @@ Folder::Folder(const QString &alias, const QString &path, QObject *parent)
       _pollInterval(DEFAULT_POLL_INTERVAL_SEC),
       _alias(alias)
 {
-    _openAction = new QAction(QIcon(FOLDER_ICON), path, this);
+    _openAction = new QAction(QIcon::fromTheme(FOLDER_ICON), path, this);
     _openAction->setIconVisibleInMenu(true);
-    _openAction->setIcon(QIcon(FOLDER_ICON));
+    _openAction->setIcon(QIcon::fromTheme(FOLDER_ICON));
 
     QObject::connect(_openAction, SIGNAL(triggered(bool)), SLOT(slotOpenFolder()));
 
@@ -109,13 +109,13 @@ void Folder::slotSyncStarted()
 {
     // disable events until syncing is done
     _watcher->setEventsEnabled(false);
-    _openAction->setIcon(QIcon(FOLDER_SYNC_ICON));
+    _openAction->setIcon(QIcon::fromTheme(FOLDER_SYNC_ICON));
 }
 
 void Folder::slotSyncFinished()
 {
     _watcher->setEventsEnabled(true);
-    _openAction->setIcon(QIcon(FOLDER_ICON));
+    _openAction->setIcon(QIcon::fromTheme(FOLDER_ICON));
     // reenable the poll timer
     qDebug() << "* " << path() << "Poll timer enabled";
     _pollTimer->start();

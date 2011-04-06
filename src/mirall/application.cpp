@@ -94,7 +94,7 @@ void Application::setupActions()
 void Application::setupSystemTray()
 {
     _tray = new QSystemTrayIcon(this);
-    _tray->setIcon(QIcon(FOLDER_ICON));
+    _tray->setIcon(QIcon::fromTheme(FOLDER_ICON));
     _tray->show();
 }
 
@@ -204,7 +204,7 @@ void Application::slotFolderSyncStarted()
     _folderSyncCount++;
 
     if (_folderSyncCount > 0) {
-        _tray->setIcon(QIcon(FOLDER_SYNC_ICON));
+        _tray->setIcon(QIcon::fromTheme(FOLDER_SYNC_ICON));
     }
 }
 
@@ -213,7 +213,7 @@ void Application::slotFolderSyncFinished()
     _folderSyncCount--;
 
     if (_folderSyncCount < 1) {
-        _tray->setIcon(QIcon(FOLDER_ICON));
+        _tray->setIcon(QIcon::fromTheme(FOLDER_ICON));
     }
 }
 
