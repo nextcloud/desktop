@@ -15,6 +15,7 @@ The ultimate goals of Mirall are:
 Mirall is in early stages of development, and may still eat your
 files or hang your computer.
 
+* Network location awareness not implemented yet
 * Current version supports local and remote (SSH) folders.
 * It is powered by the great unison (http://www.cis.upenn.edu/~bcpierce/unison/), however
   the user does not know and other tools will be incorporated to provide other
