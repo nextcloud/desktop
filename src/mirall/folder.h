@@ -63,6 +63,28 @@ public:
      */
     virtual bool isBusy() const = 0;
 
+    /**
+     * only sync when online in the network
+     */
+    bool onlyOnlineEnabled() const;
+
+    /**
+     * @see onlyOnlineEnabled
+     */
+    void setOnlyOnlineEnabled(bool enabled);
+
+    /**
+     * only sync when online in the same LAN
+     * as the one used during setup
+     */
+    bool onlyThisLANEnabled() const;
+
+    /**
+     * @see onlyThisLANEnabled
+     */
+    void setOnlyThisLANEnabled(bool enabled);
+
+
 protected:
     /**
      * The minimum amounts of seconds to wait before
@@ -92,6 +114,8 @@ private:
     QTimer *_pollTimer;
     int _pollInterval;
     QString _alias;
+    bool _onlyOnlineEnabled;
+    bool _onlyThisLANEnabled;
 
 protected slots:
 

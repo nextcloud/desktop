@@ -26,6 +26,7 @@
 #include "mirall/application.h"
 #include "mirall/folder.h"
 #include "mirall/folderwizard.h"
+#include "mirall/networklocation.h"
 #include "mirall/unisonfolder.h"
 #include "mirall/inotify.h"
 
@@ -63,6 +64,7 @@ Application::Application(int argc, char **argv) :
 
     setupContextMenu();
 
+    qDebug() << NetworkLocation::currentLocation().encoded();
 }
 
 Application::~Application()
@@ -131,12 +133,26 @@ void Application::slotAddFolder()
         }
         else if (_folderWizard->field("remote?").toBool()) {
             settings.setValue("backend:unison/secondPath", _folderWizard->field("targetSSHFolder"));
+            bool onlyOnline = _folderWizard->field("onlyOnline?").toBool();
+            settings.setValue("folder/onlyOnline", onlyOnline);
+
+            if (onlyOnline) {
+                bool onlyThisLAN = _folderWizard->field("onlyThisLAN?").toBool();
+                settings.setValue("folder/onlyThisLAN", onlyThisLAN);
+                if (onlyThisLAN) {
+                    settings.setValue("folder/onlyOnline", true);
+                    if (_folderWizard->field("onlyThisLAN?").toBool()) {
+
+                    }
+                }
+            }
         }
         else
         {
             qWarning() << "* Folder not local and note remote?";
             return;
         }
+
         settings.sync();
         setupFolderFromConfigFile(alias);
         setupContextMenu();
@@ -193,6 +209,8 @@ void Application::setupFolderFromConfigFile(const QString &file) {
             return;
         }
     }
+    folder->setOnlyOnlineEnabled(settings.value("folder/onlyOnline").toBool());
+    folder->setOnlyThisLANEnabled(settings.value("folder/onlyThisLAN").toBool());
 
     _folderMap[file] = folder;
     QObject::connect(folder, SIGNAL(syncStarted()), SLOT(slotFolderSyncStarted()));

@@ -17,6 +17,7 @@ mirall/folderwatcher.cpp
 mirall/folderwizard.cpp
 mirall/gitfolder.cpp
 mirall/inotify.cpp
+mirall/networklocation.cpp
 mirall/temporarydir.cpp
 mirall/unisonfolder.cpp
 )

@@ -33,7 +33,9 @@ Folder::Folder(const QString &alias, const QString &path, QObject *parent)
       _path(path),
       _pollTimer(new QTimer(this)),
       _pollInterval(DEFAULT_POLL_INTERVAL_SEC),
-      _alias(alias)
+      _alias(alias),
+      _onlyOnlineEnabled(false),
+      _onlyThisLANEnabled(false)
 {
     _openAction = new QAction(QIcon::fromTheme(FOLDER_ICON), path, this);
     _openAction->setIconVisibleInMenu(true);
@@ -74,6 +76,26 @@ QString Folder::alias() const
 QString Folder::path() const
 {
     return _path;
+}
+
+bool Folder::onlyOnlineEnabled() const
+{
+    return _onlyOnlineEnabled;
+}
+
+void Folder::setOnlyOnlineEnabled(bool enabled)
+{
+    _onlyOnlineEnabled = enabled;
+}
+
+bool Folder::onlyThisLANEnabled() const
+{
+    return _onlyThisLANEnabled;
+}
+
+void Folder::setOnlyThisLANEnabled(bool enabled)
+{
+    _onlyThisLANEnabled = enabled;
 }
 
 int Folder::pollInterval() const

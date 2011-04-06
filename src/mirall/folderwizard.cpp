@@ -65,6 +65,9 @@ FolderWizardTargetPage::FolderWizardTargetPage()
 
     registerField("targetLocalFolder", _ui.localFolder2LineEdit);
     registerField("targetSSHFolder", _ui.sshFolderLineEdit);
+
+    registerField("onlyOnline?", _ui.checkBoxOnlyOnline);
+    registerField("onlyThisLAN?", _ui.checkBoxOnlyThisLAN);
 }
 
 FolderWizardTargetPage::~FolderWizardTargetPage()
