@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 project(mirall)
+set(PACKAGE "mirall")
+include(${CMAKE_SOURCE_DIR}/VERSION.cmake)
 
 find_package(Qt4 4.4.3 COMPONENTS QtCore QtGui QtXml QtNetwork QtTest REQUIRED )
 
@@ -11,6 +13,30 @@ foreach( loop_var ${ARGV} )
   add_test(test${loop_var} ${CMAKE_CURRENT_BINARY_DIR}/test${loop_var} --catch_system_errors=no)
 endforeach( loop_var )
 endmacro(add_tests)
+
+set(CPACK_SOURCE_IGNORE_FILES
+  # hidden files
+  "/\\\\..+$"
+  # temporary files
+  "\\\\.swp$"
+  # backup files
+  "~$"
+  # others
+  "\\\\.#"
+  "/#"
+  "/build/"
+  "/_build/"
+  # used before
+  "\\\\.o$"
+  "\\\\.lo$"
+  "\\\\.la$"
+  "Makefile\\\\.in$"
+)
+set(CPACK_PACKAGE_VENDOR "Duncan Mac-Vicar P.")
+set(CPACK_GENERATOR "TBZ2")
+set(CPACK_SOURCE_GENERATOR "TBZ2")
+set(CPACK_SOURCE_PACKAGE_FILE_NAME "${PACKAGE}-${VERSION}" )
+include(CPack)
 
 include(CTest)
 enable_testing()
