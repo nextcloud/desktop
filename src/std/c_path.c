@@ -379,3 +379,87 @@ int c_parse_uri(const char *uri,
   return -1;
 }
 
+
+/*
+ * http://refactormycode.com/codes/1345-extracting-directory-filename-and-extension-from-a-path
+ * Allocate a block of memory that holds the PATHINFO at the beginning
+ * followed by the actual path. Two extra bytes are allocated (+3 instead
+ * of just +1) to deal with shifting the filename and extension to protect the trailing '/'
+ * and the leading '.'. These extra bytes also double as the empty string, as
+ * well as a pad to keep from reading past the memory block.
+ * 
+ */
+C_PATHINFO * c_split_path(const char* pathSrc)
+{
+    size_t length = strlen(pathSrc);
+	size_t len=0;
+    C_PATHINFO * pathinfo = (C_PATHINFO *) c_malloc(sizeof(C_PATHINFO) + length + 3);
+
+    if (pathinfo)
+    {
+        char * path = (char *) &pathinfo[1];    // copy of the path
+        char * theEnd = &path[length + 1];      // second null terminator
+        char * extension;
+        char * lastSep;
+
+        // Copy the original string and double null terminate it.
+        strcpy(path, pathSrc);
+        *theEnd = '\0';
+        pathinfo->directory = theEnd;   // Assume no path
+        pathinfo->extension = theEnd;   // Assume no extension
+        pathinfo->filename = path;      // Assume filename only
+
+        lastSep = strrchr(path, '/');
+        if (lastSep)
+        {
+            pathinfo->directory = path;     // Pick up the path
+            //*lastSep++ = '\0';              // Truncate directory
+            //pathinfo->filename = lastSep;   // Pick up name after path 
+            
+            memmove(lastSep + 2, lastSep+1, strlen(lastSep));
+			*(lastSep+1)='\0'; 
+            pathinfo->filename = lastSep+2;
+
+        }
+    
+        // Start at the second character of the filename to handle
+        // filenames that start with '.' like ".login".
+        // We don't overrun the buffer in the cases of an empty path
+        // or a path that looks like "/usr/bin/" because of the extra
+        // byte.
+        
+        
+        extension = strrchr(&pathinfo->filename[1], '.');
+        if (extension)
+        {
+            // Shift the extension over to protect the leading '.' since
+            // we need to truncate the filename.
+            memmove(extension + 1, extension, strlen(extension));
+            pathinfo->extension = extension + 1;
+
+            *extension = '\0';          // Truncate filename
+        }
+        else
+		{
+			//tmp files from kate/kwrite "somefile~": '~' should be the extension
+			len=strlen(pathinfo->filename);
+			if(len>1)
+			{
+				printf("len: %i\n",(int)len);
+				printf("%i %i\n",pathinfo->filename[len-1],pathinfo->filename[len-1]);
+				printf("%i %i\n",'~','~');
+				if(pathinfo->filename[len-1]=='~')
+				{
+					printf("kate file found\n");
+					pathinfo->filename[len-1]='\0'; // Truncate filename
+					pathinfo->extension[0]='~';      
+				}
+			}
+		}
+        
+    }
+
+    return pathinfo;
+}
+
+

@@ -106,6 +106,33 @@ int c_parse_uri(const char *uri, char **scheme, char **user, char **passwd,
     char **host, unsigned int *port, char **path);
 
 /**
+ * @brief Parts of a path.
+ *
+ * @param directory '\0' terminated path including the final '/'
+ *
+ * @param filename '\0' terminated string
+ * 
+ * @param extension '\0' terminated string
+ * 
+ */
+typedef struct
+{
+    char * directory;
+    char * filename;
+    char * extension;
+} C_PATHINFO;
+
+/**
+ * @brief Extracting directory, filename and extension from a path.
+ *
+ * @param pathSrc The path to parse.
+ *
+ * @return Returns a C_PATHINFO structure that should be freed using SAFE_FREE().
+ */
+C_PATHINFO * c_split_path(const char* pathSrc);
+
+
+/**
  * }@
  */
 #endif /* _C_PATH_H */

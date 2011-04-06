@@ -288,6 +288,7 @@ static int _insert_metadata_visitor(void *obj, void *data) {
     case CSYNC_INSTRUCTION_NONE:
     /* As we only sync the local tree we need this flag here */
     case CSYNC_INSTRUCTION_UPDATED:
+    case CSYNC_INSTRUCTION_CONFLICT:
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
         "SQL statement: INSERT INTO metadata_temp \n"
         "\t\t\t(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES \n"

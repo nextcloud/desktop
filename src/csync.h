@@ -274,6 +274,15 @@ int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb);
  */
 const char *csync_get_statedb_file(CSYNC *ctx);
 
+/**
+ * @brief Enable the creation of backup copys if files are changed on both sides
+ *
+ * @param ctx           The csync context.
+ *
+ * @return              0 on success, less than 0 if an error occured.
+ */
+int csync_enable_conflictcopys(CSYNC *ctx);
+
 /* Used for special modes or debugging */
 int csync_get_status(CSYNC *ctx);
 

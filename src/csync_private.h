@@ -32,6 +32,7 @@
 #define _CSYNC_PRIVATE_H
 
 #include <stdint.h>
+#include <stdbool.h>
 #include <sqlite3.h>
 
 #include "config.h"
@@ -114,6 +115,7 @@ struct csync_s {
     int sync_symbolic_links;
     int unix_extensions;
     char *config_dir;
+    bool with_conflict_copys;
   } options;
 
   struct {

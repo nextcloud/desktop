@@ -25,6 +25,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 #include "csync_private.h"
 #include "csync_propagate.h"
@@ -32,6 +33,7 @@
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.propagator"
 #include "csync_log.h"
+#include "csync_util.h"
 
 static int _csync_cleanup_cmp(const void *a, const void *b) {
   csync_file_stat_t *st_a, *st_b;
@@ -370,6 +372,137 @@ out:
   return rc;
 }
 
+static int _backup_path(char** duri, const char* uri, const char* path)
+{
+	int rc=0;
+	C_PATHINFO *info=NULL;
+	
+	struct tm *curtime;
+	time_t sec;
+	char timestring[16];
+	time(&sec);
+	curtime = localtime(&sec);
+	strftime(timestring, 16,   "%Y%m%d-%H%M%S",curtime);
+	
+	info=c_split_path(path);
+	printf("directory: %s\n",info->directory);
+	printf("filename : %s\n",info->filename);
+	printf("extension: %s\n",info->extension);
+	
+	if (asprintf(duri, "%s/%s%s_conflict-%s%s", uri,info->directory ,info->filename,timestring,info->extension) < 0) {
+			rc = -1;		
+	}
+
+	SAFE_FREE(info);
+	return rc;
+}
+
+
+static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st) {
+  enum csync_replica_e srep = -1;
+  enum csync_replica_e drep = -1;
+  enum csync_replica_e rep_bak = -1;
+
+  char *suri = NULL;
+  char *duri = NULL;
+
+  char errbuf[256] = {0};
+
+  int rc = -1;
+
+  rep_bak = ctx->replica;
+  
+  if(st->instruction==CSYNC_INSTRUCTION_CONFLICT)
+  {
+	//printf("CSYNC_INSTRUCTION_CONFLICT\n");
+	switch (ctx->current) {
+		case LOCAL_REPLICA:
+		srep = ctx->remote.type;
+		drep = ctx->remote.type;
+		if (asprintf(&suri, "%s/%s", ctx->remote.uri, st->path) < 0) {
+			rc = -1;
+			goto out;
+		}
+
+		if ( _backup_path(&duri, ctx->remote.uri,st->path) < 0) {
+			rc = -1;
+			goto out;
+		}
+		break;
+		case REMOTE_REPLCIA:
+		srep = ctx->local.type;
+		drep = ctx->local.type;
+		if (asprintf(&suri, "%s/%s", ctx->local.uri, st->path) < 0) {
+			rc = -1;
+			goto out;
+		}
+
+		if ( _backup_path(&duri, ctx->local.uri, st->path) < 0) {
+			rc = -1;
+			goto out;
+		}
+		break;
+		default:
+		break;
+	}
+  }
+
+  else
+  {
+	  printf("instruction not allowed: %i %s\n",st->instruction,csync_instruction_str(st->instruction));
+	  rc = -1;
+      goto out;
+  }
+	
+	printf("suri: %s\n",suri);
+	printf("duri: %s\n",duri);
+
+
+  /* rename the older file to conflict */
+  ctx->replica = drep;
+  if (csync_vio_rename(ctx, suri, duri) < 0) {
+    switch (errno) {
+      case ENOMEM:
+        rc = -1;
+        break;
+      default:
+        rc = 1;
+        break;
+    }
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+        "file: %s, command: rename, error: %s",
+        duri,
+        strerror_r(errno, errbuf, sizeof(errbuf)));
+    goto out;
+  }
+
+
+  /* set instruction for the statedb merger */
+  //st->instruction = CSYNC_INSTRUCTION_UPDATED;
+  st->instruction = CSYNC_INSTRUCTION_RENAME;
+  //maybe updated and change url to the new one
+  
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: CONFLICT_BACKUP", duri);
+
+  rc = 0;
+
+out:
+  ctx->replica = srep;
+  ctx->replica = drep;
+
+  /* set instruction for the statedb merger */
+  if (rc != 0) {
+    st->instruction = CSYNC_INSTRUCTION_ERROR;
+  }
+
+  SAFE_FREE(suri);
+  SAFE_FREE(duri);
+ 
+  ctx->replica = rep_bak;
+
+  return rc;
+}
+
 static int _csync_new_file(CSYNC *ctx, csync_file_stat_t *st) {
   int rc = -1;
 
@@ -382,6 +515,19 @@ static int _csync_sync_file(CSYNC *ctx, csync_file_stat_t *st) {
   int rc = -1;
 
   rc = _csync_push_file(ctx, st);
+
+  return rc;
+}
+
+static int _csync_conflict_file(CSYNC *ctx, csync_file_stat_t *st) {
+  int rc = -1;
+ 
+  rc = _csync_backup_file(ctx, st);
+  
+  if(rc>=0)
+  {
+	 rc = _csync_push_file(ctx, st);
+  }
 
   return rc;
 }
@@ -771,6 +917,12 @@ static int _csync_propagation_file_visitor(void *obj, void *data) {
             goto err;
           }
           break;
+        case CSYNC_INSTRUCTION_CONFLICT:
+          printf("case CSYNC_INSTRUCTION_CONFLICT: %s\n",st->path);
+          if (_csync_conflict_file(ctx, st) < 0) {
+            goto err;
+          }
+          break;
         default:
           break;
       }
@@ -812,6 +964,12 @@ static int _csync_propagation_dir_visitor(void *obj, void *data) {
           }
           break;
         case CSYNC_INSTRUCTION_SYNC:
+          if (_csync_sync_dir(ctx, st) < 0) {
+            goto err;
+          }
+          break;
+        case CSYNC_INSTRUCTION_CONFLICT:
+          printf("directory conflict\n");
           if (_csync_sync_dir(ctx, st) < 0) {
             goto err;
           }

@@ -91,11 +91,33 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
           /* file on other replica is new too */
           case CSYNC_INSTRUCTION_NEW:
             if (cur->modtime > other->modtime) {
-              cur->instruction = CSYNC_INSTRUCTION_SYNC;
-              other->instruction = CSYNC_INSTRUCTION_NONE;
+              
+			  if(ctx->options.with_conflict_copys)
+			  {
+				printf("file new on both, cur is newer PATH=./%s\n",cur->path);
+				cur->instruction = CSYNC_INSTRUCTION_CONFLICT;
+				other->instruction = CSYNC_INSTRUCTION_NONE;
+			  }
+			  else
+			  {
+				cur->instruction = CSYNC_INSTRUCTION_SYNC;
+				other->instruction = CSYNC_INSTRUCTION_NONE;
+			  }
+			  
             } else if (cur->modtime < other->modtime) {
-              cur->instruction = CSYNC_INSTRUCTION_NONE;
-              other->instruction = CSYNC_INSTRUCTION_SYNC;
+              
+			  if(ctx->options.with_conflict_copys)
+			  {
+				printf("file new on both, other is newer PATH=./%s\n",cur->path);
+				cur->instruction = CSYNC_INSTRUCTION_NONE;
+				other->instruction = CSYNC_INSTRUCTION_CONFLICT;
+			  }
+			  else
+			  {
+				cur->instruction = CSYNC_INSTRUCTION_NONE;
+				other->instruction = CSYNC_INSTRUCTION_SYNC;
+			  }
+			  
             } else {
               /* file are equal */
               cur->instruction = CSYNC_INSTRUCTION_NONE;
@@ -106,10 +128,30 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
           case CSYNC_INSTRUCTION_EVAL:
             /* file on current replica is newer */
             if (cur->modtime > other->modtime) {
-              cur->instruction = CSYNC_INSTRUCTION_SYNC;
+              
+			  if(ctx->options.with_conflict_copys)
+			  {
+				printf("new on cur, modified on other, cur is newer PATH=./%s\n",cur->path);
+				cur->instruction = CSYNC_INSTRUCTION_CONFLICT;
+			  }
+			  else
+			  {
+				cur->instruction = CSYNC_INSTRUCTION_SYNC;
+			  }
+			  
             } else {
               /* file on opposite replica is newer */
-              cur->instruction = CSYNC_INSTRUCTION_NONE;
+              
+			  if(ctx->options.with_conflict_copys)
+			  {
+				printf("new on cur, modified on other, other is newer PATH=./%s\n",cur->path);
+				cur->instruction = CSYNC_INSTRUCTION_NONE;
+			  }
+			  else
+			  {
+				  cur->instruction = CSYNC_INSTRUCTION_NONE;
+			  }
+			  
             }
             break;
           /* file on the other replica has not been modified */
@@ -126,19 +168,59 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
           /* file on other replica is new too */
           case CSYNC_INSTRUCTION_NEW:
             if (cur->modtime > other->modtime) {
-              cur->instruction = CSYNC_INSTRUCTION_SYNC;
+              
+			  if(ctx->options.with_conflict_copys)
+			  {
+				printf("modified on cur, new on other, cur is newer PATH=./%s\n",cur->path);
+				cur->instruction = CSYNC_INSTRUCTION_CONFLICT;
+			  }
+			  else
+			  {
+				  cur->instruction = CSYNC_INSTRUCTION_SYNC;
+			  }
+			  
             } else {
-              cur->instruction = CSYNC_INSTRUCTION_NONE;
+              
+			  if(ctx->options.with_conflict_copys)
+			  {
+				printf("modified on cur, new on other, other is newer PATH=./%s\n",cur->path);
+				cur->instruction = CSYNC_INSTRUCTION_NONE;
+			  }
+			  else
+			  {
+				  cur->instruction = CSYNC_INSTRUCTION_NONE;
+			  }
             }
             break;
           /* file on other replica has changed too */
           case CSYNC_INSTRUCTION_EVAL:
             /* file on current replica is newer */
             if (cur->modtime > other->modtime) {
-              cur->instruction = CSYNC_INSTRUCTION_SYNC;
+              
+			  if(ctx->options.with_conflict_copys)
+			  {
+				printf("both modified, cur is newer PATH=./%s\n",cur->path);
+				cur->instruction = CSYNC_INSTRUCTION_CONFLICT;
+				other->instruction= CSYNC_INSTRUCTION_NONE;
+			  }
+			  else
+			  {
+				cur->instruction = CSYNC_INSTRUCTION_SYNC;
+			  }
+			  
             } else {
               /* file on opposite replica is newer */
-              cur->instruction = CSYNC_INSTRUCTION_NONE;
+              
+			  if(ctx->options.with_conflict_copys)
+			  {
+				printf("both modified, other is newer PATH=./%s\n",cur->path);
+				cur->instruction = CSYNC_INSTRUCTION_NONE;
+				other->instruction=CSYNC_INSTRUCTION_CONFLICT;
+			  }
+			  else
+			  {
+				cur->instruction = CSYNC_INSTRUCTION_NONE;
+			  }
             }
             break;
           /* file on the other replica has not been modified */

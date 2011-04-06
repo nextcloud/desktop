@@ -29,6 +29,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <stdbool.h>
 
 #include "c_lib.h"
 #include "csync_private.h"
@@ -110,6 +111,7 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
   ctx->options.max_depth = MAX_DEPTH;
   ctx->options.max_time_difference = MAX_TIME_DIFFERENCE;
   ctx->options.unix_extensions = 0;
+  ctx->options.with_conflict_copys=false;
 
   ctx->pwd.uid = getuid();
   ctx->pwd.euid = geteuid();
@@ -680,6 +682,21 @@ int csync_get_status(CSYNC *ctx) {
   }
 
   return ctx->status;
+}
+
+int csync_enable_conflictcopys(CSYNC* ctx){
+  if (ctx == NULL) {
+    return -1;
+  }
+
+  if (ctx->status & CSYNC_STATUS_INIT) {
+    fprintf(stderr, "This function must be called before initialization.");
+    return -1;
+  }
+
+  ctx->options.with_conflict_copys=true;
+
+  return 0;
 }
 
 /* vim: set ts=8 sw=2 et cindent: */
