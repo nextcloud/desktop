@@ -385,9 +385,9 @@ static int _backup_path(char** duri, const char* uri, const char* path)
 	strftime(timestring, 16,   "%Y%m%d-%H%M%S",curtime);
 	
 	info=c_split_path(path);
-	printf("directory: %s\n",info->directory);
-	printf("filename : %s\n",info->filename);
-	printf("extension: %s\n",info->extension);
+	CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"directory: %s",info->directory);
+	CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"filename : %s",info->filename);
+	CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"extension: %s",info->extension);
 	
 	if (asprintf(duri, "%s/%s%s_conflict-%s%s", uri,info->directory ,info->filename,timestring,info->extension) < 0) {
 			rc = -1;		
@@ -414,7 +414,7 @@ static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st) {
   
   if(st->instruction==CSYNC_INSTRUCTION_CONFLICT)
   {
-	//printf("CSYNC_INSTRUCTION_CONFLICT\n");
+	CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"CSYNC_INSTRUCTION_CONFLICT");
 	switch (ctx->current) {
 		case LOCAL_REPLICA:
 		srep = ctx->remote.type;
@@ -449,13 +449,13 @@ static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   else
   {
-	  printf("instruction not allowed: %i %s\n",st->instruction,csync_instruction_str(st->instruction));
+	  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"instruction not allowed: %i %s",st->instruction,csync_instruction_str(st->instruction));
 	  rc = -1;
       goto out;
   }
 	
-	printf("suri: %s\n",suri);
-	printf("duri: %s\n",duri);
+	CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"suri: %s",suri);
+	CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"duri: %s",duri);
 
 
   /* rename the older file to conflict */
@@ -918,7 +918,7 @@ static int _csync_propagation_file_visitor(void *obj, void *data) {
           }
           break;
         case CSYNC_INSTRUCTION_CONFLICT:
-          printf("case CSYNC_INSTRUCTION_CONFLICT: %s\n",st->path);
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"case CSYNC_INSTRUCTION_CONFLICT: %s",st->path);
           if (_csync_conflict_file(ctx, st) < 0) {
             goto err;
           }
@@ -969,7 +969,7 @@ static int _csync_propagation_dir_visitor(void *obj, void *data) {
           }
           break;
         case CSYNC_INSTRUCTION_CONFLICT:
-          printf("directory conflict\n");
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"directory conflict");
           if (_csync_sync_dir(ctx, st) < 0) {
             goto err;
           }

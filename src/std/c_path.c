@@ -445,12 +445,11 @@ C_PATHINFO * c_split_path(const char* pathSrc)
 			len=strlen(pathinfo->filename);
 			if(len>1)
 			{
-				printf("len: %i\n",(int)len);
-				printf("%i %i\n",pathinfo->filename[len-1],pathinfo->filename[len-1]);
-				printf("%i %i\n",'~','~');
+				//printf("%i\n",pathinfo->filename[len-1]);
+				//printf("%i\n",'~');
 				if(pathinfo->filename[len-1]=='~')
 				{
-					printf("kate file found\n");
+					//printf("kate file found\n");
 					pathinfo->filename[len-1]='\0'; // Truncate filename
 					pathinfo->extension[0]='~';      
 				}

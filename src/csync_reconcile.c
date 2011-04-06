@@ -94,7 +94,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
               
 			  if(ctx->options.with_conflict_copys)
 			  {
-				printf("file new on both, cur is newer PATH=./%s\n",cur->path);
+				CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"file new on both, cur is newer PATH=./%s",cur->path);
 				cur->instruction = CSYNC_INSTRUCTION_CONFLICT;
 				other->instruction = CSYNC_INSTRUCTION_NONE;
 			  }
@@ -108,7 +108,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
               
 			  if(ctx->options.with_conflict_copys)
 			  {
-				printf("file new on both, other is newer PATH=./%s\n",cur->path);
+				CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"file new on both, other is newer PATH=./%s",cur->path);
 				cur->instruction = CSYNC_INSTRUCTION_NONE;
 				other->instruction = CSYNC_INSTRUCTION_CONFLICT;
 			  }
@@ -131,7 +131,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
               
 			  if(ctx->options.with_conflict_copys)
 			  {
-				printf("new on cur, modified on other, cur is newer PATH=./%s\n",cur->path);
+				CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"new on cur, modified on other, cur is newer PATH=./%s",cur->path);
 				cur->instruction = CSYNC_INSTRUCTION_CONFLICT;
 			  }
 			  else
@@ -144,7 +144,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
               
 			  if(ctx->options.with_conflict_copys)
 			  {
-				printf("new on cur, modified on other, other is newer PATH=./%s\n",cur->path);
+				CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"new on cur, modified on other, other is newer PATH=./%s",cur->path);
 				cur->instruction = CSYNC_INSTRUCTION_NONE;
 			  }
 			  else
@@ -171,7 +171,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
               
 			  if(ctx->options.with_conflict_copys)
 			  {
-				printf("modified on cur, new on other, cur is newer PATH=./%s\n",cur->path);
+				CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"modified on cur, new on other, cur is newer PATH=./%s",cur->path);
 				cur->instruction = CSYNC_INSTRUCTION_CONFLICT;
 			  }
 			  else
@@ -183,7 +183,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
               
 			  if(ctx->options.with_conflict_copys)
 			  {
-				printf("modified on cur, new on other, other is newer PATH=./%s\n",cur->path);
+				CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"modified on cur, new on other, other is newer PATH=./%s",cur->path);
 				cur->instruction = CSYNC_INSTRUCTION_NONE;
 			  }
 			  else
@@ -199,7 +199,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
               
 			  if(ctx->options.with_conflict_copys)
 			  {
-				printf("both modified, cur is newer PATH=./%s\n",cur->path);
+				CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"both modified, cur is newer PATH=./%s",cur->path);
 				cur->instruction = CSYNC_INSTRUCTION_CONFLICT;
 				other->instruction= CSYNC_INSTRUCTION_NONE;
 			  }
@@ -213,7 +213,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
               
 			  if(ctx->options.with_conflict_copys)
 			  {
-				printf("both modified, other is newer PATH=./%s\n",cur->path);
+				CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"both modified, other is newer PATH=./%s",cur->path);
 				cur->instruction = CSYNC_INSTRUCTION_NONE;
 				other->instruction=CSYNC_INSTRUCTION_CONFLICT;
 			  }
