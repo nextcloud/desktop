@@ -144,7 +144,8 @@ void Application::setupFolderFromConfigFile(const QString &file) {
     if (!backend.isNull()) {
         if (backend.toString() == "unison") {
 
-            folder = new UnisonFolder(path.toString(),
+            folder = new UnisonFolder(file,
+                                      path.toString(),
                                       settings.value("backend:unison/secondPath").toString(),
                                       this);
         }

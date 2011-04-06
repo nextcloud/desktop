@@ -8,8 +8,11 @@
 
 namespace Mirall {
 
-UnisonFolder::UnisonFolder(const QString &path, const QString &secondPath, QObject *parent)
-    : Folder(path, parent),
+    UnisonFolder::UnisonFolder(const QString &alias,
+                               const QString &path,
+                               const QString &secondPath,
+                               QObject *parent)
+      : Folder(alias, path, parent),
       _unison(new QProcess(this)),
       _secondPath(secondPath),
       _syncCount(0)

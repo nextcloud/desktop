@@ -14,11 +14,12 @@
 
 namespace Mirall {
 
-Folder::Folder(const QString &path, QObject *parent)
+Folder::Folder(const QString &alias, const QString &path, QObject *parent)
     : QObject(parent),
       _path(path),
       _pollTimer(new QTimer(this)),
-      _pollInterval(DEFAULT_POLL_INTERVAL_SEC)
+      _pollInterval(DEFAULT_POLL_INTERVAL_SEC),
+      _alias(alias)
 {
     _openAction = new QAction(QIcon(FOLDER_ICON), path, this);
     _openAction->setIconVisibleInMenu(true);
@@ -49,6 +50,11 @@ QAction * Folder::openAction() const
 
 Folder::~Folder()
 {
+}
+
+QString Folder::alias() const
+{
+    return _alias;
 }
 
 QString Folder::path() const

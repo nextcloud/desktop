@@ -17,8 +17,13 @@ class Folder : public QObject
     Q_OBJECT
 
 public:
-    Folder(const QString &path, QObject *parent = 0L);
+    Folder(const QString &alias, const QString &path, QObject *parent = 0L);
     virtual ~Folder();
+
+    /**
+     * alias or nickname
+     */
+    QString alias() const;
 
     /**
      * local folder path
@@ -72,6 +77,7 @@ private:
     // poll timer for remote syncs
     QTimer *_pollTimer;
     int _pollInterval;
+    QString _alias;
 
 protected slots:
 

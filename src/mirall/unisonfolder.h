@@ -15,7 +15,9 @@ class UnisonFolder : public Folder
 {
     Q_OBJECT
 public:
-    UnisonFolder(const QString &path, const QString &secondPath, QObject *parent = 0L);
+  UnisonFolder(const QString &alias,
+               const QString &path,
+               const QString &secondPath, QObject *parent = 0L);
     virtual ~UnisonFolder();
 
     QString secondPath() const;

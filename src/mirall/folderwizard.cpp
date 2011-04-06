@@ -15,6 +15,7 @@ FolderWizardSourcePage::FolderWizardSourcePage()
 {
     _ui.setupUi(this);
     registerField("*sourceFolder", _ui.localFolderLineEdit);
+    registerField("*alias", _ui.aliasFolderLineEdit);
 }
 
 FolderWizardSourcePage::~FolderWizardSourcePage()

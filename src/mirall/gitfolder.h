@@ -16,7 +16,9 @@ public:
      * path : Local folder to be keep in sync
      * remote: git repo url to sync from/to
      */
-    GitFolder(const QString &path, const QString &remote, QObject *parent = 0L);
+  GitFolder(const QString &alias,
+            const QString &path,
+            const QString &remote, QObject *parent = 0L);
     virtual ~GitFolder();
 
     virtual void startSync();
