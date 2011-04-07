@@ -28,6 +28,9 @@
 #include "mirall/folderwizard.h"
 #include "mirall/networklocation.h"
 #include "mirall/unisonfolder.h"
+#ifdef WITH_CSYNC
+#include "mirall/csyncfolder.h"
+#endif
 #include "mirall/inotify.h"
 
 namespace Mirall {
@@ -195,11 +198,20 @@ void Application::setupFolderFromConfigFile(const QString &file) {
     QVariant backend = settings.value("folder/backend");
     if (!backend.isNull()) {
         if (backend.toString() == "unison") {
-
             folder = new UnisonFolder(file,
                                       path.toString(),
                                       settings.value("backend:unison/secondPath").toString(),
                                       this);
+        }
+        else if (backend.toString() == "csync") {
+#ifdef WITH_CSYNC
+            folder = new CSyncFolder(file,
+                                     path.toString(),
+                                     settings.value("backend:csync/secondPath").toString(),
+                                     this);
+#else
+            qCritical() << "* csync suport not enabled!! ignoring:" << file;
+#endif
         }
         else {
             qWarning() << "unknown backend" << backend;

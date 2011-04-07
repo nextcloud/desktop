@@ -21,6 +21,13 @@ mirall/networklocation.cpp
 mirall/temporarydir.cpp
 mirall/unisonfolder.cpp
 )
+if(CSYNC_FOUND)
+  set(mirall_SRCS
+    ${mirall_SRCS}
+    mirall/csyncfolder.cpp
+  )
+  include_directories(${CSYNC_INCLUDE_DIR})
+endif(CSYNC_FOUND)
 qt4_automoc(${mirall_SRCS})
 
 
@@ -29,4 +36,7 @@ add_library(mirall_static STATIC ${mirall_SRCS} ${mirall_UI_SRCS})
 add_executable(mirall main.cpp)
 target_link_libraries(mirall mirall_static)
 target_link_libraries(mirall ${QT_LIBRARIES})
+if(CSYNC_FOUND)
+  target_link_libraries(mirall ${CSYNC_LIBRARY})
+endif(CSYNC_FOUND)
 

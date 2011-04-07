@@ -46,6 +46,7 @@ FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
 {
     // this is not the best place for this
     addIgnore("/**/.unison*");
+    addIgnore("*csync_timediff.ctmp*");
 
     _processTimer->setSingleShot(true);
     QObject::connect(_processTimer, SIGNAL(timeout()), this, SLOT(slotProcessTimerTimeout()));

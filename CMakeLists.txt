@@ -1,9 +1,15 @@
 cmake_minimum_required(VERSION 2.8)
 project(mirall)
 set(PACKAGE "mirall")
+set( CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules )
 include(${CMAKE_SOURCE_DIR}/VERSION.cmake)
 
 find_package(Qt4 4.4.3 COMPONENTS QtCore QtGui QtXml QtNetwork QtTest REQUIRED )
+find_package(Csync)
+
+if(CSYNC_FOUND)
+  add_definitions(-DWITH_CSYNC)
+endif(CSYNC_FOUND)
 
 macro(add_tests)
 foreach( loop_var ${ARGV} )
