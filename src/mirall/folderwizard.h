@@ -62,11 +62,11 @@ protected slots:
     void on_localFolder2ChooseBtn_clicked();
 
     void on_localFolderRadioBtn_toggled();
-    void on_sshFolderRadioBtn_toggled();
+    void on_urlFolderRadioBtn_toggled();
     void on_checkBoxOnlyOnline_toggled();
 
     void on_localFolder2LineEdit_textChanged();
-    void on_sshFolderLineEdit_textChanged();
+    void on_urlFolderLineEdit_textChanged();
 
 private:
     Ui_FolderWizardTargetPage _ui;
@@ -81,7 +81,7 @@ private:
  * local?
  * remote?
  * targetLocalFolder
- * targetSSHFolder
+ * targetURLFolder
  *
  */
 class FolderWizard : public QWizard

@@ -61,10 +61,10 @@ FolderWizardTargetPage::FolderWizardTargetPage()
     _ui.setupUi(this);
 
     registerField("local?", _ui.localFolderRadioBtn);
-    registerField("remote?", _ui.sshFolderRadioBtn);
+    registerField("remote?", _ui.urlFolderRadioBtn);
 
     registerField("targetLocalFolder", _ui.localFolder2LineEdit);
-    registerField("targetSSHFolder", _ui.sshFolderLineEdit);
+    registerField("targetURLFolder", _ui.urlFolderLineEdit);
 
     registerField("onlyOnline?", _ui.checkBoxOnlyOnline);
     registerField("onlyThisLAN?", _ui.checkBoxOnlyThisLAN);
@@ -79,9 +79,9 @@ bool FolderWizardTargetPage::isComplete() const
     if (_ui.localFolderRadioBtn->isChecked()) {
         return QFileInfo(_ui.localFolder2LineEdit->text()).isDir();
     }
-    else if (_ui.sshFolderRadioBtn->isChecked()) {
-        QUrl url(_ui.sshFolderLineEdit->text());
-        return url.isValid() && url.scheme() == "ssh";
+    else if (_ui.urlFolderRadioBtn->isChecked()) {
+        QUrl url(_ui.urlFolderLineEdit->text());
+        return url.isValid() && (url.scheme() == "scp" || url.scheme() == "smb");
     }
     return false;
 }
@@ -97,7 +97,7 @@ void FolderWizardTargetPage::on_localFolderRadioBtn_toggled()
     emit completeChanged();
 }
 
-void FolderWizardTargetPage::on_sshFolderRadioBtn_toggled()
+void FolderWizardTargetPage::on_urlFolderRadioBtn_toggled()
 {
     slotToggleItems();
     emit completeChanged();
@@ -114,7 +114,7 @@ void FolderWizardTargetPage::on_localFolder2LineEdit_textChanged()
     emit completeChanged();
 }
 
-void FolderWizardTargetPage::on_sshFolderLineEdit_textChanged()
+void FolderWizardTargetPage::on_urlFolderLineEdit_textChanged()
 {
     emit completeChanged();
 }
@@ -125,8 +125,8 @@ void FolderWizardTargetPage::slotToggleItems()
     _ui.localFolder2LineEdit->setEnabled(enabled);
     _ui.localFolder2ChooseBtn->setEnabled(enabled);
 
-    enabled = _ui.sshFolderRadioBtn->isChecked();
-    _ui.sshFolderLineEdit->setEnabled(enabled);
+    enabled = _ui.urlFolderRadioBtn->isChecked();
+    _ui.urlFolderLineEdit->setEnabled(enabled);
     _ui.checkBoxOnlyOnline->setEnabled(enabled);
     _ui.checkBoxOnlyThisLAN->setEnabled(enabled);
 

@@ -83,9 +83,9 @@
     </layout>
    </item>
    <item>
-    <widget class="QRadioButton" name="sshFolderRadioBtn">
+    <widget class="QRadioButton" name="urlFolderRadioBtn">
      <property name="text">
-      <string>Remote folder (SSH)</string>
+      <string>Remote folder (URL)</string>
      </property>
     </widget>
    </item>
@@ -108,9 +108,9 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLineEdit" name="sshFolderLineEdit">
+      <widget class="QLineEdit" name="urlFolderLineEdit">
        <property name="placeholderText">
-        <string>ssh://john@host.com//myfolder</string>
+        <string>scp://john@host.com//myfolder</string>
        </property>
       </widget>
      </item>

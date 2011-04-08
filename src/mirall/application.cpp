@@ -128,14 +128,14 @@ void Application::slotAddFolder()
         QString alias = _folderWizard->field("alias").toString();
 
         QSettings settings(folderConfigPath() + "/" + alias, QSettings::IniFormat);
-        settings.setValue("folder/backend", "unison");
+        settings.setValue("folder/backend", "csync");
         settings.setValue("folder/path", _folderWizard->field("sourceFolder"));
 
         if (_folderWizard->field("local?").toBool()) {
-            settings.setValue("backend:unison/secondPath", _folderWizard->field("targetLocalFolder"));
+            settings.setValue("backend:csync/secondPath", _folderWizard->field("targetLocalFolder"));
         }
         else if (_folderWizard->field("remote?").toBool()) {
-            settings.setValue("backend:unison/secondPath", _folderWizard->field("targetSSHFolder"));
+            settings.setValue("backend:csync/secondPath", _folderWizard->field("targetURLFolder"));
             bool onlyOnline = _folderWizard->field("onlyOnline?").toBool();
             settings.setValue("folder/onlyOnline", onlyOnline);
 
