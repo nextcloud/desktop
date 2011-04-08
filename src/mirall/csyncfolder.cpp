@@ -28,6 +28,7 @@ namespace Mirall {
 CSyncThread::CSyncThread(const QString &source, const QString &target)
     : _source(source)
     , _target(target)
+    , _error(0)
 {
 
 }
@@ -37,42 +38,40 @@ CSyncThread::~CSyncThread()
 
 }
 
+bool CSyncThread::error() const
+{
+    return _error != 0;
+}
+
+QMutex CSyncThread::_mutex;
+
 void CSyncThread::run()
 {
+    QMutexLocker locker(&_mutex);
+
     CSYNC *csync;
 
-    if ( csync_create(&csync,
-                      _source.toLocal8Bit().data(),
-                      _target.toLocal8Bit().data()) != 0) {
-        // handle error
-        qCritical() << "csync_create error";
+    _error = csync_create(&csync,
+                          _source.toLocal8Bit().data(),
+                          _target.toLocal8Bit().data());
+    if (error())
         return;
-    }
 
-    if (csync_init(csync) != 0) {
-        qCritical() << "csync_init error";
-        return;
-    }
+    _error = csync_init(csync);
+    if (error())
+        goto cleanup;
 
-    if (csync_update(csync) != 0) {
-        qCritical() << "csync_update error";
-        return;
-    }
+    _error = csync_update(csync);
+    if (error())
+        goto cleanup;
 
-    if (csync_reconcile(csync) != 0) {
-        qCritical() << "csync_reconcile error";
-        return;
-    }
+    _error = csync_reconcile(csync);
+    if (error())
+        goto cleanup;
 
-    if (csync_propagate(csync) != 0) {
-        qCritical() << "csync_propagate error";
-        return;
-    }
-
-    if (csync_destroy(csync) != 0) {
-        qCritical() << "csync_destroy error";
-        return;
-    }
+    _error = csync_propagate(csync);
+cleanup:
+    csync_destroy(csync);
 }
 
 CSyncFolder::CSyncFolder(const QString &alias,
@@ -81,6 +80,7 @@ CSyncFolder::CSyncFolder(const QString &alias,
                          QObject *parent)
       : Folder(alias, path, parent)
       , _secondPath(secondPath)
+      , _csync(0)
 {
 }
 
@@ -100,22 +100,31 @@ QString CSyncFolder::secondPath() const
 
 void CSyncFolder::startSync(const QStringList &pathList)
 {
-    //QMutexLocker locker(&_syncMutex);
-    CSyncThread *csync = new CSyncThread(path(), secondPath());
-    QObject::connect(csync, SIGNAL(started()), SLOT(slotCSyncStarted()));
-    QObject::connect(csync, SIGNAL(finished()), SLOT(slotCSyncFinished()));
-    csync->start();
+    if (_csync && _csync->isRunning()) {
+        qCritical() << "* ERROR csync is still running and new sync requested.";
+        return;
+    }
+    delete _csync;
+
+    _csync = new CSyncThread(path(), secondPath());
+    QObject::connect(_csync, SIGNAL(started()), SLOT(slotCSyncStarted()));
+    QObject::connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()));
+    _csync->start();
 }
 
 void CSyncFolder::slotCSyncStarted()
 {
-    qDebug() << "* csync thread started";
+    qDebug() << "    * csync thread started";
     emit syncStarted();
 }
 
 void CSyncFolder::slotCSyncFinished()
 {
-    qDebug() << "* csync thread finished";
+    if (_csync->error())
+        qDebug() << "    * csync thread finished with error";
+    else
+        qDebug() << "    * csync thread finished successfully";
+
     // TODO delete thread
     emit syncFinished();
 }

@@ -16,6 +16,7 @@
 #define MIRALL_CSYNCFOLDER_H
 
 #include <QMutex>
+#include <QMutex>
 #include <QThread>
 #include <QStringList>
 
@@ -33,9 +34,16 @@ public:
 
     virtual void run();
 
+    /**
+     * true if last operation ended with error
+     */
+    bool error() const;
+
 private:
+    static QMutex _mutex;
     QString _source;
     QString _target;
+    int _error;
 };
 
 class CSyncFolder : public Folder
@@ -54,6 +62,7 @@ protected slots:
     void slotCSyncFinished();
 private:
     QString _secondPath;
+    CSyncThread *_csync;
 };
 
 }
