@@ -16,16 +16,18 @@ Mirall is in early stages of development, and may still eat your
 files or hang your computer.
 
 * Network location awareness not implemented yet
-* Current version supports local and remote (SSH) folders.
-* It is powered by the great unison (http://www.cis.upenn.edu/~bcpierce/unison/), however
+* Current version supports local and remote (sftp and smb) folders.
+* It is powered by csync (http://www.csync.org), however
   the user does not know and other tools will be incorporated to provide other
   functionality.
 
 ## Current issues
 
-* No sane way to backup conflicting versions yet
-  Workaround: delete ~/.local/share/data/Mirall/folders/$ALIAS and restart
+* No sane way to backup conflicting versions yet, this should be solved
+  in a near csync release (--conflictcopy, available in Jann's branch).
+  Right now the newest copy wins.
 * You can't remove folder configurations
+  Workaround: delete ~/.local/share/data/Mirall/folders/$alias and restart
 * Some tasks block the GUI (initial setup of watchers)
 * May be some concurrency issues
 
