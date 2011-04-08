@@ -123,6 +123,10 @@ private:
     int _lastMask;
     QString _lastPath;
     QStringList _ignores;
+
+    // for the initial synchronization, without
+    // any file changed
+    bool _initialSyncDone;
 };
 
 }

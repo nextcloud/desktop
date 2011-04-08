@@ -42,7 +42,8 @@ FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
       _eventInterval(DEFAULT_EVENT_INTERVAL_SEC),
       _root(root),
       _processTimer(new QTimer(this)),
-      _lastMask(0)
+      _lastMask(0),
+      _initialSyncDone(false)
 {
     // this is not the best place for this
     addIgnore("/**/.unison*");
@@ -216,12 +217,13 @@ void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
 void FolderWatcher::slotProcessTimerTimeout()
 {
     qDebug() << "* Processing of event queue for" << root();
-    if (!_pendingPaths.empty()) {
+    if (!_pendingPaths.empty() || !_initialSyncDone) {
         QStringList notifyPaths(_pendingPaths);
         _pendingPaths.clear();
         //qDebug() << lastEventTime << eventTime;
         qDebug() << "  * Notify" << notifyPaths.size() << "changed items for" << root();
         emit folderChanged(notifyPaths);
+        _initialSyncDone = true;
     }
 }
 
