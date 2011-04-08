@@ -55,8 +55,8 @@ Folder::Folder(const QString &alias, const QString &path, QObject *parent)
 
     QObject::connect(this, SIGNAL(syncStarted()),
                      SLOT(slotSyncStarted()));
-    QObject::connect(this, SIGNAL(syncFinished()),
-                     SLOT(slotSyncFinished()));
+    QObject::connect(this, SIGNAL(syncFinished(const SyncResult &)),
+                     SLOT(slotSyncFinished(const SyncResult &)));
 
     _online = _networkMgr.isOnline();
     QObject::connect(&_networkMgr, SIGNAL(onlineStateChanged(bool)), SLOT(slotOnlineChanged(bool)));
@@ -153,7 +153,7 @@ void Folder::slotSyncStarted()
     _openAction->setIcon(QIcon::fromTheme(FOLDER_SYNC_ICON));
 }
 
-void Folder::slotSyncFinished()
+void Folder::slotSyncFinished(const SyncResult &result)
 {
     _watcher->setEventsEnabled(true);
     _openAction->setIcon(QIcon::fromTheme(FOLDER_ICON));

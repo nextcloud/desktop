@@ -20,6 +20,8 @@
 #include <QString>
 #include <QStringList>
 
+#include "mirall/syncresult.h"
+
 class QAction;
 class QTimer;
 
@@ -102,7 +104,7 @@ protected:
 signals:
 
     void syncStarted();
-    void syncFinished();
+    void syncFinished(const SyncResult &result);
 
 protected:
     FolderWatcher *_watcher;
@@ -138,7 +140,7 @@ protected slots:
     void slotOpenFolder();
 
     void slotSyncStarted();
-    void slotSyncFinished();
+    void slotSyncFinished(const SyncResult &);
 };
 
 }

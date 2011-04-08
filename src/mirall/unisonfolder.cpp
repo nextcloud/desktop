@@ -122,7 +122,9 @@ void UnisonFolder::slotFinished(int exitCode, QProcess::ExitStatus exitStatus)
 
     _lastOutput.clear();
 
-    emit syncFinished();
+    emit syncFinished((exitCode != 0) ?
+                      SyncResult(SyncResult::Error)
+                      : SyncResult(SyncResult::Success));
 }
 
 void UnisonFolder::slotReadyReadStandardOutput()

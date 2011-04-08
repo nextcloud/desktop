@@ -12,33 +12,25 @@
  * for more details.
  */
 
-#include <QMutexLocker>
-#include <QProcess>
-#include "mirall/gitfolder.h"
+#include "mirall/syncresult.h"
 
-namespace Mirall {
-
-    GitFolder::GitFolder(const QString &alias,
-                         const QString &path,
-                         const QString &remote,
-                         QObject *parent)
-    : Folder(alias, path, parent)
-    , _remote(remote)
+namespace Mirall
 {
-    _syncProcess = new QProcess();
+
+SyncResult::SyncResult(SyncResult::Result result)
+    : _result(result)
+{
+
 }
 
-GitFolder::~GitFolder()
+SyncResult::Result SyncResult::result() const
+{
+    return _result;
+}
+
+
+SyncResult::~SyncResult()
 {
 }
 
-void GitFolder::startSync()
-{
-    QMutexLocker locker(&_syncMutex);
-    emit syncStarted();
-    emit syncFinished(SyncResult(SyncResult::Success));
-}
-
-} // ns
-
-#include "gitfolder.moc"
+} // ns mirall

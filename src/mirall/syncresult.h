@@ -23,9 +23,22 @@ namespace Mirall
 class SyncResult
 {
 public:
-    SyncResult();
+    enum Result
+    {
+        Success,
+        Error
+    };
+
+    SyncResult(Result result);
     ~SyncResult();
+
+    Result result() const;
+
 private:
+    Result _result;
+    /**
+     * when the sync tool support this...
+     */
     QStringList _deletedSource;
     QStringList _deletedDestination;
 };

@@ -126,7 +126,9 @@ void CSyncFolder::slotCSyncFinished()
         qDebug() << "    * csync thread finished successfully";
 
     // TODO delete thread
-    emit syncFinished();
+    emit syncFinished(_csync->error() ?
+                      SyncResult(SyncResult::Error)
+                      : SyncResult(SyncResult::Success));
 }
 
 } // ns

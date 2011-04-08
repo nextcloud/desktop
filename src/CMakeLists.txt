@@ -19,6 +19,7 @@ mirall/gitfolder.cpp
 mirall/inotify.cpp
 mirall/networklocation.cpp
 mirall/temporarydir.cpp
+mirall/syncresult.cpp
 mirall/unisonfolder.cpp
 )
 if(CSYNC_FOUND)

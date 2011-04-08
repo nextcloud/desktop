@@ -18,6 +18,8 @@
 #include <QApplication>
 #include <QHash>
 
+#include "mirall/syncresult.h"
+
 class QAction;
 class QMenu;
 class QSystemTrayIcon;
@@ -41,7 +43,7 @@ protected slots:
     void slotAddFolder();
 
     void slotFolderSyncStarted();
-    void slotFolderSyncFinished();
+    void slotFolderSyncFinished(const SyncResult &);
 
 protected:
 

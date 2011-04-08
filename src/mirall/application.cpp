@@ -223,7 +223,7 @@ void Application::setupFolderFromConfigFile(const QString &file) {
 
     _folderMap[file] = folder;
     QObject::connect(folder, SIGNAL(syncStarted()), SLOT(slotFolderSyncStarted()));
-    QObject::connect(folder, SIGNAL(syncFinished()), SLOT(slotFolderSyncFinished()));
+    QObject::connect(folder, SIGNAL(syncFinished(const SyncResult &)), SLOT(slotFolderSyncFinished(const SyncResult &)));
 }
 
 void Application::slotFolderSyncStarted()
@@ -235,12 +235,26 @@ void Application::slotFolderSyncStarted()
     }
 }
 
-void Application::slotFolderSyncFinished()
+void Application::slotFolderSyncFinished(const SyncResult &result)
 {
     _folderSyncCount--;
 
+    Folder *folder = dynamic_cast<Folder *>(sender());
+
     if (_folderSyncCount < 1) {
-        _tray->setIcon(QIcon::fromTheme(FOLDER_ICON));
+        if (result.result() == SyncResult::Success) {
+            _tray->setIcon(QIcon::fromTheme(FOLDER_ICON));
+            //_tray->showMessage(tr("Folder %1").arg(folder->alias()),
+            //                   tr("Synchronization successfull"),
+            //                   QSystemTrayIcon::Information);
+        }
+        else {
+            _tray->setIcon(QIcon::fromTheme(FOLDER_SYNC_ERROR));
+            _tray->showMessage(tr("Folder %1").arg(folder->alias()),
+                               tr("Synchronization did not finish successfully"),
+                               QSystemTrayIcon::Warning);
+        }
+
     }
 }
 
