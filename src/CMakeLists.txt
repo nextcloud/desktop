@@ -33,10 +33,10 @@ qt4_automoc(${mirall_SRCS})
 
 
 add_library(mirall_static STATIC ${mirall_SRCS} ${mirall_UI_SRCS})
+target_link_libraries(mirall_static ${QT_LIBRARIES})
 
 add_executable(mirall main.cpp)
 target_link_libraries(mirall mirall_static)
-target_link_libraries(mirall ${QT_LIBRARIES})
 if(CSYNC_FOUND)
   target_link_libraries(mirall ${CSYNC_LIBRARY})
 endif(CSYNC_FOUND)
