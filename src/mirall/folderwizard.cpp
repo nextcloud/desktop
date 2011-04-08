@@ -81,7 +81,7 @@ bool FolderWizardTargetPage::isComplete() const
     }
     else if (_ui.urlFolderRadioBtn->isChecked()) {
         QUrl url(_ui.urlFolderLineEdit->text());
-        return url.isValid() && (url.scheme() == "scp" || url.scheme() == "smb");
+        return url.isValid() && (url.scheme() == "sftp" || url.scheme() == "smb");
     }
     return false;
 }
