@@ -478,10 +478,8 @@ static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st) {
 
 
   /* set instruction for the statedb merger */
-  //st->instruction = CSYNC_INSTRUCTION_UPDATED;
-  st->instruction = CSYNC_INSTRUCTION_RENAME;
-  //maybe updated and change url to the new one
-  
+  st->instruction = CSYNC_INSTRUCTION_NONE;
+ 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: CONFLICT_BACKUP", duri);
 
   rc = 0;
