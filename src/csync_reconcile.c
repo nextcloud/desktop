@@ -241,16 +241,16 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
   if(cur->instruction ==CSYNC_INSTRUCTION_NONE)
   {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
-      "file: %s, instruction: %s",
-      cur->path,
-      csync_instruction_str(cur->instruction));
+      "%s file: %s",
+      csync_instruction_str(cur->instruction),
+      cur->path);
   }
   else
   {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-      "file: %s, instruction: %s",
-      cur->path,
-      csync_instruction_str(cur->instruction));
+      "%s file: %s",
+      csync_instruction_str(cur->instruction),
+      cur->path);
   }
   
   return 0;

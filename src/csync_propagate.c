@@ -343,7 +343,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   /* set instruction for the statedb merger */
   st->instruction = CSYNC_INSTRUCTION_UPDATED;
 
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: PUSHED", duri);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "PUSHED  file: %s", duri);
 
   rc = 0;
 
@@ -480,7 +480,7 @@ static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st) {
   /* set instruction for the statedb merger */
   st->instruction = CSYNC_INSTRUCTION_NONE;
  
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: CONFLICT_BACKUP", duri);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "BACKUP  file: %s", duri);
 
   rc = 0;
 
@@ -569,7 +569,7 @@ static int _csync_remove_file(CSYNC *ctx, csync_file_stat_t *st) {
   /* set instruction for the statedb merger */
   st->instruction = CSYNC_INSTRUCTION_DELETED;
 
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: REMOVED", uri);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "REMOVED file: %s", uri);
 
   rc = 0;
 out:
@@ -663,7 +663,7 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
   /* set instruction for the statedb merger */
   st->instruction = CSYNC_INSTRUCTION_UPDATED;
 
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "dir: %s, instruction: CREATED", uri);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "CREATED  dir: %s", uri);
   ctx->replica = replica_bak;
 
   rc = 0;
@@ -742,7 +742,7 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
   /* set instruction for the statedb merger */
   st->instruction = CSYNC_INSTRUCTION_UPDATED;
 
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "dir: %s, instruction: SYNCED", uri);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "SYNCED   dir: %s", uri);
   ctx->replica = replica_bak;
 
   rc = 0;
@@ -822,7 +822,7 @@ static int _csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
   /* set instruction for the statedb merger */
   st->instruction = CSYNC_INSTRUCTION_DELETED;
 
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "dir: %s, instruction: REMOVED", uri);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "REMOVED  dir: %s", uri);
 
   rc = 0;
 out:
@@ -880,7 +880,7 @@ static int _csync_propagation_cleanup(CSYNC *ctx) {
       st->instruction = CSYNC_INSTRUCTION_DELETED;
     }
 
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "dir: %s, instruction: CLEANUP", dir);
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "CLEANUP  dir: %s", dir);
 
     SAFE_FREE(dir);
   }
@@ -967,7 +967,7 @@ static int _csync_propagation_dir_visitor(void *obj, void *data) {
           }
           break;
         case CSYNC_INSTRUCTION_CONFLICT:
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"directory conflict");
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"directory attributes different");
           if (_csync_sync_dir(ctx, st) < 0) {
             goto err;
           }
