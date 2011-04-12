@@ -240,17 +240,37 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
   //only show these messages on log level trace 
   if(cur->instruction ==CSYNC_INSTRUCTION_NONE)
   {
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
-      "%s file: %s",
-      csync_instruction_str(cur->instruction),
-      cur->path);
+      if(cur->type == CSYNC_FTW_TYPE_DIR)
+      {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
+        "%s  dir: %s",
+        csync_instruction_str(cur->instruction),
+        cur->path);
+      }
+      else
+      {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
+        "%s file: %s",
+        csync_instruction_str(cur->instruction),
+        cur->path);   
+      }
   }
   else
   {
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-      "%s file: %s",
-      csync_instruction_str(cur->instruction),
-      cur->path);
+      if(cur->type == CSYNC_FTW_TYPE_DIR)
+      {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+        "%s  dir: %s",
+        csync_instruction_str(cur->instruction),
+        cur->path);
+      }
+      else
+      {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+        "%s file: %s",
+        csync_instruction_str(cur->instruction),
+        cur->path);   
+      }
   }
   
   return 0;
