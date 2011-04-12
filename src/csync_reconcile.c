@@ -235,11 +235,24 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
         break;
     }
   }
-
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+  
+  //hide instruction NONE messages when log level is set to debug, 
+  //only show these messages on log level trace 
+  if(cur->instruction ==CSYNC_INSTRUCTION_NONE)
+  {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
       "file: %s, instruction: %s",
       cur->path,
       csync_instruction_str(cur->instruction));
+  }
+  else
+  {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+      "file: %s, instruction: %s",
+      cur->path,
+      csync_instruction_str(cur->instruction));
+  }
+  
   return 0;
 }
 
