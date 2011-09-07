@@ -155,19 +155,19 @@ enum csync_instructions_e {
 };
 
 typedef struct csync_file_stat_s {
-  ino_t inode;
-  uid_t uid;
-  gid_t gid;
-  mode_t mode;
-  off_t size;
-  int nlink;
-  time_t modtime;
-  int type;
-  enum csync_instructions_e instruction;
-  uint64_t phash;
-  size_t pathlen;
-  char path[1];
-} csync_file_stat_t;
+  uint64_t phash;   /* u64 */
+  time_t modtime;   /* u64 */
+  off_t size;       /* u64 */
+  size_t pathlen;   /* u64 */
+  ino_t inode;      /* u64 */
+  uid_t uid;        /* u32 */
+  gid_t gid;        /* u32 */
+  mode_t mode;      /* u32 */
+  int nlink;        /* u32 */
+  int type;         /* u32 */
+  enum csync_instructions_e instruction; /* u32 */
+  char path[1]; /* u8 */
+} csync_file_stat_t __attribute__ ((packed));
 
 /**
  * }@
