@@ -2,6 +2,7 @@ project(modules C)
 
 find_package(Libsmbclient REQUIRED)
 find_package(LibSSH 0.4.0)
+find_package(Neon)
 
 set(PLUGIN_VERSION_INSTALL_DIR "${PLUGIN_INSTALL_DIR}-${LIBRARY_SOVERSION}")
 
@@ -22,6 +23,10 @@ set(SMB_PLUGIN
 
 set(SFTP_PLUGIN
   csync_sftp
+)
+
+set(WEBDAV_PLUGIN
+    csync_webdav
 )
 
 include_directories(
@@ -53,6 +58,17 @@ install(
 )
 endif (LIBSSH_FOUND)
 
+if (NEON_FOUND)
+    macro_add_plugin(${WEBDAV_PLUGIN} csync_webdav.c)
+    target_link_libraries(${WEBDAV_PLUGIN} ${CSTDLIB_LIBRARY} ${NEON_LIBRARY})
+
+    install(
+        TARGETS
+        ${WEBDAV_PLUGIN}
+        DESTINATION
+        ${PLUGIN_VERSION_INSTALL_DIR}
+        )
+endif (NEON_FOUND)
 
 # create test file as bad plugin for the vio testcase
 file(WRITE
