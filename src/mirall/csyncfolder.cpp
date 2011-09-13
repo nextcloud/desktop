@@ -57,7 +57,12 @@ void CSyncThread::run()
     if (error())
         return;
 
+#if LIBCSYNC_VERSION_INT >= CSYNC_VERSION_INT(0, 45, 0)
+    csync_enable_conflictcopys(csync);
+#endif
+
     _error = csync_init(csync);
+
     if (error())
         goto cleanup;
 
