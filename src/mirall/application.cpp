@@ -28,6 +28,9 @@
 #include "mirall/folderwizard.h"
 #include "mirall/networklocation.h"
 #include "mirall/unisonfolder.h"
+#include "mirall/sitecopyfolder.h"
+#include "mirall/sitecopyconfig.h"
+
 #ifdef WITH_CSYNC
 #include "mirall/csyncfolder.h"
 #endif
@@ -133,8 +136,7 @@ void Application::slotAddFolder()
 
         if (_folderWizard->field("local?").toBool()) {
             settings.setValue("backend:csync/secondPath", _folderWizard->field("targetLocalFolder"));
-        }
-        else if (_folderWizard->field("remote?").toBool()) {
+        } else if (_folderWizard->field("remote?").toBool()) {
             settings.setValue("backend:csync/secondPath", _folderWizard->field("targetURLFolder"));
             bool onlyOnline = _folderWizard->field("onlyOnline?").toBool();
             settings.setValue("folder/onlyOnline", onlyOnline);
@@ -146,9 +148,22 @@ void Application::slotAddFolder()
                     settings.setValue("folder/onlyOnline", true);
                 }
             }
-        }
-        else
-        {
+        } else if( _folderWizard->field("OC?").toBool()) {
+            settings.setValue("folder/backend", "sitecopy");
+            settings.setValue("backend:sitecopy/targetPath", _folderWizard->field("targetOCFolder"));
+
+            settings.setValue("backend:sitecopy/url",    _folderWizard->field("OCUrl"));
+            settings.setValue("backend:sitecopy/user",   _folderWizard->field("OCUser"));
+            settings.setValue("backend:sitecopy/passwd", _folderWizard->field("OCPasswd"));
+
+            qDebug() << "Now writing sitecopy config " << _folderWizard->field("OCSiteAlias").toString(); ;
+            SitecopyConfig scConfig;
+            scConfig.writeSiteConfig( _folderWizard->field("sourceFolder").toString(), /* local path */
+                                      _folderWizard->field("OCSiteAlias").toString(),  /* site alias */
+                                      _folderWizard->field("OCUrl").toString(),        /* site URL   */
+                                      _folderWizard->field("OCUser").toString(),
+                                      _folderWizard->field("OCPasswd").toString() );
+        } else {
             qWarning() << "* Folder not local and note remote?";
             return;
         }
@@ -180,9 +195,10 @@ void Application::setupFolderFromConfigFile(const QString &file) {
 
     qDebug() << "  ` -> setting up:" << file;
     QSettings settings(folderConfigPath() + "/" + file, QSettings::IniFormat);
+    qDebug() << "    -> file path: " + settings.fileName();
 
     if (!settings.contains("folder/path")) {
-        qWarning() << "    `->" << file << "is not a valid folder configuration";
+        qWarning() << "   `->" << file << "is not a valid folder configuration";
         return;
     }
 
@@ -197,7 +213,16 @@ void Application::setupFolderFromConfigFile(const QString &file) {
 
     QVariant backend = settings.value("folder/backend");
     if (!backend.isNull()) {
-        if (backend.toString() == "unison") {
+        if( backend.toString() == "sitecopy") {
+
+            SiteCopyFolder *scf = new SiteCopyFolder( file,
+                                                      path.toString(),
+                                                      QString(),
+                                                      this);
+            folder = scf;
+
+        }
+        else if (backend.toString() == "unison") {
             folder = new UnisonFolder(file,
                                       path.toString(),
                                       settings.value("backend:unison/secondPath").toString(),

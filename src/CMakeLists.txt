@@ -6,6 +6,8 @@ include(${QT_USE_FILE})
 set(mirall_UI
 mirall/folderwizardsourcepage.ui
 mirall/folderwizardtargetpage.ui
+mirall/folderwizardnetworkpage.ui
+mirall/folderwizardowncloudpage.ui
 )
 qt4_wrap_ui(mirall_UI_SRCS ${mirall_UI})
 
@@ -21,6 +23,8 @@ mirall/networklocation.cpp
 mirall/temporarydir.cpp
 mirall/syncresult.cpp
 mirall/unisonfolder.cpp
+mirall/sitecopyfolder.cpp
+mirall/sitecopyconfig.cpp
 )
 if(CSYNC_FOUND)
   set(mirall_SRCS

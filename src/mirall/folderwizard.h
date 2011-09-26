@@ -19,6 +19,9 @@
 
 #include "ui_folderwizardsourcepage.h"
 #include "ui_folderwizardtargetpage.h"
+#include "ui_folderwizardnetworkpage.h"
+#include "ui_folderwizardowncloudpage.h"
+
 
 namespace Mirall {
 
@@ -72,6 +75,37 @@ private:
     Ui_FolderWizardTargetPage _ui;
 };
 
+class FolderWizardNetworkPage : public QWizardPage
+{
+    Q_OBJECT
+public:
+    FolderWizardNetworkPage();
+    ~FolderWizardNetworkPage();
+
+    virtual bool isComplete() const;
+
+protected slots:
+
+private:
+    Ui_FolderWizardNetworkPage _ui;
+};
+
+class FolderWizardOwncloudPage : public QWizardPage
+{
+    Q_OBJECT
+public:
+    FolderWizardOwncloudPage();
+    ~FolderWizardOwncloudPage();
+
+    virtual bool isComplete() const;
+    void initializePage();
+
+protected slots:
+
+private:
+    Ui_FolderWizardOwncloudPage _ui;
+
+};
 
 /**
  * Available fields registered:
@@ -91,7 +125,9 @@ public:
 
     enum {
         Page_Source,
-        Page_Target
+        Page_Target,
+        Page_Network,
+        Page_Owncloud
     };
 
     FolderWizard(QWidget *parent = 0L);

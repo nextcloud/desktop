@@ -20,6 +20,8 @@
 #include <QValidator>
 #include <QWizardPage>
 
+#include <stdlib.h>
+
 #include "mirall/folderwizard.h"
 
 namespace Mirall
@@ -62,12 +64,10 @@ FolderWizardTargetPage::FolderWizardTargetPage()
 
     registerField("local?", _ui.localFolderRadioBtn);
     registerField("remote?", _ui.urlFolderRadioBtn);
-
+    registerField("OC?", _ui.OCRadioBtn);
     registerField("targetLocalFolder", _ui.localFolder2LineEdit);
     registerField("targetURLFolder", _ui.urlFolderLineEdit);
-
-    registerField("onlyOnline?", _ui.checkBoxOnlyOnline);
-    registerField("onlyThisLAN?", _ui.checkBoxOnlyThisLAN);
+    registerField("targetOCFolder", _ui.OCFolderLineEdit);
 }
 
 FolderWizardTargetPage::~FolderWizardTargetPage()
@@ -78,10 +78,11 @@ bool FolderWizardTargetPage::isComplete() const
 {
     if (_ui.localFolderRadioBtn->isChecked()) {
         return QFileInfo(_ui.localFolder2LineEdit->text()).isDir();
-    }
-    else if (_ui.urlFolderRadioBtn->isChecked()) {
+    } else if (_ui.urlFolderRadioBtn->isChecked()) {
         QUrl url(_ui.urlFolderLineEdit->text());
         return url.isValid() && (url.scheme() == "sftp" || url.scheme() == "smb");
+    } else if( _ui.OCRadioBtn->isChecked()) {
+        return true;
     }
     return false;
 }
@@ -127,11 +128,9 @@ void FolderWizardTargetPage::slotToggleItems()
 
     enabled = _ui.urlFolderRadioBtn->isChecked();
     _ui.urlFolderLineEdit->setEnabled(enabled);
-    _ui.checkBoxOnlyOnline->setEnabled(enabled);
-    _ui.checkBoxOnlyThisLAN->setEnabled(enabled);
 
-    _ui.checkBoxOnlyThisLAN->setEnabled(_ui.checkBoxOnlyOnline->isEnabled() &&
-                                        _ui.checkBoxOnlyOnline->isChecked());
+    enabled = _ui.OCRadioBtn->isChecked();
+    _ui.OCFolderLineEdit->setEnabled(enabled);
 }
 
 void FolderWizardTargetPage::on_localFolder2ChooseBtn_clicked()
@@ -144,6 +143,53 @@ void FolderWizardTargetPage::on_localFolder2ChooseBtn_clicked()
     }
 }
 
+FolderWizardNetworkPage::FolderWizardNetworkPage()
+{
+    _ui.setupUi(this);
+    registerField("onlyNetwork*", _ui.checkBoxOnlyOnline);
+    registerField("onlyLocalNetwork*", _ui.checkBoxOnlyThisLAN );
+}
+
+FolderWizardNetworkPage::~FolderWizardNetworkPage()
+{
+}
+
+bool FolderWizardNetworkPage::isComplete() const
+{
+    return true;
+}
+
+FolderWizardOwncloudPage::FolderWizardOwncloudPage()
+{
+    _ui.setupUi(this);
+    registerField("OCUrl*",       _ui.lineEditOCUrl);
+    registerField("OCUser*",      _ui.lineEditOCUser );
+    registerField("OCPasswd",     _ui.lineEditOCPasswd);
+    registerField("OCSiteAlias*", _ui.lineEditOCAlias);
+}
+
+FolderWizardOwncloudPage::~FolderWizardOwncloudPage()
+{
+}
+
+void FolderWizardOwncloudPage::initializePage()
+{
+    _ui.lineEditOCAlias->setText( "Owncloud" );
+    _ui.lineEditOCUrl->setText( "http://localhost/owncloud" );
+    QString user( getenv("USER"));
+    _ui.lineEditOCUser->setText( user );
+}
+
+bool FolderWizardOwncloudPage::isComplete() const
+{
+
+    bool hasAlias = !(_ui.lineEditOCAlias->text().isEmpty());
+    QUrl u( _ui.lineEditOCUrl->text() );
+    bool hasUrl   = u.isValid();
+
+    return hasAlias && hasUrl;
+}
+
 /**
  * Folder wizard itself
  */
@@ -153,8 +199,10 @@ FolderWizard::FolderWizard(QWidget *parent)
 {
     setPage(Page_Source, new FolderWizardSourcePage());
     setPage(Page_Target, new FolderWizardTargetPage());
+    setPage(Page_Network, new FolderWizardNetworkPage());
+    setPage(Page_Owncloud, new FolderWizardOwncloudPage());
 }
 
-}
+} // end namespace
 
 #include "folderwizard.moc"
