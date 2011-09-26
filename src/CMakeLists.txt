@@ -8,6 +8,7 @@ mirall/folderwizardsourcepage.ui
 mirall/folderwizardtargetpage.ui
 mirall/folderwizardnetworkpage.ui
 mirall/folderwizardowncloudpage.ui
+mirall/statusdialog.ui
 )
 qt4_wrap_ui(mirall_UI_SRCS ${mirall_UI})
 
