@@ -30,6 +30,7 @@
 #include "mirall/unisonfolder.h"
 #include "mirall/sitecopyfolder.h"
 #include "mirall/sitecopyconfig.h"
+#include "mirall/statusdialog.h"
 
 #ifdef WITH_CSYNC
 #include "mirall/csyncfolder.h"
@@ -50,7 +51,7 @@ Application::Application(int argc, char **argv) :
     setQuitOnLastWindowClosed(false);
 
     _folderWizard = new FolderWizard();
-
+    _statusDialog = new StatusDialog();
     _folderConfigPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/folders";
 
     setupActions();
@@ -103,7 +104,18 @@ void Application::setupSystemTray()
 {
     _tray = new QSystemTrayIcon(this);
     _tray->setIcon(QIcon::fromTheme(FOLDER_ICON));
+
+    connect(_tray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+            SLOT(slotTrayClicked(QSystemTrayIcon::ActivationReason)));
+
     _tray->show();
+}
+
+void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
+{
+  if( reason == QSystemTrayIcon::Trigger ) {
+    _statusDialog->exec();
+  }
 }
 
 void Application::setupContextMenu()

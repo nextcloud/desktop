@@ -17,6 +17,7 @@
 
 #include <QApplication>
 #include <QHash>
+#include <QSystemTrayIcon>
 
 #include "mirall/syncresult.h"
 
@@ -29,6 +30,7 @@ namespace Mirall {
 
 class Folder;
 class FolderWizard;
+class StatusDialog;
 
 class Application : public QApplication
 {
@@ -61,6 +63,9 @@ protected:
     // configuration
     void setupFolderFromConfigFile(const QString &filename);
 
+protected slots:
+    void slotTrayClicked( QSystemTrayIcon::ActivationReason );
+
 private:
     // configuration file -> folder
     QHash<QString, Folder *> _folderMap;
@@ -77,7 +82,7 @@ private:
 
     // tray's menu
     QMenu *_contextMenu;
-
+    StatusDialog *_statusDialog;
 };
 
 } // namespace Mirall

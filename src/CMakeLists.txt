@@ -25,6 +25,7 @@ mirall/syncresult.cpp
 mirall/unisonfolder.cpp
 mirall/sitecopyfolder.cpp
 mirall/sitecopyconfig.cpp
+mirall/statusdialog.cpp
 )
 if(CSYNC_FOUND)
   set(mirall_SRCS

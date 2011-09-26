@@ -3,6 +3,8 @@
 
 #include <QDialog>
 
+namespace Mirall {
+
 class StatusDialog : public QDialog
 {
     Q_OBJECT
@@ -14,5 +16,5 @@ signals:
 public slots:
 
 };
-
+};
 #endif // STATUSDIALOG_H
