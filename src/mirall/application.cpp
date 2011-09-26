@@ -174,7 +174,8 @@ void Application::slotAddFolder()
                                       alias, /* _folderWizard->field("OCSiteAlias").toString(),  site alias */
                                       _folderWizard->field("OCUrl").toString(),        /* site URL   */
                                       _folderWizard->field("OCUser").toString(),
-                                      _folderWizard->field("OCPasswd").toString() );
+                                      _folderWizard->field("OCPasswd").toString(),
+                                      _folderWizard->field("targetOCFolder").toString() );
         } else {
             qWarning() << "* Folder not local and note remote?";
             return;

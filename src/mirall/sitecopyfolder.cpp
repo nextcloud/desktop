@@ -115,6 +115,17 @@ void SiteCopyFolder::slotFinished(int exitCode, QProcess::ExitStatus exitStatus)
         emit( syncFinished( SyncResult( SyncResult::Error )));
     }
 
+    if( exitCode > 0 ) {
+      // error has happened.
+      QString out( _lastOutput );
+      SyncResult res( SyncResult::Error );
+      res.setErrorString( out );
+      qDebug() << "An error happened: " << out;
+      emit syncFinished( res );
+      return;
+    }
+
+
     if( _NextStep == Sync ) {
       startSiteCopy( "--sync", Finish ); // sync local with cloud data.
     } else if( _NextStep == Update ) {
@@ -212,7 +223,7 @@ void SiteCopyFolder::slotReadyReadStandardOutput()
         }
         emit statusString( _StatusString );
 
-    } else if( _NextStep == DisplayStatus ) {
+    } else { /* if( _NextStep == DisplayStatus ) { */
         _lastOutput += arr;
     }
 
@@ -223,7 +234,7 @@ void SiteCopyFolder::slotReadyReadStandardOutput()
 void SiteCopyFolder::slotReadyReadStandardError()
 {
     QTextStream stream(&_lastOutput);
-    stream << _SiteCopy->readAllStandardError();;
+    stream << _SiteCopy->readAllStandardError();
 }
 
 void SiteCopyFolder::slotStateChanged(QProcess::ProcessState state)

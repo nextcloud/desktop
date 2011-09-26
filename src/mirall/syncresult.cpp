@@ -28,6 +28,16 @@ SyncResult::Result SyncResult::result() const
     return _result;
 }
 
+void SyncResult::setErrorString( const QString& err )
+{
+  _errorMsg = err;
+}
+
+QString SyncResult::errorString() const
+{
+  return _errorMsg;
+}
+
 
 SyncResult::~SyncResult()
 {

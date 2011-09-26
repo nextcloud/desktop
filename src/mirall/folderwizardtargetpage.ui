@@ -170,7 +170,7 @@
         <item row="5" column="2">
          <widget class="QLineEdit" name="OCFolderLineEdit">
           <property name="placeholderText">
-           <string>Sync</string>
+           <string>Sync-directory</string>
           </property>
          </widget>
         </item>

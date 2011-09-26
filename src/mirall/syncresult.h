@@ -31,6 +31,8 @@ public:
 
     SyncResult(Result result);
     ~SyncResult();
+    void setErrorString( const QString& );
+    QString errorString() const;
 
     Result result() const;
 
@@ -41,6 +43,7 @@ private:
      */
     QStringList _deletedSource;
     QStringList _deletedDestination;
+    QString     _errorMsg;
 };
 
 }

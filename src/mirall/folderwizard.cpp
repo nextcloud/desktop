@@ -19,7 +19,7 @@
 #include <QUrl>
 #include <QValidator>
 #include <QWizardPage>
-
+#include <QDir>
 #include <stdlib.h>
 
 #include "mirall/folderwizard.h"
@@ -31,7 +31,9 @@ FolderWizardSourcePage::FolderWizardSourcePage()
 {
     _ui.setupUi(this);
     registerField("sourceFolder*", _ui.localFolderLineEdit);
+    _ui.localFolderLineEdit->setText( QString( "%1/%2").arg( QDir::homePath() ).arg("/Owncloud" ) );
     registerField("alias*", _ui.aliasLineEdit);
+    _ui.aliasLineEdit->setText( QString::fromLatin1("Owncloud") );
 }
 
 FolderWizardSourcePage::~FolderWizardSourcePage()
@@ -62,16 +64,17 @@ FolderWizardTargetPage::FolderWizardTargetPage()
 {
     _ui.setupUi(this);
 
-    registerField("local?", _ui.localFolderRadioBtn);
-    registerField("remote?", _ui.urlFolderRadioBtn);
-    registerField("OC?", _ui.OCRadioBtn);
+    registerField("local?",            _ui.localFolderRadioBtn);
+    registerField("remote?",           _ui.urlFolderRadioBtn);
+    registerField("OC?",               _ui.OCRadioBtn);
     registerField("targetLocalFolder", _ui.localFolder2LineEdit);
-    registerField("targetURLFolder", _ui.urlFolderLineEdit);
-    registerField("targetOCFolder", _ui.OCFolderLineEdit);
+    registerField("targetURLFolder",   _ui.urlFolderLineEdit);
+    registerField("targetOCFolder",    _ui.OCFolderLineEdit);
 }
 
 FolderWizardTargetPage::~FolderWizardTargetPage()
 {
+
 }
 
 bool FolderWizardTargetPage::isComplete() const

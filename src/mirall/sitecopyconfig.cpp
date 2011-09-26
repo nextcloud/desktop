@@ -23,7 +23,8 @@ SitecopyConfig::SitecopyConfig()
 
 void SitecopyConfig::writeSiteConfig( const QString& localPath,
                                       const QString& siteAlias, const QString& url,
-                                      const QString& user, const QString& passwd )
+                                      const QString& user, const QString& passwd,
+                                      const QString& remoteFolder )
 {
   parseSiteConfig( );
   qDebug() << "*** Writing Site Alias " << siteAlias;
@@ -47,10 +48,13 @@ void SitecopyConfig::writeSiteConfig( const QString& localPath,
   ocDefs["server"]   = host;
   ocDefs["protocol"] = "webdav";
   ocDefs["local"]    = localPath;
-  ocDefs["remote"]   = path + "/files/webdav.php";
+  QString webdavBase = "/files/webdav.php";
+  if( !remoteFolder.isEmpty() ) {
+    webdavBase += "/" + remoteFolder;
+  }
+  ocDefs["remote"]   = path + webdavBase;
   ocDefs["password"] = passwd;
 
-  // QString user( getenv("USER"));
   ocDefs["username"] = user;
   _Sites.insert( siteAlias, ocDefs );
 
@@ -70,20 +74,20 @@ void SitecopyConfig::writeSiteConfig( const QString& localPath,
       out << "  " << configKey << " " << configs[configKey] << '\n';
       qDebug() << "  Setting: " << configKey << ": " << configs[configKey];
     }
-     out << '\n';
-   }
-   configFile.close();
-   configFile.setPermissions( QFile::ReadOwner | QFile::WriteOwner );
+    out << '\n';
+  }
+  configFile.close();
+  configFile.setPermissions( QFile::ReadOwner | QFile::WriteOwner );
 
-   // check if the .sitecopy dir is there, if not, create
-   if( !QFile::exists( QDir::homePath() + "/.sitecopy" ) ) {
-     QDir home( QDir::homePath() );
-     if( home.mkdir( ".sitecopy" ) ) {
-       QFile::setPermissions( QDir::homePath() + "/.sitecopy",
-                              QFile::ReadOwner | QFile::WriteOwner | QFile::ExeUser );
-     }
-   }
- }
+  // check if the .sitecopy dir is there, if not, create
+  if( !QFile::exists( QDir::homePath() + "/.sitecopy" ) ) {
+    QDir home( QDir::homePath() );
+    if( home.mkdir( ".sitecopy" ) ) {
+      QFile::setPermissions( QDir::homePath() + "/.sitecopy",
+                             QFile::ReadOwner | QFile::WriteOwner | QFile::ExeUser );
+    }
+  }
+}
 
 bool SitecopyConfig::parseSiteConfig( )
 {

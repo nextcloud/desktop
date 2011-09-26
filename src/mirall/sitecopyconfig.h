@@ -24,7 +24,8 @@ public:
 
     void writeSiteConfig( const QString& localPath, const QString& siteAlias,
                           const QString& host, const QString& user,
-                          const QString& passwd );
+                          const QString& passwd,
+                          const QString& remoteFolder = QString() );
     bool parseSiteConfig();
 
 private:
