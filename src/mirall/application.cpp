@@ -166,12 +166,12 @@ void Application::slotAddFolder()
 
             settings.setValue("backend:sitecopy/url",    _folderWizard->field("OCUrl"));
             settings.setValue("backend:sitecopy/user",   _folderWizard->field("OCUser"));
-            settings.setValue("backend:sitecopy/passwd", _folderWizard->field("OCPasswd"));
+            settings.setValue("backend:sitecopy/alias",  _folderWizard->field("OCSiteAlias"));
 
             qDebug() << "Now writing sitecopy config " << _folderWizard->field("OCSiteAlias").toString(); ;
             SitecopyConfig scConfig;
             scConfig.writeSiteConfig( _folderWizard->field("sourceFolder").toString(), /* local path */
-                                      _folderWizard->field("OCSiteAlias").toString(),  /* site alias */
+                                      alias, /* _folderWizard->field("OCSiteAlias").toString(),  site alias */
                                       _folderWizard->field("OCUrl").toString(),        /* site URL   */
                                       _folderWizard->field("OCUser").toString(),
                                       _folderWizard->field("OCPasswd").toString() );

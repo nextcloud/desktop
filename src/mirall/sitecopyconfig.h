@@ -30,10 +30,10 @@ public:
 private:
     void processConfigLine( const QString& );
 
-    QHash<QString, QHash<QString, QString> > mSites;
-    QHash<QString, QString>                  mCurrSite;
-    QHash<QString, QStringList>              mChangesHash;
-    QString mCurrSiteName;
+    QHash<QString, QHash<QString, QString> > _Sites;
+    QHash<QString, QString>                  _CurrSite;
+    // QHash<QString, QStringList>              _ChangesHash;
+    QString _CurrSiteName;
 };
 };
 

@@ -26,31 +26,33 @@ void SitecopyConfig::writeSiteConfig( const QString& localPath,
                                       const QString& user, const QString& passwd )
 {
   parseSiteConfig( );
-  // now all configured sites are in the hash mSites.
-  foreach( QString site, mSites.keys() ) {
+  qDebug() << "*** Writing Site Alias " << siteAlias;
+
+  // now all configured sites are in the hash _Sites.
+  foreach( QString site, _Sites.keys() ) {
     qDebug() << "Known site: " << site;
   }
 
-  // check if there is already a cloudia site.
-  QHash<QString, QString> cloudiaDefs;
+  // check if there is already a oc site.
+  QHash<QString, QString> ocDefs;
 
-  if( mSites.contains( siteAlias ) ) {
-    cloudiaDefs = mSites[siteAlias];
+  if( _Sites.contains( siteAlias ) ) {
+    ocDefs = _Sites[siteAlias];
   }
   QUrl ocUrl( url );
   QString host = ocUrl.host();
   QString path = ocUrl.path();
   qDebug() << "Split url, host: " << host << " and path: " << path;
   // FIXME: Check if user settings are overwritten
-  cloudiaDefs["server"]   = host;
-  cloudiaDefs["protocol"] = "webdav";
-  cloudiaDefs["local"]    = localPath;
-  cloudiaDefs["remote"]   =  path + "/files/webdav.php";
-  cloudiaDefs["password"] = passwd;
+  ocDefs["server"]   = host;
+  ocDefs["protocol"] = "webdav";
+  ocDefs["local"]    = localPath;
+  ocDefs["remote"]   = path + "/files/webdav.php";
+  ocDefs["password"] = passwd;
 
   // QString user( getenv("USER"));
-  cloudiaDefs["username"] = user;
-  mSites.insert( siteAlias, cloudiaDefs );
+  ocDefs["username"] = user;
+  _Sites.insert( siteAlias, ocDefs );
 
   qDebug() << "** Now Writing!";
 
@@ -60,8 +62,8 @@ void SitecopyConfig::writeSiteConfig( const QString& localPath,
   }
   QTextStream out(&configFile);
 
-  foreach( QString site, mSites.keys() ) {
-    QHash<QString, QString> configs = mSites[site];
+  foreach( QString site, _Sites.keys() ) {
+    QHash<QString, QString> configs = _Sites[site];
     qDebug() << "Writing site: <" << site << ">";
     out << "site " << site << '\n';
     foreach( QString configKey, configs.keys() ) {
@@ -97,8 +99,8 @@ bool SitecopyConfig::parseSiteConfig( )
     QByteArray line = configFile.readLine();
     processConfigLine( line.simplified() );
   }
-  if( ! mCurrSiteName.isEmpty() ) {
-      mSites.insert(mCurrSiteName, mCurrSite);
+  if( ! _CurrSiteName.isEmpty() ) {
+      _Sites.insert(_CurrSiteName, _CurrSite);
   } else {
       qDebug() << "ERR: No current Site name found";
       return false;
@@ -121,23 +123,23 @@ void SitecopyConfig::processConfigLine( const QString& line )
 
   if( key == QString::fromLatin1("site") && !val.isEmpty() ) {
     qDebug() << "Found site " << val;
-    if( !mCurrSiteName.isEmpty() && !mCurrSite.isEmpty() ) {
+    if( !_CurrSiteName.isEmpty() && !_CurrSite.isEmpty() ) {
       // save to the sites hash first
-      mSites.insert( mCurrSiteName, mCurrSite );
-      mCurrSite.clear();
+      _Sites.insert( _CurrSiteName, _CurrSite );
+      _CurrSite.clear();
     }
     if( !val.isEmpty() ) {
-        mCurrSiteName = val;
+        _CurrSiteName = val;
         // new site entry.
-        if( mSites.contains( val ) ) {
-            mCurrSite = mSites[val];
+        if( _Sites.contains( val ) ) {
+            _CurrSite = _Sites[val];
         }
     } else {
         qDebug() << "Found empty site name, can not parse, fix manually!";
-        mCurrSiteName.clear();
+        _CurrSiteName.clear();
     }
   } else {
-    mCurrSite.insert( key, val );
+    _CurrSite.insert( key, val );
   }
 }
 

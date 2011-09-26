@@ -40,6 +40,9 @@ public:
 
     virtual bool isBusy() const;
 
+
+    QString siteCopyAlias() const;
+
 signals:
     void statusString( const QString& );
 
@@ -61,7 +64,8 @@ private:
 
     QByteArray _lastOutput;
     QString _StatusString;
-    SiteCopyState mNextStep;
+    SiteCopyState _NextStep;
+    QString _siteCopyAlias;
     QHash<QString, QStringList>              mChangesHash;
 
 };

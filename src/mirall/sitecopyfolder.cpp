@@ -60,6 +60,11 @@ bool SiteCopyFolder::isBusy() const
     return (_SiteCopy->state() != QProcess::NotRunning);
 }
 
+QString SiteCopyFolder::siteCopyAlias() const
+{
+  return _siteCopyAlias;
+}
+
 void SiteCopyFolder::startSync(const QStringList &pathList)
 {
     QMutexLocker locker(&_syncMutex);
@@ -86,8 +91,8 @@ void SiteCopyFolder::startSiteCopy( const QString& command, SiteCopyState nextSt
   QString programm = "/usr/bin/sitecopy";
   QStringList args;
   args << command << alias();
-  qDebug() << "** staring command " << command;
-  mNextStep  = nextState;
+  qDebug() << "** staring command " << args;
+  _NextStep  = nextState;
   _lastOutput.clear();
 
   _SiteCopy->start( programm, args );
@@ -110,20 +115,20 @@ void SiteCopyFolder::slotFinished(int exitCode, QProcess::ExitStatus exitStatus)
         emit( syncFinished( SyncResult( SyncResult::Error )));
     }
 
-    if( mNextStep == Sync ) {
+    if( _NextStep == Sync ) {
       startSiteCopy( "--sync", Finish ); // sync local with cloud data.
-    } else if( mNextStep == Update ) {
+    } else if( _NextStep == Update ) {
       startSiteCopy( "--update", Finish ); // update from owncloud
-    } else if( mNextStep == Finish ) {
+    } else if( _NextStep == Finish ) {
       qDebug() << "Finished!";
 
       emit syncFinished((exitCode == -1 ) ?
                         SyncResult(SyncResult::Error)
                         : SyncResult(SyncResult::Success));
       // mLocalChangesSeen = false;
-    } else if( mNextStep == Status ) {
+    } else if( _NextStep == Status ) {
       startSiteCopy( "--flatlist", DisplayStatus );
-    } else if( mNextStep == DisplayStatus ) {
+    } else if( _NextStep == DisplayStatus ) {
         if( exitCode == 1 ) {
             qDebug() << "Exit-Code: Sync Needed!";
             analyzeStatus();
@@ -193,7 +198,7 @@ void SiteCopyFolder::slotReadyReadStandardOutput()
 {
     QByteArray arr = _SiteCopy->readAllStandardOutput();
 
-    if( mNextStep == Finish ) {
+    if( _NextStep == Finish ) {
         QTextCodec *codec = QTextCodec::codecForName("UTF-8");
         // render the output to status line
         QString string = codec->toUnicode( arr );
@@ -207,7 +212,7 @@ void SiteCopyFolder::slotReadyReadStandardOutput()
         }
         emit statusString( _StatusString );
 
-    } else if( mNextStep == DisplayStatus ) {
+    } else if( _NextStep == DisplayStatus ) {
         _lastOutput += arr;
     }
 
