@@ -31,6 +31,7 @@
 #include "mirall/sitecopyfolder.h"
 #include "mirall/sitecopyconfig.h"
 #include "mirall/statusdialog.h"
+#include "mirall/owncloudwizard.h"
 
 #ifdef WITH_CSYNC
 #include "mirall/csyncfolder.h"
@@ -51,6 +52,7 @@ Application::Application(int argc, char **argv) :
     setQuitOnLastWindowClosed(false);
 
     _folderWizard = new FolderWizard();
+    _owncloudWizard = new OwncloudWizard();
     _statusDialog = new StatusDialog();
     _folderConfigPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/folders";
 
@@ -114,7 +116,12 @@ void Application::setupSystemTray()
 void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
 {
   if( reason == QSystemTrayIcon::Trigger ) {
-    _statusDialog->exec();
+    if( _folderMap.isEmpty() ) {
+      qDebug() << "No configured folders yet, start the Owncloud integration dialog.";
+      _owncloudWizard->exec();
+    } else {
+      _statusDialog->exec();
+    }
   }
 }
 

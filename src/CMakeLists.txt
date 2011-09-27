@@ -9,7 +9,12 @@ mirall/folderwizardtargetpage.ui
 mirall/folderwizardnetworkpage.ui
 mirall/folderwizardowncloudpage.ui
 mirall/statusdialog.ui
+mirall/owncloudwizardselecttypepage.ui
+mirall/createanowncloudpage.ui
+mirall/owncloudftpaccesspage.ui
+mirall/owncloudwizardresultpage.ui
 )
+
 qt4_wrap_ui(mirall_UI_SRCS ${mirall_UI})
 
 set(mirall_SRCS
@@ -27,6 +32,7 @@ mirall/unisonfolder.cpp
 mirall/sitecopyfolder.cpp
 mirall/sitecopyconfig.cpp
 mirall/statusdialog.cpp
+mirall/owncloudwizard.cpp
 )
 if(CSYNC_FOUND)
   set(mirall_SRCS
