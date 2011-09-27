@@ -29,8 +29,8 @@ namespace Mirall {
                                const QString &secondPath,
                                QObject *parent)
       : Folder(alias, path, parent),
-      _SiteCopy(new QProcess(this)),
-      _syncCount(0)
+        _SiteCopy(new QProcess(this)),
+        _syncCount(0)
 {
     QObject::connect(_SiteCopy, SIGNAL(readyReadStandardOutput()),
                      SLOT(slotReadyReadStandardOutput()));
@@ -112,15 +112,19 @@ void SiteCopyFolder::slotFinished(int exitCode, QProcess::ExitStatus exitStatus)
 
     if( exitCode == -1 ) {
         qDebug() << "Configuration Error, stop processing.";
-        emit( syncFinished( SyncResult( SyncResult::Error )));
+        SyncResult res( SyncResult::Error );
+        res.setErrorString( tr("Sitecopy configuration problem, check $HOME/.sitecopyrc"));
+        incrementErrorCount();
+        emit( syncFinished( res ));
     }
 
-    if( exitCode > 0 ) {
+    if( exitCode > 1 ) {
       // error has happened.
       QString out( _lastOutput );
       SyncResult res( SyncResult::Error );
       res.setErrorString( out );
       qDebug() << "An error happened: " << out;
+      incrementErrorCount();
       emit syncFinished( res );
       return;
     }
@@ -132,10 +136,7 @@ void SiteCopyFolder::slotFinished(int exitCode, QProcess::ExitStatus exitStatus)
       startSiteCopy( "--update", Finish ); // update from owncloud
     } else if( _NextStep == Finish ) {
       qDebug() << "Finished!";
-
-      emit syncFinished((exitCode == -1 ) ?
-                        SyncResult(SyncResult::Error)
-                        : SyncResult(SyncResult::Success));
+      emit syncFinished( SyncResult(SyncResult::Success) );
       // mLocalChangesSeen = false;
     } else if( _NextStep == Status ) {
       startSiteCopy( "--flatlist", DisplayStatus );
@@ -149,7 +150,7 @@ void SiteCopyFolder::slotFinished(int exitCode, QProcess::ExitStatus exitStatus)
             // No update needed
             emit syncFinished( SyncResult( SyncResult::Success ) );
         } else {
-            qDebug() << "Got an invalid exit code " << exitCode;
+            qDebug() << "Got an unknown exit code " << exitCode;
             emit syncFinished( SyncResult( SyncResult::Error ) );
         }
     }
@@ -162,7 +163,7 @@ void SiteCopyFolder::analyzeStatus()
   QString out( _lastOutput );
   qDebug() << "Output: " << out;
 
-  mChangesHash.clear();
+  _ChangesHash.clear();
 
   QStringList items;
   QString action;
@@ -175,7 +176,7 @@ void SiteCopyFolder::analyzeStatus()
     }
     if( l.startsWith( "sectend|")) {
       action = l.mid(8);
-      mChangesHash.insert( action, items );
+      _ChangesHash.insert( action, items );
       items.clear();
     }
     if( l.startsWith( "item|" )) {

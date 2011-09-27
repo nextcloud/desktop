@@ -30,6 +30,7 @@ namespace Mirall {
 
 Folder::Folder(const QString &alias, const QString &path, QObject *parent)
     : QObject(parent),
+      _errorCount(0),
       _path(path),
       _pollTimer(new QTimer(this)),
       _pollInterval(DEFAULT_POLL_INTERVAL_SEC),
@@ -112,13 +113,37 @@ void Folder::setPollInterval(int seconds)
     _pollInterval = seconds;
 }
 
+int Folder::errorCount()
+{
+  return _errorCount;
+}
+
+void Folder::resetErrorCount()
+{
+  _errorCount = 0;
+}
+
+void Folder::incrementErrorCount()
+{
+  // if the error count gets higher than three, the interval timer
+  // of the watcher is doubled.
+  _errorCount++;
+  if( _errorCount > 1 ) {
+    int interval = _watcher->eventInterval();
+    int newInt = 2*interval;
+    qDebug() << "Set new watcher interval to " << newInt;
+    _watcher->setEventInterval( newInt );
+    _errorCount = 0;
+  }
+}
+
 void Folder::evaluateSync(const QStringList &pathList)
 {
-    if (!_online && onlyOnlineEnabled()) {
-        qDebug() << "*" << alias() << "sync skipped, not online";
-        return;
-    }
-    startSync(pathList);
+  if (!_online && onlyOnlineEnabled()) {
+    qDebug() << "*" << alias() << "sync skipped, not online";
+    return;
+  }
+  startSync(pathList);
 }
 
 void Folder::slotPollTimerTimeout()

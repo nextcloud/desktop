@@ -88,6 +88,16 @@ public:
     void setOnlyThisLANEnabled(bool enabled);
 
 
+    /**
+      * error counter, stop syncing after the counter reaches a certain
+      * number.
+      */
+    int errorCount();
+
+    void resetErrorCount();
+
+    void incrementErrorCount();
+
 protected:
     /**
      * The minimum amounts of seconds to wait before
@@ -108,6 +118,7 @@ signals:
 
 protected:
     FolderWatcher *_watcher;
+  int _errorCount;
 
 private:
 

@@ -62,11 +62,11 @@ private:
     QProcess *_SiteCopy;
     int _syncCount;
 
-    QByteArray _lastOutput;
-    QString _StatusString;
+    QByteArray    _lastOutput;
+    QString       _StatusString;
     SiteCopyState _NextStep;
-    QString _siteCopyAlias;
-    QHash<QString, QStringList>              mChangesHash;
+    QString       _siteCopyAlias;
+    QHash<QString, QStringList> _ChangesHash;
 
 };
 
