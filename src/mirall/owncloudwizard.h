@@ -37,6 +37,7 @@ public:
 
   virtual bool isComplete() const;
   virtual void initializePage();
+  int nextId() const;
 
 private:
   Ui_OwncloudWizardSelectTypePage _ui;
@@ -52,7 +53,7 @@ public:
 
   virtual bool isComplete() const;
   virtual void initializePage();
-
+  virtual int nextId() const;
 private:
   Ui_CreateAnOwncloudPage _ui;
 
@@ -89,6 +90,9 @@ public:
   virtual bool isComplete() const;
   virtual void initializePage();
 
+public slots:
+  void appendResultText( const QString& );
+
 private:
   Ui_OwncloudWizardResultPage _ui;
 
@@ -112,6 +116,15 @@ public:
     };
 
     OwncloudWizard(QWidget *parent = 0L);
+
+public slots:
+    void appendToResultWidget( const QString& );
+    void slotCurrentPageChanged( int );
+
+signals:
+    void connectToOCUrl( const QString& );
+    void installOCServer();
+
 };
 
 
