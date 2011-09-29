@@ -1,5 +1,6 @@
 #include <QtCore>
 #include <QProcess>
+#include <QMessageBox>
 
 #include "owncloudsetup.h"
 
@@ -60,15 +61,12 @@ void OwncloudSetup::slotCreateOCLocalhost()
 
   qDebug() << "Install OC on localhost";
 
-  const QString bin( "/usr/bin/owncloud-admin" );
   QStringList args;
 
   args << "install";
   args << "--server-type" << "local";
   args << "--root_helper" << "kdesu -c";
-
-  _process->start( bin, args );
-
+  runOwncloudAdmin( args );
 }
 
 void OwncloudSetup::slotInstallOCServer()
@@ -85,18 +83,31 @@ void OwncloudSetup::slotInstallOCServer()
 
   qDebug() << "Install OC on " << server << " as user " << user;
 
-  const QString bin( "/usr/bin/owncloud-admin" );
   QStringList args;
   args << "install";
   args << "--server-type" << "ftp";
   args << "--server"   << server;
   args << "--user"     << user;
-  args << "--password" << passwd;
+  if( ! passwd.isEmpty() ) {
+    args << "--password" << passwd;
+  }
   if( !dir.isEmpty() ) {
     args << "--ftpdir" << dir;
   }
-  _process->start( bin, args );
+  runOwncloudAdmin( args );
 }
+
+void OwncloudSetup::runOwncloudAdmin( const QStringList& args )
+{
+  const QString bin("/usr/bin/owncloud-admin");
+
+  if( checkOwncloudAdmin( bin )) {
+    _process->start( bin, args );
+  } else {
+    slotFinished( 1, QProcess::NormalExit );
+  }
+}
+
 
 void OwncloudSetup::slotReadyReadStandardOutput()
 {
@@ -133,9 +144,9 @@ void OwncloudSetup::slotFinished( int res, QProcess::ExitStatus )
   _ocWizard->button( QWizard::FinishButton )->setEnabled( true );
 
   if( res ) {
-    _ocWizard->appendToResultWidget( tr("Installation of ownCloud failed!") );
+    _ocWizard->appendToResultWidget( tr("<font color=\"red\">Installation of ownCloud failed!</font>") );
   } else {
-    _ocWizard->appendToResultWidget( tr("Installation of ownCloud succeeded!") );
+    _ocWizard->appendToResultWidget( tr("<font color=\"green\">Installation of ownCloud succeeded!</font>") );
   }
 }
 
@@ -144,6 +155,17 @@ void OwncloudSetup::startWizard( )
   _ocWizard->exec();
 }
 
+bool OwncloudSetup::checkOwncloudAdmin( const QString& bin )
+{
+  QFileInfo fi( bin );
+  qDebug() << "checking owncloud-admin " << bin;
+  if( ! (fi.exists() && fi.isExecutable() ) ) {
+    _ocWizard->appendToResultWidget( tr("The owncloud admin script can not be found.\n"
+      "Setup can not be done.") );
+      return false;
+  }
+  return true;
 }
 
+}
 #include "owncloudsetup.moc"

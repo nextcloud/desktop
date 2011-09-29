@@ -41,6 +41,9 @@ protected slots:
   void slotCreateOCLocalhost();
 
 private:
+  bool checkOwncloudAdmin( const QString& );
+  void runOwncloudAdmin( const QStringList& );
+
   OwncloudWizard *_ocWizard;
   QProcess       *_process;
 };
