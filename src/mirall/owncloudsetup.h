@@ -19,23 +19,26 @@ public:
   void startWizard( );
 
   void installServer();
+
+  bool isBusy();
+
 signals:
 
 public slots:
 
 protected slots:
   // QProcess related slots:
-  void readyReadStandardOutput();
-  void readReadStandardError();
+  void slotReadyReadStandardOutput();
+  void slotReadyReadStandardError();
   void slotStateChanged( QProcess::ProcessState );
   void slotError( QProcess::ProcessError );
   void slotStarted();
   void slotFinished( int, QProcess::ExitStatus );
-  void connectToOCUrl( const QString& );
 
   // wizard dialog signals
-  void slotInstallServer();
+  void slotInstallOCServer();
   void slotConnectToOCUrl( const QString& );
+  void slotCreateOCLocalhost();
 
 private:
   OwncloudWizard *_ocWizard;

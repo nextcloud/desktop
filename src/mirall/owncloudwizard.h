@@ -54,6 +54,9 @@ public:
   virtual bool isComplete() const;
   virtual void initializePage();
   virtual int nextId() const;
+
+  QString domain() const;
+
 private:
   Ui_CreateAnOwncloudPage _ui;
 
@@ -71,6 +74,7 @@ public:
 
   virtual bool isComplete() const;
   virtual void initializePage();
+  void setFTPUrl( const QString& );
 
 private:
   Ui_OwncloudFTPAccessPage _ui;
@@ -124,7 +128,7 @@ public slots:
 signals:
     void connectToOCUrl( const QString& );
     void installOCServer();
-
+    void installOCLocalhost();
 };
 
 

@@ -31,7 +31,7 @@ namespace Mirall {
 class Folder;
 class FolderWizard;
 class StatusDialog;
-class OwncloudWizard;
+class OwncloudSetup;
 
 class Application : public QApplication
 {
@@ -79,8 +79,8 @@ private:
     // counter tracking number of folders doing a sync
     int _folderSyncCount;
 
-    FolderWizard *_folderWizard;
-    OwncloudWizard *_owncloudWizard;
+    FolderWizard  *_folderWizard;
+    OwncloudSetup *_owncloudSetup;
 
     // tray's menu
     QMenu *_contextMenu;
