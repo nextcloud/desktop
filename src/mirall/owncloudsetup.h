@@ -22,6 +22,10 @@ public:
 
   bool isBusy();
 
+  void writeOwncloudConfig();
+
+  QString mirallConfigFile() const;
+
 signals:
 
 public slots:

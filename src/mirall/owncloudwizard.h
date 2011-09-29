@@ -129,6 +129,9 @@ signals:
     void connectToOCUrl( const QString& );
     void installOCServer();
     void installOCLocalhost();
+
+private:
+    QString _configFile;
 };
 
 

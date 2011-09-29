@@ -1,6 +1,7 @@
 #include <QtCore>
 #include <QProcess>
 #include <QMessageBox>
+#include <QDesktopServices>
 
 #include "owncloudsetup.h"
 
@@ -31,6 +32,7 @@ OwncloudSetup::OwncloudSetup( QObject *parent ) :
 
 
     _ocWizard = new OwncloudWizard();
+
     connect( _ocWizard, SIGNAL(connectToOCUrl( const QString& ) ),
              this, SLOT(slotConnectToOCUrl( const QString& )));
 
@@ -45,6 +47,9 @@ OwncloudSetup::OwncloudSetup( QObject *parent ) :
 void OwncloudSetup::slotConnectToOCUrl( const QString& url )
 {
   qDebug() << "Connect to url: " << url;
+  _ocWizard->setField("OCUrl", url );
+  _ocWizard->appendToResultWidget(tr("Connecting to ownCloud at %1").arg(url ));
+  slotFinished( 0, QProcess::NormalExit );
 }
 
 bool OwncloudSetup::isBusy()
@@ -67,6 +72,9 @@ void OwncloudSetup::slotCreateOCLocalhost()
   args << "--server-type" << "local";
   args << "--root_helper" << "kdesu -c";
   runOwncloudAdmin( args );
+
+  // define
+  _ocWizard->setField( "OCUrl", QString( "http://localhost/owncloud/") );
 }
 
 void OwncloudSetup::slotInstallOCServer()
@@ -95,6 +103,7 @@ void OwncloudSetup::slotInstallOCServer()
     args << "--ftpdir" << dir;
   }
   runOwncloudAdmin( args );
+  _ocWizard->setField( "OCUrl", QString( "%1/owncloud/").arg(_ocWizard->field("myOCDomain").toString() ));
 }
 
 void OwncloudSetup::runOwncloudAdmin( const QStringList& args )
@@ -146,15 +155,36 @@ void OwncloudSetup::slotFinished( int res, QProcess::ExitStatus )
   if( res ) {
     _ocWizard->appendToResultWidget( tr("<font color=\"red\">Installation of ownCloud failed!</font>") );
   } else {
+    // Successful installation. Write the config.
     _ocWizard->appendToResultWidget( tr("<font color=\"green\">Installation of ownCloud succeeded!</font>") );
+
+    writeOwncloudConfig();
   }
 }
 
-void OwncloudSetup::startWizard( )
+void OwncloudSetup::startWizard()
 {
   _ocWizard->exec();
 }
 
+QString OwncloudSetup::mirallConfigFile() const
+{
+  const QString dir = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/mirall.cfg";
+  return dir;
+}
+
+
+void OwncloudSetup::writeOwncloudConfig()
+{
+  qDebug() << "*** writing mirall config to " << mirallConfigFile();
+  QSettings settings( mirallConfigFile(), QSettings::IniFormat);
+  settings.setValue("ownCloud/url", _ocWizard->field("OCUrl").toString() );
+  settings.sync();
+}
+
+/*
+ *  method to check the if the owncloud admin script is existing
+ */
 bool OwncloudSetup::checkOwncloudAdmin( const QString& bin )
 {
   QFileInfo fi( bin );

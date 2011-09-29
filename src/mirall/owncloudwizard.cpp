@@ -33,6 +33,10 @@ OwncloudWizardSelectTypePage::OwncloudWizardSelectTypePage()
     registerField( "connectMyOC", _ui.connectMyOCRadioBtn );
     registerField( "createNewOC", _ui.createNewOCRadioBtn );
     registerField( "OCUrl",       _ui.OCUrlLineEdit );
+
+    connect( _ui.connectMyOCRadioBtn, SIGNAL(clicked()), SIGNAL(completeChanged()));
+    connect( _ui.createNewOCRadioBtn, SIGNAL(clicked()), SIGNAL(completeChanged()));
+    connect( _ui.OCUrlLineEdit, SIGNAL(textChanged(QString)), SIGNAL(completeChanged()));
 }
 
 OwncloudWizardSelectTypePage::~OwncloudWizardSelectTypePage()
@@ -55,7 +59,16 @@ int OwncloudWizardSelectTypePage::nextId() const
 
 bool OwncloudWizardSelectTypePage::isComplete() const
 {
-
+  if( _ui.connectMyOCRadioBtn->isChecked() ) {
+    // a valid url is needed.
+    QString u = _ui.OCUrlLineEdit->text();
+    QUrl url( u );
+    if( url.isValid() ) {
+      return true;
+    }
+    return false;
+  }
+  return true;
 }
 
 // ======================================================================
