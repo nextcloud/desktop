@@ -48,9 +48,12 @@ void SitecopyConfig::writeSiteConfig( const QString& localPath,
   ocDefs["server"]   = host;
   ocDefs["protocol"] = "webdav";
   ocDefs["local"]    = localPath;
-  QString webdavBase = "/files/webdav.php";
+  QString webdavBase = "files/webdav.php";
   if( !remoteFolder.isEmpty() ) {
     webdavBase += "/" + remoteFolder;
+  }
+  if( !path.endsWith( QChar('/')) ) {
+    webdavBase.prepend( QChar('/') );
   }
   ocDefs["remote"]   = path + webdavBase;
   if( ! passwd.isEmpty() ) {
