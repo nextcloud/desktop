@@ -21,6 +21,7 @@
 #include "ui_createanowncloudpage.h"
 #include "ui_owncloudftpaccesspage.h"
 #include "ui_owncloudwizardresultpage.h"
+#include "ui_owncloudcredentialspage.h"
 
 namespace Mirall {
 
@@ -62,6 +63,22 @@ private:
 
 };
 
+class OwncloudCredentialsPage: public QWizardPage
+{
+    Q_OBJECT
+public:
+  OwncloudCredentialsPage();
+  ~OwncloudCredentialsPage();
+
+  virtual bool isComplete() const;
+  virtual void initializePage();
+  virtual int nextId() const;
+
+
+private:
+  Ui_OwncloudCredentialsPage _ui;
+
+};
 /**
  * page to ask for the ftp credentials etc. for ftp install
  */
@@ -115,6 +132,7 @@ public:
     enum {
       Page_SelectType,
       Page_Create_OC,
+      Page_OC_Credentials,
       Page_FTP,
       Page_Install
     };

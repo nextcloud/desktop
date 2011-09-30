@@ -180,6 +180,9 @@ void OwncloudSetup::writeOwncloudConfig()
   qDebug() << "*** writing mirall config to " << mirallConfigFile();
   QSettings settings( mirallConfigFile(), QSettings::IniFormat);
   settings.setValue("ownCloud/url", _ocWizard->field("OCUrl").toString() );
+  settings.setValue("ownCloud/user", _ocWizard->field("OCUser").toString() );
+  settings.setValue("ownCloud/password", _ocWizard->field("OCPasswd").toString() );
+
   settings.sync();
 }
 

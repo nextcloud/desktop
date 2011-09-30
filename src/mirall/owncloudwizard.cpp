@@ -52,7 +52,7 @@ void OwncloudWizardSelectTypePage::initializePage()
 int OwncloudWizardSelectTypePage::nextId() const
 {
   if( _ui.connectMyOCRadioBtn->isChecked() ) {
-    return OwncloudWizard::Page_Install;
+    return OwncloudWizard::Page_OC_Credentials;
   }
   return OwncloudWizard::Page_Create_OC;
 }
@@ -74,6 +74,37 @@ bool OwncloudWizardSelectTypePage::isComplete() const
 void OwncloudWizardSelectTypePage::setOCUrl( const QString& url )
 {
   _ui.OCUrlLineEdit->setText( url );
+}
+
+// ======================================================================
+
+
+OwncloudCredentialsPage::OwncloudCredentialsPage()
+{
+    _ui.setupUi(this);
+    registerField( "OCUser",   _ui.OCUserEdit );
+    registerField( "OCPasswd", _ui.OCPasswdEdit );
+}
+
+OwncloudCredentialsPage::~OwncloudCredentialsPage()
+{
+
+}
+
+bool OwncloudCredentialsPage::isComplete() const
+{
+
+}
+
+void OwncloudCredentialsPage::initializePage()
+{
+    QString user = getenv( "USER" );
+    _ui.OCUserEdit->setText( user );
+}
+
+int OwncloudCredentialsPage::nextId() const
+{
+  return OwncloudWizard::Page_Install;
 }
 
 // ======================================================================
@@ -140,7 +171,7 @@ void CreateAnOwncloudPage::initializePage()
 int CreateAnOwncloudPage::nextId() const
 {
   if( _ui.createLocalRadioBtn->isChecked() ) {
-    return OwncloudWizard::Page_Install;
+    return OwncloudWizard::Page_OC_Credentials;
   }
 
   return OwncloudWizard::Page_FTP;
@@ -203,10 +234,11 @@ void OwncloudWizardResultPage::appendResultText( const QString& msg )
 OwncloudWizard::OwncloudWizard(QWidget *parent)
     : QWizard(parent)
 {
-    setPage(Page_SelectType, new OwncloudWizardSelectTypePage() );
-    setPage(Page_Create_OC,  new CreateAnOwncloudPage() );
-    setPage(Page_FTP,        new OwncloudFTPAccessPage() );
-    setPage(Page_Install,    new OwncloudWizardResultPage() );
+    setPage(Page_SelectType,     new OwncloudWizardSelectTypePage() );
+    setPage(Page_Create_OC,      new CreateAnOwncloudPage() );
+    setPage(Page_FTP,            new OwncloudFTPAccessPage() );
+    setPage(Page_OC_Credentials, new OwncloudCredentialsPage() );
+    setPage(Page_Install,        new OwncloudWizardResultPage() );
 
     setWizardStyle( QWizard::ClassicStyle );
 

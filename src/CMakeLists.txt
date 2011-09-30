@@ -13,6 +13,7 @@ mirall/owncloudwizardselecttypepage.ui
 mirall/createanowncloudpage.ui
 mirall/owncloudftpaccesspage.ui
 mirall/owncloudwizardresultpage.ui
+mirall/owncloudcredentialspage.ui
 )
 
 qt4_wrap_ui(mirall_UI_SRCS ${mirall_UI})
