@@ -91,7 +91,7 @@ void SiteCopyFolder::startSiteCopy( const QString& command, SiteCopyState nextSt
   QString programm = "/usr/bin/sitecopy";
   QStringList args;
   args << command << alias();
-  qDebug() << "** staring command " << args;
+  qDebug() << "** starting command " << args;
   _NextStep  = nextState;
   _lastOutput.clear();
 
