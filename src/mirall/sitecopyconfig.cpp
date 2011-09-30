@@ -53,7 +53,9 @@ void SitecopyConfig::writeSiteConfig( const QString& localPath,
     webdavBase += "/" + remoteFolder;
   }
   ocDefs["remote"]   = path + webdavBase;
-  ocDefs["password"] = passwd;
+  if( ! passwd.isEmpty() ) {
+    ocDefs["password"] = passwd;
+  }
 
   ocDefs["username"] = user;
   _Sites.insert( siteAlias, ocDefs );

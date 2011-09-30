@@ -31,7 +31,7 @@ FolderWizardSourcePage::FolderWizardSourcePage()
 {
     _ui.setupUi(this);
     registerField("sourceFolder*", _ui.localFolderLineEdit);
-    _ui.localFolderLineEdit->setText( QString( "%1/%2").arg( QDir::homePath() ).arg("/Owncloud" ) );
+    _ui.localFolderLineEdit->setText( QString( "%1/%2").arg( QDir::homePath() ).arg("Owncloud" ) );
     registerField("alias*", _ui.aliasLineEdit);
     _ui.aliasLineEdit->setText( QString::fromLatin1("Owncloud") );
 }

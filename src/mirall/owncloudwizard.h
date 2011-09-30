@@ -37,7 +37,8 @@ public:
 
   virtual bool isComplete() const;
   virtual void initializePage();
-
+  int nextId() const;
+  void setOCUrl( const QString& );
 private:
   Ui_OwncloudWizardSelectTypePage _ui;
 
@@ -52,6 +53,9 @@ public:
 
   virtual bool isComplete() const;
   virtual void initializePage();
+  virtual int nextId() const;
+
+  QString domain() const;
 
 private:
   Ui_CreateAnOwncloudPage _ui;
@@ -70,6 +74,7 @@ public:
 
   virtual bool isComplete() const;
   virtual void initializePage();
+  void setFTPUrl( const QString& );
 
 private:
   Ui_OwncloudFTPAccessPage _ui;
@@ -88,6 +93,9 @@ public:
 
   virtual bool isComplete() const;
   virtual void initializePage();
+
+public slots:
+  void appendResultText( const QString& );
 
 private:
   Ui_OwncloudWizardResultPage _ui;
@@ -112,6 +120,20 @@ public:
     };
 
     OwncloudWizard(QWidget *parent = 0L);
+
+    void setOCUrl( const QString& );
+
+public slots:
+    void appendToResultWidget( const QString& );
+    void slotCurrentPageChanged( int );
+
+signals:
+    void connectToOCUrl( const QString& );
+    void installOCServer();
+    void installOCLocalhost();
+
+private:
+    QString _configFile;
 };
 
 
