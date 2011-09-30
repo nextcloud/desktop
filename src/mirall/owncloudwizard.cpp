@@ -71,6 +71,11 @@ bool OwncloudWizardSelectTypePage::isComplete() const
   return true;
 }
 
+void OwncloudWizardSelectTypePage::setOCUrl( const QString& url )
+{
+  _ui.OCUrlLineEdit->setText( url );
+}
+
 // ======================================================================
 
 
@@ -253,6 +258,13 @@ void OwncloudWizard::appendToResultWidget( const QString& msg )
   p->appendResultText( msg );
 }
 
-} // end namespace
+void OwncloudWizard::setOCUrl( const QString& url )
+{
+  if( !url.isEmpty() ) {
+    OwncloudWizardSelectTypePage *p = static_cast<OwncloudWizardSelectTypePage*>(page( Page_SelectType ));
+    p->setOCUrl( url );
+  }
+}
 
+} // end namespace
 #include "owncloudwizard.moc"

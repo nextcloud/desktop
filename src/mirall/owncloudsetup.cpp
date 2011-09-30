@@ -164,6 +164,7 @@ void OwncloudSetup::slotFinished( int res, QProcess::ExitStatus )
 
 void OwncloudSetup::startWizard()
 {
+  _ocWizard->setOCUrl( ownCloudUrl() );
   _ocWizard->exec();
 }
 
@@ -180,6 +181,19 @@ void OwncloudSetup::writeOwncloudConfig()
   QSettings settings( mirallConfigFile(), QSettings::IniFormat);
   settings.setValue("ownCloud/url", _ocWizard->field("OCUrl").toString() );
   settings.sync();
+}
+
+/*
+ * returns the configured owncloud url if its already configured, otherwise an empty
+ * string.
+ */
+QString OwncloudSetup::ownCloudUrl() const
+{
+  QSettings settings( mirallConfigFile(), QSettings::IniFormat );
+  QString url = settings.value( "ownCloud/url" ).toString();
+  qDebug() << "Returning configured owncloud url: " << url;
+
+  return url;
 }
 
 /*

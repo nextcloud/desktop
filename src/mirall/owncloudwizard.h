@@ -38,7 +38,7 @@ public:
   virtual bool isComplete() const;
   virtual void initializePage();
   int nextId() const;
-
+  void setOCUrl( const QString& );
 private:
   Ui_OwncloudWizardSelectTypePage _ui;
 
@@ -120,6 +120,8 @@ public:
     };
 
     OwncloudWizard(QWidget *parent = 0L);
+
+    void setOCUrl( const QString& );
 
 public slots:
     void appendToResultWidget( const QString& );

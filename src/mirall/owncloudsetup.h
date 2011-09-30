@@ -26,6 +26,12 @@ public:
 
   QString mirallConfigFile() const;
 
+  /**
+   * returns the configured owncloud url if its already configured, otherwise an empty
+   * string.
+   */
+  QString ownCloudUrl() const ;
+
 signals:
 
 public slots:
