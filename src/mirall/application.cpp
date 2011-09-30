@@ -25,6 +25,7 @@
 #include "mirall/constants.h"
 #include "mirall/application.h"
 #include "mirall/folder.h"
+#include "mirall/folderwatcher.h"
 #include "mirall/folderwizard.h"
 #include "mirall/networklocation.h"
 #include "mirall/unisonfolder.h"
@@ -69,8 +70,11 @@ Application::Application(int argc, char **argv) :
     QDir storageDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
     storageDir.mkpath("folders");
 
-    setupKnownFolders();
+    // Look for configuration changes
+    _configFolderWatcher = new FolderWatcher(storageDir.path());
+    connect(_configFolderWatcher, SIGNAL(folderChanged(const QStringList &)), this, SLOT(slotReparseConfiguration()));
 
+    setupKnownFolders();
     setupContextMenu();
 
     qDebug() << NetworkLocation::currentLocation().encoded();
@@ -142,6 +146,12 @@ void Application::setupContextMenu()
     _tray->setContextMenu(_contextMenu);
 }
 
+void Application::slotReparseConfiguration()
+{
+    setupKnownFolders();
+    setupContextMenu();
+}
+
 void Application::slotAddFolder()
 {
     if (_folderWizard->exec() == QDialog::Accepted) {
@@ -200,6 +210,7 @@ void Application::setupKnownFolders()
 {
     qDebug() << "* Setup folders from " << folderConfigPath();
 
+    _folderMap.clear();
     QDir dir(folderConfigPath());
     dir.setFilter(QDir::Files);
     QStringList list = dir.entryList();

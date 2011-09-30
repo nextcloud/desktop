@@ -29,6 +29,7 @@ class QNetworkConfigurationManager;
 namespace Mirall {
 
 class Folder;
+class FolderWatcher;
 class FolderWizard;
 class StatusDialog;
 class OwncloudSetup;
@@ -43,6 +44,7 @@ signals:
 
 protected slots:
 
+    void slotReparseConfiguration();
     void slotAddFolder();
 
     void slotFolderSyncStarted();
@@ -79,6 +81,7 @@ private:
     // counter tracking number of folders doing a sync
     int _folderSyncCount;
 
+    FolderWatcher *_configFolderWatcher;
     FolderWizard  *_folderWizard;
     OwncloudSetup *_owncloudSetup;
 
