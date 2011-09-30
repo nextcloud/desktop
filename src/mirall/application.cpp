@@ -72,7 +72,8 @@ Application::Application(int argc, char **argv) :
 
     // Look for configuration changes
     _configFolderWatcher = new FolderWatcher(storageDir.path());
-    connect(_configFolderWatcher, SIGNAL(folderChanged(const QStringList &)), this, SLOT(slotReparseConfiguration()));
+    connect(_configFolderWatcher, SIGNAL(folderChanged(const QStringList &)),
+            this, SLOT(slotReparseConfiguration()));
 
     setupKnownFolders();
     setupContextMenu();
@@ -180,13 +181,11 @@ void Application::slotAddFolder()
         } else if( _folderWizard->field("OC?").toBool()) {
             settings.setValue("folder/backend", "sitecopy");
             settings.setValue("backend:sitecopy/targetPath", _folderWizard->field("targetOCFolder"));
-
-            settings.setValue("backend:sitecopy/url",    _folderWizard->field("OCUrl"));
-            settings.setValue("backend:sitecopy/user",   _folderWizard->field("OCUser"));
             settings.setValue("backend:sitecopy/alias",  _folderWizard->field("OCSiteAlias"));
 
             qDebug() << "Now writing sitecopy config " << _folderWizard->field("OCSiteAlias").toString(); ;
             SitecopyConfig scConfig;
+
             scConfig.writeSiteConfig( _folderWizard->field("sourceFolder").toString(), /* local path */
                                       alias, /* _folderWizard->field("OCSiteAlias").toString(),  site alias */
                                       _folderWizard->field("OCUrl").toString(),        /* site URL   */

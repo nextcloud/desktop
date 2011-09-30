@@ -29,7 +29,7 @@ class SiteCopyFolder : public Folder
 {
     Q_OBJECT
 public:
-    enum SiteCopyState { Sync, Update, Finish, Status, DisplayStatus };
+    enum SiteCopyState { Sync, Update, Finish, Status, FlatList, DisplayStatus };
 
     SiteCopyFolder(const QString &alias,
                    const QString &path,

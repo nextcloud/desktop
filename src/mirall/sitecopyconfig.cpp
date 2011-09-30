@@ -49,7 +49,7 @@ void SitecopyConfig::writeSiteConfig( const QString& localPath,
   ocDefs["protocol"] = "webdav";
   ocDefs["local"]    = localPath;
   QString webdavBase = "files/webdav.php";
-  if( !remoteFolder.isEmpty() ) {
+  if( !remoteFolder.isEmpty() && remoteFolder != "/" ) {
     webdavBase += "/" + remoteFolder;
   }
   if( !path.endsWith( QChar('/')) ) {

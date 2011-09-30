@@ -139,6 +139,8 @@ void SiteCopyFolder::slotFinished(int exitCode, QProcess::ExitStatus exitStatus)
       emit syncFinished( SyncResult(SyncResult::Success) );
       // mLocalChangesSeen = false;
     } else if( _NextStep == Status ) {
+      startSiteCopy( "--fetch", FlatList );
+    } else if( _NextStep == FlatList ) {
       startSiteCopy( "--flatlist", DisplayStatus );
     } else if( _NextStep == DisplayStatus ) {
         if( exitCode == 1 ) {

@@ -4,6 +4,8 @@
 #include <QDesktopServices>
 
 #include "owncloudsetup.h"
+#include "mirall/sitecopyconfig.h"
+
 
 namespace Mirall {
 
@@ -154,11 +156,15 @@ void OwncloudSetup::slotFinished( int res, QProcess::ExitStatus )
 
   if( res ) {
     _ocWizard->appendToResultWidget( tr("<font color=\"red\">Installation of ownCloud failed!</font>") );
+    emit ownCloudSetupFinished( true );
   } else {
     // Successful installation. Write the config.
     _ocWizard->appendToResultWidget( tr("<font color=\"green\">Installation of ownCloud succeeded!</font>") );
 
     writeOwncloudConfig();
+
+    emit ownCloudSetupFinished( true );
+    setupLocalSyncFolder();
   }
 }
 
@@ -199,6 +205,23 @@ QString OwncloudSetup::ownCloudUrl() const
   return url;
 }
 
+QString OwncloudSetup::ownCloudUser() const
+{
+  QSettings settings( mirallConfigFile(), QSettings::IniFormat );
+  QString user = settings.value( "ownCloud/user" ).toString();
+  qDebug() << "Returning configured owncloud user: " << user;
+
+  return user;
+}
+
+QString OwncloudSetup::ownCloudPasswd() const
+{
+  QSettings settings( mirallConfigFile(), QSettings::IniFormat );
+  QString pwd = settings.value( "ownCloud/password" ).toString();
+
+  return pwd;
+}
+
 /*
  *  method to check the if the owncloud admin script is existing
  */
@@ -212,6 +235,51 @@ bool OwncloudSetup::checkOwncloudAdmin( const QString& bin )
       return false;
   }
   return true;
+}
+
+void OwncloudSetup::setupLocalSyncFolder()
+{
+  QString syncFolder( QDir::homePath() + "/ownCloud" );
+  qDebug() << "Setup local sync folder " << syncFolder;
+  QDir fi( syncFolder );
+  _ocWizard->appendToResultWidget( tr("creating local sync folder %1").arg(syncFolder) );
+
+  if( fi.exists() ) {
+    // there is an existing local folder. If its non empty, it can only be synced if the
+    // ownCloud is newly created.
+    _ocWizard->appendToResultWidget( tr("Local sync folder %1 already exists, can "
+                                        "not automatically create.").arg(syncFolder));
+  } else {
+
+    if( fi.mkpath( syncFolder ) ) {
+      QString targetPath = "/";
+      qDebug() << "Successfully created " << fi.path();
+
+      // Create a sitecopy config file
+      SitecopyConfig scConfig;
+
+      scConfig.writeSiteConfig( syncFolder, /* local path */
+                                "ownCloud", /* _folderWizard->field("OCSiteAlias").toString(),  site alias */
+                                ownCloudUrl(),
+                                ownCloudUser(),
+                                ownCloudPasswd(),
+                                targetPath );
+
+      // create a mirall folder entry.
+      // FIXME: folderConfigPath is a method of application object, copied to here.
+      const QString folderConfigPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/folders";
+
+      QSettings settings(folderConfigPath + "/ownCloud", QSettings::IniFormat);
+      settings.setValue("folder/backend", "sitecopy");
+      settings.setValue("folder/path", syncFolder );
+      settings.setValue("backend:sitecopy/targetPath", targetPath );
+      settings.setValue("backend:sitecopy/alias",  "ownCloud" );
+      settings.sync();
+
+    } else {
+      qDebug() << "Failed to create " << fi.path();
+    }
+  }
 }
 
 }

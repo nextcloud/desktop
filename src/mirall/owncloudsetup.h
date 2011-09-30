@@ -31,8 +31,12 @@ public:
    * string.
    */
   QString ownCloudUrl() const ;
+  QString ownCloudUser() const ;
+  QString ownCloudPasswd() const ;
 
+  void    setupLocalSyncFolder();
 signals:
+  void    ownCloudSetupFinished( bool );
 
 public slots:
 
