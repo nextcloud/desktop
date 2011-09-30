@@ -185,7 +185,11 @@ void OwncloudSetup::writeOwncloudConfig()
 {
   qDebug() << "*** writing mirall config to " << mirallConfigFile();
   QSettings settings( mirallConfigFile(), QSettings::IniFormat);
-  settings.setValue("ownCloud/url", _ocWizard->field("OCUrl").toString() );
+  QString url = _ocWizard->field("OCUrl").toString();
+  if( !url.startsWith("http")) {
+    url.prepend( "http://" );
+  }
+  settings.setValue("ownCloud/url", url );
   settings.setValue("ownCloud/user", _ocWizard->field("OCUser").toString() );
   settings.setValue("ownCloud/password", _ocWizard->field("OCPasswd").toString() );
 
