@@ -110,7 +110,7 @@ void Application::setupActions()
 void Application::setupSystemTray()
 {
     _tray = new QSystemTrayIcon(this);
-    _tray->setIcon(QIcon::fromTheme(FOLDER_ICON));
+    _tray->setIcon(QIcon::fromTheme(FOLDER_ICON_EMPTY));
 
     connect(_tray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             SLOT(slotTrayClicked(QSystemTrayIcon::ActivationReason)));
@@ -218,6 +218,7 @@ void Application::setupKnownFolders()
     foreach (QString file, list) {
         setupFolderFromConfigFile(file);
     }
+    if( list.size() ) _tray->setIcon(QIcon::fromTheme(FOLDER_ICON));
 }
 
 // filename is the name of the file only, it does not include

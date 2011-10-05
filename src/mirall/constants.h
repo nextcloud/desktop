@@ -18,5 +18,6 @@
 #define FOLDER_ICON "folder-favorites"
 #define FOLDER_SYNC_ICON "folder-sync"
 #define FOLDER_SYNC_ERROR "folder-important"
+#define FOLDER_ICON_EMPTY "folder-grey"
 
 #endif
