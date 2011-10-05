@@ -24,10 +24,10 @@
 
 namespace Mirall {
 
-    SiteCopyFolder::SiteCopyFolder(const QString &alias,
-                               const QString &path,
-                               const QString &secondPath,
-                               QObject *parent)
+    SiteCopyFolder::SiteCopyFolder( const QString &alias,
+                                    const QString &path,
+                                    const QString &secondPath,
+                                    QObject *parent)
       : Folder(alias, path, parent),
         _SiteCopy(new QProcess(this)),
         _syncCount(0)
@@ -72,9 +72,16 @@ void SiteCopyFolder::startSync(const QStringList &pathList)
     emit syncStarted();
     qDebug() << "PATHLIST: " << pathList;
 
-    startSiteCopy( "--fetch", Status );
+    startSiteCopy( "--fetch", FlatList );
 }
 
+void SiteCopyFolder::fetchFromOC()
+{
+  QMutexLocker locker( &_syncMutex );
+  qDebug() << "starting to sync from ownCloud";
+
+  startSiteCopy( "--fetch", Sync );
+}
 
 void SiteCopyFolder::startSiteCopy( const QString& command, SiteCopyState nextState )
 {
@@ -141,8 +148,8 @@ void SiteCopyFolder::slotFinished(int exitCode, QProcess::ExitStatus exitStatus)
     } else if( _NextStep == Status ) {
       startSiteCopy( "--fetch", FlatList );
     } else if( _NextStep == FlatList ) {
-      startSiteCopy( "--flatlist", DisplayStatus );
-    } else if( _NextStep == DisplayStatus ) {
+      startSiteCopy( "--flatlist", ExecuteStatus );
+    } else if( _NextStep == ExecuteStatus ) {
         if( exitCode == 1 ) {
             qDebug() << "Exit-Code: Sync Needed!";
             analyzeStatus();

@@ -23,6 +23,8 @@
 
 namespace Mirall {
 
+class SiteCopyFolder;
+class SyncResult;
 
 class OwncloudSetup : public QObject
 {
@@ -39,6 +41,8 @@ public:
   void writeOwncloudConfig();
 
   QString mirallConfigFile() const;
+
+  void startFetchFromOC( const QString& );
 
   /**
    * returns the configured owncloud url if its already configured, otherwise an empty
@@ -62,6 +66,7 @@ protected slots:
   void slotError( QProcess::ProcessError );
   void slotStarted();
   void slotFinished( int, QProcess::ExitStatus );
+  void slotFetchFinished( const SyncResult& );
 
   // wizard dialog signals
   void slotInstallOCServer();
@@ -74,6 +79,7 @@ private:
 
   OwncloudWizard *_ocWizard;
   QProcess       *_process;
+  SiteCopyFolder *_scf;
 };
 
 };

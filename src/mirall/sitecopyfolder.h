@@ -29,7 +29,7 @@ class SiteCopyFolder : public Folder
 {
     Q_OBJECT
 public:
-    enum SiteCopyState { Sync, Update, Finish, Status, FlatList, DisplayStatus };
+    enum SiteCopyState { Sync, Update, Finish, Status, FlatList, ExecuteStatus };
 
     SiteCopyFolder(const QString &alias,
                    const QString &path,
@@ -37,6 +37,9 @@ public:
     virtual ~SiteCopyFolder();
 
     virtual void startSync(const QStringList &pathList);
+
+    // load data from ownCloud to the local directory.
+    void fetchFromOC();
 
     virtual bool isBusy() const;
 

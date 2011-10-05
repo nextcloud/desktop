@@ -187,7 +187,7 @@ void Application::slotAddFolder()
             SitecopyConfig scConfig;
 
             scConfig.writeSiteConfig( _folderWizard->field("sourceFolder").toString(), /* local path */
-                                      alias, /* _folderWizard->field("OCSiteAlias").toString(),  site alias */
+                                      alias,
                                       _folderWizard->field("OCUrl").toString(),        /* site URL   */
                                       _folderWizard->field("OCUser").toString(),
                                       _folderWizard->field("OCPasswd").toString(),

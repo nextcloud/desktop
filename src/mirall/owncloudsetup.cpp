@@ -19,7 +19,7 @@
 
 #include "owncloudsetup.h"
 #include "mirall/sitecopyconfig.h"
-
+#include "mirall/sitecopyfolder.h"
 
 namespace Mirall {
 
@@ -257,7 +257,7 @@ bool OwncloudSetup::checkOwncloudAdmin( const QString& bin )
 
 void OwncloudSetup::setupLocalSyncFolder()
 {
-  QString syncFolder( QDir::homePath() + "/ownCloud" );
+  const QString syncFolder( QDir::homePath() + "/ownCloud" );
   qDebug() << "Setup local sync folder " << syncFolder;
   QDir fi( syncFolder );
   _ocWizard->appendToResultWidget( tr("creating local sync folder %1").arg(syncFolder) );
@@ -283,9 +283,44 @@ void OwncloudSetup::setupLocalSyncFolder()
                                 ownCloudPasswd(),
                                 targetPath );
 
-      // create a mirall folder entry.
+      // now there is the sitecopy config. A fetch in to the newly created folder mirrors
+      // the files from the ownCloud to local
+      startFetchFromOC( syncFolder );
+
+
+    } else {
+      qDebug() << "Failed to create " << fi.path();
+    }
+  }
+}
+
+void OwncloudSetup::startFetchFromOC( const QString& syncFolder )
+{
+  _scf = new SiteCopyFolder( "ownCloud",
+                             syncFolder,
+                             QString(),
+                             this);
+  connect( _scf, SIGNAL( syncFinished( const SyncResult& )),
+           SLOT( slotFetchFinished( const SyncResult& )));
+  _ocWizard->appendToResultWidget( tr("Starting initial fetch of ownCloud data..."));
+  _scf->fetchFromOC();
+}
+
+void OwncloudSetup::slotFetchFinished( const SyncResult& res )
+{
+  qDebug() << "Initial fetch finished!";
+  if( res.result() == SyncResult::Error ) {
+    _ocWizard->appendToResultWidget( tr("Initial fetch of data failed: ") + res.errorString() );
+  } else {
+    // fetch of data from ownCloud succeeded.
+    _ocWizard->appendToResultWidget( tr("Initial fetch of data succeeded.") );
+    _ocWizard->appendToResultWidget( tr("Writing mirall folder setting now.") );
+          // create a mirall folder entry.
       // FIXME: folderConfigPath is a method of application object, copied to here.
       const QString folderConfigPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/folders";
+
+      const QString syncFolder( QDir::homePath() + "/ownCloud" );
+      const QString targetPath("/");
 
       QSettings settings(folderConfigPath + "/ownCloud", QSettings::IniFormat);
       settings.setValue("folder/backend", "sitecopy");
@@ -293,11 +328,8 @@ void OwncloudSetup::setupLocalSyncFolder()
       settings.setValue("backend:sitecopy/targetPath", targetPath );
       settings.setValue("backend:sitecopy/alias",  "ownCloud" );
       settings.sync();
-
-    } else {
-      qDebug() << "Failed to create " << fi.path();
-    }
   }
+  _scf->deleteLater();
 }
 
 }
