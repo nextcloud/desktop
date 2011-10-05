@@ -23,6 +23,8 @@
 #include <stdlib.h>
 
 #include "mirall/folderwizard.h"
+#include "mirall/owncloudinfo.h"
+
 
 namespace Mirall
 {
@@ -93,6 +95,34 @@ bool FolderWizardTargetPage::isComplete() const
 void FolderWizardTargetPage::initializePage()
 {
     slotToggleItems();
+
+    ownCloudInfo *ocInfo = new ownCloudInfo( this );
+    if( ocInfo->isConfigured() ) {
+      connect( ocInfo, SIGNAL(ownCloudInfoFound(QString,QString)),SLOT(slotOwnCloudFound(QString,QString)));
+      connect(ocInfo,SIGNAL(noOwncloudFound()),SLOT(slotOwnCloudFound(QString(),QString())));
+      ocInfo->checkInstallation();
+
+    } else {
+      _ui.OCRadioBtn->setEnabled( false );
+      _ui.OCFolderLineEdit->setEnabled( false );
+    }
+}
+
+void FolderWizardTargetPage::slotOwnCloudFound( const QString& url, const QString& infoStr )
+{
+  QString info( infoStr );
+  info.remove(0,1); // remove first char which is a "{"
+  info.remove(-1,1); // remove the last char which is a "}"
+  QStringList li = info.split( QChar(':') );
+
+  QString infoString;
+  foreach ( infoString, li ) {
+    if( infoString.contains( "versionstring") ) {
+
+    }
+  }
+
+  qDebug() << "THis result on " << url << ": " << info;
 }
 
 void FolderWizardTargetPage::on_localFolderRadioBtn_toggled()
@@ -200,10 +230,10 @@ bool FolderWizardOwncloudPage::isComplete() const
 FolderWizard::FolderWizard(QWidget *parent)
     : QWizard(parent)
 {
-    setPage(Page_Source, new FolderWizardSourcePage());
-    setPage(Page_Target, new FolderWizardTargetPage());
-    setPage(Page_Network, new FolderWizardNetworkPage());
-    setPage(Page_Owncloud, new FolderWizardOwncloudPage());
+    setPage(Page_Source,   new FolderWizardSourcePage());
+    setPage(Page_Target,   new FolderWizardTargetPage());
+    setPage(Page_Network,  new FolderWizardNetworkPage());
+    // setPage(Page_Owncloud, new FolderWizardOwncloudPage());
 }
 
 } // end namespace
