@@ -121,7 +121,9 @@ void Application::setupSystemTray()
 void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
 {
   if( reason == QSystemTrayIcon::Trigger ) {
-    if( _folderMap.isEmpty() ) {
+    // check if there is a mirall.cfg already.
+    QFile fi( QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/mirall.cfg" );
+    if( !fi.exists() ) {
       qDebug() << "No configured folders yet, start the Owncloud integration dialog.";
       _owncloudSetup->startWizard();
     } else {
