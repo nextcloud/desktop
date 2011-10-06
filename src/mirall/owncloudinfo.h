@@ -40,13 +40,15 @@ signals:
   void ownCloudInfoFound( const QString&,  const QString& );
   void noOwncloudFound();
 
+  void ownCloudInfoReply( const QString&, QNetworkReply::NetworkError );
+
 public slots:
 
 protected slots:
     void slotReplyFinished( QNetworkReply* );
     void slotReadyRead();
     void slotError( QNetworkReply::NetworkError );
-
+    void slotAuthentication( QNetworkReply*, QAuthenticator *);
 private:
     QNetworkReply *_reply;
     QByteArray    _readBuffer;

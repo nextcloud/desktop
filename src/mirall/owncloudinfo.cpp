@@ -13,8 +13,11 @@
  */
 
 #include "owncloudinfo.h"
-#include "QtCore"
-#include "QtGui"
+
+#include <QtCore>
+#include <QtGui>
+#include <QAuthenticator>
+
 
 namespace Mirall
 {
@@ -45,7 +48,9 @@ bool ownCloudInfo::isConfigured()
 QString ownCloudInfo::url() const
 {
   QSettings settings( configFile(), QSettings::IniFormat );
-  return settings.value("ownCloud/url" ).toString();
+  QString url = settings.value("ownCloud/url").toString();
+  if( url.endsWith( QChar('/')) ) url.remove( -1, 1);
+  return url;
 }
 
 QString ownCloudInfo::user() const
@@ -74,12 +79,22 @@ void ownCloudInfo::checkInstallation()
  connect( _reply, SIGNAL( readyRead()), this, SLOT(slotReadyRead()));
 }
 
+void ownCloudInfo::slotAuthentication( QNetworkReply*, QAuthenticator *auth )
+{
+  if( auth ) {
+    qDebug() << "Authenticating request!";
+    auth->setUser( user() );
+    auth->setPassword( password() );
+  }
+}
 
 
 void ownCloudInfo::slotReplyFinished( QNetworkReply *reply )
 {
   const QString version( _readBuffer );
   const QString url = reply->url().toString();
+
+  emit ownCloudInfoReply( url, reply->error() );
 
   QString info( version );
 

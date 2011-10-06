@@ -36,6 +36,7 @@ mirall/statusdialog.cpp
 mirall/owncloudwizard.cpp
 mirall/owncloudsetup.cpp
 mirall/owncloudinfo.cpp
+mirall/ownclouddircheck.cpp
 )
 if(CSYNC_FOUND)
   set(mirall_SRCS

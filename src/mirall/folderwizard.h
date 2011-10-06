@@ -16,6 +16,8 @@
 #define MIRALL_FOLDERWIZARD_H
 
 #include <QWizard>
+#include <QNetworkReply>
+#include <QTimer>
 
 #include "ui_folderwizardsourcepage.h"
 #include "ui_folderwizardtargetpage.h"
@@ -24,6 +26,9 @@
 
 
 namespace Mirall {
+
+class ownCloudInfo;
+class ownCloudDirCheck;
 
 /**
  * page to ask for the local source folder
@@ -73,8 +78,16 @@ protected slots:
 
     void slotOwnCloudFound( const QString&, const QString& );
     void slotNoOwnCloudFound();
+
+    void slotFolderTextChanged( const QString& );
+    void slotTimerFires();
+    void slotInfoReply( const QString&, bool );
+
 private:
     Ui_FolderWizardTargetPage _ui;
+    QTimer *_timer;
+    ownCloudInfo *_ownCloudInfo;
+    ownCloudDirCheck *_ownCloudDirCheck;
 };
 
 class FolderWizardNetworkPage : public QWizardPage

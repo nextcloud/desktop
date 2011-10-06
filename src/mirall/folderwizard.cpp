@@ -20,10 +20,12 @@
 #include <QValidator>
 #include <QWizardPage>
 #include <QDir>
+
 #include <stdlib.h>
 
 #include "mirall/folderwizard.h"
 #include "mirall/owncloudinfo.h"
+#include "mirall/ownclouddircheck.h"
 
 
 namespace Mirall
@@ -72,7 +74,44 @@ FolderWizardTargetPage::FolderWizardTargetPage()
     registerField("targetLocalFolder", _ui.localFolder2LineEdit);
     registerField("targetURLFolder",   _ui.urlFolderLineEdit);
     registerField("targetOCFolder",    _ui.OCFolderLineEdit);
+
+    connect( _ui.OCFolderLineEdit, SIGNAL(textChanged(QString)),
+             SLOT(slotFolderTextChanged(QString)));
+
+    _timer = new QTimer(this);
+    _timer->setSingleShot( true );
+    connect( _timer, SIGNAL(timeout()), SLOT(slotTimerFires()));
+
+    _ownCloudInfo = new ownCloudInfo( this );
+    _ownCloudDirCheck = new ownCloudDirCheck( this );
+
+    connect( _ownCloudDirCheck, SIGNAL(directoryExists(QString,bool)),
+             SLOT(slotInfoReply(QString,bool)));
 }
+
+void FolderWizardTargetPage::slotFolderTextChanged( const QString& t)
+{
+  if( t.isEmpty() ) {
+    _timer->stop();
+    return;
+  }
+  qDebug() << "XX new folder string: " << t;
+  _timer->start(500);
+}
+
+void FolderWizardTargetPage::slotTimerFires()
+{
+  const QString folder = _ui.OCFolderLineEdit->text();
+  qDebug() << "Querying folder " << folder;
+
+  _ownCloudDirCheck->checkDirectory( folder );
+}
+
+void FolderWizardTargetPage::slotInfoReply(const QString &url, bool exists )
+{
+  qDebug() << "Got reply from ownCloudInfo: " << url << " :" << exists;
+}
+
 
 FolderWizardTargetPage::~FolderWizardTargetPage()
 {
