@@ -67,6 +67,8 @@ void ownCloudInfo::checkInstallation()
          this, SLOT(slotReplyFinished(QNetworkReply*)));
 
  _reply = manager->get(QNetworkRequest(QUrl( url() + "/status.php")));
+ _readBuffer.clear();
+
  connect( _reply, SIGNAL( error(QNetworkReply::NetworkError )),
           this, SLOT(slotError( QNetworkReply::NetworkError )));
  connect( _reply, SIGNAL( readyRead()), this, SLOT(slotReadyRead()));
@@ -79,7 +81,25 @@ void ownCloudInfo::slotReplyFinished( QNetworkReply *reply )
   const QString version( _readBuffer );
   const QString url = reply->url().toString();
 
-  emit ownCloudInfoFound( url, version );
+  QString info( version );
+
+  info.remove(0,1); // remove first char which is a "{"
+  info.remove(-1,1); // remove the last char which is a "}"
+  QStringList li = info.split( QChar(',') );
+
+  QString infoString;
+  QString versionStr;
+  foreach ( infoString, li ) {
+    if( infoString.contains( "versionstring") ) {
+      // get the version string out.
+      versionStr = infoString.mid(17);
+      versionStr.remove(-1, 1);
+    }
+  }
+  QString urlStr( url );
+  urlStr.remove("/status.php"); // get the plain url.
+
+  emit ownCloudInfoFound( urlStr, versionStr );
 }
 
 void ownCloudInfo::slotReadyRead()

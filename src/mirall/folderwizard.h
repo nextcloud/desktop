@@ -72,7 +72,7 @@ protected slots:
     void on_urlFolderLineEdit_textChanged();
 
     void slotOwnCloudFound( const QString&, const QString& );
-
+    void slotNoOwnCloudFound();
 private:
     Ui_FolderWizardTargetPage _ui;
 };

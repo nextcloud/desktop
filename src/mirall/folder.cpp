@@ -24,7 +24,7 @@
 #include "mirall/folder.h"
 #include "mirall/folderwatcher.h"
 
-#define DEFAULT_POLL_INTERVAL_SEC 10
+#define DEFAULT_POLL_INTERVAL_SEC 45
 
 namespace Mirall {
 

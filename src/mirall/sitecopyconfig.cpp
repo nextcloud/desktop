@@ -13,12 +13,22 @@
  */
 
 #include "sitecopyconfig.h"
+#include "owncloudinfo.h"
 
 namespace Mirall {
 
 SitecopyConfig::SitecopyConfig()
 {
 
+}
+
+/*
+ * this uses the users ownCloud config written in mirall.cfg
+ */
+void SitecopyConfig::writeSiteConfig( const QString& alias, const QString& localPath, const QString& targetPath )
+{
+  ownCloudInfo ocInfo;
+  writeSiteConfig( localPath, alias, ocInfo.url(), ocInfo.user(), ocInfo.password(), targetPath );
 }
 
 void SitecopyConfig::writeSiteConfig( const QString& localPath,
@@ -40,6 +50,7 @@ void SitecopyConfig::writeSiteConfig( const QString& localPath,
   if( _Sites.contains( siteAlias ) ) {
     ocDefs = _Sites[siteAlias];
   }
+  qDebug() << "The url is " << url;
   QUrl ocUrl( url );
   QString host = ocUrl.host();
   QString path = ocUrl.path();

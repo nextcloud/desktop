@@ -188,11 +188,8 @@ void Application::slotAddFolder()
             qDebug() << "Now writing sitecopy config " << _folderWizard->field("OCSiteAlias").toString(); ;
             SitecopyConfig scConfig;
 
-            scConfig.writeSiteConfig( _folderWizard->field("sourceFolder").toString(), /* local path */
-                                      alias,
-                                      _folderWizard->field("OCUrl").toString(),        /* site URL   */
-                                      _folderWizard->field("OCUser").toString(),
-                                      _folderWizard->field("OCPasswd").toString(),
+            scConfig.writeSiteConfig( alias,
+                                      _folderWizard->field("sourceFolder").toString(), /* local path */
                                       _folderWizard->field("targetOCFolder").toString() );
         } else {
             qWarning() << "* Folder not local and note remote?";

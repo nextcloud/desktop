@@ -20,21 +20,28 @@ namespace Mirall {
 class SitecopyConfig
 {
 public:
-    SitecopyConfig();
+  SitecopyConfig();
 
-    void writeSiteConfig( const QString& localPath, const QString& siteAlias,
-                          const QString& host, const QString& user,
-                          const QString& passwd,
-                          const QString& remoteFolder = QString() );
-    bool parseSiteConfig();
+  /**
+   * write a sitecopy config for ownCloud.
+   * The ownCloud config values are taken from the users ownCloud config in mirall.cfg
+   */
+  void writeSiteConfig( const QString& alias, const QString& localPath,
+                        const QString& targetPath );
+
+  void writeSiteConfig( const QString& localPath, const QString& siteAlias,
+                        const QString& host, const QString& user,
+                        const QString& passwd,
+                        const QString& remoteFolder = QString() );
+  bool parseSiteConfig();
 
 private:
-    void processConfigLine( const QString& );
+  void processConfigLine( const QString& );
 
-    QHash<QString, QHash<QString, QString> > _Sites;
-    QHash<QString, QString>                  _CurrSite;
-    // QHash<QString, QStringList>              _ChangesHash;
-    QString _CurrSiteName;
+  QHash<QString, QHash<QString, QString> > _Sites;
+  QHash<QString, QString>                  _CurrSite;
+  // QHash<QString, QStringList>              _ChangesHash;
+  QString _CurrSiteName;
 };
 };
 

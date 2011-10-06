@@ -98,8 +98,8 @@ void FolderWizardTargetPage::initializePage()
 
     ownCloudInfo *ocInfo = new ownCloudInfo( this );
     if( ocInfo->isConfigured() ) {
-      connect( ocInfo, SIGNAL(ownCloudInfoFound(QString,QString)),SLOT(slotOwnCloudFound(QString,QString)));
-      connect(ocInfo,SIGNAL(noOwncloudFound()),SLOT(slotOwnCloudFound(QString(),QString())));
+      connect(ocInfo, SIGNAL(ownCloudInfoFound(QString,QString)),SLOT(slotOwnCloudFound(QString,QString)));
+      connect(ocInfo,SIGNAL(noOwncloudFound()),SLOT(slotNoOwnCloudFound()));
       ocInfo->checkInstallation();
 
     } else {
@@ -110,19 +110,17 @@ void FolderWizardTargetPage::initializePage()
 
 void FolderWizardTargetPage::slotOwnCloudFound( const QString& url, const QString& infoStr )
 {
-  QString info( infoStr );
-  info.remove(0,1); // remove first char which is a "{"
-  info.remove(-1,1); // remove the last char which is a "}"
-  QStringList li = info.split( QChar(':') );
 
-  QString infoString;
-  foreach ( infoString, li ) {
-    if( infoString.contains( "versionstring") ) {
+  _ui.OCLabel->setText( tr("to your <a href=\"%1\">ownCloud</a> (version %2)").arg(url).arg(infoStr));
 
-    }
-  }
+  qDebug() << "ownCloud found on " << url << " with version: " << infoStr;
+}
 
-  qDebug() << "THis result on " << url << ": " << info;
+void FolderWizardTargetPage::slotNoOwnCloudFound()
+{
+  qDebug() << "No ownCloud configured!";
+  _ui.OCRadioBtn->setEnabled( false );
+  _ui.OCFolderLineEdit->setEnabled( false );
 }
 
 void FolderWizardTargetPage::on_localFolderRadioBtn_toggled()
@@ -232,7 +230,7 @@ FolderWizard::FolderWizard(QWidget *parent)
 {
     setPage(Page_Source,   new FolderWizardSourcePage());
     setPage(Page_Target,   new FolderWizardTargetPage());
-    setPage(Page_Network,  new FolderWizardNetworkPage());
+    // setPage(Page_Network,  new FolderWizardNetworkPage());
     // setPage(Page_Owncloud, new FolderWizardOwncloudPage());
 }
 
