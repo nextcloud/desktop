@@ -86,8 +86,8 @@ protected slots:
 private:
     Ui_FolderWizardTargetPage _ui;
     QTimer *_timer;
-    ownCloudInfo *_ownCloudInfo;
     ownCloudDirCheck *_ownCloudDirCheck;
+    bool _dirChecked;
 };
 
 class FolderWizardNetworkPage : public QWizardPage

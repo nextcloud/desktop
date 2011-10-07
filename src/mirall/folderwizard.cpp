@@ -82,7 +82,6 @@ FolderWizardTargetPage::FolderWizardTargetPage()
     _timer->setSingleShot( true );
     connect( _timer, SIGNAL(timeout()), SLOT(slotTimerFires()));
 
-    _ownCloudInfo = new ownCloudInfo( this );
     _ownCloudDirCheck = new ownCloudDirCheck( this );
 
     connect( _ownCloudDirCheck, SIGNAL(directoryExists(QString,bool)),
@@ -91,11 +90,14 @@ FolderWizardTargetPage::FolderWizardTargetPage()
 
 void FolderWizardTargetPage::slotFolderTextChanged( const QString& t)
 {
+  _dirChecked = false;
+  emit completeChanged();
+
   if( t.isEmpty() ) {
     _timer->stop();
     return;
   }
-  qDebug() << "XX new folder string: " << t;
+
   _timer->start(500);
 }
 
@@ -103,13 +105,14 @@ void FolderWizardTargetPage::slotTimerFires()
 {
   const QString folder = _ui.OCFolderLineEdit->text();
   qDebug() << "Querying folder " << folder;
-
   _ownCloudDirCheck->checkDirectory( folder );
 }
 
 void FolderWizardTargetPage::slotInfoReply(const QString &url, bool exists )
 {
   qDebug() << "Got reply from ownCloudInfo: " << url << " :" << exists;
+  _dirChecked = exists;
+  emit completeChanged();
 }
 
 
@@ -126,7 +129,12 @@ bool FolderWizardTargetPage::isComplete() const
         QUrl url(_ui.urlFolderLineEdit->text());
         return url.isValid() && (url.scheme() == "sftp" || url.scheme() == "smb");
     } else if( _ui.OCRadioBtn->isChecked()) {
+      QString dir = _ui.OCFolderLineEdit->text();
+      if( dir.isEmpty() ) {
         return true;
+      } else {
+        return _dirChecked;
+      }
     }
     return false;
 }
