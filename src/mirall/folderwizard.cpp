@@ -39,18 +39,25 @@ FolderWizardSourcePage::FolderWizardSourcePage()
     _ui.localFolderLineEdit->setText( QString( "%1/%2").arg( QDir::homePath() ).arg("ownCloud" ) );
     registerField("alias*", _ui.aliasLineEdit);
     _ui.aliasLineEdit->setText( QString::fromLatin1("ownCloud") );
+
+    _ui.warnLabel->hide();
 }
 
 FolderWizardSourcePage::~FolderWizardSourcePage()
 {
+
 }
 
 bool FolderWizardSourcePage::isComplete() const
 {
   QFileInfo selFile( _ui.localFolderLineEdit->text() );
+  QString warnString;
 
   bool isOk = selFile.isDir();
-
+  if( !isOk ) {
+    _ui.warnLabel->show();
+    _ui.warnLabel->setText(tr("HEHHHAH"));
+  }
   // check if the local directory isn't used yet in another ownCloud sync
   Folder::Map *map = _folderMap;
   if( ! map ) return false;
@@ -58,9 +65,11 @@ bool FolderWizardSourcePage::isComplete() const
   if( isOk ) {
     Folder::Map::const_iterator i = map->begin();
     while( isOk && i != map->constEnd() ) {
-      qDebug() << "Checking local path: " << i.key();
-      if( QFileInfo( i.key() ) == selFile ) {
+      Folder *f = static_cast<Folder*>(i.value());
+      qDebug() << "Checking local path: " << f->path() << " <-> " << selFile.absoluteFilePath();
+      if( QFileInfo( f->path() ) == selFile ) {
         isOk = false;
+        warnString = tr("The local path %1 is already a upload folder.<br/>Please pick another one!").arg(selFile.absoluteFilePath());
       }
       i++;
     }
@@ -68,19 +77,32 @@ bool FolderWizardSourcePage::isComplete() const
 
   // check if the alias is unique.
   QString alias = _ui.aliasLineEdit->text();
-  if( alias.isEmpty() ) isOk = false;
-  if( isOk ) {
-    Folder::Map::const_iterator i = map->begin();
-    while( isOk && i != map->constEnd() ) {
-      Folder *f = static_cast<Folder*>(i.value());
-      qDebug() << "Checking local alias: " << f->alias();
-      if( f ) {
-        if( f->alias() == alias ) {
-          isOk = false;
-        }
+  if( alias.isEmpty() ) {
+    warnString.append( tr("The alias can not be empty. Please provide a descriptive alias word.") );
+    isOk = false;
+  }
+
+  Folder::Map::const_iterator i = map->begin();
+  bool goon = true;
+  while( goon && i != map->constEnd() ) {
+    Folder *f = static_cast<Folder*>(i.value());
+    qDebug() << "Checking local alias: " << f->alias();
+    if( f ) {
+      if( f->alias() == alias ) {
+        warnString.append( tr("<br/>The alias %1 is already in use. Please change it to something different.").arg(alias) );
+        isOk = false;
+        goon = false;
       }
-      i++;
     }
+    i++;
+  }
+
+  if( isOk ) {
+    _ui.warnLabel->hide();
+    _ui.warnLabel->setText( QString() );
+  } else {
+    _ui.warnLabel->show();
+    _ui.warnLabel->setText( warnString );
   }
   return isOk;
 }
