@@ -16,10 +16,10 @@
 #define APPLICATION_H
 
 #include <QApplication>
-#include <QHash>
 #include <QSystemTrayIcon>
 
 #include "mirall/syncresult.h"
+#include "mirall/folder.h"
 
 class QAction;
 class QMenu;
@@ -28,7 +28,6 @@ class QNetworkConfigurationManager;
 
 namespace Mirall {
 
-class Folder;
 class FolderWatcher;
 class FolderWizard;
 class StatusDialog;
@@ -71,7 +70,7 @@ protected slots:
 
 private:
     // configuration file -> folder
-    QHash<QString, Folder *> _folderMap;
+    Folder::Map _folderMap;
     QSystemTrayIcon *_tray;
     QAction *_actionQuit;
     QAction *_actionAddFolder;

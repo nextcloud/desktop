@@ -19,6 +19,7 @@
 #include <QObject>
 #include <QString>
 #include <QStringList>
+#include <QHash>
 
 #include "mirall/syncresult.h"
 
@@ -36,6 +37,8 @@ class Folder : public QObject
 public:
     Folder(const QString &alias, const QString &path, QObject *parent = 0L);
     virtual ~Folder();
+
+    typedef QHash<QString, Folder*> Map;
 
     /**
      * alias or nickname

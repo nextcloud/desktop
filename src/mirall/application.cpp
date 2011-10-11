@@ -157,51 +157,53 @@ void Application::slotReparseConfiguration()
 
 void Application::slotAddFolder()
 {
-    if (_folderWizard->exec() == QDialog::Accepted) {
-        qDebug() << "* Folder wizard completed";
+  _folderWizard->setFolderMap( &_folderMap );
 
-        QString alias = _folderWizard->field("alias").toString();
+  if (_folderWizard->exec() == QDialog::Accepted) {
+    qDebug() << "* Folder wizard completed";
 
-        QSettings settings(folderConfigPath() + "/" + alias, QSettings::IniFormat);
-        settings.setValue("folder/backend", "csync");
-        settings.setValue("folder/path", _folderWizard->field("sourceFolder"));
+    QString alias = _folderWizard->field("alias").toString();
 
-        if (_folderWizard->field("local?").toBool()) {
-            settings.setValue("backend:csync/secondPath", _folderWizard->field("targetLocalFolder"));
-        } else if (_folderWizard->field("remote?").toBool()) {
-            settings.setValue("backend:csync/secondPath", _folderWizard->field("targetURLFolder"));
-            bool onlyOnline = _folderWizard->field("onlyOnline?").toBool();
-            settings.setValue("folder/onlyOnline", onlyOnline);
+    QSettings settings(folderConfigPath() + "/" + alias, QSettings::IniFormat);
+    settings.setValue("folder/backend", "csync");
+    settings.setValue("folder/path", _folderWizard->field("sourceFolder"));
 
-            if (onlyOnline) {
-                bool onlyThisLAN = _folderWizard->field("onlyThisLAN?").toBool();
-                settings.setValue("folder/onlyThisLAN", onlyThisLAN);
-                if (onlyThisLAN) {
-                    settings.setValue("folder/onlyOnline", true);
-                }
-            }
-        } else if( _folderWizard->field("OC?").toBool()) {
-            settings.setValue("folder/backend", "sitecopy");
-            settings.setValue("backend:sitecopy/targetPath", _folderWizard->field("targetOCFolder"));
-            settings.setValue("backend:sitecopy/alias",  _folderWizard->field("OCSiteAlias"));
+    if (_folderWizard->field("local?").toBool()) {
+      settings.setValue("backend:csync/secondPath", _folderWizard->field("targetLocalFolder"));
+    } else if (_folderWizard->field("remote?").toBool()) {
+      settings.setValue("backend:csync/secondPath", _folderWizard->field("targetURLFolder"));
+      bool onlyOnline = _folderWizard->field("onlyOnline?").toBool();
+      settings.setValue("folder/onlyOnline", onlyOnline);
 
-            qDebug() << "Now writing sitecopy config " << _folderWizard->field("OCSiteAlias").toString(); ;
-            SitecopyConfig scConfig;
-
-            scConfig.writeSiteConfig( alias,
-                                      _folderWizard->field("sourceFolder").toString(), /* local path */
-                                      _folderWizard->field("targetOCFolder").toString() );
-        } else {
-            qWarning() << "* Folder not local and note remote?";
-            return;
+      if (onlyOnline) {
+        bool onlyThisLAN = _folderWizard->field("onlyThisLAN?").toBool();
+        settings.setValue("folder/onlyThisLAN", onlyThisLAN);
+        if (onlyThisLAN) {
+          settings.setValue("folder/onlyOnline", true);
         }
+      }
+    } else if( _folderWizard->field("OC?").toBool()) {
+      settings.setValue("folder/backend", "sitecopy");
+      settings.setValue("backend:sitecopy/targetPath", _folderWizard->field("targetOCFolder"));
+      settings.setValue("backend:sitecopy/alias",  _folderWizard->field("OCSiteAlias"));
 
-        settings.sync();
-        setupFolderFromConfigFile(alias);
-        setupContextMenu();
+      qDebug() << "Now writing sitecopy config " << _folderWizard->field("OCSiteAlias").toString(); ;
+      SitecopyConfig scConfig;
+
+      scConfig.writeSiteConfig( alias,
+                                _folderWizard->field("sourceFolder").toString(), /* local path */
+                                _folderWizard->field("targetOCFolder").toString() );
+    } else {
+      qWarning() << "* Folder not local and note remote?";
+      return;
     }
-    else
-        qDebug() << "* Folder wizard cancelled";
+
+    settings.sync();
+    setupFolderFromConfigFile(alias);
+    setupContextMenu();
+  }
+  else
+    qDebug() << "* Folder wizard cancelled";
 }
 
 void Application::setupKnownFolders()

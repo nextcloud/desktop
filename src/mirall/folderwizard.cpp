@@ -32,6 +32,7 @@ namespace Mirall
 {
 
 FolderWizardSourcePage::FolderWizardSourcePage()
+  :_folderMap(0)
 {
     _ui.setupUi(this);
     registerField("sourceFolder*", _ui.localFolderLineEdit);
@@ -46,7 +47,42 @@ FolderWizardSourcePage::~FolderWizardSourcePage()
 
 bool FolderWizardSourcePage::isComplete() const
 {
-    return QFileInfo(_ui.localFolderLineEdit->text()).isDir();
+  QFileInfo selFile( _ui.localFolderLineEdit->text() );
+
+  bool isOk = selFile.isDir();
+
+  // check if the local directory isn't used yet in another ownCloud sync
+  Folder::Map *map = _folderMap;
+  if( ! map ) return false;
+
+  if( isOk ) {
+    Folder::Map::const_iterator i = map->begin();
+    while( isOk && i != map->constEnd() ) {
+      qDebug() << "Checking local path: " << i.key();
+      if( QFileInfo( i.key() ) == selFile ) {
+        isOk = false;
+      }
+      i++;
+    }
+  }
+
+  // check if the alias is unique.
+  QString alias = _ui.aliasLineEdit->text();
+  if( alias.isEmpty() ) isOk = false;
+  if( isOk ) {
+    Folder::Map::const_iterator i = map->begin();
+    while( isOk && i != map->constEnd() ) {
+      Folder *f = static_cast<Folder*>(i.value());
+      qDebug() << "Checking local alias: " << f->alias();
+      if( f ) {
+        if( f->alias() == alias ) {
+          isOk = false;
+        }
+      }
+      i++;
+    }
+  }
+  return isOk;
 }
 
 void FolderWizardSourcePage::on_localFolderChooseBtn_clicked()
@@ -64,6 +100,8 @@ void FolderWizardSourcePage::on_localFolderLineEdit_textChanged()
     emit completeChanged();
 }
 
+
+// =================================================================================
 FolderWizardTargetPage::FolderWizardTargetPage()
 {
     _ui.setupUi(this);
@@ -273,12 +311,21 @@ bool FolderWizardOwncloudPage::isComplete() const
  */
 
 FolderWizard::FolderWizard(QWidget *parent)
-    : QWizard(parent)
+    : QWizard(parent),
+    _folderWizardSourcePage(0)
 {
-    setPage(Page_Source,   new FolderWizardSourcePage());
+  _folderWizardSourcePage = new FolderWizardSourcePage();
+    setPage(Page_Source,   _folderWizardSourcePage );
     setPage(Page_Target,   new FolderWizardTargetPage());
     // setPage(Page_Network,  new FolderWizardNetworkPage());
     // setPage(Page_Owncloud, new FolderWizardOwncloudPage());
+}
+
+void FolderWizard::setFolderMap( Folder::Map *fm)
+{
+  if( _folderWizardSourcePage ) {
+    _folderWizardSourcePage->setFolderMap( fm );
+  }
 }
 
 } // end namespace

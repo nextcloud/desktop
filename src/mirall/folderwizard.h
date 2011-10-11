@@ -19,6 +19,8 @@
 #include <QNetworkReply>
 #include <QTimer>
 
+#include "folder.h"
+
 #include "ui_folderwizardsourcepage.h"
 #include "ui_folderwizardtargetpage.h"
 #include "ui_folderwizardnetworkpage.h"
@@ -41,13 +43,14 @@ public:
     ~FolderWizardSourcePage();
 
     virtual bool isComplete() const;
-
+    void setFolderMap( Folder::Map *fm ) { _folderMap = fm; }
 protected slots:
     void on_localFolderChooseBtn_clicked();
     void on_localFolderLineEdit_textChanged();
 
 private:
     Ui_FolderWizardSourcePage _ui;
+    Folder::Map *_folderMap;
 };
 
 
@@ -123,14 +126,6 @@ private:
 };
 
 /**
- * Available fields registered:
- *
- * alias
- * sourceFolder
- * local?
- * remote?
- * targetLocalFolder
- * targetURLFolder
  *
  */
 class FolderWizard : public QWizard
@@ -146,7 +141,11 @@ public:
     };
 
     FolderWizard(QWidget *parent = 0L);
+    void setFolderMap( Folder::Map* );
 
+private:
+
+    FolderWizardSourcePage *_folderWizardSourcePage;
 };
 
 
