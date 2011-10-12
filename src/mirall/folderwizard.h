@@ -84,8 +84,8 @@ protected slots:
 
     void slotFolderTextChanged( const QString& );
     void slotTimerFires();
-    void slotInfoReply( const QString&, bool );
-
+    void slotDirCheckReply( const QString&, bool );
+    void showWarn( const QString& );
 private:
     Ui_FolderWizardTargetPage _ui;
     QTimer *_timer;

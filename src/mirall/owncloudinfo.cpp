@@ -122,8 +122,9 @@ void ownCloudInfo::slotReadyRead()
   _readBuffer.append(_reply->readAll());
 }
 
-void ownCloudInfo::slotError( QNetworkReply::NetworkError )
+void ownCloudInfo::slotError( QNetworkReply::NetworkError err)
 {
+  qDebug() << "Network Error: " << err;
   emit noOwncloudFound();
 }
 

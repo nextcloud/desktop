@@ -55,9 +55,8 @@ bool FolderWizardSourcePage::isComplete() const
 
   bool isOk = selFile.isDir();
   if( !isOk ) {
-    _ui.warnLabel->show();
-    _ui.warnLabel->setText(tr("HEHHHAH"));
-  }
+    warnString = tr("No local directory selected!");
+    }
   // check if the local directory isn't used yet in another ownCloud sync
   Folder::Map *map = _folderMap;
   if( ! map ) return false;
@@ -69,7 +68,7 @@ bool FolderWizardSourcePage::isComplete() const
       qDebug() << "Checking local path: " << f->path() << " <-> " << selFile.absoluteFilePath();
       if( QFileInfo( f->path() ) == selFile ) {
         isOk = false;
-        warnString = tr("The local path %1 is already a upload folder.<br/>Please pick another one!").arg(selFile.absoluteFilePath());
+        warnString.append( tr("The local path %1 is already a upload folder.<br/>Please pick another one!").arg(selFile.absoluteFilePath()) );
       }
       i++;
     }
@@ -127,6 +126,7 @@ void FolderWizardSourcePage::on_localFolderLineEdit_textChanged()
 FolderWizardTargetPage::FolderWizardTargetPage()
 {
     _ui.setupUi(this);
+    _ui.warnLabel->hide();
 
     registerField("local?",            _ui.localFolderRadioBtn);
     registerField("remote?",           _ui.urlFolderRadioBtn);
@@ -145,7 +145,7 @@ FolderWizardTargetPage::FolderWizardTargetPage()
     _ownCloudDirCheck = new ownCloudDirCheck( this );
 
     connect( _ownCloudDirCheck, SIGNAL(directoryExists(QString,bool)),
-             SLOT(slotInfoReply(QString,bool)));
+             SLOT(slotDirCheckReply(QString,bool)));
 }
 
 void FolderWizardTargetPage::slotFolderTextChanged( const QString& t)
@@ -155,6 +155,7 @@ void FolderWizardTargetPage::slotFolderTextChanged( const QString& t)
 
   if( t.isEmpty() ) {
     _timer->stop();
+    _ui.warnLabel->hide();
     return;
   }
 
@@ -168,10 +169,16 @@ void FolderWizardTargetPage::slotTimerFires()
   _ownCloudDirCheck->checkDirectory( folder );
 }
 
-void FolderWizardTargetPage::slotInfoReply(const QString &url, bool exists )
+void FolderWizardTargetPage::slotDirCheckReply(const QString &url, bool exists )
 {
   qDebug() << "Got reply from ownCloudInfo: " << url << " :" << exists;
   _dirChecked = exists;
+  if( _dirChecked ) {
+    _ui.warnLabel->hide();
+  } else {
+    showWarn( tr("The folder is not available on your ownCloud. Please create it.") );
+  }
+
   emit completeChanged();
 }
 
@@ -228,6 +235,12 @@ void FolderWizardTargetPage::slotNoOwnCloudFound()
   qDebug() << "No ownCloud configured!";
   _ui.OCRadioBtn->setEnabled( false );
   _ui.OCFolderLineEdit->setEnabled( false );
+}
+
+void FolderWizardTargetPage::showWarn( const QString& msg )
+{
+  _ui.warnLabel->show();
+  _ui.warnLabel->setText( msg );
 }
 
 void FolderWizardTargetPage::on_localFolderRadioBtn_toggled()
