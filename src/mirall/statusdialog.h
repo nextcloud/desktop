@@ -16,11 +16,26 @@
 #define STATUSDIALOG_H
 
 #include <QDialog>
+#include <QStyledItemDelegate>
+#include <QStandardItemModel>
 
 #include "ui_statusdialog.h"
 #include "application.h"
 
 namespace Mirall {
+
+class FolderViewDelegate : public QStyledItemDelegate
+{
+    public:
+    FolderViewDelegate();
+    virtual ~FolderViewDelegate();
+
+    enum datarole { FolderNameRole = Qt::UserRole + 100,
+                    FolderPathRole = Qt::UserRole + 101,
+                    FolderIconRole = Qt::UserRole + 102 };
+    void paint( QPainter*, const QStyleOptionViewItem&, const QModelIndex& ) const;
+    QSize sizeHint( const QStyleOptionViewItem&, const QModelIndex& ) const;
+};
 
 class StatusDialog : public QDialog, public Ui::statusDialog
 {
@@ -33,6 +48,9 @@ signals:
 
 public slots:
     void slotRemoveFolder();
+
+private:
+    QStandardItemModel *_model;
 };
 };
 
