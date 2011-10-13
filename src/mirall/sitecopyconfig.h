@@ -33,10 +33,14 @@ public:
                         const QString& host, const QString& user,
                         const QString& passwd,
                         const QString& remoteFolder = QString() );
+
+  bool removeFolderConfig( const QString& );
+
   bool parseSiteConfig();
 
 private:
   void processConfigLine( const QString& );
+  bool sitecopyConfigToFile();
 
   QHash<QString, QHash<QString, QString> > _Sites;
   QHash<QString, QString>                  _CurrSite;

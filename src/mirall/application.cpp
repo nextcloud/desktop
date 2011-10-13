@@ -12,15 +12,8 @@
  * for more details.
  */
 
-#include <QDebug>
-#include <QDesktopServices>
-#include <QDir>
-#include <QIcon>
-#include <QMenu>
-#include <QNetworkConfigurationManager>
-#include <QSettings>
-#include <QStringList>
-#include <QSystemTrayIcon>
+#include <QtCore>
+#include <QtGui>
 
 #include "mirall/constants.h"
 #include "mirall/application.h"
@@ -56,6 +49,9 @@ Application::Application(int argc, char **argv) :
     _owncloudSetup = new OwncloudSetup();
     _statusDialog = new StatusDialog();
     _folderConfigPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/folders";
+
+    connect( _statusDialog, SIGNAL(removeFolderAlias( const QString&)),
+             SLOT(slotRemoveFolder(const QString&)));
 
     setupActions();
     setupSystemTray();
@@ -207,18 +203,49 @@ void Application::slotAddFolder()
     qDebug() << "* Folder wizard cancelled";
 }
 
+void Application::slotRemoveFolder( const QString& alias )
+{
+  QString configFile = folderConfigPath() + "/" + alias;
+  QFile file( configFile );
+
+  int ret = QMessageBox::question( 0, tr("Confirm Folder Remove"), tr("Do you really want to remove upload folder <i>%1</i>?").arg(alias),
+                                    QMessageBox::Yes|QMessageBox::No );
+
+  if( ret == QMessageBox::No ) {
+    return;
+  }
+
+  if( _folderMap.contains( alias )) {
+    Folder *f = _folderMap.take( alias );
+    delete f;
+  }
+
+  if( file.exists() ) {
+    qDebug() << "Remove folder config file " << configFile;
+    file.remove();
+  }
+
+  SitecopyConfig scConfig;
+  if( ! scConfig.removeFolderConfig( alias ) ) {
+    qDebug() << "Failed to remove folder config for " << alias;
+  } else {
+    setupKnownFolders();
+    _statusDialog->setFolderList( _folderMap );
+  }
+}
+
 void Application::setupKnownFolders()
 {
-    qDebug() << "* Setup folders from " << folderConfigPath();
+  qDebug() << "* Setup folders from " << folderConfigPath();
 
-    _folderMap.clear();
-    QDir dir(folderConfigPath());
-    dir.setFilter(QDir::Files);
-    QStringList list = dir.entryList();
-    foreach (QString file, list) {
-        setupFolderFromConfigFile(file);
-    }
-    if( list.size() ) _tray->setIcon(QIcon::fromTheme(FOLDER_ICON));
+  _folderMap.clear();
+  QDir dir(folderConfigPath());
+  dir.setFilter(QDir::Files);
+  QStringList list = dir.entryList();
+  foreach (QString file, list) {
+    setupFolderFromConfigFile(file);
+  }
+  if( list.size() ) _tray->setIcon(QIcon::fromTheme(FOLDER_ICON));
 }
 
 // filename is the name of the file only, it does not include

@@ -76,9 +76,19 @@ void SitecopyConfig::writeSiteConfig( const QString& localPath,
 
   qDebug() << "** Now Writing!";
 
+  if( sitecopyConfigToFile() ) {
+    qDebug() << "Success in writing the sitecopy config file.";
+  } else {
+    qDebug() << "Failed to write the sitecopy config file.";
+  }
+}
+
+bool SitecopyConfig::sitecopyConfigToFile()
+{
   QFile configFile( QDir::homePath() + "/.sitecopyrc" );
   if( !configFile.open( QIODevice::WriteOnly | QIODevice::Text )) {
     qDebug() << "Failed to open config file to write.";
+    return false;
   }
   QTextStream out(&configFile);
 
@@ -103,7 +113,28 @@ void SitecopyConfig::writeSiteConfig( const QString& localPath,
                              QFile::ReadOwner | QFile::WriteOwner | QFile::ExeUser );
     }
   }
+  return true;
 }
+
+bool SitecopyConfig::removeFolderConfig( const QString& alias )
+{
+  bool res = false;
+  if( alias.isEmpty() ) return res;
+
+  if( parseSiteConfig() ) {
+    if( _Sites.contains( alias )) {
+      _Sites.remove( alias );
+      if( sitecopyConfigToFile() ) {
+        qDebug() << "Successfully removed sitecopy folder config for " << alias;
+        res = true;
+      }
+    } else {
+      qDebug() << "Can not remove alias " << alias << " - not in sitecopy config.";
+    }
+  }
+  return res;
+}
+
 
 bool SitecopyConfig::parseSiteConfig( )
 {

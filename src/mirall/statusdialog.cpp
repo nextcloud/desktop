@@ -125,7 +125,14 @@ void StatusDialog::setFolderList( Folder::Map folders )
 
 void StatusDialog::slotRemoveFolder()
 {
-    qDebug() << "Remove Folder!";
+  QModelIndex selected = _folderList->selectionModel()->currentIndex();
+  if( selected.isValid() ) {
+    QString alias = _model->data( selected, FolderViewDelegate::FolderNameRole ).toString();
+    qDebug() << "Remove Folder alias " << alias;
+    if( !alias.isEmpty() ) {
+      emit(removeFolderAlias( alias ));
+    }
+  }
 }
 
 }

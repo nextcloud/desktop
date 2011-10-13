@@ -45,6 +45,7 @@ public:
     void setFolderList( QHash<QString, Folder*> );
 
 signals:
+    void removeFolderAlias(const QString&);
 
 public slots:
     void slotRemoveFolder();

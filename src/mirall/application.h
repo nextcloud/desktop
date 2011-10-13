@@ -45,6 +45,7 @@ protected slots:
 
     void slotReparseConfiguration();
     void slotAddFolder();
+    void slotRemoveFolder( const QString& );
 
     void slotFolderSyncStarted();
     void slotFolderSyncFinished(const SyncResult &);
