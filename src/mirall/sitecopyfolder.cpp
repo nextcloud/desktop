@@ -67,12 +67,14 @@ QString SiteCopyFolder::siteCopyAlias() const
 
 void SiteCopyFolder::startSync(const QStringList &pathList)
 {
-    QMutexLocker locker(&_syncMutex);
+  QMutexLocker locker(&_syncMutex);
 
-    emit syncStarted();
-    qDebug() << "PATHLIST: " << pathList;
+  emit syncStarted();
+  qDebug() << "PATHLIST: " << pathList;
 
-    startSiteCopy( "--fetch", FlatList );
+  _pathListEmpty = (pathList.count() == 0);
+
+  startSiteCopy( "--fetch", FlatList );
 }
 
 void SiteCopyFolder::fetchFromOC()
@@ -153,7 +155,17 @@ void SiteCopyFolder::slotFinished(int exitCode, QProcess::ExitStatus exitStatus)
         if( exitCode == 1 ) {
             qDebug() << "Exit-Code: Sync Needed!";
             analyzeStatus();
-            startSiteCopy( "--update", Status );
+            if( _ChangesHash.contains("deleted") && _pathListEmpty ) {
+              // problem: Files were added on the cloud. If we say update,
+              // the new files are going to be deleted. Lets warn the user.
+              qDebug() << "!!!! Better not call update, changes happened on the cloud!";
+              SyncResult res( SyncResult::Disabled );
+              res.setErrorString( tr("The ownCloud changed. Disabling syncing for security reasons."));
+              setSyncEnabled( false );
+              emit syncFinished( res );
+            } else {
+              startSiteCopy( "--update", Status );
+            }
         } else if( exitCode == 0 ) {
             qDebug() << "No update needed, remote is in sync.";
             // No update needed

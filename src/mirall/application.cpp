@@ -336,10 +336,14 @@ void Application::slotFolderSyncFinished(const SyncResult &result)
         else {
             _tray->setIcon(QIcon::fromTheme(FOLDER_SYNC_ERROR));
             _tray->showMessage(tr("Folder %1").arg(folder->alias()),
-                               tr("Synchronization did not finish successfully"),
+                               result.errorString(),
+                               /* tr("Synchronization did not finish successfully"), */
                                QSystemTrayIcon::Warning);
         }
 
+    }
+    if( _statusDialog->isVisible() ) {
+      _statusDialog->setFolderList( _folderMap );
     }
 }
 

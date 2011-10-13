@@ -53,15 +53,17 @@ void FolderViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
   painter->save();
 
   QFont font = QApplication::font();
-  QFont SubFont = QApplication::font();
+  QFont subFont = QApplication::font();
   //font.setPixelSize(font.weight()+);
   font.setBold(true);
-  SubFont.setWeight(SubFont.weight()-2);
+  subFont.setWeight(subFont.weight()-2);
   QFontMetrics fm(font);
 
   QIcon icon = qvariant_cast<QIcon>(index.data(FolderIconRole));
+  QIcon statusIcon = qvariant_cast<QIcon>(index.data(FolderStatusIcon));
   QString aliasText = qvariant_cast<QString>(index.data(FolderNameRole));
   QString pathText = qvariant_cast<QString>(index.data(FolderPathRole));
+  QString statusText = qvariant_cast<QString>(index.data(FolderStatus));
 
   QSize iconsize = icon.actualSize(option.decorationSize);
 
@@ -76,18 +78,25 @@ void FolderViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
   headerRect.setTop(headerRect.top()+5);
   headerRect.setBottom(headerRect.top()+fm.height());
 
-  subheaderRect.setTop(headerRect.bottom()+2);
+  subheaderRect.setTop(headerRect.bottom());
+  QFontMetrics fmSub( subFont );
+  subheaderRect.setBottom(subheaderRect.top()+fmSub.height());
+  QRect statusRect = subheaderRect;
+  statusRect.setTop( subheaderRect.bottom() + 2 );
+  statusRect.setBottom( statusRect.top() + fmSub.height());
 
   //painter->drawPixmap(QPoint(iconRect.right()/2,iconRect.top()/2),icon.pixmap(iconsize.width(),iconsize.height()));
   painter->drawPixmap(QPoint(iconRect.left()+iconsize.width()/2+2,iconRect.top()+iconsize.height()/2+3),icon.pixmap(iconsize.width(),iconsize.height()));
 
+  painter->drawPixmap(QPoint(option.rect.right() - 4 - 48, option.rect.top() + 8 ), statusIcon.pixmap( 48,48));
+
+
   painter->setFont(font);
   painter->drawText(headerRect, aliasText);
 
-
-  painter->setFont(SubFont);
+  painter->setFont(subFont);
   painter->drawText(subheaderRect.left(),subheaderRect.top()+17, pathText);
-
+  painter->drawText(statusRect, tr("Status: %1").arg( statusText ));
   painter->restore();
 
 }
@@ -119,6 +128,24 @@ void StatusDialog::setFolderList( Folder::Map folders )
     item->setData( QIcon::fromTheme( "folder-sync" ), FolderViewDelegate::FolderIconRole );
     item->setData( f->path(),  FolderViewDelegate::FolderPathRole );
     item->setData( f->alias(),  FolderViewDelegate::FolderNameRole );
+
+    SyncResult res = f->lastSyncResult();
+    QString resultStr = tr("Undefined");
+    QString statusIcon = "view-refresh";
+    if( res.result() == SyncResult::Error ) {
+      resultStr = tr("Error");
+      statusIcon = "dialog-close";
+    } else if( res.result() == SyncResult::Success ) {
+      resultStr = tr("Success");
+      statusIcon = "dialog-ok";
+    } else if( res.result() == SyncResult::Disabled ) {
+      resultStr = tr("Disabled");
+      statusIcon = "dialog-cancel";
+    }
+    item->setData( QIcon::fromTheme( statusIcon ), FolderViewDelegate::FolderStatusIcon );
+    item->setData( resultStr, FolderViewDelegate::FolderStatus );
+    item->setData( res.errorString(), FolderViewDelegate::FolderErrorMsg );
+
     _model->appendRow( item );
   }
 }

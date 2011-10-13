@@ -53,6 +53,15 @@ public:
     QAction *openAction() const;
 
     /**
+     * switch sync on or off
+     * If the sync is switched off, the startSync method is not going to
+     * be called.
+     */
+     void setSyncEnabled( bool );
+
+     bool syncEnabled() const;
+
+    /**
      * Starts a sync operation
      *
      * If the list of changed files is known, it is passed.
@@ -101,6 +110,11 @@ public:
 
     void incrementErrorCount();
 
+    /**
+     * return the last sync result with error message and status
+     */
+     SyncResult lastSyncResult() const;
+
 protected:
     /**
      * The minimum amounts of seconds to wait before
@@ -141,6 +155,9 @@ private:
     bool _onlyThisLANEnabled;
     QNetworkConfigurationManager _networkMgr;
     bool _online;
+    bool _enabled;
+    SyncResult _lastSyncResult;
+
 protected slots:
 
     void slotOnlineChanged(bool online);

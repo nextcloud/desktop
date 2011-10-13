@@ -25,10 +25,13 @@ class SyncResult
 public:
     enum Result
     {
-        Success,
-        Error
+      Undefined,
+      Success,
+      Error,
+      Disabled
     };
 
+    SyncResult();
     SyncResult(Result result);
     ~SyncResult();
     void setErrorString( const QString& );

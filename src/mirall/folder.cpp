@@ -37,7 +37,8 @@ Folder::Folder(const QString &alias, const QString &path, QObject *parent)
       _alias(alias),
       _onlyOnlineEnabled(false),
       _onlyThisLANEnabled(false),
-      _online(false)
+      _online(false),
+      _enabled(true)
 {
     _openAction = new QAction(QIcon::fromTheme(FOLDER_ICON), path, this);
     _openAction->setIconVisibleInMenu(true);
@@ -81,6 +82,16 @@ QString Folder::alias() const
 QString Folder::path() const
 {
     return _path;
+}
+
+bool Folder::syncEnabled() const
+{
+  return _enabled;
+}
+
+void Folder::setSyncEnabled( bool doit )
+{
+  _enabled = doit;
 }
 
 bool Folder::onlyOnlineEnabled() const
@@ -137,8 +148,17 @@ void Folder::incrementErrorCount()
   }
 }
 
+SyncResult Folder::lastSyncResult() const
+{
+  return _lastSyncResult;
+}
+
 void Folder::evaluateSync(const QStringList &pathList)
 {
+  if( !_enabled ) {
+    qDebug() << "*" << alias() << "sync skipped, disabled!";
+    return;
+  }
   if (!_online && onlyOnlineEnabled()) {
     qDebug() << "*" << alias() << "sync skipped, not online";
     return;
@@ -180,11 +200,13 @@ void Folder::slotSyncStarted()
 
 void Folder::slotSyncFinished(const SyncResult &result)
 {
-    _watcher->setEventsEnabled(true);
-    _openAction->setIcon(QIcon::fromTheme(FOLDER_ICON));
-    // reenable the poll timer
-    qDebug() << "* " << alias() << "Poll timer enabled";
-    _pollTimer->start();
+  _lastSyncResult = result;
+
+  _watcher->setEventsEnabled(true);
+  _openAction->setIcon(QIcon::fromTheme(FOLDER_ICON));
+  // reenable the poll timer
+  qDebug() << "* " << alias() << "Poll timer enabled";
+  _pollTimer->start();
 }
 
 } // namespace Mirall

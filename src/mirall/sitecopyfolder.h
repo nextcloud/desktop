@@ -61,9 +61,10 @@ protected slots:
     void analyzeStatus();
 
 private:
-    QMutex _syncMutex;
-    QProcess *_SiteCopy;
-    int _syncCount;
+    QMutex      _syncMutex;
+    QProcess   *_SiteCopy;
+    int         _syncCount;
+    bool        _pathListEmpty;
 
     QByteArray    _lastOutput;
     QString       _StatusString;

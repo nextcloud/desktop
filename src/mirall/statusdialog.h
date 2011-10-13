@@ -30,9 +30,13 @@ class FolderViewDelegate : public QStyledItemDelegate
     FolderViewDelegate();
     virtual ~FolderViewDelegate();
 
-    enum datarole { FolderNameRole = Qt::UserRole + 100,
-                    FolderPathRole = Qt::UserRole + 101,
-                    FolderIconRole = Qt::UserRole + 102 };
+    enum datarole { FolderNameRole   = Qt::UserRole + 100,
+                    FolderPathRole   = Qt::UserRole + 101,
+                    FolderIconRole   = Qt::UserRole + 102,
+                    FolderRemotePath = Qt::UserRole + 103,
+                    FolderStatus     = Qt::UserRole + 104,
+                    FolderErrorMsg   = Qt::UserRole + 105,
+                    FolderStatusIcon = Qt::UserRole + 106 };
     void paint( QPainter*, const QStyleOptionViewItem&, const QModelIndex& ) const;
     QSize sizeHint( const QStyleOptionViewItem&, const QModelIndex& ) const;
 };

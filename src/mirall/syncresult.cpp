@@ -17,6 +17,12 @@
 namespace Mirall
 {
 
+SyncResult::SyncResult()
+: _result( Undefined )
+{
+
+}
+
 SyncResult::SyncResult(SyncResult::Result result)
     : _result(result)
 {
