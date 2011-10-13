@@ -59,6 +59,12 @@ void SitecopyConfig::writeSiteConfig( const QString& localPath,
   ocDefs["server"]   = host;
   ocDefs["protocol"] = "webdav";
   ocDefs["local"]    = localPath;
+
+  // patch sent from Dominik Schmidt <dev@dominik-schmidt.de> to enable secure connection:
+  if( ocUrl.scheme() == "https" || ocUrl.scheme() == "webdavs" ) {
+    ocDefs["http"]   = "secure";
+  }
+
   QString webdavBase = "files/webdav.php";
   if( !remoteFolder.isEmpty() && remoteFolder != "/" ) {
     webdavBase += "/" + remoteFolder;
