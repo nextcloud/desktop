@@ -58,6 +58,9 @@ OwncloudSetup::OwncloudSetup( QObject *parent ) :
     connect( _ocWizard, SIGNAL(installOCLocalhost()),
              this, SLOT(slotCreateOCLocalhost()));
 
+    // in case of cancel, terminate the owncloud-admin script.
+    connect( _ocWizard, SIGNAL(rejected()), _process, SLOT(terminate()));
+
 }
 
 void OwncloudSetup::slotConnectToOCUrl( const QString& url )
@@ -72,6 +75,11 @@ bool OwncloudSetup::isBusy()
 {
   return _process->state() > 0;
 }
+
+ OwncloudWizard *OwncloudSetup::wizard()
+ {
+   return _ocWizard;
+ }
 
 void OwncloudSetup::slotCreateOCLocalhost()
 {
@@ -125,8 +133,13 @@ void OwncloudSetup::slotInstallOCServer()
 void OwncloudSetup::runOwncloudAdmin( const QStringList& args )
 {
   const QString bin("/usr/bin/owncloud-admin");
-
+  qDebug() << "starting " << bin << " with args. " << args;
+  if( _process->state() != QProcess::NotRunning	) {
+    qDebug() << "Owncloud admin is still running, skip!";
+    return;
+  }
   if( checkOwncloudAdmin( bin )) {
+    _ocWizard->appendToResultWidget( tr("Starting script owncloud-admin...") );
     _process->start( bin, args );
   } else {
     slotFinished( 1, QProcess::NormalExit );
@@ -162,19 +175,24 @@ void OwncloudSetup::slotError( QProcess::ProcessError )
 void OwncloudSetup::slotStarted()
 {
   _ocWizard->button( QWizard::FinishButton )->setEnabled( false );
+  _ocWizard->button( QWizard::BackButton )->setEnabled( false );
+   QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 }
 
 void OwncloudSetup::slotFinished( int res, QProcess::ExitStatus )
 {
   _ocWizard->button( QWizard::FinishButton )->setEnabled( true );
+  _ocWizard->button( QWizard::BackButton)->setEnabled( true );
+  QApplication::restoreOverrideCursor();
 
   if( res ) {
     _ocWizard->appendToResultWidget( tr("<font color=\"red\">Installation of ownCloud failed!</font>") );
-    emit ownCloudSetupFinished( true );
+    _ocWizard->showOCUrlLabel( false );
+    emit ownCloudSetupFinished( false );
   } else {
     // Successful installation. Write the config.
     _ocWizard->appendToResultWidget( tr("<font color=\"green\">Installation of ownCloud succeeded!</font>") );
-
+    _ocWizard->showOCUrlLabel( true );
     writeOwncloudConfig();
 
     emit ownCloudSetupFinished( true );
@@ -185,7 +203,7 @@ void OwncloudSetup::slotFinished( int res, QProcess::ExitStatus )
 void OwncloudSetup::startWizard()
 {
   _ocWizard->setOCUrl( ownCloudUrl() );
-  _ocWizard->exec();
+  _ocWizard->show();
 }
 
 QString OwncloudSetup::mirallConfigFile() const

@@ -41,6 +41,8 @@ public:
   virtual void initializePage();
   int nextId() const;
   void setOCUrl( const QString& );
+  void showOCUrlLabel( const QString& );
+
 private:
   Ui_OwncloudWizardSelectTypePage _ui;
 
@@ -114,6 +116,7 @@ public:
 
 public slots:
   void appendResultText( const QString& );
+  void showOCUrlLabel( const QString&, bool );
 
 private:
   Ui_OwncloudWizardResultPage _ui;
@@ -145,6 +148,8 @@ public:
 public slots:
     void appendToResultWidget( const QString& );
     void slotCurrentPageChanged( int );
+    void showOCUrlLabel( bool );
+
 
 signals:
     void connectToOCUrl( const QString& );
@@ -153,6 +158,7 @@ signals:
 
 private:
     QString _configFile;
+    QString _oCUrl;
 };
 
 

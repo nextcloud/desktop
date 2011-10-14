@@ -201,6 +201,7 @@ OwncloudWizardResultPage::OwncloudWizardResultPage()
     _ui.setupUi(this);
     // no fields to register.
     _ui.resultTextEdit->setAcceptRichText(true);
+    _ui.ocLinkLabel->setVisible( false );
 }
 
 OwncloudWizardResultPage::~OwncloudWizardResultPage()
@@ -223,6 +224,18 @@ void OwncloudWizardResultPage::appendResultText( const QString& msg )
     _ui.resultTextEdit->clear();
   } else {
     _ui.resultTextEdit->append( msg );
+  }
+}
+
+void OwncloudWizardResultPage::showOCUrlLabel( const QString& url, bool show )
+{
+  _ui.ocLinkLabel->setText( tr("Congratulations! Your <a href=\"%1\">new ownCloud</a> is now up and running!").arg(url) );
+  _ui.ocLinkLabel->setOpenExternalLinks( true );
+
+  if( show ) {
+    _ui.ocLinkLabel->setVisible( true );
+  } else {
+    _ui.ocLinkLabel->setVisible( false );
   }
 }
 
@@ -262,13 +275,14 @@ void OwncloudWizard::slotCurrentPageChanged( int id )
     if( domain.startsWith( "https://" )) {
       domain = domain.right( domain.length()-8 );
     }
-    field("myOCUrl").setValue( domain );
+
     QString host = "ftp." +domain;
     OwncloudFTPAccessPage *p1 = static_cast<OwncloudFTPAccessPage*> (page( Page_FTP ));
     p1->setFTPUrl( host );
   }
   if( id == Page_Install ) {
     appendToResultWidget( QString() );
+    showOCUrlLabel( false );
     if( field("connectMyOC").toBool() ) {
       // check the url and connect.
       QString url = field("OCUrl").toString();
@@ -285,6 +299,12 @@ void OwncloudWizard::slotCurrentPageChanged( int id )
   }
 }
 
+void OwncloudWizard::showOCUrlLabel( bool show )
+{
+  OwncloudWizardResultPage *p = static_cast<OwncloudWizardResultPage*> (page( Page_Install ));
+  p->showOCUrlLabel( _oCUrl, show );
+}
+
 void OwncloudWizard::appendToResultWidget( const QString& msg )
 {
   OwncloudWizardResultPage *p = static_cast<OwncloudWizardResultPage*> (page( Page_Install ));
@@ -293,10 +313,9 @@ void OwncloudWizard::appendToResultWidget( const QString& msg )
 
 void OwncloudWizard::setOCUrl( const QString& url )
 {
-  if( !url.isEmpty() ) {
-    OwncloudWizardSelectTypePage *p = static_cast<OwncloudWizardSelectTypePage*>(page( Page_SelectType ));
-    p->setOCUrl( url );
-  }
+  _oCUrl = url;
+  OwncloudWizardSelectTypePage *p = static_cast<OwncloudWizardSelectTypePage*>(page( Page_SelectType ));
+  p->setOCUrl( url );
 }
 
 } // end namespace

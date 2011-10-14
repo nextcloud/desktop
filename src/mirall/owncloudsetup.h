@@ -53,6 +53,9 @@ public:
   QString ownCloudPasswd() const ;
 
   void    setupLocalSyncFolder();
+
+  OwncloudWizard *wizard();
+
 signals:
   void    ownCloudSetupFinished( bool );
 

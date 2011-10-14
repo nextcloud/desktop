@@ -46,6 +46,7 @@ protected slots:
     void slotReparseConfiguration();
     void slotAddFolder();
     void slotRemoveFolder( const QString& );
+    void slotConfigure();
 
     void slotFolderSyncStarted();
     void slotFolderSyncFinished(const SyncResult &);
@@ -75,6 +76,8 @@ private:
     QSystemTrayIcon *_tray;
     QAction *_actionQuit;
     QAction *_actionAddFolder;
+    QAction *_actionConfigure;
+
     QNetworkConfigurationManager *_networkMgr;
     QString _folderConfigPath;
 

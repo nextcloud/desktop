@@ -97,8 +97,10 @@ QString Application::folderConfigPath() const
 
 void Application::setupActions()
 {
-    _actionAddFolder = new QAction(tr("Add folder"), this);
+    _actionAddFolder = new QAction(tr("Add folder..."), this);
     QObject::connect(_actionAddFolder, SIGNAL(triggered(bool)), SLOT(slotAddFolder()));
+    _actionConfigure = new QAction(tr("Configure..."), this);
+    QObject::connect(_actionConfigure, SIGNAL(triggered(bool)), SLOT(slotConfigure()));
     _actionQuit = new QAction(tr("Quit"), this);
     QObject::connect(_actionQuit, SIGNAL(triggered(bool)), SLOT(quit()));
 }
@@ -118,12 +120,16 @@ void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
 {
   if( reason == QSystemTrayIcon::Trigger ) {
     // check if there is a mirall.cfg already.
+    if( _owncloudSetup->wizard()->isVisible() ) {
+      _owncloudSetup->wizard()->show();
+    }
     QFile fi( QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/mirall.cfg" );
     if( !fi.exists() ) {
       qDebug() << "No configured folders yet, start the Owncloud integration dialog.";
       _owncloudSetup->startWizard();
     } else {
       _statusDialog->setFolderList( _folderMap );
+
       _statusDialog->exec();
     }
   }
@@ -133,7 +139,10 @@ void Application::setupContextMenu()
 {
     delete _contextMenu;
     _contextMenu = new QMenu();
+    _contextMenu->setTitle(tr( "Mirall" ));
+    _contextMenu->addAction(_actionConfigure);
     _contextMenu->addAction(_actionAddFolder);
+    _contextMenu->addSeparator();
 
     // here all folders should be added
     foreach (Folder *folder, _folderMap) {
@@ -232,6 +241,11 @@ void Application::slotRemoveFolder( const QString& alias )
     setupKnownFolders();
     _statusDialog->setFolderList( _folderMap );
   }
+}
+
+void Application::slotConfigure()
+{
+  _owncloudSetup->startWizard();
 }
 
 void Application::setupKnownFolders()
