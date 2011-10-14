@@ -95,6 +95,7 @@ public:
   virtual bool isComplete() const;
   virtual void initializePage();
   void setFTPUrl( const QString& );
+  virtual int nextId() const;
 
 private:
   Ui_OwncloudFTPAccessPage _ui;

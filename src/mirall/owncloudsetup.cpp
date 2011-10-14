@@ -288,7 +288,7 @@ void OwncloudSetup::setupLocalSyncFolder()
   } else {
 
     if( fi.mkpath( syncFolder ) ) {
-      QString targetPath = "mirall";
+      QString targetPath = "mirall"; // Do NOT sync to root dir on ownCloud!
       qDebug() << "Successfully created " << fi.path();
 
       // Create a sitecopy config file

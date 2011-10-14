@@ -134,12 +134,10 @@ void OwncloudFTPAccessPage::setFTPUrl( const QString& url )
   _ui.ftpUrlEdit->setText( url );
 }
 
-#if 0
 int OwncloudFTPAccessPage::nextId() const
 {
-
+  return OwncloudWizard::Page_OC_Credentials;
 }
-#endif
 
 bool OwncloudFTPAccessPage::isComplete() const
 {

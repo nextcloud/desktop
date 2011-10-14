@@ -165,6 +165,8 @@ void Application::slotAddFolder()
 {
   _folderWizard->setFolderMap( &_folderMap );
 
+  _folderWizard->restart();
+
   if (_folderWizard->exec() == QDialog::Accepted) {
     qDebug() << "* Folder wizard completed";
 
@@ -191,9 +193,9 @@ void Application::slotAddFolder()
     } else if( _folderWizard->field("OC?").toBool()) {
       settings.setValue("folder/backend", "sitecopy");
       settings.setValue("backend:sitecopy/targetPath", _folderWizard->field("targetOCFolder"));
-      settings.setValue("backend:sitecopy/alias",  _folderWizard->field("OCSiteAlias"));
+      settings.setValue("backend:sitecopy/alias",  _folderWizard->field("alias"));
 
-      qDebug() << "Now writing sitecopy config " << _folderWizard->field("OCSiteAlias").toString(); ;
+      qDebug() << "Now writing sitecopy config " << _folderWizard->field("alias").toString(); ;
       SitecopyConfig scConfig;
 
       scConfig.writeSiteConfig( alias,
@@ -225,8 +227,11 @@ void Application::slotRemoveFolder( const QString& alias )
   }
 
   if( _folderMap.contains( alias )) {
+    qDebug() << "Removing " << alias;
     Folder *f = _folderMap.take( alias );
     delete f;
+  } else {
+    qDebug() << "!! Can not remove " << alias << ", not in folderMap.";
   }
 
   if( file.exists() ) {
