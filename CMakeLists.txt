@@ -22,6 +22,7 @@ set(CMAKE_MODULE_PATH
 
 # add definitions
 include(DefineCMakeDefaults)
+include(DefinePlatformDefaults)
 include(DefineCompilerFlags)
 include(DefineInstallationPaths)
 include(DefineOptions.cmake)
