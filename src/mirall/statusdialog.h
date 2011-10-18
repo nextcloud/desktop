@@ -49,10 +49,12 @@ public:
     void setFolderList( QHash<QString, Folder*> );
 
 signals:
-    void removeFolderAlias(const QString&);
+    void removeFolderAlias( const QString& );
+    void fetchFolderAlias( const QString& );
 
 public slots:
     void slotRemoveFolder();
+    void slotFetchFolder();
 
 private:
     QStandardItemModel *_model;

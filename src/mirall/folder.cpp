@@ -209,6 +209,16 @@ void Folder::slotSyncFinished(const SyncResult &result)
   _pollTimer->start();
 }
 
+void Folder::setBackend( const QString& b )
+{
+  _backend = b;
+}
+
+QString Folder::backend() const
+{
+  return _backend;
+}
+
 } // namespace Mirall
 
 #include "folder.moc"

@@ -115,6 +115,15 @@ public:
      */
      SyncResult lastSyncResult() const;
 
+     /**
+     * set the backend description string.
+     */
+     void setBackend( const QString& );
+     /**
+     * get the backend description string.
+     */
+     QString backend() const;
+
 protected:
     /**
      * The minimum amounts of seconds to wait before
@@ -157,6 +166,7 @@ private:
     bool _online;
     bool _enabled;
     SyncResult _lastSyncResult;
+    QString _backend;
 
 protected slots:
 

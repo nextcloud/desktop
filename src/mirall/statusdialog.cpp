@@ -116,6 +116,7 @@ StatusDialog::StatusDialog(QWidget *parent) :
 
   connect(_ButtonClose, SIGNAL(clicked()), this, SLOT(accept()));
   connect(_ButtonRemove, SIGNAL(clicked()), this, SLOT(slotRemoveFolder()));
+  connect(_ButtonFetch, SIGNAL(clicked()), this, SLOT(slotFetchFolder()));
 }
 
 void StatusDialog::setFolderList( Folder::Map folders )
@@ -158,6 +159,18 @@ void StatusDialog::slotRemoveFolder()
     qDebug() << "Remove Folder alias " << alias;
     if( !alias.isEmpty() ) {
       emit(removeFolderAlias( alias ));
+    }
+  }
+}
+
+void StatusDialog::slotFetchFolder()
+{
+  QModelIndex selected = _folderList->selectionModel()->currentIndex();
+  if( selected.isValid() ) {
+    QString alias = _model->data( selected, FolderViewDelegate::FolderNameRole ).toString();
+    qDebug() << "Fetch Folder alias " << alias;
+    if( !alias.isEmpty() ) {
+      emit(fetchFolderAlias( alias ));
     }
   }
 }

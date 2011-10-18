@@ -53,6 +53,9 @@ Application::Application(int argc, char **argv) :
     connect( _statusDialog, SIGNAL(removeFolderAlias( const QString&)),
              SLOT(slotRemoveFolder(const QString&)));
 
+    connect( _statusDialog, SIGNAL(fetchFolderAlias(const QString&)),
+             SLOT(slotFetchFolder( const QString&)));
+
     setupActions();
     setupSystemTray();
 
@@ -248,6 +251,30 @@ void Application::slotRemoveFolder( const QString& alias )
   }
 }
 
+void Application::slotFetchFolder( const QString& alias )
+{
+  qDebug() << "start to fetch folder with alias " << alias;
+
+  if( ! _folderMap.contains( alias ) ) {
+    qDebug() << "!! Can not fetch alias " << alias << ", can not be found in folderMap.";
+    return;
+  }
+
+  Folder *f = _folderMap[alias];
+
+  if( f->backend() == "sitecopy" ) {
+    if( QMessageBox::question( 0, tr("Confirm Folder Fetch"), tr("Do you really want to fetch the folder with alias <i>%1</i> from your ownCloud?<br/>"
+                                                                 "This overwrites your local data in directory <i>%2</i>!").arg(alias).arg(f->path()),
+                                                                 QMessageBox::Yes|QMessageBox::No ) == QMessageBox::Yes ) {
+      SiteCopyFolder *sf = static_cast<SiteCopyFolder*>( f );
+      sf->fetchFromOC();
+    } else {
+      qDebug() << "!! Can only fetch backend type sitecopy, this one has " << f->backend();
+    }
+  }
+
+}
+
 void Application::slotConfigure()
 {
   _owncloudSetup->startWizard();
@@ -290,9 +317,9 @@ void Application::setupFolderFromConfigFile(const QString &file) {
         return;
     }
 
-    QVariant backend = settings.value("folder/backend");
-    if (!backend.isNull()) {
-        if( backend.toString() == "sitecopy") {
+    QString backend = settings.value("folder/backend").toString();
+    if (!backend.isEmpty()) {
+        if( backend == "sitecopy") {
 
             SiteCopyFolder *scf = new SiteCopyFolder( file,
                                                       path.toString(),
@@ -301,13 +328,13 @@ void Application::setupFolderFromConfigFile(const QString &file) {
             folder = scf;
 
         }
-        else if (backend.toString() == "unison") {
+        else if (backend == "unison") {
             folder = new UnisonFolder(file,
                                       path.toString(),
                                       settings.value("backend:unison/secondPath").toString(),
                                       this);
         }
-        else if (backend.toString() == "csync") {
+        else if (backend == "csync") {
 #ifdef WITH_CSYNC
             folder = new CSyncFolder(file,
                                      path.toString(),
@@ -322,6 +349,7 @@ void Application::setupFolderFromConfigFile(const QString &file) {
             return;
         }
     }
+    folder->setBackend( backend );
     folder->setOnlyOnlineEnabled(settings.value("folder/onlyOnline", false).toBool());
     folder->setOnlyThisLANEnabled(settings.value("folder/onlyThisLAN", false).toBool());
 
