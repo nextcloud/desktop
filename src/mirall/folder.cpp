@@ -203,7 +203,7 @@ void Folder::slotSyncFinished(const SyncResult &result)
   _lastSyncResult = result;
 
   _watcher->setEventsEnabled(true);
-  _openAction->setIcon(QIcon::fromTheme(FOLDER_ICON));
+  _openAction->setIcon(icon(22));
   // reenable the poll timer
   qDebug() << "* " << alias() << "Poll timer enabled";
   _pollTimer->start();
@@ -212,6 +212,20 @@ void Folder::slotSyncFinished(const SyncResult &result)
 void Folder::setBackend( const QString& b )
 {
   _backend = b;
+  if( _openAction ) {
+    _openAction->setIcon( icon(22) );
+  }
+}
+
+QIcon Folder::icon( int size ) const
+{
+  QString name;
+
+  if( _backend == "sitecopy") name = QString( "ownCloud-%1.png" ).arg(size);
+  if( _backend == "unison" ) name = QString( "folder-%1.png" ).arg(size);
+  if( _backend == "csync" ) name = QString("folder-remote-%1.png").arg(size);
+
+  return QIcon( QString( ":/new/mirall/resources/%1").arg(name) );
 }
 
 QString Folder::backend() const

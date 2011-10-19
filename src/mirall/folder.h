@@ -25,6 +25,7 @@
 
 class QAction;
 class QTimer;
+class QIcon;
 
 namespace Mirall {
 
@@ -124,6 +125,7 @@ public:
      */
      QString backend() const;
 
+     QIcon icon( int size ) const;
 protected:
     /**
      * The minimum amounts of seconds to wait before
