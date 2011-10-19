@@ -85,12 +85,13 @@ protected slots:
     void slotFolderTextChanged( const QString& );
     void slotTimerFires();
     void slotDirCheckReply( const QString&, bool );
-    void showWarn( const QString& );
+    void showWarn( const QString& = QString() ) const;
 private:
     Ui_FolderWizardTargetPage _ui;
     QTimer *_timer;
     ownCloudDirCheck *_ownCloudDirCheck;
     bool _dirChecked;
+    bool _warnWasVisible;
 };
 
 class FolderWizardNetworkPage : public QWizardPage

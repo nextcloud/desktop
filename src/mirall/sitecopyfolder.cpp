@@ -30,7 +30,8 @@ namespace Mirall {
                                     QObject *parent)
       : Folder(alias, path, parent),
         _SiteCopy(new QProcess(this)),
-        _syncCount(0)
+        _syncCount(0),
+        _remotePath( secondPath )
 {
     QObject::connect(_SiteCopy, SIGNAL(readyReadStandardOutput()),
                      SLOT(slotReadyReadStandardOutput()));
@@ -60,9 +61,9 @@ bool SiteCopyFolder::isBusy() const
     return (_SiteCopy->state() != QProcess::NotRunning);
 }
 
-QString SiteCopyFolder::siteCopyAlias() const
+QString SiteCopyFolder::remotePath() const
 {
-  return _siteCopyAlias;
+  return _remotePath;
 }
 
 void SiteCopyFolder::startSync(const QStringList &pathList)

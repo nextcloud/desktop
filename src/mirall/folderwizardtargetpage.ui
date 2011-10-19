@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>431</width>
-    <height>296</height>
+    <width>456</width>
+    <height>336</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2">
+  <layout class="QGridLayout" name="gridLayout_5">
    <item row="0" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_12">
      <item>
@@ -26,7 +26,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Syncronisation Target</string>
+        <string>Express Upload Target</string>
        </property>
       </widget>
      </item>
@@ -50,139 +50,238 @@
      <property name="title">
       <string>Pick a place where the data should go to:</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0" colspan="2">
-       <widget class="QRadioButton" name="localFolderRadioBtn">
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="0" column="0">
+       <widget class="QRadioButton" name="OCRadioBtn">
         <property name="text">
-         <string>Another local folder</string>
+         <string/>
         </property>
         <property name="checked">
          <bool>true</bool>
         </property>
        </widget>
       </item>
+      <item row="0" column="1">
+       <widget class="QFrame" name="frame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="1">
+          <widget class="QLabel" name="OCLabel">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>to your &amp;ownCloud</string>
+           </property>
+           <property name="openExternalLinks">
+            <bool>true</bool>
+           </property>
+           <property name="buddy">
+            <cstring>OCRadioBtn</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Folder on ownCloud:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLineEdit" name="OCFolderLineEdit">
+           <property name="placeholderText">
+            <string>root</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0" rowspan="2">
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="../../mirall.qrc">:/new/mirall/resources/ownCloud-48.png</pixmap>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
       <item row="1" column="0">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+       <widget class="QRadioButton" name="localFolderRadioBtn">
+        <property name="text">
+         <string/>
         </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
+        <property name="checked">
+         <bool>false</bool>
         </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>22</width>
-          <height>13</height>
-         </size>
-        </property>
-       </spacer>
+       </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Folder name:</string>
+       <widget class="QFrame" name="frame_2">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
         </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="0" column="0" rowspan="2">
+          <widget class="QLabel" name="label_8">
+           <property name="minimumSize">
+            <size>
+             <width>48</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="../../mirall.qrc">:/new/mirall/resources/folder-grey-32.png</pixmap>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="LocalFolderLabel">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>to a &amp;local folder</string>
+           </property>
+           <property name="openExternalLinks">
+            <bool>true</bool>
+           </property>
+           <property name="buddy">
+            <cstring>localFolderRadioBtn</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Folder name:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLineEdit" name="localFolder2LineEdit">
+           <property name="placeholderText">
+            <string>/home/local</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3">
+          <widget class="QPushButton" name="localFolder2ChooseBtn">
+           <property name="text">
+            <string>C&amp;hoose..</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
-      <item row="1" column="2">
-       <widget class="QLineEdit" name="localFolder2LineEdit">
-        <property name="placeholderText">
-         <string>/home/local2</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="3">
-       <widget class="QPushButton" name="localFolder2ChooseBtn">
-        <property name="text">
-         <string>C&amp;hoose..</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0" colspan="2">
+      <item row="2" column="0">
        <widget class="QRadioButton" name="urlFolderRadioBtn">
-        <property name="text">
-         <string>Remote folder (URL)</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>22</width>
-          <height>13</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="3" column="1">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>URL:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="2">
-       <widget class="QLineEdit" name="urlFolderLineEdit">
-        <property name="placeholderText">
-         <string>scp://john@host.com//myfolder</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QRadioButton" name="OCRadioBtn">
         <property name="text">
          <string/>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
-       <widget class="QLabel" name="OCLabel">
-        <property name="text">
-         <string>to your ownCloud</string>
+      <item row="2" column="1">
+       <widget class="QFrame" name="frame_3">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
         </property>
-        <property name="openExternalLinks">
-         <bool>true</bool>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
         </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <spacer name="horizontalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>22</width>
-          <height>13</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="5" column="1">
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>Folder on ownCloud:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="2">
-       <widget class="QLineEdit" name="OCFolderLineEdit">
-        <property name="placeholderText">
-         <string>Sync-directory</string>
-        </property>
+        <layout class="QGridLayout" name="gridLayout_3">
+         <item row="0" column="0" rowspan="2">
+          <widget class="QLabel" name="label_9">
+           <property name="minimumSize">
+            <size>
+             <width>48</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="../../mirall.qrc">:/new/mirall/resources/folder-remote-32.png</pixmap>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1" colspan="2">
+          <widget class="QLabel" name="OCLabel_3">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>to a &amp;remote folder (URL)</string>
+           </property>
+           <property name="openExternalLinks">
+            <bool>true</bool>
+           </property>
+           <property name="buddy">
+            <cstring>urlFolderRadioBtn</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>URL:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLineEdit" name="urlFolderLineEdit">
+           <property name="placeholderText">
+            <string>scp://john@host.com//myfolder</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>
+     <zorder>frame</zorder>
+     <zorder>frame_2</zorder>
+     <zorder>frame_3</zorder>
+     <zorder>OCRadioBtn</zorder>
+     <zorder>label_5</zorder>
+     <zorder>localFolderRadioBtn</zorder>
+     <zorder>urlFolderRadioBtn</zorder>
     </widget>
    </item>
    <item row="2" column="0">
@@ -255,7 +354,10 @@
       <bool>true</bool>
      </property>
      <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
      </property>
      <property name="text">
       <string>TextLabel</string>
@@ -286,6 +388,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../mirall.qrc"/>
+ </resources>
  <connections/>
 </ui>

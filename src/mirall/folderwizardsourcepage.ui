@@ -22,14 +22,14 @@
       </font>
      </property>
      <property name="text">
-      <string>Local Syncronisation Source</string>
+      <string>Express Upload Source</string>
      </property>
     </widget>
    </item>
    <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Pick a folder on your computer to backup/synchronize:</string>
+      <string>Pick a folder on your computer to upload:</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">

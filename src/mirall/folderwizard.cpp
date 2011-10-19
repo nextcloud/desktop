@@ -56,7 +56,7 @@ bool FolderWizardSourcePage::isComplete() const
   bool isOk = selFile.isDir();
   if( !isOk ) {
     warnString = tr("No local directory selected!");
-    }
+  }
   // check if the local directory isn't used yet in another ownCloud sync
   Folder::Map *map = _folderMap;
   if( ! map ) return false;
@@ -65,10 +65,22 @@ bool FolderWizardSourcePage::isComplete() const
     Folder::Map::const_iterator i = map->begin();
     while( isOk && i != map->constEnd() ) {
       Folder *f = static_cast<Folder*>(i.value());
-      qDebug() << "Checking local path: " << f->path() << " <-> " << selFile.absoluteFilePath();
+      QString folderDir = QDir( f->path() ).absolutePath();
+
+      qDebug() << "Checking local path: " << folderDir << " <-> " << selFile.absoluteFilePath();
       if( QFileInfo( f->path() ) == selFile ) {
         isOk = false;
-        warnString.append( tr("The local path %1 is already a upload folder.<br/>Please pick another one!").arg(selFile.absoluteFilePath()) );
+        warnString.append( tr("The local path %1 is already an upload folder.<br/>Please pick another one!").arg(selFile.absoluteFilePath()) );
+      }
+      if( isOk && folderDir.startsWith( selFile.absoluteFilePath() )) {
+        qDebug() << "A already configured folder is child of the current selected";
+        warnString.append( tr("An already configured folder is contained in the current entry."));
+        isOk = false;
+      }
+      if( isOk && selFile.absoluteFilePath().startsWith( folderDir ) ) {
+        qDebug() << "An already configured folder is parent of the current selected";
+        warnString.append( tr("An already configured folder contains the currently entered directory."));
+        isOk = false;
       }
       i++;
     }
@@ -88,7 +100,7 @@ bool FolderWizardSourcePage::isComplete() const
     qDebug() << "Checking local alias: " << f->alias();
     if( f ) {
       if( f->alias() == alias ) {
-        warnString.append( tr("<br/>The alias %1 is already in use. Please change it to something different.").arg(alias) );
+        warnString.append( tr("<br/>The alias <i>%1</i> is already in use. Please change it to something different.").arg(alias) );
         isOk = false;
         goon = false;
       }
@@ -124,6 +136,8 @@ void FolderWizardSourcePage::on_localFolderLineEdit_textChanged()
 
 // =================================================================================
 FolderWizardTargetPage::FolderWizardTargetPage()
+: _dirChecked( false ),
+  _warnWasVisible(false)
 {
     _ui.setupUi(this);
     _ui.warnLabel->hide();
@@ -196,10 +210,15 @@ bool FolderWizardTargetPage::isComplete() const
         QUrl url(_ui.urlFolderLineEdit->text());
         return url.isValid() && (url.scheme() == "sftp" || url.scheme() == "smb");
     } else if( _ui.OCRadioBtn->isChecked()) {
+      /* owncloud selected */
       QString dir = _ui.OCFolderLineEdit->text();
       if( dir.isEmpty() ) {
+        showWarn( tr("Better do not use the remote root directory.<br/>If you do, you can <b>not</b> mirror another local folder."));
         return true;
       } else {
+        if( _dirChecked ) {
+          showWarn();
+        }
         return _dirChecked;
       }
     }
@@ -237,10 +256,14 @@ void FolderWizardTargetPage::slotNoOwnCloudFound()
   _ui.OCFolderLineEdit->setEnabled( false );
 }
 
-void FolderWizardTargetPage::showWarn( const QString& msg )
+void FolderWizardTargetPage::showWarn( const QString& msg ) const
 {
-  _ui.warnLabel->show();
-  _ui.warnLabel->setText( msg );
+  if( msg.isEmpty() ) {
+    _ui.warnLabel->hide();
+  } else {
+    _ui.warnLabel->show();
+    _ui.warnLabel->setText( msg );
+  }
 }
 
 void FolderWizardTargetPage::on_localFolderRadioBtn_toggled()
@@ -273,15 +296,25 @@ void FolderWizardTargetPage::on_urlFolderLineEdit_textChanged()
 
 void FolderWizardTargetPage::slotToggleItems()
 {
-    bool enabled = _ui.localFolderRadioBtn->isChecked();
-    _ui.localFolder2LineEdit->setEnabled(enabled);
-    _ui.localFolder2ChooseBtn->setEnabled(enabled);
 
-    enabled = _ui.urlFolderRadioBtn->isChecked();
-    _ui.urlFolderLineEdit->setEnabled(enabled);
+  bool enabled = _ui.localFolderRadioBtn->isChecked();
+  _ui.localFolder2LineEdit->setEnabled(enabled);
+  _ui.localFolder2ChooseBtn->setEnabled(enabled);
+  if( enabled ) {
+    _warnWasVisible = _ui.warnLabel->isVisible();
+    _ui.warnLabel->hide();
+  }
 
-    enabled = _ui.OCRadioBtn->isChecked();
-    _ui.OCFolderLineEdit->setEnabled(enabled);
+  enabled = _ui.urlFolderRadioBtn->isChecked();
+  _ui.urlFolderLineEdit->setEnabled(enabled);
+  if( enabled ) {
+    _warnWasVisible = _ui.warnLabel->isVisible();
+    _ui.warnLabel->hide();
+  }
+
+  enabled = _ui.OCRadioBtn->isChecked();
+  _ui.OCFolderLineEdit->setEnabled(enabled);
+  if( enabled ) _ui.warnLabel->setVisible( _warnWasVisible );
 }
 
 void FolderWizardTargetPage::on_localFolder2ChooseBtn_clicked()
@@ -293,6 +326,9 @@ void FolderWizardTargetPage::on_localFolder2ChooseBtn_clicked()
         _ui.localFolder2LineEdit->setText(dir);
     }
 }
+
+
+// ====================================================================================
 
 FolderWizardNetworkPage::FolderWizardNetworkPage()
 {

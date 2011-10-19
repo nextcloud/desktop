@@ -316,7 +316,9 @@ void OwncloudSetup::startFetchFromOC( const QString& syncFolder )
 {
   _scf = new SiteCopyFolder( "ownCloud",
                              syncFolder,
-                             QString(),
+                             QString(), /* Remote folder missing, but thats no problem as the
+                                           fetching does not rely on the information. Its taken
+                                           from the sitecopy config in ~/.sitecopyrc */
                              this);
   connect( _scf, SIGNAL( syncFinished( const SyncResult& )),
            SLOT( slotFetchFinished( const SyncResult& )));

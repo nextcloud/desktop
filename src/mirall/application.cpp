@@ -320,21 +320,20 @@ void Application::setupFolderFromConfigFile(const QString &file) {
     QString backend = settings.value("folder/backend").toString();
     if (!backend.isEmpty()) {
         if( backend == "sitecopy") {
+          QString targetPath = settings.value("backend:sitecopy/targetPath").toString();
 
-            SiteCopyFolder *scf = new SiteCopyFolder( file,
+          SiteCopyFolder *scf = new SiteCopyFolder( file, /* file is the same as the alias */
                                                       path.toString(),
-                                                      QString(),
+                                                      targetPath,
                                                       this);
-            folder = scf;
+          folder = scf;
 
-        }
-        else if (backend == "unison") {
+        } else if (backend == "unison") {
             folder = new UnisonFolder(file,
                                       path.toString(),
                                       settings.value("backend:unison/secondPath").toString(),
                                       this);
-        }
-        else if (backend == "csync") {
+        } else if (backend == "csync") {
 #ifdef WITH_CSYNC
             folder = new CSyncFolder(file,
                                      path.toString(),
