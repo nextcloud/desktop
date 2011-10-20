@@ -133,7 +133,7 @@ void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
     } else {
       _statusDialog->setFolderList( _folderMap );
 
-      _statusDialog->exec();
+      _statusDialog->show();
     }
   }
 }

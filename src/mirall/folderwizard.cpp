@@ -100,7 +100,7 @@ bool FolderWizardSourcePage::isComplete() const
     qDebug() << "Checking local alias: " << f->alias();
     if( f ) {
       if( f->alias() == alias ) {
-        warnString.append( tr("<br/>The alias <i>%1</i> is already in use. Please change it to something different.").arg(alias) );
+        warnString.append( tr("<br/>The alias <i>%1</i> is already in use. Please pick another alias.").arg(alias) );
         isOk = false;
         goon = false;
       }
@@ -390,6 +390,7 @@ FolderWizard::FolderWizard(QWidget *parent)
     setPage(Page_Target,   new FolderWizardTargetPage());
     // setPage(Page_Network,  new FolderWizardNetworkPage());
     // setPage(Page_Owncloud, new FolderWizardOwncloudPage());
+    setWindowTitle( tr( "Mirall Folder Wizard") );
 }
 
 void FolderWizard::setFolderMap( Folder::Map *fm)

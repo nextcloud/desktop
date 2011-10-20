@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/new/mirall">
         <file>resources/ownCloud-32.png</file>
-        <file>resources/ownCloud-48.png</file>
         <file>resources/ownCloud-64.png</file>
         <file>resources/ownCloud-128.png</file>
         <file>resources/folder-grey-32.png</file>
@@ -9,5 +8,8 @@
         <file>resources/folder-grey-22.png</file>
         <file>resources/folder-remote-22.png</file>
         <file>resources/ownCloud-22.png</file>
+        <file>resources/ownCloud-48.png</file>
+        <file>resources/folder-grey-48.png</file>
+        <file>resources/folder-remote-48.png</file>
     </qresource>
 </RCC>

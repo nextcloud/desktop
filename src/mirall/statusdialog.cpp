@@ -52,7 +52,7 @@ void FolderViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
   painter->save();
 
-  QFont font = QApplication::font();
+  QFont font    = QApplication::font();
   QFont subFont = QApplication::font();
   //font.setPixelSize(font.weight()+);
   font.setBold(true);
@@ -65,7 +65,7 @@ void FolderViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
   QString pathText = qvariant_cast<QString>(index.data(FolderPathRole));
   QString statusText = qvariant_cast<QString>(index.data(FolderStatus));
 
-  QSize iconsize = icon.actualSize(option.decorationSize);
+  QSize iconsize(48,48); //  = icon.actualSize(option.decorationSize);
 
   QRect headerRect = option.rect;
   QRect subheaderRect = option.rect;
@@ -86,7 +86,7 @@ void FolderViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
   statusRect.setBottom( statusRect.top() + fmSub.height());
 
   //painter->drawPixmap(QPoint(iconRect.right()/2,iconRect.top()/2),icon.pixmap(iconsize.width(),iconsize.height()));
-  painter->drawPixmap(QPoint(iconRect.left()+iconsize.width()/2+2,iconRect.top()+iconsize.height()/2+3),icon.pixmap(iconsize.width(),iconsize.height()));
+  painter->drawPixmap(QPoint(iconRect.left()+15,iconRect.top()),icon.pixmap(iconsize.width(),iconsize.height()));
 
   painter->drawPixmap(QPoint(option.rect.right() - 4 - 48, option.rect.top() + 8 ), statusIcon.pixmap( 48,48));
 
@@ -107,16 +107,32 @@ StatusDialog::StatusDialog(QWidget *parent) :
     QDialog(parent)
 {
   setupUi( this  );
+  setWindowTitle( tr("Mirall Status") );
 
   _model = new QStandardItemModel();
   FolderViewDelegate *delegate = new FolderViewDelegate();
 
   _folderList->setItemDelegate( delegate );
   _folderList->setModel( _model );
+  _folderList->setMinimumWidth( 300 );
 
-  connect(_ButtonClose, SIGNAL(clicked()), this, SLOT(accept()));
+  connect(_ButtonClose,  SIGNAL(clicked()), this, SLOT(accept()));
   connect(_ButtonRemove, SIGNAL(clicked()), this, SLOT(slotRemoveFolder()));
-  connect(_ButtonFetch, SIGNAL(clicked()), this, SLOT(slotFetchFolder()));
+  connect(_ButtonFetch,  SIGNAL(clicked()), this, SLOT(slotFetchFolder()));
+
+  _ButtonRemove->setEnabled(false);
+  _ButtonFetch->setEnabled(false);
+
+  connect(_folderList, SIGNAL(activated(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
+}
+
+void StatusDialog::slotFolderActivated( const QModelIndex& indx )
+{
+  bool state = indx.isValid();
+
+  _ButtonRemove->setEnabled( state );
+  _ButtonFetch->setEnabled( state );
+
 }
 
 void StatusDialog::setFolderList( Folder::Map folders )
@@ -126,7 +142,8 @@ void StatusDialog::setFolderList( Folder::Map folders )
   foreach( Folder *f, folders ) {
     qDebug() << "Folder: " << f;
     QStandardItem *item = new QStandardItem();
-    item->setData( QIcon::fromTheme( "folder-sync" ), FolderViewDelegate::FolderIconRole );
+    QIcon icon = f->icon( 48 );
+    item->setData( icon, FolderViewDelegate::FolderIconRole );
     item->setData( f->path(),  FolderViewDelegate::FolderPathRole );
     item->setData( f->alias(),  FolderViewDelegate::FolderNameRole );
 

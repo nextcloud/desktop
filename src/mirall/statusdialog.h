@@ -55,6 +55,7 @@ signals:
 public slots:
     void slotRemoveFolder();
     void slotFetchFolder();
+    void slotFolderActivated( const QModelIndex& );
 
 private:
     QStandardItemModel *_model;

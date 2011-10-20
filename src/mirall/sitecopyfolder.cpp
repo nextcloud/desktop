@@ -82,6 +82,7 @@ void SiteCopyFolder::fetchFromOC()
 {
   QMutexLocker locker( &_syncMutex );
   qDebug() << "starting to sync from ownCloud";
+  setSyncEnabled( true );
 
   startSiteCopy( "--fetch", Sync );
 }
