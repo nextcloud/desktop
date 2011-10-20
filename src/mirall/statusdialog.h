@@ -18,6 +18,7 @@
 #include <QDialog>
 #include <QStyledItemDelegate>
 #include <QStandardItemModel>
+#include <QUrl>
 
 #include "ui_statusdialog.h"
 #include "application.h"
@@ -47,6 +48,7 @@ class StatusDialog : public QDialog, public Ui::statusDialog
 public:
     explicit StatusDialog(QWidget *parent = 0);
     void setFolderList( QHash<QString, Folder*> );
+    void setOCUrl( const QUrl& );
 
 signals:
     void removeFolderAlias( const QString& );
@@ -56,9 +58,11 @@ public slots:
     void slotRemoveFolder();
     void slotFetchFolder();
     void slotFolderActivated( const QModelIndex& );
+    void slotOpenOC();
 
 private:
     QStandardItemModel *_model;
+    QUrl _OCUrl;
 };
 };
 

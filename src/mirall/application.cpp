@@ -132,6 +132,7 @@ void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
       _owncloudSetup->startWizard();
     } else {
       _statusDialog->setFolderList( _folderMap );
+      _statusDialog->setOCUrl( QUrl( _owncloudSetup->ownCloudUrl()));
 
       _statusDialog->show();
     }

@@ -119,7 +119,9 @@ StatusDialog::StatusDialog(QWidget *parent) :
   connect(_ButtonClose,  SIGNAL(clicked()), this, SLOT(accept()));
   connect(_ButtonRemove, SIGNAL(clicked()), this, SLOT(slotRemoveFolder()));
   connect(_ButtonFetch,  SIGNAL(clicked()), this, SLOT(slotFetchFolder()));
+  connect(_ButtonOpenOC, SIGNAL(clicked()), this, SLOT(slotOpenOC()));
 
+  _ButtonOpenOC->setEnabled(false);
   _ButtonRemove->setEnabled(false);
   _ButtonFetch->setEnabled(false);
 
@@ -190,6 +192,19 @@ void StatusDialog::slotFetchFolder()
       emit(fetchFolderAlias( alias ));
     }
   }
+}
+
+void StatusDialog::setOCUrl( const QUrl& url )
+{
+  _OCUrl = url;
+  if( url.isValid() )
+    _ButtonOpenOC->setEnabled( true );
+}
+
+void StatusDialog::slotOpenOC()
+{
+  if( _OCUrl.isValid() )
+    QDesktopServices::openUrl( _OCUrl );
 }
 
 }
