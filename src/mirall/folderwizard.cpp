@@ -26,6 +26,8 @@
 #include "mirall/folderwizard.h"
 #include "mirall/owncloudinfo.h"
 #include "mirall/ownclouddircheck.h"
+#include "mirall/owncloudsetup.h"
+#include "mirall/mirallwebdav.h"
 
 
 namespace Mirall
@@ -46,6 +48,16 @@ FolderWizardSourcePage::FolderWizardSourcePage()
 FolderWizardSourcePage::~FolderWizardSourcePage()
 {
 
+}
+
+void FolderWizardSourcePage::initializePage()
+{
+  _ui.warnLabel->hide();
+}
+
+void FolderWizardSourcePage::cleanupPage()
+{
+  _ui.warnLabel->hide();
 }
 
 bool FolderWizardSourcePage::isComplete() const
@@ -140,7 +152,7 @@ FolderWizardTargetPage::FolderWizardTargetPage()
   _warnWasVisible(false)
 {
     _ui.setupUi(this);
-    _ui.warnLabel->hide();
+    _ui.warnFrame->hide();
 
     registerField("local?",            _ui.localFolderRadioBtn);
     registerField("remote?",           _ui.urlFolderRadioBtn);
@@ -190,12 +202,49 @@ void FolderWizardTargetPage::slotDirCheckReply(const QString &url, bool exists )
   if( _dirChecked ) {
     _ui.warnLabel->hide();
   } else {
-    showWarn( tr("The folder is not available on your ownCloud. Please create it.") );
+    showWarn( tr("The folder is not available on your ownCloud.<br/>Click to let mirall create it."), true );
   }
 
   emit completeChanged();
 }
 
+void FolderWizardTargetPage::slotCreateRemoteFolder()
+{
+  _ui.OCFolderLineEdit->setEnabled( false );
+
+  const QString folder = _ui.OCFolderLineEdit->text();
+  if( folder.isEmpty() ) return;
+
+  OwncloudSetup ocSetup;
+  QString url = ocSetup.ownCloudUrl();
+  url.append( "files/webdav.php/");
+  url.append( folder );
+  qDebug() << "creating folder on ownCloud: " << url;
+
+  MirallWebDAV *webdav = new MirallWebDAV(this);
+  connect( webdav, SIGNAL(webdavFinished(QNetworkReply*)),
+           SLOT(slotCreateRemoteFolderFinished(QNetworkReply*)));
+
+  webdav->httpConnect( url, ocSetup.ownCloudUser(), ocSetup.ownCloudPasswd() );
+  if( webdav->mkdir(  url  ) ) {
+    qDebug() << "WebDAV mkdir request successfully started";
+  } else {
+    qDebug() << "WebDAV mkdir request failed";
+  }
+}
+
+void FolderWizardTargetPage::slotCreateRemoteFolderFinished( QNetworkReply *reply )
+{
+  qDebug() << "** webdav request finished";
+
+  _ui.OCFolderLineEdit->setEnabled( true );
+  if( reply->error() == QNetworkReply::NoError ) {
+    showWarn( tr("Folder on ownCloud was successfully created."), false );
+    slotTimerFires();
+  } else {
+    showWarn( tr("Failed to create the folder on ownCloud.<br/>Please check manually."), false );
+  }
+}
 
 FolderWizardTargetPage::~FolderWizardTargetPage()
 {
@@ -213,7 +262,7 @@ bool FolderWizardTargetPage::isComplete() const
       /* owncloud selected */
       QString dir = _ui.OCFolderLineEdit->text();
       if( dir.isEmpty() ) {
-        showWarn( tr("Better do not use the remote root directory.<br/>If you do, you can <b>not</b> mirror another local folder."));
+        showWarn( tr("Better do not use the remote root directory.<br/>If you do, you can <b>not</b> mirror another local folder."), false);
         return true;
       } else {
         if( _dirChecked ) {
@@ -225,14 +274,21 @@ bool FolderWizardTargetPage::isComplete() const
     return false;
 }
 
+void FolderWizardTargetPage::cleanupPage()
+{
+  _ui.warnFrame->hide();
+}
+
 void FolderWizardTargetPage::initializePage()
 {
     slotToggleItems();
+    _ui.warnFrame->hide();
 
     ownCloudInfo *ocInfo = new ownCloudInfo( this );
     if( ocInfo->isConfigured() ) {
       connect(ocInfo, SIGNAL(ownCloudInfoFound(QString,QString)),SLOT(slotOwnCloudFound(QString,QString)));
       connect(ocInfo,SIGNAL(noOwncloudFound()),SLOT(slotNoOwnCloudFound()));
+      connect(_ui._buttCreateFolder, SIGNAL(clicked()), SLOT(slotCreateRemoteFolder()));
       ocInfo->checkInstallation();
 
     } else {
@@ -256,12 +312,14 @@ void FolderWizardTargetPage::slotNoOwnCloudFound()
   _ui.OCFolderLineEdit->setEnabled( false );
 }
 
-void FolderWizardTargetPage::showWarn( const QString& msg ) const
+void FolderWizardTargetPage::showWarn( const QString& msg, bool showCreateButton ) const
 {
+  _ui._buttCreateFolder->setVisible( showCreateButton );
+
   if( msg.isEmpty() ) {
-    _ui.warnLabel->hide();
+    _ui.warnFrame->hide();
   } else {
-    _ui.warnLabel->show();
+    _ui.warnFrame->show();
     _ui.warnLabel->setText( msg );
   }
 }
@@ -301,20 +359,20 @@ void FolderWizardTargetPage::slotToggleItems()
   _ui.localFolder2LineEdit->setEnabled(enabled);
   _ui.localFolder2ChooseBtn->setEnabled(enabled);
   if( enabled ) {
-    _warnWasVisible = _ui.warnLabel->isVisible();
-    _ui.warnLabel->hide();
+    _warnWasVisible = _ui.warnFrame->isVisible();
+    _ui.warnFrame->hide();
   }
 
   enabled = _ui.urlFolderRadioBtn->isChecked();
   _ui.urlFolderLineEdit->setEnabled(enabled);
   if( enabled ) {
-    _warnWasVisible = _ui.warnLabel->isVisible();
-    _ui.warnLabel->hide();
+    _warnWasVisible = _ui.warnFrame->isVisible();
+    _ui.warnFrame->hide();
   }
 
   enabled = _ui.OCRadioBtn->isChecked();
   _ui.OCFolderLineEdit->setEnabled(enabled);
-  if( enabled ) _ui.warnLabel->setVisible( _warnWasVisible );
+  if( enabled ) _ui.warnFrame->setVisible( _warnWasVisible );
 }
 
 void FolderWizardTargetPage::on_localFolder2ChooseBtn_clicked()

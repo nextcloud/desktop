@@ -20,6 +20,7 @@
 #include "owncloudsetup.h"
 #include "mirall/sitecopyconfig.h"
 #include "mirall/sitecopyfolder.h"
+#include "mirall/mirallwebdav.h"
 
 namespace Mirall {
 
@@ -289,23 +290,27 @@ void OwncloudSetup::setupLocalSyncFolder()
 
     if( fi.mkpath( syncFolder ) ) {
       QString targetPath = "mirall"; // Do NOT sync to root dir on ownCloud!
-      qDebug() << "Successfully created " << fi.path();
 
-      // Create a sitecopy config file
-      SitecopyConfig scConfig;
+      MirallWebDAV *webdav = new MirallWebDAV;
+      webdav->httpConnect( ownCloudUrl(), ownCloudUser(), ownCloudPasswd() );
+      if( webdav->mkdir( targetPath ) ) {
 
-      scConfig.writeSiteConfig( syncFolder, /* local path */
-                                "ownCloud", /* _folderWizard->field("OCSiteAlias").toString(),  site alias */
-                                ownCloudUrl(),
-                                ownCloudUser(),
-                                ownCloudPasswd(),
-                                targetPath );
+        qDebug() << "Successfully created " << fi.path();
 
-      // now there is the sitecopy config. A fetch in to the newly created folder mirrors
-      // the files from the ownCloud to local
-      startFetchFromOC( syncFolder );
+        // Create a sitecopy config file
+        SitecopyConfig scConfig;
 
+        scConfig.writeSiteConfig( syncFolder, /* local path */
+                                  "ownCloud", /* _folderWizard->field("OCSiteAlias").toString(),  site alias */
+                                  ownCloudUrl(),
+                                  ownCloudUser(),
+                                  ownCloudPasswd(),
+                                  targetPath );
 
+        // now there is the sitecopy config. A fetch in to the newly created folder mirrors
+        // the files from the ownCloud to local
+        startFetchFromOC( syncFolder );
+      }
     } else {
       qDebug() << "Failed to create " << fi.path();
     }

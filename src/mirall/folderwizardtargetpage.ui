@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>456</width>
-    <height>336</height>
+    <height>352</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_5">
+  <layout class="QGridLayout" name="gridLayout_6">
    <item row="0" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_12">
      <item>
@@ -50,20 +50,13 @@
      <property name="title">
       <string>Pick a place where the data should go to:</string>
      </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
      <property name="checkable">
       <bool>false</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
-      <item row="0" column="0">
-       <widget class="QRadioButton" name="OCRadioBtn">
-        <property name="text">
-         <string/>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="1">
        <widget class="QFrame" name="frame">
         <property name="frameShape">
@@ -117,16 +110,6 @@
           </widget>
          </item>
         </layout>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QRadioButton" name="localFolderRadioBtn">
-        <property name="text">
-         <string/>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
        </widget>
       </item>
       <item row="1" column="1">
@@ -200,13 +183,6 @@
         </layout>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QRadioButton" name="urlFolderRadioBtn">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
       <item row="2" column="1">
        <widget class="QFrame" name="frame_3">
         <property name="frameShape">
@@ -274,18 +250,38 @@
         </layout>
        </widget>
       </item>
+      <item row="0" column="0">
+       <widget class="QRadioButton" name="OCRadioBtn">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QRadioButton" name="localFolderRadioBtn">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QRadioButton" name="urlFolderRadioBtn">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
      </layout>
-     <zorder>frame</zorder>
-     <zorder>frame_2</zorder>
-     <zorder>frame_3</zorder>
-     <zorder>OCRadioBtn</zorder>
-     <zorder>label_5</zorder>
-     <zorder>localFolderRadioBtn</zorder>
-     <zorder>urlFolderRadioBtn</zorder>
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QLabel" name="warnLabel">
+    <widget class="QFrame" name="warnFrame">
      <property name="palette">
       <palette>
        <active>
@@ -303,7 +299,7 @@
           <color alpha="255">
            <red>255</red>
            <green>255</green>
-           <blue>192</blue>
+           <blue>153</blue>
           </color>
          </brush>
         </colorrole>
@@ -323,7 +319,7 @@
           <color alpha="255">
            <red>255</red>
            <green>255</green>
-           <blue>192</blue>
+           <blue>153</blue>
           </color>
          </brush>
         </colorrole>
@@ -334,7 +330,7 @@
           <color alpha="255">
            <red>255</red>
            <green>255</green>
-           <blue>192</blue>
+           <blue>153</blue>
           </color>
          </brush>
         </colorrole>
@@ -343,7 +339,7 @@
           <color alpha="255">
            <red>255</red>
            <green>255</green>
-           <blue>192</blue>
+           <blue>153</blue>
           </color>
          </brush>
         </colorrole>
@@ -357,20 +353,52 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
+      <enum>QFrame::Raised</enum>
      </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-     <property name="textFormat">
-      <enum>Qt::AutoText</enum>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-     <property name="margin">
-      <number>3</number>
-     </property>
+     <layout class="QGridLayout" name="gridLayout_5">
+      <item row="0" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="warnLabel">
+          <property name="autoFillBackground">
+           <bool>true</bool>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Plain</enum>
+          </property>
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::AutoText</enum>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="margin">
+           <number>3</number>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="_buttCreateFolder">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>create</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
     </widget>
    </item>
    <item row="3" column="0">

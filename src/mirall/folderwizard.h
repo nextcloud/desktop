@@ -43,6 +43,9 @@ public:
     ~FolderWizardSourcePage();
 
     virtual bool isComplete() const;
+    void initializePage();
+    void cleanupPage();
+
     void setFolderMap( Folder::Map *fm ) { _folderMap = fm; }
 protected slots:
     void on_localFolderChooseBtn_clicked();
@@ -68,6 +71,8 @@ public:
     virtual bool isComplete() const;
 
     virtual void initializePage();
+    virtual void cleanupPage();
+
 protected slots:
     void slotToggleItems();
     void on_localFolder2ChooseBtn_clicked();
@@ -85,7 +90,10 @@ protected slots:
     void slotFolderTextChanged( const QString& );
     void slotTimerFires();
     void slotDirCheckReply( const QString&, bool );
-    void showWarn( const QString& = QString() ) const;
+    void showWarn( const QString& = QString(), bool showCreateButton = false ) const;
+    void slotCreateRemoteFolder();
+    void slotCreateRemoteFolderFinished( QNetworkReply* );
+
 private:
     Ui_FolderWizardTargetPage _ui;
     QTimer *_timer;
