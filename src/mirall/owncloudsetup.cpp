@@ -96,6 +96,13 @@ void OwncloudSetup::slotCreateOCLocalhost()
   args << "install";
   args << "--server-type" << "local";
   args << "--root_helper" << "kdesu -c";
+
+  const QString adminUser = _ocWizard->field("OCUser").toString();
+  const QString adminPwd  = _ocWizard->field("OCPasswd").toString();
+
+  args << "--admin-user" << adminUser;
+  args << "--admin-password" << adminPwd;
+
   runOwncloudAdmin( args );
 
   // define
@@ -112,7 +119,8 @@ void OwncloudSetup::slotInstallOCServer()
   const QString server = _ocWizard->field("ftpUrl").toString();
   const QString user   = _ocWizard->field("ftpUser").toString();
   const QString passwd = _ocWizard->field("ftpPasswd").toString();
-  const QString dir; // = _ocWizard->field("ftpDir").toString();
+  const QString adminUser = _ocWizard->field("OCUser").toString();
+  const QString adminPwd  = _ocWizard->field("OCPasswd").toString();
 
   qDebug() << "Install OC on " << server << " as user " << user;
 
@@ -120,13 +128,13 @@ void OwncloudSetup::slotInstallOCServer()
   args << "install";
   args << "--server-type" << "ftp";
   args << "--server"   << server;
-  args << "--user"     << user;
+  args << "--ftp-user"     << user;
   if( ! passwd.isEmpty() ) {
-    args << "--password" << passwd;
+    args << "--ftp-password" << passwd;
   }
-  if( !dir.isEmpty() ) {
-    args << "--ftpdir" << dir;
-  }
+  args << "--admin-user" << adminUser;
+  args << "--admin-password" << adminPwd;
+
   runOwncloudAdmin( args );
   _ocWizard->setField( "OCUrl", QString( "%1/owncloud/").arg(_ocWizard->field("myOCDomain").toString() ));
 }
@@ -160,7 +168,7 @@ void OwncloudSetup::slotReadyReadStandardOutput()
 
 void OwncloudSetup::slotReadyReadStandardError()
 {
-  qDebug() << _process->readAllStandardError();
+  qDebug() << "!! " <<_process->readAllStandardError();
 }
 
 void OwncloudSetup::slotStateChanged( QProcess::ProcessState )
@@ -168,9 +176,9 @@ void OwncloudSetup::slotStateChanged( QProcess::ProcessState )
 
 }
 
-void OwncloudSetup::slotError( QProcess::ProcessError )
+void OwncloudSetup::slotError( QProcess::ProcessError err )
 {
-
+  qDebug() << "An Error happend with owncloud-admin: " << err << ", exit-Code: " << _process->exitCode();
 }
 
 void OwncloudSetup::slotStarted()
@@ -186,6 +194,7 @@ void OwncloudSetup::slotFinished( int res, QProcess::ExitStatus )
   _ocWizard->button( QWizard::BackButton)->setEnabled( true );
   QApplication::restoreOverrideCursor();
 
+  qDebug() << "exit code: " << res;
   if( res ) {
     _ocWizard->appendToResultWidget( tr("<font color=\"red\">Installation of ownCloud failed!</font>") );
     _ocWizard->showOCUrlLabel( false );
@@ -204,6 +213,7 @@ void OwncloudSetup::slotFinished( int res, QProcess::ExitStatus )
 void OwncloudSetup::startWizard()
 {
   _ocWizard->setOCUrl( ownCloudUrl() );
+  _ocWizard->restart();
   _ocWizard->show();
 }
 

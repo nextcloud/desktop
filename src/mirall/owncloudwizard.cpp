@@ -85,6 +85,8 @@ OwncloudCredentialsPage::OwncloudCredentialsPage()
     _ui.setupUi(this);
     registerField( "OCUser",   _ui.OCUserEdit );
     registerField( "OCPasswd", _ui.OCPasswdEdit );
+
+    connect( _ui.OCPasswdEdit, SIGNAL(textChanged(QString)), this, SIGNAL(completeChanged()));
 }
 
 OwncloudCredentialsPage::~OwncloudCredentialsPage()
@@ -94,7 +96,7 @@ OwncloudCredentialsPage::~OwncloudCredentialsPage()
 
 bool OwncloudCredentialsPage::isComplete() const
 {
-
+  return !(_ui.OCPasswdEdit->text().isEmpty() );
 }
 
 void OwncloudCredentialsPage::initializePage()
@@ -227,7 +229,7 @@ void OwncloudWizardResultPage::appendResultText( const QString& msg )
 
 void OwncloudWizardResultPage::showOCUrlLabel( const QString& url, bool show )
 {
-  _ui.ocLinkLabel->setText( tr("Congratulations! Your <a href=\"%1\">new ownCloud</a> is now up and running!").arg(url) );
+  _ui.ocLinkLabel->setText( tr("Congratulations! Your <a href=\"%1\" title=\"%1\">new ownCloud</a> is now up and running!").arg(url) );
   _ui.ocLinkLabel->setOpenExternalLinks( true );
 
   if( show ) {
