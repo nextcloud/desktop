@@ -33,7 +33,8 @@
 #include "qwebdav_url_info.h"
 
 QWebdav::QWebdav (QObject *parent)
-  : QNetworkAccessManager(parent)
+  : QNetworkAccessManager(parent),
+    _authenticateCounter(0)
 {
 
 }
@@ -56,9 +57,16 @@ void QWebdav::init(const QString & hostName, const QString& user, const QString&
           SLOT(slotAuthenticate(QNetworkReply*, QAuthenticator*)));
 }
 
-void QWebdav::slotAuthenticate( QNetworkReply*, QAuthenticator *auth )
+void QWebdav::slotAuthenticate( QNetworkReply *reply, QAuthenticator *auth )
 {
-  qDebug() << "!!!! Authentication required!";
+  qDebug() << "!!!! Authentication required, setting " << _user;
+
+  _authenticateCounter++;
+  if( _authenticateCounter > 10 ) {
+    // we are in a loop of authentication counters.
+    reply->abort();
+    slotFinished( reply );
+  }
   if( auth ) {
     auth->setUser( _user );
     auth->setPassword( _passwd );

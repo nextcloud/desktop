@@ -235,7 +235,7 @@ void FolderWizardTargetPage::slotCreateRemoteFolder()
 
 void FolderWizardTargetPage::slotCreateRemoteFolderFinished( QNetworkReply *reply )
 {
-  qDebug() << "** webdav request finished";
+  qDebug() << "** webdav request finished " << reply->error();
 
   _ui.OCFolderLineEdit->setEnabled( true );
   if( reply->error() == QNetworkReply::NoError ) {

@@ -109,6 +109,8 @@ class QWEBDAV_EXPORT QWebdav : virtual public QNetworkAccessManager
 
   QString _lastError;
   QNetworkReply::NetworkError _lastReplyCode;
+
+  int     _authenticateCounter;
 };
 
 #endif // QWEBDAV_H
