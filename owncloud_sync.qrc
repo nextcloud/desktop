@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/owncloud.png</file>
+        <file>images/owncloud_sync.png</file>
+    </qresource>
+</RCC>
