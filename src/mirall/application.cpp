@@ -122,6 +122,7 @@ void Application::setupSystemTray()
 void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
 {
   if( reason == QSystemTrayIcon::Trigger ) {
+    setAllFolderSyncEnabled( false );
     // check if there is a mirall.cfg already.
     if( _owncloudSetup->wizard()->isVisible() ) {
       _owncloudSetup->wizard()->show();
@@ -136,6 +137,7 @@ void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
 
       _statusDialog->show();
     }
+    setAllFolderSyncEnabled( true );
   }
 }
 
@@ -167,6 +169,8 @@ void Application::slotReparseConfiguration()
 
 void Application::slotAddFolder()
 {
+  setAllFolderSyncEnabled( false );
+
   _folderWizard->setFolderMap( &_folderMap );
 
   _folderWizard->restart();
@@ -216,6 +220,7 @@ void Application::slotAddFolder()
   }
   else
     qDebug() << "* Folder wizard cancelled";
+  setAllFolderSyncEnabled( true );
 }
 
 void Application::slotRemoveFolder( const QString& alias )
@@ -278,7 +283,9 @@ void Application::slotFetchFolder( const QString& alias )
 
 void Application::slotConfigure()
 {
+  setAllFolderSyncEnabled( false );
   _owncloudSetup->startWizard();
+  setAllFolderSyncEnabled( true );
 }
 
 void Application::setupKnownFolders()
@@ -394,6 +401,16 @@ void Application::slotFolderSyncFinished(const SyncResult &result)
     }
 }
 
+void Application::setAllFolderSyncEnabled( bool stat )
+{
+  if( stat )
+    qDebug() << " ** Enabling folder sync!";
+  else
+    qDebug() << " ** Disabling folder sync!";
+  foreach( Folder *f, _folderMap ) {
+    f->setSyncEnabled( stat );
+  }
+}
 
 } // namespace Mirall
 

@@ -134,6 +134,7 @@ void OwncloudSetup::slotInstallOCServer()
   }
   args << "--admin-user" << adminUser;
   args << "--admin-password" << adminPwd;
+  args << "--skip-download";
 
   runOwncloudAdmin( args );
   _ocWizard->setField( "OCUrl", QString( "%1/owncloud/").arg(_ocWizard->field("myOCDomain").toString() ));

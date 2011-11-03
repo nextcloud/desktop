@@ -51,6 +51,7 @@ protected slots:
 
     void slotFolderSyncStarted();
     void slotFolderSyncFinished(const SyncResult &);
+    void setAllFolderSyncEnabled( bool );
 
 protected:
 

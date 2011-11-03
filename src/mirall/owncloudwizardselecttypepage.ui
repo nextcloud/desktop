@@ -26,7 +26,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Create an Owncloud Connection:</string>
+        <string>Create an ownCloud Connection</string>
        </property>
       </widget>
      </item>
@@ -48,13 +48,19 @@
    <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Select the Owncloud you want to connect to:</string>
+      <string>Select the ownCloud you want to connect to</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0" colspan="3">
        <widget class="QRadioButton" name="connectMyOCRadioBtn">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
         <property name="text">
-         <string>connect my Owncloud</string>
+         <string>connect my ownCloud</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -84,9 +90,9 @@
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Select this option if you already have an Owncloud instance running on a server to which you have access.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Select this option if you have an ownCloud instance running on a server.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#585858;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Enter the web address of your Owncloud below.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Enter the web address of your ownCloud below.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="textFormat">
          <enum>Qt::AutoText</enum>
@@ -102,7 +108,7 @@ p, li { white-space: pre-wrap; }
       <item row="2" column="1">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>URL:</string>
+         <string>ownCloud-URL:</string>
         </property>
        </widget>
       </item>
@@ -115,8 +121,14 @@ p, li { white-space: pre-wrap; }
       </item>
       <item row="3" column="0" colspan="3">
        <widget class="QRadioButton" name="createNewOCRadioBtn">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
         <property name="text">
-         <string>create a new Owncloud</string>
+         <string>create a new ownCloud</string>
         </property>
        </widget>
       </item>
@@ -143,7 +155,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Select this option if you want to create a new Owncloud either on the local machine or on your server. &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Select if you want to create a new ownCloud either on the local machine or on your server. &lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#585858;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;This wizard will guide you through all neccessary steps.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>

@@ -55,7 +55,10 @@
         <item>
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Directory alias name:</string>
+           <string>&amp;Directory alias name:</string>
+          </property>
+          <property name="buddy">
+           <cstring>aliasLineEdit</cstring>
           </property>
          </widget>
         </item>
