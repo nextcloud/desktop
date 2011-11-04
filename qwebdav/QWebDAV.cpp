@@ -83,6 +83,11 @@ QNetworkReply* QWebDAV::sendWebdavRequest(QUrl url, DAVType type,
         reply = QNetworkAccessManager::put(request,data);
     } else if ( type == DAVMKCOL ) {
         reply = sendCustomRequest(request,verb,0);
+    } else if ( type == DAVDELETE ) {
+        reply = sendCustomRequest(request, verb,0);
+    } else {
+        qDebug() << "Error! DAV Request of type " << type << " is not known!";
+        reply = 0;
     }
 
     // Connect the finished() signal!
@@ -331,4 +336,19 @@ void QWebDAV::connectReplyFinished(QNetworkReply *reply)
 {
     connect(reply, SIGNAL(finished ()),
             this, SLOT(slotReplyFinished ()));
+}
+
+QNetworkReply* QWebDAV::deleteFile( QString name )
+{
+    // Make sure the user has already initialized this instance!
+    if (!mInitialized)
+        return 0;
+
+    // This is the URL of the webdav server + the file we want to get
+    QUrl url(mHostname+name);
+
+    // Finally send this to the WebDAV server
+    QByteArray verb("DELETE");
+    QNetworkReply *reply = sendWebdavRequest(url,DAVMKCOL,verb);
+    return reply;
 }

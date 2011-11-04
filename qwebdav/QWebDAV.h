@@ -23,7 +23,8 @@ public:
         DAVLIST,
         DAVGET,
         DAVPUT,
-        DAVMKCOL
+        DAVMKCOL,
+        DAVDELETE
     };
 
     struct FileInfo {
@@ -72,6 +73,7 @@ public:
     };
 
     // DAV Public Functions
+    QNetworkReply* deleteFile(QString name);
     void dirList(QString dir = "/");
     QNetworkReply* list(QString dir, int depth = 1);
     QNetworkReply* get(QString fileName );

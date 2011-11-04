@@ -90,6 +90,10 @@ private:
     void saveConfigToDB();
     void scanLocalDirectoryForNewFiles(QString name);
     void processLocalFile(QString name);
+    void deleteRemovedFiles();
+    void deleteFromLocal(QString name, bool isDir);
+    void deleteFromServer(QString name);
+    void dropFromDB(QString table, QString column, QString condition );
 
 public slots:
     void processDirectoryListing(QList<QWebDAV::FileInfo> fileInfo);

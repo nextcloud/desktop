@@ -117,14 +117,6 @@ void SyncWindow::updateStatus()
         ui->status->setText(mTransferState+mCurrentFile+" out of "
                             + QString("%1").arg(mCurrentFileSize));
         ui->labelImage->setPixmap(mSyncIcon.pixmap(129,129));
-       /*
-        if( mTotalToDownload > 0 )
-            ui->progressDownload->setValue(100*(mSizeDownloaded/mTotalToDownload));
-        if( mTotalToUpload > 0 )
-            ui->progressUpload->setValue(100*(mSizeUploaded/mTotalToUpload));
-        if( mTotalToTransfer > 0 )
-            ui->progressTotal->setValue(100*(mSizeTransfered/mTotalToTransfer));
-            */
     }
 }
 
@@ -151,7 +143,6 @@ void SyncWindow::timeToSync()
     if(mIsFirstRun) {
         scanLocalDirectory(mSyncDirectory);
     }
-    mIsFirstRun = false;
 
     if ( mScanDirectoriesSet.size() != 0 ) {
         while( mScanDirectories.size() > 0 ) {
@@ -200,7 +191,7 @@ void SyncWindow::processDirectoryListing(QList<QWebDAV::FileInfo> fileInfo)
             //                        " exists. Comparing!");
             QString updateStatement =
                     QString("UPDATE server_files SET file_size='%1',"
-                            "last_modified='%2' where file_name='%3'")
+                            "last_modified='%2',found='yes' where file_name='%3'")
                             .arg(fileInfo[i].size)
                             .arg(fileInfo[i].lastModified)
                             .arg(fileInfo[i].fileName);
@@ -209,8 +200,8 @@ void SyncWindow::processDirectoryListing(QList<QWebDAV::FileInfo> fileInfo)
             //ui->textBrowser->append("File " + fileInfo[i].fileName +
             //                        " does not exist. Adding to DB");
             QString addStatement = QString("INSERT INTO server_files(file_name,"
-                                 "file_size,file_type,last_modified) "
-                                           "values('%1','%2','%3','%4');")
+                                 "file_size,file_type,last_modified,found) "
+                                           "values('%1','%2','%3','%4','yes');")
                     .arg(fileInfo[i].fileName).arg(fileInfo[i].size)
                     .arg(fileInfo[i].type).arg(fileInfo[i].lastModified);
             //qDebug() << "Query: " << addStatement;
@@ -232,6 +223,9 @@ void SyncWindow::processFileReady(QByteArray data,QString fileName)
 {
     //ui->textBrowser->append("Processing file " + fileName);
     //qDebug() << "Processing File " + mSyncDirectory << fileName;
+    // Temporarily remove this watcher so we don't get a message when
+    // we modify it.
+    mFileWatcher->removePath(mSyncDirectory+fileName);
     QFile file(mSyncDirectory+fileName);
     if (!file.open(QIODevice::WriteOnly))
             return;
@@ -240,6 +234,7 @@ void SyncWindow::processFileReady(QByteArray data,QString fileName)
     file.flush();
     file.close();
     updateDBDownload(fileName);
+    mFileWatcher->addPath(mSyncDirectory+fileName); // Add the watcher back!
     processNextStep();
 }
 
@@ -313,7 +308,7 @@ void SyncWindow::updateDBLocalFile(QString name, qint64 size, qint64 last,
     if (query.next() ) { // We already knew about this file. Update info.
         QString updateStatement =
                 QString("UPDATE local_files SET file_size='%1',"
-                        "last_modified='%2' where file_name='%3'")
+                        "last_modified='%2',found='yes' where file_name='%3'")
                         .arg(size)
                         .arg(last)
                         .arg(name);
@@ -321,8 +316,8 @@ void SyncWindow::updateDBLocalFile(QString name, qint64 size, qint64 last,
         query.exec(updateStatement);
     } else { // We did not know about this file, add
         QString addStatement = QString("INSERT INTO local_files (file_name,"
-                             "file_size,file_type,last_modified) "
-                                       "values('%1','%2','%3','%4');")
+                             "file_size,file_type,last_modified,found) "
+                                       "values('%1','%2','%3','%4','yes');")
                 .arg(name).arg(size).arg(type).arg(last);
         //qDebug() << "Query: " << addStatement;
         query.exec(addStatement);
@@ -348,12 +343,8 @@ QSqlQuery SyncWindow::queryDBAllFiles(QString table)
 
 void SyncWindow::syncFiles()
 {
-    QList<QString> downloads;
-    QList<QString> uploads;
     QList<QString> serverDirs;
     QList<QString> localDirs;
-    QList<qlonglong> downloadsSizes;
-    QList<qlonglong> uploadsSizes;
     QSqlQuery localQuery = queryDBAllFiles("local_files");
     QSqlQuery serverQuery = queryDBAllFiles("server_files");
 
@@ -465,39 +456,21 @@ void SyncWindow::syncFiles()
             //qDebug() << "Made directory "+mSyncDirectory+localDirs[i];
         }
     }
-    /*
-    int nDownloads = 0;
-    for(int i = 0; i < downloads.size(); i++ ) {
-        // Spaces seems to confuse the QHash, so:
-        QString cleanName = downloads[i];
-        cleanName.replace(QString(" "),"_sssspace_");
-        mDownloadingFiles.insert(cleanName,downloadsSizes[i]);
-        nDownloads++;
-        qDebug() << "Will try to download: " << cleanName;
-        mWebdav->get(downloads[i]);
-    }
-    qDebug() << "Have a total of " << nDownloads << " counts, corresponding to "
-             << mDownloadingFiles.size() << " download hashes."; */
 
-    // Now make remote dirs and upload
+    // Now make remote dirs
     for(int i = 0; i < serverDirs.size(); i++ ) {
         mWebdav->mkdir(serverDirs[i]);
         //qDebug() << "Making the following directories on server: " <<
         //            serverDirs[i];
     }
-    /*
-    int nUploads = 0;
-    for(int i = 0; i < uploads.size(); i++ ) {
-        // Spaces seems to confuse the QHash, so:
-        QString cleanName = uploads[i];
-        cleanName.replace(QString(" "),"_sssspace_");
-        mUploadingFiles.insert(cleanName,uploadsSizes[i]);
-        nUploads++;
-        qDebug() << "Will try to upload: " << cleanName;
-        upload(uploads[i]);
-    }
-    qDebug() << "Have a total of " << nUploads << " counts, corresponding to "
-             << mUploadingFiles.size() << " upload hashes."; */
+
+    // Delete removed files and reset the file status
+    deleteRemovedFiles();
+    QSqlQuery query;
+    query.exec("UPDATE local_files SET found='';");
+    query.exec("UPDATE server_files SET found='';");
+
+     mIsFirstRun = false;
 
     // Let's get the ball rolling!
     processNextStep();
@@ -653,29 +626,31 @@ void SyncWindow::createDataBase()
     } else {
         mDBOpen = true;
     }
-    QString createLocal("create table local_files("
-                        "id INTEGER PRIMARY KEY ASC,"
-                        "file_name text unique,"
-                        "file_size text,"
-                        "file_type text,"
-                        "last_modified text,"
-                        "last_sync text"
+    QString createLocal("create table local_files(\n"
+                        "id INTEGER PRIMARY KEY ASC,\n"
+                        "file_name text unique,\n"
+                        "file_size text,\n"
+                        "file_type text,\n"
+                        "last_modified text,\n"
+                        "last_sync text,\n"
+                        "found text\n"
                         ");");
-    QString createServer("create table server_files("
-                        "id INTEGER PRIMARY KEY ASC,"
-                        "file_name text unique,"
-                        "file_size text,"
-                        "file_type text,"
-                        "last_modified text,"
-                        "last_sync text"
+    QString createServer("create table server_files(\n"
+                        "id INTEGER PRIMARY KEY ASC,\n"
+                        "file_name text unique,\n"
+                        "file_size text,\n"
+                        "file_type text,\n"
+                        "last_modified text,\n"
+                        "last_sync text,\n"
+                        "found text\n"
                         ");");
 
-    QString createConfig("create table config("
-                        "host text,"
-                        "username text,"
-                        "password text,"
-                        "syncdir text,"
-                        "updatetime text"
+    QString createConfig("create table config(\n"
+                        "host text,\n"
+                        "username text,\n"
+                        "password text,\n"
+                        "syncdir text,\n"
+                        "updatetime text\n"
                         ");");
     QSqlQuery query;
     query.exec(createLocal);
@@ -774,14 +749,17 @@ void SyncWindow::localDirectoryChanged(QString name)
 
 void SyncWindow::localFileChanged(QString name)
 {
+    //qDebug() << "Checking file status: " << name;
     QFileInfo info(name);
     name.replace(mSyncDirectory,"");
     //qDebug() << "File " << name << " changed.";
     if( info.exists() ) { // Ok, file did not get deleted
         updateDBLocalFile(name,info.size(),
                         info.lastModified().toUTC().toMSecsSinceEpoch(),"file");
-    } else { // File got deleted (or moved!) I can't do anything for now :(
-
+    } else { // File got deleted (or moved!) I can't do anything about
+        // the moves for now. But I can delete! So do that for now :)
+        qDebug() << "Deleting from server: " << name;
+        deleteFromServer(name.replace(mSyncDirectory,""));
     }
 }
 
@@ -837,4 +815,80 @@ void SyncWindow::loadDBFromFile()
     } else {
         qDebug() << "Failed to load DB from file!";
     }
+}
+
+void SyncWindow::deleteRemovedFiles()
+{
+    // Any file that has not been found will be deleted!
+
+    if( mIsFirstRun ) {
+        //qDebug() << "Looking for server files to delete!";
+        // Since we don't always query local files except for the first run
+        // only do this if it is the first run
+        QSqlQuery local;
+
+        // First delete the files
+        local.exec("SELECT file_name from local_files where found='' "
+                   "AND file_type='file';");
+        while(local.next()) {
+            // Local files were deleted. Delete from server too.
+            //qDebug() << "Deleting file from server: " << local.value(0).toString();
+            deleteFromServer(local.value(0).toString());
+        }
+
+        // Then delete the collections
+        local.exec("SELECT file_name from local_files where found='' "
+                   "AND file_type='collection';");
+        while(local.next()) {
+            // Local files were deleted. Delete from server too.
+            //qDebug() << "Deleting directory from server: " << local.value(0).toString();
+            deleteFromServer(local.value(0).toString());
+        }
+    }
+
+    //qDebug() << "Looking for local files to delete!";
+    QSqlQuery server;
+    // First delete the files
+    server.exec("SELECT file_name from server_files where found=''"
+                "AND file_type='file';");
+    while(server.next()) {
+        // Server files were deleted. Delete from local too.
+        qDebug() << "Deleting file from local:  " << server.value(0).toString();
+        deleteFromLocal(server.value(0).toString(),false);
+    }
+
+    // Then delete the collections
+    server.exec("SELECT file_name from server_files where found=''"
+                "AND file_type='collection';");
+    while(server.next()) {
+        // Server files were deleted. Delete from local too.
+        //qDebug() << "Deleting directory from local:  " << server.value(0).toString();
+        deleteFromLocal(server.value(0).toString(),true);
+    }
+}
+
+void SyncWindow::deleteFromLocal(QString name, bool isDir)
+{
+    // Remove the watcher before deleting.
+    mFileWatcher->removePath(mSyncDirectory+name);
+    if( !QFile::remove(mSyncDirectory+name ) ) {
+            qDebug() << "File deletion failed: " << mSyncDirectory+name;
+            return;
+    }
+    dropFromDB("local_files","file_name",name);
+    dropFromDB("server_files","file_name",name);
+}
+
+void SyncWindow::deleteFromServer(QString name)
+{
+    // Delete from server
+    mWebdav->deleteFile(name);
+    dropFromDB("server_files","file_name",name);
+    dropFromDB("local_files","file_name",name);
+}
+
+void SyncWindow::dropFromDB(QString table, QString column, QString condition)
+{
+    QSqlQuery drop;
+    drop.exec("DELETE FROM "+table+" WHERE "+column+"='"+condition+"';");
 }
