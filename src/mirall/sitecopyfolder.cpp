@@ -70,6 +70,14 @@ void SiteCopyFolder::startSync(const QStringList &pathList)
 {
   QMutexLocker locker(&_syncMutex);
 
+  QFileInfo fi( SITECOPY_BIN );
+  if( ! fi.exists() ) {
+    SyncResult sr( SyncResult::SetupError );
+    sr.setErrorString( tr("Sitecopy is not installed!"));
+    this->slotSyncFinished( sr );
+    return;
+  }
+
   emit syncStarted();
   qDebug() << "PATHLIST: " << pathList;
 
@@ -99,7 +107,7 @@ void SiteCopyFolder::startSiteCopy( const QString& command, SiteCopyState nextSt
       return;
   }
 
-  QString programm = "/usr/bin/sitecopy";
+  const QString programm( SITECOPY_BIN );
   QStringList args;
   args << command << alias();
   qDebug() << "** starting command " << args;

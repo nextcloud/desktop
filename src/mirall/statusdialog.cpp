@@ -152,6 +152,7 @@ void StatusDialog::setFolderList( Folder::Map folders )
     SyncResult res = f->lastSyncResult();
     QString resultStr = tr("Undefined");
     QString statusIcon = "view-refresh";
+    qDebug() << "Status: " << res.result();
     if( res.result() == SyncResult::Error ) {
       resultStr = tr("Error");
       statusIcon = "dialog-close";
@@ -160,6 +161,9 @@ void StatusDialog::setFolderList( Folder::Map folders )
       statusIcon = "dialog-ok";
     } else if( res.result() == SyncResult::Disabled ) {
       resultStr = tr("Disabled");
+      statusIcon = "dialog-cancel";
+    } else if( res.result() == SyncResult::SetupError ) {
+      resultStr = tr( "Setup Error" );
       statusIcon = "dialog-cancel";
     }
     item->setData( QIcon::fromTheme( statusIcon ), FolderViewDelegate::FolderStatusIcon );

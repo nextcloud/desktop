@@ -91,7 +91,10 @@ bool Folder::syncEnabled() const
 
 void Folder::setSyncEnabled( bool doit )
 {
+  if( _lastSyncResult.result() != SyncResult::Success ) doit = false;
+
   _enabled = doit;
+  _watcher->setEventsEnabled( doit );
 }
 
 bool Folder::onlyOnlineEnabled() const
@@ -201,12 +204,20 @@ void Folder::slotSyncStarted()
 void Folder::slotSyncFinished(const SyncResult &result)
 {
   _lastSyncResult = result;
+  qDebug() << "XX got a sync result: " << _lastSyncResult.result()<< " for folder " << this ;
 
-  _watcher->setEventsEnabled(true);
+  bool enabled = ( result.result() == SyncResult::Success );
+  setSyncEnabled( enabled );
+
   _openAction->setIcon(icon(22));
   // reenable the poll timer
-  qDebug() << "* " << alias() << "Poll timer enabled";
-  _pollTimer->start();
+  if( enabled ) {
+    qDebug() << "* " << alias() << "Poll timer enabled";
+    _pollTimer->start();
+  } else {
+    qDebug() << "* Not enabling poll timer for " << alias();
+    _pollTimer->stop();
+  }
 }
 
 void Folder::setBackend( const QString& b )

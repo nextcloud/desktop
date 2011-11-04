@@ -47,7 +47,7 @@ class StatusDialog : public QDialog, public Ui::statusDialog
     Q_OBJECT
 public:
     explicit StatusDialog(QWidget *parent = 0);
-    void setFolderList( QHash<QString, Folder*> );
+    void setFolderList( Folder::Map );
     void setOCUrl( const QUrl& );
 
 signals:

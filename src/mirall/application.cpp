@@ -77,7 +77,14 @@ Application::Application(int argc, char **argv) :
     setupKnownFolders();
     setupContextMenu();
 
-    qDebug() << NetworkLocation::currentLocation().encoded();
+    // Check if sitecopy is installed
+    QFileInfo fi( SITECOPY_BIN );
+    if( !fi.exists() ) {
+      QMessageBox::critical( 0, tr("Sitecopy not Installed."),
+                            tr("The program <i>sitecopy</i> is not installed but it is needed by mirall.<br/>Please install sitecopy!"));
+    }
+
+    qDebug() << "Network Location: " << NetworkLocation::currentLocation().encoded();
 }
 
 Application::~Application()
@@ -331,9 +338,16 @@ void Application::setupFolderFromConfigFile(const QString &file) {
           QString targetPath = settings.value("backend:sitecopy/targetPath").toString();
 
           SiteCopyFolder *scf = new SiteCopyFolder( file, /* file is the same as the alias */
-                                                      path.toString(),
-                                                      targetPath,
-                                                      this);
+                                                    path.toString(),
+                                                    targetPath,
+                                                    this);
+          QFileInfo fi( SITECOPY_BIN );
+          if( ! fi.exists() ) {
+            SyncResult sr( SyncResult::SetupError );
+            sr.setErrorString( tr("Sitecopy is not installed!"));
+            scf->slotSyncFinished( sr );
+          }
+
           folder = scf;
 
         } else if (backend == "unison") {
@@ -361,6 +375,7 @@ void Application::setupFolderFromConfigFile(const QString &file) {
     folder->setOnlyThisLANEnabled(settings.value("folder/onlyThisLAN", false).toBool());
 
     _folderMap[file] = folder;
+    qDebug() << "Adding folder to Folder Map " << folder;
     QObject::connect(folder, SIGNAL(syncStarted()), SLOT(slotFolderSyncStarted()));
     QObject::connect(folder, SIGNAL(syncFinished(const SyncResult &)), SLOT(slotFolderSyncFinished(const SyncResult &)));
 }
