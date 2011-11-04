@@ -76,6 +76,9 @@
     </item>
     <item row="4" column="4">
      <widget class="QPushButton" name="buttonSave">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="text">
        <string>Save</string>
       </property>
@@ -179,6 +182,8 @@
   <tabstop>lineUser</tabstop>
   <tabstop>linePassword</tabstop>
   <tabstop>lineSyncDir</tabstop>
+  <tabstop>time</tabstop>
+  <tabstop>buttonSave</tabstop>
   <tabstop>buttonSyncDir</tabstop>
   <tabstop>textBrowser</tabstop>
  </tabstops>

@@ -12,6 +12,7 @@
 #include <QTimer>
 #include <QSystemTrayIcon>
 #include <QFileSystemWatcher>
+#include <QFileDialog>
 
 SyncWindow::SyncWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -19,6 +20,9 @@ SyncWindow::SyncWindow(QWidget *parent) :
 {
     mBusy = false;
     ui->setupUi(this);
+
+    mSyncTimer = 0; // So we can delete it without worrying :)
+    mIsFirstRun = true;
 
     // Setup icons
     mDefaultIcon = QIcon(":images/owncloud.png");
@@ -86,6 +90,7 @@ SyncWindow::SyncWindow(QWidget *parent) :
             mDBOpen = true;
             loadDBFromFile();
             readConfigFromDB();
+            ui->buttonSave->setDisabled(true);
             initialize();
         }
     }
@@ -93,10 +98,6 @@ SyncWindow::SyncWindow(QWidget *parent) :
     mSaveDBTimer = new QTimer(this);
     connect(mSaveDBTimer, SIGNAL(timeout()), this, SLOT(saveDBToFile()));
     mSaveDBTimer->start(370000);
-
-    // Connect the SaveButton
-    connect(ui->buttonSave, SIGNAL(clicked()),
-            this,SLOT(saveButtonClicked()));
 
     updateStatus();
 }
@@ -659,8 +660,9 @@ void SyncWindow::createDataBase()
 
 }
 
-void SyncWindow::saveButtonClicked()
+void SyncWindow::on_buttonSave_clicked()
 {
+    ui->buttonSave->setDisabled(true);
     QString host = ui->lineHost->text();
     // Add /files/webdav.php but remove what the user may have added
     mHost = host.replace("/files/webdav.php","") + "/files/webdav.php";
@@ -722,9 +724,15 @@ void SyncWindow::initialize()
 
     mFileWatcher->addPath(mSyncDirectory+"/");
 
-    // Synchronize then start the timer
+    // Synchronize (only if it is not synchronizing right now) then start the timer
+    if(mIsFirstRun) {
+        timeToSync();
+    }
     mIsFirstRun = true;
-    timeToSync();
+    if(mSyncTimer) {
+        mSyncTimer->stop();
+    }
+    delete mSyncTimer;
     mSyncTimer = new QTimer(this);
     connect(mSyncTimer, SIGNAL(timeout()), this, SLOT(timeToSync()));
     mSyncTimer->start(mUpdateTime*1000);
@@ -891,4 +899,38 @@ void SyncWindow::dropFromDB(QString table, QString column, QString condition)
 {
     QSqlQuery drop;
     drop.exec("DELETE FROM "+table+" WHERE "+column+"='"+condition+"';");
+}
+
+void SyncWindow::on_buttonSyncDir_clicked()
+{
+    QString syncDir = QFileDialog::getExistingDirectory(this);
+    if( syncDir != "" ) {
+        ui->lineSyncDir->setText(syncDir);
+        ui->buttonSave->setEnabled(true);
+    }
+}
+
+void SyncWindow::on_linePassword_textEdited(QString text)
+{
+    ui->buttonSave->setEnabled(true);
+}
+
+void SyncWindow::on_lineHost_textEdited(QString text)
+{
+    ui->buttonSave->setEnabled(true);
+}
+
+void SyncWindow::on_lineSyncDir_textEdited(QString text)
+{
+    ui->buttonSave->setEnabled(true);
+}
+
+void SyncWindow::on_lineUser_textEdited(QString text)
+{
+    ui->buttonSave->setEnabled(true);
+}
+
+void SyncWindow::on_time_valueChanged(int value)
+{
+    ui->buttonSave->setEnabled(true);
 }

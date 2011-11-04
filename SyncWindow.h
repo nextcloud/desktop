@@ -103,12 +103,20 @@ public slots:
     void updateStatus();
     void transferProgress(qint64 current,qint64 total);
     void systemTrayActivated(QSystemTrayIcon::ActivationReason reason);
-    void saveButtonClicked();
     void localFileChanged(QString name);
     void localDirectoryChanged(QString name);
     void closeEvent(QCloseEvent *event);
     void saveDBToFile();
     void loadDBFromFile();
+
+    // GUI related slots
+    void on_buttonSave_clicked();
+    void on_buttonSyncDir_clicked();
+    void on_linePassword_textEdited(QString text);
+    void on_lineHost_textEdited(QString text);
+    void on_lineSyncDir_textEdited(QString text);
+    void on_lineUser_textEdited(QString text);
+    void on_time_valueChanged(int value);
 };
 
 #endif // SYNCWINDOW_H
