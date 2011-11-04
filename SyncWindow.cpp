@@ -79,20 +79,28 @@ SyncWindow::SyncWindow(QWidget *parent) :
 #endif
     // Find out if the database exists.
     QFile dbFile(mConfigDirectory+"/owncloud_sync.db");
-    if( !dbFile.exists() ) {
-        //createDataBase();
-    } else {
+    if( dbFile.exists() ) {
         if(!mDB.open()) {
             qDebug() << "Cannot open database!";
             qDebug() << mDB.lastError().text();
             mDBOpen = false;
+            show();
         } else {
             mDBOpen = true;
             loadDBFromFile();
             readConfigFromDB();
+            // If we are already configured, just hide the window
+            if( QSystemTrayIcon::isSystemTrayAvailable()) {
+                hide();
+            } else {
+                show();
+            }
             ui->buttonSave->setDisabled(true);
             initialize();
         }
+    } else {
+      createDataBase(); // Create the database in memory
+      show();
     }
 
     mSaveDBTimer = new QTimer(this);

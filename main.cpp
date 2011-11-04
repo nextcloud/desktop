@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     // Great. No other instance is running, so we can run the program.
     QApplication a(argc, argv);
     SyncWindow w;
-    w.show();
+    //w.show();
 
     return a.exec();
 }
