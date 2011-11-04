@@ -16,6 +16,10 @@ namespace Ui {
     class SyncWindow;
 }
 
+namespace sqlite3_util {
+    bool sqliteDBMemFile( QSqlDatabase memdb, QString filename, bool save );
+}
+
 class SyncWindow : public QMainWindow
 {
     Q_OBJECT
@@ -38,6 +42,7 @@ private:
     Ui::SyncWindow *ui;
     QSystemTrayIcon *mSystemTray;
     QSqlDatabase mDB;
+    QString mDBFileName;
     QQueue<QString> mDirectoryQueue;
     QString mHomeDirectory;
     QString mSyncDirectory;
@@ -46,7 +51,7 @@ private:
     QString mPassword;
     QString mUsername;
     QTimer *mSyncTimer;
-    QTimer *mCheckDirsTimer;
+    QTimer *mSaveDBTimer;
     QQueue<FileInfo> mUploadingFiles;
     QQueue<FileInfo> mDownloadingFiles;
     //QHash<QString,qlonglong> mUploadingFiles;
@@ -97,6 +102,9 @@ public slots:
     void saveButtonClicked();
     void localFileChanged(QString name);
     void localDirectoryChanged(QString name);
+    void closeEvent(QCloseEvent *event);
+    void saveDBToFile();
+    void loadDBFromFile();
 };
 
 #endif // SYNCWINDOW_H

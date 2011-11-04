@@ -1,5 +1,6 @@
 #include "SyncWindow.h"
 #include "ui_SyncWindow.h"
+#include "sqlite3_util.h"
 #include "QWebDAV.h"
 #include <QFile>
 #include <QtSql/QSqlDatabase>
@@ -61,7 +62,9 @@ SyncWindow::SyncWindow(QWidget *parent) :
     mConfigDirectory = mHomeDirectory+"/.local/share/data/owncloud_sync";
     QDir configDir(mConfigDirectory);
     configDir.mkpath(mConfigDirectory);
-    mDB.setDatabaseName(mConfigDirectory+"/owncloud_sync.db");
+    //mDB.setDatabaseName(mConfigDirectory+"/owncloud_sync.db");
+    mDB.setDatabaseName(":memory:"); // Use memory for now
+    mDBFileName = mConfigDirectory+"/owncloud_sync.db";
 
 /*    mSyncDirectory = mHomeDirectory + QString("/tmp/sync/files");
     QString path(mHomeDirectory);
@@ -73,7 +76,7 @@ SyncWindow::SyncWindow(QWidget *parent) :
     // Find out if the database exists.
     QFile dbFile(mConfigDirectory+"/owncloud_sync.db");
     if( !dbFile.exists() ) {
-        createDataBase();
+        //createDataBase();
     } else {
         if(!mDB.open()) {
             qDebug() << "Cannot open database!";
@@ -81,10 +84,15 @@ SyncWindow::SyncWindow(QWidget *parent) :
             mDBOpen = false;
         } else {
             mDBOpen = true;
+            loadDBFromFile();
             readConfigFromDB();
             initialize();
         }
     }
+
+    mSaveDBTimer = new QTimer(this);
+    connect(mSaveDBTimer, SIGNAL(timeout()), this, SLOT(saveDBToFile()));
+    mSaveDBTimer->start(370000);
 
     // Connect the SaveButton
     connect(ui->buttonSave, SIGNAL(clicked()),
@@ -229,6 +237,8 @@ void SyncWindow::processFileReady(QByteArray data,QString fileName)
             return;
     QDataStream out(&file);
     out.writeRawData(data.constData(),data.length());
+    file.flush();
+    file.close();
     updateDBDownload(fileName);
     processNextStep();
 }
@@ -801,5 +811,30 @@ void SyncWindow::scanLocalDirectoryForNewFiles(QString path)
             }
         }
         //QString name = pathi+"/"+list[i];
+    }
+}
+
+void SyncWindow::closeEvent(QCloseEvent *event)
+{
+    // Before closing, save the database!!!
+    saveDBToFile();
+    QMainWindow::closeEvent(event);
+}
+
+void SyncWindow::saveDBToFile()
+{
+    if( sqlite3_util::sqliteDBMemFile( mDB, mDBFileName, true ) ) {
+        qDebug() << "Successfully saved DB to file!";
+    } else {
+        qDebug() << "Failed to save DB to file!";
+    }
+}
+
+void SyncWindow::loadDBFromFile()
+{
+    if( sqlite3_util::sqliteDBMemFile( mDB, mDBFileName, false ) ) {
+        qDebug() << "Successfully loaded DB from file!";
+    } else {
+        qDebug() << "Failed to load DB from file!";
     }
 }
