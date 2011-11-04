@@ -23,3 +23,20 @@ INCLUDEPATH += qwebdav/
 RESOURCES += \
     owncloud_sync.qrc
 
+
+unix:!symbian:!maemo5:isEmpty(MEEGO_VERSION_MAJOR) {
+    target.path = /opt/owncloud_sync/bin
+    INSTALLS += target
+}
+
+unix:!symbian:!maemo5:isEmpty(MEEGO_VERSION_MAJOR) {
+    desktopfile.files = $${TARGET}.desktop
+    desktopfile.path = /usr/share/applications
+    INSTALLS += desktopfile
+}
+
+unix:!symbian:!maemo5:isEmpty(MEEGO_VERSION_MAJOR) {
+    icon.files = owncloud_sync.png
+    icon.path = /usr/share/icons/hicolor/64x64/apps
+    INSTALLS += icon
+}

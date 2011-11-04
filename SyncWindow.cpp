@@ -10,6 +10,7 @@
 #include <QDateTime>
 #include <QTimer>
 #include <QSystemTrayIcon>
+#include <QFileSystemWatcher>
 
 SyncWindow::SyncWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -29,7 +30,15 @@ SyncWindow::SyncWindow(QWidget *parent) :
     connect(mSystemTray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this,SLOT(systemTrayActivated(QSystemTrayIcon::ActivationReason)));
 
+    // Create a QWebDAV instance
     mWebdav = new QWebDAV();
+
+    // Create a File System Watcher
+    mFileWatcher = new QFileSystemWatcher(this);
+    connect(mFileWatcher,SIGNAL(fileChanged(QString)),
+            this, SLOT(localFileChanged(QString)));
+    connect(mFileWatcher,SIGNAL(directoryChanged(QString)),
+            this, SLOT(localDirectoryChanged(QString)));
 
     // Connect to QWebDAV signals
     connect(mWebdav,SIGNAL(directoryListingReady(QList<QWebDAV::FileInfo>)),
@@ -128,8 +137,34 @@ void SyncWindow::timeToSync()
     mBusy = true;
 
     ui->textBrowser->append("Time to sync!");
-    // First scan the local directory and find any changes
-    scanLocalDirectory(mSyncDirectory);
+
+    // If this is the first run, scan the directory, otherwise just wait
+    // for the watcher to update us :)
+    if(mIsFirstRun) {
+        scanLocalDirectory(mSyncDirectory);
+    }
+    mIsFirstRun = false;
+
+    if ( mScanDirectoriesSet.size() != 0 ) {
+        while( mScanDirectories.size() > 0 ) {
+            QString relativeName = mScanDirectories.dequeue();
+            QString name(relativeName);
+            name.replace("_sssspace_"," ");
+            scanLocalDirectoryForNewFiles(name);
+            mScanDirectoriesSet.remove(relativeName);
+        }
+    }
+
+    // List all the watched files for now
+    /*
+    QStringList list = mFileWatcher->files();
+    for(int i = 0; i < list.size(); i++ ) {
+        qDebug() << "Watching: " << list[i];
+    }
+    list = mFileWatcher->directories();
+    for(int i = 0; i < list.size(); i++ ) {
+        qDebug() << "Watching: " << list[i];
+    } */
 
     // Then scan the base directory of the WebDAV server
     mWebdav->dirList("/");
@@ -156,8 +191,8 @@ void SyncWindow::processDirectoryListing(QList<QWebDAV::FileInfo> fileInfo)
             //ui->textBrowser->append("File " + fileInfo[i].fileName +
             //                        " exists. Comparing!");
             QString updateStatement =
-                    QString("UPDATE local_files SET file_size=%1,"
-                            "last_modified=%2 where file_name='%3")
+                    QString("UPDATE server_files SET file_size='%1',"
+                            "last_modified='%2' where file_name='%3'")
                             .arg(fileInfo[i].size)
                             .arg(fileInfo[i].lastModified)
                             .arg(fileInfo[i].fileName);
@@ -225,48 +260,65 @@ void SyncWindow::scanLocalDirectory( QString dirPath)
         if( name == "." || name == ".." ) {
             continue;
         }
-        QString relativeName(dirPath + QString("/") + name);
-        relativeName.replace(mSyncDirectory,"");
+
         //qDebug() << "Relative Path: " << relativeName;
-        QFileInfo file(dirPath + "/" + name);
+        processLocalFile(dirPath + "/" + name);
 
         // Check if it is a directory, and if so, process it
-        if ( file.isDir() ) {
-            type = "collection";
-            append = "/";
-        } else {
-            type = "file";
-            append = "";
-        }
-
-        // Check against the database
-        QSqlQuery query = queryDBFileInfo(relativeName,"local_files");
-        if (query.next() ) { // We already knew about this file. Compare.
-            QString updateStatement =
-                    QString("UPDATE local_files SET file_size=%1,"
-                            "last_modified=%2 where file_name='%3'")
-                            .arg(file.size())
-                            .arg(file.lastModified().toUTC()
-                                 .toMSecsSinceEpoch())
-                            .arg(relativeName);
-            //qDebug() << "Query: " << updateStatement;
-            query.exec(updateStatement);
-        } else { // We did not know about this file, add
-            QString addStatement = QString("INSERT INTO local_files (file_name,"
-                                 "file_size,file_type,last_modified) "
-                                           "values('%1','%2','%3','%4');")
-                    .arg(relativeName+append).arg(file.size())
-                    .arg(type)
-                    .arg(file.lastModified().toUTC().toMSecsSinceEpoch());
-            //qDebug() << "Query: " << addStatement;
-            query.exec(addStatement);
-        }
-        //qDebug() << "Processing: " << mSyncDirectory + relativeName << " Size: " << file.size();
-
-        if ( file.isDir() ) {
-            scanLocalDirectory(file.absoluteFilePath() );
-        }
     }
+}
+
+void SyncWindow::processLocalFile(QString name)
+{
+    QFileInfo file( name );
+    QString type;
+    QString append;
+    // Check if it is a directory, and if so, process it
+    if ( file.isDir() ) {
+        type = "collection";
+        append = "/";
+    } else {
+        type = "file";
+        append = "";
+    }
+
+    // Add to the watcher
+    mFileWatcher->addPath(name+append);
+    updateDBLocalFile(name + append,
+                      file.size(),file.lastModified().toUTC()
+                      .toMSecsSinceEpoch(),type);
+
+    if ( file.isDir() ) {
+        scanLocalDirectory(file.absoluteFilePath() );
+    }
+}
+
+void SyncWindow::updateDBLocalFile(QString name, qint64 size, qint64 last,
+                                   QString type )
+{
+    // Get the relative name of the file
+    name.replace(mSyncDirectory,"");
+    // Check against the database
+    QSqlQuery query = queryDBFileInfo(name,"local_files");
+    if (query.next() ) { // We already knew about this file. Update info.
+        QString updateStatement =
+                QString("UPDATE local_files SET file_size='%1',"
+                        "last_modified='%2' where file_name='%3'")
+                        .arg(size)
+                        .arg(last)
+                        .arg(name);
+        //qDebug() << "Query: " << updateStatement;
+        query.exec(updateStatement);
+    } else { // We did not know about this file, add
+        QString addStatement = QString("INSERT INTO local_files (file_name,"
+                             "file_size,file_type,last_modified) "
+                                       "values('%1','%2','%3','%4');")
+                .arg(name).arg(size).arg(type).arg(last);
+        //qDebug() << "Query: " << addStatement;
+        query.exec(addStatement);
+    }
+    //qDebug() << "Processing: " << mSyncDirectory + relativeName << " Size: "
+    //         << file.size();
 }
 
 QSqlQuery SyncWindow::queryDBFileInfo(QString fileName, QString table)
@@ -341,6 +393,7 @@ void SyncWindow::syncFiles()
                     //uploads.append(localName);
                     //uploadsSizes.append(localSize);
                     mTotalToUpload +=localSize;
+                    //qDebug() << "File " << localName << " is newer than server!";
                 }
                 //qDebug() << "UPLOAD:   " << localName;
             } else if ( serverModifiedTime > localModifiedTime &&
@@ -475,6 +528,7 @@ void SyncWindow::upload( FileInfo fileInfo)
 
 void SyncWindow::updateDBDownload(QString name)
 {
+    // This seems redundant, a little, really.
     QString fileName = mSyncDirectory+name;
     QFileInfo file(fileName);
 
@@ -482,8 +536,9 @@ void SyncWindow::updateDBDownload(QString name)
     QSqlQuery query = queryDBFileInfo(name,"local_files");
     if (query.next() ) { // We already knew about this file. Update.
         QString updateStatement =
-                QString("UPDATE local_files SET file_size=%1,"
-                        "last_modified=%2,last_sync=%3 where file_name='%4").arg(file.size())
+                QString("UPDATE local_files SET file_size='%1',"
+                        "last_modified='%2',last_sync='%3' where file_name='%4'")
+                        .arg(file.size())
                         .arg(file.lastModified().toUTC()
                              .toMSecsSinceEpoch())
                         .arg(file.lastModified().toUTC()
@@ -501,6 +556,7 @@ void SyncWindow::updateDBDownload(QString name)
         query.exec(addStatement);
     }
     ui->textBrowser->append("Downloaded file: " + name );
+    //qDebug() << "Did this get called?";
     mTotalTransfered += mCurrentFileSize;
 }
 
@@ -515,29 +571,29 @@ void SyncWindow::updateDBUpload(QString name)
     QSqlQuery query = queryDBFileInfo(name,"server_files");
     if (query.next() ) { // We already knew about this file. Update.
         QString updateStatement =
-                QString("UPDATE server_files SET file_size=%1,"
-                        "last_modified=%2 where file_name='%3")
+                QString("UPDATE server_files SET file_size='%1',"
+                        "last_modified='%2' where file_name='%3'")
                         .arg(file.size())
                         .arg(time).arg(name);
         //qDebug() << "Query: " << updateStatement;
         query.exec(updateStatement);
         updateStatement =
-                QString("UPDATE local_files SET last_sync=%1 where file_name='%2'")
+                QString("UPDATE local_files SET last_sync='%1'"
+                        "where file_name='%2'")
                 .arg(time).arg(name);
         query.exec(updateStatement);
         //qDebug() << "Query: " << updateStatement;
     } else { // We did not know about this file, add
         QString addStatement = QString("INSERT INTO server_files (file_name,"
                              "file_size,file_type,last_modified) "
-                                       "values('%1','%2','%3','%4','%5');")
+                                       "values('%1','%2','%3','%4');")
                 .arg(name).arg(file.size())
                 .arg("file")
-                .arg(time)
                 .arg(time);
         query.exec(addStatement);
         QString updateStatement =
-                QString("UPDATE local_files SET file_size=%1,"
-                        "last_modified=%2,last_sync=%3 where file_name='%4")
+                QString("UPDATE local_files SET file_size='%1',"
+                        "last_modified='%2',last_sync='%3' where file_name='%4'")
                         .arg(file.size()).arg(time).arg(time).arg(name);
         query.exec(updateStatement);
     }
@@ -679,9 +735,71 @@ void SyncWindow::initialize()
     // Initialize WebDAV
     mWebdav->initialize(mHost,mUsername,mPassword,"/files/webdav.php");
 
+    mFileWatcher->addPath(mSyncDirectory+"/");
+
     // Synchronize then start the timer
+    mIsFirstRun = true;
     timeToSync();
     mSyncTimer = new QTimer(this);
     connect(mSyncTimer, SIGNAL(timeout()), this, SLOT(timeToSync()));
     mSyncTimer->start(mUpdateTime*1000);
+}
+
+void SyncWindow::localDirectoryChanged(QString name)
+{
+    // Since we don't want to be scanning the directories every single
+    // time a file is changed (since temporary files could be the cause)
+    // instead we'll add them to a list and have a separate timer
+    // randomly go through them
+    QString relativeName(name);
+    relativeName.replace(mSyncDirectory,"");
+    // Replace spaces because it may confuse QSet
+    relativeName.replace(" ","_sssspace_");
+    if( !mScanDirectoriesSet.contains(relativeName) ) {
+        // Add to the list
+        mScanDirectoriesSet.insert(relativeName);
+        mScanDirectories.enqueue(relativeName);
+    }
+}
+
+void SyncWindow::localFileChanged(QString name)
+{
+    QFileInfo info(name);
+    name.replace(mSyncDirectory,"");
+    //qDebug() << "File " << name << " changed.";
+    if( info.exists() ) { // Ok, file did not get deleted
+        updateDBLocalFile(name,info.size(),
+                        info.lastModified().toUTC().toMSecsSinceEpoch(),"file");
+    } else { // File got deleted (or moved!) I can't do anything for now :(
+
+    }
+}
+
+void SyncWindow::scanLocalDirectoryForNewFiles(QString path)
+{
+    //qDebug() << "Scanning local directory: " << path;
+    QDir dir(mSyncDirectory+path);
+    QStringList list = dir.entryList();
+    for( int i = 0; i < list.size(); i++ ) {
+
+        // Skip current and previous directory
+        QString name = list.at(i);
+        if( name == "." || name == ".." ) {
+            continue;
+        }
+
+        QSqlQuery query;
+        query.exec(QString("SELECT * from local_files where file_name='%1'")
+                   .arg(path+list[i]));
+        if( !query.next() ) { // Ok, this file does not exist. It might be a
+            // directory, however, so let's check again!
+            query.exec(QString("SELECT * from local_files where "
+                               "file_name='%1/'").arg(path+list[i]));
+            if( !query.next() ) { // Definitely does not exist! Good!
+                // File really doesn't exist!!!
+                processLocalFile(mSyncDirectory+path+list[i]);
+            }
+        }
+        //QString name = pathi+"/"+list[i];
+    }
 }

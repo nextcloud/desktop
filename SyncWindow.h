@@ -5,11 +5,12 @@
 #include "QWebDAV.h"
 #include <QSqlDatabase>
 #include <QQueue>
-#include <QHash>
 #include <QSystemTrayIcon>
 #include <QIcon>
+#include <QSet>
 
 class QTimer;
+class QFileSystemWatcher;
 
 namespace Ui {
     class SyncWindow;
@@ -45,7 +46,7 @@ private:
     QString mPassword;
     QString mUsername;
     QTimer *mSyncTimer;
-    QTimer *mStatusTimer;
+    QTimer *mCheckDirsTimer;
     QQueue<FileInfo> mUploadingFiles;
     QQueue<FileInfo> mDownloadingFiles;
     //QHash<QString,qlonglong> mUploadingFiles;
@@ -64,7 +65,12 @@ private:
     qint64 mUpdateTime;
     QIcon mDefaultIcon;
     QIcon mSyncIcon;
+    QFileSystemWatcher *mFileWatcher;
+    bool mIsFirstRun;
+    QSet<QString> mScanDirectoriesSet;
+    QQueue<QString> mScanDirectories;
 
+    void updateDBLocalFile(QString name,qint64 size,qint64 last,QString type);
     void scanLocalDirectory(QString dirPath);
     QSqlQuery queryDBFileInfo(QString fileName, QString table);
     QSqlQuery queryDBAllFiles(QString table);
@@ -77,6 +83,8 @@ private:
     void initialize();
     void readConfigFromDB();
     void saveConfigToDB();
+    void scanLocalDirectoryForNewFiles(QString name);
+    void processLocalFile(QString name);
 
 public slots:
     void processDirectoryListing(QList<QWebDAV::FileInfo> fileInfo);
@@ -87,6 +95,8 @@ public slots:
     void transferProgress(qint64 current,qint64 total);
     void systemTrayActivated(QSystemTrayIcon::ActivationReason reason);
     void saveButtonClicked();
+    void localFileChanged(QString name);
+    void localDirectoryChanged(QString name);
 };
 
 #endif // SYNCWINDOW_H
