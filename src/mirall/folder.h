@@ -126,6 +126,10 @@ public:
      QString backend() const;
 
      QIcon icon( int size ) const;
+
+public slots:
+     void slotSyncFinished(const SyncResult &);
+
 protected:
     /**
      * The minimum amounts of seconds to wait before
@@ -156,19 +160,19 @@ private:
      */
     void evaluateSync(const QStringList &pathList);
 
-    QString _path;
-    QAction *_openAction;
+    QString   _path;
+    QAction  *_openAction;
     // poll timer for remote syncs
-    QTimer *_pollTimer;
-    int _pollInterval;
-    QString _alias;
-    bool _onlyOnlineEnabled;
-    bool _onlyThisLANEnabled;
+    QTimer   *_pollTimer;
+    int       _pollInterval;
+    QString   _alias;
+    bool      _onlyOnlineEnabled;
+    bool      _onlyThisLANEnabled;
     QNetworkConfigurationManager _networkMgr;
-    bool _online;
-    bool _enabled;
+    bool      _online;
+    bool      _enabled;
     SyncResult _lastSyncResult;
-    QString _backend;
+    QString   _backend;
 
 protected slots:
 
@@ -183,7 +187,7 @@ protected slots:
     void slotOpenFolder();
 
     void slotSyncStarted();
-    void slotSyncFinished(const SyncResult &);
+
 };
 
 }

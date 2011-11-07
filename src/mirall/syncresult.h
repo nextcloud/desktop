@@ -28,7 +28,8 @@ public:
       Undefined,
       Success,
       Error,
-      Disabled
+      Disabled,
+      SetupError
     };
 
     SyncResult();

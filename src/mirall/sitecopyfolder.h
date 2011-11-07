@@ -21,6 +21,8 @@
 
 #include "mirall/folder.h"
 
+#define SITECOPY_BIN "/usr/bin/sitecopy"
+
 class QProcess;
 
 namespace Mirall {
