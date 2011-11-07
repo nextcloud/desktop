@@ -16,10 +16,6 @@ namespace Ui {
     class SyncWindow;
 }
 
-namespace sqlite3_util {
-    bool sqliteDBMemFile( QSqlDatabase memdb, QString filename, bool save );
-}
-
 class SyncWindow : public QMainWindow
 {
     Q_OBJECT
@@ -54,6 +50,8 @@ private:
     QTimer *mSaveDBTimer;
     QQueue<FileInfo> mUploadingFiles;
     QQueue<FileInfo> mDownloadingFiles;
+    QQueue<FileInfo> mDownloadConflict;
+    QQueue<FileInfo> mUploadingConflictFiles;
     //QHash<QString,qlonglong> mUploadingFiles;
     //QHash<QString,qlonglong> mDownloadingFiles;
     qint64 mTotalToDownload;
@@ -70,10 +68,16 @@ private:
     qint64 mUpdateTime;
     QIcon mDefaultIcon;
     QIcon mSyncIcon;
+    QIcon mDefaultConflictIcon;
+    QIcon mSyncConflictIcon;
     QFileSystemWatcher *mFileWatcher;
     bool mIsFirstRun;
+    bool mDownloadingConflictingFile;
     QSet<QString> mScanDirectoriesSet;
     QQueue<QString> mScanDirectories;
+    QSet<QString> mUploadingConflictFilesSet;
+    bool mFileAccessBusy;
+    bool mConflictsExist;
 
     void updateDBLocalFile(QString name,qint64 size,qint64 last,QString type);
     void scanLocalDirectory(QString dirPath);
@@ -94,6 +98,11 @@ private:
     void deleteFromLocal(QString name, bool isDir);
     void deleteFromServer(QString name);
     void dropFromDB(QString table, QString column, QString condition );
+    void setFileConflict(QString name, qint64 size, QString server_last,
+                         QString local_last);
+    void processFileConflict(QString name, QString wins);
+    void clearFileConflict(QString name);
+    QString getConflictName(QString name);
 
 public slots:
     void processDirectoryListing(QList<QWebDAV::FileInfo> fileInfo);
@@ -117,6 +126,9 @@ public slots:
     void on_lineSyncDir_textEdited(QString text);
     void on_lineUser_textEdited(QString text);
     void on_time_valueChanged(int value);
+    void on_conflict_clicked();
+    void on_buttonBox_accepted();
+    void on_buttonBox_rejected();
 };
 
 #endif // SYNCWINDOW_H

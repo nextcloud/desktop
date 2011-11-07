@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>images/owncloud.png</file>
         <file>images/owncloud_sync.png</file>
+        <file>images/owncloud_conflict.png</file>
+        <file>images/owncloud_sync_conflict.png</file>
     </qresource>
 </RCC>

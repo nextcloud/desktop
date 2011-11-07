@@ -2,6 +2,8 @@
 #include "ui_SyncWindow.h"
 #include "sqlite3_util.h"
 #include "QWebDAV.h"
+
+
 #include <QFile>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlError>
@@ -13,6 +15,8 @@
 #include <QSystemTrayIcon>
 #include <QFileSystemWatcher>
 #include <QFileDialog>
+#include <QTableWidgetItem>
+#include <QComboBox>
 
 SyncWindow::SyncWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -21,12 +25,20 @@ SyncWindow::SyncWindow(QWidget *parent) :
     mBusy = false;
     ui->setupUi(this);
 
-    mSyncTimer = 0; // So we can delete it without worrying :)
+    // Set the pointers so we can delete them without worrying :)
+    mSyncTimer = 0;
+
     mIsFirstRun = true;
+    mDownloadingConflictingFile = false;
+    mFileAccessBusy = false;
+    mConflictsExist = false;
 
     // Setup icons
     mDefaultIcon = QIcon(":images/owncloud.png");
     mSyncIcon = QIcon(":images/owncloud_sync.png");
+    mDefaultConflictIcon = QIcon(":images/owncloud_conflict.png");
+    mSyncConflictIcon = QIcon(":images/owncloud_sync_conflict.png");
+    setWindowIcon(mDefaultIcon);
 
     // Add the tray, if available
     mSystemTray = new QSystemTrayIcon(this);
@@ -55,6 +67,7 @@ SyncWindow::SyncWindow(QWidget *parent) :
             this, SLOT(updateDBUpload(QString)));
 
     mDownloadingFiles.clear();
+    mDownloadConflict.clear();
     mUploadingFiles.clear();
 
     // Initialize the Database
@@ -120,12 +133,20 @@ void SyncWindow::updateStatus()
                             " seconds...");
         ui->progressFile->setValue(0);
         ui->progressTotal->setValue(0);
-        ui->labelImage->setPixmap(mDefaultIcon.pixmap(129,129));
+        if(mConflictsExist) {
+             ui->labelImage->setPixmap(mDefaultConflictIcon.pixmap(129,129));
+        } else {
+            ui->labelImage->setPixmap(mDefaultIcon.pixmap(129,129));
+        }
     } else {
         mSyncTimer->stop();
         ui->status->setText(mTransferState+mCurrentFile+" out of "
                             + QString("%1").arg(mCurrentFileSize));
-        ui->labelImage->setPixmap(mSyncIcon.pixmap(129,129));
+        if(mConflictsExist) {
+            ui->labelImage->setPixmap(mSyncConflictIcon.pixmap(129,129));
+        } else {
+            ui->labelImage->setPixmap(mSyncIcon.pixmap(129,129));
+        }
     }
 }
 
@@ -145,7 +166,7 @@ void SyncWindow::timeToSync()
     // Announce we are busy!
     mBusy = true;
 
-    ui->textBrowser->append("Time to sync!");
+    ui->textBrowser->append("Synchronizing on: "+QDateTime::currentDateTime().toString());
 
     // If this is the first run, scan the directory, otherwise just wait
     // for the watcher to update us :)
@@ -178,7 +199,11 @@ void SyncWindow::timeToSync()
     mWebdav->dirList("/");
 
     // Set the icon to sync
-    mSystemTray->setIcon(mSyncIcon);
+    if( mConflictsExist) {
+        mSystemTray->setIcon(mSyncConflictIcon);
+    } else {
+        mSystemTray->setIcon(mSyncIcon);
+    }
 }
 
 SyncWindow::~SyncWindow()
@@ -195,16 +220,28 @@ void SyncWindow::processDirectoryListing(QList<QWebDAV::FileInfo> fileInfo)
     QSqlQuery add;
     for(int i = 0; i < fileInfo.size(); i++ ){
         query = queryDBFileInfo(fileInfo[i].fileName,"server_files");
-        if(query.next()) { // File exists update
-            //ui->textBrowser->append("File " + fileInfo[i].fileName +
-            //                        " exists. Comparing!");
-            QString updateStatement =
-                    QString("UPDATE server_files SET file_size='%1',"
-                            "last_modified='%2',found='yes' where file_name='%3'")
-                            .arg(fileInfo[i].size)
-                            .arg(fileInfo[i].lastModified)
-                            .arg(fileInfo[i].fileName);
-            add.exec(updateStatement);
+        if(query.next()) { // File exists confirm no conflict, then update
+            if( query.value(7).toString() == "" ) {
+                //ui->textBrowser->append("File " + fileInfo[i].fileName +
+                //                        " exists. Comparing!");
+                QString prevModified = query.value(4).toString();
+                QString updateStatement =
+                        QString("UPDATE server_files SET file_size='%1',"
+                                "last_modified='%2',found='yes',prev_modified='%3'"
+                                " where file_name='%4'")
+                        .arg(fileInfo[i].size)
+                        .arg(fileInfo[i].lastModified)
+                        .arg(prevModified)
+                        .arg(fileInfo[i].fileName);
+                add.exec(updateStatement);
+                //qDebug() << "SQuery: " << updateStatement;
+            } else if ( !mUploadingConflictFilesSet.contains(
+                            fileInfo[i].fileName.replace(" ","_sssspace_")) ) {
+                // Enable the conflict resolution window
+                ui->conflict->setEnabled(true);
+                mConflictsExist = true;
+                qDebug() << "SFile still conflicts: " << fileInfo[i].fileName;
+            }
         } else { // File does not exist, so just add this info to the DB
             //ui->textBrowser->append("File " + fileInfo[i].fileName +
             //                        " does not exist. Adding to DB");
@@ -235,7 +272,14 @@ void SyncWindow::processFileReady(QByteArray data,QString fileName)
     // Temporarily remove this watcher so we don't get a message when
     // we modify it.
     mFileWatcher->removePath(mSyncDirectory+fileName);
-    QFile file(mSyncDirectory+fileName);
+    QString finalName;
+    if(mDownloadingConflictingFile) {
+        finalName = getConflictName(fileName);
+        qDebug() << "Downloading conflicting file " << fileName;
+    } else {
+        finalName = fileName;
+    }
+    QFile file(mSyncDirectory+finalName);
     if (!file.open(QIODevice::WriteOnly))
             return;
     QDataStream out(&file);
@@ -254,11 +298,26 @@ void SyncWindow::processNextStep()
         download(mDownloadingFiles.dequeue());
     } else if ( mUploadingFiles.size() != 0 ) { // Maybe an upload?
         upload(mUploadingFiles.dequeue());
+    } else if ( mUploadingConflictFiles.size() !=0 ) { // Upload conflict files
+        FileInfo info = mUploadingConflictFiles.dequeue();
+        upload(info);
+        clearFileConflict(info.name);
+        mUploadingConflictFilesSet.remove(info.name.replace(" ","_sssspace_"));
+    } else if ( mDownloadConflict.size() != 0 ) { // Download conflicting files
+        mDownloadingConflictingFile = true;
+        download(mDownloadConflict.dequeue());
+        ui->conflict->setEnabled(true);
     } else { // We are done! Start the sync clock
+        mDownloadingConflictingFile = false;
         mBusy = false;
         mSyncTimer->start();
-        ui->textBrowser->append("All done!");
-        mSystemTray->setIcon(mDefaultIcon);
+        ui->textBrowser->append(tr("Finished: ") +
+                                QDateTime::currentDateTime().toString());
+        if(mConflictsExist) {
+            mSystemTray->setIcon(mDefaultConflictIcon);
+        } else {
+            mSystemTray->setIcon(mDefaultIcon);
+        }
     }
     updateStatus();
 }
@@ -271,7 +330,8 @@ void SyncWindow::scanLocalDirectory( QString dirPath)
     QString append;
     for( int i = 0; i < list.size(); i++ ) {
         QString name = list.at(i);
-        if( name == "." || name == ".." ) {
+        if( name == "." || name == ".." ||
+                name.contains("_ocs_serverconflict.")) {
             continue;
         }
 
@@ -310,19 +370,33 @@ void SyncWindow::processLocalFile(QString name)
 void SyncWindow::updateDBLocalFile(QString name, qint64 size, qint64 last,
                                    QString type )
 {
+    // Do not upload the server conflict files
+    if( name.contains("_ocs_serverconflict.") ) {
+        return;
+    }
     // Get the relative name of the file
     name.replace(mSyncDirectory,"");
     // Check against the database
     QSqlQuery query = queryDBFileInfo(name,"local_files");
     if (query.next() ) { // We already knew about this file. Update info.
-        QString updateStatement =
-                QString("UPDATE local_files SET file_size='%1',"
-                        "last_modified='%2',found='yes' where file_name='%3'")
-                        .arg(size)
-                        .arg(last)
-                        .arg(name);
-        //qDebug() << "Query: " << updateStatement;
-        query.exec(updateStatement);
+        QString prevModified = query.value(4).toString();
+        if ( query.value(8).toString() == "") {
+            QString updateStatement =
+                    QString("UPDATE local_files SET file_size='%1',"
+                            "last_modified='%2',found='yes',prev_modified='%3' "
+                            "where file_name='%4'")
+                    .arg(size)
+                    .arg(last)
+                    .arg(prevModified)
+                    .arg(name);
+            //qDebug() << "Query:   " << updateStatement;
+            query.exec(updateStatement);
+        } else {
+            // Enable the conflict resolution button
+            ui->conflict->setEnabled(true);
+            mConflictsExist = true;
+            qDebug() << "LFile still conflicts: " << name;
+        }
     } else { // We did not know about this file, add
         QString addStatement = QString("INSERT INTO local_files (file_name,"
                              "file_size,file_type,last_modified,found) "
@@ -364,20 +438,24 @@ void SyncWindow::syncFiles()
     mTotalDownloaded = 0;
     mTotalUploaded = 0;
     mTotalTransfered = 0;
-    mUploadingFiles.clear();
-    mDownloadingFiles.clear();
+    //mUploadingFiles.clear();
+    //mDownloadingFiles.clear();
 
 
     // Find out which local files need to be uploaded
     while ( localQuery.next() ) {
         QString localName = localQuery.value(1).toString();
-        qlonglong localSize = localQuery.value(2).toString().toLongLong();
+        qint64 localSize = localQuery.value(2).toString().toLongLong();
         QString localType = localQuery.value(3).toString();
-        qlonglong localModified = localQuery.value(4).toString().toLongLong();
-        qlonglong lastSync = localQuery.value(5).toString().toLongLong();
+        qint64 localModified = localQuery.value(4).toString().toLongLong();
+        qint64 lastSync = localQuery.value(5).toString().toLongLong();
+        qint64 localPrevModified = localQuery.value(7).toString().toLongLong();
         QDateTime localModifiedTime;
         localModifiedTime.setTimeSpec(Qt::UTC);
         localModifiedTime.setMSecsSinceEpoch(localModified);
+        QDateTime localPrevModifiedTime;
+        localPrevModifiedTime.setTimeSpec(Qt::UTC);
+        localPrevModifiedTime.setMSecsSinceEpoch(localPrevModified);
         QDateTime lastSyncTime;
         lastSyncTime.setTimeSpec(Qt::UTC);
         lastSyncTime.setMSecsSinceEpoch(lastSync);
@@ -389,34 +467,69 @@ void SyncWindow::syncFiles()
             // Check when this file was last modified, and check to see
             // when we last synced
             //QString serverType = query.value(3).toString();
-            qlonglong serverSize = query.value(2).toString().toLongLong();
-            qlonglong serverModified = query.value(4).toString().toLongLong();
+            qint64 serverSize = query.value(2).toString().toLongLong();
+            qint64 serverModified = query.value(4).toString().toLongLong();
+            qint64 serverPrevModified = query.value(6).toString().toLongLong();
             QDateTime serverModifiedTime;
             serverModifiedTime.setTimeSpec(Qt::UTC);
             serverModifiedTime.setMSecsSinceEpoch(serverModified);
+            QDateTime serverPrevModifiedTime;
+            serverPrevModifiedTime.setTimeSpec(Qt::UTC);
+            serverPrevModifiedTime.setMSecsSinceEpoch(serverPrevModified);
+
+/*
+            if(localName == "/pretty.xml") {
+                qDebug() << localModifiedTime << localPrevModifiedTime
+                            << serverModifiedTime << serverPrevModifiedTime
+                               << lastSyncTime;
+                localName = localName;
+            }
+*/
             if( serverModifiedTime < localModifiedTime &&
                     localModifiedTime > lastSyncTime  ) { // Server is older!
+                // Now check to see if the server too modified the file
                 if( localType == "collection" ) { // But already exists!
                     //serverDirs.append(localName);
                 } else {
-                    mUploadingFiles.enqueue(FileInfo(localName,localSize));
-                    //uploads.append(localName);
-                    //uploadsSizes.append(localSize);
-                    mTotalToUpload +=localSize;
-                    //qDebug() << "File " << localName << " is newer than server!";
+                    if( serverPrevModifiedTime != serverModifiedTime &&
+                            serverModifiedTime > lastSyncTime) {
+                        // There is a conflict, both files got changed since the
+                        // last time we synced
+                        qDebug() << "Conflict with sfile " << localName
+                                 << serverModifiedTime << serverPrevModifiedTime
+                                 << localModifiedTime << lastSyncTime;
+                        setFileConflict(localName,localSize,
+                                        serverModifiedTime.toString(),
+                                        localModifiedTime.toString());
+                        //qDebug() << "UPLOAD:   " << localName;
+                    } else { // There is no conflict
+                        mUploadingFiles.enqueue(FileInfo(localName,localSize));
+                        mTotalToUpload +=localSize;
+                        //qDebug() << "File " << localName << " is newer than server!";
+                    }
                 }
-                //qDebug() << "UPLOAD:   " << localName;
             } else if ( serverModifiedTime > localModifiedTime &&
-                        serverModifiedTime > lastSyncTime ) {
+                        serverModifiedTime > lastSyncTime ) { // Server is newer
+                // Check to see if local file was also modified
                 if( localType == "collection" ) {
                     //localDirs.append(localName);
                 } else {
-                    mDownloadingFiles.enqueue(FileInfo(localName,serverSize));
-                    //downloads.append(localName);
-                    //downloadsSizes.append(serverSize);
-                    mTotalToDownload += serverSize;
+                    if( localPrevModifiedTime != localModifiedTime
+                            && localModifiedTime > lastSyncTime) {
+                        // There is a conflict, both files got changed since the
+                        // last time we synced
+                        qDebug() << "Conflict with lfile " << localName
+                                 << serverModifiedTime << serverPrevModifiedTime
+                                 << localModifiedTime << lastSyncTime;
+                        setFileConflict(localName,serverSize,
+                                        serverModifiedTime.toString(),
+                                        localModifiedTime.toString());
+                    } else { // There is no conflict
+                        mDownloadingFiles.enqueue(FileInfo(localName,serverSize));
+                        mTotalToDownload += serverSize;
+                        //qDebug() << "OLDER:    " << localName;
+                    }
                 }
-                //qDebug() << "OLDER:    " << localName;
             } else { // The same! (I highly doubt that!)
                 //qDebug() << "SAME:     " << localName;
             }
@@ -437,7 +550,7 @@ void SyncWindow::syncFiles()
     // that don't exist)
     while ( serverQuery.next() ) {
         QString serverName = serverQuery.value(1).toString();
-        qlonglong serverSize = serverQuery.value(2).toString().toLongLong();
+        qint64 serverSize = serverQuery.value(2).toString().toLongLong();
         QString serverType = serverQuery.value(3).toString();
         //qDebug() << "SFile: " << serverName << " Size: " << serverSize << " vs "
         //         << serverQuery.value(2).toString() << " type: " << serverType ;
@@ -476,8 +589,8 @@ void SyncWindow::syncFiles()
     // Delete removed files and reset the file status
     deleteRemovedFiles();
     QSqlQuery query;
-    query.exec("UPDATE local_files SET found='';");
-    query.exec("UPDATE server_files SET found='';");
+    query.exec("UPDATE local_files SET found='' WHERE conflict='';");
+    query.exec("UPDATE server_files SET found='' WHERE conflict='';");
 
      mIsFirstRun = false;
 
@@ -485,11 +598,35 @@ void SyncWindow::syncFiles()
     processNextStep();
 }
 
+void SyncWindow::setFileConflict(QString name, qint64 size, QString server_last,
+                                 QString local_last)
+{
+    QSqlQuery conflict;
+    QString conflictText = QString("UPDATE server_files SET conflict='yes'"
+                    " WHERE file_name='%1';").arg(name);
+    conflict.exec(conflictText);
+    conflictText = QString("UPDATE local_files SET conflict='yes'"
+                    " WHERE file_name='%1';").arg(name);
+    conflict.exec(conflictText);
+    conflictText = QString("INSERT INTO conflicts values('%1','','%2','%3');")
+            .arg(name).arg(server_last).arg(local_last);
+    conflict.exec(conflictText);
+    mDownloadConflict.enqueue(FileInfo(name,size));
+    mConflictsExist = true;
+    mSystemTray->showMessage(tr("A conflict has been found!"),
+                             tr("File %1 conflicts.").arg(name),
+                             QSystemTrayIcon::Warning);
+}
+
 void SyncWindow::download( FileInfo file )
 {
     mCurrentFileSize = file.size;
     mCurrentFile = file.name;
-    mTransferState = "Downloading ";
+    if(mDownloadingConflictingFile) {
+        mTransferState = "Downloading conflicting file ";
+    } else {
+        mTransferState = "Downloading ";
+    }
     QNetworkReply *reply = mWebdav->get(file.name);
     connect(reply, SIGNAL(downloadProgress(qint64,qint64)),
             this, SLOT(transferProgress(qint64,qint64)));
@@ -547,7 +684,13 @@ void SyncWindow::updateDBDownload(QString name)
                 .arg(file.lastModified().toUTC().toMSecsSinceEpoch());
         query.exec(addStatement);
     }
-    ui->textBrowser->append("Downloaded file: " + name );
+    QString downloadText;
+    if( mDownloadingConflictingFile ) {
+        downloadText = "Downloaded conflicting file: " + name;
+    } else {
+        downloadText = "Downloaded file: " + name;
+    }
+    ui->textBrowser->append(downloadText);
     //qDebug() << "Did this get called?";
     mTotalTransfered += mCurrentFileSize;
 }
@@ -556,7 +699,7 @@ void SyncWindow::updateDBUpload(QString name)
 {
     QString fileName = mSyncDirectory+name;
     QFileInfo file(fileName);
-    qlonglong time = QDateTime::currentMSecsSinceEpoch();
+    qint64 time = QDateTime::currentMSecsSinceEpoch();
     //qDebug() << "Debug: File: " << name << " Size: " << file.size();
 
     // Check against the database
@@ -642,7 +785,9 @@ void SyncWindow::createDataBase()
                         "file_type text,\n"
                         "last_modified text,\n"
                         "last_sync text,\n"
-                        "found text\n"
+                        "found text,\n"
+                        "prev_modified text,\n"
+                        "conflict text\n"
                         ");");
     QString createServer("create table server_files(\n"
                         "id INTEGER PRIMARY KEY ASC,\n"
@@ -650,8 +795,16 @@ void SyncWindow::createDataBase()
                         "file_size text,\n"
                         "file_type text,\n"
                         "last_modified text,\n"
-                        "last_sync text,\n"
-                        "found text\n"
+                        "found text,\n"
+                        "prev_modified text,\n"
+                        "conflict text\n"
+                        ");");
+
+    QString createConflicts("create table conflicts(\n"
+                        "file_name text unique,\n"
+                        "resolution text,\n"
+                        "server_modified text,\n"
+                        "local_modified text\n"
                         ");");
 
     QString createConfig("create table config(\n"
@@ -665,6 +818,7 @@ void SyncWindow::createDataBase()
     query.exec(createLocal);
     query.exec(createServer);
     query.exec(createConfig);
+    query.exec(createConflicts);
 
 }
 
@@ -679,6 +833,7 @@ void SyncWindow::on_buttonSave_clicked()
     mSyncDirectory = ui->lineSyncDir->text();
     mUpdateTime = ui->time->value();
     saveConfigToDB();
+    saveDBToFile();
     initialize();
 }
 
@@ -748,6 +903,10 @@ void SyncWindow::initialize()
 
 void SyncWindow::localDirectoryChanged(QString name)
 {
+    // Maybe this was caused by us renaming a file, just wait it out
+    while (mFileAccessBusy ) {
+        sleep(1);
+    }
     // Since we don't want to be scanning the directories every single
     // time a file is changed (since temporary files could be the cause)
     // instead we'll add them to a list and have a separate timer
@@ -786,9 +945,10 @@ void SyncWindow::scanLocalDirectoryForNewFiles(QString path)
     QStringList list = dir.entryList();
     for( int i = 0; i < list.size(); i++ ) {
 
-        // Skip current and previous directory
+        // Skip current and previous directory and conflict related files
         QString name = list.at(i);
-        if( name == "." || name == ".." ) {
+        if( name == "." || name == ".." ||
+                name.contains("_ocs_serverconflict.") ) {
             continue;
         }
 
@@ -810,6 +970,11 @@ void SyncWindow::scanLocalDirectoryForNewFiles(QString path)
 
 void SyncWindow::closeEvent(QCloseEvent *event)
 {
+    // We definitely don't want to quit when we are synchronizing!
+    while(mBusy) {
+        sleep(5);
+    }
+
     // Before closing, save the database!!!
     saveDBToFile();
     QMainWindow::closeEvent(event);
@@ -941,4 +1106,124 @@ void SyncWindow::on_lineUser_textEdited(QString text)
 void SyncWindow::on_time_valueChanged(int value)
 {
     ui->buttonSave->setEnabled(true);
+}
+
+void SyncWindow::on_conflict_clicked()
+{
+
+    // Clear the table
+    ui->tableWidget->clear();
+    QTableWidgetItem *name;
+    QTableWidgetItem *serverTime;
+    QTableWidgetItem *localTime;
+    QComboBox *combo;
+    int row = 0;
+    QStringList headers;
+    headers.append("File Name");
+    headers.append("Server Modified");
+    headers.append("Local Modifed");
+    headers.append("Which wins?");
+    ui->tableWidget->setHorizontalHeaderLabels(headers);
+
+
+
+    QSqlQuery query;
+    query.exec("SELECT * from conflicts;");
+    while( query.next() ) {
+        ui->tableWidget->setRowCount(row+1);
+        name = new QTableWidgetItem(query.value(0).toString());
+        serverTime = new QTableWidgetItem(query.value(2).toString());
+        localTime = new QTableWidgetItem(query.value(3).toString());
+        combo = new QComboBox(ui->tableWidget);
+        combo->addItem("Choose:");
+        combo->addItem("server");
+        combo->addItem("local");
+        ui->tableWidget->setItem(row, 0, name);
+        ui->tableWidget->setItem(row, 1, serverTime);
+        ui->tableWidget->setItem(row, 2, localTime);
+        ui->tableWidget->setCellWidget(row,3,combo);
+        row++;
+    }
+    ui->tableWidget->resizeColumnsToContents();
+    ui->tableWidget->horizontalHeader()->setStretchLastSection(true);
+    ui->stackedWidget->setCurrentIndex(1);
+}
+
+void SyncWindow::on_buttonBox_accepted()
+{
+    // Check the selections are valid
+    //mSyncTimer->start(mUpdateTime);
+    mFileAccessBusy = true;
+    bool allConflictsResolved = true;
+    for( int row = 0; row < ui->tableWidget->rowCount(); row++ ) {
+        QComboBox *combo = (QComboBox*)ui->tableWidget->cellWidget(row,3);
+        if( combo->currentIndex() == 0 ) {
+            allConflictsResolved = false;
+            continue;
+        }
+        processFileConflict(ui->tableWidget->takeItem(row,0)->text(),
+                            combo->currentText());
+
+        //qDebug() << ui->tableWidget->takeItem(row,0)->text()
+        //            << combo->currentIndex();
+    }
+    if( allConflictsResolved) {
+        ui->conflict->setEnabled(false);
+        mConflictsExist = false;
+    }
+    mFileAccessBusy = false;
+    ui->stackedWidget->setCurrentIndex(0);
+}
+
+void SyncWindow::on_buttonBox_rejected()
+{
+    //mSyncTimer->start(mUpdateTime);
+    ui->stackedWidget->setCurrentIndex(0);
+}
+
+void SyncWindow::processFileConflict(QString name, QString wins)
+{
+    if( wins == "local" ) {
+        QFileInfo info(mSyncDirectory+name);
+        QFile::remove(mSyncDirectory+getConflictName(name));
+        mUploadingConflictFiles.enqueue(FileInfo(name,info.size()));
+        mUploadingConflictFilesSet.insert(name.replace(" ","_sssspace_"));
+    } else {
+        // Stop watching the old file, since it will get removed
+        mFileWatcher->removePath(mSyncDirectory+name);
+        QFileInfo info(mSyncDirectory+getConflictName(name));
+        qint64 last = info.lastModified().toMSecsSinceEpoch();
+        QFile::remove(mSyncDirectory+name);
+        QFile::rename(mSyncDirectory+getConflictName(name),
+                      mSyncDirectory+name);
+        QSqlQuery query;
+        QString statement = QString("UPDATE local_files SET last_sync='%1'"
+                                  "WHERE file_name='%2';").arg(last).arg(name);
+        query.exec(statement);
+
+        // Add back to the watcher
+        mFileWatcher->addPath(mSyncDirectory+name);
+        clearFileConflict(name);
+    }
+}
+
+void SyncWindow::clearFileConflict(QString name)
+{
+    QSqlQuery query;
+    QString statement = QString("DELETE FROM conflicts where file_name='%1';")
+            .arg(name);
+    query.exec(statement);
+    statement = QString("UPDATE local_files set conflict='' where file_name='%1'")
+            .arg(name);
+    query.exec(statement);
+    statement = QString("UPDATE server_files set conflict='' where file_name='%1'")
+            .arg(name);
+    query.exec(statement);
+}
+
+QString SyncWindow::getConflictName(QString name)
+{
+    QFileInfo info(name);
+    return QString(info.absolutePath()+
+                   "/_ocs_serverconflict."+info.fileName());
 }
