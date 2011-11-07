@@ -48,6 +48,7 @@ private:
     QString mUsername;
     QTimer *mSyncTimer;
     QTimer *mSaveDBTimer;
+    qint64 mTotalSyncs;
     QQueue<FileInfo> mUploadingFiles;
     QQueue<FileInfo> mDownloadingFiles;
     QQueue<FileInfo> mDownloadConflict;
@@ -103,6 +104,7 @@ private:
     void processFileConflict(QString name, QString wins);
     void clearFileConflict(QString name);
     QString getConflictName(QString name);
+    void saveLogs();
 
 public slots:
     void processDirectoryListing(QList<QWebDAV::FileInfo> fileInfo);

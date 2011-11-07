@@ -32,6 +32,7 @@ SyncWindow::SyncWindow(QWidget *parent) :
     mDownloadingConflictingFile = false;
     mFileAccessBusy = false;
     mConflictsExist = false;
+    mTotalSyncs = 0;
 
     // Setup icons
     mDefaultIcon = QIcon(":images/owncloud.png");
@@ -79,6 +80,8 @@ SyncWindow::SyncWindow(QWidget *parent) :
     mConfigDirectory = mHomeDirectory+"/.local/share/data/owncloud_sync";
     QDir configDir(mConfigDirectory);
     configDir.mkpath(mConfigDirectory);
+    QDir logsDir(mConfigDirectory+"/logs");
+    logsDir.mkpath(mConfigDirectory+"/logs");
     //mDB.setDatabaseName(mConfigDirectory+"/owncloud_sync.db");
     mDB.setDatabaseName(":memory:"); // Use memory for now
     mDBFileName = mConfigDirectory+"/owncloud_sync.db";
@@ -318,8 +321,30 @@ void SyncWindow::processNextStep()
         } else {
             mSystemTray->setIcon(mDefaultIcon);
         }
+        mTotalSyncs++;
+        if(mTotalSyncs%1000 == 0) {
+            saveLogs();
+        }
     }
     updateStatus();
+}
+
+void SyncWindow::saveLogs()
+{
+    QString name =
+            QDateTime::currentDateTime().toString("yyyyMMdd:hh:mm:ss.log");
+    QFile file(mConfigDirectory+"/logs/"+name);
+    if( !file.open(QIODevice::WriteOnly)) {
+        qDebug() << "Could not open log file for writting!\n";
+        return;
+    }
+
+    QTextStream out(&file);
+    out << ui->textBrowser->toPlainText();
+    out.flush();
+    file.close();
+    ui->textBrowser->clear();
+
 }
 
 void SyncWindow::scanLocalDirectory( QString dirPath)
@@ -977,6 +1002,7 @@ void SyncWindow::closeEvent(QCloseEvent *event)
 
     // Before closing, save the database!!!
     saveDBToFile();
+    saveLogs();
     QMainWindow::closeEvent(event);
 }
 
