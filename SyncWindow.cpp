@@ -270,8 +270,8 @@ void SyncWindow::processDirectoryListing(QList<QWebDAV::FileInfo> fileInfo)
             //ui->textBrowser->append("File " + fileInfo[i].fileName +
             //                        " does not exist. Adding to DB");
             QString addStatement = QString("INSERT INTO server_files(file_name,"
-                                 "file_size,file_type,last_modified,found) "
-                                           "values('%1','%2','%3','%4','yes');")
+                                 "file_size,file_type,last_modified,found,conflict) "
+                                           "values('%1','%2','%3','%4','yes','');")
                     .arg(fileInfo[i].fileName).arg(fileInfo[i].size)
                     .arg(fileInfo[i].type).arg(fileInfo[i].lastModified);
             //qDebug() << "Query: " << addStatement;
@@ -445,8 +445,8 @@ void SyncWindow::updateDBLocalFile(QString name, qint64 size, qint64 last,
         }
     } else { // We did not know about this file, add
         QString addStatement = QString("INSERT INTO local_files (file_name,"
-                             "file_size,file_type,last_modified,found) "
-                                       "values('%1','%2','%3','%4','yes');")
+                             "file_size,file_type,last_modified,found,conflict) "
+                                       "values('%1','%2','%3','%4','yes','');")
                 .arg(name).arg(size).arg(type).arg(last);
         //qDebug() << "Query: " << addStatement;
         query.exec(addStatement);
@@ -635,7 +635,7 @@ void SyncWindow::syncFiles()
     // Delete removed files and reset the file status
     deleteRemovedFiles();
     QSqlQuery query;
-    query.exec("UPDATE local_files SET found='' WHERE conflict='';");
+    query.exec("UPDATE  local_files SET found='' WHERE conflict='';");
     query.exec("UPDATE server_files SET found='' WHERE conflict='';");
 
      mIsFirstRun = false;
@@ -993,7 +993,7 @@ void SyncWindow::localFileChanged(QString name)
                         info.lastModified().toUTC().toMSecsSinceEpoch(),"file");
     } else { // File got deleted (or moved!) I can't do anything about
         // the moves for now. But I can delete! So do that for now :)
-        qDebug() << "Deleting from server: " << name;
+        ui->textBrowser->append("Local file was deleted: " + name);
         deleteFromServer(name.replace(mSyncDirectory,""));
     }
 }
@@ -1076,6 +1076,8 @@ void SyncWindow::deleteRemovedFiles()
         while(local.next()) {
             // Local files were deleted. Delete from server too.
             //qDebug() << "Deleting file from server: " << local.value(0).toString();
+            ui->textBrowser->append(tr("Deleted server file %1").arg(
+                                        local.value(0).toString()));
             deleteFromServer(local.value(0).toString());
         }
 
@@ -1097,6 +1099,8 @@ void SyncWindow::deleteRemovedFiles()
     while(server.next()) {
         // Server files were deleted. Delete from local too.
         qDebug() << "Deleting file from local:  " << server.value(0).toString();
+        ui->textBrowser->append("Deleting local file: "+
+                                server.value(0).toString());
         deleteFromLocal(server.value(0).toString(),false);
     }
 
@@ -1118,6 +1122,7 @@ void SyncWindow::deleteFromLocal(QString name, bool isDir)
             qDebug() << "File deletion failed: " << mSyncDirectory+name;
             return;
     }
+    ui->textBrowser->append("Deleting local file: " + name);
     dropFromDB("local_files","file_name",name);
     dropFromDB("server_files","file_name",name);
 }
@@ -1126,6 +1131,7 @@ void SyncWindow::deleteFromServer(QString name)
 {
     // Delete from server
     mWebdav->deleteFile(name);
+    ui->textBrowser->append("Deleting from server: " + name) ;
     dropFromDB("server_files","file_name",name);
     dropFromDB("local_files","file_name",name);
 }
@@ -1275,10 +1281,10 @@ void SyncWindow::clearFileConflict(QString name)
     QString statement = QString("DELETE FROM conflicts where file_name='%1';")
             .arg(name);
     query.exec(statement);
-    statement = QString("UPDATE local_files set conflict='' where file_name='%1'")
+    statement = QString("UPDATE local_files set conflict='' where file_name='%1';")
             .arg(name);
     query.exec(statement);
-    statement = QString("UPDATE server_files set conflict='' where file_name='%1'")
+    statement = QString("UPDATE server_files set conflict='' where file_name='%1';")
             .arg(name);
     query.exec(statement);
 }
