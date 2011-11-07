@@ -60,6 +60,7 @@ if(CSYNC_FOUND)
   )
   include_directories(${CSYNC_INCLUDE_DIR})
 endif(CSYNC_FOUND)
+
 qt4_automoc(${mirall_SRCS})
 
 
@@ -73,4 +74,10 @@ target_link_libraries(mirall qtwebdav_static)
 if(CSYNC_FOUND)
   target_link_libraries(mirall ${CSYNC_LIBRARY})
 endif(CSYNC_FOUND)
+
+install(TARGETS mirall
+	RUNTIME DESTINATION bin
+	LIBRARY DESTINATION lib
+	ARCHIVE DESTINATION lib
+)
 
