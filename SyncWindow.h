@@ -79,6 +79,7 @@ private:
     QSet<QString> mUploadingConflictFilesSet;
     bool mFileAccessBusy;
     bool mConflictsExist;
+    bool mSettingsCheck;
 
     void updateDBLocalFile(QString name,qint64 size,qint64 last,QString type);
     void scanLocalDirectory(QString dirPath);
@@ -105,8 +106,10 @@ private:
     void clearFileConflict(QString name);
     QString getConflictName(QString name);
     void saveLogs();
+    void settingsAreFine();
 
 public slots:
+    void directoryListingError(QString url);
     void processDirectoryListing(QList<QWebDAV::FileInfo> fileInfo);
     void processFileReady(QByteArray data,QString fileName);
     void updateDBUpload(QString fileName);

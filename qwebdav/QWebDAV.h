@@ -91,6 +91,7 @@ private:
     bool mInitialized;
     QBuffer *mData1;
     QByteArray *mQuery1;
+    bool mFirstAuthentication;
 
     void processDirList(QByteArray xml, QString url);
     void processFile(QNetworkReply* reply);
@@ -101,6 +102,7 @@ signals:
     void directoryListingReady(QList<QWebDAV::FileInfo>);
     void fileReady(QByteArray data, QString fileName);
     void uploadComplete(QString name);
+    void directoryListingError(QString url);
 
 public slots:
     void slotFinished ( QNetworkReply* );

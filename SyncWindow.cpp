@@ -27,11 +27,13 @@ SyncWindow::SyncWindow(QWidget *parent) :
 
     // Set the pointers so we can delete them without worrying :)
     mSyncTimer = 0;
+    mFileWatcher = 0;
 
     mIsFirstRun = true;
     mDownloadingConflictingFile = false;
     mFileAccessBusy = false;
     mConflictsExist = false;
+    mSettingsCheck = true;
     mTotalSyncs = 0;
 
     // Setup icons
@@ -52,13 +54,15 @@ SyncWindow::SyncWindow(QWidget *parent) :
     mWebdav = new QWebDAV();
 
     // Create a File System Watcher
-    mFileWatcher = new QFileSystemWatcher(this);
+    /*mFileWatcher = new QFileSystemWatcher(this);
     connect(mFileWatcher,SIGNAL(fileChanged(QString)),
             this, SLOT(localFileChanged(QString)));
     connect(mFileWatcher,SIGNAL(directoryChanged(QString)),
-            this, SLOT(localDirectoryChanged(QString)));
+            this, SLOT(localDirectoryChanged(QString)));*/
 
     // Connect to QWebDAV signals
+    connect(mWebdav,SIGNAL(directoryListingError(QString)),
+            this, SLOT(directoryListingError(QString)));
     connect(mWebdav,SIGNAL(directoryListingReady(QList<QWebDAV::FileInfo>)),
             this, SLOT(processDirectoryListing(QList<QWebDAV::FileInfo>)));
     connect(mWebdav,SIGNAL(fileReady(QByteArray,QString)),
@@ -112,6 +116,7 @@ SyncWindow::SyncWindow(QWidget *parent) :
                 show();
             }
             ui->buttonSave->setDisabled(true);
+            qDebug() << "Checking configuration!";
             initialize();
         }
     } else {
@@ -124,6 +129,15 @@ SyncWindow::SyncWindow(QWidget *parent) :
     mSaveDBTimer->start(370000);
 
     updateStatus();
+}
+
+void SyncWindow::directoryListingError(QString url)
+{
+    if(mSettingsCheck) {
+        qDebug() << "Something wrong with the settings, please check.";
+        ui->textBrowser->append("Settings could not be confirmed. Please "
+                                "confirm your settings and try again.");
+    }
 }
 
 void SyncWindow::updateStatus()
@@ -218,6 +232,13 @@ SyncWindow::~SyncWindow()
 
 void SyncWindow::processDirectoryListing(QList<QWebDAV::FileInfo> fileInfo)
 {
+    //qDebug() << "Processing Directory Listing";
+    if( mSettingsCheck ) {
+        // Great, we were just checking
+        mSettingsCheck = false;
+        settingsAreFine();
+        return;
+    }
     // Compare against the database of known files
     QSqlQuery query;
     QSqlQuery add;
@@ -910,8 +931,22 @@ void SyncWindow::initialize()
     // Initialize WebDAV
     mWebdav->initialize(mHost,mUsername,mPassword,"/files/webdav.php");
 
-    mFileWatcher->addPath(mSyncDirectory+"/");
+    // Create a File System Watcher
 
+    delete mFileWatcher;
+    mFileWatcher = new QFileSystemWatcher(this);
+    connect(mFileWatcher,SIGNAL(fileChanged(QString)),
+            this, SLOT(localFileChanged(QString)));
+    connect(mFileWatcher,SIGNAL(directoryChanged(QString)),
+            this, SLOT(localDirectoryChanged(QString)));
+
+    mFileWatcher->addPath(mSyncDirectory+"/");
+    mSettingsCheck = true;
+    mWebdav->dirList("/");
+}
+
+void SyncWindow::settingsAreFine()
+{
     // Synchronize (only if it is not synchronizing right now) then start the timer
     if(mIsFirstRun) {
         timeToSync();
@@ -1003,6 +1038,7 @@ void SyncWindow::closeEvent(QCloseEvent *event)
     // Before closing, save the database!!!
     saveDBToFile();
     saveLogs();
+    qDebug() << "All ready to close!";
     QMainWindow::closeEvent(event);
 }
 

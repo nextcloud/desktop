@@ -29,6 +29,7 @@ QWebDAV::QWebDAV(QObject *parent) :
 void QWebDAV::initialize(QString hostname, QString username, QString password,
                          QString pathFilter)
 {
+    mFirstAuthentication = true;
     mHostname = hostname;
     mUsername = username;
     mPassword = password;
@@ -152,6 +153,8 @@ void QWebDAV::slotFinished(QNetworkReply *reply)
         emit uploadComplete(
                     reply->request().url().path().replace(mPathFilter,""));
 
+    } else {
+        qDebug() << "Who knows what the server is trying to tell us.";
     }
 
 }
@@ -159,10 +162,11 @@ void QWebDAV::slotFinished(QNetworkReply *reply)
 void QWebDAV::slotAuthenticationRequired(QNetworkReply *reply,
                                          QAuthenticator *auth)
 {
-    //qDebug() << "Authenticating:";
-    if(auth) {
+    //qDebug() << "Authenticating: ";
+    if( mFirstAuthentication && auth ) {
         auth->setUser(mUsername);
         auth->setPassword(mPassword);
+        mFirstAuthentication = false;
     }
 }
 
@@ -183,12 +187,14 @@ void QWebDAV::processDirList(QByteArray xml, QString url)
                                 &errorColumn)) {
         qDebug() << "Error at line " << errorLine << " column " << errorColumn;
         qDebug() << errorStr;
+        emit directoryListingError(url);
         return;
     }
 
     QDomElement root = domDocument.documentElement();
     if( root.tagName() != "multistatus" ) {
         qDebug() << "Badly formatted XML!" << xml;
+        emit directoryListingError(url);
         return;
     }
 
