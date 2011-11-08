@@ -505,7 +505,7 @@ void SyncWindow::processNextStep()
     } else {
         mBusy = false;
     }
-    if(mTotalSyncs%10 == 0 ) {
+    if(mTotalSyncs%1000 == 0 ) {
         saveLogs();
     }
 }
