@@ -13,11 +13,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         sqlite3_util.cpp \
         SyncWindow.cpp \
-    qwebdav/QWebDAV.cpp
+    qwebdav/QWebDAV.cpp \
+    OwnCloudSync.cpp
 
 HEADERS  += sqlite3_util.h \
             SyncWindow.h \
-            qwebdav/QWebDAV.h
+            qwebdav/QWebDAV.h \
+    OwnCloudSync.h
 
 FORMS    += SyncWindow.ui
 INCLUDEPATH += qwebdav/
@@ -52,3 +54,5 @@ unix:!macx:!symbian: LIBS += -L$$PWD/../../../../../usr/lib64/ -lsqlite3
 
 INCLUDEPATH += $$PWD/../../../../../usr/include
 DEPENDPATH += $$PWD/../../../../../usr/include
+
+

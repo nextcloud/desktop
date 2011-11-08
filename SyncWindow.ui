@@ -22,7 +22,17 @@
       </property>
       <widget class="QWidget" name="page">
        <layout class="QGridLayout" name="gridLayout_2">
-        <item row="8" column="0">
+        <item row="7" column="0" colspan="3">
+         <widget class="QTextBrowser" name="textBrowser"/>
+        </item>
+        <item row="4" column="0" colspan="3">
+         <widget class="QLabel" name="status">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
          <widget class="QLabel" name="label">
           <property name="text">
            <string>File Progress:</string>
@@ -32,47 +42,7 @@
           </property>
          </widget>
         </item>
-        <item row="10" column="0" colspan="6">
-         <widget class="QTextBrowser" name="textBrowser"/>
-        </item>
-        <item row="2" column="1">
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>Password: </string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2" colspan="4">
-         <widget class="QLineEdit" name="lineUser">
-          <property name="echoMode">
-           <enum>QLineEdit::Normal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="2" colspan="3">
-         <widget class="QLineEdit" name="lineSyncDir"/>
-        </item>
-        <item row="8" column="1" colspan="5">
-         <widget class="QProgressBar" name="progressFile">
-          <property name="value">
-           <number>0</number>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2" colspan="4">
-         <widget class="QLineEdit" name="lineHost"/>
-        </item>
-        <item row="0" column="0" rowspan="5">
-         <widget class="QLabel" name="labelImage">
-          <property name="text">
-           <string/>
-          </property>
-          <property name="pixmap">
-           <pixmap resource="owncloud_sync.qrc">:/images/owncloud.png</pixmap>
-          </property>
-         </widget>
-        </item>
-        <item row="9" column="1" colspan="5">
+        <item row="6" column="1" colspan="2">
          <widget class="QProgressBar" name="progressTotal">
           <property name="value">
            <number>0</number>
@@ -82,34 +52,7 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="2">
-         <widget class="QSpinBox" name="time"/>
-        </item>
-        <item row="4" column="1">
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>Update every: </string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="2" colspan="4">
-         <widget class="QLineEdit" name="linePassword">
-          <property name="echoMode">
-           <enum>QLineEdit::PasswordEchoOnEdit</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="4">
-         <widget class="QPushButton" name="buttonSave">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string>Save</string>
-          </property>
-         </widget>
-        </item>
-        <item row="9" column="0">
+        <item row="6" column="0">
          <widget class="QLabel" name="label_3">
           <property name="text">
            <string>Total Progress:</string>
@@ -119,55 +62,56 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
-         <widget class="QLabel" name="label_2">
+        <item row="0" column="0" rowspan="2">
+         <widget class="QLabel" name="labelImage">
           <property name="text">
-           <string>Username: </string>
+           <string/>
           </property>
-         </widget>
-        </item>
-        <item row="3" column="5">
-         <widget class="QToolButton" name="buttonSyncDir">
-          <property name="text">
-           <string>...</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string>Sync Directory: </string>
+          <property name="pixmap">
+           <pixmap resource="owncloud_sync.qrc">:/images/owncloud.png</pixmap>
           </property>
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>Hostname: </string>
+         <widget class="QTableWidget" name="tableAccounts">
+          <column>
+           <property name="text">
+            <string>Name</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Enabled</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Last Sync</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item row="5" column="1" colspan="2">
+         <widget class="QProgressBar" name="progressFile">
+          <property name="value">
+           <number>0</number>
           </property>
          </widget>
         </item>
-        <item row="4" column="3">
-         <widget class="QLabel" name="label_8">
-          <property name="text">
-           <string> seconds</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="0" colspan="6">
-         <widget class="QLabel" name="status">
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item row="11" column="0" colspan="6">
+        <item row="8" column="1">
          <widget class="QPushButton" name="conflict">
           <property name="enabled">
            <bool>false</bool>
           </property>
           <property name="text">
            <string>Conflicts exist, click to resolve.</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="0">
+         <widget class="QPushButton" name="buttonNewAccount">
+          <property name="text">
+           <string>New Account</string>
           </property>
          </widget>
         </item>
@@ -190,10 +134,15 @@
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QTableWidget" name="tableWidget">
+         <widget class="QTableWidget" name="tableConflict">
           <property name="columnCount">
-           <number>4</number>
+           <number>5</number>
           </property>
+          <column>
+           <property name="text">
+            <string>New Column</string>
+           </property>
+          </column>
           <column>
            <property name="text">
             <string>Name</string>
@@ -201,7 +150,7 @@
           </column>
           <column>
            <property name="text">
-            <string>Server Modified</string>
+            <string>Account</string>
            </property>
           </column>
           <column>
@@ -214,6 +163,153 @@
             <string>Which to keep?</string>
            </property>
           </column>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_3">
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Local Directory: </string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1" colspan="3">
+         <widget class="QLineEdit" name="lineRemoteDir"/>
+        </item>
+        <item row="6" column="4">
+         <widget class="QToolButton" name="buttonSyncDir">
+          <property name="text">
+           <string>...</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="2">
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string> seconds</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="4">
+         <widget class="QToolButton" name="buttonRemoteDir">
+          <property name="text">
+           <string>...</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Username: </string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_11">
+          <property name="text">
+           <string>Remote Directory: </string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Update every: </string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_10">
+          <property name="text">
+           <string>Account Name: </string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1" colspan="4">
+         <widget class="QLineEdit" name="lineUser">
+          <property name="echoMode">
+           <enum>QLineEdit::Normal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="3">
+         <widget class="QPushButton" name="buttonSave">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Save</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="4">
+         <widget class="QPushButton" name="buttonCancel">
+          <property name="text">
+           <string>Cancel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1" colspan="4">
+         <widget class="QLineEdit" name="lineName"/>
+        </item>
+        <item row="2" column="1" colspan="4">
+         <widget class="QLineEdit" name="lineHost"/>
+        </item>
+        <item row="7" column="1">
+         <widget class="QSpinBox" name="time">
+          <property name="value">
+           <number>15</number>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Password: </string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Hostname: </string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1" colspan="3">
+         <widget class="QLineEdit" name="lineLocalDir"/>
+        </item>
+        <item row="4" column="1" colspan="4">
+         <widget class="QLineEdit" name="linePassword">
+          <property name="echoMode">
+           <enum>QLineEdit::PasswordEchoOnEdit</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="labelImage_2">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="pixmap">
+           <pixmap resource="owncloud_sync.qrc">:/images/owncloud.png</pixmap>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1" colspan="4">
+         <widget class="QTextBrowser" name="textBrowser_2">
+          <property name="html">
+           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Enter your account details below. Leave off the /files/webdav.php on all remote references.&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No spaces on the account name!!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
          </widget>
         </item>
        </layout>
@@ -244,13 +340,23 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
+  <tabstop>lineName</tabstop>
   <tabstop>lineHost</tabstop>
   <tabstop>lineUser</tabstop>
   <tabstop>linePassword</tabstop>
-  <tabstop>lineSyncDir</tabstop>
-  <tabstop>buttonSave</tabstop>
+  <tabstop>lineRemoteDir</tabstop>
+  <tabstop>buttonRemoteDir</tabstop>
+  <tabstop>lineLocalDir</tabstop>
   <tabstop>buttonSyncDir</tabstop>
+  <tabstop>time</tabstop>
+  <tabstop>buttonSave</tabstop>
+  <tabstop>buttonCancel</tabstop>
   <tabstop>textBrowser</tabstop>
+  <tabstop>conflict</tabstop>
+  <tabstop>tableAccounts</tabstop>
+  <tabstop>tableConflict</tabstop>
+  <tabstop>buttonBox</tabstop>
+  <tabstop>textBrowser_2</tabstop>
  </tabstops>
  <resources>
   <include location="owncloud_sync.qrc"/>
