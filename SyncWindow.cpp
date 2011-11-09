@@ -44,8 +44,6 @@
 #include <QMessageBox>
 #include <QCloseEvent>
 
-#define OCS_VERSION "0.3"
-
 SyncWindow::SyncWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::SyncWindow)

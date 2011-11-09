@@ -138,8 +138,8 @@ void OwnCloudSync::directoryListingError(QString url)
 {
     if(mSettingsCheck) {
         qDebug() << "Something wrong with the settings, please check.";
-        emit toLog("Settings could not be confirmed. Please "
-                                "confirm your settings and try again.");
+        emit toLog(tr("Settings could not be confirmed for account %1. Please "
+                      "confirm your settings and try again.").arg(mAccountName));
     }
 }
 
@@ -201,7 +201,7 @@ void OwnCloudSync::sync()
     mBusy = true;
     mSyncTimer->stop();
 
-    emit toLog(tr("Synchronizing %1 on: %2")
+    emit toLog(tr("\nSynchronizing %1 on: %2")
                .arg(mAccountName)
                .arg(QDateTime::currentDateTime().toString()));
 
