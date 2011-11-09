@@ -518,6 +518,7 @@ p, li { white-space: pre-wrap; }
     </property>
     <addaction name="actionConfigure_Global_Filters"/>
     <addaction name="action_Quit"/>
+    <addaction name="actionHide_on_start"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -559,6 +560,17 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="statusTip">
     <string/>
+   </property>
+  </action>
+  <action name="actionHide_on_start">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Hide on start</string>
    </property>
   </action>
  </widget>

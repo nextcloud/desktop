@@ -44,6 +44,7 @@
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <QMenu>
+#include <QSettings>
 
 SyncWindow::SyncWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -106,11 +107,11 @@ SyncWindow::SyncWindow(QWidget *parent) :
     }
     if( files.size() == 0 ) {
         on_buttonNewAccount_clicked();
-        show();
     }
     rebuildAccountsTable();
 
     updateStatus();
+    loadApplicationSettings();
 }
 
 void SyncWindow::updateStatus()
@@ -306,6 +307,7 @@ void SyncWindow::closeEvent(QCloseEvent *event)
         }
 
         saveLogs();
+        saveApplicationSettings();
         qDebug() << "All ready to close!";
         QMainWindow::closeEvent(event);
     } else {
@@ -676,6 +678,28 @@ void SyncWindow::on_action_Quit_triggered()
 {
     mQuitAction = true;
     close();
+}
+
+void SyncWindow::saveApplicationSettings()
+{
+    QSettings settings("paintblack.com","OwnCloud Sync");
+    settings.beginGroup("SyncWindow");
+    settings.setValue("hide_on_start",ui->actionHide_on_start->isChecked());
+    settings.endGroup();
+}
+
+void SyncWindow::loadApplicationSettings()
+{
+    QSettings settings("paintblack.com","OwnCloud Sync");
+    settings.beginGroup("SyncWindow");
+    bool checked =  settings.value("hide_on_start").toBool();
+    ui->actionHide_on_start->setChecked(checked);
+    if( mAccounts.size() > 0 && checked ) {
+        hide();
+    } else {
+        show();
+    }
+    settings.endGroup();
 }
 
 /*

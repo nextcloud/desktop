@@ -87,6 +87,8 @@ private:
     void accountEnabledChanged(int row);
     void editConfig(int row);
     void listFilters(int row);
+    void saveApplicationSettings();
+    void loadApplicationSettings();
 
 public slots:
     //void timeToSync();
