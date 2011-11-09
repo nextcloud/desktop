@@ -21,7 +21,7 @@
        <number>0</number>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="page">
        <layout class="QGridLayout" name="gridLayout_2">
@@ -125,21 +125,14 @@
       </widget>
       <widget class="QWidget" name="page_2">
        <layout class="QGridLayout" name="gridLayout_3">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_9">
-          <property name="text">
-           <string>Select the one files that should be used, either the server version or local version:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
+        <item row="3" column="0">
          <widget class="QDialogButtonBox" name="buttonBox">
           <property name="standardButtons">
            <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
+        <item row="2" column="0">
          <widget class="QTableWidget" name="tableConflict">
           <property name="columnCount">
            <number>5</number>
@@ -169,6 +162,32 @@
             <string>Which to keep?</string>
            </property>
           </column>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_9">
+          <property name="text">
+           <string>Select the one files that should be used, either the server version or local version:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_13">
+          <property name="font">
+           <font>
+            <pointsize>19</pointsize>
+            <weight>75</weight>
+            <italic>false</italic>
+            <bold>true</bold>
+            <underline>false</underline>
+           </font>
+          </property>
+          <property name="text">
+           <string>CONFLICT RESOLUTION</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
          </widget>
         </item>
        </layout>

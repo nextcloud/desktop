@@ -416,7 +416,7 @@ OwnCloudSync* SyncWindow::getAccount(QString name)
 void SyncWindow::on_buttonBox_accepted()
 {
     bool allConflictsResolved = true;
-    for( int row = 0; row < ui->tableAccounts->rowCount(); row++ ) {
+    for( int row = 0; row < ui->tableConflict->rowCount(); row++ ) {
         QComboBox *combo = (QComboBox*)ui->tableConflict->cellWidget(row,4);
         if( combo->currentIndex() == 0 ) {
             allConflictsResolved = false;
@@ -432,28 +432,6 @@ void SyncWindow::on_buttonBox_accepted()
         updateStatus();
     }
     ui->stackedWidget->setCurrentIndex(0);
-    /*
-    // Check the selections are valid
-    //mSyncTimer->start(mUpdateTime);
-    mFileAccessBusy = true;
-    for( int row = 0; row < ui->tableConflict->rowCount(); row++ ) {
-        QComboBox *combo = (QComboBox*)ui->tableConflict->cellWidget(row,3);
-        if( combo->currentIndex() == 0 ) {
-            allConflictsResolved = false;
-            continue;
-        }
-        processFileConflict(ui->tableConflict->takeItem(row,0)->text(),
-                            combo->currentText());
-
-        //qDebug() << ui->tableConflict->takeItem(row,0)->text()
-        //            << combo->currentIndex();
-    }
-    if( allConflictsResolved) {
-        ui->conflict->setEnabled(false);
-        mConflictsExist = false;
-    }
-    mFileAccessBusy = false;
-    */
 }
 
 void SyncWindow::on_buttonBox_rejected()
