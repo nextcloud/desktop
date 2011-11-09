@@ -378,13 +378,14 @@ QString OwnCloudSync::getLastSync()
 void OwnCloudSync::scanLocalDirectory( QString dirPath)
 {
     QDir dir(dirPath);
+    dir.setFilter(QDir::Files|QDir::NoDot|QDir::NoDotDot|QDir::AllEntries
+                  |QDir::Hidden);
     QStringList list = dir.entryList();
     QString type;
     QString append;
     for( int i = 0; i < list.size(); i++ ) {
         QString name = list.at(i);
-        if( name == "." || name == ".." ||
-                name.contains("_ocs_serverconflict.")) {
+        if( isFileFiltered(name) ) {
             continue;
         }
 
@@ -424,7 +425,7 @@ void OwnCloudSync::updateDBLocalFile(QString name, qint64 size, qint64 last,
                                    QString type )
 {
     // Do not upload the server conflict files
-    if( name.contains("_ocs_serverconflict.") ) {
+    if( isFileFiltered(name)) {
         return;
     }
     // Get the relative name of the file
@@ -885,11 +886,16 @@ void OwnCloudSync::createDataBase()
                         "remotedir text,\n"
                         "lastsync text\n"
                         ");");
+
+    QString createFilters("create table filter(\n"
+                          "filter text"
+                          ");");
     QSqlQuery query(QSqlDatabase::database(mAccountName));
     query.exec(createLocal);
     query.exec(createServer);
     query.exec(createConfig);
     query.exec(createConflicts);
+    query.exec(createFilters);
 
 }
 
@@ -912,6 +918,28 @@ void OwnCloudSync::readConfigFromDB()
     } else {
         // There is no configuration on the db
         mDBOpen = false;
+    }
+
+    // Now also read the filters on file
+    query.exec("SELECT * from filters;");
+    while(query.next()) {
+        mFilters.insert(query.value(0).toString());
+    }
+}
+
+void OwnCloudSync::removeFilter(QString filter)
+{
+    mFilters.remove(filter);
+    QSqlQuery query(QSqlDatabase::database(mAccountName));
+    query.exec(QString("DELETE FROM filters WHERE filter='%1';").arg(filter));
+}
+
+void OwnCloudSync::addFilter(QString filter)
+{
+    if(!mFilters.contains(filter)) {
+        mFilters.insert(filter);
+        QSqlQuery query(QSqlDatabase::database(mAccountName));
+        query.exec(QString("INSERT into filters values('%1');").arg(filter));
     }
 }
 
@@ -1021,13 +1049,13 @@ void OwnCloudSync::scanLocalDirectoryForNewFiles(QString path)
     }
     //qDebug() << "Scanning local directory: " << path;
     QDir dir(mLocalDirectory+path);
+    dir.setFilter(QDir::Files|QDir::NoDot|QDir::NoDotDot|QDir::AllEntries
+                  |QDir::Hidden);
     QStringList list = dir.entryList();
     for( int i = 0; i < list.size(); i++ ) {
-
         // Skip current and previous directory and conflict related files
         QString name = list.at(i);
-        if( name == "." || name == ".." ||
-                name.contains("_ocs_serverconflict.") ) {
+        if( isFileFiltered(name) ) {
             continue;
         }
 
@@ -1225,4 +1253,46 @@ void OwnCloudSync::initialize(QString host, QString user, QString pass,
     saveDBToFile();
     mSettingsCheck = true;
     mWebdav->dirList(remote+"/");
+}
+
+QStringList OwnCloudSync::getFilterList()
+{
+    QStringList list;
+    QList<QString> filters = mFilters.toList();
+    for( int i = 0; i < filters.size(); i++ ) {
+        list << filters[i];
+        //qDebug() << filters[i];
+    }
+    return list;
+}
+
+bool OwnCloudSync::isFileFiltered(QString name)
+{
+    // Standard filters applicable to *ALL* files
+    if( name == "." || name == ".." ||
+         name.contains("_ocs_serverconflict.")) {
+        //qDebug() << "File: " +name+" ignored by " + mAccountName;
+        return true;
+    }
+    QList<QString> list = mFilters.toList();
+
+    // Else, look through the filters and see if this file is excluded
+    for( int i = 0; i < mFilters.size(); i++ ) {
+        QString filter = list[i];
+        if(filter.contains("*")) { // Must build general expression
+            filter.replace("?","\\\?");
+            filter.replace(".","\\\.");
+            filter.replace("*",".*");
+            QRegExp reg(filter);
+            if( name.contains(reg) ) {
+                //qDebug() << "File: " +name+" ignored by " + mAccountName + " because of " + filter;
+                return true;
+            }
+
+        } else if( name.contains(filter) ) {
+            //qDebug() << "File: " +name+" ignored by " + mAccountName + " because of " + filter;
+            return true;
+        }
+    }
+    return false;
 }

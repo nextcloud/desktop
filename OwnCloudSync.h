@@ -53,6 +53,9 @@ public:
     void deleteWatcher();
     void stop();
     QString getLastSync();
+    QStringList getFilterList();
+    void addFilter(QString filter);
+    void removeFilter(QString filter);
 
 private:
     QWebDAV *mWebdav;
@@ -60,6 +63,7 @@ private:
     bool mAllowedToSync;
     bool mNeedsSync;
     bool mNotifySyncEmitted;
+    QSet<QString> mFilters;
     QString mLastSync;
     QSqlDatabase mDB;
     QString mDBFileName;
@@ -124,6 +128,7 @@ private:
     QString getConflictName(QString name);
     void settingsAreFine();
     void start();
+    bool isFileFiltered(QString name);
 
 signals:
     void toLog(QString text);

@@ -20,6 +20,8 @@
 #include <QCheckBox>
 #include <QSignalMapper>
 #include <QPushButton>
+#include <QListView>
+#include <QStringListModel>
 
 SyncWindow::SyncWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -48,6 +50,7 @@ SyncWindow::SyncWindow(QWidget *parent) :
 
     // Start with the default tab
     ui->stackedWidget->setCurrentIndex(0);
+    ui->listFilterView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     // Create the Accounts SignalMapper
     mAccountsSignalMapper = new QSignalMapper(this);
@@ -74,7 +77,7 @@ SyncWindow::SyncWindow(QWidget *parent) :
         addAccount(name);
     }
     if( files.size() == 0 ) {
-        ui->stackedWidget->setCurrentIndex(2);
+        on_buttonNewAccount_clicked();
         show();
     }
     rebuildAccountsTable();
@@ -545,6 +548,22 @@ void SyncWindow::editConfig(int row)
     ui->lineRemoteDir->setText(mAccounts[row]->getRemoteDirectory());
     ui->lineLocalDir->setText(mAccounts[row]->getLocalDirectory());
     ui->time->setValue(mAccounts[row]->getUpdateTime());
+    listFilters(row);
+}
+
+void SyncWindow::listFilters(int row)
+{
+    // Show the filters list
+    ui->listFilterView->setModel(
+                new QStringListModel(mAccounts[row]->getFilterList()));
+    // Create the filterView signals
+    connect(ui->listFilterView->selectionModel(),
+            SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+                   this,SLOT(listFiltersSelectionChanged(QItemSelection,
+                                                    QItemSelection)));
+    ui->lineFilter->setText("");
+    ui->buttonFilterInsert->setEnabled(false);
+    ui->buttonFilterRemove->setEnabled(false);
 }
 
 void SyncWindow::on_buttonNewAccount_clicked()
@@ -560,4 +579,40 @@ void SyncWindow::on_buttonNewAccount_clicked()
     ui->lineRemoteDir->setText("");
     ui->lineLocalDir->setText("");
     ui->time->setValue(15);
+}
+
+void SyncWindow::on_lineFilter_textEdited(QString text)
+{
+    if(text == "") {
+        ui->buttonFilterInsert->setDisabled(true);
+    } else {
+        ui->buttonFilterInsert->setEnabled(true);
+    }
+
+}
+
+void SyncWindow::listFiltersSelectionChanged(QItemSelection selected,
+                                             QItemSelection deselected)
+{
+    ui->buttonFilterRemove->setEnabled(true);
+    qDebug() << "Selected: " << selected.indexes()[0].row();
+}
+
+void SyncWindow::on_buttonFilterRemove_clicked()
+{
+    int index = ui->listFilterView->selectionModel()
+                ->selection().indexes()[0].row();
+    qDebug() << "Will remove: " << ui->listFilterView->model()->index(index,0)
+                .data(Qt::DisplayRole ).toString();
+    mAccounts[mEditingConfig]->removeFilter(
+                ui->listFilterView->model()->index(index,0)
+                                            .data(Qt::DisplayRole ).toString());
+    listFilters(mEditingConfig);
+}
+
+void SyncWindow::on_buttonFilterInsert_clicked()
+{
+    mAccounts[mEditingConfig]->addFilter(
+                ui->lineFilter->text());
+    listFilters(mEditingConfig);
 }

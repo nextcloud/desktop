@@ -8,6 +8,8 @@
 #include <QSystemTrayIcon>
 #include <QIcon>
 #include <QSet>
+#include <QModelIndex>
+#include <QItemSelection>
 
 class QTimer;
 class OwnCloudSync;
@@ -61,6 +63,7 @@ private:
     OwnCloudSync* getAccount(QString name);
     void accountEnabledChanged(int row);
     void editConfig(int row);
+    void listFilters(int row);
 
 public slots:
     //void timeToSync();
@@ -69,6 +72,8 @@ public slots:
     void systemTrayActivated(QSystemTrayIcon::ActivationReason reason);
     void closeEvent(QCloseEvent *event);
 
+    void listFiltersSelectionChanged(QItemSelection selected,
+                                     QItemSelection deselected);
     void slotAccountsSignalMapper(int row);
 
     // GUI related slots
@@ -86,6 +91,10 @@ public slots:
     void on_buttonBox_rejected();
     void on_buttonCancel_clicked();
     void on_buttonNewAccount_clicked();
+    void on_lineFilter_textEdited(QString text);
+    void on_buttonFilterRemove_clicked();
+    void on_buttonFilterInsert_clicked();
+
 
     // Owncloud related signals
     void slotToLog(QString text);
