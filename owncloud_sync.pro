@@ -32,7 +32,7 @@ RESOURCES += \
 
 
 unix:!symbian:!maemo5:isEmpty(MEEGO_VERSION_MAJOR) {
-    target.path = /opt/owncloud_sync/bin
+    target.path = /usr/bin
     INSTALLS += target
 }
 
