@@ -112,6 +112,7 @@ SyncWindow::SyncWindow(QWidget *parent) :
 
     updateStatus();
     loadApplicationSettings();
+    ui->actionEnable_Delete_Account->setVisible(false);
 }
 
 void SyncWindow::updateStatus()
@@ -268,6 +269,7 @@ void SyncWindow::on_buttonSave_clicked()
     }
     mEditingConfig = -1;
     ui->stackedWidget->setCurrentIndex(0);
+    ui->actionEnable_Delete_Account->setVisible(false);
     rebuildAccountsTable();
 }
 
@@ -532,6 +534,7 @@ void SyncWindow::on_buttonCancel_clicked()
 {
     mEditingConfig = -1;
     ui->stackedWidget->setCurrentIndex(0);
+    ui->actionEnable_Delete_Account->setVisible(false);
 }
 
 void SyncWindow::slotReadyToSync(OwnCloudSync* oc)
@@ -605,6 +608,8 @@ void SyncWindow::editConfig(int row)
     ui->lineRemoteDir->setText(mAccounts[row]->getRemoteDirectory());
     ui->lineLocalDir->setText(mAccounts[row]->getLocalDirectory());
     ui->time->setValue(mAccounts[row]->getUpdateTime());
+    ui->buttonDeleteAccount->setEnabled(false);
+    ui->actionEnable_Delete_Account->setVisible(true);
     listFilters(row);
 }
 
@@ -635,6 +640,8 @@ void SyncWindow::on_buttonNewAccount_clicked()
     ui->linePassword->setText("");
     ui->lineRemoteDir->setText("");
     ui->lineLocalDir->setText("");
+    ui->buttonDeleteAccount->setEnabled(false);
+    ui->actionEnable_Delete_Account->setVisible(false);
     ui->time->setValue(15);
 }
 
@@ -714,3 +721,32 @@ void SyncWindow::on_actionWhat_s_this_triggered()
 }
 
 */
+
+void SyncWindow::on_actionEnable_Delete_Account_triggered()
+{
+    if(mEditingConfig >= 0 ) {
+        ui->buttonDeleteAccount->setEnabled(true);
+    } // Else we are not editing an account!
+}
+
+void SyncWindow::on_buttonDeleteAccount_clicked()
+{
+    deleteAccount();
+}
+
+void SyncWindow::deleteAccount()
+{
+    // Confirm from user if they want to delete the account
+    QMessageBox box;
+    box.setText(tr("Are you sure you want to delete account: %1").arg(
+                mAccounts[mEditingConfig]->getName()));
+    box.setStandardButtons(QMessageBox::Yes|QMessageBox::No);
+    if( box.exec() == QMessageBox::Yes ) { // Delete the account
+        ui->textBrowser->append(tr("Deleted account: %1").
+                                arg(mAccounts[mEditingConfig]->getName()));
+        mAccounts[mEditingConfig]->deleteAccount();
+        mAccounts.removeAt(mEditingConfig);
+        rebuildAccountsTable();
+    }
+    ui->stackedWidget->setCurrentIndex(0);
+}

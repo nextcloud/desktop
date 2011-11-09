@@ -74,6 +74,8 @@ public:
     QStringList getFilterList();
     void addFilter(QString filter);
     void removeFilter(QString filter);
+    void hardStop();
+    void deleteAccount();
 
 private:
     QWebDAV *mWebdav;
@@ -81,6 +83,7 @@ private:
     bool mAllowedToSync;
     bool mNeedsSync;
     bool mNotifySyncEmitted;
+    bool mHardStop;
     QSet<QString> mFilters;
     QString mLastSync;
     QSqlDatabase mDB;

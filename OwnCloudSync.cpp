@@ -42,6 +42,7 @@ OwnCloudSync::OwnCloudSync(QString name) : mAccountName(name)
     mSyncTimer = 0;
     mFileWatcher = 0;
 
+    mHardStop = false;
     mIsFirstRun = true;
     mDownloadingConflictingFile = false;
     mFileAccessBusy = false;
@@ -339,6 +340,10 @@ void OwnCloudSync::processFileReady(QByteArray data,QString fileName)
 
 void OwnCloudSync::processNextStep()
 {
+    if(mHardStop) { // Hard stop, usually indicates account will be removed
+        return;
+    }
+
     // Check if there is another file to dowload, if so, start that process
     if( mDownloadingFiles.size() != 0 ) {
         download(mDownloadingFiles.dequeue());
@@ -1303,4 +1308,20 @@ bool OwnCloudSync::isFileFiltered(QString name)
         }
     }
     return false;
+}
+
+void OwnCloudSync::deleteAccount()
+{
+    // Stop all transfer processes
+    mHardStop = true;
+
+    // Stop and delete the timer
+    if(mSyncTimer) {
+        mSyncTimer->stop();
+    }
+
+    // Delete the database
+    mDB.close();
+    QFile dbFile(mConfigDirectory+"/"+mAccountName+".db");
+    dbFile.remove();
 }
