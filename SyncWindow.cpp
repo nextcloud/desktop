@@ -33,8 +33,9 @@ SyncWindow::SyncWindow(QWidget *parent) :
 {
     mBusy = false;
     ui->setupUi(this);
-    ui->statusBar->showMessage(tr("Version %1").arg(OCS_VERSION));
+    setWindowTitle("OwnCloud Sync");
     mEditingConfig = -1;
+    mConflictsExist = false;
 
     mCurrentAccountEdit = 0;
     mTotalSyncs = 0;
@@ -49,6 +50,7 @@ SyncWindow::SyncWindow(QWidget *parent) :
     // Add the tray, if available
     mSystemTray = new QSystemTrayIcon(this);
     mSystemTray->setIcon(mDefaultIcon);
+    mSystemTray->setToolTip(tr("OwnCloud Sync Version %1").arg(OCS_VERSION));
     mSystemTray->show();
     connect(mSystemTray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this,SLOT(systemTrayActivated(QSystemTrayIcon::ActivationReason)));
@@ -86,7 +88,7 @@ SyncWindow::SyncWindow(QWidget *parent) :
     }
     rebuildAccountsTable();
 
-//    updateStatus();
+    updateStatus();
 }
 
 void SyncWindow::updateStatus()
@@ -95,7 +97,8 @@ void SyncWindow::updateStatus()
     //    return;
 
     if( !mBusy ) {
-        ui->status->setText("Waiting ");
+        ui->statusBar->showMessage(tr("Version %1: Waiting...").arg(OCS_VERSION));
+        ui->status->setText("Waiting...");
         ui->progressFile->setValue(0);
         ui->progressTotal->setValue(0);
         if(mConflictsExist) {
@@ -518,9 +521,13 @@ void SyncWindow::processNextStep()
     if( mAccountsReadyToSync.size() != 0 ) {
         mBusy = true;
         mTotalSyncs++;
-        mAccountsReadyToSync.dequeue()->sync();
+        OwnCloudSync *account = mAccountsReadyToSync.dequeue();
+        ui->statusBar->showMessage(tr("Version %1: Synchronizing %2")
+                                   .arg(OCS_VERSION).arg(account->getName()));
+        account->sync();
     } else {
         mBusy = false;
+        updateStatus();
     }
     if(mTotalSyncs%1000 == 0 ) {
         saveLogs();
