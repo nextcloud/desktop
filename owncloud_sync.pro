@@ -55,4 +55,8 @@ unix:!macx:!symbian: LIBS += -L$$PWD/../../../../../usr/lib64/ -lsqlite3
 INCLUDEPATH += $$PWD/../../../../../usr/include
 DEPENDPATH += $$PWD/../../../../../usr/include
 
+OTHER_FILES += \
+    LICENSE
+
+
 
