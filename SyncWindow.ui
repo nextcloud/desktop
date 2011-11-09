@@ -530,6 +530,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionConfigure_Global_Filters"/>
     <addaction name="action_Quit"/>
     <addaction name="actionHide_on_start"/>
+    <addaction name="actionClose_Button_Hides_Window"/>
     <addaction name="actionEnable_Delete_Account"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -588,6 +589,17 @@ p, li { white-space: pre-wrap; }
   <action name="actionEnable_Delete_Account">
    <property name="text">
     <string>Enable Delete Account</string>
+   </property>
+  </action>
+  <action name="actionClose_Button_Hides_Window">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Close Button Hides Window</string>
    </property>
   </action>
  </widget>

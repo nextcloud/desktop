@@ -275,7 +275,7 @@ void SyncWindow::on_buttonSave_clicked()
 
 void SyncWindow::closeEvent(QCloseEvent *event)
 {
-    if(mQuitAction) {
+    if(mQuitAction || !ui->actionClose_Button_Hides_Window->isChecked()) {
         // Ask the user for confirmation before closing!
         QMessageBox box;
         box.setText(tr("Are you sure you want to quit? "
@@ -692,6 +692,8 @@ void SyncWindow::saveApplicationSettings()
     QSettings settings("paintblack.com","OwnCloud Sync");
     settings.beginGroup("SyncWindow");
     settings.setValue("hide_on_start",ui->actionHide_on_start->isChecked());
+    settings.setValue("hide_when_closed",
+                      ui->actionClose_Button_Hides_Window->isChecked());
     settings.endGroup();
 }
 
@@ -706,6 +708,8 @@ void SyncWindow::loadApplicationSettings()
     } else {
         show();
     }
+    ui->actionClose_Button_Hides_Window->setChecked(
+                settings.value("hide_when_closed").toBool());
     settings.endGroup();
 }
 
