@@ -43,11 +43,13 @@
 #include <QStringListModel>
 #include <QMessageBox>
 #include <QCloseEvent>
+#include <QMenu>
 
 SyncWindow::SyncWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::SyncWindow)
 {
+    mQuitAction = false;
     mBusy = false;
     ui->setupUi(this);
     setWindowTitle("OwnCloud Sync");
@@ -66,6 +68,9 @@ SyncWindow::SyncWindow(QWidget *parent) :
 
     // Add the tray, if available
     mSystemTray = new QSystemTrayIcon(this);
+    mSystemTrayMenu = new QMenu(this);
+    mSystemTrayMenu->addAction(ui->action_Quit);
+    mSystemTray->setContextMenu(mSystemTrayMenu);
     mSystemTray->setIcon(mDefaultIcon);
     mSystemTray->setToolTip(tr("OwnCloud Sync Version %1").arg(OCS_VERSION));
     mSystemTray->show();
@@ -137,6 +142,10 @@ void SyncWindow::updateStatus()
 SyncWindow::~SyncWindow()
 {
     delete ui;
+    delete mSystemTray;
+    delete mSystemTrayMenu;
+    delete mAccountsSignalMapper;
+    mAccounts.clear();
 }
 
 void SyncWindow::saveLogs()
@@ -263,40 +272,48 @@ void SyncWindow::on_buttonSave_clicked()
 
 void SyncWindow::closeEvent(QCloseEvent *event)
 {
-    // Ask the user for confirmation before closing!
-    QMessageBox box;
-    box.setText(tr("Are you sure you want to quit? "
-                "Program will not quit until all required syncs are made."));
-    box.setStandardButtons(QMessageBox::Yes|QMessageBox::No);
-    if( box.exec() == QMessageBox::No ) {
-        event->ignore();
-        return;
-    }
+    if(mQuitAction) {
+        // Ask the user for confirmation before closing!
+        QMessageBox box;
+        box.setText(tr("Are you sure you want to quit? "
+                       "Program will not quit until all required syncs are made."));
+        box.setStandardButtons(QMessageBox::Yes|QMessageBox::No);
+        if( box.exec() == QMessageBox::No ) {
+            event->ignore();
+            mQuitAction = false;
+            return;
+        }
 
-    // We definitely don't want to quit when we are synchronizing!
-    for( int i = 0; i < mAccounts.size(); i++ ) {
-        mAccounts[i]->deleteWatcher();    // Delete the file watcher
-        mAccounts[i]->stop(); // Stop the counter
-        while( mAccounts[i]->needsSync() ) {
-            qDebug() << "Waiting for " + mAccounts[i]->getName()
-                        + " to sync before close.";
-            sleep(1); // Just wait until this thing syncs
+        // We definitely don't want to quit when we are synchronizing!
+        for( int i = 0; i < mAccounts.size(); i++ ) {
+            mAccounts[i]->deleteWatcher();    // Delete the file watcher
+            mAccounts[i]->stop(); // Stop the counter
+            while( mAccounts[i]->needsSync() ) {
+                qDebug() << "Waiting for " + mAccounts[i]->getName()
+                            + " to sync before close.";
+                sleep(1); // Just wait until this thing syncs
+            }
+        }
+        while(mBusy) {
+            sleep(5);
+            qDebug() << "Still busy!";
+        }
+
+        // Before closing, save the database!!!
+        for( int i = 0; i < mAccounts.size(); i++ ) {
+            mAccounts[i]->saveConfigToDB();
+            mAccounts[i]->saveDBToFile();
+        }
+
+        saveLogs();
+        qDebug() << "All ready to close!";
+        QMainWindow::closeEvent(event);
+    } else {
+        if(mSystemTray->isVisible()) {
+            hide();
+            event->ignore();
         }
     }
-    while(mBusy) {
-        sleep(5);
-        qDebug() << "Still busy!";
-    }
-
-    // Before closing, save the database!!!
-    for( int i = 0; i < mAccounts.size(); i++ ) {
-        mAccounts[i]->saveConfigToDB();
-        mAccounts[i]->saveDBToFile();
-    }
-
-    saveLogs();
-    qDebug() << "All ready to close!";
-    QMainWindow::closeEvent(event);
 }
 
 void SyncWindow::on_buttonSyncDir_clicked()
@@ -654,3 +671,22 @@ void SyncWindow::on_buttonFilterInsert_clicked()
                 ui->lineFilter->text());
     listFilters(mEditingConfig);
 }
+
+void SyncWindow::on_action_Quit_triggered()
+{
+    mQuitAction = true;
+    close();
+}
+
+/*
+void SyncWindow::on_actionWhat_s_this_triggered()
+{
+    if(QWhatsThis::inWhatsThisMode()) {
+        QWhatsThis::leaveWhatsThisMode();
+        updateStatus();
+    } else {
+        QWhatsThis::enterWhatsThisMode();
+    }
+}
+
+*/

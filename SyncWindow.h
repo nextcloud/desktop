@@ -34,6 +34,7 @@
 class QTimer;
 class OwnCloudSync;
 class QSignalMapper;
+class QMenu;
 
 namespace Ui {
     class SyncWindow;
@@ -50,6 +51,7 @@ public:
 private:
     Ui::SyncWindow *ui;
     QSystemTrayIcon *mSystemTray;
+    QMenu *mSystemTrayMenu;
     QList<OwnCloudSync*> mAccounts;
     OwnCloudSync *mCurrentAccountEdit;
     QStringList mAccountNames;
@@ -70,6 +72,7 @@ private:
     QString mConfigDirectory;
     QSignalMapper *mAccountsSignalMapper;
     QQueue<OwnCloudSync*> mAccountsReadyToSync;
+    bool mQuitAction;
 
     QIcon mDefaultIcon;
     QIcon mSyncIcon;
@@ -127,6 +130,8 @@ public slots:
     void slotFinishedSync(OwnCloudSync*);
     void slotToMessage(QString caption, QString body,
     QSystemTrayIcon::MessageIcon icon);
+private slots:
+    void on_action_Quit_triggered();
 };
 
 #endif // SYNCWINDOW_H

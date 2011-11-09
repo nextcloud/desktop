@@ -77,6 +77,9 @@
         </item>
         <item row="0" column="1">
          <widget class="QTableWidget" name="tableAccounts">
+          <property name="statusTip">
+           <string/>
+          </property>
           <column>
            <property name="text">
             <string>Name</string>
@@ -228,7 +231,11 @@ p, li { white-space: pre-wrap; }
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QLineEdit" name="lineName"/>
+             <widget class="QLineEdit" name="lineName">
+              <property name="statusTip">
+               <string/>
+              </property>
+             </widget>
             </item>
             <item row="2" column="0">
              <widget class="QLabel" name="label_4">
@@ -407,20 +414,6 @@ p, li { white-space: pre-wrap; }
              </widget>
             </item>
            </layout>
-           <zorder>frameFilter</zorder>
-           <zorder>labelImage_2</zorder>
-           <zorder>label_10</zorder>
-           <zorder>textBrowser_2</zorder>
-           <zorder>linePassword</zorder>
-           <zorder>lineName</zorder>
-           <zorder>label_11</zorder>
-           <zorder>label_5</zorder>
-           <zorder>label_7</zorder>
-           <zorder>label_4</zorder>
-           <zorder>label_2</zorder>
-           <zorder>lineUser</zorder>
-           <zorder>lineHost</zorder>
-           <zorder>label_6</zorder>
            <zorder>label_10</zorder>
            <zorder>labelImage_2</zorder>
            <zorder>textBrowser_2</zorder>
@@ -519,6 +512,21 @@ p, li { white-space: pre-wrap; }
      <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuProgram">
+    <property name="title">
+     <string>Program</string>
+    </property>
+    <addaction name="actionConfigure_Global_Filters"/>
+    <addaction name="action_Quit"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="action_Help"/>
+   </widget>
+   <addaction name="menuProgram"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -529,6 +537,30 @@ p, li { white-space: pre-wrap; }
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="action_Quit">
+   <property name="text">
+    <string>&amp;Quit</string>
+   </property>
+   <property name="statusTip">
+    <string/>
+   </property>
+  </action>
+  <action name="action_Help">
+   <property name="text">
+    <string>&amp;Help</string>
+   </property>
+   <property name="statusTip">
+    <string/>
+   </property>
+  </action>
+  <action name="actionConfigure_Global_Filters">
+   <property name="text">
+    <string>Global Filters</string>
+   </property>
+   <property name="statusTip">
+    <string/>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
