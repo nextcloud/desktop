@@ -8,7 +8,7 @@
  *    the Free Software Foundation, either version 3 of the License, or
  *    (at your option) any later version.
  *
- *    Foobar is distributed in the hope that it will be useful,
+ *    owncloud_sync is distributed in the hope that it will be useful,
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
@@ -84,13 +84,6 @@ OwnCloudSync::OwnCloudSync(QString name) : mAccountName(name)
     //mDB.setDatabaseName(mConfigDirectory+"/owncloud_sync.db");
     mDB.setDatabaseName(":memory:"); // Use memory for now
     mDBFileName = mConfigDirectory+"/"+mAccountName+".db";
-
-/*    mLocalDirectory = mHomeDirectory + QString("/tmp/sync/files");
-    QString path(mHomeDirectory);
-    path.append("/tmp/sync/owncloud_sync.db");
-    path = QDir::toNativeSeparators(path);
-    //qDebug() << "Database path: " << path;
-//    mDB.setDatabaseName(path);*/
 #endif
     // Find out if the database exists.
     QFile dbFile(mConfigDirectory+"/"+mAccountName+".db");
