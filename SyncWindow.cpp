@@ -25,12 +25,15 @@
 #include <QMessageBox>
 #include <QCloseEvent>
 
+#define OCS_VERSION "0.3"
+
 SyncWindow::SyncWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::SyncWindow)
 {
     mBusy = false;
     ui->setupUi(this);
+    ui->statusBar->showMessage(tr("Version %1").arg(OCS_VERSION));
     mEditingConfig = -1;
 
     mCurrentAccountEdit = 0;
