@@ -2,7 +2,6 @@
 #include "sqlite3_util.h"
 #include "QWebDAV.h"
 
-
 #include <QFile>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlError>
@@ -54,7 +53,6 @@ OwnCloudSync::OwnCloudSync(QString name) : mAccountName(name)
     mUploadingFiles.clear();
 
     // Initialize the Database
-    qDebug() << "Creating database connection name:  " << mAccountName;
     mDB = QSqlDatabase::addDatabase("QSQLITE",mAccountName);
 #ifdef Q_OS_LINUX
     // In linux, we will store all databases in
@@ -84,7 +82,6 @@ OwnCloudSync::OwnCloudSync(QString name) : mAccountName(name)
             qDebug() << mDB.lastError().text();
             mDBOpen = false;
         } else {
-            qDebug() << "Database open with connection name: " << mDB.connectionName();
             mDBOpen = true;
             loadDBFromFile();
             readConfigFromDB();

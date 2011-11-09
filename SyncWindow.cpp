@@ -22,6 +22,8 @@
 #include <QPushButton>
 #include <QListView>
 #include <QStringListModel>
+#include <QMessageBox>
+#include <QCloseEvent>
 
 SyncWindow::SyncWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -73,7 +75,6 @@ SyncWindow::SyncWindow(QWidget *parent) :
     QStringList files = configDir.entryList(filters);
     for( int i = 0; i < files.size(); i++ ) {
         QString name = files[i].replace(".db","");
-        qDebug() << "Found " << name << " config.";
         addAccount(name);
     }
     if( files.size() == 0 ) {
@@ -239,6 +240,16 @@ void SyncWindow::on_buttonSave_clicked()
 
 void SyncWindow::closeEvent(QCloseEvent *event)
 {
+    // Ask the user for confirmation before closing!
+    QMessageBox box;
+    box.setText(tr("Are you sure you want to quit? "
+                "Program will not quit until all required syncs are made."));
+    box.setStandardButtons(QMessageBox::Yes|QMessageBox::No);
+    if( box.exec() == QMessageBox::No ) {
+        event->ignore();
+        return;
+    }
+
     // We definitely don't want to quit when we are synchronizing!
     for( int i = 0; i < mAccounts.size(); i++ ) {
         mAccounts[i]->deleteWatcher();    // Delete the file watcher
