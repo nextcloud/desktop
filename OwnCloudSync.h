@@ -49,6 +49,15 @@ public:
             size = fileSize;
         }
     };
+
+    enum SyncPosition {
+        SYNCFINISHED,
+        CHECKSETTINGS,
+        LISTREMOTEDIR,
+        LISTLOCALDIR,
+        TRANSFER
+    };
+
     QSqlQuery getConflicts() {
         QSqlQuery query(QSqlDatabase::database(mAccountName));
         query.exec("SELECT * from conflicts;");
@@ -67,7 +76,7 @@ public:
     void setEnabled(bool enabled);
     void saveConfigToDB();
     void processFileConflict(QString name, QString wins);
-    bool needsSync() { return mNeedsSync; }
+    bool needsSync();
     void deleteWatcher();
     void stop();
     QString getLastSync();
@@ -98,6 +107,7 @@ private:
     QString mUsername;
     QTimer *mSyncTimer;
     QTimer *mSaveDBTimer;
+    QTimer *mRequestTimer;
     QQueue<FileInfo> mUploadingFiles;
     QQueue<FileInfo> mDownloadingFiles;
     QQueue<FileInfo> mDownloadConflict;
@@ -124,6 +134,8 @@ private:
     bool mConflictsExist;
     bool mSettingsCheck;
     QString mAccountName;
+    SyncPosition mLastSyncAborted;
+    SyncPosition mSyncPosition;
 
     void updateDBLocalFile(QString name,qint64 size,qint64 last,QString type);
     void scanLocalDirectory(QString dirPath);
@@ -150,6 +162,8 @@ private:
     void settingsAreFine();
     void start();
     bool isFileFiltered(QString name);
+    void restartRequestTimer();
+    void stopRequestTimer();
 
 signals:
     void toLog(QString text);
@@ -176,6 +190,7 @@ public slots:
     void localDirectoryChanged(QString name);
     void saveDBToFile();
     void loadDBFromFile();
+    void requestTimedout();
 };
 
 #endif // OWNCLOUDSYNC_H

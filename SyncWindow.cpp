@@ -297,10 +297,6 @@ void SyncWindow::closeEvent(QCloseEvent *event)
                 sleep(1); // Just wait until this thing syncs
             }
         }
-        while(mBusy) {
-            sleep(5);
-            qDebug() << "Still busy!";
-        }
 
         // Before closing, save the database!!!
         for( int i = 0; i < mAccounts.size(); i++ ) {

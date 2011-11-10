@@ -52,6 +52,11 @@ OwnCloudSync::OwnCloudSync(QString name) : mAccountName(name)
     mAllowedToSync = false;
     mNeedsSync = false;
     mNotifySyncEmitted = false;
+    mLastSyncAborted = SYNCFINISHED;
+    mSyncPosition = SYNCFINISHED;
+
+    mRequestTimer = new QTimer(this);
+    connect(mRequestTimer,SIGNAL(timeout()),this,SLOT(requestTimedout()));
 
     // Create a QWebDAV instance
     mWebdav = new QWebDAV();
@@ -108,7 +113,6 @@ OwnCloudSync::OwnCloudSync(QString name) : mAccountName(name)
     mSaveDBTimer = new QTimer(this);
     connect(mSaveDBTimer, SIGNAL(timeout()), this, SLOT(saveDBToFile()));
     mSaveDBTimer->start(370000);
-
     updateStatus();
 }
 
@@ -206,6 +210,25 @@ void OwnCloudSync::sync()
                .arg(mAccountName)
                .arg(QDateTime::currentDateTime().toString()));
 
+    // First, continue right where the last sync left off.
+    if( mLastSyncAborted != SYNCFINISHED ) {
+        switch(mLastSyncAborted) {
+        emit toLog(tr("Last sync unsuccessful. Resumming."));
+        case LISTLOCALDIR:
+            scanLocalDirectory(mLocalDirectory);
+            break;
+        case LISTREMOTEDIR:
+            restartRequestTimer();
+            mWebdav->dirList(mRemoteDirectory+"/");
+            return;
+        case TRANSFER:
+            processNextStep();
+            return;
+        default:
+            break;
+        }
+    }
+
     // If this is the first run, scan the directory, otherwise just wait
     // for the watcher to update us :)
     if(mIsFirstRun) {
@@ -227,6 +250,8 @@ void OwnCloudSync::sync()
     // Then scan the base directory of the WebDAV server
     //qDebug() << "Scanning server: ";
     mWebdav->dirList(mRemoteDirectory+"/");
+    mSyncPosition = LISTREMOTEDIR;
+    restartRequestTimer();
 }
 
 OwnCloudSync::~OwnCloudSync()
@@ -237,6 +262,7 @@ OwnCloudSync::~OwnCloudSync()
 
 void OwnCloudSync::processDirectoryListing(QList<QWebDAV::FileInfo> fileInfo)
 {
+    stopRequestTimer();
     if( mSettingsCheck ) {
         // Great, we were just checking
         mSettingsCheck = false;
@@ -284,6 +310,8 @@ void OwnCloudSync::processDirectoryListing(QList<QWebDAV::FileInfo> fileInfo)
     }
     if(!mDirectoryQueue.empty()) {
         mWebdav->dirList(mRemoteDirectory+mDirectoryQueue.dequeue());
+        mSyncPosition = LISTREMOTEDIR;
+        restartRequestTimer();
     } else {
         syncFiles();
     }
@@ -320,9 +348,12 @@ void OwnCloudSync::processFileReady(QByteArray data,QString fileName)
 
 void OwnCloudSync::processNextStep()
 {
+    stopRequestTimer();
     if(mHardStop) { // Hard stop, usually indicates account will be removed
         return;
     }
+
+    mSyncPosition = TRANSFER;
 
     // Check if there is another file to dowload, if so, start that process
     if( mDownloadingFiles.size() != 0 ) {
@@ -353,6 +384,8 @@ void OwnCloudSync::processNextStep()
         query.exec(QString("UPDATE config SET lastsync='%1';").arg(
                        QDateTime::currentDateTime().toString()));
         mNeedsSync = false;
+        mLastSyncAborted = SYNCFINISHED;
+        mSyncPosition = SYNCFINISHED;
         emit finishedSync(this);
     }
     updateStatus();
@@ -688,6 +721,7 @@ void OwnCloudSync::download( FileInfo file )
     QNetworkReply *reply = mWebdav->get(file.name);
     connect(reply, SIGNAL(downloadProgress(qint64,qint64)),
             this, SLOT(transferProgress(qint64,qint64)));
+    restartRequestTimer();
     updateStatus();
 }
 
@@ -711,6 +745,7 @@ void OwnCloudSync::upload( FileInfo fileInfo)
     QNetworkReply *reply = mWebdav->put(fileInfo.name,data);
     connect(reply, SIGNAL(uploadProgress(qint64,qint64)),
             this, SLOT(transferProgress(qint64,qint64)));
+    restartRequestTimer();
     updateStatus();
 }
 
@@ -802,6 +837,7 @@ void OwnCloudSync::updateDBUpload(QString name)
 
 void OwnCloudSync::transferProgress(qint64 current, qint64 total)
 {
+    stopRequestTimer();
     // First update the current file progress bar
     qint64 percent;
     if ( total > 0 ) {
@@ -817,6 +853,7 @@ void OwnCloudSync::transferProgress(qint64 current, qint64 total)
     if (mTotalToTransfer > 0) {
         emit progressTotal(100*(mTotalTransfered+additional)/mTotalToTransfer);
     }
+    restartRequestTimer();
 }
 
 void OwnCloudSync::createDataBase()
@@ -964,7 +1001,8 @@ void OwnCloudSync::settingsAreFine()
 
 void OwnCloudSync::start()
 {
-    delete mSyncTimer;
+    if(mSyncTimer)
+        delete mSyncTimer;
     mSyncTimer = new QTimer(this);
     connect(mSyncTimer, SIGNAL(timeout()), this, SLOT(timeToSync()));
     mSyncTimer->start(mUpdateTime*1000);
@@ -1235,6 +1273,8 @@ void OwnCloudSync::initialize(QString host, QString user, QString pass,
     saveDBToFile();
     mSettingsCheck = true;
     mWebdav->dirList(remote+"/");
+    mSyncPosition = CHECKSETTINGS;
+    restartRequestTimer();
 }
 
 QStringList OwnCloudSync::getFilterList()
@@ -1293,4 +1333,34 @@ void OwnCloudSync::deleteAccount()
     mDB.close();
     QFile dbFile(mConfigDirectory+"/"+mAccountName+".db");
     dbFile.remove();
+}
+
+void OwnCloudSync::requestTimedout()
+{
+    //emit toLog(tr("The request timed out"));
+    mBusy = false;
+    start();
+    emit toLog(tr("Sync timedout %1: %2").arg(mAccountName)
+                            .arg(QDateTime::currentDateTime().toString()));
+    emit finishedSync(this);
+    mLastSyncAborted = mSyncPosition;
+    stopRequestTimer();
+}
+
+void OwnCloudSync::restartRequestTimer()
+{
+    mRequestTimer->start(3000);
+}
+
+void OwnCloudSync::stopRequestTimer()
+{
+    mRequestTimer->stop();
+}
+
+bool OwnCloudSync::needsSync()
+{
+    if(mLastSyncAborted != SYNCFINISHED ) {
+        return false;
+    }
+    return mNeedsSync;
 }
