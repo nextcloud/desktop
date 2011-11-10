@@ -1,0 +1,9 @@
+Files in OwnCloud_Sync are licensed under the General Public License version 3,
+the text of which can be found in COPYING-GPL, or any later version of the GPL,
+unless otherwise noted.
+
+Licensing of files:
+* sqlite3_util.cpp, sqlite3_util.h: Public Domain
+* images/owncloud*.png: AGPLv3
+All unmodified files from these and other sources retain their original copyright
+and license notices: see the relevant individual files.

@@ -1,3 +1,11 @@
+/******************************************************************************
+  * This function was copied from:
+  * http://www.qtcentre.org/threads/36131-Attempting-to-use-Sqlite-backup-api-from-driver-handle-fails?p=207558#post207558
+  * on November 10, 2011.  The function has been released to the Public Domain
+  * by its deveveloper.
+  *
+*******************************************************************************/
+
 #include "sqlite3_util.h"
 #include <sqlite3.h>
 #include <QVariant>
@@ -30,7 +38,8 @@ bool sqlite3_util::sqliteDBMemFile( QSqlDatabase memdb, QString filename, bool s
         if( handle != 0 ) // check that it is not NULL
         {
             sqlite3 * pInMemory = handle;
-            const char * zFilename = filename.toLocal8Bit().data();
+            QByteArray array = filename.toLocal8Bit();
+            const char * zFilename = array.data();
             int rc;                   /* Function return code */
             sqlite3 *pFile;           /* Database connection opened on zFilename */
             sqlite3_backup *pBackup;  /* Backup object used to copy data */
