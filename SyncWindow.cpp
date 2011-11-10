@@ -496,12 +496,12 @@ void SyncWindow::slotConflictResolved(OwnCloudSync* oc)
 
 void SyncWindow::slotProgressFile(qint64 value)
 {
-
+    ui->progressFile->setValue(value);
 }
 
 void SyncWindow::slotProgressTotal(qint64 value)
 {
-
+    ui->progressTotal->setValue(value);
 }
 
 void SyncWindow::on_buttonCancel_clicked()
