@@ -56,7 +56,10 @@ INCLUDEPATH += $$PWD/../../../../../usr/include
 DEPENDPATH += $$PWD/../../../../../usr/include
 
 OTHER_FILES += \
-    LICENSE
+    COPYING-README \
+    COPYING-GPL
+
+
 
 
 
