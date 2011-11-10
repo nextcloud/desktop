@@ -122,7 +122,7 @@ void SyncWindow::updateStatus()
 
     if( !mBusy ) {
         ui->statusBar->showMessage(tr("Version %1: Waiting...").arg(OCS_VERSION));
-        ui->status->setText("Waiting...");
+        ui->status->setText(tr("Waiting..."));
         ui->progressFile->setValue(0);
         ui->progressTotal->setValue(0);
         if(mConflictsExist) {
@@ -370,11 +370,11 @@ void SyncWindow::on_conflict_clicked()
     QComboBox *combo;
     int row = 0;
     QStringList headers;
-    headers.append("Account");
-    headers.append("File Name");
-    headers.append("Server Modified");
-    headers.append("Local Modifed");
-    headers.append("Which wins?");
+    headers.append(tr("Account"));
+    headers.append(tr("File Name"));
+    headers.append(tr("Server Modified"));
+    headers.append(tr("Local Modifed"));
+    headers.append(tr("Which wins?"));
     ui->tableConflict->setHorizontalHeaderLabels(headers);
     for( int i = 0; i < mAccounts.size(); i++ ) {
         QSqlQuery query = mAccounts[i]->getConflicts();
@@ -386,7 +386,7 @@ void SyncWindow::on_conflict_clicked()
             serverTime = new QTableWidgetItem(query.value(2).toString());
             localTime = new QTableWidgetItem(query.value(3).toString());
             combo = new QComboBox(ui->tableConflict);
-            combo->addItem("Choose:");
+            combo->addItem(tr("Choose:"));
             combo->addItem("server");
             combo->addItem("local");
             ui->tableConflict->setItem(row,0, account);
@@ -454,9 +454,9 @@ void SyncWindow::rebuildAccountsTable()
     QPushButton *button;
     QTableWidgetItem *lastSync;
     QStringList headers;
-    headers.append("Name");
-    headers.append("Enabled");
-    headers.append("Last Sync");
+    headers.append(tr("Name"));
+    headers.append(tr("Enabled"));
+    headers.append(tr("Last Sync"));
     ui->tableAccounts->setHorizontalHeaderLabels(headers);
 
     ui->tableAccounts->setRowCount(mAccounts.size());
@@ -699,19 +699,6 @@ void SyncWindow::loadApplicationSettings()
                 settings.value("hide_when_closed").toBool());
     settings.endGroup();
 }
-
-/*
-void SyncWindow::on_actionWhat_s_this_triggered()
-{
-    if(QWhatsThis::inWhatsThisMode()) {
-        QWhatsThis::leaveWhatsThisMode();
-        updateStatus();
-    } else {
-        QWhatsThis::enterWhatsThisMode();
-    }
-}
-
-*/
 
 void SyncWindow::on_actionEnable_Delete_Account_triggered()
 {

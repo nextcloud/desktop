@@ -211,7 +211,7 @@ void OwnCloudSync::sync()
     if(mIsFirstRun) {
         //qDebug() << "Scanning local directory: ";
         scanLocalDirectory(mLocalDirectory);
-        qDebug() << "Scanning local directory!!!";
+        //qDebug() << "Scanning local directory!!!";
     }
 
     if ( mScanDirectoriesSet.size() != 0 ) {
@@ -224,29 +224,9 @@ void OwnCloudSync::sync()
         }
     }
 
-    // List all the watched files for now
-    /*
-    QStringList list = mFileWatcher->files();
-    for(int i = 0; i < list.size(); i++ ) {
-        qDebug() << "Watching: " << list[i];
-    }
-    list = mFileWatcher->directories();
-    for(int i = 0; i < list.size(); i++ ) {
-        qDebug() << "Watching: " << list[i];
-    } */
-
     // Then scan the base directory of the WebDAV server
     //qDebug() << "Scanning server: ";
     mWebdav->dirList(mRemoteDirectory+"/");
-
-    /*
-    // Set the icon to sync
-    if( mConflictsExist) {
-        mSystemTray->setIcon(mSyncConflictIcon);
-    } else {
-        mSystemTray->setIcon(mSyncIcon);
-    }
-    */
 }
 
 OwnCloudSync::~OwnCloudSync()
@@ -286,7 +266,7 @@ void OwnCloudSync::processDirectoryListing(QList<QWebDAV::FileInfo> fileInfo)
                 // Enable the conflict resolution window
                 emit conflictExists(this);
                 mConflictsExist = true;
-                qDebug() << "SFile still conflicts: " << fileInfo[i].fileName;
+                //qDebug() << "SFile still conflicts: " << fileInfo[i].fileName;
             }
         } else { // File does not exist, so just add this info to the DB
             QString addStatement = QString("INSERT INTO server_files(file_name,"
@@ -319,7 +299,7 @@ void OwnCloudSync::processFileReady(QByteArray data,QString fileName)
     QString finalName;
     if(mDownloadingConflictingFile) {
         finalName = getConflictName(fileName);
-        qDebug() << "Downloading conflicting file " << fileName;
+        //qDebug() << "Downloading conflicting file " << fileName;
     } else {
         finalName = fileName;
     }
@@ -467,7 +447,7 @@ void OwnCloudSync::updateDBLocalFile(QString name, qint64 size, qint64 last,
                 // Enable the conflict resolution button
                 emit conflictExists(this);
                 mConflictsExist = true;
-                qDebug() << "LFile still conflicts: " << name;
+                //qDebug() << "LFile still conflicts: " << name;
             }
         }
     } else { // We did not know about this file, add
@@ -590,16 +570,6 @@ void OwnCloudSync::syncFiles()
                 if( localType == "collection" ) {
                     //localDirs.append(localName);
                 } else {
-                    if(localPrevModifiedTime != localModifiedTime) {
-                        qDebug() << "First is true!";
-                    } else {
-                        qDebug() << "First is false!";
-                    }
-                    if(localModifiedTime > lastSyncTime ) {
-                        qDebug() << "Second is true!";
-                    } else {
-                        qDebug() << "Second is false!";
-                    }
                     if( localPrevModifiedTime != localModifiedTime
                             && localModifiedTime > lastSyncTime) {
                         // There is a conflict, both files got changed since the
@@ -694,7 +664,6 @@ void OwnCloudSync::setFileConflict(QString name, qint64 size, QString server_las
     conflictText = QString("UPDATE local_files SET conflict='yes'"
                     " WHERE file_name='%1';").arg(name);
     conflict.exec(conflictText);
-    qDebug() << "Continued here";
     conflictText = QString("INSERT INTO conflicts values('%1','','%2','%3');")
             .arg(name).arg(server_last).arg(local_last);
     conflict.exec(conflictText);
@@ -712,9 +681,9 @@ void OwnCloudSync::download( FileInfo file )
     mCurrentFileSize = file.size;
     mCurrentFile = file.name;
     if(mDownloadingConflictingFile) {
-        mTransferState = "Downloading conflicting file ";
+        mTransferState = tr("Downloading conflicting file ");
     } else {
-        mTransferState = "Downloading ";
+        mTransferState = tr("Downloading ");
     }
     QNetworkReply *reply = mWebdav->get(file.name);
     connect(reply, SIGNAL(downloadProgress(qint64,qint64)),
@@ -730,7 +699,7 @@ void OwnCloudSync::upload( FileInfo fileInfo)
     }
     mCurrentFileSize = fileInfo.size;
     mCurrentFile = fileInfo.name;
-    mTransferState = "Uploading ";
+    mTransferState = tr("Uploading ");
     qDebug() << "Uploading File " +mLocalDirectory + mCurrentFile;
     QFile file(mLocalDirectory+localName);
     if (!file.open(QIODevice::ReadOnly)) {
