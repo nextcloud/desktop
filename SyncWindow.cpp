@@ -589,21 +589,28 @@ void SyncWindow::editConfig(int row)
     ui->buttonDeleteAccount->setEnabled(false);
     ui->actionEnable_Delete_Account->setVisible(true);
     listFilters(row);
+    ui->frameFilter->setEnabled(true);
 }
 
 void SyncWindow::listFilters(int row)
 {
-    // Show the filters list
-    ui->listFilterView->setModel(
-                new QStringListModel(mAccounts[row]->getFilterList()));
-    // Create the filterView signals
-    connect(ui->listFilterView->selectionModel(),
-            SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-                   this,SLOT(listFiltersSelectionChanged(QItemSelection,
-                                                    QItemSelection)));
-    ui->lineFilter->setText("");
-    ui->buttonFilterInsert->setEnabled(false);
-    ui->buttonFilterRemove->setEnabled(false);
+    if(row<0) {
+        // Show the filters list
+        ui->listFilterView->setModel(
+                   new QStringListModel());
+    } else {
+        // Show the filters list
+        ui->listFilterView->setModel(
+                   new QStringListModel(mAccounts[row]->getFilterList()));
+        // Create the filterView signals
+        connect(ui->listFilterView->selectionModel(),
+               SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+                      this,SLOT(listFiltersSelectionChanged(QItemSelection,
+                                                       QItemSelection)));
+        ui->lineFilter->setText("");
+        ui->buttonFilterInsert->setEnabled(false);
+        ui->buttonFilterRemove->setEnabled(false);
+    }
 }
 
 void SyncWindow::on_buttonNewAccount_clicked()
@@ -620,7 +627,9 @@ void SyncWindow::on_buttonNewAccount_clicked()
     ui->lineLocalDir->setText("");
     ui->buttonDeleteAccount->setEnabled(false);
     ui->actionEnable_Delete_Account->setVisible(false);
+    ui->frameFilter->setEnabled(false);
     ui->time->setValue(15);
+    listFilters(mEditingConfig);
 }
 
 void SyncWindow::on_lineFilter_textEdited(QString text)
