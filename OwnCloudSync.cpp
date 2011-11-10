@@ -900,7 +900,7 @@ void OwnCloudSync::createDataBase()
                         "lastsync text\n"
                         ");");
 
-    QString createFilters("create table filter(\n"
+    QString createFilters("create table filters(\n"
                           "filter text"
                           ");");
     QSqlQuery query(QSqlDatabase::database(mAccountName));
