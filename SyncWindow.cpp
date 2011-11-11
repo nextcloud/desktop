@@ -201,7 +201,7 @@ void SyncWindow::systemTrayActivated(QSystemTrayIcon::ActivationReason reason)
 
 OwnCloudSync* SyncWindow::addAccount(QString name)
 {
-    OwnCloudSync *account = new OwnCloudSync(name);
+    OwnCloudSync *account = new OwnCloudSync(name,winId());
     mAccounts.append(account);
     mAccountNames.append(name);
 

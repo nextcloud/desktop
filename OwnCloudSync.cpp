@@ -34,13 +34,18 @@
 #include <QTableWidgetItem>
 #include <QComboBox>
 
-OwnCloudSync::OwnCloudSync(QString name) : mAccountName(name)
+#ifdef Q_OS_LINUX
+    #include <kwallet.h>
+#endif
+
+OwnCloudSync::OwnCloudSync(QString name, WId id) : mAccountName(name),mWinId(id)
 {
     mBusy = false;
 
     // Set the pointers so we can delete them without worrying :)
     mSyncTimer = 0;
     mFileWatcher = 0;
+    mWallet = 0;
 
     mHardStop = false;
     mIsFirstRun = true;
@@ -104,7 +109,11 @@ OwnCloudSync::OwnCloudSync(QString name) : mAccountName(name)
             readConfigFromDB();
             //ui->buttonSave->setDisabled(true);
             qDebug() << "Checking configuration!";
+#ifdef Q_OS_LINUX
+            // Wait until the password is set
+#else
             initialize();
+#endif
         }
     } else {
       createDataBase(); // Create the database in memory
@@ -114,6 +123,15 @@ OwnCloudSync::OwnCloudSync(QString name) : mAccountName(name)
     connect(mSaveDBTimer, SIGNAL(timeout()), this, SLOT(saveDBToFile()));
     mSaveDBTimer->start(370000);
     updateStatus();
+
+    // Now the password management
+#ifdef Q_OS_LINUX
+    mWallet= KWallet::Wallet::openWallet(
+                KWallet::Wallet::NetworkWallet(),
+                mWinId,KWallet::Wallet::Asynchronous);
+    connect(mWallet, SIGNAL(walletOpened(bool)), SLOT(walletOpened(bool)));
+#else
+#endif
 }
 
 void OwnCloudSync::setEnabled( bool enabled)
@@ -925,6 +943,7 @@ void OwnCloudSync::readConfigFromDB()
     if(query.next()) {
         mHost = query.value(0).toString();
         mUsername = query.value(1).toString();
+        mReadPassword = true;
         mPassword = query.value(2).toString();
         mLocalDirectory = query.value(3).toString();
         mRemoteDirectory = query.value(6).toString();
@@ -964,20 +983,24 @@ void OwnCloudSync::addFilter(QString filter)
 
 void OwnCloudSync::saveConfigToDB()
 {
+    bool savePw = true;
+#ifdef Q_OS_LINUX
+    savePw = false;
+#endif
     QSqlQuery query(QSqlDatabase::database(mAccountName));
     query.exec("SELECT * from config;");
     if(query.next()) { // Update
         QString update = QString("UPDATE config SET host='%1',username='%2',"
                        "password='%3',localdir='%4',updatetime='%5',"
                                  "enabled='%6',remotedir='%7';").arg(mHost)
-                       .arg(mUsername).arg(mPassword).arg(mLocalDirectory)
+                .arg(mUsername).arg(savePw?mPassword:"").arg(mLocalDirectory)
                        .arg(mUpdateTime).arg(mIsEnabled?"yes":"no")
                        .arg(mRemoteDirectory);
         query.exec(update);
     } else { // Insert
         QString add = QString("INSERT INTO config values('%1','%2',"
                               "'%3','%4','%5','%6','%7');").arg(mHost)
-                       .arg(mUsername).arg(mPassword).arg(mLocalDirectory)
+                .arg(mUsername).arg(savePw?mPassword:"").arg(mLocalDirectory)
                        .arg(mUpdateTime).arg(mIsEnabled?"yes":"no")
                        .arg(mRemoteDirectory);
         query.exec(add);
@@ -1102,6 +1125,9 @@ void OwnCloudSync::saveDBToFile()
     } else {
         qDebug() << "Failed to save DB to file!";
     }
+#ifdef Q_OS_LINUX
+    saveWalletPassword();
+#endif
 }
 
 void OwnCloudSync::loadDBFromFile()
@@ -1364,3 +1390,42 @@ bool OwnCloudSync::needsSync()
     }
     return mNeedsSync;
 }
+
+#ifdef Q_OS_LINUX
+
+void OwnCloudSync::requestPassword()
+{
+    QMap<QString,QString> map;
+    mWallet->readMap(mAccountName,map);
+    if(map.size()) {
+        mPassword = map[mAccountName];
+        initialize();
+    }
+}
+
+void OwnCloudSync::walletOpened(bool ok)
+{
+    if( (ok && (mWallet->hasFolder("owncloud_sync"))
+         || mWallet->createFolder("owncloud_sync"))
+         && mWallet->setFolder("owncloud_sync")) {
+            emit toLog("Wallet opened!");
+            qDebug() << "Wallet opened!" <<
+                       KWallet::Wallet::FormDataFolder() ;
+            if (mReadPassword ) {
+                requestPassword();
+            }
+    } else {
+        qDebug() << "Error opening wallet";
+    }
+}
+
+void OwnCloudSync::saveWalletPassword()
+{
+    QMap<QString,QString> map;
+    map[mAccountName] = mPassword;
+    if( mWallet )
+        mWallet->writeMap(mAccountName,map);
+}
+
+#endif
+

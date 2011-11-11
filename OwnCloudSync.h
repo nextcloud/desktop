@@ -30,13 +30,16 @@
 
 class QTimer;
 class QFileSystemWatcher;
+#ifdef Q_OS_LINUX
+    #include <kde4/kwallet.h>
+#endif
 
 class OwnCloudSync : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit OwnCloudSync(QString name);
+    explicit OwnCloudSync(QString name, WId id);
     ~OwnCloudSync();
     void initialize(QString host, QString user, QString pass, QString remote,
                     QString local, qint64 time);
@@ -87,6 +90,7 @@ public:
     void deleteAccount();
 
 private:
+    WId mWinId;
     QWebDAV *mWebdav;
     bool mIsEnabled;
     bool mAllowedToSync;
@@ -136,6 +140,12 @@ private:
     QString mAccountName;
     SyncPosition mLastSyncAborted;
     SyncPosition mSyncPosition;
+#ifdef Q_OS_LINUX
+    KWallet::Wallet *mWallet;
+    void saveWalletPassword();
+    void requestPassword();
+#endif
+    bool mReadPassword;
 
     void updateDBLocalFile(QString name,qint64 size,qint64 last,QString type);
     void scanLocalDirectory(QString dirPath);
@@ -191,6 +201,10 @@ public slots:
     void saveDBToFile();
     void loadDBFromFile();
     void requestTimedout();
+
+//#ifdef Q_OS_LINUX
+    void walletOpened(bool);
+//#endif
 };
 
 #endif // OWNCLOUDSYNC_H

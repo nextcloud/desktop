@@ -6,6 +6,13 @@
 
 QT       += core gui network xml sql
 
+unix:!macx:!symbian: {
+    QT += dbus
+    HEADERS +=
+    SOURCES +=
+    INCLUDEPATH += /usr/include/kde4
+}
+
 TARGET = owncloud_sync
 TEMPLATE = app
 
@@ -59,7 +66,4 @@ OTHER_FILES += \
     COPYING-README \
     COPYING-GPL
 
-
-
-
-
+unix:!macx:!symbian: LIBS += -L/usr/lib64/kde4/devel -lkparts -lkdeui -lkdecore
