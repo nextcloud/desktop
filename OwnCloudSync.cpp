@@ -698,8 +698,10 @@ void OwnCloudSync::syncFiles()
     // Make local dirs
     for(int i = 0; i < localDirs.size(); i++ ) {
         QDir dir;
-        if (!dir.mkdir(mLocalDirectory+localDirs[i]) ) {
-            qDebug() << "Could not make directory "+mLocalDirectory+localDirs[i];
+        if (!dir.mkdir(mLocalDirectory+
+                       stringRemoveBasePath(localDirs[i],mRemoteDirectory)) ) {
+            qDebug() << "Could not make directory "+mLocalDirectory+
+                        stringRemoveBasePath(localDirs[i],mRemoteDirectory);
         } else {
             emit toLog(tr("Created local directory: %1").arg(localDirs[i]));
             //qDebug() << "Made directory "+mLocalDirectory+localDirs[i];
