@@ -29,7 +29,7 @@
 #include <QModelIndex>
 #include <QItemSelection>
 
-#define OCS_VERSION "0.5.0"
+#define OCS_VERSION "0.5.1"
 
 class QTimer;
 class OwnCloudSync;
