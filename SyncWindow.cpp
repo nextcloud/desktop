@@ -281,7 +281,7 @@ void SyncWindow::closeEvent(QCloseEvent *event)
 {
     if(mQuitAction || !ui->actionClose_Button_Hides_Window->isChecked()) {
         // Ask the user for confirmation before closing!
-        QMessageBox box;
+        QMessageBox box(this);
         box.setText(tr("Are you sure you want to quit? "
                        "Program will not quit until all required syncs are made."));
         box.setStandardButtons(QMessageBox::Yes|QMessageBox::No);
@@ -719,7 +719,7 @@ void SyncWindow::on_buttonDeleteAccount_clicked()
 void SyncWindow::deleteAccount()
 {
     // Confirm from user if they want to delete the account
-    QMessageBox box;
+    QMessageBox box(this);
     box.setText(tr("Are you sure you want to delete account: %1").arg(
                 mAccounts[mEditingConfig]->getName()));
     box.setStandardButtons(QMessageBox::Yes|QMessageBox::No);

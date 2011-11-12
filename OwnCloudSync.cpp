@@ -1110,8 +1110,9 @@ void OwnCloudSync::localFileChanged(QString name)
 void OwnCloudSync::scanLocalDirectoryForNewFiles(QString path)
 {
     QString remote;
+    path = path=="/"?"":path;
     if(mRemoteDirectory != "/") {
-        remote = mRemoteDirectory;
+        remote = mRemoteDirectory+"/";
     }
     //qDebug() << "Scanning local directory: " << path;
     QDir dir(mLocalDirectory+path);
@@ -1134,6 +1135,7 @@ void OwnCloudSync::scanLocalDirectoryForNewFiles(QString path)
                                "file_name='%1/'").arg(path+remote+list[i]));
             if( !query.next() ) { // Definitely does not exist! Good!
                 // File really doesn't exist!!!
+                //qDebug() << "New file found!" << path +remote + list[i];
                 processLocalFile(mLocalDirectory+path+list[i]);
             }
         }
@@ -1203,8 +1205,8 @@ void OwnCloudSync::deleteRemovedFiles()
     while(server.next()) {
         // Server files were deleted. Delete from local too.
         qDebug() << "Deleting file from local:  " << server.value(0).toString();
-        emit toLog(tr("Deleting local file: %1").arg(
-                       server.value(0).toString()));
+        //emit toLog(tr("Deleting local file: %1").arg(
+        //               server.value(0).toString()));
         deleteFromLocal(server.value(0).toString(),false);
     }
 
@@ -1221,12 +1223,23 @@ void OwnCloudSync::deleteRemovedFiles()
 void OwnCloudSync::deleteFromLocal(QString name, bool isDir)
 {
     // Remove the watcher before deleting.
-    mFileWatcher->removePath(mLocalDirectory+name);
-    if( !QFile::remove(mLocalDirectory+name ) ) {
-            qDebug() << "File deletion failed: " << mLocalDirectory+name;
+    QString localName = stringRemoveBasePath(name,mRemoteDirectory);
+    mFileWatcher->removePath(mLocalDirectory+localName);
+    if(!isDir) {
+        if( !QFile::remove(mLocalDirectory+localName ) ) {
+            qDebug() << "File deletion failed: " << mLocalDirectory+localName;
             return;
+        }
+        emit toLog(tr("Deleted local file: %1").arg(name));
+    } else {
+        QDir dir;
+        if( !dir.rmdir(mLocalDirectory+localName) ) {
+            qDebug() << "Directory deletion failed: "
+                        << mLocalDirectory+localName;
+            return;
+        }
+        emit toLog(tr("Deleted local directory: %1").arg(name));
     }
-    emit toLog(tr("Deleting local file: %1").arg(name));
     dropFromDB("local_files","file_name",name);
     dropFromDB("server_files","file_name",name);
 }
