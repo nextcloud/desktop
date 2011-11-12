@@ -15,13 +15,13 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
+    <item row="1" column="0">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="lineWidth">
        <number>0</number>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="page">
        <layout class="QGridLayout" name="gridLayout_2">
@@ -75,6 +75,13 @@
           </property>
          </widget>
         </item>
+        <item row="5" column="1" colspan="2">
+         <widget class="QProgressBar" name="progressFile">
+          <property name="value">
+           <number>0</number>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="1">
          <widget class="QTableWidget" name="tableAccounts">
           <property name="statusTip">
@@ -97,28 +104,50 @@
           </column>
          </widget>
         </item>
-        <item row="5" column="1" colspan="2">
-         <widget class="QProgressBar" name="progressFile">
-          <property name="value">
-           <number>0</number>
+        <item row="8" column="0" colspan="3">
+         <widget class="QFrame" name="frame_5">
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
           </property>
-         </widget>
-        </item>
-        <item row="8" column="1">
-         <widget class="QPushButton" name="conflict">
-          <property name="enabled">
-           <bool>false</bool>
+          <property name="frameShadow">
+           <enum>QFrame::Plain</enum>
           </property>
-          <property name="text">
-           <string>Conflicts exist, click to resolve.</string>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="0">
-         <widget class="QPushButton" name="buttonNewAccount">
-          <property name="text">
-           <string>New Account</string>
-          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <property name="margin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QPushButton" name="pushButton">
+             <property name="text">
+              <string>Clear Log</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_2">
+             <property name="text">
+              <string>Clear and Save Log</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonNewAccount">
+             <property name="text">
+              <string>New Account</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="conflict">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Conflicts exist, click to resolve.</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
        </layout>
@@ -636,7 +665,6 @@ p, li { white-space: pre-wrap; }
   <tabstop>buttonSave</tabstop>
   <tabstop>buttonCancel</tabstop>
   <tabstop>textBrowser</tabstop>
-  <tabstop>conflict</tabstop>
   <tabstop>tableAccounts</tabstop>
   <tabstop>tableConflict</tabstop>
   <tabstop>buttonBox</tabstop>

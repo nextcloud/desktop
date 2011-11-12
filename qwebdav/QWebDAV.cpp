@@ -96,8 +96,10 @@ QNetworkReply* QWebDAV::sendWebdavRequest(QUrl url, DAVType type,
         request.setAttribute(QNetworkRequest::User, QVariant("put"));
         reply = QNetworkAccessManager::put(request,data);
     } else if ( type == DAVMKCOL ) {
+        request.setAttribute(QNetworkRequest::User, QVariant("mkcol"));
         reply = sendCustomRequest(request,verb,0);
     } else if ( type == DAVDELETE ) {
+        request.setAttribute(QNetworkRequest::User, QVariant("delete"));
         reply = sendCustomRequest(request, verb,0);
     } else {
         qDebug() << "Error! DAV Request of type " << type << " is not known!";
@@ -164,8 +166,14 @@ void QWebDAV::slotFinished(QNetworkReply *reply)
         //qDebug() << "Oh a PUT! How fun!!" <<
         //            reply->request().url().path().replace(mPathFilter,"");
         emit uploadComplete(
-                    reply->request().url().path().replace(mPathFilter,""));
-
+                    reply->request().url().path().replace(
+                        QRegExp("^"+mPathFilter),""));
+    } else if ( reply->request().attribute(
+                    QNetworkRequest::User).toString().contains("mkcol")) {
+        emit directoryCreated(reply->request().url().path().replace(
+                                  QRegExp("^"+mPathFilter),""));
+        //
+        // Do nothing for now
     } else {
         qDebug() << "Who knows what the server is trying to tell us.";
     }
@@ -368,6 +376,6 @@ QNetworkReply* QWebDAV::deleteFile( QString name )
 
     // Finally send this to the WebDAV server
     QByteArray verb("DELETE");
-    QNetworkReply *reply = sendWebdavRequest(url,DAVMKCOL,verb);
+    QNetworkReply *reply = sendWebdavRequest(url,DAVDELETE,verb);
     return reply;
 }

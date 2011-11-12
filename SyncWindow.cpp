@@ -127,15 +127,19 @@ void SyncWindow::updateStatus()
         ui->progressTotal->setValue(0);
         if(mConflictsExist) {
              ui->labelImage->setPixmap(mDefaultConflictIcon.pixmap(129,129));
+             mSystemTray->setIcon(mDefaultConflictIcon);
         } else {
             ui->labelImage->setPixmap(mDefaultIcon.pixmap(129,129));
+            mSystemTray->setIcon(mDefaultIcon);
         }
     } else {
         ui->status->setText(mTransferState+mCurrentFile+" out of "
                             + QString("%1").arg(mCurrentFileSize));
         if(mConflictsExist) {
+            mSystemTray->setIcon(mSyncConflictIcon);
             ui->labelImage->setPixmap(mSyncConflictIcon.pixmap(129,129));
         } else {
+            mSystemTray->setIcon(mSyncIcon);
             ui->labelImage->setPixmap(mSyncIcon.pixmap(129,129));
         }
     }
@@ -291,12 +295,16 @@ void SyncWindow::closeEvent(QCloseEvent *event)
         for( int i = 0; i < mAccounts.size(); i++ ) {
             mAccounts[i]->deleteWatcher();    // Delete the file watcher
             mAccounts[i]->stop(); // Stop the counter
+        }
+
+        for( int i = 0; i < mAccounts.size(); i++ ) {
             while( mAccounts[i]->needsSync() ) {
-                qDebug() << "Waiting for " + mAccounts[i]->getName()
-                            + " to sync before close.";
-                sleep(1); // Just wait until this thing syncs
+                //qDebug() << "Waiting for " + mAccounts[i]->getName()
+                //            + " to sync before close.";
+                QCoreApplication::processEvents();
             }
         }
+
 
         // Before closing, save the database!!!
         for( int i = 0; i < mAccounts.size(); i++ ) {
@@ -723,4 +731,14 @@ void SyncWindow::deleteAccount()
         rebuildAccountsTable();
     }
     ui->stackedWidget->setCurrentIndex(0);
+}
+
+void SyncWindow::on_pushButton_clicked()
+{
+    ui->textBrowser->setText("");
+}
+
+void SyncWindow::on_pushButton_2_clicked()
+{
+    saveLogs();
 }

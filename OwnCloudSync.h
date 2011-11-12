@@ -112,6 +112,7 @@ private:
     QTimer *mSyncTimer;
     QTimer *mSaveDBTimer;
     QTimer *mRequestTimer;
+    QQueue<QString>  mMakeServerDirs;
     QQueue<FileInfo> mUploadingFiles;
     QQueue<FileInfo> mDownloadingFiles;
     QQueue<FileInfo> mDownloadConflict;
@@ -175,6 +176,9 @@ private:
     void restartRequestTimer();
     void stopRequestTimer();
 
+    // String manipulation functions
+    QString stringRemoveBasePath(QString path, QString base);
+
 signals:
     void toLog(QString text);
     void toStatus(QString text);
@@ -201,6 +205,7 @@ public slots:
     void saveDBToFile();
     void loadDBFromFile();
     void requestTimedout();
+    void serverDirectoryCreated(QString name);
 
 //#ifdef Q_OS_LINUX
     void walletOpened(bool);

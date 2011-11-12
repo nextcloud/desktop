@@ -76,6 +76,8 @@ OwnCloudSync::OwnCloudSync(QString name, WId id) : mAccountName(name),mWinId(id)
 
     connect(mWebdav,SIGNAL(uploadComplete(QString)),
             this, SLOT(updateDBUpload(QString)));
+    connect(mWebdav,SIGNAL(directoryCreated(QString)),
+            this, SLOT(serverDirectoryCreated(QString)));
 
     mDownloadingFiles.clear();
     mDownloadConflict.clear();
@@ -184,7 +186,8 @@ void OwnCloudSync::updateStatus()
             ui->labelImage->setPixmap(mDefaultIcon.pixmap(129,129));
         } */
     } else {
-        mSyncTimer->stop();
+        if( mSyncTimer )
+           mSyncTimer->stop();
         emit toStatus(tr("%1 out of %2 bytes").arg(mTransferState+mCurrentFile)
                       .arg(mCurrentFileSize));
         /*if(mConflictsExist) {
@@ -222,7 +225,8 @@ void OwnCloudSync::sync()
 
     // Announce we are busy!
     mBusy = true;
-    mSyncTimer->stop();
+    if(mSyncTimer)
+        mSyncTimer->stop();
 
     emit toLog(tr("\nSynchronizing %1 on: %2")
                .arg(mAccountName)
@@ -250,6 +254,9 @@ void OwnCloudSync::sync()
     // If this is the first run, scan the directory, otherwise just wait
     // for the watcher to update us :)
     if(mIsFirstRun) {
+        //emit toLog("Clear files found!");
+        QSqlQuery query(QSqlDatabase::database(mAccountName));
+        query.exec("UPDATE  local_files SET found='' WHERE conflict='';");
         //qDebug() << "Scanning local directory: ";
         scanLocalDirectory(mLocalDirectory);
         //qDebug() << "Scanning local directory!!!";
@@ -266,7 +273,7 @@ void OwnCloudSync::sync()
     }
 
     // Then scan the base directory of the WebDAV server
-    //qDebug() << "Scanning server: ";
+    //qDebug() << "Scanning server: " << mRemoteDirectory+"/";
     mWebdav->dirList(mRemoteDirectory+"/");
     mSyncPosition = LISTREMOTEDIR;
     restartRequestTimer();
@@ -327,7 +334,7 @@ void OwnCloudSync::processDirectoryListing(QList<QWebDAV::FileInfo> fileInfo)
         }
     }
     if(!mDirectoryQueue.empty()) {
-        mWebdav->dirList(mRemoteDirectory+mDirectoryQueue.dequeue());
+        mWebdav->dirList(mDirectoryQueue.dequeue());
         mSyncPosition = LISTREMOTEDIR;
         restartRequestTimer();
     } else {
@@ -337,11 +344,11 @@ void OwnCloudSync::processDirectoryListing(QList<QWebDAV::FileInfo> fileInfo)
 
 void OwnCloudSync::processFileReady(QByteArray data,QString fileName)
 {
-    if( mRemoteDirectory != "/")
-        fileName.replace(mRemoteDirectory,"");
+    fileName = stringRemoveBasePath(fileName,mRemoteDirectory);
     // Temporarily remove this watcher so we don't get a message when
     // we modify it.
-    mFileWatcher->removePath(mLocalDirectory+fileName);
+    if(mFileWatcher)
+        mFileWatcher->removePath(mLocalDirectory+fileName);
     QString finalName;
     if(mDownloadingConflictingFile) {
         finalName = getConflictName(fileName);
@@ -360,7 +367,8 @@ void OwnCloudSync::processFileReady(QByteArray data,QString fileName)
     file.flush();
     file.close();
     updateDBDownload(fileName);
-    mFileWatcher->addPath(mLocalDirectory+fileName); // Add the watcher back!
+    if(mFileWatcher)
+        mFileWatcher->addPath(mLocalDirectory+fileName); // Add the watcher back!
     processNextStep();
 }
 
@@ -373,8 +381,13 @@ void OwnCloudSync::processNextStep()
 
     mSyncPosition = TRANSFER;
 
+    if( mMakeServerDirs.size() != 0 ) {
+            mWebdav->mkdir(mMakeServerDirs.dequeue());
+            restartRequestTimer();
+            //qDebug() << "Making the following directories on server: " <<
+          //            serverDirs[i];
     // Check if there is another file to dowload, if so, start that process
-    if( mDownloadingFiles.size() != 0 ) {
+    }else if( mDownloadingFiles.size() != 0 ) {
         download(mDownloadingFiles.dequeue());
     } else if ( mUploadingFiles.size() != 0 ) { // Maybe an upload?
         upload(mUploadingFiles.dequeue());
@@ -390,7 +403,8 @@ void OwnCloudSync::processNextStep()
     } else { // We are done! Start the sync clock
         mDownloadingConflictingFile = false;
         mBusy = false;
-        mSyncTimer->start();
+        if(mSyncTimer)
+            mSyncTimer->start();
         emit toLog(tr("Finished %1: %2").arg(mAccountName)
                                 .arg(QDateTime::currentDateTime().toString()));
         if(mConflictsExist) {
@@ -425,10 +439,9 @@ void OwnCloudSync::scanLocalDirectory( QString dirPath)
     dir.setFilter(QDir::Files|QDir::NoDot|QDir::NoDotDot|QDir::AllEntries
                   |QDir::Hidden);
     QStringList list = dir.entryList();
-    QString type;
-    QString append;
     for( int i = 0; i < list.size(); i++ ) {
         QString name = list.at(i);
+        //qDebug() << "Processing local file: " + dirPath+"/"+list.at(i);
         if( isFileFiltered(name) ) {
             continue;
         }
@@ -473,7 +486,7 @@ void OwnCloudSync::updateDBLocalFile(QString name, qint64 size, qint64 last,
         return;
     }
     // Get the relative name of the file
-    name.replace(mLocalDirectory,"");
+    name = stringRemoveBasePath(name, mLocalDirectory);
     name = mRemoteDirectory + name;
     //qDebug() << "Local file name: " << name;
     // Check against the database
@@ -482,7 +495,8 @@ void OwnCloudSync::updateDBLocalFile(QString name, qint64 size, qint64 last,
         qint64 prevModified = query.value(4).toString().toLongLong();
         // Sometimes the watcher goes crazy, though. So check to see
         // if last == previous, if so, then it never changed anything!
-        if( last != prevModified) {
+        //qDebug() << "Last: " << last << " Prev: " << prevModified;
+        if( (last != prevModified) || mIsFirstRun ) {
             if ( query.value(8).toString() == "") {
                 QString updateStatement =
                         QString("UPDATE local_files SET file_size='%1',"
@@ -532,7 +546,6 @@ QSqlQuery OwnCloudSync::queryDBAllFiles(QString table)
 
 void OwnCloudSync::syncFiles()
 {
-    QList<QString> serverDirs;
     QList<QString> localDirs;
     QSqlQuery localQuery = queryDBAllFiles("local_files");
     QSqlQuery serverQuery = queryDBAllFiles("server_files");
@@ -643,7 +656,7 @@ void OwnCloudSync::syncFiles()
         } else { // Does not exist on server! Upload!
             //qDebug() << "NEW:      " << localName;
             if ( localType == "collection") {
-                serverDirs.append(localName);
+                mMakeServerDirs.enqueue(localName);
             } else {
                 mUploadingFiles.enqueue(FileInfo(localName,localSize));
                 //uploads.append(localName);
@@ -674,29 +687,29 @@ void OwnCloudSync::syncFiles()
             //qDebug() << "DOWNLOAD: " << serverName;
         }
     }
+    for( int i = 0; i < mDownloadConflict.size(); i++ ) {
+        mTotalToDownload += mDownloadConflict[i].size;
+    }
+    for( int i = 0; i < mUploadingConflictFiles.size(); i++ ) {
+        mTotalToUpload += mUploadingConflictFiles[i].size;
+    }
     mTotalToTransfer = mTotalToDownload+mTotalToUpload;
 
-    // Make local dirs and downloads
+    // Make local dirs
     for(int i = 0; i < localDirs.size(); i++ ) {
         QDir dir;
         if (!dir.mkdir(mLocalDirectory+localDirs[i]) ) {
             qDebug() << "Could not make directory "+mLocalDirectory+localDirs[i];
         } else {
+            emit toLog(tr("Created local directory: %1").arg(localDirs[i]));
             //qDebug() << "Made directory "+mLocalDirectory+localDirs[i];
         }
-    }
-
-    // Now make remote dirs
-    for(int i = 0; i < serverDirs.size(); i++ ) {
-        mWebdav->mkdir(serverDirs[i]);
-        //qDebug() << "Making the following directories on server: " <<
-        //            serverDirs[i];
     }
 
     // Delete removed files and reset the file status
     deleteRemovedFiles();
     QSqlQuery query(QSqlDatabase::database(mAccountName));
-    query.exec("UPDATE  local_files SET found='' WHERE conflict='';");
+    //query.exec("UPDATE  local_files SET found='' WHERE conflict='';");
     query.exec("UPDATE server_files SET found='' WHERE conflict='';");
 
     mIsFirstRun = false;
@@ -746,9 +759,7 @@ void OwnCloudSync::download( FileInfo file )
 void OwnCloudSync::upload( FileInfo fileInfo)
 {
     QString localName = fileInfo.name;
-    if( mRemoteDirectory != "/") {
-        localName.replace(mRemoteDirectory,"");
-    }
+    localName = stringRemoveBasePath(localName,mRemoteDirectory);
     mCurrentFileSize = fileInfo.size;
     mCurrentFile = fileInfo.name;
     mTransferState = tr("Uploading ");
@@ -1038,6 +1049,7 @@ void OwnCloudSync::stop()
 
     if(mSyncTimer)
         mSyncTimer->stop();
+    delete mSyncTimer;
     mSyncTimer = 0;
 }
 
@@ -1045,6 +1057,7 @@ void OwnCloudSync::deleteWatcher()
 {
     // Delete the watcher. Should only be called when we are quitting!!!
     delete mFileWatcher;
+    mFileWatcher = 0;
 }
 
 void OwnCloudSync::localDirectoryChanged(QString name)
@@ -1053,12 +1066,22 @@ void OwnCloudSync::localDirectoryChanged(QString name)
     while (mFileAccessBusy ) {
         sleep(1);
     }
+    // If it was caused by one directory being deleted, then delete it now
+    // and don't scan it!
+    QDir dir(name);
+    if( !dir.exists() ) {
+        name = stringRemoveBasePath(name,mLocalDirectory);
+        name = mRemoteDirectory + name;
+        emit toLog(tr("Local directory was deleted: %1").arg(name));
+        deleteFromServer(stringRemoveBasePath(name,mLocalDirectory));
+        return;
+    }
     // Since we don't want to be scanning the directories every single
     // time a file is changed (since temporary files could be the cause)
     // instead we'll add them to a list and have a separate timer
     // randomly go through them
     QString relativeName(name);
-    relativeName.replace(mLocalDirectory,"");
+    relativeName = stringRemoveBasePath(relativeName,mLocalDirectory);
     // Replace spaces because it may confuse QSet
     relativeName.replace(" ","_sssspace_");
     if( !mScanDirectoriesSet.contains(relativeName) ) {
@@ -1072,7 +1095,7 @@ void OwnCloudSync::localFileChanged(QString name)
 {
     //qDebug() << "Checking file status: " << name;
     QFileInfo info(name);
-    name.replace(mLocalDirectory,"");
+    name = stringRemoveBasePath(name,mLocalDirectory);
     if( info.exists() ) { // Ok, file did not get deleted
         updateDBLocalFile(name,info.size(),
                         info.lastModified().toUTC().toMSecsSinceEpoch(),"file");
@@ -1080,7 +1103,7 @@ void OwnCloudSync::localFileChanged(QString name)
         // the moves for now. But I can delete! So do that for now :)
         name = mRemoteDirectory + name;
         emit toLog(tr("Local file was deleted: %1").arg(name));
-        deleteFromServer(name.replace(mLocalDirectory,""));
+        deleteFromServer(stringRemoveBasePath(name,mLocalDirectory));
     }
 }
 
@@ -1155,8 +1178,8 @@ void OwnCloudSync::deleteRemovedFiles()
         while(local.next()) {
             // Local files were deleted. Delete from server too.
             //qDebug() << "Deleting file from server: " << local.value(0).toString();
-            emit toLog(tr("Deleted server file %1").arg(
-                                        local.value(0).toString()));
+            //emit toLog(tr("File claims to be not found: %1").arg(
+            //                            local.value(0).toString()));
             deleteFromServer(local.value(0).toString());
         }
 
@@ -1164,8 +1187,10 @@ void OwnCloudSync::deleteRemovedFiles()
         local.exec("SELECT file_name from local_files where found='' "
                    "AND file_type='collection';");
         while(local.next()) {
+            //emit toLog(tr("Directory claims to be not found: %1").arg(
+            //                            local.value(0).toString()));
             // Local files were deleted. Delete from server too.
-            //qDebug() << "Deleting directory from server: " << local.value(0).toString();
+            qDebug() << "Deleting directory from server: " << local.value(0).toString();
             deleteFromServer(local.value(0).toString());
         }
     }
@@ -1223,10 +1248,7 @@ void OwnCloudSync::dropFromDB(QString table, QString column, QString condition)
 
 void OwnCloudSync::processFileConflict(QString name, QString wins)
 {
-    QString localName = name;
-    if( mRemoteDirectory != "/") {
-        localName.replace(mRemoteDirectory,"");
-    }
+    QString localName = stringRemoveBasePath(name,mRemoteDirectory);
     if( wins == "local" ) {
         QFileInfo info(mLocalDirectory+localName);
         QFile::remove(mLocalDirectory+getConflictName(localName));
@@ -1275,7 +1297,7 @@ QString OwnCloudSync::getConflictName(QString name)
 void OwnCloudSync::initialize(QString host, QString user, QString pass,
                               QString remote, QString local, qint64 time)
 {
-    mHost = host.replace("/files/webdav.php","");
+    mHost = stringRemoveBasePath(host,"/files/webdav.php");
     mUsername = user;
     mPassword = pass;
     mRemoteDirectory = remote;
@@ -1375,7 +1397,7 @@ void OwnCloudSync::requestTimedout()
 
 void OwnCloudSync::restartRequestTimer()
 {
-    mRequestTimer->start(3000);
+    mRequestTimer->start(7000);
 }
 
 void OwnCloudSync::stopRequestTimer()
@@ -1408,9 +1430,9 @@ void OwnCloudSync::walletOpened(bool ok)
     if( (ok && (mWallet->hasFolder("owncloud_sync"))
          || mWallet->createFolder("owncloud_sync"))
          && mWallet->setFolder("owncloud_sync")) {
-            emit toLog("Wallet opened!");
-            qDebug() << "Wallet opened!" <<
-                       KWallet::Wallet::FormDataFolder() ;
+            //emit toLog("Wallet opened!");
+            //qDebug() << "Wallet opened!" <<
+            //           KWallet::Wallet::FormDataFolder() ;
             if (mReadPassword ) {
                 requestPassword();
             }
@@ -1429,3 +1451,16 @@ void OwnCloudSync::saveWalletPassword()
 
 #endif
 
+QString OwnCloudSync::stringRemoveBasePath(QString path, QString base)
+{
+    if( base != "/" )  {
+        path.replace(QRegExp("^"+base),"");
+    }
+    return path;
+}
+
+void OwnCloudSync::serverDirectoryCreated(QString name)
+{
+    emit toLog(tr("Created directory on server: %1").arg(name));
+    processNextStep();
+}

@@ -24,8 +24,9 @@
 int quitOtherInstanceRunning()
 {
     QMessageBox box;
-    box.setText(QMessageBox::tr("Another instance is already running. "
-                   "Please quit that instance before trying again."));
+    box.setText(QMessageBox::tr("Either another instance is already running or "
+                                "the last instance crashed. You may try running"
+                                " this again to clear it."));
     box.setDefaultButton(QMessageBox::Ok);
     box.exec();
     return -1;

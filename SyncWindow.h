@@ -137,6 +137,8 @@ private slots:
     void on_action_Quit_triggered();
     void on_actionEnable_Delete_Account_triggered();
     void on_buttonDeleteAccount_clicked();
+    void on_pushButton_clicked();
+    void on_pushButton_2_clicked();
 };
 
 #endif // SYNCWINDOW_H

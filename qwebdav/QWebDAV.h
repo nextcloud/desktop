@@ -120,6 +120,7 @@ signals:
     void directoryListingReady(QList<QWebDAV::FileInfo>);
     void fileReady(QByteArray data, QString fileName);
     void uploadComplete(QString name);
+    void directoryCreated(QString name);
     void directoryListingError(QString url);
 
 public slots:
