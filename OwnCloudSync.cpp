@@ -1112,7 +1112,7 @@ void OwnCloudSync::localFileChanged(QString name)
 void OwnCloudSync::scanLocalDirectoryForNewFiles(QString path)
 {
     QString remote;
-    path = path=="/"?"":path;
+    //path = path=="/"?"":path;
     if(mRemoteDirectory != "/") {
         remote = mRemoteDirectory+"/";
     }
