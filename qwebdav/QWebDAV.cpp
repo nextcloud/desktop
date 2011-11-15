@@ -34,6 +34,8 @@
 #include <QDomDocument>
 #include <QDomElement>
 
+qint64 QWebDAV::mRequestNumber = 0;
+
 QWebDAV::QWebDAV(QObject *parent) :
     QNetworkAccessManager(parent), mInitialized(false)
 {
@@ -78,11 +80,13 @@ QNetworkReply* QWebDAV::sendWebdavRequest(QUrl url, DAVType type,
         request.setRawHeader(QByteArray("Depth"),
                              QByteArray(depthString.toAscii()));
         request.setAttribute(QNetworkRequest::User, QVariant("list"));
+        request.setAttribute(QNetworkRequest::Attribute(QNetworkRequest::User+1)
+                             ,QVariant(mRequestNumber));
         request.setRawHeader(QByteArray("Content-Type"),
                              QByteArray("text/xml; charset=\"utf-8\""));
         request.setRawHeader(QByteArray("Content-Length"),QByteArray("99999"));
 
-        reply = sendCustomRequest(request,verb,mData1);
+        reply = sendCustomRequest(request,verb,data);
     } else if ( type == DAVGET ) {
         request.setRawHeader("User-Agent", "QWebDAV 0.1");
         request.setAttribute(QNetworkRequest::User, QVariant("get"));
@@ -122,19 +126,18 @@ QNetworkReply* QWebDAV::list(QString dir, int depth )
 
     // Prepare the query. We want a listing of all properties the WebDAV
     // server is willing to provide
-    mQuery1 = new QByteArray();
-    *mQuery1 += "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
-    *mQuery1 += "<D:propfind xmlns:D=\"DAV:\">";
-    *mQuery1 += "<D:allprop/>";
-    *mQuery1 += "</D:propfind>";
-    if (mData1) {
-        //delete mData1;
-    }
-    mData1 = new QBuffer(mQuery1);
+    mRequestNumber++;
+    QByteArray *query = new QByteArray();
+    *query += "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
+    *query += "<D:propfind xmlns:D=\"DAV:\">";
+    *query += "<D:allprop/>";
+    *query += "</D:propfind>";
+    QBuffer *data = new QBuffer(query);
     QByteArray verb("PROPFIND");
-
+    mRequestQueries[mRequestNumber] = query;
+    mRequestData[mRequestNumber] = data;
     // Finally send this to the WebDAV server
-    return sendWebdavRequest(url,DAVLIST,verb,mData1,depth);
+    return sendWebdavRequest(url,DAVLIST,verb,data,depth);
 }
 
 void QWebDAV::slotReplyFinished()
@@ -177,7 +180,19 @@ void QWebDAV::slotFinished(QNetworkReply *reply)
     } else {
         qDebug() << "Who knows what the server is trying to tell us.";
     }
+    // Now check if additional data needs to be deleted!
+    qint64 value = reply->request().attribute(
+                QNetworkRequest::Attribute(
+                    QNetworkRequest::User+1)).toLongLong();
+    //qDebug() << "Request number: " << value;
+    if(value > 0 ) {
+        delete mRequestData.value(value);
+        delete mRequestQueries.value(value);
+        mRequestData.remove(value);
+        mRequestQueries.remove(value);
+    }
 
+    reply->deleteLater();
 }
 
 void QWebDAV::slotAuthenticationRequired(QNetworkReply *reply,

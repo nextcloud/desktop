@@ -107,9 +107,10 @@ private:
     QString mPassword;
     QString mPathFilter;
     bool mInitialized;
-    QBuffer *mData1;
-    QByteArray *mQuery1;
     bool mFirstAuthentication;
+    static qint64 mRequestNumber;
+    QHash<qint64,QByteArray*> mRequestQueries;
+    QHash<qint64,QBuffer*>    mRequestData;
 
     void processDirList(QByteArray xml, QString url);
     void processFile(QNetworkReply* reply);
