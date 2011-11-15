@@ -1322,8 +1322,13 @@ void OwnCloudSync::initialize(QString host, QString user, QString pass,
     mWebdav->initialize(mHost+"/files/webdav.php",
                         mUsername,mPassword,"/files/webdav.php");
 
-    // Create a File System Watcher
+    // Create the local directory if it doesn't exist
+    QDir localDir(mLocalDirectory);
+    if(!localDir.exists()) {
+        localDir.mkpath(mLocalDirectory);
+    }
 
+    // Create a File System Watcher
     delete mFileWatcher;
     mFileWatcher = new QFileSystemWatcher(this);
     connect(mFileWatcher,SIGNAL(fileChanged(QString)),
