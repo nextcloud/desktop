@@ -98,6 +98,8 @@ QNetworkReply* QWebDAV::sendWebdavRequest(QUrl url, DAVType type,
                  this, SLOT(slotSslErrors(QList<QSslError>)));
     } else if ( type == DAVPUT )  {
         request.setAttribute(QNetworkRequest::User, QVariant("put"));
+        request.setAttribute(QNetworkRequest::Attribute(QNetworkRequest::User+1)
+                             ,QVariant(mRequestNumber));
         reply = QNetworkAccessManager::put(request,data);
     } else if ( type == DAVMKCOL ) {
         request.setAttribute(QNetworkRequest::User, QVariant("mkcol"));
