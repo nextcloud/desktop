@@ -170,31 +170,13 @@ void OwnCloudSync::directoryListingError(QString url)
 
 void OwnCloudSync::updateStatus()
 {
-    //if( !isVisible() )
-    //    return;
-
-
     if( !mBusy ) {
-        /*
-        emit toStatus(tr("Waiting %1 seconds...") + QString("%1").arg(mUpdateTime) +
-                            " seconds...");
-        ui->progressFile->setValue(0);
-        ui->progressTotal->setValue(0);
-        if(mConflictsExist) {
-             ui->labelImage->setPixmap(mDefaultConflictIcon.pixmap(129,129));
-        } else {
-            ui->labelImage->setPixmap(mDefaultIcon.pixmap(129,129));
-        } */
+        // ???
     } else {
         if( mSyncTimer )
            mSyncTimer->stop();
         emit toStatus(tr("%1 out of %2 bytes").arg(mTransferState+mCurrentFile)
                       .arg(mCurrentFileSize));
-        /*if(mConflictsExist) {
-            ui->labelImage->setPixmap(mSyncConflictIcon.pixmap(129,129));
-        } else {
-            ui->labelImage->setPixmap(mSyncIcon.pixmap(129,129));
-        }*/
     }
 }
 
@@ -596,15 +578,6 @@ void OwnCloudSync::syncFiles()
             serverPrevModifiedTime.setTimeSpec(Qt::UTC);
             serverPrevModifiedTime.setMSecsSinceEpoch(serverPrevModified);
 
-
-            /*
-            if(localName == "/more/numbers.txt") {
-                qDebug() << localModifiedTime << localPrevModifiedTime
-                            << serverModifiedTime << serverPrevModifiedTime
-                               << lastSyncTime;
-                localName = localName;
-            } */
-
             if( serverModifiedTime < localModifiedTime &&
                     localModifiedTime > lastSyncTime  ) { // Server is older!
                 // Now check to see if the server too modified the file
@@ -659,8 +632,6 @@ void OwnCloudSync::syncFiles()
                 mMakeServerDirs.enqueue(localName);
             } else {
                 mUploadingFiles.enqueue(FileInfo(localName,localSize));
-                //uploads.append(localName);
-                //uploadsSizes.append(localSize);
                 mTotalToUpload += localSize;
             }
         }
@@ -680,8 +651,6 @@ void OwnCloudSync::syncFiles()
                 localDirs.append(serverName);
             } else {
                 mDownloadingFiles.enqueue(FileInfo(serverName,serverSize));
-                //downloads.append(serverName);
-                //downloadsSizes.append(serverSize);
                 mTotalToDownload += serverSize;
             }
             //qDebug() << "DOWNLOAD: " << serverName;
