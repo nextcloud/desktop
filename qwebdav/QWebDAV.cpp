@@ -325,8 +325,11 @@ QNetworkReply* QWebDAV::put(QString fileName, QByteArray data)
     QUrl url(mHostname+fileName);
 
     // Encapsulate data in an QIODevice
+    mRequestNumber++;
     QByteArray *safeData = new QByteArray(data);
     QBuffer *buffer = new QBuffer(safeData);
+    mRequestQueries[mRequestNumber] = safeData;
+    mRequestData[mRequestNumber] = buffer;
 
     // Finally send this to the WebDAV server
     QNetworkReply *reply = sendWebdavRequest(url,DAVPUT,0,buffer);
