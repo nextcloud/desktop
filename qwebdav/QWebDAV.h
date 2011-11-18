@@ -42,7 +42,14 @@ public:
         DAVGET,
         DAVPUT,
         DAVMKCOL,
-        DAVDELETE
+        DAVDELETE,
+        DAVMOVE
+    };
+
+    enum ATTRIBUTETYPE {
+        ATTDATA = 1,
+        ATTFILE,
+        ATTPREFIX
     };
 
     struct FileInfo {
@@ -95,12 +102,14 @@ public:
     void dirList(QString dir = "/");
     QNetworkReply* list(QString dir, int depth = 1);
     QNetworkReply* get(QString fileName );
-    QNetworkReply* put(QString fileName , QByteArray data);
-    QNetworkReply* put(QString fileName , QString absoluteFileName);
+    QNetworkReply* put(QString fileName , QByteArray data,
+                       QString put_prefix="");
+    QNetworkReply* put(QString fileName , QString absoluteFileName,
+                       QString put_prefix="");
     QNetworkReply* mkdir(QString dirName );
     QNetworkReply* sendWebdavRequest( QUrl url, DAVType type,
                                       QByteArray verb = 0,QIODevice *data = 0,
-                                      int depth = 1);
+                                      qint64 extra = 1);
 
 private:
     QString mHostname;
@@ -113,10 +122,12 @@ private:
     QHash<qint64,QByteArray*> mRequestQueries;
     QHash<qint64,QBuffer*>    mRequestData;
     QHash<qint64,QFile*> mRequestFile;
+    QHash<qint64,QString> mRequestFilePrefix;
 
     void processDirList(QByteArray xml, QString url);
     void processFile(QNetworkReply* reply);
     void processLocalDirectory(QString dirPath);
+    void processPutFinished(QNetworkReply *reply);
     void connectReplyFinished(QNetworkReply *reply);
 
 signals:

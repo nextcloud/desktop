@@ -280,6 +280,10 @@ void OwnCloudSync::processDirectoryListing(QList<QWebDAV::FileInfo> fileInfo)
     QSqlQuery query(QSqlDatabase::database(mAccountName));
     QSqlQuery add(QSqlDatabase::database(mAccountName));
     for(int i = 0; i < fileInfo.size(); i++ ){
+        // Check if it is a restricted file
+        if ( isFileFiltered(fileInfo[i].fileName)) {
+            continue;
+        }
         query = queryDBFileInfo(fileInfo[i].fileName,"server_files");
         if(query.next()) { // File exists confirm no conflict, then update
             if( query.value(7).toString() == "" ) {
@@ -753,7 +757,8 @@ void OwnCloudSync::upload( FileInfo fileInfo)
                     << file.error();
         return;
     }
-    QNetworkReply *reply = mWebdav->put(fileInfo.name,mLocalDirectory+localName);
+    QNetworkReply *reply = mWebdav->put(fileInfo.name,mLocalDirectory+localName,
+                                        "_ocs_uploading.");
     connect(reply, SIGNAL(uploadProgress(qint64,qint64)),
             this, SLOT(transferProgress(qint64,qint64)));
     restartRequestTimer();
@@ -1340,7 +1345,9 @@ bool OwnCloudSync::isFileFiltered(QString name)
 {
     // Standard filters applicable to *ALL* files
     if( name == "." || name == ".." ||
-         name.contains("_ocs_serverconflict.")) {
+         name.contains("_ocs_serverconflict.") ||
+           name.contains("_ocs_uploading.") ||
+            name.contains("_ocs_downloading." )) {
         //qDebug() << "File: " +name+" ignored by " + mAccountName;
         return true;
     }
