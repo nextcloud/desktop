@@ -30,6 +30,8 @@
 
 class QTimer;
 class QFileSystemWatcher;
+class QNetworkReply;
+
 #ifdef Q_OS_LINUX
     #include <kde4/kwallet.h>
 #endif
@@ -194,7 +196,7 @@ signals:
 public slots:
     void directoryListingError(QString url);
     void processDirectoryListing(QList<QWebDAV::FileInfo> fileInfo);
-    void processFileReady(QByteArray data,QString fileName);
+    void processFileReady(QNetworkReply *reply,QString fileName);
     void updateDBUpload(QString fileName);
     void timeToSync();
     void sync();

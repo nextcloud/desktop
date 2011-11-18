@@ -34,6 +34,9 @@
 #include <QDomDocument>
 #include <QDomElement>
 
+// Qt File I/O related
+#include <QFile>
+
 qint64 QWebDAV::mRequestNumber = 0;
 
 QWebDAV::QWebDAV(QObject *parent) :
@@ -98,8 +101,15 @@ QNetworkReply* QWebDAV::sendWebdavRequest(QUrl url, DAVType type,
                  this, SLOT(slotSslErrors(QList<QSslError>)));
     } else if ( type == DAVPUT )  {
         request.setAttribute(QNetworkRequest::User, QVariant("put"));
-        request.setAttribute(QNetworkRequest::Attribute(QNetworkRequest::User+1)
+        if ( mRequestFile.value(mRequestNumber) ) {
+            request.setAttribute(QNetworkRequest::Attribute(
+                                     QNetworkRequest::User+2)
                              ,QVariant(mRequestNumber));
+        } else {
+            request.setAttribute(QNetworkRequest::Attribute(
+                                     QNetworkRequest::User+1)
+                             ,QVariant(mRequestNumber));
+        }
         reply = QNetworkAccessManager::put(request,data);
     } else if ( type == DAVMKCOL ) {
         request.setAttribute(QNetworkRequest::User, QVariant("mkcol"));
@@ -150,6 +160,7 @@ void QWebDAV::slotReplyFinished()
 
 void QWebDAV::slotFinished(QNetworkReply *reply)
 {
+    bool keepReply = false;
     if ( reply->error() != 0 ) {
         qDebug() << "WebDAV request returned error: " << reply->error()
                     << " On URL: " << reply->url().toString();
@@ -166,6 +177,7 @@ void QWebDAV::slotFinished(QNetworkReply *reply)
         //qDebug() << "Oh a GET! How fun!!";
         //qDebug() << "Get Data: "<< reply->readAll();
         processFile(reply);
+        keepReply = true;
     } else if ( reply->request().attribute(
                     QNetworkRequest::User).toString().contains("put")) {
         //qDebug() << "Oh a PUT! How fun!!" <<
@@ -194,7 +206,17 @@ void QWebDAV::slotFinished(QNetworkReply *reply)
         mRequestQueries.remove(value);
     }
 
-    reply->deleteLater();
+    value = reply->request().attribute(
+                QNetworkRequest::Attribute(
+                    QNetworkRequest::User+2)).toLongLong();
+    if(value > 0 ) {
+        delete mRequestFile.value(value);
+        mRequestFile.remove(value);
+    }
+
+    if(!keepReply) {
+        reply->deleteLater();
+    }
 }
 
 void QWebDAV::slotAuthenticationRequired(QNetworkReply *reply,
@@ -339,6 +361,31 @@ QNetworkReply* QWebDAV::put(QString fileName, QByteArray data)
     return reply;
 }
 
+QNetworkReply* QWebDAV::put(QString fileName, QString absoluteFileName)
+{
+    // Make sure the user has already initialized this instance!
+    if (!mInitialized)
+        return 0;
+
+    // This is the Url of the webdav server + the file we want to get
+    QUrl url(mHostname+fileName);
+
+    // Encapsulate data in an QIODevice
+    mRequestNumber++;
+    QFile *file = new QFile(absoluteFileName);
+    if (!file->open(QIODevice::ReadOnly)) {
+        qDebug() << "File read error " + absoluteFileName +" Code: "
+                    << file->error();
+        return 0;
+    }
+    mRequestFile[mRequestNumber] = file;
+
+    // Finally send this to the WebDAV server
+    QNetworkReply *reply = sendWebdavRequest(url,DAVPUT,0,file);
+    //qDebug() << "PUT REPLY: " << reply->readAll();
+    return reply;
+}
+
 QNetworkReply* QWebDAV::mkdir(QString dirName)
 {
     // Make sure the user has already initialized this instance!
@@ -376,7 +423,7 @@ void QWebDAV::processFile(QNetworkReply* reply)
             .replace("\%20"," ");
 
     //qDebug() << "File Ready: " << fileName;
-    emit fileReady(reply->readAll(),fileName);
+    emit fileReady(reply,fileName);
 }
 
 void QWebDAV::connectReplyFinished(QNetworkReply *reply)

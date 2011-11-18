@@ -24,9 +24,9 @@
 #include <QDebug>
 #include <QNetworkReply>
 
-class QNetworkReply;
 class QBuffer;
 class QUrl;
+class QFile;
 
 
 class QWebDAV : public QNetworkAccessManager
@@ -96,6 +96,7 @@ public:
     QNetworkReply* list(QString dir, int depth = 1);
     QNetworkReply* get(QString fileName );
     QNetworkReply* put(QString fileName , QByteArray data);
+    QNetworkReply* put(QString fileName , QString absoluteFileName);
     QNetworkReply* mkdir(QString dirName );
     QNetworkReply* sendWebdavRequest( QUrl url, DAVType type,
                                       QByteArray verb = 0,QIODevice *data = 0,
@@ -111,6 +112,7 @@ private:
     static qint64 mRequestNumber;
     QHash<qint64,QByteArray*> mRequestQueries;
     QHash<qint64,QBuffer*>    mRequestData;
+    QHash<qint64,QFile*> mRequestFile;
 
     void processDirList(QByteArray xml, QString url);
     void processFile(QNetworkReply* reply);
@@ -119,7 +121,7 @@ private:
 
 signals:
     void directoryListingReady(QList<QWebDAV::FileInfo>);
-    void fileReady(QByteArray data, QString fileName);
+    void fileReady(QNetworkReply *reply, QString fileName);
     void uploadComplete(QString name);
     void directoryCreated(QString name);
     void directoryListingError(QString url);

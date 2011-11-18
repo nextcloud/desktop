@@ -71,8 +71,8 @@ OwnCloudSync::OwnCloudSync(QString name, WId id) : mAccountName(name),mWinId(id)
             this, SLOT(directoryListingError(QString)));
     connect(mWebdav,SIGNAL(directoryListingReady(QList<QWebDAV::FileInfo>)),
             this, SLOT(processDirectoryListing(QList<QWebDAV::FileInfo>)));
-    connect(mWebdav,SIGNAL(fileReady(QByteArray,QString)),
-            this, SLOT(processFileReady(QByteArray,QString)));
+    connect(mWebdav,SIGNAL(fileReady(QNetworkReply*,QString)),
+            this, SLOT(processFileReady(QNetworkReply*,QString)));
 
     connect(mWebdav,SIGNAL(uploadComplete(QString)),
             this, SLOT(updateDBUpload(QString)));
@@ -324,7 +324,7 @@ void OwnCloudSync::processDirectoryListing(QList<QWebDAV::FileInfo> fileInfo)
     }
 }
 
-void OwnCloudSync::processFileReady(QByteArray data,QString fileName)
+void OwnCloudSync::processFileReady(QNetworkReply *reply,QString fileName)
 {
     fileName = stringRemoveBasePath(fileName,mRemoteDirectory);
     // Temporarily remove this watcher so we don't get a message when
@@ -345,12 +345,24 @@ void OwnCloudSync::processFileReady(QByteArray data,QString fileName)
         return;
     }
     QDataStream out(&file);
-    out.writeRawData(data.constData(),data.length());
+    qint64 bytes = reply->bytesAvailable();
+    qint64 bytesToRead;
+    while( bytes > 0 ) {
+        if( bytes > 100 ) {
+            bytesToRead = 100;
+            bytes -= 100;
+        } else {
+            bytesToRead = bytes;
+            bytes = 0;
+        }
+        out.writeRawData(reply->read(bytesToRead).constData(),bytesToRead);
+    }
     file.flush();
     file.close();
     updateDBDownload(fileName);
     if(mFileWatcher)
         mFileWatcher->addPath(mLocalDirectory+fileName); // Add the watcher back!
+    reply->deleteLater();
     processNextStep();
 }
 
@@ -741,8 +753,7 @@ void OwnCloudSync::upload( FileInfo fileInfo)
                     << file.error();
         return;
     }
-    QByteArray data = file.readAll();
-    QNetworkReply *reply = mWebdav->put(fileInfo.name,data);
+    QNetworkReply *reply = mWebdav->put(fileInfo.name,mLocalDirectory+localName);
     connect(reply, SIGNAL(uploadProgress(qint64,qint64)),
             this, SLOT(transferProgress(qint64,qint64)));
     restartRequestTimer();
