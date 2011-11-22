@@ -232,7 +232,7 @@ QIcon Folder::icon( int size ) const
 {
   QString name;
 
-  if( _backend == "sitecopy") name = QString( "ownCloud-%1.png" ).arg(size);
+  if( _backend == "sitecopy") name = QString( "mirall-%1.png" ).arg(size);
   if( _backend == "unison" ) name = QString( "folder-%1.png" ).arg(size);
   if( _backend == "csync" ) name = QString("folder-remote-%1.png").arg(size);
 

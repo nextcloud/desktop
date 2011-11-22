@@ -78,6 +78,7 @@ endif(CSYNC_FOUND)
 install(TARGETS mirall
 	RUNTIME DESTINATION bin
 	LIBRARY DESTINATION lib
-	ARCHIVE DESTINATION lib
+	ARCHIVE DESTINATION lib )
+install(FILES mirall.png DESTINATION share/icons/hicolor/48x48/apps
 )
 

@@ -71,7 +71,7 @@
          </property>
          <property name="icon">
           <iconset resource="../../mirall.qrc">
-           <normaloff>:/new/mirall/resources/ownCloud-128.png</normaloff>:/new/mirall/resources/ownCloud-128.png</iconset>
+           <normaloff>:/new/mirall/resources/mirall-128.png</normaloff>:/new/mirall/resources/mirall-128.png</iconset>
          </property>
          <property name="iconSize">
           <size>
