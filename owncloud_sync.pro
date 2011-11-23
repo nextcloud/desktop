@@ -55,9 +55,25 @@ unix:!symbian:!maemo5:isEmpty(MEEGO_VERSION_MAJOR) {
     INSTALLS += icon
 }
 
-
-
+BITSIZE = $$system(getconf LONG_BIT)
+if (contains(BITSIZE, 64)) {
+#message($$BITSIZE)
 unix:!macx:!symbian: LIBS += -L$$PWD/../../../../../usr/lib64/ -lsqlite3
+unix:!macx:!symbian: LIBS += -L/usr/lib64/kde4/devel -lkparts -lkdeui -lkdecore
+}
+if (contains(BITSIZE, 32)) {
+#message($$BITSIZE)
+unix:!macx:!symbian: LIBS += -L$$PWD/../../../../../usr/lib/ -lsqlite3
+unix:!macx:!symbian: LIBS += -L/usr/lib/kde4/devel -lkparts -lkdeui -lkdecore
+}
+
+#linux-g++ {
+#message(On Linux)
+#}
+#macx-g++ {
+#message(On Mac)
+#}
+
 
 INCLUDEPATH += $$PWD/../../../../../usr/include
 DEPENDPATH += $$PWD/../../../../../usr/include
@@ -66,4 +82,3 @@ OTHER_FILES += \
     COPYING-README \
     COPYING-GPL
 
-unix:!macx:!symbian: LIBS += -L/usr/lib64/kde4/devel -lkparts -lkdeui -lkdecore
