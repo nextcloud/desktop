@@ -17,7 +17,7 @@
 
 #include "statusdialog.h"
 #include "folder.h"
-
+#include "version.h"
 
 namespace Mirall {
 FolderViewDelegate::FolderViewDelegate()
@@ -107,7 +107,7 @@ StatusDialog::StatusDialog(QWidget *parent) :
     QDialog(parent)
 {
   setupUi( this  );
-  setWindowTitle( tr("Mirall Status") );
+  setWindowTitle( tr("Mirall %1").arg( VERSION_STRING ) );
 
   _model = new QStandardItemModel();
   FolderViewDelegate *delegate = new FolderViewDelegate();
