@@ -26,6 +26,44 @@
 
 namespace Mirall {
 
+class OwncloudWizard: public QWizard
+{
+    Q_OBJECT
+public:
+
+    enum {
+      Page_SelectType,
+      Page_Create_OC,
+      Page_OC_Credentials,
+      Page_FTP,
+      Page_Install
+    };
+
+    enum LogType {
+      LogPlain,
+      LogParagraph
+    };
+
+    OwncloudWizard(QWidget *parent = 0L);
+
+    void setOCUrl( const QString& );
+
+public slots:
+    void appendToResultWidget( const QString& msg, LogType type = LogParagraph );
+    void slotCurrentPageChanged( int );
+    void showOCUrlLabel( bool );
+
+
+signals:
+    void connectToOCUrl( const QString& );
+    void installOCServer();
+    void installOCLocalhost();
+
+private:
+    QString _configFile;
+    QString _oCUrl;
+};
+
 /**
  * page to ask for the type of Owncloud to connect to
  */
@@ -116,52 +154,13 @@ public:
   virtual void initializePage();
 
 public slots:
-  void appendResultText( const QString& );
+  void appendResultText( const QString&, OwncloudWizard::LogType type = OwncloudWizard::LogParagraph );
   void showOCUrlLabel( const QString&, bool );
 
 private:
   Ui_OwncloudWizardResultPage _ui;
 
 };
-
-
-/**
- * Available fields registered:
- *
- */
-class OwncloudWizard: public QWizard
-{
-    Q_OBJECT
-public:
-
-    enum {
-      Page_SelectType,
-      Page_Create_OC,
-      Page_OC_Credentials,
-      Page_FTP,
-      Page_Install
-    };
-
-    OwncloudWizard(QWidget *parent = 0L);
-
-    void setOCUrl( const QString& );
-
-public slots:
-    void appendToResultWidget( const QString& );
-    void slotCurrentPageChanged( int );
-    void showOCUrlLabel( bool );
-
-
-signals:
-    void connectToOCUrl( const QString& );
-    void installOCServer();
-    void installOCLocalhost();
-
-private:
-    QString _configFile;
-    QString _oCUrl;
-};
-
 
 } // ns Mirall
 

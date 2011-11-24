@@ -134,7 +134,6 @@ void OwncloudSetup::slotInstallOCServer()
   }
   args << "--admin-user" << adminUser;
   args << "--admin-password" << adminPwd;
-  args << "--skip-download";
 
   runOwncloudAdmin( args );
   _ocWizard->setField( "OCUrl", QString( "%1/owncloud/").arg(_ocWizard->field("myOCDomain").toString() ));
@@ -163,7 +162,7 @@ void OwncloudSetup::slotReadyReadStandardOutput()
   QTextCodec *codec = QTextCodec::codecForName("UTF-8");
   // render the output to status line
   QString string = codec->toUnicode( arr );
-  _ocWizard->appendToResultWidget( string );
+  _ocWizard->appendToResultWidget( string, OwncloudWizard::LogPlain );
 
 }
 

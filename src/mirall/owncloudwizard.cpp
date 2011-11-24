@@ -21,6 +21,8 @@
 #include <QValidator>
 #include <QWizardPage>
 #include <QDir>
+#include <QScrollBar>
+
 #include <stdlib.h>
 
 #include "mirall/owncloudwizard.h"
@@ -218,12 +220,18 @@ bool OwncloudWizardResultPage::isComplete() const
 
 }
 
-void OwncloudWizardResultPage::appendResultText( const QString& msg )
+void OwncloudWizardResultPage::appendResultText( const QString& msg, OwncloudWizard::LogType type )
 {
   if( msg.isEmpty() ) {
     _ui.resultTextEdit->clear();
   } else {
-    _ui.resultTextEdit->append( msg );
+    if( type == OwncloudWizard::LogParagraph ) {
+      _ui.resultTextEdit->append( msg );
+    } else {
+      // _ui.resultTextEdit->append( msg );
+      _ui.resultTextEdit->insertPlainText(msg );
+    }
+    _ui.resultTextEdit->verticalScrollBar()->setValue( _ui.resultTextEdit->verticalScrollBar()->maximum() );
   }
 }
 
@@ -305,10 +313,10 @@ void OwncloudWizard::showOCUrlLabel( bool show )
   p->showOCUrlLabel( _oCUrl, show );
 }
 
-void OwncloudWizard::appendToResultWidget( const QString& msg )
+void OwncloudWizard::appendToResultWidget( const QString& msg, LogType type )
 {
   OwncloudWizardResultPage *p = static_cast<OwncloudWizardResultPage*> (page( Page_Install ));
-  p->appendResultText( msg );
+  p->appendResultText( msg, type );
 }
 
 void OwncloudWizard::setOCUrl( const QString& url )
