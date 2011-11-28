@@ -36,7 +36,7 @@ class QNetworkReply;
 /**
  * @brief Main class used to handle the webdav protocol
  */
-class QWEBDAV_EXPORT QWebdav : virtual public QNetworkAccessManager
+class QWEBDAV_EXPORT QWebdav : public QNetworkAccessManager
 {
   Q_OBJECT
  public:
