@@ -10,9 +10,11 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
- */#ifndef VERSION_H
+ */
+
+#ifndef VERSION_H
 #define VERSION_H
 
-#define VERSION_STRING "0.1.1"
+#define VERSION_STRING "0.1.2"
 
 #endif // VERSION_H

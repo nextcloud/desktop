@@ -302,7 +302,6 @@ void OwncloudWizard::slotCurrentPageChanged( int id )
       // call in installation mode and install to ftp site.
       emit installOCServer();
     } else {
-      qDebug() << "XX: " << field("connectMyOC").toBool();
     }
   }
 }

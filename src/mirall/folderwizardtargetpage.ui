@@ -105,7 +105,7 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="../../mirall.qrc">:/new/mirall/resources/mirall-48.png</pixmap>
+            <pixmap resource="../../mirall.qrc">:/mirall/resources/mirall-48.png</pixmap>
            </property>
           </widget>
          </item>
@@ -133,7 +133,7 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="../../mirall.qrc">:/new/mirall/resources/folder-grey-32.png</pixmap>
+            <pixmap resource="../../mirall.qrc">:/mirall/resources/folder-grey-32.png</pixmap>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -207,7 +207,7 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="../../mirall.qrc">:/new/mirall/resources/folder-remote-32.png</pixmap>
+            <pixmap resource="../../mirall.qrc">:/mirall/resources/folder-remote-32.png</pixmap>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>

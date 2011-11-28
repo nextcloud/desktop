@@ -217,6 +217,7 @@ void FolderWizardTargetPage::slotCreateRemoteFolder()
 
   OwncloudSetup ocSetup;
   QString url = ocSetup.ownCloudUrl();
+  if( ! url.endsWith('/')) url.append('/');
   url.append( "files/webdav.php/");
   url.append( folder );
   qDebug() << "creating folder on ownCloud: " << url;
@@ -299,15 +300,19 @@ void FolderWizardTargetPage::initializePage()
 
 void FolderWizardTargetPage::slotOwnCloudFound( const QString& url, const QString& infoStr )
 {
-
-  _ui.OCLabel->setText( tr("to your <a href=\"%1\">ownCloud</a> (version %2)").arg(url).arg(infoStr));
-
-  qDebug() << "ownCloud found on " << url << " with version: " << infoStr;
+  if( infoStr.isEmpty() ) {
+  } else {
+    _ui.OCLabel->setText( tr("to your <a href=\"%1\">ownCloud</a> (version %2)").arg(url).arg(infoStr));
+    _ui.OCFolderLineEdit->setEnabled( true );
+    _ui.OCRadioBtn->setEnabled( true );
+    qDebug() << "ownCloud found on " << url << " with version: " << infoStr;
+  }
 }
 
 void FolderWizardTargetPage::slotNoOwnCloudFound()
 {
   qDebug() << "No ownCloud configured!";
+  _ui.OCLabel->setText( tr("no configured ownCloud found!") );
   _ui.OCRadioBtn->setEnabled( false );
   _ui.OCFolderLineEdit->setEnabled( false );
 }

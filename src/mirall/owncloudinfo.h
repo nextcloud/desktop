@@ -40,8 +40,6 @@ signals:
   void ownCloudInfoFound( const QString&,  const QString& );
   void noOwncloudFound();
 
-  void ownCloudInfoReply( const QString&, QNetworkReply::NetworkError );
-
 public slots:
 
 protected slots:

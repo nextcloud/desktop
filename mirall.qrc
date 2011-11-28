@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/new/mirall">
+    <qresource prefix="/mirall">
         <file>resources/mirall-32.png</file>
         <file>resources/mirall-64.png</file>
         <file>resources/mirall-128.png</file>
@@ -11,5 +11,13 @@
         <file>resources/mirall-48.png</file>
         <file>resources/folder-grey-48.png</file>
         <file>resources/folder-remote-48.png</file>
+        <file>resources/dialog-close.png</file>
+        <file>resources/dialog-ok.png</file>
+        <file>resources/dialog-cancel.png</file>
+        <file>resources/view-refresh.png</file>
+        <file>resources/folder-favorites.png</file>
+        <file>resources/folder-sync.png</file>
+        <file>resources/folder-important.png</file>
+        <file>resources/folder-grey.png</file>
     </qresource>
 </RCC>

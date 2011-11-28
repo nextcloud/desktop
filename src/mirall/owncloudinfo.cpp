@@ -88,33 +88,35 @@ void ownCloudInfo::slotAuthentication( QNetworkReply*, QAuthenticator *auth )
   }
 }
 
-
 void ownCloudInfo::slotReplyFinished( QNetworkReply *reply )
 {
   const QString version( _readBuffer );
   const QString url = reply->url().toString();
 
-  emit ownCloudInfoReply( url, reply->error() );
-
   QString info( version );
 
-  info.remove(0,1); // remove first char which is a "{"
-  info.remove(-1,1); // remove the last char which is a "}"
-  QStringList li = info.split( QChar(',') );
+  if( info.contains("installed") && info.contains("version") && info.contains("versionstring") ) {
+    info.remove(0,1); // remove first char which is a "{"
+    info.remove(-1,1); // remove the last char which is a "}"
+    QStringList li = info.split( QChar(',') );
 
-  QString infoString;
-  QString versionStr;
-  foreach ( infoString, li ) {
-    if( infoString.contains( "versionstring") ) {
-      // get the version string out.
-      versionStr = infoString.mid(17);
-      versionStr.remove(-1, 1);
+    QString infoString;
+    QString versionStr;
+    foreach ( infoString, li ) {
+      if( infoString.contains( "versionstring") ) {
+        // get the version string out.
+        versionStr = infoString.mid(17);
+        versionStr.remove(-1, 1);
+      }
     }
-  }
-  QString urlStr( url );
-  urlStr.remove("/status.php"); // get the plain url.
+    QString urlStr( url );
+    urlStr.remove("/status.php"); // get the plain url.
 
-  emit ownCloudInfoFound( urlStr, versionStr );
+    emit ownCloudInfoFound( urlStr, versionStr );
+  } else {
+    qDebug() << "No proper answer on status.php!";
+    emit noOwncloudFound();
+  }
 }
 
 void ownCloudInfo::slotReadyRead()

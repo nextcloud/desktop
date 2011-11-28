@@ -118,7 +118,7 @@ void Application::setupActions()
 void Application::setupSystemTray()
 {
     _tray = new QSystemTrayIcon(this);
-    _tray->setIcon(QIcon::fromTheme(FOLDER_ICON_EMPTY));
+    _tray->setIcon(QIcon::fromTheme(FOLDER_ICON_EMPTY, QIcon( QString( ":/mirall/resources/%1").arg(FOLDER_ICON_EMPTY))));
 
     connect(_tray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             SLOT(slotTrayClicked(QSystemTrayIcon::ActivationReason)));
@@ -306,7 +306,7 @@ void Application::setupKnownFolders()
   foreach (QString file, list) {
     setupFolderFromConfigFile(file);
   }
-  if( list.size() ) _tray->setIcon(QIcon::fromTheme(FOLDER_ICON));
+  if( list.size() ) _tray->setIcon(QIcon::fromTheme(FOLDER_ICON, QIcon( QString( ":/mirall/resources/%1").arg(FOLDER_ICON))));
 }
 
 // filename is the name of the file only, it does not include
@@ -385,7 +385,7 @@ void Application::slotFolderSyncStarted()
     _folderSyncCount++;
 
     if (_folderSyncCount > 0) {
-        _tray->setIcon(QIcon::fromTheme(FOLDER_SYNC_ICON));
+        _tray->setIcon(QIcon::fromTheme(FOLDER_SYNC_ICON, QIcon( QString( ":/mirall/resources/%1").arg(FOLDER_SYNC_ICON))));
     }
 }
 
@@ -397,13 +397,13 @@ void Application::slotFolderSyncFinished(const SyncResult &result)
 
     if (_folderSyncCount < 1) {
         if (result.result() == SyncResult::Success) {
-            _tray->setIcon(QIcon::fromTheme(FOLDER_ICON));
+            _tray->setIcon(QIcon::fromTheme(FOLDER_ICON, QIcon( QString( ":/mirall/resources/%1").arg(FOLDER_ICON))));
             //_tray->showMessage(tr("Folder %1").arg(folder->alias()),
             //                   tr("Synchronization successfull"),
             //                   QSystemTrayIcon::Information);
         }
         else {
-            _tray->setIcon(QIcon::fromTheme(FOLDER_SYNC_ERROR));
+            _tray->setIcon(QIcon::fromTheme(FOLDER_SYNC_ERROR, QIcon( QString( ":/mirall/resources/%1").arg(FOLDER_SYNC_ERROR))));
             _tray->showMessage(tr("Folder %1").arg(folder->alias()),
                                result.errorString(),
                                /* tr("Synchronization did not finish successfully"), */

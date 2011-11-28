@@ -166,7 +166,7 @@ void StatusDialog::setFolderList( Folder::Map folders )
       resultStr = tr( "Setup Error" );
       statusIcon = "dialog-cancel";
     }
-    item->setData( QIcon::fromTheme( statusIcon ), FolderViewDelegate::FolderStatusIcon );
+    item->setData( QIcon::fromTheme( statusIcon, QIcon( QString( ":/mirall/resources/%1").arg(statusIcon))), FolderViewDelegate::FolderStatusIcon );
     item->setData( resultStr, FolderViewDelegate::FolderStatus );
     item->setData( res.errorString(), FolderViewDelegate::FolderErrorMsg );
 

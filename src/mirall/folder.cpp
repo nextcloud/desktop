@@ -40,9 +40,9 @@ Folder::Folder(const QString &alias, const QString &path, QObject *parent)
       _online(false),
       _enabled(true)
 {
-    _openAction = new QAction(QIcon::fromTheme(FOLDER_ICON), path, this);
+    _openAction = new QAction(QIcon::fromTheme(FOLDER_ICON, QIcon( QString( ":/mirall/resources/%1").arg(FOLDER_ICON))), path, this);
     _openAction->setIconVisibleInMenu(true);
-    _openAction->setIcon(QIcon::fromTheme(FOLDER_ICON));
+    _openAction->setIcon(QIcon::fromTheme(FOLDER_ICON, QIcon( QString( ":/mirall/resources/%1").arg(FOLDER_ICON))));
 
     QObject::connect(_openAction, SIGNAL(triggered(bool)), SLOT(slotOpenFolder()));
 
@@ -198,13 +198,12 @@ void Folder::slotSyncStarted()
 {
     // disable events until syncing is done
     _watcher->setEventsEnabled(false);
-    _openAction->setIcon(QIcon::fromTheme(FOLDER_SYNC_ICON));
+    _openAction->setIcon(QIcon::fromTheme(FOLDER_SYNC_ICON, QIcon( QString( ":/mirall/resources/%1").arg(FOLDER_SYNC_ICON))));
 }
 
 void Folder::slotSyncFinished(const SyncResult &result)
 {
   _lastSyncResult = result;
-  qDebug() << "XX got a sync result: " << _lastSyncResult.result()<< " for folder " << this ;
 
   bool enabled = ( result.result() == SyncResult::Success );
   setSyncEnabled( enabled );
@@ -236,7 +235,7 @@ QIcon Folder::icon( int size ) const
   if( _backend == "unison" ) name = QString( "folder-%1.png" ).arg(size);
   if( _backend == "csync" ) name = QString("folder-remote-%1.png").arg(size);
 
-  return QIcon( QString( ":/new/mirall/resources/%1").arg(name) );
+  return QIcon( QString( ":/mirall/resources/%1").arg(name) );
 }
 
 QString Folder::backend() const
