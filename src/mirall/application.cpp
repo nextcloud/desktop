@@ -55,6 +55,9 @@ Application::Application(int argc, char **argv) :
 
     connect( _statusDialog, SIGNAL(fetchFolderAlias(const QString&)),
              SLOT(slotFetchFolder( const QString&)));
+    
+    connect( _statusDialog, SIGNAL(pushFolderAlias(const QString&)),
+             SLOT(slotPushFolder( const QString&)));
 
     setupActions();
     setupSystemTray();
@@ -281,6 +284,30 @@ void Application::slotFetchFolder( const QString& alias )
                                                                  QMessageBox::Yes|QMessageBox::No ) == QMessageBox::Yes ) {
       SiteCopyFolder *sf = static_cast<SiteCopyFolder*>( f );
       sf->fetchFromOC();
+    } else {
+      qDebug() << "!! Can only fetch backend type sitecopy, this one has " << f->backend();
+    }
+  }
+
+}
+
+void Application::slotPushFolder( const QString& alias )
+{
+  qDebug() << "start to push folder with alias " << alias;
+
+  if( ! _folderMap.contains( alias ) ) {
+    qDebug() << "!! Can not push alias " << alias << ", can not be found in folderMap.";
+    return;
+  }
+
+  Folder *f = _folderMap[alias];
+
+  if( f->backend() == "sitecopy" ) {
+    if( QMessageBox::question( 0, tr("Confirm Folder Push"), tr("Do you really want to push the folder with alias <i>%1</i> to your ownCloud?<br/>"
+                                                                 "This overwrites your remote data with data in directory <i>%2</i>!").arg(alias).arg(f->path()),
+                                                                 QMessageBox::Yes|QMessageBox::No ) == QMessageBox::Yes ) {
+      SiteCopyFolder *sf = static_cast<SiteCopyFolder*>( f );
+      sf->pushToOC();
     } else {
       qDebug() << "!! Can only fetch backend type sitecopy, this one has " << f->backend();
     }

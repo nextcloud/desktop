@@ -119,11 +119,13 @@ StatusDialog::StatusDialog(QWidget *parent) :
   connect(_ButtonClose,  SIGNAL(clicked()), this, SLOT(accept()));
   connect(_ButtonRemove, SIGNAL(clicked()), this, SLOT(slotRemoveFolder()));
   connect(_ButtonFetch,  SIGNAL(clicked()), this, SLOT(slotFetchFolder()));
+  connect(_ButtonPush,  SIGNAL(clicked()), this, SLOT(slotPushFolder()));
   connect(_ButtonOpenOC, SIGNAL(clicked()), this, SLOT(slotOpenOC()));
 
   _ButtonOpenOC->setEnabled(false);
   _ButtonRemove->setEnabled(false);
   _ButtonFetch->setEnabled(false);
+  _ButtonPush->setEnabled(false);
 
   connect(_folderList, SIGNAL(activated(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
 }
@@ -134,6 +136,7 @@ void StatusDialog::slotFolderActivated( const QModelIndex& indx )
 
   _ButtonRemove->setEnabled( state );
   _ButtonFetch->setEnabled( state );
+  _ButtonPush->setEnabled( state );
 
 }
 
@@ -194,6 +197,18 @@ void StatusDialog::slotFetchFolder()
     qDebug() << "Fetch Folder alias " << alias;
     if( !alias.isEmpty() ) {
       emit(fetchFolderAlias( alias ));
+    }
+  }
+}
+
+void StatusDialog::slotPushFolder()
+{
+  QModelIndex selected = _folderList->selectionModel()->currentIndex();
+  if( selected.isValid() ) {
+    QString alias = _model->data( selected, FolderViewDelegate::FolderNameRole ).toString();
+    qDebug() << "Push Folder alias " << alias;
+    if( !alias.isEmpty() ) {
+      emit(pushFolderAlias( alias ));
     }
   }
 }

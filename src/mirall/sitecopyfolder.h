@@ -42,6 +42,9 @@ public:
 
     // load data from ownCloud to the local directory.
     void fetchFromOC();
+    
+    // push data from the local directory to ownCloud
+    void pushToOC();
 
     virtual bool isBusy() const;
 

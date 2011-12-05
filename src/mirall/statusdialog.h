@@ -53,10 +53,12 @@ public:
 signals:
     void removeFolderAlias( const QString& );
     void fetchFolderAlias( const QString& );
+    void pushFolderAlias( const QString& );
 
 public slots:
     void slotRemoveFolder();
     void slotFetchFolder();
+    void slotPushFolder();
     void slotFolderActivated( const QModelIndex& );
     void slotOpenOC();
 

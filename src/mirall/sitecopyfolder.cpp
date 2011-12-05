@@ -95,6 +95,15 @@ void SiteCopyFolder::fetchFromOC()
   startSiteCopy( "--fetch", Sync );
 }
 
+void SiteCopyFolder::pushToOC()
+{
+  QMutexLocker locker( &_syncMutex );
+  qDebug() << "starting to sync to ownCloud";
+  setSyncEnabled( true );
+
+  startSiteCopy( "--update", Sync );
+}
+
 void SiteCopyFolder::startSiteCopy( const QString& command, SiteCopyState nextState )
 {
   if( _SiteCopy->state() == QProcess::Running ) {
