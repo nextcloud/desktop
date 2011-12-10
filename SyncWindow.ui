@@ -613,6 +613,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionHide_on_start"/>
     <addaction name="actionClose_Button_Hides_Window"/>
     <addaction name="actionEnable_Delete_Account"/>
+    <addaction name="actionDisplay_Debug_Messages"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -681,6 +682,14 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="text">
     <string>Close Button Hides Window</string>
+   </property>
+  </action>
+  <action name="actionDisplay_Debug_Messages">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Display Debug Messages</string>
    </property>
   </action>
  </widget>

@@ -17,6 +17,7 @@
  *    along with owncloud_sync.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
+#include "SyncDebug.h"
 #include "QWebDAV.h"
 
 // Qt Standard Includes
@@ -133,7 +134,7 @@ QNetworkReply* QWebDAV::sendWebdavRequest(QUrl url, DAVType type,
                              QByteArray("T"));
         reply = sendCustomRequest(request, verb,0);
     } else {
-        qDebug() << "Error! DAV Request of type " << type << " is not known!";
+        syncDebug() << "Error! DAV Request of type " << type << " is not known!";
         reply = 0;
     }
 
@@ -177,25 +178,25 @@ void QWebDAV::slotFinished(QNetworkReply *reply)
 {
     bool keepReply = false;
     if ( reply->error() != 0 ) {
-        qDebug() << "WebDAV request returned error: " << reply->error()
+        syncDebug() << "WebDAV request returned error: " << reply->error()
                     << " On URL: " << reply->url().toString();
-        qDebug() << reply->readAll();
+        syncDebug() << reply->readAll();
     }
 
     // Good, but what is it responding to? Find out:
     if ( reply->request().attribute(
                 QNetworkRequest::User).toString().contains("list") ) {
-        //qDebug() << "Oh a listing! How fun!!";
+        //syncDebug() << "Oh a listing! How fun!!";
         processDirList(reply->readAll(),reply->url().path());
     } else if ( reply->request().attribute(
                     QNetworkRequest::User).toString().contains("get") ) {
-        //qDebug() << "Oh a GET! How fun!!";
-        //qDebug() << "Get Data: "<< reply->readAll();
+        //syncDebug() << "Oh a GET! How fun!!";
+        //syncDebug() << "Get Data: "<< reply->readAll();
         processFile(reply);
         keepReply = true;
     } else if ( reply->request().attribute(
                     QNetworkRequest::User).toString().contains("put")) {
-        //qDebug() << "Oh a PUT! How fun!!" <<
+        //syncDebug() << "Oh a PUT! How fun!!" <<
         //            reply->request().url().path().replace(mPathFilter,"");
         processPutFinished(reply);
     } else if ( reply->request().attribute(
@@ -208,7 +209,7 @@ void QWebDAV::slotFinished(QNetworkReply *reply)
                    QNetworkRequest::User).toString().contains("move")) {
         // Do nothing
     } else {
-        qDebug() << "Who knows what the server is trying to tell us. " +
+        syncDebug() << "Who knows what the server is trying to tell us. " +
                     reply->request().attribute(
                                        QNetworkRequest::User).toString();
     }
@@ -216,7 +217,7 @@ void QWebDAV::slotFinished(QNetworkReply *reply)
     qint64 value = reply->request().attribute(
                 QNetworkRequest::Attribute(
                     QNetworkRequest::User+ATTDATA)).toLongLong();
-    //qDebug() << "Request number: " << value;
+    //syncDebug() << "Request number: " << value;
     if(value > 0 ) {
         delete mRequestData.value(value);
         delete mRequestQueries.value(value);
@@ -262,7 +263,7 @@ void QWebDAV::processPutFinished(QNetworkReply *reply)
 void QWebDAV::slotAuthenticationRequired(QNetworkReply *reply,
                                          QAuthenticator *auth)
 {
-    //qDebug() << "Authenticating: ";
+    //syncDebug() << "Authenticating: ";
     if( mFirstAuthentication && auth ) {
         auth->setUser(mUsername);
         auth->setPassword(mPassword);
@@ -285,15 +286,15 @@ void QWebDAV::processDirList(QByteArray xml, QString url)
 
     if (!domDocument.setContent(xml, true, &errorStr, &errorLine,
                                 &errorColumn)) {
-        qDebug() << "Error at line " << errorLine << " column " << errorColumn;
-        qDebug() << errorStr;
+        syncDebug() << "Error at line " << errorLine << " column " << errorColumn;
+        syncDebug() << errorStr;
         emit directoryListingError(url);
         return;
     }
 
     QDomElement root = domDocument.documentElement();
     if( root.tagName() != "multistatus" ) {
-        qDebug() << "Badly formatted XML!" << xml;
+        syncDebug() << "Badly formatted XML!" << xml;
         emit directoryListingError(url);
         return;
     }
@@ -308,14 +309,14 @@ void QWebDAV::processDirList(QByteArray xml, QString url)
         // Parse first response
         QDomElement child = response.firstChildElement();
         while (!child.isNull()) {
-            //qDebug() << "ChildName: " << child.tagName();
+            //syncDebug() << "ChildName: " << child.tagName();
             if ( child.tagName() == "href" ) {
                 name = child.text();
             } else if ( child.tagName() == "propstat") {
                 QDomElement prop = child.firstChildElement("prop")
                         .firstChildElement();
                 while(!prop.isNull()) {
-                    //qDebug() << "PropName: " << prop.tagName();
+                    //syncDebug() << "PropName: " << prop.tagName();
                     if( prop.tagName() == "getlastmodified") {
                         last = prop.text();
                     } else if ( prop.tagName() == "getcontentlength" ||
@@ -333,11 +334,11 @@ void QWebDAV::processDirList(QByteArray xml, QString url)
             }
             child = child.nextSiblingElement();
         }
-//        qDebug() << "Name: " << name << "\nSize: " << size << "\nLastModified: "
+//        syncDebug() << "Name: " << name << "\nSize: " << size << "\nLastModified: "
 //                 << last << "\nSizeAvailable: " << available << "\nType: "
 //                 << type << "\n";
         // Filter out the requested directory from this list
-        //qDebug() << "Type: " << type << "Name: " << name << " URL: " << url;
+        //syncDebug() << "Type: " << type << "Name: " << name << " URL: " << url;
         name = QUrl::fromPercentEncoding(name.toAscii());
         if( !(type == "collection" && name == url) ) {
             // Filter out the pathname from the filename and decode URL
@@ -375,7 +376,7 @@ QNetworkReply* QWebDAV::get(QString fileName)
 
     // Finally send this to the WebDAV server
     QNetworkReply *reply = sendWebdavRequest(url,DAVGET);
-    //qDebug() << "GET REPLY: " << reply->readAll();
+    //syncDebug() << "GET REPLY: " << reply->readAll();
     return reply;
 }
 
@@ -398,7 +399,7 @@ QNetworkReply* QWebDAV::put(QString fileName, QByteArray data,
 
     // Finally send this to the WebDAV server
     QNetworkReply *reply = sendWebdavRequest(url,DAVPUT,0,buffer);
-    //qDebug() << "PUT REPLY: " << reply->readAll();
+    //syncDebug() << "PUT REPLY: " << reply->readAll();
     return reply;
 }
 
@@ -423,7 +424,7 @@ QNetworkReply* QWebDAV::put(QString fileName, QString absoluteFileName,
     mRequestNumber++;
     QFile *file = new QFile(absoluteFileName);
     if (!file->open(QIODevice::ReadOnly)) {
-        qDebug() << "File read error " + absoluteFileName +" Code: "
+        syncDebug() << "File read error " + absoluteFileName +" Code: "
                     << file->error();
         return 0;
     }
@@ -432,7 +433,7 @@ QNetworkReply* QWebDAV::put(QString fileName, QString absoluteFileName,
 
     // Finally send this to the WebDAV server
     QNetworkReply *reply = sendWebdavRequest(url,DAVPUT,0,file);
-    //qDebug() << "PUT REPLY: " << reply->readAll();
+    //syncDebug() << "PUT REPLY: " << reply->readAll();
     return reply;
 }
 
@@ -448,13 +449,13 @@ QNetworkReply* QWebDAV::mkdir(QString dirName)
     // Finally send this to the WebDAV server
     QByteArray verb("MKCOL");
     QNetworkReply *reply = sendWebdavRequest(url,DAVMKCOL,verb);
-    //qDebug() << "MKCOL REPLY: " << reply->readAll();
+    //syncDebug() << "MKCOL REPLY: " << reply->readAll();
     return reply;
 }
 
 void QWebDAV::slotReadyRead()
 {
-    //qDebug() << "Data ready to be read!";
+    //syncDebug() << "Data ready to be read!";
 }
 
 void QWebDAV::slotSslErrors(QList<QSslError> errorList)
@@ -472,7 +473,7 @@ void QWebDAV::processFile(QNetworkReply* reply)
     QString fileName = reply->request().url().path().replace(mPathFilter,"")
             .replace("\%20"," ");
 
-    //qDebug() << "File Ready: " << fileName;
+    //syncDebug() << "File Ready: " << fileName;
     emit fileReady(reply,fileName);
 }
 

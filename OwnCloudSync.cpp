@@ -16,6 +16,7 @@
  *    You should have received a copy of the GNU General Public License
  *    along with owncloud_sync.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
+#include "SyncDebug.h"
 #include "OwnCloudSync.h"
 #include "sqlite3_util.h"
 #include "QWebDAV.h"
@@ -102,15 +103,15 @@ OwnCloudSync::OwnCloudSync(QString name, WId id) : mAccountName(name),mWinId(id)
     QFile dbFile(mConfigDirectory+"/"+mAccountName+".db");
     if( dbFile.exists() ) {
         if(!mDB.open()) {
-            qDebug() << "Cannot open database!";
-            qDebug() << mDB.lastError().text();
+            syncDebug() << "Cannot open database!";
+            syncDebug() << mDB.lastError().text();
             mDBOpen = false;
         } else {
             mDBOpen = true;
             loadDBFromFile();
             readConfigFromDB();
             //ui->buttonSave->setDisabled(true);
-            qDebug() << "Checking configuration!";
+            syncDebug() << "Checking configuration!";
 #ifdef Q_OS_LINUX
             // Wait until the password is set
 #else
@@ -151,10 +152,10 @@ void OwnCloudSync::setEnabled( bool enabled)
     }
 
     if(mIsEnabled) {
-        qDebug() << "Starting " << mAccountName;
+        syncDebug() << "Starting " << mAccountName;
         start();
     } else {
-        qDebug() << "Stopping " << mAccountName;
+        syncDebug() << "Stopping " << mAccountName;
         stop();
     }
 }
@@ -162,7 +163,7 @@ void OwnCloudSync::setEnabled( bool enabled)
 void OwnCloudSync::directoryListingError(QString url)
 {
     if(mSettingsCheck) {
-        qDebug() << "Something wrong with the settings, please check.";
+        syncDebug() << "Something wrong with the settings, please check.";
         emit toLog(tr("Settings could not be confirmed for account %1. Please "
                       "confirm your settings and try again.").arg(mAccountName));
     }
@@ -239,9 +240,9 @@ void OwnCloudSync::sync()
         //emit toLog("Clear files found!");
         QSqlQuery query(QSqlDatabase::database(mAccountName));
         query.exec("UPDATE  local_files SET found='' WHERE conflict='';");
-        //qDebug() << "Scanning local directory: ";
+        //syncDebug() << "Scanning local directory: ";
         scanLocalDirectory(mLocalDirectory);
-        //qDebug() << "Scanning local directory!!!";
+        //syncDebug() << "Scanning local directory!!!";
     }
 
     if ( mScanDirectoriesSet.size() != 0 ) {
@@ -255,7 +256,7 @@ void OwnCloudSync::sync()
     }
 
     // Then scan the base directory of the WebDAV server
-    //qDebug() << "Scanning server: " << mRemoteDirectory+"/";
+    //syncDebug() << "Scanning server: " << mRemoteDirectory+"/";
     mWebdav->dirList(mRemoteDirectory+"/");
     mSyncPosition = LISTREMOTEDIR;
     restartRequestTimer();
@@ -297,13 +298,13 @@ void OwnCloudSync::processDirectoryListing(QList<QWebDAV::FileInfo> fileInfo)
                         .arg(prevModified)
                         .arg(fileInfo[i].fileName);
                 add.exec(updateStatement);
-                //qDebug() << "SQuery: " << updateStatement;
+                //syncDebug() << "SQuery: " << updateStatement;
             } else if ( !mUploadingConflictFilesSet.contains(
                             fileInfo[i].fileName.replace(" ","_sssspace_")) ) {
                 // Enable the conflict resolution window
                 emit conflictExists(this);
                 mConflictsExist = true;
-                //qDebug() << "SFile still conflicts: " << fileInfo[i].fileName;
+                //syncDebug() << "SFile still conflicts: " << fileInfo[i].fileName;
             }
         } else { // File does not exist, so just add this info to the DB
             QString addStatement = QString("INSERT INTO server_files(file_name,"
@@ -311,7 +312,7 @@ void OwnCloudSync::processDirectoryListing(QList<QWebDAV::FileInfo> fileInfo)
                                            "values('%1','%2','%3','%4','yes','');")
                     .arg(fileInfo[i].fileName).arg(fileInfo[i].size)
                     .arg(fileInfo[i].type).arg(fileInfo[i].lastModified);
-            //qDebug() << "Query: " << addStatement;
+            //syncDebug() << "Query: " << addStatement;
             add.exec(addStatement);
         }
         // If a collection, list those contents too
@@ -338,13 +339,13 @@ void OwnCloudSync::processFileReady(QNetworkReply *reply,QString fileName)
     QString finalName;
     if(mDownloadingConflictingFile) {
         finalName = getConflictName(fileName);
-        //qDebug() << "Downloading conflicting file " << fileName;
+        //syncDebug() << "Downloading conflicting file " << fileName;
     } else {
         finalName = fileName;
     }
     QFile file(mLocalDirectory+finalName);
     if (!file.open(QIODevice::WriteOnly)) {
-        qDebug() << "Could not open file " << file.fileName() << "for writting.";
+        syncDebug() << "Could not open file " << file.fileName() << "for writting.";
         processNextStep();
         return;
     }
@@ -382,7 +383,7 @@ void OwnCloudSync::processNextStep()
     if( mMakeServerDirs.size() != 0 ) {
             mWebdav->mkdir(mMakeServerDirs.dequeue());
             restartRequestTimer();
-            //qDebug() << "Making the following directories on server: " <<
+            //syncDebug() << "Making the following directories on server: " <<
           //            serverDirs[i];
     // Check if there is another file to dowload, if so, start that process
     }else if( mDownloadingFiles.size() != 0 ) {
@@ -439,12 +440,12 @@ void OwnCloudSync::scanLocalDirectory( QString dirPath)
     QStringList list = dir.entryList();
     for( int i = 0; i < list.size(); i++ ) {
         QString name = list.at(i);
-        //qDebug() << "Processing local file: " + dirPath+"/"+list.at(i);
+        //syncDebug() << "Processing local file: " + dirPath+"/"+list.at(i);
         if( isFileFiltered(name) ) {
             continue;
         }
 
-        //qDebug() << "Relative Path: " << relativeName;
+        //syncDebug() << "Relative Path: " << relativeName;
         processLocalFile(dirPath + "/" + name);
 
         // Check if it is a directory, and if so, process it
@@ -486,14 +487,14 @@ void OwnCloudSync::updateDBLocalFile(QString name, qint64 size, qint64 last,
     // Get the relative name of the file
     name = stringRemoveBasePath(name, mLocalDirectory);
     name = mRemoteDirectory + name;
-    //qDebug() << "Local file name: " << name;
+    //syncDebug() << "Local file name: " << name;
     // Check against the database
     QSqlQuery query = queryDBFileInfo(name,"local_files");
     if (query.next() ) { // We already knew about this file. Update info.
         qint64 prevModified = query.value(4).toString().toLongLong();
         // Sometimes the watcher goes crazy, though. So check to see
         // if last == previous, if so, then it never changed anything!
-        //qDebug() << "Last: " << last << " Prev: " << prevModified;
+        //syncDebug() << "Last: " << last << " Prev: " << prevModified;
         if( (last != prevModified) || mIsFirstRun ) {
             if ( query.value(8).toString() == "") {
                 QString updateStatement =
@@ -504,13 +505,13 @@ void OwnCloudSync::updateDBLocalFile(QString name, qint64 size, qint64 last,
                         .arg(last)
                         .arg(prevModified)
                         .arg(name);
-                //qDebug() << "Query:   " << updateStatement;
+                //syncDebug() << "Query:   " << updateStatement;
                 query.exec(updateStatement);
             } else {
                 // Enable the conflict resolution button
                 emit conflictExists(this);
                 mConflictsExist = true;
-                //qDebug() << "LFile still conflicts: " << name;
+                //syncDebug() << "LFile still conflicts: " << name;
             }
         }
     } else { // We did not know about this file, add
@@ -518,12 +519,12 @@ void OwnCloudSync::updateDBLocalFile(QString name, qint64 size, qint64 last,
                              "file_size,file_type,last_modified,found,conflict) "
                                        "values('%1','%2','%3','%4','yes','');")
                 .arg(name).arg(size).arg(type).arg(last);
-        //qDebug() << "Query: " << addStatement;
+        //syncDebug() << "Query: " << addStatement;
         query.exec(addStatement);
     }
     mNeedsSync = true;  // Since a local file was changed, we need to sync
                         // before closing
-    //qDebug() << "Processing: " << mLocalDirectory + relativeName << " Size: "
+    //syncDebug() << "Processing: " << mLocalDirectory + relativeName << " Size: "
     //         << file.size();
 }
 
@@ -576,7 +577,7 @@ void OwnCloudSync::syncFiles()
         QDateTime lastSyncTime;
         lastSyncTime.setTimeSpec(Qt::UTC);
         lastSyncTime.setMSecsSinceEpoch(lastSync);
-        //qDebug() << "LFile: " << localName << " Size: " << localSize << " vs "
+        //syncDebug() << "LFile: " << localName << " Size: " << localSize << " vs "
         //         << localQuery.value(2).toString() << " type: " << localType ;
         // Query the database and look for this file
         QSqlQuery query = queryDBFileInfo(localName,"server_files");
@@ -604,17 +605,17 @@ void OwnCloudSync::syncFiles()
                             serverModifiedTime > lastSyncTime) {
                         // There is a conflict, both files got changed since the
                         // last time we synced
-                        /*qDebug() << "Conflict with sfile " << localName
+                        /*syncDebug() << "Conflict with sfile " << localName
                                  << serverModifiedTime << serverPrevModifiedTime
                                  << localModifiedTime << lastSyncTime;*/
                         setFileConflict(localName,localSize,
                                         serverModifiedTime.toString(),
                                         localModifiedTime.toString());
-                        //qDebug() << "UPLOAD:   " << localName;
+                        //syncDebug() << "UPLOAD:   " << localName;
                     } else { // There is no conflict
                         mUploadingFiles.enqueue(FileInfo(localName,localSize));
                         mTotalToUpload +=localSize;
-                        //qDebug() << "File " << localName << " is newer than server!";
+                        //syncDebug() << "File " << localName << " is newer than server!";
                     }
                 }
             } else if ( serverModifiedTime > localModifiedTime &&
@@ -627,7 +628,7 @@ void OwnCloudSync::syncFiles()
                             && localModifiedTime > lastSyncTime) {
                         // There is a conflict, both files got changed since the
                         // last time we synced
-                        qDebug() << "Conflict with lfile " << localName
+                        syncDebug() << "Conflict with lfile " << localName
                                  << serverModifiedTime << serverPrevModifiedTime
                                  << localModifiedTime << lastSyncTime;
                         setFileConflict(localName,serverSize,
@@ -636,14 +637,14 @@ void OwnCloudSync::syncFiles()
                     } else { // There is no conflict
                         mDownloadingFiles.enqueue(FileInfo(localName,serverSize));
                         mTotalToDownload += serverSize;
-                        //qDebug() << "OLDER:    " << localName;
+                        //syncDebug() << "OLDER:    " << localName;
                     }
                 }
             } else { // The same! (I highly doubt that!)
-                //qDebug() << "SAME:     " << localName;
+                //syncDebug() << "SAME:     " << localName;
             }
         } else { // Does not exist on server! Upload!
-            //qDebug() << "NEW:      " << localName;
+            //syncDebug() << "NEW:      " << localName;
             if ( localType == "collection") {
                 mMakeServerDirs.enqueue(localName);
             } else {
@@ -659,7 +660,7 @@ void OwnCloudSync::syncFiles()
         QString serverName = serverQuery.value(1).toString();
         qint64 serverSize = serverQuery.value(2).toString().toLongLong();
         QString serverType = serverQuery.value(3).toString();
-        //qDebug() << "SFile: " << serverName << " Size: " << serverSize << " vs "
+        //syncDebug() << "SFile: " << serverName << " Size: " << serverSize << " vs "
         //         << serverQuery.value(2).toString() << " type: " << serverType ;
         QSqlQuery query = queryDBFileInfo(serverName,"local_files");
         if( !query.next() ) {
@@ -669,7 +670,7 @@ void OwnCloudSync::syncFiles()
                 mDownloadingFiles.enqueue(FileInfo(serverName,serverSize));
                 mTotalToDownload += serverSize;
             }
-            //qDebug() << "DOWNLOAD: " << serverName;
+            //syncDebug() << "DOWNLOAD: " << serverName;
         }
     }
     for( int i = 0; i < mDownloadConflict.size(); i++ ) {
@@ -685,11 +686,11 @@ void OwnCloudSync::syncFiles()
         QDir dir;
         if (!dir.mkdir(mLocalDirectory+
                        stringRemoveBasePath(localDirs[i],mRemoteDirectory)) ) {
-            qDebug() << "Could not make directory "+mLocalDirectory+
+            syncDebug() << "Could not make directory "+mLocalDirectory+
                         stringRemoveBasePath(localDirs[i],mRemoteDirectory);
         } else {
             emit toLog(tr("Created local directory: %1").arg(localDirs[i]));
-            //qDebug() << "Made directory "+mLocalDirectory+localDirs[i];
+            //syncDebug() << "Made directory "+mLocalDirectory+localDirs[i];
         }
     }
 
@@ -728,7 +729,7 @@ void OwnCloudSync::setFileConflict(QString name, qint64 size, QString server_las
 
 void OwnCloudSync::download( FileInfo file )
 {
-    qDebug() << "Will download file: " << file.name;
+    syncDebug() << "Will download file: " << file.name;
     mCurrentFileSize = file.size;
     mCurrentFile = file.name;
     if(mDownloadingConflictingFile) {
@@ -750,10 +751,10 @@ void OwnCloudSync::upload( FileInfo fileInfo)
     mCurrentFileSize = fileInfo.size;
     mCurrentFile = fileInfo.name;
     mTransferState = tr("Uploading ");
-    qDebug() << "Uploading File " +mLocalDirectory + mCurrentFile;
+    syncDebug() << "Uploading File " +mLocalDirectory + mCurrentFile;
     QFile file(mLocalDirectory+localName);
     if (!file.open(QIODevice::ReadOnly)) {
-        qDebug() << "File read error " + mLocalDirectory+localName+" Code: "
+        syncDebug() << "File read error " + mLocalDirectory+localName+" Code: "
                     << file.error();
         return;
     }
@@ -805,7 +806,7 @@ void OwnCloudSync::updateDBDownload(QString name)
         downloadText = tr("Downloaded file: %1").arg(dbName);
     }
     emit toLog(downloadText);
-    //qDebug() << "Did this get called?";
+    //syncDebug() << "Did this get called?";
     mTotalTransfered += mCurrentFileSize;
 }
 
@@ -814,7 +815,7 @@ void OwnCloudSync::updateDBUpload(QString name)
     QString fileName = mLocalDirectory+name;
     QFileInfo file(fileName);
     qint64 time = QDateTime::currentMSecsSinceEpoch();
-    //qDebug() << "Debug: File: " << name << " Size: " << file.size();
+    //syncDebug() << "Debug: File: " << name << " Size: " << file.size();
 
     // Check against the database
     QSqlQuery query = queryDBFileInfo(name,"server_files");
@@ -824,14 +825,14 @@ void OwnCloudSync::updateDBUpload(QString name)
                         "last_modified='%2' where file_name='%3'")
                         .arg(file.size())
                         .arg(time).arg(name);
-        //qDebug() << "Query: " << updateStatement;
+        //syncDebug() << "Query: " << updateStatement;
         query.exec(updateStatement);
         updateStatement =
                 QString("UPDATE local_files SET last_sync='%1'"
                         "where file_name='%2'")
                 .arg(time).arg(name);
         query.exec(updateStatement);
-        //qDebug() << "Query: " << updateStatement;
+        //syncDebug() << "Query: " << updateStatement;
     } else { // We did not know about this file, add
         QString addStatement = QString("INSERT INTO server_files (file_name,"
                              "file_size,file_type,last_modified) "
@@ -874,10 +875,10 @@ void OwnCloudSync::transferProgress(qint64 current, qint64 total)
 
 void OwnCloudSync::createDataBase()
 {
-    //qDebug() << "Creating Database!";
+    //syncDebug() << "Creating Database!";
     if(!mDB.open()) {
-        qDebug() << "Cannot open database for creation!";
-        qDebug() << mDB.lastError().text();
+        syncDebug() << "Cannot open database for creation!";
+        syncDebug() << mDB.lastError().text();
         mDBOpen = false;
     } else {
         mDBOpen = true;
@@ -1080,7 +1081,7 @@ void OwnCloudSync::localDirectoryChanged(QString name)
 
 void OwnCloudSync::localFileChanged(QString name)
 {
-    //qDebug() << "Checking file status: " << name;
+    //syncDebug() << "Checking file status: " << name;
     QFileInfo info(name);
     name = stringRemoveBasePath(name,mLocalDirectory);
     if( info.exists() ) { // Ok, file did not get deleted
@@ -1101,7 +1102,7 @@ void OwnCloudSync::scanLocalDirectoryForNewFiles(QString path)
     if(mRemoteDirectory != "/") {
         remote = mRemoteDirectory+"/";
     }
-    //qDebug() << "Scanning local directory: " << path;
+    //syncDebug() << "Scanning local directory: " << path;
     QDir dir(mLocalDirectory+path);
     dir.setFilter(QDir::Files|QDir::NoDot|QDir::NoDotDot|QDir::AllEntries
                   |QDir::Hidden);
@@ -1122,7 +1123,7 @@ void OwnCloudSync::scanLocalDirectoryForNewFiles(QString path)
                                "file_name='%1/'").arg(path+remote+list[i]));
             if( !query.next() ) { // Definitely does not exist! Good!
                 // File really doesn't exist!!!
-                //qDebug() << "New file found!" << path +remote + list[i];
+                //syncDebug() << "New file found!" << path +remote + list[i];
                 processLocalFile(mLocalDirectory+path+list[i]);
             }
         }
@@ -1133,9 +1134,9 @@ void OwnCloudSync::scanLocalDirectoryForNewFiles(QString path)
 void OwnCloudSync::saveDBToFile()
 {
     if( sqlite3_util::sqliteDBMemFile( mDB, mDBFileName, true ) ) {
-        qDebug() << "Successfully saved DB to file!";
+        syncDebug() << "Successfully saved DB to file!";
     } else {
-        qDebug() << "Failed to save DB to file!";
+        syncDebug() << "Failed to save DB to file!";
     }
 #ifdef Q_OS_LINUX
     saveWalletPassword();
@@ -1145,9 +1146,9 @@ void OwnCloudSync::saveDBToFile()
 void OwnCloudSync::loadDBFromFile()
 {
     if( sqlite3_util::sqliteDBMemFile( mDB, mDBFileName, false ) ) {
-        qDebug() << "Successfully loaded DB from file!";
+        syncDebug() << "Successfully loaded DB from file!";
     } else {
-        qDebug() << "Failed to load DB from file!";
+        syncDebug() << "Failed to load DB from file!";
     }
 }
 
@@ -1156,7 +1157,7 @@ void OwnCloudSync::deleteRemovedFiles()
     // Any file that has not been found will be deleted!
 
     if( mIsFirstRun ) {
-        //qDebug() << "Looking for server files to delete!";
+        //syncDebug() << "Looking for server files to delete!";
         // Since we don't always query local files except for the first run
         // only do this if it is the first run
         QSqlQuery local(QSqlDatabase::database(mAccountName));
@@ -1166,7 +1167,7 @@ void OwnCloudSync::deleteRemovedFiles()
                    "AND file_type='file';");
         while(local.next()) {
             // Local files were deleted. Delete from server too.
-            //qDebug() << "Deleting file from server: " << local.value(0).toString();
+            //syncDebug() << "Deleting file from server: " << local.value(0).toString();
             //emit toLog(tr("File claims to be not found: %1").arg(
             //                            local.value(0).toString()));
             deleteFromServer(local.value(0).toString());
@@ -1179,19 +1180,19 @@ void OwnCloudSync::deleteRemovedFiles()
             //emit toLog(tr("Directory claims to be not found: %1").arg(
             //                            local.value(0).toString()));
             // Local files were deleted. Delete from server too.
-            qDebug() << "Deleting directory from server: " << local.value(0).toString();
+            syncDebug() << "Deleting directory from server: " << local.value(0).toString();
             deleteFromServer(local.value(0).toString());
         }
     }
 
-    //qDebug() << "Looking for local files to delete!";
+    //syncDebug() << "Looking for local files to delete!";
     QSqlQuery server(QSqlDatabase::database(mAccountName));
     // First delete the files
     server.exec("SELECT file_name from server_files where found=''"
                 "AND file_type='file';");
     while(server.next()) {
         // Server files were deleted. Delete from local too.
-        qDebug() << "Deleting file from local:  " << server.value(0).toString();
+        syncDebug() << "Deleting file from local:  " << server.value(0).toString();
         //emit toLog(tr("Deleting local file: %1").arg(
         //               server.value(0).toString()));
         deleteFromLocal(server.value(0).toString(),false);
@@ -1202,7 +1203,7 @@ void OwnCloudSync::deleteRemovedFiles()
                 "AND file_type='collection';");
     while(server.next()) {
         // Server files were deleted. Delete from local too.
-        //qDebug() << "Deleting directory from local:  " << server.value(0).toString();
+        //syncDebug() << "Deleting directory from local:  " << server.value(0).toString();
         deleteFromLocal(server.value(0).toString(),true);
     }
 }
@@ -1214,14 +1215,14 @@ void OwnCloudSync::deleteFromLocal(QString name, bool isDir)
     mFileWatcher->removePath(mLocalDirectory+localName);
     if(!isDir) {
         if( !QFile::remove(mLocalDirectory+localName ) ) {
-            qDebug() << "File deletion failed: " << mLocalDirectory+localName;
+            syncDebug() << "File deletion failed: " << mLocalDirectory+localName;
             return;
         }
         emit toLog(tr("Deleted local file: %1").arg(name));
     } else {
         QDir dir;
         if( !dir.rmdir(mLocalDirectory+localName) ) {
-            qDebug() << "Directory deletion failed: "
+            syncDebug() << "Directory deletion failed: "
                         << mLocalDirectory+localName;
             return;
         }
@@ -1336,7 +1337,7 @@ QStringList OwnCloudSync::getFilterList()
     QList<QString> filters = mFilters.toList();
     for( int i = 0; i < filters.size(); i++ ) {
         list << filters[i];
-        //qDebug() << filters[i];
+        //syncDebug() << filters[i];
     }
     return list;
 }
@@ -1348,7 +1349,7 @@ bool OwnCloudSync::isFileFiltered(QString name)
          name.contains("_ocs_serverconflict.") ||
            name.contains("_ocs_uploading.") ||
             name.contains("_ocs_downloading." )) {
-        //qDebug() << "File: " +name+" ignored by " + mAccountName;
+        //syncDebug() << "File: " +name+" ignored by " + mAccountName;
         return true;
     }
     QList<QString> list = mFilters.toList();
@@ -1362,12 +1363,12 @@ bool OwnCloudSync::isFileFiltered(QString name)
             filter.replace("*",".*");
             QRegExp reg(filter);
             if( name.contains(reg) ) {
-                //qDebug() << "File: " +name+" ignored by " + mAccountName + " because of " + filter;
+                //syncDebug() << "File: " +name+" ignored by " + mAccountName + " because of " + filter;
                 return true;
             }
 
         } else if( name.contains(filter) ) {
-            //qDebug() << "File: " +name+" ignored by " + mAccountName + " because of " + filter;
+            //syncDebug() << "File: " +name+" ignored by " + mAccountName + " because of " + filter;
             return true;
         }
     }
@@ -1438,13 +1439,13 @@ void OwnCloudSync::walletOpened(bool ok)
          || mWallet->createFolder("owncloud_sync"))
          && mWallet->setFolder("owncloud_sync")) {
             //emit toLog("Wallet opened!");
-            //qDebug() << "Wallet opened!" <<
+            //syncDebug() << "Wallet opened!" <<
             //           KWallet::Wallet::FormDataFolder() ;
             if (mReadPassword ) {
                 requestPassword();
             }
     } else {
-        qDebug() << "Error opening wallet";
+        syncDebug() << "Error opening wallet";
     }
 }
 

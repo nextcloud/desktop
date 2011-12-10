@@ -17,6 +17,7 @@
  *    along with owncloud_sync.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
+#include "SyncDebug.h"
 #include "SyncWindow.h"
 #include "ui_SyncWindow.h"
 #include "sqlite3_util.h"
@@ -56,6 +57,11 @@ SyncWindow::SyncWindow(QWidget *parent) :
     setWindowTitle("OwnCloud Sync");
     mEditingConfig = -1;
     mConflictsExist = false;
+    loadApplicationSettings();
+
+    // Before anything else, connect to the SyncDebug
+    connect(getSyncDebug(),SIGNAL(debugMessage(const QString)),
+            this,SLOT(processDebugMessage(const QString)));
 
     mCurrentAccountEdit = 0;
     mTotalSyncs = 0;
@@ -111,7 +117,6 @@ SyncWindow::SyncWindow(QWidget *parent) :
     rebuildAccountsTable();
 
     updateStatus();
-    loadApplicationSettings();
     ui->actionEnable_Delete_Account->setVisible(false);
 }
 
@@ -160,7 +165,7 @@ void SyncWindow::saveLogs()
             QDateTime::currentDateTime().toString("yyyyMMdd:hh:mm:ss.log");
     QFile file(mConfigDirectory+"/logs/"+name);
     if( !file.open(QIODevice::WriteOnly)) {
-        qDebug() << "Could not open log file for writting!\n";
+        syncDebug() << "Could not open log file for writting!\n";
         return;
     }
 
@@ -248,7 +253,7 @@ void SyncWindow::on_buttonSave_clicked()
         // does not already exist
         if( ui->lineName->text() != mAccounts[mEditingConfig]->getName() ) {
             if( info.exists() ) {
-                qDebug() << "New account name already taken!!";
+                syncDebug() << "New account name already taken!!";
                 okToEdit = false;
             }
         }
@@ -264,7 +269,7 @@ void SyncWindow::on_buttonSave_clicked()
     } else { // New account
         // First, check to see if this name is already taken
         if(info.exists()) { // Account name taken!
-            qDebug() << "Account name already taken!!";
+            syncDebug() << "Account name already taken!!";
             ui->lineName->setFocus();
         } else { // Good, create a new account
             OwnCloudSync *account = addAccount(ui->lineName->text());
@@ -304,7 +309,7 @@ void SyncWindow::closeEvent(QCloseEvent *event)
 
         for( int i = 0; i < mAccounts.size(); i++ ) {
             while( mAccounts[i]->needsSync() ) {
-                //qDebug() << "Waiting for " + mAccounts[i]->getName()
+                //syncDebug() << "Waiting for " + mAccounts[i]->getName()
                 //            + " to sync before close.";
                 QCoreApplication::processEvents();
             }
@@ -319,7 +324,7 @@ void SyncWindow::closeEvent(QCloseEvent *event)
 
         saveLogs();
         saveApplicationSettings();
-        qDebug() << "All ready to close!";
+        syncDebug() << "All ready to close!";
         QMainWindow::closeEvent(event);
     } else {
         if(mSystemTray->isVisible()) {
@@ -527,7 +532,7 @@ void SyncWindow::on_buttonCancel_clicked()
 void SyncWindow::slotReadyToSync(OwnCloudSync* oc)
 {
     mAccountsReadyToSync.enqueue(oc);
-    qDebug() << oc->getName() << " is ready to sync!";
+    syncDebug() << oc->getName() << " is ready to sync!";
     if(!mBusy) {
         processNextStep();
     }
@@ -562,7 +567,7 @@ void SyncWindow::processNextStep()
 
 void SyncWindow::slotFinishedSync(OwnCloudSync *oc)
 {
-    qDebug() << oc->getName() << " just finishied.";
+    syncDebug() << oc->getName() << " just finishied.";
     rebuildAccountsTable();
     processNextStep();
 }
@@ -661,14 +666,14 @@ void SyncWindow::listFiltersSelectionChanged(QItemSelection selected,
                                              QItemSelection deselected)
 {
     ui->buttonFilterRemove->setEnabled(true);
-    qDebug() << "Selected: " << selected.indexes()[0].row();
+    syncDebug() << "Selected: " << selected.indexes()[0].row();
 }
 
 void SyncWindow::on_buttonFilterRemove_clicked()
 {
     int index = ui->listFilterView->selectionModel()
                 ->selection().indexes()[0].row();
-    qDebug() << "Will remove: " << ui->listFilterView->model()->index(index,0)
+    syncDebug() << "Will remove: " << ui->listFilterView->model()->index(index,0)
                 .data(Qt::DisplayRole ).toString();
     mAccounts[mEditingConfig]->removeFilter(
                 ui->listFilterView->model()->index(index,0)
@@ -696,6 +701,7 @@ void SyncWindow::saveApplicationSettings()
     settings.setValue("hide_on_start",ui->actionHide_on_start->isChecked());
     settings.setValue("hide_when_closed",
                       ui->actionClose_Button_Hides_Window->isChecked());
+    settings.setValue("display_debug",mDisplayDebug);
     settings.endGroup();
 }
 
@@ -712,6 +718,8 @@ void SyncWindow::loadApplicationSettings()
     }
     ui->actionClose_Button_Hides_Window->setChecked(
                 settings.value("hide_when_closed").toBool());
+    mDisplayDebug = settings.value("display_debug").toBool();
+    ui->actionDisplay_Debug_Messages->setChecked(mDisplayDebug);
     settings.endGroup();
 }
 
@@ -761,4 +769,15 @@ void SyncWindow::on_checkBoxHostnameEncryption_stateChanged(int arg1)
     } else {
         ui->labelHttp->setText("https://");
     }
+}
+
+void SyncWindow::processDebugMessage(const QString msg)
+{
+    if(mDisplayDebug)
+        ui->textBrowser->append(msg);
+}
+
+void SyncWindow::on_actionDisplay_Debug_Messages_toggled(bool arg1)
+{
+    mDisplayDebug = arg1;
 }

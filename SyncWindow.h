@@ -73,6 +73,7 @@ private:
     QSignalMapper *mAccountsSignalMapper;
     QQueue<OwnCloudSync*> mAccountsReadyToSync;
     bool mQuitAction;
+    bool mDisplayDebug;
 
     QIcon mDefaultIcon;
     QIcon mSyncIcon;
@@ -101,6 +102,7 @@ public slots:
     void listFiltersSelectionChanged(QItemSelection selected,
                                      QItemSelection deselected);
     void slotAccountsSignalMapper(int row);
+    void processDebugMessage(const QString msg);
 
     // GUI related slots
     void on_buttonSave_clicked();
@@ -140,6 +142,7 @@ private slots:
     void on_pushButton_clicked();
     void on_pushButton_2_clicked();
     void on_checkBoxHostnameEncryption_stateChanged(int arg1);
+    void on_actionDisplay_Debug_Messages_toggled(bool arg1);
 };
 
 #endif // SYNCWINDOW_H
