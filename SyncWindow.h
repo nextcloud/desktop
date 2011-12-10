@@ -139,6 +139,7 @@ private slots:
     void on_buttonDeleteAccount_clicked();
     void on_pushButton_clicked();
     void on_pushButton_2_clicked();
+    void on_checkBoxHostnameEncryption_stateChanged(int arg1);
 };
 
 #endif // SYNCWINDOW_H

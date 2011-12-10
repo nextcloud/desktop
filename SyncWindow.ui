@@ -21,7 +21,7 @@
        <number>0</number>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="page">
        <layout class="QGridLayout" name="gridLayout_2">
@@ -268,7 +268,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Enter your account details below. Leave off the /files/webdav.php on all remote references.&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; font-weight:600;&quot;&gt;No spaces on the account name!!&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Enter any filters for files that you want to exclude. Only wildcard supported is *&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;To delete account enable the button from he pop up menu. Then click the delete account button.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;To delete account enable the button from the pop up menu. Then click the delete account button.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
              </widget>
             </item>
@@ -287,14 +287,47 @@ p, li { white-space: pre-wrap; }
              </widget>
             </item>
             <item row="2" column="0">
-             <widget class="QLabel" name="label_4">
+             <widget class="QLabel" name="labelHostname">
               <property name="text">
                <string>Hostname: </string>
               </property>
              </widget>
             </item>
             <item row="2" column="1">
-             <widget class="QLineEdit" name="lineHost"/>
+             <widget class="QFrame" name="frame_6">
+              <property name="frameShape">
+               <enum>QFrame::NoFrame</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Plain</enum>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_5">
+               <property name="margin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="labelHttp">
+                 <property name="text">
+                  <string>http://</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="lineHost">
+                 <property name="text">
+                  <string/>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="checkBoxHostnameEncryption">
+                 <property name="text">
+                  <string>Encrypted</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
             </item>
             <item row="3" column="0">
              <widget class="QLabel" name="label_2">
@@ -481,14 +514,14 @@ p, li { white-space: pre-wrap; }
            <zorder>label_11</zorder>
            <zorder>label_5</zorder>
            <zorder>label_7</zorder>
-           <zorder>label_4</zorder>
+           <zorder>labelHostname</zorder>
            <zorder>label_2</zorder>
            <zorder>lineUser</zorder>
-           <zorder>lineHost</zorder>
            <zorder>label_6</zorder>
            <zorder>frame_4</zorder>
            <zorder>frame_2</zorder>
            <zorder>frame_3</zorder>
+           <zorder>frame_6</zorder>
           </widget>
           <widget class="QFrame" name="frameFilter">
            <property name="sizePolicy">

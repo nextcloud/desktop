@@ -238,6 +238,11 @@ void SyncWindow::on_buttonSave_clicked()
     QFileInfo info(mConfigDirectory+"/"+ui->lineName->text()+".db");
     bool okToEdit = true;
     ui->buttonSave->setDisabled(true);
+    QString host = ui->lineHost->text();
+    host.replace("http://","");
+    host.replace("https://","");
+    host.replace("webdav://","");
+    host.replace("webdavs://","");
     if( mEditingConfig >= 0 ) { // Editing an account
         // If we are renaming the account, make sure that the new name
         // does not already exist
@@ -249,7 +254,7 @@ void SyncWindow::on_buttonSave_clicked()
         }
         if( okToEdit ) {
             mAccounts[mEditingConfig]->initialize(
-                        ui->lineHost->text(),
+                        ui->labelHttp->text()+host,
                         ui->lineUser->text(),
                         ui->linePassword->text(),
                         ui->lineRemoteDir->text(),
@@ -263,7 +268,7 @@ void SyncWindow::on_buttonSave_clicked()
             ui->lineName->setFocus();
         } else { // Good, create a new account
             OwnCloudSync *account = addAccount(ui->lineName->text());
-            account->initialize(ui->lineHost->text(),
+            account->initialize(ui->labelHttp->text()+host,
                                 ui->lineUser->text(),
                                 ui->linePassword->text(),
                                 ui->lineRemoteDir->text(),
@@ -580,11 +585,17 @@ void SyncWindow::slotAccountsSignalMapper(int row)
 
 void SyncWindow::editConfig(int row)
 {
+    QString host = mAccounts[row]->getHost();
+    if(host.contains("https://")) {
+        ui->checkBoxHostnameEncryption->setChecked(true);
+    }
+    host.replace("https://","");
+    host.replace("http://","");
     mEditingConfig = row;
     // Switch to the account editing widget
     ui->stackedWidget->setCurrentIndex(2);
     ui->lineName->setText(mAccounts[row]->getName());
-    ui->lineHost->setText(mAccounts[row]->getHost());
+    ui->lineHost->setText(host);
     ui->lineUser->setText(mAccounts[row]->getUserName());
     ui->linePassword->setText(mAccounts[row]->getPassword());
     ui->lineRemoteDir->setText(mAccounts[row]->getRemoteDirectory());
@@ -741,4 +752,13 @@ void SyncWindow::on_pushButton_clicked()
 void SyncWindow::on_pushButton_2_clicked()
 {
     saveLogs();
+}
+
+void SyncWindow::on_checkBoxHostnameEncryption_stateChanged(int arg1)
+{
+    if( arg1 == 0 ) {
+        ui->labelHttp->setText("http://");
+    } else {
+        ui->labelHttp->setText("https://");
+    }
 }
