@@ -121,11 +121,13 @@ StatusDialog::StatusDialog(QWidget *parent) :
   connect(_ButtonFetch,  SIGNAL(clicked()), this, SLOT(slotFetchFolder()));
   connect(_ButtonPush,  SIGNAL(clicked()), this, SLOT(slotPushFolder()));
   connect(_ButtonOpenOC, SIGNAL(clicked()), this, SLOT(slotOpenOC()));
+  connect(_ButtonEnable, SIGNAL(clicked()), this, SLOT(slotEnableFolder()));
 
   _ButtonOpenOC->setEnabled(false);
   _ButtonRemove->setEnabled(false);
   _ButtonFetch->setEnabled(false);
   _ButtonPush->setEnabled(false);
+  _ButtonEnable->setEnabled(false);
 
   connect(_folderList, SIGNAL(activated(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
 }
@@ -137,7 +139,17 @@ void StatusDialog::slotFolderActivated( const QModelIndex& indx )
   _ButtonRemove->setEnabled( state );
   _ButtonFetch->setEnabled( state );
   _ButtonPush->setEnabled( state );
+  _ButtonEnable->setEnabled( state );
 
+  if ( state ) {
+    bool folderEnabled = _model->data( indx, FolderViewDelegate::FolderSyncEnabled).toBool();
+    qDebug() << "folder is sync enabled: " << folderEnabled;
+    if ( folderEnabled ) {
+      _ButtonEnable->setText( tr( "disable" ) );
+    } else {
+      _ButtonEnable->setText( tr( "enable" ) );
+    }
+  }
 }
 
 void StatusDialog::setFolderList( Folder::Map folders )
@@ -151,6 +163,8 @@ void StatusDialog::setFolderList( Folder::Map folders )
     item->setData( icon, FolderViewDelegate::FolderIconRole );
     item->setData( f->path(),  FolderViewDelegate::FolderPathRole );
     item->setData( f->alias(),  FolderViewDelegate::FolderNameRole );
+    item->setData( f->syncEnabled(), FolderViewDelegate::FolderSyncEnabled );
+    qDebug() << "Folder is SyncEnabled: " << f->syncEnabled();
 
     SyncResult res = f->lastSyncResult();
     QString resultStr = tr("Undefined");
@@ -209,6 +223,19 @@ void StatusDialog::slotPushFolder()
     qDebug() << "Push Folder alias " << alias;
     if( !alias.isEmpty() ) {
       emit(pushFolderAlias( alias ));
+    }
+  }
+}
+
+void StatusDialog::slotEnableFolder()
+{
+  QModelIndex selected = _folderList->selectionModel()->currentIndex();
+  if( selected.isValid() ) {
+    QString alias = _model->data( selected, FolderViewDelegate::FolderNameRole ).toString();
+    bool folderEnabled = _model->data( selected, FolderViewDelegate::FolderSyncEnabled).toBool();
+    qDebug() << "Toggle enabled/disabled Folder alias " << alias << " - current state: " << folderEnabled;
+    if( !alias.isEmpty() ) {
+      emit(enableFolderAlias( alias, !folderEnabled ));
     }
   }
 }

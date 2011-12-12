@@ -91,8 +91,6 @@ bool Folder::syncEnabled() const
 
 void Folder::setSyncEnabled( bool doit )
 {
-  if( _lastSyncResult.result() != SyncResult::Success ) doit = false;
-
   _enabled = doit;
   _watcher->setEventsEnabled( doit );
 }
@@ -204,13 +202,10 @@ void Folder::slotSyncStarted()
 void Folder::slotSyncFinished(const SyncResult &result)
 {
   _lastSyncResult = result;
-
-  bool enabled = ( result.result() == SyncResult::Success );
-  setSyncEnabled( enabled );
-
   _openAction->setIcon(icon(22));
-  // reenable the poll timer
-  if( enabled ) {
+
+  // reenable the poll timer if folder is sync enabled
+  if( syncEnabled() ) {
     qDebug() << "* " << alias() << "Poll timer enabled";
     _pollTimer->start();
   } else {

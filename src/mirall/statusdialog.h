@@ -31,13 +31,15 @@ class FolderViewDelegate : public QStyledItemDelegate
     FolderViewDelegate();
     virtual ~FolderViewDelegate();
 
-    enum datarole { FolderNameRole   = Qt::UserRole + 100,
-                    FolderPathRole   = Qt::UserRole + 101,
-                    FolderIconRole   = Qt::UserRole + 102,
-                    FolderRemotePath = Qt::UserRole + 103,
-                    FolderStatus     = Qt::UserRole + 104,
-                    FolderErrorMsg   = Qt::UserRole + 105,
-                    FolderStatusIcon = Qt::UserRole + 106 };
+    enum datarole { FolderNameRole    = Qt::UserRole + 100,
+                    FolderPathRole    = Qt::UserRole + 101,
+                    FolderIconRole    = Qt::UserRole + 102,
+                    FolderRemotePath  = Qt::UserRole + 103,
+                    FolderStatus      = Qt::UserRole + 104,
+                    FolderErrorMsg    = Qt::UserRole + 105,
+                    FolderStatusIcon  = Qt::UserRole + 106,
+                    FolderSyncEnabled = Qt::UserRole + 107
+    };
     void paint( QPainter*, const QStyleOptionViewItem&, const QModelIndex& ) const;
     QSize sizeHint( const QStyleOptionViewItem&, const QModelIndex& ) const;
 };
@@ -54,6 +56,7 @@ signals:
     void removeFolderAlias( const QString& );
     void fetchFolderAlias( const QString& );
     void pushFolderAlias( const QString& );
+    void enableFolderAlias( const QString&, const bool );
 
 public slots:
     void slotRemoveFolder();
@@ -61,6 +64,7 @@ public slots:
     void slotPushFolder();
     void slotFolderActivated( const QModelIndex& );
     void slotOpenOC();
+    void slotEnableFolder();
 
 private:
     QStandardItemModel *_model;

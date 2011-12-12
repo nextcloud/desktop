@@ -59,6 +59,10 @@ Application::Application(int argc, char **argv) :
     connect( _statusDialog, SIGNAL(pushFolderAlias(const QString&)),
              SLOT(slotPushFolder( const QString&)));
 
+    connect( _statusDialog, SIGNAL(enableFolderAlias(QString,bool)),
+             SLOT(slotEnableFolder(QString,bool)));
+
+
     setupActions();
     setupSystemTray();
 
@@ -132,7 +136,7 @@ void Application::setupSystemTray()
 void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
 {
   if( reason == QSystemTrayIcon::Trigger ) {
-    setAllFolderSyncEnabled( false );
+    disableFoldersWithRestore();
     // check if there is a mirall.cfg already.
     if( _owncloudSetup->wizard()->isVisible() ) {
       _owncloudSetup->wizard()->show();
@@ -147,7 +151,7 @@ void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
 
       _statusDialog->show();
     }
-    setAllFolderSyncEnabled( true );
+    restoreEnabledFolders();
   }
 }
 
@@ -179,7 +183,7 @@ void Application::slotReparseConfiguration()
 
 void Application::slotAddFolder()
 {
-  setAllFolderSyncEnabled( false );
+  disableFoldersWithRestore();
 
   _folderWizard->setFolderMap( &_folderMap );
 
@@ -227,10 +231,10 @@ void Application::slotAddFolder()
     settings.sync();
     setupFolderFromConfigFile(alias);
     setupContextMenu();
-  }
-  else
+  } else {
     qDebug() << "* Folder wizard cancelled";
-  setAllFolderSyncEnabled( true );
+  }
+  restoreEnabledFolders();
 }
 
 void Application::slotRemoveFolder( const QString& alias )
@@ -315,11 +319,24 @@ void Application::slotPushFolder( const QString& alias )
 
 }
 
+void Application::slotEnableFolder(const QString& alias, const bool enable)
+{
+  qDebug() << "enable folder with alias " << alias;
+
+  if( ! _folderMap.contains( alias ) ) {
+    qDebug() << "!! Can not enable alias " << alias << ", can not be found in folderMap.";
+    return;
+  }
+
+  Folder *f = _folderMap[alias];
+  f->setSyncEnabled(enable);
+}
+
 void Application::slotConfigure()
 {
-  setAllFolderSyncEnabled( false );
+  disableFoldersWithRestore();
   _owncloudSetup->startWizard();
-  setAllFolderSyncEnabled( true );
+  restoreEnabledFolders();
 }
 
 void Application::setupKnownFolders()
@@ -443,14 +460,22 @@ void Application::slotFolderSyncFinished(const SyncResult &result)
     }
 }
 
-void Application::setAllFolderSyncEnabled( bool stat )
+void Application::disableFoldersWithRestore()
 {
-  if( stat )
-    qDebug() << " ** Enabling folder sync!";
-  else
-    qDebug() << " ** Disabling folder sync!";
+  _folderEnabledMap.clear();
   foreach( Folder *f, _folderMap ) {
-    f->setSyncEnabled( stat );
+    // store the enabled state, then make sure it is disabled
+    _folderEnabledMap.insert(f->alias(), f->syncEnabled());
+    f->setSyncEnabled(false);
+  }
+}
+
+void Application::restoreEnabledFolders()
+{
+  foreach( Folder *f, _folderMap ) {
+    if (_folderEnabledMap.contains( f->alias() )) {
+      f->setSyncEnabled( _folderEnabledMap.value( f->alias() ));
+    }
   }
 }
 

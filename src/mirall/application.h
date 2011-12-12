@@ -48,11 +48,11 @@ protected slots:
     void slotRemoveFolder( const QString& );
     void slotFetchFolder( const QString& );
     void slotPushFolder( const QString& );
+    void slotEnableFolder( const QString&, const bool );
     void slotConfigure();
 
     void slotFolderSyncStarted();
     void slotFolderSyncFinished(const SyncResult &);
-    void setAllFolderSyncEnabled( bool );
 
 protected:
 
@@ -69,6 +69,10 @@ protected:
     // creates a folder for a specific
     // configuration
     void setupFolderFromConfigFile(const QString &filename);
+
+    //folders have to be disabled while making config changes
+    void disableFoldersWithRestore();
+    void restoreEnabledFolders();
 
 protected slots:
     void slotTrayClicked( QSystemTrayIcon::ActivationReason );
@@ -94,6 +98,8 @@ private:
     // tray's menu
     QMenu *_contextMenu;
     StatusDialog *_statusDialog;
+
+    QHash<QString, bool> _folderEnabledMap;
 };
 
 } // namespace Mirall
