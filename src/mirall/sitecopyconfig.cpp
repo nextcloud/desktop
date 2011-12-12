@@ -19,6 +19,11 @@ namespace Mirall {
 
 SitecopyConfig::SitecopyConfig()
 {
+  // file patterns to be exclude
+  _ExcludePatterns.append("*.bak");
+  _ExcludePatterns.append("*~");
+  _ExcludePatterns.append(".*");
+  _ExcludePatterns.append("\"#*#\"");
 
 }
 
@@ -106,6 +111,10 @@ bool SitecopyConfig::sitecopyConfigToFile()
       out << "  " << configKey << " " << configs[configKey] << '\n';
       qDebug() << "  Setting: " << configKey << ": " << configs[configKey];
     }
+    foreach( QString pattern, _ExcludePatterns ) {
+      out << "  exclude " << pattern << '\n';
+    }
+
     out << '\n';
   }
   configFile.close();

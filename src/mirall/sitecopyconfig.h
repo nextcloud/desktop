@@ -45,8 +45,10 @@ private:
   QHash<QString, QHash<QString, QString> > _Sites;
   QHash<QString, QString>                  _CurrSite;
   // QHash<QString, QStringList>              _ChangesHash;
-  QString _CurrSiteName;
+  QStringList				   _ExcludePatterns;
+  QString                                  _CurrSiteName;
 };
+
 };
 
 #endif // SITECOPYCONFIG_H
