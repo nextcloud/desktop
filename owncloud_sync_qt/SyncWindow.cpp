@@ -118,6 +118,12 @@ SyncWindow::SyncWindow(QWidget *parent) :
 
     updateStatus();
     ui->actionEnable_Delete_Account->setVisible(false);
+
+    if( mAccounts.size() > 0 && ui->actionHide_on_start->isChecked() ) {
+        hide();
+    } else {
+        show();
+    }
 }
 
 void SyncWindow::updateStatus()
@@ -711,11 +717,6 @@ void SyncWindow::loadApplicationSettings()
     settings.beginGroup("SyncWindow");
     bool checked =  settings.value("hide_on_start").toBool();
     ui->actionHide_on_start->setChecked(checked);
-    if( mAccounts.size() > 0 && checked ) {
-        hide();
-    } else {
-        show();
-    }
     ui->actionClose_Button_Hides_Window->setChecked(
                 settings.value("hide_when_closed").toBool());
     mDisplayDebug = settings.value("display_debug").toBool();
