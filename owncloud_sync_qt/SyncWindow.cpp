@@ -313,13 +313,13 @@ void SyncWindow::closeEvent(QCloseEvent *event)
             mAccounts[i]->stop(); // Stop the counter
         }
 
-        for( int i = 0; i < mAccounts.size(); i++ ) {
-            while( mAccounts[i]->needsSync() ) {
-                //syncDebug() << "Waiting for " + mAccounts[i]->getName()
-                //            + " to sync before close.";
-                QCoreApplication::processEvents();
-            }
-        }
+//        for( int i = 0; i < mAccounts.size(); i++ ) {
+//            while( mAccounts[i]->needsSync() ) {
+//                //syncDebug() << "Waiting for " + mAccounts[i]->getName()
+//                //            + " to sync before close.";
+//                QCoreApplication::processEvents();
+//            }
+//        }
 
 
         // Before closing, save the database!!!
