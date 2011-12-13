@@ -42,6 +42,7 @@
 OwnCloudSync::OwnCloudSync(QString name, WId id) : mAccountName(name),mWinId(id)
 {
     mBusy = false;
+    mIsPaused = false;
 
     // Set the pointers so we can delete them without worrying :)
     mSyncTimer = 0;
@@ -183,6 +184,9 @@ void OwnCloudSync::updateStatus()
 
 void OwnCloudSync::timeToSync()
 {
+    if(mIsPaused) { // Paused, skip this sync cycle
+        return;
+    }
     mNotifySyncEmitted = true;
     emit readyToSync(this);
 }
@@ -371,6 +375,10 @@ void OwnCloudSync::processNextStep()
     }
 
     mSyncPosition = TRANSFER;
+
+    if(mIsPaused) {
+        return;
+    }
 
     if( mMakeServerDirs.size() != 0 ) {
             mWebdav->mkdir(mMakeServerDirs.dequeue());
@@ -593,9 +601,7 @@ void OwnCloudSync::syncFiles()
         //         << localQuery.value(2).toString() << " type: " << localType ;
         // Query the database and look for this file
         QSqlQuery query = queryDBFileInfo(localName,"server_files_processing");
-        syncDebug() << "Will check server!" << localName;
         if( query.next() ) {
-            syncDebug() << "Server checked!!!";
             // Check when this file was last modified, and check to see
             // when we last synced
             //QString serverType = query.value(3).toString();
@@ -608,7 +614,6 @@ void OwnCloudSync::syncFiles()
             QDateTime serverPrevModifiedTime;
             serverPrevModifiedTime.setTimeSpec(Qt::UTC);
             serverPrevModifiedTime.setMSecsSinceEpoch(serverPrevModified);
-syncDebug() << serverModifiedTime << localModifiedTime << lastSyncTime;
             if( serverModifiedTime < localModifiedTime &&
                     localModifiedTime > lastSyncTime  ) { // Server is older!
                 // Now check to see if the server too modified the file
@@ -1260,6 +1265,8 @@ void OwnCloudSync::loadDBFromFile()
 
 void OwnCloudSync::deleteRemovedFiles()
 {
+    QStringList localCopy;
+    QStringList serverCopy;
     // Any file that has not been found will be deleted!
     if( mIsFirstRun ) {
         //syncDebug() << "Looking for server files to delete!";
@@ -1282,7 +1289,8 @@ void OwnCloudSync::deleteRemovedFiles()
                 //                            local.value(0).toString()));
                 deleteFromServer(local.value(0).toString());
             } else {
-                copyLocalProcessing(local.value(0).toString());
+                //copyLocalProcessing(local.value(0).toString());
+                localCopy.push_back(local.value(0).toString());
             }
         }
 
@@ -1301,7 +1309,8 @@ void OwnCloudSync::deleteRemovedFiles()
                 //                            local.value(0).toString()));
                 deleteFromServer(local.value(0).toString());
             } else {
-                copyLocalProcessing(local.value(0).toString());
+                //copyLocalProcessing(local.value(0).toString());
+                localCopy.push_back(local.value(0).toString());
             }
         }
     }
@@ -1325,7 +1334,8 @@ void OwnCloudSync::deleteRemovedFiles()
             syncDebug() << "Will delete local file: " << server.value(0).toString();
             deleteFromLocal(server.value(0).toString(),false);
         } else {
-            copyServerProcessing(server.value(0).toString());
+            //copyServerProcessing(server.value(0).toString());
+            serverCopy.push_back(server.value(0).toString());
         }
     }
 
@@ -1344,8 +1354,17 @@ void OwnCloudSync::deleteRemovedFiles()
             //                            server.value(0).toString()));
             deleteFromLocal(server.value(0).toString(),true);
         } else {
-            copyServerProcessing(server.value(0).toString());
+            //copyServerProcessing(server.value(0).toString());
+            serverCopy.push_back(server.value(0).toString());
         }
+    }
+
+    // Now copy the processing entries over to the main table
+    for(int i = 0; i < localCopy.size(); i++ ) {
+        copyLocalProcessing(localCopy[i]);
+    }
+    for(int i = 0; i < serverCopy.size(); i++ ) {
+        copyServerProcessing(serverCopy[i]);
     }
 
 }
@@ -1630,7 +1649,7 @@ void OwnCloudSync::serverDirectoryCreated(QString name)
 
 void OwnCloudSync::copyLocalProcessing(QString fileName)
 {
-    syncDebug() << "Copying DB Process Local: " << fileName;
+    //syncDebug() << "Copying DB Process Local: " << fileName;
                 QSqlQuery queryProcessing(QSqlDatabase::database(mAccountName));
     QSqlQuery query(QSqlDatabase::database(mAccountName));
     queryProcessing.exec(QString("SELECT * FROM local_files_processing WHERE "
@@ -1657,7 +1676,7 @@ void OwnCloudSync::copyLocalProcessing(QString fileName)
 
 void OwnCloudSync::copyServerProcessing(QString fileName)
 {
-    syncDebug() << "Copying DB Process Server: " << fileName;
+    //syncDebug() << "Copying DB Process Server: " << fileName;
     QSqlQuery queryProcessing(QSqlDatabase::database(mAccountName));
     QSqlQuery query(QSqlDatabase::database(mAccountName));
     queryProcessing.exec(QString("SELECT * FROM server_files_processing WHERE "

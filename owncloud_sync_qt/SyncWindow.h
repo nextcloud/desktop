@@ -141,6 +141,8 @@ private slots:
     void on_pushButton_2_clicked();
     void on_checkBoxHostnameEncryption_stateChanged(int arg1);
     void on_actionDisplay_Debug_Messages_toggled(bool arg1);
+    void on_buttonResume_clicked();
+    void on_buttonPause_clicked();
 };
 
 #endif // SYNCWINDOW_H

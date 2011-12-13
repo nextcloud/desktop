@@ -781,3 +781,24 @@ void SyncWindow::on_actionDisplay_Debug_Messages_toggled(bool arg1)
 {
     mDisplayDebug = arg1;
 }
+
+void SyncWindow::on_buttonResume_clicked()
+{
+    for( int i = 0; i < mAccounts.size(); i++ ) {
+        mAccounts[i]->resume();
+
+    }
+    ui->buttonPause->setEnabled(true);
+    ui->buttonResume->setEnabled(false);
+        ui->textBrowser->append(tr("...Resuming"));
+}
+
+void SyncWindow::on_buttonPause_clicked()
+{
+    for( int i = 0; i < mAccounts.size(); i++ ) {
+        mAccounts[i]->pause();
+    }
+    ui->buttonPause->setEnabled(false);
+    ui->buttonResume->setEnabled(true);
+    ui->textBrowser->append(tr("Pausing..."));
+}

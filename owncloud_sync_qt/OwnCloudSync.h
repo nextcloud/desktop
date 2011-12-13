@@ -90,6 +90,13 @@ public:
     void removeFilter(QString filter);
     void hardStop();
     void deleteAccount();
+    void pause() { mIsPaused = true; }
+    void resume() {
+        mIsPaused = false;
+        if(mSyncPosition == TRANSFER) {
+            processNextStep();
+        }
+    }
 
 private:
     WId mWinId;
@@ -149,6 +156,7 @@ private:
     void requestPassword();
 #endif
     bool mReadPassword;
+    bool mIsPaused;
 
     void updateDBLocalFile(QString name,qint64 size,qint64 last,QString type);
     void scanLocalDirectory(QString dirPath);
