@@ -4,5 +4,7 @@
         <file>images/owncloud_sync.png</file>
         <file>images/owncloud_conflict.png</file>
         <file>images/owncloud_sync_conflict.png</file>
+        <file>images/pause-big.png</file>
+        <file>images/play-big.png</file>
     </qresource>
 </RCC>

@@ -1,7 +1,7 @@
 /******************************************************************************
  *    Copyright 2011 Juan Carlos Cornejo jc2@paintblack.com
  *
- *    This file is part of owncloud_sync.
+ *    This file is part of owncloud_sync_qt.
  *
  *    owncloud_sync is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by

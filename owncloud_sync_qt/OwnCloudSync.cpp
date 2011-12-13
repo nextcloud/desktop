@@ -1,7 +1,7 @@
 /******************************************************************************
  *    Copyright 2011 Juan Carlos Cornejo jc2@paintblack.com
  *
- *    This file is part of owncloud_sync.
+ *    This file is part of owncloud_sync_qt.
  *
  *    owncloud_sync is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  *    You should have received a copy of the GNU General Public License
  *    along with owncloud_sync.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-#include "SyncDebug.h"
+#include "SyncGlobal.h"
 #include "OwnCloudSync.h"
 #include "sqlite3_util.h"
 #include "QWebDAV.h"
@@ -237,9 +237,6 @@ void OwnCloudSync::sync()
     // If this is the first run, scan the directory, otherwise just wait
     // for the watcher to update us :)
     if(mIsFirstRun) {
-        //emit toLog("Clear files found!");
-        QSqlQuery query(QSqlDatabase::database(mAccountName));
-        query.exec("UPDATE  local_files SET found='' WHERE conflict='';");
         //syncDebug() << "Scanning local directory: ";
         scanLocalDirectory(mLocalDirectory);
         //syncDebug() << "Scanning local directory!!!";
@@ -280,41 +277,36 @@ void OwnCloudSync::processDirectoryListing(QList<QWebDAV::FileInfo> fileInfo)
     // Compare against the database of known files
     QSqlQuery query(QSqlDatabase::database(mAccountName));
     QSqlQuery add(QSqlDatabase::database(mAccountName));
+    QString conflict("");
+    QString prev("");
     for(int i = 0; i < fileInfo.size(); i++ ){
         // Check if it is a restricted file
         if ( isFileFiltered(fileInfo[i].fileName)) {
             continue;
         }
         query = queryDBFileInfo(fileInfo[i].fileName,"server_files");
-        if(query.next()) { // File exists confirm no conflict, then update
-            if( query.value(7).toString() == "" ) {
-                QString prevModified = query.value(4).toString();
-                QString updateStatement =
-                        QString("UPDATE server_files SET file_size='%1',"
-                                "last_modified='%2',found='yes',prev_modified='%3'"
-                                " where file_name='%4'")
-                        .arg(fileInfo[i].size)
-                        .arg(fileInfo[i].lastModified)
-                        .arg(prevModified)
-                        .arg(fileInfo[i].fileName);
-                add.exec(updateStatement);
-                //syncDebug() << "SQuery: " << updateStatement;
-            } else if ( !mUploadingConflictFilesSet.contains(
-                            fileInfo[i].fileName.replace(" ","_sssspace_")) ) {
+        if(query.next()) { // File exists get conflict and last_modified
+            prev = query.value(4).toString();
+            conflict = query.value(7).toString();
+            if ( conflict != "" && !mUploadingConflictFilesSet.contains(
+                     fileInfo[i].fileName.replace(" ","_sssspace_")) ) {
                 // Enable the conflict resolution window
                 emit conflictExists(this);
                 mConflictsExist = true;
                 //syncDebug() << "SFile still conflicts: " << fileInfo[i].fileName;
             }
-        } else { // File does not exist, so just add this info to the DB
-            QString addStatement = QString("INSERT INTO server_files(file_name,"
-                                 "file_size,file_type,last_modified,found,conflict) "
-                                           "values('%1','%2','%3','%4','yes','');")
-                    .arg(fileInfo[i].fileName).arg(fileInfo[i].size)
-                    .arg(fileInfo[i].type).arg(fileInfo[i].lastModified);
-            //syncDebug() << "Query: " << addStatement;
-            add.exec(addStatement);
-        }
+        } // Now add to the processing DB
+        QString addStatement = QString("INSERT INTO server_files_processing("
+                                       "file_name,file_size,file_type,"
+                                       "last_modified,conflict,"
+                                       "prev_modified) "
+                                       "values('%1','%2','%3','%4','%5',"
+                                       "'%6');")
+                .arg(fileInfo[i].fileName).arg(fileInfo[i].size)
+                .arg(fileInfo[i].type).arg(fileInfo[i].lastModified)
+                .arg(conflict).arg(prev);
+        //syncDebug() << "Query: " << addStatement;
+        add.exec(addStatement);
         // If a collection, list those contents too
         if(fileInfo[i].type == "collection") {
             mDirectoryQueue.enqueue(fileInfo[i].fileName);
@@ -490,40 +482,39 @@ void OwnCloudSync::updateDBLocalFile(QString name, qint64 size, qint64 last,
     //syncDebug() << "Local file name: " << name;
     // Check against the database
     QSqlQuery query = queryDBFileInfo(name,"local_files");
+    QString prev("");
+    QString conflict("");
+    QString sync("");
     if (query.next() ) { // We already knew about this file. Update info.
-        qint64 prevModified = query.value(4).toString().toLongLong();
+        prev = query.value(4).toString();
+        conflict = query.value(8).toString();
+        sync = query.value(5).toString();
+        qint64 prevModified = prev.toLongLong();
         // Sometimes the watcher goes crazy, though. So check to see
         // if last == previous, if so, then it never changed anything!
         //syncDebug() << "Last: " << last << " Prev: " << prevModified;
         if( (last != prevModified) || mIsFirstRun ) {
-            if ( query.value(8).toString() == "") {
-                QString updateStatement =
-                        QString("UPDATE local_files SET file_size='%1',"
-                                "last_modified='%2',found='yes',"
-                                "prev_modified='%3' where file_name='%4'")
-                        .arg(size)
-                        .arg(last)
-                        .arg(prevModified)
-                        .arg(name);
-                //syncDebug() << "Query:   " << updateStatement;
-                query.exec(updateStatement);
-            } else {
+            if (conflict != "") {
                 // Enable the conflict resolution button
                 emit conflictExists(this);
                 mConflictsExist = true;
                 //syncDebug() << "LFile still conflicts: " << name;
             }
+        } else {
+            return; // Nothing changed
         }
-    } else { // We did not know about this file, add
-        QString addStatement = QString("INSERT INTO local_files (file_name,"
-                             "file_size,file_type,last_modified,found,conflict) "
-                                       "values('%1','%2','%3','%4','yes','');")
-                .arg(name).arg(size).arg(type).arg(last);
-        //syncDebug() << "Query: " << addStatement;
-        query.exec(addStatement);
     }
+    QString addStatement = QString("INSERT INTO local_files_processing "
+                                   "(file_name,file_size,file_type,"
+                                   "last_modified,prev_modified,conflict,"
+                                   "last_sync) values('%1','%2','%3','%4','%5',"
+                                   "'%6','%7');")
+            .arg(name).arg(size).arg(type).arg(last).arg(prev).arg(conflict)
+            .arg(sync);
+    //syncDebug() << "Query: " << addStatement;
+    query.exec(addStatement);
     mNeedsSync = true;  // Since a local file was changed, we need to sync
-                        // before closing
+    // before closing
     //syncDebug() << "Processing: " << mLocalDirectory + relativeName << " Size: "
     //         << file.size();
 }
@@ -546,9 +537,32 @@ QSqlQuery OwnCloudSync::queryDBAllFiles(QString table)
 void OwnCloudSync::syncFiles()
 {
     QList<QString> localDirs;
-    QSqlQuery localQuery = queryDBAllFiles("local_files");
-    QSqlQuery serverQuery = queryDBAllFiles("server_files");
+    QSqlQuery localQuery;
+    if( !mIsFirstRun ) {
+        localQuery = queryDBAllFiles("local_files");
+        while ( localQuery.next() ) {
+            QSqlQuery query(QSqlDatabase::database(mAccountName));
+            query.exec(QString("SELECT file_name FROM local_files_processing "
+                                    "WHERE file_name='%1'")
+                            .arg(localQuery.value(1).toString()));
+            if(!query.next()) {
+                query.exec(QString("INSERT INTO local_files_processing (file_name,"
+                                   "file_size,file_type,last_modified,last_sync,"
+                                   "prev_modified,conflict) "
+                                   "values('%1','%2','%3','%4','%5','%6','%7');")
+                           .arg(localQuery.value(1).toString())
+                           .arg(localQuery.value(2).toString())
+                           .arg(localQuery.value(3).toString())
+                           .arg(localQuery.value(4).toString())
+                           .arg(localQuery.value(5).toString())
+                           .arg(localQuery.value(7).toString())
+                           .arg(localQuery.value(8).toString())
+                           );
+            }
+        }
+    }
 
+    localQuery = queryDBAllFiles("local_files_processing");
     // Reset the progress trackers
     mTotalToDownload = 0;
     mTotalToUpload = 0;
@@ -558,16 +572,14 @@ void OwnCloudSync::syncFiles()
     mTotalTransfered = 0;
     //mUploadingFiles.clear();
     //mDownloadingFiles.clear();
-
-
     // Find out which local files need to be uploaded
-    while ( localQuery.next() ) {
+    while ( localQuery.next() && localQuery.value(7).toString() == "" ) {
         QString localName = localQuery.value(1).toString();
         qint64 localSize = localQuery.value(2).toString().toLongLong();
         QString localType = localQuery.value(3).toString();
         qint64 localModified = localQuery.value(4).toString().toLongLong();
         qint64 lastSync = localQuery.value(5).toString().toLongLong();
-        qint64 localPrevModified = localQuery.value(7).toString().toLongLong();
+        qint64 localPrevModified = localQuery.value(6).toString().toLongLong();
         QDateTime localModifiedTime;
         localModifiedTime.setTimeSpec(Qt::UTC);
         localModifiedTime.setMSecsSinceEpoch(localModified);
@@ -580,21 +592,23 @@ void OwnCloudSync::syncFiles()
         //syncDebug() << "LFile: " << localName << " Size: " << localSize << " vs "
         //         << localQuery.value(2).toString() << " type: " << localType ;
         // Query the database and look for this file
-        QSqlQuery query = queryDBFileInfo(localName,"server_files");
+        QSqlQuery query = queryDBFileInfo(localName,"server_files_processing");
+        syncDebug() << "Will check server!" << localName;
         if( query.next() ) {
+            syncDebug() << "Server checked!!!";
             // Check when this file was last modified, and check to see
             // when we last synced
             //QString serverType = query.value(3).toString();
             qint64 serverSize = query.value(2).toString().toLongLong();
             qint64 serverModified = query.value(4).toString().toLongLong();
-            qint64 serverPrevModified = query.value(6).toString().toLongLong();
+            qint64 serverPrevModified = query.value(5).toString().toLongLong();
             QDateTime serverModifiedTime;
             serverModifiedTime.setTimeSpec(Qt::UTC);
             serverModifiedTime.setMSecsSinceEpoch(serverModified);
             QDateTime serverPrevModifiedTime;
             serverPrevModifiedTime.setTimeSpec(Qt::UTC);
             serverPrevModifiedTime.setMSecsSinceEpoch(serverPrevModified);
-
+syncDebug() << serverModifiedTime << localModifiedTime << lastSyncTime;
             if( serverModifiedTime < localModifiedTime &&
                     localModifiedTime > lastSyncTime  ) { // Server is older!
                 // Now check to see if the server too modified the file
@@ -605,9 +619,9 @@ void OwnCloudSync::syncFiles()
                             serverModifiedTime > lastSyncTime) {
                         // There is a conflict, both files got changed since the
                         // last time we synced
-                        /*syncDebug() << "Conflict with sfile " << localName
+                        syncDebug() << "Conflict with sfile " << localName
                                  << serverModifiedTime << serverPrevModifiedTime
-                                 << localModifiedTime << lastSyncTime;*/
+                                 << localModifiedTime << lastSyncTime;
                         setFileConflict(localName,localSize,
                                         serverModifiedTime.toString(),
                                         localModifiedTime.toString());
@@ -640,29 +654,38 @@ void OwnCloudSync::syncFiles()
                         //syncDebug() << "OLDER:    " << localName;
                     }
                 }
-            } else { // The same! (I highly doubt that!)
-                //syncDebug() << "SAME:     " << localName;
+            } else { // Up to date
+                if(!mIsFirstRun)
+                    copyLocalProcessing(localName);
             }
-        } else { // Does not exist on server! Upload!
-            //syncDebug() << "NEW:      " << localName;
-            if ( localType == "collection") {
-                mMakeServerDirs.enqueue(localName);
-            } else {
-                mUploadingFiles.enqueue(FileInfo(localName,localSize));
-                mTotalToUpload += localSize;
+        } else { // Does not exist on server! Check if maybe it was deleted
+            QSqlQuery check = queryDBFileInfo(localName,"server_files");
+            if(!check.next()) {
+                //syncDebug() << "NEW:      " << localName;
+                if ( localType == "collection") {
+                    mMakeServerDirs.enqueue(localName);
+                } else {
+                    mUploadingFiles.enqueue(FileInfo(localName,localSize));
+                    mTotalToUpload += localSize;
+                }
             }
         }
     }
 
-    // Find out which remote files need to be downloaded (only the ones
-    // that don't exist)
+    // Find out which files exist on the server but not locally. Set to download
+    QSqlQuery serverQuery = queryDBAllFiles("server_files_processing");
     while ( serverQuery.next() ) {
         QString serverName = serverQuery.value(1).toString();
         qint64 serverSize = serverQuery.value(2).toString().toLongLong();
         QString serverType = serverQuery.value(3).toString();
         //syncDebug() << "SFile: " << serverName << " Size: " << serverSize << " vs "
         //         << serverQuery.value(2).toString() << " type: " << serverType ;
-        QSqlQuery query = queryDBFileInfo(serverName,"local_files");
+        QSqlQuery query;
+        if(mIsFirstRun) {
+            query = queryDBFileInfo(serverName,"local_files_processing");
+        } else {
+            query = queryDBFileInfo(serverName,"local_files");
+        }
         if( !query.next() ) {
             if( serverType == "collection") {
                 localDirs.append(serverName);
@@ -670,7 +693,7 @@ void OwnCloudSync::syncFiles()
                 mDownloadingFiles.enqueue(FileInfo(serverName,serverSize));
                 mTotalToDownload += serverSize;
             }
-            //syncDebug() << "DOWNLOAD: " << serverName;
+            syncDebug() << "DOWNLOAD new file: " << serverName;
         }
     }
     for( int i = 0; i < mDownloadConflict.size(); i++ ) {
@@ -696,10 +719,6 @@ void OwnCloudSync::syncFiles()
 
     // Delete removed files and reset the file status
     deleteRemovedFiles();
-    QSqlQuery query(QSqlDatabase::database(mAccountName));
-    //query.exec("UPDATE  local_files SET found='' WHERE conflict='';");
-    query.exec("UPDATE server_files SET found='' WHERE conflict='';");
-
     mIsFirstRun = false;
 
     // Let's get the ball rolling!
@@ -710,10 +729,10 @@ void OwnCloudSync::setFileConflict(QString name, qint64 size, QString server_las
                                  QString local_last)
 {
     QSqlQuery conflict(QSqlDatabase::database(mAccountName));
-    QString conflictText = QString("UPDATE server_files SET conflict='yes'"
+    QString conflictText = QString("UPDATE server_files_processing SET conflict='yes'"
                     " WHERE file_name='%1';").arg(name);
     conflict.exec(conflictText);
-    conflictText = QString("UPDATE local_files SET conflict='yes'"
+    conflictText = QString("UPDATE local_files_processing SET conflict='yes'"
                     " WHERE file_name='%1';").arg(name);
     conflict.exec(conflictText);
     conflictText = QString("INSERT INTO conflicts values('%1','','%2','%3');")
@@ -776,33 +795,34 @@ void OwnCloudSync::updateDBDownload(QString name)
         dbName = mRemoteDirectory + name;
     }
 
-    // Check against the database
-    QSqlQuery query = queryDBFileInfo(dbName,"local_files");
-    if (query.next() ) { // We already knew about this file. Update.
-        QString updateStatement =
-                QString("UPDATE local_files SET file_size='%1',"
-                        "last_modified='%2',last_sync='%3' where file_name='%4'")
-                        .arg(file.size())
-                        .arg(file.lastModified().toUTC()
-                             .toMSecsSinceEpoch())
-                        .arg(file.lastModified().toUTC()
-                              .toMSecsSinceEpoch())
-                        .arg(dbName);
-        query.exec(updateStatement);
-    } else { // We did not know about this file, add
-        QString addStatement = QString("INSERT INTO local_files (file_name,"
-                             "file_size,file_type,last_modified,last_sync) "
-                                       "values('%1','%2','%3','%4','%5');")
-                .arg(dbName).arg(file.size())
-                .arg("file")
-                .arg(file.lastModified().toUTC().toMSecsSinceEpoch())
-                .arg(file.lastModified().toUTC().toMSecsSinceEpoch());
-        query.exec(addStatement);
-    }
     QString downloadText;
     if( mDownloadingConflictingFile ) {
         downloadText = tr("Downloaded conflicting file: %1").arg(dbName);
     } else {
+        // Check against the database
+        QSqlQuery query = queryDBFileInfo(dbName,"local_files");
+        if (query.next() ) { // We already knew about this file. Update.
+            QString updateStatement =
+                    QString("UPDATE local_files SET file_size='%1',"
+                            "last_modified='%2',last_sync='%3' where file_name='%4'")
+                    .arg(file.size())
+                    .arg(file.lastModified().toUTC()
+                         .toMSecsSinceEpoch())
+                    .arg(file.lastModified().toUTC()
+                         .toMSecsSinceEpoch())
+                    .arg(dbName);
+            query.exec(updateStatement);
+        } else { // We did not know about this file, add
+            QString addStatement = QString("INSERT INTO local_files (file_name,"
+                                           "file_size,file_type,last_modified,last_sync) "
+                                           "values('%1','%2','%3','%4','%5');")
+                    .arg(dbName).arg(file.size())
+                    .arg("file")
+                    .arg(file.lastModified().toUTC().toMSecsSinceEpoch())
+                    .arg(file.lastModified().toUTC().toMSecsSinceEpoch());
+            query.exec(addStatement);
+        }
+        copyServerProcessing(dbName);
         downloadText = tr("Downloaded file: %1").arg(dbName);
     }
     emit toLog(downloadText);
@@ -820,6 +840,7 @@ void OwnCloudSync::updateDBUpload(QString name)
     // Check against the database
     QSqlQuery query = queryDBFileInfo(name,"server_files");
     if (query.next() ) { // We already knew about this file. Update.
+        copyServerProcessing(name);
         QString updateStatement =
                 QString("UPDATE server_files SET file_size='%1',"
                         "last_modified='%2' where file_name='%3'")
@@ -827,11 +848,11 @@ void OwnCloudSync::updateDBUpload(QString name)
                         .arg(time).arg(name);
         //syncDebug() << "Query: " << updateStatement;
         query.exec(updateStatement);
-        updateStatement =
-                QString("UPDATE local_files SET last_sync='%1'"
-                        "where file_name='%2'")
-                .arg(time).arg(name);
-        query.exec(updateStatement);
+//        updateStatement =
+//                QString("UPDATE local_files_processing SET last_sync='%1'"
+//                        "where file_name='%2'")
+//                .arg(time).arg(name);
+//        query.exec(updateStatement);
         //syncDebug() << "Query: " << updateStatement;
     } else { // We did not know about this file, add
         QString addStatement = QString("INSERT INTO server_files (file_name,"
@@ -841,13 +862,19 @@ void OwnCloudSync::updateDBUpload(QString name)
                 .arg("file")
                 .arg(time);
         query.exec(addStatement);
-        QString updateStatement =
-                QString("UPDATE local_files SET file_size='%1',"
-                        "last_modified='%2',last_sync='%3' where file_name='%4'")
-                        .arg(file.size()).arg(time).arg(time).arg(name);
-        query.exec(updateStatement);
+//        QString updateStatement =
+//                QString("UPDATE local_files_processing SET file_size='%1',"
+//                        "last_modified='%2',last_sync='%3' where file_name='%4'")
+//                        .arg(file.size()).arg(time).arg(time).arg(name);
+//        query.exec(updateStatement);
     }
     emit toLog(tr("Uploaded file: %1").arg(name));
+    QString updateStatement =
+            QString("UPDATE local_files_processing SET last_sync='%1'"
+                    "where file_name='%2'")
+            .arg(time).arg(name);
+    query.exec(updateStatement);
+    copyLocalProcessing(name);
     mTotalTransfered += mCurrentFileSize;
     processNextStep();
 }
@@ -873,9 +900,50 @@ void OwnCloudSync::transferProgress(qint64 current, qint64 total)
     restartRequestTimer();
 }
 
+void OwnCloudSync::updateDBVersion(int fromVersion)
+{
+    QSqlQuery query(QSqlDatabase::database(mAccountName));
+    switch(fromVersion) {
+    case 0: // Same as Version 1 (used in case a version is not found)
+    case 1:
+    case 2:
+        QString createVersion("create table db_version(\n"
+                              "\tversion integer"
+                              ");");
+        QString updateVersion = QString("INSERT INTO db_version values('%1');")
+                .arg(_OCS_DB_VERSION);
+        QString createLocalProcessing("create table local_files_processing(\n"
+                                      "\tid INTEGER PRIMARY KEY ASC,\n"
+                                      "\tfile_name text unique,\n"
+                                      "\tfile_size text,\n"
+                                      "\tfile_type text,\n"
+                                      "\tlast_modified text,\n"
+                                      "\tlast_sync text,\n"
+                                      "\tprev_modified text,\n"
+                                      "\tconflict text\n"
+                                      ");");
+        QString createServerProcessing("create table server_files_processing(\n"
+                                       "\tid INTEGER PRIMARY KEY ASC,\n"
+                                       "\tfile_name text unique,\n"
+                                       "\tfile_size text,\n"
+                                       "\tfile_type text,\n"
+                                       "\tlast_modified text,\n"
+                                       "\tprev_modified text,\n"
+                                       "\tconflict text\n"
+                                       ");");
+
+
+        query.exec(createVersion);
+        query.exec(updateVersion);
+        query.exec(createLocalProcessing);
+        query.exec(createServerProcessing);
+        break;
+    }
+}
+
 void OwnCloudSync::createDataBase()
 {
-    //syncDebug() << "Creating Database!";
+    syncDebug() << "Creating Database!";
     if(!mDB.open()) {
         syncDebug() << "Cannot open database for creation!";
         syncDebug() << mDB.lastError().text();
@@ -884,60 +952,98 @@ void OwnCloudSync::createDataBase()
         mDBOpen = true;
     }
     QString createLocal("create table local_files(\n"
-                        "id INTEGER PRIMARY KEY ASC,\n"
-                        "file_name text unique,\n"
-                        "file_size text,\n"
-                        "file_type text,\n"
-                        "last_modified text,\n"
-                        "last_sync text,\n"
-                        "found text,\n"
-                        "prev_modified text,\n"
-                        "conflict text\n"
+                        "\tid INTEGER PRIMARY KEY ASC,\n"
+                        "\tfile_name text unique,\n"
+                        "\tfile_size text,\n"
+                        "\tfile_type text,\n"
+                        "\tlast_modified text,\n"
+                        "\tlast_sync text,\n"
+                        "\tfound text,\n"
+                        "\tprev_modified text,\n"
+                        "\tconflict text\n"
                         ");");
     QString createServer("create table server_files(\n"
-                        "id INTEGER PRIMARY KEY ASC,\n"
-                        "file_name text unique,\n"
-                        "file_size text,\n"
-                        "file_type text,\n"
-                        "last_modified text,\n"
-                        "found text,\n"
-                        "prev_modified text,\n"
-                        "conflict text\n"
-                        ");");
+                         "\tid INTEGER PRIMARY KEY ASC,\n"
+                         "\tfile_name text unique,\n"
+                         "\tfile_size text,\n"
+                         "\tfile_type text,\n"
+                         "\tlast_modified text,\n"
+                         "\tfound text,\n"
+                         "\tprev_modified text,\n"
+                         "\tconflict text\n"
+                         ");");
+
+    QString createLocalProcessing("create table local_files_processing(\n"
+                                  "\tid INTEGER PRIMARY KEY ASC,\n"
+                                  "\tfile_name text unique,\n"
+                                  "\tfile_size text,\n"
+                                  "\tfile_type text,\n"
+                                  "\tlast_modified text,\n"
+                                  "\tlast_sync text,\n"
+                                  "\tprev_modified text,\n"
+                                  "\tconflict text\n"
+                                  ");");
+    QString createServerProcessing("create table server_files_processing(\n"
+                                   "\tid INTEGER PRIMARY KEY ASC,\n"
+                                   "\tfile_name text unique,\n"
+                                   "\tfile_size text,\n"
+                                   "\tfile_type text,\n"
+                                   "\tlast_modified text,\n"
+                                   "\tprev_modified text,\n"
+                                   "\tconflict text\n"
+                                   ");");
 
     QString createConflicts("create table conflicts(\n"
-                        "file_name text unique,\n"
-                        "resolution text,\n"
-                        "server_modified text,\n"
-                        "local_modified text\n"
-                        ");");
+                            "\tfile_name text unique,\n"
+                            "\tresolution text,\n"
+                            "\tserver_modified text,\n"
+                            "\tlocal_modified text\n"
+                            ");");
 
     QString createConfig("create table config(\n"
-                        "host text,\n"
-                        "username text,\n"
-                        "password text,\n"
-                        "localdir text,\n"
-                        "updatetime text,\n"
-                        "enabled text,\n"
-                        "remotedir text,\n"
-                        "lastsync text\n"
-                        ");");
+                         "\thost text,\n"
+                         "\tusername text,\n"
+                         "\tpassword text,\n"
+                         "\tlocaldir text,\n"
+                         "\tupdatetime text,\n"
+                         "\tenabled text,\n"
+                         "\tremotedir text,\n"
+                         "\tlastsync text\n"
+                         ");");
 
     QString createFilters("create table filters(\n"
-                          "filter text"
+                          "\tfilter text\n"
                           ");");
+
+    QString createVersion("create table db_version(\n"
+                          "\tversion integer\n"
+                          ");");
+
     QSqlQuery query(QSqlDatabase::database(mAccountName));
     query.exec(createLocal);
     query.exec(createServer);
+    query.exec(createLocalProcessing);
+    query.exec(createServerProcessing);
     query.exec(createConfig);
     query.exec(createConflicts);
     query.exec(createFilters);
+    query.exec(createVersion);
 
 }
 
 void OwnCloudSync::readConfigFromDB()
 {
     QSqlQuery query(QSqlDatabase::database(mAccountName));
+
+    // First identify what database verion we have
+    query.exec("SELECT * from version;");
+    if( query.next() ) { // We found a version
+        int version = query.value(0).toInt();
+        if( version < _OCS_DB_VERSION )
+            updateDBVersion(version);
+    } else { // No version information, update from beginning
+        updateDBVersion(1);
+    }
     query.exec("SELECT * from config;");
     if(query.next()) {
         mHost = query.value(0).toString();
@@ -1155,57 +1261,93 @@ void OwnCloudSync::loadDBFromFile()
 void OwnCloudSync::deleteRemovedFiles()
 {
     // Any file that has not been found will be deleted!
-
     if( mIsFirstRun ) {
         //syncDebug() << "Looking for server files to delete!";
         // Since we don't always query local files except for the first run
         // only do this if it is the first run
         QSqlQuery local(QSqlDatabase::database(mAccountName));
+        QSqlQuery localFound(QSqlDatabase::database(mAccountName));
 
         // First delete the files
-        local.exec("SELECT file_name from local_files where found='' "
-                   "AND file_type='file';");
+        local.exec("SELECT file_name from local_files WHERE file_type='file';");
         while(local.next()) {
-            // Local files were deleted. Delete from server too.
-            //syncDebug() << "Deleting file from server: " << local.value(0).toString();
-            //emit toLog(tr("File claims to be not found: %1").arg(
-            //                            local.value(0).toString()));
-            deleteFromServer(local.value(0).toString());
+            localFound.exec(QString("SELECT file_name from "
+                                    "local_files_processing WHERE "
+                                    "file_name='%1';")
+                       .arg(local.value(0).toString()));
+            if(!localFound.next()) {
+                // Local file as deleted. Delete from server too.
+                //syncDebug() << "Deleting file from server: " << local.value(0).toString();
+                //emit toLog(tr("File claims to be not found: %1").arg(
+                //                            local.value(0).toString()));
+                deleteFromServer(local.value(0).toString());
+            } else {
+                copyLocalProcessing(local.value(0).toString());
+            }
         }
 
         // Then delete the collections
-        local.exec("SELECT file_name from local_files where found='' "
-                   "AND file_type='collection';");
+        local.exec("SELECT file_name from local_files WHERE "
+                   "file_type='collection';");
         while(local.next()) {
-            //emit toLog(tr("Directory claims to be not found: %1").arg(
-            //                            local.value(0).toString()));
-            // Local files were deleted. Delete from server too.
-            syncDebug() << "Deleting directory from server: " << local.value(0).toString();
-            deleteFromServer(local.value(0).toString());
+            localFound.exec(QString("SELECT file_name from "
+                                    "local_files_processing WHERE "
+                                    "file_name='%1';")
+                       .arg(local.value(0).toString()));
+            if(!localFound.next()) {
+                // Local file as deleted. Delete from server too.
+                //syncDebug() << "Deleting file from server: " << local.value(0).toString();
+                //emit toLog(tr("File claims to be not found: %1").arg(
+                //                            local.value(0).toString()));
+                deleteFromServer(local.value(0).toString());
+            } else {
+                copyLocalProcessing(local.value(0).toString());
+            }
         }
     }
 
     //syncDebug() << "Looking for local files to delete!";
     QSqlQuery server(QSqlDatabase::database(mAccountName));
+    QSqlQuery serverFound(QSqlDatabase::database(mAccountName));
     // First delete the files
-    server.exec("SELECT file_name from server_files where found=''"
-                "AND file_type='file';");
+    // First delete the files
+    server.exec("SELECT file_name from server_files WHERE file_type='file';");
     while(server.next()) {
-        // Server files were deleted. Delete from local too.
-        syncDebug() << "Deleting file from local:  " << server.value(0).toString();
-        //emit toLog(tr("Deleting local file: %1").arg(
-        //               server.value(0).toString()));
-        deleteFromLocal(server.value(0).toString(),false);
+        serverFound.exec(QString("SELECT file_name from "
+                                "server_files_processing WHERE "
+                                "file_name='%1';")
+                   .arg(server.value(0).toString()));
+        if(!serverFound.next()) {
+            // Local file as deleted. Delete from server too.
+            //syncDebug() << "Deleting file from server: " << server.value(0).toString();
+            //emit toLog(tr("File claims to be not found: %1").arg(
+            //                            server.value(0).toString()));
+            syncDebug() << "Will delete local file: " << server.value(0).toString();
+            deleteFromLocal(server.value(0).toString(),false);
+        } else {
+            copyServerProcessing(server.value(0).toString());
+        }
     }
 
     // Then delete the collections
-    server.exec("SELECT file_name from server_files where found=''"
-                "AND file_type='collection';");
+    server.exec("SELECT file_name from server_files WHERE "
+               "file_type='collection';");
     while(server.next()) {
-        // Server files were deleted. Delete from local too.
-        //syncDebug() << "Deleting directory from local:  " << server.value(0).toString();
-        deleteFromLocal(server.value(0).toString(),true);
+        serverFound.exec(QString("SELECT file_name from "
+                                "server_files_processing WHERE "
+                                "file_name='%1';")
+                   .arg(server.value(0).toString()));
+        if(!serverFound.next()) {
+            // Local file as deleted. Delete from server too.
+            //syncDebug() << "Deleting file from server: " << server.value(0).toString();
+            //emit toLog(tr("File claims to be not found: %1").arg(
+            //                            server.value(0).toString()));
+            deleteFromLocal(server.value(0).toString(),true);
+        } else {
+            copyServerProcessing(server.value(0).toString());
+        }
     }
+
 }
 
 void OwnCloudSync::deleteFromLocal(QString name, bool isDir)
@@ -1230,6 +1372,8 @@ void OwnCloudSync::deleteFromLocal(QString name, bool isDir)
     }
     dropFromDB("local_files","file_name",name);
     dropFromDB("server_files","file_name",name);
+    dropFromDB("local_files_processing","file_name",name);
+    dropFromDB("server_files_processing","file_name",name);
 }
 
 void OwnCloudSync::deleteFromServer(QString name)
@@ -1239,6 +1383,8 @@ void OwnCloudSync::deleteFromServer(QString name)
     emit toLog(tr("Deleting from server: %1").arg(name));
     dropFromDB("server_files","file_name",name);
     dropFromDB("local_files","file_name",name);
+    dropFromDB("server_files_processing","file_name",name);
+    dropFromDB("local_files_processing","file_name",name);
 }
 
 void OwnCloudSync::dropFromDB(QString table, QString column, QString condition)
@@ -1267,6 +1413,9 @@ void OwnCloudSync::processFileConflict(QString name, QString wins)
         QString statement = QString("UPDATE local_files SET last_sync='%1'"
                                   "WHERE file_name='%2';").arg(last).arg(name);
         query.exec(statement);
+        statement = QString("UPDATE local_files_processing SET last_sync='%1'"
+                                  "WHERE file_name='%2';").arg(last).arg(name);
+        query.exec(statement);
 
         // Add back to the watcher
         mFileWatcher->addPath(mLocalDirectory+localName);
@@ -1278,6 +1427,12 @@ void OwnCloudSync::clearFileConflict(QString name)
 {
     QSqlQuery query(QSqlDatabase::database(mAccountName));
     QString statement = QString("DELETE FROM conflicts where file_name='%1';")
+            .arg(name);
+    query.exec(statement);
+    statement = QString("UPDATE local_files_processing set conflict='' where file_name='%1';")
+            .arg(name);
+    query.exec(statement);
+    statement = QString("UPDATE server_files_processing set conflict='' where file_name='%1';")
             .arg(name);
     query.exec(statement);
     statement = QString("UPDATE local_files set conflict='' where file_name='%1';")
@@ -1471,4 +1626,56 @@ void OwnCloudSync::serverDirectoryCreated(QString name)
 {
     emit toLog(tr("Created directory on server: %1").arg(name));
     processNextStep();
+}
+
+void OwnCloudSync::copyLocalProcessing(QString fileName)
+{
+    syncDebug() << "Copying DB Process Local: " << fileName;
+                QSqlQuery queryProcessing(QSqlDatabase::database(mAccountName));
+    QSqlQuery query(QSqlDatabase::database(mAccountName));
+    queryProcessing.exec(QString("SELECT * FROM local_files_processing WHERE "
+                                 "file_name='%1';").arg(fileName));
+    if(queryProcessing.next()) {
+        query.exec(QString("DELETE FROM local_files WHERE file_name='%1';")
+                   .arg(fileName));
+        query.exec(QString("INSERT INTO local_files (file_name,"
+                           "file_size,file_type,last_modified,last_sync,"
+                           "prev_modified,conflict) "
+                           "values('%1','%2','%3','%4','%5','%6','%7');")
+                   .arg(queryProcessing.value(1).toString())
+                   .arg(queryProcessing.value(2).toString())
+                   .arg(queryProcessing.value(3).toString())
+                   .arg(queryProcessing.value(4).toString())
+                   .arg(queryProcessing.value(5).toString())
+                   .arg(queryProcessing.value(6).toString())
+                   .arg(queryProcessing.value(7).toString())
+                   );
+    }
+    queryProcessing.exec(QString("DELETE FROM local_files_processing WHERE "
+                                 "file_name='%1';").arg(fileName));
+}
+
+void OwnCloudSync::copyServerProcessing(QString fileName)
+{
+    syncDebug() << "Copying DB Process Server: " << fileName;
+    QSqlQuery queryProcessing(QSqlDatabase::database(mAccountName));
+    QSqlQuery query(QSqlDatabase::database(mAccountName));
+    queryProcessing.exec(QString("SELECT * FROM server_files_processing WHERE "
+                                 "file_name='%1';").arg(fileName));
+    if(queryProcessing.next()) {
+        query.exec(QString("DELETE FROM server_files WHERE file_name='%1';")
+                   .arg(fileName));
+        query.exec(QString("INSERT INTO server_files (file_name,"
+                           "file_size,file_type,last_modified,prev_modified,conflict) "
+                           "values('%1','%2','%3','%4','%5','%6');")
+                   .arg(queryProcessing.value(1).toString())
+                   .arg(queryProcessing.value(2).toString())
+                   .arg(queryProcessing.value(3).toString())
+                   .arg(queryProcessing.value(4).toString())
+                   .arg(queryProcessing.value(5).toString())
+                   .arg(queryProcessing.value(6).toString())
+                   );
+    }
+    queryProcessing.exec(QString("DELETE FROM server_files_processing WHERE "
+                                 "file_name='%1';").arg(fileName));
 }

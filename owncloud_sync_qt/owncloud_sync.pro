@@ -13,7 +13,7 @@ unix:!macx:!symbian: {
     INCLUDEPATH += /usr/include/kde4
 }
 
-TARGET = owncloud_sync
+TARGET = owncloud_sync_qt
 TEMPLATE = app
 
 
@@ -21,14 +21,13 @@ SOURCES += main.cpp\
         sqlite3_util.cpp \
         SyncWindow.cpp \
     qwebdav/QWebDAV.cpp \
-    OwnCloudSync.cpp \
-    SyncDebug.cpp
+    OwnCloudSync.cpp
 
 HEADERS  += sqlite3_util.h \
             SyncWindow.h \
             qwebdav/QWebDAV.h \
     OwnCloudSync.h \
-    SyncDebug.h
+    SyncGlobal.h
 
 FORMS    += SyncWindow.ui
 INCLUDEPATH += qwebdav/
@@ -83,6 +82,9 @@ DEPENDPATH += /usr/include
 OTHER_FILES += \
     COPYING-README \
     COPYING-GPL
+
+
+
 
 
 

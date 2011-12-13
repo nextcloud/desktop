@@ -1,7 +1,7 @@
 /******************************************************************************
  *    Copyright 2011 Juan Carlos Cornejo jc2@paintblack.com
  *
- *    This file is part of owncloud_sync.
+ *    This file is part of owncloud_sync_qt.
  *
  *    owncloud_sync is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  *    along with owncloud_sync.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-#include "SyncDebug.h"
+#include "SyncGlobal.h"
 #include "SyncWindow.h"
 #include "ui_SyncWindow.h"
 #include "sqlite3_util.h"
@@ -79,7 +79,7 @@ SyncWindow::SyncWindow(QWidget *parent) :
     mSystemTrayMenu->addAction(ui->action_Quit);
     mSystemTray->setContextMenu(mSystemTrayMenu);
     mSystemTray->setIcon(mDefaultIcon);
-    mSystemTray->setToolTip(tr("OwnCloud Sync Version %1").arg(OCS_VERSION));
+    mSystemTray->setToolTip(tr("OwnCloud Sync Version %1").arg(_OCS_VERSION));
     mSystemTray->show();
     connect(mSystemTray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this,SLOT(systemTrayActivated(QSystemTrayIcon::ActivationReason)));
@@ -126,7 +126,7 @@ void SyncWindow::updateStatus()
     //    return;
 
     if( !mBusy ) {
-        ui->statusBar->showMessage(tr("Version %1: Waiting...").arg(OCS_VERSION));
+        ui->statusBar->showMessage(tr("Version %1: Waiting...").arg(_OCS_VERSION));
         ui->status->setText(tr("Waiting..."));
         ui->progressFile->setValue(0);
         ui->progressTotal->setValue(0);
@@ -554,7 +554,7 @@ void SyncWindow::processNextStep()
         mTotalSyncs++;
         OwnCloudSync *account = mAccountsReadyToSync.dequeue();
         ui->statusBar->showMessage(tr("Version %1: Synchronizing %2")
-                                   .arg(OCS_VERSION).arg(account->getName()));
+                                   .arg(_OCS_VERSION).arg(account->getName()));
         account->sync();
     } else {
         mBusy = false;

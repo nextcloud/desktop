@@ -21,7 +21,7 @@
        <number>0</number>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="page">
        <layout class="QGridLayout" name="gridLayout_2">
@@ -117,6 +117,31 @@
             <number>0</number>
            </property>
            <item>
+            <widget class="QPushButton" name="buttonResume">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="owncloud_sync.qrc">
+               <normaloff>:/images/play-big.png</normaloff>:/images/play-big.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonPause">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="owncloud_sync.qrc">
+               <normaloff>:/images/pause-big.png</normaloff>:/images/pause-big.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QPushButton" name="pushButton">
              <property name="text">
               <string>Clear Log</string>
@@ -126,7 +151,7 @@
            <item>
             <widget class="QPushButton" name="pushButton_2">
              <property name="text">
-              <string>Clear and Save Log</string>
+              <string>Save and Clear Log</string>
              </property>
             </widget>
            </item>
@@ -143,7 +168,7 @@
               <bool>false</bool>
              </property>
              <property name="text">
-              <string>Conflicts exist, click to resolve.</string>
+              <string>Resolve Conflicts</string>
              </property>
             </widget>
            </item>

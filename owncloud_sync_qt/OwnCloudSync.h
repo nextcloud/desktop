@@ -1,7 +1,7 @@
 /******************************************************************************
  *    Copyright 2011 Juan Carlos Cornejo jc2@paintblack.com
  *
- *    This file is part of owncloud_sync.
+ *    This file is part of owncloud_sync_qt.
  *
  *    owncloud_sync is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
@@ -158,8 +158,11 @@ private:
     void upload(FileInfo fileName);
     void download(FileInfo fileName);
     void updateDBDownload(QString fileName);
+    void copyServerProcessing(QString fileName);
+    void copyLocalProcessing(QString fileName);
     void processNextStep();
     void createDataBase();
+    void updateDBVersion(int fromVersion);
     void initialize();
     void readConfigFromDB();
     void scanLocalDirectoryForNewFiles(QString name);
