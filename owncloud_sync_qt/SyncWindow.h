@@ -199,7 +199,9 @@ inline QList<SyncIncludedFilterList> g_GetIncludedFilterList()
     list.append(SyncIncludedFilterList("android_syncfolders","*.tacit.fs.part","Android Folder Sync temporary file",true));
 
     // Internal Files (User cannot disable!!)
-    list.append(SyncIncludedFilterList("ocs_conflict",".ocs_conflicting.*","Internal Conflict Resolution File",false));
+    list.append(SyncIncludedFilterList("ocs_conflict","_ocs_serverconflict.*","Internal Conflict Resolution File",false));
+        list.append(SyncIncludedFilterList("ocs_uploading","_ocs_uploading.*","Internal Uploading File",false));
+            list.append(SyncIncludedFilterList("ocs_download","_ocs_downloading.*","Internal Downloading File",false));
     return list;
 }
 
