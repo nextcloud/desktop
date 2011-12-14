@@ -1530,7 +1530,6 @@ bool OwnCloudSync::isFileFiltered(QString name)
     QList<QString> list = mFilters.toList();
     list.append( mGlobalFilters->toList() );
 
-    syncDebug() << "Will check a total of " << list.size() << " filters";
     // Else, look through the filters and see if this file is excluded
     for( int i = 0; i < list.size(); i++ ) {
         QString filter = list[i];
