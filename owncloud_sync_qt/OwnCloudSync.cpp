@@ -693,13 +693,17 @@ void OwnCloudSync::syncFiles()
             query = queryDBFileInfo(serverName,"local_files");
         }
         if( !query.next() ) {
-            if( serverType == "collection") {
-                localDirs.append(serverName);
-            } else {
-                mDownloadingFiles.enqueue(FileInfo(serverName,serverSize));
-                mTotalToDownload += serverSize;
+            // If this is the first run, it could also just be a deleted file
+            query = queryDBFileInfo(serverName,"local_files");
+            if(mIsFirstRun && !query.next()) { // Could have just been a deleted file.
+                if( serverType == "collection") {
+                    localDirs.append(serverName);
+                } else {
+                    mDownloadingFiles.enqueue(FileInfo(serverName,serverSize));
+                    mTotalToDownload += serverSize;
+                }
+                syncDebug() << "DOWNLOAD new file: " << serverName;
             }
-            syncDebug() << "DOWNLOAD new file: " << serverName;
         }
     }
     for( int i = 0; i < mDownloadConflict.size(); i++ ) {
