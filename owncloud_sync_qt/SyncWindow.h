@@ -68,6 +68,7 @@ public:
 private:
     Ui::SyncWindow *ui;
     QList<SyncIncludedFilterList> mIncludedFilters;
+    QSet<QString> mGlobalFilters;
     QSystemTrayIcon *mSystemTray;
     QMenu *mSystemTrayMenu;
     QList<OwnCloudSync*> mAccounts;
@@ -110,6 +111,9 @@ private:
     void loadApplicationSettings();
     void deleteAccount();
     void updateSharedFilterList();
+    void listGlobalFilters();
+    void importGlobalFilters(bool isDefault = false);
+    void exportGlobalFilters(bool isDefault = false);
 
 public slots:
     //void timeToSync();
@@ -119,6 +123,8 @@ public slots:
     void closeEvent(QCloseEvent *event);
 
     void listFiltersSelectionChanged(QItemSelection selected,
+                                     QItemSelection deselected);
+    void listGlobalFiltersSelectionChanged(QItemSelection selected,
                                      QItemSelection deselected);
     void slotAccountsSignalMapper(int row);
     void processDebugMessage(const QString msg);
@@ -170,6 +176,11 @@ private slots:
     void on_buttonEnableAllIncludedFilters_clicked();
     void on_buttonDisableAllIncludedFilters_clicked();
     void on_buttonReturn_clicked();
+    void on_lineGlobalFilter_textEdited(const QString &arg1);
+    void on_buttonGlobalFilterInsert_clicked();
+    void on_buttonGlobalFilterRemove_clicked();
+    void on_buttonImport_clicked();
+    void on_buttonExport_clicked();
 };
 
 // Now create a global filter list

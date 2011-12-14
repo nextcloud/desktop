@@ -60,7 +60,6 @@ SyncWindow::SyncWindow(QWidget *parent) :
     mEditingConfig = -1;
     mConflictsExist = false;
     loadApplicationSettings();
-    updateSharedFilterList();
 
     // Before anything else, connect to the SyncDebug
     connect(getSyncDebug(),SIGNAL(debugMessage(const QString)),
@@ -107,6 +106,9 @@ SyncWindow::SyncWindow(QWidget *parent) :
     QDir logsDir(mConfigDirectory+"/logs");
     logsDir.mkpath(mConfigDirectory+"/logs");
 #endif
+
+    importGlobalFilters(true);
+    updateSharedFilterList();
 
     // Look for accounts that already exist
     QStringList filters;
@@ -311,6 +313,7 @@ void SyncWindow::closeEvent(QCloseEvent *event)
             mQuitAction = false;
             return;
         }
+                exportGlobalFilters(true);
 
         // We definitely don't want to quit when we are synchronizing!
         for( int i = 0; i < mAccounts.size(); i++ ) {
@@ -677,7 +680,7 @@ void SyncWindow::listFiltersSelectionChanged(QItemSelection selected,
                                              QItemSelection deselected)
 {
     ui->buttonFilterRemove->setEnabled(true);
-    syncDebug() << "Selected: " << selected.indexes()[0].row();
+    //syncDebug() << "Selected: " << selected.indexes()[0].row();
 }
 
 void SyncWindow::on_buttonFilterRemove_clicked()
@@ -845,6 +848,9 @@ void SyncWindow::on_actionConfigure_triggered()
     }
     connect(ui->listIncludedFilterView,SIGNAL(itemChanged(QListWidgetItem *)),
             this,SLOT(includedFilterListItemChanged(QListWidgetItem*)));
+
+    // Now populate the Global Filters list
+    listGlobalFilters();
 }
 
 void SyncWindow::includedFilterListItemChanged(QListWidgetItem *item)
@@ -887,10 +893,134 @@ void SyncWindow::updateSharedFilterList()
         if(mIncludedFilters[i].enabled)
             mSharedFilters->insert(mIncludedFilters[i].filter);
     }
+    QStringList list = mGlobalFilters.toList();
+    for(int i =0; i < list.size(); i++ ) {
+        mSharedFilters->insert(list[i]);
+    }
 }
 
 
 void SyncWindow::on_buttonReturn_clicked()
 {
     ui->stackedWidget->setCurrentIndex(0);
+}
+
+void SyncWindow::on_lineGlobalFilter_textEdited(const QString &text)
+{
+    if(text == "") {
+        ui->buttonGlobalFilterInsert->setDisabled(true);
+    } else {
+        ui->buttonGlobalFilterInsert->setEnabled(true);
+    }
+}
+
+void SyncWindow::on_buttonGlobalFilterInsert_clicked()
+{
+    mGlobalFilters.insert(ui->lineGlobalFilter->text());
+    listGlobalFilters();
+    updateSharedFilterList();
+}
+
+void SyncWindow::on_buttonGlobalFilterRemove_clicked()
+{
+    int index = ui->listGlobalFilterView->selectionModel()
+                ->selection().indexes()[0].row();
+    mGlobalFilters.remove(ui->listGlobalFilterView->model()->index(index,0)
+                          .data(Qt::DisplayRole ).toString());
+    listGlobalFilters();
+    updateSharedFilterList();
+}
+
+void SyncWindow::listGlobalFilters()
+{
+    // Show the filter list
+    ui->listGlobalFilterView->setModel(
+                new QStringListModel(mGlobalFilters.toList()));
+    // Create the filterView signals
+    connect(ui->listGlobalFilterView->selectionModel(),
+            SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+                   this,SLOT(listGlobalFiltersSelectionChanged(QItemSelection,
+                                                    QItemSelection)));
+    ui->lineGlobalFilter->setText("");
+    ui->buttonGlobalFilterInsert->setEnabled(false);
+    ui->buttonGlobalFilterRemove->setEnabled(false);
+}
+
+void SyncWindow::listGlobalFiltersSelectionChanged(QItemSelection selected,
+                                             QItemSelection deselected)
+{
+    ui->buttonGlobalFilterRemove->setEnabled(true);
+}
+
+void SyncWindow::on_buttonImport_clicked()
+{
+    importGlobalFilters();
+}
+
+void SyncWindow::on_buttonExport_clicked()
+{
+    exportGlobalFilters();
+}
+
+void SyncWindow::importGlobalFilters(bool isDefault)
+{
+    QString fileName;
+    QFile file;
+    if(isDefault) {
+        fileName = mConfigDirectory+"/global_filters.txt";
+        file.setFileName(fileName);
+        if(!file.exists()) { // One has not been created yet.
+            return;
+        }
+    } else { // Ask user
+        fileName = QFileDialog::getOpenFileName(this);
+        if( fileName == "" ) { // User cancelled
+            return;
+        }
+        file.setFileName(fileName);
+    }
+
+    if(!file.open(QIODevice::ReadOnly|QIODevice::Text)) {
+        syncDebug() << "Failed to open filter file for reading: " << fileName;
+        return;
+    }
+
+    // Read the list
+    QTextStream in(&file);
+    while(!in.atEnd()) {
+        mGlobalFilters.insert(in.readLine());
+    }
+    file.close();
+    listGlobalFilters();
+    updateSharedFilterList();
+}
+
+void SyncWindow::exportGlobalFilters( bool isDefault)
+{
+    QString fileName;
+    QFile file;
+    if(isDefault) {
+        fileName = mConfigDirectory+"/global_filters.txt";
+        file.setFileName(fileName);
+    } else { // Ask user
+        fileName = QFileDialog::getSaveFileName(this);
+        if( fileName == "" ) { // User cancelled
+            return;
+        }
+        file.setFileName(fileName);
+    }
+
+    if(!file.open(QIODevice::WriteOnly|QIODevice::Text)) {
+        syncDebug() << "Failed to open filter file for writting: " << fileName;
+        return;
+    }
+
+    // Write the list
+    QTextStream out(&file);
+    QStringList list = mGlobalFilters.toList();
+    for(int i = 0; i < list.size(); i++ ) {
+        out << list[i] << "\n";
+    }
+    out.flush();
+    file.close();
 }
