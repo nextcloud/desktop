@@ -90,6 +90,7 @@ public:
     void removeFilter(QString filter);
     void hardStop();
     void deleteAccount();
+    void setSaveDBTime(qint64 seconds);
     void pause() { mIsPaused = true; }
     void resume() {
         mIsPaused = false;

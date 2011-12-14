@@ -126,7 +126,7 @@ SyncWindow::SyncWindow(QWidget *parent) :
     updateStatus();
     ui->actionEnable_Delete_Account->setVisible(false);
 
-    if( mAccounts.size() > 0 && ui->actionHide_on_start->isChecked() ) {
+    if( mAccounts.size() > 0 && mHideOnStart ) {
         hide();
     } else {
         show();
@@ -302,7 +302,7 @@ void SyncWindow::on_buttonSave_clicked()
 
 void SyncWindow::closeEvent(QCloseEvent *event)
 {
-    if(mQuitAction || !ui->actionClose_Button_Hides_Window->isChecked()) {
+    if(mQuitAction || !mHideOnClose) {
         // Ask the user for confirmation before closing!
         QMessageBox box(this);
         box.setText(tr("Are you sure you want to quit? "
@@ -574,7 +574,7 @@ void SyncWindow::processNextStep()
         mBusy = false;
         updateStatus();
     }
-    if(mTotalSyncs%1000 == 0 ) {
+    if(mTotalSyncs%mSaveLogCounter == 0 ) {
         saveLogs();
     }
 }
@@ -712,10 +712,11 @@ void SyncWindow::saveApplicationSettings()
 {
     QSettings settings("paintblack.com","OwnCloud Sync");
     settings.beginGroup("SyncWindow");
-    settings.setValue("hide_on_start",ui->actionHide_on_start->isChecked());
-    settings.setValue("hide_when_closed",
-                      ui->actionClose_Button_Hides_Window->isChecked());
+    settings.setValue("hide_on_start",mHideOnStart);
+    settings.setValue("hide_when_closed",mHideOnClose);
     settings.setValue("display_debug",mDisplayDebug);
+    settings.setValue("save_log_count",mSaveLogCounter);
+    settings.setValue("save_db_time",mSaveDBTime);
     settings.setValue("last_run_version",_OCS_VERSION);
     settings.endGroup();
     settings.beginGroup("DisabledIncludedFilters");
@@ -733,13 +734,12 @@ void SyncWindow::loadApplicationSettings()
 {
     QSettings settings("paintblack.com","OwnCloud Sync");
     settings.beginGroup("SyncWindow");
-    bool checked =  settings.value("hide_on_start").toBool();
-    ui->actionHide_on_start->setChecked(checked);
-    ui->actionClose_Button_Hides_Window->setChecked(
-                settings.value("hide_when_closed").toBool());
-    mDisplayDebug = settings.value("display_debug").toBool();
-    ui->actionDisplay_Debug_Messages->setChecked(mDisplayDebug);
-    QString lastRunVersion = settings.value("last_run_version").toString();
+    mHideOnStart = settings.value("hide_on_start",true).toBool();
+    mHideOnClose = settings.value("hide_when_closed",true).toBool();
+    mDisplayDebug = settings.value("display_debug",false).toBool();
+    mSaveLogCounter = settings.value("save_log_count",1000).toLongLong();
+    mSaveDBTime = settings.value("save_db_time",370).toLongLong();
+    QString lastRunVersion = settings.value("last_run_version","").toString();
     if( lastRunVersion != _OCS_VERSION ) { // Need to display what's new
         // message
         displayWhatsNew();
@@ -751,6 +751,9 @@ void SyncWindow::loadApplicationSettings()
                 !settings.value(mIncludedFilters[i].name).toBool();
     }
     settings.endGroup();
+
+    // Now update the configuration
+    on_configurationBox_rejected();
 }
 
 void SyncWindow::on_actionEnable_Delete_Account_triggered()
@@ -1040,4 +1043,32 @@ void SyncWindow::displayWhatsNew()
                                 "- Global filters<br />"
                                 "- Selection of common filters<br />"),
                              QMessageBox::Ok);
+}
+
+void SyncWindow::on_configurationBox_accepted()
+{
+    mSaveLogCounter = ui->spinSaveLogs->value();
+    mSaveDBTime = ui->spinSaveDB->value();
+    mHideOnClose = ui->checkCloseButton->isChecked();
+    mDisplayDebug = ui->checkShowDebug->isChecked();
+    mHideOnStart = ui->checkHideOnStart->isChecked();
+    for(int i = 0; i < mAccounts.size(); i++ ) {
+        mAccounts[i]->setSaveDBTime(mSaveDBTime);
+    }
+
+    // Finally return to the main window
+    ui->stackedWidget->setCurrentIndex(0);
+}
+
+void SyncWindow::on_configurationBox_rejected()
+{
+    // Reset the GUI
+    ui->spinSaveLogs->setValue(mSaveLogCounter);
+    ui->spinSaveDB->setValue(mSaveDBTime);
+    ui->checkCloseButton->setChecked(mHideOnClose);
+    ui->checkShowDebug->setChecked(mDisplayDebug);
+    ui->checkHideOnStart->setChecked(mHideOnStart);
+
+    // Finally return to the main window
+    ui->stackedWidget->setCurrentIndex(0);
 }

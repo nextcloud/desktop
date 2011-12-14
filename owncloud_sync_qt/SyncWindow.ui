@@ -14,8 +14,8 @@
    <string>SyncWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout_8">
-    <item row="1" column="1">
+   <layout class="QGridLayout" name="gridLayout_11">
+    <item row="0" column="0">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="lineWidth">
        <number>0</number>
@@ -624,22 +624,6 @@ p, li { white-space: pre-wrap; }
         <property name="margin">
          <number>0</number>
         </property>
-        <item row="1" column="0">
-         <widget class="QPushButton" name="buttonReturn">
-          <property name="text">
-           <string>Return to Main Window</string>
-          </property>
-          <property name="autoDefault">
-           <bool>false</bool>
-          </property>
-          <property name="default">
-           <bool>false</bool>
-          </property>
-          <property name="flat">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="0">
          <widget class="QTabWidget" name="tabConfigurations">
           <property name="enabled">
@@ -652,51 +636,145 @@ p, li { white-space: pre-wrap; }
            </size>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tabConfigure">
            <property name="enabled">
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
            <attribute name="title">
             <string>Configure</string>
            </attribute>
-           <layout class="QGridLayout" name="gridLayout_11">
-            <item row="0" column="1">
-             <widget class="QLineEdit" name="lineEdit"/>
-            </item>
-            <item row="0" column="0">
-             <widget class="QLabel" name="label_15">
-              <property name="text">
-               <string>Save database every</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="2">
-             <widget class="QLabel" name="label_16">
-              <property name="text">
-               <string>seconds.</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_17">
-              <property name="text">
-               <string>Save and clear log every</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QLineEdit" name="lineEdit_2"/>
-            </item>
-            <item row="1" column="2">
-             <widget class="QLabel" name="label_18">
-              <property name="text">
-               <string>syncs.</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           <widget class="QFrame" name="frame_9">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>10</y>
+              <width>361</width>
+              <height>91</height>
+             </rect>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_8">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_15">
+               <property name="text">
+                <string>Save database every</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QLabel" name="label_16">
+               <property name="text">
+                <string>seconds.</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_17">
+               <property name="text">
+                <string>Save and clear log every</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QLabel" name="label_18">
+               <property name="text">
+                <string>syncs.</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QSpinBox" name="spinSaveLogs">
+               <property name="maximum">
+                <number>99999999</number>
+               </property>
+               <property name="value">
+                <number>1000</number>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QSpinBox" name="spinSaveDB">
+               <property name="maximum">
+                <number>2593000</number>
+               </property>
+               <property name="value">
+                <number>370</number>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QFrame" name="frame_10">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>100</y>
+              <width>361</width>
+              <height>85</height>
+             </rect>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout">
+             <item>
+              <widget class="QCheckBox" name="checkHideOnStart">
+               <property name="text">
+                <string>Hide on start</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="checkCloseButton">
+               <property name="text">
+                <string>Close button hides window</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="checkShowDebug">
+               <property name="text">
+                <string>Display Debug Messages</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QDialogButtonBox" name="configurationBox">
+            <property name="geometry">
+             <rect>
+              <x>100</x>
+              <y>190</y>
+              <width>167</width>
+              <height>25</height>
+             </rect>
+            </property>
+            <property name="standardButtons">
+             <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+            </property>
+           </widget>
           </widget>
           <widget class="QWidget" name="tabGlobalFilters">
            <attribute name="title">
@@ -801,7 +879,7 @@ p, li { white-space: pre-wrap; }
                       </property>
                      </widget>
                     </item>
-                    <item row="3" column="0" colspan="4">
+                    <item row="4" column="0" colspan="4">
                      <widget class="QListView" name="listGlobalFilterView"/>
                     </item>
                     <item row="1" column="0" colspan="4">
@@ -866,6 +944,22 @@ p, li { white-space: pre-wrap; }
               </widget>
              </widget>
             </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="buttonReturn">
+              <property name="text">
+               <string>Return to Main Window</string>
+              </property>
+              <property name="autoDefault">
+               <bool>false</bool>
+              </property>
+              <property name="default">
+               <bool>false</bool>
+              </property>
+              <property name="flat">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
            </layout>
           </widget>
          </widget>
@@ -891,10 +985,7 @@ p, li { white-space: pre-wrap; }
     </property>
     <addaction name="actionConfigure"/>
     <addaction name="action_Quit"/>
-    <addaction name="actionHide_on_start"/>
-    <addaction name="actionClose_Button_Hides_Window"/>
     <addaction name="actionEnable_Delete_Account"/>
-    <addaction name="actionDisplay_Debug_Messages"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">

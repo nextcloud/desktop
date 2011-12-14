@@ -93,6 +93,10 @@ private:
     QQueue<OwnCloudSync*> mAccountsReadyToSync;
     bool mQuitAction;
     bool mDisplayDebug;
+    bool mHideOnStart;
+    bool mHideOnClose;
+    qint64 mSaveLogCounter;
+    qint64 mSaveDBTime;
 
     QIcon mDefaultIcon;
     QIcon mSyncIcon;
@@ -182,6 +186,8 @@ private slots:
     void on_buttonGlobalFilterRemove_clicked();
     void on_buttonImport_clicked();
     void on_buttonExport_clicked();
+    void on_configurationBox_accepted();
+    void on_configurationBox_rejected();
 };
 
 // Now create a global filter list

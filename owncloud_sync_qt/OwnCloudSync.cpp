@@ -139,6 +139,12 @@ OwnCloudSync::OwnCloudSync(QString name, WId id,QSet<QString> *globalFilters)
 #endif
 }
 
+void OwnCloudSync::setSaveDBTime(qint64 seconds)
+{
+    mSaveDBTimer->stop();
+    mSaveDBTimer->start(seconds*1000);
+}
+
 void OwnCloudSync::setEnabled( bool enabled)
 {
     mIsEnabled = enabled;
