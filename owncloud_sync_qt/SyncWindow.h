@@ -111,6 +111,7 @@ private:
     void loadApplicationSettings();
     void deleteAccount();
     void updateSharedFilterList();
+    void displayWhatsNew();
     void listGlobalFilters();
     void importGlobalFilters(bool isDefault = false);
     void exportGlobalFilters(bool isDefault = false);

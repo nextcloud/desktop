@@ -716,6 +716,7 @@ void SyncWindow::saveApplicationSettings()
     settings.setValue("hide_when_closed",
                       ui->actionClose_Button_Hides_Window->isChecked());
     settings.setValue("display_debug",mDisplayDebug);
+    settings.setValue("last_run_version",_OCS_VERSION);
     settings.endGroup();
     settings.beginGroup("DisabledIncludedFilters");
     for(int i = 0; i < mIncludedFilters.size(); i++ ) {
@@ -738,6 +739,11 @@ void SyncWindow::loadApplicationSettings()
                 settings.value("hide_when_closed").toBool());
     mDisplayDebug = settings.value("display_debug").toBool();
     ui->actionDisplay_Debug_Messages->setChecked(mDisplayDebug);
+    QString lastRunVersion = settings.value("last_run_version").toString();
+    if( lastRunVersion != _OCS_VERSION ) { // Need to display what's new
+        // message
+        displayWhatsNew();
+    }
     settings.endGroup();
     settings.beginGroup("DisabledIncludedFilters");
     for(int i = 0; i < mIncludedFilters.size(); i++ ) {
@@ -1023,4 +1029,15 @@ void SyncWindow::exportGlobalFilters( bool isDefault)
     }
     out.flush();
     file.close();
+}
+
+void SyncWindow::displayWhatsNew()
+{
+    QMessageBox::information(this,tr("What's new?"),
+                             tr("<center><b>WARNING!!</b></center><br />This software is still in beta. It may eat your files!!!<br /><br />"
+                                "<center><b>New features</b>:</center><br />"
+                                "- Soft Pause/Resume of synchronization<br />"
+                                "- Global filters<br />"
+                                "- Selection of common filters<br />"),
+                             QMessageBox::Ok);
 }

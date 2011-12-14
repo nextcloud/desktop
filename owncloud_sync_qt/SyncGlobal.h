@@ -22,7 +22,7 @@
 #include <QIODevice>
 #include <QDebug>
 
-#define _OCS_VERSION "0.5.2"
+#define _OCS_VERSION "0.5.3"
 #define _OCS_DB_VERSION 2
 
 /*! \brief An internal OwnCloud Sync Qt debugging class.
