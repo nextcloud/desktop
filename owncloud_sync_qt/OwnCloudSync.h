@@ -41,7 +41,7 @@ class OwnCloudSync : public QObject
     Q_OBJECT
 
 public:
-    explicit OwnCloudSync(QString name, WId id);
+    explicit OwnCloudSync(QString name, WId id, QSet<QString> *globalFilters);
     ~OwnCloudSync();
     void initialize(QString host, QString user, QString pass, QString remote,
                     QString local, qint64 time);
@@ -107,6 +107,7 @@ private:
     bool mNotifySyncEmitted;
     bool mHardStop;
     QSet<QString> mFilters;
+    QSet<QString> *mGlobalFilters;
     QString mLastSync;
     QSqlDatabase mDB;
     QString mDBFileName;

@@ -51,6 +51,8 @@ SyncWindow::SyncWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::SyncWindow)
 {
+    mSharedFilters = new QSet<QString>();
+    mIncludedFilters = g_GetIncludedFilterList();
     mQuitAction = false;
     mBusy = false;
     ui->setupUi(this);
@@ -58,6 +60,7 @@ SyncWindow::SyncWindow(QWidget *parent) :
     mEditingConfig = -1;
     mConflictsExist = false;
     loadApplicationSettings();
+    updateSharedFilterList();
 
     // Before anything else, connect to the SyncDebug
     connect(getSyncDebug(),SIGNAL(debugMessage(const QString)),
@@ -87,6 +90,8 @@ SyncWindow::SyncWindow(QWidget *parent) :
     // Start with the default tab
     ui->stackedWidget->setCurrentIndex(0);
     ui->listFilterView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->listIncludedFilterView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->listGlobalFilterView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     // Create the Accounts SignalMapper
     mAccountsSignalMapper = new QSignalMapper(this);
@@ -216,7 +221,7 @@ void SyncWindow::systemTrayActivated(QSystemTrayIcon::ActivationReason reason)
 
 OwnCloudSync* SyncWindow::addAccount(QString name)
 {
-    OwnCloudSync *account = new OwnCloudSync(name,winId());
+    OwnCloudSync *account = new OwnCloudSync(name,winId(),mSharedFilters);
     mAccounts.append(account);
     mAccountNames.append(name);
 
@@ -621,11 +626,11 @@ void SyncWindow::editConfig(int row)
 void SyncWindow::listFilters(int row)
 {
     if(row<0) {
-        // Show the filters list
+        // Show an empty filter list
         ui->listFilterView->setModel(
                    new QStringListModel());
     } else {
-        // Show the filters list
+        // Show the filter list
         ui->listFilterView->setModel(
                    new QStringListModel(mAccounts[row]->getFilterList()));
         // Create the filterView signals
@@ -709,6 +714,15 @@ void SyncWindow::saveApplicationSettings()
                       ui->actionClose_Button_Hides_Window->isChecked());
     settings.setValue("display_debug",mDisplayDebug);
     settings.endGroup();
+    settings.beginGroup("DisabledIncludedFilters");
+    for(int i = 0; i < mIncludedFilters.size(); i++ ) {
+        if( !mIncludedFilters[i].enabled ) {
+            settings.setValue(mIncludedFilters[i].name,true);
+        } else {
+            settings.remove(mIncludedFilters[i].name);
+        }
+    }
+    settings.endGroup();
 }
 
 void SyncWindow::loadApplicationSettings()
@@ -721,6 +735,12 @@ void SyncWindow::loadApplicationSettings()
                 settings.value("hide_when_closed").toBool());
     mDisplayDebug = settings.value("display_debug").toBool();
     ui->actionDisplay_Debug_Messages->setChecked(mDisplayDebug);
+    settings.endGroup();
+    settings.beginGroup("DisabledIncludedFilters");
+    for(int i = 0; i < mIncludedFilters.size(); i++ ) {
+        mIncludedFilters[i].enabled =
+                !settings.value(mIncludedFilters[i].name).toBool();
+    }
     settings.endGroup();
 }
 
@@ -802,4 +822,75 @@ void SyncWindow::on_buttonPause_clicked()
     ui->buttonPause->setEnabled(false);
     ui->buttonResume->setEnabled(true);
     ui->textBrowser->append(tr("Pausing..."));
+}
+
+void SyncWindow::on_actionConfigure_triggered()
+{
+    ui->stackedWidget->setCurrentIndex(3);
+    ui->listIncludedFilterView->clear();
+    QListWidgetItem *item;
+    for( int i = 0; i < mIncludedFilters.size(); i++ ) {
+        item = new QListWidgetItem(mIncludedFilters[i].filter+
+                                   "     [" + mIncludedFilters[i].description + "]",
+                ui->listIncludedFilterView,i);
+        if( mIncludedFilters[i].canBeDisabled ) {
+            if ( mIncludedFilters[i].enabled ) {
+                item->setCheckState(Qt::Checked);
+            } else {
+                item->setCheckState(Qt::Unchecked);
+            }
+        } else {
+            item->setFlags(Qt::NoItemFlags);
+        }
+    }
+    connect(ui->listIncludedFilterView,SIGNAL(itemChanged(QListWidgetItem *)),
+            this,SLOT(includedFilterListItemChanged(QListWidgetItem*)));
+}
+
+void SyncWindow::includedFilterListItemChanged(QListWidgetItem *item)
+{
+    if(item->checkState() == Qt::Checked ) {
+        mIncludedFilters[item->type()].enabled = true;
+    } else {
+        mIncludedFilters[item->type()].enabled = false;
+    }
+    updateSharedFilterList();
+//    syncDebug() << "Item changed: " << mIncludedFilters[item->type()].name
+//                << "State: " << item->checkState() << " Enabled?: " <<
+//                   mIncludedFilters[item->type()].enabled;
+}
+
+void SyncWindow::on_buttonEnableAllIncludedFilters_clicked()
+{
+    for(int i = 0; i<mIncludedFilters.size(); i++) {
+        if(mIncludedFilters[i].canBeDisabled) {
+            ui->listIncludedFilterView->item(i)->setCheckState(Qt::Checked);
+        }
+    }
+    updateSharedFilterList();
+}
+
+void SyncWindow::on_buttonDisableAllIncludedFilters_clicked()
+{
+    for(int i = 0; i<mIncludedFilters.size(); i++) {
+        if(mIncludedFilters[i].canBeDisabled) {
+            ui->listIncludedFilterView->item(i)->setCheckState(Qt::Unchecked);
+        }
+    }
+    updateSharedFilterList();
+}
+
+void SyncWindow::updateSharedFilterList()
+{
+    mSharedFilters->clear();
+    for(int i = 0; i < mIncludedFilters.size(); i++ ) {
+        if(mIncludedFilters[i].enabled)
+            mSharedFilters->insert(mIncludedFilters[i].filter);
+    }
+}
+
+
+void SyncWindow::on_buttonReturn_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(0);
 }

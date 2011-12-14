@@ -33,10 +33,28 @@ class QTimer;
 class OwnCloudSync;
 class QSignalMapper;
 class QMenu;
+class QListWidgetItem;
 
 namespace Ui {
     class SyncWindow;
 }
+
+struct SyncIncludedFilterList {
+    QString name; // No spaces, must be unique!
+    QString filter;
+    QString description;
+    bool enabled;
+    bool canBeDisabled;
+    SyncIncludedFilterList(QString Name, QString Filter,
+                                QString Description,
+                           bool Disable = false)
+    {
+        name = Name;
+        filter = Filter;
+        description = Description;
+        canBeDisabled = Disable;
+    }
+};
 
 class SyncWindow : public QMainWindow
 {
@@ -45,9 +63,11 @@ class SyncWindow : public QMainWindow
 public:
     explicit SyncWindow(QWidget *parent = 0);
     ~SyncWindow();
+    QSet<QString> *mSharedFilters;
 
 private:
     Ui::SyncWindow *ui;
+    QList<SyncIncludedFilterList> mIncludedFilters;
     QSystemTrayIcon *mSystemTray;
     QMenu *mSystemTrayMenu;
     QList<OwnCloudSync*> mAccounts;
@@ -89,6 +109,7 @@ private:
     void saveApplicationSettings();
     void loadApplicationSettings();
     void deleteAccount();
+    void updateSharedFilterList();
 
 public slots:
     //void timeToSync();
@@ -101,6 +122,7 @@ public slots:
                                      QItemSelection deselected);
     void slotAccountsSignalMapper(int row);
     void processDebugMessage(const QString msg);
+    void includedFilterListItemChanged(QListWidgetItem* item);
 
     // GUI related slots
     void on_buttonSave_clicked();
@@ -133,6 +155,7 @@ public slots:
     void slotFinishedSync(OwnCloudSync*);
     void slotToMessage(QString caption, QString body,
     QSystemTrayIcon::MessageIcon icon);
+
 private slots:
     void on_action_Quit_triggered();
     void on_actionEnable_Delete_Account_triggered();
@@ -143,6 +166,30 @@ private slots:
     void on_actionDisplay_Debug_Messages_toggled(bool arg1);
     void on_buttonResume_clicked();
     void on_buttonPause_clicked();
+    void on_actionConfigure_triggered();
+    void on_buttonEnableAllIncludedFilters_clicked();
+    void on_buttonDisableAllIncludedFilters_clicked();
+    void on_buttonReturn_clicked();
 };
+
+// Now create a global filter list
+inline QList<SyncIncludedFilterList> g_GetIncludedFilterList()
+{
+    QList<SyncIncludedFilterList> list;
+    // VIM
+    list.append(SyncIncludedFilterList("vim_tmp",".*.swp","Vim temporary file",true));
+    list.append(SyncIncludedFilterList("vim_tmp2",".*.swo","Vim temporary binary file",true));
+
+    // LibreOffice/OpenOffice lock files
+    list.append(SyncIncludedFilterList("libreoffice_lock",".~lock.*#","LibreOffice/OpenOffice lock files",true));
+
+    // General temporary files that I know of
+    list.append(SyncIncludedFilterList("tmp1","~*","General Temporary Files",true));
+    list.append(SyncIncludedFilterList("android_syncfolders","*.tacit.fs.part","Android Folder Sync temporary file",true));
+
+    // Internal Files (User cannot disable!!)
+    list.append(SyncIncludedFilterList("ocs_conflict",".ocs_conflicting.*","Internal Conflict Resolution File",false));
+    return list;
+}
 
 #endif // SYNCWINDOW_H

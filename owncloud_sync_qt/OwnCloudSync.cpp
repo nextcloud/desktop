@@ -39,7 +39,8 @@
     #include <kwallet.h>
 #endif
 
-OwnCloudSync::OwnCloudSync(QString name, WId id) : mAccountName(name),mWinId(id)
+OwnCloudSync::OwnCloudSync(QString name, WId id,QSet<QString> *globalFilters)
+    : mAccountName(name),mWinId(id),mGlobalFilters(globalFilters)
 {
     mBusy = false;
     mIsPaused = false;
@@ -1527,9 +1528,11 @@ bool OwnCloudSync::isFileFiltered(QString name)
         return true;
     }
     QList<QString> list = mFilters.toList();
+    list.append( mGlobalFilters->toList() );
 
+    syncDebug() << "Will check a total of " << list.size() << " filters";
     // Else, look through the filters and see if this file is excluded
-    for( int i = 0; i < mFilters.size(); i++ ) {
+    for( int i = 0; i < list.size(); i++ ) {
         QString filter = list[i];
         if(filter.contains("*")) { // Must build general expression
             filter.replace("?","\\\?");
