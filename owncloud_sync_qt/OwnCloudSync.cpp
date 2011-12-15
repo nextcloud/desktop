@@ -1484,6 +1484,18 @@ void OwnCloudSync::initialize(QString host, QString user, QString pass,
                               QString remote, QString local, qint64 time)
 {
     mHost = stringRemoveBasePath(host,"/files/webdav.php");
+    QRegExp reg("/*$");
+    mHost.replace(reg,""); // Get rid of trailing /'s
+    reg = QRegExp("/.*$");
+    QString subDir = mHost;
+    subDir.replace("http://","");
+    subDir.replace("https://","");
+    int pos = reg.indexIn(subDir);
+    if( pos >-1 ) { // Found a match
+        subDir = reg.cap(0);
+    } else {
+        subDir = "";
+    }
     mUsername = user;
     mPassword = pass;
     mRemoteDirectory = remote;
@@ -1491,7 +1503,7 @@ void OwnCloudSync::initialize(QString host, QString user, QString pass,
     mUpdateTime = time;
     // Initialize WebDAV
     mWebdav->initialize(mHost+"/files/webdav.php",
-                        mUsername,mPassword,"/files/webdav.php");
+                        mUsername,mPassword,subDir+"/files/webdav.php");
 
     // Create the local directory if it doesn't exist
     QDir localDir(mLocalDirectory);
