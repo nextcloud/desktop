@@ -33,7 +33,7 @@ class QFileSystemWatcher;
 class QNetworkReply;
 
 #ifdef Q_OS_LINUX
-    #include <kde4/kwallet.h>
+    #include <kwallet.h>
 #endif
 
 class OwnCloudSync : public QObject
