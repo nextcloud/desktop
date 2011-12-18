@@ -58,8 +58,9 @@ public:
         qlonglong size;
         qlonglong sizeAvailable;
         QString type;
+        bool locked;
         FileInfo(QString name, QString last, qlonglong fileSize,
-                 qlonglong available, QString fileType ) {
+                 qlonglong available, QString fileType, bool lock = false ) {
             fileName = name;
             lastModified = last;
             size = fileSize;
@@ -69,6 +70,7 @@ public:
             } else {
                 type = fileType;
             }
+            locked = lock;
         };
         QString toString()
         {
