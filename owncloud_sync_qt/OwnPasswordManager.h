@@ -34,6 +34,12 @@ public:
 
 private:
 #ifdef Q_OS_LINUX
+    enum PasswordManagerLinux {
+        NONE,
+        KWALLET,
+        GNOME_KEYRING
+    };
+    PasswordManagerLinux mPasswordManagerLinux;
 
 #if defined(OCS_USE_KWALLET)
     KWallet::Wallet *mKWallet;
