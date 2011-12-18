@@ -44,6 +44,7 @@ public:
     qint64 writeData(const char* data, qint64 length){
         qDebug() << data;
         emit debugMessage(QString(data));
+        return 0;
     }
 
 signals:

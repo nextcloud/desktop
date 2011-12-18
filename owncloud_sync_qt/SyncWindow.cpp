@@ -23,6 +23,7 @@
 #include "sqlite3_util.h"
 #include "QWebDAV.h"
 #include "OwnCloudSync.h"
+#include "OwnPasswordManager.h"
 
 #include <QFile>
 #include <QtSql/QSqlDatabase>
@@ -51,6 +52,7 @@ SyncWindow::SyncWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::SyncWindow)
 {
+    hide();
     mSharedFilters = new QSet<QString>();
     mIncludedFilters = g_GetIncludedFilterList();
     mQuitAction = false;
@@ -110,7 +112,17 @@ SyncWindow::SyncWindow(QWidget *parent) :
     importGlobalFilters(true);
     updateSharedFilterList();
 
+    // Get the password manager
+    mPasswordManager = new OwnPasswordManager(this,winId());
+    connect(mPasswordManager,SIGNAL(managerReady()),
+            this,SLOT(passwordManagerReady()));
+}
+
+void SyncWindow::passwordManagerReady()
+{
     // Look for accounts that already exist
+    QDir configDir(mConfigDirectory);
+    configDir.mkpath(mConfigDirectory);
     QStringList filters;
     filters << "*.db";
     QStringList files = configDir.entryList(filters);
@@ -223,7 +235,8 @@ void SyncWindow::systemTrayActivated(QSystemTrayIcon::ActivationReason reason)
 
 OwnCloudSync* SyncWindow::addAccount(QString name)
 {
-    OwnCloudSync *account = new OwnCloudSync(name,winId(),mSharedFilters);
+    OwnCloudSync *account = new OwnCloudSync(name,mPasswordManager,
+                                             mSharedFilters);
     mAccounts.append(account);
     mAccountNames.append(name);
 

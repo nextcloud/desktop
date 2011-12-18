@@ -20,6 +20,7 @@
 #include "OwnCloudSync.h"
 #include "sqlite3_util.h"
 #include "QWebDAV.h"
+#include "OwnPasswordManager.h"
 
 #include <QFile>
 #include <QtSql/QSqlDatabase>
@@ -35,12 +36,10 @@
 #include <QTableWidgetItem>
 #include <QComboBox>
 
-#ifdef Q_OS_LINUX
-    #include <kwallet.h>
-#endif
-
-OwnCloudSync::OwnCloudSync(QString name, WId id,QSet<QString> *globalFilters)
-    : mAccountName(name),mWinId(id),mGlobalFilters(globalFilters)
+OwnCloudSync::OwnCloudSync(QString name, OwnPasswordManager *passwordManager,
+                           QSet<QString> *globalFilters)
+    : mAccountName(name),mPasswordManager(passwordManager),
+      mGlobalFilters(globalFilters)
 {
     mBusy = false;
     mIsPaused = false;
@@ -48,7 +47,6 @@ OwnCloudSync::OwnCloudSync(QString name, WId id,QSet<QString> *globalFilters)
     // Set the pointers so we can delete them without worrying :)
     mSyncTimer = 0;
     mFileWatcher = 0;
-    mWallet = 0;
 
     mHardStop = false;
     mIsFirstRun = true;
@@ -114,11 +112,8 @@ OwnCloudSync::OwnCloudSync(QString name, WId id,QSet<QString> *globalFilters)
             readConfigFromDB();
             //ui->buttonSave->setDisabled(true);
             syncDebug() << "Checking configuration!";
-#ifdef Q_OS_LINUX
-            // Wait until the password is set
-#else
+            mPassword = mPasswordManager->getPassword(mAccountName);
             initialize();
-#endif
         }
     } else {
       createDataBase(); // Create the database in memory
@@ -128,15 +123,6 @@ OwnCloudSync::OwnCloudSync(QString name, WId id,QSet<QString> *globalFilters)
     connect(mSaveDBTimer, SIGNAL(timeout()), this, SLOT(saveDBToFile()));
     mSaveDBTimer->start(370000);
     updateStatus();
-
-    // Now the password management
-#ifdef Q_OS_LINUX
-    mWallet= KWallet::Wallet::openWallet(
-                KWallet::Wallet::NetworkWallet(),
-                mWinId,KWallet::Wallet::Asynchronous);
-    connect(mWallet, SIGNAL(walletOpened(bool)), SLOT(walletOpened(bool)));
-#else
-#endif
 }
 
 void OwnCloudSync::setSaveDBTime(qint64 seconds)
@@ -1260,9 +1246,7 @@ void OwnCloudSync::saveDBToFile()
     } else {
         syncDebug() << "Failed to save DB to file!";
     }
-#ifdef Q_OS_LINUX
-    saveWalletPassword();
-#endif
+
 }
 
 void OwnCloudSync::loadDBFromFile()
@@ -1618,44 +1602,6 @@ bool OwnCloudSync::needsSync()
     }
     return mNeedsSync;
 }
-
-#ifdef Q_OS_LINUX
-
-void OwnCloudSync::requestPassword()
-{
-    QMap<QString,QString> map;
-    mWallet->readMap(mAccountName,map);
-    if(map.size()) {
-        mPassword = map[mAccountName];
-        initialize();
-    }
-}
-
-void OwnCloudSync::walletOpened(bool ok)
-{
-    if( (ok && (mWallet->hasFolder("owncloud_sync"))
-         || mWallet->createFolder("owncloud_sync"))
-         && mWallet->setFolder("owncloud_sync")) {
-            //emit toLog("Wallet opened!");
-            //syncDebug() << "Wallet opened!" <<
-            //           KWallet::Wallet::FormDataFolder() ;
-            if (mReadPassword ) {
-                requestPassword();
-            }
-    } else {
-        syncDebug() << "Error opening wallet";
-    }
-}
-
-void OwnCloudSync::saveWalletPassword()
-{
-    QMap<QString,QString> map;
-    map[mAccountName] = mPassword;
-    if( mWallet )
-        mWallet->writeMap(mAccountName,map);
-}
-
-#endif
 
 QString OwnCloudSync::stringRemoveBasePath(QString path, QString base)
 {

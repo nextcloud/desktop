@@ -29,6 +29,7 @@
 #include <QModelIndex>
 #include <QItemSelection>
 
+class OwnPasswordManager;
 class QTimer;
 class OwnCloudSync;
 class QSignalMapper;
@@ -103,6 +104,8 @@ private:
     QIcon mDefaultConflictIcon;
     QIcon mSyncConflictIcon;
 
+    OwnPasswordManager *mPasswordManager;
+
     void processNextStep();
     void saveLogs();
     void rebuildAccountsTable();
@@ -134,6 +137,7 @@ public slots:
     void slotAccountsSignalMapper(int row);
     void processDebugMessage(const QString msg);
     void includedFilterListItemChanged(QListWidgetItem* item);
+    void passwordManagerReady();
 
     // GUI related slots
     void on_buttonSave_clicked();

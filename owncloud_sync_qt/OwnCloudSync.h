@@ -19,6 +19,8 @@
 #ifndef OWNCLOUDSYNC_H
 #define OWNCLOUDSYNC_H
 
+#include "SyncGlobal.h"
+
 #include <QMainWindow>
 #include "QWebDAV.h"
 #include <QSqlDatabase>
@@ -31,17 +33,15 @@
 class QTimer;
 class QFileSystemWatcher;
 class QNetworkReply;
-
-#ifdef Q_OS_LINUX
-    #include <kwallet.h>
-#endif
+class OwnPasswordManager;
 
 class OwnCloudSync : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit OwnCloudSync(QString name, WId id, QSet<QString> *globalFilters);
+    explicit OwnCloudSync(QString name, OwnPasswordManager *passwordManager,
+                          QSet<QString> *globalFilters);
     ~OwnCloudSync();
     void initialize(QString host, QString user, QString pass, QString remote,
                     QString local, qint64 time);
@@ -100,7 +100,7 @@ public:
     }
 
 private:
-    WId mWinId;
+    OwnPasswordManager *mPasswordManager;
     QWebDAV *mWebdav;
     bool mIsEnabled;
     bool mAllowedToSync;
@@ -152,11 +152,6 @@ private:
     QString mAccountName;
     SyncPosition mLastSyncAborted;
     SyncPosition mSyncPosition;
-#ifdef Q_OS_LINUX
-    KWallet::Wallet *mWallet;
-    void saveWalletPassword();
-    void requestPassword();
-#endif
     bool mReadPassword;
     bool mIsPaused;
 
@@ -221,10 +216,6 @@ public slots:
     void loadDBFromFile();
     void requestTimedout();
     void serverDirectoryCreated(QString name);
-
-//#ifdef Q_OS_LINUX
-    void walletOpened(bool);
-//#endif
 };
 
 #endif // OWNCLOUDSYNC_H

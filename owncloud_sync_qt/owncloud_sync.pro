@@ -21,13 +21,15 @@ SOURCES += main.cpp\
         sqlite3_util.cpp \
         SyncWindow.cpp \
     qwebdav/QWebDAV.cpp \
-    OwnCloudSync.cpp
+    OwnCloudSync.cpp \
+    OwnPasswordManager.cpp
 
 HEADERS  += sqlite3_util.h \
             SyncWindow.h \
             qwebdav/QWebDAV.h \
     OwnCloudSync.h \
-    SyncGlobal.h
+    SyncGlobal.h \
+    OwnPasswordManager.h
 
 FORMS    += SyncWindow.ui
 INCLUDEPATH += qwebdav/
@@ -82,6 +84,10 @@ DEPENDPATH += /usr/include
 OTHER_FILES += \
     COPYING-README \
     COPYING-GPL
+
+
+
+
 
 
 
