@@ -207,6 +207,10 @@ void QWebDAV::slotFinished(QNetworkReply *reply)
         // Do nothing for now
     } else if( reply->request().attribute(
                    QNetworkRequest::User).toString().contains("move")) {
+    } else if ( reply->request().attribute(
+                    QNetworkRequest::User).toString().contains("delete")) {
+        // Ok, that's great!
+    }
         // Do nothing
     } else {
         syncDebug() << "Who knows what the server is trying to tell us. " +
