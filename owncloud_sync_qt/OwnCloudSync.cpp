@@ -48,6 +48,7 @@ OwnCloudSync::OwnCloudSync(QString name, OwnPasswordManager *passwordManager,
     mSyncTimer = 0;
     mFileWatcher = 0;
 
+    mStorePasswordInDB = false;
     mHardStop = false;
     mIsFirstRun = true;
     mDownloadingConflictingFile = false;
@@ -112,7 +113,13 @@ OwnCloudSync::OwnCloudSync(QString name, OwnPasswordManager *passwordManager,
             readConfigFromDB();
             //ui->buttonSave->setDisabled(true);
             syncDebug() << "Checking configuration!";
-            mPassword = mPasswordManager->getPassword(mAccountName);
+            QString password = mPasswordManager->getPassword(mAccountName);
+            if( password == "") {
+                mStorePasswordInDB = true;
+            } else {
+                mPassword = password;
+                mStorePasswordInDB = false;
+            }
             initialize();
         }
     } else {
@@ -1090,24 +1097,20 @@ void OwnCloudSync::addFilter(QString filter)
 
 void OwnCloudSync::saveConfigToDB()
 {
-    bool savePw = true;
-#ifdef Q_OS_LINUX
-    savePw = false;
-#endif
     QSqlQuery query(QSqlDatabase::database(mAccountName));
     query.exec("SELECT * from config;");
     if(query.next()) { // Update
         QString update = QString("UPDATE config SET host='%1',username='%2',"
                        "password='%3',localdir='%4',updatetime='%5',"
                                  "enabled='%6',remotedir='%7';").arg(mHost)
-                .arg(mUsername).arg(savePw?mPassword:"").arg(mLocalDirectory)
+                .arg(mUsername).arg(mStorePasswordInDB?mPassword:"").arg(mLocalDirectory)
                        .arg(mUpdateTime).arg(mIsEnabled?"yes":"no")
                        .arg(mRemoteDirectory);
         query.exec(update);
     } else { // Insert
         QString add = QString("INSERT INTO config values('%1','%2',"
                               "'%3','%4','%5','%6','%7');").arg(mHost)
-                .arg(mUsername).arg(savePw?mPassword:"").arg(mLocalDirectory)
+                .arg(mUsername).arg(mStorePasswordInDB?mPassword:"").arg(mLocalDirectory)
                        .arg(mUpdateTime).arg(mIsEnabled?"yes":"no")
                        .arg(mRemoteDirectory);
         query.exec(add);
@@ -1247,6 +1250,10 @@ void OwnCloudSync::saveDBToFile()
         syncDebug() << "Failed to save DB to file!";
     }
 
+    // Save password to wallet manager?
+    if (!mStorePasswordInDB) {
+        mPasswordManager->savePassword(mAccountName,mPassword);
+    }
 }
 
 void OwnCloudSync::loadDBFromFile()

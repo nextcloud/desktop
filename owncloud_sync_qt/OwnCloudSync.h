@@ -100,6 +100,7 @@ public:
     }
 
 private:
+    bool mStorePasswordInDB;
     OwnPasswordManager *mPasswordManager;
     QWebDAV *mWebdav;
     bool mIsEnabled;

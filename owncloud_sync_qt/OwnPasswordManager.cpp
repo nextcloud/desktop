@@ -31,19 +31,23 @@ OwnPasswordManager::OwnPasswordManager(QObject *parent, WId winID )
                 this,SLOT(slotKWalletOpened(bool)));
     }
 #endif // OCS_USE_KWALLET
-
+    if(mPasswordManagerLinux != KWALLET ) {
+        emit managerReady();
+    }
 #endif // Q_OS_LINUX
 }
 
-void OwnPasswordManager::savePassword(QString name, QString pass)
+bool OwnPasswordManager::savePassword(QString name, QString pass)
 {
 #ifdef Q_OS_LINUX
 
 #if defined(OCS_USE_KWALLET)
-    QMap<QString,QString> map;
-    map[name] = pass;
-    if( mKWallet )
-        mKWallet->writeMap(name,map);
+    if(mPasswordManagerLinux == KWALLET) {
+        QMap<QString,QString> map;
+        map[name] = pass;
+        if( mKWallet )
+            mKWallet->writeMap(name,map);
+    }
 #endif
 
 #if defined(OCS_USE_GNOME_KEYRING)
@@ -56,6 +60,8 @@ void OwnPasswordManager::savePassword(QString name, QString pass)
 
 #ifdef Q_OS_WIN
 #endif // Q_OS_WIN
+
+    return false; // Which means password could not be stored, store in DB
 }
 
 QString OwnPasswordManager::getPassword(QString name)
@@ -80,7 +86,7 @@ QString OwnPasswordManager::getPassword(QString name)
 
 #ifdef Q_OS_WIN
 #endif // Q_OS_WIN
-    return QString("");
+    return QString(""); // If empty, means read from DB
 }
 
 void OwnPasswordManager::slotKWalletOpened(bool ok)

@@ -29,7 +29,7 @@ class OwnPasswordManager : public QObject
     Q_OBJECT
 public:
     OwnPasswordManager(QObject *parent = 0, WId winId = 0);
-    void savePassword(QString name, QString pass);
+    bool savePassword(QString name, QString pass);
     QString getPassword(QString name);
 
 private:
