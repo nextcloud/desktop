@@ -210,7 +210,6 @@ void QWebDAV::slotFinished(QNetworkReply *reply)
     } else if ( reply->request().attribute(
                     QNetworkRequest::User).toString().contains("delete")) {
         // Ok, that's great!
-    }
         // Do nothing
     } else {
         syncDebug() << "Who knows what the server is trying to tell us. " +
