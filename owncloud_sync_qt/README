@@ -1,0 +1,19 @@
+== ownCloud Sync Qt ==
+
+1) About onwCloud Sync Qt
+2) Requirements
+3) Compiling
+
+2) == REQUIREMENTS ==
+
+3) == COMPILING ==
+
+3a) Using QtCreator
+
+Open owncloud_sync.pro with QtCreator. Then navigate to the Projects tab.
+Select Build Settings. Expand the qmake section (under build steps). If you want
+to enable the use of KWallet add "DEFINES += OCS_USE_KWALLET" under additional
+arguments (keep the quotes).
+
+
+Then build and run :)

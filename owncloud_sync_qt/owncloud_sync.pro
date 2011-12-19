@@ -83,7 +83,11 @@ DEPENDPATH += /usr/include
 
 OTHER_FILES += \
     COPYING-README \
-    COPYING-GPL
+    COPYING-GPL \
+    README
+
+
+
 
 
 
