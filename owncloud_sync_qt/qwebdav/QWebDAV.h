@@ -43,7 +43,9 @@ public:
         DAVPUT,
         DAVMKCOL,
         DAVDELETE,
-        DAVMOVE
+        DAVMOVE,
+        DAVLOCK,
+        DAVUNLOCK
     };
 
     enum ATTRIBUTETYPE {
@@ -111,7 +113,9 @@ public:
     QNetworkReply* mkdir(QString dirName );
     QNetworkReply* sendWebdavRequest( QUrl url, DAVType type,
                                       QByteArray verb = 0,QIODevice *data = 0,
-                                      qint64 extra = 1);
+                                      QString extra = "1");
+    QNetworkReply* lock(QString name);
+    QNetworkReply* unlock(QString name, QString token);
 
 private:
     QString mHostname;
@@ -125,12 +129,14 @@ private:
     QHash<qint64,QBuffer*>    mRequestData;
     QHash<qint64,QFile*> mRequestFile;
     QHash<qint64,QString> mRequestFilePrefix;
+    QHash<QString,QString> mLockTokens;
 
     void processDirList(QByteArray xml, QString url);
     void processFile(QNetworkReply* reply);
     void processLocalDirectory(QString dirPath);
     void processPutFinished(QNetworkReply *reply);
     void connectReplyFinished(QNetworkReply *reply);
+    void processLockRequest(QByteArray xml, QString url);
 
 signals:
     void directoryListingReady(QList<QWebDAV::FileInfo>);
