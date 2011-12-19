@@ -206,6 +206,9 @@ inline QList<SyncIncludedFilterList> g_GetIncludedFilterList()
     // LibreOffice/OpenOffice lock files
     list.append(SyncIncludedFilterList("libreoffice_lock",".~lock.*#","LibreOffice/OpenOffice lock files",true));
 
+    // Kate swap files
+    list.append(SyncIncludedFilterList("kate_tmp","*.kate-swp", "Kate temporary file", true));
+
     // General temporary files that I know of
     list.append(SyncIncludedFilterList("tmp1","~*","General Temporary Files",true));
     list.append(SyncIncludedFilterList("android_syncfolders","*.tacit.fs.part","Android Folder Sync temporary file",true));
