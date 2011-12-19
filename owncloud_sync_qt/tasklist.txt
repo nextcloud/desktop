@@ -1,0 +1,25 @@
+﻿== ownCloud Sync Qt Task List ==
+At least until we have the new wiki / Task Tracking system. ;)
+
+ -  Tolerate server-client time differences
+    --  Two ways to implement, as far as I can see:
+        ---  Add a script time.php to ownCloud that only reports the system time (in seconds since epoch)
+        ---  Start a QTimer on the client. Then upload a temporary file with unique name. Stop timer on client. Find out what time the server stamps it. Subtract out the time it took to process the request, and that’s the time difference.
+ -  Process SSL errors (tolerate self-signed certificates, etc...)
+    --  Present a window to the user informing them that there are SSL errors. If self signed certificate, ask user for confirmation before continuing.
+    --  QWebDAV already has a slotSslErrors slot. One would simply have to actually write something in it :) Communicate with the SyncWindow instance through an emitted signal, for example.
+ -  Process generic network errors (see above, but this time the slot is slotError)
+ -  Documentation :)
+ -  Detect network state
+ -  WebDAV file locking/unlocking (Juan Carlos)
+ -  Identify renamed files (both locally and remotely)
+ -  Check to see if there is enough space on the server before attempting to upload
+ -  Check to see if there is enough space locally before attempting to download
+ -  Implement a Wallet/keyring/keychain wrapper for all major system implementations (Juan Carlos)
+ -  Add more default included filters (see bottom of SyncWindow.h). (Florian Jacob)
+    --  Right now these are hard coded in. Perhaps implement a method so that they can be grabbed from an external file that can dynamically be updated.
+    --  If the above is implemented, allow remote updates to this file. For example, add it to gitorious or owncloud.org and have the client look for updates once a week or so.
+ -  Ensure that config directory (which houses logs and databases of files locally) is in system appropriate place. (Check mConfigDirectory in OwnCloudSync.{h,cpp} )
+ -  Investigate methods to transfer only the bits that have changed in a file, rather then the whole file (kind of like how Dropbox client does it).
+ -  Investigate pushing notifications to clients when new files become available or are changed.
+ -  Ensure all messages (such as download, uploading, etc... ) are enclosed by tr( ) so that they can be later translated to other languages as volunteers become available.
