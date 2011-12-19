@@ -274,6 +274,9 @@ void SyncWindow::on_buttonSave_clicked()
     host.replace("https://","");
     host.replace("webdav://","");
     host.replace("webdavs://","");
+    // clean up double or trailing slashes..
+    QString remoteDir = QDir::cleanPath(ui->lineRemoteDir->text());
+    QString localDir = QDir::cleanPath(ui->lineLocalDir->text());
     if( mEditingConfig >= 0 ) { // Editing an account
         // If we are renaming the account, make sure that the new name
         // does not already exist
@@ -288,8 +291,8 @@ void SyncWindow::on_buttonSave_clicked()
                         ui->labelHttp->text()+host,
                         ui->lineUser->text(),
                         ui->linePassword->text(),
-                        ui->lineRemoteDir->text(),
-                        ui->lineLocalDir->text(),
+                        remoteDir,
+                        localDir,
                         ui->time->value());
         }
     } else { // New account
@@ -302,8 +305,8 @@ void SyncWindow::on_buttonSave_clicked()
             account->initialize(ui->labelHttp->text()+host,
                                 ui->lineUser->text(),
                                 ui->linePassword->text(),
-                                ui->lineRemoteDir->text(),
-                                ui->lineLocalDir->text(),
+                                remoteDir,
+                                localDir,
                                 ui->time->value());
         }
     }
