@@ -15,5 +15,10 @@ Select Build Settings. Expand the qmake section (under build steps). If you want
 to enable the use of KWallet add "DEFINES += OCS_USE_KWALLET" under additional
 arguments (keep the quotes).
 
+If you had compiled ownCloud Sync Qt before, it is a good idea to run qmake
+again and do a clean all:
+
+Click on owncloud_sync folder in the Projects view pane. Select run qmake.
+Then go to Build in the menu, and select Clean All.
 
 Then build and run :)
