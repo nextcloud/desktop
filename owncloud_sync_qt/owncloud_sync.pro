@@ -70,6 +70,8 @@ unix:!macx:!symbian: LIBS += -L/usr/lib/ -lsqlite3
 unix:!macx:!symbian: LIBS += -L/usr/lib/kde4/devel -lkparts -lkdeui -lkdecore
 }
 
+win32: LIBS += -lsqlite3
+
 #linux-g++ {
 #message(On Linux)
 #}

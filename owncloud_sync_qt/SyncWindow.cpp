@@ -53,6 +53,7 @@ SyncWindow::SyncWindow(QWidget *parent) :
     ui(new Ui::SyncWindow)
 {
     hide();
+    mProcessedPasswordManager = false;
     mSharedFilters = new QSet<QString>();
     mIncludedFilters = g_GetIncludedFilterList();
     mQuitAction = false;
@@ -99,16 +100,20 @@ SyncWindow::SyncWindow(QWidget *parent) :
     connect(mAccountsSignalMapper, SIGNAL(mapped(int)), this,
             SLOT(slotAccountsSignalMapper(int)));
 
+    mConfigDirectory = QDir::toNativeSeparators(QDir::homePath());
 #ifdef Q_OS_LINUX
     // In linux, we will store all databases in
     // $HOME/.local/share/data/owncloud_sync
-    mConfigDirectory = QDir::home().path()+"/.local/share/data/owncloud_sync";
+    mConfigDirectory += QDir::toNativeSeparators("/.local/share/data/)";
+#endif
+#ifdef Q_OS_WIN
+    mConfigDirectory += QDir::toNativeSeparators("/AppData/Local/");
+#endif
+    mConfigDirectory += "owncloud_sync";
     QDir configDir(mConfigDirectory);
     configDir.mkpath(mConfigDirectory);
-    QDir logsDir(mConfigDirectory+"/logs");
-    logsDir.mkpath(mConfigDirectory+"/logs");
-#endif
-
+    QDir logsDir(QDir::toNativeSeparators(mConfigDirectory+"/logs"));
+    logsDir.mkpath(QDir::toNativeSeparators(mConfigDirectory+"/logs"));
     importGlobalFilters(true);
     updateSharedFilterList();
 
@@ -116,19 +121,25 @@ SyncWindow::SyncWindow(QWidget *parent) :
     mPasswordManager = new OwnPasswordManager(this,winId());
     connect(mPasswordManager,SIGNAL(managerReady()),
             this,SLOT(passwordManagerReady()));
+
+    // Check if the passwordManager is already ready
+    if(mPasswordManager->isReady() && !mProcessedPasswordManager) {
+        passwordManagerReady();
+    }
 }
 
 void SyncWindow::passwordManagerReady()
 {
+    mProcessedPasswordManager = true;
     // Look for accounts that already exist
     QDir configDir(mConfigDirectory);
-    configDir.mkpath(mConfigDirectory);
     QStringList filters;
     filters << "*.db";
     QStringList files = configDir.entryList(filters);
     for( int i = 0; i < files.size(); i++ ) {
         QString name = files[i].replace(".db","");
         addAccount(name);
+        syncDebug() << "Found account: " << name;
     }
     if( files.size() == 0 ) {
         on_buttonNewAccount_clicked();
@@ -187,10 +198,12 @@ SyncWindow::~SyncWindow()
 void SyncWindow::saveLogs()
 {
     QString name =
-            QDateTime::currentDateTime().toString("yyyyMMdd:hh:mm:ss.log");
-    QFile file(mConfigDirectory+"/logs/"+name);
+            QDateTime::currentDateTime().toString("yyyyMMdd_hh_mm_ss.log");
+    QFile file(QDir::toNativeSeparators(mConfigDirectory+"/logs/"+name));
     if( !file.open(QIODevice::WriteOnly)) {
-        syncDebug() << "Could not open log file for writting!\n";
+        syncDebug() << "Could not open log file for writting!"
+                       << QDir::toNativeSeparators(mConfigDirectory+"/logs/"+name)
+                       << file.errorString();
         return;
     }
 
@@ -236,7 +249,7 @@ void SyncWindow::systemTrayActivated(QSystemTrayIcon::ActivationReason reason)
 OwnCloudSync* SyncWindow::addAccount(QString name)
 {
     OwnCloudSync *account = new OwnCloudSync(name,mPasswordManager,
-                                             mSharedFilters);
+                                             mSharedFilters,mConfigDirectory);
     mAccounts.append(account);
     mAccountNames.append(name);
 

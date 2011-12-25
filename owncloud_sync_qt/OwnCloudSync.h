@@ -41,7 +41,7 @@ class OwnCloudSync : public QObject
 
 public:
     explicit OwnCloudSync(QString name, OwnPasswordManager *passwordManager,
-                          QSet<QString> *globalFilters);
+                          QSet<QString> *globalFilters,QString configDir);
     ~OwnCloudSync();
     void initialize(QString host, QString user, QString pass, QString remote,
                     QString local, qint64 time);

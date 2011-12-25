@@ -31,8 +31,10 @@ public:
     OwnPasswordManager(QObject *parent = 0, WId winId = 0);
     bool savePassword(QString name, QString pass);
     QString getPassword(QString name);
+    bool isReady() { return mIsReady; }
 
 private:
+    bool mIsReady;
 #ifdef Q_OS_LINUX
     enum PasswordManagerLinux {
         NONE,

@@ -37,9 +37,10 @@
 #include <QComboBox>
 
 OwnCloudSync::OwnCloudSync(QString name, OwnPasswordManager *passwordManager,
-                           QSet<QString> *globalFilters)
+                           QSet<QString> *globalFilters,
+                           QString configDir)
     : mAccountName(name),mPasswordManager(passwordManager),
-      mGlobalFilters(globalFilters)
+      mGlobalFilters(globalFilters),mConfigDirectory(configDir)
 {
     mBusy = false;
     mIsPaused = false;
@@ -87,21 +88,11 @@ OwnCloudSync::OwnCloudSync(QString name, OwnPasswordManager *passwordManager,
 
     // Initialize the Database
     mDB = QSqlDatabase::addDatabase("QSQLITE",mAccountName);
-#ifdef Q_OS_LINUX
-    // In linux, we will store all databases in
-    // $HOME/.local/share/data/owncloud_sync
-    mHomeDirectory = QDir::home().path();
-    mConfigDirectory = mHomeDirectory+"/.local/share/data/owncloud_sync";
-    QDir configDir(mConfigDirectory);
-    configDir.mkpath(mConfigDirectory);
-    QDir logsDir(mConfigDirectory+"/logs");
-    logsDir.mkpath(mConfigDirectory+"/logs");
-    //mDB.setDatabaseName(mConfigDirectory+"/owncloud_sync.db");
     mDB.setDatabaseName(":memory:"); // Use memory for now
-    mDBFileName = mConfigDirectory+"/"+mAccountName+".db";
-#endif
+    mDBFileName = QDir::toNativeSeparators(mConfigDirectory+"/")+mAccountName+".db";
+
     // Find out if the database exists.
-    QFile dbFile(mConfigDirectory+"/"+mAccountName+".db");
+    QFile dbFile(mDBFileName);
     if( dbFile.exists() ) {
         if(!mDB.open()) {
             syncDebug() << "Cannot open database!";
@@ -1163,7 +1154,7 @@ void OwnCloudSync::localDirectoryChanged(QString name)
 {
     // Maybe this was caused by us renaming a file, just wait it out
     while (mFileAccessBusy ) {
-        sleep(1);
+        //sleep(1);
     }
     // If it was caused by one directory being deleted, then delete it now
     // and don't scan it!
@@ -1576,7 +1567,7 @@ void OwnCloudSync::deleteAccount()
 
     // Delete the database
     mDB.close();
-    QFile dbFile(mConfigDirectory+"/"+mAccountName+".db");
+    QFile dbFile(mDBFileName);
     dbFile.remove();
 }
 

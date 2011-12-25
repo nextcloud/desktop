@@ -98,6 +98,7 @@ private:
     bool mHideOnClose;
     qint64 mSaveLogCounter;
     qint64 mSaveDBTime;
+    bool mProcessedPasswordManager;
 
     QIcon mDefaultIcon;
     QIcon mSyncIcon;
