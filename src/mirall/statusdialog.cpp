@@ -34,7 +34,7 @@ FolderViewDelegate::~FolderViewDelegate()
 QSize FolderViewDelegate::sizeHint(const QStyleOptionViewItem & option ,
                                    const QModelIndex & index) const
 {
-  int h = 64; // height 64 + 4px margin top and down
+  int h = 70; // height 64 + 4px margin top and down
   int w = 0;
 
   QString p = qvariant_cast<QString>(index.data(FolderPathRole));
@@ -56,7 +56,7 @@ void FolderViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
   QFont subFont = QApplication::font();
   //font.setPixelSize(font.weight()+);
   font.setBold(true);
-  subFont.setWeight(subFont.weight()-2);
+  subFont.setWeight(subFont.weight() - 4);
   QFontMetrics fm(font);
 
   QIcon icon = qvariant_cast<QIcon>(index.data(FolderIconRole));
@@ -64,26 +64,31 @@ void FolderViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
   QString aliasText = qvariant_cast<QString>(index.data(FolderNameRole));
   QString pathText = qvariant_cast<QString>(index.data(FolderPathRole));
   QString statusText = qvariant_cast<QString>(index.data(FolderStatus));
+  bool syncEnabled = index.data(FolderSyncEnabled).toBool();
+  QString syncStatus = syncEnabled? tr( "Enabled" ) : tr( "Disabled" );
 
   QSize iconsize(48,48); //  = icon.actualSize(option.decorationSize);
 
   QRect headerRect = option.rect;
-  QRect subheaderRect = option.rect;
-  QRect iconRect = subheaderRect;
+  QRect iconRect = option.rect;
 
   iconRect.setRight(iconsize.width()+30);
   iconRect.setTop(iconRect.top()+5);
   headerRect.setLeft(iconRect.right());
-  subheaderRect.setLeft(iconRect.right());
   headerRect.setTop(headerRect.top()+5);
   headerRect.setBottom(headerRect.top()+fm.height());
 
+  QRect subheaderRect = headerRect;
   subheaderRect.setTop(headerRect.bottom());
   QFontMetrics fmSub( subFont );
   subheaderRect.setBottom(subheaderRect.top()+fmSub.height());
   QRect statusRect = subheaderRect;
-  statusRect.setTop( subheaderRect.bottom() + 2 );
+  statusRect.setTop( subheaderRect.bottom() + 5);
   statusRect.setBottom( statusRect.top() + fmSub.height());
+
+  QRect lastSyncRect = statusRect;
+  lastSyncRect.setTop( statusRect.bottom());
+  lastSyncRect.setBottom( lastSyncRect.top() + fmSub.height());
 
   //painter->drawPixmap(QPoint(iconRect.right()/2,iconRect.top()/2),icon.pixmap(iconsize.width(),iconsize.height()));
   painter->drawPixmap(QPoint(iconRect.left()+15,iconRect.top()),icon.pixmap(iconsize.width(),iconsize.height()));
@@ -96,7 +101,8 @@ void FolderViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
   painter->setFont(subFont);
   painter->drawText(subheaderRect.left(),subheaderRect.top()+17, pathText);
-  painter->drawText(statusRect, tr("Status: %1").arg( statusText ));
+  painter->drawText(lastSyncRect, tr("Last Sync: %1").arg( statusText ));
+  painter->drawText(statusRect, tr("Sync Status: %1").arg( syncStatus ));
   painter->restore();
 
 }
