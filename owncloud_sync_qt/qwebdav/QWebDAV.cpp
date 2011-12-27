@@ -63,7 +63,7 @@ void QWebDAV::initialize(QString hostname, QString username, QString password,
 
 QNetworkReply* QWebDAV::sendWebdavRequest(QUrl url, DAVType type,
                                           QByteArray verb, QIODevice *data,
-                                          QString extra)
+                                          QString extra, QString extra2)
 {
     // Prepare the network request and headers
     QNetworkRequest request;
@@ -103,8 +103,12 @@ QNetworkReply* QWebDAV::sendWebdavRequest(QUrl url, DAVType type,
                                  ,QVariant(mRequestNumber));
             request.setAttribute(QNetworkRequest::Attribute(
                                      QNetworkRequest::User+ATTPREFIX)
-                                 ,QVariant(mRequestFilePrefix
-                                           .value(mRequestNumber)));
+                                 ,QVariant(extra.toAscii()));
+            if( extra2 != 0 ) {
+                // We were given a lock token.
+                request.setRawHeader(QByteArray("If"),
+                                     QByteArray(extra2.toAscii()));
+            }
         } else {
             request.setAttribute(QNetworkRequest::Attribute(
                                      QNetworkRequest::User+ATTDATA)
@@ -119,12 +123,18 @@ QNetworkReply* QWebDAV::sendWebdavRequest(QUrl url, DAVType type,
         reply = sendCustomRequest(request, verb,0);
     } else if ( type == DAVMOVE ) {
         request.setAttribute(QNetworkRequest::User, QVariant("move"));
-        QString destination = url.toString();
-        destination.replace(mRequestFilePrefix[extra.toLongLong()],"");
         request.setRawHeader(QByteArray("Destination"),
-                             QByteArray(destination.toAscii()));
+                             QByteArray(extra.toAscii()));
         request.setRawHeader(QByteArray("Overwrite"),
                              QByteArray("T"));
+        if( extra2 != 0 ) {
+            // We were given (a) lock token(s).
+            request.setRawHeader(QByteArray("If"),
+                                 QByteArray(extra2.toAscii()));
+            request.setAttribute(QNetworkRequest::Attribute(QNetworkRequest::User+
+                                                            ATTLOCKTYPE)
+                                 ,QVariant(extra.replace(mHostname,"").toAscii()));
+        }
         reply = sendCustomRequest(request, verb,0);
     } else if ( type == DAVLOCK) {
         request.setAttribute(QNetworkRequest::User,
@@ -134,12 +144,16 @@ QNetworkReply* QWebDAV::sendWebdavRequest(QUrl url, DAVType type,
         request.setAttribute(QNetworkRequest::Attribute(QNetworkRequest::User+
                                                         ATTDATA)
                              ,QVariant(mRequestNumber));
+        request.setAttribute(QNetworkRequest::Attribute(QNetworkRequest::User+
+                                                        ATTLOCKTYPE)
+                             ,QVariant(extra));
         reply = sendCustomRequest(request,verb,data);
     } else if ( type == DAVUNLOCK) {
+        QString token = "<"+extra+">";
         request.setAttribute(QNetworkRequest::User,
                              QVariant("unlock"));
         request.setRawHeader(QByteArray("Lock-Token"),
-                             QByteArray(extra.toAscii()));
+                             QByteArray(token.toAscii()));
         reply = sendCustomRequest(request,verb,0);
     } else {
         syncDebug() << "Error! DAV Request of type " << type << " is not known!";
@@ -166,7 +180,17 @@ QNetworkReply* QWebDAV::list(QString dir, int depth )
     QByteArray *query = new QByteArray();
     *query += "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
     *query += "<D:propfind xmlns:D=\"DAV:\">";
-    *query += "<D:allprop/>";
+    *query += "<D:prop xmlns:D=\"DAV:\">";
+    *query += "<D:getlastmodified/>";
+        *query += "<D:getlastmodified/>";
+        *query += "<D:getcontentlength/>";
+//        *query += "<D:resourcetype/>";
+//        *query += "<D:quota-used-bytes/>";
+//        *query += "<D:quota-available-bytes/>";
+//            *query += "<D:getetag/>";
+            *query += "<D:getcontenttype/>";
+            *query += "<D:lockdiscovery/>";
+        *query += "</D:prop>";
     *query += "</D:propfind>";
     QBuffer *data = new QBuffer(query);
     QByteArray verb("PROPFIND");
@@ -188,7 +212,8 @@ void QWebDAV::slotFinished(QNetworkReply *reply)
     if ( reply->error() != 0 ) {
         syncDebug() << "WebDAV request returned error: " << reply->error()
                     << " On URL: " << reply->url().toString();
-        //syncDebug() << reply->readAll();
+        if(reply->error()*0 == 299*0 )
+            syncDebug() << reply->readAll();
     }
 
     // Good, but what is it responding to? Find out:
@@ -215,17 +240,30 @@ void QWebDAV::slotFinished(QNetworkReply *reply)
         // Do nothing for now
     } else if( reply->request().attribute(
                    QNetworkRequest::User).toString().contains("move")) {
+        // Check if we need to remove any locks, and for which file(s)?
+        QString filename = reply->request().attribute(
+                    QNetworkRequest::Attribute(
+                    QNetworkRequest::User+ATTLOCKTYPE)).toString();
+        if(filename != "" &&mTransferLockRequests.contains(filename)) {
+            TransferLockRequest *request = &(mTransferLockRequests[filename]);
+            unlock(request->fileNameTemp,request->tokenTemp);
+            unlock(request->fileName,request->token);
+        }
+
     } else if ( reply->request().attribute(
                     QNetworkRequest::User).toString().contains("delete")) {
         // Ok, that's great!
         // Do nothing
     } else if ( reply->request().attribute(
                     QNetworkRequest::User).toString().contains("unlock")) {
-        syncDebug() << "Unlock reply: " << reply->readAll();
+        //syncDebug() << "Unlock reply: " << reply->readAll();
     } else if ( reply->request().attribute(
                     QNetworkRequest::User).toString().contains("lock")) {
         processLockRequest(reply->readAll(),reply->request().url().path()
-                           .replace(QRegExp("^"+mPathFilter),""));
+                           .replace(QRegExp("^"+mPathFilter),""),
+                           reply->request().attribute(
+                               QNetworkRequest::Attribute(
+                               QNetworkRequest::User+ATTLOCKTYPE)).toString());
     } else {
         syncDebug() << "Who knows what the server is trying to tell us. " +
                     reply->request().attribute(
@@ -251,13 +289,6 @@ void QWebDAV::slotFinished(QNetworkReply *reply)
         mRequestFile.remove(value);
     }
 
-    value = reply->request().attribute(
-                QNetworkRequest::Attribute(
-                    QNetworkRequest::User+ATTPREFIX)).toLongLong();
-    if(value > 0) {
-        mRequestFilePrefix.remove(value);
-    }
-
     if(!keepReply) {
         reply->deleteLater();
     }
@@ -270,9 +301,19 @@ void QWebDAV::processPutFinished(QNetworkReply *reply)
                 QNetworkRequest::Attribute(
                     QNetworkRequest::User+ATTPREFIX)).toString();
     if( prefix != "" ) {
+        QString tokens = "";
+        QString fileNameTemp = reply->request().url().toString().replace(mHostname,"/files/webdav.php/");
+        QString to = reply->request().url().toString().replace(prefix,"");
+        QString fileName = to;
+        fileName.replace(mHostname,"");
+        if(mTransferLockRequests.contains(fileName)) {
+            TransferLockRequest *request = &(mTransferLockRequests[fileName]);
+            tokens = "<"+fileNameTemp+ "> (<" + request->tokenTemp + ">)"
+                    +"</files/webdav.php/" +fileName +"> (<"+request->token+">)";
+        }
         QByteArray verb("MOVE");
         sendWebdavRequest(reply->request().url(),DAVMOVE,verb,0,
-                          QString("%1").arg(mRequestNumber));
+                          to,tokens);
     }
     emit uploadComplete(
                 reply->request().url().path().replace(
@@ -297,6 +338,7 @@ void QWebDAV::dirList(QString dir)
 
 void QWebDAV::processDirList(QByteArray xml, QString url)
 {
+    syncDebug() << "\n\n\n" << xml;
     QList<QWebDAV::FileInfo> list;
     QDomDocument domDocument;
     QString errorStr;
@@ -323,6 +365,7 @@ void QWebDAV::processDirList(QByteArray xml, QString url)
     QString last;
     QString type;
     QString available;
+    bool locked;
     QDomElement response = root.firstChildElement("response");
     while (!response.isNull()) {
         // Parse first response
@@ -346,6 +389,19 @@ void QWebDAV::processDirList(QByteArray xml, QString url)
                     } else if ( prop.tagName() == "resourcetype") {
                         QDomElement resourseType = prop.firstChildElement("");
                         type = resourseType.tagName();
+                    } else if ( prop.tagName() == "lockdiscovery") {
+                        if(prop.text() == "" ) { // Not locked
+                            locked = false;
+                        } else { // Locked
+                            QDomElement lock = prop.firstChildElement("activelock");
+                            while(!lock.isNull()) {
+                                if( prop.tagName() == "lockscope" &&
+                                        prop.text() == "exclusive" ) {
+                                    locked = true;
+                                }
+                                lock = lock.nextSiblingElement();
+                            }
+                        }
                     }
 
                     prop = prop.nextSiblingElement();
@@ -406,8 +462,20 @@ QNetworkReply* QWebDAV::put(QString fileName, QByteArray data,
     if (!mInitialized)
         return 0;
 
+    // A put request is done in three steps:
+    // 1) First lock the resource
+    // 2) Put file
+    // 3) Unlock resource
+}
+
+QNetworkReply* QWebDAV::put_locked(QString fileName, QByteArray data,
+                                   QString put_prefix)
+{
+
     // This is the Url of the webdav server + the file we want to get
     QUrl url(mHostname+fileName);
+
+    // First lock the resource
 
     // Encapsulate data in an QIODevice
     mRequestNumber++;
@@ -429,6 +497,31 @@ QNetworkReply* QWebDAV::put(QString fileName, QString absoluteFileName,
     if (!mInitialized)
         return 0;
 
+    // A put request is done in three steps:
+    // 1) First lock the resource
+    // 2) Put file
+    // 3) Unlock resource
+    QString tempFileName = "";
+    if ( put_prefix != "" ) {
+        QFileInfo info(fileName);
+        tempFileName = info.absolutePath()+"/"+put_prefix+
+                   info.fileName();
+    }
+    mTransferLockRequests[fileName] = TransferLockRequest(
+                true,fileName,tempFileName,absoluteFileName,put_prefix,
+                new QWebDAVTransferRequestReply());
+    lock(fileName,fileName);
+    if ( put_prefix != "" ) {
+        QFileInfo info(fileName);
+        lock(info.absolutePath()+"/"+put_prefix+
+                   info.fileName(),fileName);
+    }
+    return mTransferLockRequests[fileName].reply;
+}
+
+QNetworkReply* QWebDAV::put_locked(QString fileName, QString absoluteFileName,
+                            QString put_prefix)
+{
     // This is the Url of the webdav server + the file we want to put
     QUrl url;
     if ( put_prefix == "" ) {
@@ -448,10 +541,14 @@ QNetworkReply* QWebDAV::put(QString fileName, QString absoluteFileName,
         return 0;
     }
     mRequestFile[mRequestNumber] = file;
-    mRequestFilePrefix[mRequestNumber] = put_prefix;
+
+    // Prepare the token
+    TransferLockRequest *request = &(mTransferLockRequests[fileName]);
+    QString tokens = "(<" + request->token + ">)"
+            +"(<"+request->tokenTemp+">)";
 
     // Finally send this to the WebDAV server
-    QNetworkReply *reply = sendWebdavRequest(url,DAVPUT,0,file);
+    QNetworkReply *reply = sendWebdavRequest(url,DAVPUT,0,file,put_prefix,tokens);
     //syncDebug() << "PUT REPLY: " << reply->readAll();
     return reply;
 }
@@ -517,7 +614,7 @@ QNetworkReply* QWebDAV::deleteFile( QString name )
     return reply;
 }
 
-QNetworkReply *QWebDAV::lock( QString url )
+QNetworkReply *QWebDAV::lock( QString url, QString type )
 {
     if( !mInitialized )
         return 0;
@@ -530,20 +627,20 @@ QNetworkReply *QWebDAV::lock( QString url )
     *query += "<D:lockscope><D:exclusive/></D:lockscope>";
     *query += "<D:locktype><D:write/></D:locktype>";
     *query += "<D:owner>";
-    *query += "<D:locktype><D:write/></D:locktype>";
-    *query += "</D:owner>";
     *query += "<D:href>"+mUsername+"</D:href> ";
+    *query += "</D:owner>";
     *query += "</D:lockinfo>";
     QBuffer *data = new QBuffer(query);
     mRequestQueries[mRequestNumber] = query;
     mRequestData[mRequestNumber] = data;
     QByteArray verb("LOCK");
     // Now send this to the WebDAV server
-    QNetworkReply *reply = sendWebdavRequest(QUrl(url),DAVLOCK,verb,data);
+    QNetworkReply *reply = sendWebdavRequest(QUrl(mHostname+url),
+                                             DAVLOCK,verb,data,type);
     return reply;
 }
 
-void QWebDAV::processLockRequest(QByteArray xml, QString url)
+void QWebDAV::processLockRequest(QByteArray xml, QString url, QString extra)
 {
     QDomDocument domDocument;
     QString errorStr;
@@ -559,8 +656,17 @@ void QWebDAV::processLockRequest(QByteArray xml, QString url)
 
     QDomElement root = domDocument.documentElement();
     if( root.tagName() != "prop" ) {
-        syncDebug() << "Badly formatted XML! " << xml;
-        return;
+        // Check to see if it is reporting an error
+        if( root.tagName() != "error") {
+            syncDebug() << "Badly formatted XML! " << xml;
+            return;
+        } else { // Might already be locked
+            QDomElement exception = root.firstChildElement("exception");
+            if(!exception.isNull()&&exception.text()
+                    =="Sabre_DAV_Exception_ConflictingLock") {
+                syncDebug() << "Resource already locked!";
+            }
+        }
     }
 
     QDomElement lockDiscovery = root.firstChildElement("lockdiscovery");
@@ -571,11 +677,41 @@ void QWebDAV::processLockRequest(QByteArray xml, QString url)
             if(!locktoken.isNull()) {
                 QDomElement href = locktoken.firstChildElement("href");
                 if(!href.isNull()) {
-                    mLockTokens[url] = href.text();
+                    if(extra != "") {
+                        TransferLockRequest *request = &(mTransferLockRequests[extra]);
+                        if(url == request->fileName  ) { // This is the lock on
+                            // the permanent file
+                            request->token = href.text();
+                        } else { // This is the lock on temporary file
+                            request->tokenTemp = href.text();
+                        }
+                        if(request->put &&
+                                request->token != ""
+                                && (request->tokenTemp != ""
+                                    || request->fileNameTemp == "")) {
+                            request->reply->setReply(put_locked(request->fileName,
+                                                    request->absoluteFileName,
+                                                    request->put_prefix));
+                        } else { // Get request
+
+                        }
+                    } else {
+                        mLockTokens[url] = href.text();
+                    }
+                    syncDebug() << "Lock url: " <<
+                                   url << "\tToken: " << href.text();
                 }
             }
         }
     }
+}
+
+QNetworkReply *QWebDAV::unlock( QString url )
+{
+    if( !mInitialized )
+        return 0;
+    syncDebug() << "Will unlock: " << url << "\tToken: " << mLockTokens[url];
+    return unlock(url,mLockTokens[url]);
 }
 
 QNetworkReply *QWebDAV::unlock( QString url, QString token )
@@ -585,6 +721,7 @@ QNetworkReply *QWebDAV::unlock( QString url, QString token )
 
     QByteArray verb("UNLOCK");
     // Now send this to the WebDAV server
-    QNetworkReply *reply = sendWebdavRequest(QUrl(url),DAVUNLOCK,verb,0,token);
+    QNetworkReply *reply = sendWebdavRequest(QUrl(mHostname+url)
+                                             ,DAVUNLOCK,verb,0,token);
     return reply;
 }

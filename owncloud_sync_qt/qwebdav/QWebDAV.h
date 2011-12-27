@@ -27,6 +27,7 @@
 class QBuffer;
 class QUrl;
 class QFile;
+class QWebDAVTransferRequestReply;
 
 
 class QWebDAV : public QNetworkAccessManager
@@ -38,6 +39,7 @@ public:
                     QString pathFilter = "");
 
     enum DAVType {
+        DAVNONE,
         DAVLIST,
         DAVGET,
         DAVPUT,
@@ -51,7 +53,32 @@ public:
     enum ATTRIBUTETYPE {
         ATTDATA = 1,
         ATTFILE,
-        ATTPREFIX
+        ATTPREFIX,
+        ATTLOCKTYPE
+    };
+
+    struct TransferLockRequest {
+        bool put;
+        QString fileName;
+        QString fileNameTemp;
+        QString absoluteFileName;
+        QString put_prefix;
+        QString token;
+        QString tokenTemp;
+        QWebDAVTransferRequestReply *reply;
+        TransferLockRequest() {}
+        TransferLockRequest(bool isPut, QString name, QString temp, QString path,
+                            QString prefix,QWebDAVTransferRequestReply *Reply)
+        {
+            put = isPut;
+            fileName = name;
+            fileNameTemp = temp;
+            absoluteFileName = path;
+            put_prefix = prefix;
+            reply = Reply;
+            token = "";
+            tokenTemp = "";
+        }
     };
 
     struct FileInfo {
@@ -113,8 +140,9 @@ public:
     QNetworkReply* mkdir(QString dirName );
     QNetworkReply* sendWebdavRequest( QUrl url, DAVType type,
                                       QByteArray verb = 0,QIODevice *data = 0,
-                                      QString extra = "1");
-    QNetworkReply* lock(QString name);
+                                      QString extra = "1", QString extra2 = "");
+    QNetworkReply* lock(QString name, QString type = "");
+    QNetworkReply* unlock(QString name);
     QNetworkReply* unlock(QString name, QString token);
 
 private:
@@ -128,15 +156,19 @@ private:
     QHash<qint64,QByteArray*> mRequestQueries;
     QHash<qint64,QBuffer*>    mRequestData;
     QHash<qint64,QFile*> mRequestFile;
-    QHash<qint64,QString> mRequestFilePrefix;
     QHash<QString,QString> mLockTokens;
+    QHash<QString,TransferLockRequest> mTransferLockRequests;
 
     void processDirList(QByteArray xml, QString url);
     void processFile(QNetworkReply* reply);
     void processLocalDirectory(QString dirPath);
     void processPutFinished(QNetworkReply *reply);
     void connectReplyFinished(QNetworkReply *reply);
-    void processLockRequest(QByteArray xml, QString url);
+    void processLockRequest(QByteArray xml, QString url, QString type);
+    QNetworkReply* put_locked(QString fileName , QByteArray data,
+                       QString put_prefix="");
+    QNetworkReply* put_locked(QString fileName , QString absoluteFileName,
+                       QString put_prefix="");
 
 signals:
     void directoryListingReady(QList<QWebDAV::FileInfo>);
@@ -152,7 +184,46 @@ public slots:
     void slotReadyRead();
     void slotSslErrors(QList<QSslError> errorList);
     void slotError(QNetworkReply::NetworkError error);
+};
 
+class QWebDAVTransferRequestReply : public QNetworkReply
+{
+    Q_OBJECT
+public:
+    QWebDAVTransferRequestReply() { mReply = 0; }
+    ~QWebDAVTransferRequestReply()
+    {
+        if(mReply)
+            mReply->deleteLater();
+    }
+
+    void setReply(QNetworkReply *reply,bool get = true)
+    {
+        mReply = reply;
+        if(get) {
+            connect(reply,SIGNAL(downloadProgress(qint64,qint64)),
+                    this, SLOT(downloadProgress(qint64,qint64)));
+        } else {
+            connect(reply,SIGNAL(uploadProgress(qint64,qint64)),
+                    this, SLOT(uploadProgress(qint64,qint64)));
+        }
+    };
+
+    qint64 readData(char*,qint64) {}
+    void abort() {}
+private:
+    QNetworkReply *mReply;
+
+public slots:
+    void downloadProgress(qint64 current,qint64 total)
+    {
+        emit downloadProgress(current,total);
+    }
+
+    void uploadProgress(qint64 current,qint64 total)
+    {
+        emit uploadProgress(current,total);
+    }
 };
 
 #endif // QWEBDAV_H
