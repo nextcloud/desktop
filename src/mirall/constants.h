@@ -15,6 +15,7 @@
 #ifndef MIRALL_CONSTANTS_H
 #define MIRALL_CONSTANTS_H
 
+#define MIRALL_ICON "mirall-32"
 #define FOLDER_ICON "folder-favorites"
 #define FOLDER_SYNC_ICON "folder-sync"
 #define FOLDER_SYNC_ERROR "folder-important"
