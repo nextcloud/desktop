@@ -104,7 +104,7 @@ SyncWindow::SyncWindow(QWidget *parent) :
 #ifdef Q_OS_LINUX
     // In linux, we will store all databases in
     // $HOME/.local/share/data/owncloud_sync
-    mConfigDirectory += QDir::toNativeSeparators("/.local/share/data/)";
+    mConfigDirectory += QDir::toNativeSeparators("/.local/share/data/");
 #endif
 #ifdef Q_OS_WIN
     mConfigDirectory += QDir::toNativeSeparators("/AppData/Local/");
