@@ -194,6 +194,8 @@ private slots:
     void on_configurationBox_accepted();
     void on_configurationBox_rejected();
     void on_checkBoxHostnameEncryption_clicked();
+    void on_buttonConflictLocalWinsAll_clicked();
+    void on_buttonConflictServerWinsAll_clicked();
 };
 
 // Now create a global filter list

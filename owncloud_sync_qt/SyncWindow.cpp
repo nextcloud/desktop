@@ -1107,3 +1107,21 @@ void SyncWindow::on_configurationBox_rejected()
     ui->stackedWidget->setCurrentIndex(0);
 }
 
+
+void SyncWindow::on_buttonConflictLocalWinsAll_clicked()
+{
+    for( int row = 0; row < ui->tableConflict->rowCount(); row++ ) {
+        QComboBox *combo = (QComboBox*)ui->tableConflict->cellWidget(row,4);
+        combo->setCurrentIndex(2);
+    }
+}
+
+
+
+void SyncWindow::on_buttonConflictServerWinsAll_clicked()
+{
+    for( int row = 0; row < ui->tableConflict->rowCount(); row++ ) {
+        QComboBox *combo = (QComboBox*)ui->tableConflict->cellWidget(row,4);
+        combo->setCurrentIndex(1);
+    }
+}

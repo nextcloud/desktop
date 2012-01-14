@@ -21,7 +21,7 @@
        <number>0</number>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="page">
        <layout class="QGridLayout" name="gridLayout_2">
@@ -182,14 +182,33 @@
       </widget>
       <widget class="QWidget" name="page_2">
        <layout class="QGridLayout" name="gridLayout_3">
-        <item row="3" column="0">
-         <widget class="QDialogButtonBox" name="buttonBox">
-          <property name="standardButtons">
-           <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+        <item row="0" column="0" colspan="3">
+         <widget class="QLabel" name="label_13">
+          <property name="font">
+           <font>
+            <pointsize>19</pointsize>
+            <weight>75</weight>
+            <italic>false</italic>
+            <bold>true</bold>
+            <underline>false</underline>
+           </font>
+          </property>
+          <property name="text">
+           <string>CONFLICT RESOLUTION</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
+        <item row="1" column="0" colspan="4">
+         <widget class="QLabel" name="label_9">
+          <property name="text">
+           <string>Select which version should be used, either the server version or local version:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0" colspan="4">
          <widget class="QTableWidget" name="tableConflict">
           <property name="columnCount">
            <number>5</number>
@@ -221,29 +240,37 @@
           </column>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_9">
+        <item row="3" column="0">
+         <widget class="QPushButton" name="buttonConflictLocalWinsAll">
           <property name="text">
-           <string>Select the one files that should be used, either the server version or local version:</string>
+           <string>Set all local</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_13">
-          <property name="font">
-           <font>
-            <pointsize>19</pointsize>
-            <weight>75</weight>
-            <italic>false</italic>
-            <bold>true</bold>
-            <underline>false</underline>
-           </font>
-          </property>
+        <item row="3" column="1">
+         <widget class="QPushButton" name="buttonConflictServerWinsAll">
           <property name="text">
-           <string>CONFLICT RESOLUTION</string>
+           <string>Set all server</string>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>264</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="3" column="3">
+         <widget class="QDialogButtonBox" name="buttonBox">
+          <property name="standardButtons">
+           <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
           </property>
          </widget>
         </item>
@@ -976,7 +1003,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>771</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuProgram">
