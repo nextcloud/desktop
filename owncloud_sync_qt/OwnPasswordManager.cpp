@@ -13,7 +13,11 @@ OwnPasswordManager::OwnPasswordManager(QObject *parent, WId winID )
     p.start("pidof",args);
     p.waitForFinished(-1);
     if(p.readAllStandardOutput()!="") {
+#if defined(OCS_USE_KWALLET)
         mPasswordManagerLinux = KWALLET;
+#else
+        mPasswordManagerLinux = NONE;
+#endif
     } else {
         args.clear();
         args.push_back("gnome-session");
