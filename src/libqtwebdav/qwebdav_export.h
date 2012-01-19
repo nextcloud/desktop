@@ -23,6 +23,10 @@
 
 #include <QtCore/qglobal.h>
 
+#ifdef QWEBDAV_STATIC
+	#define QWEBDAV_EXPORT
+#else
+
 #ifndef QWEBDAV_EXPORT
 # if defined(QWEBDAV_MAKEDLL)
    /* We are building this library */
@@ -32,5 +36,8 @@
 #  define QWEBDAV_EXPORT Q_DECL_IMPORT
 # endif
 #endif
+
+#endif
+
 
 #endif
