@@ -128,6 +128,7 @@ OwnCloudSync::OwnCloudSync(QString name, OwnPasswordManager *passwordManager,
 void OwnCloudSync::errorFileLocked(QString fileName)
 {
     emit toLog(tr("File %s locked. Skipping!").arg(fileName));
+    processNextStep();
 }
 
 void OwnCloudSync::setSaveDBTime(qint64 seconds)
