@@ -176,6 +176,7 @@ signals:
     void uploadComplete(QString name);
     void directoryCreated(QString name);
     void directoryListingError(QString url);
+    void errorFileLocked(QString fileName);
 
 public slots:
     void slotFinished ( QNetworkReply* );

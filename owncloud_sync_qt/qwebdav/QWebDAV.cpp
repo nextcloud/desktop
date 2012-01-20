@@ -665,6 +665,9 @@ void QWebDAV::processLockRequest(QByteArray xml, QString url, QString extra)
             if(!exception.isNull()&&exception.text()
                     =="Sabre_DAV_Exception_ConflictingLock") {
                 syncDebug() << "Resource already locked!";
+                if(extra != "") {
+                    emit errorFileLocked(mTransferLockRequests[extra].fileName);
+                }
             }
         }
     }

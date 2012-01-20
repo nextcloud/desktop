@@ -81,6 +81,8 @@ OwnCloudSync::OwnCloudSync(QString name, OwnPasswordManager *passwordManager,
             this, SLOT(updateDBUpload(QString)));
     connect(mWebdav,SIGNAL(directoryCreated(QString)),
             this, SLOT(serverDirectoryCreated(QString)));
+    connect(mWebdav,SIGNAL(errorFileLocked(QString)),
+            this, SLOT(errorFileLocked(QString)));
 
     mDownloadingFiles.clear();
     mDownloadConflict.clear();
@@ -121,6 +123,11 @@ OwnCloudSync::OwnCloudSync(QString name, OwnPasswordManager *passwordManager,
     connect(mSaveDBTimer, SIGNAL(timeout()), this, SLOT(saveDBToFile()));
     mSaveDBTimer->start(370000);
     updateStatus();
+}
+
+void OwnCloudSync::errorFileLocked(QString fileName)
+{
+    emit toLog(tr("File %s locked. Skipping!").arg(fileName));
 }
 
 void OwnCloudSync::setSaveDBTime(qint64 seconds)

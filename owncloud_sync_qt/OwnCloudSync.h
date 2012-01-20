@@ -217,6 +217,7 @@ public slots:
     void loadDBFromFile();
     void requestTimedout();
     void serverDirectoryCreated(QString name);
+    void errorFileLocked(QString fileName);
 };
 
 #endif // OWNCLOUDSYNC_H
