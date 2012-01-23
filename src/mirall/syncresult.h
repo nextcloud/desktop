@@ -16,6 +16,7 @@
 #define MIRALL_SYNCRESULT_H
 
 #include <QStringList>
+#include <QHash>
 
 namespace Mirall
 {
@@ -37,11 +38,15 @@ public:
     ~SyncResult();
     void setErrorString( const QString& );
     QString errorString() const;
+    void setSyncChanges( const QHash<QString, QStringList> &changes );
+    QHash<QString, QStringList> syncChanges() const;
 
     Result result() const;
 
 private:
     Result _result;
+    QHash<QString, QStringList> _syncChanges;
+
     /**
      * when the sync tool support this...
      */

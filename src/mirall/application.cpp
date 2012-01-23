@@ -14,6 +14,8 @@
 
 #include <QtCore>
 #include <QtGui>
+#include <QHash>
+#include <QHashIterator>
 
 #include "mirall/constants.h"
 #include "mirall/application.h"
@@ -52,16 +54,14 @@ Application::Application(int argc, char **argv) :
 
     connect( _statusDialog, SIGNAL(removeFolderAlias( const QString&)),
              SLOT(slotRemoveFolder(const QString&)));
-
     connect( _statusDialog, SIGNAL(fetchFolderAlias(const QString&)),
              SLOT(slotFetchFolder( const QString&)));
-    
     connect( _statusDialog, SIGNAL(pushFolderAlias(const QString&)),
              SLOT(slotPushFolder( const QString&)));
-
     connect( _statusDialog, SIGNAL(enableFolderAlias(QString,bool)),
              SLOT(slotEnableFolder(QString,bool)));
-
+    connect( _statusDialog, SIGNAL(infoFolderAlias(const QString&)),
+             SLOT(slotInfoFolder( const QString&)));
 
     setupActions();
     setupSystemTray();
@@ -321,6 +321,62 @@ void Application::slotPushFolder( const QString& alias )
 
 }
 
+void Application::slotInfoFolder( const QString& alias )
+{
+    qDebug() << "details of folder with alias " << alias;
+
+    if( ! _folderMap.contains( alias ) ) {
+      qDebug() << "!! Can not get details of alias " << alias << ", can not be found in folderMap.";
+      return;
+    }
+
+    Folder *folder = _folderMap[alias];
+
+    QString folderMessage = tr( "Last sync was succesful" );
+    SyncResult folderResult = folder->lastSyncResult();
+    SyncResult::Result syncResult = folderResult.result();
+    if ( syncResult == SyncResult::Error ) {
+      folderMessage = tr( "%1" ).arg( folderResult.errorString() );
+    } else if ( syncResult == SyncResult::SetupError ) {
+      folderMessage = tr( "Setup error" );
+    } else if ( syncResult == SyncResult::Disabled ) {
+      folderMessage = tr( "%1" ).arg( folderResult.errorString() );
+    } else if ( syncResult == SyncResult::Undefined ) {
+      folderMessage = tr( "Undefined state" );
+    }
+
+    QMessageBox infoBox( QMessageBox::Information, tr( "Folder information" ), folder->alias(), QMessageBox::Ok );
+
+    infoBox.setInformativeText(folderMessage);
+    qDebug() << "informative text: " << infoBox.informativeText();
+
+    if ( !folderResult.syncChanges().isEmpty() ) {
+	QString details;
+	QHash < QString, QStringList > changes = folderResult.syncChanges();
+	QHash< QString, QStringList >::const_iterator change_it = changes.constBegin();
+	for(; change_it != changes.constEnd(); ++change_it ) {
+	    QString changeType = tr( "Unknown" );
+	    if ( change_it.key() == "changed" ) {
+		changeType = tr( "Changed files:\n" );
+	    } else if ( change_it.key() == "added" ) {
+	        changeType = tr( "Added files:\n" );
+	    } else if ( change_it.key() == "deleted" ) {
+		changeType = tr( "New files in the server, or files deleted locally:\n");
+	    }
+
+	    QStringList files = change_it.value();
+	    QString fileList;
+	    foreach( QString file, files) {
+		fileList += file + "\n";
+	    }
+	    details += changeType + fileList;
+	}
+	infoBox.setDetailedText(details);
+	qDebug() << "detailed text: " << infoBox.detailedText();
+    }
+    infoBox.exec();
+}
+
 void Application::slotEnableFolder(const QString& alias, const bool enable)
 {
   qDebug() << "enable folder with alias " << alias;
@@ -437,69 +493,75 @@ void Application::slotFolderSyncStarted()
 
 void Application::slotFolderSyncFinished(const SyncResult &result)
 {
-    _folderSyncCount--;
+  _folderSyncCount--;
 
-    Folder *folder = dynamic_cast<Folder *>(sender());
+  // in case the sending folder is needed:
+  // Folder *folder = dynamic_cast<Folder *>(sender());
 
-    if (_folderSyncCount < 1) {
-        if (result.result() != SyncResult::Success) {
-            _tray->setIcon(QIcon::fromTheme(FOLDER_SYNC_ERROR, QIcon( QString( ":/mirall/resources/%1").arg(FOLDER_SYNC_ERROR))));
-	    _tray->setToolTip(tr("Folder %1: %2").arg(folder->alias(), result.errorString()));
-        } else {
-	  // if succesful, display the info of the least succesful sync (eg. not just display the result of the latest sync
-	    SyncResult overallResult = SyncResult::Success;
-	    QString trayMessage;
-	    foreach ( Folder *syncedFolder, _folderMap ) {
-		QString folderMessage;
-		if ( syncedFolder->lastSyncResult().result() == SyncResult::Error ) {
-		  overallResult = SyncResult::Error;
-		  folderMessage = tr( "There was an error syncing folder %1" ).arg( syncedFolder->alias() );
-		} else if ( syncedFolder->lastSyncResult().result() == SyncResult::SetupError ) {
-		  if ( overallResult.result() != SyncResult::Error ) {
-		      overallResult = SyncResult::SetupError;
-		  }
-		  folderMessage = tr( "Folder %1 has a configuration error" ).arg( syncedFolder->alias() );
-		} else if ( syncedFolder->lastSyncResult().result() == SyncResult::Disabled ) {
-		  if ( overallResult.result() != SyncResult::SetupError
-			  && overallResult.result() != SyncResult::Error ) {
-		      overallResult = SyncResult::Disabled;
-		  }
-		  folderMessage = tr( "Folder %1 has been disabled" ).arg( syncedFolder->alias() );
-		} else if ( syncedFolder->lastSyncResult().result() == SyncResult::Undefined ) {
-		  if ( overallResult.result() == SyncResult::Success ) {
-		    overallResult = SyncResult::Undefined;
-		  }
-		  folderMessage = tr( "Folder %1 is in an undefined state" ).arg( syncedFolder->alias() );
-		}
-		if ( !trayMessage.isEmpty() ) {
-		    trayMessage += "\n";
-		}
-		trayMessage += folderMessage;
-	    }
+  if( _folderSyncCount == 0 ) {
+    computeOverallSyncStatus();
+  }
+}
 
-	  QString statusIcon = MIRALL_ICON;
-	  qDebug() << "overall result is " << overallResult.result();
-	  if( overallResult.result() == SyncResult::Error ) {
-	    statusIcon = "dialog-close";
-	  } else if( overallResult.result() == SyncResult::Success ) {
-	    statusIcon = MIRALL_ICON;
-	  } else if( overallResult.result() == SyncResult::Disabled ) {
-	    statusIcon = "dialog-cancel";
-	  } else if( overallResult.result() == SyncResult::SetupError ) {
-	    statusIcon = "dialog-cancel";
-	  } else if( overallResult.result() == SyncResult::Undefined ) {
-	    statusIcon = "view-refresh";
-	  }
+void Application::computeOverallSyncStatus()
+{
 
-	  _tray->setIcon(QIcon::fromTheme(statusIcon, QIcon( QString( ":/mirall/resources/%1").arg(statusIcon))));
-	  _tray->setToolTip(trayMessage);
-	}
+  // display the info of the least succesful sync (eg. not just display the result of the latest sync
+  SyncResult overallResult = SyncResult::Success;
+  QString trayMessage;
+  foreach ( Folder *syncedFolder, _folderMap ) {
+    QString folderMessage;
+    SyncResult folderResult = syncedFolder->lastSyncResult();
+    SyncResult::Result syncResult = folderResult.result();
+    if ( syncResult == SyncResult::Success ) {
+      folderMessage = tr( "Folder %1: Ok." ).arg( syncedFolder->alias() );
+    } else if ( syncResult == SyncResult::Error ) {
+      overallResult = SyncResult::Error;
+      folderMessage = tr( "Folder %1: %2" ).arg( syncedFolder->alias(), folderResult.errorString() );
+    } else if ( syncResult == SyncResult::SetupError ) {
+      if ( overallResult.result() != SyncResult::Error ) {
+        overallResult = SyncResult::SetupError;
+      }
+      folderMessage = tr( "Folder %1: setup error" ).arg( syncedFolder->alias() );
+    } else if ( syncResult == SyncResult::Disabled ) {
+      if ( overallResult.result() != SyncResult::SetupError
+           && overallResult.result() != SyncResult::Error ) {
+        overallResult = SyncResult::Disabled;
+      }
+      folderMessage = tr( "Folder %1: %2" ).arg( syncedFolder->alias(), folderResult.errorString() );
+    } else if ( syncResult == SyncResult::Undefined ) {
+      if ( overallResult.result() == SyncResult::Success ) {
+        overallResult = SyncResult::Undefined;
+      }
+      folderMessage = tr( "Folder %1: undefined state" ).arg( syncedFolder->alias() );
     }
-
-    // Only refresh the folder if it is being shown
-    if( _statusDialog->isVisible() ) {
-      _statusDialog->setFolderList( _folderMap );
+    if ( !trayMessage.isEmpty() ) {
+      trayMessage += "\n";
     }
+    trayMessage += folderMessage;
+  }
+
+  QString statusIcon = MIRALL_ICON;
+  qDebug() << "overall result is " << overallResult.result();
+  if( overallResult.result() == SyncResult::Error ) {
+    statusIcon = "dialog-close";
+  } else if( overallResult.result() == SyncResult::Success ) {
+    statusIcon = MIRALL_ICON;
+  } else if( overallResult.result() == SyncResult::Disabled ) {
+    statusIcon = "dialog-cancel";
+  } else if( overallResult.result() == SyncResult::SetupError ) {
+    statusIcon = "dialog-cancel";
+  } else if( overallResult.result() == SyncResult::Undefined ) {
+    statusIcon = "view-refresh";
+  }
+
+  _tray->setIcon(QIcon::fromTheme(statusIcon, QIcon( QString( ":/mirall/resources/%1").arg(statusIcon))));
+  _tray->setToolTip(trayMessage);
+
+  // Only refresh the folder if it is being shown
+  if( _statusDialog->isVisible() ) {
+    _statusDialog->setFolderList( _folderMap );
+  }
 }
 
 void Application::disableFoldersWithRestore()

@@ -49,6 +49,7 @@ protected slots:
     void slotFetchFolder( const QString& );
     void slotPushFolder( const QString& );
     void slotEnableFolder( const QString&, const bool );
+    void slotInfoFolder( const QString& );
     void slotConfigure();
 
     void slotFolderSyncStarted();
@@ -73,6 +74,7 @@ protected:
     //folders have to be disabled while making config changes
     void disableFoldersWithRestore();
     void restoreEnabledFolders();
+    void computeOverallSyncStatus();
 
 protected slots:
     void slotTrayClicked( QSystemTrayIcon::ActivationReason );

@@ -128,12 +128,14 @@ StatusDialog::StatusDialog(QWidget *parent) :
   connect(_ButtonPush,  SIGNAL(clicked()), this, SLOT(slotPushFolder()));
   connect(_ButtonOpenOC, SIGNAL(clicked()), this, SLOT(slotOpenOC()));
   connect(_ButtonEnable, SIGNAL(clicked()), this, SLOT(slotEnableFolder()));
+  connect(_ButtonInfo, SIGNAL(clicked()), this, SLOT(slotInfoFolder()));
 
   _ButtonOpenOC->setEnabled(false);
   _ButtonRemove->setEnabled(false);
   _ButtonFetch->setEnabled(false);
   _ButtonPush->setEnabled(false);
   _ButtonEnable->setEnabled(false);
+  _ButtonInfo->setEnabled(false);
 
   connect(_folderList, SIGNAL(activated(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
 }
@@ -146,6 +148,7 @@ void StatusDialog::slotFolderActivated( const QModelIndex& indx )
   _ButtonFetch->setEnabled( state );
   _ButtonPush->setEnabled( state );
   _ButtonEnable->setEnabled( state );
+  _ButtonInfo->setEnabled( state );
 
   if ( state ) {
     bool folderEnabled = _model->data( indx, FolderViewDelegate::FolderSyncEnabled).toBool();
@@ -242,6 +245,18 @@ void StatusDialog::slotEnableFolder()
     qDebug() << "Toggle enabled/disabled Folder alias " << alias << " - current state: " << folderEnabled;
     if( !alias.isEmpty() ) {
       emit(enableFolderAlias( alias, !folderEnabled ));
+    }
+  }
+}
+
+void StatusDialog::slotInfoFolder()
+{
+  QModelIndex selected = _folderList->selectionModel()->currentIndex();
+  if( selected.isValid() ) {
+    QString alias = _model->data( selected, FolderViewDelegate::FolderNameRole ).toString();
+    qDebug() << "Info Folder alias " << alias;
+    if( !alias.isEmpty() ) {
+      emit(infoFolderAlias( alias ));
     }
   }
 }

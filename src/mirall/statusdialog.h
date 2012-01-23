@@ -57,6 +57,7 @@ signals:
     void fetchFolderAlias( const QString& );
     void pushFolderAlias( const QString& );
     void enableFolderAlias( const QString&, const bool );
+    void infoFolderAlias( const QString& );
 
 public slots:
     void slotRemoveFolder();
@@ -65,6 +66,7 @@ public slots:
     void slotFolderActivated( const QModelIndex& );
     void slotOpenOC();
     void slotEnableFolder();
+    void slotInfoFolder();
 
 private:
     QStandardItemModel *_model;

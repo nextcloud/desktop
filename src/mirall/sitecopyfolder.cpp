@@ -157,7 +157,6 @@ void SiteCopyFolder::slotFinished(int exitCode, QProcess::ExitStatus exitStatus)
       return;
     }
 
-
     if( _NextStep == Sync ) {
       startSiteCopy( "--sync", Finish ); // sync local with cloud data.
     } else if( _NextStep == Update ) {
@@ -171,7 +170,7 @@ void SiteCopyFolder::slotFinished(int exitCode, QProcess::ExitStatus exitStatus)
     } else if( _NextStep == FlatList ) {
       startSiteCopy( "--flatlist", ExecuteStatus );
     } else if( _NextStep == ExecuteStatus ) {
-        if( exitCode == 1 ) {
+      if( exitCode == 1 ) {
             qDebug() << "Exit-Code: Sync Needed!";
             analyzeStatus();
             if( _ChangesHash.contains("deleted") && _pathListEmpty ) {
@@ -180,6 +179,7 @@ void SiteCopyFolder::slotFinished(int exitCode, QProcess::ExitStatus exitStatus)
               qDebug() << "!!!! Better not call update, changes happened on the cloud!";
               SyncResult res( SyncResult::Disabled );
               res.setErrorString( tr("The ownCloud changed. Disabling syncing for security reasons."));
+	      res.setSyncChanges( _ChangesHash );
               setSyncEnabled( false );
               emit syncFinished( res );
             } else {
@@ -187,8 +187,11 @@ void SiteCopyFolder::slotFinished(int exitCode, QProcess::ExitStatus exitStatus)
             }
         } else if( exitCode == 0 ) {
             qDebug() << "No update needed, remote is in sync.";
+            SyncResult res( SyncResult::Success );
+            // store the analyze results into the sync result data structure.
+            res.setSyncChanges( _ChangesHash );
             // No update needed
-            emit syncFinished( SyncResult( SyncResult::Success ) );
+            emit syncFinished( res );
         } else {
             qDebug() << "Got an unknown exit code " << exitCode;
             emit syncFinished( SyncResult( SyncResult::Error ) );

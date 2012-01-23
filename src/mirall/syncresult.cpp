@@ -20,13 +20,11 @@ namespace Mirall
 SyncResult::SyncResult()
 : _result( Undefined )
 {
-
 }
 
 SyncResult::SyncResult(SyncResult::Result result)
     : _result(result)
 {
-
 }
 
 SyncResult::Result SyncResult::result() const
@@ -36,14 +34,23 @@ SyncResult::Result SyncResult::result() const
 
 void SyncResult::setErrorString( const QString& err )
 {
-  _errorMsg = err;
+    _errorMsg = err;
 }
 
 QString SyncResult::errorString() const
 {
-  return _errorMsg;
+    return _errorMsg;
 }
 
+void SyncResult::setSyncChanges(const QHash< QString, QStringList >& changes)
+{
+    _syncChanges = changes;
+}
+
+QHash< QString, QStringList > SyncResult::syncChanges() const
+{
+    return _syncChanges;
+}
 
 SyncResult::~SyncResult()
 {
