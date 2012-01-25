@@ -39,7 +39,7 @@ csync_vio_file_stat_t fs;
  * file functions
  */
 
-static csync_vio_method_handle_t *_open(const char *durl, int flags, mode_t mode) {
+static csync_vio_method_handle_t *dummy_open(const char *durl, int flags, mode_t mode) {
   (void) durl;
   (void) flags;
   (void) mode;
@@ -47,28 +47,20 @@ static csync_vio_method_handle_t *_open(const char *durl, int flags, mode_t mode
   return &mh;
 }
 
-static csync_vio_method_handle_t *_creat(const char *durl, mode_t mode) {
+static csync_vio_method_handle_t *dummy_creat(const char *durl, mode_t mode) {
   (void) durl;
   (void) mode;
 
   return &mh;
 }
 
-static int _close(csync_vio_method_handle_t *fhandle) {
+static int dummy_close(csync_vio_method_handle_t *fhandle) {
   (void) fhandle;
 
   return 0;
 }
 
-static ssize_t _read(csync_vio_method_handle_t *fhandle, void *buf, size_t count) {
-  (void) fhandle;
-  (void) buf;
-  (void) count;
-
-  return 0;
-}
-
-static ssize_t _write(csync_vio_method_handle_t *fhandle, const void *buf, size_t count) {
+static ssize_t dummy_read(csync_vio_method_handle_t *fhandle, void *buf, size_t count) {
   (void) fhandle;
   (void) buf;
   (void) count;
@@ -76,7 +68,15 @@ static ssize_t _write(csync_vio_method_handle_t *fhandle, const void *buf, size_
   return 0;
 }
 
-static off_t _lseek(csync_vio_method_handle_t *fhandle, off_t offset, int whence) {
+static ssize_t dummy_write(csync_vio_method_handle_t *fhandle, const void *buf, size_t count) {
+  (void) fhandle;
+  (void) buf;
+  (void) count;
+
+  return 0;
+}
+
+static off_t dummy_lseek(csync_vio_method_handle_t *fhandle, off_t offset, int whence) {
   (void) fhandle;
   (void) offset;
   (void) whence;
@@ -88,38 +88,38 @@ static off_t _lseek(csync_vio_method_handle_t *fhandle, off_t offset, int whence
  * directory functions
  */
 
-static csync_vio_method_handle_t *_opendir(const char *name) {
+static csync_vio_method_handle_t *dummy_opendir(const char *name) {
   (void) name;
 
   return &mh;
 }
 
-static int _closedir(csync_vio_method_handle_t *dhandle) {
+static int dummy_closedir(csync_vio_method_handle_t *dhandle) {
   (void) dhandle;
 
   return 0;
 }
 
-static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
+static csync_vio_file_stat_t *dummy_readdir(csync_vio_method_handle_t *dhandle) {
   (void) dhandle;
 
   return &fs;
 }
 
-static int _mkdir(const char *uri, mode_t mode) {
+static int dummy_mkdir(const char *uri, mode_t mode) {
   (void) uri;
   (void) mode;
 
   return 0;
 }
 
-static int _rmdir(const char *uri) {
+static int dummy_rmdir(const char *uri) {
   (void) uri;
 
   return 0;
 }
 
-static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
+static int dummy_stat(const char *uri, csync_vio_file_stat_t *buf) {
   time_t now;
 
   buf->name = c_basename(uri);
@@ -135,27 +135,27 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
   return 0;
 }
 
-static int _rename(const char *olduri, const char *newuri) {
+static int dummy_rename(const char *olduri, const char *newuri) {
   (void) olduri;
   (void) newuri;
 
   return 0;
 }
 
-static int _unlink(const char *uri) {
+static int dummy_unlink(const char *uri) {
   (void) uri;
 
   return 0;
 }
 
-static int _chmod(const char *uri, mode_t mode) {
+static int dummy_chmod(const char *uri, mode_t mode) {
   (void) uri;
   (void) mode;
 
   return 0;
 }
 
-static int _chown(const char *uri, uid_t owner, gid_t group) {
+static int dummy_chown(const char *uri, uid_t owner, gid_t group) {
   (void) uri;
   (void) owner;
   (void) group;
@@ -163,32 +163,32 @@ static int _chown(const char *uri, uid_t owner, gid_t group) {
   return 0;
 }
 
-static int _utimes(const char *uri, const struct timeval *times) {
+static int dummy_utimes(const char *uri, const struct timeval *times) {
   (void) uri;
   (void) times;
 
   return 0;
 }
 
-csync_vio_method_t _method = {
+csync_vio_method_t dummy_method = {
   .method_table_size = sizeof(csync_vio_method_t),
-  .open = _open,
-  .creat = _creat,
-  .close = _close,
-  .read = _read,
-  .write = _write,
-  .lseek = _lseek,
-  .opendir = _opendir,
-  .closedir = _closedir,
-  .readdir = _readdir,
-  .mkdir = _mkdir,
-  .rmdir = _rmdir,
-  .stat = _stat,
-  .rename = _rename,
-  .unlink = _unlink,
-  .chmod = _chmod,
-  .chown = _chown,
-  .utimes = _utimes
+  .open = dummy_open,
+  .creat = dummy_creat,
+  .close = dummy_close,
+  .read = dummy_read,
+  .write = dummy_write,
+  .lseek = dummy_lseek,
+  .opendir = dummy_opendir,
+  .closedir = dummy_closedir,
+  .readdir = dummy_readdir,
+  .mkdir = dummy_mkdir,
+  .rmdir = dummy_rmdir,
+  .stat = dummy_stat,
+  .rename = dummy_rename,
+  .unlink = dummy_unlink,
+  .chmod = dummy_chmod,
+  .chown = dummy_chown,
+  .utimes = dummy_utimes
 };
 
 csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
@@ -204,7 +204,7 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
   mh = (void *) method_name;
   fs.mtime = 42;
 
-  return &_method;
+  return &dummy_method;
 }
 
 void vio_module_shutdown(csync_vio_method_t *method) {

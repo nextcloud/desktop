@@ -47,6 +47,7 @@ install(
 endif()
 
 macro_add_plugin(csync_dummy csync_dummy.c)
+target_link_libraries(csync_dummy ${CSYNC_LIBRARY})
 
 if (LIBSSH_FOUND)
 macro_add_plugin(${SFTP_PLUGIN} csync_sftp.c)
