@@ -3,14 +3,15 @@
 
 #include "support.h"
 
+#include "csync_time.h"
 #include "std/c_time.h"
 
 START_TEST (check_c_tspecdiff)
 {
   struct timespec start, finish, diff;
 
-  clock_gettime(CLOCK_REALTIME, &start);
-  clock_gettime(CLOCK_REALTIME, &finish);
+  csync_gettime(&start);
+  csync_gettime(&finish);
 
   diff = c_tspecdiff(finish, start);
 
@@ -23,9 +24,9 @@ START_TEST (check_c_tspecdiff_five)
 {
   struct timespec start, finish, diff;
 
-  clock_gettime(CLOCK_REALTIME, &start);
+  csync_gettime(&start);
   sleep(5);
-  clock_gettime(CLOCK_REALTIME, &finish);
+  csync_gettime(&finish);
 
   diff = c_tspecdiff(finish, start);
 
@@ -39,8 +40,8 @@ START_TEST (check_c_secdiff)
   struct timespec start, finish;
   double diff;
 
-  clock_gettime(CLOCK_REALTIME, &start);
-  clock_gettime(CLOCK_REALTIME, &finish);
+  csync_gettime(&start);
+  csync_gettime(&finish);
 
   diff = c_secdiff(finish, start);
 
@@ -53,9 +54,9 @@ START_TEST (check_c_secdiff_three)
   struct timespec start, finish;
   double diff;
 
-  clock_gettime(CLOCK_REALTIME, &start);
+  csync_gettime(&start);
   sleep(3);
-  clock_gettime(CLOCK_REALTIME, &finish);
+  csync_gettime(&finish);
 
   diff = c_secdiff(finish, start);
 

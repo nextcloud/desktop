@@ -316,13 +316,13 @@ int csync_update(CSYNC *ctx) {
   csync_memstat_check();
 
   /* update detection for local replica */
-  clock_gettime(CLOCK_REALTIME, &start);
+  csync_gettime(&start);
   ctx->current = LOCAL_REPLICA;
   ctx->replica = ctx->local.type;
 
   rc = csync_ftw(ctx, ctx->local.uri, csync_walker, MAX_DEPTH);
 
-  clock_gettime(CLOCK_REALTIME, &finish);
+  csync_gettime(&finish);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
       "Update detection for local replica took %.2f seconds walking %zu files.",
@@ -334,13 +334,13 @@ int csync_update(CSYNC *ctx) {
   }
 
   /* update detection for remote replica */
-  clock_gettime(CLOCK_REALTIME, &start);
+  csync_gettime(&start);
   ctx->current = REMOTE_REPLCIA;
   ctx->replica = ctx->remote.type;
 
   rc = csync_ftw(ctx, ctx->remote.uri, csync_walker, MAX_DEPTH);
 
-  clock_gettime(CLOCK_REALTIME, &finish);
+  csync_gettime(&finish);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
       "Update detection for remote replica took %.2f seconds "
@@ -367,14 +367,14 @@ int csync_reconcile(CSYNC *ctx) {
   }
 
   /* Reconciliation for local replica */
-  clock_gettime(CLOCK_REALTIME, &start);
+  csync_gettime(&start);
 
   ctx->current = LOCAL_REPLICA;
   ctx->replica = ctx->local.type;
 
   rc = csync_reconcile_updates(ctx);
 
-  clock_gettime(CLOCK_REALTIME, &finish);
+  csync_gettime(&finish);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
       "Reconciliation for local replica took %.2f seconds visiting %zu files.",
@@ -385,14 +385,14 @@ int csync_reconcile(CSYNC *ctx) {
   }
 
   /* Reconciliation for local replica */
-  clock_gettime(CLOCK_REALTIME, &start);
+  csync_gettime(&start);
 
   ctx->current = REMOTE_REPLCIA;
   ctx->replica = ctx->remote.type;
 
   rc = csync_reconcile_updates(ctx);
 
-  clock_gettime(CLOCK_REALTIME, &finish);
+  csync_gettime(&finish);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
       "Reconciliation for remote replica took %.2f seconds visiting %zu files.",
@@ -417,14 +417,14 @@ int csync_propagate(CSYNC *ctx) {
   }
 
   /* Reconciliation for local replica */
-  clock_gettime(CLOCK_REALTIME, &start);
+  csync_gettime(&start);
 
   ctx->current = LOCAL_REPLICA;
   ctx->replica = ctx->local.type;
 
   rc = csync_propagate_files(ctx);
 
-  clock_gettime(CLOCK_REALTIME, &finish);
+  csync_gettime(&finish);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
       "Propagation for local replica took %.2f seconds visiting %zu files.",
@@ -435,14 +435,14 @@ int csync_propagate(CSYNC *ctx) {
   }
 
   /* Reconciliation for local replica */
-  clock_gettime(CLOCK_REALTIME, &start);
+  csync_gettime(&start);
 
   ctx->current = REMOTE_REPLCIA;
   ctx->replica = ctx->remote.type;
 
   rc = csync_propagate_files(ctx);
 
-  clock_gettime(CLOCK_REALTIME, &finish);
+  csync_gettime(&finish);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
       "Propagation for remote replica took %.2f seconds visiting %zu files.",
@@ -486,11 +486,11 @@ int csync_destroy(CSYNC *ctx) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to merge trees: %s",
             strerror_r(errno, errbuf, sizeof(errbuf)));
       } else {
-        clock_gettime(CLOCK_REALTIME, &start);
+        csync_gettime(&start);
         /* write the statedb to disk */
         if (csync_statedb_write(ctx) == 0) {
           jwritten = 1;
-          clock_gettime(CLOCK_REALTIME, &finish);
+          csync_gettime(&finish);
           CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
               "Writing the statedb of %zu files to disk took %.2f seconds",
               c_rbtree_size(ctx->local.tree), c_secdiff(finish, start));
