@@ -327,8 +327,6 @@ int c_parse_uri(const char *uri,
       }
     }
 
-    z = p;
-
     /* check for port */
     if (*p == ':') {
       char **e = NULL;
@@ -357,9 +355,7 @@ int c_parse_uri(const char *uri,
       /*
        * uri   = scheme://user:password@host:port/path
        * p =                                     ^
-       * z =                                     ^
        */
-      z = p;
     }
   }
 
