@@ -660,10 +660,15 @@ static csync_vio_method_handle_t *_opendir(const char *uri) {
 
     DEBUG_WEBDAV(("fetchCtx good.\n" ));
 
-    fetch_resource_list( uri, NE_DEPTH_ONE, fetchCtx );
-    fetchCtx->currResource = fetchCtx->list;
-    DEBUG_WEBDAV(("opendir returning handle %p\n", (void*) fetchCtx ));
-    return fetchCtx;
+    rc = fetch_resource_list( uri, NE_DEPTH_ONE, fetchCtx );
+    if( rc != NE_OK ) {
+        errno = ne_error_to_errno( rc );
+        return NULL;
+    } else {
+        fetchCtx->currResource = fetchCtx->list;
+        DEBUG_WEBDAV(("opendir returning handle %p\n", (void*) fetchCtx ));
+        return fetchCtx;
+    }
 }
 
 static int _closedir(csync_vio_method_handle_t *dhandle) {
@@ -807,11 +812,11 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
      *   creattime
      *   size
      */
+    int rc = 0;
 #define DONT_CHEAT
 #ifdef DONT_CHEAT
     csync_vio_file_stat_t *lfs = NULL;
     struct fetch_context  *fetchCtx = NULL;
-    int rc = 0;
     ne_uri neuri;
 #else
     time_t now = time(NULL);
@@ -822,7 +827,8 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
     buf->name = c_strdup(c_basename(uri));
     if (buf->name == NULL) {
         csync_vio_file_stat_destroy(buf);
-        return -1; // FIXME: Errno!
+        errno = ENOMEM;
+        return -1;
     }
 
     /* check if the data in the static 'cache' fs is for the same file.
@@ -845,6 +851,7 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
         // DEBUG_WEBDAV(("ne_parse_result: %d\n", rc ));
 
         if (rc < 0) {
+            errno = ne_error_to_errno( rc );
             return -1;
         }
         // fetchCtx->list = reslist;
@@ -854,7 +861,11 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
 
         DEBUG_WEBDAV(("fetchCtx good.\n" ));
 
-        fetch_resource_list( uri, NE_DEPTH_ONE, fetchCtx );
+        rc = fetch_resource_list( uri, NE_DEPTH_ONE, fetchCtx );
+        if( rc != NE_OK ) {
+            errno = ne_error_to_errno( rc );
+            return -1;
+        }
         fetchCtx->currResource = fetchCtx->list;
 
         if( fetchCtx ) {
