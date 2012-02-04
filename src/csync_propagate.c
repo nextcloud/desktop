@@ -585,7 +585,6 @@ out:
 }
 
 static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
-  enum csync_replica_e src = -1;
   enum csync_replica_e dest = -1;
   enum csync_replica_e replica_bak;
   char errbuf[256] = {0};
@@ -597,14 +596,12 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
 
   switch (ctx->current) {
     case LOCAL_REPLICA:
-      src = ctx->local.type;
       dest = ctx->remote.type;
       if (asprintf(&uri, "%s/%s", ctx->remote.uri, st->path) < 0) {
         return -1;
       }
       break;
     case REMOTE_REPLCIA:
-      src = ctx->remote.type;
       dest = ctx->local.type;
       if (asprintf(&uri, "%s/%s", ctx->local.uri, st->path) < 0) {
         return -1;
@@ -679,7 +676,6 @@ out:
 }
 
 static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
-  enum csync_replica_e src = -1;
   enum csync_replica_e dest = -1;
   enum csync_replica_e replica_bak;
   char errbuf[256] = {0};
@@ -691,14 +687,12 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
 
   switch (ctx->current) {
     case LOCAL_REPLICA:
-      src = ctx->local.type;
       dest = ctx->remote.type;
       if (asprintf(&uri, "%s/%s", ctx->remote.uri, st->path) < 0) {
         return -1;
       }
       break;
     case REMOTE_REPLCIA:
-      src = ctx->remote.type;
       dest = ctx->local.type;
       if (asprintf(&uri, "%s/%s", ctx->local.uri, st->path) < 0) {
         return -1;
