@@ -154,7 +154,10 @@ enum csync_instructions_e {
   CSYNC_INSTRUCTION_UPDATED
 };
 
-typedef struct csync_file_stat_s {
+#ifdef _MSC_VER
+#pragma pack(1)
+#endif
+struct csync_file_stat_s {
   uint64_t phash;   /* u64 */
   time_t modtime;   /* u64 */
   off_t size;       /* u64 */
@@ -167,7 +170,16 @@ typedef struct csync_file_stat_s {
   int type;         /* u32 */
   enum csync_instructions_e instruction; /* u32 */
   char path[1]; /* u8 */
-} csync_file_stat_t __attribute__ ((packed));
+}
+#if !defined(__SUNPRO_C) && !defined(_MSC_VER)
+__attribute__ ((packed))
+#endif
+#ifdef _MSC_VER
+#pragma pack()
+#endif
+;
+
+typedef struct csync_file_stat_s csync_file_stat_t;
 
 /**
  * }@
