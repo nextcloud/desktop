@@ -8,4 +8,6 @@
 #cmakedefine BINARYDIR "${BINARYDIR}"
 #cmakedefine SOURCEDIR "${SOURCEDIR}"
 
+#cmakedefine HAVE_CLOCK_GETTIME
+
 #cmakedefine WITH_LOG4C 1
