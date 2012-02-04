@@ -398,7 +398,6 @@ static int _backup_path(char** duri, const char* uri, const char* path)
 
 
 static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st) {
-  enum csync_replica_e srep = -1;
   enum csync_replica_e drep = -1;
   enum csync_replica_e rep_bak = -1;
 
@@ -416,7 +415,6 @@ static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st) {
 	CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"CSYNC_INSTRUCTION_CONFLICT");
 	switch (ctx->current) {
 		case LOCAL_REPLICA:
-		srep = ctx->remote.type;
 		drep = ctx->remote.type;
 		if (asprintf(&suri, "%s/%s", ctx->remote.uri, st->path) < 0) {
 			rc = -1;
@@ -429,7 +427,6 @@ static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st) {
 		}
 		break;
 		case REMOTE_REPLCIA:
-		srep = ctx->local.type;
 		drep = ctx->local.type;
 		if (asprintf(&suri, "%s/%s", ctx->local.uri, st->path) < 0) {
 			rc = -1;
@@ -484,9 +481,6 @@ static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st) {
   rc = 0;
 
 out:
-  ctx->replica = srep;
-  ctx->replica = drep;
-
   /* set instruction for the statedb merger */
   if (rc != 0) {
     st->instruction = CSYNC_INSTRUCTION_ERROR;
