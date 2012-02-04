@@ -27,6 +27,7 @@
 
 #include "csync_private.h"
 
+int csync_gettime(struct timespec *tp);
 time_t csync_timediff(CSYNC *ctx);
 
 #endif /* _CSYNC_TIME_H */

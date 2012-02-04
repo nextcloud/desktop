@@ -32,6 +32,31 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.time"
 #include "csync_log.h"
 
+#ifdef _POSIX_MONOTONIC_CLOCK
+# define CSYNC_CLOCK CLOCK_MONOTONIC
+#else
+# define CSYNC_CLOCK CLOCK_REALTIME
+#endif
+
+int csync_gettime(struct timespec *tp)
+{
+#ifdef HAVE_CLOCK_GETTIME
+	return clock_gettime(CSYNC_CLOCK, &tp);
+#else
+	struct timeval tv;
+
+	if (gettimeofday(&tv, NULL) < 0) {
+		return -1;
+	}
+
+	tp->tv_sec = tv.tv_sec;
+	tp->tv_nsec = tv.tv_usec * 1000;
+#endif
+	return 0;
+}
+
+#undef CSYNC_CLOCK
+
 /* check time difference between the replicas */
 time_t csync_timediff(CSYNC *ctx) {
   time_t timediff = -1;
