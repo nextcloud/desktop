@@ -32,16 +32,18 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.time"
 #include "csync_log.h"
 
-#ifdef _POSIX_MONOTONIC_CLOCK
-# define CSYNC_CLOCK CLOCK_MONOTONIC
-#else
-# define CSYNC_CLOCK CLOCK_REALTIME
+#ifdef HAVE_CLOCK_GETTIME
+# ifdef _POSIX_MONOTONIC_CLOCK
+#  define CSYNC_CLOCK CLOCK_MONOTONIC
+# else
+#  define CSYNC_CLOCK CLOCK_REALTIME
+# endif
 #endif
 
 int csync_gettime(struct timespec *tp)
 {
 #ifdef HAVE_CLOCK_GETTIME
-	return clock_gettime(CSYNC_CLOCK, &tp);
+	return clock_gettime(CSYNC_CLOCK, tp);
 #else
 	struct timeval tv;
 
