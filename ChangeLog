@@ -1,6 +1,10 @@
 ChangeLog
 ==========
 
+version 0.45.0 (released 2012-xx-xx)
+  * Added backup reconciler.
+  * Fixed serveral bugs.
+
 version 0.44.0 (released 2010-02-15)
   * Migrated sftp module to libssh 0.4.
   * Added more cache entries to the default config.
