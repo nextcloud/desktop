@@ -247,7 +247,6 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
             "file: %s, command: close, error: %s",
             turi,
             strerror_r(errno, errbuf, sizeof(errbuf)));
-        rc = 1;
         break;
     }
   }
