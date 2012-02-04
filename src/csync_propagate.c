@@ -376,21 +376,21 @@ static int _backup_path(char** duri, const char* uri, const char* path)
 {
 	int rc=0;
 	C_PATHINFO *info=NULL;
-	
+
 	struct tm *curtime;
 	time_t sec;
 	char timestring[16];
 	time(&sec);
 	curtime = localtime(&sec);
 	strftime(timestring, 16,   "%Y%m%d-%H%M%S",curtime);
-	
+
 	info=c_split_path(path);
 	CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"directory: %s",info->directory);
 	CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"filename : %s",info->filename);
 	CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"extension: %s",info->extension);
-	
+
 	if (asprintf(duri, "%s/%s%s_conflict-%s%s", uri,info->directory ,info->filename,timestring,info->extension) < 0) {
-			rc = -1;		
+		rc = -1;
 	}
 
 	SAFE_FREE(info);
