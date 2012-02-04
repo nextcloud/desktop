@@ -63,13 +63,14 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
   }
 
 
-  init_fn = dlsym(ctx->module.handle, "vio_module_init");
+  *(void **) (&init_fn) = dlsym(ctx->module.handle, "vio_module_init");
   if ((err = dlerror()) != NULL) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "loading function failed - %s", err);
     return -1;
   }
 
-  ctx->module.finish_fn = dlsym(ctx->module.handle, "vio_module_shutdown");
+  *(void **)  (&ctx->module.finish_fn) = dlsym(ctx->module.handle,
+                                               "vio_module_shutdown");
   if ((err = dlerror()) != NULL) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "loading function failed - %s", err);
     return -1;
