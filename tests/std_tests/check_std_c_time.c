@@ -16,7 +16,7 @@ START_TEST (check_c_tspecdiff)
   diff = c_tspecdiff(finish, start);
 
   fail_unless(diff.tv_sec == 0, NULL);
-  fail_unless(diff.tv_nsec > 0, NULL);
+  fail_unless(diff.tv_nsec >= 0, NULL);
 }
 END_TEST
 
@@ -45,7 +45,7 @@ START_TEST (check_c_secdiff)
 
   diff = c_secdiff(finish, start);
 
-  fail_unless(diff > 0.00 && diff < 1.00, "diff is %.2f", diff);
+  fail_unless(diff >= 0.00 && diff < 1.00, "diff is %.2f", diff);
 }
 END_TEST
 
