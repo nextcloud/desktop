@@ -36,9 +36,6 @@ SMBCCTX *smb_context = NULL;
 csync_auth_callback _authcb = NULL;
 void *_userdata;
 
-/* Do we build against Samba 3.2 */
-#ifdef DEPRECATED_SMBC_INTERFACE
-
 /*
  * Authentication callback for libsmbclient
  */
@@ -86,57 +83,6 @@ static void get_auth_data_with_context_fn(SMBCCTX *c,
 
   return;
 }
-
-#else /* DEPRECATED_SMBC_INTERFACE */
-
-/*
- * Authentication callback for libsmbclient
- */
-static void get_auth_data_fn(const char *pServer,
-         const char *pShare,
-         char *pWorkgroup, int maxLenWorkgroup,
-         char *pUsername, int maxLenUsername,
-         char *pPassword, int maxLenPassword) {
-
-  static int try_krb5 = 1;
-
-  (void) pShare;
-  (void) pWorkgroup;
-  (void) maxLenWorkgroup;
-
-  DEBUG_SMB(("csync_smb - user=%s, workgroup=%s, server=%s, share=%s\n",
-        pUsername, pWorkgroup, pServer, pShare));
-
-  /* Don't authenticate for workgroup listing */
-  if (pServer == NULL || pServer[0] == '\0') {
-    DEBUG_SMB(("csync_smb - emtpy server name\n"));
-    return;
-  }
-
-  /* Try kerberos authentication if available */
-  if (try_krb5 && getenv("KRB5CCNAME")) {
-    DEBUG_SMB(("csync_smb - trying kerberos authentication\n"));
-    try_krb5 = 0;
-
-    return;
-  }
-
-  /* Call the passwort prompt */
-  if (_authcb != NULL) {
-    DEBUG_SMB(("csync_smb - execute authentication callback\n"));
-    (*_authcb) ("Username:", pUsername, maxLenUsername, 1, 0);
-    (*_authcb) ("Password:", pPassword, maxLenPassword, 0, 0);
-  }
-
-  DEBUG_SMB(("csync_smb - user=%s, workgroup=%s, server=%s, share=%s\n",
-        pUsername, pWorkgroup, pServer, pShare));
-
-  try_krb5 = 1;
-
-  return;
-}
-
-#endif /* DEPRECATED_SMBC_INTERFACE */
 
 typedef struct smb_fhandle_s {
   int fd;
@@ -494,7 +440,6 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
   }
 
   /* set debug level and authentication function callback */
-#ifdef DEPRECATED_SMBC_INTERFACE
   smbc_setDebug(smb_context, 0);
   smbc_setOptionUserData(smb_context, userdata);
   smbc_setFunctionAuthDataWithContext(smb_context, get_auth_data_with_context_fn);
@@ -507,13 +452,6 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
         smbc_getOptionUseKerberos(smb_context)));
   DEBUG_SMB(("csync_smb - use fallback after kerberos = %d\n",
         smbc_getOptionFallbackAfterKerberos(smb_context)));
-#else
-  smb_context->debug = 0;
-  smb_context->callbacks.auth_fn = get_auth_data_fn;
- #if defined(SMB_CTX_FLAG_USE_KERBEROS) && defined(SMB_CTX_FLAG_FALLBACK_AFTER_KERBEROS)
-  smb_context->flags |= (SMB_CTX_FLAG_USE_KERBEROS | SMB_CTX_FLAG_FALLBACK_AFTER_KERBEROS);
- #endif
-#endif
 
   if (smbc_init_context(smb_context) == NULL) {
     fprintf(stderr, "csync_smb - failed to initialize the smbc context");
