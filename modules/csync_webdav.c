@@ -357,8 +357,6 @@ static void results(void *userdata,
     const char *resourcetype;
     const ne_status *status = NULL;
     const char *path = uri->path;
-    int targetlen = 0;
-    int len = 0;
 
     (void) status;
 
@@ -376,14 +374,10 @@ static void results(void *userdata,
         return;
     }
 
+    /* Fill the resource structure with the data about the file */
     newres = c_malloc(sizeof(struct resource)); // ne_propset_private(set);
-    newres->uri = ne_strdup(path);
-
-    targetlen = strlen( fetchCtx->target );
-    if( !ne_path_has_trailing_slash( fetchCtx->target ) ) targetlen = targetlen+1;
-    len = strlen( path ) - targetlen;
-    if( ne_path_has_trailing_slash( path )) len = len - 1;
-    newres->name = c_strndup( path + targetlen, len );
+    newres->uri =  ne_strdup(path);
+    newres->name = c_basename( path );
 
     modtime = ne_propset_value(set, &ls_props[0]);
     clength = ne_propset_value(set, &ls_props[1]);
