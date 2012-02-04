@@ -7,7 +7,7 @@ START_TEST (check_csync_instruction_str)
   const char *str = NULL;
 
   str = csync_instruction_str(CSYNC_INSTRUCTION_ERROR);
-  fail_unless(strcmp(str, "CSYNC_INSTRUCTION_ERROR") == 0, NULL);
+  fail_unless(strcmp(str, "INSTRUCTION_ERROR") == 0, NULL);
 
   str = csync_instruction_str(0xFFFF);
   fail_unless(strcmp(str, "ERROR!") == 0, NULL);
