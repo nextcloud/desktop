@@ -277,7 +277,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
 }
 
 int csync_reconcile_updates(CSYNC *ctx) {
-  int rc = -1;
+  int rc;
   c_rbtree_t *tree = NULL;
 
   switch (ctx->current) {
@@ -293,7 +293,7 @@ int csync_reconcile_updates(CSYNC *ctx) {
 
   rc = c_rbtree_walk(tree, (void *) ctx, _csync_merge_algorithm_visitor);
 
-  return 0;
+  return rc;
 }
 
 /* vim: set ts=8 sw=2 et cindent: */
