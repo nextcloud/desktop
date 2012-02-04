@@ -97,7 +97,9 @@ static int _csync_lock_create(const char *lockfile) {
 
 out:
   close(fd);
-  unlink(ctmpfile);
+	if (ctmpfile) {
+		unlink(ctmpfile);
+	}
 
   SAFE_FREE(buf);
   SAFE_FREE(dir);
@@ -177,4 +179,3 @@ void csync_lock_remove(const char *lockfile) {
   }
 }
 
-/* vim: set ts=8 sw=2 et cindent: */
