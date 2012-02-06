@@ -513,7 +513,7 @@ static ssize_t _write(csync_vio_method_handle_t *fhandle, const void *buf, size_
 static csync_vio_method_handle_t *_open(const char *durl,
                                         int flags,
                                         mode_t mode) {
-    char *uri;
+    const char *uri;
     ne_request *req;
     int put = 0;
     int rc = 0;
@@ -551,10 +551,10 @@ static csync_vio_method_handle_t *_open(const char *durl,
 
     rc = ne_begin_request(req);
     if (rc != NE_OK) {
-        return -1;
+        return NULL;
     }
 
-    DEBUG_WEBDAV(( "open request: %p\n", req ));
+    DEBUG_WEBDAV(( "open request: %p\n", (void*) req ));
     return (csync_vio_method_handle_t *) req;
 }
 
@@ -611,7 +611,7 @@ static ssize_t _read(csync_vio_method_handle_t *fhandle, void *buf, size_t count
         rc = ne_end_request(req);
     }
 #endif
-    DEBUG_WEBDAV(( "read len: %d\n", len ));
+    DEBUG_WEBDAV(( "read len: %ld\n", len ));
 
     return len;
 }
@@ -678,7 +678,7 @@ static int _closedir(csync_vio_method_handle_t *dhandle) {
         SAFE_FREE(r);
         r = rnext;
     }
-    SAFE_FREE( fetchCtx->target );
+    SAFE_FREE( (fetchCtx->target) );
     SAFE_FREE( dhandle );
     return 0;
 }
@@ -800,6 +800,26 @@ static int _rmdir(const char *uri) {
     return 0;
 }
 
+/* WebDAV does not deliver permissions. We set a default here. */
+static int _stat_perms( int type ) {
+    int ret = 0;
+
+    if( type == CSYNC_VIO_FILE_TYPE_DIRECTORY ) {
+        DEBUG_WEBDAV(("Setting mode in stat (dir)\n"));
+        /* directory permissions */
+        ret = S_IFDIR | S_IRUSR | S_IWUSR | S_IXUSR /* directory, rwx for user */
+                | S_IRGRP | S_IXGRP                       /* rx for group */
+                | S_IROTH | S_IXOTH;                      /* rx for others */
+    } else {
+        /* regualar file permissions */
+        DEBUG_WEBDAV(("Setting mode in stat (file)\n"));
+        ret = S_IFREG | S_IRUSR | S_IWUSR /* regular file, user read & write */
+                | S_IRGRP                         /* group read perm */
+                | S_IROTH;                        /* others read perm */
+    }
+    return ret;
+}
+
 static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
     /* get props:
      *   modtime
@@ -830,10 +850,17 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
      * stat. If the cache matches, a http call is saved.
      */
     if( fs.name && strcmp( buf->name, fs.name ) == 0 ) {
+        buf->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
+        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
+        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
+        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
+        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
+
         buf->fields = fs.fields;
         buf->type   = fs.type;
         buf->mtime  = fs.mtime;
         buf->size   = fs.size;
+        buf->mode   = _stat_perms( fs.type );
     } else {
         // fetch data via a propfind call.
         DEBUG_WEBDAV(("I have no stat cache, call propfind.\n"));
@@ -865,10 +892,17 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
         if( fetchCtx ) {
             lfs = resourceToFileStat( fetchCtx->currResource );
             if( lfs ) {
+                buf->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
+                buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
+                buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
+                buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
+                buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
+
                 buf->fields = lfs->fields;
                 buf->type   = lfs->type;
                 buf->mtime  = lfs->mtime;
                 buf->size   = lfs->size;
+                buf->mode   = _stat_perms( lfs->type );
             }
         }
 #else
@@ -888,8 +922,8 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
 }
 
 static int _rename(const char *olduri, const char *newuri) {
-    char *ouri;
-    char *nuri;
+    const char *ouri;
+    const char *nuri;
     int rc;
 
     ouri = ne_path_escape(olduri);
