@@ -498,6 +498,8 @@ static ssize_t _write(csync_vio_method_handle_t *fhandle, const void *buf, size_
 
     rc = ne_request_dispatch(req);
     if (rc == NE_OK && ne_get_status(req)->klass != 2) {
+        DEBUG_WEBDAV(("write request problem: %s\n", ne_get_error(session)));
+
         len = -1;
     }
     if( rc != NE_OK ) {
@@ -925,7 +927,7 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
 
 static int _rename(const char *olduri, const char *newuri) {
     const char *ouri;
-    const char *nuri;
+    ne_uri targetUri;
     int rc;
 
     ouri = ne_path_escape(olduri);
@@ -934,9 +936,10 @@ static int _rename(const char *olduri, const char *newuri) {
         return -1;
     }
 
-    nuri = ne_path_escape(newuri);
-    nuri = newuri;
-    if (nuri == NULL) {
+    rc = ne_uri_parse(newuri, &targetUri);
+    DEBUG_WEBDAV(("ne_parse_result: %d\n", rc ));
+
+    if (rc < 0) {
         return -1;
     }
 
@@ -946,7 +949,7 @@ static int _rename(const char *olduri, const char *newuri) {
         return -1;
     }
 
-    rc = ne_move(dav_session.ctx, 1, ouri, nuri);
+    rc = ne_move(dav_session.ctx, 1, ouri, targetUri.path );
     DEBUG_WEBDAV(("MOVE: %s => %s: %d\n", olduri, newuri, rc ));
     if (rc != NE_OK ) {
         ne_session_error_errno(dav_session.ctx);
