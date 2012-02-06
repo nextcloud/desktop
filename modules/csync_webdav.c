@@ -126,6 +126,7 @@ static int ne_session_error_errno(ne_session *session)
     if (p == q) {
         return EIO;
     }
+    DEBUG_WEBDAV(("Session error string %s\n", p));
     DEBUG_WEBDAV(("Session Error: %d\n", err ));
 
     switch(err) {
@@ -507,6 +508,7 @@ static ssize_t _write(csync_vio_method_handle_t *fhandle, const void *buf, size_
             DEBUG_WEBDAV(("request_dispatch failed, session invalid!\n" ));
     }
 
+    DEBUG_WEBDAV(("Wrote %ld bytes.\n", len));
     return len;
 }
 
@@ -678,7 +680,7 @@ static int _closedir(csync_vio_method_handle_t *dhandle) {
         SAFE_FREE(r);
         r = rnext;
     }
-    SAFE_FREE( (fetchCtx->target) );
+    // SAFE_FREE( fetchCtx->target ); FIXME: Check again!
     SAFE_FREE( dhandle );
     return 0;
 }
@@ -947,6 +949,7 @@ static int _rename(const char *olduri, const char *newuri) {
     rc = ne_move(dav_session.ctx, 1, ouri, nuri);
     DEBUG_WEBDAV(("MOVE: %s => %s: %d\n", olduri, newuri, rc ));
     if (rc != NE_OK ) {
+        ne_session_error_errno(dav_session.ctx);
         errno = ne_error_to_errno(rc);
         return -1;
     }
@@ -994,9 +997,32 @@ static int _chown(const char *uri, uid_t owner, gid_t group) {
 }
 
 static int _utimes(const char *uri, const struct timeval *times) {
-    (void) uri;
-    (void) times;
 
+    ne_proppatch_operation ops[2];
+    ne_propname pname;
+    int rc = NE_OK;
+    char val[255];
+
+    if( ! uri || !times ) {
+        errno = 1;
+        return -1; // FIXME: Find good errno
+    }
+    pname.nspace = NULL;
+    pname.name = "LastModified";
+
+    snprintf( val, sizeof(val), "%ld", times->tv_sec );
+    DEBUG_WEBDAV(("===> Setting LastModified to %s\n", val ));
+
+    ops[0].name = &pname;
+    ops[0].type = ne_propset;
+    ops[0].value = val;
+
+    ops[1].name = NULL;
+
+    rc = ne_proppatch( dav_session.ctx, uri, ops );
+    if( rc != NE_OK ) {
+        errno = ne_error_to_errno( rc );
+    }
     return 0;
 }
 
