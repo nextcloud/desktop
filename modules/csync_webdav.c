@@ -90,6 +90,17 @@ struct fetch_context {
     unsigned int     result_count;   /* number of elements stored in list */
 };
 
+/*
+ * context to store info about a temp file for write
+ */
+struct write_context {
+    ne_request *req;
+    int         fd;
+    char        *tmpFileName;
+    size_t      bytes_written;
+    char        method[4];
+};
+
 /* Struct with the WebDAV session */
 struct dav_session_s {
     ne_session *ctx;
@@ -488,7 +499,32 @@ static int fetch_resource_list( const char *uri,
  * file functions
  */
 static ssize_t _write(csync_vio_method_handle_t *fhandle, const void *buf, size_t count) {
-    ne_request *req = (ne_request *)fhandle;
+    struct write_context *writeCtx = NULL;
+    ssize_t written = 0;
+
+    if (fhandle == NULL) {
+        return -1;
+    }
+
+    writeCtx = (struct write_context*) fhandle;
+    if( writeCtx->fd > -1 ) {
+        written = write( writeCtx->fd, buf, count );
+        if( written != count ) {
+            DEBUG_WEBDAV(("Written bytes not equal to count\n"));
+
+        } else {
+            writeCtx->bytes_written = writeCtx->bytes_written + written;
+            DEBUG_WEBDAV(("Successfully written %ld\n", written ));
+        }
+
+    } else {
+        /* problem: the file descriptor is not valid. */
+        DEBUG_WEBDAV(("Not a valid file descriptor in write\n"));
+    }
+
+#if 0
+    req = writeCtx->req;
+
     ssize_t len = count;
     int rc;
     ne_session *session = ne_get_session( req );
@@ -509,21 +545,22 @@ static ssize_t _write(csync_vio_method_handle_t *fhandle, const void *buf, size_
         else
             DEBUG_WEBDAV(("request_dispatch failed, session invalid!\n" ));
     }
-
-    DEBUG_WEBDAV(("Wrote %ld bytes.\n", len));
-    return len;
+#endif
+    DEBUG_WEBDAV(("Wrote %ld bytes.\n", written ));
+    return written;
 }
 
 static csync_vio_method_handle_t *_open(const char *durl,
                                         int flags,
                                         mode_t mode) {
     const char *uri;
-    ne_request *req;
     int put = 0;
     int rc = 0;
+    struct write_context *writeCtx;
 
     (void) mode; /* unused */
     DEBUG_WEBDAV(( "############# open called!\n"));
+    writeCtx = c_malloc( sizeof(struct write_context) );
 
     /* uri = ne_path_escape(durl);
      * escaping lets the ne_request_create fail, even though its documented
@@ -547,19 +584,46 @@ static csync_vio_method_handle_t *_open(const char *durl,
     }
 
     /* FIXME */
+
+    /* open a temp file to store the incoming data */
+    writeCtx->tmpFileName = c_strdup( "/tmp/csync.XXXXXX" );
+    writeCtx->fd = mkstemp( writeCtx->tmpFileName );
+    DEBUG_WEBDAV(("opening temp directory %s\n", writeCtx->tmpFileName ));
+
     if (put) {
-        req = ne_request_create(dav_session.ctx, "PUT", uri);
+        DEBUG_WEBDAV(("PUT request!\n"));
+        writeCtx->req = ne_request_create(dav_session.ctx, "PUT", uri);
+        if( writeCtx->req ) {
+            rc = ne_begin_request( writeCtx->req );
+            DEBUG_WEBDAV(("PUT request2!\n"));
+            if (rc != NE_OK) {
+                DEBUG_WEBDAV(("Can not open a request, bailing out.\n"));
+                return NULL;
+            }
+        }
+
+
+        strncpy( writeCtx->method, "PUT", 3 );
     } else {
-        req = ne_request_create(dav_session.ctx, "GET", uri);
+        DEBUG_WEBDAV(("GET request!\n"));
+        strncpy( writeCtx->method, "GET", 3 );
+        /* Download the data into a local temp file. */
+        rc = ne_get( dav_session.ctx, uri, writeCtx->fd );
+        if( rc != NE_OK ) {
+            ne_error_to_errno( rc );
+            DEBUG_WEBDAV(("Download to local file failed.\n"));
+            return NULL;
+        }
+        if( close( writeCtx->fd ) == -1 ) {
+            DEBUG_WEBDAV(("Close of local download file failed.\n"));
+            writeCtx->fd = -1;
+            return NULL;
+        }
+        writeCtx->req = 0; //  ne_request_create(dav_session.ctx, "GET", uri);
+        writeCtx->fd = -1;
     }
 
-    rc = ne_begin_request(req);
-    if (rc != NE_OK) {
-        return NULL;
-    }
-
-    DEBUG_WEBDAV(( "open request: %p\n", (void*) req ));
-    return (csync_vio_method_handle_t *) req;
+    return (csync_vio_method_handle_t *) writeCtx;
 }
 
 static csync_vio_method_handle_t *_creat(const char *durl, mode_t mode) {
@@ -573,48 +637,93 @@ static csync_vio_method_handle_t *_creat(const char *durl, mode_t mode) {
 }
 
 static int _close(csync_vio_method_handle_t *fhandle) {
-    ne_request *req;
+    struct write_context *writeCtx;
+
+    struct stat st;
+    int rc;
+
+    writeCtx = (struct write_context*) fhandle;
 
     if (fhandle == NULL) {
         return -1;
     }
-    req = (ne_request *)fhandle;
 
-    ne_request_destroy(req);
+    /* if there is a valid file descriptor, close it and transmit through the request */
+    if( strcmp( writeCtx->method, "PUT" ) == 0 ) {
+        if( writeCtx->fd > -1 ) {
+            if( close( writeCtx->fd ) < 0 ) {
+                DEBUG_WEBDAV(("Could not close file %s\n", writeCtx->tmpFileName ));
+                return -1;
+            }
+
+            /* and open it again... */
+            if (( writeCtx->fd = open( writeCtx->tmpFileName, O_RDONLY )) < 0) {
+                return -1;
+            } else {
+
+                if (fstat( writeCtx->fd, &st ) < 0) {
+                    DEBUG_WEBDAV(("Could not stat file %s\n", writeCtx->tmpFileName ));
+                    return -1;
+                }
+
+                /* successfully opened for read. Now start the request via ne_put */
+                ne_set_request_body_fd( writeCtx->req, writeCtx->fd, 0, st.st_size );
+                rc = ne_request_dispatch( writeCtx->req );
+                if (rc == NE_OK) {
+                    if ( ne_get_status( writeCtx->req )->klass != 2 ) {
+                        DEBUG_WEBDAV(("Error - PUT status value no 2xx\n"));
+                    }
+                }
+            }
+        }
+        ne_request_destroy( writeCtx->req );
+    } else  {
+        /* Its a GET request, not much to do in close. */
+        if( writeCtx->fd ) {
+            close( writeCtx->fd );
+        }
+    }
+    // FIXME: Remove the local file.
+
+    /* free mem. Note that the request mem is freed by the ne_request_destroy call */
+    SAFE_FREE( writeCtx->tmpFileName );
+    SAFE_FREE( writeCtx );
 
     return 0;
 }
 
 static ssize_t _read(csync_vio_method_handle_t *fhandle, void *buf, size_t count) {
-    ne_request *req = (ne_request *)fhandle;
-    const ne_status *const st = ne_get_status(req);
-    ssize_t len;
-    int rc;
-#if 0
-    rc = ne_begin_request(req);
-    if (rc != NE_OK) {
+    struct write_context *writeCtx;
+    ssize_t len = 0;
+    struct stat st;
+
+    writeCtx = (struct write_context*) fhandle;
+
+    DEBUG_WEBDAV(( "############# read called on %s!\n", writeCtx->tmpFileName ));
+    if( ! fhandle ) {
         return -1;
     }
-#endif
-    DEBUG_WEBDAV(("--> Status Klass: %d\n", st->klass ));
-    do {
-        if (st->klass == 2) {
-            rc = NE_OK;
-            len = ne_read_response_block(req, buf, count);
-            if (len < 0) {
-                rc = NE_ERROR;
-            }
-        } else {
-            rc = ne_discard_response(req);
-            len = -1;
-        }
-    } while(rc == NE_RETRY);
 
-#if 0
-    if (rc == NE_OK) {
-        rc = ne_end_request(req);
+    if( writeCtx->fd == -1 ) {
+        /* and open it again... */
+        if (( writeCtx->fd = open( writeCtx->tmpFileName, O_RDONLY )) < 0) {
+             DEBUG_WEBDAV(("Could not open local file %s\n", writeCtx->tmpFileName ));
+            return -1;
+        } else {
+            if (fstat( writeCtx->fd, &st ) < 0) {
+                DEBUG_WEBDAV(("Could not stat file %s\n", writeCtx->tmpFileName ));
+                return -1;
+            }
+
+            DEBUG_WEBDAV(("local downlaod file size=%d\n", st.st_size ));
+        }
     }
-#endif
+
+    if( writeCtx->fd ) {
+        len = read( writeCtx->fd, buf, count );
+        writeCtx->bytes_written = writeCtx->bytes_written + len;
+    }
+
     DEBUG_WEBDAV(( "read len: %ld\n", len ));
 
     return len;
