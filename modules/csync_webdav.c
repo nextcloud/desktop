@@ -67,22 +67,19 @@ typedef unsigned long dav_size_t;
  */
 typedef struct resource {
     char *uri;           /* The complete uri */
-    char *displayname;   /* The decoded, human readable name */
     char *name;          /* The filename only */
 
     enum resource_type type;
     dav_size_t         size;
     time_t             modtime;
 
-    char               *error_reason; /* error string returned for this resource */
-    int                error_status; /* error status returned for this resource */
     struct resource    *next;
 } resource;
 
 /* Struct to hold the context of a WebDAV PropFind operation to fetch
  * a directory listing from the server.
  */
-struct fetch_context {
+struct listdir_context {
     struct resource *list;          /* The list of result resources */
     struct resource *currResource;   /* A pointer to the current resource */
     const char      *target;         /* Request-URI of the PROPFIND */
@@ -91,14 +88,16 @@ struct fetch_context {
 };
 
 /*
- * context to store info about a temp file for write
+ * context to store info about a temp file for GET and PUT requests
+ * which store the data in a local file to save memory and secure the
+ * transmission.
  */
-struct write_context {
-    ne_request *req;
-    int         fd;
-    char        *tmpFileName;
-    size_t      bytes_written;
-    char        method[4];
+struct transfer_context {
+    ne_request *req;            /* the neon request */
+    int         fd;             /* file descriptor of the file to read or write from */
+    char        *tmpFileName;   /* the name of the temp file */
+    size_t      bytes_written;  /* the amount of bytes written or read */
+    char        method[4];      /* the HTTP method, either PUT or GET  */
 };
 
 /* Struct with the WebDAV session */
@@ -296,6 +295,7 @@ static int dav_connect(const char *base_url) {
         return -1;
     }
 
+    /* FIXME: Check for https connections */
     dav_session.ctx = ne_session_create(uri.scheme, uri.host, uri.port);
 
     if (dav_session.ctx == NULL) {
@@ -355,29 +355,29 @@ static int compare_resource(const struct resource *r1,
  * This function is called to parse the result of the propfind request
  * to list directories on the WebDAV server. I takes a single resource
  * and fills a resource struct and stores it to the result list which
- * is stored in the fetch_context.
+ * is stored in the listdir_context.
  */
 static void results(void *userdata,
                     const ne_uri *uri,
                     const ne_prop_result_set *set)
 {
-    struct fetch_context *fetchCtx = userdata;
+    struct listdir_context *fetchCtx = userdata;
     struct resource *current = 0;
     struct resource *previous = 0;
     struct resource *newres = 0;
-    const char *clength, *modtime;
-    const char *resourcetype;
+    const char *clength, *modtime = NULL;
+    const char *resourcetype = NULL;
+    const char *contenttype = NULL;
     const ne_status *status = NULL;
     const char *path = uri->path;
 
     (void) status;
 
-    DEBUG_WEBDAV(("** PATH found: %s\n", path ));
+    DEBUG_WEBDAV(("** propfind result found: %s\n", path ));
     if( ! fetchCtx->target ) {
         DEBUG_WEBDAV(("error: target must not be zero!\n" ));
         return;
     }
-    DEBUG_WEBDAV(("TARGET found: %s\n", fetchCtx->target ));
 
     if (ne_path_compare(fetchCtx->target, path) == 0 && !fetchCtx->include_target) {
         /* This is the target URI */
@@ -388,54 +388,20 @@ static void results(void *userdata,
 
     /* Fill the resource structure with the data about the file */
     newres = c_malloc(sizeof(struct resource)); // ne_propset_private(set);
-    newres->uri =  ne_strdup(path);
+    newres->uri =  c_strdup(path);
     newres->name = c_basename( path );
 
-    modtime = ne_propset_value(set, &ls_props[0]);
-    clength = ne_propset_value(set, &ls_props[1]);
-    resourcetype = ne_propset_value(set, &ls_props[2]);
-    // DEBUG_WEBDAV(("Resourcetype: %s\n", resourcetype ? resourcetype : "" ));
+    modtime      = ne_propset_value( set, &ls_props[0] );
+    clength      = ne_propset_value( set, &ls_props[1] );
+    resourcetype = ne_propset_value( set, &ls_props[2] );
+    contenttype  = ne_propset_value( set, &ls_props[3] );
+    DEBUG_WEBDAV(("Contenttype: %s\n", contenttype ? contenttype : "" ));
 
     newres->type = resr_normal;
     if( clength == NULL && resourcetype && strncmp( resourcetype, "<DAV:collection>", 16 ) == 0) {
         newres->type = resr_collection;
     }
 
-#if 0
-    if (clength == NULL)
-        status = ne_propset_status(set, &ls_props[0]);
-    if (modtime == NULL)
-        status = ne_propset_status(set, &ls_props[1]);
-
-    if (newres->type == resr_normal && status) {
-        /* It's an error! */
-        newres->error_status = status->code;
-
-        /* Special hack for Apache 1.3/mod_dav */
-        if (strcmp(status->reason_phrase, "status text goes here") == 0) {
-            const char *desc;
-            if (status->code == 401) {
-                desc = _("Authorization Required");
-            } else if (status->klass == 3) {
-                desc = _("Redirect");
-            } else if (status->klass == 5) {
-                desc = _("Server Error");
-            } else {
-                desc = _("Unknown Error");
-            }
-            newres->error_reason = ne_strdup(desc);
-        } else {
-            newres->error_reason = ne_strdup(status->reason_phrase);
-        }
-        newres->type = resr_error;
-    }
-
-    if (isexec && strcasecmp(isexec, "T") == 0) {
-        newres->is_executable = 1;
-    } else {
-        newres->is_executable = 0;
-    }
-#endif
     if (modtime)
         newres->modtime = ne_httpdate_parse(modtime);
 
@@ -448,6 +414,9 @@ static void results(void *userdata,
         }
     }
 
+    if( contenttype ) {
+
+    }
     /* put the new resource into the result list */
     for (current = fetchCtx->list, previous = NULL; current != NULL;
          previous = current, current=current->next) {
@@ -469,12 +438,12 @@ static void results(void *userdata,
 }
 
 /*
- * fetches a resource list from the WebDAV server.
+ * fetches a resource list from the WebDAV server. This is equivalent to list dir.
  */
 
 static int fetch_resource_list( const char *uri,
                                 int depth,
-                                struct fetch_context *fetchCtx )
+                                struct listdir_context *fetchCtx )
 {
     int ret = 0;
 
@@ -499,54 +468,28 @@ static int fetch_resource_list( const char *uri,
  * file functions
  */
 static ssize_t _write(csync_vio_method_handle_t *fhandle, const void *buf, size_t count) {
-    struct write_context *writeCtx = NULL;
-    ssize_t written = 0;
+    struct transfer_context *writeCtx = NULL;
+    size_t written = 0;
 
     if (fhandle == NULL) {
         return -1;
     }
 
-    writeCtx = (struct write_context*) fhandle;
+    writeCtx = (struct transfer_context*) fhandle;
     if( writeCtx->fd > -1 ) {
         written = write( writeCtx->fd, buf, count );
         if( written != count ) {
             DEBUG_WEBDAV(("Written bytes not equal to count\n"));
-
         } else {
             writeCtx->bytes_written = writeCtx->bytes_written + written;
-            DEBUG_WEBDAV(("Successfully written %ld\n", written ));
+            DEBUG_WEBDAV(("Successfully written %d\n", written ));
         }
-
     } else {
         /* problem: the file descriptor is not valid. */
         DEBUG_WEBDAV(("Not a valid file descriptor in write\n"));
     }
 
-#if 0
-    req = writeCtx->req;
-
-    ssize_t len = count;
-    int rc;
-    ne_session *session = ne_get_session( req );
-
-    ne_set_request_body_buffer(req, buf, count);
-    DEBUG_WEBDAV(( "############# write called!\n"));
-
-    rc = ne_request_dispatch(req);
-    if (rc == NE_OK && ne_get_status(req)->klass != 2) {
-        DEBUG_WEBDAV(("write request problem: %s\n", ne_get_error(session)));
-
-        len = -1;
-    }
-    if( rc != NE_OK ) {
-        len = -1;
-        if( session )
-            DEBUG_WEBDAV(("request_dispatch failed: %s\n", ne_get_error(session)));
-        else
-            DEBUG_WEBDAV(("request_dispatch failed, session invalid!\n" ));
-    }
-#endif
-    DEBUG_WEBDAV(("Wrote %ld bytes.\n", written ));
+    DEBUG_WEBDAV(("Wrote %d bytes.\n", written ));
     return written;
 }
 
@@ -556,11 +499,12 @@ static csync_vio_method_handle_t *_open(const char *durl,
     const char *uri;
     int put = 0;
     int rc = 0;
-    struct write_context *writeCtx;
+    struct transfer_context *writeCtx;
 
-    (void) mode; /* unused */
-    DEBUG_WEBDAV(( "############# open called!\n"));
-    writeCtx = c_malloc( sizeof(struct write_context) );
+    (void) mode; /* unused on webdav server */
+    DEBUG_WEBDAV(( "=> open called!\n"));
+    writeCtx = c_malloc( sizeof(struct transfer_context) );
+    writeCtx->bytes_written = 0;
 
     /* uri = ne_path_escape(durl);
      * escaping lets the ne_request_create fail, even though its documented
@@ -583,8 +527,6 @@ static csync_vio_method_handle_t *_open(const char *durl,
         put = 1;
     }
 
-    /* FIXME */
-
     /* open a temp file to store the incoming data */
     writeCtx->tmpFileName = c_strdup( "/tmp/csync.XXXXXX" );
     writeCtx->fd = mkstemp( writeCtx->tmpFileName );
@@ -592,6 +534,7 @@ static csync_vio_method_handle_t *_open(const char *durl,
 
     if (put) {
         DEBUG_WEBDAV(("PUT request!\n"));
+
         writeCtx->req = ne_request_create(dav_session.ctx, "PUT", uri);
         if( writeCtx->req ) {
             rc = ne_begin_request( writeCtx->req );
@@ -602,10 +545,11 @@ static csync_vio_method_handle_t *_open(const char *durl,
             }
         }
 
-
         strncpy( writeCtx->method, "PUT", 3 );
     } else {
         DEBUG_WEBDAV(("GET request!\n"));
+
+        writeCtx->req = 0;
         strncpy( writeCtx->method, "GET", 3 );
         /* Download the data into a local temp file. */
         rc = ne_get( dav_session.ctx, uri, writeCtx->fd );
@@ -619,7 +563,7 @@ static csync_vio_method_handle_t *_open(const char *durl,
             writeCtx->fd = -1;
             return NULL;
         }
-        writeCtx->req = 0; //  ne_request_create(dav_session.ctx, "GET", uri);
+
         writeCtx->fd = -1;
     }
 
@@ -637,33 +581,34 @@ static csync_vio_method_handle_t *_creat(const char *durl, mode_t mode) {
 }
 
 static int _close(csync_vio_method_handle_t *fhandle) {
-    struct write_context *writeCtx;
-
+    struct transfer_context *writeCtx;
     struct stat st;
     int rc;
+    int ret = 0;
 
-    writeCtx = (struct write_context*) fhandle;
+    writeCtx = (struct transfer_context*) fhandle;
 
     if (fhandle == NULL) {
-        return -1;
+        ret = -1;
     }
 
-    /* if there is a valid file descriptor, close it and transmit through the request */
-    if( strcmp( writeCtx->method, "PUT" ) == 0 ) {
+    /* handle the PUT request, means write to the WebDAV server */
+    if( ret != -1 && strcmp( writeCtx->method, "PUT" ) == 0 ) {
+
+        /* if there is a valid file descriptor, close it, reopen in read mode and start the PUT request */
         if( writeCtx->fd > -1 ) {
             if( close( writeCtx->fd ) < 0 ) {
                 DEBUG_WEBDAV(("Could not close file %s\n", writeCtx->tmpFileName ));
-                return -1;
+                ret = -1;
             }
 
-            /* and open it again... */
+            /* and open it again to read from */
             if (( writeCtx->fd = open( writeCtx->tmpFileName, O_RDONLY )) < 0) {
-                return -1;
+                ret = -1;
             } else {
-
                 if (fstat( writeCtx->fd, &st ) < 0) {
                     DEBUG_WEBDAV(("Could not stat file %s\n", writeCtx->tmpFileName ));
-                    return -1;
+                    ret = -1;
                 }
 
                 /* successfully opened for read. Now start the request via ne_put */
@@ -679,33 +624,34 @@ static int _close(csync_vio_method_handle_t *fhandle) {
         ne_request_destroy( writeCtx->req );
     } else  {
         /* Its a GET request, not much to do in close. */
-        if( writeCtx->fd ) {
+        if( writeCtx->fd > -1) {
             close( writeCtx->fd );
         }
     }
-    // FIXME: Remove the local file.
+    /* Remove the local file. */
+    unlink( writeCtx->tmpFileName );
 
     /* free mem. Note that the request mem is freed by the ne_request_destroy call */
     SAFE_FREE( writeCtx->tmpFileName );
     SAFE_FREE( writeCtx );
 
-    return 0;
+    return ret;
 }
 
 static ssize_t _read(csync_vio_method_handle_t *fhandle, void *buf, size_t count) {
-    struct write_context *writeCtx;
+    struct transfer_context *writeCtx;
     ssize_t len = 0;
     struct stat st;
 
-    writeCtx = (struct write_context*) fhandle;
+    writeCtx = (struct transfer_context*) fhandle;
 
-    DEBUG_WEBDAV(( "############# read called on %s!\n", writeCtx->tmpFileName ));
+    DEBUG_WEBDAV(( "read called on %s!\n", writeCtx->tmpFileName ));
     if( ! fhandle ) {
         return -1;
     }
 
     if( writeCtx->fd == -1 ) {
-        /* and open it again... */
+        /* open the downloaded file to read from */
         if (( writeCtx->fd = open( writeCtx->tmpFileName, O_RDONLY )) < 0) {
              DEBUG_WEBDAV(("Could not open local file %s\n", writeCtx->tmpFileName ));
             return -1;
@@ -715,7 +661,7 @@ static ssize_t _read(csync_vio_method_handle_t *fhandle, void *buf, size_t count
                 return -1;
             }
 
-            DEBUG_WEBDAV(("local downlaod file size=%d\n", st.st_size ));
+            DEBUG_WEBDAV(("local downlaod file size=%d\n", (int) st.st_size ));
         }
     }
 
@@ -724,7 +670,7 @@ static ssize_t _read(csync_vio_method_handle_t *fhandle, void *buf, size_t count
         writeCtx->bytes_written = writeCtx->bytes_written + len;
     }
 
-    DEBUG_WEBDAV(( "read len: %ld\n", len ));
+    DEBUG_WEBDAV(( "read len: %d\n", len ));
 
     return len;
 }
@@ -744,7 +690,7 @@ static csync_vio_method_handle_t *_opendir(const char *uri) {
 
     ne_uri neuri;
     int rc;
-    struct fetch_context *fetchCtx = NULL;
+    struct listdir_context *fetchCtx = NULL;
     struct resource *reslist = NULL;
 
     DEBUG_WEBDAV(("opendir method called on %s\n", uri ));
@@ -758,14 +704,12 @@ static csync_vio_method_handle_t *_opendir(const char *uri) {
         return NULL;
     }
 
-    fetchCtx = c_malloc( sizeof( struct fetch_context ));
+    fetchCtx = c_malloc( sizeof( struct listdir_context ));
 
     fetchCtx->list = reslist;
     fetchCtx->target = neuri.path;
     fetchCtx->include_target = 0;
     fetchCtx->currResource = NULL;
-
-    DEBUG_WEBDAV(("fetchCtx good.\n" ));
 
     rc = fetch_resource_list( uri, NE_DEPTH_ONE, fetchCtx );
     if( rc != NE_OK ) {
@@ -780,7 +724,7 @@ static csync_vio_method_handle_t *_opendir(const char *uri) {
 
 static int _closedir(csync_vio_method_handle_t *dhandle) {
 
-    struct fetch_context *fetchCtx = dhandle;
+    struct listdir_context *fetchCtx = dhandle;
     struct resource *r = fetchCtx->list;
     struct resource *rnext = NULL;
 
@@ -788,10 +732,11 @@ static int _closedir(csync_vio_method_handle_t *dhandle) {
 
     while( r ) {
         rnext = r->next;
+        SAFE_FREE(r->uri);
+        SAFE_FREE(r->name);
         SAFE_FREE(r);
         r = rnext;
     }
-    // SAFE_FREE( fetchCtx->target ); FIXME: Check again!
     SAFE_FREE( dhandle );
     return 0;
 }
@@ -834,7 +779,7 @@ static csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
 
 static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
 
-    struct fetch_context *fetchCtx = dhandle;
+    struct listdir_context *fetchCtx = dhandle;
     csync_vio_file_stat_t *lfs = NULL;
 
     if( fetchCtx->currResource ) {
@@ -845,6 +790,7 @@ static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
     }
 
     if( fetchCtx && fetchCtx->currResource ) {
+        /* FIXME: Who frees the allocated mem for lfs, allocated in the helper func? */
         lfs = resourceToFileStat( fetchCtx->currResource );
 
         // set pointer to next element
@@ -904,7 +850,7 @@ static int _rmdir(const char *uri) {
         return -1;
     }
 
-    rc = ne_delete(dav_session.ctx, uri);
+    rc = ne_delete(dav_session.ctx, suri);
     if (rc != 0) {
         errno = ne_error_to_errno(rc);
         return -1;
@@ -943,7 +889,7 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
 #define DONT_CHEAT
 #ifdef DONT_CHEAT
     csync_vio_file_stat_t *lfs = NULL;
-    struct fetch_context  *fetchCtx = NULL;
+    struct listdir_context  *fetchCtx = NULL;
     ne_uri neuri;
 #else
     time_t now = time(NULL);
@@ -979,7 +925,7 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
         DEBUG_WEBDAV(("I have no stat cache, call propfind.\n"));
 #ifdef DONT_CHEAT
 
-        fetchCtx = c_malloc( sizeof( struct fetch_context ));
+        fetchCtx = c_malloc( sizeof( struct listdir_context ));
 
         rc = ne_uri_parse(uri, &neuri);
         // DEBUG_WEBDAV(("ne_parse_result: %d\n", rc ));
@@ -1040,14 +986,12 @@ static int _rename(const char *olduri, const char *newuri) {
     int rc;
 
     ouri = ne_path_escape(olduri);
-    ouri = olduri;
     if (ouri == NULL) {
         return -1;
     }
 
     rc = ne_uri_parse(newuri, &targetUri);
     DEBUG_WEBDAV(("ne_parse_result: %d\n", rc ));
-
     if (rc < 0) {
         return -1;
     }
@@ -1084,7 +1028,7 @@ static int _unlink(const char *uri) {
         return -1;
     }
 
-    rc = ne_delete(dav_session.ctx, uri);
+    rc = ne_delete(dav_session.ctx, suri);
     if (rc != 0) {
         errno = ne_error_to_errno(rc);
         return -1;
