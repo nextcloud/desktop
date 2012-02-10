@@ -123,7 +123,7 @@ static const ne_propname ls_props[] = {
 struct dav_session_s dav_session; /* The DAV Session, initialised in dav_connect */
 int _connected;                   /* flag to indicate if a connection exists, ie.
                                      the dav_session is valid */
-csync_vio_file_stat_t fs;
+csync_vio_file_stat_t _fs;
 
 /* ***************************************************************************** */
 static int ne_session_error_errno(ne_session *session)
@@ -797,11 +797,11 @@ static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
         fetchCtx->currResource = fetchCtx->currResource->next;
 
         /* fill the static stat buf as input for the stat function */
-        fs.name   = lfs->name;
-        fs.mtime  = lfs->mtime;
-        fs.fields = lfs->fields;
-        fs.type   = lfs->type;
-        fs.size   = lfs->size;
+        _fs.name   = lfs->name;
+        _fs.mtime  = lfs->mtime;
+        _fs.fields = lfs->fields;
+        _fs.type   = lfs->type;
+        _fs.size   = lfs->size;
     }
 
     DEBUG_WEBDAV(("LFS fields: %s: %d\n", lfs->name, lfs->type ));
@@ -908,18 +908,18 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
      * The cache is filled by readdir which is often called directly before
      * stat. If the cache matches, a http call is saved.
      */
-    if( fs.name && strcmp( buf->name, fs.name ) == 0 ) {
+    if( _fs.name && strcmp( buf->name, _fs.name ) == 0 ) {
         buf->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
 
-        buf->fields = fs.fields;
-        buf->type   = fs.type;
-        buf->mtime  = fs.mtime;
-        buf->size   = fs.size;
-        buf->mode   = _stat_perms( fs.type );
+        buf->fields = _fs.fields;
+        buf->type   = _fs.type;
+        buf->mtime  = _fs.mtime;
+        buf->size   = _fs.size;
+        buf->mode   = _stat_perms( _fs.type );
     } else {
         // fetch data via a propfind call.
         DEBUG_WEBDAV(("I have no stat cache, call propfind.\n"));
