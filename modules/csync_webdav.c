@@ -271,40 +271,40 @@ static int ne_auth( void *userdata, const char *realm, int attempt,
  * and returns if the flag is set, so calling it frequently is save.
  */
 static int dav_connect(const char *base_url) {
-    char *scheme = NULL;
-    char *user = NULL;
-    char *passwd = NULL;
-    char *host = NULL;
-    unsigned int port = 0;
-    char *path = NULL;
     int timeout = 30;
     ne_uri uri;
     int rc;
+    char *p;
 
     if (_connected) {
         return 0;
     }
 
-    rc = c_parse_uri(base_url, &scheme, &user, &passwd, &host, &port, &path);
-    dav_session.user = user;
-    dav_session.pwd = passwd;
-
-    DEBUG_WEBDAV(("* scheme %s\n", scheme ));
-    DEBUG_WEBDAV(("* user %s\n", user ));
-    // DEBUG_WEBDAV(("passwd %s\n", passwd ));
-    DEBUG_WEBDAV(("* host %s\n", host ));
-    DEBUG_WEBDAV(("* port %d\n", port ));
-    DEBUG_WEBDAV(("* path %s\n", path ));
+    rc = ne_uri_parse(base_url, &uri);
     if (rc < 0) {
         goto out;
     }
 
-    rc = ne_uri_parse(base_url, &uri);
-    DEBUG_WEBDAV(("ne_parse_result: %d\n", rc ));
+    DEBUG_WEBDAV(("* Userinfo: %s\n", uri.userinfo ));
+    DEBUG_WEBDAV(("* scheme %s\n", uri.scheme ));
+    DEBUG_WEBDAV(("* host %s\n", uri.host ));
+    DEBUG_WEBDAV(("* port %d\n", uri.port ));
+    DEBUG_WEBDAV(("* path %s\n", uri.path ));
+    DEBUG_WEBDAV(("* fragment %s\n", uri.fragment));
 
-    if (rc < 0) {
-        return -1;
+    if( uri.userinfo ) {
+        p = strchr( uri.userinfo, ':');
+        if( p ) {
+            *p = '\0'; /* cut the strings for strdup */
+            p = p+1;
+
+             dav_session.user = c_strdup( uri.userinfo );
+             if( p ) dav_session.pwd  = c_strdup( p );
+             *(p-1) = ':'; /* unite the strings again */
+        }
     }
+    DEBUG_WEBDAV(("* user %s\n", dav_session.user ? dav_session.user : ""));
+    /* DEBUG_WEBDAV(("* passwd %s\n", dav_session.pwd ? dav_session.pwd : "" )); */
 
     if (uri.port == 0) {
         uri.port = ne_uri_defaultport(uri.scheme);
@@ -313,29 +313,26 @@ static int dav_connect(const char *base_url) {
     rc = ne_sock_init();
     DEBUG_WEBDAV(("ne_sock_init: %d\n", rc ));
     if (rc < 0) {
-        return -1;
+        rc = -1;
+        goto out;
     }
 
     /* FIXME: Check for https connections */
     dav_session.ctx = ne_session_create(uri.scheme, uri.host, uri.port);
 
     if (dav_session.ctx == NULL) {
-        return -1;
+        rc = -1;
+        goto out;
     }
 
     ne_set_read_timeout(dav_session.ctx, timeout);
-
+    ne_set_useragent( dav_session.ctx, "csync_owncloud" );
     ne_set_server_auth(dav_session.ctx, ne_auth, 0 );
 
     _connected = 1;
     rc = 0;
 out:
-    SAFE_FREE(scheme);
-    // SAFE_FREE(user);
-    // SAFE_FREE(passwd);
-    SAFE_FREE(host);
-    SAFE_FREE(path);
-
+    ne_uri_free( &uri );
     return rc;
 }
 
@@ -458,6 +455,18 @@ static void results(void *userdata,
 
 }
 
+static const char *_cleanUrl( const char* uri ) {
+    int rc = 0;
+
+    ne_uri url;
+    rc = ne_uri_parse( uri, &url );
+    if( rc < 0 ) {
+        return NULL;
+    }
+
+    return ne_path_escape( url.path );
+}
+
 /*
  * fetches a resource list from the WebDAV server. This is equivalent to list dir.
  */
@@ -467,11 +476,12 @@ static int fetch_resource_list( const char *uri,
                                 struct listdir_context *fetchCtx )
 {
     int ret = 0;
+    const char *path = _cleanUrl( uri );
 
     DEBUG_WEBDAV(("Connected to uri %s\n", uri ));
 
     /* do a propfind request and parse the results in the results function, set as callback */
-    ret = ne_simple_propfind( dav_session.ctx, uri, depth, ls_props, results, fetchCtx );
+    ret = ne_simple_propfind( dav_session.ctx, path, depth, ls_props, results, fetchCtx );
 
     if( ret == NE_OK ) {
         DEBUG_WEBDAV(("Simple propfind OK.\n" ));
@@ -1144,6 +1154,11 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
 
 void vio_module_shutdown(csync_vio_method_t *method) {
     (void) method;
+
+    SAFE_FREE( dav_session.user );
+    SAFE_FREE( dav_session.pwd );
+
+    ne_session_destroy( dav_session.ctx );
 }
 
 
