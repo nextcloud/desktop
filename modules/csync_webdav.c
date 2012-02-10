@@ -125,6 +125,9 @@ int _connected;                   /* flag to indicate if a connection exists, ie
                                      the dav_session is valid */
 csync_vio_file_stat_t _fs;
 
+csync_auth_callback _authcb;
+void *_userdata;
+
 /* ***************************************************************************** */
 static int ne_session_error_errno(ne_session *session)
 {
@@ -232,14 +235,32 @@ static int ne_error_to_errno(int ne_err)
 static int ne_auth( void *userdata, const char *realm, int attempt,
                     char *username, char *password)
 {
+    char buf[NE_ABUFSIZ];
+
     (void) userdata;
     (void) realm;
 
     // DEBUG_WEBDAV(( "Authentication required %s\n", realm ));
     if( username && password ) {
-        strncpy( username, dav_session.user, NE_ABUFSIZ);
-        strncpy( password, dav_session.pwd, NE_ABUFSIZ );
         DEBUG_WEBDAV(( "Authentication required %s\n", username ));
+        if( dav_session.user ) {
+            /* allow user without password */
+            strncpy( username, dav_session.user, NE_ABUFSIZ);
+            if( dav_session.pwd ) {
+                strncpy( password, dav_session.pwd, NE_ABUFSIZ );
+            }
+        } else if( _authcb != NULL ){
+            /* call the csync callback */
+            DEBUG_WEBDAV(("Call the csync callback for %s\n", realm ));
+            memset( buf, 0, NE_ABUFSIZ );
+            (*_authcb) ("Enter your username: ", buf, NE_ABUFSIZ-1, 1, 0, userdata );
+            strncpy( username, buf, NE_ABUFSIZ );
+            memset( buf, 0, NE_ABUFSIZ );
+            (*_authcb) ("Enter your password: ", buf, NE_ABUFSIZ-1, 0, 0, userdata );
+            strncpy( password, buf, NE_ABUFSIZ );
+        } else {
+            DEBUG_WEBDAV(("I can not authenticate!\n"));
+        }
     }
     return attempt;
 }
@@ -981,14 +1002,11 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
 }
 
 static int _rename(const char *olduri, const char *newuri) {
-    const char *ouri;
     ne_uri targetUri;
+    ne_uri sourceUri;
+    char *src = NULL;
+    char *target = NULL;
     int rc;
-
-    ouri = ne_path_escape(olduri);
-    if (ouri == NULL) {
-        return -1;
-    }
 
     rc = ne_uri_parse(newuri, &targetUri);
     DEBUG_WEBDAV(("ne_parse_result: %d\n", rc ));
@@ -996,11 +1014,19 @@ static int _rename(const char *olduri, const char *newuri) {
         return -1;
     }
 
-    rc = dav_connect(ouri);
+    rc = ne_uri_parse(olduri, &sourceUri);
+    DEBUG_WEBDAV(("ne_parse_result: %d\n", rc ));
+    if (rc < 0) {
+        return -1;
+    }
+
+    rc = dav_connect(olduri);
     if (rc < 0) {
         errno = EINVAL;
         return -1;
     }
+    src    = ne_path_escape(sourceUri.path);
+    target = ne_path_escape(targetUri.path);
 
     rc = ne_move(dav_session.ctx, 1, ouri, targetUri.path );
     DEBUG_WEBDAV(("MOVE: %s => %s: %d\n", olduri, newuri, rc ));
@@ -1110,9 +1136,8 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
 
     (void) method_name;
     (void) args;
-    (void) cb;
-    (void) userdata;
-
+    _authcb = cb;
+    _userdata = userdata;
 
     return &_method;
 }
