@@ -399,7 +399,7 @@ static void results(void *userdata,
         return;
     }
 
-    if (ne_path_compare(fetchCtx->target, path) == 0 && !fetchCtx->include_target) {
+    if (ne_path_compare(fetchCtx->target, uri->path) == 0 && !fetchCtx->include_target) {
         /* This is the target URI */
         DEBUG_WEBDAV(( "Skipping target resource.\n"));
         /* Free the private structure. */
@@ -475,18 +475,14 @@ static const char *_cleanUrl( const char* uri ) {
  * fetches a resource list from the WebDAV server. This is equivalent to list dir.
  */
 
-static int fetch_resource_list( const char *uri,
+static int fetch_resource_list( const char *curi,
                                 int depth,
                                 struct listdir_context *fetchCtx )
 {
     int ret = 0;
-    char *path;
-    path = _cleanPath( uri );
-
-    DEBUG_WEBDAV(("Connected to uri %s\n", uri ));
 
     /* do a propfind request and parse the results in the results function, set as callback */
-    ret = ne_simple_propfind( dav_session.ctx, path, depth, ls_props, results, fetchCtx );
+    ret = ne_simple_propfind( dav_session.ctx, curi, depth, ls_props, results, fetchCtx );
 
     if( ret == NE_OK ) {
         DEBUG_WEBDAV(("Simple propfind OK.\n" ));
@@ -495,14 +491,138 @@ static int fetch_resource_list( const char *uri,
         ret = ne_session_error_errno( dav_session.ctx );
         DEBUG_WEBDAV(("ne_simple_propfind failed: %d\n", ret ));
     }
-    SAFE_FREE( path );
     return ret;
 }
 
+/*
+ * helper: convert a resource struct to file_stat struct.
+ */
+static csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
+{
+    csync_vio_file_stat_t *lfs = NULL;
+
+    if( ! res ) {
+        return NULL;
+    }
+
+    lfs = c_malloc(sizeof(csync_vio_file_stat_t));
+    if (lfs == NULL) {
+        // free readdir list?
+        return NULL;
+    }
+
+    lfs->name = c_strdup( res->name );
+
+    lfs->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
+    if( res->type == resr_normal ) {
+        lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
+        lfs->type = CSYNC_VIO_FILE_TYPE_REGULAR;
+    } else if( res->type == resr_collection ) {
+        lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
+        lfs->type = CSYNC_VIO_FILE_TYPE_DIRECTORY;
+    }
+
+    lfs->mtime = res->modtime;
+    lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
+    lfs->size  = res->size;
+    lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
+
+    return lfs;
+}
 
 /*
  * file functions
  */
+static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
+    /* get props:
+     *   modtime
+     *   creattime
+     *   size
+     */
+    int rc = 0;
+    csync_vio_file_stat_t *lfs = NULL;
+    struct listdir_context  *fetchCtx = NULL;
+    char *curi = NULL;
+
+    DEBUG_WEBDAV(("__stat__ %s called\n", uri ));
+
+    buf->name = c_basename(uri);
+
+    if (buf->name == NULL) {
+        csync_vio_file_stat_destroy(buf);
+        errno = ENOMEM;
+        return -1;
+    }
+
+    /* check if the data in the static 'cache' fs is for the same file.
+     * The cache is filled by readdir which is often called directly before
+     * stat. If the cache matches, a http call is saved.
+     */
+    if( _fs.name && strcmp( buf->name, _fs.name ) == 0 ) {
+        buf->fields  = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
+        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
+        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
+        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
+        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
+
+        buf->fields = _fs.fields;
+        buf->type   = _fs.type;
+        buf->mtime  = _fs.mtime;
+        buf->size   = _fs.size;
+        buf->mode   = _stat_perms( _fs.type );
+    } else {
+        // fetch data via a propfind call.
+        DEBUG_WEBDAV(("I have no stat cache, call propfind.\n"));
+
+        fetchCtx = c_malloc( sizeof( struct listdir_context ));
+        if( ! fetchCtx ) {
+            errno = ne_error_to_errno( NE_ERROR );
+            csync_vio_file_stat_destroy(buf);
+            return -1;
+        }
+
+        curi = _cleanPath( uri );
+        fetchCtx->list = NULL;
+        fetchCtx->target = curi;
+        fetchCtx->include_target = 1;
+        fetchCtx->currResource = NULL;
+
+        DEBUG_WEBDAV(("fetchCtx good.\n" ));
+
+        rc = fetch_resource_list( curi, NE_DEPTH_ONE, fetchCtx );
+        if( rc != NE_OK ) {
+            errno = ne_error_to_errno( rc );
+            SAFE_FREE(fetchCtx);
+            // csync_vio_file_stat_destroy(buf);
+            return -1;
+        }
+
+        if( fetchCtx ) {
+            fetchCtx->currResource = fetchCtx->list;
+            lfs = resourceToFileStat( fetchCtx->currResource );
+            if( lfs ) {
+                buf->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
+                buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
+                buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
+                buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
+                buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
+
+                buf->fields = lfs->fields;
+                buf->type   = lfs->type;
+                buf->mtime  = lfs->mtime;
+                buf->size   = lfs->size;
+                buf->mode   = _stat_perms( lfs->type );
+
+                csync_vio_file_stat_destroy( lfs );
+            }
+            SAFE_FREE( fetchCtx );
+        }
+    }
+    DEBUG_WEBDAV(("STAT result: %s, type=%d\n", buf->name, buf->type ));
+
+    return 0;
+}
+
 static ssize_t _write(csync_vio_method_handle_t *fhandle, const void *buf, size_t count) {
     struct transfer_context *writeCtx = NULL;
     size_t written = 0;
@@ -538,12 +658,10 @@ static csync_vio_method_handle_t *_open(const char *durl,
     int put = 0;
     int rc = NE_OK;
     struct transfer_context *writeCtx = NULL;
+    struct stat statBuf;
 
     (void) mode; /* unused on webdav server */
     DEBUG_WEBDAV(( "=> open called for %s!\n", durl ));
-
-    writeCtx = c_malloc( sizeof(struct transfer_context) );
-    writeCtx->bytes_written = 0;
 
     /* uri = ne_path_escape(durl);
      * escaping lets the ne_request_create fail, even though its documented
@@ -569,6 +687,25 @@ static csync_vio_method_handle_t *_open(const char *durl,
         put = 1;
     }
 
+
+    if( rc == NE_OK && put ) {
+        /* check if the dir name exists. Otherwise return ENOENT */
+        dir = c_dirname( durl );
+        DEBUG_WEBDAV(("Stating directory %s\n", dir ));
+        if( _stat( dir, (csync_vio_method_handle_t*)(&statBuf) ) == 0 ) {
+            // Success!
+            DEBUG_WEBDAV(("Directory of file to open exists.\n"));
+        } else {
+            DEBUG_WEBDAV(("Directory %s of file to open does NOT exist.\n", dir ));
+            /* the directory does not exist. That is an ENOENT */
+            errno = ENOENT;
+            SAFE_FREE( dir );
+            return NULL;
+        }
+    }
+
+    writeCtx = c_malloc( sizeof(struct transfer_context) );
+    writeCtx->bytes_written = 0;
     if( rc == NE_OK ) {
         /* open a temp file to store the incoming data */
         writeCtx->tmpFileName = c_strdup( "/tmp/csync.XXXXXX" );
@@ -579,7 +716,7 @@ static csync_vio_method_handle_t *_open(const char *durl,
         }
     }
 
-    if ( rc == NE_OK && put) {
+    if( rc == NE_OK && put) {
         DEBUG_WEBDAV(("PUT request on %s!\n", uri));
 
         writeCtx->req = ne_request_create(dav_session.ctx, "PUT", uri);
@@ -623,6 +760,7 @@ static csync_vio_method_handle_t *_open(const char *durl,
     }
 
     SAFE_FREE( uri );
+    SAFE_FREE(dir);
 
     return (csync_vio_method_handle_t *) writeCtx;
 }
@@ -799,49 +937,13 @@ static int _closedir(csync_vio_method_handle_t *dhandle) {
     return 0;
 }
 
-/*
- * helper: convert a resource struct to file_stat struct.
- */
-static csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
-{
-    csync_vio_file_stat_t *lfs = NULL;
-
-    if( ! res ) {
-        return NULL;
-    }
-
-    lfs = c_malloc(sizeof(csync_vio_file_stat_t));
-    if (lfs == NULL) {
-        // free readdir list?
-        return NULL;
-    }
-
-    lfs->name = c_strdup( res->name );
-
-    lfs->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
-    if( res->type == resr_normal ) {
-        lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
-        lfs->type = CSYNC_VIO_FILE_TYPE_REGULAR;
-    } else if( res->type == resr_collection ) {
-        lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
-        lfs->type = CSYNC_VIO_FILE_TYPE_DIRECTORY;
-    }
-
-    lfs->mtime = res->modtime;
-    lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
-    lfs->size  = res->size;
-    lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
-
-    return lfs;
-}
-
 static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
 
     struct listdir_context *fetchCtx = dhandle;
     csync_vio_file_stat_t *lfs = NULL;
 
     if( fetchCtx->currResource ) {
-        DEBUG_WEBDAV(("readdir method called for %s!\n", fetchCtx->currResource->uri));
+        DEBUG_WEBDAV(("readdir method called for %s\n", fetchCtx->currResource->uri));
     } else {
         /* DEBUG_WEBDAV(("An empty dir or at end\n")); */
         return NULL;
@@ -871,7 +973,6 @@ static int _mkdir(const char *uri, mode_t mode) {
     char *path = _cleanPath( uri );
     (void) mode; /* unused */
 
-    DEBUG_WEBDAV(("MKdir on %s\n", uri ));
     rc = dav_connect(uri);
     if (rc < 0) {
         errno = EINVAL;
@@ -879,7 +980,7 @@ static int _mkdir(const char *uri, mode_t mode) {
 
     /* the suri path is required to have a trailing slash */
     if( rc >= 0 ) {
-      DEBUG_WEBDAV(("MKdir on %s\n", uri ));
+      DEBUG_WEBDAV(("MKdir on %s\n", path ));
       rc = ne_mkcol(dav_session.ctx, path );
         if (rc != NE_OK ) {
             errno = ne_error_to_errno(rc);
