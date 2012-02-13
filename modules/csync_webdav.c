@@ -22,6 +22,8 @@
 #include <errno.h>
 #include <stdio.h>
 #include <time.h>
+#include <limits.h>
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -80,9 +82,9 @@ typedef struct resource {
  * a directory listing from the server.
  */
 struct listdir_context {
-    struct resource *list;          /* The list of result resources */
+    struct resource *list;           /* The list of result resources */
     struct resource *currResource;   /* A pointer to the current resource */
-    const char      *target;         /* Request-URI of the PROPFIND */
+    char             *target;        /* Request-URI of the PROPFIND */
     unsigned int     include_target; /* Do you want the uri in the result list? */
     unsigned int     result_count;   /* number of elements stored in list */
 };
@@ -387,7 +389,7 @@ static void results(void *userdata,
     const char *resourcetype = NULL;
     const char *contenttype = NULL;
     const ne_status *status = NULL;
-    const char *path = uri->path;
+    const char *path = ne_path_unescape( uri->path );
 
     (void) status;
 
@@ -476,7 +478,8 @@ static int fetch_resource_list( const char *uri,
                                 struct listdir_context *fetchCtx )
 {
     int ret = 0;
-    const char *path = _cleanUrl( uri );
+    char *path;
+    path = _cleanPath( uri );
 
     DEBUG_WEBDAV(("Connected to uri %s\n", uri ));
 
@@ -490,7 +493,7 @@ static int fetch_resource_list( const char *uri,
         ret = ne_session_error_errno( dav_session.ctx );
         DEBUG_WEBDAV(("ne_simple_propfind failed: %d\n", ret ));
     }
-
+    SAFE_FREE( path );
     return ret;
 }
 
@@ -513,27 +516,28 @@ static ssize_t _write(csync_vio_method_handle_t *fhandle, const void *buf, size_
             DEBUG_WEBDAV(("Written bytes not equal to count\n"));
         } else {
             writeCtx->bytes_written = writeCtx->bytes_written + written;
-            DEBUG_WEBDAV(("Successfully written %d\n", written ));
+            /* DEBUG_WEBDAV(("Successfully written %d\n", written )); */
         }
     } else {
         /* problem: the file descriptor is not valid. */
         DEBUG_WEBDAV(("Not a valid file descriptor in write\n"));
     }
 
-    DEBUG_WEBDAV(("Wrote %d bytes.\n", written ));
+    /* DEBUG_WEBDAV(("Wrote %d bytes.\n", written )); */
     return written;
 }
 
 static csync_vio_method_handle_t *_open(const char *durl,
                                         int flags,
                                         mode_t mode) {
-    const char *uri;
+    char *uri = NULL;
+    char getUrl[PATH_MAX];
     int put = 0;
-    int rc = 0;
-    struct transfer_context *writeCtx;
+    int rc = NE_OK;
+    struct transfer_context *writeCtx = NULL;
 
     (void) mode; /* unused on webdav server */
-    DEBUG_WEBDAV(( "=> open called!\n"));
+    DEBUG_WEBDAV(( "=> open called for %s!\n", durl ));
     writeCtx = c_malloc( sizeof(struct transfer_context) );
     writeCtx->bytes_written = 0;
 
@@ -541,12 +545,15 @@ static csync_vio_method_handle_t *_open(const char *durl,
      * escaping lets the ne_request_create fail, even though its documented
      * differently :-(
      */
-    uri = durl;
-
-    if (uri == NULL) {
-        return NULL;
+    uri = _cleanPath( durl );
+    if( ! uri ) {
+        rc = NE_ERROR;
+    } else {
+        DEBUG_WEBDAV(("uri: %s\n", uri ));
     }
-    dav_connect( uri );
+
+    if( rc == NE_OK )
+        dav_connect( durl );
 
     if (flags & O_WRONLY) {
         put = 1;
@@ -558,45 +565,60 @@ static csync_vio_method_handle_t *_open(const char *durl,
         put = 1;
     }
 
-    /* open a temp file to store the incoming data */
-    writeCtx->tmpFileName = c_strdup( "/tmp/csync.XXXXXX" );
-    writeCtx->fd = mkstemp( writeCtx->tmpFileName );
-    DEBUG_WEBDAV(("opening temp directory %s\n", writeCtx->tmpFileName ));
+    if( rc == NE_OK ) {
+        /* open a temp file to store the incoming data */
+        writeCtx->tmpFileName = c_strdup( "/tmp/csync.XXXXXX" );
+        DEBUG_WEBDAV(("opening temp directory %s\n", writeCtx->tmpFileName ));
+        writeCtx->fd = mkstemp( writeCtx->tmpFileName );
+        if( writeCtx->fd == -1 ) {
+            rc = NE_ERROR;
+        }
+    }
 
-    if (put) {
-        DEBUG_WEBDAV(("PUT request!\n"));
+    if ( rc == NE_OK && put) {
+        DEBUG_WEBDAV(("PUT request on %s!\n", uri));
 
         writeCtx->req = ne_request_create(dav_session.ctx, "PUT", uri);
         if( writeCtx->req ) {
             rc = ne_begin_request( writeCtx->req );
-            DEBUG_WEBDAV(("PUT request2!\n"));
             if (rc != NE_OK) {
                 DEBUG_WEBDAV(("Can not open a request, bailing out.\n"));
-                return NULL;
             }
         }
 
         strncpy( writeCtx->method, "PUT", 3 );
-    } else {
-        DEBUG_WEBDAV(("GET request!\n"));
+    }
 
+
+    if( rc == NE_OK && ! put ) {
         writeCtx->req = 0;
         strncpy( writeCtx->method, "GET", 3 );
+
         /* Download the data into a local temp file. */
-        rc = ne_get( dav_session.ctx, uri, writeCtx->fd );
+        /* the download via the get function requires a full uri */
+        snprintf( getUrl, PATH_MAX, "%s://%s%s", ne_get_scheme( dav_session.ctx),
+                  ne_get_server_hostport( dav_session.ctx ), uri );
+        DEBUG_WEBDAV(("GET request on %s\n", getUrl ));
+
+        rc = ne_get( dav_session.ctx, getUrl, writeCtx->fd ); // FIX_ESCAPE
         if( rc != NE_OK ) {
-            ne_error_to_errno( rc );
-            DEBUG_WEBDAV(("Download to local file failed.\n"));
-            return NULL;
+            DEBUG_WEBDAV(("Download to local file failed: %d.\n", rc));
         }
         if( close( writeCtx->fd ) == -1 ) {
             DEBUG_WEBDAV(("Close of local download file failed.\n"));
             writeCtx->fd = -1;
-            return NULL;
+            rc = NE_ERROR;
         }
 
         writeCtx->fd = -1;
     }
+
+    if( rc != NE_OK ) {
+        ne_error_to_errno( rc );
+        SAFE_FREE( writeCtx );
+    }
+
+    SAFE_FREE( uri );
 
     return (csync_vio_method_handle_t *) writeCtx;
 }
@@ -676,7 +698,7 @@ static ssize_t _read(csync_vio_method_handle_t *fhandle, void *buf, size_t count
 
     writeCtx = (struct transfer_context*) fhandle;
 
-    DEBUG_WEBDAV(( "read called on %s!\n", writeCtx->tmpFileName ));
+    /* DEBUG_WEBDAV(( "read called on %s!\n", writeCtx->tmpFileName )); */
     if( ! fhandle ) {
         return -1;
     }
@@ -701,7 +723,7 @@ static ssize_t _read(csync_vio_method_handle_t *fhandle, void *buf, size_t count
         writeCtx->bytes_written = writeCtx->bytes_written + len;
     }
 
-    DEBUG_WEBDAV(( "read len: %d\n", len ));
+    /* DEBUG_WEBDAV(( "read len: %d\n", len )); */
 
     return len;
 }
@@ -723,26 +745,20 @@ static csync_vio_method_handle_t *_opendir(const char *uri) {
     int rc;
     struct listdir_context *fetchCtx = NULL;
     struct resource *reslist = NULL;
+    char *curi = _cleanPath( uri );
 
     DEBUG_WEBDAV(("opendir method called on %s\n", uri ));
 
     dav_connect( uri );
 
-    rc = ne_uri_parse(uri, &neuri);
-    DEBUG_WEBDAV(("ne_parse_result: %d\n", rc ));
-
-    if (rc < 0) {
-        return NULL;
-    }
-
     fetchCtx = c_malloc( sizeof( struct listdir_context ));
 
     fetchCtx->list = reslist;
-    fetchCtx->target = neuri.path;
+    fetchCtx->target = curi;
     fetchCtx->include_target = 0;
     fetchCtx->currResource = NULL;
 
-    rc = fetch_resource_list( uri, NE_DEPTH_ONE, fetchCtx );
+    rc = fetch_resource_list( curi, NE_DEPTH_ONE, fetchCtx );
     if( rc != NE_OK ) {
         errno = ne_error_to_errno( rc );
         return NULL;
@@ -751,6 +767,7 @@ static csync_vio_method_handle_t *_opendir(const char *uri) {
         DEBUG_WEBDAV(("opendir returning handle %p\n", (void*) fetchCtx ));
         return fetchCtx;
     }
+    /* no freeing of curi because its part of the fetchCtx and gets freed later */
 }
 
 static int _closedir(csync_vio_method_handle_t *dhandle) {
@@ -768,6 +785,8 @@ static int _closedir(csync_vio_method_handle_t *dhandle) {
         SAFE_FREE(r);
         r = rnext;
     }
+    SAFE_FREE( fetchCtx->target );
+
     SAFE_FREE( dhandle );
     return 0;
 }
@@ -840,50 +859,47 @@ static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
 }
 
 static int _mkdir(const char *uri, mode_t mode) {
-    char *suri;
-    int rc;
-
+    int rc = NE_OK;
+    char *path = _cleanPath( uri );
     (void) mode; /* unused */
 
-    suri = ne_path_escape(uri);
-    if (suri == NULL) {
-        return -1;
-    }
-
-    rc = dav_connect(suri);
+    rc = dav_connect(uri);
     if (rc < 0) {
         errno = EINVAL;
-        return -1;
     }
 
     /* the suri path is required to have a trailing slash */
-    rc = ne_mkcol(dav_session.ctx, suri);
-    if (rc != 0) {
-        errno = ne_error_to_errno(rc);
+    if( rc >= 0 ) {
+        rc = ne_mkcol(dav_session.ctx, path );
+        if (rc != 0) {
+            errno = ne_error_to_errno(rc);
+        }
+    }
+    SAFE_FREE( path );
+
+    if( rc < 0 || rc != NE_OK ) {
         return -1;
     }
-
     return 0;
 }
 
 static int _rmdir(const char *uri) {
-    char *suri;
-    int rc;
+    int rc = NE_OK;
+    char* curi = _cleanPath( uri );
 
-    suri = ne_path_escape(uri);
-    if (suri == NULL) {
-        return -1;
-    }
-
-    rc = dav_connect(suri);
+    rc = dav_connect(uri);
     if (rc < 0) {
         errno = EINVAL;
-        return -1;
     }
 
-    rc = ne_delete(dav_session.ctx, suri);
-    if (rc != 0) {
-        errno = ne_error_to_errno(rc);
+    if( rc >= 0 ) {
+        rc = ne_delete(dav_session.ctx, curi);
+        if (rc != 0) {
+            errno = ne_error_to_errno(rc);
+        }
+    }
+    SAFE_FREE( curi );
+    if( rc < 0 || rc != NE_OK ) {
         return -1;
     }
 
@@ -917,18 +933,13 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
      *   size
      */
     int rc = 0;
-#define DONT_CHEAT
-#ifdef DONT_CHEAT
     csync_vio_file_stat_t *lfs = NULL;
     struct listdir_context  *fetchCtx = NULL;
-    ne_uri neuri;
-#else
-    time_t now = time(NULL);
-#endif
 
     DEBUG_WEBDAV(("__stat__ %s called\n", uri ));
 
     buf->name = c_strdup(c_basename(uri));
+
     if (buf->name == NULL) {
         csync_vio_file_stat_destroy(buf);
         errno = ENOMEM;
@@ -940,7 +951,7 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
      * stat. If the cache matches, a http call is saved.
      */
     if( _fs.name && strcmp( buf->name, _fs.name ) == 0 ) {
-        buf->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
+        buf->fields  = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
@@ -954,19 +965,11 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
     } else {
         // fetch data via a propfind call.
         DEBUG_WEBDAV(("I have no stat cache, call propfind.\n"));
-#ifdef DONT_CHEAT
 
         fetchCtx = c_malloc( sizeof( struct listdir_context ));
 
-        rc = ne_uri_parse(uri, &neuri);
-        // DEBUG_WEBDAV(("ne_parse_result: %d\n", rc ));
-
-        if (rc < 0) {
-            errno = ne_error_to_errno( rc );
-            return -1;
-        }
         // fetchCtx->list = reslist;
-        fetchCtx->target = neuri.path;
+        fetchCtx->target = _cleanPath( uri );
         fetchCtx->include_target = 1;
         fetchCtx->currResource = NULL;
 
@@ -995,16 +998,6 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
                 buf->mode   = _stat_perms( lfs->type );
             }
         }
-#else
-        // FIXME: Cheat for the time check...
-        buf->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
-        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
-        buf->type = CSYNC_VIO_FILE_TYPE_REGULAR;
-        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
-        buf->mtime = now;
-        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
-        buf->size = 0;
-#endif
     }
     DEBUG_WEBDAV(("STAT result: %s, type=%d\n", buf->name, buf->type ));
 
@@ -1012,63 +1005,56 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
 }
 
 static int _rename(const char *olduri, const char *newuri) {
-    ne_uri targetUri;
-    ne_uri sourceUri;
     char *src = NULL;
     char *target = NULL;
-    int rc;
+    int rc = NE_OK;
 
-    rc = ne_uri_parse(newuri, &targetUri);
-    DEBUG_WEBDAV(("ne_parse_result: %d\n", rc ));
-    if (rc < 0) {
-        return -1;
-    }
-
-    rc = ne_uri_parse(olduri, &sourceUri);
-    DEBUG_WEBDAV(("ne_parse_result: %d\n", rc ));
-    if (rc < 0) {
-        return -1;
-    }
 
     rc = dav_connect(olduri);
     if (rc < 0) {
         errno = EINVAL;
-        return -1;
-    }
-    src    = ne_path_escape(sourceUri.path);
-    target = ne_path_escape(targetUri.path);
-
-    rc = ne_move(dav_session.ctx, 1, ouri, targetUri.path );
-    DEBUG_WEBDAV(("MOVE: %s => %s: %d\n", olduri, newuri, rc ));
-    if (rc != NE_OK ) {
-        ne_session_error_errno(dav_session.ctx);
-        errno = ne_error_to_errno(rc);
-        return -1;
     }
 
+    src    = _cleanPath( olduri );
+    target = _cleanPath( newuri );
+
+    if( rc >= 0 ) {
+        DEBUG_WEBDAV(("MOVE: %s => %s: %d\n", src, target, rc ));
+        rc = ne_move(dav_session.ctx, 1, src, target );
+
+        if (rc != NE_OK ) {
+            ne_session_error_errno(dav_session.ctx);
+            errno = ne_error_to_errno(rc);
+        }
+    }
+    SAFE_FREE( src );
+    SAFE_FREE( target );
+
+    if( rc != NE_OK )
+        return -1;
     return 0;
 }
 
 static int _unlink(const char *uri) {
-    char *suri;
-    int rc;
+    int rc = NE_OK;
+    char *path = _cleanPath( uri );
 
-    suri = ne_path_escape(uri);
-    if (suri == NULL) {
-        return -1;
-    }
-
-    rc = dav_connect(suri);
-    if (rc < 0) {
+    if( ! path ) {
+        rc = NE_ERROR;
         errno = EINVAL;
-        return -1;
     }
-
-    rc = ne_delete(dav_session.ctx, suri);
-    if (rc != 0) {
-        errno = ne_error_to_errno(rc);
-        return -1;
+    if( rc == NE_OK ) {
+        rc = dav_connect(uri);
+        if (rc < 0) {
+            errno = EINVAL;
+        }
     }
+    if( rc == NE_OK ) {
+        rc = ne_delete( dav_session.ctx, _cleanPath(uri) );
+        if ( rc != NE_OK )
+            errno = ne_error_to_errno(rc);
+    }
+    SAFE_FREE( path );
 
     return 0;
 }
@@ -1111,9 +1097,10 @@ static int _utimes(const char *uri, const struct timeval *times) {
 
     ops[1].name = NULL;
 
-    rc = ne_proppatch( dav_session.ctx, uri, ops );
+    rc = ne_proppatch( dav_session.ctx, _cleanPath(uri), ops );
     if( rc != NE_OK ) {
         errno = ne_error_to_errno( rc );
+        return -1;
     }
     return 0;
 }
