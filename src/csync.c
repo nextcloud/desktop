@@ -252,11 +252,20 @@ int csync_init(CSYNC *ctx) {
         goto out;
       }
       /* load module */
+retry_vio_init:
       rc = csync_vio_init(ctx, module, NULL);
-      SAFE_FREE(module);
       if (rc < 0) {
+        len = strlen(module);
+
+        if (module[len] == 's') {
+          module[len] = '\0';
+          goto retry_vio_init;
+        }
+
+        SAFE_FREE(module);
         goto out;
       }
+      SAFE_FREE(module);
       ctx->remote.type = REMOTE_REPLCIA;
     }
   } else {
