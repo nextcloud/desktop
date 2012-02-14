@@ -295,9 +295,9 @@ static int dav_connect(const char *base_url) {
     DEBUG_WEBDAV(("* path %s\n", uri.path ));
     DEBUG_WEBDAV(("* fragment %s\n", uri.fragment));
 
-    if( strcmp( uri.scheme, "webdav" ) == 0 ) {
+    if( strcmp( uri.scheme, "owncloud" ) == 0 ) {
         strncpy( protocol, "http", 6);
-    } else if( strcmp( uri.scheme, "webdavs" )) {
+    } else if( strcmp( uri.scheme, "ownclouds" )) {
         strncpy( protocol, "https", 6 );
     }
 

@@ -25,8 +25,8 @@ set(SFTP_PLUGIN
   csync_sftp
 )
 
-set(WEBDAV_PLUGIN
-    csync_webdav
+set(OWNCLOUD_PLUGIN
+    csync_owncloud
 )
 
 include_directories(
@@ -59,12 +59,12 @@ install(
 endif (LIBSSH_FOUND)
 
 if (NEON_FOUND)
-    macro_add_plugin(${WEBDAV_PLUGIN} csync_webdav.c)
-    target_link_libraries(${WEBDAV_PLUGIN} ${CSTDLIB_LIBRARY} ${NEON_LIBRARY})
+    macro_add_plugin(${OWNCLOUD_PLUGIN} csync_owncloud.c)
+    target_link_libraries(${OWNCLOUD_PLUGIN} ${CSTDLIB_LIBRARY} ${NEON_LIBRARY})
 
     install(
         TARGETS
-        ${WEBDAV_PLUGIN}
+	${OWNCLOUD_PLUGIN}
         DESTINATION
         ${PLUGIN_VERSION_INSTALL_DIR}
         )
