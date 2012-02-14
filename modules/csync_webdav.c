@@ -487,9 +487,6 @@ static int fetch_resource_list( const char *curi,
     if( ret == NE_OK ) {
         DEBUG_WEBDAV(("Simple propfind OK.\n" ));
         fetchCtx->currResource = fetchCtx->list;
-    } else {
-        ret = ne_session_error_errno( dav_session.ctx );
-        DEBUG_WEBDAV(("ne_simple_propfind failed: %d\n", ret ));
     }
     return ret;
 }
@@ -591,7 +588,9 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
 
         rc = fetch_resource_list( curi, NE_DEPTH_ONE, fetchCtx );
         if( rc != NE_OK ) {
-            errno = ne_error_to_errno( rc );
+            errno = ne_session_error_errno( dav_session.ctx );
+
+            DEBUG_WEBDAV(("stat fails with errno %d\n", errno ));
             SAFE_FREE(fetchCtx);
             // csync_vio_file_stat_destroy(buf);
             return -1;
@@ -906,7 +905,7 @@ static csync_vio_method_handle_t *_opendir(const char *uri) {
 
     rc = fetch_resource_list( curi, NE_DEPTH_ONE, fetchCtx );
     if( rc != NE_OK ) {
-        errno = ne_error_to_errno( rc );
+        errno = ne_session_error_errno( dav_session.ctx );
         return NULL;
     } else {
         fetchCtx->currResource = fetchCtx->list;
@@ -1201,6 +1200,9 @@ static int _utimes(const char *uri, const struct timeval *times) {
     ne_propname pname;
     int rc = NE_OK;
     char val[255];
+    char *curi;
+
+    curi = _cleanPath( uri );
 
     if( ! uri || !times ) {
         errno = 1;
@@ -1210,7 +1212,7 @@ static int _utimes(const char *uri, const struct timeval *times) {
     pname.name = "lastmodified";
 
     snprintf( val, sizeof(val), "%ld", times->tv_sec );
-    DEBUG_WEBDAV(("===> Setting LastModified to %s\n", val ));
+    DEBUG_WEBDAV(("Setting LastModified of %s to %s\n", curi, val ));
 
     ops[0].name = &pname;
     ops[0].type = ne_propset;
@@ -1218,9 +1220,12 @@ static int _utimes(const char *uri, const struct timeval *times) {
 
     ops[1].name = NULL;
 
-    rc = ne_proppatch( dav_session.ctx, _cleanPath(uri), ops );
+    rc = ne_proppatch( dav_session.ctx, curi, ops );
+    SAFE_FREE(curi);
+
     if( rc != NE_OK ) {
         errno = ne_error_to_errno( rc );
+        DEBUG_WEBDAV(("Error in propatch: %d\n", rc));
         return -1;
     }
     return 0;
