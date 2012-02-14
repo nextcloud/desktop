@@ -277,6 +277,7 @@ static int dav_connect(const char *base_url) {
     ne_uri uri;
     int rc;
     char *p;
+    char protocol[6];
 
     if (_connected) {
         return 0;
@@ -294,6 +295,12 @@ static int dav_connect(const char *base_url) {
     DEBUG_WEBDAV(("* path %s\n", uri.path ));
     DEBUG_WEBDAV(("* fragment %s\n", uri.fragment));
 
+    if( strcmp( uri.scheme, "webdav" ) == 0 ) {
+        strncpy( protocol, "http", 6);
+    } else if( strcmp( uri.scheme, "webdavs" )) {
+        strncpy( protocol, "https", 6 );
+    }
+
     if( uri.userinfo ) {
         p = strchr( uri.userinfo, ':');
         if( p ) {
@@ -309,7 +316,7 @@ static int dav_connect(const char *base_url) {
     /* DEBUG_WEBDAV(("* passwd %s\n", dav_session.pwd ? dav_session.pwd : "" )); */
 
     if (uri.port == 0) {
-        uri.port = ne_uri_defaultport(uri.scheme);
+        uri.port = ne_uri_defaultport(protocol);
     }
 
     rc = ne_sock_init();
@@ -320,7 +327,7 @@ static int dav_connect(const char *base_url) {
     }
 
     /* FIXME: Check for https connections */
-    dav_session.ctx = ne_session_create(uri.scheme, uri.host, uri.port);
+    dav_session.ctx = ne_session_create( protocol, uri.host, uri.port);
 
     if (dav_session.ctx == NULL) {
         rc = -1;
@@ -885,8 +892,6 @@ static off_t _lseek(csync_vio_method_handle_t *fhandle, off_t offset, int whence
  * directory functions
  */
 static csync_vio_method_handle_t *_opendir(const char *uri) {
-
-    ne_uri neuri;
     int rc;
     struct listdir_context *fetchCtx = NULL;
     struct resource *reslist = NULL;
