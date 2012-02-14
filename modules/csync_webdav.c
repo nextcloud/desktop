@@ -1207,7 +1207,7 @@ static int _utimes(const char *uri, const struct timeval *times) {
         return -1; // FIXME: Find good errno
     }
     pname.nspace = NULL;
-    pname.name = "LastModified";
+    pname.name = "lastmodified";
 
     snprintf( val, sizeof(val), "%ld", times->tv_sec );
     DEBUG_WEBDAV(("===> Setting LastModified to %s\n", val ));
