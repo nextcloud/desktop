@@ -20,6 +20,7 @@
 #include <QString>
 #include <QStringList>
 #include <QTime>
+#include <QHash>
 
 class QTimer;
 class INotify;
@@ -115,7 +116,8 @@ private:
     INotify *_inotify;
     QString _root;
     // paths pending to notified
-    QStringList _pendingPaths;
+    // QStringList _pendingPaths;
+    QHash<QString, int> _pendingPathes;
 
     QTimer *_processTimer;
 

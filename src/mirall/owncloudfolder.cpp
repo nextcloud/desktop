@@ -63,7 +63,7 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     /* Fix the url and remove user and password */
     QUrl url( _secondPath );
     url.setScheme( "owncloud" );
-    qDebug() << "Second path: " << url.toEncoded();
+    qDebug() << "*** Start syncing to ownCloud";
 
     _csync = new CSyncThread(path(), url.toEncoded() );
     QObject::connect(_csync, SIGNAL(started()), SLOT(slotCSyncStarted()));

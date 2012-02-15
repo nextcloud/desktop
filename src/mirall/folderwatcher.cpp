@@ -87,7 +87,7 @@ void FolderWatcher::setEventsEnabled(bool enabled)
     _eventsEnabled = enabled;
     if (_eventsEnabled) {
         // schedule a queue cleanup for accumulated events
-        if ( _pendingPaths.empty() )
+        if ( _pendingPathes.empty() )
             return;
         setProcessTimer();
     }
@@ -103,7 +103,7 @@ void FolderWatcher::clearPendingEvents()
 {
     if (_processTimer->isActive())
         _processTimer->stop();
-    _pendingPaths.clear();
+    _pendingPathes.clear();
 }
 
 int FolderWatcher::eventInterval() const
@@ -161,6 +161,7 @@ void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
     _lastMask = mask;
     _lastPath = path;
 
+    qDebug() << "***************** Inotify Event " << mask << " on " << path;
     // cancel close write events that come after create
     if (lastMask == IN_CREATE && mask == IN_CLOSE_WRITE
         && lastPath == path ) {
@@ -210,16 +211,24 @@ void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
         }
     }
 
+    if( !_pendingPathes.contains( path )) {
+        _pendingPathes[path] = 0;
+    }
+    _pendingPathes[path] = _pendingPathes[path]+mask;
+#if 0
+    _pendingPaths[path]
     _pendingPaths.append(path);
+#endif
     setProcessTimer();
 }
 
 void FolderWatcher::slotProcessTimerTimeout()
 {
     qDebug() << "* Processing of event queue for" << root();
-    if (!_pendingPaths.empty() || !_initialSyncDone) {
-        QStringList notifyPaths(_pendingPaths);
-        _pendingPaths.clear();
+
+    if (!_pendingPathes.empty() || !_initialSyncDone) {
+        QStringList notifyPaths = _pendingPathes.keys();
+        _pendingPathes.clear();
         //qDebug() << lastEventTime << eventTime;
         qDebug() << "  * Notify" << notifyPaths.size() << "changed items for" << root();
         emit folderChanged(notifyPaths);
@@ -230,7 +239,7 @@ void FolderWatcher::slotProcessTimerTimeout()
 void FolderWatcher::setProcessTimer()
 {
     if (!_processTimer->isActive()) {
-        qDebug() << "* Pending events for" << root() << "will be processed after events stop for" << eventInterval() << "seconds (" << QTime::currentTime().addSecs(eventInterval()).toString("HH:mm:ss") << ")." << _pendingPaths.size() << "events until now )";
+        qDebug() << "* Pending events for" << root() << "will be processed after events stop for" << eventInterval() << "seconds (" << QTime::currentTime().addSecs(eventInterval()).toString("HH:mm:ss") << ")." << _pendingPathes.size() << "events until now )";
     }
     _processTimer->start(eventInterval() * 1000);
 }

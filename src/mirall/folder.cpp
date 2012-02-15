@@ -184,6 +184,7 @@ void Folder::slotOnlineChanged(bool online)
 
 void Folder::slotChanged(const QStringList &pathList)
 {
+    qDebug() << "** Changed was notified on " << pathList;
     evaluateSync(pathList);
 }
 
