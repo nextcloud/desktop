@@ -5,6 +5,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include(${QT_USE_FILE})
 
 # webdav library
+add_definitions("-DQWEBDAV_STATIC")
 set( qtwebdav_LIB_SRCS
      libqtwebdav/qwebdav.cpp
      libqtwebdav/qwebdav_url_info.cpp)
