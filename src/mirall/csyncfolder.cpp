@@ -20,64 +20,10 @@
 #include <QTextStream>
 
 #include "csync.h"
-
+#include "mirall/csyncthread.h"
 #include "mirall/csyncfolder.h"
 
 namespace Mirall {
-
-CSyncThread::CSyncThread(const QString &source, const QString &target)
-    : _source(source)
-    , _target(target)
-    , _error(0)
-{
-
-}
-
-CSyncThread::~CSyncThread()
-{
-
-}
-
-bool CSyncThread::error() const
-{
-    return _error != 0;
-}
-
-QMutex CSyncThread::_mutex;
-
-void CSyncThread::run()
-{
-    QMutexLocker locker(&_mutex);
-
-    CSYNC *csync;
-
-    _error = csync_create(&csync,
-                          _source.toLocal8Bit().data(),
-                          _target.toLocal8Bit().data());
-    if (error())
-        return;
-
-#if LIBCSYNC_VERSION_INT >= CSYNC_VERSION_INT(0, 45, 0)
-    csync_enable_conflictcopys(csync);
-#endif
-
-    _error = csync_init(csync);
-
-    if (error())
-        goto cleanup;
-
-    _error = csync_update(csync);
-    if (error())
-        goto cleanup;
-
-    _error = csync_reconcile(csync);
-    if (error())
-        goto cleanup;
-
-    _error = csync_propagate(csync);
-cleanup:
-    csync_destroy(csync);
-}
 
 CSyncFolder::CSyncFolder(const QString &alias,
                          const QString &path,

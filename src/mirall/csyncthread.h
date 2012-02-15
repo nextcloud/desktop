@@ -1,5 +1,5 @@
-#ifndef CSYNCFOLDER_H
-#define CSYNCFOLDER_H
+#ifndef CSYNCTHREAD_H
+#define CSYNCTHREAD_H
 
 /*
  * Copyright (C) by Duncan Mac-Vicar P. <duncan@kde.org>
@@ -20,31 +20,29 @@
 #include <QThread>
 #include <QString>
 
-#include "mirall/csyncthread.h"
-#include "mirall/folder.h"
+class QProcess;
 
 namespace Mirall {
 
-
-class CSyncFolder : public Folder
+class CSyncThread : public QThread
 {
-    Q_OBJECT
 public:
-    CSyncFolder(const QString &alias,
-                const QString &path,
-                const QString &secondPath, QObject *parent = 0L);
-    virtual ~CSyncFolder();
-    QString secondPath() const;
-    virtual void startSync(const QStringList &pathList);
-    virtual bool isBusy() const;
-protected slots:
-    void slotCSyncStarted();
-    void slotCSyncFinished();
-private:
-    QString _secondPath;
-    CSyncThread *_csync;
-};
+    CSyncThread(const QString &source, const QString &target);
+    ~CSyncThread();
 
+    virtual void run();
+
+    /**
+     * true if last operation ended with error
+     */
+    bool error() const;
+
+private:
+    static QMutex _mutex;
+    QString _source;
+    QString _target;
+    int _error;
+};
 }
 
-#endif
+#endif // CSYNCTHREAD_H

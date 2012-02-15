@@ -57,6 +57,8 @@ if(CSYNC_FOUND)
   set(mirall_SRCS
     ${mirall_SRCS}
     mirall/csyncfolder.cpp
+    mirall/owncloudfolder.cpp
+    mirall/csyncthread.cpp
   )
   include_directories(${CSYNC_INCLUDE_DIR})
 endif(CSYNC_FOUND)
