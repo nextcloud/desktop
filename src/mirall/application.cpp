@@ -86,13 +86,6 @@ Application::Application(int argc, char **argv) :
     setupKnownFolders();
     setupContextMenu();
 
-    // Check if sitecopy is installed
-    QFileInfo fi( SITECOPY_BIN );
-    if( !fi.exists() ) {
-      QMessageBox::critical( 0, tr("Sitecopy not Installed."),
-                            tr("The program <i>sitecopy</i> is not installed but it is needed by mirall.<br/>Please install sitecopy!"));
-    }
-
     qDebug() << "Network Location: " << NetworkLocation::currentLocation().encoded();
 }
 
@@ -217,16 +210,11 @@ void Application::slotAddFolder()
         }
       }
     } else if( _folderWizard->field("OC?").toBool()) {
-      settings.setValue("folder/backend", "sitecopy");
-      settings.setValue("backend:sitecopy/targetPath", _folderWizard->field("targetOCFolder"));
-      settings.setValue("backend:sitecopy/alias",  _folderWizard->field("alias"));
+      settings.setValue("folder/backend", "owncloud");
+      settings.setValue("backend:owncloud/targetPath", _folderWizard->field("targetOCFolder"));
+      settings.setValue("backend:owncloud/alias",  _folderWizard->field("alias"));
 
-      qDebug() << "Now writing sitecopy config " << _folderWizard->field("alias").toString(); ;
-      SitecopyConfig scConfig;
-
-      scConfig.writeSiteConfig( alias,
-                                _folderWizard->field("sourceFolder").toString(), /* local path */
-                                _folderWizard->field("targetOCFolder").toString() );
+      qDebug() << "Now writing owncloud config " << _folderWizard->field("alias").toString(); ;
     } else {
       qWarning() << "* Folder not local and note remote?";
       return;
@@ -439,21 +427,7 @@ void Application::setupFolderFromConfigFile(const QString &file) {
     QString backend = settings.value("folder/backend").toString();
     if (!backend.isEmpty()) {
         if( backend == "sitecopy") {
-          QString targetPath = settings.value("backend:sitecopy/targetPath").toString();
-
-          SiteCopyFolder *scf = new SiteCopyFolder( file, /* file is the same as the alias */
-                                                    path.toString(),
-                                                    targetPath,
-                                                    this);
-          QFileInfo fi( SITECOPY_BIN );
-          if( ! fi.exists() ) {
-            SyncResult sr( SyncResult::SetupError );
-            sr.setErrorString( tr("Sitecopy is not installed!"));
-            scf->slotSyncFinished( sr );
-          }
-
-          folder = scf;
-
+            qCritical() << "* sitecopy is not longer supported in this release." << endl;
         } else if (backend == "unison") {
             folder = new UnisonFolder(file,
                                       path.toString(),
@@ -472,11 +446,12 @@ void Application::setupFolderFromConfigFile(const QString &file) {
 #ifdef WITH_CSYNC
             QUrl url( _owncloudSetup->fullOwnCloudUrl() );
             QString existPath = url.path();
+            qDebug() << "existing path: "  << existPath;
             QString newPath = settings.value("backend:owncloud/targetPath").toString();
             if( !existPath.isEmpty() ) {
                 // cut off the trailing slash
                 if( existPath.endsWith('/') ) {
-                    existPath.truncate( newPath.length()-1 );
+                    existPath.truncate( existPath.length()-1 );
                 }
                 // cut off the leading slash
                 if( newPath.startsWith('/') ) {
