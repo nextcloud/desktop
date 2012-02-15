@@ -16,6 +16,7 @@
 #include <QtGui>
 #include <QHash>
 #include <QHashIterator>
+#include <QUrl>
 
 #include "mirall/constants.h"
 #include "mirall/application.h"
@@ -26,6 +27,7 @@
 #include "mirall/unisonfolder.h"
 #include "mirall/sitecopyfolder.h"
 #include "mirall/sitecopyconfig.h"
+#include "mirall/owncloudfolder.h"
 #include "mirall/statusdialog.h"
 #include "mirall/owncloudsetup.h"
 
@@ -464,9 +466,36 @@ void Application::setupFolderFromConfigFile(const QString &file) {
                                      settings.value("backend:csync/secondPath").toString(),
                                      this);
 #else
-            qCritical() << "* csync suport not enabled!! ignoring:" << file;
+            qCritical() << "* csync support not enabled!! ignoring:" << file;
+#endif
+        } else if( backend == "owncloud" ) {
+#ifdef WITH_CSYNC
+            QUrl url( _owncloudSetup->fullOwnCloudUrl() );
+            QString existPath = url.path();
+            QString newPath = settings.value("backend:owncloud/targetPath").toString();
+            if( !existPath.isEmpty() ) {
+                // cut off the trailing slash
+                if( existPath.endsWith('/') ) {
+                    existPath.truncate( newPath.length()-1 );
+                }
+                // cut off the leading slash
+                if( newPath.startsWith('/') ) {
+                    newPath.remove(0,1);
+                }
+            }
+
+            url.setPath( QString("%1/files/webdav.php/%2").arg(existPath).arg(newPath) );
+
+            folder = new ownCloudFolder( file, path.toString(),
+                                         url.toString(),
+                                         this );
+
+
+#else
+            qCritical() << "* owncloud support not enabled!! ignoring:" << file;
 #endif
         }
+
         else {
             qWarning() << "unknown backend" << backend;
             return;

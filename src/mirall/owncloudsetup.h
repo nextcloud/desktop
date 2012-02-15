@@ -52,6 +52,8 @@ public:
   QString ownCloudUser() const ;
   QString ownCloudPasswd() const ;
 
+  QUrl    fullOwnCloudUrl() const;
+
   void    setupLocalSyncFolder();
 
   OwncloudWizard *wizard();

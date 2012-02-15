@@ -252,6 +252,15 @@ QString OwncloudSetup::ownCloudUrl() const
   return url;
 }
 
+QUrl OwncloudSetup::fullOwnCloudUrl() const
+{
+    QUrl url( ownCloudUrl() );
+    url.setUserName( ownCloudUser() );
+    url.setPassword( ownCloudPasswd() );
+
+    return url;
+}
+
 QString OwncloudSetup::ownCloudUser() const
 {
   QSettings settings( mirallConfigFile(), QSettings::IniFormat );
