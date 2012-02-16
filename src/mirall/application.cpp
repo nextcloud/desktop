@@ -30,6 +30,10 @@
 #include "mirall/owncloudfolder.h"
 #include "mirall/statusdialog.h"
 #include "mirall/owncloudsetup.h"
+#include "mirall/theme.h"
+
+#include "mirall/miralltheme.h"
+#include "mirall/owncloudtheme.h"
 
 #ifdef WITH_CSYNC
 #include "mirall/csyncfolder.h"
@@ -46,7 +50,13 @@ Application::Application(int argc, char **argv) :
 {
     INotify::initialize();
 
-    setApplicationName("Mirall");
+#ifdef OWNCLOUD_CLIENT
+    _theme = new ownCloudTheme();
+#else
+    _theme = new mirallTheme();
+#endif
+
+    setApplicationName( _theme->appName() );
     setQuitOnLastWindowClosed(false);
 
     _folderWizard = new FolderWizard();

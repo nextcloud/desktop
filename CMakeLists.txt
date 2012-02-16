@@ -48,5 +48,10 @@ include(CPack)
 include(CTest)
 enable_testing()
 
+#
+# Uncomment this to build the ownCloud client.
+# Comment this to build the original mirall client
+add_definitions(-DOWNCLOUD_CLIENT)
+
 add_subdirectory(src)
 add_subdirectory(test)

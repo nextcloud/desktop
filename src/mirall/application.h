@@ -27,7 +27,7 @@ class QSystemTrayIcon;
 class QNetworkConfigurationManager;
 
 namespace Mirall {
-
+class Theme;
 class FolderWatcher;
 class FolderWizard;
 class StatusDialog;
@@ -102,6 +102,8 @@ private:
     StatusDialog *_statusDialog;
 
     QHash<QString, bool> _folderEnabledMap;
+
+    Theme *_theme;
 };
 
 } // namespace Mirall
