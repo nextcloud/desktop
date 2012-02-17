@@ -24,6 +24,7 @@ public:
 
     virtual QString appName() const = 0;
 
+    virtual QString configFileName() const = 0;
 
 private:
 

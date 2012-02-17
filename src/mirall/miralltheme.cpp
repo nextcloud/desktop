@@ -26,7 +26,12 @@ mirallTheme::mirallTheme()
 
 QString mirallTheme::appName() const
 {
-    return QString("Mirall");
+    return QString::fromLocal8Bit("Mirall");
+}
+
+QString mirallTheme::configFileName() const
+{
+    return QString::fromLocal8Bit("mirall.cfg");
 }
 
 }

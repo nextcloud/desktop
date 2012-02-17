@@ -33,7 +33,7 @@ class Theme;
 class FolderWatcher;
 class FolderWizard;
 class StatusDialog;
-class OwncloudSetup;
+class OwncloudSetupWizard;
 
 class Application : public QApplication
 {
@@ -80,7 +80,7 @@ private:
     QNetworkConfigurationManager *_networkMgr;
 
     FolderWizard  *_folderWizard;
-    OwncloudSetup *_owncloudSetup;
+    OwncloudSetupWizard *_owncloudSetupWizard;
 
     // tray's menu
     QMenu *_contextMenu;

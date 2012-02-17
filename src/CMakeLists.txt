@@ -48,7 +48,7 @@ mirall/sitecopyfolder.cpp
 mirall/sitecopyconfig.cpp
 mirall/statusdialog.cpp
 mirall/owncloudwizard.cpp
-mirall/owncloudsetup.cpp
+mirall/owncloudsetupwizard.cpp
 mirall/owncloudinfo.cpp
 mirall/ownclouddircheck.cpp
 mirall/mirallwebdav.cpp
@@ -56,6 +56,7 @@ mirall/theme.cpp
 mirall/miralltheme.cpp
 mirall/owncloudtheme.cpp
 mirall/folderman.cpp
+mirall/mirallconfigfile.cpp
 )
 
 if(CSYNC_FOUND)

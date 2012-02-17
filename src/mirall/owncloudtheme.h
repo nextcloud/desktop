@@ -25,7 +25,7 @@ public:
     ownCloudTheme();
 
     virtual QString appName() const;
-
+    QString configFileName() const;
 
 private:
 

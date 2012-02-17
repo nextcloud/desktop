@@ -29,8 +29,9 @@
 #include "mirall/sitecopyconfig.h"
 #include "mirall/owncloudfolder.h"
 #include "mirall/statusdialog.h"
-#include "mirall/owncloudsetup.h"
+#include "mirall/owncloudsetupwizard.h"
 #include "mirall/theme.h"
+#include "mirall/mirallconfigfile.h"
 
 #include "mirall/miralltheme.h"
 #include "mirall/owncloudtheme.h"
@@ -61,7 +62,7 @@ Application::Application(int argc, char **argv) :
     setQuitOnLastWindowClosed(false);
 
     _folderWizard = new FolderWizard();
-    _owncloudSetup = new OwncloudSetup();
+    _owncloudSetupWizard = new OwncloudSetupWizard();
     _statusDialog = new StatusDialog();
 
     connect( _statusDialog, SIGNAL(removeFolderAlias( const QString&)),
@@ -130,15 +131,19 @@ void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
   if( reason == QSystemTrayIcon::Trigger ) {
     _folderMan->disableFoldersWithRestore();
     // check if there is a mirall.cfg already.
-    if( _owncloudSetup->wizard()->isVisible() ) {
-      _owncloudSetup->wizard()->show();
+    if( _owncloudSetupWizard->wizard()->isVisible() ) {
+      _owncloudSetupWizard->wizard()->show();
     }
-    QFile fi( QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/mirall.cfg" );
-    if( !fi.exists() ) {
+
+
+    // if no config file is there, start the configuration wizard.
+    MirallConfigFile cfgFile;
+
+    if( !cfgFile.exists() ) {
       qDebug() << "No configured folders yet, start the Owncloud integration dialog.";
-      _owncloudSetup->startWizard();
+      _owncloudSetupWizard->startWizard();
     } else {
-      _statusDialog->setOCUrl( QUrl( _owncloudSetup->ownCloudUrl()));
+      _statusDialog->setOCUrl( QUrl( cfgFile.ownCloudUrl()) );
 
       _statusDialog->show();
     }
@@ -345,7 +350,7 @@ void Application::slotEnableFolder(const QString& alias, const bool enable)
 void Application::slotConfigure()
 {
   _folderMan->disableFoldersWithRestore();
-  _owncloudSetup->startWizard();
+  _owncloudSetupWizard->startWizard();
   _folderMan->restoreEnabledFolders();
 }
 

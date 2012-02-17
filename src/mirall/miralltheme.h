@@ -25,7 +25,7 @@ public:
     mirallTheme();
 
     virtual QString appName() const;
-
+    virtual QString configFileName() const;
 
 private:
 

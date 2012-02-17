@@ -26,8 +26,12 @@ ownCloudTheme::ownCloudTheme()
 
 QString ownCloudTheme::appName() const
 {
-    return QString("ownCloud");
+    return QString::fromLocal8Bit("ownCloud");
 }
 
+QString ownCloudTheme::configFileName() const
+{
+    return QString::fromLocal8Bit("owncloud.cfg");
+}
 }
 

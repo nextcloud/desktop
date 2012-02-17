@@ -24,6 +24,7 @@
 namespace Mirall {
 
 class SyncResult;
+class OwncloudSetup;
 
 class FolderMan : public QObject
 {
@@ -74,6 +75,7 @@ private:
     Folder::Map _folderMap;
     QHash<QString, bool> _folderEnabledMap;
     QString _folderConfigPath;
+    OwncloudSetup *_ownCloudSetup;
 
     // counter tracking number of folders doing a sync
     int _folderSyncCount;

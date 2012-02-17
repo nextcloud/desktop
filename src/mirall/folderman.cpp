@@ -18,6 +18,7 @@
 #include <QSettings>
 #include <QUrl>
 
+#include "mirall/mirallconfigfile.h"
 #include "mirall/unisonfolder.h"
 #include "mirall/csyncfolder.h"
 #include "mirall/owncloudfolder.h"
@@ -75,13 +76,17 @@ int FolderMan::setupKnownFolders()
 {
   qDebug() << "* Setup folders from " << folderConfigPath();
 
-  _folderMap.clear();
+  _folderMap.clear(); // FIXME: check if delete of folder structure happens
+
   QDir dir(folderConfigPath());
   dir.setFilter(QDir::Files);
   QStringList list = dir.entryList();
-  foreach (QString file, list) {
-    setupFolderFromConfigFile(file);
+
+  foreach ( QString alias, list ) {
+    Folder *f = setupFolderFromConfigFile( alias );
   }
+  // return the number of valid folders.
+  return _folderMap.size();
 }
 
 // filename is the name of the file only, it does not include
@@ -93,74 +98,67 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
     QSettings settings(folderConfigPath() + "/" + file, QSettings::IniFormat);
     qDebug() << "    -> file path: " + settings.fileName();
 
-    if (!settings.contains("folder/path")) {
-        qWarning() << "   `->" << file << "is not a valid folder configuration";
-        return folder;
-    }
+    settings.beginGroup( file ); // read the group with the same name as the file which is the folder alias
 
-    QVariant path = settings.value("folder/path").toString();
-    if (path.isNull() || !QFileInfo(path.toString()).isDir()) {
-        qWarning() << "    `->" << path.toString() << "does not exist. Skipping folder" << file;
+    QString path = settings.value("localpath").toString();
+    if ( path.isNull() || !QFileInfo( path ).isDir() ) {
+        qWarning() << "    `->" << path << "does not exist. Skipping folder" << file;
         // _tray->showMessage(tr("Unknown folder"),
         //                    tr("Folder %1 does not exist").arg(path.toString()),
         //                    QSystemTrayIcon::Critical);
         return folder;
     }
 
-    QString backend = settings.value("folder/backend").toString();
+    QString backend = settings.value("backend").toString();
+    QString targetPath = settings.value( "targetPath" ).toString();
+    QString connection = settings.value( "connection" ).toString();
+
     if (!backend.isEmpty()) {
-        if( backend == "sitecopy") {
-            qCritical() << "* sitecopy is not longer supported in this release." << endl;
-        } else if (backend == "unison") {
-            folder = new UnisonFolder(file,
-                                      path.toString(),
-                                      settings.value("backend:unison/secondPath").toString(),
-                                      this);
+
+        if (backend == "unison") {
+            folder = new UnisonFolder(file, path, targetPath, this );
         } else if (backend == "csync") {
 #ifdef WITH_CSYNC
-            folder = new CSyncFolder(file,
-                                     path.toString(),
-                                     settings.value("backend:csync/secondPath").toString(),
-                                     this);
+            folder = new CSyncFolder(file, path, targetPath, this );
 #else
             qCritical() << "* csync support not enabled!! ignoring:" << file;
 #endif
         } else if( backend == "owncloud" ) {
 #ifdef WITH_CSYNC
-            QUrl url; // ( _owncloudSetup->fullOwnCloudUrl() );
+
+            MirallConfigFile cfgFile;
+
+            // assemble the owncloud url to pass to csync.
+            QUrl url( cfgFile.fullOwnCloudUrl() );
             QString existPath = url.path();
             qDebug() << "existing path: "  << existPath;
-            QString newPath = settings.value("backend:owncloud/targetPath").toString();
+
             if( !existPath.isEmpty() ) {
                 // cut off the trailing slash
                 if( existPath.endsWith('/') ) {
                     existPath.truncate( existPath.length()-1 );
                 }
                 // cut off the leading slash
-                if( newPath.startsWith('/') ) {
-                    newPath.remove(0,1);
+                if( targetPath.startsWith('/') ) {
+                    targetPath.remove(0,1);
                 }
             }
 
-            url.setPath( QString("%1/files/webdav.php/%2").arg(existPath).arg(newPath) );
+            url.setPath( QString("%1/files/webdav.php/%2").arg(existPath).arg(targetPath) );
 
-            folder = new ownCloudFolder( file, path.toString(),
-                                         url.toString(),
-                                         this );
+            folder = new ownCloudFolder( file, path, url.toString(), this );
 
 
 #else
             qCritical() << "* owncloud support not enabled!! ignoring:" << file;
 #endif
-        }
-
-        else {
+        } else {
             qWarning() << "unknown backend" << backend;
             return NULL;
         }
     }
     folder->setBackend( backend );
-    folder->setOnlyOnlineEnabled(settings.value("folder/onlyOnline", false).toBool());
+    // folder->setOnlyOnlineEnabled(settings.value("folder/onlyOnline", false).toBool());
     folder->setOnlyThisLANEnabled(settings.value("folder/onlyThisLAN", false).toBool());
 
     _folderMap[file] = folder;

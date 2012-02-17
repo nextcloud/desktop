@@ -12,8 +12,8 @@
  * for more details.
  */
 
-#ifndef OWNCLOUDSETUP_H
-#define OWNCLOUDSETUP_H
+#ifndef OWNCLOUDSETUPWIZARD_H
+#define OWNCLOUDSETUPWIZARD_H
 
 #include <QObject>
 #include <QWidget>
@@ -26,11 +26,11 @@ namespace Mirall {
 class SiteCopyFolder;
 class SyncResult;
 
-class OwncloudSetup : public QObject
+class OwncloudSetupWizard : public QObject
 {
     Q_OBJECT
 public:
-    explicit OwncloudSetup( QObject *parent = 0 );
+    explicit OwncloudSetupWizard( QObject *parent = 0 );
 
   void startWizard( );
 
@@ -40,19 +40,12 @@ public:
 
   void writeOwncloudConfig();
 
-  QString mirallConfigFile() const;
-
   void startFetchFromOC( const QString& );
 
   /**
    * returns the configured owncloud url if its already configured, otherwise an empty
    * string.
    */
-  QString ownCloudUrl() const ;
-  QString ownCloudUser() const ;
-  QString ownCloudPasswd() const ;
-
-  QUrl    fullOwnCloudUrl() const;
 
   void    setupLocalSyncFolder();
 
@@ -71,7 +64,6 @@ protected slots:
   void slotError( QProcess::ProcessError );
   void slotStarted();
   void slotFinished( int, QProcess::ExitStatus );
-  void slotFetchFinished( const SyncResult& );
 
   // wizard dialog signals
   void slotInstallOCServer();
@@ -84,9 +76,9 @@ private:
 
   OwncloudWizard *_ocWizard;
   QProcess       *_process;
-  SiteCopyFolder *_scf;
-};
 
 };
 
-#endif // OWNCLOUDSETUP_H
+};
+
+#endif // OWNCLOUDSETUPWIZARD_H

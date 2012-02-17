@@ -26,9 +26,8 @@
 #include "mirall/folderwizard.h"
 #include "mirall/owncloudinfo.h"
 #include "mirall/ownclouddircheck.h"
-#include "mirall/owncloudsetup.h"
 #include "mirall/mirallwebdav.h"
-
+#include "mirall/mirallconfigfile.h"
 
 namespace Mirall
 {
@@ -215,8 +214,9 @@ void FolderWizardTargetPage::slotCreateRemoteFolder()
   const QString folder = _ui.OCFolderLineEdit->text();
   if( folder.isEmpty() ) return;
 
-  OwncloudSetup ocSetup;
-  QString url = ocSetup.ownCloudUrl();
+  MirallConfigFile cfgFile;
+
+  QString url = cfgFile.ownCloudUrl();
   if( ! url.endsWith('/')) url.append('/');
   url.append( "files/webdav.php/");
   url.append( folder );
@@ -226,7 +226,7 @@ void FolderWizardTargetPage::slotCreateRemoteFolder()
   connect( webdav, SIGNAL(webdavFinished(QNetworkReply*)),
            SLOT(slotCreateRemoteFolderFinished(QNetworkReply*)));
 
-  webdav->httpConnect( url, ocSetup.ownCloudUser(), ocSetup.ownCloudPasswd() );
+  webdav->httpConnect( url, cfgFile.ownCloudUser(), cfgFile.ownCloudPasswd() );
   if( webdav->mkdir(  url  ) ) {
     qDebug() << "WebDAV mkdir request successfully started";
   } else {
