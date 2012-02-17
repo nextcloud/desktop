@@ -32,12 +32,11 @@ FolderMan::FolderMan(QObject *parent) :
     _folderSyncCount(0)
 
 {
-    _folderConfigPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/folders";
-
     // if QDir::mkpath would not be so stupid, I would not need to have this
     // duplication of folderConfigPath() here
     QDir storageDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
     storageDir.mkpath("folders");
+    _folderConfigPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/folders";
 }
 
 FolderMan::~FolderMan()
@@ -55,10 +54,8 @@ Mirall::Folder::Map FolderMan::map()
 
 int FolderMan::setupFolders()
 {
-    QDir storageDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
-
     // setup a handler to look for configuration changes
-    _configFolderWatcher = new FolderWatcher(storageDir.path());
+    _configFolderWatcher = new FolderWatcher( _folderConfigPath );
     connect(_configFolderWatcher, SIGNAL(folderChanged(const QStringList &)),
             this, SLOT(slotReparseConfiguration()));
 

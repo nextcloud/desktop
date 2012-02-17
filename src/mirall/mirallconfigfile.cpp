@@ -31,6 +31,9 @@ QString MirallConfigFile::mirallConfigFile() const
 #else
     mirallTheme theme;
 #endif
+    if( qApp->applicationName().isEmpty() ) {
+        qApp->setApplicationName( theme.appName() );
+    }
     const QString dir = QDesktopServices::storageLocation(QDesktopServices::DataLocation)+"/"+theme.configFileName();
     return dir;
 }

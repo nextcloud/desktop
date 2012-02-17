@@ -48,17 +48,16 @@ Application::Application(int argc, char **argv) :
     _networkMgr(new QNetworkConfigurationManager(this)),
     _contextMenu(0)
 {
-    INotify::initialize();
-
 #ifdef OWNCLOUD_CLIENT
     _theme = new ownCloudTheme();
 #else
     _theme = new mirallTheme();
 #endif
+    setApplicationName( _theme->appName() );
+    INotify::initialize();
 
     _folderMan = new FolderMan();
 
-    setApplicationName( _theme->appName() );
     setQuitOnLastWindowClosed(false);
 
     _folderWizard = new FolderWizard();

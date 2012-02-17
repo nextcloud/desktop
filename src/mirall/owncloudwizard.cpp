@@ -293,8 +293,8 @@ void OwncloudWizard::slotCurrentPageChanged( int id )
     showOCUrlLabel( false );
     if( field("connectMyOC").toBool() ) {
       // check the url and connect.
-      QString url = field("OCUrl").toString();
-      emit connectToOCUrl( url );
+      _oCUrl = field("OCUrl").toString();
+      emit connectToOCUrl( _oCUrl);
     } else if( field("createLocalOC").toBool() ) {
       qDebug() << "Connect to local!";
       emit installOCLocalhost();
