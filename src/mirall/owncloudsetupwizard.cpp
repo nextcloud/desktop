@@ -206,9 +206,13 @@ void OwncloudSetupWizard::slotFinished( int res, QProcess::ExitStatus )
     _ocWizard->showOCUrlLabel( true );
 
     // FIXME: Write the owncloud config via MirallConfigFile
-
+    MirallConfigFile cfgFile;
+    cfgFile.writeOwncloudConfig( QString::fromLocal8Bit("ownCloud"),
+                                 _ocWizard->field("OCUrl").toString(),
+                                 _ocWizard->field( "OCUser").toString(),
+                                 _ocWizard->field("OCPasswd").toString() );
     emit ownCloudSetupFinished( true );
-    setupLocalSyncFolder();
+    // setupLocalSyncFolder();
   }
 }
 
