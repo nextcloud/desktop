@@ -45,7 +45,6 @@ namespace Mirall {
 Application::Application(int argc, char **argv) :
     QApplication(argc, argv),
     _networkMgr(new QNetworkConfigurationManager(this)),
-    _folderSyncCount(0),
     _contextMenu(0)
 {
     INotify::initialize();
@@ -56,13 +55,14 @@ Application::Application(int argc, char **argv) :
     _theme = new mirallTheme();
 #endif
 
+    _folderMan = new FolderMan();
+
     setApplicationName( _theme->appName() );
     setQuitOnLastWindowClosed(false);
 
     _folderWizard = new FolderWizard();
     _owncloudSetup = new OwncloudSetup();
     _statusDialog = new StatusDialog();
-    _folderConfigPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/folders";
 
     connect( _statusDialog, SIGNAL(removeFolderAlias( const QString&)),
              SLOT(slotRemoveFolder(const QString&)));
@@ -83,18 +83,13 @@ Application::Application(int argc, char **argv) :
         //qDebug() << "Network:" << netCfg.identifier();
     }
 
-    // if QDir::mkpath would not be so stupid, I would not need to have this
-    // duplication of folderConfigPath() here
-    QDir storageDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
-    storageDir.mkpath("folders");
-
-    // Look for configuration changes
-    _configFolderWatcher = new FolderWatcher(storageDir.path());
-    connect(_configFolderWatcher, SIGNAL(folderChanged(const QStringList &)),
-            this, SLOT(slotReparseConfiguration()));
-
-    setupKnownFolders();
     setupContextMenu();
+
+    /* setup the folder list */
+    int cnt =  _folderMan->setupFolders();
+
+    if( cnt ) _tray->setIcon(QIcon::fromTheme(MIRALL_ICON, QIcon( QString( ":/mirall/resources/%1").arg(MIRALL_ICON))));
+
 
     qDebug() << "Network Location: " << NetworkLocation::currentLocation().encoded();
 }
@@ -105,16 +100,8 @@ Application::~Application()
     INotify::cleanup();
 
     delete _networkMgr;
+    delete _folderMan;
     delete _tray;
-
-    foreach (Folder *folder, _folderMap) {
-        delete folder;
-    }
-}
-
-QString Application::folderConfigPath() const
-{
-    return _folderConfigPath;
 }
 
 void Application::setupActions()
@@ -141,7 +128,7 @@ void Application::setupSystemTray()
 void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
 {
   if( reason == QSystemTrayIcon::Trigger ) {
-    disableFoldersWithRestore();
+    _folderMan->disableFoldersWithRestore();
     // check if there is a mirall.cfg already.
     if( _owncloudSetup->wizard()->isVisible() ) {
       _owncloudSetup->wizard()->show();
@@ -155,10 +142,12 @@ void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
 
       _statusDialog->show();
     }
-    restoreEnabledFolders();
-    if ( !_folderMap.isEmpty() && _statusDialog->isVisible() ) {
-      _statusDialog->setFolderList( _folderMap );
-    }
+    _folderMan->restoreEnabledFolders();
+
+    // FIXME:
+//    if ( !_folderMap.isEmpty() && _statusDialog->isVisible() ) {
+//      _statusDialog->setFolderList( _folderMap );
+//    }
   }
 }
 
@@ -172,7 +161,7 @@ void Application::setupContextMenu()
     _contextMenu->addSeparator();
 
     // here all folders should be added
-    foreach (Folder *folder, _folderMap) {
+    foreach (Folder *folder, _folderMan->map() ) {
         _contextMenu->addAction(folder->openAction());
     }
 
@@ -182,68 +171,59 @@ void Application::setupContextMenu()
     _tray->setContextMenu(_contextMenu);
 }
 
-void Application::slotReparseConfiguration()
-{
-    setupKnownFolders();
-    setupContextMenu();
-}
-
 void Application::slotAddFolder()
 {
-  disableFoldersWithRestore();
+  _folderMan->disableFoldersWithRestore();
 
-  _folderWizard->setFolderMap( &_folderMap );
+  Folder::Map folderMap = _folderMan->map();
+
+  _folderWizard->setFolderMap( &folderMap );
 
   _folderWizard->restart();
 
   if (_folderWizard->exec() == QDialog::Accepted) {
     qDebug() << "* Folder wizard completed";
 
-    QString alias = _folderWizard->field("alias").toString();
+    bool goodData = true;
 
-    QSettings settings(folderConfigPath() + "/" + alias, QSettings::IniFormat);
-    settings.setValue("folder/backend", "csync");
-    settings.setValue("folder/path", _folderWizard->field("sourceFolder"));
+    QString alias        = _folderWizard->field("alias").toString();
+    QString sourceFolder = _folderWizard->field("sourceFolder").toString();
+    QString backend      = QString::fromLocal8Bit("csync");
+    QString targetPath;
+    bool onlyThisLAN = false;
+    bool onlyOnline  = false;
 
     if (_folderWizard->field("local?").toBool()) {
-      settings.setValue("backend:csync/secondPath", _folderWizard->field("targetLocalFolder"));
+        // setup a local csync folder
+        targetPath = _folderWizard->field("targetLocalFolder").toString();
     } else if (_folderWizard->field("remote?").toBool()) {
-      settings.setValue("backend:csync/secondPath", _folderWizard->field("targetURLFolder"));
-      bool onlyOnline = _folderWizard->field("onlyOnline?").toBool();
-      settings.setValue("folder/onlyOnline", onlyOnline);
-
-      if (onlyOnline) {
-        bool onlyThisLAN = _folderWizard->field("onlyThisLAN?").toBool();
-        settings.setValue("folder/onlyThisLAN", onlyThisLAN);
-        if (onlyThisLAN) {
-          settings.setValue("folder/onlyOnline", true);
-        }
-      }
+        // setup a remote csync folder
+        targetPath  = _folderWizard->field("targetURLFolder").toString();
+        onlyOnline  = _folderWizard->field("onlyOnline?").toBool();
+        onlyThisLAN = _folderWizard->field("onlyThisLAN?").toBool();
     } else if( _folderWizard->field("OC?").toBool()) {
-      settings.setValue("folder/backend", "owncloud");
-      settings.setValue("backend:owncloud/targetPath", _folderWizard->field("targetOCFolder"));
-      settings.setValue("backend:owncloud/alias",  _folderWizard->field("alias"));
-
-      qDebug() << "Now writing owncloud config " << _folderWizard->field("alias").toString(); ;
+        // setup a ownCloud folder
+        backend    = QString::fromLocal8Bit("owncloud");
+        targetPath = _folderWizard->field("targetOCFolder").toString();
     } else {
       qWarning() << "* Folder not local and note remote?";
-      return;
+      goodData = false;
     }
 
-    settings.sync();
-    setupFolderFromConfigFile(alias);
-    setupContextMenu();
+    if( goodData ) {
+        _folderMan->addFolderDefinition( backend, alias, sourceFolder, targetPath, onlyThisLAN );
+    }
+#ifdef PUT_TO_FOLDERMAN
+
+#endif
   } else {
     qDebug() << "* Folder wizard cancelled";
   }
-  restoreEnabledFolders();
+  _folderMan->restoreEnabledFolders();
 }
 
 void Application::slotRemoveFolder( const QString& alias )
 {
-  QString configFile = folderConfigPath() + "/" + alias;
-  QFile file( configFile );
-
   int ret = QMessageBox::question( 0, tr("Confirm Folder Remove"), tr("Do you really want to remove upload folder <i>%1</i>?").arg(alias),
                                     QMessageBox::Yes|QMessageBox::No );
 
@@ -251,28 +231,10 @@ void Application::slotRemoveFolder( const QString& alias )
     return;
   }
 
-  if( _folderMap.contains( alias )) {
-    qDebug() << "Removing " << alias;
-    Folder *f = _folderMap.take( alias );
-    delete f;
-  } else {
-    qDebug() << "!! Can not remove " << alias << ", not in folderMap.";
-  }
-
-  if( file.exists() ) {
-    qDebug() << "Remove folder config file " << configFile;
-    file.remove();
-  }
-
-  SitecopyConfig scConfig;
-  if( ! scConfig.removeFolderConfig( alias ) ) {
-    qDebug() << "Failed to remove folder config for " << alias;
-  } else {
-    setupKnownFolders();
-    _statusDialog->setFolderList( _folderMap );
-  }
+  _folderMan->slotRemoveFolder( alias );
 }
 
+#ifdef HAVE_FETCH_AND_PUSH
 void Application::slotFetchFolder( const QString& alias )
 {
   qDebug() << "start to fetch folder with alias " << alias;
@@ -318,22 +280,17 @@ void Application::slotPushFolder( const QString& alias )
       qDebug() << "!! Can only fetch backend type sitecopy, this one has " << f->backend();
     }
   }
-
 }
+#endif
 
 void Application::slotInfoFolder( const QString& alias )
 {
     qDebug() << "details of folder with alias " << alias;
 
-    if( ! _folderMap.contains( alias ) ) {
-      qDebug() << "!! Can not get details of alias " << alias << ", can not be found in folderMap.";
-      return;
-    }
-
-    Folder *folder = _folderMap[alias];
+    SyncResult folderResult = _folderMan->syncResult( alias );
 
     QString folderMessage = tr( "Last sync was succesful" );
-    SyncResult folderResult = folder->lastSyncResult();
+
     SyncResult::Result syncResult = folderResult.result();
     if ( syncResult == SyncResult::Error ) {
       folderMessage = tr( "%1" ).arg( folderResult.errorString() );
@@ -345,7 +302,7 @@ void Application::slotInfoFolder( const QString& alias )
       folderMessage = tr( "Undefined state" );
     }
 
-    QMessageBox infoBox( QMessageBox::Information, tr( "Folder information" ), folder->alias(), QMessageBox::Ok );
+    QMessageBox infoBox( QMessageBox::Information, tr( "Folder information" ), alias, QMessageBox::Ok );
 
     infoBox.setInformativeText(folderMessage);
     qDebug() << "informative text: " << infoBox.informativeText();
@@ -381,140 +338,28 @@ void Application::slotEnableFolder(const QString& alias, const bool enable)
 {
   qDebug() << "enable folder with alias " << alias;
 
-  if( ! _folderMap.contains( alias ) ) {
-    qDebug() << "!! Can not enable alias " << alias << ", can not be found in folderMap.";
-    return;
-  }
+  _folderMan->slotEnableFolder( alias, enable );
 
-  Folder *f = _folderMap[alias];
-  f->setSyncEnabled(enable);
 }
 
 void Application::slotConfigure()
 {
-  disableFoldersWithRestore();
+  _folderMan->disableFoldersWithRestore();
   _owncloudSetup->startWizard();
-  restoreEnabledFolders();
+  _folderMan->restoreEnabledFolders();
 }
 
-void Application::setupKnownFolders()
-{
-  qDebug() << "* Setup folders from " << folderConfigPath();
-
-  _folderMap.clear();
-  QDir dir(folderConfigPath());
-  dir.setFilter(QDir::Files);
-  QStringList list = dir.entryList();
-  foreach (QString file, list) {
-    setupFolderFromConfigFile(file);
-  }
-  if( list.size() ) _tray->setIcon(QIcon::fromTheme(MIRALL_ICON, QIcon( QString( ":/mirall/resources/%1").arg(MIRALL_ICON))));
-}
-
-// filename is the name of the file only, it does not include
-// the configuration directory path
-void Application::setupFolderFromConfigFile(const QString &file) {
-    Folder *folder = 0L;
-
-    qDebug() << "  ` -> setting up:" << file;
-    QSettings settings(folderConfigPath() + "/" + file, QSettings::IniFormat);
-    qDebug() << "    -> file path: " + settings.fileName();
-
-    if (!settings.contains("folder/path")) {
-        qWarning() << "   `->" << file << "is not a valid folder configuration";
-        return;
-    }
-
-    QVariant path = settings.value("folder/path").toString();
-    if (path.isNull() || !QFileInfo(path.toString()).isDir()) {
-        qWarning() << "    `->" << path.toString() << "does not exist. Skipping folder" << file;
-        _tray->showMessage(tr("Unknown folder"),
-                           tr("Folder %1 does not exist").arg(path.toString()),
-                           QSystemTrayIcon::Critical);
-        return;
-    }
-
-    QString backend = settings.value("folder/backend").toString();
-    if (!backend.isEmpty()) {
-        if( backend == "sitecopy") {
-            qCritical() << "* sitecopy is not longer supported in this release." << endl;
-        } else if (backend == "unison") {
-            folder = new UnisonFolder(file,
-                                      path.toString(),
-                                      settings.value("backend:unison/secondPath").toString(),
-                                      this);
-        } else if (backend == "csync") {
-#ifdef WITH_CSYNC
-            folder = new CSyncFolder(file,
-                                     path.toString(),
-                                     settings.value("backend:csync/secondPath").toString(),
-                                     this);
-#else
-            qCritical() << "* csync support not enabled!! ignoring:" << file;
-#endif
-        } else if( backend == "owncloud" ) {
-#ifdef WITH_CSYNC
-            QUrl url( _owncloudSetup->fullOwnCloudUrl() );
-            QString existPath = url.path();
-            qDebug() << "existing path: "  << existPath;
-            QString newPath = settings.value("backend:owncloud/targetPath").toString();
-            if( !existPath.isEmpty() ) {
-                // cut off the trailing slash
-                if( existPath.endsWith('/') ) {
-                    existPath.truncate( existPath.length()-1 );
-                }
-                // cut off the leading slash
-                if( newPath.startsWith('/') ) {
-                    newPath.remove(0,1);
-                }
-            }
-
-            url.setPath( QString("%1/files/webdav.php/%2").arg(existPath).arg(newPath) );
-
-            folder = new ownCloudFolder( file, path.toString(),
-                                         url.toString(),
-                                         this );
-
-
-#else
-            qCritical() << "* owncloud support not enabled!! ignoring:" << file;
-#endif
-        }
-
-        else {
-            qWarning() << "unknown backend" << backend;
-            return;
-        }
-    }
-    folder->setBackend( backend );
-    folder->setOnlyOnlineEnabled(settings.value("folder/onlyOnline", false).toBool());
-    folder->setOnlyThisLANEnabled(settings.value("folder/onlyThisLAN", false).toBool());
-
-    _folderMap[file] = folder;
-    qDebug() << "Adding folder to Folder Map " << folder;
-    QObject::connect(folder, SIGNAL(syncStarted()), SLOT(slotFolderSyncStarted()));
-    QObject::connect(folder, SIGNAL(syncFinished(const SyncResult &)), SLOT(slotFolderSyncFinished(const SyncResult &)));
-}
-
+// FIXME: Better start- and end handling
 void Application::slotFolderSyncStarted()
 {
-    _folderSyncCount++;
-
-    if (_folderSyncCount > 0) {
-        _tray->setIcon(QIcon::fromTheme(FOLDER_SYNC_ICON, QIcon( QString( ":/mirall/resources/%1").arg(FOLDER_SYNC_ICON))));
-    }
+    _tray->setIcon(QIcon::fromTheme(FOLDER_SYNC_ICON, QIcon( QString( ":/mirall/resources/%1").arg(FOLDER_SYNC_ICON))));
 }
 
 void Application::slotFolderSyncFinished(const SyncResult &result)
 {
-  _folderSyncCount--;
-
-  // in case the sending folder is needed:
-  // Folder *folder = dynamic_cast<Folder *>(sender());
-
-  if( _folderSyncCount == 0 ) {
+  // if( _folderSyncCount == 0 ) {
     computeOverallSyncStatus();
-  }
+  // }
 }
 
 void Application::computeOverallSyncStatus()
@@ -523,7 +368,9 @@ void Application::computeOverallSyncStatus()
   // display the info of the least succesful sync (eg. not just display the result of the latest sync
   SyncResult overallResult = SyncResult::Success;
   QString trayMessage;
-  foreach ( Folder *syncedFolder, _folderMap ) {
+  Folder::Map map = _folderMan->map();
+
+  foreach ( Folder *syncedFolder, map ) {
     QString folderMessage;
     SyncResult folderResult = syncedFolder->lastSyncResult();
     SyncResult::Result syncResult = folderResult.result();
@@ -574,28 +421,10 @@ void Application::computeOverallSyncStatus()
 
   // Only refresh the folder if it is being shown
   if( _statusDialog->isVisible() ) {
-    _statusDialog->setFolderList( _folderMap );
+    _statusDialog->setFolderList( map );
   }
 }
 
-void Application::disableFoldersWithRestore()
-{
-  _folderEnabledMap.clear();
-  foreach( Folder *f, _folderMap ) {
-    // store the enabled state, then make sure it is disabled
-    _folderEnabledMap.insert(f->alias(), f->syncEnabled());
-    f->setSyncEnabled(false);
-  }
-}
-
-void Application::restoreEnabledFolders()
-{
-  foreach( Folder *f, _folderMap ) {
-    if (_folderEnabledMap.contains( f->alias() )) {
-      f->setSyncEnabled( _folderEnabledMap.value( f->alias() ));
-    }
-  }
-}
 
 } // namespace Mirall
 

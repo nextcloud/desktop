@@ -55,6 +55,7 @@ mirall/mirallwebdav.cpp
 mirall/theme.cpp
 mirall/miralltheme.cpp
 mirall/owncloudtheme.cpp
+mirall/folderman.cpp
 )
 
 if(CSYNC_FOUND)

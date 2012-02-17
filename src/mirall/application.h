@@ -21,6 +21,8 @@
 #include "mirall/syncresult.h"
 #include "mirall/folder.h"
 
+#include "mirall/folderman.h"
+
 class QAction;
 class QMenu;
 class QSystemTrayIcon;
@@ -43,11 +45,12 @@ signals:
 
 protected slots:
 
-    void slotReparseConfiguration();
     void slotAddFolder();
     void slotRemoveFolder( const QString& );
+#ifdef HAVE_FETCH_AND_PUSH
     void slotFetchFolder( const QString& );
     void slotPushFolder( const QString& );
+#endif
     void slotEnableFolder( const QString&, const bool );
     void slotInfoFolder( const QString& );
     void slotConfigure();
@@ -57,23 +60,11 @@ protected slots:
 
 protected:
 
-    QString folderConfigPath() const;
-
     void setupActions();
     void setupSystemTray();
     void setupContextMenu();
 
-    // finds all folder configuration files
-    // and create the folders
-    void setupKnownFolders();
-
-    // creates a folder for a specific
-    // configuration
-    void setupFolderFromConfigFile(const QString &filename);
-
     //folders have to be disabled while making config changes
-    void disableFoldersWithRestore();
-    void restoreEnabledFolders();
     void computeOverallSyncStatus();
 
 protected slots:
@@ -81,19 +72,13 @@ protected slots:
 
 private:
     // configuration file -> folder
-    Folder::Map _folderMap;
     QSystemTrayIcon *_tray;
     QAction *_actionQuit;
     QAction *_actionAddFolder;
     QAction *_actionConfigure;
 
     QNetworkConfigurationManager *_networkMgr;
-    QString _folderConfigPath;
 
-    // counter tracking number of folders doing a sync
-    int _folderSyncCount;
-
-    FolderWatcher *_configFolderWatcher;
     FolderWizard  *_folderWizard;
     OwncloudSetup *_owncloudSetup;
 
@@ -101,8 +86,7 @@ private:
     QMenu *_contextMenu;
     StatusDialog *_statusDialog;
 
-    QHash<QString, bool> _folderEnabledMap;
-
+    FolderMan *_folderMan;
     Theme *_theme;
 };
 
