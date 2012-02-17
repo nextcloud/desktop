@@ -22,11 +22,14 @@
 #include "mirall/sitecopyfolder.h"
 #include "mirall/mirallwebdav.h"
 #include "mirall/mirallconfigfile.h"
+#include "mirall/owncloudinfo.h"
+
 
 namespace Mirall {
 
 OwncloudSetupWizard::OwncloudSetupWizard( QObject *parent ) :
-    QObject( parent )
+    QObject( parent ),
+    _ocInfo(0)
 {
     _process = new QProcess( this );
 
@@ -46,7 +49,7 @@ OwncloudSetupWizard::OwncloudSetupWizard( QObject *parent ) :
                      SLOT(slotStarted()));
 
     QObject::connect(_process, SIGNAL(finished(int, QProcess::ExitStatus)),
-                     SLOT(slotFinished(int, QProcess::ExitStatus)));
+                     SLOT(slotProcessFinished(int, QProcess::ExitStatus)));
 
 
     _ocWizard = new OwncloudWizard();
@@ -69,8 +72,50 @@ void OwncloudSetupWizard::slotConnectToOCUrl( const QString& url )
 {
   qDebug() << "Connect to url: " << url;
   _ocWizard->setField("OCUrl", url );
-  _ocWizard->appendToResultWidget(tr("Connecting to ownCloud at %1").arg(url ));
-  slotFinished( 0, QProcess::NormalExit );
+  _ocWizard->appendToResultWidget(tr("Trying to connect to ownCloud at %1...").arg(url ));
+  testOwnCloudConnect();
+}
+
+void OwncloudSetupWizard::testOwnCloudConnect()
+{
+    // write a config. Note that it has to be removed on fail?!
+    MirallConfigFile cfgFile;
+    cfgFile.writeOwncloudConfig( QString::fromLocal8Bit("ownCloud"),
+                                 _ocWizard->field("OCUrl").toString(),
+                                 _ocWizard->field( "OCUser").toString(),
+                                 _ocWizard->field("OCPasswd").toString() );
+
+    // now start ownCloudInfo to check the connection.
+
+    if( _ocInfo ) delete _ocInfo;
+    _ocInfo = new ownCloudInfo( QString(), this );
+    if( _ocInfo->isConfigured() ) {
+        connect(_ocInfo,SIGNAL(ownCloudInfoFound(QString,QString)),SLOT(slotOwnCloudFound(QString,QString)));
+        connect(_ocInfo,SIGNAL(noOwncloudFound(QNetworkReply::NetworkError )),SLOT(slotNoOwnCloudFound(QNetworkReply::NetworkError)));
+        _ocInfo->checkInstallation();
+    } else {
+        qDebug() << "   ownCloud seems not to be configured, can not start test connect.";
+    }
+
+}
+
+void OwncloudSetupWizard::slotOwnCloudFound( const QString& url, const QString& infoString )
+{
+    _ocWizard->appendToResultWidget(tr("<font color=\"green\">Successfully connected to %1: ownCloud version %2</font>").arg( url ).arg(infoString));
+    // not much more to do here, the config file already is there.
+}
+
+void OwncloudSetupWizard::slotNoOwnCloudFound( QNetworkReply::NetworkError err )
+{
+    _ocWizard->appendToResultWidget(tr("<font color=\"red\">Failed to connect to ownCloud!</font>") );
+    _ocWizard->appendToResultWidget(tr("<font color=\"red\">Error number %1</font>").arg(err) );
+
+    // remove the config file again
+    MirallConfigFile cfgFile;
+    cfgFile.removeConnection();
+
+    // Error detection!
+
 }
 
 bool OwncloudSetupWizard::isBusy()
@@ -152,7 +197,7 @@ void OwncloudSetupWizard::runOwncloudAdmin( const QStringList& args )
     _ocWizard->appendToResultWidget( tr("Starting script owncloud-admin...") );
     _process->start( bin, args );
   } else {
-    slotFinished( 1, QProcess::NormalExit );
+    slotProcessFinished( 1, QProcess::NormalExit );
   }
 }
 
@@ -189,7 +234,10 @@ void OwncloudSetupWizard::slotStarted()
    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 }
 
-void OwncloudSetupWizard::slotFinished( int res, QProcess::ExitStatus )
+/*
+ *
+ */
+void OwncloudSetupWizard::slotProcessFinished( int res, QProcess::ExitStatus )
 {
   _ocWizard->button( QWizard::FinishButton )->setEnabled( true );
   _ocWizard->button( QWizard::BackButton)->setEnabled( true );
@@ -205,13 +253,8 @@ void OwncloudSetupWizard::slotFinished( int res, QProcess::ExitStatus )
     _ocWizard->appendToResultWidget( tr("<font color=\"green\">Installation of ownCloud succeeded!</font>") );
     _ocWizard->showOCUrlLabel( true );
 
-    // FIXME: Write the owncloud config via MirallConfigFile
-    MirallConfigFile cfgFile;
-    cfgFile.writeOwncloudConfig( QString::fromLocal8Bit("ownCloud"),
-                                 _ocWizard->field("OCUrl").toString(),
-                                 _ocWizard->field( "OCUser").toString(),
-                                 _ocWizard->field("OCPasswd").toString() );
-    emit ownCloudSetupFinished( true );
+    testOwnCloudConnect();
+
     // setupLocalSyncFolder();
   }
 }

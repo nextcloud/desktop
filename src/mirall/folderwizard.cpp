@@ -285,9 +285,9 @@ void FolderWizardTargetPage::initializePage()
     slotToggleItems();
     _ui.warnFrame->hide();
 
-    ownCloudInfo *ocInfo = new ownCloudInfo( this );
+    ownCloudInfo *ocInfo = new ownCloudInfo( QString(), this );
     if( ocInfo->isConfigured() ) {
-      connect(ocInfo, SIGNAL(ownCloudInfoFound(QString,QString)),SLOT(slotOwnCloudFound(QString,QString)));
+      connect(ocInfo,SIGNAL(ownCloudInfoFound(QString,QString)),SLOT(slotOwnCloudFound(QString,QString)));
       connect(ocInfo,SIGNAL(noOwncloudFound()),SLOT(slotNoOwnCloudFound()));
       connect(_ui._buttCreateFolder, SIGNAL(clicked()), SLOT(slotCreateRemoteFolder()));
       ocInfo->checkInstallation();

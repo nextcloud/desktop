@@ -25,20 +25,16 @@ class ownCloudInfo : public QObject
 {
   Q_OBJECT
 public:
-  explicit ownCloudInfo(QObject *parent = 0);
+  explicit ownCloudInfo( const QString& = QString(), QObject *parent = 0);
 
   bool isConfigured();
-
-  QString configFile() const;
-  QString url() const;
-  QString user() const;
-  QString password() const;
 
   void checkInstallation();
 
 signals:
+  // result signal with url- and version string.
   void ownCloudInfoFound( const QString&,  const QString& );
-  void noOwncloudFound();
+  void noOwncloudFound( QNetworkReply::NetworkError );
 
 public slots:
 
@@ -50,6 +46,7 @@ protected slots:
 private:
     QNetworkReply *_reply;
     QByteArray    _readBuffer;
+    QString _connection;
 };
 
 };

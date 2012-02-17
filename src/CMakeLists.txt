@@ -45,7 +45,6 @@ mirall/temporarydir.cpp
 mirall/syncresult.cpp
 mirall/unisonfolder.cpp
 mirall/sitecopyfolder.cpp
-mirall/sitecopyconfig.cpp
 mirall/statusdialog.cpp
 mirall/owncloudwizard.cpp
 mirall/owncloudsetupwizard.cpp

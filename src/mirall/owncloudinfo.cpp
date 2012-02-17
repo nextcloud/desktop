@@ -12,57 +12,30 @@
  * for more details.
  */
 
-#include "owncloudinfo.h"
 
 #include <QtCore>
 #include <QtGui>
 #include <QAuthenticator>
 
+#include "mirall/owncloudinfo.h"
+#include "mirall/mirallconfigfile.h"
 
 namespace Mirall
 {
 
-ownCloudInfo::ownCloudInfo(QObject *parent) :
+ownCloudInfo::ownCloudInfo( const QString& connectionName, QObject *parent ) :
     QObject(parent)
 {
-
-}
-
-QString ownCloudInfo::configFile() const
-{
-  return QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/mirall.cfg";
+    if( connectionName.isEmpty() )
+        _connection = QString::fromLocal8Bit( "ownCloud");
+    else
+        _connection = connectionName;
 }
 
 bool ownCloudInfo::isConfigured()
 {
-  QSettings settings( configFile(), QSettings::IniFormat );
-
-  if( settings.contains("ownCloud/url") &&
-      settings.contains("ownCloud/user") &&
-      settings.contains("ownCloud/password") ) {
-    return true;
-  }
-  return false;
-}
-
-QString ownCloudInfo::url() const
-{
-  QSettings settings( configFile(), QSettings::IniFormat );
-  QString url = settings.value("ownCloud/url").toString();
-  if( url.endsWith( QChar('/')) ) url.remove( -1, 1);
-  return url;
-}
-
-QString ownCloudInfo::user() const
-{
-  QSettings settings( configFile(), QSettings::IniFormat );
-  return settings.value( "ownCloud/user" ).toString();
-}
-
-QString ownCloudInfo::password() const
-{
-  QSettings settings( configFile(), QSettings::IniFormat );
-  return settings.value( "ownCloud/password" ).toString();
+    MirallConfigFile cfgFile;
+    return cfgFile.connectionExists( _connection );
 }
 
 void ownCloudInfo::checkInstallation()
@@ -71,7 +44,9 @@ void ownCloudInfo::checkInstallation()
  connect(manager, SIGNAL(finished(QNetworkReply*)),
          this, SLOT(slotReplyFinished(QNetworkReply*)));
 
- _reply = manager->get(QNetworkRequest(QUrl( url() + "/status.php")));
+ MirallConfigFile cfgFile;
+
+ _reply = manager->get(QNetworkRequest(QUrl( cfgFile.ownCloudUrl( _connection ) + "/status.php" )));
  _readBuffer.clear();
 
  connect( _reply, SIGNAL( error(QNetworkReply::NetworkError )),
@@ -81,11 +56,12 @@ void ownCloudInfo::checkInstallation()
 
 void ownCloudInfo::slotAuthentication( QNetworkReply*, QAuthenticator *auth )
 {
-  if( auth ) {
-    qDebug() << "Authenticating request!";
-    auth->setUser( user() );
-    auth->setPassword( password() );
-  }
+    if( auth ) {
+        MirallConfigFile cfgFile;
+        qDebug() << "Authenticating request!";
+        auth->setUser( cfgFile.ownCloudUser( _connection ) );
+        auth->setPassword( cfgFile.ownCloudPasswd( _connection ));
+    }
 }
 
 void ownCloudInfo::slotReplyFinished( QNetworkReply *reply )
@@ -115,7 +91,7 @@ void ownCloudInfo::slotReplyFinished( QNetworkReply *reply )
     emit ownCloudInfoFound( urlStr, versionStr );
   } else {
     qDebug() << "No proper answer on status.php!";
-    emit noOwncloudFound();
+    emit noOwncloudFound( reply->error() );
   }
 }
 
@@ -127,7 +103,7 @@ void ownCloudInfo::slotReadyRead()
 void ownCloudInfo::slotError( QNetworkReply::NetworkError err)
 {
   qDebug() << "Network Error: " << err;
-  emit noOwncloudFound();
+  emit noOwncloudFound( err );
 }
 
 }

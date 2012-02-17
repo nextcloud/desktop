@@ -18,6 +18,7 @@
 #include <QObject>
 #include <QWidget>
 #include <QProcess>
+#include <QNetworkReply>
 
 #include "mirall/owncloudwizard.h"
 
@@ -25,6 +26,7 @@ namespace Mirall {
 
 class SiteCopyFolder;
 class SyncResult;
+class ownCloudInfo;
 
 class OwncloudSetupWizard : public QObject
 {
@@ -63,20 +65,28 @@ protected slots:
   void slotStateChanged( QProcess::ProcessState );
   void slotError( QProcess::ProcessError );
   void slotStarted();
-  void slotFinished( int, QProcess::ExitStatus );
+  void slotProcessFinished( int, QProcess::ExitStatus );
 
   // wizard dialog signals
   void slotInstallOCServer();
   void slotConnectToOCUrl( const QString& );
   void slotCreateOCLocalhost();
 
+private slots:
+  void slotOwnCloudFound( const QString&, const QString& );
+  void slotNoOwnCloudFound( QNetworkReply::NetworkError );
+
 private:
   bool checkOwncloudAdmin( const QString& );
   void runOwncloudAdmin( const QStringList& );
 
+
+  /* Start a request to the newly installed ownCloud to check the connection */
+  void testOwnCloudConnect();
+
   OwncloudWizard *_ocWizard;
   QProcess       *_process;
-
+  ownCloudInfo   *_ocInfo;
 };
 
 };

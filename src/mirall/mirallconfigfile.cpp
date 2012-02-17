@@ -44,6 +44,17 @@ bool MirallConfigFile::exists()
     return file.exists();
 }
 
+bool MirallConfigFile::connectionExists( const QString& conn )
+{
+    QString con = conn;
+    if( conn.isEmpty() ) con = QString::fromLocal8Bit("ownCloud");
+
+    QSettings settings( mirallConfigFile(), QSettings::IniFormat);
+
+    return settings.contains( QString("%1/url").arg( conn ) );
+}
+
+
 void MirallConfigFile::writeOwncloudConfig( const QString& connection,
                                          const QString& url,
                                          const QString& user,
@@ -61,6 +72,20 @@ void MirallConfigFile::writeOwncloudConfig( const QString& connection,
     settings.setValue("user", user );
     settings.setValue("password", passwd );
 
+    settings.sync();
+}
+
+void MirallConfigFile::removeConnection( const QString& connection )
+{
+    QString con( connection );
+    if( connection.isEmpty() ) con = QString::fromLocal8Bit("ownCloud");
+
+    qDebug() << "    removing the config file for connection " << con;
+
+    // Currently its just removing the entire config file
+    QSettings settings( mirallConfigFile(), QSettings::IniFormat);
+    settings.beginGroup( con );
+    settings.remove("");  // removes all content from the group
     settings.sync();
 }
 

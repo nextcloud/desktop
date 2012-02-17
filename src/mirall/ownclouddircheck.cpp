@@ -1,7 +1,8 @@
 #include <QtCore>
 
-#include "ownclouddircheck.h"
-#include "owncloudinfo.h"
+#include "mirall/ownclouddircheck.h"
+#include "mirall/owncloudinfo.h"
+#include "mirall/mirallconfigfile.h"
 
 namespace Mirall {
 
@@ -22,15 +23,15 @@ bool ownCloudDirCheck::checkDirectory( const QString& dir )
     return true;
   }
 
-  ownCloudInfo info;
+  MirallConfigFile cfgFile;
 
   if( _reply && _reply->isRunning() ) _reply->abort();
 
   QNetworkRequest request;
-  request.setUrl( QUrl( info.url() + "/files/webdav.php/"+dir ) );
+  request.setUrl( QUrl( cfgFile.ownCloudUrl() + "/files/webdav.php/"+dir ) );
   request.setRawHeader( "User-Agent", "mirall" );
 
-  QString concatenated = info.user() + ":" + info.password();
+  QString concatenated = cfgFile.ownCloudUser() + ":" + cfgFile.ownCloudPasswd();
   QByteArray data = concatenated.toLocal8Bit().toBase64();
   QString headerData = "Basic " + data;
   request.setRawHeader("Authorization", headerData.toLocal8Bit());
