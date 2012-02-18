@@ -175,22 +175,28 @@ void StatusDialog::setFolderList( Folder::Map folders )
     item->setData( f->syncEnabled(), FolderViewDelegate::FolderSyncEnabled );
     qDebug() << "Folder is SyncEnabled: " << f->syncEnabled();
 
-    SyncResult res = f->lastSyncResult();
     QString resultStr = tr("Undefined");
     QString statusIcon = "view-refresh";
-    qDebug() << "Status: " << res.result();
-    if( res.result() == SyncResult::Error ) {
-      resultStr = tr("Error");
-      statusIcon = "dialog-close";
-    } else if( res.result() == SyncResult::Success ) {
-      resultStr = tr("Success");
-      statusIcon = "dialog-ok";
-    } else if( res.result() == SyncResult::Disabled ) {
-      resultStr = tr("Disabled");
-      statusIcon = "dialog-cancel";
-    } else if( res.result() == SyncResult::SetupError ) {
-      resultStr = tr( "Setup Error" );
-      statusIcon = "dialog-cancel";
+    SyncResult res = f->lastSyncResult();
+
+    if( f->syncState() == Folder::Waiting ) {
+        qDebug() << "Status: " << res.result();
+        if( res.result() == SyncResult::Error ) {
+            resultStr = tr("Error");
+            statusIcon = "dialog-close";
+        } else if( res.result() == SyncResult::Success ) {
+            resultStr = tr("Success");
+            statusIcon = "dialog-ok";
+        } else if( res.result() == SyncResult::Disabled ) {
+            resultStr = tr("Disabled");
+            statusIcon = "dialog-cancel";
+        } else if( res.result() == SyncResult::SetupError ) {
+            resultStr = tr( "Setup Error" );
+            statusIcon = "dialog-cancel";
+        }
+    } else if( f->syncState() == Folder::Running ){
+        statusIcon = "view-refresh";
+        resultStr = tr("Synchronisation running.");
     }
     item->setData( QIcon::fromTheme( statusIcon, QIcon( QString( ":/mirall/resources/%1").arg(statusIcon))), FolderViewDelegate::FolderStatusIcon );
     item->setData( resultStr, FolderViewDelegate::FolderStatus );
