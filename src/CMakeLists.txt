@@ -49,7 +49,6 @@ mirall/statusdialog.cpp
 mirall/owncloudwizard.cpp
 mirall/owncloudsetupwizard.cpp
 mirall/owncloudinfo.cpp
-mirall/ownclouddircheck.cpp
 mirall/mirallwebdav.cpp
 mirall/theme.cpp
 mirall/miralltheme.cpp

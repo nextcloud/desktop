@@ -25,7 +25,6 @@
 
 #include "mirall/folderwizard.h"
 #include "mirall/owncloudinfo.h"
-#include "mirall/ownclouddircheck.h"
 #include "mirall/mirallwebdav.h"
 #include "mirall/mirallconfigfile.h"
 
@@ -167,9 +166,9 @@ FolderWizardTargetPage::FolderWizardTargetPage()
     _timer->setSingleShot( true );
     connect( _timer, SIGNAL(timeout()), SLOT(slotTimerFires()));
 
-    _ownCloudDirCheck = new ownCloudDirCheck( this );
+    _ownCloudDirCheck = new ownCloudInfo();
 
-    connect( _ownCloudDirCheck, SIGNAL(directoryExists(QString,bool)),
+    connect( _ownCloudDirCheck, SIGNAL(ownCloudDirExists(QString,bool)),
              SLOT(slotDirCheckReply(QString,bool)));
 }
 
@@ -191,7 +190,7 @@ void FolderWizardTargetPage::slotTimerFires()
 {
   const QString folder = _ui.OCFolderLineEdit->text();
   qDebug() << "Querying folder " << folder;
-  _ownCloudDirCheck->checkDirectory( folder );
+  _ownCloudDirCheck->getWebDAVPath( folder );
 }
 
 void FolderWizardTargetPage::slotDirCheckReply(const QString &url, bool exists )
@@ -216,9 +215,7 @@ void FolderWizardTargetPage::slotCreateRemoteFolder()
 
   MirallConfigFile cfgFile;
 
-  QString url = cfgFile.ownCloudUrl();
-  if( ! url.endsWith('/')) url.append('/');
-  url.append( "files/webdav.php/");
+  QString url = cfgFile.ownCloudUrl( cfgFile.defaultConnection(), true );
   url.append( folder );
   qDebug() << "creating folder on ownCloud: " << url;
 
@@ -249,7 +246,7 @@ void FolderWizardTargetPage::slotCreateRemoteFolderFinished( QNetworkReply *repl
 
 FolderWizardTargetPage::~FolderWizardTargetPage()
 {
-
+    delete _ownCloudDirCheck;
 }
 
 bool FolderWizardTargetPage::isComplete() const

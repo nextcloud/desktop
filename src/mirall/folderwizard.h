@@ -97,7 +97,7 @@ protected slots:
 private:
     Ui_FolderWizardTargetPage _ui;
     QTimer *_timer;
-    ownCloudDirCheck *_ownCloudDirCheck;
+    ownCloudInfo *_ownCloudDirCheck;
     bool _dirChecked;
     bool _warnWasVisible;
 };

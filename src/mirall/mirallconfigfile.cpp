@@ -44,10 +44,15 @@ bool MirallConfigFile::exists()
     return file.exists();
 }
 
+QString MirallConfigFile::defaultConnection() const
+{
+    return QString::fromLocal8Bit("ownCloud");
+}
+
 bool MirallConfigFile::connectionExists( const QString& conn )
 {
     QString con = conn;
-    if( conn.isEmpty() ) con = QString::fromLocal8Bit("ownCloud");
+    if( conn.isEmpty() ) con = defaultConnection();
 
     QSettings settings( mirallConfigFile(), QSettings::IniFormat);
 
@@ -78,7 +83,7 @@ void MirallConfigFile::writeOwncloudConfig( const QString& connection,
 void MirallConfigFile::removeConnection( const QString& connection )
 {
     QString con( connection );
-    if( connection.isEmpty() ) con = QString::fromLocal8Bit("ownCloud");
+    if( connection.isEmpty() ) con = defaultConnection();
 
     qDebug() << "    removing the config file for connection " << con;
 
@@ -92,16 +97,20 @@ void MirallConfigFile::removeConnection( const QString& connection )
 /*
  * returns the configured owncloud url if its already configured, otherwise an empty
  * string.
+ * The returned url always has a trailing hash.
+ * If webdav is true, the webdav-server url is returned.
  */
-QString MirallConfigFile::ownCloudUrl( const QString& connection ) const
+QString MirallConfigFile::ownCloudUrl( const QString& connection, bool webdav ) const
 {
     QString con( connection );
-    if( connection.isEmpty() ) con = QString::fromLocal8Bit("ownCloud");
+    if( connection.isEmpty() ) con = defaultConnection();
 
     QSettings settings( mirallConfigFile(), QSettings::IniFormat );
     settings.beginGroup( con );
 
     QString url = settings.value( "url" ).toString();
+    if( ! url.endsWith('/')) url.append('/');
+    if( webdav ) url.append( "files/webdav.php/" );
 
     qDebug() << "Returning configured owncloud url: " << url;
 
@@ -111,7 +120,7 @@ QString MirallConfigFile::ownCloudUrl( const QString& connection ) const
 QUrl MirallConfigFile::fullOwnCloudUrl( const QString& connection ) const
 {
     QString con( connection );
-    if( connection.isEmpty() ) con = QString::fromLocal8Bit("ownCloud");
+    if( connection.isEmpty() ) con = defaultConnection();
 
     QSettings settings( mirallConfigFile(), QSettings::IniFormat );
     settings.beginGroup( con );
@@ -126,7 +135,7 @@ QUrl MirallConfigFile::fullOwnCloudUrl( const QString& connection ) const
 QString MirallConfigFile::ownCloudUser( const QString& connection ) const
 {
     QString con( connection );
-    if( connection.isEmpty() ) con = QString::fromLocal8Bit("ownCloud");
+    if( connection.isEmpty() ) con = defaultConnection();
 
     QSettings settings( mirallConfigFile(), QSettings::IniFormat );
     settings.beginGroup( con );
@@ -140,7 +149,7 @@ QString MirallConfigFile::ownCloudUser( const QString& connection ) const
 QString MirallConfigFile::ownCloudPasswd( const QString& connection ) const
 {
     QString con( connection );
-    if( connection.isEmpty() ) con = QString::fromLocal8Bit("ownCloud");
+    if( connection.isEmpty() ) con = defaultConnection();
 
     QSettings settings( mirallConfigFile(), QSettings::IniFormat );
     settings.beginGroup( con );
@@ -148,6 +157,15 @@ QString MirallConfigFile::ownCloudPasswd( const QString& connection ) const
     QString pwd = settings.value( "password" ).toString();
 
     return pwd;
+}
+
+QByteArray MirallConfigFile::basicAuthHeader() const
+{
+    QString concatenated = ownCloudUser() + ":" + ownCloudPasswd();
+    const QString b("Basic ");
+    QByteArray data = b.toLocal8Bit() + concatenated.toLocal8Bit().toBase64();
+
+    return data;
 }
 
 }

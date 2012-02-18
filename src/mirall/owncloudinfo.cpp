@@ -40,19 +40,44 @@ bool ownCloudInfo::isConfigured()
 
 void ownCloudInfo::checkInstallation()
 {
- QNetworkAccessManager *manager = new QNetworkAccessManager(this);
- connect(manager, SIGNAL(finished(QNetworkReply*)),
-         this, SLOT(slotReplyFinished(QNetworkReply*)));
-
- MirallConfigFile cfgFile;
-
- _reply = manager->get(QNetworkRequest(QUrl( cfgFile.ownCloudUrl( _connection ) + "/status.php" )));
- _readBuffer.clear();
-
- connect( _reply, SIGNAL( error(QNetworkReply::NetworkError )),
-          this, SLOT(slotError( QNetworkReply::NetworkError )));
- connect( _reply, SIGNAL( readyRead()), this, SLOT(slotReadyRead()));
+    getRequest( "status.php", false );
 }
+
+void ownCloudInfo::getWebDAVPath( const QString& path )
+{
+    getRequest( path, true );
+}
+
+void ownCloudInfo::getRequest( const QString& path, bool webdav )
+{
+    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+    connect(manager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(slotReplyFinished(QNetworkReply*)));
+
+    // this is not a status call.
+    if( !webdav && path == "status.php") {
+        _versionInfoCall = true;
+        _directory.clear();
+    } else {
+        _directory = path;
+        _versionInfoCall = false;
+    }
+
+    MirallConfigFile cfgFile;
+    QString url = cfgFile.ownCloudUrl( _connection, webdav ) + path;
+    QNetworkRequest request;
+    request.setUrl( QUrl( url ) );
+    request.setRawHeader( "User-Agent", "mirall" );
+    request.setRawHeader( "Authorization", cfgFile.basicAuthHeader() );
+
+    _reply = manager->get( request );
+    _readBuffer.clear();
+
+    connect( _reply, SIGNAL( error(QNetworkReply::NetworkError )),
+             this, SLOT(slotError( QNetworkReply::NetworkError )));
+    connect( _reply, SIGNAL( readyRead()), this, SLOT(slotReadyRead()));
+}
+
 
 void ownCloudInfo::slotAuthentication( QNetworkReply*, QAuthenticator *auth )
 {
@@ -71,33 +96,43 @@ void ownCloudInfo::slotReplyFinished( QNetworkReply *reply )
 
   QString info( version );
 
-  if( info.contains("installed") && info.contains("version") && info.contains("versionstring") ) {
-    info.remove(0,1); // remove first char which is a "{"
-    info.remove(-1,1); // remove the last char which is a "}"
-    QStringList li = info.split( QChar(',') );
+  if( _versionInfoCall ) {
+      // it was a call to status.php
 
-    QString infoString;
-    QString versionStr;
-    foreach ( infoString, li ) {
-      if( infoString.contains( "versionstring") ) {
-        // get the version string out.
-        versionStr = infoString.mid(17);
-        versionStr.remove(-1, 1);
+      if( info.contains("installed") && info.contains("version") && info.contains("versionstring") ) {
+          info.remove(0,1); // remove first char which is a "{"
+          info.remove(-1,1); // remove the last char which is a "}"
+          QStringList li = info.split( QChar(',') );
+
+          QString infoString;
+          QString versionStr;
+          foreach ( infoString, li ) {
+              if( infoString.contains( "versionstring") ) {
+                  // get the version string out.
+                  versionStr = infoString.mid(17);
+                  versionStr.remove(-1, 1);
+              }
+          }
+          QString urlStr( url );
+          urlStr.remove("/status.php"); // get the plain url.
+
+          emit ownCloudInfoFound( urlStr, versionStr );
+      } else {
+          qDebug() << "No proper answer on status.php!";
+          emit noOwncloudFound( reply->error() );
       }
-    }
-    QString urlStr( url );
-    urlStr.remove("/status.php"); // get the plain url.
-
-    emit ownCloudInfoFound( urlStr, versionStr );
   } else {
-    qDebug() << "No proper answer on status.php!";
-    emit noOwncloudFound( reply->error() );
+      // it was a general GET request.
+      emit ownCloudDirExists( _directory, reply->error() == QNetworkReply::NoError );
   }
 }
 
 void ownCloudInfo::slotReadyRead()
 {
-  _readBuffer.append(_reply->readAll());
+    // do not slurp in the content of other calls.
+    if( _versionInfoCall ) {
+        _readBuffer.append(_reply->readAll());
+    }
 }
 
 void ownCloudInfo::slotError( QNetworkReply::NetworkError err)

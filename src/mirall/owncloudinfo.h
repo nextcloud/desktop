@@ -23,18 +23,33 @@ namespace Mirall
 
 class ownCloudInfo : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  explicit ownCloudInfo( const QString& = QString(), QObject *parent = 0);
+    explicit ownCloudInfo( const QString& = QString(), QObject *parent = 0);
 
-  bool isConfigured();
+    bool isConfigured();
 
-  void checkInstallation();
+    /**
+      * call status.php
+      */
+    void checkInstallation();
+
+    /**
+      * a general GET request to the ownCloud. If the second bool parameter is
+      * true, the WebDAV server is queried.
+      */
+    void getRequest( const QString&, bool );
+
+    /**
+      * convenience: GET request to the WebDAV server.
+      */
+    void getWebDAVPath( const QString& );
 
 signals:
-  // result signal with url- and version string.
-  void ownCloudInfoFound( const QString&,  const QString& );
-  void noOwncloudFound( QNetworkReply::NetworkError );
+    // result signal with url- and version string.
+    void ownCloudInfoFound( const QString&,  const QString& );
+    void noOwncloudFound( QNetworkReply::NetworkError );
+    void ownCloudDirExists( const QString&, bool );
 
 public slots:
 
@@ -44,9 +59,12 @@ protected slots:
     void slotError( QNetworkReply::NetworkError );
     void slotAuthentication( QNetworkReply*, QAuthenticator *);
 private:
+
     QNetworkReply *_reply;
     QByteArray    _readBuffer;
-    QString _connection;
+    QString       _connection;
+    bool          _versionInfoCall;
+    QString       _directory;
 };
 
 };

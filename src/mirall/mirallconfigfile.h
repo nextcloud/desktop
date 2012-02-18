@@ -25,21 +25,26 @@ public:
 
     QString mirallConfigFile() const;
     bool exists();
+
     bool connectionExists( const QString& = QString() );
+    QString defaultConnection() const;
 
     void writeOwncloudConfig( const QString& connection,
                               const QString& url,
                               const QString& user,
                               const QString& passwd );
+
     void removeConnection( const QString& connection = QString() );
 
-    QString ownCloudUrl( const QString& connection = QString() ) const;
+    QString ownCloudUrl( const QString& connection = QString(), bool webdav = false ) const;
 
     QUrl fullOwnCloudUrl( const QString& connection = QString() ) const;
 
     QString ownCloudUser( const QString& connection = QString() ) const;
 
     QString ownCloudPasswd( const QString& connection = QString() ) const;
+
+    QByteArray basicAuthHeader() const;
 };
 
 }
