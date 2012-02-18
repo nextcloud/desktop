@@ -815,6 +815,7 @@ static int _close(csync_vio_method_handle_t *fhandle) {
                 /* successfully opened for read. Now start the request via ne_put */
                 ne_set_request_body_fd( writeCtx->req, writeCtx->fd, 0, st.st_size );
                 rc = ne_request_dispatch( writeCtx->req );
+                close( writeCtx->fd );
                 if (rc == NE_OK) {
                     if ( ne_get_status( writeCtx->req )->klass != 2 ) {
                         DEBUG_WEBDAV(("Error - PUT status value no 2xx\n"));
