@@ -55,9 +55,7 @@ protected slots:
     void slotInfoFolder( const QString& );
     void slotConfigure();
 
-    void slotFolderSyncStarted();
-    void slotFolderSyncFinished(const SyncResult &);
-
+    void slotSyncStateChange( const QString& );
 protected:
 
     void setupActions();

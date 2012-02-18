@@ -39,6 +39,8 @@ public:
     Folder(const QString &alias, const QString &path, QObject *parent = 0L);
     virtual ~Folder();
 
+    enum SyncState{ Unknown, Running, Waiting };
+
     typedef QHash<QString, Folder*> Map;
 
     /**
@@ -116,6 +118,8 @@ public:
      */
      SyncResult lastSyncResult() const;
 
+     SyncState syncState() { return _syncState; }
+
      /**
      * set the backend description string.
      */
@@ -144,7 +148,7 @@ protected:
     void setPollInterval(int seconds);
 
 signals:
-
+    void syncStateChange();
     void syncStarted();
     void syncFinished(const SyncResult &result);
 
@@ -169,10 +173,11 @@ private:
     bool      _onlyOnlineEnabled;
     bool      _onlyThisLANEnabled;
     QNetworkConfigurationManager _networkMgr;
-    bool      _online;
-    bool      _enabled;
+    bool       _online;
+    bool       _enabled;
     SyncResult _lastSyncResult;
-    QString   _backend;
+    SyncState  _syncState;
+    QString    _backend;
 
 protected slots:
 

@@ -17,6 +17,7 @@
 #include <QDebug>
 #include <QSettings>
 #include <QUrl>
+#include <QSignalMapper>
 
 #include "mirall/mirallconfigfile.h"
 #include "mirall/unisonfolder.h"
@@ -37,6 +38,10 @@ FolderMan::FolderMan(QObject *parent) :
     QDir storageDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
     storageDir.mkpath("folders");
     _folderConfigPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/folders";
+
+    _folderChangeSignalMapper = new QSignalMapper(this);
+    connect(_folderChangeSignalMapper, SIGNAL(mapped(const QString &)),
+            this, SIGNAL(folderSyncStateChange(const QString &)));
 }
 
 FolderMan::~FolderMan()
@@ -159,9 +164,11 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
     folder->setOnlyThisLANEnabled(settings.value("folder/onlyThisLAN", false).toBool());
 
     _folderMap[file] = folder;
+
     qDebug() << "Adding folder to Folder Map " << folder;
-    QObject::connect(folder, SIGNAL(syncStarted()), SLOT(slotFolderSyncStarted()));
-    QObject::connect(folder, SIGNAL(syncFinished(const SyncResult &)), SLOT(slotFolderSyncFinished(const SyncResult &)));
+    /* Use a signal mapper to connect the signals to the alias */
+    connect(folder, SIGNAL(syncStateChange()), _folderChangeSignalMapper, SLOT(map()));
+    _folderChangeSignalMapper->setMapping( folder, folder->alias() );
 
     return folder;
 }
@@ -200,14 +207,25 @@ SyncResult FolderMan::syncResult( const QString& alias )
 {
     SyncResult res;
     if( _folderMap.contains( alias ) ) {
+        Folder *f = _folderMap[alias];
+        res = f->lastSyncResult();
+    }
+    return res;
+}
 
+Folder::SyncState FolderMan::syncState( const QString& alias )
+{
+    Folder::SyncState res( Folder::Unknown );
+
+    if( _folderMap.contains( alias ) ) {
+        Folder *f = _folderMap[alias];
+        res = f->syncState();
     }
     return res;
 }
 
 void FolderMan::slotFolderSyncStarted( )
 {
-     _folderSyncCount++;
 }
 
 void FolderMan::slotFolderSyncFinished( const SyncResult& )

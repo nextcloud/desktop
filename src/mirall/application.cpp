@@ -58,6 +58,9 @@ Application::Application(int argc, char **argv) :
 
     _folderMan = new FolderMan();
 
+    connect( _folderMan, SIGNAL(folderSyncStateChange(QString)),
+             this,SLOT(slotSyncStateChange(QString)));
+
     setQuitOnLastWindowClosed(false);
 
     _folderWizard = new FolderWizard();
@@ -66,10 +69,12 @@ Application::Application(int argc, char **argv) :
 
     connect( _statusDialog, SIGNAL(removeFolderAlias( const QString&)),
              SLOT(slotRemoveFolder(const QString&)));
+#if 0
     connect( _statusDialog, SIGNAL(fetchFolderAlias(const QString&)),
              SLOT(slotFetchFolder( const QString&)));
     connect( _statusDialog, SIGNAL(pushFolderAlias(const QString&)),
              SLOT(slotPushFolder( const QString&)));
+#endif
     connect( _statusDialog, SIGNAL(enableFolderAlias(QString,bool)),
              SLOT(slotEnableFolder(QString,bool)));
     connect( _statusDialog, SIGNAL(infoFolderAlias(const QString&)),
@@ -134,7 +139,6 @@ void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
       _owncloudSetupWizard->wizard()->show();
     }
 
-
     // if no config file is there, start the configuration wizard.
     MirallConfigFile cfgFile;
 
@@ -143,15 +147,10 @@ void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
       _owncloudSetupWizard->startWizard();
     } else {
       _statusDialog->setOCUrl( QUrl( cfgFile.ownCloudUrl()) );
-
+      _statusDialog->setFolderList( _folderMan->map() );
       _statusDialog->show();
     }
     _folderMan->restoreEnabledFolders();
-
-    // FIXME:
-//    if ( !_folderMap.isEmpty() && _statusDialog->isVisible() ) {
-//      _statusDialog->setFolderList( _folderMap );
-//    }
   }
 }
 
@@ -217,9 +216,7 @@ void Application::slotAddFolder()
     if( goodData ) {
         _folderMan->addFolderDefinition( backend, alias, sourceFolder, targetPath, onlyThisLAN );
     }
-#ifdef PUT_TO_FOLDERMAN
 
-#endif
   } else {
     qDebug() << "* Folder wizard cancelled";
   }
@@ -353,17 +350,14 @@ void Application::slotConfigure()
   _folderMan->restoreEnabledFolders();
 }
 
-// FIXME: Better start- and end handling
-void Application::slotFolderSyncStarted()
+void Application::slotSyncStateChange( const QString& alias )
 {
-    _tray->setIcon(QIcon::fromTheme(FOLDER_SYNC_ICON, QIcon( QString( ":/mirall/resources/%1").arg(FOLDER_SYNC_ICON))));
-}
+    Folder::SyncState state = _folderMan->syncState( alias );
 
-void Application::slotFolderSyncFinished(const SyncResult &result)
-{
-  // if( _folderSyncCount == 0 ) {
-    computeOverallSyncStatus();
-  // }
+    _statusDialog->setFolderList( _folderMan->map() );
+    if( state == Folder::Waiting ) computeOverallSyncStatus();
+
+    qDebug() << "Sync state changed for folder " << alias << ": "  << state;
 }
 
 void Application::computeOverallSyncStatus()

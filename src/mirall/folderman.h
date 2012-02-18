@@ -21,6 +21,8 @@
 #include "mirall/folder.h"
 #include "mirall/folderwatcher.h"
 
+class QSignalMapper;
+
 namespace Mirall {
 
 class SyncResult;
@@ -52,8 +54,22 @@ public:
       */
     Folder *addFolderDefinition( const QString&, const QString&, const QString&, const QString&, bool );
 
+    /**
+      * return the last sync result by alias
+      */
     SyncResult syncResult( const QString& );
+
+    /**
+      * returns the current sync state of the folder named by alias
+      */
+    Folder::SyncState syncState( const QString& );
+
 signals:
+    /**
+      * signal to indicate a folder named by alias has changed its sync state.
+      * Get the state via the Folder Map or the syncResult and syncState methods.
+      */
+    void folderSyncStateChange( const QString & );
 
 public slots:
     void slotRemoveFolder( const QString& );
@@ -76,6 +92,7 @@ private:
     QHash<QString, bool> _folderEnabledMap;
     QString _folderConfigPath;
     OwncloudSetup *_ownCloudSetup;
+    QSignalMapper *_folderChangeSignalMapper;
 
     // counter tracking number of folders doing a sync
     int _folderSyncCount;

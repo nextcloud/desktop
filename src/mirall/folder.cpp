@@ -38,7 +38,8 @@ Folder::Folder(const QString &alias, const QString &path, QObject *parent)
       _onlyOnlineEnabled(false),
       _onlyThisLANEnabled(false),
       _online(false),
-      _enabled(true)
+      _enabled(true),
+      _syncState( Unknown )
 {
     _openAction = new QAction(QIcon::fromTheme(FOLDER_ICON, QIcon( QString( ":/mirall/resources/%1").arg(FOLDER_ICON))), path, this);
     _openAction->setIconVisibleInMenu(true);
@@ -197,6 +198,8 @@ void Folder::slotSyncStarted()
 {
     // disable events until syncing is done
     _watcher->setEventsEnabled(false);
+    _syncState = Running;
+    emit syncStateChange();
     _openAction->setIcon(QIcon::fromTheme(FOLDER_SYNC_ICON, QIcon( QString( ":/mirall/resources/%1").arg(FOLDER_SYNC_ICON))));
 }
 
@@ -204,6 +207,8 @@ void Folder::slotSyncFinished(const SyncResult &result)
 {
   _lastSyncResult = result;
   _openAction->setIcon(icon(22));
+  _syncState = Waiting;
+  emit syncStateChange();
 
   // reenable the poll timer if folder is sync enabled
   if( syncEnabled() ) {
