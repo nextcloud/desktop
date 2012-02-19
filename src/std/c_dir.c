@@ -101,7 +101,11 @@ int c_rmdirs(const char *path) {
 
         /* stat the file */
         if (lstat(fname, &sb) != -1) {
+#ifdef __unix__
           if (S_ISDIR(sb.st_mode) && !S_ISLNK(sb.st_mode)) {
+#else
+          if (S_ISDIR(sb.st_mode)) {
+#endif
             if (rmdir(fname) < 0) { /* can't be deleted */
               if (errno == EACCES) {
                 closedir(d);

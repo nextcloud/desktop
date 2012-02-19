@@ -39,7 +39,11 @@ int c_isfile(const char *path) {
     return 0;
   }
 
+#ifdef __unix__
   if (S_ISREG(sb.st_mode) || S_ISLNK(sb.st_mode)) {
+#else
+  if (S_ISREG(sb.st_mode)) {
+#endif
     return 1;
   }
 
