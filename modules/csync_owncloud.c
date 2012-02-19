@@ -230,6 +230,63 @@ static int ne_error_to_errno(int ne_err)
     return EIO;
 }
 
+static void addSSLWarning( char *ptr, const char *warn, int len )
+{
+    char *concatHere = ptr;
+
+    if( ! (warn && ptr )) return;
+    int remainingLen = len - strlen(ptr);
+    concatHere = ptr + strlen(ptr);  // put the write pointer to the end.
+    strncpy( concatHere, warn, remainingLen );
+}
+
+#define LEN 4096
+static int verify_sslcert(void *userdata, int failures,
+                          const ne_ssl_certificate *cert)
+{
+    char problem[LEN];
+    char buf[NE_ABUFSIZ];
+    int ret = -1;
+
+    memset( problem, 0, LEN );
+
+    addSSLWarning( problem, "There are problems with the SSL certificate:\n", LEN );
+    if( failures & NE_SSL_NOTYETVALID ) {
+        addSSLWarning( problem, " * The certificate is not yet valid.\n", LEN );
+    }
+    if( failures & NE_SSL_EXPIRED ) {
+        addSSLWarning( problem, " * The certificate has expired.\n", LEN );
+    }
+
+    if( failures & NE_SSL_UNTRUSTED ) {
+        addSSLWarning( problem, " * The certificate is not trusted!\n", LEN );
+    }
+    if( failures & NE_SSL_IDMISMATCH ) {
+        addSSLWarning( problem, " * The hostname for which the certificate was "
+                       "issued does not match the hostname of the server\n", LEN );
+    }
+    if( failures & NE_SSL_BADCHAIN ) {
+        addSSLWarning( problem, " * The certificate chain contained a certificate other than the server cert\n", LEN );
+    }
+    if( failures & NE_SSL_REVOKED ) {
+        addSSLWarning( problem, " * The server certificate has been revoked by the issuing authority.\n", LEN );
+    }
+
+    addSSLWarning( problem, "Do you want to accept the certificate anyway?\nAnswer yes to do so and take the risk: ", LEN );
+
+    if( _authcb ){
+        /* call the csync callback */
+        DEBUG_WEBDAV(("Call the csync callback for SSL problems\n"));
+        memset( buf, 0, NE_ABUFSIZ );
+        (*_authcb) ( problem, buf, NE_ABUFSIZ-1, 1, 0, userdata );
+        if( strcmp( buf, "yes" ) == 0 ) {
+            ret = 0;
+        }
+    }
+    DEBUG_WEBDAV(("################ VERIFY_SSL CERT: %d\n", ret  ));
+    return ret;
+}
+
 /*
  * Authentication callback. Is set by ne_set_server_auth to be called
  * from the neon lib to authenticate a request.
@@ -297,8 +354,12 @@ static int dav_connect(const char *base_url) {
 
     if( strcmp( uri.scheme, "owncloud" ) == 0 ) {
         strncpy( protocol, "http", 6);
-    } else if( strcmp( uri.scheme, "ownclouds" )) {
+    } else if( strcmp( uri.scheme, "ownclouds" ) == 0 ) {
         strncpy( protocol, "https", 6 );
+    } else {
+        strncpy( protocol, "", 6 );
+        DEBUG_WEBDAV(("Invalid protocol %s, go outa here!", protocol ));
+        goto out;
     }
 
     if( uri.userinfo ) {
@@ -329,6 +390,7 @@ static int dav_connect(const char *base_url) {
     /* FIXME: Check for https connections */
     dav_session.ctx = ne_session_create( protocol, uri.host, uri.port);
 
+    DEBUG_WEBDAV(("Session create with protocol %s failed\n", protocol ));
     if (dav_session.ctx == NULL) {
         rc = -1;
         goto out;
@@ -337,6 +399,7 @@ static int dav_connect(const char *base_url) {
     ne_set_read_timeout(dav_session.ctx, timeout);
     ne_set_useragent( dav_session.ctx, "csync_owncloud" );
     ne_set_server_auth(dav_session.ctx, ne_auth, 0 );
+    ne_ssl_set_verify( dav_session.ctx, verify_sslcert, 0 );
 
     _connected = 1;
     rc = 0;
