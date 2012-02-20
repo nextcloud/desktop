@@ -23,6 +23,12 @@
 #ifndef _CSYNC_VIO_FILE_STAT_H
 #define _CSYNC_VIO_FILE_STAT_H
 
+/*
+ * cannot include csync_private here because
+ * that would cause circular inclusion
+ */
+#include "c_private.h"
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>

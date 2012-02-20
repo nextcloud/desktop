@@ -9,6 +9,7 @@
 #include "c_macro.h"
 #include "c_alloc.h"
 #include "c_dir.h"
+#include "c_private.h"
 
 int c_mkdirs(const char *path, mode_t mode) {
   int tmp;

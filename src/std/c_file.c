@@ -29,6 +29,8 @@
 #include "c_file.h"
 #include "c_string.h"
 
+#include "c_private.h"
+
 /* check if path is a file */
 int c_isfile(const char *path) {
   struct stat sb;
