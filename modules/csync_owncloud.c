@@ -37,6 +37,7 @@
 #include <neon/ne_dates.h>
 
 #include "c_lib.h"
+#include "csync.h"
 #include "vio/csync_vio_module.h"
 #include "vio/csync_vio_file_stat.h"
 
@@ -230,16 +231,26 @@ static int ne_error_to_errno(int ne_err)
     return EIO;
 }
 
+/*
+ * helper method to build up a user text for SSL problems, called from the
+ * verify_sslcert callback.
+ */
 static void addSSLWarning( char *ptr, const char *warn, int len )
 {
     char *concatHere = ptr;
+    int remainingLen = 0;
 
     if( ! (warn && ptr )) return;
-    int remainingLen = len - strlen(ptr);
+    remainingLen = len - strlen(ptr);
     concatHere = ptr + strlen(ptr);  // put the write pointer to the end.
     strncpy( concatHere, warn, remainingLen );
 }
 
+/*
+ * Callback to verify the SSL certificate, called from libneon.
+ * It analyzes the SSL problem, creates a user information text and passes
+ * it to the csync callback to ask the user.
+ */
 #define LEN 4096
 static int verify_sslcert(void *userdata, int failures,
                           const ne_ssl_certificate *cert)
@@ -248,6 +259,7 @@ static int verify_sslcert(void *userdata, int failures,
     char buf[NE_ABUFSIZ];
     int ret = -1;
 
+    (void) cert;
     memset( problem, 0, LEN );
 
     addSSLWarning( problem, "There are problems with the SSL certificate:\n", LEN );
@@ -283,7 +295,7 @@ static int verify_sslcert(void *userdata, int failures,
             ret = 0;
         }
     }
-    DEBUG_WEBDAV(("################ VERIFY_SSL CERT: %d\n", ret  ));
+    DEBUG_WEBDAV(("## VERIFY_SSL CERT: %d\n", ret  ));
     return ret;
 }
 
@@ -335,6 +347,7 @@ static int dav_connect(const char *base_url) {
     int rc;
     char *p;
     char protocol[6];
+    char uaBuf[256];
 
     if (_connected) {
         return 0;
@@ -345,7 +358,7 @@ static int dav_connect(const char *base_url) {
         goto out;
     }
 
-    DEBUG_WEBDAV(("* Userinfo: %s\n", uri.userinfo ));
+    // DEBUG_WEBDAV(("* Userinfo: %s\n", uri.userinfo ));
     DEBUG_WEBDAV(("* scheme %s\n", uri.scheme ));
     DEBUG_WEBDAV(("* host %s\n", uri.host ));
     DEBUG_WEBDAV(("* port %d\n", uri.port ));
@@ -359,6 +372,7 @@ static int dav_connect(const char *base_url) {
     } else {
         strncpy( protocol, "", 6 );
         DEBUG_WEBDAV(("Invalid protocol %s, go outa here!", protocol ));
+        rc = -1;
         goto out;
     }
 
@@ -374,7 +388,6 @@ static int dav_connect(const char *base_url) {
         }
     }
     DEBUG_WEBDAV(("* user %s\n", dav_session.user ? dav_session.user : ""));
-    /* DEBUG_WEBDAV(("* passwd %s\n", dav_session.pwd ? dav_session.pwd : "" )); */
 
     if (uri.port == 0) {
         uri.port = ne_uri_defaultport(protocol);
@@ -397,7 +410,8 @@ static int dav_connect(const char *base_url) {
     }
 
     ne_set_read_timeout(dav_session.ctx, timeout);
-    ne_set_useragent( dav_session.ctx, "csync_owncloud" );
+    snprintf( uaBuf, sizeof(uaBuf), "csyncoC/%s",CSYNC_STRINGIFY( LIBCSYNC_VERSION ));
+    ne_set_useragent( dav_session.ctx, c_strdup( uaBuf ));
     ne_set_server_auth(dav_session.ctx, ne_auth, 0 );
     ne_ssl_set_verify( dav_session.ctx, verify_sslcert, 0 );
 
