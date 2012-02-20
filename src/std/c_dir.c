@@ -48,7 +48,11 @@ int c_mkdirs(const char *path, mode_t mode) {
     }
   }
 
+#ifndef _WIN32
   tmp = mkdir(path, mode);
+#else
+  tmp = mkdir(path);
+#endif
   if ((tmp < 0) && (errno == EEXIST)) {
     return 0;
   }

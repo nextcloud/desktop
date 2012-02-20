@@ -201,6 +201,7 @@ csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_method_handle_t *dhandl
   file_stat->name = c_strdup(dirent->d_name);
   file_stat->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
 
+#ifndef _WIN32
   switch (dirent->d_type) {
     case DT_FIFO:
     case DT_SOCK:
@@ -222,6 +223,7 @@ csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_method_handle_t *dhandl
     default:
       break;
   }
+#endif
 
   return file_stat;
 
@@ -232,7 +234,7 @@ err:
 }
 
 int csync_vio_local_mkdir(const char *uri, mode_t mode) {
-  return mkdir(uri, mode);
+  return c_mkdirs(uri, mode);
 }
 
 int csync_vio_local_rmdir(const char *uri) {
@@ -266,14 +268,18 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
     case S_IFIFO:
       buf->type = CSYNC_VIO_FILE_TYPE_FIFO;
       break;
+#ifndef _WIN32
     case S_IFLNK:
       buf->type = CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK;
       break;
+#endif
     case S_IFREG:
       buf->type = CSYNC_VIO_FILE_TYPE_REGULAR;
       break;
+#ifndef _WIN32
     case S_IFSOCK:
       buf->type = CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK;
+#endif
     default:
       buf->type = CSYNC_VIO_FILE_TYPE_UNKNOWN;
       break;
@@ -309,11 +315,13 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   buf->size = sb.st_size;
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
 
+#ifndef _WIN32
   buf->blksize = sb.st_blksize;
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_SIZE;
 
   buf->blkcount = sb.st_blocks;
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_COUNT;
+#endif
 
   buf->atime = sb.st_atime;
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ATIME;
@@ -340,7 +348,11 @@ int csync_vio_local_chmod(const char *uri, mode_t mode) {
 }
 
 int csync_vio_local_chown(const char *uri, uid_t owner, gid_t group) {
-  return chown(uri, owner, group);
+#ifndef _WIN32
+    return chown(uri, owner, group);
+#else
+    return 0;
+#endif
 }
 
 int csync_vio_local_utimes(const char *uri, const struct timeval *times) {
