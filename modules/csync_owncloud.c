@@ -400,7 +400,6 @@ static int dav_connect(const char *base_url) {
         goto out;
     }
 
-    /* FIXME: Check for https connections */
     dav_session.ctx = ne_session_create( protocol, uri.host, uri.port);
 
     DEBUG_WEBDAV(("Session create with protocol %s failed\n", protocol ));
@@ -668,15 +667,12 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
         fetchCtx->include_target = 1;
         fetchCtx->currResource = NULL;
 
-        DEBUG_WEBDAV(("fetchCtx good.\n" ));
-
         rc = fetch_resource_list( curi, NE_DEPTH_ONE, fetchCtx );
         if( rc != NE_OK ) {
             errno = ne_session_error_errno( dav_session.ctx );
 
             DEBUG_WEBDAV(("stat fails with errno %d\n", errno ));
             SAFE_FREE(fetchCtx);
-            // csync_vio_file_stat_destroy(buf);
             return -1;
         }
 
@@ -746,10 +742,6 @@ static csync_vio_method_handle_t *_open(const char *durl,
     (void) mode; /* unused on webdav server */
     DEBUG_WEBDAV(( "=> open called for %s!\n", durl ));
 
-    /* uri = ne_path_escape(durl);
-     * escaping lets the ne_request_create fail, even though its documented
-     * differently :-(
-     */
     uri = _cleanPath( durl );
     if( ! uri ) {
         rc = NE_ERROR;
@@ -867,6 +859,7 @@ static int _close(csync_vio_method_handle_t *fhandle) {
     writeCtx = (struct transfer_context*) fhandle;
 
     if (fhandle == NULL) {
+        errno = EBADF;
         ret = -1;
     }
 
@@ -877,29 +870,38 @@ static int _close(csync_vio_method_handle_t *fhandle) {
         if( writeCtx->fd > -1 ) {
             if( close( writeCtx->fd ) < 0 ) {
                 DEBUG_WEBDAV(("Could not close file %s\n", writeCtx->tmpFileName ));
+                errno = EBADF;
                 ret = -1;
             }
 
             /* and open it again to read from */
             if (( writeCtx->fd = open( writeCtx->tmpFileName, O_RDONLY )) < 0) {
+                errno = EIO;
                 ret = -1;
             } else {
                 if (fstat( writeCtx->fd, &st ) < 0) {
                     DEBUG_WEBDAV(("Could not stat file %s\n", writeCtx->tmpFileName ));
+                    errno = EIO;
                     ret = -1;
                 }
 
                 /* successfully opened for read. Now start the request via ne_put */
                 ne_set_request_body_fd( writeCtx->req, writeCtx->fd, 0, st.st_size );
                 rc = ne_request_dispatch( writeCtx->req );
-                close( writeCtx->fd );
+                if( close( writeCtx->fd ) == -1 ) {
+                    errno = EBADF;
+                    ret = -1;
+                }
+
                 if (rc == NE_OK) {
                     if ( ne_get_status( writeCtx->req )->klass != 2 ) {
                         DEBUG_WEBDAV(("Error - PUT status value no 2xx\n"));
+                        errno = EIO;
+                        ret = -1;
                     }
                 } else {
-                    DEBUG_WEBDAV(("ERROR %d!\n", rc ));
-                    ne_session_error_errno( dav_session.ctx );
+                    DEBUG_WEBDAV(("Error - put request on close failed: %d!\n", rc ));
+                    errno = EIO;
                     ret = -1;
                 }
             }
@@ -908,7 +910,10 @@ static int _close(csync_vio_method_handle_t *fhandle) {
     } else  {
         /* Its a GET request, not much to do in close. */
         if( writeCtx->fd > -1) {
-            close( writeCtx->fd );
+            if( close( writeCtx->fd ) == -1 ) {
+                errno = EBADF;
+                ret = -1;
+            }
         }
     }
     /* Remove the local file. */
@@ -930,17 +935,20 @@ static ssize_t _read(csync_vio_method_handle_t *fhandle, void *buf, size_t count
 
     /* DEBUG_WEBDAV(( "read called on %s!\n", writeCtx->tmpFileName )); */
     if( ! fhandle ) {
+        errno = EBADF;
         return -1;
     }
 
     if( writeCtx->fd == -1 ) {
         /* open the downloaded file to read from */
         if (( writeCtx->fd = open( writeCtx->tmpFileName, O_RDONLY )) < 0) {
-             DEBUG_WEBDAV(("Could not open local file %s\n", writeCtx->tmpFileName ));
+            DEBUG_WEBDAV(("Could not open local file %s\n", writeCtx->tmpFileName ));
+            errno = EIO;
             return -1;
         } else {
             if (fstat( writeCtx->fd, &st ) < 0) {
                 DEBUG_WEBDAV(("Could not stat file %s\n", writeCtx->tmpFileName ));
+                errno = EIO;
                 return -1;
             }
 
@@ -1287,8 +1295,12 @@ static int _utimes(const char *uri, const struct timeval *times) {
 
     curi = _cleanPath( uri );
 
-    if( ! uri || !times ) {
-        errno = 1;
+    if( ! uri ) {
+        errno = ENOENT;
+        return -1;
+    }
+    if( !times ) {
+        errno = EACCES;
         return -1; // FIXME: Find good errno
     }
     pname.nspace = NULL;
@@ -1307,7 +1319,7 @@ static int _utimes(const char *uri, const struct timeval *times) {
     SAFE_FREE(curi);
 
     if( rc != NE_OK ) {
-        errno = ne_error_to_errno( rc );
+        errno = EPERM;
         DEBUG_WEBDAV(("Error in propatch: %d\n", rc));
         return -1;
     }
@@ -1337,9 +1349,6 @@ csync_vio_method_t _method = {
 
 csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
                                     csync_auth_callback cb, void *userdata) {
-    DEBUG_WEBDAV(("csync_webdav - method_name: %s\n", method_name));
-    DEBUG_WEBDAV(("csync_webdav - args: %s\n", args));
-
     (void) method_name;
     (void) args;
     _authcb = cb;
