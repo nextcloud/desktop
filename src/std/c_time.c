@@ -63,3 +63,75 @@ double c_secdiff(struct timespec clock1, struct timespec clock0) {
   return ret;
 }
 
+
+#ifdef HAVE_UTIMES
+int c_utimes(const char *uri, const struct timeval *times) {
+    return utimes(uri, times);
+}
+#else // HAVE_UTIMES
+
+#ifdef _WIN32
+// implementation for utimes taken from KDE mingw headers
+
+#include <errno.h>
+#include <wtypes.h>
+#define CSYNC_SECONDS_SINCE_1601 11644473600LL
+#define CSYNC_USEC_IN_SEC            1000000LL
+//after Microsoft KB167296
+static void UnixTimevalToFileTime(struct timeval t, LPFILETIME pft)
+{
+    LONGLONG ll;
+    ll = Int32x32To64(t.tv_sec, CSYNC_USEC_IN_SEC*10) + t.tv_usec*10 + CSYNC_SECONDS_SINCE_1601*CSYNC_USEC_IN_SEC*10;
+    pft->dwLowDateTime = (DWORD)ll;
+    pft->dwHighDateTime = ll >> 32;
+}
+
+int c_utimes(const char *uri, const struct timeval *times) {
+    FILETIME LastAccessTime;
+    FILETIME LastModificationTime;
+    HANDLE hFile;
+
+    if(times) {
+        UnixTimevalToFileTime(times[0], &LastAccessTime);
+        UnixTimevalToFileTime(times[1], &LastModificationTime);
+    }
+    else {
+        GetSystemTimeAsFileTime(&LastAccessTime);
+        GetSystemTimeAsFileTime(&LastModificationTime);
+    }
+
+    hFile=CreateFileA(uri, FILE_WRITE_ATTRIBUTES, FILE_SHARE_DELETE | FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
+    if(hFile==INVALID_HANDLE_VALUE) {
+        switch(GetLastError()) {
+            case ERROR_FILE_NOT_FOUND:
+                errno=ENOENT;
+                break;
+            case ERROR_PATH_NOT_FOUND:
+            case ERROR_INVALID_DRIVE:
+                errno=ENOTDIR;
+                break;
+                /*case ERROR_WRITE_PROTECT:   //CreateFile sets ERROR_ACCESS_DENIED on read-only devices
+                 *                errno=EROFS;
+                 *                break;*/
+                case ERROR_ACCESS_DENIED:
+                    errno=EACCES;
+                    break;
+                default:
+                    errno=ENOENT;   //what other errors can occur?
+        }
+
+        return -1;
+    }
+
+    if(!SetFileTime(hFile, NULL, &LastAccessTime, &LastModificationTime)) {
+        //can this happen?
+        errno=ENOENT;
+        return -1;
+    }
+
+    CloseHandle(hFile);
+    return 0;
+}
+
+#endif // _WIN32
+#endif // HAVE_UTIMES

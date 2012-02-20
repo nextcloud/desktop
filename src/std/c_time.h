@@ -24,6 +24,7 @@
 #define _C_TIME_H
 
 #include <time.h>
+#include <sys/time.h>
 
 /**
  * @brief Calculate time difference
@@ -51,5 +52,7 @@ struct timespec c_tspecdiff(struct timespec time1, struct timespec time0);
  *         milliseconds.
  */
 double c_secdiff(struct timespec clock1, struct timespec clock0);
+
+int c_utimes(const char *uri, const struct timeval *times);
 
 #endif /* _C_TIME_H */

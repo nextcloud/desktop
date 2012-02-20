@@ -357,6 +357,5 @@ int csync_vio_local_chown(const char *uri, uid_t owner, gid_t group) {
 }
 
 int csync_vio_local_utimes(const char *uri, const struct timeval *times) {
-  return utimes(uri, times);
+    return c_utimes(uri, times);
 }
-
