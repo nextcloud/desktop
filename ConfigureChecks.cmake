@@ -39,6 +39,13 @@ if (HAVE_LIBDL)
     set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} ${DLFCN_LIBRARY})
 endif (HAVE_LIBDL)
 
+check_function_exists(asprintf HAVE_ASPRINTF)
+if(NOT HAVE_ASPRINTF)
+    if(MINGW)
+        add_definitions( -D__USE_MINGW_ANSI_STDIO=1 )
+    endif()
+endif()
+
 check_function_exists(strerror_r HAVE_STRERROR_R)
 
 set(CSYNC_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} CACHE INTERNAL "csync required system libraries")
