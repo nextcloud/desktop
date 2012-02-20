@@ -43,5 +43,9 @@
 #define geteuid() 0
 #endif
 
+#ifndef HAVE_STRERROR_R
+#define strerror_r(errnum, buf, buflen) snprintf(buf, buflen, "%s", strerror(errnum))
+#endif
+
 #endif //_C_PRIVATE_H
 /* vim: set ft=c.doxygen ts=8 sw=2 et cindent: */

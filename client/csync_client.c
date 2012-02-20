@@ -33,6 +33,8 @@
 
 #include "csync_auth.h"
 
+#include "../src/std/c_private.h"
+
 enum {
   KEY_EXCLUDE_FILE = 129,
   KEY_TEST_UPDATE,
