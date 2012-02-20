@@ -41,8 +41,6 @@ public:
 
     Mirall::Folder::Map map();
 
-
-    QString folderConfigPath() const;
     /**
       * Add a folder definition to the config
       * Params:
@@ -59,11 +57,6 @@ public:
       */
     SyncResult syncResult( const QString& );
 
-    /**
-      * returns the current sync state of the folder named by alias
-      */
-    Folder::SyncState syncState( const QString& );
-
 signals:
     /**
       * signal to indicate a folder named by alias has changed its sync state.
@@ -77,6 +70,8 @@ public slots:
 
     void slotFolderSyncStarted();
     void slotFolderSyncFinished( const SyncResult& );
+
+    void slotReparseConfiguration();
 
 private:
     // finds all folder configuration files
@@ -93,10 +88,6 @@ private:
     QString _folderConfigPath;
     OwncloudSetup *_ownCloudSetup;
     QSignalMapper *_folderChangeSignalMapper;
-
-    // counter tracking number of folders doing a sync
-    int _folderSyncCount;
-
 
 };
 

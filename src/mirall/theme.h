@@ -15,9 +15,17 @@
 #ifndef _THEME_H
 #define _THEME_H
 
+#include "mirall/syncresult.h"
+
+class QIcon;
+class QString;
+class QObject;
+
 namespace Mirall {
 
-class Theme
+class SyncResult;
+
+class Theme : public QObject
 {
 public:
     Theme();
@@ -25,6 +33,13 @@ public:
     virtual QString appName() const = 0;
 
     virtual QString configFileName() const = 0;
+
+    /**
+      * get a folder icon for a given backend in a given size.
+      */
+    QIcon folderIcon( const QString&, int ) const;
+    QIcon syncStateIcon( SyncResult::Status, int ) const;
+    QString statusHeaderText( SyncResult::Status ) const;
 
 private:
 

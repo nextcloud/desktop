@@ -24,9 +24,11 @@ namespace Mirall
 class SyncResult
 {
 public:
-    enum Result
+    enum Status
     {
       Undefined,
+      NotYetStarted,
+      SyncRunning,
       Success,
       Error,
       Disabled,
@@ -34,17 +36,17 @@ public:
     };
 
     SyncResult();
-    SyncResult(Result result);
+    SyncResult( Status status );
     ~SyncResult();
-    void setErrorString( const QString& );
+    void    setErrorString( const QString& );
     QString errorString() const;
-    void setSyncChanges( const QHash<QString, QStringList> &changes );
+    void    setSyncChanges( const QHash<QString, QStringList> &changes );
     QHash<QString, QStringList> syncChanges() const;
 
-    Result result() const;
+    Status status() const;
 
 private:
-    Result _result;
+    Status _status;
     QHash<QString, QStringList> _syncChanges;
 
     /**

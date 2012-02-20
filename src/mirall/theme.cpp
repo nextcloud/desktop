@@ -12,15 +12,75 @@
  * for more details.
  */
 
-#include <QString>
-
 #include "theme.h"
+
+#include <QtCore>
+#include <QtGui>
 
 namespace Mirall {
 
 Theme::Theme()
+    :QObject()
 {
 
+}
+
+QIcon Theme::folderIcon( const QString& backend, int size ) const
+{
+  QString name;
+
+  if( backend == "owncloud") name = QString( "mirall-%1.png" ).arg(size);
+  if( backend == "unison" ) name  = QString( "folder-%1.png" ).arg(size);
+  if( backend == "csync" ) name   = QString( "folder-remote-%1.png" ).arg(size);
+
+  return QIcon( QString( ":/mirall/resources/%1").arg(name) );
+}
+
+QIcon Theme::syncStateIcon( SyncResult::Status status, int ) const
+{
+    // FIXME: Mind the size!
+    QString statusIcon;
+
+    qDebug() << "Status: " << status;
+
+    if( status == SyncResult::NotYetStarted ) {
+        statusIcon = "dialog-close";
+    } else if( status == SyncResult::SyncRunning ) {
+        statusIcon = "view-refresh";
+    } else if( status == SyncResult::Success ) {
+        statusIcon = "dialog-ok";
+    } else if( status == SyncResult::Error ) {
+        statusIcon = "dialog-close";
+    } else if( status == SyncResult::Disabled ) {
+        statusIcon = "dialog-cancel";
+    } else if( status == SyncResult::SetupError ) {
+        statusIcon = "dialog-cancel";
+    } else {
+        statusIcon = "dialog-close";
+    }
+    return QIcon::fromTheme( statusIcon, QIcon( QString( ":/mirall/resources/%1").arg(statusIcon) ) );
+}
+
+QString Theme::statusHeaderText( SyncResult::Status status ) const
+{
+    QString resultStr;
+
+    if( status == SyncResult::NotYetStarted ) {
+        resultStr = tr("Not yet started");
+    } else if( status == SyncResult::SyncRunning ) {
+        resultStr = tr("Sync running");
+    } else if( status == SyncResult::Success ) {
+        resultStr = tr("Success");
+    } else if( status == SyncResult::Error ) {
+        resultStr = tr("Error");
+    } else if( status == SyncResult::Disabled ) {
+        resultStr = tr("Disabled");
+    } else if( status == SyncResult::SetupError ) {
+        resultStr = tr( "Setup Error" );
+    } else {
+        resultStr = tr("Undefined");
+    }
+    return resultStr;
 }
 
 }

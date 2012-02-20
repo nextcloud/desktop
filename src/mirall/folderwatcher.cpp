@@ -32,14 +32,14 @@ static const uint32_t standard_event_mask =
 
 /* minimum amount of seconds between two
    events  to consider it a new event */
-#define DEFAULT_EVENT_INTERVAL_SEC 3
+#define DEFAULT_EVENT_INTERVAL_MSEC 1000
 
 namespace Mirall {
 
 FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
     : QObject(parent),
       _eventsEnabled(true),
-      _eventInterval(DEFAULT_EVENT_INTERVAL_SEC),
+      _eventInterval(DEFAULT_EVENT_INTERVAL_MSEC),
       _root(root),
       _processTimer(new QTimer(this)),
       _lastMask(0),
@@ -241,7 +241,7 @@ void FolderWatcher::setProcessTimer()
     if (!_processTimer->isActive()) {
         qDebug() << "* Pending events for" << root() << "will be processed after events stop for" << eventInterval() << "seconds (" << QTime::currentTime().addSecs(eventInterval()).toString("HH:mm:ss") << ")." << _pendingPathes.size() << "events until now )";
     }
-    _processTimer->start(eventInterval() * 1000);
+    _processTimer->start(eventInterval());
 }
 
 }

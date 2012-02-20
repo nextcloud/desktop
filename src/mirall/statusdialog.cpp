@@ -15,9 +15,10 @@
  #include <QtCore>
  #include <QtGui>
 
-#include "statusdialog.h"
-#include "folder.h"
-#include "version.h"
+#include "mirall/statusdialog.h"
+#include "mirall/folder.h"
+#include "mirall/version.h"
+#include "mirall/theme.h"
 
 namespace Mirall {
 FolderViewDelegate::FolderViewDelegate()
@@ -109,11 +110,12 @@ void FolderViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
  // ====================================================================================
 
-StatusDialog::StatusDialog(QWidget *parent) :
-    QDialog(parent)
+StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
+    QDialog(parent),
+    _theme( theme )
 {
   setupUi( this  );
-  setWindowTitle( tr("Mirall %1").arg( VERSION_STRING ) );
+  setWindowTitle( _theme->appName() + QString (" %1" ).arg( VERSION_STRING ) );
 
   _model = new QStandardItemModel();
   FolderViewDelegate *delegate = new FolderViewDelegate();
@@ -168,42 +170,25 @@ void StatusDialog::setFolderList( Folder::Map folders )
   foreach( Folder *f, folders ) {
     qDebug() << "Folder: " << f;
     QStandardItem *item = new QStandardItem();
-    QIcon icon = f->icon( 48 );
-    item->setData( icon, FolderViewDelegate::FolderIconRole );
-    item->setData( f->path(),  FolderViewDelegate::FolderPathRole );
+
+    QIcon icon = _theme->folderIcon( f->backend(), 48 );
+    item->setData( icon,        FolderViewDelegate::FolderIconRole );
+    item->setData( f->path(),   FolderViewDelegate::FolderPathRole );
     item->setData( f->alias(),  FolderViewDelegate::FolderNameRole );
     item->setData( f->syncEnabled(), FolderViewDelegate::FolderSyncEnabled );
     qDebug() << "Folder is SyncEnabled: " << f->syncEnabled();
 
-    QString resultStr = tr("Undefined");
-    QString statusIcon = "view-refresh";
-    SyncResult res = f->lastSyncResult();
+    SyncResult res = f->syncResult();
+    SyncResult::Status status = res.status();
+    qDebug() << "Status: " << status;
 
-    if( f->syncState() == Folder::Waiting ) {
-        qDebug() << "Status: " << res.result();
-        if( res.result() == SyncResult::Error ) {
-            resultStr = tr("Error");
-            statusIcon = "dialog-close";
-        } else if( res.result() == SyncResult::Success ) {
-            resultStr = tr("Success");
-            statusIcon = "dialog-ok";
-        } else if( res.result() == SyncResult::Disabled ) {
-            resultStr = tr("Disabled");
-            statusIcon = "dialog-cancel";
-        } else if( res.result() == SyncResult::SetupError ) {
-            resultStr = tr( "Setup Error" );
-            statusIcon = "dialog-cancel";
-        }
-    } else if( f->syncState() == Folder::Running ){
-        statusIcon = "view-refresh";
-        resultStr = tr("Synchronisation running.");
-    }
-    item->setData( QIcon::fromTheme( statusIcon, QIcon( QString( ":/mirall/resources/%1").arg(statusIcon))), FolderViewDelegate::FolderStatusIcon );
-    item->setData( resultStr, FolderViewDelegate::FolderStatus );
-    item->setData( res.errorString(), FolderViewDelegate::FolderErrorMsg );
+    item->setData( _theme->syncStateIcon( status, 64 ), FolderViewDelegate::FolderStatusIcon );
+    item->setData( _theme->statusHeaderText( status ),  FolderViewDelegate::FolderStatus );
+    item->setData( res.errorString(),                   FolderViewDelegate::FolderErrorMsg );
 
     _model->appendRow( item );
   }
+
 }
 
 void StatusDialog::slotRemoveFolder()

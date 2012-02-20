@@ -65,7 +65,7 @@ Application::Application(int argc, char **argv) :
 
     _folderWizard = new FolderWizard();
     _owncloudSetupWizard = new OwncloudSetupWizard();
-    _statusDialog = new StatusDialog();
+    _statusDialog = new StatusDialog( _theme );
 
     connect( _statusDialog, SIGNAL(removeFolderAlias( const QString&)),
              SLOT(slotRemoveFolder(const QString&)));
@@ -292,14 +292,14 @@ void Application::slotInfoFolder( const QString& alias )
 
     QString folderMessage = tr( "Last sync was succesful" );
 
-    SyncResult::Result syncResult = folderResult.result();
-    if ( syncResult == SyncResult::Error ) {
+    SyncResult::Status syncStatus = folderResult.status();
+    if ( syncStatus == SyncResult::Error ) {
       folderMessage = tr( "%1" ).arg( folderResult.errorString() );
-    } else if ( syncResult == SyncResult::SetupError ) {
+    } else if ( syncStatus == SyncResult::SetupError ) {
       folderMessage = tr( "Setup error" );
-    } else if ( syncResult == SyncResult::Disabled ) {
+    } else if ( syncStatus == SyncResult::Disabled ) {
       folderMessage = tr( "%1" ).arg( folderResult.errorString() );
-    } else if ( syncResult == SyncResult::Undefined ) {
+    } else if ( syncStatus == SyncResult::Undefined ) {
       folderMessage = tr( "Undefined state" );
     }
 
@@ -352,12 +352,12 @@ void Application::slotConfigure()
 
 void Application::slotSyncStateChange( const QString& alias )
 {
-    Folder::SyncState state = _folderMan->syncState( alias );
+    SyncResult result = _folderMan->syncResult( alias );
 
     _statusDialog->setFolderList( _folderMan->map() );
-    if( state == Folder::Waiting ) computeOverallSyncStatus();
+    computeOverallSyncStatus();
 
-    qDebug() << "Sync state changed for folder " << alias << ": "  << state;
+    qDebug() << "Sync state changed for folder " << alias << ": "  << result.errorString();
 }
 
 void Application::computeOverallSyncStatus()
@@ -370,26 +370,26 @@ void Application::computeOverallSyncStatus()
 
   foreach ( Folder *syncedFolder, map ) {
     QString folderMessage;
-    SyncResult folderResult = syncedFolder->lastSyncResult();
-    SyncResult::Result syncResult = folderResult.result();
-    if ( syncResult == SyncResult::Success ) {
+    SyncResult folderResult = syncedFolder->syncResult();
+    SyncResult::Status syncStatus = folderResult.status();
+    if ( syncStatus == SyncResult::Success ) {
       folderMessage = tr( "Folder %1: Ok." ).arg( syncedFolder->alias() );
-    } else if ( syncResult == SyncResult::Error ) {
+    } else if ( syncStatus == SyncResult::Error ) {
       overallResult = SyncResult::Error;
       folderMessage = tr( "Folder %1: %2" ).arg( syncedFolder->alias(), folderResult.errorString() );
-    } else if ( syncResult == SyncResult::SetupError ) {
-      if ( overallResult.result() != SyncResult::Error ) {
+    } else if ( syncStatus == SyncResult::SetupError ) {
+      if ( overallResult.status() != SyncResult::Error ) {
         overallResult = SyncResult::SetupError;
       }
       folderMessage = tr( "Folder %1: setup error" ).arg( syncedFolder->alias() );
-    } else if ( syncResult == SyncResult::Disabled ) {
-      if ( overallResult.result() != SyncResult::SetupError
-           && overallResult.result() != SyncResult::Error ) {
+    } else if ( syncStatus == SyncResult::Disabled ) {
+      if ( overallResult.status() != SyncResult::SetupError
+           && overallResult.status() != SyncResult::Error ) {
         overallResult = SyncResult::Disabled;
       }
       folderMessage = tr( "Folder %1: %2" ).arg( syncedFolder->alias(), folderResult.errorString() );
-    } else if ( syncResult == SyncResult::Undefined ) {
-      if ( overallResult.result() == SyncResult::Success ) {
+    } else if ( syncStatus == SyncResult::Undefined ) {
+      if ( overallResult.status() == SyncResult::Success ) {
         overallResult = SyncResult::Undefined;
       }
       folderMessage = tr( "Folder %1: undefined state" ).arg( syncedFolder->alias() );
@@ -401,16 +401,16 @@ void Application::computeOverallSyncStatus()
   }
 
   QString statusIcon = MIRALL_ICON;
-  qDebug() << "overall result is " << overallResult.result();
-  if( overallResult.result() == SyncResult::Error ) {
+  qDebug() << "overall result is " << overallResult.status();
+  if( overallResult.status() == SyncResult::Error ) {
     statusIcon = "dialog-close";
-  } else if( overallResult.result() == SyncResult::Success ) {
+  } else if( overallResult.status() == SyncResult::Success ) {
     statusIcon = MIRALL_ICON;
-  } else if( overallResult.result() == SyncResult::Disabled ) {
+  } else if( overallResult.status() == SyncResult::Disabled ) {
     statusIcon = "dialog-cancel";
-  } else if( overallResult.result() == SyncResult::SetupError ) {
+  } else if( overallResult.status() == SyncResult::SetupError ) {
     statusIcon = "dialog-cancel";
-  } else if( overallResult.result() == SyncResult::Undefined ) {
+  } else if( overallResult.status() == SyncResult::Undefined ) {
     statusIcon = "view-refresh";
   }
 

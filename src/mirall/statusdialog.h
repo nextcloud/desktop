@@ -25,6 +25,8 @@
 
 namespace Mirall {
 
+class Theme;
+
 class FolderViewDelegate : public QStyledItemDelegate
 {
     public:
@@ -48,7 +50,7 @@ class StatusDialog : public QDialog, public Ui::statusDialog
 {
     Q_OBJECT
 public:
-    explicit StatusDialog(QWidget *parent = 0);
+    explicit StatusDialog( Theme *theme, QWidget *parent = 0);
     void setFolderList( Folder::Map );
     void setOCUrl( const QUrl& );
 
@@ -70,7 +72,8 @@ public slots:
 
 private:
     QStandardItemModel *_model;
-    QUrl _OCUrl;
+    QUrl   _OCUrl;
+    Theme *_theme;
 };
 };
 

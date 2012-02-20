@@ -39,8 +39,6 @@ public:
     Folder(const QString &alias, const QString &path, QObject *parent = 0L);
     virtual ~Folder();
 
-    enum SyncState{ Unknown, Running, Waiting };
-
     typedef QHash<QString, Folder*> Map;
 
     /**
@@ -116,9 +114,7 @@ public:
     /**
      * return the last sync result with error message and status
      */
-     SyncResult lastSyncResult() const;
-
-     SyncState syncState() { return _syncState; }
+     SyncResult syncResult() const;
 
      /**
      * set the backend description string.
@@ -133,6 +129,7 @@ public:
 
 public slots:
      void slotSyncFinished(const SyncResult &);
+     void slotChanged(const QStringList &pathList = QStringList() );
 
 protected:
     /**
@@ -175,8 +172,7 @@ private:
     QNetworkConfigurationManager _networkMgr;
     bool       _online;
     bool       _enabled;
-    SyncResult _lastSyncResult;
-    SyncState  _syncState;
+    SyncResult _syncResult;
     QString    _backend;
 
 protected slots:
@@ -187,7 +183,6 @@ protected slots:
 
     /* called when the watcher detect a list of changed
        paths */
-    void slotChanged(const QStringList &pathList);
 
     void slotOpenFolder();
 

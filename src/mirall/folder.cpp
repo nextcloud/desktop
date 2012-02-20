@@ -24,7 +24,7 @@
 #include "mirall/folder.h"
 #include "mirall/folderwatcher.h"
 
-#define DEFAULT_POLL_INTERVAL_SEC 45
+#define DEFAULT_POLL_INTERVAL_SEC 15
 
 namespace Mirall {
 
@@ -38,8 +38,7 @@ Folder::Folder(const QString &alias, const QString &path, QObject *parent)
       _onlyOnlineEnabled(false),
       _onlyThisLANEnabled(false),
       _online(false),
-      _enabled(true),
-      _syncState( Unknown )
+      _enabled(true)
 {
     _openAction = new QAction(QIcon::fromTheme(FOLDER_ICON, QIcon( QString( ":/mirall/resources/%1").arg(FOLDER_ICON))), path, this);
     _openAction->setIconVisibleInMenu(true);
@@ -63,6 +62,8 @@ Folder::Folder(const QString &alias, const QString &path, QObject *parent)
 
     _online = _networkMgr.isOnline();
     QObject::connect(&_networkMgr, SIGNAL(onlineStateChanged(bool)), SLOT(slotOnlineChanged(bool)));
+
+    _syncResult = SyncResult( SyncResult::NotYetStarted );
 
 }
 
@@ -150,9 +151,9 @@ void Folder::incrementErrorCount()
   }
 }
 
-SyncResult Folder::lastSyncResult() const
+SyncResult Folder::syncResult() const
 {
-  return _lastSyncResult;
+  return _syncResult;
 }
 
 void Folder::evaluateSync(const QStringList &pathList)
@@ -198,16 +199,15 @@ void Folder::slotSyncStarted()
 {
     // disable events until syncing is done
     _watcher->setEventsEnabled(false);
-    _syncState = Running;
+    _syncResult = SyncResult( SyncResult::SyncRunning );
+
     emit syncStateChange();
     _openAction->setIcon(QIcon::fromTheme(FOLDER_SYNC_ICON, QIcon( QString( ":/mirall/resources/%1").arg(FOLDER_SYNC_ICON))));
 }
 
 void Folder::slotSyncFinished(const SyncResult &result)
 {
-  _lastSyncResult = result;
-  _openAction->setIcon(icon(22));
-  _syncState = Waiting;
+  _syncResult = result;
   emit syncStateChange();
 
   // reenable the poll timer if folder is sync enabled
@@ -223,20 +223,6 @@ void Folder::slotSyncFinished(const SyncResult &result)
 void Folder::setBackend( const QString& b )
 {
   _backend = b;
-  if( _openAction ) {
-    _openAction->setIcon( icon(22) );
-  }
-}
-
-QIcon Folder::icon( int size ) const
-{
-  QString name;
-
-  if( _backend == "sitecopy") name = QString( "mirall-%1.png" ).arg(size);
-  if( _backend == "unison" ) name = QString( "folder-%1.png" ).arg(size);
-  if( _backend == "csync" ) name = QString("folder-remote-%1.png").arg(size);
-
-  return QIcon( QString( ":/mirall/resources/%1").arg(name) );
 }
 
 QString Folder::backend() const

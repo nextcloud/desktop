@@ -18,18 +18,18 @@ namespace Mirall
 {
 
 SyncResult::SyncResult()
-: _result( Undefined )
+: _status( Undefined )
 {
 }
 
-SyncResult::SyncResult(SyncResult::Result result)
-    : _result(result)
+SyncResult::SyncResult(SyncResult::Status status )
+    : _status(status)
 {
 }
 
-SyncResult::Result SyncResult::result() const
+SyncResult::Status SyncResult::status() const
 {
-    return _result;
+    return _status;
 }
 
 void SyncResult::setErrorString( const QString& err )

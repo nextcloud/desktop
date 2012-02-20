@@ -29,9 +29,7 @@
 namespace Mirall {
 
 FolderMan::FolderMan(QObject *parent) :
-    QObject(parent),
-    _folderSyncCount(0)
-
+    QObject(parent)
 {
     // if QDir::mkpath would not be so stupid, I would not need to have this
     // duplication of folderConfigPath() here
@@ -61,26 +59,32 @@ int FolderMan::setupFolders()
 {
     // setup a handler to look for configuration changes
     _configFolderWatcher = new FolderWatcher( _folderConfigPath );
+    _configFolderWatcher->setEventInterval(200);
     connect(_configFolderWatcher, SIGNAL(folderChanged(const QStringList &)),
-            this, SLOT(slotReparseConfiguration()));
+            this, SLOT( slotReparseConfiguration()) );
 
-    return setupKnownFolders();
+    int cnt = setupKnownFolders();
 
+    // do an initial sync
+    foreach( Folder *f, _folderMap.values() ) {
+        f->slotChanged();
+    }
+    return cnt;
 }
 
-QString FolderMan::folderConfigPath() const
+void FolderMan::slotReparseConfiguration()
 {
-    return _folderConfigPath;
+    setupKnownFolders();
 }
 
 
 int FolderMan::setupKnownFolders()
 {
-  qDebug() << "* Setup folders from " << folderConfigPath();
+  qDebug() << "* Setup folders from " << _folderConfigPath;
 
   _folderMap.clear(); // FIXME: check if delete of folder structure happens
 
-  QDir dir(folderConfigPath());
+  QDir dir( _folderConfigPath );
   dir.setFilter(QDir::Files);
   QStringList list = dir.entryList();
 
@@ -97,7 +101,7 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
     Folder *folder = 0L;
 
     qDebug() << "  ` -> setting up:" << file;
-    QSettings settings(folderConfigPath() + "/" + file, QSettings::IniFormat);
+    QSettings settings( _folderConfigPath + "/" + file, QSettings::IniFormat);
     qDebug() << "    -> file path: " + settings.fileName();
 
     settings.beginGroup( file ); // read the group with the same name as the file which is the folder alias
@@ -208,18 +212,7 @@ SyncResult FolderMan::syncResult( const QString& alias )
     SyncResult res;
     if( _folderMap.contains( alias ) ) {
         Folder *f = _folderMap[alias];
-        res = f->lastSyncResult();
-    }
-    return res;
-}
-
-Folder::SyncState FolderMan::syncState( const QString& alias )
-{
-    Folder::SyncState res( Folder::Unknown );
-
-    if( _folderMap.contains( alias ) ) {
-        Folder *f = _folderMap[alias];
-        res = f->syncState();
+        res = f->syncResult();
     }
     return res;
 }
@@ -230,7 +223,7 @@ void FolderMan::slotFolderSyncStarted( )
 
 void FolderMan::slotFolderSyncFinished( const SyncResult& )
 {
-    _folderSyncCount--;
+
 }
 
 /**
@@ -247,7 +240,7 @@ Folder* FolderMan::addFolderDefinition( const QString& backend, const QString& a
                                         bool onlyThisLAN )
 {
     // Create a settings file named after the alias
-    QSettings settings(folderConfigPath() + "/" + alias, QSettings::IniFormat);
+    QSettings settings( _folderConfigPath + "/" + alias, QSettings::IniFormat);
 
     settings.setValue(QString("%1/localPath").arg(alias),   sourceFolder );
     settings.setValue(QString("%1/targetPath").arg(alias),  targetPath );
@@ -274,7 +267,7 @@ void FolderMan::slotRemoveFolder( const QString& alias )
       qDebug() << "!! Can not remove " << alias << ", not in folderMap.";
     }
 
-    QFile file( folderConfigPath() + "/" + alias );
+    QFile file( _folderConfigPath + "/" + alias );
     if( file.exists() ) {
         qDebug() << "Remove folder config file " << file.fileName();
       file.remove();
