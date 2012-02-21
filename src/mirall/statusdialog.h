@@ -26,6 +26,7 @@
 namespace Mirall {
 
 class Theme;
+class ownCloudInfo;
 
 class FolderViewDelegate : public QStyledItemDelegate
 {
@@ -52,7 +53,6 @@ class StatusDialog : public QDialog, public Ui::statusDialog
 public:
     explicit StatusDialog( Theme *theme, QWidget *parent = 0);
     void setFolderList( Folder::Map );
-    void setOCUrl( const QUrl& );
 
 signals:
     void removeFolderAlias( const QString& );
@@ -70,10 +70,15 @@ public slots:
     void slotEnableFolder();
     void slotInfoFolder();
 
+protected slots:
+    void slotOCInfoFail();
+    void slotOCInfo( const QString&, const QString& );
+
 private:
     QStandardItemModel *_model;
     QUrl   _OCUrl;
     Theme *_theme;
+    ownCloudInfo *_ownCloudInfo;
 };
 };
 

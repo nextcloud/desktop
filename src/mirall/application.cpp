@@ -191,7 +191,6 @@ void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
       qDebug() << "No configured folders yet, start the Owncloud integration dialog.";
       _owncloudSetupWizard->startWizard();
     } else {
-      _statusDialog->setOCUrl( QUrl( cfgFile.ownCloudUrl()) );
       _statusDialog->setFolderList( _folderMan->map() );
       _statusDialog->show();
     }

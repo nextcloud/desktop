@@ -18,6 +18,7 @@
 #include "mirall/statusdialog.h"
 #include "mirall/folder.h"
 #include "mirall/theme.h"
+#include "mirall/owncloudinfo.h"
 
 namespace Mirall {
 FolderViewDelegate::FolderViewDelegate()
@@ -125,11 +126,16 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
 
   connect(_ButtonClose,  SIGNAL(clicked()), this, SLOT(accept()));
   connect(_ButtonRemove, SIGNAL(clicked()), this, SLOT(slotRemoveFolder()));
+#ifdef HAVE_FETCH_AND_PUSH
   connect(_ButtonFetch,  SIGNAL(clicked()), this, SLOT(slotFetchFolder()));
-  connect(_ButtonPush,  SIGNAL(clicked()), this, SLOT(slotPushFolder()));
+  connect(_ButtonPush,   SIGNAL(clicked()), this, SLOT(slotPushFolder()));
+#else
+  _ButtonFetch->setVisible( false );
+  _ButtonPush->setVisible( false );
+#endif
   connect(_ButtonOpenOC, SIGNAL(clicked()), this, SLOT(slotOpenOC()));
   connect(_ButtonEnable, SIGNAL(clicked()), this, SLOT(slotEnableFolder()));
-  connect(_ButtonInfo, SIGNAL(clicked()), this, SLOT(slotInfoFolder()));
+  connect(_ButtonInfo,   SIGNAL(clicked()), this, SLOT(slotInfoFolder()));
 
   _ButtonOpenOC->setEnabled(false);
   _ButtonRemove->setEnabled(false);
@@ -139,6 +145,13 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
   _ButtonInfo->setEnabled(false);
 
   connect(_folderList, SIGNAL(activated(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
+
+  _ownCloudInfo = new ownCloudInfo();
+  _ownCloudInfo->checkInstallation();
+  connect(_ownCloudInfo, SIGNAL(ownCloudInfoFound( const QString&,  const QString& )),
+          SLOT(slotOCInfo( const QString&, const QString& )));
+  connect(_ownCloudInfo, SIGNAL(noOwncloudFound(QNetworkReply::NetworkError)),
+          SLOT(slotOCInfoFail()));
 }
 
 void StatusDialog::slotFolderActivated( const QModelIndex& indx )
@@ -251,11 +264,18 @@ void StatusDialog::slotInfoFolder()
   }
 }
 
-void StatusDialog::setOCUrl( const QUrl& url )
+void StatusDialog::slotOCInfo( const QString& url, const QString& version )
 {
-  _OCUrl = url;
-  if( url.isValid() )
+    _OCUrl = url;
+    /* enable the open button */
+    _ocUrlLabel->setText( tr("Connected to %1, ownCloud %2").arg(url).arg(version) );
     _ButtonOpenOC->setEnabled( true );
+}
+
+void StatusDialog::slotOCInfoFail()
+{
+    _ocUrlLabel->setText( tr("Failed to connect to ownCloud. Please check configuration!") );
+    _ButtonOpenOC->setEnabled(false);
 }
 
 void StatusDialog::slotOpenOC()
