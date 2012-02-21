@@ -136,6 +136,7 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
   connect(_ButtonOpenOC, SIGNAL(clicked()), this, SLOT(slotOpenOC()));
   connect(_ButtonEnable, SIGNAL(clicked()), this, SLOT(slotEnableFolder()));
   connect(_ButtonInfo,   SIGNAL(clicked()), this, SLOT(slotInfoFolder()));
+  connect(_ButtonAdd,    SIGNAL(clicked()), this, SLOT(slotAddSync()));
 
   _ButtonOpenOC->setEnabled(false);
   _ButtonRemove->setEnabled(false);
@@ -143,6 +144,7 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
   _ButtonPush->setEnabled(false);
   _ButtonEnable->setEnabled(false);
   _ButtonInfo->setEnabled(false);
+  _ButtonAdd->setEnabled(true);
 
   connect(_folderList, SIGNAL(activated(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
 
@@ -264,6 +266,12 @@ void StatusDialog::slotInfoFolder()
   }
 }
 
+void StatusDialog::slotAddSync()
+{
+    qDebug() << "Add a sync requested.";
+    emit addASync();
+}
+
 void StatusDialog::slotOCInfo( const QString& url, const QString& version )
 {
     _OCUrl = url;
@@ -276,6 +284,7 @@ void StatusDialog::slotOCInfoFail()
 {
     _ocUrlLabel->setText( tr("Failed to connect to ownCloud. Please check configuration!") );
     _ButtonOpenOC->setEnabled(false);
+    _ButtonAdd->setEnabled( false);
 }
 
 void StatusDialog::slotOpenOC()

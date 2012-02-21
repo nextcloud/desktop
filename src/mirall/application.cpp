@@ -70,7 +70,9 @@ Application::Application(int argc, char **argv) :
 
     _folderWizard = new FolderWizard();
     _owncloudSetupWizard = new OwncloudSetupWizard();
+
     _statusDialog = new StatusDialog( _theme );
+    connect( _statusDialog, SIGNAL(addASync()), this, SLOT(slotAddFolder()) );
 
     connect( _statusDialog, SIGNAL(removeFolderAlias( const QString&)),
              SLOT(slotRemoveFolder(const QString&)));

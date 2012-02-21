@@ -61,6 +61,9 @@ signals:
     void enableFolderAlias( const QString&, const bool );
     void infoFolderAlias( const QString& );
 
+    /* start the add a folder wizard. */
+    void addASync();
+
 public slots:
     void slotRemoveFolder();
     void slotFetchFolder();
@@ -69,6 +72,7 @@ public slots:
     void slotOpenOC();
     void slotEnableFolder();
     void slotInfoFolder();
+    void slotAddSync();
 
 protected slots:
     void slotOCInfoFail();
