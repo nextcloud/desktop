@@ -34,6 +34,13 @@
 #include "vio/csync_vio_local.h"
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.vio.main"
+
+#ifdef _WIN32
+#define MODULE_EXTENSION "dll"
+#else
+#define MODULE_EXTENSION "so"
+#endif
+
 #include "csync_log.h"
 
 int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
@@ -43,16 +50,25 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
   csync_vio_method_t *m = NULL;
   csync_vio_method_init_fn init_fn;
 
-  if (asprintf(&path, "%s/csync_%s.so", PLUGINDIR, module) < 0) {
+  if (asprintf(&path, "%s/csync_%s.%s", PLUGINDIR, module, MODULE_EXTENSION) < 0) {
     return -1;
   }
 
   if (lstat(path, &sb) < 0) {
     SAFE_FREE(path);
-    if (asprintf(&path, "%s/modules/csync_%s.so", BINARYDIR, module) < 0) {
+    if (asprintf(&path, "%s/modules/csync_%s.%s", BINARYDIR, module, MODULE_EXTENSION) < 0) {
       return -1;
     }
   }
+
+#ifdef _WIN32
+  if (lstat(path, &sb) < 0) {
+    SAFE_FREE(path);
+    if (asprintf(&path, "modules/csync_%s.%s", module, MODULE_EXTENSION) < 0) {
+      return -1;
+    }
+  }
+#endif
 
   ctx->module.handle = dlopen(path, RTLD_LAZY);
   SAFE_FREE(path);
