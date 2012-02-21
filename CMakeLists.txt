@@ -24,9 +24,12 @@ set(CMAKE_MODULE_PATH
 include(DefineCMakeDefaults)
 include(DefinePlatformDefaults)
 include(DefineCompilerFlags)
-include(DefineInstallationPaths)
 include(DefineOptions.cmake)
 include(CPackConfig.cmake)
+
+include(DefineInstallationPaths)
+# install .dlls to bin/
+set(BIN_INSTALL_DIR "bin" CACHE PATH "-")
 
 # disallow in-source build
 include(MacroEnsureOutOfSourceBuild)
