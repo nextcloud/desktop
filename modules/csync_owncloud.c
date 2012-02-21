@@ -613,7 +613,7 @@ static csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
 /*
  * file functions
  */
-static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
+static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
     /* get props:
      *   modtime
      *   creattime
@@ -702,7 +702,7 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
     return 0;
 }
 
-static ssize_t _write(csync_vio_method_handle_t *fhandle, const void *buf, size_t count) {
+static ssize_t owncloud_write(csync_vio_method_handle_t *fhandle, const void *buf, size_t count) {
     struct transfer_context *writeCtx = NULL;
     size_t written = 0;
 
@@ -728,7 +728,7 @@ static ssize_t _write(csync_vio_method_handle_t *fhandle, const void *buf, size_
     return written;
 }
 
-static csync_vio_method_handle_t *_open(const char *durl,
+static csync_vio_method_handle_t *owncloud_open(const char *durl,
                                         int flags,
                                         mode_t mode) {
     char *uri = NULL;
@@ -767,7 +767,7 @@ static csync_vio_method_handle_t *_open(const char *durl,
         /* check if the dir name exists. Otherwise return ENOENT */
         dir = c_dirname( durl );
         DEBUG_WEBDAV(("Stating directory %s\n", dir ));
-        if( _stat( dir, (csync_vio_method_handle_t*)(&statBuf) ) == 0 ) {
+        if( owncloud_stat( dir, (csync_vio_method_handle_t*)(&statBuf) ) == 0 ) {
             // Success!
             DEBUG_WEBDAV(("Directory of file to open exists.\n"));
         } else {
@@ -840,17 +840,17 @@ static csync_vio_method_handle_t *_open(const char *durl,
     return (csync_vio_method_handle_t *) writeCtx;
 }
 
-static csync_vio_method_handle_t *_creat(const char *durl, mode_t mode) {
+static csync_vio_method_handle_t *owncloud_creat(const char *durl, mode_t mode) {
 
-    csync_vio_method_handle_t *handle = _open(durl, O_CREAT|O_WRONLY|O_TRUNC, mode);
+    csync_vio_method_handle_t *handle = owncloud_open(durl, O_CREAT|O_WRONLY|O_TRUNC, mode);
 
     /* on create, the file needs to be created empty */
-    _write( handle, NULL, 0 );
+    owncloud_write( handle, NULL, 0 );
 
     return handle;
 }
 
-static int _close(csync_vio_method_handle_t *fhandle) {
+static int owncloud_close(csync_vio_method_handle_t *fhandle) {
     struct transfer_context *writeCtx;
     struct stat st;
     int rc;
@@ -926,7 +926,7 @@ static int _close(csync_vio_method_handle_t *fhandle) {
     return ret;
 }
 
-static ssize_t _read(csync_vio_method_handle_t *fhandle, void *buf, size_t count) {
+static ssize_t owncloud_read(csync_vio_method_handle_t *fhandle, void *buf, size_t count) {
     struct transfer_context *writeCtx;
     ssize_t len = 0;
     struct stat st;
@@ -966,7 +966,7 @@ static ssize_t _read(csync_vio_method_handle_t *fhandle, void *buf, size_t count
     return len;
 }
 
-static off_t _lseek(csync_vio_method_handle_t *fhandle, off_t offset, int whence) {
+static off_t owncloud_lseek(csync_vio_method_handle_t *fhandle, off_t offset, int whence) {
     (void) fhandle;
     (void) offset;
     (void) whence;
@@ -977,7 +977,7 @@ static off_t _lseek(csync_vio_method_handle_t *fhandle, off_t offset, int whence
 /*
  * directory functions
  */
-static csync_vio_method_handle_t *_opendir(const char *uri) {
+static csync_vio_method_handle_t *owncloud_opendir(const char *uri) {
     int rc;
     struct listdir_context *fetchCtx = NULL;
     struct resource *reslist = NULL;
@@ -1006,7 +1006,7 @@ static csync_vio_method_handle_t *_opendir(const char *uri) {
     /* no freeing of curi because its part of the fetchCtx and gets freed later */
 }
 
-static int _closedir(csync_vio_method_handle_t *dhandle) {
+static int owncloud_closedir(csync_vio_method_handle_t *dhandle) {
 
     struct listdir_context *fetchCtx = dhandle;
     struct resource *r = fetchCtx->list;
@@ -1027,7 +1027,7 @@ static int _closedir(csync_vio_method_handle_t *dhandle) {
     return 0;
 }
 
-static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
+static csync_vio_file_stat_t *owncloud_readdir(csync_vio_method_handle_t *dhandle) {
 
     struct listdir_context *fetchCtx = dhandle;
     csync_vio_file_stat_t *lfs = NULL;
@@ -1058,7 +1058,7 @@ static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
     return lfs;
 }
 
-static int _mkdir(const char *uri, mode_t mode) {
+static int owncloud_mkdir(const char *uri, mode_t mode) {
     int rc = NE_OK;
     char *path = _cleanPath( uri );
     (void) mode; /* unused */
@@ -1084,7 +1084,7 @@ static int _mkdir(const char *uri, mode_t mode) {
     return 0;
 }
 
-static int _rmdir(const char *uri) {
+static int owncloud_rmdir(const char *uri) {
     int rc = NE_OK;
     char* curi = _cleanPath( uri );
 
@@ -1215,7 +1215,7 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
     return 0;
 }
 
-static int _rename(const char *olduri, const char *newuri) {
+static int owncloud_rename(const char *olduri, const char *newuri) {
     char *src = NULL;
     char *target = NULL;
     int rc = NE_OK;
@@ -1246,7 +1246,7 @@ static int _rename(const char *olduri, const char *newuri) {
     return 0;
 }
 
-static int _unlink(const char *uri) {
+static int owncloud_unlink(const char *uri) {
     int rc = NE_OK;
     char *path = _cleanPath( uri );
 
@@ -1270,14 +1270,14 @@ static int _unlink(const char *uri) {
     return 0;
 }
 
-static int _chmod(const char *uri, mode_t mode) {
+static int owncloud_chmod(const char *uri, mode_t mode) {
     (void) uri;
     (void) mode;
 
     return 0;
 }
 
-static int _chown(const char *uri, uid_t owner, gid_t group) {
+static int owncloud_chown(const char *uri, uid_t owner, gid_t group) {
     (void) uri;
     (void) owner;
     (void) group;
@@ -1285,7 +1285,7 @@ static int _chown(const char *uri, uid_t owner, gid_t group) {
     return 0;
 }
 
-static int _utimes(const char *uri, const struct timeval *times) {
+static int owncloud_utimes(const char *uri, const struct timeval *times) {
 
     ne_proppatch_operation ops[2];
     ne_propname pname;
@@ -1328,23 +1328,23 @@ static int _utimes(const char *uri, const struct timeval *times) {
 
 csync_vio_method_t _method = {
     .method_table_size = sizeof(csync_vio_method_t),
-    .open = _open,
-    .creat = _creat,
-    .close = _close,
-    .read = _read,
-    .write = _write,
-    .lseek = _lseek,
-    .opendir = _opendir,
-    .closedir = _closedir,
-    .readdir = _readdir,
-    .mkdir = _mkdir,
-    .rmdir = _rmdir,
-    .stat = _stat,
-    .rename = _rename,
-    .unlink = _unlink,
-    .chmod = _chmod,
-    .chown = _chown,
-    .utimes = _utimes
+    .open = owncloud_open,
+    .creat = owncloud_creat,
+    .close = owncloud_close,
+    .read = owncloud_read,
+    .write = owncloud_write,
+    .lseek = owncloud_lseek,
+    .opendir = owncloud_opendir,
+    .closedir = owncloud_closedir,
+    .readdir = owncloud_readdir,
+    .mkdir = owncloud_mkdir,
+    .rmdir = owncloud_rmdir,
+    .stat = owncloud_stat,
+    .rename = owncloud_rename,
+    .unlink = owncloud_unlink,
+    .chmod = owncloud_chmod,
+    .chown = owncloud_chown,
+    .utimes = owncloud_utimes
 };
 
 csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
