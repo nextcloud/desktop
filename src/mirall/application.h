@@ -27,6 +27,7 @@ class QAction;
 class QMenu;
 class QSystemTrayIcon;
 class QNetworkConfigurationManager;
+class QSignalMapper;
 
 namespace Mirall {
 class Theme;
@@ -67,6 +68,7 @@ protected:
 
 protected slots:
     void slotTrayClicked( QSystemTrayIcon::ActivationReason );
+    void slotFolderOpenAction(const QString & );
 
 private:
     // configuration file -> folder
@@ -86,6 +88,7 @@ private:
 
     FolderMan *_folderMan;
     Theme *_theme;
+    QSignalMapper *_folderOpenActionMapper;
 };
 
 } // namespace Mirall

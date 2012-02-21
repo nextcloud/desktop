@@ -53,6 +53,11 @@ public:
     Folder *addFolderDefinition( const QString&, const QString&, const QString&, const QString&, bool );
 
     /**
+      * return the folder by alias or NULL if no folder with the alias exists.
+      */
+    Folder *folder( const QString& );
+
+    /**
       * return the last sync result by alias
       */
     SyncResult syncResult( const QString& );

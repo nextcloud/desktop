@@ -207,11 +207,22 @@ void FolderMan::slotEnableFolder( const QString& alias, bool enable )
     f->setSyncEnabled(enable);
 }
 
+Folder *FolderMan::folder( const QString& alias )
+{
+    if( !alias.isEmpty() ) {
+        if( _folderMap.contains( alias )) {
+            return _folderMap[alias];
+        }
+    }
+    return 0;
+}
+
 SyncResult FolderMan::syncResult( const QString& alias )
 {
     SyncResult res;
-    if( _folderMap.contains( alias ) ) {
-        Folder *f = _folderMap[alias];
+    Folder *f = folder( alias );
+
+    if( f ) {
         res = f->syncResult();
     }
     return res;

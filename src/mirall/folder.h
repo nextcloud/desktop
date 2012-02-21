@@ -51,8 +51,6 @@ public:
      */
     QString path() const;
 
-    QAction *openAction() const;
-
     /**
      * switch sync on or off
      * If the sync is switched off, the startSync method is not going to
@@ -162,7 +160,6 @@ private:
     void evaluateSync(const QStringList &pathList);
 
     QString   _path;
-    QAction  *_openAction;
     // poll timer for remote syncs
     QTimer   *_pollTimer;
     int       _pollInterval;
@@ -183,8 +180,6 @@ protected slots:
 
     /* called when the watcher detect a list of changed
        paths */
-
-    void slotOpenFolder();
 
     void slotSyncStarted();
 

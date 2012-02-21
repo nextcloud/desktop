@@ -12,11 +12,7 @@
  * for more details.
  */
 
-#include <QAction>
 #include <QDebug>
-#include <QDesktopServices>
-#include <QIcon>
-#include <QMutexLocker>
 #include <QTimer>
 #include <QUrl>
 
@@ -40,12 +36,6 @@ Folder::Folder(const QString &alias, const QString &path, QObject *parent)
       _online(false),
       _enabled(true)
 {
-    _openAction = new QAction(QIcon::fromTheme(FOLDER_ICON, QIcon( QString( ":/mirall/resources/%1").arg(FOLDER_ICON))), path, this);
-    _openAction->setIconVisibleInMenu(true);
-    _openAction->setIcon(QIcon::fromTheme(FOLDER_ICON, QIcon( QString( ":/mirall/resources/%1").arg(FOLDER_ICON))));
-
-    QObject::connect(_openAction, SIGNAL(triggered(bool)), SLOT(slotOpenFolder()));
-
     _pollTimer->setSingleShot(true);
     _pollTimer->setInterval(pollInterval() * 1000);
     QObject::connect(_pollTimer, SIGNAL(timeout()), this, SLOT(slotPollTimerTimeout()));
@@ -65,11 +55,6 @@ Folder::Folder(const QString &alias, const QString &path, QObject *parent)
 
     _syncResult = SyncResult( SyncResult::NotYetStarted );
 
-}
-
-QAction * Folder::openAction() const
-{
-    return _openAction;
 }
 
 Folder::~Folder()
@@ -190,11 +175,6 @@ void Folder::slotChanged(const QStringList &pathList)
     evaluateSync(pathList);
 }
 
-void Folder::slotOpenFolder()
-{
-    QDesktopServices::openUrl(QUrl(_path));
-}
-
 void Folder::slotSyncStarted()
 {
     // disable events until syncing is done
@@ -202,7 +182,6 @@ void Folder::slotSyncStarted()
     _syncResult = SyncResult( SyncResult::SyncRunning );
 
     emit syncStateChange();
-    _openAction->setIcon(QIcon::fromTheme(FOLDER_SYNC_ICON, QIcon( QString( ":/mirall/resources/%1").arg(FOLDER_SYNC_ICON))));
 }
 
 void Folder::slotSyncFinished(const SyncResult &result)

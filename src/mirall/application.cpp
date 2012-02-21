@@ -17,6 +17,7 @@
 #include <QHash>
 #include <QHashIterator>
 #include <QUrl>
+#include <QDesktopServices>
 
 #include "mirall/constants.h"
 #include "mirall/application.h"
@@ -57,9 +58,13 @@ Application::Application(int argc, char **argv) :
     INotify::initialize();
 
     _folderMan = new FolderMan();
-
     connect( _folderMan, SIGNAL(folderSyncStateChange(QString)),
              this,SLOT(slotSyncStateChange(QString)));
+
+    /* use a signal mapper to map the open requests to the alias names */
+    _folderOpenActionMapper = new QSignalMapper(this);
+    connect(_folderOpenActionMapper, SIGNAL(mapped(const QString &)),
+            this, SLOT(slotFolderOpenAction(const QString &)));
 
     setQuitOnLastWindowClosed(false);
 
@@ -80,21 +85,20 @@ Application::Application(int argc, char **argv) :
     connect( _statusDialog, SIGNAL(infoFolderAlias(const QString&)),
              SLOT(slotInfoFolder( const QString&)));
 
-    setupActions();
-    setupSystemTray();
-
     qDebug() << "* Network is" << (_networkMgr->isOnline() ? "online" : "offline");
     foreach (QNetworkConfiguration netCfg, _networkMgr->allConfigurations(QNetworkConfiguration::Active)) {
         //qDebug() << "Network:" << netCfg.identifier();
     }
 
-    setupContextMenu();
-
     /* setup the folder list */
     int cnt =  _folderMan->setupFolders();
 
-    if( cnt ) _tray->setIcon(QIcon::fromTheme(MIRALL_ICON, QIcon( QString( ":/mirall/resources/%1").arg(MIRALL_ICON))));
+    setupActions();
+    setupSystemTray();
 
+    if( cnt ) {
+        _tray->setIcon(QIcon::fromTheme(MIRALL_ICON, QIcon( QString( ":/mirall/resources/%1").arg(MIRALL_ICON))));
+    }
 
     qDebug() << "Network Location: " << NetworkLocation::currentLocation().encoded();
 }
@@ -115,6 +119,8 @@ void Application::setupActions()
     QObject::connect(_actionAddFolder, SIGNAL(triggered(bool)), SLOT(slotAddFolder()));
     _actionConfigure = new QAction(tr("Configure..."), this);
     QObject::connect(_actionConfigure, SIGNAL(triggered(bool)), SLOT(slotConfigure()));
+
+
     _actionQuit = new QAction(tr("Quit"), this);
     QObject::connect(_actionQuit, SIGNAL(triggered(bool)), SLOT(quit()));
 }
@@ -127,7 +133,46 @@ void Application::setupSystemTray()
     connect(_tray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             SLOT(slotTrayClicked(QSystemTrayIcon::ActivationReason)));
 
+    setupContextMenu();
+
     _tray->show();
+}
+
+void Application::setupContextMenu()
+{
+    delete _contextMenu;
+    _contextMenu = new QMenu();
+    _contextMenu->setTitle(_theme->appName() );
+    _contextMenu->addAction(_actionConfigure);
+    _contextMenu->addAction(_actionAddFolder);
+    _contextMenu->addSeparator();
+
+    // here all folders should be added
+    foreach (Folder *folder, _folderMan->map() ) {
+        QAction *action = new QAction( tr("open %1").arg( folder->alias()), this );
+        action->setIcon( _theme->folderIcon( folder->backend(), 22) );
+
+        connect( action, SIGNAL(triggered()),_folderOpenActionMapper,SLOT(map()));
+        _folderOpenActionMapper->setMapping( action, folder->alias() );
+
+        _contextMenu->addAction(action);
+    }
+
+    _contextMenu->addSeparator();
+
+    _contextMenu->addAction(_actionQuit);
+    _tray->setContextMenu(_contextMenu);
+}
+
+/*
+ * open the folder with the given Alais
+ */
+void Application::slotFolderOpenAction( const QString& alias )
+{
+    Folder *f = _folderMan->folder(alias);
+    if( f ) {
+        QDesktopServices::openUrl(QUrl( f->path() ));
+    }
 }
 
 void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
@@ -152,26 +197,6 @@ void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
     }
     _folderMan->restoreEnabledFolders();
   }
-}
-
-void Application::setupContextMenu()
-{
-    delete _contextMenu;
-    _contextMenu = new QMenu();
-    _contextMenu->setTitle(tr( "Mirall" ));
-    _contextMenu->addAction(_actionConfigure);
-    _contextMenu->addAction(_actionAddFolder);
-    _contextMenu->addSeparator();
-
-    // here all folders should be added
-    foreach (Folder *folder, _folderMan->map() ) {
-        _contextMenu->addAction(folder->openAction());
-    }
-
-    _contextMenu->addSeparator();
-
-    _contextMenu->addAction(_actionQuit);
-    _tray->setContextMenu(_contextMenu);
 }
 
 void Application::slotAddFolder()
