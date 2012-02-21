@@ -37,10 +37,11 @@ public:
     /**
       * get a folder icon for a given backend in a given size.
       */
-    QIcon folderIcon( const QString&, int ) const;
-    QIcon syncStateIcon( SyncResult::Status, int ) const;
-    QString statusHeaderText( SyncResult::Status ) const;
+    virtual QIcon folderIcon( const QString&, int ) const;
+    virtual QIcon syncStateIcon( SyncResult::Status, int ) const;
+    virtual QString statusHeaderText( SyncResult::Status ) const;
 
+    virtual QString version() const;
 private:
 
 

@@ -15,6 +15,26 @@
 #ifndef VERSION_H
 #define VERSION_H
 
-#define VERSION_STRING "0.1.3"
+#define MIRALL_STRINGIFY(s) MIRALL_TOSTRING(s)
+#define MIRALL_TOSTRING(s) #s
+
+/* MIRALL version macros */
+#define MIRALL_VERSION_INT_(a, b, c) ((a) << 16 | (b) << 8 | (c))
+#define MIRALL_VERSION_DOT(a, b, c) a ##.## b ##.## c
+#define MIRALL_VERSION_(a, b, c) MIRALL_VERSION_DOT(a, b, c)
+
+/* MIRALL version */
+#define MIRALL_VERSION_MAJOR  0
+#define MIRALL_VERSION_MINOR  1
+#define MIRALL_VERSION_MICRO  9
+
+
+#define MIRALL_VERSION_INT MIRALL_VERSION_INT_(MIRALL_VERSION_MAJOR, \
+                                           MIRALL_VERSION_MINOR, \
+                                           MIRALL_VERSION_MICRO)
+#define MIRALL_VERSION     MIRALL_VERSION_(MIRALL_VERSION_MAJOR, \
+                                           MIRALL_VERSION_MINOR, \
+                                           MIRALL_VERSION_MICRO)
+
 
 #endif // VERSION_H

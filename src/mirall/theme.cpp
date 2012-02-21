@@ -13,6 +13,7 @@
  */
 
 #include "theme.h"
+#include "version.h"
 
 #include <QtCore>
 #include <QtGui>
@@ -81,6 +82,11 @@ QString Theme::statusHeaderText( SyncResult::Status status ) const
         resultStr = tr("Undefined");
     }
     return resultStr;
+}
+
+QString Theme::version() const
+{
+    return QString::fromLocal8Bit( MIRALL_STRINGIFY( MIRALL_VERSION ) );
 }
 
 }
