@@ -343,6 +343,7 @@ static int ne_auth( void *userdata, const char *realm, int attempt,
  */
 static int dav_connect(const char *base_url) {
     int timeout = 30;
+    int useSSL = 0;
     ne_uri uri;
     int rc;
     char *p;
@@ -369,6 +370,7 @@ static int dav_connect(const char *base_url) {
         strncpy( protocol, "http", 6);
     } else if( strcmp( uri.scheme, "ownclouds" ) == 0 ) {
         strncpy( protocol, "https", 6 );
+        useSSL = 1;
     } else {
         strncpy( protocol, "", 6 );
         DEBUG_WEBDAV(("Invalid protocol %s, go outa here!", protocol ));
@@ -402,8 +404,8 @@ static int dav_connect(const char *base_url) {
 
     dav_session.ctx = ne_session_create( protocol, uri.host, uri.port);
 
-    DEBUG_WEBDAV(("Session create with protocol %s failed\n", protocol ));
     if (dav_session.ctx == NULL) {
+        DEBUG_WEBDAV(("Session create with protocol %s failed\n", protocol ));
         rc = -1;
         goto out;
     }
@@ -413,8 +415,16 @@ static int dav_connect(const char *base_url) {
     ne_set_useragent( dav_session.ctx, c_strdup( uaBuf ));
     ne_set_server_auth(dav_session.ctx, ne_auth, 0 );
 
-    ne_ssl_trust_default_ca(dav_session.ctx);
-    ne_ssl_set_verify( dav_session.ctx, verify_sslcert, 0 );
+    if( useSSL ) {
+        if (!ne_has_support(NE_FEATURE_SSL)) {
+            DEBUG_WEBDAV(("Error: SSL is not enabled.\n"));
+            rc = -1;
+            goto out;
+        }
+
+        ne_ssl_trust_default_ca( dav_session.ctx );
+        ne_ssl_set_verify( dav_session.ctx, verify_sslcert, 0 );
+    }
 
     _connected = 1;
     rc = 0;
