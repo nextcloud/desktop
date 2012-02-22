@@ -537,7 +537,7 @@ out:
  * file functions
  */
 
-static csync_vio_method_handle_t *_open(const char *uri, int flags, mode_t mode) {
+static csync_vio_method_handle_t *_sftp_open(const char *uri, int flags, mode_t mode) {
   csync_vio_method_handle_t *mh = NULL;
   char *path = NULL;
 
@@ -558,7 +558,7 @@ static csync_vio_method_handle_t *_open(const char *uri, int flags, mode_t mode)
   return mh;
 }
 
-static csync_vio_method_handle_t *_creat(const char *uri, mode_t mode) {
+static csync_vio_method_handle_t *_sftp_creat(const char *uri, mode_t mode) {
   csync_vio_method_handle_t *mh = NULL;
   char *path = NULL;
 
@@ -579,7 +579,7 @@ static csync_vio_method_handle_t *_creat(const char *uri, mode_t mode) {
   return mh;
 }
 
-static int _close(csync_vio_method_handle_t *fhandle) {
+static int _sftp_close(csync_vio_method_handle_t *fhandle) {
   int rc = -1;
 
   rc = sftp_close(fhandle);
@@ -590,7 +590,7 @@ static int _close(csync_vio_method_handle_t *fhandle) {
   return rc;
 }
 
-static ssize_t _read(csync_vio_method_handle_t *fhandle, void *buf, size_t count) {
+static ssize_t _sftp_read(csync_vio_method_handle_t *fhandle, void *buf, size_t count) {
   int rc = -1;
 
   rc = sftp_read(fhandle, buf, count);
@@ -601,7 +601,7 @@ static ssize_t _read(csync_vio_method_handle_t *fhandle, void *buf, size_t count
   return rc;
 }
 
-static ssize_t _write(csync_vio_method_handle_t *fhandle, const void *buf, size_t count) {
+static ssize_t _sftp_write(csync_vio_method_handle_t *fhandle, const void *buf, size_t count) {
   int rc = -1;
 
   rc = sftp_write(fhandle, (void *) buf, count);
@@ -612,7 +612,7 @@ static ssize_t _write(csync_vio_method_handle_t *fhandle, const void *buf, size_
   return rc;
 }
 
-static off_t _lseek(csync_vio_method_handle_t *fhandle, off_t offset, int whence) {
+static off_t _sftp_lseek(csync_vio_method_handle_t *fhandle, off_t offset, int whence) {
   /* FIXME: really implement seek for lseek? */
   (void) whence;
   sftp_seek(fhandle, offset);
@@ -623,7 +623,7 @@ static off_t _lseek(csync_vio_method_handle_t *fhandle, off_t offset, int whence
  * directory functions
  */
 
-static csync_vio_method_handle_t *_opendir(const char *uri) {
+static csync_vio_method_handle_t *_sftp_opendir(const char *uri) {
   csync_vio_method_handle_t *mh = NULL;
   char *path = NULL;
 
@@ -644,7 +644,7 @@ static csync_vio_method_handle_t *_opendir(const char *uri) {
   return mh;
 }
 
-static int _closedir(csync_vio_method_handle_t *dhandle) {
+static int _sftp_closedir(csync_vio_method_handle_t *dhandle) {
   int rc = -1;
 
   rc = sftp_closedir(dhandle);
@@ -655,7 +655,7 @@ static int _closedir(csync_vio_method_handle_t *dhandle) {
   return rc;
 }
 
-static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
+static csync_vio_file_stat_t *_sftp_readdir(csync_vio_method_handle_t *dhandle) {
   sftp_attributes dirent = NULL;
   csync_vio_file_stat_t *fs = NULL;
 
@@ -694,7 +694,7 @@ static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
   return fs;
 }
 
-static int _mkdir(const char *uri, mode_t mode) {
+static int _sftp_mkdir(const char *uri, mode_t mode) {
   char *path = NULL;
   int rc = -1;
 
@@ -715,7 +715,7 @@ static int _mkdir(const char *uri, mode_t mode) {
   return rc;
 }
 
-static int _rmdir(const char *uri) {
+static int _sftp_rmdir(const char *uri) {
   char *path = NULL;
   int rc = -1;
 
@@ -736,7 +736,7 @@ static int _rmdir(const char *uri) {
   return rc;
 }
 
-static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
+static int _sftp_stat(const char *uri, csync_vio_file_stat_t *buf) {
   sftp_attributes attrs;
   char *path = NULL;
   int rc = -1;
@@ -819,7 +819,7 @@ out:
   return rc;
 }
 
-static int _rename(const char *olduri, const char *newuri) {
+static int _sftp_rename(const char *olduri, const char *newuri) {
   char *oldpath = NULL;
   char *newpath = NULL;
   int rc = -1;
@@ -852,7 +852,7 @@ out:
   return rc;
 }
 
-static int _unlink(const char *uri) {
+static int _sftp_unlink(const char *uri) {
   char *path = NULL;
   int rc = -1;
 
@@ -873,7 +873,7 @@ static int _unlink(const char *uri) {
   return rc;
 }
 
-static int _chmod(const char *uri, mode_t mode) {
+static int _sftp_chmod(const char *uri, mode_t mode) {
   struct sftp_attributes_struct attrs;
   char *path = NULL;
   int rc = -1;
@@ -899,7 +899,7 @@ static int _chmod(const char *uri, mode_t mode) {
   return rc;
 }
 
-static int _chown(const char *uri, uid_t owner, gid_t group) {
+static int _sftp_chown(const char *uri, uid_t owner, gid_t group) {
   struct sftp_attributes_struct attrs;
   char *path = NULL;
   int rc = -1;
@@ -926,7 +926,7 @@ static int _chown(const char *uri, uid_t owner, gid_t group) {
   return rc;
 }
 
-static int _utimes(const char *uri, const struct timeval *times) {
+static int _sftp_utimes(const char *uri, const struct timeval *times) {
   struct sftp_attributes_struct attrs;
   char *path = NULL;
   int rc = -1;
@@ -958,23 +958,23 @@ static int _utimes(const char *uri, const struct timeval *times) {
 
 csync_vio_method_t _method = {
   .method_table_size = sizeof(csync_vio_method_t),
-  .open = _open,
-  .creat = _creat,
-  .close = _close,
-  .read = _read,
-  .write = _write,
-  .lseek = _lseek,
-  .opendir = _opendir,
-  .closedir = _closedir,
-  .readdir = _readdir,
-  .mkdir = _mkdir,
-  .rmdir = _rmdir,
-  .stat = _stat,
-  .rename = _rename,
-  .unlink = _unlink,
-  .chmod = _chmod,
-  .chown = _chown,
-  .utimes = _utimes
+  .open = _sftp_open,
+  .creat = _sftp_creat,
+  .close = _sftp_close,
+  .read = _sftp_read,
+  .write = _sftp_write,
+  .lseek = _sftp_lseek,
+  .opendir = _sftp_opendir,
+  .closedir = _sftp_closedir,
+  .readdir = _sftp_readdir,
+  .mkdir = _sftp_mkdir,
+  .rmdir = _sftp_rmdir,
+  .stat = _sftp_stat,
+  .rename = _sftp_rename,
+  .unlink = _sftp_unlink,
+  .chmod = _sftp_chmod,
+  .chown = _sftp_chown,
+  .utimes = _sftp_utimes
 };
 
 csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
