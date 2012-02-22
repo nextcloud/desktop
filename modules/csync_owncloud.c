@@ -422,38 +422,6 @@ out:
 }
 
 /*
- * helper function to sort the result resource list. Called from the
- * results function to build up the result list.
- */
-static int compare_resource(const struct resource *r1,
-                            const struct resource *r2)
-{
-    /* DEBUG_WEBDAV(( "C1 %d %d\n", r1, r2 )); */
-    int re = -1;
-    /* Sort errors first, then collections, then alphabetically */
-    if (r1->type == resr_error) {
-        // return -1;
-    } else if (r2->type == resr_error) {
-        re = 1;
-    } else if (r1->type == resr_collection) {
-        if (r2->type != resr_collection) {
-            // return -1;
-        } else {
-            re = strcmp(r1->uri, r2->uri);
-        }
-    } else {
-        if (r2->type != resr_collection) {
-            re = strcmp(r1->uri, r2->uri);
-        } else {
-            re = 1;
-        }
-    }
-    /* DEBUG_WEBDAV(( "C2 = %d\n", re )); */
-    return re;
-
-}
-
-/*
  * result parsing list.
  * This function is called to parse the result of the propfind request
  * to list directories on the WebDAV server. I takes a single resource
@@ -465,8 +433,6 @@ static void results(void *userdata,
                     const ne_prop_result_set *set)
 {
     struct listdir_context *fetchCtx = userdata;
-    struct resource *current = 0;
-    struct resource *previous = 0;
     struct resource *newres = 0;
     const char *clength, *modtime = NULL;
     const char *resourcetype = NULL;
@@ -475,6 +441,10 @@ static void results(void *userdata,
     char *path = ne_path_unescape( uri->path );
 
     (void) status;
+    if( ! fetchCtx ) {
+        DEBUG_WEBDAV(("No valid fetchContext\n"));
+        return;
+    }
 
     DEBUG_WEBDAV(("** propfind result found: %s\n", path ));
     if( ! fetchCtx->target ) {
@@ -522,24 +492,11 @@ static void results(void *userdata,
 
     }
 
-    /* put the new resource into the result list */
-    for (current = fetchCtx->list, previous = NULL; current != NULL;
-         previous = current, current=current->next) {
-        if (compare_resource(current, newres) >= 0) {
-            break;
-        }
-    }
-    if (previous) {
-        previous->next = newres;
-    } else {
-        fetchCtx->list = newres;
-    }
-    newres->next = current;
-
+    /* prepend the resource to the result list */
+    newres->next   = fetchCtx->list;
+    fetchCtx->list = newres;
     fetchCtx->result_count = fetchCtx->result_count + 1;
     DEBUG_WEBDAV(( "results for URI %s: %d %d\n", newres->name, (int)newres->size, (int)newres->modtime ));
-    // DEBUG_WEBDAV(( "Leaving result for resource %s\n", newres->uri ));
-
 }
 
 /*
