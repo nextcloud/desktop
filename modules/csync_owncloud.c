@@ -412,6 +412,8 @@ static int dav_connect(const char *base_url) {
     snprintf( uaBuf, sizeof(uaBuf), "csyncoC/%s",CSYNC_STRINGIFY( LIBCSYNC_VERSION ));
     ne_set_useragent( dav_session.ctx, c_strdup( uaBuf ));
     ne_set_server_auth(dav_session.ctx, ne_auth, 0 );
+
+    ne_ssl_trust_default_ca(dav_session.ctx);
     ne_ssl_set_verify( dav_session.ctx, verify_sslcert, 0 );
 
     _connected = 1;
