@@ -85,7 +85,7 @@ typedef struct resource {
 struct listdir_context {
     struct resource *list;           /* The list of result resources */
     struct resource *currResource;   /* A pointer to the current resource */
-    char             *target;        /* Request-URI of the PROPFIND */
+    char            *target;        /* Request-URI of the PROPFIND */
     unsigned int     include_target; /* Do you want the uri in the result list? */
     unsigned int     result_count;   /* number of elements stored in list */
 };
@@ -724,7 +724,6 @@ static ssize_t owncloud_write(csync_vio_method_handle_t *fhandle, const void *bu
         DEBUG_WEBDAV(("Not a valid file descriptor in write\n"));
     }
 
-    DEBUG_WEBDAV(("Wrote %d bytes.\n", written ));
     return written;
 }
 
@@ -740,10 +739,11 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
     struct stat statBuf;
 
     (void) mode; /* unused on webdav server */
-    DEBUG_WEBDAV(( "=> open called for %s!\n", durl ));
+    DEBUG_WEBDAV(( "=> open called for %s\n", durl ));
 
     uri = _cleanPath( durl );
     if( ! uri ) {
+        DEBUG_WEBDAV(("Failed to clean path for %s\n", durl ));
         rc = NE_ERROR;
     } else {
         DEBUG_WEBDAV(("uri: %s\n", uri ));
