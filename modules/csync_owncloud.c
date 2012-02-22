@@ -113,7 +113,6 @@ static const ne_propname ls_props[] = {
     { "DAV:", "getlastmodified" },
     { "DAV:", "getcontentlength" },
     { "DAV:", "resourcetype" },
-    { "DAV:", "getcontenttype" },
     { NULL, NULL }
 };
 
@@ -435,7 +434,6 @@ static void results(void *userdata,
     struct resource *newres = 0;
     const char *clength, *modtime = NULL;
     const char *resourcetype = NULL;
-    const char *contenttype = NULL;
     const ne_status *status = NULL;
     char *path = ne_path_unescape( uri->path );
 
@@ -467,7 +465,6 @@ static void results(void *userdata,
     modtime      = ne_propset_value( set, &ls_props[0] );
     clength      = ne_propset_value( set, &ls_props[1] );
     resourcetype = ne_propset_value( set, &ls_props[2] );
-    contenttype  = ne_propset_value( set, &ls_props[3] );
 
     newres->type = resr_normal;
     if( clength == NULL && resourcetype && strncmp( resourcetype, "<DAV:collection>", 16 ) == 0) {
