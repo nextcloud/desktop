@@ -35,7 +35,7 @@ include_directories(
 )
 
 macro_add_plugin(${SMB_PLUGIN} csync_smb.c)
-target_link_libraries(${SMB_PLUGIN} ${CSTDLIB_LIBRARY} ${LIBSMBCLIENT_LIBRARIES})
+target_link_libraries(${SMB_PLUGIN} ${CSYNC_LIBRARY} ${LIBSMBCLIENT_LIBRARIES})
 
 install(
   TARGETS
@@ -48,7 +48,7 @@ macro_add_plugin(csync_dummy csync_dummy.c)
 
 if (LIBSSH_FOUND)
 macro_add_plugin(${SFTP_PLUGIN} csync_sftp.c)
-target_link_libraries(${SFTP_PLUGIN} ${CSTDLIB_LIBRARY} ${LIBSSH_LIBRARIES})
+target_link_libraries(${SFTP_PLUGIN} ${CSYNC_LIBRARY} ${LIBSSH_LIBRARIES})
 
 install(
   TARGETS
@@ -60,7 +60,7 @@ endif (LIBSSH_FOUND)
 
 if (NEON_FOUND)
     macro_add_plugin(${OWNCLOUD_PLUGIN} csync_owncloud.c)
-    target_link_libraries(${OWNCLOUD_PLUGIN} ${CSTDLIB_LIBRARY} ${NEON_LIBRARY})
+    target_link_libraries(${OWNCLOUD_PLUGIN} ${CSYNC_LIBRARY} ${NEON_LIBRARY})
 
     install(
         TARGETS
