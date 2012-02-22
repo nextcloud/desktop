@@ -18,120 +18,271 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <fcntl.h>
+#include "csync_auth.h"
+
+#include "c_macro.h"
+
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+
+
+
+
+/**
+ * @internal
+ *
+ * @brief Get the password from the console.
+ *
+ * @param[in]  prompt   The prompt to display.
+ *
+ * @param[in]  buf      The buffer to fill.
+ *
+ * @param[in]  len      The length of the buffer.
+ *
+ * @param[in]  verify   Should the password be verified?
+ *
+ * @return              1 on success, 0 on error.
+ */
+static int csync_gets(const char *prompt, char *buf, size_t len, int verify) {
+    char *tmp;
+    char *ptr = NULL;
+    int ok = 0;
+
+    tmp = malloc(len);
+    if (tmp == NULL) {
+        return 0;
+    }
+    memset(tmp,'\0',len);
+
+    /* read the password */
+    while (!ok) {
+        if (buf[0] != '\0') {
+            fprintf(stdout, "%s[%s] ", prompt, buf);
+        } else {
+            fprintf(stdout, "%s", prompt);
+        }
+        fflush(stdout);
+        if (fgets(tmp, len, stdin) == NULL) {
+            return 0;
+        }
+
+        if ((ptr = strchr(tmp, '\n'))) {
+            *ptr = '\0';
+        }
+        fprintf(stdout, "\n");
+
+        if (*tmp) {
+            strncpy(buf, tmp, len);
+        }
+
+        if (verify) {
+            char *key_string;
+
+            key_string = malloc(len);
+            if (key_string == NULL) {
+                break;
+            }
+              memset(key_string, '\0', len);
+
+            fprintf(stdout, "\nVerifying, please re-enter. %s", prompt);
+            fflush(stdout);
+            if (! fgets(key_string, len, stdin)) {
+                memset(key_string, '\0', len);
+                SAFE_FREE(key_string);
+                clearerr(stdin);
+                continue;
+            }
+            if ((ptr = strchr(key_string, '\n'))) {
+                *ptr = '\0';
+            }
+            fprintf(stdout, "\n");
+            if (strcmp(buf, key_string)) {
+                printf("\n\07\07Mismatch - try again\n");
+                memset(key_string, '\0', len);
+                SAFE_FREE(key_string);
+                fflush(stdout);
+                continue;
+            }
+            memset(key_string, '\0', len);
+            SAFE_FREE(key_string);
+        }
+        ok = 1;
+    }
+    memset(tmp, '\0', len);
+    free(tmp);
+
+    return ok;
+}
+
+#ifdef _WIN32
+#include <windows.h>
+
+int csync_getpass(const char *prompt,
+                char *buf,
+                size_t len,
+                int echo,
+                int verify,
+                void *userdata
+               ) {
+    /* unused variables */
+    (void) userdata;
+
+    HANDLE h;
+    DWORD mode = 0;
+    int ok;
+
+    /* fgets needs at least len - 1 */
+    if (prompt == NULL || buf == NULL || len < 2) {
+        return -1;
+    }
+
+    /* get stdin and mode */
+    h = GetStdHandle(STD_INPUT_HANDLE);
+    if (!GetConsoleMode(h, &mode)) {
+        return -1;
+    }
+
+    /* disable echo */
+    if (!echo) {
+        if (!SetConsoleMode(h, mode & ~ENABLE_ECHO_INPUT)) {
+            return -1;
+        }
+    }
+
+    ok = csync_gets(prompt, buf, len, verify);
+
+    /* reset echo */
+    SetConsoleMode(h, mode);
+
+    if (!ok) {
+        memset (buf, '\0', len);
+        return -1;
+    }
+
+    /* force termination */
+    buf[len - 1] = '\0';
+
+    return 0;
+}
+
+#else
+
+#include <fcntl.h>
 #include <termios.h>
 #include <unistd.h>
 
-#include "csync_auth.h"
+/**
+ *
+ * @brief Get a password from the console.
+ *
+ * You should make sure that the buffer is an empty string!
+ *
+ * You can also use this function to ask for a username. Then you can fill the
+ * buffer with the username and it is shows to the users. If the users just
+ * presses enter the buffer will be untouched.
+ *
+ * @code
+ *   char username[128];
+ *
+ *   snprintf(username, sizeof(username), "john");
+ *
+ *   csync_getpass("Username:", username, sizeof(username), 1, 0);
+ * @endcode
+ *
+ * The prompt will look like this:
+ *
+ *   Username: [john]
+ *
+ * If you press enter then john is used as the username, or you can type it in
+ * to change it.
+ *
+ * @param[in]  prompt   The prompt to show to ask for the password.
+ *
+ * @param[out] buf    The buffer the password should be stored. It NEEDS to be
+ *                      empty or filled out.
+ *
+ * @param[in]  len      The length of the buffer.
+ *
+ * @param[in]  echo     Should we echo what you type.
+ *
+ * @param[in]  verify   Should we ask for the password twice.
+ *
+ * @return              0 on success, -1 on error.
+ */
+int csync_getpass(const char *prompt,
+                char *buf,
+                size_t len,
+                int echo,
+                int verify,
+                void *userdata
+               ) {
+    struct termios attr;
+    struct termios old_attr;
+    int ok = 0;
+    int fd = -1;
 
-/** Zero a structure */
-#define ZERO_STRUCT(x) memset((char *)&(x), 0, sizeof(x))
+    /* unused variables */
+    (void) userdata;
 
-int csync_auth(const char *prompt, char *buf, size_t len, int echo, int verify,
-    void *userdata) {
-  struct termios attr;
-  struct termios old_attr;
-  int ok = 0;
-  int fd = -1;
-  char *ptr = NULL;
-  char tmp[len];
-
-  /* unused variables */
-  (void) userdata;
-
-  ZERO_STRUCT(attr);
-  ZERO_STRUCT(old_attr);
-  ZERO_STRUCT(tmp);
-
-  /* get local terminal attributes */
-  if (tcgetattr(STDIN_FILENO, &attr) < 0) {
-    perror("tcgetattr");
-    return -1;
-  }
-
-  /* save terminal attributes */
-  memcpy(&old_attr, &attr, sizeof(attr));
-  if((fd = fcntl(0, F_GETFL, 0)) < 0) {
-    perror("fcntl");
-    return -1;
-  }
-
-  /* disable echo */
-  if (!echo) {
-    attr.c_lflag &= ~(ECHO);
-  }
-
-  /* write attributes to terminal */
-  if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &attr) < 0) {
-    perror("tcsetattr");
-    return -1;
-  }
-
-  /* disable nonblocking I/O */
-  if (fd & O_NDELAY) {
-    fcntl(0, F_SETFL, fd & ~O_NDELAY);
-  }
-
-  /* read the password */
-  while (!ok) {
-    if (*buf) {
-      fprintf(stdout, "%s [%s] ", prompt, buf);
-    } else {
-      fprintf(stdout, "%s ", prompt);
-    }
-    fflush(stdout);
-    while (! fgets(tmp, len, stdin));
-
-    if ((ptr = strchr(tmp, '\n'))) {
-      *ptr = '\0';
-    }
-    fprintf(stdout, "\n");
-
-    if (*tmp) {
-      strncpy(buf, tmp, len);
+    /* fgets needs at least len - 1 */
+    if (prompt == NULL || buf == NULL || len < 2) {
+        return -1;
     }
 
+    ZERO_STRUCT(attr);
+    ZERO_STRUCT(old_attr);
 
-    if (verify) {
-      char key_string[len];
-
-      fprintf(stdout, "\nVerifying, please re-enter. %s", prompt);
-      fflush(stdout);
-      if (! fgets(key_string, sizeof(key_string), stdin)) {
-        clearerr(stdin);
-        continue;
-      }
-      if ((ptr = strchr(key_string, '\n'))) {
-        *ptr = '\0';
-      }
-      fprintf(stdout, "\n");
-      if (strcmp(buf, key_string)) {
-        printf("\n\07\07Mismatch - try again\n");
-        fflush(stdout);
-        continue;
-      }
+    /* get local terminal attributes */
+    if (tcgetattr(STDIN_FILENO, &attr) < 0) {
+        perror("tcgetattr");
+        return -1;
     }
-    ok = 1;
-  }
 
-  /* reset terminal */
-  if (tcsetattr(STDIN_FILENO, TCSANOW, &old_attr)) {
-    ok = 0;
-  }
+    /* save terminal attributes */
+    memcpy(&old_attr, &attr, sizeof(attr));
+    if((fd = fcntl(0, F_GETFL, 0)) < 0) {
+        perror("fcntl");
+        return -1;
+    }
 
-  /* close fd */
-  if (fd & O_NDELAY) {
-    fcntl(0, F_SETFL, fd);
-  }
+    /* disable echo */
+    if (!echo) {
+        attr.c_lflag &= ~(ECHO);
+    }
 
-  /* force termination */
-  buf[len - 1] = '\0';
-  ZERO_STRUCT(tmp);
+    /* write attributes to terminal */
+    if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &attr) < 0) {
+        perror("tcsetattr");
+        return -1;
+    }
 
-  /* return nonzero if not okay */
-  return !ok;
+    /* disable nonblocking I/O */
+    if (fd & O_NDELAY) {
+        fcntl(0, F_SETFL, fd & ~O_NDELAY);
+    }
+
+    ok = csync_gets(prompt, buf, len, verify);
+
+    /* reset terminal */
+    tcsetattr(STDIN_FILENO, TCSANOW, &old_attr);
+
+    /* close fd */
+    if (fd & O_NDELAY) {
+        fcntl(0, F_SETFL, fd);
+    }
+
+    if (!ok) {
+        memset (buf, '\0', len);
+        return -1;
+    }
+
+    /* force termination */
+    buf[len - 1] = '\0';
+
+    return 0;
 }
+
+#endif
 
 /* vim: set ts=8 sw=2 et cindent: */

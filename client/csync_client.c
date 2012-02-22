@@ -202,7 +202,7 @@ int main(int argc, char **argv) {
     exit(1);
   }
 
-  csync_set_auth_callback(csync, csync_auth);
+  csync_set_auth_callback(csync, csync_getpass);
   if (arguments.disable_statedb) {
     csync_disable_statedb(csync);
   }
