@@ -28,6 +28,7 @@
 #include "csync_log.h"
 
 static int _csync_config_copy_default (const char *config) {
+#ifndef _WIN32
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Copy %s/config/%s to %s", SYSCONFDIR,
         CSYNC_CONF_FILE, config);
     if (c_copy(SYSCONFDIR "/csync/" CSYNC_CONF_FILE, config, 0644) < 0) {
@@ -35,7 +36,7 @@ static int _csync_config_copy_default (const char *config) {
         return -1;
       }
     }
-
+#endif
     return 0;
 }
 

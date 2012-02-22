@@ -180,9 +180,11 @@ int csync_init(CSYNC *ctx) {
   if (c_isfile(log)) {
     csync_log_load(log);
   } else {
+#ifndef _WIN32
     if (c_copy(SYSCONFDIR "/csync/" CSYNC_LOG_FILE, log, 0644) == 0) {
       csync_log_load(log);
     }
+#endif
   }
 
   /* create lock file */
@@ -209,6 +211,7 @@ int csync_init(CSYNC *ctx) {
     goto out;
   }
 
+#ifndef _WIN32
   /* load global exclude list */
   if (asprintf(&exclude, "%s/csync/%s", SYSCONFDIR, CSYNC_EXCLUDE_FILE) < 0) {
     rc = -1;
@@ -232,6 +235,7 @@ int csync_init(CSYNC *ctx) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Could not load %s - %s", exclude, 
         strerror_r(errno, errbuf, sizeof(errbuf)));
   }
+#endif
 
   /* create/load statedb */
   if (! csync_is_statedb_disabled(ctx)) {
