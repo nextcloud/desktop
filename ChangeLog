@@ -1,7 +1,8 @@
 ChangeLog
 ==========
 
-version 0.45.0 (released 2012-xx-xx)
+version 0.50.0 (released 2012-xx-xx)
+  * Added owncloud module.
   * Added backup reconciler.
   * Fixed serveral bugs.
 
