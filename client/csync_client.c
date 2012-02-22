@@ -187,6 +187,7 @@ int main(int argc, char **argv) {
   arguments.update = 1;
   arguments.reconcile = 1;
   arguments.propagate = 1;
+  arguments.with_conflict_copys = false;
 
   /*
    * Parse our arguments; every option seen by parse_opt will
