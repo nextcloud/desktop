@@ -260,8 +260,8 @@ int csync_unix_extensions(CSYNC *ctx) {
 
   ctx->options.unix_extensions = 0;
 
-  if (asprintf(&uri, "%s/csync_file*test.ctmp", ctx->remote.uri) < 0) {
-    rc = -1;
+  rc = asprintf(&uri, "%s/csync_unix_extension*test.ctmp", ctx->remote.uri);
+  if (rc < 0) {
     goto out;
   }
 
