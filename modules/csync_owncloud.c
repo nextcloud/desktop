@@ -52,13 +52,11 @@ enum resource_type {
 
 #ifdef HAVE_UNSIGNED_LONG_LONG
 typedef unsigned long long dav_size_t;
-#define FMT_DAV_SIZE_T "ll"
 #ifdef HAVE_STRTOULL
 #define DAV_STRTOL strtoull
 #endif
 #else
 typedef unsigned long dav_size_t;
-#define FMT_DAV_SIZE_T "l"
 #endif
 
 #ifndef DAV_STRTOL
@@ -143,7 +141,6 @@ static int ne_session_error_errno(ne_session *session)
         return EIO;
     }
     DEBUG_WEBDAV(("Session error string %s\n", p));
-    DEBUG_WEBDAV(("Session Error: %d\n", err ));
 
     switch(err) {
     case 200:           /* OK */
@@ -242,6 +239,7 @@ static void addSSLWarning( char *ptr, const char *warn, int len )
 
     if( ! (warn && ptr )) return;
     remainingLen = len - strlen(ptr);
+    if( remainingLen <= 0 ) return;
     concatHere = ptr + strlen(ptr);  // put the write pointer to the end.
     strncpy( concatHere, warn, remainingLen );
 }
@@ -344,55 +342,45 @@ static int ne_auth( void *userdata, const char *realm, int attempt,
 static int dav_connect(const char *base_url) {
     int timeout = 30;
     int useSSL = 0;
-    ne_uri uri;
     int rc;
-    char *p;
     char protocol[6];
     char uaBuf[256];
+    char *path = NULL;
+    char *scheme = NULL;
+    char *host = NULL;
+    unsigned int port = 0;
 
     if (_connected) {
         return 0;
     }
 
-    rc = ne_uri_parse(base_url, &uri);
-    if (rc < 0) {
+    rc = c_parse_uri( base_url, &scheme, &dav_session.user, &dav_session.pwd, &host, &port, &path );
+    if( rc < 0 ) {
+        DEBUG_WEBDAV(("Failed to parse uri %s\n", base_url ));
         goto out;
     }
 
-    // DEBUG_WEBDAV(("* Userinfo: %s\n", uri.userinfo ));
-    DEBUG_WEBDAV(("* scheme %s\n", uri.scheme ));
-    DEBUG_WEBDAV(("* host %s\n", uri.host ));
-    DEBUG_WEBDAV(("* port %d\n", uri.port ));
-    DEBUG_WEBDAV(("* path %s\n", uri.path ));
-    DEBUG_WEBDAV(("* fragment %s\n", uri.fragment));
+    DEBUG_WEBDAV(("* scheme %s\n", scheme ));
+    DEBUG_WEBDAV(("* host %s\n", host ));
+    DEBUG_WEBDAV(("* port %u\n", port ));
+    DEBUG_WEBDAV(("* path %s\n", path ));
 
-    if( strcmp( uri.scheme, "owncloud" ) == 0 ) {
+    if( strcmp( scheme, "owncloud" ) == 0 ) {
         strncpy( protocol, "http", 6);
-    } else if( strcmp( uri.scheme, "ownclouds" ) == 0 ) {
+    } else if( strcmp( scheme, "ownclouds" ) == 0 ) {
         strncpy( protocol, "https", 6 );
         useSSL = 1;
     } else {
         strncpy( protocol, "", 6 );
-        DEBUG_WEBDAV(("Invalid protocol %s, go outa here!", protocol ));
+        DEBUG_WEBDAV(("Invalid scheme %s, go outa here!", scheme ));
         rc = -1;
         goto out;
     }
 
-    if( uri.userinfo ) {
-        p = strchr( uri.userinfo, ':');
-        if( p ) {
-            *p = '\0'; /* cut the strings for strdup */
-            p = p+1;
-
-             dav_session.user = c_strdup( uri.userinfo );
-             if( p ) dav_session.pwd  = c_strdup( p );
-             *(p-1) = ':'; /* unite the strings again */
-        }
-    }
     DEBUG_WEBDAV(("* user %s\n", dav_session.user ? dav_session.user : ""));
 
-    if (uri.port == 0) {
-        uri.port = ne_uri_defaultport(protocol);
+    if (port == 0) {
+        port = ne_uri_defaultport(protocol);
     }
 
     rc = ne_sock_init();
@@ -402,7 +390,7 @@ static int dav_connect(const char *base_url) {
         goto out;
     }
 
-    dav_session.ctx = ne_session_create( protocol, uri.host, uri.port);
+    dav_session.ctx = ne_session_create( protocol, host, port);
 
     if (dav_session.ctx == NULL) {
         DEBUG_WEBDAV(("Session create with protocol %s failed\n", protocol ));
@@ -429,7 +417,6 @@ static int dav_connect(const char *base_url) {
     _connected = 1;
     rc = 0;
 out:
-    ne_uri_free( &uri );
     return rc;
 }
 
@@ -618,7 +605,7 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
     struct listdir_context  *fetchCtx = NULL;
     char *curi = NULL;
 
-    DEBUG_WEBDAV(("__stat__ %s called\n", uri ));
+    DEBUG_WEBDAV(("owncloud_stat %s called\n", uri ));
 
     buf->name = c_basename(uri);
 
