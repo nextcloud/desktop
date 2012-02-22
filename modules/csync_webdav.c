@@ -559,7 +559,13 @@ static csync_vio_method_handle_t *_open(const char *durl,
 }
 
 static csync_vio_method_handle_t *_creat(const char *durl, mode_t mode) {
-    return _open(durl, O_CREAT|O_WRONLY|O_TRUNC, mode);
+
+    csync_vio_method_handle_t *handle = _open(durl, O_CREAT|O_WRONLY|O_TRUNC, mode);
+
+    /* on create, the file needs to be created empty */
+    _write( handle, NULL, 0 );
+
+    return handle;
 }
 
 static int _close(csync_vio_method_handle_t *fhandle) {
