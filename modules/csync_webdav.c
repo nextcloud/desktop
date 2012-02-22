@@ -363,6 +363,10 @@ static void results(void *userdata,
     (void) status;
 
     DEBUG_WEBDAV(("** PATH found: %s\n", path ));
+    if( ! fetchCtx->target ) {
+        DEBUG_WEBDAV(("error: target must not be zero!\n" ));
+        return;
+    }
     DEBUG_WEBDAV(("TARGET found: %s\n", fetchCtx->target ));
 
     if (ne_path_compare(fetchCtx->target, path) == 0 && !fetchCtx->include_target) {
@@ -488,6 +492,29 @@ static int fetch_resource_list( const char *uri,
 /*
  * file functions
  */
+static ssize_t _write(csync_vio_method_handle_t *fhandle, const void *buf, size_t count) {
+    ne_request *req = (ne_request *)fhandle;
+    ssize_t len = count;
+    int rc;
+    ne_session *session = ne_get_session( req );
+
+    ne_set_request_body_buffer(req, buf, count);
+    DEBUG_WEBDAV(( "############# write called!\n"));
+
+    rc = ne_request_dispatch(req);
+    if (rc == NE_OK && ne_get_status(req)->klass != 2) {
+        len = -1;
+    }
+    if( rc != NE_OK ) {
+        len = -1;
+        if( session )
+            DEBUG_WEBDAV(("request_dispatch failed: %s\n", ne_get_error(session)));
+        else
+            DEBUG_WEBDAV(("request_dispatch failed, session invalid!\n" ));
+    }
+
+    return len;
+}
 
 static csync_vio_method_handle_t *_open(const char *durl,
                                         int flags,
@@ -566,21 +593,6 @@ static ssize_t _read(csync_vio_method_handle_t *fhandle, void *buf, size_t count
 
     if (rc == NE_OK) {
         rc = ne_end_request(req);
-    }
-
-    return len;
-}
-
-static ssize_t _write(csync_vio_method_handle_t *fhandle, const void *buf, size_t count) {
-    ne_request *req = (ne_request *)fhandle;
-    ssize_t len = count;
-    int rc;
-
-    ne_set_request_body_buffer(req, buf, count);
-
-    rc = ne_request_dispatch(req);
-    if (rc == NE_OK && ne_get_status(req)->klass != 2) {
-        len = -1;
     }
 
     return len;
