@@ -598,6 +598,43 @@ static csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
     return lfs;
 }
 
+/* cleanPath to return an escaped path of an uri */
+static char *_cleanPath( const char* uri ) {
+    int rc = 0;
+    char *path;
+    char *re = NULL;
+
+    rc = c_parse_uri( uri, NULL, NULL, NULL, NULL, NULL, &path );
+    if( rc  < 0 ) {
+        DEBUG_WEBDAV(("Unable to cleanPath %s\n", uri ? uri: "" ));
+        re = NULL;
+    } else {
+        re = ne_path_escape( path );
+    }
+    SAFE_FREE( path );
+    return re;
+}
+
+/* WebDAV does not deliver permissions. Set a default here. */
+static int _stat_perms( int type ) {
+    int ret = 0;
+
+    if( type == CSYNC_VIO_FILE_TYPE_DIRECTORY ) {
+        DEBUG_WEBDAV(("Setting mode in stat (dir)\n"));
+        /* directory permissions */
+        ret = S_IFDIR | S_IRUSR | S_IWUSR | S_IXUSR /* directory, rwx for user */
+                | S_IRGRP | S_IXGRP                       /* rx for group */
+                | S_IROTH | S_IXOTH;                      /* rx for others */
+    } else {
+        /* regualar file permissions */
+        DEBUG_WEBDAV(("Setting mode in stat (file)\n"));
+        ret = S_IFREG | S_IRUSR | S_IWUSR /* regular file, user read & write */
+                | S_IRGRP                         /* group read perm */
+                | S_IROTH;                        /* others read perm */
+    }
+    return ret;
+}
+
 /*
  * file functions
  */
@@ -1093,26 +1130,6 @@ static int owncloud_rmdir(const char *uri) {
     }
 
     return 0;
-}
-
-/* WebDAV does not deliver permissions. We set a default here. */
-static int _stat_perms( int type ) {
-    int ret = 0;
-
-    if( type == CSYNC_VIO_FILE_TYPE_DIRECTORY ) {
-        DEBUG_WEBDAV(("Setting mode in stat (dir)\n"));
-        /* directory permissions */
-        ret = S_IFDIR | S_IRUSR | S_IWUSR | S_IXUSR /* directory, rwx for user */
-                | S_IRGRP | S_IXGRP                       /* rx for group */
-                | S_IROTH | S_IXOTH;                      /* rx for others */
-    } else {
-        /* regualar file permissions */
-        DEBUG_WEBDAV(("Setting mode in stat (file)\n"));
-        ret = S_IFREG | S_IRUSR | S_IWUSR /* regular file, user read & write */
-                | S_IRGRP                         /* group read perm */
-                | S_IROTH;                        /* others read perm */
-    }
-    return ret;
 }
 
 static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
