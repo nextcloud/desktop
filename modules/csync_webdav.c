@@ -794,11 +794,15 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
      *   creattime
      *   size
      */
+#define DONT_CHEAT
 #ifdef DONT_CHEAT
     csync_vio_file_stat_t *lfs = NULL;
     struct fetch_context  *fetchCtx = NULL;
-#endif
+    int rc = 0;
+    ne_uri neuri;
+#else
     time_t now = time(NULL);
+#endif
 
     DEBUG_WEBDAV(("__stat__ %s called\n", uri ));
 
@@ -816,7 +820,25 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
         // fetch data via a propfind call.
         DEBUG_WEBDAV(("I have no stat cache, call propfind.\n"));
 #ifdef DONT_CHEAT
-        fetchCtx = _opendir( uri );
+
+        fetchCtx = c_malloc( sizeof( struct fetch_context ));
+
+        rc = ne_uri_parse(uri, &neuri);
+        // DEBUG_WEBDAV(("ne_parse_result: %d\n", rc ));
+
+        if (rc < 0) {
+            return -1;
+        }
+        // fetchCtx->list = reslist;
+        fetchCtx->target = neuri.path;
+        fetchCtx->include_target = 1;
+        fetchCtx->currResource = NULL;
+
+        DEBUG_WEBDAV(("fetchCtx good.\n" ));
+
+        fetch_resource_list( uri, NE_DEPTH_ONE, fetchCtx );
+        fetchCtx->currResource = fetchCtx->list;
+
         if( fetchCtx ) {
             lfs = resourceToFileStat( fetchCtx->currResource );
             if( lfs ) {
@@ -825,14 +847,14 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
                 buf->mtime  = lfs->mtime;
             }
         }
-#endif
+#else
         // FIXME: Cheat for the time check...
         buf->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
         buf->type = CSYNC_VIO_FILE_TYPE_REGULAR;
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
         buf->mtime = now;
-
+#endif
     }
     DEBUG_WEBDAV(("STAT result: %s, type=%d\n", buf->name, buf->type ));
 
