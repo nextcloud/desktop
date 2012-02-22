@@ -191,10 +191,12 @@ int csync_init(CSYNC *ctx) {
     goto out;
   }
 
+#ifndef _WIN32
   if (csync_lock(lock) < 0) {
     rc = -1;
     goto out;
   }
+#endif
 
   /* load config file */
   if (asprintf(&config, "%s/%s", ctx->options.config_dir, CSYNC_CONF_FILE) < 0) {
@@ -527,10 +529,12 @@ int csync_destroy(CSYNC *ctx) {
   /* clear exclude list */
   csync_exclude_destroy(ctx);
 
+#ifndef _WIN32
   /* remove the lock file */
   if (asprintf(&lock, "%s/%s", ctx->options.config_dir, CSYNC_LOCK_FILE) > 0) {
     csync_lock_remove(lock);
   }
+#endif
 
   /* stop logging */
   csync_log_fini();

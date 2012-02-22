@@ -38,7 +38,6 @@ set(csync_SRCS
   csync_config.c
   csync_exclude.c
   csync_statedb.c
-  csync_lock.c
   csync_time.c
   csync_util.c
   csync_misc.c
@@ -52,6 +51,10 @@ set(csync_SRCS
   vio/csync_vio_file_stat.c
   vio/csync_vio_local.c
 )
+
+if(NOT WIN32)
+  list(APPEND csync_SRCS csync_lock.c)
+endif()
 
 set(csync_HDRS
   csync.h
