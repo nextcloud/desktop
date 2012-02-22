@@ -524,11 +524,18 @@ static csync_vio_method_handle_t *_open(const char *durl,
     int put = 0;
 
     (void) mode; /* unused */
+    DEBUG_WEBDAV(( "############# open called!\n"));
 
-    uri = ne_path_escape(durl);
+    /* uri = ne_path_escape(durl);
+     * escaping lets the ne_request_create fail, even though its documented
+     * differently :-(
+     */
+    uri = durl;
+
     if (uri == NULL) {
         return NULL;
     }
+    dav_connect( uri );
 
     if (flags & O_WRONLY) {
         put = 1;
@@ -547,6 +554,7 @@ static csync_vio_method_handle_t *_open(const char *durl,
         req = ne_request_create(dav_session.ctx, "GET", uri);
     }
 
+    DEBUG_WEBDAV(( "open request: %p\n", req ));
     return (csync_vio_method_handle_t *) req;
 }
 
