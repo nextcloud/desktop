@@ -542,18 +542,6 @@ static void results(void *userdata,
 
 }
 
-static const char *_cleanUrl( const char* uri ) {
-    int rc = 0;
-
-    ne_uri url;
-    rc = ne_uri_parse( uri, &url );
-    if( rc < 0 ) {
-        return NULL;
-    }
-
-    return ne_path_escape( url.path );
-}
-
 /*
  * fetches a resource list from the WebDAV server. This is equivalent to list dir.
  */
