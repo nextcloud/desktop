@@ -257,8 +257,8 @@ retry_vio_init:
       if (rc < 0) {
         len = strlen(module);
 
-        if (module[len] == 's') {
-          module[len] = '\0';
+        if (module[len-1] == 's') {
+          module[len-1] = '\0';
           goto retry_vio_init;
         }
 
