@@ -468,7 +468,6 @@ static void results(void *userdata,
     clength      = ne_propset_value( set, &ls_props[1] );
     resourcetype = ne_propset_value( set, &ls_props[2] );
     contenttype  = ne_propset_value( set, &ls_props[3] );
-    DEBUG_WEBDAV(("Contenttype: %s\n", contenttype ? contenttype : "" ));
 
     newres->type = resr_normal;
     if( clength == NULL && resourcetype && strncmp( resourcetype, "<DAV:collection>", 16 ) == 0) {
@@ -487,11 +486,7 @@ static void results(void *userdata,
         }
     }
 
-    if( contenttype ) {
-
-    }
-
-    /* prepend the resource to the result list */
+    /* prepend the new resource to the result list */
     newres->next   = fetchCtx->list;
     fetchCtx->list = newres;
     fetchCtx->result_count = fetchCtx->result_count + 1;
@@ -726,8 +721,6 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
     if( ! uri ) {
         DEBUG_WEBDAV(("Failed to clean path for %s\n", durl ));
         rc = NE_ERROR;
-    } else {
-        DEBUG_WEBDAV(("uri: %s\n", uri ));
     }
 
     if( rc == NE_OK )
