@@ -522,6 +522,7 @@ static csync_vio_method_handle_t *_open(const char *durl,
     char *uri;
     ne_request *req;
     int put = 0;
+    int rc = 0;
 
     (void) mode; /* unused */
     DEBUG_WEBDAV(( "############# open called!\n"));
@@ -552,6 +553,11 @@ static csync_vio_method_handle_t *_open(const char *durl,
         req = ne_request_create(dav_session.ctx, "PUT", uri);
     } else {
         req = ne_request_create(dav_session.ctx, "GET", uri);
+    }
+
+    rc = ne_begin_request(req);
+    if (rc != NE_OK) {
+        return -1;
     }
 
     DEBUG_WEBDAV(( "open request: %p\n", req ));
@@ -586,12 +592,13 @@ static ssize_t _read(csync_vio_method_handle_t *fhandle, void *buf, size_t count
     const ne_status *const st = ne_get_status(req);
     ssize_t len;
     int rc;
-
+#if 0
     rc = ne_begin_request(req);
     if (rc != NE_OK) {
         return -1;
     }
-
+#endif
+    DEBUG_WEBDAV(("--> Status Klass: %d\n", st->klass ));
     do {
         if (st->klass == 2) {
             rc = NE_OK;
@@ -605,9 +612,12 @@ static ssize_t _read(csync_vio_method_handle_t *fhandle, void *buf, size_t count
         }
     } while(rc == NE_RETRY);
 
+#if 0
     if (rc == NE_OK) {
         rc = ne_end_request(req);
     }
+#endif
+    DEBUG_WEBDAV(( "read len: %d\n", len ));
 
     return len;
 }
@@ -704,6 +714,8 @@ static csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
 
     lfs->mtime = res->modtime;
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
+    lfs->size  = res->size;
+    lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
 
     return lfs;
 }
@@ -731,6 +743,7 @@ static csync_vio_file_stat_t *_readdir(csync_vio_method_handle_t *dhandle) {
         fs.mtime  = lfs->mtime;
         fs.fields = lfs->fields;
         fs.type   = lfs->type;
+        fs.size   = lfs->size;
     }
 
     DEBUG_WEBDAV(("LFS fields: %s: %d\n", lfs->name, lfs->type ));
@@ -812,10 +825,15 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
         return -1; // FIXME: Errno!
     }
 
+    /* check if the data in the static 'cache' fs is for the same file.
+     * The cache is filled by readdir which is often called directly before
+     * stat. If the cache matches, a http call is saved.
+     */
     if( fs.name && strcmp( buf->name, fs.name ) == 0 ) {
         buf->fields = fs.fields;
         buf->type   = fs.type;
         buf->mtime  = fs.mtime;
+        buf->size   = fs.size;
     } else {
         // fetch data via a propfind call.
         DEBUG_WEBDAV(("I have no stat cache, call propfind.\n"));
@@ -845,6 +863,7 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
                 buf->fields = lfs->fields;
                 buf->type   = lfs->type;
                 buf->mtime  = lfs->mtime;
+                buf->size   = lfs->size;
             }
         }
 #else
@@ -854,6 +873,8 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
         buf->type = CSYNC_VIO_FILE_TYPE_REGULAR;
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
         buf->mtime = now;
+        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
+        buf->size = 0;
 #endif
     }
     DEBUG_WEBDAV(("STAT result: %s, type=%d\n", buf->name, buf->type ));
@@ -867,11 +888,13 @@ static int _rename(const char *olduri, const char *newuri) {
     int rc;
 
     ouri = ne_path_escape(olduri);
+    ouri = olduri;
     if (ouri == NULL) {
         return -1;
     }
 
     nuri = ne_path_escape(newuri);
+    nuri = newuri;
     if (nuri == NULL) {
         return -1;
     }
@@ -883,7 +906,8 @@ static int _rename(const char *olduri, const char *newuri) {
     }
 
     rc = ne_move(dav_session.ctx, 1, ouri, nuri);
-    if (rc != 0) {
+    DEBUG_WEBDAV(("MOVE: %s => %s: %d\n", olduri, newuri, rc ));
+    if (rc != NE_OK ) {
         errno = ne_error_to_errno(rc);
         return -1;
     }
