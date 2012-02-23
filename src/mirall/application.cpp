@@ -18,6 +18,7 @@
 #include <QHashIterator>
 #include <QUrl>
 #include <QDesktopServices>
+#include <QSplashScreen>
 
 #include "mirall/constants.h"
 #include "mirall/application.h"
@@ -55,6 +56,12 @@ Application::Application(int argc, char **argv) :
     _theme = new mirallTheme();
 #endif
     setApplicationName( _theme->appName() );
+
+    _splash = new QSplashScreen( _theme->splashScreen() );
+    _splash->show();
+
+    processEvents();
+
     INotify::initialize();
 
     _folderMan = new FolderMan();
@@ -102,6 +109,8 @@ Application::Application(int argc, char **argv) :
         _tray->setIcon(QIcon::fromTheme(MIRALL_ICON, QIcon( QString( ":/mirall/resources/%1").arg(MIRALL_ICON))));
     }
 
+    QTimer::singleShot( 5000, this, SLOT(slotHideSplash()) );
+
     qDebug() << "Network Location: " << NetworkLocation::currentLocation().encoded();
 }
 
@@ -113,6 +122,11 @@ Application::~Application()
     delete _networkMgr;
     delete _folderMan;
     delete _tray;
+}
+
+void Application::slotHideSplash()
+{
+    delete _splash;
 }
 
 void Application::setupActions()

@@ -14,6 +14,7 @@
 
 #include <QString>
 #include <QDebug>
+#include <QPixmap>
 
 #include "owncloudtheme.h"
 
@@ -33,5 +34,11 @@ QString ownCloudTheme::configFileName() const
 {
     return QString::fromLocal8Bit("owncloud.cfg");
 }
+
+QPixmap ownCloudTheme::splashScreen() const
+{
+    return QPixmap(":/mirall/resources/owncloud_splash.png");
+}
+
 }
 

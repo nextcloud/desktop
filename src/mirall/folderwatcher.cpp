@@ -161,7 +161,7 @@ void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
     _lastMask = mask;
     _lastPath = path;
 
-    qDebug() << "***************** Inotify Event " << mask << " on " << path;
+    // qDebug() << "** Inotify Event " << mask << " on " << path;
     // cancel close write events that come after create
     if (lastMask == IN_CREATE && mask == IN_CLOSE_WRITE
         && lastPath == path ) {

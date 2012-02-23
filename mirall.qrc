@@ -19,5 +19,6 @@
         <file>resources/folder-sync.png</file>
         <file>resources/folder-important.png</file>
         <file>resources/folder-grey.png</file>
+        <file>resources/owncloud_splash.png</file>
     </qresource>
 </RCC>

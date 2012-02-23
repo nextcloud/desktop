@@ -17,9 +17,11 @@
 
 #include "mirall/syncresult.h"
 
+
 class QIcon;
 class QString;
 class QObject;
+class QPixmap;
 
 namespace Mirall {
 
@@ -40,6 +42,7 @@ public:
     virtual QIcon folderIcon( const QString&, int ) const;
     virtual QIcon syncStateIcon( SyncResult::Status, int ) const;
     virtual QString statusHeaderText( SyncResult::Status ) const;
+    virtual QPixmap splashScreen() const = 0;
 
     virtual QString version() const;
 private:

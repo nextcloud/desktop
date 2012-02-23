@@ -14,6 +14,7 @@
 
 #include <QString>
 #include <QDebug>
+#include <QPixmap>
 
 #include "miralltheme.h"
 
@@ -32,6 +33,11 @@ QString mirallTheme::appName() const
 QString mirallTheme::configFileName() const
 {
     return QString::fromLocal8Bit("mirall.cfg");
+}
+
+QPixmap mirallTheme::splashScreen() const
+{
+    return QPixmap(":/mirall/resources/owncloud_splash.png"); // FIXME: mirall splash!
 }
 
 }

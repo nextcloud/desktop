@@ -26,7 +26,7 @@ public:
 
     virtual QString appName() const;
     QString configFileName() const;
-
+    virtual QPixmap splashScreen() const;
 private:
 
 
