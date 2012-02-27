@@ -117,6 +117,7 @@ struct csync_s {
     int unix_extensions;
     char *config_dir;
     bool with_conflict_copys;
+    bool local_only_mode;
   } options;
 
   struct {
