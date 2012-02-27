@@ -471,6 +471,14 @@ static void results(void *userdata,
         newres->type = resr_collection;
     }
 
+    /*
+     * check if the name of the new result is webdav.php. If so, it should be treated
+     * as a directory, as it represents the root of the WebDAV server.
+     */
+    if( strncmp( newres->name, "webdav.php", strlen("webdav.php")) == 0 ) {
+        newres->type = resr_collection;
+    }
+
     if (modtime)
         newres->modtime = ne_httpdate_parse(modtime);
 
@@ -487,7 +495,7 @@ static void results(void *userdata,
     newres->next   = fetchCtx->list;
     fetchCtx->list = newres;
     fetchCtx->result_count = fetchCtx->result_count + 1;
-    DEBUG_WEBDAV(( "results for URI %s: %d %d\n", newres->name, (int)newres->size, (int)newres->modtime ));
+    DEBUG_WEBDAV(( "results for URI %s: %d %d\n", newres->name, (int)newres->size, (int)newres->type ));
 }
 
 /*
@@ -536,6 +544,8 @@ static csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
     } else if( res->type == resr_collection ) {
         lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
         lfs->type = CSYNC_VIO_FILE_TYPE_DIRECTORY;
+    } else {
+        DEBUG_WEBDAV(("ERROR: Unknown resource type %d\n", res->type));
     }
 
     lfs->mtime = res->modtime;
@@ -596,6 +606,8 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
     csync_vio_file_stat_t *lfs = NULL;
     struct listdir_context  *fetchCtx = NULL;
     char *curi = NULL;
+    char strbuf[PATH_MAX +1];
+    int len = 0;
 
     DEBUG_WEBDAV(("owncloud_stat %s called\n", uri ));
 
@@ -625,8 +637,6 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
         buf->mode   = _stat_perms( _fs.type );
     } else {
         // fetch data via a propfind call.
-        DEBUG_WEBDAV(("I have no stat cache, call propfind.\n"));
-
         fetchCtx = c_malloc( sizeof( struct listdir_context ));
         if( ! fetchCtx ) {
             errno = ne_error_to_errno( NE_ERROR );
@@ -635,6 +645,8 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
         }
 
         curi = _cleanPath( uri );
+
+        DEBUG_WEBDAV(("I have no stat cache, call propfind for %s.\n", curi ));
         fetchCtx->list = NULL;
         fetchCtx->target = curi;
         fetchCtx->include_target = 1;
@@ -650,8 +662,23 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
         }
 
         if( fetchCtx ) {
-            fetchCtx->currResource = fetchCtx->list;
-            lfs = resourceToFileStat( fetchCtx->currResource );
+            struct resource *res = fetchCtx->list;
+            while( res ) {
+                /* remove trailing slashes */
+                len = strlen(res->uri);
+                while( len > 0 && res->uri[len-1] == '/' ) --len;
+                memset( strbuf, 0, PATH_MAX+1);
+                strncpy( strbuf, res->uri, len < PATH_MAX ? len : PATH_MAX );
+                DEBUG_WEBDAV(("Comparing %s - %s with %s\n",strbuf, res->uri, curi ));
+                DEBUG_WEBDAV(("Comparison: %d\n", c_streq( strbuf, curi ) ));
+                if( c_streq(strbuf, curi )) {
+                    break;
+                }
+                res = res->next;
+            }
+            DEBUG_WEBDAV(("Working on file %s\n", res ? res->name : "NULL"));
+
+            lfs = resourceToFileStat( res );
             if( lfs ) {
                 buf->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
                 buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
@@ -670,8 +697,8 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
             SAFE_FREE( fetchCtx );
         }
     }
-    DEBUG_WEBDAV(("STAT result: %s, type=%d\n", buf->name, buf->type ));
-
+    DEBUG_WEBDAV(("STAT result: %s, type=%d\n", buf->name ? buf->name:"NULL",
+                  buf->type ));
     return 0;
 }
 
@@ -1039,7 +1066,7 @@ static int owncloud_mkdir(const char *uri, mode_t mode) {
         errno = EINVAL;
     }
 
-    /* the suri path is required to have a trailing slash */
+    /* the uri path is required to have a trailing slash */
     if( rc >= 0 ) {
       DEBUG_WEBDAV(("MKdir on %s\n", path ));
       rc = ne_mkcol(dav_session.ctx, path );
@@ -1226,7 +1253,8 @@ void vio_module_shutdown(csync_vio_method_t *method) {
     SAFE_FREE( dav_session.user );
     SAFE_FREE( dav_session.pwd );
 
-    ne_session_destroy( dav_session.ctx );
+    if( dav_session.ctx )
+        ne_session_destroy( dav_session.ctx );
 }
 
 
