@@ -1,0 +1,16 @@
+freitag@zora:~> 
+Message from syslogd@zora at Sep 20 21:35:41 ...
+ kernel:[ 6702.458047] general protection fault: 0000 [#1] PREEMPT SMP 
+
+Message from syslogd@zora at Sep 20 21:35:41 ...
+ kernel:[ 6702.458060] last sysfs file: /sys/devices/LNXSYSTM:00/device:00/PNP0A08:00/device:03/ATK0110:00/hwmon/hwmon0/temp1_label
+
+Message from syslogd@zora at Sep 20 21:35:41 ...
+ kernel:[ 6702.458232] Stack:
+
+Message from syslogd@zora at Sep 20 21:35:41 ...
+ kernel:[ 6702.458262] Call Trace:
+
+Message from syslogd@zora at Sep 20 21:35:41 ...
+ kernel:[ 6702.458375] Code: 00 00 80 00 00 00 48 b9 00 00 00 00 80 ff ff ff 4e 8d 34 30 49 21 ce 48 8b 4c 24 38 49 8d 56 ff 48 3b 54 24 48 4c 0f 43 74 24 40 <48> 8b 11 48 85 d2 0f 84 d4 01 00 00 48 b9 fb 0f 00 00 00 c0 ff 
+
