@@ -1026,9 +1026,16 @@ static csync_vio_file_stat_t *owncloud_readdir(csync_vio_method_handle_t *dhandl
 
 static int owncloud_mkdir(const char *uri, mode_t mode) {
     int rc = NE_OK;
+    char buf[PATH_MAX +1];
+    int len = 0;
+
     char *path = _cleanPath( uri );
     (void) mode; /* unused */
 
+    if( ! path ) {
+        errno = EINVAL;
+        rc = -1;
+    }
     rc = dav_connect(uri);
     if (rc < 0) {
         errno = EINVAL;
@@ -1036,10 +1043,17 @@ static int owncloud_mkdir(const char *uri, mode_t mode) {
 
     /* the uri path is required to have a trailing slash */
     if( rc >= 0 ) {
-      DEBUG_WEBDAV(("MKdir on %s\n", path ));
-      rc = ne_mkcol(dav_session.ctx, path );
+      memset( buf,0, PATH_MAX+1 );
+      len = strlen( path );
+      strncpy( buf, path, len );
+      if( buf[len-1] != '/' ) {
+          buf[len] = '/';
+      }
+
+      DEBUG_WEBDAV(("MKdir on %s\n", buf ));
+      rc = ne_mkcol(dav_session.ctx, buf );
         if (rc != NE_OK ) {
-            errno = ne_error_to_errno(rc);
+            errno = ne_session_error_errno( dav_session.ctx );
         }
     }
     SAFE_FREE( path );
