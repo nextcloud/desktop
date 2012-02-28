@@ -22,7 +22,7 @@ namespace Mirall {
 
 ownCloudTheme::ownCloudTheme()
 {
-    qDebug() << " ** running ownCloud theme!";
+    // qDebug() << " ** running ownCloud theme!";
 }
 
 QString ownCloudTheme::appName() const
