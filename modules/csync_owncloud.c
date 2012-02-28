@@ -471,14 +471,6 @@ static void results(void *userdata,
         newres->type = resr_collection;
     }
 
-    /*
-     * check if the name of the new result is webdav.php. If so, it should be treated
-     * as a directory, as it represents the root of the WebDAV server.
-     */
-    if( strncmp( newres->name, "webdav.php", strlen("webdav.php")) == 0 ) {
-        newres->type = resr_collection;
-    }
-
     if (modtime)
         newres->modtime = ne_httpdate_parse(modtime);
 
