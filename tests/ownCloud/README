@@ -1,0 +1,30 @@
+t1 - a test script for csync syncing to ownCloud.
+
+t1 uses a perl WebDAV client lib to sync to an existing instance of
+ownCloud. For that, various files are copied around, synced and the
+results are tested through their existance, the filesize and the 
+modification times. All tests are asserts, which means that the 
+scripts stops if a test fails.
+
+How to call:
+
+First, configure the script. For that, open it in an editor and 
+edit the values for the owncloud-url and the credentials. Yeah,
+this test script is not secure, make sure to run it with a weak
+account and in a save environment.
+
+Further down, in sub csync, you can configure the LD_LIBRARY_PATH
+and the binary for csync. That allows to adopt the test script to
+local development environments. Make sure to check these.
+
+To start the script, call ./t1.pl on the commandline. A lot of 
+output is generated. If the script does not fail, everything works.
+
+Before it actually ends, it takes a four seconds break for you to 
+interrupt with Ctrl-C. If you don't do that, it removes all its 
+traces...
+
+Have fun,
+Klaas Freitag <freitag@owncloud.com>
+
+
