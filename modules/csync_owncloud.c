@@ -201,32 +201,6 @@ static int ne_session_error_errno(ne_session *session)
     return EIO;
 }
 
-static int ne_error_to_errno(int ne_err)
-{
-    switch (ne_err) {
-    case NE_OK:
-    case NE_ERROR:
-        return 0;
-    case NE_AUTH:
-    case NE_PROXYAUTH:
-        return EACCES;
-    case NE_CONNECT:
-    case NE_TIMEOUT:
-    case NE_RETRY:
-        return EAGAIN;
-    case NE_FAILED:
-        return EINVAL;
-    case NE_REDIRECT:
-        return ENOENT;
-    case NE_LOOKUP:
-        return EIO;
-    default:
-        return EIO;
-    }
-
-    return EIO;
-}
-
 /*
  * helper method to build up a user text for SSL problems, called from the
  * verify_sslcert callback.
@@ -631,7 +605,7 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
         // fetch data via a propfind call.
         fetchCtx = c_malloc( sizeof( struct listdir_context ));
         if( ! fetchCtx ) {
-            errno = ne_error_to_errno( NE_ERROR );
+            errno = ENOMEM;
             csync_vio_file_stat_destroy(buf);
             return -1;
         }
@@ -661,8 +635,6 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
                 while( len > 0 && res->uri[len-1] == '/' ) --len;
                 memset( strbuf, 0, PATH_MAX+1);
                 strncpy( strbuf, res->uri, len < PATH_MAX ? len : PATH_MAX );
-                DEBUG_WEBDAV(("Comparing %s - %s with %s\n",strbuf, res->uri, curi ));
-                DEBUG_WEBDAV(("Comparison: %d\n", c_streq( strbuf, curi ) ));
                 if( c_streq(strbuf, curi )) {
                     break;
                 }
@@ -736,6 +708,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
     uri = _cleanPath( durl );
     if( ! uri ) {
         DEBUG_WEBDAV(("Failed to clean path for %s\n", durl ));
+        errno = EACCES;
         rc = NE_ERROR;
     }
 
@@ -778,6 +751,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
         DEBUG_WEBDAV(("opening temp directory %s\n", writeCtx->tmpFileName ));
         if( writeCtx->fd == -1 ) {
             rc = NE_ERROR;
+            // errno is set by the mkstemp call above.
         }
     }
 
@@ -789,6 +763,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
             rc = ne_begin_request( writeCtx->req );
             if (rc != NE_OK) {
                 DEBUG_WEBDAV(("Can not open a request, bailing out.\n"));
+                errno = EACCES;
             }
         }
 
@@ -809,23 +784,24 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
         rc = ne_get( dav_session.ctx, getUrl, writeCtx->fd ); // FIX_ESCAPE
         if( rc != NE_OK ) {
             DEBUG_WEBDAV(("Download to local file failed: %d.\n", rc));
+            errno = EACCES;
         }
         if( close( writeCtx->fd ) == -1 ) {
             DEBUG_WEBDAV(("Close of local download file failed.\n"));
             writeCtx->fd = -1;
             rc = NE_ERROR;
+            errno = EACCES;
         }
 
         writeCtx->fd = -1;
     }
 
     if( rc != NE_OK ) {
-        ne_error_to_errno( rc );
         SAFE_FREE( writeCtx );
     }
 
     SAFE_FREE( uri );
-    SAFE_FREE(dir);
+    SAFE_FREE( dir );
 
     return (csync_vio_method_handle_t *) writeCtx;
 }
@@ -1085,8 +1061,8 @@ static int owncloud_rmdir(const char *uri) {
 
     if( rc >= 0 ) {
         rc = ne_delete(dav_session.ctx, curi);
-        if (rc != 0) {
-            errno = ne_error_to_errno(rc);
+        if ( rc != NE_OK ) {
+            errno = ne_session_error_errno( dav_session.ctx );
         }
     }
     SAFE_FREE( curi );
@@ -1116,8 +1092,7 @@ static int owncloud_rename(const char *olduri, const char *newuri) {
         rc = ne_move(dav_session.ctx, 1, src, target );
 
         if (rc != NE_OK ) {
-            ne_session_error_errno(dav_session.ctx);
-            errno = ne_error_to_errno(rc);
+            errno = ne_session_error_errno(dav_session.ctx);
         }
     }
     SAFE_FREE( src );
@@ -1145,7 +1120,7 @@ static int owncloud_unlink(const char *uri) {
     if( rc == NE_OK ) {
         rc = ne_delete( dav_session.ctx, path );
         if ( rc != NE_OK )
-            errno = ne_error_to_errno(rc);
+            errno = ne_session_error_errno( dav_session.ctx );
     }
     SAFE_FREE( path );
 
