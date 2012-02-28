@@ -165,9 +165,10 @@ static int ne_session_error_errno(ne_session *session)
         return EAGAIN;
     case 423:           /* Locked */
         return EACCES;
+    case 405:
+        return EEXIST;  /* Method Not Allowed */
     case 400:           /* Bad Request */
     case 403:           /* Forbidden */
-    case 405:           /* Method Not Allowed */
     case 409:           /* Conflict */
     case 411:           /* Length Required */
     case 412:           /* Precondition Failed */
