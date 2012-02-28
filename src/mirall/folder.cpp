@@ -20,7 +20,7 @@
 #include "mirall/folder.h"
 #include "mirall/folderwatcher.h"
 
-#define DEFAULT_POLL_INTERVAL_SEC 15
+#define DEFAULT_POLL_INTERVAL_SEC 15000
 
 namespace Mirall {
 
@@ -29,7 +29,6 @@ Folder::Folder(const QString &alias, const QString &path, QObject *parent)
       _errorCount(0),
       _path(path),
       _pollTimer(new QTimer(this)),
-      _pollInterval(DEFAULT_POLL_INTERVAL_SEC),
       _alias(alias),
       _onlyOnlineEnabled(false),
       _onlyThisLANEnabled(false),
@@ -37,14 +36,16 @@ Folder::Folder(const QString &alias, const QString &path, QObject *parent)
       _enabled(true)
 {
     _pollTimer->setSingleShot(true);
-    _pollTimer->setInterval(pollInterval() * 1000);
+    _pollTimer->setInterval( DEFAULT_POLL_INTERVAL_SEC );
+
     QObject::connect(_pollTimer, SIGNAL(timeout()), this, SLOT(slotPollTimerTimeout()));
     _pollTimer->start();
 
+#ifdef USE_WATCHER
     _watcher = new Mirall::FolderWatcher(path, this);
     QObject::connect(_watcher, SIGNAL(folderChanged(const QStringList &)),
                      SLOT(slotChanged(const QStringList &)));
-
+#endif
     QObject::connect(this, SIGNAL(syncStarted()),
                      SLOT(slotSyncStarted()));
     QObject::connect(this, SIGNAL(syncFinished(const SyncResult &)),
@@ -79,7 +80,9 @@ bool Folder::syncEnabled() const
 void Folder::setSyncEnabled( bool doit )
 {
   _enabled = doit;
+#ifdef USE_WATCHER
   _watcher->setEventsEnabled( doit );
+#endif
 }
 
 bool Folder::onlyOnlineEnabled() const
@@ -104,12 +107,12 @@ void Folder::setOnlyThisLANEnabled(bool enabled)
 
 int Folder::pollInterval() const
 {
-    return _pollInterval;
+    return _pollTimer->interval();
 }
 
-void Folder::setPollInterval(int seconds)
+void Folder::setPollInterval(int milliseconds)
 {
-    _pollInterval = seconds;
+    _pollTimer->setInterval( milliseconds );
 }
 
 int Folder::errorCount()
@@ -128,10 +131,12 @@ void Folder::incrementErrorCount()
   // of the watcher is doubled.
   _errorCount++;
   if( _errorCount > 1 ) {
+#ifdef USE_WATCHER
     int interval = _watcher->eventInterval();
     int newInt = 2*interval;
     qDebug() << "Set new watcher interval to " << newInt;
     _watcher->setEventInterval( newInt );
+#endif
     _errorCount = 0;
   }
 }
@@ -151,13 +156,16 @@ void Folder::evaluateSync(const QStringList &pathList)
     qDebug() << "*" << alias() << "sync skipped, not online";
     return;
   }
-  startSync(pathList);
+
+  startSync( pathList );
 }
 
 void Folder::slotPollTimerTimeout()
 {
     qDebug() << "* Polling" << alias() << "for changes. Ignoring all pending events until now";
+#ifdef USE_WATCHER
     _watcher->clearPendingEvents();
+#endif
     qDebug() << "* " << alias() << "Poll timer disabled";
     _pollTimer->stop();
     evaluateSync(QStringList());
@@ -178,7 +186,9 @@ void Folder::slotChanged(const QStringList &pathList)
 void Folder::slotSyncStarted()
 {
     // disable events until syncing is done
+#ifdef USE_WATCHER
     _watcher->setEventsEnabled(false);
+#endif
     _syncResult = SyncResult( SyncResult::SyncRunning );
 
     emit syncStateChange();

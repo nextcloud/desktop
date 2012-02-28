@@ -27,7 +27,7 @@ namespace Mirall {
 class CSyncThread : public QThread
 {
 public:
-    CSyncThread(const QString &source, const QString &target);
+    CSyncThread(const QString &source, const QString &target, bool = false);
     ~CSyncThread();
 
     virtual void run();
@@ -37,11 +37,17 @@ public:
      */
     bool error() const;
 
+    bool hasLocalChanges( int64_t ) const;
+    int64_t walkedFiles();
+
 private:
     static QMutex _mutex;
     QString _source;
     QString _target;
     int _error;
+    bool _localCheckOnly;
+    bool _localChanges;
+    int64_t _walkedFiles;
 };
 }
 

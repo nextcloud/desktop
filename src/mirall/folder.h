@@ -124,6 +124,7 @@ public:
      QString backend() const;
 
      QIcon icon( int size ) const;
+  QTimer   *_pollTimer;
 
 public slots:
      void slotSyncFinished(const SyncResult &);
@@ -137,10 +138,10 @@ protected:
     int pollInterval() const;
 
     /**
-     * Sets minimum amounts of seconds that will separate
+     * Sets minimum amounts of milliseconds that will separate
      * poll intervals
      */
-    void setPollInterval(int seconds);
+    void setPollInterval( int );
 
 signals:
     void syncStateChange();
@@ -148,8 +149,11 @@ signals:
     void syncFinished(const SyncResult &result);
 
 protected:
+#ifdef USE_WATCHER
     FolderWatcher *_watcher;
+#endif
   int _errorCount;
+
 
 private:
 
@@ -161,8 +165,7 @@ private:
 
     QString   _path;
     // poll timer for remote syncs
-    QTimer   *_pollTimer;
-    int       _pollInterval;
+
     QString   _alias;
     bool      _onlyOnlineEnabled;
     bool      _onlyThisLANEnabled;

@@ -20,6 +20,7 @@
 #include <QThread>
 #include <QStringList>
 #include <QTextStream>
+#include <QTimer>
 
 #include "csync.h"
 
@@ -33,13 +34,33 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
                                QObject *parent)
     : Folder(alias, path, parent)
     , _secondPath(secondPath)
+    , _localCheckOnly( false )
     , _csync(0)
-{
+    , _pollTimerCnt(0)
+    , _lastWalkedFiles(-1)
 
+{
+    connect( _pollTimer, SIGNAL(timeout()), this, SLOT(slotPollTimerRemoteCheck()));
+    qDebug() << "****** connect ownCloud Timer";
+
+    // set a local poll time of 2000 milliseconds, which results in a 30 seconds
+    // remote poll interval, defined in slotPollTimerRemoteCheck
+    setPollInterval( 2000 );
 }
 
 ownCloudFolder::~ownCloudFolder()
 {
+}
+
+void ownCloudFolder::slotPollTimerRemoteCheck()
+{
+    _localCheckOnly = true;
+    _pollTimerCnt++;
+    if( _pollTimerCnt == 15 ) {
+        _pollTimerCnt = 0;
+        _localCheckOnly = false;
+    }
+    qDebug() << "**** CSyncFolder Poll Timer check: " << _pollTimerCnt << " - " << _localCheckOnly;
 }
 
 bool ownCloudFolder::isBusy() const
@@ -50,6 +71,11 @@ bool ownCloudFolder::isBusy() const
 QString ownCloudFolder::secondPath() const
 {
     return _secondPath;
+}
+
+void ownCloudFolder::startSync()
+{
+    startSync( QStringList() );
 }
 
 void ownCloudFolder::startSync(const QStringList &pathList)
@@ -63,10 +89,10 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     /* Fix the url and remove user and password */
     QUrl url( _secondPath );
     url.setScheme( "owncloud" );
-    qDebug() << "*** Start syncing to ownCloud";
+    qDebug() << "*** Start syncing to ownCloud, onlyLocal: " << _localCheckOnly;
 
-    _csync = new CSyncThread(path(), url.toEncoded() );
-    QObject::connect(_csync, SIGNAL(started()), SLOT(slotCSyncStarted()));
+    _csync = new CSyncThread(path(), url.toEncoded(), _localCheckOnly );
+    QObject::connect(_csync, SIGNAL(started()),  SLOT(slotCSyncStarted()));
     QObject::connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()));
     _csync->start();
 }
@@ -80,14 +106,25 @@ void ownCloudFolder::slotCSyncStarted()
 void ownCloudFolder::slotCSyncFinished()
 {
     if (_csync->error())
-        qDebug() << "    * csync thread finished with error";
+        qDebug() << "    * owncloud csync thread finished with error";
     else
-        qDebug() << "    * csync thread finished successfully";
+        qDebug() << "    * owncloud csync thread finished successfully";
 
+    if( _csync->hasLocalChanges( _lastWalkedFiles ) ) {
+        qDebug() << "Last walked files: " << _lastWalkedFiles << " against " << _csync->walkedFiles();
+        qDebug() << "*** Local changes, lets do a full sync!" ;
+        _localCheckOnly = false;
+        _pollTimerCnt = 0;
+        _lastWalkedFiles = -1;
+        QTimer::singleShot( 0, this, SLOT(startSync( QStringList() )));
+    } else {
+        qDebug() << "     *** Finalize, pollTimerCounter is "<< _pollTimerCnt ;
+        _lastWalkedFiles = _csync->walkedFiles();
     // TODO delete thread
-    emit syncFinished(_csync->error() ?
+        emit syncFinished(_csync->error() ?
                       SyncResult(SyncResult::Error)
                       : SyncResult(SyncResult::Success));
+    }
 }
 
 } // ns

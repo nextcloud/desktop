@@ -36,14 +36,23 @@ public:
                    const QString &secondPath, QObject *parent = 0L);
     virtual ~ownCloudFolder();
     QString secondPath() const;
-    virtual void startSync(const QStringList &pathList);
     virtual bool isBusy() const;
+    virtual void startSync(const QStringList &pathList);
+
+public slots:
+    void startSync();
+
 protected slots:
     void slotCSyncStarted();
     void slotCSyncFinished();
+    void slotPollTimerRemoteCheck();
+
 private:
     QString _secondPath;
     CSyncThread *_csync;
+    bool _localCheckOnly;
+    int _pollTimerCnt;
+    int64_t _lastWalkedFiles;
 };
 
 }
