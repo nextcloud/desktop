@@ -62,8 +62,6 @@ Application::Application(int argc, char **argv) :
 
     processEvents();
 
-    INotify::initialize();
-
     _folderMan = new FolderMan();
     connect( _folderMan, SIGNAL(folderSyncStateChange(QString)),
              this,SLOT(slotSyncStateChange(QString)));
@@ -117,7 +115,6 @@ Application::Application(int argc, char **argv) :
 Application::~Application()
 {
     qDebug() << "* Mirall shutdown";
-    INotify::cleanup();
 
     delete _networkMgr;
     delete _folderMan;
