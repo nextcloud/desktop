@@ -46,9 +46,10 @@ FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
       _initialSyncDone(false)
 {
     // this is not the best place for this
-    addIgnore("/**/.unison*");
+    addIgnore(".unison*");
     addIgnore("*csync_timediff.ctmp*");
     addIgnore(".*.sw?"); // vi swap files
+    addIgnore(".*.*.sw?");
 #ifdef USE_WATCHER
     _processTimer->setSingleShot(true);
     QObject::connect(_processTimer, SIGNAL(timeout()), this, SLOT(slotProcessTimerTimeout()));
@@ -130,20 +131,22 @@ void FolderWatcher::slotAddFolderRecursive(const QString &path)
     int subdirs = 0;
     qDebug() << "(+) Watcher:" << path;
 #ifdef USE_WATCHER
+
     _inotify->addPath(path);
     QStringList watchedFolders(_inotify->directories());
-    //qDebug() << "currently watching " << watchedFolders;
+    // qDebug() << "currently watching " << watchedFolders;
     QStringListIterator subfoldersIt(FileUtils::subFoldersList(path, FileUtils::SubFolderRecursive));
     while (subfoldersIt.hasNext()) {
-        QDir folder (subfoldersIt.next());
+        QString subfolder = subfoldersIt.next();
+        // qDebug() << "  (**) subfolder: " << subfolder;
+        QDir folder (subfolder);
         if (folder.exists() && !watchedFolders.contains(folder.path())) {
             subdirs++;
-            //qDebug() << "(+) Watcher:" << folder.path();
             // check that it does not match the ignore list
             foreach (QString pattern, _ignores) {
                 QRegExp regexp(pattern);
                 regexp.setPatternSyntax(QRegExp::Wildcard);
-                if (regexp.exactMatch(folder.path())) {
+                if ( regexp.exactMatch(folder.path()) ) {
                     qDebug() << "* Not adding" << folder.path();
                     continue;
                 }
@@ -157,7 +160,7 @@ void FolderWatcher::slotAddFolderRecursive(const QString &path)
     if (subdirs >0)
         qDebug() << "    `-> and" << subdirs << "subdirectories";
 #else
-    qDebug() << "** Watcher is disabled!";
+    qDebug() << "** Watcher is not compiled in!";
 #endif
 }
 
@@ -217,8 +220,18 @@ void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
     foreach (QString pattern, _ignores) {
         QRegExp regexp(pattern);
         regexp.setPatternSyntax(QRegExp::Wildcard);
+
         if (regexp.exactMatch(path)) {
-            qDebug() << "* Discarded" << path;
+            qDebug() << "* Discarded " << path;
+            return;
+        }
+        QFileInfo fInfo(path);
+        if( regexp.exactMatch(fInfo.fileName())) {
+            qDebug() << "* Discarded " << path;
+            return;
+        }
+        if( fInfo.isHidden() ) {
+            qDebug() << "* Discarded as is hidden!";
             return;
         }
     }
