@@ -196,17 +196,21 @@ void Folder::slotSyncStarted()
 
 void Folder::slotSyncFinished(const SyncResult &result)
 {
-  _syncResult = result;
-  emit syncStateChange();
+#ifdef USE_WATCHER
+    _watcher->setEventsEnabled(true);
+#endif
 
-  // reenable the poll timer if folder is sync enabled
-  if( syncEnabled() ) {
-    qDebug() << "* " << alias() << "Poll timer enabled";
-    _pollTimer->start();
-  } else {
-    qDebug() << "* Not enabling poll timer for " << alias();
-    _pollTimer->stop();
-  }
+    _syncResult = result;
+    emit syncStateChange();
+
+    // reenable the poll timer if folder is sync enabled
+    if( syncEnabled() ) {
+        qDebug() << "* " << alias() << "Poll timer enabled with " << _pollTimer->interval() << "seconds";
+        _pollTimer->start();
+    } else {
+        qDebug() << "* Not enabling poll timer for " << alias();
+        _pollTimer->stop();
+    }
 }
 
 void Folder::setBackend( const QString& b )

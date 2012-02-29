@@ -73,7 +73,6 @@ private:
     int _mask;
     QMap<QString, int> _wds;
 };
-
 }
 
 #endif

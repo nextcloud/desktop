@@ -40,18 +40,27 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
     , _lastWalkedFiles(-1)
 
 {
-    connect( _pollTimer, SIGNAL(timeout()), this, SLOT(slotPollTimerRemoteCheck()));
-    qDebug() << "****** connect ownCloud Timer";
+#ifdef USE_WATCHER
+    setPollInterval( 15000 );
+    qDebug() << "****** ownCloud folder using watcher *******";
+#else
+    /* If local polling is used, the polltimer of class Folder has to fire more
+     * often
+     * Set a local poll time of 2000 milliseconds, which results in a 30 seconds
+     * remote poll interval, defined in slotPollTimerRemoteCheck
+     */
 
-    // set a local poll time of 2000 milliseconds, which results in a 30 seconds
-    // remote poll interval, defined in slotPollTimerRemoteCheck
+    connect( _pollTimer, SIGNAL(timeout()), this, SLOT(slotPollTimerRemoteCheck()));
     setPollInterval( 2000 );
+    qDebug() << "****** ownCloud folder using local poll *******";
+#endif
 }
 
 ownCloudFolder::~ownCloudFolder()
 {
 }
 
+#ifndef USE_WATCHER
 void ownCloudFolder::slotPollTimerRemoteCheck()
 {
     _localCheckOnly = true;
@@ -62,6 +71,7 @@ void ownCloudFolder::slotPollTimerRemoteCheck()
     }
     qDebug() << "**** CSyncFolder Poll Timer check: " << _pollTimerCnt << " - " << _localCheckOnly;
 }
+#endif
 
 bool ownCloudFolder::isBusy() const
 {
@@ -110,6 +120,7 @@ void ownCloudFolder::slotCSyncFinished()
     else
         qDebug() << "    * owncloud csync thread finished successfully";
 
+#ifndef USE_WATCHER
     if( _csync->hasLocalChanges( _lastWalkedFiles ) ) {
         qDebug() << "Last walked files: " << _lastWalkedFiles << " against " << _csync->walkedFiles();
         qDebug() << "*** Local changes, lets do a full sync!" ;
@@ -121,10 +132,12 @@ void ownCloudFolder::slotCSyncFinished()
         qDebug() << "     *** Finalize, pollTimerCounter is "<< _pollTimerCnt ;
         _lastWalkedFiles = _csync->walkedFiles();
     // TODO delete thread
-        emit syncFinished(_csync->error() ?
-                      SyncResult(SyncResult::Error)
-                      : SyncResult(SyncResult::Success));
     }
+#endif
+    emit syncFinished(_csync->error() ?
+                          SyncResult(SyncResult::Error)
+                        : SyncResult(SyncResult::Success));
+
 }
 
 } // ns

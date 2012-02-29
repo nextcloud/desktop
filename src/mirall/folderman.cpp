@@ -25,6 +25,7 @@
 #include "mirall/owncloudfolder.h"
 #include "mirall/syncresult.h"
 #include "mirall/folderman.h"
+#include "mirall/inotify.h"
 
 namespace Mirall {
 
@@ -36,6 +37,10 @@ FolderMan::FolderMan(QObject *parent) :
     QDir storageDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
     storageDir.mkpath("folders");
     _folderConfigPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/folders";
+
+#ifdef USE_WATCHER
+    Mirall::INotify::initialize();
+#endif
 
     _folderChangeSignalMapper = new QSignalMapper(this);
     connect(_folderChangeSignalMapper, SIGNAL(mapped(const QString &)),

@@ -22,8 +22,12 @@
 #include <QTime>
 #include <QHash>
 
+#include "mirall/folder.h"
+
 class QTimer;
+#ifdef USE_WATCHER
 class INotify;
+#endif
 
 namespace Mirall {
 
@@ -112,8 +116,9 @@ protected slots:
 private:
     bool _eventsEnabled;
     int _eventInterval;
-
+#ifdef USE_WATCHER
     INotify *_inotify;
+#endif
     QString _root;
     // paths pending to notified
     // QStringList _pendingPaths;

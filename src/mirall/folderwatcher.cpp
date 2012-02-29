@@ -48,7 +48,8 @@ FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
     // this is not the best place for this
     addIgnore("/**/.unison*");
     addIgnore("*csync_timediff.ctmp*");
-
+    addIgnore(".*.sw?"); // vi swap files
+#ifdef USE_WATCHER
     _processTimer->setSingleShot(true);
     QObject::connect(_processTimer, SIGNAL(timeout()), this, SLOT(slotProcessTimerTimeout()));
 
@@ -56,6 +57,7 @@ FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
     slotAddFolderRecursive(root);
     QObject::connect(_inotify, SIGNAL(notifyEvent(int, int, const QString &)),
                      SLOT(slotINotifyEvent(int, int, const QString &)));
+#endif
     // do a first synchronization to get changes while
     // the application was not running
     setProcessTimer();
@@ -118,13 +120,16 @@ void FolderWatcher::setEventInterval(int seconds)
 
 QStringList FolderWatcher::folders() const
 {
+#ifdef USE_WATCHER
     return _inotify->directories();
+#endif
 }
 
 void FolderWatcher::slotAddFolderRecursive(const QString &path)
 {
     int subdirs = 0;
     qDebug() << "(+) Watcher:" << path;
+#ifdef USE_WATCHER
     _inotify->addPath(path);
     QStringList watchedFolders(_inotify->directories());
     //qDebug() << "currently watching " << watchedFolders;
@@ -151,6 +156,9 @@ void FolderWatcher::slotAddFolderRecursive(const QString &path)
     }
     if (subdirs >0)
         qDebug() << "    `-> and" << subdirs << "subdirectories";
+#else
+    qDebug() << "** Watcher is disabled!";
+#endif
 }
 
 void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
@@ -161,7 +169,9 @@ void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
     _lastMask = mask;
     _lastPath = path;
 
-    // qDebug() << "** Inotify Event " << mask << " on " << path;
+    if( ! eventsEnabled() ) return;
+
+    qDebug() << "** Inotify Event " << mask << " on " << path;
     // cancel close write events that come after create
     if (lastMask == IN_CREATE && mask == IN_CLOSE_WRITE
         && lastPath == path ) {
@@ -187,10 +197,12 @@ void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
     }
     else if (mask & IN_DELETE) {
         //qDebug() << cookie << " DELETE: " << path;
+#ifdef USE_WATCHER
         if (_inotify->directories().contains(path) &&
             QFileInfo(path).isDir());
             qDebug() << "(-) Watcher:" << path;
         _inotify->removePath(path);
+#endif
     }
     else if (mask & IN_CLOSE_WRITE) {
         //qDebug() << cookie << " WRITABLE CLOSED: " << path;

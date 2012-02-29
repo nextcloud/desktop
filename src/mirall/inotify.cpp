@@ -27,7 +27,6 @@
 #define DEFAULT_READ_BUFFERSIZE 2048
 
 namespace Mirall {
-
 // Allocate space for static members of class.
 int INotify::s_fd;
 INotify::INotifyThread* INotify::s_thread;

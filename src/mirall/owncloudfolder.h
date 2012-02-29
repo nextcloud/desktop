@@ -45,8 +45,9 @@ public slots:
 protected slots:
     void slotCSyncStarted();
     void slotCSyncFinished();
+#ifndef USE_WATCHER
     void slotPollTimerRemoteCheck();
-
+#endif
 private:
     QString _secondPath;
     CSyncThread *_csync;
