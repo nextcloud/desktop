@@ -14,14 +14,17 @@
  * for more details.
  */
 
+#include <mirall/folder.h>
+
+#ifdef USE_WATCHER
 #include <sys/inotify.h>
+#endif
 #include <cerrno>
 #include <unistd.h>
 #include <QDebug>
 #include <QStringList>
 
 #include "inotify.h"
-
 
 // Buffer Size for read() buffer
 #define DEFAULT_READ_BUFFERSIZE 2048
@@ -193,4 +196,3 @@ INotify::INotifyThread::run()
 
 } // ns mirall
 
-#include "inotify.moc"
