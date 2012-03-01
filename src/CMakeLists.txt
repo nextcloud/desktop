@@ -10,12 +10,18 @@ include(${QT_USE_FILE})
 
 # webdav library
 add_definitions("-DQWEBDAV_STATIC")
+
 set( qtwebdav_LIB_SRCS
      libqtwebdav/qwebdav.cpp
      libqtwebdav/qwebdav_url_info.cpp)
-add_library(qtwebdav_static STATIC ${qtwebdav_LIB_SRCS})
+
+set( qtwebdav_HEADERS
+     libqtwebdav/qwebdav.h)
+
+qt4_wrap_cpp(qtwebdavMoc ${qtwebdav_HEADERS})
+
+add_library(qtwebdav_static STATIC ${qtwebdavMoc} ${qtwebdav_LIB_SRCS} ${qtwebdav_HEADERS} )
 target_link_libraries(qtwebdav_static ${QT_LIBRARIES})
-qt4_automoc(${qtwebdav_LIB_SRCS})
 
 # -------------------------------------------------------
 
@@ -43,7 +49,6 @@ mirall/folder.cpp
 mirall/folderwatcher.cpp
 mirall/folderwizard.cpp
 mirall/gitfolder.cpp
-mirall/inotify.cpp
 mirall/networklocation.cpp
 mirall/temporarydir.cpp
 mirall/syncresult.cpp
@@ -61,29 +66,60 @@ mirall/folderman.cpp
 mirall/mirallconfigfile.cpp
 )
 
-if(CSYNC_FOUND)
-  set(mirall_SRCS
+set(mirall_HEADERS
+    mirall/application.h    
+    mirall/folder.h  
+    mirall/folderman.h
+    mirall/folderwatcher.h
+    mirall/folderwizard.h
+    mirall/gitfolder.h
+    mirall/mirallwebdav.h
+    mirall/owncloudfolder.h
+    mirall/owncloudinfo.h
+    mirall/owncloudsetupwizard.h
+    mirall/owncloudwizard.h
+    mirall/sitecopyfolder.h
+    mirall/statusdialog.h
+    mirall/unisonfolder.h
+)
+
+IF( UNIX )
+	set(mirall_SRCS ${mirall_SRCS} inotify.cpp)
+	set(mirall_HEADERS ${mirall_HEADERS inotify.h)
+ENDIF(UNIX)
+
+# Disabled the csync found check. Csync required for now.
+set(mirall_SRCS
     ${mirall_SRCS}
     mirall/csyncfolder.cpp
     mirall/owncloudfolder.cpp
     mirall/csyncthread.cpp
   )
   include_directories(${CSYNC_INCLUDE_DIR})
-endif(CSYNC_FOUND)
 
-qt4_automoc(${mirall_SRCS})
+  set(mirall_HEADERS 
+      ${mirall_HEADERS} 
+     mirall/csyncfolder.h
+     mirall/owncloudfolder.h)
 
+qt4_wrap_cpp(mirallMoc ${mirall_HEADERS})
 
-add_library(mirall_static STATIC ${mirall_SRCS} ${mirall_UI_SRCS})
+add_library(mirall_static STATIC ${mirall_SRCS} ${mirall_UI_SRCS} ${mirallMoc} ${mirall_HEADERS} ${MIRALL_RC_SRC})
 target_link_libraries(mirall_static ${QT_LIBRARIES})
 
-add_executable(mirall main.cpp ${MIRALL_RC_SRC})
+add_executable(mirall main.cpp)
 target_link_libraries(mirall mirall_static)
 target_link_libraries(mirall qtwebdav_static)
 
-if(CSYNC_FOUND)
-  target_link_libraries(mirall ${CSYNC_LIBRARY})
-endif(CSYNC_FOUND)
+set( final_src ${qtwebdav_LIB_SRCS} ${qtwebdav_HEADERS}  ${mirall_HEADERS} ${qtwebdavMoc}
+               ${MIRALL_RC_SRC} ${mirall_SRCS} ${mirall_UI_SRCS} ${mirallMoc} ${mirall_HEADERS} )
+
+add_executable(owncloud main.cpp ${final_src})
+target_link_libraries(owncloud ${QT_LIBRARIES} )
+
+set( CSYNC_LIBRARY csync)  # FIXME!!!
+target_link_libraries(mirall ${CSYNC_LIBRARY})
+target_link_libraries(owncloud ${CSYNC_LIBRARY})
 
 install(TARGETS mirall
 	RUNTIME DESTINATION bin
