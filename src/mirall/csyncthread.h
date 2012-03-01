@@ -16,6 +16,8 @@
  * for more details.
  */
 
+#include <stdint.h>
+
 #include <QMutex>
 #include <QThread>
 #include <QString>
