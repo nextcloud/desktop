@@ -84,8 +84,8 @@ set(mirall_HEADERS
 )
 
 IF( UNIX )
-	set(mirall_SRCS ${mirall_SRCS} inotify.cpp)
-	set(mirall_HEADERS ${mirall_HEADERS inotify.h)
+    set(mirall_SRCS ${mirall_SRCS} mirall/inotify.cpp)
+    set(mirall_HEADERS ${mirall_HEADERS} mirall/inotify.h)
 ENDIF(UNIX)
 
 # Disabled the csync found check. Csync required for now.
@@ -107,14 +107,21 @@ qt4_wrap_cpp(mirallMoc ${mirall_HEADERS})
 add_library(mirall_static STATIC ${mirall_SRCS} ${mirall_UI_SRCS} ${mirallMoc} ${mirall_HEADERS} ${MIRALL_RC_SRC})
 target_link_libraries(mirall_static ${QT_LIBRARIES})
 
-add_executable(mirall main.cpp)
-target_link_libraries(mirall mirall_static)
-target_link_libraries(mirall qtwebdav_static)
-
+add_executable( mirall main.cpp )
 set( final_src ${qtwebdav_LIB_SRCS} ${qtwebdav_HEADERS}  ${mirall_HEADERS} ${qtwebdavMoc}
                ${MIRALL_RC_SRC} ${mirall_SRCS} ${mirall_UI_SRCS} ${mirallMoc} ${mirall_HEADERS} )
 
 add_executable(owncloud main.cpp ${final_src})
+
+SET(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+SET_TARGET_PROPERTIES( mirall PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
+SET_TARGET_PROPERTIES( owncloud PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
+
+target_link_libraries(mirall mirall_static)
+target_link_libraries(mirall qtwebdav_static)
+
 target_link_libraries(owncloud ${QT_LIBRARIES} )
 
 set( CSYNC_LIBRARY csync)  # FIXME!!!
