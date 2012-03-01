@@ -30,7 +30,7 @@
  */
 #define USE_WATCHER 1
 #ifdef Q_WS_WIN
-#define USE_WATCHER 0
+#undef USE_WATCHER
 #endif
 
 class QAction;
