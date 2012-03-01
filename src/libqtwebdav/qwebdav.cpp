@@ -333,4 +333,3 @@ QWebdav::remove ( const QString & path )
   return davRequest("DELETE", req);
 }
 
-#include "qwebdav.moc"

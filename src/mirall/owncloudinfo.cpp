@@ -143,4 +143,3 @@ void ownCloudInfo::slotError( QNetworkReply::NetworkError err)
 
 }
 
-#include "owncloudinfo.moc"

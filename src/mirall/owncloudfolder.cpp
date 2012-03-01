@@ -142,4 +142,3 @@ void ownCloudFolder::slotCSyncFinished()
 
 } // ns
 
-#include "owncloudfolder.moc"

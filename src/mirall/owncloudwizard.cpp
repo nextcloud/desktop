@@ -326,4 +326,3 @@ void OwncloudWizard::setOCUrl( const QString& url )
 }
 
 } // end namespace
-#include "owncloudwizard.moc"

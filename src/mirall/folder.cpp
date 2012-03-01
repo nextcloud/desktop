@@ -225,4 +225,3 @@ QString Folder::backend() const
 
 } // namespace Mirall
 
-#include "folder.moc"

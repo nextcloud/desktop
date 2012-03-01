@@ -462,4 +462,3 @@ void FolderWizard::setFolderMap( Folder::Map *fm)
 
 } // end namespace
 
-#include "folderwizard.moc"

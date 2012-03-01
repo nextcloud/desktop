@@ -463,4 +463,3 @@ void Application::computeOverallSyncStatus()
 
 } // namespace Mirall
 
-#include "application.moc"

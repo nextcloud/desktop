@@ -295,4 +295,3 @@ void StatusDialog::slotOpenOC()
 
 }
 
-#include "statusdialog.moc"

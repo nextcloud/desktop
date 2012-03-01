@@ -293,4 +293,3 @@ void SiteCopyFolder::slotError(QProcess::ProcessError error)
 
 } // ns
 
-#include "sitecopyfolder.moc"

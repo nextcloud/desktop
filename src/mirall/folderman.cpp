@@ -294,5 +294,3 @@ void FolderMan::slotRemoveFolder( const QString& alias )
 }
 
 }
-#include "folderman.moc"
-

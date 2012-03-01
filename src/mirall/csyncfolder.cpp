@@ -84,4 +84,3 @@ void CSyncFolder::slotCSyncFinished()
 
 } // ns
 
-#include "csyncfolder.moc"

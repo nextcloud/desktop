@@ -151,4 +151,3 @@ void UnisonFolder::slotError(QProcess::ProcessError error)
 
 } // ns
 
-#include "unisonfolder.moc"

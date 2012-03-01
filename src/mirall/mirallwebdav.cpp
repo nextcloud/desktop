@@ -48,4 +48,3 @@ bool MirallWebDAV::mkdir( const QString& dir )
   return re;
 }
 
-#include "mirallwebdav.moc"

@@ -313,4 +313,3 @@ void OwncloudSetupWizard::startFetchFromOC( const QString& syncFolder )
 
 
 }
-#include "owncloudsetupwizard.moc"

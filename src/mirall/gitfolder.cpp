@@ -41,4 +41,3 @@ void GitFolder::startSync()
 
 } // ns
 
-#include "gitfolder.moc"
