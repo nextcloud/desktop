@@ -13,7 +13,7 @@
  */
 
 // event masks
-#include <sys/inotify.h>
+#include <stdint.h>
 
 #include <QFileInfo>
 #include <QFlags>
@@ -23,13 +23,21 @@
 #include <QStringList>
 #include <QTimer>
 
+#include "mirall/folder.h"
 #include "mirall/inotify.h"
 #include "mirall/folderwatcher.h"
 #include "mirall/fileutils.h"
 
-static const uint32_t standard_event_mask =
-    IN_CLOSE_WRITE | IN_ATTRIB | IN_MOVE | IN_CREATE | IN_DELETE | IN_DELETE_SELF | IN_MOVE_SELF | IN_UNMOUNT | IN_ONLYDIR | IN_DONT_FOLLOW;
+#ifdef USE_WATCHER
+#include <sys/inotify.h>
+#endif
 
+static const uint32_t standard_event_mask =
+#ifdef USE_WATCHER
+    IN_CLOSE_WRITE | IN_ATTRIB | IN_MOVE | IN_CREATE | IN_DELETE | IN_DELETE_SELF | IN_MOVE_SELF | IN_UNMOUNT | IN_ONLYDIR | IN_DONT_FOLLOW;
+#else
+    0;
+#endif
 /* minimum amount of seconds between two
    events  to consider it a new event */
 #define DEFAULT_EVENT_INTERVAL_MSEC 1000
@@ -173,7 +181,7 @@ void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
     _lastPath = path;
 
     if( ! eventsEnabled() ) return;
-
+#ifdef USE_WATCHER
     qDebug() << "** Inotify Event " << mask << " on " << path;
     // cancel close write events that come after create
     if (lastMask == IN_CREATE && mask == IN_CLOSE_WRITE
@@ -200,12 +208,10 @@ void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
     }
     else if (mask & IN_DELETE) {
         //qDebug() << cookie << " DELETE: " << path;
-#ifdef USE_WATCHER
         if (_inotify->directories().contains(path) &&
             QFileInfo(path).isDir());
             qDebug() << "(-) Watcher:" << path;
         _inotify->removePath(path);
-#endif
     }
     else if (mask & IN_CLOSE_WRITE) {
         //qDebug() << cookie << " WRITABLE CLOSED: " << path;
@@ -244,6 +250,7 @@ void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
     _pendingPaths[path]
     _pendingPaths.append(path);
 #endif
+#endif
     setProcessTimer();
 }
 
@@ -271,4 +278,3 @@ void FolderWatcher::setProcessTimer()
 
 }
 
-#include "folderwatcher.moc"
