@@ -22,6 +22,7 @@
 
 #include <errno.h>
 #include <ctype.h>
+#include <string.h>
 #include <stdlib.h>
 
 #include "c_string.h"
