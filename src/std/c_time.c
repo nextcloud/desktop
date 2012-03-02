@@ -20,6 +20,8 @@
  * vim: ts=2 sw=2 et cindent
  */
 
+#include "config.h"
+
 #include "c_time.h"
 
 struct timespec c_tspecdiff(struct timespec time1, struct timespec time0) {

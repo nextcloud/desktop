@@ -18,6 +18,8 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include "config.h"
+
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
 #endif
@@ -124,7 +126,6 @@ char *csync_get_local_username(void) {
 
 #endif /* ************* WIN32 ************ */
 
-
 #ifdef HAVE_FNMATCH
 #include <fnmatch.h>
 
@@ -132,7 +133,7 @@ int csync_fnmatch(__const char *__pattern, __const char *__name, int __flags) {
     return fnmatch(__pattern, __name, __flags);
 }
 
-#else // HAVE_FNMATCH
+#else /* HAVE_FNMATCH */
 
 #include <shlwapi.h>
 int csync_fnmatch(__const char *__pattern, __const char *__name, int __flags) {
@@ -142,4 +143,4 @@ int csync_fnmatch(__const char *__pattern, __const char *__name, int __flags) {
         return 1;
 }
 
-#endif // HAVE_FNMATCH
+#endif /* HAVE_FNMATCH */
