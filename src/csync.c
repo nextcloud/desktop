@@ -23,7 +23,6 @@
 #endif
 
 #include <errno.h>
-#include <fnmatch.h>
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
@@ -252,7 +251,7 @@ int csync_init(CSYNC *ctx) {
   ctx->local.type = LOCAL_REPLICA;
 
   /* check for uri */
-  if (fnmatch("*://*", ctx->remote.uri, 0) == 0) {
+  if (csync_fnmatch("*://*", ctx->remote.uri, 0) == 0) {
     size_t len;
     len = strstr(ctx->remote.uri, "://") - ctx->remote.uri;
     /* get protocol */

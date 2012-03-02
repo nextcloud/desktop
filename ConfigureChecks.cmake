@@ -46,6 +46,11 @@ if(NOT HAVE_ASPRINTF)
     endif()
 endif()
 
+check_function_exists(fnmatch HAVE_FNMATCH)
+if(NOT HAVE_FNMATCH AND WIN32)
+  find_library(SHLWAPI_LIBRARY shlwapi)
+endif()
+
 check_function_exists(strerror_r HAVE_STRERROR_R)
 
 check_function_exists(utimes HAVE_UTIMES)

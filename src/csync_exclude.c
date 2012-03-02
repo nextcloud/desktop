@@ -21,13 +21,13 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <fnmatch.h>
 #include <unistd.h>
 
 #include "c_lib.h"
 
 #include "csync_private.h"
 #include "csync_exclude.h"
+#include "csync_misc.h"
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.exclude"
 #include "csync_log.h"
@@ -129,7 +129,7 @@ int csync_excluded(CSYNC *ctx, const char *path) {
 
   if (ctx->excludes->count) {
     for (i = 0; i < ctx->excludes->count; i++) {
-      if (fnmatch(ctx->excludes->vector[i], path, 0) == 0) {
+      if (csync_fnmatch(ctx->excludes->vector[i], path, 0) == 0) {
         return 1;
       }
     }

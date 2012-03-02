@@ -123,3 +123,23 @@ char *csync_get_local_username(void) {
 }
 
 #endif /* ************* WIN32 ************ */
+
+
+#ifdef HAVE_FNMATCH
+#include <fnmatch.h>
+
+int csync_fnmatch(__const char *__pattern, __const char *__name, int __flags) {
+    return fnmatch(__pattern, __name, __flags);
+}
+
+#else // HAVE_FNMATCH
+
+#include <shlwapi.h>
+int csync_fnmatch(__const char *__pattern, __const char *__name, int __flags) {
+    if(PathMatchSpec(__name, __pattern))
+        return 0;
+    else
+        return 1;
+}
+
+#endif // HAVE_FNMATCH

@@ -24,4 +24,6 @@
 char *csync_get_user_home_dir(void);
 char *csync_get_local_username(void);
 
+int csync_fnmatch(__const char *__pattern, __const char *__name, int __flags);
+
 #endif /* _CSYNC_MISC_H */
