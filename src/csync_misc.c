@@ -46,7 +46,7 @@ char *csync_get_user_home_dir(void) {
     char *szPath = NULL;
 
     if (SHGetSpecialFolderPathA(NULL, tmp, CSIDL_PROFILE, TRUE)) {
-        szPath = malloc(strlen(tmp) + 1);
+        szPath = c_malloc(strlen(tmp) + 1);
         if (szPath == NULL) {
             return NULL;
         }
@@ -65,7 +65,7 @@ char *csync_get_local_username(void) {
     /* get the size */
     GetUserName(NULL, &size);
 
-    user = (char *) malloc(size);
+    user = (char *) c_malloc(size);
     if (user == NULL) {
         return NULL;
     }
