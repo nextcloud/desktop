@@ -39,6 +39,7 @@
 #include "csync_statedb.h"
 #include "csync_time.h"
 #include "csync_util.h"
+#include "csync_misc.h"
 
 #include "csync_update.h"
 #include "csync_reconcile.h"
@@ -83,6 +84,8 @@ static int _data_cmp(const void *key, const void *data) {
 int csync_create(CSYNC **csync, const char *local, const char *remote) {
   CSYNC *ctx;
   size_t len = 0;
+  char *home;
+  int rc;
 
   ctx = c_malloc(sizeof(CSYNC));
   if (ctx == NULL) {
@@ -116,8 +119,18 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
   ctx->pwd.uid = getuid();
   ctx->pwd.euid = geteuid();
 
-  if (asprintf(&ctx->options.config_dir, "%s/%s", getenv("HOME"),
-        CSYNC_CONF_DIR) < 0) {
+  home = csync_get_user_home_dir();
+  if (home == NULL) {
+    SAFE_FREE(ctx->local.uri);
+    SAFE_FREE(ctx->remote.uri);
+    SAFE_FREE(ctx);
+    errno = ENOMEM;
+    return -1;
+  }
+
+  rc = asprintf(&ctx->options.config_dir, "%s/%s", home, CSYNC_CONF_DIR);
+  SAFE_FREE(home);
+  if (rc < 0) {
     SAFE_FREE(ctx->local.uri);
     SAFE_FREE(ctx->remote.uri);
     SAFE_FREE(ctx);
