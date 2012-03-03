@@ -98,7 +98,7 @@ struct transfer_context {
     int         fd;             /* file descriptor of the file to read or write from */
     char        *tmpFileName;   /* the name of the temp file */
     size_t      bytes_written;  /* the amount of bytes written or read */
-    char        method[4];      /* the HTTP method, either PUT or GET  */
+    const char  *method;      /* the HTTP method, either PUT or GET  */
 };
 
 /* Struct with the WebDAV session */
@@ -730,6 +730,10 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
     if( rc == NE_OK && put ) {
         /* check if the dir name exists. Otherwise return ENOENT */
         dir = c_dirname( durl );
+	if (dir == NULL) {
+            errno = ENOMEM;
+	    return NULL;
+	}
         DEBUG_WEBDAV(("Stating directory %s\n", dir ));
         if( owncloud_stat( dir, (csync_vio_method_handle_t*)(&statBuf) ) == 0 ) {
             // Success!
@@ -767,14 +771,13 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
                 errno = EACCES;
             }
         }
-
-        strncpy( writeCtx->method, "PUT", 3 );
+	writeCtx->method = "PUT";
     }
 
 
     if( rc == NE_OK && ! put ) {
         writeCtx->req = 0;
-        strncpy( writeCtx->method, "GET", 3 );
+	writeCtx->method = "GET";
 
         /* Download the data into a local temp file. */
         /* the download via the get function requires a full uri */
@@ -900,7 +903,7 @@ static ssize_t owncloud_read(csync_vio_method_handle_t *fhandle, void *buf, size
 
     writeCtx = (struct transfer_context*) fhandle;
 
-    /* DEBUG_WEBDAV(( "read called on %s!\n", writeCtx->tmpFileName )); */
+    DEBUG_WEBDAV(( "read called on %s (fd=%d)!\n", writeCtx->tmpFileName, writeCtx->fd ));
     if( ! fhandle ) {
         errno = EBADF;
         return -1;
@@ -928,7 +931,7 @@ static ssize_t owncloud_read(csync_vio_method_handle_t *fhandle, void *buf, size
         writeCtx->bytes_written = writeCtx->bytes_written + len;
     }
 
-    /* DEBUG_WEBDAV(( "read len: %d\n", len )); */
+    DEBUG_WEBDAV(( "read len: %d %ul\n", len, count ));
 
     return len;
 }
