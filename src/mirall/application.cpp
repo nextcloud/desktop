@@ -270,6 +270,8 @@ void Application::slotRemoveFolder( const QString& alias )
   }
 
   _folderMan->slotRemoveFolder( alias );
+
+  _statusDialog->setFolderList( _folderMan->map() );
 }
 
 #ifdef HAVE_FETCH_AND_PUSH
