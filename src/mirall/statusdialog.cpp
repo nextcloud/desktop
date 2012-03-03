@@ -190,7 +190,7 @@ void StatusDialog::setFolderList( Folder::Map folders )
     item->setData( f->path(),   FolderViewDelegate::FolderPathRole );
     item->setData( f->alias(),  FolderViewDelegate::FolderNameRole );
     item->setData( f->syncEnabled(), FolderViewDelegate::FolderSyncEnabled );
-    qDebug() << "Folder is SyncEnabled: " << f->syncEnabled();
+    qDebug() << "***** Folder is SyncEnabled: " << f->syncEnabled();
 
     SyncResult res = f->syncResult();
     SyncResult::Status status = res.status();

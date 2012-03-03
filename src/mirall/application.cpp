@@ -376,9 +376,10 @@ void Application::slotInfoFolder( const QString& alias )
 
 void Application::slotEnableFolder(const QString& alias, const bool enable)
 {
-  qDebug() << "enable folder with alias " << alias;
+  qDebug() << "Application: enable folder with alias " << alias;
 
   _folderMan->slotEnableFolder( alias, enable );
+  _statusDialog->setFolderList( _folderMan->map() );
 
 }
 
@@ -439,21 +440,15 @@ void Application::computeOverallSyncStatus()
     trayMessage += folderMessage;
   }
 
-  QString statusIcon = MIRALL_ICON;
-  qDebug() << "overall result is " << overallResult.status();
-  if( overallResult.status() == SyncResult::Error ) {
-    statusIcon = "dialog-close";
-  } else if( overallResult.status() == SyncResult::Success ) {
-    statusIcon = MIRALL_ICON;
-  } else if( overallResult.status() == SyncResult::Disabled ) {
-    statusIcon = "dialog-cancel";
-  } else if( overallResult.status() == SyncResult::SetupError ) {
-    statusIcon = "dialog-cancel";
-  } else if( overallResult.status() == SyncResult::Undefined ) {
-    statusIcon = "view-refresh";
+
+  QIcon statusIcon = _theme->syncStateIcon( overallResult.status(), 20 );
+  if( overallResult.status() == SyncResult::Success ) {
+      // Rather display the mirall icon instead of the ok icon.
+      statusIcon = _theme->applicationIcon( 24 );
   }
 
-  _tray->setIcon(QIcon::fromTheme(statusIcon, QIcon( QString( ":/mirall/resources/%1").arg(statusIcon))));
+
+  _tray->setIcon( statusIcon );
   _tray->setToolTip(trayMessage);
 
   // Only refresh the folder if it is being shown
@@ -461,7 +456,6 @@ void Application::computeOverallSyncStatus()
     _statusDialog->setFolderList( map );
   }
 }
-
 
 } // namespace Mirall
 
