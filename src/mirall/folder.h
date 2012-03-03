@@ -176,7 +176,6 @@ private:
     void evaluateSync(const QStringList &pathList);
 
     QString   _path;
-    // poll timer for remote syncs
 
     QString   _alias;
     bool      _onlyOnlineEnabled;
