@@ -17,10 +17,25 @@ use strict;
 print "Hello, this is t1, a tester for csync with ownCloud.\n";
 
 #
-# Adjust data as needed here:
+# Adjust data as needed here or better us a t1.cfg file with the following
+# content:
+#  user   => "joe",
+#  passwd => "XXXXXX",
+#  url    => "http://localhost/oc/files/webdav.php"
+ 
 my $owncloud = "http://localhost/oc/files/webdav.php/";
 my $user = "joe";
 my $passwd = 'XXXXX'; # Mind to be secure.
+
+if( -r "./t1.cfg" ) {
+    my %config = do 't1.cfg';
+    $user   = $config{user} if( $config{user} );
+    $passwd = $config{passwd} if( $config{passwd} );
+    $owncloud = $config{url}  if( $config{url} );
+    print "Read t1.cfg\n";
+}
+
+$owncloud .= "/" unless( $owncloud =~ /\/$/ );
 
 
 print "Connecting to ownCloud at ". $owncloud ."\n";
