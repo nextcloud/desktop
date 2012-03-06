@@ -20,6 +20,11 @@
  * vim: ts=2 sw=2 et cindent
  */
 
+#ifdef _WIN32
+#include <windef.h>
+#include <winbase.h>
+#endif
+
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -58,6 +63,17 @@ int c_copy(const char* src, const char *dst, mode_t mode) {
   ssize_t bread, bwritten;
   struct stat sb;
   char buf[BUFFER_SIZE];
+
+#ifdef _WIN32
+  if(src && dst) {
+      if (CopyFile(src, dst, FALSE)) {
+          return 0;
+      }
+      errno = GetLastError();
+
+      return -1;
+  }
+#endif
 
   if (c_streq(src, dst)) {
     return -1;
@@ -117,6 +133,10 @@ int c_copy(const char* src, const char *dst, mode_t mode) {
       goto out;
     }
   }
+
+#ifdef __unix__
+  fsync(dstfd);
+#endif
 
   rc = 0;
 out:
