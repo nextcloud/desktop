@@ -779,6 +779,15 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
 	}
 #else
         writeCtx->tmpFileName = c_strdup( "/tmp/csync.XXXXXX" );
+#ifdef _WIN32
+	if( c_tmpname( writeCtx->tmpFileName ) == 0 ) {
+          _fmode = _O_BINARY;
+
+	   writeCtx->fd = open( writeCtx->tmpFileName, O_RDWR | O_CREAT | O_EXCL, 0600 );
+	} else {
+	   writeCtx->fd = -1;
+	}
+#else
         writeCtx->fd = mkstemp( writeCtx->tmpFileName );
 #endif
         DEBUG_WEBDAV(("opening temp directory %s\n", writeCtx->tmpFileName ));
@@ -873,6 +882,9 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
             }
 
             /* and open it again to read from */
+#ifdef _WIN32
+	    _fmode = _O_BINARY;
+#endif
             if (( writeCtx->fd = open( writeCtx->tmpFileName, O_RDONLY )) < 0) {
                 errno = EIO;
                 ret = -1;
@@ -939,6 +951,9 @@ static ssize_t owncloud_read(csync_vio_method_handle_t *fhandle, void *buf, size
 
     if( writeCtx->fd == -1 ) {
         /* open the downloaded file to read from */
+#ifdef _WIN32
+	_fmode = _O_BINARY;
+#endif
         if (( writeCtx->fd = open( writeCtx->tmpFileName, O_RDONLY )) < 0) {
             DEBUG_WEBDAV(("Could not open local file %s\n", writeCtx->tmpFileName ));
             errno = EIO;
