@@ -26,7 +26,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-
+#include "c_private.h"
 #include "vio/csync_vio_handle.h"
 #include "vio/csync_vio_file_stat.h"
 

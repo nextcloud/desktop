@@ -6,6 +6,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#include "c_private.h"
 #include "c_macro.h"
 #include "c_alloc.h"
 #include "c_dir.h"
@@ -13,7 +14,7 @@
 
 int c_mkdirs(const char *path, mode_t mode) {
   int tmp;
-  struct stat sb;
+  csync_stat_t sb;
 
   if (path == NULL) {
     errno = EINVAL;
@@ -64,7 +65,7 @@ int c_mkdirs(const char *path, mode_t mode) {
 int c_rmdirs(const char *path) {
   DIR *d;
   struct dirent *dp;
-  struct stat sb;
+  csync_stat_t sb;
   char *fname;
 
   if ((d = opendir(path)) != NULL) {
@@ -132,7 +133,7 @@ int c_rmdirs(const char *path) {
 }
 
 int c_isdir(const char *path) {
-  struct stat sb;
+  csync_stat_t sb;
 
   if (lstat (path, &sb) == 0 && S_ISDIR(sb.st_mode)) {
     return 1;

@@ -27,6 +27,7 @@
 #include <dirent.h>
 #include <stdio.h>
 
+#include "c_private.h"
 #include "c_lib.h"
 #include "vio/csync_vio_local.h"
 
@@ -242,7 +243,7 @@ int csync_vio_local_rmdir(const char *uri) {
 }
 
 int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
-  struct stat sb;
+  csync_stat_t sb;
 
   if (lstat(uri, &sb) < 0) {
     return -1;

@@ -43,6 +43,12 @@
 #define geteuid() 0
 #endif
 
+#ifdef _WIN32
+typedef struct _stat csync_stat_t;
+#else
+typedef struct stat csync_stat_t;
+#endif
+
 #ifndef HAVE_STRERROR_R
 #define strerror_r(errnum, buf, buflen) snprintf(buf, buflen, "%s", strerror(errnum))
 #endif
