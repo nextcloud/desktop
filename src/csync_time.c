@@ -144,7 +144,7 @@ time_t csync_timediff(CSYNC *ctx) {
   }
 
   /* calc time difference */
-  timediff = abs(timediff - st->mtime);
+  timediff = llabs(timediff - st->mtime);
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Time difference: %ld seconds", timediff);
 
 out:
