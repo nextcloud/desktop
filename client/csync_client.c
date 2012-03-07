@@ -36,7 +36,6 @@
 #include <c_alloc.h>
 
 #include "csync_auth.h"
-
 #include "../src/std/c_private.h"
 
 const char *csync_program_version = "csync commandline client "

@@ -32,6 +32,7 @@
 #include "c_rbtree.h"
 #include "c_string.h"
 #include "c_time.h"
+#include "c_private.h"
 
 #ifdef malloc
 #undef malloc

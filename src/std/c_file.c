@@ -38,7 +38,7 @@
 
 /* check if path is a file */
 int c_isfile(const char *path) {
-  struct stat sb;
+  csync_stat_t sb;
 
   if (lstat (path, &sb) < 0) {
     return 0;
@@ -61,7 +61,7 @@ int c_copy(const char* src, const char *dst, mode_t mode) {
   int dstfd = -1;
   int rc = -1;
   ssize_t bread, bwritten;
-  struct stat sb;
+  csync_stat_t sb;
   char buf[BUFFER_SIZE];
 
 #ifdef _WIN32

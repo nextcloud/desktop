@@ -44,7 +44,7 @@
 #include "csync_log.h"
 
 int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
-  struct stat sb;
+  csync_stat_t sb;
   char *path = NULL;
   char *err = NULL;
   csync_vio_method_t *m = NULL;

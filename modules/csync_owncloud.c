@@ -38,6 +38,8 @@
 
 #include "c_lib.h"
 #include "csync.h"
+#include "c_private.h"
+
 #include "vio/csync_vio_module.h"
 #include "vio/csync_vio_file_stat.h"
 
@@ -709,7 +711,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
 #endif
 
     struct transfer_context *writeCtx = NULL;
-    struct stat statBuf;
+    csync_stat_t statBuf;
 
     (void) mode; /* unused on webdav server */
     DEBUG_WEBDAV(( "=> open called for %s\n", durl ));
@@ -848,7 +850,7 @@ static csync_vio_method_handle_t *owncloud_creat(const char *durl, mode_t mode) 
 
 static int owncloud_close(csync_vio_method_handle_t *fhandle) {
     struct transfer_context *writeCtx;
-    struct stat st;
+    csync_stat_t st;
     int rc;
     int ret = 0;
 
@@ -925,7 +927,7 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
 static ssize_t owncloud_read(csync_vio_method_handle_t *fhandle, void *buf, size_t count) {
     struct transfer_context *writeCtx;
     ssize_t len = 0;
-    struct stat st;
+    csync_stat_t st;
 
     writeCtx = (struct transfer_context*) fhandle;
 
