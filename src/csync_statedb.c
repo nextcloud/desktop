@@ -55,6 +55,9 @@ static int _csync_statedb_check(const char *statedb) {
   sqlite3 *db = NULL;
 
   /* check db version */
+#ifdef _WIN32
+   _fmode = _O_BINARY;
+#endif
   fd = open(statedb, O_RDONLY);
   if (fd >= 0) {
     if (read(fd, (void *) buf, (size_t) BUF_SIZE - 1) >= 0) {
