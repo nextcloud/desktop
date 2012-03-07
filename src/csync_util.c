@@ -142,21 +142,23 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
 
     new = c_malloc(sizeof(csync_file_stat_t) + fs->pathlen + 1);
     if (new == NULL) {
+      strerror_r(errno, errbuf, sizeof(errbuf));
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
           "file: %s, merge malloc, error: %s",
           fs->path,
-          strerror_r(errno, errbuf, sizeof(errbuf)));
+          errbuf);
       rc = -1;
       goto out;
     }
     new = memcpy(new, fs, sizeof(csync_file_stat_t) + fs->pathlen + 1);
 
     if (c_rbtree_insert(tree, new) < 0) {
+      strerror_r(errno, errbuf, sizeof(errbuf));
       SAFE_FREE(new);
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
           "file: %s, rb tree insert, error: %s",
           fs->path,
-          strerror_r(errno, errbuf, sizeof(errbuf)));
+          errbuf);
       rc = -1;
       goto out;
     }
@@ -174,16 +176,18 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
     case LOCAL_REPLICA:
       if (asprintf(&uri, "%s/%s", ctx->local.uri, fs->path) < 0) {
         rc = -1;
+        strerror_r(errno, errbuf, sizeof(errbuf));
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file uri alloc failed: %s",
-            strerror_r(errno, errbuf, sizeof(errbuf)));
+            errbuf);
         goto out;
       }
       break;
     case REMOTE_REPLCIA:
       if (asprintf(&uri, "%s/%s", ctx->remote.uri, fs->path) < 0) {
         rc = -1;
+        strerror_r(errno, errbuf, sizeof(errbuf));
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file uri alloc failed: %s",
-            strerror_r(errno, errbuf, sizeof(errbuf)));
+            errbuf);
         goto out;
       }
       break;
@@ -195,10 +199,11 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
   vst = csync_vio_file_stat_new();
   if (csync_vio_stat(ctx, uri, vst) < 0) {
     rc = -1;
+    strerror_r(errno, errbuf, sizeof(errbuf));
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
         "file: %s, updating stat failed, error: %s",
         uri,
-        strerror_r(errno, errbuf, sizeof(errbuf)));
+        errbuf);
     goto out;
   }
 
