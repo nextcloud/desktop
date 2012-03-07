@@ -712,6 +712,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
 
     struct transfer_context *writeCtx = NULL;
     csync_stat_t statBuf;
+    memset( getUrl, '\0', PATH_MAX );
 
     (void) mode; /* unused on webdav server */
     DEBUG_WEBDAV(( "=> open called for %s\n", durl ));
@@ -873,6 +874,9 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
             }
 
             /* and open it again to read from */
+#ifdef _WIN32
+	    _fmode = _O_BINARY;
+#endif
             if (( writeCtx->fd = open( writeCtx->tmpFileName, O_RDONLY )) < 0) {
                 errno = EIO;
                 ret = -1;
@@ -939,6 +943,9 @@ static ssize_t owncloud_read(csync_vio_method_handle_t *fhandle, void *buf, size
 
     if( writeCtx->fd == -1 ) {
         /* open the downloaded file to read from */
+#ifdef _WIN32
+	_fmode = _O_BINARY;
+#endif
         if (( writeCtx->fd = open( writeCtx->tmpFileName, O_RDONLY )) < 0) {
             DEBUG_WEBDAV(("Could not open local file %s\n", writeCtx->tmpFileName ));
             errno = EIO;

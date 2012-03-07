@@ -54,6 +54,9 @@ int csync_exclude_load(CSYNC *ctx, const char *fname) {
   char *buf = NULL;
   char *entry = NULL;
 
+#ifdef _WIN32
+  _fmode = _O_BINARY;  
+#endif
   fd = open(fname, O_RDONLY);
   if (fd < 0) {
     return -1;
