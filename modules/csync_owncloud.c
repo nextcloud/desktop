@@ -699,6 +699,11 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
     char getUrl[PATH_MAX];
     int put = 0;
     int rc = NE_OK;
+#ifdef _WIN32
+    int gtp = 0;
+    char tmpname[13];
+#endif
+
     struct transfer_context *writeCtx = NULL;
     struct stat statBuf;
 
@@ -749,16 +754,25 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
     writeCtx->bytes_written = 0;
     if( rc == NE_OK ) {
         /* open a temp file to store the incoming data */
-        writeCtx->tmpFileName = c_strdup( "/tmp/csync.XXXXXX" );
 #ifdef _WIN32
-	if( c_tmpname( writeCtx->tmpFileName ) == 0 ) {
-          _fmode = _O_BINARY;
-
-	   writeCtx->fd = open( writeCtx->tmpFileName, O_RDWR | O_CREAT | O_EXCL, 0600 );
+        memset( tmpname, '\0', 13 );
+        gtp = GetTempPath( PATH_MAX, getUrl );
+        DEBUG_WEBDAV(("win32 tmp path: %s\n", getUrl ));
+        if ( gtp > MAX_PATH || (gtp == 0) ) {
+            DEBUG_WEBDAV(("Failed to compute Win32 tmp path, trying /tmp\n"));
+            strcpy( getUrl, "/tmp/");
+        }
+        strcpy( tmpname, "csync.XXXXXX" );
+        if( c_tmpname( tmpname ) == 0 ) {
+            _fmode = _O_BINARY;
+            strcat( getUrl, tmpname );
+            writeCtx->tmpFileName = c_strdup( getUrl );
+            writeCtx->fd = open( writeCtx->tmpFileName, O_RDWR | O_CREAT | O_EXCL, 0600 );
 	} else {
 	   writeCtx->fd = -1;
 	}
 #else
+        writeCtx->tmpFileName = c_strdup( "/tmp/csync.XXXXXX" );
         writeCtx->fd = mkstemp( writeCtx->tmpFileName );
 #endif
         DEBUG_WEBDAV(("opening temp directory %s\n", writeCtx->tmpFileName ));
