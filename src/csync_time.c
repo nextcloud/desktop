@@ -79,10 +79,11 @@ time_t csync_timediff(CSYNC *ctx) {
      * To prevent problems especially with pam_csync we shouldn't try to create the
      * remote directory here. Just fail!
      */
+    strerror_r(errno, errbuf, sizeof(errbuf));
     CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL,
         "Access dienied to remote uri: %s - %s",
         ctx->remote.uri,
-        strerror_r(errno, errbuf, sizeof(errbuf)));
+        errbuf);
     return -1;
   }
   csync_vio_closedir(ctx, dp);
@@ -99,10 +100,11 @@ time_t csync_timediff(CSYNC *ctx) {
   ctx->replica = ctx->local.type;
   fp = csync_vio_creat(ctx, luri, 0644);
   if (fp == NULL) {
+    strerror_r(errno, errbuf, sizeof(errbuf));
     CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL,
         "Unable to create temporary file: %s - %s",
         luri,
-        strerror_r(errno, errbuf, sizeof(errbuf)));
+        errbuf);
     goto out;
   }
   csync_vio_close(ctx, fp);
@@ -110,10 +112,11 @@ time_t csync_timediff(CSYNC *ctx) {
   /* Get the modification time */
   st = csync_vio_file_stat_new();
   if (csync_vio_stat(ctx, luri, st) < 0) {
+    strerror_r(errno, errbuf, sizeof(errbuf));
     CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL,
         "Synchronisation is not possible! %s - %s",
         luri,
-        strerror_r(errno, errbuf, sizeof(errbuf)));
+        errbuf);
     goto out;
   }
   timediff = st->mtime;
@@ -125,10 +128,11 @@ time_t csync_timediff(CSYNC *ctx) {
 
   fp = csync_vio_creat(ctx, ruri, 0644);
   if (fp == NULL) {
+    strerror_r(errno, errbuf, sizeof(errbuf));
     CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL,
         "Unable to create temporary file: %s - %s",
         ruri,
-        strerror_r(errno, errbuf, sizeof(errbuf)));
+        errbuf);
     goto out;
   }
   csync_vio_close(ctx, fp);
@@ -136,10 +140,11 @@ time_t csync_timediff(CSYNC *ctx) {
   /* Get the modification time */
   st = csync_vio_file_stat_new();
   if (csync_vio_stat(ctx, ruri, st) < 0) {
+    strerror_r(errno, errbuf, sizeof(errbuf));
     CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL,
         "Synchronisation is not possible! %s - %s",
         ruri,
-        strerror_r(errno, errbuf, sizeof(errbuf)));
+        errbuf);
     goto out;
   }
 

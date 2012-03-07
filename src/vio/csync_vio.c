@@ -399,8 +399,9 @@ int csync_vio_mkdirs(CSYNC *ctx, const char *uri, mode_t mode) {
         return -1;
       }
     } else if (errno != ENOENT) {
+      strerror_r(errno, errbuf, sizeof(errbuf));
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "csync_vio_mkdirs stat failed: %s",
-          strerror_r(errno, errbuf, sizeof(errbuf)));
+          errbuf);
       csync_vio_file_stat_destroy(st);
       return -1;
     } else if (csync_vio_mkdirs(ctx, suburi, mode) < 0) {
