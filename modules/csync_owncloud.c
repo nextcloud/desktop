@@ -214,7 +214,7 @@ static void addSSLWarning( char *ptr, const char *warn, int len )
     if( ! (warn && ptr )) return;
     remainingLen = len - strlen(ptr);
     if( remainingLen <= 0 ) return;
-    concatHere = ptr + strlen(ptr);  // put the write pointer to the end.
+    concatHere = ptr + strlen(ptr);  /* put the write pointer to the end. */
     strncpy( concatHere, warn, remainingLen );
 }
 
@@ -283,7 +283,7 @@ static int ne_auth( void *userdata, const char *realm, int attempt,
     (void) userdata;
     (void) realm;
 
-    // DEBUG_WEBDAV(( "Authentication required %s\n", realm ));
+    /* DEBUG_WEBDAV(( "Authentication required %s\n", realm )); */
     if( username && password ) {
         DEBUG_WEBDAV(( "Authentication required %s\n", username ));
         if( dav_session.user ) {
@@ -498,7 +498,6 @@ static csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
 
     lfs = c_malloc(sizeof(csync_vio_file_stat_t));
     if (lfs == NULL) {
-        // free readdir list?
         return NULL;
     }
 
@@ -603,7 +602,7 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
         buf->size   = _fs.size;
         buf->mode   = _stat_perms( _fs.type );
     } else {
-        // fetch data via a propfind call.
+        /* fetch data via a propfind call. */
         fetchCtx = c_malloc( sizeof( struct listdir_context ));
         if( ! fetchCtx ) {
             errno = ENOMEM;
@@ -736,7 +735,6 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
 	}
         DEBUG_WEBDAV(("Stating directory %s\n", dir ));
         if( owncloud_stat( dir, (csync_vio_method_handle_t*)(&statBuf) ) == 0 ) {
-            // Success!
             DEBUG_WEBDAV(("Directory of file to open exists.\n"));
         } else {
             DEBUG_WEBDAV(("Directory %s of file to open does NOT exist.\n", dir ));
@@ -766,7 +764,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
         DEBUG_WEBDAV(("opening temp directory %s\n", writeCtx->tmpFileName ));
         if( writeCtx->fd == -1 ) {
             rc = NE_ERROR;
-            // errno is set by the mkstemp call above.
+            /* errno is set by the mkstemp call above. */
         }
     }
 
@@ -795,7 +793,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
                   ne_get_server_hostport( dav_session.ctx ), uri );
         DEBUG_WEBDAV(("GET request on %s\n", getUrl ));
 
-        rc = ne_get( dav_session.ctx, getUrl, writeCtx->fd ); // FIX_ESCAPE
+        rc = ne_get( dav_session.ctx, getUrl, writeCtx->fd );  /* FIX_ESCAPE? */
         if( rc != NE_OK ) {
             DEBUG_WEBDAV(("Download to local file failed: %d.\n", rc));
             errno = EACCES;
@@ -941,7 +939,7 @@ static ssize_t owncloud_read(csync_vio_method_handle_t *fhandle, void *buf, size
         writeCtx->bytes_written = writeCtx->bytes_written + len;
     }
 
-    DEBUG_WEBDAV(( "read len: %d %ul\n", len, count ));
+    /* DEBUG_WEBDAV(( "read len: %d %ul\n", len, count )); */
 
     return len;
 }
@@ -1023,7 +1021,7 @@ static csync_vio_file_stat_t *owncloud_readdir(csync_vio_method_handle_t *dhandl
         /* FIXME: Who frees the allocated mem for lfs, allocated in the helper func? */
         lfs = resourceToFileStat( fetchCtx->currResource );
 
-        // set pointer to next element
+        /* set pointer to next element */
         fetchCtx->currResource = fetchCtx->currResource->next;
 
         /* fill the static stat buf as input for the stat function */
@@ -1186,7 +1184,7 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
     }
     if( !times ) {
         errno = EACCES;
-        return -1; // FIXME: Find good errno
+        return -1; /* FIXME: Find good errno */
     }
     pname.nspace = NULL;
     pname.name = "lastmodified";
