@@ -964,15 +964,6 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
 	}
 #else
         writeCtx->tmpFileName = c_strdup( "/tmp/csync.XXXXXX" );
-#ifdef _WIN32
-	if( c_tmpname( writeCtx->tmpFileName ) == 0 ) {
-          _fmode = _O_BINARY;
-
-	   writeCtx->fd = open( writeCtx->tmpFileName, O_RDWR | O_CREAT | O_EXCL, 0600 );
-	} else {
-	   writeCtx->fd = -1;
-	}
-#else
         writeCtx->fd = mkstemp( writeCtx->tmpFileName );
 #endif
         DEBUG_WEBDAV("opening temp directory %s: %d", writeCtx->tmpFileName, writeCtx->fd );
