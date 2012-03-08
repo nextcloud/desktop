@@ -28,6 +28,16 @@ namespace Mirall {
 class Theme;
 class ownCloudInfo;
 
+class FolderStatusModel : public QStandardItemModel
+{
+public:
+    FolderStatusModel();
+    virtual Qt::ItemFlags flags( const QModelIndex& );
+    QVariant data(const QModelIndex &index, int role) const;
+
+};
+
+
 class FolderViewDelegate : public QStyledItemDelegate
 {
     public:
@@ -45,6 +55,8 @@ class FolderViewDelegate : public QStyledItemDelegate
     };
     void paint( QPainter*, const QStyleOptionViewItem&, const QModelIndex& ) const;
     QSize sizeHint( const QStyleOptionViewItem&, const QModelIndex& ) const;
+    bool editorEvent( QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& option,
+                      const QModelIndex& index );
 };
 
 class StatusDialog : public QDialog, public Ui::statusDialog

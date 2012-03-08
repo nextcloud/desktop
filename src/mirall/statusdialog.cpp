@@ -21,6 +21,30 @@
 #include "mirall/owncloudinfo.h"
 
 namespace Mirall {
+
+FolderStatusModel::FolderStatusModel()
+    :QStandardItemModel()
+{
+
+}
+
+Qt::ItemFlags FolderStatusModel::flags ( const QModelIndex&  )
+{
+    return Qt::ItemIsSelectable;
+}
+
+QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
+{
+    if (!index.isValid())
+        return QVariant();
+
+    if (role == Qt::EditRole)
+        return QVariant();
+    else
+        return QStandardItemModel::data(index,role);
+}
+// ====================================================================================
+
 FolderViewDelegate::FolderViewDelegate()
     :QStyledItemDelegate()
 {
@@ -109,6 +133,12 @@ void FolderViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
 }
 
+
+bool FolderViewDelegate::editorEvent ( QEvent * event, QAbstractItemModel * model, const QStyleOptionViewItem & option, const QModelIndex & index )
+{
+    return false;
+}
+
  // ====================================================================================
 
 StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
@@ -118,7 +148,7 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
   setupUi( this  );
   setWindowTitle( _theme->appName() + QString (" %1" ).arg( _theme->version() ) );
 
-  _model = new QStandardItemModel();
+  _model = new FolderStatusModel();
   FolderViewDelegate *delegate = new FolderViewDelegate();
 
   _folderList->setItemDelegate( delegate );
