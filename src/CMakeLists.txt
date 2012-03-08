@@ -1,16 +1,8 @@
-include_directories(${CMAKE_SOURCE_DIR}/src)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libqtwebdav)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../csync/src)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../csync/src)
-link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../buildcsync/src)
-link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../buildcsync/src)
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include(${QT_USE_FILE})
 
 # webdav library
 add_definitions("-DQWEBDAV_STATIC")
-
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libqtwebdav)
 set( qtwebdav_LIB_SRCS
      libqtwebdav/qwebdav.cpp
      libqtwebdav/qwebdav_url_info.cpp)
@@ -24,6 +16,8 @@ add_library(qtwebdav_static STATIC ${qtwebdavMoc} ${qtwebdav_LIB_SRCS} ${qtwebda
 target_link_libraries(qtwebdav_static ${QT_LIBRARIES})
 
 # -------------------------------------------------------
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
 QT4_ADD_RESOURCES ( MIRALL_RC_SRC ../mirall.qrc)
 
@@ -124,7 +118,6 @@ target_link_libraries(mirall qtwebdav_static)
 
 target_link_libraries(owncloud ${QT_LIBRARIES} )
 
-set( CSYNC_LIBRARY csync)  # FIXME!!!
 target_link_libraries(mirall ${CSYNC_LIBRARY})
 target_link_libraries(owncloud ${CSYNC_LIBRARY})
 
