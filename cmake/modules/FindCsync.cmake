@@ -1,7 +1,8 @@
 
-FIND_LIBRARY(CSYNC_LIBRARY NAMES csync)
+FIND_LIBRARY(CSYNC_LIBRARY NAMES csync 
+	HINTS "../buildcsync/src" )
 FIND_PATH(CSYNC_INCLUDE_PATH csync.h
-    HINTS "/usr/include/csync")
+    HINTS "../csync/src" "/usr/include/csync")
 
 SET(CSYNC_INCLUDE_DIR ${CSYNC_INCLUDE_PATH})
 
