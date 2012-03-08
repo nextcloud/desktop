@@ -22,6 +22,7 @@
 
 namespace Mirall {
 FolderViewDelegate::FolderViewDelegate()
+    :QStyledItemDelegate()
 {
 
 }
@@ -124,6 +125,8 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
   _folderList->setModel( _model );
   _folderList->setMinimumWidth( 300 );
 
+  connect( _folderList,SIGNAL(doubleClicked(QModelIndex)),SLOT(slotDoubleClicked(QModelIndex)));
+
   connect(_ButtonClose,  SIGNAL(clicked()), this, SLOT(accept()));
   connect(_ButtonRemove, SIGNAL(clicked()), this, SLOT(slotRemoveFolder()));
 #ifdef HAVE_FETCH_AND_PUSH
@@ -177,6 +180,14 @@ void StatusDialog::slotFolderActivated( const QModelIndex& indx )
   }
 }
 
+void StatusDialog::slotDoubleClicked( const QModelIndex& indx )
+{
+    if( ! indx.isValid() ) return;
+    QString alias = _model->data( indx, FolderViewDelegate::FolderNameRole ).toString();
+
+    emit openFolderAlias( alias );
+}
+
 void StatusDialog::setFolderList( Folder::Map folders )
 {
   _model->clear();
@@ -194,7 +205,6 @@ void StatusDialog::setFolderList( Folder::Map folders )
 
     SyncResult res = f->syncResult();
     SyncResult::Status status = res.status();
-    qDebug() << "Status: " << status;
 
     item->setData( _theme->syncStateIcon( status, 64 ), FolderViewDelegate::FolderStatusIcon );
     item->setData( _theme->statusHeaderText( status ),  FolderViewDelegate::FolderStatus );

@@ -60,6 +60,7 @@ signals:
     void pushFolderAlias( const QString& );
     void enableFolderAlias( const QString&, const bool );
     void infoFolderAlias( const QString& );
+    void openFolderAlias( const QString& );
 
     /* start the add a folder wizard. */
     void addASync();
@@ -77,6 +78,7 @@ public slots:
 protected slots:
     void slotOCInfoFail();
     void slotOCInfo( const QString&, const QString& );
+    void slotDoubleClicked( const QModelIndex& );
 
 private:
     QStandardItemModel *_model;

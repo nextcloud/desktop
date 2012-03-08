@@ -91,6 +91,8 @@ Application::Application(int argc, char **argv) :
              SLOT(slotEnableFolder(QString,bool)));
     connect( _statusDialog, SIGNAL(infoFolderAlias(const QString&)),
              SLOT(slotInfoFolder( const QString&)));
+    connect( _statusDialog, SIGNAL(openFolderAlias(const QString&)),
+             SLOT(slotFolderOpenAction(QString)));
 
     qDebug() << "* Network is" << (_networkMgr->isOnline() ? "online" : "offline");
     foreach (QNetworkConfiguration netCfg, _networkMgr->allConfigurations(QNetworkConfiguration::Active)) {
