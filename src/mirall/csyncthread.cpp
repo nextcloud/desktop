@@ -63,9 +63,7 @@ void CSyncThread::run()
         return;
     qDebug() << "## CSync Thread local only: " << _localCheckOnly;
 
-#if LIBCSYNC_VERSION_INT >= CSYNC_VERSION_INT(0, 45, 0)
     csync_enable_conflictcopys(csync);
-#endif
 
     QTime t;
     t.start();

@@ -41,8 +41,8 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
 
 {
 #ifdef USE_WATCHER
-    setPollInterval( 15000 );
     qDebug() << "****** ownCloud folder using watcher *******";
+    // The folder interval is set in the folder parent class.
 #else
     /* If local polling is used, the polltimer of class Folder has to fire more
      * often
@@ -50,8 +50,10 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
      * remote poll interval, defined in slotPollTimerRemoteCheck
      */
 
+    _pollTimer->stop();
     connect( _pollTimer, SIGNAL(timeout()), this, SLOT(slotPollTimerRemoteCheck()));
     setPollInterval( 2000 );
+    _pollTimer->start();
     qDebug() << "****** ownCloud folder using local poll *******";
 #endif
 }

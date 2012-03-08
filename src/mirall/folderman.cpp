@@ -197,7 +197,7 @@ void FolderMan::restoreEnabledFolders()
 {
   foreach( Folder *f, _folderMap ) {
     if (_folderEnabledMap.contains( f->alias() )) {
-      f->setSyncEnabled( _folderEnabledMap.value( f->alias() ));
+        f->setSyncEnabled( _folderEnabledMap.value( f->alias() ) );
     }
   }
 }

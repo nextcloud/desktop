@@ -35,8 +35,11 @@ Folder::Folder(const QString &alias, const QString &path, QObject *parent)
       _online(false),
       _enabled(true)
 {
+    qsrand(time(0));
+
     _pollTimer->setSingleShot(true);
-    _pollTimer->setInterval( DEFAULT_POLL_INTERVAL_SEC );
+    int polltime = DEFAULT_POLL_INTERVAL_SEC - 2000+ (int)( 4000.0*qrand()/(RAND_MAX+1.0));
+    _pollTimer->setInterval( polltime );
 
     QObject::connect(_pollTimer, SIGNAL(timeout()), this, SLOT(slotPollTimerTimeout()));
     _pollTimer->start();
@@ -83,6 +86,9 @@ void Folder::setSyncEnabled( bool doit )
 #ifdef USE_WATCHER
   _watcher->setEventsEnabled( doit );
 #endif
+  if( doit && ! _pollTimer->isActive() ) {
+      _pollTimer->start();
+  }
 }
 
 bool Folder::onlyOnlineEnabled() const
@@ -205,7 +211,7 @@ void Folder::slotSyncFinished(const SyncResult &result)
 
     // reenable the poll timer if folder is sync enabled
     if( syncEnabled() ) {
-        qDebug() << "* " << alias() << "Poll timer enabled with " << _pollTimer->interval() << "seconds";
+        qDebug() << "* " << alias() << "Poll timer enabled with " << _pollTimer->interval() << "milliseconds";
         _pollTimer->start();
     } else {
         qDebug() << "* Not enabling poll timer for " << alias();
