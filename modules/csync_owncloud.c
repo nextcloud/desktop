@@ -572,6 +572,7 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
     csync_vio_file_stat_t *lfs = NULL;
     struct listdir_context  *fetchCtx = NULL;
     char *curi = NULL;
+    char *decodedUri = NULL;
     char strbuf[PATH_MAX +1];
     int len = 0;
 
@@ -635,10 +636,13 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
                 while( len > 0 && res->uri[len-1] == '/' ) --len;
                 memset( strbuf, 0, PATH_MAX+1);
                 strncpy( strbuf, res->uri, len < PATH_MAX ? len : PATH_MAX );
-                if( c_streq(strbuf, curi )) {
+                decodedUri = ne_path_unescape( curi ); /* allocates memory */
+                if( c_streq(strbuf, decodedUri )) {
+                    SAFE_FREE( decodedUri );
                     break;
                 }
                 res = res->next;
+                SAFE_FREE( decodedUri );
             }
             DEBUG_WEBDAV(("Working on file %s\n", res ? res->name : "NULL"));
 
