@@ -163,6 +163,10 @@ void Folder::evaluateSync(const QStringList &pathList)
     return;
   }
 
+  // stop the poll timer here. Its started again in the slot of
+  // sync finished.
+  qDebug() << "* " << alias() << "Poll timer disabled";
+  _pollTimer->stop();
   startSync( pathList );
 }
 
@@ -172,8 +176,6 @@ void Folder::slotPollTimerTimeout()
 #ifdef USE_WATCHER
     _watcher->clearPendingEvents();
 #endif
-    qDebug() << "* " << alias() << "Poll timer disabled";
-    _pollTimer->stop();
     evaluateSync(QStringList());
 }
 
