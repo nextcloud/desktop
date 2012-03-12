@@ -22,87 +22,57 @@
 #define _GNU_SOURCE
 #endif
 
-#include <argp.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <unistd.h>
+#include <getopt.h>
+#include <errno.h>
 
 #include <csync.h>
+
+#include <c_string.h>
+#include <c_alloc.h>
 
 #include "csync_auth.h"
 
 #include "../src/std/c_private.h"
 
-enum {
-  KEY_EXCLUDE_FILE = 129,
-  KEY_TEST_UPDATE,
-  KEY_TEST_RECONCILE,
-  KEY_CREATE_STATEDB,
-};
-
-const char *argp_program_version = "csync commandline client "
+const char *csync_program_version = "csync commandline client "
   CSYNC_STRINGIFY(LIBCSYNC_VERSION);
-const char *argp_program_bug_address = "<csync-devel@csync.org>";
 
 /* Program documentation. */
-static char doc[] = "csync -- a user level file synchronizer";
-
-/* A description of the arguments we accept. */
-static char args_doc[] = "SOURCE DESTINATION";
+static char doc[] = "Usage: csync [OPTION...] LOCAL REMOTE\n\
+csync -- a user level file synchronizer which synchronizes the files\n\
+at LOCAL with the ones at REMOTE.\n\
+\n\
+-c, --conflict-copys       Create conflict copys if file changed on both\n\
+                           sides.\n\
+-d, --disable-statedb      Disable the usage and creation of a statedb.\n\
+    --dry-run              This runs only update detection and reconcilation.\n\
+\n\
+    --exclude-file=<file>  Add an additional exclude file\n\
+    --test-statedb         Test creation of the statedb. Runs update\n\
+                           detection.\n\
+    --test-update          Test the update detection\n\
+-?, --help                 Give this help list\n\
+    --usage                Give a short usage message\n\
+-V, --version              Print program version\n\
+";
 
 /* The options we understand. */
-static struct argp_option options[] = {
-  {
-    .name  = "exclude-file",
-    .key   = KEY_EXCLUDE_FILE,
-    .arg   = "<file>",
-    .flags = 0,
-    .doc   = "Add an additional exclude file",
-    .group = 0
-  },
-  {
-    .name  = "disable-statedb",
-    .key   = 'd',
-    .arg   = NULL,
-    .flags = 0,
-    .doc   = "Disable the usage and creation of a statedb.",
-    .group = 0
-  },
-  {
-    .name  = "dry-run",
-    .key   = KEY_TEST_RECONCILE,
-    .arg   = NULL,
-    .flags = 0,
-    .doc   = "This runs only update detection and reconcilation.",
-    .group = 0
-  },
-  {
-    .name  = "test-statedb",
-    .key   = KEY_CREATE_STATEDB,
-    .arg   = NULL,
-    .flags = 0,
-    .doc   = "Test creation of the statedb. Runs update detection.",
-    .group = 0
-  },
-  {
-    .name = "conflict-copys",
-    .key = 'c',
-    .arg = NULL,
-    .flags = 0,
-    .doc = "Create conflict copys if file changed on both sides.",
-    .group = 0    
-  },
-  {
-    .name  = "test-update",
-    .key   = KEY_TEST_UPDATE,
-    .arg   = NULL,
-    .flags = 0,
-    .doc   = "Test the update detection",
-    .group = 0
-  },
-  {NULL, 0, 0, 0, NULL, 0}
+static const struct option long_options[] =
+{
+    {"exclude-file",    required_argument, 0,  0  },
+    {"disable-statedb", no_argument,       0, 'd' },
+    {"dry-run",         no_argument,       0,  0  },
+    {"test-statedb",    no_argument,       0,  0  },
+    {"conflict-copies", no_argument,       0, 'c' },
+    {"test-update",     no_argument,       0,  0  },
+    {"version",         no_argument,       0, 'V' },
+    {"usage",           no_argument,       0, 'h' },
+    {0, 0, 0, 0}
 };
 
 /* Used by main to communicate with parse_opt. */
@@ -117,63 +87,81 @@ struct argument_s {
   bool with_conflict_copys;
 };
 
-/* Parse a single option. */
-static error_t parse_opt (int key, char *arg, struct argp_state *state) {
-  /* Get the input argument from argp_parse, which we
-   * know is a pointer to our arguments structure.
-   */
-  struct argument_s *arguments = state->input;
-
-  switch (key) {
-    case 'd':
-      arguments->disable_statedb = 1;
-      break;
-    case KEY_TEST_UPDATE:
-      arguments->create_statedb = 0;
-      arguments->update = 1;
-      arguments->reconcile = 0;
-      arguments->propagate = 0;
-      break;
-    case KEY_TEST_RECONCILE:
-      arguments->create_statedb = 0;
-      arguments->update = 1;
-      arguments->reconcile = 1;
-      arguments->propagate = 0;
-      break;
-    case KEY_EXCLUDE_FILE:
-      arguments->exclude_file = strdup(arg);
-      break;
-    case KEY_CREATE_STATEDB:
-      arguments->create_statedb = 1;
-      arguments->update = 1;
-      arguments->reconcile = 0;
-      arguments->propagate = 0;
-      break;
-    case 'c':
-      arguments->with_conflict_copys = true;
-      break;
-    case ARGP_KEY_ARG:
-      if (state->arg_num >= 2) {
-        /* Too many arguments. */
-        argp_usage (state);
-      }
-      arguments->args[state->arg_num] = arg;
-      break;
-    case ARGP_KEY_END:
-      if (state->arg_num < 2) {
-        /* Not enough arguments. */
-        argp_usage (state);
-      }
-      break;
-    default:
-      return ARGP_ERR_UNKNOWN;
-  }
-
-  return 0;
+static void print_version()
+{
+    printf( "%s\n", csync_program_version );
+    exit(0);
 }
 
-/* Our argp parser. */
-static struct argp argp = {options, parse_opt, args_doc, doc, NULL, NULL, NULL};
+static void print_help()
+{
+    printf( "%s\n", doc );
+    exit(0);
+}
+
+static int parse_args(struct argument_s *csync_args, int argc, char **argv)
+{
+    while(optind < argc) {
+        int c = -1;
+        struct option *opt = NULL;
+        int result = getopt_long( argc, argv, "dcVh", long_options, &c );
+
+        if( result == -1 ) {
+            break;
+        }
+
+        switch(result) {
+        case 'd':
+            csync_args->disable_statedb = 1;
+            /* printf("Argument: Disable Statedb\n"); */
+            break;
+        case 'c':
+            csync_args->with_conflict_copys = true;
+            /* printf("Argument: With conflict copies\n"); */
+            break;
+        case 'V':
+            print_version();
+            break;
+        case 'h':
+            print_help();
+            break;
+        case 0:
+            opt = (struct option*)&(long_options[c]);
+            if(c_streq(opt->name, "exclude-file")) {
+                csync_args->exclude_file = c_strdup(optarg);
+                /* printf("Argument: exclude-file: %s\n", csync_args->exclude_file); */
+            } else if(c_streq(opt->name, "test-update")) {
+                csync_args->create_statedb = 0;
+                csync_args->update = 1;
+                csync_args->reconcile = 0;
+                csync_args->propagate = 0;
+                /* printf("Argument: test-update\n"); */
+
+            } else if(c_streq(opt->name, "dry-run")) {
+                csync_args->create_statedb = 0;
+                csync_args->update = 1;
+                csync_args->reconcile = 1;
+                csync_args->propagate = 0;
+                /* printf("Argument: dry-run\n" ); */
+
+            } else if(c_streq(opt->name, "test-statedb")) {
+                csync_args->create_statedb = 1;
+                csync_args->update = 1;
+                csync_args->reconcile = 0;
+                csync_args->propagate = 0;
+                /* printf("Argument: test-statedb\n"); */
+            } else {
+                fprintf(stderr, "Argument: No idea what!\n");
+
+            }
+            break;
+        default:
+            break;
+        }
+    }
+    return optind;
+}
+
 
 int main(int argc, char **argv) {
   int rc = 0;
@@ -191,13 +179,14 @@ int main(int argc, char **argv) {
   arguments.propagate = 1;
   arguments.with_conflict_copys = false;
 
-  /*
-   * Parse our arguments; every option seen by parse_opt will
-   * be reflected in arguments.
-   */
-  argp_parse (&argp, argc, argv, 0, 0, &arguments);
+  parse_args(&arguments, argc, argv);
+  /* two options must remain as source and target       */
+  /* printf("ARGC: %d -> optind: %d\n", argc, optind ); */
+  if( argc - optind < 2 ) {
+      print_help();
+  }
 
-  if (csync_create(&csync, arguments.args[0], arguments.args[1]) < 0) {
+  if (csync_create(&csync, argv[optind], argv[optind+1]) < 0) {
     fprintf(stderr, "csync_create: failed\n");
     exit(1);
   }
