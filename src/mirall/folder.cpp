@@ -35,7 +35,7 @@ Folder::Folder(const QString &alias, const QString &path, QObject *parent)
       _online(false),
       _enabled(true)
 {
-    qsrand(time(0));
+    qsrand(QTime::currentTime().msec());
 
     _pollTimer->setSingleShot(true);
     int polltime = DEFAULT_POLL_INTERVAL_SEC - 2000+ (int)( 4000.0*qrand()/(RAND_MAX+1.0));
