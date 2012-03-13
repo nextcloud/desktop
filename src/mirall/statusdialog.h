@@ -44,7 +44,7 @@ class FolderViewDelegate : public QStyledItemDelegate
     FolderViewDelegate();
     virtual ~FolderViewDelegate();
 
-    enum datarole { FolderNameRole    = Qt::UserRole + 100,
+    enum datarole { FolderAliasRole    = Qt::UserRole + 100,
                     FolderPathRole    = Qt::UserRole + 101,
                     FolderIconRole    = Qt::UserRole + 102,
                     FolderRemotePath  = Qt::UserRole + 103,
@@ -86,13 +86,17 @@ public slots:
     void slotEnableFolder();
     void slotInfoFolder();
     void slotAddSync();
-
+    void slotAddFolder( Folder* );
+    void slotUpdateFolderState( Folder* );
+    void slotFolderRemoved( Folder* );
 protected slots:
     void slotOCInfoFail();
     void slotOCInfo( const QString&, const QString& );
     void slotDoubleClicked( const QModelIndex& );
 
 private:
+    void folderToModelItem( QStandardItem*, Folder* );
+
     QStandardItemModel *_model;
     QUrl   _OCUrl;
     Theme *_theme;

@@ -43,6 +43,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
     else
         return QStandardItemModel::data(index,role);
 }
+
 // ====================================================================================
 
 FolderViewDelegate::FolderViewDelegate()
@@ -87,7 +88,7 @@ void FolderViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
   QIcon icon = qvariant_cast<QIcon>(index.data(FolderIconRole));
   QIcon statusIcon = qvariant_cast<QIcon>(index.data(FolderStatusIcon));
-  QString aliasText = qvariant_cast<QString>(index.data(FolderNameRole));
+  QString aliasText = qvariant_cast<QString>(index.data(FolderAliasRole));
   QString pathText = qvariant_cast<QString>(index.data(FolderPathRole));
   QString statusText = qvariant_cast<QString>(index.data(FolderStatus));
   bool syncEnabled = index.data(FolderSyncEnabled).toBool();
@@ -120,7 +121,6 @@ void FolderViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
   painter->drawPixmap(QPoint(iconRect.left()+15,iconRect.top()),icon.pixmap(iconsize.width(),iconsize.height()));
 
   painter->drawPixmap(QPoint(option.rect.right() - 4 - 48, option.rect.top() + 8 ), statusIcon.pixmap( 48,48));
-
 
   painter->setFont(font);
   painter->drawText(headerRect, aliasText);
@@ -213,23 +213,75 @@ void StatusDialog::slotFolderActivated( const QModelIndex& indx )
 void StatusDialog::slotDoubleClicked( const QModelIndex& indx )
 {
     if( ! indx.isValid() ) return;
-    QString alias = _model->data( indx, FolderViewDelegate::FolderNameRole ).toString();
+    QString alias = _model->data( indx, FolderViewDelegate::FolderAliasRole ).toString();
 
     emit openFolderAlias( alias );
 }
 
 void StatusDialog::setFolderList( Folder::Map folders )
 {
-  _model->clear();
+    _model->clear();
+    foreach( Folder *f, folders ) {
+        qDebug() << "Folder: " << f;
+        slotAddFolder( f );
+    }
 
-  foreach( Folder *f, folders ) {
-    qDebug() << "Folder: " << f;
+}
+
+void StatusDialog::slotAddFolder( Folder *folder )
+{
+    if( ! folder || folder->alias().isEmpty() ) return;
+
     QStandardItem *item = new QStandardItem();
+    folderToModelItem( item, folder );
+    _model->appendRow( item );
+}
 
+void StatusDialog::slotUpdateFolderState( Folder *folder )
+{
+    QStandardItem *item = 0;
+    int row = 0;
+
+    if( ! folder ) return;
+
+    item = _model->item( row );
+
+    while( item ) {
+        if( item->data( FolderViewDelegate::FolderAliasRole ) == folder->alias() ) {
+            // its the item to update!
+            break;
+        }
+        item = _model->item( ++row );
+    }
+    if( item ) {
+        folderToModelItem( item, folder );
+    }
+}
+
+void StatusDialog::slotFolderRemoved( Folder *folder )
+{
+    QStandardItem *item = 0;
+    int row = 0;
+
+    item = _model->item( row );
+
+    while( item ) {
+        if( item->data( FolderViewDelegate::FolderAliasRole ) == folder->alias() ) {
+            break;
+        }
+        item = _model->item( ++row );
+    }
+    if( item ) {
+        _model->removeRow( row );
+    }
+}
+
+void StatusDialog::folderToModelItem( QStandardItem *item, Folder *f )
+{
     QIcon icon = _theme->folderIcon( f->backend(), 48 );
     item->setData( icon,        FolderViewDelegate::FolderIconRole );
     item->setData( f->path(),   FolderViewDelegate::FolderPathRole );
-    item->setData( f->alias(),  FolderViewDelegate::FolderNameRole );
+    item->setData( f->alias(),  FolderViewDelegate::FolderAliasRole );
     item->setData( f->syncEnabled(), FolderViewDelegate::FolderSyncEnabled );
     qDebug() << "***** Folder is SyncEnabled: " << f->syncEnabled();
 
@@ -239,17 +291,13 @@ void StatusDialog::setFolderList( Folder::Map folders )
     item->setData( _theme->syncStateIcon( status, 64 ), FolderViewDelegate::FolderStatusIcon );
     item->setData( _theme->statusHeaderText( status ),  FolderViewDelegate::FolderStatus );
     item->setData( res.errorString(),                   FolderViewDelegate::FolderErrorMsg );
-
-    _model->appendRow( item );
-  }
-
 }
 
 void StatusDialog::slotRemoveFolder()
 {
   QModelIndex selected = _folderList->selectionModel()->currentIndex();
   if( selected.isValid() ) {
-    QString alias = _model->data( selected, FolderViewDelegate::FolderNameRole ).toString();
+    QString alias = _model->data( selected, FolderViewDelegate::FolderAliasRole ).toString();
     qDebug() << "Remove Folder alias " << alias;
     if( !alias.isEmpty() ) {
       emit(removeFolderAlias( alias ));
@@ -261,7 +309,7 @@ void StatusDialog::slotFetchFolder()
 {
   QModelIndex selected = _folderList->selectionModel()->currentIndex();
   if( selected.isValid() ) {
-    QString alias = _model->data( selected, FolderViewDelegate::FolderNameRole ).toString();
+    QString alias = _model->data( selected, FolderViewDelegate::FolderAliasRole ).toString();
     qDebug() << "Fetch Folder alias " << alias;
     if( !alias.isEmpty() ) {
       emit(fetchFolderAlias( alias ));
@@ -273,7 +321,7 @@ void StatusDialog::slotPushFolder()
 {
   QModelIndex selected = _folderList->selectionModel()->currentIndex();
   if( selected.isValid() ) {
-    QString alias = _model->data( selected, FolderViewDelegate::FolderNameRole ).toString();
+    QString alias = _model->data( selected, FolderViewDelegate::FolderAliasRole ).toString();
     qDebug() << "Push Folder alias " << alias;
     if( !alias.isEmpty() ) {
       emit(pushFolderAlias( alias ));
@@ -285,7 +333,7 @@ void StatusDialog::slotEnableFolder()
 {
   QModelIndex selected = _folderList->selectionModel()->currentIndex();
   if( selected.isValid() ) {
-    QString alias = _model->data( selected, FolderViewDelegate::FolderNameRole ).toString();
+    QString alias = _model->data( selected, FolderViewDelegate::FolderAliasRole ).toString();
     bool folderEnabled = _model->data( selected, FolderViewDelegate::FolderSyncEnabled).toBool();
     qDebug() << "Toggle enabled/disabled Folder alias " << alias << " - current state: " << folderEnabled;
     if( !alias.isEmpty() ) {
@@ -298,7 +346,7 @@ void StatusDialog::slotInfoFolder()
 {
   QModelIndex selected = _folderList->selectionModel()->currentIndex();
   if( selected.isValid() ) {
-    QString alias = _model->data( selected, FolderViewDelegate::FolderNameRole ).toString();
+    QString alias = _model->data( selected, FolderViewDelegate::FolderAliasRole ).toString();
     qDebug() << "Info Folder alias " << alias;
     if( !alias.isEmpty() ) {
       emit(infoFolderAlias( alias ));

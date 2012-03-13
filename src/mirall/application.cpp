@@ -254,6 +254,7 @@ void Application::slotAddFolder()
 
     if( goodData ) {
         _folderMan->addFolderDefinition( backend, alias, sourceFolder, targetPath, onlyThisLAN );
+        _statusDialog->slotAddFolder( _folderMan->folder( alias ) );
     }
 
   } else {
@@ -273,7 +274,7 @@ void Application::slotRemoveFolder( const QString& alias )
 
   _folderMan->slotRemoveFolder( alias );
 
-  _statusDialog->setFolderList( _folderMan->map() );
+  _statusDialog->slotFolderRemoved( _folderMan->folder(alias) );
 }
 
 #ifdef HAVE_FETCH_AND_PUSH
@@ -381,7 +382,7 @@ void Application::slotEnableFolder(const QString& alias, const bool enable)
   qDebug() << "Application: enable folder with alias " << alias;
 
   _folderMan->slotEnableFolder( alias, enable );
-  _statusDialog->setFolderList( _folderMan->map() );
+  _statusDialog->slotUpdateFolderState( _folderMan->folder( alias ));
 
 }
 
@@ -396,7 +397,7 @@ void Application::slotSyncStateChange( const QString& alias )
 {
     SyncResult result = _folderMan->syncResult( alias );
 
-    _statusDialog->setFolderList( _folderMan->map() );
+    _statusDialog->slotUpdateFolderState( _folderMan->folder(alias) );
     computeOverallSyncStatus();
 
     qDebug() << "Sync state changed for folder " << alias << ": "  << result.errorString();
