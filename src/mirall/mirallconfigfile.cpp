@@ -65,8 +65,10 @@ void MirallConfigFile::writeOwncloudConfig( const QString& connection,
                                          const QString& user,
                                          const QString& passwd )
 {
-    qDebug() << "*** writing mirall config to " << mirallConfigFile();
-    QSettings settings( mirallConfigFile(), QSettings::IniFormat);
+    const QString file = mirallConfigFile();
+    qDebug() << "*** writing mirall config to " << file;
+
+    QSettings settings( file, QSettings::IniFormat);
     QString cloudsUrl( url );
 
     if( !cloudsUrl.startsWith("http") )
@@ -78,6 +80,10 @@ void MirallConfigFile::writeOwncloudConfig( const QString& connection,
     settings.setValue("password", passwd );
 
     settings.sync();
+
+    // check the perms, only read-write for the owner.
+    QFile::setPermissions( file, QFile::ReadOwner|QFile::WriteOwner );
+
 }
 
 void MirallConfigFile::removeConnection( const QString& connection )
