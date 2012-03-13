@@ -143,7 +143,7 @@ void Application::setupActions()
 void Application::setupSystemTray()
 {
     _tray = new QSystemTrayIcon(this);
-    _tray->setIcon(QIcon::fromTheme(FOLDER_ICON_EMPTY, QIcon( QString( ":/mirall/resources/%1").arg(FOLDER_ICON_EMPTY))));
+    _tray->setIcon( _theme->folderIcon("none", 22) ); // load the grey icon
 
     connect(_tray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             SLOT(slotTrayClicked(QSystemTrayIcon::ActivationReason)));

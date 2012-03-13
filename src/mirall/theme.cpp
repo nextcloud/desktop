@@ -30,9 +30,11 @@ QIcon Theme::folderIcon( const QString& backend, int size ) const
 {
   QString name;
 
-  if( backend == "owncloud") name = QString( "mirall-%1.png" ).arg(size);
-  if( backend == "unison" ) name  = QString( "folder-%1.png" ).arg(size);
-  if( backend == "csync" ) name   = QString( "folder-remote-%1.png" ).arg(size);
+  if( backend == QString::fromLatin1("owncloud")) name = QString( "mirall-%1.png" ).arg(size);
+  if( backend == QString::fromLatin1("unison" )) name  = QString( "folder-%1.png" ).arg(size);
+  if( backend == QString::fromLatin1("csync" )) name   = QString( "folder-remote-%1.png" ).arg(size);
+  if( backend.isEmpty() || backend == QString::fromLatin1("none") )
+      name = QString("folder-grey-%1.png").arg(size);
 
   return QIcon( QString( ":/mirall/resources/%1").arg(name) );
 }
