@@ -27,7 +27,12 @@
 
 namespace Mirall {
 
+/* static variables to hold the credentials */
+QString CSyncThread::_user;
+QString CSyncThread::_passwd;
+
 CSyncThread::CSyncThread(const QString &source, const QString &target, bool localCheckOnly)
+
     : _source(source)
     , _target(target)
     , _localCheckOnly( localCheckOnly )
@@ -62,7 +67,7 @@ void CSyncThread::run()
     if (error())
         return;
     qDebug() << "## CSync Thread local only: " << _localCheckOnly;
-
+    csync_set_auth_callback( csync, getauth );
     csync_enable_conflictcopys(csync);
 
     QTime t;
@@ -118,6 +123,34 @@ void CSyncThread::run()
 cleanup:
     csync_destroy(csync);
     qDebug() << "CSync run took " << t.elapsed() << " Milliseconds";
+}
+
+
+void CSyncThread::setUserPwd( const QString& user, const QString& passwd )
+{
+    _user = user;
+    _passwd = passwd;
+}
+
+int CSyncThread::getauth(const char *prompt,
+                         char *buf,
+                         size_t len,
+                         int echo,
+                         int verify,
+                         void *userdata
+                         )
+{
+    QString qPrompt = QString::fromLocal8Bit( prompt ).trimmed();
+
+    if( qPrompt == QString::fromLocal8Bit("Enter your username:") ) {
+        qDebug() << "OOO Username requested!";
+        strncpy( buf, _user.toLocal8Bit().constData(), len );
+    } else if( qPrompt == QString::fromLocal8Bit("Enter your password:") ) {
+        qDebug() << "OOO Password requested!";
+        strncpy( buf, _passwd.toLocal8Bit().constData(), len );
+    } else {
+        qDebug() << "Unknown prompt: <" << prompt << ">";
+    }
 }
 
 int64_t CSyncThread::walkedFiles()

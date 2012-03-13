@@ -117,21 +117,6 @@ QString MirallConfigFile::ownCloudUrl( const QString& connection, bool webdav ) 
   return url;
 }
 
-QUrl MirallConfigFile::fullOwnCloudUrl( const QString& connection ) const
-{
-    QString con( connection );
-    if( connection.isEmpty() ) con = defaultConnection();
-
-    QSettings settings( mirallConfigFile(), QSettings::IniFormat );
-    settings.beginGroup( con );
-
-    QUrl url( ownCloudUrl( con ) );
-    url.setUserName( ownCloudUser( con ) );
-    url.setPassword( ownCloudPasswd( con ) );
-
-    return url;
-}
-
 QString MirallConfigFile::ownCloudUser( const QString& connection ) const
 {
     QString con( connection );

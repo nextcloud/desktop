@@ -38,8 +38,6 @@ public:
 
     QString ownCloudUrl( const QString& connection = QString(), bool webdav = false ) const;
 
-    QUrl fullOwnCloudUrl( const QString& connection = QString() ) const;
-
     QString ownCloudUser( const QString& connection = QString() ) const;
 
     QString ownCloudPasswd( const QString& connection = QString() ) const;

@@ -42,7 +42,19 @@ public:
     bool hasLocalChanges( int64_t ) const;
     int64_t walkedFiles();
 
+    static void setUserPwd( const QString&, const QString& );
+    static QString _user;
+    static QString _passwd;
+
 private:
+    static int getauth(const char *prompt,
+                char *buf,
+                size_t len,
+                int echo,
+                int verify,
+                void *userdata
+                );
+
     static QMutex _mutex;
     QString _source;
     QString _target;

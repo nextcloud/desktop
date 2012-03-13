@@ -141,7 +141,7 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
             MirallConfigFile cfgFile;
 
             // assemble the owncloud url to pass to csync.
-            QUrl url( cfgFile.fullOwnCloudUrl() );
+            QUrl url( cfgFile.ownCloudUrl() );
             QString existPath = url.path();
             qDebug() << "existing path: "  << existPath;
 

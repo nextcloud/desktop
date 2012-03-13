@@ -22,6 +22,7 @@
 #include "csync.h"
 #include "mirall/csyncthread.h"
 #include "mirall/csyncfolder.h"
+#include "mirall/mirallconfigfile.h"
 
 namespace Mirall {
 
@@ -57,7 +58,9 @@ void CSyncFolder::startSync(const QStringList &pathList)
     }
     delete _csync;
 
-    _csync = new CSyncThread(path(), secondPath());
+    MirallConfigFile cfgFile;
+
+    _csync = new CSyncThread( path(), secondPath() );
     QObject::connect(_csync, SIGNAL(started()), SLOT(slotCSyncStarted()));
     QObject::connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()));
     _csync->start();

@@ -25,6 +25,7 @@
 #include "csync.h"
 
 #include "mirall/owncloudfolder.h"
+#include "mirall/mirallconfigfile.h"
 
 namespace Mirall {
 
@@ -98,12 +99,14 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     }
     delete _csync;
 
-    /* Fix the url and remove user and password */
+    MirallConfigFile cfgFile;
+
     QUrl url( _secondPath );
     url.setScheme( "owncloud" );
     qDebug() << "*** Start syncing to ownCloud, onlyLocal: " << _localCheckOnly;
 
     _csync = new CSyncThread(path(), url.toEncoded(), _localCheckOnly );
+    _csync->setUserPwd( cfgFile.ownCloudUser(), cfgFile.ownCloudPasswd() );
     QObject::connect(_csync, SIGNAL(started()),  SLOT(slotCSyncStarted()));
     QObject::connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()));
     _csync->start();
