@@ -19,6 +19,7 @@
 
 #include "mirall/owncloudinfo.h"
 #include "mirall/mirallconfigfile.h"
+#include "mirall/version.h"
 
 namespace Mirall
 {
@@ -67,7 +68,7 @@ void ownCloudInfo::getRequest( const QString& path, bool webdav )
     QString url = cfgFile.ownCloudUrl( _connection, webdav ) + path;
     QNetworkRequest request;
     request.setUrl( QUrl( url ) );
-    request.setRawHeader( "User-Agent", "mirall" );
+    request.setRawHeader( "User-Agent", QString("mirall-%1").arg(MIRALL_STRINGIFY(MIRALL_VERSION)).toAscii());
     request.setRawHeader( "Authorization", cfgFile.basicAuthHeader() );
 
     _reply = manager->get( request );
