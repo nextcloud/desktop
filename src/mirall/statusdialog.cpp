@@ -143,7 +143,8 @@ bool FolderViewDelegate::editorEvent ( QEvent * event, QAbstractItemModel * mode
 
 StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
     QDialog(parent),
-    _theme( theme )
+    _theme( theme ),
+    _ownCloudInfo(0)
 {
   setupUi( this  );
   setWindowTitle( _theme->appName() + QString (" %1" ).arg( _theme->version() ) );
@@ -180,13 +181,6 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
   _ButtonAdd->setEnabled(true);
 
   connect(_folderList, SIGNAL(activated(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
-
-  _ownCloudInfo = new ownCloudInfo();
-  _ownCloudInfo->checkInstallation();
-  connect(_ownCloudInfo, SIGNAL(ownCloudInfoFound( const QString&,  const QString& )),
-          SLOT(slotOCInfo( const QString&, const QString& )));
-  connect(_ownCloudInfo, SIGNAL(noOwncloudFound(QNetworkReply::NetworkError)),
-          SLOT(slotOCInfoFail()));
 }
 
 void StatusDialog::slotFolderActivated( const QModelIndex& indx )
@@ -360,12 +354,24 @@ void StatusDialog::slotAddSync()
     emit addASync();
 }
 
+void StatusDialog::slotCheckConnection()
+{
+    _ownCloudInfo = new ownCloudInfo();
+    _ownCloudInfo->checkInstallation();
+    connect(_ownCloudInfo, SIGNAL(ownCloudInfoFound( const QString&,  const QString& )),
+            SLOT(slotOCInfo( const QString&, const QString& )));
+    connect(_ownCloudInfo, SIGNAL(noOwncloudFound(QNetworkReply::NetworkError)),
+            SLOT(slotOCInfoFail()));
+}
+
 void StatusDialog::slotOCInfo( const QString& url, const QString& version )
 {
     _OCUrl = url;
     /* enable the open button */
     _ocUrlLabel->setText( tr("Connected to %1, ownCloud %2").arg(url).arg(version) );
     _ButtonOpenOC->setEnabled( true );
+    _ButtonAdd->setEnabled(true);
+    _ownCloudInfo->deleteLater();
 }
 
 void StatusDialog::slotOCInfoFail()
@@ -373,12 +379,22 @@ void StatusDialog::slotOCInfoFail()
     _ocUrlLabel->setText( tr("Failed to connect to ownCloud. Please check configuration!") );
     _ButtonOpenOC->setEnabled(false);
     _ButtonAdd->setEnabled( false);
+    _ownCloudInfo->deleteLater();
 }
 
 void StatusDialog::slotOpenOC()
 {
   if( _OCUrl.isValid() )
     QDesktopServices::openUrl( _OCUrl );
+}
+
+/*
+  * in the show event, start a connection check to the ownCloud.
+  */
+void StatusDialog::showEvent ( QShowEvent *event  )
+{
+    slotCheckConnection();
+    QDialog::showEvent( event );
 }
 
 }

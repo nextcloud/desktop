@@ -89,11 +89,15 @@ public slots:
     void slotAddFolder( Folder* );
     void slotUpdateFolderState( Folder* );
     void slotFolderRemoved( Folder* );
+    void slotCheckConnection();
+
 protected slots:
     void slotOCInfoFail();
     void slotOCInfo( const QString&, const QString& );
     void slotDoubleClicked( const QModelIndex& );
 
+protected:
+    void showEvent ( QShowEvent* );
 private:
     void folderToModelItem( QStandardItem*, Folder* );
 
