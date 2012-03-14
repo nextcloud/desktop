@@ -263,7 +263,10 @@ void OwncloudSetupWizard::startWizard()
 {
     MirallConfigFile cfgFile;
 
-    _ocWizard->setOCUrl( cfgFile.ownCloudUrl() );
+    QString url = cfgFile.ownCloudUrl();
+    if( !url.isEmpty() ) {
+        _ocWizard->setOCUrl( url );
+    }
     _ocWizard->restart();
     _ocWizard->show();
 }
