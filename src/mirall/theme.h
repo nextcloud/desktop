@@ -29,6 +29,7 @@ class SyncResult;
 
 class Theme : public QObject
 {
+    Q_OBJECT
 public:
     Theme();
 

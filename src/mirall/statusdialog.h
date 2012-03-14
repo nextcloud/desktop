@@ -40,6 +40,7 @@ public:
 
 class FolderViewDelegate : public QStyledItemDelegate
 {
+    Q_OBJECT
     public:
     FolderViewDelegate();
     virtual ~FolderViewDelegate();

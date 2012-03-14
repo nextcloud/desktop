@@ -75,6 +75,7 @@ set(mirall_HEADERS
     mirall/sitecopyfolder.h
     mirall/statusdialog.h
     mirall/unisonfolder.h
+    mirall/theme.h
 )
 
 IF( UNIX )
