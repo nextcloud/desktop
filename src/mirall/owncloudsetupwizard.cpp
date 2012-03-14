@@ -23,13 +23,14 @@
 #include "mirall/mirallwebdav.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/owncloudinfo.h"
-
+#include "mirall/folderman.h"
 
 namespace Mirall {
 
-OwncloudSetupWizard::OwncloudSetupWizard( QObject *parent ) :
+OwncloudSetupWizard::OwncloudSetupWizard( FolderMan *folderMan, QObject *parent ) :
     QObject( parent ),
-    _ocInfo(0)
+    _ocInfo(0),
+    _folderMan(folderMan)
 {
     _process = new QProcess( this );
 
@@ -82,7 +83,7 @@ void OwncloudSetupWizard::testOwnCloudConnect()
     MirallConfigFile cfgFile;
     cfgFile.writeOwncloudConfig( QString::fromLocal8Bit("ownCloud"),
                                  _ocWizard->field("OCUrl").toString(),
-                                 _ocWizard->field( "OCUser").toString(),
+                                 _ocWizard->field("OCUser").toString(),
                                  _ocWizard->field("OCPasswd").toString() );
 
     // now start ownCloudInfo to check the connection.
@@ -101,14 +102,16 @@ void OwncloudSetupWizard::testOwnCloudConnect()
 
 void OwncloudSetupWizard::slotOwnCloudFound( const QString& url, const QString& infoString )
 {
-    _ocWizard->appendToResultWidget(tr("<font color=\"green\">Successfully connected to %1: ownCloud version %2</font>").arg( url ).arg(infoString));
-    // not much more to do here, the config file already is there.
+    _ocWizard->appendToResultWidget(tr("<font color=\"green\">Successfully connected to %1: ownCloud version %2</font><br/><br/>").arg( url ).arg(infoString));
+
+    // start the local folder creation
+    setupLocalSyncFolder();
 }
 
 void OwncloudSetupWizard::slotNoOwnCloudFound( QNetworkReply::NetworkError err )
 {
     _ocWizard->appendToResultWidget(tr("<font color=\"red\">Failed to connect to ownCloud!</font>") );
-    _ocWizard->appendToResultWidget(tr("<font color=\"red\">Error number %1</font>").arg(err) );
+    _ocWizard->appendToResultWidget(tr("Error number %1").arg(err) );
 
     // remove the config file again
     MirallConfigFile cfgFile;
@@ -254,8 +257,6 @@ void OwncloudSetupWizard::slotProcessFinished( int res, QProcess::ExitStatus )
     _ocWizard->showOCUrlLabel( true );
 
     testOwnCloudConnect();
-
-    // setupLocalSyncFolder();
   }
 }
 
@@ -289,30 +290,93 @@ bool OwncloudSetupWizard::checkOwncloudAdmin( const QString& bin )
 
 void OwncloudSetupWizard::setupLocalSyncFolder()
 {
-  const QString syncFolder( QDir::homePath() + "/ownCloud" );
-  qDebug() << "Setup local sync folder " << syncFolder;
-  QDir fi( syncFolder );
-  _ocWizard->appendToResultWidget( tr("creating local sync folder %1").arg(syncFolder) );
+    _localFolder = QDir::homePath() + QString::fromLocal8Bit("/ownCloud");
 
-  if( fi.exists() ) {
-    // there is an existing local folder. If its non empty, it can only be synced if the
-    // ownCloud is newly created.
-    _ocWizard->appendToResultWidget( tr("Local sync folder %1 already exists, can "
-                                        "not automatically create.").arg(syncFolder));
-  } else {
-
-    if( fi.mkpath( syncFolder ) ) {
-        // FIXME: Create a local sync folder.
-    } else {
-      qDebug() << "Failed to create " << fi.path();
+    if( ! _folderMan ) return;
+    if( _folderMan->map().count() > 0 ) {
+        _ocWizard->appendToResultWidget( tr("Skipping automatic setup of sync folders as there are already sync folders.") );
+        return;
     }
-  }
+
+    qDebug() << "Setup local sync folder " << _localFolder;
+    QDir fi( _localFolder );
+    _ocWizard->appendToResultWidget( tr("Checking local sync folder %1").arg(_localFolder) );
+
+    bool localFolderOk = true;
+    if( fi.exists() ) {
+        // there is an existing local folder. If its non empty, it can only be synced if the
+        // ownCloud is newly created.
+        _ocWizard->appendToResultWidget( tr("Local sync folder %1 already exists, setting it up for sync.<br/><br/>").arg(_localFolder));
+    } else {
+        QString res = tr("Creating local sync folder %1... ").arg(_localFolder);
+
+        _ocWizard->appendToResultWidget( tr("Creating local sync folder %1").arg(_localFolder));
+        if( fi.mkpath( _localFolder ) ) {
+            // FIXME: Create a local sync folder.
+            res += tr("ok");
+        } else {
+            res += tr("failed.");
+            qDebug() << "Failed to create " << fi.path();
+            localFolderOk = false;
+        }
+    }
+
+    if( localFolderOk ) {
+        _remoteFolder = QString::fromLocal8Bit("clientsync"); // FIXME: Themeable
+        if( createRemoteFolder( _remoteFolder ) ) {
+            // the creation started successfully, does not mean it will work
+            qDebug() << "Creation of remote folder started successfully.";
+        } else {
+            // the start of the http request failed.
+            _ocWizard->appendToResultWidget(tr("Start Creation of remote folder %1 failed.").arg(_remoteFolder));
+            qDebug() << "Creation of remote folder failed.";
+        }
+
+    }
 }
 
-void OwncloudSetupWizard::startFetchFromOC( const QString& syncFolder )
+bool OwncloudSetupWizard::createRemoteFolder( const QString& folder )
 {
-    qCritical( "Fetch not longer support, use full sync!" );
+    if( folder.isEmpty() ) return false;
+
+    MirallConfigFile cfgFile;
+
+    QString url = cfgFile.ownCloudUrl( cfgFile.defaultConnection(), true );
+    url.append( folder );
+    qDebug() << "creating folder on ownCloud: " << url;
+
+    MirallWebDAV *webdav = new MirallWebDAV(this);
+    connect( webdav, SIGNAL(webdavFinished(QNetworkReply*)),
+             SLOT(slotCreateRemoteFolderFinished(QNetworkReply*)));
+
+    webdav->httpConnect( url, cfgFile.ownCloudUser(), cfgFile.ownCloudPasswd() );
+    if( webdav->mkdir(  url  ) ) {
+        qDebug() << "WebDAV mkdir request successfully started";
+        return true;
+    } else {
+        qDebug() << "WebDAV mkdir request failed";
+        return false;
+    }
 }
 
+void OwncloudSetupWizard::slotCreateRemoteFolderFinished( QNetworkReply *reply )
+{
+    qDebug() << "** webdav mkdir request finished " << reply->error();
+
+    if( reply->error() == QNetworkReply::NoError ) {
+        _ocWizard->appendToResultWidget( tr("Remote folder %1 created sucessfully.").arg(_remoteFolder));
+
+        // Now write the resulting folder definition
+        if( _folderMan ) {
+            _folderMan->addFolderDefinition("owncloud", "ownCloud", _localFolder, _remoteFolder, false );
+            _ocWizard->appendToResultWidget(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(_localFolder));
+        }
+    } else if( reply->error() == 202 ) {
+        _ocWizard->appendToResultWidget(tr("The remote folder %1 already exists. Automatic sync setup is skipped for security reasons. Please configure your sync folder manually.").arg(_remoteFolder));
+
+    } else {
+        _ocWizard->appendToResultWidget( tr("Remote folder %1 creation failed with error %2.").arg(_remoteFolder).arg(reply->error()));
+    }
+}
 
 }

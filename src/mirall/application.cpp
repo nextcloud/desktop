@@ -74,7 +74,7 @@ Application::Application(int argc, char **argv) :
     setQuitOnLastWindowClosed(false);
 
     _folderWizard = new FolderWizard();
-    _owncloudSetupWizard = new OwncloudSetupWizard();
+    _owncloudSetupWizard = new OwncloudSetupWizard( _folderMan );
 
     _statusDialog = new StatusDialog( _theme );
     connect( _statusDialog, SIGNAL(addASync()), this, SLOT(slotAddFolder()) );

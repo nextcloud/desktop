@@ -27,12 +27,13 @@ namespace Mirall {
 class SiteCopyFolder;
 class SyncResult;
 class ownCloudInfo;
+class FolderMan;
 
 class OwncloudSetupWizard : public QObject
 {
     Q_OBJECT
 public:
-    explicit OwncloudSetupWizard( QObject *parent = 0 );
+    explicit OwncloudSetupWizard( FolderMan *folderMan = 0, QObject *parent = 0 );
 
   void startWizard( );
 
@@ -41,8 +42,6 @@ public:
   bool isBusy();
 
   void writeOwncloudConfig();
-
-  void startFetchFromOC( const QString& );
 
   /**
    * returns the configured owncloud url if its already configured, otherwise an empty
@@ -75,20 +74,25 @@ protected slots:
 private slots:
   void slotOwnCloudFound( const QString&, const QString& );
   void slotNoOwnCloudFound( QNetworkReply::NetworkError );
+    void slotCreateRemoteFolderFinished( QNetworkReply* );
 
 private:
   bool checkOwncloudAdmin( const QString& );
   void runOwncloudAdmin( const QStringList& );
-
+    bool createRemoteFolder( const QString& );
 
   /* Start a request to the newly installed ownCloud to check the connection */
   void testOwnCloudConnect();
 
   OwncloudWizard *_ocWizard;
+  FolderMan      *_folderMan;
   QProcess       *_process;
   ownCloudInfo   *_ocInfo;
+
+  QString         _localFolder;
+  QString         _remoteFolder;
 };
 
-};
+}
 
 #endif // OWNCLOUDSETUPWIZARD_H
