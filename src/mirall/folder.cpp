@@ -16,7 +16,6 @@
 #include <QTimer>
 #include <QUrl>
 
-#include "mirall/constants.h"
 #include "mirall/folder.h"
 #include "mirall/folderwatcher.h"
 

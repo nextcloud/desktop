@@ -20,7 +20,6 @@
 #include <QDesktopServices>
 #include <QSplashScreen>
 
-#include "mirall/constants.h"
 #include "mirall/application.h"
 #include "mirall/folder.h"
 #include "mirall/folderwatcher.h"
@@ -106,7 +105,7 @@ Application::Application(int argc, char **argv) :
     setupSystemTray();
 
     if( cnt ) {
-        _tray->setIcon(QIcon::fromTheme(MIRALL_ICON, QIcon( QString( ":/mirall/resources/%1").arg(MIRALL_ICON))));
+        _tray->setIcon(_theme->folderIcon("owncloud", 24));
     }
 
     QTimer::singleShot( 5000, this, SLOT(slotHideSplash()) );
@@ -444,11 +443,15 @@ void Application::computeOverallSyncStatus()
   }
 
 
-  QIcon statusIcon = _theme->syncStateIcon( overallResult.status(), 20 );
-  if( overallResult.status() == SyncResult::Success ) {
-      // Rather display the mirall icon instead of the ok icon.
-      statusIcon = _theme->applicationIcon( 24 );
-  }
+  // QIcon statusIcon = _theme->syncStateIcon( overallResult.status(), 22 );
+  // if( overallResult.status() == SyncResult::Success ) {
+  // Rather display the mirall icon instead of the ok icon.
+#ifdef _WIN32
+      QIcon statusIcon = _theme->applicationIcon( 16 );
+#else
+      QIcon statusIcon = _theme->applicationIcon( 22 );
+#endif
+  // }
 
 
   _tray->setIcon( statusIcon );

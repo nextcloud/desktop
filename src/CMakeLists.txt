@@ -90,12 +90,12 @@ set(mirall_SRCS
     mirall/owncloudfolder.cpp
     mirall/csyncthread.cpp
   )
-  include_directories(${CSYNC_INCLUDE_DIR})
+include_directories(${CSYNC_INCLUDE_DIR})
 
-  set(mirall_HEADERS 
-      ${mirall_HEADERS} 
-     mirall/csyncfolder.h
-     mirall/owncloudfolder.h)
+set(mirall_HEADERS
+    ${mirall_HEADERS}
+    mirall/csyncfolder.h
+    mirall/owncloudfolder.h)
 
 qt4_wrap_cpp(mirallMoc ${mirall_HEADERS})
 
