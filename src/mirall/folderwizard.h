@@ -85,7 +85,7 @@ protected slots:
     void on_urlFolderLineEdit_textChanged();
 
     void slotOwnCloudFound( const QString&, const QString& );
-    void slotNoOwnCloudFound();
+    void slotNoOwnCloudFound(QNetworkReply::NetworkError error);
 
     void slotFolderTextChanged( const QString& );
     void slotTimerFires();
