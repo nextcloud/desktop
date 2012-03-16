@@ -191,9 +191,9 @@ void FolderWizardTargetPage::slotFolderTextChanged( const QString& t)
 
 void FolderWizardTargetPage::slotTimerFires()
 {
-  const QString folder = _ui.OCFolderLineEdit->text();
-  qDebug() << "Querying folder " << folder;
-  _ownCloudDirCheck->getWebDAVPath( folder );
+    const QString folder = _ui.OCFolderLineEdit->text();
+    qDebug() << "Querying folder " << folder;
+    _ownCloudDirCheck->getWebDAVPath( folder );
 }
 
 void FolderWizardTargetPage::slotDirCheckReply(const QString &url, bool exists )

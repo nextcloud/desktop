@@ -18,6 +18,8 @@
 #include <QObject>
 #include <QNetworkReply>
 
+class QNetworkAccessManager;
+
 namespace Mirall
 {
 
@@ -26,6 +28,7 @@ class ownCloudInfo : public QObject
     Q_OBJECT
 public:
     explicit ownCloudInfo( const QString& = QString(), QObject *parent = 0);
+    ~ownCloudInfo();
 
     bool isConfigured();
 
@@ -58,8 +61,9 @@ protected slots:
     void slotReadyRead();
     void slotError( QNetworkReply::NetworkError );
     void slotAuthentication( QNetworkReply*, QAuthenticator *);
-private:
 
+private:
+    QNetworkAccessManager *_manager;
     QNetworkReply *_reply;
     QByteArray    _readBuffer;
     QString       _connection;

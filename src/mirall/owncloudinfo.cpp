@@ -25,12 +25,22 @@ namespace Mirall
 {
 
 ownCloudInfo::ownCloudInfo( const QString& connectionName, QObject *parent ) :
-    QObject(parent)
+    QObject(parent),
+    _reply(0)
 {
     if( connectionName.isEmpty() )
         _connection = QString::fromLocal8Bit( "ownCloud");
     else
         _connection = connectionName;
+
+    _manager = new QNetworkAccessManager;
+    connect(_manager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(slotReplyFinished(QNetworkReply*)));
+}
+
+ownCloudInfo::~ownCloudInfo()
+{
+    delete _manager;
 }
 
 bool ownCloudInfo::isConfigured()
@@ -51,10 +61,15 @@ void ownCloudInfo::getWebDAVPath( const QString& path )
 
 void ownCloudInfo::getRequest( const QString& path, bool webdav )
 {
-    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-    connect(manager, SIGNAL(finished(QNetworkReply*)),
-            this, SLOT(slotReplyFinished(QNetworkReply*)));
-
+    qDebug() << "Get Request to " << path;
+    if( _reply ) {
+        if(_reply->isRunning() ) {
+            qDebug() << "info request already running, not starting a second one.";
+            return;
+        } else {
+            delete _reply;
+        }
+    }
     // this is not a status call.
     if( !webdav && path == "status.php") {
         _versionInfoCall = true;
@@ -70,8 +85,7 @@ void ownCloudInfo::getRequest( const QString& path, bool webdav )
     request.setUrl( QUrl( url ) );
     request.setRawHeader( "User-Agent", QString("mirall-%1").arg(MIRALL_STRINGIFY(MIRALL_VERSION)).toAscii());
     request.setRawHeader( "Authorization", cfgFile.basicAuthHeader() );
-
-    _reply = manager->get( request );
+    _reply = _manager->get( request );
     _readBuffer.clear();
 
     connect( _reply, SIGNAL( error(QNetworkReply::NetworkError )),
