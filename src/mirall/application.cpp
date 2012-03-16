@@ -262,18 +262,21 @@ void Application::slotAddFolder()
   _folderMan->restoreEnabledFolders();
 }
 
+/*
+  * the folder is to be removed. The slot is called from a signal emitted by
+  * the status dialog, which removes the folder from its list by itself.
+  */
 void Application::slotRemoveFolder( const QString& alias )
 {
-  int ret = QMessageBox::question( 0, tr("Confirm Folder Remove"), tr("Do you really want to remove upload folder <i>%1</i>?").arg(alias),
-                                    QMessageBox::Yes|QMessageBox::No );
+    int ret = QMessageBox::question( 0, tr("Confirm Folder Remove"), tr("Do you really want to remove upload folder <i>%1</i>?").arg(alias),
+                                     QMessageBox::Yes|QMessageBox::No );
 
-  if( ret == QMessageBox::No ) {
-    return;
-  }
+    if( ret == QMessageBox::No ) {
+        return;
+    }
 
-  _folderMan->slotRemoveFolder( alias );
+    _folderMan->slotRemoveFolder( alias );
 
-  _statusDialog->slotFolderRemoved( _folderMan->folder(alias) );
 }
 
 #ifdef HAVE_FETCH_AND_PUSH

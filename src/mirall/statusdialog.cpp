@@ -252,24 +252,6 @@ void StatusDialog::slotUpdateFolderState( Folder *folder )
     }
 }
 
-void StatusDialog::slotFolderRemoved( Folder *folder )
-{
-    QStandardItem *item = 0;
-    int row = 0;
-
-    item = _model->item( row );
-
-    while( item ) {
-        if( item->data( FolderViewDelegate::FolderAliasRole ) == folder->alias() ) {
-            break;
-        }
-        item = _model->item( ++row );
-    }
-    if( item ) {
-        _model->removeRow( row );
-    }
-}
-
 void StatusDialog::folderToModelItem( QStandardItem *item, Folder *f )
 {
     QIcon icon = _theme->folderIcon( f->backend(), 48 );
@@ -289,14 +271,16 @@ void StatusDialog::folderToModelItem( QStandardItem *item, Folder *f )
 
 void StatusDialog::slotRemoveFolder()
 {
-  QModelIndex selected = _folderList->selectionModel()->currentIndex();
-  if( selected.isValid() ) {
-    QString alias = _model->data( selected, FolderViewDelegate::FolderAliasRole ).toString();
-    qDebug() << "Remove Folder alias " << alias;
-    if( !alias.isEmpty() ) {
-      emit(removeFolderAlias( alias ));
+    QModelIndex selected = _folderList->selectionModel()->currentIndex();
+    if( selected.isValid() ) {
+        QString alias = _model->data( selected, FolderViewDelegate::FolderAliasRole ).toString();
+        qDebug() << "Remove Folder alias " << alias;
+        if( !alias.isEmpty() ) {
+            // remove from file system through folder man
+            emit(removeFolderAlias( alias ));
+            _model->removeRow( selected.row() );
+        }
     }
-  }
 }
 
 void StatusDialog::slotFetchFolder()

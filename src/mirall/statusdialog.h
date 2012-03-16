@@ -89,7 +89,6 @@ public slots:
     void slotAddSync();
     void slotAddFolder( Folder* );
     void slotUpdateFolderState( Folder* );
-    void slotFolderRemoved( Folder* );
     void slotCheckConnection();
 
 protected slots:
