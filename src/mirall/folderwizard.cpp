@@ -61,6 +61,8 @@ void FolderWizardSourcePage::cleanupPage()
 bool FolderWizardSourcePage::isComplete() const
 {
   QFileInfo selFile( _ui.localFolderLineEdit->text() );
+  QString   userInput = selFile.canonicalFilePath();
+
   QString warnString;
 
   bool isOk = selFile.isDir();
@@ -75,19 +77,20 @@ bool FolderWizardSourcePage::isComplete() const
     Folder::Map::const_iterator i = map->begin();
     while( isOk && i != map->constEnd() ) {
       Folder *f = static_cast<Folder*>(i.value());
-      QString folderDir = QDir( f->path() ).absolutePath();
+      QString folderDir = QDir( f->path() ).canonicalPath();
+      if( ! folderDir.endsWith('/') ) folderDir.append('/');
 
-      qDebug() << "Checking local path: " << folderDir << " <-> " << selFile.absoluteFilePath();
-      if( QFileInfo( f->path() ) == selFile ) {
+      qDebug() << "Checking local path: " << folderDir << " <-> " << userInput;
+      if( QFileInfo( f->path() ) == userInput ) {
         isOk = false;
-        warnString.append( tr("The local path %1 is already an upload folder.<br/>Please pick another one!").arg(selFile.absoluteFilePath()) );
+        warnString.append( tr("The local path %1 is already an upload folder.<br/>Please pick another one!").arg(userInput) );
       }
-      if( isOk && folderDir.startsWith( selFile.absoluteFilePath() )) {
+      if( isOk && folderDir.startsWith( userInput )) {
         qDebug() << "A already configured folder is child of the current selected";
         warnString.append( tr("An already configured folder is contained in the current entry."));
         isOk = false;
       }
-      if( isOk && selFile.absoluteFilePath().startsWith( folderDir ) ) {
+      if( isOk && userInput.startsWith( folderDir ) ) {
         qDebug() << "An already configured folder is parent of the current selected";
         warnString.append( tr("An already configured folder contains the currently entered directory."));
         isOk = false;
