@@ -182,10 +182,10 @@ void FolderWizardTargetPage::slotFolderTextChanged( const QString& t)
 
   if( t.isEmpty() ) {
     _timer->stop();
-    _ui.warnLabel->hide();
     return;
   }
 
+  if( _timer->isActive() ) _timer->stop();
   _timer->start(500);
 }
 
@@ -198,15 +198,15 @@ void FolderWizardTargetPage::slotTimerFires()
 
 void FolderWizardTargetPage::slotDirCheckReply(const QString &url, bool exists )
 {
-  qDebug() << "Got reply from ownCloudInfo: " << url << " :" << exists;
-  _dirChecked = exists;
-  if( _dirChecked ) {
-    _ui.warnLabel->hide();
-  } else {
-    showWarn( tr("The folder is not available on your ownCloud.<br/>Click to let mirall create it."), true );
-  }
+    qDebug() << "Got reply from owncloud dir check: " << url << " :" << exists;
+    _dirChecked = exists;
+    if( _dirChecked ) {
+        showWarn();
+    } else {
+        showWarn( tr("The folder is not available on your ownCloud.<br/>Click to let mirall create it."), true );
+    }
 
-  emit completeChanged();
+    emit completeChanged();
 }
 
 void FolderWizardTargetPage::slotCreateRemoteFolder()
@@ -277,14 +277,15 @@ bool FolderWizardTargetPage::isComplete() const
 
 void FolderWizardTargetPage::cleanupPage()
 {
-  _ui.warnFrame->hide();
+    showWarn();
 }
 
 void FolderWizardTargetPage::initializePage()
 {
     slotToggleItems();
-    _ui.warnFrame->hide();
+    showWarn();
 
+    /* check the owncloud configuration file and query the ownCloud */
     ownCloudInfo *ocInfo = new ownCloudInfo( QString(), this );
     if( ocInfo->isConfigured() ) {
       connect(ocInfo,SIGNAL(ownCloudInfoFound(QString,QString)),SLOT(slotOwnCloudFound(QString,QString)));
@@ -297,7 +298,10 @@ void FolderWizardTargetPage::initializePage()
       _ui.OCFolderLineEdit->setEnabled( false );
     }
 
-
+    QString dir = _ui.OCFolderLineEdit->text();
+    if( !dir.isEmpty() ) {
+        slotFolderTextChanged( dir );
+    }
 }
 
 void FolderWizardTargetPage::slotOwnCloudFound( const QString& url, const QString& infoStr )
@@ -321,10 +325,11 @@ void FolderWizardTargetPage::slotNoOwnCloudFound( QNetworkReply::NetworkError er
 
 void FolderWizardTargetPage::showWarn( const QString& msg, bool showCreateButton ) const
 {
-  _ui._buttCreateFolder->setVisible( showCreateButton );
+    _ui._buttCreateFolder->setVisible( showCreateButton && !msg.isEmpty() );
 
   if( msg.isEmpty() ) {
     _ui.warnFrame->hide();
+
   } else {
     _ui.warnFrame->show();
     _ui.warnLabel->setText( msg );
