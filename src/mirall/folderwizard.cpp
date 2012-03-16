@@ -239,7 +239,9 @@ void FolderWizardTargetPage::slotCreateRemoteFolderFinished( QNetworkReply *repl
   qDebug() << "** webdav mkdir request finished " << reply->error();
 
   _ui.OCFolderLineEdit->setEnabled( true );
-  if( reply->error() == QNetworkReply::NoError ) {
+  // the webDAV server seems to return a 202 even if mkdir was successful.
+  if( reply->error() == QNetworkReply::NoError ||
+          reply->error() == QNetworkReply::ContentOperationNotPermittedError) {
     showWarn( tr("Folder on ownCloud was successfully created."), false );
     slotTimerFires();
   } else {
