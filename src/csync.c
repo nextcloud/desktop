@@ -210,8 +210,7 @@ int csync_init(CSYNC *ctx) {
   }
 
   if (csync_config_load(ctx, config) < 0) {
-    rc = -1;
-    goto out;
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Could not load config file %s, using defaults.", config);
   }
 
 #ifndef _WIN32
