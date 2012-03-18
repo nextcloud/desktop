@@ -92,13 +92,16 @@ char *csync_get_user_home_dir(void) {
     char buf[NSS_BUFLEN_PASSWD];
     int rc;
 
-    rc = getpwuid_r(getuid(), &pwd, buf, NSS_BUFLEN_PASSWD, &pwdbuf);
-    if (rc != 0) {
-        szPath = getenv("HOME");
-        return szPath ? c_strdup(szPath) : NULL;
+    szPath = getenv("HOME");
+    if( szPath ) {
+        return c_strdup(szPath);
     }
 
-    szPath = c_strdup(pwd.pw_dir);
+    /* Still nothing found, read the password file */
+    rc = getpwuid_r(getuid(), &pwd, buf, NSS_BUFLEN_PASSWD, &pwdbuf);
+    if (rc != 0) {
+        szPath = c_strdup(pwd.pw_dir);
+    }
 
     return szPath;
 }
