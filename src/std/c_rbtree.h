@@ -103,7 +103,7 @@ typedef int c_rbtree_compare_func(const void *key, const void *data);
  * @return 0 on success, < 0 on error. You should set errno.
  *
  */
-typedef int c_rbtree_visit_func(void *obj, void *data);
+typedef int c_rbtree_visit_func(void *, void *);
 
 /**
  * Structure that represents a red-black tree
