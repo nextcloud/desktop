@@ -141,6 +141,7 @@ out:
   st->phash = h;
   st->pathlen = len;
   memcpy(st->path, (len ? path : ""), len + 1);
+  printf("OOOO %s (%d)\n", path, len );
 
   switch (ctx->current) {
     case LOCAL_REPLICA:
