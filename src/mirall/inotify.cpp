@@ -171,7 +171,7 @@ INotify::INotifyThread::run()
         // reset counter
         i = 0;
         // while there are enough events in the buffer
-        while(i + sizeof(struct inotify_event) < len) {
+        while(len >= 0 && (i + sizeof(struct inotify_event)) < len) {
             // cast an inotify_event
             event = (struct inotify_event*)&_buffer[i];
             // with the help of watch descriptor, retrieve, corresponding INotify
