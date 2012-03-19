@@ -491,6 +491,95 @@ int csync_propagate(CSYNC *ctx) {
   return 0;
 }
 
+/*
+ * local visitor which calls the user visitor with repacked stat info.
+ */
+static int _csync_treewalk_visitor( void *obj, void *data ) {
+    csync_file_stat_t *cur = NULL;
+    CSYNC *ctx = NULL;
+    c_rbtree_visit_func *visitor = NULL;
+    _csync_treewalk_context *twctx = NULL;
+    TREE_WALK_FILE trav;
+
+    cur = (csync_file_stat_t *) obj;
+    ctx = (CSYNC *) data;
+    if( ctx )
+        twctx = (_csync_treewalk_context*) ctx->userdata;
+    if( twctx->instruction_filter > 0 && !(twctx->instruction_filter & cur->instruction) ) {
+        return 0;
+    }
+
+    if(cur && twctx) {
+        visitor = (c_rbtree_visit_func*)(twctx->user_visitor);
+        if(visitor) {
+            trav.path =   cur->path;
+            trav.modtime = cur->modtime;
+            trav.uid =    cur->uid;
+            trav.gid =    cur->gid;
+            trav.mode =   cur->mode;
+            trav.type =   cur->type;
+            trav.instruction = cur->instruction;
+
+            return (*visitor)(&trav, twctx->userdata);
+        }
+    }
+    return -1;
+}
+
+/*
+ * treewalk function, called from its wrappers below.
+ *
+ * it encapsulates the user visitor function, the filter and the userdata
+ * into a treewalk_context structure and calls the rb treewalk function,
+ * which calls the local _csync_treewalk_visitor in this module.
+ * The user visitor is called from there.
+ */
+static int _csync_walk_tree(CSYNC *ctx, c_rbtree_t *tree, csync_treewalk_visit_func *visitor, int filter)
+{
+    _csync_treewalk_context tw_ctx;
+    int rc = -1;
+
+    if( !(visitor && tree && ctx)) return rc;
+
+    tw_ctx.userdata = ctx->userdata;
+    tw_ctx.user_visitor = visitor;
+    tw_ctx.instruction_filter = filter;
+
+    ctx->userdata = &tw_ctx;
+
+    rc = c_rbtree_walk(tree, (void*) ctx, _csync_treewalk_visitor);
+
+    ctx->userdata = tw_ctx.userdata;
+
+    return rc;
+}
+
+/*
+ * wrapper function for treewalk on the remote tree
+ */
+int csync_walk_remote_tree(CSYNC *ctx,  csync_treewalk_visit_func *visitor, int filter)
+{
+    c_rbtree_t *tree = NULL;
+
+    if( ctx ) {
+        tree = ctx->remote.tree;
+    }
+    return _csync_walk_tree(ctx, tree, visitor, filter);
+}
+
+/*
+ * wrapper function for treewalk on the local tree
+ */
+int csync_walk_local_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int filter)
+{
+    c_rbtree_t *tree = NULL;
+
+    if( ctx ) {
+        tree = ctx->local.tree;
+    }
+    return _csync_walk_tree(ctx, tree, visitor, filter);
+}
+
 static void _tree_destructor(void *data) {
   csync_file_stat_t *freedata = NULL;
 

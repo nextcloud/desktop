@@ -32,10 +32,14 @@
 #define _CSYNC_H
 
 #include <stdbool.h>
+#include <unistd.h>
+#include <sys/types.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#include "std/c_rbtree.h"
 
 #define CSYNC_STRINGIFY(s) CSYNC_TOSTRING(s)
 #define CSYNC_TOSTRING(s) #s
@@ -68,6 +72,50 @@ extern "C" {
 
 typedef int (*csync_auth_callback) (const char *prompt, char *buf, size_t len,
     int echo, int verify, void *userdata);
+
+/**
+  * Instruction enum. In the file traversal structure, it describes
+  * the csync state of a file.
+  */
+enum csync_instructions_e {
+  CSYNC_INSTRUCTION_NONE       = 0x00000000,
+  CSYNC_INSTRUCTION_EVAL       = 0x00000001,
+  CSYNC_INSTRUCTION_REMOVE     = 0x00000002,
+  CSYNC_INSTRUCTION_RENAME     = 0x00000004,
+  CSYNC_INSTRUCTION_NEW        = 0x00000008,
+  CSYNC_INSTRUCTION_CONFLICT   = 0x00000010,
+  CSYNC_INSTRUCTION_IGNORE     = 0x00000020,
+  CSYNC_INSTRUCTION_SYNC       = 0x00000040,
+  CSYNC_INSTRUCTION_STAT_ERROR = 0x00000080,
+  CSYNC_INSTRUCTION_ERROR      = 0x00000100,
+  /* instructions for the propagator */
+  CSYNC_INSTRUCTION_DELETED    = 0x00000200,
+  CSYNC_INSTRUCTION_UPDATED    = 0x00000400
+};
+
+/**
+ * CSync File Traversal structure.
+ *
+ * This structure is passed to the visitor function for every file
+ * which is seen.
+ * Note: The file size is missing here because type off_t is depending
+ *       on the large file support in your build. Make sure to check
+ *       that cmake and the callback app are compiled with the same
+ *       setting for it, such as:
+ *       -D_LARGEFILE64_SOURCE or -D_LARGEFILE_SOURCE
+ *
+ */
+struct csync_tree_walk_file_s {
+    const char *path;
+    /* off_t       size; */
+    time_t      modtime;
+    uid_t       uid;
+    gid_t       gid;
+    mode_t      mode;
+    int         type;
+    enum csync_instructions_e instruction;
+};
+typedef struct csync_tree_walk_file_s TREE_WALK_FILE;
 
 /**
  * csync handle
@@ -306,6 +354,30 @@ int csync_get_status(CSYNC *ctx);
 
 /* Used for special modes or debugging */
 int csync_set_status(CSYNC *ctx, int status);
+
+typedef int csync_treewalk_visit_func(TREE_WALK_FILE* ,void*);
+
+/**
+ * @brief Walk the local file tree and call a visitor function for each file.
+ *
+ * @param ctx           The csync context.
+ * @param visitor       A callback function to handle the file info.
+ * @param filter        A filter, built from and'ed csync_instructions_e
+ *
+ * @return              0 on success, less than 0 if an error occured.
+ */
+int csync_walk_local_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int filter);
+
+/**
+ * @brief Walk the remote file tree and call a visitor function for each file.
+ *
+ * @param ctx           The csync context.
+ * @param visitor       A callback function to handle the file info.
+ * @param filter        A filter, built from and'ed csync_instructions_e
+ *
+ * @return              0 on success, less than 0 if an error occured.
+ */
+int csync_walk_remote_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int filter);
 
 #ifdef __cplusplus
 }

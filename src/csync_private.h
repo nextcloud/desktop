@@ -140,22 +140,6 @@ enum csync_ftw_type_e {
   CSYNC_FTW_TYPE_DIR
 };
 
-enum csync_instructions_e {
-  CSYNC_INSTRUCTION_NONE,
-  CSYNC_INSTRUCTION_EVAL,
-  CSYNC_INSTRUCTION_REMOVE,
-  CSYNC_INSTRUCTION_RENAME,
-  CSYNC_INSTRUCTION_NEW,
-  CSYNC_INSTRUCTION_CONFLICT,
-  CSYNC_INSTRUCTION_IGNORE,
-  CSYNC_INSTRUCTION_SYNC,
-  CSYNC_INSTRUCTION_STAT_ERROR,
-  CSYNC_INSTRUCTION_ERROR,
-  /* instructions for the propagator */
-  CSYNC_INSTRUCTION_DELETED,
-  CSYNC_INSTRUCTION_UPDATED
-};
-
 #ifdef _MSC_VER
 #pragma pack(1)
 #endif
@@ -182,6 +166,17 @@ __attribute__ ((packed))
 ;
 
 typedef struct csync_file_stat_s csync_file_stat_t;
+
+/*
+ * context for the treewalk function
+ */
+struct _csync_treewalk_context_s
+{
+    csync_treewalk_visit_func *user_visitor;
+    int instruction_filter;
+    void *userdata;
+};
+typedef struct _csync_treewalk_context_s _csync_treewalk_context;
 
 /**
  * }@
