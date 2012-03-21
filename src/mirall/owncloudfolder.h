@@ -45,6 +45,8 @@ public slots:
 protected slots:
     void slotCSyncStarted();
     void slotCSyncFinished();
+    void slotThreadTreeWalkResult( WalkStats* );
+
 #ifndef USE_WATCHER
     void slotPollTimerRemoteCheck();
 #endif
@@ -53,7 +55,6 @@ private:
     CSyncThread *_csync;
     bool _localCheckOnly;
     int _pollTimerCnt;
-    int64_t _lastWalkedFiles;
 };
 
 }

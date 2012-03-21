@@ -20,8 +20,7 @@
 #include <QStringList>
 #include <QTextStream>
 #include <QTime>
-
-#include <csync.h>
+#include <QDebug>
 
 #include "mirall/csyncthread.h"
 
@@ -31,14 +30,67 @@ namespace Mirall {
 QString CSyncThread::_user;
 QString CSyncThread::_passwd;
 
+
+ int CSyncThread::checkPermissions( TREE_WALK_FILE* file, void *data )
+{
+     WalkStats *wStats = static_cast<WalkStats*>(data);
+
+     if( !wStats ) {
+         qDebug() << "WalkStats is zero - must not be!";
+         return -1;
+     }
+
+     wStats->seenFiles++;
+
+     switch(file->instruction) {
+     case CSYNC_INSTRUCTION_NONE:
+
+         break;
+     case CSYNC_INSTRUCTION_EVAL:
+         wStats->eval++;
+         break;
+     case CSYNC_INSTRUCTION_REMOVE:
+         wStats->removed++;
+         break;
+     case CSYNC_INSTRUCTION_RENAME:
+         wStats->renamed++;
+         break;
+     case CSYNC_INSTRUCTION_NEW:
+         wStats->newFiles++;
+         break;
+     case CSYNC_INSTRUCTION_CONFLICT:
+         wStats->conflicts++;
+         break;
+     case CSYNC_INSTRUCTION_IGNORE:
+         wStats->ignores++;
+         break;
+     case CSYNC_INSTRUCTION_SYNC:
+         wStats->sync++;
+         break;
+     case CSYNC_INSTRUCTION_STAT_ERROR:
+     case CSYNC_INSTRUCTION_ERROR:
+     /* instructions for the propagator */
+     case CSYNC_INSTRUCTION_DELETED:
+     case CSYNC_INSTRUCTION_UPDATED:
+         wStats->error++;
+         break;
+     default:
+         wStats->error++;
+         break;
+     }
+
+    // qDebug() << "XXXX " << cur->type << " uid: " << cur->uid;
+    qDebug() << wStats->seenFiles << ". Path: " << file->path << ": uid= " << file->uid << " - type: " << file->type;
+    return 1;
+}
+
 CSyncThread::CSyncThread(const QString &source, const QString &target, bool localCheckOnly)
 
     : _source(source)
     , _target(target)
     , _localCheckOnly( localCheckOnly )
     , _error(0)
-    , _localChanges(false)
-    , _walkedFiles(-1)
+
 {
 
 }
@@ -57,13 +109,16 @@ QMutex CSyncThread::_mutex;
 
 void CSyncThread::run()
 {
-    QMutexLocker locker(&_mutex);
-
     CSYNC *csync;
+    WalkStats *wStats = new WalkStats;
+    memset(wStats, 0, sizeof(WalkStats));
 
+    _mutex.lock();
     _error = csync_create(&csync,
                           _source.toLocal8Bit().data(),
                           _target.toLocal8Bit().data());
+    _mutex.unlock();
+
     if (error())
         return;
     qDebug() << "## CSync Thread local only: " << _localCheckOnly;
@@ -73,11 +128,15 @@ void CSyncThread::run()
     QTime t;
     t.start();
 
+    _mutex.lock();
     if( _localCheckOnly ) {
         _error = csync_set_local_only( csync, true );
-        if(error())
+        if(error()) {
+            _mutex.unlock();
             goto cleanup;
+        }
     }
+    _mutex.unlock();
 
     _error = csync_init(csync);
     if (error())
@@ -89,39 +148,37 @@ void CSyncThread::run()
     if (error())
         goto cleanup;
 
+    csync_set_userdata(csync, wStats);
 
+    csync_walk_local_tree(csync, &checkPermissions, 0);
 
-    UPDATE_METRICS met;
-    met.filesUpdated = 0;
-    met.filesNew  = 0;
-    met.filesWalked = 0;
+    qDebug() << "New     files: " << wStats->newFiles;
+    qDebug() << "Updated files: " << wStats->eval;
+    qDebug() << "Walked  files: " << wStats->seenFiles;
+    emit treeWalkResult(wStats);
 
-    csync_update_metrics(  csync, &met );
-
-    qDebug() << "New     files: " << met.filesNew;
-    qDebug() << "Updated files: " << met.filesUpdated;
-    qDebug() << "Walked  files: " << met.filesWalked;
-
-    _walkedFiles = met.filesWalked;
-
+    _mutex.lock();
     if( _localCheckOnly ) {
-        if( met.filesNew + met.filesUpdated > 0 ) {
-            _localChanges = true;
-
-            qDebug() << "OO there are local changes!";
+        _mutex.unlock();
+        /* check if there are happend changes in the file system */
+        if( (wStats->newFiles + wStats->eval + wStats->removed + wStats->renamed) > 0 ) {
+             qDebug() << "OO there are local changes!";
         }
         // we have to go out here as its local check only.
         goto cleanup;
     } else {
+        _mutex.unlock();
+        // check if we can write all over.
+
         _error = csync_reconcile(csync);
         if (error())
             goto cleanup;
 
         _error = csync_propagate(csync);
-        _localChanges = false;
     }
 cleanup:
     csync_destroy(csync);
+    delete wStats;
     qDebug() << "CSync run took " << t.elapsed() << " Milliseconds";
 }
 
@@ -150,30 +207,6 @@ int CSyncThread::getauth(const char *prompt,
         strncpy( buf, _passwd.toLocal8Bit().constData(), len );
     } else {
         qDebug() << "Unknown prompt: <" << prompt << ">";
-    }
-}
-
-int64_t CSyncThread::walkedFiles()
-{
-    return _walkedFiles;
-}
-
-bool CSyncThread::hasLocalChanges( int64_t prevWalked ) const
-{
-    if( _localChanges ) return true;
-
-    if( _walkedFiles == -1 || prevWalked == -1 ) { // we don't know how
-        return false;
-    } else {
-        if( prevWalked < _walkedFiles ) {
-            qDebug() << "Files were added!";
-            return true;
-        } else if( prevWalked > _walkedFiles ){
-            qDebug() << "Files were removed!";
-            return true;
-        } else {
-            return false;
-        }
     }
 }
 

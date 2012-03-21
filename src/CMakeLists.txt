@@ -76,6 +76,7 @@ set(mirall_HEADERS
     mirall/statusdialog.h
     mirall/unisonfolder.h
     mirall/theme.h
+    mirall/csyncthread.h
 )
 
 IF( UNIX )

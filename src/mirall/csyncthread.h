@@ -22,12 +22,30 @@
 #include <QThread>
 #include <QString>
 
+#include <csync.h>
+
 class QProcess;
 
 namespace Mirall {
 
+struct walkStats_s {
+    ulong eval;
+    ulong removed;
+    ulong renamed;
+    ulong newFiles;
+    ulong conflicts;
+    ulong ignores;
+    ulong sync;
+    ulong error;
+
+    ulong seenFiles;
+};
+
+typedef walkStats_s WalkStats;
+
 class CSyncThread : public QThread
 {
+    Q_OBJECT
 public:
     CSyncThread(const QString &source, const QString &target, bool = false);
     ~CSyncThread();
@@ -45,6 +63,10 @@ public:
     static void setUserPwd( const QString&, const QString& );
     static QString _user;
     static QString _passwd;
+    static int checkPermissions( TREE_WALK_FILE* file, void *data);
+
+signals:
+    void treeWalkResult(WalkStats*);
 
 private:
     static int getauth(const char *prompt,
@@ -53,15 +75,13 @@ private:
                 int echo,
                 int verify,
                 void *userdata
-                );
+    );
 
     static QMutex _mutex;
     QString _source;
     QString _target;
-    int _error;
-    bool _localCheckOnly;
-    bool _localChanges;
-    int64_t _walkedFiles;
+    int     _error;
+    bool    _localCheckOnly;
 };
 }
 

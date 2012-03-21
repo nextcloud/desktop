@@ -38,8 +38,6 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
     , _localCheckOnly( false )
     , _csync(0)
     , _pollTimerCnt(0)
-    , _lastWalkedFiles(-1)
-
 {
 #ifdef USE_WATCHER
     qDebug() << "****** ownCloud folder using watcher *******";
@@ -109,6 +107,8 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     _csync->setUserPwd( cfgFile.ownCloudUser(), cfgFile.ownCloudPasswd() );
     QObject::connect(_csync, SIGNAL(started()),  SLOT(slotCSyncStarted()));
     QObject::connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()));
+    connect( _csync, SIGNAL(treeWalkResult(WalkStats*)),
+             this, SLOT(slotThreadTreeWalkResult(WalkStats*)));
     _csync->start();
 }
 
@@ -118,6 +118,24 @@ void ownCloudFolder::slotCSyncStarted()
     emit syncStarted();
 }
 
+void ownCloudFolder::slotThreadTreeWalkResult( WalkStats* wStats )
+{
+    qDebug() << "SSSSSSeen files: " << wStats->seenFiles;
+
+#ifndef USE_WATCHER
+    /* check if there are happend changes in the file system */
+    if( (wStats->newFiles + wStats->eval + wStats->removed + wStats->renamed) > 0 ) {
+         qDebug() << "*** Local changes, lets do a full sync!" ;
+        _localCheckOnly = false;
+        _pollTimerCnt = 0;
+        QTimer::singleShot( 0, this, SLOT(startSync( QStringList() )));
+    } else {
+        qDebug() << "     *** No local changes, finalize, pollTimerCounter is "<< _pollTimerCnt ;
+    }
+#endif
+
+}
+
 void ownCloudFolder::slotCSyncFinished()
 {
     if (_csync->error())
@@ -125,20 +143,6 @@ void ownCloudFolder::slotCSyncFinished()
     else
         qDebug() << "    * owncloud csync thread finished successfully";
 
-#ifndef USE_WATCHER
-    if( _csync->hasLocalChanges( _lastWalkedFiles ) ) {
-        qDebug() << "Last walked files: " << _lastWalkedFiles << " against " << _csync->walkedFiles();
-        qDebug() << "*** Local changes, lets do a full sync!" ;
-        _localCheckOnly = false;
-        _pollTimerCnt = 0;
-        _lastWalkedFiles = -1;
-        QTimer::singleShot( 0, this, SLOT(startSync( QStringList() )));
-    } else {
-        qDebug() << "     *** Finalize, pollTimerCounter is "<< _pollTimerCnt ;
-        _lastWalkedFiles = _csync->walkedFiles();
-    // TODO delete thread
-    }
-#endif
     emit syncFinished(_csync->error() ?
                           SyncResult(SyncResult::Error)
                         : SyncResult(SyncResult::Success));
