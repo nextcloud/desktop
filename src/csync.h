@@ -39,8 +39,6 @@
 extern "C" {
 #endif
 
-#include "std/c_rbtree.h"
-
 #define CSYNC_STRINGIFY(s) CSYNC_TOSTRING(s)
 #define CSYNC_TOSTRING(s) #s
 
@@ -109,8 +107,13 @@ struct csync_tree_walk_file_s {
     const char *path;
     /* off_t       size; */
     time_t      modtime;
+#ifdef _WIN32
+    int         uid;
+    int         gid;
+#else
     uid_t       uid;
     gid_t       gid;
+#endif
     mode_t      mode;
     int         type;
     enum csync_instructions_e instruction;
