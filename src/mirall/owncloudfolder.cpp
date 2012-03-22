@@ -38,6 +38,7 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
     , _localCheckOnly( false )
     , _csync(0)
     , _pollTimerCnt(0)
+    , _csyncError(false)
 {
 #ifdef USE_WATCHER
     qDebug() << "****** ownCloud folder using watcher *******";
@@ -96,6 +97,8 @@ void ownCloudFolder::startSync(const QStringList &pathList)
         return;
     }
     delete _csync;
+    _errors.clear();
+    _csyncError = false;
 
     MirallConfigFile cfgFile;
 
@@ -107,6 +110,9 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     _csync->setUserPwd( cfgFile.ownCloudUser(), cfgFile.ownCloudPasswd() );
     QObject::connect(_csync, SIGNAL(started()),  SLOT(slotCSyncStarted()));
     QObject::connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()));
+    QObject::connect(_csync, SIGNAL(terminated()), SLOT(slotCSyncTerminated()));
+    connect(_csync, SIGNAL(csyncError(const QString)), SLOT(slotCSyncError(const QString)));
+
     connect( _csync, SIGNAL(treeWalkResult(WalkStats*)),
              this, SLOT(slotThreadTreeWalkResult(WalkStats*)));
     _csync->start();
@@ -118,35 +124,63 @@ void ownCloudFolder::slotCSyncStarted()
     emit syncStarted();
 }
 
-void ownCloudFolder::slotThreadTreeWalkResult( WalkStats* wStats )
+void ownCloudFolder::slotThreadTreeWalkResult( WalkStats *wStats )
 {
-    qDebug() << "SSSSSSeen files: " << wStats->seenFiles;
+    qDebug() << "Seen files: " << wStats->seenFiles;
+
+    /* check if there are happend changes in the file system */
+    qDebug() << "New     files: " << wStats->newFiles;
+    qDebug() << "Updated files: " << wStats->eval;
+    qDebug() << "Walked  files: " << wStats->seenFiles;
+    qDebug() << "Eval files: "    << wStats->eval;
+    qDebug() << "Removed files: " << wStats->removed;
+    qDebug() << "Renamed files: " << wStats->renamed;
 
 #ifndef USE_WATCHER
-    /* check if there are happend changes in the file system */
     if( (wStats->newFiles + wStats->eval + wStats->removed + wStats->renamed) > 0 ) {
          qDebug() << "*** Local changes, lets do a full sync!" ;
-        _localCheckOnly = false;
-        _pollTimerCnt = 0;
-        QTimer::singleShot( 0, this, SLOT(startSync( QStringList() )));
+         _localCheckOnly = false; // next time it will be a non local check.
+         _pollTimerCnt = 0;
+        // QTimer::singleShot( 0, this, SLOT(startSync( QStringList() )));
     } else {
         qDebug() << "     *** No local changes, finalize, pollTimerCounter is "<< _pollTimerCnt ;
     }
 #endif
+    /*
+     * Attention: This is deleted here, outside of the thread, because the thread can
+     * faster die than this routine has read out the memory.
+     */
+    delete wStats->sourcePath;
+    delete wStats;
+}
 
+void ownCloudFolder::slotCSyncError(const QString& err)
+{
+    _errors.append( err );
+    _csyncError = true;
+}
+
+void ownCloudFolder::slotCSyncTerminated()
+{
+    // do not ask csync here for reasons.
+    emit syncFinished( SyncResult(SyncResult::Error));
 }
 
 void ownCloudFolder::slotCSyncFinished()
 {
-    if (_csync->error())
+    SyncResult res( SyncResult::Success );
+
+    if (_csyncError) {
+        res.setStatus(SyncResult::Error);
+
+        qDebug() << "  ** error Strings: " << _errors;
+        res.setErrorStrings( _errors );
         qDebug() << "    * owncloud csync thread finished with error";
-    else
+    } else {
         qDebug() << "    * owncloud csync thread finished successfully";
+    }
 
-    emit syncFinished(_csync->error() ?
-                          SyncResult(SyncResult::Error)
-                        : SyncResult(SyncResult::Success));
-
+    emit syncFinished( res );
 }
 
 } // ns

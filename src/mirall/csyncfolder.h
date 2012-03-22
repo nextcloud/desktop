@@ -40,9 +40,12 @@ public:
 protected slots:
     void slotCSyncStarted();
     void slotCSyncFinished();
+    void slotCSyncError( const QString& );
 private:
+    bool    _csyncError;
     QString _secondPath;
     CSyncThread *_csync;
+    QStringList _errors;
 };
 
 }

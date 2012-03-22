@@ -13,11 +13,7 @@
  */
 
 #include <QDesktopServices>
-#include <QDir>
-#include <QDebug>
-#include <QSettings>
-#include <QUrl>
-#include <QSignalMapper>
+#include <QtCore>
 
 #include "mirall/mirallconfigfile.h"
 #include "mirall/unisonfolder.h"
@@ -31,6 +27,7 @@ namespace Mirall {
 
 FolderMan::FolderMan(QObject *parent) :
     QObject(parent)
+    , _currentSyncFolder(0)
 {
     // if QDir::mkpath would not be so stupid, I would not need to have this
     // duplication of folderConfigPath() here
@@ -177,7 +174,11 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
 
     qDebug() << "Adding folder to Folder Map " << folder;
     /* Use a signal mapper to connect the signals to the alias */
+    connect(folder, SIGNAL(scheduleToSync(Folder*)), SLOT(slotScheduleSync(Folder*)));
     connect(folder, SIGNAL(syncStateChange()), _folderChangeSignalMapper, SLOT(map()));
+    connect(folder, SIGNAL(syncStarted()), SLOT(slotFolderSyncStarted()));
+    connect(folder, SIGNAL(syncFinished(SyncResult)), SLOT(slotFolderSyncFinished(SyncResult)));
+
     _folderChangeSignalMapper->setMapping( folder, folder->alias() );
 
     return folder;
@@ -234,13 +235,51 @@ SyncResult FolderMan::syncResult( const QString& alias )
     return res;
 }
 
-void FolderMan::slotFolderSyncStarted( )
+/*
+  * if a folder wants to be synced, it calls this slot and is added
+  * to the queue. The slot to actually start a sync is called afterwards.
+  */
+void FolderMan::slotScheduleSync( Folder *folder )
 {
+    if( ! folder ) return;
+
+    qDebug() << "Schedule folder " << folder->alias() << " to sync!";
+    _scheduleQueue.enqueue( folder );
+    slotScheduleFolderSync();
 }
 
+/*
+  * slot to start folder syncs.
+  * It is either called from the slot where folders enqueue themselves for
+  * syncing or after a folder sync was finished.
+  */
+void FolderMan::slotScheduleFolderSync()
+{
+    if( _currentSyncFolder ) {
+        qDebug() << "Currently folder " << _currentSyncFolder << " is running, wait for finish!";
+        return;
+    }
+
+    if( ! _scheduleQueue.isEmpty() ) {
+        _currentSyncFolder = _scheduleQueue.dequeue();
+        _currentSyncFolder->startSync( QStringList() );
+    }
+}
+
+void FolderMan::slotFolderSyncStarted( )
+{
+    qDebug() << ">===================================== sync started for " << _currentSyncFolder->alias();
+}
+
+/*
+  * a folder indicates that its syncing is finished.
+  * Start the next sync after the system had some milliseconds to breath.
+  */
 void FolderMan::slotFolderSyncFinished( const SyncResult& )
 {
-
+    qDebug() << "<===================================== sync finsihed for " << _currentSyncFolder->alias();
+    _currentSyncFolder = 0;
+    QTimer::singleShot(200, this, SLOT(slotScheduleFolderSync()));
 }
 
 /**

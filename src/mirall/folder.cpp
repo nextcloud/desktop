@@ -166,7 +166,8 @@ void Folder::evaluateSync(const QStringList &pathList)
   // sync finished.
   qDebug() << "* " << alias() << "Poll timer disabled";
   _pollTimer->stop();
-  startSync( pathList );
+  emit scheduleToSync( this );
+  // startSync( pathList );
 }
 
 void Folder::slotPollTimerTimeout()

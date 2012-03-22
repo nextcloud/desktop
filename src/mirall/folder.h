@@ -159,6 +159,7 @@ signals:
     void syncStateChange();
     void syncStarted();
     void syncFinished(const SyncResult &result);
+    void scheduleToSync(Folder*);
 
 protected:
 #ifdef USE_WATCHER

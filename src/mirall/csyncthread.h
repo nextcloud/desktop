@@ -28,7 +28,17 @@ class QProcess;
 
 namespace Mirall {
 
+enum walkErrorTypes {
+    WALK_ERROR_NONE = 0,
+    WALK_ERROR_WALK,
+    WALK_ERROR_INSTRUCTIONS,
+    WALK_ERROR_DIR_PERMS
+};
+
 struct walkStats_s {
+    const char *sourcePath;
+    int errorType;
+
     ulong eval;
     ulong removed;
     ulong renamed;
@@ -52,21 +62,12 @@ public:
 
     virtual void run();
 
-    /**
-     * true if last operation ended with error
-     */
-    bool error() const;
-
-    bool hasLocalChanges( int64_t ) const;
-    int64_t walkedFiles();
-
     static void setUserPwd( const QString&, const QString& );
-    static QString _user;
-    static QString _passwd;
     static int checkPermissions( TREE_WALK_FILE* file, void *data);
 
 signals:
     void treeWalkResult(WalkStats*);
+    void csyncError(const QString&);
 
 private:
     static int getauth(const char *prompt,
@@ -78,9 +79,11 @@ private:
     );
 
     static QMutex _mutex;
+    static QString _user;
+    static QString _passwd;
+
     QString _source;
     QString _target;
-    int     _error;
     bool    _localCheckOnly;
 };
 }

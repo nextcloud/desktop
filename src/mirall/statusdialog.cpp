@@ -264,9 +264,11 @@ void StatusDialog::folderToModelItem( QStandardItem *item, Folder *f )
     SyncResult res = f->syncResult();
     SyncResult::Status status = res.status();
 
+    QString errors = res.errorStrings().join("<br/>");
+
     item->setData( _theme->syncStateIcon( status, 64 ), FolderViewDelegate::FolderStatusIcon );
     item->setData( _theme->statusHeaderText( status ),  FolderViewDelegate::FolderStatus );
-    item->setData( res.errorString(),                   FolderViewDelegate::FolderErrorMsg );
+    item->setData( errors,                              FolderViewDelegate::FolderErrorMsg );
 }
 
 void StatusDialog::slotRemoveFolder()

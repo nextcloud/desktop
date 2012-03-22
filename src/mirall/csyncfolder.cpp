@@ -33,6 +33,8 @@ CSyncFolder::CSyncFolder(const QString &alias,
       : Folder(alias, path, parent)
       , _secondPath(secondPath)
       , _csync(0)
+      , _csyncError(false)
+
 {
 }
 
@@ -57,12 +59,14 @@ void CSyncFolder::startSync(const QStringList &pathList)
         return;
     }
     delete _csync;
-
-    MirallConfigFile cfgFile;
+    _errors.clear();
+    _csyncError = false;
 
     _csync = new CSyncThread( path(), secondPath() );
-    QObject::connect(_csync, SIGNAL(started()), SLOT(slotCSyncStarted()));
-    QObject::connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()));
+    connect(_csync, SIGNAL(started()), SLOT(slotCSyncStarted()));
+    connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()));
+    connect(_csync, SIGNAL(csyncError(QString)), SLOT(slotCSyncError(QString)));
+
     _csync->start();
 }
 
@@ -74,15 +78,18 @@ void CSyncFolder::slotCSyncStarted()
 
 void CSyncFolder::slotCSyncFinished()
 {
-    if (_csync->error())
-        qDebug() << "    * csync thread finished with error";
-    else
-        qDebug() << "    * csync thread finished successfully";
+    SyncResult res(SyncResult::Success);
+    if( _csyncError ) {
+        res.setStatus( SyncResult::Error );
+        res.setErrorString( _errors.join("\\n"));
+    }
+    emit syncFinished( res );
+}
 
-    // TODO delete thread
-    emit syncFinished(_csync->error() ?
-                      SyncResult(SyncResult::Error)
-                      : SyncResult(SyncResult::Success));
+void CSyncFolder::slotCSyncError( const QString& errorStr )
+{
+    _errors.append( errorStr );
+    _csyncError = true;
 }
 
 } // ns

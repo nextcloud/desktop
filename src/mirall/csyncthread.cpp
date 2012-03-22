@@ -29,10 +29,10 @@ namespace Mirall {
 /* static variables to hold the credentials */
 QString CSyncThread::_user;
 QString CSyncThread::_passwd;
-
+QMutex CSyncThread::_mutex;
 
  int CSyncThread::checkPermissions( TREE_WALK_FILE* file, void *data )
-{
+ {
      WalkStats *wStats = static_cast<WalkStats*>(data);
 
      if( !wStats ) {
@@ -69,30 +69,48 @@ QString CSyncThread::_passwd;
          break;
      case CSYNC_INSTRUCTION_STAT_ERROR:
      case CSYNC_INSTRUCTION_ERROR:
-     /* instructions for the propagator */
+         /* instructions for the propagator */
      case CSYNC_INSTRUCTION_DELETED:
      case CSYNC_INSTRUCTION_UPDATED:
          wStats->error++;
+         wStats->errorType = WALK_ERROR_INSTRUCTIONS;
          break;
      default:
          wStats->error++;
+         wStats->errorType = WALK_ERROR_WALK;
          break;
      }
 
-    // qDebug() << "XXXX " << cur->type << " uid: " << cur->uid;
-    qDebug() << wStats->seenFiles << ". Path: " << file->path << ": uid= " << file->uid << " - type: " << file->type;
-    return 1;
-}
+     if( file ) {
+         QString source(wStats->sourcePath);
+         source.append(file->path);
+         QFileInfo fi(source);
+
+         if( fi.isDir()) {  // File type directory.
+             qDebug() << "OOOOOOOO " << fi.absoluteFilePath() << " is writeable: " << fi.isWritable();
+             if( !(fi.isWritable() && fi.isExecutable()) ) {
+                 wStats->errorType = WALK_ERROR_DIR_PERMS;
+             }
+         }
+     }
+
+     qDebug() << wStats->seenFiles << ". Path: " << file->path << ": uid= " << file->uid << " - type: " << file->type;
+     if( wStats->errorType != WALK_ERROR_NONE ) {
+         return -1;
+     }
+     return 0;
+ }
 
 CSyncThread::CSyncThread(const QString &source, const QString &target, bool localCheckOnly)
 
     : _source(source)
     , _target(target)
     , _localCheckOnly( localCheckOnly )
-    , _error(0)
 
 {
-
+    _mutex.lock();
+    if( ! _source.endsWith('/')) _source.append('/');
+    _mutex.unlock();
 }
 
 CSyncThread::~CSyncThread()
@@ -100,27 +118,35 @@ CSyncThread::~CSyncThread()
 
 }
 
-bool CSyncThread::error() const
-{
-    return _error != 0;
-}
-
-QMutex CSyncThread::_mutex;
-
 void CSyncThread::run()
 {
     CSYNC *csync;
+
     WalkStats *wStats = new WalkStats;
-    memset(wStats, 0, sizeof(WalkStats));
+    QTime walkTime;
+
+    wStats->sourcePath = 0;
+    wStats->errorType  = 0;
+    wStats->eval       = 0;
+    wStats->removed    = 0;
+    wStats->renamed    = 0;
+    wStats->newFiles   = 0;
+    wStats->ignores    = 0;
+    wStats->sync       = 0;
+    wStats->seenFiles  = 0;
+    wStats->conflicts  = 0;
+    wStats->error      = 0;
 
     _mutex.lock();
-    _error = csync_create(&csync,
+    if( csync_create(&csync,
                           _source.toLocal8Bit().data(),
-                          _target.toLocal8Bit().data());
+                          _target.toLocal8Bit().data()) < 0 ) {
+        emit csyncError( tr("CSync create failed.") );
+    }
+    // FIXME: Check if we really need this stringcopy!
+    wStats->sourcePath = qstrdup( _source.toLocal8Bit().constData() );
     _mutex.unlock();
 
-    if (error())
-        return;
     qDebug() << "## CSync Thread local only: " << _localCheckOnly;
     csync_set_auth_callback( csync, getauth );
     csync_enable_conflictcopys(csync);
@@ -130,63 +156,80 @@ void CSyncThread::run()
 
     _mutex.lock();
     if( _localCheckOnly ) {
-        _error = csync_set_local_only( csync, true );
-        if(error()) {
-            _mutex.unlock();
-            goto cleanup;
-        }
+        csync_set_local_only( csync, true );
     }
     _mutex.unlock();
 
-    _error = csync_init(csync);
-    if (error())
+    if( csync_init(csync) < 0 ) {
+        emit csyncError(tr("CSync init failed."));
         goto cleanup;
+    }
 
     qDebug() << "############################################################### >>";
-    _error = csync_update(csync);
-    qDebug() << "<<###############################################################";
-    if (error())
+    if( csync_update(csync) < 0 ) {
+        emit csyncError(tr("CSync Update failed."));
         goto cleanup;
+    }
+    qDebug() << "<<###############################################################";
 
     csync_set_userdata(csync, wStats);
+    walkTime.start();
+    if( csync_walk_local_tree(csync, &checkPermissions, 0) < 0 ) {
+        qDebug() << "Error in treewalk.";
+        if( wStats->errorType == WALK_ERROR_DIR_PERMS ) {
+            emit csyncError(tr("The local filesystem has directories which are write protected.\n"
+                               "That prevents ownCloud from successful syncing.\n"
+                               "Please make sure that all directories are writeable."));
+        } else if( wStats->errorType == WALK_ERROR_WALK ) {
+            emit csyncError(tr("CSync encountered an error while examining the file system.\n"
+                               "Syncing is not possible."));
+        } else if( wStats->errorType == WALK_ERROR_INSTRUCTIONS ) {
+            emit csyncError(tr("CSync update generated a strange instruction.\n"
+                               "Please write a bug report."));
+        }
+        emit csyncError(tr("Local filesystem problems. Better disable Syncing and check."));
+        goto cleanup;
+    }
+    qDebug() << " ..... Local walk finished: " << walkTime.elapsed();
 
-    csync_walk_local_tree(csync, &checkPermissions, 0);
-
-    qDebug() << "New     files: " << wStats->newFiles;
-    qDebug() << "Updated files: " << wStats->eval;
-    qDebug() << "Walked  files: " << wStats->seenFiles;
+    // emit the treewalk results. Do not touch the wStats after this.
     emit treeWalkResult(wStats);
 
     _mutex.lock();
     if( _localCheckOnly ) {
         _mutex.unlock();
-        /* check if there are happend changes in the file system */
-        if( (wStats->newFiles + wStats->eval + wStats->removed + wStats->renamed) > 0 ) {
-             qDebug() << "OO there are local changes!";
-        }
         // we have to go out here as its local check only.
         goto cleanup;
     } else {
         _mutex.unlock();
         // check if we can write all over.
 
-        _error = csync_reconcile(csync);
-        if (error())
+        if( csync_reconcile(csync) < 0 ) {
+            emit csyncError(tr("CSync reconcile failed."));
             goto cleanup;
-
-        _error = csync_propagate(csync);
+        }
+        if( csync_propagate(csync) < 0 ) {
+            emit csyncError(tr("CSync propagate failed."));
+            goto cleanup;
+        }
     }
 cleanup:
     csync_destroy(csync);
-    delete wStats;
+    /*
+     * Attention: do not delete the wStat memory here. it is deleted in the
+     * slot catching the signel treeWalkResult because this thread can faster
+     * die than the slot has read out the data.
+     */
     qDebug() << "CSync run took " << t.elapsed() << " Milliseconds";
 }
 
 
 void CSyncThread::setUserPwd( const QString& user, const QString& passwd )
 {
+    _mutex.lock();
     _user = user;
     _passwd = passwd;
+    _mutex.unlock();
 }
 
 int CSyncThread::getauth(const char *prompt,
@@ -198,6 +241,7 @@ int CSyncThread::getauth(const char *prompt,
                          )
 {
     QString qPrompt = QString::fromLocal8Bit( prompt ).trimmed();
+    _mutex.lock();
 
     if( qPrompt == QString::fromLocal8Bit("Enter your username:") ) {
         qDebug() << "OOO Username requested!";
@@ -208,6 +252,7 @@ int CSyncThread::getauth(const char *prompt,
     } else {
         qDebug() << "Unknown prompt: <" << prompt << ">";
     }
+    _mutex.unlock();
 }
 
 }

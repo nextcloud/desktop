@@ -338,19 +338,24 @@ void Application::slotInfoFolder( const QString& alias )
 
     SyncResult::Status syncStatus = folderResult.status();
     if ( syncStatus == SyncResult::Error ) {
-      folderMessage = tr( "%1" ).arg( folderResult.errorString() );
+      folderMessage = tr( "<b>Syncing Error</b><br/>" );
     } else if ( syncStatus == SyncResult::SetupError ) {
-      folderMessage = tr( "Setup error" );
+      folderMessage = tr( "<b>Setup Error</b><br/>" );
     } else if ( syncStatus == SyncResult::Disabled ) {
-      folderMessage = tr( "%1" ).arg( folderResult.errorString() );
+      folderMessage = tr( "<b>Disabled Folder</b><br/>" ).arg( folderResult.errorString() );
     } else if ( syncStatus == SyncResult::Undefined ) {
-      folderMessage = tr( "Undefined state" );
+      folderMessage = tr( "<b>Undefined state</b><br/>" );
     }
 
     QMessageBox infoBox( QMessageBox::Information, tr( "Folder information" ), alias, QMessageBox::Ok );
+    QStringList li = folderResult.errorStrings();
+    foreach( const QString l, li ) {
+        folderMessage += "<p>" + l +"</p>";
+    }
 
-    infoBox.setInformativeText(folderMessage);
-    qDebug() << "informative text: " << infoBox.informativeText();
+    infoBox.setText( folderMessage );
+
+    //    qDebug() << "informative text: " << infoBox.informativeText();
 
     if ( !folderResult.syncChanges().isEmpty() ) {
 	QString details;

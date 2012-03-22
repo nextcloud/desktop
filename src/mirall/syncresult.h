@@ -39,10 +39,13 @@ public:
     SyncResult( Status status );
     ~SyncResult();
     void    setErrorString( const QString& );
+    void    setErrorStrings( const QStringList& );
     QString errorString() const;
+    QStringList errorStrings() const;
     void    setSyncChanges( const QHash<QString, QStringList> &changes );
     QHash<QString, QStringList> syncChanges() const;
 
+    void setStatus( Status );
     Status status() const;
 
 private:
@@ -54,7 +57,7 @@ private:
      */
     QStringList _deletedSource;
     QStringList _deletedDestination;
-    QString     _errorMsg;
+    QStringList _errors;
 };
 
 }

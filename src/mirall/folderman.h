@@ -17,6 +17,7 @@
 #define FOLDERMAN_H
 
 #include <QObject>
+#include <QQueue>
 
 #include "mirall/folder.h"
 #include "mirall/folderwatcher.h"
@@ -78,10 +79,18 @@ public slots:
 
     void slotReparseConfiguration();
 
+private slots:
+    // slot to add a folder to the syncing queue
+    void slotScheduleSync( Folder* );
+
+    // slot to take the next folder from queue and start syncing.
+    void slotScheduleFolderSync();
+
 private:
     // finds all folder configuration files
     // and create the folders
     int setupKnownFolders();
+
 
     // creates a folder for a specific
     // configuration
@@ -93,7 +102,8 @@ private:
     QString _folderConfigPath;
     OwncloudSetup *_ownCloudSetup;
     QSignalMapper *_folderChangeSignalMapper;
-
+    Folder *_currentSyncFolder;
+    QQueue<Folder*> _scheduleQueue;
 };
 
 }

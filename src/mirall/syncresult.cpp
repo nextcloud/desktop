@@ -32,14 +32,30 @@ SyncResult::Status SyncResult::status() const
     return _status;
 }
 
+void SyncResult::setStatus( Status stat )
+{
+    _status = stat;
+}
+
+void SyncResult::setErrorStrings( const QStringList& list )
+{
+    _errors = list;
+}
+
+QStringList SyncResult::errorStrings() const
+{
+    return _errors;
+}
+
 void SyncResult::setErrorString( const QString& err )
 {
-    _errorMsg = err;
+    _errors.append( err );
 }
 
 QString SyncResult::errorString() const
 {
-    return _errorMsg;
+    if( _errors.isEmpty() ) return QString();
+    return _errors.first();
 }
 
 void SyncResult::setSyncChanges(const QHash< QString, QStringList >& changes)

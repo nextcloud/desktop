@@ -42,10 +42,12 @@ public:
 public slots:
     void startSync();
 
-protected slots:
+private slots:
     void slotCSyncStarted();
+    void slotCSyncError(const QString& );
     void slotCSyncFinished();
     void slotThreadTreeWalkResult( WalkStats* );
+    void slotCSyncTerminated();
 
 #ifndef USE_WATCHER
     void slotPollTimerRemoteCheck();
@@ -55,6 +57,8 @@ private:
     CSyncThread *_csync;
     bool _localCheckOnly;
     int _pollTimerCnt;
+    QStringList _errors;
+    bool _csyncError;
 };
 
 }
