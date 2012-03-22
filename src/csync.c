@@ -151,8 +151,9 @@ int csync_init(CSYNC *ctx) {
   char *exclude = NULL;
   char *lock = NULL;
   char *config = NULL;
+#ifndef _WIN32
   char errbuf[256] = {0};
-
+#endif
   if (ctx == NULL) {
     errno = EBADF;
     return -1;
