@@ -23,6 +23,7 @@
 #include <iniparser.h>
 
 #include "c_lib.h"
+#include "c_private.h"
 #include "csync_private.h"
 #include "csync_config.h"
 

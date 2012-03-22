@@ -21,9 +21,16 @@
 
 #include "config.h"
 
-/**
- * Add status codes, types, functions and return-values missing on windows
- */
+/* cross platform defines */
+#include "config.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+
+#ifdef _WIN32
+#include <windef.h>
+#include <winbase.h>
+#endif
+
 
 #ifdef _WIN32
 #define EDQUOT 0
@@ -56,6 +63,15 @@ typedef struct stat csync_stat_t;
 #ifndef HAVE_LSTAT
 #define lstat _stat
 #endif
+#ifdef _WIN32
+#define stat _stat
+#define fstat _fstat
+#define read _read
+#define open _open
+#define close _close
+#define write _write
+#endif
+
 
 #endif //_C_PRIVATE_H
 
