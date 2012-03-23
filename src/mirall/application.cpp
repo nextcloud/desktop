@@ -448,6 +448,10 @@ void Application::computeOverallSyncStatus()
       trayMessage += "\n";
     }
     trayMessage += folderMessage;
+
+    if( _statusDialog->isVisible() ) {
+      _statusDialog->slotUpdateFolderState( syncedFolder );
+    }
   }
 
 
@@ -461,14 +465,8 @@ void Application::computeOverallSyncStatus()
 #endif
   // }
 
-
   _tray->setIcon( statusIcon );
   _tray->setToolTip(trayMessage);
-
-  // Only refresh the folder if it is being shown
-  if( _statusDialog->isVisible() ) {
-    _statusDialog->setFolderList( map );
-  }
 }
 
 } // namespace Mirall
