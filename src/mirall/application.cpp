@@ -61,6 +61,17 @@ Application::Application(int argc, char **argv) :
 
     processEvents();
 
+    // Internationalization support.
+    QTranslator qtTranslator;
+    qtTranslator.load("qt_" + QLocale::system().name(),
+                      QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    installTranslator(&qtTranslator);
+
+    QTranslator myappTranslator;
+    myappTranslator.load("mirall_" + QLocale::system().name());
+    installTranslator(&myappTranslator);
+
+
     _folderMan = new FolderMan();
     connect( _folderMan, SIGNAL(folderSyncStateChange(QString)),
              this,SLOT(slotSyncStateChange(QString)));
