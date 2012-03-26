@@ -48,7 +48,7 @@ class Folder : public QObject
     Q_OBJECT
 
 public:
-    Folder(const QString &alias, const QString &path, QObject *parent = 0L);
+    Folder(const QString&, const QString&, const QString& , QObject*parent = 0L);
     virtual ~Folder();
 
     typedef QHash<QString, Folder*> Map;
@@ -62,6 +62,7 @@ public:
      * local folder path
      */
     QString path() const;
+    virtual QString secondPath() const;
 
     /**
      * switch sync on or off
@@ -167,7 +168,6 @@ protected:
 #endif
   int _errorCount;
 
-
 private:
 
     /**
@@ -177,7 +177,7 @@ private:
     void evaluateSync(const QStringList &pathList);
 
     QString   _path;
-
+    QString   _secondPath;
     QString   _alias;
     bool      _onlyOnlineEnabled;
     bool      _onlyThisLANEnabled;

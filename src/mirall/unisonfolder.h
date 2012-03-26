@@ -34,8 +34,6 @@ public:
                const QString &secondPath, QObject *parent = 0L);
     virtual ~UnisonFolder();
 
-    QString secondPath() const;
-
     virtual void startSync(const QStringList &pathList);
 
     virtual bool isBusy() const;
@@ -50,7 +48,6 @@ protected slots:
 private:
     QMutex _syncMutex;
     QProcess *_unison;
-    QString _secondPath;
     int _syncCount;
 
     QString _lastOutput;

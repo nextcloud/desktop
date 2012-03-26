@@ -61,14 +61,30 @@ FolderViewDelegate::~FolderViewDelegate()
 QSize FolderViewDelegate::sizeHint(const QStyleOptionViewItem & option ,
                                    const QModelIndex & index) const
 {
-  int h = 70; // height 64 + 4px margin top and down
   int w = 0;
 
   QString p = qvariant_cast<QString>(index.data(FolderPathRole));
+  QFont aliasFont = QApplication::font();
   QFont font = QApplication::font();
+  aliasFont.setPointSize( font.pointSize() +2 );
+
   QFontMetrics fm(font);
+  QFontMetrics aliasFm(aliasFont);
+
   w = 8 + fm.boundingRect( p ).width();
 
+  // calc height
+  int h = aliasFm.height()/2;  // margin to top
+  h += aliasFm.height();       // alias
+  h += fm.height()/2;          // between alias and local path
+  h += fm.height();            // local path
+  h += fm.height()/2;          // between local and remote path
+  h += fm.height();            // remote path
+  h += aliasFm.height()/2;     // bottom margin
+
+  int minHeight = 48 + fm.height()/2 + fm.height()/2; // icon + margins
+
+  if( h < minHeight ) h = minHeight;
   return QSize( w, h );
 }
 
@@ -77,58 +93,64 @@ void FolderViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 {
   QStyledItemDelegate::paint(painter,option,index);
 
+  QSize s = sizeHint( option, index );
+
   painter->save();
 
-  QFont font    = QApplication::font();
+  QFont aliasFont    = QApplication::font();
   QFont subFont = QApplication::font();
   //font.setPixelSize(font.weight()+);
-  font.setBold(true);
-  subFont.setWeight(subFont.weight() - 4);
-  QFontMetrics fm(font);
+  aliasFont.setBold(true);
+  aliasFont.setPointSize( subFont.pointSize()+2 );
+
+  QFontMetrics subFm( subFont );
+  QFontMetrics aliasFm( aliasFont );
 
   QIcon icon = qvariant_cast<QIcon>(index.data(FolderIconRole));
   QIcon statusIcon = qvariant_cast<QIcon>(index.data(FolderStatusIcon));
   QString aliasText = qvariant_cast<QString>(index.data(FolderAliasRole));
   QString pathText = qvariant_cast<QString>(index.data(FolderPathRole));
+  QString remotePath = qvariant_cast<QString>(index.data(FolderSecondPathRole));
   QString statusText = qvariant_cast<QString>(index.data(FolderStatus));
   bool syncEnabled = index.data(FolderSyncEnabled).toBool();
   QString syncStatus = syncEnabled? tr( "Enabled" ) : tr( "Disabled" );
 
   QSize iconsize(48,48); //  = icon.actualSize(option.decorationSize);
 
-  QRect headerRect = option.rect;
+  QRect aliasRect = option.rect;
   QRect iconRect = option.rect;
 
-  iconRect.setRight(iconsize.width()+30);
-  iconRect.setTop(iconRect.top()+5);
-  headerRect.setLeft(iconRect.right());
-  headerRect.setTop(headerRect.top()+5);
-  headerRect.setBottom(headerRect.top()+fm.height());
+  iconRect.setRight( iconsize.width()+30 );
+  iconRect.setTop( iconRect.top() + (iconRect.height()-iconsize.height())/2);
+  aliasRect.setLeft(iconRect.right());
 
-  QRect subheaderRect = headerRect;
-  subheaderRect.setTop(headerRect.bottom());
-  QFontMetrics fmSub( subFont );
-  subheaderRect.setBottom(subheaderRect.top()+fmSub.height());
-  QRect statusRect = subheaderRect;
-  statusRect.setTop( subheaderRect.bottom() + 5);
-  statusRect.setBottom( statusRect.top() + fmSub.height());
+  aliasRect.setTop(aliasRect.top() + aliasFm.height()/2 );
+  aliasRect.setBottom(aliasRect.top()+subFm.height());
 
-  QRect lastSyncRect = statusRect;
-  lastSyncRect.setTop( statusRect.bottom());
-  lastSyncRect.setBottom( lastSyncRect.top() + fmSub.height());
+  // local directory box
+  QRect localPathRect = aliasRect;
+  localPathRect.setTop(aliasRect.bottom() + subFm.height() / 2);
+  localPathRect.setBottom(localPathRect.top()+subFm.height());
+
+  // remote directory box
+  QRect remotePathRect = localPathRect;
+  remotePathRect.setTop( localPathRect.bottom() + subFm.height()/2 );
+  remotePathRect.setBottom( remotePathRect.top() + subFm.height());
 
   //painter->drawPixmap(QPoint(iconRect.right()/2,iconRect.top()/2),icon.pixmap(iconsize.width(),iconsize.height()));
   painter->drawPixmap(QPoint(iconRect.left()+15,iconRect.top()),icon.pixmap(iconsize.width(),iconsize.height()));
 
-  painter->drawPixmap(QPoint(option.rect.right() - 4 - 48, option.rect.top() + 8 ), statusIcon.pixmap( 48,48));
+  painter->drawPixmap(QPoint(option.rect.right() - 4 - 48, option.rect.top() + (option.rect.height()-48)/2 ), statusIcon.pixmap(48,48));
 
-  painter->setFont(font);
-  painter->drawText(headerRect, aliasText);
+  painter->setFont(aliasFont);
+  painter->drawText(aliasRect, aliasText);
 
   painter->setFont(subFont);
-  painter->drawText(subheaderRect.left(),subheaderRect.top()+17, pathText);
-  painter->drawText(lastSyncRect, tr("Last Sync: %1").arg( statusText ));
-  painter->drawText(statusRect, tr("Sync Status: %1").arg( syncStatus ));
+  painter->drawText(localPathRect.left(),localPathRect.top()+17, pathText);
+  painter->drawText(remotePathRect, tr("Remote path: %1").arg(remotePath));
+
+  // painter->drawText(lastSyncRect, tr("Last Sync: %1").arg( statusText ));
+  // painter->drawText(statusRect, tr("Sync Status: %1").arg( syncStatus ));
   painter->restore();
 
 }
@@ -247,24 +269,29 @@ void StatusDialog::slotUpdateFolderState( Folder *folder )
     }
     if( item ) {
         folderToModelItem( item, folder );
+    } else {
+        qDebug() << "  OO Error: did not find model item for folder " << folder->alias();
     }
 }
 
 void StatusDialog::folderToModelItem( QStandardItem *item, Folder *f )
 {
     QIcon icon = _theme->folderIcon( f->backend(), 48 );
-    item->setData( icon,        FolderViewDelegate::FolderIconRole );
-    item->setData( f->path(),   FolderViewDelegate::FolderPathRole );
-    item->setData( f->alias(),  FolderViewDelegate::FolderAliasRole );
+    item->setData( icon,             FolderViewDelegate::FolderIconRole );
+    item->setData( f->path(),        FolderViewDelegate::FolderPathRole );
+    item->setData( f->secondPath(),  FolderViewDelegate::FolderSecondPathRole );
+    item->setData( f->alias(),       FolderViewDelegate::FolderAliasRole );
     item->setData( f->syncEnabled(), FolderViewDelegate::FolderSyncEnabled );
-    qDebug() << "***** Folder is SyncEnabled: " << f->syncEnabled();
 
     SyncResult res = f->syncResult();
     SyncResult::Status status = res.status();
+    qDebug() << "Folder state is now " << status;
 
     QString errors = res.errorStrings().join("<br/>");
 
-    item->setData( _theme->syncStateIcon( status, 64 ), FolderViewDelegate::FolderStatusIcon );
+    item->setData( _theme->statusHeaderText( status ),  Qt::ToolTipRole );
+
+    item->setData( _theme->syncStateIcon( status, 48 ), FolderViewDelegate::FolderStatusIcon );
     item->setData( _theme->statusHeaderText( status ),  FolderViewDelegate::FolderStatus );
     item->setData( errors,                              FolderViewDelegate::FolderErrorMsg );
 }
@@ -316,6 +343,9 @@ void StatusDialog::slotEnableFolder()
     qDebug() << "Toggle enabled/disabled Folder alias " << alias << " - current state: " << folderEnabled;
     if( !alias.isEmpty() ) {
       emit(enableFolderAlias( alias, !folderEnabled ));
+
+      // set the button text accordingly.
+      slotFolderActivated( selected );
     }
   }
 }

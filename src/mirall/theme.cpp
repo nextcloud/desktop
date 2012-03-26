@@ -69,19 +69,19 @@ QString Theme::statusHeaderText( SyncResult::Status status ) const
     QString resultStr;
 
     if( status == SyncResult::NotYetStarted ) {
-        resultStr = tr("Not yet started");
+        resultStr = tr("Sync has not yet started");
     } else if( status == SyncResult::SyncRunning ) {
-        resultStr = tr("Sync running");
+        resultStr = tr("Sync is running");
     } else if( status == SyncResult::Success ) {
-        resultStr = tr("Success");
+        resultStr = tr("Sync Success");
     } else if( status == SyncResult::Error ) {
-        resultStr = tr("Error");
+        resultStr = tr("Sync Error");
     } else if( status == SyncResult::Disabled ) {
-        resultStr = tr("Disabled");
+        resultStr = tr("Sync Disabled");
     } else if( status == SyncResult::SetupError ) {
         resultStr = tr( "Setup Error" );
     } else {
-        resultStr = tr("Undefined");
+        resultStr = tr("Status undefined");
     }
     return resultStr;
 }

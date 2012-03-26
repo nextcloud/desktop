@@ -30,8 +30,7 @@ CSyncFolder::CSyncFolder(const QString &alias,
                          const QString &path,
                          const QString &secondPath,
                          QObject *parent)
-      : Folder(alias, path, parent)
-      , _secondPath(secondPath)
+      : Folder(alias, path, secondPath, parent)
       , _csync(0)
       , _csyncError(false)
 
@@ -45,11 +44,6 @@ CSyncFolder::~CSyncFolder()
 bool CSyncFolder::isBusy() const
 {
     return false;
-}
-
-QString CSyncFolder::secondPath() const
-{
-    return _secondPath;
 }
 
 void CSyncFolder::startSync(const QStringList &pathList)

@@ -23,10 +23,11 @@
 
 namespace Mirall {
 
-Folder::Folder(const QString &alias, const QString &path, QObject *parent)
+Folder::Folder(const QString &alias, const QString &path, const QString& secondPath, QObject *parent)
     : QObject(parent),
       _errorCount(0),
       _path(path),
+      _secondPath(secondPath),
       _pollTimer(new QTimer(this)),
       _alias(alias),
       _onlyOnlineEnabled(false),
@@ -74,6 +75,11 @@ QString Folder::path() const
     return _path;
 }
 
+QString Folder::secondPath() const
+{
+    return _secondPath;
+}
+
 bool Folder::syncEnabled() const
 {
   return _enabled;
@@ -87,6 +93,15 @@ void Folder::setSyncEnabled( bool doit )
 #endif
   if( doit && ! _pollTimer->isActive() ) {
       _pollTimer->start();
+  }
+
+  if( doit ) {
+      // undefined until next sync
+      _syncResult.setStatus( SyncResult::Undefined );
+      evaluateSync( QStringList() );
+  } else {
+      // disabled.
+      _syncResult.setStatus( SyncResult::Disabled );
   }
 }
 

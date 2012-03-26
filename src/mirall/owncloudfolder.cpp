@@ -33,7 +33,7 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
                                const QString &path,
                                const QString &secondPath,
                                QObject *parent)
-    : Folder(alias, path, parent)
+    : Folder(alias, path, secondPath, parent)
     , _secondPath(secondPath)
     , _localCheckOnly( false )
     , _csync(0)
@@ -82,7 +82,15 @@ bool ownCloudFolder::isBusy() const
 
 QString ownCloudFolder::secondPath() const
 {
-    return _secondPath;
+    QString re(_secondPath);
+    MirallConfigFile cfg;
+    const QString ocUrl = cfg.ownCloudUrl(QString(), true);
+    qDebug() << "**** " << ocUrl << " <-> " << re;
+    if( re.startsWith( ocUrl ) ) {
+        re.remove( ocUrl );
+    }
+
+    return re;
 }
 
 void ownCloudFolder::startSync()

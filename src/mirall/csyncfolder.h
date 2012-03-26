@@ -34,7 +34,6 @@ public:
                 const QString &path,
                 const QString &secondPath, QObject *parent = 0L);
     virtual ~CSyncFolder();
-    QString secondPath() const;
     virtual void startSync(const QStringList &pathList);
     virtual bool isBusy() const;
 protected slots:
@@ -43,7 +42,6 @@ protected slots:
     void slotCSyncError( const QString& );
 private:
     bool    _csyncError;
-    QString _secondPath;
     CSyncThread *_csync;
     QStringList _errors;
 };

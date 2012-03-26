@@ -47,7 +47,6 @@ mirall/networklocation.cpp
 mirall/temporarydir.cpp
 mirall/syncresult.cpp
 mirall/unisonfolder.cpp
-mirall/sitecopyfolder.cpp
 mirall/statusdialog.cpp
 mirall/owncloudwizard.cpp
 mirall/owncloudsetupwizard.cpp
@@ -72,7 +71,6 @@ set(mirall_HEADERS
     mirall/owncloudinfo.h
     mirall/owncloudsetupwizard.h
     mirall/owncloudwizard.h
-    mirall/sitecopyfolder.h
     mirall/statusdialog.h
     mirall/unisonfolder.h
     mirall/theme.h

@@ -26,8 +26,6 @@
 #include "mirall/folderwizard.h"
 #include "mirall/networklocation.h"
 #include "mirall/unisonfolder.h"
-#include "mirall/sitecopyfolder.h"
-#include "mirall/sitecopyconfig.h"
 #include "mirall/owncloudfolder.h"
 #include "mirall/statusdialog.h"
 #include "mirall/owncloudsetupwizard.h"
@@ -302,17 +300,6 @@ void Application::slotFetchFolder( const QString& alias )
 
   Folder *f = _folderMap[alias];
 
-  if( f->backend() == "sitecopy" ) {
-    if( QMessageBox::question( 0, tr("Confirm Folder Fetch"), tr("Do you really want to fetch the folder with alias <i>%1</i> from your ownCloud?<br/>"
-                                                                 "This overwrites your local data in directory <i>%2</i>!").arg(alias).arg(f->path()),
-                                                                 QMessageBox::Yes|QMessageBox::No ) == QMessageBox::Yes ) {
-      SiteCopyFolder *sf = static_cast<SiteCopyFolder*>( f );
-      sf->fetchFromOC();
-    } else {
-      qDebug() << "!! Can only fetch backend type sitecopy, this one has " << f->backend();
-    }
-  }
-
 }
 
 void Application::slotPushFolder( const QString& alias )
@@ -326,16 +313,6 @@ void Application::slotPushFolder( const QString& alias )
 
   Folder *f = _folderMap[alias];
 
-  if( f->backend() == "sitecopy" ) {
-    if( QMessageBox::question( 0, tr("Confirm Folder Push"), tr("Do you really want to push the folder with alias <i>%1</i> to your ownCloud?<br/>"
-                                                                 "This overwrites your remote data with data in directory <i>%2</i>!").arg(alias).arg(f->path()),
-                                                                 QMessageBox::Yes|QMessageBox::No ) == QMessageBox::Yes ) {
-      SiteCopyFolder *sf = static_cast<SiteCopyFolder*>( f );
-      sf->pushToOC();
-    } else {
-      qDebug() << "!! Can only fetch backend type sitecopy, this one has " << f->backend();
-    }
-  }
 }
 #endif
 
@@ -400,7 +377,7 @@ void Application::slotEnableFolder(const QString& alias, const bool enable)
   qDebug() << "Application: enable folder with alias " << alias;
 
   _folderMan->slotEnableFolder( alias, enable );
-  _statusDialog->slotUpdateFolderState( _folderMan->folder( alias ));
+  slotSyncStateChange( alias );
 
 }
 

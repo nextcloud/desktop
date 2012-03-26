@@ -32,14 +32,13 @@ public:
      */
   GitFolder(const QString &alias,
             const QString &path,
-            const QString &remote, QObject *parent = 0L);
+            const QString &secondPath, QObject *parent = 0L);
     virtual ~GitFolder();
 
     virtual void startSync();
 private:
     QMutex _syncMutex;
     QProcess *_syncProcess;
-    QString _remote;
 };
 
 }

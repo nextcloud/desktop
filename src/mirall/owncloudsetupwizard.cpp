@@ -18,8 +18,6 @@
 #include <QDesktopServices>
 
 #include "mirall/owncloudsetupwizard.h"
-#include "mirall/sitecopyconfig.h"
-#include "mirall/sitecopyfolder.h"
 #include "mirall/mirallwebdav.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/owncloudinfo.h"

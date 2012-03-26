@@ -26,9 +26,8 @@ namespace Mirall {
                                const QString &path,
                                const QString &secondPath,
                                QObject *parent)
-      : Folder(alias, path, parent),
+      : Folder(alias, path, secondPath, parent),
       _unison(new QProcess(this)),
-      _secondPath(secondPath),
       _syncCount(0)
 {
     QObject::connect(_unison, SIGNAL(readyReadStandardOutput()),
@@ -57,11 +56,6 @@ UnisonFolder::~UnisonFolder()
 bool UnisonFolder::isBusy() const
 {
     return (_unison->state() != QProcess::NotRunning);
-}
-
-QString UnisonFolder::secondPath() const
-{
-    return _secondPath;
 }
 
 void UnisonFolder::startSync(const QStringList &pathList)

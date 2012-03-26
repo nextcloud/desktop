@@ -20,10 +20,9 @@ namespace Mirall {
 
     GitFolder::GitFolder(const QString &alias,
                          const QString &path,
-                         const QString &remote,
+                         const QString &secondPath,
                          QObject *parent)
-    : Folder(alias, path, parent)
-    , _remote(remote)
+    : Folder(alias, path, secondPath, parent)
 {
     _syncProcess = new QProcess();
 }
