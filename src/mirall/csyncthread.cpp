@@ -87,14 +87,13 @@ QMutex CSyncThread::_mutex;
          QFileInfo fi(source);
 
          if( fi.isDir()) {  // File type directory.
-             qDebug() << "OOOOOOOO " << fi.absoluteFilePath() << " is writeable: " << fi.isWritable();
-             if( !(fi.isWritable() && fi.isExecutable()) ) {
+            if( !(fi.isWritable() && fi.isExecutable()) ) {
                  wStats->errorType = WALK_ERROR_DIR_PERMS;
              }
          }
      }
 
-     qDebug() << wStats->seenFiles << ". Path: " << file->path << ": uid= " << file->uid << " - type: " << file->type;
+     // qDebug() << wStats->seenFiles << ". Path: " << file->path << ": uid= " << file->uid << " - type: " << file->type;
      if( wStats->errorType != WALK_ERROR_NONE ) {
          return -1;
      }
@@ -244,10 +243,10 @@ int CSyncThread::getauth(const char *prompt,
     _mutex.lock();
 
     if( qPrompt == QString::fromLocal8Bit("Enter your username:") ) {
-        qDebug() << "OOO Username requested!";
+        // qDebug() << "OOO Username requested!";
         strncpy( buf, _user.toLocal8Bit().constData(), len );
     } else if( qPrompt == QString::fromLocal8Bit("Enter your password:") ) {
-        qDebug() << "OOO Password requested!";
+        // qDebug() << "OOO Password requested!";
         strncpy( buf, _passwd.toLocal8Bit().constData(), len );
     } else {
         qDebug() << "Unknown prompt: <" << prompt << ">";
