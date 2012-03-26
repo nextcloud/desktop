@@ -27,6 +27,7 @@
 #include "mirall/owncloudinfo.h"
 #include "mirall/mirallwebdav.h"
 #include "mirall/mirallconfigfile.h"
+#include "mirall/theme.h"
 
 namespace Mirall
 {
@@ -453,7 +454,7 @@ bool FolderWizardOwncloudPage::isComplete() const
  * Folder wizard itself
  */
 
-FolderWizard::FolderWizard(QWidget *parent)
+FolderWizard::FolderWizard( QWidget *parent, Theme *theme )
     : QWizard(parent),
     _folderWizardSourcePage(0)
 {
@@ -462,7 +463,7 @@ FolderWizard::FolderWizard(QWidget *parent)
     setPage(Page_Target,   new FolderWizardTargetPage());
     // setPage(Page_Network,  new FolderWizardNetworkPage());
     // setPage(Page_Owncloud, new FolderWizardOwncloudPage());
-    setWindowTitle( tr( "Mirall Folder Wizard") );
+    setWindowTitle( tr( "%1 Folder Wizard").arg( theme ? theme->appName() : "Mirall" ) );
 }
 
 void FolderWizard::setFolderMap( Folder::Map *fm)

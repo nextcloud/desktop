@@ -21,6 +21,7 @@
 #include <QNetworkReply>
 
 #include "mirall/owncloudwizard.h"
+#include "mirall/theme.h"
 
 namespace Mirall {
 
@@ -33,7 +34,7 @@ class OwncloudSetupWizard : public QObject
 {
     Q_OBJECT
 public:
-    explicit OwncloudSetupWizard( FolderMan *folderMan = 0, QObject *parent = 0 );
+    explicit OwncloudSetupWizard( FolderMan *folderMan = 0, Theme *theme = 0, QObject *parent = 0 );
 
   void startWizard( );
 

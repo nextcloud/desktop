@@ -40,6 +40,11 @@ OwncloudWizardSelectTypePage::OwncloudWizardSelectTypePage()
     connect( _ui.connectMyOCRadioBtn, SIGNAL(clicked()), SIGNAL(completeChanged()));
     connect( _ui.createNewOCRadioBtn, SIGNAL(clicked()), SIGNAL(completeChanged()));
     connect( _ui.OCUrlLineEdit, SIGNAL(textChanged(QString)), SIGNAL(completeChanged()));
+
+#ifdef OWNCLOUD_CLIENT
+    _ui.createNewOCRadioBtn->setVisible( false );
+    _ui.createNewOwncloudLabel->setVisible( false );
+#endif
 }
 
 OwncloudWizardSelectTypePage::~OwncloudWizardSelectTypePage()

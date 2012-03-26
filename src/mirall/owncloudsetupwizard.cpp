@@ -25,7 +25,9 @@
 
 namespace Mirall {
 
-OwncloudSetupWizard::OwncloudSetupWizard( FolderMan *folderMan, QObject *parent ) :
+class Theme;
+
+OwncloudSetupWizard::OwncloudSetupWizard( FolderMan *folderMan, Theme *theme, QObject *parent ) :
     QObject( parent ),
     _ocInfo(0),
     _folderMan(folderMan)
@@ -64,6 +66,8 @@ OwncloudSetupWizard::OwncloudSetupWizard( FolderMan *folderMan, QObject *parent 
 
     // in case of cancel, terminate the owncloud-admin script.
     connect( _ocWizard, SIGNAL(rejected()), _process, SLOT(terminate()));
+
+    _ocWizard->setWindowTitle( tr("%1 Connection Wizard").arg( theme ? theme->appName() : "Mirall" ) );
 
 }
 
