@@ -167,12 +167,10 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
   _ButtonFetch->setVisible( false );
   _ButtonPush->setVisible( false );
 #endif
-  connect(_ButtonOpenOC, SIGNAL(clicked()), this, SLOT(slotOpenOC()));
   connect(_ButtonEnable, SIGNAL(clicked()), this, SLOT(slotEnableFolder()));
   connect(_ButtonInfo,   SIGNAL(clicked()), this, SLOT(slotInfoFolder()));
   connect(_ButtonAdd,    SIGNAL(clicked()), this, SLOT(slotAddSync()));
 
-  _ButtonOpenOC->setEnabled(false);
   _ButtonRemove->setEnabled(false);
   _ButtonFetch->setEnabled(false);
   _ButtonPush->setEnabled(false);
@@ -354,8 +352,8 @@ void StatusDialog::slotOCInfo( const QString& url, const QString& version )
 {
     _OCUrl = url;
     /* enable the open button */
-    _ocUrlLabel->setText( tr("Connected to %1, ownCloud %2").arg(url).arg(version) );
-    _ButtonOpenOC->setEnabled( true );
+    _ocUrlLabel->setOpenExternalLinks(true);
+    _ocUrlLabel->setText( tr("Connected to <a href=\"%1\">%2</a>, ownCloud %3").arg(url).arg(url).arg(version) );
     _ButtonAdd->setEnabled(true);
     _ownCloudInfo->deleteLater();
 }
@@ -363,7 +361,6 @@ void StatusDialog::slotOCInfo( const QString& url, const QString& version )
 void StatusDialog::slotOCInfoFail()
 {
     _ocUrlLabel->setText( tr("Failed to connect to ownCloud. Please check configuration!") );
-    _ButtonOpenOC->setEnabled(false);
     _ButtonAdd->setEnabled( false);
     _ownCloudInfo->deleteLater();
 }

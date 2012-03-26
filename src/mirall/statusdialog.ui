@@ -92,28 +92,11 @@
     </spacer>
    </item>
    <item row="8" column="0" colspan="3">
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="5,0">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="5">
      <item>
       <widget class="QLabel" name="_ocUrlLabel">
        <property name="text">
         <string>TextLabel</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="_ButtonOpenOC">
-       <property name="text">
-        <string>open...</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../../mirall.qrc">
-         <normaloff>:/mirall/resources/mirall-128.png</normaloff>:/mirall/resources/mirall-128.png</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>24</width>
-         <height>24</height>
-        </size>
        </property>
       </widget>
      </item>
