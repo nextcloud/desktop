@@ -53,5 +53,9 @@ enable_testing()
 # Comment this to build the original mirall client
 add_definitions(-DOWNCLOUD_CLIENT)
 
+set(TRANSLATIONS ${CMAKE_SOURCE_DIR}/translations/mirall_de.ts)
+
 add_subdirectory(src)
 add_subdirectory(test)
+
+
