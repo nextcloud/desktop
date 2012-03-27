@@ -35,6 +35,7 @@
 #include <neon/ne_props.h>
 #include <neon/ne_auth.h>
 #include <neon/ne_dates.h>
+#include <neon/ne_compress.h>
 
 #include "c_lib.h"
 #include "csync.h"
@@ -100,7 +101,8 @@ struct transfer_context {
     int         fd;             /* file descriptor of the file to read or write from */
     char        *tmpFileName;   /* the name of the temp file */
     size_t      bytes_written;  /* the amount of bytes written or read */
-    const char  *method;      /* the HTTP method, either PUT or GET  */
+    const char  *method;        /* the HTTP method, either PUT or GET  */
+    ne_decompress *decompress;  /* the decompress context */
 };
 
 /* Struct with the WebDAV session */
@@ -697,6 +699,65 @@ static ssize_t owncloud_write(csync_vio_method_handle_t *fhandle, const void *bu
     return written;
 }
 
+static int uncompress_reader(void *userdata, const char *buf, size_t len)
+{
+   struct transfer_context *writeCtx = userdata;
+
+   if( buf && writeCtx->fd ) {
+       DEBUG_WEBDAV(("Writing NON compressed %d bytes\n", len));
+       write(writeCtx->fd, buf, len);
+
+       return NE_OK;
+   }
+   return NE_ERROR;
+}
+
+static int compress_reader(void *userdata, const char *buf, size_t len)
+{
+   struct transfer_context *writeCtx = userdata;
+
+   if( buf && writeCtx->fd ) {
+       DEBUG_WEBDAV(("Writing compressed %d bytes\n", len));
+       write(writeCtx->fd, buf, len);
+
+       return NE_OK;
+   }
+   return NE_ERROR;
+}
+
+/*
+ * This hook is called after the response is here from the server, but before
+ * the response body is parsed. It decides if the response is compressed and
+ * if it is it installs the compression reader accordingly.
+ * If the response is not compressed, the normal response body reader is installed.
+ */
+
+static void install_content_reader( ne_request *req, void *userdata, const ne_status *status )
+{
+    const char *enc = NULL;
+    struct transfer_context *writeCtx = userdata;
+
+    if( !writeCtx ) {
+        DEBUG_WEBDAV(("Error: install_content_reader called without valid write context!\n"));
+        return;
+    }
+
+    enc = ne_get_response_header( req, "Content-Encoding" );
+    DEBUG_WEBDAV(("Content encoding ist <%s> with status %d\n", enc ? enc : "empty",
+                  status ? status->code : -1 ));
+
+    if( enc && c_streq( enc, "gzip" )) {
+        writeCtx->decompress = ne_decompress_reader( req, ne_accept_2xx,
+                                                     compress_reader,     /* reader callback */
+                                                     (void*) writeCtx );  /* userdata        */
+    } else {
+        ne_add_response_body_reader( req, ne_accept_2xx,
+                                     uncompress_reader,
+                                     (void*) writeCtx );
+        writeCtx->decompress = NULL;
+    }
+}
+
 static csync_vio_method_handle_t *owncloud_open(const char *durl,
                                         int flags,
                                         mode_t mode) {
@@ -806,7 +867,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
 
     if( rc == NE_OK && ! put ) {
         writeCtx->req = 0;
-	writeCtx->method = "GET";
+        writeCtx->method = "GET";
 
         /* Download the data into a local temp file. */
         /* the download via the get function requires a full uri */
@@ -814,7 +875,44 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
                   ne_get_server_hostport( dav_session.ctx ), uri );
         DEBUG_WEBDAV(("GET request on %s\n", getUrl ));
 
+#define WITH_HTTP_COMPRESSION
+#ifdef WITH_HTTP_COMPRESSION
+        writeCtx->req = ne_request_create( dav_session.ctx, "GET", getUrl );
+
+        /* Allow compressed content by setting the header */
+        ne_add_request_header( writeCtx->req, "Accept-Encoding", "gzip,deflate" );
+
+        /* hook called before the content is parsed to set the correct reader,
+         * either the compressed- or uncompressed reader.
+         */
+        ne_hook_post_headers( dav_session.ctx, install_content_reader, writeCtx );
+
+        /* actually do the request */
+        rc = ne_request_dispatch(writeCtx->req );
+        /* possible return codes are:
+         *  NE_OK, NE_AUTH, NE_CONNECT, NE_TIMEOUT, NE_ERROR (from ne_request.h)
+         */
+
+        if( rc != NE_OK || (rc == NE_OK && ne_get_status(writeCtx->req)->klass != 2) ) {
+            DEBUG_WEBDAV(("request_dispatch failed with rc=%d\n", rc ));
+            if( rc == NE_OK ) rc = NE_ERROR;
+            errno = EACCES;
+        }
+
+        /* delete the hook again, otherwise they get chained as they are with the session */
+        ne_unhook_post_headers( dav_session.ctx, install_content_reader, writeCtx );
+
+        /* if the compression handle is set through the post_header hook, delete it. */
+        if( writeCtx->decompress ) {
+            ne_decompress_destroy( writeCtx->decompress );
+        }
+
+        /* delete the request in any case */
+        ne_request_destroy(writeCtx->req);
+#else
+        DEBUG_WEBDAV(("GET Compression not supported!\n"));
         rc = ne_get( dav_session.ctx, getUrl, writeCtx->fd );  /* FIX_ESCAPE? */
+#endif
         if( rc != NE_OK ) {
             DEBUG_WEBDAV(("Download to local file failed: %d.\n", rc));
             errno = EACCES;
@@ -1091,9 +1189,9 @@ static int owncloud_mkdir(const char *uri, mode_t mode) {
 
       DEBUG_WEBDAV(("MKdir on %s\n", buf ));
       rc = ne_mkcol(dav_session.ctx, buf );
-        if (rc != NE_OK ) {
-            errno = ne_session_error_errno( dav_session.ctx );
-        }
+      if (rc != NE_OK ) {
+          errno = ne_session_error_errno( dav_session.ctx );
+      }
     }
     SAFE_FREE( path );
 
