@@ -147,8 +147,8 @@ sub assertLocalAndRemoteDir( $$$ )
 		# check for equal mod times
 		my $remoteModTime = $res->get_property( "lastmodifiedepoch" ) ;
 		my @info = stat( "$local/$filename" );
-		my $localModTime = $info[8];
-		assert( $remoteModTime == $localModTime, "Modfied-Times differ: $remoteModTime <-> $localModTime" );
+		my $localModTime = $info[9];
+		assert( $remoteModTime == $localModTime, "Modfied-Times differ: remote: $remoteModTime <-> local: $localModTime" );
 		
 		# check for the same file size
 		my $localSize = $info[7];
