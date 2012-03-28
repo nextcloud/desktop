@@ -17,6 +17,7 @@
 int main(int argc, char **argv)
 {
   Mirall::Application app(argc, argv);
+  Q_INIT_RESOURCE(mirall);
   return app.exec();
 }
 
