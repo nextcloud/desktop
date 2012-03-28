@@ -23,6 +23,7 @@ class MirallConfigFile
 public:
     MirallConfigFile();
 
+    QString configPath() const;
     QString mirallConfigFile() const;
     bool exists();
 

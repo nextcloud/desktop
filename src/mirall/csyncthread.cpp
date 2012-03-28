@@ -23,6 +23,7 @@
 #include <QDebug>
 
 #include "mirall/csyncthread.h"
+#include "mirall/mirallconfigfile.h"
 
 namespace Mirall {
 
@@ -150,6 +151,14 @@ void CSyncThread::run()
     csync_set_auth_callback( csync, getauth );
     csync_enable_conflictcopys(csync);
 
+    MirallConfigFile cfg;
+    QString excludeList = cfg.configPath() + "exclude.lst";
+    QFileInfo fi( excludeList );
+    if( fi.isReadable() ) {
+        qDebug() << "==== added CSync exclude List: " << excludeList.toAscii();
+        csync_add_exclude_list( csync, excludeList.toAscii() );
+    }
+
     QTime t;
     t.start();
 
@@ -172,6 +181,7 @@ void CSyncThread::run()
     qDebug() << "<<###############################################################";
 
     csync_set_userdata(csync, wStats);
+
     walkTime.start();
     if( csync_walk_local_tree(csync, &checkPermissions, 0) < 0 ) {
         qDebug() << "Error in treewalk.";

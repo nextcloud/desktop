@@ -24,6 +24,13 @@ MirallConfigFile::MirallConfigFile()
 {
 }
 
+QString MirallConfigFile::configPath() const
+{
+    QString dir = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+    if( !dir.endsWith('/') ) dir.append('/');
+    return dir;
+}
+
 QString MirallConfigFile::mirallConfigFile() const
 {
 #ifdef OWNCLOUD_CLIENT
@@ -34,7 +41,7 @@ QString MirallConfigFile::mirallConfigFile() const
     if( qApp->applicationName().isEmpty() ) {
         qApp->setApplicationName( theme.appName() );
     }
-    const QString dir = QDesktopServices::storageLocation(QDesktopServices::DataLocation)+"/"+theme.configFileName();
+    const QString dir = configPath() + theme.configFileName();
     return dir;
 }
 
