@@ -151,10 +151,11 @@ void CSyncThread::run()
     csync_set_auth_callback( csync, getauth );
     csync_enable_conflictcopys(csync);
 
+
     MirallConfigFile cfg;
-    QString excludeList = cfg.configPath() + "exclude.lst";
-    QFileInfo fi( excludeList );
-    if( fi.isReadable() ) {
+    QString excludeList = cfg.excludeFile();
+
+    if( !excludeList.isEmpty() ) {
         qDebug() << "==== added CSync exclude List: " << excludeList.toAscii();
         csync_add_exclude_list( csync, excludeList.toAscii() );
     }

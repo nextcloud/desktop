@@ -18,6 +18,7 @@
 
 #include "mirall/folder.h"
 #include "mirall/folderwatcher.h"
+#include "mirall/mirallconfigfile.h"
 
 #define DEFAULT_POLL_INTERVAL_SEC 15000
 
@@ -46,6 +47,11 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
 
 #ifdef USE_WATCHER
     _watcher = new Mirall::FolderWatcher(path, this);
+
+    MirallConfigFile cfg;
+
+    _watcher->setIgnoreListFile( cfg.excludeFile() );
+
     QObject::connect(_watcher, SIGNAL(folderChanged(const QStringList &)),
                      SLOT(slotChanged(const QStringList &)));
 #endif

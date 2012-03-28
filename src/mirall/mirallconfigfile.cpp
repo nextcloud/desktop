@@ -31,7 +31,18 @@ QString MirallConfigFile::configPath() const
     return dir;
 }
 
-QString MirallConfigFile::mirallConfigFile() const
+QString MirallConfigFile::excludeFile() const
+{
+    QString dir = configPath();
+    dir += "exclude.lst";
+    QFileInfo fi( dir );
+    if( fi.isReadable() ) {
+        return dir;
+    }
+    return QString();
+}
+
+QString MirallConfigFile::configFile() const
 {
 #ifdef OWNCLOUD_CLIENT
     ownCloudTheme theme;
@@ -47,7 +58,7 @@ QString MirallConfigFile::mirallConfigFile() const
 
 bool MirallConfigFile::exists()
 {
-    QFile file( mirallConfigFile() );
+    QFile file( configFile() );
     return file.exists();
 }
 
@@ -61,7 +72,7 @@ bool MirallConfigFile::connectionExists( const QString& conn )
     QString con = conn;
     if( conn.isEmpty() ) con = defaultConnection();
 
-    QSettings settings( mirallConfigFile(), QSettings::IniFormat);
+    QSettings settings( configFile(), QSettings::IniFormat);
 
     return settings.contains( QString("%1/url").arg( conn ) );
 }
@@ -72,7 +83,7 @@ void MirallConfigFile::writeOwncloudConfig( const QString& connection,
                                          const QString& user,
                                          const QString& passwd )
 {
-    const QString file = mirallConfigFile();
+    const QString file = configFile();
     qDebug() << "*** writing mirall config to " << file;
 
     QSettings settings( file, QSettings::IniFormat);
@@ -101,7 +112,7 @@ void MirallConfigFile::removeConnection( const QString& connection )
     qDebug() << "    removing the config file for connection " << con;
 
     // Currently its just removing the entire config file
-    QSettings settings( mirallConfigFile(), QSettings::IniFormat);
+    QSettings settings( configFile(), QSettings::IniFormat);
     settings.beginGroup( con );
     settings.remove("");  // removes all content from the group
     settings.sync();
@@ -118,7 +129,7 @@ QString MirallConfigFile::ownCloudUrl( const QString& connection, bool webdav ) 
     QString con( connection );
     if( connection.isEmpty() ) con = defaultConnection();
 
-    QSettings settings( mirallConfigFile(), QSettings::IniFormat );
+    QSettings settings( configFile(), QSettings::IniFormat );
     settings.beginGroup( con );
 
     QString url = settings.value( "url" ).toString();
@@ -137,7 +148,7 @@ QString MirallConfigFile::ownCloudUser( const QString& connection ) const
     QString con( connection );
     if( connection.isEmpty() ) con = defaultConnection();
 
-    QSettings settings( mirallConfigFile(), QSettings::IniFormat );
+    QSettings settings( configFile(), QSettings::IniFormat );
     settings.beginGroup( con );
 
     QString user = settings.value( "user" ).toString();
@@ -151,7 +162,7 @@ QString MirallConfigFile::ownCloudPasswd( const QString& connection ) const
     QString con( connection );
     if( connection.isEmpty() ) con = defaultConnection();
 
-    QSettings settings( mirallConfigFile(), QSettings::IniFormat );
+    QSettings settings( configFile(), QSettings::IniFormat );
     settings.beginGroup( con );
 
     QString pwd = settings.value( "password" ).toString();

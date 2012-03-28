@@ -24,7 +24,9 @@ public:
     MirallConfigFile();
 
     QString configPath() const;
-    QString mirallConfigFile() const;
+    QString configFile() const;
+    QString excludeFile() const;
+
     bool exists();
 
     bool connectionExists( const QString& = QString() );

@@ -53,11 +53,6 @@ FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
       _lastMask(0),
       _initialSyncDone(false)
 {
-    // this is not the best place for this
-    addIgnore(".unison*");
-    addIgnore("*csync_timediff.ctmp*");
-    addIgnore(".*.sw?"); // vi swap files
-    addIgnore(".*.*.sw?");
 #ifdef USE_WATCHER
     _processTimer->setSingleShot(true);
     QObject::connect(_processTimer, SIGNAL(timeout()), this, SLOT(slotProcessTimerTimeout()));
@@ -82,8 +77,25 @@ QString FolderWatcher::root() const
     return _root;
 }
 
+void FolderWatcher::setIgnoreListFile( const QString& file )
+{
+    if( file.isEmpty() ) return;
+
+    QFile infile( file );
+    if (!infile.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
+
+    while (!infile.atEnd()) {
+        QString line = QString::fromLocal8Bit( infile.readLine() ).trimmed();
+        if( !line.startsWith( '#' )) {
+            addIgnore(line);
+        }
+    }
+}
+
 void FolderWatcher::addIgnore(const QString &pattern)
 {
+    if( pattern.isEmpty() ) return;
     _ignores.append(pattern);
 }
 
@@ -208,10 +220,10 @@ void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
     }
     else if (mask & IN_DELETE) {
         //qDebug() << cookie << " DELETE: " << path;
-        if (_inotify->directories().contains(path) &&
-            QFileInfo(path).isDir());
+        if ( QFileInfo(path).isDir() && _inotify->directories().contains(path) ) {
             qDebug() << "(-) Watcher:" << path;
-        _inotify->removePath(path);
+            _inotify->removePath(path);
+        }
     }
     else if (mask & IN_CLOSE_WRITE) {
         //qDebug() << cookie << " WRITABLE CLOSED: " << path;
@@ -228,12 +240,12 @@ void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
         regexp.setPatternSyntax(QRegExp::Wildcard);
 
         if (regexp.exactMatch(path)) {
-            qDebug() << "* Discarded " << path;
+            qDebug() << "* Discarded by ignore pattern: " << path;
             return;
         }
         QFileInfo fInfo(path);
         if( regexp.exactMatch(fInfo.fileName())) {
-            qDebug() << "* Discarded " << path;
+            qDebug() << "* Discarded by ignore pattern:" << path;
             return;
         }
         if( fInfo.isHidden() ) {
@@ -246,10 +258,6 @@ void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
         _pendingPathes[path] = 0;
     }
     _pendingPathes[path] = _pendingPathes[path]+mask;
-#if 0
-    _pendingPaths[path]
-    _pendingPaths.append(path);
-#endif
 #endif
     setProcessTimer();
 }
