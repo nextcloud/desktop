@@ -33,10 +33,13 @@ QIcon Theme::folderIcon( const QString& backend, int size ) const
   if( backend == QString::fromLatin1("owncloud")) name = QString( "mirall-%1.png" ).arg(size);
   if( backend == QString::fromLatin1("unison" )) name  = QString( "folder-%1.png" ).arg(size);
   if( backend == QString::fromLatin1("csync" )) name   = QString( "folder-remote-%1.png" ).arg(size);
-  if( backend.isEmpty() || backend == QString::fromLatin1("none") )
-      name = QString("folder-grey-%1.png").arg(size);
+  if( backend.isEmpty() || backend == QString::fromLatin1("none") ) {
+      // name = QString("folder-grey-%1.png").arg(size);
+      name = QString("folder-grey-48.png");
+  }
 
-  return QIcon( QString( ":/mirall/resources/%1").arg(name) );
+  qDebug() << "==> load folder icon " << name;
+  return QIcon( QPixmap( QString(":/mirall/resources/%1").arg(name)) );
 }
 
 QIcon Theme::syncStateIcon( SyncResult::Status status, int ) const
