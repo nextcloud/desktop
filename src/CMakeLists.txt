@@ -107,7 +107,8 @@ add_executable( mirall main.cpp )
 set( final_src ${qtwebdav_LIB_SRCS} ${qtwebdav_HEADERS}  ${mirall_HEADERS} ${qtwebdavMoc}
 	${MIRALL_RC_SRC} ${mirall_SRCS} ${mirall_UI_SRCS} ${mirallMoc} ${mirall_HEADERS} ${mirall_I18N})
 
-add_executable(owncloud main.cpp ${final_src})
+# add_executable(owncloud WIN32 main.cpp ${final_src})
+add_executable(owncloud  main.cpp ${final_src})
 
 SET(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 SET_TARGET_PROPERTIES( mirall PROPERTIES
