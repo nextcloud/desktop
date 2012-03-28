@@ -177,6 +177,7 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
   _folderList->setItemDelegate( delegate );
   _folderList->setModel( _model );
   _folderList->setMinimumWidth( 300 );
+  _folderList->setEditTriggers( QAbstractItemView::NoEditTriggers );
 
   connect( _folderList,SIGNAL(doubleClicked(QModelIndex)),SLOT(slotDoubleClicked(QModelIndex)));
 
@@ -276,6 +277,8 @@ void StatusDialog::slotUpdateFolderState( Folder *folder )
 
 void StatusDialog::folderToModelItem( QStandardItem *item, Folder *f )
 {
+    if( ! item || !f ) return;
+
     QIcon icon = _theme->folderIcon( f->backend(), 48 );
     item->setData( icon,             FolderViewDelegate::FolderIconRole );
     item->setData( f->path(),        FolderViewDelegate::FolderPathRole );
