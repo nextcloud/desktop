@@ -53,12 +53,13 @@ private slots:
     void slotPollTimerRemoteCheck();
 #endif
 private:
-    QString _secondPath;
+    QString      _secondPath;
     CSyncThread *_csync;
-    bool _localCheckOnly;
-    int _pollTimerCnt;
-    QStringList _errors;
-    bool _csyncError;
+    bool         _localCheckOnly;
+    int          _pollTimerCnt;
+    QStringList  _errors;
+    bool         _csyncError;
+    ulong        _lastSeenFiles;
 };
 
 }

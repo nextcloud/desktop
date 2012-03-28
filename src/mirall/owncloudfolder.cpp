@@ -39,6 +39,7 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
     , _csync(0)
     , _pollTimerCnt(0)
     , _csyncError(false)
+    , _lastSeenFiles(0)
 {
 #ifdef USE_WATCHER
     qDebug() << "****** ownCloud folder using watcher *******";
@@ -145,15 +146,21 @@ void ownCloudFolder::slotThreadTreeWalkResult( WalkStats *wStats )
     qDebug() << "Renamed files: " << wStats->renamed;
 
 #ifndef USE_WATCHER
-    if( (wStats->newFiles + wStats->eval + wStats->removed + wStats->renamed) > 0 ) {
+    if( _lastSeenFiles > 0 && _lastSeenFiles != wStats->seenFiles ) {
+        qDebug() << "*** last seen files different from currently seen number => full Sync needed";
+        _localCheckOnly = false;
+        _pollTimerCnt = 0;
+    }
+    if( _localCheckOnly && (wStats->newFiles + wStats->eval + wStats->removed + wStats->renamed) > 0 ) {
          qDebug() << "*** Local changes, lets do a full sync!" ;
          _localCheckOnly = false; // next time it will be a non local check.
          _pollTimerCnt = 0;
-        // QTimer::singleShot( 0, this, SLOT(startSync( QStringList() )));
-    } else {
+    }
+    if( _localCheckOnly ) {
         qDebug() << "     *** No local changes, finalize, pollTimerCounter is "<< _pollTimerCnt ;
     }
 #endif
+    _lastSeenFiles = wStats->seenFiles;
     /*
      * Attention: This is deleted here, outside of the thread, because the thread can
      * faster die than this routine has read out the memory.
