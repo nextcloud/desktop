@@ -548,14 +548,14 @@ static int _stat_perms( int type ) {
     int ret = 0;
 
     if( type == CSYNC_VIO_FILE_TYPE_DIRECTORY ) {
-        DEBUG_WEBDAV(("Setting mode in stat (dir)\n"));
+        /* DEBUG_WEBDAV(("Setting mode in stat (dir)\n")); */
         /* directory permissions */
         ret = S_IFDIR | S_IRUSR | S_IWUSR | S_IXUSR /* directory, rwx for user */
                 | S_IRGRP | S_IXGRP                       /* rx for group */
                 | S_IROTH | S_IXOTH;                      /* rx for others */
     } else {
         /* regualar file permissions */
-        DEBUG_WEBDAV(("Setting mode in stat (file)\n"));
+        /* DEBUG_WEBDAV(("Setting mode in stat (file)\n")); */
         ret = S_IFREG | S_IRUSR | S_IWUSR /* regular file, user read & write */
                 | S_IRGRP                         /* group read perm */
                 | S_IROTH;                        /* others read perm */
@@ -758,9 +758,11 @@ static void install_content_reader( ne_request *req, void *userdata, const ne_st
     }
 }
 
+static char*_lastDir = NULL;
+
 static csync_vio_method_handle_t *owncloud_open(const char *durl,
-                                        int flags,
-                                        mode_t mode) {
+                                                int flags,
+                                                mode_t mode) {
     char *uri = NULL;
     char *dir = NULL;
     char getUrl[PATH_MAX];
@@ -807,14 +809,21 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
 	    return NULL;
 	}
         DEBUG_WEBDAV(("Stating directory %s\n", dir ));
-        if( owncloud_stat( dir, (csync_vio_method_handle_t*)(&statBuf) ) == 0 ) {
-            DEBUG_WEBDAV(("Directory of file to open exists.\n"));
+        if( c_streq( dir, _lastDir )) {
+            DEBUG_WEBDAV(("Dir %s is there, we know it already.\n", dir));
         } else {
-            DEBUG_WEBDAV(("Directory %s of file to open does NOT exist.\n", dir ));
-            /* the directory does not exist. That is an ENOENT */
-            errno = ENOENT;
-            SAFE_FREE( dir );
-            return NULL;
+            if( owncloud_stat( dir, (csync_vio_method_handle_t*)(&statBuf) ) == 0 ) {
+                DEBUG_WEBDAV(("Directory of file to open exists.\n"));
+                SAFE_FREE( _lastDir );
+                _lastDir = c_strdup(dir);
+
+            } else {
+                DEBUG_WEBDAV(("Directory %s of file to open does NOT exist.\n", dir ));
+                /* the directory does not exist. That is an ENOENT */
+                errno = ENOENT;
+                SAFE_FREE( dir );
+                return NULL;
+            }
         }
     }
 
@@ -855,13 +864,6 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
         DEBUG_WEBDAV(("PUT request on %s!\n", uri));
 
         writeCtx->req = ne_request_create(dav_session.ctx, "PUT", uri);
-        if( writeCtx->req ) {
-            rc = ne_begin_request( writeCtx->req );
-            if (rc != NE_OK) {
-                DEBUG_WEBDAV(("Can not open a request, bailing out.\n"));
-                errno = EACCES;
-            }
-        }
 	writeCtx->method = "PUT";
     }
 
