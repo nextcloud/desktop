@@ -338,6 +338,18 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
 }
 
 int csync_vio_local_rename(const char *olduri, const char *newuri) {
+#ifdef _WIN32
+  if(olduri && newuri) {
+    if (MoveFileEx(olduri, newuri, MOVEFILE_COPY_ALLOWED + MOVEFILE_REPLACE_EXISTING + MOVEFILE_WRITE_THROUGH )) {
+         return 0;
+    }
+    errno = GetLastError();
+  } else {
+    errno = ENOENT;
+  }
+  return -1;
+#endif
+
   return rename(olduri, newuri);
 }
 
