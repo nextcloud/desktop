@@ -273,7 +273,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     rc = -1;
     goto out;
   }
-
+#if 0
   if (csync_vio_stat(ctx, turi, tstat) < 0) {
     switch (errno) {
       case ENOMEM:
@@ -298,7 +298,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     rc = 1;
     goto out;
   }
-
+#endif
   /* override original file */
   ctx->replica = drep;
   if (csync_vio_rename(ctx, turi, duri) < 0) {
