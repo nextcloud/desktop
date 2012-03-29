@@ -426,6 +426,11 @@ csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx, ino_t inode) {
   char *stmt = NULL;
   size_t len = 0;
 
+#ifdef _WIN32
+  /* no idea about inodes. */
+  return st;
+#endif
+
   stmt = sqlite3_mprintf("SELECT * FROM metadata WHERE inode='%llu'", inode);
   if (stmt == NULL) {
     return NULL;
