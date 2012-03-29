@@ -160,7 +160,7 @@ signals:
     void syncStateChange();
     void syncStarted();
     void syncFinished(const SyncResult &result);
-    void scheduleToSync(Folder*);
+    void scheduleToSync( const QString& );
 
 protected:
 #ifdef USE_WATCHER

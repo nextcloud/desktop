@@ -81,7 +81,7 @@ public slots:
 
 private slots:
     // slot to add a folder to the syncing queue
-    void slotScheduleSync( Folder* );
+    void slotScheduleSync( const QString & );
 
     // slot to take the next folder from queue and start syncing.
     void slotScheduleFolderSync();
@@ -91,19 +91,22 @@ private:
     // and create the folders
     int setupKnownFolders();
 
+    void removeFolder( const QString& );
+
 
     // creates a folder for a specific
     // configuration
     Folder* setupFolderFromConfigFile(const QString & );
 
     FolderWatcher *_configFolderWatcher;
-    Folder::Map _folderMap;
+    Folder::Map    _folderMap;
     QHash<QString, bool> _folderEnabledMap;
-    QString _folderConfigPath;
+    QString        _folderConfigPath;
     OwncloudSetup *_ownCloudSetup;
     QSignalMapper *_folderChangeSignalMapper;
-    Folder *_currentSyncFolder;
-    QQueue<Folder*> _scheduleQueue;
+    QString        _currentSyncFolder;
+    QStringList    _scheduleQueue;
+    bool           _folderToDelete;
 };
 
 }

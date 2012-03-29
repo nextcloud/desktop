@@ -26,8 +26,8 @@
 namespace Mirall {
 
 FolderMan::FolderMan(QObject *parent) :
-    QObject(parent)
-    , _currentSyncFolder(0)
+    QObject(parent),
+    _folderToDelete(false)
 {
     // if QDir::mkpath would not be so stupid, I would not need to have this
     // duplication of folderConfigPath() here
@@ -174,7 +174,7 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
 
     qDebug() << "Adding folder to Folder Map " << folder;
     /* Use a signal mapper to connect the signals to the alias */
-    connect(folder, SIGNAL(scheduleToSync(Folder*)), SLOT(slotScheduleSync(Folder*)));
+    connect(folder, SIGNAL(scheduleToSync(const QString&)), SLOT(slotScheduleSync(const QString&)));
     connect(folder, SIGNAL(syncStateChange()), _folderChangeSignalMapper, SLOT(map()));
     connect(folder, SIGNAL(syncStarted()), SLOT(slotFolderSyncStarted()));
     connect(folder, SIGNAL(syncFinished(SyncResult)), SLOT(slotFolderSyncFinished(SyncResult)));
@@ -239,13 +239,23 @@ SyncResult FolderMan::syncResult( const QString& alias )
   * if a folder wants to be synced, it calls this slot and is added
   * to the queue. The slot to actually start a sync is called afterwards.
   */
-void FolderMan::slotScheduleSync( Folder *folder )
+void FolderMan::slotScheduleSync( const QString& alias )
 {
-    if( ! folder ) return;
+    if( alias.isEmpty() ) return;
 
-    qDebug() << "Schedule folder " << folder->alias() << " to sync!";
-    _scheduleQueue.enqueue( folder );
-    slotScheduleFolderSync();
+    qDebug() << "Schedule folder " << alias << " to sync!";
+    if( _currentSyncFolder == alias ) {
+        // the current folder is currently syncing.
+        qDebug() << "OOOOOOOOOOOOOOOOOOOOOOO Folder is currently syncing";
+    }
+
+    if( _scheduleQueue.contains( alias ) ) {
+        qDebug() << " II> Sync for folder " << alias << " already scheduled, do not enqueue!";
+    } else {
+        _scheduleQueue.append( alias );
+
+        slotScheduleFolderSync();
+    }
 }
 
 /*
@@ -255,20 +265,24 @@ void FolderMan::slotScheduleSync( Folder *folder )
   */
 void FolderMan::slotScheduleFolderSync()
 {
-    if( _currentSyncFolder ) {
+    if( !_currentSyncFolder.isEmpty() ) {
         qDebug() << "Currently folder " << _currentSyncFolder << " is running, wait for finish!";
         return;
     }
 
     if( ! _scheduleQueue.isEmpty() ) {
-        _currentSyncFolder = _scheduleQueue.dequeue();
-        _currentSyncFolder->startSync( QStringList() );
+        const QString alias = _scheduleQueue.takeFirst();
+        if( _folderMap.contains( alias ) ) {
+            Folder *f = _folderMap[alias];
+            _currentSyncFolder = alias;
+            f->startSync( QStringList() );
+        }
     }
 }
 
 void FolderMan::slotFolderSyncStarted( )
 {
-    qDebug() << ">===================================== sync started for " << _currentSyncFolder->alias();
+    qDebug() << ">===================================== sync started for " << _currentSyncFolder;
 }
 
 /*
@@ -277,8 +291,16 @@ void FolderMan::slotFolderSyncStarted( )
   */
 void FolderMan::slotFolderSyncFinished( const SyncResult& )
 {
-    qDebug() << "<===================================== sync finsihed for " << _currentSyncFolder->alias();
-    _currentSyncFolder = 0;
+    qDebug() << "<===================================== sync finsihed for " << _currentSyncFolder;
+
+    // check if the folder is scheduled to be deleted. The flag is set in slotRemoveFolder
+    // after the user clicked to delete it.
+    if( _folderToDelete ) {
+        qDebug() << " !! This folder is going to be deleted now!";
+        removeFolder( _currentSyncFolder );
+        _folderToDelete = false;
+    }
+    _currentSyncFolder = QString();
     QTimer::singleShot(200, this, SLOT(slotScheduleFolderSync()));
 }
 
@@ -315,10 +337,21 @@ void FolderMan::slotRemoveFolder( const QString& alias )
 {
     if( alias.isEmpty() ) return;
 
+    if( _currentSyncFolder == alias ) {
+        // attention: sync is currently running!
+        _folderToDelete = true; // flag for the sync finished slot
+    } else {
+        removeFolder(alias);
+    }
+}
+
+// remove a folder from the map. Should be sure n
+void FolderMan::removeFolder( const QString& alias )
+{
     if( _folderMap.contains( alias )) {
       qDebug() << "Removing " << alias;
       Folder *f = _folderMap.take( alias );
-      delete f;
+      f->deleteLater();
     } else {
       qDebug() << "!! Can not remove " << alias << ", not in folderMap.";
     }
@@ -328,8 +361,6 @@ void FolderMan::slotRemoveFolder( const QString& alias )
         qDebug() << "Remove folder config file " << file.fileName();
       file.remove();
     }
-    // FIXME: Refresh GUI elements
-
 }
 
 }
