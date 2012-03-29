@@ -704,7 +704,7 @@ static int uncompress_reader(void *userdata, const char *buf, size_t len)
    struct transfer_context *writeCtx = userdata;
 
    if( buf && writeCtx->fd ) {
-       DEBUG_WEBDAV(("Writing NON compressed %d bytes\n", len));
+       /* DEBUG_WEBDAV(("Writing NON compressed %d bytes\n", len)); */
        write(writeCtx->fd, buf, len);
 
        return NE_OK;
@@ -717,7 +717,7 @@ static int compress_reader(void *userdata, const char *buf, size_t len)
    struct transfer_context *writeCtx = userdata;
 
    if( buf && writeCtx->fd ) {
-       DEBUG_WEBDAV(("Writing compressed %d bytes\n", len));
+       /* DEBUG_WEBDAV(("Writing compressed %d bytes\n", len)); */
        write(writeCtx->fd, buf, len);
 
        return NE_OK;
@@ -843,8 +843,9 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
         writeCtx->tmpFileName = c_strdup( "/tmp/csync.XXXXXX" );
         writeCtx->fd = mkstemp( writeCtx->tmpFileName );
 #endif
-        DEBUG_WEBDAV(("opening temp directory %s\n", writeCtx->tmpFileName ));
+        DEBUG_WEBDAV(("opening temp directory %s: %d\n", writeCtx->tmpFileName, writeCtx->fd ));
         if( writeCtx->fd == -1 ) {
+	    DEBUG_WEBDAV(("Failed to open temp file, errno = %d\n", errno ));
             rc = NE_ERROR;
             /* errno is set by the mkstemp call above. */
         }
@@ -1136,7 +1137,7 @@ static csync_vio_file_stat_t *owncloud_readdir(csync_vio_method_handle_t *dhandl
     csync_vio_file_stat_t *lfs = NULL;
 
     if( fetchCtx->currResource ) {
-        DEBUG_WEBDAV(("readdir method called for %s\n", fetchCtx->currResource->uri));
+        // DEBUG_WEBDAV(("readdir method called for %s\n", fetchCtx->currResource->uri));
     } else {
         /* DEBUG_WEBDAV(("An empty dir or at end\n")); */
         return NULL;
@@ -1157,7 +1158,7 @@ static csync_vio_file_stat_t *owncloud_readdir(csync_vio_method_handle_t *dhandl
         _fs.size   = lfs->size;
     }
 
-    DEBUG_WEBDAV(("LFS fields: %s: %d\n", lfs->name, lfs->type ));
+    // DEBUG_WEBDAV(("LFS fields: %s: %d\n", lfs->name, lfs->type ));
     return lfs;
 }
 
