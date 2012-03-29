@@ -179,8 +179,6 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
   _folderList->setMinimumWidth( 300 );
   _folderList->setEditTriggers( QAbstractItemView::NoEditTriggers );
 
-  connect( _folderList,SIGNAL(doubleClicked(QModelIndex)),SLOT(slotDoubleClicked(QModelIndex)));
-
   connect(_ButtonClose,  SIGNAL(clicked()), this, SLOT(accept()));
   connect(_ButtonRemove, SIGNAL(clicked()), this, SLOT(slotRemoveFolder()));
 #ifdef HAVE_FETCH_AND_PUSH
@@ -201,7 +199,14 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
   _ButtonInfo->setEnabled(false);
   _ButtonAdd->setEnabled(true);
 
+#ifdef Q_WS_X11
   connect(_folderList, SIGNAL(activated(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
+  connect( _folderList,SIGNAL(doubleClicked(QModelIndex)),SLOT(slotDoubleClicked(QModelIndex)));
+#endif
+#ifdef Q_WS_WIN
+  connect(_folderList, SIGNAL(clicked(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
+  connect( _folderList,SIGNAL(doubleClicked(QModelIndex)),SLOT(slotDoubleClicked(QModelIndex)));
+#endif
 }
 
 void StatusDialog::slotFolderActivated( const QModelIndex& indx )
@@ -308,8 +313,16 @@ void StatusDialog::slotRemoveFolder()
         if( !alias.isEmpty() ) {
             // remove from file system through folder man
             emit(removeFolderAlias( alias ));
-            _model->removeRow( selected.row() );
+            // _model->removeRow( selected.row() );
         }
+    }
+}
+
+void StatusDialog::slotRemoveSelectedFolder()
+{
+    QModelIndex selected = _folderList->selectionModel()->currentIndex();
+    if( selected.isValid() ) {
+        _model->removeRow( selected.row() );
     }
 }
 

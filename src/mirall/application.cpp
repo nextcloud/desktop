@@ -29,6 +29,7 @@
 #include "mirall/owncloudfolder.h"
 #include "mirall/statusdialog.h"
 #include "mirall/owncloudsetupwizard.h"
+#include "mirall/owncloudinfo.h"
 #include "mirall/theme.h"
 #include "mirall/mirallconfigfile.h"
 
@@ -44,8 +45,10 @@ namespace Mirall {
 
 Application::Application(int argc, char **argv) :
     QApplication(argc, argv),
+    _tray(0),
     _networkMgr(new QNetworkConfigurationManager(this)),
-    _contextMenu(0)
+    _contextMenu(0),
+    _ocInfo(0)
 {
 #ifdef OWNCLOUD_CLIENT
     _theme = new ownCloudTheme();
@@ -107,17 +110,11 @@ Application::Application(int argc, char **argv) :
         //qDebug() << "Network:" << netCfg.identifier();
     }
 
-    /* setup the folder list */
-    int cnt =  _folderMan->setupFolders();
-
     setupActions();
     setupSystemTray();
 
-    if( cnt ) {
-        _tray->setIcon(_theme->folderIcon("owncloud", 24));
-    }
-
     QTimer::singleShot( 5000, this, SLOT(slotHideSplash()) );
+    QTimer::singleShot( 0, this, SLOT( slotStartFolderSetup() ));
 
     qDebug() << "Network Location: " << NetworkLocation::currentLocation().encoded();
 }
@@ -129,6 +126,44 @@ Application::~Application()
     delete _networkMgr;
     delete _folderMan;
     delete _tray;
+    delete _ocInfo;
+}
+
+void Application::slotStartFolderSetup()
+{
+    _ocInfo = new ownCloudInfo( QString(), this );
+
+    if( _ocInfo->isConfigured() ) {
+      connect( _ocInfo,SIGNAL(ownCloudInfoFound(QString,QString)),
+               SLOT(slotOwnCloudFound(QString,QString)));
+      connect( _ocInfo,SIGNAL(noOwncloudFound(QNetworkReply::NetworkError)),
+               SLOT(slotNoOwnCloudFound(QNetworkReply::NetworkError)));
+
+      _ocInfo->checkInstallation();
+    } else {
+        slotNoOwnCloudFound( QNetworkReply::UnknownNetworkError );
+    }
+}
+
+void Application::slotOwnCloudFound( const QString& url , const QString& version )
+{
+    qDebug() << "** Application: ownCloud found: " << url << " with version " << version;
+    int cnt = _folderMan->setupFolders();
+    if( cnt ) {
+        _tray->setIcon(_theme->folderIcon("owncloud", 24));
+        _tray->show();
+        if( _tray )
+            _tray->showMessage(tr("ownCloud Sync Started"), tr("Sync started for %1 configured sync folder(s).").arg(cnt));
+    }
+    setupContextMenu();
+}
+
+void Application::slotNoOwnCloudFound( QNetworkReply::NetworkError err )
+{
+    qDebug() << "** Application: NO ownCloud found!";
+    QMessageBox::warning(0, tr("No ownCloud Connection"),
+                         tr("There is no ownCloud connection available. Please configure one by clicking on the tray icon!"));
+
 }
 
 void Application::slotHideSplash()
@@ -156,14 +191,14 @@ void Application::setupSystemTray()
     connect(_tray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             SLOT(slotTrayClicked(QSystemTrayIcon::ActivationReason)));
 
-    setupContextMenu();
+    // setupContextMenu();
 
     _tray->show();
 }
 
 void Application::setupContextMenu()
 {
-    delete _contextMenu;
+    if( _contextMenu ) delete _contextMenu;
     _contextMenu = new QMenu();
     _contextMenu->setTitle(_theme->appName() );
     _contextMenu->addAction(_actionConfigure);
@@ -285,7 +320,7 @@ void Application::slotRemoveFolder( const QString& alias )
     }
 
     _folderMan->slotRemoveFolder( alias );
-
+    _statusDialog->slotRemoveSelectedFolder( );
 }
 
 #ifdef HAVE_FETCH_AND_PUSH

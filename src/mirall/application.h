@@ -17,6 +17,7 @@
 
 #include <QApplication>
 #include <QSystemTrayIcon>
+#include <QNetworkReply>
 
 #include "mirall/syncresult.h"
 #include "mirall/folder.h"
@@ -29,6 +30,7 @@ class QSystemTrayIcon;
 class QNetworkConfigurationManager;
 class QSignalMapper;
 class QSplashScreen;
+class QNetworkReply;
 
 namespace Mirall {
 class Theme;
@@ -36,6 +38,7 @@ class FolderWatcher;
 class FolderWizard;
 class StatusDialog;
 class OwncloudSetupWizard;
+class ownCloudInfo;
 
 class Application : public QApplication
 {
@@ -72,6 +75,9 @@ protected slots:
     void slotFolderOpenAction(const QString & );
     void slotHideSplash();
 
+    void slotStartFolderSetup();
+    void slotOwnCloudFound( const QString&, const QString& );
+    void slotNoOwnCloudFound( QNetworkReply::NetworkError );
 private:
     // configuration file -> folder
     QSystemTrayIcon *_tray;
@@ -92,6 +98,7 @@ private:
     Theme *_theme;
     QSignalMapper *_folderOpenActionMapper;
     QSplashScreen *_splash;
+    ownCloudInfo  *_ocInfo;
 };
 
 } // namespace Mirall

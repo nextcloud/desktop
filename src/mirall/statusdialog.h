@@ -81,6 +81,7 @@ signals:
 
 public slots:
     void slotRemoveFolder();
+    void slotRemoveSelectedFolder();
     void slotFetchFolder();
     void slotPushFolder();
     void slotFolderActivated( const QModelIndex& );
