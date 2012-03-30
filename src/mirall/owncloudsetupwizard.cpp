@@ -64,6 +64,8 @@ OwncloudSetupWizard::OwncloudSetupWizard( FolderMan *folderMan, Theme *theme, QO
     connect( _ocWizard, SIGNAL(installOCLocalhost()),
              this, SLOT(slotCreateOCLocalhost()));
 
+    connect( _ocWizard, SIGNAL(finished(int)),this,SIGNAL(ownCloudWizardDone(int)));
+
     // in case of cancel, terminate the owncloud-admin script.
     connect( _ocWizard, SIGNAL(rejected()), _process, SLOT(terminate()));
 

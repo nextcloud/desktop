@@ -29,6 +29,8 @@
 
 namespace Mirall {
 
+#define POLL_TIMER_EXCEED 10
+
 ownCloudFolder::ownCloudFolder(const QString &alias,
                                const QString &path,
                                const QString &secondPath,
@@ -36,6 +38,7 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
     : Folder(alias, path, secondPath, parent)
     , _secondPath(secondPath)
     , _localCheckOnly( false )
+    , _localFileChanges( false )
     , _csync(0)
     , _pollTimerCnt(0)
     , _csyncError(false)
@@ -66,13 +69,8 @@ ownCloudFolder::~ownCloudFolder()
 #ifndef USE_WATCHER
 void ownCloudFolder::slotPollTimerRemoteCheck()
 {
-    _localCheckOnly = true;
     _pollTimerCnt++;
-    if( _pollTimerCnt == 15 ) {
-        _pollTimerCnt = 0;
-        _localCheckOnly = false;
-    }
-    qDebug() << "**** CSyncFolder Poll Timer check: " << _pollTimerCnt << " - " << _localCheckOnly;
+    qDebug() << "**** Poll Timer Cnt increase: " << _pollTimerCnt;
 }
 #endif
 
@@ -113,9 +111,20 @@ void ownCloudFolder::startSync(const QStringList &pathList)
 
     QUrl url( _secondPath );
     url.setScheme( "owncloud" );
+#ifdef USE_WATCHER
+    // if there is a watcher and no polling, ever sync is remote.
+    _localCheckOnly = false;
+#else
+    _localCheckOnly = true;
+    if( _pollTimerCnt == POLL_TIMER_EXCEED || _localFileChanges ) {
+        _localCheckOnly = false;
+        _pollTimerCnt = 0;
+        _localFileChanges = false;
+    }
+#endif
     qDebug() << "*** Start syncing to ownCloud, onlyLocal: " << _localCheckOnly;
 
-    _csync = new CSyncThread(path(), url.toEncoded(), _localCheckOnly );
+    _csync = new CSyncThread( path(), url.toEncoded(), _localCheckOnly );
     _csync->setUserPwd( cfgFile.ownCloudUser(), cfgFile.ownCloudPasswd() );
     QObject::connect(_csync, SIGNAL(started()),  SLOT(slotCSyncStarted()));
     QObject::connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()));
@@ -145,22 +154,24 @@ void ownCloudFolder::slotThreadTreeWalkResult( WalkStats *wStats )
     qDebug() << "Removed files: " << wStats->removed;
     qDebug() << "Renamed files: " << wStats->renamed;
 
+    if( ! _localCheckOnly ) _lastSeenFiles = 0;
+    _localFileChanges = false;
+
 #ifndef USE_WATCHER
     if( _lastSeenFiles > 0 && _lastSeenFiles != wStats->seenFiles ) {
-        qDebug() << "*** last seen files different from currently seen number => full Sync needed";
-        _localCheckOnly = false;
-        _pollTimerCnt = 0;
+        qDebug() << "*** last seen files different from currently seen number " << _lastSeenFiles << "<>" << wStats->seenFiles << " => full Sync needed";
+        _localFileChanges = true;
     }
-    if( _localCheckOnly && (wStats->newFiles + wStats->eval + wStats->removed + wStats->renamed) > 0 ) {
+    if( (wStats->newFiles + wStats->eval + wStats->removed + wStats->renamed) > 0 ) {
          qDebug() << "*** Local changes, lets do a full sync!" ;
-         _localCheckOnly = false; // next time it will be a non local check.
-         _pollTimerCnt = 0;
+         _localFileChanges = true;
     }
-    if( _localCheckOnly ) {
+    if( _pollTimerCnt < POLL_TIMER_EXCEED ) {
         qDebug() << "     *** No local changes, finalize, pollTimerCounter is "<< _pollTimerCnt ;
     }
 #endif
     _lastSeenFiles = wStats->seenFiles;
+
     /*
      * Attention: This is deleted here, outside of the thread, because the thread can
      * faster die than this routine has read out the memory.
@@ -192,8 +203,10 @@ void ownCloudFolder::slotCSyncFinished()
         res.setErrorStrings( _errors );
         qDebug() << "    * owncloud csync thread finished with error";
     } else {
-        qDebug() << "    * owncloud csync thread finished successfully";
+        qDebug() << "    * owncloud csync thread finished successfully " << _localCheckOnly;
     }
+
+    if( ! _localCheckOnly ) _lastSeenFiles = 0;
 
     emit syncFinished( res );
 }

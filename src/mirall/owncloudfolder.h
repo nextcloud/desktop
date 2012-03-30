@@ -56,6 +56,7 @@ private:
     QString      _secondPath;
     CSyncThread *_csync;
     bool         _localCheckOnly;
+    bool         _localFileChanges;
     int          _pollTimerCnt;
     QStringList  _errors;
     bool         _csyncError;

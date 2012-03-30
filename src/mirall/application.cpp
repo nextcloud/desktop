@@ -85,7 +85,16 @@ Application::Application(int argc, char **argv) :
     setQuitOnLastWindowClosed(false);
 
     _folderWizard = new FolderWizard( 0, _theme );
+
+    _ocInfo = new ownCloudInfo( QString(), this );
+    connect( _ocInfo,SIGNAL(ownCloudInfoFound(QString,QString)),
+             SLOT(slotOwnCloudFound(QString,QString)));
+
+    connect( _ocInfo,SIGNAL(noOwncloudFound(QNetworkReply::NetworkError)),
+             SLOT(slotNoOwnCloudFound(QNetworkReply::NetworkError)));
+
     _owncloudSetupWizard = new OwncloudSetupWizard( _folderMan, _theme );
+    connect( _owncloudSetupWizard, SIGNAL(ownCloudWizardDone(int)), SLOT(slotStartFolderSetup()));
 
     _statusDialog = new StatusDialog( _theme );
     connect( _statusDialog, SIGNAL(addASync()), this, SLOT(slotAddFolder()) );
@@ -131,14 +140,7 @@ Application::~Application()
 
 void Application::slotStartFolderSetup()
 {
-    _ocInfo = new ownCloudInfo( QString(), this );
-
     if( _ocInfo->isConfigured() ) {
-      connect( _ocInfo,SIGNAL(ownCloudInfoFound(QString,QString)),
-               SLOT(slotOwnCloudFound(QString,QString)));
-      connect( _ocInfo,SIGNAL(noOwncloudFound(QNetworkReply::NetworkError)),
-               SLOT(slotNoOwnCloudFound(QNetworkReply::NetworkError)));
-
       _ocInfo->checkInstallation();
     } else {
         slotNoOwnCloudFound( QNetworkReply::UnknownNetworkError );
@@ -155,6 +157,8 @@ void Application::slotOwnCloudFound( const QString& url , const QString& version
         if( _tray )
             _tray->showMessage(tr("ownCloud Sync Started"), tr("Sync started for %1 configured sync folder(s).").arg(cnt));
     }
+    _actionAddFolder->setEnabled( true );
+
     setupContextMenu();
 }
 
@@ -163,7 +167,8 @@ void Application::slotNoOwnCloudFound( QNetworkReply::NetworkError err )
     qDebug() << "** Application: NO ownCloud found!";
     QMessageBox::warning(0, tr("No ownCloud Connection"),
                          tr("There is no ownCloud connection available. Please configure one by clicking on the tray icon!"));
-
+    _actionAddFolder->setEnabled( false );
+    setupContextMenu();
 }
 
 void Application::slotHideSplash()
@@ -190,8 +195,6 @@ void Application::setupSystemTray()
 
     connect(_tray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             SLOT(slotTrayClicked(QSystemTrayIcon::ActivationReason)));
-
-    // setupContextMenu();
 
     _tray->show();
 }

@@ -54,7 +54,10 @@ public:
   OwncloudWizard *wizard();
 
 signals:
+  // issued if the oC Setup process (owncloud-admin) is finished.
   void    ownCloudSetupFinished( bool );
+  // overall dialog close signal.
+  void    ownCloudWizardDone( int );
 
 public slots:
 
