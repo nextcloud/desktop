@@ -103,6 +103,7 @@ struct transfer_context {
     size_t      bytes_written;  /* the amount of bytes written or read */
     const char  *method;        /* the HTTP method, either PUT or GET  */
     ne_decompress *decompress;  /* the decompress context */
+    int         fileWritten;    /* flag to indicate that a buffer file was written for PUTs */
 };
 
 /* Struct with the WebDAV session */
@@ -131,6 +132,10 @@ csync_vio_file_stat_t _fs;
 
 csync_auth_callback _authcb;
 void *_userdata;
+
+#define PUT_BUFFER_SIZE 1024*5
+
+char _buffer[PUT_BUFFER_SIZE];
 
 /* ***************************************************************************** */
 static int ne_session_error_errno(ne_session *session)
@@ -677,26 +682,53 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
 static ssize_t owncloud_write(csync_vio_method_handle_t *fhandle, const void *buf, size_t count) {
     struct transfer_context *writeCtx = NULL;
     size_t written = 0;
+    size_t bufWritten = 0;
 
     if (fhandle == NULL) {
         return -1;
     }
 
     writeCtx = (struct transfer_context*) fhandle;
-    if( writeCtx->fd > -1 ) {
-        written = write( writeCtx->fd, buf, count );
-        if( written != count ) {
-            DEBUG_WEBDAV(("Written bytes not equal to count\n"));
+
+    /* check if there is space left in the mem buffer */
+    if( writeCtx->bytes_written + count > PUT_BUFFER_SIZE ) {
+        if( writeCtx->fileWritten == 0 ) {
+            DEBUG_WEBDAV(("Remaining Mem Buffer size to small, push to disk (current buf size %d)\n", writeCtx->bytes_written));
+        }
+
+        /* write contents to disk */
+        if( writeCtx->fd > -1 ) {
+            if(  writeCtx->bytes_written > 0 ) {
+                /* there is something in the buffer already. Store to disk */
+
+                written = write( writeCtx->fd, _buffer, writeCtx->bytes_written );
+                if( written != writeCtx->bytes_written ) {
+                    DEBUG_WEBDAV(("WRN: Written bytes from buffer not equal to count\n"));
+                }
+                /* reset the buffer counter */
+                writeCtx->bytes_written = 0;
+            }
+            /* also write the incoming memory buffer content to file */
+            if( count > 0 ) {
+                bufWritten = write( writeCtx->fd, buf, count );
+
+                if( bufWritten != count ) {
+                    DEBUG_WEBDAV(("WRN: Written bytes not equal to count\n"));
+                }
+            }
+            /* set a flag that file was used, needed in the close routine */
+            writeCtx->fileWritten = 1;
         } else {
-            writeCtx->bytes_written = writeCtx->bytes_written + written;
-            /* DEBUG_WEBDAV(("Successfully written %d\n", written )); */
+            /* problem: the file descriptor is not valid. */
+            DEBUG_WEBDAV(("ERR: Not a valid file descriptor in write\n"));
         }
     } else {
-        /* problem: the file descriptor is not valid. */
-        DEBUG_WEBDAV(("Not a valid file descriptor in write\n"));
+        /* still space in the buffer */
+        memcpy( _buffer + writeCtx->bytes_written, buf, count );
+        writeCtx->bytes_written += count;
+        bufWritten = count;
     }
-
-    return written;
+    return bufWritten;
 }
 
 static int uncompress_reader(void *userdata, const char *buf, size_t len)
@@ -862,6 +894,9 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
 
     if( rc == NE_OK && put) {
         DEBUG_WEBDAV(("PUT request on %s!\n", uri));
+        /* reset the write buffer */
+        writeCtx->bytes_written = 0;
+        writeCtx->fileWritten = 0;   /* flag to indicate if contents was pushed to file */
 
         writeCtx->req = ne_request_create(dav_session.ctx, "PUT", uri);
 	writeCtx->method = "PUT";
@@ -968,6 +1003,13 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
 
         /* if there is a valid file descriptor, close it, reopen in read mode and start the PUT request */
         if( writeCtx->fd > -1 ) {
+            if( writeCtx->fileWritten && writeCtx->bytes_written > 0 ) { /* was content written to file? */
+                /* push the rest of the buffer to file as well. */
+                DEBUG_WEBDAV(("Write remaining %d bytes to disk.\n", writeCtx->bytes_written ));
+                write( writeCtx->fd, _buffer, writeCtx->bytes_written );
+                writeCtx->bytes_written = 0;
+            }
+
             if( close( writeCtx->fd ) < 0 ) {
                 DEBUG_WEBDAV(("Could not close file %s\n", writeCtx->tmpFileName ));
                 errno = EBADF;
@@ -978,32 +1020,53 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
 #ifdef _WIN32
 	    _fmode = _O_BINARY;
 #endif
-            if (( writeCtx->fd = open( writeCtx->tmpFileName, O_RDONLY )) < 0) {
-                errno = EIO;
-                ret = -1;
-            } else {
-                if (fstat( writeCtx->fd, &st ) < 0) {
-                    DEBUG_WEBDAV(("Could not stat file %s\n", writeCtx->tmpFileName ));
+            if( writeCtx->fileWritten ) {
+                DEBUG_WEBDAV(("Putting file through file cache.\n"));
+                /* we need to go the slow way and close and open the file and read from fd. */
+
+                if (( writeCtx->fd = open( writeCtx->tmpFileName, O_RDONLY )) < 0) {
                     errno = EIO;
                     ret = -1;
-                }
+                } else {
+                    if (fstat( writeCtx->fd, &st ) < 0) {
+                        DEBUG_WEBDAV(("Could not stat file %s\n", writeCtx->tmpFileName ));
+                        errno = EIO;
+                        ret = -1;
+                    }
 
-                /* successfully opened for read. Now start the request via ne_put */
-                ne_set_request_body_fd( writeCtx->req, writeCtx->fd, 0, st.st_size );
+                    /* successfully opened for read. Now start the request via ne_put */
+                    ne_set_request_body_fd( writeCtx->req, writeCtx->fd, 0, st.st_size );
+                    rc = ne_request_dispatch( writeCtx->req );
+                    if( close( writeCtx->fd ) == -1 ) {
+                        errno = EBADF;
+                        ret = -1;
+                    }
+
+                    if (rc == NE_OK) {
+                        if ( ne_get_status( writeCtx->req )->klass != 2 ) {
+                            DEBUG_WEBDAV(("Error - PUT status value no 2xx\n"));
+                            errno = EIO;
+                            ret = -1;
+                        }
+                    } else {
+                        DEBUG_WEBDAV(("Error - put request on close failed: %d!\n", rc ));
+                        errno = EIO;
+                        ret = -1;
+                    }
+                }
+            } else {
+                /* all content is in the buffer. */
+                DEBUG_WEBDAV(("Putting file through memory cache.\n"));
+                ne_set_request_body_buffer( writeCtx->req, _buffer, writeCtx->bytes_written );
                 rc = ne_request_dispatch( writeCtx->req );
-                if( close( writeCtx->fd ) == -1 ) {
-                    errno = EBADF;
-                    ret = -1;
-                }
-
-                if (rc == NE_OK) {
+                if( rc == NE_OK ) {
                     if ( ne_get_status( writeCtx->req )->klass != 2 ) {
                         DEBUG_WEBDAV(("Error - PUT status value no 2xx\n"));
                         errno = EIO;
                         ret = -1;
                     }
                 } else {
-                    DEBUG_WEBDAV(("Error - put request on close failed: %d!\n", rc ));
+                    DEBUG_WEBDAV(("Error - put request from memory failed: %d!\n", rc ));
                     errno = EIO;
                     ret = -1;
                 }
