@@ -206,7 +206,7 @@ csync( $localDir, $remoteDir );
 print "\nNow assertions:\n";
 
 # Check if the files from toremote1 are now in t1/remoteToLocal1
-# they should have taken the way via the oncCloud.
+# they should have taken the way via the ownCloud.
 assertLocalDirs( "./toremote1", "$localDir/remoteToLocal1" );
 
 # Check if the synced files from ownCloud have the same timestamp as the local ones.
@@ -226,6 +226,11 @@ foreach my $file ( <./tolocal1/*> ) {
     print "Copying $file to $locDir\n";
     copy( $file, $locDir );
 }
+csync( $localDir, $remoteDir );
+assertLocalAndRemoteDir( $d, $locDir, $remoteDir . "fromLocal1" );
+
+# move a local file
+move( "$locDir/kramer.jpg", "$locDir/oldtimer.jpg" );
 csync( $localDir, $remoteDir );
 assertLocalAndRemoteDir( $d, $locDir, $remoteDir . "fromLocal1" );
 
