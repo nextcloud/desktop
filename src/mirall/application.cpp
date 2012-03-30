@@ -480,16 +480,16 @@ void Application::computeOverallSyncStatus()
     }
   }
 
+  QIcon statusIcon = _theme->syncStateIcon( overallResult.status(), 22 );
 
-  // QIcon statusIcon = _theme->syncStateIcon( overallResult.status(), 22 );
-  // if( overallResult.status() == SyncResult::Success ) {
+  if( overallResult.status() == SyncResult::Success ) {
   // Rather display the mirall icon instead of the ok icon.
 #ifdef _WIN32
-      QIcon statusIcon = _theme->applicationIcon( 16 );
+      statusIcon = _theme->applicationIcon( 16 );
 #else
-      QIcon statusIcon = _theme->applicationIcon( 22 );
+      statusIcon = _theme->applicationIcon( 22 );
 #endif
-  // }
+  }
 
   _tray->setIcon( statusIcon );
   _tray->setToolTip(trayMessage);

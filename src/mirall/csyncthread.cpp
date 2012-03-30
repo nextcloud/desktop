@@ -170,7 +170,34 @@ void CSyncThread::run()
     _mutex.unlock();
 
     if( csync_init(csync) < 0 ) {
-        emit csyncError(tr("CSync init failed."));
+        CSYNC_ERROR_CODE err = csync_errno();
+        QString errStr;
+
+        switch( err ) {
+        case CSYNC_ERR_LOCK:
+            errStr = tr("CSync failed to create a lock file.");
+            break;
+        case CSYNC_ERR_STATEDB_LOAD:
+            errStr = tr("CSync failed to load the state db.");
+            break;
+        case CSYNC_ERR_MODULE:
+            errStr = tr("CSync failed to load the ownCloud module.");
+            break;
+        case CSYNC_ERR_TIMESKEW:
+            errStr = tr("The system time between the local machine and the server differs "
+                        "too much. Please use a time syncronization service (ntp) on both machines.");
+            break;
+        case CSYNC_ERR_FILESYSTEM:
+            errStr = tr("CSync could not detect the filesystem type.");
+            break;
+        case CSYNC_ERR_TREE:
+            errStr = tr("CSync got an error while processing internal trees.");
+            break;
+        default:
+            errStr = tr("An internal error number %1 happend.").arg( (int) err );
+        }
+        qDebug() << " #### ERROR String emitted: " << errStr;
+        emit csyncError(errStr);
         goto cleanup;
     }
 

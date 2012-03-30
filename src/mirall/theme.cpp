@@ -78,7 +78,7 @@ QString Theme::statusHeaderText( SyncResult::Status status ) const
     } else if( status == SyncResult::Success ) {
         resultStr = tr("Sync Success");
     } else if( status == SyncResult::Error ) {
-        resultStr = tr("Sync Error");
+        resultStr = tr("Sync Error - Click info button for details.");
     } else if( status == SyncResult::Disabled ) {
         resultStr = tr("Sync Disabled");
     } else if( status == SyncResult::SetupError ) {

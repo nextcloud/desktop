@@ -189,7 +189,11 @@ void ownCloudFolder::slotCSyncError(const QString& err)
 void ownCloudFolder::slotCSyncTerminated()
 {
     // do not ask csync here for reasons.
-    emit syncFinished( SyncResult(SyncResult::Error));
+    SyncResult res( SyncResult::Error );
+    _errors.append( tr("The CSync thread terminated unexpectedly.") );
+    res.setErrorStrings(_errors);
+
+    emit syncFinished( res );
 }
 
 void ownCloudFolder::slotCSyncFinished()
