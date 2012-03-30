@@ -72,6 +72,28 @@ extern "C" {
 typedef int (*csync_auth_callback) (const char *prompt, char *buf, size_t len,
     int echo, int verify, void *userdata);
 
+enum csync_error_codes_e {
+  CSYNC_ERR_NONE          = 0,
+  CSYNC_ERR_LOG,
+  CSYNC_ERR_LOCK,
+  CSYNC_ERR_STATEDB_LOAD,
+  CSYNC_ERR_MODULE,
+  CSYNC_ERR_TIMESKEW,
+  CSYNC_ERR_FILESYSTEM,
+  CSYNC_ERR_TREE,
+  CSYNC_ERR_MEM,
+  CSYNC_ERR_PARAM,
+  CSYNC_ERR_RECONCILE,
+  CSYNC_ERR_PROPAGATE,
+  CSYNC_ERR_ACCESS_FAILED,
+  CSYNC_ERR_REMOTE_CREATE,
+  CSYNC_ERR_REMOTE_STAT,
+  CSYNC_ERR_LOCAL_CREATE,
+  CSYNC_ERR_LOCAL_STAT,
+  CSYNC_ERR_UNSPEC
+};
+typedef enum csync_error_codes_e CSYNC_ERROR_CODE;
+
 /**
   * Instruction enum. In the file traversal structure, it describes
   * the csync state of a file.
@@ -382,6 +404,14 @@ int csync_walk_local_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int fi
  * @return              0 on success, less than 0 if an error occured.
  */
 int csync_walk_remote_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int filter);
+
+/**
+ * @brief Get the error code from the last operation.
+ * 
+ * @return              An error code defined by structure CSYNC_ERROR_CODE
+ */
+CSYNC_ERROR_CODE csync_get_error(CSYNC *ctx);
+
 
 #ifdef __cplusplus
 }
