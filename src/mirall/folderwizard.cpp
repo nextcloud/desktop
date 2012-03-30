@@ -172,8 +172,8 @@ FolderWizardTargetPage::FolderWizardTargetPage()
 
     _ownCloudDirCheck = new ownCloudInfo();
 
-    connect( _ownCloudDirCheck, SIGNAL(ownCloudDirExists(QString,bool)),
-             SLOT(slotDirCheckReply(QString,bool)));
+    connect( _ownCloudDirCheck, SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
+             SLOT(slotDirCheckReply(QString,QNetworkReply*)));
 }
 
 void FolderWizardTargetPage::slotFolderTextChanged( const QString& t)
@@ -197,10 +197,10 @@ void FolderWizardTargetPage::slotTimerFires()
     _ownCloudDirCheck->getWebDAVPath( folder );
 }
 
-void FolderWizardTargetPage::slotDirCheckReply(const QString &url, bool exists )
+void FolderWizardTargetPage::slotDirCheckReply(const QString &url, QNetworkReply *reply)
 {
-    qDebug() << "Got reply from owncloud dir check: " << url << " :" << exists;
-    _dirChecked = exists;
+    qDebug() << "Got reply from owncloud dir check: " << url << " :" << reply->error();
+    _dirChecked = (reply->error() == QNetworkReply::NoError);
     if( _dirChecked ) {
         showWarn();
     } else {

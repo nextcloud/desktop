@@ -78,6 +78,9 @@ protected slots:
     void slotStartFolderSetup();
     void slotOwnCloudFound( const QString&, const QString& );
     void slotNoOwnCloudFound( QNetworkReply::NetworkError );
+    void slotCheckAuthentication();
+    void slotAuthCheck( const QString& ,QNetworkReply* );
+
 private:
     // configuration file -> folder
     QSystemTrayIcon *_tray;

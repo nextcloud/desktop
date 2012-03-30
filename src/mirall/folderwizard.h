@@ -89,7 +89,7 @@ protected slots:
 
     void slotFolderTextChanged( const QString& );
     void slotTimerFires();
-    void slotDirCheckReply( const QString&, bool );
+    void slotDirCheckReply( const QString&, QNetworkReply* );
     void showWarn( const QString& = QString(), bool showCreateButton = false ) const;
     void slotCreateRemoteFolder();
     void slotCreateRemoteFolderFinished( QNetworkReply* );

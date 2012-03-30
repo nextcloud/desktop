@@ -45,7 +45,7 @@ namespace Mirall {
 
 Application::Application(int argc, char **argv) :
     QApplication(argc, argv),
-    _tray(0),
+    _tray(new QSystemTrayIcon(this)),
     _networkMgr(new QNetworkConfigurationManager(this)),
     _contextMenu(0),
     _ocInfo(0)
@@ -93,6 +93,9 @@ Application::Application(int argc, char **argv) :
     connect( _ocInfo,SIGNAL(noOwncloudFound(QNetworkReply::NetworkError)),
              SLOT(slotNoOwnCloudFound(QNetworkReply::NetworkError)));
 
+    connect( _ocInfo,SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
+             this,SLOT(slotAuthCheck(QString,QNetworkReply*)));
+
     _owncloudSetupWizard = new OwncloudSetupWizard( _folderMan, _theme );
     connect( _owncloudSetupWizard, SIGNAL(ownCloudWizardDone(int)), SLOT(slotStartFolderSetup()));
 
@@ -120,7 +123,6 @@ Application::Application(int argc, char **argv) :
     }
 
     setupActions();
-    setupSystemTray();
 
     QTimer::singleShot( 5000, this, SLOT(slotHideSplash()) );
     QTimer::singleShot( 0, this, SLOT( slotStartFolderSetup() ));
@@ -134,12 +136,13 @@ Application::~Application()
 
     delete _networkMgr;
     delete _folderMan;
-    delete _tray;
     delete _ocInfo;
 }
 
 void Application::slotStartFolderSetup()
 {
+    setupSystemTray();
+
     if( _ocInfo->isConfigured() ) {
       _ocInfo->checkInstallation();
     } else {
@@ -150,16 +153,8 @@ void Application::slotStartFolderSetup()
 void Application::slotOwnCloudFound( const QString& url , const QString& version )
 {
     qDebug() << "** Application: ownCloud found: " << url << " with version " << version;
-    int cnt = _folderMan->setupFolders();
-    if( cnt ) {
-        _tray->setIcon(_theme->folderIcon("owncloud", 24));
-        _tray->show();
-        if( _tray )
-            _tray->showMessage(tr("ownCloud Sync Started"), tr("Sync started for %1 configured sync folder(s).").arg(cnt));
-    }
-    _actionAddFolder->setEnabled( true );
-
-    setupContextMenu();
+    // now check the authentication!
+    QTimer::singleShot( 0, this, SLOT( slotCheckAuthentication() ));
 }
 
 void Application::slotNoOwnCloudFound( QNetworkReply::NetworkError err )
@@ -168,6 +163,33 @@ void Application::slotNoOwnCloudFound( QNetworkReply::NetworkError err )
     QMessageBox::warning(0, tr("No ownCloud Connection"),
                          tr("There is no ownCloud connection available. Please configure one by clicking on the tray icon!"));
     _actionAddFolder->setEnabled( false );
+    setupContextMenu();
+}
+void Application::slotCheckAuthentication()
+{
+    _ocInfo->getRequest("/", true ); // this call needs to be authenticated.
+    // simply GET the webdav root, will fail if credentials are wrong.
+    // continue in slotAuthCheck here :-)
+}
+
+void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
+{
+    if( reply->error() == QNetworkReply::AuthenticationRequiredError ) {
+        qDebug() << "******** Credentials are wrong!";
+        QMessageBox::warning(0, tr("No ownCloud Connection"),
+                             tr("Your ownCloud credentials are not correct. Please correct them by clicking on the tray icon!"));
+        _actionAddFolder->setEnabled( false );
+    } else {
+        qDebug() << "######## Credentials are ok!";
+        int cnt = _folderMan->setupFolders();
+        if( cnt ) {
+            _tray->setIcon(_theme->folderIcon("owncloud", 24));
+            _tray->show();
+            if( _tray )
+                _tray->showMessage(tr("ownCloud Sync Started"), tr("Sync started for %1 configured sync folder(s).").arg(cnt));
+        }
+        _actionAddFolder->setEnabled( true );
+    }
     setupContextMenu();
 }
 
@@ -190,8 +212,8 @@ void Application::setupActions()
 
 void Application::setupSystemTray()
 {
-    _tray = new QSystemTrayIcon(this);
-    _tray->setIcon( _theme->folderIcon("none", 22) ); // load the grey icon
+    // _tray = new QSystemTrayIcon(this);
+    _tray->setIcon( _theme->folderIcon("none", 48) ); // load the grey icon
 
     connect(_tray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             SLOT(slotTrayClicked(QSystemTrayIcon::ActivationReason)));

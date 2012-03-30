@@ -85,8 +85,8 @@ void ownCloudInfo::getRequest( const QString& path, bool webdav )
     request.setUrl( QUrl( url ) );
     request.setRawHeader( "User-Agent", QString("mirall-%1").arg(MIRALL_STRINGIFY(MIRALL_VERSION)).toAscii());
     request.setRawHeader( "Authorization", cfgFile.basicAuthHeader() );
-    _reply = _manager->get( request );
     _readBuffer.clear();
+    _reply = _manager->get( request );
 
     connect( _reply, SIGNAL( error(QNetworkReply::NetworkError )),
              this, SLOT(slotError( QNetworkReply::NetworkError )));
@@ -138,7 +138,7 @@ void ownCloudInfo::slotReplyFinished( QNetworkReply *reply )
       }
   } else {
       // it was a general GET request.
-      emit ownCloudDirExists( _directory, reply->error() == QNetworkReply::NoError );
+      emit ownCloudDirExists( _directory, reply );
   }
 }
 
@@ -152,8 +152,8 @@ void ownCloudInfo::slotReadyRead()
 
 void ownCloudInfo::slotError( QNetworkReply::NetworkError err)
 {
-  qDebug() << "Network Error: " << err;
-  emit noOwncloudFound( err );
+  qDebug() << "ownCloudInfo Network Error: " << err;
+  // emit noOwncloudFound( err );
 }
 
 }
