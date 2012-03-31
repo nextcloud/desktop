@@ -268,7 +268,6 @@ void Application::slotFolderOpenAction( const QString& alias )
 void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
 {
   if( reason == QSystemTrayIcon::Trigger ) {
-    _folderMan->disableFoldersWithRestore();
     // check if there is a mirall.cfg already.
     if( _owncloudSetupWizard->wizard()->isVisible() ) {
       _owncloudSetupWizard->wizard()->show();
@@ -281,10 +280,11 @@ void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
       qDebug() << "No configured folders yet, start the Owncloud integration dialog.";
       _owncloudSetupWizard->startWizard();
     } else {
+        qDebug() << "#============# Status dialog starting #=============#";
+
       _statusDialog->setFolderList( _folderMan->map() );
       _statusDialog->show();
     }
-    _folderMan->restoreEnabledFolders();
   }
 }
 

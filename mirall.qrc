@@ -20,5 +20,6 @@
         <file>resources/folder-important.png</file>
         <file>resources/folder-grey.png</file>
         <file>resources/owncloud_splash.png</file>
+        <file>resources/task-ongoing.png</file>
     </qresource>
 </RCC>

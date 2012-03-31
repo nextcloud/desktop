@@ -19,6 +19,7 @@
 #include "mirall/folder.h"
 #include "mirall/folderwatcher.h"
 #include "mirall/mirallconfigfile.h"
+#include "mirall/syncresult.h"
 
 #define DEFAULT_POLL_INTERVAL_SEC 15000
 
@@ -101,9 +102,10 @@ void Folder::setSyncEnabled( bool doit )
       _pollTimer->start();
   }
 
+  qDebug() << "setSyncEnabled - ############################ " << doit;
   if( doit ) {
       // undefined until next sync
-      _syncResult.setStatus( SyncResult::Undefined );
+      _syncResult.setStatus( SyncResult::NotYetStarted);
       evaluateSync( QStringList() );
   } else {
       // disabled.
@@ -187,8 +189,16 @@ void Folder::evaluateSync(const QStringList &pathList)
   // sync finished.
   qDebug() << "* " << alias() << "Poll timer disabled";
   _pollTimer->stop();
+
+  _syncResult.setStatus( SyncResult::NotYetStarted );
   emit scheduleToSync( alias() );
-  // startSync( pathList );
+
+}
+
+void Folder::startSync( const QStringList &pathList )
+{
+    _syncResult = SyncResult( SyncResult::SyncRunning );
+    emit syncStateChange();
 }
 
 void Folder::slotPollTimerTimeout()
@@ -218,9 +228,6 @@ void Folder::slotSyncStarted()
 #ifdef USE_WATCHER
     _watcher->setEventsEnabled(false);
 #endif
-    _syncResult = SyncResult( SyncResult::SyncRunning );
-
-    emit syncStateChange();
 }
 
 void Folder::slotSyncFinished(const SyncResult &result)

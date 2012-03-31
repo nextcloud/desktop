@@ -50,7 +50,7 @@ QIcon Theme::syncStateIcon( SyncResult::Status status, int ) const
     qDebug() << "Status: " << status;
 
     if( status == SyncResult::NotYetStarted ) {
-        statusIcon = "dialog-close";
+        statusIcon = "task-ongoing";
     } else if( status == SyncResult::SyncRunning ) {
         statusIcon = "view-refresh";
     } else if( status == SyncResult::Success ) {

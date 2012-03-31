@@ -99,6 +99,8 @@ void ownCloudFolder::startSync()
 
 void ownCloudFolder::startSync(const QStringList &pathList)
 {
+    Folder::startSync( pathList );
+
     if (_csync && _csync->isRunning()) {
         qCritical() << "* ERROR csync is still running and new sync requested.";
         return;
