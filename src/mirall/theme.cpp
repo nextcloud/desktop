@@ -89,9 +89,9 @@ QString Theme::statusHeaderText( SyncResult::Status status ) const
     return resultStr;
 }
 
-QIcon Theme::applicationIcon( int size ) const
+QIcon Theme::applicationIcon( ) const
 {
-    return QIcon(QString(":mirall/resources/mirall-%1").arg(size));
+    return QIcon(QString(":mirall/resources/mirall-48"));
 }
 
 QString Theme::version() const

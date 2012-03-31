@@ -45,17 +45,19 @@ namespace Mirall {
 
 Application::Application(int argc, char **argv) :
     QApplication(argc, argv),
-    _tray(new QSystemTrayIcon(this)),
+    _tray(0),
     _networkMgr(new QNetworkConfigurationManager(this)),
     _contextMenu(0),
     _ocInfo(0)
 {
+
 #ifdef OWNCLOUD_CLIENT
     _theme = new ownCloudTheme();
 #else
     _theme = new mirallTheme();
 #endif
     setApplicationName( _theme->appName() );
+    setWindowIcon( _theme->applicationIcon() );
 
     _splash = new QSplashScreen( _theme->splashScreen() );
     _splash->show();
@@ -123,6 +125,8 @@ Application::Application(int argc, char **argv) :
     }
 
     setupActions();
+    setupSystemTray();
+    processEvents();
 
     QTimer::singleShot( 5000, this, SLOT(slotHideSplash()) );
     QTimer::singleShot( 0, this, SLOT( slotStartFolderSetup() ));
@@ -141,8 +145,6 @@ Application::~Application()
 
 void Application::slotStartFolderSetup()
 {
-    setupSystemTray();
-
     if( _ocInfo->isConfigured() ) {
       _ocInfo->checkInstallation();
     } else {
@@ -185,6 +187,8 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
         if( cnt ) {
             _tray->setIcon(_theme->folderIcon("owncloud", 24));
             _tray->show();
+            processEvents();
+
             if( _tray )
                 _tray->showMessage(tr("ownCloud Sync Started"), tr("Sync started for %1 configured sync folder(s).").arg(cnt));
         }
@@ -212,7 +216,7 @@ void Application::setupActions()
 
 void Application::setupSystemTray()
 {
-    // _tray = new QSystemTrayIcon(this);
+    _tray = new QSystemTrayIcon();
     _tray->setIcon( _theme->folderIcon("none", 48) ); // load the grey icon
 
     connect(_tray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
@@ -223,8 +227,11 @@ void Application::setupSystemTray()
 
 void Application::setupContextMenu()
 {
-    if( _contextMenu ) delete _contextMenu;
-    _contextMenu = new QMenu();
+    if( _contextMenu ) {
+        _contextMenu->clear();
+    } else {
+        _contextMenu = new QMenu();
+    }
     _contextMenu->setTitle(_theme->appName() );
     _contextMenu->addAction(_actionConfigure);
     _contextMenu->addAction(_actionAddFolder);
@@ -505,12 +512,8 @@ void Application::computeOverallSyncStatus()
   QIcon statusIcon = _theme->syncStateIcon( overallResult.status(), 22 );
 
   if( overallResult.status() == SyncResult::Success ) {
-  // Rather display the mirall icon instead of the ok icon.
-#ifdef _WIN32
-      statusIcon = _theme->applicationIcon( 16 );
-#else
-      statusIcon = _theme->applicationIcon( 22 );
-#endif
+      // Rather display the mirall icon instead of the ok icon.
+      statusIcon = _theme->applicationIcon();
   }
 
   _tray->setIcon( statusIcon );

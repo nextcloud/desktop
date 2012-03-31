@@ -49,7 +49,6 @@ public:
 signals:
 
 protected slots:
-
     void slotAddFolder();
     void slotRemoveFolder( const QString& );
 #ifdef HAVE_FETCH_AND_PUSH

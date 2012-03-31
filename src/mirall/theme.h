@@ -44,7 +44,7 @@ public:
     virtual QIcon   syncStateIcon( SyncResult::Status, int ) const;
     virtual QString statusHeaderText( SyncResult::Status ) const;
     virtual QPixmap splashScreen() const = 0;
-    virtual QIcon   applicationIcon( int ) const;
+    virtual QIcon   applicationIcon() const;
 
     virtual QString version() const;
 private:
