@@ -14,6 +14,14 @@
 #include <QtCore>
 #include <QtGui>
 
+#ifdef Q_WS_WIN
+#include <sys/types.h>
+#include <sys/stat.h>
+
+#include <windef.h>
+#include <winbase.h>
+#endif
+
 #include "mirall/mirallconfigfile.h"
 #include "mirall/owncloudtheme.h"
 #include "mirall/miralltheme.h"
@@ -33,12 +41,33 @@ QString MirallConfigFile::configPath() const
 
 QString MirallConfigFile::excludeFile() const
 {
+    const QString exclFile("exclude.lst");
     QString dir = configPath();
-    dir += "exclude.lst";
+    dir += exclFile;
+
     QFileInfo fi( dir );
     if( fi.isReadable() ) {
         return dir;
     }
+    // Check alternative places...
+#ifdef Q_WS_WIN
+    /* For win32, try to copy the conf file from the directory from where the app was started. */
+    char buf[MAX_PATH+1];
+    int  len = 0;
+
+    /* Get the path from where the application was started */
+    len = GetModuleFileName(NULL, buf, MAX_PATH);
+    QString exePath = QString::fromLocal8Bit(buf);
+    exePath.remove("owncloud.exe");
+    fi.setFile(exePath, exclFile );
+#else
+    fi.setFile( QString("/etc"), exclFile );
+#endif
+    if( fi.isReadable() ) {
+        qDebug() << "  ==> returning exclude file path: " << fi.absoluteFilePath();
+        return fi.absoluteFilePath();
+    }
+    qDebug() << "EMPTY exclude file path!";
     return QString();
 }
 
