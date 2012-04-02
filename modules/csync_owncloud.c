@@ -44,7 +44,11 @@
 #include "vio/csync_vio_module.h"
 #include "vio/csync_vio_file_stat.h"
 
+#ifdef NDEBUG
+#define DEBUG_WEBDAV(x)
+#else
 #define DEBUG_WEBDAV(x) printf x
+#endif
 
 enum resource_type {
     resr_normal = 0,
