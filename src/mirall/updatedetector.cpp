@@ -38,9 +38,6 @@ void UpdateDetector::versionCheck( Theme *theme )
     QUrl url("http://download.owncloud.com/clientupdater.php");
     QString ver = QString("%1.%2.%3").arg(MIRALL_VERSION_MAJOR).arg(MIRALL_VERSION_MINOR).arg(MIRALL_VERSION_MICRO);
 
-    /// TEST
-    ver = "0.9.0";
-
     QString platform = QString::fromLocal8Bit("stranger");
 #ifdef Q_OS_LINUX
     platform = QString::fromLocal8Bit("linux");
