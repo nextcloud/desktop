@@ -261,32 +261,32 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Mirall::Application</name>
     <message>
-        <location filename="../src/mirall/application.cpp" line="208"/>
+        <location filename="../src/mirall/application.cpp" line="222"/>
         <source>Add folder...</source>
         <translation>Hinzufügen...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="210"/>
+        <location filename="../src/mirall/application.cpp" line="224"/>
         <source>Configure...</source>
         <translation>Einstellen...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="214"/>
+        <location filename="../src/mirall/application.cpp" line="228"/>
         <source>Quit</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="243"/>
+        <location filename="../src/mirall/application.cpp" line="257"/>
         <source>open %1</source>
         <translation>%1 öffnen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="352"/>
+        <location filename="../src/mirall/application.cpp" line="366"/>
         <source>Confirm Folder Remove</source>
         <translation>Bestätigung Verzeichnis Löschen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="352"/>
+        <location filename="../src/mirall/application.cpp" line="366"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>Möchten Sie wirklich das Sync-Verzeichnis &lt;i&gt;%1&lt;/i&gt; löschen?</translation>
     </message>
@@ -307,7 +307,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Möchten Sie wirklich das Verzeichnis mit dem Alias &lt;i&gt;%1&lt;/i&gt; auf die ownCloud laden?&lt;br/&gt;Das wird die Dateien im Verzeichnis &lt;i&gt;%2&lt;/i&gt; überschreiben!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="397"/>
+        <location filename="../src/mirall/application.cpp" line="411"/>
         <source>Last sync was succesful</source>
         <translation>Die letzte Synchronisierung war erfolgreich</translation>
     </message>
@@ -324,97 +324,97 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Unbekannter Status</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="194"/>
+        <location filename="../src/mirall/application.cpp" line="208"/>
         <source>ownCloud Sync Started</source>
         <translation>ownCloud Sync ist gestartet</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="194"/>
+        <location filename="../src/mirall/application.cpp" line="208"/>
         <source>Sync started for %1 configured sync folder(s).</source>
         <translation>Synchronisation gestart für %1 Verzeichniss(e).</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="165"/>
-        <location filename="../src/mirall/application.cpp" line="182"/>
+        <location filename="../src/mirall/application.cpp" line="179"/>
+        <location filename="../src/mirall/application.cpp" line="196"/>
         <source>No ownCloud Connection</source>
         <translation>Keine Verbindung zu ownCloud</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="166"/>
+        <location filename="../src/mirall/application.cpp" line="180"/>
         <source>There is no ownCloud connection available. Please configure one by clicking on the tray icon!</source>
         <translation>Es besteht keine ownCloud Verbindung. Bitte konfigurieren Sie eine durch Klicken auf das Icon in der Systemleiste!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="183"/>
+        <location filename="../src/mirall/application.cpp" line="197"/>
         <source>Your ownCloud credentials are not correct. Please correct them by clicking on the tray icon!</source>
         <translation>Der ownCloud Nutzer oder das Passwort ist falsch. Bitte korrigieren Sie das durch Klicken auf das Symbol in der Systemleiste!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="401"/>
+        <location filename="../src/mirall/application.cpp" line="415"/>
         <source>&lt;b&gt;Syncing Error&lt;/b&gt;&lt;br/&gt;</source>
         <translation>&lt;b&gt;Synchronisationsfehler&lt;/b&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="403"/>
+        <location filename="../src/mirall/application.cpp" line="417"/>
         <source>&lt;b&gt;Setup Error&lt;/b&gt;&lt;br/&gt;</source>
         <translation>&lt;b&gt;Installationsfehler&lt;/b&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="405"/>
+        <location filename="../src/mirall/application.cpp" line="419"/>
         <source>&lt;b&gt;Disabled Folder&lt;/b&gt;&lt;br/&gt;</source>
         <translation>&lt;b&gt;Deaktiviertes Verzeichnis&lt;/b&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="407"/>
+        <location filename="../src/mirall/application.cpp" line="421"/>
         <source>&lt;b&gt;Undefined state&lt;/b&gt;&lt;br/&gt;</source>
         <translation>&lt;b&gt;Undefinierter Status&lt;/b&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="410"/>
+        <location filename="../src/mirall/application.cpp" line="424"/>
         <source>Folder information</source>
         <translation>Verzeichnis Information</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="425"/>
+        <location filename="../src/mirall/application.cpp" line="439"/>
         <source>Unknown</source>
         <translation>Unbekannt</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="427"/>
+        <location filename="../src/mirall/application.cpp" line="441"/>
         <source>Changed files:
 </source>
         <translation>Geänderte Dateien:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="429"/>
+        <location filename="../src/mirall/application.cpp" line="443"/>
         <source>Added files:
 </source>
         <translation>Hinzugefügte Dateien:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="431"/>
+        <location filename="../src/mirall/application.cpp" line="445"/>
         <source>New files in the server, or files deleted locally:
 </source>
         <translation>Neue Dateien auf dem Server, oder lokal gelöschte Dateien:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="486"/>
+        <location filename="../src/mirall/application.cpp" line="500"/>
         <source>Folder %1: Ok.</source>
         <translation>Verzeichnis %1: Ok.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="489"/>
-        <location filename="../src/mirall/application.cpp" line="500"/>
+        <location filename="../src/mirall/application.cpp" line="503"/>
+        <location filename="../src/mirall/application.cpp" line="514"/>
         <source>Folder %1: %2</source>
         <translation>Verzeichnis %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="494"/>
+        <location filename="../src/mirall/application.cpp" line="508"/>
         <source>Folder %1: setup error</source>
         <translation>Verzeichnis %1: Konfigurationsfehler</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="505"/>
+        <location filename="../src/mirall/application.cpp" line="519"/>
         <source>Folder %1: undefined state</source>
         <translation>Verzeichnis %1: Unbekannter Fehler</translation>
     </message>
@@ -633,7 +633,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="204"/>
         <source>Starting script owncloud-admin...</source>
-        <translation type="unfinished"></translation>
+        <translation>Starte das ownCloud-Admin Script...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="255"/>
@@ -649,7 +649,7 @@ Please write a bug report.</source>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="288"/>
         <source>The owncloud admin script can not be found.
 Setup can not be done.</source>
-        <translation type="unfinished"></translation>
+        <translation>Das ownCloud-Admin Script wurde nicht gefunden. Das Setup wird abgebrochen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="301"/>
@@ -807,6 +807,24 @@ Setup can not be done.</source>
     <message>
         <source>Undefined</source>
         <translation type="obsolete">Unbekannt</translation>
+    </message>
+</context>
+<context>
+    <name>Mirall::UpdateDetector</name>
+    <message>
+        <location filename="../src/mirall/updatedetector.cpp" line="98"/>
+        <source>Client Version Check</source>
+        <translation>Client Versionsprüfung</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/updatedetector.cpp" line="100"/>
+        <source>&lt;p&gt;A new version of the ownCloud Client is available.</source>
+        <translation>&lt;p&gt;Eine neue Version des ownCloud Clients ist verfügbar.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/updatedetector.cpp" line="101"/>
+        <source>%1 is available. The installed version is %3.&lt;p/&gt;&lt;p&gt;For more information see &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</source>
+        <translation>%1 ist verfügbar. Die installierte Version ist %3.&lt;p/&gt;&lt;p&gt;Mehr Information unter &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
