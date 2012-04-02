@@ -111,8 +111,8 @@ set( final_src ${qtwebdav_LIB_SRCS} ${qtwebdav_HEADERS}  ${mirall_HEADERS} ${qtw
 include( AddAppIconMacro )
 kde4_add_app_icon( final_src "${CMAKE_CURRENT_SOURCE_DIR}/../resources/mirall-*.png" )
 
-# add_executable(owncloud WIN32 main.cpp ${final_src})
-add_executable(owncloud  main.cpp ${final_src})
+add_executable(owncloud WIN32 main.cpp ${final_src})
+# add_executable(owncloud  main.cpp ${final_src})
 
 SET(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 SET_TARGET_PROPERTIES( mirall PROPERTIES

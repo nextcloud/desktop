@@ -39,11 +39,8 @@ set(CPACK_SOURCE_IGNORE_FILES
   "\\\\.la$"
   "Makefile\\\\.in$"
 )
-set(CPACK_PACKAGE_VENDOR "Duncan Mac-Vicar P.")
-set(CPACK_GENERATOR "TBZ2")
-set(CPACK_SOURCE_GENERATOR "TBZ2")
-set(CPACK_SOURCE_PACKAGE_FILE_NAME "${PACKAGE}-${VERSION}" )
-include(CPack)
+
+include(OwnCloudCPack.cmake)
 
 include(CTest)
 enable_testing()
@@ -56,6 +53,6 @@ add_definitions(-DOWNCLOUD_CLIENT)
 set(TRANSLATIONS ${CMAKE_SOURCE_DIR}/translations/mirall_de.ts)
 
 add_subdirectory(src)
-add_subdirectory(test)
+# add_subdirectory(test)
 
 
