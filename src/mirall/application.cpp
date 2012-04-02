@@ -260,8 +260,11 @@ void Application::setupContextMenu()
 void Application::slotFolderOpenAction( const QString& alias )
 {
     Folder *f = _folderMan->folder(alias);
+    qDebug() << "opening local url " << f->path();
     if( f ) {
-        QDesktopServices::openUrl(QUrl( f->path() ));
+        QUrl url(f->path(), QUrl::TolerantMode);
+        url.setScheme( "file" );
+        QDesktopServices::openUrl(url);
     }
 }
 
