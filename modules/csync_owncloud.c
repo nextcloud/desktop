@@ -738,11 +738,14 @@ static ssize_t owncloud_write(csync_vio_method_handle_t *fhandle, const void *bu
 static int uncompress_reader(void *userdata, const char *buf, size_t len)
 {
    struct transfer_context *writeCtx = userdata;
+   size_t written = 0;
 
    if( buf && writeCtx->fd ) {
        /* DEBUG_WEBDAV(("Writing NON compressed %d bytes\n", len)); */
-       write(writeCtx->fd, buf, len);
-
+       len = write(writeCtx->fd, buf, len);
+       if( len != written ) {
+           DEBUG_WEBDAV(("WRN: uncompress_reader wrote wrong num of bytes\n"));
+       }
        return NE_OK;
    }
    return NE_ERROR;
@@ -751,11 +754,14 @@ static int uncompress_reader(void *userdata, const char *buf, size_t len)
 static int compress_reader(void *userdata, const char *buf, size_t len)
 {
    struct transfer_context *writeCtx = userdata;
+   size_t written = 0;
 
    if( buf && writeCtx->fd ) {
        /* DEBUG_WEBDAV(("Writing compressed %d bytes\n", len)); */
-       write(writeCtx->fd, buf, len);
-
+       written = write(writeCtx->fd, buf, len);
+       if( written != len ) {
+           DEBUG_WEBDAV(("WRN: compress reader wrote wrong len\n"));
+       }
        return NE_OK;
    }
    return NE_ERROR;
@@ -994,6 +1000,7 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
     csync_stat_t st;
     int rc;
     int ret = 0;
+    size_t len = 0;
 
     writeCtx = (struct transfer_context*) fhandle;
 
@@ -1010,7 +1017,10 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
             if( writeCtx->fileWritten && writeCtx->bytes_written > 0 ) { /* was content written to file? */
                 /* push the rest of the buffer to file as well. */
                 DEBUG_WEBDAV(("Write remaining %d bytes to disk.\n", writeCtx->bytes_written ));
-                write( writeCtx->fd, _buffer, writeCtx->bytes_written );
+                len = write( writeCtx->fd, _buffer, writeCtx->bytes_written );
+		if( len != writeCtx->bytes_written ) {
+		    DEBUG_WEBDAV(("WRN: write wrote wrong number of remaining bytes\n"));
+		}
                 writeCtx->bytes_written = 0;
             }
 
@@ -1098,7 +1108,7 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
 
 static ssize_t owncloud_read(csync_vio_method_handle_t *fhandle, void *buf, size_t count) {
     struct transfer_context *writeCtx;
-    ssize_t len = 0;
+    size_t len = 0;
     csync_stat_t st;
 
     writeCtx = (struct transfer_context*) fhandle;
