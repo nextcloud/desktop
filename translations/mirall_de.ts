@@ -261,32 +261,32 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Mirall::Application</name>
     <message>
-        <location filename="../src/mirall/application.cpp" line="176"/>
+        <location filename="../src/mirall/application.cpp" line="208"/>
         <source>Add folder...</source>
         <translation>Hinzufügen...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="178"/>
+        <location filename="../src/mirall/application.cpp" line="210"/>
         <source>Configure...</source>
         <translation>Einstellen...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="182"/>
+        <location filename="../src/mirall/application.cpp" line="214"/>
         <source>Quit</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="210"/>
+        <location filename="../src/mirall/application.cpp" line="243"/>
         <source>open %1</source>
         <translation>%1 öffnen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="315"/>
+        <location filename="../src/mirall/application.cpp" line="352"/>
         <source>Confirm Folder Remove</source>
         <translation>Bestätigung Verzeichnis Löschen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="315"/>
+        <location filename="../src/mirall/application.cpp" line="352"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>Möchten Sie wirklich das Sync-Verzeichnis &lt;i&gt;%1&lt;/i&gt; löschen?</translation>
     </message>
@@ -307,7 +307,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Möchten Sie wirklich das Verzeichnis mit dem Alias &lt;i&gt;%1&lt;/i&gt; auf die ownCloud laden?&lt;br/&gt;Das wird die Dateien im Verzeichnis &lt;i&gt;%2&lt;/i&gt; überschreiben!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="360"/>
+        <location filename="../src/mirall/application.cpp" line="397"/>
         <source>Last sync was succesful</source>
         <translation>Die letzte Synchronisierung war erfolgreich</translation>
     </message>
@@ -324,91 +324,97 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Unbekannter Status</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="156"/>
+        <location filename="../src/mirall/application.cpp" line="194"/>
         <source>ownCloud Sync Started</source>
-        <translation type="unfinished"></translation>
+        <translation>ownCloud Sync ist gestartet</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="156"/>
+        <location filename="../src/mirall/application.cpp" line="194"/>
         <source>Sync started for %1 configured sync folder(s).</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="164"/>
-        <source>No ownCloud Connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Synchronisation gestart für %1 Verzeichniss(e).</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="165"/>
+        <location filename="../src/mirall/application.cpp" line="182"/>
+        <source>No ownCloud Connection</source>
+        <translation>Keine Verbindung zu ownCloud</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="166"/>
         <source>There is no ownCloud connection available. Please configure one by clicking on the tray icon!</source>
-        <translation type="unfinished"></translation>
+        <translation>Es besteht keine ownCloud Verbindung. Bitte konfigurieren Sie eine durch Klicken auf das Icon in der Systemleiste!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="364"/>
+        <location filename="../src/mirall/application.cpp" line="183"/>
+        <source>Your ownCloud credentials are not correct. Please correct them by clicking on the tray icon!</source>
+        <translation>Der ownCloud Nutzer oder das Passwort ist falsch. Bitte korrigieren Sie das durch Klicken auf das Symbol in der Systemleiste!</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="401"/>
         <source>&lt;b&gt;Syncing Error&lt;/b&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Synchronisationsfehler&lt;/b&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="366"/>
+        <location filename="../src/mirall/application.cpp" line="403"/>
         <source>&lt;b&gt;Setup Error&lt;/b&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Installationsfehler&lt;/b&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="368"/>
+        <location filename="../src/mirall/application.cpp" line="405"/>
         <source>&lt;b&gt;Disabled Folder&lt;/b&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Deaktiviertes Verzeichnis&lt;/b&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="370"/>
+        <location filename="../src/mirall/application.cpp" line="407"/>
         <source>&lt;b&gt;Undefined state&lt;/b&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Undefinierter Status&lt;/b&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="373"/>
+        <location filename="../src/mirall/application.cpp" line="410"/>
         <source>Folder information</source>
         <translation>Verzeichnis Information</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="388"/>
+        <location filename="../src/mirall/application.cpp" line="425"/>
         <source>Unknown</source>
         <translation>Unbekannt</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="390"/>
+        <location filename="../src/mirall/application.cpp" line="427"/>
         <source>Changed files:
 </source>
         <translation>Geänderte Dateien:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="392"/>
+        <location filename="../src/mirall/application.cpp" line="429"/>
         <source>Added files:
 </source>
         <translation>Hinzugefügte Dateien:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="394"/>
+        <location filename="../src/mirall/application.cpp" line="431"/>
         <source>New files in the server, or files deleted locally:
 </source>
         <translation>Neue Dateien auf dem Server, oder lokal gelöschte Dateien:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="449"/>
+        <location filename="../src/mirall/application.cpp" line="486"/>
         <source>Folder %1: Ok.</source>
         <translation>Verzeichnis %1: Ok.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="452"/>
-        <location filename="../src/mirall/application.cpp" line="463"/>
+        <location filename="../src/mirall/application.cpp" line="489"/>
+        <location filename="../src/mirall/application.cpp" line="500"/>
         <source>Folder %1: %2</source>
         <translation>Verzeichnis %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="457"/>
+        <location filename="../src/mirall/application.cpp" line="494"/>
         <source>Folder %1: setup error</source>
         <translation>Verzeichnis %1: Konfigurationsfehler</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="468"/>
+        <location filename="../src/mirall/application.cpp" line="505"/>
         <source>Folder %1: undefined state</source>
         <translation>Verzeichnis %1: Unbekannter Fehler</translation>
     </message>
@@ -418,51 +424,81 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="144"/>
         <source>CSync create failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>CSync Initialisierung ist gescheitert.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="173"/>
-        <source>CSync init failed.</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/mirall/csyncthread.cpp" line="178"/>
+        <source>CSync failed to create a lock file.</source>
+        <translation>CSync konnte keine Lock-Datei anlegen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="179"/>
-        <source>CSync Update failed.</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/mirall/csyncthread.cpp" line="181"/>
+        <source>CSync failed to load the state db.</source>
+        <translation>CSync konnte die Status-Datenbank nicht laden.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="190"/>
-        <source>The local filesystem has directories which are write protected.
-That prevents ownCloud from successful syncing.
-Please make sure that all directories are writeable.</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/mirall/csyncthread.cpp" line="184"/>
+        <source>CSync failed to load the ownCloud module.</source>
+        <translation>CSync konnte das ownCloud-Modul nicht laden.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/csyncthread.cpp" line="187"/>
+        <source>The system time between the local machine and the server differs too much. Please use a time syncronization service (ntp) on both machines.</source>
+        <translation>Die Systemzeit dieser Maschine und die des Servers ist zu unterschiedlich. Bitte aktivieren Sie einen Zeitsynchronisationsserver auf beiden Computern.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/csyncthread.cpp" line="191"/>
+        <source>CSync could not detect the filesystem type.</source>
+        <translation>CSync konnte den Filesystem-Typ nicht ermitteln.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="194"/>
-        <source>CSync encountered an error while examining the file system.
-Syncing is not possible.</source>
-        <translation type="unfinished"></translation>
+        <source>CSync got an error while processing internal trees.</source>
+        <translation>CSync-Fehler beim Bearbeiten von internen Bäumen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="197"/>
+        <source>An internal error number %1 happend.</source>
+        <translation>Ein interner Fehler mit Nummer %1 ist vorgekommen.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/csyncthread.cpp" line="206"/>
+        <source>CSync Update failed.</source>
+        <translation>CSync Aktualisierung ist fehlgeschlagen.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/csyncthread.cpp" line="217"/>
+        <source>The local filesystem has directories which are write protected.
+That prevents ownCloud from successful syncing.
+Please make sure that all directories are writeable.</source>
+        <translation>Das lokale Dateisystem hat Verzeichnisse, die schreibgeschützt sind. Das verhindert erfolgreiche Synchronisation zur ownCloud. Bitte stellen Sie sicher, dass alle Verzeichnisse beschreibbar sind.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/csyncthread.cpp" line="221"/>
+        <source>CSync encountered an error while examining the file system.
+Syncing is not possible.</source>
+        <translation>CSync konnte das Dateisystem nicht fehlerfrei durchsuchen. Synchronisation ist nicht möglich.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/csyncthread.cpp" line="224"/>
         <source>CSync update generated a strange instruction.
 Please write a bug report.</source>
-        <translation type="unfinished"></translation>
+        <translation>CSync Aktualisierung erzeugte eine unbekannte Anweisung. Bitte schreiben Sie einen Fehlerreport.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="200"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="227"/>
         <source>Local filesystem problems. Better disable Syncing and check.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler im lokalen Dateisystem. Synchronisation sollte deaktiviert werden.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="218"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="245"/>
         <source>CSync reconcile failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>CSync Vergleich fehlerhaft.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="222"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="249"/>
         <source>CSync propagate failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>CSync Abgleich fehlerhaft.</translation>
     </message>
 </context>
 <context>
@@ -470,17 +506,17 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="116"/>
         <source>Enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktiviert</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="116"/>
         <source>Disabled</source>
-        <translation type="unfinished">Angehalten</translation>
+        <translation>Angehalten</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="150"/>
         <source>Remote path: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Server-Pfad: %1</translation>
     </message>
 </context>
 <context>
@@ -488,7 +524,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="466"/>
         <source>%1 Folder Wizard</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 Verzeichnis Assistent</translation>
     </message>
 </context>
 <context>
@@ -496,37 +532,37 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="71"/>
         <source>No local directory selected!</source>
-        <translation type="unfinished"></translation>
+        <translation>Kein lokales Verzeichnis ausgewählt!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="87"/>
         <source>The local path %1 is already an upload folder.&lt;br/&gt;Please pick another one!</source>
-        <translation type="unfinished"></translation>
+        <translation>Der lokale Pfad %1 ist schon ein synchronisiertes Verzeichnis.&lt;br/&gt;Bitte wählen Sie ein anderes!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="91"/>
         <source>An already configured folder is contained in the current entry.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein bereits synchronisiertes Verzeichnis ist Teil des aktuellen Eintrages.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="96"/>
         <source>An already configured folder contains the currently entered directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein schon synchronisiertes Verzeichnis enthält den aktuellen Verzeichniseintrag.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="106"/>
         <source>The alias can not be empty. Please provide a descriptive alias word.</source>
-        <translation type="unfinished"></translation>
+        <translation>Der Alias darf nicht leer sein. Bitte geben Sie einen beschreibenden Namen an.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="117"/>
         <source>&lt;br/&gt;The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;br/&gt;Der Alias &lt;i&gt;%1&lt;/i&gt; wird schon verwendet. Bitte wählen Sie einen anderen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="138"/>
         <source>Select the source folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen Sie das Quellverzeichnis aus.</translation>
     </message>
 </context>
 <context>
@@ -534,146 +570,146 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="207"/>
         <source>The folder is not available on your ownCloud.&lt;br/&gt;Click to let mirall create it.</source>
-        <translation type="unfinished"></translation>
+        <translation>Das Verzeichnis ist auf der ownCloud nicht verfügbar.&lt;br/&gt;Klicken um es anlegen zu lassen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="246"/>
         <source>Folder on ownCloud was successfully created.</source>
-        <translation type="unfinished"></translation>
+        <translation>Das Verzeichnis wurde erfolgreich auf der ownCloud angelegt.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="249"/>
         <source>Failed to create the folder on ownCloud.&lt;br/&gt;Please check manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Anlegen des Verzeichnisses auf der ownCloud fehlgeschlagen.&lt;br/&gt;Bitte überprüfen Sie manuell.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="269"/>
         <source>Better do not use the remote root directory.&lt;br/&gt;If you do, you can &lt;b&gt;not&lt;/b&gt; mirror another local folder.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen Sie besser nicht das ownCloud root Verzeichnis aus.&lt;br/&gt;Wenn Sie dieses wählen, können Sie &lt;b&gt;kein&lt;/b&gt; weiteres Verzeichnis synchronisieren.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="314"/>
         <source>to your &lt;a href=&quot;%1&quot;&gt;ownCloud&lt;/a&gt; (version %2)</source>
-        <translation type="unfinished"></translation>
+        <translation>zur &lt;a href=&quot;%1&quot;&gt;ownCloud&lt;/a&gt; (version %2)</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="324"/>
         <source>no configured ownCloud found!</source>
-        <translation type="unfinished"></translation>
+        <translation>keine eingerichtete ownCloud verfügbar!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="396"/>
         <source>Select the target folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen Sie den Zielordner</translation>
     </message>
 </context>
 <context>
     <name>Mirall::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="70"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="72"/>
         <source>%1 Connection Wizard</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 Verbindungsassistent</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="78"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="80"/>
         <source>Trying to connect to ownCloud at %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>Versuche mit ownCloud %1zu verbinden... </translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="107"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="109"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: ownCloud version %2&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;Erfolgreich verbunden mit %1: ownCloud Version %2&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="115"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="117"/>
         <source>&lt;font color=&quot;red&quot;&gt;Failed to connect to ownCloud!&lt;/font&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;font color=&quot;red&quot;&gt;Verbindung zu ownCloud fehlgeschlagen!&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="116"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="118"/>
         <source>Error number %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler Nummer %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="202"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="204"/>
         <source>Starting script owncloud-admin...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="253"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="255"/>
         <source>&lt;font color=&quot;red&quot;&gt;Installation of ownCloud failed!&lt;/font&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;font color=&quot;red&quot;&gt;Installation der ownCloud fehlgeschlagen!&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="258"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="260"/>
         <source>&lt;font color=&quot;green&quot;&gt;Installation of ownCloud succeeded!&lt;/font&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;Installation der ownCloud erfolgreich!&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="286"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="288"/>
         <source>The owncloud admin script can not be found.
 Setup can not be done.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="299"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="301"/>
         <source>Skipping automatic setup of sync folders as there are already sync folders.</source>
-        <translation type="unfinished"></translation>
+        <translation>Überspringe automatische Konfiguration von synchronisierten Verzeichnissen weil schon Synchronisationsverzeichnisse konfiguriert sind.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="305"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="307"/>
         <source>Checking local sync folder %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="311"/>
-        <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Überprüfe lokales Verzeichnis %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="313"/>
-        <source>Creating local sync folder %1... </source>
-        <translation type="unfinished"></translation>
+        <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation>Lokales Verzeichnis %1 existiert schon, wird zur Synchronisation eingerichtet.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="315"/>
-        <source>Creating local sync folder %1</source>
-        <translation type="unfinished"></translation>
+        <source>Creating local sync folder %1... </source>
+        <translation>Erzeuge lokales Synchronisation-Verzeichnis %1...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="318"/>
-        <source>ok</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="317"/>
+        <source>Creating local sync folder %1</source>
+        <translation>Erzeuge lokales Synchronisationsverzeichnis %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="320"/>
+        <source>ok</source>
+        <translation>Ok</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="322"/>
         <source>failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>fehlgeschlagen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="333"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="335"/>
         <source>Start Creation of remote folder %1 failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Anlegen des entfernten Verzeichnisses %1 fehlgeschlagen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="369"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="371"/>
         <source>Remote folder %1 created sucessfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>Entferntes Verzeichnis %1 erfolgreich angelegt.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="374"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="376"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Lokales Synchronisationsverzeichnis %1 erfolgreich angelegt!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="377"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="379"/>
         <source>The remote folder %1 already exists. Automatic sync setup is skipped for security reasons. Please configure your sync folder manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Das entfernte Verzeichnis %1 existiert bereits. Darum wird kein automatisches Synchronisieren eingerichtet. Bitte konfigurieren Sie die Synchronisation manuell.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="380"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="382"/>
         <source>Remote folder %1 creation failed with error %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>Anlegen des entfernten Ordner %1ist mit Fehler %2 fehlgeschlagen. </translation>
     </message>
 </context>
 <context>
@@ -681,7 +717,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="245"/>
         <source>Congratulations! Your &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;new ownCloud&lt;/a&gt; is now up and running!</source>
-        <translation type="unfinished"></translation>
+        <translation>Herzlichen Glückwunsch! Ihre &lt;a href=&quot;%1&quot;&gt;neue ownCloud&lt;/a&gt; ist eingerichtet und läuft!</translation>
     </message>
 </context>
 <context>
@@ -699,7 +735,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="402"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, ownCloud %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbunden mit &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, ownCloud %3</translation>
     </message>
     <message>
         <source>Connected to %1, ownCloud %2</source>
@@ -736,27 +772,27 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="75"/>
         <source>Sync has not yet started</source>
-        <translation type="unfinished"></translation>
+        <translation>Synchronisierung noch nicht gestartet</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="77"/>
         <source>Sync is running</source>
-        <translation type="unfinished"></translation>
+        <translation>Synchronisierung läuft</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="79"/>
         <source>Sync Success</source>
-        <translation type="unfinished"></translation>
+        <translation>Synchronisierung erfolgreich</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="81"/>
-        <source>Sync Error</source>
-        <translation type="unfinished"></translation>
+        <source>Sync Error - Click info button for details.</source>
+        <translation>Fehler - Info Button für mehr Details.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="83"/>
         <source>Sync Disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Synchronisation ausgesetzt</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="85"/>
@@ -766,11 +802,19 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="87"/>
         <source>Status undefined</source>
-        <translation type="unfinished"></translation>
+        <translation>Status undefiniert</translation>
     </message>
     <message>
         <source>Undefined</source>
         <translation type="obsolete">Unbekannt</translation>
+    </message>
+</context>
+<context>
+    <name>Mirall::ownCloudFolder</name>
+    <message>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="195"/>
+        <source>The CSync thread terminated unexpectedly.</source>
+        <translation>Der CSync Thread ist unerwartet abgebrochen.</translation>
     </message>
 </context>
 <context>
