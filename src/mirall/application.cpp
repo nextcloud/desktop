@@ -167,6 +167,7 @@ void Application::slotNoOwnCloudFound( QNetworkReply::NetworkError err )
     _actionAddFolder->setEnabled( false );
     setupContextMenu();
 }
+
 void Application::slotCheckAuthentication()
 {
     _ocInfo->getRequest("/", true ); // this call needs to be authenticated.
@@ -332,6 +333,7 @@ void Application::slotAddFolder()
 
     if( goodData ) {
         _folderMan->addFolderDefinition( backend, alias, sourceFolder, targetPath, onlyThisLAN );
+        _folderMan->setupFolderFromConfigFile( alias );
         _statusDialog->slotAddFolder( _folderMan->folder( alias ) );
     }
 

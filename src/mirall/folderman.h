@@ -51,7 +51,7 @@ public:
       * QString targetPath on remote
       * bool    onlyThisLAN, currently unused.
       */
-    Folder *addFolderDefinition( const QString&, const QString&, const QString&, const QString&, bool );
+    void addFolderDefinition( const QString&, const QString&, const QString&, const QString&, bool );
 
     /**
       * return the folder by alias or NULL if no folder with the alias exists.
@@ -62,6 +62,11 @@ public:
       * return the last sync result by alias
       */
     SyncResult syncResult( const QString& );
+
+    /**
+      * creates a folder for a specific configuration, identified by alias.
+      */
+    Folder* setupFolderFromConfigFile(const QString & );
 
 signals:
     /**
@@ -92,11 +97,6 @@ private:
     int setupKnownFolders();
 
     void removeFolder( const QString& );
-
-
-    // creates a folder for a specific
-    // configuration
-    Folder* setupFolderFromConfigFile(const QString & );
 
     FolderWatcher *_configFolderWatcher;
     Folder::Map    _folderMap;

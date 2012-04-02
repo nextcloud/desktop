@@ -312,9 +312,9 @@ void FolderMan::slotFolderSyncFinished( const SyncResult& )
   * QString targetPath on remote
   * bool    onlyThisLAN, currently unused.
   */
-Folder* FolderMan::addFolderDefinition( const QString& backend, const QString& alias,
-                                        const QString& sourceFolder, const QString& targetPath,
-                                        bool onlyThisLAN )
+void FolderMan::addFolderDefinition( const QString& backend, const QString& alias,
+                                     const QString& sourceFolder, const QString& targetPath,
+                                     bool onlyThisLAN )
 {
     // Create a settings file named after the alias
     QSettings settings( _folderConfigPath + "/" + alias, QSettings::IniFormat);
@@ -326,10 +326,6 @@ Folder* FolderMan::addFolderDefinition( const QString& backend, const QString& a
     settings.setValue(QString("%1/onlyThisLAN").arg(alias), onlyThisLAN );
     settings.sync();
 
-    Folder *folder = setupFolderFromConfigFile(alias);
-    //    setupContextMenu(); FIXME: Refresh GUI elements.
-
-    return folder;
 }
 
 void FolderMan::slotRemoveFolder( const QString& alias )
