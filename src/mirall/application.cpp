@@ -32,6 +32,7 @@
 #include "mirall/owncloudinfo.h"
 #include "mirall/theme.h"
 #include "mirall/mirallconfigfile.h"
+#include "mirall/updatedetector.h"
 
 #include "mirall/miralltheme.h"
 #include "mirall/owncloudtheme.h"
@@ -48,7 +49,8 @@ Application::Application(int argc, char **argv) :
     _tray(0),
     _networkMgr(new QNetworkConfigurationManager(this)),
     _contextMenu(0),
-    _ocInfo(0)
+    _ocInfo(0),
+    _updateDetector(0)
 {
 
 #ifdef OWNCLOUD_CLIENT
@@ -131,6 +133,11 @@ Application::Application(int argc, char **argv) :
     QTimer::singleShot( 5000, this, SLOT(slotHideSplash()) );
     QTimer::singleShot( 0, this, SLOT( slotStartFolderSetup() ));
 
+    MirallConfigFile cfg;
+    if( !cfg.ownCloudSkipUpdateCheck() ) {
+        QTimer::singleShot( 3000, this, SLOT( slotStartUpdateDetector() ));
+    }
+
     qDebug() << "Network Location: " << NetworkLocation::currentLocation().encoded();
 }
 
@@ -141,6 +148,13 @@ Application::~Application()
     delete _networkMgr;
     delete _folderMan;
     delete _ocInfo;
+}
+
+void Application::slotStartUpdateDetector()
+{
+    _updateDetector = new UpdateDetector(this);
+    _updateDetector->versionCheck(_theme);
+
 }
 
 void Application::slotStartFolderSetup()

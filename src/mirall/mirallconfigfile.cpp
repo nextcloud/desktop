@@ -199,6 +199,21 @@ QString MirallConfigFile::ownCloudPasswd( const QString& connection ) const
     return pwd;
 }
 
+bool MirallConfigFile::ownCloudSkipUpdateCheck( const QString& connection ) const
+{
+    QString con( connection );
+    if( connection.isEmpty() ) con = defaultConnection();
+
+    QSettings settings( configFile(), QSettings::IniFormat );
+    settings.beginGroup( con );
+
+    bool skipIt = settings.value( "skipUpdateCheck", false ).toBool();
+
+    return skipIt;
+}
+
+
+
 QByteArray MirallConfigFile::basicAuthHeader() const
 {
     QString concatenated = ownCloudUser() + ":" + ownCloudPasswd();

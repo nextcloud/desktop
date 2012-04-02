@@ -39,6 +39,7 @@ class FolderWizard;
 class StatusDialog;
 class OwncloudSetupWizard;
 class ownCloudInfo;
+class UpdateDetector;
 
 class Application : public QApplication
 {
@@ -77,8 +78,11 @@ protected slots:
     void slotStartFolderSetup();
     void slotOwnCloudFound( const QString&, const QString& );
     void slotNoOwnCloudFound( QNetworkReply::NetworkError );
+
     void slotCheckAuthentication();
     void slotAuthCheck( const QString& ,QNetworkReply* );
+
+    void slotStartUpdateDetector();
 
 private:
     // configuration file -> folder
@@ -101,6 +105,7 @@ private:
     QSignalMapper *_folderOpenActionMapper;
     QSplashScreen *_splash;
     ownCloudInfo  *_ocInfo;
+    UpdateDetector *_updateDetector;
 };
 
 } // namespace Mirall

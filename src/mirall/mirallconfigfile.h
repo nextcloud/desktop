@@ -45,6 +45,8 @@ public:
 
     QString ownCloudPasswd( const QString& connection = QString() ) const;
 
+    bool ownCloudSkipUpdateCheck( const QString& connection = QString() ) const;
+
     QByteArray basicAuthHeader() const;
 };
 

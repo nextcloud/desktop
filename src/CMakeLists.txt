@@ -57,6 +57,8 @@ mirall/miralltheme.cpp
 mirall/owncloudtheme.cpp
 mirall/folderman.cpp
 mirall/mirallconfigfile.cpp
+mirall/updatedetector.cpp
+mirall/occinfo.cpp
 )
 
 set(mirall_HEADERS
@@ -75,6 +77,7 @@ set(mirall_HEADERS
     mirall/unisonfolder.h
     mirall/theme.h
     mirall/csyncthread.h
+    mirall/updatedetector.h
 )
 
 IF( UNIX )
