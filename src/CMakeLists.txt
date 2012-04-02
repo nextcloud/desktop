@@ -107,6 +107,10 @@ add_executable( mirall main.cpp )
 set( final_src ${qtwebdav_LIB_SRCS} ${qtwebdav_HEADERS}  ${mirall_HEADERS} ${qtwebdavMoc}
 	${MIRALL_RC_SRC} ${mirall_SRCS} ${mirall_UI_SRCS} ${mirallMoc} ${mirall_HEADERS} ${mirall_I18N})
 
+# add executable icon on windows and osx
+include( AddAppIconMacro )
+kde4_add_app_icon( final_src "${CMAKE_CURRENT_SOURCE_DIR}/../resources/mirall-*.png" )
+
 # add_executable(owncloud WIN32 main.cpp ${final_src})
 add_executable(owncloud  main.cpp ${final_src})
 
