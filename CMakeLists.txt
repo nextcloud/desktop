@@ -55,6 +55,6 @@ set(TRANSLATIONS ${CMAKE_SOURCE_DIR}/translations/mirall_de.ts)
 add_subdirectory(src)
 # add_subdirectory(test)
 
-# install( FILES exclude.lst DESTINATION /etc )
+install( FILES exclude.lst DESTINATION /etc )
 
 
