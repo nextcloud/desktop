@@ -1,0 +1,12 @@
+*.filepart
+*~
+*.bak
+*.part
+
+*.unison*
+*csync_timedif.ctmp*
+.*.sw?
+.*.*sw?
+
+
+
