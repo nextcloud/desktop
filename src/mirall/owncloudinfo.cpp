@@ -17,25 +17,34 @@
 #include <QtGui>
 #include <QAuthenticator>
 
+
 #include "mirall/owncloudinfo.h"
 #include "mirall/mirallconfigfile.h"
+#include "mirall/sslerrordialog.h"
 #include "mirall/version.h"
 
 namespace Mirall
 {
 
+QNetworkAccessManager* ownCloudInfo::_manager = 0;
+
+
 ownCloudInfo::ownCloudInfo( const QString& connectionName, QObject *parent ) :
-    QObject(parent),
-    _reply(0)
+    QObject(parent)
 {
     if( connectionName.isEmpty() )
         _connection = QString::fromLocal8Bit( "ownCloud");
     else
         _connection = connectionName;
 
-    _manager = new QNetworkAccessManager;
-    connect(_manager, SIGNAL(finished(QNetworkReply*)),
-            this, SLOT(slotReplyFinished(QNetworkReply*)));
+    if( ! _manager ) {
+        qDebug() << "Creating static NetworkAccessManager";
+        _manager = new QNetworkAccessManager;
+    }
+    connect( _manager, SIGNAL(finished(QNetworkReply*)),
+             this, SLOT(slotReplyFinished(QNetworkReply*)));
+    connect( _manager, SIGNAL( sslErrors(QNetworkReply*, QList<QSslError>)),
+             this, SLOT(slotSSLFailed(QNetworkReply*, QList<QSslError>)) );
 }
 
 ownCloudInfo::~ownCloudInfo()
@@ -62,14 +71,7 @@ void ownCloudInfo::getWebDAVPath( const QString& path )
 void ownCloudInfo::getRequest( const QString& path, bool webdav )
 {
     qDebug() << "Get Request to " << path;
-    if( _reply ) {
-        if(_reply->isRunning() ) {
-            qDebug() << "info request already running, not starting a second one.";
-            return;
-        } else {
-            delete _reply;
-        }
-    }
+
     // this is not a status call.
     if( !webdav && path == "status.php") {
         _versionInfoCall = true;
@@ -85,12 +87,11 @@ void ownCloudInfo::getRequest( const QString& path, bool webdav )
     request.setUrl( QUrl( url ) );
     request.setRawHeader( "User-Agent", QString("mirall-%1").arg(MIRALL_STRINGIFY(MIRALL_VERSION)).toAscii());
     request.setRawHeader( "Authorization", cfgFile.basicAuthHeader() );
-    _readBuffer.clear();
-    _reply = _manager->get( request );
+    QNetworkReply *reply = _manager->get( request );
 
-    connect( _reply, SIGNAL( error(QNetworkReply::NetworkError )),
+    connect( reply, SIGNAL( error(QNetworkReply::NetworkError )),
              this, SLOT(slotError( QNetworkReply::NetworkError )));
-    connect( _reply, SIGNAL( readyRead()), this, SLOT(slotReadyRead()));
+
 }
 
 
@@ -104,9 +105,22 @@ void ownCloudInfo::slotAuthentication( QNetworkReply*, QAuthenticator *auth )
     }
 }
 
+void ownCloudInfo::slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors )
+{
+    qDebug() << "SSL-Errors happened for url " << reply->url().toString();
+
+    SslErrorDialog dialog;
+    dialog.setErrorList( errors );
+
+    if( dialog.exec() == QDialog::Accepted ) {
+        reply->ignoreSslErrors();
+    }
+
+}
+
 void ownCloudInfo::slotReplyFinished( QNetworkReply *reply )
 {
-  const QString version( _readBuffer );
+  const QString version( reply->readAll() );
   const QString url = reply->url().toString();
 
   QString info( version );
@@ -133,21 +147,14 @@ void ownCloudInfo::slotReplyFinished( QNetworkReply *reply )
 
           emit ownCloudInfoFound( urlStr, versionStr );
       } else {
-          qDebug() << "No proper answer on status.php!";
+          qDebug() << "No proper answer on " << reply->url().toString();
           emit noOwncloudFound( reply->error() );
       }
   } else {
       // it was a general GET request.
       emit ownCloudDirExists( _directory, reply );
   }
-}
-
-void ownCloudInfo::slotReadyRead()
-{
-    // do not slurp in the content of other calls.
-    if( _versionInfoCall ) {
-        _readBuffer.append(_reply->readAll());
-    }
+  reply->deleteLater();
 }
 
 void ownCloudInfo::slotError( QNetworkReply::NetworkError err)

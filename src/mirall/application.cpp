@@ -184,6 +184,7 @@ void Application::slotNoOwnCloudFound( QNetworkReply::NetworkError err )
 
 void Application::slotCheckAuthentication()
 {
+    qDebug() << "# checking for authentication settings.";
     _ocInfo->getRequest("/", true ); // this call needs to be authenticated.
     // simply GET the webdav root, will fail if credentials are wrong.
     // continue in slotAuthCheck here :-)

@@ -32,6 +32,7 @@ mirall/createanowncloudpage.ui
 mirall/owncloudftpaccesspage.ui
 mirall/owncloudwizardresultpage.ui
 mirall/owncloudcredentialspage.ui
+mirall/sslerrorsdialog.ui
 )
 
 qt4_wrap_ui(mirall_UI_SRCS ${mirall_UI})
@@ -59,6 +60,8 @@ mirall/folderman.cpp
 mirall/mirallconfigfile.cpp
 mirall/updatedetector.cpp
 mirall/occinfo.cpp
+mirall/sslerrordialog.cpp
+
 )
 
 set(mirall_HEADERS
@@ -78,6 +81,7 @@ set(mirall_HEADERS
     mirall/theme.h
     mirall/csyncthread.h
     mirall/updatedetector.h
+    mirall/sslerrordialog.h
 )
 
 IF( UNIX )

@@ -112,7 +112,13 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     MirallConfigFile cfgFile;
 
     QUrl url( _secondPath );
-    url.setScheme( "owncloud" );
+    if( url.scheme() == QString::fromLocal8Bit("http") ) {
+        url.setScheme( "owncloud" );
+    } else {
+        // connect SSL!
+        url.setScheme( "ownclouds" );
+    }
+
 #ifdef USE_WATCHER
     // if there is a watcher and no polling, ever sync is remote.
     _localCheckOnly = false;

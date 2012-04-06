@@ -387,6 +387,7 @@ void StatusDialog::slotAddSync()
 void StatusDialog::slotCheckConnection()
 {
     _ownCloudInfo = new ownCloudInfo();
+    qDebug() << "Check status.php from statusdialog.";
     _ownCloudInfo->checkInstallation();
     connect(_ownCloudInfo, SIGNAL(ownCloudInfoFound( const QString&,  const QString& )),
             SLOT(slotOCInfo( const QString&, const QString& )));

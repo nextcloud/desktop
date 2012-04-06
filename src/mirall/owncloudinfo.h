@@ -16,9 +16,7 @@
 #define OWNCLOUDINFO_H
 
 #include <QObject>
-#include <QNetworkReply>
-
-class QNetworkAccessManager;
+#include <QtNetwork>
 
 namespace Mirall
 {
@@ -58,14 +56,12 @@ public slots:
 
 protected slots:
     void slotReplyFinished( QNetworkReply* );
-    void slotReadyRead();
     void slotError( QNetworkReply::NetworkError );
     void slotAuthentication( QNetworkReply*, QAuthenticator *);
+    void slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors );
 
 private:
-    QNetworkAccessManager *_manager;
-    QNetworkReply *_reply;
-    QByteArray    _readBuffer;
+    static QNetworkAccessManager *_manager;
     QString       _connection;
     bool          _versionInfoCall;
     QString       _directory;
