@@ -51,7 +51,7 @@ void SslErrorDialog::setErrorList( QList<QSslError> errors )
         } else {
             certInfo[digest] = certDiv( cert );
         }
-        errors.append( err.errorString() );
+        errorList.append( err.errorString() );
         certErrors[digest] = errorList;
     }
 
@@ -63,7 +63,7 @@ void SslErrorDialog::setErrorList( QList<QSslError> errors )
 QString SslErrorDialog::certDiv( QSslCertificate cert ) const
 {
     QString msg;
-    msg +? "<div id=\"cert\">";
+    msg += "<div id=\"cert\">";
     msg += QString( "<h2>Certificate MD5 %1</h2>" ).arg( QString::fromAscii(cert.digest() ));
     msg += "<div id=\"ccert\">";
     msg += QString( "<p>Name: %1</p>").arg( cert.subjectInfo( QSslCertificate::CommonName ) );

@@ -20,7 +20,7 @@
 #include "ui_sslerrorsdialog.h"
 
 class QSslError;
-
+class QSslCertificate;
 
 namespace Mirall
 {
@@ -37,6 +37,8 @@ signals:
     
 public slots:
 
+private:
+    QString certDiv( QSslCertificate ) const;
 };
 } // end namespace
 
