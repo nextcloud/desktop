@@ -55,7 +55,7 @@ signals:
 public slots:
 
 protected slots:
-    void slotReplyFinished( QNetworkReply* );
+    void slotReplyFinished( );
     void slotError( QNetworkReply::NetworkError );
     void slotAuthentication( QNetworkReply*, QAuthenticator *);
     void slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors );
@@ -63,8 +63,7 @@ protected slots:
 private:
     static QNetworkAccessManager *_manager;
     QString       _connection;
-    bool          _versionInfoCall;
-    QString       _directory;
+    QHash<QNetworkReply*, QString> _directories;
 };
 
 };

@@ -95,8 +95,7 @@ public slots:
     void slotUpdateFolderState( Folder* );
     void slotCheckConnection();
 
-protected slots:
-    void slotOCInfoFail(QNetworkReply *reply);
+    void slotOCInfoFail(QNetworkReply*);
     void slotOCInfo( const QString&, const QString& );
     void slotDoubleClicked( const QModelIndex& );
 

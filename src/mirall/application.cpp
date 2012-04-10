@@ -162,11 +162,11 @@ void Application::slotStartFolderSetup()
     if( _ocInfo->isConfigured() ) {
       _ocInfo->checkInstallation();
     } else {
-        // No config file yet.
-        // slotNoOwnCloudFound( QNetworkReply::UnknownNetworkError );
         QMessageBox::warning(0, tr("No ownCloud Configuration"),
-                             tr("<p>No ownCloud was configured yet.</p><p>Please configure one by clicking on the tray icon!</p>"));
-        // FIXME: Open the configure dialog  here.
+                             tr("<p>No ownCloud connection was configured yet.</p><p>Please configure one by clicking on the tray icon!</p>"));
+        // It was evaluated to open the config dialog from here directly but decided
+        // against because the user does not know why. The popup gives a better user
+        // guidance, even if its a click more.
     }
 }
 
@@ -182,7 +182,9 @@ void Application::slotNoOwnCloudFound( QNetworkReply* reply )
     qDebug() << "** Application: NO ownCloud found!";
     QString msg;
     if( reply ) {
-        msg = tr("<p>The ownCloud at %1 could not be reached.</p>").arg( reply->url().toString());
+        QString url( reply->url().toString() );
+        url.remove( "/status.php" );
+        msg = tr("<p>The ownCloud at %1 could not be reached.</p>").arg( url );
         msg += tr("<p>The detailed error message is<br/><tt>%1</tt></p>").arg( reply->errorString() );
     }
     msg += tr("<p>Please check your configuration by clicking on the tray icon.</p>");
@@ -205,7 +207,8 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
     if( reply->error() == QNetworkReply::AuthenticationRequiredError ) {
         qDebug() << "******** Credentials are wrong!";
         QMessageBox::warning(0, tr("No ownCloud Connection"),
-                             tr("Your ownCloud credentials are not correct. Please correct them by clicking on the tray icon!"));
+                             tr("<p>Your ownCloud credentials are not correct.</p>"
+                                "<p>Please correct them by starting the configuration dialog from the tray!</p>"));
         _actionAddFolder->setEnabled( false );
     } else {
         qDebug() << "######## Credentials are ok!";

@@ -41,8 +41,7 @@ ownCloudInfo::ownCloudInfo( const QString& connectionName, QObject *parent ) :
         qDebug() << "Creating static NetworkAccessManager";
         _manager = new QNetworkAccessManager;
     }
-    connect( _manager, SIGNAL(finished(QNetworkReply*)),
-             this, SLOT(slotReplyFinished(QNetworkReply*)));
+
     connect( _manager, SIGNAL( sslErrors(QNetworkReply*, QList<QSslError>)),
              this, SLOT(slotSSLFailed(QNetworkReply*, QList<QSslError>)) );
 }
@@ -72,15 +71,6 @@ void ownCloudInfo::getRequest( const QString& path, bool webdav )
 {
     qDebug() << "Get Request to " << path;
 
-    // this is not a status call.
-    if( !webdav && path == "status.php") {
-        _versionInfoCall = true;
-        _directory.clear();
-    } else {
-        _directory = path;
-        _versionInfoCall = false;
-    }
-
     MirallConfigFile cfgFile;
     QString url = cfgFile.ownCloudUrl( _connection, webdav ) + path;
     QNetworkRequest request;
@@ -88,6 +78,8 @@ void ownCloudInfo::getRequest( const QString& path, bool webdav )
     request.setRawHeader( "User-Agent", QString("mirall-%1").arg(MIRALL_STRINGIFY(MIRALL_VERSION)).toAscii());
     request.setRawHeader( "Authorization", cfgFile.basicAuthHeader() );
     QNetworkReply *reply = _manager->get( request );
+    connect( reply, SIGNAL(finished()), SLOT(slotReplyFinished()));
+    _directories[reply] = path;
 
     connect( reply, SIGNAL( error(QNetworkReply::NetworkError )),
              this, SLOT(slotError( QNetworkReply::NetworkError )));
@@ -118,12 +110,20 @@ void ownCloudInfo::slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors 
 
 }
 
-void ownCloudInfo::slotReplyFinished( QNetworkReply *reply )
+//
+// There have been problems with the finish-signal coming from the networkmanager.
+// To avoid that, the reply-signals were connected and the data is taken from the
+// sender() method.
+//
+void ownCloudInfo::slotReplyFinished()
 {
+    QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
+
     if( ! reply ) {
         qDebug() << "ownCloudInfo: Reply empty!";
         return;
     }
+
     const QString version( reply->readAll() );
     const QString url = reply->url().toString();
     QString plainUrl(url);
@@ -131,9 +131,18 @@ void ownCloudInfo::slotReplyFinished( QNetworkReply *reply )
 
     QString info( version );
 
-    if( _versionInfoCall ) {
+    if( url.endsWith("status.php") ) {
         // it was a call to status.php
-
+        if( reply->error() == QNetworkReply::NoError && info.isEmpty() ) {
+            // This seems to be a bit strange behaviour of QNetworkAccessManager.
+            // It calls the finised slot multiple times but only the first read wins.
+            // That happend when the code connected the finished signal of the manager.
+            // It did not happen when the code connected to the reply finish signal.
+            qDebug() << "WRN: NetworkReply with not content but also no error! " << reply;
+            reply->deleteLater();
+            return;
+        }
+        qDebug() << "status.php returns: " << info << " " << reply->error() << " Reply: " << reply;
         if( info.contains("installed") && info.contains("version") && info.contains("versionstring") ) {
             info.remove(0,1); // remove first char which is a "{"
             info.remove(-1,1); // remove the last char which is a "}"
@@ -155,7 +164,13 @@ void ownCloudInfo::slotReplyFinished( QNetworkReply *reply )
         }
     } else {
         // it was a general GET request.
-        emit ownCloudDirExists( _directory, reply );
+        QString dir("unknown");
+        if( _directories.contains(reply) ) {
+            dir = _directories[reply];
+            _directories.remove(reply);
+        }
+
+        emit ownCloudDirExists( dir, reply );
     }
     reply->deleteLater();
 }

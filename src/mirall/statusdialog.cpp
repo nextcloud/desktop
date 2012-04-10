@@ -200,10 +200,11 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
   _ButtonAdd->setEnabled(true);
 
   _ownCloudInfo = new ownCloudInfo();
-  connect(_ownCloudInfo, SIGNAL(ownCloudInfoFound( const QString&,  const QString& )),
-          SLOT(slotOCInfo( const QString&, const QString& )));
+
+  connect(_ownCloudInfo, SIGNAL(ownCloudInfoFound(const QString&, const QString&)),
+          this, SLOT(slotOCInfo( const QString&, const QString& )));
   connect(_ownCloudInfo, SIGNAL(noOwncloudFound(QNetworkReply*)),
-          SLOT(slotOCInfoFail(QNetworkReply*)));
+          this, SLOT(slotOCInfoFail(QNetworkReply*)));
 
 #ifdef Q_WS_X11
   connect(_folderList, SIGNAL(activated(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
@@ -213,6 +214,8 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
   connect(_folderList, SIGNAL(clicked(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
   connect( _folderList,SIGNAL(doubleClicked(QModelIndex)),SLOT(slotDoubleClicked(QModelIndex)));
 #endif
+
+  _ocUrlLabel->setWordWrap( true );
 }
 
 StatusDialog::~StatusDialog()
@@ -411,6 +414,7 @@ void StatusDialog::slotCheckConnection()
 void StatusDialog::slotOCInfo( const QString& url, const QString& version )
 {
     _OCUrl = url;
+    qDebug() << "#-------# oC found on " << url;
     /* enable the open button */
     _ocUrlLabel->setOpenExternalLinks(true);
     _ocUrlLabel->setText( tr("Connected to <a href=\"%1\">%2</a>, ownCloud %3").arg(url).arg(url).arg(version) );
@@ -438,7 +442,7 @@ void StatusDialog::slotOpenOC()
   */
 void StatusDialog::showEvent ( QShowEvent *event  )
 {
-    slotCheckConnection();
+    QTimer::singleShot(0, this, SLOT(slotCheckConnection()));
     QDialog::showEvent( event );
 }
 
