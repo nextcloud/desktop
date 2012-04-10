@@ -292,7 +292,7 @@ void FolderWizardTargetPage::initializePage()
     ownCloudInfo *ocInfo = new ownCloudInfo( QString(), this );
     if( ocInfo->isConfigured() ) {
       connect(ocInfo,SIGNAL(ownCloudInfoFound(QString,QString)),SLOT(slotOwnCloudFound(QString,QString)));
-      connect(ocInfo,SIGNAL(noOwncloudFound(QNetworkReply::NetworkError)),SLOT(slotNoOwnCloudFound(QNetworkReply::NetworkError)));
+      connect(ocInfo,SIGNAL(noOwncloudFound(QNetworkReply*)),SLOT(slotNoOwnCloudFound(QNetworkReply*)));
       connect(_ui._buttCreateFolder, SIGNAL(clicked()), SLOT(slotCreateRemoteFolder()));
       ocInfo->checkInstallation();
 
@@ -318,10 +318,11 @@ void FolderWizardTargetPage::slotOwnCloudFound( const QString& url, const QStrin
   }
 }
 
-void FolderWizardTargetPage::slotNoOwnCloudFound( QNetworkReply::NetworkError error )
+void FolderWizardTargetPage::slotNoOwnCloudFound( QNetworkReply* error )
 {
-  qDebug() << "No ownCloud configured: " << error;
+  qDebug() << "No ownCloud configured: " << error->error();
   _ui.OCLabel->setText( tr("no configured ownCloud found!") );
+  showWarn( tr("Your ownCloud could not be reached:<br/><tt>%1</tt>").arg(error->errorString()));
   _ui.OCRadioBtn->setEnabled( false );
   _ui.OCFolderLineEdit->setEnabled( false );
 }

@@ -96,7 +96,7 @@ void OwncloudSetupWizard::testOwnCloudConnect()
     _ocInfo = new ownCloudInfo( QString(), this );
     if( _ocInfo->isConfigured() ) {
         connect(_ocInfo,SIGNAL(ownCloudInfoFound(QString,QString)),SLOT(slotOwnCloudFound(QString,QString)));
-        connect(_ocInfo,SIGNAL(noOwncloudFound(QNetworkReply::NetworkError )),SLOT(slotNoOwnCloudFound(QNetworkReply::NetworkError)));
+        connect(_ocInfo,SIGNAL(noOwncloudFound(QNetworkReply*)),SLOT(slotNoOwnCloudFound(QNetworkReply*)));
         _ocInfo->checkInstallation();
     } else {
         qDebug() << "   ownCloud seems not to be configured, can not start test connect.";
@@ -112,10 +112,10 @@ void OwncloudSetupWizard::slotOwnCloudFound( const QString& url, const QString& 
     setupLocalSyncFolder();
 }
 
-void OwncloudSetupWizard::slotNoOwnCloudFound( QNetworkReply::NetworkError err )
+void OwncloudSetupWizard::slotNoOwnCloudFound( QNetworkReply *err )
 {
     _ocWizard->appendToResultWidget(tr("<font color=\"red\">Failed to connect to ownCloud!</font>") );
-    _ocWizard->appendToResultWidget(tr("Error number %1").arg(err) );
+    _ocWizard->appendToResultWidget(tr("Error: <tt>%1</tt>").arg(err->errorString()) );
 
     // remove the config file again
     MirallConfigFile cfgFile;

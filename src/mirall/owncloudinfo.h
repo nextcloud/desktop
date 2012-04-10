@@ -49,7 +49,7 @@ public:
 signals:
     // result signal with url- and version string.
     void ownCloudInfoFound( const QString&,  const QString& );
-    void noOwncloudFound( QNetworkReply::NetworkError );
+    void noOwncloudFound( QNetworkReply* );
     void ownCloudDirExists( const QString&, QNetworkReply* );
 
 public slots:

@@ -94,8 +94,8 @@ Application::Application(int argc, char **argv) :
     connect( _ocInfo,SIGNAL(ownCloudInfoFound(QString,QString)),
              SLOT(slotOwnCloudFound(QString,QString)));
 
-    connect( _ocInfo,SIGNAL(noOwncloudFound(QNetworkReply::NetworkError)),
-             SLOT(slotNoOwnCloudFound(QNetworkReply::NetworkError)));
+    connect( _ocInfo,SIGNAL(noOwncloudFound(QNetworkReply*)),
+             SLOT(slotNoOwnCloudFound(QNetworkReply*)));
 
     connect( _ocInfo,SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
              this,SLOT(slotAuthCheck(QString,QNetworkReply*)));
@@ -162,7 +162,11 @@ void Application::slotStartFolderSetup()
     if( _ocInfo->isConfigured() ) {
       _ocInfo->checkInstallation();
     } else {
-        slotNoOwnCloudFound( QNetworkReply::UnknownNetworkError );
+        // No config file yet.
+        // slotNoOwnCloudFound( QNetworkReply::UnknownNetworkError );
+        QMessageBox::warning(0, tr("No ownCloud Configuration"),
+                             tr("<p>No ownCloud was configured yet.</p><p>Please configure one by clicking on the tray icon!</p>"));
+        // FIXME: Open the configure dialog  here.
     }
 }
 
@@ -173,11 +177,17 @@ void Application::slotOwnCloudFound( const QString& url , const QString& version
     QTimer::singleShot( 0, this, SLOT( slotCheckAuthentication() ));
 }
 
-void Application::slotNoOwnCloudFound( QNetworkReply::NetworkError err )
+void Application::slotNoOwnCloudFound( QNetworkReply* reply )
 {
     qDebug() << "** Application: NO ownCloud found!";
-    QMessageBox::warning(0, tr("No ownCloud Connection"),
-                         tr("There is no ownCloud connection available. Please configure one by clicking on the tray icon!"));
+    QString msg;
+    if( reply ) {
+        msg = tr("<p>The ownCloud at %1 could not be reached.</p>").arg( reply->url().toString());
+        msg += tr("<p>The detailed error message is<br/><tt>%1</tt></p>").arg( reply->errorString() );
+    }
+    msg += tr("<p>Please check your configuration by clicking on the tray icon.</p>");
+
+    QMessageBox::warning(0, tr("ownCloud Connection Failed"), msg );
     _actionAddFolder->setEnabled( false );
     setupContextMenu();
 }
@@ -237,6 +247,8 @@ void Application::setupSystemTray()
 
     connect(_tray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             SLOT(slotTrayClicked(QSystemTrayIcon::ActivationReason)));
+
+    setupContextMenu();
 
     _tray->show();
 }

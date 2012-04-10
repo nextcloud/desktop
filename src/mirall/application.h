@@ -77,8 +77,7 @@ protected slots:
 
     void slotStartFolderSetup();
     void slotOwnCloudFound( const QString&, const QString& );
-    void slotNoOwnCloudFound( QNetworkReply::NetworkError );
-
+    void slotNoOwnCloudFound( QNetworkReply* );
     void slotCheckAuthentication();
     void slotAuthCheck( const QString& ,QNetworkReply* );
 

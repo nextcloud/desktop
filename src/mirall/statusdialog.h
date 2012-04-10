@@ -66,6 +66,8 @@ class StatusDialog : public QDialog, public Ui::statusDialog
     Q_OBJECT
 public:
     explicit StatusDialog( Theme *theme, QWidget *parent = 0);
+    ~StatusDialog();
+
     void setFolderList( Folder::Map );
 
 signals:
@@ -94,7 +96,7 @@ public slots:
     void slotCheckConnection();
 
 protected slots:
-    void slotOCInfoFail();
+    void slotOCInfoFail(QNetworkReply *reply);
     void slotOCInfo( const QString&, const QString& );
     void slotDoubleClicked( const QModelIndex& );
 

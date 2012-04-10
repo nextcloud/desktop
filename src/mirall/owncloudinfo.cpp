@@ -120,47 +120,49 @@ void ownCloudInfo::slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors 
 
 void ownCloudInfo::slotReplyFinished( QNetworkReply *reply )
 {
-  const QString version( reply->readAll() );
-  const QString url = reply->url().toString();
+    if( ! reply ) {
+        qDebug() << "ownCloudInfo: Reply empty!";
+        return;
+    }
+    const QString version( reply->readAll() );
+    const QString url = reply->url().toString();
+    QString plainUrl(url);
+    plainUrl.remove("/status.php");
 
-  QString info( version );
+    QString info( version );
 
-  if( _versionInfoCall ) {
-      // it was a call to status.php
+    if( _versionInfoCall ) {
+        // it was a call to status.php
 
-      if( info.contains("installed") && info.contains("version") && info.contains("versionstring") ) {
-          info.remove(0,1); // remove first char which is a "{"
-          info.remove(-1,1); // remove the last char which is a "}"
-          QStringList li = info.split( QChar(',') );
+        if( info.contains("installed") && info.contains("version") && info.contains("versionstring") ) {
+            info.remove(0,1); // remove first char which is a "{"
+            info.remove(-1,1); // remove the last char which is a "}"
+            QStringList li = info.split( QChar(',') );
 
-          QString infoString;
-          QString versionStr;
-          foreach ( infoString, li ) {
-              if( infoString.contains( "versionstring") ) {
-                  // get the version string out.
-                  versionStr = infoString.mid(17);
-                  versionStr.remove(-1, 1);
-              }
-          }
-          QString urlStr( url );
-          urlStr.remove("/status.php"); // get the plain url.
-
-          emit ownCloudInfoFound( urlStr, versionStr );
-      } else {
-          qDebug() << "No proper answer on " << reply->url().toString();
-          emit noOwncloudFound( reply->error() );
-      }
-  } else {
-      // it was a general GET request.
-      emit ownCloudDirExists( _directory, reply );
-  }
-  reply->deleteLater();
+            QString infoString;
+            QString versionStr;
+            foreach ( infoString, li ) {
+                if( infoString.contains( "versionstring") ) {
+                    // get the version string out.
+                    versionStr = infoString.mid(17);
+                    versionStr.remove(-1, 1);
+                }
+            }
+            emit ownCloudInfoFound( plainUrl, versionStr );
+        } else {
+            qDebug() << "No proper answer on " << url;
+            emit noOwncloudFound( reply );
+        }
+    } else {
+        // it was a general GET request.
+        emit ownCloudDirExists( _directory, reply );
+    }
+    reply->deleteLater();
 }
 
 void ownCloudInfo::slotError( QNetworkReply::NetworkError err)
 {
   qDebug() << "ownCloudInfo Network Error: " << err;
-  // emit noOwncloudFound( err );
 }
 
 }

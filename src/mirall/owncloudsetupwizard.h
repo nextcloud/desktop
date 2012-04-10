@@ -77,7 +77,7 @@ protected slots:
 
 private slots:
   void slotOwnCloudFound( const QString&, const QString& );
-  void slotNoOwnCloudFound( QNetworkReply::NetworkError );
+  void slotNoOwnCloudFound( QNetworkReply* );
     void slotCreateRemoteFolderFinished( QNetworkReply* );
 
 private:
