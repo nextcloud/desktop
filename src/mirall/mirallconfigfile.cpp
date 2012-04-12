@@ -117,7 +117,7 @@ void MirallConfigFile::writeOwncloudConfig( const QString& connection,
                                             bool skipPwd )
 {
     const QString file = configFile();
-    qDebug() << "*** writing mirall config to " << file;
+    qDebug() << "*** writing mirall config to " << file << " Skippwd: " << skipPwd;
     QString pwd( passwd );
 
     QSettings settings( file, QSettings::IniFormat);
@@ -132,8 +132,10 @@ void MirallConfigFile::writeOwncloudConfig( const QString& connection,
     if( skipPwd ) {
         pwd = QString();
     }
-    settings.setValue("password", pwd );
-    settings.setValue("nostoredpassword", QVariant(skipPwd) );
+
+    QByteArray pwdba = pwd.toUtf8();
+    settings.setValue( "passwd", QVariant(pwdba.toBase64()) );
+    settings.setValue( "nostoredpassword", QVariant(skipPwd) );
     settings.sync();
 
     // check the perms, only read-write for the owner.
@@ -219,7 +221,22 @@ QString MirallConfigFile::ownCloudPasswd( const QString& connection ) const
         }
         pwd = _passwd;
     } else {
-        pwd = settings.value( "password" ).toString();
+        QByteArray pwdba = settings.value("passwd").toByteArray();
+        if( pwdba.isEmpty() ) {
+            // check the password entry, cleartext from before
+            // read it and convert to base64, delete the cleartext entry.
+            QString p = settings.value("password").toString();
+
+            if( ! p.isEmpty() ) {
+                // its there, save base64-encoded and delete.
+
+                pwdba = p.toUtf8();
+                settings.setValue( "passwd", QVariant(pwdba.toBase64()) );
+                settings.remove( "password" );
+                settings.sync();
+            }
+        }
+        pwd = QString::fromUtf8( QByteArray::fromBase64(pwdba) );
     }
 
     return pwd;
