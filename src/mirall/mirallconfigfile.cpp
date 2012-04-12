@@ -28,6 +28,9 @@
 
 namespace Mirall {
 
+QString MirallConfigFile::_passwd = QString();
+bool    MirallConfigFile::_askedUser = false;
+
 MirallConfigFile::MirallConfigFile()
 {
 }
@@ -108,12 +111,14 @@ bool MirallConfigFile::connectionExists( const QString& conn )
 
 
 void MirallConfigFile::writeOwncloudConfig( const QString& connection,
-                                         const QString& url,
-                                         const QString& user,
-                                         const QString& passwd )
+                                            const QString& url,
+                                            const QString& user,
+                                            const QString& passwd,
+                                            bool skipPwd )
 {
     const QString file = configFile();
     qDebug() << "*** writing mirall config to " << file;
+    QString pwd( passwd );
 
     QSettings settings( file, QSettings::IniFormat);
     QString cloudsUrl( url );
@@ -124,8 +129,11 @@ void MirallConfigFile::writeOwncloudConfig( const QString& connection,
     settings.beginGroup( connection );
     settings.setValue("url", cloudsUrl );
     settings.setValue("user", user );
-    settings.setValue("password", passwd );
-
+    if( skipPwd ) {
+        pwd = QString();
+    }
+    settings.setValue("password", pwd );
+    settings.setValue("nostoredpassword", QVariant(skipPwd) );
     settings.sync();
 
     // check the perms, only read-write for the owner.
@@ -194,7 +202,25 @@ QString MirallConfigFile::ownCloudPasswd( const QString& connection ) const
     QSettings settings( configFile(), QSettings::IniFormat );
     settings.beginGroup( con );
 
-    QString pwd = settings.value( "password" ).toString();
+    QString pwd;
+
+    bool boolfalse( false );
+    bool skipPwd = settings.value( "nostoredpassword", QVariant(boolfalse) ).toBool();
+    if( skipPwd ) {
+        if( ! _askedUser ) {
+            bool ok;
+            QString text = QInputDialog::getText(0, QObject::tr("ownCloud Password Required"),
+                                                 QObject::tr("Please enter your ownCloud password:"), QLineEdit::Password,
+                                                 QString(), &ok);
+            if( ok && !text.isEmpty() ) { // empty password is not allowed on ownCloud
+                _passwd = text;
+                _askedUser = true;
+            }
+        }
+        pwd = _passwd;
+    } else {
+        pwd = settings.value( "password" ).toString();
+    }
 
     return pwd;
 }

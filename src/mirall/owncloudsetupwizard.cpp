@@ -97,7 +97,8 @@ void OwncloudSetupWizard::testOwnCloudConnect()
     cfgFile.writeOwncloudConfig( QString::fromLocal8Bit("ownCloud"),
                                  _ocWizard->field("OCUrl").toString(),
                                  _ocWizard->field("OCUser").toString(),
-                                 _ocWizard->field("OCPasswd").toString() );
+                                 _ocWizard->field("OCPasswd").toString(),
+                                 !(_ocWizard->field("cbPwdNoLocalStore").toBool()) );
 
     // now start ownCloudInfo to check the connection.
     if( _ocInfo->isConfigured() ) {

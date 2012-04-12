@@ -35,7 +35,7 @@ public:
     void writeOwncloudConfig( const QString& connection,
                               const QString& url,
                               const QString& user,
-                              const QString& passwd );
+                              const QString& passwd, bool skipPwd );
 
     void removeConnection( const QString& connection = QString() );
 
@@ -48,6 +48,10 @@ public:
     bool ownCloudSkipUpdateCheck( const QString& connection = QString() ) const;
 
     QByteArray basicAuthHeader() const;
+
+private:
+    static QString _passwd;
+    static bool    _askedUser;
 };
 
 }

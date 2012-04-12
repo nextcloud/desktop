@@ -92,8 +92,11 @@ OwncloudCredentialsPage::OwncloudCredentialsPage()
     _ui.setupUi(this);
     registerField( "OCUser",   _ui.OCUserEdit );
     registerField( "OCPasswd", _ui.OCPasswdEdit );
+    registerField( "PwdNoLocalStore", _ui.cbPwdNoLocalStore );
 
     connect( _ui.OCPasswdEdit, SIGNAL(textChanged(QString)), this, SIGNAL(completeChanged()));
+
+    connect( _ui.cbPwdNoLocalStore, SIGNAL(stateChanged(int)), this, SLOT(slotPwdStoreChanged(int)));
 }
 
 OwncloudCredentialsPage::~OwncloudCredentialsPage()
@@ -101,9 +104,18 @@ OwncloudCredentialsPage::~OwncloudCredentialsPage()
 
 }
 
+void OwncloudCredentialsPage::slotPwdStoreChanged( int state )
+{
+    _ui.OCPasswdEdit->setEnabled( state == Qt::Unchecked );
+    emit completeChanged();
+}
+
 bool OwncloudCredentialsPage::isComplete() const
 {
-  return !(_ui.OCPasswdEdit->text().isEmpty() );
+    if( _ui.cbPwdNoLocalStore->checkState() == Qt::Checked ) {
+        return !(_ui.OCUserEdit->text().isEmpty());
+    }
+    return !(_ui.OCUserEdit->text().isEmpty() || _ui.OCPasswdEdit->text().isEmpty() );
 }
 
 void OwncloudCredentialsPage::initializePage()

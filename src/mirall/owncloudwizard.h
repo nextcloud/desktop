@@ -115,6 +115,8 @@ public:
   virtual void initializePage();
   virtual int nextId() const;
 
+protected slots:
+  void slotPwdStoreChanged( int );
 
 private:
   Ui_OwncloudCredentialsPage _ui;
