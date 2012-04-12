@@ -36,65 +36,67 @@ class OwncloudSetupWizard : public QObject
 public:
     explicit OwncloudSetupWizard( FolderMan *folderMan = 0, Theme *theme = 0, QObject *parent = 0 );
 
-  void startWizard( );
+    ~OwncloudSetupWizard();
 
-  void installServer();
+    void startWizard( );
 
-  bool isBusy();
+    void installServer();
 
-  void writeOwncloudConfig();
+    bool isBusy();
 
-  /**
+    void writeOwncloudConfig();
+
+    /**
    * returns the configured owncloud url if its already configured, otherwise an empty
    * string.
    */
 
-  void    setupLocalSyncFolder();
+    void    setupLocalSyncFolder();
 
-  OwncloudWizard *wizard();
+    OwncloudWizard *wizard();
 
 signals:
-  // issued if the oC Setup process (owncloud-admin) is finished.
-  void    ownCloudSetupFinished( bool );
-  // overall dialog close signal.
-  void    ownCloudWizardDone( int );
+    // issued if the oC Setup process (owncloud-admin) is finished.
+    void    ownCloudSetupFinished( bool );
+    // overall dialog close signal.
+    void    ownCloudWizardDone( int );
 
 public slots:
 
 protected slots:
-  // QProcess related slots:
-  void slotReadyReadStandardOutput();
-  void slotReadyReadStandardError();
-  void slotStateChanged( QProcess::ProcessState );
-  void slotError( QProcess::ProcessError );
-  void slotStarted();
-  void slotProcessFinished( int, QProcess::ExitStatus );
+    // QProcess related slots:
+    void slotReadyReadStandardOutput();
+    void slotReadyReadStandardError();
+    void slotStateChanged( QProcess::ProcessState );
+    void slotError( QProcess::ProcessError );
+    void slotStarted();
+    void slotProcessFinished( int, QProcess::ExitStatus );
 
-  // wizard dialog signals
-  void slotInstallOCServer();
-  void slotConnectToOCUrl( const QString& );
-  void slotCreateOCLocalhost();
+    // wizard dialog signals
+    void slotInstallOCServer();
+    void slotConnectToOCUrl( const QString& );
+    void slotCreateOCLocalhost();
 
 private slots:
-  void slotOwnCloudFound( const QString&, const QString& );
-  void slotNoOwnCloudFound( QNetworkReply* );
+    void slotOwnCloudFound( const QString&, const QString& );
+    void slotNoOwnCloudFound( QNetworkReply* );
     void slotCreateRemoteFolderFinished( QNetworkReply* );
 
 private:
-  bool checkOwncloudAdmin( const QString& );
-  void runOwncloudAdmin( const QStringList& );
+    bool checkOwncloudAdmin( const QString& );
+    void runOwncloudAdmin( const QStringList& );
     bool createRemoteFolder( const QString& );
 
-  /* Start a request to the newly installed ownCloud to check the connection */
-  void testOwnCloudConnect();
+    /* Start a request to the newly installed ownCloud to check the connection */
+    void testOwnCloudConnect();
 
-  OwncloudWizard *_ocWizard;
-  FolderMan      *_folderMan;
-  QProcess       *_process;
-  ownCloudInfo   *_ocInfo;
+    OwncloudWizard *_ocWizard;
+    FolderMan      *_folderMan;
+    QProcess       *_process;
+    ownCloudInfo   *_ocInfo;
 
-  QString         _localFolder;
-  QString         _remoteFolder;
+    QString         _localFolder;
+    QString         _remoteFolder;
 };
 
 }

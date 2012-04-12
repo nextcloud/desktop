@@ -287,7 +287,13 @@ int CSyncThread::getauth(const char *prompt,
         // qDebug() << "OOO Password requested!";
         strncpy( buf, _passwd.toLocal8Bit().constData(), len );
     } else {
-        qDebug() << "Unknown prompt: <" << prompt << ">";
+        if( qPrompt.startsWith( QLatin1String("There are problems with the SSL certificate:"))) {
+            // SSL is requested. If the program came here, the SSL check was done by mirall
+            // the answer is simply yes here.
+            strncpy( buf, "yes", 3 );
+        } else {
+            qDebug() << "Unknown prompt: <" << prompt << ">";
+        }
     }
     _mutex.unlock();
 }

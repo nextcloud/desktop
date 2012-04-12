@@ -16,11 +16,13 @@
 
 #include <QtCore>
 #include <QDialog>
+#include <QSslCertificate>
+#include <QList>
 
 #include "ui_sslerrorsdialog.h"
 
 class QSslError;
-class QSslCertificate;
+
 
 namespace Mirall
 {
@@ -31,14 +33,23 @@ class SslErrorDialog : public QDialog, public Ui::sslErrorsDialog
 public:
     explicit SslErrorDialog(QWidget *parent = 0);
     
-    void setErrorList( QList<QSslError> errors );
+    bool setErrorList( QList<QSslError> errors );
+
+    bool trustConnection();
 
 signals:
     
 public slots:
+    void accept();
 
 private:
+    QList<QSslCertificate> storedCACerts();
+    QString styleSheet() const;
+    bool _allTrusted;
+
     QString certDiv( QSslCertificate ) const;
+
+    QList<QSslCertificate> _unknownCerts;
 };
 } // end namespace
 

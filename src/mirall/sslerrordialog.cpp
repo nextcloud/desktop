@@ -12,78 +12,185 @@
  * for more details.
  */
 
+#include <QtGui>
 #include <QtNetwork>
 
 #include "sslerrordialog.h"
 
+#include "mirall/mirallconfigfile.h"
+
 namespace Mirall
 {
 
+
 SslErrorDialog::SslErrorDialog(QWidget *parent) :
     QDialog(parent)
+  ,_allTrusted(false)
 {
     setupUi( this  );
     setWindowTitle( tr("SSL Connection") );
+    QPushButton *okButton = _dialogButtonBox->button( QDialogButtonBox::Ok );
 
-
-
+    if( okButton ) {
+        okButton->setDefault(true);
+        connect( okButton, SIGNAL(clicked()),SLOT(accept()));
+    }
 }
 
-void SslErrorDialog::setErrorList( QList<QSslError> errors )
+QList<QSslCertificate> SslErrorDialog::storedCACerts()
 {
-    QString msg;
+    MirallConfigFile cfg;
+    QSettings settings( cfg.configFile(), QSettings::IniFormat);
 
-    QMap<QByteArray, QStringList> certErrors;
-    QMap<QByteArray, QString> certInfo;
+    QList<QSslCertificate> cacerts = QSslCertificate::fromData(settings.value(QLatin1String("CaCertificates")).toByteArray());
 
-    foreach( QSslError err, errors ) {
-        QSslCertificate cert = err.certificate();
-        QByteArray digest = cert.digest();
-        QStringList errorList;
+    return cacerts;
+}
 
-        if( certInfo.contains( digest )) {
-            // the cert is known already.
-            if( certErrors.contains(digest) ) {
-                errorList = certErrors.value(digest);
-            } else {
-                qDebug() << "WRN: No certErrors but info exists!";
-            }
-        } else {
-            certInfo[digest] = certDiv( cert );
+QString SslErrorDialog::styleSheet() const
+{
+    const QString style = QLatin1String(
+                "#cert {margin-left: 5px;} "
+                "#ca_error { color:#a00011; margin-left:5px; margin-right:5px; }"
+                "#ca_error p { margin-top: 2px; margin-bottom:2px; }"
+                "#ccert { margin-left: 5px; }"
+                "#issuer { margin-left: 5px; }"
+                );
+
+    return style;
+}
+#define QL(x) QLatin1String(x)
+
+bool SslErrorDialog::setErrorList( QList<QSslError> errors )
+{
+    QList<QSslCertificate> ourCerts = storedCACerts();
+
+    // check if unknown certs caused errors.
+    _unknownCerts.clear();
+
+    QStringList errorStrings;
+    for (int i = 0; i < errors.count(); ++i) {
+        if (ourCerts.contains(errors.at(i).certificate()) ||
+                _unknownCerts.contains(errors.at(i).certificate() ))
+            continue;
+        errorStrings += errors.at(i).errorString();
+        if (!errors.at(i).certificate().isNull()) {
+            _unknownCerts.append(errors.at(i).certificate());
         }
-        errorList.append( err.errorString() );
-        certErrors[digest] = errorList;
     }
 
-    // Loop over map and show the errors per certificate.
+    // if there are no errors left, all Certs were known.
+    if (errorStrings.isEmpty()) {
+        _allTrusted = true;
+        return true;
+    }
 
-    _tbErrors->setText( msg );
+    QString msg = QL("<html><head>");
+            msg += QL("<link rel='stylesheet' type='text/css' href='format.css'>");
+            msg += QL("</head><body>");
+
+    // loop over the unknown certs and line up their errors.
+            msg += QL("<h3>") + tr("Warnings about current SSL Connection:") + QL("</h3>");
+    msg += QL("<div id=\"ca_errors\">");
+    foreach( QSslCertificate cert, _unknownCerts ) {
+        msg += QL("<div id=\"ca_error\">");
+        // add the errors for this cert
+        foreach( QSslError err, errors ) {
+            if( err.certificate() == cert ) {
+                msg += "<p>" + err.errorString() + "</p>";
+            }
+        }
+        msg += QL("</div>");
+        msg += certDiv( cert );
+        if( _unknownCerts.count() > 1 ) {
+            msg += QL("<hr/>");
+        }
+    }
+    msg += QL("</div></body></html>");
+
+    qDebug() << "#  # # # # # ";
+    qDebug() << msg;
+    QTextDocument *doc = new QTextDocument(0);
+    QString style = styleSheet();
+    qDebug() << "Style: " << style;
+    doc->addResource( QTextDocument::StyleSheetResource, QUrl( "format.css" ), style);
+    doc->setHtml( msg );
+
+    _tbErrors->setDocument( doc );
+    _tbErrors->show();
+
+    return false;
 }
 
 QString SslErrorDialog::certDiv( QSslCertificate cert ) const
 {
     QString msg;
-    msg += "<div id=\"cert\">";
-    msg += QString( "<h2>Certificate MD5 %1</h2>" ).arg( QString::fromAscii(cert.digest() ));
-    msg += "<div id=\"ccert\">";
-    msg += QString( "<p>Name: %1</p>").arg( cert.subjectInfo( QSslCertificate::CommonName ) );
-    msg += QString( "<p>Organization: %1</p>").arg( cert.subjectInfo( QSslCertificate::Organization) );
-    msg += QString( "<p>Unit: %1</p>").arg( cert.subjectInfo( QSslCertificate::OrganizationalUnitName) );
-    msg += QString( "<p>Country: %1</p>").arg( cert.subjectInfo( QSslCertificate::CountryName) );
-    msg += "</div>";
+    msg += QL("<div id=\"cert\">");
+    msg += QL("<h3>") + tr("with Certificate %1").arg( cert.subjectInfo( QSslCertificate::CommonName )) + QL("</h3>");
+
+    msg += QL("<div id=\"ccert\">");
+    QStringList li;
+    li << tr("Organization: %1").arg( cert.subjectInfo( QSslCertificate::Organization) );
+    li << tr("Unit: %1").arg( cert.subjectInfo( QSslCertificate::OrganizationalUnitName) );
+    li << tr("Country: %1").arg(cert.subjectInfo( QSslCertificate::CountryName));
+    msg += QL("<p>") + li.join("<br/>") + QL("</p>");
+
+    msg += QL("<p>");
+    msg += tr("Effective Date: %1").arg( cert.effectiveDate().toString()) + QL("<br/>");
+    msg += tr("Expiry Date: %1").arg( cert.expiryDate().toString()) + QL("</p>");
+
+    msg += QL("</div>" );
+
+    msg += QL("<h3>") + tr("Issuer: %1").arg( cert.issuerInfo( QSslCertificate::CommonName )) + QL("</h3>");
     msg += "<div id=\"issuer\">";
-    msg += QString( "<p>Name: %1</p>").arg( cert.issuerInfo( QSslCertificate::CommonName ) );
-    msg += QString( "<p>Organization: %1</p>").arg( cert.issuerInfo( QSslCertificate::Organization) );
-    msg += QString( "<p>Unit: %1</p>").arg( cert.issuerInfo( QSslCertificate::OrganizationalUnitName) );
-    msg += QString( "<p>Country: %1</p>").arg( cert.issuerInfo( QSslCertificate::CountryName) );
-    msg += "</div>";
-    msg += "</div>";
-    msg += "</div>";
+    li.clear();
+    li << tr("Organization: %1").arg( cert.issuerInfo( QSslCertificate::Organization) );
+    li << tr("Unit: %1").arg( cert.issuerInfo( QSslCertificate::OrganizationalUnitName) );
+    li << tr("Country: %1").arg(cert.issuerInfo( QSslCertificate::CountryName));
+    msg += QL("<p>") + li.join("<br/>") + QL("</p>");
+    msg += QL("</div>" );
+    msg += QL("</div>" );
 
     return msg;
 }
 
+bool SslErrorDialog::trustConnection()
+{
+    if( _allTrusted ) return true;
 
+    bool stat = ( _cbTrustConnect->checkState() == Qt::Checked );
+    qDebug() << "SSL-Connection is trusted: " << stat;
+
+    return stat;
+}
+
+void SslErrorDialog::accept()
+{
+    // Save the contents of _unknownCerts to the settings file.
+    if( trustConnection() && _unknownCerts.count() > 0 ) {
+        MirallConfigFile cfg;
+        QSettings settings( cfg.configFile(), QSettings::IniFormat);
+
+        QByteArray certs = settings.value(QLatin1String("CaCertificates")).toByteArray();
+
+        qDebug() << "Saving " << _unknownCerts.count() << " unknown certs.";
+
+        // update the ssl config.
+        QSslConfiguration sslCfg = QSslConfiguration::defaultConfiguration();
+        QList<QSslCertificate> ca_list = sslCfg.caCertificates();
+        ca_list += _unknownCerts;
+        sslCfg.setCaCertificates(ca_list);
+        QSslConfiguration::setDefaultConfiguration(sslCfg);
+
+        foreach( QSslCertificate cert, _unknownCerts ) {
+            certs += cert.toPem() + '\n';
+        }
+
+        settings.setValue(QLatin1String("CaCertificates"), certs);
+    }
+
+    QDialog::accept();
+}
 
 
 } // end namespace

@@ -7,13 +7,27 @@
     <x>0</x>
     <y>0</y>
     <width>494</width>
-    <height>302</height>
+    <height>440</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="2" column="0">
+    <widget class="QCheckBox" name="_cbTrustConnect">
+     <property name="text">
+      <string>Check if you want t continue via SSL and trust the shown certificates.</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QDialogButtonBox" name="_dialogButtonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
    <item row="0" column="0">
     <widget class="QLabel" name="label">
      <property name="font">
@@ -22,28 +36,14 @@
       </font>
      </property>
      <property name="text">
-      <string>Current SSL Connection</string>
+      <string>SSL Connection</string>
      </property>
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QLabel" name="_topLabel">
-     <property name="text">
-      <string>Warnings while setting up the SSL Connection:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
     <widget class="QTextBrowser" name="_tbErrors">
      <property name="openExternalLinks">
       <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QCheckBox" name="_cbAccept">
-     <property name="text">
-      <string>Continue to connect via SSL and bless the connection.</string>
      </property>
     </widget>
    </item>

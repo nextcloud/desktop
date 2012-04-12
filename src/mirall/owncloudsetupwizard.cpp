@@ -71,6 +71,15 @@ OwncloudSetupWizard::OwncloudSetupWizard( FolderMan *folderMan, Theme *theme, QO
 
     _ocWizard->setWindowTitle( tr("%1 Connection Wizard").arg( theme ? theme->appName() : "Mirall" ) );
 
+    // create the ocInfo object
+    _ocInfo = new ownCloudInfo;
+    connect(_ocInfo,SIGNAL(ownCloudInfoFound(QString,QString)),SLOT(slotOwnCloudFound(QString,QString)));
+    connect(_ocInfo,SIGNAL(noOwncloudFound(QNetworkReply*)),SLOT(slotNoOwnCloudFound(QNetworkReply*)));
+}
+
+OwncloudSetupWizard::~OwncloudSetupWizard()
+{
+    delete _ocInfo;
 }
 
 void OwncloudSetupWizard::slotConnectToOCUrl( const QString& url )
@@ -91,17 +100,13 @@ void OwncloudSetupWizard::testOwnCloudConnect()
                                  _ocWizard->field("OCPasswd").toString() );
 
     // now start ownCloudInfo to check the connection.
-
-    if( _ocInfo ) delete _ocInfo;
-    _ocInfo = new ownCloudInfo( QString(), this );
     if( _ocInfo->isConfigured() ) {
-        connect(_ocInfo,SIGNAL(ownCloudInfoFound(QString,QString)),SLOT(slotOwnCloudFound(QString,QString)));
-        connect(_ocInfo,SIGNAL(noOwncloudFound(QNetworkReply*)),SLOT(slotNoOwnCloudFound(QNetworkReply*)));
+        // reset the SSL Untrust flag to let the SSL dialog appear again.
+        _ocInfo->resetSSLUntrust();
         _ocInfo->checkInstallation();
     } else {
         qDebug() << "   ownCloud seems not to be configured, can not start test connect.";
     }
-
 }
 
 void OwncloudSetupWizard::slotOwnCloudFound( const QString& url, const QString& infoString )

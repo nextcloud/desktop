@@ -22,11 +22,14 @@
 #include "mirall/mirallconfigfile.h"
 #include "mirall/sslerrordialog.h"
 #include "mirall/version.h"
+#include "mirall/sslerrordialog.h"
 
 namespace Mirall
 {
 
 QNetworkAccessManager* ownCloudInfo::_manager = 0;
+SslErrorDialog *ownCloudInfo::_sslErrorDialog = 0;
+bool            ownCloudInfo::_certsUntrusted = false;
 
 
 ownCloudInfo::ownCloudInfo( const QString& connectionName, QObject *parent ) :
@@ -49,6 +52,7 @@ ownCloudInfo::ownCloudInfo( const QString& connectionName, QObject *parent ) :
 ownCloudInfo::~ownCloudInfo()
 {
     delete _manager;
+    delete _sslErrorDialog;
 }
 
 bool ownCloudInfo::isConfigured()
@@ -86,7 +90,6 @@ void ownCloudInfo::getRequest( const QString& path, bool webdav )
 
 }
 
-
 void ownCloudInfo::slotAuthentication( QNetworkReply*, QAuthenticator *auth )
 {
     if( auth ) {
@@ -99,15 +102,31 @@ void ownCloudInfo::slotAuthentication( QNetworkReply*, QAuthenticator *auth )
 
 void ownCloudInfo::slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors )
 {
-    qDebug() << "SSL-Errors happened for url " << reply->url().toString();
+    qDebug() << "SSL-Warnings happened for url " << reply->url().toString();
 
-    SslErrorDialog dialog;
-    dialog.setErrorList( errors );
-
-    if( dialog.exec() == QDialog::Accepted ) {
-        reply->ignoreSslErrors();
+    if( _certsUntrusted ) {
+        // User decided once to untrust. Honor this decision.
+        return;
     }
 
+    if( _sslErrorDialog == 0 ) {
+        _sslErrorDialog = new SslErrorDialog();
+    }
+
+    if( _sslErrorDialog->setErrorList( errors ) ) {
+        // all ssl certs are known and accepted. We can ignore the problems right away.
+        qDebug() << "Certs are already known and trusted, Warnings are not valid.";
+        reply->ignoreSslErrors();
+    } else {
+        if( _sslErrorDialog->exec() == QDialog::Accepted ) {
+            if( _sslErrorDialog->trustConnection() ) {
+                reply->ignoreSslErrors();
+            } else {
+                // User does not want to trust.
+                _certsUntrusted = true;
+            }
+        }
+    }
 }
 
 //
@@ -173,6 +192,11 @@ void ownCloudInfo::slotReplyFinished()
         emit ownCloudDirExists( dir, reply );
     }
     reply->deleteLater();
+}
+
+void ownCloudInfo::resetSSLUntrust()
+{
+    _certsUntrusted = false;
 }
 
 void ownCloudInfo::slotError( QNetworkReply::NetworkError err)

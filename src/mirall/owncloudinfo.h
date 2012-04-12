@@ -21,6 +21,8 @@
 namespace Mirall
 {
 
+class SslErrorDialog;
+
 class ownCloudInfo : public QObject
 {
     Q_OBJECT
@@ -46,6 +48,12 @@ public:
       */
     void getWebDAVPath( const QString& );
 
+    /**
+      * There is a global flag here if the user once decided against trusting the
+      * SSL connection. This method resets it so that the ssl dialog is shown again.
+      */
+    void resetSSLUntrust();
+
 signals:
     // result signal with url- and version string.
     void ownCloudInfoFound( const QString&,  const QString& );
@@ -61,9 +69,11 @@ protected slots:
     void slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors );
 
 private:
-    static QNetworkAccessManager *_manager;
-    QString       _connection;
+    static QNetworkAccessManager  *_manager;
+    QString                        _connection;
     QHash<QNetworkReply*, QString> _directories;
+    static SslErrorDialog         *_sslErrorDialog;
+    static bool                    _certsUntrusted;
 };
 
 };
