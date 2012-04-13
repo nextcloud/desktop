@@ -40,6 +40,9 @@ include(MacroAddPlugin)
 include(MacroCopyFile)
 
 find_package(Log4C)
+if(NOT LOG4C_FOUND)
+    set(WITH_LOG4C FALSE)
+endif()
 
 include(ConfigureChecks.cmake)
 configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
