@@ -39,9 +39,7 @@ macro_ensure_out_of_source_build("${PROJECT_NAME} requires an out of source buil
 include(MacroAddPlugin)
 include(MacroCopyFile)
 
-if (WITH_LOG4C)
-  find_package(Log4C REQUIRED)
-endif (WITH_LOG4C)
+find_package(Log4C)
 
 include(ConfigureChecks.cmake)
 configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
