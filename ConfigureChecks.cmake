@@ -16,16 +16,13 @@ set(BINARYDIR ${CMAKE_BINARY_DIR})
 set(SOURCEDIR ${CMAKE_SOURCE_DIR})
 
 # HEADER FILES
-check_include_file(argp.h HAVE_ARGP_H)
 
 # FUNCTIONS
 if (NOT LINUX)
     # librt
     check_library_exists(rt nanosleep "" HAVE_LIBRT)
 
-    # argp
-    find_package(Argp REQUIRED)
-    set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} ${ARGP_LIBRARY})
+    set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} )
 endif (NOT LINUX)
 
 check_library_exists(rt clock_gettime "" HAVE_CLOCK_GETTIME)
