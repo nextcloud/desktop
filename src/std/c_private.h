@@ -72,6 +72,9 @@ typedef struct stat csync_stat_t;
 #define write _write
 #endif
 
+#ifndef O_NOATIME
+#define O_NOATIME 0
+#endif
 
 #endif //_C_PRIVATE_H
 
