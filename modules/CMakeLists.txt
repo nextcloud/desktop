@@ -63,7 +63,7 @@ endif (LIBSSH_FOUND)
 
 if (NEON_FOUND)
     macro_add_plugin(${OWNCLOUD_PLUGIN} csync_owncloud.c)
-    target_link_libraries(${OWNCLOUD_PLUGIN} ${CSYNC_LIBRARY} ${NEON_LIBRARY})
+    target_link_libraries(${OWNCLOUD_PLUGIN} ${CSYNC_LIBRARY} ${NEON_LIBRARIES})
 
     install(
         TARGETS
