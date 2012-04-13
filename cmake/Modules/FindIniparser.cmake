@@ -26,7 +26,9 @@ find_path(INIPARSER_INCLUDE_DIRS
 find_library(INIPARSER_LIBRARIES
     NAMES
         iniparser
-    PATHS
+    HINTS
+        ${CMAKE_INSTALL_PREFIX}/lib
+        ${CMAKE_INSTALL_PREFIX}/lib64
         ${CMAKE_INSTALL_LIBDIR}
 )
 
