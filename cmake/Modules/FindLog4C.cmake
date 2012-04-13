@@ -13,45 +13,24 @@
 #  For details see the accompanying COPYING-CMAKE-SCRIPTS file.
 #
 
+include(GNUInstallDirs)
 
-if (LOG4C_LIBRARIES AND LOG4C_INCLUDE_DIRS)
-  # in cache already
-  set(LOG4C_FOUND TRUE PARENT_SCOPE)
-else (LOG4C_LIBRARIES AND LOG4C_INCLUDE_DIRS)
-
-  find_path(LOG4C_INCLUDE_DIR
+find_path(LOG4C_INCLUDE_DIRS
     NAMES
       log4c.h
-    PATHS
-      /usr/include
-      /usr/local/include
-      /opt/local/include
-      /sw/include
-  )
+    HINTS
+        ${CMAKE_INSTALL_INCLUDEDIR}
+)
 
-  find_library(LOG4C_LIBRARY
+find_library(LOG4C_LIBRARIES
     NAMES
-      log4c
-    PATHS
-      /usr/lib
-      /usr/local/lib
-      /opt/local/lib
-      /sw/lib
-  )
+        log4c
+    HINTS
+        ${CMAKE_INSTALL_LIBDIR}
+)
 
-  set(LOG4C_INCLUDE_DIRS
-    ${LOG4C_INCLUDE_DIR}
-  )
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(Log4C DEFAULT_MSG LOG4C_LIBRARIES LOG4C_INCLUDE_DIRS)
 
-  set(LOG4C_LIBRARIES
-    ${LOG4C_LIBRARY}
-  )
-
-  include(FindPackageHandleStandardArgs)
-  find_package_handle_standard_args(Log4C DEFAULT_MSG LOG4C_LIBRARIES LOG4C_INCLUDE_DIRS)
-
-  # show the LOG4C_INCLUDE_DIRS and LOG4C_LIBRARIES variables only in the advanced view
-  mark_as_advanced(LOG4C_INCLUDE_DIRS LOG4C_LIBRARIES)
-
-endif (LOG4C_LIBRARIES AND LOG4C_INCLUDE_DIRS)
-
+# show the LOG4C_INCLUDE_DIRS and LOG4C_LIBRARIES variables only in the advanced view
+mark_as_advanced(LOG4C_INCLUDE_DIRS LOG4C_LIBRARIES)
