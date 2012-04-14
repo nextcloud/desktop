@@ -22,7 +22,7 @@
 #include <QThread>
 #include <QString>
 
-#include <csync.h>
+#include <csync/csync.h>
 
 class QProcess;
 

@@ -65,8 +65,8 @@ mirall/sslerrordialog.cpp
 )
 
 set(mirall_HEADERS
-    mirall/application.h    
-    mirall/folder.h  
+    mirall/application.h
+    mirall/folder.h
     mirall/folderman.h
     mirall/folderwatcher.h
     mirall/folderwizard.h
@@ -96,7 +96,7 @@ set(mirall_SRCS
     mirall/owncloudfolder.cpp
     mirall/csyncthread.cpp
   )
-include_directories(${CSYNC_INCLUDE_DIR})
+include_directories(${CSYNC_INCLUDE_DIR}/csync ${CSYNC_INCLUDE_DIR})
 
 set(mirall_HEADERS
     ${mirall_HEADERS}
@@ -139,7 +139,7 @@ install(TARGETS mirall
 	RUNTIME DESTINATION bin
 	LIBRARY DESTINATION lib
 	ARCHIVE DESTINATION lib )
-install(TARGETS owncloud 
+install(TARGETS owncloud
 	RUNTIME DESTINATION bin
 	LIBRARY DESTINATION lib
 	ARCHIVE DESTINATION lib )

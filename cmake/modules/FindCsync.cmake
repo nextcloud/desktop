@@ -1,8 +1,8 @@
 IF(EXISTS "${CMAKE_SOURCE_DIR}/../csync/src/csync.h")
   SET(CSYNC_INCLUDE_PATH ${CMAKE_SOURCE_DIR}/../csync/src/)
-ELSE(EXISTS "${CMAKE_SOURCE_DIR}/../csync/src/csync.h")
-  FIND_PATH(CSYNC_INCLUDE_PATH NAMES csync.h HINTS /usr/include/csync)
-ENDIF(EXISTS "${CMAKE_SOURCE_DIR}/../csync/src/csync.h")
+ELSE()
+  FIND_PATH(CSYNC_INCLUDE_PATH NAMES csync/csync.h)
+ENDIF()
 
 IF(EXISTS "${CMAKE_SOURCE_DIR}/../buildcsync/src/")
   IF( WIN32 )
@@ -10,9 +10,9 @@ IF(EXISTS "${CMAKE_SOURCE_DIR}/../buildcsync/src/")
   ELSE( WIN32 )
      SET(CSYNC_LIBRARY ${CMAKE_SOURCE_DIR}/../buildcsync/src/libcsync.so)
   ENDIF( WIN32 )
-ELSE(EXISTS "${CMAKE_SOURCE_DIR}/../buildcsync/src/")
+ELSE()
   FIND_LIBRARY(CSYNC_LIBRARY NAMES csync )
-ENDIF(EXISTS "${CMAKE_SOURCE_DIR}/../buildcsync/src/")
+ENDIF()
 
 SET(CSYNC_INCLUDE_DIR ${CSYNC_INCLUDE_PATH})
 
