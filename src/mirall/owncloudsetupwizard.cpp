@@ -114,6 +114,9 @@ void OwncloudSetupWizard::slotOwnCloudFound( const QString& url, const QString& 
 {
     _ocWizard->appendToResultWidget(tr("<font color=\"green\">Successfully connected to %1: ownCloud version %2</font><br/><br/>").arg( url ).arg(infoString));
 
+    // enable the finish button.
+    _ocWizard->button( QWizard::FinishButton )->setEnabled( true );
+
     // start the local folder creation
     setupLocalSyncFolder();
 }
