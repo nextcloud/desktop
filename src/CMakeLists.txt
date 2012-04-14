@@ -84,7 +84,14 @@ set(mirall_HEADERS
     mirall/sslerrordialog.h
 )
 
-IF( UNIX )
+if( UNIX AND NOT APPLE)
+    if(NOT USE_WATCHER)
+        set(USE_WATCHER ON)
+    endif()
+endif()
+
+IF( USE_WATCHER )
+    add_definitions( -DUSE_WATCHER )
     set(mirall_SRCS ${mirall_SRCS} mirall/inotify.cpp)
     set(mirall_HEADERS ${mirall_HEADERS} mirall/inotify.h)
 ENDIF(UNIX)

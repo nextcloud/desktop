@@ -23,16 +23,6 @@
 
 #include "mirall/syncresult.h"
 
-
-/*
- * Flag to enable the folder watcher instead of the local polling to detect
- * changes in the local path.
- */
-#define USE_WATCHER 1
-#ifdef Q_WS_WIN
-#undef USE_WATCHER
-#endif
-
 class QAction;
 class QTimer;
 class QIcon;
