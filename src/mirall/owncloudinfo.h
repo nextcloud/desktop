@@ -54,11 +54,18 @@ public:
       */
     void resetSSLUntrust();
 
+    /**
+      * Create a collection via owncloud. Provide a relative path.
+      */
+    void mkdirRequest( const QString& );
+
 signals:
     // result signal with url- and version string.
     void ownCloudInfoFound( const QString&,  const QString& );
     void noOwncloudFound( QNetworkReply* );
     void ownCloudDirExists( const QString&, QNetworkReply* );
+
+    void webdavColCreated( QNetworkReply* );
 
 public slots:
 
@@ -68,7 +75,12 @@ protected slots:
     void slotAuthentication( QNetworkReply*, QAuthenticator *);
     void slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors );
 
+    void slotMkdirFinished();
+
 private:
+    void setupHeaders(const QString&, QNetworkRequest&, quint64 );
+    QNetworkReply* davRequest(const QString&, QNetworkRequest&, QByteArray* );
+
     static QNetworkAccessManager  *_manager;
     QString                        _connection;
     QHash<QNetworkReply*, QString> _directories;

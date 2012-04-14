@@ -27,6 +27,7 @@
 #include "mirall/owncloudinfo.h"
 #include "mirall/mirallwebdav.h"
 #include "mirall/mirallconfigfile.h"
+#include "mirall/owncloudinfo.h"
 #include "mirall/theme.h"
 
 namespace Mirall
@@ -170,10 +171,12 @@ FolderWizardTargetPage::FolderWizardTargetPage()
     _timer->setSingleShot( true );
     connect( _timer, SIGNAL(timeout()), SLOT(slotTimerFires()));
 
-    _ownCloudDirCheck = new ownCloudInfo();
+    _ownCloudDirCheck = new ownCloudInfo;
 
     connect( _ownCloudDirCheck, SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
              SLOT(slotDirCheckReply(QString,QNetworkReply*)));
+    connect( _ownCloudDirCheck, SIGNAL(webdavColCreated(QNetworkReply*)),
+             SLOT(slotCreateRemoteFolderFinished( QNetworkReply* )));
 }
 
 void FolderWizardTargetPage::slotFolderTextChanged( const QString& t)
@@ -212,27 +215,28 @@ void FolderWizardTargetPage::slotDirCheckReply(const QString &url, QNetworkReply
 
 void FolderWizardTargetPage::slotCreateRemoteFolder()
 {
-  _ui.OCFolderLineEdit->setEnabled( false );
+    _ui.OCFolderLineEdit->setEnabled( false );
 
-  const QString folder = _ui.OCFolderLineEdit->text();
-  if( folder.isEmpty() ) return;
+    const QString folder = _ui.OCFolderLineEdit->text();
+    if( folder.isEmpty() ) return;
 
-  MirallConfigFile cfgFile;
+    _ownCloudDirCheck->mkdirRequest( folder );
+#if 0
+    QString url = cfgFile.ownCloudUrl( cfgFile.defaultConnection(), true );
+    url.append( folder );
+    qDebug() << "creating folder on ownCloud: " << url;
 
-  QString url = cfgFile.ownCloudUrl( cfgFile.defaultConnection(), true );
-  url.append( folder );
-  qDebug() << "creating folder on ownCloud: " << url;
+    MirallWebDAV *webdav = new MirallWebDAV(this);
+    connect( webdav, SIGNAL(webdavFinished(QNetworkReply*)),
+             SLOT(slotCreateRemoteFolderFinished(QNetworkReply*)));
 
-  MirallWebDAV *webdav = new MirallWebDAV(this);
-  connect( webdav, SIGNAL(webdavFinished(QNetworkReply*)),
-           SLOT(slotCreateRemoteFolderFinished(QNetworkReply*)));
-
-  webdav->httpConnect( url, cfgFile.ownCloudUser(), cfgFile.ownCloudPasswd() );
-  if( webdav->mkdir(  url  ) ) {
-    qDebug() << "WebDAV mkdir request successfully started";
-  } else {
-    qDebug() << "WebDAV mkdir request failed";
-  }
+    webdav->httpConnect( url, cfgFile.ownCloudUser(), cfgFile.ownCloudPasswd() );
+    if( webdav->mkdir(  url  ) ) {
+        qDebug() << "WebDAV mkdir request successfully started";
+    } else {
+        qDebug() << "WebDAV mkdir request failed";
+    }
+#endif
 }
 
 void FolderWizardTargetPage::slotCreateRemoteFolderFinished( QNetworkReply *reply )
@@ -459,12 +463,16 @@ FolderWizard::FolderWizard( QWidget *parent, Theme *theme )
     : QWizard(parent),
     _folderWizardSourcePage(0)
 {
-  _folderWizardSourcePage = new FolderWizardSourcePage();
+    _folderWizardSourcePage = new FolderWizardSourcePage();
     setPage(Page_Source,   _folderWizardSourcePage );
     setPage(Page_Target,   new FolderWizardTargetPage());
     // setPage(Page_Network,  new FolderWizardNetworkPage());
     // setPage(Page_Owncloud, new FolderWizardOwncloudPage());
     setWindowTitle( tr( "%1 Folder Wizard").arg( theme ? theme->appName() : "Mirall" ) );
+#ifdef Q_WS_MAC
+    setWizardStyle( QWizard::ModernStyle );
+#endif
+    _ocInfo = new ownCloudInfo;
 }
 
 void FolderWizard::setFolderMap( Folder::Map *fm)

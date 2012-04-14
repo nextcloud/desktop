@@ -47,6 +47,9 @@ ownCloudInfo::ownCloudInfo( const QString& connectionName, QObject *parent ) :
 
     connect( _manager, SIGNAL( sslErrors(QNetworkReply*, QList<QSslError>)),
              this, SLOT(slotSSLFailed(QNetworkReply*, QList<QSslError>)) );
+
+    connect( _manager, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
+             SLOT(slotAuthentication(QNetworkReply*,QAuthenticator*)));
 }
 
 ownCloudInfo::~ownCloudInfo()
@@ -89,6 +92,37 @@ void ownCloudInfo::getRequest( const QString& path, bool webdav )
              this, SLOT(slotError( QNetworkReply::NetworkError )));
 
 }
+
+void ownCloudInfo::mkdirRequest( const QString& dir )
+{
+    qDebug() << "Making dir " << dir;
+
+    MirallConfigFile cfgFile;
+    QNetworkRequest req;
+    req.setUrl( QUrl( cfgFile.ownCloudUrl( _connection, true ) + dir ) );
+
+    QNetworkReply *reply = davRequest("MKCOL", req, 0);
+
+    connect( reply, SIGNAL(finished()), SLOT(slotMkdirFinished()) );
+    connect( reply, SIGNAL( error(QNetworkReply::NetworkError )),
+             this, SLOT(slotError( QNetworkReply::NetworkError )));
+
+}
+
+void ownCloudInfo::slotMkdirFinished()
+{
+    QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
+
+    if( ! reply ) {
+        qDebug() << "ownCloudInfo: Reply empty!";
+        return;
+    }
+
+    emit webdavColCreated( reply );
+    qDebug() << "mkdir slot hit.";
+    reply->deleteLater();
+}
+
 
 void ownCloudInfo::slotAuthentication( QNetworkReply*, QAuthenticator *auth )
 {
@@ -202,6 +236,32 @@ void ownCloudInfo::resetSSLUntrust()
 void ownCloudInfo::slotError( QNetworkReply::NetworkError err)
 {
   qDebug() << "ownCloudInfo Network Error: " << err;
+}
+
+// ============================================================================
+void ownCloudInfo::setupHeaders(const QString& _host, QNetworkRequest & req, quint64 size)
+{
+  QUrl url( _host );
+  qDebug() << "Setting up host header: " << url.host().toUtf8();
+  req.setRawHeader(QByteArray("Host"), url.host().toUtf8());
+  req.setRawHeader(QByteArray("Connection"), QByteArray("Keep-Alive"));
+  if (size) {
+      req.setHeader(QNetworkRequest::ContentLengthHeader, QVariant(size));
+      req.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("text/xml; charset=utf-8"));
+  }
+}
+
+QNetworkReply* ownCloudInfo::davRequest(const QString& reqVerb,  QNetworkRequest& req, QByteArray *data)
+{
+    MirallConfigFile cfgFile;
+
+    setupHeaders(cfgFile.ownCloudUrl( QString(), false ), req, quint64(data ? data->size() : 0));
+    if( data ) {
+        QBuffer iobuf( data );
+        return _manager->sendCustomRequest(req, reqVerb.toUtf8(), &iobuf );
+    } else {
+        return _manager->sendCustomRequest(req, reqVerb.toUtf8(), 0 );
+    }
 }
 
 }

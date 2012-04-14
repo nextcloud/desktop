@@ -279,7 +279,9 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setPage(Page_OC_Credentials, new OwncloudCredentialsPage() );
     setPage(Page_Install,        new OwncloudWizardResultPage() );
 
-    setWizardStyle( QWizard::ClassicStyle );
+#ifdef Q_WS_MAC
+    setWizardStyle( QWizard::ModernStyle );
+#endif
 
     connect( this, SIGNAL(currentIdChanged(int)), SLOT(slotCurrentPageChanged(int)));
 
