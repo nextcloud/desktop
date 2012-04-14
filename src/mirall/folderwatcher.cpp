@@ -143,6 +143,8 @@ QStringList FolderWatcher::folders() const
 {
 #ifdef USE_WATCHER
     return _inotify->directories();
+#else
+    return QStringList();
 #endif
 }
 
