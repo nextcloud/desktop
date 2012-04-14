@@ -24,7 +24,7 @@ class MirallWebDAV : public QObject
 public:
   explicit MirallWebDAV(QObject *parent = 0);
 
-  bool httpConnect( const QString& url, const QString&, const QString& );
+  void httpConnect( const QString& url, const QString&, const QString& );
 
   bool mkdir( const QString& dir );
 

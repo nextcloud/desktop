@@ -27,7 +27,7 @@ MirallWebDAV::MirallWebDAV(QObject *parent) :
 
 }
 
-bool MirallWebDAV::httpConnect( const QString& str, const QString& user, const QString& passwd)
+void MirallWebDAV::httpConnect( const QString& str, const QString& user, const QString& passwd)
 {
   _host = str;
   if( !_host.endsWith( "webdav.php")) {
