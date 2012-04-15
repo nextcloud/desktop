@@ -1,22 +1,5 @@
 include(${QT_USE_FILE})
 
-# webdav library
-add_definitions("-DQWEBDAV_STATIC")
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libqtwebdav)
-set( qtwebdav_LIB_SRCS
-     libqtwebdav/qwebdav.cpp
-     libqtwebdav/qwebdav_url_info.cpp)
-
-set( qtwebdav_HEADERS
-     libqtwebdav/qwebdav.h)
-
-qt4_wrap_cpp(qtwebdavMoc ${qtwebdav_HEADERS})
-
-add_library(qtwebdav_static STATIC ${qtwebdavMoc} ${qtwebdav_LIB_SRCS} ${qtwebdav_HEADERS} )
-target_link_libraries(qtwebdav_static ${QT_LIBRARIES})
-
-# -------------------------------------------------------
-
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
 QT4_ADD_RESOURCES ( MIRALL_RC_SRC ../mirall.qrc)
@@ -116,7 +99,7 @@ add_library(mirall_static STATIC ${mirall_SRCS} ${mirall_UI_SRCS} ${mirallMoc} $
 target_link_libraries(mirall_static ${QT_LIBRARIES})
 
 add_executable( mirall main.cpp )
-set( final_src ${qtwebdav_LIB_SRCS} ${qtwebdav_HEADERS}  ${mirall_HEADERS} ${qtwebdavMoc}
+set( final_src ${mirall_HEADERS}
 	${MIRALL_RC_SRC} ${mirall_SRCS} ${mirall_UI_SRCS} ${mirallMoc} ${mirall_HEADERS} ${mirall_I18N})
 
 # add executable icon on windows and osx
@@ -133,7 +116,6 @@ SET_TARGET_PROPERTIES( owncloud PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
 
 target_link_libraries(mirall mirall_static)
-target_link_libraries(mirall qtwebdav_static)
 
 target_link_libraries(owncloud ${QT_LIBRARIES} )
 

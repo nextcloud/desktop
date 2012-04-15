@@ -6,7 +6,6 @@ set( CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules )
 include(${CMAKE_SOURCE_DIR}/VERSION.cmake)
 include(GNUInstallDirs)
 
-
 find_package(Qt4 4.4.3 COMPONENTS QtCore QtGui QtXml QtNetwork QtTest REQUIRED )
 find_package(Csync)
 

@@ -1,9 +1,0 @@
-These files are third party and were taken from a Qt based
-webDAV implementation initially done by 
-Corentin Chary <corentin.chary@gmail.com>. Some changes 
-were done by Klaas Freitag <freitag@kde.org>
-
-The original code is hosted at 
-http://code.google.com/p/qtwebdav-qnetworkaccessmanager/
-
-
