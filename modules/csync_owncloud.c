@@ -744,7 +744,7 @@ static int uncompress_reader(void *userdata, const char *buf, size_t len)
 
    if( buf && writeCtx->fd ) {
        /* DEBUG_WEBDAV(("Writing NON compressed %d bytes\n", len)); */
-       len = write(writeCtx->fd, buf, len);
+       written = write(writeCtx->fd, buf, len);
        if( len != written ) {
            DEBUG_WEBDAV(("WRN: uncompress_reader wrote wrong num of bytes\n"));
        }
