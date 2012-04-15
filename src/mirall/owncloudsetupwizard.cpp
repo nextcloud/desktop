@@ -352,13 +352,9 @@ bool OwncloudSetupWizard::createRemoteFolder( const QString& folder )
 {
     if( folder.isEmpty() ) return false;
 
-    MirallConfigFile cfgFile;
+    qDebug() << "creating folder on ownCloud: " << folder;
 
-    QString url = cfgFile.ownCloudUrl( cfgFile.defaultConnection(), true );
-    url.append( folder );
-    qDebug() << "creating folder on ownCloud: " << url;
-
-    _ocInfo->mkdirRequest( url );
+    _ocInfo->mkdirRequest( folder );
 }
 
 void OwncloudSetupWizard::slotCreateRemoteFolderFinished( QNetworkReply *reply )

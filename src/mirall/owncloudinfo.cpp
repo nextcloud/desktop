@@ -95,7 +95,7 @@ void ownCloudInfo::getRequest( const QString& path, bool webdav )
 
 void ownCloudInfo::mkdirRequest( const QString& dir )
 {
-    qDebug() << "Making dir " << dir;
+    qDebug() << "OCInfo Making dir " << dir;
 
     MirallConfigFile cfgFile;
     QNetworkRequest req;
