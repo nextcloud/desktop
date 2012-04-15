@@ -18,7 +18,6 @@
 #include <QDesktopServices>
 
 #include "mirall/owncloudsetupwizard.h"
-#include "mirall/mirallwebdav.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/owncloudinfo.h"
 #include "mirall/folderman.h"
@@ -75,6 +74,7 @@ OwncloudSetupWizard::OwncloudSetupWizard( FolderMan *folderMan, Theme *theme, QO
     _ocInfo = new ownCloudInfo;
     connect(_ocInfo,SIGNAL(ownCloudInfoFound(QString,QString)),SLOT(slotOwnCloudFound(QString,QString)));
     connect(_ocInfo,SIGNAL(noOwncloudFound(QNetworkReply*)),SLOT(slotNoOwnCloudFound(QNetworkReply*)));
+    connect(_ocInfo,SIGNAL(webdavColCreated(QNetworkReply*)),SLOT(slotCreateRemoteFolderFinished(QNetworkReply*)));
 }
 
 OwncloudSetupWizard::~OwncloudSetupWizard()
@@ -358,18 +358,7 @@ bool OwncloudSetupWizard::createRemoteFolder( const QString& folder )
     url.append( folder );
     qDebug() << "creating folder on ownCloud: " << url;
 
-    MirallWebDAV *webdav = new MirallWebDAV(this);
-    connect( webdav, SIGNAL(webdavFinished(QNetworkReply*)),
-             SLOT(slotCreateRemoteFolderFinished(QNetworkReply*)));
-
-    webdav->httpConnect( url, cfgFile.ownCloudUser(), cfgFile.ownCloudPasswd() );
-    if( webdav->mkdir(  url  ) ) {
-        qDebug() << "WebDAV mkdir request successfully started";
-        return true;
-    } else {
-        qDebug() << "WebDAV mkdir request failed";
-        return false;
-    }
+    _ocInfo->mkdirRequest( url );
 }
 
 void OwncloudSetupWizard::slotCreateRemoteFolderFinished( QNetworkReply *reply )

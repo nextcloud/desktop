@@ -52,7 +52,6 @@ mirall/statusdialog.cpp
 mirall/owncloudwizard.cpp
 mirall/owncloudsetupwizard.cpp
 mirall/owncloudinfo.cpp
-mirall/mirallwebdav.cpp
 mirall/theme.cpp
 mirall/miralltheme.cpp
 mirall/owncloudtheme.cpp
@@ -71,7 +70,6 @@ set(mirall_HEADERS
     mirall/folderwatcher.h
     mirall/folderwizard.h
     mirall/gitfolder.h
-    mirall/mirallwebdav.h
     mirall/owncloudfolder.h
     mirall/owncloudinfo.h
     mirall/owncloudsetupwizard.h

@@ -220,23 +220,8 @@ void FolderWizardTargetPage::slotCreateRemoteFolder()
     const QString folder = _ui.OCFolderLineEdit->text();
     if( folder.isEmpty() ) return;
 
+    qDebug() << "creating folder on ownCloud: " << folder;
     _ownCloudDirCheck->mkdirRequest( folder );
-#if 0
-    QString url = cfgFile.ownCloudUrl( cfgFile.defaultConnection(), true );
-    url.append( folder );
-    qDebug() << "creating folder on ownCloud: " << url;
-
-    MirallWebDAV *webdav = new MirallWebDAV(this);
-    connect( webdav, SIGNAL(webdavFinished(QNetworkReply*)),
-             SLOT(slotCreateRemoteFolderFinished(QNetworkReply*)));
-
-    webdav->httpConnect( url, cfgFile.ownCloudUser(), cfgFile.ownCloudPasswd() );
-    if( webdav->mkdir(  url  ) ) {
-        qDebug() << "WebDAV mkdir request successfully started";
-    } else {
-        qDebug() << "WebDAV mkdir request failed";
-    }
-#endif
 }
 
 void FolderWizardTargetPage::slotCreateRemoteFolderFinished( QNetworkReply *reply )
