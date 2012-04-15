@@ -29,5 +29,6 @@
 
 int csync_gettime(struct timespec *tp);
 time_t csync_timediff(CSYNC *ctx);
+CSYNC_ERROR_CODE csync_time_errno(void);
 
 #endif /* _CSYNC_TIME_H */
