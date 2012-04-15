@@ -41,6 +41,7 @@
 #  define CSYNC_CLOCK CLOCK_REALTIME
 # endif
 #endif
+static enum csync_error_codes_e _csync_time_errno;
 
 int csync_gettime(struct timespec *tp)
 {
@@ -71,6 +72,8 @@ time_t csync_timediff(CSYNC *ctx) {
   csync_vio_file_stat_t *st = NULL;
   csync_vio_handle_t *dp = NULL;
 
+  _csync_time_errno = CSYNC_ERR_NONE;
+
   /* try to open remote dir to get auth */
   ctx->replica = ctx->remote.type;
   dp = csync_vio_opendir(ctx, ctx->remote.uri);
@@ -84,6 +87,7 @@ time_t csync_timediff(CSYNC *ctx) {
         "Access dienied to remote uri: %s - %s",
         ctx->remote.uri,
         errbuf);
+    _csync_time_errno = CSYNC_ERR_ACCESS_FAILED;
     return -1;
   }
   csync_vio_closedir(ctx, dp);
@@ -105,6 +109,7 @@ time_t csync_timediff(CSYNC *ctx) {
         "Unable to create temporary file: %s - %s",
         luri,
         errbuf);
+    _csync_time_errno = CSYNC_ERR_LOCAL_CREATE;
     goto out;
   }
   csync_vio_close(ctx, fp);
@@ -117,6 +122,7 @@ time_t csync_timediff(CSYNC *ctx) {
         "Synchronisation is not possible! %s - %s",
         luri,
         errbuf);
+    _csync_time_errno = CSYNC_ERR_LOCAL_STAT;
     goto out;
   }
   timediff = st->mtime;
@@ -133,6 +139,7 @@ time_t csync_timediff(CSYNC *ctx) {
         "Unable to create temporary file: %s - %s",
         ruri,
         errbuf);
+    _csync_time_errno = CSYNC_ERR_REMOTE_CREATE;
     goto out;
   }
   csync_vio_close(ctx, fp);
@@ -145,6 +152,7 @@ time_t csync_timediff(CSYNC *ctx) {
         "Synchronisation is not possible! %s - %s",
         ruri,
         errbuf);
+    _csync_time_errno = CSYNC_ERR_REMOTE_STAT;
     goto out;
   }
 
@@ -164,6 +172,10 @@ out:
   SAFE_FREE(ruri);
 
   return timediff;
+}
+
+CSYNC_ERROR_CODE csync_time_errno(void) {
+    return _csync_time_errno;
 }
 
 /* vim: set ts=8 sw=2 et cindent: */

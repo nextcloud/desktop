@@ -325,7 +325,7 @@ retry_vio_init:
           goto out;
       } else if (timediff < 0) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Synchronisation is not possible!");
-	  _csync_errno = CSYNC_ERR_TIMESKEW;
+	  _csync_errno = csync_time_errno();
           rc = -1;
           goto out;
       }
