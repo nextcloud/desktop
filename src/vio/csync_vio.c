@@ -41,6 +41,10 @@
 #define MODULE_EXTENSION "so"
 #endif
 
+#ifdef __APPLE__
+#include <mach-o/dyld.h>
+#endif
+
 #include "csync_log.h"
 
 int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
@@ -73,7 +77,16 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
 #ifdef __APPLE__
   if (lstat(path, &sb) < 0) {
     SAFE_FREE(path);
-    if (asprintf(&path, "../Plugins/csync_%s.%s", module, MODULE_EXTENSION) < 0) {
+
+    char path_tmp[1024];
+    uint32_t size = sizeof(path_tmp);
+    if (_NSGetExecutablePath(path_tmp, &size) == 0)
+        printf("executable path is %s\n", path_tmp);
+
+    char* path2 = NULL;
+    path2 = c_dirname(path_tmp);
+
+    if (asprintf(&path, "%s/../Plugins/csync_%s.%s", path2, module, MODULE_EXTENSION) < 0) {
       return -1;
     }
   }
