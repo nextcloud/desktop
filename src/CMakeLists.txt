@@ -75,7 +75,7 @@ IF( USE_INOTIFY )
     add_definitions( -DUSE_INOTIFY )
     set(mirall_SRCS ${mirall_SRCS} mirall/inotify.cpp)
     set(mirall_HEADERS ${mirall_HEADERS} mirall/inotify.h)
-ENDIF(UNIX)
+ENDIF()
 
 # Disabled the csync found check. Csync required for now.
 set(mirall_SRCS
