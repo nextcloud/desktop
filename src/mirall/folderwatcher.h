@@ -25,7 +25,7 @@
 #include "mirall/folder.h"
 
 class QTimer;
-#ifdef USE_WATCHER
+#ifdef USE_INOTIFY
 class INotify;
 #endif
 
@@ -121,7 +121,7 @@ protected slots:
 private:
     bool _eventsEnabled;
     int _eventInterval;
-#ifdef USE_WATCHER
+#ifdef USE_INOTIFY
     INotify *_inotify;
 #endif
     QString _root;

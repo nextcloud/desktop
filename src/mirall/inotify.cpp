@@ -16,7 +16,7 @@
 
 #include <mirall/folder.h>
 
-#ifdef USE_WATCHER
+#ifdef USE_INOTIFY
 #include <sys/inotify.h>
 #endif
 #include <cerrno>

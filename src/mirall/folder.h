@@ -29,7 +29,7 @@ class QIcon;
 
 namespace Mirall {
 
-#ifdef USE_WATCHER
+#ifdef USE_INOTIFY
 class FolderWatcher;
 #endif
 
@@ -153,7 +153,7 @@ signals:
     void scheduleToSync( const QString& );
 
 protected:
-#ifdef USE_WATCHER
+#ifdef USE_INOTIFY
     FolderWatcher *_watcher;
 #endif
   int _errorCount;

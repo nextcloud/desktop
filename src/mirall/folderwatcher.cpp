@@ -28,12 +28,12 @@
 #include "mirall/folderwatcher.h"
 #include "mirall/fileutils.h"
 
-#ifdef USE_WATCHER
+#ifdef USE_INOTIFY
 #include <sys/inotify.h>
 #endif
 
 static const uint32_t standard_event_mask =
-#ifdef USE_WATCHER
+#ifdef USE_INOTIFY
     IN_CLOSE_WRITE | IN_ATTRIB | IN_MOVE | IN_CREATE | IN_DELETE | IN_DELETE_SELF | IN_MOVE_SELF | IN_UNMOUNT | IN_ONLYDIR | IN_DONT_FOLLOW;
 #else
     0;
@@ -53,7 +53,7 @@ FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
       _lastMask(0),
       _initialSyncDone(false)
 {
-#ifdef USE_WATCHER
+#ifdef USE_INOTIFY
     _processTimer->setSingleShot(true);
     QObject::connect(_processTimer, SIGNAL(timeout()), this, SLOT(slotProcessTimerTimeout()));
 
@@ -141,7 +141,7 @@ void FolderWatcher::setEventInterval(int seconds)
 
 QStringList FolderWatcher::folders() const
 {
-#ifdef USE_WATCHER
+#ifdef USE_INOTIFY
     return _inotify->directories();
 #else
     return QStringList();
@@ -152,7 +152,7 @@ void FolderWatcher::slotAddFolderRecursive(const QString &path)
 {
     int subdirs = 0;
     qDebug() << "(+) Watcher:" << path;
-#ifdef USE_WATCHER
+#ifdef USE_INOTIFY
 
     _inotify->addPath(path);
     QStringList watchedFolders(_inotify->directories());
@@ -195,7 +195,7 @@ void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
     _lastPath = path;
 
     if( ! eventsEnabled() ) return;
-#ifdef USE_WATCHER
+#ifdef USE_INOTIFY
     qDebug() << "** Inotify Event " << mask << " on " << path;
     // cancel close write events that come after create
     if (lastMask == IN_CREATE && mask == IN_CLOSE_WRITE

@@ -49,7 +49,7 @@ private slots:
     void slotThreadTreeWalkResult( WalkStats* );
     void slotCSyncTerminated();
 
-#ifndef USE_WATCHER
+#ifndef USE_INOTIFY
     void slotPollTimerRemoteCheck();
 #endif
 private:

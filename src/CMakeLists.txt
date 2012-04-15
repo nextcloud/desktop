@@ -66,13 +66,13 @@ set(mirall_HEADERS
 )
 
 if( UNIX AND NOT APPLE)
-    if(NOT USE_WATCHER)
-        set(USE_WATCHER ON)
+    if(NOT USE_INOTIFY)
+        set(USE_INOTIFY ON)
     endif()
 endif()
 
-IF( USE_WATCHER )
-    add_definitions( -DUSE_WATCHER )
+IF( USE_INOTIFY )
+    add_definitions( -DUSE_INOTIFY )
     set(mirall_SRCS ${mirall_SRCS} mirall/inotify.cpp)
     set(mirall_HEADERS ${mirall_HEADERS} mirall/inotify.h)
 ENDIF(UNIX)

@@ -35,7 +35,7 @@ FolderMan::FolderMan(QObject *parent) :
     storageDir.mkpath("folders");
     _folderConfigPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/folders";
 
-#ifdef USE_WATCHER
+#ifdef USE_INOTIFY
     Mirall::INotify::initialize();
 #endif
 

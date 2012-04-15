@@ -44,7 +44,7 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
     , _csyncError(false)
     , _lastSeenFiles(0)
 {
-#ifdef USE_WATCHER
+#ifdef USE_INOTIFY
     qDebug() << "****** ownCloud folder using watcher *******";
     // The folder interval is set in the folder parent class.
 #else
@@ -66,7 +66,7 @@ ownCloudFolder::~ownCloudFolder()
 {
 }
 
-#ifndef USE_WATCHER
+#ifndef USE_INOTIFY
 void ownCloudFolder::slotPollTimerRemoteCheck()
 {
     _pollTimerCnt++;
@@ -119,7 +119,7 @@ void ownCloudFolder::startSync(const QStringList &pathList)
         url.setScheme( "ownclouds" );
     }
 
-#ifdef USE_WATCHER
+#ifdef USE_INOTIFY
     // if there is a watcher and no polling, ever sync is remote.
     _localCheckOnly = false;
 #else
@@ -165,7 +165,7 @@ void ownCloudFolder::slotThreadTreeWalkResult( WalkStats *wStats )
     if( ! _localCheckOnly ) _lastSeenFiles = 0;
     _localFileChanges = false;
 
-#ifndef USE_WATCHER
+#ifndef USE_INOTIFY
     if( _lastSeenFiles > 0 && _lastSeenFiles != wStats->seenFiles ) {
         qDebug() << "*** last seen files different from currently seen number " << _lastSeenFiles << "<>" << wStats->seenFiles << " => full Sync needed";
         _localFileChanges = true;
