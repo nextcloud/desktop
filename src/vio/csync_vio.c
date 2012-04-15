@@ -70,6 +70,15 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
   }
 #endif
 
+#ifdef __APPLE__
+  if (lstat(path, &sb) < 0) {
+    SAFE_FREE(path);
+    if (asprintf(&path, "../Plugins/csync_%s.%s", module, MODULE_EXTENSION) < 0) {
+      return -1;
+    }
+  }
+#endif
+
   ctx->module.handle = dlopen(path, RTLD_LAZY);
   SAFE_FREE(path);
   if ((err = dlerror()) != NULL) {
