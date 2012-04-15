@@ -193,6 +193,17 @@ void CSyncThread::run()
         case CSYNC_ERR_TREE:
             errStr = tr("CSync got an error while processing internal trees.");
             break;
+        case CSYNC_ERR_ACCESS_FAILED:
+            errStr = tr("<p>The target directory %1 does not exist.</p><p>Please create it and try again.</p>").arg(_target);
+            break;
+        case CSYNC_ERR_LOCAL_CREATE:
+        case CSYNC_ERR_LOCAL_STAT:
+            errStr = tr("The local filesystem can not be written. Please check permissions.");
+            break;
+        case CSYNC_ERR_REMOTE_CREATE:
+        case CSYNC_ERR_REMOTE_STAT:
+            errStr = tr("A remote file can not be written. Please check the remote access.");
+            break;
         default:
             errStr = tr("An internal error number %1 happend.").arg( (int) err );
         }
