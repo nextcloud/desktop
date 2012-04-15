@@ -25,7 +25,6 @@
 
 #include "mirall/folderwizard.h"
 #include "mirall/owncloudinfo.h"
-#include "mirall/mirallwebdav.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/owncloudinfo.h"
 #include "mirall/theme.h"
