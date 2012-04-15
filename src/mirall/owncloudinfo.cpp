@@ -82,8 +82,8 @@ void ownCloudInfo::getRequest( const QString& path, bool webdav )
     QString url = cfgFile.ownCloudUrl( _connection, webdav ) + path;
     QNetworkRequest request;
     request.setUrl( QUrl( url ) );
-    request.setRawHeader( "User-Agent", QString("mirall-%1").arg(MIRALL_STRINGIFY(MIRALL_VERSION)).toAscii());
-    request.setRawHeader( "Authorization", cfgFile.basicAuthHeader() );
+    setupHeaders( request, 0 );
+
     QNetworkReply *reply = _manager->get( request );
     connect( reply, SIGNAL(finished()), SLOT(slotReplyFinished()));
     _directories[reply] = path;
@@ -100,13 +100,11 @@ void ownCloudInfo::mkdirRequest( const QString& dir )
     MirallConfigFile cfgFile;
     QNetworkRequest req;
     req.setUrl( QUrl( cfgFile.ownCloudUrl( _connection, true ) + dir ) );
-
     QNetworkReply *reply = davRequest("MKCOL", req, 0);
 
     connect( reply, SIGNAL(finished()), SLOT(slotMkdirFinished()) );
     connect( reply, SIGNAL( error(QNetworkReply::NetworkError )),
-             this, SLOT(slotError( QNetworkReply::NetworkError )));
-
+             this, SLOT(slotError(QNetworkReply::NetworkError )));
 }
 
 void ownCloudInfo::slotMkdirFinished()
@@ -239,30 +237,36 @@ void ownCloudInfo::slotError( QNetworkReply::NetworkError err)
 }
 
 // ============================================================================
-void ownCloudInfo::setupHeaders(const QString& _host, QNetworkRequest & req, quint64 size)
+void ownCloudInfo::setupHeaders( QNetworkRequest & req, quint64 size )
 {
-  QUrl url( _host );
-  qDebug() << "Setting up host header: " << url.host().toUtf8();
-  req.setRawHeader(QByteArray("Host"), url.host().toUtf8());
-  req.setRawHeader(QByteArray("Connection"), QByteArray("Keep-Alive"));
-  if (size) {
-      req.setHeader(QNetworkRequest::ContentLengthHeader, QVariant(size));
-      req.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("text/xml; charset=utf-8"));
-  }
+    MirallConfigFile cfgFile;
+
+    QUrl url( cfgFile.ownCloudUrl( QString(), false ) );
+    qDebug() << "Setting up host header: " << url.host();
+    req.setRawHeader( QByteArray("Host"), url.host().toUtf8() );
+    req.setRawHeader( QByteArray("User-Agent"), QString("mirall-%1").arg(MIRALL_STRINGIFY(MIRALL_VERSION)).toAscii());
+    req.setRawHeader( QByteArray("Authorization"), cfgFile.basicAuthHeader() );
+
+    if (size) {
+        req.setHeader( QNetworkRequest::ContentLengthHeader, QVariant(size));
+        req.setHeader( QNetworkRequest::ContentTypeHeader, QVariant("text/xml; charset=utf-8"));
+    }
 }
 
 QNetworkReply* ownCloudInfo::davRequest(const QString& reqVerb,  QNetworkRequest& req, QByteArray *data)
 {
     MirallConfigFile cfgFile;
 
-    setupHeaders(cfgFile.ownCloudUrl( QString(), false ), req, quint64(data ? data->size() : 0));
+    setupHeaders(req, quint64(data ? data->size() : 0));
     if( data ) {
         QBuffer iobuf( data );
         return _manager->sendCustomRequest(req, reqVerb.toUtf8(), &iobuf );
     } else {
         return _manager->sendCustomRequest(req, reqVerb.toUtf8(), 0 );
     }
+
 }
+
 
 }
 

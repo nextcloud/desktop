@@ -78,7 +78,7 @@ protected slots:
     void slotMkdirFinished();
 
 private:
-    void setupHeaders(const QString&, QNetworkRequest&, quint64 );
+    void setupHeaders(QNetworkRequest &req, quint64 size );
     QNetworkReply* davRequest(const QString&, QNetworkRequest&, QByteArray* );
 
     static QNetworkAccessManager  *_manager;
