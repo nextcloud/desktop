@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+        <key>CFBundleDevelopmentRegion</key>
+        <string>English</string>
+        <key>CFBundleExecutable</key>
+        <string>owncloud</string>
+        <key>CFBundleGetInfoString</key>
+        <string></string>
+        <key>CFBundleIconFile</key>
+        <string>ownCloud.icns</string>
+        <key>CFBundleIdentifier</key>
+        <string>org.owncloud</string>
+        <key>CFBundleInfoDictionaryVersion</key>
+        <string>6.0</string>
+        <key>CFBundleLongVersionString</key>
+        <string>owncloud FIXME</string>
+        <key>CFBundleName</key>
+        <string>owncloudBundleName</string>
+        <key>CFBundlePackageType</key>
+        <string>APPL</string>
+        <key>CFBundleShortVersionString</key>
+        <string>0.1.0 FIXME</string>
+        <key>CFBundleSignature</key>
+        <string>????</string>
+        <key>CFBundleVersion</key>
+        <string>owncloud FIXME 0.1.0</string>
+        <key>CSResourcesFileMapped</key>
+        <true/>
+        <key>LSUIElement</key>
+        <true/>
+        <key>NSHumanReadableCopyright</key>
+        <string>2012 owncloud.org</string>
+</dict>
+</plist>

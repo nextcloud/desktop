@@ -6,6 +6,12 @@ set( CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules )
 include(${CMAKE_SOURCE_DIR}/VERSION.cmake)
 include(GNUInstallDirs)
 
+if(NOT DEFINED BUILD_OWNCLOUD_OSX_BUNDLE OR NOT APPLE)
+    set(BUILD_OWNCLOUD_OSX_BUNDLE OFF)
+elseif(BUILD_OWNCLOUD_OSX_BUNDLE)
+    set(OWNCLOUD_OSX_BUNDLE "owncloud.app")
+endif()
+
 find_package(Qt4 4.4.3 COMPONENTS QtCore QtGui QtXml QtNetwork QtTest REQUIRED )
 find_package(Csync)
 
@@ -56,6 +62,9 @@ set(TRANSLATIONS ${CMAKE_SOURCE_DIR}/translations/mirall_de.ts)
 add_subdirectory(src)
 # add_subdirectory(test)
 
-install( FILES exclude.lst DESTINATION ${CMAKE_INSTALL_SYSCONFDIR})
-
+if(BUILD_OWNCLOUD_OSX_BUNDLE)
+    install( FILES exclude.lst DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources )
+else()
+    install( FILES exclude.lst DESTINATION ${CMAKE_INSTALL_SYSCONFDIR} )
+endif()
 

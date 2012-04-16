@@ -98,39 +98,76 @@ qt4_add_translation(mirall_I18N ${TRANSLATIONS})
 add_library(mirall_static STATIC ${mirall_SRCS} ${mirall_UI_SRCS} ${mirallMoc} ${mirall_HEADERS} ${MIRALL_RC_SRC} ${mirall_I18N})
 target_link_libraries(mirall_static ${QT_LIBRARIES})
 
-add_executable( mirall main.cpp )
-set( final_src ${mirall_HEADERS}
-	${MIRALL_RC_SRC} ${mirall_SRCS} ${mirall_UI_SRCS} ${mirallMoc} ${mirall_HEADERS} ${mirall_I18N})
+set( final_src
+    ${mirall_HEADERS}
+    ${MIRALL_RC_SRC}
+    ${mirall_SRCS}
+    ${mirall_UI_SRCS}
+    ${mirallMoc}
+    ${mirall_HEADERS}
+    ${mirall_I18N}
+)
 
 # add executable icon on windows and osx
 include( AddAppIconMacro )
-kde4_add_app_icon( final_src "${CMAKE_CURRENT_SOURCE_DIR}/../resources/mirall-*.png" )
+set(ownCloud_old ${ownCloud})
+kde4_add_app_icon( ownCloud "${CMAKE_CURRENT_SOURCE_DIR}/../resources/mirall-*.png" )
+list(APPEND final_src ${ownCloud})
+set(ownCloud ${ownCloud_old})
 
-add_executable(owncloud WIN32 main.cpp ${final_src})
-# add_executable(owncloud  main.cpp ${final_src})
+if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
+    set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
-SET(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
-SET_TARGET_PROPERTIES( mirall PROPERTIES
+    install(FILES mirall.png DESTINATION share/icons/hicolor/48x48/apps)
+
+    # we may not add MACOSX_BUNDLE here, if not building one
+    add_executable(owncloud WIN32 main.cpp ${final_src})
+
+    # mirall is not built for the bundle
+    add_executable( mirall WIN32 main.cpp )
+    target_link_libraries(mirall mirall_static)
+    target_link_libraries(mirall ${CSYNC_LIBRARY})
+    set_target_properties( mirall PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
-SET_TARGET_PROPERTIES( owncloud PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
+    install(TARGETS mirall
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        BUNDLE  DESTINATION library
+    )
+else()
+    set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
+    include(DeployQt4)
 
-target_link_libraries(mirall mirall_static)
+    set(CMAKE_INSTALL_PREFIX ".") # Examples use /Applications. hurmpf.
+    set(MACOSX_BUNDLE_ICON_FILE "ownCloud.icns")
 
+    # we must add MACOSX_BUNDLE only if building a bundle
+    add_executable(owncloud WIN32 MACOSX_BUNDLE main.cpp ${final_src})
+
+    #FIXME: hardcoded path
+    install(FILES /usr/local/lib/csync-0/csync_owncloud.so DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Plugins)
+    list(APPEND dirs "/usr/local/lib")
+endif()
+
+
+set_target_properties( owncloud PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY}
+)
 target_link_libraries(owncloud ${QT_LIBRARIES} )
 
-target_link_libraries(mirall ${CSYNC_LIBRARY})
 target_link_libraries(owncloud ${CSYNC_LIBRARY})
 
-install(TARGETS mirall
-	RUNTIME DESTINATION bin
-	LIBRARY DESTINATION lib
-	ARCHIVE DESTINATION lib )
 install(TARGETS owncloud
-	RUNTIME DESTINATION bin
-	LIBRARY DESTINATION lib
-	ARCHIVE DESTINATION lib )
-
-install(FILES mirall.png DESTINATION share/icons/hicolor/48x48/apps
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        BUNDLE  DESTINATION "."
 )
 
+#FIXME: find a nice solution to make the second if(BUILD_OWNCLOUD_OSX_BUNDLE) unneccessary
+# currently it needs to be done because the code right above needs to be executed no matter
+# if building a bundle or not and the install_qt4_executable needs to be called afterwards
+if(BUILD_OWNCLOUD_OSX_BUNDLE)
+    install_qt4_executable(${OWNCLOUD_OSX_BUNDLE} "" "${OWNCLOUD_OSX_BUNDLE}/Contents/Plugins/csync_owncloud.so" ${dirs})
+endif()
