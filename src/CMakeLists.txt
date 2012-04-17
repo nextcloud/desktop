@@ -66,7 +66,7 @@ set(mirall_HEADERS
 )
 
 if( UNIX AND NOT APPLE)
-    if(NOT USE_INOTIFY)
+    if(NOT DEFINED USE_INOTIFY)
         set(USE_INOTIFY ON)
     endif()
 endif()
