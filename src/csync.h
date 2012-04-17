@@ -89,8 +89,7 @@ enum csync_error_codes_e {
   CSYNC_ERR_REMOTE_STAT,
   CSYNC_ERR_LOCAL_CREATE,
   CSYNC_ERR_LOCAL_STAT,
-  CSYNC_ERR_UNSPEC,
-  
+  CSYNC_ERR_UNSPEC
 };
 typedef enum csync_error_codes_e CSYNC_ERROR_CODE;
 
@@ -410,7 +409,7 @@ int csync_walk_remote_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int f
  * 
  * @return              An error code defined by structure CSYNC_ERROR_CODE
  */
-CSYNC_ERROR_CODE csync_errno(void);
+CSYNC_ERROR_CODE csync_get_error(CSYNC *ctx);
 
 
 #ifdef __cplusplus
