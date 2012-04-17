@@ -105,6 +105,7 @@ private:
     QSplashScreen *_splash;
     ownCloudInfo  *_ocInfo;
     UpdateDetector *_updateDetector;
+    QMap<Folder*, QString> _overallStatusStrings;
 };
 
 } // namespace Mirall

@@ -237,7 +237,7 @@ void Folder::slotSyncFinished(const SyncResult &result)
     _watcher->setEventsEnabled(true);
 #endif
 
-    qDebug() << "OOOOOOOOOOOOOOOOO sync result: " << int(result.status()) << " local: " << result.localRunOnly();
+    qDebug() << "OO folder slotSyncFinished: result: " << int(result.status()) << " local: " << result.localRunOnly();
     emit syncStateChange();
 
     // reenable the poll timer if folder is sync enabled

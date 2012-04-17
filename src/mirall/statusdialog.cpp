@@ -290,7 +290,7 @@ void StatusDialog::slotUpdateFolderState( Folder *folder )
     if( item ) {
         folderToModelItem( item, folder );
     } else {
-        qDebug() << "  OO Error: did not find model item for folder " << folder->alias();
+        // the dialog is not visible.
     }
 }
 

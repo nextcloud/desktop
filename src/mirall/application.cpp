@@ -504,8 +504,8 @@ void Application::slotSyncStateChange( const QString& alias )
     // do not promote LocalSyncState to the status dialog.
     if( !result.localRunOnly() ) {
         _statusDialog->slotUpdateFolderState( _folderMan->folder(alias) );
-        // computeOverallSyncStatus();
     }
+    computeOverallSyncStatus();
 
     qDebug() << "Sync state changed for folder " << alias << ": "  << result.localRunOnly();
 }
@@ -513,56 +513,63 @@ void Application::slotSyncStateChange( const QString& alias )
 void Application::computeOverallSyncStatus()
 {
 
-  // display the info of the least succesful sync (eg. not just display the result of the latest sync
-  SyncResult overallResult = SyncResult::Success;
-  QString trayMessage;
-  Folder::Map map = _folderMan->map();
+    // display the info of the least succesful sync (eg. not just display the result of the latest sync
+    SyncResult overallResult = SyncResult::Success;
+    QString trayMessage;
+    Folder::Map map = _folderMan->map();
 
-  foreach ( Folder *syncedFolder, map ) {
-    QString folderMessage;
-    SyncResult folderResult = syncedFolder->syncResult();
-    SyncResult::Status syncStatus = folderResult.status();
-    if ( syncStatus == SyncResult::Success ) {
-      folderMessage = tr( "Folder %1: Ok." ).arg( syncedFolder->alias() );
-    } else if ( syncStatus == SyncResult::Error ) {
-      overallResult = SyncResult::Error;
-      folderMessage = tr( "Folder %1: %2" ).arg( syncedFolder->alias(), folderResult.errorString() );
-    } else if ( syncStatus == SyncResult::SetupError ) {
-      if ( overallResult.status() != SyncResult::Error ) {
-        overallResult = SyncResult::SetupError;
-      }
-      folderMessage = tr( "Folder %1: setup error" ).arg( syncedFolder->alias() );
-    } else if ( syncStatus == SyncResult::Disabled ) {
-      if ( overallResult.status() != SyncResult::SetupError
-           && overallResult.status() != SyncResult::Error ) {
-        overallResult = SyncResult::Disabled;
-      }
-      folderMessage = tr( "Folder %1: %2" ).arg( syncedFolder->alias(), folderResult.errorString() );
-    } else if ( syncStatus == SyncResult::Undefined ) {
-      if ( overallResult.status() == SyncResult::Success ) {
-        overallResult = SyncResult::Undefined;
-      }
-      folderMessage = tr( "Folder %1: undefined state" ).arg( syncedFolder->alias() );
-    }
-    if ( !trayMessage.isEmpty() ) {
-      trayMessage += "\n";
-    }
-    trayMessage += folderMessage;
+    foreach ( Folder *syncedFolder, map ) {
+        QString folderMessage = _overallStatusStrings[syncedFolder];
 
+        SyncResult folderResult = syncedFolder->syncResult();
+        SyncResult::Status syncStatus = folderResult.status();
+
+        if( ! folderResult.localRunOnly() ) { // skip local runs, use the last message.
+            if ( syncStatus == SyncResult::Success ) {
+                folderMessage = tr( "Folder %1: Ok." ).arg( syncedFolder->alias() );
+            } else if ( syncStatus == SyncResult::Error ) {
+                overallResult = SyncResult::Error;
+                folderMessage = tr( "Folder %1: %2" ).arg( syncedFolder->alias(), folderResult.errorString() );
+            } else if ( syncStatus == SyncResult::SetupError ) {
+                if ( overallResult.status() != SyncResult::Error ) {
+                    overallResult = SyncResult::SetupError;
+                }
+                folderMessage = tr( "Folder %1: setup error" ).arg( syncedFolder->alias() );
+            } else if ( syncStatus == SyncResult::Disabled ) {
+                if ( overallResult.status() != SyncResult::SetupError
+                     && overallResult.status() != SyncResult::Error ) {
+                    overallResult = SyncResult::Disabled;
+                }
+                folderMessage = tr( "Folder %1: %2" ).arg( syncedFolder->alias(), folderResult.errorString() );
+            } else if ( syncStatus == SyncResult::Undefined ) {
+                if ( overallResult.status() == SyncResult::Success ) {
+                    overallResult = SyncResult::Undefined;
+                }
+                folderMessage = tr( "Folder %1: undefined state" ).arg( syncedFolder->alias() );
+            }
+        }
+        _overallStatusStrings[syncedFolder] = folderMessage;
+    }
+
+    // create the tray blob message
+    QStringList allStatusStrings = _overallStatusStrings.values();
+    trayMessage = allStatusStrings.join("\n");
+
+#if 0
     if( _statusDialog->isVisible() ) {
-      _statusDialog->slotUpdateFolderState( syncedFolder );
+        _statusDialog->slotUpdateFolderState( syncedFolder );
     }
-  }
+#endif
 
-  QIcon statusIcon = _theme->syncStateIcon( overallResult.status(), 22 );
+    QIcon statusIcon = _theme->syncStateIcon( overallResult.status(), 22 );
 
-  if( overallResult.status() == SyncResult::Success ) {
-      // Rather display the mirall icon instead of the ok icon.
-      statusIcon = _theme->applicationIcon();
-  }
+    if( overallResult.status() == SyncResult::Success ) {
+        // Rather display the mirall icon instead of the ok icon.
+        statusIcon = _theme->applicationIcon();
+    }
 
-  _tray->setIcon( statusIcon );
-  _tray->setToolTip(trayMessage);
+    _tray->setIcon( statusIcon );
+    _tray->setToolTip(trayMessage);
 }
 
 } // namespace Mirall

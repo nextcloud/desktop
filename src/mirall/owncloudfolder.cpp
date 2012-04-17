@@ -215,7 +215,6 @@ void ownCloudFolder::slotCSyncFinished()
         _syncResult.setErrorStrings( _errors );
         qDebug() << "    * owncloud csync thread finished with error";
     } else {
-        qDebug() << "    * owncloud csync thread finished successfully " << _localCheckOnly;
         _syncResult.setStatus(SyncResult::Success);
     }
 
