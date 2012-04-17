@@ -32,6 +32,7 @@
 #define _CSYNC_H
 
 #include <stdbool.h>
+#include <stdint.h>
 #include <unistd.h>
 #include <sys/types.h>
 
@@ -108,8 +109,8 @@ struct csync_tree_walk_file_s {
     /* off_t       size; */
     time_t      modtime;
 #ifdef _WIN32
-    int         uid;
-    int         gid;
+    uint32_t    uid;
+    uint32_t    gid;
 #else
     uid_t       uid;
     gid_t       gid;
