@@ -697,7 +697,9 @@ static ssize_t owncloud_write(csync_vio_method_handle_t *fhandle, const void *bu
     /* check if there is space left in the mem buffer */
     if( writeCtx->bytes_written + count > PUT_BUFFER_SIZE ) {
         if( writeCtx->fileWritten == 0 ) {
-            DEBUG_WEBDAV(("Remaining Mem Buffer size to small, push to disk (current buf size %d)\n", writeCtx->bytes_written));
+            DEBUG_WEBDAV(("Remaining Mem Buffer size to small, push to disk "
+                          "(current buf size %lu)\n",
+                          (unsigned long) writeCtx->bytes_written));
         }
 
         /* write contents to disk */
@@ -1016,7 +1018,8 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
         if( writeCtx->fd > -1 ) {
             if( writeCtx->fileWritten && writeCtx->bytes_written > 0 ) { /* was content written to file? */
                 /* push the rest of the buffer to file as well. */
-                DEBUG_WEBDAV(("Write remaining %d bytes to disk.\n", writeCtx->bytes_written ));
+                DEBUG_WEBDAV(("Write remaining %lu bytes to disk.\n",
+                              (unsigned long) writeCtx->bytes_written ));
                 len = write( writeCtx->fd, _buffer, writeCtx->bytes_written );
 		if( len != writeCtx->bytes_written ) {
 		    DEBUG_WEBDAV(("WRN: write wrote wrong number of remaining bytes\n"));
