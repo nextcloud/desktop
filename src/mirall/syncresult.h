@@ -42,12 +42,16 @@ public:
     void    setErrorStrings( const QStringList& );
     QString errorString() const;
     QStringList errorStrings() const;
+    void    clearErrors();
+
     void    setSyncChanges( const QHash<QString, QStringList> &changes );
     QHash<QString, QStringList> syncChanges() const;
 
     void setStatus( Status );
     Status status() const;
 
+    bool localRunOnly() const;
+    void setLocalRunOnly( bool );
 private:
     Status _status;
     QHash<QString, QStringList> _syncChanges;
@@ -58,6 +62,8 @@ private:
     QStringList _deletedSource;
     QStringList _deletedDestination;
     QStringList _errors;
+
+    bool        _localRunOnly;
 };
 
 }

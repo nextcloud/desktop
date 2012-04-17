@@ -19,11 +19,13 @@ namespace Mirall
 
 SyncResult::SyncResult()
 : _status( Undefined )
+  , _localRunOnly(false)
 {
 }
 
 SyncResult::SyncResult(SyncResult::Status status )
     : _status(status)
+    , _localRunOnly(false)
 {
 }
 
@@ -58,6 +60,11 @@ QString SyncResult::errorString() const
     return _errors.first();
 }
 
+void SyncResult::clearErrors()
+{
+    _errors.clear();
+}
+
 void SyncResult::setSyncChanges(const QHash< QString, QStringList >& changes)
 {
     _syncChanges = changes;
@@ -66,6 +73,16 @@ void SyncResult::setSyncChanges(const QHash< QString, QStringList >& changes)
 QHash< QString, QStringList > SyncResult::syncChanges() const
 {
     return _syncChanges;
+}
+
+bool SyncResult::localRunOnly() const
+{
+    return _localRunOnly;
+}
+
+void SyncResult::setLocalRunOnly( bool lor )
+{
+    _localRunOnly = lor;
 }
 
 SyncResult::~SyncResult()
