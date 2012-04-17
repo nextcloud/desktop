@@ -16,7 +16,6 @@
 #define MIRALL_ownCloudFolder_H
 
 #include <QMutex>
-#include <QMutex>
 #include <QThread>
 #include <QStringList>
 
