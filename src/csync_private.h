@@ -131,6 +131,9 @@ struct csync_s {
   /* replica we want to work on */
   enum csync_replica_e replica;
 
+  /* error code of the last operation */
+  enum csync_error_codes_e error_code;
+
   int status;
 };
 
