@@ -156,7 +156,8 @@ protected:
 #ifdef USE_INOTIFY
     FolderWatcher *_watcher;
 #endif
-  int _errorCount;
+    int _errorCount;
+    SyncResult _syncResult;
 
 private:
 
@@ -174,7 +175,6 @@ private:
     QNetworkConfigurationManager _networkMgr;
     bool       _online;
     bool       _enabled;
-    SyncResult _syncResult;
     QString    _backend;
 
 protected slots:

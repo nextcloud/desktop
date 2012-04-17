@@ -106,6 +106,7 @@ void Folder::setSyncEnabled( bool doit )
   if( doit ) {
       // undefined until next sync
       _syncResult.setStatus( SyncResult::NotYetStarted);
+      _syncResult.clearErrors();
       evaluateSync( QStringList() );
   } else {
       // disabled.
@@ -197,7 +198,7 @@ void Folder::evaluateSync(const QStringList &pathList)
 
 void Folder::startSync( const QStringList &pathList )
 {
-    _syncResult = SyncResult( SyncResult::SyncRunning );
+    _syncResult.setStatus( SyncResult::SyncRunning );
     emit syncStateChange();
 }
 
@@ -236,7 +237,7 @@ void Folder::slotSyncFinished(const SyncResult &result)
     _watcher->setEventsEnabled(true);
 #endif
 
-    _syncResult = result;
+    qDebug() << "OOOOOOOOOOOOOOOOO sync result: " << int(result.status()) << " local: " << result.localRunOnly();
     emit syncStateChange();
 
     // reenable the poll timer if folder is sync enabled

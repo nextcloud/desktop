@@ -501,10 +501,13 @@ void Application::slotSyncStateChange( const QString& alias )
 {
     SyncResult result = _folderMan->syncResult( alias );
 
-    _statusDialog->slotUpdateFolderState( _folderMan->folder(alias) );
-    computeOverallSyncStatus();
+    // do not promote LocalSyncState to the status dialog.
+    if( !result.localRunOnly() ) {
+        _statusDialog->slotUpdateFolderState( _folderMan->folder(alias) );
+        // computeOverallSyncStatus();
+    }
 
-    qDebug() << "Sync state changed for folder " << alias << ": "  << result.errorString();
+    qDebug() << "Sync state changed for folder " << alias << ": "  << result.localRunOnly();
 }
 
 void Application::computeOverallSyncStatus()

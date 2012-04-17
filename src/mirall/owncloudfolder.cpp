@@ -70,7 +70,7 @@ ownCloudFolder::~ownCloudFolder()
 void ownCloudFolder::slotPollTimerRemoteCheck()
 {
     _pollTimerCnt++;
-    qDebug() << "**** Poll Timer Cnt increase: " << _pollTimerCnt;
+    qDebug() << "**** Poll Timer for Folder " << alias() << " increase: " << _pollTimerCnt;
 }
 #endif
 
@@ -99,7 +99,6 @@ void ownCloudFolder::startSync()
 
 void ownCloudFolder::startSync(const QStringList &pathList)
 {
-    Folder::startSync( pathList );
 
     if (_csync && _csync->isRunning()) {
         qCritical() << "* ERROR csync is still running and new sync requested.";
@@ -124,14 +123,17 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     _localCheckOnly = false;
 #else
     _localCheckOnly = true;
-    if( _pollTimerCnt == POLL_TIMER_EXCEED || _localFileChanges ) {
+    if( _pollTimerCnt >= POLL_TIMER_EXCEED || _localFileChanges ) {
         _localCheckOnly = false;
         _pollTimerCnt = 0;
         _localFileChanges = false;
     }
 #endif
-    qDebug() << "*** Start syncing to ownCloud, onlyLocal: " << _localCheckOnly;
+    _syncResult.setLocalRunOnly( _localCheckOnly );
+    Folder::startSync( pathList );
 
+
+    qDebug() << "*** Start syncing to ownCloud, onlyLocal: " << _localCheckOnly;
     _csync = new CSyncThread( path(), url.toEncoded(), _localCheckOnly );
     _csync->setUserPwd( cfgFile.ownCloudUser(), cfgFile.ownCloudPasswd() );
     QObject::connect(_csync, SIGNAL(started()),  SLOT(slotCSyncStarted()));
@@ -197,30 +199,29 @@ void ownCloudFolder::slotCSyncError(const QString& err)
 void ownCloudFolder::slotCSyncTerminated()
 {
     // do not ask csync here for reasons.
-    SyncResult res( SyncResult::Error );
+    _syncResult.setStatus( SyncResult::Error );
     _errors.append( tr("The CSync thread terminated unexpectedly.") );
-    res.setErrorStrings(_errors);
+    _syncResult.setErrorStrings(_errors);
 
-    emit syncFinished( res );
+    emit syncFinished( _syncResult );
 }
 
 void ownCloudFolder::slotCSyncFinished()
 {
-    SyncResult res( SyncResult::Success );
-
     if (_csyncError) {
-        res.setStatus(SyncResult::Error);
+        _syncResult.setStatus(SyncResult::Error);
 
         qDebug() << "  ** error Strings: " << _errors;
-        res.setErrorStrings( _errors );
+        _syncResult.setErrorStrings( _errors );
         qDebug() << "    * owncloud csync thread finished with error";
     } else {
         qDebug() << "    * owncloud csync thread finished successfully " << _localCheckOnly;
+        _syncResult.setStatus(SyncResult::Success);
     }
 
     if( ! _localCheckOnly ) _lastSeenFiles = 0;
 
-    emit syncFinished( res );
+    emit syncFinished( _syncResult );
 }
 
 } // ns
