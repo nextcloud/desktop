@@ -50,7 +50,6 @@
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.api"
 #include "csync_log.h"
-static enum csync_error_codes_e _csync_errno;
 
 static int _key_cmp(const void *key, const void *data) {
   uint64_t a;
@@ -89,13 +88,12 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
   char *home;
   int rc;
 
-  _csync_errno = CSYNC_ERR_NONE;
-  
   ctx = c_malloc(sizeof(CSYNC));
   if (ctx == NULL) {
-    _csync_errno = CSYNC_ERR_MEM;
     return -1;
   }
+
+  ctx->error_code = CSYNC_ERR_NONE;
 
   /* remove trailing slashes */
   len = strlen(local);
@@ -103,7 +101,7 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
 
   ctx->local.uri = c_strndup(local, len);
   if (ctx->local.uri == NULL) {
-    _csync_errno = CSYNC_ERR_MEM;
+    ctx->error_code = CSYNC_ERR_MEM;
     return -1;
   }
 
@@ -114,7 +112,7 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
   ctx->remote.uri = c_strndup(remote, len);
   if (ctx->remote.uri == NULL) {
     SAFE_FREE(ctx->remote.uri);
-    _csync_errno = CSYNC_ERR_MEM;
+    ctx->error_code = CSYNC_ERR_MEM;
     return -1;
   }
 
@@ -133,7 +131,7 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
     SAFE_FREE(ctx->remote.uri);
     SAFE_FREE(ctx);
     errno = ENOMEM;
-    _csync_errno = CSYNC_ERR_MEM;
+    ctx->error_code = CSYNC_ERR_MEM;
     return -1;
   }
 
@@ -144,7 +142,7 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
     SAFE_FREE(ctx->remote.uri);
     SAFE_FREE(ctx);
     errno = ENOMEM;
-    _csync_errno = CSYNC_ERR_MEM;
+    ctx->error_code = CSYNC_ERR_MEM;
     return -1;
   }
 
@@ -162,13 +160,12 @@ int csync_init(CSYNC *ctx) {
 #ifndef _WIN32
   char errbuf[256] = {0};
 #endif
-  _csync_errno = CSYNC_ERR_NONE;
   
   if (ctx == NULL) {
-    _csync_errno = CSYNC_ERR_UNSPEC;
     errno = EBADF;
     return -1;
   }
+  ctx->error_code = CSYNC_ERR_NONE;
 
   /* Do not initialize twice */
   if (ctx->status & CSYNC_STATUS_INIT) {
@@ -177,7 +174,7 @@ int csync_init(CSYNC *ctx) {
 
   /* load log file */
   if (csync_log_init() < 0) {
-    _csync_errno = CSYNC_ERR_LOG;
+    ctx->error_code = CSYNC_ERR_LOG;
     fprintf(stderr, "csync_init: logger init failed\n");
     return -1;
   }
@@ -188,7 +185,7 @@ int csync_init(CSYNC *ctx) {
   }
 
   if (asprintf(&log, "%s/%s", ctx->options.config_dir, CSYNC_LOG_FILE) < 0) {
-    _csync_errno = CSYNC_ERR_UNSPEC;
+    ctx->error_code = CSYNC_ERR_UNSPEC;
     rc = -1;
     goto out;
   }
@@ -206,14 +203,14 @@ int csync_init(CSYNC *ctx) {
 
   /* create lock file */
   if (asprintf(&lock, "%s/%s", ctx->options.config_dir, CSYNC_LOCK_FILE) < 0) {
-    _csync_errno = CSYNC_ERR_UNSPEC;
+    ctx->error_code = CSYNC_ERR_UNSPEC;
     rc = -1;
     goto out;
   }
 
 #ifndef _WIN32
   if (csync_lock(lock) < 0) {
-    _csync_errno = CSYNC_ERR_LOCK;
+    ctx->error_code = CSYNC_ERR_LOCK;
     rc = -1;
     goto out;
   }
@@ -232,7 +229,7 @@ int csync_init(CSYNC *ctx) {
 #ifndef _WIN32
   /* load global exclude list */
   if (asprintf(&exclude, "%s/csync/%s", SYSCONFDIR, CSYNC_EXCLUDE_FILE) < 0) {
-    _csync_errno = CSYNC_ERR_UNSPEC;
+    ctx->error_code = CSYNC_ERR_UNSPEC;
     rc = -1;
     goto out;
   }
@@ -246,7 +243,7 @@ int csync_init(CSYNC *ctx) {
 
   /* load exclude list */
   if (asprintf(&exclude, "%s/%s", ctx->options.config_dir, CSYNC_EXCLUDE_FILE) < 0) {
-    _csync_errno = CSYNC_ERR_UNSPEC;
+    ctx->error_code = CSYNC_ERR_UNSPEC;
     rc = -1;
     goto out;
   }
@@ -263,7 +260,7 @@ int csync_init(CSYNC *ctx) {
     uint64_t h = csync_create_statedb_hash(ctx);
     if (asprintf(&ctx->statedb.file, "%s/csync_statedb_%llu.db",
           ctx->options.config_dir, (long long unsigned int) h) < 0) {
-      _csync_errno = CSYNC_ERR_UNSPEC;
+      ctx->error_code = CSYNC_ERR_UNSPEC;
       rc = -1;
       goto out;
     }
@@ -271,7 +268,7 @@ int csync_init(CSYNC *ctx) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Statedb: %s", ctx->statedb.file);
 
     if (csync_statedb_load(ctx, ctx->statedb.file) < 0) {
-      _csync_errno = CSYNC_ERR_STATEDB_LOAD;
+      ctx->error_code = CSYNC_ERR_STATEDB_LOAD;
       rc = -1;
       goto out;
     }
@@ -289,7 +286,7 @@ int csync_init(CSYNC *ctx) {
       /* module name */
       module = c_strndup(ctx->remote.uri, len);
       if (module == NULL) {
-	_csync_errno = CSYNC_ERR_MODULE;
+        ctx->error_code = CSYNC_ERR_MODULE;
         rc = -1;
         goto out;
       }
@@ -320,32 +317,32 @@ retry_vio_init:
           CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL,
                     "Clock skew detected. The time difference is greater than %d seconds!",
                     ctx->options.max_time_difference);
-	  _csync_errno = CSYNC_ERR_TIMESKEW;
+          ctx->error_code = CSYNC_ERR_TIMESKEW;
           rc = -1;
           goto out;
       } else if (timediff < 0) {
+          /* error code was set in csync_timediff() */
           CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Synchronisation is not possible!");
-	  _csync_errno = csync_time_errno();
           rc = -1;
           goto out;
       }
 
       if (csync_unix_extensions(ctx) < 0) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Could not detect filesystem type.");
-	  _csync_errno = CSYNC_ERR_FILESYSTEM;
+          ctx->error_code = CSYNC_ERR_FILESYSTEM;
           rc = -1;
           goto out;
       }
   }
 
   if (c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp) < 0) {
-    _csync_errno = CSYNC_ERR_TREE;
+    ctx->error_code = CSYNC_ERR_TREE;
     rc = -1;
     goto out;
   }
 
   if (c_rbtree_create(&ctx->remote.tree, _key_cmp, _data_cmp) < 0) {
-    _csync_errno = CSYNC_ERR_TREE;
+    ctx->error_code = CSYNC_ERR_TREE;
     rc = -1;
     goto out;
   }
@@ -365,13 +362,12 @@ out:
 int csync_update(CSYNC *ctx) {
   int rc = -1;
   struct timespec start, finish;
-  _csync_errno = CSYNC_ERR_NONE;
   
   if (ctx == NULL) {
     errno = EBADF;
-    _csync_errno = CSYNC_ERR_PARAM;
     return -1;
   }
+  ctx->error_code = CSYNC_ERR_NONE;
 
   csync_memstat_check();
 
@@ -390,7 +386,7 @@ int csync_update(CSYNC *ctx) {
   csync_memstat_check();
 
   if (rc < 0) {
-    _csync_errno = CSYNC_ERR_TREE;
+    ctx->error_code = CSYNC_ERR_TREE;
     return -1;
   }
 
@@ -411,7 +407,7 @@ int csync_update(CSYNC *ctx) {
       csync_memstat_check();
 
       if (rc < 0) {
-	  _csync_errno = CSYNC_ERR_TREE;
+          ctx->error_code = CSYNC_ERR_TREE;
           return -1;
       }
   }
@@ -424,13 +420,11 @@ int csync_reconcile(CSYNC *ctx) {
   int rc = -1;
   struct timespec start, finish;
 
-  _csync_errno = CSYNC_ERR_NONE;
-  
   if (ctx == NULL) {
-    _csync_errno = CSYNC_ERR_PARAM;
     errno = EBADF;
     return -1;
   }
+  ctx->error_code = CSYNC_ERR_NONE;
 
   /* Reconciliation for local replica */
   csync_gettime(&start);
@@ -447,7 +441,7 @@ int csync_reconcile(CSYNC *ctx) {
       c_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
 
   if (rc < 0) {
-    _csync_errno = CSYNC_ERR_RECONCILE;
+    ctx->error_code = CSYNC_ERR_RECONCILE;
     return -1;
   }
 
@@ -466,7 +460,7 @@ int csync_reconcile(CSYNC *ctx) {
       c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
 
   if (rc < 0) {
-    _csync_errno = CSYNC_ERR_RECONCILE;
+    ctx->error_code = CSYNC_ERR_RECONCILE;
     return -1;
   }
 
@@ -479,13 +473,11 @@ int csync_propagate(CSYNC *ctx) {
   int rc = -1;
   struct timespec start, finish;
 
-  _csync_errno = CSYNC_ERR_NONE;
-  
   if (ctx == NULL) {
-    _csync_errno = CSYNC_ERR_PARAM;
     errno = EBADF;
     return -1;
   }
+  ctx->error_code = CSYNC_ERR_NONE;
 
   /* Reconciliation for local replica */
   csync_gettime(&start);
@@ -502,7 +494,7 @@ int csync_propagate(CSYNC *ctx) {
       c_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
 
   if (rc < 0) {
-    _csync_errno = CSYNC_ERR_PROPAGATE;
+    ctx->error_code = CSYNC_ERR_PROPAGATE;
     return -1;
   }
 
@@ -521,7 +513,7 @@ int csync_propagate(CSYNC *ctx) {
       c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
 
   if (rc < 0) {
-    _csync_errno = CSYNC_ERR_PROPAGATE;
+    ctx->error_code = CSYNC_ERR_PROPAGATE;
     return -1;
   }
 
@@ -533,20 +525,25 @@ int csync_propagate(CSYNC *ctx) {
 /*
  * local visitor which calls the user visitor with repacked stat info.
  */
-static int _csync_treewalk_visitor( void *obj, void *data ) {
+static int _csync_treewalk_visitor(void *obj, void *data) {
     csync_file_stat_t *cur         = NULL;
     CSYNC *ctx                     = NULL;
     c_rbtree_visit_func *visitor   = NULL;
     _csync_treewalk_context *twctx = NULL;
     TREE_WALK_FILE trav;
 
-    _csync_errno = CSYNC_ERR_NONE;
-    
     cur = (csync_file_stat_t *) obj;
     ctx = (CSYNC *) data;
-    if( ctx )
-        twctx = (_csync_treewalk_context*) ctx->userdata;
-    if( twctx->instruction_filter > 0 && !(twctx->instruction_filter & cur->instruction) ) {
+
+    if (ctx == NULL) {
+      errno = EBADF;
+      return -1;
+    }
+    ctx->error_code = CSYNC_ERR_NONE;
+
+    twctx = (_csync_treewalk_context*) ctx->userdata;
+
+    if(cur && twctx && twctx->instruction_filter > 0 && !(twctx->instruction_filter & cur->instruction)) {
         return 0;
     }
 
@@ -564,7 +561,7 @@ static int _csync_treewalk_visitor( void *obj, void *data ) {
             return (*visitor)(&trav, twctx->userdata);
         }
     }
-    _csync_errno = CSYNC_ERR_TREE;
+    ctx->error_code = CSYNC_ERR_TREE;
     return -1;
 }
 
@@ -580,11 +577,16 @@ static int _csync_walk_tree(CSYNC *ctx, c_rbtree_t *tree, csync_treewalk_visit_f
 {
     _csync_treewalk_context tw_ctx;
     int rc = -1;
-    _csync_errno = CSYNC_ERR_NONE;
-    
-    if( !(visitor && tree && ctx)) {
-      _csync_errno = CSYNC_ERR_PARAM;
-	return rc;
+
+    if (ctx == NULL) {
+      errno = EBADF;
+      return -1;
+    }
+    ctx->error_code = CSYNC_ERR_NONE;
+
+    if(!(visitor && tree)) {
+      ctx->error_code =  CSYNC_ERR_PARAM;
+      return rc;
     }
     
     tw_ctx.userdata = ctx->userdata;
@@ -595,7 +597,7 @@ static int _csync_walk_tree(CSYNC *ctx, c_rbtree_t *tree, csync_treewalk_visit_f
 
     rc = c_rbtree_walk(tree, (void*) ctx, _csync_treewalk_visitor);
     if( rc < 0 ) 
-	_csync_errno = CSYNC_ERR_TREE;
+        ctx->error_code = CSYNC_ERR_TREE;
     
     ctx->userdata = tw_ctx.userdata;
 
@@ -609,15 +611,13 @@ int csync_walk_remote_tree(CSYNC *ctx,  csync_treewalk_visit_func *visitor, int 
 {
     c_rbtree_t *tree = NULL;
     int rc = -1;
-    _csync_errno = CSYNC_ERR_NONE;
     
     if(ctx) {
         tree = ctx->remote.tree;
     }
-    
+
+    /* all error handling in the called function */
     rc = _csync_walk_tree(ctx, tree, visitor, filter);
-    if(rc < 0) 
-	_csync_errno = CSYNC_ERR_TREE;
     return rc;
 }
 
@@ -628,20 +628,18 @@ int csync_walk_local_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int fi
 {
     c_rbtree_t *tree = NULL;
     int rc = -1;
-    _csync_errno = CSYNC_ERR_NONE;
 
     if(ctx) {
         tree = ctx->local.tree;
     }
+
+    /* all error handling in the called function */
     rc = _csync_walk_tree(ctx, tree, visitor, filter);
-    if(rc < 0) 
-	_csync_errno = CSYNC_ERR_TREE;
     return rc;  
 }
 
 static void _tree_destructor(void *data) {
   csync_file_stat_t *freedata = NULL;
-  _csync_errno = CSYNC_ERR_NONE;
 
   freedata = (csync_file_stat_t *) data;
   SAFE_FREE(freedata);
@@ -653,13 +651,11 @@ int csync_destroy(CSYNC *ctx) {
   char errbuf[256] = {0};
   int jwritten = 0;
 
-  _csync_errno = CSYNC_ERR_NONE;
-
   if (ctx == NULL) {
-    _csync_errno = CSYNC_ERR_PARAM;
     errno = EBADF;
     return -1;
   }
+  ctx->error_code = CSYNC_ERR_NONE;
 
   csync_vio_shutdown(ctx);
 
@@ -732,8 +728,6 @@ int csync_destroy(CSYNC *ctx) {
 
 /* Check if csync is the required version or get the version string. */
 const char *csync_version(int req_version) {
-  _csync_errno = CSYNC_ERR_NONE;
-
   if (req_version <= LIBCSYNC_VERSION_INT) {
     return CSYNC_STRINGIFY(LIBCSYNC_VERSION);
   }
@@ -742,37 +736,33 @@ const char *csync_version(int req_version) {
 }
 
 int csync_add_exclude_list(CSYNC *ctx, const char *path) {
-  _csync_errno = CSYNC_ERR_NONE;
-
   if (ctx == NULL || path == NULL) {
     return -1;
   }
+  ctx->error_code = CSYNC_ERR_NONE;
 
   return csync_exclude_load(ctx, path);
 }
 
 const char *csync_get_config_dir(CSYNC *ctx) {
-  _csync_errno = CSYNC_ERR_NONE;
-
   if (ctx == NULL) {
     return NULL;
   }
+  ctx->error_code = CSYNC_ERR_NONE;
 
   return ctx->options.config_dir;
 }
 
 int csync_set_config_dir(CSYNC *ctx, const char *path) {
-  _csync_errno = CSYNC_ERR_NONE;
-
   if (ctx == NULL || path == NULL) {
-    _csync_errno = CSYNC_ERR_PARAM;
     return -1;
   }
+  ctx->error_code = CSYNC_ERR_NONE;
 
   SAFE_FREE(ctx->options.config_dir);
   ctx->options.config_dir = c_strdup(path);
   if (ctx->options.config_dir == NULL) {
-    _csync_errno = CSYNC_ERR_MEM;
+    ctx->error_code = CSYNC_ERR_MEM;
     return -1;
   }
 
@@ -780,14 +770,13 @@ int csync_set_config_dir(CSYNC *ctx, const char *path) {
 }
 
 int csync_enable_statedb(CSYNC *ctx) {
-  _csync_errno = CSYNC_ERR_NONE;
   if (ctx == NULL) {
-    _csync_errno = CSYNC_ERR_MEM;
     return -1;
   }
+  ctx->error_code = CSYNC_ERR_NONE;
 
   if (ctx->status & CSYNC_STATUS_INIT) {
-    _csync_errno = CSYNC_ERR_UNSPEC;
+    ctx->error_code = CSYNC_ERR_UNSPEC;
     fprintf(stderr, "This function must be called before initialization.");
     return -1;
   }
@@ -798,14 +787,13 @@ int csync_enable_statedb(CSYNC *ctx) {
 }
 
 int csync_disable_statedb(CSYNC *ctx) {
-  _csync_errno = CSYNC_ERR_NONE;
   if (ctx == NULL) {
-    _csync_errno = CSYNC_ERR_PARAM;
     return -1;
   }
+  ctx->error_code = CSYNC_ERR_NONE;
 
   if (ctx->status & CSYNC_STATUS_INIT) {
-    _csync_errno = CSYNC_ERR_UNSPEC;
+    ctx->error_code = CSYNC_ERR_UNSPEC;
     fprintf(stderr, "This function must be called before initialization.");
     return -1;
   }
@@ -816,25 +804,23 @@ int csync_disable_statedb(CSYNC *ctx) {
 }
 
 int csync_is_statedb_disabled(CSYNC *ctx) {
-  _csync_errno = CSYNC_ERR_NONE;
   if (ctx == NULL) {
-    _csync_errno = CSYNC_ERR_PARAM;
     return -1;
   }
+  ctx->error_code = CSYNC_ERR_NONE;
 
   return ctx->statedb.disabled;
 }
 
 int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb) {
-  _csync_errno = CSYNC_ERR_NONE;
   if (ctx == NULL || cb == NULL) {
-    _csync_errno = CSYNC_ERR_PARAM;
     return -1;
   }
+  ctx->error_code = CSYNC_ERR_NONE;
 
   if (ctx->status & CSYNC_STATUS_INIT) {
     fprintf(stderr, "This function must be called before initialization.");
-    _csync_errno = CSYNC_ERR_UNSPEC;
+    ctx->error_code = CSYNC_ERR_UNSPEC;
     return -1;
   }
 
@@ -844,31 +830,28 @@ int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb) {
 }
 
 const char *csync_get_statedb_file(CSYNC *ctx) {
-  _csync_errno = CSYNC_ERR_NONE;
   if (ctx == NULL) {
-    _csync_errno = CSYNC_ERR_PARAM;
     return NULL;
   }
+  ctx->error_code = CSYNC_ERR_NONE;
 
   return c_strdup(ctx->statedb.file);
 }
 
 void *csync_get_userdata(CSYNC *ctx) {
-  _csync_errno = CSYNC_ERR_NONE;
   if (ctx == NULL) {
-    _csync_errno = CSYNC_ERR_PARAM;
     return NULL;
   }
+  ctx->error_code = CSYNC_ERR_NONE;
 
   return ctx->userdata;
 }
 
 int csync_set_userdata(CSYNC *ctx, void *userdata) {
-  _csync_errno = CSYNC_ERR_NONE;
   if (ctx == NULL) {
-    _csync_errno = CSYNC_ERR_PARAM;
     return -1;
   }
+  ctx->error_code = CSYNC_ERR_NONE;
 
   ctx->userdata = userdata;
 
@@ -876,21 +859,19 @@ int csync_set_userdata(CSYNC *ctx, void *userdata) {
 }
 
 csync_auth_callback csync_get_auth_callback(CSYNC *ctx) {
-  _csync_errno = CSYNC_ERR_NONE;
   if (ctx == NULL) {
-    _csync_errno = CSYNC_ERR_PARAM;
     return NULL;
   }
+  ctx->error_code = CSYNC_ERR_NONE;
 
   return ctx->auth_callback;
 }
 
 int csync_set_status(CSYNC *ctx, int status) {
-  _csync_errno = CSYNC_ERR_NONE;
   if (ctx == NULL || status < 0) {
-    _csync_errno = CSYNC_ERR_PARAM;
     return -1;
   }
+  ctx->error_code = CSYNC_ERR_NONE;
 
   ctx->status = status;
 
@@ -898,25 +879,23 @@ int csync_set_status(CSYNC *ctx, int status) {
 }
 
 int csync_get_status(CSYNC *ctx) {
-  _csync_errno = CSYNC_ERR_NONE;
   if (ctx == NULL) {
-    _csync_errno = CSYNC_ERR_PARAM;
     return -1;
   }
+  ctx->error_code = CSYNC_ERR_NONE;
 
   return ctx->status;
 }
 
 int csync_enable_conflictcopys(CSYNC* ctx){
-  _csync_errno = CSYNC_ERR_NONE;
   if (ctx == NULL) {
-    _csync_errno = CSYNC_ERR_PARAM;
     return -1;
   }
+  ctx->error_code = CSYNC_ERR_NONE;
 
   if (ctx->status & CSYNC_STATUS_INIT) {
     fprintf(stderr, "This function must be called before initialization.");
-    _csync_errno = CSYNC_ERR_UNSPEC;
+    ctx->error_code = CSYNC_ERR_UNSPEC;
     return -1;
   }
 
@@ -925,16 +904,15 @@ int csync_enable_conflictcopys(CSYNC* ctx){
   return 0;
 }
 
-int csync_set_local_only( CSYNC *ctx, bool local_only ) {
-    _csync_errno = CSYNC_ERR_NONE;
+int csync_set_local_only(CSYNC *ctx, bool local_only) {
     if (ctx == NULL) {
-	_csync_errno = CSYNC_ERR_PARAM;
         return -1;
     }
+    ctx->error_code = CSYNC_ERR_NONE;
 
     if (ctx->status & CSYNC_STATUS_INIT) {
         fprintf(stderr, "This function must be called before initialization.");
-	_csync_errno = CSYNC_ERR_UNSPEC;
+        ctx->error_code = CSYNC_ERR_UNSPEC;
         return -1;
     }
 
@@ -943,18 +921,20 @@ int csync_set_local_only( CSYNC *ctx, bool local_only ) {
     return 0;
 }
 
-bool csync_get_local_only( CSYNC *ctx ) {
-    _csync_errno = CSYNC_ERR_NONE;
+bool csync_get_local_only(CSYNC *ctx) {
     if (ctx == NULL) {
-	_csync_errno = CSYNC_ERR_PARAM;
         return -1;
     }
+    ctx->error_code = CSYNC_ERR_NONE;
 
     return ctx->options.local_only_mode;
 }
 
-CSYNC_ERROR_CODE csync_errno(void) {
-    return _csync_errno;
+CSYNC_ERROR_CODE csync_get_error(CSYNC *ctx) {
+    if (ctx == NULL) {
+        return CSYNC_ERR_PARAM;
+    }
+    return ctx->error_code;
 }
 
 /* vim: set ts=8 sw=2 et cindent: */
