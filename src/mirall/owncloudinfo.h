@@ -86,6 +86,7 @@ private:
     QHash<QNetworkReply*, QString> _directories;
     static SslErrorDialog         *_sslErrorDialog;
     static bool                    _certsUntrusted;
+    static int                     _authAttempts;
 };
 
 };

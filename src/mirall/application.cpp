@@ -204,11 +204,18 @@ void Application::slotCheckAuthentication()
 
 void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
 {
-    if( reply->error() == QNetworkReply::AuthenticationRequiredError ) {
-        qDebug() << "******** Credentials are wrong!";
+    if( reply->error() == QNetworkReply::AuthenticationRequiredError ) { // returned if the user is wrong.
+        qDebug() << "******** Password is wrong!";
         QMessageBox::warning(0, tr("No ownCloud Connection"),
                              tr("<p>Your ownCloud credentials are not correct.</p>"
                                 "<p>Please correct them by starting the configuration dialog from the tray!</p>"));
+        _actionAddFolder->setEnabled( false );
+    } else if( reply->error() == QNetworkReply::OperationCanceledError ) {
+        // the username was wrong and ownCloudInfo was closing the request after a couple of auth tries.
+        qDebug() << "******** Username is wrong!";
+        QMessageBox::warning(0, tr("No ownCloud Connection"),
+                             tr("<p>Your ownCloud user name is not correct.</p>"
+                                "<p>Please correct it by starting the configuration dialog from the tray!</p>"));
         _actionAddFolder->setEnabled( false );
     } else {
         qDebug() << "######## Credentials are ok!";

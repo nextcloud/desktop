@@ -30,6 +30,7 @@ namespace Mirall
 QNetworkAccessManager* ownCloudInfo::_manager = 0;
 SslErrorDialog *ownCloudInfo::_sslErrorDialog = 0;
 bool            ownCloudInfo::_certsUntrusted = false;
+int             ownCloudInfo::_authAttempts   = 0;
 
 
 ownCloudInfo::ownCloudInfo( const QString& connectionName, QObject *parent ) :
@@ -122,13 +123,23 @@ void ownCloudInfo::slotMkdirFinished()
 }
 
 
-void ownCloudInfo::slotAuthentication( QNetworkReply*, QAuthenticator *auth )
+void ownCloudInfo::slotAuthentication( QNetworkReply *reply, QAuthenticator *auth )
 {
-    if( auth ) {
+    if( auth && reply ) {
+        _authAttempts++;
         MirallConfigFile cfgFile;
-        qDebug() << "Authenticating request!";
-        auth->setUser( cfgFile.ownCloudUser( _connection ) );
-        auth->setPassword( cfgFile.ownCloudPasswd( _connection ));
+        qDebug() << "Authenticating request for " << reply->url();
+        qDebug() << "Our Url: " << cfgFile.ownCloudUrl(_connection, true);
+        if( reply->url().toString().startsWith( cfgFile.ownCloudUrl( _connection, true )) ) {
+            auth->setUser( cfgFile.ownCloudUser( _connection ) );
+            auth->setPassword( cfgFile.ownCloudPasswd( _connection ));
+        } else {
+            qDebug() << "WRN: attempt to authenticate to different url!";
+        }
+        if( _authAttempts > 10 ) {
+            qDebug() << "Too many attempts to authenticate. Stop request.";
+            reply->close();
+        }
     }
 }
 
