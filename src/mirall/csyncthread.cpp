@@ -170,7 +170,7 @@ void CSyncThread::run()
     _mutex.unlock();
 
     if( csync_init(csync) < 0 ) {
-        CSYNC_ERROR_CODE err = csync_errno();
+        CSYNC_ERROR_CODE err = csync_get_error( csync );
         QString errStr;
 
         switch( err ) {
