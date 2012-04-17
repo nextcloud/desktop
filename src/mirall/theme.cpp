@@ -72,7 +72,7 @@ QString Theme::statusHeaderText( SyncResult::Status status ) const
     QString resultStr;
 
     if( status == SyncResult::NotYetStarted ) {
-        resultStr = tr("Sync has not yet started");
+        resultStr = tr("Waiting to start sync");
     } else if( status == SyncResult::SyncRunning ) {
         resultStr = tr("Sync is running");
     } else if( status == SyncResult::Success ) {
