@@ -320,6 +320,8 @@ Section "${APPLICATION_NAME}" SEC_OWNCLOUD_PLAYER
    ;File "${MING_BIN}\libpng15-15.dll"
    ;File "${MING_BIN}\libjpeg-8.dll"
    File "${MING_BIN}\zlib1.dll"
+   File "${MING_BIN}\libcrypto-8.dll"
+   File "${MING_BIN}\libssl-8.dll"
 
    ; CSync configs
    File "/home/kf/owncloud.com/win/csync/config/csync.conf"
