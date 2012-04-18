@@ -67,6 +67,8 @@ Application::Application(int argc, char **argv) :
     processEvents();
 
     // Internationalization support.
+    qDebug() << "################## ownCloud client " << QLocale::system().name();
+
     QTranslator qtTranslator;
     qtTranslator.load("qt_" + QLocale::system().name(),
                       QLibraryInfo::location(QLibraryInfo::TranslationsPath));
