@@ -12,7 +12,7 @@ elseif(BUILD_OWNCLOUD_OSX_BUNDLE)
     set(OWNCLOUD_OSX_BUNDLE "owncloud.app")
 endif()
 
-find_package(Qt4 4.4.3 COMPONENTS QtCore QtGui QtXml QtNetwork QtTest REQUIRED )
+find_package(Qt4 4.7.0 COMPONENTS QtCore QtGui QtXml QtNetwork QtTest REQUIRED )
 find_package(Csync)
 
 if(CSYNC_FOUND)
