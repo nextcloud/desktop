@@ -65,6 +65,6 @@ add_subdirectory(src)
 if(BUILD_OWNCLOUD_OSX_BUNDLE)
     install( FILES exclude.lst DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources )
 else()
-    install( FILES exclude.lst DESTINATION ${CMAKE_INSTALL_SYSCONFDIR} )
+    install( FILES exclude.lst DESTINATION /etc )
 endif()
 
