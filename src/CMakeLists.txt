@@ -119,6 +119,7 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
     install(FILES mirall.png DESTINATION share/icons/hicolor/48x48/apps)
+    install(FILES ${mirall_I18N} DESTINATION share/mirall/i18n)
 
     # we may not add MACOSX_BUNDLE here, if not building one
     add_executable(owncloud WIN32 main.cpp ${final_src})

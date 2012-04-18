@@ -19,6 +19,7 @@
 #include <QUrl>
 #include <QDesktopServices>
 #include <QSplashScreen>
+#include <QTranslator>
 
 #include "mirall/application.h"
 #include "mirall/folder.h"
@@ -69,16 +70,21 @@ Application::Application(int argc, char **argv) :
     // Internationalization support.
     qDebug() << "################## ownCloud client " << QLocale::system().name();
 
-    QTranslator qtTranslator;
-    qtTranslator.load("qt_" + QLocale::system().name(),
+    QTranslator *qtTranslator = new QTranslator;
+    qtTranslator->load("qt_" + QLocale::system().name(),
                       QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    installTranslator(&qtTranslator);
+    installTranslator(qtTranslator);
 
-    QTranslator myappTranslator;
-    myappTranslator.load("mirall_" + QLocale::system().name());
-    installTranslator(&myappTranslator);
+    QTranslator *mirallTranslator = new QTranslator;
+#ifdef Q_OS_LINUX
+    // FIXME - proper path!
+    mirallTranslator->load("mirall_" + QLocale::system().name(), QLatin1String("/usr/share/mirall/i18n/"));
+#else
+    mirallTranslator->load("mirall_" + QLocale::system().name()); // path defaults to app dir.
+#endif
+    installTranslator(mirallTranslator);
 
-
+    // create folder manager for sync folder management
     _folderMan = new FolderMan();
     connect( _folderMan, SIGNAL(folderSyncStateChange(QString)),
              this,SLOT(slotSyncStateChange(QString)));
