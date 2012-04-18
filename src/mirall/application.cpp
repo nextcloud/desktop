@@ -212,9 +212,9 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
         _actionAddFolder->setEnabled( false );
     } else if( reply->error() == QNetworkReply::OperationCanceledError ) {
         // the username was wrong and ownCloudInfo was closing the request after a couple of auth tries.
-        qDebug() << "******** Username is wrong!";
+        qDebug() << "******** Username or password is wrong!";
         QMessageBox::warning(0, tr("No ownCloud Connection"),
-                             tr("<p>Your ownCloud user name is not correct.</p>"
+                             tr("<p>Your ownCloud user name or password is not correct.</p>"
                                 "<p>Please correct it by starting the configuration dialog from the tray!</p>"));
         _actionAddFolder->setEnabled( false );
     } else {
@@ -431,7 +431,7 @@ void Application::slotInfoFolder( const QString& alias )
 
     SyncResult folderResult = _folderMan->syncResult( alias );
 
-    QString folderMessage = tr( "Last sync was succesful" );
+    QString folderMessage = tr( "Last sync was succesful." );
 
     SyncResult::Status syncStatus = folderResult.status();
     if ( syncStatus == SyncResult::Error ) {
@@ -486,8 +486,7 @@ void Application::slotEnableFolder(const QString& alias, const bool enable)
   qDebug() << "Application: enable folder with alias " << alias;
 
   _folderMan->slotEnableFolder( alias, enable );
-  slotSyncStateChange( alias );
-
+  _statusDialog->slotUpdateFolderState( _folderMan->folder(alias));
 }
 
 void Application::slotConfigure()

@@ -103,6 +103,9 @@ void ownCloudInfo::mkdirRequest( const QString& dir )
     req.setUrl( QUrl( cfgFile.ownCloudUrl( _connection, true ) + dir ) );
     QNetworkReply *reply = davRequest("MKCOL", req, 0);
 
+    if( reply->error() != QNetworkReply::NoError ) {
+        qDebug() << "mkdir request network error: " << reply->errorString();
+    }
     connect( reply, SIGNAL(finished()), SLOT(slotMkdirFinished()) );
     connect( reply, SIGNAL( error(QNetworkReply::NetworkError )),
              this, SLOT(slotError(QNetworkReply::NetworkError )));

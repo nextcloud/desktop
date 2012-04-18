@@ -355,6 +355,8 @@ bool OwncloudSetupWizard::createRemoteFolder( const QString& folder )
     qDebug() << "creating folder on ownCloud: " << folder;
 
     _ocInfo->mkdirRequest( folder );
+
+    return true;
 }
 
 void OwncloudSetupWizard::slotCreateRemoteFolderFinished( QNetworkReply *reply )
@@ -371,9 +373,11 @@ void OwncloudSetupWizard::slotCreateRemoteFolderFinished( QNetworkReply *reply )
         }
     } else if( reply->error() == 202 ) {
         _ocWizard->appendToResultWidget(tr("The remote folder %1 already exists. Automatic sync setup is skipped for security reasons. Please configure your sync folder manually.").arg(_remoteFolder));
-
+    } else if( reply->error() == QNetworkReply::OperationCanceledError ) {
+        _ocWizard->appendToResultWidget( tr("<p><font color=\"red\">Remote folder creation failed probably because the provided credentials are wrong.</font>"
+                                            "<br/>Please go back and check your credentials.</p>"));
     } else {
-        _ocWizard->appendToResultWidget( tr("Remote folder %1 creation failed with error %2.").arg(_remoteFolder).arg(reply->error()));
+        _ocWizard->appendToResultWidget( tr("Remote folder %1 creation failed with error <tt>%2</tt>.").arg(_remoteFolder).arg(reply->errorString()));
     }
 }
 
