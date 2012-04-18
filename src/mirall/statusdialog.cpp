@@ -111,9 +111,9 @@ void FolderViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
   QString aliasText = qvariant_cast<QString>(index.data(FolderAliasRole));
   QString pathText = qvariant_cast<QString>(index.data(FolderPathRole));
   QString remotePath = qvariant_cast<QString>(index.data(FolderSecondPathRole));
-  QString statusText = qvariant_cast<QString>(index.data(FolderStatus));
+  // QString statusText = qvariant_cast<QString>(index.data(FolderStatus));
   bool syncEnabled = index.data(FolderSyncEnabled).toBool();
-  QString syncStatus = syncEnabled? tr( "Enabled" ) : tr( "Disabled" );
+  // QString syncStatus = syncEnabled? tr( "Enabled" ) : tr( "Disabled" );
 
   QSize iconsize(48,48); //  = icon.actualSize(option.decorationSize);
 

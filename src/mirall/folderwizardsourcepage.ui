@@ -22,14 +22,14 @@
       </font>
      </property>
      <property name="text">
-      <string>Express Upload Source</string>
+      <string>Sync Directory</string>
      </property>
     </widget>
    </item>
    <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Pick a folder on your computer to upload:</string>
+      <string>Pick a local folder on your computer to sync:</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
@@ -147,7 +147,7 @@
       <enum>QFrame::StyledPanel</enum>
      </property>
      <property name="text">
-      <string>TextLabel</string>
+      <string/>
      </property>
      <property name="textFormat">
       <enum>Qt::AutoText</enum>

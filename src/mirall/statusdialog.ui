@@ -22,7 +22,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Directory Status</string>
+      <string>Sync Directory Status</string>
      </property>
     </widget>
    </item>
