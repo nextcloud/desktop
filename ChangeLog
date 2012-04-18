@@ -1,0 +1,22 @@
+ChangeLog
+=========
+
+version 1.0.1 (release 2012-04-18), csync 0.50.5 required
+  * [Security] Support SSL Connections
+  * [Security] SSL Warning dialog
+  * [Security] Do not store password in clear text anymore
+  * [Security] Restrict credentials to the configured host
+  * [Security] Added ability to forbid local password storage.
+  * [Fixes] Various fixes of the startup behaviour.
+  * [Fixes] Various fixes in sync status display
+  * [GUI] Various error messages for user display improved.
+  * [GUI] fixed terms and Translations
+  * [GUI] fixed translation loading
+  * [Intern] Migrate old credentials to new format
+  * [Intern] Some code refactorings, got rid of rotten QWebDav lib
+  * [Intern] lots of cmake cleanups
+  * [Platform] MacOSX porting efforts
+  * [Platform] MacOSX Bundle creation added
+  * [Platform] Enabled ranslations on Windows.
+
+
