@@ -180,9 +180,6 @@ void CSyncThread::run()
         case CSYNC_ERR_STATEDB_LOAD:
             errStr = tr("CSync failed to load the state db.");
             break;
-        case CSYNC_ERR_MODULE:
-            errStr = tr("CSync failed to load the ownCloud module.");
-            break;
         case CSYNC_ERR_TIMESKEW:
             errStr = tr("The system time between the local machine and the server differs "
                         "too much. Please use a time syncronization service (ntp) on both machines.");
@@ -195,6 +192,9 @@ void CSyncThread::run()
             break;
         case CSYNC_ERR_ACCESS_FAILED:
             errStr = tr("<p>The target directory %1 does not exist.</p><p>Please create it and try again.</p>").arg(_target);
+            break;
+        case CSYNC_ERR_MODULE:
+            errStr = tr("<p>The ownCloud plugin for csync could not be loaded.<br/>Please verify the installation!</p>");
             break;
         case CSYNC_ERR_LOCAL_CREATE:
         case CSYNC_ERR_LOCAL_STAT:
