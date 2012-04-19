@@ -300,7 +300,8 @@ retry_vio_init:
           module[len-1] = '\0';
           goto retry_vio_init;
         }
-
+        /* Now vio init finally failed which means a module could not be found. */
+        ctx->error_code = CSYNC_ERR_MODULE;
         SAFE_FREE(module);
         goto out;
       }
