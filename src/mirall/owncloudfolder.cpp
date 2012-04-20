@@ -57,6 +57,7 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
     _pollTimer->stop();
     connect( _pollTimer, SIGNAL(timeout()), this, SLOT(slotPollTimerRemoteCheck()));
     setPollInterval( 2000 );
+    _pollTimerCnt = POLL_TIMER_EXCEED-1; // start the syncing quickly!
     _pollTimer->start();
     qDebug() << "****** ownCloud folder using local poll *******";
 #endif
