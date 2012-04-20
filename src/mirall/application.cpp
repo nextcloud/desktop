@@ -45,7 +45,7 @@
 
 namespace Mirall {
 
-Application::Application(int argc, char **argv) :
+Application::Application(int &argc, char **argv) :
     QApplication(argc, argv),
     _tray(0),
     _networkMgr(new QNetworkConfigurationManager(this)),
