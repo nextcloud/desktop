@@ -79,7 +79,6 @@ protected slots:
 
     void on_localFolderRadioBtn_toggled();
     void on_urlFolderRadioBtn_toggled();
-    void on_checkBoxOnlyOnline_toggled();
 
     void on_localFolder2LineEdit_textChanged();
     void on_urlFolderLineEdit_textChanged();

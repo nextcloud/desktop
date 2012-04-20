@@ -68,7 +68,10 @@ Application::Application(int &argc, char **argv) :
     processEvents();
 
     // Internationalization support.
-    qDebug() << "################## ownCloud client " << QLocale::system().name();
+    qDebug() << ""; // relaxing debug output in qtCreator
+    qDebug() << QString( "################## %1 %2 %3 ").arg(_theme->appName())
+                .arg( QLocale::system().name() )
+                .arg(_theme->version());
 
     QTranslator *qtTranslator = new QTranslator;
     qtTranslator->load("qt_" + QLocale::system().name(),

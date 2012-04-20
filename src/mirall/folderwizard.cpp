@@ -351,11 +351,6 @@ void FolderWizardTargetPage::on_urlFolderRadioBtn_toggled()
 
 }
 
-void FolderWizardTargetPage::on_checkBoxOnlyOnline_toggled()
-{
-    slotToggleItems();
-}
-
 void FolderWizardTargetPage::on_localFolder2LineEdit_textChanged()
 {
     emit completeChanged();
