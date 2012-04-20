@@ -381,8 +381,11 @@ void Application::slotAddFolder()
 
     if( goodData ) {
         _folderMan->addFolderDefinition( backend, alias, sourceFolder, targetPath, onlyThisLAN );
-        _folderMan->setupFolderFromConfigFile( alias );
-        _statusDialog->slotAddFolder( _folderMan->folder( alias ) );
+        Folder *f = _folderMan->setupFolderFromConfigFile( alias );
+        if( f ) {
+            _statusDialog->slotAddFolder( f );
+            setupContextMenu();
+        }
     }
 
   } else {
@@ -406,6 +409,7 @@ void Application::slotRemoveFolder( const QString& alias )
 
     _folderMan->slotRemoveFolder( alias );
     _statusDialog->slotRemoveSelectedFolder( );
+    setupContextMenu();
 }
 
 #ifdef HAVE_FETCH_AND_PUSH
