@@ -80,7 +80,7 @@ protected slots:
 private slots:
     void slotOwnCloudFound( const QString&, const QString& );
     void slotNoOwnCloudFound( QNetworkReply* );
-    void slotCreateRemoteFolderFinished( QNetworkReply* );
+    void slotCreateRemoteFolderFinished( QNetworkReply::NetworkError );
 
 private:
     bool checkOwncloudAdmin( const QString& );

@@ -18,6 +18,12 @@
 #include <QObject>
 #include <QtNetwork>
 
+#if QT_VERSION >= 0x040700
+#define QT46_IMPL 0
+#else
+#define QT46_IMPL 1
+#endif
+
 namespace Mirall
 {
 
@@ -65,7 +71,7 @@ signals:
     void noOwncloudFound( QNetworkReply* );
     void ownCloudDirExists( const QString&, QNetworkReply* );
 
-    void webdavColCreated( QNetworkReply* );
+    void webdavColCreated( QNetworkReply::NetworkError );
 
 public slots:
 
@@ -75,7 +81,14 @@ protected slots:
     void slotAuthentication( QNetworkReply*, QAuthenticator *);
     void slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors );
 
+#if QT46_IMPL
+    void qhttpRequestFinished(int id, bool success );
+    void qhttpRequestStarted(int id);
+    void qhttpResponseHeaderReceived(const QHttpResponseHeader& header);
+//    void qhttpAuthenticationRequired(const QString& hostname, quint16 port ,QAuthenticator* authenticator);
+#else
     void slotMkdirFinished();
+#endif
 
 private:
     void setupHeaders(QNetworkRequest &req, quint64 size );

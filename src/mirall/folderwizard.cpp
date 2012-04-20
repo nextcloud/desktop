@@ -174,8 +174,8 @@ FolderWizardTargetPage::FolderWizardTargetPage()
 
     connect( _ownCloudDirCheck, SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
              SLOT(slotDirCheckReply(QString,QNetworkReply*)));
-    connect( _ownCloudDirCheck, SIGNAL(webdavColCreated(QNetworkReply*)),
-             SLOT(slotCreateRemoteFolderFinished( QNetworkReply* )));
+    connect( _ownCloudDirCheck, SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),
+             SLOT(slotCreateRemoteFolderFinished( QNetworkReply::NetworkError )));
 }
 
 void FolderWizardTargetPage::slotFolderTextChanged( const QString& t)
@@ -223,14 +223,14 @@ void FolderWizardTargetPage::slotCreateRemoteFolder()
     _ownCloudDirCheck->mkdirRequest( folder );
 }
 
-void FolderWizardTargetPage::slotCreateRemoteFolderFinished( QNetworkReply *reply )
+void FolderWizardTargetPage::slotCreateRemoteFolderFinished( QNetworkReply::NetworkError error )
 {
-  qDebug() << "** webdav mkdir request finished " << reply->error();
+  qDebug() << "** webdav mkdir request finished " << error;
 
   _ui.OCFolderLineEdit->setEnabled( true );
   // the webDAV server seems to return a 202 even if mkdir was successful.
-  if( reply->error() == QNetworkReply::NoError ||
-          reply->error() == QNetworkReply::ContentOperationNotPermittedError) {
+  if( error == QNetworkReply::NoError ||
+          error == QNetworkReply::ContentOperationNotPermittedError) {
     showWarn( tr("Folder on ownCloud was successfully created."), false );
     slotTimerFires();
   } else {

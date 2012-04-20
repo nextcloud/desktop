@@ -92,7 +92,7 @@ protected slots:
     void slotDirCheckReply( const QString&, QNetworkReply* );
     void showWarn( const QString& = QString(), bool showCreateButton = false ) const;
     void slotCreateRemoteFolder();
-    void slotCreateRemoteFolderFinished( QNetworkReply* );
+    void slotCreateRemoteFolderFinished( QNetworkReply::NetworkError error );
 
 private:
     Ui_FolderWizardTargetPage _ui;

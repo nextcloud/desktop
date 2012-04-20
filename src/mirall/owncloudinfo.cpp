@@ -24,6 +24,10 @@
 #include "mirall/version.h"
 #include "mirall/sslerrordialog.h"
 
+#if QT46_IMPL
+#include <QHttp>
+#endif
+
 namespace Mirall
 {
 
@@ -91,9 +95,72 @@ void ownCloudInfo::getRequest( const QString& path, bool webdav )
 
     connect( reply, SIGNAL( error(QNetworkReply::NetworkError )),
              this, SLOT(slotError( QNetworkReply::NetworkError )));
+}
+
+#if QT46_IMPL
+void ownCloudInfo::mkdirRequest( const QString& dir )
+{
+    qDebug() << "OCInfo Making dir " << dir;
+
+    MirallConfigFile cfgFile;
+    QUrl url = QUrl( cfgFile.ownCloudUrl( _connection, true ) + dir );
+    QHttp::ConnectionMode conMode = QHttp::ConnectionModeHttp;
+    if (url.scheme() == "https")
+        conMode = QHttp::ConnectionModeHttps;
+
+    QHttp* qhttp = new QHttp(url.host(), conMode, 0, this);
+    qhttp->setUser( cfgFile.ownCloudUser( _connection ), cfgFile.ownCloudPasswd( _connection ));
+
+    connect(qhttp, SIGNAL(requestStarted(int)), this,SLOT(qhttpRequestStarted(int)));
+    connect(qhttp, SIGNAL(requestFinished(int, bool)), this,SLOT(qhttpRequestFinished(int,bool)));
+    connect(qhttp, SIGNAL(responseHeaderReceived(QHttpResponseHeader)), this, SLOT(qhttpResponseHeaderReceived(QHttpResponseHeader)));
+    //connect(qhttp, SIGNAL(authenticationRequired(QString,quint16,QAuthenticator*)), this, SLOT(qhttpAuthenticationRequired(QString,quint16,QAuthenticator*)));
+
+    QHttpRequestHeader header("MKCOL", url.path(), 1,1);   /* header */
+    header.setValue("Host", url.host() );
+    header.setValue("User-Agent", QString("mirall-%1").arg(MIRALL_STRINGIFY(MIRALL_VERSION)).toAscii() );
+    header.setValue("Accept-Charset", "ISO-8859-1,utf-8;q=0.7,*;q=0.7");
+    header.setValue("Accept-Language", "it,de-de;q=0.8,it-it;q=0.6,en-us;q=0.4,en;q=0.2");
+    header.setValue("Connection", "keep-alive");
+    header.setContentType("application/x-www-form-urlencoded"); //important
+    header.setContentLength(0);
+    header.setValue("Authorization", cfgFile.basicAuthHeader());
+
+    int david = qhttp->request(header,0,0);
+    //////////////// connect(davinfo, SIGNAL(dataSendProgress(int,int)), this, SLOT(SendStatus(int, int)));
+    /////////////////connect(davinfo, SIGNAL(done(bool)), this,SLOT(DavWake(bool)));
+    //connect(_http, SIGNAL(requestFinished(int, bool)), this,SLOT(qhttpRequestFinished(int,bool)));
+    ///////////connect(davinfo, SIGNAL(responseHeaderReceived(constQHttpResponseHeader &)), this, SLOT(RegisterBackHeader(constQHttpResponseHeader &)));
+
 
 }
 
+void ownCloudInfo::qhttpResponseHeaderReceived(const QHttpResponseHeader& header)
+{
+    qDebug() << "Resp:" << header.toString();
+    if (header.statusCode() == 201)
+        emit webdavColCreated( QNetworkReply::NoError );
+    else
+        qDebug() << "http request failed" << header.toString();
+}
+
+void ownCloudInfo::qhttpRequestStarted(int id)
+{
+    qDebug() << "QHttp based request started " << id;
+}
+
+void ownCloudInfo::qhttpRequestFinished(int id, bool success )
+{
+     qDebug() << "HIT!";
+     QHttp* qhttp = qobject_cast<QHttp*>(sender());
+
+     if( success ) {
+         qDebug() << "QHttp based request successful";
+     } else {
+         qDebug() << "QHttp based request failed: " << qhttp->errorString();
+     }
+}
+#else
 void ownCloudInfo::mkdirRequest( const QString& dir )
 {
     qDebug() << "OCInfo Making dir " << dir;
@@ -120,11 +187,11 @@ void ownCloudInfo::slotMkdirFinished()
         return;
     }
 
-    emit webdavColCreated( reply );
+    emit webdavColCreated( reply->error() );
     qDebug() << "mkdir slot hit.";
     reply->deleteLater();
 }
-
+#endif
 
 void ownCloudInfo::slotAuthentication( QNetworkReply *reply, QAuthenticator *auth )
 {
@@ -269,8 +336,6 @@ void ownCloudInfo::setupHeaders( QNetworkRequest & req, quint64 size )
 
 QNetworkReply* ownCloudInfo::davRequest(const QString& reqVerb,  QNetworkRequest& req, QByteArray *data)
 {
-    MirallConfigFile cfgFile;
-
     setupHeaders(req, quint64(data ? data->size() : 0));
     if( data ) {
         QBuffer iobuf( data );

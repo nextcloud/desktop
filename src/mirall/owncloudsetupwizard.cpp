@@ -74,7 +74,7 @@ OwncloudSetupWizard::OwncloudSetupWizard( FolderMan *folderMan, Theme *theme, QO
     _ocInfo = new ownCloudInfo;
     connect(_ocInfo,SIGNAL(ownCloudInfoFound(QString,QString)),SLOT(slotOwnCloudFound(QString,QString)));
     connect(_ocInfo,SIGNAL(noOwncloudFound(QNetworkReply*)),SLOT(slotNoOwnCloudFound(QNetworkReply*)));
-    connect(_ocInfo,SIGNAL(webdavColCreated(QNetworkReply*)),SLOT(slotCreateRemoteFolderFinished(QNetworkReply*)));
+    connect(_ocInfo,SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
 }
 
 OwncloudSetupWizard::~OwncloudSetupWizard()
@@ -359,11 +359,11 @@ bool OwncloudSetupWizard::createRemoteFolder( const QString& folder )
     return true;
 }
 
-void OwncloudSetupWizard::slotCreateRemoteFolderFinished( QNetworkReply *reply )
+void OwncloudSetupWizard::slotCreateRemoteFolderFinished( QNetworkReply::NetworkError error )
 {
-    qDebug() << "** webdav mkdir request finished " << reply->error();
+    qDebug() << "** webdav mkdir request finished " << error;
 
-    if( reply->error() == QNetworkReply::NoError ) {
+    if( error == QNetworkReply::NoError ) {
         _ocWizard->appendToResultWidget( tr("Remote folder %1 created sucessfully.").arg(_remoteFolder));
 
         // Now write the resulting folder definition
@@ -371,13 +371,13 @@ void OwncloudSetupWizard::slotCreateRemoteFolderFinished( QNetworkReply *reply )
             _folderMan->addFolderDefinition("owncloud", "ownCloud", _localFolder, _remoteFolder, false );
             _ocWizard->appendToResultWidget(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(_localFolder));
         }
-    } else if( reply->error() == 202 ) {
+    } else if( error == 202 ) {
         _ocWizard->appendToResultWidget(tr("The remote folder %1 already exists. Automatic sync setup is skipped for security reasons. Please configure your sync folder manually.").arg(_remoteFolder));
-    } else if( reply->error() == QNetworkReply::OperationCanceledError ) {
+    } else if( error == QNetworkReply::OperationCanceledError ) {
         _ocWizard->appendToResultWidget( tr("<p><font color=\"red\">Remote folder creation failed probably because the provided credentials are wrong.</font>"
                                             "<br/>Please go back and check your credentials.</p>"));
     } else {
-        _ocWizard->appendToResultWidget( tr("Remote folder %1 creation failed with error <tt>%2</tt>.").arg(_remoteFolder).arg(reply->errorString()));
+        _ocWizard->appendToResultWidget( tr("Remote folder %1 creation failed with error <tt>%2</tt>.").arg(_remoteFolder).arg(error));
     }
 }
 
