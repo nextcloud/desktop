@@ -35,11 +35,7 @@
       <item row="0" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QLineEdit" name="localFolderLineEdit">
-          <property name="placeholderText">
-           <string>/home/local1</string>
-          </property>
-         </widget>
+         <widget class="QLineEdit" name="localFolderLineEdit"/>
         </item>
         <item>
          <widget class="QPushButton" name="localFolderChooseBtn">
@@ -63,11 +59,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="aliasLineEdit">
-          <property name="placeholderText">
-           <string>Music</string>
-          </property>
-         </widget>
+         <widget class="QLineEdit" name="aliasLineEdit"/>
         </item>
        </layout>
       </item>

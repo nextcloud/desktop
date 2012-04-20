@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>454</width>
-    <height>321</height>
+    <height>397</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -93,11 +93,7 @@
           </widget>
          </item>
          <item row="1" column="2">
-          <widget class="QLineEdit" name="OCFolderLineEdit">
-           <property name="placeholderText">
-            <string>root</string>
-           </property>
-          </widget>
+          <widget class="QLineEdit" name="OCFolderLineEdit"/>
          </item>
          <item row="0" column="0" rowspan="2">
           <widget class="QLabel" name="label_5">
@@ -167,11 +163,7 @@
           </widget>
          </item>
          <item row="1" column="2">
-          <widget class="QLineEdit" name="localFolder2LineEdit">
-           <property name="placeholderText">
-            <string>/home/local</string>
-           </property>
-          </widget>
+          <widget class="QLineEdit" name="localFolder2LineEdit"/>
          </item>
          <item row="1" column="3">
           <widget class="QPushButton" name="localFolder2ChooseBtn">
@@ -241,11 +233,7 @@
           </widget>
          </item>
          <item row="1" column="2">
-          <widget class="QLineEdit" name="urlFolderLineEdit">
-           <property name="placeholderText">
-            <string>scp://john@host.com//myfolder</string>
-           </property>
-          </widget>
+          <widget class="QLineEdit" name="urlFolderLineEdit"/>
          </item>
         </layout>
        </widget>

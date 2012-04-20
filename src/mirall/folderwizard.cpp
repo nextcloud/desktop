@@ -42,6 +42,10 @@ FolderWizardSourcePage::FolderWizardSourcePage()
     _ui.aliasLineEdit->setText( QString::fromLatin1("ownCloud") );
 
     _ui.warnLabel->hide();
+#if QT_VERSION >= 0x040700
+    _ui.localFolderLineEdit->setPlaceholderText(QApplication::translate("FolderWizardSourcePage", "/home/local1", 0, QApplication::UnicodeUTF8));
+    _ui.aliasLineEdit->setPlaceholderText(QApplication::translate("FolderWizardSourcePage", "Music", 0, QApplication::UnicodeUTF8));
+#endif
 }
 
 FolderWizardSourcePage::~FolderWizardSourcePage()
@@ -176,6 +180,12 @@ FolderWizardTargetPage::FolderWizardTargetPage()
              SLOT(slotDirCheckReply(QString,QNetworkReply*)));
     connect( _ownCloudDirCheck, SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),
              SLOT(slotCreateRemoteFolderFinished( QNetworkReply::NetworkError )));
+
+#if QT_Version >= 0x040700
+    _ui.OCFolderLineEdit->setPlaceholderText(QApplication::translate("FolderWizardTargetPage", "root", 0, QApplication::UnicodeUTF8));
+    _ui.localFolder2LineEdit->setPlaceholderText(QApplication::translate("FolderWizardTargetPage", "/home/local", 0, QApplication::UnicodeUTF8));
+    _ui.urlFolderLineEdit->setPlaceholderText(QApplication::translate("FolderWizardTargetPage", "scp://john@host.com//myfolder", 0, QApplication::UnicodeUTF8));
+#endif
 }
 
 void FolderWizardTargetPage::slotFolderTextChanged( const QString& t)
