@@ -15,6 +15,7 @@ version 1.0.1 (release 2012-04-18), csync 0.50.5 required
   * [Intern] Migrate old credentials to new format
   * [Intern] Some code refactorings, got rid of rotten QWebDav lib
   * [Intern] lots of cmake cleanups
+  * [Intern] Backport to Qt Version 4.6 for compat. with older distros.
   * [Platform] MacOSX porting efforts
   * [Platform] MacOSX Bundle creation added
   * [Platform] Enabled ranslations on Windows.
