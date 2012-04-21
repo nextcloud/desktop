@@ -90,7 +90,9 @@ private:
     QAction *_actionAddFolder;
     QAction *_actionConfigure;
 
+#if QT_VERSION >= 0x040700
     QNetworkConfigurationManager *_networkMgr;
+#endif
 
     FolderWizard  *_folderWizard;
     OwncloudSetupWizard *_owncloudSetupWizard;

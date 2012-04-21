@@ -49,7 +49,9 @@ OwncloudWizardSelectTypePage::OwncloudWizardSelectTypePage()
 
 OwncloudWizardSelectTypePage::~OwncloudWizardSelectTypePage()
 {
-
+#if QT_VERSION >= 0x040700
+    _ui.OCUrlLineEdit->setPlaceholderText(QApplication::translate("OwncloudWizardSelectTypePage", "http://owncloud.mydomain.org", 0, QApplication::UnicodeUTF8));
+#endif
 }
 
 void OwncloudWizardSelectTypePage::initializePage()
@@ -101,7 +103,10 @@ OwncloudCredentialsPage::OwncloudCredentialsPage()
 
 OwncloudCredentialsPage::~OwncloudCredentialsPage()
 {
-
+#if QT_VERSION >= 0x040700
+    _ui.OCUserEdit->setPlaceholderText(QApplication::translate("OwncloudCredentialsPage", "john", 0, QApplication::UnicodeUTF8));
+    _ui.OCPasswdEdit->setPlaceholderText(QApplication::translate("OwncloudCredentialsPage", "secret", 0, QApplication::UnicodeUTF8));
+#endif
 }
 
 void OwncloudCredentialsPage::slotPwdStoreChanged( int state )
@@ -139,6 +144,12 @@ OwncloudFTPAccessPage::OwncloudFTPAccessPage()
     registerField( "ftpUser",   _ui.ftpUserEdit );
     registerField( "ftpPasswd", _ui.ftpPasswdEdit );
     // registerField( "ftpDir",    _ui.ftpDir );
+
+#if QT_VERSION >= 0x040700
+    _ui.ftpUrlEdit->setPlaceholderText(QApplication::translate("OwncloudFTPAccessPage", "ftp.mydomain.org", 0, QApplication::UnicodeUTF8));
+    _ui.ftpUserEdit->setPlaceholderText(QApplication::translate("OwncloudFTPAccessPage", "john", 0, QApplication::UnicodeUTF8));
+    _ui.ftpPasswdEdit->setPlaceholderText(QApplication::translate("OwncloudFTPAccessPage", "john", 0, QApplication::UnicodeUTF8));
+#endif
 }
 
 OwncloudFTPAccessPage::~OwncloudFTPAccessPage()
@@ -177,6 +188,10 @@ CreateAnOwncloudPage::CreateAnOwncloudPage()
     connect( _ui.createLocalRadioBtn, SIGNAL(clicked()), SIGNAL(completeChanged()));
     connect( _ui.createPerFTPRadioBtn, SIGNAL(clicked()), SIGNAL(completeChanged()));
     connect( _ui.myDomainEdit, SIGNAL(textChanged(QString)), SIGNAL(completeChanged()));
+
+#if QT_VERSION >= 0x040700
+    _ui.myDomainEdit->setPlaceholderText(QApplication::translate("CreateAnOwncloudPage", "mydomain.org", 0, QApplication::UnicodeUTF8));
+#endif
 }
 
 CreateAnOwncloudPage::~CreateAnOwncloudPage()

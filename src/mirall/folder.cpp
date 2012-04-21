@@ -61,8 +61,12 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
     QObject::connect(this, SIGNAL(syncFinished(const SyncResult &)),
                      SLOT(slotSyncFinished(const SyncResult &)));
 
+#if QT_VERSION >= 0x040700
     _online = _networkMgr.isOnline();
     QObject::connect(&_networkMgr, SIGNAL(onlineStateChanged(bool)), SLOT(slotOnlineChanged(bool)));
+#else
+    _online = true;
+#endif
 
     _syncResult.setStatus( SyncResult::NotYetStarted );
 

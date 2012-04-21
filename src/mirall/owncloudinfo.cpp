@@ -334,6 +334,8 @@ void ownCloudInfo::setupHeaders( QNetworkRequest & req, quint64 size )
     }
 }
 
+#if QT46_IMPL
+#else
 QNetworkReply* ownCloudInfo::davRequest(const QString& reqVerb,  QNetworkRequest& req, QByteArray *data)
 {
     setupHeaders(req, quint64(data ? data->size() : 0));
@@ -343,9 +345,8 @@ QNetworkReply* ownCloudInfo::davRequest(const QString& reqVerb,  QNetworkRequest
     } else {
         return _manager->sendCustomRequest(req, reqVerb.toUtf8(), 0 );
     }
-
 }
-
+#endif
 
 }
 

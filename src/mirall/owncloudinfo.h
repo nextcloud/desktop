@@ -92,7 +92,10 @@ protected slots:
 
 private:
     void setupHeaders(QNetworkRequest &req, quint64 size );
+#if QT46_IMPL
+#else
     QNetworkReply* davRequest(const QString&, QNetworkRequest&, QByteArray* );
+#endif
 
     static QNetworkAccessManager  *_manager;
     QString                        _connection;

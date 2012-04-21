@@ -48,7 +48,9 @@ namespace Mirall {
 Application::Application(int &argc, char **argv) :
     QApplication(argc, argv),
     _tray(0),
+#if QT_VERSION >= 0x040700
     _networkMgr(new QNetworkConfigurationManager(this)),
+#endif
     _contextMenu(0),
     _ocInfo(0),
     _updateDetector(0)
@@ -132,10 +134,12 @@ Application::Application(int &argc, char **argv) :
     connect( _statusDialog, SIGNAL(openFolderAlias(const QString&)),
              SLOT(slotFolderOpenAction(QString)));
 
+#if QT_VERSION >= 0x040700
     qDebug() << "* Network is" << (_networkMgr->isOnline() ? "online" : "offline");
     foreach (QNetworkConfiguration netCfg, _networkMgr->allConfigurations(QNetworkConfiguration::Active)) {
         //qDebug() << "Network:" << netCfg.identifier();
     }
+#endif
 
     setupActions();
     setupSystemTray();
@@ -156,7 +160,9 @@ Application::~Application()
 {
     qDebug() << "* Mirall shutdown";
 
+#if QT_VERSION >= 0x040700
     delete _networkMgr;
+#endif
     delete _folderMan;
     delete _ocInfo;
 }

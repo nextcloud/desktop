@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>541</width>
+    <width>548</width>
     <height>324</height>
    </rect>
   </property>
@@ -85,9 +85,6 @@ p, li { white-space: pre-wrap; }
           <property name="text">
            <string/>
           </property>
-          <property name="placeholderText">
-           <string>ftp.mydomain.org</string>
-          </property>
          </widget>
         </item>
         <item row="1" column="0">
@@ -101,9 +98,6 @@ p, li { white-space: pre-wrap; }
          <widget class="QLineEdit" name="ftpUserEdit">
           <property name="text">
            <string/>
-          </property>
-          <property name="placeholderText">
-           <string>john</string>
           </property>
          </widget>
         </item>
@@ -121,9 +115,6 @@ p, li { white-space: pre-wrap; }
           </property>
           <property name="echoMode">
            <enum>QLineEdit::Password</enum>
-          </property>
-          <property name="placeholderText">
-           <string>john</string>
           </property>
          </widget>
         </item>
