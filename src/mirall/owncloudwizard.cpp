@@ -162,7 +162,7 @@ int OwncloudFTPAccessPage::nextId() const
 
 bool OwncloudFTPAccessPage::isComplete() const
 {
-
+    return true;
 }
 
 // ======================================================================
@@ -234,7 +234,7 @@ void OwncloudWizardResultPage::initializePage()
 
 bool OwncloudWizardResultPage::isComplete() const
 {
-
+    return true;
 }
 
 void OwncloudWizardResultPage::appendResultText( const QString& msg, OwncloudWizard::LogType type )
