@@ -93,8 +93,6 @@ void FolderViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 {
   QStyledItemDelegate::paint(painter,option,index);
 
-  QSize s = sizeHint( option, index );
-
   painter->save();
 
   QFont aliasFont    = QApplication::font();
