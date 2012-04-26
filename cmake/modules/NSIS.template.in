@@ -326,7 +326,7 @@ Section "${APPLICATION_NAME}" SEC_OWNCLOUD_PLAYER
 
    ; CSync configs
    File "/home/kf/owncloud.com/win/csync/config/csync.conf"
-   File "/home/kf/owncloud.com/mirall/exclude.lst"
+   File "${SOURCE_PATH}/exclude.lst"
 
 SectionEnd
 
