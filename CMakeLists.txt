@@ -4,7 +4,12 @@ project(mirall)
 set(PACKAGE "mirall")
 set( CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules )
 include(${CMAKE_SOURCE_DIR}/VERSION.cmake)
+
 include(GNUInstallDirs)
+## stupid, we should upstream this
+if("${CMAKE_INSTALL_PREFIX}" EQUAL "/usr")
+    set(CMAKE_INSTALL_SYSCONFDIR "/etc")
+endif()
 
 if(NOT DEFINED BUILD_OWNCLOUD_OSX_BUNDLE OR NOT APPLE)
     set(BUILD_OWNCLOUD_OSX_BUNDLE OFF)
@@ -65,6 +70,6 @@ add_subdirectory(src)
 if(BUILD_OWNCLOUD_OSX_BUNDLE)
     install( FILES exclude.lst DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources )
 else()
-    install( FILES exclude.lst DESTINATION /etc )
+    install( FILES exclude.lst DESTINATION ${CMAKE_INSTALL_SYSCONFDIR} )
 endif()
 
