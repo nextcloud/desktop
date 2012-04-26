@@ -7,5 +7,10 @@ if(CPACK_GENERATOR MATCHES "NSIS")
     SET( CPACK_NSIS_COMPRESSOR   "/SOLID lzma" ) # The arguments that will be passed to the NSIS SetCompressor command.    /SOLID lzma
 endif(CPACK_GENERATOR MATCHES "NSIS")
 
-SET( CMAKE_SOURCE_DIR @CMAKE_SOURCE_DIR@ )
-SET( CMAKE_BINARY_DIR @CMAKE_BINARY_DIR@ )
+set( CMAKE_SOURCE_DIR  @CMAKE_SOURCE_DIR@ )
+set( CMAKE_BINARY_DIR  @CMAKE_BINARY_DIR@ )
+
+set( CSYNC_BINARY_DIR  @CSYNC_BINARY_DIR@ )
+if(NOT CSYNC_BINARY_DIR)
+    message(FATAL_ERROR "You need to make CSYNC_BINARY_DIR point to the csync build dir")
+endif()
