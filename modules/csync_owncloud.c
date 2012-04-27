@@ -130,12 +130,12 @@ static const ne_propname ls_props[] = {
  */
 
 struct dav_session_s dav_session; /* The DAV Session, initialised in dav_connect */
-int _connected;                   /* flag to indicate if a connection exists, ie.
+int _connected = 0;                   /* flag to indicate if a connection exists, ie.
                                      the dav_session is valid */
 csync_vio_file_stat_t _fs;
 
 csync_auth_callback _authcb;
-void *_userdata;
+void *_userdata = NULL;
 
 #define PUT_BUFFER_SIZE 1024*5
 
@@ -431,7 +431,7 @@ static void results(void *userdata,
         return;
     }
 
-    DEBUG_WEBDAV(("** propfind result found: %s\n", path ));
+    /* DEBUG_WEBDAV(("** propfind result found: %s\n", path )); */
     if( ! fetchCtx->target ) {
         DEBUG_WEBDAV(("error: target must not be zero!\n" ));
         return;
@@ -475,7 +475,7 @@ static void results(void *userdata,
     newres->next   = fetchCtx->list;
     fetchCtx->list = newres;
     fetchCtx->result_count = fetchCtx->result_count + 1;
-    DEBUG_WEBDAV(( "results for URI %s: %d %d\n", newres->name, (int)newres->size, (int)newres->type ));
+    /* DEBUG_WEBDAV(( "results for URI %s: %d %d\n", newres->name, (int)newres->size, (int)newres->type )); */
 }
 
 /*
@@ -1441,6 +1441,9 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
     (void) args;
     _authcb = cb;
     _userdata = userdata;
+    _connected = 0;  /* triggers dav_connect to go through the whole neon setup */
+
+    /* DEBUG_WEBDAV(("********** vio_module_init \n")); */
 
     return &_method;
 }
@@ -1453,6 +1456,8 @@ void vio_module_shutdown(csync_vio_method_t *method) {
 
     if( dav_session.ctx )
         ne_session_destroy( dav_session.ctx );
+    /* DEBUG_WEBDAV(( "********** vio_module_shutdown\n" )); */
+
 }
 
 
