@@ -51,6 +51,7 @@ signals:
 
 protected slots:
     void slotAddFolder();
+    void slotOpenStatus();
     void slotRemoveFolder( const QString& );
 #ifdef HAVE_FETCH_AND_PUSH
     void slotFetchFolder( const QString& );
@@ -88,6 +89,7 @@ private:
     QSystemTrayIcon *_tray;
     QAction *_actionQuit;
     QAction *_actionAddFolder;
+    QAction *_actionOpenStatus;
     QAction *_actionConfigure;
 
 #if QT_VERSION >= 0x040700

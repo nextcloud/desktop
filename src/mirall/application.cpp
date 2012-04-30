@@ -257,6 +257,8 @@ void Application::slotHideSplash()
 
 void Application::setupActions()
 {
+    _actionOpenStatus = new QAction(tr("Open status..."), this);
+    QObject::connect(_actionOpenStatus, SIGNAL(triggered(bool)), SLOT(slotOpenStatus()));
     _actionAddFolder = new QAction(tr("Add folder..."), this);
     QObject::connect(_actionAddFolder, SIGNAL(triggered(bool)), SLOT(slotAddFolder()));
     _actionConfigure = new QAction(tr("Configure..."), this);
@@ -288,6 +290,7 @@ void Application::setupContextMenu()
         _contextMenu = new QMenu();
     }
     _contextMenu->setTitle(_theme->appName() );
+    _contextMenu->addAction(_actionOpenStatus);
     _contextMenu->addAction(_actionConfigure);
     _contextMenu->addAction(_actionAddFolder);
     _contextMenu->addSeparator();
@@ -339,9 +342,10 @@ void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
       _owncloudSetupWizard->startWizard();
     } else {
         qDebug() << "#============# Status dialog starting #=============#";
-
+#if defined Q_WS_WIN || defined Q_WS_X11
       _statusDialog->setFolderList( _folderMan->map() );
       _statusDialog->show();
+#endif
     }
   }
 }
@@ -398,6 +402,13 @@ void Application::slotAddFolder()
     qDebug() << "* Folder wizard cancelled";
   }
   _folderMan->restoreEnabledFolders();
+}
+
+void Application::slotOpenStatus()
+{
+  if( ! _statusDialog ) return;
+  _statusDialog->setFolderList( _folderMan->map() );
+  _statusDialog->show();
 }
 
 /*

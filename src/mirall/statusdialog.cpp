@@ -206,11 +206,11 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
   connect(_ownCloudInfo, SIGNAL(noOwncloudFound(QNetworkReply*)),
           this, SLOT(slotOCInfoFail(QNetworkReply*)));
 
-#if defined Q_WS_X11 || defined Q_WS_MAC
+#if defined Q_WS_X11 
   connect(_folderList, SIGNAL(activated(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
   connect( _folderList,SIGNAL(doubleClicked(QModelIndex)),SLOT(slotDoubleClicked(QModelIndex)));
 #endif
-#ifdef Q_WS_WIN
+#if defined Q_WS_WIN || defined Q_WS_MAC
   connect(_folderList, SIGNAL(clicked(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
   connect( _folderList,SIGNAL(doubleClicked(QModelIndex)),SLOT(slotDoubleClicked(QModelIndex)));
 #endif
