@@ -40,6 +40,7 @@ public:
 
 public slots:
     void startSync();
+    void slotTerminateSync();
 
 private slots:
     void slotCSyncStarted();

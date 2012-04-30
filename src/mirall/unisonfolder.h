@@ -38,6 +38,9 @@ public:
 
     virtual bool isBusy() const;
 
+public slots:
+  void slotTerminateSync();
+
 protected slots:
     void slotReadyReadStandardOutput();
     void slotReadyReadStandardError();

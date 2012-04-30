@@ -43,7 +43,7 @@ CSyncFolder::~CSyncFolder()
 
 bool CSyncFolder::isBusy() const
 {
-    return false;
+    return (_csync && _csync->isRunning() );
 }
 
 void CSyncFolder::startSync(const QStringList &pathList)
@@ -62,6 +62,13 @@ void CSyncFolder::startSync(const QStringList &pathList)
     connect(_csync, SIGNAL(csyncError(QString)), SLOT(slotCSyncError(QString)));
 
     _csync->start();
+}
+
+void CSyncFolder::slotTerminateSync()
+{
+    if( _csync ) {
+        _csync->terminate();
+    }
 }
 
 void CSyncFolder::slotCSyncStarted()

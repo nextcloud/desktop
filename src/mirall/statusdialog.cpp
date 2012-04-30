@@ -307,13 +307,15 @@ void StatusDialog::folderToModelItem( QStandardItem *item, Folder *f )
 
     SyncResult res = f->syncResult();
     SyncResult::Status status = res.status();
-    qDebug() << "Folder state is now " << status;
 
     QString errors = res.errorStrings().join("<br/>");
 
     item->setData( _theme->statusHeaderText( status ),  Qt::ToolTipRole );
-
-    item->setData( _theme->syncStateIcon( status, 48 ), FolderViewDelegate::FolderStatusIcon );
+    if( f->syncEnabled() ) {
+        item->setData( _theme->syncStateIcon( status, 48 ), FolderViewDelegate::FolderStatusIcon );
+    } else {
+        item->setData( _theme->folderDisabledIcon(), FolderViewDelegate::FolderStatusIcon );
+    }
     item->setData( _theme->statusHeaderText( status ),  FolderViewDelegate::FolderStatus );
     item->setData( errors,                              FolderViewDelegate::FolderErrorMsg );
 }

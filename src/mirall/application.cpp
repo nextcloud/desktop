@@ -452,23 +452,43 @@ void Application::slotInfoFolder( const QString& alias )
 
     SyncResult folderResult = _folderMan->syncResult( alias );
 
-    QString folderMessage = tr( "Last sync was succesful." );
+    bool enabled = true;
+    Folder *f = _folderMan->folder( alias );
+    if( f && ! f->syncEnabled() ) {
+        enabled = false;
+    }
+
+    QString folderMessage;
 
     SyncResult::Status syncStatus = folderResult.status();
-    if ( syncStatus == SyncResult::Error ) {
-      folderMessage = tr( "<b>Syncing Error</b><br/>" );
-    } else if ( syncStatus == SyncResult::SetupError ) {
-      folderMessage = tr( "<b>Setup Error</b><br/>" );
-    } else if ( syncStatus == SyncResult::Disabled ) {
-      folderMessage = tr( "<b>Disabled Folder</b><br/>" ).arg( folderResult.errorString() );
-    } else if ( syncStatus == SyncResult::Undefined ) {
-      folderMessage = tr( "<b>Undefined state</b><br/>" );
+    switch( syncStatus ) {
+    case SyncResult::Undefined:
+        folderMessage = tr( "Undefined Folder State" );
+        break;
+    case SyncResult::NotYetStarted:
+        folderMessage = tr( "The folder waits to start syncing." );
+        break;
+    case SyncResult::SyncRunning:
+        folderMessage = tr("Sync is running.");
+        break;
+    case SyncResult::Success:
+        folderMessage = tr("Last Sync was successful.");
+        break;
+    case SyncResult::Error:
+        folderMessage = tr( "Syncing Error." );
+        break;
+    case SyncResult::SetupError:
+        folderMessage = tr( "Setup Error." );
+        break;
+    default:
+        folderMessage = tr( "Undefined Error State." );
     }
+    folderMessage = QLatin1String("<b>") + folderMessage + QLatin1String("</b><br/>");
 
     QMessageBox infoBox( QMessageBox::Information, tr( "Folder information" ), alias, QMessageBox::Ok );
     QStringList li = folderResult.errorStrings();
     foreach( const QString l, li ) {
-        folderMessage += "<p>" + l +"</p>";
+        folderMessage += QString("<p>%1</p>").arg( l );
     }
 
     infoBox.setText( folderMessage );
@@ -507,7 +527,22 @@ void Application::slotEnableFolder(const QString& alias, const bool enable)
   qDebug() << "Application: enable folder with alias " << alias;
 
   _folderMan->slotEnableFolder( alias, enable );
-  _statusDialog->slotUpdateFolderState( _folderMan->folder(alias));
+
+  // this sets the folder status to disabled but does not interrupt it.
+  Folder *f = _folderMan->folder( alias );
+  if( f && !enable ) {
+      // check if a sync is still running and if so, ask if we should terminate.
+      if( f->isBusy() ) { // its still running
+          QMessageBox::StandardButton b = QMessageBox::question( 0, tr("Sync Running"),
+                                                                 tr("The syncing operation is running.<br/>Do you want to terminate it?"),
+                                                                 QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes );
+          if( b == QMessageBox::Yes ) {
+              _folderMan->terminateSyncProcess( alias );
+          }
+      }
+  }
+
+  _statusDialog->slotUpdateFolderState( f );
 }
 
 void Application::slotConfigure()
@@ -544,42 +579,43 @@ void Application::computeOverallSyncStatus()
         SyncResult folderResult = syncedFolder->syncResult();
         SyncResult::Status syncStatus = folderResult.status();
 
-        if( ! folderResult.localRunOnly() ) { // skip local runs, use the last message.
-            if ( syncStatus == SyncResult::Success ) {
-                folderMessage = tr( "Folder %1: Ok." ).arg( syncedFolder->alias() );
-            } else if ( syncStatus == SyncResult::Error ) {
+        if( ! folderResult.localRunOnly() && syncedFolder->syncEnabled() ) { // skip local runs, use the last message.
+            switch( syncStatus ) {
+            case SyncResult::Undefined:
+                if ( overallResult.status() != SyncResult::Error ) {
+                    overallResult = SyncResult::Error;
+                }
+                folderMessage = tr( "Undefined State." );
+                break;
+            case SyncResult::NotYetStarted:
+                folderMessage = tr( "Waits to start syncing." );
+                break;
+            case SyncResult::SyncRunning:
+                folderMessage = tr( "Sync is running." );
+                break;
+            case SyncResult::Success:
+                folderMessage = tr( "Last Sync was successful." );
+                break;
+            case SyncResult::Error:
                 overallResult = SyncResult::Error;
-                folderMessage = tr( "Folder %1: %2" ).arg( syncedFolder->alias(), folderResult.errorString() );
-            } else if ( syncStatus == SyncResult::SetupError ) {
+                folderMessage = tr( "Syncing Error." );
+                break;
+            case SyncResult::SetupError:
                 if ( overallResult.status() != SyncResult::Error ) {
                     overallResult = SyncResult::SetupError;
                 }
-                folderMessage = tr( "Folder %1: setup error" ).arg( syncedFolder->alias() );
-            } else if ( syncStatus == SyncResult::Disabled ) {
-                if ( overallResult.status() != SyncResult::SetupError
-                     && overallResult.status() != SyncResult::Error ) {
-                    overallResult = SyncResult::Disabled;
-                }
-                folderMessage = tr( "Folder %1: %2" ).arg( syncedFolder->alias(), folderResult.errorString() );
-            } else if ( syncStatus == SyncResult::Undefined ) {
-                if ( overallResult.status() == SyncResult::Success ) {
-                    overallResult = SyncResult::Undefined;
-                }
-                folderMessage = tr( "Folder %1: undefined state" ).arg( syncedFolder->alias() );
+                folderMessage = tr( "Setup Error." );
+                break;
+            default:
+                folderMessage = tr( "Undefined Error State." );
             }
         }
-        _overallStatusStrings[syncedFolder] = folderMessage;
+        _overallStatusStrings[syncedFolder] = QString("Folder %1: %2").arg(syncedFolder->alias()).arg(folderMessage);
     }
 
     // create the tray blob message
     QStringList allStatusStrings = _overallStatusStrings.values();
     trayMessage = allStatusStrings.join("\n");
-
-#if 0
-    if( _statusDialog->isVisible() ) {
-        _statusDialog->slotUpdateFolderState( syncedFolder );
-    }
-#endif
 
     QIcon statusIcon = _theme->syncStateIcon( overallResult.status(), 22 );
 

@@ -177,7 +177,7 @@ QString MirallConfigFile::ownCloudUrl( const QString& connection, bool webdav ) 
         if( webdav ) url.append( "files/webdav.php/" );
     }
 
-    qDebug() << "Returning configured owncloud url: " << url;
+    // qDebug() << "Returning configured owncloud url: " << url;
 
   return url;
 }
@@ -191,7 +191,7 @@ QString MirallConfigFile::ownCloudUser( const QString& connection ) const
     settings.beginGroup( con );
 
     QString user = settings.value( "user" ).toString();
-    qDebug() << "Returning configured owncloud user: " << user;
+    // qDebug() << "Returning configured owncloud user: " << user;
 
     return user;
 }

@@ -84,6 +84,8 @@ public slots:
 
     void slotReparseConfiguration();
 
+    void terminateSyncProcess( const QString& );
+
 private slots:
     // slot to add a folder to the syncing queue
     void slotScheduleSync( const QString & );

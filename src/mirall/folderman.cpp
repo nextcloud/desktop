@@ -211,7 +211,19 @@ void FolderMan::slotEnableFolder( const QString& alias, bool enable )
     }
 
     Folder *f = _folderMap[alias];
-    f->setSyncEnabled(enable);
+    if( f ) {
+        f->setSyncEnabled(enable);
+    }
+}
+
+// this really terminates, ie. no questions, no prisoners.
+// csync still remains in a stable state, regardless of that.
+void FolderMan::terminateSyncProcess( const QString& alias )
+{
+    Folder *f = _folderMap[alias];
+    if( f ) {
+        f->slotTerminateSync();
+    }
 }
 
 Folder *FolderMan::folder( const QString& alias )
@@ -269,6 +281,7 @@ void FolderMan::slotScheduleFolderSync()
         return;
     }
 
+    qDebug() << "XX slotScheduleFolderSync: folderQueue size: " << _scheduleQueue.count();
     if( ! _scheduleQueue.isEmpty() ) {
         const QString alias = _scheduleQueue.takeFirst();
         if( _folderMap.contains( alias ) ) {
@@ -299,7 +312,7 @@ void FolderMan::slotFolderSyncFinished( const SyncResult& )
         removeFolder( _currentSyncFolder );
         _folderToDelete = false;
     }
-    _currentSyncFolder = QString();
+    _currentSyncFolder.clear();
     QTimer::singleShot(200, this, SLOT(slotScheduleFolderSync()));
 }
 

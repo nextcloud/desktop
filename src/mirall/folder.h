@@ -130,11 +130,20 @@ public:
      QString backend() const;
 
      QIcon icon( int size ) const;
-  QTimer   *_pollTimer;
+     QTimer   *_pollTimer;
 
 public slots:
      void slotSyncFinished(const SyncResult &);
+
+     /**
+       *
+       */
      void slotChanged(const QStringList &pathList = QStringList() );
+
+     /**
+       * terminate the current sync run
+       */
+     virtual void slotTerminateSync() = 0;
 
 protected:
     /**

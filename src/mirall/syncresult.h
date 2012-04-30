@@ -31,7 +31,6 @@ public:
       SyncRunning,
       Success,
       Error,
-      Disabled,
       SetupError
     };
 

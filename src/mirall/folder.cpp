@@ -113,8 +113,7 @@ void Folder::setSyncEnabled( bool doit )
       _syncResult.clearErrors();
       evaluateSync( QStringList() );
   } else {
-      // disabled.
-      _syncResult.setStatus( SyncResult::Disabled );
+      // disable folder. Done through the _enabled-flag set above
   }
 }
 

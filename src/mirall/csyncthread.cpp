@@ -30,6 +30,8 @@ namespace Mirall {
 /* static variables to hold the credentials */
 QString CSyncThread::_user;
 QString CSyncThread::_passwd;
+QString CSyncThread::_csyncConfigDir;  // to be able to remove the lock file.
+
 QMutex CSyncThread::_mutex;
 
  int CSyncThread::checkPermissions( TREE_WALK_FILE* file, void *data )
@@ -145,6 +147,7 @@ void CSyncThread::run()
     }
     // FIXME: Check if we really need this stringcopy!
     wStats->sourcePath = qstrdup( _source.toLocal8Bit().constData() );
+    _csyncConfigDir = QString::fromLocal8Bit( csync_get_config_dir( csync ));
     _mutex.unlock();
 
     qDebug() << "## CSync Thread local only: " << _localCheckOnly;
@@ -278,6 +281,11 @@ void CSyncThread::setUserPwd( const QString& user, const QString& passwd )
     _user = user;
     _passwd = passwd;
     _mutex.unlock();
+}
+
+QString CSyncThread::csyncConfigDir()
+{
+    return _csyncConfigDir;
 }
 
 int CSyncThread::getauth(const char *prompt,

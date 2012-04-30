@@ -64,6 +64,7 @@ public:
 
     static void setUserPwd( const QString&, const QString& );
     static int checkPermissions( TREE_WALK_FILE* file, void *data);
+    static QString csyncConfigDir();
 
 signals:
     void treeWalkResult(WalkStats*);
@@ -81,6 +82,7 @@ private:
     static QMutex _mutex;
     static QString _user;
     static QString _passwd;
+    static QString _csyncConfigDir;
 
     QString _source;
     QString _target;

@@ -42,6 +42,7 @@ public:
       */
     virtual QIcon   folderIcon( const QString&, int ) const;
     virtual QIcon   syncStateIcon( SyncResult::Status, int ) const;
+    virtual QIcon   folderDisabledIcon() const;
     virtual QString statusHeaderText( SyncResult::Status ) const;
     virtual QPixmap splashScreen() const = 0;
     virtual QIcon   applicationIcon() const;

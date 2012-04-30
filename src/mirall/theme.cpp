@@ -47,43 +47,61 @@ QIcon Theme::syncStateIcon( SyncResult::Status status, int ) const
     // FIXME: Mind the size!
     QString statusIcon;
 
-    qDebug() << "Status: " << status;
-
-    if( status == SyncResult::NotYetStarted ) {
-        statusIcon = "task-ongoing";
-    } else if( status == SyncResult::SyncRunning ) {
-        statusIcon = "view-refresh";
-    } else if( status == SyncResult::Success ) {
-        statusIcon = "dialog-ok";
-    } else if( status == SyncResult::Error ) {
+    switch( status ) {
+    case SyncResult::Undefined:
         statusIcon = "dialog-close";
-    } else if( status == SyncResult::Disabled ) {
+        break;
+    case SyncResult::NotYetStarted:
+        statusIcon = "task-ongoing";
+        break;
+    case SyncResult::SyncRunning:
+        statusIcon = "view-refresh";
+        break;
+    case SyncResult::Success:
+        statusIcon = "dialog-ok";
+        break;
+    case SyncResult::Error:
+        statusIcon = "dialog-close";
+        break;
+    case SyncResult::SetupError:
         statusIcon = "dialog-cancel";
-    } else if( status == SyncResult::SetupError ) {
-        statusIcon = "dialog-cancel";
-    } else {
+        break;
+    default:
         statusIcon = "dialog-close";
     }
     return QIcon::fromTheme( statusIcon, QIcon( QString( ":/mirall/resources/%1").arg(statusIcon) ) );
+}
+
+QIcon Theme::folderDisabledIcon() const
+{
+    // Fixme: Do we really want the dialog-canel from theme here?
+    return QIcon::fromTheme( "dialog-cancel", QIcon( QString( ":/mirall/resources/dialog-cancel")) );
 }
 
 QString Theme::statusHeaderText( SyncResult::Status status ) const
 {
     QString resultStr;
 
-    if( status == SyncResult::NotYetStarted ) {
+    switch( status ) {
+    case SyncResult::Undefined:
+        resultStr = tr("Status undefined");
+        break;
+    case SyncResult::NotYetStarted:
         resultStr = tr("Waiting to start sync");
-    } else if( status == SyncResult::SyncRunning ) {
+        break;
+    case SyncResult::SyncRunning:
         resultStr = tr("Sync is running");
-    } else if( status == SyncResult::Success ) {
+        break;
+    case SyncResult::Success:
         resultStr = tr("Sync Success");
-    } else if( status == SyncResult::Error ) {
+        break;
+    case SyncResult::Error:
         resultStr = tr("Sync Error - Click info button for details.");
-    } else if( status == SyncResult::Disabled ) {
-        resultStr = tr("Sync Disabled");
-    } else if( status == SyncResult::SetupError ) {
+        break;
+    case SyncResult::SetupError:
         resultStr = tr( "Setup Error" );
-    } else {
+        break;
+    default:
         resultStr = tr("Status undefined");
     }
     return resultStr;
