@@ -62,7 +62,9 @@ enable_testing()
 # Comment this to build the original mirall client
 add_definitions(-DOWNCLOUD_CLIENT)
 
-set(TRANSLATIONS ${CMAKE_SOURCE_DIR}/translations/mirall_de.ts)
+# Handle Translations, pick all mirall_* files from trans directory.
+file( GLOB TRANS_FILES ${CMAKE_SOURCE_DIR}/translations/mirall_*.ts)
+set(TRANSLATIONS ${TRANS_FILES})
 
 add_subdirectory(src)
 # add_subdirectory(test)
