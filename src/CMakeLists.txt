@@ -147,6 +147,7 @@ else()
 
     # we must add MACOSX_BUNDLE only if building a bundle
     add_executable(owncloud WIN32 MACOSX_BUNDLE main.cpp ${final_src})
+    set_target_properties( owncloud PROPERTIES COMPILE_DEFINITIONS OWNCLOUD_CLIENT)
 
     #FIXME: hardcoded path
     install(FILES /usr/local/lib/csync-0/csync_owncloud.so DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Plugins)
