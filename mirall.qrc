@@ -28,7 +28,7 @@
         <file>resources/owncloud-icon-framed-64.png</file>
         <file>resources/owncloud-icon-sync-48.png</file>
         <file>resources/owncloud-icon-error-48.png</file>
-        <file>resources/owncloud-sync-ok-48.png</file>
+        <file>resources/owncloud-icon-sync-ok-48.png</file>
 
     </qresource>
 </RCC>
