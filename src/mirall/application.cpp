@@ -262,7 +262,7 @@ void Application::setupActions()
 void Application::setupSystemTray()
 {
     _tray = new QSystemTrayIcon();
-    _tray->setIcon( _theme->folderIcon("none") ); // load the grey icon
+    _tray->setIcon( _theme->applicationIcon() ); // load the grey icon
 
     connect(_tray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             SLOT(slotTrayClicked(QSystemTrayIcon::ActivationReason)));
