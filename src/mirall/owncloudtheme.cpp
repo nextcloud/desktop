@@ -86,7 +86,7 @@ QIcon ownCloudTheme::syncStateIcon( SyncResult::Status status, int size ) const
         statusIcon = "owncloud-icon-sync";
         break;
     case SyncResult::Success:
-        statusIcon = "owncloud-sync-ok";
+        statusIcon = "owncloud-icon-sync-ok";
         break;
     case SyncResult::Error:
         statusIcon = "owncloud-icon-error";
