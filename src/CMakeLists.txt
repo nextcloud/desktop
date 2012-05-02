@@ -111,7 +111,7 @@ set( final_src
 # add executable icon on windows and osx
 include( AddAppIconMacro )
 set(ownCloud_old ${ownCloud})
-kde4_add_app_icon( ownCloud "${CMAKE_CURRENT_SOURCE_DIR}/../resources/mirall-*.png" )
+kde4_add_app_icon( ownCloud "${CMAKE_CURRENT_SOURCE_DIR}/../resources/owncloud-icon-*.png") 
 list(APPEND final_src ${ownCloud})
 set(ownCloud ${ownCloud_old})
 
