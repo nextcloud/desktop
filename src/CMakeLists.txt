@@ -123,6 +123,7 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
 
     # we may not add MACOSX_BUNDLE here, if not building one
     add_executable(owncloud WIN32 main.cpp ${final_src})
+    set_target_properties( owncloud PROPERTIES COMPILE_DEFINITIONS OWNCLOUD_CLIENT) 
     # add_executable(owncloud main.cpp ${final_src})
 
     # mirall is not built for the bundle

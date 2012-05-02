@@ -58,9 +58,11 @@ include(CTest)
 enable_testing()
 
 #
-# Uncomment this to build the ownCloud client.
-# Comment this to build the original mirall client
-add_definitions(-DOWNCLOUD_CLIENT)
+# This cmake builds two targets (aka apps), mirall and owncloud. For the owncloud
+# target, OWNCLOUD_CLIENT needs to be a compile flag. It is set in src/CMakeLists.txt
+# but if that fails because cmake is too old, uncomment this here if you want to build
+# owncloud.
+# add_definitions(-DOWNCLOUD_CLIENT)
 
 # Handle Translations, pick all mirall_* files from trans directory.
 file( GLOB TRANS_FILES ${CMAKE_SOURCE_DIR}/translations/mirall_*.ts)
