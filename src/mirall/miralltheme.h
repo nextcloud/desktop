@@ -26,7 +26,12 @@ public:
 
     virtual QString appName() const;
     virtual QString configFileName() const;
-    virtual QPixmap splashScreen() const;
+    QPixmap splashScreen() const;
+
+    QIcon   folderIcon( const QString& ) const;
+    QIcon   syncStateIcon( SyncResult::Status, int ) const;
+    QIcon   folderDisabledIcon(int) const;
+    QIcon   applicationIcon() const;
 
 private:
 

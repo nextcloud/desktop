@@ -29,7 +29,6 @@ class QMenu;
 class QSystemTrayIcon;
 class QNetworkConfigurationManager;
 class QSignalMapper;
-class QSplashScreen;
 class QNetworkReply;
 
 namespace Mirall {
@@ -74,7 +73,6 @@ protected:
 protected slots:
     void slotTrayClicked( QSystemTrayIcon::ActivationReason );
     void slotFolderOpenAction(const QString & );
-    void slotHideSplash();
 
     void slotStartFolderSetup();
     void slotOwnCloudFound( const QString&, const QString& );
@@ -106,7 +104,6 @@ private:
     FolderMan *_folderMan;
     Theme *_theme;
     QSignalMapper *_folderOpenActionMapper;
-    QSplashScreen *_splash;
     ownCloudInfo  *_ocInfo;
     UpdateDetector *_updateDetector;
     QMap<Folder*, QString> _overallStatusStrings;

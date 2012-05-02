@@ -26,58 +26,6 @@ Theme::Theme()
 
 }
 
-QIcon Theme::folderIcon( const QString& backend, int size ) const
-{
-  QString name;
-
-  if( backend == QString::fromLatin1("owncloud")) name = QString( "mirall-%1.png" ).arg(size);
-  if( backend == QString::fromLatin1("unison" )) name  = QString( "folder-%1.png" ).arg(size);
-  if( backend == QString::fromLatin1("csync" )) name   = QString( "folder-remote-%1.png" ).arg(size);
-  if( backend.isEmpty() || backend == QString::fromLatin1("none") ) {
-      // name = QString("folder-grey-%1.png").arg(size);
-      name = QString("folder-grey-48.png");
-  }
-
-  qDebug() << "==> load folder icon " << name;
-  return QIcon( QPixmap( QString(":/mirall/resources/%1").arg(name)) );
-}
-
-QIcon Theme::syncStateIcon( SyncResult::Status status, int ) const
-{
-    // FIXME: Mind the size!
-    QString statusIcon;
-
-    switch( status ) {
-    case SyncResult::Undefined:
-        statusIcon = "dialog-close";
-        break;
-    case SyncResult::NotYetStarted:
-        statusIcon = "task-ongoing";
-        break;
-    case SyncResult::SyncRunning:
-        statusIcon = "view-refresh";
-        break;
-    case SyncResult::Success:
-        statusIcon = "dialog-ok";
-        break;
-    case SyncResult::Error:
-        statusIcon = "dialog-close";
-        break;
-    case SyncResult::SetupError:
-        statusIcon = "dialog-cancel";
-        break;
-    default:
-        statusIcon = "dialog-close";
-    }
-    return QIcon::fromTheme( statusIcon, QIcon( QString( ":/mirall/resources/%1").arg(statusIcon) ) );
-}
-
-QIcon Theme::folderDisabledIcon() const
-{
-    // Fixme: Do we really want the dialog-canel from theme here?
-    return QIcon::fromTheme( "dialog-cancel", QIcon( QString( ":/mirall/resources/dialog-cancel")) );
-}
-
 QString Theme::statusHeaderText( SyncResult::Status status ) const
 {
     QString resultStr;
@@ -107,15 +55,31 @@ QString Theme::statusHeaderText( SyncResult::Status status ) const
     return resultStr;
 }
 
-QIcon Theme::applicationIcon( ) const
-{
-    return QIcon(QString(":mirall/resources/mirall-48"));
-}
-
 QString Theme::version() const
 {
     return QString::fromLocal8Bit( MIRALL_STRINGIFY( MIRALL_VERSION ) );
 }
 
+QIcon Theme::trayFolderIcon( const QString& backend ) const
+{
+    return folderIcon( backend );
 }
+
+/*
+ * helper to load a icon from either the icon theme the desktop provides or from
+ * the apps Qt resources.
+ */
+QIcon Theme::themeIcon( const QString& name, int size ) const
+{
+    QIcon icon;
+    if( QIcon::hasThemeIcon( name )) {
+        // use from theme
+        icon = QIcon::fromTheme( name );
+    } else {
+        icon.addFile( QString(":/mirall/resources/%1-%2").arg(name).arg(size), QSize(size, size) );
+    }
+    return icon;
+}
+
+} // end namespace mirall
 

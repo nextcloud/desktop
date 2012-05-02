@@ -18,7 +18,6 @@
 #include <QHashIterator>
 #include <QUrl>
 #include <QDesktopServices>
-#include <QSplashScreen>
 #include <QTranslator>
 
 #include "mirall/application.h"
@@ -63,9 +62,6 @@ Application::Application(int &argc, char **argv) :
 #endif
     setApplicationName( _theme->appName() );
     setWindowIcon( _theme->applicationIcon() );
-
-    _splash = new QSplashScreen( _theme->splashScreen() );
-    _splash->show();
 
     processEvents();
 
@@ -145,7 +141,6 @@ Application::Application(int &argc, char **argv) :
     setupSystemTray();
     processEvents();
 
-    QTimer::singleShot( 5000, this, SLOT(slotHideSplash()) );
     QTimer::singleShot( 0, this, SLOT( slotStartFolderSetup() ));
 
     MirallConfigFile cfg;
@@ -238,7 +233,7 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
         qDebug() << "######## Credentials are ok!";
         int cnt = _folderMan->setupFolders();
         if( cnt ) {
-            _tray->setIcon(_theme->folderIcon("owncloud", 24));
+            _tray->setIcon(_theme->applicationIcon());
             _tray->show();
             processEvents();
 
@@ -248,11 +243,6 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
         _actionAddFolder->setEnabled( true );
     }
     setupContextMenu();
-}
-
-void Application::slotHideSplash()
-{
-    delete _splash;
 }
 
 void Application::setupActions()
@@ -272,7 +262,7 @@ void Application::setupActions()
 void Application::setupSystemTray()
 {
     _tray = new QSystemTrayIcon();
-    _tray->setIcon( _theme->folderIcon("none", 48) ); // load the grey icon
+    _tray->setIcon( _theme->folderIcon("none") ); // load the grey icon
 
     connect(_tray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             SLOT(slotTrayClicked(QSystemTrayIcon::ActivationReason)));
@@ -298,7 +288,7 @@ void Application::setupContextMenu()
     // here all folders should be added
     foreach (Folder *folder, _folderMan->map() ) {
         QAction *action = new QAction( tr("open %1").arg( folder->alias()), this );
-        action->setIcon( _theme->folderIcon( folder->backend(), 22) );
+        action->setIcon( _theme->trayFolderIcon( folder->backend()) );
 
         connect( action, SIGNAL(triggered()),_folderOpenActionMapper,SLOT(map()));
         _folderOpenActionMapper->setMapping( action, folder->alias() );
@@ -628,7 +618,7 @@ void Application::computeOverallSyncStatus()
     QStringList allStatusStrings = _overallStatusStrings.values();
     trayMessage = allStatusStrings.join("\n");
 
-    QIcon statusIcon = _theme->syncStateIcon( overallResult.status(), 22 );
+    QIcon statusIcon = _theme->syncStateIcon( overallResult.status(), 48 );
 
     if( overallResult.status() == SyncResult::Success ) {
         // Rather display the mirall icon instead of the ok icon.
