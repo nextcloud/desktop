@@ -8,9 +8,10 @@
 #
 
 use Carp::Assert;
-use HTTP::DAV;
 use Data::Dumper;
+use HTTP::DAV;
 use File::Copy;
+use File::Glob ':glob';
 
 use strict;
 
@@ -54,6 +55,7 @@ sub remoteDir( $$ )
     if( $re == 0 ) {
 	print "Failed to create directory <$dir>\n";
     }
+    $d->open( $url );
     return $re;
 }
 
@@ -175,6 +177,23 @@ sub assertLocalAndRemoteDir( $$$ )
     }
 
 }
+
+sub glob_put( $$$ )
+{
+    my( $d, $globber, $target ) = @_;
+
+    $d->open( $target );
+    
+    my @puts = bsd_glob( $globber );
+    foreach my $lfile( @puts ) {
+        if( $lfile =~ /.*\/(.+)$/g ) {
+	    my $rfile = $1;
+	    my $puturl = "$target/$rfile";
+	    print "   *** Putting $lfile to $puturl\n";
+	    $d->put( -local=>$lfile, -url=> $puturl );
+	}
+    }
+}
 # ====================================================================
 
 my $d = HTTP::DAV->new();
@@ -193,9 +212,8 @@ remoteDir( $d, $remoteDir );
 remoteDir( $d, $remoteDir . "remoteToLocal1" );
 
 # put some files remote.
-$d->put( -local=>"toremote1/*", -url=> $owncloud . $remoteDir . "remoteToLocal1" );
+glob_put( $d, 'toremote1/*', $owncloud . $remoteDir . "remoteToLocal1/" );
 
-# 
 my $localDir = "./t1";
 
 createLocalDir( $localDir );
@@ -234,6 +252,9 @@ move( "$locDir/kramer.jpg", "$locDir/oldtimer.jpg" );
 csync( $localDir, $remoteDir );
 assertLocalAndRemoteDir( $d, $locDir, $remoteDir . "fromLocal1" );
 
+print "\n###########################################\n";
+print "            all cool - tests succeeded.\n";
+print "###########################################\n";
 
 print "\nInterrupt before cleanup in 4 seconds...\n";
 sleep(4);
