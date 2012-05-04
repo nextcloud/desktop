@@ -29,6 +29,9 @@ my $passwd = 'XXXXX'; # Mind to be secure.
 
 if( -r "./t1.cfg" ) {
     my %config = do 't1.cfg';
+    warn "Could not parse t1.cfg: $!\n" unless %config;
+    warn "Could not do t1.cfg: $@\n" if $@;
+
     $user   = $config{user} if( $config{user} );
     $passwd = $config{passwd} if( $config{passwd} );
     $owncloud = $config{url}  if( $config{url} );
@@ -46,13 +49,14 @@ sub remoteDir( $$ )
     my ($d, $dir) = @_;
 
     my $url = $owncloud . $dir ;
-
-    $d->open( -url => $owncloud );
+ 
+    $d->open( $owncloud );
     print $d->message . "\n";
 
     my $re = $d->mkcol( $url );
     if( $re == 0 ) {
-	print "Failed to create directory <$dir>\n";
+	print "Failed to create directory <$url>: $re\n";
+	exit 1;
     }
     return $re;
 }
@@ -179,11 +183,10 @@ sub assertLocalAndRemoteDir( $$$ )
 
 my $d = HTTP::DAV->new();
 
-
 $d->credentials( -url=> $owncloud, -realm=>"ownCloud",
                  -user=> $user,
                  -pass=> $passwd );
-$d->DebugLevel(1);
+$d->DebugLevel(3);
 
 my $remoteDir = "t1/";
 
