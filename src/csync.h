@@ -388,7 +388,7 @@ typedef int csync_treewalk_visit_func(TREE_WALK_FILE* ,void*);
  *
  * @param ctx           The csync context.
  * @param visitor       A callback function to handle the file info.
- * @param filter        A filter, built from and'ed csync_instructions_e
+ * @param filter        A filter, built from or'ed csync_instructions_e
  *
  * @return              0 on success, less than 0 if an error occured.
  */
