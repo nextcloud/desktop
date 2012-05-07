@@ -37,6 +37,7 @@ macro_add_check_test(check_csync_exclude csync_tests/check_csync_exclude.c ${TES
 macro_add_check_test(check_csync_statedb_load csync_tests/check_csync_statedb_load.c ${TEST_TARGET_LIBRARIES})
 macro_add_check_test(check_csync_time csync_tests/check_csync_time.c ${TEST_TARGET_LIBRARIES})
 macro_add_check_test(check_csync_util csync_tests/check_csync_util.c ${TEST_TARGET_LIBRARIES})
+macro_add_check_test(check_csync_treewalk csync_tests/check_csync_treewalk.c ${TEST_TARGET_LIBRARIES})
 
 # csync tests which require init
 macro_add_check_test(check_csync_init csync_tests/check_csync_init.c ${TEST_TARGET_LIBRARIES})
