@@ -64,16 +64,54 @@ typedef struct stat csync_stat_t;
 #define lstat _stat
 #endif
 #ifdef _WIN32
-#define stat _stat
-#define fstat _fstat
-#define read _read
-#define open _open
-#define close _close
-#define write _write
+#define fstat  _fstat
 #endif
 
 #ifndef O_NOATIME
 #define O_NOATIME 0
+#endif
+
+/* tchar definitions for clean win32 filenames */
+#define _UNICODE
+
+#if defined _WIN32 && defined _UNICODE 
+typedef  wchar_t    _TCHAR;
+#define _tcslen      wcslen
+#define _topen      _wopen
+#define _tdirent    _wdirent
+#define _TDIR       _WDIR
+#define _topendir   _wopendir
+#define _tclosedir  _wclosedir
+#define _treaddir   _wreaddir
+#define _trewinddir _wrewinddir
+#define _ttelldir   _wtelldir
+#define _tseekdir   _wseekdir
+#define _tcreat     _wcreat
+#define _tstat      _wstat
+#define _tunlink    _wunlink
+#define _tmkdir     _wmkdir
+#define _trmdir	    _rmdir
+#define _tchmod     _wchmod
+#define _trewinddir _wrewinddir
+#else 
+typedef char        _TCHAR;
+#define _tdirent    dirent
+#define _tcslen     strlen
+#define _topen      open
+#define _TDIR       DIR
+#define _topendir   opendir
+#define _tclosedir  closedir
+#define _treaddir   readdir
+#define _trewinddir rewinddir
+#define _ttelldir   telldir
+#define _tseekdir   seekdir
+#define _tcreat     creat
+#define _tstat      stat
+#define _tunlink    unlink
+#define _tmkdir     mkdir
+#define _trmdir	    rmdir
+#define _tchmod     chmod
+#define _trewinddir rewinddir
 #endif
 
 #endif //_C_PRIVATE_H
