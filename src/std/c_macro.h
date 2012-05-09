@@ -43,7 +43,7 @@
 #define ZERO_STRUCTP(x) do { if ((x) != NULL) memset((char *)(x), 0, sizeof(*(x))); } while(0)
 
 /** Free memory and zero the pointer */
-#define SAFE_FREE(x) do { if ((x) != NULL) {free(x); x=NULL;} } while(0)
+#define SAFE_FREE(x) do { if ((x) != NULL) {free((void*)x); x=NULL;} } while(0)
 
 /** Get the smaller value */
 #define MIN(a,b) ((a) < (b) ? (a) : (b))

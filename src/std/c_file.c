@@ -39,8 +39,11 @@
 /* check if path is a file */
 int c_isfile(const char *path) {
   csync_stat_t sb;
-
-  if (lstat (path, &sb) < 0) {
+  const _TCHAR *wpath = c_multibyte(path);
+  int re = _tstat(wpath, &sb);
+  c_free_multibyte(wpath);
+  
+  if (re< 0) {
     return 0;
   }
 
@@ -73,8 +76,9 @@ int c_copy(const char* src, const char *dst, mode_t mode) {
 
       return -1;
   }
-#endif
+#else
 
+  /* Win32 does not come here. */
   if (c_streq(src, dst)) {
     return -1;
   }
@@ -146,5 +150,6 @@ out:
     unlink(dst);
   }
   return rc;
+#endif
 }
 

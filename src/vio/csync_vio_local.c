@@ -27,37 +27,51 @@
 #include <dirent.h>
 #include <stdio.h>
 
+#ifdef _WIN32
+#include "windows.h"
+#define _UNICODE
+#endif
+
 #include "c_private.h"
 #include "c_lib.h"
+#include "c_string.h"
+
 #include "vio/csync_vio_local.h"
 
 typedef struct fhandle_s {
   int fd;
 } fhandle_t;
 
+
+/* the url comes in as utf-8 and in windows, it needs to be multibyte. */
 csync_vio_method_handle_t *csync_vio_local_open(const char *durl, int flags, mode_t mode) {
   fhandle_t *handle = NULL;
   int fd = -1;
-
-  if ((fd = open(durl, flags, mode)) < 0) {
+  const _TCHAR *url = c_multibyte(durl);
+  
+  if ((fd = _topen(url, flags, mode)) < 0) {
     return NULL;
   }
-
+  
   handle = c_malloc(sizeof(fhandle_t));
   if (handle == NULL) {
     return NULL;
   }
 
   handle->fd = fd;
+  
+  c_free_multibyte(url);
+  
   return (csync_vio_method_handle_t *) handle;
 }
 
 csync_vio_method_handle_t *csync_vio_local_creat(const char *durl, mode_t mode) {
   fhandle_t *handle = NULL;
   int fd = -1;
+  const _TCHAR *url = c_multibyte(durl);
 
-  if ((fd = creat(durl, mode)) < 0) {
-    return NULL;
+  if(( fd = _tcreat( url, mode)) < 0) {
+      return NULL;
   }
 
   handle = c_malloc(sizeof(fhandle_t));
@@ -66,6 +80,7 @@ csync_vio_method_handle_t *csync_vio_local_creat(const char *durl, mode_t mode) 
   }
 
   handle->fd = fd;
+  c_free_multibyte(url);
   return (csync_vio_method_handle_t *) handle;
 }
 
@@ -136,24 +151,28 @@ off_t csync_vio_local_lseek(csync_vio_method_handle_t *fhandle, off_t offset, in
  */
 
 typedef struct dhandle_s {
-  DIR *dh;
+  _TDIR *dh;
   char *path;
 } dhandle_t;
 
 csync_vio_method_handle_t *csync_vio_local_opendir(const char *name) {
   dhandle_t *handle = NULL;
-
+  const _TCHAR *dirname = c_multibyte(name);
   handle = c_malloc(sizeof(dhandle_t));
   if (handle == NULL) {
     return NULL;
   }
 
-  handle->dh = opendir(name);
+  handle->dh = _topendir( dirname );
   if (handle->dh == NULL) {
     SAFE_FREE(handle);
     return NULL;
   }
-  handle->path = c_strdup(name);
+#ifdef _WIN32
+  handle->path = c_utf8(dirname);
+#else
+  handle->path = c_strdup(dirname);
+#endif
 
   return (csync_vio_method_handle_t *) handle;
 }
@@ -168,8 +187,7 @@ int csync_vio_local_closedir(csync_vio_method_handle_t *dhandle) {
   }
 
   handle = (dhandle_t *) dhandle;
-
-  rc = closedir(handle->dh);
+  rc = _tclosedir(handle->dh);
 
   SAFE_FREE(handle->path);
   SAFE_FREE(handle);
@@ -178,14 +196,15 @@ int csync_vio_local_closedir(csync_vio_method_handle_t *dhandle) {
 }
 
 csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_method_handle_t *dhandle) {
-  struct dirent *dirent = NULL;
+  struct _tdirent *dirent = NULL;
+  
   dhandle_t *handle = NULL;
   csync_vio_file_stat_t *file_stat = NULL;
-
+  
   handle = (dhandle_t *) dhandle;
 
   errno = 0;
-  dirent = readdir(handle->dh);
+  dirent = _treaddir(handle->dh);
   if (dirent == NULL) {
     if (errno) {
       goto err;
@@ -199,7 +218,11 @@ csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_method_handle_t *dhandl
     goto err;
   }
 
+#ifdef _WIN32
+  file_stat->name = c_utf8(dirent->d_name);
+#else
   file_stat->name = c_strdup(dirent->d_name);
+#endif
   file_stat->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
 
 #ifndef _WIN32
@@ -239,19 +262,28 @@ int csync_vio_local_mkdir(const char *uri, mode_t mode) {
 }
 
 int csync_vio_local_rmdir(const char *uri) {
-  return rmdir(uri);
+  const _TCHAR *dirname = c_multibyte(uri);
+  int re = -1;
+
+  re = _trmdir(dirname);
+  c_free_multibyte(dirname);
+  return re;
 }
+  
 
 int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   csync_stat_t sb;
-
-  if (lstat(uri, &sb) < 0) {
+  const _TCHAR *wuri = c_multibyte( uri );
+  if( _tstat(wuri, &sb) < 0) {
+    c_free_multibyte(wuri);
     return -1;
   }
-
+  
   buf->name = c_basename(uri);
+
   if (buf->name == NULL) {
     csync_vio_file_stat_destroy(buf);
+    c_free_multibyte(wuri);
     return -1;
   }
   buf->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
@@ -334,38 +366,53 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   buf->ctime = sb.st_ctime;
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_CTIME;
 
+  c_free_multibyte(wuri);
   return 0;
 }
 
 int csync_vio_local_rename(const char *olduri, const char *newuri) {
 #ifdef _WIN32
-  if(olduri && newuri) {
-    if (MoveFileEx(olduri, newuri, MOVEFILE_COPY_ALLOWED + MOVEFILE_REPLACE_EXISTING + MOVEFILE_WRITE_THROUGH )) {
+  const _TCHAR *nuri = c_multibyte(newuri);
+  const _TCHAR *ouri = c_multibyte(olduri);
+
+  if(ouri && nuri) {
+    if (MoveFileExW(ouri, nuri, MOVEFILE_COPY_ALLOWED + MOVEFILE_REPLACE_EXISTING + MOVEFILE_WRITE_THROUGH )) {
          return 0;
     }
     errno = GetLastError();
   } else {
     errno = ENOENT;
   }
+  c_free_multibyte(nuri);
+  c_free_multibyte(ouri);
   return -1;
+#else
+  return rename(olduri, newuri);
 #endif
 
-  return rename(olduri, newuri);
 }
 
 int csync_vio_local_unlink(const char *uri) {
-  return unlink(uri);
+  const _TCHAR *nuri = c_multibyte(uri);
+  int re = _tunlink( nuri );
+  c_free_multibyte(nuri);
+  return re;
 }
 
 int csync_vio_local_chmod(const char *uri, mode_t mode) {
-  return chmod(uri, mode);
+  const _TCHAR *nuri = c_multibyte(uri);
+  int re = -1;
+  
+  re = _tchmod(nuri, mode);
+  c_free_multibyte(nuri);
+  return re;
 }
 
 int csync_vio_local_chown(const char *uri, uid_t owner, gid_t group) {
-#ifndef _WIN32
-    return chown(uri, owner, group);
+#ifdef _WIN32
+  return 0;
 #else
-    return 0;
+  return chown(uri, owner, group);
 #endif
 }
 
