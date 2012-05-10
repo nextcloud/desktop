@@ -425,26 +425,34 @@ static void results(void *userdata,
     const ne_status *status = NULL;
     char *path = ne_path_unescape( uri->path );
 
+    /* It seems strange: first uri->path is unescaped to escape it in the next step again.
+     * The reason is that uri->path is not completely escaped (ie. it seems only to have
+     * spaces escaped), while the fetchCtx->target is fully escaped.
+     * See http://bugs.owncloud.org/thebuggenie/owncloud/issues/oc-613
+     */
+    char *escaped_path = ne_path_escape( path );
+
     (void) status;
     if( ! fetchCtx ) {
         DEBUG_WEBDAV(("No valid fetchContext\n"));
         return;
     }
 
-    /* DEBUG_WEBDAV(("** propfind result found: %s\n", path )); */
     if( ! fetchCtx->target ) {
         DEBUG_WEBDAV(("error: target must not be zero!\n" ));
         return;
     }
 
-    if (ne_path_compare(fetchCtx->target, uri->path) == 0 && !fetchCtx->include_target) {
+    /* see if the target should be included in the result list. */
+    if (ne_path_compare(fetchCtx->target, escaped_path) == 0 && !fetchCtx->include_target) {
         /* This is the target URI */
         DEBUG_WEBDAV(( "Skipping target resource.\n"));
         /* Free the private structure. */
         SAFE_FREE( path );
+        SAFE_FREE( escaped_path );
         return;
     }
-
+    SAFE_FREE( escaped_path );
     /* Fill the resource structure with the data about the file */
     newres = c_malloc(sizeof(struct resource));
     newres->uri =  path; /* no need to strdup because ne_path_unescape already allocates */
@@ -1243,7 +1251,7 @@ static csync_vio_file_stat_t *owncloud_readdir(csync_vio_method_handle_t *dhandl
         _fs.size   = lfs->size;
     }
 
-    // DEBUG_WEBDAV(("LFS fields: %s: %d\n", lfs->name, lfs->type ));
+    /* DEBUG_WEBDAV(("LFS fields: %s: %d\n", lfs->name, lfs->type )); */
     return lfs;
 }
 
