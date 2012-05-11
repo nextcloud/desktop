@@ -38,15 +38,15 @@ void UpdateDetector::versionCheck( Theme *theme )
     QUrl url("http://download.owncloud.com/clientupdater.php");
     QString ver = QString("%1.%2.%3").arg(MIRALL_VERSION_MAJOR).arg(MIRALL_VERSION_MINOR).arg(MIRALL_VERSION_MICRO);
 
-    QString platform = QString::fromLocal8Bit("stranger");
+    QString platform = QLatin1String("stranger");
 #ifdef Q_OS_LINUX
-    platform = QString::fromLocal8Bit("linux");
+    platform = QLatin1String("linux");
 #endif
 #ifdef Q_OS_WIN32
-    platform = QString::fromLocal8Bit( "win32" );
+    platform = QLatin1String( "win32" );
 #endif
 #ifdef Q_OS_MACOS
-    platform = QString::fromLocal8Bit( "macos" );
+    platform = QLatin1String( "macos" );
 #endif
 
     url.addQueryItem( "version", ver );
