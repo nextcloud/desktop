@@ -3,7 +3,9 @@ cmake_minimum_required(VERSION 2.6)
 project(mirall)
 set(PACKAGE "mirall")
 set( CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules )
+
 include(${CMAKE_SOURCE_DIR}/VERSION.cmake)
+configure_file( ${CMAKE_SOURCE_DIR}/src/mirall/version.h.in ${CMAKE_SOURCE_DIR}/src/mirall/version.h )
 
 include(GNUInstallDirs)
 ## stupid, we should upstream this
