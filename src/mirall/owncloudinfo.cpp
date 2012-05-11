@@ -188,7 +188,7 @@ void ownCloudInfo::slotMkdirFinished()
     }
 
     emit webdavColCreated( reply->error() );
-    qDebug() << "mkdir slot hit.";
+    qDebug() << "mkdir slot hit with status: " << reply->error();
     reply->deleteLater();
 }
 #endif
