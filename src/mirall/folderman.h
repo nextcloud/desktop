@@ -108,7 +108,6 @@ private:
     QSignalMapper *_folderChangeSignalMapper;
     QString        _currentSyncFolder;
     QStringList    _scheduleQueue;
-    bool           _folderToDelete;
 };
 
 }

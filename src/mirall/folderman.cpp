@@ -26,8 +26,7 @@
 namespace Mirall {
 
 FolderMan::FolderMan(QObject *parent) :
-    QObject(parent),
-    _folderToDelete(false)
+    QObject(parent)
 {
     // if QDir::mkpath would not be so stupid, I would not need to have this
     // duplication of folderConfigPath() here
@@ -305,13 +304,6 @@ void FolderMan::slotFolderSyncFinished( const SyncResult& )
 {
     qDebug() << "<===================================== sync finsihed for " << _currentSyncFolder;
 
-    // check if the folder is scheduled to be deleted. The flag is set in slotRemoveFolder
-    // after the user clicked to delete it.
-    if( _folderToDelete ) {
-        qDebug() << " !! This folder is going to be deleted now!";
-        removeFolder( _currentSyncFolder );
-        _folderToDelete = false;
-    }
     _currentSyncFolder.clear();
     QTimer::singleShot(200, this, SLOT(slotScheduleFolderSync()));
 }
@@ -346,11 +338,10 @@ void FolderMan::slotRemoveFolder( const QString& alias )
     if( alias.isEmpty() ) return;
 
     if( _currentSyncFolder == alias ) {
-        // attention: sync is currently running!
-        _folderToDelete = true; // flag for the sync finished slot
-    } else {
-        removeFolder(alias);
+        // terminate if the sync is currently underway.
+        terminateSyncProcess( alias );
     }
+    removeFolder(alias);
 }
 
 // remove a folder from the map. Should be sure n
