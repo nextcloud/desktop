@@ -580,38 +580,45 @@ void Application::computeOverallSyncStatus()
         SyncResult folderResult = syncedFolder->syncResult();
         SyncResult::Status syncStatus = folderResult.status();
 
-        if( ! folderResult.localRunOnly() && syncedFolder->syncEnabled() ) { // skip local runs, use the last message.
-            switch( syncStatus ) {
-            case SyncResult::Undefined:
-                if ( overallResult.status() != SyncResult::Error ) {
+        if( ! folderResult.localRunOnly() ) { // skip local runs, use the last message.
+            if( syncedFolder->syncEnabled() ) {
+                switch( syncStatus ) {
+                case SyncResult::Undefined:
+                    if ( overallResult.status() != SyncResult::Error ) {
+                        overallResult = SyncResult::Error;
+                    }
+                    folderMessage = tr( "Undefined State." );
+                    break;
+                case SyncResult::NotYetStarted:
+                    folderMessage = tr( "Waits to start syncing." );
+                    break;
+                case SyncResult::SyncRunning:
+                    folderMessage = tr( "Sync is running." );
+                    break;
+                case SyncResult::Success:
+                    folderMessage = tr( "Last Sync was successful." );
+                    break;
+                case SyncResult::Error:
                     overallResult = SyncResult::Error;
+                    folderMessage = tr( "Syncing Error." );
+                    break;
+                case SyncResult::SetupError:
+                    if ( overallResult.status() != SyncResult::Error ) {
+                        overallResult = SyncResult::SetupError;
+                    }
+                    folderMessage = tr( "Setup Error." );
+                    break;
+                default:
+                    folderMessage = tr( "Undefined Error State." );
                 }
-                folderMessage = tr( "Undefined State." );
-                break;
-            case SyncResult::NotYetStarted:
-                folderMessage = tr( "Waits to start syncing." );
-                break;
-            case SyncResult::SyncRunning:
-                folderMessage = tr( "Sync is running." );
-                break;
-            case SyncResult::Success:
-                folderMessage = tr( "Last Sync was successful." );
-                break;
-            case SyncResult::Error:
-                overallResult = SyncResult::Error;
-                folderMessage = tr( "Syncing Error." );
-                break;
-            case SyncResult::SetupError:
-                if ( overallResult.status() != SyncResult::Error ) {
-                    overallResult = SyncResult::SetupError;
-                }
-                folderMessage = tr( "Setup Error." );
-                break;
-            default:
-                folderMessage = tr( "Undefined Error State." );
+            } else {
+                    // sync is disabled.
+                folderMessage = tr( "Sync is disabled." );
             }
         }
-        _overallStatusStrings[syncedFolder] = QString("Folder %1: %2").arg(syncedFolder->alias()).arg(folderMessage);
+        if( folderMessage != _overallStatusStrings[syncedFolder] ) {
+            _overallStatusStrings[syncedFolder] = QString("Folder %1: %2").arg(syncedFolder->alias()).arg(folderMessage);
+        }
     }
 
     // create the tray blob message
