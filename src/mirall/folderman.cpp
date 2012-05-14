@@ -136,27 +136,15 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
 
             MirallConfigFile cfgFile;
 
-            // assemble the owncloud url to pass to csync.
-            QUrl url( cfgFile.ownCloudUrl() );
-            QString existPath = url.path();
-            qDebug() << "existing path: "  << existPath;
+            // assemble the owncloud url to pass to csync, incl. webdav
+            QString oCUrl = cfgFile.ownCloudUrl( QString(), true );
 
-            if( !existPath.isEmpty() ) {
-                // cut off the trailing slash
-                if( existPath.endsWith('/') ) {
-                    existPath.truncate( existPath.length()-1 );
-                }
-                // cut off the leading slash
-                if( targetPath.startsWith('/') ) {
-                    targetPath.remove(0,1);
-                }
+            // cut off the leading slash, oCUrl always has a trailing.
+            if( targetPath.startsWith('/') ) {
+                targetPath.remove(0,1);
             }
 
-            url.setPath( QString("%1/files/webdav.php/%2").arg(existPath).arg(targetPath) );
-
-            folder = new ownCloudFolder( file, path, url.toString(), this );
-
-
+            folder = new ownCloudFolder( file, path, oCUrl + targetPath, this );
 #else
             qCritical() << "* owncloud support not enabled!! ignoring:" << file;
 #endif
