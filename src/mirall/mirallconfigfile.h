@@ -45,6 +45,9 @@ public:
 
     QString ownCloudPasswd( const QString& connection = QString() ) const;
 
+    QString ownCloudVersion() const;
+    void setOwnCloudVersion( const QString& );
+
     bool ownCloudSkipUpdateCheck( const QString& connection = QString() ) const;
 
     QByteArray basicAuthHeader() const;
@@ -52,6 +55,7 @@ public:
 private:
     static QString _passwd;
     static bool    _askedUser;
+    static QString _oCVersion;
 };
 
 }

@@ -36,7 +36,6 @@ SslErrorDialog *ownCloudInfo::_sslErrorDialog = 0;
 bool            ownCloudInfo::_certsUntrusted = false;
 int             ownCloudInfo::_authAttempts   = 0;
 
-
 ownCloudInfo::ownCloudInfo( const QString& connectionName, QObject *parent ) :
     QObject(parent)
 {
@@ -282,14 +281,30 @@ void ownCloudInfo::slotReplyFinished()
 
             QString infoString;
             QString versionStr;
+            QString version;
+            QString edition;
+
             foreach ( infoString, li ) {
-                if( infoString.contains( "versionstring") ) {
-                    // get the version string out.
-                    versionStr = infoString.mid(17);
-                    versionStr.remove(-1, 1);
+                QStringList touple = infoString.split( QChar(':'));
+                QString key = touple[0];
+                key.remove(QChar('"'));
+                QString val = touple[1];
+                val.remove(QChar('"'));
+
+                if( key == QLatin1String("versionstring") ) {
+                    // get the versionstring out.
+                    versionStr = val;
+                } else if( key == QLatin1String( "version") ) {
+                    // get version out
+                    version = val;
+                } else if( key == QLatin1String( "edition") ) {
+                    // get version out
+                    edition = val;
+                } else {
+                    qDebug() << "Unknown info from ownCloud status.php: "<< key << "=" << val;
                 }
             }
-            emit ownCloudInfoFound( plainUrl, versionStr );
+            emit ownCloudInfoFound( plainUrl, versionStr, version, edition );
         } else {
             qDebug() << "No proper answer on " << url;
             emit noOwncloudFound( reply );

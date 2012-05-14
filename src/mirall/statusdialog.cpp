@@ -205,8 +205,8 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
 
   _ownCloudInfo = new ownCloudInfo();
 
-  connect(_ownCloudInfo, SIGNAL(ownCloudInfoFound(const QString&, const QString&)),
-          this, SLOT(slotOCInfo( const QString&, const QString& )));
+  connect(_ownCloudInfo, SIGNAL(ownCloudInfoFound(const QString&, const QString&, const QString&, const QString&)),
+          this, SLOT(slotOCInfo( const QString&, const QString&, const QString&, const QString& )));
   connect(_ownCloudInfo, SIGNAL(noOwncloudFound(QNetworkReply*)),
           this, SLOT(slotOCInfoFail(QNetworkReply*)));
 
@@ -417,13 +417,14 @@ void StatusDialog::slotCheckConnection()
     }
 }
 
-void StatusDialog::slotOCInfo( const QString& url, const QString& version )
+void StatusDialog::slotOCInfo( const QString& url, const QString& versionStr, const QString& version, const QString& )
 {
     _OCUrl = url;
     qDebug() << "#-------# oC found on " << url;
     /* enable the open button */
     _ocUrlLabel->setOpenExternalLinks(true);
-    _ocUrlLabel->setText( tr("Connected to <a href=\"%1\">%2</a>, ownCloud %3").arg(url).arg(url).arg(version) );
+    _ocUrlLabel->setText( tr("Connected to <a href=\"%1\">%2</a>, ownCloud %3").arg(url).arg(url).arg(versionStr) );
+    _ocUrlLabel->setToolTip( tr("Version: %1").arg(version));
     _ButtonAdd->setEnabled(true);
 
 }

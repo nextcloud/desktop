@@ -289,7 +289,7 @@ void FolderWizardTargetPage::initializePage()
     /* check the owncloud configuration file and query the ownCloud */
     ownCloudInfo *ocInfo = new ownCloudInfo( QString(), this );
     if( ocInfo->isConfigured() ) {
-      connect(ocInfo,SIGNAL(ownCloudInfoFound(QString,QString)),SLOT(slotOwnCloudFound(QString,QString)));
+      connect(ocInfo,SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
       connect(ocInfo,SIGNAL(noOwncloudFound(QNetworkReply*)),SLOT(slotNoOwnCloudFound(QNetworkReply*)));
       connect(_ui._buttCreateFolder, SIGNAL(clicked()), SLOT(slotCreateRemoteFolder()));
       ocInfo->checkInstallation();
@@ -305,15 +305,18 @@ void FolderWizardTargetPage::initializePage()
     }
 }
 
-void FolderWizardTargetPage::slotOwnCloudFound( const QString& url, const QString& infoStr )
+void FolderWizardTargetPage::slotOwnCloudFound( const QString& url, const QString& infoStr, const QString& version, const QString& edition)
 {
-  if( infoStr.isEmpty() ) {
-  } else {
-    _ui.OCLabel->setText( tr("to your <a href=\"%1\">ownCloud</a> (version %2)").arg(url).arg(infoStr));
-    _ui.OCFolderLineEdit->setEnabled( true );
-    _ui.OCRadioBtn->setEnabled( true );
-    qDebug() << "ownCloud found on " << url << " with version: " << infoStr;
-  }
+    Q_UNUSED(version);
+    Q_UNUSED(edition);
+
+    if( infoStr.isEmpty() ) {
+    } else {
+        _ui.OCLabel->setText( tr("to your <a href=\"%1\">ownCloud</a> (version %2)").arg(url).arg(infoStr));
+        _ui.OCFolderLineEdit->setEnabled( true );
+        _ui.OCRadioBtn->setEnabled( true );
+        qDebug() << "ownCloud found on " << url << " with version: " << infoStr;
+    }
 }
 
 void FolderWizardTargetPage::slotNoOwnCloudFound( QNetworkReply* error )

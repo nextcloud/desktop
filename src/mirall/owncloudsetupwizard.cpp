@@ -72,7 +72,7 @@ OwncloudSetupWizard::OwncloudSetupWizard( FolderMan *folderMan, Theme *theme, QO
 
     // create the ocInfo object
     _ocInfo = new ownCloudInfo;
-    connect(_ocInfo,SIGNAL(ownCloudInfoFound(QString,QString)),SLOT(slotOwnCloudFound(QString,QString)));
+    connect(_ocInfo,SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
     connect(_ocInfo,SIGNAL(noOwncloudFound(QNetworkReply*)),SLOT(slotNoOwnCloudFound(QNetworkReply*)));
     connect(_ocInfo,SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
 }
@@ -110,9 +110,9 @@ void OwncloudSetupWizard::testOwnCloudConnect()
     }
 }
 
-void OwncloudSetupWizard::slotOwnCloudFound( const QString& url, const QString& infoString )
+void OwncloudSetupWizard::slotOwnCloudFound( const QString& url, const QString& infoString, const QString& version, const QString& )
 {
-    _ocWizard->appendToResultWidget(tr("<font color=\"green\">Successfully connected to %1: ownCloud version %2</font><br/><br/>").arg( url ).arg(infoString));
+    _ocWizard->appendToResultWidget(tr("<font color=\"green\">Successfully connected to %1: ownCloud version %2 (%3)</font><br/><br/>").arg( url ).arg(infoString).arg(version));
 
     // enable the finish button.
     _ocWizard->button( QWizard::FinishButton )->setEnabled( true );

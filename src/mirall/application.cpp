@@ -100,8 +100,8 @@ Application::Application(int &argc, char **argv) :
     _folderWizard = new FolderWizard( 0, _theme );
 
     _ocInfo = new ownCloudInfo( QString(), this );
-    connect( _ocInfo,SIGNAL(ownCloudInfoFound(QString,QString)),
-             SLOT(slotOwnCloudFound(QString,QString)));
+    connect( _ocInfo,SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
+             SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
 
     connect( _ocInfo,SIGNAL(noOwncloudFound(QNetworkReply*)),
              SLOT(slotNoOwnCloudFound(QNetworkReply*)));
@@ -182,10 +182,13 @@ void Application::slotStartFolderSetup()
     }
 }
 
-void Application::slotOwnCloudFound( const QString& url , const QString& version )
+void Application::slotOwnCloudFound( const QString& url, const QString& versionStr, const QString& version, const QString& edition)
 {
-    qDebug() << "** Application: ownCloud found: " << url << " with version " << version;
-    // now check the authentication!
+    qDebug() << "** Application: ownCloud found: " << url << " with version " << versionStr << "(" << version << ")";
+    // now check the authentication
+    MirallConfigFile cfgFile;
+    cfgFile.setOwnCloudVersion( version );
+
     QTimer::singleShot( 0, this, SLOT( slotCheckAuthentication() ));
 }
 

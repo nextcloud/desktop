@@ -96,7 +96,7 @@ public slots:
     void slotCheckConnection();
 
     void slotOCInfoFail(QNetworkReply*);
-    void slotOCInfo( const QString&, const QString& );
+    void slotOCInfo( const QString&, const QString&, const QString&, const QString& );
     void slotDoubleClicked( const QModelIndex& );
 
 protected:

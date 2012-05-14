@@ -83,7 +83,7 @@ protected slots:
     void on_localFolder2LineEdit_textChanged();
     void on_urlFolderLineEdit_textChanged();
 
-    void slotOwnCloudFound( const QString&, const QString& );
+    void slotOwnCloudFound( const QString&, const QString&, const QString&, const QString& );
     void slotNoOwnCloudFound(QNetworkReply*);
 
     void slotFolderTextChanged( const QString& );

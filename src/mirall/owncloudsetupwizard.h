@@ -78,7 +78,7 @@ protected slots:
     void slotCreateOCLocalhost();
 
 private slots:
-    void slotOwnCloudFound( const QString&, const QString& );
+    void slotOwnCloudFound( const QString&, const QString&, const QString&, const QString& );
     void slotNoOwnCloudFound( QNetworkReply* );
     void slotCreateRemoteFolderFinished( QNetworkReply::NetworkError );
 
