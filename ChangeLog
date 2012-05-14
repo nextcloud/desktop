@@ -1,6 +1,11 @@
 ChangeLog
 =========
-
+version 1.0.2 (release ), csync 0.50.6 required
+  * [GUI] New icon set for ownCloud client
+  * [GUI] No splashscreen any more (oC Bug #498)
+  * [GUI] Russian translation added
+  * [Fixes] Long running syncs can be interrupted now.
+    + csync fixes.
 version 1.0.1 (release 2012-04-18), csync 0.50.5 required
   * [Security] Support SSL Connections
   * [Security] SSL Warning dialog
