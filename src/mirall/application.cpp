@@ -413,9 +413,14 @@ void Application::slotRemoveFolder( const QString& alias )
     if( ret == QMessageBox::No ) {
         return;
     }
+    Folder *f = _folderMan->folder(alias);
+    if( f && _overallStatusStrings.contains( f )) {
+        _overallStatusStrings.remove( f );
+    }
 
     _folderMan->slotRemoveFolder( alias );
     _statusDialog->slotRemoveSelectedFolder( );
+    computeOverallSyncStatus();
     setupContextMenu();
 }
 
@@ -623,7 +628,10 @@ void Application::computeOverallSyncStatus()
 
     // create the tray blob message
     QStringList allStatusStrings = _overallStatusStrings.values();
-    trayMessage = allStatusStrings.join("\n");
+    if( ! allStatusStrings.isEmpty() )
+        trayMessage = allStatusStrings.join("\n");
+    else
+        trayMessage = tr("No sync folders configured.");
 
     QIcon statusIcon = _theme->syncStateIcon( overallResult.status(), 48 );
 
