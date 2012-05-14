@@ -36,6 +36,7 @@
 #include <neon/ne_auth.h>
 #include <neon/ne_dates.h>
 #include <neon/ne_compress.h>
+#include <neon/ne_redirect.h>
 
 #include "c_lib.h"
 #include "csync.h"
@@ -400,6 +401,7 @@ static int dav_connect(const char *base_url) {
         ne_ssl_trust_default_ca( dav_session.ctx );
         ne_ssl_set_verify( dav_session.ctx, verify_sslcert, 0 );
     }
+    ne_redirect_register( dav_session.ctx );
 
     _connected = 1;
     rc = 0;
@@ -1179,6 +1181,8 @@ static csync_vio_method_handle_t *owncloud_opendir(const char *uri) {
     struct listdir_context *fetchCtx = NULL;
     struct resource *reslist = NULL;
     char *curi = _cleanPath( uri );
+    char *redir_uri = NULL;
+    const ne_uri *redir_ne_uri = NULL;
 
     DEBUG_WEBDAV(("opendir method called on %s\n", uri ));
 
@@ -1194,6 +1198,11 @@ static csync_vio_method_handle_t *owncloud_opendir(const char *uri) {
     rc = fetch_resource_list( curi, NE_DEPTH_ONE, fetchCtx );
     if( rc != NE_OK ) {
         errno = ne_session_error_errno( dav_session.ctx );
+	redir_ne_uri = ne_redirect_location(dav_session.ctx);
+	if( redir_ne_uri ) {
+            redir_uri = ne_uri_unparse(redir_ne_uri);
+	    DEBUG_WEBDAV(("Permanently moved to %s\n", redir_uri));
+	}
         return NULL;
     } else {
         fetchCtx->currResource = fetchCtx->list;
