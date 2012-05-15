@@ -33,6 +33,8 @@
 #ifndef _C_STR_H
 #define _C_STR_H
 
+#include "c_private.h"
+
 struct c_strlist_s; typedef struct c_strlist_s c_strlist_t;
 
 /**
@@ -136,6 +138,39 @@ char *c_uppercase(const char* str);
  * @return The malloced lowered string or NULL on error.
  */
 char *c_lowercase(const char* str);
+
+/**
+ * @brief Convert a multibyte string to utf8 (Win32).
+ *
+ * @param  str     The multibyte encoded string to convert
+ *
+ * @return The malloced converted string or NULL on error.
+ */
+const char*   c_utf8(const _TCHAR *str);
+
+/**
+ * @brief Convert a utf8 encoded string to multibyte (Win32).
+ *
+ * @param  str     The utf8 string to convert.
+ *
+ * @return The malloced converted multibyte string or NULL on error.
+ */
+const _TCHAR* c_multibyte(const char *wstr);
+
+/**
+ * @brief Free buffer malloced by c_utf8.
+ *
+ * @param  buf     The buffer to free.
+ *
+ */
+void c_free_utf8(char* buf);
+
+/**
+ * @brief Free buffer malloced by c_multibyte.
+ *
+ * @param  buf     The buffer to free.
+ */
+void c_free_multibyte(const _TCHAR* buf);
 
 /**
  * }@

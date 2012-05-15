@@ -8,9 +8,10 @@
 #
 
 use Carp::Assert;
-use HTTP::DAV;
 use Data::Dumper;
+use HTTP::DAV;
 use File::Copy;
+use File::Glob ':glob';
 
 use strict;
 
@@ -29,6 +30,9 @@ my $passwd = 'XXXXX'; # Mind to be secure.
 
 if( -r "./t1.cfg" ) {
     my %config = do 't1.cfg';
+    warn "Could not parse t1.cfg: $!\n" unless %config;
+    warn "Could not do t1.cfg: $@\n" if $@;
+
     $user   = $config{user} if( $config{user} );
     $passwd = $config{passwd} if( $config{passwd} );
     $owncloud = $config{url}  if( $config{url} );
@@ -46,14 +50,16 @@ sub remoteDir( $$ )
     my ($d, $dir) = @_;
 
     my $url = $owncloud . $dir ;
-
-    $d->open( -url => $owncloud );
+ 
+    $d->open( $owncloud );
     print $d->message . "\n";
 
     my $re = $d->mkcol( $url );
     if( $re == 0 ) {
-	print "Failed to create directory <$dir>\n";
+	print "Failed to create directory <$url>: $re\n";
+	exit 1;
     }
+    $d->open( $url );
     return $re;
 }
 
@@ -175,15 +181,31 @@ sub assertLocalAndRemoteDir( $$$ )
     }
 
 }
+
+sub glob_put( $$$ )
+{
+    my( $d, $globber, $target ) = @_;
+
+    $d->open( $target );
+    
+    my @puts = bsd_glob( $globber );
+    foreach my $lfile( @puts ) {
+        if( $lfile =~ /.*\/(.+)$/g ) {
+	    my $rfile = $1;
+	    my $puturl = "$target/$rfile";
+	    print "   *** Putting $lfile to $puturl\n";
+	    $d->put( -local=>$lfile, -url=> $puturl );
+	}
+    }
+}
 # ====================================================================
 
 my $d = HTTP::DAV->new();
 
-
 $d->credentials( -url=> $owncloud, -realm=>"ownCloud",
                  -user=> $user,
                  -pass=> $passwd );
-$d->DebugLevel(1);
+$d->DebugLevel(3);
 
 my $remoteDir = "t1/";
 
@@ -193,9 +215,8 @@ remoteDir( $d, $remoteDir );
 remoteDir( $d, $remoteDir . "remoteToLocal1" );
 
 # put some files remote.
-$d->put( -local=>"toremote1/*", -url=> $owncloud . $remoteDir . "remoteToLocal1" );
+glob_put( $d, 'toremote1/*', $owncloud . $remoteDir . "remoteToLocal1/" );
 
-# 
 my $localDir = "./t1";
 
 createLocalDir( $localDir );
@@ -234,6 +255,9 @@ move( "$locDir/kramer.jpg", "$locDir/oldtimer.jpg" );
 csync( $localDir, $remoteDir );
 assertLocalAndRemoteDir( $d, $locDir, $remoteDir . "fromLocal1" );
 
+print "\n###########################################\n";
+print "            all cool - tests succeeded.\n";
+print "###########################################\n";
 
 print "\nInterrupt before cleanup in 4 seconds...\n";
 sleep(4);

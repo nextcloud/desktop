@@ -36,6 +36,7 @@
 #include <neon/ne_auth.h>
 #include <neon/ne_dates.h>
 #include <neon/ne_compress.h>
+#include <neon/ne_redirect.h>
 
 #include "c_lib.h"
 #include "csync.h"
@@ -130,12 +131,12 @@ static const ne_propname ls_props[] = {
  */
 
 struct dav_session_s dav_session; /* The DAV Session, initialised in dav_connect */
-int _connected;                   /* flag to indicate if a connection exists, ie.
+int _connected = 0;                   /* flag to indicate if a connection exists, ie.
                                      the dav_session is valid */
 csync_vio_file_stat_t _fs;
 
 csync_auth_callback _authcb;
-void *_userdata;
+void *_userdata = NULL;
 
 #define PUT_BUFFER_SIZE 1024*5
 
@@ -400,6 +401,7 @@ static int dav_connect(const char *base_url) {
         ne_ssl_trust_default_ca( dav_session.ctx );
         ne_ssl_set_verify( dav_session.ctx, verify_sslcert, 0 );
     }
+    ne_redirect_register( dav_session.ctx );
 
     _connected = 1;
     rc = 0;
@@ -425,26 +427,34 @@ static void results(void *userdata,
     const ne_status *status = NULL;
     char *path = ne_path_unescape( uri->path );
 
+    /* It seems strange: first uri->path is unescaped to escape it in the next step again.
+     * The reason is that uri->path is not completely escaped (ie. it seems only to have
+     * spaces escaped), while the fetchCtx->target is fully escaped.
+     * See http://bugs.owncloud.org/thebuggenie/owncloud/issues/oc-613
+     */
+    char *escaped_path = ne_path_escape( path );
+
     (void) status;
     if( ! fetchCtx ) {
         DEBUG_WEBDAV(("No valid fetchContext\n"));
         return;
     }
 
-    DEBUG_WEBDAV(("** propfind result found: %s\n", path ));
     if( ! fetchCtx->target ) {
         DEBUG_WEBDAV(("error: target must not be zero!\n" ));
         return;
     }
 
-    if (ne_path_compare(fetchCtx->target, uri->path) == 0 && !fetchCtx->include_target) {
+    /* see if the target should be included in the result list. */
+    if (ne_path_compare(fetchCtx->target, escaped_path) == 0 && !fetchCtx->include_target) {
         /* This is the target URI */
         DEBUG_WEBDAV(( "Skipping target resource.\n"));
         /* Free the private structure. */
         SAFE_FREE( path );
+        SAFE_FREE( escaped_path );
         return;
     }
-
+    SAFE_FREE( escaped_path );
     /* Fill the resource structure with the data about the file */
     newres = c_malloc(sizeof(struct resource));
     newres->uri =  path; /* no need to strdup because ne_path_unescape already allocates */
@@ -475,7 +485,7 @@ static void results(void *userdata,
     newres->next   = fetchCtx->list;
     fetchCtx->list = newres;
     fetchCtx->result_count = fetchCtx->result_count + 1;
-    DEBUG_WEBDAV(( "results for URI %s: %d %d\n", newres->name, (int)newres->size, (int)newres->type ));
+    /* DEBUG_WEBDAV(( "results for URI %s: %d %d\n", newres->name, (int)newres->size, (int)newres->type )); */
 }
 
 /*
@@ -697,7 +707,9 @@ static ssize_t owncloud_write(csync_vio_method_handle_t *fhandle, const void *bu
     /* check if there is space left in the mem buffer */
     if( writeCtx->bytes_written + count > PUT_BUFFER_SIZE ) {
         if( writeCtx->fileWritten == 0 ) {
-            DEBUG_WEBDAV(("Remaining Mem Buffer size to small, push to disk (current buf size %d)\n", writeCtx->bytes_written));
+            DEBUG_WEBDAV(("Remaining Mem Buffer size to small, push to disk "
+                          "(current buf size %lu)\n",
+                          (unsigned long) writeCtx->bytes_written));
         }
 
         /* write contents to disk */
@@ -1019,7 +1031,8 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
         if( writeCtx->fd > -1 ) {
             if( writeCtx->fileWritten && writeCtx->bytes_written > 0 ) { /* was content written to file? */
                 /* push the rest of the buffer to file as well. */
-                DEBUG_WEBDAV(("Write remaining %d bytes to disk.\n", writeCtx->bytes_written ));
+                DEBUG_WEBDAV(("Write remaining %lu bytes to disk.\n",
+                              (unsigned long) writeCtx->bytes_written ));
                 len = write( writeCtx->fd, _buffer, writeCtx->bytes_written );
 		if( len != writeCtx->bytes_written ) {
 		    DEBUG_WEBDAV(("WRN: write wrote wrong number of remaining bytes\n"));
@@ -1168,6 +1181,8 @@ static csync_vio_method_handle_t *owncloud_opendir(const char *uri) {
     struct listdir_context *fetchCtx = NULL;
     struct resource *reslist = NULL;
     char *curi = _cleanPath( uri );
+    char *redir_uri = NULL;
+    const ne_uri *redir_ne_uri = NULL;
 
     DEBUG_WEBDAV(("opendir method called on %s\n", uri ));
 
@@ -1183,6 +1198,11 @@ static csync_vio_method_handle_t *owncloud_opendir(const char *uri) {
     rc = fetch_resource_list( curi, NE_DEPTH_ONE, fetchCtx );
     if( rc != NE_OK ) {
         errno = ne_session_error_errno( dav_session.ctx );
+	redir_ne_uri = ne_redirect_location(dav_session.ctx);
+	if( redir_ne_uri ) {
+            redir_uri = ne_uri_unparse(redir_ne_uri);
+	    DEBUG_WEBDAV(("Permanently moved to %s\n", redir_uri));
+	}
         return NULL;
     } else {
         fetchCtx->currResource = fetchCtx->list;
@@ -1240,7 +1260,7 @@ static csync_vio_file_stat_t *owncloud_readdir(csync_vio_method_handle_t *dhandl
         _fs.size   = lfs->size;
     }
 
-    // DEBUG_WEBDAV(("LFS fields: %s: %d\n", lfs->name, lfs->type ));
+    /* DEBUG_WEBDAV(("LFS fields: %s: %d\n", lfs->name, lfs->type )); */
     return lfs;
 }
 
@@ -1444,6 +1464,9 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
     (void) args;
     _authcb = cb;
     _userdata = userdata;
+    _connected = 0;  /* triggers dav_connect to go through the whole neon setup */
+
+    /* DEBUG_WEBDAV(("********** vio_module_init \n")); */
 
     return &_method;
 }
@@ -1456,6 +1479,8 @@ void vio_module_shutdown(csync_vio_method_t *method) {
 
     if( dav_session.ctx )
         ne_session_destroy( dav_session.ctx );
+    /* DEBUG_WEBDAV(( "********** vio_module_shutdown\n" )); */
+
 }
 
 

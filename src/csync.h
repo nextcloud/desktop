@@ -32,6 +32,7 @@
 #define _CSYNC_H
 
 #include <stdbool.h>
+#include <stdint.h>
 #include <unistd.h>
 #include <sys/types.h>
 
@@ -130,8 +131,8 @@ struct csync_tree_walk_file_s {
     /* off_t       size; */
     time_t      modtime;
 #ifdef _WIN32
-    int         uid;
-    int         gid;
+    uint32_t    uid;
+    uint32_t    gid;
 #else
     uid_t       uid;
     gid_t       gid;
@@ -387,7 +388,7 @@ typedef int csync_treewalk_visit_func(TREE_WALK_FILE* ,void*);
  *
  * @param ctx           The csync context.
  * @param visitor       A callback function to handle the file info.
- * @param filter        A filter, built from and'ed csync_instructions_e
+ * @param filter        A filter, built from or'ed csync_instructions_e
  *
  * @return              0 on success, less than 0 if an error occured.
  */
