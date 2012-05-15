@@ -321,26 +321,13 @@ void Application::slotFolderOpenAction( const QString& alias )
 
 void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
 {
-  if( reason == QSystemTrayIcon::Trigger ) {
-    // check if there is a mirall.cfg already.
-    if( _owncloudSetupWizard->wizard()->isVisible() ) {
-      _owncloudSetupWizard->wizard()->show();
-    }
-
-    // if no config file is there, start the configuration wizard.
-    MirallConfigFile cfgFile;
-
-    if( !cfgFile.exists() ) {
-      qDebug() << "No configured folders yet, start the Owncloud integration dialog.";
-      _owncloudSetupWizard->startWizard();
-    } else {
-        qDebug() << "#============# Status dialog starting #=============#";
+  // A click on the tray icon should only open the status window on Win and
+  // Linux, not on Mac. They want a menu entry.
 #if defined Q_WS_WIN || defined Q_WS_X11
-      _statusDialog->setFolderList( _folderMan->map() );
-      _statusDialog->show();
-#endif
-    }
+  if( reason == QSystemTrayIcon::Trigger ) {
+    slotOpenStatus();
   }
+#endif
 }
 
 void Application::slotAddFolder()
@@ -400,8 +387,42 @@ void Application::slotAddFolder()
 void Application::slotOpenStatus()
 {
   if( ! _statusDialog ) return;
-  _statusDialog->setFolderList( _folderMan->map() );
-  _statusDialog->show();
+
+  QWidget *raiseWidget = 0;
+
+  // check if there is a mirall.cfg already.
+  if( _owncloudSetupWizard->wizard()->isVisible() ) {
+    raiseWidget = _owncloudSetupWizard->wizard();
+  }
+
+  // if no config file is there, start the configuration wizard.
+  if( ! raiseWidget ) {
+    MirallConfigFile cfgFile;
+
+    if( !cfgFile.exists() ) {
+      qDebug() << "No configured folders yet, start the Owncloud integration dialog.";
+      _owncloudSetupWizard->startWizard();
+    } else {
+      qDebug() << "#============# Status dialog starting #=============#";
+      raiseWidget = _statusDialog;
+      _statusDialog->setFolderList( _folderMan->map() );
+    }
+  }
+
+  // viel hilft viel ;-)
+  if( raiseWidget ) {
+#if defined Q_WS_WIN
+    Qt::WindowFlags eFlags = raiseWidget->windowFlags();
+    eFlags |= Qt::WindowStaysOnTopHint;
+    raiseWidget->setWindowFlags(eFlags);
+    raiseWidget->show();
+    eFlags &= ~Qt::WindowStaysOnTopHint;
+    raiseWidget->setWindowFlags(eFlags);
+#endif
+    raiseWidget->show();
+    raiseWidget->raise();
+    raiseWidget->activateWindow();
+  }
 }
 
 /*
