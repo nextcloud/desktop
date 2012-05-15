@@ -809,6 +809,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
                                                 mode_t mode) {
     char *uri = NULL;
     char *dir = NULL;
+    const  char *err = NULL;
     char getUrl[PATH_MAX];
     int put = 0;
     int rc = NE_OK;
@@ -945,6 +946,8 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
 
         if( rc != NE_OK || (rc == NE_OK && ne_get_status(writeCtx->req)->klass != 2) ) {
             DEBUG_WEBDAV(("request_dispatch failed with rc=%d\n", rc ));
+	    err = ne_get_error( dav_session.ctx );
+	    DEBUG_WEBDAV(("request error: %s\n", err ? err : "<nil>"));
             if( rc == NE_OK ) rc = NE_ERROR;
             errno = EACCES;
         }
