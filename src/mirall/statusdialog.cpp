@@ -239,9 +239,9 @@ void StatusDialog::slotFolderActivated( const QModelIndex& indx )
     bool folderEnabled = _model->data( indx, FolderViewDelegate::FolderSyncEnabled).toBool();
     qDebug() << "folder is sync enabled: " << folderEnabled;
     if ( folderEnabled ) {
-      _ButtonEnable->setText( tr( "disable" ) );
+      _ButtonEnable->setText( tr( "Pause" ) );
     } else {
-      _ButtonEnable->setText( tr( "enable" ) );
+      _ButtonEnable->setText( tr( "Resume" ) );
     }
   }
 }

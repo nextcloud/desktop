@@ -642,7 +642,7 @@ void Application::computeOverallSyncStatus()
                 }
             } else {
                     // sync is disabled.
-                folderMessage = tr( "Sync is disabled." );
+                folderMessage = tr( "Sync is paused." );
             }
         }
         if( folderMessage != _overallStatusStrings[syncedFolder] ) {
