@@ -296,11 +296,13 @@ retry_vio_init:
       if (rc < 0) {
         len = strlen(module);
 
-        if (module[len-1] == 's') {
+        if (len > 0 && module[len-1] == 's') {
           module[len-1] = '\0';
           goto retry_vio_init;
         }
-
+	/* error condition: Module could not be loaded */
+        ctx->error_code = CSYNC_ERR_MODULE;
+	
         SAFE_FREE(module);
         goto out;
       }
