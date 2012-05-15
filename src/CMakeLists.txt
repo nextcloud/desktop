@@ -111,18 +111,24 @@ set( final_src
 # add executable icon on windows and osx
 include( AddAppIconMacro )
 set(ownCloud_old ${ownCloud})
-kde4_add_app_icon( ownCloud "${CMAKE_CURRENT_SOURCE_DIR}/../resources/mirall-*.png" )
+kde4_add_app_icon( ownCloud "${CMAKE_CURRENT_SOURCE_DIR}/../resources/owncloud-icon-*.png") 
 list(APPEND final_src ${ownCloud})
 set(ownCloud ${ownCloud_old})
 
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
-    install(FILES mirall.png DESTINATION share/icons/hicolor/48x48/apps)
+    install(FILES ${CMAKE_SOURCE_DIR}/resources/mirall-48.png DESTINATION share/icons/hicolor/48x48/apps/ RENAME mirall.png)
+    install(FILES ${CMAKE_SOURCE_DIR}/resources/owncloud-icon-48.png DESTINATION share/icons/hicolor/48x48/apps/ RENAME owncloud.png)
+
     install(FILES ${mirall_I18N} DESTINATION share/mirall/i18n)
 
     # we may not add MACOSX_BUNDLE here, if not building one
+
+    # add_executable(owncloud main.cpp ${final_src})
     add_executable(owncloud WIN32 main.cpp ${final_src})
+    set_target_properties( owncloud PROPERTIES COMPILE_DEFINITIONS OWNCLOUD_CLIENT) 
+    # add_executable(owncloud main.cpp ${final_src})
 
     # mirall is not built for the bundle
     add_executable( mirall WIN32 main.cpp )
@@ -145,6 +151,7 @@ else()
 
     # we must add MACOSX_BUNDLE only if building a bundle
     add_executable(owncloud WIN32 MACOSX_BUNDLE main.cpp ${final_src})
+    set_target_properties( owncloud PROPERTIES COMPILE_DEFINITIONS OWNCLOUD_CLIENT)
 
     #FIXME: hardcoded path
     install(FILES /usr/local/lib/csync-0/csync_owncloud.so DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Plugins)

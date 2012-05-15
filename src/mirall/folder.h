@@ -15,11 +15,14 @@
 #ifndef MIRALL_FOLDER_H
 #define MIRALL_FOLDER_H
 
-#include <QNetworkConfigurationManager>
 #include <QObject>
 #include <QString>
 #include <QStringList>
 #include <QHash>
+
+#if QT_VERSION >= 0x040700
+#include <QNetworkConfigurationManager>
+#endif
 
 #include "mirall/syncresult.h"
 
@@ -127,11 +130,20 @@ public:
      QString backend() const;
 
      QIcon icon( int size ) const;
-  QTimer   *_pollTimer;
+     QTimer   *_pollTimer;
 
 public slots:
      void slotSyncFinished(const SyncResult &);
+
+     /**
+       *
+       */
      void slotChanged(const QStringList &pathList = QStringList() );
+
+     /**
+       * terminate the current sync run
+       */
+     virtual void slotTerminateSync() = 0;
 
 protected:
     /**
@@ -172,7 +184,9 @@ private:
     QString   _alias;
     bool      _onlyOnlineEnabled;
     bool      _onlyThisLANEnabled;
+#if QT_VERSION >= 0x040700
     QNetworkConfigurationManager _networkMgr;
+#endif
     bool       _online;
     bool       _enabled;
     QString    _backend;

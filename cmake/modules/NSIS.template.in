@@ -33,6 +33,10 @@
 !define SQLITE_DLL_PATH "${MING_LIB}/qt4/plugins/sqldrivers"
 !define IMAGEFORMATS_DLL_PATH "${MING_LIB}/qt4/plugins/imageformats"
 
+!define CSYNC_LIBRARY_DIR "@CSYNC_LIBRARY_DIR@"
+!define CSYNC_PLUGIN_DIR "@CSYNC_PLUGIN_DIR@"
+!define CSYNC_CONFIG_DIR "@CSYNC_CONFIG_DIR@"
+
 !define NSI_PATH "${SOURCE_PATH}/admin/win/nsi"
 
 ;-----------------------------------------------------------------------------
@@ -282,7 +286,7 @@ Section "${APPLICATION_NAME}" SEC_OWNCLOUD_PLAYER
         ; FIXME: fix installation dir of module, currently needs manual copying to
         ; /usr/i686-w64-mingw32/sys-root/mingw/bin/csync_modules/
 
-        File "/home/kf/owncloud.com/win/buildcsync/modules/csync_owncloud.dll"
+        File "${CSYNC_PLUGIN_DIR}/csync_owncloud.dll"
         SetOutPath "$INSTDIR"
    !endif
 
@@ -298,7 +302,7 @@ Section "${APPLICATION_NAME}" SEC_OWNCLOUD_PLAYER
    File "${QT_DLL_PATH}\QtNetwork4.dll"
    File "${QT_DLL_PATH}\QtXml4.dll"
 
-   File "/home/kf/owncloud.com/win/buildcsync/src/libcsync.dll"
+   File "${CSYNC_LIBRARY_DIR}/libcsync.dll"
    File "${MING_BIN}\libsqlite3-0.dll"
    File "${MING_BIN}\libiniparser.dll"
    File "${MING_BIN}\libdl.dll"
@@ -325,8 +329,8 @@ Section "${APPLICATION_NAME}" SEC_OWNCLOUD_PLAYER
    File "${MING_BIN}\libssl-8.dll"
 
    ; CSync configs
-   File "/home/kf/owncloud.com/win/csync/config/csync.conf"
-   File "/home/kf/owncloud.com/mirall/exclude.lst"
+   File "${CSYNC_CONFIG_DIR}/csync.conf"
+   File "${SOURCE_PATH}/exclude.lst"
 
 SectionEnd
 

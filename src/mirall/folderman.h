@@ -84,6 +84,8 @@ public slots:
 
     void slotReparseConfiguration();
 
+    void terminateSyncProcess( const QString& );
+
 private slots:
     // slot to add a folder to the syncing queue
     void slotScheduleSync( const QString & );
@@ -106,7 +108,6 @@ private:
     QSignalMapper *_folderChangeSignalMapper;
     QString        _currentSyncFolder;
     QStringList    _scheduleQueue;
-    bool           _folderToDelete;
 };
 
 }

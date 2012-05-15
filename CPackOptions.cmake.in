@@ -7,5 +7,18 @@ if(CPACK_GENERATOR MATCHES "NSIS")
     SET( CPACK_NSIS_COMPRESSOR   "/SOLID lzma" ) # The arguments that will be passed to the NSIS SetCompressor command.    /SOLID lzma
 endif(CPACK_GENERATOR MATCHES "NSIS")
 
-SET( CMAKE_SOURCE_DIR @CMAKE_SOURCE_DIR@ )
-SET( CMAKE_BINARY_DIR @CMAKE_BINARY_DIR@ )
+set( CMAKE_SOURCE_DIR  @CMAKE_SOURCE_DIR@ )
+set( CMAKE_BINARY_DIR  @CMAKE_BINARY_DIR@ )
+
+
+set( CSYNC_BINARY_DIR  @CSYNC_BINARY_DIR@ )
+set( MINGW_ROOT @CMAKE_FIND_ROOT_PATH@ )
+if(CSYNC_BINARY_DIR)
+    set( CSYNC_LIBRARY_DIR "${CSYNC_BINARY_DIR}/src" )
+    set( CSYNC_PLUGIN_DIR  "${CSYNC_BINARY_DIR}/modules" )
+    set( CSYNC_CONFIG_DIR  "${CSYNC_BINARY_DIR}/config" )
+else()
+    set( CSYNC_LIBRARY_DIR "${MINGW_ROOT}/bin" )
+    set( CSYNC_PLUGIN_DIR  "${MINGW_ROOT}/bin/csync-0" ) #FIXME: whatever it is
+    set( CSYNC_CONFIG_DIR  "${MINGW_ROOT}/etc/csync" )
+endif()

@@ -16,10 +16,19 @@
         <file>resources/dialog-cancel.png</file>
         <file>resources/view-refresh.png</file>
         <file>resources/folder-favorites.png</file>
-        <file>resources/folder-sync.png</file>
+        <file>resources/folder-sync-48.png</file>
         <file>resources/folder-important.png</file>
         <file>resources/folder-grey.png</file>
         <file>resources/owncloud_splash.png</file>
         <file>resources/task-ongoing.png</file>
+
+
+        <file>resources/owncloud-icon-32.png</file>
+        <file>resources/owncloud-icon-48.png</file>
+        <file>resources/owncloud-icon-framed-64.png</file>
+        <file>resources/owncloud-icon-sync-48.png</file>
+        <file>resources/owncloud-icon-error-48.png</file>
+        <file>resources/owncloud-icon-sync-ok-48.png</file>
+
     </qresource>
 </RCC>

@@ -40,13 +40,29 @@ public:
     /**
       * get a folder icon for a given backend in a given size.
       */
-    virtual QIcon   folderIcon( const QString&, int ) const;
-    virtual QIcon   syncStateIcon( SyncResult::Status, int ) const;
-    virtual QString statusHeaderText( SyncResult::Status ) const;
-    virtual QPixmap splashScreen() const = 0;
-    virtual QIcon   applicationIcon() const;
+    virtual QIcon   folderIcon( const QString& ) const = 0;
 
+    /**
+      * the icon that is shown in the tray context menu left of the folder name
+      */
+    virtual QIcon   trayFolderIcon( const QString& ) const;
+
+    /**
+      * get an sync state icon
+      */
+    virtual QIcon   syncStateIcon( SyncResult::Status, int ) const = 0;
+
+    virtual QIcon   folderDisabledIcon( int ) const = 0;
+    virtual QPixmap splashScreen() const = 0;
+
+    virtual QIcon   applicationIcon() const = 0;
+
+    virtual QString statusHeaderText( SyncResult::Status ) const;
     virtual QString version() const;
+
+protected:
+    QIcon themeIcon( const QString& name, int size ) const;
+
 private:
 
 

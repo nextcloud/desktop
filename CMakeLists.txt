@@ -1,10 +1,17 @@
 
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.6)
 project(mirall)
 set(PACKAGE "mirall")
 set( CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules )
+
 include(${CMAKE_SOURCE_DIR}/VERSION.cmake)
+configure_file( ${CMAKE_SOURCE_DIR}/src/mirall/version.h.in ${CMAKE_SOURCE_DIR}/src/mirall/version.h )
+
 include(GNUInstallDirs)
+## stupid, we should upstream this
+if("${CMAKE_INSTALL_PREFIX}" EQUAL "/usr")
+    set(CMAKE_INSTALL_SYSCONFDIR "/etc")
+endif()
 
 if(NOT DEFINED BUILD_OWNCLOUD_OSX_BUNDLE OR NOT APPLE)
     set(BUILD_OWNCLOUD_OSX_BUNDLE OFF)
@@ -12,7 +19,7 @@ elseif(BUILD_OWNCLOUD_OSX_BUNDLE)
     set(OWNCLOUD_OSX_BUNDLE "owncloud.app")
 endif()
 
-find_package(Qt4 4.7.0 COMPONENTS QtCore QtGui QtXml QtNetwork QtTest REQUIRED )
+find_package(Qt4 4.6.0 COMPONENTS QtCore QtGui QtXml QtNetwork QtTest REQUIRED )
 find_package(Csync)
 
 if(CSYNC_FOUND)
@@ -53,11 +60,15 @@ include(CTest)
 enable_testing()
 
 #
-# Uncomment this to build the ownCloud client.
-# Comment this to build the original mirall client
-add_definitions(-DOWNCLOUD_CLIENT)
+# This cmake builds two targets (aka apps), mirall and owncloud. For the owncloud
+# target, OWNCLOUD_CLIENT needs to be a compile flag. It is set in src/CMakeLists.txt
+# but if that fails because cmake is too old, uncomment this here if you want to build
+# owncloud.
+# add_definitions(-DOWNCLOUD_CLIENT)
 
-set(TRANSLATIONS ${CMAKE_SOURCE_DIR}/translations/mirall_de.ts)
+# Handle Translations, pick all mirall_* files from trans directory.
+file( GLOB TRANS_FILES ${CMAKE_SOURCE_DIR}/translations/mirall_*.ts)
+set(TRANSLATIONS ${TRANS_FILES})
 
 add_subdirectory(src)
 # add_subdirectory(test)
@@ -65,6 +76,6 @@ add_subdirectory(src)
 if(BUILD_OWNCLOUD_OSX_BUNDLE)
     install( FILES exclude.lst DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources )
 else()
-    install( FILES exclude.lst DESTINATION /etc )
+    install( FILES exclude.lst DESTINATION ${CMAKE_INSTALL_SYSCONFDIR} )
 endif()
 

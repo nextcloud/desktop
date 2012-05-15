@@ -26,72 +26,33 @@ Theme::Theme()
 
 }
 
-QIcon Theme::folderIcon( const QString& backend, int size ) const
-{
-  QString name;
-
-  if( backend == QString::fromLatin1("owncloud")) name = QString( "mirall-%1.png" ).arg(size);
-  if( backend == QString::fromLatin1("unison" )) name  = QString( "folder-%1.png" ).arg(size);
-  if( backend == QString::fromLatin1("csync" )) name   = QString( "folder-remote-%1.png" ).arg(size);
-  if( backend.isEmpty() || backend == QString::fromLatin1("none") ) {
-      // name = QString("folder-grey-%1.png").arg(size);
-      name = QString("folder-grey-48.png");
-  }
-
-  qDebug() << "==> load folder icon " << name;
-  return QIcon( QPixmap( QString(":/mirall/resources/%1").arg(name)) );
-}
-
-QIcon Theme::syncStateIcon( SyncResult::Status status, int ) const
-{
-    // FIXME: Mind the size!
-    QString statusIcon;
-
-    qDebug() << "Status: " << status;
-
-    if( status == SyncResult::NotYetStarted ) {
-        statusIcon = "task-ongoing";
-    } else if( status == SyncResult::SyncRunning ) {
-        statusIcon = "view-refresh";
-    } else if( status == SyncResult::Success ) {
-        statusIcon = "dialog-ok";
-    } else if( status == SyncResult::Error ) {
-        statusIcon = "dialog-close";
-    } else if( status == SyncResult::Disabled ) {
-        statusIcon = "dialog-cancel";
-    } else if( status == SyncResult::SetupError ) {
-        statusIcon = "dialog-cancel";
-    } else {
-        statusIcon = "dialog-close";
-    }
-    return QIcon::fromTheme( statusIcon, QIcon( QString( ":/mirall/resources/%1").arg(statusIcon) ) );
-}
-
 QString Theme::statusHeaderText( SyncResult::Status status ) const
 {
     QString resultStr;
 
-    if( status == SyncResult::NotYetStarted ) {
+    switch( status ) {
+    case SyncResult::Undefined:
+        resultStr = tr("Status undefined");
+        break;
+    case SyncResult::NotYetStarted:
         resultStr = tr("Waiting to start sync");
-    } else if( status == SyncResult::SyncRunning ) {
+        break;
+    case SyncResult::SyncRunning:
         resultStr = tr("Sync is running");
-    } else if( status == SyncResult::Success ) {
+        break;
+    case SyncResult::Success:
         resultStr = tr("Sync Success");
-    } else if( status == SyncResult::Error ) {
+        break;
+    case SyncResult::Error:
         resultStr = tr("Sync Error - Click info button for details.");
-    } else if( status == SyncResult::Disabled ) {
-        resultStr = tr("Sync Disabled");
-    } else if( status == SyncResult::SetupError ) {
+        break;
+    case SyncResult::SetupError:
         resultStr = tr( "Setup Error" );
-    } else {
+        break;
+    default:
         resultStr = tr("Status undefined");
     }
     return resultStr;
-}
-
-QIcon Theme::applicationIcon( ) const
-{
-    return QIcon(QString(":mirall/resources/mirall-48"));
 }
 
 QString Theme::version() const
@@ -99,5 +60,26 @@ QString Theme::version() const
     return QString::fromLocal8Bit( MIRALL_STRINGIFY( MIRALL_VERSION ) );
 }
 
+QIcon Theme::trayFolderIcon( const QString& backend ) const
+{
+    return folderIcon( backend );
 }
+
+/*
+ * helper to load a icon from either the icon theme the desktop provides or from
+ * the apps Qt resources.
+ */
+QIcon Theme::themeIcon( const QString& name, int size ) const
+{
+    QIcon icon;
+    if( QIcon::hasThemeIcon( name )) {
+        // use from theme
+        icon = QIcon::fromTheme( name );
+    } else {
+        icon.addFile( QString(":/mirall/resources/%1-%2").arg(name).arg(size), QSize(size, size) );
+    }
+    return icon;
+}
+
+} // end namespace mirall
 

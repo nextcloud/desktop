@@ -29,7 +29,6 @@ class QMenu;
 class QSystemTrayIcon;
 class QNetworkConfigurationManager;
 class QSignalMapper;
-class QSplashScreen;
 class QNetworkReply;
 
 namespace Mirall {
@@ -51,6 +50,7 @@ signals:
 
 protected slots:
     void slotAddFolder();
+    void slotOpenStatus();
     void slotRemoveFolder( const QString& );
 #ifdef HAVE_FETCH_AND_PUSH
     void slotFetchFolder( const QString& );
@@ -73,10 +73,9 @@ protected:
 protected slots:
     void slotTrayClicked( QSystemTrayIcon::ActivationReason );
     void slotFolderOpenAction(const QString & );
-    void slotHideSplash();
 
     void slotStartFolderSetup();
-    void slotOwnCloudFound( const QString&, const QString& );
+    void slotOwnCloudFound( const QString&, const QString&, const QString&, const QString& );
     void slotNoOwnCloudFound( QNetworkReply* );
     void slotCheckAuthentication();
     void slotAuthCheck( const QString& ,QNetworkReply* );
@@ -88,9 +87,12 @@ private:
     QSystemTrayIcon *_tray;
     QAction *_actionQuit;
     QAction *_actionAddFolder;
+    QAction *_actionOpenStatus;
     QAction *_actionConfigure;
 
+#if QT_VERSION >= 0x040700
     QNetworkConfigurationManager *_networkMgr;
+#endif
 
     FolderWizard  *_folderWizard;
     OwncloudSetupWizard *_owncloudSetupWizard;
@@ -102,7 +104,6 @@ private:
     FolderMan *_folderMan;
     Theme *_theme;
     QSignalMapper *_folderOpenActionMapper;
-    QSplashScreen *_splash;
     ownCloudInfo  *_ocInfo;
     UpdateDetector *_updateDetector;
     QMap<Folder*, QString> _overallStatusStrings;

@@ -89,6 +89,12 @@ void UnisonFolder::startSync(const QStringList &pathList)
     _unison->start(program, args);
 }
 
+void UnisonFolder::slotTerminateSync()
+{
+    if( _unison )
+        _unison->terminate();
+}
+
 void UnisonFolder::slotStarted()
 {
     qDebug() << "    * Unison process started ( PID " << _unison->pid() << ")";

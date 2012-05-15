@@ -36,6 +36,10 @@ public:
     virtual ~CSyncFolder();
     virtual void startSync(const QStringList &pathList);
     virtual bool isBusy() const;
+
+public slots:
+    void slotTerminateSync();
+
 protected slots:
     void slotCSyncStarted();
     void slotCSyncFinished();

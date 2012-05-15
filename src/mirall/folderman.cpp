@@ -26,8 +26,7 @@
 namespace Mirall {
 
 FolderMan::FolderMan(QObject *parent) :
-    QObject(parent),
-    _folderToDelete(false)
+    QObject(parent)
 {
     // if QDir::mkpath would not be so stupid, I would not need to have this
     // duplication of folderConfigPath() here
@@ -137,27 +136,15 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
 
             MirallConfigFile cfgFile;
 
-            // assemble the owncloud url to pass to csync.
-            QUrl url( cfgFile.ownCloudUrl() );
-            QString existPath = url.path();
-            qDebug() << "existing path: "  << existPath;
+            // assemble the owncloud url to pass to csync, incl. webdav
+            QString oCUrl = cfgFile.ownCloudUrl( QString(), true );
 
-            if( !existPath.isEmpty() ) {
-                // cut off the trailing slash
-                if( existPath.endsWith('/') ) {
-                    existPath.truncate( existPath.length()-1 );
-                }
-                // cut off the leading slash
-                if( targetPath.startsWith('/') ) {
-                    targetPath.remove(0,1);
-                }
+            // cut off the leading slash, oCUrl always has a trailing.
+            if( targetPath.startsWith('/') ) {
+                targetPath.remove(0,1);
             }
 
-            url.setPath( QString("%1/files/webdav.php/%2").arg(existPath).arg(targetPath) );
-
-            folder = new ownCloudFolder( file, path, url.toString(), this );
-
-
+            folder = new ownCloudFolder( file, path, oCUrl + targetPath, this );
 #else
             qCritical() << "* owncloud support not enabled!! ignoring:" << file;
 #endif
@@ -211,7 +198,19 @@ void FolderMan::slotEnableFolder( const QString& alias, bool enable )
     }
 
     Folder *f = _folderMap[alias];
-    f->setSyncEnabled(enable);
+    if( f ) {
+        f->setSyncEnabled(enable);
+    }
+}
+
+// this really terminates, ie. no questions, no prisoners.
+// csync still remains in a stable state, regardless of that.
+void FolderMan::terminateSyncProcess( const QString& alias )
+{
+    Folder *f = _folderMap[alias];
+    if( f ) {
+        f->slotTerminateSync();
+    }
 }
 
 Folder *FolderMan::folder( const QString& alias )
@@ -269,6 +268,7 @@ void FolderMan::slotScheduleFolderSync()
         return;
     }
 
+    qDebug() << "XX slotScheduleFolderSync: folderQueue size: " << _scheduleQueue.count();
     if( ! _scheduleQueue.isEmpty() ) {
         const QString alias = _scheduleQueue.takeFirst();
         if( _folderMap.contains( alias ) ) {
@@ -292,14 +292,7 @@ void FolderMan::slotFolderSyncFinished( const SyncResult& )
 {
     qDebug() << "<===================================== sync finsihed for " << _currentSyncFolder;
 
-    // check if the folder is scheduled to be deleted. The flag is set in slotRemoveFolder
-    // after the user clicked to delete it.
-    if( _folderToDelete ) {
-        qDebug() << " !! This folder is going to be deleted now!";
-        removeFolder( _currentSyncFolder );
-        _folderToDelete = false;
-    }
-    _currentSyncFolder = QString();
+    _currentSyncFolder.clear();
     QTimer::singleShot(200, this, SLOT(slotScheduleFolderSync()));
 }
 
@@ -333,11 +326,10 @@ void FolderMan::slotRemoveFolder( const QString& alias )
     if( alias.isEmpty() ) return;
 
     if( _currentSyncFolder == alias ) {
-        // attention: sync is currently running!
-        _folderToDelete = true; // flag for the sync finished slot
-    } else {
-        removeFolder(alias);
+        // terminate if the sync is currently underway.
+        terminateSyncProcess( alias );
     }
+    removeFolder(alias);
 }
 
 // remove a folder from the map. Should be sure n

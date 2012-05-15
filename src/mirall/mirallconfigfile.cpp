@@ -29,6 +29,7 @@
 namespace Mirall {
 
 QString MirallConfigFile::_passwd = QString();
+QString MirallConfigFile::_oCVersion = QString();
 bool    MirallConfigFile::_askedUser = false;
 
 MirallConfigFile::MirallConfigFile()
@@ -171,13 +172,20 @@ QString MirallConfigFile::ownCloudUrl( const QString& connection, bool webdav ) 
     QSettings settings( configFile(), QSettings::IniFormat );
     settings.beginGroup( con );
 
+    // For the WebDAV connect it is required to know which version the server is running
+    // because the url changed :-/
+    if( webdav && _oCVersion.isEmpty() ) {
+        qDebug() << "######## Config does not yet know the ownCloud server version #########";
+        qDebug() << "###################### THIS SHOULD NOT HAPPEN! ########################";
+    }
+
     QString url = settings.value( "url" ).toString();
     if( ! url.isEmpty() ) {
         if( ! url.endsWith('/')) url.append('/');
         if( webdav ) url.append( "files/webdav.php/" );
     }
 
-    qDebug() << "Returning configured owncloud url: " << url;
+    // qDebug() << "Returning configured owncloud url: " << url;
 
   return url;
 }
@@ -191,7 +199,7 @@ QString MirallConfigFile::ownCloudUser( const QString& connection ) const
     settings.beginGroup( con );
 
     QString user = settings.value( "user" ).toString();
-    qDebug() << "Returning configured owncloud user: " << user;
+    // qDebug() << "Returning configured owncloud user: " << user;
 
     return user;
 }
@@ -241,6 +249,18 @@ QString MirallConfigFile::ownCloudPasswd( const QString& connection ) const
 
     return pwd;
 }
+
+QString MirallConfigFile::ownCloudVersion() const
+{
+    return _oCVersion;
+}
+
+void MirallConfigFile::setOwnCloudVersion( const QString& ver)
+{
+    qDebug() << "** Setting ownCloud Server version to " << ver;
+    _oCVersion = ver;
+}
+
 
 bool MirallConfigFile::ownCloudSkipUpdateCheck( const QString& connection ) const
 {

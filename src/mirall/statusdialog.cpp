@@ -104,7 +104,7 @@ void FolderViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
   QFontMetrics subFm( subFont );
   QFontMetrics aliasFm( aliasFont );
 
-  QIcon icon = qvariant_cast<QIcon>(index.data(FolderIconRole));
+  QIcon folderIcon = qvariant_cast<QIcon>(index.data(FolderIconRole));
   QIcon statusIcon = qvariant_cast<QIcon>(index.data(FolderStatusIcon));
   QString aliasText = qvariant_cast<QString>(index.data(FolderAliasRole));
   QString pathText = qvariant_cast<QString>(index.data(FolderPathRole));
@@ -113,7 +113,7 @@ void FolderViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
   bool syncEnabled = index.data(FolderSyncEnabled).toBool();
   // QString syncStatus = syncEnabled? tr( "Enabled" ) : tr( "Disabled" );
 
-  QSize iconsize(48,48); //  = icon.actualSize(option.decorationSize);
+  QSize iconsize(48, 48); //  = icon.actualSize(option.decorationSize);
 
   QRect aliasRect = option.rect;
   QRect iconRect = option.rect;
@@ -136,7 +136,11 @@ void FolderViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
   remotePathRect.setBottom( remotePathRect.top() + subFm.height());
 
   //painter->drawPixmap(QPoint(iconRect.right()/2,iconRect.top()/2),icon.pixmap(iconsize.width(),iconsize.height()));
-  painter->drawPixmap(QPoint(iconRect.left()+15,iconRect.top()),icon.pixmap(iconsize.width(),iconsize.height()));
+  if( syncEnabled ) {
+      painter->drawPixmap(QPoint(iconRect.left()+15,iconRect.top()), folderIcon.pixmap(iconsize.width(),iconsize.height()));
+  } else {
+      painter->drawPixmap(QPoint(iconRect.left()+15,iconRect.top()), folderIcon.pixmap(iconsize.width(),iconsize.height(), QIcon::Disabled ));
+  }
 
   painter->drawPixmap(QPoint(option.rect.right() - 4 - 48, option.rect.top() + (option.rect.height()-48)/2 ), statusIcon.pixmap(48,48));
 
@@ -199,16 +203,16 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
 
   _ownCloudInfo = new ownCloudInfo();
 
-  connect(_ownCloudInfo, SIGNAL(ownCloudInfoFound(const QString&, const QString&)),
-          this, SLOT(slotOCInfo( const QString&, const QString& )));
+  connect(_ownCloudInfo, SIGNAL(ownCloudInfoFound(const QString&, const QString&, const QString&, const QString&)),
+          this, SLOT(slotOCInfo( const QString&, const QString&, const QString&, const QString& )));
   connect(_ownCloudInfo, SIGNAL(noOwncloudFound(QNetworkReply*)),
           this, SLOT(slotOCInfoFail(QNetworkReply*)));
 
-#if defined Q_WS_X11 || defined Q_WS_MAC
+#if defined Q_WS_X11 
   connect(_folderList, SIGNAL(activated(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
   connect( _folderList,SIGNAL(doubleClicked(QModelIndex)),SLOT(slotDoubleClicked(QModelIndex)));
 #endif
-#ifdef Q_WS_WIN
+#if defined Q_WS_WIN || defined Q_WS_MAC
   connect(_folderList, SIGNAL(clicked(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
   connect( _folderList,SIGNAL(doubleClicked(QModelIndex)),SLOT(slotDoubleClicked(QModelIndex)));
 #endif
@@ -296,7 +300,7 @@ void StatusDialog::folderToModelItem( QStandardItem *item, Folder *f )
 {
     if( ! item || !f ) return;
 
-    QIcon icon = _theme->folderIcon( f->backend(), 48 );
+    QIcon icon = _theme->folderIcon( f->backend() );
     item->setData( icon,             FolderViewDelegate::FolderIconRole );
     item->setData( f->path(),        FolderViewDelegate::FolderPathRole );
     item->setData( f->secondPath(),  FolderViewDelegate::FolderSecondPathRole );
@@ -305,13 +309,15 @@ void StatusDialog::folderToModelItem( QStandardItem *item, Folder *f )
 
     SyncResult res = f->syncResult();
     SyncResult::Status status = res.status();
-    qDebug() << "Folder state is now " << status;
 
     QString errors = res.errorStrings().join("<br/>");
 
     item->setData( _theme->statusHeaderText( status ),  Qt::ToolTipRole );
-
-    item->setData( _theme->syncStateIcon( status, 48 ), FolderViewDelegate::FolderStatusIcon );
+    if( f->syncEnabled() ) {
+        item->setData( _theme->syncStateIcon( status, 48 ), FolderViewDelegate::FolderStatusIcon );
+    } else {
+        item->setData( _theme->folderDisabledIcon( 48 ), FolderViewDelegate::FolderStatusIcon );
+    }
     item->setData( _theme->statusHeaderText( status ),  FolderViewDelegate::FolderStatus );
     item->setData( errors,                              FolderViewDelegate::FolderErrorMsg );
 }
@@ -409,13 +415,14 @@ void StatusDialog::slotCheckConnection()
     }
 }
 
-void StatusDialog::slotOCInfo( const QString& url, const QString& version )
+void StatusDialog::slotOCInfo( const QString& url, const QString& versionStr, const QString& version, const QString& )
 {
     _OCUrl = url;
     qDebug() << "#-------# oC found on " << url;
     /* enable the open button */
     _ocUrlLabel->setOpenExternalLinks(true);
-    _ocUrlLabel->setText( tr("Connected to <a href=\"%1\">%2</a>, ownCloud %3").arg(url).arg(url).arg(version) );
+    _ocUrlLabel->setText( tr("Connected to <a href=\"%1\">%2</a>, ownCloud %3").arg(url).arg(url).arg(versionStr) );
+    _ocUrlLabel->setToolTip( tr("Version: %1").arg(version));
     _ButtonAdd->setEnabled(true);
 
 }

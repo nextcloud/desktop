@@ -67,7 +67,7 @@ public:
 
 signals:
     // result signal with url- and version string.
-    void ownCloudInfoFound( const QString&,  const QString& );
+    void ownCloudInfoFound( const QString&, const QString&, const QString&, const QString& );
     void noOwncloudFound( QNetworkReply* );
     void ownCloudDirExists( const QString&, QNetworkReply* );
 
@@ -92,7 +92,10 @@ protected slots:
 
 private:
     void setupHeaders(QNetworkRequest &req, quint64 size );
+#if QT46_IMPL
+#else
     QNetworkReply* davRequest(const QString&, QNetworkRequest&, QByteArray* );
+#endif
 
     static QNetworkAccessManager  *_manager;
     QString                        _connection;

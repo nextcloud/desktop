@@ -18,7 +18,6 @@
 #include <QHashIterator>
 #include <QUrl>
 #include <QDesktopServices>
-#include <QSplashScreen>
 #include <QTranslator>
 
 #include "mirall/application.h"
@@ -48,7 +47,9 @@ namespace Mirall {
 Application::Application(int &argc, char **argv) :
     QApplication(argc, argv),
     _tray(0),
+#if QT_VERSION >= 0x040700
     _networkMgr(new QNetworkConfigurationManager(this)),
+#endif
     _contextMenu(0),
     _ocInfo(0),
     _updateDetector(0)
@@ -61,9 +62,6 @@ Application::Application(int &argc, char **argv) :
 #endif
     setApplicationName( _theme->appName() );
     setWindowIcon( _theme->applicationIcon() );
-
-    _splash = new QSplashScreen( _theme->splashScreen() );
-    _splash->show();
 
     processEvents();
 
@@ -102,8 +100,8 @@ Application::Application(int &argc, char **argv) :
     _folderWizard = new FolderWizard( 0, _theme );
 
     _ocInfo = new ownCloudInfo( QString(), this );
-    connect( _ocInfo,SIGNAL(ownCloudInfoFound(QString,QString)),
-             SLOT(slotOwnCloudFound(QString,QString)));
+    connect( _ocInfo,SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
+             SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
 
     connect( _ocInfo,SIGNAL(noOwncloudFound(QNetworkReply*)),
              SLOT(slotNoOwnCloudFound(QNetworkReply*)));
@@ -132,16 +130,17 @@ Application::Application(int &argc, char **argv) :
     connect( _statusDialog, SIGNAL(openFolderAlias(const QString&)),
              SLOT(slotFolderOpenAction(QString)));
 
+#if QT_VERSION >= 0x040700
     qDebug() << "* Network is" << (_networkMgr->isOnline() ? "online" : "offline");
     foreach (QNetworkConfiguration netCfg, _networkMgr->allConfigurations(QNetworkConfiguration::Active)) {
         //qDebug() << "Network:" << netCfg.identifier();
     }
+#endif
 
     setupActions();
     setupSystemTray();
     processEvents();
 
-    QTimer::singleShot( 5000, this, SLOT(slotHideSplash()) );
     QTimer::singleShot( 0, this, SLOT( slotStartFolderSetup() ));
 
     MirallConfigFile cfg;
@@ -156,7 +155,9 @@ Application::~Application()
 {
     qDebug() << "* Mirall shutdown";
 
+#if QT_VERSION >= 0x040700
     delete _networkMgr;
+#endif
     delete _folderMan;
     delete _ocInfo;
 }
@@ -181,10 +182,13 @@ void Application::slotStartFolderSetup()
     }
 }
 
-void Application::slotOwnCloudFound( const QString& url , const QString& version )
+void Application::slotOwnCloudFound( const QString& url, const QString& versionStr, const QString& version, const QString& edition)
 {
-    qDebug() << "** Application: ownCloud found: " << url << " with version " << version;
-    // now check the authentication!
+    qDebug() << "** Application: ownCloud found: " << url << " with version " << versionStr << "(" << version << ")";
+    // now check the authentication
+    MirallConfigFile cfgFile;
+    cfgFile.setOwnCloudVersion( version );
+
     QTimer::singleShot( 0, this, SLOT( slotCheckAuthentication() ));
 }
 
@@ -232,7 +236,7 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
         qDebug() << "######## Credentials are ok!";
         int cnt = _folderMan->setupFolders();
         if( cnt ) {
-            _tray->setIcon(_theme->folderIcon("owncloud", 24));
+            _tray->setIcon(_theme->applicationIcon());
             _tray->show();
             processEvents();
 
@@ -244,13 +248,10 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
     setupContextMenu();
 }
 
-void Application::slotHideSplash()
-{
-    delete _splash;
-}
-
 void Application::setupActions()
 {
+    _actionOpenStatus = new QAction(tr("Open status..."), this);
+    QObject::connect(_actionOpenStatus, SIGNAL(triggered(bool)), SLOT(slotOpenStatus()));
     _actionAddFolder = new QAction(tr("Add folder..."), this);
     QObject::connect(_actionAddFolder, SIGNAL(triggered(bool)), SLOT(slotAddFolder()));
     _actionConfigure = new QAction(tr("Configure..."), this);
@@ -264,7 +265,7 @@ void Application::setupActions()
 void Application::setupSystemTray()
 {
     _tray = new QSystemTrayIcon();
-    _tray->setIcon( _theme->folderIcon("none", 48) ); // load the grey icon
+    _tray->setIcon( _theme->applicationIcon() ); // load the grey icon
 
     connect(_tray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             SLOT(slotTrayClicked(QSystemTrayIcon::ActivationReason)));
@@ -282,6 +283,7 @@ void Application::setupContextMenu()
         _contextMenu = new QMenu();
     }
     _contextMenu->setTitle(_theme->appName() );
+    _contextMenu->addAction(_actionOpenStatus);
     _contextMenu->addAction(_actionConfigure);
     _contextMenu->addAction(_actionAddFolder);
     _contextMenu->addSeparator();
@@ -289,7 +291,7 @@ void Application::setupContextMenu()
     // here all folders should be added
     foreach (Folder *folder, _folderMan->map() ) {
         QAction *action = new QAction( tr("open %1").arg( folder->alias()), this );
-        action->setIcon( _theme->folderIcon( folder->backend(), 22) );
+        action->setIcon( _theme->trayFolderIcon( folder->backend()) );
 
         connect( action, SIGNAL(triggered()),_folderOpenActionMapper,SLOT(map()));
         _folderOpenActionMapper->setMapping( action, folder->alias() );
@@ -333,9 +335,10 @@ void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
       _owncloudSetupWizard->startWizard();
     } else {
         qDebug() << "#============# Status dialog starting #=============#";
-
+#if defined Q_WS_WIN || defined Q_WS_X11
       _statusDialog->setFolderList( _folderMan->map() );
       _statusDialog->show();
+#endif
     }
   }
 }
@@ -394,6 +397,13 @@ void Application::slotAddFolder()
   _folderMan->restoreEnabledFolders();
 }
 
+void Application::slotOpenStatus()
+{
+  if( ! _statusDialog ) return;
+  _statusDialog->setFolderList( _folderMan->map() );
+  _statusDialog->show();
+}
+
 /*
   * the folder is to be removed. The slot is called from a signal emitted by
   * the status dialog, which removes the folder from its list by itself.
@@ -406,9 +416,14 @@ void Application::slotRemoveFolder( const QString& alias )
     if( ret == QMessageBox::No ) {
         return;
     }
+    Folder *f = _folderMan->folder(alias);
+    if( f && _overallStatusStrings.contains( f )) {
+        _overallStatusStrings.remove( f );
+    }
 
     _folderMan->slotRemoveFolder( alias );
     _statusDialog->slotRemoveSelectedFolder( );
+    computeOverallSyncStatus();
     setupContextMenu();
 }
 
@@ -446,23 +461,43 @@ void Application::slotInfoFolder( const QString& alias )
 
     SyncResult folderResult = _folderMan->syncResult( alias );
 
-    QString folderMessage = tr( "Last sync was succesful." );
+    bool enabled = true;
+    Folder *f = _folderMan->folder( alias );
+    if( f && ! f->syncEnabled() ) {
+        enabled = false;
+    }
+
+    QString folderMessage;
 
     SyncResult::Status syncStatus = folderResult.status();
-    if ( syncStatus == SyncResult::Error ) {
-      folderMessage = tr( "<b>Syncing Error</b><br/>" );
-    } else if ( syncStatus == SyncResult::SetupError ) {
-      folderMessage = tr( "<b>Setup Error</b><br/>" );
-    } else if ( syncStatus == SyncResult::Disabled ) {
-      folderMessage = tr( "<b>Disabled Folder</b><br/>" ).arg( folderResult.errorString() );
-    } else if ( syncStatus == SyncResult::Undefined ) {
-      folderMessage = tr( "<b>Undefined state</b><br/>" );
+    switch( syncStatus ) {
+    case SyncResult::Undefined:
+        folderMessage = tr( "Undefined Folder State" );
+        break;
+    case SyncResult::NotYetStarted:
+        folderMessage = tr( "The folder waits to start syncing." );
+        break;
+    case SyncResult::SyncRunning:
+        folderMessage = tr("Sync is running.");
+        break;
+    case SyncResult::Success:
+        folderMessage = tr("Last Sync was successful.");
+        break;
+    case SyncResult::Error:
+        folderMessage = tr( "Syncing Error." );
+        break;
+    case SyncResult::SetupError:
+        folderMessage = tr( "Setup Error." );
+        break;
+    default:
+        folderMessage = tr( "Undefined Error State." );
     }
+    folderMessage = QLatin1String("<b>") + folderMessage + QLatin1String("</b><br/>");
 
     QMessageBox infoBox( QMessageBox::Information, tr( "Folder information" ), alias, QMessageBox::Ok );
     QStringList li = folderResult.errorStrings();
     foreach( const QString l, li ) {
-        folderMessage += "<p>" + l +"</p>";
+        folderMessage += QString("<p>%1</p>").arg( l );
     }
 
     infoBox.setText( folderMessage );
@@ -501,7 +536,22 @@ void Application::slotEnableFolder(const QString& alias, const bool enable)
   qDebug() << "Application: enable folder with alias " << alias;
 
   _folderMan->slotEnableFolder( alias, enable );
-  _statusDialog->slotUpdateFolderState( _folderMan->folder(alias));
+
+  // this sets the folder status to disabled but does not interrupt it.
+  Folder *f = _folderMan->folder( alias );
+  if( f && !enable ) {
+      // check if a sync is still running and if so, ask if we should terminate.
+      if( f->isBusy() ) { // its still running
+          QMessageBox::StandardButton b = QMessageBox::question( 0, tr("Sync Running"),
+                                                                 tr("The syncing operation is running.<br/>Do you want to terminate it?"),
+                                                                 QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes );
+          if( b == QMessageBox::Yes ) {
+              _folderMan->terminateSyncProcess( alias );
+          }
+      }
+  }
+
+  _statusDialog->slotUpdateFolderState( f );
 }
 
 void Application::slotConfigure()
@@ -539,43 +589,54 @@ void Application::computeOverallSyncStatus()
         SyncResult::Status syncStatus = folderResult.status();
 
         if( ! folderResult.localRunOnly() ) { // skip local runs, use the last message.
-            if ( syncStatus == SyncResult::Success ) {
-                folderMessage = tr( "Folder %1: Ok." ).arg( syncedFolder->alias() );
-            } else if ( syncStatus == SyncResult::Error ) {
-                overallResult = SyncResult::Error;
-                folderMessage = tr( "Folder %1: %2" ).arg( syncedFolder->alias(), folderResult.errorString() );
-            } else if ( syncStatus == SyncResult::SetupError ) {
-                if ( overallResult.status() != SyncResult::Error ) {
-                    overallResult = SyncResult::SetupError;
+            if( syncedFolder->syncEnabled() ) {
+                switch( syncStatus ) {
+                case SyncResult::Undefined:
+                    if ( overallResult.status() != SyncResult::Error ) {
+                        overallResult = SyncResult::Error;
+                    }
+                    folderMessage = tr( "Undefined State." );
+                    break;
+                case SyncResult::NotYetStarted:
+                    folderMessage = tr( "Waits to start syncing." );
+                    break;
+                case SyncResult::SyncRunning:
+                    folderMessage = tr( "Sync is running." );
+                    break;
+                case SyncResult::Success:
+                    folderMessage = tr( "Last Sync was successful." );
+                    break;
+                case SyncResult::Error:
+                    overallResult = SyncResult::Error;
+                    folderMessage = tr( "Syncing Error." );
+                    break;
+                case SyncResult::SetupError:
+                    if ( overallResult.status() != SyncResult::Error ) {
+                        overallResult = SyncResult::SetupError;
+                    }
+                    folderMessage = tr( "Setup Error." );
+                    break;
+                default:
+                    folderMessage = tr( "Undefined Error State." );
                 }
-                folderMessage = tr( "Folder %1: setup error" ).arg( syncedFolder->alias() );
-            } else if ( syncStatus == SyncResult::Disabled ) {
-                if ( overallResult.status() != SyncResult::SetupError
-                     && overallResult.status() != SyncResult::Error ) {
-                    overallResult = SyncResult::Disabled;
-                }
-                folderMessage = tr( "Folder %1: %2" ).arg( syncedFolder->alias(), folderResult.errorString() );
-            } else if ( syncStatus == SyncResult::Undefined ) {
-                if ( overallResult.status() == SyncResult::Success ) {
-                    overallResult = SyncResult::Undefined;
-                }
-                folderMessage = tr( "Folder %1: undefined state" ).arg( syncedFolder->alias() );
+            } else {
+                    // sync is disabled.
+                folderMessage = tr( "Sync is disabled." );
             }
         }
-        _overallStatusStrings[syncedFolder] = folderMessage;
+        if( folderMessage != _overallStatusStrings[syncedFolder] ) {
+            _overallStatusStrings[syncedFolder] = QString("Folder %1: %2").arg(syncedFolder->alias()).arg(folderMessage);
+        }
     }
 
     // create the tray blob message
     QStringList allStatusStrings = _overallStatusStrings.values();
-    trayMessage = allStatusStrings.join("\n");
+    if( ! allStatusStrings.isEmpty() )
+        trayMessage = allStatusStrings.join("\n");
+    else
+        trayMessage = tr("No sync folders configured.");
 
-#if 0
-    if( _statusDialog->isVisible() ) {
-        _statusDialog->slotUpdateFolderState( syncedFolder );
-    }
-#endif
-
-    QIcon statusIcon = _theme->syncStateIcon( overallResult.status(), 22 );
+    QIcon statusIcon = _theme->syncStateIcon( overallResult.status(), 48 );
 
     if( overallResult.status() == SyncResult::Success ) {
         // Rather display the mirall icon instead of the ok icon.

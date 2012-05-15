@@ -77,7 +77,7 @@ void ownCloudFolder::slotPollTimerRemoteCheck()
 
 bool ownCloudFolder::isBusy() const
 {
-    return false;
+    return ( _csync && _csync->isRunning() );
 }
 
 QString ownCloudFolder::secondPath() const
@@ -85,7 +85,7 @@ QString ownCloudFolder::secondPath() const
     QString re(_secondPath);
     MirallConfigFile cfg;
     const QString ocUrl = cfg.ownCloudUrl(QString(), true);
-    qDebug() << "**** " << ocUrl << " <-> " << re;
+    // qDebug() << "**** " << ocUrl << " <-> " << re;
     if( re.startsWith( ocUrl ) ) {
         re.remove( ocUrl );
     }
@@ -105,7 +105,7 @@ void ownCloudFolder::startSync(const QStringList &pathList)
         qCritical() << "* ERROR csync is still running and new sync requested.";
         return;
     }
-    delete _csync;
+     delete _csync;
     _errors.clear();
     _csyncError = false;
 
@@ -134,8 +134,8 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     Folder::startSync( pathList );
 
 
-    qDebug() << "*** Start syncing to ownCloud, onlyLocal: " << _localCheckOnly;
-    _csync = new CSyncThread( path(), url.toEncoded(), _localCheckOnly );
+    qDebug() << "*** Start syncing url to ownCloud: " << url.toString() << ", with localOnly: " << _localCheckOnly;
+    _csync = new CSyncThread( path(), url.toString().toLocal8Bit(), _localCheckOnly );
     _csync->setUserPwd( cfgFile.ownCloudUser(), cfgFile.ownCloudPasswd() );
     QObject::connect(_csync, SIGNAL(started()),  SLOT(slotCSyncStarted()));
     QObject::connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()));
@@ -201,15 +201,19 @@ void ownCloudFolder::slotCSyncTerminated()
 {
     // do not ask csync here for reasons.
     _syncResult.setStatus( SyncResult::Error );
-    _errors.append( tr("The CSync thread terminated unexpectedly.") );
+    _errors.append( tr("The CSync thread terminated.") );
     _syncResult.setErrorStrings(_errors);
-
-    emit syncFinished( _syncResult );
+    _csyncError = true;
+    qDebug() << "-> CSync Terminated!";
+    // emit syncFinished( _syncResult );
 }
 
 void ownCloudFolder::slotCSyncFinished()
 {
+    qDebug() << "-> CSync Finished slot with error " << _csyncError;
+
     if (_csyncError) {
+
         _syncResult.setStatus(SyncResult::Error);
 
         qDebug() << "  ** error Strings: " << _errors;
@@ -222,6 +226,28 @@ void ownCloudFolder::slotCSyncFinished()
     if( ! _localCheckOnly ) _lastSeenFiles = 0;
 
     emit syncFinished( _syncResult );
+}
+
+void ownCloudFolder::slotTerminateSync()
+{
+    qDebug() << "folder " << alias() << " Terminating!";
+    QString configDir = _csync->csyncConfigDir();
+    qDebug() << "csync's Config Dir: " << configDir;
+
+    if( _csync ) {
+        _csync->terminate();
+        _csync->wait();
+        delete _csync;
+        _csync = 0;
+    }
+
+    if( ! configDir.isEmpty() ) {
+        QFile file( configDir + QLatin1String("/lock"));
+        if( file.exists() ) {
+            qDebug() << "After termination, lock file exists and gets removed.";
+            file.remove();
+        }
+    }
 }
 
 } // ns

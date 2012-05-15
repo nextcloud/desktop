@@ -4,10 +4,11 @@ set( CPACK_PACKAGE_CONTACT  "Dominik Schmidt <domme@tomahawk-player.org>" )
 
 set( APPLICATION_NAME "ownCloud Client")
 
-set( CPACK_PACKAGE_VERSION_MAJOR  1 )
-set( CPACK_PACKAGE_VERSION_MINOR  0 )
-set( CPACK_PACKAGE_VERSION_PATCH  1 )
-set( CPACK_PACKAGE_VERSION  ${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH} )
+include( VERSION.cmake )
+set( CPACK_PACKAGE_VERSION_MAJOR  ${VERSION_MAJOR} )
+set( CPACK_PACKAGE_VERSION_MINOR  ${VERSION_MINOR} )
+set( CPACK_PACKAGE_VERSION_PATCH  ${VERSION_PATCH} )
+set( CPACK_PACKAGE_VERSION  ${VERSION} )
 
 if(APPLE)
     set( CPACK_GENERATOR "DragNDrop" )
@@ -34,7 +35,7 @@ endif()
 
 
 if(WIN32)
-    set( CPACK_PACKAGE_FILE_NAME  owncloud-client-setup )
+    set( CPACK_PACKAGE_FILE_NAME  owncloud-client-${CPACK_PACKAGE_VERSION}-setup )
     # Package file name without extension. Also a directory of installer  cmake-2.5.0-Linux-i686
     # CPACK_GENERATOR   CPack generator to be used  STGZ;TGZ;TZ
     # CPACK_INCLUDE_TOPLEVEL_DIRECTORY    Controls whether CPack adds a top-level directory, usually of the form ProjectName-Version-OS, to the top of package tree.  0 to disable, 1 to enable
