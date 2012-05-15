@@ -73,7 +73,7 @@ protected:
 protected slots:
     void slotTrayClicked( QSystemTrayIcon::ActivationReason );
     void slotFolderOpenAction(const QString & );
-
+    void slotOpenOwnCloud();
     void slotStartFolderSetup();
     void slotOwnCloudFound( const QString&, const QString&, const QString&, const QString& );
     void slotNoOwnCloudFound( QNetworkReply* );
@@ -89,6 +89,7 @@ private:
     QAction *_actionAddFolder;
     QAction *_actionOpenStatus;
     QAction *_actionConfigure;
+    QAction *_actionOpenoC;
 
 #if QT_VERSION >= 0x040700
     QNetworkConfigurationManager *_networkMgr;

@@ -250,6 +250,8 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
 
 void Application::setupActions()
 {
+    _actionOpenoC = new QAction(tr("Open ownCloud..."), this);
+    QObject::connect(_actionOpenoC, SIGNAL(triggered(bool)), SLOT(slotOpenOwnCloud()));
     _actionOpenStatus = new QAction(tr("Open status..."), this);
     QObject::connect(_actionOpenStatus, SIGNAL(triggered(bool)), SLOT(slotOpenStatus()));
     _actionAddFolder = new QAction(tr("Add folder..."), this);
@@ -284,13 +286,14 @@ void Application::setupContextMenu()
     }
     _contextMenu->setTitle(_theme->appName() );
     _contextMenu->addAction(_actionOpenStatus);
+    _contextMenu->addAction(_actionOpenoC);
     _contextMenu->addAction(_actionConfigure);
     _contextMenu->addAction(_actionAddFolder);
     _contextMenu->addSeparator();
 
     // here all folders should be added
     foreach (Folder *folder, _folderMan->map() ) {
-        QAction *action = new QAction( tr("open %1").arg( folder->alias()), this );
+        QAction *action = new QAction( tr("open folder %1").arg( folder->alias()), this );
         action->setIcon( _theme->trayFolderIcon( folder->backend()) );
 
         connect( action, SIGNAL(triggered()),_folderOpenActionMapper,SLOT(map()));
@@ -317,6 +320,14 @@ void Application::slotFolderOpenAction( const QString& alias )
         url.setScheme( "file" );
         QDesktopServices::openUrl(url);
     }
+}
+
+void Application::slotOpenOwnCloud()
+{
+  MirallConfigFile cfgFile;
+
+  QString url = cfgFile.ownCloudUrl();
+  QDesktopServices::openUrl( url );
 }
 
 void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
