@@ -164,6 +164,10 @@ static LOG4C_INLINE void csync_log(char *catName, int a_priority,
     va_end(va);
   }
 #else
+  /* On Apple, all stderr & stdout go to Apple System Log (ASL) by default.
+   * Thats certainly too much at the moment.
+   */
+#ifndef __APPLE__
   va_list va;
   va_start(va, a_format);
   if (a_priority > 0) {
@@ -172,6 +176,7 @@ static LOG4C_INLINE void csync_log(char *catName, int a_priority,
   vprintf(a_format, va);
   va_end(va);
   printf("\n");
+#endif
 #endif
 }
 
