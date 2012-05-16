@@ -417,7 +417,18 @@ void StatusDialog::slotCheckConnection()
 
 void StatusDialog::slotOCInfo( const QString& url, const QString& versionStr, const QString& version, const QString& )
 {
-    _OCUrl = url;
+#ifdef Q_OS_WIN32
+        // work around a bug in QDesktopServices on Win32, see i-net
+        QString filePath = url;
+
+        if (filePath.startsWith("\\\\") || filePath.startsWith("//"))
+            _OCUrl.setUrl(QDir::toNativeSeparators(filePath));
+        else
+            _OCUrl = QUrl::fromLocalFile(filePath);
+#else
+    _OCUrl = QUrl::fromLocalFile(url);
+#endif
+
     qDebug() << "#-------# oC found on " << url;
     /* enable the open button */
     _ocUrlLabel->setOpenExternalLinks(true);
