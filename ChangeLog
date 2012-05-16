@@ -4,6 +4,7 @@ version 0.50.6 (released )
   * Directories with 'strange' characters broke sync. (oC bug #613)
   * Special characters in Windows did not sync correctly. (oC bug #478)
   * Make neon redirecting
+  * Switch logging off on Apple to not fill the syslog
 
 version 0.50.5 (released 2012-04-18)
   * removed argp lib dependency
