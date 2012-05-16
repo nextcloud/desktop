@@ -26,6 +26,10 @@
 #include "mirall/owncloudtheme.h"
 #include "mirall/miralltheme.h"
 
+#ifdef Q_OS_MAC 
+#include <mach-o/dyld.h>
+#endif
+
 namespace Mirall {
 
 QString MirallConfigFile::_passwd = QString();
@@ -69,7 +73,7 @@ QString MirallConfigFile::excludeFile() const
     fi.setFile( QString("/etc"), exclFile );
 #endif
 #ifdef Q_OS_MAC
-    char buf[MAX_PATH+1];
+    char buf[1024];
     uint32_t size = sizeof(buf);
     if (_NSGetExecutablePath(buf, &size) == 0) {
       qDebug() << "  Executable path: <" << buf;
