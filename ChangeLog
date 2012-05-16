@@ -9,6 +9,7 @@ version 1.0.2 (release ), csync 0.50.6 required
   * [Fixes] Long running syncs can be interrupted now.
   * [Fixes] Dialogs comes to front on click
   * [Fixes] Open local sync folder from tray and status for win32
+  * [Fixes] Load exclude.lst correctly on MacOSX
     + csync fixes.
 version 1.0.1 (release 2012-04-18), csync 0.50.5 required
   * [Security] Support SSL Connections
