@@ -39,6 +39,8 @@ protected slots:
     void slotVersionInfoArrived( QNetworkReply* );
 
 private:
+    QString getSystemInfo();
+
     QNetworkAccessManager *_accessManager;
 };
 

@@ -45,16 +45,36 @@ void UpdateDetector::versionCheck( Theme *theme )
 #ifdef Q_OS_WIN32
     platform = QLatin1String( "win32" );
 #endif
-#ifdef Q_OS_MACOS
+#ifdef Q_OS_MAC
     platform = QLatin1String( "macos" );
 #endif
 
+    QString sysInfo = getSystemInfo();
+    if( !sysInfo.isEmpty() ) {
+        url.addQueryItem("client", sysInfo );
+    }
     url.addQueryItem( "version", ver );
     url.addQueryItem( "platform", platform );
 
     qDebug() << "00 client update check to " << url.toString();
 
     _accessManager->get( QNetworkRequest( url ));
+}
+
+QString UpdateDetector::getSystemInfo()
+{
+#ifdef Q_OS_LINUX
+    QProcess process;
+    process.start( "lsb_release -a" );
+    process.waitForFinished();
+    QByteArray output = process.readAllStandardOutput();
+    qDebug() << "Sys Info size: " << output.length();
+    if( output.length() > 1024 ) output.clear(); // don't send too much.
+
+    return QString::fromLocal8Bit( output.toBase64() );
+#else
+    return QString();
+#endif
 }
 
 void UpdateDetector::slotVersionInfoArrived( QNetworkReply* reply )
