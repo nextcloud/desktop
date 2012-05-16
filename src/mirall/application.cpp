@@ -318,6 +318,16 @@ void Application::slotFolderOpenAction( const QString& alias )
     if( f ) {
         QUrl url(f->path(), QUrl::TolerantMode);
         url.setScheme( "file" );
+
+#ifdef Q_OS_WIN32
+        // work around a bug in QDesktopServices on Win32, see i-net
+        QString filePath = f->path();
+
+        if (filePath.startsWith("\\\\") || filePath.startsWith("//"))
+            url.setUrl(QDir::toNativeSeparators(filePath));
+        else
+            url = QUrl::fromLocalFile(filePath);
+#endif
         QDesktopServices::openUrl(url);
     }
 }
