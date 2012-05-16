@@ -54,7 +54,7 @@ QString MirallConfigFile::excludeFile() const
         return dir;
     }
     // Check alternative places...
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
     /* For win32, try to copy the conf file from the directory from where the app was started. */
     char buf[MAX_PATH+1];
     int  len = 0;
@@ -64,8 +64,19 @@ QString MirallConfigFile::excludeFile() const
     QString exePath = QString::fromLocal8Bit(buf);
     exePath.remove("owncloud.exe");
     fi.setFile(exePath, exclFile );
-#else
+#endif
+#ifdef Q_OS_LINUX
     fi.setFile( QString("/etc"), exclFile );
+#endif
+#ifdef Q_OS_MAC
+    char buf[MAX_PATH+1];
+    uint32_t size = sizeof(buf);
+    if (_NSGetExecutablePath(buf, &size) == 0) {
+      qDebug() << "  Executable path: <" << buf;
+      QString execFile = QString::fromLocal8Bit(buf);
+      QFileInfo fi2(execFile);
+      fi.setFile( fi2.canonicalPath(), "../Resources/exclude.lst");
+    }
 #endif
     if( fi.isReadable() ) {
         qDebug() << "  ==> returning exclude file path: " << fi.absoluteFilePath();
