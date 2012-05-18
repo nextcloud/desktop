@@ -54,7 +54,12 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
   csync_vio_method_t *m = NULL;
   csync_vio_method_init_fn init_fn;
   const _TCHAR *mpath = NULL;
-  
+#ifdef _WIN32
+  _TCHAR tbuf[MAX_PATH];
+  const _TCHAR *pathBuf = NULL;
+  char *buf = NULL;
+  int indx = 0;
+#endif
   
   if (asprintf(&path, "%s/csync_%s.%s", PLUGINDIR, module, MODULE_EXTENSION) < 0) {
     return -1;
@@ -73,13 +78,29 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
   mpath = c_multibyte(path);
   if (_tstat(mpath, &sb) < 0) {
     SAFE_FREE(path);
-    if (asprintf(&path, "modules/csync_%s.%s", module, MODULE_EXTENSION) < 0) {
-      return -1;
+    /* Change the current working directory to read the module from a relative path. */
+    if( GetModuleFileNameW(NULL, tbuf, MAX_PATH) > 0 ) {
+      buf = c_utf8(tbuf);
+      /* cut the trailing owncloud.exe off */
+      if( strlen(buf)>13) {
+        indx = strlen(buf)-13;
+        buf[indx]='\0';
+        pathBuf = c_multibyte(buf);
+
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Win32: changing current working dir to %s", buf);
+        _wchdir(pathBuf);
+        c_free_multibyte(pathBuf);
+      }
+      c_free_utf8(buf);
+
+      if (asprintf(&path, "modules/csync_%s.%s", module, MODULE_EXTENSION) < 0) {
+        return -1;
+      }
     }
   }
   c_free_multibyte(mpath);
 #endif
-  
+
 #ifdef __APPLE__
   if (lstat(path, &sb) < 0) {
     SAFE_FREE(path);
