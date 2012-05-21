@@ -179,3 +179,10 @@ install(TARGETS owncloud
 if(BUILD_OWNCLOUD_OSX_BUNDLE)
     install_qt4_executable(${OWNCLOUD_OSX_BUNDLE} "" "${OWNCLOUD_OSX_BUNDLE}/Contents/Plugins/csync_owncloud.so" ${dirs})
 endif()
+
+# s/y k/y ALL k/ for building this target always
+add_custom_target( krazy ALL krazy2 --check-sets c++,qt4,foss
+                            ${PROJECT_SOURCE_DIR}/src/mirall/*.ui
+                            ${PROJECT_SOURCE_DIR}/src/mirall/*.h
+                            ${PROJECT_SOURCE_DIR}/src/mirall/*.cpp
+)
