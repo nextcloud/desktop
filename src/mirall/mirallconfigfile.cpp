@@ -11,6 +11,11 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
+
+#include "mirall/mirallconfigfile.h"
+#include "mirall/owncloudtheme.h"
+#include "mirall/miralltheme.h"
+
 #include <QtCore>
 #include <QtGui>
 
@@ -22,18 +27,14 @@
 #include <winbase.h>
 #endif
 
-#include "mirall/mirallconfigfile.h"
-#include "mirall/owncloudtheme.h"
-#include "mirall/miralltheme.h"
-
 #ifdef Q_OS_MAC 
 #include <mach-o/dyld.h>
 #endif
 
 namespace Mirall {
 
-QString MirallConfigFile::_passwd = QString();
-QString MirallConfigFile::_oCVersion = QString();
+QString MirallConfigFile::_passwd; //  = QString();
+QString MirallConfigFile::_oCVersion; // = QString();
 bool    MirallConfigFile::_askedUser = false;
 
 MirallConfigFile::MirallConfigFile()
@@ -139,14 +140,14 @@ void MirallConfigFile::writeOwncloudConfig( const QString& connection,
     QSettings settings( file, QSettings::IniFormat);
     QString cloudsUrl( url );
 
-    if( !cloudsUrl.startsWith("http") )
-        cloudsUrl.prepend( "http://" );
+    if( !cloudsUrl.startsWith( QLatin1String("http")) )
+        cloudsUrl.prepend(QLatin1String("http://"));
 
     settings.beginGroup( connection );
     settings.setValue("url", cloudsUrl );
     settings.setValue("user", user );
     if( skipPwd ) {
-        pwd = QString();
+        pwd.clear();
     }
 
     QByteArray pwdba = pwd.toUtf8();
@@ -294,7 +295,7 @@ bool MirallConfigFile::ownCloudSkipUpdateCheck( const QString& connection ) cons
 
 QByteArray MirallConfigFile::basicAuthHeader() const
 {
-    QString concatenated = ownCloudUser() + ":" + ownCloudPasswd();
+    QString concatenated = ownCloudUser() + QChar(':') + ownCloudPasswd();
     const QString b("Basic ");
     QByteArray data = b.toLocal8Bit() + concatenated.toLocal8Bit().toBase64();
 

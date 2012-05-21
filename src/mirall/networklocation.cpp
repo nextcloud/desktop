@@ -49,7 +49,7 @@ NetworkLocation NetworkLocation::currentLocation()
     QByteArray gwIp;
     while (ip.canReadLine()) {
         QByteArray line = ip.readLine();
-        if (line.startsWith("default")) {
+        if ( line.startsWith("default") ) { // krazy:exclude=strings
             QList<QByteArray> parts = line.split(' ');
             gwIp = parts[2];
             break;

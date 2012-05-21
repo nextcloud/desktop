@@ -12,6 +12,9 @@
  * for more details.
  */
 
+#include "mirall/temporarydir.h"
+#include "mirall/fileutils.h"
+
 #include <cstdlib>
 #include <cerrno>
 #include <cstring>
@@ -19,9 +22,6 @@
 #include <QDebug>
 #include <QDir>
 #include <QDateTime>
-
-#include "mirall/temporarydir.h"
-#include "mirall/fileutils.h"
 
 namespace Mirall
 {

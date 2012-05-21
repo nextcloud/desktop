@@ -11,17 +11,16 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-
-#include <QDesktopServices>
-#include <QtCore>
-
+#include "mirall/folderman.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/unisonfolder.h"
 #include "mirall/csyncfolder.h"
 #include "mirall/owncloudfolder.h"
 #include "mirall/syncresult.h"
-#include "mirall/folderman.h"
 #include "mirall/inotify.h"
+
+#include <QDesktopServices>
+#include <QtCore>
 
 namespace Mirall {
 
@@ -90,7 +89,7 @@ int FolderMan::setupKnownFolders()
   dir.setFilter(QDir::Files);
   QStringList list = dir.entryList();
 
-  foreach ( QString alias, list ) {
+  foreach ( const QString& alias, list ) {
     Folder *f = setupFolderFromConfigFile( alias );
   }
   // return the number of valid folders.
@@ -103,7 +102,7 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
     Folder *folder = 0L;
 
     qDebug() << "  ` -> setting up:" << file;
-    QSettings settings( _folderConfigPath + "/" + file, QSettings::IniFormat);
+    QSettings settings( _folderConfigPath + QChar('/') + file, QSettings::IniFormat);
     qDebug() << "    -> file path: " + settings.fileName();
 
     settings.beginGroup( file ); // read the group with the same name as the file which is the folder alias
@@ -310,7 +309,7 @@ void FolderMan::addFolderDefinition( const QString& backend, const QString& alia
                                      bool onlyThisLAN )
 {
     // Create a settings file named after the alias
-    QSettings settings( _folderConfigPath + "/" + alias, QSettings::IniFormat);
+    QSettings settings( _folderConfigPath + QChar('/') + alias, QSettings::IniFormat);
 
     settings.setValue(QString("%1/localPath").arg(alias),   sourceFolder );
     settings.setValue(QString("%1/targetPath").arg(alias),  targetPath );
@@ -343,7 +342,7 @@ void FolderMan::removeFolder( const QString& alias )
       qDebug() << "!! Can not remove " << alias << ", not in folderMap.";
     }
 
-    QFile file( _folderConfigPath + "/" + alias );
+    QFile file( _folderConfigPath + QChar('/') + alias );
     if( file.exists() ) {
         qDebug() << "Remove folder config file " << file.fileName();
       file.remove();

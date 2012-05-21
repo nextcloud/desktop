@@ -12,17 +12,14 @@
  * for more details.
  */
 
+#include "mirall/owncloudinfo.h"
+#include "mirall/mirallconfigfile.h"
+#include "mirall/version.h"
+#include "mirall/sslerrordialog.h"
 
 #include <QtCore>
 #include <QtGui>
 #include <QAuthenticator>
-
-
-#include "mirall/owncloudinfo.h"
-#include "mirall/mirallconfigfile.h"
-#include "mirall/sslerrordialog.h"
-#include "mirall/version.h"
-#include "mirall/sslerrordialog.h"
 
 #if QT46_IMPL
 #include <QHttp>
@@ -258,11 +255,11 @@ void ownCloudInfo::slotReplyFinished()
     const QString version( reply->readAll() );
     const QString url = reply->url().toString();
     QString plainUrl(url);
-    plainUrl.remove("/status.php");
+    plainUrl.remove( QLatin1String("/status.php"));
 
     QString info( version );
 
-    if( url.endsWith("status.php") ) {
+    if( url.endsWith( QLatin1String("status.php")) ) {
         // it was a call to status.php
         if( reply->error() == QNetworkReply::NoError && info.isEmpty() ) {
             // This seems to be a bit strange behaviour of QNetworkAccessManager.
@@ -279,12 +276,11 @@ void ownCloudInfo::slotReplyFinished()
             info.remove(-1,1); // remove the last char which is a "}"
             QStringList li = info.split( QChar(',') );
 
-            QString infoString;
             QString versionStr;
             QString version;
             QString edition;
 
-            foreach ( infoString, li ) {
+            foreach ( const QString& infoString, li ) {
                 QStringList touple = infoString.split( QChar(':'));
                 QString key = touple[0];
                 key.remove(QChar('"'));

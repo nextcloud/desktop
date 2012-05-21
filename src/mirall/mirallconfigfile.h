@@ -15,6 +15,9 @@
 #ifndef MIRALLCONFIGFILE_H
 #define MIRALLCONFIGFILE_H
 
+#include <QString>
+
+
 namespace Mirall {
 
 

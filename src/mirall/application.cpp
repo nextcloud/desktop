@@ -12,14 +12,6 @@
  * for more details.
  */
 
-#include <QtCore>
-#include <QtGui>
-#include <QHash>
-#include <QHashIterator>
-#include <QUrl>
-#include <QDesktopServices>
-#include <QTranslator>
-
 #include "mirall/application.h"
 #include "mirall/folder.h"
 #include "mirall/folderwatcher.h"
@@ -41,6 +33,14 @@
 #include "mirall/csyncfolder.h"
 #endif
 #include "mirall/inotify.h"
+
+#include <QtCore>
+#include <QtGui>
+#include <QHash>
+#include <QHashIterator>
+#include <QUrl>
+#include <QDesktopServices>
+#include <QTranslator>
 
 namespace Mirall {
 
@@ -132,7 +132,7 @@ Application::Application(int &argc, char **argv) :
 
 #if QT_VERSION >= 0x040700
     qDebug() << "* Network is" << (_networkMgr->isOnline() ? "online" : "offline");
-    foreach (QNetworkConfiguration netCfg, _networkMgr->allConfigurations(QNetworkConfiguration::Active)) {
+    foreach (const QNetworkConfiguration& netCfg, _networkMgr->allConfigurations(QNetworkConfiguration::Active)) {
         //qDebug() << "Network:" << netCfg.identifier();
     }
 #endif
@@ -323,7 +323,7 @@ void Application::slotFolderOpenAction( const QString& alias )
         // work around a bug in QDesktopServices on Win32, see i-net
         QString filePath = f->path();
 
-        if (filePath.startsWith("\\\\") || filePath.startsWith("//"))
+        if (filePath.startsWith(QLatin1String("\\\\") || filePath.startsWith("//"))
             url.setUrl(QDir::toNativeSeparators(filePath));
         else
             url = QUrl::fromLocalFile(filePath);
@@ -469,34 +469,6 @@ void Application::slotRemoveFolder( const QString& alias )
     setupContextMenu();
 }
 
-#ifdef HAVE_FETCH_AND_PUSH
-void Application::slotFetchFolder( const QString& alias )
-{
-  qDebug() << "start to fetch folder with alias " << alias;
-
-  if( ! _folderMap.contains( alias ) ) {
-    qDebug() << "!! Can not fetch alias " << alias << ", can not be found in folderMap.";
-    return;
-  }
-
-  Folder *f = _folderMap[alias];
-
-}
-
-void Application::slotPushFolder( const QString& alias )
-{
-  qDebug() << "start to push folder with alias " << alias;
-
-  if( ! _folderMap.contains( alias ) ) {
-    qDebug() << "!! Can not push alias " << alias << ", can not be found in folderMap.";
-    return;
-  }
-
-  Folder *f = _folderMap[alias];
-
-}
-#endif
-
 void Application::slotInfoFolder( const QString& alias )
 {
     qDebug() << "details of folder with alias " << alias;
@@ -538,7 +510,7 @@ void Application::slotInfoFolder( const QString& alias )
 
     QMessageBox infoBox( QMessageBox::Information, tr( "Folder information" ), alias, QMessageBox::Ok );
     QStringList li = folderResult.errorStrings();
-    foreach( const QString l, li ) {
+    foreach( const QString& l, li ) {
         folderMessage += QString("<p>%1</p>").arg( l );
     }
 
@@ -562,8 +534,8 @@ void Application::slotInfoFolder( const QString& alias )
 
 	    QStringList files = change_it.value();
 	    QString fileList;
-	    foreach( QString file, files) {
-		fileList += file + "\n";
+            foreach( const QString& file, files) {
+                fileList += file + QChar('\n');
 	    }
 	    details += changeType + fileList;
 	}
@@ -619,7 +591,7 @@ void Application::slotSyncStateChange( const QString& alias )
 void Application::computeOverallSyncStatus()
 {
 
-    // display the info of the least succesful sync (eg. not just display the result of the latest sync
+    // display the info of the least successful sync (eg. not just display the result of the latest sync
     SyncResult overallResult = SyncResult::Success;
     QString trayMessage;
     Folder::Map map = _folderMan->map();

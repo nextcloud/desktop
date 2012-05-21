@@ -12,12 +12,12 @@
  * for more details.
  */
 
+#include "miralltheme.h"
+
 #include <QString>
 #include <QDebug>
 #include <QPixmap>
 #include <QIcon>
-
-#include "miralltheme.h"
 
 namespace Mirall {
 

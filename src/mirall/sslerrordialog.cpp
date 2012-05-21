@@ -11,13 +11,11 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
+#include "sslerrordialog.h"
+#include "mirall/mirallconfigfile.h"
 
 #include <QtGui>
 #include <QtNetwork>
-
-#include "sslerrordialog.h"
-
-#include "mirall/mirallconfigfile.h"
 
 namespace Mirall
 {
@@ -92,7 +90,7 @@ bool SslErrorDialog::setErrorList( QList<QSslError> errors )
     // loop over the unknown certs and line up their errors.
             msg += QL("<h3>") + tr("Warnings about current SSL Connection:") + QL("</h3>");
     msg += QL("<div id=\"ca_errors\">");
-    foreach( QSslCertificate cert, _unknownCerts ) {
+    foreach( const QSslCertificate& cert, _unknownCerts ) {
         msg += QL("<div id=\"ca_error\">");
         // add the errors for this cert
         foreach( QSslError err, errors ) {
@@ -182,7 +180,7 @@ void SslErrorDialog::accept()
         sslCfg.setCaCertificates(ca_list);
         QSslConfiguration::setDefaultConfiguration(sslCfg);
 
-        foreach( QSslCertificate cert, _unknownCerts ) {
+        foreach( const QSslCertificate& cert, _unknownCerts ) {
             certs += cert.toPem() + '\n';
         }
 

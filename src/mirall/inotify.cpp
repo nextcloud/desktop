@@ -14,17 +14,18 @@
  * for more details.
  */
 
-#include <mirall/folder.h>
-
 #ifdef USE_INOTIFY
 #include <sys/inotify.h>
 #endif
+#include "inotify.h"
+#include "mirall/folder.h"
+
 #include <cerrno>
 #include <unistd.h>
 #include <QDebug>
 #include <QStringList>
 
-#include "inotify.h"
+
 
 // Buffer Size for read() buffer
 #define DEFAULT_READ_BUFFERSIZE 2048
@@ -48,9 +49,9 @@ INotify::~INotify()
     s_thread->unregisterForNotification(this);
 
     // Remove all inotify watchs.
-    QString key;
-    foreach (key, _wds.keys())
-        inotify_rm_watch(s_fd, _wds.value(key));
+    foreach( int fd, _wds ) {
+        inotify_rm_watch(s_fd, fd);
+    }
 }
 
 void INotify::addPath(const QString &path)
@@ -99,8 +100,8 @@ INotify::fireEvent(int mask, int cookie, int wd, char* name)
 {
     //qDebug() << "****" << name;
     QStringList paths(_wds.keys(wd));
-    foreach (QString path, paths)
-        emit notifyEvent(mask, cookie, path + "/" + QString::fromUtf8(name));
+    foreach (const QString& path, paths)
+        emit notifyEvent(mask, cookie, path + QChar('/') + QString::fromUtf8(name));
 }
 
 void

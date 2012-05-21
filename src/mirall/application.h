@@ -52,10 +52,6 @@ protected slots:
     void slotAddFolder();
     void slotOpenStatus();
     void slotRemoveFolder( const QString& );
-#ifdef HAVE_FETCH_AND_PUSH
-    void slotFetchFolder( const QString& );
-    void slotPushFolder( const QString& );
-#endif
     void slotEnableFolder( const QString&, const bool );
     void slotInfoFolder( const QString& );
     void slotConfigure();

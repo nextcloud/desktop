@@ -12,12 +12,12 @@
  * for more details.
  */
 
+#include "owncloudtheme.h"
+
 #include <QString>
 #include <QDebug>
 #include <QPixmap>
 #include <QIcon>
-
-#include "owncloudtheme.h"
 
 namespace Mirall {
 

@@ -12,15 +12,15 @@
  * for more details.
  */
 
-#include <QtCore>
-#include <QProcess>
-#include <QMessageBox>
-#include <QDesktopServices>
-
 #include "mirall/owncloudsetupwizard.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/owncloudinfo.h"
 #include "mirall/folderman.h"
+
+#include <QtCore>
+#include <QProcess>
+#include <QMessageBox>
+#include <QDesktopServices>
 
 namespace Mirall {
 
@@ -364,7 +364,7 @@ void OwncloudSetupWizard::slotCreateRemoteFolderFinished( QNetworkReply::Network
     qDebug() << "** webdav mkdir request finished " << error;
 
     if( error == QNetworkReply::NoError ) {
-        _ocWizard->appendToResultWidget( tr("Remote folder %1 created sucessfully.").arg(_remoteFolder));
+        _ocWizard->appendToResultWidget( tr("Remote folder %1 created successfully.").arg(_remoteFolder));
 
         // Now write the resulting folder definition
         if( _folderMan ) {

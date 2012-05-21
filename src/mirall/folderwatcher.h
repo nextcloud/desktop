@@ -15,6 +15,8 @@
 #ifndef MIRALL_FOLDERWATCHER_H
 #define MIRALL_FOLDERWATCHER_H
 
+#include "mirall/folder.h"
+
 #include <QList>
 #include <QObject>
 #include <QString>
@@ -22,14 +24,13 @@
 #include <QTime>
 #include <QHash>
 
-#include "mirall/folder.h"
-
 class QTimer;
+
+namespace Mirall {
+
 #ifdef USE_INOTIFY
 class INotify;
 #endif
-
-namespace Mirall {
 
 /**
  * Watches a folder and sub folders for changes

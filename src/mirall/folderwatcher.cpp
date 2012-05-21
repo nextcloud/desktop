@@ -13,6 +13,11 @@
  */
 
 // event masks
+#include "mirall/folderwatcher.h"
+#include "mirall/folder.h"
+#include "mirall/inotify.h"
+#include "mirall/fileutils.h"
+
 #include <stdint.h>
 
 #include <QFileInfo>
@@ -22,11 +27,6 @@
 #include <QMutexLocker>
 #include <QStringList>
 #include <QTimer>
-
-#include "mirall/folder.h"
-#include "mirall/inotify.h"
-#include "mirall/folderwatcher.h"
-#include "mirall/fileutils.h"
 
 #ifdef USE_INOTIFY
 #include <sys/inotify.h>
@@ -60,7 +60,7 @@ FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
     _inotify = new INotify(standard_event_mask);
     slotAddFolderRecursive(root);
     QObject::connect(_inotify, SIGNAL(notifyEvent(int, int, const QString &)),
-                     SLOT(slotINotifyEvent(int, int, const QString &)));
+                     this, SLOT(slotINotifyEvent(int, int, const QString &)));
 #endif
     // do a first synchronization to get changes while
     // the application was not running
@@ -165,7 +165,7 @@ void FolderWatcher::slotAddFolderRecursive(const QString &path)
         if (folder.exists() && !watchedFolders.contains(folder.path())) {
             subdirs++;
             // check that it does not match the ignore list
-            foreach (QString pattern, _ignores) {
+            foreach ( const QString& pattern, _ignores) {
                 QRegExp regexp(pattern);
                 regexp.setPatternSyntax(QRegExp::Wildcard);
                 if ( regexp.exactMatch(folder.path()) ) {
@@ -237,7 +237,7 @@ void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
         //qDebug() << cookie << " OTHER " << mask << " :" << path;
     }
 
-    foreach (QString pattern, _ignores) {
+    foreach (const QString& pattern, _ignores) {
         QRegExp regexp(pattern);
         regexp.setPatternSyntax(QRegExp::Wildcard);
 

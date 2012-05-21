@@ -12,13 +12,13 @@
  * for more details.
  */
 
- #include <QtCore>
- #include <QtGui>
-
 #include "mirall/statusdialog.h"
 #include "mirall/folder.h"
 #include "mirall/theme.h"
 #include "mirall/owncloudinfo.h"
+
+#include <QtCore>
+#include <QtGui>
 
 namespace Mirall {
 
@@ -183,13 +183,11 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
 
   connect(_ButtonClose,  SIGNAL(clicked()), this, SLOT(accept()));
   connect(_ButtonRemove, SIGNAL(clicked()), this, SLOT(slotRemoveFolder()));
-#ifdef HAVE_FETCH_AND_PUSH
-  connect(_ButtonFetch,  SIGNAL(clicked()), this, SLOT(slotFetchFolder()));
-  connect(_ButtonPush,   SIGNAL(clicked()), this, SLOT(slotPushFolder()));
-#else
+
+  // hide these two for now...
   _ButtonFetch->setVisible( false );
   _ButtonPush->setVisible( false );
-#endif
+
   connect(_ButtonEnable, SIGNAL(clicked()), this, SLOT(slotEnableFolder()));
   connect(_ButtonInfo,   SIGNAL(clicked()), this, SLOT(slotInfoFolder()));
   connect(_ButtonAdd,    SIGNAL(clicked()), this, SLOT(slotAddSync()));
@@ -421,7 +419,7 @@ void StatusDialog::slotOCInfo( const QString& url, const QString& versionStr, co
         // work around a bug in QDesktopServices on Win32, see i-net
         QString filePath = url;
 
-        if (filePath.startsWith("\\\\") || filePath.startsWith("//"))
+        if (filePath.startsWith(QLatin1String("\\\\") || filePath.startsWith(QLatin1String("//"))
             _OCUrl.setUrl(QDir::toNativeSeparators(filePath));
         else
             _OCUrl = QUrl::fromLocalFile(filePath);

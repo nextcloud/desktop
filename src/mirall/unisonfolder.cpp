@@ -12,13 +12,13 @@
  * for more details.
  */
 
+#include "mirall/unisonfolder.h"
+
 #include <QDebug>
 #include <QDir>
 #include <QMutexLocker>
 #include <QStringList>
 #include <QTextStream>
-
-#include "mirall/unisonfolder.h"
 
 namespace Mirall {
 
@@ -77,7 +77,7 @@ void UnisonFolder::startSync(const QStringList &pathList)
     if (_syncCount > 0 ) {
         // may be we should use a QDir in the API itself?
         QDir root(path());
-        foreach(QString changedPath, pathList) {
+        foreach( const QString& changedPath, pathList) {
             args << "-path" << root.relativeFilePath(changedPath);
         }
     }

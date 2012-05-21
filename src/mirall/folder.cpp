@@ -11,15 +11,14 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-
-#include <QDebug>
-#include <QTimer>
-#include <QUrl>
-
 #include "mirall/folder.h"
 #include "mirall/folderwatcher.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/syncresult.h"
+
+#include <QDebug>
+#include <QTimer>
+#include <QUrl>
 
 #define DEFAULT_POLL_INTERVAL_SEC 15000
 

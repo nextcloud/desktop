@@ -12,6 +12,11 @@
  * for more details.
  */
 
+#include "mirall/folderwizard.h"
+#include "mirall/owncloudinfo.h"
+#include "mirall/mirallconfigfile.h"
+#include "mirall/theme.h"
+
 #include <QDebug>
 #include <QDesktopServices>
 #include <QFileDialog>
@@ -22,12 +27,6 @@
 #include <QDir>
 
 #include <stdlib.h>
-
-#include "mirall/folderwizard.h"
-#include "mirall/owncloudinfo.h"
-#include "mirall/mirallconfigfile.h"
-#include "mirall/owncloudinfo.h"
-#include "mirall/theme.h"
 
 namespace Mirall
 {
@@ -433,7 +432,7 @@ void FolderWizardOwncloudPage::initializePage()
 {
     _ui.lineEditOCAlias->setText( "ownCloud" );
     _ui.lineEditOCUrl->setText( "http://localhost/owncloud" );
-    QString user( getenv("USER"));
+    QString user( qgetenv("USER"));
     _ui.lineEditOCUser->setText( user );
 }
 

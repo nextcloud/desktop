@@ -16,12 +16,13 @@
  * for more details.
  */
 
-#include <QMutex>
-#include <QThread>
-#include <QString>
 
 #include "mirall/csyncthread.h"
 #include "mirall/folder.h"
+
+#include <QMutex>
+#include <QThread>
+#include <QString>
 
 namespace Mirall {
 

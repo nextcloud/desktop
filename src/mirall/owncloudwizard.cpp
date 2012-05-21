@@ -12,6 +12,7 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
+#include "mirall/owncloudwizard.h"
 
 #include <QDebug>
 #include <QDesktopServices>
@@ -24,8 +25,6 @@
 #include <QScrollBar>
 
 #include <stdlib.h>
-
-#include "mirall/owncloudwizard.h"
 
 namespace Mirall
 {
@@ -125,7 +124,7 @@ bool OwncloudCredentialsPage::isComplete() const
 
 void OwncloudCredentialsPage::initializePage()
 {
-    QString user = getenv( "USER" );
+    QString user = qgetenv( "USER" );
     _ui.OCUserEdit->setText( user );
 }
 
@@ -311,10 +310,10 @@ void OwncloudWizard::slotCurrentPageChanged( int id )
     // preset the ftp url field
     CreateAnOwncloudPage *p = static_cast<CreateAnOwncloudPage*> (page( Page_Create_OC ));
     QString domain = p->domain();
-    if( domain.startsWith( "http://" )) {
+    if( domain.startsWith( QLatin1String("http://") )) {
       domain = domain.right( domain.length()-7 );
     }
-    if( domain.startsWith( "https://" )) {
+    if( domain.startsWith( QLatin1String("https://") )) {
       domain = domain.right( domain.length()-8 );
     }
 

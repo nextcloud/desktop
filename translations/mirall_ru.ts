@@ -264,143 +264,162 @@ p, li { white-space: pre-wrap; }
         <translation>&lt;p&gt;Не настроено подключение к ownCloud&lt;/p&gt;&lt;p&gt;Параметры можно изменить через меню значка в области уведомлений.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="199"/>
+        <location filename="../src/mirall/application.cpp" line="202"/>
         <source>&lt;p&gt;The ownCloud at %1 could not be reached.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Экземпляр ownCloud %1 недоступен.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="200"/>
+        <location filename="../src/mirall/application.cpp" line="203"/>
         <source>&lt;p&gt;The detailed error message is&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Подробное сообщение об ошибке &lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="202"/>
+        <location filename="../src/mirall/application.cpp" line="205"/>
         <source>&lt;p&gt;Please check your configuration by clicking on the tray icon.&lt;/p&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="204"/>
+        <location filename="../src/mirall/application.cpp" line="207"/>
         <source>ownCloud Connection Failed</source>
         <translation>Ошибка подключения к ownCloud</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="221"/>
-        <location filename="../src/mirall/application.cpp" line="228"/>
+        <location filename="../src/mirall/application.cpp" line="224"/>
+        <location filename="../src/mirall/application.cpp" line="231"/>
         <source>No ownCloud Connection</source>
         <translation>Нет подключения к ownCloud</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="222"/>
+        <location filename="../src/mirall/application.cpp" line="225"/>
         <source>&lt;p&gt;Your ownCloud credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Параметры доступа к ownCloud указаны неверно.&lt;/p&gt;&lt;p&gt;Параметры можно изменить через меню значка в области уведомлений.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="229"/>
+        <location filename="../src/mirall/application.cpp" line="232"/>
         <source>&lt;p&gt;Your ownCloud user name or password is not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Имя пользователя или пароль к ownCloud указано неверно.&lt;/p&gt;&lt;p&gt;Параметры можно изменить через меню значка в области уведомлений.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="241"/>
+        <location filename="../src/mirall/application.cpp" line="244"/>
         <source>ownCloud Sync Started</source>
         <translation>Запущена синхронизация с ownCloud</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="241"/>
+        <location filename="../src/mirall/application.cpp" line="244"/>
         <source>Sync started for %1 configured sync folder(s).</source>
         <translation>Запущена синхронизация папок: %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="250"/>
+        <location filename="../src/mirall/application.cpp" line="253"/>
+        <source>Open ownCloud...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="255"/>
         <source>Open status...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="252"/>
+        <location filename="../src/mirall/application.cpp" line="257"/>
         <source>Add folder...</source>
         <translation>Добавить папку...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="254"/>
+        <location filename="../src/mirall/application.cpp" line="259"/>
         <source>Configure...</source>
         <translation>Настроить...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="258"/>
+        <location filename="../src/mirall/application.cpp" line="263"/>
         <source>Quit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="290"/>
-        <source>open %1</source>
-        <translation>Открыть %1</translation>
+        <location filename="../src/mirall/application.cpp" line="296"/>
+        <source>open folder %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="410"/>
+        <location filename="../src/mirall/application.cpp" line="666"/>
+        <source>Sync is paused.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="679"/>
+        <source>No sync folders configured.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>open %1</source>
+        <translation type="obsolete">Открыть %1</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="455"/>
         <source>Confirm Folder Remove</source>
         <translation>Подтверждение удаления папки</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="410"/>
+        <location filename="../src/mirall/application.cpp" line="455"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>Удалить папку &lt;i&gt;%1&lt;/i&gt; на сервере?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="467"/>
+        <location filename="../src/mirall/application.cpp" line="517"/>
         <source>Undefined Folder State</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="470"/>
+        <location filename="../src/mirall/application.cpp" line="520"/>
         <source>The folder waits to start syncing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="473"/>
-        <location filename="../src/mirall/application.cpp" line="595"/>
+        <location filename="../src/mirall/application.cpp" line="523"/>
+        <location filename="../src/mirall/application.cpp" line="646"/>
         <source>Sync is running.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="476"/>
-        <location filename="../src/mirall/application.cpp" line="598"/>
+        <location filename="../src/mirall/application.cpp" line="526"/>
+        <location filename="../src/mirall/application.cpp" line="649"/>
         <source>Last Sync was successful.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="479"/>
-        <location filename="../src/mirall/application.cpp" line="602"/>
+        <location filename="../src/mirall/application.cpp" line="529"/>
+        <location filename="../src/mirall/application.cpp" line="653"/>
         <source>Syncing Error.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="482"/>
-        <location filename="../src/mirall/application.cpp" line="608"/>
+        <location filename="../src/mirall/application.cpp" line="532"/>
+        <location filename="../src/mirall/application.cpp" line="659"/>
         <source>Setup Error.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="485"/>
-        <location filename="../src/mirall/application.cpp" line="611"/>
+        <location filename="../src/mirall/application.cpp" line="535"/>
+        <location filename="../src/mirall/application.cpp" line="662"/>
         <source>Undefined Error State.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="537"/>
+        <location filename="../src/mirall/application.cpp" line="587"/>
         <source>Sync Running</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="538"/>
+        <location filename="../src/mirall/application.cpp" line="588"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="589"/>
+        <location filename="../src/mirall/application.cpp" line="640"/>
         <source>Undefined State.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="592"/>
+        <location filename="../src/mirall/application.cpp" line="643"/>
         <source>Waits to start syncing.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -425,29 +444,29 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">&lt;b&gt;Неопределённое состояние&lt;/b&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="489"/>
+        <location filename="../src/mirall/application.cpp" line="539"/>
         <source>Folder information</source>
         <translation>Сведения о папке</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="504"/>
+        <location filename="../src/mirall/application.cpp" line="554"/>
         <source>Unknown</source>
         <translation>Нет данных</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="506"/>
+        <location filename="../src/mirall/application.cpp" line="556"/>
         <source>Changed files:
 </source>
         <translation>Изменены файлы:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="508"/>
+        <location filename="../src/mirall/application.cpp" line="558"/>
         <source>Added files:
 </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="510"/>
+        <location filename="../src/mirall/application.cpp" line="560"/>
         <source>New files in the server, or files deleted locally:
 </source>
         <translation>Новые файлы на сервере или файлы удалены локально:</translation>
@@ -569,7 +588,7 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::FolderViewDelegate</name>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="154"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="152"/>
         <source>Remote path: %1</source>
         <translation>Путь на сервере: %1</translation>
     </message>
@@ -577,7 +596,7 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::FolderWizard</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="460"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="463"/>
         <source>%1 Folder Wizard</source>
         <translation>Настройка папки %1</translation>
     </message>
@@ -643,22 +662,22 @@ Please write a bug report.</source>
         <translation>Лучше не использовать сетевой корневой каталог.&lt;br/&gt;В этом случае вы &lt;b&gt;не сможете&lt;/b&gt; синхронизировать другую локальную папку.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="312"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="315"/>
         <source>to your &lt;a href=&quot;%1&quot;&gt;ownCloud&lt;/a&gt; (version %2)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="322"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="325"/>
         <source>no configured ownCloud found!</source>
         <translation>Нет настроенного экземпляра ownCloud.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="323"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="326"/>
         <source>Your ownCloud could not be reached:&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Ваш экземпляр ownCloud недоступен:&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="390"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="393"/>
         <source>Select the target folder</source>
         <translation>Выберите папку</translation>
     </message>
@@ -676,9 +695,13 @@ Please write a bug report.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="115"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: ownCloud version %2&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;Успешное подключение к %1: версия ownCloud %2&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation type="obsolete">&lt;font color=&quot;green&quot;&gt;Успешное подключение к %1: версия ownCloud %2&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="115"/>
+        <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: ownCloud version %2 (%3)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="126"/>
@@ -840,37 +863,50 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::StatusDialog</name>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="244"/>
         <source>disable</source>
-        <translation>отключено</translation>
+        <translation type="obsolete">отключено</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="246"/>
         <source>enable</source>
-        <translation>включено</translation>
+        <translation type="obsolete">включено</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="410"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="242"/>
+        <source>Pause</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/statusdialog.cpp" line="244"/>
+        <source>Resume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/statusdialog.cpp" line="408"/>
         <source>Checking ownCloud connection...</source>
         <translation>Проверка подключения к ownCloud...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="415"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="413"/>
         <source>No ownCloud connection configured.</source>
         <translation>Нет настроенного подключения к ownCloud.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="426"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="435"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, ownCloud %3</source>
         <translation>Подключено к &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, ownCloud %3</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="433"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="436"/>
+        <source>Version: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/statusdialog.cpp" line="443"/>
         <source>unknown problem.</source>
         <translation>неизвестная ошибка.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="436"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="446"/>
         <source>&lt;p&gt;Failed to connect to ownCloud: &lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Не удалось подключиться к ownCloud: &lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
@@ -916,17 +952,17 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::UpdateDetector</name>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="95"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="115"/>
         <source>Client Version Check</source>
         <translation>Проверка версии клиента</translation>
     </message>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="97"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="117"/>
         <source>&lt;p&gt;A new version of the ownCloud Client is available.</source>
         <translation>&lt;p&gt;Доступна новая версия клиента ownCloud.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="98"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="118"/>
         <source>%1 is available. The installed version is %3.&lt;p/&gt;&lt;p&gt;For more information see &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</source>
         <translation>Доступна версия %1. Установлена версия %3.&lt;p/&gt;&lt;p&gt;Подробности на сайте&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</translation>
     </message>
@@ -1162,12 +1198,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/mirall/mirallconfigfile.cpp" line="214"/>
+        <location filename="../src/mirall/mirallconfigfile.cpp" line="237"/>
         <source>ownCloud Password Required</source>
         <translation>Требуется пароль к ownCloud</translation>
     </message>
     <message>
-        <location filename="../src/mirall/mirallconfigfile.cpp" line="215"/>
+        <location filename="../src/mirall/mirallconfigfile.cpp" line="238"/>
         <source>Please enter your ownCloud password:</source>
         <translation>Укажите пароль для доступа к ownCloud:</translation>
     </message>
@@ -1214,23 +1250,39 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="56"/>
-        <source>fetch...</source>
-        <translation>Получить...</translation>
+        <source>Fetch...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="63"/>
-        <source>push...</source>
-        <translation>Отправить...</translation>
+        <source>Push...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="70"/>
-        <source>enable</source>
-        <translation>Включить</translation>
+        <source>Pause</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="77"/>
+        <source>Info...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>fetch...</source>
+        <translation type="obsolete">Получить...</translation>
+    </message>
+    <message>
+        <source>push...</source>
+        <translation type="obsolete">Отправить...</translation>
+    </message>
+    <message>
+        <source>enable</source>
+        <translation type="obsolete">Включить</translation>
+    </message>
+    <message>
         <source>info...</source>
-        <translation>Свойства...</translation>
+        <translation type="obsolete">Свойства...</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="99"/>

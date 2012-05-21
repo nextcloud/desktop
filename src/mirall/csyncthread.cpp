@@ -13,6 +13,9 @@
  * for more details.
  */
 
+#include "mirall/csyncthread.h"
+#include "mirall/mirallconfigfile.h"
+
 #include <QDebug>
 #include <QDir>
 #include <QMutexLocker>
@@ -20,10 +23,6 @@
 #include <QStringList>
 #include <QTextStream>
 #include <QTime>
-#include <QDebug>
-
-#include "mirall/csyncthread.h"
-#include "mirall/mirallconfigfile.h"
 
 namespace Mirall {
 
@@ -185,7 +184,7 @@ void CSyncThread::run()
             break;
         case CSYNC_ERR_TIMESKEW:
             errStr = tr("The system time between the local machine and the server differs "
-                        "too much. Please use a time syncronization service (ntp) on both machines.");
+                        "too much. Please use a time synchronization service (ntp) on both machines.");
             break;
         case CSYNC_ERR_FILESYSTEM:
             errStr = tr("CSync could not detect the filesystem type.");

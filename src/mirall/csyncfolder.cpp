@@ -12,17 +12,18 @@
  * for more details.
  */
 
+#include "mirall/csyncfolder.h"
+#include "mirall/csyncthread.h"
+#include "mirall/mirallconfigfile.h"
+
+#include <csync.h>
+
 #include <QDebug>
 #include <QDir>
 #include <QMutexLocker>
 #include <QThread>
 #include <QStringList>
 #include <QTextStream>
-
-#include "csync.h"
-#include "mirall/csyncthread.h"
-#include "mirall/csyncfolder.h"
-#include "mirall/mirallconfigfile.h"
 
 namespace Mirall {
 

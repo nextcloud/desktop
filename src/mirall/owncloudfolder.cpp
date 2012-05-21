@@ -13,6 +13,11 @@
  * for more details.
  */
 
+#include "mirall/owncloudfolder.h"
+#include "mirall/mirallconfigfile.h"
+
+#include <csync.h>
+
 #include <QDebug>
 #include <QDir>
 #include <QUrl>
@@ -21,11 +26,6 @@
 #include <QStringList>
 #include <QTextStream>
 #include <QTimer>
-
-#include "csync.h"
-
-#include "mirall/owncloudfolder.h"
-#include "mirall/mirallconfigfile.h"
 
 namespace Mirall {
 

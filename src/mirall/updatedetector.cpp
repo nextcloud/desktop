@@ -11,15 +11,15 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-#include <QtCore>
-#include <QtNetwork>
-#include <QtGui>
 
-#include "updatedetector.h"
-
+#include "mirall/updatedetector.h"
 #include "mirall/theme.h"
 #include "mirall/version.h"
 #include "mirall/occinfo.h"
+
+#include <QtCore>
+#include <QtNetwork>
+#include <QtGui>
 
 namespace Mirall {
 

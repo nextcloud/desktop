@@ -12,9 +12,10 @@
  * for more details.
  */
 
+#include "mirall/gitfolder.h"
+
 #include <QMutexLocker>
 #include <QProcess>
-#include "mirall/gitfolder.h"
 
 namespace Mirall {
 
