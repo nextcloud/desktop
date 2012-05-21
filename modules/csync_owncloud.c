@@ -548,12 +548,12 @@ static csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
 /* cleanPath to return an escaped path of an uri */
 static char *_cleanPath( const char* uri ) {
     int rc = 0;
-    char *path;
+    char *path = NULL;
     char *re = NULL;
 
     rc = c_parse_uri( uri, NULL, NULL, NULL, NULL, NULL, &path );
     if( rc  < 0 ) {
-        DEBUG_WEBDAV(("Unable to cleanPath %s\n", uri ? uri: "" ));
+        DEBUG_WEBDAV(("Unable to cleanPath %s\n", uri ? uri: "<zero>" ));
         re = NULL;
     } else {
         re = ne_path_escape( path );
@@ -1120,7 +1120,7 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
 }
 
 static ssize_t owncloud_read(csync_vio_method_handle_t *fhandle, void *buf, size_t count) {
-    struct transfer_context *writeCtx;
+    struct transfer_context *writeCtx = NULL;
     size_t len = 0;
     csync_stat_t st;
 
@@ -1399,7 +1399,7 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
     ne_propname pname;
     int rc = NE_OK;
     char val[255];
-    char *curi;
+    char *curi = NULL;
 
     curi = _cleanPath( uri );
 
