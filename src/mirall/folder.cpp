@@ -20,8 +20,6 @@
 #include <QTimer>
 #include <QUrl>
 
-#define DEFAULT_POLL_INTERVAL_SEC 15000
-
 namespace Mirall {
 
 Folder::Folder(const QString &alias, const QString &path, const QString& secondPath, QObject *parent)
@@ -37,9 +35,11 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
       _enabled(true)
 {
     qsrand(QTime::currentTime().msec());
+    MirallConfigFile cfgFile;
 
     _pollTimer->setSingleShot(true);
-    int polltime = DEFAULT_POLL_INTERVAL_SEC - 2000+ (int)( 4000.0*qrand()/(RAND_MAX+1.0));
+    int polltime = cfgFile.remotePollInterval()- 2000 + (int)( 4000.0*qrand()/(RAND_MAX+1.0));
+    qDebug() << "setting remote poll timer interval to" << polltime << "msec for folder " << alias;
     _pollTimer->setInterval( polltime );
 
     QObject::connect(_pollTimer, SIGNAL(timeout()), this, SLOT(slotPollTimerTimeout()));

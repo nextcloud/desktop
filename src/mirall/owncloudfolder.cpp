@@ -29,7 +29,6 @@
 
 namespace Mirall {
 
-#define POLL_TIMER_EXCEED 10
 
 ownCloudFolder::ownCloudFolder(const QString &alias,
                                const QString &path,
@@ -54,10 +53,14 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
      * remote poll interval, defined in slotPollTimerRemoteCheck
      */
 
+    MirallConfigFile cfgFile;
+
     _pollTimer->stop();
     connect( _pollTimer, SIGNAL(timeout()), this, SLOT(slotPollTimerRemoteCheck()));
-    setPollInterval( 2000 );
-    _pollTimerCnt = POLL_TIMER_EXCEED-1; // start the syncing quickly!
+    setPollInterval( cfgFile.localPollInterval()- 500 + (int)( 1000.0*qrand()/(RAND_MAX+1.0) ) );
+    _pollTimerExceed = cfgFile.pollTimerExceedFactor();
+
+    _pollTimerCnt = _pollTimerExceed-1; // start the syncing quickly!
     _pollTimer->start();
     qDebug() << "****** ownCloud folder using local poll *******";
 #endif
@@ -124,7 +127,7 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     _localCheckOnly = false;
 #else
     _localCheckOnly = true;
-    if( _pollTimerCnt >= POLL_TIMER_EXCEED || _localFileChanges ) {
+    if( _pollTimerCnt >= _pollTimerExceed || _localFileChanges ) {
         _localCheckOnly = false;
         _pollTimerCnt = 0;
         _localFileChanges = false;
@@ -177,7 +180,7 @@ void ownCloudFolder::slotThreadTreeWalkResult( WalkStats *wStats )
          qDebug() << "*** Local changes, lets do a full sync!" ;
          _localFileChanges = true;
     }
-    if( _pollTimerCnt < POLL_TIMER_EXCEED ) {
+    if( _pollTimerCnt < _pollTimerExceed ) {
         qDebug() << "     *** No local changes, finalize, pollTimerCounter is "<< _pollTimerCnt ;
     }
 #endif

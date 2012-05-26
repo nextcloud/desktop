@@ -53,6 +53,11 @@ public:
 
     bool ownCloudSkipUpdateCheck( const QString& connection = QString() ) const;
 
+    /* Poll intervals in milliseconds */
+    int localPollInterval ( const QString& connection = QString() ) const;
+    int remotePollInterval( const QString& connection = QString() ) const;
+    int pollTimerExceedFactor( const QString& connection = QString() ) const;
+
     QByteArray basicAuthHeader() const;
 
 private:

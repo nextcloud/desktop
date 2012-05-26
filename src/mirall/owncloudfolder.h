@@ -58,6 +58,7 @@ private:
     bool         _localCheckOnly;
     bool         _localFileChanges;
     int          _pollTimerCnt;
+    int          _pollTimerExceed;
     QStringList  _errors;
     bool         _csyncError;
     ulong        _lastSeenFiles;

@@ -31,6 +31,10 @@
 #include <mach-o/dyld.h>
 #endif
 
+#define DEFAULT_REMOTE_POLL_INTERVAL 30000 // default remote poll time in milliseconds
+#define DEFAULT_LOCAL_POLL_INTERVAL  10000 // default local poll time in milliseconds
+#define DEFAULT_POLL_TIMER_EXEED     10
+
 namespace Mirall {
 
 QString MirallConfigFile::_passwd; //  = QString();
@@ -218,6 +222,61 @@ QString MirallConfigFile::ownCloudUser( const QString& connection ) const
     // qDebug() << "Returning configured owncloud user: " << user;
 
     return user;
+}
+
+int MirallConfigFile::remotePollInterval( const QString& connection ) const
+{
+  QString con( connection );
+  if( connection.isEmpty() ) con = defaultConnection();
+
+  QSettings settings( configFile(), QSettings::IniFormat );
+  settings.beginGroup( con );
+
+  int remoteInterval = settings.value( "remotePollInterval", DEFAULT_REMOTE_POLL_INTERVAL ).toInt();
+  int localInterval  = settings.value("localPollInterval", DEFAULT_LOCAL_POLL_INTERVAL ).toInt();
+  if( remoteInterval < 2*localInterval ) {
+    qDebug() << "WARN: remote poll Interval should at least be twice as local poll interval!";
+  }
+  if( remoteInterval < 5000 || remoteInterval < localInterval ) {
+    qDebug() << "Remote Interval is smaller than local Interval";
+    remoteInterval = DEFAULT_REMOTE_POLL_INTERVAL;
+  }
+  return remoteInterval;
+}
+
+int MirallConfigFile::localPollInterval( const QString& connection ) const
+{
+  QString con( connection );
+  if( connection.isEmpty() ) con = defaultConnection();
+
+  QSettings settings( configFile(), QSettings::IniFormat );
+  settings.beginGroup( con );
+
+  int remoteInterval = settings.value( "remotePollInterval", DEFAULT_REMOTE_POLL_INTERVAL ).toInt();
+  int localInterval  = settings.value("localPollInterval", DEFAULT_LOCAL_POLL_INTERVAL ).toInt();
+  if( remoteInterval < 2*localInterval ) {
+    qDebug() << "WARN: remote poll Interval should at least be twice as local poll interval!";
+  }
+  if( localInterval < 2500 || remoteInterval < localInterval ) {
+    qDebug() << "Remote Interval is smaller than local Interval";
+    localInterval = DEFAULT_LOCAL_POLL_INTERVAL;
+  }
+  return localInterval;
+}
+
+int MirallConfigFile::pollTimerExceedFactor( const QString& connection ) const
+{
+  QString con( connection );
+  if( connection.isEmpty() ) con = defaultConnection();
+
+  QSettings settings( configFile(), QSettings::IniFormat );
+  settings.beginGroup( con );
+
+  int pte = settings.value( "pollTimerExeedFactor", DEFAULT_POLL_TIMER_EXEED).toInt();
+
+  if( pte < 1 ) pte = DEFAULT_POLL_TIMER_EXEED;
+
+  return pte;
 }
 
 QString MirallConfigFile::ownCloudPasswd( const QString& connection ) const
