@@ -419,7 +419,7 @@ void StatusDialog::slotOCInfo( const QString& url, const QString& versionStr, co
         // work around a bug in QDesktopServices on Win32, see i-net
         QString filePath = url;
 
-        if (filePath.startsWith(QLatin1String("\\\\") || filePath.startsWith(QLatin1String("//"))
+        if (filePath.startsWith("\\\\") || filePath.startsWith("//"))
             _OCUrl.setUrl(QDir::toNativeSeparators(filePath));
         else
             _OCUrl = QUrl::fromLocalFile(filePath);
