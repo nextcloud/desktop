@@ -116,7 +116,7 @@ LogWidget::LogWidget(QWidget *parent)
 
     MirallConfigFile cfg;
     int lines = cfg.maxLogLines();
-    qDebug() << "#        ##  Have " << lines << " Loglines!";
+    // qDebug() << "#        ##  Have " << lines << " Loglines!";
     document()->setMaximumBlockCount( lines );
 }
 

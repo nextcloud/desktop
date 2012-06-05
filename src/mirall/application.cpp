@@ -83,11 +83,7 @@ Application::Application(int &argc, char **argv) :
 
     processEvents();
 
-    // Internationalization support.
-    qDebug() << ""; // relaxing debug output in qtCreator
-    qDebug() << QString( "################## %1 %2 %3 ").arg(_theme->appName())
-                .arg( QLocale::system().name() )
-                .arg(_theme->version());
+    setupLogBrowser();
 
     QTranslator *qtTranslator = new QTranslator;
     qtTranslator->load("qt_" + QLocale::system().name(),
@@ -161,10 +157,6 @@ Application::Application(int &argc, char **argv) :
     setupActions();
     setupSystemTray();
     processEvents();
-
-    _logBrowser = new LogBrowser;
-    qInstallMsgHandler( mirallLogCatcher );
-    csync_set_log_callback( csyncLogCatcher );
 
     QTimer::singleShot( 0, this, SLOT( slotStartFolderSetup() ));
 
@@ -332,6 +324,21 @@ void Application::setupContextMenu()
     _tray->setContextMenu(_contextMenu);
 }
 
+void Application::setupLogBrowser()
+{
+    // init the log browser.
+    _logBrowser = new LogBrowser;
+    qInstallMsgHandler( mirallLogCatcher );
+    csync_set_log_callback( csyncLogCatcher );
+
+    if( arguments().contains("--logwindow") || arguments().contains("-l")) {
+        slotOpenLogBrowser();
+    }
+
+    qDebug() << QString( "################## %1 %2 %3 ").arg(_theme->appName())
+                .arg( QLocale::system().name() )
+                .arg(_theme->version());
+}
 /*
  * open the folder with the given Alais
  */

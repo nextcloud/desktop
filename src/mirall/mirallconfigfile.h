@@ -53,8 +53,6 @@ public:
 
     // max count of lines in the log window
     int  maxLogLines() const;
-    // show the log window on startup?
-    bool showLogWindowOnStart() const;
 
     bool ownCloudSkipUpdateCheck( const QString& connection = QString() ) const;
 

@@ -62,6 +62,7 @@ protected:
     void setupActions();
     void setupSystemTray();
     void setupContextMenu();
+    void setupLogBrowser();
 
     //folders have to be disabled while making config changes
     void computeOverallSyncStatus();
