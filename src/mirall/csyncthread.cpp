@@ -295,6 +295,8 @@ int CSyncThread::getauth(const char *prompt,
                          void *userdata
                          )
 {
+    int re = 0;
+
     QString qPrompt = QString::fromLocal8Bit( prompt ).trimmed();
     _mutex.lock();
 
@@ -311,9 +313,11 @@ int CSyncThread::getauth(const char *prompt,
             strncpy( buf, "yes", 3 );
         } else {
             qDebug() << "Unknown prompt: <" << prompt << ">";
+            re = -1;
         }
     }
     _mutex.unlock();
+    return re;
 }
 
 }
