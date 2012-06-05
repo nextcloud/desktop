@@ -16,3 +16,4 @@
 #cmakedefine HAVE_LSTAT 1
 #cmakedefine HAVE_FNMATCH 1
 
+#cmakedefine LOG_TO_CALLBACK
