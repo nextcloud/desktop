@@ -939,4 +939,34 @@ CSYNC_ERROR_CODE csync_get_error(CSYNC *ctx) {
     return ctx->error_code;
 }
 
+#ifdef LOG_TO_CALLBACK
+static csync_log_callback log_cb = 0;
+
+void csync_set_log_callback( csync_log_callback cb ) 
+{ 
+  log_cb = cb; 
+}
+
+void csync_log_cb( char *catName, int a_priority,
+  const char* a_format,...) 
+{
+  char buf[1024]={0};
+  
+  va_list va;
+  va_start(va, a_format);
+  if (a_priority > 0) {
+    sprintf( buf, "%s - ", catName );
+  }
+  vsnprintf(buf+strlen(buf), 1023 - strlen(buf), a_format, va);
+  va_end(va);
+  // strcat( buf, "\n" );
+
+  if(log_cb) {
+    (log_cb)(buf);
+  } else {
+    fprintf(stderr, "%s\n", buf);
+  }
+}
+#endif
+
 /* vim: set ts=8 sw=2 et cindent: */
