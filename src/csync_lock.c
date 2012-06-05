@@ -36,6 +36,7 @@
 
 #include "c_lib.h"
 #include "csync_lock.h"
+#include "csync.h"
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.lock"
 #include "csync_log.h"

@@ -64,8 +64,13 @@
  * The ## token in combination with __VA_ARGS__ is a gcc extension that's not part of ISO C99
  * http://stackoverflow.com/questions/4100746/suppressing-iso-c99-requires-rest-arguments-to-be-used
  */
+#ifdef LOG_TO_CALLBACK
+#define CSYNC_LOG(priority, ...) \
+  csync_log_cb((char *) CSYNC_LOG_CATEGORY_NAME, priority,  __VA_ARGS__)
+#else
 #define CSYNC_LOG(priority, ...) \
   csync_log((char *) CSYNC_LOG_CATEGORY_NAME, priority,  __VA_ARGS__)
+#endif
 
 #ifdef WITH_LOG4C
 #define CSYNC_LOG_PRIORITY_FATAL   LOG4C_PRIORITY_FATAL

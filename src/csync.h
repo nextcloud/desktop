@@ -412,6 +412,16 @@ int csync_walk_remote_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int f
  */
 CSYNC_ERROR_CODE csync_get_error(CSYNC *ctx);
 
+#ifdef LOG_TO_CALLBACK
+
+typedef void (*csync_log_callback)(const char *msg);
+
+void csync_set_log_callback( csync_log_callback );
+
+void csync_log_cb(char *catName, int a_priority,
+		  const char* a_format,...);
+#endif
+
 
 #ifdef __cplusplus
 }
