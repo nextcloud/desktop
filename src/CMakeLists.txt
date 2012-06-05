@@ -43,7 +43,7 @@ mirall/mirallconfigfile.cpp
 mirall/updatedetector.cpp
 mirall/occinfo.cpp
 mirall/sslerrordialog.cpp
-
+mirall/logbrowser.cpp
 )
 
 set(mirall_HEADERS
@@ -63,6 +63,7 @@ set(mirall_HEADERS
     mirall/csyncthread.h
     mirall/updatedetector.h
     mirall/sslerrordialog.h
+    mirall/logbrowser.h
 )
 
 if( UNIX AND NOT APPLE)
@@ -182,11 +183,11 @@ endif()
 
 find_program(KRAZY2_EXECUTABLE krazy2)
 if(KRAZY2_EXECUTABLE)
-# s/y k/y ALL k/ for building this target always
-add_custom_target( krazy krazy2 --check-sets c++,qt4,foss
-                            ${PROJECT_SOURCE_DIR}/src/mirall/*.ui
-                            ${PROJECT_SOURCE_DIR}/src/mirall/*.h
-                            ${PROJECT_SOURCE_DIR}/src/mirall/*.cpp
+    # s/y k/y ALL k/ for building this target always
+    add_custom_target( krazy krazy2 --check-sets c++,qt4,foss
+                       ${PROJECT_SOURCE_DIR}/src/mirall/*.ui
+                       ${PROJECT_SOURCE_DIR}/src/mirall/*.h
+                       ${PROJECT_SOURCE_DIR}/src/mirall/*.cpp
 )
 endif()
 

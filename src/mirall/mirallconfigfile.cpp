@@ -350,7 +350,21 @@ bool MirallConfigFile::ownCloudSkipUpdateCheck( const QString& connection ) cons
     return skipIt;
 }
 
+bool MirallConfigFile::showLogWindowOnStart() const
+{
+    QSettings settings( configFile(), QSettings::IniFormat );
+    settings.beginGroup("Logging");
+    bool showOnStart = settings.value("showLogOnStart", false).toBool();
+    return showOnStart;
+}
 
+int MirallConfigFile::maxLogLines() const
+{
+    QSettings settings( configFile(), QSettings::IniFormat );
+    settings.beginGroup("Logging");
+    int logLines = settings.value( "maxLogLines", 20000 ).toInt();
+    return logLines;
+}
 
 QByteArray MirallConfigFile::basicAuthHeader() const
 {

@@ -21,7 +21,7 @@
 
 #include "mirall/syncresult.h"
 #include "mirall/folder.h"
-
+#include "mirall/logbrowser.h"
 #include "mirall/folderman.h"
 
 class QAction;
@@ -75,6 +75,7 @@ protected slots:
     void slotNoOwnCloudFound( QNetworkReply* );
     void slotCheckAuthentication();
     void slotAuthCheck( const QString& ,QNetworkReply* );
+    void slotOpenLogBrowser();
 
     void slotStartUpdateDetector();
 
@@ -104,6 +105,7 @@ private:
     ownCloudInfo  *_ocInfo;
     UpdateDetector *_updateDetector;
     QMap<Folder*, QString> _overallStatusStrings;
+    LogBrowser *_logBrowser;
 };
 
 } // namespace Mirall

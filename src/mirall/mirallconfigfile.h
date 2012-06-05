@@ -51,6 +51,11 @@ public:
     QString ownCloudVersion() const;
     void setOwnCloudVersion( const QString& );
 
+    // max count of lines in the log window
+    int  maxLogLines() const;
+    // show the log window on startup?
+    bool showLogWindowOnStart() const;
+
     bool ownCloudSkipUpdateCheck( const QString& connection = QString() ) const;
 
     /* Poll intervals in milliseconds */
