@@ -57,7 +57,7 @@ void mirallLogCatcher(QtMsgType type, const char *msg)
 
 void csyncLogCatcher(const char *msg)
 {
-  Logger::instance()->csyncLog( msg );
+  Logger::instance()->csyncLog( QString::fromUtf8(msg) );
 }
 
 // ----------------------------------------------------------------------------------
