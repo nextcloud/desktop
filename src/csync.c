@@ -964,7 +964,7 @@ void csync_log_cb( char *catName, int a_priority,
   if(log_cb) {
     (log_cb)(buf);
   } else {
-    fprintf(stderr, "%s", buf);
+    fprintf(stderr, "%s\n", buf);
   }
 }
 #endif
