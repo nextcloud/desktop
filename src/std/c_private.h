@@ -90,7 +90,7 @@ typedef  wchar_t    _TCHAR;
 #define _tstat      _wstat
 #define _tunlink    _wunlink
 #define _tmkdir     _wmkdir
-#define _trmdir	    _rmdir
+#define _trmdir	    _wrmdir
 #define _tchmod     _wchmod
 #define _trewinddir _wrewinddir
 #else 
