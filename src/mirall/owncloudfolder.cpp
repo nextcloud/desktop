@@ -68,6 +68,7 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
 
 ownCloudFolder::~ownCloudFolder()
 {
+
 }
 
 #ifndef USE_INOTIFY
@@ -144,6 +145,7 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     QObject::connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()));
     QObject::connect(_csync, SIGNAL(terminated()), SLOT(slotCSyncTerminated()));
     connect(_csync, SIGNAL(csyncError(const QString)), SLOT(slotCSyncError(const QString)));
+    connect(_csync, SIGNAL(csyncStateDbFile(QString)), SLOT(slotCsyncStateDbFile(QString)));
 
     connect( _csync, SIGNAL(treeWalkResult(WalkStats*)),
              this, SLOT(slotThreadTreeWalkResult(WalkStats*)));
@@ -200,6 +202,12 @@ void ownCloudFolder::slotCSyncError(const QString& err)
     _csyncError = true;
 }
 
+void ownCloudFolder::slotCsyncStateDbFile( const QString& file )
+{
+    qDebug() << "Got csync statedb file: " << file;
+    _csyncStateDbFile = file;
+}
+
 void ownCloudFolder::slotCSyncTerminated()
 {
     // do not ask csync here for reasons.
@@ -249,6 +257,32 @@ void ownCloudFolder::slotTerminateSync()
         if( file.exists() ) {
             qDebug() << "After termination, lock file exists and gets removed.";
             file.remove();
+        }
+    }
+}
+
+// This removes the csync File database if the sync folder definition is removed
+// permanentely. This is needed to provide a clean startup again in case another
+// local folder is synced to the same ownCloud.
+// See http://bugs.owncloud.org/thebuggenie/owncloud/issues/oc-788
+void ownCloudFolder::wipe()
+{
+    if( !_csyncStateDbFile.isEmpty() ) {
+        QFile file(_csyncStateDbFile);
+        if( file.exists() ) {
+            if( !file.remove()) {
+                qDebug() << "WRN: Failed to remove existing csync StateDB " << _csyncStateDbFile;
+            } else {
+                qDebug() << "wipe: Removed csync StateDB " << _csyncStateDbFile;
+            }
+        } else {
+            qDebug() << "WRN: statedb is empty, can not remove.";
+        }
+        // Check if the tmp database file also exists
+        QString ctmpName = _csyncStateDbFile + ".ctmp";
+        QFile ctmpFile( ctmpName );
+        if( ctmpFile.exists() ) {
+            ctmpFile.remove();
         }
     }
 }

@@ -68,7 +68,9 @@ public:
 
 signals:
     void treeWalkResult(WalkStats*);
-    void csyncError(const QString&);
+    void csyncError( const QString& );
+
+    void csyncStateDbFile( const QString& );
 
 private:
     static int getauth(const char *prompt,

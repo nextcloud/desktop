@@ -129,6 +129,11 @@ public:
      */
      QString backend() const;
 
+     /**
+      * This is called if the sync folder definition is removed. Do cleanups here.
+      */
+     virtual void wipe();
+
      QIcon icon( int size ) const;
      QTimer   *_pollTimer;
 
