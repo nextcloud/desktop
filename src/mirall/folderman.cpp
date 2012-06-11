@@ -337,6 +337,7 @@ void FolderMan::removeFolder( const QString& alias )
     if( _folderMap.contains( alias )) {
       qDebug() << "Removing " << alias;
       Folder *f = _folderMap.take( alias );
+      f->wipe();
       f->deleteLater();
     } else {
       qDebug() << "!! Can not remove " << alias << ", not in folderMap.";

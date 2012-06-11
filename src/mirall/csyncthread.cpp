@@ -137,11 +137,12 @@ void CSyncThread::run()
     wStats->seenFiles  = 0;
     wStats->conflicts  = 0;
     wStats->error      = 0;
+    const char *statedb = 0;
 
     _mutex.lock();
     if( csync_create(&csync,
-                          _source.toLocal8Bit().data(),
-                          _target.toLocal8Bit().data()) < 0 ) {
+                     _source.toLocal8Bit().data(),
+                     _target.toLocal8Bit().data()) < 0 ) {
         emit csyncError( tr("CSync create failed.") );
     }
     // FIXME: Check if we really need this stringcopy!
@@ -214,6 +215,17 @@ void CSyncThread::run()
         goto cleanup;
     }
 
+    // After csync_init the statedb file name can be emitted
+    statedb = csync_get_statedb_file( csync );
+    if( statedb ) {
+        QString stateDbFile = QString::fromUtf8(statedb);
+        free((void*)statedb);
+
+        emit csyncStateDbFile( stateDbFile );
+    } else {
+        qDebug() << "WRN: Unable to get csync statedb file name";
+    }
+
     qDebug() << "############################################################### >>";
     if( csync_update(csync) < 0 ) {
         emit csyncError(tr("CSync Update failed."));
@@ -240,7 +252,6 @@ void CSyncThread::run()
         emit csyncError(tr("Local filesystem problems. Better disable Syncing and check."));
         goto cleanup;
     }
-    qDebug() << " ..... Local walk finished: " << walkTime.elapsed();
 
     // emit the treewalk results. Do not touch the wStats after this.
     emit treeWalkResult(wStats);
@@ -248,6 +259,7 @@ void CSyncThread::run()
     _mutex.lock();
     if( _localCheckOnly ) {
         _mutex.unlock();
+        qDebug() << " ..... Local only walk finished: " << walkTime.elapsed();
         // we have to go out here as its local check only.
         goto cleanup;
     } else {
@@ -295,6 +307,8 @@ int CSyncThread::getauth(const char *prompt,
                          void *userdata
                          )
 {
+    int re = 0;
+
     QString qPrompt = QString::fromLocal8Bit( prompt ).trimmed();
     _mutex.lock();
 
@@ -311,9 +325,11 @@ int CSyncThread::getauth(const char *prompt,
             strncpy( buf, "yes", 3 );
         } else {
             qDebug() << "Unknown prompt: <" << prompt << ">";
+            re = -1;
         }
     }
     _mutex.unlock();
+    return re;
 }
 
 }

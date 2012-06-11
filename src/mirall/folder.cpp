@@ -262,5 +262,10 @@ QString Folder::backend() const
   return _backend;
 }
 
+void Folder::wipe()
+{
+
+}
+
 } // namespace Mirall
 

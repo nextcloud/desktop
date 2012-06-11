@@ -350,7 +350,13 @@ bool MirallConfigFile::ownCloudSkipUpdateCheck( const QString& connection ) cons
     return skipIt;
 }
 
-
+int MirallConfigFile::maxLogLines() const
+{
+    QSettings settings( configFile(), QSettings::IniFormat );
+    settings.beginGroup("Logging");
+    int logLines = settings.value( "maxLogLines", 20000 ).toInt();
+    return logLines;
+}
 
 QByteArray MirallConfigFile::basicAuthHeader() const
 {

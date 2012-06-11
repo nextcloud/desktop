@@ -12,6 +12,8 @@
  * for more details.
  */
 
+#define LOG_TO_CALLBACK // FIXME: This should be in csync.
+
 #include "mirall/application.h"
 #include "mirall/folder.h"
 #include "mirall/folderwatcher.h"
@@ -34,6 +36,8 @@
 #endif
 #include "mirall/inotify.h"
 
+#include <csync.h>
+
 #include <QtCore>
 #include <QtGui>
 #include <QHash>
@@ -43,6 +47,20 @@
 #include <QTranslator>
 
 namespace Mirall {
+
+// application logging handler.
+void mirallLogCatcher(QtMsgType type, const char *msg)
+{
+  Q_UNUSED(type)
+  Logger::instance()->mirallLog( msg );
+}
+
+void csyncLogCatcher(const char *msg)
+{
+  Logger::instance()->csyncLog( QString::fromUtf8(msg) );
+}
+
+// ----------------------------------------------------------------------------------
 
 Application::Application(int &argc, char **argv) :
     QApplication(argc, argv),
@@ -65,11 +83,7 @@ Application::Application(int &argc, char **argv) :
 
     processEvents();
 
-    // Internationalization support.
-    qDebug() << ""; // relaxing debug output in qtCreator
-    qDebug() << QString( "################## %1 %2 %3 ").arg(_theme->appName())
-                .arg( QLocale::system().name() )
-                .arg(_theme->version());
+    setupLogBrowser();
 
     QTranslator *qtTranslator = new QTranslator;
     qtTranslator->load("qt_" + QLocale::system().name(),
@@ -117,6 +131,9 @@ Application::Application(int &argc, char **argv) :
 
     connect( _statusDialog, SIGNAL(removeFolderAlias( const QString&)),
              SLOT(slotRemoveFolder(const QString&)));
+
+    connect( _statusDialog, SIGNAL(openLogBrowser()), this, SLOT(slotOpenLogBrowser()));
+
 #if 0
     connect( _statusDialog, SIGNAL(fetchFolderAlias(const QString&)),
              SLOT(slotFetchFolder( const QString&)));
@@ -259,7 +276,6 @@ void Application::setupActions()
     _actionConfigure = new QAction(tr("Configure..."), this);
     QObject::connect(_actionConfigure, SIGNAL(triggered(bool)), SLOT(slotConfigure()));
 
-
     _actionQuit = new QAction(tr("Quit"), this);
     QObject::connect(_actionQuit, SIGNAL(triggered(bool)), SLOT(quit()));
 }
@@ -308,6 +324,21 @@ void Application::setupContextMenu()
     _tray->setContextMenu(_contextMenu);
 }
 
+void Application::setupLogBrowser()
+{
+    // init the log browser.
+    _logBrowser = new LogBrowser;
+    qInstallMsgHandler( mirallLogCatcher );
+    csync_set_log_callback( csyncLogCatcher );
+
+    if( arguments().contains("--logwindow") || arguments().contains("-l")) {
+        slotOpenLogBrowser();
+    }
+
+    qDebug() << QString( "################## %1 %2 %3 ").arg(_theme->appName())
+                .arg( QLocale::system().name() )
+                .arg(_theme->version());
+}
 /*
  * open the folder with the given Alais
  */
@@ -444,6 +475,12 @@ void Application::slotOpenStatus()
     raiseWidget->raise();
     raiseWidget->activateWindow();
   }
+}
+
+void Application::slotOpenLogBrowser()
+{
+    _logBrowser->show();
+    _logBrowser->raise();
 }
 
 /*

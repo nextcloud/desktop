@@ -38,6 +38,8 @@ public:
     virtual bool isBusy() const;
     virtual void startSync(const QStringList &pathList);
 
+    virtual void wipe();
+
 public slots:
     void startSync();
     void slotTerminateSync();
@@ -48,6 +50,7 @@ private slots:
     void slotCSyncFinished();
     void slotThreadTreeWalkResult( WalkStats* );
     void slotCSyncTerminated();
+    void slotCsyncStateDbFile(const QString&);
 
 #ifndef USE_INOTIFY
     void slotPollTimerRemoteCheck();
@@ -62,6 +65,7 @@ private:
     QStringList  _errors;
     bool         _csyncError;
     ulong        _lastSeenFiles;
+    QString      _csyncStateDbFile;
 };
 
 }
