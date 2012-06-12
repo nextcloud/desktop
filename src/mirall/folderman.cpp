@@ -331,6 +331,13 @@ void FolderMan::slotRemoveFolder( const QString& alias )
     removeFolder(alias);
 }
 
+void FolderMan::removeAllFolderDefinitions()
+{
+    foreach( Folder *f, _folderMap.values() ) {
+        removeFolder( f->alias() );
+    }
+}
+
 // remove a folder from the map. Should be sure n
 void FolderMan::removeFolder( const QString& alias )
 {

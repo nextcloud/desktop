@@ -68,6 +68,11 @@ public:
       */
     Folder* setupFolderFromConfigFile(const QString & );
 
+    /**
+     * wipes all folder defintions. No way back!
+     */
+    void removeAllFolderDefinitions();
+
 signals:
     /**
       * signal to indicate a folder named by alias has changed its sync state.
