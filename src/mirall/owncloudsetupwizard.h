@@ -81,11 +81,13 @@ private slots:
     void slotOwnCloudFound( const QString&, const QString&, const QString&, const QString& );
     void slotNoOwnCloudFound( QNetworkReply* );
     void slotCreateRemoteFolderFinished( QNetworkReply::NetworkError );
+    void slotAssistantFinished( int );
 
 private:
     bool checkOwncloudAdmin( const QString& );
     void runOwncloudAdmin( const QStringList& );
     bool createRemoteFolder( const QString& );
+    void finalizeSetup( bool );
 
     /* Start a request to the newly installed ownCloud to check the connection */
     void testOwnCloudConnect();
@@ -95,6 +97,7 @@ private:
     QProcess       *_process;
     ownCloudInfo   *_ocInfo;
 
+    QString         _configHandle;
     QString         _localFolder;
     QString         _remoteFolder;
 };
