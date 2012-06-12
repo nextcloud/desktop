@@ -124,7 +124,7 @@ Application::Application(int &argc, char **argv) :
              this,SLOT(slotAuthCheck(QString,QNetworkReply*)));
 
     _owncloudSetupWizard = new OwncloudSetupWizard( _folderMan, _theme );
-    connect( _owncloudSetupWizard, SIGNAL(ownCloudWizardDone(int)), SLOT(slotStartFolderSetup()));
+    connect( _owncloudSetupWizard, SIGNAL(ownCloudWizardDone(int)), SLOT(slotStartFolderSetup(int)));
 
     _statusDialog = new StatusDialog( _theme );
     connect( _statusDialog, SIGNAL(addASync()), this, SLOT(slotAddFolder()) );
@@ -186,16 +186,20 @@ void Application::slotStartUpdateDetector()
 
 }
 
-void Application::slotStartFolderSetup()
+void Application::slotStartFolderSetup( int result )
 {
-    if( _ocInfo->isConfigured() ) {
-      _ocInfo->checkInstallation();
+    if( result == QDialog::Accepted ) {
+        if( _ocInfo->isConfigured() ) {
+            _ocInfo->checkInstallation();
+        } else {
+            QMessageBox::warning(0, tr("No ownCloud Configuration"),
+                                 tr("<p>No ownCloud connection was configured yet.</p><p>Please configure one by clicking on the tray icon!</p>"));
+            // It was evaluated to open the config dialog from here directly but decided
+            // against because the user does not know why. The popup gives a better user
+            // guidance, even if its a click more.
+        }
     } else {
-        QMessageBox::warning(0, tr("No ownCloud Configuration"),
-                             tr("<p>No ownCloud connection was configured yet.</p><p>Please configure one by clicking on the tray icon!</p>"));
-        // It was evaluated to open the config dialog from here directly but decided
-        // against because the user does not know why. The popup gives a better user
-        // guidance, even if its a click more.
+        qDebug() << "Setup Wizard was canceled. No reparsing of config.";
     }
 }
 
