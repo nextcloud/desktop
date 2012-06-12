@@ -24,7 +24,7 @@ namespace Mirall {
 class MirallConfigFile
 {
 public:
-    MirallConfigFile();
+    MirallConfigFile( const QString& appendix = QString() );
 
     QString configPath() const;
     QString configFile() const;
@@ -63,10 +63,16 @@ public:
 
     QByteArray basicAuthHeader() const;
 
+    // Custom Config: accept the custom config to become the main one.
+    void acceptCustomConfig();
+    // Custom Config: remove the custom config file.
+    void cleanupCustomConfig();
+
 private:
     static QString _passwd;
     static bool    _askedUser;
     static QString _oCVersion;
+    QString        _customHandle;
 };
 
 }

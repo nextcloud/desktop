@@ -37,11 +37,12 @@
 
 namespace Mirall {
 
-QString MirallConfigFile::_passwd; //  = QString();
-QString MirallConfigFile::_oCVersion; // = QString();
+QString MirallConfigFile::_passwd;
+QString MirallConfigFile::_oCVersion;
 bool    MirallConfigFile::_askedUser = false;
 
-MirallConfigFile::MirallConfigFile()
+MirallConfigFile::MirallConfigFile( const QString& appendix )
+    :_customHandle(appendix)
 {
 }
 
@@ -105,7 +106,12 @@ QString MirallConfigFile::configFile() const
     if( qApp->applicationName().isEmpty() ) {
         qApp->setApplicationName( theme.appName() );
     }
-    const QString dir = configPath() + theme.configFileName();
+    QString dir = configPath() + theme.configFileName();
+    if( !_customHandle.isEmpty() ) {
+        dir.append( QChar('_'));
+        dir.append( _customHandle );
+        qDebug() << "  OO Custom config file in use: " << dir;
+    }
     return dir;
 }
 
@@ -367,4 +373,49 @@ QByteArray MirallConfigFile::basicAuthHeader() const
     return data;
 }
 
+// remove a custom config file.
+void MirallConfigFile::cleanupCustomConfig()
+{
+    if( _customHandle.isEmpty() ) {
+        qDebug() << "SKipping to erase the main configuration.";
+        return;
+    }
+    QString file = configFile();
+    if( QFile::exists( file ) ) {
+        QFile::remove( file );
+    }
 }
+
+// accept a config identified by the customHandle as general config.
+void MirallConfigFile::acceptCustomConfig()
+{
+    if( _customHandle.isEmpty() ) {
+        qDebug() << "WRN: Custom Handle is empty. Can not accept.";
+        return;
+    }
+
+    QString srcConfig = configFile(); // this considers the custom handle
+    _customHandle.clear();
+    QString targetConfig = configFile();
+    QString targetBak = targetConfig + QLatin1String(".bak");
+
+    bool bakOk = false;
+    // remove an evtl existing old config backup.
+    if( QFile::exists( targetBak ) ) {
+        QFile::remove( targetBak );
+    }
+    // create a backup of the current config.
+    bakOk = QFile::rename( targetConfig, targetBak );
+
+    // move the custom config to the master place.
+    if( ! QFile::rename( srcConfig, targetConfig ) ) {
+        // if the move from custom to master failed, put old backup back.
+        if( bakOk ) {
+            QFile::rename( targetBak, targetConfig );
+        }
+    }
+    QFile::remove( targetBak );
+}
+
+}
+
