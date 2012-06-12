@@ -59,9 +59,15 @@ ownCloudInfo::~ownCloudInfo()
     delete _sslErrorDialog;
 }
 
+void ownCloudInfo::setCustomConfigHandle( const QString& handle )
+{
+    _configHandle = handle;
+    resetSSLUntrust();
+}
+
 bool ownCloudInfo::isConfigured()
 {
-    MirallConfigFile cfgFile;
+    MirallConfigFile cfgFile( _configHandle );
     return cfgFile.connectionExists( _connection );
 }
 
@@ -79,7 +85,7 @@ void ownCloudInfo::getRequest( const QString& path, bool webdav )
 {
     qDebug() << "Get Request to " << path;
 
-    MirallConfigFile cfgFile;
+    MirallConfigFile cfgFile(  _configHandle );
     QString url = cfgFile.ownCloudUrl( _connection, webdav ) + path;
     QNetworkRequest request;
     request.setUrl( QUrl( url ) );
@@ -98,7 +104,7 @@ void ownCloudInfo::mkdirRequest( const QString& dir )
 {
     qDebug() << "OCInfo Making dir " << dir;
 
-    MirallConfigFile cfgFile;
+    MirallConfigFile cfgFile( _configHandle );
     QUrl url = QUrl( cfgFile.ownCloudUrl( _connection, true ) + dir );
     QHttp::ConnectionMode conMode = QHttp::ConnectionModeHttp;
     if (url.scheme() == "https")
@@ -161,7 +167,7 @@ void ownCloudInfo::mkdirRequest( const QString& dir )
 {
     qDebug() << "OCInfo Making dir " << dir;
 
-    MirallConfigFile cfgFile;
+    MirallConfigFile cfgFile( _configHandle );
     QNetworkRequest req;
     req.setUrl( QUrl( cfgFile.ownCloudUrl( _connection, true ) + dir ) );
     QNetworkReply *reply = davRequest("MKCOL", req, 0);
@@ -192,8 +198,9 @@ void ownCloudInfo::slotMkdirFinished()
 void ownCloudInfo::slotAuthentication( QNetworkReply *reply, QAuthenticator *auth )
 {
     if( auth && reply ) {
+        qDebug() << "Auth request to me and I am " << this;
         _authAttempts++;
-        MirallConfigFile cfgFile;
+        MirallConfigFile cfgFile( _configHandle );
         qDebug() << "Authenticating request for " << reply->url();
         qDebug() << "Our Url: " << cfgFile.ownCloudUrl(_connection, true);
         if( reply->url().toString().startsWith( cfgFile.ownCloudUrl( _connection, true )) ) {
@@ -331,7 +338,7 @@ void ownCloudInfo::slotError( QNetworkReply::NetworkError err)
 // ============================================================================
 void ownCloudInfo::setupHeaders( QNetworkRequest & req, quint64 size )
 {
-    MirallConfigFile cfgFile;
+    MirallConfigFile cfgFile(_configHandle );
 
     QUrl url( cfgFile.ownCloudUrl( QString(), false ) );
     qDebug() << "Setting up host header: " << url.host();

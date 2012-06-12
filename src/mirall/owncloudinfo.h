@@ -65,6 +65,11 @@ public:
       */
     void mkdirRequest( const QString& );
 
+    /**
+     * Use a custom ownCloud configuration file identified by handle
+     */
+    void setCustomConfigHandle( const QString& );
+
 signals:
     // result signal with url- and version string.
     void ownCloudInfoFound( const QString&, const QString&, const QString&, const QString& );
@@ -99,6 +104,7 @@ private:
 
     static QNetworkAccessManager  *_manager;
     QString                        _connection;
+    QString                        _configHandle;
     QHash<QNetworkReply*, QString> _directories;
     static SslErrorDialog         *_sslErrorDialog;
     static bool                    _certsUntrusted;
