@@ -44,16 +44,15 @@
 
 #ifdef _WIN32
 char *csync_get_user_home_dir(void) {
-    char tmp[MAX_PATH] = {0};
-    char *szPath = NULL;
+    wchar_t tmp[MAX_PATH];
+    const char *szPath = NULL;
 
-    if (SHGetSpecialFolderPathA(NULL, tmp, CSIDL_PROFILE, TRUE)) {
-        szPath = c_malloc(strlen(tmp) + 1);
-        if (szPath == NULL) {
-            return NULL;
-        }
-
-        strcpy(szPath, tmp);
+    if( SHGetFolderPathW( NULL,
+                          CSIDL_PROFILE|CSIDL_FLAG_CREATE,
+                          NULL,
+                          0,
+                          tmp) == S_OK ) {
+        szPath = c_utf8( tmp );
         return szPath;
     }
 
