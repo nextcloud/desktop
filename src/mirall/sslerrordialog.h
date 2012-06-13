@@ -37,6 +37,7 @@ public:
 
     bool trustConnection();
 
+    void setCustomConfigHandle( const QString& );
 signals:
     
 public slots:
@@ -50,6 +51,7 @@ private:
     QString certDiv( QSslCertificate ) const;
 
     QList<QSslCertificate> _unknownCerts;
+    QString                _customConfigHandle;
 };
 } // end namespace
 
