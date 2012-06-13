@@ -320,6 +320,16 @@ void FolderMan::addFolderDefinition( const QString& backend, const QString& alia
 
 }
 
+void FolderMan::removeAllFolderDefinitions()
+{
+    foreach( Folder *f, _folderMap.values() ) {
+        slotRemoveFolder( f->alias() );
+    }
+    // clear the queue.
+    _scheduleQueue.clear();
+
+}
+
 void FolderMan::slotRemoveFolder( const QString& alias )
 {
     if( alias.isEmpty() ) return;
@@ -329,13 +339,6 @@ void FolderMan::slotRemoveFolder( const QString& alias )
         terminateSyncProcess( alias );
     }
     removeFolder(alias);
-}
-
-void FolderMan::removeAllFolderDefinitions()
-{
-    foreach( Folder *f, _folderMap.values() ) {
-        removeFolder( f->alias() );
-    }
 }
 
 // remove a folder from the map. Should be sure n
