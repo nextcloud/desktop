@@ -147,7 +147,7 @@ void CSyncThread::run()
     }
     // FIXME: Check if we really need this stringcopy!
     wStats->sourcePath = qstrdup( _source.toLocal8Bit().constData() );
-    _csyncConfigDir = QString::fromLocal8Bit( csync_get_config_dir( csync ));
+    _csyncConfigDir = QString::fromUtf8( csync_get_config_dir( csync ));
     _mutex.unlock();
 
     qDebug() << "## CSync Thread local only: " << _localCheckOnly;
@@ -314,15 +314,15 @@ int CSyncThread::getauth(const char *prompt,
 
     if( qPrompt == QString::fromLocal8Bit("Enter your username:") ) {
         // qDebug() << "OOO Username requested!";
-        strncpy( buf, _user.toLocal8Bit().constData(), len );
+        qstrncpy( buf, _user.toUtf8().constData(), len );
     } else if( qPrompt == QString::fromLocal8Bit("Enter your password:") ) {
         // qDebug() << "OOO Password requested!";
-        strncpy( buf, _passwd.toLocal8Bit().constData(), len );
+        qstrncpy( buf, _passwd.toUtf8().constData(), len );
     } else {
         if( qPrompt.startsWith( QLatin1String("There are problems with the SSL certificate:"))) {
             // SSL is requested. If the program came here, the SSL check was done by mirall
             // the answer is simply yes here.
-            strncpy( buf, "yes", 3 );
+            qstrcpy( buf, "yes" );
         } else {
             qDebug() << "Unknown prompt: <" << prompt << ">";
             re = -1;
