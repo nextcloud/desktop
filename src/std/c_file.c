@@ -69,12 +69,19 @@ int c_copy(const char* src, const char *dst, mode_t mode) {
 
 #ifdef _WIN32
   if(src && dst) {
-      if (CopyFile(src, dst, FALSE)) {
-          return 0;
+      const _TCHAR *wsrc = c_multibyte(src);
+      const _TCHAR *wdst = c_multibyte(dst);
+      if (CopyFileW(wsrc, wdst, FALSE)) {
+          rc = 0;
       }
-      errno = GetLastError();
+      c_free_multibyte(wsrc);
+      c_free_multibyte(wdst);
 
-      return -1;
+      if( rc < 0 ) {
+          errno = GetLastError();
+      }
+
+      return rc;
   }
 #else
 
