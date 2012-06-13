@@ -32,6 +32,7 @@ QNetworkAccessManager* ownCloudInfo::_manager = 0;
 SslErrorDialog *ownCloudInfo::_sslErrorDialog = 0;
 bool            ownCloudInfo::_certsUntrusted = false;
 int             ownCloudInfo::_authAttempts   = 0;
+QHash<QNetworkReply*, QString> ownCloudInfo::_configHandleMap;
 
 ownCloudInfo::ownCloudInfo( const QString& connectionName, QObject *parent ) :
     QObject(parent)
@@ -62,6 +63,7 @@ ownCloudInfo::~ownCloudInfo()
 void ownCloudInfo::setCustomConfigHandle( const QString& handle )
 {
     _configHandle = handle;
+    _authAttempts = 0; // allow a couple of tries again.
     resetSSLUntrust();
 }
 
@@ -94,6 +96,11 @@ void ownCloudInfo::getRequest( const QString& path, bool webdav )
     QNetworkReply *reply = _manager->get( request );
     connect( reply, SIGNAL(finished()), SLOT(slotReplyFinished()));
     _directories[reply] = path;
+
+    if( !_configHandle.isEmpty() ) {
+        qDebug() << "Setting config handle " << _configHandle;
+        _configHandleMap[reply] = _configHandle;
+    }
 
     connect( reply, SIGNAL( error(QNetworkReply::NetworkError )),
              this, SLOT(slotError( QNetworkReply::NetworkError )));
@@ -166,15 +173,21 @@ void ownCloudInfo::qhttpRequestFinished(int id, bool success )
 void ownCloudInfo::mkdirRequest( const QString& dir )
 {
     qDebug() << "OCInfo Making dir " << dir;
-
+    _authAttempts = 0;
     MirallConfigFile cfgFile( _configHandle );
     QNetworkRequest req;
     req.setUrl( QUrl( cfgFile.ownCloudUrl( _connection, true ) + dir ) );
     QNetworkReply *reply = davRequest("MKCOL", req, 0);
 
+    // remember the confighandle used for this request
+    if( ! _configHandle.isEmpty() )
+        qDebug() << "Setting config handle " << _configHandle;
+        _configHandleMap[reply] = _configHandle;
+
     if( reply->error() != QNetworkReply::NoError ) {
         qDebug() << "mkdir request network error: " << reply->errorString();
     }
+
     connect( reply, SIGNAL(finished()), SLOT(slotMkdirFinished()) );
     connect( reply, SIGNAL( error(QNetworkReply::NetworkError )),
              this, SLOT(slotError(QNetworkReply::NetworkError )));
@@ -191,34 +204,52 @@ void ownCloudInfo::slotMkdirFinished()
 
     emit webdavColCreated( reply->error() );
     qDebug() << "mkdir slot hit with status: " << reply->error();
+    if( _configHandleMap.contains( reply ) ) {
+        _configHandleMap.remove( reply );
+    }
+
     reply->deleteLater();
 }
 #endif
 
 void ownCloudInfo::slotAuthentication( QNetworkReply *reply, QAuthenticator *auth )
 {
-    if( auth && reply ) {
-        qDebug() << "Auth request to me and I am " << this;
-        _authAttempts++;
-        MirallConfigFile cfgFile( _configHandle );
-        qDebug() << "Authenticating request for " << reply->url();
-        qDebug() << "Our Url: " << cfgFile.ownCloudUrl(_connection, true);
-        if( reply->url().toString().startsWith( cfgFile.ownCloudUrl( _connection, true )) ) {
-            auth->setUser( cfgFile.ownCloudUser( _connection ) );
-            auth->setPassword( cfgFile.ownCloudPasswd( _connection ));
-        } else {
-            qDebug() << "WRN: attempt to authenticate to different url!";
-        }
-        if( _authAttempts > 10 ) {
-            qDebug() << "Too many attempts to authenticate. Stop request.";
-            reply->close();
-        }
+    if( !(auth && reply) ) return;
+    QString configHandle;
+
+    // an empty config handle is ok for the default config.
+    if( _configHandleMap.contains(reply) ) {
+        configHandle = _configHandleMap[reply];
+        qDebug() << "Auth: Have a custom config handle: " << configHandle;
     }
+
+    qDebug() << "Auth request to me and I am " << this;
+    _authAttempts++;
+    MirallConfigFile cfgFile( configHandle );
+    qDebug() << "Authenticating request for " << reply->url();
+    if( reply->url().toString().startsWith( cfgFile.ownCloudUrl( _connection, true )) ) {
+        auth->setUser( cfgFile.ownCloudUser( _connection ) );
+        auth->setPassword( cfgFile.ownCloudPasswd( _connection ));
+    } else {
+        qDebug() << "WRN: attempt to authenticate to different url - attempt " <<_authAttempts;
+    }
+    if( _authAttempts > 10 ) {
+        qDebug() << "Too many attempts to authenticate. Stop request.";
+        reply->close();
+    }
+
 }
 
 void ownCloudInfo::slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors )
 {
     qDebug() << "SSL-Warnings happened for url " << reply->url().toString();
+
+    QString configHandle;
+    // an empty config handle is ok for the default config.
+    if( _configHandleMap.contains(reply) ) {
+        configHandle = _configHandleMap[reply];
+        qDebug() << "SSL: Have a custom config handle: " << configHandle;
+    }
 
     if( _certsUntrusted ) {
         // User decided once to untrust. Honor this decision.
@@ -228,6 +259,9 @@ void ownCloudInfo::slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors 
     if( _sslErrorDialog == 0 ) {
         _sslErrorDialog = new SslErrorDialog();
     }
+
+    // make the ssl dialog aware of the custom config. It loads known certs.
+    _sslErrorDialog->setCustomConfigHandle( configHandle );
 
     if( _sslErrorDialog->setErrorList( errors ) ) {
         // all ssl certs are known and accepted. We can ignore the problems right away.
@@ -321,6 +355,9 @@ void ownCloudInfo::slotReplyFinished()
         }
 
         emit ownCloudDirExists( dir, reply );
+    }
+    if( _configHandleMap.contains(reply)) {
+        _configHandleMap.remove(reply);
     }
     reply->deleteLater();
 }

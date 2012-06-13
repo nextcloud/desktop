@@ -106,6 +106,7 @@ private:
     QString                        _connection;
     QString                        _configHandle;
     QHash<QNetworkReply*, QString> _directories;
+    static QHash<QNetworkReply*, QString> _configHandleMap;
     static SslErrorDialog         *_sslErrorDialog;
     static bool                    _certsUntrusted;
     static int                     _authAttempts;
