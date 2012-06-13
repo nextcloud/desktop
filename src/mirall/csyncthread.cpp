@@ -141,12 +141,12 @@ void CSyncThread::run()
 
     _mutex.lock();
     if( csync_create(&csync,
-                     _source.toLocal8Bit().data(),
-                     _target.toLocal8Bit().data()) < 0 ) {
+                     _source.toUtf8().data(),
+                     _target.toUtf8().data()) < 0 ) {
         emit csyncError( tr("CSync create failed.") );
     }
     // FIXME: Check if we really need this stringcopy!
-    wStats->sourcePath = qstrdup( _source.toLocal8Bit().constData() );
+    wStats->sourcePath = qstrdup( _source.toUtf8().constData() );
     _csyncConfigDir = QString::fromUtf8( csync_get_config_dir( csync ));
     _mutex.unlock();
 

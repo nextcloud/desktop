@@ -116,7 +116,7 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     MirallConfigFile cfgFile;
 
     QUrl url( _secondPath );
-    if( url.scheme() == QString::fromLocal8Bit("http") ) {
+    if( url.scheme() == QLatin1String("http") ) {
         url.setScheme( "owncloud" );
     } else {
         // connect SSL!
@@ -139,7 +139,7 @@ void ownCloudFolder::startSync(const QStringList &pathList)
 
 
     qDebug() << "*** Start syncing url to ownCloud: " << url.toString() << ", with localOnly: " << _localCheckOnly;
-    _csync = new CSyncThread( path(), url.toString().toLocal8Bit(), _localCheckOnly );
+    _csync = new CSyncThread( path(), url.toString(), _localCheckOnly );
     _csync->setUserPwd( cfgFile.ownCloudUser(), cfgFile.ownCloudPasswd() );
     QObject::connect(_csync, SIGNAL(started()),  SLOT(slotCSyncStarted()));
     QObject::connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()));
