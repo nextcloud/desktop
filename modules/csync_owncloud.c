@@ -282,7 +282,9 @@ static int verify_sslcert(void *userdata, int failures,
         (*_authcb) ( problem, buf, NE_ABUFSIZ-1, 1, 0, userdata );
         if( strcmp( buf, "yes" ) == 0 ) {
             ret = 0;
-        }
+        } else {
+	    DEBUG_WEBDAV("Authentication callback replied %s", buf );
+	}
     }
     DEBUG_WEBDAV("## VERIFY_SSL CERT: %d", ret  );
     return ret;
