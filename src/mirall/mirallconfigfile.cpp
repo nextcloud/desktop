@@ -132,6 +132,7 @@ bool MirallConfigFile::connectionExists( const QString& conn )
     if( conn.isEmpty() ) con = defaultConnection();
 
     QSettings settings( configFile(), QSettings::IniFormat);
+    settings.setIniCodec( "UTF-8" );
 
     return settings.contains( QString("%1/url").arg( conn ) );
 }
@@ -148,6 +149,7 @@ void MirallConfigFile::writeOwncloudConfig( const QString& connection,
     QString pwd( passwd );
 
     QSettings settings( file, QSettings::IniFormat);
+    settings.setIniCodec( "UTF-8" );
     QString cloudsUrl( url );
 
     if( !cloudsUrl.startsWith( QLatin1String("http")) )
@@ -179,6 +181,7 @@ void MirallConfigFile::removeConnection( const QString& connection )
 
     // Currently its just removing the entire config file
     QSettings settings( configFile(), QSettings::IniFormat);
+    settings.setIniCodec( "UTF-8" );
     settings.beginGroup( con );
     settings.remove("");  // removes all content from the group
     settings.sync();
@@ -196,6 +199,7 @@ QString MirallConfigFile::ownCloudUrl( const QString& connection, bool webdav ) 
     if( connection.isEmpty() ) con = defaultConnection();
 
     QSettings settings( configFile(), QSettings::IniFormat );
+    settings.setIniCodec( "UTF-8" );
     settings.beginGroup( con );
 
     // For the WebDAV connect it is required to know which version the server is running
@@ -222,6 +226,7 @@ QString MirallConfigFile::ownCloudUser( const QString& connection ) const
     if( connection.isEmpty() ) con = defaultConnection();
 
     QSettings settings( configFile(), QSettings::IniFormat );
+    settings.setIniCodec( "UTF-8" );
     settings.beginGroup( con );
 
     QString user = settings.value( "user" ).toString();
@@ -236,6 +241,7 @@ int MirallConfigFile::remotePollInterval( const QString& connection ) const
   if( connection.isEmpty() ) con = defaultConnection();
 
   QSettings settings( configFile(), QSettings::IniFormat );
+  settings.setIniCodec( "UTF-8" );
   settings.beginGroup( con );
 
   int remoteInterval = settings.value( "remotePollInterval", DEFAULT_REMOTE_POLL_INTERVAL ).toInt();
@@ -256,6 +262,7 @@ int MirallConfigFile::localPollInterval( const QString& connection ) const
   if( connection.isEmpty() ) con = defaultConnection();
 
   QSettings settings( configFile(), QSettings::IniFormat );
+  settings.setIniCodec( "UTF-8" );
   settings.beginGroup( con );
 
   int remoteInterval = settings.value( "remotePollInterval", DEFAULT_REMOTE_POLL_INTERVAL ).toInt();
@@ -276,6 +283,7 @@ int MirallConfigFile::pollTimerExceedFactor( const QString& connection ) const
   if( connection.isEmpty() ) con = defaultConnection();
 
   QSettings settings( configFile(), QSettings::IniFormat );
+  settings.setIniCodec( "UTF-8" );
   settings.beginGroup( con );
 
   int pte = settings.value( "pollTimerExeedFactor", DEFAULT_POLL_TIMER_EXEED).toInt();
@@ -291,6 +299,7 @@ QString MirallConfigFile::ownCloudPasswd( const QString& connection ) const
     if( connection.isEmpty() ) con = defaultConnection();
 
     QSettings settings( configFile(), QSettings::IniFormat );
+    settings.setIniCodec( "UTF-8" );
     settings.beginGroup( con );
 
     QString pwd;
@@ -349,6 +358,7 @@ bool MirallConfigFile::ownCloudSkipUpdateCheck( const QString& connection ) cons
     if( connection.isEmpty() ) con = defaultConnection();
 
     QSettings settings( configFile(), QSettings::IniFormat );
+    settings.setIniCodec( "UTF-8" );
     settings.beginGroup( con );
 
     bool skipIt = settings.value( "skipUpdateCheck", false ).toBool();
@@ -359,6 +369,7 @@ bool MirallConfigFile::ownCloudSkipUpdateCheck( const QString& connection ) cons
 int MirallConfigFile::maxLogLines() const
 {
     QSettings settings( configFile(), QSettings::IniFormat );
+    settings.setIniCodec( "UTF-8" );
     settings.beginGroup("Logging");
     int logLines = settings.value( "maxLogLines", 20000 ).toInt();
     return logLines;
