@@ -275,6 +275,8 @@ void ownCloudInfo::slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors 
                 // User does not want to trust.
                 _certsUntrusted = true;
             }
+        } else {
+            _certsUntrusted = true;
         }
     }
 }
