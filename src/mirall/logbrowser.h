@@ -15,7 +15,9 @@
 #ifndef LOGBROWSER_H
 #define LOGBROWSER_H
 
-#include <QTextEdit>
+#include <QTextBrowser>
+#include <QTextStream>
+#include <QFile>
 #include <QObject>
 #include <QList>
 #include <QDateTime>
@@ -65,7 +67,7 @@ protected:
   static Logger* _instance;
 };
 
-class LogWidget : public QTextEdit
+class LogWidget : public QTextBrowser
 {
     Q_OBJECT
 public:
@@ -80,6 +82,10 @@ class LogBrowser : public QDialog
   Q_OBJECT
 public:
     explicit LogBrowser(QWidget *parent = 0);
+    ~LogBrowser();
+
+    void setLogFile(const QString& , bool );
+
 signals:
 
 public slots:
@@ -97,6 +103,10 @@ private:
     QLineEdit *_findTermEdit;
     QPushButton *_saveBtn;
     QLabel      *_statusLabel;
+
+    QFile       _logFile;
+    bool        _doFileFlush;
+    QTextStream *_logstream;
 };
 
 } // namespace

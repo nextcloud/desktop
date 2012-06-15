@@ -105,7 +105,7 @@ void Logger::setEnabled( bool state )
 // ==============================================================================
 
 LogWidget::LogWidget(QWidget *parent)
-    :QTextEdit(parent)
+    :QTextBrowser(parent)
 {
     setReadOnly( true );
     setLineWrapMode( QTextEdit::NoWrap );
@@ -124,7 +124,9 @@ LogWidget::LogWidget(QWidget *parent)
 
 LogBrowser::LogBrowser(QWidget *parent) :
     QDialog(parent),
-    _logWidget( new LogWidget(parent) )
+    _logWidget( new LogWidget(parent) ),
+    _logstream(0),
+    _doFileFlush(false)
 {
     setWindowTitle(tr("Log Output"));
     setMinimumWidth(600);
@@ -177,6 +179,13 @@ LogBrowser::LogBrowser(QWidget *parent) :
     connect(Logger::instance(), SIGNAL(newLog(QString)),this,SLOT(slotNewLog(QString)), Qt::QueuedConnection);
 }
 
+LogBrowser::~LogBrowser()
+{
+    if( _logstream ) {
+        _logFile.close();
+    }
+}
+
 void LogBrowser::show()
 {
     QDialog::show();
@@ -191,7 +200,31 @@ void LogBrowser::close()
 
 void LogBrowser::slotNewLog( const QString& msg )
 {
-    _logWidget->append( msg );
+    if( _logWidget->isVisible() ) {
+        _logWidget->append( msg );
+    }
+
+    if( _logstream ) {
+        (*_logstream) << msg << endl;
+        if( _doFileFlush ) _logstream->flush();
+    }
+}
+
+void LogBrowser::setLogFile( const QString & name, bool flush )
+{
+    _logFile.setFileName( name );
+
+    if(!_logFile.open(QIODevice::WriteOnly)) {
+        QMessageBox::warning(
+                    this,
+                    tr("Error"),
+                    QString(tr("<nobr>File '%1'<br/>cannot be opened for writing.<br/><br/>"
+                               "The log output can <b>not</b> be saved!</nobr>"))
+                    .arg(name));
+        return;
+    }
+    _doFileFlush = flush;
+    _logstream = new QTextStream( &_logFile );
 }
 
 void LogBrowser::slotFind()
@@ -236,10 +269,9 @@ void LogBrowser::slotSave()
     if( ! saveFile.isEmpty() ) {
         QFile file(saveFile);
 
-        if (file.open(QIODevice::ReadWrite)) {
+        if (file.open(QIODevice::WriteOnly)) {
             QTextStream stream(&file);
             stream << _logWidget->toPlainText();
-            file.flush();
             file.close();
         } else {
             QMessageBox::critical(this, tr("Error"), tr("Could not write to log file ")+ saveFile);

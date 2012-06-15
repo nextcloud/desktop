@@ -341,6 +341,19 @@ void Application::setupLogBrowser()
         slotOpenLogBrowser();
     }
 
+    // check for command line option for a log file.
+    int lf = arguments().indexOf("--logfile");
+
+    if( lf > -1 && lf+1 < arguments().count() ) {
+        QString logfile = arguments().at( lf+1 );
+
+        bool flush = false;
+        if( arguments().contains("--logflush")) flush = true;
+
+        qDebug() << "Logging into logfile: " << logfile << " with flush " << flush;
+        _logBrowser->setLogFile( logfile, flush );
+    }
+
     qDebug() << QString( "################## %1 %2 %3 ").arg(_theme->appName())
                 .arg( QLocale::system().name() )
                 .arg(_theme->version());
