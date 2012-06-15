@@ -13,6 +13,7 @@
  */
 
 #define LOG_TO_CALLBACK // FIXME: This should be in csync.
+#include <iostream>
 
 #include "mirall/application.h"
 #include "mirall/folder.h"
@@ -70,7 +71,8 @@ Application::Application(int &argc, char **argv) :
 #endif
     _contextMenu(0),
     _ocInfo(0),
-    _updateDetector(0)
+    _updateDetector(0),
+    _helpOnly(false)
 {
 
 #ifdef OWNCLOUD_CLIENT
@@ -81,9 +83,11 @@ Application::Application(int &argc, char **argv) :
     setApplicationName( _theme->appName() );
     setWindowIcon( _theme->applicationIcon() );
 
-    processEvents();
-
+    if( arguments().contains("--help")) {
+        showHelp();
+    }
     setupLogBrowser();
+    processEvents();
 
     QTranslator *qtTranslator = new QTranslator;
     qtTranslator->load("qt_" + QLocale::system().name(),
@@ -717,5 +721,23 @@ void Application::computeOverallSyncStatus()
     _tray->setToolTip(trayMessage);
 }
 
+void Application::showHelp()
+{
+    std::cout << _theme->appName().toLatin1().constData() << " version " <<
+                 _theme->version().toLatin1().constData() << std::endl << std::endl;
+    std::cout << "File synchronisation desktop utility." << std::endl << std::endl;
+    std::cout << "Options:" << std::endl;
+    std::cout << "  --logwindow          : open a window to show log output." << std::endl;
+    std::cout << "  --logfile <filename> : write log output to file <filename>." << std::endl;
+    std::cout << "  --flushlog           : flush the log file after every write." << std::endl;
+    std::cout << std::endl;
+    std::cout << "For more information, see http://www.owncloud.org" << std::endl;
+    _helpOnly = true;
+}
+
+bool Application::giveHelp()
+{
+    return _helpOnly;
+}
 } // namespace Mirall
 

@@ -46,6 +46,9 @@ class Application : public QApplication
 public:
     explicit Application(int &argc, char **argv);
     ~Application();
+
+    bool giveHelp();
+
 signals:
 
 protected slots:
@@ -81,6 +84,8 @@ protected slots:
     void slotStartUpdateDetector();
 
 private:
+    void showHelp();
+
     // configuration file -> folder
     QSystemTrayIcon *_tray;
     QAction *_actionQuit;
@@ -107,6 +112,7 @@ private:
     UpdateDetector *_updateDetector;
     QMap<Folder*, QString> _overallStatusStrings;
     LogBrowser *_logBrowser;
+    bool        _helpOnly;
 };
 
 } // namespace Mirall

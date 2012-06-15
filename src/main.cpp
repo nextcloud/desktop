@@ -20,6 +20,8 @@ int main(int argc, char **argv)
 
     Mirall::Application app(argc, argv);
 
-    return app.exec();
+    if( ! app.giveHelp() )
+        return app.exec();
+
 }
 

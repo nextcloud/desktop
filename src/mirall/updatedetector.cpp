@@ -48,6 +48,7 @@ void UpdateDetector::versionCheck( Theme *theme )
 #ifdef Q_OS_MAC
     platform = QLatin1String( "macos" );
 #endif
+    qDebug() << "00 client update check to " << url.toString();
 
     QString sysInfo = getSystemInfo();
     if( !sysInfo.isEmpty() ) {
@@ -55,8 +56,6 @@ void UpdateDetector::versionCheck( Theme *theme )
     }
     url.addQueryItem( "version", ver );
     url.addQueryItem( "platform", platform );
-
-    qDebug() << "00 client update check to " << url.toString();
 
     _accessManager->get( QNetworkRequest( url ));
 }
