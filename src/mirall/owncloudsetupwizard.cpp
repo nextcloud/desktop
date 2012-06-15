@@ -425,8 +425,9 @@ void OwncloudSetupWizard::finalizeSetup( bool success )
         }
         _ocWizard->appendToResultWidget( QLatin1String(" "));
         _ocWizard->appendToResultWidget( QLatin1String("<p><font color=\"green\"><b>")
-                                                       + tr("Congratulations, your ownCloud was successfully connected!")
+                                                       + tr("Congratulations, your ownCloud can be connected!")
                                                        + QLatin1String("</b></font></p>"));
+        _ocWizard->appendToResultWidget( tr("Press Finish to permanently accept this connection."));
     } else {
         _ocWizard->appendToResultWidget(QLatin1String("<p><font color=\"red\">")
                                         + tr("An ownCloud connection could not be established. Please check again.")
