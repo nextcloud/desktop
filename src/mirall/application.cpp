@@ -193,7 +193,9 @@ void Application::slotStartFolderSetup( int result )
             _ocInfo->checkInstallation();
         } else {
             QMessageBox::warning(0, tr("No ownCloud Configuration"),
-                                 tr("<p>No ownCloud connection was configured yet.</p><p>Please configure one by clicking on the tray icon!</p>"));
+                                 tr("<p>No server connection has been configured for this ownCloud client.</p>"
+                                    "<p>Please right click on the ownCloud system tray icon and select <i>Configure</i> "
+                                    "to connect this client to an ownCloud server.</p>"));
             // It was evaluated to open the config dialog from here directly but decided
             // against because the user does not know why. The popup gives a better user
             // guidance, even if its a click more.

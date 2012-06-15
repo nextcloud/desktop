@@ -184,8 +184,9 @@ void CSyncThread::run()
             errStr = tr("CSync failed to load the state db.");
             break;
         case CSYNC_ERR_TIMESKEW:
-            errStr = tr("The system time between the local machine and the server differs "
-                        "too much. Please use a time synchronization service (ntp) on both machines.");
+            errStr = tr("The system time on this client is different than the system time on the server. "
+                        "Please use a time synchronization service (NTP) on the server and client machines "
+                        "so that the times remain the same.");
             break;
         case CSYNC_ERR_FILESYSTEM:
             errStr = tr("CSync could not detect the filesystem type.");

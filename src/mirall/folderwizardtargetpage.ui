@@ -26,7 +26,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Express Upload Target</string>
+        <string>Synchronization Target</string>
        </property>
       </widget>
      </item>
@@ -48,7 +48,7 @@
    <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Pick a place where the data should go to:</string>
+      <string>Select a destination folder for your data</string>
      </property>
      <property name="flat">
       <bool>true</bool>
@@ -75,7 +75,7 @@
             </font>
            </property>
            <property name="text">
-            <string>to your &amp;ownCloud</string>
+            <string>on your &amp;ownCloud server</string>
            </property>
            <property name="openExternalLinks">
             <bool>true</bool>
