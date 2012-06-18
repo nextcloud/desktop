@@ -22,7 +22,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Check if you want t continue via SSL and trust the shown certificates.</string>
+      <string>Check if you want to continue via SSL and trust the shown certificates.</string>
      </property>
     </widget>
    </item>
