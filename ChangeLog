@@ -1,6 +1,22 @@
 ChangeLog
 =========
-version 1.0.2 (release ), csync 0.50.6 required
+version 1.0.3 (release 2012-06-19), csync 0.50.7 required
+  * [GUI] Added a log window which catches the logging if required and
+          allows to save for information.
+  * [CMI] Added options --help, --logfile and --logflush
+  * [APP] Allow to specify sync frequency in the config file.
+  * [Fixes] Do not use csync database files from a sync before.
+  * [Fixes] In Connection wizard, write the final config onyl if
+            the user really accepted. Also remove the former database.
+  * [Fixes] Allow special characters in the sync directory names
+  * [Fixes] Win32: Fixed directory removal with special character dirs.
+  * [Fixes] MacOS: Do not flood the system log any more
+  * [Fixes] MacOS: Put app translations to correct places
+  * [Fixes] Win32: Fix loading of csync state db.
+  * [Fixes] Improved some english grammar.
+  * [Platform] Added krazy2 static code checks.
+
+version 1.0.2 (release 2012-05-18), csync 0.50.6 required
   * [GUI] New icon set for ownCloud client
   * [GUI] No splashscreen any more (oC Bug #498)
   * [GUI] Russian translation added
@@ -11,6 +27,7 @@ version 1.0.2 (release ), csync 0.50.6 required
   * [Fixes] Open local sync folder from tray and status for win32
   * [Fixes] Load exclude.lst correctly on MacOSX
     + csync fixes.
+
 version 1.0.1 (release 2012-04-18), csync 0.50.5 required
   * [Security] Support SSL Connections
   * [Security] SSL Warning dialog
