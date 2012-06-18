@@ -156,7 +156,7 @@ else()
 
     #FIXME: hardcoded path
     install(FILES /usr/local/lib/csync-0/csync_owncloud.so DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Plugins)
-    install(FILES ${mirall_I18N} DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS)
+    install(FILES ${mirall_I18N} DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/translations)
 
     list(APPEND dirs "/usr/local/lib")
 endif()
