@@ -245,6 +245,9 @@ void ownCloudInfo::slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors 
     qDebug() << "SSL-Warnings happened for url " << reply->url().toString();
 
     QString configHandle;
+    if( !configHandle.isEmpty() ) {
+        qDebug() << "Custom config handle: " << configHandle;
+    }
     // an empty config handle is ok for the default config.
     if( _configHandleMap.contains(reply) ) {
         configHandle = _configHandleMap[reply];
@@ -253,6 +256,7 @@ void ownCloudInfo::slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors 
 
     if( _certsUntrusted ) {
         // User decided once to untrust. Honor this decision.
+        qDebug() << "Untrusted by user decision, returning.";
         return;
     }
 
