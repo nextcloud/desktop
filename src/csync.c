@@ -302,6 +302,8 @@ retry_vio_init:
         }
         /* Now vio init finally failed which means a module could not be found. */
         ctx->error_code = CSYNC_ERR_MODULE;
+	CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL,
+		  "The csync module %s could not be loaded.", module);
         SAFE_FREE(module);
         goto out;
       }
