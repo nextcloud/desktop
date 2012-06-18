@@ -53,8 +53,6 @@ public:
   static Logger* instance();
   static void destroy();
 
-  void setEnabled( bool );
-
 signals:
   void newLog(const QString&);
 
@@ -89,8 +87,6 @@ public:
 signals:
 
 public slots:
-    void show();
-    void close();
 
 protected slots:
     void slotNewLog( const QString &msg );

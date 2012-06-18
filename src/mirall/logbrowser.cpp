@@ -37,8 +37,7 @@ Logger* Logger::_instance=0;
 
 Logger::Logger( QObject* parent)
 : QObject(parent),
-  _showTime(true),
-  _doLogging(false)
+  _showTime(true)
 {
 
 }
@@ -59,8 +58,6 @@ void Logger::destroy()
 
 void Logger::log(Log log)
 {
-    if( ! _doLogging ) return;
-
     QString msg;
     if( _showTime ) {
         msg = log.timeStamp.toString("MM-dd hh:mm:ss:zzz") + " ";
@@ -95,11 +92,6 @@ void Logger::mirallLog( const QString& message )
     log_.message = message;
 
     Logger::instance()->log( log_ );
-}
-
-void Logger::setEnabled( bool state )
-{
-    _doLogging = state;
 }
 
 // ==============================================================================
@@ -184,18 +176,6 @@ LogBrowser::~LogBrowser()
     if( _logstream ) {
         _logFile.close();
     }
-}
-
-void LogBrowser::show()
-{
-    QDialog::show();
-    Logger::instance()->setEnabled(true);
-}
-
-void LogBrowser::close()
-{
-    Logger::instance()->setEnabled(false);
-    QDialog::close();
 }
 
 void LogBrowser::slotNewLog( const QString& msg )
