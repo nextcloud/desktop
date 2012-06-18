@@ -1,5 +1,11 @@
 ChangeLog
 ==========
+version 0.50.7 (released 2012-06-19)
+  * Added ability to log to a callback, ie. let the app 
+    catch the log output
+  * Fixed file copy function to use wide character (win32).
+  * Fixed loading of statedb if user has special char (win32).
+
 version 0.50.6 (released )
   * Directories with 'strange' characters broke sync. (oC bug #613)
   * Special characters in Windows did not sync correctly. (oC bug #478)
