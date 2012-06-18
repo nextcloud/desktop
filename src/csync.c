@@ -965,7 +965,10 @@ void csync_log_cb( char *catName, int a_priority,
   if(log_cb) {
     (log_cb)(buf);
   } else {
+#ifndef __APPLE__
+    /* skip this output on apple to not spam the system log. */
     fprintf(stderr, "%s\n", buf);
+#endif
   }
 }
 #endif

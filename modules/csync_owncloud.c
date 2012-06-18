@@ -49,7 +49,7 @@
 #include "csync_log.h"
 
 #ifdef NDEBUG
-#define DEBUG_WEBDAV(x)
+#define DEBUG_WEBDAV(...)
 #else
 #define DEBUG_WEBDAV(...) CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, __VA_ARGS__)
 #endif
