@@ -1,7 +1,7 @@
 IF(EXISTS "${CMAKE_SOURCE_DIR}/../csync/src/csync.h")
   SET(CSYNC_INCLUDE_PATH ${CMAKE_SOURCE_DIR}/../csync/src/)
 ELSE()
-  FIND_PATH(CSYNC_INCLUDE_PATH NAMES csync/csync.h HINTS $ENV{CSYNC_DIR} )
+  FIND_PATH(CSYNC_INCLUDE_PATH NAMES csync/csync.h csync.h HINTS $ENV{CSYNC_DIR} )
 ENDIF()
 
 IF(EXISTS "${CMAKE_SOURCE_DIR}/../buildcsync/src/")
