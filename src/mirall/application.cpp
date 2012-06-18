@@ -98,9 +98,14 @@ Application::Application(int &argc, char **argv) :
 #ifdef Q_OS_LINUX
     // FIXME - proper path!
     mirallTranslator->load("mirall_" + QLocale::system().name(), QLatin1String("/usr/share/mirall/i18n/"));
-#else
+#endif
+#ifdef Q_OS_MAC
+    mirallTranslator->load("mirall_" + QLocale::system().name(), applicationDirPath()+QLatin1String("/translations") ); // path defaults to app dir.
+#endif
+#ifdef Q_QS_WIN32
     mirallTranslator->load("mirall_" + QLocale::system().name()); // path defaults to app dir.
 #endif
+
     installTranslator(mirallTranslator);
 
     // create folder manager for sync folder management
