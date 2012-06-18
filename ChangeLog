@@ -6,7 +6,7 @@ version 0.50.7 (released 2012-06-19)
   * Fixed file copy function to use wide character (win32).
   * Fixed loading of statedb if user has special char (win32).
 
-version 0.50.6 (released )
+version 0.50.6 (released 2012-05-18)
   * Directories with 'strange' characters broke sync. (oC bug #613)
   * Special characters in Windows did not sync correctly. (oC bug #478)
   * Make neon redirecting
