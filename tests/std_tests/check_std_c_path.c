@@ -107,6 +107,29 @@ START_TEST (check_c_dirname_uri)
 }
 END_TEST
 
+START_TEST (check_c_tmpname)
+{
+  char tmpl[22]={0};
+  char prev[22]={0};
+
+  int i=0;
+  srand((unsigned)time(NULL));
+
+  /* remember the last random value and compare the new one against.
+   * They may never be the same. */
+  for(i = 0; i < 10; i++){
+      strcpy(tmpl, "check_tmpname.XXXXXX");
+      fail_unless(c_tmpname(tmpl) == 0);
+
+      if(strlen(prev)) {
+          fail_if(strcmp(tmpl, prev) == 0);
+      }
+      strcpy(prev,tmpl);
+
+  }
+}
+END_TEST
+
 START_TEST (check_c_parse_uri)
 {
   const char *test_scheme = "git+ssh";
@@ -171,8 +194,16 @@ static Suite *make_std_c_parse_uri_suite(void) {
   return s;
 }
 
+static Suite *make_std_c_tmpname_suite(void) {
+  Suite *s = suite_create("std:path:c_tmpname");
+
+  create_case(s, "check_c_tmpname", check_c_tmpname);
+
+  return s;
+}
+
 int main(int argc, char **argv) {
-  Suite *s, *s2, *s3;
+  Suite *s, *s2, *s3, *s4;
   SRunner *sr = NULL;
   struct argument_s arguments;
   int nf;
@@ -184,6 +215,7 @@ int main(int argc, char **argv) {
   s = make_std_c_basename_suite();
   s2 = make_std_c_dirname_suite();
   s3 = make_std_c_parse_uri_suite();
+  s4 = make_std_c_tmpname_suite();
 
   sr = srunner_create(s);
   if (arguments.nofork) {
@@ -191,6 +223,7 @@ int main(int argc, char **argv) {
   }
   srunner_add_suite (sr, s2);
   srunner_add_suite (sr, s3);
+  srunner_add_suite (sr, s4);
   srunner_run_all(sr, CK_VERBOSE);
   nf = srunner_ntests_failed(sr);
   srunner_free(sr);
