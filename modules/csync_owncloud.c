@@ -830,6 +830,10 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
 #ifdef _WIN32
     int gtp = 0;
     char tmpname[13];
+    _TCHAR winTmp[PATH_MAX];
+    const _TCHAR *winUrlMB = NULL;
+    const char *winTmpUtf8 = NULL;
+    csync_stat_t sb;
 #endif
 
     struct transfer_context *writeCtx = NULL;
@@ -892,18 +896,37 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
         /* open a temp file to store the incoming data */
 #ifdef _WIN32
         memset( tmpname, '\0', 13 );
-        gtp = GetTempPath( PATH_MAX, getUrl );
-        DEBUG_WEBDAV("win32 tmp path: %s", getUrl );
+        gtp = GetTempPathW( PATH_MAX, winTmp );
+        winTmpUtf8 = c_utf8( winTmp );
+        strcpy( getUrl, winTmpUtf8 );
+        DEBUG_WEBDAV("win32 tmp path: %s", getUrl);
+
         if ( gtp > MAX_PATH || (gtp == 0) ) {
             DEBUG_WEBDAV("Failed to compute Win32 tmp path, trying /tmp");
             strcpy( getUrl, "/tmp/");
         }
         strcpy( tmpname, "csync.XXXXXX" );
         if( c_tmpname( tmpname ) == 0 ) {
+            /* Set the windows file mode to Binary. */
             _fmode = _O_BINARY;
+            /* append the tmp file name to tmp path */
             strcat( getUrl, tmpname );
             writeCtx->tmpFileName = c_strdup( getUrl );
-            writeCtx->fd = open( writeCtx->tmpFileName, O_RDWR | O_CREAT | O_EXCL, 0600 );
+
+            /* Open the file finally. */
+            winUrlMB = c_multibyte( getUrl );
+
+            /* check if the file exists by chance. */
+            if( _tstat( winUrlMB, &sb ) == 0 ) {
+                /* the file exists. Remove it! */
+                _tunlink( winUrlMB );
+            }
+
+            writeCtx->fd = _topen( winUrlMB, O_RDWR | O_CREAT | O_EXCL, 0600 );
+
+            /* free the extra bytes */
+            c_free_multibyte( winUrlMB );
+            c_free_utf8( winTmpUtf8 );
 	} else {
 	   writeCtx->fd = -1;
 	}
@@ -1020,6 +1043,7 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
     int rc;
     int ret = 0;
     size_t len = 0;
+    const _TCHAR *tmpFileName = 0;
 
     writeCtx = (struct transfer_context*) fhandle;
 
@@ -1057,8 +1081,9 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
             if( writeCtx->fileWritten ) {
                 DEBUG_WEBDAV("Putting file through file cache.");
                 /* we need to go the slow way and close and open the file and read from fd. */
+                tmpFileName = c_multibyte( writeCtx->tmpFileName );
 
-                if (( writeCtx->fd = open( writeCtx->tmpFileName, O_RDONLY )) < 0) {
+                if (( writeCtx->fd = _topen( tmpFileName, O_RDONLY )) < 0) {
                     errno = EIO;
                     ret = -1;
                 } else {
@@ -1088,6 +1113,7 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
                         ret = -1;
                     }
                 }
+                c_free_multibyte(tmpFileName);
             } else {
                 /* all content is in the buffer. */
                 DEBUG_WEBDAV("Putting file through memory cache.");
@@ -1130,6 +1156,7 @@ static ssize_t owncloud_read(csync_vio_method_handle_t *fhandle, void *buf, size
     struct transfer_context *writeCtx = NULL;
     size_t len = 0;
     csync_stat_t st;
+    const _TCHAR *tmpFileName;
 
     writeCtx = (struct transfer_context*) fhandle;
 
@@ -1144,11 +1171,14 @@ static ssize_t owncloud_read(csync_vio_method_handle_t *fhandle, void *buf, size
 #ifdef _WIN32
 	_fmode = _O_BINARY;
 #endif
-        if (( writeCtx->fd = open( writeCtx->tmpFileName, O_RDONLY )) < 0) {
+        tmpFileName = c_multibyte(writeCtx->tmpFileName);
+        if (( writeCtx->fd = _topen( tmpFileName, O_RDONLY )) < 0) {
+            c_free_multibyte(tmpFileName);
             DEBUG_WEBDAV("Could not open local file %s", writeCtx->tmpFileName );
             errno = EIO;
             return -1;
         } else {
+            c_free_multibyte(tmpFileName);
             if (fstat( writeCtx->fd, &st ) < 0) {
                 DEBUG_WEBDAV("Could not stat file %s", writeCtx->tmpFileName );
                 errno = EIO;
