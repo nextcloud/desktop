@@ -132,10 +132,15 @@ int c_tmpname(char *template) {
     }
   }
 
-  srand(time(NULL));
-
   for (i = 0; i < 6; ++i) {
+#ifdef _WIN32
+    /* in win32 MAX_RAND is 32767, thus we can not shift that far,
+     * otherwise the last three chars are 0
+     */
+    int hexdigit = (rand() >> (i * 2)) & 0x1f;
+#else
     int hexdigit = (rand() >> (i * 5)) & 0x1f;
+#endif
     tmp[i] = hexdigit > 9 ? hexdigit + 'a' - 10 : hexdigit + '0';
   }
 
