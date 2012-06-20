@@ -351,6 +351,9 @@ retry_vio_init:
 
   ctx->status = CSYNC_STATUS_INIT;
 
+  /* initialize random generator */
+  srand(time(NULL));
+
   rc = 0;
 
 out:
