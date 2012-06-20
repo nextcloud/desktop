@@ -126,6 +126,7 @@ void ownCloudFolder::startSync(const QStringList &pathList)
 #ifdef USE_INOTIFY
     // if there is a watcher and no polling, ever sync is remote.
     _localCheckOnly = false;
+    _syncResult.clearErrors();
 #else
     _localCheckOnly = true;
     if( _pollTimerCnt >= _pollTimerExceed || _localFileChanges ) {
