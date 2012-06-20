@@ -132,6 +132,7 @@ void ownCloudFolder::startSync(const QStringList &pathList)
         _localCheckOnly = false;
         _pollTimerCnt = 0;
         _localFileChanges = false;
+        _syncResult.clearErrors();
     }
 #endif
     _syncResult.setLocalRunOnly( _localCheckOnly );

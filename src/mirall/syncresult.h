@@ -58,8 +58,6 @@ private:
     /**
      * when the sync tool support this...
      */
-    QStringList _deletedSource;
-    QStringList _deletedDestination;
     QStringList _errors;
 
     bool        _localRunOnly;
