@@ -393,7 +393,7 @@ static int dav_connect(const char *base_url) {
 
     ne_set_read_timeout(dav_session.ctx, timeout);
     snprintf( uaBuf, sizeof(uaBuf), "csyncoC/%s",CSYNC_STRINGIFY( LIBCSYNC_VERSION ));
-    ne_set_useragent( dav_session.ctx, c_strdup( uaBuf ));
+    ne_set_useragent( dav_session.ctx, uaBuf);
     ne_set_server_auth(dav_session.ctx, ne_auth, 0 );
 
     if( useSSL ) {
@@ -411,6 +411,9 @@ static int dav_connect(const char *base_url) {
     _connected = 1;
     rc = 0;
 out:
+    SAFE_FREE(path);
+    SAFE_FREE(host);
+    SAFE_FREE(scheme);
     return rc;
 }
 
@@ -588,6 +591,29 @@ static int _stat_perms( int type ) {
 }
 
 /*
+ * free the fetchCtx
+ */
+static void free_fetchCtx( struct listdir_context *ctx )
+{
+    struct resource *newres = ctx->list;
+    struct resource *res = newres;
+    if( ! ctx ) return;
+
+    SAFE_FREE(ctx->target);
+
+    while( res ) {
+        SAFE_FREE(res->uri);
+        SAFE_FREE(res->name);
+
+        newres = res->next;
+        SAFE_FREE(res);
+        res = newres;
+    }
+    SAFE_FREE(ctx);
+}
+
+
+/*
  * file functions
  */
 static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
@@ -652,7 +678,7 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
             errno = ne_session_error_errno( dav_session.ctx );
 
             DEBUG_WEBDAV("stat fails with errno %d", errno );
-            SAFE_FREE(fetchCtx);
+            free_fetchCtx(fetchCtx);
             return -1;
         }
 
@@ -690,7 +716,8 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
 
                 csync_vio_file_stat_destroy( lfs );
             }
-            SAFE_FREE( fetchCtx );
+
+            free_fetchCtx( fetchCtx );
         }
     }
     DEBUG_WEBDAV("STAT result: %s, type=%d", buf->name ? buf->name:"NULL",
@@ -837,7 +864,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
 #endif
 
     struct transfer_context *writeCtx = NULL;
-    csync_stat_t statBuf;
+    csync_vio_file_stat_t statBuf;
     memset( getUrl, '\0', PATH_MAX );
 
     (void) mode; /* unused on webdav server */
@@ -869,6 +896,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
         dir = c_dirname( durl );
 	if (dir == NULL) {
             errno = ENOMEM;
+            SAFE_FREE(uri);
 	    return NULL;
 	}
         DEBUG_WEBDAV("Stating directory %s", dir );
@@ -876,6 +904,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
             DEBUG_WEBDAV("Dir %s is there, we know it already.", dir);
         } else {
             if( owncloud_stat( dir, (csync_vio_method_handle_t*)(&statBuf) ) == 0 ) {
+                SAFE_FREE(statBuf.name);
                 DEBUG_WEBDAV("Directory of file to open exists.");
                 SAFE_FREE( _lastDir );
                 _lastDir = c_strdup(dir);
@@ -884,7 +913,9 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
                 DEBUG_WEBDAV("Directory %s of file to open does NOT exist.", dir );
                 /* the directory does not exist. That is an ENOENT */
                 errno = ENOENT;
-                SAFE_FREE( dir );
+                SAFE_FREE(dir);
+                SAFE_FREE(uri);
+                SAFE_FREE(statBuf.name);
                 return NULL;
             }
         }
@@ -1249,21 +1280,11 @@ static csync_vio_method_handle_t *owncloud_opendir(const char *uri) {
 static int owncloud_closedir(csync_vio_method_handle_t *dhandle) {
 
     struct listdir_context *fetchCtx = dhandle;
-    struct resource *r = fetchCtx->list;
-    struct resource *rnext = NULL;
 
     DEBUG_WEBDAV("closedir method called %p!", dhandle);
 
-    while( r ) {
-        rnext = r->next;
-        SAFE_FREE(r->uri);
-        SAFE_FREE(r->name);
-        SAFE_FREE(r);
-        r = rnext;
-    }
-    SAFE_FREE( fetchCtx->target );
+    free_fetchCtx(fetchCtx);
 
-    SAFE_FREE( dhandle );
     return 0;
 }
 
