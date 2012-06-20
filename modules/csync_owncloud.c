@@ -904,7 +904,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
         if( c_streq( dir, _lastDir )) {
             DEBUG_WEBDAV("Dir %s is there, we know it already.", dir);
         } else {
-            if( owncloud_stat( dir, (csync_vio_method_handle_t*)(&statBuf) ) == 0 ) {
+            if( owncloud_stat( dir, &statBuf ) == 0 ) {
                 SAFE_FREE(statBuf.name);
                 DEBUG_WEBDAV("Directory of file to open exists.");
                 SAFE_FREE( _lastDir );
