@@ -195,7 +195,7 @@ void CSyncThread::run()
             errStr = tr("CSync got an error while processing internal trees.");
             break;
         case CSYNC_ERR_ACCESS_FAILED:
-            errStr = tr("<p>The target directory %1 does not exist.</p><p>Please create it and try again.</p>").arg(_target);
+            errStr = tr("<p>The target directory %1 does not exist.</p><p>Please check the sync setup.</p>").arg(_target);
             break;
         case CSYNC_ERR_MODULE:
             errStr = tr("<p>The ownCloud plugin for csync could not be loaded.<br/>Please verify the installation!</p>");
@@ -214,6 +214,11 @@ void CSyncThread::run()
         qDebug() << " #### ERROR String emitted: " << errStr;
         emit csyncError(errStr);
         goto cleanup;
+    }
+
+    // tell csync that the remote repository (ownCloud) does atomar push
+    if( csync_set_remote_push_atomar( csync, true ) < 0 ) {
+        qDebug() << "WRN: Failed to set remote push atomar.";
     }
 
     // After csync_init the statedb file name can be emitted
