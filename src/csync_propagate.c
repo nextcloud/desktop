@@ -46,6 +46,12 @@ static int _csync_cleanup_cmp(const void *a, const void *b) {
   return strcmp(st_a->path, st_b->path);
 }
 
+static bool _push_to_tmp_first(CSYNC *ctx)
+{
+    if( ctx->current == REMOTE_REPLCIA && !ctx->options.remote_push_atomar ) return true;
+    return false;
+}
+
 static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   enum csync_replica_e srep = -1;
   enum csync_replica_e drep = -1;
@@ -125,22 +131,37 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     goto out;
   }
 
-  /* create the temporary file name */
-  if (asprintf(&turi, "%s.XXXXXX", duri) < 0) {
-    rc = -1;
-    goto out;
-  }
+  if (_push_to_tmp_first(ctx)) {
+      /* create the temporary file name */
+      if (asprintf(&turi, "%s.XXXXXX", duri) < 0) {
+          rc = -1;
+          goto out;
+      }
 
-  /* We just want a random file name here, open checks if the file exists. */
-  if (c_tmpname(turi) < 0) {
-    rc = -1;
-    goto out;
+      /* We just want a random file name here, open checks if the file exists. */
+      if (c_tmpname(turi) < 0) {
+          rc = -1;
+          goto out;
+      }
+  } else {
+      /* write to the target file directly as the HTTP server does it atomically */
+      if (asprintf(&turi, "%s", duri) < 0) {
+          rc = -1;
+          goto out;
+      }
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
+                "Remote repository atomar push enabled for %s.", turi );
+
   }
 
   /* Create the destination file */
   ctx->replica = drep;
   while ((dfp = csync_vio_open(ctx, turi, O_CREAT|O_EXCL|O_WRONLY|O_NOCTTY,
           C_FILE_MODE)) == NULL) {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
+          "file: %s, command: open(O_CREAT), error: %d",
+          duri, errno);
+
     switch (errno) {
       case EEXIST:
         if (count++ > 10) {
@@ -150,9 +171,11 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
           rc = 1;
           goto out;
         }
-        if (c_tmpname(turi) < 0) {
-          rc = -1;
-          goto out;
+        if(_push_to_tmp_first(ctx)) {
+          if (c_tmpname(turi) < 0) {
+            rc = -1;
+            goto out;
+          }
         }
         break;
       case ENOENT:
@@ -299,25 +322,27 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     goto out;
   }
 #endif
-  /* override original file */
-  ctx->replica = drep;
-  if (csync_vio_rename(ctx, turi, duri) < 0) {
-    switch (errno) {
+
+  if (_push_to_tmp_first(ctx)) {
+    /* override original file */
+    ctx->replica = drep;
+    if (csync_vio_rename(ctx, turi, duri) < 0) {
+      switch (errno) {
       case ENOMEM:
         rc = -1;
         break;
       default:
         rc = 1;
         break;
+      }
+      strerror_r(errno, errbuf, sizeof(errbuf));
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+                 "file: %s, command: rename, error: %s",
+                  duri,
+                  errbuf);
+       goto out;
     }
-    strerror_r(errno, errbuf, sizeof(errbuf));
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
-        "file: %s, command: rename, error: %s",
-        duri,
-        errbuf);
-    goto out;
   }
-
   /* set mode only if it is not the default mode */
   if ((st->mode & 07777) != C_FILE_MODE) {
     if (csync_vio_chmod(ctx, duri, st->mode) < 0) {
@@ -907,16 +932,19 @@ static int _csync_propagation_file_visitor(void *obj, void *data) {
       switch (st->instruction) {
         case CSYNC_INSTRUCTION_NEW:
           if (_csync_new_file(ctx, st) < 0) {
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"FAIL NEW: %s",st->path);
             goto err;
           }
           break;
         case CSYNC_INSTRUCTION_SYNC:
           if (_csync_sync_file(ctx, st) < 0) {
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"FAIL SYNC: %s",st->path);
             goto err;
           }
           break;
         case CSYNC_INSTRUCTION_REMOVE:
           if (_csync_remove_file(ctx, st) < 0) {
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"FAIL REMOVE: %s",st->path);
             goto err;
           }
           break;

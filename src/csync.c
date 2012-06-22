@@ -121,6 +121,7 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
   ctx->options.unix_extensions = 0;
   ctx->options.with_conflict_copys=false;
   ctx->options.local_only_mode = false;
+  ctx->options.remote_push_atomar = false;
 
   ctx->pwd.uid = getuid();
   ctx->pwd.euid = geteuid();
@@ -934,6 +935,33 @@ bool csync_get_local_only(CSYNC *ctx) {
     ctx->error_code = CSYNC_ERR_NONE;
 
     return ctx->options.local_only_mode;
+}
+
+int csync_set_remote_push_atomar(CSYNC *ctx, bool is_atomar) {
+    if(ctx == NULL) {
+        return -1;
+    }
+
+    ctx->error_code = CSYNC_ERR_NONE;
+
+    if (ctx->status & CSYNC_STATUS_PROPAGATE) {
+        fprintf(stderr, "This function must be called before propagation.");
+        ctx->error_code = CSYNC_ERR_UNSPEC;
+        return -1;
+    }
+
+    ctx->options.remote_push_atomar = is_atomar;
+
+    return 0;
+}
+
+bool csync_get_remote_push_atomar(CSYNC *ctx) {
+    if (ctx == NULL) {
+        return -1;
+    }
+    ctx->error_code = CSYNC_ERR_NONE;
+
+    return ctx->options.remote_push_atomar;
 }
 
 CSYNC_ERROR_CODE csync_get_error(CSYNC *ctx) {
