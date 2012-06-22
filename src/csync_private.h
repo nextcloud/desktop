@@ -118,6 +118,7 @@ struct csync_s {
     char *config_dir;
     bool with_conflict_copys;
     bool local_only_mode;
+    bool remote_push_atomar;
   } options;
 
   struct {
