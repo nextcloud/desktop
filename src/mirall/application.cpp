@@ -186,6 +186,7 @@ Application::~Application()
 #endif
     delete _folderMan;
     delete _ocInfo;
+    delete _tray;
 }
 
 void Application::slotStartUpdateDetector()
