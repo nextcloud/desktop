@@ -48,7 +48,11 @@ static int _csync_cleanup_cmp(const void *a, const void *b) {
 
 static bool _push_to_tmp_first(CSYNC *ctx)
 {
-    if( ctx->current == REMOTE_REPLCIA && !ctx->options.remote_push_atomar ) return true;
+    if( ctx->current == REMOTE_REPLCIA ) return true; /* Always push to tmp for destination local file system */
+
+    /* If destination is the remote replica check if the switch is set. */
+    if( !ctx->options.remote_push_atomar ) return true; /* DO push to tmp first */
+
     return false;
 }
 
@@ -150,7 +154,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
           goto out;
       }
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
-                "Remote repository atomar push enabled for %s.", turi );
+                "Remote repository atomar push enabled for %s (%d).", turi, ctx->current);
 
   }
 
