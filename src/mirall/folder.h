@@ -29,6 +29,7 @@
 class QAction;
 class QTimer;
 class QIcon;
+class QFileSystemWatcher;
 
 namespace Mirall {
 
@@ -189,6 +190,9 @@ private:
     QString   _alias;
     bool      _onlyOnlineEnabled;
     bool      _onlyThisLANEnabled;
+
+    QFileSystemWatcher *_pathWatcher;
+
 #if QT_VERSION >= 0x040700
     QNetworkConfigurationManager _networkMgr;
 #endif
@@ -206,6 +210,11 @@ protected slots:
        paths */
 
     void slotSyncStarted();
+
+    /**
+     * Triggered by a file system watcher on the local sync dir
+     */
+    virtual void slotLocalPathChanged( const QString& );
 
 };
 

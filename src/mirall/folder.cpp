@@ -19,6 +19,8 @@
 #include <QDebug>
 #include <QTimer>
 #include <QUrl>
+#include <QFileSystemWatcher>
+#include <QDir>
 
 namespace Mirall {
 
@@ -66,6 +68,10 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
 #else
     _online = true;
 #endif
+
+    _pathWatcher = new QFileSystemWatcher(this);
+    _pathWatcher->addPath( _path );
+    connect(_pathWatcher, SIGNAL(directoryChanged(QString)),SLOT(slotLocalPathChanged(QString)));
 
     _syncResult.setStatus( SyncResult::NotYetStarted );
 
@@ -249,6 +255,18 @@ void Folder::slotSyncFinished(const SyncResult &result)
     } else {
         qDebug() << "* Not enabling poll timer for " << alias();
         _pollTimer->stop();
+    }
+}
+
+void Folder::slotLocalPathChanged( const QString& dir )
+{
+    QDir notifiedDir(dir);
+    QDir localPath(_path );
+
+    if( notifiedDir == localPath ) {
+        if( !localPath.exists() ) {
+            qDebug() << "ALARM: The local path was DELETED!";
+        }
     }
 }
 

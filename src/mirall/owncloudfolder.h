@@ -44,6 +44,9 @@ public slots:
     void startSync();
     void slotTerminateSync();
 
+protected slots:
+    void slotLocalPathChanged( const QString& );
+
 private slots:
     void slotCSyncStarted();
     void slotCSyncError(const QString& );

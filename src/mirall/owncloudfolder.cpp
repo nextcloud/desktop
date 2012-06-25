@@ -105,7 +105,6 @@ void ownCloudFolder::startSync()
 
 void ownCloudFolder::startSync(const QStringList &pathList)
 {
-
     if (_csync && _csync->isRunning()) {
         qCritical() << "* ERROR csync is still running and new sync requested.";
         return;
@@ -263,6 +262,27 @@ void ownCloudFolder::slotTerminateSync()
         if( file.exists() ) {
             qDebug() << "After termination, lock file exists and gets removed.";
             file.remove();
+        }
+    }
+}
+
+void ownCloudFolder::slotLocalPathChanged( const QString& dir )
+{
+    QDir notifiedDir(dir);
+    QDir localPath( path() );
+
+    if( notifiedDir == localPath ) {
+        if( !localPath.exists() ) {
+            qDebug() << "XXXXXXX The sync folder root was removed!!";
+            if( _csync && _csync->isRunning() ) {
+                qDebug() << "CSync currently running, set wipe flag!!";
+                slotWipeDb();
+            } else {
+                qDebug() << "CSync not running, wipe it now!!";
+                wipe();
+            }
+
+            qDebug() << "ALARM: The local path was DELETED!";
         }
     }
 }
