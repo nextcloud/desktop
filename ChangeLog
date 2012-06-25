@@ -8,6 +8,8 @@ version 1.0.3 (release 2012-06-19), csync 0.50.7 required
   * [Fixes] Do not use csync database files from a sync before.
   * [Fixes] In Connection wizard, write the final config onyl if
             the user really accepted. Also remove the former database.
+  * [Fixes] More user expected behaviour deletion of sync folder local 
+            and remote.
   * [Fixes] Allow special characters in the sync directory names
   * [Fixes] Win32: Fixed directory removal with special character dirs.
   * [Fixes] MacOS: Do not flood the system log any more
