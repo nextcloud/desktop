@@ -71,8 +71,11 @@ signals:
     void csyncError( const QString& );
 
     void csyncStateDbFile( const QString& );
+    void wipeDb();
 
 private:
+    void emitStateDb( CSYNC *csync );
+
     static int getauth(const char *prompt,
                 char *buf,
                 size_t len,

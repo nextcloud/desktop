@@ -51,6 +51,7 @@ private slots:
     void slotThreadTreeWalkResult( WalkStats* );
     void slotCSyncTerminated();
     void slotCsyncStateDbFile(const QString&);
+    void slotWipeDb();
 
 #ifndef USE_INOTIFY
     void slotPollTimerRemoteCheck();
@@ -64,6 +65,7 @@ private:
     int          _pollTimerExceed;
     QStringList  _errors;
     bool         _csyncError;
+    bool         _wipeDb;
     ulong        _lastSeenFiles;
     QString      _csyncStateDbFile;
 };

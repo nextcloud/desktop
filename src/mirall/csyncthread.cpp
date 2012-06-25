@@ -196,6 +196,9 @@ void CSyncThread::run()
             break;
         case CSYNC_ERR_ACCESS_FAILED:
             errStr = tr("<p>The target directory %1 does not exist.</p><p>Please check the sync setup.</p>").arg(_target);
+            // this is critical. The database has to be removed.
+            emitStateDb(csync); // to make the name of the csync db known.
+            emit wipeDb();
             break;
         case CSYNC_ERR_MODULE:
             errStr = tr("<p>The ownCloud plugin for csync could not be loaded.<br/>Please verify the installation!</p>");
@@ -221,16 +224,7 @@ void CSyncThread::run()
         qDebug() << "WRN: Failed to set remote push atomar.";
     }
 
-    // After csync_init the statedb file name can be emitted
-    statedb = csync_get_statedb_file( csync );
-    if( statedb ) {
-        QString stateDbFile = QString::fromUtf8(statedb);
-        free((void*)statedb);
-
-        emit csyncStateDbFile( stateDbFile );
-    } else {
-        qDebug() << "WRN: Unable to get csync statedb file name";
-    }
+    emitStateDb(csync);
 
     qDebug() << "############################################################### >>";
     if( csync_update(csync) < 0 ) {
@@ -291,6 +285,19 @@ cleanup:
     qDebug() << "CSync run took " << t.elapsed() << " Milliseconds";
 }
 
+void CSyncThread::emitStateDb( CSYNC *csync )
+{
+    // After csync_init the statedb file name can be emitted
+    const char *statedb = csync_get_statedb_file( csync );
+    if( statedb ) {
+        QString stateDbFile = QString::fromUtf8(statedb);
+        free((void*)statedb);
+
+        emit csyncStateDbFile( stateDbFile );
+    } else {
+        qDebug() << "WRN: Unable to get csync statedb file name";
+    }
+}
 
 void CSyncThread::setUserPwd( const QString& user, const QString& passwd )
 {

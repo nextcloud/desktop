@@ -41,6 +41,7 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
     , _csync(0)
     , _pollTimerCnt(0)
     , _csyncError(false)
+    , _wipeDb(false)
     , _lastSeenFiles(0)
 {
 #ifdef USE_INOTIFY
@@ -112,6 +113,7 @@ void ownCloudFolder::startSync(const QStringList &pathList)
      delete _csync;
     _errors.clear();
     _csyncError = false;
+    _wipeDb = false;
 
     MirallConfigFile cfgFile;
 
@@ -148,6 +150,7 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     QObject::connect(_csync, SIGNAL(terminated()), SLOT(slotCSyncTerminated()));
     connect(_csync, SIGNAL(csyncError(const QString)), SLOT(slotCSyncError(const QString)));
     connect(_csync, SIGNAL(csyncStateDbFile(QString)), SLOT(slotCsyncStateDbFile(QString)));
+    connect(_csync, SIGNAL(wipeDb()),SLOT(slotWipeDb()));
 
     connect( _csync, SIGNAL(treeWalkResult(WalkStats*)),
              this, SLOT(slotThreadTreeWalkResult(WalkStats*)));
@@ -232,6 +235,7 @@ void ownCloudFolder::slotCSyncFinished()
         qDebug() << "  ** error Strings: " << _errors;
         _syncResult.setErrorStrings( _errors );
         qDebug() << "    * owncloud csync thread finished with error";
+        if( _wipeDb ) wipe();
     } else {
         _syncResult.setStatus(SyncResult::Success);
     }
@@ -263,6 +267,14 @@ void ownCloudFolder::slotTerminateSync()
     }
 }
 
+// an error condition in csyncthread requires to get rid of the database to avoid deletion
+// of files.
+void ownCloudFolder::slotWipeDb()
+{
+    qDebug() << "Wiping of the csync database is required!";
+    _wipeDb = true;
+}
+
 // This removes the csync File database if the sync folder definition is removed
 // permanentely. This is needed to provide a clean startup again in case another
 // local folder is synced to the same ownCloud.
@@ -286,6 +298,7 @@ void ownCloudFolder::wipe()
         if( ctmpFile.exists() ) {
             ctmpFile.remove();
         }
+        _wipeDb = false;
     }
 }
 
