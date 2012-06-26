@@ -271,7 +271,7 @@ void ownCloudFolder::slotLocalPathChanged( const QString& dir )
     QDir notifiedDir(dir);
     QDir localPath( path() );
 
-    if( notifiedDir == localPath ) {
+    if( notifiedDir.absolutePath() == localPath.absolutePath() ) {
         if( !localPath.exists() ) {
             qDebug() << "XXXXXXX The sync folder root was removed!!";
             if( _csync && _csync->isRunning() ) {
