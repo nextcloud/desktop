@@ -851,6 +851,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
                                                 mode_t mode) {
     char *uri = NULL;
     char *dir = NULL;
+    const  char *err = NULL;
     char getUrl[PATH_MAX];
     int put = 0;
     int rc = NE_OK;
