@@ -119,6 +119,10 @@ struct dav_session_s {
     ne_session *ctx;
     char *user;
     char *pwd;
+
+    time_t   time_delta;     /* The time delta to use.                  */
+    long int time_delta_sum; /* What is the time delta average?         */
+    int      time_delta_cnt; /* How often was the server time gathered? */
 };
 
 /* The list of properties that is fetched in PropFind on a collection */
@@ -347,6 +351,9 @@ static int dav_connect(const char *base_url) {
         return 0;
     }
 
+    dav_session.time_delta_sum = 0;
+    dav_session.time_delta_cnt = 0;
+
     rc = c_parse_uri( base_url, &scheme, &dav_session.user, &dav_session.pwd, &host, &port, &path );
     if( rc < 0 ) {
         DEBUG_WEBDAV("Failed to parse uri %s", base_url );
@@ -505,14 +512,51 @@ static int fetch_resource_list( const char *curi,
                                 struct listdir_context *fetchCtx )
 {
     int ret = 0;
+    ne_propfind_handler *hdl = NULL;
+    ne_request *request = NULL;
+    const char *date_header = NULL;
+    time_t server_time;
+    time_t now;
+    time_t time_diff;
+    time_t time_diff_delta;
 
     /* do a propfind request and parse the results in the results function, set as callback */
-    ret = ne_simple_propfind( dav_session.ctx, curi, depth, ls_props, results, fetchCtx );
+    /* ret = ne_simple_propfind( dav_session.ctx, curi, depth, ls_props, results, fetchCtx ); */
+
+    hdl = ne_propfind_create(dav_session.ctx, curi, depth);
+
+    ret = ne_propfind_named(hdl, ls_props, results, fetchCtx);
 
     if( ret == NE_OK ) {
         DEBUG_WEBDAV("Simple propfind OK.");
         fetchCtx->currResource = fetchCtx->list;
+        request = ne_propfind_get_request( hdl );
+
+        date_header =  ne_get_response_header( request, "Date" );
+        DEBUG_WEBDAV("Server Date from HTTP header value: %s", date_header);
+        server_time = ne_rfc1123_parse( date_header );
+        now = time(NULL);
+        time_diff = server_time - now;
+
+        dav_session.time_delta_sum += time_diff;
+        dav_session.time_delta_cnt++;
+
+        /* check the changing of the time delta */
+        time_diff_delta = llabs(dav_session.time_delta - time_diff);
+        if( time_diff_delta > 5 ) {
+          DEBUG_WEBDAV("WRN: The time delta changed more than 5 second");
+        } else if( time_diff_delta == 0) {
+          DEBUG_WEBDAV("Ok: Time delta remained the same.");
+        } else {
+          DEBUG_WEBDAV("Difference to last server time delta: %d", time_diff_delta );
+        }
+        dav_session.time_delta = time_diff;
+
+        /* DEBUG_WEBDAV("%d <0> %d", server_time, now); */
+        dav_session.time_delta = time_diff;
     }
+    ne_propfind_destroy(hdl);
+
     return ret;
 }
 
@@ -545,7 +589,13 @@ static csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
         DEBUG_WEBDAV("ERROR: Unknown resource type %d", res->type);
     }
 
-    lfs->mtime = res->modtime;
+    /* Correct the mtime of the file with the server time delta */
+    if( dav_session.time_delta_cnt == 0 ) {
+      DEBUG_WEBDAV("WRN: Delta time not yet computed.");
+      lfs->mtime = res->modtime;
+    } else {
+      lfs->mtime = res->modtime + dav_session.time_delta;
+    }
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
     lfs->size  = res->size;
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
