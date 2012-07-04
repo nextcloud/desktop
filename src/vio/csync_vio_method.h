@@ -38,8 +38,11 @@ typedef struct csync_vio_method_s csync_vio_method_t;
 /* module capabilities definition.
  * remember to set useful defaults in csync_vio.c if you add something here. */
 struct csync_vio_capabilities_s {
- bool atomar_copy_support;
- bool do_post_copy_stat;
+ bool atomar_copy_support; /* set to true if the backend provides atomar copy */
+ bool do_post_copy_stat;   /* true if csync should check the copy afterwards  */
+ bool time_sync_required;  /* true if local and remote need to be time synced */
+ int  unix_extensions;     /* -1: do csync detection, 0: no unix extensions,
+                               1: extensions available */
 };
 
 typedef struct csync_vio_capabilities_s csync_vio_capabilities_t;

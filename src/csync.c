@@ -315,28 +315,34 @@ retry_vio_init:
   }
 
   if( !ctx->options.local_only_mode ) {
+    if(ctx->module.capabilities.time_sync_required) {
       timediff = csync_timediff(ctx);
       if (timediff > ctx->options.max_time_difference) {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL,
-                    "Clock skew detected. The time difference is greater than %d seconds!",
-                    ctx->options.max_time_difference);
-          ctx->error_code = CSYNC_ERR_TIMESKEW;
-          rc = -1;
-          goto out;
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL,
+                  "Clock skew detected. The time difference is greater than %d seconds!",
+                  ctx->options.max_time_difference);
+        ctx->error_code = CSYNC_ERR_TIMESKEW;
+        rc = -1;
+        goto out;
       } else if (timediff < 0) {
-          /* error code was set in csync_timediff() */
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Synchronisation is not possible!");
-	  ctx->error_code = CSYNC_ERR_TIMESKEW;
-          rc = -1;
-          goto out;
+        /* error code was set in csync_timediff() */
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Synchronisation is not possible!");
+        ctx->error_code = CSYNC_ERR_TIMESKEW;
+        rc = -1;
+        goto out;
       }
-
+    }
+    if(ctx->module.capabilities.unix_extensions == -1) { /* detect */
       if (csync_unix_extensions(ctx) < 0) {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Could not detect filesystem type.");
-          ctx->error_code = CSYNC_ERR_FILESYSTEM;
-          rc = -1;
-          goto out;
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Could not detect filesystem type.");
+        ctx->error_code = CSYNC_ERR_FILESYSTEM;
+        rc = -1;
+        goto out;
       }
+    } else {
+      /* The module specifies the value for the unix_extensions. */
+      ctx->options.unix_extensions = ctx->module.capabilities.unix_extensions;
+    }
   }
 
   if (c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp) < 0) {

@@ -553,7 +553,7 @@ static int fetch_resource_list( const char *curi,
         dav_session.time_delta = time_diff;
 
         /* DEBUG_WEBDAV("%d <0> %d", server_time, now); */
-        dav_session.time_delta = time_diff;
+
     }
     ne_propfind_destroy(hdl);
 
@@ -594,7 +594,7 @@ static csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
       DEBUG_WEBDAV("WRN: Delta time not yet computed.");
       lfs->mtime = res->modtime;
     } else {
-      lfs->mtime = res->modtime + dav_session.time_delta;
+      lfs->mtime = res->modtime - dav_session.time_delta;
     }
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
     lfs->size  = res->size;
@@ -897,13 +897,18 @@ static void install_content_reader( ne_request *req, void *userdata, const ne_st
 static char*_lastDir = NULL;
 
 /* capabilities are currently:
- *  bool atomar_copy_support
- *  bool do_post_copy_stat
+ *  bool atomar_copy_support - oC provides atomar copy
+ *  bool do_post_copy_stat   - oC does not want the post copy check
+ *  bool time_sync_required  - oC does not require the time sync
+ *  int  unix_extensions     - oC supports unix extensions.
  */
-static csync_vio_capabilities_t _owncloud_capabilities = { true, false };
+static csync_vio_capabilities_t _owncloud_capabilities = { true, false, false, 1 };
 
 static csync_vio_capabilities_t *owncloud_get_capabilities(void)
 {
+#ifdef _WIN32
+  _owncloud_capabilities.unix_extensions = 0;
+#endif
   return &_owncloud_capabilities;
 }
 
@@ -1520,6 +1525,8 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
     int rc = NE_OK;
     char val[255];
     char *curi = NULL;
+    const struct timeval *modtime = times+1;
+    long newmodtime;
 
     curi = _cleanPath( uri );
 
@@ -1534,7 +1541,10 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
     pname.nspace = NULL;
     pname.name = "lastmodified";
 
-    snprintf( val, sizeof(val), "%ld", times->tv_sec );
+    newmodtime = modtime->tv_sec;
+    newmodtime += dav_session.time_delta;
+
+    snprintf( val, sizeof(val), "%ld", newmodtime );
     DEBUG_WEBDAV("Setting LastModified of %s to %s", curi, val );
 
     ops[0].name = &pname;
