@@ -896,6 +896,17 @@ static void install_content_reader( ne_request *req, void *userdata, const ne_st
 
 static char*_lastDir = NULL;
 
+/* capabilities are currently:
+ *  bool atomar_copy_support
+ */
+
+static csync_vio_capabilities_t _owncloud_capabilities = { true };
+
+static csync_vio_capabilities_t *owncloud_get_capabilities(void)
+{
+  return &_owncloud_capabilities;
+}
+
 static csync_vio_method_handle_t *owncloud_open(const char *durl,
                                                 int flags,
                                                 mode_t mode) {
@@ -1545,6 +1556,7 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
 
 csync_vio_method_t _method = {
     .method_table_size = sizeof(csync_vio_method_t),
+    .get_capabilities = owncloud_get_capabilities,
     .open = owncloud_open,
     .creat = owncloud_creat,
     .close = owncloud_close,

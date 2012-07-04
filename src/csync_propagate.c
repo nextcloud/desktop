@@ -51,7 +51,7 @@ static bool _push_to_tmp_first(CSYNC *ctx)
     if( ctx->current == REMOTE_REPLCIA ) return true; /* Always push to tmp for destination local file system */
 
     /* If destination is the remote replica check if the switch is set. */
-    if( !ctx->options.remote_push_atomar ) return true; /* DO push to tmp first */
+    if( !ctx->module.capabilities.atomar_copy_support ) return true;
 
     return false;
 }

@@ -128,6 +128,13 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
     return -1;
   }
 
+  /* Useful defaults to the module capabilities */
+  ctx->module.capabilities.atomar_copy_support = false;
+
+  /* Load the module capabilities from the module if it implements the it. */
+  if( VIO_METHOD_HAS_FUNC(m, get_capabilities)) {
+    ctx->module.capabilities = *(m->get_capabilities());
+  }
 
   *(void **) (&init_fn) = dlsym(ctx->module.handle, "vio_module_init");
   if ((err = dlerror()) != NULL) {
@@ -164,6 +171,10 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
   if (! VIO_METHOD_HAS_FUNC(m, opendir)) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "module %s has no opendir fn", module);
     return -1;
+  }
+
+  if(! VIO_METHOD_HAS_FUNC(m, get_capabilities)) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "module %s has no capabilities fn", module);
   }
 
   if (! VIO_METHOD_HAS_FUNC(m, open)) {

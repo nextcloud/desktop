@@ -375,23 +375,6 @@ int csync_set_local_only( CSYNC *ctx, bool local_only );
   */
 bool csync_get_local_only( CSYNC *ctx );
 
-/**
-  * @brief Flag to tell csync that the push to remote is atomar and no temp file is needed.
-  *
-  * @param local_only   Bool flag to indicate atomar remote push
-  *
-  * @return             0 on success, less than 0 if an error occured.
-  */
-int csync_set_remote_push_atomar(CSYNC *ctx, bool is_atomar);
-
-/**
-  * @brief Retrieve the flag if the remote push is atomar and needs no temp file in between.
-  *
-  * @return             1: remote push is atomar, 0: use temp file to push
-  */
-bool csync_get_remote_push_atomar( CSYNC *ctx );
-
-
 /* Used for special modes or debugging */
 int csync_get_status(CSYNC *ctx);
 
