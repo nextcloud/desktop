@@ -35,9 +35,17 @@
 
 typedef struct csync_vio_method_s csync_vio_method_t;
 
+struct csync_vio_capabilities_s {
+ bool atomar_copy_support;
+};
+
+typedef struct csync_vio_capabilities_s csync_vio_capabilities_t;
+
 typedef csync_vio_method_t *(*csync_vio_method_init_fn)(const char *method_name,
     const char *config_args, csync_auth_callback cb, void *userdata);
 typedef void (*csync_vio_method_finish_fn)(csync_vio_method_t *method);
+
+typedef csync_vio_capabilities_t *(*csync_method_get_capabilities_fn)(void);
 
 typedef csync_vio_method_handle_t *(*csync_method_open_fn)(const char *durl, int flags, mode_t mode);
 typedef csync_vio_method_handle_t *(*csync_method_creat_fn)(const char *durl, mode_t mode);
@@ -64,6 +72,7 @@ typedef int (*csync_method_utimes_fn)(const char *uri, const struct timeval time
 
 struct csync_vio_method_s {
         size_t method_table_size;           /* Used for versioning */
+        csync_method_get_capabilities_fn get_capabilities;
         csync_method_open_fn open;
         csync_method_creat_fn creat;
         csync_method_close_fn close;

@@ -46,6 +46,16 @@ static int _csync_cleanup_cmp(const void *a, const void *b) {
   return strcmp(st_a->path, st_b->path);
 }
 
+static bool _push_to_tmp_first(CSYNC *ctx)
+{
+    if( ctx->current == REMOTE_REPLICA ) return true; /* Always push to tmp for destination local file system */
+
+    /* If destination is the remote replica check if the switch is set. */
+    if( !ctx->module.capabilities.atomar_copy_support ) return true;
+
+    return false;
+}
+
 static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   enum csync_replica_e srep = -1;
   enum csync_replica_e drep = -1;
