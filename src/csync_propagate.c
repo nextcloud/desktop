@@ -285,46 +285,50 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   }
   dfp = NULL;
 
-  /*
-   * Check filesize
-   */
-  ctx->replica = drep;
-  tstat = csync_vio_file_stat_new();
-  if (tstat == NULL) {
-    strerror_r(errno, errbuf, sizeof(errbuf));
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
-        "file: %s, command: stat, error: %s",
-        turi,
-        errbuf);
-    rc = -1;
-    goto out;
-  }
-#if 0
-  if (csync_vio_stat(ctx, turi, tstat) < 0) {
-    switch (errno) {
+  if( ctx->module.capabilities.do_post_copy_stat ) {
+    /*
+     * Check filesize
+     * In case the transport is secure and/or the stat is expensive, this check
+     * could be skipped through module capabilities definitions.
+     */
+
+    ctx->replica = drep;
+    tstat = csync_vio_file_stat_new();
+    if (tstat == NULL) {
+      strerror_r(errno, errbuf, sizeof(errbuf));
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+                "file: %s, command: stat, error: %s",
+                turi,
+                errbuf);
+      rc = -1;
+      goto out;
+    }
+
+    if (csync_vio_stat(ctx, turi, tstat) < 0) {
+      switch (errno) {
       case ENOMEM:
         rc = -1;
         break;
       default:
         rc = 1;
         break;
+      }
+      strerror_r(errno, errbuf, sizeof(errbuf));
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+                "file: %s, command: stat, error: %s",
+                turi,
+                errbuf);
+      goto out;
     }
-    strerror_r(errno, errbuf, sizeof(errbuf));
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
-        "file: %s, command: stat, error: %s",
-        turi,
-        errbuf);
-    goto out;
-  }
 
-  if (st->size != tstat->size) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
-        "file: %s, error: incorrect filesize (size: %jd should be %jd)",
-        turi, tstat->size, st->size);
-    rc = 1;
-    goto out;
+    if (st->size != tstat->size) {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+                "file: %s, error: incorrect filesize (size: %jd should be %jd)",
+                turi, tstat->size, st->size);
+      rc = 1;
+      goto out;
+    }
   }
-#endif
 
   if (_push_to_tmp_first(ctx)) {
     /* override original file */

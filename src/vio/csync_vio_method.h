@@ -35,8 +35,11 @@
 
 typedef struct csync_vio_method_s csync_vio_method_t;
 
+/* module capabilities definition.
+ * remember to set useful defaults in csync_vio.c if you add something here. */
 struct csync_vio_capabilities_s {
  bool atomar_copy_support;
+ bool do_post_copy_stat;
 };
 
 typedef struct csync_vio_capabilities_s csync_vio_capabilities_t;

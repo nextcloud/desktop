@@ -898,9 +898,9 @@ static char*_lastDir = NULL;
 
 /* capabilities are currently:
  *  bool atomar_copy_support
+ *  bool do_post_copy_stat
  */
-
-static csync_vio_capabilities_t _owncloud_capabilities = { true };
+static csync_vio_capabilities_t _owncloud_capabilities = { true, false };
 
 static csync_vio_capabilities_t *owncloud_get_capabilities(void)
 {

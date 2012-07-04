@@ -130,6 +130,7 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
 
   /* Useful defaults to the module capabilities */
   ctx->module.capabilities.atomar_copy_support = false;
+  ctx->module.capabilities.do_post_copy_stat   = true;
 
   /* Load the module capabilities from the module if it implements the it. */
   if( VIO_METHOD_HAS_FUNC(m, get_capabilities)) {
