@@ -34,6 +34,7 @@
 #include "c_time.h"
 #include "c_private.h"
 
+#ifndef UNIT_TESTING
 #ifdef malloc
 #undef malloc
 #endif
@@ -43,6 +44,8 @@
 #undef calloc
 #endif
 #define calloc(x,y) DO_NOT_CALL_CALLOC__USE_C_CALLOC_INSTEAD
+
+#endif
 
 #ifdef realloc
 #undef realloc
