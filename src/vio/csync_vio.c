@@ -160,6 +160,15 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
     ctx->module.capabilities = *(m->get_capabilities());
   }
 
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "capabilities: atomar copy support: %s",
+            ctx->module.capabilities.atomar_copy_support ? "yes": "no");
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "capabilities: post copy stat: %s",
+            ctx->module.capabilities.do_post_copy_stat ? "yes": "no");
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "capabilities: time sync required: %s",
+            ctx->module.capabilities.time_sync_required ? "yes": "no");
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "capabilities: unix extensions: %d",
+            ctx->module.capabilities.unix_extensions );
+
   /* Some basic checks */
   if (m->method_table_size == 0) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "module %s method table size is 0", module);
