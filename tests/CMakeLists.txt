@@ -52,3 +52,5 @@ macro_add_check_test(check_vio vio_tests/check_vio.c ${TEST_TARGET_LIBRARIES})
 # sync
 macro_add_check_test(check_csync_update csync_tests/check_csync_update.c ${TEST_TARGET_LIBRARIES})
 
+add_subdirectory(ownCloud)
+
