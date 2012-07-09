@@ -90,11 +90,11 @@ time_t csync_timediff(CSYNC *ctx) {
   }
   csync_vio_closedir(ctx, dp);
 
-  if (asprintf(&luri, "%s/csync_timediff.ctmp", ctx->local.uri) < 0) {
+  if (asprintf(&luri, "%s/.csync_timediff.ctmp", ctx->local.uri) < 0) {
     goto out;
   }
 
-  if (asprintf(&ruri, "%s/csync_timediff.ctmp", ctx->remote.uri) < 0) {
+  if (asprintf(&ruri, "%s/.csync_timediff.ctmp", ctx->remote.uri) < 0) {
     goto out;
   }
 

@@ -119,6 +119,24 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
   }
 #endif
 
+#ifdef __APPLE__
+  if (lstat(path, &sb) < 0) {
+    SAFE_FREE(path);
+
+    char path_tmp[1024];
+    uint32_t size = sizeof(path_tmp);
+    if (_NSGetExecutablePath(path_tmp, &size) == 0)
+        printf("executable path is %s\n", path_tmp);
+
+    char* path2 = NULL;
+    path2 = c_dirname(path_tmp);
+
+    if (asprintf(&path, "%s/../Plugins/csync_%s.%s", path2, module, MODULE_EXTENSION) < 0) {
+      return -1;
+    }
+  }
+#endif
+
   ctx->module.handle = dlopen(path, RTLD_LAZY);
   SAFE_FREE(path);
   if ((err = dlerror()) != NULL) {

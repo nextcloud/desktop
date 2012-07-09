@@ -155,6 +155,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
       }
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
                 "Remote repository atomar push enabled for %s (%d).", turi, ctx->current);
+
   }
 
   /* Create the destination file */
