@@ -55,7 +55,7 @@ static void fetch_a_context() {
     printf("Results: %d\n", fetchCtx->result_count);
     
     fetchCtx->currResource = fetchCtx->list;
-    for( int i = 0; i < fetchCtx->result_count; i++ ) {
+    for( uint i = 0; i < fetchCtx->result_count; i++ ) {
 	assert_true( fetchCtx->currResource != NULL );
 	assert_true( fetchCtx->currResource->uri != NULL );
 	assert_true( fetchCtx->currResource->name != NULL );
