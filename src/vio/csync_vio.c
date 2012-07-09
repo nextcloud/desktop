@@ -128,17 +128,6 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
     return -1;
   }
 
-  /* Useful defaults to the module capabilities */
-  ctx->module.capabilities.atomar_copy_support = false;
-  ctx->module.capabilities.do_post_copy_stat   = true;
-  ctx->module.capabilities.time_sync_required  = true;
-  ctx->module.capabilities.unix_extensions     = -1; /* detect automatically */
-
-  /* Load the module capabilities from the module if it implements the it. */
-  if( VIO_METHOD_HAS_FUNC(m, get_capabilities)) {
-    ctx->module.capabilities = *(m->get_capabilities());
-  }
-
   *(void **) (&init_fn) = dlsym(ctx->module.handle, "vio_module_init");
   if ((err = dlerror()) != NULL) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "loading function failed - %s", err);
@@ -158,6 +147,17 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
   if (m == NULL) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "module %s returned a NULL method", module);
     return -1;
+  }
+
+  /* Useful defaults to the module capabilities */
+  ctx->module.capabilities.atomar_copy_support = false;
+  ctx->module.capabilities.do_post_copy_stat   = true;
+  ctx->module.capabilities.time_sync_required  = true;
+  ctx->module.capabilities.unix_extensions     = -1; /* detect automatically */
+
+  /* Load the module capabilities from the module if it implements the it. */
+  if( VIO_METHOD_HAS_FUNC(m, get_capabilities)) {
+    ctx->module.capabilities = *(m->get_capabilities());
   }
 
   /* Some basic checks */
