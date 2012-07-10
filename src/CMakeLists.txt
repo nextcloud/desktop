@@ -20,30 +20,49 @@ mirall/sslerrorsdialog.ui
 
 qt4_wrap_ui(mirall_UI_SRCS ${mirall_UI})
 
+set(libsync_SRCS
+    mirall/folderman.cpp
+    mirall/folder.cpp
+    mirall/folderwatcher.cpp
+    mirall/gitfolder.cpp
+    mirall/syncresult.cpp
+    mirall/unisonfolder.cpp
+    mirall/networklocation.cpp
+    mirall/mirallconfigfile.cpp
+    mirall/csyncfolder.cpp
+    mirall/owncloudfolder.cpp
+    mirall/csyncthread.cpp
+    mirall/fileutils.cpp
+    mirall/temporarydir.cpp
+)
+set(libsync_HEADERS mirall/csyncfolder.h)
+
+IF( USE_INOTIFY )
+    add_definitions( -DUSE_INOTIFY )
+    set(libsync_SRCS ${libsync_SRCS} mirall/inotify.cpp)
+    set(libsync_HEADERS ${libsync_HEADERS} mirall/inotify.h)
+ENDIF()
+
+qt4_wrap_cpp(syncMoc ${libsync_HEADERS})
+
+add_library(mirallsync   SHARED ${libsync_SRCS} ${syncMoc})
+add_library(owncloudsync SHARED ${libsync_SRCS} ${syncMoc})
+set_target_properties( owncloudsync PROPERTIES COMPILE_DEFINITIONS OWNCLOUD_CLIENT)
+
 set(mirall_SRCS
-mirall/application.cpp
-mirall/fileutils.cpp
-mirall/folder.cpp
-mirall/folderwatcher.cpp
-mirall/folderwizard.cpp
-mirall/gitfolder.cpp
-mirall/networklocation.cpp
-mirall/temporarydir.cpp
-mirall/syncresult.cpp
-mirall/unisonfolder.cpp
-mirall/statusdialog.cpp
-mirall/owncloudwizard.cpp
-mirall/owncloudsetupwizard.cpp
-mirall/owncloudinfo.cpp
-mirall/theme.cpp
-mirall/miralltheme.cpp
-mirall/owncloudtheme.cpp
-mirall/folderman.cpp
-mirall/mirallconfigfile.cpp
-mirall/updatedetector.cpp
-mirall/occinfo.cpp
-mirall/sslerrordialog.cpp
-mirall/logbrowser.cpp
+    mirall/application.cpp
+    mirall/folderwizard.cpp
+    mirall/statusdialog.cpp
+    mirall/owncloudwizard.cpp
+    mirall/owncloudsetupwizard.cpp
+    mirall/owncloudinfo.cpp
+    mirall/updatedetector.cpp
+    mirall/occinfo.cpp
+    mirall/sslerrordialog.cpp
+    mirall/logbrowser.cpp
+    mirall/theme.cpp
+    mirall/owncloudtheme.cpp
+    mirall/miralltheme.cpp
 )
 
 set(mirall_HEADERS
@@ -72,32 +91,12 @@ if( UNIX AND NOT APPLE)
     endif()
 endif()
 
-IF( USE_INOTIFY )
-    add_definitions( -DUSE_INOTIFY )
-    set(mirall_SRCS ${mirall_SRCS} mirall/inotify.cpp)
-    set(mirall_HEADERS ${mirall_HEADERS} mirall/inotify.h)
-ENDIF()
-
-# Disabled the csync found check. Csync required for now.
-set(mirall_SRCS
-    ${mirall_SRCS}
-    mirall/csyncfolder.cpp
-    mirall/owncloudfolder.cpp
-    mirall/csyncthread.cpp
-  )
+# csync is required.
 include_directories(${CSYNC_INCLUDE_DIR}/csync ${CSYNC_INCLUDE_DIR})
-
-set(mirall_HEADERS
-    ${mirall_HEADERS}
-    mirall/csyncfolder.h
-    mirall/owncloudfolder.h)
 
 qt4_wrap_cpp(mirallMoc ${mirall_HEADERS})
 
 qt4_add_translation(mirall_I18N ${TRANSLATIONS})
-
-add_library(mirall_static STATIC ${mirall_SRCS} ${mirall_UI_SRCS} ${mirallMoc} ${mirall_HEADERS} ${MIRALL_RC_SRC} ${mirall_I18N})
-target_link_libraries(mirall_static ${QT_LIBRARIES})
 
 set( final_src
     ${mirall_HEADERS}
@@ -129,12 +128,14 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     # add_executable(owncloud main.cpp ${final_src})
     add_executable(owncloud WIN32 main.cpp ${final_src})
     set_target_properties( owncloud PROPERTIES COMPILE_DEFINITIONS OWNCLOUD_CLIENT) 
-    # add_executable(owncloud main.cpp ${final_src})
 
     # mirall is not built for the bundle
-    add_executable( mirall WIN32 main.cpp )
-    target_link_libraries(mirall mirall_static)
+    add_executable( mirall WIN32 main.cpp ${final_src})
+
+    target_link_libraries(mirall ${QT_LIBRARIES} )
+    target_link_libraries(mirall mirallsync)
     target_link_libraries(mirall ${CSYNC_LIBRARY})
+
     set_target_properties( mirall PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
     install(TARGETS mirall
@@ -166,7 +167,7 @@ set_target_properties( owncloud PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY}
 )
 target_link_libraries(owncloud ${QT_LIBRARIES} )
-
+target_link_libraries(owncloud owncloudsync)
 target_link_libraries(owncloud ${CSYNC_LIBRARY})
 
 install(TARGETS owncloud
