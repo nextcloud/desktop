@@ -543,10 +543,12 @@ static int fetch_resource_list( const char *curi,
 
         /* check the changing of the time delta */
         time_diff_delta = llabs(dav_session.time_delta - time_diff);
-        if( time_diff_delta > 5 ) {
+        if( dav_session.time_delta_cnt == 1 ) {
+            DEBUG_WEBDAV( "The first time_delta is %d", time_diff );
+        } else if( dav_session.time_delta_cnt > 1 && time_diff_delta > 5 ) {
           DEBUG_WEBDAV("WRN: The time delta changed more than 5 second");
         } else if( time_diff_delta == 0) {
-          DEBUG_WEBDAV("Ok: Time delta remained the same.");
+          DEBUG_WEBDAV("XXXX Ok: Time delta remained the same: %ld.", time_diff);
         } else {
           DEBUG_WEBDAV("Difference to last server time delta: %d", time_diff_delta );
         }
@@ -554,7 +556,10 @@ static int fetch_resource_list( const char *curi,
 
         /* DEBUG_WEBDAV("%d <0> %d", server_time, now); */
 
+    } else {
+        DEBUG_WEBDAV("WRN: propfind named failed with %d", ret);
     }
+
     ne_propfind_destroy(hdl);
 
     return ret;
@@ -591,7 +596,6 @@ static csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
 
     /* Correct the mtime of the file with the server time delta */
     if( dav_session.time_delta_cnt == 0 ) {
-      DEBUG_WEBDAV("WRN: Delta time not yet computed.");
       lfs->mtime = res->modtime;
     } else {
       lfs->mtime = res->modtime - dav_session.time_delta;
