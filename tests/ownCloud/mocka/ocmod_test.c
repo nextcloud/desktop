@@ -42,6 +42,10 @@ static bool load_oc_config( const char *config ) {
     dictionary *dict;
     const char* val;
     bool re = true;
+    char *deflt;
+    char b;
+    deflt = &b;
+
 
     dict = iniparser_load( config );
 
@@ -50,21 +54,21 @@ static bool load_oc_config( const char *config ) {
         return false;
     }
 
-    val = iniparser_getstr(dict, "global:host");
+    val = iniparser_getstring(dict, "global:host", deflt);
     if( val ) {
         _credentials.url = c_strdup( val );
     } else {
         re = false;
     }
 
-    val = iniparser_getstr(dict, "global:user");
+    val = iniparser_getstring(dict, "global:user", deflt);
     if( re && val ) {
         _credentials.user = c_strdup( val );
     } else {
         re = false;
     }
 
-    val = iniparser_getstr(dict, "global:pwd");
+    val = iniparser_getstring(dict, "global:pwd", deflt);
     if( re && val ) {
         _credentials.pwd = c_strdup( val );
     } else {
@@ -111,6 +115,7 @@ static void fetch_a_context(void **state) {
     struct listdir_context  *fetchCtx = NULL;
     char *curi = _cleanPath(_credentials.oc_server);
     int rc = 0;
+    unsigned int i;
 
     (void) state;
 
@@ -123,7 +128,7 @@ static void fetch_a_context(void **state) {
     printf("Results: %d\n", fetchCtx->result_count);
     
     fetchCtx->currResource = fetchCtx->list;
-    for( uint i = 0; i < fetchCtx->result_count; i++ ) {
+    for( i = 0; i < fetchCtx->result_count; i++ ) {
 	assert_true( fetchCtx->currResource != NULL );
 	assert_true( fetchCtx->currResource->uri != NULL );
 	assert_true( fetchCtx->currResource->name != NULL );

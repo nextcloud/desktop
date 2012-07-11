@@ -65,8 +65,10 @@ add_subdirectory(config)
 add_subdirectory(doc)
 
 find_package(Check)
-if (CHECK_FOUND AND UNIT_TESTING)
+if (CHECK_FOUND)
   include(MacroAddCheckTest)
+endif (CHECK_FOUND)
+if (UNIT_TESTING)
   add_subdirectory(tests)
-endif (CHECK_FOUND AND UNIT_TESTING)
+endif(UNIT_TESTING)
 
