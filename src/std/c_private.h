@@ -106,7 +106,7 @@ typedef char        _TCHAR;
 #define _ttelldir   telldir
 #define _tseekdir   seekdir
 #define _tcreat     creat
-#define _tstat      stat
+#define _tstat      lstat
 #define _tunlink    unlink
 #define _tmkdir     mkdir
 #define _trmdir	    rmdir
