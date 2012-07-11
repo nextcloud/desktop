@@ -314,7 +314,7 @@ retry_vio_init:
     ctx->remote.type = LOCAL_REPLICA;
   }
 
-  if( !ctx->options.local_only_mode ) {
+  if(!ctx->options.local_only_mode) {
     if(ctx->module.capabilities.time_sync_required) {
       timediff = csync_timediff(ctx);
       if (timediff > ctx->options.max_time_difference) {
@@ -331,7 +331,10 @@ retry_vio_init:
         rc = -1;
         goto out;
       }
+    } else {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Module does not need time synchronization.");
     }
+
     if(ctx->module.capabilities.unix_extensions == -1) { /* detect */
       if (csync_unix_extensions(ctx) < 0) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Could not detect filesystem type.");
