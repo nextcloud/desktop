@@ -34,8 +34,20 @@ set(libsync_SRCS
     mirall/csyncthread.cpp
     mirall/fileutils.cpp
     mirall/temporarydir.cpp
+    mirall/theme.cpp
+    mirall/owncloudtheme.cpp
+    mirall/miralltheme.cpp
 )
-set(libsync_HEADERS mirall/csyncfolder.h)
+set(libsync_HEADERS 
+    mirall/folderman.h
+    mirall/folder.h
+    mirall/folderwatcher.h
+    mirall/gitfolder.h
+    mirall/unisonfolder.h
+    mirall/csyncfolder.h
+    mirall/owncloudfolder.h
+    mirall/csyncthread.h
+)
 
 IF( USE_INOTIFY )
     add_definitions( -DUSE_INOTIFY )
@@ -48,6 +60,9 @@ qt4_wrap_cpp(syncMoc ${libsync_HEADERS})
 add_library(mirallsync   SHARED ${libsync_SRCS} ${syncMoc})
 add_library(owncloudsync SHARED ${libsync_SRCS} ${syncMoc})
 set_target_properties( owncloudsync PROPERTIES COMPILE_DEFINITIONS OWNCLOUD_CLIENT)
+target_link_libraries(mirallsync ${QT_LIBRARIES} ${CSYNC_LIBRARY} )
+target_link_libraries(owncloudsync ${QT_LIBRARIES} ${CSYNC_LIBRARY} )
+
 
 set(mirall_SRCS
     mirall/application.cpp
@@ -60,26 +75,15 @@ set(mirall_SRCS
     mirall/occinfo.cpp
     mirall/sslerrordialog.cpp
     mirall/logbrowser.cpp
-    mirall/theme.cpp
-    mirall/owncloudtheme.cpp
-    mirall/miralltheme.cpp
 )
 
 set(mirall_HEADERS
     mirall/application.h
-    mirall/folder.h
-    mirall/folderman.h
-    mirall/folderwatcher.h
     mirall/folderwizard.h
-    mirall/gitfolder.h
-    mirall/owncloudfolder.h
     mirall/owncloudinfo.h
     mirall/owncloudsetupwizard.h
     mirall/owncloudwizard.h
     mirall/statusdialog.h
-    mirall/unisonfolder.h
-    mirall/theme.h
-    mirall/csyncthread.h
     mirall/updatedetector.h
     mirall/sslerrordialog.h
     mirall/logbrowser.h

@@ -21,7 +21,6 @@
 namespace Mirall {
 
 Theme::Theme()
-    :QObject()
 {
 
 }
@@ -32,25 +31,25 @@ QString Theme::statusHeaderText( SyncResult::Status status ) const
 
     switch( status ) {
     case SyncResult::Undefined:
-        resultStr = tr("Status undefined");
+        resultStr = QObject::tr("Status undefined");
         break;
     case SyncResult::NotYetStarted:
-        resultStr = tr("Waiting to start sync");
+        resultStr = QObject::tr("Waiting to start sync");
         break;
     case SyncResult::SyncRunning:
-        resultStr = tr("Sync is running");
+        resultStr = QObject::tr("Sync is running");
         break;
     case SyncResult::Success:
-        resultStr = tr("Sync Success");
+        resultStr = QObject::tr("Sync Success");
         break;
     case SyncResult::Error:
-        resultStr = tr("Sync Error - Click info button for details.");
+        resultStr = QObject::tr("Sync Error - Click info button for details.");
         break;
     case SyncResult::SetupError:
-        resultStr = tr( "Setup Error" );
+        resultStr = QObject::tr( "Setup Error" );
         break;
     default:
-        resultStr = tr("Status undefined");
+        resultStr = QObject::tr("Status undefined");
     }
     return resultStr;
 }

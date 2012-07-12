@@ -27,9 +27,8 @@ namespace Mirall {
 
 class SyncResult;
 
-class Theme : public QObject
+class Theme
 {
-    Q_OBJECT
 public:
     Theme();
 
