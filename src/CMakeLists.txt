@@ -63,6 +63,15 @@ set_target_properties( owncloudsync PROPERTIES COMPILE_DEFINITIONS OWNCLOUD_CLIE
 target_link_libraries(mirallsync ${QT_LIBRARIES} ${CSYNC_LIBRARY} )
 target_link_libraries(owncloudsync ${QT_LIBRARIES} ${CSYNC_LIBRARY} )
 
+if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
+    install(TARGETS mirallsync owncloudsync
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
+else()
+    install(TARGETS mirallsync owncloudsync DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS)
+endif()
 
 set(mirall_SRCS
     mirall/application.cpp
@@ -143,10 +152,9 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     set_target_properties( mirall PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
     install(TARGETS mirall
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
-        BUNDLE  DESTINATION library
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 else()
     set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
