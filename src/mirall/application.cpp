@@ -658,7 +658,7 @@ void Application::computeOverallSyncStatus()
 {
 
     // display the info of the least successful sync (eg. not just display the result of the latest sync
-    SyncResult overallResult = SyncResult::Success;
+    SyncResult overallResult(SyncResult::Undefined );
     QString trayMessage;
     Folder::Map map = _folderMan->map();
 
@@ -679,25 +679,29 @@ void Application::computeOverallSyncStatus()
                     break;
                 case SyncResult::NotYetStarted:
                     folderMessage = tr( "Waits to start syncing." );
+                    overallResult.setStatus( SyncResult::NotYetStarted );
                     break;
                 case SyncResult::SyncRunning:
                     folderMessage = tr( "Sync is running." );
+                    overallResult.setStatus( SyncResult::SyncRunning );
                     break;
                 case SyncResult::Success:
                     folderMessage = tr( "Last Sync was successful." );
+                    overallResult.setStatus( SyncResult::Success );
                     break;
                 case SyncResult::Error:
-                    overallResult = SyncResult::Error;
+                    overallResult.setStatus( SyncResult::Error );
                     folderMessage = tr( "Syncing Error." );
                     break;
                 case SyncResult::SetupError:
                     if ( overallResult.status() != SyncResult::Error ) {
-                        overallResult = SyncResult::SetupError;
+                        overallResult.setStatus( SyncResult::SetupError );
                     }
                     folderMessage = tr( "Setup Error." );
                     break;
                 default:
                     folderMessage = tr( "Undefined Error State." );
+                    overallResult.setStatus( SyncResult::Error );
                 }
             } else {
                     // sync is disabled.
@@ -709,22 +713,19 @@ void Application::computeOverallSyncStatus()
         }
     }
 
-    // create the tray blob message
-    QStringList allStatusStrings = _overallStatusStrings.values();
-    if( ! allStatusStrings.isEmpty() )
-        trayMessage = allStatusStrings.join("\n");
-    else
-        trayMessage = tr("No sync folders configured.");
+    // create the tray blob message, check if we have an defined state
+    if( overallResult.status() != SyncResult::Undefined ) {
+        QStringList allStatusStrings = _overallStatusStrings.values();
+        if( ! allStatusStrings.isEmpty() )
+            trayMessage = allStatusStrings.join("\n");
+        else
+            trayMessage = tr("No sync folders configured.");
 
-    QIcon statusIcon = _theme->syncStateIcon( overallResult.status(), 48 );
+        QIcon statusIcon = _theme->syncStateIcon( overallResult.status()); // size 48 before
 
-    if( overallResult.status() == SyncResult::Success ) {
-        // Rather display the mirall icon instead of the ok icon.
-        statusIcon = _theme->applicationIcon();
+        _tray->setIcon( statusIcon );
+        _tray->setToolTip(trayMessage);
     }
-
-    _tray->setIcon( statusIcon );
-    _tray->setToolTip(trayMessage);
 }
 
 void Application::showHelp()
