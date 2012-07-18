@@ -68,14 +68,21 @@ QIcon Theme::trayFolderIcon( const QString& backend ) const
  * helper to load a icon from either the icon theme the desktop provides or from
  * the apps Qt resources.
  */
-QIcon Theme::themeIcon( const QString& name, int size ) const
+QIcon Theme::themeIcon( const QString& name ) const
 {
     QIcon icon;
     if( QIcon::hasThemeIcon( name )) {
         // use from theme
         icon = QIcon::fromTheme( name );
     } else {
-        icon.addFile( QString(":/mirall/resources/%1-%2").arg(name).arg(size), QSize(size, size) );
+        QList<int> sizes;
+        sizes <<16 << 24 << 32 << 48 << 64 << 128;
+        foreach (int size, sizes) {
+            QString pixmapName = QString(":/mirall/resources/%1-%2.png").arg(name).arg(size);
+            if (QFile::exists(pixmapName)) {
+                icon.addFile(pixmapName, QSize(size, size));
+            }
+        }
     }
     return icon;
 }

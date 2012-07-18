@@ -44,11 +44,9 @@ QPixmap mirallTheme::splashScreen() const
 QIcon mirallTheme::folderIcon( const QString& backend ) const
 {
   QString name;
-  int size = 48;
 
   if( backend == QString::fromLatin1("owncloud")) {
       name = QString( "mirall" );
-      size = 64;
   }
   if( backend == QString::fromLatin1("unison" )) {
       name  = QString( "folder-sync" );
@@ -61,10 +59,10 @@ QIcon mirallTheme::folderIcon( const QString& backend ) const
   }
 
   qDebug() << "==> load folder icon " << name;
-  return themeIcon( name, size );
+  return themeIcon( name );
 }
 
-QIcon mirallTheme::syncStateIcon( SyncResult::Status status, int size ) const
+QIcon mirallTheme::syncStateIcon( SyncResult::Status status ) const
 {
     QString statusIcon;
 
@@ -90,19 +88,19 @@ QIcon mirallTheme::syncStateIcon( SyncResult::Status status, int size ) const
     default:
         statusIcon = "dialog-close";
     }
-    return themeIcon( statusIcon, size );
+    return themeIcon( statusIcon );
 }
 
 
-QIcon mirallTheme::folderDisabledIcon( int size ) const
+QIcon mirallTheme::folderDisabledIcon() const
 {
     // Fixme: Do we really want the dialog-canel from theme here?
-    return themeIcon( "dialog-cancel", size );
+    return themeIcon( "dialog-cancel" );
 }
 
 QIcon mirallTheme::applicationIcon( ) const
 {
-    return themeIcon( "mirall", 48 );
+    return themeIcon( "mirall");
 }
 
 }

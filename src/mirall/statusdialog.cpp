@@ -313,9 +313,9 @@ void StatusDialog::folderToModelItem( QStandardItem *item, Folder *f )
 
     item->setData( _theme->statusHeaderText( status ),  Qt::ToolTipRole );
     if( f->syncEnabled() ) {
-        item->setData( _theme->syncStateIcon( status, 48 ), FolderViewDelegate::FolderStatusIcon );
+        item->setData( _theme->syncStateIcon( status ), FolderViewDelegate::FolderStatusIcon );
     } else {
-        item->setData( _theme->folderDisabledIcon( 48 ), FolderViewDelegate::FolderStatusIcon );
+        item->setData( _theme->folderDisabledIcon( ), FolderViewDelegate::FolderStatusIcon ); // size 48 before
     }
     item->setData( _theme->statusHeaderText( status ),  FolderViewDelegate::FolderStatus );
     item->setData( errors,                              FolderViewDelegate::FolderErrorMsg );
