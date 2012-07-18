@@ -5,7 +5,8 @@ set(PACKAGE "mirall")
 set( CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules )
 
 include(${CMAKE_SOURCE_DIR}/VERSION.cmake)
-configure_file( ${CMAKE_SOURCE_DIR}/src/mirall/version.h.in ${CMAKE_SOURCE_DIR}/src/mirall/version.h )
+configure_file( ${CMAKE_SOURCE_DIR}/src/mirall/version.h.in "${CMAKE_CURRENT_BINARY_DIR}/src/mirall/version.h" )
+include_directories(BEFORE "${CMAKE_CURRENT_BINARY_DIR}/src/mirall/")
 
 include(GNUInstallDirs)
 ## stupid, we should upstream this
