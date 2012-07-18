@@ -32,6 +32,14 @@
 #include "csync_util.h"
 #include "vio/csync_vio.h"
 
+#if defined(__APPLE__)
+#  define COMMON_DIGEST_FOR_OPENSSL
+#  include <CommonCrypto/CommonDigest.h>
+#  define SHA1 CC_SHA1
+#else
+#  include <openssl/md5.h>
+#endif
+
 #define CSYNC_LOG_CATEGORY_NAME "csync.util"
 #include "csync_log.h"
 
@@ -324,6 +332,70 @@ uint64_t csync_create_statedb_hash(CSYNC *ctx) {
   SAFE_FREE(path);
 
   return hash;
+}
+
+static char* digest_to_out(unsigned char* digest)
+{
+    char *out = c_malloc(33);
+    int n;
+
+    if( !digest ) return NULL;
+
+    for (n = 0; n < 16; ++n) {
+        snprintf(&(out[n*2]), 16*2, "%02x", (unsigned int) *(digest+n));
+    }
+
+    return out;
+}
+
+#define BUF_SIZE 512
+
+char* csync_file_md5(const char *filename)
+{
+    const char *tmpFileName;
+    int fd;
+    MD5_CTX c;
+    char buf[ BUF_SIZE+1 ];
+    unsigned char digest[16];
+    size_t size;
+
+    tmpFileName = c_multibyte( filename );
+
+    if ( (fd = _topen( tmpFileName, O_RDONLY )) < 0) {
+        return NULL;
+    } else {
+        MD5_Init(&c);
+        while( (size=read(fd, buf, BUF_SIZE )) >  0) {
+            buf[size]='\0';
+            MD5_Update(&c, buf, size);
+        }
+        close(fd);
+        MD5_Final(digest, &c);
+    }
+
+    c_free_multibyte(tmpFileName);
+    return digest_to_out(digest);
+}
+
+char* csync_buffer_md5(const char *str, int length)
+{
+    MD5_CTX c;
+    unsigned char digest[16];
+
+    MD5_Init(&c);
+
+    while (length > 0) {
+        if (length > 512) {
+            MD5_Update(&c, str, 512);
+        } else {
+            MD5_Update(&c, str, length);
+        }
+        length -= 512;
+        str += 512;
+    }
+
+    MD5_Final(digest, &c);
+    return digest_to_out(digest);
 }
 
 /* vim: set ts=8 sw=2 et cindent: */
