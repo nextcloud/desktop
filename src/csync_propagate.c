@@ -277,10 +277,11 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
         goto out;
         break;
       default:
+        strerror_r(errno, errbuf, sizeof(errbuf));
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
             "file: %s, command: close, error: %s",
             turi,
-            strerror_r(errno, errbuf, sizeof(errbuf)));
+	    errbuf);
         break;
     }
   }
