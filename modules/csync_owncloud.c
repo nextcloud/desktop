@@ -28,8 +28,6 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#include <iniparser.h>
-
 #include <neon/ne_basic.h>
 #include <neon/ne_socket.h>
 #include <neon/ne_session.h>
@@ -1559,10 +1557,11 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
     pname.name = "lastmodified";
 
     newmodtime = modtime->tv_sec;
+#if TIMEDELTA
     DEBUG_WEBDAV("Add a time delta to modtime %lu: %ld",
                  modtime->tv_sec, dav_session.time_delta);
     newmodtime += dav_session.time_delta;
-
+#endif
     snprintf( val, sizeof(val), "%ld", newmodtime );
     DEBUG_WEBDAV("Setting LastModified of %s to %s", curi, val );
 
@@ -1605,25 +1604,8 @@ csync_vio_method_t _method = {
     .utimes = owncloud_utimes
 };
 
-static char *oc_csync_conf_dir()
-{
-    char *home = NULL;
-    char *conf_dir =  NULL;
-
-    home = csync_get_user_home_dir();
-    if( asprintf( &conf_dir, "%s/%s/%s", home, CSYNC_CONF_DIR, CSYNC_CONF_FILE) == -1 ) {
-        return NULL;
-    }
-    return conf_dir;
-}
-
-#define OWNCLOUD_INI_TIMEDELTA "ownCloud:time_delta"
-
 csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
                                     csync_auth_callback cb, void *userdata) {
-    char *config = NULL;
-    dictionary *dict = NULL;
-
     (void) method_name;
     (void) args;
 
@@ -1631,39 +1613,11 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
     _userdata = userdata;
     _connected = 0;  /* triggers dav_connect to go through the whole neon setup */
 
-    /* Load the last time delta from config file. */
-    config = oc_csync_conf_dir();
-
-    if( config )  {
-      dict = iniparser_load(config);
-      if( dict ) {
-        dav_session.prev_delta = iniparser_getint(dict, OWNCLOUD_INI_TIMEDELTA, 0);
-        DEBUG_WEBDAV( "Init: Previous time delta: %d", dav_session.prev_delta );
-        iniparser_freedict( dict );
-      }
-    }
-
     return &_method;
 }
 
 void vio_module_shutdown(csync_vio_method_t *method) {
-    char *config = NULL;
-    dictionary *dict = NULL;
-    char entry[32];
-    char val[10];
-
     (void) method;
-    strcpy( entry, OWNCLOUD_INI_TIMEDELTA );
-
-    config = oc_csync_conf_dir();
-    if( config )  {
-      dict = iniparser_load(config);
-      if( dict ) {
-        sprintf( val, "%ld", dav_session.prev_delta );
-        iniparser_setstr( dict, entry, val );
-        iniparser_freedict( dict );
-      }
-    }
 
     SAFE_FREE( dav_session.user );
     SAFE_FREE( dav_session.pwd );
