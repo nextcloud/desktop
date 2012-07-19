@@ -116,9 +116,11 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   ctx->replica = srep;
   flags = O_RDONLY|O_NOFOLLOW;
   /* O_NOATIME can only be set by the owner of the file or the superuser */
+#ifndef __APPLE__
   if (st->uid == ctx->pwd.uid || ctx->pwd.euid == 0) {
     flags |= O_NOATIME;
   }
+#endif
   sfp = csync_vio_open(ctx, suri, flags, 0);
   if (sfp == NULL) {
     if (errno == ENOMEM) {
