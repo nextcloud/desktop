@@ -18,7 +18,7 @@
  * along with this program = NULL, if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
+#define _GNU_SOURCE
 #include <errno.h>
 #include <stdio.h>
 #include <time.h>
@@ -27,6 +27,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+
+#include <iniparser.h>
 
 #include <neon/ne_basic.h>
 #include <neon/ne_socket.h>
@@ -40,6 +42,7 @@
 
 #include "c_lib.h"
 #include "csync.h"
+#include "csync_misc.h"
 #include "c_private.h"
 
 #include "vio/csync_vio_module.h"
@@ -53,6 +56,10 @@
 #else
 #define DEBUG_WEBDAV(...) CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, __VA_ARGS__)
 #endif
+
+#define OC_TIMEDELTA_FAIL (NE_REDIRECT +1)
+#define OC_PROPFIND_FAIL  (NE_REDIRECT +2)
+
 
 enum resource_type {
     resr_normal = 0,
@@ -120,6 +127,7 @@ struct dav_session_s {
     char *user;
     char *pwd;
 
+    time_t   prev_delta;
     time_t   time_delta;     /* The time delta to use.                  */
     long int time_delta_sum; /* What is the time delta average?         */
     int      time_delta_cnt; /* How often was the server time gathered? */
@@ -353,6 +361,7 @@ static int dav_connect(const char *base_url) {
 
     dav_session.time_delta_sum = 0;
     dav_session.time_delta_cnt = 0;
+    dav_session.prev_delta     = 0;
 
     rc = c_parse_uri( base_url, &scheme, &dav_session.user, &dav_session.pwd, &host, &port, &path );
     if( rc < 0 ) {
@@ -541,21 +550,24 @@ static int fetch_resource_list( const char *curi,
         dav_session.time_delta_sum += time_diff;
         dav_session.time_delta_cnt++;
 
+        /* Store the previous time delta */
+        dav_session.prev_delta = dav_session.time_delta;
+
         /* check the changing of the time delta */
         time_diff_delta = llabs(dav_session.time_delta - time_diff);
         if( dav_session.time_delta_cnt == 1 ) {
             DEBUG_WEBDAV( "The first time_delta is %d", time_diff );
-        } else if( dav_session.time_delta_cnt > 1 && time_diff_delta > 5 ) {
-          DEBUG_WEBDAV("WRN: The time delta changed more than 5 second");
-        } else if( time_diff_delta == 0) {
-          DEBUG_WEBDAV("XXXX Ok: Time delta remained the same: %ld.", time_diff);
+        } else if( dav_session.time_delta_cnt > 1 ) {
+            if( time_diff_delta > 5 ) {
+                DEBUG_WEBDAV("WRN: The time delta changed more than 5 second");
+                ret = OC_TIMEDELTA_FAIL;
+            } else {
+                DEBUG_WEBDAV("Ok: Time delta remained (almost) the same: %ld.", time_diff);
+            }
         } else {
           DEBUG_WEBDAV("Difference to last server time delta: %d", time_diff_delta );
         }
         dav_session.time_delta = time_diff;
-
-        /* DEBUG_WEBDAV("%d <0> %d", server_time, now); */
-
     } else {
         DEBUG_WEBDAV("WRN: propfind named failed with %d", ret);
     }
@@ -595,11 +607,7 @@ static csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
     }
 
     /* Correct the mtime of the file with the server time delta */
-    if( dav_session.time_delta_cnt == 0 ) {
-      lfs->mtime = res->modtime;
-    } else {
-      lfs->mtime = res->modtime - dav_session.time_delta;
-    }
+    lfs->mtime = res->modtime;
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
     lfs->size  = res->size;
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
@@ -708,6 +716,7 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
         buf->fields = _fs.fields;
         buf->type   = _fs.type;
         buf->mtime  = _fs.mtime;
+
         buf->size   = _fs.size;
         buf->mode   = _stat_perms( _fs.type );
     } else {
@@ -729,9 +738,14 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
 
         rc = fetch_resource_list( curi, NE_DEPTH_ONE, fetchCtx );
         if( rc != NE_OK ) {
-            errno = ne_session_error_errno( dav_session.ctx );
+            if( rc == OC_TIMEDELTA_FAIL ) {
+                DEBUG_WEBDAV("WRN: Time delta changed too much!");
+                /* FIXME: Reasonable user warning */
+            } else {
+                errno = ne_session_error_errno( dav_session.ctx );
 
-            DEBUG_WEBDAV("stat fails with errno %d", errno );
+                DEBUG_WEBDAV("stat fails with errno %d", errno );
+            }
             free_fetchCtx(fetchCtx);
             return -1;
         }
@@ -1202,7 +1216,6 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
                         errno = EBADF;
                         ret = -1;
                     }
-
                     if (rc == NE_OK) {
                         if ( ne_get_status( writeCtx->req )->klass != 2 ) {
                             DEBUG_WEBDAV("Error - PUT status value no 2xx");
@@ -1546,6 +1559,8 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
     pname.name = "lastmodified";
 
     newmodtime = modtime->tv_sec;
+    DEBUG_WEBDAV("Add a time delta to modtime %lu: %ld",
+                 modtime->tv_sec, dav_session.time_delta);
     newmodtime += dav_session.time_delta;
 
     snprintf( val, sizeof(val), "%ld", newmodtime );
@@ -1590,21 +1605,65 @@ csync_vio_method_t _method = {
     .utimes = owncloud_utimes
 };
 
+static char *oc_csync_conf_dir()
+{
+    char *home = NULL;
+    char *conf_dir =  NULL;
+
+    home = csync_get_user_home_dir();
+    if( asprintf( &conf_dir, "%s/%s/%s", home, CSYNC_CONF_DIR, CSYNC_CONF_FILE) == -1 ) {
+        return NULL;
+    }
+    return conf_dir;
+}
+
+#define OWNCLOUD_INI_TIMEDELTA "ownCloud:time_delta"
+
 csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
                                     csync_auth_callback cb, void *userdata) {
+    char *config = NULL;
+    dictionary *dict = NULL;
+
     (void) method_name;
     (void) args;
+
     _authcb = cb;
     _userdata = userdata;
     _connected = 0;  /* triggers dav_connect to go through the whole neon setup */
 
-    /* DEBUG_WEBDAV("********** vio_module_init "); */
+    /* Load the last time delta from config file. */
+    config = oc_csync_conf_dir();
+
+    if( config )  {
+      dict = iniparser_load(config);
+      if( dict ) {
+        dav_session.prev_delta = iniparser_getint(dict, OWNCLOUD_INI_TIMEDELTA, 0);
+        DEBUG_WEBDAV( "Init: Previous time delta: %d", dav_session.prev_delta );
+        iniparser_freedict( dict );
+      }
+    }
 
     return &_method;
 }
 
 void vio_module_shutdown(csync_vio_method_t *method) {
+    char *config = NULL;
+    dictionary *dict = NULL;
+    char entry[32];
+    char val[10];
+
     (void) method;
+    strcpy( entry, OWNCLOUD_INI_TIMEDELTA );
+
+    config = oc_csync_conf_dir();
+    if( config )  {
+      dict = iniparser_load(config);
+      if( dict ) {
+        sprintf( val, "%ld", dav_session.prev_delta );
+        iniparser_setstr( dict, entry, val );
+        iniparser_freedict( dict );
+      }
+    }
 
     SAFE_FREE( dav_session.user );
     SAFE_FREE( dav_session.pwd );
@@ -1614,7 +1673,5 @@ void vio_module_shutdown(csync_vio_method_t *method) {
     /* DEBUG_WEBDAV( "********** vio_module_shutdown" ); */
 
 }
-
-
 
 /* vim: set ts=4 sw=4 et cindent: */
