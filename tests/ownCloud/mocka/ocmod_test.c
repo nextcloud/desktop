@@ -230,11 +230,13 @@ static void download_a_file( const char* local, void **state, const char *durl)
 {
     char buffer[BUFSIZE+1];
     char path[256];
-    char local_path[256];
+    char src_path[256];
+    int  did;
+    _TCHAR tlocal[256];
 
     csync_vio_method_handle_t *handle;
-    size_t count;
-    size_t overall_size = 0;
+    ssize_t count;
+    ssize_t overall_size = 0;
     csync_stat_t sb;
 
     /* Create the target path */
@@ -244,20 +246,27 @@ static void download_a_file( const char* local, void **state, const char *durl)
     strcat( path, "/");
     strcat( path, durl );
 
+    strcpy( tlocal, "/tmp/");
+    strcat( tlocal, local );
+    did = _topen(tlocal, O_RDWR|O_CREAT, 0644);
+    assert_true( did > -1 );
+
     handle = owncloud_open( path, O_RDONLY, 0644 );
     assert_int_not_equal( handle, NULL );
 
     while( (count = owncloud_read(handle, buffer, BUFSIZE)) > 0 ) {
+        write( did, buffer, count );
         overall_size += count;
     }
     assert_int_equal( owncloud_close(handle), 0 );
+    close(did);
 
-    strcpy(local_path, TESTFILES_DIR);
-    strcat(local_path, local);
-    stat_local_file( &sb, local_path );
+    strcpy(src_path, TESTFILES_DIR);
+    strcat(src_path, local);
+    stat_local_file( &sb, src_path );
 
     /* assert the download size, it has to be the same. */
-    assert_int_equal( overall_size, sb.st_size );
+    assert_true( overall_size == sb.st_size );
 
 }
 
