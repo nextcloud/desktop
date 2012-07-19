@@ -327,7 +327,10 @@ retry_vio_init:
       } else if (timediff < 0) {
         /* error code was set in csync_timediff() */
         CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Synchronisation is not possible!");
-        ctx->error_code = CSYNC_ERR_TIMESKEW;
+	/* do not override error code set by timediff */
+	if(ctx->error_code == CSYNC_ERR_NONE) {
+	  ctx->error_code = CSYNC_ERR_TIMESKEW;
+	}
         rc = -1;
         goto out;
       }
