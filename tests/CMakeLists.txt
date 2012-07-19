@@ -5,10 +5,11 @@ set(SUPPORT_LIBRARY support)
 include_directories(
   ${CSYNC_PUBLIC_INCLUDE_DIRS}
   ${CSTDLIB_PUBLIC_INCLUDE_DIRS}
-  ${CHECK_INCLUDE_DIRS}
   ${CMAKE_BINARY_DIR}
 )
 
+if (CHECK_FOUND)
+include_directories(${CHECK_INCLUDE_DIRS})
 # create test library
 add_library(${SUPPORT_LIBRARY} STATIC support.c cmdline.c)
 target_link_libraries(${SUPPORT_LIBRARY} ${CHECK_LIBRARIES} ${CSYNC_LIBRARY} ${CSTDLIB_LIBRARY})
@@ -51,4 +52,7 @@ macro_add_check_test(check_vio vio_tests/check_vio.c ${TEST_TARGET_LIBRARIES})
 
 # sync
 macro_add_check_test(check_csync_update csync_tests/check_csync_update.c ${TEST_TARGET_LIBRARIES})
+endif (CHECK_FOUND)
+
+add_subdirectory(ownCloud)
 

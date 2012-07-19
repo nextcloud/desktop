@@ -121,7 +121,6 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
   ctx->options.unix_extensions = 0;
   ctx->options.with_conflict_copys=false;
   ctx->options.local_only_mode = false;
-  ctx->options.remote_push_atomar = false;
 
   ctx->pwd.uid = getuid();
   ctx->pwd.euid = geteuid();
@@ -315,29 +314,38 @@ retry_vio_init:
     ctx->remote.type = LOCAL_REPLICA;
   }
 
-  if( !ctx->options.local_only_mode ) {
+  if(!ctx->options.local_only_mode) {
+    if(ctx->module.capabilities.time_sync_required) {
       timediff = csync_timediff(ctx);
       if (timediff > ctx->options.max_time_difference) {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL,
-                    "Clock skew detected. The time difference is greater than %d seconds!",
-                    ctx->options.max_time_difference);
-          ctx->error_code = CSYNC_ERR_TIMESKEW;
-          rc = -1;
-          goto out;
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL,
+                  "Clock skew detected. The time difference is greater than %d seconds!",
+                  ctx->options.max_time_difference);
+        ctx->error_code = CSYNC_ERR_TIMESKEW;
+        rc = -1;
+        goto out;
       } else if (timediff < 0) {
-          /* error code was set in csync_timediff() */
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Synchronisation is not possible!");
-	  ctx->error_code = CSYNC_ERR_TIMESKEW;
-          rc = -1;
-          goto out;
+        /* error code was set in csync_timediff() */
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Synchronisation is not possible!");
+        ctx->error_code = CSYNC_ERR_TIMESKEW;
+        rc = -1;
+        goto out;
       }
+    } else {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Module does not need time synchronization.");
+    }
 
+    if(ctx->module.capabilities.unix_extensions == -1) { /* detect */
       if (csync_unix_extensions(ctx) < 0) {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Could not detect filesystem type.");
-          ctx->error_code = CSYNC_ERR_FILESYSTEM;
-          rc = -1;
-          goto out;
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Could not detect filesystem type.");
+        ctx->error_code = CSYNC_ERR_FILESYSTEM;
+        rc = -1;
+        goto out;
       }
+    } else {
+      /* The module specifies the value for the unix_extensions. */
+      ctx->options.unix_extensions = ctx->module.capabilities.unix_extensions;
+    }
   }
 
   if (c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp) < 0) {
@@ -936,33 +944,6 @@ bool csync_get_local_only(CSYNC *ctx) {
     ctx->error_code = CSYNC_ERR_NONE;
 
     return ctx->options.local_only_mode;
-}
-
-int csync_set_remote_push_atomar(CSYNC *ctx, bool is_atomar) {
-    if(ctx == NULL) {
-        return -1;
-    }
-
-    ctx->error_code = CSYNC_ERR_NONE;
-
-    if (ctx->status & CSYNC_STATUS_PROPAGATE) {
-        fprintf(stderr, "This function must be called before propagation.");
-        ctx->error_code = CSYNC_ERR_UNSPEC;
-        return -1;
-    }
-
-    ctx->options.remote_push_atomar = is_atomar;
-
-    return 0;
-}
-
-bool csync_get_remote_push_atomar(CSYNC *ctx) {
-    if (ctx == NULL) {
-        return -1;
-    }
-    ctx->error_code = CSYNC_ERR_NONE;
-
-    return ctx->options.remote_push_atomar;
 }
 
 CSYNC_ERROR_CODE csync_get_error(CSYNC *ctx) {

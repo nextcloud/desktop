@@ -101,6 +101,8 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     tmp = csync_statedb_get_stat_by_hash(ctx, h);
     if (tmp && tmp->phash == h) {
       /* we have an update! */
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "time compare: %lu <-> %lu",
+                  fs->mtime, tmp->modtime);
       if (fs->mtime > tmp->modtime) {
         st->instruction = CSYNC_INSTRUCTION_EVAL;
         goto out;

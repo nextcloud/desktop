@@ -18,7 +18,7 @@
  * along with this program = NULL, if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
+#define _GNU_SOURCE
 #include <errno.h>
 #include <stdio.h>
 #include <time.h>
@@ -40,6 +40,7 @@
 
 #include "c_lib.h"
 #include "csync.h"
+#include "csync_misc.h"
 #include "c_private.h"
 
 #include "vio/csync_vio_module.h"
@@ -53,6 +54,10 @@
 #else
 #define DEBUG_WEBDAV(...) CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, __VA_ARGS__)
 #endif
+
+#define OC_TIMEDELTA_FAIL (NE_REDIRECT +1)
+#define OC_PROPFIND_FAIL  (NE_REDIRECT +2)
+
 
 enum resource_type {
     resr_normal = 0,
@@ -119,6 +124,11 @@ struct dav_session_s {
     ne_session *ctx;
     char *user;
     char *pwd;
+
+    time_t   prev_delta;
+    time_t   time_delta;     /* The time delta to use.                  */
+    long int time_delta_sum; /* What is the time delta average?         */
+    int      time_delta_cnt; /* How often was the server time gathered? */
 };
 
 /* The list of properties that is fetched in PropFind on a collection */
@@ -347,6 +357,10 @@ static int dav_connect(const char *base_url) {
         return 0;
     }
 
+    dav_session.time_delta_sum = 0;
+    dav_session.time_delta_cnt = 0;
+    dav_session.prev_delta     = 0;
+
     rc = c_parse_uri( base_url, &scheme, &dav_session.user, &dav_session.pwd, &host, &port, &path );
     if( rc < 0 ) {
         DEBUG_WEBDAV("Failed to parse uri %s", base_url );
@@ -505,14 +519,59 @@ static int fetch_resource_list( const char *curi,
                                 struct listdir_context *fetchCtx )
 {
     int ret = 0;
+    ne_propfind_handler *hdl = NULL;
+    ne_request *request = NULL;
+    const char *date_header = NULL;
+    time_t server_time;
+    time_t now;
+    time_t time_diff;
+    time_t time_diff_delta;
 
     /* do a propfind request and parse the results in the results function, set as callback */
-    ret = ne_simple_propfind( dav_session.ctx, curi, depth, ls_props, results, fetchCtx );
+    /* ret = ne_simple_propfind( dav_session.ctx, curi, depth, ls_props, results, fetchCtx ); */
+
+    hdl = ne_propfind_create(dav_session.ctx, curi, depth);
+
+    ret = ne_propfind_named(hdl, ls_props, results, fetchCtx);
 
     if( ret == NE_OK ) {
         DEBUG_WEBDAV("Simple propfind OK.");
         fetchCtx->currResource = fetchCtx->list;
+        request = ne_propfind_get_request( hdl );
+
+        date_header =  ne_get_response_header( request, "Date" );
+        DEBUG_WEBDAV("Server Date from HTTP header value: %s", date_header);
+        server_time = ne_rfc1123_parse( date_header );
+        now = time(NULL);
+        time_diff = server_time - now;
+
+        dav_session.time_delta_sum += time_diff;
+        dav_session.time_delta_cnt++;
+
+        /* Store the previous time delta */
+        dav_session.prev_delta = dav_session.time_delta;
+
+        /* check the changing of the time delta */
+        time_diff_delta = llabs(dav_session.time_delta - time_diff);
+        if( dav_session.time_delta_cnt == 1 ) {
+            DEBUG_WEBDAV( "The first time_delta is %d", time_diff );
+        } else if( dav_session.time_delta_cnt > 1 ) {
+            if( time_diff_delta > 5 ) {
+                DEBUG_WEBDAV("WRN: The time delta changed more than 5 second");
+                ret = OC_TIMEDELTA_FAIL;
+            } else {
+                DEBUG_WEBDAV("Ok: Time delta remained (almost) the same: %ld.", time_diff);
+            }
+        } else {
+          DEBUG_WEBDAV("Difference to last server time delta: %d", time_diff_delta );
+        }
+        dav_session.time_delta = time_diff;
+    } else {
+        DEBUG_WEBDAV("WRN: propfind named failed with %d", ret);
     }
+
+    ne_propfind_destroy(hdl);
+
     return ret;
 }
 
@@ -545,6 +604,7 @@ static csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
         DEBUG_WEBDAV("ERROR: Unknown resource type %d", res->type);
     }
 
+    /* Correct the mtime of the file with the server time delta */
     lfs->mtime = res->modtime;
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
     lfs->size  = res->size;
@@ -654,6 +714,7 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
         buf->fields = _fs.fields;
         buf->type   = _fs.type;
         buf->mtime  = _fs.mtime;
+
         buf->size   = _fs.size;
         buf->mode   = _stat_perms( _fs.type );
     } else {
@@ -675,9 +736,14 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
 
         rc = fetch_resource_list( curi, NE_DEPTH_ONE, fetchCtx );
         if( rc != NE_OK ) {
-            errno = ne_session_error_errno( dav_session.ctx );
+            if( rc == OC_TIMEDELTA_FAIL ) {
+                DEBUG_WEBDAV("WRN: Time delta changed too much!");
+                /* FIXME: Reasonable user warning */
+            } else {
+                errno = ne_session_error_errno( dav_session.ctx );
 
-            DEBUG_WEBDAV("stat fails with errno %d", errno );
+                DEBUG_WEBDAV("stat fails with errno %d", errno );
+            }
             free_fetchCtx(fetchCtx);
             return -1;
         }
@@ -845,6 +911,22 @@ static void install_content_reader( ne_request *req, void *userdata, const ne_st
 }
 
 static char*_lastDir = NULL;
+
+/* capabilities are currently:
+ *  bool atomar_copy_support - oC provides atomar copy
+ *  bool do_post_copy_stat   - oC does not want the post copy check
+ *  bool time_sync_required  - oC does not require the time sync
+ *  int  unix_extensions     - oC supports unix extensions.
+ */
+static csync_vio_capabilities_t _owncloud_capabilities = { true, false, false, 1 };
+
+static csync_vio_capabilities_t *owncloud_get_capabilities(void)
+{
+#ifdef _WIN32
+  _owncloud_capabilities.unix_extensions = 0;
+#endif
+  return &_owncloud_capabilities;
+}
 
 static csync_vio_method_handle_t *owncloud_open(const char *durl,
                                                 int flags,
@@ -1132,7 +1214,6 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
                         errno = EBADF;
                         ret = -1;
                     }
-
                     if (rc == NE_OK) {
                         if ( ne_get_status( writeCtx->req )->klass != 2 ) {
                             DEBUG_WEBDAV("Error - PUT status value no 2xx");
@@ -1459,6 +1540,8 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
     int rc = NE_OK;
     char val[255];
     char *curi = NULL;
+    const struct timeval *modtime = times+1;
+    long newmodtime;
 
     curi = _cleanPath( uri );
 
@@ -1473,7 +1556,13 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
     pname.nspace = NULL;
     pname.name = "lastmodified";
 
-    snprintf( val, sizeof(val), "%ld", times->tv_sec );
+    newmodtime = modtime->tv_sec;
+#if TIMEDELTA
+    DEBUG_WEBDAV("Add a time delta to modtime %lu: %ld",
+                 modtime->tv_sec, dav_session.time_delta);
+    newmodtime += dav_session.time_delta;
+#endif
+    snprintf( val, sizeof(val), "%ld", newmodtime );
     DEBUG_WEBDAV("Setting LastModified of %s to %s", curi, val );
 
     ops[0].name = &pname;
@@ -1495,6 +1584,7 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
 
 csync_vio_method_t _method = {
     .method_table_size = sizeof(csync_vio_method_t),
+    .get_capabilities = owncloud_get_capabilities,
     .open = owncloud_open,
     .creat = owncloud_creat,
     .close = owncloud_close,
@@ -1518,11 +1608,10 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
                                     csync_auth_callback cb, void *userdata) {
     (void) method_name;
     (void) args;
+
     _authcb = cb;
     _userdata = userdata;
     _connected = 0;  /* triggers dav_connect to go through the whole neon setup */
-
-    /* DEBUG_WEBDAV("********** vio_module_init "); */
 
     return &_method;
 }
@@ -1538,7 +1627,5 @@ void vio_module_shutdown(csync_vio_method_t *method) {
     /* DEBUG_WEBDAV( "********** vio_module_shutdown" ); */
 
 }
-
-
 
 /* vim: set ts=4 sw=4 et cindent: */
