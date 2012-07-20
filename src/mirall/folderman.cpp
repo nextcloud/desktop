@@ -66,10 +66,6 @@ int FolderMan::setupFolders()
 #endif
     int cnt = setupKnownFolders();
 
-    // do an initial sync
-    foreach( Folder *f, _folderMap.values() ) {
-    //    f->slotChanged();
-    }
     return cnt;
 }
 
@@ -91,6 +87,7 @@ int FolderMan::setupKnownFolders()
 
   foreach ( const QString& alias, list ) {
     Folder *f = setupFolderFromConfigFile( alias );
+    emit( folderSyncStateChange( f->alias() ) );
   }
   // return the number of valid folders.
   return _folderMap.size();
