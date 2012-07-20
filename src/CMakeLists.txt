@@ -49,8 +49,7 @@ set(libsync_HEADERS
     mirall/csyncthread.h
 )
 
-IF( USE_INOTIFY )
-    add_definitions( -DUSE_INOTIFY )
+IF( INOTIFY_FOUND )
     set(libsync_SRCS ${libsync_SRCS} mirall/inotify.cpp)
     set(libsync_HEADERS ${libsync_HEADERS} mirall/inotify.h)
 ENDIF()
@@ -105,7 +104,7 @@ if( UNIX AND NOT APPLE)
 endif()
 
 # csync is required.
-include_directories(${CSYNC_INCLUDE_DIR}/csync ${CSYNC_INCLUDE_DIR})
+include_directories(${CSYNC_INCLUDE_DIR}/csync ${CSYNC_INCLUDE_DIR} ${CMAKE_BINARY_DIR})
 
 qt4_wrap_cpp(mirallMoc ${mirall_HEADERS})
 
