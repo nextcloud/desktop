@@ -1553,7 +1553,7 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
         errno = EACCES;
         return -1; /* FIXME: Find good errno */
     }
-    pname.nspace = NULL;
+    pname.nspace = "DAV:";
     pname.name = "lastmodified";
 
     newmodtime = modtime->tv_sec;
