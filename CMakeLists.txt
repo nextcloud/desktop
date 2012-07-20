@@ -9,7 +9,7 @@ configure_file( ${CMAKE_SOURCE_DIR}/src/mirall/version.h.in ${CMAKE_SOURCE_DIR}/
 
 include(GNUInstallDirs)
 ## stupid, we should upstream this
-if("${CMAKE_INSTALL_PREFIX}" EQUAL "/usr")
+if("${CMAKE_INSTALL_PREFIX}" STREQUAL "/usr")
     set(CMAKE_INSTALL_SYSCONFDIR "/etc")
 endif()
 
