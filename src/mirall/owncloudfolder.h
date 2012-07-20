@@ -56,9 +56,8 @@ private slots:
     void slotCsyncStateDbFile(const QString&);
     void slotWipeDb();
 
-#ifndef USE_INOTIFY
     void slotPollTimerRemoteCheck();
-#endif
+
 private:
     QString      _secondPath;
     CSyncThread *_csync;

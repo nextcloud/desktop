@@ -15,6 +15,8 @@
 #ifndef MIRALL_FOLDERWATCHER_H
 #define MIRALL_FOLDERWATCHER_H
 
+#include "config.h"
+
 #include "mirall/folder.h"
 
 #include <QList>

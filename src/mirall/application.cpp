@@ -32,6 +32,8 @@
 #include "mirall/miralltheme.h"
 #include "mirall/owncloudtheme.h"
 
+#include "config.h"
+
 #ifdef WITH_CSYNC
 #include "mirall/csyncfolder.h"
 #endif

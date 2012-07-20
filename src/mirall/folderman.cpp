@@ -11,6 +11,7 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
+
 #include "mirall/folderman.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/unisonfolder.h"
@@ -32,10 +33,6 @@ FolderMan::FolderMan(QObject *parent) :
     QDir storageDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
     storageDir.mkpath("folders");
     _folderConfigPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/folders";
-
-#ifdef USE_INOTIFY
-    Mirall::INotify::initialize();
-#endif
 
     _folderChangeSignalMapper = new QSignalMapper(this);
     connect(_folderChangeSignalMapper, SIGNAL(mapped(const QString &)),

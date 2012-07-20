@@ -72,13 +72,12 @@ ownCloudFolder::~ownCloudFolder()
 
 }
 
-#ifndef USE_INOTIFY
+/* Only used if INotify is not available. */
 void ownCloudFolder::slotPollTimerRemoteCheck()
 {
     _pollTimerCnt++;
     qDebug() << "**** Poll Timer for Folder " << alias() << " increase: " << _pollTimerCnt;
 }
-#endif
 
 bool ownCloudFolder::isBusy() const
 {

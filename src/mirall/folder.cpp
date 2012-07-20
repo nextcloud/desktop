@@ -11,6 +11,7 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
+
 #include "mirall/folder.h"
 #include "mirall/folderwatcher.h"
 #include "mirall/mirallconfigfile.h"

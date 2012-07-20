@@ -15,6 +15,8 @@
 #ifndef MIRALL_FOLDER_H
 #define MIRALL_FOLDER_H
 
+#include "config.h"
+
 #include <QObject>
 #include <QString>
 #include <QStringList>
