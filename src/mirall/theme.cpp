@@ -21,7 +21,6 @@
 namespace Mirall {
 
 Theme::Theme()
-    :QObject()
 {
 
 }
@@ -32,25 +31,25 @@ QString Theme::statusHeaderText( SyncResult::Status status ) const
 
     switch( status ) {
     case SyncResult::Undefined:
-        resultStr = tr("Status undefined");
+        resultStr = QObject::tr("Status undefined");
         break;
     case SyncResult::NotYetStarted:
-        resultStr = tr("Waiting to start sync");
+        resultStr = QObject::tr("Waiting to start sync");
         break;
     case SyncResult::SyncRunning:
-        resultStr = tr("Sync is running");
+        resultStr = QObject::tr("Sync is running");
         break;
     case SyncResult::Success:
-        resultStr = tr("Sync Success");
+        resultStr = QObject::tr("Sync Success");
         break;
     case SyncResult::Error:
-        resultStr = tr("Sync Error - Click info button for details.");
+        resultStr = QObject::tr("Sync Error - Click info button for details.");
         break;
     case SyncResult::SetupError:
-        resultStr = tr( "Setup Error" );
+        resultStr = QObject::tr( "Setup Error" );
         break;
     default:
-        resultStr = tr("Status undefined");
+        resultStr = QObject::tr("Status undefined");
     }
     return resultStr;
 }
@@ -69,14 +68,21 @@ QIcon Theme::trayFolderIcon( const QString& backend ) const
  * helper to load a icon from either the icon theme the desktop provides or from
  * the apps Qt resources.
  */
-QIcon Theme::themeIcon( const QString& name, int size ) const
+QIcon Theme::themeIcon( const QString& name ) const
 {
     QIcon icon;
     if( QIcon::hasThemeIcon( name )) {
         // use from theme
         icon = QIcon::fromTheme( name );
     } else {
-        icon.addFile( QString(":/mirall/resources/%1-%2").arg(name).arg(size), QSize(size, size) );
+        QList<int> sizes;
+        sizes <<16 << 24 << 32 << 48 << 64 << 128;
+        foreach (int size, sizes) {
+            QString pixmapName = QString(":/mirall/resources/%1-%2.png").arg(name).arg(size);
+            if (QFile::exists(pixmapName)) {
+                icon.addFile(pixmapName, QSize(size, size));
+            }
+        }
     }
     return icon;
 }

@@ -219,11 +219,6 @@ void CSyncThread::run()
         goto cleanup;
     }
 
-    // tell csync that the remote repository (ownCloud) does atomar push
-    if( csync_set_remote_push_atomar( csync, true ) < 0 ) {
-        qDebug() << "WRN: Failed to set remote push atomar.";
-    }
-
     emitStateDb(csync);
 
     qDebug() << "############################################################### >>";

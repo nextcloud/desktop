@@ -27,9 +27,8 @@ namespace Mirall {
 
 class SyncResult;
 
-class Theme : public QObject
+class Theme
 {
-    Q_OBJECT
 public:
     Theme();
 
@@ -50,9 +49,9 @@ public:
     /**
       * get an sync state icon
       */
-    virtual QIcon   syncStateIcon( SyncResult::Status, int ) const = 0;
+    virtual QIcon   syncStateIcon( SyncResult::Status ) const = 0;
 
-    virtual QIcon   folderDisabledIcon( int ) const = 0;
+    virtual QIcon   folderDisabledIcon() const = 0;
     virtual QPixmap splashScreen() const = 0;
 
     virtual QIcon   applicationIcon() const = 0;
@@ -61,7 +60,7 @@ public:
     virtual QString version() const;
 
 protected:
-    QIcon themeIcon( const QString& name, int size ) const;
+    QIcon themeIcon(const QString& name) const;
 
 private:
 

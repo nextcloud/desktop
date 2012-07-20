@@ -44,11 +44,9 @@ QPixmap ownCloudTheme::splashScreen() const
 QIcon ownCloudTheme::folderIcon( const QString& backend ) const
 {
   QString name;
-  int size = 48;
 
   if( backend == QString::fromLatin1("owncloud")) {
       name = QString( "owncloud-icon-framed" );
-      size = 64;
   }
   if( backend == QString::fromLatin1("unison" )) {
       name  = QString( "folder-sync" );
@@ -61,16 +59,16 @@ QIcon ownCloudTheme::folderIcon( const QString& backend ) const
   }
 
   qDebug() << "==> load folder icon " << name;
-  return themeIcon( name, size );
+  return themeIcon( name );
 }
 
 QIcon ownCloudTheme::trayFolderIcon( const QString& ) const
 {
-    return themeIcon( "owncloud-icon", 48 );
+    return themeIcon( "owncloud-icon" );
 }
 
 
-QIcon ownCloudTheme::syncStateIcon( SyncResult::Status status, int size ) const
+QIcon ownCloudTheme::syncStateIcon( SyncResult::Status status ) const
 {
     // FIXME: Mind the size!
     QString statusIcon;
@@ -98,19 +96,19 @@ QIcon ownCloudTheme::syncStateIcon( SyncResult::Status status, int size ) const
         statusIcon = "owncloud-icon-error";
     }
 
-    return themeIcon( statusIcon, size );
+    return themeIcon( statusIcon );
 }
 
 
-QIcon ownCloudTheme::folderDisabledIcon( int size ) const
+QIcon ownCloudTheme::folderDisabledIcon( ) const
 {
     // Fixme: Do we really want the dialog-canel from theme here?
-    return themeIcon( "owncloud-icon-error", size );
+    return themeIcon( "owncloud-icon-error" );
 }
 
 QIcon ownCloudTheme::applicationIcon( ) const
 {
-    return themeIcon( "owncloud-icon", 48 );
+    return themeIcon( "owncloud-icon" );
 }
 
 

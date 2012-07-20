@@ -280,7 +280,9 @@ Section "${APPLICATION_NAME}" SEC_OWNCLOUD_PLAYER
    !ifndef INSTALL_PATH
         ;Main executable.
         File "${BUILD_PATH}\bin\${APPLICATION_EXECUTABLE}"
+        File "${BUILD_PATH}\src\libowncloudsync.dll"
         File "${BUILD_PATH}\src\mirall_de.qm"
+        File "${BUILD_PATH}\src\mirall_ru.qm"
 
         SetOutPath "$INSTDIR\modules"
         ; FIXME: fix installation dir of module, currently needs manual copying to
