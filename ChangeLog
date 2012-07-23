@@ -1,5 +1,13 @@
 ChangeLog
 ==========
+version 0.50.8 (released )
+  * Fixed namespace for lastmodified propset.
+  * Added cmocka based tests for ownCloud module.
+  * Added a config_test.h config header file.
+  * Fix link handling: Ignore symlinks.
+  * Added module capabilities.
+  * A lot of minor fixes.
+
 version 0.50.7 (released 2012-06-19)
   * Added ability to log to a callback, ie. let the app 
     catch the log output
