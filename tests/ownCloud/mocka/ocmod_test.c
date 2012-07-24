@@ -134,6 +134,7 @@ static void fetch_a_context(void **state) {
 	assert_true( fetchCtx->currResource->name != NULL );
 	
 	printf( "   %s -> %s\n", fetchCtx->currResource->uri, fetchCtx->currResource->name );
+	printf( "   MD5: %s\n", fetchCtx->currResource->md5);
 	fetchCtx->currResource = fetchCtx->currResource->next;
     } 
 }
@@ -299,11 +300,13 @@ int main(void) {
     const UnitTest tests[] = {
         unit_test(null_test_success),
         unit_test(connect_test_success),
-        unit_test(fetch_a_context),
         unit_test_setup_teardown(test_setup_dirs, setup_toplevel_dir, teardown_toplevel_dir),
         unit_test(test_upload_files),
+        unit_test(fetch_a_context),
         unit_test(test_download_files),
     };
+
+    srand(time(NULL));
 
     return run_tests(tests);
 }

@@ -89,6 +89,7 @@ typedef struct resource {
     enum resource_type type;
     dav_size_t         size;
     time_t             modtime;
+    char               md5[33];
 
     struct resource    *next;
 } resource;
@@ -142,6 +143,7 @@ static const ne_propname ls_props[] = {
     { "DAV:", "getlastmodified" },
     { "DAV:", "getcontentlength" },
     { "DAV:", "resourcetype" },
+    { "DAV:", "getetag"},
     { NULL, NULL }
 };
 
@@ -522,6 +524,7 @@ static void results(void *userdata,
     struct resource *newres = 0;
     const char *clength, *modtime = NULL;
     const char *resourcetype = NULL;
+    const char *md5sum = NULL;
     const ne_status *status = NULL;
     char *path = ne_path_unescape( uri->path );
 
@@ -561,6 +564,7 @@ static void results(void *userdata,
     modtime      = ne_propset_value( set, &ls_props[0] );
     clength      = ne_propset_value( set, &ls_props[1] );
     resourcetype = ne_propset_value( set, &ls_props[2] );
+    md5sum       = ne_propset_value( set, &ls_props[3] );
 
     newres->type = resr_normal;
     if( clength == NULL && resourcetype && strncmp( resourcetype, "<DAV:collection>", 16 ) == 0) {
@@ -577,6 +581,12 @@ static void results(void *userdata,
         if (*p) {
             newres->size = 0;
         }
+    }
+
+    if( md5sum ) {
+        /* Skip the " around the string coming back from teh ne_propset_value call */
+        strncpy( newres->md5, md5sum+1, 32 );
+        DEBUG_WEBDAV("OOOOOOOOOOOOOOOOOOOOO %s", newres->md5);
     }
 
     /* prepend the new resource to the result list */
@@ -690,7 +700,9 @@ static csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
     lfs->size  = res->size;
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
-
+    lfs->md5   = c_strdup(res->md5);
+    DEBUG_WEBDAV("XXXXXXXXXXXXXXXXXXXXX MD5: %s", lfs->md5 );
+    lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
     return lfs;
 }
 
@@ -791,10 +803,12 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
+        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
 
         buf->fields = _fs.fields;
         buf->type   = _fs.type;
         buf->mtime  = _fs.mtime;
+        buf->md5    = c_strdup( _fs.md5 );
 
         buf->size   = _fs.size;
         buf->mode   = _stat_perms( _fs.type );
@@ -859,12 +873,14 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
                 buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
                 buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
                 buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
+                buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
 
                 buf->fields = lfs->fields;
                 buf->type   = lfs->type;
                 buf->mtime  = lfs->mtime;
                 buf->size   = lfs->size;
                 buf->mode   = _stat_perms( lfs->type );
+                buf->md5    = c_strdup( lfs->md5 );
 
                 csync_vio_file_stat_destroy( lfs );
             }
@@ -1486,6 +1502,7 @@ static csync_vio_file_stat_t *owncloud_readdir(csync_vio_method_handle_t *dhandl
         _fs.fields = lfs->fields;
         _fs.type   = lfs->type;
         _fs.size   = lfs->size;
+        _fs.md5    = c_strdup( lfs->md5 );
     }
 
     /* DEBUG_WEBDAV("LFS fields: %s: %d", lfs->name, lfs->type ); */
