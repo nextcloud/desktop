@@ -213,6 +213,7 @@ int csync_statedb_create_tables(CSYNC *ctx) {
       "gid INTEGER,"
       "mode INTEGER,"
       "modtime INTEGER(8),"
+      "md5 VARCHAR(32),"
       "PRIMARY KEY(phash)"
       ");"
       );
@@ -232,6 +233,7 @@ int csync_statedb_create_tables(CSYNC *ctx) {
       "gid INTEGER,"
       "mode INTEGER,"
       "modtime INTEGER(8),"
+      "md5 VARCHAR(32),"
       "PRIMARY KEY(phash)"
       ");"
       );
@@ -249,6 +251,13 @@ int csync_statedb_create_tables(CSYNC *ctx) {
 
   result = csync_statedb_query(ctx,
       "CREATE INDEX metadata_inode ON metadata(inode);");
+  if (result == NULL) {
+    return -1;
+  }
+  c_strlist_destroy(result);
+
+  result = csync_statedb_query(ctx,
+      "CREATE INDEX metadata_md5 ON metadata(md5);");
   if (result == NULL) {
     return -1;
   }
@@ -296,8 +305,8 @@ static int _insert_metadata_visitor(void *obj, void *data) {
     case CSYNC_INSTRUCTION_CONFLICT:
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
         "SQL statement: INSERT INTO metadata_temp \n"
-        "\t\t\t(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES \n"
-        "\t\t\t(%llu, %lu, %s, %llu, %u, %u, %u, %lu);",
+        "\t\t\t(phash, pathlen, path, inode, uid, gid, mode, modtime, md5) VALUES \n"
+        "\t\t\t(%llu, %lu, %s, %llu, %u, %u, %u, %lu, %s);",
         (long long unsigned int) fs->phash,
         (long unsigned int) fs->pathlen,
         fs->path,
@@ -305,14 +314,15 @@ static int _insert_metadata_visitor(void *obj, void *data) {
         fs->uid,
         fs->gid,
         fs->mode,
-        fs->modtime);
+        fs->modtime,
+        fs->md5);
 
       /*
        * The phash needs to be long long unsigned int or it segfaults on PPC
        */
       stmt = sqlite3_mprintf("INSERT INTO metadata_temp "
-        "(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES "
-        "(%llu, %lu, '%q', %llu, %u, %u, %u, %lu);",
+        "(phash, pathlen, path, inode, uid, gid, mode, modtime, md5) VALUES "
+        "(%llu, %lu, '%q', %llu, %u, %u, %u, %lu, '%s');",
         (long long unsigned int) fs->phash,
         (long unsigned int) fs->pathlen,
         fs->path,
@@ -320,7 +330,8 @@ static int _insert_metadata_visitor(void *obj, void *data) {
         fs->uid,
         fs->gid,
         fs->mode,
-        fs->modtime);
+        fs->modtime,
+        fs->md5);
 
       if (stmt == NULL) {
         return -1;
@@ -413,7 +424,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
   st->gid = atoi(result->vector[5]);
   st->mode = atoi(result->vector[6]);
   st->modtime = strtoul(result->vector[7], NULL, 10);
-
+  st->md5 = c_strdup( result->vector[8] );
   c_strlist_destroy(result);
 
   return st;
@@ -463,6 +474,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx, ino_t inode) {
   st->gid = atoi(result->vector[5]);
   st->mode = atoi(result->vector[6]);
   st->modtime = strtoul(result->vector[7], NULL, 10);
+  st->md5 = c_strdup(result->vector[8]);
 
   c_strlist_destroy(result);
 

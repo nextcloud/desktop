@@ -103,7 +103,8 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
       /* we have an update! */
         CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "time compare: %lu <-> %lu",
                   fs->mtime, tmp->modtime);
-      if (fs->mtime > tmp->modtime) {
+      if( !c_streq(fs->md5, tmp->md5 )) {
+      // if (!fs->mtime > tmp->modtime) {
         st->instruction = CSYNC_INSTRUCTION_EVAL;
         goto out;
       }
@@ -139,6 +140,7 @@ out:
   st->gid = fs->gid;
   st->nlink = fs->nlink;
   st->type = type;
+  st->md5  = c_strdup(fs->md5); 
 
   st->phash = h;
   st->pathlen = len;

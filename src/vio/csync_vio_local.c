@@ -35,6 +35,8 @@
 #include "c_private.h"
 #include "c_lib.h"
 #include "c_string.h"
+#include "csync_util.h"
+#include "csync_log.h"
 
 #include "vio/csync_vio_local.h"
 
@@ -365,6 +367,9 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
 
   buf->ctime = sb.st_ctime;
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_CTIME;
+
+  buf->md5   = csync_file_md5( uri );
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
 
   c_free_multibyte(wuri);
   return 0;
