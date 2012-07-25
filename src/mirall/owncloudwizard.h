@@ -23,8 +23,34 @@
 #include "ui_owncloudftpaccesspage.h"
 #include "ui_owncloudwizardresultpage.h"
 #include "ui_owncloudcredentialspage.h"
+#include "ui_owncloudsetuppage.h"
+
+class QLabel;
+class QVariant;
 
 namespace Mirall {
+
+class OwncloudSetupPage: public QWizardPage
+{
+    Q_OBJECT
+public:
+  OwncloudSetupPage();
+  ~OwncloudSetupPage();
+
+  virtual bool isComplete() const;
+  virtual void initializePage();
+  virtual int nextId() const;
+  void setOCUrl( const QString& );
+
+protected slots:
+  void slotPwdStoreChanged( int );
+  void slotSecureConChanged( int );
+  void setupCustomization();
+  void setupCustomMedia( QVariant, QLabel* );
+private:
+  Ui_OwncloudSetupPage _ui;
+
+};
 
 class OwncloudWizard: public QWizard
 {
@@ -32,6 +58,7 @@ class OwncloudWizard: public QWizard
 public:
 
     enum {
+      Page_oCSetup,
       Page_SelectType,
       Page_Create_OC,
       Page_OC_Credentials,

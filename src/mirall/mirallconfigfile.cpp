@@ -428,5 +428,41 @@ void MirallConfigFile::acceptCustomConfig()
     QFile::remove( targetBak );
 }
 
+QVariant MirallConfigFile::customMedia( customMediaType type )
+{
+    QVariant re;
+    QString key;
+
+    if( type == oCSetupTop ) {
+        key = QLatin1String("oCSetupTop");
+    } else if( type == oCSetupSide ) {
+        key = QLatin1String("oCSetupSide");
+    } else if( type == oCSetupBottom) {
+        key = QLatin1String("oCSetupBottom");
+    } else if( type == oCSetupFixUrl ) {
+        key = QLatin1String("oCSetupFixUrl");
+    } else {
+        qDebug() << "Wrong media type.";
+    }
+
+    if( !key.isEmpty() ) {
+        QSettings settings( configFile(), QSettings::IniFormat );
+        settings.setIniCodec( "UTF-8" );
+        settings.beginGroup(QLatin1String("GUICustomize"));
+        QString val = settings.value( key, QString() ).toString();
+
+        if( !val.isEmpty() ) {
+            QPixmap pix( val );
+            if( pix.isNull() ) {
+                // pixmap loading hasn't succeeded. We take the text instead.
+                re.setValue( val );
+            } else {
+                re.setValue( pix );
+            }
+        }
+    }
+    return re;
+}
+
 }
 

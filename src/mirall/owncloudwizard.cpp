@@ -13,6 +13,7 @@
  * for more details.
  */
 #include "mirall/owncloudwizard.h"
+#include "mirall/mirallconfigfile.h"
 
 #include <QDebug>
 #include <QDesktopServices>
@@ -28,6 +29,139 @@
 
 namespace Mirall
 {
+
+// ======================================================================
+
+
+OwncloudSetupPage::OwncloudSetupPage()
+{
+    _ui.setupUi(this);
+    registerField( "OCUrl", _ui.leUrl );
+    registerField( "OCUser",   _ui.leUsername );
+    registerField( "OCPasswd", _ui.lePassword);
+    registerField( "connectMyOC", _ui.cbConnectOC );
+
+    registerField( "PwdNoLocalStore", _ui.cbNoPasswordStore );
+
+    connect( _ui.lePassword, SIGNAL(textChanged(QString)), this, SIGNAL(completeChanged()));
+
+    connect( _ui.cbNoPasswordStore, SIGNAL(stateChanged(int)), this, SLOT(slotPwdStoreChanged(int)));
+    connect( _ui.cbSecureConnect, SIGNAL(stateChanged(int)), this, SLOT(slotSecureConChanged(int)));
+
+    _ui.cbConnectOC->hide();
+    setupCustomization();
+}
+
+OwncloudSetupPage::~OwncloudSetupPage()
+{
+#if QT_VERSION >= 0x040700
+    _ui.leUsername->setPlaceholderText(QApplication::translate("OwncloudSetupPage", "john", 0, QApplication::UnicodeUTF8));
+    _ui.lePassword->setPlaceholderText(QApplication::translate("OwncloudSetupPage", "secret", 0, QApplication::UnicodeUTF8));
+#endif
+}
+
+void OwncloudSetupPage::setOCUrl( const QString& newUrl )
+{
+    QString url( newUrl );
+    if( url.isEmpty() ) {
+        _ui.leUrl->clear();
+        return;
+    }
+    if( url.startsWith( QLatin1String("https"))) {
+        _ui.cbSecureConnect->setChecked( true );
+        url.remove(0,5);
+    } else if( url.startsWith( QLatin1String("http"))) {
+        _ui.cbSecureConnect->setChecked( false );
+        url.remove(0,4);
+    }
+    if( url.startsWith( QLatin1String("://"))) url.remove(0,3);
+
+    _ui.leUrl->setText( url );
+}
+
+void OwncloudSetupPage::setupCustomization()
+{
+    // set defaults for the customize labels.
+    _ui.sideLabel->setText( QString() );
+    _ui.sideLabel->setFixedWidth(160);
+
+    _ui.topLabel->hide();
+    _ui.bottomLabel->hide();
+
+    MirallConfigFile cfg;
+
+    QVariant variant = cfg.customMedia( MirallConfigFile::oCSetupTop );
+    setupCustomMedia( variant, _ui.topLabel );
+    variant = cfg.customMedia( MirallConfigFile::oCSetupSide );
+    setupCustomMedia( variant, _ui.sideLabel );
+    variant = cfg.customMedia( MirallConfigFile::oCSetupBottom );
+    setupCustomMedia( variant, _ui.bottomLabel );
+
+    QString fixUrl = cfg.customMedia( MirallConfigFile::oCSetupFixUrl ).toString();
+    if( !fixUrl.isEmpty() ) {
+        setOCUrl( fixUrl );
+        _ui.leUrl->setEnabled( false );
+        _ui.cbSecureConnect->hide();
+    }
+}
+
+void OwncloudSetupPage::setupCustomMedia( QVariant variant, QLabel *label )
+{
+    if( ! label ) return;
+
+    QPixmap pix = variant.value<QPixmap>();
+    if( ! pix.isNull() ) {
+        label->setPixmap(pix);
+        label->setAlignment( Qt::AlignTop | Qt::AlignRight );
+        label->setVisible(true);
+    } else {
+        QString str = variant.toString();
+        if( !str.isEmpty() ) {
+            label->setText( str );
+            label->setTextFormat( Qt::RichText );
+            label->setVisible(true);
+            label->setOpenExternalLinks(true);
+        }
+    }
+}
+
+void OwncloudSetupPage::slotPwdStoreChanged( int state )
+{
+    _ui.lePassword->setEnabled( state == Qt::Unchecked );
+    emit completeChanged();
+}
+
+void OwncloudSetupPage::slotSecureConChanged( int state )
+{
+    if( state == Qt::Checked ) {
+        _ui.protocolLabel->setText(QLatin1String("https://"));
+    } else {
+        _ui.protocolLabel->setText(QLatin1String("http://"));
+    }
+}
+
+bool OwncloudSetupPage::isComplete() const
+{
+    if( _ui.leUrl->text().isEmpty() ) return false;
+
+    if( _ui.cbNoPasswordStore->checkState() == Qt::Checked ) {
+        return !(_ui.leUsername->text().isEmpty());
+    }
+    return !(_ui.leUsername->text().isEmpty() || _ui.lePassword->text().isEmpty() );
+}
+
+void OwncloudSetupPage::initializePage()
+{
+    QString user = qgetenv( "USER" );
+    _ui.leUsername->setText( user );
+}
+
+int OwncloudSetupPage::nextId() const
+{
+  return OwncloudWizard::Page_Install;
+}
+
+// ======================================================================
 
 OwncloudWizardSelectTypePage::OwncloudWizardSelectTypePage()
 {
@@ -287,15 +421,20 @@ void OwncloudWizardResultPage::showOCUrlLabel( const QString& url, bool show )
 OwncloudWizard::OwncloudWizard(QWidget *parent)
     : QWizard(parent)
 {
+#ifdef OWNCLOUD_CLIENT
+    setPage(Page_oCSetup,        new OwncloudSetupPage() );
+#else
     setPage(Page_SelectType,     new OwncloudWizardSelectTypePage() );
+    setPage(Page_OC_Credentials, new OwncloudCredentialsPage() );
+#endif
     setPage(Page_Create_OC,      new CreateAnOwncloudPage() );
     setPage(Page_FTP,            new OwncloudFTPAccessPage() );
-    setPage(Page_OC_Credentials, new OwncloudCredentialsPage() );
     setPage(Page_Install,        new OwncloudWizardResultPage() );
 
 #ifdef Q_WS_MAC
     setWizardStyle( QWizard::ModernStyle );
 #endif
+    setField("connectMyOC", true);
 
     connect( this, SIGNAL(currentIdChanged(int)), SLOT(slotCurrentPageChanged(int)));
 
@@ -354,8 +493,14 @@ void OwncloudWizard::appendToResultWidget( const QString& msg, LogType type )
 void OwncloudWizard::setOCUrl( const QString& url )
 {
   _oCUrl = url;
+#ifdef OWNCLOUD_CLIENT
+  OwncloudSetupPage *p = static_cast<OwncloudSetupPage*>(page(Page_oCSetup));
+#else
   OwncloudWizardSelectTypePage *p = static_cast<OwncloudWizardSelectTypePage*>(page( Page_SelectType ));
-  p->setOCUrl( url );
+#endif
+  if( p )
+      p->setOCUrl( url );
+
 }
 
 } // end namespace

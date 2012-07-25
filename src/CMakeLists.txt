@@ -11,6 +11,7 @@ mirall/folderwizardnetworkpage.ui
 mirall/folderwizardowncloudpage.ui
 mirall/statusdialog.ui
 mirall/owncloudwizardselecttypepage.ui
+mirall/owncloudsetuppage.ui
 mirall/createanowncloudpage.ui
 mirall/owncloudftpaccesspage.ui
 mirall/owncloudwizardresultpage.ui

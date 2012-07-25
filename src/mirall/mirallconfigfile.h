@@ -17,6 +17,7 @@
 
 #include <QString>
 
+class QVariant;
 
 namespace Mirall {
 
@@ -25,6 +26,13 @@ class MirallConfigFile
 {
 public:
     MirallConfigFile( const QString& appendix = QString() );
+
+    enum customMediaType {
+        oCSetupTop,
+        oCSetupSide,
+        oCSetupBottom,
+        oCSetupFixUrl
+    };
 
     QString configPath() const;
     QString configFile() const;
@@ -50,6 +58,8 @@ public:
 
     QString ownCloudVersion() const;
     void setOwnCloudVersion( const QString& );
+
+    QVariant customMedia( customMediaType );
 
     // max count of lines in the log window
     int  maxLogLines() const;
