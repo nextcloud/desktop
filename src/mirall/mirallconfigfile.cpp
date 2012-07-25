@@ -35,6 +35,9 @@
 #define DEFAULT_LOCAL_POLL_INTERVAL  10000 // default local poll time in milliseconds
 #define DEFAULT_POLL_TIMER_EXEED     10
 
+#define OC_ORGANIZATION QLatin1String("ownCloud")
+#define OC_APPLICATION  QLatin1String("ownCloudClient")
+
 namespace Mirall {
 
 QString MirallConfigFile::_passwd;
@@ -446,7 +449,10 @@ QVariant MirallConfigFile::customMedia( customMediaType type )
     }
 
     if( !key.isEmpty() ) {
-        QSettings settings( configFile(), QSettings::IniFormat );
+        QSettings settings( QSettings::IniFormat, QSettings::SystemScope, OC_ORGANIZATION, OC_APPLICATION );
+        QString cfg = settings.fileName();
+        qDebug() << "Trying to read config ini file at " << cfg;
+
         settings.setIniCodec( "UTF-8" );
         settings.beginGroup(QLatin1String("GUICustomize"));
         QString val = settings.value( key, QString() ).toString();

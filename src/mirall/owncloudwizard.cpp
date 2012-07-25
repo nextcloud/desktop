@@ -102,6 +102,9 @@ void OwncloudSetupPage::setupCustomization()
         setOCUrl( fixUrl );
         _ui.leUrl->setEnabled( false );
         _ui.cbSecureConnect->hide();
+        _ui.leUrl->hide();
+        _ui.protocolLabel->hide();
+        _ui.serverAddressLabel->hide();
     }
 }
 
