@@ -84,7 +84,9 @@ int FolderMan::setupKnownFolders()
 
   foreach ( const QString& alias, list ) {
     Folder *f = setupFolderFromConfigFile( alias );
-    emit( folderSyncStateChange( f->alias() ) );
+    if( f ) {
+        emit( folderSyncStateChange( f->alias() ) );
+    }
   }
   // return the number of valid folders.
   return _folderMap.size();
