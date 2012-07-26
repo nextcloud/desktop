@@ -81,13 +81,6 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="_ButtonLog">
-       <property name="text">
-        <string>open Log Window...</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <spacer name="verticalSpacer">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
@@ -141,17 +134,6 @@
     </widget>
    </item>
   </layout>
-  <zorder>label</zorder>
-  <zorder>_ButtonAdd</zorder>
-  <zorder>_ButtonRemove</zorder>
-  <zorder>_ButtonFetch</zorder>
-  <zorder>_ButtonPush</zorder>
-  <zorder>_ButtonEnable</zorder>
-  <zorder>_ButtonInfo</zorder>
-  <zorder>line</zorder>
-  <zorder>_ButtonClose</zorder>
-  <zorder>_ButtonLog</zorder>
-  <zorder>_ocUrlLabel</zorder>
  </widget>
  <resources/>
  <connections/>

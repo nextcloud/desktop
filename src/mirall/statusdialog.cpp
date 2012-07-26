@@ -191,7 +191,6 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
   connect(_ButtonEnable, SIGNAL(clicked()), this, SLOT(slotEnableFolder()));
   connect(_ButtonInfo,   SIGNAL(clicked()), this, SLOT(slotInfoFolder()));
   connect(_ButtonAdd,    SIGNAL(clicked()), this, SLOT(slotAddSync()));
-  connect(_ButtonLog,    SIGNAL(clicked()), SIGNAL(openLogBrowser()));
 
   _ButtonRemove->setEnabled(false);
   _ButtonFetch->setEnabled(false);
