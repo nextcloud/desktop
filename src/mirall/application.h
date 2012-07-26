@@ -108,7 +108,6 @@ private:
     FolderMan *_folderMan;
     Theme *_theme;
     QSignalMapper *_folderOpenActionMapper;
-    ownCloudInfo  *_ocInfo;
     UpdateDetector *_updateDetector;
     QMap<Folder*, QString> _overallStatusStrings;
     LogBrowser *_logBrowser;

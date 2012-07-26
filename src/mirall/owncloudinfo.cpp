@@ -28,30 +28,39 @@
 namespace Mirall
 {
 
-QNetworkAccessManager* ownCloudInfo::_manager = 0;
-SslErrorDialog *ownCloudInfo::_sslErrorDialog = 0;
-bool            ownCloudInfo::_certsUntrusted = false;
-int             ownCloudInfo::_authAttempts   = 0;
-QHash<QNetworkReply*, QString> ownCloudInfo::_configHandleMap;
+ownCloudInfo *ownCloudInfo::_instance = 0;
+
+ownCloudInfo* ownCloudInfo::instance()
+{
+  static QMutex mutex;
+  if (!_instance)
+  {
+    mutex.lock();
+
+    if (!_instance) {
+      _instance = new ownCloudInfo;
+
+    }
+    mutex.unlock();
+  }
+
+  return _instance;
+}
 
 ownCloudInfo::ownCloudInfo( const QString& connectionName, QObject *parent ) :
     QObject(parent)
 {
     if( connectionName.isEmpty() )
-        _connection = QString::fromLocal8Bit( "ownCloud");
+        _connection = QLatin1String( "ownCloud");
     else
         _connection = connectionName;
 
-    if( ! _manager ) {
-        qDebug() << "Creating static NetworkAccessManager";
-        _manager = new QNetworkAccessManager;
-    }
-
+    _manager = new QNetworkAccessManager;
     connect( _manager, SIGNAL( sslErrors(QNetworkReply*, QList<QSslError>)),
-             this, SLOT(slotSSLFailed(QNetworkReply*, QList<QSslError>)) );
+             _instance, SLOT(slotSSLFailed(QNetworkReply*, QList<QSslError>)) );
 
     connect( _manager, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
-             SLOT(slotAuthentication(QNetworkReply*,QAuthenticator*)));
+             _instance, SLOT(slotAuthentication(QNetworkReply*,QAuthenticator*)));
 }
 
 ownCloudInfo::~ownCloudInfo()
