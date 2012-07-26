@@ -35,6 +35,9 @@
 #define DEFAULT_LOCAL_POLL_INTERVAL  10000 // default local poll time in milliseconds
 #define DEFAULT_POLL_TIMER_EXEED     10
 
+#define OC_ORGANIZATION QLatin1String("ownCloud")
+#define OC_APPLICATION  QLatin1String("ownCloudClient")
+
 namespace Mirall {
 
 QString MirallConfigFile::_passwd;
@@ -426,6 +429,47 @@ void MirallConfigFile::acceptCustomConfig()
         }
     }
     QFile::remove( targetBak );
+}
+
+QVariant MirallConfigFile::customMedia( customMediaType type )
+{
+    QVariant re;
+    QString key;
+
+    if( type == oCSetupTop ) {
+        key = QLatin1String("oCSetupTop");
+    } else if( type == oCSetupSide ) {
+        key = QLatin1String("oCSetupSide");
+    } else if( type == oCSetupBottom) {
+        key = QLatin1String("oCSetupBottom");
+    } else if( type == oCSetupFixUrl ) {
+        key = QLatin1String("oCSetupFixUrl");
+    } else if( type == oCSetupResultTop ) {
+        key = QLatin1String("oCSetupResultTop");
+    } else {
+        qDebug() << "Wrong media type.";
+    }
+
+    if( !key.isEmpty() ) {
+        QSettings settings( QSettings::IniFormat, QSettings::SystemScope, OC_ORGANIZATION, OC_APPLICATION );
+        QString cfg = settings.fileName();
+        qDebug() << "Trying to read config ini file at " << cfg;
+
+        settings.setIniCodec( "UTF-8" );
+        settings.beginGroup(QLatin1String("GUICustomize"));
+        QString val = settings.value( key, QString() ).toString();
+
+        if( !val.isEmpty() ) {
+            QPixmap pix( val );
+            if( pix.isNull() ) {
+                // pixmap loading hasn't succeeded. We take the text instead.
+                re.setValue( val );
+            } else {
+                re.setValue( pix );
+            }
+        }
+    }
+    return re;
 }
 
 }
