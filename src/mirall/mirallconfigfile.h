@@ -28,10 +28,11 @@ public:
     MirallConfigFile( const QString& appendix = QString() );
 
     enum customMediaType {
-        oCSetupTop,
+        oCSetupTop,      // ownCloud connect page
         oCSetupSide,
         oCSetupBottom,
-        oCSetupFixUrl
+        oCSetupFixUrl,
+        oCSetupResultTop // ownCloud connect result page
     };
 
     QString configPath() const;

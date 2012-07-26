@@ -53,7 +53,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="leUrl"/>
+      <widget class="QLineEdit" name="leUrl">
+       <property name="toolTip">
+        <string>Enter the url of the ownCloud you want to connect to (without http or https).</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -100,7 +104,11 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QLineEdit" name="leUsername"/>
+          <widget class="QLineEdit" name="leUsername">
+           <property name="toolTip">
+            <string>Enter the ownCloud username.</string>
+           </property>
+          </widget>
          </item>
          <item row="1" column="0">
           <widget class="QLabel" name="label_4">
@@ -129,6 +137,9 @@
        </item>
        <item>
         <widget class="QCheckBox" name="cbNoPasswordStore">
+         <property name="toolTip">
+          <string>Do not allow the local storage of the password.</string>
+         </property>
          <property name="text">
           <string>&amp;do not store Password on local machine.</string>
          </property>
@@ -153,7 +164,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>344</width>
-       <height>19</height>
+       <height>1</height>
       </size>
      </property>
     </spacer>

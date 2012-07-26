@@ -444,6 +444,8 @@ QVariant MirallConfigFile::customMedia( customMediaType type )
         key = QLatin1String("oCSetupBottom");
     } else if( type == oCSetupFixUrl ) {
         key = QLatin1String("oCSetupFixUrl");
+    } else if( type == oCSetupResultTop ) {
+        key = QLatin1String("oCSetupResultTop");
     } else {
         qDebug() << "Wrong media type.";
     }

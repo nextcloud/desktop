@@ -46,7 +46,6 @@ protected slots:
   void slotPwdStoreChanged( int );
   void slotSecureConChanged( int );
   void setupCustomization();
-  void setupCustomMedia( QVariant, QLabel* );
 private:
   Ui_OwncloudSetupPage _ui;
 
@@ -74,6 +73,8 @@ public:
     OwncloudWizard(QWidget *parent = 0L);
 
     void setOCUrl( const QString& );
+
+    void setupCustomMedia( QVariant, QLabel* );
 
 public slots:
     void appendToResultWidget( const QString& msg, LogType type = LogParagraph );
@@ -185,6 +186,9 @@ public:
 public slots:
   void appendResultText( const QString&, OwncloudWizard::LogType type = OwncloudWizard::LogParagraph );
   void showOCUrlLabel( const QString&, bool );
+
+protected:
+  void setupCustomization();
 
 private:
   Ui_OwncloudWizardResultPage _ui;

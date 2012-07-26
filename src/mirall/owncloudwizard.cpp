@@ -30,6 +30,26 @@
 namespace Mirall
 {
 
+void setupCustomMedia( QVariant variant, QLabel *label )
+{
+    if( ! label ) return;
+
+    QPixmap pix = variant.value<QPixmap>();
+    if( ! pix.isNull() ) {
+        label->setPixmap(pix);
+        label->setAlignment( Qt::AlignTop | Qt::AlignRight );
+        label->setVisible(true);
+    } else {
+        QString str = variant.toString();
+        if( !str.isEmpty() ) {
+            label->setText( str );
+            label->setTextFormat( Qt::RichText );
+            label->setVisible(true);
+            label->setOpenExternalLinks(true);
+        }
+    }
+}
+
 // ======================================================================
 
 
@@ -105,26 +125,6 @@ void OwncloudSetupPage::setupCustomization()
         _ui.leUrl->hide();
         _ui.protocolLabel->hide();
         _ui.serverAddressLabel->hide();
-    }
-}
-
-void OwncloudSetupPage::setupCustomMedia( QVariant variant, QLabel *label )
-{
-    if( ! label ) return;
-
-    QPixmap pix = variant.value<QPixmap>();
-    if( ! pix.isNull() ) {
-        label->setPixmap(pix);
-        label->setAlignment( Qt::AlignTop | Qt::AlignRight );
-        label->setVisible(true);
-    } else {
-        QString str = variant.toString();
-        if( !str.isEmpty() ) {
-            label->setText( str );
-            label->setTextFormat( Qt::RichText );
-            label->setVisible(true);
-            label->setOpenExternalLinks(true);
-        }
     }
 }
 
@@ -372,6 +372,8 @@ OwncloudWizardResultPage::OwncloudWizardResultPage()
     // no fields to register.
     _ui.resultTextEdit->setAcceptRichText(true);
     _ui.ocLinkLabel->setVisible( false );
+
+    setupCustomization();
 }
 
 OwncloudWizardResultPage::~OwncloudWizardResultPage()
@@ -413,6 +415,18 @@ void OwncloudWizardResultPage::showOCUrlLabel( const QString& url, bool show )
   } else {
     _ui.ocLinkLabel->setVisible( false );
   }
+}
+
+void OwncloudWizardResultPage::setupCustomization()
+{
+    // set defaults for the customize labels.
+    _ui.topLabel->setText( QString() );
+    _ui.topLabel->hide();
+
+    MirallConfigFile cfg;
+
+    QVariant variant = cfg.customMedia( MirallConfigFile::oCSetupResultTop );
+    setupCustomMedia( variant, _ui.topLabel );
 }
 
 // ======================================================================
