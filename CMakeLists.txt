@@ -75,7 +75,9 @@ file( GLOB TRANS_FILES ${CMAKE_SOURCE_DIR}/translations/mirall_*.ts)
 set(TRANSLATIONS ${TRANS_FILES})
 
 add_subdirectory(src)
-# add_subdirectory(test)
+if(UNIT_TESTING)
+    add_subdirectory(test)
+endif(UNIT_TESTING)
 
 if(BUILD_OWNCLOUD_OSX_BUNDLE)
     install( FILES exclude.lst DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources )
