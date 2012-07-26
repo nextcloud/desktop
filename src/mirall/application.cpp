@@ -72,7 +72,6 @@ Application::Application(int &argc, char **argv) :
     _networkMgr(new QNetworkConfigurationManager(this)),
 #endif
     _contextMenu(0),
-    _ocInfo(0),
     _updateDetector(0),
     _helpOnly(false)
 {
@@ -91,12 +90,12 @@ Application::Application(int &argc, char **argv) :
     setupLogBrowser();
     processEvents();
 
-    QTranslator *qtTranslator = new QTranslator;
+    QTranslator *qtTranslator = new QTranslator(this);
     qtTranslator->load("qt_" + QLocale::system().name(),
                       QLibraryInfo::location(QLibraryInfo::TranslationsPath));
     installTranslator(qtTranslator);
 
-    QTranslator *mirallTranslator = new QTranslator;
+    QTranslator *mirallTranslator = new QTranslator(this);
 #ifdef Q_OS_LINUX
     // FIXME - proper path!
     mirallTranslator->load("mirall_" + QLocale::system().name(), QLatin1String("/usr/share/mirall/i18n/"));
@@ -124,17 +123,16 @@ Application::Application(int &argc, char **argv) :
 
     _folderWizard = new FolderWizard( 0, _theme );
 
-    _ocInfo = new ownCloudInfo( QString(), this );
-    connect( _ocInfo,SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
+    connect( ownCloudInfo::instance(),SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
              SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
 
-    connect( _ocInfo,SIGNAL(noOwncloudFound(QNetworkReply*)),
+    connect( ownCloudInfo::instance(),SIGNAL(noOwncloudFound(QNetworkReply*)),
              SLOT(slotNoOwnCloudFound(QNetworkReply*)));
 
-    connect( _ocInfo,SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
+    connect( ownCloudInfo::instance(),SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
              this,SLOT(slotAuthCheck(QString,QNetworkReply*)));
 
-    _owncloudSetupWizard = new OwncloudSetupWizard( _folderMan, _theme );
+    _owncloudSetupWizard = new OwncloudSetupWizard( _folderMan, _theme, this );
     connect( _owncloudSetupWizard, SIGNAL(ownCloudWizardDone(int)), SLOT(slotStartFolderSetup(int)));
 
     _statusDialog = new StatusDialog( _theme );
@@ -187,7 +185,6 @@ Application::~Application()
     delete _networkMgr;
 #endif
     delete _folderMan;
-    delete _ocInfo;
     delete _tray;
 }
 
@@ -201,8 +198,8 @@ void Application::slotStartUpdateDetector()
 void Application::slotStartFolderSetup( int result )
 {
     if( result == QDialog::Accepted ) {
-        if( _ocInfo->isConfigured() ) {
-            _ocInfo->checkInstallation();
+        if( ownCloudInfo::instance()->isConfigured() ) {
+            ownCloudInfo::instance()->checkInstallation();
         } else {
             QMessageBox::warning(0, tr("No ownCloud Configuration"),
                                  tr("<p>No server connection has been configured for this ownCloud client.</p>"
@@ -247,7 +244,7 @@ void Application::slotNoOwnCloudFound( QNetworkReply* reply )
 void Application::slotCheckAuthentication()
 {
     qDebug() << "# checking for authentication settings.";
-    _ocInfo->getRequest("/", true ); // this call needs to be authenticated.
+    ownCloudInfo::instance()->getRequest("/", true ); // this call needs to be authenticated.
     // simply GET the webdav root, will fail if credentials are wrong.
     // continue in slotAuthCheck here :-)
 }
@@ -675,7 +672,7 @@ void Application::computeOverallSyncStatus()
                 switch( syncStatus ) {
                 case SyncResult::Undefined:
                     if ( overallResult.status() != SyncResult::Error ) {
-                        overallResult = SyncResult::Error;
+                      overallResult.setStatus(SyncResult::Error);
                     }
                     folderMessage = tr( "Undefined State." );
                     break;

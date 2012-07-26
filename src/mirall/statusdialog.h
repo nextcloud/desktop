@@ -108,8 +108,7 @@ private:
     QStandardItemModel *_model;
     QUrl   _OCUrl;
     Theme *_theme;
-    ownCloudInfo *_ownCloudInfo;
 };
-};
+}
 
 #endif // STATUSDIALOG_H

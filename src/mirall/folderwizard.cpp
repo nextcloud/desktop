@@ -173,11 +173,9 @@ FolderWizardTargetPage::FolderWizardTargetPage()
     _timer->setSingleShot( true );
     connect( _timer, SIGNAL(timeout()), SLOT(slotTimerFires()));
 
-    _ownCloudDirCheck = new ownCloudInfo;
-
-    connect( _ownCloudDirCheck, SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
+    connect( ownCloudInfo::instance(), SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
              SLOT(slotDirCheckReply(QString,QNetworkReply*)));
-    connect( _ownCloudDirCheck, SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),
+    connect( ownCloudInfo::instance(), SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),
              SLOT(slotCreateRemoteFolderFinished( QNetworkReply::NetworkError )));
 
 #if QT_Version >= 0x040700
@@ -205,7 +203,7 @@ void FolderWizardTargetPage::slotTimerFires()
 {
     const QString folder = _ui.OCFolderLineEdit->text();
     qDebug() << "Querying folder " << folder;
-    _ownCloudDirCheck->getWebDAVPath( folder );
+    ownCloudInfo::instance()->getWebDAVPath( folder );
 }
 
 void FolderWizardTargetPage::slotDirCheckReply(const QString &url, QNetworkReply *reply)
@@ -229,7 +227,7 @@ void FolderWizardTargetPage::slotCreateRemoteFolder()
     if( folder.isEmpty() ) return;
 
     qDebug() << "creating folder on ownCloud: " << folder;
-    _ownCloudDirCheck->mkdirRequest( folder );
+    ownCloudInfo::instance()->mkdirRequest( folder );
 }
 
 void FolderWizardTargetPage::slotCreateRemoteFolderFinished( QNetworkReply::NetworkError error )
@@ -249,7 +247,6 @@ void FolderWizardTargetPage::slotCreateRemoteFolderFinished( QNetworkReply::Netw
 
 FolderWizardTargetPage::~FolderWizardTargetPage()
 {
-    delete _ownCloudDirCheck;
 }
 
 bool FolderWizardTargetPage::isComplete() const
@@ -286,7 +283,7 @@ void FolderWizardTargetPage::initializePage()
     showWarn();
 
     /* check the owncloud configuration file and query the ownCloud */
-    ownCloudInfo *ocInfo = new ownCloudInfo( QString(), this );
+    ownCloudInfo *ocInfo = ownCloudInfo::instance();
     if( ocInfo->isConfigured() ) {
       connect(ocInfo,SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
       connect(ocInfo,SIGNAL(noOwncloudFound(QNetworkReply*)),SLOT(slotNoOwnCloudFound(QNetworkReply*)));
@@ -463,7 +460,6 @@ FolderWizard::FolderWizard( QWidget *parent, Theme *theme )
 #ifdef Q_WS_MAC
     setWizardStyle( QWizard::ModernStyle );
 #endif
-    _ocInfo = new ownCloudInfo;
 }
 
 void FolderWizard::setFolderMap( Folder::Map *fm)

@@ -95,7 +95,6 @@ private:
     OwncloudWizard *_ocWizard;
     FolderMan      *_folderMan;
     QProcess       *_process;
-    ownCloudInfo   *_ocInfo;
 
     QString         _configHandle;
     QString         _localFolder;

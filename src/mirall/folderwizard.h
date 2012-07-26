@@ -156,8 +156,6 @@ public:
 private:
 
     FolderWizardSourcePage *_folderWizardSourcePage;
-
-    ownCloudInfo *_ocInfo;
 };
 
 

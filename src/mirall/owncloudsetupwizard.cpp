@@ -28,7 +28,6 @@ class Theme;
 
 OwncloudSetupWizard::OwncloudSetupWizard( FolderMan *folderMan, Theme *theme, QObject *parent ) :
     QObject( parent ),
-    _ocInfo(0),
     _folderMan(folderMan)
 {
     _process = new QProcess( this );
@@ -71,15 +70,14 @@ OwncloudSetupWizard::OwncloudSetupWizard( FolderMan *folderMan, Theme *theme, QO
     _ocWizard->setWindowTitle( tr("%1 Connection Wizard").arg( theme ? theme->appName() : "Mirall" ) );
 
     // create the ocInfo object
-    _ocInfo = new ownCloudInfo;
-    connect(_ocInfo,SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
-    connect(_ocInfo,SIGNAL(noOwncloudFound(QNetworkReply*)),SLOT(slotNoOwnCloudFound(QNetworkReply*)));
-    connect(_ocInfo,SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
+    connect(ownCloudInfo::instance(),SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
+    connect(ownCloudInfo::instance(),SIGNAL(noOwncloudFound(QNetworkReply*)),SLOT(slotNoOwnCloudFound(QNetworkReply*)));
+    connect(ownCloudInfo::instance(),SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
 }
 
 OwncloudSetupWizard::~OwncloudSetupWizard()
 {
-    delete _ocInfo;
+
 }
 
 // Method executed when the user ends the wizard, either with 'accept' or 'reject'.
@@ -114,7 +112,7 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
 
     // clear the custom config handle
     _configHandle.clear();
-    _ocInfo->setCustomConfigHandle( QString() );
+    ownCloudInfo::instance()->setCustomConfigHandle( QString() );
 
     // notify others.
     emit ownCloudWizardDone( result );
@@ -143,11 +141,11 @@ void OwncloudSetupWizard::testOwnCloudConnect()
                                  _ocWizard->field("PwdNoLocalStore").toBool() );
 
     // now start ownCloudInfo to check the connection.
-    _ocInfo->setCustomConfigHandle( _configHandle );
-    if( _ocInfo->isConfigured() ) {
+    ownCloudInfo::instance()->setCustomConfigHandle( _configHandle );
+    if( ownCloudInfo::instance()->isConfigured() ) {
         // reset the SSL Untrust flag to let the SSL dialog appear again.
-        _ocInfo->resetSSLUntrust();
-        _ocInfo->checkInstallation();
+        ownCloudInfo::instance()->resetSSLUntrust();
+        ownCloudInfo::instance()->checkInstallation();
     } else {
         qDebug() << "   ownCloud seems not to be configured, can not start test connect.";
     }
@@ -389,7 +387,7 @@ bool OwncloudSetupWizard::createRemoteFolder( const QString& folder )
 
     qDebug() << "creating folder on ownCloud: " << folder;
 
-    _ocInfo->mkdirRequest( folder );
+    ownCloudInfo::instance()->mkdirRequest( folder );
 
     return true;
 }

@@ -33,8 +33,8 @@ class ownCloudInfo : public QObject
 {
     Q_OBJECT
 public:
-    explicit ownCloudInfo( const QString& = QString(), QObject *parent = 0);
-    ~ownCloudInfo();
+
+  static ownCloudInfo *instance();
 
     bool isConfigured();
 
@@ -96,20 +96,25 @@ protected slots:
 #endif
 
 private:
+    explicit ownCloudInfo( const QString& = QString(), QObject *parent = 0);
+    ~ownCloudInfo();
+
     void setupHeaders(QNetworkRequest &req, quint64 size );
 #if QT46_IMPL
 #else
     QNetworkReply* davRequest(const QString&, QNetworkRequest&, QByteArray* );
 #endif
 
-    static QNetworkAccessManager  *_manager;
+    static ownCloudInfo           *_instance;
+
+    QNetworkAccessManager         *_manager;
     QString                        _connection;
     QString                        _configHandle;
     QHash<QNetworkReply*, QString> _directories;
-    static QHash<QNetworkReply*, QString> _configHandleMap;
-    static SslErrorDialog         *_sslErrorDialog;
-    static bool                    _certsUntrusted;
-    static int                     _authAttempts;
+    QHash<QNetworkReply*, QString> _configHandleMap;
+    SslErrorDialog                *_sslErrorDialog;
+    bool                           _certsUntrusted;
+    int                            _authAttempts;
 };
 
 };

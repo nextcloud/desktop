@@ -167,8 +167,7 @@ bool FolderViewDelegate::editorEvent ( QEvent * event, QAbstractItemModel * mode
 
 StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
     QDialog(parent),
-    _theme( theme ),
-    _ownCloudInfo(0)
+    _theme( theme )
 {
   setupUi( this  );
   setWindowTitle( _theme->appName() + QString (" %1" ).arg( _theme->version() ) );
@@ -200,11 +199,9 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
   _ButtonInfo->setEnabled(false);
   _ButtonAdd->setEnabled(true);
 
-  _ownCloudInfo = new ownCloudInfo();
-
-  connect(_ownCloudInfo, SIGNAL(ownCloudInfoFound(const QString&, const QString&, const QString&, const QString&)),
+  connect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(const QString&, const QString&, const QString&, const QString&)),
           this, SLOT(slotOCInfo( const QString&, const QString&, const QString&, const QString& )));
-  connect(_ownCloudInfo, SIGNAL(noOwncloudFound(QNetworkReply*)),
+  connect(ownCloudInfo::instance(), SIGNAL(noOwncloudFound(QNetworkReply*)),
           this, SLOT(slotOCInfoFail(QNetworkReply*)));
 
 #if defined Q_WS_X11 
@@ -221,7 +218,6 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
 
 StatusDialog::~StatusDialog()
 {
-    delete _ownCloudInfo;
 }
 
 void StatusDialog::slotFolderActivated( const QModelIndex& indx )
@@ -403,10 +399,10 @@ void StatusDialog::slotAddSync()
 
 void StatusDialog::slotCheckConnection()
 {
-    if( _ownCloudInfo->isConfigured() ) {
+    if( ownCloudInfo::instance()->isConfigured() ) {
         _ocUrlLabel->setText( tr("Checking ownCloud connection..."));
         qDebug() << "Check status.php from statusdialog.";
-        _ownCloudInfo->checkInstallation();
+        ownCloudInfo::instance()->checkInstallation();
     } else {
         // ownCloud is not yet configured.
         _ocUrlLabel->setText( tr("No ownCloud connection configured."));
