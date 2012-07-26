@@ -4,7 +4,11 @@ add_subdirectory(std)
 
 find_package(SQLite3 REQUIRED)
 find_package(Iniparser REQUIRED)
-find_package(OpenSSL REQUIRED)
+if(CMAKE_CROSSCOMPILING)
+    find_package(OpenSSLCross REQUIRED)
+else()
+    find_package(OpenSSL REQUIRED)
+endif()
 
 set(CSYNC_PUBLIC_INCLUDE_DIRS
   ${CMAKE_CURRENT_SOURCE_DIR}
