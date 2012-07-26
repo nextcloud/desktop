@@ -93,11 +93,13 @@ protected slots:
     void slotFind();
     void search( const QString& );
     void slotSave();
+    void slotClearLog();
 
 private:
     LogWidget *_logWidget;
     QLineEdit *_findTermEdit;
     QPushButton *_saveBtn;
+    QPushButton *_clearBtn;
     QLabel      *_statusLabel;
 
     QFile       _logFile;

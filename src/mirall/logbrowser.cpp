@@ -156,6 +156,13 @@ LogBrowser::LogBrowser(QWidget *parent) :
 
     mainLayout->addWidget( btnbox );
 
+    // clear button
+    _clearBtn = new QPushButton;
+    _clearBtn->setText( tr("Clear") );
+    _clearBtn->setToolTip( tr("Clear the log display.") );
+    btnbox->addButton(_clearBtn, QDialogButtonBox::ActionRole);
+    connect( _clearBtn, SIGNAL(clicked()), this, SLOT(slotClearLog()));
+
     // save Button
     _saveBtn = new QPushButton;
     _saveBtn->setText( tr("S&ave") );
@@ -259,6 +266,11 @@ void LogBrowser::slotSave()
     }
     _saveBtn->setEnabled(true);
 
+}
+
+void LogBrowser::slotClearLog()
+{
+    _logWidget->clear();
 }
 
 } // namespace
