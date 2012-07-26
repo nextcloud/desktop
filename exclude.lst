@@ -13,5 +13,11 @@
 desktop.ini
 Thumbs.db
 
+*.kate-swp
+*.aux
+*.nav
+*.out
+*.toc
+
 
 
