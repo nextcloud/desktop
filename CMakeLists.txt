@@ -25,7 +25,7 @@ find_package(Csync)
 find_package(INotify)
 
 set(WITH_CSYNC CSYNC_FOUND)
-set(USE_INOTIFY INOTIFY_FOUND)
+set(USE_INOTIFY ${INOTIFY_FOUND})
 
 configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
@@ -69,6 +69,8 @@ enable_testing()
 # but if that fails because cmake is too old, uncomment this here if you want to build
 # owncloud.
 # add_definitions(-DOWNCLOUD_CLIENT)
+add_definitions(-DUNICODE)
+add_definitions(-D_UNICODE)
 
 # Handle Translations, pick all mirall_* files from trans directory.
 file( GLOB TRANS_FILES ${CMAKE_SOURCE_DIR}/translations/mirall_*.ts)

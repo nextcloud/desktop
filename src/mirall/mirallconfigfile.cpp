@@ -69,12 +69,12 @@ QString MirallConfigFile::excludeFile() const
     // Check alternative places...
 #ifdef Q_OS_WIN32
     /* For win32, try to copy the conf file from the directory from where the app was started. */
-    char buf[MAX_PATH+1];
+    TCHAR buf[MAX_PATH+1];
     int  len = 0;
 
     /* Get the path from where the application was started */
-    len = GetModuleFileName(NULL, buf, MAX_PATH);
-    QString exePath = QString::fromLocal8Bit(buf);
+    len = GetModuleFileNameW(NULL,  buf, MAX_PATH);
+    QString exePath = QString::fromUtf16((ushort*)buf);
     exePath.remove("owncloud.exe");
     fi.setFile(exePath, exclFile );
 #endif
