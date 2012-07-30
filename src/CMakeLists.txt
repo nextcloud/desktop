@@ -19,6 +19,36 @@ mirall/owncloudcredentialspage.ui
 mirall/sslerrorsdialog.ui
 )
 
+set(3rdparty_SRC
+3rdparty/qtsingleapplication/qtsingleapplication.cpp
+3rdparty/qtsingleapplication/qtlocalpeer.h
+3rdparty/qtsingleapplication/qtlocalpeer.cpp
+3rdparty/qtsingleapplication/qtsingleapplication.h
+3rdparty/qtsingleapplication/qtsinglecoreapplication.h
+3rdparty/qtsingleapplication/qtsinglecoreapplication.cpp
+
+3rdparty/qtlockedfile/qtlockedfile.h
+3rdparty/qtlockedfile/qtlockedfile.cpp
+)
+
+set(3rdparty_HEADER
+3rdparty/qtsingleapplication/qtlocalpeer.h
+3rdparty/qtsingleapplication/qtsingleapplication.h
+3rdparty/qtsingleapplication/qtsinglecoreapplication.h
+)
+qt4_wrap_cpp(3rdparty_MOC ${3rdparty_HEADER})
+
+if(NOT WIN32) 
+	list(APPEND 3rdparty_SRC 3rdparty/qtlockedfile/qtlockedfile_unix.cpp)
+else()
+	list(APPEND 3rdparty_SRC 3rdparty/qtlockedfile/qtlockedfile_win.cpp )
+endif()
+
+set(3rdparty_INC
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/qtlockedfile
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/qtsingleapplication
+    )
+
 qt4_wrap_ui(mirall_UI_SRCS ${mirall_UI})
 
 set(libsync_SRCS
@@ -106,6 +136,7 @@ endif()
 
 # csync is required.
 include_directories(${CSYNC_INCLUDE_DIR}/csync ${CSYNC_INCLUDE_DIR} ${CMAKE_BINARY_DIR})
+include_directories(${3rdparty_INC})
 
 qt4_wrap_cpp(mirallMoc ${mirall_HEADERS})
 
@@ -119,6 +150,8 @@ set( final_src
     ${mirallMoc}
     ${mirall_HEADERS}
     ${mirall_I18N}
+    ${3rdparty_SRC}
+    ${3rdparty_MOC}
 )
 
 # add executable icon on windows and osx

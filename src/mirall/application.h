@@ -19,6 +19,8 @@
 #include <QSystemTrayIcon>
 #include <QNetworkReply>
 
+#include "qtsingleapplication.h"
+
 #include "mirall/syncresult.h"
 #include "mirall/folder.h"
 #include "mirall/logbrowser.h"
@@ -40,7 +42,7 @@ class OwncloudSetupWizard;
 class ownCloudInfo;
 class UpdateDetector;
 
-class Application : public QApplication
+class Application : public SharedTools::QtSingleApplication
 {
     Q_OBJECT
 public:
@@ -109,7 +111,7 @@ private:
     Theme *_theme;
     QSignalMapper *_folderOpenActionMapper;
     UpdateDetector *_updateDetector;
-    QMap<Folder*, QString> _overallStatusStrings;
+    QMap<QString, QString> _overallStatusStrings;
     LogBrowser *_logBrowser;
     bool        _helpOnly;
 };

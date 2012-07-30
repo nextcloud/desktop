@@ -66,7 +66,7 @@ void csyncLogCatcher(const char *msg)
 // ----------------------------------------------------------------------------------
 
 Application::Application(int &argc, char **argv) :
-    QApplication(argc, argv),
+    SharedTools::QtSingleApplication(argc, argv),
     _tray(0),
 #if QT_VERSION >= 0x040700
     _networkMgr(new QNetworkConfigurationManager(this)),
@@ -167,6 +167,9 @@ Application::Application(int &argc, char **argv) :
     setupSystemTray();
     processEvents();
 
+    QObject::connect( this, SIGNAL(messageReceived(QString)),
+                         this, SLOT(slotOpenStatus()) );
+
     QTimer::singleShot( 0, this, SLOT( slotStartFolderSetup() ));
 
     MirallConfigFile cfg;
@@ -220,6 +223,13 @@ void Application::slotOwnCloudFound( const QString& url, const QString& versionS
     // now check the authentication
     MirallConfigFile cfgFile;
     cfgFile.setOwnCloudVersion( version );
+
+    // disconnect from ownCloudInfo
+    disconnect( ownCloudInfo::instance(),SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
+                this, SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
+
+    disconnect( ownCloudInfo::instance(),SIGNAL(noOwncloudFound(QNetworkReply*)),
+                this, SLOT(slotNoOwnCloudFound(QNetworkReply*)));
 
     QTimer::singleShot( 0, this, SLOT( slotCheckAuthentication() ));
 }
@@ -277,6 +287,10 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
         }
         _actionAddFolder->setEnabled( true );
     }
+
+    // disconnect from ownCloud Info signals
+    disconnect( ownCloudInfo::instance(),SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
+             this,SLOT(slotAuthCheck(QString,QNetworkReply*)));
     setupContextMenu();
 }
 
@@ -524,8 +538,8 @@ void Application::slotRemoveFolder( const QString& alias )
         return;
     }
     Folder *f = _folderMan->folder(alias);
-    if( f && _overallStatusStrings.contains( f )) {
-        _overallStatusStrings.remove( f );
+    if( f && _overallStatusStrings.contains( f->alias() )) {
+        _overallStatusStrings.remove( f->alias() );
     }
 
     _folderMan->slotRemoveFolder( alias );
@@ -650,7 +664,7 @@ void Application::slotSyncStateChange( const QString& alias )
     }
     computeOverallSyncStatus();
 
-    qDebug() << "Sync state changed for folder " << alias << ": "  << result.localRunOnly();
+    qDebug() << "Sync state changed for folder " << alias << ": "  << result.statusString();
 }
 
 void Application::computeOverallSyncStatus()
@@ -661,8 +675,8 @@ void Application::computeOverallSyncStatus()
     QString trayMessage;
     Folder::Map map = _folderMan->map();
 
-    foreach ( Folder *syncedFolder, map ) {
-        QString folderMessage = _overallStatusStrings[syncedFolder];
+    foreach ( Folder *syncedFolder, map.values() ) {
+        QString folderMessage = _overallStatusStrings[syncedFolder->alias()];
 
         SyncResult folderResult = syncedFolder->syncResult();
         SyncResult::Status syncStatus = folderResult.status();
@@ -685,8 +699,10 @@ void Application::computeOverallSyncStatus()
                     overallResult.setStatus( SyncResult::SyncRunning );
                     break;
                 case SyncResult::Success:
-                    folderMessage = tr( "Last Sync was successful." );
-                    overallResult.setStatus( SyncResult::Success );
+                    if( overallResult.status() == SyncResult::Undefined ) {
+                        folderMessage = tr( "Last Sync was successful." );
+                        overallResult.setStatus( SyncResult::Success );
+                    }
                     break;
                 case SyncResult::Error:
                     overallResult.setStatus( SyncResult::Error );
@@ -707,8 +723,10 @@ void Application::computeOverallSyncStatus()
                 folderMessage = tr( "Sync is paused." );
             }
         }
-        if( folderMessage != _overallStatusStrings[syncedFolder] ) {
-            _overallStatusStrings[syncedFolder] = QString("Folder %1: %2").arg(syncedFolder->alias()).arg(folderMessage);
+        qDebug() << "Folder in overallStatus Message: " << syncedFolder << " with name " << syncedFolder->alias();
+        QString msg = QString("Folder %1: %2").arg(syncedFolder->alias()).arg(folderMessage);
+        if( msg != _overallStatusStrings[syncedFolder->alias()] ) {
+            _overallStatusStrings[syncedFolder->alias()] = msg;
         }
     }
 

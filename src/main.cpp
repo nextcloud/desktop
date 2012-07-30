@@ -19,7 +19,16 @@ int main(int argc, char **argv)
     Q_INIT_RESOURCE(mirall);
 
     Mirall::Application app(argc, argv);
+    app.initialize();
+   
+    qint64 pid = -1;
 
+    // if the application is already running, notify it.
+    if( app.isRunning() ) {
+        if( app.sendMessage( QLatin1String("A message to the master"), 5000, pid ))
+	   return 0;
+    }
+    // if help requested, show on command line and exit.
     if( ! app.giveHelp() )
         return app.exec();
 
