@@ -505,7 +505,7 @@ void Application::slotOpenStatus()
 
   // viel hilft viel ;-)
   if( raiseWidget ) {
-#if defined Q_WS_WIN
+#if defined(Q_WS_WIN) || defined (Q_OS_MAC)
     Qt::WindowFlags eFlags = raiseWidget->windowFlags();
     eFlags |= Qt::WindowStaysOnTopHint;
     raiseWidget->setWindowFlags(eFlags);
