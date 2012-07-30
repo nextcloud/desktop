@@ -48,6 +48,7 @@ public:
 
     void setStatus( Status );
     Status status() const;
+    QString statusString() const;
 
     bool localRunOnly() const;
     void setLocalRunOnly( bool );

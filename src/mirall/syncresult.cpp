@@ -34,6 +34,34 @@ SyncResult::Status SyncResult::status() const
     return _status;
 }
 
+QString SyncResult::statusString() const
+{
+    QString re;
+    Status stat = status();
+
+    switch( stat ){
+        case Undefined:
+            re = QLatin1String("Undefined");
+            break;
+        case NotYetStarted:
+            re = QLatin1String("Not yet Started");
+            break;
+        case SyncRunning:
+            re = QLatin1String("Sync Running");
+            break;
+        case Success:
+            re = QLatin1String("Success");
+            break;
+        case Error:
+            re = QLatin1String("Error");
+            break;
+        case SetupError:
+            re = QLatin1String("SetupError");
+            break;
+    }
+    return re;
+}
+
 void SyncResult::setStatus( Status stat )
 {
     _status = stat;
