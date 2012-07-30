@@ -24,6 +24,6 @@ else()
 endif()
 set( BUILD_OWNCLOUD_OSX_BUNDLE @BUILD_OWNCLOUD_OSX_BUNDLE@)
 if(APPLE AND NOT BUILD_OWNCLOUD_OSX_BUNDLE)
-    message( FATAL_ERROR "You're trying to build a bundle although you haven't built mirall in bundle mode.\n Add -DBUILD_OWNCLOUD_O")
+    message( FATAL_ERROR "You're trying to build a bundle although you haven't built mirall in bundle mode.\n Add -DBUILD_OWNCLOUD_OSX_BUNDLE=ON")
 endif()
 
