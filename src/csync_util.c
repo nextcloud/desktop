@@ -118,6 +118,7 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
   CSYNC *ctx = NULL;
   c_rbtree_t *tree = NULL;
   c_rbnode_t *node = NULL;
+  char *md5        = NULL;
 
   char errbuf[256] = {0};
   char *uri = NULL;
@@ -178,7 +179,9 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
       goto out;
     }
   }
+  md5 = fs->md5;
   fs = c_rbtree_node_data(node);
+  fs->md5 = md5;
 
   switch (ctx->current) {
     case LOCAL_REPLICA:
@@ -218,6 +221,8 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
   /* update file stat */
   fs->inode = vst->inode;
   fs->modtime = vst->mtime;
+  // if( vst->md5 )
+  //    fs->md5 = c_strdup(vst->md5);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: UPDATED", uri);
 

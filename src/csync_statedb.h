@@ -61,6 +61,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash);
 
 csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx, uint64_t inode);
 
+char *csync_statedb_get_uniqId( CSYNC *ctx, uint64_t jHash, csync_vio_file_stat_t *buf );
 /**
  * @brief A generic statedb query.
  *
