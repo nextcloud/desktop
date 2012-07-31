@@ -417,6 +417,11 @@ int csync_update(CSYNC *ctx) {
 
       rc = csync_ftw(ctx, ctx->remote.uri, csync_walker, MAX_DEPTH);
 
+      if( rc < 0 ) {
+          if( errno == 5 ) {
+              ctx->error_code = CSYNC_ERR_ACCESS_FAILED; // FIXME: improve error handling!
+          }
+      }
       csync_gettime(&finish);
 
       CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
