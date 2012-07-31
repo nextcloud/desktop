@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>509</width>
-    <height>299</height>
+    <height>360</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -116,9 +116,6 @@
                  <property name="text">
                   <string/>
                  </property>
-                 <property name="placeholderText">
-                  <string>Username to authenticate on proxy server</string>
-                 </property>
                 </widget>
                </item>
                <item row="4" column="0">
@@ -165,9 +162,6 @@
                  </property>
                  <property name="text">
                   <string/>
-                 </property>
-                 <property name="placeholderText">
-                  <string>Hostname of proxy server</string>
                  </property>
                 </widget>
                </item>

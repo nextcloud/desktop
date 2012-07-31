@@ -23,6 +23,12 @@ Mirall::ProxyDialog::ProxyDialog( QWidget* parent )
     : QDialog(parent)
 {
     setupUi(this);
+
+#if QT_VERSION >= 0x040700
+    hostLineEdit->setPlaceholderText(QApplication::translate("proxyDialog", "Hostname of proxy server"));
+    userLineEdit->setPlaceholderText(QApplication::translate("proxyDialog", "Username to authenticate on proxy server"));
+#endif
+
 }
 
 void Mirall::ProxyDialog::saveSettings()
