@@ -17,6 +17,7 @@ mirall/owncloudftpaccesspage.ui
 mirall/owncloudwizardresultpage.ui
 mirall/owncloudcredentialspage.ui
 mirall/sslerrorsdialog.ui
+mirall/proxydialog.ui
 )
 
 set(3rdparty_SRC
@@ -114,6 +115,7 @@ set(mirall_SRCS
     mirall/occinfo.cpp
     mirall/sslerrordialog.cpp
     mirall/logbrowser.cpp
+    mirall/proxydialog.cpp
 )
 
 set(mirall_HEADERS
@@ -126,6 +128,7 @@ set(mirall_HEADERS
     mirall/updatedetector.h
     mirall/sslerrordialog.h
     mirall/logbrowser.h
+    mirall/proxydialog.h
 )
 
 if( UNIX AND NOT APPLE)

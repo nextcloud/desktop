@@ -28,6 +28,7 @@
 #include "mirall/theme.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/updatedetector.h"
+#include "mirall/proxydialog.h"
 
 #include "mirall/miralltheme.h"
 #include "mirall/owncloudtheme.h"
@@ -48,6 +49,8 @@
 #include <QUrl>
 #include <QDesktopServices>
 #include <QTranslator>
+#include <QNetworkProxy>
+#include <QNetworkProxyFactory>
 
 namespace Mirall {
 
@@ -165,6 +168,7 @@ Application::Application(int &argc, char **argv) :
 
     setupActions();
     setupSystemTray();
+    setupProxy();
     processEvents();
 
     QObject::connect( this, SIGNAL(messageReceived(QString)),
@@ -304,6 +308,8 @@ void Application::setupActions()
     QObject::connect(_actionAddFolder, SIGNAL(triggered(bool)), SLOT(slotAddFolder()));
     _actionConfigure = new QAction(tr("Configure..."), this);
     QObject::connect(_actionConfigure, SIGNAL(triggered(bool)), SLOT(slotConfigure()));
+    _actionConfigureProxy = new QAction(tr("Configure proxy..."), this);
+    QObject::connect(_actionConfigureProxy, SIGNAL(triggered(bool)), SLOT(slotConfigureProxy()));
 
     _actionQuit = new QAction(tr("Quit"), this);
     QObject::connect(_actionQuit, SIGNAL(triggered(bool)), SLOT(quit()));
@@ -333,6 +339,7 @@ void Application::setupContextMenu()
     _contextMenu->addAction(_actionOpenStatus);
     _contextMenu->addAction(_actionOpenoC);
     _contextMenu->addAction(_actionConfigure);
+    _contextMenu->addAction(_actionConfigureProxy);
     _contextMenu->addAction(_actionAddFolder);
     _contextMenu->addSeparator();
 
@@ -381,6 +388,41 @@ void Application::setupLogBrowser()
                 .arg( QLocale::system().name() )
                 .arg(_theme->version());
 }
+
+void Application::setupProxy()
+{
+    //
+    // TODO: push proxy information to csync
+    //
+    Mirall::MirallConfigFile cfg;
+    switch(cfg.proxyType())
+    {
+    case QNetworkProxy::NoProxy:
+    {
+        QNetworkProxy proxy;
+        proxy.setType(QNetworkProxy::NoProxy);
+        QNetworkProxy::setApplicationProxy(proxy);
+        break;
+    }
+    case QNetworkProxy::DefaultProxy:
+    {
+        QNetworkProxyFactory::setUseSystemConfiguration(true);
+        break;
+    }
+    case QNetworkProxy::Socks5Proxy:
+    {
+        QNetworkProxy proxy;
+        proxy.setType(QNetworkProxy::Socks5Proxy);
+        proxy.setHostName(cfg.proxyHostName());
+        proxy.setPort(cfg.proxyPort());
+        proxy.setUser(cfg.proxyUser());
+        proxy.setPassword(cfg.proxyPassword());
+        QNetworkProxy::setApplicationProxy(proxy);
+        break;
+    }
+    }
+}
+
 /*
  * open the folder with the given Alais
  */
@@ -598,28 +640,28 @@ void Application::slotInfoFolder( const QString& alias )
     //    qDebug() << "informative text: " << infoBox.informativeText();
 
     if ( !folderResult.syncChanges().isEmpty() ) {
-	QString details;
-	QHash < QString, QStringList > changes = folderResult.syncChanges();
-	QHash< QString, QStringList >::const_iterator change_it = changes.constBegin();
-	for(; change_it != changes.constEnd(); ++change_it ) {
-	    QString changeType = tr( "Unknown" );
-	    if ( change_it.key() == "changed" ) {
-		changeType = tr( "Changed files:\n" );
-	    } else if ( change_it.key() == "added" ) {
-	        changeType = tr( "Added files:\n" );
-	    } else if ( change_it.key() == "deleted" ) {
-		changeType = tr( "New files in the server, or files deleted locally:\n");
-	    }
+        QString details;
+        QHash < QString, QStringList > changes = folderResult.syncChanges();
+        QHash< QString, QStringList >::const_iterator change_it = changes.constBegin();
+        for(; change_it != changes.constEnd(); ++change_it ) {
+            QString changeType = tr( "Unknown" );
+            if ( change_it.key() == "changed" ) {
+            changeType = tr( "Changed files:\n" );
+            } else if ( change_it.key() == "added" ) {
+                changeType = tr( "Added files:\n" );
+            } else if ( change_it.key() == "deleted" ) {
+            changeType = tr( "New files in the server, or files deleted locally:\n");
+            }
 
-	    QStringList files = change_it.value();
-	    QString fileList;
-            foreach( const QString& file, files) {
-                fileList += file + QChar('\n');
-	    }
-	    details += changeType + fileList;
-	}
-	infoBox.setDetailedText(details);
-	qDebug() << "detailed text: " << infoBox.detailedText();
+            QStringList files = change_it.value();
+            QString fileList;
+                foreach( const QString& file, files) {
+                    fileList += file + QChar('\n');
+            }
+            details += changeType + fileList;
+        }
+        infoBox.setDetailedText(details);
+        qDebug() << "detailed text: " << infoBox.detailedText();
     }
     infoBox.exec();
 }
@@ -652,6 +694,16 @@ void Application::slotConfigure()
   _folderMan->disableFoldersWithRestore();
   _owncloudSetupWizard->startWizard();
   _folderMan->restoreEnabledFolders();
+}
+
+void Application::slotConfigureProxy()
+{
+    ProxyDialog* dlg = new ProxyDialog();
+    if (dlg->exec() == QDialog::Accepted)
+    {
+        setupProxy();
+    }
+    dlg->deleteLater();
 }
 
 void Application::slotSyncStateChange( const QString& alias )
@@ -719,7 +771,7 @@ void Application::computeOverallSyncStatus()
                     overallResult.setStatus( SyncResult::Error );
                 }
             } else {
-                    // sync is disabled.
+                // sync is disabled.
                 folderMessage = tr( "Sync is paused." );
             }
         }

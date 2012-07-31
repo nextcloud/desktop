@@ -472,5 +472,58 @@ QVariant MirallConfigFile::customMedia( customMediaType type )
     return re;
 }
 
+void MirallConfigFile::setProxyType(int proxyType,
+                  const QString& host,
+                  int port,
+                  const QString& user,
+                  const QString& pass)
+{
+    QSettings settings( configFile(), QSettings::IniFormat );
+    settings.setIniCodec( "UTF-8" );
+    settings.beginGroup("proxy");
+
+    settings.setValue("type", proxyType);
+    settings.setValue("host", host);
+    settings.setValue("port", port);
+    settings.setValue("user", user);
+    settings.setValue("pass", pass);
+
+    settings.sync();
 }
 
+QVariant MirallConfigFile::getValue(const QString& param, const QString& group) const
+{
+    QSettings settings( configFile(), QSettings::IniFormat );
+    settings.setIniCodec( "UTF-8" );
+    settings.beginGroup(group);
+
+    return settings.value(param);
+}
+
+int MirallConfigFile::proxyType() const
+{
+    return getValue("type", "proxy").toInt();
+}
+
+QString MirallConfigFile::proxyHostName() const
+{
+    return getValue("host", "proxy").toString();
+}
+
+int MirallConfigFile::proxyPort() const
+{
+    return getValue("port", "proxy").toInt();
+}
+
+QString MirallConfigFile::proxyUser() const
+{
+    return getValue("user", "proxy").toString();
+}
+
+QString MirallConfigFile::proxyPassword() const
+{
+    QByteArray pass = getValue("pass", "proxy").toByteArray();
+    return QString::fromUtf8(QByteArray::fromBase64(pass));
+}
+
+}

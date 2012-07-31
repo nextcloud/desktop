@@ -79,6 +79,23 @@ public:
     // Custom Config: remove the custom config file.
     void cleanupCustomConfig();
 
+    // proxy settings
+    void setProxyType(int proxyType,
+                      const QString& host = QString(),
+                      int port = 0,
+                      const QString& user = QString(),
+                      const QString& pass = QString());
+
+    int proxyType() const;
+    QString proxyHostName() const;
+    int proxyPort() const;
+    QString proxyUser() const;
+    QString proxyPassword() const;
+
+private:
+    QVariant getValue(const QString& param, const QString& group) const;
+
+
 private:
     static QString _passwd;
     static bool    _askedUser;

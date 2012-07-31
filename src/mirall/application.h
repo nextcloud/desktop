@@ -60,6 +60,7 @@ protected slots:
     void slotEnableFolder( const QString&, const bool );
     void slotInfoFolder( const QString& );
     void slotConfigure();
+    void slotConfigureProxy();
 
     void slotSyncStateChange( const QString& );
 protected:
@@ -68,6 +69,7 @@ protected:
     void setupSystemTray();
     void setupContextMenu();
     void setupLogBrowser();
+    void setupProxy();
 
     //folders have to be disabled while making config changes
     void computeOverallSyncStatus();
@@ -95,6 +97,7 @@ private:
     QAction *_actionOpenStatus;
     QAction *_actionConfigure;
     QAction *_actionOpenoC;
+    QAction *_actionConfigureProxy;
 
 #if QT_VERSION >= 0x040700
     QNetworkConfigurationManager *_networkMgr;
