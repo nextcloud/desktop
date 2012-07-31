@@ -481,6 +481,28 @@ csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx, ino_t inode) {
   return st;
 }
 
+char *csync_statedb_get_uniqId( CSYNC *ctx, uint64_t jHash, csync_vio_file_stat_t *buf ) {
+    char *ret = NULL;
+    c_strlist_t *result = NULL;
+    char *stmt = NULL;
+
+    stmt = sqlite3_mprintf("SELECT md5 FROM metadata WHERE phash='%llu' AND modtime=%llu", jHash, buf->mtime);
+    result = csync_statedb_query(ctx, stmt);
+    sqlite3_free(stmt);
+    if (result == NULL) {
+      return NULL;
+    }
+
+    if (result->count == 1) {
+        /* phash, pathlen, path, inode, uid, gid, mode, modtime */
+        ret = c_strdup( result->vector[0] );
+    }
+
+    c_strlist_destroy(result);
+
+    return ret;
+}
+
 /* query the statedb, caller must free the memory */
 c_strlist_t *csync_statedb_query(CSYNC *ctx, const char *statement) {
   int err = SQLITE_OK;

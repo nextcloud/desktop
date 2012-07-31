@@ -332,6 +332,12 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
       rc = 1;
       goto out;
     }
+
+    if( st->md5 ) {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "UUUU MD5 sum: %s", st->md5);
+    } else {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "MD5 sum is empty");
+    }
   }
 
   if (_push_to_tmp_first(ctx)) {
