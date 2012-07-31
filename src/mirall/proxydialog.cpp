@@ -29,6 +29,24 @@ Mirall::ProxyDialog::ProxyDialog( QWidget* parent )
     userLineEdit->setPlaceholderText(QApplication::translate("proxyDialog", "Username to authenticate on proxy server"));
 #endif
 
+    // load current proxy settings
+    Mirall::MirallConfigFile cfgFile;
+    if (cfgFile.proxyType() == QNetworkProxy::NoProxy)
+        noProxyRadioButton->setChecked(true);
+    if (cfgFile.proxyType() == QNetworkProxy::DefaultProxy)
+        systemProxyRadioButton->setChecked(true);
+    if (cfgFile.proxyType() == QNetworkProxy::Socks5Proxy)
+    {
+        manualProxyRadioButton->setChecked(true);
+        hostLineEdit->setText(cfgFile.proxyHostName());
+        portSpinBox->setValue(cfgFile.proxyPort());
+        if (cfgFile.proxyUser() != QString())
+        {
+            authRequiredcheckBox->setChecked(true);
+            userLineEdit->setText(cfgFile.proxyUser());
+            passwordLineEdit->setText(cfgFile.proxyPassword());
+        }
+    }
 }
 
 void Mirall::ProxyDialog::saveSettings()
@@ -49,11 +67,11 @@ void Mirall::ProxyDialog::saveSettings()
         {
             QString user = userLineEdit->text();
             QString pass = passwordLineEdit->text();
-            cfgFile.setProxyType(QNetworkProxy::Socks5Proxy, hostLabel->text(), portSpinBox->value(), user, pass);
+            cfgFile.setProxyType(QNetworkProxy::Socks5Proxy, hostLineEdit->text(), portSpinBox->value(), user, pass);
         }
         else
         {
-            cfgFile.setProxyType(QNetworkProxy::Socks5Proxy, hostLabel->text(), portSpinBox->value(), QString(), QString());
+            cfgFile.setProxyType(QNetworkProxy::Socks5Proxy, hostLineEdit->text(), portSpinBox->value(), QString(), QString());
         }
     }
 
