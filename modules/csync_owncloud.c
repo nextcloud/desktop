@@ -125,6 +125,12 @@ struct dav_session_s {
     char *user;
     char *pwd;
 
+    char *proxy_type;
+    char *proxy_host;
+    int   proxy_port;
+    char *proxy_user;
+    char *proxy_pwd;
+
     time_t   prev_delta;
     time_t   time_delta;     /* The time delta to use.                  */
     long int time_delta_sum; /* What is the time delta average?         */
@@ -149,7 +155,6 @@ int _connected = 0;                   /* flag to indicate if a connection exists
 csync_vio_file_stat_t _fs;
 
 csync_auth_callback _authcb;
-void *_userdata = NULL;
 
 #define PUT_BUFFER_SIZE 1024*5
 
@@ -338,6 +343,63 @@ static int ne_auth( void *userdata, const char *realm, int attempt,
 }
 
 /*
+ * Authentication callback. Is set by ne_set_proxy_auth to be called
+ * from the neon lib to authenticate against a proxy. The data to authenticate
+ * against comes from mirall throught vio_module_init function.
+ */
+static int ne_proxy_auth( void *userdata, const char *realm, int attempt,
+                          char *username, char *password)
+{
+    (void) userdata;
+    (void) realm;
+    if( dav_session.proxy_user ) {
+        strncpy( username, dav_session.proxy_user, NE_ABUFSIZ );
+        if( dav_session.proxy_pwd ) {
+            strncpy( password, dav_session.proxy_pwd, NE_ABUFSIZ );
+        }
+    }
+
+    return attempt;
+}
+
+/* Configure the proxy depending on the variables */
+static int configureProxy( ne_session *session )
+{
+    int port = 8080;
+    int re = -1;
+
+    if( ! session ) return -1;
+    if( ! dav_session.proxy_type ) return 0; /* Go by NoProxy per default */
+
+    if( dav_session.proxy_port > 0 ) {
+        port = dav_session.proxy_port;
+    }
+
+    if( c_streq(dav_session.proxy_type, "NoProxy" )) {
+        DEBUG_WEBDAV("No proxy configured.");
+        re = 0;
+    } else if( c_streq(dav_session.proxy_type, "DefaultProxy" )) {
+        DEBUG_WEBDAV("Default Proxy Usage.");
+        ne_session_system_proxy( session, 0 );
+        re = 1;
+    } else if( c_streq(dav_session.proxy_type, "Socks5Proxy") ||
+               c_streq(dav_session.proxy_type, "HttpProxy")   ||
+               c_streq(dav_session.proxy_type, "HttpCachingProxy") ) {
+        if( dav_session.proxy_host ) {
+            DEBUG_WEBDAV("%s at %s:%d", dav_session.proxy_type, dav_session.proxy_host, port );
+            ne_session_proxy(session, dav_session.proxy_host, port );
+            re = 2;
+        } else {
+            DEBUG_WEBDAV("No host defined for %s", dav_session.proxy_type );
+        }
+    } else if( c_streq(dav_session.proxy_type, "FtpCachingProxy")) {
+        DEBUG_WEBDAV( "Unsupported Proxy: %s", dav_session.proxy_type );
+    }
+
+    return re;
+}
+
+/*
  * Connect to a DAV server
  * This function sets the flag _connected if the connection is established
  * and returns if the flag is set, so calling it frequently is save.
@@ -352,6 +414,7 @@ static int dav_connect(const char *base_url) {
     char *scheme = NULL;
     char *host = NULL;
     unsigned int port = 0;
+    int proxystate = -1;
 
     if (_connected) {
         return 0;
@@ -421,6 +484,14 @@ static int dav_connect(const char *base_url) {
         ne_ssl_set_verify( dav_session.ctx, verify_sslcert, 0 );
     }
     ne_redirect_register( dav_session.ctx );
+
+    /* Proxy support */
+    proxystate = configureProxy( dav_session.ctx );
+    if( proxystate < 0 ) {
+        DEBUG_WEBDAV("Error: Proxy-Configuration failed.");
+    } else if( proxystate > 0 ) {
+        ne_set_proxy_auth( dav_session.ctx, ne_proxy_auth, 0 );
+    }
 
     _connected = 1;
     rc = 0;
@@ -1345,11 +1416,11 @@ static csync_vio_method_handle_t *owncloud_opendir(const char *uri) {
     rc = fetch_resource_list( curi, NE_DEPTH_ONE, fetchCtx );
     if( rc != NE_OK ) {
         errno = ne_session_error_errno( dav_session.ctx );
-	redir_ne_uri = ne_redirect_location(dav_session.ctx);
-	if( redir_ne_uri ) {
+        redir_ne_uri = ne_redirect_location(dav_session.ctx);
+        if( redir_ne_uri ) {
             redir_uri = ne_uri_unparse(redir_ne_uri);
-	    DEBUG_WEBDAV("Permanently moved to %s", redir_uri);
-	}
+            DEBUG_WEBDAV("Permanently moved to %s", redir_uri);
+        }
         return NULL;
     } else {
         fetchCtx->currResource = fetchCtx->list;
@@ -1606,12 +1677,35 @@ csync_vio_method_t _method = {
 
 csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
                                     csync_auth_callback cb, void *userdata) {
+    char **userdata_ptr = NULL;
+
     (void) method_name;
     (void) args;
 
     _authcb = cb;
-    _userdata = userdata;
     _connected = 0;  /* triggers dav_connect to go through the whole neon setup */
+
+    if( userdata ) {
+        userdata_ptr = userdata;
+        if( *userdata_ptr && strlen( *userdata_ptr) )
+            dav_session.proxy_type = c_strdup( *userdata_ptr );
+        userdata_ptr++;
+
+        if( *userdata_ptr && strlen( *userdata_ptr) )
+            dav_session.proxy_host = c_strdup( *userdata_ptr );
+        userdata_ptr++;
+
+        if( *userdata_ptr && strlen( *userdata_ptr) )
+            dav_session.proxy_port = atoi( *userdata_ptr );
+        userdata_ptr++;
+
+        if( *userdata_ptr && strlen( *userdata_ptr) )
+            dav_session.proxy_user = c_strdup( *userdata_ptr );
+        userdata_ptr++;
+
+        if( *userdata_ptr && strlen( *userdata_ptr) )
+            dav_session.proxy_pwd = c_strdup( *userdata_ptr );
+    }
 
     return &_method;
 }
@@ -1621,6 +1715,11 @@ void vio_module_shutdown(csync_vio_method_t *method) {
 
     SAFE_FREE( dav_session.user );
     SAFE_FREE( dav_session.pwd );
+
+    SAFE_FREE( dav_session.proxy_type );
+    SAFE_FREE( dav_session.proxy_host );
+    SAFE_FREE( dav_session.proxy_user );
+    SAFE_FREE( dav_session.proxy_pwd  );
 
     if( dav_session.ctx )
         ne_session_destroy( dav_session.ctx );
