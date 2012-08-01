@@ -145,7 +145,7 @@ void MirallConfigFile::writeOwncloudConfig( const QString& connection,
                                             const QString& url,
                                             const QString& user,
                                             const QString& passwd,
-                                            bool skipPwd )
+                                            bool https, bool skipPwd )
 {
     const QString file = configFile();
     qDebug() << "*** writing mirall config to " << file << " Skippwd: " << skipPwd;
@@ -155,8 +155,12 @@ void MirallConfigFile::writeOwncloudConfig( const QString& connection,
     settings.setIniCodec( "UTF-8" );
     QString cloudsUrl( url );
 
-    if( !cloudsUrl.startsWith( QLatin1String("http")) )
-        cloudsUrl.prepend(QLatin1String("http://"));
+    if( !cloudsUrl.startsWith( QLatin1String("http")) ) {
+        if (https)
+            cloudsUrl.prepend(QLatin1String("https://"));
+        else
+            cloudsUrl.prepend(QLatin1String("http://"));
+    }
 
     settings.beginGroup( connection );
     settings.setValue("url", cloudsUrl );

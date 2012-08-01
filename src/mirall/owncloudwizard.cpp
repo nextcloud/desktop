@@ -60,8 +60,10 @@ OwncloudSetupPage::OwncloudSetupPage()
     registerField( "OCUser",   _ui.leUsername );
     registerField( "OCPasswd", _ui.lePassword);
     registerField( "connectMyOC", _ui.cbConnectOC );
-
+    registerField( "cbSecureConnect", _ui.cbSecureConnect );
     registerField( "PwdNoLocalStore", _ui.cbNoPasswordStore );
+
+    _ui.cbSecureConnect->setEnabled(QSslSocket::supportsSsl());
 
     connect( _ui.lePassword, SIGNAL(textChanged(QString)), this, SIGNAL(completeChanged()));
 

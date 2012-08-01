@@ -138,6 +138,7 @@ void OwncloudSetupWizard::testOwnCloudConnect()
                                  _ocWizard->field("OCUrl").toString(),
                                  _ocWizard->field("OCUser").toString(),
                                  _ocWizard->field("OCPasswd").toString(),
+                                 _ocWizard->field("cbSecureConnect").toBool(),
                                  _ocWizard->field("PwdNoLocalStore").toBool() );
 
     // now start ownCloudInfo to check the connection.

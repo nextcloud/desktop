@@ -48,7 +48,7 @@ ownCloudInfo* ownCloudInfo::instance()
 }
 
 ownCloudInfo::ownCloudInfo( const QString& connectionName, QObject *parent ) :
-    QObject(parent)
+    QObject(parent), _sslErrorDialog(0)
 {
     if( connectionName.isEmpty() )
         _connection = QLatin1String( "ownCloud");
@@ -57,10 +57,10 @@ ownCloudInfo::ownCloudInfo( const QString& connectionName, QObject *parent ) :
 
     _manager = new QNetworkAccessManager;
     connect( _manager, SIGNAL( sslErrors(QNetworkReply*, QList<QSslError>)),
-             _instance, SLOT(slotSSLFailed(QNetworkReply*, QList<QSslError>)) );
+             SLOT(slotSSLFailed(QNetworkReply*, QList<QSslError>)) );
 
     connect( _manager, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
-             _instance, SLOT(slotAuthentication(QNetworkReply*,QAuthenticator*)));
+             SLOT(slotAuthentication(QNetworkReply*,QAuthenticator*)));
 }
 
 ownCloudInfo::~ownCloudInfo()
