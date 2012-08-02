@@ -70,14 +70,15 @@ OwncloudSetupPage::OwncloudSetupPage()
 
     _ui.cbConnectOC->hide();
     setupCustomization();
+
+#if QT_VERSION >= 0x040700
+    _ui.leUsername->setPlaceholderText(tr("john"));
+    _ui.lePassword->setPlaceholderText(tr("secret"));
+#endif
 }
 
 OwncloudSetupPage::~OwncloudSetupPage()
 {
-#if QT_VERSION >= 0x040700
-    _ui.leUsername->setPlaceholderText(QApplication::translate("OwncloudSetupPage", "john", 0, QApplication::UnicodeUTF8));
-    _ui.lePassword->setPlaceholderText(QApplication::translate("OwncloudSetupPage", "secret", 0, QApplication::UnicodeUTF8));
-#endif
 }
 
 void OwncloudSetupPage::setOCUrl( const QString& newUrl )
@@ -181,13 +182,14 @@ OwncloudWizardSelectTypePage::OwncloudWizardSelectTypePage()
     _ui.createNewOCRadioBtn->setVisible( false );
     _ui.createNewOwncloudLabel->setVisible( false );
 #endif
+
+#if QT_VERSION >= 0x040700
+    _ui.OCUrlLineEdit->setPlaceholderText(tr("http://owncloud.mydomain.org"));
+#endif
 }
 
 OwncloudWizardSelectTypePage::~OwncloudWizardSelectTypePage()
 {
-#if QT_VERSION >= 0x040700
-    _ui.OCUrlLineEdit->setPlaceholderText(QApplication::translate("OwncloudWizardSelectTypePage", "http://owncloud.mydomain.org", 0, QApplication::UnicodeUTF8));
-#endif
 }
 
 void OwncloudWizardSelectTypePage::initializePage()
@@ -235,14 +237,15 @@ OwncloudCredentialsPage::OwncloudCredentialsPage()
     connect( _ui.OCPasswdEdit, SIGNAL(textChanged(QString)), this, SIGNAL(completeChanged()));
 
     connect( _ui.cbPwdNoLocalStore, SIGNAL(stateChanged(int)), this, SLOT(slotPwdStoreChanged(int)));
+
+#if QT_VERSION >= 0x040700
+    _ui.OCUserEdit->setPlaceholderText(tr("john"));
+    _ui.OCPasswdEdit->setPlaceholderText(tr("secret"));
+#endif
 }
 
 OwncloudCredentialsPage::~OwncloudCredentialsPage()
 {
-#if QT_VERSION >= 0x040700
-    _ui.OCUserEdit->setPlaceholderText(QApplication::translate("OwncloudCredentialsPage", "john", 0, QApplication::UnicodeUTF8));
-    _ui.OCPasswdEdit->setPlaceholderText(QApplication::translate("OwncloudCredentialsPage", "secret", 0, QApplication::UnicodeUTF8));
-#endif
 }
 
 void OwncloudCredentialsPage::slotPwdStoreChanged( int state )
@@ -282,9 +285,9 @@ OwncloudFTPAccessPage::OwncloudFTPAccessPage()
     // registerField( "ftpDir",    _ui.ftpDir );
 
 #if QT_VERSION >= 0x040700
-    _ui.ftpUrlEdit->setPlaceholderText(QApplication::translate("OwncloudFTPAccessPage", "ftp.mydomain.org", 0, QApplication::UnicodeUTF8));
-    _ui.ftpUserEdit->setPlaceholderText(QApplication::translate("OwncloudFTPAccessPage", "john", 0, QApplication::UnicodeUTF8));
-    _ui.ftpPasswdEdit->setPlaceholderText(QApplication::translate("OwncloudFTPAccessPage", "john", 0, QApplication::UnicodeUTF8));
+    _ui.ftpUrlEdit->setPlaceholderText(tr("ftp.mydomain.org"));
+    _ui.ftpUserEdit->setPlaceholderText(tr("john"));
+    _ui.ftpPasswdEdit->setPlaceholderText(tr("secret"));
 #endif
 }
 
