@@ -55,7 +55,8 @@ ownCloudInfo::ownCloudInfo( const QString& connectionName, QObject *parent ) :
     else
         _connection = connectionName;
 
-    _manager = new QNetworkAccessManager;
+    _manager = new QNetworkAccessManager( this );
+
     MirallConfigFile cfg( _configHandle );
     QSettings settings( cfg.configFile(), QSettings::IniFormat);
     QByteArray certs = settings.value(QLatin1String("CaCertificates")).toByteArray();
@@ -71,7 +72,6 @@ ownCloudInfo::ownCloudInfo( const QString& connectionName, QObject *parent ) :
 
 ownCloudInfo::~ownCloudInfo()
 {
-    delete _manager;
     delete _sslErrorDialog;
 }
 
@@ -276,7 +276,7 @@ void ownCloudInfo::slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors 
     }
 
     if( _sslErrorDialog == 0 ) {
-        _sslErrorDialog = new SslErrorDialog();
+        _sslErrorDialog = new SslErrorDialog;
     }
 
     // make the ssl dialog aware of the custom config. It loads known certs.

@@ -113,7 +113,7 @@ Application::Application(int &argc, char **argv) :
     installTranslator(mirallTranslator);
 
     // create folder manager for sync folder management
-    _folderMan = new FolderMan();
+    _folderMan = new FolderMan(this);
     connect( _folderMan, SIGNAL(folderSyncStateChange(QString)),
              this,SLOT(slotSyncStateChange(QString)));
 
@@ -187,12 +187,6 @@ Application::Application(int &argc, char **argv) :
 Application::~Application()
 {
     qDebug() << "* Mirall shutdown";
-
-#if QT_VERSION >= 0x040700
-    delete _networkMgr;
-#endif
-    delete _folderMan;
-    delete _tray;
 }
 
 void Application::slotStartUpdateDetector()
@@ -317,7 +311,7 @@ void Application::setupActions()
 
 void Application::setupSystemTray()
 {
-    _tray = new QSystemTrayIcon();
+    _tray = new QSystemTrayIcon(this);
     _tray->setIcon( _theme->applicationIcon() ); // load the grey icon
 
     connect(_tray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
