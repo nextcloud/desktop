@@ -332,14 +332,15 @@ void Application::setupContextMenu()
     _contextMenu->setTitle(_theme->appName() );
     _contextMenu->addAction(_actionOpenStatus);
     _contextMenu->addAction(_actionOpenoC);
-    _contextMenu->addAction(_actionConfigure);
-    _contextMenu->addAction(_actionConfigureProxy);
-    _contextMenu->addAction(_actionAddFolder);
+
     _contextMenu->addSeparator();
+
+    if (!_folderMan->map().isEmpty())
+        _contextMenu->addAction(tr("Managed Folders:"))->setDisabled(true);
 
     // here all folders should be added
     foreach (Folder *folder, _folderMan->map() ) {
-        QAction *action = new QAction( tr("open folder %1").arg( folder->alias()), this );
+        QAction *action = new QAction( folder->alias(), this );
         action->setIcon( _theme->trayFolderIcon( folder->backend()) );
 
         connect( action, SIGNAL(triggered()),_folderOpenActionMapper,SLOT(map()));
@@ -347,7 +348,11 @@ void Application::setupContextMenu()
 
         _contextMenu->addAction(action);
     }
+    _contextMenu->addAction(_actionAddFolder);
 
+    _contextMenu->addSeparator();
+    _contextMenu->addAction(_actionConfigure);
+    _contextMenu->addAction(_actionConfigureProxy);
     _contextMenu->addSeparator();
 
     _contextMenu->addAction(_actionQuit);
