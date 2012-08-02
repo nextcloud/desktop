@@ -26,6 +26,7 @@
 #include <QStringList>
 #include <QTextStream>
 #include <QTimer>
+#include <QNetworkProxy>
 
 namespace Mirall {
 
@@ -141,8 +142,28 @@ void ownCloudFolder::startSync(const QStringList &pathList)
 
 
     qDebug() << "*** Start syncing url to ownCloud: " << url.toString() << ", with localOnly: " << _localCheckOnly;
+
     _csync = new CSyncThread( path(), url.toString(), _localCheckOnly );
-    _csync->setUserPwd( cfgFile.ownCloudUser(), cfgFile.ownCloudPasswd() );
+
+    // Proxy settings. Proceed them as strings to csync thread.
+    QNetworkProxy proxy = QNetworkProxy::applicationProxy();
+    QString proxyType;
+    if( proxy.type() == QNetworkProxy::NoProxy )
+        proxyType = QLatin1String("NoProxy");
+    else if( proxy.type() == QNetworkProxy::DefaultProxy )
+        proxyType = QLatin1String("DefaultProxy");
+    else if( proxy.type() == QNetworkProxy::Socks5Proxy )
+        proxyType = QLatin1String("Socks5Proxy");
+    else if( proxy.type() == QNetworkProxy::HttpProxy )
+        proxyType = QLatin1String("HttpProxy");
+    else if( proxy.type() == QNetworkProxy::HttpCachingProxy )
+        proxyType = QLatin1String("HttpCachingProxy");
+    else if( proxy.type() == QNetworkProxy::FtpCachingProxy )
+            proxyType = QLatin1String("FtpCachingProxy");
+
+    _csync->setConnectionDetails( cfgFile.ownCloudUser(), cfgFile.ownCloudPasswd(), proxyType,
+                                  proxy.hostName(), proxy.port(), proxy.user(), proxy.password() );
+
     QObject::connect(_csync, SIGNAL(started()),  SLOT(slotCSyncStarted()));
     QObject::connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()));
     QObject::connect(_csync, SIGNAL(terminated()), SLOT(slotCSyncTerminated()));
