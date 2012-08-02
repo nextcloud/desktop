@@ -482,7 +482,7 @@ void Application::slotAddFolder()
 
     QString alias        = _folderWizard->field("alias").toString();
     QString sourceFolder = _folderWizard->field("sourceFolder").toString();
-    QString backend      = QString::fromLocal8Bit("csync");
+    QString backend      = QLatin1String("csync");
     QString targetPath;
     bool onlyThisLAN = false;
     bool onlyOnline  = false;
@@ -497,7 +497,7 @@ void Application::slotAddFolder()
         onlyThisLAN = _folderWizard->field("onlyThisLAN?").toBool();
     } else if( _folderWizard->field("OC?").toBool()) {
         // setup a ownCloud folder
-        backend    = QString::fromLocal8Bit("owncloud");
+        backend    = QLatin1String("owncloud");
         targetPath = _folderWizard->field("targetOCFolder").toString();
     } else {
       qWarning() << "* Folder not local and note remote?";

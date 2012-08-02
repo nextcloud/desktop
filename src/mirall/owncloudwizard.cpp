@@ -103,7 +103,7 @@ void OwncloudSetupPage::setOCUrl( const QString& newUrl )
 void OwncloudSetupPage::setupCustomization()
 {
     // set defaults for the customize labels.
-    _ui.sideLabel->setText( QString() );
+    _ui.sideLabel->setText( QString::null );
     _ui.sideLabel->setFixedWidth(160);
 
     _ui.topLabel->hide();

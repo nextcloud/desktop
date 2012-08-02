@@ -90,7 +90,7 @@ bool ownCloudInfo::isConfigured()
 
 void ownCloudInfo::checkInstallation()
 {
-    getRequest( "status.php", false );
+    getRequest( QLatin1String("status.php"), false );
 }
 
 void ownCloudInfo::getWebDAVPath( const QString& path )
