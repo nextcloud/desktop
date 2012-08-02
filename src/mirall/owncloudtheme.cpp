@@ -18,6 +18,7 @@
 #include <QDebug>
 #include <QPixmap>
 #include <QIcon>
+#include <QApplication>
 
 namespace Mirall {
 
@@ -28,7 +29,7 @@ ownCloudTheme::ownCloudTheme()
 
 QString ownCloudTheme::appName() const
 {
-    return QString::fromLocal8Bit("ownCloud");
+    return QApplication::translate("appname", "ownCloud Client");
 }
 
 QString ownCloudTheme::configFileName() const

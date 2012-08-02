@@ -170,7 +170,7 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
     _theme( theme )
 {
   setupUi( this  );
-  setWindowTitle( _theme->appName() + QString (" %1" ).arg( _theme->version() ) );
+  setWindowTitle( QString::fromLatin1( "%1 %2" ).arg(_theme->appName(), _theme->version() ) );
 
   _model = new FolderStatusModel();
   FolderViewDelegate *delegate = new FolderViewDelegate();
@@ -179,7 +179,6 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
   _folderList->setModel( _model );
   _folderList->setMinimumWidth( 300 );
   _folderList->setEditTriggers( QAbstractItemView::NoEditTriggers );
-
   connect(_ButtonClose,  SIGNAL(clicked()), this, SLOT(accept()));
   connect(_ButtonRemove, SIGNAL(clicked()), this, SLOT(slotRemoveFolder()));
 

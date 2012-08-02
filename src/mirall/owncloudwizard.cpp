@@ -326,7 +326,7 @@ CreateAnOwncloudPage::CreateAnOwncloudPage()
     connect( _ui.myDomainEdit, SIGNAL(textChanged(QString)), SIGNAL(completeChanged()));
 
 #if QT_VERSION >= 0x040700
-    _ui.myDomainEdit->setPlaceholderText(QApplication::translate("CreateAnOwncloudPage", "mydomain.org", 0, QApplication::UnicodeUTF8));
+    _ui.myDomainEdit->setPlaceholderText(tr("mydomain.org"));
 #endif
 }
 
