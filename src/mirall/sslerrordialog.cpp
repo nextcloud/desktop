@@ -19,11 +19,10 @@
 
 namespace Mirall
 {
-
+#define CA_CERTS_KEY QLatin1String("CaCertificates")
 
 SslErrorDialog::SslErrorDialog(QWidget *parent) :
-    QDialog(parent)
-  ,_allTrusted(false)
+    QDialog(parent), _allTrusted(false)
 {
     setupUi( this  );
     setWindowTitle( tr("SSL Connection") );
@@ -40,7 +39,7 @@ QList<QSslCertificate> SslErrorDialog::storedCACerts()
     MirallConfigFile cfg( _customConfigHandle );
     QSettings settings( cfg.configFile(), QSettings::IniFormat);
 
-    QList<QSslCertificate> cacerts = QSslCertificate::fromData(settings.value(QLatin1String("CaCertificates")).toByteArray());
+    QList<QSslCertificate> cacerts = QSslCertificate::fromData(settings.value(CA_CERTS_KEY).toByteArray());
 
     return cacerts;
 }
@@ -166,26 +165,17 @@ void SslErrorDialog::accept()
 {
     // Save the contents of _unknownCerts to the settings file.
     if( trustConnection() && _unknownCerts.count() > 0 ) {
-        MirallConfigFile cfg( _customConfigHandle );
+        QSslSocket::addDefaultCaCertificates(_unknownCerts);
 
+        MirallConfigFile cfg( _customConfigHandle );
         QSettings settings( cfg.configFile(), QSettings::IniFormat);
 
-        QByteArray certs = settings.value(QLatin1String("CaCertificates")).toByteArray();
-
+        QByteArray certs = settings.value(CA_CERTS_KEY).toByteArray();
         qDebug() << "Saving " << _unknownCerts.count() << " unknown certs.";
-
-        // update the ssl config.
-        QSslConfiguration sslCfg = QSslConfiguration::defaultConfiguration();
-        QList<QSslCertificate> ca_list = sslCfg.caCertificates();
-        ca_list += _unknownCerts;
-        sslCfg.setCaCertificates(ca_list);
-        QSslConfiguration::setDefaultConfiguration(sslCfg);
-
         foreach( const QSslCertificate& cert, _unknownCerts ) {
             certs += cert.toPem() + '\n';
         }
-
-        settings.setValue(QLatin1String("CaCertificates"), certs);
+        settings.setValue(CA_CERTS_KEY, certs);
     }
 
     QDialog::accept();

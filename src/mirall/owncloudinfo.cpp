@@ -56,11 +56,17 @@ ownCloudInfo::ownCloudInfo( const QString& connectionName, QObject *parent ) :
         _connection = connectionName;
 
     _manager = new QNetworkAccessManager;
+    MirallConfigFile cfg( _configHandle );
+    QSettings settings( cfg.configFile(), QSettings::IniFormat);
+    QByteArray certs = settings.value(QLatin1String("CaCertificates")).toByteArray();
+    QSslSocket::addDefaultCaCertificates(QSslCertificate::fromData(certs));
+
     connect( _manager, SIGNAL( sslErrors(QNetworkReply*, QList<QSslError>)),
              _instance, SLOT(slotSSLFailed(QNetworkReply*, QList<QSslError>)) );
 
     connect( _manager, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
              _instance, SLOT(slotAuthentication(QNetworkReply*,QAuthenticator*)));
+    resetSSLUntrust();
 }
 
 ownCloudInfo::~ownCloudInfo()
