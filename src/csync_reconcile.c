@@ -23,6 +23,8 @@
 #include "csync_private.h"
 #include "csync_reconcile.h"
 #include "csync_util.h"
+#include "csync_statedb.h"
+#include "c_jhash.h"
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.reconciler"
 #include "csync_log.h"
@@ -43,6 +45,10 @@
 static int _csync_merge_algorithm_visitor(void *obj, void *data) {
   csync_file_stat_t *cur = NULL;
   csync_file_stat_t *other = NULL;
+  csync_file_stat_t *tmp = NULL;
+  uint64_t h = 0;
+  int len = 0;
+
   CSYNC *ctx = NULL;
   c_rbtree_t *tree = NULL;
   c_rbnode_t *node = NULL;
@@ -75,7 +81,28 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
         cur->instruction = CSYNC_INSTRUCTION_REMOVE;
         break;
       case CSYNC_INSTRUCTION_RENAME:
-        cur->instruction = CSYNC_INSTRUCTION_NEW;
+        /* use the old name to find the "other" node */
+        tmp = csync_statedb_get_stat_by_inode(ctx, cur->inode);
+        /* Find the opposite node. */
+        if( tmp ) {
+          /* We need to calculate the phash again because of the phash being stored as int in db. */
+          if( tmp->path ) {
+            len = strlen( tmp->path );
+            h = c_jhash64((uint8_t *) tmp->path, len, 0);
+
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"PHash of temporar opposite: %llu", h);
+            node = c_rbtree_find(tree, &h);
+          }
+          if(node) {
+            other = (csync_file_stat_t*)node->data;
+            other->instruction = CSYNC_INSTRUCTION_RENAME;
+            other->destpath = c_strdup( cur->path );
+            cur->instruction = CSYNC_INSTRUCTION_NONE;
+          }
+          if( ! other ) {
+            cur->instruction = CSYNC_INSTRUCTION_NEW;
+          }
+        }
         break;
       default:
         break;

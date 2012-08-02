@@ -159,6 +159,7 @@ struct csync_file_stat_s {
   mode_t mode;      /* u32 */
   int nlink;        /* u32 */
   int type;         /* u32 */
+  char *destpath;   /* for renames */
   enum csync_instructions_e instruction; /* u32 */
   char path[1]; /* u8 */
 }
