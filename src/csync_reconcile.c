@@ -81,27 +81,30 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
         cur->instruction = CSYNC_INSTRUCTION_REMOVE;
         break;
       case CSYNC_INSTRUCTION_RENAME:
+        /* rename support only on the local replica because of inode needed. */
+        if(ctx->current == LOCAL_REPLICA ) {
         /* use the old name to find the "other" node */
-        tmp = csync_statedb_get_stat_by_inode(ctx, cur->inode);
-        /* Find the opposite node. */
-        if( tmp ) {
-          /* We need to calculate the phash again because of the phash being stored as int in db. */
-          if( tmp->path ) {
-            len = strlen( tmp->path );
-            h = c_jhash64((uint8_t *) tmp->path, len, 0);
+            tmp = csync_statedb_get_stat_by_inode(ctx, cur->inode);
+            /* Find the opposite node. */
+            if( tmp ) {
+                /* We need to calculate the phash again because of the phash being stored as int in db. */
+                if( tmp->path ) {
+                    len = strlen( tmp->path );
+                    h = c_jhash64((uint8_t *) tmp->path, len, 0);
 
-            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"PHash of temporar opposite: %llu", h);
-            node = c_rbtree_find(tree, &h);
-          }
-          if(node) {
-            other = (csync_file_stat_t*)node->data;
-            other->instruction = CSYNC_INSTRUCTION_RENAME;
-            other->destpath = c_strdup( cur->path );
-            cur->instruction = CSYNC_INSTRUCTION_NONE;
-          }
-          if( ! other ) {
-            cur->instruction = CSYNC_INSTRUCTION_NEW;
-          }
+                    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"PHash of temporar opposite: %llu", h);
+                    node = c_rbtree_find(tree, &h);
+                }
+                if(node) {
+                    other = (csync_file_stat_t*)node->data;
+                    other->instruction = CSYNC_INSTRUCTION_RENAME;
+                    other->destpath = c_strdup( cur->path );
+                    cur->instruction = CSYNC_INSTRUCTION_NONE;
+                }
+                if( ! other ) {
+                    cur->instruction = CSYNC_INSTRUCTION_NEW;
+                }
+            }
         }
         break;
       default:

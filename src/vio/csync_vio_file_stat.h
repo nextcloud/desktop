@@ -32,6 +32,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <stdint.h>
 
 typedef struct csync_vio_file_stat_s csync_vio_file_stat_t;
 
@@ -97,7 +98,7 @@ struct csync_vio_file_stat_s {
   mode_t mode;
 
   dev_t device;
-  ino_t inode;
+  uint64_t inode;
   nlink_t nlink;
 
   enum csync_vio_file_stat_fields_e fields;

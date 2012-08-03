@@ -153,7 +153,7 @@ struct csync_file_stat_s {
   time_t modtime;   /* u64 */
   off_t size;       /* u64 */
   size_t pathlen;   /* u64 */
-  ino_t inode;      /* u64 */
+  uint64_t inode;   /* u64 */
   uid_t uid;        /* u32 */
   gid_t gid;        /* u32 */
   mode_t mode;      /* u32 */

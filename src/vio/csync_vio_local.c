@@ -335,6 +335,27 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_DEVICE;
 
   buf->inode = sb.st_ino;
+#ifdef _WIN32
+  /* Get the Windows file id as an inode replacement. */
+  HANDLE h = CreateFileW( wuri, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL );
+  if( h == INVALID_HANDLE_VALUE ) {
+
+  } else {
+     BY_HANDLE_FILE_INFORMATION fileInfo;
+     if( GetFileInformationByHandle( h, &fileInfo ) ) {
+        ULARGE_INTEGER FileIndex;
+        FileIndex.HighPart = fileInfo.nFileIndexHigh;
+        FileIndex.LowPart = fileInfo.nFileIndexLow;
+        FileIndex.QuadPart &= 0x0000FFFFFFFFFFFF;
+
+        printf("Index: %I64i\n", FileIndex.QuadPart);
+
+        buf->inode = FileIndex.QuadPart;
+     }
+     CloseHandle(h);
+  }
+#endif
+
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_INODE;
 
   buf->nlink = sb.st_nlink;
