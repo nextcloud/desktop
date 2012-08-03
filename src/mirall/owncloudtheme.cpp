@@ -29,7 +29,11 @@ ownCloudTheme::ownCloudTheme()
 
 QString ownCloudTheme::appName() const
 {
-    return QApplication::translate("appname", "ownCloud Client");
+    /* If this is changed, existing configs are not found any more
+     * because the value is used by QDesktopServices to find the config
+     * file. Be aware.
+     */
+    return QApplication::translate("appname", "ownCloud");
 }
 
 QString ownCloudTheme::configFileName() const
