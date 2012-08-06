@@ -402,8 +402,6 @@ void Application::setupLogBrowser()
 void Application::setupProxy()
 {
     //
-    // TODO: push proxy information to csync
-    //
     Mirall::MirallConfigFile cfg;
     switch(cfg.proxyType())
     {

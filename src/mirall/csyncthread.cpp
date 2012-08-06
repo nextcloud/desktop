@@ -334,7 +334,8 @@ void CSyncThread::setConnectionDetails( const QString& user, const QString& pass
     _passwd = passwd;
     _proxyType = proxyType;
     _proxyHost = proxyHost;
-    _proxyPort = proxyPort;
+    _proxyPort = QString::number(proxyPort);
+    qDebug() << "Proxy-Port: " << _proxyPort;
     _proxyUser = proxyUser;
     _proxyPwd  = proxyPwd;
     _mutex.unlock();
