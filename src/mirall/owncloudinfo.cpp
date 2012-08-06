@@ -260,13 +260,14 @@ void ownCloudInfo::slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors 
     qDebug() << "SSL-Warnings happened for url " << reply->url().toString();
 
     QString configHandle;
-    if( !configHandle.isEmpty() ) {
-        qDebug() << "Custom config handle: " << configHandle;
-    }
+
     // an empty config handle is ok for the default config.
     if( _configHandleMap.contains(reply) ) {
         configHandle = _configHandleMap[reply];
         qDebug() << "SSL: Have a custom config handle: " << configHandle;
+    }
+    if( !configHandle.isEmpty() ) {
+        qDebug() << "Custom config handle: " << configHandle;
     }
 
     if( _certsUntrusted ) {
@@ -300,6 +301,23 @@ void ownCloudInfo::slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors 
     }
 }
 
+
+QUrl ownCloudInfo::redirectUrl(const QUrl& possibleRedirectUrl,
+                               const QUrl& oldRedirectUrl) const {
+    QUrl redirectUrl;
+    /*
+     * Check if the URL is empty and
+     * that we aren't being fooled into a infinite redirect loop.
+     * We could also keep track of how many redirects we have been to
+     * and set a limit to it, but we'll leave that to you.
+     */
+    if(!possibleRedirectUrl.isEmpty() &&
+       possibleRedirectUrl != oldRedirectUrl) {
+        redirectUrl = possibleRedirectUrl;
+    }
+    return redirectUrl;
+}
+
 //
 // There have been problems with the finish-signal coming from the networkmanager.
 // To avoid that, the reply-signals were connected and the data is taken from the
@@ -313,6 +331,37 @@ void ownCloudInfo::slotReplyFinished()
         qDebug() << "ownCloudInfo: Reply empty!";
         return;
     }
+
+    // Detect redirect url
+    QVariant possibleRedirUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
+    /* We'll deduct if the redirection is valid in the redirectUrl function */
+    _urlRedirectedTo = redirectUrl( possibleRedirUrl.toUrl(),
+                                    _urlRedirectedTo );
+
+    if(!_urlRedirectedTo.isEmpty()) {
+        QString configHandle;
+
+        qDebug() << "Redirected to " << possibleRedirUrl;
+        /* We'll do another request to the redirection url. */
+        if(!_urlRedirectedTo.isEmpty()) {
+            // an empty config handle is ok for the default config.
+            if( _configHandleMap.contains(reply) ) {
+                configHandle = _configHandleMap[reply];
+                qDebug() << "Auth: Have a custom config handle: " << configHandle;
+            }
+
+            qDebug() << "Auth request to me and I am " << this;
+            MirallConfigFile cfgFile( configHandle );
+            cfgFile.setOwnCloudUrl( _connection, _urlRedirectedTo.toString() );
+
+            QString path = _directories[reply];
+            qDebug() << "Redirection with new config to path " << path;
+            getRequest( path, false ); // FIXME: Redirect for webdav!
+            reply->deleteLater();
+            return;
+        }
+    }
+    _urlRedirectedTo.clear();
 
     const QString version( reply->readAll() );
     const QString url = reply->url().toString();
@@ -365,6 +414,7 @@ void ownCloudInfo::slotReplyFinished()
             emit ownCloudInfoFound( plainUrl, versionStr, version, edition );
         } else {
             qDebug() << "No proper answer on " << url;
+
             emit noOwncloudFound( reply );
         }
     } else {
