@@ -14,11 +14,22 @@ if("${CMAKE_INSTALL_PREFIX}" STREQUAL "/usr")
     set(CMAKE_INSTALL_SYSCONFDIR "/etc")
 endif()
 
-if(NOT DEFINED BUILD_OWNCLOUD_OSX_BUNDLE OR NOT APPLE)
-    set(BUILD_OWNCLOUD_OSX_BUNDLE OFF)
-elseif(BUILD_OWNCLOUD_OSX_BUNDLE)
+#####
+## handle BUILD_OWNCLOUD_OSX_BUNDLE
+# BUILD_OWNCLOUD_OSX_BUNDLE was not initialized OR set to true on OSX
+if(APPLE AND (NOT DEFINED BUILD_OWNCLOUD_OSX_BUNDLE OR BUILD_OWNCLOUD_OSX_BUNDLE))
+    set(BUILD_OWNCLOUD_OSX_BUNDLE ON)
     set(OWNCLOUD_OSX_BUNDLE "owncloud.app")
+
+# BUILD_OWNCLOUD_OSX_BUNDLE was disabled on OSX
+elseif(APPLE AND NOT BUILD_OWNCLOUD_OSX_BUNDLE)
+    message(FATAL_ERROR "Building in non-bundle mode on OSX is currently not supported. Comment this error out if you want to work on/test it.")
+
+# any other platform
+else()
+    set(BUILD_OWNCLOUD_OSX_BUNDLE OFF)
 endif()
+#####
 
 find_package(Qt4 4.6.0 COMPONENTS QtCore QtGui QtXml QtNetwork QtTest REQUIRED )
 find_package(Csync)
