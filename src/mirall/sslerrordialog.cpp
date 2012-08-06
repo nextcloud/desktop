@@ -37,9 +37,8 @@ SslErrorDialog::SslErrorDialog(QWidget *parent) :
 QList<QSslCertificate> SslErrorDialog::storedCACerts()
 {
     MirallConfigFile cfg( _customConfigHandle );
-    QSettings settings( cfg.configFile(), QSettings::IniFormat);
 
-    QList<QSslCertificate> cacerts = QSslCertificate::fromData(settings.value(CA_CERTS_KEY).toByteArray());
+    QList<QSslCertificate> cacerts = QSslCertificate::fromData(cfg.caCerts());
 
     return cacerts;
 }
@@ -168,14 +167,14 @@ void SslErrorDialog::accept()
         QSslSocket::addDefaultCaCertificates(_unknownCerts);
 
         MirallConfigFile cfg( _customConfigHandle );
-        QSettings settings( cfg.configFile(), QSettings::IniFormat);
 
-        QByteArray certs = settings.value(CA_CERTS_KEY).toByteArray();
+        QByteArray certs = cfg.caCerts();
+
         qDebug() << "Saving " << _unknownCerts.count() << " unknown certs.";
         foreach( const QSslCertificate& cert, _unknownCerts ) {
             certs += cert.toPem() + '\n';
         }
-        settings.setValue(CA_CERTS_KEY, certs);
+        cfg.setCaCerts( certs );
     }
 
     QDialog::accept();
