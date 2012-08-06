@@ -395,23 +395,28 @@ bool OwncloudSetupWizard::createRemoteFolder( const QString& folder )
 void OwncloudSetupWizard::slotCreateRemoteFolderFinished( QNetworkReply::NetworkError error )
 {
     qDebug() << "** webdav mkdir request finished " << error;
+    bool success = true;
 
     if( error == QNetworkReply::NoError ) {
         _ocWizard->appendToResultWidget( tr("Remote folder %1 created successfully.").arg(_remoteFolder));
     } else if( error == 202 ) {
         _ocWizard->appendToResultWidget( tr("The remote folder %1 already exists. Connecting it for syncing.").arg(_remoteFolder));
+    } else if( error > 202 && error < 300 ) {
+        _ocWizard->appendToResultWidget( tr("The folder creation resulted in HTTP error code %d").arg((int)error) );
     } else if( error == QNetworkReply::OperationCanceledError ) {
         _ocWizard->appendToResultWidget( tr("<p><font color=\"red\">Remote folder creation failed probably because the provided credentials are wrong.</font>"
                                             "<br/>Please go back and check your credentials.</p>"));
         _localFolder.clear();
         _remoteFolder.clear();
+        success = false;
     } else {
         _ocWizard->appendToResultWidget( tr("Remote folder %1 creation failed with error <tt>%2</tt>.").arg(_remoteFolder).arg(error));
         _localFolder.clear();
         _remoteFolder.clear();
+        success = false;
     }
 
-    finalizeSetup( true );
+    finalizeSetup( success );
 }
 
 void OwncloudSetupWizard::finalizeSetup( bool success )
