@@ -547,7 +547,7 @@ int csync_vio_stat(CSYNC *ctx, const char *uri, csync_vio_file_stat_t *buf) {
       if( file ) {
           h = c_jhash64((uint8_t *) file, len, 0);
           buf->md5 = csync_statedb_get_uniqId( ctx, h, buf );
-
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "OOOOOOOOOOOOO vio_stat MD5: %s -> %s", file, buf->md5);
           SAFE_FREE(file);
       }
       break;

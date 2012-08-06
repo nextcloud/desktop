@@ -424,7 +424,8 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
   st->gid = atoi(result->vector[5]);
   st->mode = atoi(result->vector[6]);
   st->modtime = strtoul(result->vector[7], NULL, 10);
-  st->md5 = c_strdup( result->vector[8] );
+  if( result->vector[8])
+    st->md5 = c_strdup( result->vector[8] );
   c_strlist_destroy(result);
 
   return st;
@@ -474,7 +475,8 @@ csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx, ino_t inode) {
   st->gid = atoi(result->vector[5]);
   st->mode = atoi(result->vector[6]);
   st->modtime = strtoul(result->vector[7], NULL, 10);
-  st->md5 = c_strdup(result->vector[8]);
+  if( result->vector[8] )
+    st->md5 = c_strdup(result->vector[8]);
 
   c_strlist_destroy(result);
 
