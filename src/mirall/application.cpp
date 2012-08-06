@@ -126,15 +126,6 @@ Application::Application(int &argc, char **argv) :
 
     _folderWizard = new FolderWizard( 0, _theme );
 
-    connect( ownCloudInfo::instance(),SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
-             SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
-
-    connect( ownCloudInfo::instance(),SIGNAL(noOwncloudFound(QNetworkReply*)),
-             SLOT(slotNoOwnCloudFound(QNetworkReply*)));
-
-    connect( ownCloudInfo::instance(),SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
-             this,SLOT(slotAuthCheck(QString,QNetworkReply*)));
-
     _owncloudSetupWizard = new OwncloudSetupWizard( _folderMan, _theme, this );
     connect( _owncloudSetupWizard, SIGNAL(ownCloudWizardDone(int)), SLOT(slotStartFolderSetup(int)));
 
@@ -200,6 +191,16 @@ void Application::slotStartFolderSetup( int result )
 {
     if( result == QDialog::Accepted ) {
         if( ownCloudInfo::instance()->isConfigured() ) {
+            connect( ownCloudInfo::instance(),SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
+                     SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
+
+            connect( ownCloudInfo::instance(),SIGNAL(noOwncloudFound(QNetworkReply*)),
+                     SLOT(slotNoOwnCloudFound(QNetworkReply*)));
+
+            connect( ownCloudInfo::instance(),SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
+                     this,SLOT(slotAuthCheck(QString,QNetworkReply*)));
+
+
             ownCloudInfo::instance()->checkInstallation();
         } else {
             QMessageBox::warning(0, tr("No ownCloud Configuration"),
@@ -221,7 +222,6 @@ void Application::slotOwnCloudFound( const QString& url, const QString& versionS
     // now check the authentication
     MirallConfigFile cfgFile;
     cfgFile.setOwnCloudVersion( version );
-
     // disconnect from ownCloudInfo
     disconnect( ownCloudInfo::instance(),SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
                 this, SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
@@ -246,6 +246,17 @@ void Application::slotNoOwnCloudFound( QNetworkReply* reply )
 
     QMessageBox::warning(0, tr("ownCloud Connection Failed"), msg );
     _actionAddFolder->setEnabled( false );
+
+    // Disconnect.
+    disconnect( ownCloudInfo::instance(),SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
+                this, SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
+
+    disconnect( ownCloudInfo::instance(),SIGNAL(noOwncloudFound(QNetworkReply*)),
+                this, SLOT(slotNoOwnCloudFound(QNetworkReply*)));
+
+    disconnect( ownCloudInfo::instance(),SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
+                this,SLOT(slotAuthCheck(QString,QNetworkReply*)));
+
     setupContextMenu();
 }
 
