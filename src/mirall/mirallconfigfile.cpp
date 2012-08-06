@@ -38,6 +38,8 @@
 #define OC_ORGANIZATION QLatin1String("ownCloud")
 #define OC_APPLICATION  QLatin1String("ownCloudClient")
 
+#define CA_CERTS_KEY QLatin1String("CaCertificates")
+
 namespace Mirall {
 
 QString MirallConfigFile::_passwd;
@@ -174,6 +176,41 @@ void MirallConfigFile::writeOwncloudConfig( const QString& connection,
     QFile::setPermissions( file, QFile::ReadOwner|QFile::WriteOwner );
 
 }
+
+// set the url, called from redirect handling.
+void MirallConfigFile::setOwnCloudUrl( const QString& connection, const QString & url )
+{
+    const QString file = configFile();
+
+    QSettings settings( file, QSettings::IniFormat);
+    settings.setIniCodec( "UTF-8" );
+    settings.beginGroup( connection );
+    settings.setValue("url", url );
+
+    settings.sync();
+}
+
+QByteArray MirallConfigFile::caCerts( )
+{
+    QSettings settings( configFile(), QSettings::IniFormat );
+    settings.setIniCodec( "UTF-8" );
+
+    QByteArray certs = settings.value( CA_CERTS_KEY ).toByteArray();
+
+    return certs;
+}
+
+void MirallConfigFile::setCaCerts( const QByteArray & certs )
+{
+    const QString file = configFile();
+
+    QSettings settings( file, QSettings::IniFormat);
+    settings.setIniCodec( "UTF-8" );
+    settings.setValue( CA_CERTS_KEY, certs );
+
+    settings.sync();
+}
+
 
 void MirallConfigFile::removeConnection( const QString& connection )
 {
