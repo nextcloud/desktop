@@ -197,11 +197,6 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
   _ButtonInfo->setEnabled(false);
   _ButtonAdd->setEnabled(true);
 
-  connect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(const QString&, const QString&, const QString&, const QString&)),
-          this, SLOT(slotOCInfo( const QString&, const QString&, const QString&, const QString& )));
-  connect(ownCloudInfo::instance(), SIGNAL(noOwncloudFound(QNetworkReply*)),
-          this, SLOT(slotOCInfoFail(QNetworkReply*)));
-
 #if defined Q_WS_X11 
   connect(_folderList, SIGNAL(activated(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
   connect( _folderList,SIGNAL(doubleClicked(QModelIndex)),SLOT(slotDoubleClicked(QModelIndex)));
@@ -398,6 +393,11 @@ void StatusDialog::slotAddSync()
 void StatusDialog::slotCheckConnection()
 {
     if( ownCloudInfo::instance()->isConfigured() ) {
+        connect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(const QString&, const QString&, const QString&, const QString&)),
+                this, SLOT(slotOCInfo( const QString&, const QString&, const QString&, const QString& )));
+        connect(ownCloudInfo::instance(), SIGNAL(noOwncloudFound(QNetworkReply*)),
+                this, SLOT(slotOCInfoFail(QNetworkReply*)));
+
         _ocUrlLabel->setText( tr("Checking ownCloud connection..."));
         qDebug() << "Check status.php from statusdialog.";
         ownCloudInfo::instance()->checkInstallation();
@@ -429,6 +429,12 @@ void StatusDialog::slotOCInfo( const QString& url, const QString& versionStr, co
     _ocUrlLabel->setToolTip( tr("Version: %1").arg(version));
     _ButtonAdd->setEnabled(true);
 
+    disconnect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(const QString&, const QString&, const QString&, const QString&)),
+            this, SLOT(slotOCInfo( const QString&, const QString&, const QString&, const QString& )));
+    disconnect(ownCloudInfo::instance(), SIGNAL(noOwncloudFound(QNetworkReply*)),
+            this, SLOT(slotOCInfoFail(QNetworkReply*)));
+
+
 }
 
 void StatusDialog::slotOCInfoFail( QNetworkReply *reply)
@@ -438,6 +444,12 @@ void StatusDialog::slotOCInfoFail( QNetworkReply *reply)
 
     _ocUrlLabel->setText( tr("<p>Failed to connect to ownCloud: <tt>%1</tt></p>").arg(errStr) );
     _ButtonAdd->setEnabled( false);
+
+    disconnect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(const QString&, const QString&, const QString&, const QString&)),
+            this, SLOT(slotOCInfo( const QString&, const QString&, const QString&, const QString& )));
+    disconnect(ownCloudInfo::instance(), SIGNAL(noOwncloudFound(QNetworkReply*)),
+            this, SLOT(slotOCInfoFail(QNetworkReply*)));
+
 }
 
 void StatusDialog::slotOpenOC()
