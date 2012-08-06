@@ -134,7 +134,7 @@ void OwncloudSetupWizard::testOwnCloudConnect()
 
     MirallConfigFile cfgFile( _configHandle );
 
-    cfgFile.writeOwncloudConfig( QString::fromLocal8Bit("ownCloud"),
+    cfgFile.writeOwncloudConfig( QLatin1String("ownCloud"),
                                  _ocWizard->field("OCUrl").toString(),
                                  _ocWizard->field("OCUser").toString(),
                                  _ocWizard->field("OCPasswd").toString(),
