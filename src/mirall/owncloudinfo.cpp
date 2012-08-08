@@ -308,8 +308,6 @@ QUrl ownCloudInfo::redirectUrl(const QUrl& possibleRedirectUrl,
     /*
      * Check if the URL is empty and
      * that we aren't being fooled into a infinite redirect loop.
-     * We could also keep track of how many redirects we have been to
-     * and set a limit to it, but we'll leave that to you.
      */
     if(!possibleRedirectUrl.isEmpty() &&
        possibleRedirectUrl != oldRedirectUrl) {
@@ -342,23 +340,30 @@ void ownCloudInfo::slotReplyFinished()
         QString configHandle;
 
         qDebug() << "Redirected to " << possibleRedirUrl;
-        /* We'll do another request to the redirection url. */
-        if(!_urlRedirectedTo.isEmpty()) {
-            // an empty config handle is ok for the default config.
-            if( _configHandleMap.contains(reply) ) {
-                configHandle = _configHandleMap[reply];
-                qDebug() << "Auth: Have a custom config handle: " << configHandle;
-            }
 
-            qDebug() << "Auth request to me and I am " << this;
-            MirallConfigFile cfgFile( configHandle );
-            cfgFile.setOwnCloudUrl( _connection, _urlRedirectedTo.toString() );
+        // We'll do another request to the redirection url.
+        // an empty config handle is ok for the default config.
+        if( _configHandleMap.contains(reply) ) {
+            configHandle = _configHandleMap[reply];
+            qDebug() << "Redirect: Have a custom config handle: " << configHandle;
+        }
 
-            QString path = _directories[reply];
-            qDebug() << "Redirection with new config to path " << path;
+        QString path = _directories[reply];
+        qDebug() << "This path was redirected: " << path;
+
+        MirallConfigFile cfgFile( configHandle );
+        QString newUrl = _urlRedirectedTo.toString();
+        if( newUrl.endsWith( path )) {
+            // cut off the trailing path
+            newUrl.chop( path.length() );
+            cfgFile.setOwnCloudUrl( _connection, newUrl );
+
+            qDebug() << "Update the config file url to " << newUrl;
             getRequest( path, false ); // FIXME: Redirect for webdav!
             reply->deleteLater();
             return;
+        } else {
+            qDebug() << "WRN: Path is not part of the redirect URL. NO redirect.";
         }
     }
     _urlRedirectedTo.clear();
