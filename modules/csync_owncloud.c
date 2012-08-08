@@ -322,19 +322,25 @@ static int ne_auth( void *userdata, const char *realm, int attempt,
         DEBUG_WEBDAV( "Authentication required %s", username );
         if( dav_session.user ) {
             /* allow user without password */
-            strncpy( username, dav_session.user, NE_ABUFSIZ);
-            if( dav_session.pwd ) {
-                strncpy( password, dav_session.pwd, NE_ABUFSIZ );
+            if( strlen( dav_session.user ) < NE_ABUFSIZ ) {
+                strcpy( username, dav_session.user );
+            }
+            if( dav_session.pwd && strlen( dav_session.pwd ) < NE_ABUFSIZ ) {
+                strcpy( password, dav_session.pwd );
             }
         } else if( _authcb != NULL ){
             /* call the csync callback */
             DEBUG_WEBDAV("Call the csync callback for %s", realm );
             memset( buf, 0, NE_ABUFSIZ );
             (*_authcb) ("Enter your username: ", buf, NE_ABUFSIZ-1, 1, 0, userdata );
-            strncpy( username, buf, NE_ABUFSIZ );
+            if( strlen(buf) < NE_ABUFSIZ ) {
+                strcpy( username, buf );
+            }
             memset( buf, 0, NE_ABUFSIZ );
             (*_authcb) ("Enter your password: ", buf, NE_ABUFSIZ-1, 0, 0, userdata );
-            strncpy( password, buf, NE_ABUFSIZ );
+            if( strlen(buf) < NE_ABUFSIZ) {
+                strcpy( password, buf );
+            }
         } else {
             DEBUG_WEBDAV("I can not authenticate!");
         }
@@ -352,10 +358,10 @@ static int ne_proxy_auth( void *userdata, const char *realm, int attempt,
 {
     (void) userdata;
     (void) realm;
-    if( dav_session.proxy_user ) {
-        strncpy( username, dav_session.proxy_user, NE_ABUFSIZ );
-        if( dav_session.proxy_pwd ) {
-            strncpy( password, dav_session.proxy_pwd, NE_ABUFSIZ );
+    if( dav_session.proxy_user && strlen( dav_session.proxy_user ) < NE_ABUFSIZ) {
+        strcpy( username, dav_session.proxy_user );
+        if( dav_session.proxy_pwd && strlen( dav_session.proxy_pwd ) < NE_ABUFSIZ) {
+            strcpy( password, dav_session.proxy_pwd );
         }
     }
 
@@ -379,7 +385,7 @@ static int configureProxy( ne_session *session )
         DEBUG_WEBDAV("No proxy configured.");
         re = 0;
     } else if( c_streq(dav_session.proxy_type, "DefaultProxy" )) {
-        DEBUG_WEBDAV("Default Proxy Usage.");
+        DEBUG_WEBDAV("System Proxy Usage.");
         ne_session_system_proxy( session, 0 );
         re = 1;
     } else if( c_streq(dav_session.proxy_type, "Socks5Proxy") ||
@@ -408,7 +414,7 @@ static int dav_connect(const char *base_url) {
     int timeout = 30;
     int useSSL = 0;
     int rc;
-    char protocol[6];
+    char protocol[6] = {'\0'};
     char uaBuf[256];
     char *path = NULL;
     char *scheme = NULL;
@@ -436,12 +442,11 @@ static int dav_connect(const char *base_url) {
     DEBUG_WEBDAV("* path %s", path );
 
     if( strcmp( scheme, "owncloud" ) == 0 ) {
-        strncpy( protocol, "http", 6);
+        strcpy( protocol, "http");
     } else if( strcmp( scheme, "ownclouds" ) == 0 ) {
-        strncpy( protocol, "https", 6 );
+        strcpy( protocol, "https");
         useSSL = 1;
     } else {
-        strncpy( protocol, "", 6 );
         DEBUG_WEBDAV("Invalid scheme %s, go outa here!", scheme );
         rc = -1;
         goto out;
@@ -826,7 +831,7 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
                 len = strlen(res->uri);
                 while( len > 0 && res->uri[len-1] == '/' ) --len;
                 memset( strbuf, 0, PATH_MAX+1);
-                strncpy( strbuf, res->uri, len < PATH_MAX ? len : PATH_MAX );
+                strncpy( strbuf, res->uri, len < PATH_MAX ? len : PATH_MAX ); /* this removes the trailing slash */
                 decodedUri = ne_path_unescape( curi ); /* allocates memory */
                 if( c_streq(strbuf, decodedUri )) {
                     SAFE_FREE( decodedUri );
@@ -1491,18 +1496,21 @@ static int owncloud_mkdir(const char *uri, mode_t mode) {
 
     /* the uri path is required to have a trailing slash */
     if( rc >= 0 ) {
-      memset( buf,0, PATH_MAX+1 );
-      len = strlen( path );
-      strncpy( buf, path, len );
-      if( buf[len-1] != '/' ) {
-          buf[len] = '/';
-      }
+        len = strlen( path );
+        if( len > PATH_MAX-1 ) {
+            DEBUG_WEBDAV("ERR: Path is too long for OS max path length!");
+        } else {
+            strcpy( buf, path );
+            if( buf[len-1] != '/' ) {
+                strcat(buf, "/");
+            }
 
-      DEBUG_WEBDAV("MKdir on %s", buf );
-      rc = ne_mkcol(dav_session.ctx, buf );
-      if (rc != NE_OK ) {
-          errno = ne_session_error_errno( dav_session.ctx );
-      }
+            DEBUG_WEBDAV("MKdir on %s", buf );
+            rc = ne_mkcol(dav_session.ctx, buf );
+            if (rc != NE_OK ) {
+                errno = ne_session_error_errno( dav_session.ctx );
+            }
+        }
     }
     SAFE_FREE( path );
 
@@ -1690,7 +1698,7 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
         if( *userdata_ptr && strlen( *userdata_ptr) )
             dav_session.proxy_type = c_strdup( *userdata_ptr );
         userdata_ptr++;
-
+        DEBUG_WEBDAV("CSync Proxy Type: %s", dav_session.proxy_type);
         if( *userdata_ptr && strlen( *userdata_ptr) )
             dav_session.proxy_host = c_strdup( *userdata_ptr );
         userdata_ptr++;
