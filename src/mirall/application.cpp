@@ -403,22 +403,20 @@ void Application::setupProxy()
 {
     //
     Mirall::MirallConfigFile cfg;
-    switch(cfg.proxyType())
-    {
-    case QNetworkProxy::NoProxy:
-    {
+    int proxy = cfg.proxyType();
+
+    switch(proxy) {
+    case QNetworkProxy::NoProxy: {
         QNetworkProxy proxy;
         proxy.setType(QNetworkProxy::NoProxy);
         QNetworkProxy::setApplicationProxy(proxy);
         break;
     }
-    case QNetworkProxy::DefaultProxy:
-    {
+    case QNetworkProxy::DefaultProxy: {
         QNetworkProxyFactory::setUseSystemConfiguration(true);
         break;
     }
-    case QNetworkProxy::Socks5Proxy:
-    {
+    case QNetworkProxy::Socks5Proxy: {
         QNetworkProxy proxy;
         proxy.setType(QNetworkProxy::Socks5Proxy);
         proxy.setHostName(cfg.proxyHostName());
