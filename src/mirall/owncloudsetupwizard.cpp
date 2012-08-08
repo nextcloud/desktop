@@ -69,10 +69,6 @@ OwncloudSetupWizard::OwncloudSetupWizard( FolderMan *folderMan, Theme *theme, QO
 
     _ocWizard->setWindowTitle( tr("%1 Connection Wizard").arg( theme ? theme->appName() : "Mirall" ) );
 
-    // create the ocInfo object
-    connect(ownCloudInfo::instance(),SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
-    connect(ownCloudInfo::instance(),SIGNAL(noOwncloudFound(QNetworkReply*)),SLOT(slotNoOwnCloudFound(QNetworkReply*)));
-    connect(ownCloudInfo::instance(),SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
 }
 
 OwncloudSetupWizard::~OwncloudSetupWizard()
@@ -113,6 +109,14 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
     // clear the custom config handle
     _configHandle.clear();
     ownCloudInfo::instance()->setCustomConfigHandle( QString() );
+
+    // disconnect the ocInfo object
+    disconnect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
+               this, SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
+    disconnect(ownCloudInfo::instance(), SIGNAL(noOwncloudFound(QNetworkReply*)),
+               this, SLOT(slotNoOwnCloudFound(QNetworkReply*)));
+    disconnect(ownCloudInfo::instance(), SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),
+               this, SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
 
     // notify others.
     emit ownCloudWizardDone( result );
@@ -314,6 +318,11 @@ void OwncloudSetupWizard::slotProcessFinished( int res, QProcess::ExitStatus )
 
 void OwncloudSetupWizard::startWizard()
 {
+    // create the ocInfo object
+    connect(ownCloudInfo::instance(),SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
+    connect(ownCloudInfo::instance(),SIGNAL(noOwncloudFound(QNetworkReply*)),SLOT(slotNoOwnCloudFound(QNetworkReply*)));
+    connect(ownCloudInfo::instance(),SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
+
     MirallConfigFile cfgFile;
 
     QString url = cfgFile.ownCloudUrl();
