@@ -146,23 +146,26 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     _csync = new CSyncThread( path(), url.toString(), _localCheckOnly );
 
     // Proxy settings. Proceed them as strings to csync thread.
-    QNetworkProxy proxy = QNetworkProxy::applicationProxy();
+    int intProxy = cfgFile.proxyType();
     QString proxyType;
-    if( proxy.type() == QNetworkProxy::NoProxy )
+
+    if( intProxy == QNetworkProxy::NoProxy )
         proxyType = QLatin1String("NoProxy");
-    else if( proxy.type() == QNetworkProxy::DefaultProxy )
+    else if( intProxy == QNetworkProxy::DefaultProxy )
         proxyType = QLatin1String("DefaultProxy");
-    else if( proxy.type() == QNetworkProxy::Socks5Proxy )
+    else if( intProxy == QNetworkProxy::Socks5Proxy )
         proxyType = QLatin1String("Socks5Proxy");
-    else if( proxy.type() == QNetworkProxy::HttpProxy )
+    else if( intProxy == QNetworkProxy::HttpProxy )
         proxyType = QLatin1String("HttpProxy");
-    else if( proxy.type() == QNetworkProxy::HttpCachingProxy )
+    else if( intProxy == QNetworkProxy::HttpCachingProxy )
         proxyType = QLatin1String("HttpCachingProxy");
-    else if( proxy.type() == QNetworkProxy::FtpCachingProxy )
+    else if( intProxy == QNetworkProxy::FtpCachingProxy )
             proxyType = QLatin1String("FtpCachingProxy");
+    else proxyType = QLatin1String("NoProxy");
 
     _csync->setConnectionDetails( cfgFile.ownCloudUser(), cfgFile.ownCloudPasswd(), proxyType,
-                                  proxy.hostName(), proxy.port(), proxy.user(), proxy.password() );
+                                  cfgFile.proxyHostName(), cfgFile.proxyPort(), cfgFile.proxyUser(),
+                                  cfgFile.proxyPassword() );
 
     QObject::connect(_csync, SIGNAL(started()),  SLOT(slotCSyncStarted()));
     QObject::connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()));
