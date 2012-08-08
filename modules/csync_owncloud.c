@@ -804,7 +804,7 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
 
         curi = _cleanPath( uri );
 
-        DEBUG_WEBDAV("I have no stat cache, call propfind for %s.", curi );
+        DEBUG_WEBDAV("I have no stat cache, call propfind for %s", curi );
         fetchCtx->list = NULL;
         fetchCtx->target = curi;
         fetchCtx->include_target = 1;
@@ -833,6 +833,8 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
                 memset( strbuf, 0, PATH_MAX+1);
                 strncpy( strbuf, res->uri, len < PATH_MAX ? len : PATH_MAX ); /* this removes the trailing slash */
                 decodedUri = ne_path_unescape( curi ); /* allocates memory */
+                DEBUG_WEBDAV("Decoded URI: %s", decodedUri);
+
                 if( c_streq(strbuf, decodedUri )) {
                     SAFE_FREE( decodedUri );
                     break;
@@ -840,7 +842,11 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
                 res = res->next;
                 SAFE_FREE( decodedUri );
             }
-            DEBUG_WEBDAV("Working on file %s", res ? res->name : "NULL");
+            if( res ) {
+                DEBUG_WEBDAV("Working on file %s", res->name );
+            } else {
+                DEBUG_WEBDAV("ERROR: Result struct not valid!");
+            }
 
             lfs = resourceToFileStat( res );
             if( lfs ) {
