@@ -1430,11 +1430,16 @@ static csync_vio_method_handle_t *owncloud_opendir(const char *uri) {
 
     rc = fetch_resource_list( curi, NE_DEPTH_ONE, fetchCtx );
     if( rc != NE_OK ) {
-        errno = ne_session_error_errno( dav_session.ctx );
-        redir_ne_uri = ne_redirect_location(dav_session.ctx);
-        if( redir_ne_uri ) {
-            redir_uri = ne_uri_unparse(redir_ne_uri);
-            DEBUG_WEBDAV("Permanently moved to %s", redir_uri);
+        if( rc == NE_CONNECT || rc == NE_LOOKUP ) {
+            errno = EIO;
+        } else {
+            errno = ne_session_error_errno( dav_session.ctx );
+            DEBUG_WEBDAV("Errno set to %d", errno);
+            redir_ne_uri = ne_redirect_location(dav_session.ctx);
+            if( redir_ne_uri ) {
+                redir_uri = ne_uri_unparse(redir_ne_uri);
+                DEBUG_WEBDAV("Permanently moved to %s", redir_uri);
+            }
         }
         return NULL;
     } else {

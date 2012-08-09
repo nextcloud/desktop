@@ -90,6 +90,7 @@ enum csync_error_codes_e {
   CSYNC_ERR_REMOTE_STAT,
   CSYNC_ERR_LOCAL_CREATE,
   CSYNC_ERR_LOCAL_STAT,
+  CSYNC_ERR_PROXY,
   CSYNC_ERR_UNSPEC
 };
 typedef enum csync_error_codes_e CSYNC_ERROR_CODE;

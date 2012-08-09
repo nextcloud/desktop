@@ -220,6 +220,10 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     /* permission denied */
     if (errno == EACCES) {
       return 0;
+    } else if(errno == EIO ) {
+      /* Proxy problems (ownCloud) */
+      ctx->error_code = CSYNC_ERR_PROXY;
+      goto error;
     } else {
       strerror_r(errno, errbuf, sizeof(errbuf));
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
