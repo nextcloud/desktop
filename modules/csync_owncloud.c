@@ -594,7 +594,7 @@ static int fetch_resource_list( const char *curi,
                                 int depth,
                                 struct listdir_context *fetchCtx )
 {
-    int ret = 0;
+    int ret = -1;
     ne_propfind_handler *hdl = NULL;
     ne_request *request = NULL;
     const char *date_header = NULL;
@@ -602,13 +602,15 @@ static int fetch_resource_list( const char *curi,
     time_t now;
     time_t time_diff;
     time_t time_diff_delta;
+    const char *err = NULL;
 
     /* do a propfind request and parse the results in the results function, set as callback */
     /* ret = ne_simple_propfind( dav_session.ctx, curi, depth, ls_props, results, fetchCtx ); */
 
     hdl = ne_propfind_create(dav_session.ctx, curi, depth);
 
-    ret = ne_propfind_named(hdl, ls_props, results, fetchCtx);
+    if(hdl)
+        ret = ne_propfind_named(hdl, ls_props, results, fetchCtx);
 
     if( ret == NE_OK ) {
         DEBUG_WEBDAV("Simple propfind OK.");
@@ -643,11 +645,14 @@ static int fetch_resource_list( const char *curi,
         }
         dav_session.time_delta = time_diff;
     } else {
-        DEBUG_WEBDAV("WRN: propfind named failed with %d", ret);
+        err = ne_get_error( dav_session.ctx );
+        DEBUG_WEBDAV("WRN: propfind named failed with %d, request error: %s", ret, err ? err : "<nil>");
     }
 
-    ne_propfind_destroy(hdl);
+    if( hdl )
+        ne_propfind_destroy(hdl);
 
+    if( ret == -1 ) ret = NE_ERROR;
     return ret;
 }
 
@@ -833,7 +838,6 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
                 memset( strbuf, 0, PATH_MAX+1);
                 strncpy( strbuf, res->uri, len < PATH_MAX ? len : PATH_MAX ); /* this removes the trailing slash */
                 decodedUri = ne_path_unescape( curi ); /* allocates memory */
-                DEBUG_WEBDAV("Decoded URI: %s", decodedUri);
 
                 if( c_streq(strbuf, decodedUri )) {
                     SAFE_FREE( decodedUri );
