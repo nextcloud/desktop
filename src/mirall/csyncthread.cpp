@@ -104,14 +104,15 @@ struct ProxyInfo {
          QFileInfo fi(source);
 
          if( fi.isDir()) {  // File type directory.
-            if( !(fi.isWritable() && fi.isExecutable()) ) {
+             if( !(fi.isWritable() && fi.isExecutable()) ) {
+                 wStats->dirPermErrors++;
                  wStats->errorType = WALK_ERROR_DIR_PERMS;
              }
          }
      }
 
      // qDebug() << wStats->seenFiles << ". Path: " << file->path << ": uid= " << file->uid << " - type: " << file->type;
-     if( wStats->errorType != WALK_ERROR_NONE ) {
+     if( !( wStats->errorType == WALK_ERROR_NONE || wStats->errorType == WALK_ERROR_DIR_PERMS )) {
          return -1;
      }
      return 0;
@@ -151,6 +152,7 @@ void CSyncThread::run()
     wStats->seenFiles  = 0;
     wStats->conflicts  = 0;
     wStats->error      = 0;
+    wStats->dirPermErrors = 0;
 
     ProxyInfo *proxyInfo  = new ProxyInfo;
 
@@ -245,7 +247,7 @@ void CSyncThread::run()
 
     qDebug() << "############################################################### >>";
     if( csync_update(csync) < 0 ) {
-        emit csyncError(tr("CSync Update failed wiht errno."));
+        emit csyncError(tr("CSync Update failed."));
         goto cleanup;
     }
     qDebug() << "<<###############################################################";
@@ -255,11 +257,7 @@ void CSyncThread::run()
     walkTime.start();
     if( csync_walk_local_tree(csync, &checkPermissions, 0) < 0 ) {
         qDebug() << "Error in treewalk.";
-        if( wStats->errorType == WALK_ERROR_DIR_PERMS ) {
-            emit csyncError(tr("The local filesystem has directories which are write protected.\n"
-                               "That prevents ownCloud from successful syncing.\n"
-                               "Please make sure that all directories are writeable."));
-        } else if( wStats->errorType == WALK_ERROR_WALK ) {
+        if( wStats->errorType == WALK_ERROR_WALK ) {
             emit csyncError(tr("CSync encountered an error while examining the file system.\n"
                                "Syncing is not possible."));
         } else if( wStats->errorType == WALK_ERROR_INSTRUCTIONS ) {
@@ -268,6 +266,13 @@ void CSyncThread::run()
         }
         emit csyncError(tr("Local filesystem problems. Better disable Syncing and check."));
         goto cleanup;
+    } else {
+        // only warn, do not stop the sync process.
+        if( wStats->errorType == WALK_ERROR_DIR_PERMS ) {
+            emit csyncError(tr("The local filesystem has %1 write protected directories."
+                               "That can hinder successful syncing.<p/>"
+                               "Please make sure that all local directories are writeable.").arg(wStats->dirPermErrors));
+        }
     }
 
     // emit the treewalk results. Do not touch the wStats after this.

@@ -251,7 +251,6 @@ void ownCloudFolder::slotCSyncFinished()
     qDebug() << "-> CSync Finished slot with error " << _csyncError;
 
     if (_csyncError) {
-
         _syncResult.setStatus(SyncResult::Error);
 
         qDebug() << "  ** error Strings: " << _errors;

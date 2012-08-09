@@ -48,6 +48,8 @@ struct walkStats_s {
     ulong sync;
     ulong error;
 
+    ulong dirPermErrors;
+
     ulong seenFiles;
 };
 
