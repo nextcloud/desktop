@@ -96,7 +96,11 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     goto out;
   }
 
-  /* Update detection */
+  /* Update detection: Check if a database entry exists.
+   * If not, the file is either new or has been renamed. To see if it is
+   * renamed, the db gets queried by the inode of the file as that one
+   * does not change on rename.
+   */
   if (csync_get_statedb_exists(ctx)) {
     tmp = csync_statedb_get_stat_by_hash(ctx, h);
     if (tmp && tmp->phash == h) {
@@ -109,8 +113,8 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
       }
       st->instruction = CSYNC_INSTRUCTION_NONE;
     } else {
-      /* check if the file has been renamed */
-      if (ctx->current == LOCAL_REPLICA) {
+      /* check if it's a file and has been renamed */
+      if (type == CSYNC_FTW_TYPE_FILE && ctx->current == LOCAL_REPLICA) {
         tmp = csync_statedb_get_stat_by_inode(ctx, fs->inode);
         if (tmp && tmp->inode == fs->inode) {
           /* inode found so the file has been renamed */
@@ -122,7 +126,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
           goto out;
         }
       }
-      /* remote and file not found in statedb */
+      /* directory, remote and file not found in statedb */
       st->instruction = CSYNC_INSTRUCTION_NEW;
     }
   } else  {

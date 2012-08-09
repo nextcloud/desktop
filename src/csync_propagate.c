@@ -553,6 +553,7 @@ static int _csync_new_file(CSYNC *ctx, csync_file_stat_t *st) {
 static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
   int rc = 0;
   char errbuf[256] = {0};
+  struct timeval times[2];
   char *suri = NULL;
   char *duri = NULL;
 
@@ -592,6 +593,17 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
     }
     goto out;
   }
+
+  /* set owner and group if possible */
+  if (ctx->pwd.euid == 0) {
+    csync_vio_chown(ctx, duri, st->uid, st->gid);
+  }
+
+  /* sync time */
+  times[0].tv_sec = times[1].tv_sec = st->modtime;
+  times[0].tv_usec = times[1].tv_usec = 0;
+
+  csync_vio_utimes(ctx, duri, times);
 
   /* set instruction for the statedb merger */
   if( rc > -1 ) {
@@ -1088,6 +1100,8 @@ static int _csync_propagation_dir_visitor(void *obj, void *data) {
           if (_csync_remove_dir(ctx, st) < 0) {
             goto err;
           }
+        case CSYNC_INSTRUCTION_RENAME:
+          /* there can't be a rename for dirs. See updater. */
           break;
         default:
           break;
