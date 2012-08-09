@@ -245,12 +245,23 @@ void CSyncThread::run()
 
     emitStateDb(csync);
 
-    qDebug() << "############################################################### >>";
+    qDebug() << "#### Update start #################################################### >>";
     if( csync_update(csync) < 0 ) {
-        emit csyncError(tr("CSync Update failed."));
+        CSYNC_ERROR_CODE err = csync_get_error( csync );
+        QString errStr;
+
+        switch( err ) {
+        case CSYNC_ERR_PROXY:
+            errStr = tr("CSync failed to reach the host. Either host or proxy settings are not valid.");
+            break;
+        default:
+            errStr = tr("CSync Update failed.");
+            break;
+        }
+        emit csyncError( errStr );
         goto cleanup;
     }
-    qDebug() << "<<###############################################################";
+    qDebug() << "<<#### Update end ###########################################################";
 
     csync_set_userdata(csync, wStats);
 

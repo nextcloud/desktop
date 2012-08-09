@@ -137,12 +137,6 @@ Application::Application(int &argc, char **argv) :
 
     connect( _statusDialog, SIGNAL(openLogBrowser()), this, SLOT(slotOpenLogBrowser()));
 
-#if 0
-    connect( _statusDialog, SIGNAL(fetchFolderAlias(const QString&)),
-             SLOT(slotFetchFolder( const QString&)));
-    connect( _statusDialog, SIGNAL(pushFolderAlias(const QString&)),
-             SLOT(slotPushFolder( const QString&)));
-#endif
     connect( _statusDialog, SIGNAL(enableFolderAlias(QString,bool)),
              SLOT(slotEnableFolder(QString,bool)));
     connect( _statusDialog, SIGNAL(infoFolderAlias(const QString&)),
@@ -293,6 +287,8 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
 
             if( _tray )
                 _tray->showMessage(tr("ownCloud Sync Started"), tr("Sync started for %1 configured sync folder(s).").arg(cnt));
+
+            _statusDialog->setFolderList( _folderMan->map() );
         }
         _actionAddFolder->setEnabled( true );
     }
@@ -315,7 +311,6 @@ void Application::setupActions()
     QObject::connect(_actionConfigure, SIGNAL(triggered(bool)), SLOT(slotConfigure()));
     _actionConfigureProxy = new QAction(tr("Configure proxy..."), this);
     QObject::connect(_actionConfigureProxy, SIGNAL(triggered(bool)), SLOT(slotConfigureProxy()));
-
     _actionQuit = new QAction(tr("Quit"), this);
     QObject::connect(_actionQuit, SIGNAL(triggered(bool)), SLOT(quit()));
 }
