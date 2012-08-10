@@ -1004,7 +1004,7 @@ static char*_lastDir = NULL;
  *  bool time_sync_required  - oC does not require the time sync
  *  int  unix_extensions     - oC supports unix extensions.
  */
-static csync_vio_capabilities_t _owncloud_capabilities = { true, false, false, 1 };
+static csync_vio_capabilities_t _owncloud_capabilities = { true, false, true, 1 };
 
 static csync_vio_capabilities_t *owncloud_get_capabilities(void)
 {
