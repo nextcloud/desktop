@@ -192,17 +192,17 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="29"/>
         <source>Synchronization Target</source>
-        <translation type="unfinished"/>
+        <translation>Cible pour la synchronisation</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="51"/>
         <source>Select a destination folder for your data</source>
-        <translation type="unfinished"/>
+        <translation>Veuillez spécifier un dossier de destination pour vos données</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="78"/>
         <source>on your &amp;ownCloud server</source>
-        <translation type="unfinished"/>
+        <translation>sur votre serveur ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="91"/>
@@ -274,7 +274,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/application.cpp" line="201"/>
         <source>&lt;p&gt;No server connection has been configured for this ownCloud client.&lt;/p&gt;&lt;p&gt;Please right click on the ownCloud system tray icon and select &lt;i&gt;Configure&lt;/i&gt; to connect this client to an ownCloud server.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Aucune connexion serveur n&apos;a été configurée pour ce client ownCloud.&lt;/p&gt;&lt;p&gt;Veuillez cliquer droit sur l’icône ownCloud dans la zone de notification et sélectionner &lt;i&gt;Configurer&lt;/i&gt; pour connecter ce client à un serveur ownCloud.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="236"/>
@@ -495,7 +495,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="211"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;heure du client est différente de l&apos;heure du serveur. Veuillez utiliser un service de synchronisation du temps (NTP) sur le serveur et le client afin que les horloges soient à la même heure.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="216"/>
@@ -697,17 +697,17 @@ Veuillez envoyer un rapport de bug</translation>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="123"/>
         <source>Log Output</source>
-        <translation type="unfinished"/>
+        <translation>Consigner la sortie dans des fichiers de log</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="135"/>
         <source>&amp;Search: </source>
-        <translation type="unfinished"/>
+        <translation>&amp;Recherche :</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="143"/>
         <source>&amp;Find</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Chercher</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="161"/>
@@ -722,33 +722,33 @@ Veuillez envoyer un rapport de bug</translation>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="168"/>
         <source>S&amp;ave</source>
-        <translation type="unfinished"/>
+        <translation>S&amp;auvegarder</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="169"/>
         <source>Save the log file to a file on disk for debugging.</source>
-        <translation type="unfinished"/>
+        <translation>Enregistrer le fichier de log sur le disque à des fins de débogage.</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="207"/>
         <location filename="../src/mirall/logbrowser.cpp" line="264"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Erreur</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="208"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;nobr&gt;Le fichier &apos;%1&apos;&lt;br/&gt;ne peut être ouvert en écriture.&lt;br/&gt;&lt;br/&gt;La sortie &lt;b&gt;ne peut&lt;/b&gt; être consignée dans un fichier de log !&lt;/nobr&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="254"/>
         <source>Save log file</source>
-        <translation type="unfinished"/>
+        <translation>Sauvegarder le fichier de log</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="264"/>
         <source>Could not write to log file </source>
-        <translation type="unfinished"/>
+        <translation>Impossible d&apos;écrire dans le fichier de log</translation>
     </message>
 </context>
 <context>
@@ -847,17 +847,17 @@ L&apos;installation ne peut pas continuer.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="386"/>
         <source>Creation of remote folder %1 could not be started.</source>
-        <translation type="unfinished"/>
+        <translation>La création du dossier distant %1 ne peut être démarrée.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="410"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation type="unfinished"/>
+        <translation>Le dossier distant %1 a été créé avec succès.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="412"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Le dossier distant %1 existe déjà. Veuillez vous y connecter pour la synchronisation.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="414"/>
@@ -867,12 +867,12 @@ L&apos;installation ne peut pas continuer.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="435"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation type="unfinished"/>
+        <translation>Une synchronisation entre le dossier local %1 et le dossier distant %2 a été configurée.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="440"/>
         <source>Congratulations, your ownCloud can be connected!</source>
-        <translation type="unfinished"/>
+        <translation>Félicitations ! Votre ownCloud peut être connecté !</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="442"/>

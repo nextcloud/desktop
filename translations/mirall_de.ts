@@ -345,7 +345,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="312"/>
         <source>Configure proxy...</source>
-        <translation type="unfinished"/>
+        <translation>Proxy-Einstellungen</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="314"/>
@@ -594,7 +594,7 @@ Bitte einen Fehlerbericht schreiben.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="332"/>
         <source>mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>mydomain.org</translation>
     </message>
 </context>
 <context>
@@ -771,7 +771,7 @@ Bitte einen Fehlerbericht schreiben.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="288"/>
         <source>ftp.mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>ftp.mydomain.org</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="289"/>
@@ -959,7 +959,7 @@ Setup kann nicht ausgeführt werden.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="187"/>
         <source>http://owncloud.mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>http://owncloud.mydomain.org</translation>
     </message>
 </context>
 <context>
@@ -1263,7 +1263,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="51"/>
         <source>https://</source>
-        <translation type="unfinished"/>
+        <translation>https://</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="58"/>
@@ -1474,7 +1474,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/theme.cpp" line="49"/>
         <source>Setup Error</source>
-        <translation type="unfinished"/>
+        <translation>Setup-Fehler</translation>
     </message>
 </context>
 <context>
@@ -1482,7 +1482,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="36"/>
         <source>ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud</translation>
     </message>
 </context>
 <context>
@@ -1490,7 +1490,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="14"/>
         <source>Proxy Settings</source>
-        <translation type="unfinished"/>
+        <translation>Proxy-Einstellungen</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="26"/>
@@ -1500,37 +1500,37 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="43"/>
         <source>No Proxy</source>
-        <translation type="unfinished"/>
+        <translation>Kein Proxy</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="53"/>
         <source>Use system proxy</source>
-        <translation type="unfinished"/>
+        <translation>Benutze System-Proxy</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="60"/>
         <source>Manual proxy configuration</source>
-        <translation type="unfinished"/>
+        <translation>Manuelle Proxy-Konfiguration</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="90"/>
         <source>User</source>
-        <translation type="unfinished"/>
+        <translation>Benutzer</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="116"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Passwort</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="142"/>
         <source>Port</source>
-        <translation type="unfinished"/>
+        <translation>Port</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="149"/>
         <source>Host</source>
-        <translation type="unfinished"/>
+        <translation>Host</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="172"/>
