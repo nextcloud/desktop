@@ -550,6 +550,11 @@ int csync_vio_stat(CSYNC *ctx, const char *uri, csync_vio_file_stat_t *buf) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "OOOOOOOOOOOOO vio_stat MD5: %s -> %s", file, buf->md5);
           SAFE_FREE(file);
       }
+
+#ifdef _WIN32
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Win32: STAT-inode for %s: %llu", uri, buf->inode );
+#endif
+
       break;
     default:
       break;

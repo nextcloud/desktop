@@ -595,6 +595,80 @@ static int _csync_new_file(CSYNC *ctx, csync_file_stat_t *st) {
   return rc;
 }
 
+static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
+  int rc = 0;
+  char errbuf[256] = {0};
+  struct timeval times[2];
+  char *suri = NULL;
+  char *duri = NULL;
+
+  switch (ctx->current) {
+    case REMOTE_REPLCIA:
+      if( !(st->path && st->destpath) ) {
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Rename failed: src or dest path empty");
+          rc = -1;
+      }
+      if (asprintf(&suri, "%s/%s", ctx->remote.uri, st->path) < 0) {
+        rc = -1;
+      }
+      if (asprintf(&duri, "%s/%s", ctx->remote.uri, st->destpath) < 0) {
+        rc = -1;
+      }
+      break;
+    case LOCAL_REPLICA:
+      /* No renaming supported by updater */
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "RENAME is only supported on local filesystem.");
+      rc = -1;
+      break;
+    default:
+      break;
+  }
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Renaming %s => %s", suri, duri);
+
+  if (rc > -1 && csync_vio_rename(ctx, suri, duri) < 0) {
+    switch (errno) {
+      default:
+        strerror_r(errno, errbuf, sizeof(errbuf));
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+            "dir: %s, command: rename, error: %s",
+            suri,
+            errbuf);
+        rc = -1;
+        break;
+    }
+    goto out;
+  }
+
+  /* set owner and group if possible */
+  if (ctx->pwd.euid == 0) {
+    csync_vio_chown(ctx, duri, st->uid, st->gid);
+  }
+
+  /* sync time */
+  times[0].tv_sec = times[1].tv_sec = st->modtime;
+  times[0].tv_usec = times[1].tv_usec = 0;
+
+  csync_vio_utimes(ctx, duri, times);
+
+  /* set instruction for the statedb merger */
+  if( rc > -1 ) {
+    st->instruction = CSYNC_INSTRUCTION_RENAME;
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "RENAME  file: %s", suri);
+  }
+
+out:
+  SAFE_FREE(suri);
+  SAFE_FREE(duri);
+  SAFE_FREE(st->destpath);
+
+  /* set instruction for the statedb merger */
+  if (rc != 0) {
+    st->instruction = CSYNC_INSTRUCTION_NONE;
+  }
+
+  return rc;
+}
+
 static int _csync_sync_file(CSYNC *ctx, csync_file_stat_t *st) {
   int rc = -1;
 
@@ -997,7 +1071,13 @@ static int _csync_propagation_file_visitor(void *obj, void *data) {
             goto err;
           }
           break;
-        case CSYNC_INSTRUCTION_SYNC:
+        case CSYNC_INSTRUCTION_RENAME:
+          if (_csync_rename_file(ctx, st) < 0) {
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"FAIL RENAME: %s",st->path);
+            goto err;
+          }
+          break;
+      case CSYNC_INSTRUCTION_SYNC:
           if (_csync_sync_file(ctx, st) < 0) {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"FAIL SYNC: %s",st->path);
             goto err;
@@ -1070,6 +1150,8 @@ static int _csync_propagation_dir_visitor(void *obj, void *data) {
           if (_csync_remove_dir(ctx, st) < 0) {
             goto err;
           }
+        case CSYNC_INSTRUCTION_RENAME:
+          /* there can't be a rename for dirs. See updater. */
           break;
         default:
           break;

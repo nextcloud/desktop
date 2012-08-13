@@ -432,16 +432,11 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
 }
 
 /* caller must free the memory */
-csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx, ino_t inode) {
+csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx, uint64_t inode) {
   csync_file_stat_t *st = NULL;
   c_strlist_t *result = NULL;
   char *stmt = NULL;
   size_t len = 0;
-
-#ifdef _WIN32
-  /* no idea about inodes. */
-  return st;
-#endif
 
   stmt = sqlite3_mprintf("SELECT * FROM metadata WHERE inode='%llu'", inode);
   if (stmt == NULL) {

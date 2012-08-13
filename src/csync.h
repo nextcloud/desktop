@@ -51,7 +51,7 @@ extern "C" {
 /* csync version */
 #define LIBCSYNC_VERSION_MAJOR  0
 #define LIBCSYNC_VERSION_MINOR  50 
-#define LIBCSYNC_VERSION_MICRO  7
+#define LIBCSYNC_VERSION_MICRO  8
 
 #define LIBCSYNC_VERSION_INT CSYNC_VERSION_INT(LIBCSYNC_VERSION_MAJOR, \
                                            LIBCSYNC_VERSION_MINOR, \
@@ -90,6 +90,7 @@ enum csync_error_codes_e {
   CSYNC_ERR_REMOTE_STAT,
   CSYNC_ERR_LOCAL_CREATE,
   CSYNC_ERR_LOCAL_STAT,
+  CSYNC_ERR_PROXY,
   CSYNC_ERR_UNSPEC
 };
 typedef enum csync_error_codes_e CSYNC_ERROR_CODE;

@@ -405,7 +405,8 @@ int csync_update(CSYNC *ctx) {
   csync_memstat_check();
 
   if (rc < 0) {
-    ctx->error_code = CSYNC_ERR_TREE;
+    if(ctx->error_code == CSYNC_ERR_NONE)
+        ctx->error_code = CSYNC_ERR_TREE;
     return -1;
   }
 
@@ -426,7 +427,8 @@ int csync_update(CSYNC *ctx) {
       csync_memstat_check();
 
       if (rc < 0) {
-          ctx->error_code = CSYNC_ERR_TREE;
+          if(ctx->error_code == CSYNC_ERR_NONE )
+            ctx->error_code = CSYNC_ERR_TREE;
           return -1;
       }
   }

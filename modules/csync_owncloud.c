@@ -128,6 +128,12 @@ struct dav_session_s {
     char *user;
     char *pwd;
 
+    char *proxy_type;
+    char *proxy_host;
+    int   proxy_port;
+    char *proxy_user;
+    char *proxy_pwd;
+
     time_t   prev_delta;
     time_t   time_delta;     /* The time delta to use.                  */
     long int time_delta_sum; /* What is the time delta average?         */
@@ -162,7 +168,6 @@ struct stat_cache_s _statCache;
 
 
 csync_auth_callback _authcb;
-void *_userdata = NULL;
 
 #define PUT_BUFFER_SIZE 1024*5
 
@@ -330,24 +335,87 @@ static int ne_auth( void *userdata, const char *realm, int attempt,
         DEBUG_WEBDAV( "Authentication required %s", username );
         if( dav_session.user ) {
             /* allow user without password */
-            strncpy( username, dav_session.user, NE_ABUFSIZ);
-            if( dav_session.pwd ) {
-                strncpy( password, dav_session.pwd, NE_ABUFSIZ );
+            if( strlen( dav_session.user ) < NE_ABUFSIZ ) {
+                strcpy( username, dav_session.user );
+            }
+            if( dav_session.pwd && strlen( dav_session.pwd ) < NE_ABUFSIZ ) {
+                strcpy( password, dav_session.pwd );
             }
         } else if( _authcb != NULL ){
             /* call the csync callback */
             DEBUG_WEBDAV("Call the csync callback for %s", realm );
             memset( buf, 0, NE_ABUFSIZ );
             (*_authcb) ("Enter your username: ", buf, NE_ABUFSIZ-1, 1, 0, userdata );
-            strncpy( username, buf, NE_ABUFSIZ );
+            if( strlen(buf) < NE_ABUFSIZ ) {
+                strcpy( username, buf );
+            }
             memset( buf, 0, NE_ABUFSIZ );
             (*_authcb) ("Enter your password: ", buf, NE_ABUFSIZ-1, 0, 0, userdata );
-            strncpy( password, buf, NE_ABUFSIZ );
+            if( strlen(buf) < NE_ABUFSIZ) {
+                strcpy( password, buf );
+            }
         } else {
             DEBUG_WEBDAV("I can not authenticate!");
         }
     }
     return attempt;
+}
+
+/*
+ * Authentication callback. Is set by ne_set_proxy_auth to be called
+ * from the neon lib to authenticate against a proxy. The data to authenticate
+ * against comes from mirall throught vio_module_init function.
+ */
+static int ne_proxy_auth( void *userdata, const char *realm, int attempt,
+                          char *username, char *password)
+{
+    (void) userdata;
+    (void) realm;
+    if( dav_session.proxy_user && strlen( dav_session.proxy_user ) < NE_ABUFSIZ) {
+        strcpy( username, dav_session.proxy_user );
+        if( dav_session.proxy_pwd && strlen( dav_session.proxy_pwd ) < NE_ABUFSIZ) {
+            strcpy( password, dav_session.proxy_pwd );
+        }
+    }
+
+    return attempt;
+}
+
+/* Configure the proxy depending on the variables */
+static int configureProxy( ne_session *session )
+{
+    int port = 8080;
+    int re = -1;
+
+    if( ! session ) return -1;
+    if( ! dav_session.proxy_type ) return 0; /* Go by NoProxy per default */
+
+    if( dav_session.proxy_port > 0 ) {
+        port = dav_session.proxy_port;
+    }
+
+    if( c_streq(dav_session.proxy_type, "NoProxy" )) {
+        DEBUG_WEBDAV("No proxy configured.");
+        re = 0;
+    } else if( c_streq(dav_session.proxy_type, "DefaultProxy" )) {
+        DEBUG_WEBDAV("System Proxy Usage.");
+        ne_session_system_proxy( session, 0 );
+        re = 1;
+    } else if( c_streq(dav_session.proxy_type, "Socks5Proxy") ||
+               c_streq(dav_session.proxy_type, "HttpProxy")   ||
+               c_streq(dav_session.proxy_type, "HttpCachingProxy") ) {
+        if( dav_session.proxy_host ) {
+            DEBUG_WEBDAV("%s at %s:%d", dav_session.proxy_type, dav_session.proxy_host, port );
+            ne_session_proxy(session, dav_session.proxy_host, port );
+            re = 2;
+        } else {
+            DEBUG_WEBDAV("No host defined for %s", dav_session.proxy_type );
+        }
+    } else if( c_streq(dav_session.proxy_type, "FtpCachingProxy")) {
+        DEBUG_WEBDAV( "Unsupported Proxy: %s", dav_session.proxy_type );
+    }
+
+    return re;
 }
 
 /*
@@ -359,12 +427,13 @@ static int dav_connect(const char *base_url) {
     int timeout = 30;
     int useSSL = 0;
     int rc;
-    char protocol[6];
+    char protocol[6] = {'\0'};
     char uaBuf[256];
     char *path = NULL;
     char *scheme = NULL;
     char *host = NULL;
     unsigned int port = 0;
+    int proxystate = -1;
 
     if (_connected) {
         return 0;
@@ -386,12 +455,11 @@ static int dav_connect(const char *base_url) {
     DEBUG_WEBDAV("* path %s", path );
 
     if( strcmp( scheme, "owncloud" ) == 0 ) {
-        strncpy( protocol, "http", 6);
+        strcpy( protocol, "http");
     } else if( strcmp( scheme, "ownclouds" ) == 0 ) {
-        strncpy( protocol, "https", 6 );
+        strcpy( protocol, "https");
         useSSL = 1;
     } else {
-        strncpy( protocol, "", 6 );
         DEBUG_WEBDAV("Invalid scheme %s, go outa here!", scheme );
         rc = -1;
         goto out;
@@ -434,6 +502,14 @@ static int dav_connect(const char *base_url) {
         ne_ssl_set_verify( dav_session.ctx, verify_sslcert, 0 );
     }
     ne_redirect_register( dav_session.ctx );
+
+    /* Proxy support */
+    proxystate = configureProxy( dav_session.ctx );
+    if( proxystate < 0 ) {
+        DEBUG_WEBDAV("Error: Proxy-Configuration failed.");
+    } else if( proxystate > 0 ) {
+        ne_set_proxy_auth( dav_session.ctx, ne_proxy_auth, 0 );
+    }
 
     _connected = 1;
     rc = 0;
@@ -538,7 +614,7 @@ static int fetch_resource_list( const char *curi,
                                 int depth,
                                 struct listdir_context *fetchCtx )
 {
-    int ret = 0;
+    int ret = -1;
     ne_propfind_handler *hdl = NULL;
     ne_request *request = NULL;
     const char *date_header = NULL;
@@ -546,13 +622,15 @@ static int fetch_resource_list( const char *curi,
     time_t now;
     time_t time_diff;
     time_t time_diff_delta;
+    const char *err = NULL;
 
     /* do a propfind request and parse the results in the results function, set as callback */
     /* ret = ne_simple_propfind( dav_session.ctx, curi, depth, ls_props, results, fetchCtx ); */
 
     hdl = ne_propfind_create(dav_session.ctx, curi, depth);
 
-    ret = ne_propfind_named(hdl, ls_props, results, fetchCtx);
+    if(hdl)
+        ret = ne_propfind_named(hdl, ls_props, results, fetchCtx);
 
     if( ret == NE_OK ) {
         DEBUG_WEBDAV("Simple propfind OK.");
@@ -587,11 +665,14 @@ static int fetch_resource_list( const char *curi,
         }
         dav_session.time_delta = time_diff;
     } else {
-        DEBUG_WEBDAV("WRN: propfind named failed with %d", ret);
+        err = ne_get_error( dav_session.ctx );
+        DEBUG_WEBDAV("WRN: propfind named failed with %d, request error: %s", ret, err ? err : "<nil>");
     }
 
-    ne_propfind_destroy(hdl);
+    if( hdl )
+        ne_propfind_destroy(hdl);
 
+    if( ret == -1 ) ret = NE_ERROR;
     return ret;
 }
 
@@ -769,7 +850,7 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
 
         curi = _cleanPath( uri );
 
-        DEBUG_WEBDAV("I have no stat cache, call propfind for %s.", curi );
+        DEBUG_WEBDAV("I have no stat cache, call propfind for %s", curi );
         fetchCtx->list = NULL;
         fetchCtx->target = curi;
         fetchCtx->include_target = 1;
@@ -796,8 +877,9 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
                 len = strlen(res->uri);
                 while( len > 0 && res->uri[len-1] == '/' ) --len;
                 memset( strbuf, 0, PATH_MAX+1);
-                strncpy( strbuf, res->uri, len < PATH_MAX ? len : PATH_MAX );
+                strncpy( strbuf, res->uri, len < PATH_MAX ? len : PATH_MAX ); /* this removes the trailing slash */
                 decodedUri = ne_path_unescape( curi ); /* allocates memory */
+
                 if( c_streq(strbuf, decodedUri )) {
                     SAFE_FREE( decodedUri );
                     break;
@@ -805,7 +887,11 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
                 res = res->next;
                 SAFE_FREE( decodedUri );
             }
-            DEBUG_WEBDAV("Working on file %s", res ? res->name : "NULL");
+            if( res ) {
+                DEBUG_WEBDAV("Working on file %s", res->name );
+            } else {
+                DEBUG_WEBDAV("ERROR: Result struct not valid!");
+            }
 
             lfs = resourceToFileStat( res );
             if( lfs ) {
@@ -1413,12 +1499,17 @@ static csync_vio_method_handle_t *owncloud_opendir(const char *uri) {
 
     rc = fetch_resource_list( curi, NE_DEPTH_ONE, fetchCtx );
     if( rc != NE_OK ) {
-        errno = ne_session_error_errno( dav_session.ctx );
-	redir_ne_uri = ne_redirect_location(dav_session.ctx);
-	if( redir_ne_uri ) {
-            redir_uri = ne_uri_unparse(redir_ne_uri);
-	    DEBUG_WEBDAV("Permanently moved to %s", redir_uri);
-	}
+        if( rc == NE_CONNECT || rc == NE_LOOKUP ) {
+            errno = EIO;
+        } else {
+            errno = ne_session_error_errno( dav_session.ctx );
+            DEBUG_WEBDAV("Errno set to %d", errno);
+            redir_ne_uri = ne_redirect_location(dav_session.ctx);
+            if( redir_ne_uri ) {
+                redir_uri = ne_uri_unparse(redir_ne_uri);
+                DEBUG_WEBDAV("Permanently moved to %s", redir_uri);
+            }
+        }
         return NULL;
     } else {
         fetchCtx->currResource = fetchCtx->list;
@@ -1490,18 +1581,21 @@ static int owncloud_mkdir(const char *uri, mode_t mode) {
 
     /* the uri path is required to have a trailing slash */
     if( rc >= 0 ) {
-      memset( buf,0, PATH_MAX+1 );
-      len = strlen( path );
-      strncpy( buf, path, len );
-      if( buf[len-1] != '/' ) {
-          buf[len] = '/';
-      }
+        len = strlen( path );
+        if( len > PATH_MAX-1 ) {
+            DEBUG_WEBDAV("ERR: Path is too long for OS max path length!");
+        } else {
+            strcpy( buf, path );
+            if( buf[len-1] != '/' ) {
+                strcat(buf, "/");
+            }
 
-      DEBUG_WEBDAV("MKdir on %s", buf );
-      rc = ne_mkcol(dav_session.ctx, buf );
-      if (rc != NE_OK ) {
-          errno = ne_session_error_errno( dav_session.ctx );
-      }
+            DEBUG_WEBDAV("MKdir on %s", buf );
+            rc = ne_mkcol(dav_session.ctx, buf );
+            if (rc != NE_OK ) {
+                errno = ne_session_error_errno( dav_session.ctx );
+            }
+        }
     }
     SAFE_FREE( path );
 
@@ -1676,12 +1770,35 @@ csync_vio_method_t _method = {
 
 csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
                                     csync_auth_callback cb, void *userdata) {
+    char **userdata_ptr = NULL;
+
     (void) method_name;
     (void) args;
 
     _authcb = cb;
-    _userdata = userdata;
     _connected = 0;  /* triggers dav_connect to go through the whole neon setup */
+
+    if( userdata ) {
+        userdata_ptr = userdata;
+        if( *userdata_ptr && strlen( *userdata_ptr) )
+            dav_session.proxy_type = c_strdup( *userdata_ptr );
+        userdata_ptr++;
+        DEBUG_WEBDAV("CSync Proxy Type: %s", dav_session.proxy_type);
+        if( *userdata_ptr && strlen( *userdata_ptr) )
+            dav_session.proxy_host = c_strdup( *userdata_ptr );
+        userdata_ptr++;
+
+        if( *userdata_ptr && strlen( *userdata_ptr) )
+            dav_session.proxy_port = atoi( *userdata_ptr );
+        userdata_ptr++;
+
+        if( *userdata_ptr && strlen( *userdata_ptr) )
+            dav_session.proxy_user = c_strdup( *userdata_ptr );
+        userdata_ptr++;
+
+        if( *userdata_ptr && strlen( *userdata_ptr) )
+            dav_session.proxy_pwd = c_strdup( *userdata_ptr );
+    }
 
     return &_method;
 }
@@ -1691,6 +1808,11 @@ void vio_module_shutdown(csync_vio_method_t *method) {
 
     SAFE_FREE( dav_session.user );
     SAFE_FREE( dav_session.pwd );
+
+    SAFE_FREE( dav_session.proxy_type );
+    SAFE_FREE( dav_session.proxy_host );
+    SAFE_FREE( dav_session.proxy_user );
+    SAFE_FREE( dav_session.proxy_pwd  );
 
     if( dav_session.ctx )
         ne_session_destroy( dav_session.ctx );

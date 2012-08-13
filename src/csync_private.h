@@ -153,13 +153,16 @@ struct csync_file_stat_s {
   time_t modtime;   /* u64 */
   off_t size;       /* u64 */
   size_t pathlen;   /* u64 */
-  ino_t inode;      /* u64 */
+  uint64_t inode;   /* u64 */
   uid_t uid;        /* u32 */
   gid_t gid;        /* u32 */
   mode_t mode;      /* u32 */
   int nlink;        /* u32 */
   int type;         /* u32 */
+
   char *md5;
+  char *destpath;   /* for renames */
+
   enum csync_instructions_e instruction; /* u32 */
   char path[1]; /* u8 */
 }

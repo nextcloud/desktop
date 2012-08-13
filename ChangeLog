@@ -1,12 +1,16 @@
 ChangeLog
 ==========
-version 0.50.8 (released )
+version 0.50.8 (released 2012-08-10)
+  * Inode equivalent support for Win32 platforms to support rename
+  * ownCloud supports propagates renames from local to webdav MOVE
+  * ownCloud module works with proxy, settings from mirall.
+  * improved CMake modules (openSSL)
   * Fixed namespace for lastmodified propset.
   * Added cmocka based tests for ownCloud module.
   * Added a config_test.h config header file.
   * Fix link handling: Ignore symlinks.
-  * Added module capabilities.
-  * A lot of minor fixes.
+  * Modules can now report their capabilities to csync core.
+  * A lot of minor fixes and improvements.
 
 version 0.50.7 (released 2012-06-19)
   * Added ability to log to a callback, ie. let the app 
