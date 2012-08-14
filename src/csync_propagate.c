@@ -61,27 +61,28 @@ static char*_get_md5( CSYNC *ctx, const char *uri ) {
   csync_vio_file_stat_t *tstat = NULL;
   char *md5 = NULL;
 
-  tstat = csync_vio_file_stat_new();
-  if (tstat == NULL) {
-    strerror_r(errno, errbuf, sizeof(errbuf));
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
-              "file: %s, command: stat, error: %s",
-              uri,
-              errbuf);
+  if( ctx->current == LOCAL_REPLICA ) {
+      tstat = csync_vio_file_stat_new();
+      if (tstat == NULL) {
+          strerror_r(errno, errbuf, sizeof(errbuf));
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+                    "file: %s, command: stat, error: %s",
+                    uri,
+                    errbuf);
+      }
+      if ( tstat && csync_vio_stat(ctx, uri, tstat) < 0) {
+          strerror_r(errno, errbuf, sizeof(errbuf));
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+                    "file: %s, command: stat(for md5), error: %s",
+                    uri,
+                    errbuf);
+      } else {
+          md5 = c_strdup(tstat->md5);
+      }
+      SAFE_FREE(tstat);
   }
-  if ( tstat && csync_vio_stat(ctx, uri, tstat) < 0) {
-    strerror_r(errno, errbuf, sizeof(errbuf));
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
-              "file: %s, command: stat(for md5), error: %s",
-              uri,
-              errbuf);
-  } else {
-    md5 = c_strdup(tstat->md5);
-  }
-  SAFE_FREE(tstat);
-
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Final MD5 for %s: %s", uri, md5 ? md5 : "<null>");
-    return md5;
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "MD5 for %s: %s", uri, md5 ? md5 : "<null>");
+  return md5;
 }
 
 static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
@@ -360,7 +361,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
       rc = 1;
       goto out;
     }
-#if 0
+
     if( st->md5 ) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "UUUU MD5 sum: %s", st->md5);
     } else {
@@ -371,7 +372,6 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "MD5 sum is empty");
       }
     }
-#endif
   }
 
   if (_push_to_tmp_first(ctx)) {
@@ -426,10 +426,16 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   ctx->replica = drep;
   csync_vio_utimes(ctx, duri, times);
 
+
+  /* For remote repos, after the utimes call, the ID has changed again */
   /* do a stat on the target again to get a valid md5 */
-  // if( ! st->md5 ) {
-    st->md5 = _get_md5( ctx, turi );
-  // }
+  char *tmd5 = _get_md5(ctx, duri);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "FINAL MD5: %s", tmd5 ? tmd5 : "<null>");
+
+  if(tmd5) {
+      SAFE_FREE(st->md5);
+      st->md5 = tmd5;
+  }
 
   /* set instruction for the statedb merger */
   st->instruction = CSYNC_INSTRUCTION_UPDATED;
@@ -899,9 +905,11 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
   times[0].tv_usec = times[1].tv_usec = 0;
 
   csync_vio_utimes(ctx, uri, times);
-  // if( ! st->md5 ) {
-    st->md5 = _get_md5(ctx, uri);
-  // }
+  char *tmd5 = _get_md5(ctx, uri);
+  if(tmd5) {
+      SAFE_FREE(st->md5);
+      st->md5 = tmd5;
+  }
   /* set instruction for the statedb merger */
   st->instruction = CSYNC_INSTRUCTION_UPDATED;
 
