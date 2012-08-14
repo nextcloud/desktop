@@ -117,8 +117,8 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 #endif
     if (tmp && tmp->phash == h) {
       /* we have an update! */
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "time compare: %lu <-> %lu",
-                  fs->mtime, tmp->modtime);
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "time compare: %lu <-> %lu, md5: %s <-> %s",
+                  fs->mtime, tmp->modtime, fs->md5, tmp->md5);
       if( !fs->md5) {
           st->instruction = CSYNC_INSTRUCTION_EVAL;
           goto out;
