@@ -1,5 +1,8 @@
 ChangeLog
 =========
+version 1.0.5 (release 2012-08-14), csync 0.50.8 required
+  * [Fixes] Fixed setup dialog: Really use https if checkbox is activated.
+
 version 1.0.4 (release 2012-08-10), csync 0.50.8 required
   * [APP] ownCloud is now a single instance app, can not start twice any more.
   * [APP] Proxy support 
