@@ -533,7 +533,9 @@ int csync_vio_stat(CSYNC *ctx, const char *uri, csync_vio_file_stat_t *buf) {
   int rc = -1;
   int len = 0;
   uint64_t h = 0;
-  char *file = 0;
+  const char *file = 0;
+
+  file = uri;
 
   switch(ctx->replica) {
     case REMOTE_REPLCIA:
@@ -542,13 +544,16 @@ int csync_vio_stat(CSYNC *ctx, const char *uri, csync_vio_file_stat_t *buf) {
     case LOCAL_REPLICA:
       rc = csync_vio_local_stat(uri, buf);
 
-      file = c_basename(uri);
+      if (strlen(uri) <= strlen(ctx->local.uri)) {
+        return -1;
+      }
+      file += strlen(ctx->local.uri) + 1;
+
       len = strlen(file);
       if( file ) {
           h = c_jhash64((uint8_t *) file, len, 0);
           buf->md5 = csync_statedb_get_uniqId( ctx, h, buf );
           CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "OOOOOOOOOOOOO vio_stat MD5: %s -> %s", file, buf->md5);
-          SAFE_FREE(file);
       }
 
 #ifdef _WIN32
