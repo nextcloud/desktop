@@ -60,7 +60,7 @@ OwncloudSetupPage::OwncloudSetupPage()
     registerField( "OCUser",   _ui.leUsername );
     registerField( "OCPasswd", _ui.lePassword);
     registerField( "connectMyOC", _ui.cbConnectOC );
-
+    registerField( "secureConnect", _ui.cbSecureConnect );
     registerField( "PwdNoLocalStore", _ui.cbNoPasswordStore );
 
     connect( _ui.lePassword, SIGNAL(textChanged(QString)), this, SIGNAL(completeChanged()));
@@ -460,6 +460,18 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
 
 }
 
+QString OwncloudWizard::ocUrl() const
+{
+    QString url = field("OCUrl").toString();
+
+    if( field("secureConnect").toBool() ) {
+        url.prepend(QLatin1String("https://"));
+    } else {
+        url.prepend(QLatin1String("http://"));
+    }
+    return url;
+}
+
 void OwncloudWizard::slotCurrentPageChanged( int id )
 {
   qDebug() << "Current Wizard page changed to " << id;
@@ -485,7 +497,7 @@ void OwncloudWizard::slotCurrentPageChanged( int id )
     showOCUrlLabel( false );
     if( field("connectMyOC").toBool() ) {
       // check the url and connect.
-      _oCUrl = field("OCUrl").toString();
+      _oCUrl = ocUrl();
       emit connectToOCUrl( _oCUrl);
     } else if( field("createLocalOC").toBool() ) {
       qDebug() << "Connect to local!";
