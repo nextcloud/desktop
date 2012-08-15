@@ -182,17 +182,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="29"/>
         <source>Synchronization Target</source>
-        <translation type="unfinished"/>
+        <translation>Destí de sincronització</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="51"/>
         <source>Select a destination folder for your data</source>
-        <translation type="unfinished"/>
+        <translation>Seleccioneu una carpeta de destí per les dades</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="78"/>
         <source>on your &amp;ownCloud server</source>
-        <translation type="unfinished"/>
+        <translation>en el vostre servidor &amp;ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="91"/>
@@ -264,7 +264,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="201"/>
         <source>&lt;p&gt;No server connection has been configured for this ownCloud client.&lt;/p&gt;&lt;p&gt;Please right click on the ownCloud system tray icon and select &lt;i&gt;Configure&lt;/i&gt; to connect this client to an ownCloud server.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;No s&apos;ha configurat cap connexió amb el servidor per aquest client ownCloud.&lt;/p&gt;&lt;p&gt;Feu clic amb la dreta a la icona ownCloud de la safata del sistema i seleccioneu &lt;i&gt;Configura&lt;/i&gt; per connectar aquest client a un servidor ownCloud.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="236"/>
@@ -335,7 +335,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="312"/>
         <source>Configure proxy...</source>
-        <translation type="unfinished"/>
+        <translation>Configura proxy...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="314"/>
@@ -349,7 +349,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="345"/>
         <source>Managed Folders:</source>
-        <translation type="unfinished"/>
+        <translation>Fitxers gestionats:</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="577"/>
@@ -487,7 +487,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="211"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;hora del sistema d&apos;aquest client és diferent de l&apos;hora del sistema del servidor. Useu un servei de sincronització de temps (NTP) en el servidor i al client perquè l&apos;hora sigui la mateixa.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="216"/>
@@ -506,7 +506,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="222"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;La carpeta destí %1 no existeix.&lt;/p&gt;&lt;p&gt;Comproveu la configuració de sincronització.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="228"/>
@@ -531,7 +531,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="255"/>
         <source>CSync failed to reach the host. Either host or proxy settings are not valid.</source>
-        <translation type="unfinished"/>
+        <translation>CSync ha fallat en trobar l&apos;equip remot. L&apos;equip remot o la configuració del proxy no són válids.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="258"/>
@@ -566,7 +566,7 @@ Comuniqueu l&apos;errada.</translation>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="283"/>
         <source>The local filesystem has %1 write protected directories.That can hinder successful syncing.&lt;p/&gt;Please make sure that all local directories are writeable.</source>
-        <translation type="unfinished"/>
+        <translation>El sistema de fitxers té %1 carpetes amb protecció contra escriptura.Això pot impedir una ocrrecta sincronització.&lt;p/&gt;Assegureu-vos que totes les carpetes locals tenen permís d&apos;escriptura.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="303"/>
@@ -584,7 +584,7 @@ Comuniqueu l&apos;errada.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="332"/>
         <source>mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>elmeudomini.org</translation>
     </message>
 </context>
 <context>
@@ -689,58 +689,58 @@ Comuniqueu l&apos;errada.</translation>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="123"/>
         <source>Log Output</source>
-        <translation type="unfinished"/>
+        <translation>Sortida de registre</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="135"/>
         <source>&amp;Search: </source>
-        <translation type="unfinished"/>
+        <translation>&amp;Cerca:</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="143"/>
         <source>&amp;Find</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Troba</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="161"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Neteja</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="162"/>
         <source>Clear the log display.</source>
-        <translation type="unfinished"/>
+        <translation>Neteja l&apos;inici de sessió.</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="168"/>
         <source>S&amp;ave</source>
-        <translation type="unfinished"/>
+        <translation>Des&amp;a</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="169"/>
         <source>Save the log file to a file on disk for debugging.</source>
-        <translation type="unfinished"/>
+        <translation>Desa el fitxer de registre al disc per depuració</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="207"/>
         <location filename="../src/mirall/logbrowser.cpp" line="264"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Error</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="208"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;nobr&gt;El fitxer &apos;%1&apos;&lt;br/&gt;no es pot obrir en mode escriptura.&lt;br/&gt;&lt;br/&gt;La sortida del registre &lt;b&gt;no&lt;/b&gt; es pot desar!&lt;/nobr&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="254"/>
         <source>Save log file</source>
-        <translation type="unfinished"/>
+        <translation>Desa el fitxer de registre</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="264"/>
         <source>Could not write to log file </source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;ha pogut escriure el fitxer de registre</translation>
     </message>
 </context>
 <context>
@@ -748,12 +748,12 @@ Comuniqueu l&apos;errada.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="242"/>
         <source>john</source>
-        <translation type="unfinished"/>
+        <translation>jordi</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="243"/>
         <source>secret</source>
-        <translation type="unfinished"/>
+        <translation>secret</translation>
     </message>
 </context>
 <context>
@@ -761,17 +761,17 @@ Comuniqueu l&apos;errada.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="288"/>
         <source>ftp.mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>ftp.elmeudomini.org</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="289"/>
         <source>john</source>
-        <translation type="unfinished"/>
+        <translation>jordi</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="290"/>
         <source>secret</source>
-        <translation type="unfinished"/>
+        <translation>secret</translation>
     </message>
 </context>
 <context>
@@ -779,12 +779,12 @@ Comuniqueu l&apos;errada.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="75"/>
         <source>john</source>
-        <translation type="unfinished"/>
+        <translation>jordi</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="76"/>
         <source>secret</source>
-        <translation type="unfinished"/>
+        <translation>secret</translation>
     </message>
 </context>
 <context>
@@ -839,42 +839,42 @@ No s&apos;ha pogut configurar</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="386"/>
         <source>Creation of remote folder %1 could not be started.</source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;ha pogut crear la carpeta remota %1.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="410"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation type="unfinished"/>
+        <translation>La carpeta remota %1 s&apos;ha creat correctament.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="412"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation type="unfinished"/>
+        <translation>La carpeta remota %1 ja existeix. S&apos;hi està connectant per sincronitzar-les.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="414"/>
         <source>The folder creation resulted in HTTP error code %d</source>
-        <translation type="unfinished"/>
+        <translation>La creació de la carpeta ha resultat en un error HTTP de codi %d</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="435"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha establert una connexió de sincronització des de %1 a la carpeta remota %2.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="440"/>
         <source>Congratulations, your ownCloud can be connected!</source>
-        <translation type="unfinished"/>
+        <translation>Fecilitats, s&apos;ha pogut contactar amb ownCloud!</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="442"/>
         <source>Press Finish to permanently accept this connection.</source>
-        <translation type="unfinished"/>
+        <translation>Premeu Acaba per acceptar permanentment aquesta connexió</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="445"/>
         <source>An ownCloud connection could not be established. Please check again.</source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;ha pogutr establir la connexió ownCloud. Comproveu-ho de nou.</translation>
     </message>
     <message>
         <source>Skipping automatic setup of sync folders as there are already sync folders.</source>
@@ -949,7 +949,7 @@ No s&apos;ha pogut configurar</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="187"/>
         <source>http://owncloud.mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>http://owncloud.elmeudomini.org</translation>
     </message>
 </context>
 <context>
@@ -957,17 +957,17 @@ No s&apos;ha pogut configurar</translation>
     <message>
         <location filename="../src/mirall/proxydialog.cpp" line="31"/>
         <source>Hostname of proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Equip remot del servidor proxy</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.cpp" line="32"/>
         <source>Username for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Nom d&apos;usuari del servidor proxy</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.cpp" line="33"/>
         <source>Password for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Contrasenya del servidor proxy</translation>
     </message>
 </context>
 <context>
@@ -1143,7 +1143,13 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Please enter the username and password for your ownCloud Instance. &lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt; color:#585858;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;If you do not wish to store the credentials on your local machine, check the box. ownCloud will prompt you for your password every time the client starts.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Escriviu el nom d&apos;usuari i la contrasenya de la instància ownCloud. &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt; color:#585858;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Si no voleu desar les credencials a la màquina local, marqueu la casella. ownCloud us preguntarà per la contrasenya cada vegada que s&apos;inicïi el client.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1238,74 +1244,74 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formulari</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="31"/>
         <source>Create the ownCloud Connection</source>
-        <translation type="unfinished"/>
+        <translation>Crea una connexió ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="39"/>
         <source>Server &amp;address:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Adreça del servidor:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="51"/>
         <source>https://</source>
-        <translation type="unfinished"/>
+        <translation>https://</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="58"/>
         <source>Enter the url of the ownCloud you want to connect to (without http or https).</source>
-        <translation type="unfinished"/>
+        <translation>Escriviu la url de ownCloud amb la que voleu contactar (sense http o https).</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="71"/>
         <source>Use &amp;secure connection</source>
-        <translation type="unfinished"/>
+        <translation>Usa una connexió segura</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="84"/>
         <source>CheckBox</source>
-        <translation type="unfinished"/>
+        <translation>Caixa de selecció</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="99"/>
         <source>&amp;Username:</source>
-        <translation type="unfinished"/>
+        <translation>Nom d&apos;&amp;usuari:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="109"/>
         <source>Enter the ownCloud username.</source>
-        <translation type="unfinished"/>
+        <translation>Escriciu el nom d&apos;usuari ownCloud.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="116"/>
         <source>&amp;Password:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Contrasenya:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="126"/>
         <source>Enter the ownCloud password.</source>
-        <translation type="unfinished"/>
+        <translation>Escriviu la contrasenya ownCloud.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="141"/>
         <source>Do not allow the local storage of the password.</source>
-        <translation type="unfinished"/>
+        <translation>No permetis desar localment la contrasenya.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="144"/>
         <source>&amp;do not store Password on local machine.</source>
-        <translation type="unfinished"/>
+        <translation>no &amp;desis la contrasenya en la màquina local.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="153"/>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="181"/>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="188"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>TextLabel</translation>
     </message>
 </context>
 <context>
@@ -1370,12 +1376,17 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Specify the ownCloud you want to connect to.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Enter the web address of your ownCloud server below.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Especifiqueu l&apos;ownCloud amb el que voleu conatctar.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Escriviu l&apos;adreça web del servidor ownCloud a continuació.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="110"/>
         <source>ownCloud-Link:</source>
-        <translation type="unfinished"/>
+        <translation>Enllaç ownCloud:</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1394,7 +1405,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="120"/>
         <source>Note: To specify an SSL secured connection, start the url with https.</source>
-        <translation type="unfinished"/>
+        <translation>Nota: per especificar una connexió segura SSL, inicieu la url amb https.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="133"/>
@@ -1439,32 +1450,32 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/theme.cpp" line="34"/>
         <location filename="../src/mirall/theme.cpp" line="52"/>
         <source>Status undefined</source>
-        <translation type="unfinished"/>
+        <translation>Estat indefinit</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="37"/>
         <source>Waiting to start sync</source>
-        <translation type="unfinished"/>
+        <translation>Pendent d&apos;iniciar la sincronització</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="40"/>
         <source>Sync is running</source>
-        <translation type="unfinished"/>
+        <translation>La sincronització s&apos;està executant</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="43"/>
         <source>Sync Success</source>
-        <translation type="unfinished"/>
+        <translation>Sincronització amb èxit</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="46"/>
         <source>Sync Error - Click info button for details.</source>
-        <translation type="unfinished"/>
+        <translation>Error de sincronització - Feu clic al botó per més detalls.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="49"/>
         <source>Setup Error</source>
-        <translation type="unfinished"/>
+        <translation>Error de configuració</translation>
     </message>
 </context>
 <context>
@@ -1472,7 +1483,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="36"/>
         <source>ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud</translation>
     </message>
 </context>
 <context>
@@ -1480,52 +1491,52 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="14"/>
         <source>Proxy Settings</source>
-        <translation type="unfinished"/>
+        <translation>Configuració del proxy</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="26"/>
         <source>Configure Proxies to access your ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>Configura els proxys per accedir a ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="43"/>
         <source>No Proxy</source>
-        <translation type="unfinished"/>
+        <translation>Sense proxy</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="53"/>
         <source>Use system proxy</source>
-        <translation type="unfinished"/>
+        <translation>Usa el sistema proxy</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="60"/>
         <source>Manual proxy configuration</source>
-        <translation type="unfinished"/>
+        <translation>Configuració manual del proxy</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="90"/>
         <source>User</source>
-        <translation type="unfinished"/>
+        <translation>Usuari</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="116"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Contrasenya</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="142"/>
         <source>Port</source>
-        <translation type="unfinished"/>
+        <translation>Port</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="149"/>
         <source>Host</source>
-        <translation type="unfinished"/>
+        <translation>Equip remot</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="172"/>
         <source>Proxy server requires password</source>
-        <translation type="unfinished"/>
+        <translation>El servidor proxy requereix contrasenya</translation>
     </message>
 </context>
 <context>
@@ -1538,7 +1549,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrorsdialog.ui" line="25"/>
         <source>Check if you want to continue via SSL and trust the shown certificates.</source>
-        <translation type="unfinished"/>
+        <translation>Marqueu-ho si voleu continuar via SSL i creure en els certificats que se us mostren.</translation>
     </message>
     <message>
         <source>Check if you want t continue via SSL and trust the shown certificates.</source>

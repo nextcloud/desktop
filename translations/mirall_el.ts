@@ -197,7 +197,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="51"/>
         <source>Select a destination folder for your data</source>
-        <translation type="unfinished"/>
+        <translation>Επιλέξτε φάκελο προορισμού για τα δεδομένα σας </translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="78"/>
@@ -359,7 +359,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="345"/>
         <source>Managed Folders:</source>
-        <translation type="unfinished"/>
+        <translation>Διαχείρηση αρχείων:</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="577"/>
@@ -699,32 +699,32 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="123"/>
         <source>Log Output</source>
-        <translation type="unfinished"/>
+        <translation>Καταγραφή εξόδου</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="135"/>
         <source>&amp;Search: </source>
-        <translation type="unfinished"/>
+        <translation>&amp;Αναζήτηση:</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="143"/>
         <source>&amp;Find</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Εύρεση</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="161"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Εκκαθάριση</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="162"/>
         <source>Clear the log display.</source>
-        <translation type="unfinished"/>
+        <translation>Εκκαθάριση του αρχείου συμβάντων.</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="168"/>
         <source>S&amp;ave</source>
-        <translation type="unfinished"/>
+        <translation>Α&amp;ποθήκευση</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="169"/>
@@ -735,7 +735,7 @@ Please write a bug report.</source>
         <location filename="../src/mirall/logbrowser.cpp" line="207"/>
         <location filename="../src/mirall/logbrowser.cpp" line="264"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Σφάλμα</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="208"/>
@@ -745,12 +745,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="254"/>
         <source>Save log file</source>
-        <translation type="unfinished"/>
+        <translation>Αποθήκευση αρχείου συμβάντων</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="264"/>
         <source>Could not write to log file </source>
-        <translation type="unfinished"/>
+        <translation>Δεν ήταν δυνατή η εγγραφή στο αρχείο συμβάντων</translation>
     </message>
 </context>
 <context>
@@ -758,12 +758,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="242"/>
         <source>john</source>
-        <translation type="unfinished"/>
+        <translation>Γιάννης</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="243"/>
         <source>secret</source>
-        <translation type="unfinished"/>
+        <translation>μυστικό</translation>
     </message>
 </context>
 <context>
@@ -771,17 +771,17 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="288"/>
         <source>ftp.mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>ftp.mydomain.org</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="289"/>
         <source>john</source>
-        <translation type="unfinished"/>
+        <translation>Γιάννης</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="290"/>
         <source>secret</source>
-        <translation type="unfinished"/>
+        <translation>μυστικό</translation>
     </message>
 </context>
 <context>
@@ -789,12 +789,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="75"/>
         <source>john</source>
-        <translation type="unfinished"/>
+        <translation>Γιάννης</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="76"/>
         <source>secret</source>
-        <translation type="unfinished"/>
+        <translation>μυστικό</translation>
     </message>
 </context>
 <context>
@@ -874,17 +874,17 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="440"/>
         <source>Congratulations, your ownCloud can be connected!</source>
-        <translation type="unfinished"/>
+        <translation>Συγχαρητήρια, το ownCloud μπορεί να συνδεθεί!</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="442"/>
         <source>Press Finish to permanently accept this connection.</source>
-        <translation type="unfinished"/>
+        <translation>Επιλέξτε Τερματισμό για να αποδεχτείτε μόνιμα αυτή τη σύνδεση.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="445"/>
         <source>An ownCloud connection could not be established. Please check again.</source>
-        <translation type="unfinished"/>
+        <translation>Το ownCloud δεν μπορεί να συνδεθεί. Παρακαλώ δοκιμάστε ξανά. </translation>
     </message>
     <message>
         <source>Skipping automatic setup of sync folders as there are already sync folders.</source>

@@ -192,7 +192,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="29"/>
         <source>Synchronization Target</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisations Ziel</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="51"/>
@@ -202,7 +202,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="78"/>
         <source>on your &amp;ownCloud server</source>
-        <translation type="unfinished"/>
+        <translation>auf Ihrem &amp;ownCloud-Server</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="91"/>
@@ -315,7 +315,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="289"/>
         <source>ownCloud Sync Started</source>
-        <translation>ownClound Sync. gestartet</translation>
+        <translation>ownCloud Sync. gestartet</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="289"/>
@@ -704,7 +704,7 @@ Bitte einen Fehlerbericht schreiben.</translation>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="135"/>
         <source>&amp;Search: </source>
-        <translation type="unfinished"/>
+        <translation>&amp;Suche:</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="143"/>
@@ -714,7 +714,7 @@ Bitte einen Fehlerbericht schreiben.</translation>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="161"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Leeren</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="162"/>
@@ -735,7 +735,7 @@ Bitte einen Fehlerbericht schreiben.</translation>
         <location filename="../src/mirall/logbrowser.cpp" line="207"/>
         <location filename="../src/mirall/logbrowser.cpp" line="264"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Fehler</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="208"/>
@@ -745,7 +745,7 @@ Bitte einen Fehlerbericht schreiben.</translation>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="254"/>
         <source>Save log file</source>
-        <translation type="unfinished"/>
+        <translation>Log Datei speichern</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="264"/>
@@ -763,7 +763,7 @@ Bitte einen Fehlerbericht schreiben.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="243"/>
         <source>secret</source>
-        <translation type="unfinished"/>
+        <translation>geheim</translation>
     </message>
 </context>
 <context>
@@ -781,7 +781,7 @@ Bitte einen Fehlerbericht schreiben.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="290"/>
         <source>secret</source>
-        <translation type="unfinished"/>
+        <translation>geheim</translation>
     </message>
 </context>
 <context>
@@ -794,7 +794,7 @@ Bitte einen Fehlerbericht schreiben.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="76"/>
         <source>secret</source>
-        <translation type="unfinished"/>
+        <translation>geheim</translation>
     </message>
 </context>
 <context>
@@ -1248,12 +1248,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="31"/>
         <source>Create the ownCloud Connection</source>
-        <translation type="unfinished"/>
+        <translation>Erstelle die ownCloud Verbindung</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="39"/>
@@ -1278,12 +1278,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="84"/>
         <source>CheckBox</source>
-        <translation type="unfinished"/>
+        <translation>CheckBox</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="99"/>
         <source>&amp;Username:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Benutzername:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="109"/>
@@ -1293,7 +1293,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="116"/>
         <source>&amp;Password:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Passwort:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="126"/>
@@ -1315,7 +1315,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/owncloudsetuppage.ui" line="181"/>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="188"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Textbeschriftung</translation>
     </message>
 </context>
 <context>
@@ -1548,7 +1548,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrorsdialog.ui" line="25"/>
         <source>Check if you want to continue via SSL and trust the shown certificates.</source>
-        <translation type="unfinished"/>
+        <translation>Ich vertraue dem angezeigten Zertifikat und möchte die Verbindung herstellen.</translation>
     </message>
     <message>
         <source>Check if you want t continue via SSL and trust the shown certificates.</source>

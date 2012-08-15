@@ -182,17 +182,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="29"/>
         <source>Synchronization Target</source>
-        <translation type="unfinished"/>
+        <translation>ปลายทางที่ต้องการเชื่อมข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="51"/>
         <source>Select a destination folder for your data</source>
-        <translation type="unfinished"/>
+        <translation>เลือกโฟลเดอร์ปลายทางที่มีข้อมูลของคุณอยู่</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="78"/>
         <source>on your &amp;ownCloud server</source>
-        <translation type="unfinished"/>
+        <translation>บนเซิร์ฟเวอร์ &amp;ownCloud ของคุณ</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="91"/>
@@ -274,7 +274,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="237"/>
         <source>&lt;p&gt;The detailed error message is&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;ข้อความแสดงรายละเอียดเกี่ยวกับข้อผิดพลาดคือ&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="239"/>
@@ -335,7 +335,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="312"/>
         <source>Configure proxy...</source>
-        <translation type="unfinished"/>
+        <translation>กำหนดค่าพร็อกซี่...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="314"/>
@@ -349,7 +349,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="345"/>
         <source>Managed Folders:</source>
-        <translation type="unfinished"/>
+        <translation>โฟลเดอร์ที่มีการจัดการแล้ว:</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="577"/>
@@ -582,7 +582,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="332"/>
         <source>mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>mydomain.org</translation>
     </message>
 </context>
 <context>
@@ -664,7 +664,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="311"/>
         <source>to your &lt;a href=&quot;%1&quot;&gt;ownCloud&lt;/a&gt; (version %2)</source>
-        <translation type="unfinished"/>
+        <translation>ไปที่ &lt;a href=&quot;%1&quot;&gt;ownCloud&lt;/a&gt; ของคุณ (รุ่น %2)</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="321"/>
@@ -692,17 +692,17 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="135"/>
         <source>&amp;Search: </source>
-        <translation type="unfinished"/>
+        <translation>&amp;ค้นหา</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="143"/>
         <source>&amp;Find</source>
-        <translation type="unfinished"/>
+        <translation>&amp;ค้น</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="161"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>ล้างข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="162"/>
@@ -712,7 +712,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="168"/>
         <source>S&amp;ave</source>
-        <translation type="unfinished"/>
+        <translation>&amp;บันทึก</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="169"/>
@@ -723,7 +723,7 @@ Please write a bug report.</source>
         <location filename="../src/mirall/logbrowser.cpp" line="207"/>
         <location filename="../src/mirall/logbrowser.cpp" line="264"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>ข้อผิดพลาด</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="208"/>
@@ -733,12 +733,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="254"/>
         <source>Save log file</source>
-        <translation type="unfinished"/>
+        <translation>บันทึกข้อมูลไฟล์ log</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="264"/>
         <source>Could not write to log file </source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถเขียนข้อมูลไปไว้ที่ log ไฟล์ได้</translation>
     </message>
 </context>
 <context>
@@ -746,12 +746,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="242"/>
         <source>john</source>
-        <translation type="unfinished"/>
+        <translation>จอห์น</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="243"/>
         <source>secret</source>
-        <translation type="unfinished"/>
+        <translation>รหัสลับ</translation>
     </message>
 </context>
 <context>
@@ -759,17 +759,17 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="288"/>
         <source>ftp.mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>ftp.mydomain.org</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="289"/>
         <source>john</source>
-        <translation type="unfinished"/>
+        <translation>จอห์น</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="290"/>
         <source>secret</source>
-        <translation type="unfinished"/>
+        <translation>รหัสลับ</translation>
     </message>
 </context>
 <context>
@@ -777,12 +777,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="75"/>
         <source>john</source>
-        <translation type="unfinished"/>
+        <translation>จอห์น</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="76"/>
         <source>secret</source>
-        <translation type="unfinished"/>
+        <translation>รหัสลับ</translation>
     </message>
 </context>
 <context>
@@ -805,7 +805,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="171"/>
         <source>&lt;font color=&quot;red&quot;&gt;Failed to connect to ownCloud!&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;red&quot;&gt;การเชื่อมต่อไปที่ ownCloud ล้มเหลว!&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="172"/>
@@ -815,17 +815,17 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="256"/>
         <source>Starting script owncloud-admin...</source>
-        <translation type="unfinished"/>
+        <translation>กำลังเริ่มสคริปต์ owncloud-admin...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="307"/>
         <source>&lt;font color=&quot;red&quot;&gt;Installation of ownCloud failed!&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;red&quot;&gt;การติดตั้ง ownCloud ล้มเหลว!&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="312"/>
         <source>&lt;font color=&quot;green&quot;&gt;Installation of ownCloud succeeded!&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;การติดตั้ง ownCloud สำเร็จ!&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="345"/>
@@ -946,7 +946,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="187"/>
         <source>http://owncloud.mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>http://owncloud.mydomain.org</translation>
     </message>
 </context>
 <context>
@@ -954,17 +954,17 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/proxydialog.cpp" line="31"/>
         <source>Hostname of proxy server</source>
-        <translation type="unfinished"/>
+        <translation>ชื่อโฮสต์ของเซิร์ฟเวอร์พร็อกซี่</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.cpp" line="32"/>
         <source>Username for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>ชื่อผู้ใช้ของเซิร์ฟเวอร์พร็อกซี่</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.cpp" line="33"/>
         <source>Password for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>รหัสผ่านของเซิร์ฟเวอร์พร็อกซี่</translation>
     </message>
 </context>
 <context>
@@ -994,7 +994,7 @@ Setup can not be done.</source>
         <location filename="../src/mirall/sslerrordialog.cpp" line="130"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="144"/>
         <source>Unit: %1</source>
-        <translation type="unfinished"/>
+        <translation>หน่วย: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="131"/>
@@ -1038,7 +1038,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="406"/>
         <source>No ownCloud connection configured.</source>
-        <translation type="unfinished"/>
+        <translation>ยังไม่มีการกำหนดค่าการเชื่อมต่อกับ ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="428"/>
@@ -1181,7 +1181,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>แบบฟอร์ม</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="29"/>
@@ -1236,17 +1236,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="31"/>
         <source>Create the ownCloud Connection</source>
-        <translation type="unfinished"/>
+        <translation>สร้างการเชื่อมต่อกับ ownCLoud</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="39"/>
         <source>Server &amp;address:</source>
-        <translation type="unfinished"/>
+        <translation>ที่อยู่ &amp; ที่อยู่:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="51"/>
         <source>https://</source>
-        <translation type="unfinished"/>
+        <translation>https://</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="58"/>
@@ -1261,27 +1261,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="84"/>
         <source>CheckBox</source>
-        <translation type="unfinished"/>
+        <translation>ช่องกาตัวเลือก</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="99"/>
         <source>&amp;Username:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;ชื่อผู้ใช้งาน:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="109"/>
         <source>Enter the ownCloud username.</source>
-        <translation type="unfinished"/>
+        <translation>กรอกชื่อผู้ใช้ ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="116"/>
         <source>&amp;Password:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;รหัสผ่าน:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="126"/>
         <source>Enter the ownCloud password.</source>
-        <translation type="unfinished"/>
+        <translation>กรอกรหัสผ่าน ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="141"/>
@@ -1427,27 +1427,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/theme.cpp" line="37"/>
         <source>Waiting to start sync</source>
-        <translation type="unfinished"/>
+        <translation>กำลังรอการเริ่มต้นเชื่อมข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="40"/>
         <source>Sync is running</source>
-        <translation type="unfinished"/>
+        <translation>การเชื่อมข้อมูลกำลังทำงาน</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="43"/>
         <source>Sync Success</source>
-        <translation type="unfinished"/>
+        <translation>การเชื่อมข้อมูลเสร็จสิ้น</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="46"/>
         <source>Sync Error - Click info button for details.</source>
-        <translation type="unfinished"/>
+        <translation>การเชื่อมข้อมูลเกิดข้อผิดพลาด - คลิกที่ปุ่มข้อมูลเพื่อดูรายละเอียด</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="49"/>
         <source>Setup Error</source>
-        <translation type="unfinished"/>
+        <translation>เกิดข้อผิดพลาดในการตั้งค่า</translation>
     </message>
 </context>
 <context>
@@ -1455,7 +1455,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="36"/>
         <source>ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud</translation>
     </message>
 </context>
 <context>
@@ -1463,52 +1463,52 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="14"/>
         <source>Proxy Settings</source>
-        <translation type="unfinished"/>
+        <translation>ตั้งค่าพร็อกซี่</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="26"/>
         <source>Configure Proxies to access your ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>กำหนดค่าพร็อกซี่เพื่อเข้าใช้งาน ownCloud ของคุณ</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="43"/>
         <source>No Proxy</source>
-        <translation type="unfinished"/>
+        <translation>ไม่มีพร็อกซี่</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="53"/>
         <source>Use system proxy</source>
-        <translation type="unfinished"/>
+        <translation>ใช้พร็อกซี่จากระบบ</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="60"/>
         <source>Manual proxy configuration</source>
-        <translation type="unfinished"/>
+        <translation>กำหนดค่าพร็อกซี่ด้วยตนเอง</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="90"/>
         <source>User</source>
-        <translation type="unfinished"/>
+        <translation>ผู้ใช้งาน</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="116"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>รหัสผ่าน</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="142"/>
         <source>Port</source>
-        <translation type="unfinished"/>
+        <translation>พอร์ต</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="149"/>
         <source>Host</source>
-        <translation type="unfinished"/>
+        <translation>โฮสต์</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="172"/>
         <source>Proxy server requires password</source>
-        <translation type="unfinished"/>
+        <translation>เซิร์ฟเวอร์พร็อกซี่จำเป็นต้องใช้รหัสผ่าน</translation>
     </message>
 </context>
 <context>
