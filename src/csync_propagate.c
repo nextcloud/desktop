@@ -94,6 +94,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   char *duri = NULL;
   char *turi = NULL;
   char *tdir = NULL;
+  char *tmd5 = NULL;
 
   csync_vio_handle_t *sfp = NULL;
   csync_vio_handle_t *dfp = NULL;
@@ -429,7 +430,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   /* For remote repos, after the utimes call, the ID has changed again */
   /* do a stat on the target again to get a valid md5 */
-  char *tmd5 = _get_md5(ctx, duri);
+  tmd5 = _get_md5(ctx, duri);
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "FINAL MD5: %s", tmd5 ? tmd5 : "<null>");
 
   if(tmd5) {
@@ -756,6 +757,7 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
   enum csync_replica_e replica_bak;
   char errbuf[256] = {0};
   char *uri = NULL;
+  char *tmd5 = NULL;
   struct timeval times[2];
   int rc = -1;
 
@@ -826,8 +828,11 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
 
   csync_vio_utimes(ctx, uri, times);
 
-  // if( ! st->md5 )
-    st->md5 = _get_md5(ctx, uri);
+  tmd5 = _get_md5(ctx, uri);
+  if(tmd5) {
+      SAFE_FREE(st->md5);
+      st->md5 = tmd5;
+  }
 
   /* set instruction for the statedb merger */
   st->instruction = CSYNC_INSTRUCTION_UPDATED;
@@ -852,6 +857,7 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
   enum csync_replica_e replica_bak;
   char errbuf[256] = {0};
   char *uri = NULL;
+  char *tmd5 = NULL;
   struct timeval times[2];
   int rc = -1;
 
@@ -905,7 +911,7 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
   times[0].tv_usec = times[1].tv_usec = 0;
 
   csync_vio_utimes(ctx, uri, times);
-  char *tmd5 = _get_md5(ctx, uri);
+  tmd5 = _get_md5(ctx, uri);
   if(tmd5) {
       SAFE_FREE(st->md5);
       st->md5 = tmd5;
