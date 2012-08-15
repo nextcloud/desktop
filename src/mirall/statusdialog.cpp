@@ -289,11 +289,11 @@ void StatusDialog::folderToModelItem( QStandardItem *item, Folder *f )
     if( ! item || !f ) return;
 
     QIcon icon = _theme->folderIcon( f->backend() );
-    item->setData( icon,             FolderViewDelegate::FolderIconRole );
-    item->setData( f->path(),        FolderViewDelegate::FolderPathRole );
-    item->setData( f->secondPath(),  FolderViewDelegate::FolderSecondPathRole );
-    item->setData( f->alias(),       FolderViewDelegate::FolderAliasRole );
-    item->setData( f->syncEnabled(), FolderViewDelegate::FolderSyncEnabled );
+    item->setData( icon,                   FolderViewDelegate::FolderIconRole );
+    item->setData( f->nativePath(),        FolderViewDelegate::FolderPathRole );
+    item->setData( f->nativeSecondPath(),  FolderViewDelegate::FolderSecondPathRole );
+    item->setData( f->alias(),             FolderViewDelegate::FolderAliasRole );
+    item->setData( f->syncEnabled(),       FolderViewDelegate::FolderSyncEnabled );
 
     SyncResult res = f->syncResult();
     SyncResult::Status status = res.status();
