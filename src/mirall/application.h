@@ -18,6 +18,7 @@
 #include <QApplication>
 #include <QSystemTrayIcon>
 #include <QNetworkReply>
+#include <QSslError>
 
 #include "qtsingleapplication.h"
 
@@ -40,6 +41,7 @@ class FolderWizard;
 class StatusDialog;
 class OwncloudSetupWizard;
 class ownCloudInfo;
+class SslErrorDialog;
 class UpdateDetector;
 
 class Application : public SharedTools::QtSingleApplication
@@ -84,6 +86,7 @@ protected slots:
     void slotCheckAuthentication();
     void slotAuthCheck( const QString& ,QNetworkReply* );
     void slotOpenLogBrowser();
+    void slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors );
 
     void slotStartUpdateDetector();
 
@@ -105,6 +108,7 @@ private:
 
     FolderWizard  *_folderWizard;
     OwncloudSetupWizard *_owncloudSetupWizard;
+    SslErrorDialog *_sslErrorDialog;
 
     // tray's menu
     QMenu *_contextMenu;

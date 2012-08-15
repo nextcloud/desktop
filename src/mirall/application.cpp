@@ -25,6 +25,7 @@
 #include "mirall/statusdialog.h"
 #include "mirall/owncloudsetupwizard.h"
 #include "mirall/owncloudinfo.h"
+#include "mirall/sslerrordialog.h"
 #include "mirall/theme.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/updatedetector.h"
@@ -71,6 +72,7 @@ void csyncLogCatcher(const char *msg)
 Application::Application(int &argc, char **argv) :
     SharedTools::QtSingleApplication(argc, argv),
     _tray(0),
+    _sslErrorDialog(0),
 #if QT_VERSION >= 0x040700
     _networkMgr(new QNetworkConfigurationManager(this)),
 #endif
@@ -171,6 +173,7 @@ Application::Application(int &argc, char **argv) :
 
 Application::~Application()
 {
+    delete _sslErrorDialog;
     qDebug() << "* Mirall shutdown";
 }
 
@@ -193,6 +196,9 @@ void Application::slotStartFolderSetup( int result )
 
             connect( ownCloudInfo::instance(),SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
                      this,SLOT(slotAuthCheck(QString,QNetworkReply*)));
+
+            connect( ownCloudInfo::instance(), SIGNAL(sslFailed(QNetworkReply*, QList<QSslError>)),
+                     this,SLOT(slotSSLFailed(QNetworkReply*, QList<QSslError>)));
 
 
             ownCloudInfo::instance()->checkInstallation();
@@ -304,6 +310,39 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
     disconnect( ownCloudInfo::instance(),SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
              this,SLOT(slotAuthCheck(QString,QNetworkReply*)));
     setupContextMenu();
+}
+
+void Application::slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors )
+{
+    qDebug() << "SSL-Warnings happened for url " << reply->url().toString();
+
+    if( ownCloudInfo::instance()->certsUntrusted() ) {
+        // User decided once to untrust. Honor this decision.
+        qDebug() << "Untrusted by user decision, returning.";
+        return;
+    }
+
+    QString configHandle = ownCloudInfo::instance()->configHandle(reply);
+
+    // make the ssl dialog aware of the custom config. It loads known certs.
+    _sslErrorDialog->setCustomConfigHandle( configHandle );
+
+    if( _sslErrorDialog->setErrorList( errors ) ) {
+        // all ssl certs are known and accepted. We can ignore the problems right away.
+        qDebug() << "Certs are already known and trusted, Warnings are not valid.";
+        reply->ignoreSslErrors();
+    } else {
+        if( _sslErrorDialog->exec() == QDialog::Accepted ) {
+            if( _sslErrorDialog->trustConnection() ) {
+                reply->ignoreSslErrors();
+            } else {
+                // User does not want to trust.
+                ownCloudInfo::instance()->setCertsUntrusted(true);
+            }
+        } else {
+            ownCloudInfo::instance()->setCertsUntrusted(true);
+        }
+    }
 }
 
 void Application::setupActions()

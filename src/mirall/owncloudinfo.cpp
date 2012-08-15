@@ -47,7 +47,7 @@ ownCloudInfo* ownCloudInfo::instance()
 }
 
 ownCloudInfo::ownCloudInfo( const QString& connectionName, QObject *parent ) :
-    QObject(parent), _sslErrorDialog(0)
+    QObject(parent)
 {
     if( connectionName.isEmpty() )
         _connection = QLatin1String( "ownCloud");
@@ -62,7 +62,7 @@ ownCloudInfo::ownCloudInfo( const QString& connectionName, QObject *parent ) :
     QSslSocket::addDefaultCaCertificates(QSslCertificate::fromData(certs));
 
     connect( _manager, SIGNAL( sslErrors(QNetworkReply*, QList<QSslError>)),
-             this, SLOT(slotSSLFailed(QNetworkReply*, QList<QSslError>)) );
+             this, SIGNAL(sslFailed(QNetworkReply*, QList<QSslError>)) );
 
     connect( _manager, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
              this, SLOT(slotAuthentication(QNetworkReply*,QAuthenticator*)));
@@ -72,7 +72,6 @@ ownCloudInfo::ownCloudInfo( const QString& connectionName, QObject *parent ) :
 
 ownCloudInfo::~ownCloudInfo()
 {
-    delete _sslErrorDialog;
 }
 
 void ownCloudInfo::setCustomConfigHandle( const QString& handle )
@@ -255,52 +254,14 @@ void ownCloudInfo::slotAuthentication( QNetworkReply *reply, QAuthenticator *aut
 
 }
 
-void ownCloudInfo::slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors )
+QString ownCloudInfo::configHandle(QNetworkReply *reply)
 {
-    qDebug() << "SSL-Warnings happened for url " << reply->url().toString();
-
     QString configHandle;
-
-    // an empty config handle is ok for the default config.
     if( _configHandleMap.contains(reply) ) {
         configHandle = _configHandleMap[reply];
-        qDebug() << "SSL: Have a custom config handle: " << configHandle;
     }
-    if( !configHandle.isEmpty() ) {
-        qDebug() << "Custom config handle: " << configHandle;
-    }
-
-    if( _certsUntrusted ) {
-        // User decided once to untrust. Honor this decision.
-        qDebug() << "Untrusted by user decision, returning.";
-        return;
-    }
-
-    if( _sslErrorDialog == 0 ) {
-        _sslErrorDialog = new SslErrorDialog;
-    }
-
-    // make the ssl dialog aware of the custom config. It loads known certs.
-    _sslErrorDialog->setCustomConfigHandle( configHandle );
-
-    if( _sslErrorDialog->setErrorList( errors ) ) {
-        // all ssl certs are known and accepted. We can ignore the problems right away.
-        qDebug() << "Certs are already known and trusted, Warnings are not valid.";
-        reply->ignoreSslErrors();
-    } else {
-        if( _sslErrorDialog->exec() == QDialog::Accepted ) {
-            if( _sslErrorDialog->trustConnection() ) {
-                reply->ignoreSslErrors();
-            } else {
-                // User does not want to trust.
-                _certsUntrusted = true;
-            }
-        } else {
-            _certsUntrusted = true;
-        }
-    }
+    return configHandle;
 }
-
 
 QUrl ownCloudInfo::redirectUrl(const QUrl& possibleRedirectUrl,
                                const QUrl& oldRedirectUrl) const {
@@ -444,6 +405,16 @@ void ownCloudInfo::slotReplyFinished()
 void ownCloudInfo::resetSSLUntrust()
 {
     _certsUntrusted = false;
+}
+
+void ownCloudInfo::setCertsUntrusted(bool donttrust)
+{
+    _certsUntrusted = donttrust;
+}
+
+bool ownCloudInfo::certsUntrusted()
+{
+    return _certsUntrusted;
 }
 
 void ownCloudInfo::slotError( QNetworkReply::NetworkError err)
