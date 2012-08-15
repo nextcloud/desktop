@@ -174,11 +174,17 @@ out:
         SAFE_FREE(st);
         return -1;
       }
+      if( st->instruction != CSYNC_INSTRUCTION_NONE ) {
+        ctx->local.changes++;
+      }
       break;
     case REMOTE_REPLCIA:
       if (c_rbtree_insert(ctx->remote.tree, (void *) st) < 0) {
         SAFE_FREE(st);
         return -1;
+      }
+      if( st->instruction != CSYNC_INSTRUCTION_NONE ) {
+        ctx->remote.changes++;
       }
       break;
     default:
@@ -337,10 +343,42 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     }
 
     if (flag == CSYNC_FTW_FLAG_DIR && depth) {
+      long rcnt = ctx->remote.changes;
+      long lcnt = ctx->local.changes;
+
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "OOOO> before digging into filename (%s): local %u, remote: %u",
+                filename, ctx->local.changes , ctx->remote.changes );
+
       rc = csync_ftw(ctx, filename, fn, depth - 1);
       if (rc < 0) {
         csync_vio_closedir(ctx, dh);
         goto done;
+      }
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "OOOO> change count (%s): local %u - %u, remote: %u - %u",
+                filename, ctx->local.changes, lcnt, ctx->remote.changes, rcnt);
+      if( ctx->local.changes != lcnt ) {
+          csync_file_stat_t *myfs = NULL;
+          c_rbnode_t *mynode = NULL;
+          int len;
+          uint64_t h = 0;
+
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "OOOO> saw changes in subdir(%s), setting SYNC",
+                    filename );
+          /* the directory within this directory changed. Set this to sync. */
+
+          len = strlen(path);
+          h = c_jhash64((uint8_t *) path, len, 0);
+          mynode = c_rbtree_find(ctx->local.tree, &h);
+
+          if( mynode ) {
+              myfs = c_rbtree_node_data( mynode );
+
+              if( myfs->instruction == CSYNC_INSTRUCTION_NONE ) {
+                  myfs->instruction = CSYNC_INSTRUCTION_EVAL;
+              } else {
+                  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "OOOO> instruction is not NONE, skip setting to SYNC");
+              }
+          }
       }
     }
     SAFE_FREE(filename);

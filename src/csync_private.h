@@ -95,6 +95,7 @@ struct csync_s {
     c_rbtree_t *tree;
     c_list_t *list;
     enum csync_replica_e type;
+    unsigned long changes;
   } local;
 
   struct {
@@ -102,6 +103,7 @@ struct csync_s {
     c_rbtree_t *tree;
     c_list_t *list;
     enum csync_replica_e type;
+    unsigned long changes;
   } remote;
 
   struct {
