@@ -310,7 +310,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="289"/>
         <source>Sync started for %1 configured sync folder(s).</source>
-        <translation>Synkronisering har startat för %1 konfigurerade sykroniseringskatalog(s).</translation>
+        <translation>Synkroniseringen har startat för %1 synkroniseringskatalog(er).</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="304"/>
