@@ -19,18 +19,6 @@
 #include <QtCore>
 #include <QtGui>
 
-#ifdef Q_WS_WIN
-#include <sys/types.h>
-#include <sys/stat.h>
-
-#include <windef.h>
-#include <winbase.h>
-#endif
-
-#ifdef Q_OS_MAC 
-#include <mach-o/dyld.h>
-#endif
-
 #define DEFAULT_REMOTE_POLL_INTERVAL 30000 // default remote poll time in milliseconds
 #define DEFAULT_LOCAL_POLL_INTERVAL  10000 // default local poll time in milliseconds
 #define DEFAULT_POLL_TIMER_EXEED     10
@@ -68,6 +56,7 @@ QString MirallConfigFile::excludeFile() const
     if( fi.isReadable() ) {
         return dir;
     }
+
     // Check alternative places...
 #ifdef Q_OS_WIN32
     fi.setFile( QApplication::applicationDirPath(), exclFile );
