@@ -82,6 +82,7 @@ typedef unsigned long dav_size_t;
 /* Struct to store data for each resource found during an opendir operation.
  * It represents a single file entry.
  */
+
 typedef struct resource {
     char *uri;           /* The complete uri */
     char *name;          /* The filename only */
@@ -89,7 +90,7 @@ typedef struct resource {
     enum resource_type type;
     dav_size_t         size;
     time_t             modtime;
-    char               md5[33];
+    char*              md5;
 
     struct resource    *next;
 } resource;
@@ -595,8 +596,13 @@ static void results(void *userdata,
     }
 
     if( md5sum ) {
-        /* Skip the " around the string coming back from teh ne_propset_value call */
-        strncpy( newres->md5, md5sum+1, 32 );
+        int len = strlen(md5sum)-2;
+        if( len > 0 ) {
+            /* Skip the " around the string coming back from the ne_propset_value call */
+            newres->md5 = c_malloc(len+1);
+            strncpy( newres->md5, md5sum+1, len );
+            newres->md5[len] = '\0';
+        }
     }
 
     /* prepend the new resource to the result list */
@@ -766,6 +772,7 @@ static void free_fetchCtx( struct listdir_context *ctx )
     while( res ) {
         SAFE_FREE(res->uri);
         SAFE_FREE(res->name);
+        SAFE_FREE(res->md5);
 
         newres = res->next;
         SAFE_FREE(res);
@@ -1056,6 +1063,43 @@ static csync_vio_capabilities_t *owncloud_capabilities(void)
   _owncloud_capabilities.unix_extensions = 0;
 #endif
   return &_owncloud_capabilities;
+}
+
+static const char* owncloud_file_id( const char *path )
+{
+    ne_request *req    = NULL;
+    const char *header = NULL;
+    char *uri          = _cleanPath(path);
+    char *buf          = NULL;
+
+    req = ne_request_create(dav_session.ctx, "HEAD", uri);
+    ne_request_dispatch(req);
+
+    header = ne_get_response_header(req, "etag");
+
+    if( ! header ) {
+        csync_vio_file_stat_t statBuf;
+        if( owncloud_stat( uri, &statBuf ) == 0 ) {
+            header = statBuf.md5;
+            SAFE_FREE(statBuf.name);
+        }
+    }
+
+    if( header ) {
+        if( header [0] == '"' && header[ strlen(header)-1] == '"') {
+            int len = strlen( header )-2;
+            buf = c_malloc( len );
+            strncpy( buf, header+1, len );
+            buf[len] = '\0';
+        } else {
+            buf = c_strdup(header);
+        }
+    }
+    DEBUG_WEBDAV("GET FILE ID FOR %s: %s", path, buf);
+    ne_request_destroy(req);
+    SAFE_FREE(uri);
+
+    return buf;
 }
 
 static csync_vio_method_handle_t *owncloud_open(const char *durl,
@@ -1749,6 +1793,7 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
 csync_vio_method_t _method = {
     .method_table_size = sizeof(csync_vio_method_t),
     .get_capabilities = owncloud_capabilities,
+    .get_file_id = owncloud_file_id,
     .open = owncloud_open,
     .creat = owncloud_creat,
     .close = owncloud_close,
