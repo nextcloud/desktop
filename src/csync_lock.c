@@ -63,6 +63,7 @@ static int _csync_lock_create(const char *lockfile) {
     goto out;
   }
 
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
   CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Create temporary lock file: %s", ctmpfile);
   if ((fd = mkstemp(ctmpfile)) < 0) {
     strerror_r(errno, errbuf, sizeof(errbuf));
