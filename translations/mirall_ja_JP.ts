@@ -330,7 +330,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="306"/>
         <source>Open status...</source>
-        <translation>状態を開く...</translation>
+        <translation>状態を確認...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="308"/>
