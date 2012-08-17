@@ -78,7 +78,7 @@ QIcon Theme::themeIcon( const QString& name ) const
         QList<int> sizes;
         sizes <<16 << 24 << 32 << 48 << 64 << 128;
         foreach (int size, sizes) {
-            QString pixmapName = QString(":/mirall/resources/%1-%2.png").arg(name).arg(size);
+            QString pixmapName = QString::fromLatin1(":/mirall/resources/%1-%2.png").arg(name).arg(size);
             if (QFile::exists(pixmapName)) {
                 icon.addFile(pixmapName, QSize(size, size));
             }

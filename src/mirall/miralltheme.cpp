@@ -28,17 +28,17 @@ mirallTheme::mirallTheme()
 
 QString mirallTheme::appName() const
 {
-    return QString::fromLocal8Bit("Mirall");
+    return QLatin1String("Mirall");
 }
 
 QString mirallTheme::configFileName() const
 {
-    return QString::fromLocal8Bit("mirall.cfg");
+    return QLatin1String("mirall.cfg");
 }
 
 QPixmap mirallTheme::splashScreen() const
 {
-    return QPixmap(":/mirall/resources/owncloud_splash.png"); // FIXME: mirall splash!
+    return QPixmap(QLatin1String(":/mirall/resources/owncloud_splash.png")); // FIXME: mirall splash!
 }
 
 QIcon mirallTheme::folderIcon( const QString& backend ) const
@@ -46,16 +46,16 @@ QIcon mirallTheme::folderIcon( const QString& backend ) const
   QString name;
 
   if( backend == QString::fromLatin1("owncloud")) {
-      name = QString( "mirall" );
+      name = QLatin1String( "mirall" );
   }
   if( backend == QString::fromLatin1("unison" )) {
-      name  = QString( "folder-sync" );
+      name  = QLatin1String( "folder-sync" );
   }
   if( backend == QString::fromLatin1("csync" )) {
-      name   = QString( "folder-remote" );
+      name   = QLatin1String( "folder-remote" );
   }
   if( backend.isEmpty() || backend == QString::fromLatin1("none") ) {
-      name = QString("folder-grey.png");
+      name = QLatin1String("folder-grey.png");
   }
 
   qDebug() << "==> load folder icon " << name;
@@ -68,25 +68,25 @@ QIcon mirallTheme::syncStateIcon( SyncResult::Status status ) const
 
     switch( status ) {
     case SyncResult::Undefined:
-        statusIcon = "dialog-close";
+        statusIcon = QLatin1String("dialog-close");
         break;
     case SyncResult::NotYetStarted:
-        statusIcon = "task-ongoing";
+        statusIcon = QLatin1String("task-ongoing");
         break;
     case SyncResult::SyncRunning:
-        statusIcon = "view-refresh";
+        statusIcon = QLatin1String("view-refresh");
         break;
     case SyncResult::Success:
-        statusIcon = "dialog-ok";
+        statusIcon = QLatin1String("dialog-ok");
         break;
     case SyncResult::Error:
-        statusIcon = "dialog-close";
+        statusIcon = QLatin1String("dialog-close");
         break;
     case SyncResult::SetupError:
-        statusIcon = "dialog-cancel";
+        statusIcon = QLatin1String("dialog-cancel");
         break;
     default:
-        statusIcon = "dialog-close";
+        statusIcon = QLatin1String("dialog-close");
     }
     return themeIcon( statusIcon );
 }
@@ -95,12 +95,12 @@ QIcon mirallTheme::syncStateIcon( SyncResult::Status status ) const
 QIcon mirallTheme::folderDisabledIcon() const
 {
     // Fixme: Do we really want the dialog-canel from theme here?
-    return themeIcon( "dialog-cancel" );
+    return themeIcon( QLatin1String("dialog-cancel") );
 }
 
 QIcon mirallTheme::applicationIcon( ) const
 {
-    return themeIcon( "mirall");
+    return themeIcon( QLatin1String("mirall"));
 }
 
 }

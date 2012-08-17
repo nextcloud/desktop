@@ -89,7 +89,7 @@ QString ownCloudFolder::secondPath() const
 {
     QString re(_secondPath);
     MirallConfigFile cfg;
-    const QString ocUrl = cfg.ownCloudUrl(QString(), true);
+    const QString ocUrl = cfg.ownCloudUrl(QString::null, true);
     // qDebug() << "**** " << ocUrl << " <-> " << re;
     if( re.startsWith( ocUrl ) ) {
         re.remove( ocUrl );
@@ -118,10 +118,10 @@ void ownCloudFolder::startSync(const QStringList &pathList)
 
     QUrl url( _secondPath );
     if( url.scheme() == QLatin1String("http") ) {
-        url.setScheme( "owncloud" );
+        url.setScheme( QLatin1String("owncloud") );
     } else {
         // connect SSL!
-        url.setScheme( "ownclouds" );
+        url.setScheme( QLatin1String("ownclouds") );
     }
 
 #ifdef USE_INOTIFY
@@ -335,7 +335,7 @@ void ownCloudFolder::wipe()
             qDebug() << "WRN: statedb is empty, can not remove.";
         }
         // Check if the tmp database file also exists
-        QString ctmpName = _csyncStateDbFile + ".ctmp";
+        QString ctmpName = _csyncStateDbFile + QLatin1String(".ctmp");
         QFile ctmpFile( ctmpName );
         if( ctmpFile.exists() ) {
             ctmpFile.remove();

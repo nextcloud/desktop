@@ -71,11 +71,13 @@ void Mirall::ProxyDialog::saveSettings()
         {
             QString user = userLineEdit->text();
             QString pass = passwordLineEdit->text();
-            cfgFile.setProxyType(QNetworkProxy::Socks5Proxy, hostLineEdit->text(), portSpinBox->value(), user, pass);
+            cfgFile.setProxyType(QNetworkProxy::Socks5Proxy, hostLineEdit->text(),
+                                 portSpinBox->value(), user, pass);
         }
         else
         {
-            cfgFile.setProxyType(QNetworkProxy::Socks5Proxy, hostLineEdit->text(), portSpinBox->value(), QString(), QString());
+            cfgFile.setProxyType(QNetworkProxy::Socks5Proxy, hostLineEdit->text(),
+                                 portSpinBox->value(), QString::null, QString::null);
         }
     }
 

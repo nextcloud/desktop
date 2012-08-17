@@ -56,12 +56,12 @@ void setupCustomMedia( QVariant variant, QLabel *label )
 OwncloudSetupPage::OwncloudSetupPage()
 {
     _ui.setupUi(this);
-    registerField( "OCUrl", _ui.leUrl );
-    registerField( "OCUser",   _ui.leUsername );
-    registerField( "OCPasswd", _ui.lePassword);
-    registerField( "connectMyOC", _ui.cbConnectOC );
-    registerField( "secureConnect", _ui.cbSecureConnect );
-    registerField( "PwdNoLocalStore", _ui.cbNoPasswordStore );
+    registerField( QLatin1String("OCUrl"), _ui.leUrl );
+    registerField( QLatin1String("OCUser"),   _ui.leUsername );
+    registerField( QLatin1String("OCPasswd"), _ui.lePassword);
+    registerField( QLatin1String("connectMyOC"), _ui.cbConnectOC );
+    registerField( QLatin1String("secureConnect"), _ui.cbSecureConnect );
+    registerField( QLatin1String("PwdNoLocalStore"), _ui.cbNoPasswordStore );
 
     connect( _ui.lePassword, SIGNAL(textChanged(QString)), this, SIGNAL(completeChanged()));
 
@@ -156,7 +156,7 @@ bool OwncloudSetupPage::isComplete() const
 
 void OwncloudSetupPage::initializePage()
 {
-    QString user = qgetenv( "USER" );
+    QString user = QString::fromLocal8Bit(qgetenv( "USER" ));
     _ui.leUsername->setText( user );
 }
 
@@ -170,9 +170,9 @@ int OwncloudSetupPage::nextId() const
 OwncloudWizardSelectTypePage::OwncloudWizardSelectTypePage()
 {
     _ui.setupUi(this);
-    registerField( "connectMyOC", _ui.connectMyOCRadioBtn );
-    registerField( "createNewOC", _ui.createNewOCRadioBtn );
-    registerField( "OCUrl",       _ui.OCUrlLineEdit );
+    registerField( QLatin1String("connectMyOC"), _ui.connectMyOCRadioBtn );
+    registerField( QLatin1String("createNewOC"), _ui.createNewOCRadioBtn );
+    registerField( QLatin1String("OCUrl"),       _ui.OCUrlLineEdit );
 
     connect( _ui.connectMyOCRadioBtn, SIGNAL(clicked()), SIGNAL(completeChanged()));
     connect( _ui.createNewOCRadioBtn, SIGNAL(clicked()), SIGNAL(completeChanged()));
@@ -230,9 +230,9 @@ void OwncloudWizardSelectTypePage::setOCUrl( const QString& url )
 OwncloudCredentialsPage::OwncloudCredentialsPage()
 {
     _ui.setupUi(this);
-    registerField( "OCUser",   _ui.OCUserEdit );
-    registerField( "OCPasswd", _ui.OCPasswdEdit );
-    registerField( "PwdNoLocalStore", _ui.cbPwdNoLocalStore );
+    registerField( QLatin1String("OCUser"),   _ui.OCUserEdit );
+    registerField( QLatin1String("OCPasswd"), _ui.OCPasswdEdit );
+    registerField( QLatin1String("PwdNoLocalStore"), _ui.cbPwdNoLocalStore );
 
     connect( _ui.OCPasswdEdit, SIGNAL(textChanged(QString)), this, SIGNAL(completeChanged()));
 
@@ -264,7 +264,7 @@ bool OwncloudCredentialsPage::isComplete() const
 
 void OwncloudCredentialsPage::initializePage()
 {
-    QString user = qgetenv( "USER" );
+    QString user = QString::fromLocal8Bit(qgetenv( "USER" ));
     _ui.OCUserEdit->setText( user );
 }
 
@@ -279,10 +279,10 @@ int OwncloudCredentialsPage::nextId() const
 OwncloudFTPAccessPage::OwncloudFTPAccessPage()
 {
     _ui.setupUi(this);
-    registerField( "ftpUrl",    _ui.ftpUrlEdit );
-    registerField( "ftpUser",   _ui.ftpUserEdit );
-    registerField( "ftpPasswd", _ui.ftpPasswdEdit );
-    // registerField( "ftpDir",    _ui.ftpDir );
+    registerField( QLatin1String("ftpUrl"),    _ui.ftpUrlEdit );
+    registerField( QLatin1String("ftpUser"),   _ui.ftpUserEdit );
+    registerField( QLatin1String("ftpPasswd"), _ui.ftpPasswdEdit );
+    // registerField( QLatin1String("ftpDir"),    _ui.ftpDir );
 
 #if QT_VERSION >= 0x040700
     _ui.ftpUrlEdit->setPlaceholderText(tr("ftp.mydomain.org"));
@@ -320,9 +320,9 @@ bool OwncloudFTPAccessPage::isComplete() const
 CreateAnOwncloudPage::CreateAnOwncloudPage()
 {
     _ui.setupUi(this);
-    registerField("createLocalOC",  _ui.createLocalRadioBtn );
-    registerField("createOnDomain", _ui.createPerFTPRadioBtn );
-    registerField("myOCDomain",     _ui.myDomainEdit );
+    registerField(QLatin1String("createLocalOC"),  _ui.createLocalRadioBtn );
+    registerField(QLatin1String("createOnDomain"), _ui.createPerFTPRadioBtn );
+    registerField(QLatin1String("myOCDomain"),     _ui.myDomainEdit );
 
     connect( _ui.createLocalRadioBtn, SIGNAL(clicked()), SIGNAL(completeChanged()));
     connect( _ui.createPerFTPRadioBtn, SIGNAL(clicked()), SIGNAL(completeChanged()));
@@ -357,8 +357,8 @@ bool CreateAnOwncloudPage::isComplete() const
   if( _ui.createPerFTPRadioBtn->isChecked() ) {
     QString dom = _ui.myDomainEdit->text();
     qDebug() << "check is Complete with " << dom;
-    return (!dom.isEmpty() && dom.contains( QChar('.'))
-            && dom.lastIndexOf('.') < dom.length()-2 );
+    return (!dom.isEmpty() && dom.contains( QLatin1Char('.'))
+            && dom.lastIndexOf(QLatin1Char('.')) < dom.length()-2 );
   }
   return true;
 }
@@ -423,7 +423,7 @@ void OwncloudWizardResultPage::showOCUrlLabel( const QString& url, bool show )
 void OwncloudWizardResultPage::setupCustomization()
 {
     // set defaults for the customize labels.
-    _ui.topLabel->setText( QString() );
+    _ui.topLabel->setText( QString::null );
     _ui.topLabel->hide();
 
     MirallConfigFile cfg;
@@ -454,7 +454,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
 #ifdef Q_WS_MAC
     setWizardStyle( QWizard::ModernStyle );
 #endif
-    setField("connectMyOC", true);
+    setField(QLatin1String("connectMyOC"), true);
 
     connect( this, SIGNAL(currentIdChanged(int)), SLOT(slotCurrentPageChanged(int)));
 
@@ -488,21 +488,21 @@ void OwncloudWizard::slotCurrentPageChanged( int id )
       domain = domain.right( domain.length()-8 );
     }
 
-    QString host = "ftp." +domain;
+    QString host = QLatin1String("ftp.") +domain;
     OwncloudFTPAccessPage *p1 = static_cast<OwncloudFTPAccessPage*> (page( Page_FTP ));
     p1->setFTPUrl( host );
   }
   if( id == Page_Install ) {
-    appendToResultWidget( QString() );
+    appendToResultWidget( QString::null );
     showOCUrlLabel( false );
-    if( field("connectMyOC").toBool() ) {
+    if( field(QLatin1String("connectMyOC")).toBool() ) {
       // check the url and connect.
       _oCUrl = ocUrl();
       emit connectToOCUrl( _oCUrl);
-    } else if( field("createLocalOC").toBool() ) {
+    } else if( field(QLatin1String("createLocalOC")).toBool() ) {
       qDebug() << "Connect to local!";
       emit installOCLocalhost();
-    } else if( field("createNewOC").toBool() ) {
+    } else if( field(QLatin1String("createNewOC")).toBool() ) {
       // call in installation mode and install to ftp site.
       emit installOCServer();
     } else {

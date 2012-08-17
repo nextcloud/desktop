@@ -84,7 +84,7 @@ void SyncResult::setErrorString( const QString& err )
 
 QString SyncResult::errorString() const
 {
-    if( _errors.isEmpty() ) return QString();
+    if( _errors.isEmpty() ) return QString::null;
     return _errors.first();
 }
 

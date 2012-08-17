@@ -87,7 +87,7 @@ void FolderWatcher::setIgnoreListFile( const QString& file )
 
     while (!infile.atEnd()) {
         QString line = QString::fromLocal8Bit( infile.readLine() ).trimmed();
-        if( !line.startsWith( '#' )) {
+        if( !line.startsWith( QLatin1Char('#') )) {
             addIgnore(line);
         }
     }
@@ -281,7 +281,11 @@ void FolderWatcher::slotProcessTimerTimeout()
 void FolderWatcher::setProcessTimer()
 {
     if (!_processTimer->isActive()) {
-        qDebug() << "* Pending events for" << root() << "will be processed after events stop for" << eventInterval() << "seconds (" << QTime::currentTime().addSecs(eventInterval()).toString("HH:mm:ss") << ")." << _pendingPathes.size() << "events until now )";
+        qDebug() << "* Pending events for" << root()
+                 << "will be processed after events stop for"
+                 << eventInterval() << "seconds ("
+                 << QTime::currentTime().addSecs(eventInterval()).toString(QLatin1String("HH:mm:ss"))
+                 << ")." << _pendingPathes.size() << "events until now )";
     }
     _processTimer->start(eventInterval());
 }

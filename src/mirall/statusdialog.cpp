@@ -298,7 +298,7 @@ void StatusDialog::folderToModelItem( QStandardItem *item, Folder *f )
     SyncResult res = f->syncResult();
     SyncResult::Status status = res.status();
 
-    QString errors = res.errorStrings().join("<br/>");
+    QString errors = res.errorStrings().join(QLatin1String("<br/>"));
 
     item->setData( _theme->statusHeaderText( status ),  Qt::ToolTipRole );
     if( f->syncEnabled() ) {

@@ -67,7 +67,7 @@ OwncloudSetupWizard::OwncloudSetupWizard( FolderMan *folderMan, Theme *theme, QO
     // in case of cancel, terminate the owncloud-admin script.
     connect( _ocWizard, SIGNAL(rejected()), _process, SLOT(terminate()));
 
-    _ocWizard->setWindowTitle( tr("%1 Connection Wizard").arg( theme ? theme->appName() : "Mirall" ) );
+    _ocWizard->setWindowTitle( tr("%1 Connection Wizard").arg( theme ? theme->appName() : QLatin1String("Mirall") ) );
 
 }
 
@@ -108,7 +108,7 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
 
     // clear the custom config handle
     _configHandle.clear();
-    ownCloudInfo::instance()->setCustomConfigHandle( QString() );
+    ownCloudInfo::instance()->setCustomConfigHandle( QString::null );
 
     // disconnect the ocInfo object
     disconnect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
@@ -125,7 +125,7 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
 void OwncloudSetupWizard::slotConnectToOCUrl( const QString& url )
 {
   qDebug() << "Connect to url: " << url;
-  _ocWizard->setField("OCUrl", url );
+  _ocWizard->setField(QLatin1String("OCUrl"), url );
   _ocWizard->appendToResultWidget(tr("Trying to connect to ownCloud at %1...").arg(url ));
   testOwnCloudConnect();
 }
@@ -134,15 +134,15 @@ void OwncloudSetupWizard::testOwnCloudConnect()
 {
     // write a temporary config.
     QDateTime now = QDateTime::currentDateTime();
-    _configHandle = now.toString("MMddyyhhmmss");
+    _configHandle = now.toString(QLatin1String("MMddyyhhmmss"));
 
     MirallConfigFile cfgFile( _configHandle );
 
     cfgFile.writeOwncloudConfig( QLatin1String("ownCloud"),
-                                 _ocWizard->field("OCUrl").toString(),
-                                 _ocWizard->field("OCUser").toString(),
-                                 _ocWizard->field("OCPasswd").toString(),
-                                 _ocWizard->field("PwdNoLocalStore").toBool() );
+                                 _ocWizard->field(QLatin1String("OCUrl")).toString(),
+                                 _ocWizard->field(QLatin1String("OCUser")).toString(),
+                                 _ocWizard->field(QLatin1String("OCPasswd")).toString(),
+                                 _ocWizard->field(QLatin1String("PwdNoLocalStore")).toBool() );
 
     // now start ownCloudInfo to check the connection.
     ownCloudInfo::instance()->setCustomConfigHandle( _configHandle );
@@ -198,20 +198,20 @@ void OwncloudSetupWizard::slotCreateOCLocalhost()
 
   QStringList args;
 
-  args << "install";
-  args << "--server-type" << "local";
-  args << "--root_helper" << "kdesu -c";
+  args << QLatin1String("install");
+  args << QLatin1String("--server-type") << QLatin1String("local");
+  args << QLatin1String("--root_helper") << QLatin1String("kdesu -c");
 
-  const QString adminUser = _ocWizard->field("OCUser").toString();
-  const QString adminPwd  = _ocWizard->field("OCPasswd").toString();
+  const QString adminUser = _ocWizard->field(QLatin1String("OCUser")).toString();
+  const QString adminPwd  = _ocWizard->field(QLatin1String("OCPasswd")).toString();
 
-  args << "--admin-user" << adminUser;
-  args << "--admin-password" << adminPwd;
+  args << QLatin1String("--admin-user") << adminUser;
+  args << QLatin1String("--admin-password") << adminPwd;
 
   runOwncloudAdmin( args );
 
   // define
-  _ocWizard->setField( "OCUrl", QString( "http://localhost/owncloud/") );
+  _ocWizard->setField( QLatin1String("OCUrl"), QLatin1String( "http://localhost/owncloud/") );
 }
 
 void OwncloudSetupWizard::slotInstallOCServer()
@@ -221,32 +221,33 @@ void OwncloudSetupWizard::slotInstallOCServer()
     return;
   }
 
-  const QString server = _ocWizard->field("ftpUrl").toString();
-  const QString user   = _ocWizard->field("ftpUser").toString();
-  const QString passwd = _ocWizard->field("ftpPasswd").toString();
-  const QString adminUser = _ocWizard->field("OCUser").toString();
-  const QString adminPwd  = _ocWizard->field("OCPasswd").toString();
+  const QString server = _ocWizard->field(QLatin1String("ftpUrl")).toString();
+  const QString user   = _ocWizard->field(QLatin1String("ftpUser")).toString();
+  const QString passwd = _ocWizard->field(QLatin1String("ftpPasswd")).toString();
+  const QString adminUser = _ocWizard->field(QLatin1String("OCUser")).toString();
+  const QString adminPwd  = _ocWizard->field(QLatin1String("OCPasswd")).toString();
 
   qDebug() << "Install OC on " << server << " as user " << user;
 
   QStringList args;
-  args << "install";
-  args << "--server-type" << "ftp";
-  args << "--server"   << server;
-  args << "--ftp-user"     << user;
+  args << QLatin1String("install");
+  args << QLatin1String("--server-type") << QLatin1String("ftp");
+  args << QLatin1String("--server")   << server;
+  args << QLatin1String("--ftp-user")     << user;
   if( ! passwd.isEmpty() ) {
-    args << "--ftp-password" << passwd;
+    args << QLatin1String("--ftp-password") << passwd;
   }
-  args << "--admin-user" << adminUser;
-  args << "--admin-password" << adminPwd;
+  args << QLatin1String("--admin-user") << adminUser;
+  args << QLatin1String("--admin-password") << adminPwd;
 
   runOwncloudAdmin( args );
-  _ocWizard->setField( "OCUrl", QString( "%1/owncloud/").arg(_ocWizard->field("myOCDomain").toString() ));
+  _ocWizard->setField( QLatin1String("OCUrl"), QString::fromLatin1( "%1/owncloud/")
+                       .arg(_ocWizard->field(QLatin1String("myOCDomain")).toString() ));
 }
 
 void OwncloudSetupWizard::runOwncloudAdmin( const QStringList& args )
 {
-  const QString bin("/usr/bin/owncloud-admin");
+  const QString bin(QLatin1String("/usr/bin/owncloud-admin"));
   qDebug() << "starting " << bin << " with args. " << args;
   if( _process->state() != QProcess::NotRunning	) {
     qDebug() << "Owncloud admin is still running, skip!";
@@ -351,7 +352,7 @@ bool OwncloudSetupWizard::checkOwncloudAdmin( const QString& bin )
 
 void OwncloudSetupWizard::setupLocalSyncFolder()
 {
-    _localFolder = QDir::homePath() + QString::fromLocal8Bit("/ownCloud");
+    _localFolder = QDir::homePath() + QLatin1String("/ownCloud");
 
     if( ! _folderMan ) return;
 

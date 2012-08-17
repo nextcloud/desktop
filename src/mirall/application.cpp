@@ -58,7 +58,7 @@ namespace Mirall {
 void mirallLogCatcher(QtMsgType type, const char *msg)
 {
   Q_UNUSED(type)
-  Logger::instance()->mirallLog( msg );
+  Logger::instance()->mirallLog( QString::fromUtf8(msg) );
 }
 
 void csyncLogCatcher(const char *msg)
@@ -87,27 +87,27 @@ Application::Application(int &argc, char **argv) :
     setApplicationName( _theme->appName() );
     setWindowIcon( _theme->applicationIcon() );
 
-    if( arguments().contains("--help")) {
+    if( arguments().contains(QLatin1String("--help"))) {
         showHelp();
     }
     setupLogBrowser();
     processEvents();
 
     QTranslator *qtTranslator = new QTranslator(this);
-    qtTranslator->load("qt_" + QLocale::system().name(),
+    qtTranslator->load(QLatin1String("qt_") + QLocale::system().name(),
                       QLibraryInfo::location(QLibraryInfo::TranslationsPath));
     installTranslator(qtTranslator);
 
     QTranslator *mirallTranslator = new QTranslator(this);
 #ifdef Q_OS_LINUX
     // FIXME - proper path!
-    mirallTranslator->load("mirall_" + QLocale::system().name(), QLatin1String("/usr/share/mirall/i18n/"));
+    mirallTranslator->load(QLatin1String("mirall_") + QLocale::system().name(), QLatin1String("/usr/share/mirall/i18n/"));
 #endif
 #ifdef Q_OS_MAC
-    mirallTranslator->load("mirall_" + QLocale::system().name(), applicationDirPath()+QLatin1String("/../translations") ); // path defaults to app dir.
+    mirallTranslator->load(QLatin1String("mirall_") + QLocale::system().name(), applicationDirPath()+QLatin1String("/../translations") ); // path defaults to app dir.
 #endif
 #ifdef Q_OS_WIN32
-    mirallTranslator->load("mirall_" + QLocale::system().name()); // path defaults to app dir.
+    mirallTranslator->load(QLatin1String("mirall_") + QLocale::system().name()); // path defaults to app dir.
 #endif
 
     installTranslator(mirallTranslator);
@@ -232,7 +232,7 @@ void Application::slotNoOwnCloudFound( QNetworkReply* reply )
     QString msg;
     if( reply ) {
         QString url( reply->url().toString() );
-        url.remove( "/status.php" );
+        url.remove( QLatin1String("/status.php") );
         msg = tr("<p>The ownCloud at %1 could not be reached.</p>").arg( url );
         msg += tr("<p>The detailed error message is<br/><tt>%1</tt></p>").arg( reply->errorString() );
     }
@@ -257,7 +257,7 @@ void Application::slotNoOwnCloudFound( QNetworkReply* reply )
 void Application::slotCheckAuthentication()
 {
     qDebug() << "# checking for authentication settings.";
-    ownCloudInfo::instance()->getRequest("/", true ); // this call needs to be authenticated.
+    ownCloudInfo::instance()->getRequest(QLatin1String("/"), true ); // this call needs to be authenticated.
     // simply GET the webdav root, will fail if credentials are wrong.
     // continue in slotAuthCheck here :-)
 }
@@ -372,24 +372,25 @@ void Application::setupLogBrowser()
     qInstallMsgHandler( mirallLogCatcher );
     csync_set_log_callback( csyncLogCatcher );
 
-    if( arguments().contains("--logwindow") || arguments().contains("-l")) {
+    if( arguments().contains(QLatin1String("--logwindow"))
+            || arguments().contains(QLatin1String("-l"))) {
         slotOpenLogBrowser();
     }
 
     // check for command line option for a log file.
-    int lf = arguments().indexOf("--logfile");
+    int lf = arguments().indexOf(QLatin1String("--logfile"));
 
     if( lf > -1 && lf+1 < arguments().count() ) {
         QString logfile = arguments().at( lf+1 );
 
         bool flush = false;
-        if( arguments().contains("--logflush")) flush = true;
+        if( arguments().contains(QLatin1String("--logflush"))) flush = true;
 
         qDebug() << "Logging into logfile: " << logfile << " with flush " << flush;
         _logBrowser->setLogFile( logfile, flush );
     }
 
-    qDebug() << QString( "################## %1 %2 %3 ").arg(_theme->appName())
+    qDebug() << QString::fromLatin1( "################## %1 %2 %3 ").arg(_theme->appName())
                 .arg( QLocale::system().name() )
                 .arg(_theme->version());
 }
@@ -433,13 +434,13 @@ void Application::slotFolderOpenAction( const QString& alias )
     qDebug() << "opening local url " << f->path();
     if( f ) {
         QUrl url(f->path(), QUrl::TolerantMode);
-        url.setScheme( "file" );
+        url.setScheme( QLatin1String("file") );
 
 #ifdef Q_OS_WIN32
         // work around a bug in QDesktopServices on Win32, see i-net
         QString filePath = f->path();
 
-        if (filePath.startsWith("\\\\") || filePath.startsWith("//"))
+        if (filePath.startsWith(QLatin1String("\\\\")) || filePath.startsWith(QLatin1String("//")))
             url.setUrl(QDir::toNativeSeparators(filePath));
         else
             url = QUrl::fromLocalFile(filePath);
@@ -482,25 +483,25 @@ void Application::slotAddFolder()
 
     bool goodData = true;
 
-    QString alias        = _folderWizard->field("alias").toString();
-    QString sourceFolder = _folderWizard->field("sourceFolder").toString();
+    QString alias        = _folderWizard->field(QLatin1String("alias")).toString();
+    QString sourceFolder = _folderWizard->field(QLatin1String("sourceFolder")).toString();
     QString backend      = QLatin1String("csync");
     QString targetPath;
     bool onlyThisLAN = false;
     bool onlyOnline  = false;
 
-    if (_folderWizard->field("local?").toBool()) {
+    if (_folderWizard->field(QLatin1String("local?")).toBool()) {
         // setup a local csync folder
-        targetPath = _folderWizard->field("targetLocalFolder").toString();
-    } else if (_folderWizard->field("remote?").toBool()) {
+        targetPath = _folderWizard->field(QLatin1String("targetLocalFolder")).toString();
+    } else if (_folderWizard->field(QLatin1String("remote?")).toBool()) {
         // setup a remote csync folder
-        targetPath  = _folderWizard->field("targetURLFolder").toString();
-        onlyOnline  = _folderWizard->field("onlyOnline?").toBool();
-        onlyThisLAN = _folderWizard->field("onlyThisLAN?").toBool();
-    } else if( _folderWizard->field("OC?").toBool()) {
+        targetPath  = _folderWizard->field(QLatin1String("targetURLFolder")).toString();
+        onlyOnline  = _folderWizard->field(QLatin1String("onlyOnline?")).toBool();
+        onlyThisLAN = _folderWizard->field(QLatin1String("onlyThisLAN?")).toBool();
+    } else if( _folderWizard->field(QLatin1String("OC?")).toBool()) {
         // setup a ownCloud folder
         backend    = QLatin1String("owncloud");
-        targetPath = _folderWizard->field("targetOCFolder").toString();
+        targetPath = _folderWizard->field(QLatin1String("targetOCFolder")).toString();
     } else {
       qWarning() << "* Folder not local and note remote?";
       goodData = false;
@@ -574,7 +575,8 @@ void Application::slotOpenLogBrowser()
   */
 void Application::slotRemoveFolder( const QString& alias )
 {
-    int ret = QMessageBox::question( 0, tr("Confirm Folder Remove"), tr("Do you really want to remove upload folder <i>%1</i>?").arg(alias),
+    int ret = QMessageBox::question( 0, tr("Confirm Folder Remove"),
+                                     tr("Do you really want to remove upload folder <i>%1</i>?").arg(alias),
                                      QMessageBox::Yes|QMessageBox::No );
 
     if( ret == QMessageBox::No ) {
@@ -633,7 +635,7 @@ void Application::slotInfoFolder( const QString& alias )
     QMessageBox infoBox( QMessageBox::Information, tr( "Folder information" ), alias, QMessageBox::Ok );
     QStringList li = folderResult.errorStrings();
     foreach( const QString& l, li ) {
-        folderMessage += QString("<p>%1</p>").arg( l );
+        folderMessage += QString::fromLatin1("<p>%1</p>").arg( l );
     }
 
     infoBox.setText( folderMessage );
@@ -646,18 +648,18 @@ void Application::slotInfoFolder( const QString& alias )
         QHash< QString, QStringList >::const_iterator change_it = changes.constBegin();
         for(; change_it != changes.constEnd(); ++change_it ) {
             QString changeType = tr( "Unknown" );
-            if ( change_it.key() == "changed" ) {
+            if ( change_it.key() == QLatin1String("changed") ) {
             changeType = tr( "Changed files:\n" );
-            } else if ( change_it.key() == "added" ) {
+            } else if ( change_it.key() == QLatin1String("added") ) {
                 changeType = tr( "Added files:\n" );
-            } else if ( change_it.key() == "deleted" ) {
+            } else if ( change_it.key() == QLatin1String("deleted") ) {
             changeType = tr( "New files in the server, or files deleted locally:\n");
             }
 
             QStringList files = change_it.value();
             QString fileList;
                 foreach( const QString& file, files) {
-                    fileList += file + QChar('\n');
+                    fileList += file + QLatin1Char('\n');
             }
             details += changeType + fileList;
         }
@@ -777,7 +779,7 @@ void Application::computeOverallSyncStatus()
             }
         }
         qDebug() << "Folder in overallStatus Message: " << syncedFolder << " with name " << syncedFolder->alias();
-        QString msg = QString("Folder %1: %2").arg(syncedFolder->alias()).arg(folderMessage);
+        QString msg = QString::fromLatin1("Folder %1: %2").arg(syncedFolder->alias()).arg(folderMessage);
         if( msg != _overallStatusStrings[syncedFolder->alias()] ) {
             _overallStatusStrings[syncedFolder->alias()] = msg;
         }
@@ -787,7 +789,7 @@ void Application::computeOverallSyncStatus()
     if( overallResult.status() != SyncResult::Undefined ) {
         QStringList allStatusStrings = _overallStatusStrings.values();
         if( ! allStatusStrings.isEmpty() )
-            trayMessage = allStatusStrings.join("\n");
+            trayMessage = allStatusStrings.join(QLatin1String("\n"));
         else
             trayMessage = tr("No sync folders configured.");
 

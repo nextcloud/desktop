@@ -99,8 +99,8 @@ struct ProxyInfo {
      }
 
      if( file ) {
-         QString source(wStats->sourcePath);
-         source.append(file->path);
+         QString source = QString::fromLocal8Bit(wStats->sourcePath);
+         source.append(QString::fromLocal8Bit(file->path));
          QFileInfo fi(source);
 
          if( fi.isDir()) {  // File type directory.
@@ -126,7 +126,7 @@ CSyncThread::CSyncThread(const QString &source, const QString &target, bool loca
 
 {
     _mutex.lock();
-    if( ! _source.endsWith('/')) _source.append('/');
+    if( ! _source.endsWith(QLatin1Char('/'))) _source.append(QLatin1Char('/'));
     _mutex.unlock();
 }
 
@@ -375,10 +375,10 @@ int CSyncThread::getauth(const char *prompt,
     QString qPrompt = QString::fromLocal8Bit( prompt ).trimmed();
     _mutex.lock();
 
-    if( qPrompt == QString::fromLocal8Bit("Enter your username:") ) {
+    if( qPrompt == QLatin1String("Enter your username:") ) {
         // qDebug() << "OOO Username requested!";
         qstrncpy( buf, _user.toUtf8().constData(), len );
-    } else if( qPrompt == QString::fromLocal8Bit("Enter your password:") ) {
+    } else if( qPrompt == QLatin1String("Enter your password:") ) {
         // qDebug() << "OOO Password requested!";
         qstrncpy( buf, _passwd.toUtf8().constData(), len );
     } else {

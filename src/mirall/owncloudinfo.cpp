@@ -192,7 +192,7 @@ void ownCloudInfo::mkdirRequest( const QString& dir )
     MirallConfigFile cfgFile( _configHandle );
     QNetworkRequest req;
     req.setUrl( QUrl( cfgFile.ownCloudUrl( _connection, true ) + dir ) );
-    QNetworkReply *reply = davRequest("MKCOL", req, 0);
+    QNetworkReply *reply = davRequest(QLatin1String("MKCOL"), req, 0);
 
     // remember the confighandle used for this request
     if( ! _configHandle.isEmpty() )
@@ -368,7 +368,8 @@ void ownCloudInfo::slotReplyFinished()
     }
     _urlRedirectedTo.clear();
 
-    const QString version( reply->readAll() );
+    // TODO: check if this is always the correct encoding
+    const QString version = QString::fromUtf8( reply->readAll() );
     const QString url = reply->url().toString();
     QString plainUrl(url);
     plainUrl.remove( QLatin1String("/status.php"));
@@ -387,21 +388,23 @@ void ownCloudInfo::slotReplyFinished()
             return;
         }
         qDebug() << "status.php returns: " << info << " " << reply->error() << " Reply: " << reply;
-        if( info.contains("installed") && info.contains("version") && info.contains("versionstring") ) {
+        if( info.contains(QLatin1String("installed"))
+                && info.contains(QLatin1String("version"))
+                && info.contains(QLatin1String("versionstring")) ) {
             info.remove(0,1); // remove first char which is a "{"
             info.remove(-1,1); // remove the last char which is a "}"
-            QStringList li = info.split( QChar(',') );
+            QStringList li = info.split( QLatin1Char(',') );
 
             QString versionStr;
             QString version;
             QString edition;
 
             foreach ( const QString& infoString, li ) {
-                QStringList touple = infoString.split( QChar(':'));
+                QStringList touple = infoString.split( QLatin1Char(':'));
                 QString key = touple[0];
-                key.remove(QChar('"'));
+                key.remove(QLatin1Char('"'));
                 QString val = touple[1];
-                val.remove(QChar('"'));
+                val.remove(QLatin1Char('"'));
 
                 if( key == QLatin1String("versionstring") ) {
                     // get the versionstring out.
@@ -424,7 +427,7 @@ void ownCloudInfo::slotReplyFinished()
         }
     } else {
         // it was a general GET request.
-        QString dir("unknown");
+        QString dir(QLatin1String("unknown"));
         if( _directories.contains(reply) ) {
             dir = _directories[reply];
             _directories.remove(reply);
@@ -453,15 +456,16 @@ void ownCloudInfo::setupHeaders( QNetworkRequest & req, quint64 size )
 {
     MirallConfigFile cfgFile(_configHandle );
 
-    QUrl url( cfgFile.ownCloudUrl( QString(), false ) );
+    QUrl url( cfgFile.ownCloudUrl( QString::null, false ) );
     qDebug() << "Setting up host header: " << url.host();
     req.setRawHeader( QByteArray("Host"), url.host().toUtf8() );
-    req.setRawHeader( QByteArray("User-Agent"), QString("mirall-%1").arg(MIRALL_STRINGIFY(MIRALL_VERSION)).toAscii());
+    req.setRawHeader( QByteArray("User-Agent"), QString::fromLatin1("mirall-%1")
+                      .arg(QLatin1String(MIRALL_STRINGIFY(MIRALL_VERSION))).toAscii());
     req.setRawHeader( QByteArray("Authorization"), cfgFile.basicAuthHeader() );
 
     if (size) {
-        req.setHeader( QNetworkRequest::ContentLengthHeader, QVariant(size));
-        req.setHeader( QNetworkRequest::ContentTypeHeader, QVariant("text/xml; charset=utf-8"));
+        req.setHeader( QNetworkRequest::ContentLengthHeader, size);
+        req.setHeader( QNetworkRequest::ContentTypeHeader, QLatin1String("text/xml; charset=utf-8"));
     }
 }
 

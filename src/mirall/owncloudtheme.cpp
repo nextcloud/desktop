@@ -69,7 +69,7 @@ QIcon ownCloudTheme::folderIcon( const QString& backend ) const
 
 QIcon ownCloudTheme::trayFolderIcon( const QString& ) const
 {
-    return themeIcon( "owncloud-icon" );
+    return themeIcon( QLatin1String("owncloud-icon") );
 }
 
 QIcon ownCloudTheme::syncStateIcon( SyncResult::Status status ) const
