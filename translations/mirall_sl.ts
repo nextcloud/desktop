@@ -274,7 +274,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="201"/>
         <source>&lt;p&gt;No server connection has been configured for this ownCloud client.&lt;/p&gt;&lt;p&gt;Please right click on the ownCloud system tray icon and select &lt;i&gt;Configure&lt;/i&gt; to connect this client to an ownCloud server.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Povezava med strežnikom in ownCloud odjemalcem še ni bila nastavljena.&lt;/p&gt;&lt;p&gt;Prosimo, če z desno miškino tipko kliknete na ownCloud ikono v sistemski vrstici in izberete &lt;i&gt;Nastavi&lt;/i&gt; za povezavo tega odjemalca z ownCloud strežnikom.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="236"/>
@@ -362,113 +362,113 @@ p, li { white-space: pre-wrap; }
         <translation>Upravljane mape:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="577"/>
+        <location filename="../src/mirall/application.cpp" line="578"/>
         <source>Confirm Folder Remove</source>
         <translation>Potrdi odstranitev mape</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="577"/>
+        <location filename="../src/mirall/application.cpp" line="579"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>Ali res želite odstraniti naloženo mapo &lt;i&gt;%1&lt;/i&gt;?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="611"/>
+        <location filename="../src/mirall/application.cpp" line="613"/>
         <source>Undefined Folder State</source>
         <translation>Nedoločeno stanje mape</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="614"/>
+        <location filename="../src/mirall/application.cpp" line="616"/>
         <source>The folder waits to start syncing.</source>
         <translation>Čakanje na začetek usklajevanja mape.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="617"/>
-        <location filename="../src/mirall/application.cpp" line="751"/>
+        <location filename="../src/mirall/application.cpp" line="619"/>
+        <location filename="../src/mirall/application.cpp" line="753"/>
         <source>Sync is running.</source>
         <translation>Usklajevanje se izvaja.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="620"/>
-        <location filename="../src/mirall/application.cpp" line="756"/>
+        <location filename="../src/mirall/application.cpp" line="622"/>
+        <location filename="../src/mirall/application.cpp" line="758"/>
         <source>Last Sync was successful.</source>
         <translation>Zadnje usklajevanje je bilo uspešno.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="623"/>
-        <location filename="../src/mirall/application.cpp" line="762"/>
+        <location filename="../src/mirall/application.cpp" line="625"/>
+        <location filename="../src/mirall/application.cpp" line="764"/>
         <source>Syncing Error.</source>
         <translation>Napaka pri usklajevanju.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="626"/>
-        <location filename="../src/mirall/application.cpp" line="768"/>
+        <location filename="../src/mirall/application.cpp" line="628"/>
+        <location filename="../src/mirall/application.cpp" line="770"/>
         <source>Setup Error.</source>
         <translation>Napaka nastavitev.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="629"/>
-        <location filename="../src/mirall/application.cpp" line="771"/>
+        <location filename="../src/mirall/application.cpp" line="631"/>
+        <location filename="../src/mirall/application.cpp" line="773"/>
         <source>Undefined Error State.</source>
         <translation>Nedoločeno stanje napake.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="633"/>
+        <location filename="../src/mirall/application.cpp" line="635"/>
         <source>Folder information</source>
         <translation>Podrobnosti mape</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="648"/>
+        <location filename="../src/mirall/application.cpp" line="650"/>
         <source>Unknown</source>
         <translation>Neznano</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="650"/>
+        <location filename="../src/mirall/application.cpp" line="652"/>
         <source>Changed files:
 </source>
         <translation>Spremenjene datoteke:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="652"/>
+        <location filename="../src/mirall/application.cpp" line="654"/>
         <source>Added files:
 </source>
         <translation>Dodane datoteke:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="654"/>
+        <location filename="../src/mirall/application.cpp" line="656"/>
         <source>New files in the server, or files deleted locally:
 </source>
         <translation>Nove datoteke na strežniku ali lokalno izbrisane datoteke:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="681"/>
+        <location filename="../src/mirall/application.cpp" line="683"/>
         <source>Sync Running</source>
         <translation>Usklajevanje se izvaja</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="682"/>
+        <location filename="../src/mirall/application.cpp" line="684"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Izvaja se usklajevanje.&lt;br/&gt;Ali ga želite prekiniti?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="744"/>
+        <location filename="../src/mirall/application.cpp" line="746"/>
         <source>Undefined State.</source>
         <translation>Nedoločeno stanje.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="747"/>
+        <location filename="../src/mirall/application.cpp" line="749"/>
         <source>Waits to start syncing.</source>
         <translation>Čakam na začetek usklajevanja.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="776"/>
+        <location filename="../src/mirall/application.cpp" line="778"/>
         <source>Sync is paused.</source>
         <translation>Usklajevanje je začasno zaustavljeno</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="792"/>
+        <location filename="../src/mirall/application.cpp" line="794"/>
         <source>No sync folders configured.</source>
         <translation>Ni nastavljenih map za usklajevanje.</translation>
     </message>
@@ -516,7 +516,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="222"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Ciljna mapa %1 ne obstaja.&lt;/p&gt;&lt;p&gt;Prosimo, če preverite nastavitve usklajevanja.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="228"/>
@@ -541,7 +541,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="255"/>
         <source>CSync failed to reach the host. Either host or proxy settings are not valid.</source>
-        <translation type="unfinished"/>
+        <translation>CSync ni mogel doseči gostitelja. Nastavitve gostitelja ali proxy strežnika niso veljavne.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="258"/>
@@ -576,7 +576,7 @@ Prosimo, če napišete poročilo o hrošču.</translation>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="283"/>
         <source>The local filesystem has %1 write protected directories.That can hinder successful syncing.&lt;p/&gt;Please make sure that all local directories are writeable.</source>
-        <translation type="unfinished"/>
+        <translation>Datotečni sistem ima %1 map zaščitenih pred pisanjem. To lahko ovira uspešno usklajevane.&lt;p/&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="303"/>
@@ -608,7 +608,7 @@ Prosimo, če napišete poročilo o hrošču.</translation>
 <context>
     <name>Mirall::FolderWizard</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="459"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="460"/>
         <source>%1 Folder Wizard</source>
         <translation>%1 čarovnik mape</translation>
     </message>
@@ -669,27 +669,27 @@ Prosimo, če napišete poročilo o hrošču.</translation>
         <translation>Ustvarjanje mape na ownCloud je spodletelo.&lt;br/&gt;Prosimo, če stanje ročno preverite.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="263"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="264"/>
         <source>Better do not use the remote root directory.&lt;br/&gt;If you do, you can &lt;b&gt;not&lt;/b&gt; mirror another local folder.</source>
         <translation>Bolje je, če za oddaljeno mapo ne uporabljate korenske mape.&lt;br/&gt;Če jo, namreč &lt;b&gt;ne&lt;/b&gt; morete več zrcaliti nadaljnjih lokalnih map.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="311"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="312"/>
         <source>to your &lt;a href=&quot;%1&quot;&gt;ownCloud&lt;/a&gt; (version %2)</source>
         <translation>na vaš &lt;a href=&quot;%1&quot;&gt;ownCloud&lt;/a&gt; (različica %2)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="321"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="322"/>
         <source>no configured ownCloud found!</source>
         <translation>ne najdem nastavljenega ownCloud-a!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="322"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="323"/>
         <source>Your ownCloud could not be reached:&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Vaš ownCloud ni bil dosegljiv:&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="389"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="390"/>
         <source>Select the target folder</source>
         <translation>Izberite ciljno mapo</translation>
     </message>
@@ -740,7 +740,7 @@ Prosimo, če napišete poročilo o hrošču.</translation>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="208"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;nobr&gt;Datoteke &apos;%1&apos;&lt;br/&gt;ni bilo mogoče odpreti za pisanje.&lt;br/&gt;&lt;br/&gt;Dnevniški zapis &lt;b&gt;ne more&lt;/b&gt; biti shranjen!&lt;/nobr&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="254"/>
@@ -825,64 +825,64 @@ Prosimo, če napišete poročilo o hrošču.</translation>
         <translation>Napaka: &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="256"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="257"/>
         <source>Starting script owncloud-admin...</source>
         <translation>Začenjanje skripte owncloud-admin...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="307"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="308"/>
         <source>&lt;font color=&quot;red&quot;&gt;Installation of ownCloud failed!&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;red&quot;&gt;Namestitev ownCloud je spodletela!&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="312"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="313"/>
         <source>&lt;font color=&quot;green&quot;&gt;Installation of ownCloud succeeded!&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;Namestitev ownCloud je uspela!&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="345"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="346"/>
         <source>The owncloud admin script can not be found.
 Setup can not be done.</source>
         <translation>Skrbniška skripta za ownCloud ni bila najdena.
 Namestitev ne se ne more izvesti.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="386"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="387"/>
         <source>Creation of remote folder %1 could not be started.</source>
         <translation>Ustvarjanje oddaljene mape %1 ni bilo mogoče začeti.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="410"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="411"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Oddaljena mapa %1 je bila uspešno ustvarjena.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="412"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="413"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Oddaljena mapa %1 že obstaja. Povezujem jo za usklajevanje.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="414"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="415"/>
         <source>The folder creation resulted in HTTP error code %d</source>
         <translation>Ustvarjanje mape je privedlo do HTTP napake s šifro %d</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="435"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="436"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation type="unfinished"/>
+        <translation>Usklajevalna povezava med %1 in oddaljeno mapo %2 je bila nastavljena.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="440"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="441"/>
         <source>Congratulations, your ownCloud can be connected!</source>
-        <translation type="unfinished"/>
+        <translation>Čestitamo, vaš ownCloud se lahko poveže!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="442"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="443"/>
         <source>Press Finish to permanently accept this connection.</source>
-        <translation type="unfinished"/>
+        <translation>Pritisnite Končaj, da trajno sprejmete to povezavo.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="445"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="446"/>
         <source>An ownCloud connection could not be established. Please check again.</source>
         <translation>ownCloud povezave ni bilo mogoče vzpostaviti. Prosimo, če poskusite ponovno.</translation>
     </message>
@@ -895,12 +895,12 @@ Namestitev ne se ne more izvesti.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="365"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="366"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Lokalna mapa %1 že obstaja. Nastavljam jo za usklajevanje.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="367"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="368"/>
         <source>Creating local sync folder %1... </source>
         <translation>Ustvarjam mapo za lokalno usklajevanje %1... </translation>
     </message>
@@ -909,12 +909,12 @@ Namestitev ne se ne more izvesti.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="370"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="371"/>
         <source>ok</source>
         <translation>je v redu</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="372"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="373"/>
         <source>failed.</source>
         <translation>je spodletelo.</translation>
     </message>
@@ -936,12 +936,12 @@ Namestitev ne se ne more izvesti.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="416"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="417"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Ustvarjanje oddaljene mape je spodletelo. Najverjetneje je vzrok v napačnih poverilih.&lt;/font&gt;&lt;br/&gt;Prosimo, pojdite nazaj in preverite svoja poverila.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="422"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="423"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Ustvarjanje oddaljene mape %1 je spodletelo z napako &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
@@ -1104,17 +1104,17 @@ Namestitev ne se ne more izvesti.</translation>
 <context>
     <name>Mirall::UpdateDetector</name>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="114"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="115"/>
         <source>Client Version Check</source>
         <translation>Preveri različico odjemalca</translation>
     </message>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="116"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="117"/>
         <source>&lt;p&gt;A new version of the ownCloud Client is available.</source>
         <translation>&lt;p&gt;Na voljo je nova različica ownCloud odjemalca.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="117"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="118"/>
         <source>%1 is available. The installed version is %3.&lt;p/&gt;&lt;p&gt;For more information see &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</source>
         <translation>%1 je na voljo. Nameščena različica je %3.&lt;p/&gt;&lt;p&gt;Za več podrobnosti glejte &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</translation>
     </message>
@@ -1125,6 +1125,19 @@ Namestitev ne se ne more izvesti.</translation>
         <location filename="../src/mirall/owncloudfolder.cpp" line="242"/>
         <source>The CSync thread terminated.</source>
         <translation>CSync nit je zaključena.</translation>
+    </message>
+</context>
+<context>
+    <name>MirallConfigFile</name>
+    <message>
+        <location filename="../src/mirall/mirallconfigfile.cpp" line="327"/>
+        <source>ownCloud Password Required</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/mirallconfigfile.cpp" line="328"/>
+        <source>Please enter your ownCloud password:</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1289,39 +1302,39 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="99"/>
         <source>&amp;Username:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Uporabniško ime:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="109"/>
         <source>Enter the ownCloud username.</source>
-        <translation type="unfinished"/>
+        <translation>Vnesite ownCloud uporabniško ime.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="116"/>
         <source>&amp;Password:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Geslo:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="126"/>
         <source>Enter the ownCloud password.</source>
-        <translation type="unfinished"/>
+        <translation>Vnesite ownCloud geslo.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="141"/>
         <source>Do not allow the local storage of the password.</source>
-        <translation type="unfinished"/>
+        <translation>Ne dovoli shranjevanja gesla.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="144"/>
         <source>&amp;do not store Password on local machine.</source>
-        <translation type="unfinished"/>
+        <translation>&amp;ne shrani gesla na računalnik.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="153"/>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="181"/>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="188"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Besedilna oznaka</translation>
     </message>
 </context>
 <context>
@@ -1396,7 +1409,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="110"/>
         <source>ownCloud-Link:</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud-povezava:</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1447,45 +1460,43 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/mirall/mirallconfigfile.cpp" line="339"/>
         <source>ownCloud Password Required</source>
-        <translation>ownCloud geslo je zahtevano</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/mirallconfigfile.cpp" line="340"/>
         <source>Please enter your ownCloud password:</source>
-        <translation>Prosimo, če vnesete vaše ownCloud geslo:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="34"/>
         <location filename="../src/mirall/theme.cpp" line="52"/>
         <source>Status undefined</source>
-        <translation type="unfinished"/>
+        <translation>Stanje je nedoločeno</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="37"/>
         <source>Waiting to start sync</source>
-        <translation type="unfinished"/>
+        <translation>Čakam na začetek usklajevanja</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="40"/>
         <source>Sync is running</source>
-        <translation type="unfinished"/>
+        <translation>Usklajevanje v teku</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="43"/>
         <source>Sync Success</source>
-        <translation type="unfinished"/>
+        <translation>Usklajevanje je bilo uspešno</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="46"/>
         <source>Sync Error - Click info button for details.</source>
-        <translation type="unfinished"/>
+        <translation>Napaka pri usklajevanju - Kliknite gumb info za prikaz podrobnosti.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="49"/>
         <source>Setup Error</source>
-        <translation type="unfinished"/>
+        <translation>Napaka pri nastavitvi</translation>
     </message>
 </context>
 <context>
@@ -1493,7 +1504,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="36"/>
         <source>ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud</translation>
     </message>
 </context>
 <context>
@@ -1501,52 +1512,52 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="14"/>
         <source>Proxy Settings</source>
-        <translation type="unfinished"/>
+        <translation>Proxy nastavitve</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="26"/>
         <source>Configure Proxies to access your ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>Nastavi proxy strežnike za dostop do vašega ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="43"/>
         <source>No Proxy</source>
-        <translation type="unfinished"/>
+        <translation>Brez proxy strežnika</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="53"/>
         <source>Use system proxy</source>
-        <translation type="unfinished"/>
+        <translation>Uporabi sistemski proxy</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="60"/>
         <source>Manual proxy configuration</source>
-        <translation type="unfinished"/>
+        <translation>Ročna proxy nastavitev</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="90"/>
         <source>User</source>
-        <translation type="unfinished"/>
+        <translation>Uporabnik</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="116"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Geslo</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="142"/>
         <source>Port</source>
-        <translation type="unfinished"/>
+        <translation>Vrata</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="149"/>
         <source>Host</source>
-        <translation type="unfinished"/>
+        <translation>Gostitelj</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="172"/>
         <source>Proxy server requires password</source>
-        <translation type="unfinished"/>
+        <translation>Proxy strežnik zahteva geslo</translation>
     </message>
 </context>
 <context>
