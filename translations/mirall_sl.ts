@@ -1132,12 +1132,12 @@ Namestitev ne se ne more izvesti.</translation>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="327"/>
         <source>ownCloud Password Required</source>
-        <translation type="unfinished"/>
+        <translation>Zahtevano je ownCloud geslo</translation>
     </message>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="328"/>
         <source>Please enter your ownCloud password:</source>
-        <translation type="unfinished"/>
+        <translation>Prosimo, če vpišete ownCloud geslo:</translation>
     </message>
 </context>
 <context>
