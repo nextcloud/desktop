@@ -115,39 +115,44 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
         }
     }
 #endif
-    if (tmp && tmp->phash == h) {
-      /* we have an update! */
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "time compare: %lu <-> %lu, md5: %s <-> %s",
-                  fs->mtime, tmp->modtime, fs->md5, tmp->md5);
-      if( !fs->md5) {
-          st->instruction = CSYNC_INSTRUCTION_EVAL;
-          goto out;
-      }
-      if( !c_streq(fs->md5, tmp->md5 )) {
-      // if (!fs->mtime > tmp->modtime) {
-        st->instruction = CSYNC_INSTRUCTION_EVAL;
-        goto out;
-      }
-      st->instruction = CSYNC_INSTRUCTION_NONE;
-    } else {
-      /* check if it's a file and has been renamed */
-      if (type == CSYNC_FTW_TYPE_FILE && ctx->current == LOCAL_REPLICA) {
-        tmp = csync_statedb_get_stat_by_inode(ctx, fs->inode);
-        if (tmp && tmp->inode == fs->inode) {
-          /* inode found so the file has been renamed */
-          st->instruction = CSYNC_INSTRUCTION_RENAME;
-          goto out;
+    if(tmp) { /* there is an entry in the database */
+        if (tmp->phash == h) {
+            /* we have an update! */
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "time compare: %lu <-> %lu, md5: %s <-> %s",
+                      fs->mtime, tmp->modtime, fs->md5, tmp->md5);
+            if( !fs->md5) {
+                st->instruction = CSYNC_INSTRUCTION_EVAL;
+                goto out;
+            }
+            if( !c_streq(fs->md5, tmp->md5 )) {
+                // if (!fs->mtime > tmp->modtime) {
+                st->instruction = CSYNC_INSTRUCTION_EVAL;
+                goto out;
+            }
+            st->instruction = CSYNC_INSTRUCTION_NONE;
         } else {
-          /* file not found in statedb */
-          st->instruction = CSYNC_INSTRUCTION_NEW;
-          goto out;
+            /* check if it's a file and has been renamed */
+            if (type == CSYNC_FTW_TYPE_FILE && ctx->current == LOCAL_REPLICA) {
+                tmp = csync_statedb_get_stat_by_inode(ctx, fs->inode);
+                if (tmp && tmp->inode == fs->inode) {
+                    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "inodes: %ld <-> %ld", tmp->inode, fs->inode);
+                    /* inode found so the file has been renamed */
+                    st->instruction = CSYNC_INSTRUCTION_RENAME;
+                    goto out;
+                } else {
+                    /* file not found in statedb */
+                    st->instruction = CSYNC_INSTRUCTION_NEW;
+                    goto out;
+                }
+            }
+            /* directory, remote and file not found in statedb */
+            st->instruction = CSYNC_INSTRUCTION_NEW;
         }
-      }
-      /* directory, remote and file not found in statedb */
-      st->instruction = CSYNC_INSTRUCTION_NEW;
+    } else {
+        st->instruction = CSYNC_INSTRUCTION_NEW;
     }
   } else  {
-    st->instruction = CSYNC_INSTRUCTION_NEW;
+      st->instruction = CSYNC_INSTRUCTION_NEW;
   }
 
 out:
@@ -329,7 +334,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
         int len = strlen( path );
         uint64_t h = c_jhash64((uint8_t *) path, len, 0);
         fs->md5 = csync_statedb_get_uniqId( ctx, h, fs );
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Uniq ID read from Database: %s -> %s", path, fs->md5);
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Uniq ID read from Database: %s -> %s", path, fs->md5 ? fs->md5 : "<NULL>" );
     }
 
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "walk: %s", filename);
