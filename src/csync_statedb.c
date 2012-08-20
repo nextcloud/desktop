@@ -570,7 +570,7 @@ c_strlist_t *csync_statedb_query(CSYNC *ctx, const char *statement) {
 
         /* iterate over columns */
         for (i = 0; i < column_count; i++) {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "sqlite3_column_text: %s", (char *) sqlite3_column_text(stmt, i));
+          // CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "sqlite3_column_text: %s", (char *) sqlite3_column_text(stmt, i));
           if (c_strlist_add(result, (char *) sqlite3_column_text(stmt, i)) < 0) {
             c_strlist_destroy(result);
             return NULL;
