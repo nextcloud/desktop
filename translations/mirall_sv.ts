@@ -1132,12 +1132,12 @@ Inställning kan inte utföras.</translation>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="327"/>
         <source>ownCloud Password Required</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud lösenord krävs</translation>
     </message>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="328"/>
         <source>Please enter your ownCloud password:</source>
-        <translation type="unfinished"/>
+        <translation>Ange ditt ownCloud lösenord:</translation>
     </message>
 </context>
 <context>
