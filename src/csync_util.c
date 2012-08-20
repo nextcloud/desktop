@@ -229,9 +229,12 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
   }
 
   tfs = c_rbtree_node_data(node);
-  fs->md5 = c_strdup( tfs->md5 );
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "PRE UPDATED %s: %s <-> %s", uri, fs->md5, tfs->md5);
-
+  if( tfs->md5 ) {
+    fs->md5 = c_strdup( tfs->md5 );
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "PRE UPDATED %s: %s <-> %s", uri, fs->md5, tfs->md5);
+  } else {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "md5 is empty in merger!");
+  }
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: UPDATED (%s)", uri, fs->md5);
 
   fs->instruction = CSYNC_INSTRUCTION_NONE;
