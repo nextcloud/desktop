@@ -1122,12 +1122,12 @@ No s&apos;ha pogut configurar</translation>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="327"/>
         <source>ownCloud Password Required</source>
-        <translation type="unfinished"/>
+        <translation>Es requereix la contrasenya d&apos;ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="328"/>
         <source>Please enter your ownCloud password:</source>
-        <translation type="unfinished"/>
+        <translation>Escriviu la contrasenya d&apos;ownCloud:</translation>
     </message>
 </context>
 <context>
