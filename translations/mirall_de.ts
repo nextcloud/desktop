@@ -142,7 +142,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="25"/>
         <source>Sync Directory</source>
-        <translation>Sync- Verzeichnis</translation>
+        <translation>Sync-Verzeichnis</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="32"/>
@@ -207,7 +207,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="91"/>
         <source>Folder on ownCloud:</source>
-        <translation>Verzeichnis auf ownCloud</translation>
+        <translation>Verzeichnis auf ownCloud:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="148"/>
@@ -217,12 +217,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="161"/>
         <source>Folder name:</source>
-        <translation>Verzeichnisname</translation>
+        <translation>Verzeichnisname:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="171"/>
         <source>C&amp;hoose..</source>
-        <translation>Auswä&amp;hlen</translation>
+        <translation>Auswä&amp;hlen...</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="218"/>
@@ -279,7 +279,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="236"/>
         <source>&lt;p&gt;The ownCloud at %1 could not be reached.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Der ownCloud-Ordner unter %1 konnte nicht erreicht werden.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;ownCloud unter %1 konnte nicht erreicht werden.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="237"/>
@@ -289,7 +289,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="239"/>
         <source>&lt;p&gt;Please check your configuration by clicking on the tray icon.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Bitte überprüfe deine Konfiguration, indem du auf das Tray-Symbol klickst.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Bitte überprüfen Sie Ihre Konfiguration, indem Sie auf das Tray-Symbol klicken.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="241"/>
@@ -305,12 +305,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="270"/>
         <source>&lt;p&gt;Your ownCloud credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Deine ownCloud-Zugangsdaten sind nicht korrekt.&lt;/p&gt;&lt;p&gt;Bitte korrigiere sie, indem du den Konfigurations-Dialog aus dem Tray aufrufst!&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Ihre ownCloud-Zugangsdaten sind nicht korrekt.&lt;/p&gt;&lt;p&gt;Bitte korrigieren Sie diese, indem Sie den Konfigurations-Dialog aus dem Tray aufrufen!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="277"/>
         <source>&lt;p&gt;Your ownCloud user name or password is not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Dein ownCloud Benutzername oder Passwort sind nicht korrekt.&lt;/p&gt;&lt;p&gt;Bitte korrigiere sie, indem du den Konfigurations-Dialog aus dem Tray aufrufst!&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Ihr ownCloud Benutzername oder Passwort sind nicht korrekt.&lt;/p&gt;&lt;p&gt;Bitte korrigieren Sie diese, indem Sie den Konfigurations-Dialog aus dem Tray aufrufen!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="289"/>
@@ -325,7 +325,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="304"/>
         <source>Open ownCloud...</source>
-        <translation>ownCloud öffnen</translation>
+        <translation>ownCloud öffnen...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="306"/>
@@ -385,7 +385,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/application.cpp" line="619"/>
         <location filename="../src/mirall/application.cpp" line="753"/>
         <source>Sync is running.</source>
-        <translation>Sync. läuft.</translation>
+        <translation>Synchronisation läuft.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="622"/>
@@ -397,13 +397,13 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/application.cpp" line="625"/>
         <location filename="../src/mirall/application.cpp" line="764"/>
         <source>Syncing Error.</source>
-        <translation>Sync-Fehler.</translation>
+        <translation>Fehler bei der Synchronisation.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="628"/>
         <location filename="../src/mirall/application.cpp" line="770"/>
         <source>Setup Error.</source>
-        <translation>Setup -Fehler.</translation>
+        <translation>Setup-Fehler.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="631"/>
@@ -425,7 +425,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/application.cpp" line="652"/>
         <source>Changed files:
 </source>
-        <translation>Geänderte Dateien
+        <translation>Geänderte Dateien:
 </translation>
     </message>
     <message>
@@ -445,12 +445,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="683"/>
         <source>Sync Running</source>
-        <translation>Sync. läuft</translation>
+        <translation>Synchronisation läuft</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="684"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>Die Synchronistation läuft gerade.&lt;br/&gt;Willst du sie beenden?</translation>
+        <translation>Die Synchronistation läuft gerade.&lt;br/&gt;Willen Sie diese beenden?</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="746"/>
@@ -465,7 +465,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="778"/>
         <source>Sync is paused.</source>
-        <translation>Sync. ist angehalten.</translation>
+        <translation>Synchronisation wurde angehalten.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="794"/>
@@ -521,7 +521,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="228"/>
         <source>&lt;p&gt;The ownCloud plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Das ownCloud plugin für csync konnte nicht geladen werden..&lt;br/&gt;Bitte überprüfe seine Installation!&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Das ownCloud plugin für csync konnte nicht geladen werden.&lt;br/&gt;Bitte überprüfe seine Installation!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="232"/>
@@ -618,12 +618,12 @@ Bitte einen Fehlerbericht schreiben.</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="74"/>
         <source>No local directory selected!</source>
-        <translation>Kein lokales Verzeichnis ausgewählt.</translation>
+        <translation>Kein lokales Verzeichnis ausgewählt!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="90"/>
         <source>The local path %1 is already an upload folder.&lt;br/&gt;Please pick another one!</source>
-        <translation>Der lokale Pfad %1 ist bereits ein Upload-Ordner.&lt;br/&gt;Bitte einen Anderen auswählen!</translation>
+        <translation>Der lokale Pfad %1 ist bereits ein Upload-Ordner.&lt;br/&gt;Bitte einen anderen auswählen!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="94"/>
