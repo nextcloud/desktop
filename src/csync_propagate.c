@@ -1118,7 +1118,7 @@ static int _csync_correct_id(CSYNC *ctx) {
               } else {
                   tfs = c_rbtree_node_data(node);
                   tfs->md5 = _get_md5(ctx, path);
-                  if( tfs->instruction != CSYNC_INSTRUCTION_UPDATED ) {
+                  if( tfs->instruction == CSYNC_INSTRUCTION_NONE ) {
                       /* set instruction for the statedb merger */
                       tfs->instruction = CSYNC_INSTRUCTION_UPDATED;
                   }
