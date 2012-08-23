@@ -104,6 +104,7 @@ struct csync_s {
     c_list_t *list;
     c_list_t *id_list;
     enum csync_replica_e type;
+    int  read_from_db;
   } remote;
 
   struct {
@@ -163,7 +164,7 @@ struct csync_file_stat_s {
   int type;         /* u32 */
 
   char *destpath;   /* for renames */
-  char *md5;
+  const char *md5;
   enum csync_instructions_e instruction; /* u32 */
   char path[1]; /* u8 */
 }
