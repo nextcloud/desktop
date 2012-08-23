@@ -118,6 +118,8 @@ struct transfer_context {
     const char  *method;        /* the HTTP method, either PUT or GET  */
     ne_decompress *decompress;  /* the decompress context */
     int         fileWritten;    /* flag to indicate that a buffer file was written for PUTs */
+    char        *md5;
+    char        *clean_uri;
 };
 
 /* Struct with the WebDAV session */
@@ -147,6 +149,11 @@ static const ne_propname ls_props[] = {
     { NULL, NULL }
 };
 
+struct stat_cache_s {
+    char *uri;
+    csync_vio_file_stat_t stat;
+};
+
 /*
  * local variables.
  */
@@ -155,6 +162,10 @@ struct dav_session_s dav_session; /* The DAV Session, initialised in dav_connect
 int _connected = 0;                   /* flag to indicate if a connection exists, ie.
                                      the dav_session is valid */
 csync_vio_file_stat_t _fs;
+csync_vio_file_stat_t _owc;
+
+struct stat_cache_s _statCache;
+
 
 csync_auth_callback _authcb;
 
@@ -812,6 +823,21 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
 
         buf->size   = _fs.size;
         buf->mode   = _stat_perms( _fs.type );
+    } else if( _statCache.uri && c_streq( _statCache.uri, uri )) {
+        DEBUG_WEBDAV("Found file stat info in statcache!");
+        buf->fields  = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
+        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
+        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
+        // buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
+        // buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
+        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
+
+        buf->type   = _fs.type;
+        buf->size   = _fs.size;
+        buf->md5    = c_strdup( _fs.md5 );
+
+        // buf->mode   = _stat_perms( _fs.type );
+
     } else {
         /* fetch data via a propfind call. */
         fetchCtx = c_malloc( sizeof( struct listdir_context ));
@@ -1022,7 +1048,7 @@ static char*_lastDir = NULL;
  */
 static csync_vio_capabilities_t _owncloud_capabilities = { true, false, true, 1 };
 
-static csync_vio_capabilities_t *owncloud_get_capabilities(void)
+static csync_vio_capabilities_t *owncloud_capabilities(void)
 {
 #ifdef _WIN32
   _owncloud_capabilities.unix_extensions = 0;
@@ -1047,6 +1073,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
     const char *winTmpUtf8 = NULL;
     csync_stat_t sb;
 #endif
+    const char *etag_header = NULL;
 
     struct transfer_context *writeCtx = NULL;
     csync_vio_file_stat_t statBuf;
@@ -1108,6 +1135,8 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
 
     writeCtx = c_malloc( sizeof(struct transfer_context) );
     writeCtx->bytes_written = 0;
+    writeCtx->clean_uri = c_strdup(uri);
+
     if( rc == NE_OK ) {
         /* open a temp file to store the incoming data */
 #ifdef _WIN32
@@ -1165,7 +1194,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
         writeCtx->fileWritten = 0;   /* flag to indicate if contents was pushed to file */
 
         writeCtx->req = ne_request_create(dav_session.ctx, "PUT", uri);
-	writeCtx->method = "PUT";
+        writeCtx->method = "PUT";
     }
 
 
@@ -1211,6 +1240,13 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
         /* if the compression handle is set through the post_header hook, delete it. */
         if( writeCtx->decompress ) {
             ne_decompress_destroy( writeCtx->decompress );
+        }
+
+        /* preserve the ETag header */
+        etag_header = ne_get_response_header( writeCtx->req, "ETag" );
+        if( etag_header ) {
+            writeCtx->md5 = c_strdup( etag_header );
+            DEBUG_WEBDAV("GET Etag: %s", etag_header );
         }
 
         /* delete the request in any case */
@@ -1260,6 +1296,7 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
     int ret = 0;
     size_t len = 0;
     const _TCHAR *tmpFileName = 0;
+    const char *etag_header = 0;
 
     writeCtx = (struct transfer_context*) fhandle;
 
@@ -1346,6 +1383,13 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
                     ret = -1;
                 }
             }
+
+            /* get the uniq id request header */
+            etag_header = ne_get_response_header( writeCtx->req, "ETag" );
+            if( etag_header ) {
+                DEBUG_WEBDAV("ETag for file : %s", etag_header);
+                writeCtx->md5 = c_strdup( etag_header );
+            }
         }
         ne_request_destroy( writeCtx->req );
     } else  {
@@ -1359,6 +1403,13 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
     }
     /* Remove the local file. */
     unlink( writeCtx->tmpFileName );
+
+    /* cache the stat info about the recently written or read file */
+    // FIXME: Free the strings
+    _statCache.stat.size = writeCtx->bytes_written;
+    _statCache.stat.md5  = writeCtx->md5;
+    _statCache.stat.name = c_basename( writeCtx->clean_uri );
+    _statCache.stat.type = CSYNC_VIO_FILE_TYPE_REGULAR;
 
     /* free mem. Note that the request mem is freed by the ne_request_destroy call */
     SAFE_FREE( writeCtx->tmpFileName );
@@ -1502,7 +1553,7 @@ static csync_vio_file_stat_t *owncloud_readdir(csync_vio_method_handle_t *dhandl
         _fs.fields = lfs->fields;
         _fs.type   = lfs->type;
         _fs.size   = lfs->size;
-        _fs.md5    = c_strdup( lfs->md5 );
+        _fs.md5    = lfs->md5;
     }
 
     /* DEBUG_WEBDAV("LFS fields: %s: %d", lfs->name, lfs->type ); */
@@ -1695,7 +1746,7 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
 
 csync_vio_method_t _method = {
     .method_table_size = sizeof(csync_vio_method_t),
-    .get_capabilities = owncloud_get_capabilities,
+    .get_capabilities = owncloud_capabilities,
     .open = owncloud_open,
     .creat = owncloud_creat,
     .close = owncloud_close,
