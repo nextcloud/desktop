@@ -32,6 +32,8 @@
 #include "vio/csync_vio.h"
 #include "vio/csync_vio_handle_private.h"
 #include "vio/csync_vio_local.h"
+#include "csync_statedb.h"
+#include "std/c_jhash.h"
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.vio.main"
 
@@ -529,6 +531,9 @@ int csync_vio_rmdir(CSYNC *ctx, const char *uri) {
 
 int csync_vio_stat(CSYNC *ctx, const char *uri, csync_vio_file_stat_t *buf) {
   int rc = -1;
+  int len = 0;
+  uint64_t h = 0;
+  char *file = 0;
 
   switch(ctx->replica) {
     case REMOTE_REPLCIA:
@@ -539,7 +544,6 @@ int csync_vio_stat(CSYNC *ctx, const char *uri, csync_vio_file_stat_t *buf) {
 #ifdef _WIN32
       CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Win32: STAT-inode for %s: %llu", uri, buf->inode );
 #endif
-
       break;
     default:
       break;
