@@ -517,6 +517,7 @@ c_strlist_t *csync_statedb_query(CSYNC *ctx, const char *statement) {
   sqlite3_stmt *stmt;
   const char *tail = NULL;
   c_strlist_t *result = NULL;
+  int row = 0;
 
   do {
     /* compile SQL program into a virtual machine, reattempteing if busy */
@@ -569,7 +570,13 @@ c_strlist_t *csync_statedb_query(CSYNC *ctx, const char *statement) {
           break;
         }
 
-        result = c_strlist_new(column_count);
+        row++;
+        if( result ) {
+            result = c_strlist_expand(result, row*column_count);
+        } else {
+            result = c_strlist_new(column_count);
+        }
+
         if (result == NULL) {
           return NULL;
         }
