@@ -7,6 +7,8 @@
 # Copyright (C) by Klaas Freitag <freitag@owncloud.com>
 #
 
+use lib ".";
+
 use Carp::Assert;
 use Data::Dumper;
 use HTTP::DAV;
@@ -110,7 +112,7 @@ sub csync( $$ )
     my $cmd = "LD_LIBRARY_PATH=$ld_libpath $csync $local $url";
     print "Starting: $cmd\n";
 
-    system( $cmd );
+    system( $cmd ) == 0 or die("CSync died!\n");
 }
 
 #
@@ -192,9 +194,11 @@ sub glob_put( $$$ )
     foreach my $lfile( @puts ) {
         if( $lfile =~ /.*\/(.+)$/g ) {
 	    my $rfile = $1;
-	    my $puturl = "$target/$rfile";
+	    my $puturl = "$target"."$rfile";
 	    print "   *** Putting $lfile to $puturl\n";
-	    $d->put( -local=>$lfile, -url=> $puturl );
+	    if( ! $d->put( -local=>$lfile, -url=> $puturl ) ) {
+	      print "   ### FAILED to put: ". $d->message . '\n';
+	    }
 	}
     }
 }
@@ -205,40 +209,51 @@ my $d = HTTP::DAV->new();
 $d->credentials( -url=> $owncloud, -realm=>"ownCloud",
                  -user=> $user,
                  -pass=> $passwd );
-$d->DebugLevel(3);
+# $d->DebugLevel(3);
 
-my $remoteDir = "t1/";
+my $remoteDir = sprintf( "t1-%#.3o/", rand(1000) );
+print "Working in remote dir $remoteDir\n";
 
 remoteDir( $d, $remoteDir );
 
 # $d->open("localhost/oc/files/webdav.php/t1");
+print "Copy some files to the remote location\n";
 remoteDir( $d, $remoteDir . "remoteToLocal1" );
+remoteDir( $d, $remoteDir . "remoteToLocal1/rtl1");
+remoteDir( $d, $remoteDir . "remoteToLocal1/rtl1/rtl11");
+remoteDir( $d, $remoteDir . "remoteToLocal1/rtl2");
 
 # put some files remote.
 glob_put( $d, 'toremote1/*', $owncloud . $remoteDir . "remoteToLocal1/" );
+glob_put( $d, 'toremote1/rtl1/*', $owncloud . $remoteDir . "remoteToLocal1/rtl1/" );
+glob_put( $d, 'toremote1/rtl1/rtl11/*', $owncloud . $remoteDir . "remoteToLocal1/rtl1/rtl11/" );
+glob_put( $d, 'toremote1/rtl2/*', $owncloud . $remoteDir . "remoteToLocal1/rtl2/" );
 
 my $localDir = "./t1";
 
+print "Create the local sync dir $localDir\n";
 createLocalDir( $localDir );
 
 # call csync, sync local t1 to remote t1
 csync( $localDir, $remoteDir );
 
-print "\nNow assertions:\n";
-
 # Check if the files from toremote1 are now in t1/remoteToLocal1
 # they should have taken the way via the ownCloud.
+print "Assert the local file copy\n";
 assertLocalDirs( "./toremote1", "$localDir/remoteToLocal1" );
 
 # Check if the synced files from ownCloud have the same timestamp as the local ones.
+print "\nNow assert remote 'toremote1' with local \"$localDir/remoteToLocal1\" :\n";
 assertLocalAndRemoteDir( $d, "$localDir/remoteToLocal1", $remoteDir . "remoteToLocal1" );
 
 # remove a local file.
+print "\nRemove a local file\n";
 unlink( "$localDir/remoteToLocal1/kernelcrash.txt" );
 csync( $localDir, $remoteDir );
 assertLocalAndRemoteDir( $d, "$localDir/remoteToLocal1", $remoteDir . "remoteToLocal1" );
 
 # add local files to a new dir1
+print "\nAdd some more files to local:\n";
 my $locDir = $localDir . "/fromLocal1";
 
 mkdir( $locDir );
@@ -248,15 +263,30 @@ foreach my $file ( <./tolocal1/*> ) {
     copy( $file, $locDir );
 }
 csync( $localDir, $remoteDir );
+print "\nAssert local and remote dirs.\n";
 assertLocalAndRemoteDir( $d, $locDir, $remoteDir . "fromLocal1" );
 
 # move a local file
+print "\nMove a file locally.\n";
 move( "$locDir/kramer.jpg", "$locDir/oldtimer.jpg" );
 csync( $localDir, $remoteDir );
 assertLocalAndRemoteDir( $d, $locDir, $remoteDir . "fromLocal1" );
 
+# move a local directory.
+print "\nMove a local directory.\n";
+move( "$localDir/remoteToLocal1/rtl1", "$localDir/remoteToLocal1/rtlX");
+csync( $localDir, $remoteDir );
+assertLocalAndRemoteDir( $d, $locDir, $remoteDir . "fromLocal1" );
+
+# remove a local dir
+print "\nRemove a local directory.\n";
+localCleanup( "$localDir/remoteToLocal1/rtlX" );
+csync( $localDir, $remoteDir );
+assertLocalAndRemoteDir( $d, $locDir, $remoteDir . "fromLocal1" );
+
+
 print "\n###########################################\n";
-print "            all cool - tests succeeded.\n";
+print "            all cool - tests succeeded in $remoteDir.\n";
 print "###########################################\n";
 
 print "\nInterrupt before cleanup in 4 seconds...\n";
