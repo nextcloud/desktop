@@ -229,6 +229,63 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
   return 0;
 }
 
+/* check if the dirent entries for the directory can be read from db
+ * instead really calling readdir which is costly over net.
+ * For that, a single HEAD request is done on the directory to get its
+ * id. If the ID has not changed remotely, this subtree hasn't changed
+ * and can be read from db.
+ */
+static int _check_read_from_db(CSYNC *ctx, const char *uri) {
+    int len;
+    uint64_t h;
+    csync_vio_file_stat_t *fs = NULL;
+    char       *md5_local  = NULL;
+    const char *md5_remote = NULL;
+    const char *mpath;
+    c_rbnode_t *node = NULL;
+    int rc = 0; /* FIXME: Error handling! */
+
+    if( !c_streq( ctx->remote.uri, uri )) {
+        /* FIXME: The top uri can not be checked because there is no db entry for it */
+        if( strlen(uri) < strlen(ctx->remote.uri)+1 ) {
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "check_read_from_db: uri is not a remote uri.");
+            /* FIXME: errno? */
+            return -1;
+        }
+        mpath = uri + strlen(ctx->remote.uri) + 1;
+        fs = csync_vio_file_stat_new();
+        if(fs == NULL) {
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "check_read_from_db: memory fault.");
+            errno = ENOMEM;
+            return -1;
+        }
+        len = strlen( mpath );
+        h = c_jhash64((uint8_t *) mpath, len, 0);
+
+        /* search in the local tree for the local file to get the mtime */
+        node =  c_rbtree_find(ctx->local.tree, &h);
+        if(node == NULL) {
+            /* no local file found. */
+        } else {
+            csync_file_stat_t *other = NULL;
+            /* set the mtime which is needed in statedb_get_uniqid */
+            other = (csync_file_stat_t *) node->data;
+            if( other )
+                fs->mtime = other->modtime;
+        }
+        md5_local = csync_statedb_get_uniqId( ctx, h, fs );
+        md5_remote = csync_vio_file_id(ctx, uri);
+
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Compare directory ids for %s: %s -> %s", mpath, md5_local, md5_remote );
+
+        if( c_streq(md5_local, md5_remote) ) {
+            ctx->remote.read_from_db = 1;
+        }
+        csync_vio_file_stat_destroy(fs);
+    }
+    return rc;
+}
+
 /* File tree walker */
 int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     unsigned int depth) {
@@ -238,11 +295,28 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   csync_vio_handle_t *dh = NULL;
   csync_vio_file_stat_t *dirent = NULL;
   csync_vio_file_stat_t *fs = NULL;
+  int read_from_db = 0;
   int rc = 0;
+  int res = 0;
+
+  bool do_read_from_db = (ctx->current == REMOTE_REPLCIA && ctx->remote.read_from_db);
 
   if (uri[0] == '\0') {
     errno = ENOENT;
     goto error;
+  }
+
+  /* If remote, compare the id with the local id. If equal, read all contents from
+   * the database. */
+  read_from_db = ctx->remote.read_from_db;
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Incoming read_from_db-Flag for %s: %d",
+          uri, read_from_db );
+  if( ctx->current == REMOTE_REPLCIA && !do_read_from_db ) {
+      _check_read_from_db(ctx, uri);
+      do_read_from_db = (ctx->current == REMOTE_REPLCIA && ctx->remote.read_from_db);
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Checking for read from db for %s: %d",
+                uri, ctx->remote.read_from_db );
+
   }
 
   if ((dh = csync_vio_opendir(ctx, uri)) == NULL) {
@@ -305,8 +379,16 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       continue;
     }
 
-    fs = csync_vio_file_stat_new();
-    if (csync_vio_stat(ctx, filename, fs) == 0) {
+    /* == see if really stat has to be called. */
+    if( do_read_from_db ) {
+        fs = dirent;
+        res = 0;
+    } else {
+        fs = csync_vio_file_stat_new();
+        res = csync_vio_stat(ctx, filename, fs);
+    }
+
+    if( res == 0) {
       switch (fs->type) {
         case CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK:
           flag = CSYNC_FTW_FLAG_SLINK;
@@ -341,7 +423,9 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
     /* Call walker function for each file */
     rc = fn(ctx, filename, fs, flag);
-    csync_vio_file_stat_destroy(fs);
+
+    if( ! do_read_from_db )
+        csync_vio_file_stat_destroy(fs);
 
     if (rc < 0) {
       csync_vio_closedir(ctx, dh);
@@ -360,6 +444,9 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     dirent = NULL;
   }
   csync_vio_closedir(ctx, dh);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Closing walk for %s with read_from_db %d", uri, read_from_db);
+
+  ctx->remote.read_from_db = read_from_db;
 
 done:
   csync_vio_file_stat_destroy(dirent);
