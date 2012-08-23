@@ -214,6 +214,11 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
     return -1;
   }
 
+  if (! VIO_METHOD_HAS_FUNC(m, get_file_id)) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "module %s has no get_file_id fn", module);
+  }
+
+
   ctx->module.method = m;
 
   return 0;
@@ -529,11 +534,16 @@ int csync_vio_rmdir(CSYNC *ctx, const char *uri) {
   return rc;
 }
 
+const char *csync_vio_file_id(CSYNC *ctx, const char *path)
+{
+    const char *re;
+    /* We always use the remote method here. */
+    re = ctx->module.method->get_file_id(path);
+    return re;
+}
+
 int csync_vio_stat(CSYNC *ctx, const char *uri, csync_vio_file_stat_t *buf) {
   int rc = -1;
-  int len = 0;
-  uint64_t h = 0;
-  char *file = 0;
 
   switch(ctx->replica) {
     case REMOTE_REPLCIA:
