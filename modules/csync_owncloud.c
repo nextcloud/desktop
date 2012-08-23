@@ -597,7 +597,6 @@ static void results(void *userdata,
     if( md5sum ) {
         /* Skip the " around the string coming back from teh ne_propset_value call */
         strncpy( newres->md5, md5sum+1, 32 );
-        DEBUG_WEBDAV("OOOOOOOOOOOOOOOOOOOOO %s", newres->md5);
     }
 
     /* prepend the new resource to the result list */
@@ -712,7 +711,6 @@ static csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
     lfs->size  = res->size;
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
     lfs->md5   = c_strdup(res->md5);
-    DEBUG_WEBDAV("XXXXXXXXXXXXXXXXXXXXX MD5: %s", lfs->md5 );
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
     return lfs;
 }
@@ -809,6 +807,7 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
      * stat. If the cache matches, a http call is saved.
      */
     if( _fs.name && strcmp( buf->name, _fs.name ) == 0 ) {
+
         buf->fields  = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
@@ -820,10 +819,11 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
         buf->type   = _fs.type;
         buf->mtime  = _fs.mtime;
         buf->md5    = c_strdup( _fs.md5 );
-
+        DEBUG_WEBDAV("stat results from fs cache - md5: %s", _fs.md5);
         buf->size   = _fs.size;
         buf->mode   = _stat_perms( _fs.type );
     } else if( _statCache.uri && c_streq( _statCache.uri, uri )) {
+      DEBUG_WEBDAV("stat results from stat cache");
         DEBUG_WEBDAV("Found file stat info in statcache!");
         buf->fields  = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
@@ -832,13 +832,14 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
         // buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
 
-        buf->type   = _fs.type;
-        buf->size   = _fs.size;
-        buf->md5    = c_strdup( _fs.md5 );
+        buf->type   = _statCache.stat.type;
+        buf->size   = _statCache.stat.size;
+        buf->md5    = c_strdup( _statCache.stat.md5 );
 
-        // buf->mode   = _stat_perms( _fs.type );
+        // buf->mode   = _stat_perms( _statCache.type );
 
     } else {
+      DEBUG_WEBDAV("stat results fetched.");
         /* fetch data via a propfind call. */
         fetchCtx = c_malloc( sizeof( struct listdir_context ));
         if( ! fetchCtx ) {
@@ -906,16 +907,17 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
                 buf->mtime  = lfs->mtime;
                 buf->size   = lfs->size;
                 buf->mode   = _stat_perms( lfs->type );
-                buf->md5    = c_strdup( lfs->md5 );
 
+                buf->md5    = c_strdup( lfs->md5 );
+                DEBUG_WEBDAV("XXXXXXXXXXXXXXX md5: %s", buf->md5 );
                 csync_vio_file_stat_destroy( lfs );
             }
 
             free_fetchCtx( fetchCtx );
         }
     }
-    DEBUG_WEBDAV("STAT result: %s, type=%d", buf->name ? buf->name:"NULL",
-                  buf->type );
+    DEBUG_WEBDAV("STAT result: %s, md5: %s", buf->name ? buf->name:"NULL",
+                  buf->md5 );
     return 0;
 }
 
@@ -1553,7 +1555,7 @@ static csync_vio_file_stat_t *owncloud_readdir(csync_vio_method_handle_t *dhandl
         _fs.fields = lfs->fields;
         _fs.type   = lfs->type;
         _fs.size   = lfs->size;
-        _fs.md5    = lfs->md5;
+        _fs.md5    = c_strdup(lfs->md5);
     }
 
     /* DEBUG_WEBDAV("LFS fields: %s: %d", lfs->name, lfs->type ); */
