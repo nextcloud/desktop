@@ -160,6 +160,7 @@ struct csync_file_stat_s {
   int nlink;        /* u32 */
   int type;         /* u32 */
   char *destpath;   /* for renames */
+  char *md5;
   enum csync_instructions_e instruction; /* u32 */
   char path[1]; /* u8 */
 }
