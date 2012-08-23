@@ -916,7 +916,7 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
                 buf->mode   = _stat_perms( lfs->type );
 
                 buf->md5    = c_strdup( lfs->md5 );
-                DEBUG_WEBDAV("XXXXXXXXXXXXXXX md5: %s", buf->md5 );
+
                 csync_vio_file_stat_destroy( lfs );
             }
 
@@ -1055,7 +1055,7 @@ static char*_lastDir = NULL;
  *  bool time_sync_required  - oC does not require the time sync
  *  int  unix_extensions     - oC supports unix extensions.
  */
-static csync_vio_capabilities_t _owncloud_capabilities = { true, false, true, 1 };
+static csync_vio_capabilities_t _owncloud_capabilities = { true, false, false, 1 };
 
 static csync_vio_capabilities_t *owncloud_capabilities(void)
 {
@@ -1072,11 +1072,17 @@ static const char* owncloud_file_id( const char *path )
     char *uri          = _cleanPath(path);
     char *buf          = NULL;
 
+    /* Perform an HEAD request to the resource. HEAD delivers the
+     * ETag header back. */
     req = ne_request_create(dav_session.ctx, "HEAD", uri);
     ne_request_dispatch(req);
 
     header = ne_get_response_header(req, "etag");
 
+    /* If the request went wrong or the server did not respond correctly
+     * (that can happen for collections) a stat call is done which translates
+     * into a PROPFIND request.
+     */
     if( ! header ) {
         csync_vio_file_stat_t statBuf;
         if( owncloud_stat( uri, &statBuf ) == 0 ) {
@@ -1085,6 +1091,7 @@ static const char* owncloud_file_id( const char *path )
         }
     }
 
+    /* In case the result is surrounded by "" cut them away. */
     if( header ) {
         if( header [0] == '"' && header[ strlen(header)-1] == '"') {
             int len = strlen( header )-2;
@@ -1095,7 +1102,7 @@ static const char* owncloud_file_id( const char *path )
             buf = c_strdup(header);
         }
     }
-    DEBUG_WEBDAV("GET FILE ID FOR %s: %s", path, buf);
+    DEBUG_WEBDAV("Get file ID for %s: %s", path, buf);
     ne_request_destroy(req);
     SAFE_FREE(uri);
 
@@ -1401,9 +1408,9 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
                     }
                     if (rc == NE_OK) {
                         if ( ne_get_status( writeCtx->req )->klass != 2 ) {
-                            DEBUG_WEBDAV("Error - PUT status value no 2xx");
-                            errno = EIO;
-                            ret = -1;
+                            // DEBUG_WEBDAV("Error - PUT status value no 2xx");
+                            // errno = EIO;
+                            // ret = -1;
                         }
                     } else {
                         DEBUG_WEBDAV("Error - put request on close failed: %d!", rc );
@@ -1419,9 +1426,9 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
                 rc = ne_request_dispatch( writeCtx->req );
                 if( rc == NE_OK ) {
                     if ( ne_get_status( writeCtx->req )->klass != 2 ) {
-                        DEBUG_WEBDAV("Error - PUT status value no 2xx");
-                        errno = EIO;
-                        ret = -1;
+                        // DEBUG_WEBDAV("Error - PUT status value no 2xx");
+                        // errno = EIO;
+                        // ret = -1;
                     }
                 } else {
                     DEBUG_WEBDAV("Error - put request from memory failed: %d!", rc );
