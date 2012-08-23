@@ -237,7 +237,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="182"/>
         <source>root</source>
-        <translation type="unfinished"/>
+        <translation>root</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="183"/>
@@ -330,17 +330,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="310"/>
         <source>Configure...</source>
-        <translation type="unfinished"/>
+        <translation>Konfigūruoti...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="312"/>
         <source>Configure proxy...</source>
-        <translation type="unfinished"/>
+        <translation>Nustatyti proxy...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="314"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Išeiti</translation>
     </message>
     <message>
         <source>open folder %1</source>
@@ -354,7 +354,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="578"/>
         <source>Confirm Folder Remove</source>
-        <translation type="unfinished"/>
+        <translation>Patvirtinti katalogo trynimą</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="579"/>
@@ -387,13 +387,13 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/application.cpp" line="625"/>
         <location filename="../src/mirall/application.cpp" line="764"/>
         <source>Syncing Error.</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizavimo klaida.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="628"/>
         <location filename="../src/mirall/application.cpp" line="770"/>
         <source>Setup Error.</source>
-        <translation type="unfinished"/>
+        <translation>Diegimo klaida.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="631"/>
@@ -415,13 +415,15 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/application.cpp" line="652"/>
         <source>Changed files:
 </source>
-        <translation type="unfinished"/>
+        <translation>Pakeisti failai:
+</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="654"/>
         <source>Added files:
 </source>
-        <translation type="unfinished"/>
+        <translation>Pridėti failai:
+</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="656"/>
@@ -432,7 +434,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="683"/>
         <source>Sync Running</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizuojama</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="684"/>
@@ -579,7 +581,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="332"/>
         <source>mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>mydomain.org</translation>
     </message>
 </context>
 <context>
@@ -787,7 +789,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="70"/>
         <source>%1 Connection Wizard</source>
-        <translation type="unfinished"/>
+        <translation>%1 Prisijungimo Vedlys</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="129"/>
@@ -807,7 +809,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="172"/>
         <source>Error: &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Klaida: &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="257"/>
@@ -943,7 +945,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="187"/>
         <source>http://owncloud.mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>http://owncloud.mydomain.org</translation>
     </message>
 </context>
 <context>
@@ -969,7 +971,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="28"/>
         <source>SSL Connection</source>
-        <translation type="unfinished"/>
+        <translation>SSL Prisijungimas</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="89"/>
@@ -1045,12 +1047,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="429"/>
         <source>Version: %1</source>
-        <translation type="unfinished"/>
+        <translation>Versija: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="442"/>
         <source>unknown problem.</source>
-        <translation type="unfinished"/>
+        <translation>nežinoma problema.</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="445"/>
@@ -1090,12 +1092,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="115"/>
         <source>Client Version Check</source>
-        <translation type="unfinished"/>
+        <translation>Kliento versijos tikrinimas</translation>
     </message>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="117"/>
         <source>&lt;p&gt;A new version of the ownCloud Client is available.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Yra išleista nauja ownCloud kliento verija.</translation>
     </message>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="118"/>
@@ -1170,12 +1172,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="98"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Slaptažodis:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="115"/>
         <source>Do not store password on local machine.</source>
-        <translation type="unfinished"/>
+        <translation>Nesaugoti slaptažodio lokaliame kompiuteryje</translation>
     </message>
     <message>
         <source>john</source>
@@ -1201,7 +1203,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="51"/>
         <source>FTP Details and Credentials</source>
-        <translation type="unfinished"/>
+        <translation>FTP detalės ir prisijungimai</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="57"/>
@@ -1215,17 +1217,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="79"/>
         <source>FTP-URL:</source>
-        <translation type="unfinished"/>
+        <translation>FTP-URL:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="93"/>
         <source>FTP-User:</source>
-        <translation type="unfinished"/>
+        <translation>FTP-Vartotojas:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="107"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Slaptažodis:</translation>
     </message>
     <message>
         <source>ftp.mydomain.org</source>
@@ -1256,7 +1258,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="51"/>
         <source>https://</source>
-        <translation type="unfinished"/>
+        <translation>https://</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="58"/>
@@ -1321,7 +1323,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudwizardresultpage.ui" line="43"/>
         <source>Result</source>
-        <translation type="unfinished"/>
+        <translation>Rezultatas</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardresultpage.ui" line="65"/>
@@ -1591,7 +1593,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="132"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Uždaryti</translation>
     </message>
 </context>
 </TS>
