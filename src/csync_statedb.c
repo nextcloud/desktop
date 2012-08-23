@@ -213,6 +213,7 @@ int csync_statedb_create_tables(CSYNC *ctx) {
       "gid INTEGER,"
       "mode INTEGER,"
       "modtime INTEGER(8),"
+      "type INTEGER,"
       "md5 VARCHAR(32),"
       "PRIMARY KEY(phash)"
       ");"
@@ -233,6 +234,7 @@ int csync_statedb_create_tables(CSYNC *ctx) {
       "gid INTEGER,"
       "mode INTEGER,"
       "modtime INTEGER(8),"
+      "type INTEGER,"
       "md5 VARCHAR(32),"
       "PRIMARY KEY(phash)"
       ");"
@@ -305,8 +307,8 @@ static int _insert_metadata_visitor(void *obj, void *data) {
     case CSYNC_INSTRUCTION_CONFLICT:
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
         "SQL statement: INSERT INTO metadata_temp \n"
-        "\t\t\t(phash, pathlen, path, inode, uid, gid, mode, modtime, md5) VALUES \n"
-        "\t\t\t(%llu, %lu, %s, %llu, %u, %u, %u, %lu, %s);",
+        "\t\t\t(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5) VALUES \n"
+        "\t\t\t(%llu, %lu, %s, %llu, %u, %u, %u, %lu, %d, %s);",
         (long long unsigned int) fs->phash,
         (long unsigned int) fs->pathlen,
         fs->path,
@@ -315,14 +317,15 @@ static int _insert_metadata_visitor(void *obj, void *data) {
         fs->gid,
         fs->mode,
         fs->modtime,
+        fs->type,
         fs->md5);
 
       /*
        * The phash needs to be long long unsigned int or it segfaults on PPC
        */
       stmt = sqlite3_mprintf("INSERT INTO metadata_temp "
-        "(phash, pathlen, path, inode, uid, gid, mode, modtime, md5) VALUES "
-        "(%llu, %lu, '%q', %llu, %u, %u, %u, %lu, '%s');",
+        "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5) VALUES "
+        "(%llu, %lu, '%q', %llu, %u, %u, %u, %lu, %d, '%s');",
         (long long unsigned int) fs->phash,
         (long unsigned int) fs->pathlen,
         fs->path,
@@ -331,6 +334,7 @@ static int _insert_metadata_visitor(void *obj, void *data) {
         fs->gid,
         fs->mode,
         fs->modtime,
+        fs->type,
         fs->md5);
 
       if (stmt == NULL) {
@@ -424,8 +428,9 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
   st->gid = atoi(result->vector[5]);
   st->mode = atoi(result->vector[6]);
   st->modtime = strtoul(result->vector[7], NULL, 10);
-  if( result->vector[8])
-    st->md5 = c_strdup( result->vector[8] );
+  st->type = atoi(result->vector[8]);
+  if( result->vector[9])
+    st->md5 = c_strdup( result->vector[9] );
   c_strlist_destroy(result);
 
   return st;
@@ -470,8 +475,9 @@ csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx, uint64_t inode) {
   st->gid = atoi(result->vector[5]);
   st->mode = atoi(result->vector[6]);
   st->modtime = strtoul(result->vector[7], NULL, 10);
-  if( result->vector[8] )
-    st->md5 = c_strdup(result->vector[8]);
+  st->type = atoi(result->vector[8]);
+  if( result->vector[9] )
+    st->md5 = c_strdup(result->vector[9]);
 
   c_strlist_destroy(result);
 
