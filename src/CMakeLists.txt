@@ -48,6 +48,7 @@ set(csync_SRCS
   csync_config.c
   csync_exclude.c
   csync_statedb.c
+  csync_dbtree.c
   csync_time.c
   csync_util.c
   csync_misc.c
