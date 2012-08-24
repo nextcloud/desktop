@@ -48,6 +48,8 @@ struct walkStats_s {
     ulong sync;
     ulong error;
 
+    ulong dirPermErrors;
+
     ulong seenFiles;
 };
 
@@ -62,7 +64,9 @@ public:
 
     virtual void run();
 
-    static void setUserPwd( const QString&, const QString& );
+    static void setConnectionDetails( const QString&, const QString&,
+                                      const QString&, const QString&, int,
+                                      const QString&, const QString& );
     static int checkPermissions( TREE_WALK_FILE* file, void *data);
     static QString csyncConfigDir();
 
@@ -87,6 +91,12 @@ private:
     static QMutex _mutex;
     static QString _user;
     static QString _passwd;
+    static QString _proxyType;
+    static QString _proxyHost;
+    static QString _proxyPort;
+    static QString _proxyUser;
+    static QString _proxyPwd;
+
     static QString _csyncConfigDir;
 
     QString _source;

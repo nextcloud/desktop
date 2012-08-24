@@ -60,7 +60,7 @@ void Logger::log(Log log)
 {
     QString msg;
     if( _showTime ) {
-        msg = log.timeStamp.toString("MM-dd hh:mm:ss:zzz") + " ";
+        msg = log.timeStamp.toString(QLatin1String("MM-dd hh:mm:ss:zzz")) + QLatin1Char(' ');
     }
 
     if( log.source == Log::CSync ) {
@@ -102,7 +102,7 @@ LogWidget::LogWidget(QWidget *parent)
     setReadOnly( true );
     setLineWrapMode( QTextEdit::NoWrap );
     QFont font;
-    font.setFamily("Courier New");
+    font.setFamily(QLatin1String("Courier New"));
     font.setFixedPitch(true);
     document()->setDefaultFont( font );
 
@@ -240,7 +240,7 @@ void LogBrowser::search( const QString& str )
         extraSelections.append(extra);
     }
 
-    QString stat = QString("Search term %1 with %2 search results.").arg(str).arg(extraSelections.count());
+    QString stat = QString::fromLatin1("Search term %1 with %2 search results.").arg(str).arg(extraSelections.count());
     _statusLabel->setText(stat);
 
     _logWidget->setExtraSelections(extraSelections);

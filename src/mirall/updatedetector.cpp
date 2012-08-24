@@ -35,8 +35,8 @@ void UpdateDetector::versionCheck( Theme *theme )
     _accessManager = new QNetworkAccessManager(this);
     connect(_accessManager, SIGNAL(finished(QNetworkReply*)), this,
             SLOT(slotVersionInfoArrived(QNetworkReply*)) );
-    QUrl url("http://download.owncloud.com/clientupdater.php");
-    QString ver = QString("%1.%2.%3").arg(MIRALL_VERSION_MAJOR).arg(MIRALL_VERSION_MINOR).arg(MIRALL_VERSION_MICRO);
+    QUrl url(QLatin1String("http://download.owncloud.com/clientupdater.php"));
+    QString ver = QString::fromLatin1("%1.%2.%3").arg(MIRALL_VERSION_MAJOR).arg(MIRALL_VERSION_MINOR).arg(MIRALL_VERSION_MICRO);
 
     QString platform = QLatin1String("stranger");
 #ifdef Q_OS_LINUX
@@ -52,10 +52,10 @@ void UpdateDetector::versionCheck( Theme *theme )
 
     QString sysInfo = getSystemInfo();
     if( !sysInfo.isEmpty() ) {
-        url.addQueryItem("client", sysInfo );
+        url.addQueryItem(QLatin1String("client"), sysInfo );
     }
-    url.addQueryItem( "version", ver );
-    url.addQueryItem( "platform", platform );
+    url.addQueryItem( QLatin1String("version"), ver );
+    url.addQueryItem( QLatin1String("platform"), platform );
 
     _accessManager->get( QNetworkRequest( url ));
 }
@@ -64,7 +64,7 @@ QString UpdateDetector::getSystemInfo()
 {
 #ifdef Q_OS_LINUX
     QProcess process;
-    process.start( "lsb_release -a" );
+    process.start( QLatin1String("lsb_release -a") );
     process.waitForFinished();
     QByteArray output = process.readAllStandardOutput();
     qDebug() << "Sys Info size: " << output.length();
@@ -72,7 +72,7 @@ QString UpdateDetector::getSystemInfo()
 
     return QString::fromLocal8Bit( output.toBase64() );
 #else
-    return QString();
+    return QString::null;
 #endif
 }
 
@@ -108,7 +108,8 @@ void UpdateDetector::slotVersionInfoArrived( QNetworkReply* reply )
             qDebug() << "Client is on latest version!";
         } else {
             // if the version tag is set, there is a newer version.
-            QString ver = QString("%1.%2.%3").arg(MIRALL_VERSION_MAJOR).arg(MIRALL_VERSION_MINOR).arg(MIRALL_VERSION_MICRO);
+            QString ver = QString::fromLatin1("%1.%2.%3")
+                    .arg(MIRALL_VERSION_MAJOR).arg(MIRALL_VERSION_MINOR).arg(MIRALL_VERSION_MICRO);
             QMessageBox msgBox;
             msgBox.setTextFormat( Qt::RichText );
             msgBox.setWindowTitle(tr("Client Version Check"));

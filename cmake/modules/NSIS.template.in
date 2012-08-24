@@ -281,8 +281,22 @@ Section "${APPLICATION_NAME}" SEC_OWNCLOUD_PLAYER
         ;Main executable.
         File "${BUILD_PATH}\bin\${APPLICATION_EXECUTABLE}"
         File "${BUILD_PATH}\src\libowncloudsync.dll"
+        File "${BUILD_PATH}\src\mirall_ca.qm"
+        File "${BUILD_PATH}\src\mirall_cs_CZ.qm"
         File "${BUILD_PATH}\src\mirall_de.qm"
+        File "${BUILD_PATH}\src\mirall_el.qm"
+        File "${BUILD_PATH}\src\mirall_en.qm"
+        File "${BUILD_PATH}\src\mirall_es.qm"
+        File "${BUILD_PATH}\src\mirall_fr.qm"
+        File "${BUILD_PATH}\src\mirall_it.qm"
+        File "${BUILD_PATH}\src\mirall_ja_JP.qm"
+        File "${BUILD_PATH}\src\mirall_pl.qm"
+        File "${BUILD_PATH}\src\mirall_pt_BR.qm"
+        File "${BUILD_PATH}\src\mirall_pt_PT.qm"
         File "${BUILD_PATH}\src\mirall_ru.qm"
+        File "${BUILD_PATH}\src\mirall_sk_SK.qm"
+        File "${BUILD_PATH}\src\mirall_sl.qm"
+        File "${BUILD_PATH}\src\mirall_sv.qm"
 
         SetOutPath "$INSTDIR\modules"
         ; FIXME: fix installation dir of module, currently needs manual copying to
@@ -316,6 +330,8 @@ Section "${APPLICATION_NAME}" SEC_OWNCLOUD_PLAYER
    File "${MING_BIN}\libgpg-error-0.dll"
    File "${MING_BIN}\libintl-8.dll"
    File "${MING_BIN}\libneon-27.dll"
+   File "${MING_BIN}\libproxy.dll"
+   File "${MING_BIN}\libmodman.dll"
    File "${MING_BIN}\libtasn1-3.dll"
    File "${MING_BIN}\libxml2-2.dll"
 

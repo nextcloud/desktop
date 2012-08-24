@@ -64,12 +64,12 @@ void UnisonFolder::startSync(const QStringList &pathList)
 
     emit syncStarted();
 
-    QString program = "unison";
+    QString program = QLatin1String("unison");
     QStringList args;
-    args << "-ui" << "text";
-    args << "-auto" << "-batch";
+    args << QLatin1String("-ui") << QLatin1String("text");
+    args << QLatin1String("-auto") << QLatin1String("-batch");
 
-    args << "-confirmbigdel=false";
+    args << QLatin1String("-confirmbigdel=false");
 
     // only use -path in after a full synchronization
     // already happened, which we do only on the first
@@ -78,7 +78,7 @@ void UnisonFolder::startSync(const QStringList &pathList)
         // may be we should use a QDir in the API itself?
         QDir root(path());
         foreach( const QString& changedPath, pathList) {
-            args << "-path" << root.relativeFilePath(changedPath);
+            args << QLatin1String("-path") << root.relativeFilePath(changedPath);
         }
     }
 

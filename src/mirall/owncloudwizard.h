@@ -75,6 +75,7 @@ public:
     void setOCUrl( const QString& );
 
     void setupCustomMedia( QVariant, QLabel* );
+    QString ocUrl() const;
 
 public slots:
     void appendToResultWidget( const QString& msg, LogType type = LogParagraph );

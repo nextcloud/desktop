@@ -31,8 +31,8 @@ FolderMan::FolderMan(QObject *parent) :
     // if QDir::mkpath would not be so stupid, I would not need to have this
     // duplication of folderConfigPath() here
     QDir storageDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
-    storageDir.mkpath("folders");
-    _folderConfigPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + "/folders";
+    storageDir.mkpath(QLatin1String("folders"));
+    _folderConfigPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QLatin1String("/folders");
 
     _folderChangeSignalMapper = new QSignalMapper(this);
     connect(_folderChangeSignalMapper, SIGNAL(mapped(const QString &)),
@@ -98,12 +98,12 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
     Folder *folder = 0L;
 
     qDebug() << "  ` -> setting up:" << file;
-    QSettings settings( _folderConfigPath + QChar('/') + file, QSettings::IniFormat);
-    qDebug() << "    -> file path: " + settings.fileName();
+    QSettings settings( _folderConfigPath + QLatin1Char('/') + file, QSettings::IniFormat);
+    qDebug() << "    -> file path: " << settings.fileName();
 
     settings.beginGroup( file ); // read the group with the same name as the file which is the folder alias
 
-    QString path = settings.value("localpath").toString();
+    QString path = settings.value(QLatin1String("localpath")).toString();
     if ( path.isNull() || !QFileInfo( path ).isDir() ) {
         qWarning() << "    `->" << path << "does not exist. Skipping folder" << file;
         // _tray->showMessage(tr("Unknown folder"),
@@ -112,30 +112,31 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
         return folder;
     }
 
-    QString backend = settings.value("backend").toString();
-    QString targetPath = settings.value( "targetPath" ).toString();
-    QString connection = settings.value( "connection" ).toString();
+    QString backend = settings.value(QLatin1String("backend")).toString();
+    QString targetPath = settings.value( QLatin1String("targetPath") ).toString();
+    QString connection = settings.value( QLatin1String("connection") ).toString();
 
     if (!backend.isEmpty()) {
 
-        if (backend == "unison") {
+        if (backend == QLatin1String("unison")) {
             folder = new UnisonFolder(file, path, targetPath, this );
-        } else if (backend == "csync") {
+        } else if (backend == QLatin1String("csync")) {
 #ifdef WITH_CSYNC
             folder = new CSyncFolder(file, path, targetPath, this );
 #else
             qCritical() << "* csync support not enabled!! ignoring:" << file;
 #endif
-        } else if( backend == "owncloud" ) {
+        } else if( backend == QLatin1String("owncloud") ) {
 #ifdef WITH_CSYNC
 
             MirallConfigFile cfgFile;
 
             // assemble the owncloud url to pass to csync, incl. webdav
-            QString oCUrl = cfgFile.ownCloudUrl( QString(), true );
+            QString oCUrl = cfgFile.ownCloudUrl( QString::null, true );
 
             // cut off the leading slash, oCUrl always has a trailing.
-            if( targetPath.startsWith('/') ) {
+            if( targetPath.startsWith(QLatin1Char('/')) ) {
+
                 targetPath.remove(0,1);
             }
 
@@ -150,7 +151,7 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
     }
     folder->setBackend( backend );
     // folder->setOnlyOnlineEnabled(settings.value("folder/onlyOnline", false).toBool());
-    folder->setOnlyThisLANEnabled(settings.value("folder/onlyThisLAN", false).toBool());
+    folder->setOnlyThisLANEnabled(settings.value(QLatin1String("folder/onlyThisLAN"), false).toBool());
 
     _folderMap[file] = folder;
 
@@ -305,13 +306,13 @@ void FolderMan::addFolderDefinition( const QString& backend, const QString& alia
                                      bool onlyThisLAN )
 {
     // Create a settings file named after the alias
-    QSettings settings( _folderConfigPath + QChar('/') + alias, QSettings::IniFormat);
+    QSettings settings( _folderConfigPath + QLatin1Char('/') + alias, QSettings::IniFormat);
 
-    settings.setValue(QString("%1/localPath").arg(alias),   sourceFolder );
-    settings.setValue(QString("%1/targetPath").arg(alias),  targetPath );
-    settings.setValue(QString("%1/backend").arg(alias),     backend );
-    settings.setValue(QString("%1/connection").arg(alias),  QString::fromLocal8Bit("ownCloud"));
-    settings.setValue(QString("%1/onlyThisLAN").arg(alias), onlyThisLAN );
+    settings.setValue(QString::fromLatin1("%1/localPath").arg(alias),   sourceFolder );
+    settings.setValue(QString::fromLatin1("%1/targetPath").arg(alias),  targetPath );
+    settings.setValue(QString::fromLatin1("%1/backend").arg(alias),     backend );
+    settings.setValue(QString::fromLatin1("%1/connection").arg(alias),  QLatin1String("ownCloud"));
+    settings.setValue(QString::fromLatin1("%1/onlyThisLAN").arg(alias), onlyThisLAN );
     settings.sync();
 
 }
@@ -349,7 +350,7 @@ void FolderMan::removeFolder( const QString& alias )
       qDebug() << "!! Can not remove " << alias << ", not in folderMap.";
     }
 
-    QFile file( _folderConfigPath + QChar('/') + alias );
+    QFile file( _folderConfigPath + QLatin1Char('/') + alias );
     if( file.exists() ) {
         qDebug() << "Remove folder config file " << file.fileName();
       file.remove();

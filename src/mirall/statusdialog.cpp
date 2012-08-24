@@ -170,7 +170,7 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
     _theme( theme )
 {
   setupUi( this  );
-  setWindowTitle( _theme->appName() + QString (" %1" ).arg( _theme->version() ) );
+  setWindowTitle( QString::fromLatin1( "%1 %2" ).arg(_theme->appName(), _theme->version() ) );
 
   _model = new FolderStatusModel();
   FolderViewDelegate *delegate = new FolderViewDelegate();
@@ -179,7 +179,6 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
   _folderList->setModel( _model );
   _folderList->setMinimumWidth( 300 );
   _folderList->setEditTriggers( QAbstractItemView::NoEditTriggers );
-
   connect(_ButtonClose,  SIGNAL(clicked()), this, SLOT(accept()));
   connect(_ButtonRemove, SIGNAL(clicked()), this, SLOT(slotRemoveFolder()));
 
@@ -197,11 +196,6 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
   _ButtonEnable->setEnabled(false);
   _ButtonInfo->setEnabled(false);
   _ButtonAdd->setEnabled(true);
-
-  connect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(const QString&, const QString&, const QString&, const QString&)),
-          this, SLOT(slotOCInfo( const QString&, const QString&, const QString&, const QString& )));
-  connect(ownCloudInfo::instance(), SIGNAL(noOwncloudFound(QNetworkReply*)),
-          this, SLOT(slotOCInfoFail(QNetworkReply*)));
 
 #if defined Q_WS_X11 
   connect(_folderList, SIGNAL(activated(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
@@ -295,16 +289,16 @@ void StatusDialog::folderToModelItem( QStandardItem *item, Folder *f )
     if( ! item || !f ) return;
 
     QIcon icon = _theme->folderIcon( f->backend() );
-    item->setData( icon,             FolderViewDelegate::FolderIconRole );
-    item->setData( f->path(),        FolderViewDelegate::FolderPathRole );
-    item->setData( f->secondPath(),  FolderViewDelegate::FolderSecondPathRole );
-    item->setData( f->alias(),       FolderViewDelegate::FolderAliasRole );
-    item->setData( f->syncEnabled(), FolderViewDelegate::FolderSyncEnabled );
+    item->setData( icon,                   FolderViewDelegate::FolderIconRole );
+    item->setData( f->nativePath(),        FolderViewDelegate::FolderPathRole );
+    item->setData( f->nativeSecondPath(),  FolderViewDelegate::FolderSecondPathRole );
+    item->setData( f->alias(),             FolderViewDelegate::FolderAliasRole );
+    item->setData( f->syncEnabled(),       FolderViewDelegate::FolderSyncEnabled );
 
     SyncResult res = f->syncResult();
     SyncResult::Status status = res.status();
 
-    QString errors = res.errorStrings().join("<br/>");
+    QString errors = res.errorStrings().join(QLatin1String("<br/>"));
 
     item->setData( _theme->statusHeaderText( status ),  Qt::ToolTipRole );
     if( f->syncEnabled() ) {
@@ -399,6 +393,11 @@ void StatusDialog::slotAddSync()
 void StatusDialog::slotCheckConnection()
 {
     if( ownCloudInfo::instance()->isConfigured() ) {
+        connect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(const QString&, const QString&, const QString&, const QString&)),
+                this, SLOT(slotOCInfo( const QString&, const QString&, const QString&, const QString& )));
+        connect(ownCloudInfo::instance(), SIGNAL(noOwncloudFound(QNetworkReply*)),
+                this, SLOT(slotOCInfoFail(QNetworkReply*)));
+
         _ocUrlLabel->setText( tr("Checking ownCloud connection..."));
         qDebug() << "Check status.php from statusdialog.";
         ownCloudInfo::instance()->checkInstallation();
@@ -430,6 +429,12 @@ void StatusDialog::slotOCInfo( const QString& url, const QString& versionStr, co
     _ocUrlLabel->setToolTip( tr("Version: %1").arg(version));
     _ButtonAdd->setEnabled(true);
 
+    disconnect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(const QString&, const QString&, const QString&, const QString&)),
+            this, SLOT(slotOCInfo( const QString&, const QString&, const QString&, const QString& )));
+    disconnect(ownCloudInfo::instance(), SIGNAL(noOwncloudFound(QNetworkReply*)),
+            this, SLOT(slotOCInfoFail(QNetworkReply*)));
+
+
 }
 
 void StatusDialog::slotOCInfoFail( QNetworkReply *reply)
@@ -439,6 +444,12 @@ void StatusDialog::slotOCInfoFail( QNetworkReply *reply)
 
     _ocUrlLabel->setText( tr("<p>Failed to connect to ownCloud: <tt>%1</tt></p>").arg(errStr) );
     _ButtonAdd->setEnabled( false);
+
+    disconnect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(const QString&, const QString&, const QString&, const QString&)),
+            this, SLOT(slotOCInfo( const QString&, const QString&, const QString&, const QString& )));
+    disconnect(ownCloudInfo::instance(), SIGNAL(noOwncloudFound(QNetworkReply*)),
+            this, SLOT(slotOCInfoFail(QNetworkReply*)));
+
 }
 
 void StatusDialog::slotOpenOC()

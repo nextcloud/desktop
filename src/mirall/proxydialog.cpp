@@ -24,9 +24,13 @@ Mirall::ProxyDialog::ProxyDialog( QWidget* parent )
 {
     setupUi(this);
 
+    // designer is buggy, so do it programmatically
+    manualSettings->setEnabled(false);
+
 #if QT_VERSION >= 0x040700
-    hostLineEdit->setPlaceholderText(QApplication::translate("proxyDialog", "Hostname of proxy server"));
-    userLineEdit->setPlaceholderText(QApplication::translate("proxyDialog", "Username to authenticate on proxy server"));
+    hostLineEdit->setPlaceholderText(tr("Hostname of proxy server"));
+    userLineEdit->setPlaceholderText(tr("Username for proxy server"));
+    passwordLineEdit->setPlaceholderText(tr("Password for proxy server"));
 #endif
 
     // load current proxy settings
@@ -40,7 +44,7 @@ Mirall::ProxyDialog::ProxyDialog( QWidget* parent )
         manualProxyRadioButton->setChecked(true);
         hostLineEdit->setText(cfgFile.proxyHostName());
         portSpinBox->setValue(cfgFile.proxyPort());
-        if (cfgFile.proxyUser() != QString())
+        if (!cfgFile.proxyUser().isEmpty())
         {
             authRequiredcheckBox->setChecked(true);
             userLineEdit->setText(cfgFile.proxyUser());
@@ -67,11 +71,13 @@ void Mirall::ProxyDialog::saveSettings()
         {
             QString user = userLineEdit->text();
             QString pass = passwordLineEdit->text();
-            cfgFile.setProxyType(QNetworkProxy::Socks5Proxy, hostLineEdit->text(), portSpinBox->value(), user, pass);
+            cfgFile.setProxyType(QNetworkProxy::Socks5Proxy, hostLineEdit->text(),
+                                 portSpinBox->value(), user, pass);
         }
         else
         {
-            cfgFile.setProxyType(QNetworkProxy::Socks5Proxy, hostLineEdit->text(), portSpinBox->value(), QString(), QString());
+            cfgFile.setProxyType(QNetworkProxy::Socks5Proxy, hostLineEdit->text(),
+                                 portSpinBox->value(), QString::null, QString::null);
         }
     }
 
@@ -83,13 +89,13 @@ void Mirall::ProxyDialog::on_authRequiredcheckBox_stateChanged(int state)
     bool e = (state == Qt::Checked);
     userLineEdit->setEnabled(e);
     passwordLineEdit->setEnabled(e);
+    proxyUserLabel->setEnabled(e);
+    proxyPasswordLabel->setEnabled(e);
 }
 
 void Mirall::ProxyDialog::on_manualProxyRadioButton_toggled(bool checked)
 {
-    hostLineEdit->setEnabled(checked);
-    portSpinBox->setEnabled(checked);
-    authRequiredcheckBox->setEnabled(checked);
+    manualSettings->setEnabled(checked);
 }
 
 void Mirall::ProxyDialog::on_buttonBox_accepted()

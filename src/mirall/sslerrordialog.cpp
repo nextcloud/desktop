@@ -19,11 +19,10 @@
 
 namespace Mirall
 {
-
+#define CA_CERTS_KEY QLatin1String("CaCertificates")
 
 SslErrorDialog::SslErrorDialog(QWidget *parent) :
-    QDialog(parent)
-  ,_allTrusted(false)
+    QDialog(parent), _allTrusted(false)
 {
     setupUi( this  );
     setWindowTitle( tr("SSL Connection") );
@@ -38,9 +37,8 @@ SslErrorDialog::SslErrorDialog(QWidget *parent) :
 QList<QSslCertificate> SslErrorDialog::storedCACerts()
 {
     MirallConfigFile cfg( _customConfigHandle );
-    QSettings settings( cfg.configFile(), QSettings::IniFormat);
 
-    QList<QSslCertificate> cacerts = QSslCertificate::fromData(settings.value(QLatin1String("CaCertificates")).toByteArray());
+    QList<QSslCertificate> cacerts = QSslCertificate::fromData(cfg.caCerts());
 
     return cacerts;
 }
@@ -95,7 +93,7 @@ bool SslErrorDialog::setErrorList( QList<QSslError> errors )
         // add the errors for this cert
         foreach( QSslError err, errors ) {
             if( err.certificate() == cert ) {
-                msg += "<p>" + err.errorString() + "</p>";
+                msg += QL("<p>") + err.errorString() + QL("</p>");
             }
         }
         msg += QL("</div>");
@@ -111,7 +109,7 @@ bool SslErrorDialog::setErrorList( QList<QSslError> errors )
     QTextDocument *doc = new QTextDocument(0);
     QString style = styleSheet();
     qDebug() << "Style: " << style;
-    doc->addResource( QTextDocument::StyleSheetResource, QUrl( "format.css" ), style);
+    doc->addResource( QTextDocument::StyleSheetResource, QUrl( QL("format.css") ), style);
     doc->setHtml( msg );
 
     _tbErrors->setDocument( doc );
@@ -131,7 +129,7 @@ QString SslErrorDialog::certDiv( QSslCertificate cert ) const
     li << tr("Organization: %1").arg( cert.subjectInfo( QSslCertificate::Organization) );
     li << tr("Unit: %1").arg( cert.subjectInfo( QSslCertificate::OrganizationalUnitName) );
     li << tr("Country: %1").arg(cert.subjectInfo( QSslCertificate::CountryName));
-    msg += QL("<p>") + li.join("<br/>") + QL("</p>");
+    msg += QL("<p>") + li.join(QL("<br/>")) + QL("</p>");
 
     msg += QL("<p>");
     msg += tr("Effective Date: %1").arg( cert.effectiveDate().toString()) + QL("<br/>");
@@ -140,12 +138,12 @@ QString SslErrorDialog::certDiv( QSslCertificate cert ) const
     msg += QL("</div>" );
 
     msg += QL("<h3>") + tr("Issuer: %1").arg( cert.issuerInfo( QSslCertificate::CommonName )) + QL("</h3>");
-    msg += "<div id=\"issuer\">";
+    msg += QL("<div id=\"issuer\">");
     li.clear();
     li << tr("Organization: %1").arg( cert.issuerInfo( QSslCertificate::Organization) );
     li << tr("Unit: %1").arg( cert.issuerInfo( QSslCertificate::OrganizationalUnitName) );
     li << tr("Country: %1").arg(cert.issuerInfo( QSslCertificate::CountryName));
-    msg += QL("<p>") + li.join("<br/>") + QL("</p>");
+    msg += QL("<p>") + li.join(QL("<br/>")) + QL("</p>");
     msg += QL("</div>" );
     msg += QL("</div>" );
 
@@ -166,26 +164,17 @@ void SslErrorDialog::accept()
 {
     // Save the contents of _unknownCerts to the settings file.
     if( trustConnection() && _unknownCerts.count() > 0 ) {
+        QSslSocket::addDefaultCaCertificates(_unknownCerts);
+
         MirallConfigFile cfg( _customConfigHandle );
 
-        QSettings settings( cfg.configFile(), QSettings::IniFormat);
-
-        QByteArray certs = settings.value(QLatin1String("CaCertificates")).toByteArray();
+        QByteArray certs = cfg.caCerts();
 
         qDebug() << "Saving " << _unknownCerts.count() << " unknown certs.";
-
-        // update the ssl config.
-        QSslConfiguration sslCfg = QSslConfiguration::defaultConfiguration();
-        QList<QSslCertificate> ca_list = sslCfg.caCertificates();
-        ca_list += _unknownCerts;
-        sslCfg.setCaCertificates(ca_list);
-        QSslConfiguration::setDefaultConfiguration(sslCfg);
-
         foreach( const QSslCertificate& cert, _unknownCerts ) {
             certs += cert.toPem() + '\n';
         }
-
-        settings.setValue(QLatin1String("CaCertificates"), certs);
+        cfg.setCaCerts( certs );
     }
 
     QDialog::accept();

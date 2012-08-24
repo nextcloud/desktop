@@ -41,7 +41,7 @@ QString Owncloudclient::web() const
 
 Owncloudclient Owncloudclient::parseElement( const QDomElement &element, bool *ok )
 {
-  if ( element.tagName() != "owncloudclient" ) {
+  if ( element.tagName() != QLatin1String("owncloudclient") ) {
     qCritical() << "Expected 'owncloudclient', got '" << element.tagName() << "'.";
     if ( ok ) *ok = false;
     return Owncloudclient();
@@ -52,13 +52,13 @@ Owncloudclient Owncloudclient::parseElement( const QDomElement &element, bool *o
   QDomNode n;
   for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
     QDomElement e = n.toElement();
-    if ( e.tagName() == "version" ) {
+    if ( e.tagName() == QLatin1String("version") ) {
       result.setVersion( e.text() );
     }
-    else if ( e.tagName() == "versionstring" ) {
+    else if ( e.tagName() == QLatin1String("versionstring") ) {
       result.setVersionstring( e.text() );
     }
-    else if ( e.tagName() == "web" ) {
+    else if ( e.tagName() == QLatin1String("web") ) {
       result.setWeb( e.text() );
     }
   }
@@ -70,15 +70,15 @@ Owncloudclient Owncloudclient::parseElement( const QDomElement &element, bool *o
 
 void Owncloudclient::writeElement( QXmlStreamWriter &xml )
 {
-  xml.writeStartElement( "owncloudclient" );
+  xml.writeStartElement( QLatin1String("owncloudclient") );
   if ( !version().isEmpty() ) {
-    xml.writeTextElement(  "version", version() );
+    xml.writeTextElement(  QLatin1String("version"), version() );
   }
   if ( !versionstring().isEmpty() ) {
-    xml.writeTextElement(  "versionstring", versionstring() );
+    xml.writeTextElement(  QLatin1String("versionstring"), versionstring() );
   }
   if ( !web().isEmpty() ) {
-    xml.writeTextElement(  "web", web() );
+    xml.writeTextElement(  QLatin1String("web"), web() );
   }
   xml.writeEndElement();
 }
@@ -139,7 +139,7 @@ bool Owncloudclient::writeFile( const QString &filename )
   QXmlStreamWriter xml( &file );
   xml.setAutoFormatting( true );
   xml.setAutoFormattingIndent( 2 );
-  xml.writeStartDocument( "1.0" );
+  xml.writeStartDocument( QLatin1String("1.0") );
   writeElement( xml );
   xml.writeEndDocument();
   file.close();

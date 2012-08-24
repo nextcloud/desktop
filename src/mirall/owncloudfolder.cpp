@@ -26,6 +26,7 @@
 #include <QStringList>
 #include <QTextStream>
 #include <QTimer>
+#include <QNetworkProxy>
 
 namespace Mirall {
 
@@ -88,7 +89,7 @@ QString ownCloudFolder::secondPath() const
 {
     QString re(_secondPath);
     MirallConfigFile cfg;
-    const QString ocUrl = cfg.ownCloudUrl(QString(), true);
+    const QString ocUrl = cfg.ownCloudUrl(QString::null, true);
     // qDebug() << "**** " << ocUrl << " <-> " << re;
     if( re.startsWith( ocUrl ) ) {
         re.remove( ocUrl );
@@ -117,10 +118,10 @@ void ownCloudFolder::startSync(const QStringList &pathList)
 
     QUrl url( _secondPath );
     if( url.scheme() == QLatin1String("http") ) {
-        url.setScheme( "owncloud" );
+        url.setScheme( QLatin1String("owncloud") );
     } else {
         // connect SSL!
-        url.setScheme( "ownclouds" );
+        url.setScheme( QLatin1String("ownclouds") );
     }
 
 #ifdef USE_INOTIFY
@@ -141,8 +142,31 @@ void ownCloudFolder::startSync(const QStringList &pathList)
 
 
     qDebug() << "*** Start syncing url to ownCloud: " << url.toString() << ", with localOnly: " << _localCheckOnly;
+
     _csync = new CSyncThread( path(), url.toString(), _localCheckOnly );
-    _csync->setUserPwd( cfgFile.ownCloudUser(), cfgFile.ownCloudPasswd() );
+
+    // Proxy settings. Proceed them as strings to csync thread.
+    int intProxy = cfgFile.proxyType();
+    QString proxyType;
+
+    if( intProxy == QNetworkProxy::NoProxy )
+        proxyType = QLatin1String("NoProxy");
+    else if( intProxy == QNetworkProxy::DefaultProxy )
+        proxyType = QLatin1String("DefaultProxy");
+    else if( intProxy == QNetworkProxy::Socks5Proxy )
+        proxyType = QLatin1String("Socks5Proxy");
+    else if( intProxy == QNetworkProxy::HttpProxy )
+        proxyType = QLatin1String("HttpProxy");
+    else if( intProxy == QNetworkProxy::HttpCachingProxy )
+        proxyType = QLatin1String("HttpCachingProxy");
+    else if( intProxy == QNetworkProxy::FtpCachingProxy )
+            proxyType = QLatin1String("FtpCachingProxy");
+    else proxyType = QLatin1String("NoProxy");
+
+    _csync->setConnectionDetails( cfgFile.ownCloudUser(), cfgFile.ownCloudPasswd(), proxyType,
+                                  cfgFile.proxyHostName(), cfgFile.proxyPort(), cfgFile.proxyUser(),
+                                  cfgFile.proxyPassword() );
+
     QObject::connect(_csync, SIGNAL(started()),  SLOT(slotCSyncStarted()));
     QObject::connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()));
     QObject::connect(_csync, SIGNAL(terminated()), SLOT(slotCSyncTerminated()));
@@ -227,7 +251,6 @@ void ownCloudFolder::slotCSyncFinished()
     qDebug() << "-> CSync Finished slot with error " << _csyncError;
 
     if (_csyncError) {
-
         _syncResult.setStatus(SyncResult::Error);
 
         qDebug() << "  ** error Strings: " << _errors;
@@ -312,7 +335,7 @@ void ownCloudFolder::wipe()
             qDebug() << "WRN: statedb is empty, can not remove.";
         }
         // Check if the tmp database file also exists
-        QString ctmpName = _csyncStateDbFile + ".ctmp";
+        QString ctmpName = _csyncStateDbFile + QLatin1String(".ctmp");
         QFile ctmpFile( ctmpName );
         if( ctmpFile.exists() ) {
             ctmpFile.remove();

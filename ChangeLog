@@ -1,5 +1,28 @@
 ChangeLog
 =========
+version 1.0.5 (release 2012-08-14), csync 0.50.8 required
+  * [Fixes] Fixed setup dialog: Really use https if checkbox is activated.
+
+version 1.0.4 (release 2012-08-10), csync 0.50.8 required
+  * [APP] ownCloud is now a single instance app, can not start twice any more.
+  * [APP] Proxy support 
+  * [APP] Handle HTTP redirection correctly, note new url.
+  * [APP] More relaxed handling of read only directories in the sync paths.
+  * [APP] Started to split off a library with sync functionality, eg for KDE
+  * [APP] Make ownCloud Info class a singleton, more robust.
+  * [GUI] New, simplified connection wizard.
+  * [GUI] Added ability for customized theming.
+  * [GUI] Improved icon size handling.
+  * [GUI] Removed Log Window Button, log available through command line.
+  * [GUI] Proxy configuration dialog added.
+  * [GUI] Added Translations to languages Slovenian, Polish, Catalan,
+          Portuguese (Brazil), German, Greek, Spanish, Czech, Italian, Slovak, 
+	  French, Russian, Japanese, Swedish, Portuguese (Portugal) 
+	  all with translation rate >90%.
+  * [Fixes] Loading of self signed certs into Networkmanager (#oc-843)
+  * [Fixes] Win32: Handle SSL dll loading correctly.
+  * [Fixes] Many other small fixes and improvements.
+  
 version 1.0.3 (release 2012-06-19), csync 0.50.7 required
   * [GUI] Added a log window which catches the logging if required and
           allows to save for information.

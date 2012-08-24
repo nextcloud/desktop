@@ -29,9 +29,24 @@ namespace Mirall {
 /* static variables to hold the credentials */
 QString CSyncThread::_user;
 QString CSyncThread::_passwd;
+QString CSyncThread::_proxyType;
+QString CSyncThread::_proxyPwd;
+QString CSyncThread::_proxyPort;
+QString CSyncThread::_proxyHost;
+QString CSyncThread::_proxyUser;
+
 QString CSyncThread::_csyncConfigDir;  // to be able to remove the lock file.
 
 QMutex CSyncThread::_mutex;
+
+
+struct ProxyInfo {
+    char *proxyType;
+    char *proxyHost;
+    char *proxyPort;
+    char *proxyUser;
+    char *proxyPwd;
+};
 
  int CSyncThread::checkPermissions( TREE_WALK_FILE* file, void *data )
  {
@@ -84,19 +99,20 @@ QMutex CSyncThread::_mutex;
      }
 
      if( file ) {
-         QString source(wStats->sourcePath);
-         source.append(file->path);
+         QString source = QString::fromLocal8Bit(wStats->sourcePath);
+         source.append(QString::fromLocal8Bit(file->path));
          QFileInfo fi(source);
 
          if( fi.isDir()) {  // File type directory.
-            if( !(fi.isWritable() && fi.isExecutable()) ) {
+             if( !(fi.isWritable() && fi.isExecutable()) ) {
+                 wStats->dirPermErrors++;
                  wStats->errorType = WALK_ERROR_DIR_PERMS;
              }
          }
      }
 
      // qDebug() << wStats->seenFiles << ". Path: " << file->path << ": uid= " << file->uid << " - type: " << file->type;
-     if( wStats->errorType != WALK_ERROR_NONE ) {
+     if( !( wStats->errorType == WALK_ERROR_NONE || wStats->errorType == WALK_ERROR_DIR_PERMS )) {
          return -1;
      }
      return 0;
@@ -110,7 +126,7 @@ CSyncThread::CSyncThread(const QString &source, const QString &target, bool loca
 
 {
     _mutex.lock();
-    if( ! _source.endsWith('/')) _source.append('/');
+    if( ! _source.endsWith(QLatin1Char('/'))) _source.append(QLatin1Char('/'));
     _mutex.unlock();
 }
 
@@ -122,7 +138,6 @@ CSyncThread::~CSyncThread()
 void CSyncThread::run()
 {
     CSYNC *csync;
-
     WalkStats *wStats = new WalkStats;
     QTime walkTime;
 
@@ -137,9 +152,17 @@ void CSyncThread::run()
     wStats->seenFiles  = 0;
     wStats->conflicts  = 0;
     wStats->error      = 0;
-    const char *statedb = 0;
+    wStats->dirPermErrors = 0;
+
+    ProxyInfo *proxyInfo  = new ProxyInfo;
 
     _mutex.lock();
+    proxyInfo->proxyType = qstrdup( _proxyType.toAscii().constData() );
+    proxyInfo->proxyHost = qstrdup( _proxyHost.toAscii().constData() );
+    proxyInfo->proxyPort = qstrdup( _proxyPort.toAscii().constData() );
+    proxyInfo->proxyUser = qstrdup( _proxyUser.toAscii().constData() );
+    proxyInfo->proxyPwd  = qstrdup( _proxyPwd.toAscii().constData() );
+
     if( csync_create(&csync,
                      _source.toUtf8().data(),
                      _target.toUtf8().data()) < 0 ) {
@@ -170,6 +193,7 @@ void CSyncThread::run()
     if( _localCheckOnly ) {
         csync_set_local_only( csync, true );
     }
+    csync_set_userdata(csync, (void*) proxyInfo);
     _mutex.unlock();
 
     if( csync_init(csync) < 0 ) {
@@ -221,23 +245,30 @@ void CSyncThread::run()
 
     emitStateDb(csync);
 
-    qDebug() << "############################################################### >>";
+    qDebug() << "#### Update start #################################################### >>";
     if( csync_update(csync) < 0 ) {
-        emit csyncError(tr("CSync Update failed."));
+        CSYNC_ERROR_CODE err = csync_get_error( csync );
+        QString errStr;
+
+        switch( err ) {
+        case CSYNC_ERR_PROXY:
+            errStr = tr("CSync failed to reach the host. Either host or proxy settings are not valid.");
+            break;
+        default:
+            errStr = tr("CSync Update failed.");
+            break;
+        }
+        emit csyncError( errStr );
         goto cleanup;
     }
-    qDebug() << "<<###############################################################";
+    qDebug() << "<<#### Update end ###########################################################";
 
     csync_set_userdata(csync, wStats);
 
     walkTime.start();
     if( csync_walk_local_tree(csync, &checkPermissions, 0) < 0 ) {
         qDebug() << "Error in treewalk.";
-        if( wStats->errorType == WALK_ERROR_DIR_PERMS ) {
-            emit csyncError(tr("The local filesystem has directories which are write protected.\n"
-                               "That prevents ownCloud from successful syncing.\n"
-                               "Please make sure that all directories are writeable."));
-        } else if( wStats->errorType == WALK_ERROR_WALK ) {
+        if( wStats->errorType == WALK_ERROR_WALK ) {
             emit csyncError(tr("CSync encountered an error while examining the file system.\n"
                                "Syncing is not possible."));
         } else if( wStats->errorType == WALK_ERROR_INSTRUCTIONS ) {
@@ -246,6 +277,13 @@ void CSyncThread::run()
         }
         emit csyncError(tr("Local filesystem problems. Better disable Syncing and check."));
         goto cleanup;
+    } else {
+        // only warn, do not stop the sync process.
+        if( wStats->errorType == WALK_ERROR_DIR_PERMS ) {
+            emit csyncError(tr("The local filesystem has %1 write protected directories."
+                               "That can hinder successful syncing.<p/>"
+                               "Please make sure that all local directories are writeable.").arg(wStats->dirPermErrors));
+        }
     }
 
     // emit the treewalk results. Do not touch the wStats after this.
@@ -272,6 +310,15 @@ void CSyncThread::run()
     }
 cleanup:
     csync_destroy(csync);
+
+    if( proxyInfo->proxyType ) free( proxyInfo->proxyType );
+    if( proxyInfo->proxyHost ) free( proxyInfo->proxyHost );
+    if( proxyInfo->proxyPort ) free( proxyInfo->proxyPort );
+    if( proxyInfo->proxyUser ) free( proxyInfo->proxyUser );
+    if( proxyInfo->proxyPwd  ) free( proxyInfo->proxyPwd  );
+
+    free( proxyInfo );
+
     /*
      * Attention: do not delete the wStat memory here. it is deleted in the
      * slot catching the signel treeWalkResult because this thread can faster
@@ -294,11 +341,19 @@ void CSyncThread::emitStateDb( CSYNC *csync )
     }
 }
 
-void CSyncThread::setUserPwd( const QString& user, const QString& passwd )
+void CSyncThread::setConnectionDetails( const QString& user, const QString& passwd,
+                                        const QString& proxyType, const QString& proxyHost,
+                                        int proxyPort , const QString& proxyUser, const QString& proxyPwd )
 {
     _mutex.lock();
     _user = user;
     _passwd = passwd;
+    _proxyType = proxyType;
+    _proxyHost = proxyHost;
+    _proxyPort = QString::number(proxyPort);
+    qDebug() << "Proxy-Port: " << _proxyPort;
+    _proxyUser = proxyUser;
+    _proxyPwd  = proxyPwd;
     _mutex.unlock();
 }
 
@@ -320,10 +375,10 @@ int CSyncThread::getauth(const char *prompt,
     QString qPrompt = QString::fromLocal8Bit( prompt ).trimmed();
     _mutex.lock();
 
-    if( qPrompt == QString::fromLocal8Bit("Enter your username:") ) {
+    if( qPrompt == QLatin1String("Enter your username:") ) {
         // qDebug() << "OOO Username requested!";
         qstrncpy( buf, _user.toUtf8().constData(), len );
-    } else if( qPrompt == QString::fromLocal8Bit("Enter your password:") ) {
+    } else if( qPrompt == QLatin1String("Enter your password:") ) {
         // qDebug() << "OOO Password requested!";
         qstrncpy( buf, _passwd.toUtf8().constData(), len );
     } else {

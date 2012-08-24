@@ -55,17 +55,22 @@ ownCloudInfo::ownCloudInfo( const QString& connectionName, QObject *parent ) :
     else
         _connection = connectionName;
 
-    _manager = new QNetworkAccessManager;
+    _manager = new QNetworkAccessManager( this );
+
+    MirallConfigFile cfg( _configHandle );
+    QSettings settings( cfg.configFile(), QSettings::IniFormat);
+    QByteArray certs = settings.value(QLatin1String("CaCertificates")).toByteArray();
+    QSslSocket::addDefaultCaCertificates(QSslCertificate::fromData(certs));
+
     connect( _manager, SIGNAL( sslErrors(QNetworkReply*, QList<QSslError>)),
-             SLOT(slotSSLFailed(QNetworkReply*, QList<QSslError>)) );
+             this, SLOT(slotSSLFailed(QNetworkReply*, QList<QSslError>)) );
 
     connect( _manager, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
-             SLOT(slotAuthentication(QNetworkReply*,QAuthenticator*)));
+             this, SLOT(slotAuthentication(QNetworkReply*,QAuthenticator*)));
 }
 
 ownCloudInfo::~ownCloudInfo()
 {
-    delete _manager;
     delete _sslErrorDialog;
 }
 
@@ -84,7 +89,7 @@ bool ownCloudInfo::isConfigured()
 
 void ownCloudInfo::checkInstallation()
 {
-    getRequest( "status.php", false );
+    getRequest( QLatin1String("status.php"), false );
 }
 
 void ownCloudInfo::getWebDAVPath( const QString& path )
@@ -186,7 +191,7 @@ void ownCloudInfo::mkdirRequest( const QString& dir )
     MirallConfigFile cfgFile( _configHandle );
     QNetworkRequest req;
     req.setUrl( QUrl( cfgFile.ownCloudUrl( _connection, true ) + dir ) );
-    QNetworkReply *reply = davRequest("MKCOL", req, 0);
+    QNetworkReply *reply = davRequest(QLatin1String("MKCOL"), req, 0);
 
     // remember the confighandle used for this request
     if( ! _configHandle.isEmpty() )
@@ -254,13 +259,14 @@ void ownCloudInfo::slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors 
     qDebug() << "SSL-Warnings happened for url " << reply->url().toString();
 
     QString configHandle;
-    if( !configHandle.isEmpty() ) {
-        qDebug() << "Custom config handle: " << configHandle;
-    }
+
     // an empty config handle is ok for the default config.
     if( _configHandleMap.contains(reply) ) {
         configHandle = _configHandleMap[reply];
         qDebug() << "SSL: Have a custom config handle: " << configHandle;
+    }
+    if( !configHandle.isEmpty() ) {
+        qDebug() << "Custom config handle: " << configHandle;
     }
 
     if( _certsUntrusted ) {
@@ -270,7 +276,7 @@ void ownCloudInfo::slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors 
     }
 
     if( _sslErrorDialog == 0 ) {
-        _sslErrorDialog = new SslErrorDialog();
+        _sslErrorDialog = new SslErrorDialog;
     }
 
     // make the ssl dialog aware of the custom config. It loads known certs.
@@ -294,6 +300,21 @@ void ownCloudInfo::slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors 
     }
 }
 
+
+QUrl ownCloudInfo::redirectUrl(const QUrl& possibleRedirectUrl,
+                               const QUrl& oldRedirectUrl) const {
+    QUrl redirectUrl;
+    /*
+     * Check if the URL is empty and
+     * that we aren't being fooled into a infinite redirect loop.
+     */
+    if(!possibleRedirectUrl.isEmpty() &&
+       possibleRedirectUrl != oldRedirectUrl) {
+        redirectUrl = possibleRedirectUrl;
+    }
+    return redirectUrl;
+}
+
 //
 // There have been problems with the finish-signal coming from the networkmanager.
 // To avoid that, the reply-signals were connected and the data is taken from the
@@ -308,7 +329,46 @@ void ownCloudInfo::slotReplyFinished()
         return;
     }
 
-    const QString version( reply->readAll() );
+    // Detect redirect url
+    QVariant possibleRedirUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
+    /* We'll deduct if the redirection is valid in the redirectUrl function */
+    _urlRedirectedTo = redirectUrl( possibleRedirUrl.toUrl(),
+                                    _urlRedirectedTo );
+
+    if(!_urlRedirectedTo.isEmpty()) {
+        QString configHandle;
+
+        qDebug() << "Redirected to " << possibleRedirUrl;
+
+        // We'll do another request to the redirection url.
+        // an empty config handle is ok for the default config.
+        if( _configHandleMap.contains(reply) ) {
+            configHandle = _configHandleMap[reply];
+            qDebug() << "Redirect: Have a custom config handle: " << configHandle;
+        }
+
+        QString path = _directories[reply];
+        qDebug() << "This path was redirected: " << path;
+
+        MirallConfigFile cfgFile( configHandle );
+        QString newUrl = _urlRedirectedTo.toString();
+        if( newUrl.endsWith( path )) {
+            // cut off the trailing path
+            newUrl.chop( path.length() );
+            cfgFile.setOwnCloudUrl( _connection, newUrl );
+
+            qDebug() << "Update the config file url to " << newUrl;
+            getRequest( path, false ); // FIXME: Redirect for webdav!
+            reply->deleteLater();
+            return;
+        } else {
+            qDebug() << "WRN: Path is not part of the redirect URL. NO redirect.";
+        }
+    }
+    _urlRedirectedTo.clear();
+
+    // TODO: check if this is always the correct encoding
+    const QString version = QString::fromUtf8( reply->readAll() );
     const QString url = reply->url().toString();
     QString plainUrl(url);
     plainUrl.remove( QLatin1String("/status.php"));
@@ -327,21 +387,23 @@ void ownCloudInfo::slotReplyFinished()
             return;
         }
         qDebug() << "status.php returns: " << info << " " << reply->error() << " Reply: " << reply;
-        if( info.contains("installed") && info.contains("version") && info.contains("versionstring") ) {
+        if( info.contains(QLatin1String("installed"))
+                && info.contains(QLatin1String("version"))
+                && info.contains(QLatin1String("versionstring")) ) {
             info.remove(0,1); // remove first char which is a "{"
             info.remove(-1,1); // remove the last char which is a "}"
-            QStringList li = info.split( QChar(',') );
+            QStringList li = info.split( QLatin1Char(',') );
 
             QString versionStr;
             QString version;
             QString edition;
 
             foreach ( const QString& infoString, li ) {
-                QStringList touple = infoString.split( QChar(':'));
+                QStringList touple = infoString.split( QLatin1Char(':'));
                 QString key = touple[0];
-                key.remove(QChar('"'));
+                key.remove(QLatin1Char('"'));
                 QString val = touple[1];
-                val.remove(QChar('"'));
+                val.remove(QLatin1Char('"'));
 
                 if( key == QLatin1String("versionstring") ) {
                     // get the versionstring out.
@@ -359,11 +421,12 @@ void ownCloudInfo::slotReplyFinished()
             emit ownCloudInfoFound( plainUrl, versionStr, version, edition );
         } else {
             qDebug() << "No proper answer on " << url;
+
             emit noOwncloudFound( reply );
         }
     } else {
         // it was a general GET request.
-        QString dir("unknown");
+        QString dir(QLatin1String("unknown"));
         if( _directories.contains(reply) ) {
             dir = _directories[reply];
             _directories.remove(reply);
@@ -392,15 +455,16 @@ void ownCloudInfo::setupHeaders( QNetworkRequest & req, quint64 size )
 {
     MirallConfigFile cfgFile(_configHandle );
 
-    QUrl url( cfgFile.ownCloudUrl( QString(), false ) );
+    QUrl url( cfgFile.ownCloudUrl( QString::null, false ) );
     qDebug() << "Setting up host header: " << url.host();
     req.setRawHeader( QByteArray("Host"), url.host().toUtf8() );
-    req.setRawHeader( QByteArray("User-Agent"), QString("mirall-%1").arg(MIRALL_STRINGIFY(MIRALL_VERSION)).toAscii());
+    req.setRawHeader( QByteArray("User-Agent"), QString::fromLatin1("mirall-%1")
+                      .arg(QLatin1String(MIRALL_STRINGIFY(MIRALL_VERSION))).toAscii());
     req.setRawHeader( QByteArray("Authorization"), cfgFile.basicAuthHeader() );
 
     if (size) {
-        req.setHeader( QNetworkRequest::ContentLengthHeader, QVariant(size));
-        req.setHeader( QNetworkRequest::ContentTypeHeader, QVariant("text/xml; charset=utf-8"));
+        req.setHeader( QNetworkRequest::ContentLengthHeader, size);
+        req.setHeader( QNetworkRequest::ContentTypeHeader, QLatin1String("text/xml; charset=utf-8"));
     }
 }
 

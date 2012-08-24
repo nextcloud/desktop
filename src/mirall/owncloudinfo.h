@@ -97,6 +97,9 @@ protected slots:
 
 private:
     explicit ownCloudInfo( const QString& = QString(), QObject *parent = 0);
+
+    QUrl redirectUrl(const QUrl&, const QUrl& ) const;
+
     ~ownCloudInfo();
 
     void setupHeaders(QNetworkRequest &req, quint64 size );
@@ -110,6 +113,7 @@ private:
     QNetworkAccessManager         *_manager;
     QString                        _connection;
     QString                        _configHandle;
+    QUrl                           _urlRedirectedTo;
     QHash<QNetworkReply*, QString> _directories;
     QHash<QNetworkReply*, QString> _configHandleMap;
     SslErrorDialog                *_sslErrorDialog;

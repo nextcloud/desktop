@@ -65,7 +65,6 @@ set(libsync_SRCS
     mirall/owncloudfolder.cpp
     mirall/csyncthread.cpp
     mirall/fileutils.cpp
-    mirall/temporarydir.cpp
     mirall/theme.cpp
     mirall/owncloudtheme.cpp
     mirall/miralltheme.cpp

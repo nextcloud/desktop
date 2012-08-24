@@ -38,7 +38,7 @@ NetworkLocation::~NetworkLocation()
 NetworkLocation NetworkLocation::currentLocation()
 {
     QProcess ip;
-    ip.start("/sbin/ip", QStringList() << "route");
+    ip.start(QLatin1String("/sbin/ip"), QStringList() << QLatin1String("route"));
 
     if (!ip.waitForStarted())
         return NetworkLocation();
@@ -59,7 +59,7 @@ NetworkLocation NetworkLocation::currentLocation()
             return NetworkLocation();
 
     QProcess arp;
-    arp.start("/sbin/arp", QStringList() << "-a");
+    arp.start(QLatin1String("/sbin/arp"), QStringList() << QLatin1String("-a"));
 
     if (!arp.waitForStarted())
         return NetworkLocation();
@@ -79,7 +79,7 @@ NetworkLocation NetworkLocation::currentLocation()
     if (gwMAC.isEmpty())
         return NetworkLocation();
 
-    return NetworkLocation(gwMAC);
+    return NetworkLocation(QString::fromLatin1(gwMAC));
 }
 
 

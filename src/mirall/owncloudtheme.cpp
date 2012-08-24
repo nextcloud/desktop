@@ -18,6 +18,7 @@
 #include <QDebug>
 #include <QPixmap>
 #include <QIcon>
+#include <QApplication>
 
 namespace Mirall {
 
@@ -28,34 +29,38 @@ ownCloudTheme::ownCloudTheme()
 
 QString ownCloudTheme::appName() const
 {
-    return QString::fromLocal8Bit("ownCloud");
+    /* If this is changed, existing configs are not found any more
+     * because the value is used by QDesktopServices to find the config
+     * file. Be aware.
+     */
+    return QApplication::translate("appname", "ownCloud");
 }
 
 QString ownCloudTheme::configFileName() const
 {
-    return QString::fromLocal8Bit("owncloud.cfg");
+    return QLatin1String("owncloud.cfg");
 }
 
 QPixmap ownCloudTheme::splashScreen() const
 {
-    return QPixmap(":/mirall/resources/owncloud_splash.png");
+    return QPixmap(QLatin1String(":/mirall/resources/owncloud_splash.png"));
 }
 
 QIcon ownCloudTheme::folderIcon( const QString& backend ) const
 {
   QString name;
 
-  if( backend == QString::fromLatin1("owncloud")) {
-      name = QString( "owncloud-icon-framed" );
+  if( backend == QLatin1String("owncloud")) {
+      name = QLatin1String( "owncloud-icon-framed" );
   }
-  if( backend == QString::fromLatin1("unison" )) {
-      name  = QString( "folder-sync" );
+  if( backend == QLatin1String("unison" )) {
+      name  = QLatin1String( "folder-sync" );
   }
-  if( backend == QString::fromLatin1("csync" )) {
-      name   = QString( "folder-remote" );
+  if( backend == QLatin1String("csync" )) {
+      name   = QLatin1String( "folder-remote" );
   }
-  if( backend.isEmpty() || backend == QString::fromLatin1("none") ) {
-      name = QString("folder-grey.png");
+  if( backend.isEmpty() || backend == QLatin1String("none") ) {
+      name = QLatin1String("folder-grey");
   }
 
   qDebug() << "==> load folder icon " << name;
@@ -64,9 +69,8 @@ QIcon ownCloudTheme::folderIcon( const QString& backend ) const
 
 QIcon ownCloudTheme::trayFolderIcon( const QString& ) const
 {
-    return themeIcon( "owncloud-icon" );
+    return themeIcon( QLatin1String("owncloud-icon") );
 }
-
 
 QIcon ownCloudTheme::syncStateIcon( SyncResult::Status status ) const
 {
@@ -75,42 +79,40 @@ QIcon ownCloudTheme::syncStateIcon( SyncResult::Status status ) const
 
     switch( status ) {
     case SyncResult::Undefined:
-        statusIcon = "owncloud-icon-error";
+        statusIcon = QLatin1String("owncloud-icon-error");
         break;
     case SyncResult::NotYetStarted:
-        statusIcon = "owncloud-icon";
+        statusIcon = QLatin1String("owncloud-icon");
         break;
     case SyncResult::SyncRunning:
-        statusIcon = "owncloud-icon-sync";
+        statusIcon = QLatin1String("owncloud-icon-sync");
         break;
     case SyncResult::Success:
-        statusIcon = "owncloud-icon-sync-ok";
+        statusIcon = QLatin1String("owncloud-icon-sync-ok");
         break;
     case SyncResult::Error:
-        statusIcon = "owncloud-icon-error";
+        statusIcon = QLatin1String("owncloud-icon-error");
         break;
     case SyncResult::SetupError:
-        statusIcon = "owncloud-icon-error";
+        statusIcon = QLatin1String("owncloud-icon-error");
         break;
     default:
-        statusIcon = "owncloud-icon-error";
+        statusIcon = QLatin1String("owncloud-icon-error");
     }
 
     return themeIcon( statusIcon );
 }
 
-
 QIcon ownCloudTheme::folderDisabledIcon( ) const
 {
     // Fixme: Do we really want the dialog-canel from theme here?
-    return themeIcon( "owncloud-icon-error" );
+    return themeIcon( QLatin1String("owncloud-icon-error") );
 }
 
 QIcon ownCloudTheme::applicationIcon( ) const
 {
-    return themeIcon( "owncloud-icon" );
+    return themeIcon( QLatin1String("owncloud-icon") );
 }
-
 
 }
 
