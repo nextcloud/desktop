@@ -330,7 +330,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="306"/>
         <source>Open status...</source>
-        <translation type="unfinished"/>
+        <translation>Avaa tila...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="308"/>
@@ -340,7 +340,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="310"/>
         <source>Configure...</source>
-        <translation type="unfinished"/>
+        <translation>Asetukset..</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="312"/>
@@ -403,7 +403,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/application.cpp" line="628"/>
         <location filename="../src/mirall/application.cpp" line="770"/>
         <source>Setup Error.</source>
-        <translation type="unfinished"/>
+        <translation>Asetusvirhe.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="631"/>
@@ -743,12 +743,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="254"/>
         <source>Save log file</source>
-        <translation type="unfinished"/>
+        <translation>Tallenna lokitiedosto</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="264"/>
         <source>Could not write to log file </source>
-        <translation type="unfinished"/>
+        <translation>Lokitiedostoon kirjoitus epäonnistui</translation>
     </message>
 </context>
 <context>
@@ -871,7 +871,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="441"/>
         <source>Congratulations, your ownCloud can be connected!</source>
-        <translation type="unfinished"/>
+        <translation>Onnittelut, voit nyt yhdistää omaan ownCloudiisi!</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="443"/>
@@ -956,7 +956,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="187"/>
         <source>http://owncloud.mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>http://owncloud.mydomain.org</translation>
     </message>
 </context>
 <context>
@@ -969,12 +969,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/proxydialog.cpp" line="32"/>
         <source>Username for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Välityspalvelimen käyttäjätunnus</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.cpp" line="33"/>
         <source>Password for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Välityspalvelimen salasana</translation>
     </message>
 </context>
 <context>
@@ -1103,7 +1103,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="115"/>
         <source>Client Version Check</source>
-        <translation type="unfinished"/>
+        <translation>Asiakasohjelmiston version tarkistus</translation>
     </message>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="117"/>
@@ -1134,7 +1134,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="328"/>
         <source>Please enter your ownCloud password:</source>
-        <translation type="unfinished"/>
+        <translation>Anna ownCloudisi salasana:</translation>
     </message>
 </context>
 <context>
@@ -1259,27 +1259,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="31"/>
         <source>Create the ownCloud Connection</source>
-        <translation type="unfinished"/>
+        <translation>Luo ownCloud-yhteys</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="39"/>
         <source>Server &amp;address:</source>
-        <translation type="unfinished"/>
+        <translation>Palvelimen &amp;osoite:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="51"/>
         <source>https://</source>
-        <translation type="unfinished"/>
+        <translation>https://</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="58"/>
         <source>Enter the url of the ownCloud you want to connect to (without http or https).</source>
-        <translation type="unfinished"/>
+        <translation>Anna sen ownCloudin verkko-osoite, johon haluat yhdistää (ilman http- tai https-etuliitettä).</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="71"/>
         <source>Use &amp;secure connection</source>
-        <translation type="unfinished"/>
+        <translation>Käytä salattua &amp;yhteyttä</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="84"/>
@@ -1289,12 +1289,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="99"/>
         <source>&amp;Username:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Käyttäjätunnus:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="109"/>
         <source>Enter the ownCloud username.</source>
-        <translation type="unfinished"/>
+        <translation>Anna ownCloudin käyttäjätunnus.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="116"/>
@@ -1304,7 +1304,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="126"/>
         <source>Enter the ownCloud password.</source>
-        <translation type="unfinished"/>
+        <translation>Anna ownCloudin salasana.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="141"/>
@@ -1314,7 +1314,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="144"/>
         <source>&amp;do not store Password on local machine.</source>
-        <translation type="unfinished"/>
+        <translation>&amp;älä tallenna salasanaa paikalliselle koneelle.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="153"/>
@@ -1367,7 +1367,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="51"/>
         <source>Select the ownCloud you want to connect to</source>
-        <translation type="unfinished"/>
+        <translation>Valitse ownCloud, johon haluat yhdistää</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="63"/>
