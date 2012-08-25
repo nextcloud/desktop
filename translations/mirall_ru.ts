@@ -192,17 +192,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="29"/>
         <source>Synchronization Target</source>
-        <translation type="unfinished"/>
+        <translation>Назначение синхронизации</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="51"/>
         <source>Select a destination folder for your data</source>
-        <translation type="unfinished"/>
+        <translation>Выберите папку назначения для ваших данных</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="78"/>
         <source>on your &amp;ownCloud server</source>
-        <translation type="unfinished"/>
+        <translation>на вашем ownCloud сервере</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="91"/>
@@ -274,7 +274,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="201"/>
         <source>&lt;p&gt;No server connection has been configured for this ownCloud client.&lt;/p&gt;&lt;p&gt;Please right click on the ownCloud system tray icon and select &lt;i&gt;Configure&lt;/i&gt; to connect this client to an ownCloud server.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Для этого клиента ownCloud не было сконфигурировано соединений с сервером.&lt;/p&gt;&lt;p&gt;Нажмите правой кнопкой мыши на иконке ownCloud в трее и выберите &lt;i&gt;Конфигурация&lt;/i&gt; для соединения клиента к серверу ownCloud.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="236"/>
@@ -359,7 +359,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="345"/>
         <source>Managed Folders:</source>
-        <translation type="unfinished"/>
+        <translation>Управляемые папки:</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="578"/>
@@ -495,7 +495,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="211"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
-        <translation type="unfinished"/>
+        <translation>Системное время на этом клиенте отличается от времени на сервере. Воспользуйтесь сервисом синхронизации времени (NTP) на серверной и клиентской машинах для установки точного времени.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="216"/>
@@ -514,7 +514,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="222"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Целевая директория %1 не существует.&lt;/p&gt;&lt;p&gt;Проверьте настройки синхронизации.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="228"/>
@@ -590,7 +590,7 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::CreateAnOwncloudPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="332"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="335"/>
         <source>mydomain.org</source>
         <translation>mydomain.org</translation>
     </message>
@@ -697,17 +697,17 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="123"/>
         <source>Log Output</source>
-        <translation type="unfinished"/>
+        <translation>Выйти</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="135"/>
         <source>&amp;Search: </source>
-        <translation type="unfinished"/>
+        <translation>&amp;Поиск:</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="143"/>
         <source>&amp;Find</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Найти</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="161"/>
@@ -722,44 +722,44 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="168"/>
         <source>S&amp;ave</source>
-        <translation type="unfinished"/>
+        <translation>Сохранить</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="169"/>
         <source>Save the log file to a file on disk for debugging.</source>
-        <translation type="unfinished"/>
+        <translation>Сохранить файл журнала на диск для отладки.</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="207"/>
         <location filename="../src/mirall/logbrowser.cpp" line="264"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="208"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;nobr&gt;Файл &apos;%1&apos;&lt;br/&gt;не может быть открыт на запись.&lt;br/&gt;&lt;br/&gt;Журнал &lt;b&gt;не может&lt;/b&gt; быть сохранён!&lt;/nobr&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="254"/>
         <source>Save log file</source>
-        <translation type="unfinished"/>
+        <translation>Сохранить файл журнала</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="264"/>
         <source>Could not write to log file </source>
-        <translation type="unfinished"/>
+        <translation>Файл журнала не может быть записан</translation>
     </message>
 </context>
 <context>
     <name>Mirall::OwncloudCredentialsPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="242"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="245"/>
         <source>john</source>
         <translation>Иван</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="243"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="246"/>
         <source>secret</source>
         <translation>секрет</translation>
     </message>
@@ -767,17 +767,17 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::OwncloudFTPAccessPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="288"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="291"/>
         <source>ftp.mydomain.org</source>
         <translation>ftp.mydomain.org</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="289"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="292"/>
         <source>john</source>
         <translation>Иван</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="290"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="293"/>
         <source>secret</source>
         <translation>секрет</translation>
     </message>
@@ -785,12 +785,12 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::OwncloudSetupPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="75"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="78"/>
         <source>john</source>
         <translation>Иван</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="76"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="79"/>
         <source>secret</source>
         <translation>секрет</translation>
     </message>
@@ -808,81 +808,81 @@ Please write a bug report.</source>
         <translation>Попытка подключиться к ownCloud на %1...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="160"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="161"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: ownCloud version %2 (%3)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;Успешное подключение к %1: ownCloud версии %2 (%3)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="171"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="172"/>
         <source>&lt;font color=&quot;red&quot;&gt;Failed to connect to ownCloud!&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;red&quot;&gt;Не удалось подключиться к ownCloud!&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="172"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="173"/>
         <source>Error: &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Ошибка: &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="257"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="258"/>
         <source>Starting script owncloud-admin...</source>
         <translation>Запуск сценария owncloud-admin...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="308"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="309"/>
         <source>&lt;font color=&quot;red&quot;&gt;Installation of ownCloud failed!&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;red&quot;&gt;Установка ownCloud не удалась!&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="313"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="314"/>
         <source>&lt;font color=&quot;green&quot;&gt;Installation of ownCloud succeeded!&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;Установка ownCloud завершилась успешно!&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="346"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="347"/>
         <source>The owncloud admin script can not be found.
 Setup can not be done.</source>
         <translation>Сценарий owncloud admin не может быть найден.
 Программа установки не может быть запущена.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="387"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="388"/>
         <source>Creation of remote folder %1 could not be started.</source>
-        <translation type="unfinished"/>
+        <translation>Создание удалённой папки %1 не может быть начато.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="411"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="412"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation type="unfinished"/>
+        <translation>Удалённая папка %1 успешно создана.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="413"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="414"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Удалённая папка %1 уже существует. Подключение к ней для синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="415"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="416"/>
         <source>The folder creation resulted in HTTP error code %d</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="436"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="437"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation type="unfinished"/>
+        <translation>Установлено соединение синхронизации с %1 к удалённой директории %2.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="441"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="442"/>
         <source>Congratulations, your ownCloud can be connected!</source>
-        <translation type="unfinished"/>
+        <translation>Поздравляем, ваш ownCloud может быть соединён!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="443"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="444"/>
         <source>Press Finish to permanently accept this connection.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="446"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="447"/>
         <source>An ownCloud connection could not be established. Please check again.</source>
-        <translation type="unfinished"/>
+        <translation>Соединение с ownCloud не может быть установлено. Попытайтесь ещё раз.</translation>
     </message>
     <message>
         <source>Skipping automatic setup of sync folders as there are already sync folders.</source>
@@ -893,12 +893,12 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="366"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="367"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Локальная синхронизация папки %1 уже существует, ее настройки для синхронизации.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="368"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="369"/>
         <source>Creating local sync folder %1... </source>
         <translation>Создание локальной папки синхронизации %1... </translation>
     </message>
@@ -907,12 +907,12 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="371"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="372"/>
         <source>ok</source>
         <translation>ок</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="373"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="374"/>
         <source>failed.</source>
         <translation>не удалось.</translation>
     </message>
@@ -934,12 +934,12 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="417"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="418"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Удаленное создание папки не удалось, вероятно, потому, что предоставленные учетные данные неверны.&lt;/font&gt;&lt;br/&gt;Пожалуйста, вернитесь назад и проверьте данные.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="423"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="424"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Удаленная папка %1 не создана из-за ошибки &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
@@ -947,7 +947,7 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::OwncloudWizardResultPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="413"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="416"/>
         <source>Congratulations! Your &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;new ownCloud&lt;/a&gt; is now up and running!</source>
         <translation>Поздравляем! Ваш&lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;новый ownCloud&lt;/a&gt; уже работает!</translation>
     </message>
@@ -955,7 +955,7 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::OwncloudWizardSelectTypePage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="187"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="190"/>
         <source>http://owncloud.mydomain.org</source>
         <translation>http://owncloud.mydomain.org</translation>
     </message>
@@ -1128,14 +1128,14 @@ Setup can not be done.</source>
 <context>
     <name>MirallConfigFile</name>
     <message>
-        <location filename="../src/mirall/mirallconfigfile.cpp" line="327"/>
+        <location filename="../src/mirall/mirallconfigfile.cpp" line="331"/>
         <source>ownCloud Password Required</source>
-        <translation type="unfinished"/>
+        <translation>Требуется пароль ownCloud</translation>
     </message>
     <message>
-        <location filename="../src/mirall/mirallconfigfile.cpp" line="328"/>
+        <location filename="../src/mirall/mirallconfigfile.cpp" line="332"/>
         <source>Please enter your ownCloud password:</source>
-        <translation type="unfinished"/>
+        <translation>Введите пароль вашего ownCloud:</translation>
     </message>
 </context>
 <context>
@@ -1164,7 +1164,13 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Please enter the username and password for your ownCloud Instance. &lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt; color:#585858;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;If you do not wish to store the credentials on your local machine, check the box. ownCloud will prompt you for your password every time the client starts.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Введите имя пользователя и пароль для вашей ownCloud. &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt; color:#585858;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Если вы не хотите хранить параметры доступа на локальной машине, отметьте галочку. ownCloud будет спрашивать пароль при каждой загрузке клиента.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1264,27 +1270,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="31"/>
         <source>Create the ownCloud Connection</source>
-        <translation type="unfinished"/>
+        <translation>Создать соединение ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="39"/>
         <source>Server &amp;address:</source>
-        <translation type="unfinished"/>
+        <translation>Адрес сервера:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="51"/>
         <source>https://</source>
-        <translation type="unfinished"/>
+        <translation>https://</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="58"/>
         <source>Enter the url of the ownCloud you want to connect to (without http or https).</source>
-        <translation type="unfinished"/>
+        <translation>Введите адрес ownCloud, к которому вы хотите подключиться (без http или https).</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="71"/>
         <source>Use &amp;secure connection</source>
-        <translation type="unfinished"/>
+        <translation>Использовать защищённое соединение</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="84"/>
@@ -1294,32 +1300,32 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="99"/>
         <source>&amp;Username:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Имя пользователя:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="109"/>
         <source>Enter the ownCloud username.</source>
-        <translation type="unfinished"/>
+        <translation>Введите имя пользователя ownCloud.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="116"/>
         <source>&amp;Password:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Пароль:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="126"/>
         <source>Enter the ownCloud password.</source>
-        <translation type="unfinished"/>
+        <translation>Введите пароль ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="141"/>
         <source>Do not allow the local storage of the password.</source>
-        <translation type="unfinished"/>
+        <translation>Не позволять локальное хранение пароля.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="144"/>
         <source>&amp;do not store Password on local machine.</source>
-        <translation type="unfinished"/>
+        <translation>&amp;не хранить пароль на локальной машине.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="153"/>
@@ -1391,12 +1397,17 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Specify the ownCloud you want to connect to.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Enter the web address of your ownCloud server below.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Укажите ownCloud, к которому вы хотите подключиться.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Введите ниже веб-адрес вашего сервера ownCloud.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="110"/>
         <source>ownCloud-Link:</source>
-        <translation type="unfinished"/>
+        <translation>ссылка ownCloud:</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1415,7 +1426,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="120"/>
         <source>Note: To specify an SSL secured connection, start the url with https.</source>
-        <translation type="unfinished"/>
+        <translation>Заметка: Для указания защищённого соединения SSL используйте адрес с https.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="133"/>
@@ -1458,32 +1469,32 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/theme.cpp" line="34"/>
         <location filename="../src/mirall/theme.cpp" line="52"/>
         <source>Status undefined</source>
-        <translation type="unfinished"/>
+        <translation>Статус неопределён</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="37"/>
         <source>Waiting to start sync</source>
-        <translation type="unfinished"/>
+        <translation>Ожидание начала синхронизации</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="40"/>
         <source>Sync is running</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация запущена</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="43"/>
         <source>Sync Success</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация прошла успешно</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="46"/>
         <source>Sync Error - Click info button for details.</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка синхронизации - Нажмите кнопку информации для подробного описания.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="49"/>
         <source>Setup Error</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка установки</translation>
     </message>
 </context>
 <context>
@@ -1491,7 +1502,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="36"/>
         <source>ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud</translation>
     </message>
 </context>
 <context>
@@ -1499,52 +1510,52 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="14"/>
         <source>Proxy Settings</source>
-        <translation type="unfinished"/>
+        <translation>Настройки прокси</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="26"/>
         <source>Configure Proxies to access your ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>Настроить прокси для доступа к вашему ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="43"/>
         <source>No Proxy</source>
-        <translation type="unfinished"/>
+        <translation>Без прокси</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="53"/>
         <source>Use system proxy</source>
-        <translation type="unfinished"/>
+        <translation>Использовать системный прокси</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="60"/>
         <source>Manual proxy configuration</source>
-        <translation type="unfinished"/>
+        <translation>Конфигурация прокси вручную</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="90"/>
         <source>User</source>
-        <translation type="unfinished"/>
+        <translation>Пользователь</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="116"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Пароль</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="142"/>
         <source>Port</source>
-        <translation type="unfinished"/>
+        <translation>Порт</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="149"/>
         <source>Host</source>
-        <translation type="unfinished"/>
+        <translation>Адрес</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="172"/>
         <source>Proxy server requires password</source>
-        <translation type="unfinished"/>
+        <translation>Для прокси сервера требуется пароль</translation>
     </message>
 </context>
 <context>
@@ -1557,7 +1568,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrorsdialog.ui" line="25"/>
         <source>Check if you want to continue via SSL and trust the shown certificates.</source>
-        <translation type="unfinished"/>
+        <translation>Отметьте если вы хотите продолжить соединение через SSL и доверяете показанным сертификатам.</translation>
     </message>
     <message>
         <source>Check if you want t continue via SSL and trust the shown certificates.</source>

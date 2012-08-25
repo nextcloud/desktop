@@ -590,7 +590,7 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::CreateAnOwncloudPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="332"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="335"/>
         <source>mydomain.org</source>
         <translation type="unfinished"/>
     </message>
@@ -754,12 +754,12 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::OwncloudCredentialsPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="242"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="245"/>
         <source>john</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="243"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="246"/>
         <source>secret</source>
         <translation type="unfinished"/>
     </message>
@@ -767,17 +767,17 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::OwncloudFTPAccessPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="288"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="291"/>
         <source>ftp.mydomain.org</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="289"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="292"/>
         <source>john</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="290"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="293"/>
         <source>secret</source>
         <translation type="unfinished"/>
     </message>
@@ -785,12 +785,12 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::OwncloudSetupPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="75"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="78"/>
         <source>john</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="76"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="79"/>
         <source>secret</source>
         <translation type="unfinished"/>
     </message>
@@ -808,78 +808,78 @@ Please write a bug report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="160"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="161"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: ownCloud version %2 (%3)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="171"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="172"/>
         <source>&lt;font color=&quot;red&quot;&gt;Failed to connect to ownCloud!&lt;/font&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="172"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="173"/>
         <source>Error: &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="257"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="258"/>
         <source>Starting script owncloud-admin...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="308"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="309"/>
         <source>&lt;font color=&quot;red&quot;&gt;Installation of ownCloud failed!&lt;/font&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="313"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="314"/>
         <source>&lt;font color=&quot;green&quot;&gt;Installation of ownCloud succeeded!&lt;/font&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="346"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="347"/>
         <source>The owncloud admin script can not be found.
 Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="387"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="388"/>
         <source>Creation of remote folder %1 could not be started.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="411"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="412"/>
         <source>Remote folder %1 created successfully.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="413"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="414"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="415"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="416"/>
         <source>The folder creation resulted in HTTP error code %d</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="436"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="437"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="441"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="442"/>
         <source>Congratulations, your ownCloud can be connected!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="443"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="444"/>
         <source>Press Finish to permanently accept this connection.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="446"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="447"/>
         <source>An ownCloud connection could not be established. Please check again.</source>
         <translation type="unfinished"/>
     </message>
@@ -892,12 +892,12 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="366"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="367"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="368"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="369"/>
         <source>Creating local sync folder %1... </source>
         <translation type="unfinished"/>
     </message>
@@ -906,12 +906,12 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="371"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="372"/>
         <source>ok</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="373"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="374"/>
         <source>failed.</source>
         <translation type="unfinished"/>
     </message>
@@ -933,12 +933,12 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="417"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="418"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="423"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="424"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation type="unfinished"/>
     </message>
@@ -946,7 +946,7 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::OwncloudWizardResultPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="413"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="416"/>
         <source>Congratulations! Your &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;new ownCloud&lt;/a&gt; is now up and running!</source>
         <translation type="unfinished"/>
     </message>
@@ -954,7 +954,7 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::OwncloudWizardSelectTypePage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="187"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="190"/>
         <source>http://owncloud.mydomain.org</source>
         <translation type="unfinished"/>
     </message>
@@ -1127,12 +1127,12 @@ Setup can not be done.</source>
 <context>
     <name>MirallConfigFile</name>
     <message>
-        <location filename="../src/mirall/mirallconfigfile.cpp" line="327"/>
+        <location filename="../src/mirall/mirallconfigfile.cpp" line="331"/>
         <source>ownCloud Password Required</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/mirallconfigfile.cpp" line="328"/>
+        <location filename="../src/mirall/mirallconfigfile.cpp" line="332"/>
         <source>Please enter your ownCloud password:</source>
         <translation type="unfinished"/>
     </message>
