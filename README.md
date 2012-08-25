@@ -1,4 +1,3 @@
-
 # Mirall
 
 ## Introduction
@@ -54,7 +53,7 @@ http://software.opensuse.org/search?q=mirall&baseproject=ALL&lang=en&include_hom
 
 ### Source code
 
-* http://github.com/dmacvicar/mirall
+* https://github.com/owncloud/mirall
 
 ## Building the source code
 
