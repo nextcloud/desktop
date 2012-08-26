@@ -396,9 +396,8 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
     return NULL;
   }
 
-  if (result->count <= 6) {
-    c_strlist_destroy(result);
-    return NULL;
+  if (result->count < 10) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Amount of result columns wrong, db version mismatch!");
   }
   /* phash, pathlen, path, inode, uid, gid, mode, modtime */
   len = strlen(result->vector[2]);
@@ -428,9 +427,14 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
   st->gid = atoi(result->vector[5]);
   st->mode = atoi(result->vector[6]);
   st->modtime = strtoul(result->vector[7], NULL, 10);
-  st->type = atoi(result->vector[8]);
-  if( result->vector[9])
-    st->md5 = c_strdup( result->vector[9] );
+
+  if(result->count > 8 && result->vector[8]) {
+      st->type = atoi(result->vector[8]);
+  }
+
+  if(result->count > 9 && result->vector[9]) {
+      st->md5 = c_strdup( result->vector[9] );
+  }
   c_strlist_destroy(result);
 
   return st;
