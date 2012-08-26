@@ -15,7 +15,7 @@
 #ifndef LOGBROWSER_H
 #define LOGBROWSER_H
 
-#include <QTextBrowser>
+#include <QPlainTextEdit>
 #include <QTextStream>
 #include <QFile>
 #include <QObject>
@@ -65,7 +65,7 @@ protected:
   static Logger* _instance;
 };
 
-class LogWidget : public QTextBrowser
+class LogWidget : public QPlainTextEdit 
 {
     Q_OBJECT
 public:

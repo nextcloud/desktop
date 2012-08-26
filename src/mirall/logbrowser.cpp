@@ -97,10 +97,9 @@ void Logger::mirallLog( const QString& message )
 // ==============================================================================
 
 LogWidget::LogWidget(QWidget *parent)
-    :QTextBrowser(parent)
+    :QPlainTextEdit(parent)
 {
     setReadOnly( true );
-    setLineWrapMode( QTextEdit::NoWrap );
     QFont font;
     font.setFamily(QLatin1String("Courier New"));
     font.setFixedPitch(true);
@@ -188,7 +187,7 @@ LogBrowser::~LogBrowser()
 void LogBrowser::slotNewLog( const QString& msg )
 {
     if( _logWidget->isVisible() ) {
-        _logWidget->append( msg );
+        _logWidget->appendPlainText( msg );
     }
 
     if( _logstream ) {
