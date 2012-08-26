@@ -48,6 +48,7 @@ protected slots:
 private:
     bool    _csyncError;
     CSyncThread *_csync;
+    QThread    *_thread;
     QStringList _errors;
 };
 

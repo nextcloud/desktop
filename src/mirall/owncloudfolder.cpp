@@ -37,6 +37,7 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
                                QObject *parent)
     : Folder(alias, path, secondPath, parent)
     , _secondPath(secondPath)
+    , _thread(0)
     , _localCheckOnly( false )
     , _localFileChanges( false )
     , _csync(0)
@@ -82,7 +83,7 @@ void ownCloudFolder::slotPollTimerRemoteCheck()
 
 bool ownCloudFolder::isBusy() const
 {
-    return ( _csync && _csync->isRunning() );
+    return ( _thread && _thread->isRunning() );
 }
 
 QString ownCloudFolder::secondPath() const
@@ -105,11 +106,12 @@ void ownCloudFolder::startSync()
 
 void ownCloudFolder::startSync(const QStringList &pathList)
 {
-    if (_csync && _csync->isRunning()) {
+    if (_thread && _thread->isRunning()) {
         qCritical() << "* ERROR csync is still running and new sync requested.";
         return;
     }
-     delete _csync;
+    delete _csync;
+    delete _thread;
     _errors.clear();
     _csyncError = false;
     _wipeDb = false;
@@ -143,7 +145,9 @@ void ownCloudFolder::startSync(const QStringList &pathList)
 
     qDebug() << "*** Start syncing url to ownCloud: " << url.toString() << ", with localOnly: " << _localCheckOnly;
 
+    _thread = new QThread(this);
     _csync = new CSyncThread( path(), url.toString(), _localCheckOnly );
+    _csync->moveToThread(_thread);
 
     // Proxy settings. Proceed them as strings to csync thread.
     int intProxy = cfgFile.proxyType();
@@ -167,16 +171,17 @@ void ownCloudFolder::startSync(const QStringList &pathList)
                                   cfgFile.proxyHostName(), cfgFile.proxyPort(), cfgFile.proxyUser(),
                                   cfgFile.proxyPassword() );
 
-    QObject::connect(_csync, SIGNAL(started()),  SLOT(slotCSyncStarted()));
-    QObject::connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()));
-    QObject::connect(_csync, SIGNAL(terminated()), SLOT(slotCSyncTerminated()));
-    connect(_csync, SIGNAL(csyncError(const QString)), SLOT(slotCSyncError(const QString)));
-    connect(_csync, SIGNAL(csyncStateDbFile(QString)), SLOT(slotCsyncStateDbFile(QString)));
-    connect(_csync, SIGNAL(wipeDb()),SLOT(slotWipeDb()));
+    connect(_csync, SIGNAL(started()),  SLOT(slotCSyncStarted()), Qt::QueuedConnection);
+    connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()), Qt::QueuedConnection);
+    connect(_csync, SIGNAL(csyncError(const QString)), SLOT(slotCSyncError(const QString)), Qt::QueuedConnection);
+    connect(_csync, SIGNAL(csyncStateDbFile(QString)), SLOT(slotCsyncStateDbFile(QString)), Qt::QueuedConnection);
+    connect(_csync, SIGNAL(wipeDb()),SLOT(slotWipeDb()), Qt::QueuedConnection);
 
     connect( _csync, SIGNAL(treeWalkResult(WalkStats*)),
-             this, SLOT(slotThreadTreeWalkResult(WalkStats*)));
-    _csync->start();
+             this, SLOT(slotThreadTreeWalkResult(WalkStats*)), Qt::QueuedConnection);
+    _thread->start();
+    QMetaObject::invokeMethod(_csync, "startSync", Qt::QueuedConnection);
+
 }
 
 void ownCloudFolder::slotCSyncStarted()
@@ -235,17 +240,6 @@ void ownCloudFolder::slotCsyncStateDbFile( const QString& file )
     _csyncStateDbFile = file;
 }
 
-void ownCloudFolder::slotCSyncTerminated()
-{
-    // do not ask csync here for reasons.
-    _syncResult.setStatus( SyncResult::Error );
-    _errors.append( tr("The CSync thread terminated.") );
-    _syncResult.setErrorStrings(_errors);
-    _csyncError = true;
-    qDebug() << "-> CSync Terminated!";
-    // emit syncFinished( _syncResult );
-}
-
 void ownCloudFolder::slotCSyncFinished()
 {
     qDebug() << "-> CSync Finished slot with error " << _csyncError;
@@ -262,7 +256,9 @@ void ownCloudFolder::slotCSyncFinished()
     }
 
     if( ! _localCheckOnly ) _lastSeenFiles = 0;
-
+    if( _thread && _thread->isRunning() ) {
+        _thread->quit();
+    }
     emit syncFinished( _syncResult );
 }
 
@@ -272,11 +268,13 @@ void ownCloudFolder::slotTerminateSync()
     QString configDir = _csync->csyncConfigDir();
     qDebug() << "csync's Config Dir: " << configDir;
 
-    if( _csync ) {
-        _csync->terminate();
-        _csync->wait();
+    if( _thread ) {
+        _thread->terminate();
+        _thread->wait();
         delete _csync;
+        delete _thread;
         _csync = 0;
+        _thread = 0;
     }
 
     if( ! configDir.isEmpty() ) {
@@ -286,6 +284,11 @@ void ownCloudFolder::slotTerminateSync()
             file.remove();
         }
     }
+
+    _errors.append( tr("The CSync thread terminated.") );
+    _csyncError = true;
+    qDebug() << "-> CSync Terminated!";
+    slotCSyncFinished();
 }
 
 void ownCloudFolder::slotLocalPathChanged( const QString& dir )
@@ -296,7 +299,7 @@ void ownCloudFolder::slotLocalPathChanged( const QString& dir )
     if( notifiedDir.absolutePath() == localPath.absolutePath() ) {
         if( !localPath.exists() ) {
             qDebug() << "XXXXXXX The sync folder root was removed!!";
-            if( _csync && _csync->isRunning() ) {
+            if( _thread && _thread->isRunning() ) {
                 qDebug() << "CSync currently running, set wipe flag!!";
                 slotWipeDb();
             } else {

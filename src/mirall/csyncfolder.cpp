@@ -33,6 +33,7 @@ CSyncFolder::CSyncFolder(const QString &alias,
                          QObject *parent)
       : Folder(alias, path, secondPath, parent)
       , _csync(0)
+      , _thread(0)
       , _csyncError(false)
 
 {
@@ -49,26 +50,29 @@ bool CSyncFolder::isBusy() const
 
 void CSyncFolder::startSync(const QStringList &pathList)
 {
-    if (_csync && _csync->isRunning()) {
+    if (_thread && _thread->isRunning()) {
         qCritical() << "* ERROR csync is still running and new sync requested.";
         return;
     }
     delete _csync;
+    delete _thread;
     _errors.clear();
     _csyncError = false;
 
+    _thread = new QThread(this);
     _csync = new CSyncThread( path(), secondPath() );
-    connect(_csync, SIGNAL(started()), SLOT(slotCSyncStarted()));
-    connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()));
-    connect(_csync, SIGNAL(csyncError(QString)), SLOT(slotCSyncError(QString)));
-
-    _csync->start();
+    connect(_csync, SIGNAL(started()), SLOT(slotCSyncStarted()), Qt::QueuedConnection);
+    connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()), Qt::QueuedConnection);
+    connect(_csync, SIGNAL(csyncError(QString)), SLOT(slotCSyncError(QString)), Qt::QueuedConnection);
+    _csync->moveToThread(_thread);
+    _thread->start();
+    QMetaObject::invokeMethod(_csync, "startSync", Qt::QueuedConnection);
 }
 
 void CSyncFolder::slotTerminateSync()
 {
-    if( _csync ) {
-        _csync->terminate();
+    if( _thread ) {
+        _thread->terminate();
     }
 }
 

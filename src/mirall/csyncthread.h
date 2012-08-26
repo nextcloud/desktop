@@ -55,20 +55,19 @@ struct walkStats_s {
 
 typedef walkStats_s WalkStats;
 
-class CSyncThread : public QThread
+class CSyncThread : public QObject
 {
     Q_OBJECT
 public:
     CSyncThread(const QString &source, const QString &target, bool = false);
     ~CSyncThread();
 
-    virtual void run();
-
     static void setConnectionDetails( const QString&, const QString&,
                                       const QString&, const QString&, int,
                                       const QString&, const QString& );
-    static int checkPermissions( TREE_WALK_FILE* file, void *data);
     static QString csyncConfigDir();
+
+    Q_INVOKABLE void startSync();
 
 signals:
     void treeWalkResult(WalkStats*);
@@ -77,7 +76,11 @@ signals:
     void csyncStateDbFile( const QString& );
     void wipeDb();
 
+    void finished();
+    void started();
+
 private:
+    static int checkPermissions( TREE_WALK_FILE* file, void *data);
     void emitStateDb( CSYNC *csync );
 
     static int getauth(const char *prompt,

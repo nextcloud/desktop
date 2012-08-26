@@ -52,7 +52,6 @@ private slots:
     void slotCSyncError(const QString& );
     void slotCSyncFinished();
     void slotThreadTreeWalkResult( WalkStats* );
-    void slotCSyncTerminated();
     void slotCsyncStateDbFile(const QString&);
     void slotWipeDb();
 
@@ -60,6 +59,7 @@ private slots:
 
 private:
     QString      _secondPath;
+    QThread     *_thread;
     CSyncThread *_csync;
     bool         _localCheckOnly;
     bool         _localFileChanges;

@@ -23,6 +23,8 @@
 #include <QStringList>
 #include <QTextStream>
 #include <QTime>
+#include <QApplication>
+
 
 namespace Mirall {
 
@@ -99,8 +101,8 @@ struct ProxyInfo {
      }
 
      if( file ) {
-         QString source = QString::fromLocal8Bit(wStats->sourcePath);
-         source.append(QString::fromLocal8Bit(file->path));
+         QString source = QString::fromUtf8(wStats->sourcePath);
+         source.append(QString::fromUtf8(file->path));
          QFileInfo fi(source);
 
          if( fi.isDir()) {  // File type directory.
@@ -135,8 +137,9 @@ CSyncThread::~CSyncThread()
 
 }
 
-void CSyncThread::run()
+void CSyncThread::startSync()
 {
+    qDebug() << "starting to sync " << qApp->thread() << QThread::currentThread();
     CSYNC *csync;
     WalkStats *wStats = new WalkStats;
     QTime walkTime;
@@ -162,6 +165,8 @@ void CSyncThread::run()
     proxyInfo->proxyPort = qstrdup( _proxyPort.toAscii().constData() );
     proxyInfo->proxyUser = qstrdup( _proxyUser.toAscii().constData() );
     proxyInfo->proxyPwd  = qstrdup( _proxyPwd.toAscii().constData() );
+
+    emit(started());
 
     if( csync_create(&csync,
                      _source.toUtf8().data(),
@@ -325,6 +330,7 @@ cleanup:
      * die than the slot has read out the data.
      */
     qDebug() << "CSync run took " << t.elapsed() << " Milliseconds";
+    emit(finished());
 }
 
 void CSyncThread::emitStateDb( CSYNC *csync )
