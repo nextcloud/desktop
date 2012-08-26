@@ -45,7 +45,7 @@ CSyncFolder::~CSyncFolder()
 
 bool CSyncFolder::isBusy() const
 {
-    return (_csync && _csync->isRunning() );
+    return (_csync && _thread && _thread->isRunning() );
 }
 
 void CSyncFolder::startSync(const QStringList &pathList)
