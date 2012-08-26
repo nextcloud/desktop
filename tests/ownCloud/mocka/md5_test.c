@@ -1,17 +1,16 @@
 /*
- * Copyright 2008 Google Inc.
+ * Copyright 2012 Klaas Freitag <freitag@owncloud.com>
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 
@@ -30,6 +29,17 @@
 
 #include "config_test.h"
 
+
+static void test_testdir_exists(void **state) {
+    csync_stat_t sb;
+    const _TCHAR *wuri = c_multibyte( TESTFILES_DIR );
+
+    (void) state;
+    assert_int_equal( _tstat(wuri, &sb), 0 );
+    assert_true( S_ISDIR(sb.st_mode));
+
+    c_free_multibyte(wuri);
+}
 
 static void test_md5_buffer(void **state) {
     const char *t1 = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.";
@@ -60,6 +70,7 @@ static void test_md5_files(void **state) {
 
 int main(void) {
     const UnitTest tests[] = {
+        unit_test(test_testdir_exists),
         unit_test(test_md5_buffer),
         unit_test(test_md5_files)
     };
