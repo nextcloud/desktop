@@ -716,7 +716,9 @@ static csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
     lfs->size  = res->size;
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
-    lfs->md5   = c_strdup(res->md5);
+    if( res->md5 ) {
+        lfs->md5   = c_strdup(res->md5);
+    }
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
     return lfs;
 }
@@ -825,8 +827,11 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
         buf->fields = _fs.fields;
         buf->type   = _fs.type;
         buf->mtime  = _fs.mtime;
-        buf->md5    = c_strdup( _fs.md5 );
-        DEBUG_WEBDAV("stat results from fs cache - md5: %s", _fs.md5);
+        buf->md5    = NULL;
+        if( _fs.md5 ) {
+            buf->md5    = c_strdup( _fs.md5 );
+        }
+        DEBUG_WEBDAV("stat results from fs cache - md5: %s", _fs.md5 ? _fs.md5 : "NULL");
         buf->size   = _fs.size;
         buf->mode   = _stat_perms( _fs.type );
     } else if( _statCache.uri && c_streq( _statCache.uri, uri )) {
@@ -914,8 +919,10 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
                 buf->mtime  = lfs->mtime;
                 buf->size   = lfs->size;
                 buf->mode   = _stat_perms( lfs->type );
-
-                buf->md5    = c_strdup( lfs->md5 );
+                buf->md5    = NULL;
+                if( lfs->md5 ) {
+                    buf->md5    = c_strdup( lfs->md5 );
+                }
 
                 csync_vio_file_stat_destroy( lfs );
             }
@@ -924,7 +931,7 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
         }
     }
     DEBUG_WEBDAV("STAT result: %s, md5: %s", buf->name ? buf->name:"NULL",
-                  buf->md5 );
+                 buf->md5 ? buf->md5 : "NULL" );
     return 0;
 }
 
@@ -1606,7 +1613,9 @@ static csync_vio_file_stat_t *owncloud_readdir(csync_vio_method_handle_t *dhandl
         _fs.fields = lfs->fields;
         _fs.type   = lfs->type;
         _fs.size   = lfs->size;
-        _fs.md5    = c_strdup(lfs->md5);
+        if( lfs->md5 ) {
+            _fs.md5    = c_strdup(lfs->md5);
+        }
     }
 
     /* DEBUG_WEBDAV("LFS fields: %s: %d", lfs->name, lfs->type ); */
