@@ -468,13 +468,28 @@ QVariant MirallConfigFile::customMedia( customMediaType type )
     }
 
     if( !key.isEmpty() ) {
+#ifdef Q_OS_WIN32
+        QFileInfo fi;
+        fi.setFile( QApplication::applicationDirPath(), QLatin1String("ownCloudClient.ini"));
+        qDebug() << "Custom Config file: " << fi.absoluteFilePath();
+        QSettings settings( fi.absoluteFilePath(), QSettings::IniFormat );
+#else
+
         QSettings settings( QSettings::IniFormat, QSettings::SystemScope, OC_ORGANIZATION, OC_APPLICATION );
+#endif
         QString cfg = settings.fileName();
         qDebug() << "Trying to read config ini file at " << cfg;
 
         settings.setIniCodec( "UTF-8" );
         settings.beginGroup(QLatin1String("GUICustomize"));
         QString val = settings.value( key ).toString();
+
+        // if file is relative, prepend the application dir path.
+        QFileInfo checkFi(val);
+        if( !val.isEmpty() && checkFi.isRelative() ) {
+            checkFi.setFile( QApplication::applicationDirPath(), val );
+            val = checkFi.absoluteFilePath();
+        }
 
         if( !val.isEmpty() ) {
             QPixmap pix( val );
