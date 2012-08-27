@@ -107,7 +107,7 @@ Application::Application(int &argc, char **argv) :
     mirallTranslator->load(QLatin1String("mirall_") + QLocale::system().name(), applicationDirPath()+QLatin1String("/../translations") ); // path defaults to app dir.
 #endif
 #ifdef Q_OS_WIN32
-    mirallTranslator->load(QLatin1String("mirall_") + QLocale::system().name()); // path defaults to app dir.
+    mirallTranslator->load(QLatin1String("mirall_") + QLocale::system().name(), applicationDirPath());
 #endif
 
     installTranslator(mirallTranslator);
