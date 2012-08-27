@@ -473,17 +473,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="169"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="174"/>
         <source>CSync create failed.</source>
         <translation>Nie można utworzyć CSync.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="205"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="210"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSync - nie udało się utworzyć pliku blokady.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="208"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="213"/>
         <source>CSync failed to load the state db.</source>
         <translation>CSync - nie udało się wczytać stanu bd.</translation>
     </message>
@@ -492,17 +492,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="211"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="216"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>Czas systemowy na tym kliencie różni się od czasu systemowego na serwerze. Użyj usługi synchronizacji czasu (NTP) na serwerze i kliencie, aby czas na obu urządzeniach był taki sam.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="216"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="221"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSync nie może wykryć systemu plików.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="219"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="224"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSync napotkał błąd podczas przetwarzania wewnętrznego drzewa.</translation>
     </message>
@@ -511,37 +511,37 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="222"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="227"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Katalog docelowy %1 nie istnieje.&lt;/p&gt;&lt;p&gt;Sprawdź ustawienia synchronizacji.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="228"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="233"/>
         <source>&lt;p&gt;The ownCloud plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Nie można załadować dodatku ownCloud dla csync.&lt;br&gt;Sprawdź instalację!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="232"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="237"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>Nie można  zapisywać na lokalnym systemie plików. Sprawdź uprawnienia.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="236"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="241"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>Zdalny plik nie może zostać zapisany. Sprawdź uprawnienia.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="239"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="244"/>
         <source>An internal error number %1 happend.</source>
         <translation>Wystąpił błąd wewnętrzny numer %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="255"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="260"/>
         <source>CSync failed to reach the host. Either host or proxy settings are not valid.</source>
         <translation>Błąd CSync: nie udało się połączyć z hostem. Ustawienia hosta lub serwera proxy nie są prawidłowe.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="258"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="263"/>
         <source>CSync Update failed.</source>
         <translation>CSync - Aktualizacja nie powiodła się.</translation>
     </message>
@@ -552,36 +552,36 @@ Please make sure that all directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="272"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="277"/>
         <source>CSync encountered an error while examining the file system.
 Syncing is not possible.</source>
         <translation>CSync napotkał błąd podczas rozpatrywania systemu plików.
 Synchronizacja nie jest możliwa.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="275"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="280"/>
         <source>CSync update generated a strange instruction.
 Please write a bug report.</source>
         <translation>Aktualizacja CSync generuje dziwne instrukcje.
 Proszę napisz raport o błędzie.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="278"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="283"/>
         <source>Local filesystem problems. Better disable Syncing and check.</source>
         <translation>Problemy z lokalnym systemem plików. Lepiej wyłączyć Synchronizację i to sprawdzić.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="283"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="288"/>
         <source>The local filesystem has %1 write protected directories.That can hinder successful syncing.&lt;p/&gt;Please make sure that all local directories are writeable.</source>
         <translation>Lokalny system plików %1 ma chroniony zapis katalogów. Mogą wystąpić utrudnienia, synchronizacji. &lt;p/&gt;Upewnij się, że wszystkie katalogi lokalne są zapisywalne.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="303"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="308"/>
         <source>CSync reconcile failed.</source>
         <translation>Uzgadnianie CSync nie powiodło się.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="307"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="312"/>
         <source>CSync propagate failed.</source>
         <translation>Propagowanie CSync nie powiodło się.</translation>
     </message>
@@ -694,58 +694,58 @@ Proszę napisz raport o błędzie.</translation>
 <context>
     <name>Mirall::LogBrowser</name>
     <message>
-        <location filename="../src/mirall/logbrowser.cpp" line="123"/>
+        <location filename="../src/mirall/logbrowser.cpp" line="122"/>
         <source>Log Output</source>
         <translation>Logi wyjściowe</translation>
     </message>
     <message>
-        <location filename="../src/mirall/logbrowser.cpp" line="135"/>
+        <location filename="../src/mirall/logbrowser.cpp" line="134"/>
         <source>&amp;Search: </source>
         <translation>&amp;Szukaj: </translation>
     </message>
     <message>
-        <location filename="../src/mirall/logbrowser.cpp" line="143"/>
+        <location filename="../src/mirall/logbrowser.cpp" line="142"/>
         <source>&amp;Find</source>
         <translation>&amp;Znajdź</translation>
     </message>
     <message>
-        <location filename="../src/mirall/logbrowser.cpp" line="161"/>
+        <location filename="../src/mirall/logbrowser.cpp" line="160"/>
         <source>Clear</source>
         <translation>Czyść</translation>
     </message>
     <message>
-        <location filename="../src/mirall/logbrowser.cpp" line="162"/>
+        <location filename="../src/mirall/logbrowser.cpp" line="161"/>
         <source>Clear the log display.</source>
         <translation>Wyczyść wyświetlane logi</translation>
     </message>
     <message>
-        <location filename="../src/mirall/logbrowser.cpp" line="168"/>
+        <location filename="../src/mirall/logbrowser.cpp" line="167"/>
         <source>S&amp;ave</source>
         <translation>Z&amp;apisz</translation>
     </message>
     <message>
-        <location filename="../src/mirall/logbrowser.cpp" line="169"/>
+        <location filename="../src/mirall/logbrowser.cpp" line="168"/>
         <source>Save the log file to a file on disk for debugging.</source>
         <translation>Zapisz plik dziennika do pliku na dysku w celu debugowania.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/logbrowser.cpp" line="207"/>
-        <location filename="../src/mirall/logbrowser.cpp" line="264"/>
+        <location filename="../src/mirall/logbrowser.cpp" line="206"/>
+        <location filename="../src/mirall/logbrowser.cpp" line="263"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../src/mirall/logbrowser.cpp" line="208"/>
+        <location filename="../src/mirall/logbrowser.cpp" line="207"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;Plik &apos;%1&apos;&lt;br&gt;nie można otworzyć do zapisu.&lt;br/&gt;&lt;br/&gt;Dane wyjściowe dziennika &lt;b&gt;nie&lt;/b&gt; mogą być zapisywane!&lt;/nobr&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/logbrowser.cpp" line="254"/>
+        <location filename="../src/mirall/logbrowser.cpp" line="253"/>
         <source>Save log file</source>
         <translation>Zapisz plik dziennika</translation>
     </message>
     <message>
-        <location filename="../src/mirall/logbrowser.cpp" line="264"/>
+        <location filename="../src/mirall/logbrowser.cpp" line="263"/>
         <source>Could not write to log file </source>
         <translation>Nie można zapisać w pliku dziennika</translation>
     </message>
@@ -1119,7 +1119,7 @@ Instalacja nie może być wykonywana.</translation>
 <context>
     <name>Mirall::ownCloudFolder</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="242"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="288"/>
         <source>The CSync thread terminated.</source>
         <translation>Wątek CSync zakończony.</translation>
     </message>
