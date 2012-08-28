@@ -184,6 +184,9 @@ csync_vio_method_handle_t *csync_dbtree_opendir(CSYNC *ctx, const char *name)
     }
     listing->entry = c_list_first( listing->list );
 
+    c_strlist_destroy( list );
+    SAFE_FREE(stmt);
+
     return listing;
 }
 
@@ -191,23 +194,15 @@ int csync_dbtree_closedir(CSYNC *ctx, csync_vio_method_handle_t *dhandle)
 {
     struct dir_listing *dl = NULL;
     int rc = 0;
-
-    c_list_t *entry = NULL;
-    csync_vio_file_stat_t *fs = NULL;
+    (void) ctx;
 
     if( dhandle != NULL ) {
         dl = (struct dir_listing*) dhandle;
-#if 0
-        entry = c_list_first( dl->list );
-
-        while( entry ) {
-
-            fs = (csync_vio_file_stat_t*) entry->data;
-            // csync_vio_file_stat_destroy(fs);
-            entry = c_list_next(dl->list);
-        }
-#endif
+        c_list_free(dl->list);
+        SAFE_FREE(dl->dir);
+        SAFE_FREE(dl);
     }
+
     return rc;
 }
 
@@ -215,6 +210,7 @@ csync_vio_file_stat_t *csync_dbtree_readdir(CSYNC *ctx, csync_vio_method_handle_
 {
     csync_vio_file_stat_t *fs = NULL;
     struct dir_listing *dl = NULL;
+    (void) ctx;
 
     if( dhandle != NULL ) {
         dl = (struct dir_listing*) dhandle;

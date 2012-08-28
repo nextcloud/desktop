@@ -830,7 +830,6 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
-        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
 
         buf->fields = _fs.fields;
         buf->type   = _fs.type;
@@ -840,6 +839,7 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
         buf->md5    = NULL;
         if( _fs.md5 ) {
             buf->md5    = c_strdup( _fs.md5 );
+            buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
         }
         DEBUG_WEBDAV("stat results from fs cache - md5: %s", _fs.md5 ? _fs.md5 : "NULL");
     } else {
@@ -1074,6 +1074,7 @@ static const char* owncloud_file_id( const char *path )
     const char *header = NULL;
     char *uri          = _cleanPath(path);
     char *buf          = NULL;
+    const char *cbuf   = NULL;
 
     /* Perform an HEAD request to the resource. HEAD delivers the
      * ETag header back. */
@@ -1087,11 +1088,16 @@ static const char* owncloud_file_id( const char *path )
      * into a PROPFIND request.
      */
     if( ! header ) {
-        csync_vio_file_stat_t statBuf;
-        if( owncloud_stat( path, &statBuf ) == 0 ) {
-            header = statBuf.md5;
-            SAFE_FREE(statBuf.name);
+        csync_vio_file_stat_t *fs = csync_vio_file_stat_new();
+        if(fs == NULL) {
+            DEBUG_WEBDAV( "owncloud_file_id: memory fault.");
+            errno = ENOMEM;
+            return NULL;
+        };
+        if( owncloud_stat( path, fs ) == 0 ) {
+            header = c_strdup(fs->md5);
         }
+        csync_vio_file_stat_destroy(fs);
     }
 
     /* In case the result is surrounded by "" cut them away. */
@@ -1101,15 +1107,17 @@ static const char* owncloud_file_id( const char *path )
             buf = c_malloc( len );
             strncpy( buf, header+1, len );
             buf[len] = '\0';
+            cbuf = buf;
+            SAFE_FREE(header);
         } else {
-            buf = c_strdup(header);
+            cbuf = header;
         }
     }
     DEBUG_WEBDAV("Get file ID for %s: %s", path, buf);
     ne_request_destroy(req);
     SAFE_FREE(uri);
 
-    return buf;
+    return cbuf;
 }
 
 static csync_vio_method_handle_t *owncloud_open(const char *durl,

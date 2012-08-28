@@ -148,6 +148,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             /* directory, remote and file not found in statedb */
             st->instruction = CSYNC_INSTRUCTION_NEW;
         }
+        SAFE_FREE(tmp->md5);
     } else {
         st->instruction = CSYNC_INSTRUCTION_NEW;
     }
@@ -281,6 +282,9 @@ static int _check_read_from_db(CSYNC *ctx, const char *uri) {
         if( c_streq(md5_local, md5_remote) ) {
             ctx->remote.read_from_db = 1;
         }
+        SAFE_FREE(md5_local);
+        SAFE_FREE(md5_remote);
+
         csync_vio_file_stat_destroy(fs);
     }
     return rc;
@@ -416,6 +420,8 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
         int len = strlen( path );
         uint64_t h = c_jhash64((uint8_t *) path, len, 0);
         fs->md5 = csync_statedb_get_uniqId( ctx, h, fs );
+        fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
+
         CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Uniq ID read from Database: %s -> %s", path, fs->md5 ? fs->md5 : "<NULL>" );
     }
 
