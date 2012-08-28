@@ -399,15 +399,16 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
   if (result->count < 10) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Amount of result columns wrong, db version mismatch!");
   }
-  /* phash, pathlen, path, inode, uid, gid, mode, modtime */
-  len = strlen(result->vector[2]);
-  st = c_malloc(sizeof(csync_file_stat_t) + len + 1);
-  if (st == NULL) {
-    c_strlist_destroy(result);
-    return NULL;
-  }
+  if(result->count > 7) {
+      /* phash, pathlen, path, inode, uid, gid, mode, modtime */
+      len = strlen(result->vector[2]);
+      st = c_malloc(sizeof(csync_file_stat_t) + len + 1);
+      if (st == NULL) {
+          c_strlist_destroy(result);
+          return NULL;
+      }
 
-  /*
+      /*
    * FIXME:
    * We use an INTEGER(8) which is signed to the phash in the sqlite3 db,
    * but the phash is an uint64_t. So for some values we get a string like
@@ -417,16 +418,20 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
    * st->phash = strtoull(result->vector[0], NULL, 10);
    */
 
-   /* The query suceeded so use the phash we pass to the function. */
-  st->phash = phash;
+      /* The query suceeded so use the phash we pass to the function. */
+      st->phash = phash;
 
-  st->pathlen = atoi(result->vector[1]);
-  memcpy(st->path, (len ? result->vector[2] : ""), len + 1);
-  st->inode = atoi(result->vector[3]);
-  st->uid = atoi(result->vector[4]);
-  st->gid = atoi(result->vector[5]);
-  st->mode = atoi(result->vector[6]);
-  st->modtime = strtoul(result->vector[7], NULL, 10);
+      st->pathlen = atoi(result->vector[1]);
+      memcpy(st->path, (len ? result->vector[2] : ""), len + 1);
+      st->inode = atoi(result->vector[3]);
+      st->uid = atoi(result->vector[4]);
+      st->gid = atoi(result->vector[5]);
+      st->mode = atoi(result->vector[6]);
+      st->modtime = strtoul(result->vector[7], NULL, 10);
+  } else {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "No result record found for phash = %llu",
+                (long long unsigned int) phash);
+  }
 
   if(result->count > 8 && result->vector[8]) {
       st->type = atoi(result->vector[8]);
