@@ -775,6 +775,22 @@ static void free_fetchCtx( struct listdir_context *ctx )
     SAFE_FREE(ctx);
 }
 
+static void fill_stat_cache( csync_vio_file_stat_t *lfs ) {
+
+    if( _fs.name ) SAFE_FREE(_fs.name);
+    if( _fs.md5  ) SAFE_FREE(_fs.md5 );
+
+    if( !lfs) return;
+
+    _fs.name   = c_strdup(lfs->name);
+    _fs.mtime  = lfs->mtime;
+    _fs.fields = lfs->fields;
+    _fs.type   = lfs->type;
+    _fs.size   = lfs->size;
+    if( lfs->md5 ) {
+        _fs.md5    = c_strdup(lfs->md5);
+    }
+}
 
 /*
  * file functions
@@ -819,13 +835,13 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
         buf->fields = _fs.fields;
         buf->type   = _fs.type;
         buf->mtime  = _fs.mtime;
+        buf->size   = _fs.size;
+        buf->mode   = _stat_perms( _fs.type );
         buf->md5    = NULL;
         if( _fs.md5 ) {
             buf->md5    = c_strdup( _fs.md5 );
         }
         DEBUG_WEBDAV("stat results from fs cache - md5: %s", _fs.md5 ? _fs.md5 : "NULL");
-        buf->size   = _fs.size;
-        buf->mode   = _stat_perms( _fs.type );
     } else {
       DEBUG_WEBDAV("stat results fetched.");
         /* fetch data via a propfind call. */
@@ -900,6 +916,10 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
                     buf->md5    = c_strdup( lfs->md5 );
                 }
 
+                /* put the stat information to cache for subsequent calls */
+                fill_stat_cache( lfs );
+
+                /* fill the static stat buf as input for the stat function */
                 csync_vio_file_stat_destroy( lfs );
             }
 
@@ -1577,14 +1597,7 @@ static csync_vio_file_stat_t *owncloud_readdir(csync_vio_method_handle_t *dhandl
         fetchCtx->currResource = fetchCtx->currResource->next;
 
         /* fill the static stat buf as input for the stat function */
-        _fs.name   = lfs->name;
-        _fs.mtime  = lfs->mtime;
-        _fs.fields = lfs->fields;
-        _fs.type   = lfs->type;
-        _fs.size   = lfs->size;
-        if( lfs->md5 ) {
-            _fs.md5    = c_strdup(lfs->md5);
-        }
+        fill_stat_cache(lfs);
     }
 
     /* DEBUG_WEBDAV("LFS fields: %s: %d", lfs->name, lfs->type ); */
@@ -1843,6 +1856,9 @@ void vio_module_shutdown(csync_vio_method_t *method) {
     SAFE_FREE( dav_session.proxy_host );
     SAFE_FREE( dav_session.proxy_user );
     SAFE_FREE( dav_session.proxy_pwd  );
+
+    /* free stat memory */
+    fill_stat_cache(NULL);
 
     if( dav_session.ctx )
         ne_session_destroy( dav_session.ctx );
