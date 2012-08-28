@@ -82,6 +82,11 @@ csync_vio_method_handle_t *csync_dbtree_opendir(CSYNC *ctx, const char *name)
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "SQL: %s", stmt);
 
     list = csync_statedb_query( ctx, stmt );
+
+    if( ! list ) {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Query result list is NULL!");
+        return NULL;
+    }
     /* list count must be a multiple of col_count */
     if( list->count % col_count != 0 ) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Wrong size of query result list");
