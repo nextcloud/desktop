@@ -279,7 +279,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="236"/>
         <source>&lt;p&gt;The ownCloud at %1 could not be reached.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;ownCloud unter %1 konnte nicht erreicht werden.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;OwnCloud unter %1 konnte nicht erreicht werden.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="237"/>
