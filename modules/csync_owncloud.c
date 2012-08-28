@@ -1092,7 +1092,7 @@ static const char* owncloud_file_id( const char *path )
      */
     if( ! header ) {
         csync_vio_file_stat_t statBuf;
-        if( owncloud_stat( uri, &statBuf ) == 0 ) {
+        if( owncloud_stat( path, &statBuf ) == 0 ) {
             header = statBuf.md5;
             SAFE_FREE(statBuf.name);
         }
