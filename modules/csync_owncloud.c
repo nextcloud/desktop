@@ -150,11 +150,6 @@ static const ne_propname ls_props[] = {
     { NULL, NULL }
 };
 
-struct stat_cache_s {
-    char *uri;
-    csync_vio_file_stat_t stat;
-};
-
 /*
  * local variables.
  */
@@ -164,9 +159,6 @@ int _connected = 0;                   /* flag to indicate if a connection exists
                                      the dav_session is valid */
 csync_vio_file_stat_t _fs;
 csync_vio_file_stat_t _owc;
-
-struct stat_cache_s _statCache;
-
 
 csync_auth_callback _authcb;
 
@@ -834,22 +826,6 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
         DEBUG_WEBDAV("stat results from fs cache - md5: %s", _fs.md5 ? _fs.md5 : "NULL");
         buf->size   = _fs.size;
         buf->mode   = _stat_perms( _fs.type );
-    } else if( _statCache.uri && c_streq( _statCache.uri, uri )) {
-      DEBUG_WEBDAV("stat results from stat cache");
-        DEBUG_WEBDAV("Found file stat info in statcache!");
-        buf->fields  = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
-        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
-        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
-        // buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
-        // buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
-        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
-
-        buf->type   = _statCache.stat.type;
-        buf->size   = _statCache.stat.size;
-        buf->md5    = c_strdup( _statCache.stat.md5 );
-
-        // buf->mode   = _stat_perms( _statCache.type );
-
     } else {
       DEBUG_WEBDAV("stat results fetched.");
         /* fetch data via a propfind call. */
@@ -1463,13 +1439,6 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
     }
     /* Remove the local file. */
     unlink( writeCtx->tmpFileName );
-
-    /* cache the stat info about the recently written or read file */
-    // FIXME: Free the strings
-    _statCache.stat.size = writeCtx->bytes_written;
-    _statCache.stat.md5  = writeCtx->md5;
-    _statCache.stat.name = c_basename( writeCtx->clean_uri );
-    _statCache.stat.type = CSYNC_VIO_FILE_TYPE_REGULAR;
 
     /* free mem. Note that the request mem is freed by the ne_request_destroy call */
     SAFE_FREE( writeCtx->tmpFileName );
