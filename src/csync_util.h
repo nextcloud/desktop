@@ -36,13 +36,5 @@ int csync_unix_extensions(CSYNC *ctx);
 /* Normalize the uri to <host>/<path> */
 uint64_t csync_create_statedb_hash(CSYNC *ctx);
 
-/* Calculate the md5 sum for a file given by filename.
- * Caller has to free the memory. */
-char* csync_file_md5(const char *filename);
-
-/* Create an md5 sum from a data pointer with a given length.
- * Caller has to free the memory */
-char* csync_buffer_md5(const char *str, int length);
-
 #endif /* _CSYNC_UTIL_H */
 /* vim: set ft=c.doxygen ts=8 sw=2 et cindent: */
