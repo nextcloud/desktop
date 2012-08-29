@@ -550,9 +550,12 @@ int csync_vio_rmdir(CSYNC *ctx, const char *uri) {
 
 const char *csync_vio_file_id(CSYNC *ctx, const char *path)
 {
-    const char *re;
+    const char *re = NULL;
     /* We always use the remote method here. */
-    re = ctx->module.method->get_file_id(path);
+    if(ctx->module.method &&
+            VIO_METHOD_HAS_FUNC(ctx->module.method, get_file_id)) {
+        re = ctx->module.method->get_file_id(path);
+    }
     return re;
 }
 
