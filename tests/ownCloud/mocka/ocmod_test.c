@@ -97,7 +97,7 @@ static void connect_test_success(void **state) {
 
     (void) state;
     strcpy(buf, TEST_CONFIG_DIR);
-    strcat(buf, "test.cfg");
+    strcat(buf, "mockatest.cfg");
 
     assert_true( load_oc_config( buf ));
 
