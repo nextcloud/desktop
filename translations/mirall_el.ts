@@ -147,7 +147,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="32"/>
         <source>Pick a local folder on your computer to sync:</source>
-        <translation>Επιλέξτε έναν τοπικό φάκελο για συχγρονισμό:</translation>
+        <translation>Επιλέξτε έναν τοπικό φάκελο για συγχρονισμό:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="43"/>
@@ -305,7 +305,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="270"/>
         <source>&lt;p&gt;Your ownCloud credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Δεν είναι ορθά τα διαπιστευτήριά σας για το ownCloud.&lt;/p&gt;&lt;p&gt;Παρακαλώ διορθώστε τα εκκινόντας το παράθυρο ρύθμισης από την μπάρα!&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Δεν είναι ορθά τα διαπιστευτήριά σας για το ownCloud.&lt;/p&gt;&lt;p&gt;Παρακαλώ διορθώστε τα εκκινώντας το παράθυρο ρύθμισης από την μπάρα!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="277"/>
@@ -359,7 +359,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="345"/>
         <source>Managed Folders:</source>
-        <translation>Διαχείρηση αρχείων:</translation>
+        <translation>Διαχείριση αρχείων:</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="578"/>
@@ -439,7 +439,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/application.cpp" line="656"/>
         <source>New files in the server, or files deleted locally:
 </source>
-        <translation>Νέα αρχεία στον εξυπηρετητή, ή αρχεία διαγράφησαν τοπικά:
+        <translation>Νέα αρχεία στον εξυπηρετητή, ή αρχεία διαγράφηκαν τοπικά:
 </translation>
     </message>
     <message>
@@ -536,7 +536,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="244"/>
         <source>An internal error number %1 happend.</source>
-        <translation>Ένα εσωτερικό σφάλμα με αριθμό 1% συνέβει.</translation>
+        <translation>Ένα εσωτερικό σφάλμα με αριθμό %1 συνέβη.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="260"/>
@@ -558,7 +558,7 @@ Please make sure that all directories are writeable.</source>
         <location filename="../src/mirall/csyncthread.cpp" line="277"/>
         <source>CSync encountered an error while examining the file system.
 Syncing is not possible.</source>
-        <translation>Τo CSync αντιμετώπισε ένα σφάλμα κατά την εξέταση του συστήματος αρχείων.
+        <translation>Το CSync αντιμετώπισε ένα σφάλμα κατά την εξέταση του συστήματος αρχείων.
 Ο συγχρονισμός δεν είναι επιτεύξιμος.</translation>
     </message>
     <message>
@@ -581,7 +581,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="308"/>
         <source>CSync reconcile failed.</source>
-        <translation>H συμφωνία του CSync απέτυχε.</translation>
+        <translation>Η συμφωνία του CSync απέτυχε.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="312"/>
@@ -671,7 +671,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="264"/>
         <source>Better do not use the remote root directory.&lt;br/&gt;If you do, you can &lt;b&gt;not&lt;/b&gt; mirror another local folder.</source>
-        <translation>Καλύτερα να μην χρησιμοποιήσετε τον απομακρυσμένο ριζικό κατάλογο.&lt;br/&gt;Εάν το κάνετε,&lt;b&gt;δεν&lt;/b&gt; θα μπορέσετε να δημιουργίσετε άλλο αντίγραφο (mirror) κάποιου τοπικού φάκελου.</translation>
+        <translation>Καλύτερα να μην χρησιμοποιήσετε τον απομακρυσμένο ριζικό κατάλογο.&lt;br/&gt;Εάν το κάνετε,&lt;b&gt;δεν&lt;/b&gt; θα μπορέσετε να δημιουργήσετε άλλο αντίγραφο (mirror) κάποιου τοπικού φακέλου.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="312"/>
@@ -849,17 +849,17 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="388"/>
         <source>Creation of remote folder %1 could not be started.</source>
-        <translation>Δεν ήταν δυνατή η εκκίνηση της δημιουργίας του απομανκρυσμένου φάκελου %1</translation>
+        <translation>Δεν ήταν δυνατή η εκκίνηση της δημιουργίας του απομακρυσμένου φακέλου %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="412"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation>Ο απομανκρυσμένος φάκελος %1 δημιουργήθηκε με επιτυχία.</translation>
+        <translation>Ο απομακρυσμένος φάκελος %1 δημιουργήθηκε με επιτυχία.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="414"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>Ο απομακρυσμένος φάκελςο %1 υπάρχει, ήδη. Πραγματοποιείτε σύνδεση για ενημέρωση. </translation>
+        <translation>Ο απομακρυσμένος φάκελος %1 υπάρχει, ήδη. Πραγματοποιείτε σύνδεση για ενημέρωση. </translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="416"/>
@@ -911,7 +911,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="372"/>
         <source>ok</source>
-        <translation>ok</translation>
+        <translation>οκ</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="374"/>
@@ -929,7 +929,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="100"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Επιτυχής δημιουργία τοπικού καταλόγου %1 για συχρονισμό!&lt;/b&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Επιτυχής δημιουργία τοπικού καταλόγου %1 για συγχρονισμό!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <source>The remote folder %1 already exists. Automatic sync setup is skipped for security reasons. Please configure your sync folder manually.</source>
