@@ -1194,7 +1194,6 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
                 SAFE_FREE(dir);
                 SAFE_FREE(uri);
                 SAFE_FREE(statBuf.name);
-                SAFE_FREE(statBuf.md5);
                 return NULL;
             }
         }
