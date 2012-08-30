@@ -39,7 +39,6 @@ ownCloudInfo* ownCloudInfo::instance()
 
     if (!_instance) {
       _instance = new ownCloudInfo;
-
     }
     mutex.unlock();
   }
@@ -67,6 +66,8 @@ ownCloudInfo::ownCloudInfo( const QString& connectionName, QObject *parent ) :
 
     connect( _manager, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
              this, SLOT(slotAuthentication(QNetworkReply*,QAuthenticator*)));
+
+    _certsUntrusted = false;
 }
 
 ownCloudInfo::~ownCloudInfo()
