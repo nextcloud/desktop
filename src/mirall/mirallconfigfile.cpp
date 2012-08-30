@@ -232,10 +232,10 @@ QString MirallConfigFile::ownCloudUrl( const QString& connection, bool webdav ) 
     QString url = settings.value( QLatin1String("url") ).toString();
     if( ! url.isEmpty() ) {
         if( ! url.endsWith(QLatin1Char('/'))) url.append(QLatin1String("/"));
-        if( webdav ) url.append( QLatin1String("files/webdav.php/") );
+        if( webdav ) url.append( QLatin1String("remote.php/webdav/") );
     }
 
-    // qDebug() << "Returning configured owncloud url: " << url;
+    qDebug() << "Returning configured owncloud url: " << url;
 
   return url;
 }
