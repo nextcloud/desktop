@@ -72,6 +72,10 @@ csync_vio_method_handle_t *csync_dbtree_opendir(CSYNC *ctx, const char *name)
      */
 
     int col_count = 9;
+    if( strlen(name) < strlen(ctx->remote.uri)+1) {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "name does not contain remote uri!");
+        return NULL;
+    }
 
     path = name + strlen(ctx->remote.uri)+1;
 
