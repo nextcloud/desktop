@@ -1075,6 +1075,7 @@ static const char* owncloud_file_id( const char *path )
     char *uri          = _cleanPath(path);
     char *buf          = NULL;
     const char *cbuf   = NULL;
+    csync_vio_file_stat_t *fs = NULL;
 
     /* Perform an HEAD request to the resource. HEAD delivers the
      * ETag header back. */
@@ -1088,32 +1089,32 @@ static const char* owncloud_file_id( const char *path )
      * into a PROPFIND request.
      */
     if( ! header ) {
-        csync_vio_file_stat_t *fs = csync_vio_file_stat_new();
+        fs = csync_vio_file_stat_new();
         if(fs == NULL) {
             DEBUG_WEBDAV( "owncloud_file_id: memory fault.");
             errno = ENOMEM;
             return NULL;
-        };
-        if( owncloud_stat( path, fs ) == 0 ) {
-            header = c_strdup(fs->md5);
         }
-        csync_vio_file_stat_destroy(fs);
+        if( owncloud_stat( path, fs ) == 0 ) {
+            header = fs->md5;
+        }
     }
 
     /* In case the result is surrounded by "" cut them away. */
     if( header ) {
         if( header [0] == '"' && header[ strlen(header)-1] == '"') {
             int len = strlen( header )-2;
-            buf = c_malloc( len );
+            buf = c_malloc( len+1 );
             strncpy( buf, header+1, len );
             buf[len] = '\0';
             cbuf = buf;
-            SAFE_FREE(header);
+            /* do not free header here, as it belongs to the request */
         } else {
-            cbuf = header;
+            cbuf = c_strdup(header);
         }
     }
-    DEBUG_WEBDAV("Get file ID for %s: %s", path, buf);
+    DEBUG_WEBDAV("Get file ID for %s: %s", path, buf ? buf:"<null>");
+    if( fs ) csync_vio_file_stat_destroy(fs);
     ne_request_destroy(req);
     SAFE_FREE(uri);
 
@@ -1181,6 +1182,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
         } else {
             if( owncloud_stat( dir, &statBuf ) == 0 ) {
                 SAFE_FREE(statBuf.name);
+                SAFE_FREE(statBuf.md5);
                 DEBUG_WEBDAV("Directory of file to open exists.");
                 SAFE_FREE( _lastDir );
                 _lastDir = c_strdup(dir);
@@ -1192,6 +1194,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
                 SAFE_FREE(dir);
                 SAFE_FREE(uri);
                 SAFE_FREE(statBuf.name);
+                SAFE_FREE(statBuf.md5);
                 return NULL;
             }
         }
@@ -1359,8 +1362,7 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
     int rc;
     int ret = 0;
     size_t len = 0;
-    const _TCHAR *tmpFileName = 0;
-    const char *etag_header = 0;
+    const _TCHAR *tmpFileName = NULL;
 
     writeCtx = (struct transfer_context*) fhandle;
 
@@ -1428,6 +1430,8 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
                         errno = EIO;
                         ret = -1;
                     }
+                    /* Remove the local file. */
+                    _tunlink(tmpFileName);
                 }
                 c_free_multibyte(tmpFileName);
             } else {
@@ -1447,14 +1451,8 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
                     ret = -1;
                 }
             }
-
-            /* get the uniq id request header */
-            etag_header = ne_get_response_header( writeCtx->req, "ETag" );
-            if( etag_header ) {
-                DEBUG_WEBDAV("ETag for file : %s", etag_header);
-                writeCtx->md5 = c_strdup( etag_header );
-            }
         }
+
         ne_request_destroy( writeCtx->req );
     } else  {
         /* Its a GET request, not much to do in close. */
@@ -1465,11 +1463,10 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
             }
         }
     }
-    /* Remove the local file. */
-    unlink( writeCtx->tmpFileName );
 
     /* free mem. Note that the request mem is freed by the ne_request_destroy call */
     SAFE_FREE( writeCtx->tmpFileName );
+    SAFE_FREE( writeCtx->clean_uri );
     SAFE_FREE( writeCtx );
 
     return ret;
@@ -1771,11 +1768,11 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
     pname.name = "lastmodified";
 
     newmodtime = modtime->tv_sec;
-#if TIMEDELTA
+
     DEBUG_WEBDAV("Add a time delta to modtime %lu: %ld",
                  modtime->tv_sec, dav_session.time_delta);
     newmodtime += dav_session.time_delta;
-#endif
+
     snprintf( val, sizeof(val), "%ld", newmodtime );
     DEBUG_WEBDAV("Setting LastModified of %s to %s", curi, val );
 
