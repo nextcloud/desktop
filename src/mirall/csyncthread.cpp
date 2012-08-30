@@ -42,13 +42,14 @@ QString CSyncThread::_csyncConfigDir;  // to be able to remove the lock file.
 QMutex CSyncThread::_mutex;
 
 
-struct ProxyInfo {
+struct proxyInfo_s {
     char *proxyType;
     char *proxyHost;
     char *proxyPort;
     char *proxyUser;
     char *proxyPwd;
 };
+typedef proxyInfo_s ProxyInfo;
 
  int CSyncThread::checkPermissions( TREE_WALK_FILE* file, void *data )
  {
@@ -157,14 +158,30 @@ void CSyncThread::startSync()
     wStats->error      = 0;
     wStats->dirPermErrors = 0;
 
-    ProxyInfo *proxyInfo  = new ProxyInfo;
+    ProxyInfo proxyInfo;
+    proxyInfo.proxyHost = 0;
+    proxyInfo.proxyPort = 0;
+    proxyInfo.proxyPwd  = 0;
+    proxyInfo.proxyType = 0;
+    proxyInfo.proxyUser = 0;
 
     _mutex.lock();
-    proxyInfo->proxyType = qstrdup( _proxyType.toAscii().constData() );
-    proxyInfo->proxyHost = qstrdup( _proxyHost.toAscii().constData() );
-    proxyInfo->proxyPort = qstrdup( _proxyPort.toAscii().constData() );
-    proxyInfo->proxyUser = qstrdup( _proxyUser.toAscii().constData() );
-    proxyInfo->proxyPwd  = qstrdup( _proxyPwd.toAscii().constData() );
+
+    if( !_proxyType.isEmpty() ) {
+        proxyInfo.proxyType = qstrdup( _proxyType.toAscii().constData() );
+    }
+    if( !_proxyHost.isEmpty() ) {
+        proxyInfo.proxyHost = qstrdup( _proxyHost.toAscii().constData() );
+    }
+    if( !_proxyPort.isEmpty() ) {
+        proxyInfo.proxyPort = qstrdup( _proxyPort.toAscii().constData() );
+    }
+    if( !_proxyUser.isEmpty() ) {
+        proxyInfo.proxyUser = qstrdup( _proxyUser.toAscii().constData() );
+    }
+    if( !_proxyPwd.isEmpty() ) {
+        proxyInfo.proxyPwd  = qstrdup( _proxyPwd.toAscii().constData() );
+    }
 
     emit(started());
 
@@ -198,7 +215,7 @@ void CSyncThread::startSync()
     if( _localCheckOnly ) {
         csync_set_local_only( csync, true );
     }
-    csync_set_userdata(csync, (void*) proxyInfo);
+    csync_set_userdata(csync, (void*) &proxyInfo);
     _mutex.unlock();
 
     if( csync_init(csync) < 0 ) {
@@ -316,13 +333,11 @@ void CSyncThread::startSync()
 cleanup:
     csync_destroy(csync);
 
-    if( proxyInfo->proxyType ) free( proxyInfo->proxyType );
-    if( proxyInfo->proxyHost ) free( proxyInfo->proxyHost );
-    if( proxyInfo->proxyPort ) free( proxyInfo->proxyPort );
-    if( proxyInfo->proxyUser ) free( proxyInfo->proxyUser );
-    if( proxyInfo->proxyPwd  ) free( proxyInfo->proxyPwd  );
-
-    free( proxyInfo );
+    if( proxyInfo.proxyType ) delete( proxyInfo.proxyType );
+    if( proxyInfo.proxyHost ) delete( proxyInfo.proxyHost );
+    if( proxyInfo.proxyPort ) delete( proxyInfo.proxyPort );
+    if( proxyInfo.proxyUser ) delete( proxyInfo.proxyUser );
+    if( proxyInfo.proxyPwd  ) delete( proxyInfo.proxyPwd  );
 
     /*
      * Attention: do not delete the wStat memory here. it is deleted in the
