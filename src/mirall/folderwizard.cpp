@@ -173,11 +173,6 @@ FolderWizardTargetPage::FolderWizardTargetPage()
     _timer->setSingleShot( true );
     connect( _timer, SIGNAL(timeout()), SLOT(slotTimerFires()));
 
-    connect( ownCloudInfo::instance(), SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
-             SLOT(slotDirCheckReply(QString,QNetworkReply*)));
-    connect( ownCloudInfo::instance(), SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),
-             SLOT(slotCreateRemoteFolderFinished( QNetworkReply::NetworkError )));
-
 #if QT_Version >= 0x040700
     _ui.OCFolderLineEdit->setPlaceholderText(QApplication::translate("FolderWizardTargetPage", "root", 0, QApplication::UnicodeUTF8));
     _ui.localFolder2LineEdit->setPlaceholderText(QApplication::translate("FolderWizardTargetPage", "/home/local", 0, QApplication::UnicodeUTF8));
@@ -286,8 +281,15 @@ void FolderWizardTargetPage::initializePage()
     /* check the owncloud configuration file and query the ownCloud */
     ownCloudInfo *ocInfo = ownCloudInfo::instance();
     if( ocInfo->isConfigured() ) {
-      connect(ocInfo,SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
-      connect(ocInfo,SIGNAL(noOwncloudFound(QNetworkReply*)),SLOT(slotNoOwnCloudFound(QNetworkReply*)));
+      connect( ocInfo, SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
+               SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
+      connect( ocInfo, SIGNAL(noOwncloudFound(QNetworkReply*)),
+               SLOT(slotNoOwnCloudFound(QNetworkReply*)));
+      connect( ocInfo, SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
+               SLOT(slotDirCheckReply(QString,QNetworkReply*)));
+      connect( ocInfo, SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),
+               SLOT(slotCreateRemoteFolderFinished( QNetworkReply::NetworkError )));
+
       connect(_ui._buttCreateFolder, SIGNAL(clicked()), SLOT(slotCreateRemoteFolder()));
       ocInfo->checkInstallation();
 
