@@ -222,6 +222,7 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
 
   tfs = c_rbtree_node_data(node);
   if( tfs->md5 ) {
+      if( fs->md5 ) SAFE_FREE(fs->md5);
     fs->md5 = c_strdup( tfs->md5 );
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "PRE UPDATED %s: %s <-> %s", uri, fs->md5, tfs->md5);
   } else {
@@ -340,20 +341,6 @@ uint64_t csync_create_statedb_hash(CSYNC *ctx) {
   SAFE_FREE(path);
 
   return hash;
-}
-
-static char* digest_to_out(unsigned char* digest)
-{
-    char *out = c_malloc(33);
-    int n;
-
-    if( !digest ) return NULL;
-
-    for (n = 0; n < 16; ++n) {
-        snprintf(&(out[n*2]), 16*2, "%02x", (unsigned int) *(digest+n));
-    }
-
-    return out;
 }
 
 /* vim: set ts=8 sw=2 et cindent: */
