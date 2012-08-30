@@ -1,25 +1,25 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs_CZ" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ru_RU" version="2.0">
 <context>
     <name>CreateAnOwncloudPage</name>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="14"/>
         <source>Form</source>
-        <translation>Formulář</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="39"/>
         <source>Create a new ownCloud</source>
-        <translation>Vytvořit nový ownCloud</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="61"/>
         <source>Where do you want to create your ownCloud?</source>
-        <translation>Kde si přejete vytvořit nový ownCloud?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="73"/>
         <source>create ownCloud on this computer</source>
-        <translation>Vytvořit nový ownCloud na tomto počítači</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="105"/>
@@ -28,16 +28,12 @@
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;installs the ownCloud on this computer. Other people will not be able to access your data by default.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Nainstaluje nový ownCloud na tomto počítači. Ostatní uživatelé nebudou, ve výchozím nastavení, moci pracovat s Vašimi daty.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="132"/>
         <source>create ownCloud on my internet domain</source>
-        <translation>vytvořit ownCloud v mé internetové doméně</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="155"/>
@@ -48,18 +44,12 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;installs ownCloud on a domain you control. You need the FTP credentials for the installation.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#585858;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;This ownCloud will be accessible from the internet.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Nainstaluje nový ownCloud v doméně, kterou spravujete. Pro instalaci je třeba přístupové údaje na FTP.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#585858;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Tento ownCloud bude přístupný z internetu.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="177"/>
         <source>&amp;Domain:</source>
-        <translation>&amp;Doména:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>mydomain.org</source>
@@ -71,27 +61,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardnetworkpage.ui" line="14"/>
         <source>Form</source>
-        <translation>Formulář</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardnetworkpage.ui" line="27"/>
         <source>Network Settings</source>
-        <translation>Nastavení sítě</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardnetworkpage.ui" line="34"/>
         <source>Set networking options:</source>
-        <translation>Nastavení voleb sítě:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardnetworkpage.ui" line="40"/>
         <source>Only enable if network is available</source>
-        <translation>Povolit pouze pokud je dostupná síť</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardnetworkpage.ui" line="47"/>
         <source>restrict to this local network</source>
-        <translation>omezit pouze na místní síť</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -99,37 +89,37 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="14"/>
         <source>Form</source>
-        <translation>Formulář</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="20"/>
         <source>ownCloud Settings</source>
-        <translation>Nastavení ownCloud</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="29"/>
         <source>URL:</source>
-        <translation>URL:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="36"/>
         <source>User:</source>
-        <translation>Uživatel:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="46"/>
         <source>Password:</source>
-        <translation>Heslo:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="63"/>
         <source>Alias:</source>
-        <translation>Alias:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="93"/>
         <source>ownCloud</source>
-        <translation>ownCloud</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -137,37 +127,37 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="14"/>
         <source>Form</source>
-        <translation>Formulář</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="25"/>
         <source>Sync Directory</source>
-        <translation>Synchronizace adresáře</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="32"/>
         <source>Pick a local folder on your computer to sync:</source>
-        <translation>Pro synchronizaci vyberte místní složku na Vašem počítači:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="43"/>
         <source>&amp;Choose...</source>
-        <translation>Vy&amp;brat...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="54"/>
         <source>&amp;Directory alias name:</source>
-        <translation>&amp;Alias názvu adresáře:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="45"/>
         <source>/home/local1</source>
-        <translation>/home/local1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="46"/>
         <source>Music</source>
-        <translation>Hudba</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -175,7 +165,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="14"/>
         <source>Form</source>
-        <translation>Formulář</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Express Upload Target</source>
@@ -192,72 +182,72 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="29"/>
         <source>Synchronization Target</source>
-        <translation>Cíl synchronizace</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="51"/>
         <source>Select a destination folder for your data</source>
-        <translation>Vybrat cílovou složku pro Vaše data</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="78"/>
         <source>on your &amp;ownCloud server</source>
-        <translation>na Vašem &amp;ownCloud serveru</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="91"/>
         <source>Folder on ownCloud:</source>
-        <translation>Složka v ownCloud:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="148"/>
         <source>to a &amp;local folder</source>
-        <translation>do &amp;místní složky</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="161"/>
         <source>Folder name:</source>
-        <translation>Název složky:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="171"/>
         <source>C&amp;hoose..</source>
-        <translation>Vyb&amp;rat..</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="218"/>
         <source>to a &amp;remote folder (URL)</source>
-        <translation>do v&amp;zdálené složky (URL)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="231"/>
         <source>URL:</source>
-        <translation>URL:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="361"/>
         <source>TextLabel</source>
-        <translation>TextLabel</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="383"/>
         <source>create</source>
-        <translation>vytvořit</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="182"/>
         <source>root</source>
-        <translation>kořen</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="183"/>
         <source>/home/local</source>
-        <translation>/home/local</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="184"/>
         <source>scp://john@host.com//myfolder</source>
-        <translation>scp://john@host.com//mojesložka</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -265,7 +255,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="200"/>
         <source>No ownCloud Configuration</source>
-        <translation>Chybí nastavení ownCloud</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>&lt;p&gt;No ownCloud connection was configured yet.&lt;/p&gt;&lt;p&gt;Please configure one by clicking on the tray icon!&lt;/p&gt;</source>
@@ -274,83 +264,83 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="201"/>
         <source>&lt;p&gt;No server connection has been configured for this ownCloud client.&lt;/p&gt;&lt;p&gt;Please right click on the ownCloud system tray icon and select &lt;i&gt;Configure&lt;/i&gt; to connect this client to an ownCloud server.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Pro tento ownCloud nebylo nastaveno žádné serverové spojení.&lt;/p&gt;&lt;p&gt;Klikněte pravým tlačítkem na ikonu ownCloud v systémové části panelu a vyberte &lt;i&gt;Nastavit&lt;/i&gt; pro připojení klienta k serveru ownCloud.&lt;/p&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="236"/>
         <source>&lt;p&gt;The ownCloud at %1 could not be reached.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;ownCloud na %1 je nedosažitelný.&lt;/p&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="237"/>
         <source>&lt;p&gt;The detailed error message is&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Podrobnosti chybového hlášení&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="239"/>
         <source>&lt;p&gt;Please check your configuration by clicking on the tray icon.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Kliknutím na ikonu v systémové části panelu ověřte Vaše nastavení.&lt;/p&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="241"/>
         <source>ownCloud Connection Failed</source>
-        <translation>Připojení k ownCloud selhalo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="269"/>
         <location filename="../src/mirall/application.cpp" line="276"/>
         <source>No ownCloud Connection</source>
-        <translation>Žádné připojení k ownCloud</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="270"/>
         <source>&lt;p&gt;Your ownCloud credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Vaše přihlašovací údaje ownCloud nejsou v pořádku.&lt;/p&gt;&lt;p&gt;Opravte je, prosím, spuštěním dialogu pro nastavení ze systémové části panelu!&lt;/p&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="277"/>
         <source>&lt;p&gt;Your ownCloud user name or password is not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Vaše uživatelské jméno, nebo heslo ownCloud, není v pořádku.&lt;/p&gt;&lt;p&gt;Opravte je, prosím, spuštěním dialogu pro nastavení ze systémové části panelu!&lt;/p&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="289"/>
         <source>ownCloud Sync Started</source>
-        <translation>Synchronizace ownCloud spuštěna</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="289"/>
         <source>Sync started for %1 configured sync folder(s).</source>
-        <translation>Synchronizace spuštěna pro %1 nastavené synchronizované složky.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="304"/>
         <source>Open ownCloud...</source>
-        <translation>Otevřít ownCloud...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="306"/>
         <source>Open status...</source>
-        <translation>Otevřít stav...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="308"/>
         <source>Add folder...</source>
-        <translation>Přidat složku...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="310"/>
         <source>Configure...</source>
-        <translation>Nastavit...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="312"/>
         <source>Configure proxy...</source>
-        <translation>Nastavit proxy...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="314"/>
         <source>Quit</source>
-        <translation>Ukončit</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>open folder %1</source>
@@ -359,118 +349,115 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="345"/>
         <source>Managed Folders:</source>
-        <translation>Spravované složky:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="578"/>
         <source>Confirm Folder Remove</source>
-        <translation>Potvrdit odstranění složky</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="579"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
-        <translation>Opravdu si přejete odstranit odesílací složku &lt;i&gt;%1&lt;/i&gt;?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="613"/>
         <source>Undefined Folder State</source>
-        <translation>Nedefinovatelný stav složky</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="616"/>
         <source>The folder waits to start syncing.</source>
-        <translation>Složka  vyčkává na spuštění synchronizace.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="619"/>
         <location filename="../src/mirall/application.cpp" line="753"/>
         <source>Sync is running.</source>
-        <translation>Synchronizace probíhá.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="622"/>
         <location filename="../src/mirall/application.cpp" line="758"/>
         <source>Last Sync was successful.</source>
-        <translation>Poslední synchronizace byla úspěšná.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="625"/>
         <location filename="../src/mirall/application.cpp" line="764"/>
         <source>Syncing Error.</source>
-        <translation>Chyba synchronizace.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="628"/>
         <location filename="../src/mirall/application.cpp" line="770"/>
         <source>Setup Error.</source>
-        <translation>Chyba nastavení.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="631"/>
         <location filename="../src/mirall/application.cpp" line="773"/>
         <source>Undefined Error State.</source>
-        <translation>Nedefinovatelná chyba.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="635"/>
         <source>Folder information</source>
-        <translation>Informace o složce</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="650"/>
         <source>Unknown</source>
-        <translation>Neznámý</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="652"/>
         <source>Changed files:
 </source>
-        <translation>Změněné soubory:
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="654"/>
         <source>Added files:
 </source>
-        <translation>Přidané soubory:
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="656"/>
         <source>New files in the server, or files deleted locally:
 </source>
-        <translation>Nové soubory na serveru, nebo místní soubory, které byly odstraněny:
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="683"/>
         <source>Sync Running</source>
-        <translation>Synchronizace probíhá</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="684"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>Probíhá operace synchronizace.&lt;br/&gt;Přejete si ji přerušit?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="746"/>
         <source>Undefined State.</source>
-        <translation>Nedefinovatelný stav.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="749"/>
         <source>Waits to start syncing.</source>
-        <translation>Vyčkává na spuštění synchronizace.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="778"/>
         <source>Sync is paused.</source>
-        <translation>Synchronizace pozastavena.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="794"/>
         <source>No sync folders configured.</source>
-        <translation>Nejsou nastaveny žádné synchronizované složky.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -478,17 +465,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="174"/>
         <source>CSync create failed.</source>
-        <translation>CSync vytvoření selhalo.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="210"/>
         <source>CSync failed to create a lock file.</source>
-        <translation>CSync nelze vytvořit soubor zámku.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="213"/>
         <source>CSync failed to load the state db.</source>
-        <translation>CSync nelze načíst databázi stavu.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>The system time between the local machine and the server differs too much. Please use a time syncronization service (ntp) on both machines.</source>
@@ -497,17 +484,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="216"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
-        <translation>Systémový čas na klientu je rozdílný od systémového času serveru. Použijte, prosím, službu synchronizace času (NTP) na na serveru i klientu, aby byl čas na obou strojích stejný.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="221"/>
         <source>CSync could not detect the filesystem type.</source>
-        <translation>CSync nelze detekovat typ souborového systému.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="224"/>
         <source>CSync got an error while processing internal trees.</source>
-        <translation>CSync obdrželo chybu při zpracování vnitřních stromů.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please create it and try again.&lt;/p&gt;</source>
@@ -516,37 +503,37 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="227"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Cílový adresář %1 neexistuje.&lt;/p&gt;&lt;p&gt;Zkontrolujte, prosím, nastavení synchronizace.&lt;/p&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="233"/>
         <source>&lt;p&gt;The ownCloud plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Modul CSync pro ownCloud nelze načíst .&lt;br/&gt;Ověřte, prosím, instalaci!&lt;/p&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="237"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
-        <translation>Do místního souborového systému nelze zapisovat. Ověřte, prosím, práva.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="241"/>
         <source>A remote file can not be written. Please check the remote access.</source>
-        <translation>Vzdálený soubor nelze zapsat. Ověřte prosím vzdálený přístup.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="244"/>
         <source>An internal error number %1 happend.</source>
-        <translation>Nastala vnitřní chyba číslo %1.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="260"/>
         <source>CSync failed to reach the host. Either host or proxy settings are not valid.</source>
-        <translation>CSync nemůže kontaktovat hostitele. Hostitel, nebo nastavení proxy, jsou neplatné.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="263"/>
         <source>CSync Update failed.</source>
-        <translation>CSync aktualizace selhala.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>The local filesystem has directories which are write protected.
@@ -558,35 +545,33 @@ Please make sure that all directories are writeable.</source>
         <location filename="../src/mirall/csyncthread.cpp" line="277"/>
         <source>CSync encountered an error while examining the file system.
 Syncing is not possible.</source>
-        <translation>CSync narazil na chybu při kontrole souborového systému.
-Synchronizace není možná.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="280"/>
         <source>CSync update generated a strange instruction.
 Please write a bug report.</source>
-        <translation>CSync update vygeneroval divné instrukce.
-Vytvořte prosím chybové hlášení.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="283"/>
         <source>Local filesystem problems. Better disable Syncing and check.</source>
-        <translation>Problémy s místním souborovým systémem. Raději zakažte synchronizaci a zkontrolujte jej.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="288"/>
         <source>The local filesystem has %1 write protected directories.That can hinder successful syncing.&lt;p/&gt;Please make sure that all local directories are writeable.</source>
-        <translation>Místní souborový systém má %1 adresářů pouze pro čtení. Toto může zabránit úspěšné synchronizaci.&lt;p/&gt;Ujistěte se, prosím, že všechny místní složky jsou zapisovatelné.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="308"/>
         <source>CSync reconcile failed.</source>
-        <translation>CSync reconcile selhalo.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="312"/>
         <source>CSync propagate failed.</source>
-        <translation>CSync propagate selhalo.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -594,7 +579,7 @@ Vytvořte prosím chybové hlášení.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="335"/>
         <source>mydomain.org</source>
-        <translation>mojedomena.org</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -602,7 +587,7 @@ Vytvořte prosím chybové hlášení.</translation>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="152"/>
         <source>Remote path: %1</source>
-        <translation>Vzdálená cesta: %1</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -610,7 +595,7 @@ Vytvořte prosím chybové hlášení.</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="460"/>
         <source>%1 Folder Wizard</source>
-        <translation>%1 průvodce složkou</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -618,37 +603,37 @@ Vytvořte prosím chybové hlášení.</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="74"/>
         <source>No local directory selected!</source>
-        <translation>Nebyl zvolen místní adresář.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="90"/>
         <source>The local path %1 is already an upload folder.&lt;br/&gt;Please pick another one!</source>
-        <translation>Cesta %1 je již nastavena jako adresář pro odesílání.&lt;br/&gt;Zvolte, prosím, jinou!</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="94"/>
         <source>An already configured folder is contained in the current entry.</source>
-        <translation>Nastavená složka je již obsažena v aktuálním záznamu.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="99"/>
         <source>An already configured folder contains the currently entered directory.</source>
-        <translation>Nastavená složka již obsahuje právě zadaný adresář.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="109"/>
         <source>The alias can not be empty. Please provide a descriptive alias word.</source>
-        <translation>Alias nemůže být prázdný. Zadejte prosím slovo, kterým složku popíšete.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="120"/>
         <source>&lt;br/&gt;The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
-        <translation>&lt;br/&gt;Alias &lt;i&gt;%1&lt;/i&gt; je již používán. Zvolte prosím jiný.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="141"/>
         <source>Select the source folder</source>
-        <translation>Zvolte zdrojovou složku</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -656,42 +641,42 @@ Vytvořte prosím chybové hlášení.</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="216"/>
         <source>The folder is not available on your ownCloud.&lt;br/&gt;Click to let mirall create it.</source>
-        <translation>Složka není k dispozici ve Vašem ownCloud.&lt;br/&gt;Kliknutím ji nechte Mirallem vytvořit.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="241"/>
         <source>Folder on ownCloud was successfully created.</source>
-        <translation>Složka v ownCloud byla úspěšně vytvořena.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="244"/>
         <source>Failed to create the folder on ownCloud.&lt;br/&gt;Please check manually.</source>
-        <translation>Nelze vytvořit složku v ownCloud.&lt;br/&gt;Zkontrolujte jej, prosím, ručně.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="264"/>
         <source>Better do not use the remote root directory.&lt;br/&gt;If you do, you can &lt;b&gt;not&lt;/b&gt; mirror another local folder.</source>
-        <translation>Nepoužívejte vzdálený kořenový adresář.&lt;br/&gt;Pokud tak učiníte, &lt;b&gt;nebudete&lt;/b&gt; moci zrcadlit jiný místní adresář.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="312"/>
         <source>to your &lt;a href=&quot;%1&quot;&gt;ownCloud&lt;/a&gt; (version %2)</source>
-        <translation>do Vašeho &lt;a href=&quot;%1&quot;&gt;ownCloud&lt;/a&gt; (verze %2)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="322"/>
         <source>no configured ownCloud found!</source>
-        <translation>nenalezen žádný nastavený ownCloud!</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="323"/>
         <source>Your ownCloud could not be reached:&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>Váš ownCloud je nedosažitelný:&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="390"/>
         <source>Select the target folder</source>
-        <translation>Zvolte cílovou složku</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -699,58 +684,58 @@ Vytvořte prosím chybové hlášení.</translation>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="122"/>
         <source>Log Output</source>
-        <translation>Zaznamenat výstup</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="134"/>
         <source>&amp;Search: </source>
-        <translation>&amp;Hledat: </translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="142"/>
         <source>&amp;Find</source>
-        <translation>Na&amp;jít</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="160"/>
         <source>Clear</source>
-        <translation>Vyčistit</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="161"/>
         <source>Clear the log display.</source>
-        <translation>Vyčistit záznam.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="167"/>
         <source>S&amp;ave</source>
-        <translation>&amp;Uložit</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="168"/>
         <source>Save the log file to a file on disk for debugging.</source>
-        <translation>Uložit soubor záznamu na disk pro ladění.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="206"/>
         <location filename="../src/mirall/logbrowser.cpp" line="263"/>
         <source>Error</source>
-        <translation>Chyba</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="207"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;Soubor &apos;%1&apos;&lt;br/&gt;nelze otevřít pro zápis.&lt;br/&gt;&lt;br/&gt;Výstup záznamu &lt;b&gt;nelze&lt;/b&gt; uložit.&lt;/nobr&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="253"/>
         <source>Save log file</source>
-        <translation>Uložit log</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="263"/>
         <source>Could not write to log file </source>
-        <translation>Nemohu zapisovat do log souboru</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -758,12 +743,12 @@ Vytvořte prosím chybové hlášení.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="245"/>
         <source>john</source>
-        <translation>john</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="246"/>
         <source>secret</source>
-        <translation>tajné</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -771,17 +756,17 @@ Vytvořte prosím chybové hlášení.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="291"/>
         <source>ftp.mydomain.org</source>
-        <translation>ftp.mojedomena.org</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="292"/>
         <source>john</source>
-        <translation>john</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="293"/>
         <source>secret</source>
-        <translation>tajné</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -789,12 +774,12 @@ Vytvořte prosím chybové hlášení.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="78"/>
         <source>john</source>
-        <translation>john</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="79"/>
         <source>secret</source>
-        <translation>tajné</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -802,89 +787,88 @@ Vytvořte prosím chybové hlášení.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="70"/>
         <source>%1 Connection Wizard</source>
-        <translation>%1 Průvodce spojením</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="129"/>
         <source>Trying to connect to ownCloud at %1...</source>
-        <translation>Pokouším se spojit s ownCloud na %1...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="161"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: ownCloud version %2 (%3)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;Úspěšné spojení s %1: ownCloud verze %2 (%3)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="172"/>
         <source>&lt;font color=&quot;red&quot;&gt;Failed to connect to ownCloud!&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;red&quot;&gt;Selhalo spojení s ownCloud!&lt;/font&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="173"/>
         <source>Error: &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>Chyba: &lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="258"/>
         <source>Starting script owncloud-admin...</source>
-        <translation>Spouštím skript správce ownCloud...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="309"/>
         <source>&lt;font color=&quot;red&quot;&gt;Installation of ownCloud failed!&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;red&quot;&gt;Instalace ownCloud selhala!&lt;/font&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="314"/>
         <source>&lt;font color=&quot;green&quot;&gt;Installation of ownCloud succeeded!&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;Instalace ownCloud byla úspěšná!&lt;/font&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="347"/>
         <source>The owncloud admin script can not be found.
 Setup can not be done.</source>
-        <translation>Skript správce ownCloud nelze nalézt.
-Nastavení nelze provést.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="388"/>
         <source>Creation of remote folder %1 could not be started.</source>
-        <translation>Vytváření vzdálené složky %1 nemohlo být zahájeno.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="412"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation>Vzdálená složka %1 byla úspěšně vytvořena.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="414"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>Vzdálená složka %1 již existuje. Spojuji ji pro synchronizaci.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="416"/>
         <source>The folder creation resulted in HTTP error code %d</source>
-        <translation>Vytváření složky vyústilo v chybový kód HTTP %d</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="437"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation>Bylo nastaveno synchronizované spojení z %1 ke vzdálenému adresáři %2.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="442"/>
         <source>Congratulations, your ownCloud can be connected!</source>
-        <translation>Gratulujeme, k Vášemu ownCloud se lze připojit.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="444"/>
         <source>Press Finish to permanently accept this connection.</source>
-        <translation>Stiskněte Dokončit pro trvalé přijmutí tohoto spojení.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="447"/>
         <source>An ownCloud connection could not be established. Please check again.</source>
-        <translation>Nelze navázat spojení s ownCloud. Zkontrolujte jej, prosím a zopakujte.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Skipping automatic setup of sync folders as there are already sync folders.</source>
@@ -897,12 +881,12 @@ Nastavení nelze provést.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="367"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>Místní synchronizovaná složka %1 existuje, nastavuji ji pro synchronizaci.&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="369"/>
         <source>Creating local sync folder %1... </source>
-        <translation>Vytvářím místní synchronizovanou složku %1... </translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Creating local sync folder %1</source>
@@ -911,12 +895,12 @@ Nastavení nelze provést.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="372"/>
         <source>ok</source>
-        <translation>OK</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="374"/>
         <source>failed.</source>
-        <translation>selhalo.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Start Creation of remote folder %1 failed.</source>
@@ -929,7 +913,7 @@ Nastavení nelze provést.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="100"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Místní synchronizovaná složka %1 byla vytvořena úspěšně!&lt;/b&gt;&lt;/font&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>The remote folder %1 already exists. Automatic sync setup is skipped for security reasons. Please configure your sync folder manually.</source>
@@ -938,12 +922,12 @@ Nastavení nelze provést.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="418"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Vytvoření vzdálené složky selhalo, pravděpodobně z důvodu neplatných přihlašovacích údajů.&lt;/font&gt;&lt;br/&gt;Vraťte se, prosím, zpět a zkontrolujte je.&lt;/p&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="424"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation>Vytváření vzdálené složky %1 selhalo s chybou &lt;tt&gt;%2&lt;/tt&gt;.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -951,7 +935,7 @@ Nastavení nelze provést.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="416"/>
         <source>Congratulations! Your &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;new ownCloud&lt;/a&gt; is now up and running!</source>
-        <translation>Gratulujeme! Váš &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;nový ownCloud&lt;/a&gt; je nyní funkční!</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -959,7 +943,7 @@ Nastavení nelze provést.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="190"/>
         <source>http://owncloud.mydomain.org</source>
-        <translation>http://owncloud.mojedomena.org</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -967,17 +951,17 @@ Nastavení nelze provést.</translation>
     <message>
         <location filename="../src/mirall/proxydialog.cpp" line="31"/>
         <source>Hostname of proxy server</source>
-        <translation>Adresa proxy serveru</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.cpp" line="32"/>
         <source>Username for proxy server</source>
-        <translation>Uživatelské jméno pro proxy server</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.cpp" line="33"/>
         <source>Password for proxy server</source>
-        <translation>Heslo pro proxy server</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -985,50 +969,50 @@ Nastavení nelze provést.</translation>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="28"/>
         <source>SSL Connection</source>
-        <translation>SSL připojení</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="89"/>
         <source>Warnings about current SSL Connection:</source>
-        <translation>Varování v aktuálním SSL spojení:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="125"/>
         <source>with Certificate %1</source>
-        <translation>s certifikátem %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="129"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="143"/>
         <source>Organization: %1</source>
-        <translation>Organizace: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="130"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="144"/>
         <source>Unit: %1</source>
-        <translation>Jednotka: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="131"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="145"/>
         <source>Country: %1</source>
-        <translation>Země: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="135"/>
         <source>Effective Date: %1</source>
-        <translation>Datum účinnosti: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="136"/>
         <source>Expiry Date: %1</source>
-        <translation>Datum vypršení platnosti: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="140"/>
         <source>Issuer: %1</source>
-        <translation>Vydavatel: %1</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1036,42 +1020,42 @@ Nastavení nelze provést.</translation>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="230"/>
         <source>Pause</source>
-        <translation>Pozastavit</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="232"/>
         <source>Resume</source>
-        <translation>Obnovit</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="401"/>
         <source>Checking ownCloud connection...</source>
-        <translation>Ověřuji spojení ownCloud...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="406"/>
         <source>No ownCloud connection configured.</source>
-        <translation>Žádné spojení s ownCloud nebylo nastaveno.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="428"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, ownCloud %3</source>
-        <translation>Připojeno k &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, ownCloud %3</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="429"/>
         <source>Version: %1</source>
-        <translation>Verze: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="442"/>
         <source>unknown problem.</source>
-        <translation>neznámý problém.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="445"/>
         <source>&lt;p&gt;Failed to connect to ownCloud: &lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Připojení k ownCloud selhalo: &lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1106,17 +1090,17 @@ Nastavení nelze provést.</translation>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="115"/>
         <source>Client Version Check</source>
-        <translation>Ověření verze klienta</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="117"/>
         <source>&lt;p&gt;A new version of the ownCloud Client is available.</source>
-        <translation>&lt;p&gt;Nová verze klienta ownCloud je k dispozici.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="118"/>
         <source>%1 is available. The installed version is %3.&lt;p/&gt;&lt;p&gt;For more information see &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</source>
-        <translation>%1 je k dispozici. Instalovaná verze je %3.&lt;p/&gt;&lt;p&gt;Více informací na  &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1124,7 +1108,7 @@ Nastavení nelze provést.</translation>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="288"/>
         <source>The CSync thread terminated.</source>
-        <translation>Vlákno CSync přerušeno.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1132,12 +1116,12 @@ Nastavení nelze provést.</translation>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="331"/>
         <source>ownCloud Password Required</source>
-        <translation>Vyžadováno heslo ownCloud</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="332"/>
         <source>Please enter your ownCloud password:</source>
-        <translation>Zadejte prosím své ownCloud heslo:</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1145,17 +1129,17 @@ Nastavení nelze provést.</translation>
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="14"/>
         <source>Form</source>
-        <translation>Formulář</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="29"/>
         <source>ownCloud Credentials</source>
-        <translation>Přihlašovací údaje k ownCloud</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="51"/>
         <source>Provide ownCloud Credentials</source>
-        <translation>Zadejte přihlašovací údaje k ownCloud</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="57"/>
@@ -1166,13 +1150,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Please enter the username and password for your ownCloud Instance. &lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt; color:#585858;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;If you do not wish to store the credentials on your local machine, check the box. ownCloud will prompt you for your password every time the client starts.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Zadejte prosím uživatelské jméno a heslo Vaší instance ownCloud. &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt; color:#585858;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Pokud si nepřejete ukládat přístupové údaje na Vašem místním stroji, zaškrtněte tlačítko. ownCloud se bude ptát na heslo pokaždé při spuštění klienta.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1187,17 +1165,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="84"/>
         <source>ownCloud-User:</source>
-        <translation>Uživatel ownCloud:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="98"/>
         <source>Password:</source>
-        <translation>Heslo:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="115"/>
         <source>Do not store password on local machine.</source>
-        <translation>Neukládat heslo na počítači.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>john</source>
@@ -1213,17 +1191,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="14"/>
         <source>Form</source>
-        <translation>Formulář</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="29"/>
         <source>FTP Access to your Webaccount:</source>
-        <translation>Přístup FTP na Váš webový účet:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="51"/>
         <source>FTP Details and Credentials</source>
-        <translation>Podrobnosti FTP a přihlašovací údaje</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="57"/>
@@ -1232,26 +1210,22 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;The details here are used to install the owncloud data on your web space which is accessible over ftp. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Zde uvedené informace budou použity při instalaci ownCloud ve Vašem webovém prostoru prostřednictvím FTP. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="79"/>
         <source>FTP-URL:</source>
-        <translation>FTP-URL:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="93"/>
         <source>FTP-User:</source>
-        <translation>FTP-Uživatel:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="107"/>
         <source>Password:</source>
-        <translation>Heslo:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>ftp.mydomain.org</source>
@@ -1267,74 +1241,74 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="14"/>
         <source>Form</source>
-        <translation>Formulář</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="31"/>
         <source>Create the ownCloud Connection</source>
-        <translation>Vytvořit spojení ownCloud</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="39"/>
         <source>Server &amp;address:</source>
-        <translation>&amp;Adresa serveru:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="51"/>
         <source>https://</source>
-        <translation>https://</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="58"/>
         <source>Enter the url of the ownCloud you want to connect to (without http or https).</source>
-        <translation>Zadejte url ownCloud, ke které si přejete se připojit (bez http, či https).</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="71"/>
         <source>Use &amp;secure connection</source>
-        <translation>Použít &amp;bezpečné spojení</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="84"/>
         <source>CheckBox</source>
-        <translation>Zaškrtávací tlačítko</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="99"/>
         <source>&amp;Username:</source>
-        <translation>&amp;Uživatelské jméno:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="109"/>
         <source>Enter the ownCloud username.</source>
-        <translation>Zadejte uživatelské jméno ownCloud.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="116"/>
         <source>&amp;Password:</source>
-        <translation>&amp;Heslo:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="126"/>
         <source>Enter the ownCloud password.</source>
-        <translation>Zadejte heslo ownCloud.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="141"/>
         <source>Do not allow the local storage of the password.</source>
-        <translation>Nepovolit místní uložení hesla.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="144"/>
         <source>&amp;do not store Password on local machine.</source>
-        <translation>&amp;neukládat heslo na místním stroji.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="153"/>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="181"/>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="188"/>
         <source>TextLabel</source>
-        <translation>Textový štítek</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1342,12 +1316,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudwizardresultpage.ui" line="14"/>
         <source>Form</source>
-        <translation>Formulář</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardresultpage.ui" line="43"/>
         <source>Result</source>
-        <translation>Výsledek</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardresultpage.ui" line="65"/>
@@ -1356,17 +1330,13 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;This page shows the status of the connection.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Tato stránka zobrazuje stav spojení.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardresultpage.ui" line="27"/>
         <location filename="../src/mirall/owncloudwizardresultpage.ui" line="85"/>
         <source>TextLabel</source>
-        <translation>TextLabel</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1374,22 +1344,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="14"/>
         <source>Form</source>
-        <translation>Formulář</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="29"/>
         <source>Create an ownCloud Connection</source>
-        <translation>Vytvořit spojení s ownCloud</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="51"/>
         <source>Select the ownCloud you want to connect to</source>
-        <translation>Vyberte ownCloud, se kterým si přejete se spojit</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="63"/>
         <source>connect my ownCloud</source>
-        <translation>připojit na můj ownCloud</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="89"/>
@@ -1399,17 +1369,12 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Specify the ownCloud you want to connect to.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Enter the web address of your ownCloud server below.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Určete ownCloud, ke kterému si přejete se připojit.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Zadejte níže URL Vašeho serveru ownCloud.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="110"/>
         <source>ownCloud-Link:</source>
-        <translation>Odkaz ownCloud:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1428,12 +1393,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="120"/>
         <source>Note: To specify an SSL secured connection, start the url with https.</source>
-        <translation>Poznámka: Pro určení zabezpečeného SSL spojení zadejte url s https.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="133"/>
         <source>create a new ownCloud</source>
-        <translation>vytvořit nový ownCloud</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="156"/>
@@ -1444,13 +1409,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Select if you want to create a new ownCloud either on the local machine or on your server. &lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#585858;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;This wizard will guide you through all neccessary steps.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Zvolte tuto možnost, pokud si přejete ownCloud vytvořit buďto na místním počítači nebo serveru. &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#585858;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Tento pomocník Vás provede všemi nezbytnými kroky.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>http://owncloud.mydomain.org</source>
@@ -1471,32 +1430,32 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/theme.cpp" line="34"/>
         <location filename="../src/mirall/theme.cpp" line="52"/>
         <source>Status undefined</source>
-        <translation>Nedefinovaný stav</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="37"/>
         <source>Waiting to start sync</source>
-        <translation>Čekám, až začne synchronizace</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="40"/>
         <source>Sync is running</source>
-        <translation>Synchronizace běží</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="43"/>
         <source>Sync Success</source>
-        <translation>Synchronizace úspěšná</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="46"/>
         <source>Sync Error - Click info button for details.</source>
-        <translation>Chyba synchronizace - klikněte na informační tlačítko pro podrobnosti.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="49"/>
         <source>Setup Error</source>
-        <translation>Chyba nastavení</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1504,7 +1463,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="36"/>
         <source>ownCloud</source>
-        <translation>ownCloud</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1512,52 +1471,52 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="14"/>
         <source>Proxy Settings</source>
-        <translation>Nastavení proxy</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="26"/>
         <source>Configure Proxies to access your ownCloud</source>
-        <translation>Nastavit proxy pro přístup k Vašemu ownCloud</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="43"/>
         <source>No Proxy</source>
-        <translation>Bez proxy</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="53"/>
         <source>Use system proxy</source>
-        <translation>Použít systémové proxy</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="60"/>
         <source>Manual proxy configuration</source>
-        <translation>Manuální nastavení proxy</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="90"/>
         <source>User</source>
-        <translation>Uživatel</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="116"/>
         <source>Password</source>
-        <translation>Heslo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="142"/>
         <source>Port</source>
-        <translation>Port</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="149"/>
         <source>Host</source>
-        <translation>Hostitel</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="172"/>
         <source>Proxy server requires password</source>
-        <translation>Proxy vyžaduje heslo</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1565,12 +1524,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrorsdialog.ui" line="14"/>
         <source>Form</source>
-        <translation>Formulář</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/sslerrorsdialog.ui" line="25"/>
         <source>Check if you want to continue via SSL and trust the shown certificates.</source>
-        <translation>Zvolte, pokud chcete pokračovat prostřednictvím SSL a věřit zobrazeným certifikátům.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Check if you want t continue via SSL and trust the shown certificates.</source>
@@ -1579,7 +1538,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrorsdialog.ui" line="44"/>
         <source>SSL Connection</source>
-        <translation>SSL připojení</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1587,52 +1546,52 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="14"/>
         <source>Form</source>
-        <translation>Formulář</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="25"/>
         <source>Sync Directory Status</source>
-        <translation>Stav synchronizace adresáře</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="41"/>
         <source>Add Sync...</source>
-        <translation>Přidat synchronizaci...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="48"/>
         <source>Remove...</source>
-        <translation>Odstranit...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="58"/>
         <source>Fetch...</source>
-        <translation>Stáhnout...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="65"/>
         <source>Push...</source>
-        <translation>Odeslat...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="72"/>
         <source>Pause</source>
-        <translation>Pozastavit</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="79"/>
         <source>Info...</source>
-        <translation>Info...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="103"/>
         <source>TextLabel</source>
-        <translation>TextLabel</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="132"/>
         <source>Close</source>
-        <translation>Zavřít</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>
