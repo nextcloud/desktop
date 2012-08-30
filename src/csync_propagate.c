@@ -378,6 +378,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     } else {
       if( tstat->md5 ) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Target MD5 sum is %s", tstat->md5 );
+        if(st->md5) SAFE_FREE(st->md5);
         st->md5 = c_strdup(tstat->md5 );
       } else {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "MD5 sum is empty");
@@ -1117,6 +1118,7 @@ static int _csync_correct_id(CSYNC *ctx) {
                 CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to find node");
               } else {
                   tfs = c_rbtree_node_data(node);
+                  if(tfs->md5) SAFE_FREE(tfs->md5);
                   tfs->md5 = _get_md5(ctx, path);
                   if( tfs->instruction == CSYNC_INSTRUCTION_NONE ) {
                       /* set instruction for the statedb merger */
@@ -1141,6 +1143,20 @@ static int _csync_correct_id(CSYNC *ctx) {
           }
       }
     }
+
+    /* Free the seen_dirs list */
+
+    if( seen_dirs ) {
+        c_list_t *walk1 = NULL;
+
+        for (walk1 = c_list_first(seen_dirs); walk1 != NULL; walk1 = c_list_next(walk1)) {
+            char *data = NULL;
+
+            data = (char*) walk1->data;
+            SAFE_FREE(data);
+        }
+    }
+    c_list_free(seen_dirs);
     return 0;
 }
 
