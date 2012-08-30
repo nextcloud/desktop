@@ -148,7 +148,6 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             /* directory, remote and file not found in statedb */
             st->instruction = CSYNC_INSTRUCTION_NEW;
         }
-        SAFE_FREE(tmp->md5);
     } else {
         st->instruction = CSYNC_INSTRUCTION_NEW;
     }
@@ -157,6 +156,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   }
 
 out:
+  if( tmp) SAFE_FREE(tmp->md5);
   SAFE_FREE(tmp);
   st->inode = fs->inode;
   st->mode = fs->mode;
@@ -167,9 +167,9 @@ out:
   st->nlink = fs->nlink;
   st->type = type;
   st->md5 = NULL;
-  if( fs->md5 )
+  if( fs->md5 ) {
       st->md5  = c_strdup(fs->md5);
-
+  }
   st->phash = h;
   st->pathlen = len;
   memcpy(st->path, (len ? path : ""), len + 1);
@@ -432,6 +432,8 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
     if( ! do_read_from_db )
         csync_vio_file_stat_destroy(fs);
+    else
+        SAFE_FREE(fs->md5);
 
     if (rc < 0) {
       csync_vio_closedir(ctx, dh);
