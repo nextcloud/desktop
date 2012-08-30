@@ -223,6 +223,13 @@ void Application::slotOwnCloudFound( const QString& url, const QString& versionS
     disconnect( ownCloudInfo::instance(),SIGNAL(noOwncloudFound(QNetworkReply*)),
                 this, SLOT(slotNoOwnCloudFound(QNetworkReply*)));
 
+    if( version.startsWith("4.0") ) {
+        QMessageBox::warning(0, tr("ownCloud Server Mismatch"),
+                             tr("<p>The configured server for this client is too old.</p>"
+                                "<p>Please update to the latest ownCloud server and restart the client.</p>"));
+        return;
+    }
+
     QTimer::singleShot( 0, this, SLOT( slotCheckAuthentication() ));
 }
 
