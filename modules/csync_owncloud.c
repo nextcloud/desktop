@@ -135,10 +135,10 @@ struct dav_session_s {
     char *proxy_user;
     char *proxy_pwd;
 
-    time_t   prev_delta;
-    time_t   time_delta;     /* The time delta to use.                  */
+    long int prev_delta;
+    long int time_delta;     /* The time delta to use.                  */
     long int time_delta_sum; /* What is the time delta average?         */
-    int      time_delta_cnt; /* How often was the server time gathered? */
+    long int time_delta_cnt; /* How often was the server time gathered? */
 };
 
 /* The list of properties that is fetched in PropFind on a collection */
@@ -704,7 +704,7 @@ static csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
     }
 
     /* Correct the mtime of the file with the server time delta */
-    lfs->mtime = res->modtime;
+    lfs->mtime = res->modtime - dav_session.time_delta;
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
     lfs->size  = res->size;
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
