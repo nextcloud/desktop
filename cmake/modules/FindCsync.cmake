@@ -6,7 +6,7 @@ ENDIF()
 
 IF(EXISTS "${CMAKE_SOURCE_DIR}/../buildcsync/src/")
   IF( WIN32 )
-     SET(CSYNC_LIBRARY ${CMAKE_SOURCE_DIR}/../buildcsync/src/libcsync.dll)
+     SET(CSYNC_LIBRARY ${CMAKE_SOURCE_DIR}/../win/buildcsync/src/libcsync.dll)
   ELSE( WIN32 )
      SET(CSYNC_LIBRARY ${CMAKE_SOURCE_DIR}/../buildcsync/src/libcsync.so)
   ENDIF( WIN32 )
