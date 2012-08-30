@@ -498,7 +498,9 @@ char *csync_statedb_get_uniqId( CSYNC *ctx, uint64_t jHash, csync_vio_file_stat_
     c_strlist_t *result = NULL;
     char *stmt = NULL;
 
-    stmt = sqlite3_mprintf("SELECT md5 FROM metadata WHERE phash='%llu' AND modtime=%llu", jHash, buf->mtime);
+    stmt = sqlite3_mprintf("SELECT md5 FROM metadata WHERE phash='%llu' AND modtime=%lu", jHash, buf->mtime);
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "STATEMENT: %s", stmt);
+
     result = csync_statedb_query(ctx, stmt);
     sqlite3_free(stmt);
     if (result == NULL) {
