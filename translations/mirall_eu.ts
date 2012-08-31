@@ -28,7 +28,11 @@
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;installs the ownCloud on this computer. Other people will not be able to access your data by default.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EU&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;ownCloud ordenagailu honetan instalatzen du. Beste pertsonek ezin izango dute zure datuak ikusi konfigurazio lehentsiarekin.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="132"/>
@@ -44,7 +48,13 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;installs ownCloud on a domain you control. You need the FTP credentials for the installation.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#585858;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;This ownCloud will be accessible from the internet.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EU&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;ownCloud zure domeinu batean instalatzen du. Instalazioa burutzeko FTP krednetzialakbeharko dituzu.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#585858;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;ownCloud interneten bidez eskuragarri egongo da.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="177"/>
@@ -235,17 +245,17 @@ p, li { white-space: pre-wrap; }
         <translation>sortu</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="182"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="177"/>
         <source>root</source>
         <translation>erroa</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="183"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="178"/>
         <source>/home/local</source>
         <translation>/home/local</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="184"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="179"/>
         <source>scp://john@host.com//myfolder</source>
         <translation>scp://jon@host.com//nirefitxategia</translation>
     </message>
@@ -264,81 +274,91 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="201"/>
         <source>&lt;p&gt;No server connection has been configured for this ownCloud client.&lt;/p&gt;&lt;p&gt;Please right click on the ownCloud system tray icon and select &lt;i&gt;Configure&lt;/i&gt; to connect this client to an ownCloud server.&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Ez da ownCloud bezero honetarako zerbitzari baterako konexiorik konfiguratu.&lt;/p&gt;&lt;p&gt;Mesedez klikatu eskubiko botoiarekin erretiluko ikonoan eta hautatu &lt;i&gt;Konfiguratu&lt;/i&gt; bezero hau ownCloud zerbitzari batetara konektatzeko.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="227"/>
+        <source>ownCloud Server Mismatch</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="236"/>
+        <location filename="../src/mirall/application.cpp" line="228"/>
+        <source>&lt;p&gt;The configured server for this client is too old.&lt;/p&gt;&lt;p&gt;Please update to the latest ownCloud server and restart the client.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="243"/>
         <source>&lt;p&gt;The ownCloud at %1 could not be reached.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ezin da %1 ko onwCloud-ra iritsi.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="237"/>
+        <location filename="../src/mirall/application.cpp" line="244"/>
         <source>&lt;p&gt;The detailed error message is&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Zehaztutako errore mezua:&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="239"/>
+        <location filename="../src/mirall/application.cpp" line="246"/>
         <source>&lt;p&gt;Please check your configuration by clicking on the tray icon.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Mezedez begiratu zure konfigurazioa erretilu ikonoak klik eginez&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="241"/>
+        <location filename="../src/mirall/application.cpp" line="248"/>
         <source>ownCloud Connection Failed</source>
         <translation>ownCloud konexioak huts egin du</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="269"/>
         <location filename="../src/mirall/application.cpp" line="276"/>
+        <location filename="../src/mirall/application.cpp" line="283"/>
         <source>No ownCloud Connection</source>
         <translation>Ez dago ownCloudekin konexiorik</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="270"/>
-        <source>&lt;p&gt;Your ownCloud credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/mirall/application.cpp" line="277"/>
-        <source>&lt;p&gt;Your ownCloud user name or password is not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <source>&lt;p&gt;Your ownCloud credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Zure ownCloud kredentzialak ez dira zuzenak.&lt;/p&gt;&lt;p&gt;Mesedez zuzendu erretilutiko ikonotik konfigurazio elkarrizketa koadroa abiarazten!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="289"/>
+        <location filename="../src/mirall/application.cpp" line="284"/>
+        <source>&lt;p&gt;Your ownCloud user name or password is not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Zure ownCloud erabiltzaile izena edo pasahitza ez dira zuzenak.&lt;/p&gt;&lt;p&gt;Mesedez zuzendu erretilutiko ikonotik konfigurazio elkarrizketa koadroa abiarazten!&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="296"/>
         <source>ownCloud Sync Started</source>
         <translation>ownClouden sinkronizazioa hasi da</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="289"/>
+        <location filename="../src/mirall/application.cpp" line="296"/>
         <source>Sync started for %1 configured sync folder(s).</source>
-        <translation type="unfinished"/>
+        <translation>CSync konfiguratutako %1 karpetentzat hasi da.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="304"/>
+        <location filename="../src/mirall/application.cpp" line="311"/>
         <source>Open ownCloud...</source>
         <translation>Ireki ownCloud...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="306"/>
+        <location filename="../src/mirall/application.cpp" line="313"/>
         <source>Open status...</source>
         <translation>Ikusi egoera...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="308"/>
+        <location filename="../src/mirall/application.cpp" line="315"/>
         <source>Add folder...</source>
         <translation>Gehitu karpeta...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="310"/>
+        <location filename="../src/mirall/application.cpp" line="317"/>
         <source>Configure...</source>
         <translation>Konfiguratu...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="312"/>
+        <location filename="../src/mirall/application.cpp" line="319"/>
         <source>Configure proxy...</source>
         <translation>Konfiguratu proxya...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="314"/>
+        <location filename="../src/mirall/application.cpp" line="321"/>
         <source>Quit</source>
         <translation>Kendu</translation>
     </message>
@@ -347,118 +367,118 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="345"/>
+        <location filename="../src/mirall/application.cpp" line="352"/>
         <source>Managed Folders:</source>
         <translation>Kudeatutako karpetak:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="578"/>
+        <location filename="../src/mirall/application.cpp" line="585"/>
         <source>Confirm Folder Remove</source>
         <translation>Baieztatu karpetaren ezabatzea</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="579"/>
+        <location filename="../src/mirall/application.cpp" line="586"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>Ziur zaude  &lt;i&gt;%1&lt;/i&gt; karpeta ezabatu nahi duzula?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="613"/>
+        <location filename="../src/mirall/application.cpp" line="620"/>
         <source>Undefined Folder State</source>
         <translation>Definitu gabeko karpeta egoera.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="616"/>
+        <location filename="../src/mirall/application.cpp" line="623"/>
         <source>The folder waits to start syncing.</source>
         <translation>Karpeta sinkronizazioa hasteko zain dago.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="619"/>
-        <location filename="../src/mirall/application.cpp" line="753"/>
+        <location filename="../src/mirall/application.cpp" line="626"/>
+        <location filename="../src/mirall/application.cpp" line="760"/>
         <source>Sync is running.</source>
         <translation>Sinkronizazioa martxan da.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="622"/>
-        <location filename="../src/mirall/application.cpp" line="758"/>
+        <location filename="../src/mirall/application.cpp" line="629"/>
+        <location filename="../src/mirall/application.cpp" line="765"/>
         <source>Last Sync was successful.</source>
         <translation>Azkeneko sinkronizazioa ongi burutu zen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="625"/>
-        <location filename="../src/mirall/application.cpp" line="764"/>
+        <location filename="../src/mirall/application.cpp" line="632"/>
+        <location filename="../src/mirall/application.cpp" line="771"/>
         <source>Syncing Error.</source>
         <translation>Sinkronizazio errorea.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="628"/>
-        <location filename="../src/mirall/application.cpp" line="770"/>
+        <location filename="../src/mirall/application.cpp" line="635"/>
+        <location filename="../src/mirall/application.cpp" line="777"/>
         <source>Setup Error.</source>
         <translation>Konfigurazio errorea.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="631"/>
-        <location filename="../src/mirall/application.cpp" line="773"/>
+        <location filename="../src/mirall/application.cpp" line="638"/>
+        <location filename="../src/mirall/application.cpp" line="780"/>
         <source>Undefined Error State.</source>
         <translation>Definitu gabeko errore egoera.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="635"/>
+        <location filename="../src/mirall/application.cpp" line="642"/>
         <source>Folder information</source>
         <translation>Karpetaren informazioa</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="650"/>
+        <location filename="../src/mirall/application.cpp" line="657"/>
         <source>Unknown</source>
         <translation>Ezezaguna</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="652"/>
+        <location filename="../src/mirall/application.cpp" line="659"/>
         <source>Changed files:
 </source>
         <translation>Aldatutako fitxategiak:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="654"/>
+        <location filename="../src/mirall/application.cpp" line="661"/>
         <source>Added files:
 </source>
         <translation>Gehitutako fitxategiak:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="656"/>
+        <location filename="../src/mirall/application.cpp" line="663"/>
         <source>New files in the server, or files deleted locally:
 </source>
         <translation>Zerbitzariko fitxategi berriak, edo ezabtu diren bertakoak:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="683"/>
+        <location filename="../src/mirall/application.cpp" line="690"/>
         <source>Sync Running</source>
         <translation>Sinkronizazioa martxan da</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="684"/>
+        <location filename="../src/mirall/application.cpp" line="691"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Sinkronizazio martxan da.&lt;br/&gt;Bukatu nahi al duzu?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="746"/>
+        <location filename="../src/mirall/application.cpp" line="753"/>
         <source>Undefined State.</source>
         <translation>Definitu gabeko egoera.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="749"/>
+        <location filename="../src/mirall/application.cpp" line="756"/>
         <source>Waits to start syncing.</source>
         <translation>Itxoiten sinkronizazioa hasteko.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="778"/>
+        <location filename="../src/mirall/application.cpp" line="785"/>
         <source>Sync is paused.</source>
         <translation>Sinkronizazioa pausatuta dago.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="794"/>
+        <location filename="../src/mirall/application.cpp" line="801"/>
         <source>No sync folders configured.</source>
         <translation>Ez dago sinkronizazio karpetarik definituta.</translation>
     </message>
@@ -466,17 +486,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="174"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="191"/>
         <source>CSync create failed.</source>
-        <translation type="unfinished"/>
+        <translation>CSync sortzeak huts egin du.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="210"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="227"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSyncek huts egin du lock fitxategia sortzean.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="213"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="230"/>
         <source>CSync failed to load the state db.</source>
         <translation>CSyncek huts egin du egoera db kargatzean.</translation>
     </message>
@@ -485,17 +505,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="216"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="233"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
-        <translation type="unfinished"/>
+        <translation>Bezero honetako sistemaren ordua zerbitzariarenaren ezberdina da. Mesedez erabili sinkronizazio zerbitzari bat (NTP) zerbitzari eta bezeroan orduak berdinak izan daitezen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="221"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="238"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSyncek ezin du fitxategi sistema mota antzeman.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="224"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="241"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSyncek errorea izan du barne zuhaitzak prozesatzerakoan.</translation>
     </message>
@@ -504,37 +524,37 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="227"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="244"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;%1 helmuga karpeta ez da existitzen.&lt;/p&gt;&lt;p&gt;Mesedez egiaztatu sinkronizazio konfigurazioa.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="233"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="250"/>
         <source>&lt;p&gt;The ownCloud plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;csyncen ownCloud plugina ezin da kargatu.&lt;br/&gt;Mesedez egiaztatu instalazioa!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="237"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="254"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>Ezin da idatzi bertako fitxategi sisteman. Mesedez egiaztatu baimenak.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="241"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="258"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>Urruneko fitxategi bat ezin da idatzi. Mesedez egiaztatu urreneko sarbidea.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="244"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="261"/>
         <source>An internal error number %1 happend.</source>
         <translation>Barne errore bat gertatu da, zenbakia %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="260"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="277"/>
         <source>CSync failed to reach the host. Either host or proxy settings are not valid.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncek huts egin du hostalarira iristean. Hostalaria edo proxia ez dira baliogarriak.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="263"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="280"/>
         <source>CSync Update failed.</source>
         <translation>CSyncen Eguneraketak huts egin du.</translation>
     </message>
@@ -545,37 +565,38 @@ Please make sure that all directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="277"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="294"/>
         <source>CSync encountered an error while examining the file system.
 Syncing is not possible.</source>
         <translation>CSyncek errore bat aurkitu du fitxategi sistema aztertzean.
 Sinkronizazioa ez da posible.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="280"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="297"/>
         <source>CSync update generated a strange instruction.
 Please write a bug report.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncen eguneraketak instrukzio arraro bat sortu du.
+Mesedez idatz ezazu bug txosten bat.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="283"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="300"/>
         <source>Local filesystem problems. Better disable Syncing and check.</source>
-        <translation type="unfinished"/>
+        <translation>Bertako fitxategi sistemarekin arazoak. Hobe sinkronizazioa desgaitzen baduzu eta fitxategi sistema aztertzen baduzu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="288"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="305"/>
         <source>The local filesystem has %1 write protected directories.That can hinder successful syncing.&lt;p/&gt;Please make sure that all local directories are writeable.</source>
-        <translation type="unfinished"/>
+        <translation>Bertako fitxategi sistemak idazkera debekatuta duten %1 karpeta ditu.  Honek sinkronizazio arrakastatsua eragotzi dezake.&lt;/p&gt;Mesedez ziurtatu bertako karpeta guztiak idazteko baimenak dituztela.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="308"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="325"/>
         <source>CSync reconcile failed.</source>
-        <translation type="unfinished"/>
+        <translation>CSync berdinkatzeak huts egin du.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="312"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="329"/>
         <source>CSync propagate failed.</source>
-        <translation type="unfinished"/>
+        <translation>CSync hedapenak huts egin du.</translation>
     </message>
 </context>
 <context>
@@ -597,9 +618,9 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::FolderWizard</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="460"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="462"/>
         <source>%1 Folder Wizard</source>
-        <translation type="unfinished"/>
+        <translation>%1 Karpeta Morroia</translation>
     </message>
 </context>
 <context>
@@ -612,7 +633,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="90"/>
         <source>The local path %1 is already an upload folder.&lt;br/&gt;Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Bertako %1 karpeta dagoeneko igoerako karpeta bat da.&lt;br/&gt;Mesdez hautatu beste bat!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="94"/>
@@ -643,42 +664,42 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::FolderWizardTargetPage</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="216"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="211"/>
         <source>The folder is not available on your ownCloud.&lt;br/&gt;Click to let mirall create it.</source>
         <translation>Karpeta ez dago ownClouden eskuragarri. &lt;/br&gt;Klikatu mirallek sortu dezan.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="241"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="236"/>
         <source>Folder on ownCloud was successfully created.</source>
         <translation>ownClouden karpeta ongi sortu da.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="244"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="239"/>
         <source>Failed to create the folder on ownCloud.&lt;br/&gt;Please check manually.</source>
-        <translation type="unfinished"/>
+        <translation>ownClouden karpeta sortzeak huts egin du.&lt;br/&gt;Mesedez egiazta ezazu eskuz.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="264"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="259"/>
         <source>Better do not use the remote root directory.&lt;br/&gt;If you do, you can &lt;b&gt;not&lt;/b&gt; mirror another local folder.</source>
-        <translation type="unfinished"/>
+        <translation>Hobe urruneko erro karpeta erabiltzen ez baduzu.&lt;br/&gt;Egiten baduzu, &lt;b&gt;ezin&lt;br/&gt; izango duzu bertako beste karpetarik sinkronizatu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="312"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="314"/>
         <source>to your &lt;a href=&quot;%1&quot;&gt;ownCloud&lt;/a&gt; (version %2)</source>
-        <translation type="unfinished"/>
+        <translation>zure  &lt;a href=&quot;%1&quot;&gt;ownCloud&lt;/a&gt;era (%2 bertsioa)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="322"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="324"/>
         <source>no configured ownCloud found!</source>
         <translation> ez da konfiguratutako ownCloudik aurkitu!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="323"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="325"/>
         <source>Your ownCloud could not be reached:&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Zure ownCloud ezin da eskuratu:&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="390"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="392"/>
         <source>Select the target folder</source>
         <translation>Hautatu helburu karpeta</translation>
     </message>
@@ -688,7 +709,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="122"/>
         <source>Log Output</source>
-        <translation type="unfinished"/>
+        <translation>Egunkari Irteera</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="134"/>
@@ -708,7 +729,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="161"/>
         <source>Clear the log display.</source>
-        <translation type="unfinished"/>
+        <translation>Garbitu egunkari bistaratzea.</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="167"/>
@@ -718,7 +739,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="168"/>
         <source>Save the log file to a file on disk for debugging.</source>
-        <translation type="unfinished"/>
+        <translation>Gorde egunkari fitxategia fitxategi batean arazteko.</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="206"/>
@@ -729,17 +750,17 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="207"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;nobr&gt;&apos;%1&apos; Fitxategia&lt;br/&gt; ezin da idazteko ireki.&lt;br/&gt;&lt;br/&gt;Egunkariaren irteera &lt;b&gt;ezin&lt;/b&gt; da gorde!&lt;/nobr&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="253"/>
         <source>Save log file</source>
-        <translation type="unfinished"/>
+        <translation>Gorde egunkari fitxategia</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="263"/>
         <source>Could not write to log file </source>
-        <translation type="unfinished"/>
+        <translation>Ezin da egunkari fitxategia idatzi</translation>
     </message>
 </context>
 <context>
@@ -747,12 +768,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="245"/>
         <source>john</source>
-        <translation type="unfinished"/>
+        <translation>Ion</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="246"/>
         <source>secret</source>
-        <translation type="unfinished"/>
+        <translation>sekretua</translation>
     </message>
 </context>
 <context>
@@ -765,12 +786,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="292"/>
         <source>john</source>
-        <translation type="unfinished"/>
+        <translation>Ion</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="293"/>
         <source>secret</source>
-        <translation type="unfinished"/>
+        <translation>sekretua</translation>
     </message>
 </context>
 <context>
@@ -778,12 +799,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="78"/>
         <source>john</source>
-        <translation type="unfinished"/>
+        <translation>Ion</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="79"/>
         <source>secret</source>
-        <translation type="unfinished"/>
+        <translation>sekretua</translation>
     </message>
 </context>
 <context>
@@ -791,22 +812,22 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="70"/>
         <source>%1 Connection Wizard</source>
-        <translation type="unfinished"/>
+        <translation>%1 Konexio Morroia</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="129"/>
         <source>Trying to connect to ownCloud at %1...</source>
-        <translation type="unfinished"/>
+        <translation>%1 zerbitzarian dagoen ownCloudera konektatzen...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="161"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: ownCloud version %2 (%3)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;Konexioa ongi burutu da  %1 zerbitzarian: ownCloud bertsioa %2 (%3)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="172"/>
         <source>&lt;font color=&quot;red&quot;&gt;Failed to connect to ownCloud!&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;red&quot;&gt;ownCloud zerbitzariarekin konektatzeak huts egin du!&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="173"/>
@@ -816,23 +837,24 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="258"/>
         <source>Starting script owncloud-admin...</source>
-        <translation type="unfinished"/>
+        <translation>owncloud-admin gidoia hasten...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="309"/>
         <source>&lt;font color=&quot;red&quot;&gt;Installation of ownCloud failed!&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;red&quot;&gt;ownClouden instalazioak huts egin du!&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="314"/>
         <source>&lt;font color=&quot;green&quot;&gt;Installation of ownCloud succeeded!&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;red&quot;&gt;ownClouden instalazioa ongi burutu da!&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="347"/>
         <source>The owncloud admin script can not be found.
 Setup can not be done.</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud admin gidoia ezin da aurkitu.
+Ezin da konfigurazioa egin.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="388"/>
@@ -852,12 +874,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="416"/>
         <source>The folder creation resulted in HTTP error code %d</source>
-        <translation type="unfinished"/>
+        <translation>Karpetaren sortzeak HTTP errore kode bat sortu du %d</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="437"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizazio konexio bat konfiguratu da %1 karpetatik urruneko %2 karpetara.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="442"/>
@@ -867,12 +889,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="444"/>
         <source>Press Finish to permanently accept this connection.</source>
-        <translation type="unfinished"/>
+        <translation>Sakatu Bukatu konexio hau behin-betirako onartzeko.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="447"/>
         <source>An ownCloud connection could not be established. Please check again.</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud konexioa ezin da ezarri. Mesedez egiaztatu berriz.</translation>
     </message>
     <message>
         <source>Skipping automatic setup of sync folders as there are already sync folders.</source>
@@ -885,12 +907,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="367"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Bertako %1 karpeta dagoeneko existitzen da, sinkronizaziorako prestatzen.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="369"/>
         <source>Creating local sync folder %1... </source>
-        <translation type="unfinished"/>
+        <translation>Bertako sinkronizazio %1 karpeta sortzen...</translation>
     </message>
     <message>
         <source>Creating local sync folder %1</source>
@@ -904,7 +926,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="374"/>
         <source>failed.</source>
-        <translation type="unfinished"/>
+        <translation>huts egin du.</translation>
     </message>
     <message>
         <source>Start Creation of remote folder %1 failed.</source>
@@ -917,7 +939,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="100"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Bertako sinkronizazio %1 karpeta ongi sortu da!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <source>The remote folder %1 already exists. Automatic sync setup is skipped for security reasons. Please configure your sync folder manually.</source>
@@ -926,12 +948,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="418"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Urruneko karpeten sortzeak  huts egin du ziuraski emandako kredentzialak gaizki daudelako.&lt;/font&gt;&lt;br/&gt;Mesedez atzera joan eta egiaztatu zure kredentzialak.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="424"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Urruneko %1 karpetaren sortzeak huts egin du &lt;tt&gt;%2&lt;/tt&gt; errorearekin.</translation>
     </message>
 </context>
 <context>
@@ -939,7 +961,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="416"/>
         <source>Congratulations! Your &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;new ownCloud&lt;/a&gt; is now up and running!</source>
-        <translation type="unfinished"/>
+        <translation>Zorionak! Zure &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;ownCloud berria&lt;/a&gt; konfiguratua dago eta martxan da!</translation>
     </message>
 </context>
 <context>
@@ -965,7 +987,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/proxydialog.cpp" line="33"/>
         <source>Password for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Proxy zerbitzarirako pasahitza</translation>
     </message>
 </context>
 <context>
@@ -978,12 +1000,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="89"/>
         <source>Warnings about current SSL Connection:</source>
-        <translation type="unfinished"/>
+        <translation>Abisua uneko SSL konexioari buruz:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="125"/>
         <source>with Certificate %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 ziurtagiriarekin</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="129"/>
@@ -1006,17 +1028,17 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="135"/>
         <source>Effective Date: %1</source>
-        <translation type="unfinished"/>
+        <translation>Balio-data: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="136"/>
         <source>Expiry Date: %1</source>
-        <translation type="unfinished"/>
+        <translation>Iraungitze-data: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="140"/>
         <source>Issuer: %1</source>
-        <translation type="unfinished"/>
+        <translation>Jaulkitzailea: %1</translation>
     </message>
 </context>
 <context>
@@ -1024,27 +1046,27 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="230"/>
         <source>Pause</source>
-        <translation type="unfinished"/>
+        <translation>Pausarazi</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="232"/>
         <source>Resume</source>
-        <translation type="unfinished"/>
+        <translation>Berrekin</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="401"/>
         <source>Checking ownCloud connection...</source>
-        <translation type="unfinished"/>
+        <translation>Egiaztatzen ownCloud konexioa...</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="406"/>
         <source>No ownCloud connection configured.</source>
-        <translation type="unfinished"/>
+        <translation>Ez dago ownCloud konexiorik konfiguratuta.</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="428"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, ownCloud %3</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;ra konektatuta, ownCloud %3</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="429"/>
@@ -1059,7 +1081,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="445"/>
         <source>&lt;p&gt;Failed to connect to ownCloud: &lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;ownCloud zerbitzariarekin konektatzeak huts egin du: &lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1094,12 +1116,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="115"/>
         <source>Client Version Check</source>
-        <translation type="unfinished"/>
+        <translation>Egiaztatzen Bezeroaren Bertsioa</translation>
     </message>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="117"/>
         <source>&lt;p&gt;A new version of the ownCloud Client is available.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;ownCloud Bezeroaren bertsio berri bat eskuragarri dago.</translation>
     </message>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="118"/>
@@ -1154,7 +1176,13 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Please enter the username and password for your ownCloud Instance. &lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt; color:#585858;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;If you do not wish to store the credentials on your local machine, check the box. ownCloud will prompt you for your password every time the client starts.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Mesedez sartu zure ownClouden erabiltzailea eta pasahitza &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt; color:#585858;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Zure kredentzialak ordenagailuan gorde nahi ez baldin baduzu, markatu kutxa. ownCloudek bezeroa abiarazten den bakoitzean zure pasahitza eskatuko dizu.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1254,7 +1282,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="31"/>
         <source>Create the ownCloud Connection</source>
-        <translation type="unfinished"/>
+        <translation>Sortu ownCloud konexioa</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="39"/>
@@ -1269,7 +1297,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="58"/>
         <source>Enter the url of the ownCloud you want to connect to (without http or https).</source>
-        <translation type="unfinished"/>
+        <translation>Sartu konektatu nahi duzun ownCloud zerbitzariaren urla (http edo https gabe).</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="71"/>
@@ -1381,7 +1409,12 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Specify the ownCloud you want to connect to.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Enter the web address of your ownCloud server below.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EU&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Zehaztu ze ownCloudera konektatu nahi duzun.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Sartu azpian zure ownCloud zerbitzariaren web helbidea.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="110"/>
@@ -1405,7 +1438,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="120"/>
         <source>Note: To specify an SSL secured connection, start the url with https.</source>
-        <translation type="unfinished"/>
+        <translation>Oharra: SSL konexio seguru bat zehazteko, hasi urla https-rekin.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="133"/>
@@ -1448,7 +1481,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/theme.cpp" line="34"/>
         <location filename="../src/mirall/theme.cpp" line="52"/>
         <source>Status undefined</source>
-        <translation type="unfinished"/>
+        <translation>Definitu gabeko egoera</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="37"/>
@@ -1468,12 +1501,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/theme.cpp" line="46"/>
         <source>Sync Error - Click info button for details.</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizazio Errorea -Klikatu info botoia xehetasun gehiagorako.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="49"/>
         <source>Setup Error</source>
-        <translation type="unfinished"/>
+        <translation>Konfigurazio Errorea</translation>
     </message>
 </context>
 <context>
@@ -1494,7 +1527,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="26"/>
         <source>Configure Proxies to access your ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>Konfiguratu Proxiak zure ownCloudera konektatzeko</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="43"/>

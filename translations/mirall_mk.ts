@@ -235,17 +235,17 @@ p, li { white-space: pre-wrap; }
         <translation>креирај</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="182"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="177"/>
         <source>root</source>
         <translation>корен</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="183"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="178"/>
         <source>/home/local</source>
         <translation>/home/local</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="184"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="179"/>
         <source>scp://john@host.com//myfolder</source>
         <translation>scp://pero@host.com.mk//mojfolder</translation>
     </message>
@@ -267,78 +267,88 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="236"/>
+        <location filename="../src/mirall/application.cpp" line="227"/>
+        <source>ownCloud Server Mismatch</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="228"/>
+        <source>&lt;p&gt;The configured server for this client is too old.&lt;/p&gt;&lt;p&gt;Please update to the latest ownCloud server and restart the client.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="243"/>
         <source>&lt;p&gt;The ownCloud at %1 could not be reached.&lt;/p&gt;</source>
         <translation>&lt;p&gt;ОwnCloud на %1 не може да биде достапен.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="237"/>
+        <location filename="../src/mirall/application.cpp" line="244"/>
         <source>&lt;p&gt;The detailed error message is&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Деталната порака за грешка е&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="239"/>
+        <location filename="../src/mirall/application.cpp" line="246"/>
         <source>&lt;p&gt;Please check your configuration by clicking on the tray icon.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Проверете ја конфигурацијата со кликање врз иконата во  tray-от.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="241"/>
+        <location filename="../src/mirall/application.cpp" line="248"/>
         <source>ownCloud Connection Failed</source>
         <translation>ownCloud врската е неуспешна</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="269"/>
         <location filename="../src/mirall/application.cpp" line="276"/>
+        <location filename="../src/mirall/application.cpp" line="283"/>
         <source>No ownCloud Connection</source>
         <translation>Нема ownCloud врска</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="270"/>
+        <location filename="../src/mirall/application.cpp" line="277"/>
         <source>&lt;p&gt;Your ownCloud credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Вашите ownCloud акредитиви не се во ред.&lt;/p&gt;&lt;p&gt;Исправете ги со стартување на формата за конфигурација од tray-от!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="277"/>
+        <location filename="../src/mirall/application.cpp" line="284"/>
         <source>&lt;p&gt;Your ownCloud user name or password is not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Вашето ownCloud корисничко име или лозинка не се во ред.&lt;/p&gt;&lt;p&gt;Исправете ги со стартување на формата за конфигурација од tray-от!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="289"/>
+        <location filename="../src/mirall/application.cpp" line="296"/>
         <source>ownCloud Sync Started</source>
         <translation>Започна ownCloud синхронизација </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="289"/>
+        <location filename="../src/mirall/application.cpp" line="296"/>
         <source>Sync started for %1 configured sync folder(s).</source>
         <translation>Синхронизацијата започна за %1 конфигурирани фолдери за синхронизација.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="304"/>
+        <location filename="../src/mirall/application.cpp" line="311"/>
         <source>Open ownCloud...</source>
         <translation>Отвори ownCloud...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="306"/>
+        <location filename="../src/mirall/application.cpp" line="313"/>
         <source>Open status...</source>
         <translation>Отворен статус...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="308"/>
+        <location filename="../src/mirall/application.cpp" line="315"/>
         <source>Add folder...</source>
         <translation>Додади фолдер...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="310"/>
+        <location filename="../src/mirall/application.cpp" line="317"/>
         <source>Configure...</source>
         <translation>Конфигурирај...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="312"/>
+        <location filename="../src/mirall/application.cpp" line="319"/>
         <source>Configure proxy...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="314"/>
+        <location filename="../src/mirall/application.cpp" line="321"/>
         <source>Quit</source>
         <translation>Прекини</translation>
     </message>
@@ -347,118 +357,118 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="345"/>
+        <location filename="../src/mirall/application.cpp" line="352"/>
         <source>Managed Folders:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="578"/>
+        <location filename="../src/mirall/application.cpp" line="585"/>
         <source>Confirm Folder Remove</source>
         <translation>Потврди го бришењето на фолдерот</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="579"/>
+        <location filename="../src/mirall/application.cpp" line="586"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>Дали навистина сакате да го отстраните префрлениот фолдер &lt;i&gt;%1&lt;/i&gt;?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="613"/>
+        <location filename="../src/mirall/application.cpp" line="620"/>
         <source>Undefined Folder State</source>
         <translation>Недифинирана состојба на фолдерот</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="616"/>
+        <location filename="../src/mirall/application.cpp" line="623"/>
         <source>The folder waits to start syncing.</source>
         <translation>Фолдерот чека да почне синхронизирањето.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="619"/>
-        <location filename="../src/mirall/application.cpp" line="753"/>
+        <location filename="../src/mirall/application.cpp" line="626"/>
+        <location filename="../src/mirall/application.cpp" line="760"/>
         <source>Sync is running.</source>
         <translation>Синхронизацијата е во тек.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="622"/>
-        <location filename="../src/mirall/application.cpp" line="758"/>
+        <location filename="../src/mirall/application.cpp" line="629"/>
+        <location filename="../src/mirall/application.cpp" line="765"/>
         <source>Last Sync was successful.</source>
         <translation>Последната синхронизација беше успешна.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="625"/>
-        <location filename="../src/mirall/application.cpp" line="764"/>
+        <location filename="../src/mirall/application.cpp" line="632"/>
+        <location filename="../src/mirall/application.cpp" line="771"/>
         <source>Syncing Error.</source>
         <translation>Грешка при синхронизација.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="628"/>
-        <location filename="../src/mirall/application.cpp" line="770"/>
+        <location filename="../src/mirall/application.cpp" line="635"/>
+        <location filename="../src/mirall/application.cpp" line="777"/>
         <source>Setup Error.</source>
         <translation>Грешка при нагодување.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="631"/>
-        <location filename="../src/mirall/application.cpp" line="773"/>
+        <location filename="../src/mirall/application.cpp" line="638"/>
+        <location filename="../src/mirall/application.cpp" line="780"/>
         <source>Undefined Error State.</source>
         <translation>Недефинирана состојба на грешка.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="635"/>
+        <location filename="../src/mirall/application.cpp" line="642"/>
         <source>Folder information</source>
         <translation>Информација за фолдерот</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="650"/>
+        <location filename="../src/mirall/application.cpp" line="657"/>
         <source>Unknown</source>
         <translation>Непознат</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="652"/>
+        <location filename="../src/mirall/application.cpp" line="659"/>
         <source>Changed files:
 </source>
         <translation>Променети датотеки:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="654"/>
+        <location filename="../src/mirall/application.cpp" line="661"/>
         <source>Added files:
 </source>
         <translation>Додадени датотеки:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="656"/>
+        <location filename="../src/mirall/application.cpp" line="663"/>
         <source>New files in the server, or files deleted locally:
 </source>
         <translation>Нови датотеки на серверот, или локално избришани:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="683"/>
+        <location filename="../src/mirall/application.cpp" line="690"/>
         <source>Sync Running</source>
         <translation>Синхронизацијата е во тек</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="684"/>
+        <location filename="../src/mirall/application.cpp" line="691"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Активноста за синхронизација е во тек.&lt;br/&gt;Сакате да ја прекинете?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="746"/>
+        <location filename="../src/mirall/application.cpp" line="753"/>
         <source>Undefined State.</source>
         <translation>Недефинирана состојба.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="749"/>
+        <location filename="../src/mirall/application.cpp" line="756"/>
         <source>Waits to start syncing.</source>
         <translation>Почекај да започне синхронизацијата.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="778"/>
+        <location filename="../src/mirall/application.cpp" line="785"/>
         <source>Sync is paused.</source>
         <translation>Синхронизацијата е паузирана.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="794"/>
+        <location filename="../src/mirall/application.cpp" line="801"/>
         <source>No sync folders configured.</source>
         <translation>Нема негодени фолдери за синхронизација.</translation>
     </message>
@@ -466,17 +476,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="174"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="191"/>
         <source>CSync create failed.</source>
         <translation>Креирањето на CSync е неуспешно.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="210"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="227"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSync не успеа да креира датотека за заклучување.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="213"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="230"/>
         <source>CSync failed to load the state db.</source>
         <translation>CSync не успеа да ја прочита db состојбата.</translation>
     </message>
@@ -485,17 +495,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="216"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="233"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="221"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="238"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSync не може да го осознае типот на фајл системот.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="224"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="241"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation type="unfinished"/>
     </message>
@@ -504,37 +514,37 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="227"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="244"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="233"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="250"/>
         <source>&lt;p&gt;The ownCloud plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="237"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="254"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>На локалниот фајл систем не може да се запишува. Проверете ги соодветните дозволи/пермисии.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="241"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="258"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>Записот не може да биде снимена. Проверете го пристапот до серверот.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="244"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="261"/>
         <source>An internal error number %1 happend.</source>
         <translation>Се случи интерна грешка со код %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="260"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="277"/>
         <source>CSync failed to reach the host. Either host or proxy settings are not valid.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="263"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="280"/>
         <source>CSync Update failed.</source>
         <translation>CSync оасвежувањето е неуспешно.</translation>
     </message>
@@ -545,34 +555,34 @@ Please make sure that all directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="277"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="294"/>
         <source>CSync encountered an error while examining the file system.
 Syncing is not possible.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="280"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="297"/>
         <source>CSync update generated a strange instruction.
 Please write a bug report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="283"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="300"/>
         <source>Local filesystem problems. Better disable Syncing and check.</source>
         <translation>Проблем со локалниот фајл систем. Подобро е да ја исклучите синхронизацијата и да проверите.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="288"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="305"/>
         <source>The local filesystem has %1 write protected directories.That can hinder successful syncing.&lt;p/&gt;Please make sure that all local directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="308"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="325"/>
         <source>CSync reconcile failed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="312"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="329"/>
         <source>CSync propagate failed.</source>
         <translation type="unfinished"/>
     </message>
@@ -596,7 +606,7 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::FolderWizard</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="460"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="462"/>
         <source>%1 Folder Wizard</source>
         <translation>%1 Волшебник за фолдери</translation>
     </message>
@@ -642,42 +652,42 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::FolderWizardTargetPage</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="216"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="211"/>
         <source>The folder is not available on your ownCloud.&lt;br/&gt;Click to let mirall create it.</source>
         <translation>Фолерот не постоина вашиот ownCloud.&lt;br/&gt;Кликнете за да mirall го креира.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="241"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="236"/>
         <source>Folder on ownCloud was successfully created.</source>
         <translation>Фолдерот на ownCloud беше успешно креиран.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="244"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="239"/>
         <source>Failed to create the folder on ownCloud.&lt;br/&gt;Please check manually.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="264"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="259"/>
         <source>Better do not use the remote root directory.&lt;br/&gt;If you do, you can &lt;b&gt;not&lt;/b&gt; mirror another local folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="312"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="314"/>
         <source>to your &lt;a href=&quot;%1&quot;&gt;ownCloud&lt;/a&gt; (version %2)</source>
         <translation>кон вашиот &lt;a href=&quot;%1&quot;&gt;ownCloud&lt;/a&gt; (version %2)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="322"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="324"/>
         <source>no configured ownCloud found!</source>
         <translation>Не епронајден конфигуриран ownCloud!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="323"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="325"/>
         <source>Your ownCloud could not be reached:&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Вашиот ownCloud не може да се достапи:&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="390"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="392"/>
         <source>Select the target folder</source>
         <translation>Одбери го целниот фолдер</translation>
     </message>
