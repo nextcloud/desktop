@@ -269,12 +269,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="227"/>
         <source>ownCloud Server Mismatch</source>
-        <translation type="unfinished"/>
+        <translation>La versió del servidor ownCloud no coincideix</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="228"/>
         <source>&lt;p&gt;The configured server for this client is too old.&lt;/p&gt;&lt;p&gt;Please update to the latest ownCloud server and restart the client.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;El servidor configurat per aquest client és massa antic.&lt;/p&gt;&lt;p&gt;Actualitzeu a l&apos;última versió del sevidor ownCloud i reinicieu el client.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="243"/>

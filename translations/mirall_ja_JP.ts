@@ -274,17 +274,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="201"/>
         <source>&lt;p&gt;No server connection has been configured for this ownCloud client.&lt;/p&gt;&lt;p&gt;Please right click on the ownCloud system tray icon and select &lt;i&gt;Configure&lt;/i&gt; to connect this client to an ownCloud server.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;このownCloudクライアントにはサーバ接続の設定がありません。&lt;/p&gt;&lt;p&gt;ownCloudサーバへ接続するために、ownCloudのシステムトレイアイコン上で右クリックし、&lt;i&gt;設定&lt;/i&gt;を洗濯してください&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;このownCloudクライアントにはサーバ接続の設定がありません。&lt;/p&gt;&lt;p&gt;ownCloudサーバへ接続するために、ownCloudのシステムトレイアイコン上で右クリックし、&lt;i&gt;設定&lt;/i&gt;を選択してください&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="227"/>
         <source>ownCloud Server Mismatch</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud のサーバ不適合</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="228"/>
         <source>&lt;p&gt;The configured server for this client is too old.&lt;/p&gt;&lt;p&gt;Please update to the latest ownCloud server and restart the client.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;このクライアントに対して設定されたサーバーがとても古いものです。&lt;/p&gt;&lt;p&gt;ownCloud サーバを最新版にアップデートしてクライアントを再起動してください。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="243"/>
@@ -681,7 +681,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="259"/>
         <source>Better do not use the remote root directory.&lt;br/&gt;If you do, you can &lt;b&gt;not&lt;/b&gt; mirror another local folder.</source>
-        <translation>リモートのルートディレクトリの使用はおすすめしません。&lt;br/&gt;もし使用する場合は、他のローカルフォルダと同期することは&lt;b&gt;できません&lt;/b&gt;。</translation>
+        <translation>リモートパスのルート直下ディレクトリを指定することはおすすめしません。&lt;br/&gt;もし使用する場合は、他のローカルフォルダと同期することは&lt;b&gt;できません&lt;/b&gt;。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="314"/>
@@ -1076,7 +1076,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="442"/>
         <source>unknown problem.</source>
-        <translation>リモートパス: %1</translation>
+        <translation>未知の問題。</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="445"/>
