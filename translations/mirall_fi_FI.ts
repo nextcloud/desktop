@@ -237,7 +237,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="361"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="383"/>
@@ -265,7 +265,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="200"/>
         <source>No ownCloud Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Ei ownCloud asetuksia</translation>
     </message>
     <message>
         <source>&lt;p&gt;No ownCloud connection was configured yet.&lt;/p&gt;&lt;p&gt;Please configure one by clicking on the tray icon!&lt;/p&gt;</source>
@@ -315,12 +315,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="277"/>
         <source>&lt;p&gt;Your ownCloud credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;ownCloud valtuutustietosi eivät ole oikein.&lt;/p&gt;&lt;p&gt;Korjaa käynnistämällä asetusikkuna tehtäväpalkista!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="284"/>
         <source>&lt;p&gt;Your ownCloud user name or password is not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Väärä ownCloud käyttäjätunnus tai salasana.&lt;/p&gt;&lt;p&gt;Korjaa käynnistämällä asetusikkuna tehtäväpalkista!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="296"/>
@@ -330,7 +330,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="296"/>
         <source>Sync started for %1 configured sync folder(s).</source>
-        <translation type="unfinished"/>
+        <translation>Täsmäytys aloitettu %1 asetetulle täsmäyskansio(i)lle.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="311"/>
@@ -379,7 +379,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="586"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
-        <translation type="unfinished"/>
+        <translation>Haluatko todella poistaa latauskansion &lt;i&gt;%1&lt;/i&gt;?</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="620"/>
@@ -488,17 +488,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="191"/>
         <source>CSync create failed.</source>
-        <translation type="unfinished"/>
+        <translation>Csync täsmäytyksen luominen ei onnistunut.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="227"/>
         <source>CSync failed to create a lock file.</source>
-        <translation type="unfinished"/>
+        <translation>Csync täsmäytyspalvelu ei onnistunut luomaan lukitustiedostoa.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="230"/>
         <source>CSync failed to load the state db.</source>
-        <translation type="unfinished"/>
+        <translation>Csync täsmäytyspalvelu ei onnistunut lataamaan tilatietokantaa.</translation>
     </message>
     <message>
         <source>The system time between the local machine and the server differs too much. Please use a time syncronization service (ntp) on both machines.</source>
@@ -512,12 +512,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="238"/>
         <source>CSync could not detect the filesystem type.</source>
-        <translation type="unfinished"/>
+        <translation>Csync täsmäytyspalvelu ei kyennyt tunnistamaan tiedostojärjestelmän tyyppiä.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="241"/>
         <source>CSync got an error while processing internal trees.</source>
-        <translation type="unfinished"/>
+        <translation>Csync täsmäytyspalvelussa tapahtui virhe sisäisten puurakenteiden prosessoinnissa.</translation>
     </message>
     <message>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please create it and try again.&lt;/p&gt;</source>
@@ -556,7 +556,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="280"/>
         <source>CSync Update failed.</source>
-        <translation type="unfinished"/>
+        <translation>Csync täsmäytyspalvelun päivitys epäonnistui.</translation>
     </message>
     <message>
         <source>The local filesystem has directories which are write protected.
@@ -568,7 +568,7 @@ Please make sure that all directories are writeable.</source>
         <location filename="../src/mirall/csyncthread.cpp" line="294"/>
         <source>CSync encountered an error while examining the file system.
 Syncing is not possible.</source>
-        <translation type="unfinished"/>
+        <translation>Csync täsmäytyspalvelussa tapahtui virhe sen yrittäessä tutkia tiedostojärjestelmää. ⏎ Täsmäytys ei ole mahdollinen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="297"/>
@@ -689,12 +689,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="324"/>
         <source>no configured ownCloud found!</source>
-        <translation type="unfinished"/>
+        <translation>ei löydetty ownCloudia, jossa asetukset kunnossa!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="325"/>
         <source>Your ownCloud could not be reached:&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Omaan ownCloudiisi ei saada yhteyttä:&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="392"/>
@@ -851,7 +851,7 @@ Please write a bug report.</source>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="347"/>
         <source>The owncloud admin script can not be found.
 Setup can not be done.</source>
-        <translation type="unfinished"/>
+        <translation>Ylläpitäjän ownCloud skriptiä ei löydy. Asetukset eivät onnistu. </translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="388"/>
