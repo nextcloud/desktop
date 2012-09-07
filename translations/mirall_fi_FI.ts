@@ -192,7 +192,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="29"/>
         <source>Synchronization Target</source>
-        <translation>Täsmäyskohde</translation>
+        <translation>Synkronointikohde</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="51"/>
@@ -202,7 +202,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="78"/>
         <source>on your &amp;ownCloud server</source>
-        <translation>omalla ownCloud palvelimellasi</translation>
+        <translation>omalla &amp;ownCloud-palvelimellasi</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="91"/>
@@ -265,7 +265,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="200"/>
         <source>No ownCloud Configuration</source>
-        <translation>Ei ownCloud asetuksia</translation>
+        <translation>Ei ownCloud-asetuksia</translation>
     </message>
     <message>
         <source>&lt;p&gt;No ownCloud connection was configured yet.&lt;/p&gt;&lt;p&gt;Please configure one by clicking on the tray icon!&lt;/p&gt;</source>
@@ -274,12 +274,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="201"/>
         <source>&lt;p&gt;No server connection has been configured for this ownCloud client.&lt;/p&gt;&lt;p&gt;Please right click on the ownCloud system tray icon and select &lt;i&gt;Configure&lt;/i&gt; to connect this client to an ownCloud server.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Tälle ownCloud asiakasohjelmalle ei ole asetettu yhtään palvelinta.&lt;/p&gt;&lt;p&gt;Napsauta hiiren oikealla napilla ownCloudin ikonia järjestelmäpalkkissa ja valitse &lt;i&gt;Asetukset&lt;/i&gt;yhdistääksesi tämän palvelimeen.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Tälle ownCloud-asiakasohjelmalle ei ole asetettu yhtään palvelinta.&lt;/p&gt;&lt;p&gt;Napsauta hiiren oikealla painikkeella ownCloudin kuvaketta ilmoitusalueella ja valitse &lt;i&gt;Asetukset&lt;/i&gt; yhdistääksesi tämän palvelimeen.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="227"/>
         <source>ownCloud Server Mismatch</source>
-        <translation>ownCloud palvelin ei täsmää.</translation>
+        <translation>ownCloud-palvelin ei täsmää.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="228"/>
@@ -320,7 +320,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="284"/>
         <source>&lt;p&gt;Your ownCloud user name or password is not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Väärä ownCloud käyttäjätunnus tai salasana.&lt;/p&gt;&lt;p&gt;Korjaa käynnistämällä asetusikkuna tehtäväpalkista!&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Väärä ownCloud-käyttäjätunnus tai -salasana.&lt;/p&gt;&lt;p&gt;Korjaa käynnistämällä asetusikkuna tehtäväpalkista!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="296"/>
@@ -330,7 +330,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="296"/>
         <source>Sync started for %1 configured sync folder(s).</source>
-        <translation>Täsmäytys aloitettu %1 asetetulle täsmäyskansio(i)lle.</translation>
+        <translation>Synkronointi aloitettu %1 asetetulle täsmäyskansioille.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="311"/>
@@ -379,7 +379,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="586"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
-        <translation>Haluatko todella poistaa latauskansion &lt;i&gt;%1&lt;/i&gt;?</translation>
+        <translation>Haluatko varmasti poistaa latauskansion &lt;i&gt;%1&lt;/i&gt;?</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="620"/>
@@ -488,17 +488,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="191"/>
         <source>CSync create failed.</source>
-        <translation>Csync täsmäytyksen luominen ei onnistunut.</translation>
+        <translation>Csync-synkronoinnin luominen ei onnistunut.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="227"/>
         <source>CSync failed to create a lock file.</source>
-        <translation>Csync täsmäytyspalvelu ei onnistunut luomaan lukitustiedostoa.</translation>
+        <translation>Csync-synkronointipalvelu ei onnistunut luomaan lukitustiedostoa.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="230"/>
         <source>CSync failed to load the state db.</source>
-        <translation>Csync täsmäytyspalvelu ei onnistunut lataamaan tilatietokantaa.</translation>
+        <translation>Csync-synkronointipalvelu ei onnistunut lataamaan tilatietokantaa.</translation>
     </message>
     <message>
         <source>The system time between the local machine and the server differs too much. Please use a time syncronization service (ntp) on both machines.</source>
@@ -507,17 +507,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="233"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
-        <translation>Tämän koneen järjestelmäaika on erilainen verrattuna palvelimen aikaan. Käytä NTP-palvelua kummallakin koneella, jotta kellonajat täsmäävät. Muuten tiedostojen täsmäys ei toimi.</translation>
+        <translation>Tämän koneen järjestelmäaika on erilainen verrattuna palvelimen aikaan. Käytä NTP-palvelua kummallakin koneella, jotta kellot pysyvät samassa ajassa. Muuten tiedostojen synkronointi ei toimi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="238"/>
         <source>CSync could not detect the filesystem type.</source>
-        <translation>Csync täsmäytyspalvelu ei kyennyt tunnistamaan tiedostojärjestelmän tyyppiä.</translation>
+        <translation>Csync-synkronointipalvelu ei kyennyt tunnistamaan tiedostojärjestelmän tyyppiä.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="241"/>
         <source>CSync got an error while processing internal trees.</source>
-        <translation>Csync täsmäytyspalvelussa tapahtui virhe sisäisten puurakenteiden prosessoinnissa.</translation>
+        <translation>Csync-synkronointipalvelussa tapahtui virhe sisäisten puurakenteiden prosessoinnissa.</translation>
     </message>
     <message>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please create it and try again.&lt;/p&gt;</source>
@@ -531,7 +531,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="250"/>
         <source>&lt;p&gt;The ownCloud plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation>&lt;p&gt;ownCloud csync-lisäosaa ei voitu ladata.&lt;br/&gt;Tarkista asennus!&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;ownCloudin csync-lisäosaa ei voitu ladata.&lt;br/&gt;Tarkista asennus.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="254"/>
@@ -541,7 +541,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="258"/>
         <source>A remote file can not be written. Please check the remote access.</source>
-        <translation>Etätiedostoa ei pystytä kirjoittamaan. Tarkista että etäpääsy toimii.</translation>
+        <translation>Etätiedostoa ei pystytä kirjoittamaan. Tarkista, että etäpääsy toimii.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="261"/>
@@ -556,7 +556,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="280"/>
         <source>CSync Update failed.</source>
-        <translation>Csync täsmäytyspalvelun päivitys epäonnistui.</translation>
+        <translation>Csync-synkronointipalvelun päivitys epäonnistui.</translation>
     </message>
     <message>
         <source>The local filesystem has directories which are write protected.
@@ -568,18 +568,18 @@ Please make sure that all directories are writeable.</source>
         <location filename="../src/mirall/csyncthread.cpp" line="294"/>
         <source>CSync encountered an error while examining the file system.
 Syncing is not possible.</source>
-        <translation>Csync täsmäytyspalvelussa tapahtui virhe sen yrittäessä tutkia tiedostojärjestelmää. ⏎ Täsmäytys ei ole mahdollinen.</translation>
+        <translation>Csync-synkronointipalvelussa tapahtui virhe sen yrittäessä tutkia tiedostojärjestelmää. ⏎ Synkronointi ei ole mahdollista.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="297"/>
         <source>CSync update generated a strange instruction.
 Please write a bug report.</source>
-        <translation>Csync päivitys tuotti omituisen käskyn. Kirjoita bugiraportti.</translation>
+        <translation>Csync-päivitys tuotti omituisen käskyn. Kirjoita bugiraportti.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="300"/>
         <source>Local filesystem problems. Better disable Syncing and check.</source>
-        <translation>Ongelmia paikallisessa tiedostojärjestelmässä. Kannattaa ottaa pois käytöstä tiedostojen täsmäys ja tarkistaa uudelleen.</translation>
+        <translation>Ongelmia paikallisessa tiedostojärjestelmässä. Kannattaa poistaa synkronointi käytöstä ja tarkistaa uudelleen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="305"/>
@@ -631,7 +631,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="90"/>
         <source>The local path %1 is already an upload folder.&lt;br/&gt;Please pick another one!</source>
-        <translation>Paikallinen polku %1 on jo latauskansio.&lt;br/&gt;Valitse jokin toinen!</translation>
+        <translation>Paikallinen polku %1 on jo latauskansio.&lt;br/&gt;Valitse jokin toinen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="94"/>
@@ -851,7 +851,7 @@ Please write a bug report.</source>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="347"/>
         <source>The owncloud admin script can not be found.
 Setup can not be done.</source>
-        <translation>Ylläpitäjän ownCloud skriptiä ei löydy. Asetukset eivät onnistu. </translation>
+        <translation>Ylläpitäjän ownCloud-skriptiä ei löydy. Asetusten tekeminen ei onnistu. </translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="388"/>
@@ -904,7 +904,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="367"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>Paikallinen kansio %1 on jo olemassa, asetetaan se täsmäämään tiedostot pilvipalveluun.&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>Paikallinen kansio %1 on jo olemassa, asetetaan se synkronoitavaksi.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="369"/>
@@ -945,7 +945,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="418"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Pilvipalvelun etäkansion luominen ei onnistunut , koska tunnistautumistietosi ovat todennäköisesti väärin.&lt;/font&gt;&lt;br/&gt;Palaa takaisin ja tarkista käyttäjätunnus ja salasanas.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Pilvipalvelun etäkansion luominen ei onnistunut , koska tunnistautumistietosi ovat todennäköisesti väärin.&lt;/font&gt;&lt;br/&gt;Palaa takaisin ja tarkista käyttäjätunnus ja salasana.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="424"/>
@@ -1058,7 +1058,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="406"/>
         <source>No ownCloud connection configured.</source>
-        <translation>Yhtään ownCloud yhteyttä ei ole asetettu.</translation>
+        <translation>Yhtään ownCloud-yhteyttä ei ole asetettu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="428"/>
@@ -1219,12 +1219,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="29"/>
         <source>FTP Access to your Webaccount:</source>
-        <translation>FTP siirto webbitunnuksellesi:</translation>
+        <translation>FTP-yhteys webbitunnuksellesi:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="51"/>
         <source>FTP Details and Credentials</source>
-        <translation>FTP yksityiskohdat ja tunnistautumistiedot</translation>
+        <translation>FTP-tiedot ja tunnistautumistiedot</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="57"/>
@@ -1233,7 +1233,7 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;The details here are used to install the owncloud data on your web space which is accessible over ftp. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;⏎ &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;⏎ p, li { white-space: pre-wrap; }⏎ &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;⏎ &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Tässä annettuja yksityiskohtia käytetään asentamaan ownCloud data webbiin, johon pääset käsiksi ftp-siirrolla. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;⏎ &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;⏎ p, li { white-space: pre-wrap; }⏎ &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;⏎ &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Tässä annettuja yksityiskohtia käytetään asentamaan ownCloud data webbiin paikkaan, johon pääset käsiksi ftp:llä. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="79"/>
@@ -1353,7 +1353,7 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;This page shows the status of the connection.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;⏎ &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;⏎ p, li { white-space: pre-wrap; }⏎ &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;⏎ &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Tämä sivu näyttää yhteyden tilannetiedot.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;⏎ &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;⏎ p, li { white-space: pre-wrap; }⏎ &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;⏎ &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Tämä sivu näyttää tilan.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardresultpage.ui" line="27"/>
@@ -1382,7 +1382,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="63"/>
         <source>connect my ownCloud</source>
-        <translation>Ota yhteys omaan ownCloudiin.</translation>
+        <translation>Yhdistä omaan ownCloudiin.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="89"/>
@@ -1432,7 +1432,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Select if you want to create a new ownCloud either on the local machine or on your server. &lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#585858;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;This wizard will guide you through all neccessary steps.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;⏎ &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;⏎ p, li { white-space: pre-wrap; }⏎ &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;⏎ &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Valitse haluatko luoda uuden ownCloud-pilvipalvelun paikalliselle koneelle vai omalle palvelimellesi. &lt;/span&gt;&lt;/p&gt;⏎ &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#585858;&quot;&gt;&lt;/p&gt;⏎ &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Tämä velho ohjaa läpi kaikkien tarvittavien vaiheiden.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;⏎ &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;⏎ p, li { white-space: pre-wrap; }⏎ &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;⏎ &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Valitse, haluatko luoda uuden ownCloud-pilvipalvelun paikalliselle koneelle vai omalle palvelimellesi. &lt;/span&gt;&lt;/p&gt;⏎ &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#585858;&quot;&gt;&lt;/p&gt;⏎ &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Tämä ohjattu toiminto opastaa kaikkien tarvittavien vaiheiden läpi.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>http://owncloud.mydomain.org</source>
@@ -1453,7 +1453,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/theme.cpp" line="34"/>
         <location filename="../src/mirall/theme.cpp" line="52"/>
         <source>Status undefined</source>
-        <translation>Tilannetieto on määrittelemätön.</translation>
+        <translation>Tila on määrittelemätön.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="37"/>
@@ -1473,7 +1473,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/theme.cpp" line="46"/>
         <source>Sync Error - Click info button for details.</source>
-        <translation>Täsmäysvirhe - Napsauta Tietoja.</translation>
+        <translation>Synkronointivirhe – Napsauta Tietoja.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="49"/>
@@ -1499,7 +1499,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="26"/>
         <source>Configure Proxies to access your ownCloud</source>
-        <translation>Aseta välityspalvelimia omalle ownCloud palvelulle.</translation>
+        <translation>Aseta välityspalvelimia omalle ownCloud-palvelulle.</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="43"/>
@@ -1552,7 +1552,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrorsdialog.ui" line="25"/>
         <source>Check if you want to continue via SSL and trust the shown certificates.</source>
-        <translation>Ruksaa jos haluat käyttää turvallista SSL-yhteyttä ja luotat käytettyihin sertifikaatteihin.</translation>
+        <translation>Ruksaa, jos haluat käyttää turvallista SSL-yhteyttä ja luotat käytettyihin sertifikaatteihin.</translation>
     </message>
     <message>
         <source>Check if you want t continue via SSL and trust the shown certificates.</source>
