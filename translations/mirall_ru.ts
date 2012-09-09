@@ -279,7 +279,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="227"/>
         <source>ownCloud Server Mismatch</source>
-        <translation type="unfinished"/>
+        <translation>Неподходящий сервер ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="228"/>
