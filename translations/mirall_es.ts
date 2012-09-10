@@ -282,7 +282,7 @@ tiqueta</translation>
     <message>
         <location filename="../src/mirall/application.cpp" line="227"/>
         <source>ownCloud Server Mismatch</source>
-        <translation type="unfinished"/>
+        <translation>Discrepancia con el servidor ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="228"/>

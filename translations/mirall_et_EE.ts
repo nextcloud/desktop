@@ -279,7 +279,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="227"/>
         <source>ownCloud Server Mismatch</source>
-        <translation type="unfinished"/>
+        <translation>ownCloudi serverid ei kattu</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="228"/>
@@ -355,7 +355,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="319"/>
         <source>Configure proxy...</source>
-        <translation type="unfinished"/>
+        <translation>Seadista proksi...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="321"/>
@@ -369,7 +369,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="352"/>
         <source>Managed Folders:</source>
-        <translation type="unfinished"/>
+        <translation>Kaustade haldamine:</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="585"/>
@@ -601,7 +601,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="335"/>
         <source>mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>minudomeen.ee</translation>
     </message>
 </context>
 <context>
@@ -698,7 +698,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="392"/>
         <source>Select the target folder</source>
-        <translation type="unfinished"/>
+        <translation>Vali sihtkaust</translation>
     </message>
 </context>
 <context>
@@ -711,27 +711,27 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="134"/>
         <source>&amp;Search: </source>
-        <translation type="unfinished"/>
+        <translation>Ot&amp;si:</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="142"/>
         <source>&amp;Find</source>
-        <translation type="unfinished"/>
+        <translation>Leia:</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="160"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Tühjenda</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="161"/>
         <source>Clear the log display.</source>
-        <translation type="unfinished"/>
+        <translation>Tühjenda näidatav logi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="167"/>
         <source>S&amp;ave</source>
-        <translation type="unfinished"/>
+        <translation>S&amp;alvesta</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="168"/>
@@ -742,7 +742,7 @@ Please write a bug report.</source>
         <location filename="../src/mirall/logbrowser.cpp" line="206"/>
         <location filename="../src/mirall/logbrowser.cpp" line="263"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Viga</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="207"/>
@@ -752,12 +752,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="253"/>
         <source>Save log file</source>
-        <translation type="unfinished"/>
+        <translation>Salvesta logifail</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="263"/>
         <source>Could not write to log file </source>
-        <translation type="unfinished"/>
+        <translation>Logifaili kirjutamine ebaõnnestus</translation>
     </message>
 </context>
 <context>
@@ -765,12 +765,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="245"/>
         <source>john</source>
-        <translation type="unfinished"/>
+        <translation>jaan</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="246"/>
         <source>secret</source>
-        <translation type="unfinished"/>
+        <translation>salasõna</translation>
     </message>
 </context>
 <context>
@@ -778,17 +778,17 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="291"/>
         <source>ftp.mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>ftp.minudomeen.ee</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="292"/>
         <source>john</source>
-        <translation type="unfinished"/>
+        <translation>jaan</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="293"/>
         <source>secret</source>
-        <translation type="unfinished"/>
+        <translation>salasõna</translation>
     </message>
 </context>
 <context>
@@ -796,12 +796,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="78"/>
         <source>john</source>
-        <translation type="unfinished"/>
+        <translation>jaan</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="79"/>
         <source>secret</source>
-        <translation type="unfinished"/>
+        <translation>salasõna</translation>
     </message>
 </context>
 <context>
@@ -834,17 +834,17 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="258"/>
         <source>Starting script owncloud-admin...</source>
-        <translation type="unfinished"/>
+        <translation>Skripti owncloud-admin käivitamine...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="309"/>
         <source>&lt;font color=&quot;red&quot;&gt;Installation of ownCloud failed!&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;red&quot;&gt;ownCloudi paigaldamine ebaõnnestus!&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="314"/>
         <source>&lt;font color=&quot;green&quot;&gt;Installation of ownCloud succeeded!&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;ownCloud paigaldamine oli edukas!&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="347"/>
@@ -965,7 +965,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="190"/>
         <source>http://owncloud.mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>http://owncloud.minudomeen.ee</translation>
     </message>
 </context>
 <context>
@@ -973,17 +973,17 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/proxydialog.cpp" line="31"/>
         <source>Hostname of proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Proksiserveri hostinimi</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.cpp" line="32"/>
         <source>Username for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Proksiserveri kasutajanimi</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.cpp" line="33"/>
         <source>Password for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Proksiserveri parool</translation>
     </message>
 </context>
 <context>
@@ -1138,12 +1138,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="331"/>
         <source>ownCloud Password Required</source>
-        <translation type="unfinished"/>
+        <translation>ownCloudi parool on nõutud</translation>
     </message>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="332"/>
         <source>Please enter your ownCloud password:</source>
-        <translation type="unfinished"/>
+        <translation>Palun sisesta oma ownCloudi parool:</translation>
     </message>
 </context>
 <context>
@@ -1268,17 +1268,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="31"/>
         <source>Create the ownCloud Connection</source>
-        <translation type="unfinished"/>
+        <translation>Loo ownCloudi ühendus</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="39"/>
         <source>Server &amp;address:</source>
-        <translation type="unfinished"/>
+        <translation>Serveri &amp;aadress:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="51"/>
         <source>https://</source>
-        <translation type="unfinished"/>
+        <translation>https://</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="58"/>
@@ -1288,32 +1288,32 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="71"/>
         <source>Use &amp;secure connection</source>
-        <translation type="unfinished"/>
+        <translation>Ka&amp;suta turvalist ühendust</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="84"/>
         <source>CheckBox</source>
-        <translation type="unfinished"/>
+        <translation>Märkekast</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="99"/>
         <source>&amp;Username:</source>
-        <translation type="unfinished"/>
+        <translation>Kas&amp;utajanimi:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="109"/>
         <source>Enter the ownCloud username.</source>
-        <translation type="unfinished"/>
+        <translation>Sisesta ownCloudi kasutajanimi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="116"/>
         <source>&amp;Password:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Parool:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="126"/>
         <source>Enter the ownCloud password.</source>
-        <translation type="unfinished"/>
+        <translation>Sisesta ownCloudi parool.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="141"/>
@@ -1330,7 +1330,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/owncloudsetuppage.ui" line="181"/>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="188"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Tekstisilt</translation>
     </message>
 </context>
 <context>
@@ -1376,7 +1376,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="51"/>
         <source>Select the ownCloud you want to connect to</source>
-        <translation type="unfinished"/>
+        <translation>Vali ownCloud, millega sa soovid ühenduda</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="63"/>
@@ -1396,7 +1396,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="110"/>
         <source>ownCloud-Link:</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud-Link:</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1452,7 +1452,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/theme.cpp" line="34"/>
         <location filename="../src/mirall/theme.cpp" line="52"/>
         <source>Status undefined</source>
-        <translation type="unfinished"/>
+        <translation>Staatus on määramata</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="37"/>
@@ -1462,12 +1462,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/theme.cpp" line="40"/>
         <source>Sync is running</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerimineon käimas</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="43"/>
         <source>Sync Success</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerimine on tehtud</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="46"/>
@@ -1477,7 +1477,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/theme.cpp" line="49"/>
         <source>Setup Error</source>
-        <translation type="unfinished"/>
+        <translation>Viga sünkroniseerimisel</translation>
     </message>
 </context>
 <context>
@@ -1485,7 +1485,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="36"/>
         <source>ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud</translation>
     </message>
 </context>
 <context>
@@ -1493,7 +1493,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="14"/>
         <source>Proxy Settings</source>
-        <translation type="unfinished"/>
+        <translation>Proksi seaded</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="26"/>
@@ -1503,42 +1503,42 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="43"/>
         <source>No Proxy</source>
-        <translation type="unfinished"/>
+        <translation>Proksit pole</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="53"/>
         <source>Use system proxy</source>
-        <translation type="unfinished"/>
+        <translation>Kasuta süsteemi proksit</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="60"/>
         <source>Manual proxy configuration</source>
-        <translation type="unfinished"/>
+        <translation>Käsitsi proksi seadistamine</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="90"/>
         <source>User</source>
-        <translation type="unfinished"/>
+        <translation>Kasutaja</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="116"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Parool</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="142"/>
         <source>Port</source>
-        <translation type="unfinished"/>
+        <translation>Port</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="149"/>
         <source>Host</source>
-        <translation type="unfinished"/>
+        <translation>Host</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="172"/>
         <source>Proxy server requires password</source>
-        <translation type="unfinished"/>
+        <translation>Proksiserver nõuab parooli</translation>
     </message>
 </context>
 <context>
