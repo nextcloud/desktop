@@ -57,7 +57,7 @@ void setupCustomMedia( QVariant variant, QLabel *label )
 OwncloudSetupPage::OwncloudSetupPage()
 {
     _ui.setupUi(this);
-    registerField( QLatin1String("OCUrl"), _ui.leUrl );
+    registerField( QLatin1String("OCUrlWithoutProtocol"), _ui.leUrl );
     registerField( QLatin1String("OCUser"),   _ui.leUsername );
     registerField( QLatin1String("OCPasswd"), _ui.lePassword);
     registerField( QLatin1String("connectMyOC"), _ui.cbConnectOC );
@@ -465,7 +465,11 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
 
 QString OwncloudWizard::ocUrl() const
 {
-    QString url = field("OCUrl").toString();
+    QString url = field("OCUrlWithoutProtocol").toString();
+
+    if (url.isEmpty()) {
+        url = field("OCUrl").toString();
+    }
 
     if( field("secureConnect").toBool() ) {
         url.prepend(QLatin1String("https://"));
