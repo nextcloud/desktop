@@ -185,7 +185,7 @@ void ownCloudInfo::qhttpRequestFinished(int id, bool success )
      }
 }
 #else
-void ownCloudInfo::mkdirRequest( const QString& dir )
+QNetworkReply* ownCloudInfo::mkdirRequest( const QString& dir )
 {
     qDebug() << "OCInfo Making dir " << dir;
     _authAttempts = 0;
@@ -206,6 +206,7 @@ void ownCloudInfo::mkdirRequest( const QString& dir )
     connect( reply, SIGNAL(finished()), SLOT(slotMkdirFinished()) );
     connect( reply, SIGNAL( error(QNetworkReply::NetworkError )),
              this, SLOT(slotError(QNetworkReply::NetworkError )));
+    return reply;
 }
 
 void ownCloudInfo::slotMkdirFinished()
