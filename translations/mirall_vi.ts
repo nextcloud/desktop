@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="61"/>
         <source>Where do you want to create your ownCloud?</source>
-        <translation type="unfinished"/>
+        <translation>Bạn muốn tạo ownCloud của bạn ở đâu?</translation>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="73"/>
@@ -147,7 +147,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="32"/>
         <source>Pick a local folder on your computer to sync:</source>
-        <translation type="unfinished"/>
+        <translation>Chọn một thư mục trên máy tính của bạn để đồng bộ hóa:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="43"/>
@@ -212,7 +212,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="148"/>
         <source>to a &amp;local folder</source>
-        <translation type="unfinished"/>
+        <translation>Đến thư mục &amp;local</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="161"/>
@@ -222,7 +222,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="171"/>
         <source>C&amp;hoose..</source>
-        <translation type="unfinished"/>
+        <translation>C&amp;hoose..</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="218"/>
@@ -294,7 +294,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="244"/>
         <source>&lt;p&gt;The detailed error message is&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Chi tiết lỗi thông báo là&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="246"/>
@@ -335,12 +335,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="311"/>
         <source>Open ownCloud...</source>
-        <translation type="unfinished"/>
+        <translation>Mở ownCloud...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="313"/>
         <source>Open status...</source>
-        <translation type="unfinished"/>
+        <translation>Mở trạng thái ...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="315"/>
@@ -374,22 +374,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="585"/>
         <source>Confirm Folder Remove</source>
-        <translation type="unfinished"/>
+        <translation>Xác nhận xóa thư mục</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="586"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
-        <translation type="unfinished"/>
+        <translation>Bạn có thật sự muốn xóa thư mục tải lên &lt;i&gt;%1&lt;/i&gt;?</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="620"/>
         <source>Undefined Folder State</source>
-        <translation type="unfinished"/>
+        <translation>Tình trạng thư mục không xác định</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="623"/>
         <source>The folder waits to start syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Thư mục chờ bắt đầu đồng bộ hóa.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="626"/>
@@ -419,7 +419,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/application.cpp" line="638"/>
         <location filename="../src/mirall/application.cpp" line="780"/>
         <source>Undefined Error State.</source>
-        <translation type="unfinished"/>
+        <translation>Tình trạng lỗi không xác định.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="642"/>
@@ -447,7 +447,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/application.cpp" line="663"/>
         <source>New files in the server, or files deleted locally:
 </source>
-        <translation type="unfinished"/>
+        <translation>Những tập tin mới trên máy chủ, hoặc những tập tin đã bị xóa trong máy cục bộ:</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="690"/>
@@ -457,17 +457,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="691"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation type="unfinished"/>
+        <translation>Hoạt động đồng bộ đang được thực hiện.&lt;br/&gt;Bạn có muốn chấm dứt nó?</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="753"/>
         <source>Undefined State.</source>
-        <translation type="unfinished"/>
+        <translation>Tình trạng không xác định.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="756"/>
         <source>Waits to start syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Vui lòng chờ để bắt đầu đồng bộ hóa.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="785"/>
@@ -477,7 +477,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="801"/>
         <source>No sync folders configured.</source>
-        <translation type="unfinished"/>
+        <translation>Không đồng bộ hóa những thư mục đã được cấu hình.</translation>
     </message>
 </context>
 <context>
@@ -485,12 +485,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="191"/>
         <source>CSync create failed.</source>
-        <translation type="unfinished"/>
+        <translation>Tạo CSync không thành công.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="227"/>
         <source>CSync failed to create a lock file.</source>
-        <translation type="unfinished"/>
+        <translation>CSync thất bại trong việc tạo ra một tập tin khóa.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="230"/>
@@ -509,12 +509,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="238"/>
         <source>CSync could not detect the filesystem type.</source>
-        <translation type="unfinished"/>
+        <translation>CSyn không thể nhận ra kiểu của hệ thống tập tin.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="241"/>
         <source>CSync got an error while processing internal trees.</source>
-        <translation type="unfinished"/>
+        <translation>CSyn đã gặp lỗi trong khi xử lý những cây nội bộ.</translation>
     </message>
     <message>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please create it and try again.&lt;/p&gt;</source>
@@ -528,22 +528,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="250"/>
         <source>&lt;p&gt;The ownCloud plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Các plugin của ownCloud cho csync không thể nạp được. &lt;br/&gt;Vui lòng kiểm tra lại quá trình cài đặt! &lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="254"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
-        <translation type="unfinished"/>
+        <translation>Hệ thống tập tin cục bộ không thể bị chỉnh sửa. Vui lòng kiểm tra lại quyền truy cập.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="258"/>
         <source>A remote file can not be written. Please check the remote access.</source>
-        <translation type="unfinished"/>
+        <translation>Một tập tin từ xa không thể bị chỉnh sửa. Vui lòng kiểm tra quyền truy cập từ xa</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="261"/>
         <source>An internal error number %1 happend.</source>
-        <translation type="unfinished"/>
+        <translation>Một lỗi nội bộ số %1 đã xảy ra.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="277"/>
@@ -553,7 +553,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="280"/>
         <source>CSync Update failed.</source>
-        <translation type="unfinished"/>
+        <translation>CSync cập nhật không thành công.</translation>
     </message>
     <message>
         <source>The local filesystem has directories which are write protected.
@@ -565,18 +565,20 @@ Please make sure that all directories are writeable.</source>
         <location filename="../src/mirall/csyncthread.cpp" line="294"/>
         <source>CSync encountered an error while examining the file system.
 Syncing is not possible.</source>
-        <translation type="unfinished"/>
+        <translation>CSync gặp phải một lỗi trong khi kiểm tra hệ thống tập tin.
+Quá trình đồng bộ không thể thực hiện được.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="297"/>
         <source>CSync update generated a strange instruction.
 Please write a bug report.</source>
-        <translation type="unfinished"/>
+        <translation>CSync cập nhật tạo ra một lệnh lạ.
+Vui lòng viết một báo cáo lỗi. </translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="300"/>
         <source>Local filesystem problems. Better disable Syncing and check.</source>
-        <translation type="unfinished"/>
+        <translation>Những vấn đề hệ thống tập tin cục bộ. Tốt hơn là nên vô hiệu hóa đồng bộ và kiểm tra.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="305"/>
@@ -623,7 +625,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="74"/>
         <source>No local directory selected!</source>
-        <translation type="unfinished"/>
+        <translation>Không có thư mục cục bộ nào được chọn!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="90"/>
@@ -653,7 +655,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="141"/>
         <source>Select the source folder</source>
-        <translation type="unfinished"/>
+        <translation>Chọn thư mục nguồn</translation>
     </message>
 </context>
 <context>
@@ -666,12 +668,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="236"/>
         <source>Folder on ownCloud was successfully created.</source>
-        <translation type="unfinished"/>
+        <translation>Thư mục trên ownCloud đã được tạo thành công.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="239"/>
         <source>Failed to create the folder on ownCloud.&lt;br/&gt;Please check manually.</source>
-        <translation type="unfinished"/>
+        <translation>Không thể tạo thư mục trên ownCloud. &lt;br/&gt; Vui lòng kiểm tra bằng tay.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="259"/>
