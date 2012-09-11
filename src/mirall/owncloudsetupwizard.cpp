@@ -127,14 +127,6 @@ void OwncloudSetupWizard::slotConnectToOCUrl( const QString& url )
   qDebug() << "Connect to url: " << url;
   _ocWizard->setField(QLatin1String("OCUrl"), url );
   _ocWizard->appendToResultWidget(tr("Trying to connect to ownCloud at %1...").arg(url ));
-
-  // Remove the protocol from the beginning of the url
-  QString urlWithoutProtocol = url;
-  urlWithoutProtocol.remove(QRegExp(".*://"));
-
-  _ocWizard->setField(QLatin1String("OCUrlWithoutProtocol"),
-                      urlWithoutProtocol);
-
   testOwnCloudConnect();
 }
 
@@ -221,8 +213,6 @@ void OwncloudSetupWizard::slotCreateOCLocalhost()
 
   // define
   _ocWizard->setField( QLatin1String("OCUrl"), QLatin1String( "http://localhost/owncloud/") );
-  _ocWizard->setField(QLatin1String("OCUrlWithoutProtocol"),
-                      QLatin1String("localhost/owncloud/"));
 }
 
 void OwncloudSetupWizard::slotInstallOCServer()
@@ -254,13 +244,6 @@ void OwncloudSetupWizard::slotInstallOCServer()
   runOwncloudAdmin( args );
   _ocWizard->setField( QLatin1String("OCUrl"), QString::fromLatin1( "%1/owncloud/")
                        .arg(_ocWizard->field(QLatin1String("myOCDomain")).toString() ));
-
-  QString url = QString::fromLatin1( "%1/owncloud/")
-          .arg(_ocWizard->field(QLatin1String("myOCDomain")).toString());
-
-  _ocWizard->setField(QLatin1String("OCUrl"), url);
-  _ocWizard->setField(QLatin1String("OCUrlWithoutProtocol"),
-                      url.remove(QRegExp(".*://")));
 }
 
 void OwncloudSetupWizard::runOwncloudAdmin( const QStringList& args )
