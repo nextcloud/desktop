@@ -45,7 +45,7 @@ public:
 protected slots:
   void slotPwdStoreChanged( int );
   void slotSecureConChanged( int );
-  void handleNewOcUrl(QString ocUrl);
+  void handleNewOcUrl(const QString& ocUrl);
   void setupCustomization();
 private:
   Ui_OwncloudSetupPage _ui;

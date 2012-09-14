@@ -150,9 +150,20 @@ void OwncloudSetupPage::slotSecureConChanged( int state )
     }
 }
 
-void OwncloudSetupPage::handleNewOcUrl(QString ocUrl)
+void OwncloudSetupPage::handleNewOcUrl(const QString& ocUrl)
 {
-    _ui.leUrl->setText(ocUrl.remove(QRegExp(".*://")));
+    QUrl url(ocUrl);
+
+    QString urlMinusScheme = url.toString(QUrl::RemoveScheme);
+
+    // QUrl::RemoveScheme leaves the beginning slashes. Remove them
+    // if they're present.
+    if (urlMinusScheme.startsWith("//"))
+    {
+        urlMinusScheme.remove(0, 2);
+    }
+
+    _ui.leUrl->setText(urlMinusScheme);
 }
 
 bool OwncloudSetupPage::isComplete() const
