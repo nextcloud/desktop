@@ -45,10 +45,10 @@ public:
 protected slots:
   void slotPwdStoreChanged( int );
   void slotSecureConChanged( int );
+  void handleNewOcUrl(const QString& ocUrl);
   void setupCustomization();
 private:
   Ui_OwncloudSetupPage _ui;
-
 };
 
 class OwncloudWizard: public QWizard
@@ -112,7 +112,6 @@ public:
 
 private:
   Ui_OwncloudWizardSelectTypePage _ui;
-
 };
 
 class CreateAnOwncloudPage: public QWizardPage

@@ -57,6 +57,9 @@ void setupCustomMedia( QVariant variant, QLabel *label )
 OwncloudSetupPage::OwncloudSetupPage()
 {
     _ui.setupUi(this);
+
+    connect(_ui.leUrl, SIGNAL(textChanged(QString)), SLOT(handleNewOcUrl(QString)));
+
     registerField( QLatin1String("OCUrl"), _ui.leUrl );
     registerField( QLatin1String("OCUser"),   _ui.leUsername );
     registerField( QLatin1String("OCPasswd"), _ui.lePassword);
@@ -145,6 +148,21 @@ void OwncloudSetupPage::slotSecureConChanged( int state )
     } else {
         _ui.protocolLabel->setText(QLatin1String("http://"));
     }
+}
+
+void OwncloudSetupPage::handleNewOcUrl(const QString& ocUrl)
+{
+    QUrl url(ocUrl);
+
+    QString urlMinusScheme = url.toString(QUrl::RemoveScheme);
+
+    // QUrl::RemoveScheme leaves the beginning slashes. Remove them
+    // if they're present.
+    if (urlMinusScheme.startsWith("//")) {
+        urlMinusScheme.remove(0, 2);
+    }
+
+    _ui.leUrl->setText(urlMinusScheme);
 }
 
 bool OwncloudSetupPage::isComplete() const
