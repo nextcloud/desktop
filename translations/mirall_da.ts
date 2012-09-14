@@ -61,7 +61,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardnetworkpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardnetworkpage.ui" line="27"/>
@@ -89,7 +89,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="20"/>
@@ -127,7 +127,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="25"/>
@@ -165,7 +165,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Form</translation>
     </message>
     <message>
         <source>Express Upload Target</source>
@@ -227,7 +227,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="361"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Tekstlabel</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="383"/>
@@ -289,7 +289,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="246"/>
         <source>&lt;p&gt;Please check your configuration by clicking on the tray icon.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Tjek venligst indstillingerne ved at klikke på ikonet i statusbaren&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="248"/>
@@ -305,42 +305,42 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="277"/>
         <source>&lt;p&gt;Your ownCloud credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Dit ownCloud brugernavn/kodeord er ikke korrekt.&lt;/p&gt;&lt;p&gt;Ajourfør venligst disse ved at åbne indstillingerne fra ikonet i statusbaren!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="284"/>
         <source>&lt;p&gt;Your ownCloud user name or password is not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Dit ownCloud brugernavn/kodeord er ikke korrekt.&lt;/p&gt;&lt;p&gt;Ajourfør venligst disse ved at åbne indstillingerne fra ikonet i statusbaren!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="296"/>
         <source>ownCloud Sync Started</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud Sync er startet</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="296"/>
         <source>Sync started for %1 configured sync folder(s).</source>
-        <translation type="unfinished"/>
+        <translation>Synkronisering af %1 konfigurerede mapper er startet.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="311"/>
         <source>Open ownCloud...</source>
-        <translation type="unfinished"/>
+        <translation>Åben ownCloud...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="313"/>
         <source>Open status...</source>
-        <translation type="unfinished"/>
+        <translation>Åben status...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="315"/>
         <source>Add folder...</source>
-        <translation type="unfinished"/>
+        <translation>Tilføj mappe...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="317"/>
         <source>Configure...</source>
-        <translation type="unfinished"/>
+        <translation>Konfigurer...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="319"/>
@@ -350,7 +350,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="321"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Afslut</translation>
     </message>
     <message>
         <source>open folder %1</source>
@@ -364,85 +364,88 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="585"/>
         <source>Confirm Folder Remove</source>
-        <translation type="unfinished"/>
+        <translation>Bekræft sletning af mappe</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="586"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
-        <translation type="unfinished"/>
+        <translation>Vil du virkelig slette uploadmappen &lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="620"/>
         <source>Undefined Folder State</source>
-        <translation type="unfinished"/>
+        <translation>Udefineret mappetilstand</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="623"/>
         <source>The folder waits to start syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Mappen venter på at blive synkroniseret.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="626"/>
         <location filename="../src/mirall/application.cpp" line="760"/>
         <source>Sync is running.</source>
-        <translation type="unfinished"/>
+        <translation>Synkronisering igang.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="629"/>
         <location filename="../src/mirall/application.cpp" line="765"/>
         <source>Last Sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>Sidste synkronisering var succesfuld.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="632"/>
         <location filename="../src/mirall/application.cpp" line="771"/>
         <source>Syncing Error.</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniseringsfejl.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="635"/>
         <location filename="../src/mirall/application.cpp" line="777"/>
         <source>Setup Error.</source>
-        <translation type="unfinished"/>
+        <translation>Indstillingsfejl.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="638"/>
         <location filename="../src/mirall/application.cpp" line="780"/>
         <source>Undefined Error State.</source>
-        <translation type="unfinished"/>
+        <translation>Udefineret fejl.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="642"/>
         <source>Folder information</source>
-        <translation type="unfinished"/>
+        <translation>Mappeinformation</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="657"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Ukendt</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="659"/>
         <source>Changed files:
 </source>
-        <translation type="unfinished"/>
+        <translation>Ændrede filer:
+</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="661"/>
         <source>Added files:
 </source>
-        <translation type="unfinished"/>
+        <translation>Tilføjede filer:
+</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="663"/>
         <source>New files in the server, or files deleted locally:
 </source>
-        <translation type="unfinished"/>
+        <translation>Nye filer på serveren eller filer slettet lokalt:
+</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="690"/>
         <source>Sync Running</source>
-        <translation type="unfinished"/>
+        <translation>Synkronisering igang</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="691"/>
