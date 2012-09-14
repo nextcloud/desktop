@@ -158,8 +158,7 @@ void OwncloudSetupPage::handleNewOcUrl(const QString& ocUrl)
 
     // QUrl::RemoveScheme leaves the beginning slashes. Remove them
     // if they're present.
-    if (urlMinusScheme.startsWith("//"))
-    {
+    if (urlMinusScheme.startsWith("//")) {
         urlMinusScheme.remove(0, 2);
     }
 
