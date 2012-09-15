@@ -600,7 +600,7 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::CreateAnOwncloudPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="335"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="353"/>
         <source>mydomain.org</source>
         <translation>mydomain.org</translation>
     </message>
@@ -764,12 +764,12 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::OwncloudCredentialsPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="245"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="263"/>
         <source>john</source>
         <translation>Иван</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="246"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="264"/>
         <source>secret</source>
         <translation>секрет</translation>
     </message>
@@ -777,17 +777,17 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::OwncloudFTPAccessPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="291"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="309"/>
         <source>ftp.mydomain.org</source>
         <translation>ftp.mydomain.org</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="292"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="310"/>
         <source>john</source>
         <translation>Иван</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="293"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="311"/>
         <source>secret</source>
         <translation>секрет</translation>
     </message>
@@ -795,12 +795,12 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::OwncloudSetupPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="78"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="81"/>
         <source>john</source>
         <translation>Иван</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="79"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="82"/>
         <source>secret</source>
         <translation>секрет</translation>
     </message>
@@ -957,7 +957,7 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::OwncloudWizardResultPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="416"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="434"/>
         <source>Congratulations! Your &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;new ownCloud&lt;/a&gt; is now up and running!</source>
         <translation>Поздравляем! Ваш&lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;новый ownCloud&lt;/a&gt; уже работает!</translation>
     </message>
@@ -965,7 +965,7 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::OwncloudWizardSelectTypePage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="190"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="208"/>
         <source>http://owncloud.mydomain.org</source>
         <translation>http://owncloud.mydomain.org</translation>
     </message>
