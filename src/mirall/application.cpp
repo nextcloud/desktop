@@ -29,6 +29,7 @@
 #include "mirall/mirallconfigfile.h"
 #include "mirall/updatedetector.h"
 #include "mirall/proxydialog.h"
+#include "mirall/version.h"
 
 #include "mirall/miralltheme.h"
 #include "mirall/owncloudtheme.h"
@@ -318,6 +319,8 @@ void Application::setupActions()
     QObject::connect(_actionConfigure, SIGNAL(triggered(bool)), SLOT(slotConfigure()));
     _actionConfigureProxy = new QAction(tr("Configure proxy..."), this);
     QObject::connect(_actionConfigureProxy, SIGNAL(triggered(bool)), SLOT(slotConfigureProxy()));
+    _actionAbout = new QAction(tr("&About..."), this);
+    QObject::connect(_actionAbout, SIGNAL(triggered(bool)), SLOT(slotAbout()));
     _actionQuit = new QAction(tr("Quit"), this);
     QObject::connect(_actionQuit, SIGNAL(triggered(bool)), SLOT(quit()));
 }
@@ -366,6 +369,8 @@ void Application::setupContextMenu()
     _contextMenu->addSeparator();
     _contextMenu->addAction(_actionConfigure);
     _contextMenu->addAction(_actionConfigureProxy);
+    _contextMenu->addSeparator();
+    _contextMenu->addAction(_actionAbout);
     _contextMenu->addSeparator();
 
     _contextMenu->addAction(_actionQuit);
@@ -574,6 +579,16 @@ void Application::slotOpenLogBrowser()
 {
     _logBrowser->show();
     _logBrowser->raise();
+}
+
+void Application::slotAbout()
+{
+    QMessageBox::about(0, tr("About %1").arg(_theme->appName()),
+                       tr("%1 client, version %2\n\nCopyright 2012, the ownCloud developers\n\nLicensed under GPLv2\n\n"
+                          "The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN,"
+                          "MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.")
+                       .arg(_theme->appName())
+                       .arg(MIRALL_STRINGIFY(MIRALL_VERSION)));
 }
 
 /*
