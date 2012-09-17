@@ -152,17 +152,17 @@ void OwncloudSetupPage::slotSecureConChanged( int state )
 
 void OwncloudSetupPage::handleNewOcUrl(const QString& ocUrl)
 {
-    QUrl url(ocUrl);
-
-    QString urlMinusScheme = url.toString(QUrl::RemoveScheme);
-
-    // QUrl::RemoveScheme leaves the beginning slashes. Remove them
-    // if they're present.
-    if (urlMinusScheme.startsWith("//")) {
-        urlMinusScheme.remove(0, 2);
+    QString url = ocUrl;
+    QRegExp scheme(".*://");
+    if (url.contains(scheme)) {
+        if (url.startsWith(QLatin1String("https://")))
+            _ui.cbSecureConnect->setChecked(true);
+        if (url.startsWith(QLatin1String("http://")))
+            _ui.cbSecureConnect->setChecked(false);
+        int pos = _ui.leUrl->cursorPosition();
+        _ui.leUrl->setText(url.remove(scheme));
+        _ui.leUrl->setCursorPosition(qMin(pos-scheme.matchedLength(),url.length()));
     }
-
-    _ui.leUrl->setText(urlMinusScheme);
 }
 
 bool OwncloudSetupPage::isComplete() const
