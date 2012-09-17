@@ -16,7 +16,7 @@
         <string>6.0</string>
         <key>CFBundleLongVersionString</key>
         <string>ownCloud client @VERSION@</string>
-        <key>CFBundleName</key>
+        <key>CFBundlePackageType</key>
         <string>APPL</string>
         <key>CFBundleSignature</key>
         <string>????</string>
