@@ -263,7 +263,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Mirall::Application</name>
     <message>
-        <location filename="../src/mirall/application.cpp" line="200"/>
+        <location filename="../src/mirall/application.cpp" line="201"/>
         <source>No ownCloud Configuration</source>
         <translation>Chybí nastavení ownCloud</translation>
     </message>
@@ -272,93 +272,98 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="201"/>
+        <location filename="../src/mirall/application.cpp" line="202"/>
         <source>&lt;p&gt;No server connection has been configured for this ownCloud client.&lt;/p&gt;&lt;p&gt;Please right click on the ownCloud system tray icon and select &lt;i&gt;Configure&lt;/i&gt; to connect this client to an ownCloud server.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Pro tento ownCloud nebylo nastaveno žádné serverové spojení.&lt;/p&gt;&lt;p&gt;Klikněte pravým tlačítkem na ikonu ownCloud v systémové části panelu a vyberte &lt;i&gt;Nastavit&lt;/i&gt; pro připojení klienta k serveru ownCloud.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="227"/>
+        <location filename="../src/mirall/application.cpp" line="228"/>
         <source>ownCloud Server Mismatch</source>
         <translation>Neshoda serveru ownCloud</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="228"/>
+        <location filename="../src/mirall/application.cpp" line="229"/>
         <source>&lt;p&gt;The configured server for this client is too old.&lt;/p&gt;&lt;p&gt;Please update to the latest ownCloud server and restart the client.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Server nastavený pro tohoto klienta je příliš starý.&lt;/p&gt;&lt;p&gt;Aktualizujte, prosím, na poslední verzi ownCloud a restartujte klienta.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="243"/>
+        <location filename="../src/mirall/application.cpp" line="244"/>
         <source>&lt;p&gt;The ownCloud at %1 could not be reached.&lt;/p&gt;</source>
         <translation>&lt;p&gt;ownCloud na %1 je nedosažitelný.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="244"/>
+        <location filename="../src/mirall/application.cpp" line="245"/>
         <source>&lt;p&gt;The detailed error message is&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Podrobnosti chybového hlášení&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="246"/>
+        <location filename="../src/mirall/application.cpp" line="247"/>
         <source>&lt;p&gt;Please check your configuration by clicking on the tray icon.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Kliknutím na ikonu v systémové části panelu ověřte Vaše nastavení.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="248"/>
+        <location filename="../src/mirall/application.cpp" line="249"/>
         <source>ownCloud Connection Failed</source>
         <translation>Připojení k ownCloud selhalo</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="276"/>
-        <location filename="../src/mirall/application.cpp" line="283"/>
+        <location filename="../src/mirall/application.cpp" line="277"/>
+        <location filename="../src/mirall/application.cpp" line="284"/>
         <source>No ownCloud Connection</source>
         <translation>Žádné připojení k ownCloud</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="277"/>
+        <location filename="../src/mirall/application.cpp" line="278"/>
         <source>&lt;p&gt;Your ownCloud credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Vaše přihlašovací údaje ownCloud nejsou v pořádku.&lt;/p&gt;&lt;p&gt;Opravte je, prosím, spuštěním dialogu pro nastavení ze systémové části panelu!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="284"/>
+        <location filename="../src/mirall/application.cpp" line="285"/>
         <source>&lt;p&gt;Your ownCloud user name or password is not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Vaše uživatelské jméno, nebo heslo ownCloud, není v pořádku.&lt;/p&gt;&lt;p&gt;Opravte je, prosím, spuštěním dialogu pro nastavení ze systémové části panelu!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="296"/>
+        <location filename="../src/mirall/application.cpp" line="297"/>
         <source>ownCloud Sync Started</source>
         <translation>Synchronizace ownCloud spuštěna</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="296"/>
+        <location filename="../src/mirall/application.cpp" line="297"/>
         <source>Sync started for %1 configured sync folder(s).</source>
         <translation>Synchronizace spuštěna pro %1 nastavené synchronizované složky.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="311"/>
+        <location filename="../src/mirall/application.cpp" line="312"/>
         <source>Open ownCloud...</source>
         <translation>Otevřít ownCloud...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="313"/>
+        <location filename="../src/mirall/application.cpp" line="314"/>
         <source>Open status...</source>
         <translation>Otevřít stav...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="315"/>
+        <location filename="../src/mirall/application.cpp" line="316"/>
         <source>Add folder...</source>
         <translation>Přidat složku...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="317"/>
+        <location filename="../src/mirall/application.cpp" line="318"/>
         <source>Configure...</source>
         <translation>Nastavit...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="319"/>
+        <location filename="../src/mirall/application.cpp" line="320"/>
         <source>Configure proxy...</source>
         <translation>Nastavit proxy...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="321"/>
+        <location filename="../src/mirall/application.cpp" line="322"/>
+        <source>&amp;About...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="324"/>
         <source>Quit</source>
         <translation>Ukončit</translation>
     </message>
@@ -367,118 +372,134 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="352"/>
+        <location filename="../src/mirall/application.cpp" line="355"/>
         <source>Managed Folders:</source>
         <translation>Spravované složky:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="585"/>
+        <location filename="../src/mirall/application.cpp" line="586"/>
+        <source>About %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="587"/>
+        <source>%1 client, version %2
+
+Copyright 2012, the ownCloud developers
+
+Licensed under GPLv2
+
+The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN,MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="600"/>
         <source>Confirm Folder Remove</source>
         <translation>Potvrdit odstranění složky</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="586"/>
+        <location filename="../src/mirall/application.cpp" line="601"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>Opravdu si přejete odstranit odesílací složku &lt;i&gt;%1&lt;/i&gt;?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="620"/>
+        <location filename="../src/mirall/application.cpp" line="635"/>
         <source>Undefined Folder State</source>
         <translation>Nedefinovatelný stav složky</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="623"/>
+        <location filename="../src/mirall/application.cpp" line="638"/>
         <source>The folder waits to start syncing.</source>
         <translation>Složka  vyčkává na spuštění synchronizace.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="626"/>
-        <location filename="../src/mirall/application.cpp" line="760"/>
+        <location filename="../src/mirall/application.cpp" line="641"/>
+        <location filename="../src/mirall/application.cpp" line="775"/>
         <source>Sync is running.</source>
         <translation>Synchronizace probíhá.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="629"/>
-        <location filename="../src/mirall/application.cpp" line="765"/>
+        <location filename="../src/mirall/application.cpp" line="644"/>
+        <location filename="../src/mirall/application.cpp" line="780"/>
         <source>Last Sync was successful.</source>
         <translation>Poslední synchronizace byla úspěšná.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="632"/>
-        <location filename="../src/mirall/application.cpp" line="771"/>
+        <location filename="../src/mirall/application.cpp" line="647"/>
+        <location filename="../src/mirall/application.cpp" line="786"/>
         <source>Syncing Error.</source>
         <translation>Chyba synchronizace.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="635"/>
-        <location filename="../src/mirall/application.cpp" line="777"/>
+        <location filename="../src/mirall/application.cpp" line="650"/>
+        <location filename="../src/mirall/application.cpp" line="792"/>
         <source>Setup Error.</source>
         <translation>Chyba nastavení.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="638"/>
-        <location filename="../src/mirall/application.cpp" line="780"/>
+        <location filename="../src/mirall/application.cpp" line="653"/>
+        <location filename="../src/mirall/application.cpp" line="795"/>
         <source>Undefined Error State.</source>
         <translation>Nedefinovatelná chyba.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="642"/>
+        <location filename="../src/mirall/application.cpp" line="657"/>
         <source>Folder information</source>
         <translation>Informace o složce</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="657"/>
+        <location filename="../src/mirall/application.cpp" line="672"/>
         <source>Unknown</source>
         <translation>Neznámý</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="659"/>
+        <location filename="../src/mirall/application.cpp" line="674"/>
         <source>Changed files:
 </source>
         <translation>Změněné soubory:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="661"/>
+        <location filename="../src/mirall/application.cpp" line="676"/>
         <source>Added files:
 </source>
         <translation>Přidané soubory:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="663"/>
+        <location filename="../src/mirall/application.cpp" line="678"/>
         <source>New files in the server, or files deleted locally:
 </source>
         <translation>Nové soubory na serveru, nebo místní soubory, které byly odstraněny:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="690"/>
+        <location filename="../src/mirall/application.cpp" line="705"/>
         <source>Sync Running</source>
         <translation>Synchronizace probíhá</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="691"/>
+        <location filename="../src/mirall/application.cpp" line="706"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Probíhá operace synchronizace.&lt;br/&gt;Přejete si ji přerušit?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="753"/>
+        <location filename="../src/mirall/application.cpp" line="768"/>
         <source>Undefined State.</source>
         <translation>Nedefinovatelný stav.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="756"/>
+        <location filename="../src/mirall/application.cpp" line="771"/>
         <source>Waits to start syncing.</source>
         <translation>Vyčkává na spuštění synchronizace.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="785"/>
+        <location filename="../src/mirall/application.cpp" line="800"/>
         <source>Sync is paused.</source>
         <translation>Synchronizace pozastavena.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="801"/>
+        <location filename="../src/mirall/application.cpp" line="816"/>
         <source>No sync folders configured.</source>
         <translation>Nejsou nastaveny žádné synchronizované složky.</translation>
     </message>
@@ -1336,8 +1357,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="144"/>
-        <source>&amp;do not store Password on local machine.</source>
-        <translation>&amp;neukládat heslo na místním stroji.</translation>
+        <source>&amp;Do not store password on local machine.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="153"/>
