@@ -12,6 +12,8 @@
  * for more details.
  */
 
+#include "config.h"
+
 #include "mirall/mirallconfigfile.h"
 #include "mirall/owncloudtheme.h"
 #include "mirall/miralltheme.h"
@@ -79,11 +81,8 @@ QString MirallConfigFile::excludeFile() const
 
 QString MirallConfigFile::configFile() const
 {
-#ifdef OWNCLOUD_CLIENT
-    ownCloudTheme theme;
-#else
-    mirallTheme theme;
-#endif
+    THEME_CLASS theme;
+
     if( qApp->applicationName().isEmpty() ) {
         qApp->setApplicationName( theme.appName() );
     }
