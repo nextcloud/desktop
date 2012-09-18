@@ -75,15 +75,12 @@ Application::Application(int &argc, char **argv) :
     _networkMgr(new QNetworkConfigurationManager(this)),
 #endif
     _contextMenu(0),
+    _theme(0),
     _updateDetector(0),
     _helpOnly(false)
 {
 
-#ifdef OWNCLOUD_CLIENT
-    _theme = new ownCloudTheme();
-#else
-    _theme = new mirallTheme();
-#endif
+    _theme = new THEME_CLASS;
     setApplicationName( _theme->appName() );
     setWindowIcon( _theme->applicationIcon() );
 

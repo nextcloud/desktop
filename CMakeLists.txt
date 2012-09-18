@@ -37,6 +37,7 @@ find_package(INotify)
 
 set(WITH_CSYNC CSYNC_FOUND)
 set(USE_INOTIFY ${INOTIFY_FOUND})
+set(THEME_CLASS "ownCloudTheme")
 
 configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
