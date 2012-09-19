@@ -263,7 +263,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Mirall::Application</name>
     <message>
-        <location filename="../src/mirall/application.cpp" line="201"/>
+        <location filename="../src/mirall/application.cpp" line="198"/>
         <source>No ownCloud Configuration</source>
         <translation>ownCloudの設定がありません</translation>
     </message>
@@ -272,98 +272,98 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="202"/>
+        <location filename="../src/mirall/application.cpp" line="199"/>
         <source>&lt;p&gt;No server connection has been configured for this ownCloud client.&lt;/p&gt;&lt;p&gt;Please right click on the ownCloud system tray icon and select &lt;i&gt;Configure&lt;/i&gt; to connect this client to an ownCloud server.&lt;/p&gt;</source>
         <translation>&lt;p&gt;このownCloudクライアントにはサーバ接続の設定がありません。&lt;/p&gt;&lt;p&gt;ownCloudサーバへ接続するために、ownCloudのシステムトレイアイコン上で右クリックし、&lt;i&gt;設定&lt;/i&gt;を選択してください&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="228"/>
+        <location filename="../src/mirall/application.cpp" line="225"/>
         <source>ownCloud Server Mismatch</source>
         <translation>ownCloud のサーバ不適合</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="229"/>
+        <location filename="../src/mirall/application.cpp" line="226"/>
         <source>&lt;p&gt;The configured server for this client is too old.&lt;/p&gt;&lt;p&gt;Please update to the latest ownCloud server and restart the client.&lt;/p&gt;</source>
         <translation>&lt;p&gt;このクライアントに対して設定されたサーバーがとても古いものです。&lt;/p&gt;&lt;p&gt;ownCloud サーバを最新版にアップデートしてクライアントを再起動してください。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="244"/>
+        <location filename="../src/mirall/application.cpp" line="241"/>
         <source>&lt;p&gt;The ownCloud at %1 could not be reached.&lt;/p&gt;</source>
         <translation>&lt;p&gt;ownCloud %1 へたどり着くことができませんでした。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="245"/>
+        <location filename="../src/mirall/application.cpp" line="242"/>
         <source>&lt;p&gt;The detailed error message is&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;詳細なエラーメッセージ&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="247"/>
+        <location filename="../src/mirall/application.cpp" line="244"/>
         <source>&lt;p&gt;Please check your configuration by clicking on the tray icon.&lt;/p&gt;</source>
         <translation>&lt;p&gt;トレイアイコンをクリックして設定をチェックしてください。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="249"/>
+        <location filename="../src/mirall/application.cpp" line="246"/>
         <source>ownCloud Connection Failed</source>
         <translation>ownCloudの接続に失敗しました</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="277"/>
-        <location filename="../src/mirall/application.cpp" line="284"/>
+        <location filename="../src/mirall/application.cpp" line="274"/>
+        <location filename="../src/mirall/application.cpp" line="281"/>
         <source>No ownCloud Connection</source>
         <translation>ownCloudの接続がありません</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="278"/>
+        <location filename="../src/mirall/application.cpp" line="275"/>
         <source>&lt;p&gt;Your ownCloud credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation>&lt;p&gt;あなたのownCloudの資格情報は正しくありません。&lt;/p&gt;&lt;p&gt;トレイ内から設定ダイアログを表示し、正しく訂正してください！&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="285"/>
+        <location filename="../src/mirall/application.cpp" line="282"/>
         <source>&lt;p&gt;Your ownCloud user name or password is not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation>&lt;p&gt;あなたのownCloudユーザ名もしくはパスワードは正しくありません。&lt;/p&gt;&lt;p&gt;トレイから設定ダイアログを開き、正しく修正してください！&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="297"/>
+        <location filename="../src/mirall/application.cpp" line="294"/>
         <source>ownCloud Sync Started</source>
         <translation>ownCloudの同期を開始しました</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="297"/>
+        <location filename="../src/mirall/application.cpp" line="294"/>
         <source>Sync started for %1 configured sync folder(s).</source>
         <translation>設定された %1 フォルダの同期を開始しました。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="312"/>
+        <location filename="../src/mirall/application.cpp" line="309"/>
         <source>Open ownCloud...</source>
         <translation>ownCloudを開く...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="314"/>
+        <location filename="../src/mirall/application.cpp" line="311"/>
         <source>Open status...</source>
         <translation>状態を確認...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="316"/>
+        <location filename="../src/mirall/application.cpp" line="313"/>
         <source>Add folder...</source>
         <translation>フォルダを追加...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="318"/>
+        <location filename="../src/mirall/application.cpp" line="315"/>
         <source>Configure...</source>
         <translation>設定...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="320"/>
+        <location filename="../src/mirall/application.cpp" line="317"/>
         <source>Configure proxy...</source>
         <translation>プロキシを設定...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="322"/>
+        <location filename="../src/mirall/application.cpp" line="319"/>
         <source>&amp;About...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="324"/>
+        <location filename="../src/mirall/application.cpp" line="321"/>
         <source>Quit</source>
         <translation>終了</translation>
     </message>
@@ -372,17 +372,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="355"/>
+        <location filename="../src/mirall/application.cpp" line="352"/>
         <source>Managed Folders:</source>
         <translation>管理フォルダ:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="586"/>
+        <location filename="../src/mirall/application.cpp" line="583"/>
         <source>About %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="587"/>
+        <location filename="../src/mirall/application.cpp" line="584"/>
         <source>%1 client, version %2
 
 Copyright 2012, the ownCloud developers
@@ -393,113 +393,113 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="600"/>
+        <location filename="../src/mirall/application.cpp" line="597"/>
         <source>Confirm Folder Remove</source>
         <translation>フォルダの削除を確認</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="601"/>
+        <location filename="../src/mirall/application.cpp" line="598"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>本当にアップロードフォルダ &lt;i&gt;%1&lt;/i&gt; を削除してよろしいですか？</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="635"/>
+        <location filename="../src/mirall/application.cpp" line="632"/>
         <source>Undefined Folder State</source>
         <translation>未定義のフォルダの状態</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="638"/>
+        <location filename="../src/mirall/application.cpp" line="635"/>
         <source>The folder waits to start syncing.</source>
         <translation>フォルダは同期開始の待機中です。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="641"/>
-        <location filename="../src/mirall/application.cpp" line="775"/>
+        <location filename="../src/mirall/application.cpp" line="638"/>
+        <location filename="../src/mirall/application.cpp" line="772"/>
         <source>Sync is running.</source>
         <translation>同期を実行中です。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="644"/>
-        <location filename="../src/mirall/application.cpp" line="780"/>
+        <location filename="../src/mirall/application.cpp" line="641"/>
+        <location filename="../src/mirall/application.cpp" line="777"/>
         <source>Last Sync was successful.</source>
         <translation>最後の同期は成功しました。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="647"/>
-        <location filename="../src/mirall/application.cpp" line="786"/>
+        <location filename="../src/mirall/application.cpp" line="644"/>
+        <location filename="../src/mirall/application.cpp" line="783"/>
         <source>Syncing Error.</source>
         <translation>同期エラー。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="650"/>
-        <location filename="../src/mirall/application.cpp" line="792"/>
+        <location filename="../src/mirall/application.cpp" line="647"/>
+        <location filename="../src/mirall/application.cpp" line="789"/>
         <source>Setup Error.</source>
         <translation>設定エラー。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="653"/>
-        <location filename="../src/mirall/application.cpp" line="795"/>
+        <location filename="../src/mirall/application.cpp" line="650"/>
+        <location filename="../src/mirall/application.cpp" line="792"/>
         <source>Undefined Error State.</source>
         <translation>未定義のエラー状態。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="657"/>
+        <location filename="../src/mirall/application.cpp" line="654"/>
         <source>Folder information</source>
         <translation>フォルダー情報</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="672"/>
+        <location filename="../src/mirall/application.cpp" line="669"/>
         <source>Unknown</source>
         <translation>不明</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="674"/>
+        <location filename="../src/mirall/application.cpp" line="671"/>
         <source>Changed files:
 </source>
         <translation>変更されたファイル:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="676"/>
+        <location filename="../src/mirall/application.cpp" line="673"/>
         <source>Added files:
 </source>
         <translation>追加されたファイル:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="678"/>
+        <location filename="../src/mirall/application.cpp" line="675"/>
         <source>New files in the server, or files deleted locally:
 </source>
         <translation>サーバー上の新規ファイル、もしくはローカルのファイル削除:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="705"/>
+        <location filename="../src/mirall/application.cpp" line="702"/>
         <source>Sync Running</source>
         <translation>同期実行中</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="706"/>
+        <location filename="../src/mirall/application.cpp" line="703"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>同期操作が実行中です。&lt;br/&gt;終了してもよろしいですか？</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="768"/>
+        <location filename="../src/mirall/application.cpp" line="765"/>
         <source>Undefined State.</source>
         <translation>未定義の状態。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="771"/>
+        <location filename="../src/mirall/application.cpp" line="768"/>
         <source>Waits to start syncing.</source>
         <translation>同期開始を待機中</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="800"/>
+        <location filename="../src/mirall/application.cpp" line="797"/>
         <source>Sync is paused.</source>
         <translation>同期を一時停止しました。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="816"/>
+        <location filename="../src/mirall/application.cpp" line="813"/>
         <source>No sync folders configured.</source>
         <translation>同期フォルダが設定されていません。</translation>
     </message>
@@ -1161,12 +1161,12 @@ Setup can not be done.</source>
 <context>
     <name>MirallConfigFile</name>
     <message>
-        <location filename="../src/mirall/mirallconfigfile.cpp" line="331"/>
+        <location filename="../src/mirall/mirallconfigfile.cpp" line="330"/>
         <source>ownCloud Password Required</source>
         <translation>ownCloudのパスワードが必要です</translation>
     </message>
     <message>
-        <location filename="../src/mirall/mirallconfigfile.cpp" line="332"/>
+        <location filename="../src/mirall/mirallconfigfile.cpp" line="331"/>
         <source>Please enter your ownCloud password:</source>
         <translation>ownCloudのパスワードを入力してください:</translation>
     </message>
