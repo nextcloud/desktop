@@ -135,6 +135,8 @@ struct dav_session_s {
     char *proxy_user;
     char *proxy_pwd;
 
+    char *session_key;
+
     long int prev_delta;
     long int time_delta;     /* The time delta to use.                  */
     long int time_delta_sum; /* What is the time delta average?         */
@@ -412,6 +414,118 @@ static int configureProxy( ne_session *session )
 }
 
 /*
+ * This hook is called for with the response of a request. Here its checked
+ * if a Set-Cookie header is there for the PHPSESSID. The key is stored into
+ * the webdav session to be added to subsequent requests.
+ */
+#define PHPSESSID "PHPSESSID="
+static void post_request_hook(ne_request *req, void *userdata, const ne_status *status)
+{
+    const char *set_cookie_header = NULL;
+    const char *sc  = NULL;
+    char *key = NULL;
+
+    (void) userdata;
+
+    if(!(status && req)) return;
+    if( status->klass == 2 || status->code == 401 ) {
+        /* successful request */
+        set_cookie_header =  ne_get_response_header( req, "Set-Cookie" );
+        if( set_cookie_header ) {
+            DEBUG_WEBDAV("===================> Set-Cookie: >%s<", set_cookie_header);
+            /* try to find a ', ' sequence which is the separator of neon if multiple Set-Cookie
+             * headers are there.
+             * The following code parses a string like this:
+             * PHPSESSID=n8feu3dsbarpvvufqae9btn5fl7m7ikgh5ml1fg37v4i2cah7k41; path=/; HttpOnly */
+            sc = set_cookie_header;
+            while(sc) {
+                if( strlen(sc) > strlen(PHPSESSID) &&
+                        strncmp( sc, PHPSESSID, strlen(PHPSESSID)) == 0 ) {
+                    const char *sc_val = sc; /* + strlen(PHPSESSID); */
+                    const char *sc_end = sc_val;
+                    int cnt = 0;
+                    int len = strlen(sc_val); /* The length of the rest of the header string. */
+
+                    while( cnt < len && *sc_end != ';' && *sc_end != ',') {
+                        cnt++;
+                        sc_end++;
+                    }
+                    if( cnt == len ) {
+                        /* exit: We are at the end. */
+                        sc = NULL;
+                    } else if( *sc_end == ';' ) {
+                        /* We are at the end of the session key. */
+                        int keylen = sc_end-sc_val;
+                        key = c_malloc(keylen+1);
+                        strncpy( key, sc_val, keylen );
+                        key[keylen] = '\0';
+
+                        /* now search for a ',' to find a potential other header entry */
+                        while(cnt < len && *sc_end != ',') {
+                            cnt++;
+                            sc_end++;
+                        }
+                        if( cnt < len )
+                            sc = sc_end+2; /* mind the space after the comma */
+                        else
+                            sc = NULL;
+                    } else if( *sc_end == ',' ) {
+                        /* A new entry is to check. */
+                        if( *(sc_end + 1) == ' ') {
+                            sc = sc_end+2;
+                        } else {
+                            /* error condition */
+                            sc = NULL;
+                        }
+                    }
+                } else {
+                    /* It is not a PHPSESSID-Header but another one which we're not interested in.
+                     * forward to next header entry (search ',' )
+                     */
+                    int len = strlen(sc);
+                    int cnt = 0;
+
+                    while(cnt < len && *sc != ',') {
+                        cnt++;
+                        sc++;
+                    }
+                    if( cnt < len )
+                        sc = sc+2; /* mind the space after the comma */
+                    else
+                        sc = NULL;
+                }
+            }
+        }
+    } else {
+        DEBUG_WEBDAV("Request failed, don't take session header.");
+    }
+    if( key ) {
+        DEBUG_WEBDAV("----> Session-key: %s", key);
+        SAFE_FREE(dav_session.session_key);
+        dav_session.session_key = key;
+    }
+}
+
+/*
+ * this hook is called just after a request has been created, before its sent.
+ * Here it is used to set the session cookie if available.
+ */
+static void request_created_hook(ne_request *req, void *userdata,
+                                 const char *method, const char *requri)
+{
+    (void) userdata;
+    (void) method;
+
+    if( !req ) return;
+
+    if(dav_session.session_key) {
+        /* DEBUG_WEBDAV("Setting PHPSESSID to %s", dav_session.session_key); */
+        ne_add_request_header(req, "Cookie", dav_session.session_key);
+    }
+
+}
+
+/*
  * Connect to a DAV server
  * This function sets the flag _connected if the connection is established
  * and returns if the flag is set, so calling it frequently is save.
@@ -495,6 +609,13 @@ static int dav_connect(const char *base_url) {
         ne_ssl_set_verify( dav_session.ctx, verify_sslcert, 0 );
     }
     ne_redirect_register( dav_session.ctx );
+
+    /* Hook to get the Session ID */
+    ne_hook_post_headers( dav_session.ctx, post_request_hook, NULL );
+    /* Hook called when a request is built. It sets the PHPSESSID header */
+    ne_hook_create_request( dav_session.ctx, request_created_hook, NULL );
+
+    dav_session.session_key = NULL;
 
     /* Proxy support */
     proxystate = configureProxy( dav_session.ctx );
