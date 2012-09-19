@@ -87,5 +87,11 @@ QIcon Theme::themeIcon( const QString& name ) const
     return icon;
 }
 
+// if this option return true, the client only supports one folder to sync.
+// The Add-Button is removed accoringly.
+bool Theme::singleSyncFolder() const {
+    return false;
+}
+
 } // end namespace mirall
 

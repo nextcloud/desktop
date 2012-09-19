@@ -59,6 +59,11 @@ public:
     virtual QString statusHeaderText( SyncResult::Status ) const;
     virtual QString version() const;
 
+    /**
+     * Characteristics: bool if more than one sync folder is allowed
+     */
+    virtual bool singleSyncFolder() const;
+
 protected:
     QIcon themeIcon(const QString& name) const;
 
