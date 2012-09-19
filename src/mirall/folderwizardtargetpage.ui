@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>454</width>
-    <height>397</height>
+    <width>520</width>
+    <height>360</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -66,6 +66,16 @@
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0" rowspan="2">
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="../../mirall.qrc">:/mirall/resources/owncloud-icon-48.png</pixmap>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="1">
           <widget class="QLabel" name="OCLabel">
            <property name="font">
@@ -86,24 +96,18 @@
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>Folder on ownCloud:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2">
-          <widget class="QLineEdit" name="OCFolderLineEdit"/>
-         </item>
-         <item row="0" column="0" rowspan="2">
-          <widget class="QLabel" name="label_5">
-           <property name="text">
-            <string/>
-           </property>
-           <property name="pixmap">
-            <pixmap resource="../../mirall.qrc">:/mirall/resources/mirall-48.png</pixmap>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>Folder on ownCloud:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="OCFolderLineEdit"/>
+           </item>
+          </layout>
          </item>
         </layout>
        </widget>
