@@ -224,7 +224,7 @@ void ownCloudFolder::slotThreadTreeWalkResult( WalkStats *wStats )
      * Attention: This is deleted here, outside of the thread, because the thread can
      * faster die than this routine has read out the memory.
      */
-    delete wStats->sourcePath;
+    if(wStats->sourcePath) delete[] wStats->sourcePath;
     delete wStats;
 }
 

@@ -333,11 +333,11 @@ void CSyncThread::startSync()
 cleanup:
     csync_destroy(csync);
 
-    if( proxyInfo.proxyType ) delete( proxyInfo.proxyType );
-    if( proxyInfo.proxyHost ) delete( proxyInfo.proxyHost );
-    if( proxyInfo.proxyPort ) delete( proxyInfo.proxyPort );
-    if( proxyInfo.proxyUser ) delete( proxyInfo.proxyUser );
-    if( proxyInfo.proxyPwd  ) delete( proxyInfo.proxyPwd  );
+    if( proxyInfo.proxyType ) delete[] proxyInfo.proxyType;
+    if( proxyInfo.proxyHost ) delete[] proxyInfo.proxyHost;
+    if( proxyInfo.proxyPort ) delete[] proxyInfo.proxyPort;
+    if( proxyInfo.proxyUser ) delete[] proxyInfo.proxyUser;
+    if( proxyInfo.proxyPwd  ) delete[] proxyInfo.proxyPwd ;
 
     /*
      * Attention: do not delete the wStat memory here. it is deleted in the
