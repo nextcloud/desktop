@@ -348,20 +348,45 @@ void Application::setupContextMenu()
 
     _contextMenu->addSeparator();
 
-    if (!_folderMan->map().isEmpty())
-        _contextMenu->addAction(tr("Managed Folders:"))->setDisabled(true);
+    int folderCnt = _folderMan->map().size();
+    // add open actions for all sync folders to the tray menu
+    if( _theme->singleSyncFolder() ) {
+        if( folderCnt == 0 ) {
+            // if there is no folder configured yet, show the add action.
+            _contextMenu->addAction(_actionAddFolder);
+        } else {
+            // there should be exactly one folder. No sync-folder add action will be shown.
+            QStringList li = _folderMan->map().keys();
+            if( li.size() == 1 ) {
+                Folder *folder = _folderMan->map().value(li.first());
+                if( folder ) {
+                    // if there is singleFolder mode, a generic open action is displayed.
+                    QAction *action = new QAction( tr("open %1 folder").arg(_theme->appName()), this);
+                    action->setIcon( _theme->trayFolderIcon( folder->backend()) );
 
-    // here all folders should be added
-    foreach (Folder *folder, _folderMan->map() ) {
-        QAction *action = new QAction( folder->alias(), this );
-        action->setIcon( _theme->trayFolderIcon( folder->backend()) );
+                    connect( action, SIGNAL(triggered()),_folderOpenActionMapper,SLOT(map()));
+                    _folderOpenActionMapper->setMapping( action, folder->alias() );
 
-        connect( action, SIGNAL(triggered()),_folderOpenActionMapper,SLOT(map()));
-        _folderOpenActionMapper->setMapping( action, folder->alias() );
+                    _contextMenu->addAction(action);
+                }
+            }
+        }
+    } else {
+        // show a grouping with more than one folder.
+        if ( folderCnt ) {
+            _contextMenu->addAction(tr("Managed Folders:"))->setDisabled(true);
+        }
+        foreach (Folder *folder, _folderMan->map() ) {
+            QAction *action = new QAction( folder->alias(), this );
+            action->setIcon( _theme->trayFolderIcon( folder->backend()) );
 
-        _contextMenu->addAction(action);
+            connect( action, SIGNAL(triggered()),_folderOpenActionMapper,SLOT(map()));
+            _folderOpenActionMapper->setMapping( action, folder->alias() );
+
+            _contextMenu->addAction(action);
+        }
+        _contextMenu->addAction(_actionAddFolder);
     }
-    _contextMenu->addAction(_actionAddFolder);
 
     _contextMenu->addSeparator();
     _contextMenu->addAction(_actionConfigure);
@@ -521,6 +546,7 @@ void Application::slotAddFolder()
         Folder *f = _folderMan->setupFolderFromConfigFile( alias );
         if( f ) {
             _statusDialog->slotAddFolder( f );
+            _statusDialog->buttonsSetEnabled();
             setupContextMenu();
         }
     }
