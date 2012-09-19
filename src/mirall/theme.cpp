@@ -56,7 +56,7 @@ QString Theme::statusHeaderText( SyncResult::Status status ) const
 
 QString Theme::version() const
 {
-    return QString::fromLocal8Bit( MIRALL_STRINGIFY( MIRALL_VERSION ))+QLatin1String("beta1");
+    return QString::fromLocal8Bit( MIRALL_STRINGIFY( MIRALL_VERSION ));
 }
 
 QIcon Theme::trayFolderIcon( const QString& backend ) const
