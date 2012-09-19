@@ -69,6 +69,7 @@ public:
     ~StatusDialog();
 
     void setFolderList( Folder::Map );
+    void buttonsSetEnabled();
 
 signals:
     void removeFolderAlias( const QString& );

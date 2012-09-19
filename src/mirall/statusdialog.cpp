@@ -199,11 +199,11 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
 
 #if defined Q_WS_X11 
   connect(_folderList, SIGNAL(activated(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
-  connect( _folderList,SIGNAL(doubleClicked(QModelIndex)),SLOT(slotDoubleClicked(QModelIndex)));
+  connect(_folderList, SIGNAL(doubleClicked(QModelIndex)),SLOT(slotDoubleClicked(QModelIndex)));
 #endif
 #if defined Q_WS_WIN || defined Q_WS_MAC
   connect(_folderList, SIGNAL(clicked(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
-  connect( _folderList,SIGNAL(doubleClicked(QModelIndex)),SLOT(slotDoubleClicked(QModelIndex)));
+  connect(_folderList, SIGNAL(doubleClicked(QModelIndex)),SLOT(slotDoubleClicked(QModelIndex)));
 #endif
 
   _ocUrlLabel->setWordWrap( true );
@@ -249,6 +249,7 @@ void StatusDialog::setFolderList( Folder::Map folders )
         qDebug() << "Folder: " << f;
         slotAddFolder( f );
     }
+    buttonsSetEnabled();
 
 }
 
@@ -259,6 +260,30 @@ void StatusDialog::slotAddFolder( Folder *folder )
     QStandardItem *item = new QStandardItem();
     folderToModelItem( item, folder );
     _model->appendRow( item );
+}
+
+
+void StatusDialog::buttonsSetEnabled()
+{
+    bool haveFolders = _folderList->model()->rowCount() > 0;
+
+    _ButtonRemove->setEnabled(false);
+    if( _theme->singleSyncFolder() ) {
+        // only one folder synced folder allowed.
+        _ButtonAdd->setVisible(!haveFolders);
+    } else {
+        _ButtonAdd->setVisible(true);
+        _ButtonAdd->setEnabled(true);
+    }
+
+    QModelIndex selected = _folderList->selectionModel()->currentIndex();
+    bool isSelected = selected.isValid();
+
+    _ButtonEnable->setEnabled(isSelected);
+    _ButtonRemove->setEnabled(isSelected);
+    _ButtonFetch->setEnabled(isSelected);
+    _ButtonInfo->setEnabled(isSelected);
+    _ButtonPush->setEnabled(isSelected);
 }
 
 void StatusDialog::slotUpdateFolderState( Folder *folder )
@@ -330,6 +355,7 @@ void StatusDialog::slotRemoveSelectedFolder()
     if( selected.isValid() ) {
         _model->removeRow( selected.row() );
     }
+    buttonsSetEnabled();
 }
 
 void StatusDialog::slotFetchFolder()
