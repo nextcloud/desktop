@@ -169,6 +169,7 @@ Application::Application(int &argc, char **argv) :
 
 Application::~Application()
 {
+    delete _tray; // needed, see ctor
     qDebug() << "* Mirall shutdown";
 }
 
@@ -324,7 +325,9 @@ void Application::setupActions()
 
 void Application::setupSystemTray()
 {
-    _tray = new QSystemTrayIcon(this);
+    // Setting a parent heres will crash on X11 since by the time qapp runs
+    // its childrens dtors, the X11->screen variable queried for is gone -> crash
+    _tray = new QSystemTrayIcon;
     _tray->setIcon( _theme->applicationIcon() ); // load the grey icon
 
     connect(_tray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
