@@ -27,7 +27,6 @@ class QSignalMapper;
 namespace Mirall {
 
 class SyncResult;
-class OwncloudSetup;
 
 class FolderMan : public QObject
 {
@@ -109,7 +108,6 @@ private:
     Folder::Map    _folderMap;
     QHash<QString, bool> _folderEnabledMap;
     QString        _folderConfigPath;
-    OwncloudSetup *_ownCloudSetup;
     QSignalMapper *_folderChangeSignalMapper;
     QString        _currentSyncFolder;
     QStringList    _scheduleQueue;
