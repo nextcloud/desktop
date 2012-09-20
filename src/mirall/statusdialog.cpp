@@ -197,14 +197,8 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
   _ButtonInfo->setEnabled(false);
   _ButtonAdd->setEnabled(true);
 
-#if defined Q_WS_X11 
-  connect(_folderList, SIGNAL(activated(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
-  connect(_folderList, SIGNAL(doubleClicked(QModelIndex)),SLOT(slotDoubleClicked(QModelIndex)));
-#endif
-#if defined Q_WS_WIN || defined Q_WS_MAC
   connect(_folderList, SIGNAL(clicked(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
   connect(_folderList, SIGNAL(doubleClicked(QModelIndex)),SLOT(slotDoubleClicked(QModelIndex)));
-#endif
 
   _ocUrlLabel->setWordWrap( true );
 }
