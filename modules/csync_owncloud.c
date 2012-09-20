@@ -432,7 +432,7 @@ static void post_request_hook(ne_request *req, void *userdata, const ne_status *
         /* successful request */
         set_cookie_header =  ne_get_response_header( req, "Set-Cookie" );
         if( set_cookie_header ) {
-            DEBUG_WEBDAV("===================> Set-Cookie: >%s<", set_cookie_header);
+            DEBUG_WEBDAV(" Set-Cookie found: %s", set_cookie_header);
             /* try to find a ', ' sequence which is the separator of neon if multiple Set-Cookie
              * headers are there.
              * The following code parses a string like this:
@@ -515,6 +515,7 @@ static void request_created_hook(ne_request *req, void *userdata,
 {
     (void) userdata;
     (void) method;
+    (void) requri;
 
     if( !req ) return;
 
@@ -975,7 +976,6 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
 
         curi = _cleanPath( uri );
 
-        DEBUG_WEBDAV("I have no stat cache, call propfind for %s", curi );
         fetchCtx->list = NULL;
         fetchCtx->target = curi;
         fetchCtx->include_target = 1;
@@ -1046,9 +1046,10 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
 
             free_fetchCtx( fetchCtx );
         }
+        DEBUG_WEBDAV("STAT result from propfind: %s, md5: %s", buf->name ? buf->name:"NULL",
+                     buf->md5 ? buf->md5 : "NULL" );
     }
-    DEBUG_WEBDAV("STAT result: %s, md5: %s", buf->name ? buf->name:"NULL",
-                 buf->md5 ? buf->md5 : "NULL" );
+
     return 0;
 }
 
@@ -1234,7 +1235,7 @@ static const char* owncloud_file_id( const char *path )
             cbuf = c_strdup(header);
         }
     }
-    DEBUG_WEBDAV("Get file ID for %s: %s", path, buf ? buf:"<null>");
+    DEBUG_WEBDAV("Get file ID for %s: %s", path, cbuf ? cbuf:"<null>");
     if( fs ) csync_vio_file_stat_destroy(fs);
     ne_request_destroy(req);
     SAFE_FREE(uri);
