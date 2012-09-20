@@ -1,4 +1,4 @@
-build
+*build*
 *flymake*
-CMakeLists.txt.user
-qtcreator-build/*
+CMakeLists.txt.user*
+*.patch
