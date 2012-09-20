@@ -2,7 +2,11 @@ include( InstallRequiredSystemLibraries )
 
 set( CPACK_PACKAGE_CONTACT  "Dominik Schmidt <domme@tomahawk-player.org>" )
 
-set( APPLICATION_NAME "ownCloud Client")
+if ( EXISTS "${CMAKE_SOURCE_DIR}/OEM.cmake" )
+     include ( "${CMAKE_SOURCE_DIR}/OEM.cmake" )
+else ()
+     include ( "${CMAKE_SOURCE_DIR}/OWNCLOUD.cmake" )
+endif()
 
 include( VERSION.cmake )
 set( CPACK_PACKAGE_VERSION_MAJOR  ${VERSION_MAJOR} )
@@ -35,7 +39,7 @@ endif()
 
 
 if(WIN32)
-    set( CPACK_PACKAGE_FILE_NAME  owncloud-client-${CPACK_PACKAGE_VERSION}-setup )
+    set( CPACK_PACKAGE_FILE_NAME  ${APPLICATION_SHORTNAME}-${CPACK_PACKAGE_VERSION}-setup )
     # Package file name without extension. Also a directory of installer  cmake-2.5.0-Linux-i686
     # CPACK_GENERATOR   CPack generator to be used  STGZ;TGZ;TZ
     # CPACK_INCLUDE_TOPLEVEL_DIRECTORY    Controls whether CPack adds a top-level directory, usually of the form ProjectName-Version-OS, to the top of package tree.  0 to disable, 1 to enable

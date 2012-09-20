@@ -173,9 +173,9 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
 
     # we may not add MACOSX_BUNDLE here, if not building one
 
-    # add_executable(owncloud main.cpp ${final_src})
-    add_executable(owncloud WIN32 main.cpp ${final_src})
-    set_target_properties( owncloud PROPERTIES COMPILE_DEFINITIONS OWNCLOUD_CLIENT) 
+    # add_executable( ${APPLICATION_EXECUTABLE} main.cpp ${final_src})
+    add_executable( ${APPLICATION_EXECUTABLE} WIN32 main.cpp ${final_src})
+    set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES COMPILE_DEFINITIONS OWNCLOUD_CLIENT)
 
     # mirall is not built for the bundle
     add_executable( mirall WIN32 main.cpp ${final_src})
@@ -199,8 +199,8 @@ else()
     set(MACOSX_BUNDLE_ICON_FILE "ownCloud.icns")
 
     # we must add MACOSX_BUNDLE only if building a bundle
-    add_executable(owncloud WIN32 MACOSX_BUNDLE main.cpp ${final_src})
-    set_target_properties( owncloud PROPERTIES COMPILE_DEFINITIONS OWNCLOUD_CLIENT)
+    add_executable( ${APPLICATION_EXECUTABLE} WIN32 MACOSX_BUNDLE main.cpp ${final_src})
+    set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES COMPILE_DEFINITIONS OWNCLOUD_CLIENT)
 
     #FIXME: hardcoded path
     install(FILES /usr/local/lib/csync-0/csync_owncloud.so DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Plugins)
@@ -210,14 +210,14 @@ else()
 endif()
 
 
-set_target_properties( owncloud PROPERTIES
+set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY}
 )
-target_link_libraries(owncloud ${QT_LIBRARIES} )
-target_link_libraries(owncloud owncloudsync)
-target_link_libraries(owncloud ${CSYNC_LIBRARY})
+target_link_libraries( ${APPLICATION_EXECUTABLE} ${QT_LIBRARIES} )
+target_link_libraries( ${APPLICATION_EXECUTABLE} owncloudsync )
+target_link_libraries( ${APPLICATION_EXECUTABLE} ${CSYNC_LIBRARY} )
 
-install(TARGETS owncloud
+install(TARGETS ${APPLICATION_EXECUTABLE}
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib

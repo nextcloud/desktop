@@ -4,6 +4,12 @@ project(mirall)
 set(PACKAGE "mirall")
 set( CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules )
 
+if ( EXISTS "OEM.cmake" )
+     include ( OEM.cmake )
+else ()
+     include ( OWNCLOUD.cmake )
+endif()
+
 include(${CMAKE_SOURCE_DIR}/VERSION.cmake)
 configure_file( ${CMAKE_SOURCE_DIR}/src/mirall/version.h.in "${CMAKE_CURRENT_BINARY_DIR}/src/mirall/version.h" )
 include_directories(BEFORE "${CMAKE_CURRENT_BINARY_DIR}/src/mirall/")
@@ -19,7 +25,7 @@ endif()
 # BUILD_OWNCLOUD_OSX_BUNDLE was not initialized OR set to true on OSX
 if(APPLE AND (NOT DEFINED BUILD_OWNCLOUD_OSX_BUNDLE OR BUILD_OWNCLOUD_OSX_BUNDLE))
     set(BUILD_OWNCLOUD_OSX_BUNDLE ON)
-    set(OWNCLOUD_OSX_BUNDLE "owncloud.app")
+    set(OWNCLOUD_OSX_BUNDLE "${APPLICATION_EXECUTABLE}.app")
 
 # BUILD_OWNCLOUD_OSX_BUNDLE was disabled on OSX
 elseif(APPLE AND NOT BUILD_OWNCLOUD_OSX_BUNDLE)
@@ -37,7 +43,6 @@ find_package(INotify)
 
 set(WITH_CSYNC CSYNC_FOUND)
 set(USE_INOTIFY ${INOTIFY_FOUND})
-set(THEME_CLASS "ownCloudTheme")
 
 configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 

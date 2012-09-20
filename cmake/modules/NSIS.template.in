@@ -1,8 +1,9 @@
 ;ownCloud installer script.
 
-!define APPLICATION_NAME ownCloud
-!define APPLICATION_EXECUTABLE owncloud.exe
-!define APPLICATION_DOMAIN owncloud.com
+!define APPLICATION_SHORTNAME "@APPLICATION_SHORTNAME@"
+!define APPLICATION_NAME "@APPLICATION_NAME@"
+!define APPLICATION_EXECUTABLE "@APPLICATION_EXECUTABLE@.exe"
+!define APPLICATION_DOMAIN "@APPLICATION_DOMAIN@"
 
 !define MUI_FINISHPAGE_LINK_LOCATION "http://www.${APPLICATION_DOMAIN}"
 
@@ -89,7 +90,7 @@ ReserveFile "${NSISDIR}\Plugins\InstallOptions.dll"
 ; Memento selections stored in registry.
 ;-----------------------------------------------------------------------------
 !define MEMENTO_REGISTRY_ROOT HKLM
-!define MEMENTO_REGISTRY_KEY Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}
+!define MEMENTO_REGISTRY_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}"
 
 ;-----------------------------------------------------------------------------
 ; Modern User Interface (MUI) defintions and setup.
@@ -97,11 +98,11 @@ ReserveFile "${NSISDIR}\Plugins\InstallOptions.dll"
 !define MUI_ABORTWARNING
 !define MUI_ICON ${NSI_PATH}\installer.ico
 !define MUI_UNICON ${NSI_PATH}\installer.ico
-!define MUI_WELCOMEFINISHPAGE_BITMAP ${NSI_PATH}\welcome_oc.bmp
+!define MUI_WELCOMEFINISHPAGE_BITMAP ${NSI_PATH}\welcome_${APPLICATION_SHORTNAME}.bmp
 !define MUI_WELCOMEPAGE_TITLE "@CPACK_PACKAGE_NAME@ ${VERSION} Setup$\r$\nInstaller"
 !define MUI_WELCOMEPAGE_TEXT "This wizard will guide you through the installation.$\r$\n$\r$\n$_CLICK"
 !define MUI_HEADERIMAGE
-!define MUI_HEADERIMAGE_BITMAP ${NSI_PATH}\page_header_oc.bmp
+!define MUI_HEADERIMAGE_BITMAP ${NSI_PATH}\page_header_${APPLICATION_SHORTNAME}.bmp
 !define MUI_COMPONENTSPAGE_SMALLDESC
 !define MUI_FINISHPAGE_TITLE "@CPACK_PACKAGE_NAME@ Install Completed"
 !define MUI_FINISHPAGE_LINK "Click here to visit the @CPACK_PACKAGE_NAME@ website."
