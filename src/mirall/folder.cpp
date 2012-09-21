@@ -104,7 +104,7 @@ QString Folder::nativePath() const
 
 QString Folder::nativeSecondPath() const
 {
-    return QDir::toNativeSeparators(_secondPath);
+    return _secondPath;
 }
 
 bool Folder::syncEnabled() const
