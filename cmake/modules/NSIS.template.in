@@ -2,6 +2,7 @@
 
 !define APPLICATION_SHORTNAME "@APPLICATION_SHORTNAME@"
 !define APPLICATION_NAME "@APPLICATION_NAME@"
+!define APPLICATION_VENDOR "@APPLICATION_VENDOR@"
 !define APPLICATION_EXECUTABLE "@APPLICATION_EXECUTABLE@.exe"
 !define APPLICATION_DOMAIN "@APPLICATION_DOMAIN@"
 
@@ -429,7 +430,7 @@ Section -post
    WriteRegExpandStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "UninstallString" '"$INSTDIR\Uninstall.exe"'
    WriteRegExpandStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "InstallLocation" "$INSTDIR"
    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "DisplayName" "${APPLICATION_NAME}"
-   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "Publisher" "${APPLICATION_DOMAIN}"
+   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "Publisher" "${APPLICATION_VENDOR}"
    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "DisplayIcon" "$INSTDIR\Uninstall.exe,0"
    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "DisplayVersion" "${VERSION}"
    WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "VersionMajor" "${VER_MAJOR}"
@@ -456,7 +457,7 @@ Var UnPageUserAppDataCheckbox_State
 Var UnPageUserAppDataEditBox
 
 Function un.UnPageUserAppData
-   !insertmacro MUI_HEADER_TEXT "Uninstall ${APPLICATION_DOMAIN}" "Remove ${APPLICATION_DOMAIN}'s data folder from your computer."
+   !insertmacro MUI_HEADER_TEXT "Uninstall ${APPLICATION_NAME}" "Remove ${APPLICATION_NAME}'s data folder from your computer."
    nsDialogs::Create /NOUNLOAD 1018
    Pop $UnPageUserAppDataDialog
 
@@ -464,10 +465,10 @@ Function un.UnPageUserAppData
       Abort
    ${EndIf}
 
-   ${NSD_CreateLabel} 0 0 100% 12u "Do you want to delete ${APPLICATION_DOMAIN}'s data folder?"
+   ${NSD_CreateLabel} 0 0 100% 12u "Do you want to delete ${APPLICATION_NAME}'s data folder?"
    Pop $0
 
-   ${NSD_CreateText} 0 13u 100% 12u "$LOCALAPPDATA\${APPLICATION_DOMAIN}"
+   ${NSD_CreateText} 0 13u 100% 12u "$LOCALAPPDATA\${APPLICATION_NAME}"
    Pop $UnPageUserAppDataEditBox
    SendMessage $UnPageUserAppDataEditBox ${EM_SETREADONLY} 1 0
 

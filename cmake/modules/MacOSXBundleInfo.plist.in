@@ -9,7 +9,7 @@
 	<key>CFBundleDevelopmentRegion</key>
         <string>English</string>
         <key>CFBundleExecutable</key>
-        <string>owncloud</string>
+        <string>@APPLICATION_EXECUTABLE@</string>
         <key>CFBundleIconFile</key>
         <string>ownCloud.icns</string>
         <key>CFBundleIdentifier</key>
@@ -17,7 +17,7 @@
         <key>CFBundleInfoDictionaryVersion</key>
         <string>6.0</string>
         <key>CFBundleLongVersionString</key>
-        <string>ownCloud client @VERSION@</string>
+        <string>@APPLICATION_NAME@ @VERSION@</string>
         <key>CFBundlePackageType</key>
         <string>APPL</string>
         <key>CFBundleSignature</key>
@@ -27,6 +27,6 @@
         <key>CFBundleShortVersionString</key>
         <string>@VERSION@</string>
         <key>NSHumanReadableCopyright</key>
-        <string>(C) 2012 owncloud.org</string>
+        <string>(C) 2012 @APPLICATION_VENDOR@</string>
 </dict>
 </plist>
