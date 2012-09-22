@@ -374,7 +374,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="367"/>
         <source>open %1 folder</source>
-        <translation type="unfinished"/>
+        <translation>Ordner %1 öffnen</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="380"/>

@@ -4,22 +4,22 @@
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Форма</translation>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="39"/>
         <source>Create a new ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>Создать новый ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="61"/>
         <source>Where do you want to create your ownCloud?</source>
-        <translation type="unfinished"/>
+        <translation>Где Вы хотите создать Ваш ownCloud?</translation>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="73"/>
         <source>create ownCloud on this computer</source>
-        <translation type="unfinished"/>
+        <translation>создать ownCloud на этом компьютере</translation>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="105"/>
@@ -28,12 +28,12 @@
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;installs the ownCloud on this computer. Other people will not be able to access your data by default.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;⏎ &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;⏎ p, li { white-space: pre-wrap; }⏎ &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;⏎ &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;устанавливает ownCloud на этот компьютер. Другие люди не смогут получить доступ к Вашим данным по умолчанию.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="132"/>
         <source>create ownCloud on my internet domain</source>
-        <translation type="unfinished"/>
+        <translation>создать ownCloud на моем интернет-домене</translation>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="155"/>
@@ -44,12 +44,12 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;installs ownCloud on a domain you control. You need the FTP credentials for the installation.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#585858;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;This ownCloud will be accessible from the internet.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;⏎ &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;⏎ p, li { white-space: pre-wrap; }⏎ &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;⏎ &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;устанавливает ownCloud на контролируемый Вами домен. Вам необходимы учетные данные FTP для установки.&lt;/span&gt;&lt;/p&gt;⏎ &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#585858;&quot;&gt;&lt;/p&gt;⏎ &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Этот ownCloud будет доступен по Интернету.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="177"/>
         <source>&amp;Domain:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Domain:</translation>
     </message>
     <message>
         <source>mydomain.org</source>
@@ -61,12 +61,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardnetworkpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Форма</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardnetworkpage.ui" line="27"/>
         <source>Network Settings</source>
-        <translation type="unfinished"/>
+        <translation>Сетевые настройки</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardnetworkpage.ui" line="34"/>
@@ -76,12 +76,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardnetworkpage.ui" line="40"/>
         <source>Only enable if network is available</source>
-        <translation type="unfinished"/>
+        <translation>Включено, только если сеть доступна</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardnetworkpage.ui" line="47"/>
         <source>restrict to this local network</source>
-        <translation type="unfinished"/>
+        <translation>ограничивается этой локальной сетью</translation>
     </message>
 </context>
 <context>
@@ -89,37 +89,37 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Форма</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="20"/>
         <source>ownCloud Settings</source>
-        <translation type="unfinished"/>
+        <translation>Настройки ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="29"/>
         <source>URL:</source>
-        <translation type="unfinished"/>
+        <translation>URL:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="36"/>
         <source>User:</source>
-        <translation type="unfinished"/>
+        <translation>Пользователь:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="46"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Пароль:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="63"/>
         <source>Alias:</source>
-        <translation type="unfinished"/>
+        <translation>Алиасы:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="93"/>
         <source>ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud</translation>
     </message>
 </context>
 <context>
@@ -127,7 +127,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Форма</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="25"/>
@@ -157,7 +157,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="46"/>
         <source>Music</source>
-        <translation type="unfinished"/>
+        <translation>Музыка</translation>
     </message>
 </context>
 <context>
@@ -165,7 +165,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Форма</translation>
     </message>
     <message>
         <source>Express Upload Target</source>
@@ -197,7 +197,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="103"/>
         <source>Folder on ownCloud:</source>
-        <translation type="unfinished"/>
+        <translation>Папки в ownCloud:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="152"/>
@@ -207,12 +207,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="165"/>
         <source>Folder name:</source>
-        <translation type="unfinished"/>
+        <translation>Имя папки:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="175"/>
         <source>C&amp;hoose..</source>
-        <translation type="unfinished"/>
+        <translation>C&amp;hoose..</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="222"/>
@@ -222,7 +222,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="235"/>
         <source>URL:</source>
-        <translation type="unfinished"/>
+        <translation>URL:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="365"/>
@@ -232,22 +232,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="387"/>
         <source>create</source>
-        <translation type="unfinished"/>
+        <translation>создать</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="177"/>
         <source>root</source>
-        <translation type="unfinished"/>
+        <translation>корень</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="178"/>
         <source>/home/local</source>
-        <translation type="unfinished"/>
+        <translation>/home/local</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="179"/>
         <source>scp://john@host.com//myfolder</source>
-        <translation type="unfinished"/>
+        <translation>scp://john@host.com//myfolder</translation>
     </message>
 </context>
 <context>
@@ -294,13 +294,13 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="247"/>
         <source>ownCloud Connection Failed</source>
-        <translation type="unfinished"/>
+        <translation>Сбой подключения ownCloud </translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="275"/>
         <location filename="../src/mirall/application.cpp" line="282"/>
         <source>No ownCloud Connection</source>
-        <translation type="unfinished"/>
+        <translation>Нет подключения к ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="276"/>
@@ -325,7 +325,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="310"/>
         <source>Open ownCloud...</source>
-        <translation type="unfinished"/>
+        <translation>Открыть ownCloud...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="312"/>
