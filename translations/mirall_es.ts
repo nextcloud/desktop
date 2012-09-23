@@ -363,7 +363,7 @@ tiqueta</translation>
     <message>
         <location filename="../src/mirall/application.cpp" line="320"/>
         <source>&amp;About...</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Acerca de...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="322"/>
@@ -377,7 +377,7 @@ tiqueta</translation>
     <message>
         <location filename="../src/mirall/application.cpp" line="367"/>
         <source>open %1 folder</source>
-        <translation type="unfinished"/>
+        <translation>Abrir carpeta %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="380"/>
@@ -387,7 +387,7 @@ tiqueta</translation>
     <message>
         <location filename="../src/mirall/application.cpp" line="612"/>
         <source>About %1</source>
-        <translation type="unfinished"/>
+        <translation>cerca de %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="613"/>
@@ -398,7 +398,13 @@ Copyright 2012, the ownCloud developers
 Licensed under GPLv2
 
 The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN,MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.</source>
-        <translation type="unfinished"/>
+        <translation>%1 cliente, versión %2
+
+Copyright 2012, the ownCloud developers
+
+Licensed under GPLv2
+
+The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN,MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="626"/>
@@ -1364,7 +1370,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="144"/>
         <source>&amp;Do not store password on local machine.</source>
-        <translation type="unfinished"/>
+        <translation>&amp;No guardar contraseñas en la maquina local.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="153"/>
