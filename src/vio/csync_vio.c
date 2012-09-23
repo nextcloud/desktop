@@ -61,7 +61,7 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
   _TCHAR tbuf[MAX_PATH];
   const _TCHAR *pathBuf = NULL;
   char *buf = NULL;
-  int indx = 0;
+  char *last_bslash = NULL;
 #endif
   
   if (asprintf(&path, "%s/csync_%s.%s", PLUGINDIR, module, MODULE_EXTENSION) < 0) {
@@ -84,10 +84,9 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
     /* Change the current working directory to read the module from a relative path. */
     if( GetModuleFileNameW(NULL, tbuf, MAX_PATH) > 0 ) {
       buf = c_utf8(tbuf);
-      /* cut the trailing owncloud.exe off */
-      if( strlen(buf)>13) {
-        indx = strlen(buf)-13;
-        buf[indx]='\0';
+      /* cut the trailing filename off */
+      if ((last_bslash = strrchr(buf, '\\')) != NULL) {
+        *last_bslash='\0';
         pathBuf = c_multibyte(buf);
 
         CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Win32: changing current working dir to %s", buf);
