@@ -153,7 +153,7 @@ START_TEST (check_csync_detect_update_db_none)
 
   /* the instruction should be set to new  */
   st = c_rbtree_node_data(csync->local.tree->root);
-  fail_unless(st->instruction == CSYNC_INSTRUCTION_NONE, "instruction is %s", csync_instruction_str(st->instruction));
+  fail_unless(st->instruction == CSYNC_INSTRUCTION_EVAL, "instruction is %s", csync_instruction_str(st->instruction));
 
   /* set the instruction to UPDATED that it gets written to the statedb */
   st->instruction = CSYNC_INSTRUCTION_UPDATED;
