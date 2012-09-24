@@ -174,25 +174,31 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
   fs = c_rbtree_node_data(node);
 
   switch (ctx->current) {
-    case LOCAL_REPLICA:
-      if (asprintf(&uri, "%s/%s", ctx->local.uri, fs->path) < 0) {
-        rc = -1;
-        strerror_r(errno, errbuf, sizeof(errbuf));
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file uri alloc failed: %s",
-            errbuf);
-        goto out;
+  case LOCAL_REPLICA:
+      /* If there is a destpath, this is a rename and the target must be used. */
+      if( fs->destpath ) {
+          asprintf(&uri, "%s/%s", ctx->local.uri, fs->destpath);
+          SAFE_FREE(fs->destpath);
+      } else {
+          if (asprintf(&uri, "%s/%s", ctx->local.uri, fs->path) < 0) {
+              rc = -1;
+              strerror_r(errno, errbuf, sizeof(errbuf));
+              CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file uri alloc failed: %s",
+                        errbuf);
+              goto out;
+          }
       }
       break;
-    case REMOTE_REPLCIA:
+  case REMOTE_REPLCIA:
       if (asprintf(&uri, "%s/%s", ctx->remote.uri, fs->path) < 0) {
-        rc = -1;
-        strerror_r(errno, errbuf, sizeof(errbuf));
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file uri alloc failed: %s",
-            errbuf);
-        goto out;
+          rc = -1;
+          strerror_r(errno, errbuf, sizeof(errbuf));
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file uri alloc failed: %s",
+                    errbuf);
+          goto out;
       }
       break;
-    default:
+  default:
       break;
   }
 
@@ -212,22 +218,23 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
   fs->inode = vst->inode;
   fs->modtime = vst->mtime;
 
-  /* update with the id from the remote repo */
+  /* update with the id from the remote repo. This method always works on the local repo */
   node = c_rbtree_find(ctx->remote.tree, &fs->phash);
   if (node == NULL) {
-    rc = -1;
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to find node");
-    goto out;
+      rc = -1;
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to find node");
+      goto out;
   }
 
   tfs = c_rbtree_node_data(node);
-  if( tfs->md5 ) {
+  if( tfs && tfs->md5 ) {
       if( fs->md5 ) SAFE_FREE(fs->md5);
-    fs->md5 = c_strdup( tfs->md5 );
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "PRE UPDATED %s: %s <-> %s", uri, fs->md5, tfs->md5);
+      fs->md5 = c_strdup( tfs->md5 );
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "PRE UPDATED %s: %s <-> %s", fs->path, fs->md5, tfs->md5);
   } else {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "md5 is empty in merger!");
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "md5 is empty in merger!");
   }
+
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: UPDATED (%s)", uri, fs->md5);
 
   fs->instruction = CSYNC_INSTRUCTION_NONE;
