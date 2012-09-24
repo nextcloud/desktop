@@ -36,8 +36,8 @@ static void setup_db(void) {
   fail_unless(csync_statedb_create_tables(csync) == 0, "Setup failed");
 
   stmt = sqlite3_mprintf("INSERT INTO metadata"
-    "(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES"
-    "(%lu, %d, '%q', %d, %d, %d, %d, %lu);",
+    "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5) VALUES"
+    "(%lu, %d, '%q', %d, %d, %d, %d, %lu, %d, %lu);",
     42,
     42,
     "It's a rainy day",
@@ -45,7 +45,9 @@ static void setup_db(void) {
     42,
     42,
     42,
-    42);
+    42,
+     2,
+    43);
 
   fail_if(csync_statedb_insert(csync, stmt) < 0, NULL);
   sqlite3_free(stmt);
