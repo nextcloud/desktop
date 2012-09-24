@@ -126,7 +126,8 @@ void OwncloudSetupWizard::slotConnectToOCUrl( const QString& url )
 {
   qDebug() << "Connect to url: " << url;
   _ocWizard->setField(QLatin1String("OCUrl"), url );
-  _ocWizard->appendToResultWidget(tr("Trying to connect to ownCloud at %1...").arg(url ));
+  _ocWizard->appendToResultWidget(tr("Trying to connect to %1 at %2...")
+                                  .arg( Theme::instance()->appName() ).arg(url) );
   testOwnCloudConnect();
 }
 
@@ -138,7 +139,7 @@ void OwncloudSetupWizard::testOwnCloudConnect()
 
     MirallConfigFile cfgFile( _configHandle );
 
-    cfgFile.writeOwncloudConfig( QLatin1String("ownCloud"),
+    cfgFile.writeOwncloudConfig( Theme::instance()->appName(),
                                  _ocWizard->field(QLatin1String("OCUrl")).toString(),
                                  _ocWizard->field(QLatin1String("OCUser")).toString(),
                                  _ocWizard->field(QLatin1String("OCPasswd")).toString(),

@@ -19,6 +19,7 @@
 #include "mirall/owncloudfolder.h"
 #include "mirall/syncresult.h"
 #include "mirall/inotify.h"
+#include "mirall/theme.h"
 
 #include <QDesktopServices>
 #include <QtCore>
@@ -311,7 +312,7 @@ void FolderMan::addFolderDefinition( const QString& backend, const QString& alia
     settings.setValue(QString::fromLatin1("%1/localPath").arg(alias),   sourceFolder );
     settings.setValue(QString::fromLatin1("%1/targetPath").arg(alias),  targetPath );
     settings.setValue(QString::fromLatin1("%1/backend").arg(alias),     backend );
-    settings.setValue(QString::fromLatin1("%1/connection").arg(alias),  QLatin1String("ownCloud"));
+    settings.setValue(QString::fromLatin1("%1/connection").arg(alias),  Theme::instance()->appName());
     settings.setValue(QString::fromLatin1("%1/onlyThisLAN").arg(alias), onlyThisLAN );
     settings.sync();
 

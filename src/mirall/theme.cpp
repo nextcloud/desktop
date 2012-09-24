@@ -18,11 +18,19 @@
 #include <QtCore>
 #include <QtGui>
 
+#include "mirall/miralltheme.h"
+#include "mirall/owncloudtheme.h"
+
+#include "config.h"
+
 namespace Mirall {
 
-Theme::Theme()
-{
+Theme* Theme::_instance = 0;
 
+Theme* Theme::instance() {
+    if (!_instance)
+        _instance = new THEME_CLASS;
+    return _instance;
 }
 
 QString Theme::statusHeaderText( SyncResult::Status status ) const

@@ -30,7 +30,7 @@ class SyncResult;
 class Theme
 {
 public:
-    Theme();
+    static Theme* instance();
 
     virtual QString appName() const = 0;
 
@@ -66,8 +66,13 @@ public:
 
 protected:
     QIcon themeIcon(const QString& name) const;
+    Theme() {}
 
 private:
+    Theme(Theme const&) {}
+    Theme& operator=(Theme const&) {}
+
+    static Theme* _instance;
 
 
 };

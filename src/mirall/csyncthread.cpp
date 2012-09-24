@@ -25,7 +25,6 @@
 #include <QTime>
 #include <QApplication>
 
-
 namespace Mirall {
 
 /* static variables to hold the credentials */

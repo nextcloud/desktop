@@ -136,8 +136,6 @@ private:
 /**
  *
  */
-class Theme;
-
 class FolderWizard : public QWizard
 {
     Q_OBJECT
@@ -150,7 +148,7 @@ public:
         Page_Owncloud
     };
 
-    FolderWizard(QWidget *parent = 0L, Theme *theme = 0);
+    FolderWizard(QWidget *parent = 0);
     void setFolderMap( Folder::Map* );
 
 private:

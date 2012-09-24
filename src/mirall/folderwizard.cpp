@@ -36,9 +36,9 @@ FolderWizardSourcePage::FolderWizardSourcePage()
 {
     _ui.setupUi(this);
     registerField(QLatin1String("sourceFolder*"), _ui.localFolderLineEdit);
-    _ui.localFolderLineEdit->setText( QString::fromLatin1( "%1/%2").arg( QDir::homePath() ).arg(QLatin1String("ownCloud") ) );
+    _ui.localFolderLineEdit->setText( QString::fromLatin1( "%1/%2").arg( QDir::homePath() ).arg(Theme::instance()->appName() ) );
     registerField(QLatin1String("alias*"), _ui.aliasLineEdit);
-    _ui.aliasLineEdit->setText( QString::fromLatin1("ownCloud") );
+    _ui.aliasLineEdit->setText( Theme::instance()->appName() );
 
     _ui.warnLabel->hide();
 #if QT_VERSION >= 0x040700
@@ -208,7 +208,8 @@ void FolderWizardTargetPage::slotDirCheckReply(const QString &url, QNetworkReply
     if( _dirChecked ) {
         showWarn();
     } else {
-        showWarn( tr("The folder is not available on your ownCloud.<br/>Click to let mirall create it."), true );
+        showWarn( tr("The folder is not available on your %1.<br/>Click to create it." )
+                  .arg( Theme::instance()->appName() ), true );
     }
 
     emit completeChanged();
@@ -233,10 +234,10 @@ void FolderWizardTargetPage::slotCreateRemoteFolderFinished( QNetworkReply::Netw
   // the webDAV server seems to return a 202 even if mkdir was successful.
   if( error == QNetworkReply::NoError ||
           error == QNetworkReply::ContentOperationNotPermittedError) {
-    showWarn( tr("Folder on ownCloud was successfully created."), false );
+    showWarn( tr("Folder was successfully created on %1.").arg( Theme::instance()->appName() ), false );
     slotTimerFires();
   } else {
-    showWarn( tr("Failed to create the folder on ownCloud.<br/>Please check manually."), false );
+    showWarn( tr("Failed to create the folder on %1.<br/>Please check manually.").arg( Theme::instance()->appName() ), false );
   }
 }
 
@@ -311,7 +312,8 @@ void FolderWizardTargetPage::slotOwnCloudFound( const QString& url, const QStrin
 
     if( infoStr.isEmpty() ) {
     } else {
-        _ui.OCLabel->setText( tr("to your <a href=\"%1\">ownCloud</a> (version %2)").arg(url).arg(infoStr));
+        _ui.OCLabel->setText( tr("to your <a href=\"%1\">%2</a> (version %3)").arg(url)
+                              .arg(Theme::instance()->appName()).arg(infoStr));
         _ui.OCFolderLineEdit->setEnabled( true );
         _ui.OCRadioBtn->setEnabled( true );
         qDebug() << "ownCloud found on " << url << " with version: " << infoStr;
@@ -322,7 +324,8 @@ void FolderWizardTargetPage::slotNoOwnCloudFound( QNetworkReply* error )
 {
   qDebug() << "No ownCloud configured: " << error->error();
   _ui.OCLabel->setText( tr("no configured ownCloud found!") );
-  showWarn( tr("Your ownCloud could not be reached:<br/><tt>%1</tt>").arg(error->errorString()));
+  showWarn( tr("%1 could not be reached:<br/><tt>%2</tt>")
+            .arg(Theme::instance()->appName()).arg(error->errorString()));
   _ui.OCRadioBtn->setEnabled( false );
   _ui.OCFolderLineEdit->setEnabled( false );
 }
@@ -450,7 +453,7 @@ bool FolderWizardOwncloudPage::isComplete() const
  * Folder wizard itself
  */
 
-FolderWizard::FolderWizard( QWidget *parent, Theme *theme )
+FolderWizard::FolderWizard( QWidget *parent )
     : QWizard(parent),
     _folderWizardSourcePage(0)
 {
@@ -459,9 +462,7 @@ FolderWizard::FolderWizard( QWidget *parent, Theme *theme )
     setPage(Page_Target,   new FolderWizardTargetPage());
     // setPage(Page_Network,  new FolderWizardNetworkPage());
     // setPage(Page_Owncloud, new FolderWizardOwncloudPage());
-    setWindowTitle( tr( "%1 Folder Wizard")
-                    .arg( theme ? theme->appName()
-                                : QLatin1String("Mirall") ) );
+    setWindowTitle( tr( "%1 Folder Wizard" ).arg( Theme::instance()->appName() ) );
 #ifdef Q_WS_MAC
     setWizardStyle( QWizard::ModernStyle );
 #endif

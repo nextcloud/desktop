@@ -31,11 +31,6 @@
 #include "mirall/proxydialog.h"
 #include "mirall/version.h"
 
-#include "mirall/miralltheme.h"
-#include "mirall/owncloudtheme.h"
-
-#include "config.h"
-
 #ifdef WITH_CSYNC
 #include "mirall/csyncfolder.h"
 #endif
@@ -76,12 +71,10 @@ Application::Application(int &argc, char **argv) :
     _networkMgr(new QNetworkConfigurationManager(this)),
 #endif
     _contextMenu(0),
-    _theme(0),
+    _theme(Theme::instance()),
     _updateDetector(0),
     _helpOnly(false)
 {
-
-    _theme = new THEME_CLASS;
     setApplicationName( _theme->appName() );
     setWindowIcon( _theme->applicationIcon() );
 
@@ -122,7 +115,7 @@ Application::Application(int &argc, char **argv) :
 
     setQuitOnLastWindowClosed(false);
 
-    _folderWizard = new FolderWizard( 0, _theme );
+    _folderWizard = new FolderWizard;
 
     _owncloudSetupWizard = new OwncloudSetupWizard( _folderMan, _theme, this );
     connect( _owncloudSetupWizard, SIGNAL(ownCloudWizardDone(int)), SLOT(slotStartFolderSetup(int)));
@@ -196,10 +189,10 @@ void Application::slotStartFolderSetup( int result )
 
             ownCloudInfo::instance()->checkInstallation();
         } else {
-            QMessageBox::warning(0, tr("No ownCloud Configuration"),
-                                 tr("<p>No server connection has been configured for this ownCloud client.</p>"
+            QMessageBox::warning(0, tr("No %1 Configuration").arg(_theme->appName()),
+                                 tr("<p>No server connection has been configured for this %1 client.</p>"
                                     "<p>Please right click on the ownCloud system tray icon and select <i>Configure</i> "
-                                    "to connect this client to an ownCloud server.</p>"));
+                                    "to connect this client to an ownCloud server.</p>").arg(_theme->appName()));
             // It was evaluated to open the config dialog from here directly but decided
             // against because the user does not know why. The popup gives a better user
             // guidance, even if its a click more.
@@ -223,9 +216,9 @@ void Application::slotOwnCloudFound( const QString& url, const QString& versionS
                 this, SLOT(slotNoOwnCloudFound(QNetworkReply*)));
 
     if( version.startsWith("4.0") ) {
-        QMessageBox::warning(0, tr("ownCloud Server Mismatch"),
+        QMessageBox::warning(0, tr("%1 Server Mismatch").arg(_theme->appName()),
                              tr("<p>The configured server for this client is too old.</p>"
-                                "<p>Please update to the latest ownCloud server and restart the client.</p>"));
+                                "<p>Please update to the latest %1 server and restart the client.</p>").arg(_theme->appName()));
         return;
     }
 
@@ -239,12 +232,12 @@ void Application::slotNoOwnCloudFound( QNetworkReply* reply )
     if( reply ) {
         QString url( reply->url().toString() );
         url.remove( QLatin1String("/status.php") );
-        msg = tr("<p>The ownCloud at %1 could not be reached.</p>").arg( url );
+        msg = tr("<p>The %1 at %2 could not be reached.</p>").arg(_theme->appName()).arg( url );
         msg += tr("<p>The detailed error message is<br/><tt>%1</tt></p>").arg( reply->errorString() );
     }
     msg += tr("<p>Please check your configuration by clicking on the tray icon.</p>");
 
-    QMessageBox::warning(0, tr("ownCloud Connection Failed"), msg );
+    QMessageBox::warning(0, tr("%1 Connection Failed").arg(_theme->appName()), msg );
     _actionAddFolder->setEnabled( false );
 
     // Disconnect.
@@ -272,15 +265,16 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
 {
     if( reply->error() == QNetworkReply::AuthenticationRequiredError ) { // returned if the user is wrong.
         qDebug() << "******** Password is wrong!";
-        QMessageBox::warning(0, tr("No ownCloud Connection"),
-                             tr("<p>Your ownCloud credentials are not correct.</p>"
-                                "<p>Please correct them by starting the configuration dialog from the tray!</p>"));
+        QMessageBox::warning(0, tr("No %1 Connection").arg(_theme->appName()),
+                             tr("<p>Your %1 credentials are not correct.</p>"
+                                "<p>Please correct them by starting the configuration dialog from the tray!</p>")
+                             .arg(_theme->appName()));
         _actionAddFolder->setEnabled( false );
     } else if( reply->error() == QNetworkReply::OperationCanceledError ) {
         // the username was wrong and ownCloudInfo was closing the request after a couple of auth tries.
         qDebug() << "******** Username or password is wrong!";
-        QMessageBox::warning(0, tr("No ownCloud Connection"),
-                             tr("<p>Your ownCloud user name or password is not correct.</p>"
+        QMessageBox::warning(0, tr("No %1 Connection").arg(_theme->appName()),
+                             tr("<p>Either your user name or your password are not correct.</p>"
                                 "<p>Please correct it by starting the configuration dialog from the tray!</p>"));
         _actionAddFolder->setEnabled( false );
     } else {
@@ -292,7 +286,8 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
             processEvents();
 
             if( _tray )
-                _tray->showMessage(tr("ownCloud Sync Started"), tr("Sync started for %1 configured sync folder(s).").arg(cnt));
+                _tray->showMessage(tr("%1 Sync Started").arg(_theme->appName()),
+                                   tr("Sync started for %1 configured sync folder(s).").arg(cnt));
 
             _statusDialog->setFolderList( _folderMan->map() );
         }
@@ -307,7 +302,7 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
 
 void Application::setupActions()
 {
-    _actionOpenoC = new QAction(tr("Open ownCloud..."), this);
+    _actionOpenoC = new QAction(tr("Open %1 in browser...").arg(_theme->appName()), this);
     QObject::connect(_actionOpenoC, SIGNAL(triggered(bool)), SLOT(slotOpenOwnCloud()));
     _actionOpenStatus = new QAction(tr("Open status..."), this);
     QObject::connect(_actionOpenStatus, SIGNAL(triggered(bool)), SLOT(slotOpenStatus()));
@@ -317,7 +312,7 @@ void Application::setupActions()
     QObject::connect(_actionConfigure, SIGNAL(triggered(bool)), SLOT(slotConfigure()));
     _actionConfigureProxy = new QAction(tr("Configure proxy..."), this);
     QObject::connect(_actionConfigureProxy, SIGNAL(triggered(bool)), SLOT(slotConfigureProxy()));
-    _actionAbout = new QAction(tr("&About..."), this);
+    _actionAbout = new QAction(tr("About..."), this);
     QObject::connect(_actionAbout, SIGNAL(triggered(bool)), SLOT(slotAbout()));
     _actionQuit = new QAction(tr("Quit"), this);
     QObject::connect(_actionQuit, SIGNAL(triggered(bool)), SLOT(quit()));
@@ -858,7 +853,8 @@ void Application::showHelp()
     std::cout << "  --logfile <filename> : write log output to file <filename>." << std::endl;
     std::cout << "  --flushlog           : flush the log file after every write." << std::endl;
     std::cout << std::endl;
-    std::cout << "For more information, see http://www.owncloud.org" << std::endl;
+    if (_theme->appName() == QLatin1String("ownCloud"))
+        std::cout << "For more information, see http://www.owncloud.org" << std::endl;
     _helpOnly = true;
 }
 
