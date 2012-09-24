@@ -323,7 +323,8 @@ void FolderWizardTargetPage::slotOwnCloudFound( const QString& url, const QStrin
 void FolderWizardTargetPage::slotNoOwnCloudFound( QNetworkReply* error )
 {
   qDebug() << "No ownCloud configured: " << error->error();
-  _ui.OCLabel->setText( tr("no configured ownCloud found!") );
+  _ui.OCLabel->setText( tr("no configured ownCloud found!")
+                        .arg(Theme::instance()->appName()) );
   showWarn( tr("%1 could not be reached:<br/><tt>%2</tt>")
             .arg(Theme::instance()->appName()).arg(error->errorString()));
   _ui.OCRadioBtn->setEnabled( false );

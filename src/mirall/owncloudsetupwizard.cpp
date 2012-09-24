@@ -159,7 +159,8 @@ void OwncloudSetupWizard::testOwnCloudConnect()
 
 void OwncloudSetupWizard::slotOwnCloudFound( const QString& url, const QString& infoString, const QString& version, const QString& )
 {
-    _ocWizard->appendToResultWidget(tr("<font color=\"green\">Successfully connected to %1: ownCloud version %2 (%3)</font><br/><br/>").arg( url ).arg(infoString).arg(version));
+    _ocWizard->appendToResultWidget(tr("<font color=\"green\">Successfully connected to %1: %2 version %3 (%4)</font><br/><br/>")
+                                    .arg( url ).arg(Theme::instance()->appName()).arg(infoString).arg(version));
 
     // enable the finish button.
     _ocWizard->button( QWizard::FinishButton )->setEnabled( true );
@@ -170,7 +171,8 @@ void OwncloudSetupWizard::slotOwnCloudFound( const QString& url, const QString& 
 
 void OwncloudSetupWizard::slotNoOwnCloudFound( QNetworkReply *err )
 {
-    _ocWizard->appendToResultWidget(tr("<font color=\"red\">Failed to connect to ownCloud!</font>") );
+    _ocWizard->appendToResultWidget(tr("<font color=\"red\">Failed to connect to %1!</font>")
+                                    .arg(Theme::instance()->appName()));
     _ocWizard->appendToResultWidget(tr("Error: <tt>%1</tt>").arg(err->errorString()) );
 
     // remove the config file again
@@ -440,12 +442,14 @@ void OwncloudSetupWizard::finalizeSetup( bool success )
         }
         _ocWizard->appendToResultWidget( QLatin1String(" "));
         _ocWizard->appendToResultWidget( QLatin1String("<p><font color=\"green\"><b>")
-                                                       + tr("Congratulations, your ownCloud can be connected!")
+                                                       + tr("Succesfully connected to %1!")
+                                                         .arg(Theme::instance()->appName())
                                                        + QLatin1String("</b></font></p>"));
         _ocWizard->appendToResultWidget( tr("Press Finish to permanently accept this connection."));
     } else {
         _ocWizard->appendToResultWidget(QLatin1String("<p><font color=\"red\">")
-                                        + tr("An ownCloud connection could not be established. Please check again.")
+                                        + tr("Connection to %1 could not be established. Please check again.")
+                                          .arg(Theme::instance()->appName())
                                         + QLatin1String("</font></p>"));
     }
 }

@@ -114,7 +114,7 @@ void UpdateDetector::slotVersionInfoArrived( QNetworkReply* reply )
             msgBox.setTextFormat( Qt::RichText );
             msgBox.setWindowTitle(tr("Client Version Check"));
             msgBox.setIcon( QMessageBox::Information );
-            msgBox.setText(tr("<p>A new version of the ownCloud Client is available."));
+            msgBox.setText(tr("<p>A new version of the %1 client is available.").arg(Theme::instance()->appName()));
             QString txt = tr("%1 is available. The installed version is %3.<p/><p>For more information see <a href=\"%2\">%2</a></p>")
                     .arg(ocClient.versionstring()).arg(ocClient.web()).arg(ver);
 

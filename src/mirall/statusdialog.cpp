@@ -418,12 +418,12 @@ void StatusDialog::slotCheckConnection()
         connect(ownCloudInfo::instance(), SIGNAL(noOwncloudFound(QNetworkReply*)),
                 this, SLOT(slotOCInfoFail(QNetworkReply*)));
 
-        _ocUrlLabel->setText( tr("Checking ownCloud connection..."));
+        _ocUrlLabel->setText( tr("Checking %1 connection...").arg(Theme::instance()->appName()));
         qDebug() << "Check status.php from statusdialog.";
         ownCloudInfo::instance()->checkInstallation();
     } else {
         // ownCloud is not yet configured.
-        _ocUrlLabel->setText( tr("No ownCloud connection configured."));
+        _ocUrlLabel->setText( tr("No %1 connection configured.").arg(Theme::instance()->appName()));
         _ButtonAdd->setEnabled( false);
     }
 }
@@ -445,7 +445,8 @@ void StatusDialog::slotOCInfo( const QString& url, const QString& versionStr, co
     qDebug() << "#-------# oC found on " << url;
     /* enable the open button */
     _ocUrlLabel->setOpenExternalLinks(true);
-    _ocUrlLabel->setText( tr("Connected to <a href=\"%1\">%2</a>, ownCloud %3").arg(url).arg(url).arg(versionStr) );
+    _ocUrlLabel->setText( tr("Connected to <a href=\"%1\">%2</a>, %3 %4")
+                          .arg(url).arg(url).arg(Theme::instance()->appName()).arg(versionStr) );
     _ocUrlLabel->setToolTip( tr("Version: %1").arg(version));
     _ButtonAdd->setEnabled(true);
 
@@ -462,7 +463,7 @@ void StatusDialog::slotOCInfoFail( QNetworkReply *reply)
     QString errStr = tr("unknown problem.");
     if( reply ) errStr = reply->errorString();
 
-    _ocUrlLabel->setText( tr("<p>Failed to connect to ownCloud: <tt>%1</tt></p>").arg(errStr) );
+    _ocUrlLabel->setText( tr("<p>Failed to connect to %1: <tt>%2</tt></p>").arg(Theme::instance()->appName()).arg(errStr) );
     _ButtonAdd->setEnabled( false);
 
     disconnect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(const QString&, const QString&, const QString&, const QString&)),
