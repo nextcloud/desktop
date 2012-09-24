@@ -360,7 +360,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/application.cpp" line="320"/>
         <source>&amp;About...</source>
-        <translation type="unfinished"/>
+        <translation>À &amp;Propos de…</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="322"/>
@@ -374,7 +374,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/application.cpp" line="367"/>
         <source>open %1 folder</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrir le répertoire %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="380"/>
@@ -384,7 +384,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/application.cpp" line="612"/>
         <source>About %1</source>
-        <translation type="unfinished"/>
+        <translation>À propos de %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="613"/>
@@ -1361,7 +1361,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="144"/>
         <source>&amp;Do not store password on local machine.</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Ne pas mémoriser le mot de passe sur cet ordinateur.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="153"/>
