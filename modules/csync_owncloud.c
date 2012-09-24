@@ -1210,6 +1210,10 @@ static const char* owncloud_file_id( const char *path )
      * into a PROPFIND request.
      */
     if( ! header ) {
+        /* Clear the cache */
+        fill_stat_cache(NULL);
+
+        /* ... and do a stat call. */
         fs = csync_vio_file_stat_new();
         if(fs == NULL) {
             DEBUG_WEBDAV( "owncloud_file_id: memory fault.");
