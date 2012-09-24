@@ -1090,7 +1090,10 @@ static int _csync_correct_id(CSYNC *ctx) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "correct ID on dir: %s", path);
 
       /* handle the . path */
-      if( path && path[0] == '.' ) path = NULL;
+      if( path && path[0] == '.' && strlen(path) == 1) {
+          SAFE_FREE(path);
+          path = NULL;
+      }
 
       while( path ) {
           uint64_t h;
