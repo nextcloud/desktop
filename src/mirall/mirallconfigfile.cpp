@@ -81,12 +81,10 @@ QString MirallConfigFile::excludeFile() const
 
 QString MirallConfigFile::configFile() const
 {
-    THEME_CLASS theme;
-
     if( qApp->applicationName().isEmpty() ) {
-        qApp->setApplicationName( theme.appName() );
+        qApp->setApplicationName( Theme::instance()->appName() );
     }
-    QString dir = configPath() + theme.configFileName();
+    QString dir = configPath() + Theme::instance()->configFileName();
     if( !_customHandle.isEmpty() ) {
         dir.append( QLatin1Char('_'));
         dir.append( _customHandle );
