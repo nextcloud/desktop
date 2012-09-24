@@ -160,7 +160,6 @@ struct dav_session_s dav_session; /* The DAV Session, initialised in dav_connect
 int _connected = 0;                   /* flag to indicate if a connection exists, ie.
                                      the dav_session is valid */
 csync_vio_file_stat_t _fs;
-csync_vio_file_stat_t _owc;
 
 csync_auth_callback _authcb;
 
