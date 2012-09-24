@@ -455,7 +455,7 @@ Section -post
 
 
    SetDetailsPrint textonly
-   DetailPrint "Finsihed."
+   DetailPrint "Finished."
 SectionEnd
 
 ##############################################################################
