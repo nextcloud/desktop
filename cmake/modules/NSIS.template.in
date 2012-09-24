@@ -359,7 +359,7 @@ SectionGroup "Shortcuts"
 
 !ifdef OPTION_SECTION_SC_START_MENU
    ${MementoSection} "Start Menu Program Group" SEC_START_MENU
-      SectionIn 1 2
+      SectionIn 1 2 3
       SetDetailsPrint textonly
       DetailPrint "Adding shortcuts for the ${APPLICATION_NAME} program group to the Start Menu."
       SetDetailsPrint listonly
