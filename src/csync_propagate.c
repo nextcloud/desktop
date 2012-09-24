@@ -619,6 +619,8 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
   struct timeval times[2];
   char *suri = NULL;
   char *duri = NULL;
+  const char *tmd5 = NULL;
+  c_rbnode_t *node = NULL;
 
   switch (ctx->current) {
     case REMOTE_REPLCIA:
@@ -668,16 +670,36 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   csync_vio_utimes(ctx, duri, times);
 
-  /* set instruction for the statedb merger */
+  /* The the uniq ID for the destination */
+  tmd5 = _get_md5(ctx, st->destpath);
+
   if( rc > -1 ) {
-    st->instruction = CSYNC_INSTRUCTION_RENAME;
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "RENAME  file: %s", suri);
+      /* Find the destination entry in the local tree and insert the uniq id */
+      int len = strlen(st->destpath);
+      uint64_t h = c_jhash64((uint8_t *) st->destpath, len, 0);
+      h = c_jhash64((uint8_t *) st->destpath, len, 0);
+
+      /* search in the local tree for the local file to get the mtime */
+      node =  c_rbtree_find(ctx->local.tree, &h);
+      if(node == NULL) {
+          /* no local file found. */
+
+      } else {
+          csync_file_stat_t *other = NULL;
+          /* set the mtime which is needed in statedb_get_uniqid */
+          other = (csync_file_stat_t *) node->data;
+          if( other ) {
+              other->md5 = tmd5;
+          }
+      }
+      /* set instruction for the statedb merger */
+      st->instruction = CSYNC_INSTRUCTION_DELETED;
   }
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "RENAME  file: %s => %s with ID %s", st->path, st->destpath, st->md5);
 
 out:
   SAFE_FREE(suri);
   SAFE_FREE(duri);
-  SAFE_FREE(st->destpath);
 
   /* set instruction for the statedb merger */
   if (rc != 0) {
