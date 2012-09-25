@@ -80,6 +80,17 @@ static void check_csync_excluded(void **state)
     assert_int_equal(rc, 1);
     rc = csync_excluded(csync, ".mozilla/plugins");
     assert_int_equal(rc, 1);
+
+    /*
+     * Test for patterns in subdirs. '.beagle' is defined as a pattern and has
+     * to be found in top dir as well as in directories underneath.
+     */
+    rc = csync_excluded(csync, ".beagle");
+    assert_int_equal(rc, 1);
+    rc = csync_excluded(csync, "foo/.beagle");
+    assert_int_equal(rc, 1);
+    rc = csync_excluded(csync, "foo/bar/.beagle");
+    assert_int_equal(rc, 1);
 }
 
 int torture_run_tests(void)
