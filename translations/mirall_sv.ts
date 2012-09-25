@@ -263,107 +263,78 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Mirall::Application</name>
     <message>
-        <location filename="../src/mirall/application.cpp" line="199"/>
         <source>No ownCloud Configuration</source>
-        <translation>Ingen ownCloud konfiguration</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>&lt;p&gt;No ownCloud connection was configured yet.&lt;/p&gt;&lt;p&gt;Please configure one by clicking on the tray icon!&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="200"/>
-        <source>&lt;p&gt;No server connection has been configured for this ownCloud client.&lt;/p&gt;&lt;p&gt;Please right click on the ownCloud system tray icon and select &lt;i&gt;Configure&lt;/i&gt; to connect this client to an ownCloud server.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Ingen serveranslutning har konfigurerats för ownCloud.&lt;/p&gt;&lt;p&gt;Vänligen högerklicka på ownCloudikonen i systemfältet och välj &lt;i&gt;Konfigurera&lt;/i&gt; för att ansluta denna dator till en ownCloudserver.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="226"/>
-        <source>ownCloud Server Mismatch</source>
-        <translation>Felaktig ownCloud-server</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="227"/>
-        <source>&lt;p&gt;The configured server for this client is too old.&lt;/p&gt;&lt;p&gt;Please update to the latest ownCloud server and restart the client.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Den konfigurerade servern använder en för gammal version av ownCloud.&lt;/p&gt;&lt;p&gt;Uppgradera servern till den senaste versionen av ownCloud och starta sedan om klienten.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="242"/>
         <source>&lt;p&gt;The ownCloud at %1 could not be reached.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;ownCloud på %1 är inte nåbar.&lt;/p&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="243"/>
+        <location filename="../src/mirall/application.cpp" line="236"/>
         <source>&lt;p&gt;The detailed error message is&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>Det detaljerade felmeddelandet är:&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="245"/>
+        <location filename="../src/mirall/application.cpp" line="238"/>
         <source>&lt;p&gt;Please check your configuration by clicking on the tray icon.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Kontrollera inställningarna genom att klicka på ikonen i systemfältet.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="247"/>
         <source>ownCloud Connection Failed</source>
-        <translation>Uppkoppling till ownCloud misslyckades</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="275"/>
-        <location filename="../src/mirall/application.cpp" line="282"/>
         <source>No ownCloud Connection</source>
-        <translation>Ingen anslutning till ownCloud</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="276"/>
         <source>&lt;p&gt;Your ownCloud credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Dina uppgifter för ownCloud stämmer inte.&lt;/p&gt;&lt;p&gt;Rätta till dem genom att starta konfigurationsdialogen.&lt;/p&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="283"/>
         <source>&lt;p&gt;Your ownCloud user name or password is not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Ditt användarnamn och lösenord för ownCloud stämmer inte.&lt;/p&gt;&lt;p&gt;Rätta till dem genom att starta konfigurationsdialogen.&lt;/p&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="295"/>
         <source>ownCloud Sync Started</source>
-        <translation>ownCloud synkronisering har startat</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="295"/>
+        <location filename="../src/mirall/application.cpp" line="290"/>
         <source>Sync started for %1 configured sync folder(s).</source>
         <translation>Synkroniseringen har startat för %1 synkroniseringskatalog(er).</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="310"/>
         <source>Open ownCloud...</source>
-        <translation>Öppna ownCloud...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="312"/>
+        <location filename="../src/mirall/application.cpp" line="307"/>
         <source>Open status...</source>
         <translation>Öppna status...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="314"/>
+        <location filename="../src/mirall/application.cpp" line="309"/>
         <source>Add folder...</source>
         <translation>Lägg till en mapp...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="316"/>
+        <location filename="../src/mirall/application.cpp" line="311"/>
         <source>Configure...</source>
         <translation>Konfigurera...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="318"/>
+        <location filename="../src/mirall/application.cpp" line="313"/>
         <source>Configure proxy...</source>
         <translation>Konfigurera proxy...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="320"/>
-        <source>&amp;About...</source>
-        <translation>&amp;Om...</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="322"/>
+        <location filename="../src/mirall/application.cpp" line="317"/>
         <source>Quit</source>
         <translation>Avsluta</translation>
     </message>
@@ -372,22 +343,83 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="367"/>
+        <location filename="../src/mirall/application.cpp" line="192"/>
+        <source>No %1 Configuration</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="193"/>
+        <source>&lt;p&gt;No server connection has been configured for this %1 client.&lt;/p&gt;&lt;p&gt;Please right click on the ownCloud system tray icon and select &lt;i&gt;Configure&lt;/i&gt; to connect this client to an ownCloud server.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="219"/>
+        <source>%1 Server Mismatch</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="220"/>
+        <source>&lt;p&gt;The configured server for this client is too old.&lt;/p&gt;&lt;p&gt;Please update to the latest %1 server and restart the client.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="235"/>
+        <source>&lt;p&gt;The %1 at %2 could not be reached.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="240"/>
+        <source>%1 Connection Failed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="268"/>
+        <location filename="../src/mirall/application.cpp" line="276"/>
+        <source>No %1 Connection</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="269"/>
+        <source>&lt;p&gt;Your %1 credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="277"/>
+        <source>&lt;p&gt;Either your user name or your password are not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="289"/>
+        <source>%1 Sync Started</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="305"/>
+        <source>Open %1 in browser...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="315"/>
+        <source>About...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="362"/>
         <source>open %1 folder</source>
         <translation>öppna %1 mappen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="380"/>
+        <location filename="../src/mirall/application.cpp" line="375"/>
         <source>Managed Folders:</source>
         <translation>Hanterade mappar:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="612"/>
+        <location filename="../src/mirall/application.cpp" line="607"/>
         <source>About %1</source>
         <translation>Om %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="613"/>
+        <location filename="../src/mirall/application.cpp" line="608"/>
         <source>%1 client, version %2
 
 Copyright 2012, the ownCloud developers
@@ -404,113 +436,113 @@ Licensierad under GPLv2
 The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN,MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="626"/>
+        <location filename="../src/mirall/application.cpp" line="621"/>
         <source>Confirm Folder Remove</source>
         <translation>Bekräfta radering av mapp</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="627"/>
+        <location filename="../src/mirall/application.cpp" line="622"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>Vill du verkligen ta bort uppladdningsmapp &lt;i&gt;%1&lt;/i&gt;?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="661"/>
+        <location filename="../src/mirall/application.cpp" line="656"/>
         <source>Undefined Folder State</source>
         <translation>Okänd mappstatus</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="664"/>
+        <location filename="../src/mirall/application.cpp" line="659"/>
         <source>The folder waits to start syncing.</source>
         <translation>Mappen väntar på att synkronisering ska starta.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="667"/>
-        <location filename="../src/mirall/application.cpp" line="801"/>
+        <location filename="../src/mirall/application.cpp" line="662"/>
+        <location filename="../src/mirall/application.cpp" line="796"/>
         <source>Sync is running.</source>
         <translation>Synkronisering pågår.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="670"/>
-        <location filename="../src/mirall/application.cpp" line="806"/>
+        <location filename="../src/mirall/application.cpp" line="665"/>
+        <location filename="../src/mirall/application.cpp" line="801"/>
         <source>Last Sync was successful.</source>
         <translation>Senaste synkronisering lyckades.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="673"/>
-        <location filename="../src/mirall/application.cpp" line="812"/>
+        <location filename="../src/mirall/application.cpp" line="668"/>
+        <location filename="../src/mirall/application.cpp" line="807"/>
         <source>Syncing Error.</source>
         <translation>Synkroniseringsfel.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="676"/>
-        <location filename="../src/mirall/application.cpp" line="818"/>
+        <location filename="../src/mirall/application.cpp" line="671"/>
+        <location filename="../src/mirall/application.cpp" line="813"/>
         <source>Setup Error.</source>
         <translation>Inställningsfel.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="679"/>
-        <location filename="../src/mirall/application.cpp" line="821"/>
+        <location filename="../src/mirall/application.cpp" line="674"/>
+        <location filename="../src/mirall/application.cpp" line="816"/>
         <source>Undefined Error State.</source>
         <translation>Odefinierat fel.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="683"/>
+        <location filename="../src/mirall/application.cpp" line="678"/>
         <source>Folder information</source>
         <translation>Mappinformation</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="698"/>
+        <location filename="../src/mirall/application.cpp" line="693"/>
         <source>Unknown</source>
         <translation>Okänt</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="700"/>
+        <location filename="../src/mirall/application.cpp" line="695"/>
         <source>Changed files:
 </source>
         <translation>Ändrade filer:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="702"/>
+        <location filename="../src/mirall/application.cpp" line="697"/>
         <source>Added files:
 </source>
         <translation>Tillagda filer:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="704"/>
+        <location filename="../src/mirall/application.cpp" line="699"/>
         <source>New files in the server, or files deleted locally:
 </source>
         <translation>Nya filer på servern, eller borttagna filer lokalt:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="731"/>
+        <location filename="../src/mirall/application.cpp" line="726"/>
         <source>Sync Running</source>
         <translation>Synkronisering pågår</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="732"/>
+        <location filename="../src/mirall/application.cpp" line="727"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>En synkronisering pågår.&lt;br/&gt;Vill du avbryta den?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="794"/>
+        <location filename="../src/mirall/application.cpp" line="789"/>
         <source>Undefined State.</source>
         <translation>Okänt tillstånd.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="797"/>
+        <location filename="../src/mirall/application.cpp" line="792"/>
         <source>Waits to start syncing.</source>
         <translation>Väntar på att starta synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="826"/>
+        <location filename="../src/mirall/application.cpp" line="821"/>
         <source>Sync is paused.</source>
         <translation>Synkronisering är pausad.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="842"/>
+        <location filename="../src/mirall/application.cpp" line="837"/>
         <source>No sync folders configured.</source>
         <translation>Ingen synkroniseringsmapp är konfigurerad.</translation>
     </message>
@@ -518,17 +550,17 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="191"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="190"/>
         <source>CSync create failed.</source>
         <translation>CSync misslyckades skapa.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="227"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="226"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSync misslyckades skapa en låsfil.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="230"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="229"/>
         <source>CSync failed to load the state db.</source>
         <translation>CSync misslyckades ladda status för databasen.</translation>
     </message>
@@ -537,17 +569,17 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="233"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="232"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>Systemtiden på denna klientdator är annorlunda än systemtiden på servern. Använd en tjänst för tidssynkronisering (NTP) på servern och alla klientdatorer så att tiden är lika.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="238"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="237"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSync kunde inte upptäcka filsystemtyp.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="241"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="240"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSYNC fel vid intern bearbetning.</translation>
     </message>
@@ -556,37 +588,37 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="244"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="243"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Målmappen %1 finns inte.&lt;/p&gt;&lt;p&gt;Kontrollera dina inställningar.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="250"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="249"/>
         <source>&lt;p&gt;The ownCloud plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;ownCloud-tillägget för csync kunde inte laddas.&lt;br/&gt;Verifiera installationen.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="254"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="253"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>Kan inte skriva till det lokala filsystemet. Var god kontrollera rättigheterna.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="258"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="257"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>En fil på servern kan inte skapas. Kontrollera åtkomst till fjärranslutningen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="261"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="260"/>
         <source>An internal error number %1 happend.</source>
         <translation>Internt fel nummer %1 uppstod.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="277"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="276"/>
         <source>CSync failed to reach the host. Either host or proxy settings are not valid.</source>
         <translation>CSYNC kunde inte nå servern. Antingen är server eller proxyinställningarna felaktiga.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="280"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="279"/>
         <source>CSync Update failed.</source>
         <translation>CSync misslyckades uppdatera.</translation>
     </message>
@@ -597,36 +629,36 @@ Please make sure that all directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="294"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="293"/>
         <source>CSync encountered an error while examining the file system.
 Syncing is not possible.</source>
         <translation>CSYNC påträffade ett fel vid läsning av filsystemet.
 Synkronisering är inte är möjlig.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="297"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="296"/>
         <source>CSync update generated a strange instruction.
 Please write a bug report.</source>
         <translation>CSYNC uppdatering genererade en märklig instruktion.
 Skriv en felrapport.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="300"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="299"/>
         <source>Local filesystem problems. Better disable Syncing and check.</source>
         <translation>Lokalt problem med filsystemet. Bäst att avaktivera synkning och kontrollera.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="305"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="304"/>
         <source>The local filesystem has %1 write protected directories.That can hinder successful syncing.&lt;p/&gt;Please make sure that all local directories are writeable.</source>
         <translation>Det lokala filsystemet har %1 skrivskyddade mappar. Detta kan förhindra full synkronisering. &lt;p/&gt;Se till att alla lokala mappar är skrivbara.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="325"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="324"/>
         <source>CSync reconcile failed.</source>
         <translation>CSync kontroll misslyckades.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="329"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="328"/>
         <source>CSync propagate failed.</source>
         <translation>CSync misslyckades propagera.</translation>
     </message>
@@ -650,7 +682,7 @@ Skriv en felrapport.</translation>
 <context>
     <name>Mirall::FolderWizard</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="462"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="466"/>
         <source>%1 Folder Wizard</source>
         <translation>%1 Mappguide</translation>
     </message>
@@ -696,42 +728,62 @@ Skriv en felrapport.</translation>
 <context>
     <name>Mirall::FolderWizardTargetPage</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="211"/>
         <source>The folder is not available on your ownCloud.&lt;br/&gt;Click to let mirall create it.</source>
-        <translation>Mappen är inte tillgänglig på ditt ownCloud. &lt;br/&gt; Klicka för att låta Mirall skapa den.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="236"/>
         <source>Folder on ownCloud was successfully created.</source>
-        <translation>Mapp på ownCloud har skapats.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="239"/>
         <source>Failed to create the folder on ownCloud.&lt;br/&gt;Please check manually.</source>
-        <translation>Kunde inte skapa mappen på ownCloud. &lt;br/&gt; Gör en manuell kontroll.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="259"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="211"/>
+        <source>The folder is not available on your %1.&lt;br/&gt;Click to create it.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="237"/>
+        <source>Folder was successfully created on %1.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="240"/>
+        <source>Failed to create the folder on %1.&lt;br/&gt;Please check manually.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="260"/>
         <source>Better do not use the remote root directory.&lt;br/&gt;If you do, you can &lt;b&gt;not&lt;/b&gt; mirror another local folder.</source>
         <translation>Det är bäst att inte använda rotkatalogen på servern.&lt;br/&gt;Om du gör det kan du &lt;b&gt;inte&lt;/ b&gt; spegla någon annan lokal mapp.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="314"/>
-        <source>to your &lt;a href=&quot;%1&quot;&gt;ownCloud&lt;/a&gt; (version %2)</source>
-        <translation>till &lt;a href=&quot;%1&quot;&gt;ownCloud&lt;/a&gt; (version %2)</translation>
+        <location filename="../src/mirall/folderwizard.cpp" line="315"/>
+        <source>to your &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; (version %3)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="324"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="328"/>
+        <source>%1 could not be reached:&lt;br/&gt;&lt;tt&gt;%2&lt;/tt&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>to your &lt;a href=&quot;%1&quot;&gt;ownCloud&lt;/a&gt; (version %2)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="326"/>
         <source>no configured ownCloud found!</source>
         <translation>hittar ingen konfiguration för ownCloud!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="325"/>
         <source>Your ownCloud could not be reached:&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>Ditt ownCloud är inte nåbar:&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="392"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="396"/>
         <source>Select the target folder</source>
         <translation>Välj målmapp</translation>
     </message>
@@ -847,86 +899,98 @@ Skriv en felrapport.</translation>
         <translation>%1 Anslutningsguiden</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="129"/>
         <source>Trying to connect to ownCloud at %1...</source>
-        <translation>Försöker ansluta till ownCloud på %1 ...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="161"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: ownCloud version %2 (%3)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;Ansluten till %1: ownCloud version %2 (%3)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="172"/>
         <source>&lt;font color=&quot;red&quot;&gt;Failed to connect to ownCloud!&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;red&quot;&gt;Kunde inte ansluta till ownCloud!&lt;/font&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="173"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="129"/>
+        <source>Trying to connect to %1 at %2...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="162"/>
+        <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="174"/>
+        <source>&lt;font color=&quot;red&quot;&gt;Failed to connect to %1!&lt;/font&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="176"/>
         <source>Error: &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Fel: &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="258"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="261"/>
         <source>Starting script owncloud-admin...</source>
         <translation>Startar skript owncloud-admin...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="309"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="312"/>
         <source>&lt;font color=&quot;red&quot;&gt;Installation of ownCloud failed!&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;red&quot;&gt;Installation av ownCloud misslyckades!&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="314"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="317"/>
         <source>&lt;font color=&quot;green&quot;&gt;Installation of ownCloud succeeded!&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;Installation av ownCloud lyckades!&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="347"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="350"/>
         <source>The owncloud admin script can not be found.
 Setup can not be done.</source>
         <translation>Admin-skriptet kan inte hittas.
 Inställning kan inte utföras.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="388"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="391"/>
         <source>Creation of remote folder %1 could not be started.</source>
         <translation>Skapande av fjärrmapp %1 kunde inte startas.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="412"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="415"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Fjärrmapp %1 har skapats.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="414"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="417"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>Fjärrmappen %1 finns redan. Ansluter den för synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="416"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="419"/>
         <source>The folder creation resulted in HTTP error code %d</source>
         <translation>Skapande av mappen resulterade i HTTP-felkod %d</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="437"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="440"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>En synkroniseringsanslutning från %1 till fjärrmappen %2 har skapats.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="442"/>
-        <source>Congratulations, your ownCloud can be connected!</source>
-        <translation>Grattis, ownCloud kan anslutas!</translation>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="445"/>
+        <source>Succesfully connected to %1!</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="444"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="451"/>
+        <source>Connection to %1 could not be established. Please check again.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="448"/>
         <source>Press Finish to permanently accept this connection.</source>
         <translation>Tryck på Slutför för att permanent acceptera denna anslutning.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="447"/>
-        <source>An ownCloud connection could not be established. Please check again.</source>
-        <translation>En anslutning till ownCloud kunde inte etableras. Var god kontrollera och försök igen.</translation>
     </message>
     <message>
         <source>Skipping automatic setup of sync folders as there are already sync folders.</source>
@@ -937,12 +1001,12 @@ Inställning kan inte utföras.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="367"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="370"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Lokal synkmapp %1 finns redan, aktiverar den för synk.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="369"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="372"/>
         <source>Creating local sync folder %1... </source>
         <translation>Skapar lokal synkmapp %1... </translation>
     </message>
@@ -951,12 +1015,12 @@ Inställning kan inte utföras.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="372"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="375"/>
         <source>ok</source>
         <translation>ok</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="374"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="377"/>
         <source>failed.</source>
         <translation>misslyckades.</translation>
     </message>
@@ -978,12 +1042,12 @@ Inställning kan inte utföras.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="418"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="421"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Misslyckades skapa fjärrmappen, troligen p.g.a felaktiga inloggningsuppgifter.&lt;/font&gt;&lt;br/&gt;Vänligen kontrollera dina inloggningsuppgifter.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="424"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="427"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Misslyckades skapa fjärrmapp %1 med fel &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
@@ -1087,33 +1151,49 @@ Inställning kan inte utföras.</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="421"/>
-        <source>Checking ownCloud connection...</source>
-        <translation>Kontrollerar anslutning till ownCloud...</translation>
+        <source>Checking %1 connection...</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="426"/>
-        <source>No ownCloud connection configured.</source>
-        <translation>Ingen anslutning för ownCloud konfigurerad.</translation>
+        <source>No %1 connection configured.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="448"/>
-        <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, ownCloud %3</source>
-        <translation>Ansluten till &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, ownCloud %3</translation>
+        <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, %3 %4</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="449"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="466"/>
+        <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Checking ownCloud connection...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>No ownCloud connection configured.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, ownCloud %3</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/statusdialog.cpp" line="450"/>
         <source>Version: %1</source>
         <translation>Version: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="462"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="463"/>
         <source>unknown problem.</source>
         <translation>okänt fel.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="465"/>
         <source>&lt;p&gt;Failed to connect to ownCloud: &lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Kunde inte ansluta till ownCloud: &lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1152,8 +1232,12 @@ Inställning kan inte utföras.</translation>
     </message>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="117"/>
+        <source>&lt;p&gt;A new version of the %1 client is available.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <source>&lt;p&gt;A new version of the ownCloud Client is available.</source>
-        <translation>&lt;p&gt;En ny version av ownCloud-klienten finns tillgänglig.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="118"/>
@@ -1172,12 +1256,12 @@ Inställning kan inte utföras.</translation>
 <context>
     <name>MirallConfigFile</name>
     <message>
-        <location filename="../src/mirall/mirallconfigfile.cpp" line="330"/>
+        <location filename="../src/mirall/mirallconfigfile.cpp" line="328"/>
         <source>ownCloud Password Required</source>
         <translation>ownCloud lösenord krävs</translation>
     </message>
     <message>
-        <location filename="../src/mirall/mirallconfigfile.cpp" line="331"/>
+        <location filename="../src/mirall/mirallconfigfile.cpp" line="329"/>
         <source>Please enter your ownCloud password:</source>
         <translation>Ange ditt ownCloud lösenord:</translation>
     </message>
@@ -1510,33 +1594,33 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/theme.cpp" line="34"/>
-        <location filename="../src/mirall/theme.cpp" line="52"/>
+        <location filename="../src/mirall/theme.cpp" line="42"/>
+        <location filename="../src/mirall/theme.cpp" line="60"/>
         <source>Status undefined</source>
         <translation>Odefinierad status</translation>
     </message>
     <message>
-        <location filename="../src/mirall/theme.cpp" line="37"/>
+        <location filename="../src/mirall/theme.cpp" line="45"/>
         <source>Waiting to start sync</source>
         <translation>Väntar på att starta synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/mirall/theme.cpp" line="40"/>
+        <location filename="../src/mirall/theme.cpp" line="48"/>
         <source>Sync is running</source>
         <translation>Synkronisering är aktiv</translation>
     </message>
     <message>
-        <location filename="../src/mirall/theme.cpp" line="43"/>
+        <location filename="../src/mirall/theme.cpp" line="51"/>
         <source>Sync Success</source>
         <translation>Lyckad synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/mirall/theme.cpp" line="46"/>
+        <location filename="../src/mirall/theme.cpp" line="54"/>
         <source>Sync Error - Click info button for details.</source>
         <translation>Synkroniseringsfel - Klicka på info-knappen för mer information.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/theme.cpp" line="49"/>
+        <location filename="../src/mirall/theme.cpp" line="57"/>
         <source>Setup Error</source>
         <translation>Inställningsfel</translation>
     </message>
