@@ -46,6 +46,12 @@ START_TEST (check_csync_excluded)
   fail_unless(csync_excluded(csync, ".kde/share/config/kwin.eventsrc") == 0, NULL);
   fail_unless(csync_excluded(csync, ".kde4/cache-maximegalon/cache1.txt") == 1, NULL);
   fail_unless(csync_excluded(csync, ".mozilla/plugins") == 1, NULL);
+
+  /* test for finding patterns in subdirs. .beagle is defined as a pattern and has to
+   * be found in top dir as well as in directories underneath. */
+  fail_unless(csync_excluded(csync, ".beagle") == 1, NULL);
+  fail_unless(csync_excluded(csync, "foo/.beagle") == 1, NULL);
+  fail_unless(csync_excluded(csync, "bar/foo/.beagle") == 1, NULL);
 }
 END_TEST
 

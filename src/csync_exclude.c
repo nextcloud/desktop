@@ -109,6 +109,7 @@ void csync_exclude_destroy(CSYNC *ctx) {
 int csync_excluded(CSYNC *ctx, const char *path) {
   size_t i;
   const char *p;
+  const char *bname = NULL;
 
   if (! ctx->options.unix_extensions) {
     for (p = path; *p; p++) {
@@ -133,11 +134,16 @@ int csync_excluded(CSYNC *ctx, const char *path) {
   }
 
   if (ctx->excludes->count) {
+    bname = c_basename(path);
     for (i = 0; i < ctx->excludes->count; i++) {
       if (csync_fnmatch(ctx->excludes->vector[i], path, 0) == 0) {
         return 1;
       }
+      if( bname && csync_fnmatch(ctx->excludes->vector[i], bname, 0) == 0) {
+          return 1;
+      }
     }
+    SAFE_FREE(bname);
   }
   return 0;
 }
