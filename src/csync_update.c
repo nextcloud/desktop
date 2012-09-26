@@ -413,10 +413,15 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     }
 
     if( ctx->current == LOCAL_REPLICA ) {
+        char *md5 = NULL;
         int len = strlen( path );
         uint64_t h = c_jhash64((uint8_t *) path, len, 0);
-        fs->md5 = csync_statedb_get_uniqId( ctx, h, fs );
-        fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
+        md5 = csync_statedb_get_uniqId( ctx, h, fs );
+        if( md5 ) {
+            SAFE_FREE(fs->md5);
+            fs->md5 = md5;
+            fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
+        }
 
         CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Uniq ID read from Database: %s -> %s", path, fs->md5 ? fs->md5 : "<NULL>" );
     }

@@ -230,7 +230,7 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
   if( tfs && tfs->md5 ) {
       if( fs->md5 ) SAFE_FREE(fs->md5);
       fs->md5 = c_strdup( tfs->md5 );
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "PRE UPDATED %s: %s <-> %s", fs->path, fs->md5, tfs->md5);
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "PRE UPDATED %s: %s", fs->path, fs->md5);
   } else {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "md5 is empty in merger!");
   }

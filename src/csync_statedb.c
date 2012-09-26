@@ -318,7 +318,7 @@ static int _insert_metadata_visitor(void *obj, void *data) {
         fs->mode,
         fs->modtime,
         fs->type,
-        fs->md5);
+                fs->md5 ? fs->md5 : "<empty>");
 
       /*
        * The phash needs to be long long unsigned int or it segfaults on PPC

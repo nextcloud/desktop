@@ -30,7 +30,7 @@ csync_vio_file_stat_t *csync_vio_file_stat_new(void) {
   if (file_stat == NULL) {
     return NULL;
   }
-
+  file_stat->md5 = NULL;
   return file_stat;
 }
 

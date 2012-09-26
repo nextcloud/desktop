@@ -455,6 +455,7 @@ static void post_request_hook(ne_request *req, void *userdata, const ne_status *
                     } else if( *sc_end == ';' ) {
                         /* We are at the end of the session key. */
                         int keylen = sc_end-sc_val;
+                        if( key ) SAFE_FREE(key);
                         key = c_malloc(keylen+1);
                         strncpy( key, sc_val, keylen );
                         key[keylen] = '\0';
