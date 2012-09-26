@@ -344,13 +344,12 @@ void Application::setupContextMenu()
     _contextMenu->addAction(_actionOpenStatus);
     _contextMenu->addAction(_actionOpenoC);
 
-    _contextMenu->addSeparator();
-
     int folderCnt = _folderMan->map().size();
     // add open actions for all sync folders to the tray menu
     if( _theme->singleSyncFolder() ) {
         if( folderCnt == 0 ) {
             // if there is no folder configured yet, show the add action.
+            _contextMenu->addSeparator();
             _contextMenu->addAction(_actionAddFolder);
         } else {
             // there should be exactly one folder. No sync-folder add action will be shown.
@@ -359,7 +358,7 @@ void Application::setupContextMenu()
                 Folder *folder = _folderMan->map().value(li.first());
                 if( folder ) {
                     // if there is singleFolder mode, a generic open action is displayed.
-                    QAction *action = new QAction( tr("open %1 folder").arg(_theme->appName()), this);
+                    QAction *action = new QAction( tr("Open %1 folder").arg(_theme->appName()), this);
                     action->setIcon( _theme->trayFolderIcon( folder->backend()) );
 
                     connect( action, SIGNAL(triggered()),_folderOpenActionMapper,SLOT(map()));
