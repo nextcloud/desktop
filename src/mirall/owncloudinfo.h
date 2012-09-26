@@ -96,7 +96,7 @@ protected slots:
 #endif
 
 private:
-    explicit ownCloudInfo( const QString& = QString(), QObject *parent = 0);
+    explicit ownCloudInfo();
 
     QUrl redirectUrl(const QUrl&, const QUrl& ) const;
 

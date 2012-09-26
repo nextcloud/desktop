@@ -16,7 +16,7 @@
 #include "mirall/mirallconfigfile.h"
 #include "mirall/version.h"
 #include "mirall/sslerrordialog.h"
-
+#include "mirall/theme.h"
 #include <QtCore>
 #include <QtGui>
 #include <QAuthenticator>
@@ -46,13 +46,10 @@ ownCloudInfo* ownCloudInfo::instance()
   return _instance;
 }
 
-ownCloudInfo::ownCloudInfo( const QString& connectionName, QObject *parent ) :
-    QObject(parent), _sslErrorDialog(0)
+ownCloudInfo::ownCloudInfo() :
+    QObject(0), _sslErrorDialog(0)
 {
-    if( connectionName.isEmpty() )
-        _connection = QLatin1String( "ownCloud");
-    else
-        _connection = connectionName;
+    _connection = Theme::instance()->appName();
 
     _manager = new QNetworkAccessManager( this );
 
