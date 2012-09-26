@@ -4,10 +4,10 @@ project(mirall)
 set(PACKAGE "mirall")
 set( CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules )
 
-if ( EXISTS "OEM.cmake" )
-     include ( OEM.cmake )
+if ( EXISTS ${CMAKE_SOURCE_DIR}/OEM.cmake )
+     include ( ${CMAKE_SOURCE_DIR}/OEM.cmake )
 else ()
-     include ( OWNCLOUD.cmake )
+     include ( ${CMAKE_SOURCE_DIR}/OWNCLOUD.cmake )
 endif()
 
 include(${CMAKE_SOURCE_DIR}/VERSION.cmake)
