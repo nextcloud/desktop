@@ -1197,14 +1197,16 @@ static const char* owncloud_file_id( const char *path )
     char *buf          = NULL;
     const char *cbuf   = NULL;
     csync_vio_file_stat_t *fs = NULL;
+    bool  doHeadRequest= false; /* ownCloud server doesn't have good support for HEAD yet */
 
-    /* Perform an HEAD request to the resource. HEAD delivers the
-     * ETag header back. */
-    req = ne_request_create(dav_session.ctx, "HEAD", uri);
-    ne_request_dispatch(req);
+    if( doHeadRequest ) {
+        /* Perform an HEAD request to the resource. HEAD delivers the
+         * ETag header back. */
+        req = ne_request_create(dav_session.ctx, "HEAD", uri);
+        ne_request_dispatch(req);
 
-    header = ne_get_response_header(req, "etag");
-
+        header = ne_get_response_header(req, "etag");
+    }
     /* If the request went wrong or the server did not respond correctly
      * (that can happen for collections) a stat call is done which translates
      * into a PROPFIND request.
@@ -1240,7 +1242,7 @@ static const char* owncloud_file_id( const char *path )
     }
     DEBUG_WEBDAV("Get file ID for %s: %s", path, cbuf ? cbuf:"<null>");
     if( fs ) csync_vio_file_stat_destroy(fs);
-    ne_request_destroy(req);
+    if( req ) ne_request_destroy(req);
     SAFE_FREE(uri);
 
     return cbuf;
