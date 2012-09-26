@@ -396,7 +396,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
     return NULL;
   }
 
-  if (result->count < 10) {
+  if (result->count != 0 && result->count < 10) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Amount of result columns wrong, db version mismatch!");
   }
   if(result->count > 7) {
@@ -499,7 +499,6 @@ char *csync_statedb_get_uniqId( CSYNC *ctx, uint64_t jHash, csync_vio_file_stat_
     char *stmt = NULL;
 
     stmt = sqlite3_mprintf("SELECT md5 FROM metadata WHERE phash='%llu' AND modtime=%lu", jHash, buf->mtime);
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "STATEMENT: %s", stmt);
 
     result = csync_statedb_query(ctx, stmt);
     sqlite3_free(stmt);
