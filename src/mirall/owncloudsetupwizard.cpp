@@ -357,7 +357,7 @@ bool OwncloudSetupWizard::checkOwncloudAdmin( const QString& bin )
 
 void OwncloudSetupWizard::setupLocalSyncFolder()
 {
-    _localFolder = QDir::homePath() + QLatin1String("/ownCloud");
+    _localFolder = QDir::homePath() + QDir::separator() + Theme::instance()->appName();
 
     if( ! _folderMan ) return;
 

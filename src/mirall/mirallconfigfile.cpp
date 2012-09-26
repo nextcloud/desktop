@@ -25,8 +25,8 @@
 #define DEFAULT_LOCAL_POLL_INTERVAL  10000 // default local poll time in milliseconds
 #define DEFAULT_POLL_TIMER_EXEED     10
 
-#define OC_ORGANIZATION QLatin1String("ownCloud")
-#define OC_APPLICATION  QLatin1String("ownCloudClient")
+#define OC_ORGANIZATION Theme::instance()->appName()
+#define OC_APPLICATION  Theme::instance()->appName()
 
 #define CA_CERTS_KEY QLatin1String("CaCertificates")
 
@@ -101,7 +101,7 @@ bool MirallConfigFile::exists()
 
 QString MirallConfigFile::defaultConnection() const
 {
-    return QLatin1String("ownCloud");
+    return Theme::instance()->appName();
 }
 
 bool MirallConfigFile::connectionExists( const QString& conn )
