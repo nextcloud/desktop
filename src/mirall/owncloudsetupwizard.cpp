@@ -147,11 +147,12 @@ void OwncloudSetupWizard::testOwnCloudConnect()
                                  _ocWizard->field(QLatin1String("PwdNoLocalStore")).toBool() );
 
     // now start ownCloudInfo to check the connection.
-    ownCloudInfo::instance()->setCustomConfigHandle( _configHandle );
-    if( ownCloudInfo::instance()->isConfigured() ) {
+    ownCloudInfo* info = ownCloudInfo::instance();
+    info->setCustomConfigHandle( _configHandle );
+    if( info->isConfigured() ) {
         // reset the SSL Untrust flag to let the SSL dialog appear again.
-        ownCloudInfo::instance()->resetSSLUntrust();
-        ownCloudInfo::instance()->checkInstallation();
+        info->resetSSLUntrust();
+        info->checkInstallation();
     } else {
         qDebug() << "   ownCloud seems not to be configured, can not start test connect.";
     }
