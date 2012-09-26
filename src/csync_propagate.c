@@ -1143,14 +1143,20 @@ static int _csync_correct_id(CSYNC *ctx) {
                 CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to find node");
               } else {
                   tfs = c_rbtree_node_data(node);
-                  if(tfs->md5) SAFE_FREE(tfs->md5);
-                  tfs->md5 = _get_md5(ctx, path);
-                  if( tfs->instruction == CSYNC_INSTRUCTION_NONE ) {
-                      /* set instruction for the statedb merger */
-                      tfs->instruction = CSYNC_INSTRUCTION_UPDATED;
+                  if( tfs ) {
+                      if(tfs->instruction == CSYNC_INSTRUCTION_DELETED) {
+                          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Skipping update of MD5 because item is deleted.");
+                      } else {
+                          if(tfs->md5) SAFE_FREE(tfs->md5);
+                          tfs->md5 = _get_md5(ctx, path);
+                          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "MD5 for dir: %s %s (Instruction: %s)", tfs->path,
+                                    tfs->md5, csync_instruction_str(tfs->instruction));
+                          if( tfs->md5 && tfs->instruction == CSYNC_INSTRUCTION_NONE ) {
+                              /* set instruction for the statedb merger */
+                              tfs->instruction = CSYNC_INSTRUCTION_UPDATED;
+                          }
+                      }
                   }
-
-                  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "MD5 for dir: %s %s", tfs->path, tfs->md5);
               }
           }
          /* get the parent dir */
