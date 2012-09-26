@@ -344,12 +344,13 @@ void Application::setupContextMenu()
     _contextMenu->addAction(_actionOpenStatus);
     _contextMenu->addAction(_actionOpenoC);
 
+    _contextMenu->addSeparator();
+
     int folderCnt = _folderMan->map().size();
     // add open actions for all sync folders to the tray menu
     if( _theme->singleSyncFolder() ) {
         if( folderCnt == 0 ) {
             // if there is no folder configured yet, show the add action.
-            _contextMenu->addSeparator();
             _contextMenu->addAction(_actionAddFolder);
         } else {
             // there should be exactly one folder. No sync-folder add action will be shown.
