@@ -33,7 +33,7 @@ QString ownCloudTheme::appName() const
      * because the value is used by QDesktopServices to find the config
      * file. Be aware.
      */
-    return QApplication::translate("appname", "ownCloud");
+    return QLatin1String("appname", "ownCloud");
 }
 
 QString ownCloudTheme::configFileName() const
