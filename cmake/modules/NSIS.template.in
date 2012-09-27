@@ -351,7 +351,7 @@ Section "${APPLICATION_NAME}" SEC_OWNCLOUD
 
    ; CSync configs
    File "${CSYNC_CONFIG_DIR}/csync.conf"
-   File "${SOURCE_PATH}/exclude.lst"
+   File "${SOURCE_PATH}/sync-exclude.lst"
 
 SectionEnd
 

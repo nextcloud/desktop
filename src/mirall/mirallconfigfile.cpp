@@ -50,27 +50,33 @@ QString MirallConfigFile::configPath() const
 
 QString MirallConfigFile::excludeFile() const
 {
-    const QString exclFile(QLatin1String("exclude.lst"));
-    QString dir = configPath();
-    dir += exclFile;
+    // prefer sync-exclude.lst, but if it does not exist, check for
+    // exclude.lst for compatibility reasonsin the user writeable
+    // directories.
+    const QString exclFile("sync-exclude.lst");
 
-    QFileInfo fi( dir );
-    if( fi.isReadable() ) {
-        return dir;
+    QFileInfo fi;
+    fi.setFile( configPath(), exclFile );
+
+    if( ! fi.isReadable() ) {
+        fi.setFile( configPath(), QLatin1String("exclude.lst") );
     }
 
     // Check alternative places...
+    if( ! fi.isReadable() ) {
 #ifdef Q_OS_WIN32
-    fi.setFile( QApplication::applicationDirPath(), exclFile );
+        fi.setFile( QApplication::applicationDirPath(), exclFile );
 #endif
 #ifdef Q_OS_LINUX
-    fi.setFile( QString("/etc"), exclFile );
+        fi.setFile( QString("/etc/%1").arg(Theme::instance()->appName()), exclFile );
 #endif
 #ifdef Q_OS_MAC
-    // exec path is inside the bundle
-    fi.setFile( QApplication::applicationDirPath(),
-                QLatin1String("../Resources/") + exclFile );
+        // exec path is inside the bundle
+        fi.setFile( QApplication::applicationDirPath(),
+                    QLatin1String("../Resources/") + exclFile );
 #endif
+    }
+
     if( fi.isReadable() ) {
         qDebug() << "  ==> returning exclude file path: " << fi.absoluteFilePath();
         return fi.absoluteFilePath();
