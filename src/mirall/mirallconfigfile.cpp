@@ -25,9 +25,6 @@
 #define DEFAULT_LOCAL_POLL_INTERVAL  10000 // default local poll time in milliseconds
 #define DEFAULT_POLL_TIMER_EXEED     10
 
-#define OC_ORGANIZATION Theme::instance()->appName()
-#define OC_APPLICATION  Theme::instance()->appName()
-
 #define CA_CERTS_KEY QLatin1String("CaCertificates")
 
 namespace Mirall {
@@ -471,15 +468,24 @@ QVariant MirallConfigFile::customMedia( customMediaType type )
     }
 
     if( !key.isEmpty() ) {
-#ifdef Q_OS_WIN32
+        const QString customFile("custom.ini");
         QFileInfo fi;
-        fi.setFile( QApplication::applicationDirPath(), QLatin1String("ownCloudClient.ini"));
+
+#ifdef Q_OS_WIN32
+        fi.setFile( QApplication::applicationDirPath(), customFile );
         qDebug() << "Custom Config file: " << fi.absoluteFilePath();
         QSettings settings( fi.absoluteFilePath(), QSettings::IniFormat );
-#else
-
-        QSettings settings( QSettings::IniFormat, QSettings::SystemScope, OC_ORGANIZATION, OC_APPLICATION );
 #endif
+#ifdef Q_OS_MAC
+        // exec path is inside the bundle
+        fi.setFile( QApplication::applicationDirPath(),
+                    QLatin1String("../Resources/") + customFile );
+#endif
+#ifdef Q_OS_LINUX
+        fi.setFile( QString("/etc/%1").arg(Theme::instance()->appName()), customFile );
+#endif
+        QSettings settings( fi.absoluteFilePath(), QSettings::IniFormat );
+
         QString cfg = settings.fileName();
         qDebug() << "Trying to read config ini file at " << cfg;
 
