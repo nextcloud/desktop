@@ -14,6 +14,7 @@
  */
 #include "mirall/owncloudwizard.h"
 #include "mirall/mirallconfigfile.h"
+#include "mirall/theme.h"
 
 #include <QDebug>
 #include <QDesktopServices>
@@ -431,7 +432,8 @@ void OwncloudWizardResultPage::appendResultText( const QString& msg, OwncloudWiz
 
 void OwncloudWizardResultPage::showOCUrlLabel( const QString& url, bool show )
 {
-  _ui.ocLinkLabel->setText( tr("Congratulations! Your <a href=\"%1\" title=\"%1\">new ownCloud</a> is now up and running!").arg(url) );
+  _ui.ocLinkLabel->setText( tr("Congratulations! Your <a href=\"%1\" title=\"%1\">new %2</a> is now up and running!")
+		  .arg(url).arg( Theme::instance()->appName()));
   _ui.ocLinkLabel->setOpenExternalLinks( true );
 
   if( show ) {

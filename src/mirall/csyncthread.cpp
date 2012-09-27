@@ -15,6 +15,7 @@
 
 #include "mirall/csyncthread.h"
 #include "mirall/mirallconfigfile.h"
+#include "mirall/theme.h"
 
 #include <QDebug>
 #include <QDir>
@@ -248,7 +249,7 @@ void CSyncThread::startSync()
             emit wipeDb();
             break;
         case CSYNC_ERR_MODULE:
-            errStr = tr("<p>The ownCloud plugin for csync could not be loaded.<br/>Please verify the installation!</p>");
+            errStr = tr("<p>The %1 plugin for csync could not be loaded.<br/>Please verify the installation!</p>").arg(Theme::instance()->appName());
             break;
         case CSYNC_ERR_LOCAL_CREATE:
         case CSYNC_ERR_LOCAL_STAT:

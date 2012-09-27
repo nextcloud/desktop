@@ -310,12 +310,12 @@ void OwncloudSetupWizard::slotProcessFinished( int res, QProcess::ExitStatus )
 
   qDebug() << "exit code: " << res;
   if( res ) {
-    _ocWizard->appendToResultWidget( tr("<font color=\"red\">Installation of ownCloud failed!</font>") );
+    _ocWizard->appendToResultWidget( tr("<font color=\"red\">Installation of %1 failed!</font>").arg(Theme::instance()->appName()));
     _ocWizard->showOCUrlLabel( false );
     emit ownCloudSetupFinished( false );
   } else {
     // Successful installation. Write the config.
-    _ocWizard->appendToResultWidget( tr("<font color=\"green\">Installation of ownCloud succeeded!</font>") );
+    _ocWizard->appendToResultWidget( tr("<font color=\"green\">Installation of %1 succeeded!</font>").arg(Theme::instance()->appName()));
     _ocWizard->showOCUrlLabel( true );
 
     testOwnCloudConnect();
