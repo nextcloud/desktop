@@ -207,6 +207,8 @@ void CSyncThread::startSync()
         csync_add_exclude_list( csync, excludeList.toAscii() );
     }
 
+    csync_set_config_dir( csync, cfg.configPath().toUtf8() );
+
     QTime t;
     t.start();
 
