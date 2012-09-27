@@ -498,6 +498,10 @@ Function un.UnPageUserAppDataLeave
    ${NSD_GetState} $UnPageUserAppDataCheckbox $UnPageUserAppDataCheckbox_State
 FunctionEnd
 
+Function un.EnsureOwncloudShutdown
+   !insertmacro CheckAndConfirmEndProcess "${APPLICATION_EXECUTABLE}"
+FunctionEnd
+
 Section Uninstall
    IfFileExists "$INSTDIR\${APPLICATION_EXECUTABLE}" owncloud_installed
       MessageBox MB_YESNO "It does not appear that ${APPLICATION_NAME} is installed in the directory '$INSTDIR'.$\r$\nContinue anyway (not recommended)?" IDYES owncloud_installed
@@ -649,6 +653,9 @@ Function un.onInit
    StrCmp $R0 0 +3
       MessageBox MB_OK|MB_ICONEXCLAMATION "This uninstaller is already running."
       Abort
+
+   ;Shutdown ${APPLICATION_NAME} in order to remove locked files.
+   Call un.EnsureOwncloudShutdown
 FunctionEnd
 
 Function un.onUnInstSuccess
