@@ -64,6 +64,16 @@ public:
      */
     virtual bool singleSyncFolder() const;
 
+    /**
+     * The default folder name without path on the server at setup time.
+     */
+    virtual QString defaultServerFolder() const;
+
+    /**
+     * The default folder name without path on the client side at setup time.
+     */
+    virtual QString defaultClientFolder() const;
+
 protected:
     QIcon themeIcon(const QString& name) const;
     Theme() {}

@@ -101,5 +101,23 @@ bool Theme::singleSyncFolder() const {
     return false;
 }
 
+/**
+ * The default folder (without path) on the server at setup time.
+ */
+QString Theme::defaultServerFolder() const
+{
+    return QLatin1String("clientsync");
+}
+
+/**
+ * The default folder (without path) on the client side at setup time.
+ */
+QString Theme::defaultClientFolder() const
+{
+    return appName();
+}
+
+
+
 } // end namespace mirall
 

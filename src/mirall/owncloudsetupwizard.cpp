@@ -357,7 +357,7 @@ bool OwncloudSetupWizard::checkOwncloudAdmin( const QString& bin )
 
 void OwncloudSetupWizard::setupLocalSyncFolder()
 {
-    _localFolder = QDir::homePath() + QDir::separator() + Theme::instance()->appName();
+    _localFolder = QDir::homePath() + QDir::separator() + Theme::instance()->defaultClientFolder();
 
     if( ! _folderMan ) return;
 
@@ -383,8 +383,8 @@ void OwncloudSetupWizard::setupLocalSyncFolder()
     }
 
     if( localFolderOk ) {
-        _remoteFolder = QLatin1String("clientsync"); // FIXME: Themeable
-        if( createRemoteFolder( _remoteFolder ) ) {
+        _remoteFolder = Theme::instance()->defaultServerFolder();
+        if( !_remoteFolder.isEmpty() && createRemoteFolder( _remoteFolder ) ) {
             // the creation started successfully, does not mean it will work
             qDebug() << "Creation of remote folder started successfully.";
         } else {
