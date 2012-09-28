@@ -446,8 +446,8 @@ void StatusDialog::slotOCInfo( const QString& url, const QString& versionStr, co
     qDebug() << "#-------# oC found on " << url;
     /* enable the open button */
     _ocUrlLabel->setOpenExternalLinks(true);
-    _ocUrlLabel->setText( tr("Connected to <a href=\"%1\">%2</a>, %3 %4")
-                          .arg(url).arg(url).arg(Theme::instance()->appName()).arg(versionStr) );
+    _ocUrlLabel->setText( tr("Connected to <a href=\"%1\">%2</a>, server version %3")
+                          .arg(url).arg(url).arg(versionStr) );
     _ocUrlLabel->setToolTip( tr("Version: %1").arg(version));
     _ButtonAdd->setEnabled(true);
 

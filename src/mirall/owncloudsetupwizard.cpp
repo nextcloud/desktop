@@ -96,7 +96,8 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         // Now write the resulting folder definition if folder names are set.
         if( !( _localFolder.isEmpty() || _remoteFolder.isEmpty() ) ) { // both variables are set.
             if( _folderMan ) {
-                _folderMan->addFolderDefinition( QLatin1String("owncloud"), QLatin1String("ownCloud"), _localFolder, _remoteFolder, false );
+                _folderMan->addFolderDefinition( QLatin1String("owncloud"), Theme::instance()->appName(),
+				_localFolder, _remoteFolder, false );
                 _ocWizard->appendToResultWidget(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(_localFolder));
             } else {
                 qDebug() << "WRN: Folderman is zero in Setup Wizzard.";
