@@ -473,8 +473,6 @@ QVariant MirallConfigFile::customMedia( customMediaType type )
 
 #ifdef Q_OS_WIN32
         fi.setFile( QApplication::applicationDirPath(), customFile );
-        qDebug() << "Custom Config file: " << fi.absoluteFilePath();
-        QSettings settings( fi.absoluteFilePath(), QSettings::IniFormat );
 #endif
 #ifdef Q_OS_MAC
         // exec path is inside the bundle
