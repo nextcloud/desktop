@@ -1892,7 +1892,7 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
         return -1; /* FIXME: Find good errno */
     }
     pname.nspace = "DAV:";
-    pname.name = "getlastmodified";
+    pname.name = "lastmodified";
 
     newmodtime = modtime->tv_sec;
 
