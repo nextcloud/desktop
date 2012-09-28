@@ -191,8 +191,8 @@ void Application::slotStartFolderSetup( int result )
         } else {
             QMessageBox::warning(0, tr("No %1 Configuration").arg(_theme->appName()),
                                  tr("<p>No server connection has been configured for this %1 client.</p>"
-                                    "<p>Please right click on the ownCloud system tray icon and select <i>Configure</i> "
-                                    "to connect this client to an ownCloud server.</p>").arg(_theme->appName()));
+                                    "<p>Please right click on the %1 system tray icon and select <i>Configure</i> "
+                                    "to connect this client to an %1 server.</p>").arg(_theme->appName()));
             // It was evaluated to open the config dialog from here directly but decided
             // against because the user does not know why. The popup gives a better user
             // guidance, even if its a click more.
