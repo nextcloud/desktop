@@ -406,7 +406,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="362"/>
         <source>Open %1 folder</source>
-        <translation type="unfinished"/>
+        <translation>เปิดโฟลเดอร์ %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="375"/>
@@ -550,17 +550,17 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="190"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="191"/>
         <source>CSync create failed.</source>
         <translation>การสร้าง CSync ล้มเหลว</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="226"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="229"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSync ล้มเหลวในการสร้างไฟล์ล็อคข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="229"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="232"/>
         <source>CSync failed to load the state db.</source>
         <translation>CSync ล้มเหลวในการโหลดข้อมูลสถานะฐานข้อมูล</translation>
     </message>
@@ -569,17 +569,17 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="232"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="235"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>เวลาในระบบของโปรแกรมไคลเอนต์นี้แตกต่างจากเวลาในระบบของเซิร์ฟเวอร์ กรุณาใช้บริการผสานข้อมูลของเวลา (NTP) บนเซิร์ฟเวอร์และเครื่องไคลเอนต์เพื่อปรับเวลาให้ตรงกัน</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="237"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="240"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSync ไม่สามารถตรวจพบประเภทของไฟล์ในระบบได้</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="240"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="243"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSync เกิดข้อผิดพลาดบางประการในระหว่างประมวลผล internal trees</translation>
     </message>
@@ -588,37 +588,36 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="243"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="246"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;ไดเร็กทอรี่เป้าหมาย %1 ไม่มีอยู่ในระบบ &lt;/p&gt;&lt;p&gt;กรุณาตรวจสอบการตั้งค่าโอนถ่ายข้อมูล&lt;p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="249"/>
         <source>&lt;p&gt;The ownCloud plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation>&lt;p&gt; ปลั๊กอินของ ownCloud สำหรับ csync ไม่สามารถโหลดเข้ามาได้ &lt;br/&gt; กรุณาตรวจสอบการติดตั้ง!&lt;/p&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="253"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="256"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>ระบบไฟล์ในพื้นที่ไม่สามารถเขียนข้อมูลได้ กรุณาตรวจสอบสิทธิ์การเข้าใช้งาน</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="257"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="260"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>ไม่สามารถเขียนข้อมูลไปยังไฟล์ระยะไกลได้ กรุณาตรวจสอบการเข้าถึงข้อมูลระยะไกล</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="260"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="263"/>
         <source>An internal error number %1 happend.</source>
         <translation>เกิดข้อผิดพลาดภายในระบบหมายเลข %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="276"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="279"/>
         <source>CSync failed to reach the host. Either host or proxy settings are not valid.</source>
         <translation>CSync ล้มเหลวในการเข้าถึงโฮสต์ เนื่องจากมีการตั้งค่าโฮสต์หรือพร็อกซี่ไม่ถูกต้อง</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="279"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="282"/>
         <source>CSync Update failed.</source>
         <translation>การอัพเดท CSync ล้มเหลว</translation>
     </message>
@@ -629,36 +628,41 @@ Please make sure that all directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="293"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="252"/>
+        <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/csyncthread.cpp" line="296"/>
         <source>CSync encountered an error while examining the file system.
 Syncing is not possible.</source>
         <translation>CSync พบข้อผิดพลาดบางประการในระหว่างการตรวจสอบระบบไฟล์.
 ไม่สามารถผสานเชื่อมข้อมูลได้.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="296"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="299"/>
         <source>CSync update generated a strange instruction.
 Please write a bug report.</source>
         <translation>CSync update generated a strange instruction.
 Please write a bug report.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="299"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="302"/>
         <source>Local filesystem problems. Better disable Syncing and check.</source>
         <translation>เกิดปัญหากับระบบไฟล์ในเครื่อง กรุณาปิดระบบผสานข้อมูลและตรวจสอบ</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="304"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="307"/>
         <source>The local filesystem has %1 write protected directories.That can hinder successful syncing.&lt;p/&gt;Please make sure that all local directories are writeable.</source>
         <translation>ระบบไฟล์ภายในมีไดเร็กทอรี่ที่ได้รับการป้องกันการเขียนข้อมูลอาไว้ %1 ไดเร็กทอรี่ ซึ่งอาจขัดขวางการถ่ายโอนข้อมูลไม่ให้ประสบความสำเร็จ &lt;p/&gt;กรุณาตรวจสอบให้แน่ใจว่าไดเร็กทอรี่ภายในระบบทั้งหมดนั้นสามารถเขียนข้อมูลได้</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="324"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="327"/>
         <source>CSync reconcile failed.</source>
         <translation>การปรับข้อมูล CSync ล้มเหลว</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="328"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="331"/>
         <source>CSync propagate failed.</source>
         <translation>การถ่ายทอดข้อมูล CSync ล้มเหลว</translation>
     </message>
@@ -666,7 +670,7 @@ Please write a bug report.</translation>
 <context>
     <name>Mirall::CreateAnOwncloudPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="353"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="354"/>
         <source>mydomain.org</source>
         <translation>mydomain.org</translation>
     </message>
@@ -682,7 +686,7 @@ Please write a bug report.</translation>
 <context>
     <name>Mirall::FolderWizard</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="466"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="465"/>
         <source>%1 Folder Wizard</source>
         <translation>%1 ตัวช่วยสร้างโฟลเดอร์</translation>
     </message>
@@ -765,7 +769,12 @@ Please write a bug report.</translation>
         <translation>ไปที่ &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; ของคุณ (รุ่น %3)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="328"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="326"/>
+        <source>no configured %1 found!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="327"/>
         <source>%1 could not be reached:&lt;br/&gt;&lt;tt&gt;%2&lt;/tt&gt;</source>
         <translation>%1 ไม่สามารถเชื่อมต่อได้:&lt;br/&gt;&lt;tt&gt;%2&lt;/tt&gt;</translation>
     </message>
@@ -774,16 +783,15 @@ Please write a bug report.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="326"/>
         <source>no configured ownCloud found!</source>
-        <translation>ไม่พบการกำหนดค่า ownCloud!</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Your ownCloud could not be reached:&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="396"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="395"/>
         <source>Select the target folder</source>
         <translation>เลือกโฟลเดอร์เป้าหมาย</translation>
     </message>
@@ -850,12 +858,12 @@ Please write a bug report.</translation>
 <context>
     <name>Mirall::OwncloudCredentialsPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="263"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="264"/>
         <source>john</source>
         <translation>จอห์น</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="264"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="265"/>
         <source>secret</source>
         <translation>รหัสลับ</translation>
     </message>
@@ -863,17 +871,17 @@ Please write a bug report.</translation>
 <context>
     <name>Mirall::OwncloudFTPAccessPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="309"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="310"/>
         <source>ftp.mydomain.org</source>
         <translation>ftp.mydomain.org</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="310"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="311"/>
         <source>john</source>
         <translation>จอห์น</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="311"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="312"/>
         <source>secret</source>
         <translation>รหัสลับ</translation>
     </message>
@@ -881,12 +889,12 @@ Please write a bug report.</translation>
 <context>
     <name>Mirall::OwncloudSetupPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="81"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="82"/>
         <source>john</source>
         <translation>จอห์น</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="82"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="83"/>
         <source>secret</source>
         <translation>รหัสลับ</translation>
     </message>
@@ -936,14 +944,22 @@ Please write a bug report.</translation>
         <translation>กำลังเริ่มสคริปต์ owncloud-admin...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="313"/>
         <source>&lt;font color=&quot;red&quot;&gt;Installation of ownCloud failed!&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;red&quot;&gt;การติดตั้ง ownCloud ล้มเหลว!&lt;/font&gt;</translation>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>&lt;font color=&quot;green&quot;&gt;Installation of ownCloud succeeded!&lt;/font&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="313"/>
+        <source>&lt;font color=&quot;red&quot;&gt;Installation of %1 failed!&lt;/font&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="318"/>
-        <source>&lt;font color=&quot;green&quot;&gt;Installation of ownCloud succeeded!&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;การติดตั้ง ownCloud สำเร็จ!&lt;/font&gt;</translation>
+        <source>&lt;font color=&quot;green&quot;&gt;Installation of %1 succeeded!&lt;/font&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="351"/>
@@ -1055,15 +1071,19 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::OwncloudWizardResultPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="434"/>
         <source>Congratulations! Your &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;new ownCloud&lt;/a&gt; is now up and running!</source>
-        <translation>ขอแสดงความยินดี! &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;ownCloud ใหม่&lt;/a&gt; สามารถใช้งานได้แล้ว!</translation>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="435"/>
+        <source>Congratulations! Your &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;new %2&lt;/a&gt; is now up and running!</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>Mirall::OwncloudWizardSelectTypePage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="208"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="209"/>
         <source>http://owncloud.mydomain.org</source>
         <translation>http://owncloud.mydomain.org</translation>
     </message>
@@ -1256,12 +1276,12 @@ Setup can not be done.</source>
 <context>
     <name>MirallConfigFile</name>
     <message>
-        <location filename="../src/mirall/mirallconfigfile.cpp" line="328"/>
+        <location filename="../src/mirall/mirallconfigfile.cpp" line="331"/>
         <source>ownCloud Password Required</source>
         <translation>รหัสผ่าน ownCloud จำเป็นต้องกรอก</translation>
     </message>
     <message>
-        <location filename="../src/mirall/mirallconfigfile.cpp" line="329"/>
+        <location filename="../src/mirall/mirallconfigfile.cpp" line="332"/>
         <source>Please enter your ownCloud password:</source>
         <translation>กรุณากรอกรหัสผ่าน ownCloud ของคุณ</translation>
     </message>
@@ -1628,9 +1648,8 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>appname</name>
     <message>
-        <location filename="../src/mirall/owncloudtheme.cpp" line="36"/>
         <source>ownCloud</source>
-        <translation>ownCloud</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

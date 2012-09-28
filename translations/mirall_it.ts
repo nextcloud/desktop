@@ -406,7 +406,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="362"/>
         <source>Open %1 folder</source>
-        <translation type="unfinished"/>
+        <translation>Apri la cartella %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="375"/>
@@ -544,17 +544,17 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="190"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="191"/>
         <source>CSync create failed.</source>
         <translation>Creazione di CSync non riuscita.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="226"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="229"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSync non è riuscito a creare il file di lock.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="229"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="232"/>
         <source>CSync failed to load the state db.</source>
         <translation>CSync non è riuscito a caricare lo state db.</translation>
     </message>
@@ -563,17 +563,17 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="232"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="235"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>L&apos;ora di sistema su questo client è diversa dall&apos;ora di sistema del server. Usa un servizio di sincronizzazione dell&apos;orario (NTP) sul server e sulle macchine client in modo che l&apos;ora sia la stessa.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="237"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="240"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSync non è riuscito a individuare il tipo di filesystem.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="240"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="243"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>Errore di CSync durante l&apos;elaborazione degli alberi interni.</translation>
     </message>
@@ -582,37 +582,36 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="243"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="246"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;La cartella di destinazione %1 non esiste.&lt;/p&gt;&lt;p&gt;Controlla la configurazione della sincronizzazione.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="249"/>
         <source>&lt;p&gt;The ownCloud plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Non è stato possibile caricare il plugin ownCloud per csync.&lt;br/&gt;Verifica l&apos;installazione!&lt;/p&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="253"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="256"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>Il filesystem locale non può essere scritto. Controlla i permessi.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="257"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="260"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>Un file remoto non può essere scritto. Controlla l&apos;accesso remoto.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="260"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="263"/>
         <source>An internal error number %1 happend.</source>
         <translation>SI è verificato un errore interno numero %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="276"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="279"/>
         <source>CSync failed to reach the host. Either host or proxy settings are not valid.</source>
         <translation>CSync non è riuscito a contattare l&apos;host. Le impostazioni dell&apos;host o del proxy non sono valide.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="279"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="282"/>
         <source>CSync Update failed.</source>
         <translation>CSync Update non riuscito.</translation>
     </message>
@@ -623,36 +622,41 @@ Please make sure that all directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="293"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="252"/>
+        <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/csyncthread.cpp" line="296"/>
         <source>CSync encountered an error while examining the file system.
 Syncing is not possible.</source>
         <translation>CSync ha incontrato un errore durante l&apos;analisi del filesystem.
 Impossibile sincronizzare.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="296"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="299"/>
         <source>CSync update generated a strange instruction.
 Please write a bug report.</source>
         <translation>L&apos;aggiornamento di CSync ha generato un&apos;istruzione non corretta.
 Segnala questo bug.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="299"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="302"/>
         <source>Local filesystem problems. Better disable Syncing and check.</source>
         <translation>Problemi sul filesystem locale. È consigliato disabilitare la sincronizzazione e controllare.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="304"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="307"/>
         <source>The local filesystem has %1 write protected directories.That can hinder successful syncing.&lt;p/&gt;Please make sure that all local directories are writeable.</source>
         <translation>Il filesystem locale ha %1 cartelle protette da scrittura. Ciò può impedire il completamento della sincronizzazione.&lt;p/&gt;Assicurati che tutte le cartelle locali siano scrivibili.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="324"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="327"/>
         <source>CSync reconcile failed.</source>
         <translation>Riconciliazione di CSync non riuscita.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="328"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="331"/>
         <source>CSync propagate failed.</source>
         <translation>Propagazione di CSync non riuscita.</translation>
     </message>
@@ -660,7 +664,7 @@ Segnala questo bug.</translation>
 <context>
     <name>Mirall::CreateAnOwncloudPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="353"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="354"/>
         <source>mydomain.org</source>
         <translation>miodominio.org</translation>
     </message>
@@ -676,7 +680,7 @@ Segnala questo bug.</translation>
 <context>
     <name>Mirall::FolderWizard</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="466"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="465"/>
         <source>%1 Folder Wizard</source>
         <translation>Proceduta guidata cartella di %1</translation>
     </message>
@@ -759,7 +763,12 @@ Segnala questo bug.</translation>
         <translation>sul tuo &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; (versione %3)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="328"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="326"/>
+        <source>no configured %1 found!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="327"/>
         <source>%1 could not be reached:&lt;br/&gt;&lt;tt&gt;%2&lt;/tt&gt;</source>
         <translation>%1 non è raggiungibile:&lt;br/&gt;&lt;tt&gt;%2&lt;/tt&gt;</translation>
     </message>
@@ -768,16 +777,15 @@ Segnala questo bug.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="326"/>
         <source>no configured ownCloud found!</source>
-        <translation>non è stato trovato alcun ownCloud configurato!</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Your ownCloud could not be reached:&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="396"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="395"/>
         <source>Select the target folder</source>
         <translation>Seleziona la cartella di destinazione</translation>
     </message>
@@ -844,12 +852,12 @@ Segnala questo bug.</translation>
 <context>
     <name>Mirall::OwncloudCredentialsPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="263"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="264"/>
         <source>john</source>
         <translation>john</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="264"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="265"/>
         <source>secret</source>
         <translation>segreto</translation>
     </message>
@@ -857,17 +865,17 @@ Segnala questo bug.</translation>
 <context>
     <name>Mirall::OwncloudFTPAccessPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="309"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="310"/>
         <source>ftp.mydomain.org</source>
         <translation>ftp.miodominio.org</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="310"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="311"/>
         <source>john</source>
         <translation>john</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="311"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="312"/>
         <source>secret</source>
         <translation>segreto</translation>
     </message>
@@ -875,12 +883,12 @@ Segnala questo bug.</translation>
 <context>
     <name>Mirall::OwncloudSetupPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="81"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="82"/>
         <source>john</source>
         <translation>john</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="82"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="83"/>
         <source>secret</source>
         <translation>segreto</translation>
     </message>
@@ -930,14 +938,22 @@ Segnala questo bug.</translation>
         <translation>Avvio script owncloud-admin...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="313"/>
         <source>&lt;font color=&quot;red&quot;&gt;Installation of ownCloud failed!&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;red&quot;&gt;Installazione di ownCloud non riuscita!&lt;/font&gt;</translation>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>&lt;font color=&quot;green&quot;&gt;Installation of ownCloud succeeded!&lt;/font&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="313"/>
+        <source>&lt;font color=&quot;red&quot;&gt;Installation of %1 failed!&lt;/font&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="318"/>
-        <source>&lt;font color=&quot;green&quot;&gt;Installation of ownCloud succeeded!&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;ownCloud installato correttamente!&lt;/font&gt;</translation>
+        <source>&lt;font color=&quot;green&quot;&gt;Installation of %1 succeeded!&lt;/font&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="351"/>
@@ -1049,15 +1065,19 @@ La configurazione non può essere completata.</translation>
 <context>
     <name>Mirall::OwncloudWizardResultPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="434"/>
         <source>Congratulations! Your &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;new ownCloud&lt;/a&gt; is now up and running!</source>
-        <translation>Congratulazioni! Il tuo &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;nuovo ownCloud&lt;/a&gt; è attivo e funzionante!</translation>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="435"/>
+        <source>Congratulations! Your &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;new %2&lt;/a&gt; is now up and running!</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>Mirall::OwncloudWizardSelectTypePage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="208"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="209"/>
         <source>http://owncloud.mydomain.org</source>
         <translation>http://owncloud.miodominio.org</translation>
     </message>
@@ -1250,12 +1270,12 @@ La configurazione non può essere completata.</translation>
 <context>
     <name>MirallConfigFile</name>
     <message>
-        <location filename="../src/mirall/mirallconfigfile.cpp" line="328"/>
+        <location filename="../src/mirall/mirallconfigfile.cpp" line="331"/>
         <source>ownCloud Password Required</source>
         <translation>Password di ownCloud richiesta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/mirallconfigfile.cpp" line="329"/>
+        <location filename="../src/mirall/mirallconfigfile.cpp" line="332"/>
         <source>Please enter your ownCloud password:</source>
         <translation>Digita la password di ownCloud:</translation>
     </message>
@@ -1624,9 +1644,8 @@ Questa procedura guidata ti aiuterà durante i passaggi necessari.&lt;/span&gt;&
 <context>
     <name>appname</name>
     <message>
-        <location filename="../src/mirall/owncloudtheme.cpp" line="36"/>
         <source>ownCloud</source>
-        <translation>ownCloud</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
