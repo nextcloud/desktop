@@ -2,6 +2,24 @@ ChangeLog
 =========
 version 1.1.0 (release ), csync 0.60.0 required
   * 
+  * [GUI]   Added an about dialog
+  * [GUI]   Improved themeing capabilities of the client.
+  * [GUI]   Minor fixes in folder assistant.
+  * [GUI]   Reworked tray context menu.
+  * [Fixes] Url entry field in setup assistant handles http/https correctly.
+  * [Fixes] Button enable state in status dialog.
+  * [Fixes] Crash fixed on ending the client, tray icon related.
+  * [Fixes] Crash through wrong delete operator.
+  * [MacOS] behave correctly on retina displays.
+  * [MacOS] fix focus policy.
+  * [MacOS] Packaging improvements.
+  * [Platform] insert correct version info from cmake.
+  * [Platform] csync conf file and database were moved to the users app data
+               directory, away from the .csync dir.
+  *         Renamed exclude.lst to sync-exclude.lst and moved it to
+            /etc/appName()/ for more clean packaging. From the user path, 
+	    still exclude.lst is read if sync-exclude.lst is not existing.
+  *         Placed custom.ini with customization options to /etc/appName()
 
 version 1.0.5 (release 2012-08-14), csync 0.50.8 required
   * [Fixes] Fixed setup dialog: Really use https if checkbox is activated.
