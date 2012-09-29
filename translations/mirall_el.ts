@@ -349,7 +349,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="193"/>
-        <source>&lt;p&gt;No server connection has been configured for this %1 client.&lt;/p&gt;&lt;p&gt;Please right click on the ownCloud system tray icon and select &lt;i&gt;Configure&lt;/i&gt; to connect this client to an ownCloud server.&lt;/p&gt;</source>
+        <source>&lt;p&gt;No server connection has been configured for this %1 client.&lt;/p&gt;&lt;p&gt;Please right click on the %1 system tray icon and select &lt;i&gt;Configure&lt;/i&gt; to connect this client to an %1 server.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -381,12 +381,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="269"/>
         <source>&lt;p&gt;Your %1 credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Δεν είναι ορθά τα διαπιστευτήριά σας για το %1.&lt;/p&gt;&lt;p&gt;Παρακαλώ διορθώστε τα εκκινώντας το παράθυρο ρύθμισης από την μπάρα!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="277"/>
         <source>&lt;p&gt;Either your user name or your password are not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;To όνομα χρήστη ή o κωδικός πρόσβασης σας δεν είναι σωστός.&lt;/p&gt; Παρακαλούμε διορθώστε το με την έναρξη του διαλόγου διαμόρφωσης από τον χώρο ειδοποιήσεων!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="289"/>
@@ -401,7 +401,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="315"/>
         <source>About...</source>
-        <translation type="unfinished"/>
+        <translation>Σχετικά...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="362"/>
@@ -416,7 +416,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="607"/>
         <source>About %1</source>
-        <translation type="unfinished"/>
+        <translation>Σχετικά %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="608"/>
@@ -624,7 +624,7 @@ Please make sure that all directories are writeable.</source>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="252"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Το πρόσθετο του %1 για το csync δεν μπόρεσε να φορτωθεί.&lt;br/&gt;Παρακαλούμε επαληθεύσετε την εγκατάσταση!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="296"/>
@@ -750,7 +750,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="240"/>
         <source>Failed to create the folder on %1.&lt;br/&gt;Please check manually.</source>
-        <translation type="unfinished"/>
+        <translation>Αποτυχία δημιουργίας καταλόγου στο %1.&lt;br/&gt;Παρακαλώ ελέγξτε χειροκίνητα.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="260"/>
@@ -760,7 +760,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="315"/>
         <source>to your &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; (version %3)</source>
-        <translation type="unfinished"/>
+        <translation>στο &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; (έκδοση %3)</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="326"/>
@@ -913,27 +913,27 @@ Please write a bug report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="129"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="130"/>
         <source>Trying to connect to %1 at %2...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="163"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="164"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;Επιτυχής σύνδεση στο %1: %2 έκδοση %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="175"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="176"/>
         <source>&lt;font color=&quot;red&quot;&gt;Failed to connect to %1!&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;red&quot;&gt;Αποτυχία σύνδεσης στο %1!&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="177"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="178"/>
         <source>Error: &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Σφάλμα: &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="262"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="263"/>
         <source>Starting script owncloud-admin...</source>
         <translation>Έναρξη script owncloud-admin...</translation>
     </message>
@@ -946,59 +946,59 @@ Please write a bug report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="313"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="314"/>
         <source>&lt;font color=&quot;red&quot;&gt;Installation of %1 failed!&lt;/font&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="318"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="319"/>
         <source>&lt;font color=&quot;green&quot;&gt;Installation of %1 succeeded!&lt;/font&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="351"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="352"/>
         <source>The owncloud admin script can not be found.
 Setup can not be done.</source>
         <translation>Δεν μπορεί να βρεθεί το script διαχειριστή του owncloud.
 Δεν μπορεί να γίνει η ρύθμιση.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="392"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="393"/>
         <source>Creation of remote folder %1 could not be started.</source>
         <translation>Δεν ήταν δυνατή η εκκίνηση της δημιουργίας του απομακρυσμένου φακέλου %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="416"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="417"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Ο απομακρυσμένος φάκελος %1 δημιουργήθηκε με επιτυχία.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="418"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="419"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>Ο απομακρυσμένος φάκελος %1 υπάρχει, ήδη. Πραγματοποιείτε σύνδεση για ενημέρωση. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="420"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="421"/>
         <source>The folder creation resulted in HTTP error code %d</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="441"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="442"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="446"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="447"/>
         <source>Succesfully connected to %1!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="452"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="453"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="449"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="450"/>
         <source>Press Finish to permanently accept this connection.</source>
         <translation>Επιλέξτε Τερματισμό για να αποδεχτείτε μόνιμα αυτή τη σύνδεση.</translation>
     </message>
@@ -1011,12 +1011,12 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="371"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="372"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Υπάρχει ήδη ο τοπικός κατάλογος %1 για συγχρονισμό, ρυθμίστε τον για συγχρονισμό.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="373"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="374"/>
         <source>Creating local sync folder %1... </source>
         <translation>Δημιουργία τοπικού καταλόγου %1 για συγχρονισμό... </translation>
     </message>
@@ -1025,12 +1025,12 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="376"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="377"/>
         <source>ok</source>
         <translation>οκ</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="378"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="379"/>
         <source>failed.</source>
         <translation>αποτυχία</translation>
     </message>
@@ -1043,7 +1043,7 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="100"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="101"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Επιτυχής δημιουργία τοπικού καταλόγου %1 για συγχρονισμό!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -1052,12 +1052,12 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="422"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="423"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Η απομακρυσμένη δημιουργία φακέλου απέτυχε, επειδή πιθανώς τα διαπιστευτήρια που δόθηκαν είναι λάθος.&lt;/font&gt;&lt;br/&gt;Παρακαλώ επιστρέψτε πίσω και ελέγξτε τα διαπιστευτήρια σας.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="428"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="429"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Η απομακρυσμένη δημιουργία φακέλου %1 απέτυχε με σφάλμα &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
@@ -1164,24 +1164,24 @@ Setup can not be done.</source>
         <translation>Συνέχεια</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="421"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="422"/>
         <source>Checking %1 connection...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="426"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="427"/>
         <source>No %1 connection configured.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="448"/>
-        <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, %3 %4</source>
+        <location filename="../src/mirall/statusdialog.cpp" line="449"/>
+        <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, server version %3</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="466"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="467"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Αποτυχία σύνδεσης με το %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Checking ownCloud connection...</source>
@@ -1196,12 +1196,12 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="450"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="451"/>
         <source>Version: %1</source>
         <translation>Έκδοση: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="463"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="464"/>
         <source>unknown problem.</source>
         <translation>άγνωστο πρόβλημα.</translation>
     </message>
@@ -1247,7 +1247,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="117"/>
         <source>&lt;p&gt;A new version of the %1 client is available.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Μια νέα έκδοση του λογισμικού συγχρονισμού %1 είναι διαθέσιμη.</translation>
     </message>
     <message>
         <source>&lt;p&gt;A new version of the ownCloud Client is available.</source>
@@ -1306,7 +1306,13 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Please enter the username and password for your ownCloud Instance. &lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt; color:#585858;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;If you do not wish to store the credentials on your local machine, check the box. ownCloud will prompt you for your password every time the client starts.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Παρέχετε όνομα χρήστη και συνθηματικό για να συνδεθείτε με το ownCloud σας. &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt; color:#585858;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Εάν δεν επιθυμείτε να αποθηκεύσετε τα διαπιστευτήριά σας τοπικά στον υπολογιστή, επιλέξτε το κουμπί. Το ownCloud θα σας ζητάει τον κωδικό σας κάθε φορά κατά την έναρξη.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1461,7 +1467,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="144"/>
         <source>&amp;Do not store password on local machine.</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Να μην γίνει τοπική αποθήκευση του κωδικού.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="153"/>
@@ -1533,7 +1539,10 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Specify the ownCloud you want to connect to.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Enter the web address of your ownCloud server below.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; } &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Επιλέξτε το ownCloud που θέλετε να συνδεθείτε.&lt;/span&gt;&lt;/p&gt; &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#585858;&quot;&gt;&lt;/p&gt; &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Εισάγετε παρακάτω την διεύθυνση του ownCloud σας.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="110"/>

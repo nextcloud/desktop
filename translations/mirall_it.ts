@@ -349,8 +349,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="193"/>
-        <source>&lt;p&gt;No server connection has been configured for this %1 client.&lt;/p&gt;&lt;p&gt;Please right click on the ownCloud system tray icon and select &lt;i&gt;Configure&lt;/i&gt; to connect this client to an ownCloud server.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Non è stata configurata alcuna connessione a un server per questo client %1.&lt;/p&gt;&lt;p&gt;Fai clic con il tasto destro del mouse sull&apos;icona di ownCloud nel vassoio di sistema e seleziona &lt;i&gt;Configura&lt;/i&gt; per collegare il client a un server ownCloud.&lt;/p&gt;</translation>
+        <source>&lt;p&gt;No server connection has been configured for this %1 client.&lt;/p&gt;&lt;p&gt;Please right click on the %1 system tray icon and select &lt;i&gt;Configure&lt;/i&gt; to connect this client to an %1 server.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="219"/>
@@ -624,7 +624,7 @@ Please make sure that all directories are writeable.</source>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="252"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Il plugin %1 per csync non può essere caricato.&lt;br/&gt;Verifica l&apos;installazione!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="296"/>
@@ -765,7 +765,7 @@ Segnala questo bug.</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="326"/>
         <source>no configured %1 found!</source>
-        <translation type="unfinished"/>
+        <translation>nessun %1 configurato!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="327"/>
@@ -913,27 +913,27 @@ Segnala questo bug.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="129"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="130"/>
         <source>Trying to connect to %1 at %2...</source>
         <translation>Tentativo di connessione a %1 su %2...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="163"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="164"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;Connesso correttamente a %1: %2 versione %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="175"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="176"/>
         <source>&lt;font color=&quot;red&quot;&gt;Failed to connect to %1!&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;red&quot;&gt;Connessione a %1 non riuscita!&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="177"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="178"/>
         <source>Error: &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Errore: &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="262"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="263"/>
         <source>Starting script owncloud-admin...</source>
         <translation>Avvio script owncloud-admin...</translation>
     </message>
@@ -946,59 +946,59 @@ Segnala questo bug.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="313"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="314"/>
         <source>&lt;font color=&quot;red&quot;&gt;Installation of %1 failed!&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;red&quot;&gt;Installazione di %1 non riuscita!&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="318"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="319"/>
         <source>&lt;font color=&quot;green&quot;&gt;Installation of %1 succeeded!&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;Installazione di %1 completata!&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="351"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="352"/>
         <source>The owncloud admin script can not be found.
 Setup can not be done.</source>
         <translation>Lo script owncloud admin non è stato trovato.
 La configurazione non può essere completata.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="392"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="393"/>
         <source>Creation of remote folder %1 could not be started.</source>
         <translation>La creazione della cartella remota %1 non può essere iniziata.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="416"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="417"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>La cartella remota %1 è stata creata correttamente.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="418"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="419"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>La cartella remota %1 esiste già. Connessione in corso per la sincronizzazione</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="420"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="421"/>
         <source>The folder creation resulted in HTTP error code %d</source>
         <translation>La creazione della cartella ha prodotto un codice di errore HTTP %d</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="441"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="442"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>Una connessione di sincronizzazione da %1 alla cartella remota %2 è stata stabilita.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="446"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="447"/>
         <source>Succesfully connected to %1!</source>
         <translation>Connesso correttamente a %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="452"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="453"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>La connessione a %1 non può essere stabilita. Prova ancora.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="449"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="450"/>
         <source>Press Finish to permanently accept this connection.</source>
         <translation>Premi Fine per accettare definitivamente questa connessione.</translation>
     </message>
@@ -1011,12 +1011,12 @@ La configurazione non può essere completata.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="371"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="372"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>La cartella di sincronizzazione locale %1 esiste già, impostata per la sincronizzazione.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="373"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="374"/>
         <source>Creating local sync folder %1... </source>
         <translation>Creazione della cartella locale di sincronizzazione %1 in corso... </translation>
     </message>
@@ -1025,12 +1025,12 @@ La configurazione non può essere completata.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="376"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="377"/>
         <source>ok</source>
         <translation>ok</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="378"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="379"/>
         <source>failed.</source>
         <translation>non riuscita.</translation>
     </message>
@@ -1043,7 +1043,7 @@ La configurazione non può essere completata.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="100"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="101"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Cartella locale %1 creta correttamente!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -1052,12 +1052,12 @@ La configurazione non può essere completata.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="422"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="423"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;La creazione della cartella remota non è riuscita probabilmente perché le credenziali fornite non sono corrette.&lt;/font&gt;&lt;br/&gt;Torna indietro e controlla le credenziali inserite.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="428"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="429"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Creazione della cartella remota %1 non riuscita con errore &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
@@ -1071,7 +1071,7 @@ La configurazione non può essere completata.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="435"/>
         <source>Congratulations! Your &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;new %2&lt;/a&gt; is now up and running!</source>
-        <translation type="unfinished"/>
+        <translation>Congratulazioni! Il tuo &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;nuovo %2&lt;/a&gt; è attivo e in esecuzione!</translation>
     </message>
 </context>
 <context>
@@ -1164,22 +1164,22 @@ La configurazione non può essere completata.</translation>
         <translation>Riprendi</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="421"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="422"/>
         <source>Checking %1 connection...</source>
         <translation>Controllo della connessione di %1...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="426"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="427"/>
         <source>No %1 connection configured.</source>
         <translation>Nessuna connessione di %1 configurata.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="448"/>
-        <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, %3 %4</source>
-        <translation>Connesso a &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, %3 %4</translation>
+        <location filename="../src/mirall/statusdialog.cpp" line="449"/>
+        <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, server version %3</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="466"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="467"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Connessione a %1 non riuscita: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
@@ -1196,12 +1196,12 @@ La configurazione non può essere completata.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="450"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="451"/>
         <source>Version: %1</source>
         <translation>Versione: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="463"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="464"/>
         <source>unknown problem.</source>
         <translation>problema sconosciuto.</translation>
     </message>
