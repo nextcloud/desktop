@@ -335,7 +335,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="192"/>
         <source>No %1 Configuration</source>
-        <translation type="unfinished"/>
+        <translation>No %1 Configuració</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="193"/>
@@ -345,7 +345,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="219"/>
         <source>%1 Server Mismatch</source>
-        <translation type="unfinished"/>
+        <translation>%1 Servidor no coincideix</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="220"/>
@@ -360,13 +360,13 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="240"/>
         <source>%1 Connection Failed</source>
-        <translation type="unfinished"/>
+        <translation>%1 Error de Connexió</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="268"/>
         <location filename="../src/mirall/application.cpp" line="276"/>
         <source>No %1 Connection</source>
-        <translation type="unfinished"/>
+        <translation>No %1 Connexió</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="269"/>
@@ -381,7 +381,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="289"/>
         <source>%1 Sync Started</source>
-        <translation type="unfinished"/>
+        <translation>%1 Sincronització iniciada</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="305"/>
@@ -391,7 +391,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="315"/>
         <source>About...</source>
-        <translation type="unfinished"/>
+        <translation>Sobre...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="362"/>

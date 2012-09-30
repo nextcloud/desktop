@@ -350,7 +350,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="193"/>
         <source>&lt;p&gt;No server connection has been configured for this %1 client.&lt;/p&gt;&lt;p&gt;Please right click on the %1 system tray icon and select &lt;i&gt;Configure&lt;/i&gt; to connect this client to an %1 server.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Nebylo nastaveno žádné spojení k serveru pro tohoto klienta %1.&lt;/p&gt;&lt;p&gt;Klikněte, prosím, pravým tlačítkem na ikonu %1 v systémové části panelu a vyberte &lt;i&gt;Nastavit&lt;/i&gt; pro připojení tohoto klienta k serveru %1.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="219"/>
@@ -1176,7 +1176,7 @@ Nastavení nelze provést.</translation>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="449"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, server version %3</source>
-        <translation type="unfinished"/>
+        <translation>Připojeno k &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, serveru verze %3</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="467"/>

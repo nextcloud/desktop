@@ -350,7 +350,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="193"/>
         <source>&lt;p&gt;No server connection has been configured for this %1 client.&lt;/p&gt;&lt;p&gt;Please right click on the %1 system tray icon and select &lt;i&gt;Configure&lt;/i&gt; to connect this client to an %1 server.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Non è stata configurata alcuna connessione a un server per questo client %1.&lt;/p&gt;&lt;p&gt;Fai clic con il tasto destro sull&apos;icona di %1 nel vassoio di sistema e seleziona &lt;i&gt;Configura&lt;/i&gt; per collegare il client a un server %1.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="219"/>
@@ -1176,7 +1176,7 @@ La configurazione non può essere completata.</translation>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="449"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, server version %3</source>
-        <translation type="unfinished"/>
+        <translation>Connesso a &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, versione del server %3</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="467"/>
