@@ -213,6 +213,8 @@ int csync_statedb_create_tables(CSYNC *ctx) {
       "gid INTEGER,"
       "mode INTEGER,"
       "modtime INTEGER(8),"
+      "type INTEGER,"
+      "md5 VARCHAR(32),"
       "PRIMARY KEY(phash)"
       ");"
       );
@@ -232,6 +234,8 @@ int csync_statedb_create_tables(CSYNC *ctx) {
       "gid INTEGER,"
       "mode INTEGER,"
       "modtime INTEGER(8),"
+      "type INTEGER,"
+      "md5 VARCHAR(32),"
       "PRIMARY KEY(phash)"
       ");"
       );
@@ -249,6 +253,13 @@ int csync_statedb_create_tables(CSYNC *ctx) {
 
   result = csync_statedb_query(ctx,
       "CREATE INDEX metadata_inode ON metadata(inode);");
+  if (result == NULL) {
+    return -1;
+  }
+  c_strlist_destroy(result);
+
+  result = csync_statedb_query(ctx,
+      "CREATE INDEX metadata_md5 ON metadata(md5);");
   if (result == NULL) {
     return -1;
   }
@@ -296,8 +307,8 @@ static int _insert_metadata_visitor(void *obj, void *data) {
     case CSYNC_INSTRUCTION_CONFLICT:
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
         "SQL statement: INSERT INTO metadata_temp \n"
-        "\t\t\t(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES \n"
-        "\t\t\t(%llu, %lu, %s, %llu, %u, %u, %u, %lu);",
+        "\t\t\t(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5) VALUES \n"
+        "\t\t\t(%llu, %lu, %s, %llu, %u, %u, %u, %lu, %d, %s);",
         (long long unsigned int) fs->phash,
         (long unsigned int) fs->pathlen,
         fs->path,
@@ -305,14 +316,16 @@ static int _insert_metadata_visitor(void *obj, void *data) {
         fs->uid,
         fs->gid,
         fs->mode,
-        fs->modtime);
+        fs->modtime,
+        fs->type,
+                fs->md5 ? fs->md5 : "<empty>");
 
       /*
        * The phash needs to be long long unsigned int or it segfaults on PPC
        */
       stmt = sqlite3_mprintf("INSERT INTO metadata_temp "
-        "(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES "
-        "(%llu, %lu, '%q', %llu, %u, %u, %u, %lu);",
+        "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5) VALUES "
+        "(%llu, %lu, '%q', %llu, %u, %u, %u, %lu, %d, '%s');",
         (long long unsigned int) fs->phash,
         (long unsigned int) fs->pathlen,
         fs->path,
@@ -320,7 +333,9 @@ static int _insert_metadata_visitor(void *obj, void *data) {
         fs->uid,
         fs->gid,
         fs->mode,
-        fs->modtime);
+        fs->modtime,
+        fs->type,
+        fs->md5);
 
       if (stmt == NULL) {
         return -1;
@@ -381,19 +396,19 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
     return NULL;
   }
 
-  if (result->count <= 6) {
-    c_strlist_destroy(result);
-    return NULL;
+  if (result->count != 0 && result->count < 10) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Amount of result columns wrong, db version mismatch!");
   }
-  /* phash, pathlen, path, inode, uid, gid, mode, modtime */
-  len = strlen(result->vector[2]);
-  st = c_malloc(sizeof(csync_file_stat_t) + len + 1);
-  if (st == NULL) {
-    c_strlist_destroy(result);
-    return NULL;
-  }
+  if(result->count > 7) {
+      /* phash, pathlen, path, inode, uid, gid, mode, modtime */
+      len = strlen(result->vector[2]);
+      st = c_malloc(sizeof(csync_file_stat_t) + len + 1);
+      if (st == NULL) {
+          c_strlist_destroy(result);
+          return NULL;
+      }
 
-  /*
+      /*
    * FIXME:
    * We use an INTEGER(8) which is signed to the phash in the sqlite3 db,
    * but the phash is an uint64_t. So for some values we get a string like
@@ -403,17 +418,28 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
    * st->phash = strtoull(result->vector[0], NULL, 10);
    */
 
-   /* The query suceeded so use the phash we pass to the function. */
-  st->phash = phash;
+      /* The query suceeded so use the phash we pass to the function. */
+      st->phash = phash;
 
-  st->pathlen = atoi(result->vector[1]);
-  memcpy(st->path, (len ? result->vector[2] : ""), len + 1);
-  st->inode = atoi(result->vector[3]);
-  st->uid = atoi(result->vector[4]);
-  st->gid = atoi(result->vector[5]);
-  st->mode = atoi(result->vector[6]);
-  st->modtime = strtoul(result->vector[7], NULL, 10);
+      st->pathlen = atoi(result->vector[1]);
+      memcpy(st->path, (len ? result->vector[2] : ""), len + 1);
+      st->inode = atoi(result->vector[3]);
+      st->uid = atoi(result->vector[4]);
+      st->gid = atoi(result->vector[5]);
+      st->mode = atoi(result->vector[6]);
+      st->modtime = strtoul(result->vector[7], NULL, 10);
+  } else {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "No result record found for phash = %llu",
+                (long long unsigned int) phash);
+  }
 
+  if(result->count > 8 && result->vector[8]) {
+      st->type = atoi(result->vector[8]);
+  }
+
+  if(result->count > 9 && result->vector[9]) {
+      st->md5 = c_strdup( result->vector[9] );
+  }
   c_strlist_destroy(result);
 
   return st;
@@ -458,10 +484,36 @@ csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx, uint64_t inode) {
   st->gid = atoi(result->vector[5]);
   st->mode = atoi(result->vector[6]);
   st->modtime = strtoul(result->vector[7], NULL, 10);
+  st->type = atoi(result->vector[8]);
+  if( result->vector[9] )
+    st->md5 = c_strdup(result->vector[9]);
 
   c_strlist_destroy(result);
 
   return st;
+}
+
+char *csync_statedb_get_uniqId( CSYNC *ctx, uint64_t jHash, csync_vio_file_stat_t *buf ) {
+    char *ret = NULL;
+    c_strlist_t *result = NULL;
+    char *stmt = NULL;
+
+    stmt = sqlite3_mprintf("SELECT md5 FROM metadata WHERE phash='%llu' AND modtime=%lu", jHash, buf->mtime);
+
+    result = csync_statedb_query(ctx, stmt);
+    sqlite3_free(stmt);
+    if (result == NULL) {
+      return NULL;
+    }
+
+    if (result->count == 1) {
+        /* phash, pathlen, path, inode, uid, gid, mode, modtime */
+        ret = c_strdup( result->vector[0] );
+    }
+
+    c_strlist_destroy(result);
+
+    return ret;
 }
 
 /* query the statedb, caller must free the memory */
@@ -475,6 +527,7 @@ c_strlist_t *csync_statedb_query(CSYNC *ctx, const char *statement) {
   sqlite3_stmt *stmt;
   const char *tail = NULL;
   c_strlist_t *result = NULL;
+  int row = 0;
 
   do {
     /* compile SQL program into a virtual machine, reattempteing if busy */
@@ -527,14 +580,20 @@ c_strlist_t *csync_statedb_query(CSYNC *ctx, const char *statement) {
           break;
         }
 
-        result = c_strlist_new(column_count);
+        row++;
+        if( result ) {
+            result = c_strlist_expand(result, row*column_count);
+        } else {
+            result = c_strlist_new(column_count);
+        }
+
         if (result == NULL) {
           return NULL;
         }
 
         /* iterate over columns */
         for (i = 0; i < column_count; i++) {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "sqlite3_column_text: %s", (char *) sqlite3_column_text(stmt, i));
+          // CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "sqlite3_column_text: %s", (char *) sqlite3_column_text(stmt, i));
           if (c_strlist_add(result, (char *) sqlite3_column_text(stmt, i)) < 0) {
             c_strlist_destroy(result);
             return NULL;

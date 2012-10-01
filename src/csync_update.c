@@ -103,37 +103,56 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
    */
   if (csync_get_statedb_exists(ctx)) {
     tmp = csync_statedb_get_stat_by_hash(ctx, h);
-    if (tmp && tmp->phash == h) {
-      /* we have an update! */
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "time compare: %lu <-> %lu",
-                  fs->mtime, tmp->modtime);
-      if (fs->mtime > tmp->modtime) {
-        st->instruction = CSYNC_INSTRUCTION_EVAL;
-        goto out;
-      }
-      st->instruction = CSYNC_INSTRUCTION_NONE;
-    } else {
-      /* check if it's a file and has been renamed */
-      if (type == CSYNC_FTW_TYPE_FILE && ctx->current == LOCAL_REPLICA) {
-        tmp = csync_statedb_get_stat_by_inode(ctx, fs->inode);
-        if (tmp && tmp->inode == fs->inode) {
-          /* inode found so the file has been renamed */
-          st->instruction = CSYNC_INSTRUCTION_RENAME;
-          goto out;
-        } else {
-          /* file not found in statedb */
-          st->instruction = CSYNC_INSTRUCTION_NEW;
-          goto out;
+#if 0
+    /* this code could possibly replace the one in csync_vio.c stat and would be more efficient */
+    if(tmp) {
+        if( ctx->current == LOCAL_REPLICA ) {
+            if(fs->mtime == tmp->modtime && fs->size == tmp->size) {
+                /* filesystem modtime is still the same as the db mtime
+                 * thus the md5 sum is still valid. */
+                fs->md5 = c_strdup( tmp->md5 );
+            }
         }
-      }
-      /* directory, remote and file not found in statedb */
-      st->instruction = CSYNC_INSTRUCTION_NEW;
+    }
+#endif
+    if(tmp && tmp->phash == h ) { /* there is an entry in the database */
+        /* we have an update! */
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "time compare: %lu <-> %lu, md5: %s <-> %s",
+                  fs->mtime, tmp->modtime, fs->md5, tmp->md5);
+        if( !fs->md5) {
+            st->instruction = CSYNC_INSTRUCTION_EVAL;
+            goto out;
+        }
+        if( !c_streq(fs->md5, tmp->md5 )) {
+            // if (!fs->mtime > tmp->modtime) {
+            st->instruction = CSYNC_INSTRUCTION_EVAL;
+            goto out;
+        }
+        st->instruction = CSYNC_INSTRUCTION_NONE;
+    } else {
+        /* check if it's a file and has been renamed */
+        if (type == CSYNC_FTW_TYPE_FILE && ctx->current == LOCAL_REPLICA) {
+            tmp = csync_statedb_get_stat_by_inode(ctx, fs->inode);
+            if (tmp && tmp->inode == fs->inode) {
+                CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "inodes: %ld <-> %ld", tmp->inode, fs->inode);
+                /* inode found so the file has been renamed */
+                st->instruction = CSYNC_INSTRUCTION_RENAME;
+                goto out;
+            } else {
+                /* file not found in statedb */
+                st->instruction = CSYNC_INSTRUCTION_NEW;
+                goto out;
+            }
+        }
+        /* directory, remote and file not found in statedb */
+            st->instruction = CSYNC_INSTRUCTION_NEW;
     }
   } else  {
-    st->instruction = CSYNC_INSTRUCTION_NEW;
+      st->instruction = CSYNC_INSTRUCTION_NEW;
   }
 
 out:
+  if( tmp) SAFE_FREE(tmp->md5);
   SAFE_FREE(tmp);
   st->inode = fs->inode;
   st->mode = fs->mode;
@@ -143,7 +162,10 @@ out:
   st->gid = fs->gid;
   st->nlink = fs->nlink;
   st->type = type;
-
+  st->md5 = NULL;
+  if( fs->md5 ) {
+      st->md5  = c_strdup(fs->md5);
+  }
   st->phash = h;
   st->pathlen = len;
   memcpy(st->path, (len ? path : ""), len + 1);
@@ -204,6 +226,66 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
   return 0;
 }
 
+/* check if the dirent entries for the directory can be read from db
+ * instead really calling readdir which is costly over net.
+ * For that, a single HEAD request is done on the directory to get its
+ * id. If the ID has not changed remotely, this subtree hasn't changed
+ * and can be read from db.
+ */
+static int _check_read_from_db(CSYNC *ctx, const char *uri) {
+    int len;
+    uint64_t h;
+    csync_vio_file_stat_t *fs = NULL;
+    char       *md5_local  = NULL;
+    const char *md5_remote = NULL;
+    const char *mpath;
+    c_rbnode_t *node = NULL;
+    int rc = 0; /* FIXME: Error handling! */
+
+    if( !c_streq( ctx->remote.uri, uri )) {
+        /* FIXME: The top uri can not be checked because there is no db entry for it */
+        if( strlen(uri) < strlen(ctx->remote.uri)+1 ) {
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "check_read_from_db: uri is not a remote uri.");
+            /* FIXME: errno? */
+            return -1;
+        }
+        mpath = uri + strlen(ctx->remote.uri) + 1;
+        fs = csync_vio_file_stat_new();
+        if(fs == NULL) {
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "check_read_from_db: memory fault.");
+            errno = ENOMEM;
+            return -1;
+        }
+        len = strlen( mpath );
+        h = c_jhash64((uint8_t *) mpath, len, 0);
+
+        /* search in the local tree for the local file to get the mtime */
+        node =  c_rbtree_find(ctx->local.tree, &h);
+        if(node == NULL) {
+            /* no local file found. */
+        } else {
+            csync_file_stat_t *other = NULL;
+            /* set the mtime which is needed in statedb_get_uniqid */
+            other = (csync_file_stat_t *) node->data;
+            if( other )
+                fs->mtime = other->modtime;
+        }
+        md5_local = csync_statedb_get_uniqId( ctx, h, fs );
+        md5_remote = csync_vio_file_id(ctx, uri);
+
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Compare directory ids for %s: %s -> %s", mpath, md5_local, md5_remote );
+
+        if( c_streq(md5_local, md5_remote) ) {
+            ctx->remote.read_from_db = 1;
+        }
+        SAFE_FREE(md5_local);
+        SAFE_FREE(md5_remote);
+
+        csync_vio_file_stat_destroy(fs);
+    }
+    return rc;
+}
+
 /* File tree walker */
 int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     unsigned int depth) {
@@ -213,11 +295,28 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   csync_vio_handle_t *dh = NULL;
   csync_vio_file_stat_t *dirent = NULL;
   csync_vio_file_stat_t *fs = NULL;
+  int read_from_db = 0;
   int rc = 0;
+  int res = 0;
+
+  bool do_read_from_db = (ctx->current == REMOTE_REPLCIA && ctx->remote.read_from_db);
 
   if (uri[0] == '\0') {
     errno = ENOENT;
     goto error;
+  }
+
+  /* If remote, compare the id with the local id. If equal, read all contents from
+   * the database. */
+  read_from_db = ctx->remote.read_from_db;
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Incoming read_from_db-Flag for %s: %d",
+          uri, read_from_db );
+  if( ctx->current == REMOTE_REPLCIA && !do_read_from_db ) {
+      _check_read_from_db(ctx, uri);
+      do_read_from_db = (ctx->current == REMOTE_REPLCIA && ctx->remote.read_from_db);
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Checking for read from db for %s: %d",
+                uri, ctx->remote.read_from_db );
+
   }
 
   if ((dh = csync_vio_opendir(ctx, uri)) == NULL) {
@@ -280,8 +379,16 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       continue;
     }
 
-    fs = csync_vio_file_stat_new();
-    if (csync_vio_stat(ctx, filename, fs) == 0) {
+    /* == see if really stat has to be called. */
+    if( do_read_from_db ) {
+        fs = dirent;
+        res = 0;
+    } else {
+        fs = csync_vio_file_stat_new();
+        res = csync_vio_stat(ctx, filename, fs);
+    }
+
+    if( res == 0) {
       switch (fs->type) {
         case CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK:
           flag = CSYNC_FTW_FLAG_SLINK;
@@ -305,11 +412,29 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       flag = CSYNC_FTW_FLAG_NSTAT;
     }
 
+    if( ctx->current == LOCAL_REPLICA ) {
+        char *md5 = NULL;
+        int len = strlen( path );
+        uint64_t h = c_jhash64((uint8_t *) path, len, 0);
+        md5 = csync_statedb_get_uniqId( ctx, h, fs );
+        if( md5 ) {
+            SAFE_FREE(fs->md5);
+            fs->md5 = md5;
+            fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
+        }
+
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Uniq ID read from Database: %s -> %s", path, fs->md5 ? fs->md5 : "<NULL>" );
+    }
+
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "walk: %s", filename);
 
     /* Call walker function for each file */
     rc = fn(ctx, filename, fs, flag);
-    csync_vio_file_stat_destroy(fs);
+
+    if( ! do_read_from_db )
+        csync_vio_file_stat_destroy(fs);
+    else
+        SAFE_FREE(fs->md5);
 
     if (rc < 0) {
       csync_vio_closedir(ctx, dh);
@@ -328,6 +453,9 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     dirent = NULL;
   }
   csync_vio_closedir(ctx, dh);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Closing walk for %s with read_from_db %d", uri, read_from_db);
+
+  ctx->remote.read_from_db = read_from_db;
 
 done:
   csync_vio_file_stat_destroy(dirent);

@@ -1,17 +1,15 @@
 /*
- * Copyright 2008 Google Inc.
+ * Copyright 2012 Klaas Freitag <freitag@owncloud.com>
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 
@@ -99,7 +97,7 @@ static void connect_test_success(void **state) {
 
     (void) state;
     strcpy(buf, TEST_CONFIG_DIR);
-    strcat(buf, "test.cfg");
+    strcat(buf, "mockatest.cfg");
 
     assert_true( load_oc_config( buf ));
 
@@ -134,6 +132,7 @@ static void fetch_a_context(void **state) {
 	assert_true( fetchCtx->currResource->name != NULL );
 	
 	printf( "   %s -> %s\n", fetchCtx->currResource->uri, fetchCtx->currResource->name );
+	printf( "   MD5: %s\n", fetchCtx->currResource->md5);
 	fetchCtx->currResource = fetchCtx->currResource->next;
     } 
 }
@@ -299,11 +298,13 @@ int main(void) {
     const UnitTest tests[] = {
         unit_test(null_test_success),
         unit_test(connect_test_success),
-        unit_test(fetch_a_context),
         unit_test_setup_teardown(test_setup_dirs, setup_toplevel_dir, teardown_toplevel_dir),
         unit_test(test_upload_files),
+        unit_test(fetch_a_context),
         unit_test(test_download_files),
     };
+
+    srand(time(NULL));
 
     return run_tests(tests);
 }

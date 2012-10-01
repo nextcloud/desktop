@@ -28,10 +28,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
+#include <limits.h>
 
 #include "csync_private.h"
 #include "csync_propagate.h"
 #include "vio/csync_vio.h"
+#include "c_jhash.h"
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.propagator"
 #include "csync_log.h"
@@ -46,6 +48,27 @@ static int _csync_cleanup_cmp(const void *a, const void *b) {
   return strcmp(st_a->path, st_b->path);
 }
 
+static void _store_id_update(CSYNC *ctx, csync_file_stat_t *st) {
+    c_list_t *list = NULL;
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "SYNCED remember  dir: %s", st->path);
+
+    switch (ctx->current) {
+      case LOCAL_REPLICA:
+        list = c_list_prepend(ctx->local.id_list, (void*)st);
+        if( list != NULL ) {
+            ctx->local.id_list = list;
+        }
+        break;
+      case REMOTE_REPLCIA:
+        list = c_list_prepend(ctx->remote.id_list, (void*)st);
+        if(list != NULL ) {
+            ctx->remote.id_list = list;
+        }
+        break;
+
+    }
+}
+
 static bool _push_to_tmp_first(CSYNC *ctx)
 {
     if( ctx->current == REMOTE_REPLCIA ) return true; /* Always push to tmp for destination local file system */
@@ -54,6 +77,22 @@ static bool _push_to_tmp_first(CSYNC *ctx)
     if( !ctx->module.capabilities.atomar_copy_support ) return true;
 
     return false;
+}
+
+static const char*_get_md5( CSYNC *ctx, const char *path ) {
+  const char *md5 = NULL;
+  char *buf = NULL;
+
+  /* Always use the remote uri path, local does not have Ids. */
+  if (asprintf(&buf, "%s/%s", ctx->remote.uri, path) < 0) {
+      return 0;
+  }
+
+  md5 = csync_vio_file_id(ctx, buf);
+
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "MD5 for %s: %s", buf, md5 ? md5 : "<null>");
+  SAFE_FREE(buf);
+  return md5;
 }
 
 static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
@@ -65,6 +104,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   char *duri = NULL;
   char *turi = NULL;
   char *tdir = NULL;
+  const char *tmd5 = NULL;
 
   csync_vio_handle_t *sfp = NULL;
   csync_vio_handle_t *dfp = NULL;
@@ -332,6 +372,18 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
       rc = 1;
       goto out;
     }
+
+    if( st->md5 ) {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "UUUU MD5 sum: %s", st->md5);
+    } else {
+      if( tstat->md5 ) {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Target MD5 sum is %s", tstat->md5 );
+        if(st->md5) SAFE_FREE(st->md5);
+        st->md5 = c_strdup(tstat->md5 );
+      } else {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "MD5 sum is empty");
+      }
+    }
   }
 
   if (_push_to_tmp_first(ctx)) {
@@ -385,6 +437,17 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   ctx->replica = drep;
   csync_vio_utimes(ctx, duri, times);
+
+
+  /* For remote repos, after the utimes call, the ID has changed again */
+  /* do a stat on the target again to get a valid md5 */
+  tmd5 = _get_md5(ctx, st->path);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "FINAL MD5: %s", tmd5 ? tmd5 : "<null>");
+
+  if(tmd5) {
+      SAFE_FREE(st->md5);
+      st->md5 = tmd5;
+  }
 
   /* set instruction for the statedb merger */
   st->instruction = CSYNC_INSTRUCTION_UPDATED;
@@ -556,6 +619,8 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
   struct timeval times[2];
   char *suri = NULL;
   char *duri = NULL;
+  const char *tmd5 = NULL;
+  c_rbnode_t *node = NULL;
 
   switch (ctx->current) {
     case REMOTE_REPLCIA:
@@ -605,16 +670,36 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   csync_vio_utimes(ctx, duri, times);
 
-  /* set instruction for the statedb merger */
+  /* The the uniq ID for the destination */
+  tmd5 = _get_md5(ctx, st->destpath);
+
   if( rc > -1 ) {
-    st->instruction = CSYNC_INSTRUCTION_RENAME;
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "RENAME  file: %s", suri);
+      /* Find the destination entry in the local tree and insert the uniq id */
+      int len = strlen(st->destpath);
+      uint64_t h = c_jhash64((uint8_t *) st->destpath, len, 0);
+      h = c_jhash64((uint8_t *) st->destpath, len, 0);
+
+      /* search in the local tree for the local file to get the mtime */
+      node =  c_rbtree_find(ctx->local.tree, &h);
+      if(node == NULL) {
+          /* no local file found. */
+
+      } else {
+          csync_file_stat_t *other = NULL;
+          /* set the mtime which is needed in statedb_get_uniqid */
+          other = (csync_file_stat_t *) node->data;
+          if( other ) {
+              other->md5 = tmd5;
+          }
+      }
+      /* set instruction for the statedb merger */
+      st->instruction = CSYNC_INSTRUCTION_DELETED;
   }
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "RENAME  file: %s => %s with ID %s", st->path, st->destpath, st->md5);
 
 out:
   SAFE_FREE(suri);
   SAFE_FREE(duri);
-  SAFE_FREE(st->destpath);
 
   /* set instruction for the statedb merger */
   if (rc != 0) {
@@ -705,6 +790,7 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
   enum csync_replica_e replica_bak;
   char errbuf[256] = {0};
   char *uri = NULL;
+  const char *tmd5 = NULL;
   struct timeval times[2];
   int rc = -1;
 
@@ -775,6 +861,12 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
 
   csync_vio_utimes(ctx, uri, times);
 
+  tmd5 = _get_md5(ctx, st->path);
+  if(tmd5) {
+      SAFE_FREE(st->md5);
+      st->md5 = tmd5;
+  }
+
   /* set instruction for the statedb merger */
   st->instruction = CSYNC_INSTRUCTION_UPDATED;
 
@@ -798,6 +890,7 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
   enum csync_replica_e replica_bak;
   char errbuf[256] = {0};
   char *uri = NULL;
+  const char *tmd5 = NULL;
   struct timeval times[2];
   int rc = -1;
 
@@ -851,11 +944,16 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
   times[0].tv_usec = times[1].tv_usec = 0;
 
   csync_vio_utimes(ctx, uri, times);
-
+  tmd5 = _get_md5(ctx, st->path);
+  if(tmd5) {
+      SAFE_FREE(st->md5);
+      st->md5 = tmd5;
+  }
   /* set instruction for the statedb merger */
   st->instruction = CSYNC_INSTRUCTION_UPDATED;
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "SYNCED   dir: %s", uri);
+
   ctx->replica = replica_bak;
 
   rc = 0;
@@ -951,6 +1049,148 @@ out:
   return rc;
 }
 
+static int _cmp_char( const void *d1, const void *d2 )
+{
+    const char *c1 = (const char*) d1;
+    const char *c2 = (const char*) d2;
+    // CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "COMPARE: %s <-> %s", c1, c2);
+    if( c_streq(c1, c2) ) return 0;
+    return 1;
+}
+
+/*
+ * This function corrects the unique IDs of parent directories of changed
+ * files. Other than in the file system, the change of a unique Id propagates
+ * up to the top dir. To save the correct IDs, in all propagations, pathes
+ * are recorded in the local and remotes id_list lists.
+ * In this function, the unique ID is queried for each directory once and
+ * stored into the according entry.
+ */
+static int _csync_correct_id(CSYNC *ctx) {
+    c_list_t *walk      = NULL;
+    c_list_t *seen_dirs = NULL;
+    c_list_t *list      = NULL;
+    c_rbtree_t *tree    = NULL;
+    const char *replica = NULL;
+    char *path          = NULL;
+
+    switch (ctx->current) {
+      case LOCAL_REPLICA:
+        list = ctx->local.id_list;
+        tree = ctx->local.tree;
+        replica = "LOCAL_REPLICA";
+        break;
+      case REMOTE_REPLCIA:
+        list = ctx->remote.id_list;
+        tree = ctx->remote.tree;
+        replica = "REMOTE_REPLICA";
+        break;
+      default:
+        break;
+    }
+
+    if (list == NULL) {
+      return 0;
+    }
+
+    list = c_list_sort(list, _csync_cleanup_cmp);
+    if (list == NULL) {
+      return -1;
+    }
+
+    for (walk = c_list_last(list); walk != NULL; walk = c_list_prev(walk)) {
+      csync_file_stat_t *st = NULL;
+
+      st = (csync_file_stat_t *) walk->data;
+      if( st->type == CSYNC_FTW_TYPE_FILE ) {
+          path = c_dirname( st->path );
+      } else if( st->type == CSYNC_FTW_TYPE_DIR ) {
+          path = c_strdup(st->path); /* Allocate mem for this not to disappoint FREE */
+      } else {
+          /* unhandled path */
+      }
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "correct ID on dir: %s", path);
+
+      /* handle the . path */
+      if( path && path[0] == '.' && strlen(path) == 1) {
+          SAFE_FREE(path);
+          path = NULL;
+      }
+
+      while( path ) {
+          uint64_t h;
+          int len;
+          c_rbnode_t *node = NULL;
+
+          char pathbuf[PATH_MAX] = {'\0' };
+          char *old_path = path;
+          csync_file_stat_t *tfs = NULL;
+
+          /* do stuff with the dir here */
+
+          if( seen_dirs && c_list_find_custom( seen_dirs,  path, _cmp_char)) {
+              // CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "saw this dir already: %s", path);
+          } else {
+              CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "climb on dir: %s (%s)", path, replica);
+              seen_dirs = c_list_prepend( seen_dirs, c_strdup(path));
+
+              /* Find the correct target entry. */
+              len = strlen(path);
+              h = c_jhash64((uint8_t *) path, len, 0);
+
+              node = c_rbtree_find(tree, &h);
+              if (node == NULL) {
+                CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to find node");
+              } else {
+                  tfs = c_rbtree_node_data(node);
+                  if( tfs ) {
+                      if(tfs->instruction == CSYNC_INSTRUCTION_DELETED) {
+                          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Skipping update of MD5 because item is deleted.");
+                      } else {
+                          if(tfs->md5) SAFE_FREE(tfs->md5);
+                          tfs->md5 = _get_md5(ctx, path);
+                          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "MD5 for dir: %s %s (Instruction: %s)", tfs->path,
+                                    tfs->md5, csync_instruction_str(tfs->instruction));
+                          if( tfs->md5 && tfs->instruction == CSYNC_INSTRUCTION_NONE ) {
+                              /* set instruction for the statedb merger */
+                              tfs->instruction = CSYNC_INSTRUCTION_UPDATED;
+                          }
+                      }
+                  }
+              }
+          }
+         /* get the parent dir */
+          /* copy one byte less, omit the trailing slash */
+          strncpy( pathbuf, path, strlen(path)-1 );
+          /* and get the path name */
+          path = c_dirname( pathbuf );
+          /* free the old path memory */
+          SAFE_FREE(old_path );
+
+          /* exit on top directory */
+          if( c_streq(path, ".")) {
+              SAFE_FREE(path);
+              path = NULL;
+          }
+      }
+    }
+
+    /* Free the seen_dirs list */
+
+    if( seen_dirs ) {
+        c_list_t *walk1 = NULL;
+
+        for (walk1 = c_list_first(seen_dirs); walk1 != NULL; walk1 = c_list_next(walk1)) {
+            char *data = NULL;
+
+            data = (char*) walk1->data;
+            SAFE_FREE(data);
+        }
+    }
+    c_list_free(seen_dirs);
+    return 0;
+}
+
 static int _csync_propagation_cleanup(CSYNC *ctx) {
   c_list_t *list = NULL;
   c_list_t *walk = NULL;
@@ -1020,30 +1260,35 @@ static int _csync_propagation_file_visitor(void *obj, void *data) {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"FAIL NEW: %s",st->path);
             goto err;
           }
+          _store_id_update(ctx, st);
           break;
         case CSYNC_INSTRUCTION_RENAME:
           if (_csync_rename_file(ctx, st) < 0) {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"FAIL RENAME: %s",st->path);
             goto err;
           }
+          _store_id_update(ctx, st);
           break;
       case CSYNC_INSTRUCTION_SYNC:
           if (_csync_sync_file(ctx, st) < 0) {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"FAIL SYNC: %s",st->path);
             goto err;
           }
+          _store_id_update(ctx, st);
           break;
         case CSYNC_INSTRUCTION_REMOVE:
           if (_csync_remove_file(ctx, st) < 0) {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"FAIL REMOVE: %s",st->path);
             goto err;
           }
+          _store_id_update(ctx, st);
           break;
         case CSYNC_INSTRUCTION_CONFLICT:
           CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"case CSYNC_INSTRUCTION_CONFLICT: %s",st->path);
           if (_csync_conflict_file(ctx, st) < 0) {
             goto err;
           }
+          _store_id_update(ctx, st);
           break;
         default:
           break;
@@ -1084,22 +1329,27 @@ static int _csync_propagation_dir_visitor(void *obj, void *data) {
           if (_csync_new_dir(ctx, st) < 0) {
             goto err;
           }
+          _store_id_update(ctx, st);
           break;
         case CSYNC_INSTRUCTION_SYNC:
           if (_csync_sync_dir(ctx, st) < 0) {
             goto err;
           }
+          _store_id_update(ctx, st);
           break;
         case CSYNC_INSTRUCTION_CONFLICT:
           CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"directory attributes different");
           if (_csync_sync_dir(ctx, st) < 0) {
             goto err;
           }
+          _store_id_update(ctx, st);
           break;
         case CSYNC_INSTRUCTION_REMOVE:
           if (_csync_remove_dir(ctx, st) < 0) {
             goto err;
           }
+          _store_id_update(ctx, st);
+          break;
         case CSYNC_INSTRUCTION_RENAME:
           /* there can't be a rename for dirs. See updater. */
           break;
@@ -1142,6 +1392,9 @@ int csync_propagate_files(CSYNC *ctx) {
     return -1;
   }
 
+  if( _csync_correct_id(ctx) < 0) {
+    return -1;
+  }
   return 0;
 }
 

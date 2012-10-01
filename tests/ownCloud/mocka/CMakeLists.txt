@@ -13,8 +13,6 @@ include_directories(
 
 
 add_executable(ocmod_test ocmod_test.c)
-add_executable(md5_test   md5_test.c)
 
 target_link_libraries(ocmod_test ${CMOCKA_LIBRARIES} ${NEON_LIBRARIES} ${CSYNC_LIBRARY} )
 
-target_link_libraries(md5_test ${CMOCKA_LIBRARIES} ${CSYNC_LIBRARY} )

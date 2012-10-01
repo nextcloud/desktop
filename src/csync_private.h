@@ -94,6 +94,7 @@ struct csync_s {
     char *uri;
     c_rbtree_t *tree;
     c_list_t *list;
+    c_list_t *id_list;
     enum csync_replica_e type;
   } local;
 
@@ -101,7 +102,9 @@ struct csync_s {
     char *uri;
     c_rbtree_t *tree;
     c_list_t *list;
+    c_list_t *id_list;
     enum csync_replica_e type;
+    int  read_from_db;
   } remote;
 
   struct {
@@ -135,7 +138,7 @@ struct csync_s {
 
   /* error code of the last operation */
   enum csync_error_codes_e error_code;
-
+  
   int status;
 };
 
@@ -159,7 +162,10 @@ struct csync_file_stat_s {
   mode_t mode;      /* u32 */
   int nlink;        /* u32 */
   int type;         /* u32 */
+
   char *destpath;   /* for renames */
+  const char *md5;
+
   enum csync_instructions_e instruction; /* u32 */
   char path[1]; /* u8 */
 }

@@ -100,7 +100,7 @@ START_TEST (check_csync_treewalk_local_with_filter)
     fail_if(file_count != 2, "Local File count filtered (EVAL) not correct: %d", file_count);
     file_count = 0;
     fail_if(csync_walk_local_tree(csync, &visitor, CSYNC_INSTRUCTION_EVAL | CSYNC_INSTRUCTION_REMOVE) < 0, "Local walk");
-    fail_if(file_count != 2, "Local File count filtered (EVAL) not correct: %d", file_count);
+    fail_if(file_count != 2, "Local File count filtered (EVAL|REMOVE) not correct: %d", file_count);
     file_count = 0;
     fail_if(csync_walk_local_tree(csync, &visitor, CSYNC_INSTRUCTION_RENAME) < 0, "Local walk");
     fail_if(file_count != 0, "Local File count filtered (RENAME) not correct");

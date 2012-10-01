@@ -29,9 +29,12 @@
 #include <dlfcn.h> /* dlopen(), dlclose(), dlsym() ... */
 
 #include "csync_private.h"
+#include "csync_dbtree.h"
 #include "vio/csync_vio.h"
 #include "vio/csync_vio_handle_private.h"
 #include "vio/csync_vio_local.h"
+#include "csync_statedb.h"
+#include "std/c_jhash.h"
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.vio.main"
 
@@ -193,6 +196,11 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
     return -1;
   }
 
+  if (! VIO_METHOD_HAS_FUNC(m, get_file_id)) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "module %s has no get_file_id fn", module);
+  }
+
+
   ctx->module.method = m;
 
   return 0;
@@ -353,7 +361,12 @@ csync_vio_handle_t *csync_vio_opendir(CSYNC *ctx, const char *name) {
 
   switch(ctx->replica) {
     case REMOTE_REPLCIA:
-      mh = ctx->module.method->opendir(name);
+      if(ctx->remote.read_from_db) {
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Reading directory %s from database", name);
+          mh = csync_dbtree_opendir(ctx, name);
+      } else {
+          mh = ctx->module.method->opendir(name);
+      }
       break;
     case LOCAL_REPLICA:
       mh = csync_vio_local_opendir(name);
@@ -380,7 +393,11 @@ int csync_vio_closedir(CSYNC *ctx, csync_vio_handle_t *dhandle) {
 
   switch(ctx->replica) {
     case REMOTE_REPLCIA:
-      rc = ctx->module.method->closedir(dhandle->method_handle);
+      if(ctx->remote.read_from_db) {
+          rc = csync_dbtree_closedir(ctx, dhandle->method_handle);
+      } else {
+          rc = ctx->module.method->closedir(dhandle->method_handle);
+      }
       break;
     case LOCAL_REPLICA:
       rc = csync_vio_local_closedir(dhandle->method_handle);
@@ -400,7 +417,11 @@ csync_vio_file_stat_t *csync_vio_readdir(CSYNC *ctx, csync_vio_handle_t *dhandle
 
   switch(ctx->replica) {
     case REMOTE_REPLCIA:
-      fs = ctx->module.method->readdir(dhandle->method_handle);
+      if(ctx->remote.read_from_db) {
+          fs = csync_dbtree_readdir(ctx, dhandle->method_handle);
+      } else {
+          fs = ctx->module.method->readdir(dhandle->method_handle);
+      }
       break;
     case LOCAL_REPLICA:
       fs = csync_vio_local_readdir(dhandle->method_handle);
@@ -508,6 +529,17 @@ int csync_vio_rmdir(CSYNC *ctx, const char *uri) {
   return rc;
 }
 
+const char *csync_vio_file_id(CSYNC *ctx, const char *path)
+{
+    const char *re = NULL;
+    /* We always use the remote method here. */
+    if(ctx->module.method &&
+            VIO_METHOD_HAS_FUNC(ctx->module.method, get_file_id)) {
+        re = ctx->module.method->get_file_id(path);
+    }
+    return re;
+}
+
 int csync_vio_stat(CSYNC *ctx, const char *uri, csync_vio_file_stat_t *buf) {
   int rc = -1;
 
@@ -520,7 +552,6 @@ int csync_vio_stat(CSYNC *ctx, const char *uri, csync_vio_file_stat_t *buf) {
 #ifdef _WIN32
       CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Win32: STAT-inode for %s: %llu", uri, buf->inode );
 #endif
-
       break;
     default:
       break;

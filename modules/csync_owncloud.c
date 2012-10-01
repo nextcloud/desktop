@@ -82,6 +82,7 @@ typedef unsigned long dav_size_t;
 /* Struct to store data for each resource found during an opendir operation.
  * It represents a single file entry.
  */
+
 typedef struct resource {
     char *uri;           /* The complete uri */
     char *name;          /* The filename only */
@@ -89,6 +90,7 @@ typedef struct resource {
     enum resource_type type;
     dav_size_t         size;
     time_t             modtime;
+    char*              md5;
 
     struct resource    *next;
 } resource;
@@ -117,6 +119,8 @@ struct transfer_context {
     const char  *method;        /* the HTTP method, either PUT or GET  */
     ne_decompress *decompress;  /* the decompress context */
     int         fileWritten;    /* flag to indicate that a buffer file was written for PUTs */
+    char        *md5;
+    char        *clean_uri;
 };
 
 /* Struct with the WebDAV session */
@@ -131,10 +135,12 @@ struct dav_session_s {
     char *proxy_user;
     char *proxy_pwd;
 
-    time_t   prev_delta;
-    time_t   time_delta;     /* The time delta to use.                  */
+    char *session_key;
+
+    long int prev_delta;
+    long int time_delta;     /* The time delta to use.                  */
     long int time_delta_sum; /* What is the time delta average?         */
-    int      time_delta_cnt; /* How often was the server time gathered? */
+    long int time_delta_cnt; /* How often was the server time gathered? */
 };
 
 /* The list of properties that is fetched in PropFind on a collection */
@@ -142,6 +148,7 @@ static const ne_propname ls_props[] = {
     { "DAV:", "getlastmodified" },
     { "DAV:", "getcontentlength" },
     { "DAV:", "resourcetype" },
+    { "DAV:", "getetag"},
     { NULL, NULL }
 };
 
@@ -406,6 +413,120 @@ static int configureProxy( ne_session *session )
 }
 
 /*
+ * This hook is called for with the response of a request. Here its checked
+ * if a Set-Cookie header is there for the PHPSESSID. The key is stored into
+ * the webdav session to be added to subsequent requests.
+ */
+#define PHPSESSID "PHPSESSID="
+static void post_request_hook(ne_request *req, void *userdata, const ne_status *status)
+{
+    const char *set_cookie_header = NULL;
+    const char *sc  = NULL;
+    char *key = NULL;
+
+    (void) userdata;
+
+    if(!(status && req)) return;
+    if( status->klass == 2 || status->code == 401 ) {
+        /* successful request */
+        set_cookie_header =  ne_get_response_header( req, "Set-Cookie" );
+        if( set_cookie_header ) {
+            DEBUG_WEBDAV(" Set-Cookie found: %s", set_cookie_header);
+            /* try to find a ', ' sequence which is the separator of neon if multiple Set-Cookie
+             * headers are there.
+             * The following code parses a string like this:
+             * PHPSESSID=n8feu3dsbarpvvufqae9btn5fl7m7ikgh5ml1fg37v4i2cah7k41; path=/; HttpOnly */
+            sc = set_cookie_header;
+            while(sc) {
+                if( strlen(sc) > strlen(PHPSESSID) &&
+                        strncmp( sc, PHPSESSID, strlen(PHPSESSID)) == 0 ) {
+                    const char *sc_val = sc; /* + strlen(PHPSESSID); */
+                    const char *sc_end = sc_val;
+                    int cnt = 0;
+                    int len = strlen(sc_val); /* The length of the rest of the header string. */
+
+                    while( cnt < len && *sc_end != ';' && *sc_end != ',') {
+                        cnt++;
+                        sc_end++;
+                    }
+                    if( cnt == len ) {
+                        /* exit: We are at the end. */
+                        sc = NULL;
+                    } else if( *sc_end == ';' ) {
+                        /* We are at the end of the session key. */
+                        int keylen = sc_end-sc_val;
+                        if( key ) SAFE_FREE(key);
+                        key = c_malloc(keylen+1);
+                        strncpy( key, sc_val, keylen );
+                        key[keylen] = '\0';
+
+                        /* now search for a ',' to find a potential other header entry */
+                        while(cnt < len && *sc_end != ',') {
+                            cnt++;
+                            sc_end++;
+                        }
+                        if( cnt < len )
+                            sc = sc_end+2; /* mind the space after the comma */
+                        else
+                            sc = NULL;
+                    } else if( *sc_end == ',' ) {
+                        /* A new entry is to check. */
+                        if( *(sc_end + 1) == ' ') {
+                            sc = sc_end+2;
+                        } else {
+                            /* error condition */
+                            sc = NULL;
+                        }
+                    }
+                } else {
+                    /* It is not a PHPSESSID-Header but another one which we're not interested in.
+                     * forward to next header entry (search ',' )
+                     */
+                    int len = strlen(sc);
+                    int cnt = 0;
+
+                    while(cnt < len && *sc != ',') {
+                        cnt++;
+                        sc++;
+                    }
+                    if( cnt < len )
+                        sc = sc+2; /* mind the space after the comma */
+                    else
+                        sc = NULL;
+                }
+            }
+        }
+    } else {
+        DEBUG_WEBDAV("Request failed, don't take session header.");
+    }
+    if( key ) {
+        DEBUG_WEBDAV("----> Session-key: %s", key);
+        SAFE_FREE(dav_session.session_key);
+        dav_session.session_key = key;
+    }
+}
+
+/*
+ * this hook is called just after a request has been created, before its sent.
+ * Here it is used to set the session cookie if available.
+ */
+static void request_created_hook(ne_request *req, void *userdata,
+                                 const char *method, const char *requri)
+{
+    (void) userdata;
+    (void) method;
+    (void) requri;
+
+    if( !req ) return;
+
+    if(dav_session.session_key) {
+        /* DEBUG_WEBDAV("Setting PHPSESSID to %s", dav_session.session_key); */
+        ne_add_request_header(req, "Cookie", dav_session.session_key);
+    }
+
+}
+
+/*
  * Connect to a DAV server
  * This function sets the flag _connected if the connection is established
  * and returns if the flag is set, so calling it frequently is save.
@@ -490,6 +611,13 @@ static int dav_connect(const char *base_url) {
     }
     ne_redirect_register( dav_session.ctx );
 
+    /* Hook to get the Session ID */
+    ne_hook_post_headers( dav_session.ctx, post_request_hook, NULL );
+    /* Hook called when a request is built. It sets the PHPSESSID header */
+    ne_hook_create_request( dav_session.ctx, request_created_hook, NULL );
+
+    dav_session.session_key = NULL;
+
     /* Proxy support */
     proxystate = configureProxy( dav_session.ctx );
     if( proxystate < 0 ) {
@@ -522,6 +650,7 @@ static void results(void *userdata,
     struct resource *newres = 0;
     const char *clength, *modtime = NULL;
     const char *resourcetype = NULL;
+    const char *md5sum = NULL;
     const ne_status *status = NULL;
     char *path = ne_path_unescape( uri->path );
 
@@ -561,6 +690,7 @@ static void results(void *userdata,
     modtime      = ne_propset_value( set, &ls_props[0] );
     clength      = ne_propset_value( set, &ls_props[1] );
     resourcetype = ne_propset_value( set, &ls_props[2] );
+    md5sum       = ne_propset_value( set, &ls_props[3] );
 
     newres->type = resr_normal;
     if( clength == NULL && resourcetype && strncmp( resourcetype, "<DAV:collection>", 16 ) == 0) {
@@ -576,6 +706,16 @@ static void results(void *userdata,
         newres->size = DAV_STRTOL(clength, &p, 10);
         if (*p) {
             newres->size = 0;
+        }
+    }
+
+    if( md5sum ) {
+        int len = strlen(md5sum)-2;
+        if( len > 0 ) {
+            /* Skip the " around the string coming back from the ne_propset_value call */
+            newres->md5 = c_malloc(len+1);
+            strncpy( newres->md5, md5sum+1, len );
+            newres->md5[len] = '\0';
         }
     }
 
@@ -686,11 +826,14 @@ static csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
     }
 
     /* Correct the mtime of the file with the server time delta */
-    lfs->mtime = res->modtime;
+    lfs->mtime = res->modtime - dav_session.time_delta;
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
     lfs->size  = res->size;
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
-
+    if( res->md5 ) {
+        lfs->md5   = c_strdup(res->md5);
+    }
+    lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
     return lfs;
 }
 
@@ -745,6 +888,7 @@ static void free_fetchCtx( struct listdir_context *ctx )
     while( res ) {
         SAFE_FREE(res->uri);
         SAFE_FREE(res->name);
+        SAFE_FREE(res->md5);
 
         newres = res->next;
         SAFE_FREE(res);
@@ -753,6 +897,22 @@ static void free_fetchCtx( struct listdir_context *ctx )
     SAFE_FREE(ctx);
 }
 
+static void fill_stat_cache( csync_vio_file_stat_t *lfs ) {
+
+    if( _fs.name ) SAFE_FREE(_fs.name);
+    if( _fs.md5  ) SAFE_FREE(_fs.md5 );
+
+    if( !lfs) return;
+
+    _fs.name   = c_strdup(lfs->name);
+    _fs.mtime  = lfs->mtime;
+    _fs.fields = lfs->fields;
+    _fs.type   = lfs->type;
+    _fs.size   = lfs->size;
+    if( lfs->md5 ) {
+        _fs.md5    = c_strdup(lfs->md5);
+    }
+}
 
 /*
  * file functions
@@ -786,6 +946,7 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
      * stat. If the cache matches, a http call is saved.
      */
     if( _fs.name && strcmp( buf->name, _fs.name ) == 0 ) {
+
         buf->fields  = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
@@ -795,10 +956,16 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
         buf->fields = _fs.fields;
         buf->type   = _fs.type;
         buf->mtime  = _fs.mtime;
-
         buf->size   = _fs.size;
         buf->mode   = _stat_perms( _fs.type );
+        buf->md5    = NULL;
+        if( _fs.md5 ) {
+            buf->md5    = c_strdup( _fs.md5 );
+            buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
+        }
+        DEBUG_WEBDAV("stat results from fs cache - md5: %s", _fs.md5 ? _fs.md5 : "NULL");
     } else {
+      DEBUG_WEBDAV("stat results fetched.");
         /* fetch data via a propfind call. */
         fetchCtx = c_malloc( sizeof( struct listdir_context ));
         if( ! fetchCtx ) {
@@ -809,7 +976,6 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
 
         curi = _cleanPath( uri );
 
-        DEBUG_WEBDAV("I have no stat cache, call propfind for %s", curi );
         fetchCtx->list = NULL;
         fetchCtx->target = curi;
         fetchCtx->include_target = 1;
@@ -859,21 +1025,31 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
                 buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
                 buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
                 buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
+                buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
 
                 buf->fields = lfs->fields;
                 buf->type   = lfs->type;
                 buf->mtime  = lfs->mtime;
                 buf->size   = lfs->size;
                 buf->mode   = _stat_perms( lfs->type );
+                buf->md5    = NULL;
+                if( lfs->md5 ) {
+                    buf->md5    = c_strdup( lfs->md5 );
+                }
 
+                /* put the stat information to cache for subsequent calls */
+                fill_stat_cache( lfs );
+
+                /* fill the static stat buf as input for the stat function */
                 csync_vio_file_stat_destroy( lfs );
             }
 
             free_fetchCtx( fetchCtx );
         }
+        DEBUG_WEBDAV("STAT result from propfind: %s, md5: %s", buf->name ? buf->name:"NULL",
+                     buf->md5 ? buf->md5 : "NULL" );
     }
-    DEBUG_WEBDAV("STAT result: %s, type=%d", buf->name ? buf->name:"NULL",
-                  buf->type );
+
     return 0;
 }
 
@@ -1004,14 +1180,73 @@ static char*_lastDir = NULL;
  *  bool time_sync_required  - oC does not require the time sync
  *  int  unix_extensions     - oC supports unix extensions.
  */
-static csync_vio_capabilities_t _owncloud_capabilities = { true, false, true, 1 };
+static csync_vio_capabilities_t _owncloud_capabilities = { true, false, false, 1 };
 
-static csync_vio_capabilities_t *owncloud_get_capabilities(void)
+static csync_vio_capabilities_t *owncloud_capabilities(void)
 {
 #ifdef _WIN32
   _owncloud_capabilities.unix_extensions = 0;
 #endif
   return &_owncloud_capabilities;
+}
+
+static const char* owncloud_file_id( const char *path )
+{
+    ne_request *req    = NULL;
+    const char *header = NULL;
+    char *uri          = _cleanPath(path);
+    char *buf          = NULL;
+    const char *cbuf   = NULL;
+    csync_vio_file_stat_t *fs = NULL;
+    bool  doHeadRequest= false; /* ownCloud server doesn't have good support for HEAD yet */
+
+    if( doHeadRequest ) {
+        /* Perform an HEAD request to the resource. HEAD delivers the
+         * ETag header back. */
+        req = ne_request_create(dav_session.ctx, "HEAD", uri);
+        ne_request_dispatch(req);
+
+        header = ne_get_response_header(req, "etag");
+    }
+    /* If the request went wrong or the server did not respond correctly
+     * (that can happen for collections) a stat call is done which translates
+     * into a PROPFIND request.
+     */
+    if( ! header ) {
+        /* Clear the cache */
+        fill_stat_cache(NULL);
+
+        /* ... and do a stat call. */
+        fs = csync_vio_file_stat_new();
+        if(fs == NULL) {
+            DEBUG_WEBDAV( "owncloud_file_id: memory fault.");
+            errno = ENOMEM;
+            return NULL;
+        }
+        if( owncloud_stat( path, fs ) == 0 ) {
+            header = fs->md5;
+        }
+    }
+
+    /* In case the result is surrounded by "" cut them away. */
+    if( header ) {
+        if( header [0] == '"' && header[ strlen(header)-1] == '"') {
+            int len = strlen( header )-2;
+            buf = c_malloc( len+1 );
+            strncpy( buf, header+1, len );
+            buf[len] = '\0';
+            cbuf = buf;
+            /* do not free header here, as it belongs to the request */
+        } else {
+            cbuf = c_strdup(header);
+        }
+    }
+    DEBUG_WEBDAV("Get file ID for %s: %s", path, cbuf ? cbuf:"<null>");
+    if( fs ) csync_vio_file_stat_destroy(fs);
+    if( req ) ne_request_destroy(req);
+    SAFE_FREE(uri);
+
+    return cbuf;
 }
 
 static csync_vio_method_handle_t *owncloud_open(const char *durl,
@@ -1031,6 +1266,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
     const char *winTmpUtf8 = NULL;
     csync_stat_t sb;
 #endif
+    const char *etag_header = NULL;
 
     struct transfer_context *writeCtx = NULL;
     csync_vio_file_stat_t statBuf;
@@ -1074,6 +1310,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
         } else {
             if( owncloud_stat( dir, &statBuf ) == 0 ) {
                 SAFE_FREE(statBuf.name);
+                SAFE_FREE(statBuf.md5);
                 DEBUG_WEBDAV("Directory of file to open exists.");
                 SAFE_FREE( _lastDir );
                 _lastDir = c_strdup(dir);
@@ -1092,6 +1329,8 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
 
     writeCtx = c_malloc( sizeof(struct transfer_context) );
     writeCtx->bytes_written = 0;
+    writeCtx->clean_uri = c_strdup(uri);
+
     if( rc == NE_OK ) {
         /* open a temp file to store the incoming data */
 #ifdef _WIN32
@@ -1149,7 +1388,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
         writeCtx->fileWritten = 0;   /* flag to indicate if contents was pushed to file */
 
         writeCtx->req = ne_request_create(dav_session.ctx, "PUT", uri);
-	writeCtx->method = "PUT";
+        writeCtx->method = "PUT";
     }
 
 
@@ -1195,6 +1434,13 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
         /* if the compression handle is set through the post_header hook, delete it. */
         if( writeCtx->decompress ) {
             ne_decompress_destroy( writeCtx->decompress );
+        }
+
+        /* preserve the ETag header */
+        etag_header = ne_get_response_header( writeCtx->req, "ETag" );
+        if( etag_header ) {
+            writeCtx->md5 = c_strdup( etag_header );
+            DEBUG_WEBDAV("GET Etag: %s", etag_header );
         }
 
         /* delete the request in any case */
@@ -1243,7 +1489,7 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
     int rc;
     int ret = 0;
     size_t len = 0;
-    const _TCHAR *tmpFileName = 0;
+    const _TCHAR *tmpFileName = NULL;
 
     writeCtx = (struct transfer_context*) fhandle;
 
@@ -1302,15 +1548,17 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
                     }
                     if (rc == NE_OK) {
                         if ( ne_get_status( writeCtx->req )->klass != 2 ) {
-                            DEBUG_WEBDAV("Error - PUT status value no 2xx");
-                            errno = EIO;
-                            ret = -1;
+                            // DEBUG_WEBDAV("Error - PUT status value no 2xx");
+                            // errno = EIO;
+                            // ret = -1;
                         }
                     } else {
                         DEBUG_WEBDAV("Error - put request on close failed: %d!", rc );
                         errno = EIO;
                         ret = -1;
                     }
+                    /* Remove the local file. */
+                    _tunlink(tmpFileName);
                 }
                 c_free_multibyte(tmpFileName);
             } else {
@@ -1320,9 +1568,9 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
                 rc = ne_request_dispatch( writeCtx->req );
                 if( rc == NE_OK ) {
                     if ( ne_get_status( writeCtx->req )->klass != 2 ) {
-                        DEBUG_WEBDAV("Error - PUT status value no 2xx");
-                        errno = EIO;
-                        ret = -1;
+                        // DEBUG_WEBDAV("Error - PUT status value no 2xx");
+                        // errno = EIO;
+                        // ret = -1;
                     }
                 } else {
                     DEBUG_WEBDAV("Error - put request from memory failed: %d!", rc );
@@ -1331,6 +1579,7 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
                 }
             }
         }
+
         ne_request_destroy( writeCtx->req );
     } else  {
         /* Its a GET request, not much to do in close. */
@@ -1341,11 +1590,10 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
             }
         }
     }
-    /* Remove the local file. */
-    unlink( writeCtx->tmpFileName );
 
     /* free mem. Note that the request mem is freed by the ne_request_destroy call */
     SAFE_FREE( writeCtx->tmpFileName );
+    SAFE_FREE( writeCtx->clean_uri );
     SAFE_FREE( writeCtx );
 
     return ret;
@@ -1481,11 +1729,7 @@ static csync_vio_file_stat_t *owncloud_readdir(csync_vio_method_handle_t *dhandl
         fetchCtx->currResource = fetchCtx->currResource->next;
 
         /* fill the static stat buf as input for the stat function */
-        _fs.name   = lfs->name;
-        _fs.mtime  = lfs->mtime;
-        _fs.fields = lfs->fields;
-        _fs.type   = lfs->type;
-        _fs.size   = lfs->size;
+        fill_stat_cache(lfs);
     }
 
     /* DEBUG_WEBDAV("LFS fields: %s: %d", lfs->name, lfs->type ); */
@@ -1651,11 +1895,11 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
     pname.name = "lastmodified";
 
     newmodtime = modtime->tv_sec;
-#if TIMEDELTA
+
     DEBUG_WEBDAV("Add a time delta to modtime %lu: %ld",
                  modtime->tv_sec, dav_session.time_delta);
     newmodtime += dav_session.time_delta;
-#endif
+
     snprintf( val, sizeof(val), "%ld", newmodtime );
     DEBUG_WEBDAV("Setting LastModified of %s to %s", curi, val );
 
@@ -1678,7 +1922,8 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
 
 csync_vio_method_t _method = {
     .method_table_size = sizeof(csync_vio_method_t),
-    .get_capabilities = owncloud_get_capabilities,
+    .get_capabilities = owncloud_capabilities,
+    .get_file_id = owncloud_file_id,
     .open = owncloud_open,
     .creat = owncloud_creat,
     .close = owncloud_close,
@@ -1743,6 +1988,9 @@ void vio_module_shutdown(csync_vio_method_t *method) {
     SAFE_FREE( dav_session.proxy_host );
     SAFE_FREE( dav_session.proxy_user );
     SAFE_FREE( dav_session.proxy_pwd  );
+
+    /* free stat memory */
+    fill_stat_cache(NULL);
 
     if( dav_session.ctx )
         ne_session_destroy( dav_session.ctx );

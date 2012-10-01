@@ -30,7 +30,7 @@ csync_vio_file_stat_t *csync_vio_file_stat_new(void) {
   if (file_stat == NULL) {
     return NULL;
   }
-
+  file_stat->md5 = NULL;
   return file_stat;
 }
 
@@ -40,13 +40,15 @@ void csync_vio_file_stat_destroy(csync_vio_file_stat_t *file_stat) {
     return;
   }
 
-  if (file_stat->fields == CSYNC_VIO_FILE_STAT_FIELDS_SYMLINK_NAME) {
+  if (file_stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_SYMLINK_NAME) {
     SAFE_FREE(file_stat->u.symlink_name);
   }
-  if (file_stat->fields == CSYNC_VIO_FILE_STAT_FIELDS_CHECKSUM) {
+  if (file_stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_CHECKSUM) {
     SAFE_FREE(file_stat->u.checksum);
   }
-
+  if (file_stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_MD5) {
+    SAFE_FREE(file_stat->md5);
+  }
   SAFE_FREE(file_stat->name);
   SAFE_FREE(file_stat);
 }

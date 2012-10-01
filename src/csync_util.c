@@ -32,14 +32,6 @@
 #include "csync_util.h"
 #include "vio/csync_vio.h"
 
-#if defined(__APPLE__)
-#  define COMMON_DIGEST_FOR_OPENSSL
-#  include <CommonCrypto/CommonDigest.h>
-#  define SHA1 CC_SHA1
-#else
-#  include <openssl/md5.h>
-#endif
-
 #define CSYNC_LOG_CATEGORY_NAME "csync.util"
 #include "csync_log.h"
 
@@ -113,6 +105,7 @@ void csync_memstat_check(void) {
 
 static int _merge_file_trees_visitor(void *obj, void *data) {
   csync_file_stat_t *fs = NULL;
+  csync_file_stat_t *tfs = NULL;
   csync_vio_file_stat_t *vst = NULL;
 
   CSYNC *ctx = NULL;
@@ -181,25 +174,31 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
   fs = c_rbtree_node_data(node);
 
   switch (ctx->current) {
-    case LOCAL_REPLICA:
-      if (asprintf(&uri, "%s/%s", ctx->local.uri, fs->path) < 0) {
-        rc = -1;
-        strerror_r(errno, errbuf, sizeof(errbuf));
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file uri alloc failed: %s",
-            errbuf);
-        goto out;
+  case LOCAL_REPLICA:
+      /* If there is a destpath, this is a rename and the target must be used. */
+      if( fs->destpath ) {
+          asprintf(&uri, "%s/%s", ctx->local.uri, fs->destpath);
+          SAFE_FREE(fs->destpath);
+      } else {
+          if (asprintf(&uri, "%s/%s", ctx->local.uri, fs->path) < 0) {
+              rc = -1;
+              strerror_r(errno, errbuf, sizeof(errbuf));
+              CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file uri alloc failed: %s",
+                        errbuf);
+              goto out;
+          }
       }
       break;
-    case REMOTE_REPLCIA:
+  case REMOTE_REPLCIA:
       if (asprintf(&uri, "%s/%s", ctx->remote.uri, fs->path) < 0) {
-        rc = -1;
-        strerror_r(errno, errbuf, sizeof(errbuf));
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file uri alloc failed: %s",
-            errbuf);
-        goto out;
+          rc = -1;
+          strerror_r(errno, errbuf, sizeof(errbuf));
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file uri alloc failed: %s",
+                    errbuf);
+          goto out;
       }
       break;
-    default:
+  default:
       break;
   }
 
@@ -219,7 +218,24 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
   fs->inode = vst->inode;
   fs->modtime = vst->mtime;
 
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: UPDATED", uri);
+  /* update with the id from the remote repo. This method always works on the local repo */
+  node = c_rbtree_find(ctx->remote.tree, &fs->phash);
+  if (node == NULL) {
+      rc = -1;
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to find node");
+      goto out;
+  }
+
+  tfs = c_rbtree_node_data(node);
+  if( tfs && tfs->md5 ) {
+      if( fs->md5 ) SAFE_FREE(fs->md5);
+      fs->md5 = c_strdup( tfs->md5 );
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "PRE UPDATED %s: %s", fs->path, fs->md5);
+  } else {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "md5 is empty in merger!");
+  }
+
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: UPDATED (%s)", uri, fs->md5);
 
   fs->instruction = CSYNC_INSTRUCTION_NONE;
 
@@ -332,70 +348,6 @@ uint64_t csync_create_statedb_hash(CSYNC *ctx) {
   SAFE_FREE(path);
 
   return hash;
-}
-
-static char* digest_to_out(unsigned char* digest)
-{
-    char *out = c_malloc(33);
-    int n;
-
-    if( !digest ) return NULL;
-
-    for (n = 0; n < 16; ++n) {
-        snprintf(&(out[n*2]), 16*2, "%02x", (unsigned int) *(digest+n));
-    }
-
-    return out;
-}
-
-#define BUF_SIZE 512
-
-char* csync_file_md5(const char *filename)
-{
-    const char *tmpFileName;
-    int fd;
-    MD5_CTX c;
-    char buf[ BUF_SIZE+1 ];
-    unsigned char digest[16];
-    size_t size;
-
-    tmpFileName = c_multibyte( filename );
-
-    if ( (fd = _topen( tmpFileName, O_RDONLY )) < 0) {
-        return NULL;
-    } else {
-        MD5_Init(&c);
-        while( (size=read(fd, buf, BUF_SIZE )) >  0) {
-            buf[size]='\0';
-            MD5_Update(&c, buf, size);
-        }
-        close(fd);
-        MD5_Final(digest, &c);
-    }
-
-    c_free_multibyte(tmpFileName);
-    return digest_to_out(digest);
-}
-
-char* csync_buffer_md5(const char *str, int length)
-{
-    MD5_CTX c;
-    unsigned char digest[16];
-
-    MD5_Init(&c);
-
-    while (length > 0) {
-        if (length > 512) {
-            MD5_Update(&c, str, 512);
-        } else {
-            MD5_Update(&c, str, length);
-        }
-        length -= 512;
-        str += 512;
-    }
-
-    MD5_Final(digest, &c);
-    return digest_to_out(digest);
 }
 
 /* vim: set ts=8 sw=2 et cindent: */

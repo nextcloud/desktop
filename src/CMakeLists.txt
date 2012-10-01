@@ -4,11 +4,6 @@ add_subdirectory(std)
 
 find_package(SQLite3 REQUIRED)
 find_package(Iniparser REQUIRED)
-if(CMAKE_CROSSCOMPILING)
-    find_package(OpenSSLCross REQUIRED)
-else()
-    find_package(OpenSSL REQUIRED)
-endif()
 
 set(CSYNC_PUBLIC_INCLUDE_DIRS
   ${CMAKE_CURRENT_SOURCE_DIR}
@@ -17,7 +12,6 @@ set(CSYNC_PUBLIC_INCLUDE_DIRS
 )
 
 set(CSYNC_PRIVATE_INCLUDE_DIRS
-  ${OPENSSL_INCLUDE_DIRS}
   ${INIPARSER_INCLUDE_DIRS}
   ${SQLITE3_INCLUDE_DIRS}
   ${CSTDLIB_PUBLIC_INCLUDE_DIRS}
@@ -34,7 +28,6 @@ set(CSYNC_LINK_LIBRARIES
   ${CSTDLIB_LIBRARY}
   ${CSYNC_REQUIRED_LIBRARIES}
   ${INIPARSER_LIBRARIES}
-  ${OPENSSL_LIBRARIES}
   ${SQLITE3_LIBRARIES}
 )
 
@@ -48,6 +41,7 @@ set(csync_SRCS
   csync_config.c
   csync_exclude.c
   csync_statedb.c
+  csync_dbtree.c
   csync_time.c
   csync_util.c
   csync_misc.c
