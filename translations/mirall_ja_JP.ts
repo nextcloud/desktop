@@ -376,7 +376,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/application.cpp" line="268"/>
         <location filename="../src/mirall/application.cpp" line="276"/>
         <source>No %1 Connection</source>
-        <translation type="unfinished"/>
+        <translation>%1 未接続</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="269"/>
@@ -391,12 +391,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="289"/>
         <source>%1 Sync Started</source>
-        <translation type="unfinished"/>
+        <translation>%1 同期開始</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="305"/>
         <source>Open %1 in browser...</source>
-        <translation type="unfinished"/>
+        <translation>%1 をブラウザーで開く...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="315"/>
@@ -751,7 +751,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="237"/>
         <source>Folder was successfully created on %1.</source>
-        <translation type="unfinished"/>
+        <translation>%1 にフォルダーが作成されました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="240"/>
