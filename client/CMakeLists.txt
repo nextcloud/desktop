@@ -14,8 +14,8 @@ set(CLIENT_PRIVATE_INCLUDE_DIRS
 )
 
 set(CLIENT_EXECUTABLE
-  csync_client
-  CACHE INTERNAL "csync client"
+  ocsync_client
+  CACHE INTERNAL "ocsync client"
 )
 
 set(CLIENT_LINK_LIBRARIES
@@ -46,12 +46,13 @@ set_target_properties(
   ${CLIENT_EXECUTABLE}
   PROPERTIES
     OUTPUT_NAME
-      csync
+      ocsync
 )
 
 install(
   TARGETS
-    csync_client
+    ocsync_client
+
   DESTINATION
   ${BIN_INSTALL_DIR}
 )

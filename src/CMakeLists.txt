@@ -19,8 +19,8 @@ set(CSYNC_PRIVATE_INCLUDE_DIRS
 )
 
 set(CSYNC_LIBRARY
-  csync
-  CACHE INTERNAL "csync library"
+  ocsync
+  CACHE INTERNAL "ocsync library"
 )
 
 set(CSYNC_LINK_LIBRARIES

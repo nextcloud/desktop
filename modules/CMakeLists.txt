@@ -17,15 +17,15 @@ set(MODULES_PRIVATE_INCLUDE_DIRS
 )
 
 set(SMB_PLUGIN
-  csync_smb
+  ocsync_smb
 )
 
 set(SFTP_PLUGIN
-  csync_sftp
+  ocsync_sftp
 )
 
 set(OWNCLOUD_PLUGIN
-    csync_owncloud
+  ocsync_owncloud
 )
 
 include_directories(
@@ -46,8 +46,8 @@ install(
 )
 endif()
 
-macro_add_plugin(csync_dummy csync_dummy.c)
-target_link_libraries(csync_dummy ${CSYNC_LIBRARY})
+macro_add_plugin(ocsync_dummy csync_dummy.c)
+target_link_libraries(ocsync_dummy ${CSYNC_LIBRARY})
 
 if (LIBSSH_FOUND)
 macro_add_plugin(${SFTP_PLUGIN} csync_sftp.c)
@@ -76,7 +76,7 @@ endif (NEON_FOUND)
 
 # create test file as bad plugin for the vio testcase
 file(WRITE
-  ${CMAKE_CURRENT_BINARY_DIR}/csync_bad.so
+  ${CMAKE_CURRENT_BINARY_DIR}/ocsync_bad.so
   "bad plugin"
 )
 

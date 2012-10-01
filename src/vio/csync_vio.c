@@ -64,14 +64,14 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
   char *last_bslash = NULL;
 #endif
   
-  if (asprintf(&path, "%s/csync_%s.%s", PLUGINDIR, module, MODULE_EXTENSION) < 0) {
+  if (asprintf(&path, "%s/ocsync_%s.%s", PLUGINDIR, module, MODULE_EXTENSION) < 0) {
     return -1;
   }
 
   mpath = c_multibyte(path);
   if (_tstat(mpath, &sb) < 0) {
     SAFE_FREE(path);
-    if (asprintf(&path, "%s/modules/csync_%s.%s", BINARYDIR, module, MODULE_EXTENSION) < 0) {
+    if (asprintf(&path, "%s/modules/ocsync_%s.%s", BINARYDIR, module, MODULE_EXTENSION) < 0) {
       return -1;
     }
   }
@@ -95,7 +95,7 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
       }
       c_free_utf8(buf);
 
-      if (asprintf(&path, "modules/csync_%s.%s", module, MODULE_EXTENSION) < 0) {
+      if (asprintf(&path, "modules/ocsync_%s.%s", module, MODULE_EXTENSION) < 0) {
         return -1;
       }
     }
@@ -115,7 +115,7 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
     char* path2 = NULL;
     path2 = c_dirname(path_tmp);
 
-    if (asprintf(&path, "%s/../Plugins/csync_%s.%s", path2, module, MODULE_EXTENSION) < 0) {
+    if (asprintf(&path, "%s/../Plugins/ocsync_%s.%s", path2, module, MODULE_EXTENSION) < 0) {
       return -1;
     }
   }
