@@ -318,6 +318,9 @@ void Application::slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors )
     QString configHandle = ownCloudInfo::instance()->configHandle(reply);
 
     // make the ssl dialog aware of the custom config. It loads known certs.
+    if( ! _sslErrorDialog ) {
+        _sslErrorDialog = new SslErrorDialog;
+    }
     _sslErrorDialog->setCustomConfigHandle( configHandle );
 
     if( _sslErrorDialog->setErrorList( errors ) ) {
