@@ -27,8 +27,6 @@
 namespace Mirall
 {
 
-class SslErrorDialog;
-
 class ownCloudInfo : public QObject
 {
     Q_OBJECT
@@ -61,6 +59,16 @@ public:
     void resetSSLUntrust();
 
     /**
+      * Set wether or not to trust errorneus SSL certificates
+      */
+    void setCertsUntrusted(bool donttrust);
+
+    /**
+      * Do we trust the certificate?.
+      */
+    bool certsUntrusted();
+
+    /**
       * Create a collection via owncloud. Provide a relative path.
       */
     void mkdirRequest( const QString& );
@@ -70,6 +78,11 @@ public:
      */
     void setCustomConfigHandle( const QString& );
 
+    /**
+     * Accessor to the config handle.
+     */
+    QString configHandle(QNetworkReply *reply = 0);
+
 signals:
     // result signal with url- and version string.
     void ownCloudInfoFound( const QString&, const QString&, const QString&, const QString& );
@@ -77,6 +90,7 @@ signals:
     void ownCloudDirExists( const QString&, QNetworkReply* );
 
     void webdavColCreated( QNetworkReply::NetworkError );
+    void sslFailed( QNetworkReply *reply, QList<QSslError> errors );
 
 public slots:
 
@@ -84,7 +98,6 @@ protected slots:
     void slotReplyFinished( );
     void slotError( QNetworkReply::NetworkError );
     void slotAuthentication( QNetworkReply*, QAuthenticator *);
-    void slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors );
 
 #if QT46_IMPL
     void qhttpRequestFinished(int id, bool success );
@@ -116,7 +129,6 @@ private:
     QUrl                           _urlRedirectedTo;
     QHash<QNetworkReply*, QString> _directories;
     QHash<QNetworkReply*, QString> _configHandleMap;
-    SslErrorDialog                *_sslErrorDialog;
     bool                           _certsUntrusted;
     int                            _authAttempts;
 };

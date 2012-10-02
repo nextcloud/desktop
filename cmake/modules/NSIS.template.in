@@ -321,7 +321,7 @@ Section "${APPLICATION_NAME}" SEC_OWNCLOUD
    File "${QT_DLL_PATH}\QtNetwork4.dll"
    File "${QT_DLL_PATH}\QtXml4.dll"
 
-   File "${CSYNC_LIBRARY_DIR}/libcsync.dll"
+   File "${CSYNC_LIBRARY_DIR}/libocsync.dll"
    File "${MING_BIN}\libsqlite3-0.dll"
    File "${MING_BIN}\libiniparser.dll"
    File "${MING_BIN}\libdl.dll"
