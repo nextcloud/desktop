@@ -16,7 +16,7 @@ mirall/createanowncloudpage.ui
 mirall/owncloudftpaccesspage.ui
 mirall/owncloudwizardresultpage.ui
 mirall/owncloudcredentialspage.ui
-mirall/sslerrorsdialog.ui
+mirall/sslerrordialog.ui
 mirall/proxydialog.ui
 )
 

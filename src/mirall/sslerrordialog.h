@@ -19,7 +19,7 @@
 #include <QSslCertificate>
 #include <QList>
 
-#include "ui_sslerrorsdialog.h"
+#include "ui_sslerrordialog.h"
 
 class QSslError;
 
@@ -27,7 +27,7 @@ class QSslError;
 namespace Mirall
 {
 
-class SslErrorDialog : public QDialog, public Ui::sslErrorsDialog
+class SslErrorDialog : public QDialog, public Ui::sslErrorDialog
 {
     Q_OBJECT
 public:
