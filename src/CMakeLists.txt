@@ -68,6 +68,7 @@ set(libsync_SRCS
     mirall/theme.cpp
     mirall/owncloudtheme.cpp
     mirall/miralltheme.cpp
+    mirall/owncloudinfo.cpp
 )
 set(libsync_HEADERS 
     mirall/folderman.h
@@ -78,6 +79,7 @@ set(libsync_HEADERS
     mirall/csyncfolder.h
     mirall/owncloudfolder.h
     mirall/csyncthread.h
+    mirall/owncloudinfo.h
 )
 
 IF( INOTIFY_FOUND )
@@ -109,7 +111,6 @@ set(mirall_SRCS
     mirall/statusdialog.cpp
     mirall/owncloudwizard.cpp
     mirall/owncloudsetupwizard.cpp
-    mirall/owncloudinfo.cpp
     mirall/updatedetector.cpp
     mirall/occinfo.cpp
     mirall/sslerrordialog.cpp
@@ -120,7 +121,6 @@ set(mirall_SRCS
 set(mirall_HEADERS
     mirall/application.h
     mirall/folderwizard.h
-    mirall/owncloudinfo.h
     mirall/owncloudsetupwizard.h
     mirall/owncloudwizard.h
     mirall/statusdialog.h
