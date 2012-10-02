@@ -83,6 +83,11 @@ public:
      */
     QString configHandle(QNetworkReply *reply = 0);
 
+    /**
+     * return the proxy the QNetworkAccessManager is using.
+     */
+    QNetworkProxy qnamProxy();
+
 signals:
     // result signal with url- and version string.
     void ownCloudInfoFound( const QString&, const QString&, const QString&, const QString& );
