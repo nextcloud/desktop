@@ -328,8 +328,9 @@ QString MirallConfigFile::ownCloudPasswd( const QString& connection ) const
     if( skipPwd ) {
         if( ! _askedUser ) {
             bool ok;
-            QString text = QInputDialog::getText(0, QApplication::translate("MirallConfigFile","ownCloud Password Required"),
-                                                 QApplication::translate("MirallConfigFile","Please enter your ownCloud password:"),
+            QString text = QInputDialog::getText(0, QApplication::translate("MirallConfigFile","Password Required"),
+                                                 QApplication::translate("MirallConfigFile","Please enter your %1 password:")
+                                                 .arg(Theme::instance()->appName()),
                                                  QLineEdit::Password,
                                                  QString::null, &ok);
             if( ok && !text.isEmpty() ) { // empty password is not allowed on ownCloud
