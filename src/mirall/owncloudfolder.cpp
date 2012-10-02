@@ -15,6 +15,7 @@
 
 #include "mirall/owncloudfolder.h"
 #include "mirall/mirallconfigfile.h"
+#include "mirall/owncloudinfo.h"
 
 #include <csync.h>
 
@@ -151,8 +152,30 @@ void ownCloudFolder::startSync(const QStringList &pathList)
 
     // Proxy settings. Proceed them as strings to csync thread.
     int intProxy = cfgFile.proxyType();
-    QString proxyType;
 
+    QString proxyHost = cfgFile.proxyHostName();
+    int proxyPort     = cfgFile.proxyPort();
+    QString proxyUser = cfgFile.proxyUser();
+    QString proxyPwd  = cfgFile.proxyPassword();
+
+    if( intProxy == QNetworkProxy::DefaultProxy ) {
+        // in case of system proxy we set the proxy in csync explicitely to the
+        // value of Qt as Qt should be able to handle the pac system configuration
+        // while libproxy (through libneon) might not on the target platform
+        QNetworkProxy proxy = ownCloudInfo::instance()->qnamProxy();
+        if( (!proxyHost.isEmpty()) && (proxyPort != 0) ) {
+            intProxy  = QNetworkProxy::HttpProxy; // switch to http proxy. Tells csync/owncloud to
+            // explicitely set the proxy host and port.
+        }
+
+        proxyHost = proxy.hostName();
+        proxyPort = proxy.port();
+        proxyUser = proxy.user();
+        proxyPwd  = proxy.password();
+        qDebug() << "Re-Using the Qt proxy settings for csync, host: " << proxyHost;
+    }
+
+    QString proxyType;
     if( intProxy == QNetworkProxy::NoProxy )
         proxyType = QLatin1String("NoProxy");
     else if( intProxy == QNetworkProxy::DefaultProxy )
@@ -164,12 +187,11 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     else if( intProxy == QNetworkProxy::HttpCachingProxy )
         proxyType = QLatin1String("HttpCachingProxy");
     else if( intProxy == QNetworkProxy::FtpCachingProxy )
-            proxyType = QLatin1String("FtpCachingProxy");
+        proxyType = QLatin1String("FtpCachingProxy");
     else proxyType = QLatin1String("NoProxy");
 
     _csync->setConnectionDetails( cfgFile.ownCloudUser(), cfgFile.ownCloudPasswd(), proxyType,
-                                  cfgFile.proxyHostName(), cfgFile.proxyPort(), cfgFile.proxyUser(),
-                                  cfgFile.proxyPassword() );
+                                  proxyHost, proxyPort, proxyUser, proxyPwd );
 
     connect(_csync, SIGNAL(started()),  SLOT(slotCSyncStarted()), Qt::QueuedConnection);
     connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()), Qt::QueuedConnection);

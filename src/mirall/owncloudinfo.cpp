@@ -451,5 +451,11 @@ QNetworkReply* ownCloudInfo::davRequest(const QString& reqVerb,  QNetworkRequest
 }
 #endif
 
+QNetworkProxy ownCloudInfo::qnamProxy()
+{
+    return _manager->proxy();
+}
+
+
 }
 

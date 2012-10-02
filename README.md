@@ -74,6 +74,8 @@ To generate a tarball:
 ## Authors
 
 * Duncan Mac-Vicar P. <duncan@kde.org>
+* Klaas Freitag <freitag@owncloud.com>
+* Daniel Molkentin <danimo@owncloud.com>
 
 ## License
 
