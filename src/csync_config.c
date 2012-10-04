@@ -20,12 +20,16 @@
 
 #include "config.h"
 
+#define _GNU_SOURCE
+#include <stdio.h>
+
 #include <iniparser.h>
 
 #include "c_lib.h"
 #include "c_private.h"
 #include "csync_private.h"
 #include "csync_config.h"
+#include "csync_misc.h"
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.config"
 #include "csync_log.h"
@@ -73,9 +77,49 @@ int csync_config_load(CSYNC *ctx, const char *config) {
 
   /* copy default config, if no config exists */
   if (! c_isfile(config)) {
-    if (_csync_config_copy_default(config) < 0) {
-      return -1;
-    }
+      /* check if there is still one csync.conf left over in $HOME/.csync
+       * and copy it over (migration path)
+       */
+      char *home = NULL;
+      char *home_config = NULL;
+      char *config_file = NULL;
+
+      /* there is no statedb at the expected place. */
+      home = csync_get_user_home_dir();
+      if( !c_streq(home, ctx->options.config_dir) ) {
+          int rc = -1;
+
+          config_file = c_basename(config);
+          if( config_file ) {
+              rc = asprintf(&home_config, "%s/%s/%s", home, CSYNC_CONF_DIR, config_file);
+              SAFE_FREE(config_file);
+          }
+
+          if (rc >= 0) {
+              CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "config file %s not found, checking %s",
+                        config, home_config);
+
+              /* check the home file and copy to new statedb if existing. */
+              if(c_isfile(home_config)) {
+                  if (c_copy(home_config, config, 0644) < 0) {
+                      /* copy failed, but that is not reason to die. */
+                      CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Could not copy config %s => %s",
+                                home_config, config);
+                  } else {
+                      CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "Copied %s => %s",
+                                home_config, config);
+                  }
+              }
+          }
+          SAFE_FREE(home_config);
+      }
+      SAFE_FREE(home);
+      /* Still install the default one if nothing is there. */
+      if( ! c_isfile(config)) {
+          if (_csync_config_copy_default(config) < 0) {
+              return -1;
+          }
+      }
   }
 
   dict = iniparser_load(config);
