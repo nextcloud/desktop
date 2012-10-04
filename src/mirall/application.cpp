@@ -755,25 +755,28 @@ void Application::slotInfoFolder( const QString& alias )
 
 void Application::slotEnableFolder(const QString& alias, const bool enable)
 {
-  qDebug() << "Application: enable folder with alias " << alias;
+    qDebug() << "Application: enable folder with alias " << alias;
+    bool terminate = false;
 
-  _folderMan->slotEnableFolder( alias, enable );
+    // this sets the folder status to disabled but does not interrupt it.
+    Folder *f = _folderMan->folder( alias );
+    if( f && !enable ) {
+        // check if a sync is still running and if so, ask if we should terminate.
+        if( f->isBusy() ) { // its still running
+            int reply = QMessageBox::question( 0, tr("Sync Running"),
+                                               tr("The syncing operation is running.<br/>Do you want to terminate it?"),
+                                               QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes );
+            terminate = ( reply == QMessageBox::Yes );
+        }
+    }
 
-  // this sets the folder status to disabled but does not interrupt it.
-  Folder *f = _folderMan->folder( alias );
-  if( f && !enable ) {
-      // check if a sync is still running and if so, ask if we should terminate.
-      if( f->isBusy() ) { // its still running
-          QMessageBox::StandardButton b = QMessageBox::question( 0, tr("Sync Running"),
-                                                                 tr("The syncing operation is running.<br/>Do you want to terminate it?"),
-                                                                 QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes );
-          if( b == QMessageBox::Yes ) {
-              _folderMan->terminateSyncProcess( alias );
-          }
-      }
-  }
+    // message box can return at any time while the thread keeps running,
+    // so better check again after the user has responded.
+    if ( f->isBusy() && terminate )
+        _folderMan->terminateSyncProcess( alias );
 
-  _statusDialog->slotUpdateFolderState( f );
+    _folderMan->slotEnableFolder( alias, enable );
+    _statusDialog->slotUpdateFolderState( f );
 }
 
 void Application::slotConfigure()
