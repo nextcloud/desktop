@@ -35,6 +35,7 @@
 #include "csync_private.h"
 #include "csync_statedb.h"
 #include "csync_util.h"
+#include "csync_misc.h"
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.statedb"
 #include "csync_log.h"
@@ -108,6 +109,47 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb) {
   c_strlist_t *result = NULL;
   char *statedb_tmp = NULL;
 
+  /* check if the statedb is existing. If not, check if there is still one
+   * left over in $HOME/.csync and copy it over (migration path)
+   */
+  if( !c_isfile(statedb) ) {
+      char *home = NULL;
+      char *home_statedb = NULL;
+      char *statedb_file = NULL;
+
+      /* there is no statedb at the expected place. */
+
+      home = csync_get_user_home_dir();
+      statedb_file = c_basename(statedb);
+
+      rc = asprintf(&home_statedb, "%s/%s/%s", home, CSYNC_CONF_DIR, statedb_file);
+      SAFE_FREE(home);
+      SAFE_FREE(statedb_file);
+
+      if (rc < 0) {
+          goto out;
+      }
+
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "statedb %s not found, checking %s",
+                statedb, home_statedb);
+
+      /* check the home file and copy to new statedb if existing. */
+      if(c_isfile(home_statedb)) {
+          if (c_copy(home_statedb, statedb, 0644) < 0) {
+            /* copy failed, but that is not reason to die. */
+              CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Could not copy file %s => %s",
+                        home_statedb, statedb );
+          } else {
+              CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "Copied %s => %s",
+                        home_statedb, statedb );
+          }
+      }
+      SAFE_FREE(home_statedb);
+  }
+
+  /* csync_statedb_check tries to open the statedb and creates it in case
+   * its not there.
+   */
   if (_csync_statedb_check(statedb) < 0) {
     rc = -1;
     goto out;
