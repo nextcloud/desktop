@@ -1280,12 +1280,12 @@ La configurazione non può essere completata.</translation>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="331"/>
         <source>Password Required</source>
-        <translation type="unfinished"/>
+        <translation>Password richiesta</translation>
     </message>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="332"/>
         <source>Please enter your %1 password:</source>
-        <translation type="unfinished"/>
+        <translation>Digita la tua password di %1:</translation>
     </message>
 </context>
 <context>
@@ -1714,17 +1714,17 @@ Questa procedura guidata ti aiuterà durante i passaggi necessari.&lt;/span&gt;&
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Modulo</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
         <source>Check if you want to continue via SSL and trust the shown certificates.</source>
-        <translation type="unfinished"/>
+        <translation>Verifica se vuoi continuare con SSL e fidarti dei certificati mostrati.</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>
         <source>SSL Connection</source>
-        <translation type="unfinished"/>
+        <translation>Connessione SSL</translation>
     </message>
 </context>
 <context>

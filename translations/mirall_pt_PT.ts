@@ -331,7 +331,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="354"/>
         <source>Configure proxy...</source>
-        <translation type="unfinished"/>
+        <translation>Configurar proxy...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="358"/>
@@ -411,7 +411,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="416"/>
         <source>Managed Folders:</source>
-        <translation type="unfinished"/>
+        <translation>Pastas Geridas:</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="648"/>
@@ -666,7 +666,7 @@ Por favor reporte o erro - escreva um bug report</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="354"/>
         <source>mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>meudominio.org</translation>
     </message>
 </context>
 <context>
@@ -800,12 +800,12 @@ Por favor reporte o erro - escreva um bug report</translation>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="134"/>
         <source>&amp;Search: </source>
-        <translation type="unfinished"/>
+        <translation>&amp;Procurar:</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="142"/>
         <source>&amp;Find</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Encontrar</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="160"/>
@@ -820,7 +820,7 @@ Por favor reporte o erro - escreva um bug report</translation>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="167"/>
         <source>S&amp;ave</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Guardar</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="168"/>
@@ -831,7 +831,7 @@ Por favor reporte o erro - escreva um bug report</translation>
         <location filename="../src/mirall/logbrowser.cpp" line="206"/>
         <location filename="../src/mirall/logbrowser.cpp" line="263"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="207"/>
@@ -841,12 +841,12 @@ Por favor reporte o erro - escreva um bug report</translation>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="253"/>
         <source>Save log file</source>
-        <translation type="unfinished"/>
+        <translation>Guardar ficheiro de log</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="263"/>
         <source>Could not write to log file </source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível escrever no ficheiro de log</translation>
     </message>
 </context>
 <context>
@@ -854,7 +854,7 @@ Por favor reporte o erro - escreva um bug report</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="264"/>
         <source>john</source>
-        <translation type="unfinished"/>
+        <translation>joão</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="265"/>
@@ -867,12 +867,12 @@ Por favor reporte o erro - escreva um bug report</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="310"/>
         <source>ftp.mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>ftp.meudominio.org</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="311"/>
         <source>john</source>
-        <translation type="unfinished"/>
+        <translation>joão</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="312"/>
@@ -885,7 +885,7 @@ Por favor reporte o erro - escreva um bug report</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="82"/>
         <source>john</source>
-        <translation type="unfinished"/>
+        <translation>joão</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="83"/>
@@ -1079,7 +1079,7 @@ Não é possível correr o programa de instalação ou configuração.</translat
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="209"/>
         <source>http://owncloud.mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>http://owncloud.meudominio.org</translation>
     </message>
 </context>
 <context>
@@ -1110,7 +1110,7 @@ Não é possível correr o programa de instalação ou configuração.</translat
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="89"/>
         <source>Warnings about current SSL Connection:</source>
-        <translation type="unfinished"/>
+        <translation>Avisos sobre a Ligação SSL actual:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="125"/>

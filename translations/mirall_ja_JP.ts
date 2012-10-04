@@ -1286,12 +1286,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="331"/>
         <source>Password Required</source>
-        <translation type="unfinished"/>
+        <translation>パスワードが必要</translation>
     </message>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="332"/>
         <source>Please enter your %1 password:</source>
-        <translation type="unfinished"/>
+        <translation>%1 のパスワードを入力してください:</translation>
     </message>
 </context>
 <context>
@@ -1718,17 +1718,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>フォーム</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
         <source>Check if you want to continue via SSL and trust the shown certificates.</source>
-        <translation type="unfinished"/>
+        <translation>SSL接続を継続し、表示された証明書を信頼する場合はチェックしてください。</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>
         <source>SSL Connection</source>
-        <translation type="unfinished"/>
+        <translation>SSL接続</translation>
     </message>
 </context>
 <context>

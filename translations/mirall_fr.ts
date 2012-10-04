@@ -401,7 +401,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/application.cpp" line="356"/>
         <source>About...</source>
-        <translation type="unfinished"/>
+        <translation>À propos de…</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="403"/>
@@ -1278,7 +1278,7 @@ L&apos;installation ne peut pas continuer.</translation>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="331"/>
         <source>Password Required</source>
-        <translation type="unfinished"/>
+        <translation>Mot de passe requis</translation>
     </message>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="332"/>
@@ -1710,7 +1710,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formulaire</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
@@ -1720,7 +1720,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>
         <source>SSL Connection</source>
-        <translation type="unfinished"/>
+        <translation>Connexion SSL</translation>
     </message>
 </context>
 <context>

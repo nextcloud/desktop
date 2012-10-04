@@ -1276,12 +1276,12 @@ No s&apos;ha pogut configurar</translation>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="331"/>
         <source>Password Required</source>
-        <translation type="unfinished"/>
+        <translation>Es requereix contrasenya</translation>
     </message>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="332"/>
         <source>Please enter your %1 password:</source>
-        <translation type="unfinished"/>
+        <translation>Escriviu la contrasenya %1:</translation>
     </message>
 </context>
 <context>
@@ -1708,17 +1708,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formulari</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
         <source>Check if you want to continue via SSL and trust the shown certificates.</source>
-        <translation type="unfinished"/>
+        <translation>Comproveu si voleu continuar via SSL i confiar en els certificats que es mostren.</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>
         <source>SSL Connection</source>
-        <translation type="unfinished"/>
+        <translation>Connexió SSL</translation>
     </message>
 </context>
 <context>

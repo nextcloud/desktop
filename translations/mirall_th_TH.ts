@@ -1286,12 +1286,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="331"/>
         <source>Password Required</source>
-        <translation type="unfinished"/>
+        <translation>จำเป็นต้องกรอกรหัสผ่าน</translation>
     </message>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="332"/>
         <source>Please enter your %1 password:</source>
-        <translation type="unfinished"/>
+        <translation>กรุณากรอกรหัสผ่าน %1 ของคุณ</translation>
     </message>
 </context>
 <context>
@@ -1718,17 +1718,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>แบบฟอร์ม</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
         <source>Check if you want to continue via SSL and trust the shown certificates.</source>
-        <translation type="unfinished"/>
+        <translation>ตรวจสอบให้แน่ใจว่าคุณต้องการดำเนินการผ่านทาง SSL และให้ความเชื่อถือและไว้วางใจในใบรับรองความปลอดภัยที่แสดงต่อไปหรือไม่</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>
         <source>SSL Connection</source>
-        <translation type="unfinished"/>
+        <translation>การเชื่อมต่อแบบ SSL</translation>
     </message>
 </context>
 <context>

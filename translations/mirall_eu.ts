@@ -345,48 +345,48 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="197"/>
         <source>No %1 Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Ez dago %1-en konfiguraziorik</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="198"/>
         <source>&lt;p&gt;No server connection has been configured for this %1 client.&lt;/p&gt;&lt;p&gt;Please right click on the %1 system tray icon and select &lt;i&gt;Configure&lt;/i&gt; to connect this client to an %1 server.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Ez da %1 bezero honetarako zerbitzari baterako konexiorik konfiguratu.&lt;/p&gt;&lt;p&gt;Mesedez klikatu eskubiko botoiarekin %1 erretiluko ikonoan eta hautatu &lt;i&gt;Konfiguratu&lt;/i&gt; bezero hau %1 zerbitzari batetara konektatzeko.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="224"/>
         <source>%1 Server Mismatch</source>
-        <translation type="unfinished"/>
+        <translation>%1 Zerbitzaria ez dator bat</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="225"/>
         <source>&lt;p&gt;The configured server for this client is too old.&lt;/p&gt;&lt;p&gt;Please update to the latest %1 server and restart the client.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Bezero honetarako konfiguratutako zerbitzaria oso zaharra da.&lt;/p&gt;&lt;p&gt;Mesedez eguneratu zerbitzaria %1-en azkenengo bertsiora eta berrabiarazi bezeroa.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="240"/>
         <source>&lt;p&gt;The %1 at %2 could not be reached.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Ezin da %2-ko %1-era iritsi.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="245"/>
         <source>%1 Connection Failed</source>
-        <translation type="unfinished"/>
+        <translation>%1 konexioak huts egin du</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="273"/>
         <location filename="../src/mirall/application.cpp" line="281"/>
         <source>No %1 Connection</source>
-        <translation type="unfinished"/>
+        <translation>Ez dago %1-ekin konexiorik</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="274"/>
         <source>&lt;p&gt;Your %1 credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Zure %1 kredentzialak ez dira zuzenak.&lt;/p&gt;&lt;p&gt;Mesedez zuzendu erretilutiko ikonotik konfigurazio elkarrizketa koadroa abiarazten!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="282"/>
         <source>&lt;p&gt;Either your user name or your password are not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Zure erabiltzaile izena edo pasahitza ez dira zuzenak.&lt;/p&gt;&lt;p&gt;Mesedez zuzendu erretilutiko ikonotik konfigurazio elkarrizketa koadroa abiarazten!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="294"/>
@@ -624,7 +624,7 @@ Please make sure that all directories are writeable.</source>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="252"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;csyncen %1 plugina ezin da kargatu.&lt;br/&gt;Mesedez egiaztatu instalazioa!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="296"/>
@@ -740,17 +740,17 @@ Mesedez idatz ezazu bug txosten bat.</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="211"/>
         <source>The folder is not available on your %1.&lt;br/&gt;Click to create it.</source>
-        <translation type="unfinished"/>
+        <translation>Karpeta ez dago zure %1-en eskuragarri. &lt;/br&gt;Klikatu sortzeko.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="237"/>
         <source>Folder was successfully created on %1.</source>
-        <translation type="unfinished"/>
+        <translation>%1-en karpeta ongi sortu da.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="240"/>
         <source>Failed to create the folder on %1.&lt;br/&gt;Please check manually.</source>
-        <translation type="unfinished"/>
+        <translation>%1-en karpeta sortzeak huts egin du.&lt;br/&gt;Mesedez egiazta ezazu eskuz.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="260"/>
@@ -760,17 +760,17 @@ Mesedez idatz ezazu bug txosten bat.</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="315"/>
         <source>to your &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; (version %3)</source>
-        <translation type="unfinished"/>
+        <translation>zure  &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;era (%3 bertsioa)</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="326"/>
         <source>no configured %1 found!</source>
-        <translation type="unfinished"/>
+        <translation>ez da %1 konfiguraturik aurkitu!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="327"/>
         <source>%1 could not be reached:&lt;br/&gt;&lt;tt&gt;%2&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Zure %1 ezin da eskuratu:&lt;br/&gt;&lt;tt&gt;%2&lt;/tt&gt;</translation>
     </message>
     <message>
         <source>to your &lt;a href=&quot;%1&quot;&gt;ownCloud&lt;/a&gt; (version %2)</source>
@@ -915,17 +915,17 @@ Mesedez idatz ezazu bug txosten bat.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="130"/>
         <source>Trying to connect to %1 at %2...</source>
-        <translation type="unfinished"/>
+        <translation>%2 zerbitzarian dagoen %1 konektatzen...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="164"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;Konexioa ongi burutu da  %1 zerbitzarian: %2 bertsioa %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="176"/>
         <source>&lt;font color=&quot;red&quot;&gt;Failed to connect to %1!&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;red&quot;&gt;%1-ekin konektatzeak huts egin du!&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="178"/>
@@ -948,12 +948,12 @@ Mesedez idatz ezazu bug txosten bat.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="314"/>
         <source>&lt;font color=&quot;red&quot;&gt;Installation of %1 failed!&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;red&quot;&gt;%1-en instalazioak huts egin du!&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="319"/>
         <source>&lt;font color=&quot;green&quot;&gt;Installation of %1 succeeded!&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;%1-en instalazioa ongi burutu da!&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="352"/>
@@ -990,12 +990,12 @@ Ezin da konfigurazioa egin.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="447"/>
         <source>Succesfully connected to %1!</source>
-        <translation type="unfinished"/>
+        <translation>%1-era ongi konektatu da!</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="453"/>
         <source>Connection to %1 could not be established. Please check again.</source>
-        <translation type="unfinished"/>
+        <translation>%1 konexioa ezin da ezarri. Mesedez egiaztatu berriz.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="450"/>
@@ -1071,7 +1071,7 @@ Ezin da konfigurazioa egin.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="435"/>
         <source>Congratulations! Your &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;new %2&lt;/a&gt; is now up and running!</source>
-        <translation type="unfinished"/>
+        <translation>Zorionak! zure  &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;%2 berria&lt;/a&gt; martxan da!</translation>
     </message>
 </context>
 <context>
@@ -1166,22 +1166,22 @@ Ezin da konfigurazioa egin.</translation>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="422"/>
         <source>Checking %1 connection...</source>
-        <translation type="unfinished"/>
+        <translation>Egiaztatzen %1 konexioa...</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="427"/>
         <source>No %1 connection configured.</source>
-        <translation type="unfinished"/>
+        <translation>Ez dago %1 konexiorik konfiguratuta.</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="449"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, server version %3</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;ra konektatuta, zerbitzariaren bertsioa %3</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="467"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;%1-era konektatzeak huts egin du: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Checking ownCloud connection...</source>
@@ -1247,7 +1247,7 @@ Ezin da konfigurazioa egin.</translation>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="117"/>
         <source>&lt;p&gt;A new version of the %1 client is available.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt; %1 bezeroaren bertsio berria eskuragarri dago.</translation>
     </message>
     <message>
         <source>&lt;p&gt;A new version of the ownCloud Client is available.</source>
@@ -1280,12 +1280,12 @@ Ezin da konfigurazioa egin.</translation>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="331"/>
         <source>Password Required</source>
-        <translation type="unfinished"/>
+        <translation>Pasahitza behar da</translation>
     </message>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="332"/>
         <source>Please enter your %1 password:</source>
-        <translation type="unfinished"/>
+        <translation>Mesedez sartu zure %1 pasahitza:</translation>
     </message>
 </context>
 <context>
@@ -1717,12 +1717,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
         <source>Check if you want to continue via SSL and trust the shown certificates.</source>
-        <translation type="unfinished"/>
+        <translation>Egiaztatu SSL bidez jarraitu nahi duzula eta fidatu ikusitako ziurtagiriez.</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>
         <source>SSL Connection</source>
-        <translation type="unfinished"/>
+        <translation>SSL Konexioa</translation>
     </message>
 </context>
 <context>
