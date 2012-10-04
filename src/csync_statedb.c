@@ -449,6 +449,8 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
           c_strlist_destroy(result);
           return NULL;
       }
+      /* clear the whole structure */
+      ZERO_STRUCTP(st);
 
       /*
    * FIXME:
@@ -470,18 +472,20 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
       st->gid = atoi(result->vector[5]);
       st->mode = atoi(result->vector[6]);
       st->modtime = strtoul(result->vector[7], NULL, 10);
+
+      if(st && result->count > 8 && result->vector[8]) {
+          st->type = atoi(result->vector[8]);
+      }
+
+      if(result->count > 9 && result->vector[9]) {
+          st->md5 = c_strdup( result->vector[9] );
+      }
   } else {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "No result record found for phash = %llu",
                 (long long unsigned int) phash);
+      SAFE_FREE(st);
   }
 
-  if(result->count > 8 && result->vector[8]) {
-      st->type = atoi(result->vector[8]);
-  }
-
-  if(result->count > 9 && result->vector[9]) {
-      st->md5 = c_strdup( result->vector[9] );
-  }
   c_strlist_destroy(result);
 
   return st;
@@ -517,6 +521,8 @@ csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx, uint64_t inode) {
     c_strlist_destroy(result);
     return NULL;
   }
+  /* clear the whole structure */
+  ZERO_STRUCTP(st);
 
   st->phash = strtoull(result->vector[0], NULL, 10);
   st->pathlen = atoi(result->vector[1]);
