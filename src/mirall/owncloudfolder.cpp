@@ -100,6 +100,15 @@ QString ownCloudFolder::secondPath() const
     return re;
 }
 
+QString ownCloudFolder::nativeSecondPath() const
+{
+    // TODO: fold into secondPath() after 1.1.0 release
+    QString path = secondPath();
+    if (!path.startsWith(QLatin1Char('/')) || path.isEmpty())
+        path.prepend(QLatin1Char('/'));
+    return path;
+}
+
 void ownCloudFolder::startSync()
 {
     startSync( QStringList() );
