@@ -302,7 +302,10 @@ void ownCloudFolder::slotTerminateSync()
     if( _thread ) {
         _thread->terminate();
         _thread->wait();
+// TODO: crashes on win, leak for now, fix properly after 1.1.0
+#ifndef Q_OS_WIN
         delete _csync;
+#endif
         delete _thread;
         _csync = 0;
         _thread = 0;
