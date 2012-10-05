@@ -485,8 +485,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
 
 QString OwncloudWizard::ocUrl() const
 {
-    QString url = field("OCUrl").toString();
-
+    QString url = field("OCUrl").toString().simplified();
     if( field("secureConnect").toBool() ) {
         url.prepend(QLatin1String("https://"));
     } else {
