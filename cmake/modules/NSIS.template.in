@@ -305,7 +305,7 @@ Section "${APPLICATION_NAME}" SEC_OWNCLOUD
         ; FIXME: fix installation dir of module, currently needs manual copying to
         ; /usr/i686-w64-mingw32/sys-root/mingw/bin/csync_modules/
 
-        File "${CSYNC_PLUGIN_DIR}/csync_owncloud.dll"
+        File "${CSYNC_PLUGIN_DIR}/ocsync_owncloud.dll"
         SetOutPath "$INSTDIR"
    !endif
 
