@@ -16,7 +16,7 @@ include_directories(BEFORE "${CMAKE_CURRENT_BINARY_DIR}/src/mirall/")
 
 include(GNUInstallDirs)
 ## stupid, we should upstream this
-if("${CMAKE_INSTALL_PREFIX}" STREQUAL "/usr" AND NOT CMAKE_INSTALL_SYSCONFIGDIR)
+if("${CMAKE_INSTALL_PREFIX}" STREQUAL "/usr" AND NOT CMAKE_INSTALL_SYSCONFDIR)
     set(CMAKE_INSTALL_SYSCONFDIR "/etc")
 endif()
 
