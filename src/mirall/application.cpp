@@ -766,7 +766,10 @@ void Application::slotEnableFolder(const QString& alias, const bool enable)
             int reply = QMessageBox::question( 0, tr("Sync Running"),
                                                tr("The syncing operation is running.<br/>Do you want to terminate it?"),
                                                QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes );
-            terminate = ( reply == QMessageBox::Yes );
+            if ( reply == QMessageBox::Yes )
+                terminate = true;
+            else
+                return; // do nothing
         }
     }
 
