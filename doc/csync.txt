@@ -82,7 +82,7 @@ csync must be safe, even in the case of unexpected errors (e.g. disk full).
 What was done to make csync safe is described in the following sections.
 
 
-On problem concerning correctness is the handling of conflicts.  Each file
+One problem concerning correctness is the handling of conflicts.  Each file
 synchronizer tries to propagate conflicting changes to the other replica.  At
 the end both replicas should be identical. There are different strategies to
 fulfill these goals.
@@ -148,7 +148,7 @@ If a file has a conflict the user has to decide which file should be used.
 Propagation
 ~~~~~~~~~~~
 
-The next instance of the file synchronizer the propagator. It uses the
+The next instance of the file synchronizer is the propagator. It uses the
 calculated records to apply them on the current replica.
 
 
@@ -156,10 +156,10 @@ The propagator uses a two-phase-commit mechanism to simulate an atomic
 filesystem operation.
 
 In the first phase we copy the file to a temporary file on the opposite
-replica. This has the advantage that we can check if file which has been copied
-to the opposite replica has been transfered successfully. If the connection
-gets interrupted during the transfer we still have the original states of the
-file. This means no data will be lost.
+replica. This has the advantage that we can check if the file which has been
+copied to the opposite replica has been transfered successfully. If the
+connection gets interrupted during the transfer we still have the original
+states of the file. This means no data will be lost.
 
 In the second phase the file on the opposite replica will be overwritten by
 the temporary file.
@@ -278,8 +278,8 @@ csync provides exclude lists with simple shell wildcard patterns. There is a
 global exclude list, which is normally located in
 '/etc/csync/csync_exclude.conf' and it has already some sane defaults. If you
 run csync the first time, it will create an empty exclude list for the user.
-This file will be '~/.csync/csync_exclude.conf'. If you run both files are used
-and maybe an additional one if you specify it.
+This file will be '~/.csync/csync_exclude.conf'. csync considers both
+configuration files and an additional one if you specify it.
 
 The entries in the file are newline separated. Use
 '/etc/csync/csync_exclude.conf' as an example.
