@@ -427,7 +427,13 @@ Copyright 2012, the ownCloud developers
 Licensed under GPLv2
 
 The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN,MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.</source>
-        <translation type="unfinished"/>
+        <translation>%1 bezeroa, bertsioa%2
+
+Copyright 2012, onwClouden garatzaileak
+
+GPLv2 lizentziapean
+
+ Programa hau erabilgarria izango delakoan banatzen da, baina INOLAKO GARANTIARIK GABE; ez eta HELBURU ZEHATZ BATERAKO ERABILGARRITASUNA ETA SALTZEARI suposatu litezkeenak.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="662"/>

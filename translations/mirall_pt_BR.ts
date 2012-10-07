@@ -316,7 +316,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="348"/>
         <source>Open status...</source>
-        <translation>Status aberto...</translation>
+        <translation>Mostrar status...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="350"/>
@@ -350,7 +350,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="198"/>
         <source>&lt;p&gt;No server connection has been configured for this %1 client.&lt;/p&gt;&lt;p&gt;Please right click on the %1 system tray icon and select &lt;i&gt;Configure&lt;/i&gt; to connect this client to an %1 server.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Nenhuma conexão com servidor foi configurada para este cliente %1.&lt;/p&gt;&lt;p&gt;Por favor clique no ícone %1 da barra de tarefas e selecione &lt;i&gt;Configurar&lt;/i&gt; para conectar esse cliente a um servidor %1.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="224"/>
@@ -427,7 +427,7 @@ Copyright 2012, the ownCloud developers
 Licensed under GPLv2
 
 The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN,MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.</source>
-        <translation>cliente %1, version %2
+        <translation>cliente %1, versão %2
 
 Copyright 2012, os desenvolvedores ownCloud
 
@@ -1182,7 +1182,7 @@ A configuração não pôde ser concluida.</translation>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="449"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, server version %3</source>
-        <translation type="unfinished"/>
+        <translation>Conectado à &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, versão do servidor %3</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="467"/>
@@ -1286,12 +1286,12 @@ A configuração não pôde ser concluida.</translation>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="331"/>
         <source>Password Required</source>
-        <translation type="unfinished"/>
+        <translation>Senha Requerida</translation>
     </message>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="332"/>
         <source>Please enter your %1 password:</source>
-        <translation type="unfinished"/>
+        <translation>Digite sua senha %1:</translation>
     </message>
 </context>
 <context>
@@ -1718,17 +1718,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formulário</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
         <source>Check if you want to continue via SSL and trust the shown certificates.</source>
-        <translation type="unfinished"/>
+        <translation>Verifique se você quer continuar via SSL e confia nos certificados mostrados.</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>
         <source>SSL Connection</source>
-        <translation type="unfinished"/>
+        <translation>Conexão SSL</translation>
     </message>
 </context>
 <context>
@@ -1786,7 +1786,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="79"/>
         <source>Info...</source>
-        <translation>informações...</translation>
+        <translation>Informação...</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="103"/>
