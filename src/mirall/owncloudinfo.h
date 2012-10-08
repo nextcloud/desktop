@@ -84,9 +84,9 @@ public:
     QString configHandle(QNetworkReply *reply = 0);
 
     /**
-     * return the proxy the QNetworkAccessManager is using.
+     * return the central QNetworkAccessManager instance.
      */
-    QNetworkProxy qnamProxy();
+    QNetworkAccessManager* networkManager();
 
 signals:
     // result signal with url- and version string.

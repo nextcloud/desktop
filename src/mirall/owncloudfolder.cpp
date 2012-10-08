@@ -28,6 +28,8 @@
 #include <QTextStream>
 #include <QTimer>
 #include <QNetworkProxy>
+#include <QNetworkAccessManager>
+#include <QNetworkProxyFactory>
 
 namespace Mirall {
 
@@ -171,10 +173,18 @@ void ownCloudFolder::startSync(const QStringList &pathList)
         // in case of system proxy we set the proxy in csync explicitely to the
         // value of Qt as Qt should be able to handle the pac system configuration
         // while libproxy (through libneon) might not on the target platform
-        QNetworkProxy proxy = ownCloudInfo::instance()->qnamProxy();
+        QNetworkAccessManager *nam = ownCloudInfo::instance()->networkManager();
+        QNetworkProxy proxy = nam->proxy();
         if( (!proxyHost.isEmpty()) && (proxyPort != 0) ) {
             intProxy  = QNetworkProxy::HttpProxy; // switch to http proxy. Tells csync/owncloud to
             // explicitely set the proxy host and port.
+        } else {
+            QList<QNetworkProxy> proxies = QNetworkProxyFactory::systemProxyForQuery(QUrl(cfgFile.ownCloudUrl()));
+            if (proxies.isEmpty())
+                qWarning() << "No proxy for PAC found";
+            else {
+                proxy = proxies.first();
+            }
         }
 
         proxyHost = proxy.hostName();
