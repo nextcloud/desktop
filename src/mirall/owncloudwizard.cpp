@@ -167,7 +167,7 @@ void OwncloudSetupPage::handleNewOcUrl(const QString& ocUrl)
         int pos = _ui.leUrl->cursorPosition();
         url.remove(0, len);
         _ui.leUrl->setText(url);
-        _ui.leUrl->setCursorPosition(qMin(0, pos-len));
+        _ui.leUrl->setCursorPosition(qMax(0, pos-len));
 
     }
 }
