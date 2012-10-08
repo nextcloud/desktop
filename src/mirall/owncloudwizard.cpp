@@ -154,15 +154,21 @@ void OwncloudSetupPage::slotSecureConChanged( int state )
 void OwncloudSetupPage::handleNewOcUrl(const QString& ocUrl)
 {
     QString url = ocUrl;
-    QRegExp scheme(".*://");
-    if (url.contains(scheme)) {
-        if (url.startsWith(QLatin1String("https://")))
-            _ui.cbSecureConnect->setChecked(true);
-        if (url.startsWith(QLatin1String("http://")))
-            _ui.cbSecureConnect->setChecked(false);
+    int len = 0;
+    if (url.startsWith(QLatin1String("https://"))) {
+        _ui.cbSecureConnect->setChecked(true);
+        len = 8;
+    }
+    if (url.startsWith(QLatin1String("http://"))) {
+        _ui.cbSecureConnect->setChecked(false);
+        len = 7;
+    }
+    if( len ) {
         int pos = _ui.leUrl->cursorPosition();
-        _ui.leUrl->setText(url.remove(scheme));
-        _ui.leUrl->setCursorPosition(qMin(pos-scheme.matchedLength(),url.length()));
+        url.remove(0, len);
+        _ui.leUrl->setText(url);
+        _ui.leUrl->setCursorPosition(qMin(0, pos-len));
+
     }
 }
 
