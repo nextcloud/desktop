@@ -13,7 +13,7 @@
         <key>CFBundleIconFile</key>
         <string>ownCloud.icns</string>
         <key>CFBundleIdentifier</key>
-        <string>org.owncloud.mirallclient</string>
+        <string>@APPLICATION_REV_DOMAIN@</string>
         <key>CFBundleInfoDictionaryVersion</key>
         <string>6.0</string>
         <key>CFBundleLongVersionString</key>
