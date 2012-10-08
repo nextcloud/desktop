@@ -39,7 +39,7 @@ Mirall::ProxyDialog::ProxyDialog( QWidget* parent )
         noProxyRadioButton->setChecked(true);
     if (cfgFile.proxyType() == QNetworkProxy::DefaultProxy)
         systemProxyRadioButton->setChecked(true);
-    if (cfgFile.proxyType() == QNetworkProxy::Socks5Proxy)
+    if (cfgFile.proxyType() == QNetworkProxy::HttpProxy)
     {
         manualProxyRadioButton->setChecked(true);
         hostLineEdit->setText(cfgFile.proxyHostName());
@@ -71,12 +71,12 @@ void Mirall::ProxyDialog::saveSettings()
         {
             QString user = userLineEdit->text();
             QString pass = passwordLineEdit->text();
-            cfgFile.setProxyType(QNetworkProxy::Socks5Proxy, hostLineEdit->text(),
+            cfgFile.setProxyType(QNetworkProxy::HttpProxy, hostLineEdit->text(),
                                  portSpinBox->value(), user, pass);
         }
         else
         {
-            cfgFile.setProxyType(QNetworkProxy::Socks5Proxy, hostLineEdit->text(),
+            cfgFile.setProxyType(QNetworkProxy::HttpProxy, hostLineEdit->text(),
                                  portSpinBox->value(), QString::null, QString::null);
         }
     }

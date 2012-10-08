@@ -485,9 +485,15 @@ void Application::setupProxy()
         QNetworkProxyFactory::setUseSystemConfiguration(true);
         break;
     }
+
     case QNetworkProxy::Socks5Proxy: {
+        proxy = QNetworkProxy::HttpProxy;
+        cfg.setProxyType(proxy);
+        // fall through
+    }
+    case QNetworkProxy::HttpProxy:{
         QNetworkProxy proxy;
-        proxy.setType(QNetworkProxy::Socks5Proxy);
+        proxy.setType(QNetworkProxy::HttpProxy);
         proxy.setHostName(cfg.proxyHostName());
         proxy.setPort(cfg.proxyPort());
         proxy.setUser(cfg.proxyUser());
@@ -791,12 +797,11 @@ void Application::slotConfigure()
 
 void Application::slotConfigureProxy()
 {
-    ProxyDialog* dlg = new ProxyDialog();
-    if (dlg->exec() == QDialog::Accepted)
+    ProxyDialog dlg;
+    if (dlg.exec() == QDialog::Accepted)
     {
         setupProxy();
     }
-    dlg->deleteLater();
 }
 
 void Application::slotSyncStateChange( const QString& alias )
