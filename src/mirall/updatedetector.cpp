@@ -34,7 +34,7 @@ void UpdateDetector::versionCheck( Theme *theme )
 {
     connect(_accessManager, SIGNAL(finished(QNetworkReply*)), this,
             SLOT(slotVersionInfoArrived(QNetworkReply*)) );
-    QUrl url(QLatin1String("http://download.owncloud.com/clientupdater.php"));
+    QUrl url(QLatin1String("https://download.owncloud.com/clientupdater.php"));
     QString ver = QString::fromLatin1("%1.%2.%3").arg(MIRALL_VERSION_MAJOR).arg(MIRALL_VERSION_MINOR).arg(MIRALL_VERSION_MICRO);
 
     QString platform = QLatin1String("stranger");
