@@ -21,6 +21,7 @@
 #include <QMutex>
 #include <QThread>
 #include <QString>
+#include <QNetworkProxy>
 
 #include <csync.h>
 
@@ -62,9 +63,7 @@ public:
     CSyncThread(const QString &source, const QString &target, bool = false);
     ~CSyncThread();
 
-    static void setConnectionDetails( const QString&, const QString&,
-                                      const QString&, const QString&, int,
-                                      const QString&, const QString& );
+    static void setConnectionDetails( const QString&, const QString&, const QNetworkProxy& );
     static QString csyncConfigDir();
 
     Q_INVOKABLE void startSync();
@@ -94,11 +93,7 @@ private:
     static QMutex _mutex;
     static QString _user;
     static QString _passwd;
-    static QString _proxyType;
-    static QString _proxyHost;
-    static QString _proxyPort;
-    static QString _proxyUser;
-    static QString _proxyPwd;
+    static QNetworkProxy _proxy;
 
     static QString _csyncConfigDir;
 

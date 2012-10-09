@@ -31,11 +31,7 @@ namespace Mirall {
 /* static variables to hold the credentials */
 QString CSyncThread::_user;
 QString CSyncThread::_passwd;
-QString CSyncThread::_proxyType;
-QString CSyncThread::_proxyPwd;
-QString CSyncThread::_proxyPort;
-QString CSyncThread::_proxyHost;
-QString CSyncThread::_proxyUser;
+QNetworkProxy CSyncThread::_proxy;
 
 QString CSyncThread::_csyncConfigDir;  // to be able to remove the lock file.
 
@@ -138,6 +134,26 @@ CSyncThread::~CSyncThread()
 
 }
 
+static char* proxyTypeToCStr(QNetworkProxy::ProxyType type)
+{
+    switch (type) {
+    case QNetworkProxy::NoProxy:
+        return qstrdup("NoProxy");
+    case QNetworkProxy::DefaultProxy:
+        return qstrdup("DefaultProxy");
+    case QNetworkProxy::Socks5Proxy:
+        return qstrdup("Socks5Proxy");
+    case  QNetworkProxy::HttpProxy:
+        return qstrdup("HttpProxy");
+    case  QNetworkProxy::HttpCachingProxy:
+        return qstrdup("HttpCachingProxy");
+    case  QNetworkProxy::FtpCachingProxy:
+        return qstrdup("FtpCachingProxy");
+    default:
+        return qstrdup("NoProxy");
+    }
+}
+
 void CSyncThread::startSync()
 {
     qDebug() << "starting to sync " << qApp->thread() << QThread::currentThread();
@@ -159,29 +175,14 @@ void CSyncThread::startSync()
     wStats->dirPermErrors = 0;
 
     ProxyInfo proxyInfo;
-    proxyInfo.proxyHost = 0;
-    proxyInfo.proxyPort = 0;
-    proxyInfo.proxyPwd  = 0;
-    proxyInfo.proxyType = 0;
-    proxyInfo.proxyUser = 0;
 
     _mutex.lock();
 
-    if( !_proxyType.isEmpty() ) {
-        proxyInfo.proxyType = qstrdup( _proxyType.toAscii().constData() );
-    }
-    if( !_proxyHost.isEmpty() ) {
-        proxyInfo.proxyHost = qstrdup( _proxyHost.toAscii().constData() );
-    }
-    if( !_proxyPort.isEmpty() ) {
-        proxyInfo.proxyPort = qstrdup( _proxyPort.toAscii().constData() );
-    }
-    if( !_proxyUser.isEmpty() ) {
-        proxyInfo.proxyUser = qstrdup( _proxyUser.toAscii().constData() );
-    }
-    if( !_proxyPwd.isEmpty() ) {
-        proxyInfo.proxyPwd  = qstrdup( _proxyPwd.toAscii().constData() );
-    }
+    proxyInfo.proxyType = proxyTypeToCStr( _proxy.type() );
+    proxyInfo.proxyHost = qstrdup( _proxy.hostName().toAscii().constData() );
+    proxyInfo.proxyPort = qstrdup( QByteArray::number( _proxy.port() ).constData() );
+    proxyInfo.proxyUser = qstrdup( _proxy.user().toAscii().constData() );
+    proxyInfo.proxyPwd  = qstrdup( _proxy.password().toAscii().constData() );
 
     emit(started());
 
@@ -364,19 +365,12 @@ void CSyncThread::emitStateDb( CSYNC *csync )
     }
 }
 
-void CSyncThread::setConnectionDetails( const QString& user, const QString& passwd,
-                                        const QString& proxyType, const QString& proxyHost,
-                                        int proxyPort , const QString& proxyUser, const QString& proxyPwd )
+void CSyncThread::setConnectionDetails( const QString &user, const QString &passwd, const QNetworkProxy &proxy )
 {
     _mutex.lock();
     _user = user;
     _passwd = passwd;
-    _proxyType = proxyType;
-    _proxyHost = proxyHost;
-    _proxyPort = QString::number(proxyPort);
-    qDebug() << "Proxy-Port: " << _proxyPort;
-    _proxyUser = proxyUser;
-    _proxyPwd  = proxyPwd;
+    _proxy = proxy;
     _mutex.unlock();
 }
 

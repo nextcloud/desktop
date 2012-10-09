@@ -161,56 +161,12 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     _csync = new CSyncThread( path(), url.toString(), _localCheckOnly );
     _csync->moveToThread(_thread);
 
-    // Proxy settings. Proceed them as strings to csync thread.
-    int intProxy = cfgFile.proxyType();
+    QList<QNetworkProxy> proxies = QNetworkProxyFactory::systemProxyForQuery(QUrl(cfgFile.ownCloudUrl()));
+    // We set at least one in Application
+    Q_ASSERT(proxies.count() > 0);
+    QNetworkProxy proxy = proxies.first();
 
-    QString proxyHost = cfgFile.proxyHostName();
-    int proxyPort     = cfgFile.proxyPort();
-    QString proxyUser = cfgFile.proxyUser();
-    QString proxyPwd  = cfgFile.proxyPassword();
-
-    if( intProxy == QNetworkProxy::DefaultProxy ) {
-        // in case of system proxy we set the proxy in csync explicitely to the
-        // value of Qt as Qt should be able to handle the pac system configuration
-        // while libproxy (through libneon) might not on the target platform
-        QNetworkAccessManager *nam = ownCloudInfo::instance()->networkManager();
-        QNetworkProxy proxy = nam->proxy();
-        if( (!proxyHost.isEmpty()) && (proxyPort != 0) ) {
-            intProxy  = QNetworkProxy::HttpProxy; // switch to http proxy. Tells csync/owncloud to
-            // explicitely set the proxy host and port.
-        } else {
-            QList<QNetworkProxy> proxies = QNetworkProxyFactory::systemProxyForQuery(QUrl(cfgFile.ownCloudUrl()));
-            if (proxies.isEmpty())
-                qWarning() << "No proxy for PAC found";
-            else {
-                proxy = proxies.first();
-            }
-        }
-
-        proxyHost = proxy.hostName();
-        proxyPort = proxy.port();
-        proxyUser = proxy.user();
-        proxyPwd  = proxy.password();
-        qDebug() << "Re-Using the Qt proxy settings for csync, host: " << proxyHost;
-    }
-
-    QString proxyType;
-    if( intProxy == QNetworkProxy::NoProxy )
-        proxyType = QLatin1String("NoProxy");
-    else if( intProxy == QNetworkProxy::DefaultProxy )
-        proxyType = QLatin1String("DefaultProxy");
-    else if( intProxy == QNetworkProxy::Socks5Proxy )
-        proxyType = QLatin1String("Socks5Proxy");
-    else if( intProxy == QNetworkProxy::HttpProxy )
-        proxyType = QLatin1String("HttpProxy");
-    else if( intProxy == QNetworkProxy::HttpCachingProxy )
-        proxyType = QLatin1String("HttpCachingProxy");
-    else if( intProxy == QNetworkProxy::FtpCachingProxy )
-        proxyType = QLatin1String("FtpCachingProxy");
-    else proxyType = QLatin1String("NoProxy");
-
-    _csync->setConnectionDetails( cfgFile.ownCloudUser(), cfgFile.ownCloudPasswd(), proxyType,
-                                  proxyHost, proxyPort, proxyUser, proxyPwd );
+    _csync->setConnectionDetails( cfgFile.ownCloudUser(), cfgFile.ownCloudPasswd(), proxy );
 
     connect(_csync, SIGNAL(started()),  SLOT(slotCSyncStarted()), Qt::QueuedConnection);
     connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()), Qt::QueuedConnection);
