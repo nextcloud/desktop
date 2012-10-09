@@ -32,7 +32,6 @@ UpdateDetector::UpdateDetector(QObject *parent) :
 
 void UpdateDetector::versionCheck( Theme *theme )
 {
-    _accessManager = new QNetworkAccessManager(this);
     connect(_accessManager, SIGNAL(finished(QNetworkReply*)), this,
             SLOT(slotVersionInfoArrived(QNetworkReply*)) );
     QUrl url(QLatin1String("http://download.owncloud.com/clientupdater.php"));
