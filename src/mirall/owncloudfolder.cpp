@@ -161,7 +161,7 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     _csync = new CSyncThread( path(), url.toString(), _localCheckOnly );
     _csync->moveToThread(_thread);
 
-    QList<QNetworkProxy> proxies = QNetworkProxyFactory::systemProxyForQuery(QUrl(cfgFile.ownCloudUrl()));
+    QList<QNetworkProxy> proxies = QNetworkProxyFactory::proxyForQuery(QUrl(cfgFile.ownCloudUrl()));
     // We set at least one in Application
     Q_ASSERT(proxies.count() > 0);
     QNetworkProxy proxy = proxies.first();
