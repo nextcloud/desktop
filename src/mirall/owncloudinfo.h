@@ -83,11 +83,6 @@ public:
      */
     QString configHandle(QNetworkReply *reply = 0);
 
-    /**
-     * return the central QNetworkAccessManager instance.
-     */
-    QNetworkAccessManager* networkManager();
-
 signals:
     // result signal with url- and version string.
     void ownCloudInfoFound( const QString&, const QString&, const QString&, const QString& );

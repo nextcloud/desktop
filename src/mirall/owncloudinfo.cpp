@@ -18,6 +18,7 @@
 #include "mirall/theme.h"
 #include <QtCore>
 #include <QtGui>
+#include <QAuthenticator>
 
 #if QT46_IMPL
 #include <QHttp>
@@ -448,12 +449,5 @@ QNetworkReply* ownCloudInfo::davRequest(const QString& reqVerb,  QNetworkRequest
     }
 }
 #endif
-
-QNetworkAccessManager* ownCloudInfo::networkManager()
-{
-    return _manager;
-}
-
-
 }
 
