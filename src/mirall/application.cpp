@@ -476,9 +476,7 @@ void Application::setupProxy()
 
     switch(proxy) {
     case QNetworkProxy::NoProxy: {
-        QNetworkProxy proxy;
-        proxy.setType(QNetworkProxy::NoProxy);
-        QNetworkProxy::setApplicationProxy(proxy);
+        QNetworkProxy::setApplicationProxy(QNetworkProxy::NoProxy);
         break;
     }
     case QNetworkProxy::DefaultProxy: {
