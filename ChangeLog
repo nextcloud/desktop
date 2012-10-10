@@ -6,6 +6,9 @@ version 1.1.0 (release ), csync 0.60.0 required
   * [GUI]   Improved themeing capabilities of the client.
   * [GUI]   Minor fixes in folder assistant.
   * [GUI]   Reworked tray context menu.
+  * [GUI]   Users can now sync the server root folder.
+  * [Fixes] Proxy support: now supports Proxy Auto-Configuration (PAC)
+            on Windows, reliability fixes across all OSes.
   * [Fixes] Url entry field in setup assistant handles http/https correctly.
   * [Fixes] Button enable state in status dialog.
   * [Fixes] Crash fixed on ending the client, tray icon related.
@@ -13,6 +16,9 @@ version 1.1.0 (release ), csync 0.60.0 required
   * [MacOS] behave correctly on retina displays.
   * [MacOS] fix focus policy.
   * [MacOS] Packaging improvements.
+  * [MacOS] Packaging improvements.
+  * [Platform] Windows: Setup closes client prior to uninstall.
+  * [Platform] Windows: ownCloud gets added to autorun by default.
   * [Platform] insert correct version info from cmake.
   * [Platform] csync conf file and database were moved to the users app data
                directory, away from the .csync dir.
