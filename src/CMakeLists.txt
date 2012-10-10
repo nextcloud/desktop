@@ -203,7 +203,11 @@ else()
     set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES COMPILE_DEFINITIONS OWNCLOUD_CLIENT)
 
     #FIXME: hardcoded path
-    install(FILES /usr/local/lib/ocsync-0/ocsync_owncloud.so DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Plugins)
+    if ( EXISTS ${CSYNC_BINARY_DIR}/modules/ocsync_owncloud.so )
+        install(FILES ${CSYNC_BINARY_DIR}/modules/ocsync_owncloud.so DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Plugins)
+    else()
+        install(FILES /usr/local/lib/ocsync-0/ocsync_owncloud.so DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Plugins)
+    endif()
     install(FILES ${mirall_I18N} DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/translations)
 
     list(APPEND dirs "/usr/local/lib")
