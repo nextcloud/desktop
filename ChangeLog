@@ -1,10 +1,11 @@
 ChangeLog
 ==========
 version 0.60.0  (released 2012-09-)
+  * simplification of pac based proxy support. 
 
 version 0.50.11 (third beta version, released 2012-10-05)
-  * Renamed ownCloud version of csync to ocsync
-  * Migration paths for csync database and config
+  * Renamed ownCloud version of csync to ocsync for ownCloud.
+  * Migration paths for csync database and config.
   * Fixed that exclude patterns are also tested on files basenames.
   * Fixed return type for query function if no database exists.
   * minor code fixes
@@ -15,6 +16,14 @@ version 0.50.10 (second beta version, released 2012-09-20)
   * ownCloud: Maintain the http session by handling the HTTP Cookie.
 
 version 0.50.9 (first beta version, released 2012-08-30)
+  * Fixed strncpy handling (mkdir on windows problem).
+  * extend database with columns uniq id and type.
+  * Use server maintained uniq IDs for update detection instead of 
+    mtimes. 
+  * Maintain uniq IDs in local database
+  * Handle change propagation through the file tree locally and remote.
+  * Added module to build a file tree from the local database (dbtree.c)
+  * Added methods to query IDs from the server and maintain it locally.
 
 version 0.50.8 (released 2012-08-10)
   * Inode equivalent support for Win32 platforms to support rename
