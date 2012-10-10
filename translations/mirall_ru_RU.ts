@@ -360,13 +360,13 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="245"/>
         <source>%1 Connection Failed</source>
-        <translation type="unfinished"/>
+        <translation>%1 Сбой подключения</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="273"/>
         <location filename="../src/mirall/application.cpp" line="281"/>
         <source>No %1 Connection</source>
-        <translation type="unfinished"/>
+        <translation>Нет %1 подключения</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="274"/>
@@ -381,12 +381,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="294"/>
         <source>%1 Sync Started</source>
-        <translation type="unfinished"/>
+        <translation>%1 синхронизация начата</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="346"/>
         <source>Open %1 in browser...</source>
-        <translation type="unfinished"/>
+        <translation>Открыть %1 в браузере...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="356"/>
@@ -404,12 +404,12 @@ p, li { white-space: pre-wrap; }
         <translation>Управляемые папки:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="654"/>
+        <location filename="../src/mirall/application.cpp" line="652"/>
         <source>About %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="655"/>
+        <location filename="../src/mirall/application.cpp" line="653"/>
         <source>%1 client, version %2
 
 Copyright 2012, the ownCloud developers
@@ -420,113 +420,113 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="668"/>
+        <location filename="../src/mirall/application.cpp" line="666"/>
         <source>Confirm Folder Remove</source>
         <translation>Подтвердить удаление папки</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="669"/>
+        <location filename="../src/mirall/application.cpp" line="667"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>Вы действительно хотите удалить папку загрузки &lt;i&gt;%1&lt;/i&gt;?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="703"/>
+        <location filename="../src/mirall/application.cpp" line="701"/>
         <source>Undefined Folder State</source>
         <translation>Неопределенное состояние папки</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="706"/>
+        <location filename="../src/mirall/application.cpp" line="704"/>
         <source>The folder waits to start syncing.</source>
         <translation>Папка ожидает начала синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="709"/>
-        <location filename="../src/mirall/application.cpp" line="848"/>
+        <location filename="../src/mirall/application.cpp" line="707"/>
+        <location filename="../src/mirall/application.cpp" line="846"/>
         <source>Sync is running.</source>
         <translation>Идет синхронизация.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="712"/>
-        <location filename="../src/mirall/application.cpp" line="853"/>
+        <location filename="../src/mirall/application.cpp" line="710"/>
+        <location filename="../src/mirall/application.cpp" line="851"/>
         <source>Last Sync was successful.</source>
         <translation>Последняя синхронизация была успешной.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="715"/>
-        <location filename="../src/mirall/application.cpp" line="859"/>
+        <location filename="../src/mirall/application.cpp" line="713"/>
+        <location filename="../src/mirall/application.cpp" line="857"/>
         <source>Syncing Error.</source>
         <translation>Ошибка синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="718"/>
-        <location filename="../src/mirall/application.cpp" line="865"/>
+        <location filename="../src/mirall/application.cpp" line="716"/>
+        <location filename="../src/mirall/application.cpp" line="863"/>
         <source>Setup Error.</source>
         <translation>Ошибка установки.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="721"/>
-        <location filename="../src/mirall/application.cpp" line="868"/>
+        <location filename="../src/mirall/application.cpp" line="719"/>
+        <location filename="../src/mirall/application.cpp" line="866"/>
         <source>Undefined Error State.</source>
         <translation>Состояние неопределенной ошибки.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="725"/>
+        <location filename="../src/mirall/application.cpp" line="723"/>
         <source>Folder information</source>
         <translation>Информация о папке</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="740"/>
+        <location filename="../src/mirall/application.cpp" line="738"/>
         <source>Unknown</source>
         <translation>Неизвестный</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="742"/>
+        <location filename="../src/mirall/application.cpp" line="740"/>
         <source>Changed files:
 </source>
         <translation>Измененные файлы:⏎
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="744"/>
+        <location filename="../src/mirall/application.cpp" line="742"/>
         <source>Added files:
 </source>
         <translation>Добавленные файлы:⏎
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="746"/>
+        <location filename="../src/mirall/application.cpp" line="744"/>
         <source>New files in the server, or files deleted locally:
 </source>
         <translation>Новые файлы на сервере или локально удаленные файлы:⏎
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="772"/>
+        <location filename="../src/mirall/application.cpp" line="770"/>
         <source>Sync Running</source>
         <translation>Идет синхронизация</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="773"/>
+        <location filename="../src/mirall/application.cpp" line="771"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Выполняется операция синхронизации.&lt;br/&gt;Хотите прекратить ее?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="841"/>
+        <location filename="../src/mirall/application.cpp" line="839"/>
         <source>Undefined State.</source>
         <translation>Неопределенный статус.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="844"/>
+        <location filename="../src/mirall/application.cpp" line="842"/>
         <source>Waits to start syncing.</source>
         <translation>Ожидает начала синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="873"/>
+        <location filename="../src/mirall/application.cpp" line="871"/>
         <source>Sync is paused.</source>
         <translation>Синхронизация приостановлена.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="889"/>
+        <location filename="../src/mirall/application.cpp" line="887"/>
         <source>No sync folders configured.</source>
         <translation>Не сконфигурированы папки синхронизации.</translation>
     </message>
@@ -534,17 +534,17 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="191"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="192"/>
         <source>CSync create failed.</source>
         <translation>Ошибка при создании CSync.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="229"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="230"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSync не удалось создать файл блокировки.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="232"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="233"/>
         <source>CSync failed to load the state db.</source>
         <translation>CSync не удалось загрузить БД состояний.</translation>
     </message>
@@ -553,17 +553,17 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="235"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="236"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>Системное время на этом клиенте отличается от времени на сервере. Пожалуйста, воспользуйтесь сервисом синхронизации времени (NTP) на серверной и клиентской машинах, чтобы время оставалось одинаковым.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="240"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="241"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSync не смог выявить тип файловой системы. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="243"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="244"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSync получил сообщение об ошибке при обработке внутренних деревьев. </translation>
     </message>
@@ -572,7 +572,7 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="246"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="247"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Целевой каталог %1 не существует.&lt;/p&gt;&lt;p&gt;Пожалуйста, проверьте настройку синхронизации.&lt;/p&gt;</translation>
     </message>
@@ -581,27 +581,27 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="256"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="257"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>Невозможно записать в локальную файловую систему. Пожалуйста, проверьте права доступа.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="260"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="261"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>Удаленный файл не может быть записан. Пожалуйста, проверьте удаленный доступ.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="263"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="264"/>
         <source>An internal error number %1 happend.</source>
         <translation>Произошла внутренняя ошибка номер %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="279"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="280"/>
         <source>CSync failed to reach the host. Either host or proxy settings are not valid.</source>
         <translation>CSync не удалось достичь хоста. Настройки хоста либо прокси не действительны.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="282"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="283"/>
         <source>CSync Update failed.</source>
         <translation>Не удалось обновить CSync.</translation>
     </message>
@@ -612,40 +612,40 @@ Please make sure that all directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="252"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="253"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="296"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="297"/>
         <source>CSync encountered an error while examining the file system.
 Syncing is not possible.</source>
         <translation>CSync столкнулся с ошибкой при проверке файловой системы.⏎ Синхронизация не возможна.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="299"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="300"/>
         <source>CSync update generated a strange instruction.
 Please write a bug report.</source>
         <translation>CSync-обновление вызвало странную инструкцию.
 Пожалуйста, сообщите об ошибке.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="302"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="303"/>
         <source>Local filesystem problems. Better disable Syncing and check.</source>
         <translation>Проблемы локальной файловой системы. Лучше отключить синхронизацию и проверить.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="307"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="308"/>
         <source>The local filesystem has %1 write protected directories.That can hinder successful syncing.&lt;p/&gt;Please make sure that all local directories are writeable.</source>
         <translation>В локальной файловой системе содержится %1 защищенных от записи каталогов. Это может препятствовать успешной синхронизации.&lt;p/&gt;Пожалуйста, убедитесь, что все локальные каталоги имеют возможность записи.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="327"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="328"/>
         <source>CSync reconcile failed.</source>
         <translation>CSync-согласование не удалось.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="331"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="332"/>
         <source>CSync propagate failed.</source>
         <translation>CSync-распространение не удалось.</translation>
     </message>
@@ -979,7 +979,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="447"/>
         <source>Succesfully connected to %1!</source>
-        <translation type="unfinished"/>
+        <translation>Успешно подключено к %1!</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="453"/>
@@ -1165,7 +1165,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="449"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, server version %3</source>
-        <translation type="unfinished"/>
+        <translation>Подключено к &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, версия сервера %3</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="467"/>
@@ -1229,12 +1229,12 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::UpdateDetector</name>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="115"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="114"/>
         <source>Client Version Check</source>
         <translation>Проверка версии клиента</translation>
     </message>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="117"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="116"/>
         <source>&lt;p&gt;A new version of the %1 client is available.</source>
         <translation type="unfinished"/>
     </message>
@@ -1243,7 +1243,7 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="118"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="117"/>
         <source>%1 is available. The installed version is %3.&lt;p/&gt;&lt;p&gt;For more information see &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</source>
         <translation>%1 доступно. Установленная версия %3.&lt;p/&gt;&lt;p&gt;Для получения дополнительной  информации обратитесь к &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</translation>
     </message>
@@ -1251,7 +1251,7 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::ownCloudFolder</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="322"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="288"/>
         <source>The CSync thread terminated.</source>
         <translation>CSync-поток завершен.</translation>
     </message>
@@ -1269,12 +1269,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="331"/>
         <source>Password Required</source>
-        <translation type="unfinished"/>
+        <translation>Требуется пароль</translation>
     </message>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="332"/>
         <source>Please enter your %1 password:</source>
-        <translation type="unfinished"/>
+        <translation>Пожалуйста, введите Ваш %1 пароль:</translation>
     </message>
 </context>
 <context>
@@ -1464,7 +1464,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="144"/>
         <source>&amp;Do not store password on local machine.</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Не хранить пароль на локальной машине.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="153"/>
@@ -1701,17 +1701,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Форма</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
         <source>Check if you want to continue via SSL and trust the shown certificates.</source>
-        <translation type="unfinished"/>
+        <translation>Проверьте, хотите ли Вы продолжать, используя SSL, и считаете ли указанные сертификаты надежными.</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>
         <source>SSL Connection</source>
-        <translation type="unfinished"/>
+        <translation>SSL-соединение</translation>
     </message>
 </context>
 <context>

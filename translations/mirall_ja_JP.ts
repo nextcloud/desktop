@@ -414,12 +414,12 @@ p, li { white-space: pre-wrap; }
         <translation>管理フォルダ:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="654"/>
+        <location filename="../src/mirall/application.cpp" line="652"/>
         <source>About %1</source>
         <translation>%1 について</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="655"/>
+        <location filename="../src/mirall/application.cpp" line="653"/>
         <source>%1 client, version %2
 
 Copyright 2012, the ownCloud developers
@@ -436,113 +436,113 @@ Copyright 2012, ownCloud 開発チーム
 The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN,MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="668"/>
+        <location filename="../src/mirall/application.cpp" line="666"/>
         <source>Confirm Folder Remove</source>
         <translation>フォルダの削除を確認</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="669"/>
+        <location filename="../src/mirall/application.cpp" line="667"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>本当にアップロードフォルダ &lt;i&gt;%1&lt;/i&gt; を削除してよろしいですか？</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="703"/>
+        <location filename="../src/mirall/application.cpp" line="701"/>
         <source>Undefined Folder State</source>
         <translation>未定義のフォルダの状態</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="706"/>
+        <location filename="../src/mirall/application.cpp" line="704"/>
         <source>The folder waits to start syncing.</source>
         <translation>フォルダは同期開始の待機中です。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="709"/>
-        <location filename="../src/mirall/application.cpp" line="848"/>
+        <location filename="../src/mirall/application.cpp" line="707"/>
+        <location filename="../src/mirall/application.cpp" line="846"/>
         <source>Sync is running.</source>
         <translation>同期を実行中です。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="712"/>
-        <location filename="../src/mirall/application.cpp" line="853"/>
+        <location filename="../src/mirall/application.cpp" line="710"/>
+        <location filename="../src/mirall/application.cpp" line="851"/>
         <source>Last Sync was successful.</source>
         <translation>最後の同期は成功しました。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="715"/>
-        <location filename="../src/mirall/application.cpp" line="859"/>
+        <location filename="../src/mirall/application.cpp" line="713"/>
+        <location filename="../src/mirall/application.cpp" line="857"/>
         <source>Syncing Error.</source>
         <translation>同期エラー。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="718"/>
-        <location filename="../src/mirall/application.cpp" line="865"/>
+        <location filename="../src/mirall/application.cpp" line="716"/>
+        <location filename="../src/mirall/application.cpp" line="863"/>
         <source>Setup Error.</source>
         <translation>設定エラー。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="721"/>
-        <location filename="../src/mirall/application.cpp" line="868"/>
+        <location filename="../src/mirall/application.cpp" line="719"/>
+        <location filename="../src/mirall/application.cpp" line="866"/>
         <source>Undefined Error State.</source>
         <translation>未定義のエラー状態。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="725"/>
+        <location filename="../src/mirall/application.cpp" line="723"/>
         <source>Folder information</source>
         <translation>フォルダー情報</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="740"/>
+        <location filename="../src/mirall/application.cpp" line="738"/>
         <source>Unknown</source>
         <translation>不明</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="742"/>
+        <location filename="../src/mirall/application.cpp" line="740"/>
         <source>Changed files:
 </source>
         <translation>変更されたファイル:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="744"/>
+        <location filename="../src/mirall/application.cpp" line="742"/>
         <source>Added files:
 </source>
         <translation>追加されたファイル:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="746"/>
+        <location filename="../src/mirall/application.cpp" line="744"/>
         <source>New files in the server, or files deleted locally:
 </source>
         <translation>サーバー上の新規ファイル、もしくはローカルのファイル削除:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="772"/>
+        <location filename="../src/mirall/application.cpp" line="770"/>
         <source>Sync Running</source>
         <translation>同期実行中</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="773"/>
+        <location filename="../src/mirall/application.cpp" line="771"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>同期操作が実行中です。&lt;br/&gt;終了してもよろしいですか？</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="841"/>
+        <location filename="../src/mirall/application.cpp" line="839"/>
         <source>Undefined State.</source>
         <translation>未定義の状態。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="844"/>
+        <location filename="../src/mirall/application.cpp" line="842"/>
         <source>Waits to start syncing.</source>
         <translation>同期開始を待機中</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="873"/>
+        <location filename="../src/mirall/application.cpp" line="871"/>
         <source>Sync is paused.</source>
         <translation>同期を一時停止しました。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="889"/>
+        <location filename="../src/mirall/application.cpp" line="887"/>
         <source>No sync folders configured.</source>
         <translation>同期フォルダが設定されていません。</translation>
     </message>
@@ -550,17 +550,17 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="191"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="192"/>
         <source>CSync create failed.</source>
         <translation>CSyncは作成に失敗しました。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="229"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="230"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSyncがロックファイルの作成に失敗しました。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="232"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="233"/>
         <source>CSync failed to load the state db.</source>
         <translation>CSyncは状態DBの読み込みに失敗しました。</translation>
     </message>
@@ -569,17 +569,17 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="235"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="236"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>このクライアントのシステム時刻はサーバのシステム時刻と異なります。時刻が同じになるように、クライアントとサーバの両方で時刻同期サービス（NTP）を実行してください。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="240"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="241"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSyncはファイルシステムタイプを検出できませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="243"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="244"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSyncは内部ツリーの処理中にエラーに遭遇しました。</translation>
     </message>
@@ -588,7 +588,7 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="246"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="247"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;ターゲットディレクトリ %1 は存在しません。&lt;/p&gt;&lt;p&gt;同期設定をチェックしてください。&lt;/p&gt;</translation>
     </message>
@@ -597,27 +597,27 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="256"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="257"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>ローカルファイルシステムは書き込みができません。パーミッションをチェックしてください。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="260"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="261"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>リモートファイルは書き込みできません。リモートアクセスをチェックしてください。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="263"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="264"/>
         <source>An internal error number %1 happend.</source>
         <translation>内部エラー番号 %1 が発生しました。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="279"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="280"/>
         <source>CSync failed to reach the host. Either host or proxy settings are not valid.</source>
         <translation>Csyncはホストに接続できませんでした。ホストもしくはプロキシの設定のいずれかが正しくありません。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="282"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="283"/>
         <source>CSync Update failed.</source>
         <translation>CSyncは同期に失敗しました。</translation>
     </message>
@@ -628,41 +628,41 @@ Please make sure that all directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="252"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="253"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;csync 用の %1 プラグインのロードができませんでした。&lt;br/&gt;インストールの確認を行なってください！&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="296"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="297"/>
         <source>CSync encountered an error while examining the file system.
 Syncing is not possible.</source>
         <translation>CSyncはファイルシステムの検査中にエラーに遭遇しました。
 同期はできません。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="299"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="300"/>
         <source>CSync update generated a strange instruction.
 Please write a bug report.</source>
         <translation>CSyncの更新はおかしなインストラクションを生成しました。
 バグレポートを投稿してください。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="302"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="303"/>
         <source>Local filesystem problems. Better disable Syncing and check.</source>
         <translation>ローカルファイルシステムに問題があります。同期を無効にしてチェックすることをおすすめします。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="307"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="308"/>
         <source>The local filesystem has %1 write protected directories.That can hinder successful syncing.&lt;p/&gt;Please make sure that all local directories are writeable.</source>
         <translation>ローカルファイルシステムには %1 の書き込み禁止ディレクトリがあります。これは正常な同期の妨げとなります。&lt;p/&gt;すべてのローカルディレクトリが書き込み可能であることを確認してください。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="327"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="328"/>
         <source>CSync reconcile failed.</source>
         <translation>CSyncは調停に失敗しました。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="331"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="332"/>
         <source>CSync propagate failed.</source>
         <translation>CSyncは伝搬に失敗しました。</translation>
     </message>
@@ -1246,12 +1246,12 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::UpdateDetector</name>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="115"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="114"/>
         <source>Client Version Check</source>
         <translation>クライアントのバージョンをチェック</translation>
     </message>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="117"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="116"/>
         <source>&lt;p&gt;A new version of the %1 client is available.</source>
         <translation>&lt;p&gt;%1 クライアントの新しいバージョンが利用可能です。</translation>
     </message>
@@ -1260,7 +1260,7 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="118"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="117"/>
         <source>%1 is available. The installed version is %3.&lt;p/&gt;&lt;p&gt;For more information see &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</source>
         <translation>%1 が利用可能です。インストールされているバージョンは %3 です。&lt;p/&gt;&lt;p&gt;より詳細な情報は &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt; を確認してください。&lt;/p&gt;</translation>
     </message>
@@ -1268,7 +1268,7 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::ownCloudFolder</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="322"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="288"/>
         <source>The CSync thread terminated.</source>
         <translation>CSyncのスレッドが終了しました。</translation>
     </message>

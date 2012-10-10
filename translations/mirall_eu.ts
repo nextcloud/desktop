@@ -414,12 +414,12 @@ p, li { white-space: pre-wrap; }
         <translation>Kudeatutako karpetak:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="654"/>
+        <location filename="../src/mirall/application.cpp" line="652"/>
         <source>About %1</source>
         <translation>%1 buruz</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="655"/>
+        <location filename="../src/mirall/application.cpp" line="653"/>
         <source>%1 client, version %2
 
 Copyright 2012, the ownCloud developers
@@ -436,113 +436,113 @@ GPLv2 lizentziapean
  Programa hau erabilgarria izango delakoan banatzen da, baina INOLAKO GARANTIARIK GABE; ez eta HELBURU ZEHATZ BATERAKO ERABILGARRITASUNA ETA SALTZEARI suposatu litezkeenak.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="668"/>
+        <location filename="../src/mirall/application.cpp" line="666"/>
         <source>Confirm Folder Remove</source>
         <translation>Baieztatu karpetaren ezabatzea</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="669"/>
+        <location filename="../src/mirall/application.cpp" line="667"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>Ziur zaude  &lt;i&gt;%1&lt;/i&gt; karpeta ezabatu nahi duzula?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="703"/>
+        <location filename="../src/mirall/application.cpp" line="701"/>
         <source>Undefined Folder State</source>
         <translation>Definitu gabeko karpeta egoera.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="706"/>
+        <location filename="../src/mirall/application.cpp" line="704"/>
         <source>The folder waits to start syncing.</source>
         <translation>Karpeta sinkronizazioa hasteko zain dago.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="709"/>
-        <location filename="../src/mirall/application.cpp" line="848"/>
+        <location filename="../src/mirall/application.cpp" line="707"/>
+        <location filename="../src/mirall/application.cpp" line="846"/>
         <source>Sync is running.</source>
         <translation>Sinkronizazioa martxan da.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="712"/>
-        <location filename="../src/mirall/application.cpp" line="853"/>
+        <location filename="../src/mirall/application.cpp" line="710"/>
+        <location filename="../src/mirall/application.cpp" line="851"/>
         <source>Last Sync was successful.</source>
         <translation>Azkeneko sinkronizazioa ongi burutu zen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="715"/>
-        <location filename="../src/mirall/application.cpp" line="859"/>
+        <location filename="../src/mirall/application.cpp" line="713"/>
+        <location filename="../src/mirall/application.cpp" line="857"/>
         <source>Syncing Error.</source>
         <translation>Sinkronizazio errorea.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="718"/>
-        <location filename="../src/mirall/application.cpp" line="865"/>
+        <location filename="../src/mirall/application.cpp" line="716"/>
+        <location filename="../src/mirall/application.cpp" line="863"/>
         <source>Setup Error.</source>
         <translation>Konfigurazio errorea.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="721"/>
-        <location filename="../src/mirall/application.cpp" line="868"/>
+        <location filename="../src/mirall/application.cpp" line="719"/>
+        <location filename="../src/mirall/application.cpp" line="866"/>
         <source>Undefined Error State.</source>
         <translation>Definitu gabeko errore egoera.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="725"/>
+        <location filename="../src/mirall/application.cpp" line="723"/>
         <source>Folder information</source>
         <translation>Karpetaren informazioa</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="740"/>
+        <location filename="../src/mirall/application.cpp" line="738"/>
         <source>Unknown</source>
         <translation>Ezezaguna</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="742"/>
+        <location filename="../src/mirall/application.cpp" line="740"/>
         <source>Changed files:
 </source>
         <translation>Aldatutako fitxategiak:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="744"/>
+        <location filename="../src/mirall/application.cpp" line="742"/>
         <source>Added files:
 </source>
         <translation>Gehitutako fitxategiak:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="746"/>
+        <location filename="../src/mirall/application.cpp" line="744"/>
         <source>New files in the server, or files deleted locally:
 </source>
         <translation>Zerbitzariko fitxategi berriak, edo ezabtu diren bertakoak:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="772"/>
+        <location filename="../src/mirall/application.cpp" line="770"/>
         <source>Sync Running</source>
         <translation>Sinkronizazioa martxan da</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="773"/>
+        <location filename="../src/mirall/application.cpp" line="771"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Sinkronizazio martxan da.&lt;br/&gt;Bukatu nahi al duzu?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="841"/>
+        <location filename="../src/mirall/application.cpp" line="839"/>
         <source>Undefined State.</source>
         <translation>Definitu gabeko egoera.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="844"/>
+        <location filename="../src/mirall/application.cpp" line="842"/>
         <source>Waits to start syncing.</source>
         <translation>Itxoiten sinkronizazioa hasteko.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="873"/>
+        <location filename="../src/mirall/application.cpp" line="871"/>
         <source>Sync is paused.</source>
         <translation>Sinkronizazioa pausatuta dago.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="889"/>
+        <location filename="../src/mirall/application.cpp" line="887"/>
         <source>No sync folders configured.</source>
         <translation>Ez dago sinkronizazio karpetarik definituta.</translation>
     </message>
@@ -550,17 +550,17 @@ GPLv2 lizentziapean
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="191"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="192"/>
         <source>CSync create failed.</source>
         <translation>CSync sortzeak huts egin du.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="229"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="230"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSyncek huts egin du lock fitxategia sortzean.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="232"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="233"/>
         <source>CSync failed to load the state db.</source>
         <translation>CSyncek huts egin du egoera db kargatzean.</translation>
     </message>
@@ -569,17 +569,17 @@ GPLv2 lizentziapean
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="235"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="236"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>Bezero honetako sistemaren ordua zerbitzariarenaren ezberdina da. Mesedez erabili sinkronizazio zerbitzari bat (NTP) zerbitzari eta bezeroan orduak berdinak izan daitezen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="240"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="241"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSyncek ezin du fitxategi sistema mota antzeman.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="243"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="244"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSyncek errorea izan du barne zuhaitzak prozesatzerakoan.</translation>
     </message>
@@ -588,7 +588,7 @@ GPLv2 lizentziapean
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="246"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="247"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;%1 helmuga karpeta ez da existitzen.&lt;/p&gt;&lt;p&gt;Mesedez egiaztatu sinkronizazio konfigurazioa.&lt;/p&gt;</translation>
     </message>
@@ -597,27 +597,27 @@ GPLv2 lizentziapean
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="256"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="257"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>Ezin da idatzi bertako fitxategi sisteman. Mesedez egiaztatu baimenak.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="260"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="261"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>Urruneko fitxategi bat ezin da idatzi. Mesedez egiaztatu urreneko sarbidea.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="263"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="264"/>
         <source>An internal error number %1 happend.</source>
         <translation>Barne errore bat gertatu da, zenbakia %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="279"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="280"/>
         <source>CSync failed to reach the host. Either host or proxy settings are not valid.</source>
         <translation>CSyncek huts egin du hostalarira iristean. Hostalaria edo proxia ez dira baliogarriak.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="282"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="283"/>
         <source>CSync Update failed.</source>
         <translation>CSyncen Eguneraketak huts egin du.</translation>
     </message>
@@ -628,41 +628,41 @@ Please make sure that all directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="252"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="253"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;csyncen %1 plugina ezin da kargatu.&lt;br/&gt;Mesedez egiaztatu instalazioa!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="296"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="297"/>
         <source>CSync encountered an error while examining the file system.
 Syncing is not possible.</source>
         <translation>CSyncek errore bat aurkitu du fitxategi sistema aztertzean.
 Sinkronizazioa ez da posible.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="299"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="300"/>
         <source>CSync update generated a strange instruction.
 Please write a bug report.</source>
         <translation>CSyncen eguneraketak instrukzio arraro bat sortu du.
 Mesedez idatz ezazu bug txosten bat.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="302"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="303"/>
         <source>Local filesystem problems. Better disable Syncing and check.</source>
         <translation>Bertako fitxategi sistemarekin arazoak. Hobe sinkronizazioa desgaitzen baduzu eta fitxategi sistema aztertzen baduzu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="307"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="308"/>
         <source>The local filesystem has %1 write protected directories.That can hinder successful syncing.&lt;p/&gt;Please make sure that all local directories are writeable.</source>
         <translation>Bertako fitxategi sistemak idazkera debekatuta duten %1 karpeta ditu.  Honek sinkronizazio arrakastatsua eragotzi dezake.&lt;/p&gt;Mesedez ziurtatu bertako karpeta guztiak idazteko baimenak dituztela.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="327"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="328"/>
         <source>CSync reconcile failed.</source>
         <translation>CSync berdinkatzeak huts egin du.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="331"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="332"/>
         <source>CSync propagate failed.</source>
         <translation>CSync hedapenak huts egin du.</translation>
     </message>
@@ -1246,12 +1246,12 @@ Ezin da konfigurazioa egin.</translation>
 <context>
     <name>Mirall::UpdateDetector</name>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="115"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="114"/>
         <source>Client Version Check</source>
         <translation>Egiaztatzen Bezeroaren Bertsioa</translation>
     </message>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="117"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="116"/>
         <source>&lt;p&gt;A new version of the %1 client is available.</source>
         <translation>&lt;p&gt; %1 bezeroaren bertsio berria eskuragarri dago.</translation>
     </message>
@@ -1260,7 +1260,7 @@ Ezin da konfigurazioa egin.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="118"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="117"/>
         <source>%1 is available. The installed version is %3.&lt;p/&gt;&lt;p&gt;For more information see &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</source>
         <translation>%1 eskuragarri dago. Instalatutako bertsioa %3 da. &lt;/p&gt;&lt;p&gt;Informazio gehiagorako ikus &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</translation>
     </message>
@@ -1268,7 +1268,7 @@ Ezin da konfigurazioa egin.</translation>
 <context>
     <name>Mirall::ownCloudFolder</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="322"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="288"/>
         <source>The CSync thread terminated.</source>
         <translation>CSync haria bukatu da.</translation>
     </message>

@@ -414,12 +414,12 @@ p, li { white-space: pre-wrap; }
         <translation>Hallitut kansiot:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="654"/>
+        <location filename="../src/mirall/application.cpp" line="652"/>
         <source>About %1</source>
         <translation>Tietoja - %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="655"/>
+        <location filename="../src/mirall/application.cpp" line="653"/>
         <source>%1 client, version %2
 
 Copyright 2012, the ownCloud developers
@@ -430,113 +430,113 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="668"/>
+        <location filename="../src/mirall/application.cpp" line="666"/>
         <source>Confirm Folder Remove</source>
         <translation>Vahvista kansion poisto</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="669"/>
+        <location filename="../src/mirall/application.cpp" line="667"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>Haluatko varmasti poistaa latauskansion &lt;i&gt;%1&lt;/i&gt;?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="703"/>
+        <location filename="../src/mirall/application.cpp" line="701"/>
         <source>Undefined Folder State</source>
         <translation>Määrittelemätön kansiotila</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="706"/>
+        <location filename="../src/mirall/application.cpp" line="704"/>
         <source>The folder waits to start syncing.</source>
         <translation>Kansio odottaa synkronoinnin aloitusta.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="709"/>
-        <location filename="../src/mirall/application.cpp" line="848"/>
+        <location filename="../src/mirall/application.cpp" line="707"/>
+        <location filename="../src/mirall/application.cpp" line="846"/>
         <source>Sync is running.</source>
         <translation>Synkronointi on meneillään.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="712"/>
-        <location filename="../src/mirall/application.cpp" line="853"/>
+        <location filename="../src/mirall/application.cpp" line="710"/>
+        <location filename="../src/mirall/application.cpp" line="851"/>
         <source>Last Sync was successful.</source>
         <translation>Viimeisin synkronointi suoritettiin onnistuneesti.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="715"/>
-        <location filename="../src/mirall/application.cpp" line="859"/>
+        <location filename="../src/mirall/application.cpp" line="713"/>
+        <location filename="../src/mirall/application.cpp" line="857"/>
         <source>Syncing Error.</source>
         <translation>Synkronointivirhe.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="718"/>
-        <location filename="../src/mirall/application.cpp" line="865"/>
+        <location filename="../src/mirall/application.cpp" line="716"/>
+        <location filename="../src/mirall/application.cpp" line="863"/>
         <source>Setup Error.</source>
         <translation>Asetusvirhe.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="721"/>
-        <location filename="../src/mirall/application.cpp" line="868"/>
+        <location filename="../src/mirall/application.cpp" line="719"/>
+        <location filename="../src/mirall/application.cpp" line="866"/>
         <source>Undefined Error State.</source>
         <translation>Määrittelemätön virhetila.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="725"/>
+        <location filename="../src/mirall/application.cpp" line="723"/>
         <source>Folder information</source>
         <translation>Kansiotiedot</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="740"/>
+        <location filename="../src/mirall/application.cpp" line="738"/>
         <source>Unknown</source>
         <translation>Tuntematon</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="742"/>
+        <location filename="../src/mirall/application.cpp" line="740"/>
         <source>Changed files:
 </source>
         <translation>Muutetut tiedostot:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="744"/>
+        <location filename="../src/mirall/application.cpp" line="742"/>
         <source>Added files:
 </source>
         <translation>Lisätyt tiedostot:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="746"/>
+        <location filename="../src/mirall/application.cpp" line="744"/>
         <source>New files in the server, or files deleted locally:
 </source>
         <translation>Uusia tiedostoja palvelimella, tai tiedostoja poistettu paikallisesti:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="772"/>
+        <location filename="../src/mirall/application.cpp" line="770"/>
         <source>Sync Running</source>
         <translation>Synkronointi meneillään</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="773"/>
+        <location filename="../src/mirall/application.cpp" line="771"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Synkronointioperaatio on meneillään.&lt;br/&gt;Haluatko keskeyttää sen?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="841"/>
+        <location filename="../src/mirall/application.cpp" line="839"/>
         <source>Undefined State.</source>
         <translation>Määrittelemätön tila.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="844"/>
+        <location filename="../src/mirall/application.cpp" line="842"/>
         <source>Waits to start syncing.</source>
         <translation>Odottaa synkronoinnin alkamista.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="873"/>
+        <location filename="../src/mirall/application.cpp" line="871"/>
         <source>Sync is paused.</source>
         <translation>Synkronointi on keskeytetty.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="889"/>
+        <location filename="../src/mirall/application.cpp" line="887"/>
         <source>No sync folders configured.</source>
         <translation>Synkronointikansioita ei ole määritetty.</translation>
     </message>
@@ -544,17 +544,17 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="191"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="192"/>
         <source>CSync create failed.</source>
         <translation>Csync-synkronoinnin luominen ei onnistunut.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="229"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="230"/>
         <source>CSync failed to create a lock file.</source>
         <translation>Csync-synkronointipalvelu ei onnistunut luomaan lukitustiedostoa.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="232"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="233"/>
         <source>CSync failed to load the state db.</source>
         <translation>Csync-synkronointipalvelu ei onnistunut lataamaan tilatietokantaa.</translation>
     </message>
@@ -563,17 +563,17 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="235"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="236"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>Tämän koneen järjestelmäaika on erilainen verrattuna palvelimen aikaan. Käytä NTP-palvelua kummallakin koneella, jotta kellot pysyvät samassa ajassa. Muuten tiedostojen synkronointi ei toimi.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="240"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="241"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>Csync-synkronointipalvelu ei kyennyt tunnistamaan tiedostojärjestelmän tyyppiä.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="243"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="244"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>Csync-synkronointipalvelussa tapahtui virhe sisäisten puurakenteiden prosessoinnissa.</translation>
     </message>
@@ -582,7 +582,7 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="246"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="247"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Kohdekansiota %1 ei ole olemassa.&lt;/p&gt;&lt;p&gt;Tarkista täsmäyspalvelun asetukset&lt;/p&gt;</translation>
     </message>
@@ -591,27 +591,27 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="256"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="257"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>Paikalliseen tiedostojärjestelmään kirjoittaminen epäonnistui. Tarkista kansion oikeudet.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="260"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="261"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>Etätiedostoa ei pystytä kirjoittamaan. Tarkista, että etäpääsy toimii.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="263"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="264"/>
         <source>An internal error number %1 happend.</source>
         <translation>Tapahtui sisäinen virhe %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="279"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="280"/>
         <source>CSync failed to reach the host. Either host or proxy settings are not valid.</source>
         <translation>Csync täsmäyspalvelu ei saanut yhteyttä isäntään. Joko isännän tai välityspalvelimen (proxy) asetukset ovat väärin.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="282"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="283"/>
         <source>CSync Update failed.</source>
         <translation>Csync-synkronointipalvelun päivitys epäonnistui.</translation>
     </message>
@@ -622,39 +622,39 @@ Please make sure that all directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="252"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="253"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="296"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="297"/>
         <source>CSync encountered an error while examining the file system.
 Syncing is not possible.</source>
         <translation>Csync-synkronointipalvelussa tapahtui virhe sen yrittäessä tutkia tiedostojärjestelmää. ⏎ Synkronointi ei ole mahdollista.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="299"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="300"/>
         <source>CSync update generated a strange instruction.
 Please write a bug report.</source>
         <translation>Csync-päivitys tuotti omituisen käskyn. Kirjoita bugiraportti.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="302"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="303"/>
         <source>Local filesystem problems. Better disable Syncing and check.</source>
         <translation>Ongelmia paikallisessa tiedostojärjestelmässä. Kannattaa poistaa synkronointi käytöstä ja tarkistaa uudelleen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="307"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="308"/>
         <source>The local filesystem has %1 write protected directories.That can hinder successful syncing.&lt;p/&gt;Please make sure that all local directories are writeable.</source>
         <translation>Paikallisessa tiedostojärjestelmässä on %1 kirjoitussuojattua kansiota. Tämä voi estää täsmäyksen.&lt;p/&gt;Tarkista ettei mikään paikallinen kansio ole kirjoitussuojattu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="327"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="328"/>
         <source>CSync reconcile failed.</source>
         <translation>CSyncin ristiriitatilanteiden sovittelu ei onnistunut.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="331"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="332"/>
         <source>CSync propagate failed.</source>
         <translation>Csyncin muutosten siirtäminen epäonnistui.</translation>
     </message>
@@ -1237,12 +1237,12 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::UpdateDetector</name>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="115"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="114"/>
         <source>Client Version Check</source>
         <translation>Asiakasohjelmiston version tarkistus</translation>
     </message>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="117"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="116"/>
         <source>&lt;p&gt;A new version of the %1 client is available.</source>
         <translation>&lt;p&gt;Uusi versio %1-sovelluksesta on saatavilla.</translation>
     </message>
@@ -1251,7 +1251,7 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="118"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="117"/>
         <source>%1 is available. The installed version is %3.&lt;p/&gt;&lt;p&gt;For more information see &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</source>
         <translation>%1 on saatavilla. Asennettu versio on %3.&lt;p/&gt;&lt;p&gt;Lue lisää sivulta &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</translation>
     </message>
@@ -1259,7 +1259,7 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::ownCloudFolder</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="322"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="288"/>
         <source>The CSync thread terminated.</source>
         <translation>Csyncin säikeen suoritus päättyi.</translation>
     </message>
