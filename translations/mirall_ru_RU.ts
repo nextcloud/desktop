@@ -396,7 +396,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="403"/>
         <source>Open %1 folder</source>
-        <translation type="unfinished"/>
+        <translation>Открыть %1 папку</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="416"/>
@@ -914,7 +914,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="176"/>
         <source>&lt;font color=&quot;red&quot;&gt;Failed to connect to %1!&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;red&quot;&gt;Не удалось подключиться к %1!&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="178"/>
@@ -937,12 +937,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="314"/>
         <source>&lt;font color=&quot;red&quot;&gt;Installation of %1 failed!&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;red&quot;&gt;Установка %1 не удлась!&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="319"/>
         <source>&lt;font color=&quot;green&quot;&gt;Installation of %1 succeeded!&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;Установка %1 прошла успешно!&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="352"/>
@@ -984,7 +984,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="453"/>
         <source>Connection to %1 could not be established. Please check again.</source>
-        <translation type="unfinished"/>
+        <translation>Подключение к %1 не может быть установлено. Пожалуйста, проверьте еще ​​раз.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="450"/>
@@ -1236,7 +1236,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="116"/>
         <source>&lt;p&gt;A new version of the %1 client is available.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Новая версия %1 клиента доступна.</translation>
     </message>
     <message>
         <source>&lt;p&gt;A new version of the ownCloud Client is available.</source>
@@ -1613,7 +1613,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/theme.cpp" line="45"/>
         <source>Waiting to start sync</source>
-        <translation type="unfinished"/>
+        <translation>Ожидание начала синхронизации</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="48"/>
