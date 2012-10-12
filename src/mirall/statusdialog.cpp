@@ -265,7 +265,6 @@ void StatusDialog::buttonsSetEnabled()
     if( _theme->singleSyncFolder() ) {
         // only one folder synced folder allowed.
         _ButtonAdd->setVisible(!haveFolders);
-        _ButtonRemove->setVisible(false); // never show the remove button.
     } else {
         _ButtonAdd->setVisible(true);
         _ButtonAdd->setEnabled(true);
