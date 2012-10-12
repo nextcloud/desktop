@@ -94,6 +94,7 @@ int c_rmdirs(const char *path) {
   char *fname = NULL;
   const _TCHAR *wfname = NULL;
   const _TCHAR *wpath = c_multibyte(path);
+  char *rd_name = NULL;
 
   if ((d = _topendir(wpath)) != NULL) {
     while( _tstat(wpath, &sb) == 0) {
@@ -113,20 +114,20 @@ int c_rmdirs(const char *path) {
 
       while ((dp = _treaddir(d)) != NULL) {
         size_t len;
+	rd_name = c_utf8(dp->d_name);
         /* skip '.' and '..' */
-        if (dp->d_name[0] == '.' &&
-            (dp->d_name[1] == '\0' ||
-             (dp->d_name[1] == '.' && dp->d_name[2] == '\0'))) {
+	if( c_streq( rd_name, "." ) || c_streq( rd_name, ".." ) ) {
+	  c_free_utf8(rd_name);
           continue;
         }
 
-        len = strlen(path) + _tcslen(dp->d_name) + 2;
+        len = strlen(path) + strlen(rd_name) + 2;
         fname = c_malloc(len);
         if (fname == NULL) {
           closedir(d);
           return -1;
         }
-        snprintf(fname, len, "%s/%s", path, dp->d_name);
+        snprintf(fname, len, "%s/%s", path, rd_name);
 	wfname = c_multibyte(fname);
 
         /* stat the file */
@@ -151,6 +152,7 @@ int c_rmdirs(const char *path) {
         } /* lstat */
         SAFE_FREE(fname);
 	c_free_multibyte(wfname);
+	c_free_utf8(rd_name);
       } /* readdir */
 
       _trewinddir(d);
