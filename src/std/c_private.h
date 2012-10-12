@@ -72,7 +72,7 @@ typedef struct stat csync_stat_t;
 #define _UNICODE
 
 #if defined _WIN32 && defined _UNICODE
-typedef  wchar_t    _TCHAR;
+typedef  wchar_t    mbchar_t;
 #define _tcslen      wcslen
 #define _topen      _wopen
 #define _tdirent    _wdirent
@@ -91,7 +91,7 @@ typedef  wchar_t    _TCHAR;
 #define _tchmod     _wchmod
 #define _trewinddir _wrewinddir
 #else
-typedef char        _TCHAR;
+typedef char        mbchar_t;
 #define _tdirent    dirent
 #define _tcslen     strlen
 #define _topen      open
