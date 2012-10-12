@@ -25,9 +25,19 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include <limits.h>
+#include <sys/types.h>
+#include <wchar.h>
+
+#include "config.h"
+
 #include "c_string.h"
 #include "c_alloc.h"
 #include "c_macro.h"
+
+#ifdef _WIN32
+#include <windows.h>
+#endif
 
 int c_streq(const char *a, const char *b) {
   register const char *s1 = a;
@@ -186,3 +196,65 @@ char *c_lowercase(const char* str) {
   return new;
 }
 
+/* Convert a wide multibyte String to UTF8 */
+const char* c_utf8(const _TCHAR *wstr)
+{
+  const char *dst = NULL;
+
+#ifdef _WIN32
+  char *mdst = NULL;
+
+  if(!wstr) return NULL;
+  size_t len = _tcslen( wstr );
+  /* Call once to get the required size. */
+  int size_needed = WideCharToMultiByte(CP_UTF8, 0, wstr, len, NULL, 0, NULL, NULL);
+  if( size_needed > 0 ) {
+    mdst = c_malloc(1+size_needed);
+    memset( mdst, 0, 1+size_needed);
+    WideCharToMultiByte(CP_UTF8, 0, wstr, len, mdst, size_needed, NULL, NULL);
+    dst = mdst;
+  }
+#else
+  dst = wstr;
+#endif
+  return dst;
+}
+
+/* Convert a an UTF8 string to multibyte */
+const _TCHAR* c_multibyte(const char *str)
+{
+#ifdef _WIN32
+  _TCHAR *wstrTo = NULL;
+  if(!str) return NULL;
+
+  size_t len = strlen( str );
+  int size_needed = MultiByteToWideChar(CP_UTF8, 0, str, len, NULL, 0);
+  if(size_needed > 0) {
+    int size_char = (size_needed+1)*sizeof(_TCHAR);
+    wstrTo = c_malloc(size_char);
+    memset( (void*)wstrTo, 0, size_char);
+    MultiByteToWideChar(CP_UTF8, 0, str, -1, wstrTo, size_needed);
+  }
+  return wstrTo;
+#else
+  return str;
+#endif
+}
+
+void c_free_utf8(char* buf)
+{
+#ifdef _WIN32
+    SAFE_FREE(buf);
+#else
+    (void)buf;
+#endif
+}
+
+void c_free_multibyte(const _TCHAR* buf)
+{
+#ifdef _WIN32
+    SAFE_FREE(buf);
+#else
+    (void)buf;
+#endif
+}
