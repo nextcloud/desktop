@@ -5,4 +5,5 @@ set( APPLICATION_DOMAIN     "owncloud.org"    )
 set( APPLICATION_VENDOR     "ownCloud.org"    )
 set( THEME_CLASS            "ownCloudTheme"   )
 SET( APPLICATION_REV_DOMAIN "org.owncloud.desktopclient" )
+SET( APPLICATION_LICENSE    "COPYING" )
 

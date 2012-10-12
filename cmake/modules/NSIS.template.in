@@ -5,6 +5,7 @@
 !define APPLICATION_VENDOR "@APPLICATION_VENDOR@"
 !define APPLICATION_EXECUTABLE "@APPLICATION_EXECUTABLE@.exe"
 !define APPLICATION_DOMAIN "@APPLICATION_DOMAIN@"
+!define APPLICATION_LICENSE "@APPLICATION_LICENSE@"
 
 !define MUI_FINISHPAGE_LINK_LOCATION "http://www.${APPLICATION_DOMAIN}"
 
@@ -12,7 +13,7 @@
 ;-----------------------------------------------------------------------------
 ; Some installer script options (comment-out options not required)
 ;-----------------------------------------------------------------------------
-;!define OPTION_LICENSE_AGREEMENT
+!define OPTION_LICENSE_AGREEMENT
 !define OPTION_UAC_PLUGIN_ENHANCED
 !define OPTION_SECTION_SC_START_MENU
 !define OPTION_SECTION_SC_DESKTOP
@@ -40,7 +41,7 @@
 !define CSYNC_PLUGIN_DIR "@CSYNC_PLUGIN_DIR@"
 !define CSYNC_CONFIG_DIR "@CSYNC_CONFIG_DIR@"
 
-!define NSI_PATH "${SOURCE_PATH}/admin/win/nsi"
+!define NSI_PATH "${source_path}/admin/win/nsi"
 
 ;-----------------------------------------------------------------------------
 ; Installer version
@@ -125,7 +126,7 @@ ReserveFile "${NSISDIR}\Plugins\InstallOptions.dll"
 ;-----------------------------------------------------------------------------
 !insertmacro MUI_PAGE_WELCOME
 !ifdef OPTION_LICENSE_AGREEMENT
-   !insertmacro MUI_PAGE_LICENSE "LICENSE.txt"
+   !insertmacro MUI_PAGE_LICENSE "${source_path}/${APPLICATION_LICENSE}"
 !endif
 Page custom PageReinstall PageLeaveReinstall
 !insertmacro MUI_PAGE_COMPONENTS
