@@ -197,7 +197,7 @@ char *c_lowercase(const char* str) {
 }
 
 /* Convert a wide multibyte String to UTF8 */
-const char* c_utf8(const _TCHAR *wstr)
+const char* c_utf8(const mbchar_t *wstr)
 {
   const char *dst = NULL;
 
@@ -221,16 +221,16 @@ const char* c_utf8(const _TCHAR *wstr)
 }
 
 /* Convert a an UTF8 string to multibyte */
-const _TCHAR* c_multibyte(const char *str)
+const mbchar_t* c_multibyte(const char *str)
 {
 #ifdef _WIN32
-  _TCHAR *wstrTo = NULL;
+  mbchar_t *wstrTo = NULL;
   if(!str) return NULL;
 
   size_t len = strlen( str );
   int size_needed = MultiByteToWideChar(CP_UTF8, 0, str, len, NULL, 0);
   if(size_needed > 0) {
-    int size_char = (size_needed+1)*sizeof(_TCHAR);
+    int size_char = (size_needed+1)*sizeof(mbchar_t);
     wstrTo = c_malloc(size_char);
     memset( (void*)wstrTo, 0, size_char);
     MultiByteToWideChar(CP_UTF8, 0, str, -1, wstrTo, size_needed);
@@ -250,7 +250,7 @@ void c_free_utf8(char* buf)
 #endif
 }
 
-void c_free_multibyte(const _TCHAR* buf)
+void c_free_multibyte(const mbchar_t* buf)
 {
 #ifdef _WIN32
     SAFE_FREE(buf);
