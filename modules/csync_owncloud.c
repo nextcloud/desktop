@@ -1154,7 +1154,7 @@ static ssize_t owncloud_read(csync_vio_method_handle_t *fhandle, void *buf, size
 #ifdef _WIN32
 	_fmode = _O_BINARY;
 #endif
-        tmpFileName = c_multibyte(writeCtx->tmpFileName);
+        const mbchar_t *tmpFileName = c_multibyte(writeCtx->tmpFileName);
         if (( writeCtx->fd = _topen( tmpFileName, O_RDONLY )) < 0) {
             c_free_multibyte(tmpFileName);
             DEBUG_WEBDAV(("Could not open local file %s", writeCtx->tmpFileName ));
