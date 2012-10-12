@@ -1628,7 +1628,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/theme.cpp" line="54"/>
         <source>Sync Error - Click info button for details.</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка синхронизации - Кликните на кнопку информации для детализации</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="57"/>
@@ -1663,7 +1663,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="53"/>
         <source>Use system proxy</source>
-        <translation type="unfinished"/>
+        <translation>Используйте системный прокси</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="60"/>
@@ -1693,7 +1693,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="172"/>
         <source>Proxy server requires password</source>
-        <translation type="unfinished"/>
+        <translation>Прокси-сервер требует пароль</translation>
     </message>
 </context>
 <context>
