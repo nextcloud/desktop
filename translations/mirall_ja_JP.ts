@@ -1170,22 +1170,22 @@ Setup can not be done.</source>
         <translation>再開</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="422"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="421"/>
         <source>Checking %1 connection...</source>
         <translation>%1 の接続を確認中...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="427"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="426"/>
         <source>No %1 connection configured.</source>
         <translation>%1 の接続は設定されていません。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="449"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="448"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, server version %3</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; へ接続中、サーバのバージョン %3</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="467"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="466"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;%1 への接続に失敗: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
@@ -1202,12 +1202,12 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="451"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="450"/>
         <source>Version: %1</source>
         <translation>バージョン: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="464"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="463"/>
         <source>unknown problem.</source>
         <translation>未知の問題。</translation>
     </message>

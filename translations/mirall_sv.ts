@@ -1170,22 +1170,22 @@ Inställning kan inte utföras.</translation>
         <translation>Återuppta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="422"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="421"/>
         <source>Checking %1 connection...</source>
         <translation>Kontrollerar %1 anslutning...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="427"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="426"/>
         <source>No %1 connection configured.</source>
         <translation>Ingen %1 anslutning konfigurerad.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="449"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="448"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, server version %3</source>
         <translation>Ansluten till &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, server version %3</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="467"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="466"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Misslyckades ansluta till %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
@@ -1202,12 +1202,12 @@ Inställning kan inte utföras.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="451"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="450"/>
         <source>Version: %1</source>
         <translation>Version: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="464"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="463"/>
         <source>unknown problem.</source>
         <translation>okänt fel.</translation>
     </message>

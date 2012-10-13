@@ -1170,22 +1170,22 @@ Das Setup kann nicht ausgeführt werden.</translation>
         <translation>Fortsetzen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="422"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="421"/>
         <source>Checking %1 connection...</source>
         <translation>Überprüfe %1-Verbindung...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="427"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="426"/>
         <source>No %1 connection configured.</source>
         <translation>Keine %1-Verbindung konfiguriert.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="449"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="448"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, server version %3</source>
         <translation>Verbinde zu &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, Serverversion %3</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="467"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="466"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Verbindung mit %1 fehlgeschlagen &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
@@ -1202,12 +1202,12 @@ Das Setup kann nicht ausgeführt werden.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="451"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="450"/>
         <source>Version: %1</source>
         <translation>Version: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="464"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="463"/>
         <source>unknown problem.</source>
         <translation>unbekanntes Problem.</translation>
     </message>
@@ -1286,12 +1286,12 @@ Das Setup kann nicht ausgeführt werden.</translation>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="331"/>
         <source>Password Required</source>
-        <translation>Passwort benötigt</translation>
+        <translation>Passwort erforderlich</translation>
     </message>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="332"/>
         <source>Please enter your %1 password:</source>
-        <translation>Bitte geben Sie Ihr %1 Passwort ein:</translation>
+        <translation>Bitte gib Dein %1 Passwort ein:</translation>
     </message>
 </context>
 <context>
@@ -1723,7 +1723,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
         <source>Check if you want to continue via SSL and trust the shown certificates.</source>
-        <translation>Überprüfen Sie, ob Sie die SSL-Verbindung herstellen möchten und dem angezeigten Zertifikat vertrauen.</translation>
+        <translation>Bitte überprüfe, ob Sie Du SSL-Verbindung herstellen möchtest und dem angezeigten Zertifikat vertraust.</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>

@@ -1164,22 +1164,22 @@ Nastavení nelze provést.</translation>
         <translation>Obnovit</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="422"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="421"/>
         <source>Checking %1 connection...</source>
         <translation>Kontroluji spojení s %1....</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="427"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="426"/>
         <source>No %1 connection configured.</source>
         <translation>Žádné spojení s %1 nenastaveno.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="449"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="448"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, server version %3</source>
         <translation>Připojeno k &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, serveru verze %3</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="467"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="466"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Spojení s %1 selhalo: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
@@ -1196,12 +1196,12 @@ Nastavení nelze provést.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="451"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="450"/>
         <source>Version: %1</source>
         <translation>Verze: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="464"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="463"/>
         <source>unknown problem.</source>
         <translation>neznámý problém.</translation>
     </message>
