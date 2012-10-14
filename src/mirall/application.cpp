@@ -159,6 +159,9 @@ Application::Application(int &argc, char **argv) :
         QTimer::singleShot( 3000, this, SLOT( slotStartUpdateDetector() ));
     }
 
+    connect( ownCloudInfo::instance(), SIGNAL(sslFailed(QNetworkReply*, QList<QSslError>)),
+             this,SLOT(slotSSLFailed(QNetworkReply*, QList<QSslError>)));
+
     qDebug() << "Network Location: " << NetworkLocation::currentLocation().encoded();
 }
 
@@ -187,10 +190,6 @@ void Application::slotStartFolderSetup( int result )
 
             connect( ownCloudInfo::instance(),SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
                      this,SLOT(slotAuthCheck(QString,QNetworkReply*)));
-
-            connect( ownCloudInfo::instance(), SIGNAL(sslFailed(QNetworkReply*, QList<QSslError>)),
-                     this,SLOT(slotSSLFailed(QNetworkReply*, QList<QSslError>)));
-
 
             ownCloudInfo::instance()->checkInstallation();
         } else {
