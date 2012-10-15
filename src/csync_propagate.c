@@ -105,10 +105,12 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   /* Open the source file */
   ctx->replica = srep;
   flags = O_RDONLY|O_NOFOLLOW;
+#ifdef O_NOATIME
   /* O_NOATIME can only be set by the owner of the file or the superuser */
   if (st->uid == ctx->pwd.uid || ctx->pwd.euid == 0) {
     flags |= O_NOATIME;
   }
+#endif
   sfp = csync_vio_open(ctx, suri, flags, 0);
   if (sfp == NULL) {
     if (errno == ENOMEM) {
