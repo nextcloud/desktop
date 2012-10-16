@@ -1,11 +1,9 @@
-#include <string.h>
+#include <stdlib.h>
 #include <time.h>
 
-#include "support.h"
+#include "torture.h"
 
 #include "std/c_list.h"
-
-static c_list_t *list = NULL;
 
 typedef struct test_s {
   int key;
@@ -28,327 +26,310 @@ static int list_cmp(const void *key, const void *data) {
   return 0;
 }
 
-static void setup_complete_list(void) {
-  int i = 0;
-  srand(1);
+static void setup_complete_list(void **state) {
+    c_list_t *list = NULL;
+    int i = 0;
+    srand(1);
 
-  for (i = 0; i < 100; i++) {
-    test_t *testdata = NULL;
+    for (i = 0; i < 100; i++) {
+        test_t *testdata = NULL;
 
-    testdata = c_malloc(sizeof(test_t));
-    fail_if(testdata == NULL, NULL);
+        testdata = malloc(sizeof(test_t));
+        assert_non_null(testdata);
 
-    testdata->key = i;
-    testdata->number = rand() % 100;
+        testdata->key = i;
+        testdata->number = rand() % 100;
 
-    list = c_list_append(list, (void *) testdata);
-
-    fail_if(list == NULL, "Setup failed");
-  }
-}
-
-static void setup_random_list(void) {
-  int i = 0;
-  srand(1);
-
-  for (i = 0; i < 100; i++) {
-    test_t *testdata = NULL;
-
-    testdata = c_malloc(sizeof(test_t));
-    fail_if(testdata == NULL, NULL);
-
-    testdata->key = i;
-    testdata->number = rand() % 100;
-
-    /* random insert */
-    if (testdata->number > 49) {
-      list = c_list_prepend(list, (void *) testdata);
-    } else {
-      list = c_list_append(list, (void *) testdata);
+        list = c_list_append(list, (void *) testdata);
+        assert_non_null(list);
     }
 
-    fail_if(list == NULL, "Setup failed");
-  }
+    *state = list;
 }
 
-static void teardown_destroy_list(void) {
-  c_list_t *walk = NULL;
+static void setup_random_list(void **state) {
+    c_list_t *list = NULL;
+    int i = 0;
+    srand(1);
 
-  for (walk = c_list_first(list); walk != NULL; walk = c_list_next(walk)) {
-    test_t *data = NULL;
+    for (i = 0; i < 100; i++) {
+        test_t *testdata;
 
-    data = (test_t *) walk->data;
-    SAFE_FREE(data);
-  }
-  c_list_free(list);
-  list = NULL;
+        testdata = malloc(sizeof(test_t));
+        assert_non_null(testdata);
+
+        testdata->key = i;
+        testdata->number = rand() % 100;
+
+        /* random insert */
+        if (testdata->number > 49) {
+            list = c_list_prepend(list, (void *) testdata);
+        } else {
+            list = c_list_append(list, (void *) testdata);
+        }
+
+        assert_non_null(list);
+    }
+
+    *state = list;
+}
+
+static void teardown_destroy_list(void **state) {
+    c_list_t *list = *state;
+    c_list_t *walk = NULL;
+
+    for (walk = c_list_first(list); walk != NULL; walk = c_list_next(walk)) {
+        test_t *data;
+
+        data = (test_t *) walk->data;
+        free(data);
+    }
+    c_list_free(list);
+    *state = NULL;
 }
 
 /*
  * Start tests
  */
-START_TEST (check_c_list_alloc)
+static void check_c_list_alloc(void **state)
 {
-  c_list_t *new = NULL;
-  new = c_list_alloc();
-  fail_if(new == NULL, NULL);
+    c_list_t *new = NULL;
 
-  SAFE_FREE(new);
+    (void) state; /* unused */
+
+    new = c_list_alloc();
+    assert_non_null(new);
+
+    free(new);
 }
-END_TEST
 
-START_TEST (check_c_list_remove_null)
+static void check_c_list_remove_null(void **state)
 {
-  fail_unless(c_list_remove(NULL, NULL) == NULL, NULL);
-}
-END_TEST
+    (void) state; /* unused */
 
-START_TEST (check_c_list_append)
+    assert_null(c_list_remove(NULL, NULL));
+}
+
+static void check_c_list_append(void **state)
 {
-  list = c_list_append(list, (void *) 5);
-  fail_if(list == NULL, NULL);
+    c_list_t *list = *state;
 
-  list = c_list_remove(list, (void *) 5);
-  fail_unless(list == NULL, NULL);
+    list = c_list_append(list, (void *) 5);
+    assert_non_null(list);
+
+    list = c_list_remove(list, (void *) 5);
+    assert_null(list);
 }
-END_TEST
 
-START_TEST (check_c_list_prepend)
+static void check_c_list_prepend(void **state)
 {
-  list = c_list_prepend(list, (void *) 5);
-  fail_if(list == NULL, NULL);
+    c_list_t *list = *state;
 
-  list = c_list_remove(list, (void *) 5);
-  fail_unless(list == NULL, NULL);
+    list = c_list_prepend(list, (void *) 5);
+    assert_non_null(list);
+
+    list = c_list_remove(list, (void *) 5);
+    assert_null(list);
 }
-END_TEST
 
-START_TEST (check_c_list_first)
+static void check_c_list_first(void **state)
 {
-  c_list_t *first = NULL;
-  test_t *data = NULL;
+    c_list_t *list = *state;
 
-  first = c_list_first(list);
-  fail_if(first == NULL);
+    c_list_t *first = NULL;
+    test_t *data = NULL;
 
-  data = first->data;
-  fail_unless(data->key == 0, NULL);
+    first = c_list_first(list);
+    assert_non_null(first);
+
+    data = first->data;
+    assert_int_equal(data->key, 0);
 }
-END_TEST
 
-START_TEST (check_c_list_last)
+static void check_c_list_last(void **state)
 {
-  c_list_t *last = NULL;
-  test_t *data = NULL;
+    c_list_t *list = *state;
+    c_list_t *last = NULL;
+    test_t *data = NULL;
 
-  last = c_list_last(list);
-  fail_if(last == NULL);
+    last = c_list_last(list);
+    assert_non_null(list);
 
-  data = last->data;
-  fail_unless(data->key == 99, NULL);
+    data = last->data;
+    assert_int_equal(data->key, 99);
 }
-END_TEST
 
-START_TEST (check_c_list_next)
+static void check_c_list_next(void **state)
 {
-  c_list_t *first = NULL;
-  c_list_t *next = NULL;
-  test_t *data = NULL;
+    c_list_t *list = *state;
+    c_list_t *first = NULL;
+    c_list_t *next = NULL;
+    test_t *data = NULL;
 
-  first = c_list_first(list);
-  fail_if(first == NULL);
-  next = c_list_next(first);
-  fail_if(next == NULL);
+    first = c_list_first(list);
+    assert_non_null(first);
+    next = c_list_next(first);
+    assert_non_null(next);
 
-  data = next->data;
-  fail_unless(data->key == 1, NULL);
+    data = next->data;
+    assert_int_equal(data->key, 1);
 }
-END_TEST
 
-START_TEST (check_c_list_prev)
+static void check_c_list_prev(void **state)
 {
-  c_list_t *last = NULL;
-  c_list_t *prev = NULL;
-  test_t *data = NULL;
+    c_list_t *list = *state;
+    c_list_t *last = NULL;
+    c_list_t *prev = NULL;
+    test_t *data = NULL;
 
-  last = c_list_last(list);
-  fail_if(last == NULL);
-  prev = c_list_prev(last);
-  fail_if(prev == NULL);
+    last = c_list_last(list);
+    assert_non_null(last);
+    prev = c_list_prev(last);
+    assert_non_null(prev);
 
-  data = prev->data;
-  fail_unless(data->key == 98, NULL);
+    data = prev->data;
+    assert_int_equal(data->key, 98);
 }
-END_TEST
 
-START_TEST (check_c_list_length)
+static void check_c_list_length(void **state)
 {
-  unsigned long len = 0;
+    c_list_t *list = *state;
+    unsigned long len = 0;
 
-  len = c_list_length(list);
-  fail_unless(len == 100, "len = %lu", len);
+    len = c_list_length(list);
+    assert_int_equal(len, 100);
 }
-END_TEST
 
-START_TEST (check_c_list_position)
+static void check_c_list_position(void **state)
 {
-  c_list_t *pos = NULL;
-  test_t *data = NULL;
+    c_list_t *list = *state;
+    c_list_t *pos = NULL;
+    test_t *data = NULL;
 
-  pos = c_list_position(list, 50);
-  fail_if(pos == NULL, NULL);
+    pos = c_list_position(list, 50);
+    assert_non_null(pos);
 
-  data = pos->data;
-  fail_unless(data->key == 50, "key: %d", data->key);
+    data = pos->data;
+    assert_int_equal(data->key, 50);
 }
-END_TEST
 
-START_TEST (check_c_list_insert)
+static void check_c_list_insert(void **state)
 {
-  c_list_t *pos = NULL;
-  test_t *data = NULL;
+    c_list_t *list = *state;
+    c_list_t *pos = NULL;
+    test_t *data = NULL;
 
-  data = c_malloc(sizeof(test_t));
-  fail_if(data == NULL, NULL);
+    data = malloc(sizeof(test_t));
+    assert_non_null(data);
 
-  data->key = data->number = 123;
+    data->key = data->number = 123;
 
-  list = c_list_insert(list, (void *) data, 50);
-  data = NULL;
+    list = c_list_insert(list, (void *) data, 50);
+    data = NULL;
 
-  pos = c_list_position(list, 50);
-  fail_if(pos == NULL, NULL);
+    pos = c_list_position(list, 50);
+    assert_non_null(pos);
 
-  data = pos->data;
-  fail_unless(data->key == 123, "key: %d", data->key);
+    data = pos->data;
+    assert_int_equal(data->key, 123);
 }
-END_TEST
 
-START_TEST (check_c_list_find)
+static void check_c_list_find(void **state)
 {
-  c_list_t *find = NULL;
-  test_t *data = NULL;
+    c_list_t *list = *state;
+    c_list_t *find = NULL;
+    test_t *data = NULL;
 
-  data = c_malloc(sizeof(test_t));
-  fail_if(data == NULL, NULL);
+    data = malloc(sizeof(test_t));
+    assert_non_null(data);
 
-  data->key = data->number = 123;
+    data->key = data->number = 123;
 
-  list = c_list_insert(list, (void *) data, 50);
+    list = c_list_insert(list, (void *) data, 50);
 
-  find = c_list_find(list, data);
-  fail_unless(data == (test_t *) find->data, NULL);
+    find = c_list_find(list, data);
+    assert_memory_equal(data, find->data, sizeof(test_t));
 }
-END_TEST
 
-START_TEST (check_c_list_find_custom)
+static void check_c_list_find_custom(void **state)
 {
-  c_list_t *find = NULL;
-  test_t *data = NULL;
+    c_list_t *list = *state;
+    c_list_t *find = NULL;
+    test_t *data = NULL;
 
-  data = c_malloc(sizeof(test_t));
-  fail_if(data == NULL, NULL);
+    data = malloc(sizeof(test_t));
+    assert_non_null(data);
 
-  data->key = data->number = 123;
+    data->key = data->number = 123;
 
-  list = c_list_insert(list, (void *) data, 50);
+    list = c_list_insert(list, (void *) data, 50);
 
-  find = c_list_find_custom(list, data, list_cmp);
-  fail_unless(data == (test_t *) find->data, NULL);
+    find = c_list_find_custom(list, data, list_cmp);
+    assert_memory_equal(data, find->data, sizeof(test_t));
 }
-END_TEST
 
-START_TEST (check_c_list_insert_sorted)
+static void check_c_list_insert_sorted(void **state)
 {
-  int i = 0;
-  c_list_t *walk = NULL;
-  c_list_t *new = NULL;
-  test_t *data = NULL;
+    c_list_t *list = *state;
+    int i = 0;
+    c_list_t *walk = NULL;
+    c_list_t *new = NULL;
+    test_t *data = NULL;
 
-  /* create the list */
-  for (walk = c_list_first(list); walk != NULL; walk = c_list_next(walk)) {
-    new = c_list_insert_sorted(new, walk->data, list_cmp);
-  }
+    /* create the list */
+    for (walk = c_list_first(list); walk != NULL; walk = c_list_next(walk)) {
+        new = c_list_insert_sorted(new, walk->data, list_cmp);
+    }
 
-  /* check the list */
-  for (walk = c_list_first(new); walk != NULL; walk = c_list_next(walk)) {
-    data = (test_t *) walk->data;
-    fail_unless(data->key == i, "key: %d, i: %d", data->key, i);
-    i++;
-  }
+    /* check the list */
+    for (walk = c_list_first(new); walk != NULL; walk = c_list_next(walk)) {
+        data = (test_t *) walk->data;
+        assert_int_equal(data->key, i);
+        i++;
+    }
 
-  c_list_free(new);
+    c_list_free(new);
 }
-END_TEST
 
-START_TEST (check_c_list_sort)
+static void check_c_list_sort(void **state)
 {
-  int i = 0;
-  test_t *data = NULL;
-  c_list_t *walk = NULL;
+    c_list_t *list = *state;
+    int i = 0;
+    test_t *data = NULL;
+    c_list_t *walk = NULL;
 
-  /* sort list */
-  list = c_list_sort(list, list_cmp);
-  fail_if(list == NULL, NULL);
+    /* sort list */
+    list = c_list_sort(list, list_cmp);
+    assert_non_null(list);
 
-  /* check the list */
-  for (walk = c_list_first(list); walk != NULL; walk = c_list_next(walk)) {
-    data = (test_t *) walk->data;
-    fail_unless(data->key == i, "key: %d, i: %d", data->key, i);
-    i++;
-  }
+    /* check the list */
+    for (walk = c_list_first(list); walk != NULL; walk = c_list_next(walk)) {
+        data = (test_t *) walk->data;
+        assert_int_equal(data->key, i);
+        i++;
+    }
 }
-END_TEST
 
-#if 0
-START_TEST (check_c_list_x)
+int torture_run_tests(void)
 {
-}
-END_TEST
-#endif
+  const UnitTest tests[] = {
+      unit_test(check_c_list_alloc),
+      unit_test(check_c_list_remove_null),
+      unit_test(check_c_list_append),
+      unit_test(check_c_list_prepend),
+      unit_test_setup_teardown(check_c_list_first, setup_complete_list, teardown_destroy_list),
+      unit_test_setup_teardown(check_c_list_last, setup_complete_list, teardown_destroy_list),
+      unit_test_setup_teardown(check_c_list_next, setup_complete_list, teardown_destroy_list),
+      unit_test_setup_teardown(check_c_list_prev, setup_complete_list, teardown_destroy_list),
+      unit_test_setup_teardown(check_c_list_length, setup_complete_list, teardown_destroy_list),
+      unit_test_setup_teardown(check_c_list_position, setup_complete_list, teardown_destroy_list),
+      unit_test_setup_teardown(check_c_list_find, setup_complete_list, teardown_destroy_list),
+      unit_test_setup_teardown(check_c_list_find_custom, setup_complete_list, teardown_destroy_list),
+      unit_test_setup_teardown(check_c_list_insert, setup_complete_list, teardown_destroy_list),
+      unit_test_setup_teardown(check_c_list_insert_sorted, setup_random_list, teardown_destroy_list),
+      unit_test_setup_teardown(check_c_list_sort, setup_random_list, teardown_destroy_list),
+  };
 
-static Suite *make_std_c_suite(void) {
-  Suite *s = suite_create("std:path:c_basename");
-
-  create_case(s, "check_c_list_alloc", check_c_list_alloc);
-  create_case(s, "check_c_list_remove_null", check_c_list_remove_null);
-  create_case(s, "check_c_list_append", check_c_list_append);
-  create_case(s, "check_c_list_prepend", check_c_list_prepend);
-  create_case_fixture(s, "check_c_list_first", check_c_list_first, setup_complete_list, teardown_destroy_list);
-  create_case_fixture(s, "check_c_list_last", check_c_list_last, setup_complete_list, teardown_destroy_list);
-  create_case_fixture(s, "check_c_list_next", check_c_list_next, setup_complete_list, teardown_destroy_list);
-  create_case_fixture(s, "check_c_list_prev", check_c_list_prev, setup_complete_list, teardown_destroy_list);
-  create_case_fixture(s, "check_c_list_length", check_c_list_length, setup_complete_list, teardown_destroy_list);
-  create_case_fixture(s, "check_c_list_position", check_c_list_position, setup_complete_list, teardown_destroy_list);
-  create_case_fixture(s, "check_c_list_find", check_c_list_find, setup_complete_list, teardown_destroy_list);
-  create_case_fixture(s, "check_c_list_find_custom", check_c_list_find_custom, setup_complete_list, teardown_destroy_list);
-  create_case_fixture(s, "check_c_list_insert", check_c_list_insert, setup_complete_list, teardown_destroy_list);
-  create_case_fixture(s, "check_c_list_insert_sorted", check_c_list_insert_sorted, setup_random_list, teardown_destroy_list);
-  create_case_fixture(s, "check_c_list_sort", check_c_list_sort, setup_random_list, teardown_destroy_list);
-
-  return s;
-}
-
-int main(int argc, char **argv) {
-  Suite *s = NULL;
-  SRunner *sr = NULL;
-  struct argument_s arguments;
-  int nf;
-
-  ZERO_STRUCT(arguments);
-
-  cmdline_parse(argc, argv, &arguments);
-
-  s = make_std_c_suite();
-
-  sr = srunner_create(s);
-  if (arguments.nofork) {
-    srunner_set_fork_status(sr, CK_NOFORK);
-  }
-  srunner_run_all(sr, CK_VERBOSE);
-  nf = srunner_ntests_failed(sr);
-  srunner_free(sr);
-
-  return (nf == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+  return run_tests(tests);
 }
 
