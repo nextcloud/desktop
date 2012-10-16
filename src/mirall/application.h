@@ -80,7 +80,7 @@ protected slots:
     void slotTrayClicked( QSystemTrayIcon::ActivationReason );
     void slotFolderOpenAction(const QString & );
     void slotOpenOwnCloud();
-    void slotStartFolderSetup(int result = 1); // defaulting to Accepted
+    void slotStartFolderSetup(int result = QDialog::Accepted); // defaulting to Accepted
     void slotOwnCloudFound( const QString&, const QString&, const QString&, const QString& );
     void slotNoOwnCloudFound( QNetworkReply* );
     void slotCheckAuthentication();
