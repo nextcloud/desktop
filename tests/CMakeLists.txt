@@ -31,7 +31,10 @@ add_cmocka_test(check_std_c_str std_tests/check_std_c_str.c ${TEST_TARGET_LIBRAR
 add_cmocka_test(check_std_c_time std_tests/check_std_c_time.c ${TEST_TARGET_LIBRARIES})
 
 # csync tests
-add_cmocka_test(check_logger log_tests/check_log.c ${TEST_TARGET_LIBRARIES})
+
+# This will be rewritten soon anyway.
+#add_cmocka_test(check_logger log_tests/check_log.c ${TEST_TARGET_LIBRARIES})
+
 add_cmocka_test(check_csync_create csync_tests/check_csync_create.c ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_csync_lock csync_tests/check_csync_lock.c ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_csync_config csync_tests/check_csync_config.c ${TEST_TARGET_LIBRARIES})
