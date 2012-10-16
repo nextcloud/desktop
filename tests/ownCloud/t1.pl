@@ -102,7 +102,7 @@ sub csync( $$ )
     my ($local, $remote) = @_;
 
     my $ld_libpath = "/home/kf/owncloud.com/buildcsync/modules";
-    my $csync = "/home/kf/owncloud.com/buildcsync/client/csync";
+    my $csync = "/home/kf/owncloud.com/buildcsync/client/ocsync";
 
     my $url = $owncloud;
     $url =~ s#^http://##;    # Remove the leading http://
