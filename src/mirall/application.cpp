@@ -75,15 +75,18 @@ Application::Application(int &argc, char **argv) :
     _contextMenu(0),
     _theme(Theme::instance()),
     _updateDetector(0),
-    _helpOnly(false)
+    _showLogWindow(false),
+    _logFlush(false),
+    _helpOnly(false),
+    _logBrowser(0)
 {
     setApplicationName( _theme->appName() );
     setWindowIcon( _theme->applicationIcon() );
 
-    if( arguments().contains(QLatin1String("--help"))) {
-        showHelp();
-    }
+    parseOptions(arguments());
     setupLogBrowser();
+    //no need to waste time;
+    if ( _helpOnly ) return;
     processEvents();
 
     QTranslator *qtTranslator = new QTranslator(this);
@@ -104,6 +107,8 @@ Application::Application(int &argc, char **argv) :
 #endif
 
     installTranslator(mirallTranslator);
+
+    connect( this, SIGNAL(messageReceived(QString)), SLOT(slotParseOptions(QString)));
 
     // create folder manager for sync folder management
     _folderMan = new FolderMan(this);
@@ -439,32 +444,26 @@ void Application::setupContextMenu()
 
 void Application::setupLogBrowser()
 {
-    // init the log browser.
-    _logBrowser = new LogBrowser;
-    qInstallMsgHandler( mirallLogCatcher );
-    csync_set_log_callback( csyncLogCatcher );
+    // might be called from second instance
+    if (!_logBrowser) {
+        // init the log browser.
+        _logBrowser = new LogBrowser;
+        qInstallMsgHandler( mirallLogCatcher );
+        csync_set_log_callback( csyncLogCatcher );
+        // ## TODO: allow new log name maybe?
+        if (!_logFile.isEmpty()) {
+            qDebug() << "Logging into logfile: " << _logFile << " with flush " << _logFlush;
+            _logBrowser->setLogFile( _logFile, _logFlush );
+        }
+    }
 
-    if( arguments().contains(QLatin1String("--logwindow"))
-            || arguments().contains(QLatin1String("-l"))) {
+    if (_showLogWindow)
         slotOpenLogBrowser();
-    }
-
-    // check for command line option for a log file.
-    int lf = arguments().indexOf(QLatin1String("--logfile"));
-
-    if( lf > -1 && lf+1 < arguments().count() ) {
-        QString logfile = arguments().at( lf+1 );
-
-        bool flush = false;
-        if( arguments().contains(QLatin1String("--logflush"))) flush = true;
-
-        qDebug() << "Logging into logfile: " << logfile << " with flush " << flush;
-        _logBrowser->setLogFile( logfile, flush );
-    }
 
     qDebug() << QString::fromLatin1( "################## %1 %2 %3 ").arg(_theme->appName())
                 .arg( QLocale::system().name() )
                 .arg(_theme->version());
+
 }
 
 void Application::setupProxy()
@@ -801,6 +800,13 @@ void Application::slotConfigureProxy()
     }
 }
 
+void Application::slotParseOptions(const QString &opts)
+{
+    QStringList options = opts.split(QLatin1Char('|'));
+    parseOptions(options);
+    setupLogBrowser();
+}
+
 void Application::slotSyncStateChange( const QString& alias )
 {
     SyncResult result = _folderMan->syncResult( alias );
@@ -812,6 +818,31 @@ void Application::slotSyncStateChange( const QString& alias )
     computeOverallSyncStatus();
 
     qDebug() << "Sync state changed for folder " << alias << ": "  << result.statusString();
+}
+
+void Application::parseOptions(const QStringList &options)
+{
+    QStringListIterator it(options);
+    // skip file name;
+    if (it.hasNext()) it.next();
+
+    while (it.hasNext()) {
+        QString option = it.next();
+        if (option == QLatin1String("--help")) {
+            showHelp();
+        } else if (option == QLatin1String("--logwindow") ||
+                option == QLatin1String("-l")) {
+            _showLogWindow = true;
+        } else if (option == QLatin1String("--logfile")) {
+            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+                _logFile = it.next();
+            } else {
+                showHelp();
+            }
+        } else if (option == QLatin1String("--logflush")) {
+            _logFlush = true;
+        }
+    }
 }
 
 void Application::computeOverallSyncStatus()

@@ -21,12 +21,15 @@ int main(int argc, char **argv)
     Mirall::Application app(argc, argv);
     app.initialize();
    
-    qint64 pid = -1;
-
     // if the application is already running, notify it.
     if( app.isRunning() ) {
-        if( app.sendMessage( QLatin1String("A message to the master"), 5000, pid ))
-	   return 0;
+        QStringList args = app.arguments();
+        if ( args.size() > 1 && ! app.giveHelp() ) {
+            QString msg = args.join( QLatin1String("|") );
+            if( ! app.sendMessage( msg ) )
+                return -1;
+        }
+        return 0;
     }
     // if help requested, show on command line and exit.
     if( ! app.giveHelp() )

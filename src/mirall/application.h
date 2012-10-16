@@ -63,10 +63,12 @@ protected slots:
     void slotInfoFolder( const QString& );
     void slotConfigure();
     void slotConfigureProxy();
+    void slotParseOptions( const QString& );
 
     void slotSyncStateChange( const QString& );
 protected:
 
+    void parseOptions(const QStringList& );
     void setupActions();
     void setupSystemTray();
     void setupContextMenu();
@@ -122,6 +124,9 @@ private:
     UpdateDetector *_updateDetector;
     QMap<QString, QString> _overallStatusStrings;
     LogBrowser *_logBrowser;
+    QString _logFile;
+    bool _showLogWindow;
+    bool _logFlush;
     bool        _helpOnly;
 };
 
