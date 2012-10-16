@@ -452,16 +452,17 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     csync_vio_file_stat_destroy(dirent);
     dirent = NULL;
   }
+
   csync_vio_closedir(ctx, dh);
   CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Closing walk for %s with read_from_db %d", uri, read_from_db);
 
-  ctx->remote.read_from_db = read_from_db;
-
 done:
+  ctx->remote.read_from_db = read_from_db;
   csync_vio_file_stat_destroy(dirent);
   SAFE_FREE(filename);
   return rc;
 error:
+  ctx->remote.read_from_db = read_from_db;
   SAFE_FREE(filename);
   return -1;
 }
