@@ -4,7 +4,7 @@
  *
  * See http://burtleburtle.net/bob/hash/evahash.html
  */
-#include "support.h"
+#include "torture.h"
 
 #include "std/c_jhash.h"
 
@@ -13,13 +13,15 @@
 #define MAXPAIR 80
 #define MAXLEN 70
 
-START_TEST (check_c_jhash_trials)
+static void check_c_jhash_trials(void **state)
 {
   uint8_t qa[MAXLEN+1], qb[MAXLEN+2], *a = &qa[0], *b = &qb[1];
   uint32_t c[HASHSTATE], d[HASHSTATE], i, j=0, k, l, m, z;
   uint32_t e[HASHSTATE],f[HASHSTATE],g[HASHSTATE],h[HASHSTATE];
   uint32_t x[HASHSTATE],y[HASHSTATE];
   uint32_t hlen;
+
+  (void) state; /* unused */
 
   for (hlen=0; hlen < MAXLEN; ++hlen) {
     z=0;
@@ -54,10 +56,10 @@ START_TEST (check_c_jhash_trials)
           }
           if (k>z) z=k;
           if (k==MAXPAIR) {
-             printf("Some bit didn't change: ");
-             printf("%.8x %.8x %.8x %.8x %.8x %.8x  ",
+             print_error("Some bit didn't change: ");
+             print_error("%.8x %.8x %.8x %.8x %.8x %.8x  ",
                     e[0], f[0], g[0], h[0], x[0], y[0]);
-             printf("i %d j %d m %d len %d\n",i,j,m,hlen);
+             print_error("i %d j %d m %d len %d\n",i,j,m,hlen);
           }
           if (z==MAXPAIR) goto done;
         }
@@ -65,13 +67,13 @@ START_TEST (check_c_jhash_trials)
     }
    done:
     if (z < MAXPAIR) {
-      fail_unless(z < MAXPAIR, "%ld trials needed, should be less than 40", z/2);
+        assert_true(z < MAXPAIR);
+        // print_error("%u trials needed, should be less than 40\n", z/2);
     }
   }
 }
-END_TEST
 
-START_TEST (check_c_jhash_alignment_problems)
+static void check_c_jhash_alignment_problems(void **state)
 {
   uint32_t test;
   uint8_t buf[MAXLEN+20], *b;
@@ -82,11 +84,13 @@ START_TEST (check_c_jhash_alignment_problems)
   uint8_t qqqq[] = "xxxThis is the time for all good men to come to the aid of their country";
   uint32_t h,i,j,ref,x,y;
 
+  (void) state; /* unused */
+
   test = c_jhash(q, sizeof(q)-1, (uint32_t)0);
-  fail_unless(test == c_jhash(qq+1, sizeof(q)-1, (uint32_t)0), NULL);
-  fail_unless(test == c_jhash(qq+1, sizeof(q)-1, (uint32_t)0), NULL);
-  fail_unless(test == c_jhash(qqq+2, sizeof(q)-1, (uint32_t)0), NULL);
-  fail_unless(test == c_jhash(qqqq+3, sizeof(q)-1, (uint32_t)0), NULL);
+  assert_true(test == c_jhash(qq+1, sizeof(q)-1, (uint32_t)0));
+  assert_true(test == c_jhash(qq+1, sizeof(q)-1, (uint32_t)0));
+  assert_true(test == c_jhash(qqq+2, sizeof(q)-1, (uint32_t)0));
+  assert_true(test == c_jhash(qqqq+3, sizeof(q)-1, (uint32_t)0));
   for (h=0, b=buf+1; h<8; ++h, ++b) {
     for (i=0; i<MAXLEN; ++i) {
       len = i;
@@ -98,28 +102,28 @@ START_TEST (check_c_jhash_alignment_problems)
       *(b-1)=(uint8_t)~0;
       x = c_jhash(b, len, (uint32_t)1);
       y = c_jhash(b, len, (uint32_t)1);
-      fail_if((ref != x) || (ref != y), "alignment error: %.8lx %.8lx %.8lx %ld %ld\n", ref, x, y, h, i);
+      assert_false((ref != x) || (ref != y));
     }
   }
 }
-END_TEST
 
-START_TEST (check_c_jhash_null_strings)
+static void check_c_jhash_null_strings(void **state)
 {
   uint8_t buf[1];
-  uint32_t h, i, t, state[HASHSTATE];
+  uint32_t h, i, t;
+
+  (void) state; /* unused */
 
   buf[0] = ~0;
-  for (i=0; i<HASHSTATE; ++i) state[i] = 1;
   for (i=0, h=0; i<8; ++i) {
     t = h;
     h = c_jhash(buf, (uint32_t)0, h);
-    fail_if(t == h, "0-byte-string check failed: t = %.8lx, h = %.8lx", t, h);
+    assert_false(t == h);
+    // print_error("0-byte-string check failed: t = %.8x, h = %.8x", t, h);
   }
 }
-END_TEST
 
-START_TEST (check_c_jhash64_trials)
+static void check_c_jhash64_trials(void **state)
 {
   uint8_t qa[MAXLEN + 1], qb[MAXLEN + 2];
   uint8_t *a, *b;
@@ -127,6 +131,8 @@ START_TEST (check_c_jhash64_trials)
   uint64_t e[HASHSTATE],f[HASHSTATE],g[HASHSTATE],h[HASHSTATE];
   uint64_t x[HASHSTATE],y[HASHSTATE];
   uint64_t hlen;
+
+  (void) state; /* unused */
 
   a = &qa[0];
   b = &qb[1];
@@ -165,16 +171,18 @@ START_TEST (check_c_jhash64_trials)
           }
           if (k>z) z=k;
           if (k==MAXPAIR) {
-             printf("Some bit didn't change: ");
-             printf("%.8llx %.8llx %.8llx %.8llx %.8llx %.8llx  ",
-                    (long long unsigned int) e[0],
-                    (long long unsigned int) f[0],
-                    (long long unsigned int) g[0],
-                    (long long unsigned int) h[0],
-                    (long long unsigned int) x[0],
-                    (long long unsigned int) y[0]);
-             printf("i %d j %d m %d len %d\n",
-                    (uint32_t)i,(uint32_t)j,(uint32_t)m,(uint32_t)hlen);
+#if 0
+             print_error("Some bit didn't change: ");
+             print_error("%.8llx %.8llx %.8llx %.8llx %.8llx %.8llx  ",
+                         (long long unsigned int) e[0],
+                         (long long unsigned int) f[0],
+                         (long long unsigned int) g[0],
+                         (long long unsigned int) h[0],
+                         (long long unsigned int) x[0],
+                         (long long unsigned int) y[0]);
+             print_error("i %d j %d m %d len %d\n",
+                         (uint32_t)i,(uint32_t)j,(uint32_t)m,(uint32_t)hlen);
+#endif
           }
           if (z==MAXPAIR) goto done;
         }
@@ -182,13 +190,15 @@ START_TEST (check_c_jhash64_trials)
     }
    done:
     if (z < MAXPAIR) {
-      fail_unless(z < MAXPAIR, "%ld trials needed, should be less than 40", z/2);
+#if 0
+        print_error("%lu trials needed, should be less than 40", z/2);
+#endif
+        assert_true(z < MAXPAIR);
     }
   }
 }
-END_TEST
 
-START_TEST (check_c_jhash64_alignment_problems)
+static void check_c_jhash64_alignment_problems(void **state)
 {
   uint8_t buf[MAXLEN+20], *b;
   uint64_t len;
@@ -202,23 +212,33 @@ START_TEST (check_c_jhash64_alignment_problems)
   uint8_t oooo[] = "xxxxxxxThis is the time for all good men to come to the aid of their country";
   uint64_t h,i,j,ref,t,x,y;
 
+  (void) state; /* unused */
+
   h = c_jhash64(q+0, (uint64_t)(sizeof(q)-1), (uint64_t)0);
   t = h;
-  fail_unless(t == h, "%.8lx%.8lx\n", (uint32_t)h, (uint32_t)(h>>32));
+  assert_true(t == h);
+  // , "%.8lx%.8lx\n", (uint32_t)h, (uint32_t)(h>>32));
   h = c_jhash64(qq+1, (uint64_t)(sizeof(q)-1), (uint64_t)0);
-  fail_unless(t == h, "%.8lx%.8lx\n", (uint32_t)h, (uint32_t)(h>>32));
+  assert_true(t == h);
+  // , "%.8lx%.8lx\n", (uint32_t)h, (uint32_t)(h>>32));
   h = c_jhash64(qqq+2, (uint64_t)(sizeof(q)-1), (uint64_t)0);
-  fail_unless(t == h, "%.8lx%.8lx\n", (uint32_t)h, (uint32_t)(h>>32));
+  assert_true(t == h);
+  // , "%.8lx%.8lx\n", (uint32_t)h, (uint32_t)(h>>32));
   h = c_jhash64(qqqq+3, (uint64_t)(sizeof(q)-1), (uint64_t)0);
-  fail_unless(t == h, "%.8lx%.8lx\n", (uint32_t)h, (uint32_t)(h>>32));
+  assert_true(t == h);
+  // , "%.8lx%.8lx\n", (uint32_t)h, (uint32_t)(h>>32));
   h = c_jhash64(o+4, (uint64_t)(sizeof(q)-1), (uint64_t)0);
-  fail_unless(t == h, "%.8lx%.8lx\n", (uint32_t)h, (uint32_t)(h>>32));
+  assert_true(t == h);
+  // , "%.8lx%.8lx\n", (uint32_t)h, (uint32_t)(h>>32));
   h = c_jhash64(oo+5, (uint64_t)(sizeof(q)-1), (uint64_t)0);
-  fail_unless(t == h, "%.8lx%.8lx\n", (uint32_t)h, (uint32_t)(h>>32));
+  assert_true(t == h);
+  // , "%.8lx%.8lx\n", (uint32_t)h, (uint32_t)(h>>32));
   h = c_jhash64(ooo+6, (uint64_t)(sizeof(q)-1), (uint64_t)0);
-  fail_unless(t == h, "%.8lx%.8lx\n", (uint32_t)h, (uint32_t)(h>>32));
+  assert_true(t == h);
+  // , "%.8lx%.8lx\n", (uint32_t)h, (uint32_t)(h>>32));
   h = c_jhash64(oooo+7, (uint64_t)(sizeof(q)-1), (uint64_t)0);
-  fail_unless(t == h, "%.8lx%.8lx\n", (uint32_t)h, (uint32_t)(h>>32));
+  assert_true(t == h);
+  // , "%.8lx%.8lx\n", (uint32_t)h, (uint32_t)(h>>32));
   for (h=0, b=buf+1; h<8; ++h, ++b) {
     for (i=0; i<MAXLEN; ++i) {
       len = i;
@@ -230,63 +250,43 @@ START_TEST (check_c_jhash64_alignment_problems)
       *(b-1)=(uint8_t)~0;
       x = c_jhash64(b, len, (uint64_t)1);
       y = c_jhash64(b, len, (uint64_t)1);
-      fail_if((ref != x) || (ref != y), "alignment error: %.8lx %.8lx %.8lx %ld %ld\n", ref, x, y, h, i);
+      assert_false((ref != x) || (ref != y));
+#if 0
+      print_error("alignment error: %.8lx %.8lx %.8lx %ld %ld\n", ref, x, y, h, i);
+#endif
     }
   }
 }
-END_TEST
 
-START_TEST (check_c_jhash64_null_strings)
+static void check_c_jhash64_null_strings(void **state)
 {
   uint8_t buf[1];
-  uint64_t h, i, t, state[HASHSTATE];
+  uint64_t h, i, t;
 
+  (void) state; /* unused */
 
   buf[0] = ~0;
-  for (i=0; i<HASHSTATE; ++i) state[i] = 1;
   for (i=0, h=0; i<8; ++i) {
     t = h;
     h = c_jhash64(buf, (uint64_t)0, h);
-    fail_if(t == h, "0-byte-string check failed: t = %.8lx, h = %.8lx", t, h);
+    assert_false(t == h);
+#if 0
+    print_error("0-byte-string check failed: t = %.8lx, h = %.8lx", t, h);
+#endif
   }
 }
-END_TEST
 
+int torture_run_tests(void)
+{
+  const UnitTest tests[] = {
+      unit_test(check_c_jhash_trials),
+      unit_test(check_c_jhash_alignment_problems),
+      unit_test(check_c_jhash_null_strings),
+      unit_test(check_c_jhash64_trials),
+      unit_test(check_c_jhash64_alignment_problems),
+      unit_test(check_c_jhash64_null_strings),
+  };
 
-static Suite *make_c_jhash_suite(void) {
-  Suite *s = suite_create("std:path:xsrbtree");
-
-  create_case(s, "check_c_jhash_trials", check_c_jhash_trials);
-  create_case(s, "check_c_jhash_alignment_problems", check_c_jhash_alignment_problems);
-  create_case(s, "check_c_jhash_null_strings", check_c_jhash_null_strings);
-
-  create_case(s, "check_c_jhash64_trials", check_c_jhash64_trials);
-  create_case(s, "check_c_jhash64_alignment_problems", check_c_jhash64_alignment_problems);
-  create_case(s, "check_c_jhash64_null_strings", check_c_jhash64_null_strings);
-
-  return s;
-}
-
-int main(int argc, char **argv) {
-  Suite *s = NULL;
-  SRunner *sr = NULL;
-  struct argument_s arguments;
-  int nf;
-
-  ZERO_STRUCT(arguments);
-
-  cmdline_parse(argc, argv, &arguments);
-
-  s = make_c_jhash_suite();
-
-  sr = srunner_create(s);
-  if (arguments.nofork) {
-    srunner_set_fork_status(sr, CK_NOFORK);
-  }
-  srunner_run_all(sr, CK_VERBOSE);
-  nf = srunner_ntests_failed(sr);
-  srunner_free(sr);
-
-  return (nf == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+  return run_tests(tests);
 }
 
