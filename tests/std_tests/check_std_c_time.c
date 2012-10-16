@@ -1,100 +1,82 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "support.h"
+#include "torture.h"
 
 #include "csync_time.h"
 #include "std/c_time.h"
 
-START_TEST (check_c_tspecdiff)
+static void check_c_tspecdiff(void **state)
 {
-  struct timespec start, finish, diff;
+    struct timespec start, finish, diff;
 
-  csync_gettime(&start);
-  csync_gettime(&finish);
+    (void) state; /* unused */
 
-  diff = c_tspecdiff(finish, start);
+    csync_gettime(&start);
+    csync_gettime(&finish);
 
-  fail_unless(diff.tv_sec == 0, NULL);
-  fail_unless(diff.tv_nsec >= 0, NULL);
+    diff = c_tspecdiff(finish, start);
+
+    assert_int_equal(diff.tv_sec, 0);
+    assert_true(diff.tv_nsec >= 0);
 }
-END_TEST
 
-START_TEST (check_c_tspecdiff_five)
+static void check_c_tspecdiff_five(void **state)
 {
-  struct timespec start, finish, diff;
+    struct timespec start, finish, diff;
 
-  csync_gettime(&start);
-  sleep(5);
-  csync_gettime(&finish);
+    (void) state; /* unused */
 
-  diff = c_tspecdiff(finish, start);
+    csync_gettime(&start);
+    sleep(5);
+    csync_gettime(&finish);
 
-  fail_unless(diff.tv_sec == 5, NULL);
-  fail_unless(diff.tv_nsec > 0, NULL);
+    diff = c_tspecdiff(finish, start);
+
+    assert_int_equal(diff.tv_sec, 5);
+    assert_true(diff.tv_nsec > 0);
 }
-END_TEST
 
-START_TEST (check_c_secdiff)
+static void check_c_secdiff(void **state)
 {
-  struct timespec start, finish;
-  double diff;
+    struct timespec start, finish;
+    double diff;
 
-  csync_gettime(&start);
-  csync_gettime(&finish);
+    (void) state; /* unused */
 
-  diff = c_secdiff(finish, start);
+    csync_gettime(&start);
+    csync_gettime(&finish);
 
-  fail_unless(diff >= 0.00 && diff < 1.00, "diff is %.2f", diff);
+    diff = c_secdiff(finish, start);
+
+    assert_true(diff >= 0.00 && diff < 1.00);
 }
-END_TEST
 
-START_TEST (check_c_secdiff_three)
+static void check_c_secdiff_three(void **state)
 {
-  struct timespec start, finish;
-  double diff;
+    struct timespec start, finish;
+    double diff;
 
-  csync_gettime(&start);
-  sleep(3);
-  csync_gettime(&finish);
+    (void) state; /* unused */
 
-  diff = c_secdiff(finish, start);
+    csync_gettime(&start);
+    sleep(3);
+    csync_gettime(&finish);
 
-  fail_unless(diff > 3.00 && diff < 4.00, "diff is %.2f", diff);
-}
-END_TEST
+    diff = c_secdiff(finish, start);
 
-static Suite *make_std_c_suite(void) {
-  Suite *s = suite_create("std:path:c_basename");
-
-  create_case(s, "check_c_tspecdiff", check_c_tspecdiff);
-  create_case(s, "check_c_tspecdiff_five", check_c_tspecdiff_five);
-  create_case(s, "check_c_secdiff", check_c_secdiff);
-  create_case(s, "check_c_secdiff_three", check_c_secdiff_three);
-
-  return s;
+    assert_true(diff > 3.00 && diff < 4.00);
 }
 
-int main(int argc, char **argv) {
-  Suite *s = NULL;
-  SRunner *sr = NULL;
-  struct argument_s arguments;
-  int nf;
+int torture_run_tests(void)
+{
+    const UnitTest tests[] = {
+        unit_test(check_c_tspecdiff),
+        unit_test(check_c_tspecdiff_five),
+        unit_test(check_c_secdiff),
+        unit_test(check_c_secdiff_three),
+    };
 
-  ZERO_STRUCT(arguments);
-
-  cmdline_parse(argc, argv, &arguments);
-
-  s = make_std_c_suite();
-
-  sr = srunner_create(s);
-  if (arguments.nofork) {
-    srunner_set_fork_status(sr, CK_NOFORK);
-  }
-  srunner_run_all(sr, CK_VERBOSE);
-  nf = srunner_ntests_failed(sr);
-  srunner_free(sr);
-
-  return (nf == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+    return run_tests(tests);
 }
 
