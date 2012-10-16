@@ -61,7 +61,27 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash);
 
 csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx, uint64_t inode);
 
-char *csync_statedb_get_uniqId( CSYNC *ctx, uint64_t jHash, csync_vio_file_stat_t *buf );
+char *csync_statedb_get_uniqId(CSYNC *ctx, uint64_t jHash, csync_vio_file_stat_t *buf);
+
+/**
+ * @brief Query all files metadata inside and below a path.
+ * @param ctx        The csync context.
+ * @param path       The path.
+ *
+ * This function queries all metadata of all files inside or below the
+ * given path. The result is a linear string list with a multiple of 9
+ * entries. For each result file there are 9 strings which are phash,
+ * path, inode, uid, gid, mode, modtime, type and md5 (unique id).
+ *
+ * Note that not only the files in the given path are part of the result
+ * but also the files in directories below the given path. Ie. if the
+ * parameter path is /home/kf/test, we have /home/kf/test/file.txt in
+ * the result but also /home/kf/test/homework/another_file.txt
+ *
+ * @return   A stringlist containing a multiple of 9 entries.
+ */
+c_strlist_t *csync_statedb_get_below_path(CSYNC *ctx, const char *path);
+
 /**
  * @brief A generic statedb query.
  *

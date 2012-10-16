@@ -564,6 +564,26 @@ char *csync_statedb_get_uniqId( CSYNC *ctx, uint64_t jHash, csync_vio_file_stat_
     return ret;
 }
 
+c_strlist_t *csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
+    c_strlist_t *list = NULL;
+    char *stmt = NULL;
+
+    stmt = sqlite3_mprintf("SELECT phash, path, inode, uid, gid, mode, modtime, type, md5 "
+                           "FROM metadata WHERE path GLOB('%q/*')", path);
+    if (stmt == NULL) {
+      return NULL;
+    }
+
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "SQL: %s", stmt);
+
+    list = csync_statedb_query( ctx, stmt );
+
+    sqlite3_free(stmt);
+
+    return list;
+}
+
+
 /* query the statedb, caller must free the memory */
 c_strlist_t *csync_statedb_query(CSYNC *ctx, const char *statement) {
   int err = SQLITE_OK;
