@@ -11,6 +11,9 @@
 #cmakedefine HAVE_CLOCK_GETTIME
 
 #cmakedefine WITH_LOG4C 1
+
+#cmakedefine HAVE_ARGP_H 1
+
 #cmakedefine HAVE_STRERROR_R 1
 #cmakedefine HAVE_UTIMES 1
 #cmakedefine HAVE_LSTAT 1

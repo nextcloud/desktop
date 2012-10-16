@@ -57,9 +57,8 @@ add_subdirectory(client)
 add_subdirectory(config)
 add_subdirectory(doc)
 
-find_package(Check)
-if (CHECK_FOUND AND UNIT_TESTING)
-  include(MacroAddCheckTest)
-  add_subdirectory(tests)
-endif (CHECK_FOUND AND UNIT_TESTING)
+find_package(CMocka)
+if (CMOCKA_FOUND AND UNIT_TESTING)
+    add_subdirectory(tests)
+endif (CMOCKA_FOUND AND UNIT_TESTING)
 
