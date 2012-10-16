@@ -1,23 +1,34 @@
 #include <errno.h>
-#include <string.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "support.h"
+#include "torture.h"
 
 #include "std/c_dir.h"
 
 const char *check_dir = "/tmp/check/c_mkdirs//with/check//";
 const char *check_file = "/tmp/check/c_mkdirs/with/check/foobar.txt";
 
-static void setup(void) {
-  fail_if(c_mkdirs(check_dir, 0755) < 0, "Setup failed");
-  fail_if(system("touch /tmp/check/c_mkdirs/with/check/foobar.txt") < 0, "Setup failed");
+static void setup(void **state) {
+    int rc;
+
+    (void) state; /* unused */
+
+    rc = c_mkdirs(check_dir, 0755);
+    assert_int_equal(rc, 0);
+    rc = system("touch /tmp/check/c_mkdirs/with/check/foobar.txt");
+    assert_int_equal(rc, 0);
 }
 
-static void teardown(void) {
-  fail_unless(c_rmdirs(check_dir) == 0, "Teardown failed");
+static void teardown(void **state) {
+    int rc;
+
+    (void) state; /* unused */
+
+    rc = c_rmdirs(check_dir);
+    assert_int_equal(rc, 0);
 }
 
 static int test_dir(const char *path, mode_t mode) {
@@ -38,107 +49,102 @@ static int test_dir(const char *path, mode_t mode) {
   return -1;
 }
 
-START_TEST (check_c_mkdirs_rmdirs)
+static void check_c_mkdirs_rmdirs(void **state)
 {
-  struct stat sb;
-  fail_unless(c_mkdirs(check_dir, 0755) == 0, NULL);
-  fail_unless(test_dir(check_dir, 0755) == 0, NULL);
-  fail_unless(c_rmdirs(check_dir) == 0, NULL);
-  fail_unless(lstat(check_dir, &sb) < 0, NULL);
-}
-END_TEST
+    struct stat sb;
+    int rc;
 
-START_TEST (check_c_mkdirs_mode)
+    (void) state; /* unused */
+
+    rc = c_mkdirs(check_dir, 0755);
+    assert_int_equal(rc, 0);
+    rc = test_dir(check_dir, 0755);
+    assert_int_equal(rc, 0);
+    rc = c_rmdirs(check_dir);
+    assert_int_equal(rc, 0);
+    rc = lstat(check_dir, &sb);
+    assert_int_equal(rc, -1);
+}
+
+static void check_c_mkdirs_mode(void **state)
 {
-  struct stat sb;
-  fail_unless(c_mkdirs(check_dir, 0700) == 0, NULL);
-  fail_unless(test_dir(check_dir, 0700) == 0, NULL);
-  fail_unless(c_rmdirs(check_dir) == 0, NULL);
-  fail_unless(lstat(check_dir, &sb) < 0, NULL);
-}
-END_TEST
+    struct stat sb;
+    int rc;
 
-START_TEST (check_c_mkdirs_existing_path)
+    (void) state; /* unused */
+
+    rc = c_mkdirs(check_dir, 0700);
+    assert_int_equal(rc, 0);
+    rc = test_dir(check_dir, 0700);
+    assert_int_equal(rc, 0);
+    rc = c_rmdirs(check_dir);
+    assert_int_equal(rc, 0);
+    rc = lstat(check_dir, &sb);
+    assert_int_equal(rc, -1);
+}
+
+static void check_c_mkdirs_existing_path(void **state)
 {
-  fail_unless(c_mkdirs(check_dir, 0755) == 0, NULL);
-}
-END_TEST
+    int rc;
 
-START_TEST (check_c_mkdirs_file)
+    (void) state; /* unused */
+
+    rc = c_mkdirs(check_dir, 0755);
+    assert_int_equal(rc, 0);
+}
+
+static void check_c_mkdirs_file(void **state)
 {
-  fail_unless(c_mkdirs(check_file, 0755) == -1 && errno == ENOTDIR, NULL);
-}
-END_TEST
+    int rc;
 
-START_TEST (check_c_mkdirs_null)
+    (void) state; /* unused */
+
+    rc = c_mkdirs(check_file, 0755);
+    assert_int_equal(rc, -1);
+    assert_int_equal(errno, ENOTDIR);
+}
+
+static void check_c_mkdirs_null(void **state)
 {
-  fail_unless(c_mkdirs(NULL, 0755) == -1, NULL);
-}
-END_TEST
+    (void) state; /* unused */
 
-START_TEST (check_c_isdir)
+    assert_int_equal(c_mkdirs(NULL, 0755), -1);
+}
+
+static void check_c_isdir(void **state)
 {
-  fail_unless(c_isdir(check_dir), NULL);
-}
-END_TEST
+    (void) state; /* unused */
 
-START_TEST (check_c_isdir_on_file)
+    assert_int_equal(c_isdir(NULL), 0);
+}
+
+static void check_c_isdir_on_file(void **state)
 {
-  fail_unless(! c_isdir(check_file), NULL);
-}
-END_TEST
+    (void) state; /* unused */
 
-START_TEST (check_c_isdir_null)
+    assert_int_equal(c_isdir(NULL), 0);
+}
+
+static void check_c_isdir_null(void **state)
 {
-  fail_unless(! c_isdir(NULL), NULL);
-}
-END_TEST
+    (void) state; /* unused */
 
-static Suite *make_std_c_mkdirs_suite(void) {
-  Suite *s = suite_create("std:dir:c_mkdirs");
-
-  create_case(s, "check_c_mkdirs_rmdirs", check_c_mkdirs_rmdirs);
-  create_case(s, "check_c_mkdirs_mode", check_c_mkdirs_mode);
-  create_case_fixture(s, "check_c_mkdirs_existing_path", check_c_mkdirs_existing_path, setup, teardown);
-  create_case_fixture(s, "check_c_mkdirs_file", check_c_mkdirs_file, setup, teardown);
-  create_case(s, "check_c_mkdirs_null", check_c_mkdirs_null);
-
-  return s;
+    assert_int_equal(c_isdir(NULL), 0);
 }
 
-static Suite *make_std_c_isdir_suite(void) {
-  Suite *s = suite_create("std:dir:c_isdir");
+int torture_run_tests(void)
+{
+  const UnitTest tests[] = {
+      unit_test(check_c_mkdirs_rmdirs),
+      unit_test(check_c_mkdirs_mode),
+      unit_test_setup_teardown(check_c_mkdirs_existing_path, setup, teardown),
+      unit_test_setup_teardown(check_c_mkdirs_file, setup, teardown),
+      unit_test(check_c_mkdirs_null),
+      unit_test_setup_teardown(check_c_isdir, setup, teardown),
+      unit_test_setup_teardown(check_c_isdir_on_file, setup, teardown),
+      unit_test(check_c_isdir_null),
+  };
 
-  create_case_fixture(s, "check_c_isdir", check_c_isdir, setup, teardown);
-  create_case_fixture(s, "check_c_isdir_on_file", check_c_isdir_on_file, setup, teardown);
-  create_case(s, "check_c_isdir_null", check_c_isdir_null);
-
-  return s;
-}
-
-int main(int argc, char **argv) {
-  Suite *s = NULL;
-  Suite *s2 = NULL;
-  SRunner *sr = NULL;
-  struct argument_s arguments;
-  int nf;
-
-  ZERO_STRUCT(arguments);
-
-  cmdline_parse(argc, argv, &arguments);
-
-  s = make_std_c_mkdirs_suite();
-  s2 = make_std_c_isdir_suite();
-
-  sr = srunner_create(s);
-  if (arguments.nofork) {
-    srunner_set_fork_status(sr, CK_NOFORK);
-  }
-  srunner_add_suite (sr, s2);
-  srunner_run_all(sr, CK_VERBOSE);
-  nf = srunner_ntests_failed(sr);
-  srunner_free(sr);
-
-  return (nf == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+  return run_tests(tests);
 }
 
