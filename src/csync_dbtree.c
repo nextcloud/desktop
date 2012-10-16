@@ -24,7 +24,6 @@
 #define _GNU_SOURCE
 #endif
 
-#include <sqlite3.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -52,7 +51,7 @@ struct dir_listing {
 
 csync_vio_method_handle_t *csync_dbtree_opendir(CSYNC *ctx, const char *name)
 {
-    char *stmt = NULL;
+
     char *column = NULL;
     const char *path = NULL;
     csync_vio_file_stat_t *fs = NULL;
@@ -80,29 +79,23 @@ csync_vio_method_handle_t *csync_dbtree_opendir(CSYNC *ctx, const char *name)
 
     path = name + strlen(ctx->remote.uri)+1;
 
-    if( asprintf( &stmt, "SELECT phash, path, inode, uid, gid, mode, modtime, type, md5 "
-            "FROM metadata WHERE path GLOB('%s/*')", path ) < 0 ) {
-        return NULL;
-    }
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "SQL: %s", stmt);
-
-    list = csync_statedb_query( ctx, stmt );
+    list = csync_statedb_get_below_path(ctx, path);
 
     if( ! list ) {
-        SAFE_FREE(stmt);
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Query result list is NULL!");
         return NULL;
     }
     /* list count must be a multiple of col_count */
     if( list->count % col_count != 0 ) {
-        SAFE_FREE(stmt);
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Wrong size of query result list");
+        c_strlist_destroy( list );
         return NULL;
     }
 
     listing = c_malloc(sizeof(struct dir_listing));
     ZERO_STRUCTP(listing);
     if( listing == NULL ) {
+        c_strlist_destroy( list );
         errno = ENOMEM;
         return NULL;
     }
@@ -195,7 +188,6 @@ csync_vio_method_handle_t *csync_dbtree_opendir(CSYNC *ctx, const char *name)
         listing->entry = c_list_first( listing->list );
 
     c_strlist_destroy( list );
-    SAFE_FREE(stmt);
 
     return listing;
 }
