@@ -663,6 +663,7 @@ static void _tree_destructor(void *data) {
   csync_file_stat_t *freedata = NULL;
 
   freedata = (csync_file_stat_t *) data;
+  SAFE_FREE(freedata->md5);
   SAFE_FREE(freedata);
 }
 
