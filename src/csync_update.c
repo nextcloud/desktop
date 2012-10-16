@@ -376,6 +376,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s excluded", path);
       csync_vio_file_stat_destroy(dirent);
       dirent = NULL;
+      SAFE_FREE(filename);
       continue;
     }
 

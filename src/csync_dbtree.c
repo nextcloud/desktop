@@ -37,6 +37,7 @@
 #include "csync_private.h"
 #include "csync_statedb.h"
 #include "csync_util.h"
+#include "c_macro.h"
 
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.dbtree"
@@ -88,16 +89,19 @@ csync_vio_method_handle_t *csync_dbtree_opendir(CSYNC *ctx, const char *name)
     list = csync_statedb_query( ctx, stmt );
 
     if( ! list ) {
+        SAFE_FREE(stmt);
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Query result list is NULL!");
         return NULL;
     }
     /* list count must be a multiple of col_count */
     if( list->count % col_count != 0 ) {
+        SAFE_FREE(stmt);
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Wrong size of query result list");
         return NULL;
     }
 
     listing = c_malloc(sizeof(struct dir_listing));
+    ZERO_STRUCTP(listing);
     if( listing == NULL ) {
         errno = ENOMEM;
         return NULL;
@@ -186,7 +190,9 @@ csync_vio_method_handle_t *csync_dbtree_opendir(CSYNC *ctx, const char *name)
         listing->list = c_list_append( listing->list, fs );
         listing->cnt++;
     }
-    listing->entry = c_list_first( listing->list );
+
+    if(listing->cnt)
+        listing->entry = c_list_first( listing->list );
 
     c_strlist_destroy( list );
     SAFE_FREE(stmt);
@@ -202,6 +208,7 @@ int csync_dbtree_closedir(CSYNC *ctx, csync_vio_method_handle_t *dhandle)
 
     if( dhandle != NULL ) {
         dl = (struct dir_listing*) dhandle;
+
         c_list_free(dl->list);
         SAFE_FREE(dl->dir);
         SAFE_FREE(dl);
