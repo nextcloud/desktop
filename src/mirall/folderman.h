@@ -102,6 +102,11 @@ private:
     // and create the folders
     int setupKnownFolders();
 
+    // Escaping of the alias which is used in QSettings AND the file
+    // system, thus need to be escaped.
+    QString escapeAlias( const QString& ) const;
+    QString unescapeAlias( const QString& ) const;
+
     void removeFolder( const QString& );
 
     FolderWatcher *_configFolderWatcher;
