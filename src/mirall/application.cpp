@@ -384,6 +384,9 @@ void Application::setupContextMenu()
         _contextMenu->clear();
     } else {
         _contextMenu = new QMenu();
+        // this must be called only once after creating the context menu, or
+        // it will trigger a bug in Ubuntu's SNI bridge patch (11.10, 12.04).
+        _tray->setContextMenu(_contextMenu);
     }
     _contextMenu->setTitle(_theme->appName() );
     _contextMenu->addAction(_actionOpenStatus);
@@ -439,7 +442,6 @@ void Application::setupContextMenu()
     _contextMenu->addSeparator();
 
     _contextMenu->addAction(_actionQuit);
-    _tray->setContextMenu(_contextMenu);
 }
 
 void Application::setupLogBrowser()
