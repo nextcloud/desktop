@@ -1,7 +1,16 @@
 ChangeLog
 ==========
-version 0.60.0  (released 2012-09-)
+version 0.60.1  (released 2012-10-18)
+  * Fix improper memory cleanup which could
+            cause memory leaks and crashes
+  * Fix memory leak
+  * Allow single quote (') in file names
+  * Remove stray temporary files
+
+version 0.60.0  (released 2012-10-10)
   * simplification of pac based proxy support. 
+  * syncing algorithm based on ids rather than on timestamps
+  * make it possible to relocate database
 
 version 0.50.11 (third beta version, released 2012-10-05)
   * Renamed ownCloud version of csync to ocsync for ownCloud.
