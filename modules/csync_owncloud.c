@@ -1497,6 +1497,8 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
         ret = -1;
     }
 
+    tmpFileName = c_multibyte( writeCtx->tmpFileName );
+
     /* handle the PUT request, means write to the WebDAV server */
     if( ret != -1 && strcmp( writeCtx->method, "PUT" ) == 0 ) {
 
@@ -1507,9 +1509,9 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
                 DEBUG_WEBDAV("Write remaining %lu bytes to disk.",
                               (unsigned long) writeCtx->bytes_written );
                 len = write( writeCtx->fd, _buffer, writeCtx->bytes_written );
-		if( len != writeCtx->bytes_written ) {
-		    DEBUG_WEBDAV("WRN: write wrote wrong number of remaining bytes");
-		}
+                if( len != writeCtx->bytes_written ) {
+                    DEBUG_WEBDAV("WRN: write wrote wrong number of remaining bytes");
+                }
                 writeCtx->bytes_written = 0;
             }
 
@@ -1526,7 +1528,6 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
             if( writeCtx->fileWritten ) {
                 DEBUG_WEBDAV("Putting file through file cache.");
                 /* we need to go the slow way and close and open the file and read from fd. */
-                tmpFileName = c_multibyte( writeCtx->tmpFileName );
 
                 if (( writeCtx->fd = _topen( tmpFileName, O_RDONLY )) < 0) {
                     errno = EIO;
@@ -1556,10 +1557,7 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
                         errno = EIO;
                         ret = -1;
                     }
-                    /* Remove the local file. */
-                    _tunlink(tmpFileName);
                 }
-                c_free_multibyte(tmpFileName);
             } else {
                 /* all content is in the buffer. */
                 DEBUG_WEBDAV("Putting file through memory cache.");
@@ -1587,9 +1585,16 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
                 errno = EBADF;
                 ret = -1;
             }
-            _tunlink(tmpFileName);
         }
     }
+     /* Remove the local file. */
+    if(_tunlink(tmpFileName) != 0) {
+        DEBUG_WEBDAV("WRN: Removing of tmp file %s failed with errno %d!",
+                     writeCtx->tmpFileName ? writeCtx->tmpFileName : "<empty>", errno );
+    }
+    /* DEBUG_WEBDAV("Removing tmp file %s: %d", writeCtx->tmpFileName, rc); */
+
+    c_free_multibyte(tmpFileName);
 
     /* free mem. Note that the request mem is freed by the ne_request_destroy call */
     SAFE_FREE( writeCtx->tmpFileName );
