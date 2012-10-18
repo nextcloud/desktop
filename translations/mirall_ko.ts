@@ -405,22 +405,22 @@ p, li { white-space: pre-wrap; }⏎
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="407"/>
+        <location filename="../src/mirall/application.cpp" line="410"/>
         <source>Open %1 folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="420"/>
+        <location filename="../src/mirall/application.cpp" line="423"/>
         <source>Managed Folders:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="650"/>
+        <location filename="../src/mirall/application.cpp" line="652"/>
         <source>About %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="651"/>
+        <location filename="../src/mirall/application.cpp" line="653"/>
         <source>%1 client, version %2
 
 Copyright 2012, the ownCloud developers
@@ -431,112 +431,112 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="664"/>
+        <location filename="../src/mirall/application.cpp" line="666"/>
         <source>Confirm Folder Remove</source>
         <translation>원격 루트 디렉토리를 사용하지 않는것이 더 나을 것 입니다.&lt;br/&gt;만약 당신이 사용을 한다면, 당신은 다른 로컬 폴더를 복제 할 수 &lt;b&gt;없습니다.&lt;/b&gt; </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="665"/>
+        <location filename="../src/mirall/application.cpp" line="667"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>정말로 업로드 폴더를 삭제하시겠습니까 &lt;i&gt;%1&lt;/i&gt;?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="699"/>
+        <location filename="../src/mirall/application.cpp" line="701"/>
         <source>Undefined Folder State</source>
         <translation>정의되지 않은 폴더 상태</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="702"/>
+        <location filename="../src/mirall/application.cpp" line="704"/>
         <source>The folder waits to start syncing.</source>
         <translation>이 폴더는 동기화를 기다리고 있습니다. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="705"/>
-        <location filename="../src/mirall/application.cpp" line="876"/>
+        <location filename="../src/mirall/application.cpp" line="707"/>
+        <location filename="../src/mirall/application.cpp" line="878"/>
         <source>Sync is running.</source>
         <translation>동기화 중입니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="708"/>
-        <location filename="../src/mirall/application.cpp" line="881"/>
+        <location filename="../src/mirall/application.cpp" line="710"/>
+        <location filename="../src/mirall/application.cpp" line="883"/>
         <source>Last Sync was successful.</source>
         <translation>마지막 동기화를 성공적으로 마쳤습니다. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="711"/>
-        <location filename="../src/mirall/application.cpp" line="887"/>
+        <location filename="../src/mirall/application.cpp" line="713"/>
+        <location filename="../src/mirall/application.cpp" line="889"/>
         <source>Syncing Error.</source>
         <translation>동기화 에러</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="714"/>
-        <location filename="../src/mirall/application.cpp" line="893"/>
+        <location filename="../src/mirall/application.cpp" line="716"/>
+        <location filename="../src/mirall/application.cpp" line="895"/>
         <source>Setup Error.</source>
         <translation>설치 에러</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="717"/>
-        <location filename="../src/mirall/application.cpp" line="896"/>
+        <location filename="../src/mirall/application.cpp" line="719"/>
+        <location filename="../src/mirall/application.cpp" line="898"/>
         <source>Undefined Error State.</source>
         <translation>정의되지 않은 에러상태.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="721"/>
+        <location filename="../src/mirall/application.cpp" line="723"/>
         <source>Folder information</source>
         <translation>폴더 정보</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="736"/>
+        <location filename="../src/mirall/application.cpp" line="738"/>
         <source>Unknown</source>
         <translation>모름</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="738"/>
+        <location filename="../src/mirall/application.cpp" line="740"/>
         <source>Changed files:
 </source>
         <translation>파일 변경:⏎</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="740"/>
+        <location filename="../src/mirall/application.cpp" line="742"/>
         <source>Added files:
 </source>
         <translation>파일 추가:⏎</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="742"/>
+        <location filename="../src/mirall/application.cpp" line="744"/>
         <source>New files in the server, or files deleted locally:
 </source>
         <translation>서버에 있는 새로운 파일, 또는 로컬에서 삭제한 파일:⏎</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="768"/>
+        <location filename="../src/mirall/application.cpp" line="770"/>
         <source>Sync Running</source>
         <translation>동기화중</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="769"/>
+        <location filename="../src/mirall/application.cpp" line="771"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>동기화가 실행중입니다.&lt;br/&gt;실행을 종료하시겠습니까?
 
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="869"/>
+        <location filename="../src/mirall/application.cpp" line="871"/>
         <source>Undefined State.</source>
         <translation>정의되지 않은 상태.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="872"/>
+        <location filename="../src/mirall/application.cpp" line="874"/>
         <source>Waits to start syncing.</source>
         <translation>동기화 시작을 기다림.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="901"/>
+        <location filename="../src/mirall/application.cpp" line="903"/>
         <source>Sync is paused.</source>
         <translation>동기화가 멈췄습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="917"/>
+        <location filename="../src/mirall/application.cpp" line="919"/>
         <source>No sync folders configured.</source>
         <translation>동기화 폴더가 구성되지 않습니다.</translation>
     </message>

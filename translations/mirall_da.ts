@@ -28,7 +28,11 @@
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;installs the ownCloud on this computer. Other people will not be able to access your data by default.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;installerer ownCloud på denne computer. Andre vil som standard ikke kunne tilgå dine data.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="132"/>
@@ -394,22 +398,22 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="407"/>
+        <location filename="../src/mirall/application.cpp" line="410"/>
         <source>Open %1 folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="420"/>
+        <location filename="../src/mirall/application.cpp" line="423"/>
         <source>Managed Folders:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="650"/>
+        <location filename="../src/mirall/application.cpp" line="652"/>
         <source>About %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="651"/>
+        <location filename="../src/mirall/application.cpp" line="653"/>
         <source>%1 client, version %2
 
 Copyright 2012, the ownCloud developers
@@ -420,115 +424,115 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="664"/>
+        <location filename="../src/mirall/application.cpp" line="666"/>
         <source>Confirm Folder Remove</source>
         <translation>Bekræft sletning af mappe</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="665"/>
+        <location filename="../src/mirall/application.cpp" line="667"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>Vil du virkelig slette uploadmappen &lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="699"/>
+        <location filename="../src/mirall/application.cpp" line="701"/>
         <source>Undefined Folder State</source>
         <translation>Udefineret mappetilstand</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="702"/>
+        <location filename="../src/mirall/application.cpp" line="704"/>
         <source>The folder waits to start syncing.</source>
         <translation>Mappen venter på at blive synkroniseret.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="705"/>
-        <location filename="../src/mirall/application.cpp" line="876"/>
+        <location filename="../src/mirall/application.cpp" line="707"/>
+        <location filename="../src/mirall/application.cpp" line="878"/>
         <source>Sync is running.</source>
         <translation>Synkronisering igang.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="708"/>
-        <location filename="../src/mirall/application.cpp" line="881"/>
+        <location filename="../src/mirall/application.cpp" line="710"/>
+        <location filename="../src/mirall/application.cpp" line="883"/>
         <source>Last Sync was successful.</source>
         <translation>Sidste synkronisering var succesfuld.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="711"/>
-        <location filename="../src/mirall/application.cpp" line="887"/>
+        <location filename="../src/mirall/application.cpp" line="713"/>
+        <location filename="../src/mirall/application.cpp" line="889"/>
         <source>Syncing Error.</source>
         <translation>Synkroniseringsfejl.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="714"/>
-        <location filename="../src/mirall/application.cpp" line="893"/>
+        <location filename="../src/mirall/application.cpp" line="716"/>
+        <location filename="../src/mirall/application.cpp" line="895"/>
         <source>Setup Error.</source>
         <translation>Indstillingsfejl.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="717"/>
-        <location filename="../src/mirall/application.cpp" line="896"/>
+        <location filename="../src/mirall/application.cpp" line="719"/>
+        <location filename="../src/mirall/application.cpp" line="898"/>
         <source>Undefined Error State.</source>
         <translation>Udefineret fejl.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="721"/>
+        <location filename="../src/mirall/application.cpp" line="723"/>
         <source>Folder information</source>
         <translation>Mappeinformation</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="736"/>
+        <location filename="../src/mirall/application.cpp" line="738"/>
         <source>Unknown</source>
         <translation>Ukendt</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="738"/>
+        <location filename="../src/mirall/application.cpp" line="740"/>
         <source>Changed files:
 </source>
         <translation>Ændrede filer:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="740"/>
+        <location filename="../src/mirall/application.cpp" line="742"/>
         <source>Added files:
 </source>
         <translation>Tilføjede filer:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="742"/>
+        <location filename="../src/mirall/application.cpp" line="744"/>
         <source>New files in the server, or files deleted locally:
 </source>
         <translation>Nye filer på serveren eller filer slettet lokalt:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="768"/>
+        <location filename="../src/mirall/application.cpp" line="770"/>
         <source>Sync Running</source>
         <translation>Synkronisering igang</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="769"/>
+        <location filename="../src/mirall/application.cpp" line="771"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniseringsoperationen er i gang.&lt;br/&gt;Ønsker du at stoppe den?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="869"/>
+        <location filename="../src/mirall/application.cpp" line="871"/>
         <source>Undefined State.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="872"/>
+        <location filename="../src/mirall/application.cpp" line="874"/>
         <source>Waits to start syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Venter på at påbegynde synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="901"/>
+        <location filename="../src/mirall/application.cpp" line="903"/>
         <source>Sync is paused.</source>
-        <translation type="unfinished"/>
+        <translation>Synkronisering er på pause.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="917"/>
+        <location filename="../src/mirall/application.cpp" line="919"/>
         <source>No sync folders configured.</source>
-        <translation type="unfinished"/>
+        <translation>Der er ikke defineret synkroniseringsmapper.</translation>
     </message>
 </context>
 <context>
@@ -536,12 +540,12 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="192"/>
         <source>CSync create failed.</source>
-        <translation type="unfinished"/>
+        <translation>Der opstod en fejl ved oprettelse af CSync.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="230"/>
         <source>CSync failed to create a lock file.</source>
-        <translation type="unfinished"/>
+        <translation>CSync kunne ikke oprette låsefil.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="233"/>
@@ -560,7 +564,7 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="241"/>
         <source>CSync could not detect the filesystem type.</source>
-        <translation type="unfinished"/>
+        <translation>CSync kunne ikke bestemme filsystemstypen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="244"/>
@@ -583,7 +587,7 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="257"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
-        <translation type="unfinished"/>
+        <translation>Der kan ikke skrives til det lokale filsystem. Efterse adgangsrettigheder.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="261"/>
@@ -593,7 +597,7 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="264"/>
         <source>An internal error number %1 happend.</source>
-        <translation type="unfinished"/>
+        <translation>Der opstod en intern fejl %1.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="280"/>
@@ -603,7 +607,7 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="283"/>
         <source>CSync Update failed.</source>
-        <translation type="unfinished"/>
+        <translation>Updatering med CSync slog fejl.</translation>
     </message>
     <message>
         <source>The local filesystem has directories which are write protected.
@@ -631,7 +635,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="303"/>
         <source>Local filesystem problems. Better disable Syncing and check.</source>
-        <translation type="unfinished"/>
+        <translation>Problemer med lokalt filsystem. Du opfordres til at deaktivere synkronisering og undersøge problemet.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="308"/>
@@ -662,7 +666,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="152"/>
         <source>Remote path: %1</source>
-        <translation type="unfinished"/>
+        <translation>Fjernsti: %1</translation>
     </message>
 </context>
 <context>
@@ -678,17 +682,17 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="74"/>
         <source>No local directory selected!</source>
-        <translation type="unfinished"/>
+        <translation>Der er ikke valgt en lokal mappe!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="90"/>
         <source>The local path %1 is already an upload folder.&lt;br/&gt;Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Den lokale mappe %1 er allerede en uploade-mappe.&lt;br/&gt;Vælg en anden!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="94"/>
         <source>An already configured folder is contained in the current entry.</source>
-        <translation type="unfinished"/>
+        <translation>En allerede opsat mappe er indeholdt i den aktuelle indtastning.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="99"/>
@@ -698,7 +702,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="109"/>
         <source>The alias can not be empty. Please provide a descriptive alias word.</source>
-        <translation type="unfinished"/>
+        <translation>Alias kan ikke stå tomt. Vælg et beskrivende ord.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="120"/>
@@ -708,7 +712,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="141"/>
         <source>Select the source folder</source>
-        <translation type="unfinished"/>
+        <translation>Vælg mappen som kilde</translation>
     </message>
 </context>
 <context>
@@ -775,7 +779,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="395"/>
         <source>Select the target folder</source>
-        <translation type="unfinished"/>
+        <translation>Vælg destinationsmappe</translation>
     </message>
 </context>
 <context>
@@ -918,12 +922,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="178"/>
         <source>Error: &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Fejl: &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="263"/>
         <source>Starting script owncloud-admin...</source>
-        <translation type="unfinished"/>
+        <translation>Starter script owncloud-admin...</translation>
     </message>
     <message>
         <source>&lt;font color=&quot;red&quot;&gt;Installation of ownCloud failed!&lt;/font&gt;</source>
@@ -1014,7 +1018,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="377"/>
         <source>ok</source>
-        <translation type="unfinished"/>
+        <translation>ok</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="379"/>
@@ -1092,12 +1096,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="28"/>
         <source>SSL Connection</source>
-        <translation type="unfinished"/>
+        <translation>SSL-forbindelse</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="89"/>
         <source>Warnings about current SSL Connection:</source>
-        <translation type="unfinished"/>
+        <translation>Advarsler om den nuværende SSL-forbindelse:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="125"/>
