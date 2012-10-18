@@ -1,4 +1,3 @@
-#define _GNU_SOURCE /* asprintf */
 #include <string.h>
 
 #include "support.h"
