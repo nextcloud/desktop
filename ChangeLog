@@ -1,7 +1,21 @@
 ChangeLog
 =========
-version 1.1.0 (release ), csync 0.60.0 required
-  * 
+
+version 1.1.1 (release 2012-10-18), csync 0.60.1 required
+  * [GUI]   Allow changing folder name in single folder mode 
+  * [GUI]   Windows: Add license to installer
+  * [GUI]   owncloud --logwindow will bring up the log window
+            in an already running instance
+  * [Fixes] Make sure SSL errors are always handled
+  * [Fixes] Allow special characters in folder alias 
+  * [Fixes] Proper workaround for Menu bug in Ubuntu 
+  * [Fixes] csync: Fix improper memory cleanup which could
+            cause memory leaks and crashes
+  * [Fixes] csync: Fix memory leak 
+  * [Fixes] csync: Allow single quote (') in file names 
+  * [Fixes] csync: Remove stray temporary files 
+
+version 1.1.0 (release 2012-10-10), csync 0.60.0 required
   * [GUI]   Added an about dialog
   * [GUI]   Improved themeing capabilities of the client.
   * [GUI]   Minor fixes in folder assistant.
