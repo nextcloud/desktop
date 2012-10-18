@@ -1,0 +1,4 @@
+.tag                    export-subst
+.gitignore              export-ignore
+.gitattributes          export-ignore
+.commit-template        export-ignore
