@@ -639,6 +639,7 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
       /* No renaming supported by updater */
       CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "RENAME is only supported on local filesystem.");
       rc = -1;
+      goto out;
       break;
     default:
       break;

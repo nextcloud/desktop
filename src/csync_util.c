@@ -152,6 +152,7 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
       goto out;
     }
     new = memcpy(new, fs, sizeof(csync_file_stat_t) + fs->pathlen + 1);
+    new->md5 = c_strdup(fs->md5);
 
     if (c_rbtree_insert(tree, new) < 0) {
       strerror_r(errno, errbuf, sizeof(errbuf));

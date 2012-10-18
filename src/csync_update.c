@@ -89,6 +89,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
   /* Set instruction by default to none */
   st->instruction = CSYNC_INSTRUCTION_NONE;
+  st->md5 = NULL;
 
   /* check hardlink count */
   if (type == CSYNC_FTW_TYPE_FILE && fs->nlink > 1) {
