@@ -1587,6 +1587,7 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
                 errno = EBADF;
                 ret = -1;
             }
+            _tunlink(tmpFileName);
         }
     }
 
