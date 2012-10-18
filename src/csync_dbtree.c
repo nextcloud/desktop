@@ -117,9 +117,8 @@ csync_vio_method_handle_t *csync_dbtree_opendir(CSYNC *ctx, const char *name)
         tpath += strlen(path)+1; /* jump over the search path */
         tpath_len = strlen( tpath );
         while( cnt < tpath_len ) {
-
             if(*(tpath+cnt) == '/') {
-                CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Skipping entry: %s", list->vector[base+1]);
+                /* CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Skipping entry: %s", list->vector[base+1]); */
                 break;
             }
             cnt++;
