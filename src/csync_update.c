@@ -109,6 +109,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     } else {
       /* check if the file has been renamed */
       if (ctx->current == LOCAL_REPLICA) {
+        free(tmp);
         tmp = csync_statedb_get_stat_by_inode(ctx, fs->inode);
         if (tmp && tmp->inode == fs->inode) {
           /* inode found so the file has been renamed */
