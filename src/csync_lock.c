@@ -48,6 +48,7 @@ static int _csync_lock_create(const char *lockfile) {
   char *ctmpfile = NULL;
   char *dir = NULL;
   char *buf = NULL;
+  mode_t mask;
 
   pid = getpid();
 
@@ -63,7 +64,10 @@ static int _csync_lock_create(const char *lockfile) {
   }
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Create temporary lock file: %s", ctmpfile);
-  if ((fd = mkstemp(ctmpfile)) < 0) {
+  mask = umask(0077);
+  fd = mkstemp(ctmpfile);
+  umask(mask);
+  if (fd < 0) {
     strerror_r(errno, errbuf, sizeof(errbuf));
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
         "Unable to create temporary lock file: %s - %s",
