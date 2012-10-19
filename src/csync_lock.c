@@ -101,10 +101,12 @@ static int _csync_lock_create(const char *lockfile) {
   rc = 0;
 
 out:
-  close(fd);
-	if (ctmpfile) {
-		unlink(ctmpfile);
-	}
+  if (fd > 0) {
+      close(fd);
+  }
+  if (ctmpfile) {
+      unlink(ctmpfile);
+  }
 
   SAFE_FREE(buf);
   SAFE_FREE(dir);
