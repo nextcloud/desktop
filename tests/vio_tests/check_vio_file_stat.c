@@ -1,47 +1,26 @@
-#include "support.h"
+#include "torture.h"
 
 #include "vio/csync_vio_file_stat.h"
 
-START_TEST (check_csync_vio_file_stat_new)
+static void check_csync_vio_file_stat_new(void **state)
 {
-  csync_vio_file_stat_t *tstat = NULL;
+    csync_vio_file_stat_t *tstat;
 
-  tstat = csync_vio_file_stat_new();
-  fail_if(tstat == NULL, NULL);
+    (void) state; /* unused */
 
-  csync_vio_file_stat_destroy(tstat);
-}
-END_TEST
+    tstat = csync_vio_file_stat_new();
+    assert_non_null(tstat);
 
-
-static Suite *make_csync_vio_suite(void) {
-  Suite *s = suite_create("csync_vio_file_stat");
-
-  create_case(s, "check_csync_vio_file_stat_new", check_csync_vio_file_stat_new);
-
-  return s;
+    csync_vio_file_stat_destroy(tstat);
 }
 
-int main(int argc, char **argv) {
-  Suite *s = NULL;
-  SRunner *sr = NULL;
-  struct argument_s arguments;
-  int nf;
 
-  ZERO_STRUCT(arguments);
+int torture_run_tests(void)
+{
+    const UnitTest tests[] = {
+        unit_test(check_csync_vio_file_stat_new),
+    };
 
-  cmdline_parse(argc, argv, &arguments);
-
-  s = make_csync_vio_suite();
-
-  sr = srunner_create(s);
-  if (arguments.nofork) {
-    srunner_set_fork_status(sr, CK_NOFORK);
-  }
-  srunner_run_all(sr, CK_VERBOSE);
-  nf = srunner_ntests_failed(sr);
-  srunner_free(sr);
-
-  return (nf == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+    return run_tests(tests);
 }
 
