@@ -1,12 +1,12 @@
 #include <sys/types.h>
 #include <sys/stat.h>
-
 #include <fcntl.h>
+
 #include <signal.h>
-#include <string.h>
+#include <stdlib.h>
 #include <unistd.h>
 
-#include "support.h"
+#include "torture.h"
 
 #define CSYNC_TEST 1
 #include "std/c_file.h"
@@ -14,84 +14,81 @@
 
 #define TEST_LOCK "/tmp/check_csync/test"
 
-static void setup(void) {
-  fail_if(system("mkdir -p /tmp/check_csync") < 0, "Setup failed");
+static void setup(void **state) {
+    int rc;
+
+    (void) state; /* unused */
+
+    rc = system("mkdir -p /tmp/check_csync");
+    assert_int_equal(rc, 0);
 }
 
-static void teardown(void) {
-  fail_if(system("rm -rf /tmp/check_csync") < 0, "Teardown failed");
+static void teardown(void **state) {
+    int rc;
+
+    (void) state; /* unused */
+
+    rc = system("rm -rf /tmp/check_csync");
+    assert_int_equal(rc, 0);
 }
 
-START_TEST (check_csync_lock)
+static void check_csync_lock(void **state)
 {
-  fail_unless(csync_lock(TEST_LOCK) == 0, NULL);
-  fail_unless(c_isfile(TEST_LOCK) == 1, NULL);
-  fail_unless(csync_lock(TEST_LOCK) < 0, NULL);
+    int rc;
 
-  csync_lock_remove(TEST_LOCK);
-  fail_unless(c_isfile(TEST_LOCK) == 0, NULL);
+    (void) state; /* unused */
+
+    rc = csync_lock(TEST_LOCK);
+    assert_int_equal(rc, 0);
+
+    assert_true(c_isfile(TEST_LOCK));
+
+    rc = csync_lock(TEST_LOCK);
+    assert_int_equal(rc, -1);
+
+    csync_lock_remove(TEST_LOCK);
+    assert_false(c_isfile(TEST_LOCK));
 }
-END_TEST
 
-START_TEST (check_csync_lock_content)
+static void check_csync_lock_content(void **state)
 {
-  char buf[8] = {0};
-  int  fd, pid;
+    char buf[8] = {0};
+    int  fd, pid, rc;
 
-  fail_unless(csync_lock(TEST_LOCK) == 0, NULL);
-  fail_unless(c_isfile(TEST_LOCK) == 1, NULL);
+    (void) state; /* unused */
 
-  /* open lock file */
-  fd = open(TEST_LOCK, O_RDONLY);
-  fail_if(fd < 0, NULL);
+    rc = csync_lock(TEST_LOCK);
+    assert_int_equal(rc, 0);
 
-  /* read content */
-  pid = read(fd, buf, sizeof(buf));
-  close(fd);
+    assert_true(c_isfile(TEST_LOCK));
 
-  fail_if(pid < 0, NULL);
+    /* open lock file */
+    fd = open(TEST_LOCK, O_RDONLY);
+    assert_true(fd > 0);
 
-  /* get pid */
-  buf[sizeof(buf) - 1] = '\0';
-  pid = strtol(buf, NULL, 10);
+    /* read content */
+    pid = read(fd, buf, sizeof(buf));
+    close(fd);
 
-  fail_unless(pid == getpid(), NULL);
+    assert_true(pid > 0);
 
-  csync_lock_remove(TEST_LOCK);
-  fail_unless(c_isfile(TEST_LOCK) == 0, NULL);
-}
-END_TEST
+    /* get pid */
+    buf[sizeof(buf) - 1] = '\0';
+    pid = strtol(buf, NULL, 10);
 
+    assert_int_equal(pid, getpid());
 
-static Suite *make_csync_suite(void) {
-  Suite *s = suite_create("csync_lock");
-
-  create_case_fixture(s, "check_csync_lock", check_csync_lock, setup, teardown);
-  create_case_fixture(s, "check_csync_lock_content", check_csync_lock_content, setup, teardown);
-
-  return s;
+    csync_lock_remove(TEST_LOCK);
+    assert_false(c_isfile(TEST_LOCK));
 }
 
-int main(int argc, char **argv) {
-  Suite *s = NULL;
-  SRunner *sr = NULL;
-  struct argument_s arguments;
-  int nf;
+int torture_run_tests(void)
+{
+    const UnitTest tests[] = {
+        unit_test_setup_teardown(check_csync_lock, setup, teardown),
+        unit_test_setup_teardown(check_csync_lock_content, setup, teardown),
+    };
 
-  ZERO_STRUCT(arguments);
-
-  cmdline_parse(argc, argv, &arguments);
-
-  s = make_csync_suite();
-
-  sr = srunner_create(s);
-  if (arguments.nofork) {
-    srunner_set_fork_status(sr, CK_NOFORK);
-  }
-  srunner_run_all(sr, CK_VERBOSE);
-  nf = srunner_ntests_failed(sr);
-  srunner_free(sr);
-
-  return (nf == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+    return run_tests(tests);
 }
 
