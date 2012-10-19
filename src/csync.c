@@ -499,34 +499,42 @@ int csync_propagate(CSYNC *ctx) {
  * local visitor which calls the user visitor with repacked stat info.
  */
 static int _csync_treewalk_visitor( void *obj, void *data ) {
-    csync_file_stat_t *cur = NULL;
-    CSYNC *ctx = NULL;
-    c_rbtree_visit_func *visitor = NULL;
-    _csync_treewalk_context *twctx = NULL;
+    csync_file_stat_t *cur;
+    CSYNC *ctx;
+    c_rbtree_visit_func *visitor;
+    _csync_treewalk_context *twctx;
     TREE_WALK_FILE trav;
+
+    if (obj == NULL || data == NULL) {
+      return -1;
+    }
 
     cur = (csync_file_stat_t *) obj;
     ctx = (CSYNC *) data;
-    if( ctx )
-        twctx = (_csync_treewalk_context*) ctx->userdata;
-    if( twctx->instruction_filter > 0 && !(twctx->instruction_filter & cur->instruction) ) {
+
+    twctx = (_csync_treewalk_context*) ctx->userdata;
+    if (twctx == NULL) {
+      return -1;
+    }
+
+    if (twctx->instruction_filter > 0 &&
+        !(twctx->instruction_filter & cur->instruction) ) {
         return 0;
     }
 
-    if(cur && twctx) {
-        visitor = (c_rbtree_visit_func*)(twctx->user_visitor);
-        if(visitor) {
-            trav.path =   cur->path;
-            trav.modtime = cur->modtime;
-            trav.uid =    cur->uid;
-            trav.gid =    cur->gid;
-            trav.mode =   cur->mode;
-            trav.type =   cur->type;
-            trav.instruction = cur->instruction;
+    visitor = (c_rbtree_visit_func*)(twctx->user_visitor);
+    if (visitor != NULL) {
+      trav.path =   cur->path;
+      trav.modtime = cur->modtime;
+      trav.uid =    cur->uid;
+      trav.gid =    cur->gid;
+      trav.mode =   cur->mode;
+      trav.type =   cur->type;
+      trav.instruction = cur->instruction;
 
-            return (*visitor)(&trav, twctx->userdata);
-        }
+      return (*visitor)(&trav, twctx->userdata);
     }
+
     return -1;
 }
 
