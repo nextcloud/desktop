@@ -532,6 +532,10 @@ c_strlist_t *csync_statedb_query(CSYNC *ctx, const char *statement) {
           break;
         }
 
+        /* If something went wrong make sure we don't leak memory */
+        if (result != NULL) {
+          c_strlist_destroy(result);
+        }
         result = c_strlist_new(column_count);
         if (result == NULL) {
           return NULL;
@@ -552,6 +556,9 @@ c_strlist_t *csync_statedb_query(CSYNC *ctx, const char *statement) {
 
       if (err != SQLITE_DONE && rc != SQLITE_SCHEMA) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "sqlite_step error: %s - on query: %s", sqlite3_errmsg(ctx->statedb.db), statement);
+        if (result != NULL) {
+          c_strlist_destroy(result);
+        }
         result = c_strlist_new(1);
       }
 
@@ -562,6 +569,9 @@ c_strlist_t *csync_statedb_query(CSYNC *ctx, const char *statement) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Retrying now.");
         } else {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "RETRY count has reached its maximum. Aborting statement: %s", statement);
+          if (result != NULL) {
+            c_strlist_destroy(result);
+          }
           result = c_strlist_new(1);
         }
       }
