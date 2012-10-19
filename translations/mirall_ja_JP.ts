@@ -350,7 +350,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="202"/>
         <source>&lt;p&gt;No server connection has been configured for this %1 client.&lt;/p&gt;&lt;p&gt;Please right click on the %1 system tray icon and select &lt;i&gt;Configure&lt;/i&gt; to connect this client to an %1 server.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;この %1 クライアントにはサーバへの接続が設定されていません。&lt;/p&gt;&lt;p&gt;%1 のシステムトレイアイコン上で右クリックし、system tray icon and select &lt;i&gt;Configure&lt;/i&gt; to connect this client to an %1 server.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;この %1 クライアントにはサーバ接続の設定がされていません。&lt;/p&gt;&lt;p&gt;%1 システムトレイアイコン上で右クリックし、&lt;i&gt;設定&lt;/i&gt; を選択してこのクライアントを %1 サーバに接続してください。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="228"/>
@@ -1351,7 +1351,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="115"/>
         <source>Do not store password on local machine.</source>
-        <translation>ローカルマシンにパスワードを保存しないでください。</translation>
+        <translation>ローカルマシンにパスワードを保存しない。</translation>
     </message>
     <message>
         <source>john</source>

@@ -192,7 +192,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="29"/>
         <source>Synchronization Target</source>
-        <translation type="unfinished"/>
+        <translation>Alvo da sincronização</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="51"/>
@@ -1242,7 +1242,7 @@ Não é possível correr o programa de instalação ou configuração.</translat
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="114"/>
         <source>Client Version Check</source>
-        <translation type="unfinished"/>
+        <translation>Verificar versão do cliente</translation>
     </message>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="116"/>
@@ -1424,7 +1424,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="51"/>
         <source>https://</source>
-        <translation type="unfinished"/>
+        <translation>https://</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="58"/>
