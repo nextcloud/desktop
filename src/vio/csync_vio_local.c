@@ -45,6 +45,7 @@ csync_vio_method_handle_t *csync_vio_local_open(const char *durl, int flags, mod
 
   handle = c_malloc(sizeof(fhandle_t));
   if (handle == NULL) {
+    close(fd);
     return NULL;
   }
 
