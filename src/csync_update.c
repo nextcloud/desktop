@@ -64,7 +64,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
       }
       path += strlen(ctx->local.uri) + 1;
       break;
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       if (strlen(path) <= strlen(ctx->remote.uri)) {
         return -1;
       }
@@ -149,7 +149,7 @@ out:
         return -1;
       }
       break;
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       if (c_rbtree_insert(ctx->remote.tree, (void *) st) < 0) {
         SAFE_FREE(st);
         return -1;
@@ -256,7 +256,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       case LOCAL_REPLICA:
         path = filename + strlen(ctx->local.uri) + 1;
         break;
-      case REMOTE_REPLCIA:
+      case REMOTE_REPLICA:
         path = filename + strlen(ctx->remote.uri) + 1;
         break;
       default:

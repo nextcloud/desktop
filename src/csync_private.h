@@ -72,7 +72,7 @@
 
 enum csync_replica_e {
   LOCAL_REPLICA,
-  REMOTE_REPLCIA
+  REMOTE_REPLICA
 };
 
 /**

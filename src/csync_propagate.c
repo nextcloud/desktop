@@ -86,7 +86,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
         goto out;
       }
       break;
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       srep = ctx->remote.type;
       drep = ctx->local.type;
       if (asprintf(&suri, "%s/%s", ctx->remote.uri, st->path) < 0) {
@@ -439,7 +439,7 @@ static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st) {
 			goto out;
 		}
 		break;
-		case REMOTE_REPLCIA:
+		case REMOTE_REPLICA:
 		drep = ctx->local.type;
 		if (asprintf(&suri, "%s/%s", ctx->local.uri, st->path) < 0) {
 			rc = -1;
@@ -548,7 +548,7 @@ static int _csync_remove_file(CSYNC *ctx, csync_file_stat_t *st) {
         return -1;
       }
       break;
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       if (asprintf(&uri, "%s/%s", ctx->remote.uri, st->path) < 0) {
         return -1;
       }
@@ -609,7 +609,7 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
         return -1;
       }
       break;
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       dest = ctx->local.type;
       if (asprintf(&uri, "%s/%s", ctx->local.uri, st->path) < 0) {
         return -1;
@@ -702,7 +702,7 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
         return -1;
       }
       break;
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       dest = ctx->local.type;
       if (asprintf(&uri, "%s/%s", ctx->local.uri, st->path) < 0) {
         return -1;
@@ -774,7 +774,7 @@ static int _csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
         return -1;
       }
       break;
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       if (asprintf(&uri, "%s/%s", ctx->remote.uri, st->path) < 0) {
         return -1;
       }
@@ -802,7 +802,7 @@ static int _csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
             }
             ctx->local.list = list;
             break;
-          case REMOTE_REPLCIA:
+          case REMOTE_REPLICA:
             list = c_list_prepend(ctx->remote.list, (void *) st);
             if (list == NULL) {
               return -1;
@@ -854,7 +854,7 @@ static int _csync_propagation_cleanup(CSYNC *ctx) {
       list = ctx->local.list;
       uri = ctx->local.uri;
       break;
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       list = ctx->remote.list;
       uri = ctx->remote.uri;
       break;
@@ -1004,7 +1004,7 @@ int csync_propagate_files(CSYNC *ctx) {
     case LOCAL_REPLICA:
       tree = ctx->local.tree;
       break;
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       tree = ctx->remote.tree;
       break;
     default:

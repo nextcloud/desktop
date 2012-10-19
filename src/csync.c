@@ -289,7 +289,7 @@ retry_vio_init:
         goto out;
       }
       SAFE_FREE(module);
-      ctx->remote.type = REMOTE_REPLCIA;
+      ctx->remote.type = REMOTE_REPLICA;
     }
   } else {
     ctx->remote.type = LOCAL_REPLICA;
@@ -373,7 +373,7 @@ int csync_update(CSYNC *ctx) {
   /* update detection for remote replica */
   if( ! ctx->options.local_only_mode ) {
       csync_gettime(&start);
-      ctx->current = REMOTE_REPLCIA;
+      ctx->current = REMOTE_REPLICA;
       ctx->replica = ctx->remote.type;
 
       rc = csync_ftw(ctx, ctx->remote.uri, csync_walker, MAX_DEPTH);
@@ -425,7 +425,7 @@ int csync_reconcile(CSYNC *ctx) {
   /* Reconciliation for local replica */
   csync_gettime(&start);
 
-  ctx->current = REMOTE_REPLCIA;
+  ctx->current = REMOTE_REPLICA;
   ctx->replica = ctx->remote.type;
 
   rc = csync_reconcile_updates(ctx);
@@ -475,7 +475,7 @@ int csync_propagate(CSYNC *ctx) {
   /* Reconciliation for local replica */
   csync_gettime(&start);
 
-  ctx->current = REMOTE_REPLCIA;
+  ctx->current = REMOTE_REPLICA;
   ctx->replica = ctx->remote.type;
 
   rc = csync_propagate_files(ctx);

@@ -128,7 +128,7 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
     case LOCAL_REPLICA:
       tree = ctx->local.tree;
       break;
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       tree = ctx->remote.tree;
       break;
     default:
@@ -182,7 +182,7 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
         goto out;
       }
       break;
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       if (asprintf(&uri, "%s/%s", ctx->remote.uri, fs->path) < 0) {
         rc = -1;
         strerror_r(errno, errbuf, sizeof(errbuf));
