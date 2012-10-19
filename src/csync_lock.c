@@ -116,7 +116,10 @@ out:
 static pid_t _csync_lock_read(const char *lockfile) {
   char errbuf[256] = {0};
   char buf[8] = {0};
-  int  fd, pid;
+  long int tmp;
+  ssize_t rc;
+  int  fd;
+  pid_t pid;
 
   /* Read PID from existing lock */
 #ifdef _WIN32
@@ -126,18 +129,18 @@ static pid_t _csync_lock_read(const char *lockfile) {
      return -1;
   }
 
-  pid = read(fd, buf, sizeof(buf));
+  rc = read(fd, buf, sizeof(buf));
   close(fd);
 
-  if (pid <= 0) {
+  if (rc <= 0) {
      return -1;
   }
 
   buf[sizeof(buf) - 1] = '\0';
-  pid = strtol(buf, NULL, 10);
-  if (!pid || errno == ERANGE) {
+  tmp = strtol(buf, NULL, 10);
+  if (tmp == 0 || tmp > 0xFFFF || errno == ERANGE) {
      /* Broken lock file */
-     strerror_r(errno, errbuf, sizeof(errbuf));
+     strerror_r(ERANGE, errbuf, sizeof(errbuf));
      if (unlink(lockfile) < 0) {
        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
            "Unable to remove broken lock %s - %s",
@@ -146,6 +149,7 @@ static pid_t _csync_lock_read(const char *lockfile) {
      }
      return -1;
   }
+  pid = (pid_t)(tmp & 0xFFFF);
 
   /* Check if process is still alive */
   if (kill(pid, 0) < 0 && errno == ESRCH) {
