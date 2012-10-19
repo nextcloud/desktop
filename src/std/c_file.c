@@ -62,7 +62,7 @@ int c_copy(const char* src, const char *dst, mode_t mode) {
   int rc = -1;
   ssize_t bread, bwritten;
   csync_stat_t sb;
-  char buf[BUFFER_SIZE];
+  char buf[4096];
 
 #ifdef _WIN32
   if(src && dst) {
@@ -110,7 +110,7 @@ int c_copy(const char* src, const char *dst, mode_t mode) {
   }
 
   for (;;) {
-    bread = read(srcfd, buf, BUFFER_SIZE);
+    bread = read(srcfd, buf, sizeof(buf));
     if (bread == 0) {
       /* done */
       break;
