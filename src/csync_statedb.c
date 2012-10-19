@@ -51,6 +51,7 @@ int csync_get_statedb_exists(CSYNC *ctx) {
 
 static int _csync_statedb_check(const char *statedb) {
   int fd = -1;
+  ssize_t r;
   char buf[BUF_SIZE] = {0};
   sqlite3 *db = NULL;
 
@@ -60,9 +61,10 @@ static int _csync_statedb_check(const char *statedb) {
 #endif
   fd = open(statedb, O_RDONLY);
   if (fd >= 0) {
-    if (read(fd, (void *) buf, (size_t) BUF_SIZE - 1) >= 0) {
+    r = read(fd, (void *) buf, sizeof(buf) - 1);
+    close(fd);
+    if (r >= 0) {
       buf[BUF_SIZE - 1] = '\0';
-      close(fd);
       if (c_streq(buf, "SQLite format 3")) {
         if (sqlite3_open(statedb, &db ) == SQLITE_OK) {
           /* everything is fine */
