@@ -371,7 +371,9 @@ out:
   /* set instruction for the statedb merger */
   if (rc != 0) {
     st->instruction = CSYNC_INSTRUCTION_ERROR;
-    csync_vio_unlink(ctx, turi);
+    if (turi != NULL) {
+      csync_vio_unlink(ctx, turi);
+    }
   }
 
   SAFE_FREE(suri);
