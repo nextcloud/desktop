@@ -99,6 +99,7 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
 
   ctx->local.uri = c_strndup(local, len);
   if (ctx->local.uri == NULL) {
+    free(ctx);
     return -1;
   }
 
@@ -108,7 +109,8 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
 
   ctx->remote.uri = c_strndup(remote, len);
   if (ctx->remote.uri == NULL) {
-    SAFE_FREE(ctx->remote.uri);
+    free(ctx->remote.uri);
+    free(ctx);
     return -1;
   }
 
