@@ -1,283 +1,305 @@
-/* Last Change: 2008-05-14 00:59:10 */
-#define _GNU_SOURCE /* asprintf */
-#include <string.h>
-
-#include "support.h"
+#include "torture.h"
 
 #define CSYNC_TEST 1
 #include "csync_statedb.c"
 
-CSYNC *csync;
-const char *testdb = (char *) "/tmp/check_csync1/test.db";
-const char *testtmpdb = (char *) "/tmp/check_csync1/test.db.ctmp";
+#define TESTDB "/tmp/check_csync1/test.db"
+#define TESTDBTMP "/tmp/check_csync1/test.db.ctmp"
 
-static void setup(void) {
-  fail_if(system("rm -rf /tmp/check_csync1") < 0, "Setup failed");
-  fail_if(system("rm -rf /tmp/check_csync2") < 0, "Setup failed");
-  fail_if(system("mkdir -p /tmp/check_csync1") < 0, "Setup failed");
-  fail_if(system("mkdir -p /tmp/check_csync2") < 0, "Setup failed");
-  fail_if(system("mkdir -p /tmp/check_csync") < 0, "Setup failed");
-  fail_if(csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2") < 0, "Setup failed");
-  csync_set_config_dir(csync, "/tmp/check_csync/");
-  fail_if(csync_init(csync) < 0, NULL, "Setup failed");
-}
-
-static void setup_db(void) {
-  char *stmt = NULL;
-
-  fail_if(system("rm -rf /tmp/check_csync1") < 0, "Setup failed");
-  fail_if(system("rm -rf /tmp/check_csync2") < 0, "Setup failed");
-  fail_if(system("mkdir -p /tmp/check_csync1") < 0, "Setup failed");
-  fail_if(system("mkdir -p /tmp/check_csync2") < 0, "Setup failed");
-  fail_if(system("mkdir -p /tmp/check_csync") < 0, "Setup failed");
-  fail_if(csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2") < 0, "Setup failed");
-  csync_set_config_dir(csync, "/tmp/check_csync/");
-  fail_if(csync_init(csync) < 0, NULL, "Setup failed");
-  fail_unless(csync_statedb_create_tables(csync) == 0, "Setup failed");
-
-  stmt = sqlite3_mprintf("INSERT INTO metadata"
-    "(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES"
-    "(%lu, %d, '%q', %d, %d, %d, %d, %lu);",
-    42,
-    42,
-    "It's a rainy day",
-    23,
-    42,
-    42,
-    42,
-    42);
-
-  fail_if(csync_statedb_insert(csync, stmt) < 0, NULL);
-  sqlite3_free(stmt);
-}
-
-static void teardown(void) {
-  fail_if(csync_destroy(csync) < 0, "Teardown failed");
-  fail_if(system("rm -rf /tmp/check_csync") < 0, "Teardown failed");
-  fail_if(system("rm -rf /tmp/check_csync1") < 0, "Teardown failed");
-  fail_if(system("rm -rf /tmp/check_csync2") < 0, "Teardown failed");
-}
-
-
-START_TEST (check_csync_statedb_query_statement)
+static void setup(void **state)
 {
-  c_strlist_t *result = NULL;
-  result = csync_statedb_query(csync, "");
-  fail_unless(result == NULL, NULL);
-  c_strlist_destroy(result);
+    CSYNC *csync;
+    int rc;
 
-  result = csync_statedb_query(csync, "SELECT;");
-  fail_unless(result == NULL, NULL);
-  c_strlist_destroy(result);
+    rc = system("rm -rf /tmp/check_csync1");
+    assert_int_equal(rc, 0);
+    rc = system("rm -rf /tmp/check_csync2");
+    assert_int_equal(rc, 0);
+    rc = system("mkdir -p /tmp/check_csync1");
+    assert_int_equal(rc, 0);
+    rc = system("mkdir -p /tmp/check_csync2");
+    assert_int_equal(rc, 0);
+    rc = system("mkdir -p /tmp/check_csync");
+    assert_int_equal(rc, 0);
+    rc = csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
+    assert_int_equal(rc, 0);
+    rc = csync_set_config_dir(csync, "/tmp/check_csync/");
+    assert_int_equal(rc, 0);
+    rc = csync_init(csync);
+    assert_int_equal(rc, 0);
+
+    *state = csync;
 }
-END_TEST
 
-START_TEST (check_csync_statedb_create_error)
+static void setup_db(void **state)
 {
-  c_strlist_t *result = NULL;
-  result = csync_statedb_query(csync, "CREATE TABLE test(phash INTEGER, text VARCHAR(10));");
-  fail_if(result == NULL, NULL);
-  c_strlist_destroy(result);
+    CSYNC *csync;
+    char *stmt = NULL;
+    int rc;
 
-  result = csync_statedb_query(csync, "CREATE TABLE test(phash INTEGER, text VARCHAR(10));");
-  fail_unless(result == NULL, NULL);
-  c_strlist_destroy(result);
+    setup(state);
+    csync = *state;
+
+    rc = csync_statedb_create_tables(csync);
+    assert_int_equal(rc, 0);
+
+    stmt = sqlite3_mprintf("INSERT INTO metadata"
+        "(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES"
+        "(%lu, %d, '%q', %d, %d, %d, %d, %lu);",
+        42,
+        42,
+        "It's a rainy day",
+        23,
+        42,
+        42,
+        42,
+        42);
+
+    rc = csync_statedb_insert(csync, stmt);
+    sqlite3_free(stmt);
 }
-END_TEST
 
-START_TEST (check_csync_statedb_insert_statement)
+static void teardown(void **state) {
+    CSYNC *csync = *state;
+    int rc;
+
+    rc = csync_destroy(csync);
+    assert_int_equal(rc, 0);
+    rc = system("rm -rf /tmp/check_csync");
+    assert_int_equal(rc, 0);
+    rc = system("rm -rf /tmp/check_csync1");
+    assert_int_equal(rc, 0);
+    rc = system("rm -rf /tmp/check_csync2");
+    assert_int_equal(rc, 0);
+
+    *state = NULL;
+}
+
+
+static void check_csync_statedb_query_statement(void **state)
 {
-  c_strlist_t *result = NULL;
-  result = csync_statedb_query(csync, "CREATE TABLE test(phash INTEGER, text VARCHAR(10));");
-  fail_if(result == NULL, NULL);
-  c_strlist_destroy(result);
-  fail_unless(csync_statedb_insert(csync, "INSERT;") == 0, NULL);
-  fail_unless(csync_statedb_insert(csync, "INSERT") == 0, NULL);
-  fail_unless(csync_statedb_insert(csync, "") == 0, NULL);
-}
-END_TEST
+    CSYNC *csync = *state;
+    c_strlist_t *result;
 
-START_TEST (check_csync_statedb_query_create_and_insert_table)
+    result = csync_statedb_query(csync, "");
+    assert_null(result);
+
+    result = csync_statedb_query(csync, "SELECT;");
+    assert_null(result);
+}
+
+static void check_csync_statedb_create_error(void **state)
 {
-  c_strlist_t *result = NULL;
-  result = csync_statedb_query(csync, "CREATE TABLE test(phash INTEGER, text VARCHAR(10));");
-  c_strlist_destroy(result);
-  fail_unless(csync_statedb_insert(csync, "INSERT INTO test (phash, text) VALUES (42, 'hello');"), NULL);
-  result = csync_statedb_query(csync, "SELECT * FROM test;");
-  fail_unless(result->count == 2, NULL);
-  fail_unless(strcmp(result->vector[0], "42") == 0, NULL);
-  fail_unless(strcmp(result->vector[1], "hello") == 0, NULL);
-  c_strlist_destroy(result);
-}
-END_TEST
+    CSYNC *csync = *state;
+    c_strlist_t *result;
 
-START_TEST (check_csync_statedb_is_empty)
+    result = csync_statedb_query(csync, "CREATE TABLE test(phash INTEGER, text VARCHAR(10));");
+    assert_non_null(result);
+    c_strlist_destroy(result);
+
+    result = csync_statedb_query(csync, "CREATE TABLE test(phash INTEGER, text VARCHAR(10));");
+    assert_null(result);
+}
+
+static void check_csync_statedb_insert_statement(void **state)
 {
-  c_strlist_t *result = NULL;
+    CSYNC *csync = *state;
+    c_strlist_t *result;
+    int rc;
 
-  /* we have an empty db */
-  fail_unless(_csync_statedb_is_empty(csync) == 1, NULL);
+    result = csync_statedb_query(csync, "CREATE TABLE test(phash INTEGER, text VARCHAR(10));");
+    assert_non_null(result);
+    c_strlist_destroy(result);
 
-  /* add a table and an entry */
-  result = csync_statedb_query(csync, "CREATE TABLE metadata(phash INTEGER, text VARCHAR(10));");
-  c_strlist_destroy(result);
-  fail_unless(csync_statedb_insert(csync, "INSERT INTO metadata (phash, text) VALUES (42, 'hello');"), NULL);
-
-  fail_unless(_csync_statedb_is_empty(csync) == 0, NULL);
+    rc = csync_statedb_insert(csync, "INSERT;");
+    assert_int_equal(rc, 0);
+    rc = csync_statedb_insert(csync, "INSERT");
+    assert_int_equal(rc, 0);
+    rc = csync_statedb_insert(csync, "");
+    assert_int_equal(rc, 0);
 }
-END_TEST
 
-START_TEST (check_csync_statedb_create_tables)
+static void check_csync_statedb_query_create_and_insert_table(void **state)
 {
-  char *stmt = NULL;
+    CSYNC *csync = *state;
+    c_strlist_t *result;
+    int rc;
 
-  fail_unless(csync_statedb_create_tables(csync) == 0, NULL);
+    result = csync_statedb_query(csync, "CREATE TABLE test(phash INTEGER, text VARCHAR(10));");
+    c_strlist_destroy(result);
+    rc = csync_statedb_insert(csync, "INSERT INTO test (phash, text) VALUES (42, 'hello');");
+    assert_true(rc > 0);
 
-  stmt = sqlite3_mprintf("INSERT INTO metadata_temp"
-    "(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES"
-    "(%lu, %d, '%q', %d, %d, %d, %d, %lu);",
-    42,
-    42,
-    "It's a rainy day",
-    42,
-    42,
-    42,
-    42,
-    42);
+    result = csync_statedb_query(csync, "SELECT * FROM test;");
+    assert_non_null(result);
+    assert_int_equal(result->count, 2);
 
-  fail_if(csync_statedb_insert(csync, stmt) < 0, NULL);
-  sqlite3_free(stmt);
+    assert_string_equal(result->vector[0], "42");
+    assert_string_equal(result->vector[1], "hello");
+    c_strlist_destroy(result);
 }
-END_TEST
 
-START_TEST (check_csync_statedb_drop_tables)
+static void check_csync_statedb_is_empty(void **state)
 {
-  fail_unless(csync_statedb_drop_tables(csync) == 0, NULL);
-  fail_unless(csync_statedb_create_tables(csync) == 0, NULL);
-  fail_unless(csync_statedb_drop_tables(csync) == 0, NULL);
-}
-END_TEST
+    CSYNC *csync = *state;
+    c_strlist_t *result;
+    int rc;
 
-START_TEST (check_csync_statedb_insert_metadata)
+    /* we have an empty db */
+    assert_true(_csync_statedb_is_empty(csync));
+
+    /* add a table and an entry */
+    result = csync_statedb_query(csync, "CREATE TABLE metadata(phash INTEGER, text VARCHAR(10));");
+    c_strlist_destroy(result);
+    rc = csync_statedb_insert(csync, "INSERT INTO metadata (phash, text) VALUES (42, 'hello');");
+    assert_true(rc > 0);
+
+    assert_false(_csync_statedb_is_empty(csync));
+}
+
+static void check_csync_statedb_create_tables(void **state)
 {
-  int i = 0;
-  csync_file_stat_t *st;
+    CSYNC *csync = *state;
+    char *stmt = NULL;
+    int rc;
 
-  fail_unless(csync_statedb_create_tables(csync) == 0, NULL);
+    rc = csync_statedb_create_tables(csync);
+    assert_int_equal(rc, 0);
 
-  for(i = 0; i < 100; i++) {
-    st = c_malloc(sizeof(csync_file_stat_t));
-    st->phash = i;
+    stmt = sqlite3_mprintf("INSERT INTO metadata_temp"
+           "(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES"
+           "(%lu, %d, '%q', %d, %d, %d, %d, %lu);",
+           42,
+           42,
+           "It's a rainy day",
+           42,
+           42,
+           42,
+           42,
+           42);
 
-    fail_unless(c_rbtree_insert(csync->local.tree, (void *) st) == 0, NULL);
-  }
+    rc = csync_statedb_insert(csync, stmt);
+    assert_true(rc > 0);
 
-  fail_unless(csync_statedb_insert_metadata(csync) == 0, NULL);
+    sqlite3_free(stmt);
 }
-END_TEST
 
-START_TEST (check_csync_statedb_write)
+static void check_csync_statedb_drop_tables(void **state)
 {
-  int i = 0;
-  csync_file_stat_t *st;
+    CSYNC *csync = *state;
+    int rc;
 
-  for(i = 0; i < 100; i++) {
-    st = c_malloc(sizeof(csync_file_stat_t));
-    st->phash = i;
-
-    fail_unless(c_rbtree_insert(csync->local.tree, (void *) st) == 0, NULL);
-  }
-
-  fail_unless(csync_statedb_write(csync) == 0, NULL);
+    rc = csync_statedb_drop_tables(csync);
+    assert_int_equal(rc, 0);
+    rc = csync_statedb_create_tables(csync);
+    assert_int_equal(rc, 0);
+    rc = csync_statedb_drop_tables(csync);
+    assert_int_equal(rc, 0);
 }
-END_TEST
 
-START_TEST (check_csync_statedb_get_stat_by_hash)
+static void check_csync_statedb_insert_metadata(void **state)
 {
-  csync_file_stat_t *tmp = NULL;
+    CSYNC *csync = *state;
+    csync_file_stat_t *st;
+    int i, rc;
 
-  tmp = csync_statedb_get_stat_by_hash(csync, (uint64_t) 42);
-  fail_if(tmp == NULL, NULL);
+    rc = csync_statedb_create_tables(csync);
+    assert_int_equal(rc, 0);
 
-  fail_unless(tmp->phash == 42, NULL);
-  fail_unless(tmp->inode == 23, NULL);
+    for (i = 0; i < 100; i++) {
+        st = c_malloc(sizeof(csync_file_stat_t));
+        st->phash = i;
 
-  SAFE_FREE(tmp);
+        rc = c_rbtree_insert(csync->local.tree, (void *) st);
+        assert_int_equal(rc, 0);
+    }
+
+    rc = csync_statedb_insert_metadata(csync);
+    assert_int_equal(rc, 0);
 }
-END_TEST
 
-START_TEST (check_csync_statedb_get_stat_by_hash_not_found)
+static void check_csync_statedb_write(void **state)
 {
-  csync_file_stat_t *tmp = NULL;
+    CSYNC *csync = *state;
+    csync_file_stat_t *st;
+    int i, rc;
 
-  tmp = csync_statedb_get_stat_by_hash(csync, (uint64_t) 666);
-  fail_unless(tmp == NULL, NULL);
+    for (i = 0; i < 100; i++) {
+        st = c_malloc(sizeof(csync_file_stat_t));
+        st->phash = i;
+
+        rc = c_rbtree_insert(csync->local.tree, (void *) st);
+        assert_int_equal(rc, 0);
+    }
+
+    rc = csync_statedb_write(csync);
+    assert_int_equal(rc, 0);
 }
-END_TEST
 
-START_TEST (check_csync_statedb_get_stat_by_inode)
+static void check_csync_statedb_get_stat_by_hash(void **state)
 {
-  csync_file_stat_t *tmp = NULL;
+    CSYNC *csync = *state;
+    csync_file_stat_t *tmp;
 
-  tmp = csync_statedb_get_stat_by_inode(csync, (ino_t) 23);
-  fail_if(tmp == NULL, NULL);
+    tmp = csync_statedb_get_stat_by_hash(csync, (uint64_t) 42);
+    assert_non_null(tmp);
 
-  fail_unless(tmp->phash == 42, NULL);
-  fail_unless(tmp->inode == 23, NULL);
+    assert_int_equal(tmp->phash, 42);
+    assert_int_equal(tmp->inode, 23);
 
-  SAFE_FREE(tmp);
+    free(tmp);
 }
-END_TEST
 
-START_TEST (check_csync_statedb_get_stat_by_inode_not_found)
+static void check_csync_statedb_get_stat_by_hash_not_found(void **state)
 {
-  csync_file_stat_t *tmp = NULL;
+    CSYNC *csync = *state;
+    csync_file_stat_t *tmp;
 
-  tmp = csync_statedb_get_stat_by_inode(csync, (ino_t) 666);
-  fail_unless(tmp == NULL, NULL);
-}
-END_TEST
-
-static Suite *make_csync_suite(void) {
-  Suite *s = suite_create("csync_statedb");
-
-  create_case_fixture(s, "check_csync_statedb_query_statement", check_csync_statedb_query_statement, setup, teardown);
-  create_case_fixture(s, "check_csync_statedb_create_error", check_csync_statedb_create_error, setup, teardown);
-  create_case_fixture(s, "check_csync_statedb_insert_statement", check_csync_statedb_insert_statement, setup, teardown);
-  create_case_fixture(s, "check_csync_statedb_query_create_and_insert_table", check_csync_statedb_query_create_and_insert_table, setup, teardown);
-  create_case_fixture(s, "check_csync_statedb_is_empty", check_csync_statedb_is_empty, setup, teardown);
-  create_case_fixture(s, "check_csync_statedb_create_tables", check_csync_statedb_create_tables, setup, teardown);
-  create_case_fixture(s, "check_csync_statedb_drop_tables", check_csync_statedb_drop_tables, setup, teardown);
-  create_case_fixture(s, "check_csync_statedb_insert_metadata", check_csync_statedb_insert_metadata, setup, teardown);
-  create_case_fixture(s, "check_csync_statedb_write", check_csync_statedb_write, setup, teardown);
-  create_case_fixture(s, "check_csync_statedb_get_stat_by_hash", check_csync_statedb_get_stat_by_hash, setup_db, teardown);
-  create_case_fixture(s, "check_csync_statedb_get_stat_by_hash_not_found", check_csync_statedb_get_stat_by_hash_not_found, setup_db, teardown);
-  create_case_fixture(s, "check_csync_statedb_get_stat_by_inode", check_csync_statedb_get_stat_by_inode, setup_db, teardown);
-  create_case_fixture(s, "check_csync_statedb_get_stat_by_inode_not_found", check_csync_statedb_get_stat_by_inode_not_found, setup_db, teardown);
-
-  return s;
+    tmp = csync_statedb_get_stat_by_hash(csync, (uint64_t) 666);
+    assert_null(tmp);
 }
 
-int main(int argc, char **argv) {
-  Suite *s = NULL;
-  SRunner *sr = NULL;
-  struct argument_s arguments;
-  int nf;
+static void check_csync_statedb_get_stat_by_inode(void **state)
+{
+    CSYNC *csync = *state;
+    csync_file_stat_t *tmp;
 
-  ZERO_STRUCT(arguments);
+    tmp = csync_statedb_get_stat_by_inode(csync, (ino_t) 23);
+    assert_non_null(tmp);
 
-  cmdline_parse(argc, argv, &arguments);
+    assert_int_equal(tmp->phash, 42);
+    assert_int_equal(tmp->inode, 23);
 
-  s = make_csync_suite();
+    free(tmp);
+}
 
-  sr = srunner_create(s);
-  if (arguments.nofork) {
-    srunner_set_fork_status(sr, CK_NOFORK);
-  }
-  srunner_run_all(sr, CK_VERBOSE);
-  nf = srunner_ntests_failed(sr);
-  srunner_free(sr);
+static void check_csync_statedb_get_stat_by_inode_not_found(void **state)
+{
+    CSYNC *csync = *state;
+    csync_file_stat_t *tmp;
 
-  return (nf == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+    tmp = csync_statedb_get_stat_by_inode(csync, (ino_t) 666);
+    assert_null(tmp);
+}
+
+int torture_run_tests(void)
+{
+    const UnitTest tests[] = {
+        unit_test_setup_teardown(check_csync_statedb_query_statement, setup, teardown),
+        unit_test_setup_teardown(check_csync_statedb_create_error, setup, teardown),
+        unit_test_setup_teardown(check_csync_statedb_insert_statement, setup, teardown),
+        unit_test_setup_teardown(check_csync_statedb_query_create_and_insert_table, setup, teardown),
+        unit_test_setup_teardown(check_csync_statedb_is_empty, setup, teardown),
+        unit_test_setup_teardown(check_csync_statedb_create_tables, setup, teardown),
+        unit_test_setup_teardown(check_csync_statedb_drop_tables, setup, teardown),
+        unit_test_setup_teardown(check_csync_statedb_insert_metadata, setup, teardown),
+        unit_test_setup_teardown(check_csync_statedb_write, setup, teardown),
+        unit_test_setup_teardown(check_csync_statedb_get_stat_by_hash, setup_db, teardown),
+        unit_test_setup_teardown(check_csync_statedb_get_stat_by_hash_not_found, setup_db, teardown),
+        unit_test_setup_teardown(check_csync_statedb_get_stat_by_inode, setup_db, teardown),
+        unit_test_setup_teardown(check_csync_statedb_get_stat_by_inode_not_found, setup_db, teardown),
+    };
+
+    return run_tests(tests);
 }
 
