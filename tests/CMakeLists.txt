@@ -1,7 +1,5 @@
 project(tests C)
 
-include(AddCMockaTest)
-
 set(TORTURE_LIBRARY torture)
 
 include_directories(

@@ -40,6 +40,10 @@ include(MacroAddPlugin)
 include(MacroCopyFile)
 
 find_package(Log4C)
+find_package(CMocka)
+if (CMOCKA_FOUND AND UNIT_TESTING)
+    include(AddCMockaTest)
+endif (CMOCKA_FOUND AND UNIT_TESTING)
 
 include(ConfigureChecks.cmake)
 configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
@@ -57,7 +61,6 @@ add_subdirectory(client)
 add_subdirectory(config)
 add_subdirectory(doc)
 
-find_package(CMocka)
 if (CMOCKA_FOUND AND UNIT_TESTING)
     add_subdirectory(tests)
 endif (CMOCKA_FOUND AND UNIT_TESTING)
