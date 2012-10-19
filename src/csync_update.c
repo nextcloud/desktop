@@ -325,6 +325,9 @@ done:
   SAFE_FREE(filename);
   return rc;
 error:
+  if (dh != NULL) {
+    csync_vio_closedir(ctx, dh);
+  }
   SAFE_FREE(filename);
   return -1;
 }
