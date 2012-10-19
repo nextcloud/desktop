@@ -1,115 +1,154 @@
-#include "support.h"
+#include "torture.h"
 
 #include "csync_update.c"
 
-CSYNC *csync;
+static void setup(void **state)
+{
+    CSYNC *csync;
+    int rc;
 
-static void setup(void) {
-  fail_if(system("mkdir -p /tmp/check_csync") < 0, "Setup failed");
-  fail_if(system("mkdir -p /tmp/check_csync1") < 0, "Setup failed");
-  fail_if(system("mkdir -p /tmp/check_csync2") < 0, "Setup failed");
-  fail_if(csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2") < 0, "Setup failed");
-  fail_if(csync_set_config_dir(csync, "/tmp/check_csync") < 0, "Setup failed");
-  fail_if(csync_init(csync) < 0, NULL);
+    rc = system("mkdir -p /tmp/check_csync");
+    assert_int_equal(rc, 0);
+    rc = system("mkdir -p /tmp/check_csync1");
+    assert_int_equal(rc, 0);
+    rc = system("mkdir -p /tmp/check_csync2");
+    assert_int_equal(rc, 0);
+    rc = csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
+    assert_int_equal(rc, 0);
+    rc = csync_set_config_dir(csync, "/tmp/check_csync");
+    assert_int_equal(rc, 0);
+    rc = csync_init(csync);
+    assert_int_equal(rc, 0);
+
+    *state = csync;
 }
 
-static void setup_ftw(void) {
-  fail_if(system("mkdir -p /tmp/check_csync") < 0, "Setup failed");
-  fail_if(system("mkdir -p /tmp/check_csync1") < 0, "Setup failed");
-  fail_if(system("mkdir -p /tmp/check_csync2") < 0, "Setup failed");
-  fail_if(csync_create(&csync, "/tmp", "/tmp") < 0, "Setup failed");
-  fail_if(csync_set_config_dir(csync, "/tmp/check_csync") < 0, "Setup failed");
-  fail_if(csync_init(csync) < 0, NULL);
+static void setup_ftw(void **state)
+{
+    CSYNC *csync;
+    int rc;
+
+    rc = system("mkdir -p /tmp/check_csync");
+    assert_int_equal(rc, 0);
+    rc = system("mkdir -p /tmp/check_csync1");
+    assert_int_equal(rc, 0);
+    rc = system("mkdir -p /tmp/check_csync2");
+    assert_int_equal(rc, 0);
+    rc = csync_create(&csync, "/tmp", "/tmp");
+    assert_int_equal(rc, 0);
+    rc = csync_set_config_dir(csync, "/tmp/check_csync");
+    assert_int_equal(rc, 0);
+    rc = csync_init(csync);
+    assert_int_equal(rc, 0);
+
+    *state = csync;
 }
 
-static void teardown(void) {
-  fail_if(csync_destroy(csync) < 0, "Teardown failed");
-  unsetenv("CSYNC_NOMEMORY");
+static void teardown(void **state)
+{
+    CSYNC *csync = *state;
+    int rc;
+
+    rc = csync_destroy(csync);
+    assert_int_equal(rc, 0);
+
+    *state = NULL;
 }
 
-static void teardown_rm(void) {
-  teardown();
-  fail_if(system("rm -rf /tmp/check_csync") < 0, "Teardown failed");
-  fail_if(system("rm -rf /tmp/check_csync1") < 0, "Teardown failed");
-  fail_if(system("rm -rf /tmp/check_csync2") < 0, "Teardown failed");
+static void teardown_rm(void **state) {
+    int rc;
+
+    teardown(state);
+
+    rc = system("rm -rf /tmp/check_csync");
+    assert_int_equal(rc, 0);
+    rc = system("rm -rf /tmp/check_csync1");
+    assert_int_equal(rc, 0);
+    rc = system("rm -rf /tmp/check_csync2");
+    assert_int_equal(rc, 0);
 }
 
 /* create a file stat, caller must free memory */
-static csync_vio_file_stat_t* create_fstat(const char *name, ino_t inode, nlink_t nlink, time_t mtime) {
-  csync_vio_file_stat_t *fs = NULL;
-  time_t t;
+static csync_vio_file_stat_t* create_fstat(const char *name,
+                                           ino_t inode,
+                                           nlink_t nlink,
+                                           time_t mtime)
+{
+    csync_vio_file_stat_t *fs = NULL;
+    time_t t;
 
-  fs = csync_vio_file_stat_new();
-  if (fs == NULL) {
-    return NULL;
-  }
+    fs = csync_vio_file_stat_new();
+    if (fs == NULL) {
+        return NULL;
+    }
 
-  if (name && *name) {
-    fs->name = c_strdup(name);
-  } else {
-    fs->name = c_strdup("file.txt");
-  }
+    if (name && *name) {
+        fs->name = c_strdup(name);
+    } else {
+        fs->name = c_strdup("file.txt");
+    }
 
-  if (fs->name == NULL) {
-    csync_vio_file_stat_destroy(fs);
-    return NULL;
-  }
+    if (fs->name == NULL) {
+        csync_vio_file_stat_destroy(fs);
+        return NULL;
+    }
 
-  fs->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
+    fs->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
 
-  fs->type = CSYNC_VIO_FILE_TYPE_REGULAR;
-  fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
+    fs->type = CSYNC_VIO_FILE_TYPE_REGULAR;
+    fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
 
-  fs->mode = 0644;
-  fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
+    fs->mode = 0644;
+    fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
 
-  if (inode == 0) {
-    fs->inode = 619070;
-  } else {
-    fs->inode = inode;
-  }
-  fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_INODE;
+    if (inode == 0) {
+        fs->inode = 619070;
+    } else {
+        fs->inode = inode;
+    }
+    fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_INODE;
 
-  fs->device = 0;
+    fs->device = 0;
 
-  fs->size = 157459;
-  fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
+    fs->size = 157459;
+    fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
 
-  if (nlink == 0) {
-    fs->nlink = 1;
-  } else {
-    fs->nlink = nlink;
-  }
-  fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_LINK_COUNT;
+    if (nlink == 0) {
+        fs->nlink = 1;
+    } else {
+        fs->nlink = nlink;
+    }
+    fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_LINK_COUNT;
 
-  fs->uid = 1000;
-  fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_UID;
+    fs->uid = 1000;
+    fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_UID;
 
-  fs->gid = 1000;
-  fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_GID;
+    fs->gid = 1000;
+    fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_GID;
 
-  fs->blkcount = 312;
-  fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_COUNT;
+    fs->blkcount = 312;
+    fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_COUNT;
 
-  fs->blksize = 4096;
-  fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_SIZE;
+    fs->blksize = 4096;
+    fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_SIZE;
 
-  if (mtime == 0) {
-    fs->atime = fs->ctime = fs->mtime = time(&t);
-  } else {
-    fs->atime = fs->ctime = fs->mtime = mtime;
-  }
-  fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ATIME;
-  fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_CTIME;
-  fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
+    if (mtime == 0) {
+        fs->atime = fs->ctime = fs->mtime = time(&t);
+    } else {
+        fs->atime = fs->ctime = fs->mtime = mtime;
+    }
+    fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ATIME;
+    fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_CTIME;
+    fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
 
-  return fs;
+    return fs;
 }
 
 static int failing_fn(CSYNC *ctx,
-    const char *file,
-    const csync_vio_file_stat_t *fs,
-    enum csync_ftw_flags_e flag) {
+                      const char *file,
+                      const csync_vio_file_stat_t *fs,
+                      enum csync_ftw_flags_e flag)
+{
   (void) ctx;
   (void) file;
   (void) fs;
@@ -119,235 +158,243 @@ static int failing_fn(CSYNC *ctx,
 }
 
 /* detect a new file */
-START_TEST (check_csync_detect_update)
+static void check_csync_detect_update(void **state)
 {
-  csync_file_stat_t *st = NULL;
-  csync_vio_file_stat_t *fs = NULL;
+    CSYNC *csync = *state;
+    csync_file_stat_t *st;
+    csync_vio_file_stat_t *fs;
+    int rc;
 
-  fs = create_fstat("file.txt", 0, 1, 1217597845);
+    fs = create_fstat("file.txt", 0, 1, 1217597845);
+    assert_non_null(fs);
 
-  fail_unless(_csync_detect_update(csync, "/tmp/check_csync1/file.txt", fs, CSYNC_FTW_TYPE_FILE) == 0, NULL);
+    rc = _csync_detect_update(csync,
+                              "/tmp/check_csync1/file.txt",
+                              fs,
+                              CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, 0);
 
-  /* the instruction should be set to new  */
-  st = c_rbtree_node_data(csync->local.tree->root);
-  fail_unless(st->instruction == CSYNC_INSTRUCTION_NEW, "instruction is %s", csync_instruction_str(st->instruction));
+    /* the instruction should be set to new  */
+    st = c_rbtree_node_data(csync->local.tree->root);
+    assert_int_equal(st->instruction, CSYNC_INSTRUCTION_NEW);
 
-  /* set the instruction to UPDATED that it gets written to the statedb */
-  st->instruction = CSYNC_INSTRUCTION_UPDATED;
+    /* set the instruction to UPDATED that it gets written to the statedb */
+    st->instruction = CSYNC_INSTRUCTION_UPDATED;
 
-  /* create a statedb */
-  csync_set_status(csync, 0xFFFF);
+    /* create a statedb */
+    csync_set_status(csync, 0xFFFF);
 
-  csync_vio_file_stat_destroy(fs);
+    csync_vio_file_stat_destroy(fs);
 }
-END_TEST
 
-START_TEST (check_csync_detect_update_db_none)
+static void check_csync_detect_update_db_none(void **state)
 {
-  csync_file_stat_t *st = NULL;
-  csync_vio_file_stat_t *fs = NULL;
+    CSYNC *csync = *state;
+    csync_file_stat_t *st;
+    csync_vio_file_stat_t *fs;
+    int rc;
 
-  fs = create_fstat("file.txt", 0, 1, 1217597845);
+    fs = create_fstat("file.txt", 0, 1, 1217597845);
+    assert_non_null(fs);
 
-  fail_unless(_csync_detect_update(csync, "/tmp/check_csync1/file.txt", fs, CSYNC_FTW_TYPE_FILE) == 0, NULL);
+    rc = _csync_detect_update(csync,
+                              "/tmp/check_csync1/file.txt",
+                              fs,
+                              CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, 0);
 
-  /* the instruction should be set to new  */
-  st = c_rbtree_node_data(csync->local.tree->root);
-  fail_unless(st->instruction == CSYNC_INSTRUCTION_NONE, "instruction is %s", csync_instruction_str(st->instruction));
+    /* the instruction should be set to new  */
+    st = c_rbtree_node_data(csync->local.tree->root);
+    assert_int_equal(st->instruction, CSYNC_INSTRUCTION_NONE);
 
-  /* set the instruction to UPDATED that it gets written to the statedb */
-  st->instruction = CSYNC_INSTRUCTION_UPDATED;
+    /* set the instruction to UPDATED that it gets written to the statedb */
+    st->instruction = CSYNC_INSTRUCTION_UPDATED;
 
-  /* create a statedb */
-  csync_set_status(csync, 0xFFFF);
+    /* create a statedb */
+    csync_set_status(csync, 0xFFFF);
 
-  csync_vio_file_stat_destroy(fs);
+    csync_vio_file_stat_destroy(fs);
 }
-END_TEST
 
-START_TEST (check_csync_detect_update_db_eval)
+static void check_csync_detect_update_db_eval(void **state)
 {
-  csync_file_stat_t *st = NULL;
-  csync_vio_file_stat_t *fs = NULL;
+    CSYNC *csync = *state;
+    csync_file_stat_t *st;
+    csync_vio_file_stat_t *fs;
+    int rc;
 
-  fs = create_fstat("file.txt", 0, 1, 0);
+    fs = create_fstat("file.txt", 0, 1, 0);
+    assert_non_null(fs);
 
-  fail_unless(_csync_detect_update(csync, "/tmp/check_csync1/file.txt", fs, CSYNC_FTW_TYPE_FILE) == 0, NULL);
+    rc = _csync_detect_update(csync,
+                              "/tmp/check_csync1/file.txt",
+                              fs,
+                              CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, 0);
 
-  /* the instruction should be set to new  */
-  st = c_rbtree_node_data(csync->local.tree->root);
-  fail_unless(st->instruction == CSYNC_INSTRUCTION_EVAL, "instruction is %s", csync_instruction_str(st->instruction));
+    /* the instruction should be set to new  */
+    st = c_rbtree_node_data(csync->local.tree->root);
+    assert_int_equal(st->instruction, CSYNC_INSTRUCTION_EVAL);
 
-  /* set the instruction to UPDATED that it gets written to the statedb */
-  st->instruction = CSYNC_INSTRUCTION_UPDATED;
+    /* set the instruction to UPDATED that it gets written to the statedb */
+    st->instruction = CSYNC_INSTRUCTION_UPDATED;
 
-  /* create a statedb */
-  csync_set_status(csync, 0xFFFF);
+    /* create a statedb */
+    csync_set_status(csync, 0xFFFF);
 
-  csync_vio_file_stat_destroy(fs);
+    csync_vio_file_stat_destroy(fs);
 }
-END_TEST
 
-START_TEST (check_csync_detect_update_db_rename)
+static void check_csync_detect_update_db_rename(void **state)
 {
-  csync_file_stat_t *st = NULL;
-  csync_vio_file_stat_t *fs = NULL;
+    CSYNC *csync = *state;
+    csync_file_stat_t *st;
+    csync_vio_file_stat_t *fs;
+    int rc;
 
-  fs = create_fstat("wurst.txt", 0, 1, 0);
+    fs = create_fstat("wurst.txt", 0, 1, 0);
+    assert_non_null(fs);
 
-  fail_unless(_csync_detect_update(csync, "/tmp/check_csync1/wurst.txt", fs, CSYNC_FTW_TYPE_FILE) == 0, NULL);
+    rc = _csync_detect_update(csync,
+                              "/tmp/check_csync1/wurst.txt",
+                              fs,
+                              CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, 0);
 
-  /* the instruction should be set to rename */
-  st = c_rbtree_node_data(csync->local.tree->root);
-  fail_unless(st->instruction == CSYNC_INSTRUCTION_RENAME, "instruction is %s", csync_instruction_str(st->instruction));
+    /* the instruction should be set to rename */
+    st = c_rbtree_node_data(csync->local.tree->root);
+    assert_int_equal(st->instruction, CSYNC_INSTRUCTION_RENAME);
 
-  /* set the instruction to UPDATED that it gets written to the statedb */
-  st->instruction = CSYNC_INSTRUCTION_UPDATED;
+    /* set the instruction to UPDATED that it gets written to the statedb */
+    st->instruction = CSYNC_INSTRUCTION_UPDATED;
 
-  /* create a statedb */
-  csync_set_status(csync, 0xFFFF);
+    /* create a statedb */
+    csync_set_status(csync, 0xFFFF);
 
-  csync_vio_file_stat_destroy(fs);
+    csync_vio_file_stat_destroy(fs);
 }
-END_TEST
 
-START_TEST (check_csync_detect_update_db_new)
+static void check_csync_detect_update_db_new(void **state)
 {
-  csync_file_stat_t *st = NULL;
-  csync_vio_file_stat_t *fs = NULL;
+    CSYNC *csync = *state;
+    csync_file_stat_t *st;
+    csync_vio_file_stat_t *fs;
+    int rc;
 
-  fs = create_fstat("file.txt", 42000, 1, 0);
+    fs = create_fstat("file.txt", 42000, 1, 0);
+    assert_non_null(fs);
 
-  fail_unless(_csync_detect_update(csync, "/tmp/check_csync1/file.txt", fs, CSYNC_FTW_TYPE_FILE) == 0, NULL);
+    rc = _csync_detect_update(csync,
+                              "/tmp/check_csync1/file.txt",
+                              fs,
+                              CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, 0);
 
-  /* the instruction should be set to new  */
-  st = c_rbtree_node_data(csync->local.tree->root);
-  fail_unless(st->instruction == CSYNC_INSTRUCTION_NEW, "instruction is %s", csync_instruction_str(st->instruction));
+    /* the instruction should be set to new  */
+    st = c_rbtree_node_data(csync->local.tree->root);
+    assert_int_equal(st->instruction, CSYNC_INSTRUCTION_NEW);
 
-  /* set the instruction to UPDATED that it gets written to the statedb */
-  st->instruction = CSYNC_INSTRUCTION_UPDATED;
+    /* set the instruction to UPDATED that it gets written to the statedb */
+    st->instruction = CSYNC_INSTRUCTION_UPDATED;
 
-  /* create a statedb */
-  csync_set_status(csync, 0xFFFF);
+    /* create a statedb */
+    csync_set_status(csync, 0xFFFF);
 
-  csync_vio_file_stat_destroy(fs);
+    csync_vio_file_stat_destroy(fs);
 }
-END_TEST
 
-START_TEST (check_csync_detect_update_nlink)
+static void check_csync_detect_update_nlink(void **state)
 {
-  csync_file_stat_t *st = NULL;
-  csync_vio_file_stat_t *fs = NULL;
+    CSYNC *csync = *state;
+    csync_file_stat_t *st;
+    csync_vio_file_stat_t *fs;
+    int rc;
 
-  /* create vio file stat with nlink greater than 1 */
-  fs = create_fstat("file.txt", 0, 7, 0);
+    /* create vio file stat with nlink greater than 1 */
+    fs = create_fstat("file.txt", 0, 7, 0);
+    assert_non_null(fs);
 
-  /* add it to local tree */
-  fail_unless(_csync_detect_update(csync, "/tmp/check_csync1/file.txt", fs, CSYNC_FTW_TYPE_FILE) == 0, NULL);
+    /* add it to local tree */
+    rc = _csync_detect_update(csync,
+                              "/tmp/check_csync1/file.txt",
+                              fs,
+                              CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, 0);
 
-  /* the instruction should be set to ignore */
-  st = c_rbtree_node_data(csync->local.tree->root);
-  fail_unless(st->instruction == CSYNC_INSTRUCTION_IGNORE);
+    /* the instruction should be set to ignore */
+    st = c_rbtree_node_data(csync->local.tree->root);
+    assert_int_equal(st->instruction, CSYNC_INSTRUCTION_IGNORE);
 
-  csync_vio_file_stat_destroy(fs);
+    csync_vio_file_stat_destroy(fs);
 }
-END_TEST
 
-START_TEST (check_csync_detect_update_null)
+static void check_csync_detect_update_null(void **state)
 {
-  csync_vio_file_stat_t *fs = NULL;
+    CSYNC *csync = *state;
+    csync_vio_file_stat_t *fs;
+    int rc;
 
-  fs = create_fstat("file.txt", 0, 1, 0);
+    fs = create_fstat("file.txt", 0, 1, 0);
+    assert_non_null(fs);
 
-  fail_unless(_csync_detect_update(csync, NULL, fs, CSYNC_FTW_TYPE_FILE) < 0, NULL);
-  fail_unless(_csync_detect_update(csync, "/tmp/check_csync1/file.txt", NULL, CSYNC_FTW_TYPE_FILE) < 0, NULL);
+    rc = _csync_detect_update(csync,
+                              NULL,
+                              fs,
+                              CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, -1);
 
-  csync_vio_file_stat_destroy(fs);
+    rc = _csync_detect_update(csync,
+                              "/tmp/check_csync1/file.txt",
+                              NULL,
+                              CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, -1);
+
+    csync_vio_file_stat_destroy(fs);
 }
-END_TEST
 
-START_TEST (check_csync_ftw)
+static void check_csync_ftw(void **state)
 {
-  fail_unless(csync_ftw(csync, "/tmp", csync_walker, MAX_DEPTH) == 0, NULL);
-}
-END_TEST
+    CSYNC *csync = *state;
+    int rc;
 
-START_TEST (check_csync_ftw_empty_uri)
+    rc = csync_ftw(csync, "/tmp", csync_walker, MAX_DEPTH);
+    assert_int_equal(rc, 0);
+}
+
+static void check_csync_ftw_empty_uri(void **state)
 {
-  fail_unless(csync_ftw(csync, "", csync_walker, MAX_DEPTH) < 0, NULL);
-}
-END_TEST
+    CSYNC *csync = *state;
+    int rc;
 
-START_TEST (check_csync_ftw_failing_fn)
+    rc = csync_ftw(csync, "", csync_walker, MAX_DEPTH);
+    assert_int_equal(rc, -1);
+}
+
+static void check_csync_ftw_failing_fn(void **state)
 {
-  fail_unless(csync_ftw(csync, "/tmp", failing_fn, MAX_DEPTH) < 0, NULL);
-}
-END_TEST
+    CSYNC *csync = *state;
+    int rc;
 
-#ifdef CSYNC_MEM_NULL_TESTS
-START_TEST (check_csync_detect_update_no_mem)
+    rc = csync_ftw(csync, "/tmp", failing_fn, MAX_DEPTH);
+    assert_int_equal(rc, -1);
+}
+
+int torture_run_tests(void)
 {
-  csync_vio_file_stat_t *fs = NULL;
+    const UnitTest tests[] = {
+        unit_test_setup_teardown(check_csync_detect_update, setup, teardown),
+        unit_test_setup_teardown(check_csync_detect_update_db_none, setup, teardown),
+        unit_test_setup_teardown(check_csync_detect_update_db_eval, setup, teardown),
+        unit_test_setup_teardown(check_csync_detect_update_db_rename, setup, teardown),
+        unit_test_setup_teardown(check_csync_detect_update_db_new, setup, teardown_rm),
+        unit_test_setup_teardown(check_csync_detect_update_nlink, setup, teardown_rm),
+        unit_test_setup_teardown(check_csync_detect_update_null, setup, teardown_rm),
 
-  fs = create_fstat("file.txt", 0, 1, 0);
+        unit_test_setup_teardown(check_csync_ftw, setup_ftw, teardown_rm),
+        unit_test_setup_teardown(check_csync_ftw_empty_uri, setup_ftw, teardown_rm),
+        unit_test_setup_teardown(check_csync_ftw_failing_fn, setup, teardown_rm),
+    };
 
-  setenv("CSYNC_NOMEMORY", "1", 1);
-  fail_unless(_csync_detect_update(csync, "file.txt", fs, CSYNC_FTW_TYPE_FILE) < 0, NULL);
-
-  csync_vio_file_stat_destroy(fs);
-}
-END_TEST
-
-START_TEST (check_csync_ftw_nomem)
-{
-  setenv("CSYNC_NOMEMORY", "1", 1);
-  fail_unless(csync_ftw(csync, "/tmp", csync_walker, MAX_DEPTH) < 0, NULL);
-}
-END_TEST
-#endif
-
-static Suite *make_csync_suite(void) {
-  Suite *s = suite_create("csync_update");
-
-  create_case_fixture(s, "check_csync_detect_update", check_csync_detect_update, setup, teardown);
-  create_case_fixture(s, "check_csync_detect_update_db_none", check_csync_detect_update_db_none, setup, teardown);
-  create_case_fixture(s, "check_csync_detect_update_db_eval", check_csync_detect_update_db_eval, setup, teardown);
-  create_case_fixture(s, "check_csync_detect_update_db_rename", check_csync_detect_update_db_rename, setup, teardown);
-  create_case_fixture(s, "check_csync_detect_update_db_new", check_csync_detect_update_db_new, setup, teardown_rm);
-  create_case_fixture(s, "check_csync_detect_update_nlink", check_csync_detect_update_nlink, setup, teardown_rm);
-  create_case_fixture(s, "check_csync_detect_update_no_file", check_csync_detect_update_null, setup, teardown_rm);
-
-  create_case_fixture(s, "check_csync_ftw", check_csync_ftw, setup_ftw, teardown_rm);
-  create_case_fixture(s, "check_csync_ftw_empty_uri", check_csync_ftw_empty_uri, setup_ftw, teardown_rm);
-  create_case_fixture(s, "check_csync_ftw_failing_fn", check_csync_ftw_failing_fn, setup, teardown_rm);
-
-#ifdef CSYNC_MEM_NULL_TESTS
-  create_case_fixture(s, "check_csync_ftw_nomem", check_csync_ftw_nomem, setup, teardown_rm);
-  create_case_fixture(s, "check_csync_detect_update_nomem", check_csync_detect_update_no_mem, setup, teardown_rm);
-#endif
-  return s;
-}
-
-int main(int argc, char **argv) {
-  Suite *s = NULL;
-  SRunner *sr = NULL;
-  struct argument_s arguments;
-  int nf;
-
-  ZERO_STRUCT(arguments);
-
-  cmdline_parse(argc, argv, &arguments);
-
-  s = make_csync_suite();
-
-  sr = srunner_create(s);
-  if (arguments.nofork) {
-    srunner_set_fork_status(sr, CK_NOFORK);
-  }
-  srunner_run_all(sr, CK_VERBOSE);
-  nf = srunner_ntests_failed(sr);
-  srunner_free(sr);
-
-  return (nf == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+    return run_tests(tests);
 }
 
