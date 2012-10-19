@@ -140,8 +140,12 @@ int c_copy(const char* src, const char *dst, mode_t mode) {
 
   rc = 0;
 out:
-  close(srcfd);
-  close(dstfd);
+  if (srcfd > 0) {
+    close(srcfd);
+  }
+  if (dstfd > 0) {
+      close(dstfd);
+  }
   if (rc < 0) {
     unlink(dst);
   }
