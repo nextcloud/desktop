@@ -50,7 +50,6 @@ add_cmocka_test(check_csync_statedb_query csync_tests/check_csync_statedb_query.
 # vio
 add_cmocka_test(check_vio_handle vio_tests/check_vio_handle.c ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_vio_file_stat vio_tests/check_vio_file_stat.c ${TEST_TARGET_LIBRARIES})
-add_cmocka_test(check_vio_local vio_tests/check_vio_local.c ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_vio vio_tests/check_vio.c ${TEST_TARGET_LIBRARIES})
 
 # sync
