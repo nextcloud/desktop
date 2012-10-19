@@ -34,16 +34,25 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.exclude"
 #include "csync_log.h"
 
-static void _csync_exclude_add(CSYNC *ctx, const char *string) {
-  if (ctx->excludes == NULL) {
-    ctx->excludes = c_strlist_new(32);
-  }
+static int _csync_exclude_add(CSYNC *ctx, const char *string) {
+    c_strlist_t *list;
 
-  if (ctx->excludes->count == ctx->excludes->size) {
-    ctx->excludes = c_strlist_expand(ctx->excludes, 2 * ctx->excludes->size);
-  }
+    if (ctx->excludes == NULL) {
+        ctx->excludes = c_strlist_new(32);
+        if (ctx->excludes == NULL) {
+            return -1;
+        }
+    }
 
-  c_strlist_add(ctx->excludes, string);
+    if (ctx->excludes->count == ctx->excludes->size) {
+        list = c_strlist_expand(ctx->excludes, 2 * ctx->excludes->size);
+        if (list == NULL) {
+            return -1;
+        }
+        ctx->excludes = list;
+    }
+
+    return c_strlist_add(ctx->excludes, string);
 }
 
 int csync_exclude_load(CSYNC *ctx, const char *fname) {
@@ -87,7 +96,10 @@ int csync_exclude_load(CSYNC *ctx, const char *fname) {
         buf[i] = '\0';
         if (*entry != '#' || *entry == '\n') {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Adding entry: %s", entry);
-          _csync_exclude_add(ctx, entry);
+          rc = _csync_exclude_add(ctx, entry);
+          if (rc < 0) {
+              goto out;
+          }
         }
       }
       entry = buf + i + 1;
@@ -142,4 +154,3 @@ int csync_excluded(CSYNC *ctx, const char *path) {
   return 0;
 }
 
-/* vim: set ts=8 sw=2 et cindent: */
