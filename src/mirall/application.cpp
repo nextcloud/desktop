@@ -380,6 +380,12 @@ void Application::setupSystemTray()
 
 void Application::setupContextMenu()
 {
+    bool isConfigured = ownCloudInfo::instance()->isConfigured();
+
+    _actionOpenStatus->setEnabled(isConfigured);
+    _actionOpenoC->setEnabled(isConfigured);
+    _actionAddFolder->setEnabled(isConfigured);
+
     if( _contextMenu ) {
         _contextMenu->clear();
     } else {
