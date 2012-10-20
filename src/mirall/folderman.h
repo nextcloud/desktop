@@ -101,6 +101,7 @@ private:
     // finds all folder configuration files
     // and create the folders
     int setupKnownFolders();
+    void setupFavLink(const QString& folder);
 
     // Escaping of the alias which is used in QSettings AND the file
     // system, thus need to be escaped.

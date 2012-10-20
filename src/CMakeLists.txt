@@ -120,6 +120,11 @@ set_target_properties( owncloudsync PROPERTIES COMPILE_DEFINITIONS OWNCLOUD_CLIE
 target_link_libraries(mirallsync ${libsync_LINK_TARGETS} )
 target_link_libraries(owncloudsync ${libsync_LINK_TARGETS} )
 
+if ( APPLE )
+    target_link_libraries(mirallsync /System/Library/Frameworks/CoreServices.framework)
+    target_link_libraries(owncloudsync /System/Library/Frameworks/CoreServices.framework)
+endif()
+
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     install(TARGETS mirallsync owncloudsync
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
