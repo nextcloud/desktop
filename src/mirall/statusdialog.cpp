@@ -243,6 +243,10 @@ void StatusDialog::setFolderList( Folder::Map folders )
         qDebug() << "Folder: " << f;
         slotAddFolder( f );
     }
+
+   QModelIndex idx = _model->index(0, 0);
+   if (idx.isValid())
+        _folderList->setCurrentIndex(idx);
     buttonsSetEnabled();
 
 }
@@ -270,7 +274,7 @@ void StatusDialog::buttonsSetEnabled()
         _ButtonAdd->setEnabled(true);
     }
 
-    QModelIndex selected = _folderList->selectionModel()->currentIndex();
+    QModelIndex selected = _folderList->currentIndex();
     bool isSelected = selected.isValid();
 
     _ButtonEnable->setEnabled(isSelected);
