@@ -198,13 +198,7 @@ void Application::slotStartFolderSetup( int result )
 
             ownCloudInfo::instance()->checkInstallation();
         } else {
-            QMessageBox::warning(0, tr("No %1 Configuration").arg(_theme->appName()),
-                                 tr("<p>No server connection has been configured for this %1 client.</p>"
-                                    "<p>Please right click on the %1 system tray icon and select <i>Configure</i> "
-                                    "to connect this client to an %1 server.</p>").arg(_theme->appName()));
-            // It was evaluated to open the config dialog from here directly but decided
-            // against because the user does not know why. The popup gives a better user
-            // guidance, even if its a click more.
+            _owncloudSetupWizard->startWizard(true); // with intro
         }
     } else {
         qDebug() << "Setup Wizard was canceled. No reparsing of config.";
@@ -623,7 +617,7 @@ void Application::slotOpenStatus()
 
     if( !cfgFile.exists() ) {
       qDebug() << "No configured folders yet, start the Owncloud integration dialog.";
-      _owncloudSetupWizard->startWizard();
+      _owncloudSetupWizard->startWizard(true); // with intro
     } else {
       qDebug() << "#============# Status dialog starting #=============#";
       raiseWidget = _statusDialog;
@@ -795,7 +789,7 @@ void Application::slotEnableFolder(const QString& alias, const bool enable)
 void Application::slotConfigure()
 {
   _folderMan->disableFoldersWithRestore();
-  _owncloudSetupWizard->startWizard();
+  _owncloudSetupWizard->startWizard(false);
   _folderMan->restoreEnabledFolders();
 }
 

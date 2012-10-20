@@ -57,6 +57,7 @@ class OwncloudWizard: public QWizard
 public:
 
     enum {
+      Page_oCWelcome,
       Page_oCSetup,
       Page_SelectType,
       Page_Create_OC,
@@ -92,6 +93,20 @@ private:
     QString _configFile;
     QString _oCUrl;
 };
+
+
+/**
+ * page for first launch only
+ */
+class OwncloudWelcomePage: public QWizardPage
+{
+    Q_OBJECT
+public:
+  OwncloudWelcomePage();
+
+  virtual int nextId() const  { return OwncloudWizard::Page_oCSetup; }
+};
+
 
 /**
  * page to ask for the type of Owncloud to connect to

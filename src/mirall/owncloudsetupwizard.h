@@ -38,7 +38,10 @@ public:
 
     ~OwncloudSetupWizard();
 
-    void startWizard( );
+    /**
+     * @intro wether or not to show the intro wizard page
+     */
+    void startWizard(bool intro = false);
 
     void installServer();
 

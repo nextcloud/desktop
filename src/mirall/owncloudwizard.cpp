@@ -55,9 +55,30 @@ void setupCustomMedia( QVariant variant, QLabel *label )
 // ======================================================================
 
 
+OwncloudWelcomePage::OwncloudWelcomePage()
+{
+    setTitle(tr("Welcome to %1").arg(Theme::instance()->appName()));
+    setSubTitle(tr("Set up your server connection"));
+
+    QVBoxLayout *lay = new QVBoxLayout(this);
+    QLabel *content = new QLabel;
+    lay->addWidget(content, 100, Qt::AlignTop);
+    content->setAlignment(Qt::AlignTop);
+    content->setTextFormat(Qt::RichText);
+    content->setWordWrap(true);
+    content->setText(tr("<p>In order to connect to your %1 server, you need to provide the server address "
+                        "as well as your credentials.</p><p>This wizard will guide you through the process.<p>"
+                        "<p>If you have not received this information, please contact your %1 hosting provider.</p>")
+                     .arg(Theme::instance()->appName()));
+}
+
+
 OwncloudSetupPage::OwncloudSetupPage()
 {
     _ui.setupUi(this);
+
+    setTitle(tr("Create the %1 Connection").arg(Theme::instance()->appName()));
+    setSubTitle(tr("Enter Server Name and Credentials"));
 
     connect(_ui.leUrl, SIGNAL(textChanged(QString)), SLOT(handleNewOcUrl(QString)));
 
@@ -471,6 +492,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     : QWizard(parent)
 {
 #ifdef OWNCLOUD_CLIENT
+    setPage(Page_oCWelcome,      new OwncloudWelcomePage() );
     setPage(Page_oCSetup,        new OwncloudSetupPage() );
 #else
     setPage(Page_SelectType,     new OwncloudWizardSelectTypePage() );

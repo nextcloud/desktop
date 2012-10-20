@@ -323,7 +323,7 @@ void OwncloudSetupWizard::slotProcessFinished( int res, QProcess::ExitStatus )
   }
 }
 
-void OwncloudSetupWizard::startWizard()
+void OwncloudSetupWizard::startWizard(bool intro)
 {
     // create the ocInfo object
     connect(ownCloudInfo::instance(),SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
@@ -336,6 +336,12 @@ void OwncloudSetupWizard::startWizard()
     if( !url.isEmpty() ) {
         _ocWizard->setOCUrl( url );
     }
+#ifdef OWNCLOUD_CLIENT
+    if (intro)
+        _ocWizard->setStartId(OwncloudWizard::Page_oCWelcome);
+    else
+        _ocWizard->setStartId(OwncloudWizard::Page_oCSetup);
+#endif
     _ocWizard->restart();
     _ocWizard->show();
 }
