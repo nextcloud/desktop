@@ -122,6 +122,7 @@ int csync_excluded(CSYNC *ctx, const char *path) {
   size_t i;
   const char *p;
   char *bname;
+  int rc;
 
   if (! ctx->options.unix_extensions) {
     for (p = path; *p; p++) {
@@ -146,16 +147,23 @@ int csync_excluded(CSYNC *ctx, const char *path) {
   }
 
   if (ctx->excludes->count) {
-    bname = c_basename(path);
-    for (i = 0; i < ctx->excludes->count; i++) {
-      if (csync_fnmatch(ctx->excludes->vector[i], path, 0) == 0) {
-        return 1;
+      for (i = 0; i < ctx->excludes->count; i++) {
+          rc = csync_fnmatch(ctx->excludes->vector[i], path, 0);
+          if (rc == 0) {
+              return 1;
+          }
+
+          bname = c_basename(path);
+          if (bname == NULL) {
+              return 0;
+          }
+
+          rc = csync_fnmatch(ctx->excludes->vector[i], bname, 0);
+          free(bname);
+          if (rc == 0) {
+              return 1;
+          }
       }
-      if( bname && csync_fnmatch(ctx->excludes->vector[i], bname, 0) == 0) {
-          return 1;
-      }
-    }
-    SAFE_FREE(bname);
   }
   return 0;
 }
