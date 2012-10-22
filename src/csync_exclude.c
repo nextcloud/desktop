@@ -142,6 +142,21 @@ int csync_excluded(CSYNC *ctx, const char *path) {
     }
   }
 
+  rc = csync_fnmatch(".csync_journal.db*", path, 0);
+  if (rc == 0) {
+      return 1;
+  }
+
+  bname = c_basename(path);
+  if (bname == NULL) {
+      return 0;
+  }
+  rc = csync_fnmatch(".csync_journal.db*", bname, 0);
+  SAFE_FREE(bname);
+  if (rc == 0) {
+      return 1;
+  }
+
   if (ctx->excludes == NULL) {
     return 0;
   }
