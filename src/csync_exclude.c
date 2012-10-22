@@ -163,19 +163,15 @@ int csync_excluded(CSYNC *ctx, const char *path) {
       goto out;
   }
 
-  if (ctx->excludes->count) {
-      for (i = 0; i < ctx->excludes->count; i++) {
-          rc = csync_fnmatch(ctx->excludes->vector[i], path, 0);
-          if (rc == 0) {
-              match = 1;
-              goto out;
-          }
+  for (i = 0; match == 0 && i < ctx->excludes->count; i++) {
+      rc = csync_fnmatch(ctx->excludes->vector[i], path, 0);
+      if (rc == 0) {
+          match = 1;
+      }
 
-          rc = csync_fnmatch(ctx->excludes->vector[i], bname, 0);
-          if (rc == 0) {
-              match = 1;
-              goto out;
-          }
+      rc = csync_fnmatch(ctx->excludes->vector[i], bname, 0);
+      if (rc == 0) {
+          match = 1;
       }
   }
 
