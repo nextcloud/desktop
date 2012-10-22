@@ -296,7 +296,6 @@ out:
 
 /* Normalize the uri to <host>/<path> */
 uint64_t csync_create_statedb_hash(CSYNC *ctx) {
-  char *p = NULL;
   char *host = NULL;
   char *path = NULL;
   char name[PATH_MAX] = {0};
@@ -308,12 +307,8 @@ uint64_t csync_create_statedb_hash(CSYNC *ctx) {
     return 0;
   }
 
-  if (host && (p = strchr(host, '.'))) {
-    *p = '\0';
-  }
-
   /* len + 1 for \0 */
-  snprintf(name, PATH_MAX, "%s%s", host ? host : "", path);
+  snprintf(name, sizeof(name), "%s:%s%s", ctx->local.uri, host ? host : "", path);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO,
       "Normalized path for the statedb hash: %s", name);
