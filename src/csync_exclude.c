@@ -121,7 +121,7 @@ void csync_exclude_destroy(CSYNC *ctx) {
 int csync_excluded(CSYNC *ctx, const char *path) {
   size_t i;
   const char *p;
-  const char *bname = NULL;
+  char *bname;
 
   if (! ctx->options.unix_extensions) {
     for (p = path; *p; p++) {
