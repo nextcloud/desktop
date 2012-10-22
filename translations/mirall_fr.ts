@@ -1728,7 +1728,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
         <source>Check if you want to continue via SSL and trust the shown certificates.</source>
-        <translation type="unfinished"/>
+        <translation>Vérifiez si vous souhaiter continuer via SSL en faisant confiance aux certificats suivants.</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>

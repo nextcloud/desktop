@@ -93,7 +93,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Obrazac</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="20"/>
@@ -236,7 +236,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="387"/>
         <source>create</source>
-        <translation type="unfinished"/>
+        <translation>kreiraj</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="177"/>
@@ -330,7 +330,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="356"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Izlaz</translation>
     </message>
     <message>
         <source>open folder %1</source>
@@ -647,7 +647,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="381"/>
         <source>mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>mojadomena.hr</translation>
     </message>
 </context>
 <context>
@@ -812,7 +812,7 @@ Please write a bug report.</source>
         <location filename="../src/mirall/logbrowser.cpp" line="206"/>
         <location filename="../src/mirall/logbrowser.cpp" line="263"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Greška</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="207"/>
@@ -848,7 +848,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="337"/>
         <source>ftp.mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>ftp.mojadomena.hr</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="338"/>
@@ -1087,7 +1087,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="236"/>
         <source>http://owncloud.mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>http://owncloud.mojadomena.hr</translation>
     </message>
 </context>
 <context>
@@ -1342,7 +1342,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="98"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Lozinka:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="115"/>
@@ -1363,7 +1363,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Obrazac</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="29"/>
@@ -1413,7 +1413,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Obrazac</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="20"/>
@@ -1671,7 +1671,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="116"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Lozinka</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="142"/>
@@ -1694,7 +1694,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Obrazac</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
@@ -1704,7 +1704,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>
         <source>SSL Connection</source>
-        <translation type="unfinished"/>
+        <translation>SSL veza</translation>
     </message>
 </context>
 <context>

@@ -1762,7 +1762,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="132"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Փակել</translation>
     </message>
 </context>
 </TS>

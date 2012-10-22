@@ -656,7 +656,7 @@ Prosím napíšte chybové hlásenie.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="381"/>
         <source>mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>mojadomena.org</translation>
     </message>
 </context>
 <context>
@@ -821,7 +821,7 @@ Prosím napíšte chybové hlásenie.</translation>
         <location filename="../src/mirall/logbrowser.cpp" line="206"/>
         <location filename="../src/mirall/logbrowser.cpp" line="263"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Chyba</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="207"/>
@@ -844,12 +844,12 @@ Prosím napíšte chybové hlásenie.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="291"/>
         <source>john</source>
-        <translation type="unfinished"/>
+        <translation>ján</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="292"/>
         <source>secret</source>
-        <translation type="unfinished"/>
+        <translation>tajné</translation>
     </message>
 </context>
 <context>
@@ -857,17 +857,17 @@ Prosím napíšte chybové hlásenie.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="337"/>
         <source>ftp.mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>ftp.mojadomena.org</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="338"/>
         <source>john</source>
-        <translation type="unfinished"/>
+        <translation>ján</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="339"/>
         <source>secret</source>
-        <translation type="unfinished"/>
+        <translation>tajné</translation>
     </message>
 </context>
 <context>
@@ -885,12 +885,12 @@ Prosím napíšte chybové hlásenie.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="103"/>
         <source>john</source>
-        <translation type="unfinished"/>
+        <translation>ján</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="104"/>
         <source>secret</source>
-        <translation type="unfinished"/>
+        <translation>tajné</translation>
     </message>
 </context>
 <context>
@@ -1097,7 +1097,7 @@ Inštalácia nemôže pokračovať.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="236"/>
         <source>http://owncloud.mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>http://owncloud.mojadomena.org</translation>
     </message>
 </context>
 <context>
@@ -1427,7 +1427,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formulár</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="20"/>
@@ -1489,7 +1489,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/owncloudsetuppage.ui" line="129"/>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="156"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>TextLabel</translation>
     </message>
 </context>
 <context>
@@ -1621,32 +1621,32 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/theme.cpp" line="42"/>
         <location filename="../src/mirall/theme.cpp" line="60"/>
         <source>Status undefined</source>
-        <translation type="unfinished"/>
+        <translation>Nedefinovaný status</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="45"/>
         <source>Waiting to start sync</source>
-        <translation type="unfinished"/>
+        <translation>Čakanie na začiatok synchronizácie</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="48"/>
         <source>Sync is running</source>
-        <translation type="unfinished"/>
+        <translation>Prebieha synchronizácia</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="51"/>
         <source>Sync Success</source>
-        <translation type="unfinished"/>
+        <translation>Úspešná synchronizácia</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="54"/>
         <source>Sync Error - Click info button for details.</source>
-        <translation type="unfinished"/>
+        <translation>Chyba synchronizácie - Kliknite na informačné tlačidlo pre detaily.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="57"/>
         <source>Setup Error</source>
-        <translation type="unfinished"/>
+        <translation>Chyba inštalácie</translation>
     </message>
 </context>
 <context>
@@ -1691,7 +1691,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="116"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Heslo</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="142"/>
@@ -1714,7 +1714,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formulár</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
@@ -1724,7 +1724,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>
         <source>SSL Connection</source>
-        <translation type="unfinished"/>
+        <translation>Šifrované (SSL) spojenie</translation>
     </message>
 </context>
 <context>

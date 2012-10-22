@@ -849,7 +849,7 @@ Por favor reporte o erro - escreva um bug report</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="292"/>
         <source>secret</source>
-        <translation type="unfinished"/>
+        <translation>segredo</translation>
     </message>
 </context>
 <context>
@@ -867,7 +867,7 @@ Por favor reporte o erro - escreva um bug report</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="339"/>
         <source>secret</source>
-        <translation type="unfinished"/>
+        <translation>segredo</translation>
     </message>
 </context>
 <context>
@@ -890,7 +890,7 @@ Por favor reporte o erro - escreva um bug report</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="104"/>
         <source>secret</source>
-        <translation type="unfinished"/>
+        <translation>segredo</translation>
     </message>
 </context>
 <context>
@@ -1427,7 +1427,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formulário</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="20"/>
@@ -1489,7 +1489,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/owncloudsetuppage.ui" line="129"/>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="156"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>TextLabel</translation>
     </message>
 </context>
 <context>
@@ -1621,7 +1621,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/theme.cpp" line="42"/>
         <location filename="../src/mirall/theme.cpp" line="60"/>
         <source>Status undefined</source>
-        <translation type="unfinished"/>
+        <translation>Estado indefinido</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="45"/>
@@ -1631,12 +1631,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/theme.cpp" line="48"/>
         <source>Sync is running</source>
-        <translation type="unfinished"/>
+        <translation>A sincronização está a decorrer</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="51"/>
         <source>Sync Success</source>
-        <translation type="unfinished"/>
+        <translation>A sincronização foi efectuada com sucesso</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="54"/>
@@ -1646,7 +1646,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/theme.cpp" line="57"/>
         <source>Setup Error</source>
-        <translation type="unfinished"/>
+        <translation>Erro na configuração</translation>
     </message>
 </context>
 <context>
@@ -1691,17 +1691,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="116"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Palavra-passe</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="142"/>
         <source>Port</source>
-        <translation type="unfinished"/>
+        <translation>Porto</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="149"/>
         <source>Host</source>
-        <translation type="unfinished"/>
+        <translation>Anfitrião</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="172"/>
@@ -1714,7 +1714,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formulário</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
@@ -1724,7 +1724,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>
         <source>SSL Connection</source>
-        <translation type="unfinished"/>
+        <translation>Ligação SSL</translation>
     </message>
 </context>
 <context>
