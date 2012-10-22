@@ -123,6 +123,7 @@ int csync_excluded(CSYNC *ctx, const char *path) {
   const char *p;
   char *bname;
   int rc;
+  int match = 0;
 
   if (! ctx->options.unix_extensions) {
     for (p = path; *p; p++) {
@@ -151,35 +152,35 @@ int csync_excluded(CSYNC *ctx, const char *path) {
   if (bname == NULL) {
       return 0;
   }
+
   rc = csync_fnmatch(".csync_journal.db*", bname, 0);
-  SAFE_FREE(bname);
   if (rc == 0) {
-      return 1;
+      match = 1;
+      goto out;
   }
 
   if (ctx->excludes == NULL) {
-    return 0;
+      goto out;
   }
 
   if (ctx->excludes->count) {
       for (i = 0; i < ctx->excludes->count; i++) {
           rc = csync_fnmatch(ctx->excludes->vector[i], path, 0);
           if (rc == 0) {
-              return 1;
-          }
-
-          bname = c_basename(path);
-          if (bname == NULL) {
-              return 0;
+              match = 1;
+              goto out;
           }
 
           rc = csync_fnmatch(ctx->excludes->vector[i], bname, 0);
-          free(bname);
           if (rc == 0) {
-              return 1;
+              match = 1;
+              goto out;
           }
       }
   }
-  return 0;
+
+out:
+  free(bname);
+  return match;
 }
 
