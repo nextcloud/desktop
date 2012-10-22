@@ -246,14 +246,12 @@ int csync_init(CSYNC *ctx) {
 
   /* create/load statedb */
   if (! csync_is_statedb_disabled(ctx)) {
-    uint64_t h = csync_create_statedb_hash(ctx);
-    if (asprintf(&ctx->statedb.file, "%s/csync_statedb_%llu.db",
-          ctx->options.config_dir, (long long unsigned int) h) < 0) {
-      rc = -1;
-      goto out;
+    rc = asprintf(&ctx->statedb.file, "%s/.csync_journal.db",
+                  ctx->local.uri);
+    if (rc < 0) {
+        goto out;
     }
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Remote replica: %s", ctx->remote.uri);
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Statedb: %s", ctx->statedb.file);
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Journal: %s", ctx->statedb.file);
 
     if (csync_statedb_load(ctx, ctx->statedb.file) < 0) {
       rc = -1;
