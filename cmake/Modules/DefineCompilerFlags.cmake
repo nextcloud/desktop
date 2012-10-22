@@ -7,7 +7,8 @@ if (UNIX AND NOT WIN32)
     #
     # Define GNUCC compiler flags
     #
-    if (${CMAKE_C_COMPILER_ID} MATCHES GNU)
+    if (${CMAKE_C_COMPILER_ID} MATCHES "(GNU|Clang)")
+
         # add -Wconversion ?
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -pedantic -pedantic-errors")
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wshadow -Wmissing-prototypes -Wdeclaration-after-statement")
@@ -29,7 +30,7 @@ if (UNIX AND NOT WIN32)
         if (WITH_FORTIFY_SOURCE)
             set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_FORTIFY_SOURCE=2")
         endif (WITH_FORTIFY_SOURCE)
-    endif (${CMAKE_C_COMPILER_ID} MATCHES GNU)
+    endif (${CMAKE_C_COMPILER_ID} MATCHES "(GNU|Clang)")
 
     #
     # Check for large filesystem support
