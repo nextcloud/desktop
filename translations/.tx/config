@@ -1,5 +1,6 @@
 [main]
 host = https://www.transifex.net
+minimum_perc = 70
 
 [owncloud.mirall]
 host = https://www.transifex.net
