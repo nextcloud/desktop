@@ -91,6 +91,13 @@ static void check_csync_excluded(void **state)
     assert_int_equal(rc, 1);
     rc = csync_excluded(csync, "foo/bar/.beagle");
     assert_int_equal(rc, 1);
+
+    rc = csync_excluded(csync, ".csync_journal.db");
+    assert_int_equal(rc, 1);
+    rc = csync_excluded(csync, ".csync_journal.db.ctmp");
+    assert_int_equal(rc, 1);
+    rc = csync_excluded(csync, "subdir/.csync_journal.db");
+    assert_int_equal(rc, 1);
 }
 
 int torture_run_tests(void)
