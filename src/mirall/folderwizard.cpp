@@ -459,7 +459,8 @@ FolderWizard::FolderWizard( QWidget *parent )
 {
     _folderWizardSourcePage = new FolderWizardSourcePage();
     setPage(Page_Source,   _folderWizardSourcePage );
-    setPage(Page_Target,   new FolderWizardTargetPage());
+    if (!Theme::instance()->singleSyncFolder())
+        setPage(Page_Target,   new FolderWizardTargetPage());
     // setPage(Page_Network,  new FolderWizardNetworkPage());
     // setPage(Page_Owncloud, new FolderWizardOwncloudPage());
     setWindowTitle( tr( "%1 Folder Wizard" ).arg( Theme::instance()->appName() ) );

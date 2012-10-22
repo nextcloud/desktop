@@ -575,10 +575,11 @@ void Application::slotAddFolder()
         targetPath  = _folderWizard->field(QLatin1String("targetURLFolder")).toString();
         onlyOnline  = _folderWizard->field(QLatin1String("onlyOnline?")).toBool();
         onlyThisLAN = _folderWizard->field(QLatin1String("onlyThisLAN?")).toBool();
-    } else if( _folderWizard->field(QLatin1String("OC?")).toBool()) {
+    } else if( _folderWizard->field(QLatin1String("OC?")).toBool() ||
+               Theme::instance()->singleSyncFolder()) {
         // setup a ownCloud folder
         backend    = QLatin1String("owncloud");
-        targetPath = _folderWizard->field(QLatin1String("targetOCFolder")).toString();
+        targetPath = _folderWizard->field(QLatin1String("targetOCFolder")).toString(); //empty in single folder mode
     } else {
       qWarning() << "* Folder not local and note remote?";
       goodData = false;
