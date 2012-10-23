@@ -51,6 +51,7 @@ QString SslErrorDialog::styleSheet() const
                 "#ca_error p { margin-top: 2px; margin-bottom:2px; }"
                 "#ccert { margin-left: 5px; }"
                 "#issuer { margin-left: 5px; }"
+                "tt { font-size: small; }"
                 );
 
     return style;
@@ -118,6 +119,18 @@ bool SslErrorDialog::setErrorList( QList<QSslError> errors )
     return false;
 }
 
+static QByteArray formatHash(const QByteArray &fmhash)
+{
+    QByteArray hash;
+    int steps = fmhash.length()/2;
+    for (int i = 0; i < steps; i++) {
+        hash.append(fmhash[i]);
+        hash.append(fmhash[i+1]);
+        hash.append(' ');
+    }
+    return hash;
+}
+
 QString SslErrorDialog::certDiv( QSslCertificate cert ) const
 {
     QString msg;
@@ -126,12 +139,27 @@ QString SslErrorDialog::certDiv( QSslCertificate cert ) const
 
     msg += QL("<div id=\"ccert\">");
     QStringList li;
-    li << tr("Organization: %1").arg( cert.subjectInfo( QSslCertificate::Organization) );
-    li << tr("Unit: %1").arg( cert.subjectInfo( QSslCertificate::OrganizationalUnitName) );
-    li << tr("Country: %1").arg(cert.subjectInfo( QSslCertificate::CountryName));
+
+    QString org = cert.subjectInfo( QSslCertificate::Organization);
+    QString unit = cert.subjectInfo( QSslCertificate::OrganizationalUnitName);
+    QString country = cert.subjectInfo( QSslCertificate::CountryName);
+    if (unit.isEmpty()) unit = tr("&lt;not specified&gt;");
+    if (org.isEmpty()) org = tr("&lt;not specified&gt;");
+    if (country.isEmpty()) country = tr("&lt;not specified&gt;");
+    li << tr("Organization: %1").arg(org);
+    li << tr("Unit: %1").arg(unit);
+    li << tr("Country: %1").arg(country);
     msg += QL("<p>") + li.join(QL("<br/>")) + QL("</p>");
 
     msg += QL("<p>");
+
+    QString md5sum = QString::fromAscii(formatHash(cert.digest(QCryptographicHash::Md5).toHex()));
+    QString sha1sum =  QString::fromAscii(formatHash(cert.digest(QCryptographicHash::Sha1).toHex()));
+    if (!md5sum.isEmpty())
+        msg += tr("Fingerprint (MD5): <tt>%1</tt>").arg(md5sum) + QL("<br/>");
+    if (!sha1sum.isEmpty())
+        msg += tr("Fingerprint (SHA1): <tt>%1</tt>").arg(sha1sum) + QL("<br/>");
+    msg += QL("<br/>");
     msg += tr("Effective Date: %1").arg( cert.effectiveDate().toString()) + QL("<br/>");
     msg += tr("Expiry Date: %1").arg( cert.expiryDate().toString()) + QL("</p>");
 
