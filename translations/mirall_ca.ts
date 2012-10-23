@@ -394,12 +394,12 @@ p, li { white-space: pre-wrap; }
         <translation>Fitxers gestionats:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="652"/>
+        <location filename="../src/mirall/application.cpp" line="653"/>
         <source>About %1</source>
         <translation>Sobre %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="653"/>
+        <location filename="../src/mirall/application.cpp" line="654"/>
         <source>%1 client, version %2
 
 Copyright 2012, the ownCloud developers
@@ -416,113 +416,113 @@ Llicència sota GPL v2
 El programa es proporciona TAL QUAL SENSE CAP TIPUS GARANTIA, INCLOENT LA GARANTIA DEL DISSENY, LA COMERCIALITZACIÓ I LA APTITUD PER A PROPÒSITS DETERMINATS</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="666"/>
+        <location filename="../src/mirall/application.cpp" line="667"/>
         <source>Confirm Folder Remove</source>
         <translation>Confirma l&apos;eliminació de la carpeta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="667"/>
+        <location filename="../src/mirall/application.cpp" line="668"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>Esteu segurs d&apos;eliminar la carpeta de pujada &lt;i&gt;%1&lt;/i&gt;?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="701"/>
+        <location filename="../src/mirall/application.cpp" line="702"/>
         <source>Undefined Folder State</source>
         <translation>Estat de la carpeta indefinit</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="704"/>
+        <location filename="../src/mirall/application.cpp" line="705"/>
         <source>The folder waits to start syncing.</source>
         <translation>La carpeta espera per començar amb la sincronització</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="707"/>
-        <location filename="../src/mirall/application.cpp" line="878"/>
+        <location filename="../src/mirall/application.cpp" line="708"/>
+        <location filename="../src/mirall/application.cpp" line="879"/>
         <source>Sync is running.</source>
         <translation>S&apos;està sincronitzant.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="710"/>
-        <location filename="../src/mirall/application.cpp" line="883"/>
+        <location filename="../src/mirall/application.cpp" line="711"/>
+        <location filename="../src/mirall/application.cpp" line="884"/>
         <source>Last Sync was successful.</source>
         <translation>La darrera sincronització va ser correcta.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="713"/>
-        <location filename="../src/mirall/application.cpp" line="889"/>
+        <location filename="../src/mirall/application.cpp" line="714"/>
+        <location filename="../src/mirall/application.cpp" line="890"/>
         <source>Syncing Error.</source>
         <translation>Error de sincronització.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="716"/>
-        <location filename="../src/mirall/application.cpp" line="895"/>
+        <location filename="../src/mirall/application.cpp" line="717"/>
+        <location filename="../src/mirall/application.cpp" line="896"/>
         <source>Setup Error.</source>
         <translation>Error de configuració.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="719"/>
-        <location filename="../src/mirall/application.cpp" line="898"/>
+        <location filename="../src/mirall/application.cpp" line="720"/>
+        <location filename="../src/mirall/application.cpp" line="899"/>
         <source>Undefined Error State.</source>
         <translation>Estat d&apos;error no definit.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="723"/>
+        <location filename="../src/mirall/application.cpp" line="724"/>
         <source>Folder information</source>
         <translation>Informació de la carpeta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="738"/>
+        <location filename="../src/mirall/application.cpp" line="739"/>
         <source>Unknown</source>
         <translation>Desconegut</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="740"/>
+        <location filename="../src/mirall/application.cpp" line="741"/>
         <source>Changed files:
 </source>
         <translation>Fitxers mb canvis:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="742"/>
+        <location filename="../src/mirall/application.cpp" line="743"/>
         <source>Added files:
 </source>
         <translation>Fitxers afegits:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="744"/>
+        <location filename="../src/mirall/application.cpp" line="745"/>
         <source>New files in the server, or files deleted locally:
 </source>
         <translation>Fitxers nous en el servidor, o fitxers eliminats localment:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="770"/>
+        <location filename="../src/mirall/application.cpp" line="771"/>
         <source>Sync Running</source>
         <translation>S&apos;està sincronitzant</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="771"/>
+        <location filename="../src/mirall/application.cpp" line="772"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>S&apos;està sincronitzant.&lt;br/&gt;Voleu parar-la?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="871"/>
+        <location filename="../src/mirall/application.cpp" line="872"/>
         <source>Undefined State.</source>
         <translation>Estat indefinit.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="874"/>
+        <location filename="../src/mirall/application.cpp" line="875"/>
         <source>Waits to start syncing.</source>
         <translation>Espera per començar la sincronització.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="903"/>
+        <location filename="../src/mirall/application.cpp" line="904"/>
         <source>Sync is paused.</source>
         <translation>La sincronització està en pausa.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="919"/>
+        <location filename="../src/mirall/application.cpp" line="920"/>
         <source>No sync folders configured.</source>
         <translation>No hi ha fitxers de sincronització configurats</translation>
     </message>
@@ -666,7 +666,7 @@ Comuniqueu l&apos;errada.</translation>
 <context>
     <name>Mirall::FolderWizard</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="465"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="466"/>
         <source>%1 Folder Wizard</source>
         <translation>Assistent de carpeta %1</translation>
     </message>
@@ -871,12 +871,12 @@ Comuniqueu l&apos;errada.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="80"/>
         <source>Create the %1 Connection</source>
-        <translation type="unfinished"/>
+        <translation>Crea la connexió %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="81"/>
         <source>Enter Server Name and Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Escriviu el nom del servidor i les credencials</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="103"/>
@@ -1063,17 +1063,17 @@ No s&apos;ha pogut configurar</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="60"/>
         <source>Welcome to %1</source>
-        <translation type="unfinished"/>
+        <translation>Benvingut a %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="61"/>
         <source>Set up your server connection</source>
-        <translation type="unfinished"/>
+        <translation>Configureu la connexió amb el servidor</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="69"/>
         <source>&lt;p&gt;In order to connect to your %1 server, you need to provide the server address as well as your credentials.&lt;/p&gt;&lt;p&gt;This wizard will guide you through the process.&lt;p&gt;&lt;p&gt;If you have not received this information, please contact your %1 hosting provider.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Per tal de connectar amb el servidor %1, heu de subministrar l&apos;adreça del servidor i les credencials.&lt;/p&gt;&lt;p&gt;Aquest assistent us guiarà a través del procés.&lt;p&gt;&lt;p&gt;Si no heu rebut aquesta informació, contacteu amb el proveïdor %1 d&apos;hospedatge.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>

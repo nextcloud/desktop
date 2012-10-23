@@ -404,12 +404,12 @@ p, li { white-space: pre-wrap; }
         <translation>管理フォルダ:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="652"/>
+        <location filename="../src/mirall/application.cpp" line="653"/>
         <source>About %1</source>
         <translation>%1 について</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="653"/>
+        <location filename="../src/mirall/application.cpp" line="654"/>
         <source>%1 client, version %2
 
 Copyright 2012, the ownCloud developers
@@ -426,113 +426,113 @@ Copyright 2012, ownCloud 開発チーム
 The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN,MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="666"/>
+        <location filename="../src/mirall/application.cpp" line="667"/>
         <source>Confirm Folder Remove</source>
         <translation>フォルダの削除を確認</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="667"/>
+        <location filename="../src/mirall/application.cpp" line="668"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>本当にアップロードフォルダ &lt;i&gt;%1&lt;/i&gt; を削除してよろしいですか？</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="701"/>
+        <location filename="../src/mirall/application.cpp" line="702"/>
         <source>Undefined Folder State</source>
         <translation>未定義のフォルダの状態</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="704"/>
+        <location filename="../src/mirall/application.cpp" line="705"/>
         <source>The folder waits to start syncing.</source>
         <translation>フォルダは同期開始の待機中です。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="707"/>
-        <location filename="../src/mirall/application.cpp" line="878"/>
+        <location filename="../src/mirall/application.cpp" line="708"/>
+        <location filename="../src/mirall/application.cpp" line="879"/>
         <source>Sync is running.</source>
         <translation>同期を実行中です。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="710"/>
-        <location filename="../src/mirall/application.cpp" line="883"/>
+        <location filename="../src/mirall/application.cpp" line="711"/>
+        <location filename="../src/mirall/application.cpp" line="884"/>
         <source>Last Sync was successful.</source>
         <translation>最後の同期は成功しました。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="713"/>
-        <location filename="../src/mirall/application.cpp" line="889"/>
+        <location filename="../src/mirall/application.cpp" line="714"/>
+        <location filename="../src/mirall/application.cpp" line="890"/>
         <source>Syncing Error.</source>
         <translation>同期エラー。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="716"/>
-        <location filename="../src/mirall/application.cpp" line="895"/>
+        <location filename="../src/mirall/application.cpp" line="717"/>
+        <location filename="../src/mirall/application.cpp" line="896"/>
         <source>Setup Error.</source>
         <translation>設定エラー。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="719"/>
-        <location filename="../src/mirall/application.cpp" line="898"/>
+        <location filename="../src/mirall/application.cpp" line="720"/>
+        <location filename="../src/mirall/application.cpp" line="899"/>
         <source>Undefined Error State.</source>
         <translation>未定義のエラー状態。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="723"/>
+        <location filename="../src/mirall/application.cpp" line="724"/>
         <source>Folder information</source>
         <translation>フォルダー情報</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="738"/>
+        <location filename="../src/mirall/application.cpp" line="739"/>
         <source>Unknown</source>
         <translation>不明</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="740"/>
+        <location filename="../src/mirall/application.cpp" line="741"/>
         <source>Changed files:
 </source>
         <translation>変更されたファイル:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="742"/>
+        <location filename="../src/mirall/application.cpp" line="743"/>
         <source>Added files:
 </source>
         <translation>追加されたファイル:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="744"/>
+        <location filename="../src/mirall/application.cpp" line="745"/>
         <source>New files in the server, or files deleted locally:
 </source>
         <translation>サーバー上の新規ファイル、もしくはローカルのファイル削除:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="770"/>
+        <location filename="../src/mirall/application.cpp" line="771"/>
         <source>Sync Running</source>
         <translation>同期実行中</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="771"/>
+        <location filename="../src/mirall/application.cpp" line="772"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>同期操作が実行中です。&lt;br/&gt;終了してもよろしいですか？</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="871"/>
+        <location filename="../src/mirall/application.cpp" line="872"/>
         <source>Undefined State.</source>
         <translation>未定義の状態。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="874"/>
+        <location filename="../src/mirall/application.cpp" line="875"/>
         <source>Waits to start syncing.</source>
         <translation>同期開始を待機中</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="903"/>
+        <location filename="../src/mirall/application.cpp" line="904"/>
         <source>Sync is paused.</source>
         <translation>同期を一時停止しました。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="919"/>
+        <location filename="../src/mirall/application.cpp" line="920"/>
         <source>No sync folders configured.</source>
         <translation>同期フォルダが設定されていません。</translation>
     </message>
@@ -676,7 +676,7 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::FolderWizard</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="465"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="466"/>
         <source>%1 Folder Wizard</source>
         <translation>%1 フォルダウィザード</translation>
     </message>
