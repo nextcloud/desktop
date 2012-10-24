@@ -172,6 +172,14 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>leUrl</tabstop>
+  <tabstop>cbSecureConnect</tabstop>
+  <tabstop>cbConnectOC</tabstop>
+  <tabstop>leUsername</tabstop>
+  <tabstop>lePassword</tabstop>
+  <tabstop>cbNoPasswordStore</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
