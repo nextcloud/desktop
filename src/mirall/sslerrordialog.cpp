@@ -140,9 +140,9 @@ QString SslErrorDialog::certDiv( QSslCertificate cert ) const
     msg += QL("<div id=\"ccert\">");
     QStringList li;
 
-    QString org = cert.subjectInfo( QSslCertificate::Organization);
-    QString unit = cert.subjectInfo( QSslCertificate::OrganizationalUnitName);
-    QString country = cert.subjectInfo( QSslCertificate::CountryName);
+    QString org = Qt::escape(cert.subjectInfo( QSslCertificate::Organization));
+    QString unit = Qt::escape(cert.subjectInfo( QSslCertificate::OrganizationalUnitName));
+    QString country = Qt::escape(cert.subjectInfo( QSslCertificate::CountryName));
     if (unit.isEmpty()) unit = tr("&lt;not specified&gt;");
     if (org.isEmpty()) org = tr("&lt;not specified&gt;");
     if (country.isEmpty()) country = tr("&lt;not specified&gt;");
@@ -163,12 +163,12 @@ QString SslErrorDialog::certDiv( QSslCertificate cert ) const
 
     msg += QL("</div>" );
 
-    msg += QL("<h3>") + tr("Issuer: %1").arg( cert.issuerInfo( QSslCertificate::CommonName )) + QL("</h3>");
+    msg += QL("<h3>") + tr("Issuer: %1").arg(Qt::escape(cert.issuerInfo( QSslCertificate::CommonName))) + QL("</h3>");
     msg += QL("<div id=\"issuer\">");
     li.clear();
-    li << tr("Organization: %1").arg( cert.issuerInfo( QSslCertificate::Organization) );
-    li << tr("Unit: %1").arg( cert.issuerInfo( QSslCertificate::OrganizationalUnitName) );
-    li << tr("Country: %1").arg(cert.issuerInfo( QSslCertificate::CountryName));
+    li << tr("Organization: %1").arg(Qt::escape(cert.issuerInfo( QSslCertificate::Organization)));
+    li << tr("Unit: %1").arg(Qt::escape(cert.issuerInfo( QSslCertificate::OrganizationalUnitName)));
+    li << tr("Country: %1").arg(Qt::escape(cert.issuerInfo( QSslCertificate::CountryName)));
     msg += QL("<p>") + li.join(QL("<br/>")) + QL("</p>");
     msg += QL("</div>" );
     msg += QL("</div>" );
