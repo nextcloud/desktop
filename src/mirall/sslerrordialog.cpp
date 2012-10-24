@@ -155,10 +155,8 @@ QString SslErrorDialog::certDiv( QSslCertificate cert ) const
 
     QString md5sum = QString::fromAscii(formatHash(cert.digest(QCryptographicHash::Md5).toHex()));
     QString sha1sum =  QString::fromAscii(formatHash(cert.digest(QCryptographicHash::Sha1).toHex()));
-    if (!md5sum.isEmpty())
-        msg += tr("Fingerprint (MD5): <tt>%1</tt>").arg(md5sum) + QL("<br/>");
-    if (!sha1sum.isEmpty())
-        msg += tr("Fingerprint (SHA1): <tt>%1</tt>").arg(sha1sum) + QL("<br/>");
+    msg += tr("Fingerprint (MD5): <tt>%1</tt>").arg(md5sum) + QL("<br/>");
+    msg += tr("Fingerprint (SHA1): <tt>%1</tt>").arg(sha1sum) + QL("<br/>");
     msg += QL("<br/>");
     msg += tr("Effective Date: %1").arg( cert.effectiveDate().toString()) + QL("<br/>");
     msg += tr("Expiry Date: %1").arg( cert.expiryDate().toString()) + QL("</p>");
