@@ -1140,7 +1140,7 @@ La configurazione non può essere completata.</translation>
         <location filename="../src/mirall/sslerrordialog.cpp" line="147"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="148"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;lt;non specificato&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="149"/>
@@ -1163,12 +1163,12 @@ La configurazione non può essere completata.</translation>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="159"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Impronta digitale (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="161"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Impronta digitale (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="163"/>

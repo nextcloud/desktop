@@ -1137,7 +1137,7 @@ Instalacja nie może być wykonywana.</translation>
         <location filename="../src/mirall/sslerrordialog.cpp" line="147"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="148"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;lt;nie określono&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="149"/>
@@ -1160,12 +1160,12 @@ Instalacja nie może być wykonywana.</translation>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="159"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Skrót (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="161"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Skrót (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="163"/>

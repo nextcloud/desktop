@@ -881,12 +881,12 @@ Skriv en felrapport.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="80"/>
         <source>Create the %1 Connection</source>
-        <translation type="unfinished"/>
+        <translation>Skapa %1 anslutningen</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="81"/>
         <source>Enter Server Name and Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Ange servernamn och inloggningsuppgifter</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="103"/>
@@ -1073,17 +1073,17 @@ Inställning kan inte utföras.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="60"/>
         <source>Welcome to %1</source>
-        <translation type="unfinished"/>
+        <translation>Välkommen till %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="61"/>
         <source>Set up your server connection</source>
-        <translation type="unfinished"/>
+        <translation>Konfigurera din serveranslutning</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="69"/>
         <source>&lt;p&gt;In order to connect to your %1 server, you need to provide the server address as well as your credentials.&lt;/p&gt;&lt;p&gt;This wizard will guide you through the process.&lt;p&gt;&lt;p&gt;If you have not received this information, please contact your %1 hosting provider.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;För att kunna ansluta till din %1 server så måste du ange serverns adress samt dina inloggningsuppgifter.&lt;/p&gt;&lt;p&gt;Denna guide kommer att hjälpa dig med detta.&lt;p&gt;&lt;p&gt;Om du inte har fått dessa uppgifter, kontakta din %1 systemadministratör.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1146,7 +1146,7 @@ Inställning kan inte utföras.</translation>
         <location filename="../src/mirall/sslerrordialog.cpp" line="147"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="148"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;lt;inte angivet&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="149"/>
@@ -1169,12 +1169,12 @@ Inställning kan inte utföras.</translation>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="159"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Fingeravtryck (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="161"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Fingeravtryck (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="163"/>

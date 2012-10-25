@@ -1077,7 +1077,7 @@ Nastavení nelze provést.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="69"/>
         <source>&lt;p&gt;In order to connect to your %1 server, you need to provide the server address as well as your credentials.&lt;/p&gt;&lt;p&gt;This wizard will guide you through the process.&lt;p&gt;&lt;p&gt;If you have not received this information, please contact your %1 hosting provider.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Pro připojení k Vašemu serveru %1 musíte zadat jeho adresu a přihlašovací údaje.&lt;/p&gt;&lt;p&gt;Tento průvodce Vám s nastavením pomůže.&lt;p&gt;&lt;p&gt;Pokud tuto informaci nemáte, kontaktujte Vašeho poskytovatele %1.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1140,7 +1140,7 @@ Nastavení nelze provést.</translation>
         <location filename="../src/mirall/sslerrordialog.cpp" line="147"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="148"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;lt;nespecifikováno&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="149"/>
@@ -1163,12 +1163,12 @@ Nastavení nelze provést.</translation>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="159"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Otisk (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="161"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Otisk (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="163"/>

@@ -1146,7 +1146,7 @@ Setup can not be done.</source>
         <location filename="../src/mirall/sslerrordialog.cpp" line="147"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="148"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;lt;指定されていませんd&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="149"/>
@@ -1169,12 +1169,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="159"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="161"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="163"/>
