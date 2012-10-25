@@ -79,8 +79,8 @@ protected:
     Theme() {}
 
 private:
-    Theme(Theme const&) {}
-    Theme& operator=(Theme const&) {}
+    Theme(Theme const&);
+    Theme& operator=(Theme const&);
 
     static Theme* _instance;
 
