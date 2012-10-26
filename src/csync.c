@@ -195,7 +195,7 @@ int csync_init(CSYNC *ctx) {
     csync_log_load(log);
   } else {
 #ifndef _WIN32
-    if (c_copy(SYSCONFDIR "/csync/" CSYNC_LOG_FILE, log, 0644) == 0) {
+    if (c_copy(SYSCONFDIR "/ocsync/" CSYNC_LOG_FILE, log, 0644) == 0) {
       csync_log_load(log);
     }
 #endif
@@ -228,7 +228,7 @@ int csync_init(CSYNC *ctx) {
 
 #ifndef _WIN32
   /* load global exclude list */
-  if (asprintf(&exclude, "%s/csync/%s", SYSCONFDIR, CSYNC_EXCLUDE_FILE) < 0) {
+  if (asprintf(&exclude, "%s/ocsync/%s", SYSCONFDIR, CSYNC_EXCLUDE_FILE) < 0) {
     ctx->error_code = CSYNC_ERR_UNSPEC;
     rc = -1;
     goto out;
