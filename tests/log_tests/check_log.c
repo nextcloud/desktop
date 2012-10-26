@@ -23,7 +23,7 @@ END_TEST
 START_TEST (log_load)
 {
   char buf[256];
-  snprintf(buf, (size_t) 256 - 1, "%s/%s", SOURCEDIR, "config/csync_log.conf");
+  snprintf(buf, (size_t) 256 - 1, "%s/%s", SOURCEDIR, "config/ocsync_log.conf");
   fail_unless(csync_log_load(buf) == 0);
 }
 END_TEST
