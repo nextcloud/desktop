@@ -46,16 +46,6 @@ set(USE_INOTIFY ${INOTIFY_FOUND})
 
 configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
-
-macro(add_tests)
-foreach( loop_var ${ARGV} )
-  qt4_automoc(test${loop_var}.cpp)
-  add_executable(test${loop_var} test${loop_var}.cpp)
-  target_link_libraries(test${loop_var} ${QT_LIBRARIES} mirall_static)
-  add_test(test${loop_var} ${CMAKE_CURRENT_BINARY_DIR}/test${loop_var} --catch_system_errors=no)
-endforeach( loop_var )
-endmacro(add_tests)
-
 set(CPACK_SOURCE_IGNORE_FILES
   # hidden files
   "/\\\\..+$"
@@ -77,9 +67,6 @@ set(CPACK_SOURCE_IGNORE_FILES
 
 include(OwnCloudCPack.cmake)
 
-include(CTest)
-enable_testing()
-
 #
 # This cmake builds two targets (aka apps), mirall and owncloud. For the owncloud
 # target, OWNCLOUD_CLIENT needs to be a compile flag. It is set in src/CMakeLists.txt
@@ -95,6 +82,8 @@ set(TRANSLATIONS ${TRANS_FILES})
 
 add_subdirectory(src)
 if(UNIT_TESTING)
+    include(CTest)
+    enable_testing()
     add_subdirectory(test)
 endif(UNIT_TESTING)
 

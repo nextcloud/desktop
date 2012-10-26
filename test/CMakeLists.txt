@@ -1,6 +1,4 @@
-include_directories(${CMAKE_SOURCE_DIR}/src)
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-include(${QT_USE_FILE})
+include_directories(${CMAKE_CURRENT_LIST_DIR}/../src)
+include(owncloud_add_test.cmake)
 
-add_tests(folderwatcher unisonfolder)
+owncloud_add_test(DanimoStinkt)
