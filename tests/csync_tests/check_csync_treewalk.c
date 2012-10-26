@@ -12,10 +12,12 @@ int    file_count;
 static void setup_local(void) {
   fail_if(system("mkdir -p /tmp/check_csync1") < 0, "Setup failed");
   fail_if(system("mkdir -p /tmp/check_csync2") < 0, "Setup failed");
+  fail_if(system("mkdir -p /tmp/check_csync") < 0, "Setup failed");
   fail_if(system("echo \"This is test data\" > /tmp/check_csync1/testfile1.txt") < 0, NULL);
   fail_if(system("echo \"This is also test data\" > /tmp/check_csync1/testfile2.txt") < 0, NULL);
 
   fail_if(csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2") < 0, "Setup failed");
+  fail_if(csync_set_config_dir(csync, "/tmp/check_csync/") < 0, "Setup failed");
   fail_if(csync_init(csync) < 0, "Init failed");
   
   file_count = 0;
@@ -26,7 +28,7 @@ static void teardown_local(void) {
   fail_if(csync_destroy(csync) < 0, "Teardown failed");
   fail_if(system("rm -rf /tmp/check_csync1") < 0, "Teardown failed");
   fail_if(system("rm -rf /tmp/check_csync2") < 0, "Teardown failed");
-  
+  fail_if(system("rm -rf /tmp/check_csync") < 0, "Teardown failed"); 
   printf("********** tearing down local\n");
 }
 
@@ -37,21 +39,19 @@ static void setup_remote(void) {
   fail_if(system("echo \"This is also test data\" > /tmp/check_csync1/testfile2.txt") < 0, NULL);
 
   fail_if(csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2") < 0, "Setup failed");
+  fail_if(csync_set_config_dir(csync, "/tmp/check_csync/") < 0, "Setup failed");
   fail_if(csync_init(csync) < 0, "Init failed");
   fail_if(csync_update(csync) < 0, "Update failed");
   fail_if(csync_reconcile(csync) < 0, "Reconcile failed");
   fail_if(csync_propagate(csync) < 0, "Propagate failed");
   
   file_count = 0;
-  printf("********** setting up remote!\n");
 }
 
 static void teardown_remote(void) {
   fail_if(csync_destroy(csync) < 0, "Teardown failed");
   fail_if(system("rm -rf /tmp/check_csync1") < 0, "Teardown failed");
   fail_if(system("rm -rf /tmp/check_csync2") < 0, "Teardown failed");
-  
-  printf("********** tearing down remote\n");
 }
 
 
@@ -95,12 +95,7 @@ START_TEST (check_csync_treewalk_local_with_filter)
     fail_if(csync_walk_local_tree(csync, &visitor, 0) < 0, "Local walk needs update first");
     fail_if(file_count != 0, "Local File count not correct (without update)");
     fail_if(csync_update(csync) < 0, "Update failed");
-    
-    fail_if(csync_walk_local_tree(csync, &visitor, CSYNC_INSTRUCTION_EVAL) < 0, "Local walk");
-    fail_if(file_count != 2, "Local File count filtered (EVAL) not correct: %d", file_count);
-    file_count = 0;
-    fail_if(csync_walk_local_tree(csync, &visitor, CSYNC_INSTRUCTION_EVAL | CSYNC_INSTRUCTION_REMOVE) < 0, "Local walk");
-    fail_if(file_count != 2, "Local File count filtered (EVAL|REMOVE) not correct: %d", file_count);
+
     file_count = 0;
     fail_if(csync_walk_local_tree(csync, &visitor, CSYNC_INSTRUCTION_RENAME) < 0, "Local walk");
     fail_if(file_count != 0, "Local File count filtered (RENAME) not correct");

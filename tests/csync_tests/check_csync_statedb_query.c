@@ -12,6 +12,8 @@ const char *testdb = (char *) "/tmp/check_csync1/test.db";
 const char *testtmpdb = (char *) "/tmp/check_csync1/test.db.ctmp";
 
 static void setup(void) {
+  fail_if(system("rm -rf /tmp/check_csync"));
+
   fail_if(system("rm -rf /tmp/check_csync1") < 0, "Setup failed");
   fail_if(system("rm -rf /tmp/check_csync2") < 0, "Setup failed");
   fail_if(system("mkdir -p /tmp/check_csync1") < 0, "Setup failed");
