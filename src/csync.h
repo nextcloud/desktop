@@ -115,6 +115,13 @@ enum csync_instructions_e {
   CSYNC_INSTRUCTION_UPDATED    = 0x00000400
 };
 
+enum csync_ftw_type_e {
+    CSYNC_FTW_TYPE_FILE,
+    CSYNC_FTW_TYPE_SLINK,
+    CSYNC_FTW_TYPE_DIR
+};
+
+
 /**
  * CSync File Traversal structure.
  *
@@ -139,8 +146,10 @@ struct csync_tree_walk_file_s {
     gid_t       gid;
 #endif
     mode_t      mode;
-    int         type;
+    enum csync_ftw_type_e     type;
     enum csync_instructions_e instruction;
+
+    const char *rename_path;
 };
 typedef struct csync_tree_walk_file_s TREE_WALK_FILE;
 

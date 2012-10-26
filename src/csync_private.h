@@ -142,11 +142,6 @@ struct csync_s {
   int status;
 };
 
-enum csync_ftw_type_e {
-  CSYNC_FTW_TYPE_FILE,
-  CSYNC_FTW_TYPE_SLINK,
-  CSYNC_FTW_TYPE_DIR
-};
 
 #ifdef _MSC_VER
 #pragma pack(1)

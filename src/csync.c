@@ -578,6 +578,7 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
             trav.mode =   cur->mode;
             trav.type =   cur->type;
             trav.instruction = cur->instruction;
+            trav.rename_path = cur->destpath;
 
             return (*visitor)(&trav, twctx->userdata);
         }
