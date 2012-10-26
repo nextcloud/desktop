@@ -350,7 +350,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/application.cpp" line="223"/>
         <source>&lt;p&gt;The configured server for this client is too old.&lt;/p&gt;&lt;p&gt;Please update to the latest %1 server and restart the client.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Le serveur configuré pour ce client est obsolète.&lt;/p&gt;&lt;p&gt;Veuillez le mettre à jour dans sa dernière version %1 puis relancez le client.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="238"/>
@@ -366,7 +366,7 @@ p, li { white-space: pre-wrap; }⏎
         <location filename="../src/mirall/application.cpp" line="271"/>
         <location filename="../src/mirall/application.cpp" line="279"/>
         <source>No %1 Connection</source>
-        <translation type="unfinished"/>
+        <translation>Pas de connexion %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="272"/>
@@ -376,7 +376,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/application.cpp" line="280"/>
         <source>&lt;p&gt;Either your user name or your password are not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Votre nom d&apos;utilisateur ou votre mot de passe ownCloud est incorrect.&lt;/p&gt;&lt;p&gt;Merci de les corriger via la boite de dialogue accessible depuis l&apos;icône de la zone de notifications !&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="292"/>
@@ -878,7 +878,7 @@ Veuillez soumettre un rapport de bug.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="81"/>
         <source>Enter Server Name and Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Veuillez saisir le nom du serveur ainsi que les identifiants de connexion</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="103"/>
@@ -1070,7 +1070,7 @@ L&apos;installation ne peut pas continuer.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="61"/>
         <source>Set up your server connection</source>
-        <translation type="unfinished"/>
+        <translation>Configurez la connexion à votre serveur</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="69"/>
@@ -1161,12 +1161,12 @@ L&apos;installation ne peut pas continuer.</translation>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="159"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Empreinte (MD5) : &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="161"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Empreinte (SHA1) : &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="163"/>
