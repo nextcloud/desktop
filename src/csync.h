@@ -66,7 +66,7 @@ extern "C" {
 #define CSYNC_CONF_DIR ".ocsync"
 #define CSYNC_CONF_FILE "ocsync.conf"
 #define CSYNC_LOG_FILE "ocsync_log.conf"
-#define CSYNC_EXCLUDE_FILE "csync_exclude.conf"
+#define CSYNC_EXCLUDE_FILE "ocsync_exclude.conf"
 #define CSYNC_LOCK_FILE "lock"
 
 typedef int (*csync_auth_callback) (const char *prompt, char *buf, size_t len,
