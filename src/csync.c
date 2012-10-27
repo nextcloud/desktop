@@ -512,7 +512,7 @@ static int _csync_treewalk_visitor( void *obj, void *data ) {
     cur = (csync_file_stat_t *) obj;
     ctx = (CSYNC *) data;
 
-    twctx = (_csync_treewalk_context*) ctx->userdata;
+    twctx = (_csync_treewalk_context*) ctx->callbacks.userdata;
     if (twctx == NULL) {
       return -1;
     }
@@ -553,15 +553,15 @@ static int _csync_walk_tree(CSYNC *ctx, c_rbtree_t *tree, csync_treewalk_visit_f
 
     if( !(visitor && tree && ctx)) return rc;
 
-    tw_ctx.userdata = ctx->userdata;
+    tw_ctx.userdata = ctx->callbacks.userdata;
     tw_ctx.user_visitor = visitor;
     tw_ctx.instruction_filter = filter;
 
-    ctx->userdata = &tw_ctx;
+    ctx->callbacks.userdata = &tw_ctx;
 
     rc = c_rbtree_walk(tree, (void*) ctx, _csync_treewalk_visitor);
 
-    ctx->userdata = tw_ctx.userdata;
+    ctx->callbacks.userdata = tw_ctx.userdata;
 
     return rc;
 }
@@ -766,7 +766,7 @@ int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb) {
     return -1;
   }
 
-  ctx->auth_callback = cb;
+  ctx->callbacks.auth_function = cb;
 
   return 0;
 }
@@ -784,7 +784,7 @@ void *csync_get_userdata(CSYNC *ctx) {
     return NULL;
   }
 
-  return ctx->userdata;
+  return ctx->callbacks.userdata;
 }
 
 int csync_set_userdata(CSYNC *ctx, void *userdata) {
@@ -792,7 +792,7 @@ int csync_set_userdata(CSYNC *ctx, void *userdata) {
     return -1;
   }
 
-  ctx->userdata = userdata;
+  ctx->callbacks.userdata = userdata;
 
   return 0;
 }
@@ -802,7 +802,7 @@ csync_auth_callback csync_get_auth_callback(CSYNC *ctx) {
     return NULL;
   }
 
-  return ctx->auth_callback;
+  return ctx->callbacks.auth_function;
 }
 
 int csync_set_status(CSYNC *ctx, int status) {
