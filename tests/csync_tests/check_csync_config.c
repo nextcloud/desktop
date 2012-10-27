@@ -1,68 +1,66 @@
-#define _GNU_SOURCE /* asprintf */
 #include <string.h>
 
-#include "support.h"
+#include "torture.h"
 
 #define CSYNC_TEST 1
 #include "csync_config.c"
 
-CSYNC *csync;
+#define TESTCONF "/tmp/check_csync1/csync.conf"
 
-const char *testconf = "/tmp/check_csync1/csync.conf";
+static void setup(void **state) {
+    CSYNC *csync;
+    int rc;
 
-static void setup(void) {
-  fail_if(system("mkdir -p /tmp/check_csync1") < 0, "Setup failed");
-  fail_if(csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2") < 0, "Setup failed");
-  SAFE_FREE(csync->options.config_dir);
-  csync->options.config_dir = c_strdup("/tmp/check_csync1/");
+    rc = system("mkdir -p /tmp/check_csync1");
+    assert_int_equal(rc, 0);
+
+    rc = csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
+    assert_int_equal(rc, 0);
+
+    free(csync->options.config_dir);
+    csync->options.config_dir = c_strdup("/tmp/check_csync1/");
+
+    *state = csync;
 }
 
-static void teardown(void) {
-  fail_if(csync_destroy(csync) < 0, "Teardown failed");
-  fail_if(system("rm -rf /tmp/check_csync") < 0, "Teardown failed");
+static void teardown(void **state) {
+    CSYNC *csync = *state;
+    int rc;
+
+    rc = csync_destroy(csync);
+    assert_int_equal(rc, 0);
+
+    rc = system("rm -rf /tmp/check_csync");
+    assert_int_equal(rc, 0);
+
+    *state = NULL;
 }
 
-START_TEST (check_csync_config_copy_default)
+static void check_csync_config_copy_default(void **state)
 {
-  fail_unless(_csync_config_copy_default(testconf) == 0, NULL);
-}
-END_TEST
+    int rc;
 
-START_TEST (check_csync_config_load)
+    (void) state; /* unused */
+    rc = _csync_config_copy_default(TESTCONF);
+    assert_int_equal(rc, 0);
+}
+
+static void check_csync_config_load(void **state)
 {
-  fail_unless(csync_config_load(csync, testconf) == 0, NULL);
-}
-END_TEST
+    CSYNC *csync = *state;
+    int rc;
 
-static Suite *make_csync_suite(void) {
-  Suite *s = suite_create("csync_config");
-
-  create_case_fixture(s, "check_csync_config_copy_default", check_csync_config_copy_default, setup, teardown);
-  create_case_fixture(s, "check_csync_config_load", check_csync_config_load, setup, teardown);
-
-  return s;
+    rc = csync_config_load(csync, TESTCONF);
+    assert_int_equal(rc, 0);
 }
 
-int main(int argc, char **argv) {
-  Suite *s = NULL;
-  SRunner *sr = NULL;
-  struct argument_s arguments;
-  int nf;
+int torture_run_tests(void)
+{
+    const UnitTest tests[] = {
+        unit_test_setup_teardown(check_csync_config_copy_default, setup, teardown),
+        unit_test_setup_teardown(check_csync_config_load, setup, teardown),
+    };
 
-  ZERO_STRUCT(arguments);
-
-  cmdline_parse(argc, argv, &arguments);
-
-  s = make_csync_suite();
-
-  sr = srunner_create(s);
-  if (arguments.nofork) {
-    srunner_set_fork_status(sr, CK_NOFORK);
-  }
-  srunner_run_all(sr, CK_VERBOSE);
-  nf = srunner_ntests_failed(sr);
-  srunner_free(sr);
-
-  return (nf == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+    return run_tests(tests);
 }
 

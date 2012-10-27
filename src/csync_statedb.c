@@ -52,6 +52,7 @@ int csync_get_statedb_exists(CSYNC *ctx) {
 
 static int _csync_statedb_check(const char *statedb) {
   int fd = -1;
+  ssize_t r;
   char buf[BUF_SIZE] = {0};
   sqlite3 *db = NULL;
 
@@ -61,9 +62,10 @@ static int _csync_statedb_check(const char *statedb) {
 #endif
   fd = open(statedb, O_RDONLY);
   if (fd >= 0) {
-    if (read(fd, (void *) buf, (size_t) BUF_SIZE - 1) >= 0) {
+    r = read(fd, (void *) buf, sizeof(buf) - 1);
+    close(fd);
+    if (r >= 0) {
       buf[BUF_SIZE - 1] = '\0';
-      close(fd);
       if (c_streq(buf, "SQLite format 3")) {
         if (sqlite3_open(statedb, &db ) == SQLITE_OK) {
           /* everything is fine */
@@ -650,7 +652,7 @@ c_strlist_t *csync_statedb_query(CSYNC *ctx, const char *statement) {
           break;
         }
 
-        row++;
+       row++;
         if( result ) {
             result = c_strlist_expand(result, row*column_count);
         } else {
@@ -676,6 +678,9 @@ c_strlist_t *csync_statedb_query(CSYNC *ctx, const char *statement) {
 
       if (err != SQLITE_DONE && rc != SQLITE_SCHEMA) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "sqlite_step error: %s - on query: %s", sqlite3_errmsg(ctx->statedb.db), statement);
+        if (result != NULL) {
+          c_strlist_destroy(result);
+        }
         result = c_strlist_new(1);
       }
 
@@ -686,6 +691,9 @@ c_strlist_t *csync_statedb_query(CSYNC *ctx, const char *statement) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Retrying now.");
         } else {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "RETRY count has reached its maximum. Aborting statement: %s", statement);
+          if (result != NULL) {
+            c_strlist_destroy(result);
+          }
           result = c_strlist_new(1);
         }
       }

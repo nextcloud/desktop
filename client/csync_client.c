@@ -37,6 +37,7 @@
 
 #include "csync_auth.h"
 #include "../src/std/c_private.h"
+#include "../src/csync_misc.h"
 
 const char *csync_program_version = "csync commandline client "
   CSYNC_STRINGIFY(LIBCSYNC_VERSION);
@@ -166,6 +167,7 @@ int main(int argc, char **argv) {
   int rc = 0;
   CSYNC *csync;
   char errbuf[256] = {0};
+  int curser = 0;
 
   struct argument_s arguments;
 
@@ -188,6 +190,23 @@ int main(int argc, char **argv) {
   if (csync_create(&csync, argv[optind], argv[optind+1]) < 0) {
     fprintf(stderr, "csync_create: failed\n");
     exit(1);
+  }
+
+  /*
+   * Protect password from ps listing
+   * Find and replace :password@ by :********@
+   */
+  for (int i = 0; i < argc; i++) {
+    if (csync_fnmatch("*://*:*@*", argv[i], 0) == 0) {
+      curser = strlen(argv[i]);
+      while(curser > 0 && argv[i][curser] != '@') {
+        curser--;
+      }
+      while(curser > 0 && argv[i][curser - 1] != ':') {
+        curser--;
+        argv[i][curser] = '*';
+      }
+    }
   }
 
   csync_set_auth_callback(csync, csync_getpass);

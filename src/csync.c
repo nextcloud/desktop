@@ -102,6 +102,7 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
   ctx->local.uri = c_strndup(local, len);
   if (ctx->local.uri == NULL) {
     ctx->error_code = CSYNC_ERR_MEM;
+    free(ctx);
     return -1;
   }
 
@@ -111,8 +112,8 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
 
   ctx->remote.uri = c_strndup(remote, len);
   if (ctx->remote.uri == NULL) {
-    SAFE_FREE(ctx->remote.uri);
     ctx->error_code = CSYNC_ERR_MEM;
+    free(ctx);
     return -1;
   }
 
@@ -257,15 +258,12 @@ int csync_init(CSYNC *ctx) {
 
   /* create/load statedb */
   if (! csync_is_statedb_disabled(ctx)) {
-    uint64_t h = csync_create_statedb_hash(ctx);
-    if (asprintf(&ctx->statedb.file, "%s/csync_statedb_%llu.db",
-          ctx->options.config_dir, (long long unsigned int) h) < 0) {
-      ctx->error_code = CSYNC_ERR_UNSPEC;
-      rc = -1;
-      goto out;
+    rc = asprintf(&ctx->statedb.file, "%s/.csync_journal.db",
+                  ctx->local.uri);
+    if (rc < 0) {
+        goto out;
     }
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Remote replica: %s", ctx->remote.uri);
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Statedb: %s", ctx->statedb.file);
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Journal: %s", ctx->statedb.file);
 
     if (csync_statedb_load(ctx, ctx->statedb.file) < 0) {
       ctx->error_code = CSYNC_ERR_STATEDB_LOAD;
@@ -308,7 +306,7 @@ retry_vio_init:
         goto out;
       }
       SAFE_FREE(module);
-      ctx->remote.type = REMOTE_REPLCIA;
+      ctx->remote.type = REMOTE_REPLICA;
     }
   } else {
     ctx->remote.type = LOCAL_REPLICA;
@@ -413,7 +411,7 @@ int csync_update(CSYNC *ctx) {
   /* update detection for remote replica */
   if( ! ctx->options.local_only_mode ) {
       csync_gettime(&start);
-      ctx->current = REMOTE_REPLCIA;
+      ctx->current = REMOTE_REPLICA;
       ctx->replica = ctx->remote.type;
 
       rc = csync_ftw(ctx, ctx->remote.uri, csync_walker, MAX_DEPTH);
@@ -469,7 +467,7 @@ int csync_reconcile(CSYNC *ctx) {
   /* Reconciliation for local replica */
   csync_gettime(&start);
 
-  ctx->current = REMOTE_REPLCIA;
+  ctx->current = REMOTE_REPLICA;
   ctx->replica = ctx->remote.type;
 
   rc = csync_reconcile_updates(ctx);
@@ -522,7 +520,7 @@ int csync_propagate(CSYNC *ctx) {
   /* Reconciliation for local replica */
   csync_gettime(&start);
 
-  ctx->current = REMOTE_REPLCIA;
+  ctx->current = REMOTE_REPLICA;
   ctx->replica = ctx->remote.type;
 
   rc = csync_propagate_files(ctx);
@@ -553,35 +551,38 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
     _csync_treewalk_context *twctx = NULL;
     TREE_WALK_FILE trav;
 
-    cur = (csync_file_stat_t *) obj;
-    ctx = (CSYNC *) data;
-
-    if (ctx == NULL) {
-      errno = EBADF;
+    if (!(ctx && obj && data)) {
+      ctx->error_code = CSYNC_ERR_PARAM;
       return -1;
     }
     ctx->error_code = CSYNC_ERR_NONE;
 
-    twctx = (_csync_treewalk_context*) ctx->userdata;
+    cur = (csync_file_stat_t *) obj;
+    ctx = (CSYNC *) data;
 
-    if(cur && twctx && twctx->instruction_filter > 0 && !(twctx->instruction_filter & cur->instruction)) {
+    twctx = (_csync_treewalk_context*) ctx->userdata;
+    if (twctx == NULL) {
+      ctx->error_code = CSYNC_ERR_PARAM;
+      return -1;
+    }
+
+    if (twctx->instruction_filter > 0 &&
+        !(twctx->instruction_filter & cur->instruction) ) {
         return 0;
     }
 
-    if(cur && twctx) {
-        visitor = (c_rbtree_visit_func*)(twctx->user_visitor);
-        if(visitor) {
-            trav.path =   cur->path;
-            trav.modtime = cur->modtime;
-            trav.uid =    cur->uid;
-            trav.gid =    cur->gid;
-            trav.mode =   cur->mode;
-            trav.type =   cur->type;
-            trav.instruction = cur->instruction;
-            trav.rename_path = cur->destpath;
+    visitor = (c_rbtree_visit_func*)(twctx->user_visitor);
+    if (visitor != NULL) {
+      trav.path =   cur->path;
+      trav.modtime = cur->modtime;
+      trav.uid =    cur->uid;
+      trav.gid =    cur->gid;
+      trav.mode =   cur->mode;
+      trav.type =   cur->type;
+      trav.instruction = cur->instruction;
+      trav.rename_path = cur->destpath;
 
-            return (*visitor)(&trav, twctx->userdata);
-        }
+      return (*visitor)(&trav, twctx->userdata);
     }
     ctx->error_code = CSYNC_ERR_TREE;
     return -1;

@@ -30,7 +30,7 @@
 #include "vio/csync_vio_handle.h"
 
 #define VIO_METHOD_HAS_FUNC(method,func) \
-  ((((char *)&((method)->func)) - ((char *)(method)) < (method)->method_table_size) \
+  (((size_t)(((char *)&((method)->func)) - ((char *)(method))) < (method)->method_table_size) \
   && method->func != NULL)
 
 typedef struct csync_vio_method_s csync_vio_method_t;

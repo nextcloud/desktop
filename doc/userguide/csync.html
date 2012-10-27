@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 8.3.3" />
+<meta name="generator" content="AsciiDoc 8.4.5" />
 <title>CSYNC User Guide</title>
 <style type="text/css">
 /* Debug borders */
@@ -91,7 +91,7 @@ span#author {
 }
 span#email {
 }
-span#revision {
+span#revnumber, span#revdate, span#revremark {
   font-family: sans-serif;
 }
 
@@ -111,11 +111,13 @@ div#footer-badges {
   padding-bottom: 0.5em;
 }
 
-div#preamble,
+div#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
 div.tableblock, div.imageblock, div.exampleblock, div.verseblock,
 div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
 div.admonitionblock {
-  margin-right: 10%;
   margin-top: 1.5em;
   margin-bottom: 1.5em;
 }
@@ -157,9 +159,6 @@ div.sidebarblock > div.content {
   padding: 0.5em;
 }
 
-div.listingblock {
-  margin-right: 0%;
-}
 div.listingblock > div.content {
   border: 1px solid silver;
   background: #f4f4f4;
@@ -168,6 +167,7 @@ div.listingblock > div.content {
 
 div.quoteblock {
   padding-left: 2.0em;
+  margin-right: 10%;
 }
 div.quoteblock > div.attribution {
   padding-top: 0.5em;
@@ -176,6 +176,7 @@ div.quoteblock > div.attribution {
 
 div.verseblock {
   padding-left: 2.0em;
+  margin-right: 10%;
 }
 div.verseblock > div.content {
   white-space: pre;
@@ -208,8 +209,8 @@ div.exampleblock > div.content {
 }
 
 div.imageblock div.content { padding-left: 0; }
-div.imageblock img { border: 1px solid silver; }
 span.image img { border-style: none; }
+a.image:visited { color: white; }
 
 dl {
   margin-top: 0.8em;
@@ -303,6 +304,10 @@ td.hdlist2 {
 div.hdlist.compact tr {
   margin: 0;
   padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
 }
 
 @media print {
@@ -559,7 +564,7 @@ scattered or large parts of the filesystem.  Since this in mostly not monitored
 by the user, and the file synchronizer is in a position to harm the system,
 csync must be safe, even in the case of unexpected errors (e.g. disk full).
 What was done to make csync safe is described in the following sections.</p></div>
-<div class="paragraph"><p>On problem concerning correctness is the handling of conflicts.  Each file
+<div class="paragraph"><p>One problem concerning correctness is the handling of conflicts.  Each file
 synchronizer tries to propagate conflicting changes to the other replica.  At
 the end both replicas should be identical. There are different strategies to
 fulfill these goals.</p></div>
@@ -622,15 +627,15 @@ normally you want the latest file.</p></div>
 <div class="paragraph"><p>This is not implemented yet.</p></div>
 <div class="paragraph"><p>If a file has a conflict the user has to decide which file should be used.</p></div>
 <h3 id="_propagation">3.3. Propagation</h3><div style="clear:left"></div>
-<div class="paragraph"><p>The next instance of the file synchronizer the propagator. It uses the
+<div class="paragraph"><p>The next instance of the file synchronizer is the propagator. It uses the
 calculated records to apply them on the current replica.</p></div>
 <div class="paragraph"><p>The propagator uses a two-phase-commit mechanism to simulate an atomic
 filesystem operation.</p></div>
 <div class="paragraph"><p>In the first phase we copy the file to a temporary file on the opposite
-replica. This has the advantage that we can check if file which has been copied
-to the opposite replica has been transfered successfully. If the connection
-gets interrupted during the transfer we still have the original states of the
-file. This means no data will be lost.</p></div>
+replica. This has the advantage that we can check if the file which has been
+copied to the opposite replica has been transfered successfully. If the
+connection gets interrupted during the transfer we still have the original
+states of the file. This means no data will be lost.</p></div>
 <div class="paragraph"><p>In the second phase the file on the opposite replica will be overwritten by
 the temporary file.</p></div>
 <div class="paragraph"><p>After a successful propagation we have to merge the trees to reflect the
@@ -753,8 +758,8 @@ and sftp support. For more information, see the manpage of <tt>csync(1)</tt>.</p
 global exclude list, which is normally located in
 <em>/etc/csync/csync_exclude.conf</em> and it has already some sane defaults. If you
 run csync the first time, it will create an empty exclude list for the user.
-This file will be <em>~/.csync/csync_exclude.conf</em>. If you run both files are used
-and maybe an additional one if you specify it.</p></div>
+This file will be <em>~/.csync/csync_exclude.conf</em>. csync considers both
+configuration files and an additional one if you specify it.</p></div>
 <div class="paragraph"><p>The entries in the file are newline separated. Use
 <em>/etc/csync/csync_exclude.conf</em> as an example.</p></div>
 <h3 id="_debug_messages_and_dry_run">4.4. Debug messages and dry run</h3><div style="clear:left"></div>
@@ -821,7 +826,7 @@ directory).</p></div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2009-02-10 12:48:31 CEST
+Last updated 2012-10-07 12:15:24 CEST
 </div>
 </div>
 </body>

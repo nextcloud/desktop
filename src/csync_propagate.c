@@ -59,7 +59,7 @@ static void _store_id_update(CSYNC *ctx, csync_file_stat_t *st) {
             ctx->local.id_list = list;
         }
         break;
-      case REMOTE_REPLCIA:
+      case REMOTE_REPLICA:
         list = c_list_prepend(ctx->remote.id_list, (void*)st);
         if(list != NULL ) {
             ctx->remote.id_list = list;
@@ -71,7 +71,7 @@ static void _store_id_update(CSYNC *ctx, csync_file_stat_t *st) {
 
 static bool _push_to_tmp_first(CSYNC *ctx)
 {
-    if( ctx->current == REMOTE_REPLCIA ) return true; /* Always push to tmp for destination local file system */
+    if( ctx->current == REMOTE_REPLICA ) return true; /* Always push to tmp for destination local file system */
 
     /* If destination is the remote replica check if the switch is set. */
     if( !ctx->module.capabilities.atomar_copy_support ) return true;
@@ -136,7 +136,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
         goto out;
       }
       break;
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       srep = ctx->remote.type;
       drep = ctx->local.type;
       if (asprintf(&suri, "%s/%s", ctx->remote.uri, st->path) < 0) {
@@ -155,8 +155,8 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   /* Open the source file */
   ctx->replica = srep;
   flags = O_RDONLY|O_NOFOLLOW;
+#ifdef O_NOATIME
   /* O_NOATIME can only be set by the owner of the file or the superuser */
-#ifndef __APPLE__
   if (st->uid == ctx->pwd.uid || ctx->pwd.euid == 0) {
     flags |= O_NOATIME;
   }
@@ -468,7 +468,9 @@ out:
   /* set instruction for the statedb merger */
   if (rc != 0) {
     st->instruction = CSYNC_INSTRUCTION_ERROR;
-    csync_vio_unlink(ctx, turi);
+    if (turi != NULL) {
+      csync_vio_unlink(ctx, turi);
+    }
   }
 
   SAFE_FREE(suri);
@@ -536,7 +538,7 @@ static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st) {
 			goto out;
 		}
 		break;
-		case REMOTE_REPLCIA:
+		case REMOTE_REPLICA:
 		drep = ctx->local.type;
 		if (asprintf(&suri, "%s/%s", ctx->local.uri, st->path) < 0) {
 			rc = -1;
@@ -623,7 +625,7 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
   c_rbnode_t *node = NULL;
 
   switch (ctx->current) {
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       if( !(st->path && st->destpath) ) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Rename failed: src or dest path empty");
           rc = -1;
@@ -742,7 +744,7 @@ static int _csync_remove_file(CSYNC *ctx, csync_file_stat_t *st) {
         return -1;
       }
       break;
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       if (asprintf(&uri, "%s/%s", ctx->remote.uri, st->path) < 0) {
         return -1;
       }
@@ -804,7 +806,7 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
         return -1;
       }
       break;
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       dest = ctx->local.type;
       if (asprintf(&uri, "%s/%s", ctx->local.uri, st->path) < 0) {
         return -1;
@@ -904,7 +906,7 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
         return -1;
       }
       break;
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       dest = ctx->local.type;
       if (asprintf(&uri, "%s/%s", ctx->local.uri, st->path) < 0) {
         return -1;
@@ -981,7 +983,7 @@ static int _csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
         return -1;
       }
       break;
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       if (asprintf(&uri, "%s/%s", ctx->remote.uri, st->path) < 0) {
         return -1;
       }
@@ -1009,7 +1011,7 @@ static int _csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
             }
             ctx->local.list = list;
             break;
-          case REMOTE_REPLCIA:
+          case REMOTE_REPLICA:
             list = c_list_prepend(ctx->remote.list, (void *) st);
             if (list == NULL) {
               return -1;
@@ -1081,7 +1083,7 @@ static int _csync_correct_id(CSYNC *ctx) {
         tree = ctx->local.tree;
         replica = "LOCAL_REPLICA";
         break;
-      case REMOTE_REPLCIA:
+      case REMOTE_REPLICA:
         list = ctx->remote.id_list;
         tree = ctx->remote.tree;
         replica = "REMOTE_REPLICA";
@@ -1203,7 +1205,7 @@ static int _csync_propagation_cleanup(CSYNC *ctx) {
       list = ctx->local.list;
       uri = ctx->local.uri;
       break;
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       list = ctx->remote.list;
       uri = ctx->remote.uri;
       break;
@@ -1374,7 +1376,7 @@ int csync_propagate_files(CSYNC *ctx) {
     case LOCAL_REPLICA:
       tree = ctx->local.tree;
       break;
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       tree = ctx->remote.tree;
       break;
     default:

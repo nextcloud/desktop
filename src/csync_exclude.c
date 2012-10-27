@@ -34,16 +34,25 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.exclude"
 #include "csync_log.h"
 
-static void _csync_exclude_add(CSYNC *ctx, const char *string) {
-  if (ctx->excludes == NULL) {
-    ctx->excludes = c_strlist_new(32);
-  }
+static int _csync_exclude_add(CSYNC *ctx, const char *string) {
+    c_strlist_t *list;
 
-  if (ctx->excludes->count == ctx->excludes->size) {
-    ctx->excludes = c_strlist_expand(ctx->excludes, 2 * ctx->excludes->size);
-  }
+    if (ctx->excludes == NULL) {
+        ctx->excludes = c_strlist_new(32);
+        if (ctx->excludes == NULL) {
+            return -1;
+        }
+    }
 
-  c_strlist_add(ctx->excludes, string);
+    if (ctx->excludes->count == ctx->excludes->size) {
+        list = c_strlist_expand(ctx->excludes, 2 * ctx->excludes->size);
+        if (list == NULL) {
+            return -1;
+        }
+        ctx->excludes = list;
+    }
+
+    return c_strlist_add(ctx->excludes, string);
 }
 
 int csync_exclude_load(CSYNC *ctx, const char *fname) {
@@ -87,7 +96,10 @@ int csync_exclude_load(CSYNC *ctx, const char *fname) {
         buf[i] = '\0';
         if (*entry != '#' || *entry == '\n') {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Adding entry: %s", entry);
-          _csync_exclude_add(ctx, entry);
+          rc = _csync_exclude_add(ctx, entry);
+          if (rc < 0) {
+              goto out;
+          }
         }
       }
       entry = buf + i + 1;
@@ -109,7 +121,9 @@ void csync_exclude_destroy(CSYNC *ctx) {
 int csync_excluded(CSYNC *ctx, const char *path) {
   size_t i;
   const char *p;
-  const char *bname = NULL;
+  char *bname;
+  int rc;
+  int match = 0;
 
   if (! ctx->options.unix_extensions) {
     for (p = path; *p; p++) {
@@ -129,23 +143,40 @@ int csync_excluded(CSYNC *ctx, const char *path) {
     }
   }
 
-  if (ctx->excludes == NULL) {
-    return 0;
+  rc = csync_fnmatch(".csync_journal.db*", path, 0);
+  if (rc == 0) {
+      return 1;
   }
 
-  if (ctx->excludes->count) {
-    bname = c_basename(path);
-    for (i = 0; i < ctx->excludes->count; i++) {
-      if (csync_fnmatch(ctx->excludes->vector[i], path, 0) == 0) {
-        return 1;
-      }
-      if( bname && csync_fnmatch(ctx->excludes->vector[i], bname, 0) == 0) {
-          return 1;
-      }
-    }
-    SAFE_FREE(bname);
+  bname = c_basename(path);
+  if (bname == NULL) {
+      return 0;
   }
-  return 0;
+
+  rc = csync_fnmatch(".csync_journal.db*", bname, 0);
+  if (rc == 0) {
+      match = 1;
+      goto out;
+  }
+
+  if (ctx->excludes == NULL) {
+      goto out;
+  }
+
+  for (i = 0; match == 0 && i < ctx->excludes->count; i++) {
+      rc = csync_fnmatch(ctx->excludes->vector[i], path, 0);
+      if (rc == 0) {
+          match = 1;
+      }
+
+      rc = csync_fnmatch(ctx->excludes->vector[i], bname, 0);
+      if (rc == 0) {
+          match = 1;
+      }
+  }
+
+out:
+  free(bname);
+  return match;
 }
 
-/* vim: set ts=8 sw=2 et cindent: */

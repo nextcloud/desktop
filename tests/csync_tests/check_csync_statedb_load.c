@@ -1,122 +1,139 @@
-#define _GNU_SOURCE /* asprintf */
 #include <string.h>
 #include <unistd.h>
 
-#include "support.h"
+#include "torture.h"
 
 #define CSYNC_TEST 1
 #include "csync_statedb.c"
 
-CSYNC *csync;
-const char *testdb = (char *) "/tmp/check_csync1/test.db";
-const char *testtmpdb = (char *) "/tmp/check_csync1/test.db.ctmp";
+#define TESTDB "/tmp/check_csync1/test.db"
+#define TESTDBTMP "/tmp/check_csync1/test.db.ctmp"
 
-static void setup(void) {
-  fail_if(system("rm -rf /tmp/check_csync1") < 0, "Setup failed");
-  fail_if(system("mkdir -p /tmp/check_csync1") < 0, "Setup failed");
-  fail_if(csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2") < 0, "Setup failed");
-  SAFE_FREE(csync->options.config_dir);
-  csync_set_config_dir(csync, "/tmp/check_csync1/");
+static void setup(void **state) {
+    CSYNC *csync;
+    int rc;
+
+    rc = system("rm -rf /tmp/check_csync1");
+    assert_int_equal(rc, 0);
+
+    rc = system("mkdir -p /tmp/check_csync1");
+    assert_int_equal(rc, 0);
+
+    rc = csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
+    assert_int_equal(rc, 0);
+
+    free(csync->options.config_dir);
+    csync_set_config_dir(csync, "/tmp/check_csync1/");
+
+    *state = csync;
 }
 
-static void teardown(void) {
-  fail_if(csync_destroy(csync) < 0, "Teardown failed");
-  fail_if(system("rm -rf /tmp/check_csync1") < 0, "Teardown failed");
+static void teardown(void **state) {
+    CSYNC *csync = *state;
+    int rc;
+
+    rc = csync_destroy(csync);
+    assert_int_equal(rc, 0);
+
+    rc = system("rm -rf /tmp/check_csync1");
+    assert_int_equal(rc, 0);
+
+    *state = NULL;
 }
 
-START_TEST (check_csync_statedb_check)
+static void check_csync_statedb_check(void **state)
 {
-  fail_if(system("mkdir -p /tmp/check_csync1") < 0, NULL);
+    int rc;
 
-  /* old db */
-  fail_if(system("echo \"SQLite format 2\" > /tmp/check_csync1/test.db") < 0, NULL);
-  fail_unless(_csync_statedb_check(testdb) == 0);
+    (void) state; /* unused */
 
-  /* db already exists */
-  fail_unless(_csync_statedb_check(testdb) == 0);
+    rc = system("mkdir -p /tmp/check_csync1");
 
-  /* no db exists */
-  fail_if(system("rm -f /tmp/check_csync1/test.db") < 0, NULL);
-  fail_unless(_csync_statedb_check(testdb) == 0);
+    /* old db */
+    rc = system("echo \"SQLite format 2\" > /tmp/check_csync1/test.db");
+    assert_int_equal(rc, 0);
+    rc = _csync_statedb_check(TESTDB);
+    assert_int_equal(rc, 0);
 
-  fail_unless(_csync_statedb_check((char *) "/tmp/check_csync1/") < 0);
+    /* db already exists */
+    rc = _csync_statedb_check(TESTDB);
+    assert_int_equal(rc, 0);
 
-  fail_if(system("rm -rf /tmp/check_csync1") < 0, NULL);
+    /* no db exists */
+    rc = system("rm -f /tmp/check_csync1/test.db");
+    assert_int_equal(rc, 0);
+    rc = _csync_statedb_check(TESTDB);
+    assert_int_equal(rc, 0);
+
+    rc = _csync_statedb_check("/tmp/check_csync1/");
+    assert_int_equal(rc, -1);
+
+    rc = system("rm -rf /tmp/check_csync1");
+    assert_int_equal(rc, 0);
 }
-END_TEST
 
-START_TEST (check_csync_statedb_load)
+static void check_csync_statedb_load(void **state)
 {
-  struct stat sb;
-  fail_unless(csync_statedb_load(csync, testdb) == 0, NULL);
+    CSYNC *csync = *state;
+    struct stat sb;
+    int rc;
 
-  fail_unless(lstat(testtmpdb, &sb) == 0, NULL);
+    rc = csync_statedb_load(csync, TESTDB);
+    assert_int_equal(rc, 0);
 
-  sqlite3_close(csync->statedb.db);
+    rc = lstat(TESTDBTMP, &sb);
+    assert_int_equal(rc, 0);
+
+    sqlite3_close(csync->statedb.db);
 }
-END_TEST
 
-START_TEST (check_csync_statedb_close)
+static void check_csync_statedb_close(void **state)
 {
-  struct stat sb;
-  time_t modtime;
-  /* statedb not written */
-  csync_statedb_load(csync, testdb);
+    CSYNC *csync = *state;
+    struct stat sb;
+    time_t modtime;
+    int rc;
 
-  fail_unless(lstat(testdb, &sb) == 0, NULL);
-  modtime = sb.st_mtime;
+    /* statedb not written */
+    csync_statedb_load(csync, TESTDB);
 
-  fail_unless(csync_statedb_close(csync, testdb, 0) == 0, NULL);
+    rc = lstat(TESTDB, &sb);
+    assert_int_equal(rc, 0);
+    modtime = sb.st_mtime;
 
-  fail_unless(lstat(testdb, &sb) == 0, NULL);
-  fail_unless(modtime == sb.st_mtime, NULL);
+    rc = csync_statedb_close(csync, TESTDB, 0);
+    assert_int_equal(rc, 0);
 
-  csync_statedb_load(csync, testdb);
+    rc = lstat(TESTDB, &sb);
+    assert_int_equal(rc, 0);
+    assert_int_equal(modtime, sb.st_mtime);
 
-  fail_unless(lstat(testdb, &sb) == 0, NULL);
-  modtime = sb.st_mtime;
+    csync_statedb_load(csync, TESTDB);
 
-  /* wait a sec or the modtime will be the same */
-  sleep(1);
+    rc = lstat(TESTDB, &sb);
+    assert_int_equal(rc, 0);
+    modtime = sb.st_mtime;
 
-  /* statedb written */
-  fail_unless(csync_statedb_close(csync, testdb, 1) == 0, NULL);
+    /* wait a sec or the modtime will be the same */
+    sleep(1);
 
-  fail_unless(lstat(testdb, &sb) == 0, NULL);
-  fail_unless(modtime < sb.st_mtime, NULL);
-}
-END_TEST
+    /* statedb written */
+    rc = csync_statedb_close(csync, TESTDB, 1);
+    assert_int_equal(rc, 0);
 
-static Suite *make_csync_suite(void) {
-  Suite *s = suite_create("csync_statedb");
-
-  create_case(s, "check_csync_statedb_check", check_csync_statedb_check);
-  create_case_fixture(s, "check_csync_statedb_load", check_csync_statedb_load, setup, teardown);
-  create_case_fixture(s, "check_csync_statedb_close", check_csync_statedb_close, setup, teardown);
-
-  return s;
+    rc = lstat(TESTDB, &sb);
+    assert_int_equal(rc, 0);
+    assert_true(modtime < sb.st_mtime);
 }
 
-int main(int argc, char **argv) {
-  Suite *s = NULL;
-  SRunner *sr = NULL;
-  struct argument_s arguments;
-  int nf;
+int torture_run_tests(void)
+{
+    const UnitTest tests[] = {
+        unit_test(check_csync_statedb_check),
+        unit_test_setup_teardown(check_csync_statedb_load, setup, teardown),
+        unit_test_setup_teardown(check_csync_statedb_close, setup, teardown),
+    };
 
-  ZERO_STRUCT(arguments);
-
-  cmdline_parse(argc, argv, &arguments);
-
-  s = make_csync_suite();
-
-  sr = srunner_create(s);
-  if (arguments.nofork) {
-    srunner_set_fork_status(sr, CK_NOFORK);
-  }
-  srunner_run_all(sr, CK_VERBOSE);
-  nf = srunner_ntests_failed(sr);
-  srunner_free(sr);
-
-  return (nf == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+    return run_tests(tests);
 }
 

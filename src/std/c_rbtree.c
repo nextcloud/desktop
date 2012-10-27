@@ -477,9 +477,9 @@ int c_rbtree_insert(c_rbtree_t *tree, void *data) {
 }
 
 int c_rbtree_node_delete(c_rbnode_t *node) {
-  c_rbtree_t *tree = NULL;
-  c_rbnode_t *y = NULL;
-  c_rbnode_t *x = NULL;
+  c_rbtree_t *tree;
+  c_rbnode_t *y;
+  c_rbnode_t *x;
 
   if (node == NULL || node == NIL) {
     errno = EINVAL;
@@ -493,7 +493,8 @@ int c_rbtree_node_delete(c_rbnode_t *node) {
     y = node;
   } else {
     /* find tree successor with a NIL node as a child */
-    while(y != NIL) {
+    y = node;
+    while(y->left != NIL) {
       y = y->left;
     }
   }

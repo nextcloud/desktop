@@ -1,77 +1,55 @@
-#define _GNU_SOURCE /* asprintf */
-#include <string.h>
+#include <stdlib.h>
 
-#include "support.h"
+#include "torture.h"
 
 #include "vio/csync_vio_handle.h"
 #include "vio/csync_vio_handle_private.h"
 
-START_TEST (check_csync_vio_handle_new)
+static void check_csync_vio_handle_new(void **state)
 {
-  int *number = NULL;
-  csync_vio_handle_t *handle = NULL;
+    int *number;
+    csync_vio_handle_t *handle;
 
-  number = c_malloc(sizeof(int));
-  *number = 42;
+    (void) state; /* unused */
 
-  handle = csync_vio_handle_new("/tmp", (csync_vio_method_handle_t *) number);
-  fail_if(handle == NULL, NULL);
-  fail_unless(strcmp(handle->uri, "/tmp") == 0, NULL);
+    number = malloc(sizeof(int));
+    *number = 42;
 
-  SAFE_FREE(handle->method_handle);
+    handle = csync_vio_handle_new("/tmp", (csync_vio_method_handle_t *) number);
+    assert_non_null(handle);
+    assert_string_equal(handle->uri, "/tmp");
 
-  csync_vio_handle_destroy(handle);
+    free(handle->method_handle);
+
+    csync_vio_handle_destroy(handle);
 }
-END_TEST
 
-START_TEST (check_csync_vio_handle_new_null)
+static void check_csync_vio_handle_new_null(void **state)
 {
-  int *number = NULL;
-  csync_vio_handle_t *handle = NULL;
+    int *number;
+    csync_vio_handle_t *handle;
 
-  number = c_malloc(sizeof(int));
-  *number = 42;
+    (void) state; /* unused */
 
-  handle = csync_vio_handle_new(NULL, (csync_vio_method_handle_t *) number);
-  fail_unless(handle == NULL, NULL);
+    number = malloc(sizeof(int));
+    *number = 42;
 
-  handle = csync_vio_handle_new((char *) "/tmp", NULL);
-  fail_unless(handle == NULL, NULL);
+    handle = csync_vio_handle_new(NULL, (csync_vio_method_handle_t *) number);
+    assert_null(handle);
 
-  SAFE_FREE(number);
-}
-END_TEST
+    handle = csync_vio_handle_new((char *) "/tmp", NULL);
+    assert_null(handle);
 
-
-static Suite *make_csync_vio_suite(void) {
-  Suite *s = suite_create("csync_vio_handle");
-
-  create_case(s, "check_csync_vio_handle_new", check_csync_vio_handle_new);
-  create_case(s, "check_csync_vio_handle_new_null", check_csync_vio_handle_new_null);
-
-  return s;
+    free(number);
 }
 
-int main(int argc, char **argv) {
-  Suite *s = NULL;
-  SRunner *sr = NULL;
-  struct argument_s arguments;
-  int nf;
+int torture_run_tests(void)
+{
+    const UnitTest tests[] = {
+        unit_test(check_csync_vio_handle_new),
+        unit_test(check_csync_vio_handle_new_null),
+    };
 
-  ZERO_STRUCT(arguments);
-
-  cmdline_parse(argc, argv, &arguments);
-
-  s = make_csync_vio_suite();
-
-  sr = srunner_create(s);
-  if (arguments.nofork) {
-    srunner_set_fork_status(sr, CK_NOFORK);
-  }
-  srunner_run_all(sr, CK_VERBOSE);
-  nf = srunner_ntests_failed(sr);
-  srunner_free(sr);
-
-  return (nf == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+    return run_tests(tests);
 }
 

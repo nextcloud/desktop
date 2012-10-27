@@ -1,58 +1,49 @@
-#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 
-#include "support.h"
+#include "torture.h"
 
 #include "csync_private.h"
 
-CSYNC *csync;
 
-START_TEST (check_csync_destroy_null)
+static void check_csync_destroy_null(void **state)
 {
-  fail_unless(csync_destroy(NULL) < 0, NULL);
-}
-END_TEST
+    int rc;
 
-START_TEST (check_csync_create)
+    (void) state; /* unused */
+
+    rc = csync_destroy(NULL);
+    assert_int_equal(rc, -1);
+}
+
+static void check_csync_create(void **state)
 {
-  fail_unless(csync_create(&csync, "/tmp/csync1", "/tmp/csync2") == 0, NULL);
+    CSYNC *csync;
+    char confdir[1024] = {0};
+    int rc;
 
-  fail_unless(csync->options.max_depth == MAX_DEPTH, NULL);
-  fail_unless(csync->options.max_time_difference == MAX_TIME_DIFFERENCE, NULL);
-  fail_unless(strcmp(csync->options.config_dir, CSYNC_CONF_DIR) > 0, NULL);
+    (void) state; /* unused */
 
-  fail_unless(csync_destroy(csync) == 0, NULL);
+    rc = csync_create(&csync, "/tmp/csync1", "/tmp/csync2");
+    assert_int_equal(rc, 0);
+
+    assert_int_equal(csync->options.max_depth, MAX_DEPTH);
+    assert_int_equal(csync->options.max_time_difference, MAX_TIME_DIFFERENCE);
+
+    snprintf(confdir, sizeof(confdir), "%s/%s", getenv("HOME"), CSYNC_CONF_DIR);
+    assert_string_equal(csync->options.config_dir, confdir);
+
+    rc = csync_destroy(csync);
+    assert_int_equal(rc, 0);
 }
-END_TEST
 
-static Suite *make_csync_suite(void) {
-  Suite *s = suite_create("csync");
+int torture_run_tests(void)
+{
+    const UnitTest tests[] = {
+        unit_test(check_csync_destroy_null),
+        unit_test(check_csync_create),
+    };
 
-  create_case(s, "check_csync_destroy_null", check_csync_destroy_null);
-  create_case(s, "check_csync_create", check_csync_create);
-
-  return s;
-}
-
-int main(int argc, char **argv) {
-  Suite *s = NULL;
-  SRunner *sr = NULL;
-  struct argument_s arguments;
-  int nf;
-
-  ZERO_STRUCT(arguments);
-
-  cmdline_parse(argc, argv, &arguments);
-
-  s = make_csync_suite();
-
-  sr = srunner_create(s);
-  if (arguments.nofork) {
-    srunner_set_fork_status(sr, CK_NOFORK);
-  }
-  srunner_run_all(sr, CK_VERBOSE);
-  nf = srunner_ntests_failed(sr);
-  srunner_free(sr);
-
-  return (nf == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+    return run_tests(tests);
 }
 

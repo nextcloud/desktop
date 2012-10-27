@@ -227,7 +227,7 @@ csync_vio_handle_t *csync_vio_open(CSYNC *ctx, const char *uri, int flags, mode_
   csync_vio_method_handle_t *mh = NULL;
 
   switch(ctx->replica) {
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       mh = ctx->module.method->open(uri, flags, mode);
       break;
     case LOCAL_REPLICA:
@@ -250,7 +250,7 @@ csync_vio_handle_t *csync_vio_creat(CSYNC *ctx, const char *uri, mode_t mode) {
   csync_vio_method_handle_t *mh = NULL;
 
   switch(ctx->replica) {
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       mh = ctx->module.method->creat(uri, mode);
       break;
     case LOCAL_REPLICA:
@@ -277,7 +277,7 @@ int csync_vio_close(CSYNC *ctx, csync_vio_handle_t *fhandle) {
   }
 
   switch(ctx->replica) {
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       rc = ctx->module.method->close(fhandle->method_handle);
       break;
     case LOCAL_REPLICA:
@@ -303,7 +303,7 @@ ssize_t csync_vio_read(CSYNC *ctx, csync_vio_handle_t *fhandle, void *buf, size_
   }
 
   switch(ctx->replica) {
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       rs = ctx->module.method->read(fhandle->method_handle, buf, count);
       break;
     case LOCAL_REPLICA:
@@ -325,7 +325,7 @@ ssize_t csync_vio_write(CSYNC *ctx, csync_vio_handle_t *fhandle, const void *buf
   }
 
   switch(ctx->replica) {
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       rs = ctx->module.method->write(fhandle->method_handle, buf, count);
       break;
     case LOCAL_REPLICA:
@@ -342,7 +342,7 @@ off_t csync_vio_lseek(CSYNC *ctx, csync_vio_handle_t *fhandle, off_t offset, int
   off_t ro = 0;
 
   switch(ctx->replica) {
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       ro = ctx->module.method->lseek(fhandle->method_handle, offset, whence);
       break;
     case LOCAL_REPLICA:
@@ -360,7 +360,7 @@ csync_vio_handle_t *csync_vio_opendir(CSYNC *ctx, const char *name) {
   csync_vio_method_handle_t *mh = NULL;
 
   switch(ctx->replica) {
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       if(ctx->remote.read_from_db) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Reading directory %s from database", name);
           mh = csync_dbtree_opendir(ctx, name);
@@ -392,7 +392,7 @@ int csync_vio_closedir(CSYNC *ctx, csync_vio_handle_t *dhandle) {
   }
 
   switch(ctx->replica) {
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       if(ctx->remote.read_from_db) {
           rc = csync_dbtree_closedir(ctx, dhandle->method_handle);
       } else {
@@ -416,7 +416,7 @@ csync_vio_file_stat_t *csync_vio_readdir(CSYNC *ctx, csync_vio_handle_t *dhandle
   csync_vio_file_stat_t *fs = NULL;
 
   switch(ctx->replica) {
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       if(ctx->remote.read_from_db) {
           fs = csync_dbtree_readdir(ctx, dhandle->method_handle);
       } else {
@@ -437,7 +437,7 @@ int csync_vio_mkdir(CSYNC *ctx, const char *uri, mode_t mode) {
   int rc = -1;
 
   switch(ctx->replica) {
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       rc = ctx->module.method->mkdir(uri, mode);
       break;
     case LOCAL_REPLICA:
@@ -516,7 +516,7 @@ int csync_vio_rmdir(CSYNC *ctx, const char *uri) {
   int rc = -1;
 
   switch(ctx->replica) {
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       rc = ctx->module.method->rmdir(uri);
       break;
     case LOCAL_REPLICA:
@@ -544,7 +544,7 @@ int csync_vio_stat(CSYNC *ctx, const char *uri, csync_vio_file_stat_t *buf) {
   int rc = -1;
 
   switch(ctx->replica) {
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       rc = ctx->module.method->stat(uri, buf);
       break;
     case LOCAL_REPLICA:
@@ -564,7 +564,7 @@ int csync_vio_rename(CSYNC *ctx, const char *olduri, const char *newuri) {
   int rc = -1;
 
   switch(ctx->replica) {
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       rc = ctx->module.method->rename(olduri, newuri);
       break;
     case LOCAL_REPLICA:
@@ -581,7 +581,7 @@ int csync_vio_unlink(CSYNC *ctx, const char *uri) {
   int rc = -1;
 
   switch(ctx->replica) {
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       rc = ctx->module.method->unlink(uri);
       break;
     case LOCAL_REPLICA:
@@ -598,7 +598,7 @@ int csync_vio_chmod(CSYNC *ctx, const char *uri, mode_t mode) {
   int rc = -1;
 
   switch(ctx->replica) {
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       rc = ctx->module.method->chmod(uri, mode);
       break;
     case LOCAL_REPLICA:
@@ -615,7 +615,7 @@ int csync_vio_chown(CSYNC *ctx, const char *uri, uid_t owner, gid_t group) {
   int rc = -1;
 
   switch(ctx->replica) {
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       rc = ctx->module.method->chown(uri, owner, group);
       break;
     case LOCAL_REPLICA:
@@ -632,7 +632,7 @@ int csync_vio_utimes(CSYNC *ctx, const char *uri, const struct timeval *times) {
   int rc = -1;
 
   switch(ctx->replica) {
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       rc = ctx->module.method->utimes(uri, times);
       break;
     case LOCAL_REPLICA:

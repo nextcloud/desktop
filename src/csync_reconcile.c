@@ -61,7 +61,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
     case LOCAL_REPLICA:
         tree = ctx->remote.tree;
         break;
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
         tree = ctx->local.tree;
         break;
     default:
@@ -319,7 +319,7 @@ int csync_reconcile_updates(CSYNC *ctx) {
     case LOCAL_REPLICA:
       tree = ctx->local.tree;
       break;
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       tree = ctx->remote.tree;
       break;
     default:

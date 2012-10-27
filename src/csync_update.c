@@ -64,7 +64,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
       }
       path += strlen(ctx->local.uri) + 1;
       break;
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       if (strlen(path) <= strlen(ctx->remote.uri)) {
         return -1;
       }
@@ -178,7 +178,7 @@ out:
         return -1;
       }
       break;
-    case REMOTE_REPLCIA:
+    case REMOTE_REPLICA:
       if (c_rbtree_insert(ctx->remote.tree, (void *) st) < 0) {
         SAFE_FREE(st);
         return -1;
@@ -300,7 +300,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   int rc = 0;
   int res = 0;
 
-  bool do_read_from_db = (ctx->current == REMOTE_REPLCIA && ctx->remote.read_from_db);
+  bool do_read_from_db = (ctx->current == REMOTE_REPLICA && ctx->remote.read_from_db);
 
   if (uri[0] == '\0') {
     errno = ENOENT;
@@ -312,9 +312,9 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   read_from_db = ctx->remote.read_from_db;
   CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Incoming read_from_db-Flag for %s: %d",
           uri, read_from_db );
-  if( ctx->current == REMOTE_REPLCIA && !do_read_from_db ) {
+  if( ctx->current == REMOTE_REPLICA && !do_read_from_db ) {
       _check_read_from_db(ctx, uri);
-      do_read_from_db = (ctx->current == REMOTE_REPLCIA && ctx->remote.read_from_db);
+      do_read_from_db = (ctx->current == REMOTE_REPLICA && ctx->remote.read_from_db);
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Checking for read from db for %s: %d",
                 uri, ctx->remote.read_from_db );
 
@@ -365,7 +365,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       case LOCAL_REPLICA:
         path = filename + strlen(ctx->local.uri) + 1;
         break;
-      case REMOTE_REPLCIA:
+      case REMOTE_REPLICA:
         path = filename + strlen(ctx->remote.uri) + 1;
         break;
       default:
@@ -465,6 +465,10 @@ done:
   return rc;
 error:
   ctx->remote.read_from_db = read_from_db;
+
+  if (dh != NULL) {
+    csync_vio_closedir(ctx, dh);
+  }
   SAFE_FREE(filename);
   return -1;
 }

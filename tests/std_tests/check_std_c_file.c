@@ -1,10 +1,10 @@
 #include <errno.h>
-#include <string.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "support.h"
+#include "torture.h"
 
 #include "std/c_file.h"
 
@@ -29,65 +29,70 @@ static int test_file(const char *path, mode_t mode) {
   return -1;
 }
 
-static void setup(void) {
-  fail_if(system("mkdir -p /tmp/check") < 0, "Setup failed");
-  fail_if(system("echo 42 > /tmp/check/foo.txt") < 0, "Setup failed");
+static void setup(void **state) {
+    int rc;
+
+    (void) state; /* unused */
+
+    rc = system("mkdir -p /tmp/check");
+    assert_int_equal(rc, 0);
+    rc = system("echo 42 > /tmp/check/foo.txt");
+    assert_int_equal(rc, 0);
 }
 
-static void teardown(void) {
-  fail_if(system("rm -rf /tmp/check") < 0, "Teardown failed");
+static void teardown(void **state) {
+    int rc;
+
+    (void) state; /* unused */
+
+    rc = system("rm -rf /tmp/check");
+    assert_int_equal(rc, 0);
 }
 
-START_TEST (check_c_copy)
+static void check_c_copy(void **state)
 {
-  fail_unless(c_copy(check_src_file, check_dst_file, 0644) == 0, NULL);
-  fail_unless(test_file(check_dst_file, 0644) == 0, NULL);
-}
-END_TEST
+    int rc;
 
-START_TEST (check_c_copy_same_file)
+    (void) state; /* unused */
+
+    rc = c_copy(check_src_file, check_dst_file, 0644);
+    assert_int_equal(rc, 0);
+    rc = test_file(check_dst_file, 0644);
+    assert_int_equal(rc, 0);
+}
+
+static void check_c_copy_same_file(void **state)
 {
-  fail_unless(c_copy(check_src_file, check_src_file, 0644) == -1, NULL);
-}
-END_TEST
+    int rc;
 
-START_TEST (check_c_copy_isdir)
+    (void) state; /* unused */
+
+    rc = c_copy(check_src_file, check_src_file, 0644);
+    assert_int_equal(rc, -1);
+}
+
+static void check_c_copy_isdir(void **state)
 {
-  fail_unless((c_copy(check_src_file, check_dir, 0644) == -1) && (errno == EISDIR), NULL);
-  fail_unless((c_copy(check_dir, check_dst_file, 0644) == -1) && (errno == EISDIR), NULL);
-}
-END_TEST
+    int rc;
 
-static Suite *make_c_copy_suite(void) {
-  Suite *s = suite_create("std:file:c_copy");
+    (void) state; /* unused */
 
-  create_case_fixture(s, "check_c_copy", check_c_copy, setup, teardown);
-  create_case(s, "check_c_copy_same_file", check_c_copy_same_file);
-  create_case_fixture(s, "check_c_copy_isdir", check_c_copy_isdir, setup, teardown);
-
-  return s;
+    rc = c_copy(check_src_file, check_dir, 0644);
+    assert_int_equal(rc, -1);
+    assert_int_equal(errno, EISDIR);
+    rc = c_copy(check_dir, check_dst_file, 0644);
+    assert_int_equal(rc, -1);
+    assert_int_equal(errno, EISDIR);
 }
 
-int main(int argc, char **argv) {
-  Suite *s = NULL;
-  SRunner *sr = NULL;
-  struct argument_s arguments;
-  int nf;
+int torture_run_tests(void)
+{
+  const UnitTest tests[] = {
+      unit_test_setup_teardown(check_c_copy, setup, teardown),
+      unit_test(check_c_copy_same_file),
+      unit_test_setup_teardown(check_c_copy_isdir, setup, teardown),
+  };
 
-  ZERO_STRUCT(arguments);
-
-  cmdline_parse(argc, argv, &arguments);
-
-  s = make_c_copy_suite();
-
-  sr = srunner_create(s);
-  if (arguments.nofork) {
-    srunner_set_fork_status(sr, CK_NOFORK);
-  }
-  srunner_run_all(sr, CK_VERBOSE);
-  nf = srunner_ntests_failed(sr);
-  srunner_free(sr);
-
-  return (nf == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+  return run_tests(tests);
 }
 
