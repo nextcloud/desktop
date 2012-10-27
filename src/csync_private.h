@@ -121,6 +121,7 @@ struct csync_s {
     char *config_dir;
     bool with_conflict_copys;
     bool local_only_mode;
+    int log_verbosity;
   } options;
 
   struct {
