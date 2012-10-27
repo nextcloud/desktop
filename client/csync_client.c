@@ -49,7 +49,8 @@ at LOCAL with the ones at REMOTE.\n\
 \n\
 -c, --conflict-copys       Create conflict copys if file changed on both\n\
                            sides.\n\
--d, --disable-statedb      Disable the usage and creation of a statedb.\n\
+-d, --debug-level=DEBUGLVL Set debug level\n\
+    --disable-statedb      Disable the usage and creation of a statedb.\n\
     --dry-run              This runs only update detection and reconcilation.\n\
 \n\
     --exclude-file=<file>  Add an additional exclude file\n\
@@ -65,7 +66,8 @@ at LOCAL with the ones at REMOTE.\n\
 static const struct option long_options[] =
 {
     {"exclude-file",    required_argument, 0,  0  },
-    {"disable-statedb", no_argument,       0, 'd' },
+    {"debug-level",     required_argument, 0, 'd' },
+    {"disable-statedb", no_argument,       0,  0  },
     {"dry-run",         no_argument,       0,  0  },
     {"test-statedb",    no_argument,       0,  0  },
     {"conflict-copies", no_argument,       0, 'c' },
@@ -79,6 +81,7 @@ static const struct option long_options[] =
 struct argument_s {
   char *args[2]; /* SOURCE and DESTINATION */
   char *exclude_file;
+  int debug_level;
   int disable_statedb;
   int create_statedb;
   int update;
@@ -112,8 +115,9 @@ static int parse_args(struct argument_s *csync_args, int argc, char **argv)
 
         switch(result) {
         case 'd':
-            csync_args->disable_statedb = 1;
-            /* printf("Argument: Disable Statedb\n"); */
+            if (optarg != NULL) {
+              csync_args->debug_level = atoi(optarg);
+            }
             break;
         case 'c':
             csync_args->with_conflict_copys = true;
@@ -130,6 +134,8 @@ static int parse_args(struct argument_s *csync_args, int argc, char **argv)
             if(c_streq(opt->name, "exclude-file")) {
                 csync_args->exclude_file = c_strdup(optarg);
                 /* printf("Argument: exclude-file: %s\n", csync_args->exclude_file); */
+            } else if(c_streq(opt->name, "disable-statedb")) {
+                csync_args->disable_statedb = 1;
             } else if(c_streq(opt->name, "test-update")) {
                 csync_args->create_statedb = 0;
                 csync_args->update = 1;
@@ -173,6 +179,7 @@ int main(int argc, char **argv) {
 
   /* Default values. */
   arguments.exclude_file = NULL;
+  arguments.debug_level = 4;
   arguments.disable_statedb = 0;
   arguments.create_statedb = 0;
   arguments.update = 1;
@@ -210,10 +217,15 @@ int main(int argc, char **argv) {
   }
 
   csync_set_auth_callback(csync, csync_getpass);
+
+  if (arguments.debug_level) {
+    csync_set_log_verbosity(csync, arguments.debug_level);
+  }
+
   if (arguments.disable_statedb) {
     csync_disable_statedb(csync);
   }
-  
+
   if(arguments.with_conflict_copys)
   {
     csync_enable_conflictcopys(csync);
