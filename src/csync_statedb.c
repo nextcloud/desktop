@@ -187,6 +187,8 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb) {
   /* optimization for speeding up SQLite */
   result = csync_statedb_query(ctx, "PRAGMA default_synchronous = OFF;");
   c_strlist_destroy(result);
+  result = csync_statedb_query(ctx, "PRAGMA case_sensitive_like = ON;");
+  c_strlist_destroy(result);
 
   rc = 0;
 out:
@@ -569,7 +571,7 @@ c_strlist_t *csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
     char *stmt = NULL;
 
     stmt = sqlite3_mprintf("SELECT phash, path, inode, uid, gid, mode, modtime, type, md5 "
-                           "FROM metadata WHERE path GLOB('%q/*')", path);
+                           "FROM metadata WHERE path LIKE('%q/%%')", path);
     if (stmt == NULL) {
       return NULL;
     }
