@@ -1130,62 +1130,62 @@ Setup can not be done.</translation>
         <translation>SSL Connection</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="90"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="97"/>
         <source>Warnings about current SSL Connection:</source>
         <translation>Warnings about current SSL Connection:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="138"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="145"/>
         <source>with Certificate %1</source>
         <translation>with Certificate %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="146"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="147"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="148"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="153"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="154"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="155"/>
         <source>&amp;lt;not specified&amp;gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="149"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="171"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="156"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="176"/>
         <source>Organization: %1</source>
         <translation>Organization: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="150"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="172"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="157"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="177"/>
         <source>Unit: %1</source>
         <translation>Unit: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="151"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="173"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="158"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="178"/>
         <source>Country: %1</source>
         <translation>Country: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="159"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="165"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="161"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="166"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="163"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="168"/>
         <source>Effective Date: %1</source>
         <translation>Effective Date: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="164"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="169"/>
         <source>Expiry Date: %1</source>
         <translation>Expiry Date: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="168"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="173"/>
         <source>Issuer: %1</source>
         <translation>Issuer: %1</translation>
     </message>
@@ -1751,7 +1751,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
-        <source>Check if you want to continue via SSL and trust the shown certificates.</source>
+        <source>Trust this certificate anyway</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

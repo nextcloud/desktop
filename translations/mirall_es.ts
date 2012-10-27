@@ -882,12 +882,12 @@ Por favor, escribe un reporte de error sobre ello.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="80"/>
         <source>Create the %1 Connection</source>
-        <translation type="unfinished"/>
+        <translation>Crear la conexión de %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="81"/>
         <source>Enter Server Name and Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Introduce el nombre del servidor y credenciales</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="103"/>
@@ -1074,17 +1074,17 @@ No se puede completar la instalación.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="60"/>
         <source>Welcome to %1</source>
-        <translation type="unfinished"/>
+        <translation>Bienvenido a %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="61"/>
         <source>Set up your server connection</source>
-        <translation type="unfinished"/>
+        <translation>Configura la conexión de tu servidor</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="69"/>
         <source>&lt;p&gt;In order to connect to your %1 server, you need to provide the server address as well as your credentials.&lt;/p&gt;&lt;p&gt;This wizard will guide you through the process.&lt;p&gt;&lt;p&gt;If you have not received this information, please contact your %1 hosting provider.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Para conectar a tu servidor de %1 necesitas proporcionar la dirección del servidor así como tus credenciales.&lt;/p&gt;&lt;p&gt;Este asistente te guiará a través del proceso.&lt;/p&gt;&lt;p&gt;Si no has recibido esta información, por favor contacta con tu proveedor de %1.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1133,62 +1133,62 @@ No se puede completar la instalación.</translation>
         <translation>Conexión SSL</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="90"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="97"/>
         <source>Warnings about current SSL Connection:</source>
         <translation>Avisos de la actual conexión SSL:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="138"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="145"/>
         <source>with Certificate %1</source>
         <translation>con certificado %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="146"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="147"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="148"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="153"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="154"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="155"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;lt;no especificado&amp;gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="149"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="171"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="156"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="176"/>
         <source>Organization: %1</source>
         <translation>Organización: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="150"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="172"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="157"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="177"/>
         <source>Unit: %1</source>
         <translation>Unidad: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="151"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="173"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="158"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="178"/>
         <source>Country: %1</source>
         <translation>País: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="159"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="165"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Huella (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="161"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="166"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Huella (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="163"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="168"/>
         <source>Effective Date: %1</source>
         <translation>Fecha de vigencia: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="164"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="169"/>
         <source>Expiry Date: %1</source>
         <translation>Fecha de expiración: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="168"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="173"/>
         <source>Issuer: %1</source>
         <translation>Emisor: %1</translation>
     </message>
@@ -1753,8 +1753,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
-        <source>Check if you want to continue via SSL and trust the shown certificates.</source>
-        <translation>Activar si desea continuar via SSL y valida los certificados mostrados</translation>
+        <source>Trust this certificate anyway</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>
