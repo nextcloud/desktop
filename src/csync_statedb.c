@@ -49,7 +49,7 @@ int csync_get_statedb_exists(CSYNC *ctx) {
   return ctx->statedb.exists;
 }
 
-static int _csync_statedb_check(const char *statedb) {
+static int _csync_statedb_check(CSYNC *ctx, const char *statedb) {
   int fd = -1;
   ssize_t r;
   char buf[BUF_SIZE] = {0};
@@ -110,7 +110,7 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb) {
   c_strlist_t *result = NULL;
   char *statedb_tmp = NULL;
 
-  if (_csync_statedb_check(statedb) < 0) {
+  if (_csync_statedb_check(ctx, statedb) < 0) {
     rc = -1;
     goto out;
   }

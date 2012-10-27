@@ -38,15 +38,15 @@ static void check_csync_lock(void **state)
 
     (void) state; /* unused */
 
-    rc = csync_lock(TEST_LOCK);
+    rc = csync_lock(NULL, TEST_LOCK);
     assert_int_equal(rc, 0);
 
     assert_true(c_isfile(TEST_LOCK));
 
-    rc = csync_lock(TEST_LOCK);
+    rc = csync_lock(NULL, TEST_LOCK);
     assert_int_equal(rc, -1);
 
-    csync_lock_remove(TEST_LOCK);
+    csync_lock_remove(NULL, TEST_LOCK);
     assert_false(c_isfile(TEST_LOCK));
 }
 
@@ -57,7 +57,7 @@ static void check_csync_lock_content(void **state)
 
     (void) state; /* unused */
 
-    rc = csync_lock(TEST_LOCK);
+    rc = csync_lock(NULL, TEST_LOCK);
     assert_int_equal(rc, 0);
 
     assert_true(c_isfile(TEST_LOCK));
@@ -78,7 +78,7 @@ static void check_csync_lock_content(void **state)
 
     assert_int_equal(pid, getpid());
 
-    csync_lock_remove(TEST_LOCK);
+    csync_lock_remove(NULL, TEST_LOCK);
     assert_false(c_isfile(TEST_LOCK));
 }
 

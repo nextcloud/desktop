@@ -48,7 +48,6 @@
 
 #include "vio/csync_vio.h"
 
-#define CSYNC_LOG_CATEGORY_NAME "csync.api"
 #include "csync_log.h"
 
 static int _key_cmp(const void *key, const void *data) {
@@ -149,7 +148,6 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
 int csync_init(CSYNC *ctx) {
   int rc;
   time_t timediff = -1;
-  char *log = NULL;
   char *exclude = NULL;
   char *lock = NULL;
   char *config = NULL;
@@ -166,31 +164,9 @@ int csync_init(CSYNC *ctx) {
     return 1;
   }
 
-  /* load log file */
-  if (csync_log_init() < 0) {
-    fprintf(stderr, "csync_init: logger init failed\n");
-    return -1;
-  }
-
   /* create dir if it doesn't exist */
   if (! c_isdir(ctx->options.config_dir)) {
     c_mkdirs(ctx->options.config_dir, 0700);
-  }
-
-  if (asprintf(&log, "%s/%s", ctx->options.config_dir, CSYNC_LOG_FILE) < 0) {
-    rc = -1;
-    goto out;
-  }
-
-  /* load log if it exists */
-  if (c_isfile(log)) {
-    csync_log_load(log);
-  } else {
-#ifndef _WIN32
-    if (c_copy(SYSCONFDIR "/csync/" CSYNC_LOG_FILE, log, 0644) == 0) {
-      csync_log_load(log);
-    }
-#endif
   }
 
   /* create lock file */
@@ -200,7 +176,7 @@ int csync_init(CSYNC *ctx) {
   }
 
 #ifndef _WIN32
-  if (csync_lock(lock) < 0) {
+  if (csync_lock(ctx, lock) < 0) {
     rc = -1;
     goto out;
   }
@@ -225,7 +201,7 @@ int csync_init(CSYNC *ctx) {
 
   if (csync_exclude_load(ctx, exclude) < 0) {
     strerror_r(errno, errbuf, sizeof(errbuf));
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Could not load %s - %s", exclude,
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Could not load %s - %s", exclude,
               errbuf);
   }
   SAFE_FREE(exclude);
@@ -334,7 +310,6 @@ retry_vio_init:
   rc = 0;
 
 out:
-  SAFE_FREE(log);
   SAFE_FREE(lock);
   SAFE_FREE(exclude);
   SAFE_FREE(config);
@@ -350,7 +325,7 @@ int csync_update(CSYNC *ctx) {
     return -1;
   }
 
-  csync_memstat_check();
+  csync_memstat_check(ctx);
 
   /* update detection for local replica */
   csync_gettime(&start);
@@ -364,7 +339,7 @@ int csync_update(CSYNC *ctx) {
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
       "Update detection for local replica took %.2f seconds walking %zu files.",
       c_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
-  csync_memstat_check();
+  csync_memstat_check(ctx);
 
   if (rc < 0) {
     return -1;
@@ -384,7 +359,7 @@ int csync_update(CSYNC *ctx) {
                 "Update detection for remote replica took %.2f seconds "
                 "walking %zu files.",
                 c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
-      csync_memstat_check();
+      csync_memstat_check(ctx);
 
       if (rc < 0) {
           return -1;
@@ -646,12 +621,9 @@ int csync_destroy(CSYNC *ctx) {
 #ifndef _WIN32
   /* remove the lock file */
   if (asprintf(&lock, "%s/%s", ctx->options.config_dir, CSYNC_LOCK_FILE) > 0) {
-    csync_lock_remove(lock);
+    csync_lock_remove(ctx, lock);
   }
 #endif
-
-  /* stop logging */
-  csync_log_fini();
 
   /* destroy the rbtrees */
   if (c_rbtree_size(ctx->local.tree) > 0) {
