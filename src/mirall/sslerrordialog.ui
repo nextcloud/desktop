@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>593</width>
-    <height>547</height>
+    <width>640</width>
+    <height>560</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,14 +22,14 @@
       </font>
      </property>
      <property name="text">
-      <string>Check if you want to continue via SSL and trust the shown certificates.</string>
+      <string>Trust this certificate anyway</string>
      </property>
     </widget>
    </item>
    <item row="3" column="0">
     <widget class="QDialogButtonBox" name="_dialogButtonBox">
      <property name="standardButtons">
-      <set>QDialogButtonBox::Ok</set>
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
     </widget>
    </item>

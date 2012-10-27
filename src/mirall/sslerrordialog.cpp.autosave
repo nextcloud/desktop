@@ -26,17 +26,17 @@ SslErrorDialog::SslErrorDialog(QWidget *parent) :
 {
     setupUi( this  );
     setWindowTitle( tr("SSL Connection") );
-    QPushButton *okButton =
+    QPushButton *okBFutton =
             _dialogButtonBox->button( QDialogButtonBox::Ok );
     QPushButton *cancelButton =
             _dialogButtonBox->button( QDialogButtonBox::Cancel );
-    okButton->setEnabled(false);
+    okBFutton->setEnabled(false);
     connect(_cbTrustConnect, SIGNAL(clicked(bool)),
-            okButton, SLOT(setEnabled(bool)));
+            okBFutton, SLOT(setEnabled(bool)));
 
-    if( okButton ) {
-        okButton->setDefault(true);
-        connect( okButton, SIGNAL(clicked()),SLOT(accept()));
+    if( okBFutton ) {
+        okBFutton->setDefault(true);
+        connect( okBFutton, SIGNAL(clicked()),SLOT(accept()));
         connect( cancelButton, SIGNAL(clicked()),SLOT(reject()));
     }
 }
