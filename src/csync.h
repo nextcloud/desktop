@@ -1,7 +1,7 @@
 /*
  * libcsync -- a library to sync a directory with another
  *
- * Copyright (c) 2006-2008 by Andreas Schneider <mail@cynapses.org>
+ * Copyright (c) 2006-2012 by Andreas Schneider <asn@cryptomilk.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -69,9 +69,6 @@ extern "C" {
 #define CSYNC_EXCLUDE_FILE "csync_exclude.conf"
 #define CSYNC_LOCK_FILE "lock"
 
-typedef int (*csync_auth_callback) (const char *prompt, char *buf, size_t len,
-    int echo, int verify, void *userdata);
-
 /**
   * Instruction enum. In the file traversal structure, it describes
   * the csync state of a file.
@@ -125,6 +122,15 @@ typedef struct csync_tree_walk_file_s TREE_WALK_FILE;
  * csync handle
  */
 typedef struct csync_s CSYNC;
+
+typedef int (*csync_auth_callback) (const char *prompt, char *buf, size_t len,
+    int echo, int verify, void *userdata);
+
+typedef void (*csync_log_callback) (CSYNC *ctx,
+                                    int verbosity,
+                                    const char *function,
+                                    const char *buffer,
+                                    void *userdata);
 
 /**
  * @brief Allocate a csync context.
@@ -318,6 +324,27 @@ csync_auth_callback csync_get_auth_callback(CSYNC *ctx);
  * @return              0 on success, less than 0 if an error occured.
  */
 int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb);
+
+/**
+ * @brief Get the logging callback set.
+ *
+ * @param ctx           The csync context.
+ *
+ * @return              The logging callback set or NULL if an error
+ *                      occured.
+ */
+csync_log_callback csync_get_log_callback(CSYNC *ctx);
+
+/**
+ * @brief Set the logging callback.
+ *
+ * @param ctx           The csync context.
+ *
+ * @param cb            The logging callback.
+ *
+ * @return              0 on success, less than 0 if an error occured.
+ */
+int csync_set_log_callback(CSYNC *ctx, csync_log_callback cb);
 
 /**
  * @brief Get the path of the statedb file used.

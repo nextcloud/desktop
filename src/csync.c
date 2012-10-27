@@ -1,7 +1,7 @@
 /*
  * libcsync -- a library to sync a directory with another
  *
- * Copyright (c) 2008      by Andreas Schneider <mail@cynapses.org>
+ * Copyright (c) 2008-2012 by Andreas Schneider <asn@cryptomilk.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -771,6 +771,21 @@ int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb) {
   return 0;
 }
 
+int csync_set_log_callback(CSYNC *ctx, csync_log_callback cb) {
+  if (ctx == NULL || cb == NULL) {
+    return -1;
+  }
+
+  if (ctx->status & CSYNC_STATUS_INIT) {
+    fprintf(stderr, "This function must be called before initialization.");
+    return -1;
+  }
+
+  ctx->callbacks.log_function = cb;
+
+  return 0;
+}
+
 const char *csync_get_statedb_file(CSYNC *ctx) {
   if (ctx == NULL) {
     return NULL;
@@ -803,6 +818,14 @@ csync_auth_callback csync_get_auth_callback(CSYNC *ctx) {
   }
 
   return ctx->callbacks.auth_function;
+}
+
+csync_log_callback csync_get_log_callback(CSYNC *ctx) {
+  if (ctx == NULL) {
+    return NULL;
+  }
+
+  return ctx->callbacks.log_function;
 }
 
 int csync_set_status(CSYNC *ctx, int status) {

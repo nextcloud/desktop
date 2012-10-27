@@ -1,7 +1,7 @@
 /*
  * libcsync -- a library to sync a directory with another
  *
- * Copyright (c) 2006 by Andreas Schneider <mail@cynapses.org>
+ * Copyright (c) 2006-2012 by Andreas Schneider <asn@cryptomilk.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -81,6 +81,7 @@ enum csync_replica_e {
 struct csync_s {
   struct {
       csync_auth_callback auth_function;
+      csync_log_callback log_function;
       void *userdata;
   } callbacks;
   c_strlist_t *excludes;
