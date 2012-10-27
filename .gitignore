@@ -2,3 +2,4 @@
 *flymake*
 CMakeLists.txt.user*
 *.patch
+doc/_build/*
