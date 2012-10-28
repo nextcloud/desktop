@@ -1749,7 +1749,7 @@ Questa procedura guidata ti aiuterà durante i passaggi necessari.&lt;/span&gt;&
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
         <source>Trust this certificate anyway</source>
-        <translation type="unfinished"/>
+        <translation>Fidati comunque di questo certificato</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>
