@@ -422,6 +422,7 @@ int csync_walk_remote_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int f
  */
 CSYNC_ERROR_CODE csync_get_error(CSYNC *ctx);
 
+
 #ifdef LOG_TO_CALLBACK
 
 typedef void (*csync_log_callback)(const char *msg);
@@ -432,6 +433,9 @@ void csync_log_cb(char *catName, int a_priority,
 		  const char* a_format,...);
 #endif
 
+/* dirty stuff from here on - EXPERIMENTAL */
+/* read the information if a file is known to csync ie. if it has an entry in the database */
+bool csync_file_known( char *statedb_file, const char* url );
 
 #ifdef __cplusplus
 }

@@ -41,6 +41,7 @@
 #include "csync_time.h"
 #include "csync_util.h"
 #include "csync_misc.h"
+#include "c_jhash.h"
 
 #include "csync_update.h"
 #include "csync_reconcile.h"
@@ -961,6 +962,27 @@ CSYNC_ERROR_CODE csync_get_error(CSYNC *ctx) {
         return CSYNC_ERR_PARAM;
     }
     return ctx->error_code;
+}
+
+bool csync_file_known( char *statedb_file, const char* url ) {
+    int len;
+    uint64_t h;
+    csync_file_stat_t *sb;
+
+    if( ! url ) return false;
+
+    CSYNC *ctx = c_malloc(sizeof(CSYNC));
+
+    ctx->statedb.file = statedb_file;
+
+    len = strlen(statedb_file);
+    h = c_jhash64((uint8_t *) url, len, 0);
+
+    sb = csync_statedb_get_stat_by_hash(ctx, h);
+
+    free(ctx);
+
+    return( sb != NULL );
 }
 
 #ifdef LOG_TO_CALLBACK
