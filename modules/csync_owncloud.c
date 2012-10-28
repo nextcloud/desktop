@@ -770,16 +770,16 @@ static int fetch_resource_list( const char *curi,
         /* check the changing of the time delta */
         time_diff_delta = llabs(dav_session.time_delta - time_diff);
         if( dav_session.time_delta_cnt == 1 ) {
-            DEBUG_WEBDAV( "The first time_delta is %d", time_diff );
+            DEBUG_WEBDAV( "The first time_delta is %llu", (unsigned long long) time_diff );
         } else if( dav_session.time_delta_cnt > 1 ) {
             if( time_diff_delta > 5 ) {
                 DEBUG_WEBDAV("WRN: The time delta changed more than 5 second");
                 ret = OC_TIMEDELTA_FAIL;
             } else {
-                DEBUG_WEBDAV("Ok: Time delta remained (almost) the same: %ld.", time_diff);
+                DEBUG_WEBDAV("Ok: Time delta remained (almost) the same: %llu.", (unsigned long long) time_diff);
             }
         } else {
-          DEBUG_WEBDAV("Difference to last server time delta: %d", time_diff_delta );
+          DEBUG_WEBDAV("Difference to last server time delta: %llu", (unsigned long long) time_diff_delta );
         }
         dav_session.time_delta = time_diff;
     } else {
@@ -1900,8 +1900,8 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
 
     newmodtime = modtime->tv_sec;
 
-    DEBUG_WEBDAV("Add a time delta to modtime %lu: %ld",
-                 modtime->tv_sec, dav_session.time_delta);
+    DEBUG_WEBDAV("Add a time delta to modtime %lu: %llu",
+                 modtime->tv_sec, (unsigned long long) dav_session.time_delta);
     newmodtime += dav_session.time_delta;
 
     snprintf( val, sizeof(val), "%ld", newmodtime );
