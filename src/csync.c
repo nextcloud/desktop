@@ -551,14 +551,14 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
     _csync_treewalk_context *twctx = NULL;
     TREE_WALK_FILE trav;
 
+    cur = (csync_file_stat_t *) obj;
+    ctx = (CSYNC *) data;
+
     if (!(ctx && obj && data)) {
       ctx->error_code = CSYNC_ERR_PARAM;
       return -1;
     }
     ctx->error_code = CSYNC_ERR_NONE;
-
-    cur = (csync_file_stat_t *) obj;
-    ctx = (CSYNC *) data;
 
     twctx = (_csync_treewalk_context*) ctx->userdata;
     if (twctx == NULL) {
