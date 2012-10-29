@@ -538,17 +538,17 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="192"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="209"/>
         <source>CSync create failed.</source>
         <translation>CSync 创建失败。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="230"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="245"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSync 无法创建文件锁。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="233"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="248"/>
         <source>CSync failed to load the state db.</source>
         <translation>CSync 无法加载状态数据库。</translation>
     </message>
@@ -557,17 +557,17 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="236"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="251"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>本客户端的系统时间和服务器的系统时间不一致。请在服务器和客户机上使用时间同步服务 (NTP)以让时间一致。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="241"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="256"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSync 无法检测文件系统类型。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="244"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="259"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSync 在处理内部文件树时出错。</translation>
     </message>
@@ -576,7 +576,7 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="247"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="262"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;目标文件夹 %1 不存在。&lt;/p&gt;&lt;p&gt;请检查同步设置。&lt;/p&gt;</translation>
     </message>
@@ -585,27 +585,27 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="257"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="272"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>本地文件系统不可写。请检查权限。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="261"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="276"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>远程文件不可写，请检查远程权限。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="264"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="279"/>
         <source>An internal error number %1 happend.</source>
         <translation>发生内部错误 %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="280"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="295"/>
         <source>CSync failed to reach the host. Either host or proxy settings are not valid.</source>
         <translation>CSync 未能访问主机。主机或代理设置可能无效。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="283"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="298"/>
         <source>CSync Update failed.</source>
         <translation>Csync 更新失败</translation>
     </message>
@@ -616,41 +616,41 @@ Please make sure that all directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="253"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="268"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;csync 的 %1 插件不能加载。&lt;br/&gt;请校验安装！&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="297"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="312"/>
         <source>CSync encountered an error while examining the file system.
 Syncing is not possible.</source>
         <translation>CSync检查文件系统时遇到错误。
 不能同步。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="300"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="315"/>
         <source>CSync update generated a strange instruction.
 Please write a bug report.</source>
         <translation>CSync 更新生成了一个奇怪的指令。
 请报告 bug。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="303"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="318"/>
         <source>Local filesystem problems. Better disable Syncing and check.</source>
         <translation>本地文件系统错误。最好停用同步后检查。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="308"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="323"/>
         <source>The local filesystem has %1 write protected directories.That can hinder successful syncing.&lt;p/&gt;Please make sure that all local directories are writeable.</source>
         <translation>本地文件系统有 %1 个写保护文件夹。这可能阻碍成功同步。&lt;p/&gt;请确保所有本地文件夹都是可写的。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="328"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="343"/>
         <source>CSync reconcile failed.</source>
         <translation>CSync一致性失败。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="332"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="347"/>
         <source>CSync propagate failed.</source>
         <translation>CSync传输失败。</translation>
     </message>
@@ -1301,7 +1301,7 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::ownCloudFolder</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="288"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="277"/>
         <source>The CSync thread terminated.</source>
         <translation>CSync线程终止</translation>
     </message>

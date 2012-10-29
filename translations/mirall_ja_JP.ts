@@ -540,17 +540,17 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="192"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="209"/>
         <source>CSync create failed.</source>
         <translation>CSyncは作成に失敗しました。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="230"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="245"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSyncがロックファイルの作成に失敗しました。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="233"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="248"/>
         <source>CSync failed to load the state db.</source>
         <translation>CSyncは状態DBの読み込みに失敗しました。</translation>
     </message>
@@ -559,17 +559,17 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="236"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="251"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>このクライアントのシステム時刻はサーバのシステム時刻と異なります。時刻が同じになるように、クライアントとサーバの両方で時刻同期サービス（NTP）を実行してください。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="241"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="256"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSyncはファイルシステムタイプを検出できませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="244"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="259"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSyncは内部ツリーの処理中にエラーに遭遇しました。</translation>
     </message>
@@ -578,7 +578,7 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="247"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="262"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;ターゲットディレクトリ %1 は存在しません。&lt;/p&gt;&lt;p&gt;同期設定をチェックしてください。&lt;/p&gt;</translation>
     </message>
@@ -587,27 +587,27 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="257"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="272"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>ローカルファイルシステムは書き込みができません。パーミッションをチェックしてください。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="261"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="276"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>リモートファイルは書き込みできません。リモートアクセスをチェックしてください。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="264"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="279"/>
         <source>An internal error number %1 happend.</source>
         <translation>内部エラー番号 %1 が発生しました。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="280"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="295"/>
         <source>CSync failed to reach the host. Either host or proxy settings are not valid.</source>
         <translation>Csyncはホストに接続できませんでした。ホストもしくはプロキシの設定のいずれかが正しくありません。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="283"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="298"/>
         <source>CSync Update failed.</source>
         <translation>CSyncは同期に失敗しました。</translation>
     </message>
@@ -618,41 +618,41 @@ Please make sure that all directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="253"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="268"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;csync 用の %1 プラグインのロードができませんでした。&lt;br/&gt;インストールの確認を行なってください！&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="297"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="312"/>
         <source>CSync encountered an error while examining the file system.
 Syncing is not possible.</source>
         <translation>CSyncはファイルシステムの検査中にエラーに遭遇しました。
 同期はできません。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="300"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="315"/>
         <source>CSync update generated a strange instruction.
 Please write a bug report.</source>
         <translation>CSyncの更新はおかしなインストラクションを生成しました。
 バグレポートを投稿してください。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="303"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="318"/>
         <source>Local filesystem problems. Better disable Syncing and check.</source>
         <translation>ローカルファイルシステムに問題があります。同期を無効にしてチェックすることをおすすめします。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="308"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="323"/>
         <source>The local filesystem has %1 write protected directories.That can hinder successful syncing.&lt;p/&gt;Please make sure that all local directories are writeable.</source>
         <translation>ローカルファイルシステムには %1 の書き込み禁止ディレクトリがあります。これは正常な同期の妨げとなります。&lt;p/&gt;すべてのローカルディレクトリが書き込み可能であることを確認してください。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="328"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="343"/>
         <source>CSync reconcile failed.</source>
         <translation>CSyncは調停に失敗しました。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="332"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="347"/>
         <source>CSync propagate failed.</source>
         <translation>CSyncは伝搬に失敗しました。</translation>
     </message>
@@ -1303,7 +1303,7 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::ownCloudFolder</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="288"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="277"/>
         <source>The CSync thread terminated.</source>
         <translation>CSyncのスレッドが終了しました。</translation>
     </message>
@@ -1753,7 +1753,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
         <source>Trust this certificate anyway</source>
-        <translation>この認証をとにかく信用</translation>
+        <translation>この証明書を信用する</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>
