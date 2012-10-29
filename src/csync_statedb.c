@@ -381,7 +381,7 @@ static int _insert_metadata_visitor(void *obj, void *data) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
         "SQL statement: INSERT INTO metadata_temp \n"
         "\t\t\t(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5) VALUES \n"
-        "\t\t\t(%llu, %lu, %s, %llu, %u, %u, %u, %lu, %d, %s);",
+        "\t\t\t(%lld, %lu, %s, %lld, %u, %u, %u, %lu, %d, %s);",
         (long long unsigned int) fs->phash,
         (long unsigned int) fs->pathlen,
         fs->path,
@@ -398,7 +398,7 @@ static int _insert_metadata_visitor(void *obj, void *data) {
        */
       stmt = sqlite3_mprintf("INSERT INTO metadata_temp "
         "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5) VALUES "
-        "(%llu, %lu, '%q', %llu, %u, %u, %u, %lu, %d, '%s');",
+        "(%lld, %lu, '%q', %lld, %u, %u, %u, %lu, %d, '%s');",
         (long long unsigned int) fs->phash,
         (long unsigned int) fs->pathlen,
         fs->path,
@@ -457,7 +457,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
   char *stmt = NULL;
   size_t len = 0;
 
-  stmt = sqlite3_mprintf("SELECT * FROM metadata WHERE phash='%llu'",
+  stmt = sqlite3_mprintf("SELECT * FROM metadata WHERE phash='%lld'",
       (long long unsigned int) phash);
   if (stmt == NULL) {
     return NULL;
@@ -529,7 +529,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx, uint64_t inode) {
   char *stmt = NULL;
   size_t len = 0;
 
-  stmt = sqlite3_mprintf("SELECT * FROM metadata WHERE inode='%llu'", inode);
+  stmt = sqlite3_mprintf("SELECT * FROM metadata WHERE inode='%lld'", inode);
   if (stmt == NULL) {
     return NULL;
   }
@@ -577,7 +577,7 @@ char *csync_statedb_get_uniqId( CSYNC *ctx, uint64_t jHash, csync_vio_file_stat_
     c_strlist_t *result = NULL;
     char *stmt = NULL;
 
-    stmt = sqlite3_mprintf("SELECT md5 FROM metadata WHERE phash='%llu' AND modtime=%lu", jHash, buf->mtime);
+    stmt = sqlite3_mprintf("SELECT md5 FROM metadata WHERE phash='%lld' AND modtime=%lu", jHash, buf->mtime);
 
     result = csync_statedb_query(ctx, stmt);
     sqlite3_free(stmt);
