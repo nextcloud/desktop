@@ -50,7 +50,7 @@ int csync_get_statedb_exists(CSYNC *ctx) {
 }
 
 static int _csync_statedb_check(CSYNC *ctx, const char *statedb) {
-  int fd = -1;
+  int fd = -1, rc;
   ssize_t r;
   char buf[BUF_SIZE] = {0};
   sqlite3 *db = NULL;
@@ -83,10 +83,12 @@ static int _csync_statedb_check(CSYNC *ctx, const char *statedb) {
   }
 
   /* create database */
-  if (sqlite3_open(statedb, &db) == SQLITE_OK) {
+  rc = sqlite3_open(statedb, &db);
+  if (rc == SQLITE_OK) {
     sqlite3_close(db);
     return 0;
   }
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "%s %s", sqlite3_errmsg(db), statedb);
   sqlite3_close(db);
 
   return -1;
