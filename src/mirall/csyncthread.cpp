@@ -37,7 +37,6 @@ QString CSyncThread::_csyncConfigDir;  // to be able to remove the lock file.
 
 QMutex CSyncThread::_mutex;
 
-
 struct proxyInfo_s {
     char *proxyType;
     char *proxyHost;
@@ -47,75 +46,107 @@ struct proxyInfo_s {
 };
 typedef proxyInfo_s ProxyInfo;
 
- int CSyncThread::checkPermissions( TREE_WALK_FILE* file, void *data )
- {
-     WalkStats *wStats = static_cast<WalkStats*>(data);
+walkStats_s::walkStats_s() {
+    errorType = 0;
 
-     if( !wStats ) {
-         qDebug() << "WalkStats is zero - must not be!";
-         return -1;
-     }
+    eval = 0;
+    removed = 0;
+    renamed = 0;
+    newFiles = 0;
+    conflicts = 0;
+    ignores = 0;
+    sync = 0;
+    error = 0;
 
-     wStats->seenFiles++;
+    dirPermErrors = 0;
 
-     switch(file->instruction) {
-     case CSYNC_INSTRUCTION_NONE:
+    seenFiles = 0;
 
-         break;
-     case CSYNC_INSTRUCTION_EVAL:
-         wStats->eval++;
-         break;
-     case CSYNC_INSTRUCTION_REMOVE:
-         wStats->removed++;
-         break;
-     case CSYNC_INSTRUCTION_RENAME:
-         wStats->renamed++;
-         break;
-     case CSYNC_INSTRUCTION_NEW:
-         wStats->newFiles++;
-         break;
-     case CSYNC_INSTRUCTION_CONFLICT:
-         wStats->conflicts++;
-         break;
-     case CSYNC_INSTRUCTION_IGNORE:
-         wStats->ignores++;
-         break;
-     case CSYNC_INSTRUCTION_SYNC:
-         wStats->sync++;
-         break;
-     case CSYNC_INSTRUCTION_STAT_ERROR:
-     case CSYNC_INSTRUCTION_ERROR:
-         /* instructions for the propagator */
-     case CSYNC_INSTRUCTION_DELETED:
-     case CSYNC_INSTRUCTION_UPDATED:
-         wStats->error++;
-         wStats->errorType = WALK_ERROR_INSTRUCTIONS;
-         break;
-     default:
-         wStats->error++;
-         wStats->errorType = WALK_ERROR_WALK;
-         break;
-     }
+}
 
-     if( file ) {
-         QString source = QString::fromUtf8(wStats->sourcePath);
-         source.append(QString::fromUtf8(file->path));
-         QFileInfo fi(source);
 
-         if( fi.isDir()) {  // File type directory.
-             if( !(fi.isWritable() && fi.isExecutable()) ) {
-                 wStats->dirPermErrors++;
-                 wStats->errorType = WALK_ERROR_DIR_PERMS;
-             }
-         }
-     }
+int CSyncThread::recordStats( TREE_WALK_FILE* file )
+{
+    if( ! file ) return -1;
+    _mutex.lock();
 
-     // qDebug() << wStats->seenFiles << ". Path: " << file->path << ": uid= " << file->uid << " - type: " << file->type;
-     if( !( wStats->errorType == WALK_ERROR_NONE || wStats->errorType == WALK_ERROR_DIR_PERMS )) {
-         return -1;
-     }
-     return 0;
- }
+    _walkStats.seenFiles++;
+
+    switch(file->instruction) {
+    case CSYNC_INSTRUCTION_NONE:
+
+        break;
+    case CSYNC_INSTRUCTION_EVAL:
+        _walkStats.eval++;
+        break;
+    case CSYNC_INSTRUCTION_REMOVE:
+        _walkStats.removed++;
+        break;
+    case CSYNC_INSTRUCTION_RENAME:
+        _walkStats.renamed++;
+        break;
+    case CSYNC_INSTRUCTION_NEW:
+        _walkStats.newFiles++;
+        break;
+    case CSYNC_INSTRUCTION_CONFLICT:
+        _walkStats.conflicts++;
+        break;
+    case CSYNC_INSTRUCTION_IGNORE:
+        _walkStats.ignores++;
+        break;
+    case CSYNC_INSTRUCTION_SYNC:
+        _walkStats.sync++;
+        break;
+    case CSYNC_INSTRUCTION_STAT_ERROR:
+    case CSYNC_INSTRUCTION_ERROR:
+        /* instructions for the propagator */
+    case CSYNC_INSTRUCTION_DELETED:
+    case CSYNC_INSTRUCTION_UPDATED:
+        _walkStats.error++;
+        _walkStats.errorType = WALK_ERROR_INSTRUCTIONS;
+        break;
+    default:
+        _walkStats.error++;
+        _walkStats.errorType = WALK_ERROR_WALK;
+        break;
+    }
+
+    int re = 0;
+    // qDebug() << _walkStats.seenFiles << ". Path: " << file->path << ": uid= " << file->uid << " - type: " << file->type;
+    if( !( _walkStats.errorType == WALK_ERROR_NONE || _walkStats.errorType == WALK_ERROR_DIR_PERMS )) {
+        re = -1;
+    }
+    _mutex.unlock();
+
+    return re;
+}
+
+int CSyncThread::treewalk( TREE_WALK_FILE* file, void *data )
+{
+    int re = static_cast<CSyncThread*>(data)->recordStats( file );
+    if( re > -1 )
+        return static_cast<CSyncThread*>(data)->treewalkFile( file );
+    return -1;
+}
+
+int CSyncThread::treewalkFile( TREE_WALK_FILE *file )
+{
+    if( ! file ) return -1;
+    SyncFileItem item;
+    item.file = QString::fromUtf8( file->path );
+    item.instruction = file->instruction;
+
+    QFileInfo fi( _source, item.file );
+    if( !(fi.isWritable() && fi.isExecutable()) ) {
+        _walkStats.dirPermErrors++;
+    }
+
+    _mutex.lock();
+    _syncedItems.append(item);
+    _mutex.unlock();
+
+    return 0;
+}
 
 CSyncThread::CSyncThread(const QString &source, const QString &target, bool localCheckOnly)
 
@@ -158,23 +189,11 @@ void CSyncThread::startSync()
 {
     qDebug() << "starting to sync " << qApp->thread() << QThread::currentThread();
     CSYNC *csync;
-    WalkStats *wStats = new WalkStats;
     QTime walkTime;
 
-    wStats->sourcePath = 0;
-    wStats->errorType  = 0;
-    wStats->eval       = 0;
-    wStats->removed    = 0;
-    wStats->renamed    = 0;
-    wStats->newFiles   = 0;
-    wStats->ignores    = 0;
-    wStats->sync       = 0;
-    wStats->seenFiles  = 0;
-    wStats->conflicts  = 0;
-    wStats->error      = 0;
-    wStats->dirPermErrors = 0;
-
     ProxyInfo proxyInfo;
+
+    emit(started());
 
     _mutex.lock();
 
@@ -184,15 +203,11 @@ void CSyncThread::startSync()
     proxyInfo.proxyUser = qstrdup( _proxy.user().toAscii().constData() );
     proxyInfo.proxyPwd  = qstrdup( _proxy.password().toAscii().constData() );
 
-    emit(started());
-
     if( csync_create(&csync,
                      _source.toUtf8().data(),
                      _target.toUtf8().data()) < 0 ) {
         emit csyncError( tr("CSync create failed.") );
     }
-    // FIXME: Check if we really need this stringcopy!
-    wStats->sourcePath = qstrdup( _source.toUtf8().constData() );
     _csyncConfigDir = QString::fromUtf8( csync_get_config_dir( csync ));
     _mutex.unlock();
 
@@ -288,15 +303,15 @@ void CSyncThread::startSync()
     }
     qDebug() << "<<#### Update end ###########################################################";
 
-    csync_set_userdata(csync, wStats);
+    csync_set_userdata(csync, this);
 
     walkTime.start();
-    if( csync_walk_local_tree(csync, &checkPermissions, 0) < 0 ) {
+    if( csync_walk_local_tree(csync, &treewalk, 0) < 0 ) {
         qDebug() << "Error in treewalk.";
-        if( wStats->errorType == WALK_ERROR_WALK ) {
+        if( _walkStats.errorType == WALK_ERROR_WALK ) {
             emit csyncError(tr("CSync encountered an error while examining the file system.\n"
                                "Syncing is not possible."));
-        } else if( wStats->errorType == WALK_ERROR_INSTRUCTIONS ) {
+        } else if( _walkStats.errorType == WALK_ERROR_INSTRUCTIONS ) {
             emit csyncError(tr("CSync update generated a strange instruction.\n"
                                "Please write a bug report."));
         }
@@ -304,15 +319,15 @@ void CSyncThread::startSync()
         goto cleanup;
     } else {
         // only warn, do not stop the sync process.
-        if( wStats->errorType == WALK_ERROR_DIR_PERMS ) {
+        if( _walkStats.errorType == WALK_ERROR_DIR_PERMS ) {
             emit csyncError(tr("The local filesystem has %1 write protected directories."
                                "That can hinder successful syncing.<p/>"
-                               "Please make sure that all local directories are writeable.").arg(wStats->dirPermErrors));
+                               "Please make sure that all local directories are writeable.").arg(_walkStats.dirPermErrors));
         }
     }
 
-    // emit the treewalk results. Do not touch the wStats after this.
-    emit treeWalkResult(wStats);
+    // emit the treewalk results.
+    emit treeWalkResult(_syncedItems, _walkStats);
 
     _mutex.lock();
     if( _localCheckOnly ) {

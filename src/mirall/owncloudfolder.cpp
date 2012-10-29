@@ -174,8 +174,10 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     connect(_csync, SIGNAL(csyncStateDbFile(QString)), SLOT(slotCsyncStateDbFile(QString)), Qt::QueuedConnection);
     connect(_csync, SIGNAL(wipeDb()),SLOT(slotWipeDb()), Qt::QueuedConnection);
 
-    connect( _csync, SIGNAL(treeWalkResult(WalkStats*)),
-             this, SLOT(slotThreadTreeWalkResult(WalkStats*)), Qt::QueuedConnection);
+    qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
+    qRegisterMetaType<WalkStats>("WalkStats");
+    connect( _csync, SIGNAL(treeWalkResult(SyncFileItemVector,WalkStats)),
+             this, SLOT(slotThreadTreeWalkResult(SyncFileItemVector, WalkStats)), Qt::QueuedConnection);
     _thread->start();
     QMetaObject::invokeMethod(_csync, "startSync", Qt::QueuedConnection);
 
@@ -187,27 +189,28 @@ void ownCloudFolder::slotCSyncStarted()
     emit syncStarted();
 }
 
-void ownCloudFolder::slotThreadTreeWalkResult( WalkStats *wStats )
+void ownCloudFolder::slotThreadTreeWalkResult(const SyncFileItemVector& items, const WalkStats& wStats )
 {
-    qDebug() << "Seen files: " << wStats->seenFiles;
+    _items = items;
+    qDebug() << "Seen files: " << wStats.seenFiles;
 
     /* check if there are happend changes in the file system */
-    qDebug() << "New     files: " << wStats->newFiles;
-    qDebug() << "Updated files: " << wStats->eval;
-    qDebug() << "Walked  files: " << wStats->seenFiles;
-    qDebug() << "Eval files: "    << wStats->eval;
-    qDebug() << "Removed files: " << wStats->removed;
-    qDebug() << "Renamed files: " << wStats->renamed;
+    qDebug() << "New     files: " << wStats.newFiles;
+    qDebug() << "Updated files: " << wStats.eval;
+    qDebug() << "Walked  files: " << wStats.seenFiles;
+    qDebug() << "Eval files: "    << wStats.eval;
+    qDebug() << "Removed files: " << wStats.removed;
+    qDebug() << "Renamed files: " << wStats.renamed;
 
     if( ! _localCheckOnly ) _lastSeenFiles = 0;
     _localFileChanges = false;
 
 #ifndef USE_INOTIFY
-    if( _lastSeenFiles > 0 && _lastSeenFiles != wStats->seenFiles ) {
-        qDebug() << "*** last seen files different from currently seen number " << _lastSeenFiles << "<>" << wStats->seenFiles << " => full Sync needed";
+    if( _lastSeenFiles > 0 && _lastSeenFiles != wStats.seenFiles ) {
+        qDebug() << "*** last seen files different from currently seen number " << _lastSeenFiles << "<>" << wStats.seenFiles << " => full Sync needed";
         _localFileChanges = true;
     }
-    if( (wStats->newFiles + wStats->eval + wStats->removed + wStats->renamed) > 0 ) {
+    if( (wStats.newFiles + wStats.eval + wStats.removed + wStats.renamed) > 0 ) {
          qDebug() << "*** Local changes, lets do a full sync!" ;
          _localFileChanges = true;
     }
@@ -215,14 +218,8 @@ void ownCloudFolder::slotThreadTreeWalkResult( WalkStats *wStats )
         qDebug() << "     *** No local changes, finalize, pollTimerCounter is "<< _pollTimerCnt ;
     }
 #endif
-    _lastSeenFiles = wStats->seenFiles;
+    _lastSeenFiles = wStats.seenFiles;
 
-    /*
-     * Attention: This is deleted here, outside of the thread, because the thread can
-     * faster die than this routine has read out the memory.
-     */
-    if(wStats->sourcePath) delete[] wStats->sourcePath;
-    delete wStats;
 }
 
 void ownCloudFolder::slotCSyncError(const QString& err)
@@ -381,6 +378,55 @@ SyncFileStatus ownCloudFolder::fileStatus( const QString& file )
         }
     }
     return STATUS_NEW;
+}
+
+SyncFileStatus ownCloudFolder::fileStatus( const QString& file )
+{
+    foreach( const SyncFileItem item, _items ) {
+        const QString fullFileName = path() + item.file;
+        qDebug() << "FileStatus compare: " << item.file << " <> " << fullFileName;
+
+        if( item.file == fullFileName ) {
+            switch( item.instruction ) {
+            case   CSYNC_INSTRUCTION_NONE:
+                return STATUS_NONE;
+                break;
+            case   CSYNC_INSTRUCTION_EVAL:
+                return STATUS_EVAL;
+                break;
+            case   CSYNC_INSTRUCTION_RENAME:
+                return STATUS_RENAME;
+                break;
+            case   CSYNC_INSTRUCTION_NEW:
+                return STATUS_NEW;
+                break;
+            case   CSYNC_INSTRUCTION_CONFLICT:
+                return STATUS_CONFLICT;
+                break;
+            case   CSYNC_INSTRUCTION_IGNORE:
+                return STATUS_IGNORE;
+                break;
+            case   CSYNC_INSTRUCTION_SYNC:
+                return STATUS_SYNC;
+                break;
+            case   CSYNC_INSTRUCTION_STAT_ERROR:
+                return STATUS_STAT_ERROR;
+                break;
+            case   CSYNC_INSTRUCTION_ERROR:
+                return STATUS_ERROR;
+                break;
+            case   CSYNC_INSTRUCTION_DELETED:
+                return STATUS_DELETED;
+                break;
+            case   CSYNC_INSTRUCTION_UPDATED:
+                return STATUS_UPDATED;
+                break;
+            default:
+                return STATUS_NEW;
+            }
+
+        }
+    }
 }
 
 } // ns

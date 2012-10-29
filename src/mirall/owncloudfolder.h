@@ -26,6 +26,22 @@ class QProcess;
 
 namespace Mirall {
 
+enum SyncFileStatus_s {
+    STATUS_NONE,
+    STATUS_EVAL,
+    STATUS_REMOVE,
+    STATUS_RENAME,
+    STATUS_NEW,
+    STATUS_CONFLICT,
+    STATUS_IGNORE,
+    STATUS_SYNC,
+    STATUS_STAT_ERROR,
+    STATUS_ERROR,
+    STATUS_DELETED,
+    STATUS_UPDATED
+};
+typedef SyncFileStatus_s SyncFileStatus;
+
 class ownCloudFolder : public Folder
 {
     Q_OBJECT
@@ -41,6 +57,8 @@ public:
 
     virtual void wipe();
 
+    SyncFileStatus fileStatus( const QString& );
+
 public slots:
     void startSync();
     void slotTerminateSync();
@@ -52,9 +70,7 @@ private slots:
     void slotCSyncStarted();
     void slotCSyncError(const QString& );
     void slotCSyncFinished();
-    void slotThreadTreeWalkResult( WalkStats* );
-    void slotCsyncStateDbFile(const QString&);
-    void slotWipeDb();
+    void slotThreadTreeWalkResult(const SyncFileItemVector &, const WalkStats& );
 
     void slotPollTimerRemoteCheck();
 
@@ -70,7 +86,7 @@ private:
     bool         _csyncError;
     bool         _wipeDb;
     ulong        _lastSeenFiles;
-    QString      _csyncStateDbFile;
+    QVector<SyncFileItem> _items;
 };
 
 }

@@ -37,7 +37,8 @@ enum walkErrorTypes {
 };
 
 struct walkStats_s {
-    const char *sourcePath;
+    walkStats_s();
+
     int errorType;
 
     ulong eval;
@@ -56,6 +57,14 @@ struct walkStats_s {
 
 typedef walkStats_s WalkStats;
 
+struct syncFileItem_s {
+    QString file;
+    csync_instructions_e instruction;
+};
+typedef syncFileItem_s SyncFileItem;
+
+typedef QVector<SyncFileItem> SyncFileItemVector;
+
 class CSyncThread : public QObject
 {
     Q_OBJECT
@@ -69,7 +78,7 @@ public:
     Q_INVOKABLE void startSync();
 
 signals:
-    void treeWalkResult(WalkStats*);
+    void treeWalkResult(const SyncFileItemVector&, const WalkStats&);
     void csyncError( const QString& );
 
     void csyncStateDbFile( const QString& );
@@ -79,8 +88,10 @@ signals:
     void started();
 
 private:
-    static int checkPermissions( TREE_WALK_FILE* file, void *data);
+    static int treewalk( TREE_WALK_FILE* file, void *data );
+    int recordStats( TREE_WALK_FILE* file);
     void emitStateDb( CSYNC *csync );
+    int treewalkFile( TREE_WALK_FILE* );
 
     static int getauth(const char *prompt,
                 char *buf,
@@ -100,6 +111,9 @@ private:
     QString _source;
     QString _target;
     bool    _localCheckOnly;
+
+    QVector <SyncFileItem> _syncedItems;
+    WalkStats _walkStats;
 };
 }
 
