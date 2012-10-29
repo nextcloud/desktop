@@ -89,7 +89,11 @@ QString Folder::alias() const
 
 QString Folder::path() const
 {
-    return _path;
+    QString p(_path);
+    if( ! p.endsWith(QLatin1Char('/')) ) {
+        p.append(QLatin1Char('/'));
+    }
+    return p;
 }
 
 QString Folder::secondPath() const
