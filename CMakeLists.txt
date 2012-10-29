@@ -39,7 +39,6 @@ macro_ensure_out_of_source_build("${PROJECT_NAME} requires an out of source buil
 include(MacroAddPlugin)
 include(MacroCopyFile)
 
-find_package(Log4C)
 find_package(CMocka)
 if (CMOCKA_FOUND AND UNIT_TESTING)
     include(AddCMockaTest)
