@@ -37,7 +37,6 @@ enum SyncFileStatus_s {
     STATUS_SYNC,
     STATUS_STAT_ERROR,
     STATUS_ERROR,
-    STATUS_DELETED,
     STATUS_UPDATED
 };
 typedef SyncFileStatus_s SyncFileStatus;
