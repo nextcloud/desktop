@@ -332,5 +332,56 @@ void ownCloudFolder::wipe()
     _wipeDb = false;
 }
 
+SyncFileStatus ownCloudFolder::fileStatus( const QString& file )
+{
+    if( file.isEmpty() ) return STATUS_NONE;
+
+    foreach( const SyncFileItem item, _items ) {
+        qDebug() << "FileStatus compare: " << item.file << " <> " << file;
+
+        if( item.file == file ) {
+            switch( item.instruction ) {
+            case   CSYNC_INSTRUCTION_NONE:
+                return STATUS_NONE;
+                break;
+            case   CSYNC_INSTRUCTION_EVAL:
+                return STATUS_EVAL;
+                break;
+            case   CSYNC_INSTRUCTION_RENAME:
+                return STATUS_RENAME;
+                break;
+            case   CSYNC_INSTRUCTION_NEW:
+                return STATUS_NEW;
+                break;
+            case   CSYNC_INSTRUCTION_CONFLICT:
+                return STATUS_CONFLICT;
+                break;
+            case   CSYNC_INSTRUCTION_IGNORE:
+                return STATUS_IGNORE;
+                break;
+            case   CSYNC_INSTRUCTION_SYNC:
+                return STATUS_SYNC;
+                break;
+            case   CSYNC_INSTRUCTION_STAT_ERROR:
+                return STATUS_STAT_ERROR;
+                break;
+            case   CSYNC_INSTRUCTION_ERROR:
+                return STATUS_ERROR;
+                break;
+            case   CSYNC_INSTRUCTION_DELETED:
+                return STATUS_DELETED;
+                break;
+            case   CSYNC_INSTRUCTION_UPDATED:
+                return STATUS_UPDATED;
+                break;
+            default:
+                break;
+            }
+
+        }
+    }
+    return STATUS_NEW;
+}
+
 } // ns
 
