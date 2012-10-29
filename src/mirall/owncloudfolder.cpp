@@ -231,12 +231,6 @@ void ownCloudFolder::slotCSyncError(const QString& err)
     _csyncError = true;
 }
 
-void ownCloudFolder::slotCsyncStateDbFile( const QString& file )
-{
-    qDebug() << "Got csync statedb file: " << file;
-    _csyncStateDbFile = file;
-}
-
 void ownCloudFolder::slotCSyncFinished()
 {
     qDebug() << "-> CSync Finished slot with error " << _csyncError;
@@ -301,7 +295,6 @@ void ownCloudFolder::slotLocalPathChanged( const QString& dir )
             qDebug() << "XXXXXXX The sync folder root was removed!!";
             if( _thread && _thread->isRunning() ) {
                 qDebug() << "CSync currently running, set wipe flag!!";
-                slotWipeDb();
             } else {
                 qDebug() << "CSync not running, wipe it now!!";
                 wipe();
@@ -312,39 +305,31 @@ void ownCloudFolder::slotLocalPathChanged( const QString& dir )
     }
 }
 
-// an error condition in csyncthread requires to get rid of the database to avoid deletion
-// of files.
-void ownCloudFolder::slotWipeDb()
-{
-    qDebug() << "Wiping of the csync database is required!";
-    _wipeDb = true;
-}
-
 // This removes the csync File database if the sync folder definition is removed
 // permanentely. This is needed to provide a clean startup again in case another
 // local folder is synced to the same ownCloud.
 // See http://bugs.owncloud.org/thebuggenie/owncloud/issues/oc-788
 void ownCloudFolder::wipe()
 {
-    if( !_csyncStateDbFile.isEmpty() ) {
-        QFile file(_csyncStateDbFile);
-        if( file.exists() ) {
-            if( !file.remove()) {
-                qDebug() << "WRN: Failed to remove existing csync StateDB " << _csyncStateDbFile;
-            } else {
-                qDebug() << "wipe: Removed csync StateDB " << _csyncStateDbFile;
-            }
+    QString stateDbFile = path()+QLatin1String(".csync_journal.db");
+
+    QFile file(stateDbFile);
+    if( file.exists() ) {
+        if( !file.remove()) {
+            qDebug() << "WRN: Failed to remove existing csync StateDB " << stateDbFile;
         } else {
-            qDebug() << "WRN: statedb is empty, can not remove.";
+            qDebug() << "wipe: Removed csync StateDB " << stateDbFile;
         }
-        // Check if the tmp database file also exists
-        QString ctmpName = _csyncStateDbFile + QLatin1String(".ctmp");
-        QFile ctmpFile( ctmpName );
-        if( ctmpFile.exists() ) {
-            ctmpFile.remove();
-        }
-        _wipeDb = false;
+    } else {
+        qDebug() << "WRN: statedb is empty, can not remove.";
     }
+    // Check if the tmp database file also exists
+    QString ctmpName = path() + QLatin1String(".csync_journal.db.ctmp");
+    QFile ctmpFile( ctmpName );
+    if( ctmpFile.exists() ) {
+        ctmpFile.remove();
+    }
+    _wipeDb = false;
 }
 
 } // ns
