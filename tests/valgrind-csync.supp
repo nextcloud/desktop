@@ -25,39 +25,6 @@
    fun:suite_create
 }
 
-### LOG4C
-
-{
-   Still reacheable memory in log4c
-   Memcheck:Leak
-   fun:calloc
-   fun:sd_hash_*
-}
-
-{
-   Still reacheable memory in log4c
-   Memcheck:Leak
-   fun:calloc
-   fun:sd_factory_*
-}
-
-{
-   Still reacheable memory in log4c
-   Memcheck:Leak
-   fun:calloc
-   fun:log4c_category_*
-   fun:sd_factory_*
-}
-
-{
-   Still reacheable memory in log4c
-   Memcheck:Leak
-   fun:malloc
-   fun:strdup
-   fun:sd_factory_*
-   fun:log4c_category_*
-}
-
 ### SQLITE3
 
 {
