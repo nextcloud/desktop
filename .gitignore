@@ -6,3 +6,7 @@ CMakeLists.txt.user*
 *~
 *.autosave
 doc/_build/*
+*~
+*.kate-swp
+*.kdev4
+win/
