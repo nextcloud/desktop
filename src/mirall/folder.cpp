@@ -74,7 +74,6 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
 
     // check if the local path exists
     checkLocalPath();
-
 }
 
 Folder::~Folder()
@@ -88,17 +87,23 @@ void Folder::checkLocalPath()
     if( fi.isDir() && fi.isReadable() ) {
         qDebug() << "Checked local path ok";
     } else {
-        _syncResult.setStatus( SyncResult::SetupError );
-        setSyncEnabled(false);
-
+        if( !fi.exists() ) {
+            // try to create the local dir
+            QDir d(_path);
+            if( d.mkpath(_path) ) {
+                qDebug() << "Successfully created the local dir " << _path;
+            }
+        }
+        // Check directory again
         if( !fi.exists() ) {
             _syncResult.setErrorString(tr("Local folder %1 does not exist.").arg(_path));
-        } else {
-            if( !fi.isDir() ) {
-                _syncResult.setErrorString(tr("Path %1 should be a directory but is not.").arg(_path));
-            } else if( !fi.isReadable() ) {
-                _syncResult.setErrorString(tr("Path %1 is not readable.").arg(_path));
-            }
+            _syncResult.setStatus( SyncResult::SetupError );
+        } else if( !fi.isDir() ) {
+            _syncResult.setErrorString(tr("%1 should be a directory but is not.").arg(_path));
+            _syncResult.setStatus( SyncResult::SetupError );
+        } else if( !fi.isReadable() ) {
+            _syncResult.setErrorString(tr("%1 is not readable.").arg(_path));
+            _syncResult.setStatus( SyncResult::SetupError );
         }
     }
 
