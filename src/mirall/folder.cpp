@@ -92,7 +92,7 @@ void Folder::checkLocalPath()
         setSyncEnabled(false);
 
         if( !fi.exists() ) {
-            _syncResult.setErrorString(tr("The local folder %1 does not exist.").arg(_path));
+            _syncResult.setErrorString(tr("Local folder %1 does not exist.").arg(_path));
         } else {
             if( !fi.isDir() ) {
                 _syncResult.setErrorString(tr("Path %1 should be a directory but is not.").arg(_path));

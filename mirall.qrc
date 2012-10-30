@@ -31,5 +31,7 @@
         <file>resources/owncloud-error-48.png</file>
         <file>resources/owncloud-sync-48.png</file>
         <file>resources/owncloud-sync-ok-48.png</file>
+
+        <file>resources/warning-16.png</file>
     </qresource>
 </RCC>
