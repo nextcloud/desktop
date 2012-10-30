@@ -192,6 +192,8 @@ private:
      */
     void evaluateSync(const QStringList &pathList);
 
+    virtual void checkLocalPath();
+
     QString   _path;
     QString   _secondPath;
     QString   _alias;

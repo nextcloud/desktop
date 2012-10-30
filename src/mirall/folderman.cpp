@@ -169,14 +169,6 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
     settings.beginGroup( escapedAlias ); // read the group with the same name as the file which is the folder alias
 
     QString path = settings.value(QLatin1String("localpath")).toString();
-    if ( path.isNull() || !QFileInfo( path ).isDir() ) {
-        qWarning() << "    `->" << path << "does not exist. Skipping folder" << file;
-        // _tray->showMessage(tr("Unknown folder"),
-        //                    tr("Folder %1 does not exist").arg(path.toString()),
-        //                    QSystemTrayIcon::Critical);
-        return folder;
-    }
-
     QString backend = settings.value(QLatin1String("backend")).toString();
     QString targetPath = settings.value( QLatin1String("targetPath") ).toString();
     // QString connection = settings.value( QLatin1String("connection") ).toString();

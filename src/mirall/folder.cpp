@@ -70,16 +70,45 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
     _online = true;
 #endif
 
-    _pathWatcher = new QFileSystemWatcher(this);
-    _pathWatcher->addPath( _path );
-    connect(_pathWatcher, SIGNAL(directoryChanged(QString)),SLOT(slotLocalPathChanged(QString)));
-
     _syncResult.setStatus( SyncResult::NotYetStarted );
+
+    // check if the local path exists
+    checkLocalPath();
 
 }
 
 Folder::~Folder()
 {
+}
+
+void Folder::checkLocalPath()
+{
+    QFileInfo fi(_path);
+
+    if( fi.isDir() && fi.isReadable() ) {
+        qDebug() << "Checked local path ok";
+    } else {
+        _syncResult.setStatus( SyncResult::SetupError );
+        setSyncEnabled(false);
+
+        if( !fi.exists() ) {
+            _syncResult.setErrorString(tr("The local folder %1 does not exist.").arg(_path));
+        } else {
+            if( !fi.isDir() ) {
+                _syncResult.setErrorString(tr("Path %1 should be a directory but is not.").arg(_path));
+            } else if( !fi.isReadable() ) {
+                _syncResult.setErrorString(tr("Path %1 is not readable.").arg(_path));
+            }
+        }
+    }
+
+    // if all is fine, connect a FileSystemWatcher
+    if( _syncResult.status() != SyncResult::SetupError ) {
+        _pathWatcher = new QFileSystemWatcher(this);
+        _pathWatcher->addPath( _path );
+        connect(_pathWatcher, SIGNAL(directoryChanged(QString)),
+                SLOT(slotLocalPathChanged(QString)));
+    }
 }
 
 QString Folder::alias() const
