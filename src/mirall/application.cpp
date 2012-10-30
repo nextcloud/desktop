@@ -864,47 +864,47 @@ void Application::computeOverallSyncStatus()
         SyncResult::Status syncStatus = folderResult.status();
 
         if( ! folderResult.localRunOnly() ) { // skip local runs, use the last message.
-            if( syncedFolder->syncEnabled() ) {
-                switch( syncStatus ) {
-                case SyncResult::Undefined:
-                    if ( overallResult.status() != SyncResult::Error ) {
-                      overallResult.setStatus(SyncResult::Error);
-                    }
-                    folderMessage = tr( "Undefined State." );
-                    break;
-                case SyncResult::NotYetStarted:
-                    folderMessage = tr( "Waits to start syncing." );
-                    overallResult.setStatus( SyncResult::NotYetStarted );
-                    break;
-                case SyncResult::SyncRunning:
-                    folderMessage = tr( "Sync is running." );
-                    overallResult.setStatus( SyncResult::SyncRunning );
-                    break;
-                case SyncResult::Success:
-                    if( overallResult.status() == SyncResult::Undefined ) {
-                        folderMessage = tr( "Last Sync was successful." );
-                        overallResult.setStatus( SyncResult::Success );
-                    }
-                    break;
-                case SyncResult::Error:
-                    overallResult.setStatus( SyncResult::Error );
-                    folderMessage = tr( "Syncing Error." );
-                    break;
-                case SyncResult::SetupError:
-                    if ( overallResult.status() != SyncResult::Error ) {
-                        overallResult.setStatus( SyncResult::SetupError );
-                    }
-                    folderMessage = tr( "Setup Error." );
-                    break;
-                default:
-                    folderMessage = tr( "Undefined Error State." );
-                    overallResult.setStatus( SyncResult::Error );
+            switch( syncStatus ) {
+            case SyncResult::Undefined:
+                if ( overallResult.status() != SyncResult::Error ) {
+                    overallResult.setStatus(SyncResult::Error);
                 }
-            } else {
+                folderMessage = tr( "Undefined State." );
+                break;
+            case SyncResult::NotYetStarted:
+                folderMessage = tr( "Waits to start syncing." );
+                overallResult.setStatus( SyncResult::NotYetStarted );
+                break;
+            case SyncResult::SyncRunning:
+                folderMessage = tr( "Sync is running." );
+                overallResult.setStatus( SyncResult::SyncRunning );
+                break;
+            case SyncResult::Success:
+                if( overallResult.status() == SyncResult::Undefined ) {
+                    folderMessage = tr( "Last Sync was successful." );
+                    overallResult.setStatus( SyncResult::Success );
+                }
+                break;
+            case SyncResult::Error:
+                overallResult.setStatus( SyncResult::Error );
+                folderMessage = tr( "Syncing Error." );
+                break;
+            case SyncResult::SetupError:
+                if ( overallResult.status() != SyncResult::Error ) {
+                    overallResult.setStatus( SyncResult::SetupError );
+                }
+                folderMessage = tr( "Setup Error." );
+                break;
+            default:
+                folderMessage = tr( "Undefined Error State." );
+                overallResult.setStatus( SyncResult::Error );
+            }
+            if( !syncedFolder->syncEnabled() ) {
                 // sync is disabled.
-                folderMessage = tr( "Sync is paused." );
+                folderMessage += tr( " (Sync is paused)" );
             }
         }
+
         qDebug() << "Folder in overallStatus Message: " << syncedFolder << " with name " << syncedFolder->alias();
         QString msg = QString::fromLatin1("Folder %1: %2").arg(syncedFolder->alias()).arg(folderMessage);
         if( msg != _overallStatusStrings[syncedFolder->alias()] ) {
