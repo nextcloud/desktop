@@ -293,6 +293,7 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
                                    tr("Sync started for %1 configured sync folder(s).").arg(cnt));
 
             _statusDialog->setFolderList( _folderMan->map() );
+            computeOverallSyncStatus();
         }
         _actionAddFolder->setEnabled( true );
     }
