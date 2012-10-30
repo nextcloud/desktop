@@ -216,7 +216,7 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
     QDialog(parent),
     _theme( theme )
 {
-  setupUi( this  );
+  setupUi( this );
   setWindowTitle( QString::fromLatin1( "%1 %2" ).arg(_theme->appName(), _theme->version() ) );
 
   _model = new FolderStatusModel();
