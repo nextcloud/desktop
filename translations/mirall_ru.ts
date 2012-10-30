@@ -91,7 +91,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardnetworkpage.ui" line="47"/>
         <source>restrict to this local network</source>
-        <translation>ограничить в этой локальной сети</translation>
+        <translation>ограничить этой локальной сетью</translation>
     </message>
 </context>
 <context>
@@ -157,7 +157,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="54"/>
         <source>&amp;Directory alias name:</source>
-        <translation>&amp;псевдоним каталога :</translation>
+        <translation>&amp;Псевдоним каталога :</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="45"/>
@@ -326,7 +326,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="350"/>
         <source>Configure...</source>
-        <translation>Настройка...</translation>
+        <translation>Настроить...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="352"/>
@@ -345,7 +345,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="222"/>
         <source>%1 Server Mismatch</source>
-        <translation>Не соответсиве сервера %1</translation>
+        <translation>Несоответсиве сервера %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="223"/>
@@ -443,13 +443,13 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
     <message>
         <location filename="../src/mirall/application.cpp" line="705"/>
         <source>The folder waits to start syncing.</source>
-        <translation>Папка ожидает, начала синхронизации.</translation>
+        <translation>Папка ожидает начала синхронизации.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="708"/>
         <location filename="../src/mirall/application.cpp" line="879"/>
         <source>Sync is running.</source>
-        <translation>Синхронизация запущена.</translation>
+        <translation>Идет синхронизация.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="711"/>
@@ -489,7 +489,8 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <location filename="../src/mirall/application.cpp" line="741"/>
         <source>Changed files:
 </source>
-        <translation>Измененные файлы:</translation>
+        <translation>Измененные файлы:
+</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="743"/>
@@ -502,7 +503,8 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <location filename="../src/mirall/application.cpp" line="745"/>
         <source>New files in the server, or files deleted locally:
 </source>
-        <translation>Новые файлы на сервере, или файлы, удаленные на месте:</translation>
+        <translation>Новые файлы на сервере, или файлы, удаленные на месте:
+</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="771"/>
@@ -587,7 +589,7 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="272"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
-        <translation>Локальная файловая система не доступна для записан. Пожалуйста, проверьте разрешения.</translation>
+        <translation>Локальная файловая система не доступна для записи. Пожалуйста, проверьте права пользователя.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="276"/>
@@ -637,7 +639,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="318"/>
         <source>Local filesystem problems. Better disable Syncing and check.</source>
-        <translation>Локальные проблемы файловой системы. Лучше отключить синхронизацию и проверить.</translation>
+        <translation>Проблемы с локальной файловой системой. Рекомендуется отключить синхронизацию и проверить.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="323"/>
@@ -694,12 +696,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="94"/>
         <source>An already configured folder is contained in the current entry.</source>
-        <translation>Уже настроенные папки, содержаться в текущей записи.</translation>
+        <translation>Уже настроенные папки содержатся в текущей записи.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="99"/>
         <source>An already configured folder contains the currently entered directory.</source>
-        <translation>Уже настроенные папки, содержаться в текущем каталоге.</translation>
+        <translation>Уже настроенные папки содержатся в текущем каталоге.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="109"/>
@@ -1144,7 +1146,7 @@ Setup can not be done.</source>
         <location filename="../src/mirall/sslerrordialog.cpp" line="154"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="155"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;lt;не указано&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="156"/>
@@ -1167,12 +1169,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="165"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Отпечаток (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="166"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Отпечаток (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="168"/>
@@ -1281,7 +1283,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="114"/>
         <source>Client Version Check</source>
-        <translation>Версия клиента Проверьте</translation>
+        <translation>Проверить версию клиента</translation>
     </message>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="116"/>
@@ -1384,7 +1386,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="115"/>
         <source>Do not store password on local machine.</source>
-        <translation>Не храните пароль на локальной машине.</translation>
+        <translation>Не хранить пароль на локальной машине.</translation>
     </message>
     <message>
         <source>john</source>
@@ -1509,7 +1511,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="120"/>
         <source>&amp;Do not store password on local machine.</source>
-        <translation>&amp;Не храните пароль на локальном компьютере.</translation>
+        <translation>&amp;Не хранить пароль на локальном компьютере.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="36"/>
@@ -1751,7 +1753,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
         <source>Trust this certificate anyway</source>
-        <translation type="unfinished"/>
+        <translation>Доверять этому сертификату в любом случае</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>
@@ -1794,12 +1796,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="48"/>
         <source>Remove...</source>
-        <translation>Выборка...</translation>
+        <translation>Удалить...</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="58"/>
         <source>Fetch...</source>
-        <translation>Fetch...</translation>
+        <translation>Получить...</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="65"/>
