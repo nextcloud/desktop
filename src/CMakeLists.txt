@@ -2,8 +2,18 @@ project(libcsync C)
 
 add_subdirectory(std)
 
-find_package(SQLite3 REQUIRED)
-find_package(Iniparser REQUIRED)
+# Statically include sqlite and iniparser
+if (CSYNC_STATIC_COMPILE_DIR)
+    set(SQLITE3_INCLUDE_DIRS "")
+    set(SQLITE3_LIBRARIES "")
+    set(INIPARSER_LIBRARIES "")
+    set(INIPARSER_INCLUDE_DIRS "")
+    include_directories(${CSYNC_STATIC_COMPILE_DIR})
+else (CSYNC_STATIC_COMPILE_DIR)
+    find_package(SQLite3 REQUIRED)
+    find_package(Iniparser REQUIRED)
+endif()
+
 
 set(CSYNC_PUBLIC_INCLUDE_DIRS
   ${CMAKE_CURRENT_SOURCE_DIR}
@@ -68,6 +78,11 @@ set(csync_HDRS
   vio/csync_vio_method.h
   vio/csync_vio_module.h
 )
+
+# Statically include sqlite and iniparser
+if (CSYNC_STATIC_COMPILE_DIR)
+    list(APPEND csync_SRCS ${CSYNC_STATIC_COMPILE_DIR}/dictionary.c ${CSYNC_STATIC_COMPILE_DIR}/iniparser.c ${CSYNC_STATIC_COMPILE_DIR}/sqlite3.c)
+endif()
 
 include_directories(
   ${CSYNC_PUBLIC_INCLUDE_DIRS}
