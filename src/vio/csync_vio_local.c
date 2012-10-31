@@ -325,19 +325,17 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
     case S_IFIFO:
       buf->type = CSYNC_VIO_FILE_TYPE_FIFO;
       break;
-#ifndef _WIN32
-    case S_IFLNK:
-      buf->type = CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK;
-      break;
-#endif
     case S_IFREG:
       buf->type = CSYNC_VIO_FILE_TYPE_REGULAR;
       break;
 #ifndef _WIN32
+    case S_IFLNK:
+      buf->type = CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK;
+      break;
     case S_IFSOCK:
       buf->type = CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK;
-#endif
       break;
+#endif
     default:
       buf->type = CSYNC_VIO_FILE_TYPE_UNKNOWN;
       break;
@@ -380,6 +378,11 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
 
         buf->inode = FileIndex.QuadPart;
      }
+
+     /* Get the file time with a win32 call rather than through stat. See
+      * http://www.codeproject.com/Articles/1144/Beating-the-Daylight-Savings-Time-bug-and-getting
+      * for deeper explanation.
+      */
      if( GetFileTime(h, &ftCreate, &ftAccess, &ftWrite) ) {
        DWORD rem;
        buf->atime = FileTimeToUnixTime(&ftAccess, &rem);
@@ -393,23 +396,7 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
      }
      CloseHandle(h);
   }
-#endif
-
-  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_INODE;
-
-  buf->nlink = sb.st_nlink;
-  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_LINK_COUNT;
-
-  buf->uid = sb.st_uid;
-  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_UID;
-
-  buf->gid = sb.st_gid;
-  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_GID;
-
-  buf->size = sb.st_size;
-  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
-
-#ifndef _WIN32
+#else /* non windows platforms: */
   buf->blksize = sb.st_blksize;
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_SIZE;
 
@@ -425,10 +412,20 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   buf->ctime = sb.st_ctime;
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_CTIME;
 #endif
-  /*   buf->md5   = csync_file_md5( uri ); */
-  /* md5 is queried one level higher because we do not have ctx here. */
 
-  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_INODE;
+
+  buf->nlink = sb.st_nlink;
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_LINK_COUNT;
+
+  buf->uid = sb.st_uid;
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_UID;
+
+  buf->gid = sb.st_gid;
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_GID;
+
+  buf->size = sb.st_size;
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
 
   c_free_multibyte(wuri);
   return 0;
