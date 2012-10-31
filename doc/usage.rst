@@ -78,5 +78,5 @@ These are config settings that may be changed:
 * ``localPollinterval`` is for systems which poll the local file system (currently Win and Mac) this is the
   frequency they poll locally. The ``remotePollInterval`` is ignored on these systems.
 
-* ``maxLogLines`` sets  the exceed factor is the factor after which a remote poll is done. That means the effective
+* ``PollTimerExceedFactor`` sets  the exceed factor is the factor after which a remote poll is done. That means the effective
   frequency for remote poll is ``localPollInterval * pollTimerExceedFactor``.
