@@ -417,6 +417,10 @@ int csync_update(CSYNC *ctx) {
 
       rc = csync_ftw(ctx, ctx->remote.uri, csync_walker, MAX_DEPTH);
 
+      if( c_rbtree_size(ctx->remote.tree) == 0 && c_rbtree_size(ctx->local.tree) > 0 ) {
+          ctx->error_code = CSYNC_ERR_REMOTE_CLEANUP;
+          return -1;
+      }
       csync_gettime(&finish);
 
       CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
@@ -968,11 +972,11 @@ bool csync_file_known( char *statedb_file, const char* url ) {
     int len;
     uint64_t h;
     csync_file_stat_t *sb;
+    CSYNC *ctx = NULL;
 
     if( ! url ) return false;
 
-    CSYNC *ctx = c_malloc(sizeof(CSYNC));
-
+    ctx = c_malloc(sizeof(CSYNC));
     ctx->statedb.file = statedb_file;
 
     len = strlen(statedb_file);
