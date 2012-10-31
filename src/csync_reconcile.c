@@ -126,7 +126,8 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
 
                     if(ctx->options.with_conflict_copys)
                     {
-                        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"file new on both, cur is newer PATH=./%s",cur->path);
+                        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"file new on both, cur is newer PATH=./%s, %llu <-> %llu",
+				  cur->path, (unsigned long long) cur->modtime, (unsigned long long) other->modtime);
                         cur->instruction = CSYNC_INSTRUCTION_CONFLICT;
                         other->instruction = CSYNC_INSTRUCTION_NONE;
                     }
@@ -140,7 +141,8 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
 
                     if(ctx->options.with_conflict_copys)
                     {
-                        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"file new on both, other is newer PATH=./%s",cur->path);
+                        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"file new on both, other is newer PATH=./%s, %llu <->%llu",
+				  cur->path, (unsigned long long) cur->modtime, (unsigned long long) other->modtime);
                         cur->instruction = CSYNC_INSTRUCTION_NONE;
                         other->instruction = CSYNC_INSTRUCTION_CONFLICT;
                     }

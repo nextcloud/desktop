@@ -50,11 +50,11 @@ csync_vio_method_handle_t *csync_vio_local_open(const char *durl, int flags, mod
   fhandle_t *handle = NULL;
   int fd = -1;
   const _TCHAR *url = c_multibyte(durl);
-  
+
   if ((fd = _topen(url, flags, mode)) < 0) {
     return NULL;
   }
-  
+
   handle = c_malloc(sizeof(fhandle_t));
   if (handle == NULL) {
     close(fd);
@@ -62,9 +62,9 @@ csync_vio_method_handle_t *csync_vio_local_open(const char *durl, int flags, mod
   }
 
   handle->fd = fd;
-  
+
   c_free_multibyte(url);
-  
+
   return (csync_vio_method_handle_t *) handle;
 }
 
@@ -201,10 +201,10 @@ int csync_vio_local_closedir(csync_vio_method_handle_t *dhandle) {
 
 csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_method_handle_t *dhandle) {
   struct _tdirent *dirent = NULL;
-  
+
   dhandle_t *handle = NULL;
   csync_vio_file_stat_t *file_stat = NULL;
-  
+
   handle = (dhandle_t *) dhandle;
 
   errno = 0;
@@ -273,7 +273,27 @@ int csync_vio_local_rmdir(const char *uri) {
   c_free_multibyte(dirname);
   return re;
 }
-  
+
+#ifdef _WIN32
+static time_t FileTimeToUnixTime(FILETIME *filetime, DWORD *remainder)
+{
+   long long int t = filetime->dwHighDateTime;
+   t <<= 32;
+   t += (UINT32)filetime->dwLowDateTime;
+   t -= 116444736000000000LL;
+   if (t < 0)
+   {
+    if (remainder) *remainder = 9999999 - (-t - 1) % 10000000;
+	return -1 - ((-t - 1) / 10000000);
+    }
+    else
+    {
+	if (remainder) *remainder = t % 10000000;
+	return t / 10000000;
+    }
+
+}
+#endif
 
 int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   csync_stat_t sb;
@@ -282,7 +302,7 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
     c_free_multibyte(wuri);
     return -1;
   }
-  
+
   buf->name = c_basename(uri);
 
   if (buf->name == NULL) {
@@ -345,7 +365,11 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   if( h == INVALID_HANDLE_VALUE ) {
 
   } else {
+     FILETIME ftCreate, ftAccess, ftWrite;
+     SYSTEMTIME stUTC;
+
      BY_HANDLE_FILE_INFORMATION fileInfo;
+
      if( GetFileInformationByHandle( h, &fileInfo ) ) {
         ULARGE_INTEGER FileIndex;
         FileIndex.HighPart = fileInfo.nFileIndexHigh;
@@ -355,6 +379,17 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
         printf("Index: %I64i\n", FileIndex.QuadPart);
 
         buf->inode = FileIndex.QuadPart;
+     }
+     if( GetFileTime(h, &ftCreate, &ftAccess, &ftWrite) ) {
+       DWORD rem;
+       buf->atime = FileTimeToUnixTime(&ftAccess, &rem);
+       buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ATIME;
+
+       buf->mtime = FileTimeToUnixTime(&ftWrite, &rem);
+       buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
+
+       buf->ctime = FileTimeToUnixTime(&ftCreate, &rem);
+       buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_CTIME;
      }
      CloseHandle(h);
   }
@@ -380,7 +415,6 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
 
   buf->blkcount = sb.st_blocks;
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_COUNT;
-#endif
 
   buf->atime = sb.st_atime;
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ATIME;
@@ -390,7 +424,7 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
 
   buf->ctime = sb.st_ctime;
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_CTIME;
-
+#endif
   /*   buf->md5   = csync_file_md5( uri ); */
   /* md5 is queried one level higher because we do not have ctx here. */
 
@@ -432,7 +466,7 @@ int csync_vio_local_unlink(const char *uri) {
 int csync_vio_local_chmod(const char *uri, mode_t mode) {
   const _TCHAR *nuri = c_multibyte(uri);
   int re = -1;
-  
+
   re = _tchmod(nuri, mode);
   c_free_multibyte(nuri);
   return re;
