@@ -14,6 +14,7 @@ Contents
 
    install
    usage 
+   building 
 
 .. Indices and tables
 .. ==================
