@@ -168,6 +168,7 @@ int main(int argc, char **argv) {
   CSYNC *csync;
   char errbuf[256] = {0};
   int curser = 0;
+  int i;
 
   struct argument_s arguments;
 
@@ -196,7 +197,7 @@ int main(int argc, char **argv) {
    * Protect password from ps listing
    * Find and replace :password@ by :********@
    */
-  for (int i = 0; i < argc; i++) {
+  for (i = 0; i < argc; i++) {
     if (csync_fnmatch("*://*:*@*", argv[i], 0) == 0) {
       curser = strlen(argv[i]);
       while(curser > 0 && argv[i][curser] != '@') {
