@@ -37,6 +37,8 @@
 #include "csync_util.h"
 #include "csync_misc.h"
 
+#include "c_string.h"
+
 #define CSYNC_LOG_CATEGORY_NAME "csync.statedb"
 #include "csync_log.h"
 
@@ -48,6 +50,25 @@ void csync_set_statedb_exists(CSYNC *ctx, int val) {
 
 int csync_get_statedb_exists(CSYNC *ctx) {
   return ctx->statedb.exists;
+}
+
+static void _csync_win32_hide_file( const char *file ) {
+#ifdef _WIN32
+  const _TCHAR *fileName;
+  if( !file ) return;
+
+  fileName = c_multibyte( file );
+
+  DWORD dwAttrs = GetFileAttributesW(fileName);
+
+  if (dwAttrs==INVALID_FILE_ATTRIBUTES) return;
+
+  if (!(dwAttrs & FILE_ATTRIBUTE_HIDDEN)) {
+     SetFileAttributesW(fileName, dwAttrs | FILE_ATTRIBUTE_HIDDEN );
+  }
+
+  c_free_multibyte(fileName);
+#endif
 }
 
 static int _csync_statedb_check(const char *statedb) {
@@ -86,6 +107,7 @@ static int _csync_statedb_check(const char *statedb) {
   /* create database */
   if (sqlite3_open(statedb, &db) == SQLITE_OK) {
     sqlite3_close(db);
+    _csync_win32_hide_file(statedb);
     return 0;
   }
   sqlite3_close(db);
@@ -172,6 +194,8 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb) {
     rc = -1;
     goto out;
   }
+
+  _csync_win32_hide_file( statedb_tmp );
 
   /* Open the temporary database */
   if (sqlite3_open(statedb_tmp, &ctx->statedb.db) != SQLITE_OK) {
