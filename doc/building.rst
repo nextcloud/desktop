@@ -1,8 +1,9 @@
 Building the Client
 ===================
 
-The ownCloud Client requires Mirall and CSync_. Mirall is the GUI frontend,
-while CSync is responsible for handling the actual synchronization process.
+This section explains how to build the ownCloud Client from source
+for all major platforms. You should read this section if you want
+to development on the desktop client.
 
 Linux
 -----
@@ -12,21 +13,26 @@ Linux
 
   * Debian/Ubuntu: ``apt-get update; apt-get build-dep owncloud-client``
   * openSUSE: ``zypper ref; zypper si -d owncloud-client``
-  * Fedora: ``yum install yum-utils; yum-builddep owncloud-client``
+  * Fedora/CentOS: ``yum install yum-utils; yum-builddep owncloud-client``
 
-3. Follow the generic build instructions.
+3. Follow the `generic build instructions`_.
 
 Mac OS X
 --------
 
-Follow the generic build instructions.
+Follow the `generic build instructions`_.
  
 You can install the missing dependencies via MacPorts_ or Homebrew_.
 This is only needed on the build machine, since non-standard libs
 will be deployed in the app bundle.
 
 The only exception to this rule is libiniparser_, which lacks a decent
-build system. You need to copy the header and lib files to
+build system. If you are using Homebrew_, you can just add it::
+
+  brew tap dschmidt/owncloud
+  brew install iniparser
+
+Otherwise, you need to copy the header and lib files to
 ``/usr/local/include`` and ``/usr/local/lib`` respectively. 
 
 .. note::
@@ -54,7 +60,7 @@ Next, install the cross-compiler packages and the cross-compiled dependencies::
   zypper si -d mingw32-ocsync
   zypper si -d mingw32-owncloud-client 
 
-Now, follow the generic build instructions, but make sure to append
+Now, follow the `generic build instructions`_, but make sure to append
 the following parameter to both cmake calls::
 
   -DCMAKE_TOOLCHAIN_FILE=../mirall/admin/win/Toolchain-mingw32-openSUSE.cmake
@@ -64,6 +70,10 @@ an NSIS-based installer, provided the NSIS mingw32 packages are installed.
 
 Generic Build Instructions
 --------------------------
+.. _`generic build instructions`
+
+The ownCloud Client requires Mirall and CSync_. Mirall is the GUI frontend,
+while CSync is responsible for handling the actual synchronization process.
 
 At the moment, ownCloud Client requires a forked version of CSync. Both
 CMake and Mirall can be downloaded at ownCloud's `Client Download Page`_.
