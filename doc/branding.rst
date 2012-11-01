@@ -38,15 +38,18 @@ Under the group definition [GUICustomize] the following keys can be set:
 * ``oCSetupFixUrl``: An fixed url to the ownCloud instance. If this is set, the
    user can not access the url entry field and it is hidden.
 
-The keys can be set to either an image file or a rich text snippet. Image files
-must be addressed by the complete file name. On windows, the pathes should be
-noted with slashes instead of backslashes, i.e.
-``%RESOURCES/custom/fncloud_top.png`` (Note the single `%`).
+The keys can be set to either an image file or a `rich text`_ snippet, which
+must be enclosed with  double quotes. Image files must be addressed by the
+complete file name. On windows, the pathes should be noted with slashes
+instead of backslashes. Instead of absolute file pathes, you can use
+the ``%RESOURCES`` placeholder (note the single ``%``!).
 
-`Rich text`_, must be enclosed by double quotes.
+Example::
+
+  ``%RESOURCES/custom/myimage_top.png
 
 .. note:: ``%RESOURCES`` is currently undefined on Linux, it points to the
-          directories of ``custom.ini`` on all other platforms.
+          directory location of ``custom.ini`` on all other platforms.
 
 Example
 ~~~~~~~
@@ -70,12 +73,14 @@ A config file ``custom.ini`` like this::
 
   Setup Dialog Customization
 
-
-.. _`Windows INI file format`: http://en.wikipedia.org/wiki/INI_file
-
 Packaging remarks
 ~~~~~~~~~~~~~~~~~
 
 While you do not need to rebuild the client, you will need to repackage
 the client on your own. This also means you will have to resign those
 packages with your own signing key.
+
+.. _`Windows INI file format`: http://en.wikipedia.org/wiki/INI_file
+.. _`rich text`: http://qt-project.org/doc/qt-5.0/richtext-html-subset.html 
+
+
