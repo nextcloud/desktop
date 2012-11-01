@@ -67,7 +67,8 @@ A config file ``custom.ini`` like this::
   href="http://owncloud.com">ownCloud Inc.</a>
   "
   oCSetupResultTop=/home/kf/owncloud.com/topimg.png
-  will produce this setup dialog:
+
+will produce this setup dialog:
 
 .. figure:: images/branding_setup.png
 
