@@ -1,5 +1,5 @@
-Branding the ownCloud Client
-============================
+Adding 3rd-Party Branding
+=========================
 
 The ownCloud Client supports theming in the setup assistant dialog in both the
 account setting and the result window. These customizations do not require a

@@ -16,9 +16,11 @@ Contents
    usage 
    building 
    branding
+   architecture
+   glossary 
 
-.. Indices and tables
-.. ==================
+Index
+=====
 
-.. * :ref:`genindex`
-.. * :ref:`modindex`
+  * :ref:`genindex`
+
