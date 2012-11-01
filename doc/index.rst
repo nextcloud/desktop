@@ -15,6 +15,7 @@ Contents
    install
    usage 
    building 
+   branding
 
 .. Indices and tables
 .. ==================
