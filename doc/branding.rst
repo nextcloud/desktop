@@ -35,8 +35,8 @@ Under the group definition [GUICustomize] the following keys can be set:
 * ``oCSetupSide``: The side area of the connect wizard, account page.
 * ``ocSetupBottom``: The bottom area of the connect wizard, account page
 * ``oCSetupResultTop``: The top area of the connect wizard result page.
-* ``oCSetupFixUrl``: An fixed url to the ownCloud instance. If this is set, the
-   user can not access the url entry field and it is hidden.
+* ``oCSetupFixUrl``: A fixed url to the ownCloud instance. If this is set, the
+  user can not access the url entry field and it is hidden.
 
 The keys can be set to either an image file or a `rich text`_ snippet, which
 must be enclosed with  double quotes. Image files must be addressed by the
