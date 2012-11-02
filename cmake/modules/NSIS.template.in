@@ -13,7 +13,9 @@
 ;-----------------------------------------------------------------------------
 ; Some installer script options (comment-out options not required)
 ;-----------------------------------------------------------------------------
-!define OPTION_LICENSE_AGREEMENT
+!if "@APPLICATION_LICENSE@" != ""
+  !define OPTION_LICENSE_AGREEMENT
+!endif
 !define OPTION_UAC_PLUGIN_ENHANCED
 !define OPTION_SECTION_SC_START_MENU
 !define OPTION_SECTION_SC_DESKTOP
