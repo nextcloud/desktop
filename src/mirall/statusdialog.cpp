@@ -16,6 +16,7 @@
 #include "mirall/folder.h"
 #include "mirall/theme.h"
 #include "mirall/owncloudinfo.h"
+#include "mirall/mirallconfigfile.h"
 
 #include <QtCore>
 #include <QtGui>
@@ -448,10 +449,11 @@ void StatusDialog::slotOCInfo( const QString& url, const QString& versionStr, co
 
     qDebug() << "#-------# oC found on " << url;
     /* enable the open button */
+    MirallConfigFile cfg;
     _ocUrlLabel->setOpenExternalLinks(true);
-    _ocUrlLabel->setText( tr("Connected to <a href=\"%1\">%2</a>, server version %3")
-                          .arg(url).arg(url).arg(versionStr) );
-    _ocUrlLabel->setToolTip( tr("Version: %1").arg(version));
+    _ocUrlLabel->setText( tr("Connected to <a href=\"%1\">%1</a> as <i>%2</i>.")
+                          .arg(url).arg(cfg.ownCloudUser()) );
+    _ocUrlLabel->setToolTip( tr("Version: %1 (%2)").arg(versionStr).arg(version));
     _ButtonAdd->setEnabled(true);
 
     disconnect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(const QString&, const QString&, const QString&, const QString&)),
