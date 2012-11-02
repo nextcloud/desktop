@@ -17,6 +17,7 @@ Contents
    building 
    branding
    architecture
+   troubleshooting
    glossary 
 
 Index
