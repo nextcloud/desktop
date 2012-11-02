@@ -654,7 +654,7 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::FolderViewDelegate</name>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="152"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="153"/>
         <source>Remote path: %1</source>
         <translation>Malloka vojo: %1</translation>
     </message>
@@ -1181,32 +1181,37 @@ Agordado ne povas fariĝi.</translation>
 <context>
     <name>Mirall::StatusDialog</name>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="224"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="225"/>
         <source>Pause</source>
         <translation>Paŭzigi</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="226"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="227"/>
         <source>Resume</source>
         <translation>Malpaŭzi</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="425"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="426"/>
         <source>Checking %1 connection...</source>
         <translation>Kontrolanta la konekton %1...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="430"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="431"/>
         <source>No %1 connection configured.</source>
         <translation>Neniu konekto %1 agordiĝis.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="452"/>
-        <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, server version %3</source>
-        <translation>Konektita al &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; eldono de servilo %3</translation>
+        <location filename="../src/mirall/statusdialog.cpp" line="454"/>
+        <source>Connected to &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; as &lt;i&gt;%2&lt;/i&gt;.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="470"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="456"/>
+        <source>Version: %1 (%2)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/statusdialog.cpp" line="472"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Malsukcesis konektado al %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
@@ -1223,12 +1228,11 @@ Agordado ne povas fariĝi.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="454"/>
         <source>Version: %1</source>
-        <translation>Eldono: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="467"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="469"/>
         <source>unknown problem.</source>
         <translation>nekonata problemo.</translation>
     </message>

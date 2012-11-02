@@ -668,7 +668,7 @@ Bitte schreiben Sie einen Fehlerbericht.</translation>
 <context>
     <name>Mirall::FolderViewDelegate</name>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="152"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="153"/>
         <source>Remote path: %1</source>
         <translation>Remote-Pfad: %1</translation>
     </message>
@@ -1195,32 +1195,37 @@ Das Setup kann nicht ausgeführt werden.</translation>
 <context>
     <name>Mirall::StatusDialog</name>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="224"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="225"/>
         <source>Pause</source>
         <translation>Anhalten</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="226"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="227"/>
         <source>Resume</source>
         <translation>Fortsetzen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="425"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="426"/>
         <source>Checking %1 connection...</source>
         <translation>Überprüfe %1-Verbindung...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="430"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="431"/>
         <source>No %1 connection configured.</source>
         <translation>Keine %1-Verbindung konfiguriert.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="452"/>
-        <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, server version %3</source>
-        <translation>Verbinde zu &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, Serverversion %3</translation>
+        <location filename="../src/mirall/statusdialog.cpp" line="454"/>
+        <source>Connected to &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; as &lt;i&gt;%2&lt;/i&gt;.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="470"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="456"/>
+        <source>Version: %1 (%2)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/statusdialog.cpp" line="472"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Verbindung mit %1 fehlgeschlagen &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
@@ -1237,12 +1242,11 @@ Das Setup kann nicht ausgeführt werden.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="454"/>
         <source>Version: %1</source>
-        <translation>Version: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="467"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="469"/>
         <source>unknown problem.</source>
         <translation>unbekanntes Problem.</translation>
     </message>

@@ -662,7 +662,7 @@ Segnala questo bug.</translation>
 <context>
     <name>Mirall::FolderViewDelegate</name>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="152"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="153"/>
         <source>Remote path: %1</source>
         <translation>Percorso remoto: %1</translation>
     </message>
@@ -1189,32 +1189,37 @@ La configurazione non può essere completata.</translation>
 <context>
     <name>Mirall::StatusDialog</name>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="224"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="225"/>
         <source>Pause</source>
         <translation>Pausa</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="226"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="227"/>
         <source>Resume</source>
         <translation>Riprendi</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="425"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="426"/>
         <source>Checking %1 connection...</source>
         <translation>Controllo della connessione di %1...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="430"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="431"/>
         <source>No %1 connection configured.</source>
         <translation>Nessuna connessione di %1 configurata.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="452"/>
-        <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, server version %3</source>
-        <translation>Connesso a &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, versione del server %3</translation>
+        <location filename="../src/mirall/statusdialog.cpp" line="454"/>
+        <source>Connected to &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; as &lt;i&gt;%2&lt;/i&gt;.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="470"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="456"/>
+        <source>Version: %1 (%2)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/statusdialog.cpp" line="472"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Connessione a %1 non riuscita: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
@@ -1231,12 +1236,11 @@ La configurazione non può essere completata.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="454"/>
         <source>Version: %1</source>
-        <translation>Versione: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="467"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="469"/>
         <source>unknown problem.</source>
         <translation>problema sconosciuto.</translation>
     </message>

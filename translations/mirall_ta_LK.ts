@@ -322,7 +322,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="352"/>
         <source>Configure proxy...</source>
-        <translation type="unfinished"/>
+        <translation>proxy ஐ தகவமைக்குக...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="356"/>
@@ -392,7 +392,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="423"/>
         <source>Managed Folders:</source>
-        <translation type="unfinished"/>
+        <translation>கட்டுப்படுத்தப்பட்ட கோப்புறை :</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="653"/>
@@ -546,7 +546,7 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="251"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
-        <translation>இந்த சேவை பயனாளரின் கணணியின் நேரமானது சேவையகத்தில் உள்ள கணணியின் நேரத்திலும் வித்தியாசமானது. தயவுசெய்து சேவையகத்திலும் சேவை பயனாளரின் கணணியிலும் நேர ஒத்திசைவு சேவையொன்றை (NTP) பயன்படுத்தவும் அதனால் நேரங்கள் ஒரே மாதிரியாக இருக்கும்</translation>
+        <translation>இந்த சேவை பயனாளரின் கணணியின் நேரமானது சேவையகத்தில் உள்ள கணணியின் நேரத்திலும் வித்தியாசமானது. தயவுசெய்து சேவையகத்திலும் சேவை பயனாளரின் கணணியிலும் நேர ஒத்திசைவு சேவையொன்றை (NTP) பயன்படுத்தவும் அதனால் நேரங்கள் ஒரே மாதிரியாக இருக்கும்.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="256"/>
@@ -565,7 +565,7 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="262"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;குறித்த அடைவு %1 ஐ காணமுடியவில்லை.&lt;/p&gt;&lt;p&gt;தயவுசெய்து ஒத்திசைவு அமைப்பை சரிபார்க்க.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>&lt;p&gt;The ownCloud plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
@@ -589,7 +589,7 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="295"/>
         <source>CSync failed to reach the host. Either host or proxy settings are not valid.</source>
-        <translation type="unfinished"/>
+        <translation>ஓம்புனரை அடைவதில் Cஒத்திசைவு தோல்வியுற்றது. ஓம்புனரோ அல்லது proxy அமைப்புகளோ சரியானதாக இல்லை.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="298"/>
@@ -627,7 +627,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="323"/>
         <source>The local filesystem has %1 write protected directories.That can hinder successful syncing.&lt;p/&gt;Please make sure that all local directories are writeable.</source>
-        <translation type="unfinished"/>
+        <translation>%1 பாதுகாக்கப்பட்ட அடைவுகளை இடத்துரி கோப்பு அமைப்பு கொண்டுள்ளது. வெற்றிகரமான ஒத்திசைவை பாதிக்க முடியும். &lt;p/&gt; தயவுசெய்து எல்லா இடத்துரி அடைவுகளும் எழுதப்படக்கூடியவை என்பதை உறுதிப்படுத்துக.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="343"/>
@@ -645,13 +645,13 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="381"/>
         <source>mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>mydomain.org</translation>
     </message>
 </context>
 <context>
     <name>Mirall::FolderViewDelegate</name>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="152"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="153"/>
         <source>Remote path: %1</source>
         <translation>தொலைவு பாதை : %1</translation>
     </message>
@@ -789,12 +789,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="160"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>சுத்தப்படுத்தல்</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="161"/>
         <source>Clear the log display.</source>
-        <translation type="unfinished"/>
+        <translation>பதிகை காட்சியை சுத்தப்படுத்துக</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="167"/>
@@ -833,12 +833,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="291"/>
         <source>john</source>
-        <translation type="unfinished"/>
+        <translation>ஜோன்</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="292"/>
         <source>secret</source>
-        <translation type="unfinished"/>
+        <translation>இரகசியம்</translation>
     </message>
 </context>
 <context>
@@ -846,17 +846,17 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="337"/>
         <source>ftp.mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>ftp.mydomain.org</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="338"/>
         <source>john</source>
-        <translation type="unfinished"/>
+        <translation>ஜோன்</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="339"/>
         <source>secret</source>
-        <translation type="unfinished"/>
+        <translation>இரகசியம்</translation>
     </message>
 </context>
 <context>
@@ -874,12 +874,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="103"/>
         <source>john</source>
-        <translation type="unfinished"/>
+        <translation>ஜோன்</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="104"/>
         <source>secret</source>
-        <translation type="unfinished"/>
+        <translation>இரகசியம்</translation>
     </message>
 </context>
 <context>
@@ -968,7 +968,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="427"/>
         <source>The folder creation resulted in HTTP error code %d</source>
-        <translation type="unfinished"/>
+        <translation>HTTP வழு குறியீடு %d உடன் கோப்புறை உருவாக்கம் </translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="448"/>
@@ -1085,7 +1085,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="236"/>
         <source>http://owncloud.mydomain.org</source>
-        <translation type="unfinished"/>
+        <translation>http://owncloud.mydomain.org</translation>
     </message>
 </context>
 <context>
@@ -1093,17 +1093,17 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/proxydialog.cpp" line="31"/>
         <source>Hostname of proxy server</source>
-        <translation type="unfinished"/>
+        <translation>proxy சேவையகத்தின் ஓம்பு</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.cpp" line="32"/>
         <source>Username for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>proxy சேவையகத்திற்கான பயனாளர் பெயர்</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.cpp" line="33"/>
         <source>Password for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>proxy சேவையகத்திற்கான கடவுச்சொல்</translation>
     </message>
 </context>
 <context>
@@ -1177,32 +1177,37 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::StatusDialog</name>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="224"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="225"/>
         <source>Pause</source>
         <translation>இடை நிறுத்தம்</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="226"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="227"/>
         <source>Resume</source>
         <translation>மறுபடியும் ஆரம்பி</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="425"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="426"/>
         <source>Checking %1 connection...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="430"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="431"/>
         <source>No %1 connection configured.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="452"/>
-        <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;, server version %3</source>
-        <translation>இணைக்கப்பட்டுள்ளது &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;,சேவையக பதிப்பு %3</translation>
+        <location filename="../src/mirall/statusdialog.cpp" line="454"/>
+        <source>Connected to &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; as &lt;i&gt;%2&lt;/i&gt;.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="470"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="456"/>
+        <source>Version: %1 (%2)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/statusdialog.cpp" line="472"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
@@ -1219,12 +1224,11 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="454"/>
         <source>Version: %1</source>
-        <translation>பதிப்பு: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="467"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="469"/>
         <source>unknown problem.</source>
         <translation>தெரியாதப் பிரச்சினை</translation>
     </message>
@@ -1337,7 +1341,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Please enter the username and password for your ownCloud Instance. &lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt; color:#585858;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;If you do not wish to store the credentials on your local machine, check the box. ownCloud will prompt you for your password every time the client starts.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;⏎ &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;⏎ p, li { white-space: pre-wrap; }⏎ &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;⏎ &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;ownCloud இல் தயவுசெய்து உங்களுடைய பயனாளர் பெயரையும் கடவுச்சொல்லையும் நுழைக்க.&lt;/span&gt;&lt;/p&gt;⏎ &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt; color:#585858;&quot;&gt;&lt;br /&gt;&lt;/p&gt;⏎ &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;உங்களுடைய இடத்துரி கணணியில் சான்று ஆவணங்களை சேமிக்க விருப்பமில்லையெனின், பெட்டியை சரிபார்க்க.  ownCloud will prompt you for your password every time the client starts.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;⏎ &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;⏎ p, li { white-space: pre-wrap; }⏎ &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;⏎ &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;ownCloud இல் தயவுசெய்து உங்களுடைய பயனாளர் பெயரையும் கடவுச்சொல்லையும் நுழைக்க.&lt;/span&gt;&lt;/p&gt;⏎ &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt; color:#585858;&quot;&gt;&lt;br /&gt;&lt;/p&gt;⏎ &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;உங்களுடைய இடத்துரி கணணியில் சான்று ஆவணங்களை சேமிக்க விருப்பமில்லையெனின், பெட்டியை சரிபார்க்க.  சேவைப் பயனாளர் ஆரம்பிக்கும் ஒவ்வொரு தடவையும் ownCloud உங்களுடைய கடவுச்சொல்லை நினைவாக கேட்கும். &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1433,27 +1437,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="20"/>
         <source>Server &amp;address:</source>
-        <translation type="unfinished"/>
+        <translation>சேவையகம் &amp; முகவரி:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="140"/>
         <source>https://</source>
-        <translation type="unfinished"/>
+        <translation>https://</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="147"/>
         <source>Enter the url of the ownCloud you want to connect to (without http or https).</source>
-        <translation type="unfinished"/>
+        <translation>உங்களுக்கு இணைக்க வேண்டிய ownCloud இன் url ஐ நுழைக்க (http அல்லது httpsஇல்லாமல்)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="47"/>
         <source>Use &amp;secure connection</source>
-        <translation type="unfinished"/>
+        <translation>பாதுகாப்பான இணைப்பை &amp; பயன்படுத்துக</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="60"/>
         <source>CheckBox</source>
-        <translation type="unfinished"/>
+        <translation>சரிபார்ப்புப் பெட்டி</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="75"/>
@@ -1575,7 +1579,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="120"/>
         <source>Note: To specify an SSL secured connection, start the url with https.</source>
-        <translation type="unfinished"/>
+        <translation>குறிப்பு : SSL பாதுகாப்பு இணைப்பை குறிப்பதற்கு, url ஐ https உடன் தொடங்குக</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="133"/>
