@@ -2,7 +2,7 @@ Troubleshooting
 ===============
 
 :All of my desktop clients fail to connect to ownCloud:
-  Verify that you can log on to ownClouds WebDAV server. Assume your ownCloud
+  Verify that you can log on to ownClouds WebDAV server. Assuming your ownCloud
   instance is installed at ``http://yourserver.com/owncloud``, type
   ``http://yourserver.com/owncloud/remote.php/webdav`` into your browsers
   address bar. 
