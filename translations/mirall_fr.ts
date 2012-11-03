@@ -360,7 +360,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/application.cpp" line="243"/>
         <source>%1 Connection Failed</source>
-        <translation type="unfinished"/>
+        <translation>%1 Connection échouée</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="271"/>
@@ -371,7 +371,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/application.cpp" line="272"/>
         <source>&lt;p&gt;Your %1 credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Vos %1 identifiants sont incorrects.&lt;/p&gt;&lt;p&gt;Veuillez les corriger en utilisant le menu configuration&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="280"/>
@@ -381,12 +381,12 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/application.cpp" line="292"/>
         <source>%1 Sync Started</source>
-        <translation type="unfinished"/>
+        <translation>%1 Synchronisation démarrée </translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="344"/>
         <source>Open %1 in browser...</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrir %1 dans le navigateur</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="354"/>
@@ -396,7 +396,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/application.cpp" line="410"/>
         <source>Open %1 folder</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrir le répertoire %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="423"/>
@@ -728,17 +728,17 @@ Veuillez soumettre un rapport de bug.</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="211"/>
         <source>The folder is not available on your %1.&lt;br/&gt;Click to create it.</source>
-        <translation type="unfinished"/>
+        <translation>Ce dossier n&apos;est pas disponible sur votre %1 .&lt;br/&gt;Cliquez pour le créer.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="237"/>
         <source>Folder was successfully created on %1.</source>
-        <translation type="unfinished"/>
+        <translation>Le dossier a été créé sur %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="240"/>
         <source>Failed to create the folder on %1.&lt;br/&gt;Please check manually.</source>
-        <translation type="unfinished"/>
+        <translation>Echec de la création du dossier sur %1 .&lt;br/&gt;Veuillez vérifier manuellement.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="260"/>
@@ -748,17 +748,18 @@ Veuillez soumettre un rapport de bug.</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="315"/>
         <source>to your &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; (version %3)</source>
-        <translation type="unfinished"/>
+        <translation>vers votre &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; (version %3)</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="326"/>
         <source>no configured %1 found!</source>
-        <translation type="unfinished"/>
+        <translation>aucune connexion à %1 trouvée!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="327"/>
         <source>%1 could not be reached:&lt;br/&gt;&lt;tt&gt;%2&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>%1 ne peut être joint :&lt;br/&gt;&lt;tt&gt;%2&lt;/tt&gt;
+</translation>
     </message>
     <message>
         <source>to your &lt;a href=&quot;%1&quot;&gt;ownCloud&lt;/a&gt; (version %2)</source>
@@ -873,7 +874,7 @@ Veuillez soumettre un rapport de bug.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="80"/>
         <source>Create the %1 Connection</source>
-        <translation type="unfinished"/>
+        <translation>Créer la connexion %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="81"/>
@@ -946,12 +947,12 @@ Veuillez soumettre un rapport de bug.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="314"/>
         <source>&lt;font color=&quot;red&quot;&gt;Installation of %1 failed!&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;red&quot;&gt;L&apos;installation de %1 a échouée!&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="319"/>
         <source>&lt;font color=&quot;green&quot;&gt;Installation of %1 succeeded!&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;L&apos;installation de %1 a réussie!&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="358"/>
@@ -988,12 +989,12 @@ L&apos;installation ne peut pas continuer.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="453"/>
         <source>Succesfully connected to %1!</source>
-        <translation type="unfinished"/>
+        <translation>Connexion réussie à %1!</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="459"/>
         <source>Connection to %1 could not be established. Please check again.</source>
-        <translation type="unfinished"/>
+        <translation>La connexion à %1 n&apos;a pu être établie. Essayez encore svp.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="456"/>
@@ -1065,7 +1066,7 @@ L&apos;installation ne peut pas continuer.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="60"/>
         <source>Welcome to %1</source>
-        <translation type="unfinished"/>
+        <translation>Bienvenue sur %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="61"/>
@@ -1138,7 +1139,7 @@ L&apos;installation ne peut pas continuer.</translation>
         <location filename="../src/mirall/sslerrordialog.cpp" line="154"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="155"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;lt;non spécifié&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="156"/>
@@ -1199,27 +1200,27 @@ L&apos;installation ne peut pas continuer.</translation>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="426"/>
         <source>Checking %1 connection...</source>
-        <translation type="unfinished"/>
+        <translation>Vérification de la connexion à %1 </translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="431"/>
         <source>No %1 connection configured.</source>
-        <translation type="unfinished"/>
+        <translation>Aucune connexion à %1 configurée</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="454"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; as &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Connecté à &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; en tant que &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="456"/>
         <source>Version: %1 (%2)</source>
-        <translation type="unfinished"/>
+        <translation>Version : %1 (%2)</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="472"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Echec de connexion à %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Checking ownCloud connection...</source>
@@ -1284,7 +1285,7 @@ L&apos;installation ne peut pas continuer.</translation>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="116"/>
         <source>&lt;p&gt;A new version of the %1 client is available.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Une nouvelle version du client %1 est disponible.</translation>
     </message>
     <message>
         <source>&lt;p&gt;A new version of the ownCloud Client is available.</source>
@@ -1322,7 +1323,7 @@ L&apos;installation ne peut pas continuer.</translation>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="332"/>
         <source>Please enter your %1 password:</source>
-        <translation type="unfinished"/>
+        <translation>Entrez votre mot de passe %1:</translation>
     </message>
 </context>
 <context>
@@ -1749,7 +1750,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
         <source>Trust this certificate anyway</source>
-        <translation type="unfinished"/>
+        <translation>Faire confiance à ce certificat malgré tout</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>

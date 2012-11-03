@@ -881,12 +881,12 @@ Escreva-nos um bug report, por favor.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="80"/>
         <source>Create the %1 Connection</source>
-        <translation type="unfinished"/>
+        <translation>Crie a %1 Conexão</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="81"/>
         <source>Enter Server Name and Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Entre com o Nome do Servidor e suas Credenciais</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="103"/>
@@ -1073,17 +1073,17 @@ A configuração não pôde ser concluida.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="60"/>
         <source>Welcome to %1</source>
-        <translation type="unfinished"/>
+        <translation>Bem vindo a %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="61"/>
         <source>Set up your server connection</source>
-        <translation type="unfinished"/>
+        <translation>Configure a sua conexão com o servidor</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="69"/>
         <source>&lt;p&gt;In order to connect to your %1 server, you need to provide the server address as well as your credentials.&lt;/p&gt;&lt;p&gt;This wizard will guide you through the process.&lt;p&gt;&lt;p&gt;If you have not received this information, please contact your %1 hosting provider.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Para se conectar ao seu %1 servidor, você precisa fornecer o endereço do servidor, assim como suas credenciais.&lt;/p&gt;&lt;p&gt;Este guia te mostrará o processo.&lt;/p&gt;&lt;p&gt;Se você não possui essas informações, por favor, entre em contato com o seu %1 provedor de hospedagem.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1146,7 +1146,7 @@ A configuração não pôde ser concluida.</translation>
         <location filename="../src/mirall/sslerrordialog.cpp" line="154"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="155"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;lt;não especificado&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="156"/>
@@ -1169,12 +1169,12 @@ A configuração não pôde ser concluida.</translation>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="165"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Fingerprint/Identificação (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="166"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Fingerprint/Identificação (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="168"/>
@@ -1217,12 +1217,12 @@ A configuração não pôde ser concluida.</translation>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="454"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; as &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Conectar em &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; como &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="456"/>
         <source>Version: %1 (%2)</source>
-        <translation type="unfinished"/>
+        <translation>Versão: %1 (%2)</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="472"/>
@@ -1757,7 +1757,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
         <source>Trust this certificate anyway</source>
-        <translation type="unfinished"/>
+        <translation>Confiar neste certificado mesmo assim</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>

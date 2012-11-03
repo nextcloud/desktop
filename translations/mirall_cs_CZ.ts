@@ -1211,12 +1211,12 @@ Nastavení nelze provést.</translation>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="454"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; as &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Spojeno s &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; jako &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="456"/>
         <source>Version: %1 (%2)</source>
-        <translation type="unfinished"/>
+        <translation>Verze: %1 (%2)</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="472"/>

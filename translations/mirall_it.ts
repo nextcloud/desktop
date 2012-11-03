@@ -1211,12 +1211,12 @@ La configurazione non può essere completata.</translation>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="454"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; as &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Connesso a &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; come &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="456"/>
         <source>Version: %1 (%2)</source>
-        <translation type="unfinished"/>
+        <translation>Versione: %1 (%2)</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="472"/>
