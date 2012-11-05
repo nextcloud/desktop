@@ -424,7 +424,7 @@ void OwncloudSetupWizard::slotCreateRemoteFolderFinished( QNetworkReply::Network
     } else if( error == 202 ) {
         _ocWizard->appendToResultWidget( tr("The remote folder %1 already exists. Connecting it for syncing.").arg(_remoteFolder));
     } else if( error > 202 && error < 300 ) {
-        _ocWizard->appendToResultWidget( tr("The folder creation resulted in HTTP error code %d").arg((int)error) );
+        _ocWizard->appendToResultWidget( tr("The folder creation resulted in HTTP error code %1").arg((int)error) );
     } else if( error == QNetworkReply::OperationCanceledError ) {
         _ocWizard->appendToResultWidget( tr("<p><font color=\"red\">Remote folder creation failed probably because the provided credentials are wrong.</font>"
                                             "<br/>Please go back and check your credentials.</p>"));
