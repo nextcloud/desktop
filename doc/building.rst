@@ -112,8 +112,8 @@ Next, we build mirall::
 
   cd ../mirall-build
   cmake -DCMAKE_BUILD_TYPE="Debug" ../mirall \
-        -DCSYNC_LIBRARY_DIRECTORY=../ocsync-build \
-        -DCSYNC_INCLUDE_DIRECTORY=../ocsync/src
+        -DCSYNC_LIBRARY_PATH=../ocsync-build \
+        -DCSYNC_INCLUDE_PATH=../ocsync/src
 
 If this succeeds, call ``make``. The owncloud binary should appear in the
 ``bin`` directory. You can also run ``make install`` to install the client to
