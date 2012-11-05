@@ -158,7 +158,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                     cur->instruction = CSYNC_INSTRUCTION_NONE;
                     other->instruction = CSYNC_INSTRUCTION_NONE;
 
-                    if( !cur->md5 ) cur->md5 = c_strdup(other->md5);
+                    if( !cur->md5 && other->md5 ) cur->md5 = c_strdup(other->md5);
                 }
                 break;
                 /* file on other replica has changed too */
