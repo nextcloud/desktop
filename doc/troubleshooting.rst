@@ -13,3 +13,16 @@ Troubleshooting
   If you are prompted, but the authentication fails even though the credentials
   your provided are correct, please ensure that your authentication backend
   is configured properly.
+
+
+:The desktop client fails for an unknown reason:
+  Start the client with ``--logwindow``. You can also open a log window for an
+  already running session, by simply starting the client again with this
+  parameter. Syntax:
+
+  * Windows: ``C:\Program Files (x86)\ownCloud\owncloud.exe --logwindow``
+  * Mac OS X: ``/Applications/owncloud.app/Contents/MacOS/owncloud --logwindow``
+  * Linux: ``owncloud --logwindow``
+
+  The log output can help you with tracking down problem, and if you report
+  a bug, it's useful to include the output.
