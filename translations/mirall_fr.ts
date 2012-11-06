@@ -345,7 +345,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/application.cpp" line="222"/>
         <source>%1 Server Mismatch</source>
-        <translation type="unfinished"/>
+        <translation>Serveur %1 incompatible</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="223"/>
@@ -355,7 +355,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/application.cpp" line="238"/>
         <source>&lt;p&gt;The %1 at %2 could not be reached.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Le %1 à %2 n&apos;est pas accessible.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="243"/>
@@ -417,7 +417,7 @@ Copyright 2012, the ownCloud developers
 Licensed under GPLv2
 
 The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN,MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.</source>
-        <translation type="unfinished"/>
+        <translation>%1 client, version %2⏎ ⏎ Copyright 2012, les  développeurs ownCloud ⏎ ⏎ Sous licence GPLv2⏎ ⏎ Le programme est fourni &lt;b&gt;tel quel, sans garantie d&apos;aucune sorte, y compris sur la conception la qualité ou adaptation à un usage particulier.&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="668"/>
@@ -521,7 +521,7 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
     <message>
         <location filename="../src/mirall/application.cpp" line="904"/>
         <source> (Sync is paused)</source>
-        <translation type="unfinished"/>
+        <translation>(La synchronisation est en pause)</translation>
     </message>
     <message>
         <source>Sync is paused.</source>
@@ -616,7 +616,7 @@ Please make sure that all directories are writeable.</source>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="268"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Le plugin %1 pour csync n&apos;a pas pu être chargé.&lt;br/&gt;Merci de vérifier votre installation !&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="312"/>
@@ -666,17 +666,17 @@ Veuillez soumettre un rapport de bug.</translation>
     <message>
         <location filename="../src/mirall/folder.cpp" line="99"/>
         <source>Local folder %1 does not exist.</source>
-        <translation type="unfinished"/>
+        <translation>Le dossier local %1 n&apos;existe pas.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="102"/>
         <source>%1 should be a directory but is not.</source>
-        <translation type="unfinished"/>
+        <translation>%1 doit être un répertoire, mais ce n&apos;en ai pas un.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="105"/>
         <source>%1 is not readable.</source>
-        <translation type="unfinished"/>
+        <translation>%1 ne peut pas être lu.</translation>
     </message>
 </context>
 <context>
@@ -936,17 +936,17 @@ Veuillez soumettre un rapport de bug.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="130"/>
         <source>Trying to connect to %1 at %2...</source>
-        <translation type="unfinished"/>
+        <translation>Tentative de connexion de %1 à %2 ...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="164"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;Connecté avec succès à %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="176"/>
         <source>&lt;font color=&quot;red&quot;&gt;Failed to connect to %1!&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;red&quot;&gt;Impossible de se connecter à %1 !&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="178"/>
@@ -1001,7 +1001,7 @@ L&apos;installation ne peut pas continuer.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="427"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation type="unfinished"/>
+        <translation>La création du dossier a généré le code d&apos;erreur HTTP %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="448"/>
@@ -1098,7 +1098,7 @@ L&apos;installation ne peut pas continuer.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="69"/>
         <source>&lt;p&gt;In order to connect to your %1 server, you need to provide the server address as well as your credentials.&lt;/p&gt;&lt;p&gt;This wizard will guide you through the process.&lt;p&gt;&lt;p&gt;If you have not received this information, please contact your %1 hosting provider.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Pour se connecter à votre serveur %1, vous devez fournir l&apos;adresse du serveur ainsi que vos identifiants.&lt;/p&gt;&lt;p&gt;Cet assistant va vous guider dans le processus.&lt;p&gt;&lt;p&gt;Si vous n&apos;avez pas reçu cette information, merci de contacter votre serveur d&apos;hébergement %1&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1110,7 +1110,7 @@ L&apos;installation ne peut pas continuer.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="462"/>
         <source>Congratulations! Your &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;new %2&lt;/a&gt; is now up and running!</source>
-        <translation type="unfinished"/>
+        <translation>Félicitation ! Votre &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;nouvel %2&lt;/a&gt; est maintenant en ligne !</translation>
     </message>
 </context>
 <context>

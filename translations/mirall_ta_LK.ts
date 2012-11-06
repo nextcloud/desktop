@@ -1499,12 +1499,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="102"/>
         <source>Enter the ownCloud password.</source>
-        <translation type="unfinished"/>
+        <translation>owncloud இன் கடவுச்சொல்லை நுழைக்க.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="117"/>
         <source>Do not allow the local storage of the password.</source>
-        <translation type="unfinished"/>
+        <translation>கடவுச்சொல்லை இடத்துரியாக சேமிப்பதற்கு அனுமதிக்கவேண்டாம்.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="120"/>
@@ -1582,7 +1582,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="110"/>
         <source>ownCloud-Link:</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud - இணைப்பு:</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1638,27 +1638,27 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/theme.cpp" line="42"/>
         <location filename="../src/mirall/theme.cpp" line="60"/>
         <source>Status undefined</source>
-        <translation type="unfinished"/>
+        <translation>நிலைகள் குறிப்பிடப்படவில்லை</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="45"/>
         <source>Waiting to start sync</source>
-        <translation type="unfinished"/>
+        <translation>ஒத்திசைவை ஆரம்பிக்க காத்திருக்கின்றது</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="48"/>
         <source>Sync is running</source>
-        <translation type="unfinished"/>
+        <translation>ஒத்திசைவு ஓடிக்கொண்டிருக்கின்றது</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="51"/>
         <source>Sync Success</source>
-        <translation type="unfinished"/>
+        <translation>ஒத்திசைவு வெற்றியளித்தது</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="54"/>
         <source>Sync Error - Click info button for details.</source>
-        <translation type="unfinished"/>
+        <translation>ஒத்திசைவு வழு - </translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="57"/>

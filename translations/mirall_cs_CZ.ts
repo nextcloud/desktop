@@ -523,7 +523,7 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
     <message>
         <location filename="../src/mirall/application.cpp" line="904"/>
         <source> (Sync is paused)</source>
-        <translation type="unfinished"/>
+        <translation>(Synchronizace je pozastavena)</translation>
     </message>
     <message>
         <source>Sync is paused.</source>
@@ -668,17 +668,17 @@ Vytvořte prosím chybové hlášení.</translation>
     <message>
         <location filename="../src/mirall/folder.cpp" line="99"/>
         <source>Local folder %1 does not exist.</source>
-        <translation type="unfinished"/>
+        <translation>Místní složka %1 neexistuje.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="102"/>
         <source>%1 should be a directory but is not.</source>
-        <translation type="unfinished"/>
+        <translation>%1 bu měl být adresář, ale není.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="105"/>
         <source>%1 is not readable.</source>
-        <translation type="unfinished"/>
+        <translation>%1 není čitelný.</translation>
     </message>
 </context>
 <context>
@@ -1002,7 +1002,7 @@ Nastavení nelze provést.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="427"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation type="unfinished"/>
+        <translation>Vytvoření složky selhalo chybou HTTP %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="448"/>

@@ -529,7 +529,7 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
     <message>
         <location filename="../src/mirall/application.cpp" line="904"/>
         <source> (Sync is paused)</source>
-        <translation type="unfinished"/>
+        <translation>(Synchronisation pausiert)</translation>
     </message>
     <message>
         <source>Sync is paused.</source>
@@ -674,17 +674,17 @@ Bitte schreiben Sie einen Fehlerbericht.</translation>
     <message>
         <location filename="../src/mirall/folder.cpp" line="99"/>
         <source>Local folder %1 does not exist.</source>
-        <translation type="unfinished"/>
+        <translation>Lokales Verzeichnis %1 existiert nicht.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="102"/>
         <source>%1 should be a directory but is not.</source>
-        <translation type="unfinished"/>
+        <translation>%1 ist kein Verzeichnis.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="105"/>
         <source>%1 is not readable.</source>
-        <translation type="unfinished"/>
+        <translation>%1 ist nicht lesbar.</translation>
     </message>
 </context>
 <context>
@@ -1008,7 +1008,7 @@ Das Setup kann nicht ausgeführt werden.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="427"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation type="unfinished"/>
+        <translation>Das Erstellen des Verzeichnis erzeugte den HTTP Fehler %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="448"/>
