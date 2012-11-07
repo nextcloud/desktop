@@ -159,9 +159,7 @@ int csync_init(CSYNC *ctx) {
   char *exclude = NULL;
   char *lock = NULL;
   char *config = NULL;
-#ifndef _WIN32
   char errbuf[256] = {0};
-#endif
   
   if (ctx == NULL) {
     errno = EBADF;
@@ -242,7 +240,7 @@ int csync_init(CSYNC *ctx) {
               errbuf);
   }
   SAFE_FREE(exclude);
-
+#endif
   /* load exclude list */
   if (asprintf(&exclude, "%s/%s", ctx->options.config_dir, CSYNC_EXCLUDE_FILE) < 0) {
     ctx->error_code = CSYNC_ERR_UNSPEC;
@@ -255,7 +253,7 @@ int csync_init(CSYNC *ctx) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Could not load %s - %s", exclude, 
               errbuf);
   }
-#endif
+
 
   /* create/load statedb */
   if (! csync_is_statedb_disabled(ctx)) {
