@@ -42,19 +42,17 @@ static int _csync_config_copy_default (const char *config) {
     int  len = 0;
 
     /* Get the path from where the application was started */
-    len = GetModuleFileName(NULL, buf, MAX_PATH);
+    len = GetModuleFileNameA(NULL, buf, MAX_PATH);
     if(len== 0) {
         re = -1;
     } else {
-        /* the path has still owncloud.exe or mirall.exe at the end.
-         * find it and copy the name of the conf file instead.       */
-        if( c_streq( buf+strlen(buf)-strlen("owncloud.exe"), "owncloud.exe")) {
-            strcpy(buf+strlen(buf)-strlen("owncloud.exe"), CSYNC_CONF_FILE );
-        }
-        if( c_streq( buf+strlen(buf)-strlen("mirall.exe"), "mirall.exe")) {
-            strcpy(buf+strlen(buf)-strlen("mirall.exe"), CSYNC_CONF_FILE );
+        char *last_bslash;
+        /* cut the trailing filename off */
+        if ((last_bslash = strrchr(buf, '\\')) != NULL) {
+          *last_bslash='\0';
         }
 
+        strncat(buf, "\\" CSYNC_CONF_FILE, MAX_PATH);
         if(c_copy(buf, config, 0644) < 0) {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Could not copy /%s to %s", buf, config );
             re = -1;
