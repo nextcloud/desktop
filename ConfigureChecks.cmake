@@ -33,8 +33,7 @@ endif (HAVE_LIBRT OR HAVE_CLOCK_GETTIME)
 
 check_library_exists(dl dlopen "" HAVE_LIBDL)
 if (HAVE_LIBDL)
-    find_library(DLFCN_LIBRARY dl)
-    set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} ${DLFCN_LIBRARY})
+    set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} dl)
 endif (HAVE_LIBDL)
 
 check_function_exists(asprintf HAVE_ASPRINTF)
@@ -47,6 +46,11 @@ endif()
 check_function_exists(fnmatch HAVE_FNMATCH)
 if(NOT HAVE_FNMATCH AND WIN32)
   find_library(SHLWAPI_LIBRARY shlwapi)
+  set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} shlwapi)
+endif()
+
+if(WIN32)
+  set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} psapi kernel32)
 endif()
 
 check_function_exists(strerror_r HAVE_STRERROR_R)
