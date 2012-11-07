@@ -80,9 +80,8 @@ int c_copy(const char* src, const char *dst, mode_t mode) {
       if( rc < 0 ) {
           errno = GetLastError();
       }
-
-      return rc;
   }
+  return rc;
 #else
 
   /* Win32 does not come here. */
