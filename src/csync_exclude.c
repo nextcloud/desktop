@@ -91,10 +91,10 @@ int csync_exclude_load(CSYNC *ctx, const char *fname) {
   /* FIXME: Don't add duplicates */
   entry = buf;
   for (i = 0; i < size; i++) {
-    if (buf[i] == '\n') {
+    if (buf[i] == '\n' || buf[i] == '\r') {
       if (entry != buf + i) {
         buf[i] = '\0';
-        if (*entry != '#' || *entry == '\n') {
+        if (*entry != '#') {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Adding entry: %s", entry);
           rc = _csync_exclude_add(ctx, entry);
           if (rc < 0) {
