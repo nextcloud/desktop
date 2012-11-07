@@ -119,7 +119,6 @@ struct transfer_context {
     const char  *method;        /* the HTTP method, either PUT or GET  */
     ne_decompress *decompress;  /* the decompress context */
     int         fileWritten;    /* flag to indicate that a buffer file was written for PUTs */
-    char        *md5;
     char        *clean_uri;
 };
 
@@ -1525,13 +1524,6 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
         /* if the compression handle is set through the post_header hook, delete it. */
         if( writeCtx->decompress ) {
             ne_decompress_destroy( writeCtx->decompress );
-        }
-
-        /* preserve the ETag header */
-        etag_header = ne_get_response_header( writeCtx->req, "ETag" );
-        if( etag_header ) {
-            writeCtx->md5 = c_strdup( etag_header );
-            DEBUG_WEBDAV("GET Etag: %s", etag_header );
         }
 
         /* delete the request in any case */
