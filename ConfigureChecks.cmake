@@ -53,6 +53,7 @@ if(WIN32)
   set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} psapi kernel32)
 endif()
 
+check_function_exists(timegm HAVE_TIMEGM)
 check_function_exists(strerror_r HAVE_STRERROR_R)
 check_function_exists(utimes HAVE_UTIMES)
 check_function_exists(lstat HAVE_LSTAT)
