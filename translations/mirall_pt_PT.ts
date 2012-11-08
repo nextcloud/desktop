@@ -345,58 +345,58 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="222"/>
         <source>%1 Server Mismatch</source>
-        <translation type="unfinished"/>
+        <translation>Erro de nome nome servidor %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="223"/>
         <source>&lt;p&gt;The configured server for this client is too old.&lt;/p&gt;&lt;p&gt;Please update to the latest %1 server and restart the client.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;O servidor indicado utiliza uma versão do ownCloud desactualizada para utilizar este cliente.&lt;/p&gt;&lt;p&gt;Actualize para a versão %1 servidor e reinicie o cliente.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="238"/>
         <source>&lt;p&gt;The %1 at %2 could not be reached.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;O %1 em %2 não pode ser alcançado.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="243"/>
         <source>%1 Connection Failed</source>
-        <translation type="unfinished"/>
+        <translation>%1 Falha na ligação</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="271"/>
         <location filename="../src/mirall/application.cpp" line="279"/>
         <source>No %1 Connection</source>
-        <translation type="unfinished"/>
+        <translation>Sem %1 Ligação.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="272"/>
         <source>&lt;p&gt;Your %1 credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;%1 As suas credenciais não estão correctas..&lt;/p&gt;&lt;p&gt;Por favor actualize as suas credenciais a partir do menu de configuração a partir da barra de tarefas!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="280"/>
         <source>&lt;p&gt;Either your user name or your password are not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Tanto o nome de utilizador como a palavra-passe estão incorrectas.&lt;/p&gt;&lt;p&gt;Por favor actualize as suas credenciais a partir do menu de configuração a partir da barra de tarefas!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="292"/>
         <source>%1 Sync Started</source>
-        <translation type="unfinished"/>
+        <translation>%1 A sincronização inicou.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="345"/>
         <source>Open %1 in browser...</source>
-        <translation type="unfinished"/>
+        <translation>Abrir %1 no browser.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="355"/>
         <source>About...</source>
-        <translation type="unfinished"/>
+        <translation>Sobre...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="411"/>
         <source>Open %1 folder</source>
-        <translation type="unfinished"/>
+        <translation>Abrir a pasta %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="424"/>
@@ -417,7 +417,13 @@ Copyright 2012, the ownCloud developers
 Licensed under GPLv2
 
 The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN,MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.</source>
-        <translation type="unfinished"/>
+        <translation>%1 cliente, versão %2
+
+Copyright 2012, the ownCloud developers
+
+Licensed under GPLv2
+
+O programa é fornecido como está SEM GARANTIAS de qualquer tipo, inlcuíndo a garantia de design, comercialização ou para qualquer uso em particular.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="668"/>
@@ -523,7 +529,7 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
     <message>
         <location filename="../src/mirall/application.cpp" line="904"/>
         <source> (Sync is paused)</source>
-        <translation type="unfinished"/>
+        <translation>(Sincronização Pausada)</translation>
     </message>
     <message>
         <source>Sync is paused.</source>
@@ -619,7 +625,7 @@ Please make sure that all directories are writeable.</source>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="268"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;O plugin %1 para o CSync não foi carregado.&lt;br/&gt;Por favor verifique a instalação!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="312"/>
@@ -669,17 +675,17 @@ Por favor reporte o erro - escreva um bug report</translation>
     <message>
         <location filename="../src/mirall/folder.cpp" line="99"/>
         <source>Local folder %1 does not exist.</source>
-        <translation type="unfinished"/>
+        <translation>A pasta local %1 não existe.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="102"/>
         <source>%1 should be a directory but is not.</source>
-        <translation type="unfinished"/>
+        <translation>%1 devia de ser um directório mas não é</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="105"/>
         <source>%1 is not readable.</source>
-        <translation type="unfinished"/>
+        <translation>Não é possível ler %1</translation>
     </message>
 </context>
 <context>
@@ -753,17 +759,17 @@ Por favor reporte o erro - escreva um bug report</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="211"/>
         <source>The folder is not available on your %1.&lt;br/&gt;Click to create it.</source>
-        <translation type="unfinished"/>
+        <translation>A pasta não está disponível no seu %1. &lt;/br&gt;Clique para criar.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="237"/>
         <source>Folder was successfully created on %1.</source>
-        <translation type="unfinished"/>
+        <translation>Pasta criada com sucesso em %1.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="240"/>
         <source>Failed to create the folder on %1.&lt;br/&gt;Please check manually.</source>
-        <translation type="unfinished"/>
+        <translation>A criação da pasta em %1 falhou. &lt;/br&gt;Verifique manualmente.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="260"/>
@@ -773,17 +779,17 @@ Por favor reporte o erro - escreva um bug report</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="315"/>
         <source>to your &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; (version %3)</source>
-        <translation type="unfinished"/>
+        <translation>para a sua &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;(versão %3)</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="326"/>
         <source>no configured %1 found!</source>
-        <translation type="unfinished"/>
+        <translation>Nao foi encontrada a configuração de %1 !</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="327"/>
         <source>%1 could not be reached:&lt;br/&gt;&lt;tt&gt;%2&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possivel ligar a %1: &lt;br/&gt;&lt;tt&gt;%2&lt;/tt&gt;</translation>
     </message>
     <message>
         <source>to your &lt;a href=&quot;%1&quot;&gt;ownCloud&lt;/a&gt; (version %2)</source>
@@ -898,12 +904,12 @@ Por favor reporte o erro - escreva um bug report</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="80"/>
         <source>Create the %1 Connection</source>
-        <translation type="unfinished"/>
+        <translation>Criar a ligação de %1 .</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="81"/>
         <source>Enter Server Name and Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Introduza o nome do servidor e as credenciais.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="103"/>
@@ -938,17 +944,17 @@ Por favor reporte o erro - escreva um bug report</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="130"/>
         <source>Trying to connect to %1 at %2...</source>
-        <translation type="unfinished"/>
+        <translation>A tentar ligação a %1 em %2...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="164"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;Conectado com sucesso a %1: %2 versão %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="176"/>
         <source>&lt;font color=&quot;red&quot;&gt;Failed to connect to %1!&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;red&quot;&gt;Falhou a ligação a %1!&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="178"/>
@@ -971,12 +977,12 @@ Por favor reporte o erro - escreva um bug report</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="314"/>
         <source>&lt;font color=&quot;red&quot;&gt;Installation of %1 failed!&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;red&quot;&gt;A instalação de %1 falhou!&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="319"/>
         <source>&lt;font color=&quot;green&quot;&gt;Installation of %1 succeeded!&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;A instalação de %1 concluída com sucesso!&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="358"/>
@@ -1003,7 +1009,7 @@ Não é possível correr o programa de instalação ou configuração.</translat
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="427"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation type="unfinished"/>
+        <translation>A criação da pasta resultou num erro HTTP com o código %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="448"/>
@@ -1013,12 +1019,12 @@ Não é possível correr o programa de instalação ou configuração.</translat
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="453"/>
         <source>Succesfully connected to %1!</source>
-        <translation type="unfinished"/>
+        <translation>Ligação com sucesso a %1 !</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="459"/>
         <source>Connection to %1 could not be established. Please check again.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível ligar a %1 . Por Favor verifique novamente.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="456"/>
@@ -1090,17 +1096,17 @@ Não é possível correr o programa de instalação ou configuração.</translat
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="60"/>
         <source>Welcome to %1</source>
-        <translation type="unfinished"/>
+        <translation>Bem-Vindo a %1 !</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="61"/>
         <source>Set up your server connection</source>
-        <translation type="unfinished"/>
+        <translation>Configure a ligação do seu servidor.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="69"/>
         <source>&lt;p&gt;In order to connect to your %1 server, you need to provide the server address as well as your credentials.&lt;/p&gt;&lt;p&gt;This wizard will guide you through the process.&lt;p&gt;&lt;p&gt;If you have not received this information, please contact your %1 hosting provider.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Para ser possível ligar ao seu servidor %1 , é necessário que introduza o nome do servidor (ou endereço) assim como as credenciais de acesso (nome de utilizador e palavra-passe).&lt;/p&gt;&lt;p&gt;Este assistente irá ajudá-lo no processo.&lt;p&gt;&lt;p&gt;Se não recebeu estas informações, por favor contacte o seu provedor de serviços ownCloud %1 .&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1112,7 +1118,7 @@ Não é possível correr o programa de instalação ou configuração.</translat
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="462"/>
         <source>Congratulations! Your &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;new %2&lt;/a&gt; is now up and running!</source>
-        <translation type="unfinished"/>
+        <translation>Parabéns! O seu &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt; novo %2 &lt;/a&gt; está ligado e a correr!</translation>
     </message>
 </context>
 <context>
@@ -1163,7 +1169,7 @@ Não é possível correr o programa de instalação ou configuração.</translat
         <location filename="../src/mirall/sslerrordialog.cpp" line="154"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="155"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;lt;não especificado&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="156"/>
@@ -1186,12 +1192,12 @@ Não é possível correr o programa de instalação ou configuração.</translat
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="165"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Chave(MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="166"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Chave(SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="168"/>
@@ -1224,27 +1230,27 @@ Não é possível correr o programa de instalação ou configuração.</translat
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="472"/>
         <source>Checking %1 connection...</source>
-        <translation type="unfinished"/>
+        <translation>A testar a ligação a %1 ...</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="477"/>
         <source>No %1 connection configured.</source>
-        <translation type="unfinished"/>
+        <translation>%1 sem ligação configurada.</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="500"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; as &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Ligado a &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; como &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="502"/>
         <source>Version: %1 (%2)</source>
-        <translation type="unfinished"/>
+        <translation>Versão: %1 (%2)</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="518"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Falha a ligar a %1 : &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Checking ownCloud connection...</source>
@@ -1309,7 +1315,7 @@ Não é possível correr o programa de instalação ou configuração.</translat
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="116"/>
         <source>&lt;p&gt;A new version of the %1 client is available.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Uma nova versão do cliente %1 está disponível.</translation>
     </message>
     <message>
         <source>&lt;p&gt;A new version of the ownCloud Client is available.</source>
@@ -1342,12 +1348,12 @@ Não é possível correr o programa de instalação ou configuração.</translat
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="331"/>
         <source>Password Required</source>
-        <translation type="unfinished"/>
+        <translation>É necessária a palavra-passe.</translation>
     </message>
     <message>
         <location filename="../src/mirall/mirallconfigfile.cpp" line="332"/>
         <source>Please enter your %1 password:</source>
-        <translation type="unfinished"/>
+        <translation>Por favor introduza a sua %1 palavra-passe:</translation>
     </message>
 </context>
 <context>
@@ -1532,7 +1538,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="120"/>
         <source>&amp;Do not store password on local machine.</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Não guardar a password na máquina local.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="36"/>
@@ -1774,7 +1780,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
         <source>Trust this certificate anyway</source>
-        <translation type="unfinished"/>
+        <translation>Confiar na mesma neste certificado.</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>
