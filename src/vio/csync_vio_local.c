@@ -359,9 +359,11 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   buf->inode = sb.st_ino;
 #ifdef _WIN32
   /* Get the Windows file id as an inode replacement. */
-  HANDLE h = CreateFileW( wuri, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL );
+  HANDLE h = CreateFileW( wuri, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
+			  FILE_ATTRIBUTE_NORMAL+FILE_FLAG_BACKUP_SEMANTICS, NULL );
   if( h == INVALID_HANDLE_VALUE ) {
-
+     DWORD err = GetLastError();
+     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "ERR: Failed to create a handle for %s: %ld", uri,err );
   } else {
      FILETIME ftCreate, ftAccess, ftWrite;
      SYSTEMTIME stUTC;
@@ -374,7 +376,7 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
         FileIndex.LowPart = fileInfo.nFileIndexLow;
         FileIndex.QuadPart &= 0x0000FFFFFFFFFFFF;
 
-        printf("Index: %I64i\n", FileIndex.QuadPart);
+        /* printf("Index: %I64i\n", FileIndex.QuadPart); */
 
         buf->inode = FileIndex.QuadPart;
      }
@@ -389,6 +391,7 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ATIME;
 
        buf->mtime = FileTimeToUnixTime(&ftWrite, &rem);
+       CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Local File MTime: %llu", (unsigned long long) buf->mtime );
        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
 
        buf->ctime = FileTimeToUnixTime(&ftCreate, &rem);
