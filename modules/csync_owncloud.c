@@ -1044,8 +1044,8 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
 
             free_fetchCtx( fetchCtx );
         }
-        DEBUG_WEBDAV("STAT result from propfind: %s, md5: %s", buf->name ? buf->name:"NULL",
-                     buf->md5 ? buf->md5 : "NULL" );
+        DEBUG_WEBDAV("STAT result from propfind: %s, mtime: %llu", buf->name ? buf->name:"NULL",
+                      (unsigned long long) buf->mtime );
     }
 
     return 0;
