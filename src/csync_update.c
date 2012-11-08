@@ -84,8 +84,8 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   if (st == NULL) {
     return -1;
   }
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - hash %llu, st size: %zu",
-      path, (long long unsigned int) h, size);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - hash %llu, mtime: %llu",
+      path, (unsigned long long ) h, (unsigned long long) fs->mtime);
 
   /* Set instruction by default to none */
   st->instruction = CSYNC_INSTRUCTION_NONE;

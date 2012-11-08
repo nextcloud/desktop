@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <limits.h>
+#include <stdlib.h>
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -633,6 +634,90 @@ out:
     return rc;
 }
 
+#ifndef HAVE_TIMEGM
+#ifdef _WIN32
+static int is_leap(unsigned y) {
+    y += 1900;
+    return (y % 4) == 0 && ((y % 100) != 0 || (y % 400) == 0);
+}
+
+static time_t timegm(struct tm *tm) {
+    static const unsigned ndays[2][12] = {
+    {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31},
+    {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31} };
+
+    time_t res = 0;
+    int i;
+
+    for (i = 70; i < tm->tm_year; ++i)
+        res += is_leap(i) ? 366 : 365;
+
+    for (i = 0; i < tm->tm_mon; ++i)
+        res += ndays[is_leap(tm->tm_year)][i];
+     res += tm->tm_mday - 1;
+     res *= 24;
+     res += tm->tm_hour;
+     res *= 60;
+     res += tm->tm_min;
+     res *= 60;
+     res += tm->tm_sec;
+     return res;
+}
+#else
+/* A hopefully portable version of timegm */
+static time_t timegm(struct tm *tm ) {
+     time_t ret;
+     char *tz;
+
+     tz = getenv("TZ");
+     setenv("TZ", "", 1);
+     tzset();
+     ret = mktime(tm);
+     if (tz)
+         setenv("TZ", tz, 1);
+     else
+         unsetenv("TZ");
+     tzset();
+     return ret;
+}
+#endif /* Platform switch */
+#endif /* HAVE_TIMEGM */
+
+#define RFC1123_FORMAT "%3s, %02d %3s %4d %02d:%02d:%02d GMT"
+static const char short_months[12][4] = {
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+};
+/*
+ * This function is borrowed from libneon's ne_httpdate_parse.
+ * Unfortunately that one converts to local time but here UTC is
+ * needed.
+ * This one uses timegm instead, which returns UTC.
+ */
+static time_t oc_httpdate_parse( const char *date ) {
+
+    struct tm gmt = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    char wkday[4], mon[4];
+    int n;
+    time_t result;
+
+    /*  it goes: Sun, 06 Nov 1994 08:49:37 GMT */
+    n = sscanf(date, RFC1123_FORMAT,
+               wkday, &gmt.tm_mday, mon, &gmt.tm_year, &gmt.tm_hour,
+               &gmt.tm_min, &gmt.tm_sec);
+    /* Is it portable to check n==7 here? */
+    gmt.tm_year -= 1900;
+    for (n=0; n<12; n++)
+        if (strcmp(mon, short_months[n]) == 0)
+            break;
+    /* tm_mon comes out as 12 if the month is corrupt, which is desired,
+     * since the mktime will then fail */
+    gmt.tm_mon = n;
+    gmt.tm_isdst = -1;
+    result = timegm(&gmt);
+    return result;
+}
+
 /*
  * result parsing list.
  * This function is called to parse the result of the propfind request
@@ -695,8 +780,11 @@ static void results(void *userdata,
         newres->type = resr_collection;
     }
 
-    if (modtime)
-        newres->modtime = ne_httpdate_parse(modtime);
+    if (modtime) {
+        newres->modtime = oc_httpdate_parse(modtime);
+    }
+
+    /* DEBUG_WEBDAV("Parsing Modtime: %s -> %llu", modtime, (unsigned long long) newres->modtime ); */
 
     if (clength) {
         char *p;
@@ -757,7 +845,7 @@ static int fetch_resource_list( const char *curi,
 
         date_header =  ne_get_response_header( request, "Date" );
         DEBUG_WEBDAV("Server Date from HTTP header value: %s", date_header);
-        server_time = ne_rfc1123_parse( date_header );
+        server_time = oc_httpdate_parse(date_header);
         now = time(NULL);
         time_diff = server_time - now;
 
@@ -824,7 +912,9 @@ static csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
     }
 
     /* Correct the mtime of the file with the server time delta */
-    lfs->mtime = res->modtime - dav_session.time_delta;
+    DEBUG_WEBDAV("  :> Subtracting %d from modtime %llu", dav_session.time_delta,
+		 (unsigned long long) res->modtime);
+    lfs->mtime = res->modtime - dav_session.time_delta ;
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
     lfs->size  = res->size;
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
@@ -961,7 +1051,8 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
             buf->md5    = c_strdup( _fs.md5 );
             buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
         }
-        DEBUG_WEBDAV("stat results from fs cache - md5: %s", _fs.md5 ? _fs.md5 : "NULL");
+        DEBUG_WEBDAV("stat results from fs cache - md5: %s - mtime: %llu", _fs.md5 ? _fs.md5 : "NULL",
+		(unsigned long long) buf->mtime );
     } else {
       DEBUG_WEBDAV("stat results fetched.");
         /* fetch data via a propfind call. */

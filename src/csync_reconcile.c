@@ -29,6 +29,8 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.reconciler"
 #include "csync_log.h"
 
+#define ACCEPTED_TIME_DIFF 5
+
 /*
  * We merge replicas at the file level. The merged replica contains the
  * superset of files that are on the local machine and server copies of
@@ -122,7 +124,8 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
             switch (other->instruction) {
             /* file on other replica is new too */
             case CSYNC_INSTRUCTION_NEW:
-                if (cur->modtime > other->modtime) {
+                /* if (cur->modtime > other->modtime) { */
+        if (cur->modtime - other->modtime > ACCEPTED_TIME_DIFF) {
 
                     if(ctx->options.with_conflict_copys)
                     {
@@ -137,7 +140,8 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                         other->instruction = CSYNC_INSTRUCTION_NONE;
                     }
 
-                } else if (cur->modtime < other->modtime) {
+                /* } else if (cur->modtime < other->modtime) { */
+        } else if (other->modtime - cur->modtime > ACCEPTED_TIME_DIFF) {
 
                     if(ctx->options.with_conflict_copys)
                     {
@@ -164,7 +168,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                 /* file on other replica has changed too */
             case CSYNC_INSTRUCTION_EVAL:
                 /* file on current replica is newer */
-                if (cur->modtime > other->modtime) {
+                if (cur->modtime - other->modtime > ACCEPTED_TIME_DIFF ) {
 
                     if(ctx->options.with_conflict_copys)
                     {
@@ -204,7 +208,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
             switch (other->instruction) {
             /* file on other replica is new too */
             case CSYNC_INSTRUCTION_NEW:
-                if (cur->modtime > other->modtime) {
+                if (cur->modtime - other->modtime > ACCEPTED_TIME_DIFF) {
 
                     if(ctx->options.with_conflict_copys)
                     {
@@ -232,7 +236,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                 /* file on other replica has changed too */
             case CSYNC_INSTRUCTION_EVAL:
                 /* file on current replica is newer */
-                if (cur->modtime > other->modtime) {
+                if (cur->modtime - other->modtime > ACCEPTED_TIME_DIFF) {
 
                     if(ctx->options.with_conflict_copys)
                     {
