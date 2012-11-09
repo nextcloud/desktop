@@ -22,7 +22,6 @@ static void setup(void **state) {
     rc = csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
     assert_int_equal(rc, 0);
 
-    free(csync->options.config_dir);
     csync_set_config_dir(csync, "/tmp/check_csync1/");
 
     *state = csync;
