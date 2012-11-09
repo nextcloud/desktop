@@ -695,11 +695,12 @@ static const char short_months[12][4] = {
  * This one uses timegm instead, which returns UTC.
  */
 static time_t oc_httpdate_parse( const char *date ) {
-
-    struct tm gmt = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    struct tm gmt;
     char wkday[4], mon[4];
     int n;
     time_t result;
+
+    memset(&gmt, 0, sizeof(struct tm));
 
     /*  it goes: Sun, 06 Nov 1994 08:49:37 GMT */
     n = sscanf(date, RFC1123_FORMAT,
