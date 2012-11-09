@@ -519,7 +519,7 @@ El programa es proporciona TAL QUAL SENSE CAP TIPUS GARANTIA, INCLOENT LA GARANT
     <message>
         <location filename="../src/mirall/application.cpp" line="904"/>
         <source> (Sync is paused)</source>
-        <translation type="unfinished"/>
+        <translation>(La sincronització està pausada)</translation>
     </message>
     <message>
         <source>Sync is paused.</source>
@@ -664,17 +664,17 @@ Comuniqueu l&apos;errada.</translation>
     <message>
         <location filename="../src/mirall/folder.cpp" line="99"/>
         <source>Local folder %1 does not exist.</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer local %1 no existeix.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="102"/>
         <source>%1 should be a directory but is not.</source>
-        <translation type="unfinished"/>
+        <translation>%1 hauria de ser una carpeta, però no ho és.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="105"/>
         <source>%1 is not readable.</source>
-        <translation type="unfinished"/>
+        <translation>No es pot llegir %1.</translation>
     </message>
 </context>
 <context>
@@ -998,7 +998,7 @@ No s&apos;ha pogut configurar</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="427"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation type="unfinished"/>
+        <translation>La creació de la carpeta ha resultat en el codi d&apos;error HTTP %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="448"/>
