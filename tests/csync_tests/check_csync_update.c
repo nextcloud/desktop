@@ -205,7 +205,7 @@ static void check_csync_detect_update_db_none(void **state)
 
     /* the instruction should be set to new  */
     st = c_rbtree_node_data(csync->local.tree->root);
-    assert_int_equal(st->instruction, CSYNC_INSTRUCTION_NONE);
+    assert_int_equal(st->instruction, CSYNC_INSTRUCTION_EVAL);
 
     /* set the instruction to UPDATED that it gets written to the statedb */
     st->instruction = CSYNC_INSTRUCTION_UPDATED;
