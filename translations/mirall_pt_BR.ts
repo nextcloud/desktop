@@ -529,7 +529,7 @@ O programa é fornecido como é com NENHUMA GARANTIA DE QUALQUER TIPO, INCLUINDO
     <message>
         <location filename="../src/mirall/application.cpp" line="904"/>
         <source> (Sync is paused)</source>
-        <translation type="unfinished"/>
+        <translation>(Sincronização está pausada)</translation>
     </message>
     <message>
         <source>Sync is paused.</source>
@@ -674,17 +674,17 @@ Escreva-nos um bug report, por favor.</translation>
     <message>
         <location filename="../src/mirall/folder.cpp" line="99"/>
         <source>Local folder %1 does not exist.</source>
-        <translation type="unfinished"/>
+        <translation>A pasta local %1 não existe.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="102"/>
         <source>%1 should be a directory but is not.</source>
-        <translation type="unfinished"/>
+        <translation>%1 deveria ser uma pasta, mas não é.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="105"/>
         <source>%1 is not readable.</source>
-        <translation type="unfinished"/>
+        <translation>%1 não pode ser lido.</translation>
     </message>
 </context>
 <context>
@@ -1008,7 +1008,7 @@ A configuração não pôde ser concluida.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="427"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation type="unfinished"/>
+        <translation>A criação da pasta resultou em um erro HTTP %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="448"/>
