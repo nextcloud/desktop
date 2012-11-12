@@ -22,6 +22,7 @@
 
 #include "config.h"
 
+#include "c_string.h"
 #include "c_time.h"
 
 struct timespec c_tspecdiff(struct timespec time1, struct timespec time0) {
@@ -92,6 +93,7 @@ int c_utimes(const char *uri, const struct timeval *times) {
     FILETIME LastAccessTime;
     FILETIME LastModificationTime;
     HANDLE hFile;
+    const _TCHAR *wuri = c_multibyte( uri );
 
     if(times) {
         UnixTimevalToFileTime(times[0], &LastAccessTime);
@@ -102,7 +104,8 @@ int c_utimes(const char *uri, const struct timeval *times) {
         GetSystemTimeAsFileTime(&LastModificationTime);
     }
 
-    hFile=CreateFileA(uri, FILE_WRITE_ATTRIBUTES, FILE_SHARE_DELETE | FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
+    hFile=CreateFileW(wuri, FILE_WRITE_ATTRIBUTES, FILE_SHARE_DELETE | FILE_SHARE_READ | FILE_SHARE_WRITE,
+                      NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL+FILE_FLAG_BACKUP_SEMANTICS, NULL);
     if(hFile==INVALID_HANDLE_VALUE) {
         switch(GetLastError()) {
             case ERROR_FILE_NOT_FOUND:
@@ -132,6 +135,8 @@ int c_utimes(const char *uri, const struct timeval *times) {
     }
 
     CloseHandle(hFile);
+    c_free_multibyte(wuri);
+
     return 0;
 }
 

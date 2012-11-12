@@ -38,15 +38,19 @@ static int _csync_config_copy_default (const char *config) {
     int re = 0;
 #ifdef _WIN32
     /* For win32, try to copy the conf file from the directory from where the app was started. */
-    char buf[MAX_PATH+1];
+    _TCHAR tcharbuf[MAX_PATH+1];
+    char *buf;
     int  len = 0;
 
+
     /* Get the path from where the application was started */
-    len = GetModuleFileNameA(NULL, buf, MAX_PATH);
+    len = GetModuleFileNameW(NULL, tcharbuf, MAX_PATH);
     if(len== 0) {
         re = -1;
     } else {
         char *last_bslash;
+
+        buf = c_utf8(tcharbuf);
         /* cut the trailing filename off */
         if ((last_bslash = strrchr(buf, '\\')) != NULL) {
           *last_bslash='\0';
@@ -57,6 +61,7 @@ static int _csync_config_copy_default (const char *config) {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Could not copy /%s to %s", buf, config );
             re = -1;
         }
+        c_free_utf8(buf);
     }
 #else
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Copy %s/config/%s to %s", SYSCONFDIR,
