@@ -519,7 +519,7 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
     <message>
         <location filename="../src/mirall/application.cpp" line="904"/>
         <source> (Sync is paused)</source>
-        <translation type="unfinished"/>
+        <translation>(La sincronización está pausada)</translation>
     </message>
     <message>
         <source>Sync is paused.</source>
@@ -664,17 +664,17 @@ Por favor, escribí un bug sobre esto. </translation>
     <message>
         <location filename="../src/mirall/folder.cpp" line="99"/>
         <source>Local folder %1 does not exist.</source>
-        <translation type="unfinished"/>
+        <translation>El directorio local %1 no existe.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="102"/>
         <source>%1 should be a directory but is not.</source>
-        <translation type="unfinished"/>
+        <translation>%1 debería ser un directorio, pero no lo es.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="105"/>
         <source>%1 is not readable.</source>
-        <translation type="unfinished"/>
+        <translation>No se puede leer %1.</translation>
     </message>
 </context>
 <context>
@@ -997,7 +997,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="427"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation type="unfinished"/>
+        <translation>La creación del directorio resultó en un error HTTP con código de error %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="448"/>
@@ -1228,12 +1228,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="500"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; as &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Conectado a &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; como &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="502"/>
         <source>Version: %1 (%2)</source>
-        <translation type="unfinished"/>
+        <translation>Versión: %1 (%2)</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="518"/>

@@ -523,7 +523,7 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
     <message>
         <location filename="../src/mirall/application.cpp" line="904"/>
         <source> (Sync is paused)</source>
-        <translation type="unfinished"/>
+        <translation> (Sync is gepauseerd)</translation>
     </message>
     <message>
         <source>Sync is paused.</source>
@@ -592,7 +592,7 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="276"/>
         <source>A remote file can not be written. Please check the remote access.</source>
-        <translation type="unfinished"/>
+        <translation>Een extern bestand kon niet worden weggeschreven. Controleer de externe rechten.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="279"/>
@@ -624,7 +624,8 @@ Please make sure that all directories are writeable.</source>
         <location filename="../src/mirall/csyncthread.cpp" line="312"/>
         <source>CSync encountered an error while examining the file system.
 Syncing is not possible.</source>
-        <translation type="unfinished"/>
+        <translation>CSync is een fout tegengekomen tijdens het onderzoeken van het bestandssysteem.
+Synchroniseren is niet mogelijk.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="315"/>
@@ -667,17 +668,17 @@ Neem alstublieft de tijd voor het schrijven van een bug report.</translation>
     <message>
         <location filename="../src/mirall/folder.cpp" line="99"/>
         <source>Local folder %1 does not exist.</source>
-        <translation type="unfinished"/>
+        <translation>Lokale map %1 bestaat niet.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="102"/>
         <source>%1 should be a directory but is not.</source>
-        <translation type="unfinished"/>
+        <translation>%1 zou een map moeten zijn, maar is dit niet.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="105"/>
         <source>%1 is not readable.</source>
-        <translation type="unfinished"/>
+        <translation>%1 is niet leesbaar.</translation>
     </message>
 </context>
 <context>
@@ -706,7 +707,7 @@ Neem alstublieft de tijd voor het schrijven van een bug report.</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="90"/>
         <source>The local path %1 is already an upload folder.&lt;br/&gt;Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Het lokale pad %1 is al een upload map.&lt;br/&gt;Kies een andere map!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="94"/>
@@ -726,7 +727,7 @@ Neem alstublieft de tijd voor het schrijven van een bug report.</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="120"/>
         <source>&lt;br/&gt;The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;De alias &lt;i&gt;%1&lt;/i&gt; is al in gebruik. Kies een andere alias.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="141"/>
@@ -901,7 +902,7 @@ Neem alstublieft de tijd voor het schrijven van een bug report.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="81"/>
         <source>Enter Server Name and Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Voer Server Naam en Inloggegevens in.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="103"/>
@@ -956,7 +957,7 @@ Neem alstublieft de tijd voor het schrijven van een bug report.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="263"/>
         <source>Starting script owncloud-admin...</source>
-        <translation type="unfinished"/>
+        <translation>Starten van script owncloud-admin...</translation>
     </message>
     <message>
         <source>&lt;font color=&quot;red&quot;&gt;Installation of ownCloud failed!&lt;/font&gt;</source>
@@ -980,7 +981,8 @@ Neem alstublieft de tijd voor het schrijven van een bug report.</translation>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="358"/>
         <source>The owncloud admin script can not be found.
 Setup can not be done.</source>
-        <translation type="unfinished"/>
+        <translation>Het owncloud admin script is niet gevonden.
+De setup kan niet worden uitgevoerd.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="399"/>
@@ -990,7 +992,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="423"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation type="unfinished"/>
+        <translation>Externe map %1 succesvol gecreërd.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="425"/>
@@ -1087,12 +1089,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="60"/>
         <source>Welcome to %1</source>
-        <translation type="unfinished"/>
+        <translation>Welkom op %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="61"/>
         <source>Set up your server connection</source>
-        <translation type="unfinished"/>
+        <translation>Maak een server connectie</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="69"/>
@@ -1160,7 +1162,7 @@ Setup can not be done.</source>
         <location filename="../src/mirall/sslerrordialog.cpp" line="154"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="155"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;lt;niet gespecificeerd&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="156"/>
@@ -1183,12 +1185,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="165"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="166"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="168"/>
@@ -1221,22 +1223,22 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="472"/>
         <source>Checking %1 connection...</source>
-        <translation type="unfinished"/>
+        <translation>Controleren van %1 connectie...</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="477"/>
         <source>No %1 connection configured.</source>
-        <translation type="unfinished"/>
+        <translation>Geen %1 connectie geconfigureerd.</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="500"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; as &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Verbonden met &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; als &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="502"/>
         <source>Version: %1 (%2)</source>
-        <translation type="unfinished"/>
+        <translation>Versie: %1 (%2)</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="518"/>
@@ -1306,7 +1308,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="116"/>
         <source>&lt;p&gt;A new version of the %1 client is available.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Een nieuwe versie van de %1 client is beschikbaar.</translation>
     </message>
     <message>
         <source>&lt;p&gt;A new version of the ownCloud Client is available.</source>
@@ -1746,7 +1748,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
         <source>Trust this certificate anyway</source>
-        <translation type="unfinished"/>
+        <translation>Vertrouw dit certificaat alsnog</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>
@@ -1799,7 +1801,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="65"/>
         <source>Push...</source>
-        <translation type="unfinished"/>
+        <translation>Doorvoeren...</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="72"/>
