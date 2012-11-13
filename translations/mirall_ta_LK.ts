@@ -266,12 +266,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="239"/>
+        <location filename="../src/mirall/application.cpp" line="237"/>
         <source>&lt;p&gt;The detailed error message is&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;விரிவான வழு செய்தி&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="241"/>
+        <location filename="../src/mirall/application.cpp" line="239"/>
         <source>&lt;p&gt;Please check your configuration by clicking on the tray icon.&lt;/p&gt;</source>
         <translation>&lt;p&gt;தட்டு சின்னத்தை சொடக்குவதன் மூலம் உங்களுடைய தகவமைப்புகளை சரிபார்க்க.&lt;/p&gt;</translation>
     </message>
@@ -296,7 +296,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="293"/>
+        <location filename="../src/mirall/application.cpp" line="341"/>
         <source>Sync started for %1 configured sync folder(s).</source>
         <translation>தகவமைக்கப்பட்ட கோப்புறையில் (களில்)   %1 ஒத்திசைக்க தொடங்கியுள்ளது.</translation>
     </message>
@@ -305,27 +305,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="347"/>
+        <location filename="../src/mirall/application.cpp" line="393"/>
         <source>Open status...</source>
         <translation>திறந்த நிலை...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="349"/>
+        <location filename="../src/mirall/application.cpp" line="395"/>
         <source>Add folder...</source>
         <translation>கோப்புறையை சேர்க்க...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="351"/>
+        <location filename="../src/mirall/application.cpp" line="397"/>
         <source>Configure...</source>
         <translation>தகவமைத்தல்...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="353"/>
+        <location filename="../src/mirall/application.cpp" line="399"/>
         <source>Configure proxy...</source>
         <translation>proxy ஐ தகவமைக்குக...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="357"/>
+        <location filename="../src/mirall/application.cpp" line="403"/>
         <source>Quit</source>
         <translation>விலகுக</translation>
     </message>
@@ -334,73 +334,94 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="222"/>
+        <location filename="../src/mirall/application.cpp" line="220"/>
         <source>%1 Server Mismatch</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="223"/>
+        <location filename="../src/mirall/application.cpp" line="221"/>
         <source>&lt;p&gt;The configured server for this client is too old.&lt;/p&gt;&lt;p&gt;Please update to the latest %1 server and restart the client.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="238"/>
+        <location filename="../src/mirall/application.cpp" line="236"/>
         <source>&lt;p&gt;The %1 at %2 could not be reached.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="243"/>
+        <location filename="../src/mirall/application.cpp" line="241"/>
         <source>%1 Connection Failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="271"/>
-        <location filename="../src/mirall/application.cpp" line="279"/>
+        <location filename="../src/mirall/application.cpp" line="263"/>
+        <source>Too many user attempts to enter password.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="264"/>
+        <location filename="../src/mirall/application.cpp" line="281"/>
+        <source>Credentials</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="275"/>
+        <source>Error: Could not retrieve the password!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="277"/>
+        <source>Password dialog was canceled!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="311"/>
+        <location filename="../src/mirall/application.cpp" line="320"/>
         <source>No %1 Connection</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="272"/>
+        <location filename="../src/mirall/application.cpp" line="312"/>
         <source>&lt;p&gt;Your %1 credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="280"/>
+        <location filename="../src/mirall/application.cpp" line="321"/>
         <source>&lt;p&gt;Either your user name or your password are not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="292"/>
+        <location filename="../src/mirall/application.cpp" line="340"/>
         <source>%1 Sync Started</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="345"/>
+        <location filename="../src/mirall/application.cpp" line="391"/>
         <source>Open %1 in browser...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="355"/>
+        <location filename="../src/mirall/application.cpp" line="401"/>
         <source>About...</source>
         <translation>பற்றி்...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="411"/>
+        <location filename="../src/mirall/application.cpp" line="457"/>
         <source>Open %1 folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="424"/>
+        <location filename="../src/mirall/application.cpp" line="470"/>
         <source>Managed Folders:</source>
         <translation>கட்டுப்படுத்தப்பட்ட கோப்புறை :</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="654"/>
+        <location filename="../src/mirall/application.cpp" line="704"/>
         <source>About %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="655"/>
+        <location filename="../src/mirall/application.cpp" line="705"/>
         <source>%1 client, version %2
 
 Copyright 2012, the ownCloud developers
@@ -411,108 +432,108 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="668"/>
+        <location filename="../src/mirall/application.cpp" line="718"/>
         <source>Confirm Folder Remove</source>
         <translation>கோப்புறை அகற்றுவதை உறுதிப்படுத்துக</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="669"/>
+        <location filename="../src/mirall/application.cpp" line="719"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>உங்களுக்கு பதிவேற்றப்பட்ட கோப்புறையை அகற்றவேண்டுமா &lt;i&gt;%1&lt;/i&gt;?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="703"/>
+        <location filename="../src/mirall/application.cpp" line="753"/>
         <source>Undefined Folder State</source>
         <translation>வரையறுக்கப்படாத கோப்புறை நிலை</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="706"/>
+        <location filename="../src/mirall/application.cpp" line="756"/>
         <source>The folder waits to start syncing.</source>
         <translation>கோப்புறை ஒத்திசைவை ஆரம்பிக்க காத்திருக்கின்றன.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="709"/>
-        <location filename="../src/mirall/application.cpp" line="879"/>
+        <location filename="../src/mirall/application.cpp" line="759"/>
+        <location filename="../src/mirall/application.cpp" line="929"/>
         <source>Sync is running.</source>
         <translation>ஒத்திசைவு ஓடிக்கொண்டிருக்கின்றது.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="712"/>
-        <location filename="../src/mirall/application.cpp" line="884"/>
+        <location filename="../src/mirall/application.cpp" line="762"/>
+        <location filename="../src/mirall/application.cpp" line="934"/>
         <source>Last Sync was successful.</source>
         <translation>இறுதி ஒத்திசைவு வெற்றிகரமானது.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="715"/>
-        <location filename="../src/mirall/application.cpp" line="890"/>
+        <location filename="../src/mirall/application.cpp" line="765"/>
+        <location filename="../src/mirall/application.cpp" line="940"/>
         <source>Syncing Error.</source>
         <translation>ஒத்திசைவில் வழு</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="718"/>
-        <location filename="../src/mirall/application.cpp" line="896"/>
+        <location filename="../src/mirall/application.cpp" line="768"/>
+        <location filename="../src/mirall/application.cpp" line="946"/>
         <source>Setup Error.</source>
         <translation>நிறுவு வழு</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="721"/>
-        <location filename="../src/mirall/application.cpp" line="899"/>
+        <location filename="../src/mirall/application.cpp" line="771"/>
+        <location filename="../src/mirall/application.cpp" line="949"/>
         <source>Undefined Error State.</source>
         <translation>வரையறுக்கப்படாத வழு நிலைமை</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="725"/>
+        <location filename="../src/mirall/application.cpp" line="775"/>
         <source>Folder information</source>
         <translation>கோப்புறை தகவல்</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="740"/>
+        <location filename="../src/mirall/application.cpp" line="790"/>
         <source>Unknown</source>
         <translation>தெரியாத</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="742"/>
+        <location filename="../src/mirall/application.cpp" line="792"/>
         <source>Changed files:
 </source>
         <translation>மாற்றப்பட்ட கோப்புகள்:⏎
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="744"/>
+        <location filename="../src/mirall/application.cpp" line="794"/>
         <source>Added files:
 </source>
         <translation>சேர்க்கப்பட்ட கோப்புகள்:⏎
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="746"/>
+        <location filename="../src/mirall/application.cpp" line="796"/>
         <source>New files in the server, or files deleted locally:
 </source>
         <translation>சேவையகத்தில் உள்ள புதிய கோப்பு, அல்லது கோப்புகள் இடதுரியாக அகற்றுக:⏎
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="772"/>
+        <location filename="../src/mirall/application.cpp" line="822"/>
         <source>Sync Running</source>
         <translation>ஒத்திசைவு ஓடிக்கொண்டிருக்கின்றன</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="773"/>
+        <location filename="../src/mirall/application.cpp" line="823"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>ஒத்திசைவு செயல் ஓடிக்கொண்டிருக்கிருக்கின்றன. &lt;br/&gt;உங்களுக்கு இதை முடிக்கவேண்டுமா?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="872"/>
+        <location filename="../src/mirall/application.cpp" line="922"/>
         <source>Undefined State.</source>
         <translation>வரையறுக்கப்படாத நிலை</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="875"/>
+        <location filename="../src/mirall/application.cpp" line="925"/>
         <source>Waits to start syncing.</source>
         <translation>ஒத்திசைவை ஆரம்பிக்க காத்திருக்கின்றது.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="904"/>
+        <location filename="../src/mirall/application.cpp" line="954"/>
         <source> (Sync is paused)</source>
         <translation type="unfinished"/>
     </message>
@@ -521,7 +542,7 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="921"/>
+        <location filename="../src/mirall/application.cpp" line="971"/>
         <source>No sync folders configured.</source>
         <translation>ஒத்திசைவு கோப்புறைகள் தவகமைக்கப்படவில்லை.</translation>
     </message>
@@ -673,7 +694,7 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::FolderViewDelegate</name>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="175"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="176"/>
         <source>Remote path: %1</source>
         <translation>தொலைவு பாதை : %1</translation>
     </message>
@@ -1199,37 +1220,37 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::StatusDialog</name>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="271"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="272"/>
         <source>Pause</source>
         <translation>இடை நிறுத்தம்</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="273"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="274"/>
         <source>Resume</source>
         <translation>மறுபடியும் ஆரம்பி</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="472"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="473"/>
         <source>Checking %1 connection...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="477"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="478"/>
         <source>No %1 connection configured.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="500"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="501"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; as &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="502"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="503"/>
         <source>Version: %1 (%2)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="518"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="519"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
@@ -1250,7 +1271,7 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="515"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="516"/>
         <source>unknown problem.</source>
         <translation>தெரியாதப் பிரச்சினை</translation>
     </message>
@@ -1311,7 +1332,7 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::ownCloudFolder</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="277"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="280"/>
         <source>The CSync thread terminated.</source>
         <translation>Cஒத்திசைவு புரிஉரு முடிவு.</translation>
     </message>
@@ -1327,12 +1348,12 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/mirallconfigfile.cpp" line="331"/>
+        <location filename="../src/mirall/credentialstore.cpp" line="75"/>
         <source>Password Required</source>
         <translation>கடவுச்சொல் தேவைப்படுகிறது</translation>
     </message>
     <message>
-        <location filename="../src/mirall/mirallconfigfile.cpp" line="332"/>
+        <location filename="../src/mirall/credentialstore.cpp" line="76"/>
         <source>Please enter your %1 password:</source>
         <translation>தயவுசெய்து உங்களுடைய %1 கடவுச்சொல்லை நுழைக்க: </translation>
     </message>

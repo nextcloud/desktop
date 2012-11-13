@@ -275,12 +275,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="239"/>
+        <location filename="../src/mirall/application.cpp" line="237"/>
         <source>&lt;p&gt;The detailed error message is&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;ข้อความแสดงรายละเอียดเกี่ยวกับข้อผิดพลาดคือ&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="241"/>
+        <location filename="../src/mirall/application.cpp" line="239"/>
         <source>&lt;p&gt;Please check your configuration by clicking on the tray icon.&lt;/p&gt;</source>
         <translation>&lt;p&gt;กรุณาตรวจสอบการกำหนดค่าของคุณโดยคลิกที่แถบไอคอน tray &lt;/p&gt;</translation>
     </message>
@@ -305,7 +305,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="293"/>
+        <location filename="../src/mirall/application.cpp" line="341"/>
         <source>Sync started for %1 configured sync folder(s).</source>
         <translation>เริ่มผสานข้อมูลแล้วสำหรับ %1 โฟลเดอร์ที่ถูกกำหนดให้ผสานข้อมูล</translation>
     </message>
@@ -314,27 +314,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="347"/>
+        <location filename="../src/mirall/application.cpp" line="393"/>
         <source>Open status...</source>
         <translation>เปิดสถานะ...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="349"/>
+        <location filename="../src/mirall/application.cpp" line="395"/>
         <source>Add folder...</source>
         <translation>เพิ่มโฟลเดอร์...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="351"/>
+        <location filename="../src/mirall/application.cpp" line="397"/>
         <source>Configure...</source>
         <translation>กำหนดค่า...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="353"/>
+        <location filename="../src/mirall/application.cpp" line="399"/>
         <source>Configure proxy...</source>
         <translation>กำหนดค่าพร็อกซี่...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="357"/>
+        <location filename="../src/mirall/application.cpp" line="403"/>
         <source>Quit</source>
         <translation>ออก</translation>
     </message>
@@ -343,73 +343,94 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="222"/>
+        <location filename="../src/mirall/application.cpp" line="220"/>
         <source>%1 Server Mismatch</source>
         <translation>%1 เซิร์ฟเวอร์ ไม่ตรงกัน</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="223"/>
+        <location filename="../src/mirall/application.cpp" line="221"/>
         <source>&lt;p&gt;The configured server for this client is too old.&lt;/p&gt;&lt;p&gt;Please update to the latest %1 server and restart the client.&lt;/p&gt;</source>
         <translation>&lt;p&gt;เซิร์ฟเวอร์ที่กำหนดค่าไว้สำหรับโปรแกรมไคลเอนต์นี้เก่าแล้ว.&lt;/p&gt;&lt;p&gt;กรุณาอัพเดทไปเป็นเซิร์ฟเวอร์ล่าสุด %1 แล้วรีสตาร์ทโปรแกรมไคลเอนต์ใหม่อีกครั้ง.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="238"/>
+        <location filename="../src/mirall/application.cpp" line="236"/>
         <source>&lt;p&gt;The %1 at %2 could not be reached.&lt;/p&gt;</source>
         <translation>&lt;p&gt;%1 ที่ %2 ไม่สามารถเชื่อมต่อได้.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="243"/>
+        <location filename="../src/mirall/application.cpp" line="241"/>
         <source>%1 Connection Failed</source>
         <translation>%1 การเชื่อมต่อล้มเหลว</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="271"/>
-        <location filename="../src/mirall/application.cpp" line="279"/>
+        <location filename="../src/mirall/application.cpp" line="263"/>
+        <source>Too many user attempts to enter password.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="264"/>
+        <location filename="../src/mirall/application.cpp" line="281"/>
+        <source>Credentials</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="275"/>
+        <source>Error: Could not retrieve the password!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="277"/>
+        <source>Password dialog was canceled!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="311"/>
+        <location filename="../src/mirall/application.cpp" line="320"/>
         <source>No %1 Connection</source>
         <translation>ยังไม่มีการเชื่อมต่อ %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="272"/>
+        <location filename="../src/mirall/application.cpp" line="312"/>
         <source>&lt;p&gt;Your %1 credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation>&lt;p&gt;ข้อมูลประจำตัว %1 ของคุณไม่ถูกต้อง.&lt;/p&gt;&lt;p&gt;กรุณาแก้ไขข้อมูลดังกล่าวด้วยการเปิดกล่องโต้ตอบเพื่อกำหนดค่าจากถาดเครื่องมือ!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="280"/>
+        <location filename="../src/mirall/application.cpp" line="321"/>
         <source>&lt;p&gt;Either your user name or your password are not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation>&lt;p&gt;ชื่อผู้ใช้งาน หรือรหัสผ่านของคุณไม่ถูกต้อง.&lt;/p&gt;&lt;p&gt;กรุณาแก้ไขให้ถูกต้องโดยเปิดกล่องโต้ตอบเพื่อกำหนดค่าจากถาดเครื่องมือ!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="292"/>
+        <location filename="../src/mirall/application.cpp" line="340"/>
         <source>%1 Sync Started</source>
         <translation>การซิงค์ข้อมูล %1 เริ่มต้นแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="345"/>
+        <location filename="../src/mirall/application.cpp" line="391"/>
         <source>Open %1 in browser...</source>
         <translation>เปิด %1 ในโปรแกราบราวเซอร์...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="355"/>
+        <location filename="../src/mirall/application.cpp" line="401"/>
         <source>About...</source>
         <translation>เกี่ยวกับ...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="411"/>
+        <location filename="../src/mirall/application.cpp" line="457"/>
         <source>Open %1 folder</source>
         <translation>เปิดโฟลเดอร์ %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="424"/>
+        <location filename="../src/mirall/application.cpp" line="470"/>
         <source>Managed Folders:</source>
         <translation>โฟลเดอร์ที่มีการจัดการแล้ว:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="654"/>
+        <location filename="../src/mirall/application.cpp" line="704"/>
         <source>About %1</source>
         <translation>เกี่ยวกับ %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="655"/>
+        <location filename="../src/mirall/application.cpp" line="705"/>
         <source>%1 client, version %2
 
 Copyright 2012, the ownCloud developers
@@ -426,108 +447,108 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
 โปรแกรมดังกล่าวนี้ได้นำเสนอบริการ AS IS โดยไม่รับประกันใดๆทั้งสิ้น รวมทั้งการรับประกันในเรื่องของดีไซน์, ความสามารถเชิงพาณิชย์ และความเหมาะสมสำหรับวัตถุประสงค์เฉพาะ</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="668"/>
+        <location filename="../src/mirall/application.cpp" line="718"/>
         <source>Confirm Folder Remove</source>
         <translation>ยืนยันการลบโฟลเดอร์</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="669"/>
+        <location filename="../src/mirall/application.cpp" line="719"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>คุณแน่ใจแล้วหรือว่าต้องการลบโฟลเดอร์ที่อัพโหลด &lt;i&gt;%1-&lt;/i&gt;นี้ทิ้งไป?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="703"/>
+        <location filename="../src/mirall/application.cpp" line="753"/>
         <source>Undefined Folder State</source>
         <translation>สถานะโฟลเดอร์ยังไม่ได้ถูกกำหนด</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="706"/>
+        <location filename="../src/mirall/application.cpp" line="756"/>
         <source>The folder waits to start syncing.</source>
         <translation>โฟลเดอร์ดังกล่าวกำลังรอการซิงค์ข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="709"/>
-        <location filename="../src/mirall/application.cpp" line="879"/>
+        <location filename="../src/mirall/application.cpp" line="759"/>
+        <location filename="../src/mirall/application.cpp" line="929"/>
         <source>Sync is running.</source>
         <translation>การซิงค์ข้อมูลกำลังทำงาน</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="712"/>
-        <location filename="../src/mirall/application.cpp" line="884"/>
+        <location filename="../src/mirall/application.cpp" line="762"/>
+        <location filename="../src/mirall/application.cpp" line="934"/>
         <source>Last Sync was successful.</source>
         <translation>การซิงค์ข้อมูลครั้งล่าสุดเสร็จเรียบร้อยแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="715"/>
-        <location filename="../src/mirall/application.cpp" line="890"/>
+        <location filename="../src/mirall/application.cpp" line="765"/>
+        <location filename="../src/mirall/application.cpp" line="940"/>
         <source>Syncing Error.</source>
         <translation>การซิงค์ข้อมูลเกิดข้อผิดพลาด</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="718"/>
-        <location filename="../src/mirall/application.cpp" line="896"/>
+        <location filename="../src/mirall/application.cpp" line="768"/>
+        <location filename="../src/mirall/application.cpp" line="946"/>
         <source>Setup Error.</source>
         <translation>เกิดข้อผิดพลาดในการติดตั้ง</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="721"/>
-        <location filename="../src/mirall/application.cpp" line="899"/>
+        <location filename="../src/mirall/application.cpp" line="771"/>
+        <location filename="../src/mirall/application.cpp" line="949"/>
         <source>Undefined Error State.</source>
         <translation>ไม่สามารถระบุข้อผิดพลาดได้</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="725"/>
+        <location filename="../src/mirall/application.cpp" line="775"/>
         <source>Folder information</source>
         <translation>ข้อมูลเกี่ยวกับโฟลเดอร์</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="740"/>
+        <location filename="../src/mirall/application.cpp" line="790"/>
         <source>Unknown</source>
         <translation>ไม่ทราบ</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="742"/>
+        <location filename="../src/mirall/application.cpp" line="792"/>
         <source>Changed files:
 </source>
         <translation>ไฟล์ที่ถูกเปลี่ยน:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="744"/>
+        <location filename="../src/mirall/application.cpp" line="794"/>
         <source>Added files:
 </source>
         <translation>ไฟล์ถูกเพิ่มแล้ว
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="746"/>
+        <location filename="../src/mirall/application.cpp" line="796"/>
         <source>New files in the server, or files deleted locally:
 </source>
         <translation>ไฟล์ใหม่ในเซิร์ฟเวอร์, หรือไฟล์ถูกลบจากเครื่อง::
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="772"/>
+        <location filename="../src/mirall/application.cpp" line="822"/>
         <source>Sync Running</source>
         <translation>การซิงค์ข้อมูลกำลังทำงาน</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="773"/>
+        <location filename="../src/mirall/application.cpp" line="823"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>การดำเนินการเพื่อถ่ายโอนข้อมูลกำลังทำงานอยู่ &lt;br/&gt;คุณต้องการสิ้นสุดการทำงานหรือไม่?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="872"/>
+        <location filename="../src/mirall/application.cpp" line="922"/>
         <source>Undefined State.</source>
         <translation>สถานะที่ยังไม่ได้ถูกกำหนด</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="875"/>
+        <location filename="../src/mirall/application.cpp" line="925"/>
         <source>Waits to start syncing.</source>
         <translation>รอการเริ่มต้นซิงค์ข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="904"/>
+        <location filename="../src/mirall/application.cpp" line="954"/>
         <source> (Sync is paused)</source>
         <translation type="unfinished"/>
     </message>
@@ -536,7 +557,7 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="921"/>
+        <location filename="../src/mirall/application.cpp" line="971"/>
         <source>No sync folders configured.</source>
         <translation>ยังไม่มีการกำหนดค่าโฟลเดอร์ที่ต้องการซิงค์ข้อมูล</translation>
     </message>
@@ -690,7 +711,7 @@ Please write a bug report.</translation>
 <context>
     <name>Mirall::FolderViewDelegate</name>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="175"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="176"/>
         <source>Remote path: %1</source>
         <translation>ตำแหน่งพาธระยะไกล: %1</translation>
     </message>
@@ -1217,37 +1238,37 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::StatusDialog</name>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="271"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="272"/>
         <source>Pause</source>
         <translation>หยุดชั่วคราว</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="273"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="274"/>
         <source>Resume</source>
         <translation>ดำเนินการต่อ</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="472"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="473"/>
         <source>Checking %1 connection...</source>
         <translation>กำลังตรวจสอบ %1 การเชื่อมต่อ</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="477"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="478"/>
         <source>No %1 connection configured.</source>
         <translation>ยังไม่มีการเชื่อมต่อ %1 ที่ถูกกำหนดค่า</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="500"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="501"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; as &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="502"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="503"/>
         <source>Version: %1 (%2)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="518"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="519"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;ล้มเหลวในการเชื่อมต่อไปที่ %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
@@ -1268,7 +1289,7 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="515"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="516"/>
         <source>unknown problem.</source>
         <translation>ปัญหาที่ไม่ทราบสาเหตุ</translation>
     </message>
@@ -1329,7 +1350,7 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::ownCloudFolder</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="277"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="280"/>
         <source>The CSync thread terminated.</source>
         <translation>หัวข้อ CSync สิ้นสุดลงแล้ว</translation>
     </message>
@@ -1345,12 +1366,12 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/mirallconfigfile.cpp" line="331"/>
+        <location filename="../src/mirall/credentialstore.cpp" line="75"/>
         <source>Password Required</source>
         <translation>จำเป็นต้องกรอกรหัสผ่าน</translation>
     </message>
     <message>
-        <location filename="../src/mirall/mirallconfigfile.cpp" line="332"/>
+        <location filename="../src/mirall/credentialstore.cpp" line="76"/>
         <source>Please enter your %1 password:</source>
         <translation>กรุณากรอกรหัสผ่าน %1 ของคุณ</translation>
     </message>
