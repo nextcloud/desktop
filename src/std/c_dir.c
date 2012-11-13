@@ -124,7 +124,7 @@ int c_rmdirs(const char *path) {
         len = strlen(path) + strlen(rd_name) + 2;
         fname = c_malloc(len);
         if (fname == NULL) {
-          closedir(d);
+          _tclosedir(d);
           return -1;
         }
         snprintf(fname, len, "%s/%s", path, rd_name);
