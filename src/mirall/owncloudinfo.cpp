@@ -131,7 +131,8 @@ void ownCloudInfo::mkdirRequest( const QString& dir )
         conMode = QHttp::ConnectionModeHttps;
 
     QHttp* qhttp = new QHttp(url.host(), conMode, 0, this);
-    qhttp->setUser( cfgFile.ownCloudUser( _connection ), cfgFile.ownCloudPasswd( _connection ));
+    qhttp->setUser( CredentialStore::instance()->user(_connection),
+                    CredentialStore::instance()->password(_connection) );
 
     connect(qhttp, SIGNAL(requestStarted(int)), this,SLOT(qhttpRequestStarted(int)));
     connect(qhttp, SIGNAL(requestFinished(int, bool)), this,SLOT(qhttpRequestFinished(int,bool)));
