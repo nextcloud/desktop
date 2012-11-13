@@ -14,7 +14,15 @@
 #ifndef CREDENTIALSTORE_H
 #define CREDENTIALSTORE_H
 
+#include "config.h"
 #include <QObject>
+
+#ifdef WITH_QTKEYCHAIN
+#include "qtkeychain/keychain.h"
+
+using namespace QKeychain;
+#endif
+
 
 namespace Mirall {
 
@@ -94,8 +102,8 @@ signals:
     void fetchCredentialsFinished(bool);
 
 private slots:
-#ifdef HAVE_QTKEYCHAIN
-void slotKeyChainFinished(QKeyChain::Job* job);
+#ifdef WITH_QTKEYCHAIN
+    void slotKeyChainFinished(QKeychain::Job* job);
 #endif
 
 private:

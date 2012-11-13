@@ -3,6 +3,7 @@
 
 #cmakedefine USE_INOTIFY 1
 #cmakedefine WITH_CSYNC 1
+#cmakedefine WITH_QTKEYCHAIN 1
 
 #cmakedefine THEME_CLASS @THEME_CLASS@
 #endif

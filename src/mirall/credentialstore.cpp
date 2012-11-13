@@ -13,9 +13,13 @@
 
 #include <QtGui>
 
+#include "config.h"
+
 #include "mirall/credentialstore.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/theme.h"
+
+
 
 namespace Mirall {
 
@@ -90,14 +94,14 @@ void CredentialStore::fetchCredentials()
     }
     case MirallConfigFile::KeyChain: {
         /* Qt Keychain is not yet implemented. */
-#ifdef HAVE_QTKEYCHAIN
+#ifdef WITH_QTKEYCHAIN
         if( !_user.isEmpty() ) {
-            ReadPasswordJoei b job( QLatin1String(Theme::instance()->appName()) );
+            ReadPasswordJob job(Theme::instance()->appName());
             job.setAutoDelete( false );
             job.setKey( _user );
 
             job.connect( &job, SIGNAL(finished(QKeychain::Job*)), this,
-                         SLOT(slotKeyChainFinished(QKeyChain::Job*)));
+                         SLOT(slotKeyChainFinished(QKeychain::Job*)));
             job.start();
         }
 #else
@@ -121,14 +125,15 @@ void CredentialStore::fetchCredentials()
     emit( fetchCredentialsFinished(ok) );
 }
 
-#ifdef HAVE_QTKEYCHAIN
-void CredentialsStore::slotKeyChainFinished(QKeyChain::Job* job)
+#ifdef WITH_QTKEYCHAIN
+void CredentialStore::slotKeyChainFinished(QKeychain::Job* job)
 {
-    if( job ) {
-        if( job->error() ) {
-            qDebug() << "Error mit keychain: " << job->errorString();
+    ReadPasswordJob *pwdJob = static_cast<ReadPasswordJob*>(job);
+    if( pwdJob ) {
+        if( pwdJob->error() ) {
+            qDebug() << "Error mit keychain: " << pwdJob->errorString();
         } else {
-            _passwd = job.textData();
+            _passwd = pwdJob->textData();
         }
     }
 }

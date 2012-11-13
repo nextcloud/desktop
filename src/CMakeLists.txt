@@ -91,11 +91,22 @@ ENDIF()
 
 qt4_wrap_cpp(syncMoc ${libsync_HEADERS})
 
+list(APPEND libsync_LINK_TARGETS
+    ${QT_LIBRARIES}
+    ${CSYNC_LIBRARY}
+)
+
+if(QTKEYCHAIN_FOUND)
+    list(APPEND libsync_LINK_TARGETS ${QTKEYCHAIN_LIBRARY})
+    include_directories(${QTKEYCHAIN_INCLUDE_DIR})
+endif()
+
 add_library(mirallsync   SHARED ${libsync_SRCS} ${syncMoc})
 add_library(owncloudsync SHARED ${libsync_SRCS} ${syncMoc})
 set_target_properties( owncloudsync PROPERTIES COMPILE_DEFINITIONS OWNCLOUD_CLIENT)
-target_link_libraries(mirallsync ${QT_LIBRARIES} ${CSYNC_LIBRARY} )
-target_link_libraries(owncloudsync ${QT_LIBRARIES} ${CSYNC_LIBRARY} )
+
+target_link_libraries(mirallsync ${libsync_LINK_TARGETS} )
+target_link_libraries(owncloudsync ${libsync_LINK_TARGETS} )
 
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     install(TARGETS mirallsync owncloudsync
