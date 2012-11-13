@@ -24,6 +24,9 @@ namespace Mirall {
 
 class MirallConfigFile
 {
+    /* let only CredentialStore read the password from the file. All other classes
+     *  should work with CredentialStore to get the credentials.  */
+    friend class CredentialStore;
 public:
     MirallConfigFile( const QString& appendix = QString() );
 
@@ -33,6 +36,12 @@ public:
         oCSetupBottom,
         oCSetupFixUrl,
         oCSetupResultTop // ownCloud connect result page
+    };
+
+    enum CredentialType {
+        User = 0,
+        Settings,
+        KeyChain
     };
 
     QString configPath() const;
@@ -60,9 +69,7 @@ public:
     QByteArray caCerts();
     void setCaCerts( const QByteArray& );
 
-    QString ownCloudUser( const QString& connection = QString() ) const;
-
-    QString ownCloudPasswd( const QString& connection = QString() ) const;
+    CredentialType credentialType() const;
 
     QString ownCloudVersion() const;
     void setOwnCloudVersion( const QString& );
@@ -78,8 +85,6 @@ public:
     int localPollInterval ( const QString& connection = QString() ) const;
     int remotePollInterval( const QString& connection = QString() ) const;
     int pollTimerExceedFactor( const QString& connection = QString() ) const;
-
-    QByteArray basicAuthHeader() const;
 
     // Custom Config: accept the custom config to become the main one.
     void acceptCustomConfig();
@@ -98,6 +103,10 @@ public:
     int proxyPort() const;
     QString proxyUser() const;
     QString proxyPassword() const;
+
+protected:
+    QString ownCloudPasswd( const QString& connection = QString() ) const;
+    QString ownCloudUser( const QString& connection = QString() ) const;
 
 private:
     QVariant getValue(const QString& param, const QString& group) const;

@@ -90,7 +90,8 @@ protected slots:
     void slotOpenLogBrowser();
     void slotAbout();
     void slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors );
-
+    void slotFetchCredentials();
+    void slotCredentialsFetched( bool );
     void slotStartUpdateDetector();
 
 private:

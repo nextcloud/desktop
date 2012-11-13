@@ -16,6 +16,8 @@
 #include "mirall/mirallconfigfile.h"
 #include "mirall/version.h"
 #include "mirall/theme.h"
+#include "mirall/credentialstore.h"
+
 #include <QtCore>
 #include <QtGui>
 #include <QAuthenticator>
@@ -85,6 +87,7 @@ bool ownCloudInfo::isConfigured()
 
 void ownCloudInfo::checkInstallation()
 {
+    /* No authentication required for this. */
     getRequest( QLatin1String("status.php"), false );
 }
 
@@ -143,7 +146,7 @@ void ownCloudInfo::mkdirRequest( const QString& dir )
     header.setValue("Connection", "keep-alive");
     header.setContentType("application/x-www-form-urlencoded"); //important
     header.setContentLength(0);
-    header.setValue("Authorization", cfgFile.basicAuthHeader());
+    header.setValue("Authorization", CredentialStore::instance()->basicAuthHeader());
 
     int david = qhttp->request(header,0,0);
     //////////////// connect(davinfo, SIGNAL(dataSendProgress(int,int)), this, SLOT(SendStatus(int, int)));
@@ -238,8 +241,8 @@ void ownCloudInfo::slotAuthentication( QNetworkReply *reply, QAuthenticator *aut
     MirallConfigFile cfgFile( configHandle );
     qDebug() << "Authenticating request for " << reply->url();
     if( reply->url().toString().startsWith( cfgFile.ownCloudUrl( _connection, true )) ) {
-        auth->setUser( cfgFile.ownCloudUser( _connection ) );
-        auth->setPassword( cfgFile.ownCloudPasswd( _connection ));
+        auth->setUser( CredentialStore::instance()->user() ); //_connection ) );
+        auth->setPassword( CredentialStore::instance()->password() ); // _connection ));
     } else {
         qDebug() << "WRN: attempt to authenticate to different url - attempt " <<_authAttempts;
     }
@@ -428,7 +431,7 @@ void ownCloudInfo::setupHeaders( QNetworkRequest & req, quint64 size )
     req.setRawHeader( QByteArray("Host"), url.host().toUtf8() );
     req.setRawHeader( QByteArray("User-Agent"), QString::fromLatin1("mirall-%1")
                       .arg(QLatin1String(MIRALL_STRINGIFY(MIRALL_VERSION))).toAscii());
-    req.setRawHeader( QByteArray("Authorization"), cfgFile.basicAuthHeader() );
+    req.setRawHeader( QByteArray("Authorization"), CredentialStore::instance()->basicAuthHeader() );
 
     if (size) {
         req.setHeader( QNetworkRequest::ContentLengthHeader, size);

@@ -61,6 +61,7 @@ set(libsync_SRCS
     mirall/unisonfolder.cpp
     mirall/networklocation.cpp
     mirall/mirallconfigfile.cpp
+    mirall/credentialstore.cpp
     mirall/csyncfolder.cpp
     mirall/owncloudfolder.cpp
     mirall/csyncthread.cpp
@@ -80,6 +81,7 @@ set(libsync_HEADERS
     mirall/owncloudfolder.h
     mirall/csyncthread.h
     mirall/owncloudinfo.h
+    mirall/credentialstore.h
 )
 
 IF( INOTIFY_FOUND )

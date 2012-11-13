@@ -17,6 +17,7 @@
 #include "mirall/theme.h"
 #include "mirall/owncloudinfo.h"
 #include "mirall/mirallconfigfile.h"
+#include "mirall/credentialstore.h"
 
 #include <QtCore>
 #include <QtGui>
@@ -498,7 +499,7 @@ void StatusDialog::slotOCInfo( const QString& url, const QString& versionStr, co
     MirallConfigFile cfg;
     _ocUrlLabel->setOpenExternalLinks(true);
     _ocUrlLabel->setText( tr("Connected to <a href=\"%1\">%1</a> as <i>%2</i>.")
-                          .arg(url).arg(cfg.ownCloudUser()) );
+                          .arg(url).arg( CredentialStore::instance()->user()) );
     _ocUrlLabel->setToolTip( tr("Version: %1 (%2)").arg(versionStr).arg(version));
     _ButtonAdd->setEnabled(true);
 

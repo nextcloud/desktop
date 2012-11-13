@@ -16,6 +16,7 @@
 #include "mirall/owncloudfolder.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/owncloudinfo.h"
+#include "mirall/credentialstore.h"
 
 #include <csync.h>
 
@@ -166,7 +167,9 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     Q_ASSERT(proxies.count() > 0);
     QNetworkProxy proxy = proxies.first();
 
-    _csync->setConnectionDetails( cfgFile.ownCloudUser(), cfgFile.ownCloudPasswd(), proxy );
+    _csync->setConnectionDetails( CredentialStore::instance()->user(),
+                                  CredentialStore::instance()->password(),
+                                  proxy );
 
     connect(_csync, SIGNAL(started()),  SLOT(slotCSyncStarted()), Qt::QueuedConnection);
     connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()), Qt::QueuedConnection);

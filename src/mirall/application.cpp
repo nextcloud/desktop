@@ -31,6 +31,7 @@
 #include "mirall/updatedetector.h"
 #include "mirall/proxydialog.h"
 #include "mirall/version.h"
+#include "mirall/credentialstore.h"
 
 #ifdef WITH_CSYNC
 #include "mirall/csyncfolder.h"
@@ -193,9 +194,6 @@ void Application::slotStartFolderSetup( int result )
             connect( ownCloudInfo::instance(),SIGNAL(noOwncloudFound(QNetworkReply*)),
                      SLOT(slotNoOwnCloudFound(QNetworkReply*)));
 
-            connect( ownCloudInfo::instance(),SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
-                     this,SLOT(slotAuthCheck(QString,QNetworkReply*)));
-
             ownCloudInfo::instance()->checkInstallation();
         } else {
             _owncloudSetupWizard->startWizard(true); // with intro
@@ -225,7 +223,7 @@ void Application::slotOwnCloudFound( const QString& url, const QString& versionS
         return;
     }
 
-    QTimer::singleShot( 0, this, SLOT( slotCheckAuthentication() ));
+    QTimer::singleShot( 0, this, SLOT( slotFetchCredentials() ));
 }
 
 void Application::slotNoOwnCloudFound( QNetworkReply* reply )
@@ -256,8 +254,48 @@ void Application::slotNoOwnCloudFound( QNetworkReply* reply )
     setupContextMenu();
 }
 
+void Application::slotFetchCredentials()
+{
+    connect( CredentialStore::instance(), SIGNAL(fetchCredentialsFinished(bool)),
+             this, SLOT(slotCredentialsFetched(bool)) );
+    CredentialStore::instance()->fetchCredentials();
+    if( CredentialStore::instance()->state() == CredentialStore::TooManyAttempts ) {
+        QString trayMessage = tr("Too many user attempts to enter password.");
+        _tray->showMessage(tr("Credentials"), trayMessage);
+        _actionOpenStatus->setEnabled( false );
+        _actionAddFolder->setEnabled( false );
+    }
+}
+
+void Application::slotCredentialsFetched(bool ok)
+{
+    qDebug() << "Credentials successfully fetched: " << ok;
+    if( ! ok ) {
+        QString trayMessage;
+        trayMessage = tr("Error: Could not retrieve the password!");
+        if( CredentialStore::instance()->state() == CredentialStore::UserCanceled ) {
+            trayMessage = tr("Password dialog was canceled!");
+        }
+
+        if( !trayMessage.isEmpty() ) {
+            _tray->showMessage(tr("Credentials"), trayMessage);
+        }
+
+        qDebug() << "Could not fetch credentials";
+        _actionAddFolder->setEnabled( false );
+        _actionOpenStatus->setEnabled( false );
+    } else {
+        // Credential fetched ok.
+        QTimer::singleShot( 0, this, SLOT( slotCheckAuthentication() ));
+    }
+    disconnect( CredentialStore::instance(), SIGNAL(fetchCredentialsFinished(bool)) );
+}
+
 void Application::slotCheckAuthentication()
 {
+    connect( ownCloudInfo::instance(),SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
+             this,SLOT(slotAuthCheck(QString,QNetworkReply*)));
+
     qDebug() << "# checking for authentication settings.";
     ownCloudInfo::instance()->getRequest(QLatin1String("/"), true ); // this call needs to be authenticated.
     // simply GET the webdav root, will fail if credentials are wrong.
@@ -266,6 +304,8 @@ void Application::slotCheckAuthentication()
 
 void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
 {
+    bool ok = true;
+
     if( reply->error() == QNetworkReply::AuthenticationRequiredError ) { // returned if the user is wrong.
         qDebug() << "******** Password is wrong!";
         QMessageBox::warning(0, tr("No %1 Connection").arg(_theme->appName()),
@@ -273,6 +313,7 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
                                 "<p>Please correct them by starting the configuration dialog from the tray!</p>")
                              .arg(_theme->appName()));
         _actionAddFolder->setEnabled( false );
+        ok = false;
     } else if( reply->error() == QNetworkReply::OperationCanceledError ) {
         // the username was wrong and ownCloudInfo was closing the request after a couple of auth tries.
         qDebug() << "******** Username or password is wrong!";
@@ -280,7 +321,14 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
                              tr("<p>Either your user name or your password are not correct.</p>"
                                 "<p>Please correct it by starting the configuration dialog from the tray!</p>"));
         _actionAddFolder->setEnabled( false );
-    } else {
+        ok = false;
+    }
+
+    // disconnect from ownCloud Info signals
+    disconnect( ownCloudInfo::instance(),SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
+             this,SLOT(slotAuthCheck(QString,QNetworkReply*)));
+
+    if( ok ) {
         qDebug() << "######## Credentials are ok!";
         int cnt = _folderMan->setupFolders();
         if( cnt ) {
@@ -296,12 +344,10 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
             computeOverallSyncStatus();
         }
         _actionAddFolder->setEnabled( true );
+        setupContextMenu();
+    } else {
+        slotFetchCredentials();
     }
-
-    // disconnect from ownCloud Info signals
-    disconnect( ownCloudInfo::instance(),SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
-             this,SLOT(slotAuthCheck(QString,QNetworkReply*)));
-    setupContextMenu();
 }
 
 void Application::slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors )
@@ -537,12 +583,16 @@ void Application::slotOpenOwnCloud()
 
 void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
 {
-  // A click on the tray icon should only open the status window on Win and
-  // Linux, not on Mac. They want a menu entry.
+    // A click on the tray icon should only open the status window on Win and
+    // Linux, not on Mac. They want a menu entry.
+    // If the user canceled login, rather open the login window.
+    if( CredentialStore::instance()->state() == CredentialStore::UserCanceled ) {
+        slotFetchCredentials();
+    }
 #if defined Q_WS_WIN || defined Q_WS_X11
-  if( reason == QSystemTrayIcon::Trigger ) {
-    slotOpenStatus();
-  }
+    if( reason == QSystemTrayIcon::Trigger && _actionOpenStatus->isEnabled() ) {
+        slotOpenStatus();
+    }
 #endif
 }
 

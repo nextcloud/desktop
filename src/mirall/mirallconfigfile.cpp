@@ -313,6 +313,24 @@ int MirallConfigFile::pollTimerExceedFactor( const QString& connection ) const
   return pte;
 }
 
+MirallConfigFile::CredentialType MirallConfigFile::credentialType() const
+{
+    QString con; /* ( connection ); */
+    /* if( connection.isEmpty() ) */ con = defaultConnection();
+    CredentialType ct = Settings;
+
+    QSettings settings( configFile(), QSettings::IniFormat );
+    settings.setIniCodec( "UTF-8" );
+    settings.beginGroup( con );
+
+    bool skipPwd = settings.value( QLatin1String("nostoredpassword"), false ).toBool();
+    if( skipPwd ) {
+        ct = User;
+    }
+
+    return ct;
+}
+
 QString MirallConfigFile::ownCloudPasswd( const QString& connection ) const
 {
     QString con( connection );
@@ -324,39 +342,22 @@ QString MirallConfigFile::ownCloudPasswd( const QString& connection ) const
 
     QString pwd;
 
-    bool skipPwd = settings.value( QLatin1String("nostoredpassword"), false ).toBool();
-    if( skipPwd ) {
-        if( ! _askedUser ) {
-            bool ok;
-            QString text = QInputDialog::getText(0, QApplication::translate("MirallConfigFile","Password Required"),
-                                                 QApplication::translate("MirallConfigFile","Please enter your %1 password:")
-                                                 .arg(Theme::instance()->appName()),
-                                                 QLineEdit::Password,
-                                                 QString::null, &ok);
-            if( ok && !text.isEmpty() ) { // empty password is not allowed on ownCloud
-                _passwd = text;
-                _askedUser = true;
-            }
-        }
-        pwd = _passwd;
-    } else {
-        QByteArray pwdba = settings.value(QLatin1String("passwd")).toByteArray();
-        if( pwdba.isEmpty() ) {
-            // check the password entry, cleartext from before
-            // read it and convert to base64, delete the cleartext entry.
-            QString p = settings.value(QLatin1String("password")).toString();
+    QByteArray pwdba = settings.value(QLatin1String("passwd")).toByteArray();
+    if( pwdba.isEmpty() ) {
+        // check the password entry, cleartext from before
+        // read it and convert to base64, delete the cleartext entry.
+        QString p = settings.value(QLatin1String("password")).toString();
 
-            if( ! p.isEmpty() ) {
-                // its there, save base64-encoded and delete.
+        if( ! p.isEmpty() ) {
+            // its there, save base64-encoded and delete.
 
-                pwdba = p.toUtf8();
-                settings.setValue( QLatin1String("passwd"), QVariant(pwdba.toBase64()) );
-                settings.remove( QLatin1String("password") );
-                settings.sync();
-            }
+            pwdba = p.toUtf8();
+            settings.setValue( QLatin1String("passwd"), QVariant(pwdba.toBase64()) );
+            settings.remove( QLatin1String("password") );
+            settings.sync();
         }
-        pwd = QString::fromUtf8( QByteArray::fromBase64(pwdba) );
     }
+    pwd = QString::fromUtf8( QByteArray::fromBase64(pwdba) );
 
     return pwd;
 }
@@ -394,15 +395,6 @@ int MirallConfigFile::maxLogLines() const
     settings.beginGroup(QLatin1String("Logging"));
     int logLines = settings.value( QLatin1String("maxLogLines"), 20000 ).toInt();
     return logLines;
-}
-
-QByteArray MirallConfigFile::basicAuthHeader() const
-{
-    QString concatenated = ownCloudUser() + QLatin1Char(':') + ownCloudPasswd();
-    const QString b(QLatin1String("Basic "));
-    QByteArray data = b.toLocal8Bit() + concatenated.toLocal8Bit().toBase64();
-
-    return data;
 }
 
 // remove a custom config file.
