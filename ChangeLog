@@ -1,6 +1,9 @@
 ChangeLog
 =========
-
+version 1.1.2 (release 2012-11- ), csync 0.60.2 required
+  * [Fixes] Allow to cancel the password dialog
+  * [APP] Use CredentialStore to better support various credential
+          backends.
 version 1.1.1 (release 2012-10-18), csync 0.60.1 required
   * [GUI]   Allow changing folder name in single folder mode 
   * [GUI]   Windows: Add license to installer
