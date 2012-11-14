@@ -1361,6 +1361,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
     struct transfer_context *writeCtx = NULL;
     csync_vio_file_stat_t statBuf;
     memset( getUrl, '\0', PATH_MAX );
+    ZERO_STRUCT(statBuf);
 
     (void) mode; /* unused on webdav server */
     DEBUG_WEBDAV( "=> open called for %s", durl );
