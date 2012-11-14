@@ -385,10 +385,10 @@ static int _insert_metadata_visitor(void *obj, void *data) {
         "SQL statement: INSERT INTO metadata_temp \n"
         "\t\t\t(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5) VALUES \n"
         "\t\t\t(%lld, %lu, %s, %lld, %u, %u, %u, %lu, %d, %s);",
-        (long long unsigned int) fs->phash,
+        (long long signed int) fs->phash,
         (long unsigned int) fs->pathlen,
         fs->path,
-        (long long unsigned int) fs->inode,
+        (long long signed int) fs->inode,
         fs->uid,
         fs->gid,
         fs->mode,
@@ -402,10 +402,10 @@ static int _insert_metadata_visitor(void *obj, void *data) {
       stmt = sqlite3_mprintf("INSERT INTO metadata_temp "
         "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5) VALUES "
         "(%lld, %lu, '%q', %lld, %u, %u, %u, %lu, %d, '%s');",
-        (long long unsigned int) fs->phash,
+        (long long signed int) fs->phash,
         (long unsigned int) fs->pathlen,
         fs->path,
-        (long long unsigned int) fs->inode,
+        (long long signed int) fs->inode,
         fs->uid,
         fs->gid,
         fs->mode,
@@ -461,7 +461,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
   size_t len = 0;
 
   stmt = sqlite3_mprintf("SELECT * FROM metadata WHERE phash='%lld'",
-      (long long unsigned int) phash);
+      (long long signed int) phash);
   if (stmt == NULL) {
     return NULL;
   }
