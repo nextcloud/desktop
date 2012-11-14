@@ -274,6 +274,8 @@ int csync_statedb_close(CSYNC *ctx, const char *statedb, int jwritten) {
 
 int csync_statedb_create_tables(CSYNC *ctx) {
   c_strlist_t *result = NULL;
+  int rc;
+  char *stmt;
 
   /*
    * Create temorary table to work on, this speeds up the
@@ -340,6 +342,29 @@ int csync_statedb_create_tables(CSYNC *ctx) {
     return -1;
   }
   c_strlist_destroy(result);
+
+  result = csync_statedb_query(ctx,
+                               "CREATE TABLE IF NOT EXISTS version("
+                               "major INTEGER(8),"
+                               "minor INTEGER(8),"
+                               "patch INTEGER(8),"
+                               "custom VARCHAR(256));" );
+  if (result == NULL) {
+    return -1;
+  }
+  c_strlist_destroy(result);
+
+  /* write the version table. */
+  stmt = sqlite3_mprintf( "INSERT INTO version (major, minor, patch) VALUES (%d, %d, %d);",
+                          LIBCSYNC_VERSION_MAJOR, LIBCSYNC_VERSION_MINOR, LIBCSYNC_VERSION_MICRO );
+
+  rc = csync_statedb_insert(ctx, stmt);
+
+  if( rc < 0 ) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Error: Failed to insert into version table.");
+    return -1;
+  }
+  sqlite3_free(stmt);
 
   return 0;
 }
