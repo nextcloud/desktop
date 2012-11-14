@@ -136,6 +136,9 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb) {
   c_strlist_t *result = NULL;
   char *statedb_tmp = NULL;
 
+#if 0
+  /* This was commented out to recreate the db after upgrading. */
+
   /* check if the statedb is existing. If not, check if there is still one
    * left over in $HOME/.csync and copy it over (migration path)
    */
@@ -173,7 +176,7 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb) {
       }
       SAFE_FREE(home_statedb);
   }
-
+#endif
   /* csync_statedb_check tries to open the statedb and creates it in case
    * its not there.
    */
