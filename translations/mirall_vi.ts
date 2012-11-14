@@ -32,7 +32,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;installs the ownCloud on this computer. Other people will not be able to access your data by default.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;cài đặt ownCloud trên máy tính này. Mặc định, những người khác sẽ không thể truy cập được dữ liệu của bạn.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="132"/>
@@ -147,7 +147,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="32"/>
         <source>Pick a local folder on your computer to sync:</source>
-        <translation>Chọn một thư mục trên máy tính của bạn để đồng bộ hóa:</translation>
+        <translation>Chọn một thư mục cục bộ trên máy tính của bạn để đồng bộ hóa:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="43"/>
@@ -207,7 +207,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="103"/>
         <source>Folder on ownCloud:</source>
-        <translation>Folder on ownCloud:</translation>
+        <translation>Thư mục trên ownCloud:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="152"/>
@@ -217,7 +217,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="165"/>
         <source>Folder name:</source>
-        <translation>Tên folder :</translation>
+        <translation>Tên thư mục:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="175"/>
@@ -345,64 +345,64 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="220"/>
         <source>%1 Server Mismatch</source>
-        <translation type="unfinished"/>
+        <translation>Máy chủ %1 không phù hợp</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="221"/>
         <source>&lt;p&gt;The configured server for this client is too old.&lt;/p&gt;&lt;p&gt;Please update to the latest %1 server and restart the client.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Cấu hình máy chủ cho máy khách này đã quá lâu.&lt;/p&gt;&lt;p&gt;Vui lòng cập nhật lại máy chủ %1 và khởi động lại máy khách.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="236"/>
         <source>&lt;p&gt;The %1 at %2 could not be reached.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Kết nối %1 vào %2 không thể liên kết.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="241"/>
         <source>%1 Connection Failed</source>
-        <translation type="unfinished"/>
+        <translation>%1 kết nối thất bại</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="263"/>
         <source>Too many user attempts to enter password.</source>
-        <translation type="unfinished"/>
+        <translation>Quá nhiều người dùng cố gắng nhập mật khẩu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="264"/>
         <location filename="../src/mirall/application.cpp" line="281"/>
         <source>Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Giấy chứng nhận</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="275"/>
         <source>Error: Could not retrieve the password!</source>
-        <translation type="unfinished"/>
+        <translation>Lỗi: Không thể lấy lại mật khẩu!</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="277"/>
         <source>Password dialog was canceled!</source>
-        <translation type="unfinished"/>
+        <translation>Hộp thoại mật khẩu đã bị hủy!</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="311"/>
         <location filename="../src/mirall/application.cpp" line="320"/>
         <source>No %1 Connection</source>
-        <translation type="unfinished"/>
+        <translation>Không có %1 kết nối</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="312"/>
         <source>&lt;p&gt;Your %1 credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Thông tin %1 của bạn không chính xác.&lt;/p&gt;&lt;p&gt;Vui lòng chỉnh sửa lại chúng từ hộp thoại cấu hình&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="321"/>
         <source>&lt;p&gt;Either your user name or your password are not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Hay do tên người dùng hoặc mật khẩu của bạn không đúng.&lt;/p&gt;&lt;p&gt;Vui lòng chỉnh sửa lại từ hộp thoại cấu hình!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="340"/>
         <source>%1 Sync Started</source>
-        <translation type="unfinished"/>
+        <translation>%1 Đồng bộ dữ liệu đã bắt đầu</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="391"/>
@@ -412,12 +412,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="401"/>
         <source>About...</source>
-        <translation type="unfinished"/>
+        <translation>Về...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="457"/>
         <source>Open %1 folder</source>
-        <translation type="unfinished"/>
+        <translation>Mở %1 thư mục</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="470"/>
@@ -522,7 +522,8 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <location filename="../src/mirall/application.cpp" line="796"/>
         <source>New files in the server, or files deleted locally:
 </source>
-        <translation>Những tập tin mới trên máy chủ, hoặc những tập tin đã bị xóa trong máy cục bộ:</translation>
+        <translation>Những tập tin mới trên máy chủ, hoặc những tập tin đã bị xóa trong máy cục bộ:
+</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="822"/>
@@ -532,7 +533,7 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
     <message>
         <location filename="../src/mirall/application.cpp" line="823"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>Hoạt động đồng bộ đang được thực hiện.&lt;br/&gt;Bạn có muốn chấm dứt nó?</translation>
+        <translation>Hoạt động đồng bộ đang được thực hiện.&lt;br/&gt;Bạn có muốn hủy nó?</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="922"/>
@@ -542,12 +543,12 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
     <message>
         <location filename="../src/mirall/application.cpp" line="925"/>
         <source>Waits to start syncing.</source>
-        <translation>Vui lòng chờ để bắt đầu đồng bộ hóa.</translation>
+        <translation>Vui lòng chờ để bắt đầu đồng bộ.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="954"/>
         <source> (Sync is paused)</source>
-        <translation type="unfinished"/>
+        <translation> (Đồng bộ dữ liệu tạm dừng)</translation>
     </message>
     <message>
         <source>Sync is paused.</source>
@@ -556,7 +557,7 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
     <message>
         <location filename="../src/mirall/application.cpp" line="971"/>
         <source>No sync folders configured.</source>
-        <translation>Không đồng bộ hóa những thư mục đã được cấu hình.</translation>
+        <translation>Không đồng bộ những thư mục đã được cấu hình.</translation>
     </message>
 </context>
 <context>
@@ -564,7 +565,7 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="209"/>
         <source>CSync create failed.</source>
-        <translation>Tạo CSync không thành công.</translation>
+        <translation>Tạo CSync thất bại.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="245"/>
@@ -642,7 +643,7 @@ Please make sure that all directories are writeable.</source>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="268"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;%1 plugin cho csync không thể được nạp.&lt;br/&gt;Vui lòng kiểm tra lại cài đặt!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="312"/>
@@ -702,7 +703,7 @@ Vui lòng viết một báo cáo lỗi. </translation>
     <message>
         <location filename="../src/mirall/folder.cpp" line="105"/>
         <source>%1 is not readable.</source>
-        <translation type="unfinished"/>
+        <translation>%1 không thể liên kết.</translation>
     </message>
 </context>
 <context>
@@ -776,7 +777,7 @@ Vui lòng viết một báo cáo lỗi. </translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="211"/>
         <source>The folder is not available on your %1.&lt;br/&gt;Click to create it.</source>
-        <translation type="unfinished"/>
+        <translation>Thư mục không có giá trị trên %1 của bạn.&lt;br/&gt;Nhấn vào để tạo nó.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="237"/>
@@ -786,7 +787,7 @@ Vui lòng viết một báo cáo lỗi. </translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="240"/>
         <source>Failed to create the folder on %1.&lt;br/&gt;Please check manually.</source>
-        <translation type="unfinished"/>
+        <translation>Tạo thư mục thất bại trên %1.&lt;br/&gt;Vui lòng kiểm tra lại.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="260"/>
@@ -796,7 +797,7 @@ Vui lòng viết một báo cáo lỗi. </translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="315"/>
         <source>to your &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; (version %3)</source>
-        <translation type="unfinished"/>
+        <translation>đến &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; của bạn (phiên bản %3)</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="326"/>
@@ -806,7 +807,7 @@ Vui lòng viết một báo cáo lỗi. </translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="327"/>
         <source>%1 could not be reached:&lt;br/&gt;&lt;tt&gt;%2&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>%1 không thể liên kết:&lt;br/&gt;&lt;tt&gt;%2&lt;/tt&gt;</translation>
     </message>
     <message>
         <source>to your &lt;a href=&quot;%1&quot;&gt;ownCloud&lt;/a&gt; (version %2)</source>
@@ -926,7 +927,7 @@ Vui lòng viết một báo cáo lỗi. </translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="81"/>
         <source>Enter Server Name and Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Nhập tên máy chủ và giấy chứng nhận</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="103"/>
@@ -966,12 +967,12 @@ Vui lòng viết một báo cáo lỗi. </translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="164"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;Kết nối thành công đến %1: %2 phiên bản %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="176"/>
         <source>&lt;font color=&quot;red&quot;&gt;Failed to connect to %1!&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;red&quot;&gt;Kết nối thât bại đến %1!&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="178"/>
@@ -994,18 +995,18 @@ Vui lòng viết một báo cáo lỗi. </translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="314"/>
         <source>&lt;font color=&quot;red&quot;&gt;Installation of %1 failed!&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;red&quot;&gt;Cài đặt của %1 đã thất bại!&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="319"/>
         <source>&lt;font color=&quot;green&quot;&gt;Installation of %1 succeeded!&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;Cài đặt của %1 đã thành công!&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="358"/>
         <source>The owncloud admin script can not be found.
 Setup can not be done.</source>
-        <translation>script owncloud quản trị không thể được tìm thấy. Cài đặt ⏎ không thể được thực hiện.</translation>
+        <translation>script owncloud-admin không được tìm thấy.⏎ Hệ thống không thể thực hiện.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="399"/>
@@ -1025,7 +1026,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="427"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation type="unfinished"/>
+        <translation>Việc tạo thư mục đã dẫn đến mã lỗi HTTP %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="448"/>
@@ -1035,12 +1036,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="453"/>
         <source>Succesfully connected to %1!</source>
-        <translation type="unfinished"/>
+        <translation>Đã kết nối thành công đến %1!</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="459"/>
         <source>Connection to %1 could not be established. Please check again.</source>
-        <translation type="unfinished"/>
+        <translation>Kết nối đến %1 không thể thiết lập. Vui lòng kiểm tra lại.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="456"/>
@@ -1063,7 +1064,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="380"/>
         <source>Creating local sync folder %1... </source>
-        <translation>Tạo thư mục local sync %1...</translation>
+        <translation>Tạo thư mục đồng bộ cục bộ %1...</translation>
     </message>
     <message>
         <source>Creating local sync folder %1</source>
@@ -1090,7 +1091,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="101"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Thư mục đồng bộ cục bộ %1 đã được tạo thành công!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <source>The remote folder %1 already exists. Automatic sync setup is skipped for security reasons. Please configure your sync folder manually.</source>
@@ -1117,12 +1118,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="61"/>
         <source>Set up your server connection</source>
-        <translation type="unfinished"/>
+        <translation>Thiết lập kết nối máy chủ</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="69"/>
         <source>&lt;p&gt;In order to connect to your %1 server, you need to provide the server address as well as your credentials.&lt;/p&gt;&lt;p&gt;This wizard will guide you through the process.&lt;p&gt;&lt;p&gt;If you have not received this information, please contact your %1 hosting provider.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Để kết nối đến máy chủ %1 của bạn, bạn cần cung cấp địa chỉ máy chủ cũng như các thông tin của bạn.&lt;/p&gt;&lt;p&gt;Chương trình sẽ hướng dẫn bạn xử lý  thông qua tiến trình.&lt;p&gt;&lt;p&gt;Nếu bạn chưa nhận được thông tin này, vui lòng liên hệ với nhà cung cấp %1 của bạn.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1134,7 +1135,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="462"/>
         <source>Congratulations! Your &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;new %2&lt;/a&gt; is now up and running!</source>
-        <translation type="unfinished"/>
+        <translation>Xin chúc mừng! &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;%2&lt;/a&gt; mới của bạn đã hoàn tất và đang chạy!</translation>
     </message>
 </context>
 <context>
@@ -1251,7 +1252,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="478"/>
         <source>No %1 connection configured.</source>
-        <translation type="unfinished"/>
+        <translation>Không có %1 kết nối được cấu hình</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="501"/>
@@ -1266,7 +1267,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="519"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Kết nối thất bại đến %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Checking ownCloud connection...</source>
@@ -1331,7 +1332,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="116"/>
         <source>&lt;p&gt;A new version of the %1 client is available.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Một phiên bản mới của %1 máy khách có giá trị.</translation>
     </message>
     <message>
         <source>&lt;p&gt;A new version of the ownCloud Client is available.</source>
@@ -1784,7 +1785,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
         <source>Trust this certificate anyway</source>
-        <translation type="unfinished"/>
+        <translation>Tin tưởng chứng chỉ mọi lúc</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>

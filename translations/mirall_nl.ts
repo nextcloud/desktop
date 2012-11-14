@@ -282,7 +282,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="239"/>
         <source>&lt;p&gt;Please check your configuration by clicking on the tray icon.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Controleer de configuratie door te klikken op het pictogram in het systeemvak.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>ownCloud Connection Failed</source>
@@ -345,7 +345,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="220"/>
         <source>%1 Server Mismatch</source>
-        <translation type="unfinished"/>
+        <translation>%1 Server mismatch</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="221"/>
@@ -365,23 +365,23 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="263"/>
         <source>Too many user attempts to enter password.</source>
-        <translation type="unfinished"/>
+        <translation>Te veel pogingen om het wachtwoord in te voeren.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="264"/>
         <location filename="../src/mirall/application.cpp" line="281"/>
         <source>Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Inloggegevens</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="275"/>
         <source>Error: Could not retrieve the password!</source>
-        <translation type="unfinished"/>
+        <translation>Fout: Kon het wachtwoord niet ophalen!</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="277"/>
         <source>Password dialog was canceled!</source>
-        <translation type="unfinished"/>
+        <translation>Wachtwoord dialoog geannuleerd!</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="311"/>
@@ -397,7 +397,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="321"/>
         <source>&lt;p&gt;Either your user name or your password are not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Uw gebruikersnaam en/of uw wachtwoord is onjuist.&lt;/p&gt;&lt;p&gt;Herstel dit in de configuratie dialoog via het systeemvak!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="340"/>
@@ -586,7 +586,7 @@ Dit programma wordt beschikbaar gesteld ZOALS u het krijgt, ZONDER ENIGE GARANTI
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="251"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
-        <translation type="unfinished"/>
+        <translation>De systeemtijd van deze client wijkt af van de systeemtijd op de server. Gebruik een tijdsynchronisatieservice (NTP) op zowel de server als de client, zodat de machines dezelfde systeemtijd hebben.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="256"/>
@@ -629,7 +629,7 @@ Dit programma wordt beschikbaar gesteld ZOALS u het krijgt, ZONDER ENIGE GARANTI
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="295"/>
         <source>CSync failed to reach the host. Either host or proxy settings are not valid.</source>
-        <translation type="unfinished"/>
+        <translation>CSync kon de host niet bereiken. De host en/of de proxy instellingen zijn onjuist.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="298"/>
@@ -645,7 +645,7 @@ Please make sure that all directories are writeable.</source>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="268"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;De %1 plugin voor csync kon niet worden geladen.&lt;br/&gt;Verifieer de installatie!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="312"/>
@@ -669,7 +669,7 @@ Neem alstublieft de tijd voor het schrijven van een bug report.</translation>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="323"/>
         <source>The local filesystem has %1 write protected directories.That can hinder successful syncing.&lt;p/&gt;Please make sure that all local directories are writeable.</source>
-        <translation type="unfinished"/>
+        <translation>Het lokale bestandssysteem heeft %1 schrijf-beveiligde directories. Dat kan succesvol synchroniseren verhindern.&lt;p/&gt;Zorg ervoor dat alle lokale directories beschrijfbaar zijn.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="343"/>
@@ -789,7 +789,7 @@ Neem alstublieft de tijd voor het schrijven van een bug report.</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="240"/>
         <source>Failed to create the folder on %1.&lt;br/&gt;Please check manually.</source>
-        <translation type="unfinished"/>
+        <translation>Creëren van de map op %1 mislukt.&lt;br/&gt;Controleer handmatig.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="260"/>
@@ -875,7 +875,7 @@ Neem alstublieft de tijd voor het schrijven van een bug report.</translation>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="207"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;nobr&gt;Bestand &apos;%1&apos;&lt;br/&gt;kan niet worden geopend voor schrijven.&lt;br/&gt;&lt;br/&gt;De logging output kan &lt;b&gt;niet&lt;/b&gt; worden weggeschreven!&lt;/nobr&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="253"/>
@@ -1034,7 +1034,7 @@ De setup kan niet worden uitgevoerd.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="448"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation type="unfinished"/>
+        <translation>Er is een sync verbinding van %1 naar remote directory %2 opgezet.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="453"/>
@@ -1126,7 +1126,7 @@ De setup kan niet worden uitgevoerd.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="69"/>
         <source>&lt;p&gt;In order to connect to your %1 server, you need to provide the server address as well as your credentials.&lt;/p&gt;&lt;p&gt;This wizard will guide you through the process.&lt;p&gt;&lt;p&gt;If you have not received this information, please contact your %1 hosting provider.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Om te verbinden met uw %1 server, moet u zowel het serveradres als uw inloggegevens opgeven.&lt;/p&gt;&lt;p&gt;Deze wizard begeleidt u hierbij.&lt;p&gt;&lt;p&gt;Als u deze informatie niet hebt ontvangen, neem dan contact op met uw %1 hosting provider.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1518,7 +1518,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="147"/>
         <source>Enter the url of the ownCloud you want to connect to (without http or https).</source>
-        <translation type="unfinished"/>
+        <translation>Voer de url in van de ownCloud waarmee je wilt verbinden (met http of https).</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="47"/>
@@ -1558,7 +1558,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="120"/>
         <source>&amp;Do not store password on local machine.</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Geen wachtwoorden opslaan op de lokale machine.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="36"/>

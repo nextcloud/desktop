@@ -376,12 +376,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="275"/>
         <source>Error: Could not retrieve the password!</source>
-        <translation type="unfinished"/>
+        <translation>Σφάλμα: Αδυναμία ανάκτησης συνθηματικού!</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="277"/>
         <source>Password dialog was canceled!</source>
-        <translation type="unfinished"/>
+        <translation>Το παράθυρο συνθηματικού ακυρώθηκε!</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="311"/>

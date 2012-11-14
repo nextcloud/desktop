@@ -365,23 +365,23 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="263"/>
         <source>Too many user attempts to enter password.</source>
-        <translation type="unfinished"/>
+        <translation>Слишком много пользователей пытается ввести пароль.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="264"/>
         <location filename="../src/mirall/application.cpp" line="281"/>
         <source>Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Полномочия</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="275"/>
         <source>Error: Could not retrieve the password!</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка: не удалось получить пароль!</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="277"/>
         <source>Password dialog was canceled!</source>
-        <translation type="unfinished"/>
+        <translation>Ввод пароля был отменен!</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="311"/>
