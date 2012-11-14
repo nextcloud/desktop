@@ -47,9 +47,7 @@ files or hang your computer.
 
 ### openSUSE
 
-* 1-click install available in software.opensuse.org
-
-http://software.opensuse.org/search?q=mirall&baseproject=ALL&lang=en&include_home=true&exclude_debug=true
+* Refer to the download page http://owncloud.org/sync-clients/
 
 ### Source code
 
