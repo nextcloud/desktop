@@ -2,4 +2,6 @@
 *flymake*
 CMakeLists.txt.user*
 *.patch
+*~
+*.autosave
 doc/_build/*
