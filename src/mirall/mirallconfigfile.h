@@ -113,7 +113,6 @@ private:
 
 
 private:
-    static QString _passwd;
     static bool    _askedUser;
     static QString _oCVersion;
     QString        _customHandle;

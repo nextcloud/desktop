@@ -144,4 +144,11 @@ QByteArray CredentialStore::basicAuthHeader() const
     return data;
 }
 
+void CredentialStore::setCredentials( const QString& user, const QString& pwd )
+{
+    _passwd = pwd;
+    _user = user;
+    _state = Ok;
+}
+
 }

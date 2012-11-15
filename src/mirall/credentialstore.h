@@ -72,6 +72,16 @@ public:
      * @return the singleton pointer to access the object.
      */
     static CredentialStore *instance();
+
+    /**
+     * @brief setCredentials - sets the user credentials.
+     *
+     * This function is called from the setup wizard to set the credentials
+     * int this store. The function also sets the state to ok.
+     * @param user - the user name
+     * @param password - the password.
+     */
+    void setCredentials( const QString&, const QString& );
 signals:
     /**
      * @brief fetchCredentialsFinished

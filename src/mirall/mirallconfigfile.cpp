@@ -17,6 +17,7 @@
 #include "mirall/mirallconfigfile.h"
 #include "mirall/owncloudtheme.h"
 #include "mirall/miralltheme.h"
+#include "mirall/credentialstore.h"
 
 #include <QtCore>
 #include <QtGui>
@@ -29,7 +30,6 @@
 
 namespace Mirall {
 
-QString MirallConfigFile::_passwd;
 QString MirallConfigFile::_oCVersion;
 bool    MirallConfigFile::_askedUser = false;
 
@@ -151,9 +151,11 @@ void MirallConfigFile::writeOwncloudConfig( const QString& connection,
     settings.setValue( QLatin1String("passwd"), QVariant(pwdba.toBase64()) );
     settings.setValue( QLatin1String("nostoredpassword"), QVariant(skipPwd) );
     settings.sync();
-
     // check the perms, only read-write for the owner.
     QFile::setPermissions( file, QFile::ReadOwner|QFile::WriteOwner );
+
+    // inform the credential store about the password change.
+    CredentialStore::instance()->setCredentials( user, pwd );
 
 }
 
