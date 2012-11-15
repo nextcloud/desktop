@@ -427,115 +427,111 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/application.cpp" line="705"/>
         <source>%1 client, version %2
 
-Copyright 2012, the ownCloud developers
-
-Licensed under GPLv2
-
-The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN,MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.</source>
+Copyright 2012, the ownCloud developers.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="718"/>
+        <location filename="../src/mirall/application.cpp" line="716"/>
         <source>Confirm Folder Remove</source>
         <translation>Konfirmi forigon de dosierujo</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="719"/>
+        <location filename="../src/mirall/application.cpp" line="717"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>Ĉu vi vere volas forigi la alŝutan dosierujon &lt;i&gt;%1&lt;/i&gt;?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="753"/>
+        <location filename="../src/mirall/application.cpp" line="751"/>
         <source>Undefined Folder State</source>
         <translation>Sendifina dosieruja stato</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="756"/>
+        <location filename="../src/mirall/application.cpp" line="754"/>
         <source>The folder waits to start syncing.</source>
         <translation>La dosierujo atendas komencon de sinkronigo.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="759"/>
-        <location filename="../src/mirall/application.cpp" line="929"/>
+        <location filename="../src/mirall/application.cpp" line="757"/>
+        <location filename="../src/mirall/application.cpp" line="927"/>
         <source>Sync is running.</source>
         <translation>Sinkronigo okazas.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="762"/>
-        <location filename="../src/mirall/application.cpp" line="934"/>
+        <location filename="../src/mirall/application.cpp" line="760"/>
+        <location filename="../src/mirall/application.cpp" line="932"/>
         <source>Last Sync was successful.</source>
         <translation>La lasta sinkronigo sukcesis.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="765"/>
-        <location filename="../src/mirall/application.cpp" line="940"/>
+        <location filename="../src/mirall/application.cpp" line="763"/>
+        <location filename="../src/mirall/application.cpp" line="938"/>
         <source>Syncing Error.</source>
         <translation>Sinkroniga eraro.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="768"/>
-        <location filename="../src/mirall/application.cpp" line="946"/>
+        <location filename="../src/mirall/application.cpp" line="766"/>
+        <location filename="../src/mirall/application.cpp" line="944"/>
         <source>Setup Error.</source>
         <translation>Agorda eraro.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="771"/>
-        <location filename="../src/mirall/application.cpp" line="949"/>
+        <location filename="../src/mirall/application.cpp" line="769"/>
+        <location filename="../src/mirall/application.cpp" line="947"/>
         <source>Undefined Error State.</source>
         <translation>Sendifina erarostato.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="775"/>
+        <location filename="../src/mirall/application.cpp" line="773"/>
         <source>Folder information</source>
         <translation>Informo pri dosierujo</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="790"/>
+        <location filename="../src/mirall/application.cpp" line="788"/>
         <source>Unknown</source>
         <translation>Nekonata</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="792"/>
+        <location filename="../src/mirall/application.cpp" line="790"/>
         <source>Changed files:
 </source>
         <translation>Ŝanĝitaj dosieroj:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="794"/>
+        <location filename="../src/mirall/application.cpp" line="792"/>
         <source>Added files:
 </source>
         <translation>Aldonitaj dosieroj:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="796"/>
+        <location filename="../src/mirall/application.cpp" line="794"/>
         <source>New files in the server, or files deleted locally:
 </source>
         <translation>Dosieroj novaj en la servilo, aŭ forigitaj loke:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="822"/>
+        <location filename="../src/mirall/application.cpp" line="820"/>
         <source>Sync Running</source>
         <translation>Sinkronigo okazanta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="823"/>
+        <location filename="../src/mirall/application.cpp" line="821"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>La sinkroniga operacio funkcias.&lt;br/&gt;Ĉu vi volas fini ĝin?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="922"/>
+        <location filename="../src/mirall/application.cpp" line="920"/>
         <source>Undefined State.</source>
         <translation>Sendifina stato.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="925"/>
+        <location filename="../src/mirall/application.cpp" line="923"/>
         <source>Waits to start syncing.</source>
         <translation>Atendanta komencon de sinkronigo.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="954"/>
+        <location filename="../src/mirall/application.cpp" line="952"/>
         <source> (Sync is paused)</source>
         <translation type="unfinished"/>
     </message>
@@ -544,7 +540,7 @@ The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRAN
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="971"/>
+        <location filename="../src/mirall/application.cpp" line="969"/>
         <source>No sync folders configured.</source>
         <translation>Neniu sinkroniga dosierujo agordita.</translation>
     </message>
