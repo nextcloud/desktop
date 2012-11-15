@@ -23,7 +23,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Configure Proxies to access your ownCloud</string>
+      <string>Configure Proxies</string>
      </property>
      <property name="buddy">
       <cstring>manualSettings</cstring>
