@@ -702,9 +702,7 @@ void Application::slotOpenLogBrowser()
 void Application::slotAbout()
 {
     QMessageBox::about(0, tr("About %1").arg(_theme->appName()),
-                       tr("%1 client, version %2\n\nCopyright 2012, the ownCloud developers\n\nLicensed under GPLv2\n\n"
-                          "The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN,"
-                          "MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.")
+                       tr("%1 client, version %2\n\nCopyright 2012, the ownCloud developers.")
                        .arg(_theme->appName())
                        .arg(MIRALL_STRINGIFY(MIRALL_VERSION)));
 }
