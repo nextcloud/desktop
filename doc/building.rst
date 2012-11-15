@@ -57,7 +57,7 @@ via YaST or ``zypper ar`` (adjust when using openSUSE 12.2)::
 
 Next, install the cross-compiler packages and the cross-compiled dependencies::
 
-  zypper si -d mingw32-ocsync
+  zypper si -d mingw32-csync
   zypper si -d mingw32-owncloud-client 
 
 Now, follow the `generic build instructions`_, but make sure to append
