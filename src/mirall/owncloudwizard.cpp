@@ -96,11 +96,6 @@ OwncloudSetupPage::OwncloudSetupPage()
 
     _ui.cbConnectOC->hide();
     setupCustomization();
-
-#if QT_VERSION >= 0x040700
-    _ui.leUsername->setPlaceholderText(tr("john"));
-    _ui.lePassword->setPlaceholderText(tr("secret"));
-#endif
 }
 
 OwncloudSetupPage::~OwncloudSetupPage()
@@ -284,11 +279,6 @@ OwncloudCredentialsPage::OwncloudCredentialsPage()
     connect( _ui.OCPasswdEdit, SIGNAL(textChanged(QString)), this, SIGNAL(completeChanged()));
 
     connect( _ui.cbPwdNoLocalStore, SIGNAL(stateChanged(int)), this, SLOT(slotPwdStoreChanged(int)));
-
-#if QT_VERSION >= 0x040700
-    _ui.OCUserEdit->setPlaceholderText(tr("john"));
-    _ui.OCPasswdEdit->setPlaceholderText(tr("secret"));
-#endif
 }
 
 OwncloudCredentialsPage::~OwncloudCredentialsPage()
@@ -333,8 +323,6 @@ OwncloudFTPAccessPage::OwncloudFTPAccessPage()
 
 #if QT_VERSION >= 0x040700
     _ui.ftpUrlEdit->setPlaceholderText(tr("ftp.mydomain.org"));
-    _ui.ftpUserEdit->setPlaceholderText(tr("john"));
-    _ui.ftpPasswdEdit->setPlaceholderText(tr("secret"));
 #endif
 }
 
