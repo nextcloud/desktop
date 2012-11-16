@@ -668,8 +668,12 @@ Mesedez idatz ezazu bug txosten bat.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="347"/>
+        <source>File exchange with ownCloud failed. Sync was stopped.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <source>CSync propagate failed.</source>
-        <translation>CSync hedapenak huts egin du.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1736,8 +1740,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="26"/>
-        <source>Configure Proxies to access your ownCloud</source>
-        <translation>Konfiguratu Proxiak zure ownCloudera konektatzeko</translation>
+        <source>Configure Proxies</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="43"/>

@@ -355,23 +355,23 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="263"/>
         <source>Too many user attempts to enter password.</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;usuari ha intentat introduir la contrasenya massa  vegades.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="264"/>
         <location filename="../src/mirall/application.cpp" line="281"/>
         <source>Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Credencials</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="275"/>
         <source>Error: Could not retrieve the password!</source>
-        <translation type="unfinished"/>
+        <translation>Error no s&apos;ha pogut obtenir la contrasenya!</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="277"/>
         <source>Password dialog was canceled!</source>
-        <translation type="unfinished"/>
+        <translation>El diàleg de contrasenya s&apos;ha cancel·lat!</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="311"/>
@@ -424,7 +424,9 @@ p, li { white-space: pre-wrap; }
         <source>%1 client, version %2
 
 Copyright 2012, the ownCloud developers.</source>
-        <translation type="unfinished"/>
+        <translation>%1 client, versió %2
+
+Copyright 2012, els desenvolupadors de ownCloud.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="716"/>
@@ -658,8 +660,12 @@ Comuniqueu l&apos;errada.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="347"/>
+        <source>File exchange with ownCloud failed. Sync was stopped.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <source>CSync propagate failed.</source>
-        <translation>Ha fallat en propagar el CSync</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1726,8 +1732,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="26"/>
-        <source>Configure Proxies to access your ownCloud</source>
-        <translation>Configura els proxys per accedir a ownCloud</translation>
+        <source>Configure Proxies</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="43"/>
