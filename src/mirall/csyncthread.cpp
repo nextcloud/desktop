@@ -344,7 +344,7 @@ void CSyncThread::startSync()
             goto cleanup;
         }
         if( csync_propagate(csync) < 0 ) {
-            emit csyncError(tr("CSync propagate failed."));
+            emit csyncError(tr("File exchange with ownCloud failed. Sync was stopped."));
             goto cleanup;
         }
     }
