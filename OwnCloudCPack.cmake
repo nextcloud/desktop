@@ -21,7 +21,7 @@ if(APPLE)
     set( CPACK_PACKAGE_ICON ${CMAKE_BINARY_DIR}/src/ownCloud.icns)
 
     set( CPACK_DMG_DS_STORE "${CMAKE_SOURCE_DIR}/admin/osx/DS_Store.in")
-    set( CPACK_DMG_BACKGROUND_IMAGE "${CMAKE_SOURCE_DIR}/admin/osx/DMGBackground.png" )
+#    set( CPACK_DMG_BACKGROUND_IMAGE "${CMAKE_SOURCE_DIR}/admin/osx/DMGBackground.png" )
 
     set( CPACK_DMG_FORMAT "UDBZ" )
     set( CPACK_DMG_VOLUME_NAME "${APPLICATION_NAME}")
