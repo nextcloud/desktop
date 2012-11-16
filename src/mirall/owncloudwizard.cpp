@@ -58,7 +58,6 @@ void setupCustomMedia( QVariant variant, QLabel *label )
 OwncloudWelcomePage::OwncloudWelcomePage()
 {
     setTitle(tr("Welcome to %1").arg(Theme::instance()->appName()));
-    setSubTitle(tr("Set up your server connection"));
 
     QVBoxLayout *lay = new QVBoxLayout(this);
     QLabel *content = new QLabel;
@@ -78,7 +77,6 @@ OwncloudSetupPage::OwncloudSetupPage()
     _ui.setupUi(this);
 
     setTitle(tr("Create the %1 Connection").arg(Theme::instance()->appName()));
-    setSubTitle(tr("Enter Server Name and Credentials"));
 
     connect(_ui.leUrl, SIGNAL(textChanged(QString)), SLOT(handleNewOcUrl(QString)));
 
