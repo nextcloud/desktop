@@ -88,7 +88,7 @@ if(UNIT_TESTING)
 endif(UNIT_TESTING)
 
 if(BUILD_OWNCLOUD_OSX_BUNDLE)
-    install( FILES sync-exclude.lst DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources )
+    configure_file(sync-exclude.lst ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/sync-exclude.lst COPYONLY)
 else()
     install( FILES sync-exclude.lst DESTINATION ${CMAKE_INSTALL_SYSCONFDIR} )
 endif()
