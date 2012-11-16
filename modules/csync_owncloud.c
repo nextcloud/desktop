@@ -1587,6 +1587,8 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
 
         /* if there is a valid file descriptor, close it, reopen in read mode and start the PUT request */
         if( writeCtx->fd > -1 ) {
+            const ne_status *status = NULL;
+
             if( writeCtx->fileWritten && writeCtx->bytes_written > 0 ) { /* was content written to file? */
                 /* push the rest of the buffer to file as well. */
                 DEBUG_WEBDAV("Write remaining %lu bytes to disk.",
@@ -1609,6 +1611,7 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
 	    _fmode = _O_BINARY;
 #endif
             if( writeCtx->fileWritten ) {
+
                 DEBUG_WEBDAV("Putting file through file cache.");
                 /* we need to go the slow way and close and open the file and read from fd. */
 
@@ -1629,14 +1632,15 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
                         errno = EBADF;
                         ret = -1;
                     }
-                    if (rc == NE_OK) {
-                        if ( ne_get_status( writeCtx->req )->klass != 2 ) {
-                            // DEBUG_WEBDAV("Error - PUT status value no 2xx");
-                            // errno = EIO;
-                            // ret = -1;
+                    status = ne_get_status( writeCtx->req );
+                    if( status ) {
+                        if(rc != NE_OK || status->klass != 2 ) {
+                            DEBUG_WEBDAV("Error - PUT status %d, %s", status->code, status->reason_phrase);
+                            errno = EIO;
+                            ret = -1;
                         }
                     } else {
-                        DEBUG_WEBDAV("Error - put request on close failed: %d!", rc );
+                        DEBUG_WEBDAV("Status undefined, critical.");
                         errno = EIO;
                         ret = -1;
                     }
@@ -1646,14 +1650,17 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
                 DEBUG_WEBDAV("Putting file through memory cache.");
                 ne_set_request_body_buffer( writeCtx->req, _buffer, writeCtx->bytes_written );
                 rc = ne_request_dispatch( writeCtx->req );
-                if( rc == NE_OK ) {
-                    if ( ne_get_status( writeCtx->req )->klass != 2 ) {
-                        // DEBUG_WEBDAV("Error - PUT status value no 2xx");
-                        // errno = EIO;
-                        // ret = -1;
+
+                status = ne_get_status( writeCtx->req );
+
+                if( status ) {
+                    if(rc != NE_OK || status->klass != 2 ) {
+                        DEBUG_WEBDAV("Error - PUT status %d, %s", status->code, status->reason_phrase);
+                        errno = EIO;
+                        ret = -1;
                     }
                 } else {
-                    DEBUG_WEBDAV("Error - put request from memory failed: %d!", rc );
+                    DEBUG_WEBDAV("Status undefined, critical.");
                     errno = EIO;
                     ret = -1;
                 }

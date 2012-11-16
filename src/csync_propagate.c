@@ -318,6 +318,10 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
         rc = -1;
         goto out;
         break;
+      case EIO:
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "ownCloud error: could not transfer file.");
+        rc = -1;
+        goto out;
       default:
         strerror_r(errno, errbuf, sizeof(errbuf));
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
@@ -469,7 +473,9 @@ out:
   if (rc != 0) {
     st->instruction = CSYNC_INSTRUCTION_ERROR;
     if (turi != NULL) {
-      csync_vio_unlink(ctx, turi);
+      /* FIXME: Think again if unlink makes sense. It does not for ownCloud */
+      /* csync_vio_unlink(ctx, turi); *
+       */
     }
   }
 
