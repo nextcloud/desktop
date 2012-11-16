@@ -96,15 +96,19 @@ Application::Application(int &argc, char **argv) :
     installTranslator(qtTranslator);
 
     QTranslator *mirallTranslator = new QTranslator(this);
+
+    QString locale = Theme::instance()->enforcedLocale();
+    if (locale.isEmpty()) locale = QLocale::system().name();
+
 #ifdef Q_OS_LINUX
     // FIXME - proper path!
-    mirallTranslator->load(QLatin1String("mirall_") + QLocale::system().name(), QLatin1String("/usr/share/mirall/i18n/"));
+    mirallTranslator->load(QLatin1String("mirall_") + locale, QLatin1String("/usr/share/mirall/i18n/"));
 #endif
 #ifdef Q_OS_MAC
-    mirallTranslator->load(QLatin1String("mirall_") + QLocale::system().name(), applicationDirPath()+QLatin1String("/../translations") ); // path defaults to app dir.
+    mirallTranslator->load(QLatin1String("mirall_") + locale, applicationDirPath()+QLatin1String("/../translations") ); // path defaults to app dir.
 #endif
 #ifdef Q_OS_WIN32
-    mirallTranslator->load(QLatin1String("mirall_") + QLocale::system().name(), applicationDirPath());
+    mirallTranslator->load(QLatin1String("mirall_") + locale, applicationDirPath());
 #endif
 
     installTranslator(mirallTranslator);
