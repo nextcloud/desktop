@@ -1355,7 +1355,6 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
     const char *winTmpUtf8 = NULL;
     csync_stat_t sb;
 #endif
-    const char *etag_header = NULL;
 
     struct transfer_context *writeCtx = NULL;
     csync_vio_file_stat_t statBuf;
