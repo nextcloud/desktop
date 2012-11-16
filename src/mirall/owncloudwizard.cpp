@@ -198,8 +198,6 @@ bool OwncloudSetupPage::isComplete() const
 
 void OwncloudSetupPage::initializePage()
 {
-    QString user = QString::fromLocal8Bit(qgetenv( "USER" ));
-    _ui.leUsername->setText( user );
 }
 
 int OwncloudSetupPage::nextId() const
@@ -301,8 +299,6 @@ bool OwncloudCredentialsPage::isComplete() const
 
 void OwncloudCredentialsPage::initializePage()
 {
-    QString user = QString::fromLocal8Bit(qgetenv( "USER" ));
-    _ui.OCUserEdit->setText( user );
 }
 
 int OwncloudCredentialsPage::nextId() const
