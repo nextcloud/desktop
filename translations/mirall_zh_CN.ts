@@ -541,7 +541,7 @@ Copyright 2012, the ownCloud developers.</source>
     <message>
         <location filename="../src/mirall/application.cpp" line="952"/>
         <source> (Sync is paused)</source>
-        <translation type="unfinished"/>
+        <translation>(同步已暂停)</translation>
     </message>
     <message>
         <source>Sync is paused.</source>
@@ -690,7 +690,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folder.cpp" line="99"/>
         <source>Local folder %1 does not exist.</source>
-        <translation type="unfinished"/>
+        <translation>本地文件夹 %1 不存在。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="102"/>
@@ -700,7 +700,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folder.cpp" line="105"/>
         <source>%1 is not readable.</source>
-        <translation type="unfinished"/>
+        <translation>%1 不可读。</translation>
     </message>
 </context>
 <context>
@@ -1255,12 +1255,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="501"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; as &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>已作为 &lt;i&gt;%2&lt;/i&gt; 连接到 &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;。</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="503"/>
         <source>Version: %1 (%2)</source>
-        <translation type="unfinished"/>
+        <translation>版本：%1 (%2)</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="519"/>

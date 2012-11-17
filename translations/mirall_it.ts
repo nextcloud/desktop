@@ -671,7 +671,7 @@ Segnala questo bug.</translation>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="347"/>
         <source>File exchange with ownCloud failed. Sync was stopped.</source>
-        <translation type="unfinished"/>
+        <translation>Lo scambio dei file con ownCloud non è riuscito. La sincronizzazione è stata fermata.</translation>
     </message>
     <message>
         <source>CSync propagate failed.</source>
@@ -1745,7 +1745,7 @@ Questa procedura guidata ti aiuterà durante i passaggi necessari.&lt;/span&gt;&
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="26"/>
         <source>Configure Proxies</source>
-        <translation type="unfinished"/>
+        <translation>Configura proxy</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="43"/>

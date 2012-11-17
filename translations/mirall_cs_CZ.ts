@@ -671,7 +671,7 @@ Vytvořte prosím chybové hlášení.</translation>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="347"/>
         <source>File exchange with ownCloud failed. Sync was stopped.</source>
-        <translation type="unfinished"/>
+        <translation>Selhala výměna souborů s ownCloud. Sychnronizace byla zastavena.</translation>
     </message>
     <message>
         <source>CSync propagate failed.</source>
@@ -1743,7 +1743,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="26"/>
         <source>Configure Proxies</source>
-        <translation type="unfinished"/>
+        <translation>Nastavit proxy</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="43"/>

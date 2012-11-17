@@ -658,7 +658,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="347"/>
         <source>File exchange with ownCloud failed. Sync was stopped.</source>
-        <translation type="unfinished"/>
+        <translation>owncloud மூலமான கோப்பு பரிமாற்றம் தோல்வியுற்றது. ஒத்திசைவு நிறுத்தப்பட்டது.</translation>
     </message>
     <message>
         <source>CSync propagate failed.</source>
@@ -1704,7 +1704,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="26"/>
         <source>Configure Proxies</source>
-        <translation type="unfinished"/>
+        <translation>proxies ஐ தகவமைக்க</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="43"/>
