@@ -697,7 +697,7 @@ static time_t oc_httpdate_parse( const char *date ) {
     struct tm gmt;
     char wkday[4], mon[4];
     int n;
-    time_t result;
+    time_t result = 0;
 
     memset(&gmt, 0, sizeof(struct tm));
 
@@ -824,6 +824,7 @@ static int fetch_resource_list( const char *curi,
     ne_propfind_handler *hdl = NULL;
     ne_request *request = NULL;
     const char *date_header = NULL;
+    const char *content_type = NULL;
     time_t server_time;
     time_t now;
     time_t time_diff;
@@ -839,38 +840,70 @@ static int fetch_resource_list( const char *curi,
         ret = ne_propfind_named(hdl, ls_props, results, fetchCtx);
 
     if( ret == NE_OK ) {
+        const ne_status *req_status = NULL;
+
         DEBUG_WEBDAV("Simple propfind OK.");
         fetchCtx->currResource = fetchCtx->list;
         request = ne_propfind_get_request( hdl );
+        req_status = ne_get_status( request );
 
+        /* Check the request status. */
+        if( req_status->klass != 2 ) {
+            DEBUG_WEBDAV("ERROR: Request failed: status %d (%s)", req_status->code,
+                         req_status->reason_phrase);
+            ret = NE_CONNECT;
+        }
+    }
+
+    if( ret == NE_OK ) {
+        /* Check the content type. If the server has a problem, ie. database is gone or such,
+         * the content type is not xml but a html error message. Stop on processing if it's
+         * not XML.
+         * FIXME: Generate user error message from the reply content.
+         */
+        content_type =  ne_get_response_header( request, "Content-Type" );
+        if( !(content_type && c_streq(content_type, "application/xml; charset=utf-8") ) ) {
+            DEBUG_WEBDAV("ERROR: Content type of propfind request not XML: %s.",
+                         content_type ?  content_type: "<empty>");
+            ret = NE_CONNECT;
+        }
+    }
+
+    if( ret == NE_OK ) {
         date_header =  ne_get_response_header( request, "Date" );
         DEBUG_WEBDAV("Server Date from HTTP header value: %s", date_header);
         server_time = oc_httpdate_parse(date_header);
-        now = time(NULL);
-        time_diff = server_time - now;
+        if( server_time ) {
+            now = time(NULL);
+            time_diff = server_time - now;
 
-        dav_session.time_delta_sum += time_diff;
-        dav_session.time_delta_cnt++;
+            dav_session.time_delta_sum += time_diff;
+            dav_session.time_delta_cnt++;
 
-        /* Store the previous time delta */
-        dav_session.prev_delta = dav_session.time_delta;
+            /* Store the previous time delta */
+            dav_session.prev_delta = dav_session.time_delta;
 
-        /* check the changing of the time delta */
-        time_diff_delta = llabs(dav_session.time_delta - time_diff);
-        if( dav_session.time_delta_cnt == 1 ) {
-            DEBUG_WEBDAV( "The first time_delta is %llu", (unsigned long long) time_diff );
-        } else if( dav_session.time_delta_cnt > 1 ) {
-            if( time_diff_delta > 5 ) {
-                DEBUG_WEBDAV("WRN: The time delta changed more than 5 second");
-                ret = OC_TIMEDELTA_FAIL;
+            /* check the changing of the time delta */
+            time_diff_delta = llabs(dav_session.time_delta - time_diff);
+            if( dav_session.time_delta_cnt == 1 ) {
+                DEBUG_WEBDAV( "The first time_delta is %llu", (unsigned long long) time_diff );
+            } else if( dav_session.time_delta_cnt > 1 ) {
+                if( time_diff_delta > 5 ) {
+                    DEBUG_WEBDAV("WRN: The time delta changed more than 5 second");
+                    ret = OC_TIMEDELTA_FAIL;
+                } else {
+                    DEBUG_WEBDAV("Ok: Time delta remained (almost) the same: %llu.", (unsigned long long) time_diff);
+                }
             } else {
-                DEBUG_WEBDAV("Ok: Time delta remained (almost) the same: %llu.", (unsigned long long) time_diff);
+                DEBUG_WEBDAV("Difference to last server time delta: %llu", (unsigned long long) time_diff_delta );
             }
+            dav_session.time_delta = time_diff;
         } else {
-          DEBUG_WEBDAV("Difference to last server time delta: %llu", (unsigned long long) time_diff_delta );
+            DEBUG_WEBDAV("ERROR: Unable to parse server time.");
         }
-        dav_session.time_delta = time_diff;
-    } else {
+    }
+
+    if( ret != NE_OK ) {
         err = ne_get_error( dav_session.ctx );
         DEBUG_WEBDAV("WRN: propfind named failed with %d, request error: %s", ret, err ? err : "<nil>");
     }
