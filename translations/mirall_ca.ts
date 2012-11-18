@@ -661,7 +661,7 @@ Comuniqueu l&apos;errada.</translation>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="347"/>
         <source>File exchange with ownCloud failed. Sync was stopped.</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;intercanvi de fitxers amb ownCloud ha fallat. S&apos;ha aturat la sincronització.</translation>
     </message>
     <message>
         <source>CSync propagate failed.</source>
@@ -1733,7 +1733,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="26"/>
         <source>Configure Proxies</source>
-        <translation type="unfinished"/>
+        <translation>Configura Proxies</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="43"/>

@@ -372,12 +372,12 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/application.cpp" line="264"/>
         <location filename="../src/mirall/application.cpp" line="281"/>
         <source>Credentials</source>
-        <translation type="unfinished"/>
+        <translation>凭证</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="275"/>
         <source>Error: Could not retrieve the password!</source>
-        <translation type="unfinished"/>
+        <translation>错误。无法获取密码!</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="277"/>
@@ -435,7 +435,8 @@ p, li { white-space: pre-wrap; }
         <source>%1 client, version %2
 
 Copyright 2012, the ownCloud developers.</source>
-        <translation type="unfinished"/>
+        <translation>%1 客户端，版本 %2 
+Copyright 2012, the ownCloud developers.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="716"/>
@@ -670,7 +671,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="347"/>
         <source>File exchange with ownCloud failed. Sync was stopped.</source>
-        <translation type="unfinished"/>
+        <translation>与owncloud进行文件交换失败。同步停止。</translation>
     </message>
     <message>
         <source>CSync propagate failed.</source>
@@ -1728,7 +1729,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="26"/>
         <source>Configure Proxies</source>
-        <translation type="unfinished"/>
+        <translation>设置代理服务器</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="43"/>

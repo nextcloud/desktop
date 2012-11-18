@@ -671,7 +671,7 @@ Neem alstublieft de tijd voor het schrijven van een bug report.</translation>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="347"/>
         <source>File exchange with ownCloud failed. Sync was stopped.</source>
-        <translation type="unfinished"/>
+        <translation>Bestandsuitwisseling met ownCloud is mislukt. Het synchroniseren is gestopt.</translation>
     </message>
     <message>
         <source>CSync propagate failed.</source>
@@ -1743,7 +1743,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="26"/>
         <source>Configure Proxies</source>
-        <translation type="unfinished"/>
+        <translation>Configureer Proxies</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="43"/>
