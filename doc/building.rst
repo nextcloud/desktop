@@ -58,7 +58,7 @@ via YaST or ``zypper ar`` (adjust when using openSUSE 12.2)::
 Next, install the cross-compiler packages and the cross-compiled dependencies::
 
   zypper si -d mingw32-csync
-  zypper install kdewin-png2ico
+  zypper install kdewin-png2ico mingw32-libqt4 mingw32-libqt4-devel
 
 For the installer, the NSIS installer packages are also required::
 
