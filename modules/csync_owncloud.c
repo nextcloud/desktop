@@ -842,7 +842,6 @@ static int fetch_resource_list( const char *curi,
     if( ret == NE_OK ) {
         const ne_status *req_status = NULL;
 
-        DEBUG_WEBDAV("Simple propfind OK.");
         fetchCtx->currResource = fetchCtx->list;
         request = ne_propfind_get_request( hdl );
         req_status = ne_get_status( request );
@@ -853,6 +852,7 @@ static int fetch_resource_list( const char *curi,
                          req_status->reason_phrase);
             ret = NE_CONNECT;
         }
+        DEBUG_WEBDAV("Simple propfind result code %d.", req_status->code);
     }
 
     if( ret == NE_OK ) {
