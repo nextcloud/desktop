@@ -58,7 +58,12 @@ via YaST or ``zypper ar`` (adjust when using openSUSE 12.2)::
 Next, install the cross-compiler packages and the cross-compiled dependencies::
 
   zypper si -d mingw32-csync
-  zypper si -d mingw32-owncloud-client 
+  zypper install kdewin-png2ico
+
+For the installer, the NSIS installer packages are also required::
+
+  zypper install mingw32-cross-nsis mingw32-cross-nsis-plugin-processes \
+                 mingw32-cross-nsis-plugin-uac
 
 Now, follow the `generic build instructions`_, but make sure to append
 the following parameter to both cmake calls::
@@ -118,6 +123,10 @@ Next, we build mirall::
 If this succeeds, call ``make``. The owncloud binary should appear in the
 ``bin`` directory. You can also run ``make install`` to install the client to
 ``/usr/local/bin``.
+
+To build in installer (requires the mingw32-cross-nsis packages)::
+
+  make package
 
 .. _`ownCloud repository from OBS`: http://software.opensuse.org/download/package?project=isv:ownCloud:devel&package=owncloud-client
 .. _CSync: http://www.csync.org
