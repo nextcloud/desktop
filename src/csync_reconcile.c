@@ -30,6 +30,16 @@
 #include "csync_log.h"
 
 #define ACCEPTED_TIME_DIFF 5
+#define ONE_HOUR 3600
+
+static bool _time_dst_off( time_t t1, time_t t2, int dst_offset ) {
+    bool ret = false;
+    long int diff = t1 - t2;
+    if( diff > (dst_offset - ACCEPTED_TIME_DIFF) && (diff < dst_offset+ ACCEPTED_TIME_DIFF) )
+        ret = true;
+
+    return ret;
+}
 
 /*
  * We merge replicas at the file level. The merged replica contains the
@@ -116,6 +126,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
         /*
      * file found on the other replica
      */
+        bool set_instruction_none = false;
         other = (csync_file_stat_t *) node->data;
 
         switch (cur->instruction) {
@@ -125,38 +136,58 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
             /* file on other replica is new too */
             case CSYNC_INSTRUCTION_NEW:
                 /* if (cur->modtime > other->modtime) { */
-        if (cur->modtime - other->modtime > ACCEPTED_TIME_DIFF) {
-
-                    if(ctx->options.with_conflict_copys)
-                    {
-                        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"file new on both, cur is newer PATH=./%s, %llu <-> %llu",
-				  cur->path, (unsigned long long) cur->modtime, (unsigned long long) other->modtime);
-                        cur->instruction = CSYNC_INSTRUCTION_CONFLICT;
-                        other->instruction = CSYNC_INSTRUCTION_NONE;
+                CSYNC_LOG( CSYNC_LOG_PRIORITY_DEBUG, "** size compare: %lld <-> %lld", (long long) cur->size,
+                           (long long) other->size);
+                if(cur->modtime - other->modtime > ACCEPTED_TIME_DIFF) {
+                    if( other->size == cur->size &&
+                            _time_dst_off( cur->modtime, other->modtime, ONE_HOUR ) ) {
+                        CSYNC_LOG( CSYNC_LOG_PRIORITY_DEBUG, "DST-Problem detected. Skip conflict for %s!", cur->path);
+                        set_instruction_none = true;
+                    } else {
+                        if(ctx->options.with_conflict_copys)
+                        {
+                            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"file new on both, cur is newer PATH=./%s, %llu <-> %llu",
+                                      cur->path, (unsigned long long) cur->modtime, (unsigned long long) other->modtime);
+                            cur->instruction = CSYNC_INSTRUCTION_CONFLICT;
+                            other->instruction = CSYNC_INSTRUCTION_NONE;
+                        }
+                        else
+                        {
+                            cur->instruction = CSYNC_INSTRUCTION_SYNC;
+                            other->instruction = CSYNC_INSTRUCTION_NONE;
+                        }
                     }
-                    else
-                    {
-                        cur->instruction = CSYNC_INSTRUCTION_SYNC;
-                        other->instruction = CSYNC_INSTRUCTION_NONE;
-                    }
 
-                /* } else if (cur->modtime < other->modtime) { */
-        } else if (other->modtime - cur->modtime > ACCEPTED_TIME_DIFF) {
-
-                    if(ctx->options.with_conflict_copys)
-                    {
-                        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"file new on both, other is newer PATH=./%s, %llu <->%llu",
-				  cur->path, (unsigned long long) cur->modtime, (unsigned long long) other->modtime);
-                        cur->instruction = CSYNC_INSTRUCTION_NONE;
-                        other->instruction = CSYNC_INSTRUCTION_CONFLICT;
-                    }
-                    else
-                    {
-                        cur->instruction = CSYNC_INSTRUCTION_NONE;
-                        other->instruction = CSYNC_INSTRUCTION_SYNC;
+                    /* } else if (cur->modtime < other->modtime) { */
+                } else if (other->modtime - cur->modtime > ACCEPTED_TIME_DIFF) {
+                    /* Check if we have the dst problem. Older versions of ocsync wrote a wrong
+                     * (ie. localized) mtime to the files which can be ignored if the size is equal
+                     * and the time shift is exactyl one hour. */
+                    if( other->size == cur->size &&
+                            _time_dst_off( other->modtime, cur->modtime, ONE_HOUR ) ) {
+                        CSYNC_LOG( CSYNC_LOG_PRIORITY_DEBUG, "DST-Problem detected. Skip conflict for %s!", cur->path);
+                        set_instruction_none = true;
+                    } else {
+                        if(ctx->options.with_conflict_copys)
+                        {
+                            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"file new on both, other is newer PATH=./%s, %llu <->%llu",
+                                      cur->path, (unsigned long long) cur->modtime, (unsigned long long) other->modtime);
+                            cur->instruction = CSYNC_INSTRUCTION_NONE;
+                            other->instruction = CSYNC_INSTRUCTION_CONFLICT;
+                        }
+                        else
+                        {
+                            cur->instruction = CSYNC_INSTRUCTION_NONE;
+                            other->instruction = CSYNC_INSTRUCTION_SYNC;
+                        }
                     }
 
                 } else {
+                    /* The files are equal. */
+                    set_instruction_none = true;
+                }
+
+                if( set_instruction_none ) {
                     /* file are equal */
                     /* FIXME: Get the id from the server! */
                     cur->instruction = CSYNC_INSTRUCTION_NONE;
@@ -164,6 +195,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
 
                     if( !cur->md5 && other->md5 ) cur->md5 = c_strdup(other->md5);
                 }
+
                 break;
                 /* file on other replica has changed too */
             case CSYNC_INSTRUCTION_EVAL:
