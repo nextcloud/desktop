@@ -66,18 +66,7 @@ enum resource_type {
     resr_error
 };
 
-#ifdef HAVE_UNSIGNED_LONG_LONG
-typedef unsigned long long dav_size_t;
-#ifdef HAVE_STRTOULL
-#define DAV_STRTOL strtoull
-#endif
-#else
-typedef unsigned long dav_size_t;
-#endif
-
-#ifndef DAV_STRTOL
-#define DAV_STRTOL strtol
-#endif
+#define DAV_STRTOL strtoll
 
 /* Struct to store data for each resource found during an opendir operation.
  * It represents a single file entry.
@@ -88,7 +77,7 @@ typedef struct resource {
     char *name;          /* The filename only */
 
     enum resource_type type;
-    dav_size_t         size;
+    off_t              size;
     time_t             modtime;
     char*              md5;
 
@@ -793,6 +782,7 @@ static void results(void *userdata,
         if (*p) {
             newres->size = 0;
         }
+        DEBUG_WEBDAV("Parsed File size for %s from %s: %lld", newres->name, clength, (long long)newres->size );
     }
 
     if( md5sum ) {
