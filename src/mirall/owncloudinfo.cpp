@@ -140,7 +140,7 @@ void ownCloudInfo::mkdirRequest( const QString& dir )
     //connect(qhttp, SIGNAL(authenticationRequired(QString,quint16,QAuthenticator*)), this, SLOT(qhttpAuthenticationRequired(QString,quint16,QAuthenticator*)));
 
     QHttpRequestHeader header("MKCOL", QString(url.encodedPath()), 1,1);   /* header */
-    header.setValue("Host", QString(url.encodedHost());
+    header.setValue("Host", QString(url.encodedHost()));
     header.setValue("User-Agent", QString("mirall-%1").arg(MIRALL_STRINGIFY(MIRALL_VERSION)).toAscii() );
     header.setValue("Accept-Charset", "ISO-8859-1,utf-8;q=0.7,*;q=0.7");
     header.setValue("Accept-Language", "it,de-de;q=0.8,it-it;q=0.6,en-us;q=0.4,en;q=0.2");
