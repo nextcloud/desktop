@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="61"/>
         <source>Where do you want to create your ownCloud?</source>
-        <translation>Bạn muốn tạo ownCloud của bạn ở đâu?</translation>
+        <translation>Bạn muốn tạo ownCloud ở đâu?</translation>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="73"/>
@@ -37,7 +37,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="132"/>
         <source>create ownCloud on my internet domain</source>
-        <translation>tạo ownCloud trên tên miền internet của tôi</translation>
+        <translation>tạo ownCloud dựa trên tên miền của tôi</translation>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="155"/>
@@ -59,7 +59,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="177"/>
         <source>&amp;Domain:</source>
-        <translation>&amp;Domain:</translation>
+        <translation>&amp;Tên miền:</translation>
     </message>
     <message>
         <source>mydomain.org</source>
@@ -71,7 +71,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardnetworkpage.ui" line="14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Mẫu</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardnetworkpage.ui" line="27"/>
@@ -86,7 +86,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardnetworkpage.ui" line="40"/>
         <source>Only enable if network is available</source>
-        <translation>Chỉ cho phép nếu mạng có sẵn</translation>
+        <translation>Chỉ được bật nếu mạng có sẵn</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardnetworkpage.ui" line="47"/>
@@ -99,7 +99,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Mẫu</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="20"/>
@@ -124,7 +124,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="63"/>
         <source>Alias:</source>
-        <translation>Alias:</translation>
+        <translation> Bí danh:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="93"/>
@@ -157,7 +157,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="54"/>
         <source>&amp;Directory alias name:</source>
-        <translation>&amp;tên thư mục alias:</translation>
+        <translation>&amp;Tên thư mục alias:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="45"/>
@@ -434,7 +434,9 @@ p, li { white-space: pre-wrap; }
         <source>%1 client, version %2
 
 Copyright 2012, the ownCloud developers.</source>
-        <translation type="unfinished"/>
+        <translation>%1 máy khách, phiên bản %2
+
+Bản quyền 2012, nhà phát triển ownCloud.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="720"/>
@@ -466,7 +468,7 @@ Copyright 2012, the ownCloud developers.</source>
         <location filename="../src/mirall/application.cpp" line="764"/>
         <location filename="../src/mirall/application.cpp" line="936"/>
         <source>Last Sync was successful.</source>
-        <translation>Last Sync was successful.</translation>
+        <translation> Lần đồng bộ sau cùng thành công</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="767"/>
@@ -489,18 +491,19 @@ Copyright 2012, the ownCloud developers.</source>
     <message>
         <location filename="../src/mirall/application.cpp" line="777"/>
         <source>Folder information</source>
-        <translation>Thông tin folder</translation>
+        <translation>Thông tin thư mục</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="792"/>
         <source>Unknown</source>
-        <translation>Unknown</translation>
+        <translation> Chưa biết</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="794"/>
         <source>Changed files:
 </source>
-        <translation>Thay đổi các tập tin:</translation>
+        <translation>Thay đổi các tập tin:
+</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="796"/>
@@ -533,7 +536,7 @@ Copyright 2012, the ownCloud developers.</source>
     <message>
         <location filename="../src/mirall/application.cpp" line="927"/>
         <source>Waits to start syncing.</source>
-        <translation>Vui lòng chờ để bắt đầu đồng bộ.</translation>
+        <translation>Vui lòng chờ đang bắt đầu đồng bộ.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="956"/>
@@ -646,13 +649,12 @@ Quá trình đồng bộ không thể thực hiện được.</translation>
         <location filename="../src/mirall/csyncthread.cpp" line="315"/>
         <source>CSync update generated a strange instruction.
 Please write a bug report.</source>
-        <translation>CSync cập nhật tạo ra một lệnh lạ.
-Vui lòng viết một báo cáo lỗi. </translation>
+        <translation>CSync cập nhật tạo ra một hướng dẫn lạ .Vui lòng thông báo lỗi. </translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="318"/>
         <source>Local filesystem problems. Better disable Syncing and check.</source>
-        <translation>Những vấn đề hệ thống tập tin cục bộ. Tốt hơn là nên vô hiệu hóa đồng bộ và kiểm tra.</translation>
+        <translation> Hệ thống tập tin cục bộ có vấn đề .Tốt hơn là bạn nên Tắt đồng bộ và kiểm tra.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="323"/>
@@ -667,7 +669,7 @@ Vui lòng viết một báo cáo lỗi. </translation>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="347"/>
         <source>File exchange with ownCloud failed. Sync was stopped.</source>
-        <translation type="unfinished"/>
+        <translation>Tập tin trao đổi với ownCloud thất bại. đồng bộ bị dừng lại.</translation>
     </message>
     <message>
         <source>CSync propagate failed.</source>
@@ -955,7 +957,7 @@ Vui lòng viết một báo cáo lỗi. </translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="176"/>
         <source>&lt;font color=&quot;red&quot;&gt;Failed to connect to %1!&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;red&quot;&gt;Kết nối thât bại đến %1!&lt;/font&gt;</translation>
+        <translation>&lt;font color=&quot;red&quot;&gt;Kết nối thất bại đến %1!&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="178"/>
@@ -1056,12 +1058,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="383"/>
         <source>ok</source>
-        <translation>Chấp nhận</translation>
+        <translation>Đồng ý</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="385"/>
         <source>failed.</source>
-        <translation>Thất bại</translation>
+        <translation>Thất bại.</translation>
     </message>
     <message>
         <source>Start Creation of remote folder %1 failed.</source>
@@ -1152,7 +1154,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="97"/>
         <source>Warnings about current SSL Connection:</source>
-        <translation>Cảnh báo về các kết nối SSL hiện tại :</translation>
+        <translation>Cảnh báo về kết nối SSL hiện tại :</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="145"/>
@@ -1343,7 +1345,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/credentialstore.cpp" line="75"/>
         <source>Password Required</source>
-        <translation>yêu cầu Mật khẩu  </translation>
+        <translation>Yêu cầu Mật khẩu  </translation>
     </message>
     <message>
         <location filename="../src/mirall/credentialstore.cpp" line="76"/>
@@ -1710,12 +1712,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="26"/>
         <source>Configure Proxies</source>
-        <translation type="unfinished"/>
+        <translation>Cấu hình proxy</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="43"/>
         <source>No Proxy</source>
-        <translation> Không dùng proxy</translation>
+        <translation> Không sử dụng proxy</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="53"/>

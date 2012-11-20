@@ -355,7 +355,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="267"/>
         <source>Too many user attempts to enter password.</source>
-        <translation type="unfinished"/>
+        <translation>Demasiados intentos del usuarios para ingresar la contraseña.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="268"/>
@@ -366,12 +366,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="279"/>
         <source>Error: Could not retrieve the password!</source>
-        <translation type="unfinished"/>
+        <translation>Error: No se pudo recuperar la contraseña </translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="281"/>
         <source>Password dialog was canceled!</source>
-        <translation type="unfinished"/>
+        <translation>El diálogo de la contraseña fue cancelado!</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="315"/>
@@ -424,7 +424,7 @@ p, li { white-space: pre-wrap; }
         <source>%1 client, version %2
 
 Copyright 2012, the ownCloud developers.</source>
-        <translation type="unfinished"/>
+        <translation>%1 cliente, version %2⏎ ⏎ Copyright 2012, los desarrolladores de ownCloud.  </translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="720"/>
@@ -659,7 +659,7 @@ Por favor, escribí un bug sobre esto. </translation>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="347"/>
         <source>File exchange with ownCloud failed. Sync was stopped.</source>
-        <translation type="unfinished"/>
+        <translation>El intercambio de archivos con owncloud fracasó. La sincronización se detuvo.</translation>
     </message>
     <message>
         <source>CSync propagate failed.</source>
@@ -1692,7 +1692,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="26"/>
         <source>Configure Proxies</source>
-        <translation type="unfinished"/>
+        <translation>Configurar Proxies</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="43"/>
