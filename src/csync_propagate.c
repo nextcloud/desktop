@@ -201,6 +201,8 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   }
 
   /* Create the destination file */
+  char *prev_tdir = NULL;
+
   ctx->replica = drep;
   while ((dfp = csync_vio_open(ctx, turi, O_CREAT|O_EXCL|O_WRONLY|O_NOCTTY,
           C_FILE_MODE)) == NULL) {
@@ -231,6 +233,17 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
           rc = -1;
           goto out;
         }
+
+        if( prev_tdir && c_streq(tdir, prev_tdir) ) {
+            /* we're looping */
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN,
+                      "dir: %s, loop in mkdir detected!", tdir);
+            rc = 0;
+            st->instruction = CSYNC_INSTRUCTION_IGNORE;
+            goto out;
+        }
+        SAFE_FREE(prev_tdir);
+        prev_tdir = c_strdup(tdir);
 
         if (csync_vio_mkdirs(ctx, tdir, C_DIR_MODE) < 0) {
           strerror_r(errno, errbuf, sizeof(errbuf));
@@ -479,6 +492,7 @@ out:
     }
   }
 
+  SAFE_FREE(prev_tdir);
   SAFE_FREE(suri);
   SAFE_FREE(duri);
   SAFE_FREE(turi);
