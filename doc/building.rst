@@ -63,12 +63,21 @@ Next, install the cross-compiler packages and the cross-compiled dependencies::
 For the installer, the NSIS installer packages are also required::
 
   zypper install mingw32-cross-nsis mingw32-cross-nsis-plugin-processes \
-                 mingw32-cross-nsis-plugin-uac
+                 mingw32-cross-nsis-plugin-uac mingw32-libgcrypt \
+                 mingw32-libgnutls mingw32-gnutls mingw32-libneon \
+                 mingw32-libbeecrypt mingw32-libopenssl mingw32-openssl
 
-Now, follow the `generic build instructions`_, but make sure to append
-the following parameter to both cmake calls::
+Now, follow the `generic build instructions`_, but pay attention to
+the following differences:
 
-  -DCMAKE_TOOLCHAIN_FILE=../mirall/admin/win/Toolchain-mingw32-openSUSE.cmake
+1. For building ``libocsync``, you need to use ``mingw32-cmake`` instead
+   of cmake.
+2. Also, you need to specify *absolute pathes* for ``CSYNC_LIBRARY_PATH``
+   and ``CSYNC_LIBRARY_PATH`` when running ``cmake`` on mirall.
+3. for building ``mirall``, you need to use ``cmake`` again, but make sure
+   to append the following parameter::
+
+  ``-DCMAKE_TOOLCHAIN_FILE=../mirall/admin/win/Toolchain-mingw32-openSUSE.cmake``
 
 Finally, just build by running ``make``. ``make package`` will produce
 an NSIS-based installer, provided the NSIS mingw32 packages are installed.
