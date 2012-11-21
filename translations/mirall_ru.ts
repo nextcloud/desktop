@@ -434,7 +434,9 @@ p, li { white-space: pre-wrap; }
         <source>%1 client, version %2
 
 Copyright 2012, the ownCloud developers.</source>
-        <translation type="unfinished"/>
+        <translation>%1 клиент, версия %2
+
+Все права защищены, 2012, разработчики ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="720"/>
@@ -669,7 +671,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="347"/>
         <source>File exchange with ownCloud failed. Sync was stopped.</source>
-        <translation type="unfinished"/>
+        <translation>Обмен файлами с ownCloud не удался. Синхронизация остановлена.</translation>
     </message>
     <message>
         <source>CSync propagate failed.</source>
@@ -1725,7 +1727,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="26"/>
         <source>Configure Proxies</source>
-        <translation type="unfinished"/>
+        <translation>Настроить прокси</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="43"/>
