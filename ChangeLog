@@ -1,11 +1,22 @@
 ChangeLog
 =========
 version 1.1.2 (release 2012-11- ), csync 0.60.2 required
-  * [Fixes] Allow to cancel the password dialog
+  * [Fixes] Allow to properly cancel the password dialog.
+  * [Fixes] Share folder name correctly percent encoded with old Qt
+            4.6 builds ie. Debian.
+  * [Fixes] If local sync dir is not existing, create it.
+  * [Fixes] lots of other minor fixes.
+  * [GUI] Display error messages in status dialog.
+  * [GUI] GUI fixes for the connection wizard.
+  * [GUI] Show username for connection in statusdialog.
+  * [GUI] Show intro wizard on new connection setup.
   * [APP] Use CredentialStore to better support various credential
           backends.
   * [APP] Handle missing local folder more robust: Create it if
           missing instead of ignoring.
+  * [APP] Simplify treewalk code.
+  * [Platform] Fix Mac building
+
 version 1.1.1 (release 2012-10-18), csync 0.60.1 required
   * [GUI]   Allow changing folder name in single folder mode 
   * [GUI]   Windows: Add license to installer
