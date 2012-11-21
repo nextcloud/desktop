@@ -1,5 +1,22 @@
 ChangeLog
 ==========
+version 0.60.2  (released 2012-11-  )
+  * Migration to cross platform testing system cmocka.
+  * Fixed variuos minor things incl. potential mem leaks.
+  * Clang fixes.
+  * Moved journal database to sync directory.
+  * Fixed more csync->ocsync renaming issues.
+  * Fixed statedb query below path.
+  * Fixed win32 Daylight Saving Time issues.
+  * Allow static linking with iniparser and sqlite.
+  * Win32: Fix CreateHandle function in local stat.
+  * Win32: More wide char fixes.
+  * Added version table to journal database.
+  * Fixes for HTTP reply computation.
+  * Stricter error checks on PROPFIND results.
+  * Workaround for DST influenced times from previous versions.
+  * Detect looping in mkdirs to fix sharing.
+
 version 0.60.1  (released 2012-10-18)
   * Fix improper memory cleanup which could
             cause memory leaks and crashes
