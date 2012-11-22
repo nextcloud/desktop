@@ -365,23 +365,23 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="267"/>
         <source>Too many user attempts to enter password.</source>
-        <translation type="unfinished"/>
+        <translation>ผู้ใช้งานกรอกรหัสผ่านเกิดจำนวนครั้งที่กำหนดไว้</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="268"/>
         <location filename="../src/mirall/application.cpp" line="285"/>
         <source>Credentials</source>
-        <translation type="unfinished"/>
+        <translation>ข้อมูลส่วนตัวสำหรับเข้าระบบ</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="279"/>
         <source>Error: Could not retrieve the password!</source>
-        <translation type="unfinished"/>
+        <translation>พบข้อผิดพลาด: ไม่สามารถรับรหัสผ่านได้</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="281"/>
         <source>Password dialog was canceled!</source>
-        <translation type="unfinished"/>
+        <translation>กล่องโต้ตอบรหัสผ่านถูกยกเลิกแล้ว!</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="315"/>
@@ -434,7 +434,9 @@ p, li { white-space: pre-wrap; }
         <source>%1 client, version %2
 
 Copyright 2012, the ownCloud developers.</source>
-        <translation type="unfinished"/>
+        <translation>%1 โปรแกรมไคลเอนต์, รุ่น %2
+
+สงวนลิขสิทธิ์ 2012, ทีมงานผู้พัฒนา ownCloud.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="720"/>
@@ -540,7 +542,7 @@ Copyright 2012, the ownCloud developers.</source>
     <message>
         <location filename="../src/mirall/application.cpp" line="956"/>
         <source> (Sync is paused)</source>
-        <translation type="unfinished"/>
+        <translation>(การผสานข้อมูลถูกหยุดชั่วคราว)</translation>
     </message>
     <message>
         <source>Sync is paused.</source>
@@ -669,7 +671,7 @@ Please write a bug report.</translation>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="347"/>
         <source>File exchange with ownCloud failed. Sync was stopped.</source>
-        <translation type="unfinished"/>
+        <translation>การแลกเปลี่ยนไฟล์กับ ownCloud ล้มเหลว การผสานข้อมูลถูกหยุดไว้</translation>
     </message>
     <message>
         <source>CSync propagate failed.</source>
@@ -689,17 +691,17 @@ Please write a bug report.</translation>
     <message>
         <location filename="../src/mirall/folder.cpp" line="99"/>
         <source>Local folder %1 does not exist.</source>
-        <translation type="unfinished"/>
+        <translation>โฟลเดอร์ในเครื่อง %1 ไม่มีอยู่</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="102"/>
         <source>%1 should be a directory but is not.</source>
-        <translation type="unfinished"/>
+        <translation>%1 ควรเป็นไดเร็กทอรี่แต่ไม่ได้เป็น</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="105"/>
         <source>%1 is not readable.</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถอ่านข้อมูล %1 ได้</translation>
     </message>
 </context>
 <context>
@@ -1012,7 +1014,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="427"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation type="unfinished"/>
+        <translation>การสร้างโฟลเดอร์ดังกล่าวส่งผลให้เกิดรหัสข้อผิดพลาด HTTP error code %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="448"/>
@@ -1238,12 +1240,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="501"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; as &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>ได้เชื่อมต่อกับ &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; ในฐานะ &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="503"/>
         <source>Version: %1 (%2)</source>
-        <translation type="unfinished"/>
+        <translation>รุ่น: %1 (%2)</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="519"/>
@@ -1725,7 +1727,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="26"/>
         <source>Configure Proxies</source>
-        <translation type="unfinished"/>
+        <translation>กำหนดค่าพร็อกซี่</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="43"/>
