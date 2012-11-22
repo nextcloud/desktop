@@ -170,13 +170,21 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
     QSettings settings( cfgFile.filePath(), QSettings::IniFormat);
     qDebug() << "    -> file path: " << settings.fileName();
 
+    // Check if the filename is equal to the group setting. If not, use the group
+    // name as an alias.
+    QStringList groups = settings.childGroups();
+
+    if( ! groups.contains(escapedAlias) && groups.count() > 0 ) {
+        escapedAlias = groups.first();
+    }
+
     settings.beginGroup( escapedAlias ); // read the group with the same name as the file which is the folder alias
 
     QString path = settings.value(QLatin1String("localpath")).toString();
     QString backend = settings.value(QLatin1String("backend")).toString();
     QString targetPath = settings.value( QLatin1String("targetPath") ).toString();
     // QString connection = settings.value( QLatin1String("connection") ).toString();
-    QString alias = unescapeAlias( file );
+    QString alias = unescapeAlias( escapedAlias );
 
     if (!backend.isEmpty()) {
 
@@ -203,6 +211,7 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
             }
 
             folder = new ownCloudFolder( alias, path, oCUrl + targetPath, this );
+            folder->setConfigFile(file);
 #else
             qCritical() << "* owncloud support not enabled!! ignoring:" << file;
 #endif
@@ -211,21 +220,23 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
             return NULL;
         }
     }
-    folder->setBackend( backend );
-    // folder->setOnlyOnlineEnabled(settings.value("folder/onlyOnline", false).toBool());
-    folder->setOnlyThisLANEnabled(settings.value(QLatin1String("folder/onlyThisLAN"), false).toBool());
 
-    _folderMap[alias] = folder;
+    if( folder ) {
+        folder->setBackend( backend );
+        // folder->setOnlyOnlineEnabled(settings.value("folder/onlyOnline", false).toBool());
+        folder->setOnlyThisLANEnabled(settings.value(QLatin1String("folder/onlyThisLAN"), false).toBool());
 
-    qDebug() << "Adding folder to Folder Map " << folder;
-    /* Use a signal mapper to connect the signals to the alias */
-    connect(folder, SIGNAL(scheduleToSync(const QString&)), SLOT(slotScheduleSync(const QString&)));
-    connect(folder, SIGNAL(syncStateChange()), _folderChangeSignalMapper, SLOT(map()));
-    connect(folder, SIGNAL(syncStarted()), SLOT(slotFolderSyncStarted()));
-    connect(folder, SIGNAL(syncFinished(SyncResult)), SLOT(slotFolderSyncFinished(SyncResult)));
+        _folderMap[alias] = folder;
 
-    _folderChangeSignalMapper->setMapping( folder, folder->alias() );
+        qDebug() << "Adding folder to Folder Map " << folder;
+        /* Use a signal mapper to connect the signals to the alias */
+        connect(folder, SIGNAL(scheduleToSync(const QString&)), SLOT(slotScheduleSync(const QString&)));
+        connect(folder, SIGNAL(syncStateChange()), _folderChangeSignalMapper, SLOT(map()));
+        connect(folder, SIGNAL(syncStarted()), SLOT(slotFolderSyncStarted()));
+        connect(folder, SIGNAL(syncFinished(SyncResult)), SLOT(slotFolderSyncFinished(SyncResult)));
 
+        _folderChangeSignalMapper->setMapping( folder, folder->alias() );
+    }
     return folder;
 }
 
@@ -404,19 +415,23 @@ void FolderMan::slotRemoveFolder( const QString& alias )
 // remove a folder from the map. Should be sure n
 void FolderMan::removeFolder( const QString& alias )
 {
+    Folder *f = 0;
+
     if( _folderMap.contains( alias )) {
-      qDebug() << "Removing " << alias;
-      Folder *f = _folderMap.take( alias );
-      f->wipe();
-      f->deleteLater();
+        qDebug() << "Removing " << alias;
+        f = _folderMap.take( alias );
+        f->wipe();
     } else {
-      qDebug() << "!! Can not remove " << alias << ", not in folderMap.";
+        qDebug() << "!! Can not remove " << alias << ", not in folderMap.";
     }
 
-    QFile file( _folderConfigPath + QLatin1Char('/') + escapeAlias(alias) );
-    if( file.exists() ) {
-        qDebug() << "Remove folder config file " << file.fileName();
-      file.remove();
+    if( f ) {
+        QFile file( _folderConfigPath + QLatin1Char('/') + f->configFile() );
+        if( file.exists() ) {
+            qDebug() << "Remove folder config file " << file.fileName();
+            file.remove();
+        }
+        f->deleteLater();
     }
 }
 
