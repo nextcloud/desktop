@@ -103,7 +103,8 @@ int FolderMan::setupKnownFolders()
 #define QUOTE_TAG   QLatin1String("__QUOTE__")
 #define LT_TAG      QLatin1String("__LESS_THAN__")
 #define GT_TAG      QLatin1String("__GREATER_THAN__")
-
+#define PAR_O_TAG   QLatin1String("__PAR_OPEN__")
+#define PAR_C_TAG   QLatin1String("__PAR_CLOSE__")
 
 QString FolderMan::escapeAlias( const QString& alias ) const
 {
@@ -119,7 +120,8 @@ QString FolderMan::escapeAlias( const QString& alias ) const
     a.replace( QLatin1Char('"'), QUOTE_TAG );
     a.replace( QLatin1Char('<'), LT_TAG );
     a.replace( QLatin1Char('>'), GT_TAG );
-
+    a.replace( QLatin1Char('['), PAR_O_TAG );
+    a.replace( QLatin1Char(']'), PAR_C_TAG );
     return a;
 }
 
@@ -137,6 +139,8 @@ QString FolderMan::unescapeAlias( const QString& alias ) const
     a.replace( QUOTE_TAG,   QLatin1String("\"") );
     a.replace( LT_TAG,      QLatin1String("<") );
     a.replace( GT_TAG,      QLatin1String(">") );
+    a.replace( PAR_O_TAG,   QLatin1String("[") );
+    a.replace( PAR_C_TAG,   QLatin1String("]") );
 
     return a;
 }
