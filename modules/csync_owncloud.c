@@ -782,7 +782,7 @@ static void results(void *userdata,
         if (*p) {
             newres->size = 0;
         }
-        DEBUG_WEBDAV("Parsed File size for %s from %s: %lld", newres->name, clength, (long long)newres->size );
+        /* DEBUG_WEBDAV("Parsed File size for %s from %s: %lld", newres->name, clength, (long long)newres->size ); */
     }
 
     if( md5sum ) {
