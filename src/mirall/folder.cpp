@@ -319,6 +319,16 @@ void Folder::slotLocalPathChanged( const QString& dir )
     }
 }
 
+void Folder::setConfigFile( const QString& file )
+{
+    _configFile = file;
+}
+
+QString Folder::configFile()
+{
+    return _configFile;
+}
+
 void Folder::setBackend( const QString& b )
 {
   _backend = b;
