@@ -66,7 +66,7 @@ static void check_csync_vio_load(void **state)
     CSYNC *csync = *state;
     int rc;
 
-    rc = csync_vio_init(csync, "smb", NULL);
+    rc = csync_vio_init(csync, "owncloud", NULL);
     assert_int_equal(rc, 0);
 
     csync_vio_shutdown(csync);
