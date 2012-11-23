@@ -46,6 +46,8 @@ static void teardown(void **state) {
 
     rc = system("rm -rf /tmp/check_csync1");
     assert_int_equal(rc, 0);
+    rc = system("rm -rf /tmp/check_csync2");
+    assert_int_equal(rc, 0);
 
     *state = NULL;
 }
