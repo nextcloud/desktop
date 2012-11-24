@@ -46,7 +46,7 @@ the ``%RESOURCES`` placeholder (note the single ``%``!).
 
 Example::
 
-  ``%RESOURCES/custom/myimage_top.png
+  %RESOURCES/custom/myimage_top.png
 
 .. note:: ``%RESOURCES`` is currently undefined on Linux, it points to the
           directory location of ``custom.ini`` on all other platforms.

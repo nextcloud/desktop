@@ -20,8 +20,3 @@ Contents
    troubleshooting
    glossary 
 
-Index
-=====
-
-  * :ref:`genindex`
-

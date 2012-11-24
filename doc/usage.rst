@@ -22,11 +22,11 @@ Command line switches
 ownCloud Client supports the following command line switches:
 
 +--------------------------+------------------------------------------------+
-+ Switch                   | Action                                         |
+| Switch                   | Action                                         |
 +==========================+================================================+
 | ``--logwindow``          | open a window to show log output at startup.   |
 +--------------------------+------------------------------------------------+
-| ``--logfile <filename>`` | write log output to file .                     |
+| ``--logfile <filename>`` | write log output to file.                      |
 +--------------------------+------------------------------------------------+
 | ``--flushlog``           | flush the log file after every write.          |
 +--------------------------+------------------------------------------------+
@@ -45,7 +45,7 @@ It contains settings in the ini file format known from Windows.
 These are config settings that may be changed:
 
 +---------------------------+-----------+--------------+-----------+-----------------------------------------------------+
-+ Setting                   | Data Type | Unit         | Default   | Description                                         |
+| Setting                   | Data Type | Unit         | Default   | Description                                         |
 +===========================+===========+==============+===========+=====================================================+
 | ``remotePollinterval``    | integer   | milliseconds | ``30000`` | Poll time for the remote repository                 |
 +---------------------------+-----------+--------------+-----------+-----------------------------------------------------+
