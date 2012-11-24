@@ -377,7 +377,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/application.cpp" line="279"/>
         <source>Error: Could not retrieve the password!</source>
-        <translation type="unfinished"/>
+        <translation>Error: No se pudo recuperar la contraseña</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="281"/>
