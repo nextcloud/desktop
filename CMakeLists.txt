@@ -40,6 +40,8 @@ endif()
 find_package(Qt4 4.6.0 COMPONENTS QtCore QtGui QtXml QtNetwork QtTest REQUIRED )
 find_package(Csync)
 find_package(INotify)
+find_package(Sphinx)
+find_package(PdfLatex)
 
 set(WITH_CSYNC CSYNC_FOUND)
 set(USE_INOTIFY ${INOTIFY_FOUND})
@@ -81,6 +83,8 @@ file( GLOB TRANS_FILES ${CMAKE_SOURCE_DIR}/translations/mirall_*.ts)
 set(TRANSLATIONS ${TRANS_FILES})
 
 add_subdirectory(src)
+add_subdirectory(doc)
+
 if(UNIT_TESTING)
     include(CTest)
     enable_testing()
@@ -92,4 +96,3 @@ if(BUILD_OWNCLOUD_OSX_BUNDLE)
 else()
     install( FILES sync-exclude.lst DESTINATION ${CMAKE_INSTALL_SYSCONFDIR} )
 endif()
-
