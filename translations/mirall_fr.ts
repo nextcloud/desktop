@@ -365,23 +365,23 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/application.cpp" line="267"/>
         <source>Too many user attempts to enter password.</source>
-        <translation type="unfinished"/>
+        <translation>Nombre de tentatives dépassé pour la saisie du mot de passe.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="268"/>
         <location filename="../src/mirall/application.cpp" line="285"/>
         <source>Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Informations d&apos;identification</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="279"/>
         <source>Error: Could not retrieve the password!</source>
-        <translation type="unfinished"/>
+        <translation>Erreur : Impossible de récupérer le mot de passe !</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="281"/>
         <source>Password dialog was canceled!</source>
-        <translation type="unfinished"/>
+        <translation>La fenêtre de saisie du mot de passe a été fermée !</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="315"/>
@@ -434,7 +434,9 @@ p, li { white-space: pre-wrap; }⏎
         <source>%1 client, version %2
 
 Copyright 2012, the ownCloud developers.</source>
-        <translation type="unfinished"/>
+        <translation>%1 client, version %2
+
+Copyright 2012, the ownCloud developers.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="720"/>
@@ -667,7 +669,7 @@ Veuillez soumettre un rapport de bug.</translation>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="347"/>
         <source>File exchange with ownCloud failed. Sync was stopped.</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;échange de fichier avec ownCloud a échoué. La synchronisation a été arrêtée.</translation>
     </message>
     <message>
         <source>CSync propagate failed.</source>
@@ -1724,7 +1726,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="26"/>
         <source>Configure Proxies</source>
-        <translation type="unfinished"/>
+        <translation>Configuration du serveur mandataire</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="43"/>
