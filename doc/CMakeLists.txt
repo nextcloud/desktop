@@ -11,7 +11,7 @@ if(SPHINX_FOUND)
     set(MSHTML_COMPILER     wine 'C:\\Program Files\\HTML Help Workshop\\hhc.exe')
 
     configure_file("${CMAKE_CURRENT_SOURCE_DIR}/conf.py.in" conf.py @ONLY)
-    add_custom_target(doc ALL DEPENDS doc-html doc-man COMMENT "Building documentation...")
+    add_custom_target(doc DEPENDS doc-html doc-man COMMENT "Building documentation...")
     if(PDFLATEX_FOUND)
         # if this still fails on Debian/Ubuntu, run
         # apt-get install texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended
