@@ -365,23 +365,23 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="267"/>
         <source>Too many user attempts to enter password.</source>
-        <translation type="unfinished"/>
+        <translation>Erabiltzaile gehiegi pasahitza sartzen saiatzen ari dira.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="268"/>
         <location filename="../src/mirall/application.cpp" line="285"/>
         <source>Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Kredentzialak</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="279"/>
         <source>Error: Could not retrieve the password!</source>
-        <translation type="unfinished"/>
+        <translation>Errorea: Ezin izan da pasahitza eskuratu!</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="281"/>
         <source>Password dialog was canceled!</source>
-        <translation type="unfinished"/>
+        <translation>Pasahitza elkarrizketa koadroa ezeztatua izan da!</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="315"/>
@@ -540,7 +540,7 @@ Copyright 2012, the ownCloud developers.</source>
     <message>
         <location filename="../src/mirall/application.cpp" line="956"/>
         <source> (Sync is paused)</source>
-        <translation type="unfinished"/>
+        <translation>(Sinkronizazioa pausatuta dago)</translation>
     </message>
     <message>
         <source>Sync is paused.</source>
@@ -689,17 +689,17 @@ Mesedez idatz ezazu bug txosten bat.</translation>
     <message>
         <location filename="../src/mirall/folder.cpp" line="99"/>
         <source>Local folder %1 does not exist.</source>
-        <translation type="unfinished"/>
+        <translation>Bertako %1 karpeta ez da existitzen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="102"/>
         <source>%1 should be a directory but is not.</source>
-        <translation type="unfinished"/>
+        <translation>%1 karpeta bat izan behar zen baina ez da.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="105"/>
         <source>%1 is not readable.</source>
-        <translation type="unfinished"/>
+        <translation>%1 ezin da irakurri.</translation>
     </message>
 </context>
 <context>
@@ -914,7 +914,7 @@ Mesedez idatz ezazu bug txosten bat.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="79"/>
         <source>Create the %1 Connection</source>
-        <translation type="unfinished"/>
+        <translation>Sortu %1 konexioa</translation>
     </message>
     <message>
         <source>john</source>
@@ -1099,7 +1099,7 @@ Ezin da konfigurazioa egin.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="60"/>
         <source>Welcome to %1</source>
-        <translation type="unfinished"/>
+        <translation>Ongi etorri %1-era</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="68"/>
@@ -1243,7 +1243,7 @@ Ezin da konfigurazioa egin.</translation>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="503"/>
         <source>Version: %1 (%2)</source>
-        <translation type="unfinished"/>
+        <translation>Bertsioa: %1 (%2)</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="519"/>
@@ -1725,7 +1725,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="26"/>
         <source>Configure Proxies</source>
-        <translation type="unfinished"/>
+        <translation>Konfiguratu proxiak</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="43"/>

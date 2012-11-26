@@ -435,7 +435,9 @@ p, li { white-space: pre-wrap; }⏎
         <source>%1 client, version %2
 
 Copyright 2012, the ownCloud developers.</source>
-        <translation type="unfinished"/>
+        <translation> Cliente %1, Versión %2
+
+Copyright 2012, Desarrolladores de ownCloud.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="720"/>
@@ -670,7 +672,7 @@ Por favor, escribe un reporte de error sobre ello.</translation>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="347"/>
         <source>File exchange with ownCloud failed. Sync was stopped.</source>
-        <translation type="unfinished"/>
+        <translation>El intercambio de archivos con el cliente falló. La sincronización se detuvo.</translation>
     </message>
     <message>
         <source>CSync propagate failed.</source>
