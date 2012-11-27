@@ -62,12 +62,16 @@ int csync_exclude_load(CSYNC *ctx, const char *fname) {
   off_t size;
   char *buf = NULL;
   char *entry = NULL;
+  const _TCHAR *wfname;
 
 #ifdef _WIN32
   _fmode = _O_BINARY;  
 #endif
-  fd = open(fname, O_RDONLY);
-  if (fd < 0) {
+  wfname = c_multibyte(fname);
+
+  fd = _topen(wfname, O_RDONLY);
+  c_free_multibyte(wfname);
+  if ( !fd ) {
     return -1;
   }
 

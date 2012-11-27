@@ -128,13 +128,18 @@ static pid_t _csync_lock_read(const char *lockfile) {
   ssize_t rc;
   int  fd;
   pid_t pid;
+  const _TCHAR *wlockfile;
 
   /* Read PID from existing lock */
 #ifdef _WIN32
-   _fmode = _O_BINARY;
+  _fmode = _O_BINARY;
 #endif
-  if ((fd = open(lockfile, O_RDONLY)) < 0) {
-     return -1;
+  wlockfile = c_multibyte(lockfile);
+  fd = _topen(wlockfile, O_RDONLY);
+  c_free_multibyte(wlockfile);
+
+  if( !fd ) {
+      return -1;
   }
 
   rc = read(fd, buf, sizeof(buf));

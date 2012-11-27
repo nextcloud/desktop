@@ -79,12 +79,17 @@ static int _csync_statedb_check(const char *statedb) {
   ssize_t r;
   char buf[BUF_SIZE] = {0};
   sqlite3 *db = NULL;
+  const _TCHAR *wstatedb;
 
   /* check db version */
 #ifdef _WIN32
-   _fmode = _O_BINARY;
+  _fmode = _O_BINARY;
 #endif
-  fd = open(statedb, O_RDONLY);
+
+  wstatedb = c_multibyte(statedb);
+  fd = _topen(wstatedb, O_RDONLY);
+  c_free_multibyte(wstatedb);
+
   if (fd >= 0) {
     r = read(fd, (void *) buf, sizeof(buf) - 1);
     close(fd);
