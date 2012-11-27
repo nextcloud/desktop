@@ -1348,12 +1348,12 @@ Setup can not be done.</translation>
         <translation type="obsolete">Please enter your ownCloud password:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/credentialstore.cpp" line="75"/>
+        <location filename="../src/mirall/credentialstore.cpp" line="79"/>
         <source>Password Required</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/credentialstore.cpp" line="76"/>
+        <location filename="../src/mirall/credentialstore.cpp" line="80"/>
         <source>Please enter your %1 password:</source>
         <translation type="unfinished"></translation>
     </message>

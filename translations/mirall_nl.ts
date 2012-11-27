@@ -1346,12 +1346,12 @@ De setup kan niet worden uitgevoerd.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/credentialstore.cpp" line="75"/>
+        <location filename="../src/mirall/credentialstore.cpp" line="79"/>
         <source>Password Required</source>
         <translation>Wachtwoord Vereist</translation>
     </message>
     <message>
-        <location filename="../src/mirall/credentialstore.cpp" line="76"/>
+        <location filename="../src/mirall/credentialstore.cpp" line="80"/>
         <source>Please enter your %1 password:</source>
         <translation>Voer uw %1 wachtwoord in:</translation>
     </message>

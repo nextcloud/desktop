@@ -1346,12 +1346,12 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/credentialstore.cpp" line="75"/>
+        <location filename="../src/mirall/credentialstore.cpp" line="79"/>
         <source>Password Required</source>
         <translation>需要密碼</translation>
     </message>
     <message>
-        <location filename="../src/mirall/credentialstore.cpp" line="76"/>
+        <location filename="../src/mirall/credentialstore.cpp" line="80"/>
         <source>Please enter your %1 password:</source>
         <translation>請輸入您的%1密碼</translation>
     </message>

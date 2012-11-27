@@ -1346,12 +1346,12 @@ Namestitev ne se ne more izvesti.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/credentialstore.cpp" line="75"/>
+        <location filename="../src/mirall/credentialstore.cpp" line="79"/>
         <source>Password Required</source>
         <translation>Geslo je zahtevano</translation>
     </message>
     <message>
-        <location filename="../src/mirall/credentialstore.cpp" line="76"/>
+        <location filename="../src/mirall/credentialstore.cpp" line="80"/>
         <source>Please enter your %1 password:</source>
         <translation>Prosimo, če vnesete vaše %1 geslo:</translation>
     </message>

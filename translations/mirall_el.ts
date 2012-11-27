@@ -157,7 +157,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="54"/>
         <source>&amp;Directory alias name:</source>
-        <translation>&amp;Ψευδώνυμο καταλώγου:</translation>
+        <translation>&amp;Ψευδώνυμο καταλόγου:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="45"/>
@@ -1064,7 +1064,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="385"/>
         <source>failed.</source>
-        <translation>αποτυχία</translation>
+        <translation>απέτυχε.</translation>
     </message>
     <message>
         <source>Start Creation of remote folder %1 failed.</source>
@@ -1344,12 +1344,12 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/credentialstore.cpp" line="75"/>
+        <location filename="../src/mirall/credentialstore.cpp" line="79"/>
         <source>Password Required</source>
         <translation>Απαιτείται Κωδικός</translation>
     </message>
     <message>
-        <location filename="../src/mirall/credentialstore.cpp" line="76"/>
+        <location filename="../src/mirall/credentialstore.cpp" line="80"/>
         <source>Please enter your %1 password:</source>
         <translation>Παρακαλώ εισάγεται τον %1 κωδικό</translation>
     </message>
@@ -1809,7 +1809,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="25"/>
         <source>Sync Directory Status</source>
-        <translation>Κατάσταση Συχρονισμού Καταλόγου</translation>
+        <translation>Κατάσταση Συγχρονισμού Καταλόγου</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="41"/>

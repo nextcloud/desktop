@@ -365,23 +365,23 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="267"/>
         <source>Too many user attempts to enter password.</source>
-        <translation type="unfinished"/>
+        <translation>Zbyt wiele prób użytkownika o podanie hasła.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="268"/>
         <location filename="../src/mirall/application.cpp" line="285"/>
         <source>Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Poświadczenia</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="279"/>
         <source>Error: Could not retrieve the password!</source>
-        <translation type="unfinished"/>
+        <translation>Błąd: Nie można pobrać hasło!</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="281"/>
         <source>Password dialog was canceled!</source>
-        <translation type="unfinished"/>
+        <translation>Hasło zostało anulowane!</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="315"/>
@@ -434,7 +434,9 @@ p, li { white-space: pre-wrap; }
         <source>%1 client, version %2
 
 Copyright 2012, the ownCloud developers.</source>
-        <translation type="unfinished"/>
+        <translation>%1 klient, wersja %2
+
+Copyright 2012, the ownCloud developers.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="720"/>
@@ -666,7 +668,7 @@ Proszę napisz raport o błędzie.</translation>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="347"/>
         <source>File exchange with ownCloud failed. Sync was stopped.</source>
-        <translation type="unfinished"/>
+        <translation>Wymiana plików z ownCloud nie powiodła się. Synchronizacja została zatrzymana.</translation>
     </message>
     <message>
         <source>CSync propagate failed.</source>
@@ -1341,12 +1343,12 @@ Instalacja nie może być wykonywana.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/credentialstore.cpp" line="75"/>
+        <location filename="../src/mirall/credentialstore.cpp" line="79"/>
         <source>Password Required</source>
         <translation>Hasło wymagane</translation>
     </message>
     <message>
-        <location filename="../src/mirall/credentialstore.cpp" line="76"/>
+        <location filename="../src/mirall/credentialstore.cpp" line="80"/>
         <source>Please enter your %1 password:</source>
         <translation>Proszę podać twoje %1 hasło:</translation>
     </message>
@@ -1722,7 +1724,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="26"/>
         <source>Configure Proxies</source>
-        <translation type="unfinished"/>
+        <translation>Konfiguruj proxy</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="43"/>
