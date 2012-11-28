@@ -95,6 +95,12 @@ public:
      * @param password - the password.
      */
     void setCredentials( const QString&, const QString& );
+
+    /**
+     * @brief canTryAgain - check if another try to get credentials makes sense.
+    */
+    bool canTryAgain();
+
 signals:
     /**
      * @brief fetchCredentialsFinished

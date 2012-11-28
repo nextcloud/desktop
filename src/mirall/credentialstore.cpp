@@ -54,6 +54,30 @@ CredentialStore::CredState CredentialStore::state()
     return _state;
 }
 
+bool CredentialStore::canTryAgain()
+{
+    MirallConfigFile::CredentialType t;
+    MirallConfigFile cfgFile;
+
+    bool canDoIt = false;
+
+    if( _state == NotFetched ) {
+        return true;
+    }
+    t = cfgFile.credentialType();
+    switch( t ) {
+    case MirallConfigFile::User:
+        canDoIt = true;
+        break;
+    case MirallConfigFile::Settings:
+        break;
+    case MirallConfigFile::KeyChain:
+        break;
+    default:
+        break;
+    }
+    return canDoIt;
+}
 void CredentialStore::fetchCredentials()
 {
     _state = Fetching;

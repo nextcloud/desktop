@@ -260,11 +260,21 @@ void Application::slotNoOwnCloudFound( QNetworkReply* reply )
 
 void Application::slotFetchCredentials()
 {
-    connect( CredentialStore::instance(), SIGNAL(fetchCredentialsFinished(bool)),
-             this, SLOT(slotCredentialsFetched(bool)) );
-    CredentialStore::instance()->fetchCredentials();
-    if( CredentialStore::instance()->state() == CredentialStore::TooManyAttempts ) {
-        QString trayMessage = tr("Too many user attempts to enter password.");
+    QString trayMessage;
+
+    if( CredentialStore::instance()->canTryAgain() ) {
+        connect( CredentialStore::instance(), SIGNAL(fetchCredentialsFinished(bool)),
+                 this, SLOT(slotCredentialsFetched(bool)) );
+        CredentialStore::instance()->fetchCredentials();
+        if( CredentialStore::instance()->state() == CredentialStore::TooManyAttempts ) {
+            trayMessage = tr("Too many user attempts to enter password.");
+        }
+    } else {
+        qDebug() << "Can not try again to fetch Credentials.";
+         trayMessage = tr("ownCloud user credentials are wrong. Please check configuration.");
+    }
+
+    if( !trayMessage.isEmpty() ) {
         _tray->showMessage(tr("Credentials"), trayMessage);
         _actionOpenStatus->setEnabled( false );
         _actionAddFolder->setEnabled( false );
