@@ -95,17 +95,19 @@ void CredentialStore::fetchCredentials()
     case MirallConfigFile::KeyChain: {
         /* Qt Keychain is not yet implemented. */
 #ifdef WITH_QTKEYCHAIN
+        _state = AsyncFetching;
         if( !_user.isEmpty() ) {
-            ReadPasswordJob job(Theme::instance()->appName());
-            job.setAutoDelete( false );
-            job.setKey( _user );
+            ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
+            // job->setAutoDelete( false );
+            job->setKey( _user );
 
-            job.connect( &job, SIGNAL(finished(QKeychain::Job*)), this,
-                         SLOT(slotKeyChainFinished(QKeychain::Job*)));
-            job.start();
+            connect( job, SIGNAL(finished(QKeychain::Job*)), this,
+                     SLOT(slotKeyChainFinished(QKeychain::Job*)));
+            job->start();
         }
 #else
         qDebug() << "QtKeyChain: Not yet implemented!";
+        _state = Error;
 #endif
         break;
     }
@@ -114,30 +116,43 @@ void CredentialStore::fetchCredentials()
     }
     }
 
-    if( ok ) {
-        _passwd = pwd;
-        _state = Ok;
-    }
-    if( !ok && _state == Fetching ) {
-        _state = Error;
-    }
+    if( _state == Fetching ) { // ...but not AsyncFetching
+        if( ok ) {
+            _passwd = pwd;
+            _state = Ok;
+        }
+        if( !ok && _state == Fetching ) {
+            _state = Error;
+        }
 
-    emit( fetchCredentialsFinished(ok) );
+        emit( fetchCredentialsFinished(ok) );
+    } else {
+        // in case of AsyncFetching nothing happens here. The finished-Slot
+        // will emit the finish signal.
+    }
 }
 
-#ifdef WITH_QTKEYCHAIN
 void CredentialStore::slotKeyChainFinished(QKeychain::Job* job)
 {
+#ifdef WITH_QTKEYCHAIN
     ReadPasswordJob *pwdJob = static_cast<ReadPasswordJob*>(job);
     if( pwdJob ) {
         if( pwdJob->error() ) {
-            qDebug() << "Error mit keychain: " << pwdJob->errorString();
+            qDebug() << "Error with keychain: " << pwdJob->errorString();
+            _state = Error;
         } else {
             _passwd = pwdJob->textData();
+            _state = Ok;
         }
+    } else {
+        _state = Error;
+        qDebug() << "Error: KeyChain Read Password Job failed!";
     }
-}
+    emit(fetchCredentialsFinished(_state == Ok));
+#else
+    (void) job;
 #endif
+}
 
 
 QByteArray CredentialStore::basicAuthHeader() const

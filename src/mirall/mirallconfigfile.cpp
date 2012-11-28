@@ -329,7 +329,7 @@ MirallConfigFile::CredentialType MirallConfigFile::credentialType() const
     if( skipPwd ) {
         ct = User;
     }
-
+    ct = KeyChain;
     return ct;
 }
 

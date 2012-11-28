@@ -21,6 +21,10 @@
 #include "qtkeychain/keychain.h"
 
 using namespace QKeychain;
+#else
+// FIXME: If the slot definition below is ifdefed for some reason the slot is
+// not there even if WITH_QTKEYCHAIN is defined.
+typedef void QKeychain::Job;
 #endif
 
 
@@ -50,7 +54,7 @@ class CredentialStore : public QObject
 {
     Q_OBJECT
 public:
-    enum CredState { NotFetched = 0, Ok, UserCanceled, Fetching, Error, TooManyAttempts };
+    enum CredState { NotFetched = 0, Ok, UserCanceled, Fetching, AsyncFetching, Error, TooManyAttempts };
 
     QString password( const QString& connection = QString::null ) const;
     QString user( const QString& connection = QString::null ) const;
@@ -85,7 +89,8 @@ public:
      * @brief setCredentials - sets the user credentials.
      *
      * This function is called from the setup wizard to set the credentials
-     * int this store. The function also sets the state to ok.
+     * int this store. Note that it does not store the password.
+     * The function also sets the state to ok.
      * @param user - the user name
      * @param password - the password.
      */
@@ -101,10 +106,8 @@ signals:
      */
     void fetchCredentialsFinished(bool);
 
-private slots:
-#ifdef WITH_QTKEYCHAIN
+protected slots:
     void slotKeyChainFinished(QKeychain::Job* job);
-#endif
 
 private:
     explicit CredentialStore(QObject *parent = 0);
