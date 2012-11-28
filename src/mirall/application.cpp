@@ -69,17 +69,17 @@ void csyncLogCatcher(const char *msg)
 Application::Application(int &argc, char **argv) :
     SharedTools::QtSingleApplication(argc, argv),
     _tray(0),
-    _sslErrorDialog(0),
 #if QT_VERSION >= 0x040700
     _networkMgr(new QNetworkConfigurationManager(this)),
 #endif
+    _sslErrorDialog(0),
     _contextMenu(0),
     _theme(Theme::instance()),
     _updateDetector(0),
+    _logBrowser(0),
     _showLogWindow(false),
     _logFlush(false),
-    _helpOnly(false),
-    _logBrowser(0)
+    _helpOnly(false)
 {
     setApplicationName( _theme->appName() );
     setWindowIcon( _theme->applicationIcon() );
@@ -147,13 +147,14 @@ Application::Application(int &argc, char **argv) :
     connect( _statusDialog, SIGNAL(openFolderAlias(const QString&)),
              SLOT(slotFolderOpenAction(QString)));
 
+#if 0
 #if QT_VERSION >= 0x040700
     qDebug() << "* Network is" << (_networkMgr->isOnline() ? "online" : "offline");
     foreach (const QNetworkConfiguration& netCfg, _networkMgr->allConfigurations(QNetworkConfiguration::Active)) {
         //qDebug() << "Network:" << netCfg.identifier();
     }
 #endif
-
+#endif
     setupActions();
     setupSystemTray();
     setupProxy();
@@ -640,6 +641,8 @@ void Application::slotAddFolder()
         targetPath  = _folderWizard->field(QLatin1String("targetURLFolder")).toString();
         onlyOnline  = _folderWizard->field(QLatin1String("onlyOnline?")).toBool();
         onlyThisLAN = _folderWizard->field(QLatin1String("onlyThisLAN?")).toBool();
+        (void) onlyOnline;
+        (void) onlyThisLAN;
     } else if( _folderWizard->field(QLatin1String("OC?")).toBool() ||
                Theme::instance()->singleSyncFolder()) {
         // setup a ownCloud folder
@@ -750,12 +753,6 @@ void Application::slotInfoFolder( const QString& alias )
     qDebug() << "details of folder with alias " << alias;
 
     SyncResult folderResult = _folderMan->syncResult( alias );
-
-    bool enabled = true;
-    Folder *f = _folderMan->folder( alias );
-    if( f && ! f->syncEnabled() ) {
-        enabled = false;
-    }
 
     QString folderMessage;
 
