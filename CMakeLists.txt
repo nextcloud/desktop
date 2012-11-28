@@ -46,7 +46,7 @@ find_package(PdfLatex)
 find_package(QtKeychain)
 
 set(WITH_CSYNC CSYNC_FOUND)
-set(WITH_QTKEYCHAIN QTKEYCHAIN_FOUND)
+set(WITH_QTKEYCHAIN ${QTKEYCHAIN_FOUND})
 set(USE_INOTIFY ${INOTIFY_FOUND})
 
 configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
