@@ -24,7 +24,9 @@ using namespace QKeychain;
 #else
 // FIXME: If the slot definition below is ifdefed for some reason the slot is
 // not there even if WITH_QTKEYCHAIN is defined.
-typedef void QKeychain::Job;
+namespace QKeychain {
+   typedef void Job;
+}
 #endif
 
 
