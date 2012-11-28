@@ -78,7 +78,7 @@ bool FolderWizardSourcePage::isComplete() const
   if( ! map ) return false;
 
   if( isOk ) {
-    Folder::Map::const_iterator i = map->begin();
+    Folder::Map::const_iterator i = map->constBegin();
     while( isOk && i != map->constEnd() ) {
       Folder *f = static_cast<Folder*>(i.value());
       QString folderDir = QDir( f->path() ).canonicalPath();
@@ -110,7 +110,7 @@ bool FolderWizardSourcePage::isComplete() const
     isOk = false;
   }
 
-  Folder::Map::const_iterator i = map->begin();
+  Folder::Map::const_iterator i = map->constBegin();
   bool goon = true;
   while( goon && i != map->constEnd() ) {
     Folder *f = static_cast<Folder*>(i.value());
