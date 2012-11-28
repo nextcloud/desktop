@@ -2114,6 +2114,7 @@ void vio_module_shutdown(csync_vio_method_t *method) {
         ne_session_destroy( dav_session.ctx );
     /* DEBUG_WEBDAV( "********** vio_module_shutdown" ); */
 
+    ne_sock_exit();
 }
 
 /* vim: set ts=4 sw=4 et cindent: */
