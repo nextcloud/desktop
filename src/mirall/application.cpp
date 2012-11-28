@@ -130,7 +130,8 @@ Application::Application(int &argc, char **argv) :
     _folderWizard = new FolderWizard;
 
     _owncloudSetupWizard = new OwncloudSetupWizard( _folderMan, _theme, this );
-    connect( _owncloudSetupWizard, SIGNAL(ownCloudWizardDone(int)), SLOT(slotStartFolderSetup(int)));
+    connect( _owncloudSetupWizard, SIGNAL(ownCloudWizardDone(int)),
+             this, SLOT(slotownCloudWizardDone(int)));
 
     _statusDialog = new StatusDialog( _theme );
     connect( _statusDialog, SIGNAL(addASync()), this, SLOT(slotAddFolder()) );
@@ -399,6 +400,14 @@ void Application::slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors )
             ownCloudInfo::instance()->setCertsUntrusted(true);
         }
     }
+}
+
+void Application::slotownCloudWizardDone( int res )
+{
+    if( res == QDialog::Accepted ) {
+        CredentialStore::instance()->reset();
+    }
+    slotStartFolderSetup( res );
 }
 
 void Application::setupActions()

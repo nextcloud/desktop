@@ -66,6 +66,7 @@ protected slots:
     void slotParseOptions( const QString& );
 
     void slotSyncStateChange( const QString& );
+    void slotownCloudWizardDone(int);
 protected:
 
     void parseOptions(const QStringList& );
