@@ -370,7 +370,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="274"/>
         <source>ownCloud user credentials are wrong. Please check configuration.</source>
-        <translation type="unfinished"/>
+        <translation>Le credenziali dell&apos;utente di ownCloud sono errate. Controlla la configurazione.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="278"/>

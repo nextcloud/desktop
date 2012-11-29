@@ -370,7 +370,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="274"/>
         <source>ownCloud user credentials are wrong. Please check configuration.</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud 使用者認證錯誤, 請檢查設定</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="278"/>
@@ -1111,7 +1111,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="68"/>
         <source>&lt;p&gt;In order to connect to your %1 server, you need to provide the server address as well as your credentials.&lt;/p&gt;&lt;p&gt;This wizard will guide you through the process.&lt;p&gt;&lt;p&gt;If you have not received this information, please contact your %1 hosting provider.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;為了連線道您的%1伺服器, 您需要提供伺服器位置以及您的認證&lt;/p&gt;&lt;p&gt;設定精靈將會引導您整個過程&lt;/p&gt;&lt;p&gt;如果您沒有收到相關資訊,請聯絡您的%1主機提供者&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;為了連線到您的%1伺服器, 您需要提供伺服器位置以及您的認證&lt;/p&gt;&lt;p&gt;設定精靈將會引導您整個過程&lt;/p&gt;&lt;p&gt;如果您沒有收到相關資訊,請聯絡您的%1主機提供者&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1483,7 +1483,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="20"/>
         <source>Server &amp;address:</source>
-        <translation>伺服器 &amp; 位置:</translation>
+        <translation>伺服器&amp;位置:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="140"/>

@@ -370,7 +370,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="274"/>
         <source>ownCloud user credentials are wrong. Please check configuration.</source>
-        <translation type="unfinished"/>
+        <translation>Nieprawidłowe dane użytkownika. Proszę sprawdzić konfigurację.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="278"/>
@@ -951,7 +951,7 @@ Proszę napisz raport o błędzie.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="130"/>
         <source>Trying to connect to %1 at %2...</source>
-        <translation>Prubuje połączyć się z %1 w %2...</translation>
+        <translation>Próbuję połączyć się z %1 w %2...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="164"/>

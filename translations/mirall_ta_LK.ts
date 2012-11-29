@@ -361,7 +361,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="274"/>
         <source>ownCloud user credentials are wrong. Please check configuration.</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud பயனாளர் சான்று ஆவணங்கள் தவறானது. தயவுசெய்து தகமைப்பை சரிபார்க்க.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="278"/>

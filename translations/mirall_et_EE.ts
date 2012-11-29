@@ -545,7 +545,7 @@ Copyright 2012, the ownCloud developers.</source>
     <message>
         <location filename="../src/mirall/application.cpp" line="966"/>
         <source> (Sync is paused)</source>
-        <translation type="unfinished"/>
+        <translation>(Sünkroniseerimine on peatatud)</translation>
     </message>
     <message>
         <source>Sync is paused.</source>
@@ -692,7 +692,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folder.cpp" line="99"/>
         <source>Local folder %1 does not exist.</source>
-        <translation type="unfinished"/>
+        <translation>Kohalikku kausta %1 pole olemas.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="102"/>
@@ -1246,7 +1246,7 @@ Seadistamist ei saa teha.</translation>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="503"/>
         <source>Version: %1 (%2)</source>
-        <translation type="unfinished"/>
+        <translation>Versioon: %1 (%2)</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="519"/>
@@ -1709,7 +1709,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="26"/>
         <source>Configure Proxies</source>
-        <translation type="unfinished"/>
+        <translation>Seadista proksid</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="43"/>
