@@ -9,6 +9,8 @@ if(SPHINX_FOUND)
     set(SPHINX_QCH_DIR      "${CMAKE_CURRENT_BINARY_DIR}/qthelp")
     set(SPHINX_HTMLHELP_DIR "${CMAKE_CURRENT_BINARY_DIR}/htmlhelp")
     set(MSHTML_COMPILER     wine 'C:\\Program Files\\HTML Help Workshop\\hhc.exe')
+    # assets
+    set(LATEX_LOGO          "${CMAKE_CURRENT_SOURCE_DIR}/logo-blue.pdf")
 
     configure_file("${CMAKE_CURRENT_SOURCE_DIR}/conf.py.in" conf.py @ONLY)
     add_custom_target(doc DEPENDS doc-html doc-man COMMENT "Building documentation...")
@@ -18,6 +20,7 @@ if(SPHINX_FOUND)
         add_custom_target(doc-latex  ${SPHINX_EXECUTABLE}
 		                     -q -c . -b latex
 				     -d ${SPHINX_CACHE_DIR}
+				     -D latex_logo=${LATEX_LOGO}
 				     ${CMAKE_CURRENT_SOURCE_DIR}
 				     ${SPHINX_PDF_DIR} )
         add_custom_target(doc-pdf make -C ${SPHINX_PDF_DIR} all-pdf
