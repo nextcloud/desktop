@@ -105,6 +105,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   char *turi = NULL;
   char *tdir = NULL;
   const char *tmd5 = NULL;
+  char *prev_tdir  = NULL;
 
   csync_vio_handle_t *sfp = NULL;
   csync_vio_handle_t *dfp = NULL;
@@ -201,8 +202,6 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   }
 
   /* Create the destination file */
-  char *prev_tdir = NULL;
-
   ctx->replica = drep;
   while ((dfp = csync_vio_open(ctx, turi, O_CREAT|O_EXCL|O_WRONLY|O_NOCTTY,
           C_FILE_MODE)) == NULL) {
