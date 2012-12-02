@@ -80,7 +80,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardnetworkpage.ui" line="40"/>
         <source>Only enable if network is available</source>
-        <translation>Nur kapabligi se reto disponeblas</translation>
+        <translation>Nur kapabligi se reto haveblas</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardnetworkpage.ui" line="47"/>
@@ -339,7 +339,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="224"/>
         <source>%1 Server Mismatch</source>
-        <translation type="unfinished"/>
+        <translation>Malĝusta kongruo de servilo%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="225"/>
@@ -359,28 +359,28 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="270"/>
         <source>Too many user attempts to enter password.</source>
-        <translation type="unfinished"/>
+        <translation>Tro multaj provoj de la uzanto enigi pasvorton.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="274"/>
         <source>ownCloud user credentials are wrong. Please check configuration.</source>
-        <translation type="unfinished"/>
+        <translation>Aŭtentigiloj de la uzanto de ownCloud malĝustas. Bonvolu kontroli agordon.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="278"/>
         <location filename="../src/mirall/application.cpp" line="295"/>
         <source>Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Aŭtentigiloj</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="289"/>
         <source>Error: Could not retrieve the password!</source>
-        <translation type="unfinished"/>
+        <translation>Eraro: ne eblis venigi la pasvorton!</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="291"/>
         <source>Password dialog was canceled!</source>
-        <translation type="unfinished"/>
+        <translation>Pasvorta dialogo nuliĝis!</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="325"/>
@@ -433,7 +433,9 @@ p, li { white-space: pre-wrap; }
         <source>%1 client, version %2
 
 Copyright 2012, the ownCloud developers.</source>
-        <translation type="unfinished"/>
+        <translation>Kliento %1, eldono %2
+
+Kopirajto 2012, la ellaborintoj de ownCloud.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="730"/>
@@ -538,7 +540,7 @@ Copyright 2012, the ownCloud developers.</source>
     <message>
         <location filename="../src/mirall/application.cpp" line="966"/>
         <source> (Sync is paused)</source>
-        <translation type="unfinished"/>
+        <translation>(Sinkronigo paŭzas)</translation>
     </message>
     <message>
         <source>Sync is paused.</source>
@@ -593,7 +595,7 @@ Copyright 2012, the ownCloud developers.</source>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="262"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;La cela dosierujo %1 ne ekzistas.&lt;/p&gt;&lt;p&gt;Bonvolu kontroli la sinkronigan agordon.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>&lt;p&gt;The ownCloud plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
@@ -686,17 +688,17 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folder.cpp" line="99"/>
         <source>Local folder %1 does not exist.</source>
-        <translation type="unfinished"/>
+        <translation>Loka dosierujo %1 ne ekzistas.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="102"/>
         <source>%1 should be a directory but is not.</source>
-        <translation type="unfinished"/>
+        <translation>%1 devas esti dosierujo sed ne estas.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="105"/>
         <source>%1 is not readable.</source>
-        <translation type="unfinished"/>
+        <translation>%1 ne legeblas.</translation>
     </message>
 </context>
 <context>
@@ -911,7 +913,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="79"/>
         <source>Create the %1 Connection</source>
-        <translation type="unfinished"/>
+        <translation>Krei la konekton %1</translation>
     </message>
     <message>
         <source>john</source>
@@ -1009,7 +1011,7 @@ Agordado ne povas fariĝi.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="427"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation type="unfinished"/>
+        <translation>La kreo de la dosierujo rezultigis HTTP-eraron, kodo %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="448"/>
@@ -1083,7 +1085,7 @@ Agordado ne povas fariĝi.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="429"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Kreo de malloka dosierujo malsukcesis, probable ĉar la donitaj aŭtentigiloj malĝustas.&lt;/font&gt;&lt;br/&gt;Bonvolu antaŭeniri kaj kontroli vian aŭtentigilojn.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="435"/>
@@ -1096,7 +1098,7 @@ Agordado ne povas fariĝi.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="60"/>
         <source>Welcome to %1</source>
-        <translation type="unfinished"/>
+        <translation>Bonvenon al %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="68"/>
@@ -1164,7 +1166,7 @@ Agordado ne povas fariĝi.</translation>
         <location filename="../src/mirall/sslerrordialog.cpp" line="154"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="155"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;lt;ne indikita&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="156"/>
@@ -1187,12 +1189,12 @@ Agordado ne povas fariĝi.</translation>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="165"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Fingropremo (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="166"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Fingropremo (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="168"/>
@@ -1207,7 +1209,7 @@ Agordado ne povas fariĝi.</translation>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="173"/>
         <source>Issuer: %1</source>
-        <translation type="unfinished"/>
+        <translation>Sendinto: %1</translation>
     </message>
 </context>
 <context>
@@ -1235,12 +1237,12 @@ Agordado ne povas fariĝi.</translation>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="501"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; as &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Konektita al &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; kiel &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="503"/>
         <source>Version: %1 (%2)</source>
-        <translation type="unfinished"/>
+        <translation>Eldono: %1 (%2)</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="519"/>
@@ -1319,7 +1321,7 @@ Agordado ne povas fariĝi.</translation>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="117"/>
         <source>%1 is available. The installed version is %3.&lt;p/&gt;&lt;p&gt;For more information see &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</source>
-        <translation>%1 disponeblas. La instalita eldono estas %3.&lt;p/&gt;&lt;p&gt;Por pli da informo vidu &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;.</translation>
+        <translation>%1 haveblas. La instalita eldono estas %3.&lt;p/&gt;&lt;p&gt;Por pli da informo vidu &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;.</translation>
     </message>
 </context>
 <context>
@@ -1615,7 +1617,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="120"/>
         <source>Note: To specify an SSL secured connection, start the url with https.</source>
-        <translation type="unfinished"/>
+        <translation>Noto: por specifi SSL-sekuran konekton, komencu la URL-on per https.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="133"/>
@@ -1697,7 +1699,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="26"/>
         <source>Configure Proxies</source>
-        <translation type="unfinished"/>
+        <translation>Agordi prokurajn servilojn</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="43"/>
@@ -1750,7 +1752,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
         <source>Trust this certificate anyway</source>
-        <translation type="unfinished"/>
+        <translation>Fidi ĉi tiun atestilon ĉiel ajn</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>
@@ -1783,7 +1785,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="25"/>
         <source>Sync Directory Status</source>
-        <translation type="unfinished"/>
+        <translation>Stato de sinkroniga dosierujo</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="41"/>
@@ -1803,7 +1805,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="65"/>
         <source>Push...</source>
-        <translation type="unfinished"/>
+        <translation>Sendi...</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="72"/>
