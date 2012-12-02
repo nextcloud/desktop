@@ -131,8 +131,8 @@ static QByteArray formatHash(const QByteArray &fmhash)
     QByteArray hash;
     int steps = fmhash.length()/2;
     for (int i = 0; i < steps; i++) {
-        hash.append(fmhash[i]);
-        hash.append(fmhash[i+1]);
+        hash.append(fmhash[i*2]);
+        hash.append(fmhash[i*2+1]);
         hash.append(' ');
     }
     return hash;
