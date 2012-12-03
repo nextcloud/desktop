@@ -59,7 +59,7 @@ enum csync_log_priority_e {
   csync_log_cb((char *) CSYNC_LOG_CATEGORY_NAME, priority,  __VA_ARGS__)
 #else
 #define CSYNC_LOG(priority, ...) \
-  csync_log((char *) CSYNC_LOG_CATEGORY_NAME, priority,  __VA_ARGS__)
+  csync_log(ctx, priority, __FUNCTION__, __VA_ARGS__)
 #endif
 
 void csync_log(CSYNC *ctx,

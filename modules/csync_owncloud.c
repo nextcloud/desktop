@@ -49,9 +49,9 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.owncloud"
 #include "csync_log.h"
 
-#ifdef NDEBUG
+#if 1 || defined(NDEBUG)
 #define DEBUG_WEBDAV(...)
-#else
+#else // FIXME: can't use CSYNC_LOG here because there is no ctx
 #define DEBUG_WEBDAV(...) CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, __VA_ARGS__)
 #endif
 
