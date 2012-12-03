@@ -74,8 +74,8 @@ static void _csync_win32_hide_file( const char *file ) {
 #endif
 }
 
-static int _csync_statedb_check(const char *statedb) {
-  int fd = -1;
+static int _csync_statedb_check(CSYNC *ctx, const char *statedb) {
+  int fd = -1, rc;
   ssize_t r;
   char buf[BUF_SIZE] = {0};
   sqlite3 *db = NULL;
@@ -113,11 +113,13 @@ static int _csync_statedb_check(const char *statedb) {
   }
 
   /* create database */
-  if (sqlite3_open(statedb, &db) == SQLITE_OK) {
+  rc = sqlite3_open(statedb, &db);
+  if (rc == SQLITE_OK) {
     sqlite3_close(db);
     _csync_win32_hide_file(statedb);
     return 0;
   }
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "%s %s", sqlite3_errmsg(db), statedb);
   sqlite3_close(db);
 
   return -1;
@@ -185,7 +187,7 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb) {
   /* csync_statedb_check tries to open the statedb and creates it in case
    * its not there.
    */
-  if (_csync_statedb_check(statedb) < 0) {
+  if (_csync_statedb_check(ctx, statedb) < 0) {
     rc = -1;
     goto out;
   }

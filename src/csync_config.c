@@ -34,7 +34,7 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.config"
 #include "csync_log.h"
 
-static int _csync_config_copy_default (const char *config) {
+static int _csync_config_copy_default (CSYNC *ctx, const char *config) {
     int re = 0;
 #ifdef _WIN32
     /* For win32, try to copy the conf file from the directory from where the app was started. */
@@ -119,7 +119,7 @@ int csync_config_load(CSYNC *ctx, const char *config) {
       SAFE_FREE(home);
       /* Still install the default one if nothing is there. */
       if( ! c_isfile(config)) {
-          if (_csync_config_copy_default(config) < 0) {
+          if (_csync_config_copy_default(ctx, config) < 0) {
               return -1;
           }
       }

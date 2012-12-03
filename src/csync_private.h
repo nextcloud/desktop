@@ -1,7 +1,7 @@
 /*
  * libcsync -- a library to sync a directory with another
  *
- * Copyright (c) 2006 by Andreas Schneider <mail@cynapses.org>
+ * Copyright (c) 2006-2012 by Andreas Schneider <asn@cryptomilk.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -79,8 +79,11 @@ enum csync_replica_e {
  * @brief csync public structure
  */
 struct csync_s {
-  csync_auth_callback auth_callback;
-  void *userdata;
+  struct {
+      csync_auth_callback auth_function;
+      csync_log_callback log_function;
+      void *userdata;
+  } callbacks;
   c_strlist_t *excludes;
 
   struct {
@@ -123,6 +126,7 @@ struct csync_s {
     bool with_conflict_copys;
     bool local_only_mode;
     bool remote_push_atomar;
+    int log_verbosity;
   } options;
 
   struct {

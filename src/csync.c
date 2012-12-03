@@ -1,7 +1,7 @@
 /*
  * libcsync -- a library to sync a directory with another
  *
- * Copyright (c) 2008      by Andreas Schneider <mail@cynapses.org>
+ * Copyright (c) 2008-2012 by Andreas Schneider <asn@cryptomilk.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -49,7 +49,6 @@
 
 #include "vio/csync_vio.h"
 
-#define CSYNC_LOG_CATEGORY_NAME "csync.api"
 #include "csync_log.h"
 
 static int _key_cmp(const void *key, const void *data) {
@@ -155,7 +154,6 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
 int csync_init(CSYNC *ctx) {
   int rc;
   time_t timediff = -1;
-  char *log = NULL;
   char *exclude = NULL;
   char *lock = NULL;
   char *config = NULL;
@@ -172,33 +170,9 @@ int csync_init(CSYNC *ctx) {
     return 1;
   }
 
-  /* load log file */
-  if (csync_log_init() < 0) {
-    ctx->error_code = CSYNC_ERR_LOG;
-    fprintf(stderr, "csync_init: logger init failed\n");
-    return -1;
-  }
-
   /* create dir if it doesn't exist */
   if (! c_isdir(ctx->options.config_dir)) {
     c_mkdirs(ctx->options.config_dir, 0700);
-  }
-
-  if (asprintf(&log, "%s/%s", ctx->options.config_dir, CSYNC_LOG_FILE) < 0) {
-    ctx->error_code = CSYNC_ERR_UNSPEC;
-    rc = -1;
-    goto out;
-  }
-
-  /* load log if it exists */
-  if (c_isfile(log)) {
-    csync_log_load(log);
-  } else {
-#ifndef _WIN32
-    if (c_copy(SYSCONFDIR "/ocsync/" CSYNC_LOG_FILE, log, 0644) == 0) {
-      csync_log_load(log);
-    }
-#endif
   }
 
   /* create lock file */
@@ -209,7 +183,7 @@ int csync_init(CSYNC *ctx) {
   }
 
 #ifndef _WIN32
-  if (csync_lock(lock) < 0) {
+  if (csync_lock(ctx, lock) < 0) {
     ctx->error_code = CSYNC_ERR_LOCK;
     rc = -1;
     goto out;
@@ -236,7 +210,7 @@ int csync_init(CSYNC *ctx) {
 
   if (csync_exclude_load(ctx, exclude) < 0) {
     strerror_r(errno, errbuf, sizeof(errbuf));
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Could not load %s - %s", exclude,
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Could not load %s - %s", exclude,
               errbuf);
   }
   SAFE_FREE(exclude);
@@ -368,7 +342,6 @@ retry_vio_init:
   rc = 0;
 
 out:
-  SAFE_FREE(log);
   SAFE_FREE(lock);
   SAFE_FREE(exclude);
   SAFE_FREE(config);
@@ -385,7 +358,7 @@ int csync_update(CSYNC *ctx) {
   }
   ctx->error_code = CSYNC_ERR_NONE;
 
-  csync_memstat_check();
+  csync_memstat_check(ctx);
 
   /* update detection for local replica */
   csync_gettime(&start);
@@ -399,7 +372,7 @@ int csync_update(CSYNC *ctx) {
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
       "Update detection for local replica took %.2f seconds walking %zu files.",
       c_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
-  csync_memstat_check();
+  csync_memstat_check(ctx);
 
   if (rc < 0) {
     if(ctx->error_code == CSYNC_ERR_NONE)
@@ -432,7 +405,7 @@ int csync_update(CSYNC *ctx) {
                 "Update detection for remote replica took %.2f seconds "
                 "walking %zu files.",
                 c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
-      csync_memstat_check();
+      csync_memstat_check(ctx);
 
       if (rc < 0) {
           if(ctx->error_code == CSYNC_ERR_NONE )
@@ -564,13 +537,14 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
     cur = (csync_file_stat_t *) obj;
     ctx = (CSYNC *) data;
 
+
     if (!(ctx && obj && data)) {
       ctx->error_code = CSYNC_ERR_PARAM;
       return -1;
     }
     ctx->error_code = CSYNC_ERR_NONE;
 
-    twctx = (_csync_treewalk_context*) ctx->userdata;
+    twctx = (_csync_treewalk_context*) ctx->callbacks.userdata;
     if (twctx == NULL) {
       ctx->error_code = CSYNC_ERR_PARAM;
       return -1;
@@ -622,17 +596,17 @@ static int _csync_walk_tree(CSYNC *ctx, c_rbtree_t *tree, csync_treewalk_visit_f
       return rc;
     }
     
-    tw_ctx.userdata = ctx->userdata;
+    tw_ctx.userdata = ctx->callbacks.userdata;
     tw_ctx.user_visitor = visitor;
     tw_ctx.instruction_filter = filter;
 
-    ctx->userdata = &tw_ctx;
+    ctx->callbacks.userdata = &tw_ctx;
 
     rc = c_rbtree_walk(tree, (void*) ctx, _csync_treewalk_visitor);
     if( rc < 0 ) 
         ctx->error_code = CSYNC_ERR_TREE;
-    
-    ctx->userdata = tw_ctx.userdata;
+
+    ctx->callbacks.userdata = tw_ctx.userdata;
 
     return rc;
 }
@@ -727,12 +701,9 @@ int csync_destroy(CSYNC *ctx) {
 #ifndef _WIN32
   /* remove the lock file */
   if (asprintf(&lock, "%s/%s", ctx->options.config_dir, CSYNC_LOCK_FILE) > 0) {
-    csync_lock_remove(lock);
+    csync_lock_remove(ctx, lock);
   }
 #endif
-
-  /* stop logging */
-  csync_log_fini();
 
   /* destroy the rbtrees */
   if (c_rbtree_size(ctx->local.tree) > 0) {
@@ -860,7 +831,40 @@ int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb) {
     return -1;
   }
 
-  ctx->auth_callback = cb;
+  ctx->callbacks.auth_function = cb;
+
+  return 0;
+}
+
+int csync_set_log_verbosity(CSYNC *ctx, int verbosity) {
+  if (ctx == NULL || verbosity < 0) {
+    return -1;
+  }
+
+  ctx->options.log_verbosity = verbosity;
+
+  return 0;
+}
+
+int csync_get_log_verbosity(CSYNC *ctx) {
+  if (ctx == NULL) {
+    return -1;
+  }
+
+  return ctx->options.log_verbosity;
+}
+
+int csync_set_log_callback(CSYNC *ctx, csync_log_callback cb) {
+  if (ctx == NULL || cb == NULL) {
+    return -1;
+  }
+
+  if (ctx->status & CSYNC_STATUS_INIT) {
+    fprintf(stderr, "This function must be called before initialization.");
+    return -1;
+  }
+
+  ctx->callbacks.log_function = cb;
 
   return 0;
 }
@@ -880,7 +884,7 @@ void *csync_get_userdata(CSYNC *ctx) {
   }
   ctx->error_code = CSYNC_ERR_NONE;
 
-  return ctx->userdata;
+  return ctx->callbacks.userdata;
 }
 
 int csync_set_userdata(CSYNC *ctx, void *userdata) {
@@ -889,7 +893,7 @@ int csync_set_userdata(CSYNC *ctx, void *userdata) {
   }
   ctx->error_code = CSYNC_ERR_NONE;
 
-  ctx->userdata = userdata;
+  ctx->callbacks.userdata = userdata;
 
   return 0;
 }
@@ -900,7 +904,15 @@ csync_auth_callback csync_get_auth_callback(CSYNC *ctx) {
   }
   ctx->error_code = CSYNC_ERR_NONE;
 
-  return ctx->auth_callback;
+  return ctx->callbacks.auth_function;
+}
+
+csync_log_callback csync_get_log_callback(CSYNC *ctx) {
+  if (ctx == NULL) {
+    return NULL;
+  }
+
+  return ctx->callbacks.log_function;
 }
 
 int csync_set_status(CSYNC *ctx, int status) {

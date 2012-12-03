@@ -41,10 +41,10 @@ static void teardown(void **state) {
 
 static void check_csync_config_copy_default(void **state)
 {
+    CSYNC *csync = *state;
     int rc;
 
-    (void) state; /* unused */
-    rc = _csync_config_copy_default(TESTCONF);
+    rc = _csync_config_copy_default(csync, TESTCONF);
     assert_int_equal(rc, 0);
 }
 

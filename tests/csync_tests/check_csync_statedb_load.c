@@ -51,20 +51,20 @@ static void check_csync_statedb_check(void **state)
     /* old db */
     rc = system("echo \"SQLite format 2\" > /tmp/check_csync1/test.db");
     assert_int_equal(rc, 0);
-    rc = _csync_statedb_check(TESTDB);
+    rc = _csync_statedb_check(NULL, TESTDB);
     assert_int_equal(rc, 0);
 
     /* db already exists */
-    rc = _csync_statedb_check(TESTDB);
+    rc = _csync_statedb_check(NULL, TESTDB);
     assert_int_equal(rc, 0);
 
     /* no db exists */
     rc = system("rm -f /tmp/check_csync1/test.db");
     assert_int_equal(rc, 0);
-    rc = _csync_statedb_check(TESTDB);
+    rc = _csync_statedb_check(NULL, TESTDB);
     assert_int_equal(rc, 0);
 
-    rc = _csync_statedb_check("/tmp/check_csync1/");
+    rc = _csync_statedb_check(NULL, "/tmp/check_csync1/");
     assert_int_equal(rc, -1);
 
     rc = system("rm -rf /tmp/check_csync1");

@@ -41,15 +41,11 @@ set(CSYNC_LINK_LIBRARIES
   ${SQLITE3_LIBRARIES}
 )
 
-if(LOG4C_FOUND)
-    list(APPEND CSYNC_PRIVATE_INCLUDE_DIRS ${LOG4C_INCLUDE_DIRS})
-    list(APPEND CSYNC_LINK_LIBRARIES ${LOG4C_LIBRARIES})
-endif()
-
 set(csync_SRCS
   csync.c
   csync_config.c
   csync_exclude.c
+  csync_log.c
   csync_statedb.c
   csync_dbtree.c
   csync_time.c
