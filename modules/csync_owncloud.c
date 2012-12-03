@@ -507,7 +507,7 @@ static void request_created_hook(ne_request *req, void *userdata,
     if( !req ) return;
 
     if(dav_session.session_key) {
-        /* DEBUG_WEBDAV("Setting PHPSESSID to %s", dav_session.session_key); */
+        DEBUG_WEBDAV("Setting PHPSESSID to %s", dav_session.session_key);
         ne_add_request_header(req, "Cookie", dav_session.session_key);
     }
 
@@ -602,8 +602,6 @@ static int dav_connect(const char *base_url) {
     ne_hook_post_headers( dav_session.ctx, post_request_hook, NULL );
     /* Hook called when a request is built. It sets the PHPSESSID header */
     ne_hook_create_request( dav_session.ctx, request_created_hook, NULL );
-
-    dav_session.session_key = NULL;
 
     /* Proxy support */
     proxystate = configureProxy( dav_session.ctx );
@@ -2071,8 +2069,20 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
     _authcb = cb;
     _connected = 0;  /* triggers dav_connect to go through the whole neon setup */
 
+    dav_session.session_key = NULL;
+
     if( userdata ) {
         userdata_ptr = userdata;
+        if( *userdata_ptr && strlen( *userdata_ptr) && 0 == strcmp(*userdata_ptr, "Cookie=")) {
+            userdata_ptr++;
+            char *cookie = *userdata_ptr;
+            DEBUG_WEBDAV("Will use cookie given to us: %s", cookie);
+            userdata_ptr++;
+            dav_session.session_key = c_strdup( cookie );
+        } else {
+            DEBUG_WEBDAV("No cookie given to us %s", *userdata_ptr);
+        }
+
         if( *userdata_ptr && strlen( *userdata_ptr) )
             dav_session.proxy_type = c_strdup( *userdata_ptr );
         userdata_ptr++;
