@@ -817,7 +817,6 @@ static int fetch_resource_list( const char *curi,
     time_t now;
     time_t time_diff;
     time_t time_diff_delta;
-    const char *err = NULL;
 
     /* do a propfind request and parse the results in the results function, set as callback */
     /* ret = ne_simple_propfind( dav_session.ctx, curi, depth, ls_props, results, fetchCtx ); */
@@ -892,6 +891,8 @@ static int fetch_resource_list( const char *curi,
     }
 
     if( ret != NE_OK ) {
+        const char *err = NULL;
+
         err = ne_get_error( dav_session.ctx );
         DEBUG_WEBDAV("WRN: propfind named failed with %d, request error: %s", ret, err ? err : "<nil>");
     }
