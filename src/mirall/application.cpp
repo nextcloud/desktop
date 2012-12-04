@@ -12,7 +12,6 @@
  * for more details.
  */
 
-#define LOG_TO_CALLBACK // FIXME: This should be in csync.
 #include <iostream>
 
 #include "mirall/application.h"
@@ -38,8 +37,6 @@
 #endif
 #include "mirall/inotify.h"
 
-#include <csync.h>
-
 #include <QtCore>
 #include <QtGui>
 #include <QHash>
@@ -57,11 +54,6 @@ void mirallLogCatcher(QtMsgType type, const char *msg)
 {
   Q_UNUSED(type)
   Logger::instance()->mirallLog( QString::fromUtf8(msg) );
-}
-
-void csyncLogCatcher(const char *msg)
-{
-  Logger::instance()->csyncLog( QString::fromUtf8(msg) );
 }
 
 // ----------------------------------------------------------------------------------
@@ -522,7 +514,6 @@ void Application::setupLogBrowser()
         // init the log browser.
         _logBrowser = new LogBrowser;
         qInstallMsgHandler( mirallLogCatcher );
-        csync_set_log_callback( csyncLogCatcher );
         // ## TODO: allow new log name maybe?
         if (!_logFile.isEmpty()) {
             qDebug() << "Logging into logfile: " << _logFile << " with flush " << _logFlush;

@@ -16,6 +16,7 @@
 #include "mirall/csyncthread.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/theme.h"
+#include "mirall/logbrowser.h"
 
 #include <QDebug>
 #include <QDir>
@@ -36,6 +37,15 @@ QNetworkProxy CSyncThread::_proxy;
 QString CSyncThread::_csyncConfigDir;  // to be able to remove the lock file.
 
 QMutex CSyncThread::_mutex;
+
+void csyncLogCatcher(CSYNC *ctx,
+                     int verbosity,
+                     const char *function,
+                     const char *buffer,
+                     void *userdata)
+{
+  Logger::instance()->csyncLog( QString::fromUtf8(function) + QLatin1String("> ") + QString::fromUtf8(buffer) );
+}
 
 struct proxyInfo_s {
     char *proxyType;
@@ -213,6 +223,8 @@ void CSyncThread::startSync()
 
     qDebug() << "## CSync Thread local only: " << _localCheckOnly;
     csync_set_auth_callback( csync, getauth );
+    csync_set_log_callback( csync, csyncLogCatcher );
+
     csync_enable_conflictcopys(csync);
 
 
