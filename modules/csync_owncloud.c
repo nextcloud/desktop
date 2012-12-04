@@ -1461,7 +1461,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
     }
 
     writeCtx = c_malloc( sizeof(struct transfer_context) );
-    writeCtx->clean_uri = c_strdup(uri);
+    writeCtx->clean_uri = c_strdup(durl);
 
     if( rc == NE_OK && put) {
         DEBUG_WEBDAV("PUT request on %s!", uri);
