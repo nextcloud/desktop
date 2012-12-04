@@ -20,6 +20,11 @@
 
 namespace Mirall {
 
+class FolderWatcherPrivate {
+public:
+    INotify *inotify;
+};
+
 static const uint32_t standard_event_mask =
     IN_CLOSE_WRITE | IN_ATTRIB | IN_MOVE |
     IN_CREATE |IN_DELETE | IN_DELETE_SELF |
@@ -29,16 +34,16 @@ static const uint32_t standard_event_mask =
 void FolderWatcher::setupBackend() {
     _processTimer->setSingleShot(true);
     QObject::connect(_processTimer, SIGNAL(timeout()), this, SLOT(slotProcessTimerTimeout()));
-
-    _inotify = new INotify(standard_event_mask);
+    _d = new FolderWatcherPrivate;
+    _d->inotify = new INotify(this, standard_event_mask);
     slotAddFolderRecursive(_root);
-    QObject::connect(_inotify, SIGNAL(notifyEvent(int, int, const QString &)),
+    QObject::connect(_d->inotify, SIGNAL(notifyEvent(int, int, const QString &)),
                      this, SLOT(slotINotifyEvent(int, int, const QString &)));
 }
 
 QStringList FolderWatcher::folders() const
 {
-    return _inotify->directories();
+    return _d->inotify->directories();
 }
 
 void FolderWatcher::slotAddFolderRecursive(const QString &path)
@@ -46,8 +51,8 @@ void FolderWatcher::slotAddFolderRecursive(const QString &path)
     int subdirs = 0;
     qDebug() << "(+) Watcher:" << path;
 
-    _inotify->addPath(path);
-    QStringList watchedFolders(_inotify->directories());
+    _d->inotify->addPath(path);
+    QStringList watchedFolders(_d->inotify->directories());
     // qDebug() << "currently watching " << watchedFolders;
     QStringListIterator subfoldersIt(FileUtils::subFoldersList(path, FileUtils::SubFolderRecursive));
     while (subfoldersIt.hasNext()) {
@@ -66,7 +71,7 @@ void FolderWatcher::slotAddFolderRecursive(const QString &path)
                 }
 
             }
-            _inotify->addPath(folder.path());
+            _d->inotify->addPath(folder.path());
         }
         else
             qDebug() << "    `-> discarded:" << folder.path();
@@ -110,9 +115,9 @@ void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
     }
     else if (mask & IN_DELETE) {
         //qDebug() << cookie << " DELETE: " << path;
-        if ( QFileInfo(path).isDir() && _inotify->directories().contains(path) ) {
+        if ( QFileInfo(path).isDir() && _d->inotify->directories().contains(path) ) {
             qDebug() << "(-) Watcher:" << path;
-            _inotify->removePath(path);
+            _d->inotify->removePath(path);
         }
     }
     else if (mask & IN_CLOSE_WRITE) {

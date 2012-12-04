@@ -30,9 +30,7 @@ class QTimer;
 
 namespace Mirall {
 
-#ifdef USE_INOTIFY
-class INotify;
-#endif
+class FolderWatcherPrivate;
 
 /**
  * Watches a folder and sub folders for changes
@@ -127,9 +125,7 @@ private:
 private:
     bool _eventsEnabled;
     int _eventInterval;
-#ifdef USE_INOTIFY
-    INotify *_inotify;
-#endif
+    FolderWatcherPrivate *_d;
     QString _root;
     // paths pending to notified
     // QStringList _pendingPaths;

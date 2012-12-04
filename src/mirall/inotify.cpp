@@ -36,7 +36,9 @@
 
 namespace Mirall {
 
-INotify::INotify(int mask) : _mask(mask)
+INotify::INotify(QObject *parent, int mask)
+    : QObject(parent),
+      _mask(mask)
 {
     _fd = inotify_init();
     _notifier = new QSocketNotifier(_fd, QSocketNotifier::Read);

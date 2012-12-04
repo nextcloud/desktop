@@ -50,6 +50,7 @@ namespace Mirall {
 
 FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
     : QObject(parent),
+      _d(new FolderWatcherPrivate),
       _eventsEnabled(true),
       _eventInterval(DEFAULT_EVENT_INTERVAL_MSEC),
       _root(root),
@@ -65,7 +66,7 @@ FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
 
 FolderWatcher::~FolderWatcher()
 {
-
+    delete _d;
 }
 
 QString FolderWatcher::root() const

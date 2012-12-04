@@ -35,7 +35,7 @@ class INotify : public QObject
 
 public:
 
-    INotify(int mask);
+    INotify(QObject *parent, int mask);
     ~INotify();
 
     static void initialize();
