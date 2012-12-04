@@ -1895,6 +1895,15 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
     return 0;
 }
 
+int owncloud_set_property(const char *key, void *data) {
+    if (strcmp(key, "session_key") == 0) {
+        SAFE_FREE(dav_session.session_key);
+        dav_session.session_key = c_strdup((const char*)data);
+        return 0;
+    }
+    return -1;
+}
+
 csync_vio_method_t _method = {
     .method_table_size = sizeof(csync_vio_method_t),
     .get_capabilities = owncloud_capabilities,
@@ -1916,7 +1925,8 @@ csync_vio_method_t _method = {
     .unlink = owncloud_unlink,
     .chmod = owncloud_chmod,
     .chown = owncloud_chown,
-    .utimes = owncloud_utimes
+    .utimes = owncloud_utimes,
+    .set_property = owncloud_set_property
 };
 
 csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
@@ -1933,17 +1943,6 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
 
     if( userdata ) {
         userdata_ptr = userdata;
-        if( *userdata_ptr && strlen( *userdata_ptr) && 0 == strcmp(*userdata_ptr, "Cookie=")) {
-            char *cookie = NULL;
-            userdata_ptr++;
-            cookie = *userdata_ptr;
-            DEBUG_WEBDAV("Will use cookie given to us: %s", cookie);
-            userdata_ptr++;
-            dav_session.session_key = c_strdup( cookie );
-        } else {
-            DEBUG_WEBDAV("No cookie given to us %s", *userdata_ptr);
-        }
-
         if( *userdata_ptr && strlen( *userdata_ptr) )
             dav_session.proxy_type = c_strdup( *userdata_ptr );
         userdata_ptr++;
@@ -1977,6 +1976,7 @@ void vio_module_shutdown(csync_vio_method_t *method) {
     SAFE_FREE( dav_session.proxy_host );
     SAFE_FREE( dav_session.proxy_user );
     SAFE_FREE( dav_session.proxy_pwd  );
+    SAFE_FREE( dav_session.session_key);
 
     /* free stat memory */
     fill_stat_cache(NULL);
