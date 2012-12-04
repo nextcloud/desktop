@@ -41,7 +41,7 @@
 #include "c_lib.h"
 #include "csync.h"
 #include "csync_misc.h"
-#include "csync_private.h"
+#include "csync_macros.h"
 #include "c_private.h"
 
 #include "vio/csync_vio_module.h"
