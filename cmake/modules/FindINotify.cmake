@@ -4,12 +4,12 @@
 # also defined, but not for general use are
 #  INOTIFY_LIBRARY, where to find the inotify library.
 
-find_path(INOTIFY_INCLUDE_DIR sys/inotify.h)
+find_path(INOTIFY_INCLUDE_DIR sys/inotify.h 
+          HINTS /usr/include/${CMAKE_LIBRARY_ARCHITECTURE})
 mark_as_advanced(INOTIFY_INCLUDE_DIR)
 
-
-# handle the QUIETLY and REQUIRED arguments and set INOTIFY_FOUND to TRUE if
 # all listed variables are TRUE
+# handle the QUIETLY and REQUIRED arguments and set INOTIFY_FOUND to TRUE if
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(INOTIFY DEFAULT_MSG INOTIFY_INCLUDE_DIR)
 
