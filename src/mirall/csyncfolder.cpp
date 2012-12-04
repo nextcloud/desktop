@@ -87,7 +87,7 @@ void CSyncFolder::slotCSyncFinished()
     SyncResult res(SyncResult::Success);
     if( _csyncError ) {
         res.setStatus( SyncResult::Error );
-        res.setErrorString( _errors.join(QLatin1String("\\n")));
+        res.setErrorString( _errors.join(QLatin1String("\n")));
     }
     emit syncFinished( res );
 }
