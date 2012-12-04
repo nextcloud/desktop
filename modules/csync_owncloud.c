@@ -559,6 +559,7 @@ static void request_created_hook(ne_request *req, void *userdata,
 
 }
 
+/* called from neon */
 static void ne_notify_status_cb (void *userdata, ne_session_status status,
                                  const ne_session_status_info *info)
 {
@@ -1500,7 +1501,8 @@ static csync_vio_method_handle_t *owncloud_creat(const char *durl, mode_t mode) 
 }
 
 static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_handle_t *hdl ) {
-    int rc  = -1;
+    int rc  = 0;
+    int neon_stat;
     const ne_status *status;
     struct transfer_context *write_ctx = (struct transfer_context*) hdl;
     fhandle_t *fh = (fhandle_t *) src;
@@ -1508,12 +1510,12 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
 
     if( ! write_ctx ) {
         errno = EINVAL;
-        return rc;
+        return -1;
     }
 
     if( !fh ) {
         errno = EINVAL;
-        return rc;
+        return -1;
     }
     fd = fh->fd;
 
@@ -1539,15 +1541,16 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
                 }
 
                 /* Start the request. */
-                rc = ne_request_dispatch( write_ctx->req );
-                if( rc != NE_OK ) {
-                    set_errno_from_neon_errcode( rc );
+                neon_stat = ne_request_dispatch( write_ctx->req );
+                if( neon_stat != NE_OK ) {
+                    set_errno_from_neon_errcode( neon_stat );
+                    rc = -1;
                 } else {
                     status = ne_get_status( request );
                     if( status->klass != 2 ) {
                         DEBUG_WEBDAV("request failed!");
                         set_errno_from_http_errcode( status->code );
-                        rc = NE_ERROR;
+                        rc = -1;
                     } else {
                         DEBUG_WEBDAV("http request all cool, result code %d", status->code);
                     }
@@ -1571,17 +1574,20 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
             ne_set_notifier(dav_session.ctx, ne_notify_status_cb, write_ctx);
             _progresscb(write_ctx->clean_uri, CSYNC_NOTIFY_START_UPLOAD, 0 , 0, dav_session.userdata);
         }
-        rc = ne_request_dispatch(write_ctx->req );
+        neon_stat = ne_request_dispatch(write_ctx->req );
         /* possible return codes are:
          *  NE_OK, NE_AUTH, NE_CONNECT, NE_TIMEOUT, NE_ERROR (from ne_request.h)
          */
 
-        if( rc != NE_OK || (rc == NE_OK && ne_get_status(write_ctx->req)->klass != 2) ) {
-            DEBUG_WEBDAV("request_dispatch failed with rc=%d", rc );
-            // err = ne_get_error( dav_session.ctx );
-            // DEBUG_WEBDAV("request error: %s", err ? err : "<nil>");
-            if( rc == NE_OK ) rc = NE_ERROR;
-            errno = EACCES;
+        if( neon_stat != NE_OK ) {
+            set_errno_from_neon_errcode(neon_stat);
+            rc = -1;
+        } else {
+            status = ne_get_status( write_ctx->req );
+            if( status->klass != 2 ) {
+                set_errno_from_http_errcode( status->code );
+                rc = -1;
+            }
         }
 
         /* delete the hook again, otherwise they get chained as they are with the session */
