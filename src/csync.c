@@ -322,6 +322,9 @@ retry_vio_init:
     }
   }
 
+  if (ctx->callbacks.progresscb)
+    csync_set_module_property(ctx, "progress_callback", &ctx->callbacks.progresscb);
+
   if (c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp) < 0) {
     ctx->error_code = CSYNC_ERR_TREE;
     rc = -1;
@@ -1009,6 +1012,25 @@ bool csync_file_known( char *statedb_file, const char* url ) {
 int csync_set_module_property(CSYNC* ctx, const char* key, void* value)
 {
     return csync_vio_set_property(ctx, key, value);
+}
+
+int csync_set_progress_callback(CSYNC* ctx, csync_progress_callback cb)
+{
+  if (ctx == NULL || cb == NULL) {
+    ctx->error_code = CSYNC_ERR_PARAM;
+    return -1;
+  }
+  ctx->error_code = CSYNC_ERR_NONE;
+  ctx->callbacks.progresscb = cb;
+
+  if (ctx->status & CSYNC_STATUS_INIT) {
+    fprintf(stderr, "This function must be called before initialization.");
+    ctx->error_code = CSYNC_ERR_UNSPEC;
+    return -1;
+  }
+
+  return 0;
+
 }
 
 /* vim: set ts=8 sw=2 et cindent: */

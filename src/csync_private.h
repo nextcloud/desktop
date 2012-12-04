@@ -82,6 +82,7 @@ struct csync_s {
   struct {
       csync_auth_callback auth_function;
       csync_log_callback log_function;
+      csync_progress_callback progresscb;
       void *userdata;
   } callbacks;
   c_strlist_t *excludes;

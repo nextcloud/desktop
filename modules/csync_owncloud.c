@@ -52,7 +52,7 @@
 #include "csync_log.h"
 
 #if 1 || defined(NDEBUG)
-#define DEBUG_WEBDAV(...) { printf(__VA_ARGS__); printf("\n"); }
+#define DEBUG_WEBDAV(...)
 #else // FIXME: can't use CSYNC_LOG here because there is no ctx
 #define DEBUG_WEBDAV(...) CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, __VA_ARGS__)
 #endif
@@ -153,6 +153,8 @@ int _connected = 0;                   /* flag to indicate if a connection exists
 csync_vio_file_stat_t _fs;
 
 csync_auth_callback _authcb;
+csync_progress_callback _progresscb;
+
 
 #define PUT_BUFFER_SIZE 1024*5
 
@@ -558,6 +560,17 @@ static void request_created_hook(ne_request *req, void *userdata,
     }
 
 }
+
+static void ne_notify_status_cb (void *userdata, ne_session_status status,
+                                 const ne_session_status_info *info)
+{
+    struct transfer_context *tc = (struct transfer_context*) userdata;
+//     printf("ne_notify_status %i %s   %ld %ld\n", status, tc->clean_uri, info->sr.progress, info->sr.total);
+
+    if (_progresscb && (status == ne_status_sending || status == ne_status_recving))
+        _progresscb(tc->clean_uri, CSYNC_NOTIFY_PROGRESS, info->sr.progress, info->sr.total, dav_session.userdata);
+}
+
 
 /*
  * Connect to a DAV server
@@ -1527,11 +1540,15 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
                 /* Attach the request to the file descriptor */
                 ne_set_request_body_fd(request, fd, 0, sb.st_size );
 
+                if (_progresscb) {
+                    ne_set_notifier(dav_session.ctx, ne_notify_status_cb, write_ctx);
+                    _progresscb(write_ctx->clean_uri, CSYNC_NOTIFY_START_UPLOAD, 0 , 0, dav_session.userdata);
+                }
+
                 /* Start the request. */
                 rc = ne_request_dispatch( write_ctx->req );
                 if( rc != NE_OK ) {
                     set_errno_from_neon_errcode( rc );
-                    return rc;
                 } else {
                     status = ne_get_status( request );
                     if( status->klass != 2 ) {
@@ -1541,6 +1558,11 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
                     } else {
                         DEBUG_WEBDAV("http request all cool, result code %d", status->code);
                     }
+                }
+                if (_progresscb) {
+                    ne_set_notifier(dav_session.ctx, 0, 0);
+                    _progresscb(write_ctx->clean_uri, rc != NE_OK ? CSYNC_NOTFY_ERROR : CSYNC_NOTIFY_FINISHED,
+                                0, 0, dav_session.userdata);
                 }
             } else {
                 DEBUG_WEBDAV("Could not stat file descriptor");
@@ -1552,6 +1574,10 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
         /* GET a file to the file descriptor */
         /* actually do the request */
         write_ctx->fd = fd;
+        if (_progresscb) {
+            ne_set_notifier(dav_session.ctx, ne_notify_status_cb, write_ctx);
+            _progresscb(write_ctx->clean_uri, CSYNC_NOTIFY_START_UPLOAD, 0 , 0, dav_session.userdata);
+        }
         rc = ne_request_dispatch(write_ctx->req );
         /* possible return codes are:
          *  NE_OK, NE_AUTH, NE_CONNECT, NE_TIMEOUT, NE_ERROR (from ne_request.h)
@@ -1571,6 +1597,11 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
         /* if the compression handle is set through the post_header hook, delete it. */
         if( write_ctx->decompress ) {
             ne_decompress_destroy( write_ctx->decompress );
+        }
+        if (_progresscb) {
+            ne_set_notifier(dav_session.ctx, 0, 0);
+            _progresscb(write_ctx->clean_uri, (rc != NE_OK) ? CSYNC_NOTFY_ERROR : CSYNC_NOTIFY_FINISHED,
+                        0,0, dav_session.userdata);
         }
     } else  {
         DEBUG_WEBDAV("Unknown method!");
@@ -1913,6 +1944,10 @@ int owncloud_set_property(const char *key, void *data) {
 
     if (c_streq(key, "proxy_port")) {
         dav_session.proxy_port = *(int*)(data);
+        return 0;
+    }
+    if (c_streq(key, "progress_callback")) {
+        _progresscb = *(csync_progress_callback*)(data);
         return 0;
     }
 
