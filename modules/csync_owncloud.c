@@ -130,6 +130,8 @@ struct dav_session_s {
     long int time_delta;     /* The time delta to use.                  */
     long int time_delta_sum; /* What is the time delta average?         */
     long int time_delta_cnt; /* How often was the server time gathered? */
+
+    void *userdata;
 };
 
 /* The list of properties that is fetched in PropFind on a collection */
@@ -333,7 +335,7 @@ static int verify_sslcert(void *userdata, int failures,
         /* call the csync callback */
         DEBUG_WEBDAV("Call the csync callback for SSL problems");
         memset( buf, 0, NE_ABUFSIZ );
-        (*_authcb) ( problem, buf, NE_ABUFSIZ-1, 1, 0, userdata );
+        (*_authcb) ( problem, buf, NE_ABUFSIZ-1, 1, 0, dav_session.userdata );
         if( strcmp( buf, "yes" ) == 0 ) {
             ret = 0;
         } else {
@@ -371,12 +373,12 @@ static int ne_auth( void *userdata, const char *realm, int attempt,
             /* call the csync callback */
             DEBUG_WEBDAV("Call the csync callback for %s", realm );
             memset( buf, 0, NE_ABUFSIZ );
-            (*_authcb) ("Enter your username: ", buf, NE_ABUFSIZ-1, 1, 0, userdata );
+            (*_authcb) ("Enter your username: ", buf, NE_ABUFSIZ-1, 1, 0, dav_session.userdata );
             if( strlen(buf) < NE_ABUFSIZ ) {
                 strcpy( username, buf );
             }
             memset( buf, 0, NE_ABUFSIZ );
-            (*_authcb) ("Enter your password: ", buf, NE_ABUFSIZ-1, 0, 0, userdata );
+            (*_authcb) ("Enter your password: ", buf, NE_ABUFSIZ-1, 0, 0, dav_session.userdata );
             if( strlen(buf) < NE_ABUFSIZ) {
                 strcpy( password, buf );
             }
@@ -1896,11 +1898,24 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
 }
 
 int owncloud_set_property(const char *key, void *data) {
-    if (strcmp(key, "session_key") == 0) {
-        SAFE_FREE(dav_session.session_key);
-        dav_session.session_key = c_strdup((const char*)data);
+#define READ_STRING_PROPERTY(P) \
+    if (c_streq(key, #P)) { \
+        SAFE_FREE(dav_session.P); \
+        dav_session.P = c_strdup((const char*)data); \
+        return 0; \
+    }
+    READ_STRING_PROPERTY(session_key)
+    READ_STRING_PROPERTY(proxy_type)
+    READ_STRING_PROPERTY(proxy_host)
+    READ_STRING_PROPERTY(proxy_user)
+    READ_STRING_PROPERTY(proxy_pwd)
+#undef READ_STRING_PROPERTY
+
+    if (c_streq(key, "proxy_port")) {
+        dav_session.proxy_port = *(int*)(data);
         return 0;
     }
+
     return -1;
 }
 
@@ -1931,37 +1946,14 @@ csync_vio_method_t _method = {
 
 csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
                                     csync_auth_callback cb, void *userdata) {
-    char **userdata_ptr = NULL;
-
     (void) method_name;
     (void) args;
 
     _authcb = cb;
     _connected = 0;  /* triggers dav_connect to go through the whole neon setup */
 
-    dav_session.session_key = NULL;
-
-    if( userdata ) {
-        userdata_ptr = userdata;
-        if( *userdata_ptr && strlen( *userdata_ptr) )
-            dav_session.proxy_type = c_strdup( *userdata_ptr );
-        userdata_ptr++;
-        DEBUG_WEBDAV("CSync Proxy Type: %s", dav_session.proxy_type);
-        if( *userdata_ptr && strlen( *userdata_ptr) )
-            dav_session.proxy_host = c_strdup( *userdata_ptr );
-        userdata_ptr++;
-
-        if( *userdata_ptr && strlen( *userdata_ptr) )
-            dav_session.proxy_port = atoi( *userdata_ptr );
-        userdata_ptr++;
-
-        if( *userdata_ptr && strlen( *userdata_ptr) )
-            dav_session.proxy_user = c_strdup( *userdata_ptr );
-        userdata_ptr++;
-
-        if( *userdata_ptr && strlen( *userdata_ptr) )
-            dav_session.proxy_pwd = c_strdup( *userdata_ptr );
-    }
+    memset(&dav_session, 0, sizeof(dav_session));
+    dav_session.userdata = userdata;
 
     return &_method;
 }
