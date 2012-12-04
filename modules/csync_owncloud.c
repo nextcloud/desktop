@@ -45,12 +45,13 @@
 
 #include "vio/csync_vio_module.h"
 #include "vio/csync_vio_file_stat.h"
+#include "vio/csync_vio.h"
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.owncloud"
 #include "csync_log.h"
 
 #if 1 || defined(NDEBUG)
-#define DEBUG_WEBDAV(...)
+#define DEBUG_WEBDAV(...) { printf(__VA_ARGS__); printf("\n"); }
 #else // FIXME: can't use CSYNC_LOG here because there is no ctx
 #define DEBUG_WEBDAV(...) CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, __VA_ARGS__)
 #endif
@@ -103,7 +104,6 @@ struct listdir_context {
 struct transfer_context {
     ne_request *req;            /* the neon request */
     int         fd;             /* file descriptor of the file to read or write from */
-    char        *tmpFileName;   /* the name of the temp file */
     size_t      bytes_written;  /* the amount of bytes written or read */
     const char  *method;        /* the HTTP method, either PUT or GET  */
     ne_decompress *decompress;  /* the decompress context */
@@ -934,7 +934,7 @@ static csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
     }
 
     /* Correct the mtime of the file with the server time delta */
-    DEBUG_WEBDAV("  :> Subtracting %d from modtime %llu", dav_session.time_delta,
+    DEBUG_WEBDAV("  :> Subtracting %ld from modtime %llu", dav_session.time_delta,
 		 (unsigned long long) res->modtime);
     lfs->mtime = res->modtime - dav_session.time_delta ;
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
@@ -1290,8 +1290,9 @@ static char*_lastDir = NULL;
  *  bool do_post_copy_stat   - oC does not want the post copy check
  *  bool time_sync_required  - oC does not require the time sync
  *  int  unix_extensions     - oC supports unix extensions.
+ *  bool propagate_on_fd     - oC supports the send_file method.
  */
-static csync_vio_capabilities_t _owncloud_capabilities = { true, false, false, 1 };
+static csync_vio_capabilities_t _owncloud_capabilities = { true, false, false, 1, true };
 
 static csync_vio_capabilities_t *owncloud_capabilities(void)
 {
@@ -1365,18 +1366,9 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
                                                 mode_t mode) {
     char *uri = NULL;
     char *dir = NULL;
-    const  char *err = NULL;
     char getUrl[PATH_MAX];
     int put = 0;
     int rc = NE_OK;
-#ifdef _WIN32
-    int gtp = 0;
-    char tmpname[13];
-    _TCHAR winTmp[PATH_MAX];
-    const _TCHAR *winUrlMB = NULL;
-    const char *winTmpUtf8 = NULL;
-    csync_stat_t sb;
-#endif
 
     struct transfer_context *writeCtx = NULL;
     csync_vio_file_stat_t statBuf;
@@ -1406,15 +1398,14 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
         put = 1;
     }
 
-
     if( rc == NE_OK && put ) {
         /* check if the dir name exists. Otherwise return ENOENT */
         dir = c_dirname( durl );
-	if (dir == NULL) {
+        if (dir == NULL) {
             errno = ENOMEM;
             SAFE_FREE(uri);
-	    return NULL;
-	}
+            return NULL;
+        }
         DEBUG_WEBDAV("Stating directory %s", dir );
         if( c_streq( dir, _lastDir )) {
             DEBUG_WEBDAV("Dir %s is there, we know it already.", dir);
@@ -1442,56 +1433,6 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
     writeCtx->bytes_written = 0;
     writeCtx->clean_uri = c_strdup(uri);
 
-    if( rc == NE_OK ) {
-        /* open a temp file to store the incoming data */
-#ifdef _WIN32
-        memset( tmpname, '\0', 13 );
-        gtp = GetTempPathW( PATH_MAX, winTmp );
-        winTmpUtf8 = c_utf8( winTmp );
-        strcpy( getUrl, winTmpUtf8 );
-        DEBUG_WEBDAV("win32 tmp path: %s", getUrl);
-
-        if ( gtp > MAX_PATH || (gtp == 0) ) {
-            DEBUG_WEBDAV("Failed to compute Win32 tmp path, trying /tmp");
-            strcpy( getUrl, "/tmp/");
-        }
-        strcpy( tmpname, "csync.XXXXXX" );
-        if( c_tmpname( tmpname ) == 0 ) {
-            /* Set the windows file mode to Binary. */
-            _fmode = _O_BINARY;
-            /* append the tmp file name to tmp path */
-            strcat( getUrl, tmpname );
-            writeCtx->tmpFileName = c_strdup( getUrl );
-
-            /* Open the file finally. */
-            winUrlMB = c_multibyte( getUrl );
-
-            /* check if the file exists by chance. */
-            if( _tstat( winUrlMB, &sb ) == 0 ) {
-                /* the file exists. Remove it! */
-                _tunlink( winUrlMB );
-            }
-
-            writeCtx->fd = _topen( winUrlMB, O_RDWR | O_CREAT | O_EXCL, 0600 );
-
-            /* free the extra bytes */
-            c_free_multibyte( winUrlMB );
-            c_free_utf8( winTmpUtf8 );
-	} else {
-	   writeCtx->fd = -1;
-	}
-#else
-        writeCtx->tmpFileName = c_strdup( "/tmp/csync.XXXXXX" );
-        writeCtx->fd = mkstemp( writeCtx->tmpFileName );
-#endif
-        DEBUG_WEBDAV("opening temp directory %s: %d", writeCtx->tmpFileName, writeCtx->fd );
-        if( writeCtx->fd == -1 ) {
-	    DEBUG_WEBDAV("Failed to open temp file, errno = %d", errno );
-            rc = NE_ERROR;
-            /* errno is set by the mkstemp call above. */
-        }
-    }
-
     if( rc == NE_OK && put) {
         DEBUG_WEBDAV("PUT request on %s!", uri);
         /* reset the write buffer */
@@ -1502,12 +1443,10 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
         writeCtx->method = "PUT";
     }
 
-
     if( rc == NE_OK && ! put ) {
         writeCtx->req = 0;
         writeCtx->method = "GET";
 
-        /* Download the data into a local temp file. */
         /* the download via the get function requires a full uri */
         snprintf( getUrl, PATH_MAX, "%s://%s%s", ne_get_scheme( dav_session.ctx),
                   ne_get_server_hostport( dav_session.ctx ), uri );
@@ -1524,46 +1463,10 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
          * either the compressed- or uncompressed reader.
          */
         ne_hook_post_headers( dav_session.ctx, install_content_reader, writeCtx );
-
-        /* actually do the request */
-        rc = ne_request_dispatch(writeCtx->req );
-        /* possible return codes are:
-         *  NE_OK, NE_AUTH, NE_CONNECT, NE_TIMEOUT, NE_ERROR (from ne_request.h)
-         */
-
-        if( rc != NE_OK || (rc == NE_OK && ne_get_status(writeCtx->req)->klass != 2) ) {
-            DEBUG_WEBDAV("request_dispatch failed with rc=%d", rc );
-	    err = ne_get_error( dav_session.ctx );
-	    DEBUG_WEBDAV("request error: %s", err ? err : "<nil>");
-            if( rc == NE_OK ) rc = NE_ERROR;
-            errno = EACCES;
-        }
-
-        /* delete the hook again, otherwise they get chained as they are with the session */
-        ne_unhook_post_headers( dav_session.ctx, install_content_reader, writeCtx );
-
-        /* if the compression handle is set through the post_header hook, delete it. */
-        if( writeCtx->decompress ) {
-            ne_decompress_destroy( writeCtx->decompress );
-        }
-
-        /* delete the request in any case */
-        ne_request_destroy(writeCtx->req);
 #else
         DEBUG_WEBDAV("GET Compression not supported!");
         rc = ne_get( dav_session.ctx, getUrl, writeCtx->fd );  /* FIX_ESCAPE? */
 #endif
-        if( rc != NE_OK ) {
-            DEBUG_WEBDAV("Download to local file failed: %d.", rc);
-            errno = EACCES;
-        }
-        if( close( writeCtx->fd ) == -1 ) {
-            DEBUG_WEBDAV("Close of local download file failed.");
-            writeCtx->fd = -1;
-            rc = NE_ERROR;
-            errno = EACCES;
-        }
-
         writeCtx->fd = -1;
     }
 
@@ -1587,13 +1490,77 @@ static csync_vio_method_handle_t *owncloud_creat(const char *durl, mode_t mode) 
     return handle;
 }
 
+static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_handle_t *hdl ) {
+    int rc  = -1;
+    const ne_status *status;
+    struct transfer_context *write_ctx = (struct transfer_context*) hdl;
+
+    fhandle_t *fh = (fhandle_t *) src;
+    int fd = fh->fd;
+
+    DEBUG_WEBDAV("Hi, we're copying.");
+
+    /* Copy from the file descriptor if method == PUT
+     * Copy to the file descriptor if method == GET
+     */
+
+    if( c_streq( write_ctx->method, "PUT") ) {
+        /* Copy up */
+        ne_request *request = write_ctx->req;
+        if( request ) {
+            struct stat sb;
+            if( fstat( fd, &sb ) == 0) {
+                ne_set_request_body_fd(request, fd, 0, sb.st_size );
+                rc = ne_request_dispatch( write_ctx->req );
+
+                // FIXME: Do proper error handling!!
+                status = ne_get_status( request );
+                if( status ) {
+                    if(rc != NE_OK || status->klass != 2 ) {
+                        DEBUG_WEBDAV("request failed!");
+                    }
+                }
+            } else {
+                DEBUG_WEBDAV("Could not stat file descriptor");
+            }
+        } else {
+            DEBUG_WEBDAV("Did not find a valid request!");
+        }
+    } else if( c_streq( write_ctx->method, "GET") ) {
+        /* GET a file to the file descriptor */
+        /* actually do the request */
+        write_ctx->fd = fd;
+        rc = ne_request_dispatch(write_ctx->req );
+        /* possible return codes are:
+         *  NE_OK, NE_AUTH, NE_CONNECT, NE_TIMEOUT, NE_ERROR (from ne_request.h)
+         */
+
+        if( rc != NE_OK || (rc == NE_OK && ne_get_status(write_ctx->req)->klass != 2) ) {
+            DEBUG_WEBDAV("request_dispatch failed with rc=%d", rc );
+            // err = ne_get_error( dav_session.ctx );
+            // DEBUG_WEBDAV("request error: %s", err ? err : "<nil>");
+            if( rc == NE_OK ) rc = NE_ERROR;
+            errno = EACCES;
+        }
+
+        /* delete the hook again, otherwise they get chained as they are with the session */
+        ne_unhook_post_headers( dav_session.ctx, install_content_reader, write_ctx );
+
+        /* if the compression handle is set through the post_header hook, delete it. */
+        if( write_ctx->decompress ) {
+            ne_decompress_destroy( write_ctx->decompress );
+        }
+    } else  {
+        DEBUG_WEBDAV("Unknown method!");
+    }
+
+    return rc;
+}
+
 static int owncloud_close(csync_vio_method_handle_t *fhandle) {
     struct transfer_context *writeCtx;
-    csync_stat_t st;
-    int rc;
+
     int ret = 0;
-    size_t len = 0;
-    const _TCHAR *tmpFileName = NULL;
 
     writeCtx = (struct transfer_context*) fhandle;
 
@@ -1602,114 +1569,15 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
         ret = -1;
     }
 
-    tmpFileName = c_multibyte( writeCtx->tmpFileName );
-
     /* handle the PUT request, means write to the WebDAV server */
     if( ret != -1 && strcmp( writeCtx->method, "PUT" ) == 0 ) {
-
-        /* if there is a valid file descriptor, close it, reopen in read mode and start the PUT request */
-        if( writeCtx->fd > -1 ) {
-            const ne_status *status = NULL;
-
-            if( writeCtx->fileWritten && writeCtx->bytes_written > 0 ) { /* was content written to file? */
-                /* push the rest of the buffer to file as well. */
-                DEBUG_WEBDAV("Write remaining %lu bytes to disk.",
-                              (unsigned long) writeCtx->bytes_written );
-                len = write( writeCtx->fd, _buffer, writeCtx->bytes_written );
-                if( len != writeCtx->bytes_written ) {
-                    DEBUG_WEBDAV("WRN: write wrote wrong number of remaining bytes");
-                }
-                writeCtx->bytes_written = 0;
-            }
-
-            if( close( writeCtx->fd ) < 0 ) {
-                DEBUG_WEBDAV("Could not close file %s", writeCtx->tmpFileName );
-                errno = EBADF;
-                ret = -1;
-            }
-
-            /* and open it again to read from */
-#ifdef _WIN32
-	    _fmode = _O_BINARY;
-#endif
-            if( writeCtx->fileWritten ) {
-
-                DEBUG_WEBDAV("Putting file through file cache.");
-                /* we need to go the slow way and close and open the file and read from fd. */
-
-                if (( writeCtx->fd = _topen( tmpFileName, O_RDONLY )) < 0) {
-                    errno = EIO;
-                    ret = -1;
-                } else {
-                    if (fstat( writeCtx->fd, &st ) < 0) {
-                        DEBUG_WEBDAV("Could not stat file %s", writeCtx->tmpFileName );
-                        errno = EIO;
-                        ret = -1;
-                    }
-
-                    /* successfully opened for read. Now start the request via ne_put */
-                    ne_set_request_body_fd( writeCtx->req, writeCtx->fd, 0, st.st_size );
-                    rc = ne_request_dispatch( writeCtx->req );
-                    if( close( writeCtx->fd ) == -1 ) {
-                        errno = EBADF;
-                        ret = -1;
-                    }
-                    status = ne_get_status( writeCtx->req );
-                    if( status ) {
-                        if(rc != NE_OK || status->klass != 2 ) {
-                            DEBUG_WEBDAV("Error - PUT status %d, %s", status->code, status->reason_phrase);
-                            errno = EIO;
-                            ret = -1;
-                        }
-                    } else {
-                        DEBUG_WEBDAV("Status undefined, critical.");
-                        errno = EIO;
-                        ret = -1;
-                    }
-                }
-            } else {
-                /* all content is in the buffer. */
-                DEBUG_WEBDAV("Putting file through memory cache.");
-                ne_set_request_body_buffer( writeCtx->req, _buffer, writeCtx->bytes_written );
-                rc = ne_request_dispatch( writeCtx->req );
-
-                status = ne_get_status( writeCtx->req );
-
-                if( status ) {
-                    if(rc != NE_OK || status->klass != 2 ) {
-                        DEBUG_WEBDAV("Error - PUT status %d, %s", status->code, status->reason_phrase);
-                        errno = EIO;
-                        ret = -1;
-                    }
-                } else {
-                    DEBUG_WEBDAV("Status undefined, critical.");
-                    errno = EIO;
-                    ret = -1;
-                }
-            }
-        }
-
         ne_request_destroy( writeCtx->req );
     } else  {
+        ne_request_destroy( writeCtx->req );
         /* Its a GET request, not much to do in close. */
-        if( writeCtx->fd > -1) {
-            if( close( writeCtx->fd ) == -1 ) {
-                errno = EBADF;
-                ret = -1;
-            }
-        }
     }
-     /* Remove the local file. */
-    if(_tunlink(tmpFileName) != 0) {
-        DEBUG_WEBDAV("WRN: Removing of tmp file %s failed with errno %d!",
-                     writeCtx->tmpFileName ? writeCtx->tmpFileName : "<empty>", errno );
-    }
-    /* DEBUG_WEBDAV("Removing tmp file %s: %d", writeCtx->tmpFileName, rc); */
-
-    c_free_multibyte(tmpFileName);
 
     /* free mem. Note that the request mem is freed by the ne_request_destroy call */
-    SAFE_FREE( writeCtx->tmpFileName );
     SAFE_FREE( writeCtx->clean_uri );
     SAFE_FREE( writeCtx );
 
@@ -1717,8 +1585,13 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
 }
 
 static ssize_t owncloud_read(csync_vio_method_handle_t *fhandle, void *buf, size_t count) {
-    struct transfer_context *writeCtx = NULL;
     size_t len = 0;
+
+    (void) fhandle;
+    (void) buf;
+    (void) count;
+#if 0
+    struct transfer_context *writeCtx = NULL;
     csync_stat_t st;
     const _TCHAR *tmpFileName;
 
@@ -1759,7 +1632,7 @@ static ssize_t owncloud_read(csync_vio_method_handle_t *fhandle, void *buf, size
     }
 
     /* DEBUG_WEBDAV( "read len: %d %ul", len, count ); */
-
+#endif
     return len;
 }
 
@@ -2046,6 +1919,7 @@ csync_vio_method_t _method = {
     .close = owncloud_close,
     .read = owncloud_read,
     .write = owncloud_write,
+    .sendfile = owncloud_sendfile,
     .lseek = owncloud_lseek,
     .opendir = owncloud_opendir,
     .closedir = owncloud_closedir,
@@ -2075,8 +1949,9 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
     if( userdata ) {
         userdata_ptr = userdata;
         if( *userdata_ptr && strlen( *userdata_ptr) && 0 == strcmp(*userdata_ptr, "Cookie=")) {
+            char *cookie = NULL;
             userdata_ptr++;
-            char *cookie = *userdata_ptr;
+            cookie = *userdata_ptr;
             DEBUG_WEBDAV("Will use cookie given to us: %s", cookie);
             userdata_ptr++;
             dav_session.session_key = c_strdup( cookie );
