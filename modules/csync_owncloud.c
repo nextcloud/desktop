@@ -41,6 +41,7 @@
 #include "c_lib.h"
 #include "csync.h"
 #include "csync_misc.h"
+#include "csync_private.h"
 #include "c_private.h"
 
 #include "vio/csync_vio_module.h"
@@ -156,17 +157,47 @@ csync_auth_callback _authcb;
 char _buffer[PUT_BUFFER_SIZE];
 
 /* ***************************************************************************** */
-static int ne_session_error_errno(ne_session *session)
-{
-    const char *p = ne_get_error(session);
-    char *q;
-    int err;
+static void set_errno_from_neon_errcode( int neon_code ) {
 
-    err = strtol(p, &q, 10);
-    if (p == q) {
-        return EIO;
+    switch(neon_code) {
+    case NE_OK: /* Success */
+        errno = 0;
+        break;
+    case NE_ERROR: /* Generic error; use ne_get_error(session) for message */
+        errno = ERRNO_GENERAL_ERROR;
+        break;
+    case NE_LOOKUP:  /* Server or proxy hostname lookup failed */
+        errno = ERRNO_LOOKUP_ERROR;
+        break;
+    case NE_AUTH:     /* User authentication failed on server */
+        errno = ERRNO_USER_UNKNOWN_ON_SERVER;
+        break;
+    case NE_PROXYAUTH:  /* User authentication failed on proxy */
+        errno = ERRNO_PROXY_AUTH;
+        break;
+    case NE_CONNECT:  /* Could not connect to server */
+        errno = ERRNO_CONNECT;
+        break;
+    case NE_TIMEOUT:  /* Connection timed out */
+        errno = ERRNO_TIMEOUT;
+        break;
+    case NE_FAILED:   /* The precondition failed */
+        errno = ERRNO_PRECONDITION;
+        break;
+    case NE_RETRY:    /* Retry request (ne_end_request ONLY) */
+        errno = ERRNO_RETRY;
+        break;
+
+    case NE_REDIRECT: /* See ne_redirect.h */
+        errno = ERRNO_REDIRECT;
+        break;
+    default:
+        errno = ERRNO_GENERAL_ERROR;
     }
-    DEBUG_WEBDAV("Session error string %s", p);
+}
+
+static void set_errno_from_http_errcode( int err ) {
+    int new_errno = 0;
 
     switch(err) {
     case 200:           /* OK */
@@ -177,23 +208,23 @@ static int ne_session_error_errno(ne_session *session)
     case 205:           /* Reset Content */
     case 207:           /* Multi-Status */
     case 304:           /* Not Modified */
-        return 0;
+        new_errno = 0;
     case 401:           /* Unauthorized */
     case 402:           /* Payment Required */
     case 407:           /* Proxy Authentication Required */
-        return EPERM;
+        new_errno = EPERM;
     case 301:           /* Moved Permanently */
     case 303:           /* See Other */
     case 404:           /* Not Found */
     case 410:           /* Gone */
-        return ENOENT;
+        new_errno = ENOENT;
     case 408:           /* Request Timeout */
     case 504:           /* Gateway Timeout */
-        return EAGAIN;
+        new_errno = EAGAIN;
     case 423:           /* Locked */
-        return EACCES;
+        new_errno = EACCES;
     case 405:
-        return EEXIST;  /* Method Not Allowed */
+        new_errno = EEXIST;  /* Method Not Allowed */
     case 400:           /* Bad Request */
     case 403:           /* Forbidden */
     case 409:           /* Conflict */
@@ -203,10 +234,10 @@ static int ne_session_error_errno(ne_session *session)
     case 415:           /* Unsupported Media Type */
     case 424:           /* Failed Dependency */
     case 501:           /* Not Implemented */
-        return EINVAL;
+        new_errno = EINVAL;
     case 413:           /* Request Entity Too Large */
     case 507:           /* Insufficient Storage */
-        return ENOSPC;
+        new_errno = ENOSPC;
     case 206:           /* Partial Content */
     case 300:           /* Multiple Choices */
     case 302:           /* Found */
@@ -221,12 +252,25 @@ static int ne_session_error_errno(ne_session *session)
     case 502:           /* Bad Gateway */
     case 503:           /* Service Unavailable */
     case 505:           /* HTTP Version Not Supported */
-        return EIO;
+        new_errno = EIO;
     default:
-        return EIO;
+        new_errno = EIO;
     }
 
-    return EIO;
+    errno = new_errno;
+}
+
+static void set_errno_from_session() {
+    const char *p = ne_get_error( dav_session.ctx );
+    char *q;
+    int err;
+
+    err = strtol(p, &q, 10);
+    if (p == q) {
+        errno = EIO;
+    } else {
+        set_errno_from_http_errcode(err);
+    }
 }
 
 /*
@@ -819,8 +863,6 @@ static int fetch_resource_list( const char *curi,
     time_t time_diff_delta;
 
     /* do a propfind request and parse the results in the results function, set as callback */
-    /* ret = ne_simple_propfind( dav_session.ctx, curi, depth, ls_props, results, fetchCtx ); */
-
     hdl = ne_propfind_create(dav_session.ctx, curi, depth);
 
     if(hdl)
@@ -835,11 +877,14 @@ static int fetch_resource_list( const char *curi,
 
         /* Check the request status. */
         if( req_status->klass != 2 ) {
+            set_errno_from_http_errcode(req_status->code);
             DEBUG_WEBDAV("ERROR: Request failed: status %d (%s)", req_status->code,
                          req_status->reason_phrase);
             ret = NE_CONNECT;
         }
         DEBUG_WEBDAV("Simple propfind result code %d.", req_status->code);
+    } else {
+        set_errno_from_neon_errcode(ret);
     }
 
     if( ret == NE_OK ) {
@@ -852,6 +897,7 @@ static int fetch_resource_list( const char *curi,
         if( !(content_type && c_streq(content_type, "application/xml; charset=utf-8") ) ) {
             DEBUG_WEBDAV("ERROR: Content type of propfind request not XML: %s.",
                          content_type ?  content_type: "<empty>");
+            errno = ERRNO_WRONG_CONTENT;
             ret = NE_CONNECT;
         }
     }
@@ -877,6 +923,7 @@ static int fetch_resource_list( const char *curi,
             } else if( dav_session.time_delta_cnt > 1 ) {
                 if( time_diff_delta > 5 ) {
                     DEBUG_WEBDAV("WRN: The time delta changed more than 5 second");
+                    errno = ERRNO_TIMEDELTA;
                     ret = OC_TIMEDELTA_FAIL;
                 } else {
                     DEBUG_WEBDAV("Ok: Time delta remained (almost) the same: %llu.", (unsigned long long) time_diff);
@@ -1098,10 +1145,10 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
                 DEBUG_WEBDAV("WRN: Time delta changed too much!");
                 /* FIXME: Reasonable user warning */
             } else {
-                errno = ne_session_error_errno( dav_session.ctx );
-
+                /* errno is set accordingly in fetch_resource_list */
                 DEBUG_WEBDAV("stat fails with errno %d", errno );
             }
+
             free_fetchCtx(fetchCtx);
             return -1;
         }
@@ -1448,30 +1495,49 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
     int rc  = -1;
     const ne_status *status;
     struct transfer_context *write_ctx = (struct transfer_context*) hdl;
-
     fhandle_t *fh = (fhandle_t *) src;
-    int fd = fh->fd;
+    int fd;
 
-    DEBUG_WEBDAV("Hi, we're copying.");
+    if( ! write_ctx ) {
+        errno = EINVAL;
+        return rc;
+    }
+
+    if( !fh ) {
+        errno = EINVAL;
+        return rc;
+    }
+    fd = fh->fd;
+
+    DEBUG_WEBDAV("Sendfile handling request type %s.", write_ctx->method);
 
     /* Copy from the file descriptor if method == PUT
      * Copy to the file descriptor if method == GET
      */
 
     if( c_streq( write_ctx->method, "PUT") ) {
-        /* Copy up */
+        /* Transmit a file through PUT */
         ne_request *request = write_ctx->req;
         if( request ) {
+            /* stat the source-file to get the file size. */
             struct stat sb;
-            if( fstat( fd, &sb ) == 0) {
+            if( fstat( fd, &sb ) == 0 ) {
+                /* Attach the request to the file descriptor */
                 ne_set_request_body_fd(request, fd, 0, sb.st_size );
-                rc = ne_request_dispatch( write_ctx->req );
 
-                // FIXME: Do proper error handling!!
-                status = ne_get_status( request );
-                if( status ) {
-                    if(rc != NE_OK || status->klass != 2 ) {
+                /* Start the request. */
+                rc = ne_request_dispatch( write_ctx->req );
+                if( rc != NE_OK ) {
+                    set_errno_from_neon_errcode( rc );
+                    return rc;
+                } else {
+                    status = ne_get_status( request );
+                    if( status->klass != 2 ) {
                         DEBUG_WEBDAV("request failed!");
+                        set_errno_from_http_errcode( status->code );
+                        rc = NE_ERROR;
+                    } else {
+                        DEBUG_WEBDAV("http request all cool, result code %d", status->code);
                     }
                 }
             } else {
@@ -1580,11 +1646,10 @@ static csync_vio_method_handle_t *owncloud_opendir(const char *uri) {
 
     rc = fetch_resource_list( curi, NE_DEPTH_ONE, fetchCtx );
     if( rc != NE_OK ) {
-        if( rc == NE_CONNECT || rc == NE_LOOKUP ) {
-            errno = EIO;
-        } else {
-            errno = ne_session_error_errno( dav_session.ctx );
-            DEBUG_WEBDAV("Errno set to %d", errno);
+        /* errno is set properly in fetch_resource_list */
+
+        DEBUG_WEBDAV("Errno set to %d", errno);
+        if( rc == NE_REDIRECT ) {
             redir_ne_uri = ne_redirect_location(dav_session.ctx);
             if( redir_ne_uri ) {
                 redir_uri = ne_uri_unparse(redir_ne_uri);
@@ -1668,8 +1733,10 @@ static int owncloud_mkdir(const char *uri, mode_t mode) {
 
             DEBUG_WEBDAV("MKdir on %s", buf );
             rc = ne_mkcol(dav_session.ctx, buf );
-            if (rc != NE_OK ) {
-                errno = ne_session_error_errno( dav_session.ctx );
+            if( rc != NE_OK ) {
+                set_errno_from_neon_errcode(rc);
+            } else {
+                set_errno_from_session();
             }
         }
     }
@@ -1693,7 +1760,9 @@ static int owncloud_rmdir(const char *uri) {
     if( rc >= 0 ) {
         rc = ne_delete(dav_session.ctx, curi);
         if ( rc != NE_OK ) {
-            errno = ne_session_error_errno( dav_session.ctx );
+            set_errno_from_neon_errcode( rc );
+        } else {
+            set_errno_from_session();
         }
     }
     SAFE_FREE( curi );
@@ -1723,7 +1792,9 @@ static int owncloud_rename(const char *olduri, const char *newuri) {
         rc = ne_move(dav_session.ctx, 1, src, target );
 
         if (rc != NE_OK ) {
-            errno = ne_session_error_errno(dav_session.ctx);
+            set_errno_from_neon_errcode(rc);
+        } else {
+            set_errno_from_session();
         }
     }
     SAFE_FREE( src );
@@ -1751,7 +1822,9 @@ static int owncloud_unlink(const char *uri) {
     if( rc == NE_OK ) {
         rc = ne_delete( dav_session.ctx, path );
         if ( rc != NE_OK )
-            errno = ne_session_error_errno( dav_session.ctx );
+            set_errno_from_neon_errcode(rc);
+        else
+            set_errno_from_session();
     }
     SAFE_FREE( path );
 
