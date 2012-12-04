@@ -122,6 +122,9 @@ protected slots:
     void slotProcessTimerTimeout();
 
 private:
+    void setupBackend();
+
+private:
     bool _eventsEnabled;
     int _eventInterval;
 #ifdef USE_INOTIFY
