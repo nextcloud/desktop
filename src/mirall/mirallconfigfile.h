@@ -69,7 +69,7 @@ public:
     QByteArray caCerts();
     void setCaCerts( const QByteArray& );
 
-    CredentialType credentialType() const;
+    CredentialType credentialType(const QString &connection = QString::null) const;
 
     QString ownCloudVersion() const;
     void setOwnCloudVersion( const QString& );
@@ -107,7 +107,7 @@ public:
 protected:
     QString ownCloudPasswd( const QString& connection = QString() ) const;
     QString ownCloudUser( const QString& connection = QString() ) const;
-
+    void clearPasswordFromConfig( const QString& connect = QString() );
 private:
     QVariant getValue(const QString& param, const QString& group) const;
 

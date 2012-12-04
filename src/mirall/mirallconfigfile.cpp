@@ -147,16 +147,41 @@ void MirallConfigFile::writeOwncloudConfig( const QString& connection,
         pwd.clear();
     }
 
+#ifdef WITH_QTKEYCHAIN
+    // Password is stored to QtKeyChain now by default in CredentialStore
+    // The CredentialStore calls clearPasswordFromConfig after the creds
+    // were successfully wiritten to delete the passwd entry from config.
+    qDebug() << "Going to delete the password from settings file.";
+#else
+    // store password into settings file.
     QByteArray pwdba = pwd.toUtf8();
     settings.setValue( QLatin1String("passwd"), QVariant(pwdba.toBase64()) );
+#endif
     settings.setValue( QLatin1String("nostoredpassword"), QVariant(skipPwd) );
     settings.sync();
     // check the perms, only read-write for the owner.
     QFile::setPermissions( file, QFile::ReadOwner|QFile::WriteOwner );
 
     // inform the credential store about the password change.
-    CredentialStore::instance()->setCredentials( user, pwd );
+    CredentialStore::instance()->setCredentials( cloudsUrl, user, pwd, skipPwd );
 
+}
+
+// This method is called after the password was successfully stored into the
+// QKeyChain in CredentialStore.
+void MirallConfigFile::clearPasswordFromConfig( const QString& connection )
+{
+    const QString file = configFile();
+    QString con( defaultConnection() );
+    if( !connection.isEmpty() )
+        con = connection;
+
+    QSettings settings( file, QSettings::IniFormat);
+    settings.setIniCodec( "UTF-8" );
+    settings.beginGroup( con ); // FIXME: Connection!
+    settings.remove(QLatin1String("passwd"));
+    settings.remove(QLatin1String("password"));
+    settings.sync();
 }
 
 // set the url, called from redirect handling.
@@ -315,11 +340,16 @@ int MirallConfigFile::pollTimerExceedFactor( const QString& connection ) const
   return pte;
 }
 
-MirallConfigFile::CredentialType MirallConfigFile::credentialType() const
+MirallConfigFile::CredentialType MirallConfigFile::credentialType( const QString& connection) const
 {
-    QString con; /* ( connection ); */
-    /* if( connection.isEmpty() ) */ con = defaultConnection();
+    QString con( connection );
+    if( connection.isEmpty() ) con = defaultConnection();
+
     CredentialType ct = Settings;
+#ifdef WITH_QTKEYCHAIN
+    // In case QtKeyChain is there, use it mandatory.
+    ct = KeyChain;
+#endif
 
     QSettings settings( configFile(), QSettings::IniFormat );
     settings.setIniCodec( "UTF-8" );

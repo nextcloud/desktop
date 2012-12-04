@@ -16,6 +16,7 @@
 #include "mirall/mirallconfigfile.h"
 #include "mirall/owncloudinfo.h"
 #include "mirall/folderman.h"
+#include "mirall/credentialstore.h"
 
 #include <QtCore>
 #include <QProcess>
@@ -391,15 +392,20 @@ void OwncloudSetupWizard::setupLocalSyncFolder()
 
     if( localFolderOk ) {
         _remoteFolder = Theme::instance()->defaultServerFolder();
-        if( !_remoteFolder.isEmpty() && createRemoteFolder( _remoteFolder ) ) {
-            // the creation started successfully, does not mean it will work
-            qDebug() << "Creation of remote folder started successfully.";
-        } else {
-            // the start of the http request failed.
-            _ocWizard->appendToResultWidget(tr("Creation of remote folder %1 could not be started.").arg(_remoteFolder));
-            qDebug() << "Creation of remote folder failed.";
-        }
+        CredentialStore::instance()->reset();
+        connect( CredentialStore::instance(), SIGNAL(fetchCredentialsFinished(int)),
+                 this, SLOT(slotCreateRemoteFolder(int)));
+        CredentialStore::instance()->fetchCredentials();
+    }
+}
 
+void OwncloudSetupWizard::slotCreateRemoteFolder(int res)
+{
+    disconnect(CredentialStore::instance(), SIGNAL(fetchCredentialsFinished(bool)));
+    if( createRemoteFolder( _remoteFolder ) ) {
+        qDebug() << "Started remote folder creation ok";
+    } else {
+        _ocWizard->appendToResultWidget(tr("Creation of remote folder %1 could not be started.").arg(_remoteFolder));
     }
 }
 
@@ -450,14 +456,14 @@ void OwncloudSetupWizard::finalizeSetup( bool success )
         }
         _ocWizard->appendToResultWidget( QLatin1String(" "));
         _ocWizard->appendToResultWidget( QLatin1String("<p><font color=\"green\"><b>")
-                                                       + tr("Succesfully connected to %1!")
-                                                         .arg(Theme::instance()->appName())
-                                                       + QLatin1String("</b></font></p>"));
+                                         + tr("Succesfully connected to %1!")
+                                         .arg(Theme::instance()->appName())
+                                         + QLatin1String("</b></font></p>"));
         _ocWizard->appendToResultWidget( tr("Press Finish to permanently accept this connection."));
     } else {
         _ocWizard->appendToResultWidget(QLatin1String("<p><font color=\"red\">")
                                         + tr("Connection to %1 could not be established. Please check again.")
-                                          .arg(Theme::instance()->appName())
+                                        .arg(Theme::instance()->appName())
                                         + QLatin1String("</font></p>"));
     }
 }

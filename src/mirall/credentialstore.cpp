@@ -123,10 +123,10 @@ void CredentialStore::fetchCredentials()
         if( !_user.isEmpty() ) {
             ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
             // job->setAutoDelete( false );
-            job->setKey( _user );
+            job->setKey( keyChainKey( cfgFile.ownCloudUrl() ) );
 
             connect( job, SIGNAL(finished(QKeychain::Job*)), this,
-                     SLOT(slotKeyChainFinished(QKeychain::Job*)));
+                     SLOT(slotKeyChainReadFinished(QKeychain::Job*)));
             job->start();
         }
 #else
@@ -156,7 +156,21 @@ void CredentialStore::fetchCredentials()
     }
 }
 
-void CredentialStore::slotKeyChainFinished(QKeychain::Job* job)
+void CredentialStore::reset()
+{
+    _state = NotFetched;
+    _user   = QString::null;
+    _passwd = QString::null;
+    _tries = 0;
+}
+
+QString CredentialStore::keyChainKey( const QString& url ) const
+{
+    QString key = _user+QLatin1Char(':')+url;
+    return key;
+}
+
+void CredentialStore::slotKeyChainReadFinished(QKeychain::Job* job)
 {
 #ifdef WITH_QTKEYCHAIN
     ReadPasswordJob *pwdJob = static_cast<ReadPasswordJob*>(job);
@@ -188,11 +202,71 @@ QByteArray CredentialStore::basicAuthHeader() const
     return data;
 }
 
-void CredentialStore::setCredentials( const QString& user, const QString& pwd )
+void CredentialStore::setCredentials( const QString& url, const QString& user, const QString& pwd, bool noLocalPwd )
 {
     _passwd = pwd;
     _user = user;
     _state = Ok;
+
+#ifdef WITH_QTKEYCHAIN
+    MirallConfigFile::CredentialType t;
+    t = MirallConfigFile::KeyChain;
+    if( noLocalPwd ) t = MirallConfigFile::User;
+
+    switch( t ) {
+    case MirallConfigFile::User:
+        deleteKeyChainCredential(keyChainKey( url ));
+        break;
+    case MirallConfigFile::KeyChain: {
+        // Set password in KeyChain
+        WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
+        // job->setAutoDelete( false );
+        job->setKey( keyChainKey( url ) );
+        job->setTextData(pwd);
+
+        connect( job, SIGNAL(finished(QKeychain::Job*)), this,
+                 SLOT(slotKeyChainWriteFinished(QKeychain::Job*)));
+        job->start();
+
+        break;
+    }
+    default:
+        // unsupported.
+        break;
+    }
+#else
+    (void) url;
+#endif
+}
+
+void CredentialStore::slotKeyChainWriteFinished( QKeychain::Job *job )
+{
+#ifdef WITH_QTKEYCHAIN
+    WritePasswordJob *pwdJob = static_cast<WritePasswordJob*>(job);
+    if( pwdJob ) {
+        if( pwdJob->error() ) {
+            qDebug() << "Error with keychain: " << pwdJob->errorString();
+        } else {
+            qDebug() << "Successfully stored password for user " << _user;
+            // Try to remove password formerly stored in the config file.
+            MirallConfigFile cfgFile;
+            cfgFile.clearPasswordFromConfig();
+        }
+    } else {
+        qDebug() << "Error: KeyChain Write Password Job failed!";
+    }
+#else
+    (void) job;
+#endif
+}
+
+// Called if a user chooses to not store the password locally.
+void CredentialStore::deleteKeyChainCredential( const QString& key )
+{
+    // Start the remove job, do not care so much about the result.
+    DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
+    job->setKey( key );
+    job->start();
 }
 
 }

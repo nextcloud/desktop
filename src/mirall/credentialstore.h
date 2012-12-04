@@ -96,13 +96,14 @@ public:
      * @param user - the user name
      * @param password - the password.
      */
-    void setCredentials( const QString&, const QString& );
+    void setCredentials( const QString&, const QString&, const QString&, bool );
 
     /**
      * @brief canTryAgain - check if another try to get credentials makes sense.
     */
     bool canTryAgain();
 
+    void reset();
 signals:
     /**
      * @brief fetchCredentialsFinished
@@ -115,10 +116,13 @@ signals:
     void fetchCredentialsFinished(bool);
 
 protected slots:
-    void slotKeyChainFinished(QKeychain::Job* job);
+    void slotKeyChainReadFinished( QKeychain::Job* );
+    void slotKeyChainWriteFinished( QKeychain::Job* );
 
 private:
     explicit CredentialStore(QObject *parent = 0);
+    void deleteKeyChainCredential( const QString& );
+    QString keyChainKey( const QString& ) const;
 
     static CredentialStore *_instance;
     static CredState _state;
