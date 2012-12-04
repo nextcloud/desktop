@@ -1165,57 +1165,11 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
 }
 
 static ssize_t owncloud_write(csync_vio_method_handle_t *fhandle, const void *buf, size_t count) {
-    struct transfer_context *writeCtx = NULL;
-    size_t written = 0;
-    size_t bufWritten = 0;
+    (void) fhandle;
+    (void) buf;
+    (void) count;
 
-    if (fhandle == NULL) {
-        return -1;
-    }
-
-    writeCtx = (struct transfer_context*) fhandle;
-
-    /* check if there is space left in the mem buffer */
-    if( writeCtx->bytes_written + count > PUT_BUFFER_SIZE ) {
-        if( writeCtx->fileWritten == 0 ) {
-            DEBUG_WEBDAV("Remaining Mem Buffer size to small, push to disk "
-                          "(current buf size %lu)",
-                          (unsigned long) writeCtx->bytes_written);
-        }
-
-        /* write contents to disk */
-        if( writeCtx->fd > -1 ) {
-            if(  writeCtx->bytes_written > 0 ) {
-                /* there is something in the buffer already. Store to disk */
-
-                written = write( writeCtx->fd, _buffer, writeCtx->bytes_written );
-                if( written != writeCtx->bytes_written ) {
-                    DEBUG_WEBDAV("WRN: Written bytes from buffer not equal to count");
-                }
-                /* reset the buffer counter */
-                writeCtx->bytes_written = 0;
-            }
-            /* also write the incoming memory buffer content to file */
-            if( count > 0 ) {
-                bufWritten = write( writeCtx->fd, buf, count );
-
-                if( bufWritten != count ) {
-                    DEBUG_WEBDAV("WRN: Written bytes not equal to count");
-                }
-            }
-            /* set a flag that file was used, needed in the close routine */
-            writeCtx->fileWritten = 1;
-        } else {
-            /* problem: the file descriptor is not valid. */
-            DEBUG_WEBDAV("ERR: Not a valid file descriptor in write");
-        }
-    } else {
-        /* still space in the buffer */
-        memcpy( _buffer + writeCtx->bytes_written, buf, count );
-        writeCtx->bytes_written += count;
-        bufWritten = count;
-    }
-    return bufWritten;
+    return 0;
 }
 
 static int uncompress_reader(void *userdata, const char *buf, size_t len)
@@ -1590,49 +1544,7 @@ static ssize_t owncloud_read(csync_vio_method_handle_t *fhandle, void *buf, size
     (void) fhandle;
     (void) buf;
     (void) count;
-#if 0
-    struct transfer_context *writeCtx = NULL;
-    csync_stat_t st;
-    const _TCHAR *tmpFileName;
 
-    writeCtx = (struct transfer_context*) fhandle;
-
-    /* DEBUG_WEBDAV( "read called on %s (fd=%d)!", writeCtx->tmpFileName, writeCtx->fd ); */
-    if( ! fhandle ) {
-        errno = EBADF;
-        return -1;
-    }
-
-    if( writeCtx->fd == -1 ) {
-        /* open the downloaded file to read from */
-#ifdef _WIN32
-	_fmode = _O_BINARY;
-#endif
-        tmpFileName = c_multibyte(writeCtx->tmpFileName);
-        if (( writeCtx->fd = _topen( tmpFileName, O_RDONLY )) < 0) {
-            c_free_multibyte(tmpFileName);
-            DEBUG_WEBDAV("Could not open local file %s", writeCtx->tmpFileName );
-            errno = EIO;
-            return -1;
-        } else {
-            c_free_multibyte(tmpFileName);
-            if (fstat( writeCtx->fd, &st ) < 0) {
-                DEBUG_WEBDAV("Could not stat file %s", writeCtx->tmpFileName );
-                errno = EIO;
-                return -1;
-            }
-
-            DEBUG_WEBDAV("local downlaod file size=%d", (int) st.st_size );
-        }
-    }
-
-    if( writeCtx->fd ) {
-        len = read( writeCtx->fd, buf, count );
-        writeCtx->bytes_written = writeCtx->bytes_written + len;
-    }
-
-    /* DEBUG_WEBDAV( "read len: %d %ul", len, count ); */
-#endif
     return len;
 }
 
