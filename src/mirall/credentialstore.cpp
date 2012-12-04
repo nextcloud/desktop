@@ -263,10 +263,12 @@ void CredentialStore::slotKeyChainWriteFinished( QKeychain::Job *job )
 // Called if a user chooses to not store the password locally.
 void CredentialStore::deleteKeyChainCredential( const QString& key )
 {
+#ifdef WITH_QTKEYCHAIN
     // Start the remove job, do not care so much about the result.
     DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
     job->setKey( key );
     job->start();
+#endif
 }
 
 }
