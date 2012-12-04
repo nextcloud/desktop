@@ -937,3 +937,10 @@ int csync_set_iconv_codec(const char *from)
   return 0;
 }
 #endif
+
+int csync_set_module_property(CSYNC* ctx, const char* key, void* value)
+{
+    return csync_vio_set_property(ctx, key, value);
+}
+
+/* vim: set ts=8 sw=2 et cindent: */
