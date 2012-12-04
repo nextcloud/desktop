@@ -37,12 +37,10 @@
 #include "c_string.h"
 #include "csync_util.h"
 #include "csync_log.h"
+#include "csync_vio.h"
 
 #include "vio/csync_vio_local.h"
 
-typedef struct fhandle_s {
-  int fd;
-} fhandle_t;
 
 
 /* the url comes in as utf-8 and in windows, it needs to be multibyte. */
