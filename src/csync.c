@@ -1006,4 +1006,9 @@ bool csync_file_known( char *statedb_file, const char* url ) {
     return( sb != NULL );
 }
 
+int csync_set_module_property(CSYNC* ctx, const char* key, void* value)
+{
+    return csync_vio_set_property(ctx, key, value);
+}
+
 /* vim: set ts=8 sw=2 et cindent: */

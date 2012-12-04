@@ -474,6 +474,19 @@ CSYNC_ERROR_CODE csync_get_error(CSYNC *ctx);
 /* read the information if a file is known to csync ie. if it has an entry in the database */
 bool csync_file_known( char *statedb_file, const char* url );
 
+/**
+ * @brief Set a property to module
+ *
+ * @param ctx           The csync context.
+ *
+ * @param key           The property key
+ *
+ * @param value         An opaque pointer to the data.
+ *
+ * @return              0 on success, less than 0 if an error occured.
+ */
+int csync_set_module_property(CSYNC *ctx, const char *key, void *value);
+
 #ifdef __cplusplus
 }
 #endif

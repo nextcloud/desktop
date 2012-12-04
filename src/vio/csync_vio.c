@@ -666,3 +666,12 @@ int csync_vio_utimes(CSYNC *ctx, const char *uri, const struct timeval *times) {
   return rc;
 }
 
+int csync_vio_set_property(CSYNC* ctx, const char* key, void* data)
+{
+  int rc = -1;
+  if(VIO_METHOD_HAS_FUNC(ctx->module.method, set_property))
+    rc = ctx->module.method->set_property(key, data);
+  return rc;
+}
+
+

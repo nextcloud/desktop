@@ -63,4 +63,6 @@ int csync_vio_chown(CSYNC *ctx, const char *uri, uid_t owner, gid_t group);
 
 int csync_vio_utimes(CSYNC *ctx, const char *uri, const struct timeval *times);
 
+int csync_vio_set_property(CSYNC *ctx, const char *key, void *data);
+
 #endif /* _CSYNC_VIO_H */
