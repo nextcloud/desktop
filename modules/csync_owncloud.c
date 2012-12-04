@@ -105,10 +105,8 @@ struct listdir_context {
 struct transfer_context {
     ne_request *req;            /* the neon request */
     int         fd;             /* file descriptor of the file to read or write from */
-    size_t      bytes_written;  /* the amount of bytes written or read */
     const char  *method;        /* the HTTP method, either PUT or GET  */
     ne_decompress *decompress;  /* the decompress context */
-    int         fileWritten;    /* flag to indicate that a buffer file was written for PUTs */
     char        *clean_uri;
 };
 
@@ -1446,15 +1444,10 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
     }
 
     writeCtx = c_malloc( sizeof(struct transfer_context) );
-    writeCtx->bytes_written = 0;
     writeCtx->clean_uri = c_strdup(uri);
 
     if( rc == NE_OK && put) {
         DEBUG_WEBDAV("PUT request on %s!", uri);
-        /* reset the write buffer */
-        writeCtx->bytes_written = 0;
-        writeCtx->fileWritten = 0;   /* flag to indicate if contents was pushed to file */
-
         writeCtx->req = ne_request_create(dav_session.ctx, "PUT", uri);
         writeCtx->method = "PUT";
     }
