@@ -71,11 +71,20 @@ static void _store_id_update(CSYNC *ctx, csync_file_stat_t *st) {
 
 static bool _push_to_tmp_first(CSYNC *ctx)
 {
+    if( !ctx ) return true;
     if( ctx->current == REMOTE_REPLICA ) return true; /* Always push to tmp for destination local file system */
 
     /* If destination is the remote replica check if the switch is set. */
     if( !ctx->module.capabilities.atomar_copy_support ) return true;
 
+    return false;
+}
+
+static bool _use_fd_based_push(CSYNC *ctx)
+{
+    if(!ctx) return false;
+
+    if( ctx->module.capabilities.use_send_file_to_propagate ) return true;
     return false;
 }
 
@@ -272,39 +281,42 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   }
 
   /* copy file */
-  for (;;) {
-    ctx->replica = srep;
-    bread = csync_vio_read(ctx, sfp, buf, MAX_XFER_BUF_SIZE);
+  if( _use_fd_based_push(ctx) ) {
+      rc = csync_vio_sendfile( ctx, sfp, dfp );
+  } else {
+      for (;;) {
+          ctx->replica = srep;
+          bread = csync_vio_read(ctx, sfp, buf, MAX_XFER_BUF_SIZE);
 
-    if (bread < 0) {
-      /* read error */
-      strerror_r(errno,  errbuf, sizeof(errbuf));
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
-          "file: %s, command: read, error: %s",
-          suri, errbuf);
-      rc = 1;
-      goto out;
-    } else if (bread == 0) {
-      /* done */
-      break;
-    }
+          if (bread < 0) {
+              /* read error */
+              strerror_r(errno,  errbuf, sizeof(errbuf));
+              CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+                        "file: %s, command: read, error: %s",
+                        suri, errbuf);
+              rc = 1;
+              goto out;
+          } else if (bread == 0) {
+              /* done */
+              break;
+          }
 
-    ctx->replica = drep;
-    bwritten = csync_vio_write(ctx, dfp, buf, bread);
+          ctx->replica = drep;
+          bwritten = csync_vio_write(ctx, dfp, buf, bread);
 
-    if (bwritten < 0 || bread != bwritten) {
-      strerror_r(errno, errbuf, sizeof(errbuf));
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
-          "file: %s, command: write, error: bread = %zu, bwritten = %zu - %s",
-          duri,
-          bread,
-          bwritten,
-          errbuf);
-      rc = 1;
-      goto out;
-    }
+          if (bwritten < 0 || bread != bwritten) {
+              strerror_r(errno, errbuf, sizeof(errbuf));
+              CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+                        "file: %s, command: write, error: bread = %zu, bwritten = %zu - %s",
+                        duri,
+                        bread,
+                        bwritten,
+                        errbuf);
+              rc = 1;
+              goto out;
+          }
+      }
   }
-
   ctx->replica = srep;
   if (csync_vio_close(ctx, sfp) < 0) {
     strerror_r(errno, errbuf, sizeof(errbuf));

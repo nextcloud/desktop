@@ -156,6 +156,7 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
   ctx->module.capabilities.do_post_copy_stat   = true;
   ctx->module.capabilities.time_sync_required  = true;
   ctx->module.capabilities.unix_extensions     = -1; /* detect automatically */
+  ctx->module.capabilities.use_send_file_to_propagate = false; /* do use read/write by default */
 
   /* Load the module capabilities from the module if it implements the it. */
   if( VIO_METHOD_HAS_FUNC(m, get_capabilities)) {
@@ -170,6 +171,8 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
             ctx->module.capabilities.time_sync_required ? "yes": "no");
   CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "capabilities: unix extensions: %d",
             ctx->module.capabilities.unix_extensions );
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "capabilities: use send_file: %s",
+            ctx->module.capabilities.use_send_file_to_propagate ? "yes" : "no" );
 
   /* Some basic checks */
   if (m->method_table_size == 0) {
@@ -336,6 +339,24 @@ ssize_t csync_vio_write(CSYNC *ctx, csync_vio_handle_t *fhandle, const void *buf
   }
 
   return rs;
+}
+
+int csync_vio_sendfile(CSYNC *ctx, csync_vio_handle_t *sfp, csync_vio_handle_t *dst) {
+    int rc;
+
+    switch(ctx->replica) {
+      case REMOTE_REPLICA:
+        rc = ctx->module.method->sendfile(sfp->method_handle, dst->method_handle);
+        break;
+      case LOCAL_REPLICA:
+        /* Not implemented, go for the read/write syntax instead. */
+        rc = ctx->module.method->sendfile(dst->method_handle, sfp->method_handle);
+        break;
+      default:
+        break;
+    }
+
+    return rc;
 }
 
 off_t csync_vio_lseek(CSYNC *ctx, csync_vio_handle_t *fhandle, off_t offset, int whence) {

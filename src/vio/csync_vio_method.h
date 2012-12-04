@@ -43,6 +43,7 @@ struct csync_vio_capabilities_s {
  bool time_sync_required;  /* true if local and remote need to be time synced */
  int  unix_extensions;     /* -1: do csync detection, 0: no unix extensions,
                                1: extensions available */
+ bool use_send_file_to_propagate; /* if set, the module rather copies files using send_file than read and write */
 };
 
 typedef struct csync_vio_capabilities_s csync_vio_capabilities_t;
@@ -58,6 +59,7 @@ typedef csync_vio_method_handle_t *(*csync_method_creat_fn)(const char *durl, mo
 typedef int (*csync_method_close_fn)(csync_vio_method_handle_t *fhandle);
 typedef ssize_t (*csync_method_read_fn)(csync_vio_method_handle_t *fhandle, void *buf, size_t count);
 typedef ssize_t (*csync_method_write_fn)(csync_vio_method_handle_t *fhandle, const void *buf, size_t count);
+typedef int (*csync_method_sendfile_fn)(csync_vio_method_handle_t *src, csync_vio_method_handle_t *dst);
 typedef off_t (*csync_method_lseek_fn)(csync_vio_method_handle_t *fhandle, off_t offset, int whence);
 
 typedef csync_vio_method_handle_t *(*csync_method_opendir_fn)(const char *name);
@@ -97,6 +99,7 @@ struct csync_vio_method_s {
         csync_method_chmod_fn chmod;
         csync_method_chown_fn chown;
         csync_method_utimes_fn utimes;
+        csync_method_sendfile_fn sendfile;
 };
 
 #endif /* _CSYNC_VIO_H */
