@@ -156,11 +156,22 @@ void FolderWatcher::setProcessTimer()
     if (!_processTimer->isActive()) {
         qDebug() << "* Pending events for" << root()
                  << "will be processed after events stop for"
-                 << eventInterval() << "seconds ("
+                 << eventInterval() << "milliseconds ("
                  << QTime::currentTime().addSecs(eventInterval()).toString(QLatin1String("HH:mm:ss"))
                  << ")." << _pendingPathes.size() << "events until now )";
     }
     _processTimer->start(eventInterval());
+}
+
+void FolderWatcher::changeDetected(QString f)
+{
+    if( ! eventsEnabled() ) {
+        qDebug() << "FolderWatcher::changeDetected when eventsEnabled() -> ignore";
+        return;
+    }
+
+    _pendingPathes[f] = 1; //_pendingPathes[path]+mask;
+    setProcessTimer();
 }
 
 } // namespace Mirall

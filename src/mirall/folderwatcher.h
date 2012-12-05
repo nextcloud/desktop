@@ -131,6 +131,8 @@ private:
     // for the initial synchronization, without
     // any file changed
     bool _initialSyncDone;
+
+    friend class FolderWatcherPrivate;
 };
 
 }

@@ -358,6 +358,11 @@ cleanup:
      * die than the slot has read out the data.
      */
     qDebug() << "CSync run took " << t.elapsed() << " Milliseconds";
+
+    qDebug() << "CSync Waiting a bit to let OS finish up IO";
+    sleep(2);
+    qDebug() << "CSync End Waiting";
+
     emit(finished());
 }
 

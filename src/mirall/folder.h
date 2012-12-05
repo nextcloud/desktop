@@ -35,7 +35,7 @@ class QFileSystemWatcher;
 
 namespace Mirall {
 
-#ifdef USE_INOTIFY
+#if defined(USE_INOTIFY) || defined (Q_OS_MAC)
 class FolderWatcher;
 #endif
 
@@ -184,7 +184,7 @@ signals:
     void scheduleToSync( const QString& );
 
 protected:
-#ifdef USE_INOTIFY
+#if defined(USE_INOTIFY) || defined (Q_OS_MAC)
     FolderWatcher *_watcher;
 #endif
     int _errorCount;

@@ -50,7 +50,7 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
     , _wipeDb(false)
     , _lastSeenFiles(0)
 {
-#ifdef USE_INOTIFY
+#if defined(USE_INOTIFY) || defined (Q_OS_MAC)
     qDebug() << "****** ownCloud folder using watcher *******";
     // The folder interval is set in the folder parent class.
 #else
@@ -139,7 +139,7 @@ void ownCloudFolder::startSync(const QStringList &pathList)
         url.setScheme( QLatin1String("ownclouds") );
     }
 
-#ifdef USE_INOTIFY
+#if defined(USE_INOTIFY) || defined (Q_OS_MAC)
     // if there is a watcher and no polling, ever sync is remote.
     _localCheckOnly = false;
     _syncResult.clearErrors();
@@ -206,7 +206,7 @@ void ownCloudFolder::slotThreadTreeWalkResult(const SyncFileItemVector& items, c
     if( ! _localCheckOnly ) _lastSeenFiles = 0;
     _localFileChanges = false;
 
-#ifndef USE_INOTIFY
+#if defined(USE_INOTIFY) || defined (Q_OS_MAC)
     if( _lastSeenFiles > 0 && _lastSeenFiles != wStats.seenFiles ) {
         qDebug() << "*** last seen files different from currently seen number " << _lastSeenFiles << "<>" << wStats.seenFiles << " => full Sync needed";
         _localFileChanges = true;
