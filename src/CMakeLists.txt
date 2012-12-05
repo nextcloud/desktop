@@ -88,7 +88,13 @@ set(libsync_HEADERS
 
 IF( INOTIFY_FOUND )
     set(libsync_SRCS ${libsync_SRCS} mirall/inotify.cpp)
+    set(libsync_SRCS ${libsync_SRCS} mirall/folderwatcher_inotify.cpp)
     set(libsync_HEADERS ${libsync_HEADERS} mirall/inotify.h)
+    set(libsync_HEADERS ${libsync_HEADERS} mirall/folderwatcher_inotify.h)
+ENDIF()
+IF( WIN32 ) 
+    set(libsync_SRCS ${libsync_SRCS} mirall/folderwatcher_win.cpp)
+    set(libsync_HEADERS ${libsync_HEADERS} mirall/folderwatcher_win.h)
 ENDIF()
 
 qt4_wrap_cpp(syncMoc ${libsync_HEADERS})

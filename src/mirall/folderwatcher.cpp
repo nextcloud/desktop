@@ -32,33 +32,29 @@
    events  to consider it a new event */
 #define DEFAULT_EVENT_INTERVAL_MSEC 1000
 
-#ifdef NEW_FW_BEHAVIOR
 #if defined(Q_OS_WIN)
-#include "mirall/folderwatcher_win.cpp"
+#include "mirall/folderwatcher_win.h"
 #elif defined(Q_OS_MAC)
-#include "mirall/folderwatcher_mac.cpp"
-#endif
-#endif
-
-#ifdef USE_INOTIFY
-#include "mirall/folderwatcher_inotify.cpp"
-#else
-#include "mirall/folderwatcher_dummy.cpp"
+#include "mirall/folderwatcher_mac.h"
+#elif defined(USE_INOTIFY)
+#include "mirall/folderwatcher_inotify.h"
 #endif
 
 namespace Mirall {
 
 FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
     : QObject(parent),
-      _d(new FolderWatcherPrivate),
       _eventsEnabled(true),
       _eventInterval(DEFAULT_EVENT_INTERVAL_MSEC),
       _root(root),
       _processTimer(new QTimer(this)),
-      _lastMask(0),
       _initialSyncDone(false)
 {
-    setupBackend();
+    _d = new FolderWatcherPrivate(this);
+
+    _processTimer->setSingleShot(true);
+    QObject::connect(_processTimer, SIGNAL(timeout()), this, SLOT(slotProcessTimerTimeout()));
+
     // do a first synchronization to get changes while
     // the application was not running
     setProcessTimer();
@@ -94,6 +90,11 @@ void FolderWatcher::addIgnore(const QString &pattern)
 {
     if( pattern.isEmpty() ) return;
     _ignores.append(pattern);
+}
+
+QStringList FolderWatcher::ignores() const
+{
+    return _ignores;
 }
 
 bool FolderWatcher::eventsEnabled() const
@@ -144,7 +145,7 @@ void FolderWatcher::slotProcessTimerTimeout()
         QStringList notifyPaths = _pendingPathes.keys();
         _pendingPathes.clear();
         //qDebug() << lastEventTime << eventTime;
-        qDebug() << "  * Notify" << notifyPaths.size() << "changed items for" << root();
+        qDebug() << "  * Notify" << notifyPaths.size() << "change items for" << root();
         emit folderChanged(notifyPaths);
         _initialSyncDone = true;
     }

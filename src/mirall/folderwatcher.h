@@ -52,11 +52,6 @@ public:
     ~FolderWatcher();
 
     /**
-     * All watched folders and subfolders
-     */
-    QStringList folders() const;
-
-    /**
      * Root path being monitored
      */
     QString root() const;
@@ -104,6 +99,7 @@ public:
      */
     void setEventInterval(int seconds);
 
+    QStringList ignores() const;
 signals:
     /**
      * Emitted when one of the paths is changed
@@ -114,13 +110,14 @@ protected:
     void setProcessTimer();
 
 protected slots:
-    void slotINotifyEvent(int mask, int cookie, const QString &path);
-    void slotAddFolderRecursive(const QString &path);
     // called when the manually process timer triggers
     void slotProcessTimerTimeout();
 
-private:
-    void setupBackend();
+    // TODO: this belongs with the inotify backend
+protected:
+    QHash<QString, int> _pendingPathes;
+    friend class FolderWatcherPrivate;
+
 
 private:
     bool _eventsEnabled;
@@ -129,15 +126,8 @@ private:
     QString _root;
     // paths pending to notified
     // QStringList _pendingPaths;
-    QHash<QString, int> _pendingPathes;
-
     QTimer *_processTimer;
-
-    // to cancel events that belong to the same action
-    int _lastMask;
-    QString _lastPath;
     QStringList _ignores;
-
     // for the initial synchronization, without
     // any file changed
     bool _initialSyncDone;

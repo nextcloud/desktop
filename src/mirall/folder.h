@@ -21,6 +21,7 @@
 #include <QString>
 #include <QStringList>
 #include <QHash>
+#include <QTimer>
 
 #if QT_VERSION >= 0x040700
 #include <QNetworkConfigurationManager>
@@ -29,7 +30,6 @@
 #include "mirall/syncresult.h"
 
 class QAction;
-class QTimer;
 class QIcon;
 class QFileSystemWatcher;
 

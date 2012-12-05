@@ -12,39 +12,42 @@
  * for more details.
  */
 
-#include "mirall/folderwatcher.h"
+#ifndef MIRALL_FOLDERWATCHER_WIN_H
+#define MIRALL_FOLDERWATCHER_WIN_H
+
+#include <QThread>
 
 namespace Mirall {
 
-void FolderWatcher::setupBackend()
-{
-    // blank
+class FolderWatcher;
+
+// watcher thread
+
+class WatcherThread : public QThread {
+    Q_OBJECT
+public:
+    WatcherThread(const QString &path) :
+        QThread(), _path(path) {}
+
+    void run();
+
+signals:
+    void changed();
+
+private:
+    QString _path;
+};
+
+class FolderWatcherPrivate : public QObject {
+    Q_OBJECT
+public:
+    FolderWatcherPrivate(FolderWatcher *p);
+    ~FolderWatcherPrivate();
+private:
+    FolderWatcher *_parent;
+    WatcherThread *_thread;
+};
+
 }
 
-QStringList FolderWatcher::folders() const
-{
-    return QStringList();
-}
-
-void FolderWatcher::slotAddFolderRecursive(const QString &path)
-{
-    Q_UNUSED(path);
-    qDebug() << "** Watcher is not compiled in!";
-}
-
-void FolderWatcher::slotINotifyEvent(int mask, int cookie, const QString &path)
-{
-    // TODO: refactor!
-
-    int lastMask = _lastMask;
-    QString lastPath = _lastPath;
-
-    _lastMask = mask;
-    _lastPath = path;
-
-    if( ! eventsEnabled() ) return;
-
-    setProcessTimer();
-}
-
-} // namespace Mirall
+#endif // MIRALL_FOLDERWATCHER_WIN_H
