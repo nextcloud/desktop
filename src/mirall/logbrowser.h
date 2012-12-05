@@ -28,43 +28,6 @@
 
 namespace Mirall {
 
-struct Log{
-  typedef enum{
-    Mirall,
-    CSync
-  } Source;
-
-  QDateTime timeStamp;
-  Source source;
-  QString message;
-};
-
-class Logger : public QObject
-{
-  Q_OBJECT
-public:
-  void log(Log log);
-
-  static void csyncLog( const QString& message );
-  static void mirallLog( const QString& message );
-
-  const QList<Log>& logs() const {return _logs;}
-
-  static Logger* instance();
-  static void destroy();
-
-signals:
-  void newLog(const QString&);
-
-protected:
-  Logger(QObject* parent=0);
-  QList<Log> _logs;
-  bool       _showTime;
-  bool       _doLogging;
-
-  static Logger* _instance;
-};
-
 class LogWidget : public QPlainTextEdit 
 {
     Q_OBJECT

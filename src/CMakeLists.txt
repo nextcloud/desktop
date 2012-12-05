@@ -70,6 +70,7 @@ set(libsync_SRCS
     mirall/owncloudtheme.cpp
     mirall/miralltheme.cpp
     mirall/owncloudinfo.cpp
+    mirall/logger.cpp
 )
 set(libsync_HEADERS 
     mirall/folderman.h
@@ -82,6 +83,7 @@ set(libsync_HEADERS
     mirall/csyncthread.h
     mirall/owncloudinfo.h
     mirall/credentialstore.h
+    mirall/logger.h
 )
 
 IF( INOTIFY_FOUND )

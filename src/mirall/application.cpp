@@ -31,6 +31,7 @@
 #include "mirall/proxydialog.h"
 #include "mirall/version.h"
 #include "mirall/credentialstore.h"
+#include "mirall/logger.h"
 
 #ifdef WITH_CSYNC
 #include "mirall/csyncfolder.h"
