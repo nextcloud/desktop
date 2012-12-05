@@ -1331,10 +1331,23 @@ static const char* owncloud_file_id( const char *path )
     bool  doHeadRequest= false; /* ownCloud server doesn't have good support for HEAD yet */
 
     if( doHeadRequest ) {
+        int neon_stat;
+        const ne_status *status;
         /* Perform an HEAD request to the resource. HEAD delivers the
          * ETag header back. */
         req = ne_request_create(dav_session.ctx, "HEAD", uri);
-        ne_request_dispatch(req);
+        neon_stat = ne_request_dispatch(req);
+        if( neon_stat != NE_OK ) {
+            set_errno_from_neon_errcode( neon_stat );
+        } else {
+            status = ne_get_status(req);
+            if( status->klass != 2 ) {
+                DEBUG_WEBDAV("HEAD request failed: %s!", status->reason_phrase);
+                set_errno_from_http_errcode( status->code );
+            } else {
+                DEBUG_WEBDAV("http request all cool, result code %d", status->code);
+            }
+        }
 
         header = ne_get_response_header(req, "etag");
     }
