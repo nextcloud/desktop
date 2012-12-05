@@ -1142,7 +1142,6 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
     buf->name = c_basename(uri);
 
     if (buf->name == NULL) {
-        csync_vio_file_stat_destroy(buf);
         errno = ENOMEM;
         return -1;
     }
@@ -1171,7 +1170,6 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
     curi = _cleanPath( uri );
     fetchCtx = fetch_resource_list( curi, NE_DEPTH_ONE);
     if (!fetchCtx) {
-        csync_vio_file_stat_destroy(buf);
         return -1;
     }
 
