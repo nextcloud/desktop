@@ -16,7 +16,6 @@
 #include "mirall/csyncthread.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/theme.h"
-#include "mirall/logbrowser.h"
 #include "mirall/logger.h"
 
 #include <QDebug>
