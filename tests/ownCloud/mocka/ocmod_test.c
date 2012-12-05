@@ -115,12 +115,8 @@ static void fetch_a_context(void **state) {
     unsigned int i;
 
     (void) state;
-
-    fetchCtx = c_malloc( sizeof( struct listdir_context ));
-    fetchCtx->target = curi;
-    fetchCtx->include_target = 1;
     
-    rc = fetch_resource_list( curi, NE_DEPTH_ONE, fetchCtx );
+    fetchCtx = fetch_resource_list( curi, NE_DEPTH_ONE);
     assert_int_equal( rc, 0 );
     printf("Results: %d\n", fetchCtx->result_count);
     

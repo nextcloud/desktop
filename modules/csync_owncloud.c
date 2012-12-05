@@ -93,9 +93,37 @@ struct listdir_context {
     struct resource *list;           /* The list of result resources */
     struct resource *currResource;   /* A pointer to the current resource */
     char            *target;        /* Request-URI of the PROPFIND */
-    unsigned int     include_target; /* Do you want the uri in the result list? */
     unsigned int     result_count;   /* number of elements stored in list */
+    int ref; /* reference count, only destroy when it reaches 0 */
 };
+
+/*
+ * free the fetchCtx
+ */
+static void free_fetchCtx( struct listdir_context *ctx )
+{
+    struct resource *newres, *res;
+    if( ! ctx ) return;
+    newres = ctx->list;
+    res = newres;
+
+    ctx->ref--;
+    if (ctx->ref > 0) return;
+
+    SAFE_FREE(ctx->target);
+
+    while( res ) {
+        SAFE_FREE(res->uri);
+        SAFE_FREE(res->name);
+        SAFE_FREE(res->md5);
+
+        newres = res->next;
+        SAFE_FREE(res);
+        res = newres;
+    }
+    SAFE_FREE(ctx);
+}
+
 
 /*
  * context to store info about a temp file for GET and PUT requests
@@ -148,10 +176,13 @@ static const ne_propname ls_props[] = {
 struct dav_session_s dav_session; /* The DAV Session, initialised in dav_connect */
 int _connected = 0;                   /* flag to indicate if a connection exists, ie.
                                      the dav_session is valid */
-csync_vio_file_stat_t _fs;
 
 csync_auth_callback _authcb;
 csync_progress_callback _progresscb;
+
+struct listdir_context *propfind_cache = 0;
+csync_vio_file_stat_t _stat_cache;
+
 
 
 #define PUT_BUFFER_SIZE 1024*5
@@ -306,6 +337,7 @@ static int verify_sslcert(void *userdata, int failures,
 
     (void) userdata;
     (void) cert;
+    (void) userdata;
     memset( problem, 0, LEN );
 
     addSSLWarning( problem, "There are problems with the SSL certificate:\n", LEN );
@@ -565,7 +597,6 @@ static void ne_notify_status_cb (void *userdata, ne_session_status status,
                                  const ne_session_status_info *info)
 {
     struct transfer_context *tc = (struct transfer_context*) userdata;
-//     DEBUG_WEBDAV("ne_notify_status %i %s   %ld %ld\n", status, tc->clean_uri, info->sr.progress, info->sr.total);
 
     if (_progresscb && (status == ne_status_sending || status == ne_status_recving))
         _progresscb(tc->clean_uri, CSYNC_NOTIFY_PROGRESS, info->sr.progress, info->sr.total, dav_session.userdata);
@@ -783,13 +814,6 @@ static void results(void *userdata,
     const ne_status *status = NULL;
     char *path = ne_path_unescape( uri->path );
 
-    /* It seems strange: first uri->path is unescaped to escape it in the next step again.
-     * The reason is that uri->path is not completely escaped (ie. it seems only to have
-     * spaces escaped), while the fetchCtx->target is fully escaped.
-     * See http://bugs.owncloud.org/thebuggenie/owncloud/issues/oc-613
-     */
-    char *escaped_path = ne_path_escape( path );
-
     (void) status;
     if( ! fetchCtx ) {
         DEBUG_WEBDAV("No valid fetchContext");
@@ -801,16 +825,6 @@ static void results(void *userdata,
         return;
     }
 
-    /* see if the target should be included in the result list. */
-    if (ne_path_compare(fetchCtx->target, escaped_path) == 0 && !fetchCtx->include_target) {
-        /* This is the target URI */
-        DEBUG_WEBDAV( "Skipping target resource.");
-        /* Free the private structure. */
-        SAFE_FREE( path );
-        SAFE_FREE( escaped_path );
-        return;
-    }
-    SAFE_FREE( escaped_path );
     /* Fill the resource structure with the data about the file */
     newres = c_malloc(sizeof(struct resource));
     newres->uri =  path; /* no need to strdup because ne_path_unescape already allocates */
@@ -859,15 +873,17 @@ static void results(void *userdata,
     /* DEBUG_WEBDAV( "results for URI %s: %d %d", newres->name, (int)newres->size, (int)newres->type ); */
 }
 
+
+
 /*
  * fetches a resource list from the WebDAV server. This is equivalent to list dir.
+ *
+ * takes ownership of curi
  */
-
-static int fetch_resource_list( const char *curi,
-                                int depth,
-                                struct listdir_context *fetchCtx )
+static struct listdir_context *fetch_resource_list(char *curi, int depth)
 {
-    int ret = -1;
+    struct listdir_context *fetchCtx;
+    int ret = 0;
     ne_propfind_handler *hdl = NULL;
     ne_request *request = NULL;
     const char *date_header = NULL;
@@ -876,6 +892,25 @@ static int fetch_resource_list( const char *curi,
     time_t now;
     time_t time_diff;
     time_t time_diff_delta;
+
+    if (propfind_cache) {
+        if (c_streq(curi, propfind_cache->target)) {
+            propfind_cache->ref++;
+            SAFE_FREE(curi);
+            return propfind_cache;
+        }
+    }
+
+    fetchCtx = c_malloc( sizeof( struct listdir_context ));
+    if (!fetchCtx) {
+        errno = ENOMEM;
+        SAFE_FREE(curi);
+        return NULL;
+    }
+    fetchCtx->list = NULL;
+    fetchCtx->target = curi;
+    fetchCtx->currResource = NULL;
+    fetchCtx->ref = 1;
 
     /* do a propfind request and parse the results in the results function, set as callback */
     hdl = ne_propfind_create(dav_session.ctx, curi, depth);
@@ -962,8 +997,29 @@ static int fetch_resource_list( const char *curi,
     if( hdl )
         ne_propfind_destroy(hdl);
 
-    if( ret == -1 ) ret = NE_ERROR;
-    return ret;
+    if( ret == NE_REDIRECT ) {
+        const ne_uri *redir_ne_uri = NULL;
+        char *redir_uri = NULL;
+        redir_ne_uri = ne_redirect_location(dav_session.ctx);
+        if( redir_ne_uri ) {
+            redir_uri = ne_uri_unparse(redir_ne_uri);
+            DEBUG_WEBDAV("Permanently moved to %s", redir_uri);
+        }
+    }
+    if( ret == OC_TIMEDELTA_FAIL ) {
+        DEBUG_WEBDAV("WRN: Time delta changed too much!");
+        /* FIXME: Reasonable user warning */
+    }
+
+    if( ret != NE_OK ) {
+        free_fetchCtx(fetchCtx);
+        return NULL;
+    }
+
+    free_fetchCtx(propfind_cache);
+    propfind_cache = fetchCtx;
+    propfind_cache->ref++;
+    return fetchCtx;
 }
 
 /*
@@ -1046,45 +1102,24 @@ static int _stat_perms( int type ) {
     return ret;
 }
 
-/*
- * free the fetchCtx
- */
-static void free_fetchCtx( struct listdir_context *ctx )
-{
-    struct resource *newres = ctx->list;
-    struct resource *res = newres;
-    if( ! ctx ) return;
-
-    SAFE_FREE(ctx->target);
-
-    while( res ) {
-        SAFE_FREE(res->uri);
-        SAFE_FREE(res->name);
-        SAFE_FREE(res->md5);
-
-        newres = res->next;
-        SAFE_FREE(res);
-        res = newres;
-    }
-    SAFE_FREE(ctx);
-}
-
 static void fill_stat_cache( csync_vio_file_stat_t *lfs ) {
 
-    if( _fs.name ) SAFE_FREE(_fs.name);
-    if( _fs.md5  ) SAFE_FREE(_fs.md5 );
+    if( _stat_cache.name ) SAFE_FREE(_stat_cache.name);
+    if( _stat_cache.md5  ) SAFE_FREE(_stat_cache.md5 );
 
     if( !lfs) return;
 
-    _fs.name   = c_strdup(lfs->name);
-    _fs.mtime  = lfs->mtime;
-    _fs.fields = lfs->fields;
-    _fs.type   = lfs->type;
-    _fs.size   = lfs->size;
+    _stat_cache.name   = c_strdup(lfs->name);
+    _stat_cache.mtime  = lfs->mtime;
+    _stat_cache.fields = lfs->fields;
+    _stat_cache.type   = lfs->type;
+    _stat_cache.size   = lfs->size;
     if( lfs->md5 ) {
-        _fs.md5    = c_strdup(lfs->md5);
+        _stat_cache.md5    = c_strdup(lfs->md5);
     }
 }
+
+
 
 /*
  * file functions
@@ -1095,7 +1130,6 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
      *   creattime
      *   size
      */
-    int rc = 0;
     csync_vio_file_stat_t *lfs = NULL;
     struct listdir_context  *fetchCtx = NULL;
     char *curi = NULL;
@@ -1113,115 +1147,84 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
         return -1;
     }
 
-    /* check if the data in the static 'cache' fs is for the same file.
-     * The cache is filled by readdir which is often called directly before
-     * stat. If the cache matches, a http call is saved.
-     */
-    if( _fs.name && strcmp( buf->name, _fs.name ) == 0 ) {
-
+    if( _stat_cache.name && strcmp( buf->name, _stat_cache.name ) == 0 ) {
         buf->fields  = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
 
-        buf->fields = _fs.fields;
-        buf->type   = _fs.type;
-        buf->mtime  = _fs.mtime;
-        buf->size   = _fs.size;
-        buf->mode   = _stat_perms( _fs.type );
+        buf->fields = _stat_cache.fields;
+        buf->type   = _stat_cache.type;
+        buf->mtime  = _stat_cache.mtime;
+        buf->size   = _stat_cache.size;
+        buf->mode   = _stat_perms( _stat_cache.type );
         buf->md5    = NULL;
-        if( _fs.md5 ) {
-            buf->md5    = c_strdup( _fs.md5 );
+        if( _stat_cache.md5 ) {
+            buf->md5    = c_strdup( _stat_cache.md5 );
             buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
         }
-        DEBUG_WEBDAV("stat results from fs cache - md5: %s - mtime: %llu", _fs.md5 ? _fs.md5 : "NULL",
-		(unsigned long long) buf->mtime );
-    } else {
-      DEBUG_WEBDAV("stat results fetched.");
-        /* fetch data via a propfind call. */
-        fetchCtx = c_malloc( sizeof( struct listdir_context ));
-        if( ! fetchCtx ) {
-            errno = ENOMEM;
-            csync_vio_file_stat_destroy(buf);
-            return -1;
-        }
-
-        curi = _cleanPath( uri );
-
-        fetchCtx->list = NULL;
-        fetchCtx->target = curi;
-        fetchCtx->include_target = 1;
-        fetchCtx->currResource = NULL;
-
-        rc = fetch_resource_list( curi, NE_DEPTH_ONE, fetchCtx );
-        if( rc != NE_OK ) {
-            if( rc == OC_TIMEDELTA_FAIL ) {
-                DEBUG_WEBDAV("WRN: Time delta changed too much!");
-                /* FIXME: Reasonable user warning */
-            } else {
-                /* errno is set accordingly in fetch_resource_list */
-                DEBUG_WEBDAV("stat fails with errno %d", errno );
-            }
-
-            free_fetchCtx(fetchCtx);
-            return -1;
-        }
-
-        if( fetchCtx ) {
-            struct resource *res = fetchCtx->list;
-            while( res ) {
-                /* remove trailing slashes */
-                len = strlen(res->uri);
-                while( len > 0 && res->uri[len-1] == '/' ) --len;
-                memset( strbuf, 0, PATH_MAX+1);
-                strncpy( strbuf, res->uri, len < PATH_MAX ? len : PATH_MAX ); /* this removes the trailing slash */
-                decodedUri = ne_path_unescape( curi ); /* allocates memory */
-
-                if( c_streq(strbuf, decodedUri )) {
-                    SAFE_FREE( decodedUri );
-                    break;
-                }
-                res = res->next;
-                SAFE_FREE( decodedUri );
-            }
-            if( res ) {
-                DEBUG_WEBDAV("Working on file %s", res->name );
-            } else {
-                DEBUG_WEBDAV("ERROR: Result struct not valid!");
-            }
-
-            lfs = resourceToFileStat( res );
-            if( lfs ) {
-                buf->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
-                buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
-                buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
-                buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
-                buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
-                buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
-
-                buf->fields = lfs->fields;
-                buf->type   = lfs->type;
-                buf->mtime  = lfs->mtime;
-                buf->size   = lfs->size;
-                buf->mode   = _stat_perms( lfs->type );
-                buf->md5    = NULL;
-                if( lfs->md5 ) {
-                    buf->md5    = c_strdup( lfs->md5 );
-                }
-
-                /* put the stat information to cache for subsequent calls */
-                fill_stat_cache( lfs );
-
-                /* fill the static stat buf as input for the stat function */
-                csync_vio_file_stat_destroy( lfs );
-            }
-
-            free_fetchCtx( fetchCtx );
-        }
-        DEBUG_WEBDAV("STAT result from propfind: %s, mtime: %llu", buf->name ? buf->name:"NULL",
-                      (unsigned long long) buf->mtime );
+        return 0;
     }
+
+    /* fetch data via a propfind call. */
+    curi = _cleanPath( uri );
+    fetchCtx = fetch_resource_list( curi, NE_DEPTH_ONE);
+    if (!fetchCtx) {
+        csync_vio_file_stat_destroy(buf);
+        return -1;
+    }
+
+    if( fetchCtx ) {
+        struct resource *res = fetchCtx->list;
+        while( res ) {
+            /* remove trailing slashes */
+            len = strlen(res->uri);
+            while( len > 0 && res->uri[len-1] == '/' ) --len;
+            memset( strbuf, 0, PATH_MAX+1);
+            strncpy( strbuf, res->uri, len < PATH_MAX ? len : PATH_MAX ); /* this removes the trailing slash */
+            decodedUri = ne_path_unescape( fetchCtx->target ); /* allocates memory */
+
+            if( c_streq(strbuf, decodedUri )) {
+                SAFE_FREE( decodedUri );
+                break;
+            }
+            res = res->next;
+            SAFE_FREE( decodedUri );
+        }
+        if( res ) {
+            DEBUG_WEBDAV("Working on file %s", res->name );
+        } else {
+            DEBUG_WEBDAV("ERROR: Result struct not valid!");
+        }
+
+        lfs = resourceToFileStat( res );
+        if( lfs ) {
+            buf->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
+            buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
+            buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
+            buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
+            buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
+            buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
+
+            buf->fields = lfs->fields;
+            buf->type   = lfs->type;
+            buf->mtime  = lfs->mtime;
+            buf->size   = lfs->size;
+            buf->mode   = _stat_perms( lfs->type );
+            buf->md5    = NULL;
+            if( lfs->md5 ) {
+                buf->md5    = c_strdup( lfs->md5 );
+            }
+
+            /* fill the static stat buf as input for the stat function */
+            csync_vio_file_stat_destroy( lfs );
+        }
+
+        free_fetchCtx( fetchCtx );
+    }
+    DEBUG_WEBDAV("STAT result from propfind: %s, mtime: %llu", buf->name ? buf->name:"NULL",
+                    (unsigned long long) buf->mtime );
 
     return 0;
 }
@@ -1277,6 +1280,7 @@ static void install_content_reader( ne_request *req, void *userdata, const ne_st
 {
     const char *enc = NULL;
     struct transfer_context *writeCtx = userdata;
+    (void)status;
 
     (void) status;
 
@@ -1356,9 +1360,6 @@ static const char* owncloud_file_id( const char *path )
      * into a PROPFIND request.
      */
     if( ! header ) {
-        /* Clear the cache */
-        fill_stat_cache(NULL);
-
         /* ... and do a stat call. */
         fs = csync_vio_file_stat_new();
         if(fs == NULL) {
@@ -1657,6 +1658,11 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
     SAFE_FREE( writeCtx->clean_uri );
     SAFE_FREE( writeCtx );
 
+    // Clear the cache so get_id gets the updates
+    free_fetchCtx(propfind_cache);
+    propfind_cache = NULL;
+    fill_stat_cache(NULL);
+
     return ret;
 }
 
@@ -1682,36 +1688,17 @@ static off_t owncloud_lseek(csync_vio_method_handle_t *fhandle, off_t offset, in
  * directory functions
  */
 static csync_vio_method_handle_t *owncloud_opendir(const char *uri) {
-    int rc;
     struct listdir_context *fetchCtx = NULL;
-    struct resource *reslist = NULL;
     char *curi = _cleanPath( uri );
-    char *redir_uri = NULL;
-    const ne_uri *redir_ne_uri = NULL;
 
     DEBUG_WEBDAV("opendir method called on %s", uri );
 
     dav_connect( uri );
 
-    fetchCtx = c_malloc( sizeof( struct listdir_context ));
-
-    fetchCtx->list = reslist;
-    fetchCtx->target = curi;
-    fetchCtx->include_target = 0;
-    fetchCtx->currResource = NULL;
-
-    rc = fetch_resource_list( curi, NE_DEPTH_ONE, fetchCtx );
-    if( rc != NE_OK ) {
+    fetchCtx = fetch_resource_list( curi, NE_DEPTH_ONE );
+    if( !fetchCtx ) {
         /* errno is set properly in fetch_resource_list */
-
         DEBUG_WEBDAV("Errno set to %d", errno);
-        if( rc == NE_REDIRECT ) {
-            redir_ne_uri = ne_redirect_location(dav_session.ctx);
-            if( redir_ne_uri ) {
-                redir_uri = ne_uri_unparse(redir_ne_uri);
-                DEBUG_WEBDAV("Permanently moved to %s", redir_uri);
-            }
-        }
         return NULL;
     } else {
         fetchCtx->currResource = fetchCtx->list;
@@ -1735,7 +1722,6 @@ static int owncloud_closedir(csync_vio_method_handle_t *dhandle) {
 static csync_vio_file_stat_t *owncloud_readdir(csync_vio_method_handle_t *dhandle) {
 
     struct listdir_context *fetchCtx = dhandle;
-    csync_vio_file_stat_t *lfs = NULL;
 
     if( fetchCtx->currResource ) {
         // DEBUG_WEBDAV("readdir method called for %s", fetchCtx->currResource->uri);
@@ -1744,19 +1730,31 @@ static csync_vio_file_stat_t *owncloud_readdir(csync_vio_method_handle_t *dhandl
         return NULL;
     }
 
-    if( fetchCtx && fetchCtx->currResource ) {
-        /* FIXME: Who frees the allocated mem for lfs, allocated in the helper func? */
-        lfs = resourceToFileStat( fetchCtx->currResource );
+    while( fetchCtx && fetchCtx->currResource ) {
+        resource* currResource = fetchCtx->currResource;
 
         /* set pointer to next element */
         fetchCtx->currResource = fetchCtx->currResource->next;
 
-        /* fill the static stat buf as input for the stat function */
-        fill_stat_cache(lfs);
+        /* It seems strange: first uri->path is unescaped to escape it in the next step again.
+         * The reason is that uri->path is not completely escaped (ie. it seems only to have
+         * spaces escaped), while the fetchCtx->target is fully escaped.
+         * See http://bugs.owncloud.org/thebuggenie/owncloud/issues/oc-613
+         */
+        char *escaped_path = ne_path_escape( currResource->uri );
+        if (ne_path_compare(fetchCtx->target, escaped_path) != 0) {
+            csync_vio_file_stat_t* lfs = resourceToFileStat(currResource);
+            fill_stat_cache(lfs);
+            SAFE_FREE( escaped_path );
+            return lfs;
+        }
+
+        /* This is the target URI */
+        DEBUG_WEBDAV( "Skipping target resource.");
+        SAFE_FREE( escaped_path );
     }
 
-    /* DEBUG_WEBDAV("LFS fields: %s: %d", lfs->name, lfs->type ); */
-    return lfs;
+    return NULL;
 }
 
 static int owncloud_mkdir(const char *uri, mode_t mode) {
@@ -1951,7 +1949,7 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
     return 0;
 }
 
-int owncloud_set_property(const char *key, void *data) {
+static int owncloud_set_property(const char *key, void *data) {
 #define READ_STRING_PROPERTY(P) \
     if (c_streq(key, #P)) { \
         SAFE_FREE(dav_session.P); \
@@ -2031,6 +2029,8 @@ void vio_module_shutdown(csync_vio_method_t *method) {
     SAFE_FREE( _lastDir );
 
     /* free stat memory */
+    free_fetchCtx(propfind_cache);
+    propfind_cache = NULL;
     fill_stat_cache(NULL);
 
     if( dav_session.ctx )
