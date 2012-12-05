@@ -152,6 +152,8 @@ struct dav_session_s {
 
     char *session_key;
 
+    int read_timeout;
+
     long int prev_delta;
     long int time_delta;     /* The time delta to use.                  */
     long int time_delta_sum; /* What is the time delta average?         */
@@ -609,7 +611,6 @@ static void ne_notify_status_cb (void *userdata, ne_session_status status,
  * and returns if the flag is set, so calling it frequently is save.
  */
 static int dav_connect(const char *base_url) {
-    int timeout = 30;
     int useSSL = 0;
     int rc;
     char protocol[6] = {'\0'};
@@ -671,7 +672,11 @@ static int dav_connect(const char *base_url) {
         goto out;
     }
 
-    ne_set_read_timeout(dav_session.ctx, timeout);
+    if (dav_session.read_timeout == 0)
+        dav_session.read_timeout = 30; // Default from old code
+
+    ne_set_read_timeout(dav_session.ctx, dav_session.read_timeout);
+
     snprintf( uaBuf, sizeof(uaBuf), "csyncoC/%s",CSYNC_STRINGIFY( LIBCSYNC_VERSION ));
     ne_set_useragent( dav_session.ctx, uaBuf);
     ne_set_server_auth(dav_session.ctx, ne_auth, 0 );
@@ -1967,6 +1972,10 @@ static int owncloud_set_property(const char *key, void *data) {
     }
     if (c_streq(key, "progress_callback")) {
         _progresscb = *(csync_progress_callback*)(data);
+        return 0;
+    }
+    if (c_streq(key, "read_timeout")) {
+        dav_session.read_timeout = *(int*)(data);
         return 0;
     }
 
