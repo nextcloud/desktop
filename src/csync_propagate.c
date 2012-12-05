@@ -283,6 +283,13 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   /* copy file */
   if( _use_fd_based_push(ctx) ) {
       rc = csync_vio_sendfile( ctx, sfp, dfp );
+      if( rc != 0 ) {
+          strerror_r(errno,  errbuf, sizeof(errbuf));
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+                    "file: %s, command: sendfile, error: %s from errno %d",
+                    suri, errbuf, errno);
+          goto out;
+      }
   } else {
       for (;;) {
           ctx->replica = srep;

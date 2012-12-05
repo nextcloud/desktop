@@ -1560,13 +1560,19 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
                 neon_stat = ne_request_dispatch( write_ctx->req );
                 if( neon_stat != NE_OK ) {
                     set_errno_from_neon_errcode( neon_stat );
+                    /* FIXME: The -1 aborts the whole sync. Correct? */
                     rc = -1;
                 } else {
                     status = ne_get_status( request );
                     if( status->klass != 2 ) {
-                        DEBUG_WEBDAV("request failed!");
+                        DEBUG_WEBDAV("sendfile request failed with http status %d!", status->code);
                         set_errno_from_http_errcode( status->code );
-                        rc = -1;
+                        /* decide if soft error or hard error that stops the whole sync. */
+                        if( status->klass == 4 /* Forbidden and stuff, soft error */ ) {
+                            rc = 1;
+                        } else {
+                            rc = -1;
+                        }
                     } else {
                         DEBUG_WEBDAV("http request all cool, result code %d", status->code);
                     }
@@ -1578,9 +1584,11 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
                 }
             } else {
                 DEBUG_WEBDAV("Could not stat file descriptor");
+                rc = 1;
             }
         } else {
             DEBUG_WEBDAV("Did not find a valid request!");
+            rc = 1;
         }
     } else if( c_streq( write_ctx->method, "GET") ) {
         /* GET a file to the file descriptor */
@@ -1602,7 +1610,12 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
             status = ne_get_status( write_ctx->req );
             if( status->klass != 2 ) {
                 set_errno_from_http_errcode( status->code );
-                rc = -1;
+                /* decide if soft error or hard error that stops the whole sync. */
+                if( status->klass == 4 /* Forbidden and stuff, soft error */ ) {
+                    rc = 1;
+                } else {
+                    rc = -1;
+                }
             }
         }
 
@@ -1620,6 +1633,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
         }
     } else  {
         DEBUG_WEBDAV("Unknown method!");
+        rc = -1;
     }
 
     return rc;
@@ -1634,16 +1648,10 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
 
     if (fhandle == NULL) {
         errno = EBADF;
-        ret = -1;
+        return -1;
     }
 
-    /* handle the PUT request, means write to the WebDAV server */
-    if( ret != -1 && strcmp( writeCtx->method, "PUT" ) == 0 ) {
-        ne_request_destroy( writeCtx->req );
-    } else  {
-        ne_request_destroy( writeCtx->req );
-        /* Its a GET request, not much to do in close. */
-    }
+    ne_request_destroy( writeCtx->req );
 
     /* free mem. Note that the request mem is freed by the ne_request_destroy call */
     SAFE_FREE( writeCtx->clean_uri );
