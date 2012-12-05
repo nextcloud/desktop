@@ -1530,7 +1530,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
         ne_request *request = write_ctx->req;
         if( request ) {
             /* stat the source-file to get the file size. */
-            struct stat sb;
+            csync_stat_t sb;
             if( fstat( fd, &sb ) == 0 ) {
                 /* Attach the request to the file descriptor */
                 ne_set_request_body_fd(request, fd, 0, sb.st_size );
@@ -2003,6 +2003,8 @@ void vio_module_shutdown(csync_vio_method_t *method) {
     SAFE_FREE( dav_session.proxy_user );
     SAFE_FREE( dav_session.proxy_pwd  );
     SAFE_FREE( dav_session.session_key);
+
+    SAFE_FREE( _lastDir );
 
     /* free stat memory */
     fill_stat_cache(NULL);
