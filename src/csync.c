@@ -390,18 +390,6 @@ int csync_update(CSYNC *ctx) {
       ctx->replica = ctx->remote.type;
 
       rc = csync_ftw(ctx, ctx->remote.uri, csync_walker, MAX_DEPTH);
-#if WIP
-      /* This code checks if the remote tree is empty but the local is not. That
-       * could mean that the user has created his server dir new and hopes that his
-       * local content is going to be synced up. That does not happen, as the new
-       * dir is probably newer. A client can react on the CSYNC_ERR_REMOTE_CLEANUP
-       * with a user question.
-       */
-      if( c_rbtree_size(ctx->remote.tree) == 0 && c_rbtree_size(ctx->local.tree) > 0 ) {
-          ctx->error_code = CSYNC_ERR_REMOTE_CLEANUP;
-          return -1;
-      }
-#endif
       csync_gettime(&finish);
 
       CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
