@@ -47,15 +47,6 @@ void csyncLogCatcher(CSYNC *ctx,
   Logger::instance()->csyncLog( QString::fromUtf8(function) + QLatin1String("> ") + QString::fromUtf8(buffer) );
 }
 
-struct proxyInfo_s {
-    char *proxyType;
-    char *proxyHost;
-    char *proxyPort;
-    char *proxyUser;
-    char *proxyPwd;
-};
-typedef proxyInfo_s ProxyInfo;
-
 walkStats_s::walkStats_s() {
     errorType = 0;
 
@@ -201,17 +192,9 @@ void CSyncThread::startSync()
     CSYNC *csync;
     QTime walkTime;
 
-    ProxyInfo proxyInfo;
-
     emit(started());
 
     _mutex.lock();
-
-    proxyInfo.proxyType = proxyTypeToCStr( _proxy.type() );
-    proxyInfo.proxyHost = qstrdup( _proxy.hostName().toAscii().constData() );
-    proxyInfo.proxyPort = qstrdup( QByteArray::number( _proxy.port() ).constData() );
-    proxyInfo.proxyUser = qstrdup( _proxy.user().toAscii().constData() );
-    proxyInfo.proxyPwd  = qstrdup( _proxy.password().toAscii().constData() );
 
     if( csync_create(&csync,
                      _source.toUtf8().data(),
@@ -245,7 +228,6 @@ void CSyncThread::startSync()
     if( _localCheckOnly ) {
         csync_set_local_only( csync, true );
     }
-    csync_set_userdata(csync, (void*) &proxyInfo);
     _mutex.unlock();
 
     if( csync_init(csync) < 0 ) {
@@ -294,6 +276,13 @@ void CSyncThread::startSync()
         emit csyncError(errStr);
         goto cleanup;
     }
+
+    // set module properties, mainly the proxy information.
+    // do not use QLatin1String here because that has to be real const char* for C.
+    csync_set_module_property(csync, "proxy_type", proxyTypeToCStr( _proxy.type())         );
+    csync_set_module_property(csync, "proxy_host", _proxy.hostName().toAscii().data() );
+    csync_set_module_property(csync, "proxy_user", _proxy.user().toAscii().data()     );
+    csync_set_module_property(csync, "proxy_pwd" , _proxy.password().toAscii().data() );
 
     emitStateDb(csync);
 
@@ -362,12 +351,6 @@ void CSyncThread::startSync()
     }
 cleanup:
     csync_destroy(csync);
-
-    if( proxyInfo.proxyType ) delete[] proxyInfo.proxyType;
-    if( proxyInfo.proxyHost ) delete[] proxyInfo.proxyHost;
-    if( proxyInfo.proxyPort ) delete[] proxyInfo.proxyPort;
-    if( proxyInfo.proxyUser ) delete[] proxyInfo.proxyUser;
-    if( proxyInfo.proxyPwd  ) delete[] proxyInfo.proxyPwd ;
 
     /*
      * Attention: do not delete the wStat memory here. it is deleted in the
