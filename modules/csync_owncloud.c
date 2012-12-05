@@ -304,6 +304,7 @@ static int verify_sslcert(void *userdata, int failures,
     char buf[NE_ABUFSIZ];
     int ret = -1;
 
+    (void) userdata;
     (void) cert;
     memset( problem, 0, LEN );
 
@@ -564,7 +565,7 @@ static void ne_notify_status_cb (void *userdata, ne_session_status status,
                                  const ne_session_status_info *info)
 {
     struct transfer_context *tc = (struct transfer_context*) userdata;
-//     printf("ne_notify_status %i %s   %ld %ld\n", status, tc->clean_uri, info->sr.progress, info->sr.total);
+//     DEBUG_WEBDAV("ne_notify_status %i %s   %ld %ld\n", status, tc->clean_uri, info->sr.progress, info->sr.total);
 
     if (_progresscb && (status == ne_status_sending || status == ne_status_recving))
         _progresscb(tc->clean_uri, CSYNC_NOTIFY_PROGRESS, info->sr.progress, info->sr.total, dav_session.userdata);
@@ -1276,6 +1277,8 @@ static void install_content_reader( ne_request *req, void *userdata, const ne_st
 {
     const char *enc = NULL;
     struct transfer_context *writeCtx = userdata;
+
+    (void) status;
 
     if( !writeCtx ) {
         DEBUG_WEBDAV("Error: install_content_reader called without valid write context!");
