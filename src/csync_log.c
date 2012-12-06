@@ -68,7 +68,7 @@ static void csync_log_stderr(int verbosity,
 
     rc = current_timestring(1, date, sizeof(date));
     if (rc == 0) {
-        fprintf(stderr, "[%s, %d] %s:", date, verbosity, function);
+        fprintf(stderr, "[%s, %d] %s:", date+5, verbosity, function);
     } else {
         fprintf(stderr, "[%d] %s", verbosity, function);
     }
