@@ -16,6 +16,7 @@
 #define MIRALL_FOLDERWATCHER_WIN_H
 
 #include <QThread>
+#include <windows.h>
 
 namespace Mirall {
 
@@ -27,15 +28,19 @@ class WatcherThread : public QThread {
     Q_OBJECT
 public:
     WatcherThread(const QString &path) :
-        QThread(), _path(path) {}
+        QThread(), _path(path), _handle(0) {}
 
+    ~WatcherThread();
+
+protected:
     void run();
 
 signals:
-    void changed();
+    void changed(const QString &path);
 
 private:
     QString _path;
+    HANDLE _handle;
 };
 
 class FolderWatcherPrivate : public QObject {

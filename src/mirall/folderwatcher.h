@@ -112,12 +112,10 @@ protected:
 protected slots:
     // called when the manually process timer triggers
     void slotProcessTimerTimeout();
+    void changeDetected(const QString &f);
 
-    // TODO: this belongs with the inotify backend
 protected:
     QHash<QString, int> _pendingPathes;
-    friend class FolderWatcherPrivate;
-
 
 private:
     bool _eventsEnabled;
