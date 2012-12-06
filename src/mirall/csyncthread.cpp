@@ -191,6 +191,7 @@ void CSyncThread::startSync()
 
     // set module properties, mainly the proxy information.
     // do not use QLatin1String here because that has to be real const char* for C.
+    csync_set_module_property(csync, "csync_context", csync);
     csync_set_module_property(csync, "proxy_type", proxyTypeToCStr( _proxy.type())         );
     csync_set_module_property(csync, "proxy_host", _proxy.hostName().toAscii().data() );
     csync_set_module_property(csync, "proxy_user", _proxy.user().toAscii().data()     );
