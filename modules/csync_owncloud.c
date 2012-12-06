@@ -184,6 +184,19 @@ csync_progress_callback _progresscb;
 
 struct listdir_context *propfind_cache = 0;
 csync_vio_file_stat_t _stat_cache;
+/* id cache, cache the ETag: header of a GET request */
+struct { char *uri; char *id;  } _id_cache = { NULL, NULL };
+
+static void clean_caches() {
+    free_fetchCtx(propfind_cache);
+    propfind_cache = NULL;
+
+    SAFE_FREE(_stat_cache.name);
+    SAFE_FREE(_stat_cache.md5 );
+
+    SAFE_FREE(_id_cache.uri);
+    SAFE_FREE(_id_cache.id);
+}
 
 
 
@@ -1327,6 +1340,14 @@ static void install_content_reader( ne_request *req, void *userdata, const ne_st
                                      (void*) writeCtx );
         writeCtx->decompress = NULL;
     }
+
+    enc = ne_get_response_header( req, "ETag" );
+    if (enc && *enc) {
+        SAFE_FREE(_id_cache.uri);
+        SAFE_FREE(_id_cache.id);
+        _id_cache.uri = c_strdup(writeCtx->clean_uri);
+        _id_cache.id = c_strdup(enc);
+    }
 }
 
 static char*_lastDir = NULL;
@@ -1356,6 +1377,11 @@ static const char* owncloud_file_id( const char *path )
     char *buf          = NULL;
     const char *cbuf   = NULL;
     csync_vio_file_stat_t *fs = NULL;
+
+    if (_id_cache.uri && c_streq(path, _id_cache.uri)) {
+        return c_strdup(_id_cache.uri);
+    }
+
     bool  doHeadRequest= false; /* ownCloud server doesn't have good support for HEAD yet */
 
     if( doHeadRequest ) {
@@ -1674,14 +1700,14 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
 
     ne_request_destroy( writeCtx->req );
 
+    if( ret != -1 && strcmp( writeCtx->method, "PUT" ) == 0 ) {
+        // Clear the cache so get_id gets the updates
+        clean_caches();
+    }
+
     /* free mem. Note that the request mem is freed by the ne_request_destroy call */
     SAFE_FREE( writeCtx->clean_uri );
     SAFE_FREE( writeCtx );
-
-    // Clear the cache so get_id gets the updates
-    free_fetchCtx(propfind_cache);
-    propfind_cache = NULL;
-    fill_stat_cache(NULL);
 
     return ret;
 }
@@ -1951,6 +1977,9 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
         DEBUG_WEBDAV("Error in propatch: %d", rc);
         return -1;
     }
+
+    clean_caches();
+
     return 0;
 }
 
@@ -2037,10 +2066,7 @@ void vio_module_shutdown(csync_vio_method_t *method) {
 
     SAFE_FREE( _lastDir );
 
-    /* free stat memory */
-    free_fetchCtx(propfind_cache);
-    propfind_cache = NULL;
-    fill_stat_cache(NULL);
+    clean_caches();
 
     if( dav_session.ctx )
         ne_session_destroy( dav_session.ctx );
