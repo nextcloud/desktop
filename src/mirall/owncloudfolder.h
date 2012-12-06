@@ -69,22 +69,14 @@ private slots:
     void slotCSyncStarted();
     void slotCSyncError(const QString& );
     void slotCSyncFinished();
-    void slotThreadTreeWalkResult(const SyncFileItemVector &, const WalkStats& );
-
-    void slotPollTimerRemoteCheck();
 
 private:
     QString      _secondPath;
     QThread     *_thread;
     CSyncThread *_csync;
-    bool         _localCheckOnly;
-    bool         _localFileChanges;
-    int          _pollTimerCnt;
-    int          _pollTimerExceed;
     QStringList  _errors;
     bool         _csyncError;
     bool         _wipeDb;
-    ulong        _lastSeenFiles;
     QVector<SyncFileItem> _items;
 };
 

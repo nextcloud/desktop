@@ -42,47 +42,17 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
     : Folder(alias, path, secondPath, parent)
     , _secondPath(secondPath)
     , _thread(0)
-    , _localCheckOnly( false )
-    , _localFileChanges( false )
     , _csync(0)
-    , _pollTimerCnt(0)
     , _csyncError(false)
     , _wipeDb(false)
-    , _lastSeenFiles(0)
 {
-#if defined(USE_INOTIFY) || defined (Q_OS_MAC)
     qDebug() << "****** ownCloud folder using watcher *******";
     // The folder interval is set in the folder parent class.
-#else
-    /* If local polling is used, the polltimer of class Folder has to fire more
-     * often
-     * Set a local poll time of 2000 milliseconds, which results in a 30 seconds
-     * remote poll interval, defined in slotPollTimerRemoteCheck
-     */
-
-    MirallConfigFile cfgFile;
-
-    _pollTimer->stop();
-    connect( _pollTimer, SIGNAL(timeout()), this, SLOT(slotPollTimerRemoteCheck()));
-    setPollInterval( cfgFile.localPollInterval()- 500 + (int)( 1000.0*qrand()/(RAND_MAX+1.0) ) );
-    _pollTimerExceed = cfgFile.pollTimerExceedFactor();
-
-    _pollTimerCnt = _pollTimerExceed-1; // start the syncing quickly!
-    _pollTimer->start();
-    qDebug() << "****** ownCloud folder using local poll *******";
-#endif
 }
 
 ownCloudFolder::~ownCloudFolder()
 {
 
-}
-
-/* Only used if INotify is not available. */
-void ownCloudFolder::slotPollTimerRemoteCheck()
-{
-    _pollTimerCnt++;
-    qDebug() << "**** Poll Timer for Folder " << alias() << " increase: " << _pollTimerCnt;
 }
 
 bool ownCloudFolder::isBusy() const
@@ -139,27 +109,15 @@ void ownCloudFolder::startSync(const QStringList &pathList)
         url.setScheme( QLatin1String("ownclouds") );
     }
 
-#if defined(USE_INOTIFY) || defined (Q_OS_MAC)
-    // if there is a watcher and no polling, ever sync is remote.
-    _localCheckOnly = false;
     _syncResult.clearErrors();
-#else
-    _localCheckOnly = true;
-    if( _pollTimerCnt >= _pollTimerExceed || _localFileChanges ) {
-        _localCheckOnly = false;
-        _pollTimerCnt = 0;
-        _localFileChanges = false;
-        _syncResult.clearErrors();
-    }
-#endif
-    _syncResult.setLocalRunOnly( _localCheckOnly );
+    // we now have watchers for everything, so every sync is remote.
+    _syncResult.setLocalRunOnly( false );
     Folder::startSync( pathList );
 
 
-    qDebug() << "*** Start syncing url to ownCloud: " << url.toString() << ", with localOnly: " << _localCheckOnly;
-
+    qDebug() << "*** Start syncing url to ownCloud: " << url.toString();
     _thread = new QThread(this);
-    _csync = new CSyncThread( path(), url.toString(), _localCheckOnly );
+    _csync = new CSyncThread( path(), url.toString() );
     _csync->moveToThread(_thread);
 
     QList<QNetworkProxy> proxies = QNetworkProxyFactory::proxyForQuery(QUrl(cfgFile.ownCloudUrl()));
@@ -177,8 +135,6 @@ void ownCloudFolder::startSync(const QStringList &pathList)
 
     qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
     qRegisterMetaType<WalkStats>("WalkStats");
-    connect( _csync, SIGNAL(treeWalkResult(SyncFileItemVector,WalkStats)),
-             this, SLOT(slotThreadTreeWalkResult(SyncFileItemVector, WalkStats)), Qt::QueuedConnection);
     _thread->start();
     QMetaObject::invokeMethod(_csync, "startSync", Qt::QueuedConnection);
 
@@ -188,39 +144,6 @@ void ownCloudFolder::slotCSyncStarted()
 {
     qDebug() << "    * csync thread started";
     emit syncStarted();
-}
-
-void ownCloudFolder::slotThreadTreeWalkResult(const SyncFileItemVector& items, const WalkStats& wStats )
-{
-    _items = items;
-    qDebug() << "Seen files: " << wStats.seenFiles;
-
-    /* check if there are happend changes in the file system */
-    qDebug() << "New     files: " << wStats.newFiles;
-    qDebug() << "Updated files: " << wStats.eval;
-    qDebug() << "Walked  files: " << wStats.seenFiles;
-    qDebug() << "Eval files: "    << wStats.eval;
-    qDebug() << "Removed files: " << wStats.removed;
-    qDebug() << "Renamed files: " << wStats.renamed;
-
-    if( ! _localCheckOnly ) _lastSeenFiles = 0;
-    _localFileChanges = false;
-
-#if defined(USE_INOTIFY) || defined (Q_OS_MAC)
-    if( _lastSeenFiles > 0 && _lastSeenFiles != wStats.seenFiles ) {
-        qDebug() << "*** last seen files different from currently seen number " << _lastSeenFiles << "<>" << wStats.seenFiles << " => full Sync needed";
-        _localFileChanges = true;
-    }
-    if( (wStats.newFiles + wStats.eval + wStats.removed + wStats.renamed) > 0 ) {
-         qDebug() << "*** Local changes, lets do a full sync!" ;
-         _localFileChanges = true;
-    }
-    if( _pollTimerCnt < _pollTimerExceed ) {
-        qDebug() << "     *** No local changes, finalize, pollTimerCounter is "<< _pollTimerCnt ;
-    }
-#endif
-    _lastSeenFiles = wStats.seenFiles;
-
 }
 
 void ownCloudFolder::slotCSyncError(const QString& err)
@@ -244,7 +167,6 @@ void ownCloudFolder::slotCSyncFinished()
         _syncResult.setStatus(SyncResult::Success);
     }
 
-    if( ! _localCheckOnly ) _lastSeenFiles = 0;
     if( _thread && _thread->isRunning() ) {
         _thread->quit();
     }
@@ -330,6 +252,7 @@ void ownCloudFolder::wipe()
     _wipeDb = false;
 }
 
+// TOOD: not called anywhere
 SyncFileStatus ownCloudFolder::fileStatus( const QString& file )
 {
     if( file.isEmpty() ) return STATUS_NONE;

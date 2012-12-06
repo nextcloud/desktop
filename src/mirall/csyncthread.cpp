@@ -71,95 +71,9 @@ walkStats_s::walkStats_s() {
 
 }
 
-
-int CSyncThread::recordStats( TREE_WALK_FILE* file )
-{
-    if( ! file ) return -1;
-    _mutex.lock();
-
-    _walkStats.seenFiles++;
-
-    switch(file->instruction) {
-    case CSYNC_INSTRUCTION_NONE:
-
-        break;
-    case CSYNC_INSTRUCTION_EVAL:
-        _walkStats.eval++;
-        break;
-    case CSYNC_INSTRUCTION_REMOVE:
-        _walkStats.removed++;
-        break;
-    case CSYNC_INSTRUCTION_RENAME:
-        _walkStats.renamed++;
-        break;
-    case CSYNC_INSTRUCTION_NEW:
-        _walkStats.newFiles++;
-        break;
-    case CSYNC_INSTRUCTION_CONFLICT:
-        _walkStats.conflicts++;
-        break;
-    case CSYNC_INSTRUCTION_IGNORE:
-        _walkStats.ignores++;
-        break;
-    case CSYNC_INSTRUCTION_SYNC:
-        _walkStats.sync++;
-        break;
-    case CSYNC_INSTRUCTION_STAT_ERROR:
-    case CSYNC_INSTRUCTION_ERROR:
-        /* instructions for the propagator */
-    case CSYNC_INSTRUCTION_DELETED:
-    case CSYNC_INSTRUCTION_UPDATED:
-        _walkStats.error++;
-        _walkStats.errorType = WALK_ERROR_INSTRUCTIONS;
-        break;
-    default:
-        _walkStats.error++;
-        _walkStats.errorType = WALK_ERROR_WALK;
-        break;
-    }
-
-    int re = 0;
-    // qDebug() << _walkStats.seenFiles << ". Path: " << file->path << ": uid= " << file->uid << " - type: " << file->type;
-    if( !( _walkStats.errorType == WALK_ERROR_NONE || _walkStats.errorType == WALK_ERROR_DIR_PERMS )) {
-        re = -1;
-    }
-    _mutex.unlock();
-
-    return re;
-}
-
-int CSyncThread::treewalk( TREE_WALK_FILE* file, void *data )
-{
-    int re = static_cast<CSyncThread*>(data)->recordStats( file );
-    if( re > -1 )
-        return static_cast<CSyncThread*>(data)->treewalkFile( file );
-    return -1;
-}
-
-int CSyncThread::treewalkFile( TREE_WALK_FILE *file )
-{
-    if( ! file ) return -1;
-    SyncFileItem item;
-    item.file = QString::fromUtf8( file->path );
-    item.instruction = file->instruction;
-
-    QFileInfo fi( _source, item.file );
-    if( !(fi.isWritable() && fi.isExecutable()) ) {
-        _walkStats.dirPermErrors++;
-    }
-
-    _mutex.lock();
-    _syncedItems.append(item);
-    _mutex.unlock();
-
-    return 0;
-}
-
-CSyncThread::CSyncThread(const QString &source, const QString &target, bool localCheckOnly)
-
+CSyncThread::CSyncThread(const QString &source, const QString &target)
     : _source(source)
     , _target(target)
-    , _localCheckOnly( localCheckOnly )
 
 {
     _mutex.lock();
@@ -196,7 +110,6 @@ void CSyncThread::startSync()
 {
     qDebug() << "starting to sync " << qApp->thread() << QThread::currentThread();
     CSYNC *csync;
-    QTime walkTime;
 
     emit(started());
 
@@ -210,7 +123,6 @@ void CSyncThread::startSync()
     _csyncConfigDir = QString::fromUtf8( csync_get_config_dir( csync ));
     _mutex.unlock();
 
-    qDebug() << "## CSync Thread local only: " << _localCheckOnly;
     csync_set_auth_callback( csync, getauth );
     csync_set_log_callback( csync, csyncLogCatcher );
 
@@ -230,11 +142,7 @@ void CSyncThread::startSync()
     QTime t;
     t.start();
 
-    _mutex.lock();
-    if( _localCheckOnly ) {
-        csync_set_local_only( csync, true );
-    }
-    _mutex.unlock();
+    csync_set_log_verbosity(csync, 10);
 
     if( csync_init(csync) < 0 ) {
         CSYNC_ERROR_CODE err = csync_get_error( csync );
@@ -312,48 +220,13 @@ void CSyncThread::startSync()
 
     csync_set_userdata(csync, this);
 
-    walkTime.start();
-    if( csync_walk_local_tree(csync, &treewalk, 0) < 0 ) {
-        qDebug() << "Error in treewalk.";
-        if( _walkStats.errorType == WALK_ERROR_WALK ) {
-            emit csyncError(tr("CSync encountered an error while examining the file system.\n"
-                               "Syncing is not possible."));
-        } else if( _walkStats.errorType == WALK_ERROR_INSTRUCTIONS ) {
-            emit csyncError(tr("CSync update generated a strange instruction.\n"
-                               "Please write a bug report."));
-        }
-        emit csyncError(tr("Local filesystem problems. Better disable Syncing and check."));
+    if( csync_reconcile(csync) < 0 ) {
+        emit csyncError(tr("CSync reconcile failed."));
         goto cleanup;
-    } else {
-        // only warn, do not stop the sync process.
-        if( _walkStats.errorType == WALK_ERROR_DIR_PERMS ) {
-            emit csyncError(tr("The local filesystem has %1 write protected directories."
-                               "That can hinder successful syncing.<p/>"
-                               "Please make sure that all local directories are writeable.").arg(_walkStats.dirPermErrors));
-        }
     }
-
-    // emit the treewalk results.
-    emit treeWalkResult(_syncedItems, _walkStats);
-
-    _mutex.lock();
-    if( _localCheckOnly ) {
-        _mutex.unlock();
-        qDebug() << " ..... Local only walk finished: " << walkTime.elapsed();
-        // we have to go out here as its local check only.
+    if( csync_propagate(csync) < 0 ) {
+        emit csyncError(tr("File exchange with ownCloud failed. Sync was stopped."));
         goto cleanup;
-    } else {
-        _mutex.unlock();
-        // check if we can write all over.
-
-        if( csync_reconcile(csync) < 0 ) {
-            emit csyncError(tr("CSync reconcile failed."));
-            goto cleanup;
-        }
-        if( csync_propagate(csync) < 0 ) {
-            emit csyncError(tr("File exchange with ownCloud failed. Sync was stopped."));
-            goto cleanup;
-        }
     }
 cleanup:
     csync_destroy(csync);

@@ -69,7 +69,7 @@ class CSyncThread : public QObject
 {
     Q_OBJECT
 public:
-    CSyncThread(const QString &source, const QString &target, bool = false);
+    CSyncThread(const QString &source, const QString &target);
     ~CSyncThread();
 
     static void setConnectionDetails( const QString&, const QString&, const QNetworkProxy& );
@@ -78,7 +78,6 @@ public:
     Q_INVOKABLE void startSync();
 
 signals:
-    void treeWalkResult(const SyncFileItemVector&, const WalkStats&);
     void csyncError( const QString& );
 
     void csyncStateDbFile( const QString& );
@@ -88,10 +87,7 @@ signals:
     void started();
 
 private:
-    static int treewalk( TREE_WALK_FILE* file, void *data );
-    int recordStats( TREE_WALK_FILE* file);
     void emitStateDb( CSYNC *csync );
-    int treewalkFile( TREE_WALK_FILE* );
 
     static int getauth(const char *prompt,
                 char *buf,
@@ -110,10 +106,6 @@ private:
 
     QString _source;
     QString _target;
-    bool    _localCheckOnly;
-
-    QVector <SyncFileItem> _syncedItems;
-    WalkStats _walkStats;
 };
 }
 

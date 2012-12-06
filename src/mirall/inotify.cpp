@@ -16,9 +16,7 @@
  */
 #include "config.h"
 
-#ifdef USE_INOTIFY
 #include <sys/inotify.h>
-#endif
 
 #include "inotify.h"
 #include "mirall/folder.h"

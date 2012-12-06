@@ -48,7 +48,6 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
     QObject::connect(_pollTimer, SIGNAL(timeout()), this, SLOT(slotPollTimerTimeout()));
     _pollTimer->start();
 
-#if defined(USE_INOTIFY) || defined (Q_OS_MAC)
     _watcher = new Mirall::FolderWatcher(path, this);
 
     MirallConfigFile cfg;
@@ -57,7 +56,6 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
 
     QObject::connect(_watcher, SIGNAL(folderChanged(const QStringList &)),
                      SLOT(slotChanged(const QStringList &)));
-#endif
     QObject::connect(this, SIGNAL(syncStarted()),
                      SLOT(slotSyncStarted()));
     QObject::connect(this, SIGNAL(syncFinished(const SyncResult &)),
@@ -153,9 +151,7 @@ bool Folder::syncEnabled() const
 void Folder::setSyncEnabled( bool doit )
 {
   _enabled = doit;
-#if defined(USE_INOTIFY) || defined (Q_OS_MAC)
   _watcher->setEventsEnabled( doit );
-#endif
   if( doit && ! _pollTimer->isActive() ) {
       _pollTimer->start();
   }
@@ -217,12 +213,10 @@ void Folder::incrementErrorCount()
   // of the watcher is doubled.
   _errorCount++;
   if( _errorCount > 1 ) {
-#if defined(USE_INOTIFY) || defined (Q_OS_MAC)
     int interval = _watcher->eventInterval();
     int newInt = 2*interval;
     qDebug() << "Set new watcher interval to " << newInt;
     _watcher->setEventInterval( newInt );
-#endif
     _errorCount = 0;
   }
 }
@@ -262,9 +256,7 @@ void Folder::startSync( const QStringList &pathList )
 void Folder::slotPollTimerTimeout()
 {
     qDebug() << "* Polling" << alias() << "for changes. Ignoring all pending events until now";
-#if defined(USE_INOTIFY) || defined (Q_OS_MAC)
     _watcher->clearPendingEvents();
-#endif
     evaluateSync(QStringList());
 }
 
@@ -283,16 +275,12 @@ void Folder::slotChanged(const QStringList &pathList)
 void Folder::slotSyncStarted()
 {
     // disable events until syncing is done
-#if defined(USE_INOTIFY) || defined (Q_OS_MAC)
     _watcher->setEventsEnabled(false);
-#endif
 }
 
 void Folder::slotSyncFinished(const SyncResult &result)
 {
-#if defined(USE_INOTIFY) || defined (Q_OS_MAC)
     _watcher->setEventsEnabled(true);
-#endif
 
     qDebug() << "OO folder slotSyncFinished: result: " << int(result.status()) << " local: " << result.localRunOnly();
     emit syncStateChange();
