@@ -96,6 +96,10 @@ IF( WIN32 )
     set(libsync_SRCS ${libsync_SRCS} mirall/folderwatcher_win.cpp)
     set(libsync_HEADERS ${libsync_HEADERS} mirall/folderwatcher_win.h)
 ENDIF()
+IF( APPLE )
+    set(libsync_SRCS ${libsync_SRCS} mirall/folderwatcher_mac.cpp)
+ENDIF()
+
 
 qt4_wrap_cpp(syncMoc ${libsync_HEADERS})
 

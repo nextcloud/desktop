@@ -26,11 +26,6 @@
 
 namespace Mirall {
 
-void FolderWatcher::setupBackend()
-{
-
-}
-
 FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p)
     : parent(p)
 {
@@ -43,7 +38,6 @@ FolderWatcherPrivate::~FolderWatcherPrivate()
     FSEventStreamStop(stream);
     FSEventStreamInvalidate(stream);
 }
-
 
 static void callback(
         ConstFSEventStreamRef streamRef,
