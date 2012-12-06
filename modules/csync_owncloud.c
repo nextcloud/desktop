@@ -242,22 +242,28 @@ static void set_errno_from_http_errcode( int err ) {
     case 207:           /* Multi-Status */
     case 304:           /* Not Modified */
         new_errno = 0;
+        break;
     case 401:           /* Unauthorized */
     case 402:           /* Payment Required */
     case 407:           /* Proxy Authentication Required */
         new_errno = EPERM;
+        break;
     case 301:           /* Moved Permanently */
     case 303:           /* See Other */
     case 404:           /* Not Found */
     case 410:           /* Gone */
         new_errno = ENOENT;
+        break;
     case 408:           /* Request Timeout */
     case 504:           /* Gateway Timeout */
         new_errno = EAGAIN;
+        break;
     case 423:           /* Locked */
         new_errno = EACCES;
+        break;
     case 405:
         new_errno = EEXIST;  /* Method Not Allowed */
+        break;
     case 400:           /* Bad Request */
     case 403:           /* Forbidden */
     case 409:           /* Conflict */
@@ -268,9 +274,11 @@ static void set_errno_from_http_errcode( int err ) {
     case 424:           /* Failed Dependency */
     case 501:           /* Not Implemented */
         new_errno = EINVAL;
+        break;
     case 413:           /* Request Entity Too Large */
     case 507:           /* Insufficient Storage */
         new_errno = ENOSPC;
+        break;
     case 206:           /* Partial Content */
     case 300:           /* Multiple Choices */
     case 302:           /* Found */
@@ -286,6 +294,7 @@ static void set_errno_from_http_errcode( int err ) {
     case 503:           /* Service Unavailable */
     case 505:           /* HTTP Version Not Supported */
         new_errno = EIO;
+        break;
     default:
         new_errno = EIO;
     }
@@ -293,13 +302,22 @@ static void set_errno_from_http_errcode( int err ) {
     errno = new_errno;
 }
 
-static void set_errno_from_session() {
+static int http_result_code_from_session() {
     const char *p = ne_get_error( dav_session.ctx );
     char *q;
     int err;
 
     err = strtol(p, &q, 10);
     if (p == q) {
+        err = EIO;
+    }
+    return err;
+}
+
+static void set_errno_from_session() {
+    int err = http_result_code_from_session();
+
+    if( err = EIO ) {
         errno = EIO;
     } else {
         set_errno_from_http_errcode(err);
