@@ -1009,6 +1009,11 @@ bool csync_file_known( char *statedb_file, const char* url ) {
 
 int csync_set_module_property(CSYNC* ctx, const char* key, void* value)
 {
+    if (!(ctx->status & CSYNC_STATUS_INIT)) {
+        ctx->error_code = CSYNC_ERR_UNSPEC;
+        fprintf(stderr, "This function must be called after initialization.");
+        return -1;
+    }
     return csync_vio_set_property(ctx, key, value);
 }
 
