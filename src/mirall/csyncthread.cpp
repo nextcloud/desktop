@@ -18,6 +18,12 @@
 #include "mirall/theme.h"
 #include "mirall/logger.h"
 
+#ifdef Q_OS_WIN
+#include <windows.h>
+#else
+#include <unistd.h>
+#endif
+
 #include <QDebug>
 #include <QDir>
 #include <QMutexLocker>
@@ -360,7 +366,11 @@ cleanup:
     qDebug() << "CSync run took " << t.elapsed() << " Milliseconds";
 
     qDebug() << "CSync Waiting a bit to let OS finish up IO";
-    sleep(2);
+#ifdef Q_OS_WIN
+    Sleep(2000);
+#else
+    ::sleep(2);
+#endif
     qDebug() << "CSync End Waiting";
 
     emit(finished());
