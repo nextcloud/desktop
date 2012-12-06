@@ -39,6 +39,7 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.vio.main"
 
 #ifdef _WIN32
+#include <wchar.h>
 #define MODULE_EXTENSION "dll"
 #else
 #define MODULE_EXTENSION "so"
@@ -342,7 +343,7 @@ ssize_t csync_vio_write(CSYNC *ctx, csync_vio_handle_t *fhandle, const void *buf
 }
 
 int csync_vio_sendfile(CSYNC *ctx, csync_vio_handle_t *sfp, csync_vio_handle_t *dst) {
-    int rc;
+    int rc = 0;
 
     switch(ctx->replica) {
       case REMOTE_REPLICA:
@@ -351,8 +352,6 @@ int csync_vio_sendfile(CSYNC *ctx, csync_vio_handle_t *sfp, csync_vio_handle_t *
       case LOCAL_REPLICA:
         /* Not implemented, go for the read/write syntax instead. */
         rc = ctx->module.method->sendfile(dst->method_handle, sfp->method_handle);
-        break;
-      default:
         break;
     }
 
@@ -368,8 +367,6 @@ off_t csync_vio_lseek(CSYNC *ctx, csync_vio_handle_t *fhandle, off_t offset, int
       break;
     case LOCAL_REPLICA:
       ro = csync_vio_local_lseek(fhandle->method_handle, offset, whence);
-      break;
-    default:
       break;
   }
 
