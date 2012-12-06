@@ -931,6 +931,7 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
     time_t now;
     time_t time_diff;
     time_t time_diff_delta;
+    const ne_status *req_status = NULL;
 
     curi = _cleanPath( uri );
 
@@ -956,7 +957,6 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
     /* do a propfind request and parse the results in the results function, set as callback */
     hdl = ne_propfind_create(dav_session.ctx, curi, depth);
 
-    const ne_status *req_status = NULL;
     if(hdl) {
         ret = ne_propfind_named(hdl, ls_props, results, fetchCtx);
         request = ne_propfind_get_request( hdl );
@@ -1360,7 +1360,6 @@ static const char* owncloud_file_id( const char *path )
 
     if( doHeadRequest ) {
         int neon_stat;
-        const ne_status *status;
         /* Perform an HEAD request to the resource. HEAD delivers the
          * ETag header back. */
         req = ne_request_create(dav_session.ctx, "HEAD", uri);
@@ -1752,6 +1751,7 @@ static csync_vio_file_stat_t *owncloud_readdir(csync_vio_method_handle_t *dhandl
 
     while( fetchCtx && fetchCtx->currResource ) {
         resource* currResource = fetchCtx->currResource;
+        char *escaped_path = NULL;
 
         /* set pointer to next element */
         fetchCtx->currResource = fetchCtx->currResource->next;
@@ -1761,7 +1761,7 @@ static csync_vio_file_stat_t *owncloud_readdir(csync_vio_method_handle_t *dhandl
          * spaces escaped), while the fetchCtx->target is fully escaped.
          * See http://bugs.owncloud.org/thebuggenie/owncloud/issues/oc-613
          */
-        char *escaped_path = ne_path_escape( currResource->uri );
+        escaped_path = ne_path_escape( currResource->uri );
         if (ne_path_compare(fetchCtx->target, escaped_path) != 0) {
             csync_vio_file_stat_t* lfs = resourceToFileStat(currResource);
             fill_stat_cache(lfs);
