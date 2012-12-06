@@ -98,6 +98,7 @@ struct csync_s {
     char *uri;
     c_rbtree_t *tree;
     c_list_t *list;
+    c_list_t *id_list;
     enum csync_replica_e type;
   } local;
 
