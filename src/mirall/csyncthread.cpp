@@ -142,8 +142,6 @@ void CSyncThread::startSync()
     QTime t;
     t.start();
 
-    csync_set_log_verbosity(csync, 10);
-
     if( csync_init(csync) < 0 ) {
         CSYNC_ERROR_CODE err = csync_get_error( csync );
         QString errStr;
