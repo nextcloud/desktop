@@ -84,7 +84,7 @@ void CredentialStore::fetchCredentials()
     MirallConfigFile cfgFile;
     MirallConfigFile::CredentialType t;
 
-    if( _tries++ == 3 ) {
+    if( ++_tries == 3 ) {
         qDebug() << "Too many attempts to enter password!";
         _state = TooManyAttempts;
         return;
@@ -117,7 +117,6 @@ void CredentialStore::fetchCredentials()
         break;
     }
     case MirallConfigFile::KeyChain: {
-        /* Qt Keychain is not yet implemented. */
 #ifdef WITH_QTKEYCHAIN
         _state = AsyncFetching;
         if( !_user.isEmpty() ) {
