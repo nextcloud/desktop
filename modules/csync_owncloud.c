@@ -52,7 +52,7 @@
 #include "csync_log.h"
 
 #if 1 || defined(NDEBUG)
-#define DEBUG_WEBDAV(...)
+#define DEBUG_WEBDAV(...) {printf(__VA_ARGS__); printf("\n");}
 #else // FIXME: can't use CSYNC_LOG here because there is no ctx
 #define DEBUG_WEBDAV(...) CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, __VA_ARGS__)
 #endif
@@ -192,45 +192,6 @@ csync_vio_file_stat_t _stat_cache;
 char _buffer[PUT_BUFFER_SIZE];
 
 /* ***************************************************************************** */
-static void set_errno_from_neon_errcode( int neon_code ) {
-
-    switch(neon_code) {
-    case NE_OK: /* Success */
-        errno = 0;
-        break;
-    case NE_ERROR: /* Generic error; use ne_get_error(session) for message */
-        errno = ERRNO_GENERAL_ERROR;
-        break;
-    case NE_LOOKUP:  /* Server or proxy hostname lookup failed */
-        errno = ERRNO_LOOKUP_ERROR;
-        break;
-    case NE_AUTH:     /* User authentication failed on server */
-        errno = ERRNO_USER_UNKNOWN_ON_SERVER;
-        break;
-    case NE_PROXYAUTH:  /* User authentication failed on proxy */
-        errno = ERRNO_PROXY_AUTH;
-        break;
-    case NE_CONNECT:  /* Could not connect to server */
-        errno = ERRNO_CONNECT;
-        break;
-    case NE_TIMEOUT:  /* Connection timed out */
-        errno = ERRNO_TIMEOUT;
-        break;
-    case NE_FAILED:   /* The precondition failed */
-        errno = ERRNO_PRECONDITION;
-        break;
-    case NE_RETRY:    /* Retry request (ne_end_request ONLY) */
-        errno = ERRNO_RETRY;
-        break;
-
-    case NE_REDIRECT: /* See ne_redirect.h */
-        errno = ERRNO_REDIRECT;
-        break;
-    default:
-        errno = ERRNO_GENERAL_ERROR;
-    }
-}
-
 static void set_errno_from_http_errcode( int err ) {
     int new_errno = 0;
 
@@ -324,6 +285,62 @@ static void set_errno_from_session() {
     } else {
         set_errno_from_http_errcode(err);
     }
+}
+
+static void set_errno_from_neon_errcode( int neon_code ) {
+
+    switch(neon_code) {
+    case NE_OK:     /* Success, but still the possiblity of problems */
+    case NE_ERROR:  /* Generic error; use ne_get_error(session) for message */
+        set_errno_from_session(); /* Something wrong with http communication */
+        break;
+    case NE_LOOKUP:  /* Server or proxy hostname lookup failed */
+        errno = ERRNO_LOOKUP_ERROR;
+        break;
+    case NE_AUTH:     /* User authentication failed on server */
+        errno = ERRNO_USER_UNKNOWN_ON_SERVER;
+        break;
+    case NE_PROXYAUTH:  /* User authentication failed on proxy */
+        errno = ERRNO_PROXY_AUTH;
+        break;
+    case NE_CONNECT:  /* Could not connect to server */
+        errno = ERRNO_CONNECT;
+        break;
+    case NE_TIMEOUT:  /* Connection timed out */
+        errno = ERRNO_TIMEOUT;
+        break;
+    case NE_FAILED:   /* The precondition failed */
+        errno = ERRNO_PRECONDITION;
+        break;
+    case NE_RETRY:    /* Retry request (ne_end_request ONLY) */
+        errno = ERRNO_RETRY;
+        break;
+
+    case NE_REDIRECT: /* See ne_redirect.h */
+        errno = ERRNO_REDIRECT;
+        break;
+    default:
+        errno = ERRNO_GENERAL_ERROR;
+    }
+}
+
+
+/* cleanPath to return an escaped path of an uri */
+static char *_cleanPath( const char* uri ) {
+    int rc = 0;
+    char *path = NULL;
+    char *re = NULL;
+
+    rc = c_parse_uri( uri, NULL, NULL, NULL, NULL, NULL, &path );
+    if( rc  < 0 ) {
+        DEBUG_WEBDAV("Unable to cleanPath %s", uri ? uri: "<zero>" );
+        re = NULL;
+    } else {
+        re = ne_path_escape( path );
+    }
+    DEBUG_WEBDAV("------------> Path in cleanpath: %s", path );
+    SAFE_FREE( path );
+    return re;
 }
 
 /*
@@ -606,7 +623,7 @@ static void request_created_hook(ne_request *req, void *userdata,
     if( !req ) return;
 
     if(dav_session.session_key) {
-        DEBUG_WEBDAV("Setting PHPSESSID to %s", dav_session.session_key);
+        /* DEBUG_WEBDAV("Setting PHPSESSID to %s", dav_session.session_key); */
         ne_add_request_header(req, "Cookie", dav_session.session_key);
     }
 
@@ -900,10 +917,8 @@ static void results(void *userdata,
 
 /*
  * fetches a resource list from the WebDAV server. This is equivalent to list dir.
- *
- * takes ownership of curi
  */
-static struct listdir_context *fetch_resource_list(char *curi, int depth)
+static struct listdir_context *fetch_resource_list(const char *uri, int depth)
 {
     struct listdir_context *fetchCtx;
     int ret = 0;
@@ -911,10 +926,13 @@ static struct listdir_context *fetch_resource_list(char *curi, int depth)
     ne_request *request = NULL;
     const char *date_header = NULL;
     const char *content_type = NULL;
+    char *curi = NULL;
     time_t server_time;
     time_t now;
     time_t time_diff;
     time_t time_diff_delta;
+
+    curi = _cleanPath( uri );
 
     if (propfind_cache) {
         if (c_streq(curi, propfind_cache->target)) {
@@ -938,16 +956,15 @@ static struct listdir_context *fetch_resource_list(char *curi, int depth)
     /* do a propfind request and parse the results in the results function, set as callback */
     hdl = ne_propfind_create(dav_session.ctx, curi, depth);
 
-    if(hdl)
+    const ne_status *req_status = NULL;
+    if(hdl) {
         ret = ne_propfind_named(hdl, ls_props, results, fetchCtx);
-
-    if( ret == NE_OK ) {
-        const ne_status *req_status = NULL;
-
-        fetchCtx->currResource = fetchCtx->list;
         request = ne_propfind_get_request( hdl );
         req_status = ne_get_status( request );
+    }
 
+    if( ret == NE_OK ) {
+        fetchCtx->currResource = fetchCtx->list;
         /* Check the request status. */
         if( req_status->klass != 2 ) {
             set_errno_from_http_errcode(req_status->code);
@@ -957,7 +974,11 @@ static struct listdir_context *fetch_resource_list(char *curi, int depth)
         }
         DEBUG_WEBDAV("Simple propfind result code %d.", req_status->code);
     } else {
-        set_errno_from_neon_errcode(ret);
+        if( ret == NE_ERROR && req_status->code == 404) {
+            errno = ENOENT;
+        } else {
+            set_errno_from_neon_errcode(ret);
+        }
     }
 
     if( ret == NE_OK ) {
@@ -1088,23 +1109,6 @@ static csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
     return lfs;
 }
 
-/* cleanPath to return an escaped path of an uri */
-static char *_cleanPath( const char* uri ) {
-    int rc = 0;
-    char *path = NULL;
-    char *re = NULL;
-
-    rc = c_parse_uri( uri, NULL, NULL, NULL, NULL, NULL, &path );
-    if( rc  < 0 ) {
-        DEBUG_WEBDAV("Unable to cleanPath %s", uri ? uri: "<zero>" );
-        re = NULL;
-    } else {
-        re = ne_path_escape( path );
-    }
-    SAFE_FREE( path );
-    return re;
-}
-
 /* WebDAV does not deliver permissions. Set a default here. */
 static int _stat_perms( int type ) {
     int ret = 0;
@@ -1155,7 +1159,6 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
      */
     csync_vio_file_stat_t *lfs = NULL;
     struct listdir_context  *fetchCtx = NULL;
-    char *curi = NULL;
     char *decodedUri = NULL;
     char strbuf[PATH_MAX +1];
     int len = 0;
@@ -1190,8 +1193,8 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
     }
 
     /* fetch data via a propfind call. */
-    curi = _cleanPath( uri );
-    fetchCtx = fetch_resource_list( curi, NE_DEPTH_ONE);
+    fetchCtx = fetch_resource_list( uri, NE_DEPTH_ONE);
+    DEBUG_WEBDAV("=> Errno after fetch resource list for %s: %d", uri, errno);
     if (!fetchCtx) {
         return -1;
     }
@@ -1362,17 +1365,7 @@ static const char* owncloud_file_id( const char *path )
          * ETag header back. */
         req = ne_request_create(dav_session.ctx, "HEAD", uri);
         neon_stat = ne_request_dispatch(req);
-        if( neon_stat != NE_OK ) {
-            set_errno_from_neon_errcode( neon_stat );
-        } else {
-            status = ne_get_status(req);
-            if( status->klass != 2 ) {
-                DEBUG_WEBDAV("HEAD request failed: %s!", status->reason_phrase);
-                set_errno_from_http_errcode( status->code );
-            } else {
-                DEBUG_WEBDAV("http request all cool, result code %d", status->code);
-            }
-        }
+        set_errno_from_neon_errcode( neon_stat );
 
         header = ne_get_response_header(req, "etag");
     }
@@ -1580,25 +1573,25 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
 
                 /* Start the request. */
                 neon_stat = ne_request_dispatch( write_ctx->req );
-                if( neon_stat != NE_OK ) {
-                    set_errno_from_neon_errcode( neon_stat );
-                    /* FIXME: The -1 aborts the whole sync. Correct? */
-                    rc = -1;
-                } else {
-                    status = ne_get_status( request );
-                    if( status->klass != 2 ) {
-                        DEBUG_WEBDAV("sendfile request failed with http status %d!", status->code);
-                        set_errno_from_http_errcode( status->code );
-                        /* decide if soft error or hard error that stops the whole sync. */
-                        if( status->klass == 4 /* Forbidden and stuff, soft error */ ) {
-                            rc = 1;
-                        } else {
-                            rc = -1;
-                        }
+                set_errno_from_neon_errcode( neon_stat );
+
+                status = ne_get_status( request );
+                if( status->klass != 2 ) {
+                    DEBUG_WEBDAV("sendfile request failed with http status %d!", status->code);
+                    set_errno_from_http_errcode( status->code );
+                    /* decide if soft error or hard error that stops the whole sync. */
+                    if( status->klass == 4 /* Forbidden and stuff, soft error */ ) {
+                        rc = 1;
                     } else {
-                        DEBUG_WEBDAV("http request all cool, result code %d", status->code);
+                        rc = -1;
                     }
+                    if( status->klass == 5 /* Server errors and such */ ) {
+                        rc = -1; /* Abort. */
+                    }
+                } else {
+                    DEBUG_WEBDAV("http request all cool, result code %d", status->code);
                 }
+
                 if (_progresscb) {
                     ne_set_notifier(dav_session.ctx, 0, 0);
                     _progresscb(write_ctx->clean_uri, rc != NE_OK ? CSYNC_NOTFY_ERROR : CSYNC_NOTIFY_FINISHED,
@@ -1631,6 +1624,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
         } else {
             status = ne_get_status( write_ctx->req );
             if( status->klass != 2 ) {
+                DEBUG_WEBDAV("sendfile request failed with http status %d!", status->code);
                 set_errno_from_http_errcode( status->code );
                 /* decide if soft error or hard error that stops the whole sync. */
                 if( status->klass == 4 /* Forbidden and stuff, soft error */ ) {
@@ -1638,6 +1632,11 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
                 } else {
                     rc = -1;
                 }
+                if( status->klass == 5 /* Server errors and such */ ) {
+                    rc = -1; /* Abort. */
+                }
+            } else {
+                DEBUG_WEBDAV("http request all cool, result code %d", status->code);
             }
         }
 
@@ -1669,6 +1668,7 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
     writeCtx = (struct transfer_context*) fhandle;
 
     if (fhandle == NULL) {
+        DEBUG_WEBDAV("*** Close returns errno EBADF!");
         errno = EBADF;
         return -1;
     }
@@ -1710,13 +1710,12 @@ static off_t owncloud_lseek(csync_vio_method_handle_t *fhandle, off_t offset, in
  */
 static csync_vio_method_handle_t *owncloud_opendir(const char *uri) {
     struct listdir_context *fetchCtx = NULL;
-    char *curi = _cleanPath( uri );
 
     DEBUG_WEBDAV("opendir method called on %s", uri );
 
     dav_connect( uri );
 
-    fetchCtx = fetch_resource_list( curi, NE_DEPTH_ONE );
+    fetchCtx = fetch_resource_list( uri, NE_DEPTH_ONE );
     if( !fetchCtx ) {
         /* errno is set properly in fetch_resource_list */
         DEBUG_WEBDAV("Errno set to %d", errno);
@@ -1808,11 +1807,7 @@ static int owncloud_mkdir(const char *uri, mode_t mode) {
 
             DEBUG_WEBDAV("MKdir on %s", buf );
             rc = ne_mkcol(dav_session.ctx, buf );
-            if( rc != NE_OK ) {
-                set_errno_from_neon_errcode(rc);
-            } else {
-                set_errno_from_session();
-            }
+            set_errno_from_neon_errcode(rc);
         }
     }
     SAFE_FREE( path );
@@ -1834,11 +1829,7 @@ static int owncloud_rmdir(const char *uri) {
 
     if( rc >= 0 ) {
         rc = ne_delete(dav_session.ctx, curi);
-        if ( rc != NE_OK ) {
-            set_errno_from_neon_errcode( rc );
-        } else {
-            set_errno_from_session();
-        }
+        set_errno_from_neon_errcode( rc );
     }
     SAFE_FREE( curi );
     if( rc < 0 || rc != NE_OK ) {
@@ -1866,11 +1857,7 @@ static int owncloud_rename(const char *olduri, const char *newuri) {
         DEBUG_WEBDAV("MOVE: %s => %s: %d", src, target, rc );
         rc = ne_move(dav_session.ctx, 1, src, target );
 
-        if (rc != NE_OK ) {
-            set_errno_from_neon_errcode(rc);
-        } else {
-            set_errno_from_session();
-        }
+        set_errno_from_neon_errcode(rc);
     }
     SAFE_FREE( src );
     SAFE_FREE( target );
@@ -1896,10 +1883,7 @@ static int owncloud_unlink(const char *uri) {
     }
     if( rc == NE_OK ) {
         rc = ne_delete( dav_session.ctx, path );
-        if ( rc != NE_OK )
             set_errno_from_neon_errcode(rc);
-        else
-            set_errno_from_session();
     }
     SAFE_FREE( path );
 
