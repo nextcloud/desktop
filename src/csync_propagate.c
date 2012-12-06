@@ -987,10 +987,12 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
   times[0].tv_usec = times[1].tv_usec = 0;
 
   csync_vio_utimes(ctx, uri, times);
-  tmd5 = _get_md5(ctx, st->path);
-  if(tmd5) {
-      SAFE_FREE(st->md5);
-      st->md5 = tmd5;
+  if (ctx->replica == REMOTE_REPLICA) {
+    tmd5 = _get_md5(ctx, st->path);
+    if(tmd5) {
+        SAFE_FREE(st->md5);
+        st->md5 = tmd5;
+    }
   }
   /* set instruction for the statedb merger */
   st->instruction = CSYNC_INSTRUCTION_UPDATED;
