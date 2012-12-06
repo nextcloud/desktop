@@ -1378,12 +1378,12 @@ static const char* owncloud_file_id( const char *path )
     bool doHeadRequest = false;
 
     if (_id_cache.uri && c_streq(path, _id_cache.uri)) {
-        return c_strdup(_id_cache.uri);
+        header = _id_cache.id;
     }
 
     doHeadRequest= false; /* ownCloud server doesn't have good support for HEAD yet */
 
-    if( doHeadRequest ) {
+    if( !header && doHeadRequest ) {
         int neon_stat;
         /* Perform an HEAD request to the resource. HEAD delivers the
          * ETag header back. */
