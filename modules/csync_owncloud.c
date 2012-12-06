@@ -319,7 +319,7 @@ static int http_result_code_from_session() {
 static void set_errno_from_session() {
     int err = http_result_code_from_session();
 
-    if( err = EIO ) {
+    if( err == EIO ) {
         errno = EIO;
     } else {
         set_errno_from_http_errcode(err);

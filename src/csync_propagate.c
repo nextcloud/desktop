@@ -1102,7 +1102,6 @@ static int _csync_correct_id(CSYNC *ctx) {
     c_list_t *seen_dirs = NULL;
     c_list_t *list      = NULL;
     c_rbtree_t *tree    = NULL;
-    const char *replica = NULL;
     char *path          = NULL;
 
     if (ctx->current != REMOTE_REPLICA) {
