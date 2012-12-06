@@ -53,24 +53,6 @@ void csyncLogCatcher(CSYNC *ctx,
   Logger::instance()->csyncLog( QString::fromUtf8(function) + QLatin1String("> ") + QString::fromUtf8(buffer) );
 }
 
-walkStats_s::walkStats_s() {
-    errorType = 0;
-
-    eval = 0;
-    removed = 0;
-    renamed = 0;
-    newFiles = 0;
-    conflicts = 0;
-    ignores = 0;
-    sync = 0;
-    error = 0;
-
-    dirPermErrors = 0;
-
-    seenFiles = 0;
-
-}
-
 CSyncThread::CSyncThread(const QString &source, const QString &target)
     : _source(source)
     , _target(target)
@@ -167,7 +149,6 @@ void CSyncThread::startSync()
         case CSYNC_ERR_ACCESS_FAILED:
             errStr = tr("<p>The target directory %1 does not exist.</p><p>Please check the sync setup.</p>").arg(_target);
             // this is critical. The database has to be removed.
-            emitStateDb(csync); // to make the name of the csync db known.
             emit wipeDb();
             break;
         case CSYNC_ERR_MODULE:
@@ -196,8 +177,6 @@ void CSyncThread::startSync()
     csync_set_module_property(csync, "proxy_host", _proxy.hostName().toAscii().data() );
     csync_set_module_property(csync, "proxy_user", _proxy.user().toAscii().data()     );
     csync_set_module_property(csync, "proxy_pwd" , _proxy.password().toAscii().data() );
-
-    emitStateDb(csync);
 
     qDebug() << "#### Update start #################################################### >>";
     if( csync_update(csync) < 0 ) {
@@ -246,20 +225,6 @@ cleanup:
     qDebug() << "CSync End Waiting";
 
     emit(finished());
-}
-
-void CSyncThread::emitStateDb( CSYNC *csync )
-{
-    // After csync_init the statedb file name can be emitted
-    const char *statedb = csync_get_statedb_file( csync );
-    if( statedb ) {
-        QString stateDbFile = QString::fromUtf8(statedb);
-        free((void*)statedb);
-
-        emit csyncStateDbFile( stateDbFile );
-    } else {
-        qDebug() << "WRN: Unable to get csync statedb file name";
-    }
 }
 
 void CSyncThread::setConnectionDetails( const QString &user, const QString &passwd, const QNetworkProxy &proxy )
