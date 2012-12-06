@@ -1436,13 +1436,11 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
                                                 mode_t mode) {
     char *uri = NULL;
     char *dir = NULL;
-    char getUrl[PATH_MAX];
     int put = 0;
     int rc = NE_OK;
 
     struct transfer_context *writeCtx = NULL;
     csync_vio_file_stat_t statBuf;
-    memset( getUrl, '\0', PATH_MAX );
     ZERO_STRUCT(statBuf);
 
     (void) mode; /* unused on webdav server */
@@ -1511,15 +1509,11 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
     if( rc == NE_OK && ! put ) {
         writeCtx->req = 0;
         writeCtx->method = "GET";
-
-        /* the download via the get function requires a full uri */
-        snprintf( getUrl, PATH_MAX, "%s://%s%s", ne_get_scheme( dav_session.ctx),
-                  ne_get_server_hostport( dav_session.ctx ), uri );
-        DEBUG_WEBDAV("GET request on %s", getUrl );
+        DEBUG_WEBDAV("GET request on %s", uri );
 
 #define WITH_HTTP_COMPRESSION
 #ifdef WITH_HTTP_COMPRESSION
-        writeCtx->req = ne_request_create( dav_session.ctx, "GET", getUrl );
+        writeCtx->req = ne_request_create( dav_session.ctx, "GET", uri );
 
         /* Allow compressed content by setting the header */
         ne_add_request_header( writeCtx->req, "Accept-Encoding", "gzip,deflate" );
