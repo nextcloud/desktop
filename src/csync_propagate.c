@@ -480,6 +480,9 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "PUSHED  file: %s", duri);
 
   rc = 0;
+  if (ctx->current == LOCAL_REPLICA) {
+    _store_id_update(ctx, st);
+  }
 
 out:
   ctx->replica = srep;
@@ -728,6 +731,10 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
   }
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "RENAME  file: %s => %s with ID %s", st->path, st->destpath, st->md5);
 
+  if (ctx->current == REMOTE_REPLICA) {
+      _store_id_update(ctx, st);
+  }
+
 out:
   SAFE_FREE(suri);
   SAFE_FREE(duri);
@@ -802,6 +809,11 @@ static int _csync_remove_file(CSYNC *ctx, csync_file_stat_t *st) {
   st->instruction = CSYNC_INSTRUCTION_DELETED;
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "REMOVED file: %s", uri);
+
+  if (ctx->current == REMOTE_REPLICA) {
+      _store_id_update(ctx, st);
+  }
+  
 
   rc = 0;
 out:
@@ -1278,35 +1290,30 @@ static int _csync_propagation_file_visitor(void *obj, void *data) {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"FAIL NEW: %s",st->path);
             goto err;
           }
-          _store_id_update(ctx, st);
           break;
         case CSYNC_INSTRUCTION_RENAME:
           if (_csync_rename_file(ctx, st) < 0) {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"FAIL RENAME: %s",st->path);
             goto err;
           }
-          _store_id_update(ctx, st);
           break;
       case CSYNC_INSTRUCTION_SYNC:
           if (_csync_sync_file(ctx, st) < 0) {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"FAIL SYNC: %s",st->path);
             goto err;
           }
-          _store_id_update(ctx, st);
           break;
         case CSYNC_INSTRUCTION_REMOVE:
           if (_csync_remove_file(ctx, st) < 0) {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"FAIL REMOVE: %s",st->path);
             goto err;
           }
-          _store_id_update(ctx, st);
           break;
         case CSYNC_INSTRUCTION_CONFLICT:
           CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"case CSYNC_INSTRUCTION_CONFLICT: %s",st->path);
           if (_csync_conflict_file(ctx, st) < 0) {
             goto err;
           }
-          _store_id_update(ctx, st);
           break;
         default:
           break;
@@ -1347,26 +1354,22 @@ static int _csync_propagation_dir_visitor(void *obj, void *data) {
           if (_csync_new_dir(ctx, st) < 0) {
             goto err;
           }
-          _store_id_update(ctx, st);
           break;
         case CSYNC_INSTRUCTION_SYNC:
           if (_csync_sync_dir(ctx, st) < 0) {
             goto err;
           }
-          _store_id_update(ctx, st);
           break;
         case CSYNC_INSTRUCTION_CONFLICT:
           CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"directory attributes different");
           if (_csync_sync_dir(ctx, st) < 0) {
             goto err;
           }
-          _store_id_update(ctx, st);
           break;
         case CSYNC_INSTRUCTION_REMOVE:
           if (_csync_remove_dir(ctx, st) < 0) {
             goto err;
           }
-          _store_id_update(ctx, st);
           break;
         case CSYNC_INSTRUCTION_RENAME:
           /* there can't be a rename for dirs. See updater. */
