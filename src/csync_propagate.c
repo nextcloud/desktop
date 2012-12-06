@@ -1126,6 +1126,7 @@ static int _csync_correct_id(CSYNC *ctx) {
     c_list_t *seen_dirs = NULL;
     c_list_t *list      = NULL;
     c_rbtree_t *tree    = NULL;
+    const char *replica = NULL;
     char *path          = NULL;
 
     switch (ctx->current) {
@@ -1176,7 +1177,6 @@ static int _csync_correct_id(CSYNC *ctx) {
           int len;
           c_rbnode_t *node = NULL;
 
-          char pathbuf[PATH_MAX] = {'\0' };
           char *old_path = path;
           csync_file_stat_t *tfs = NULL;
 
@@ -1213,11 +1213,8 @@ static int _csync_correct_id(CSYNC *ctx) {
                   }
               }
           }
-         /* get the parent dir */
-          /* copy one byte less, omit the trailing slash */
-          strncpy( pathbuf, path, strlen(path)-1 );
-          /* and get the path name */
-          path = c_dirname( pathbuf );
+          /* get the parent dir */
+          path = c_dirname( path );
           /* free the old path memory */
           SAFE_FREE(old_path );
 
