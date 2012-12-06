@@ -50,22 +50,12 @@ static int _csync_cleanup_cmp(const void *a, const void *b) {
 
 static void _store_id_update(CSYNC *ctx, csync_file_stat_t *st) {
     c_list_t *list = NULL;
+
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "SYNCED remember  dir: %s", st->path);
 
-    switch (ctx->current) {
-      case LOCAL_REPLICA:
-        list = c_list_prepend(ctx->local.id_list, (void*)st);
-        if( list != NULL ) {
-            ctx->local.id_list = list;
-        }
-        break;
-      case REMOTE_REPLICA:
-        list = c_list_prepend(ctx->remote.id_list, (void*)st);
-        if(list != NULL ) {
-            ctx->remote.id_list = list;
-        }
-        break;
-
+    list = c_list_prepend(ctx->remote.id_list, (void*)st);
+    if( list != NULL ) {
+        ctx->remote.id_list = list;
     }
 }
 
@@ -1115,20 +1105,12 @@ static int _csync_correct_id(CSYNC *ctx) {
     const char *replica = NULL;
     char *path          = NULL;
 
-    switch (ctx->current) {
-      case LOCAL_REPLICA:
-        list = ctx->local.id_list;
-        tree = ctx->local.tree;
-        replica = "LOCAL_REPLICA";
-        break;
-      case REMOTE_REPLICA:
-        list = ctx->remote.id_list;
-        tree = ctx->remote.tree;
-        replica = "REMOTE_REPLICA";
-        break;
-      default:
-        break;
+    if (ctx->current != REMOTE_REPLICA) {
+        return 0;
     }
+
+    list = ctx->remote.id_list;
+    tree = ctx->remote.tree;
 
     if (list == NULL) {
       return 0;
@@ -1163,7 +1145,6 @@ static int _csync_correct_id(CSYNC *ctx) {
           int len;
           c_rbnode_t *node = NULL;
 
-          char pathbuf[PATH_MAX] = {'\0' };
           char *old_path = path;
           csync_file_stat_t *tfs = NULL;
 
@@ -1172,7 +1153,7 @@ static int _csync_correct_id(CSYNC *ctx) {
           if( seen_dirs && c_list_find_custom( seen_dirs,  path, _cmp_char)) {
               // CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "saw this dir already: %s", path);
           } else {
-              CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "climb on dir: %s (%s)", path, replica);
+              CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "climb on dir: %s", path);
               seen_dirs = c_list_prepend( seen_dirs, c_strdup(path));
 
               /* Find the correct target entry. */
@@ -1200,11 +1181,8 @@ static int _csync_correct_id(CSYNC *ctx) {
                   }
               }
           }
-         /* get the parent dir */
-          /* copy one byte less, omit the trailing slash */
-          strncpy( pathbuf, path, strlen(path)-1 );
-          /* and get the path name */
-          path = c_dirname( pathbuf );
+          /* get the parent dir */
+          path = c_dirname( path );
           /* free the old path memory */
           SAFE_FREE(old_path );
 

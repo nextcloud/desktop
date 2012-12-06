@@ -708,7 +708,6 @@ int csync_destroy(CSYNC *ctx) {
   /* free memory */
   c_rbtree_free(ctx->local.tree);
   c_list_free(ctx->local.list);
-  c_list_free(ctx->local.id_list);
   c_rbtree_free(ctx->remote.tree);
   c_list_free(ctx->remote.list);
   c_list_free(ctx->remote.id_list);
