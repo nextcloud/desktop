@@ -102,6 +102,12 @@ bool FolderWatcher::eventsEnabled() const
     return _eventsEnabled;
 }
 
+void FolderWatcher::setEventsEnabledDelayed( int delay_msec )
+{
+    qDebug() << "Starting Event logging again in " << delay_msec << " milliseconds";
+    QTimer::singleShot( delay_msec, this, SLOT(setEventsEnabled()));
+}
+
 void FolderWatcher::setEventsEnabled(bool enabled)
 {
     qDebug() << "    * event notification " << (enabled ? "enabled" : "disabled");

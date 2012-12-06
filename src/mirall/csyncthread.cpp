@@ -217,11 +217,6 @@ cleanup:
     qDebug() << "CSync run took " << t.elapsed() << " Milliseconds";
 
     qDebug() << "CSync Waiting a bit to let OS finish up IO";
-#ifdef Q_OS_WIN
-    Sleep(2000);
-#else
-    ::sleep(2);
-#endif
     qDebug() << "CSync End Waiting";
 
     emit(finished());

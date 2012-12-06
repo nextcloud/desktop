@@ -280,7 +280,7 @@ void Folder::slotSyncStarted()
 
 void Folder::slotSyncFinished(const SyncResult &result)
 {
-    _watcher->setEventsEnabled(true);
+    _watcher->setEventsEnabledDelayed(2000);
 
     qDebug() << "OO folder slotSyncFinished: result: " << int(result.status()) << " local: " << result.localRunOnly();
     emit syncStateChange();

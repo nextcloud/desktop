@@ -76,13 +76,6 @@ public:
     bool eventsEnabled() const;
 
     /**
-     * Enabled or disables folderChanged() events.
-     * If disabled, events are accumulated and emptied
-     * the next time a folderChanged() event happens.
-     */
-    void setEventsEnabled(bool enabled);
-
-    /**
      * Clear all pending events
      */
     void clearPendingEvents();
@@ -100,6 +93,21 @@ public:
     void setEventInterval(int seconds);
 
     QStringList ignores() const;
+public slots:
+    /**
+     * Enabled or disables folderChanged() events.
+     * If disabled, events are accumulated and emptied
+     * the next time a folderChanged() event happens.
+     */
+    void setEventsEnabled(bool enabled=true);
+
+    /**
+     * @brief setEventsEnabledDelayed - start event logging after a while
+     * @param delay     - delay time in milliseconds
+     * @param enabled   - enable the events.
+     */
+    void setEventsEnabledDelayed( int );
+
 signals:
     /**
      * Emitted when one of the paths is changed
