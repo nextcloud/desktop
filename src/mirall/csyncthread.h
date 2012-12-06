@@ -39,6 +39,8 @@ public:
     static void setConnectionDetails( const QString&, const QString&, const QNetworkProxy& );
     static QString csyncConfigDir();
 
+    QString proxyTypeToCStr(QNetworkProxy::ProxyType);
+
     Q_INVOKABLE void startSync();
 
 signals:
