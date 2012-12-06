@@ -133,8 +133,6 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()), Qt::QueuedConnection);
     connect(_csync, SIGNAL(csyncError(const QString)), SLOT(slotCSyncError(const QString)), Qt::QueuedConnection);
 
-    qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
-    qRegisterMetaType<WalkStats>("WalkStats");
     _thread->start();
     QMetaObject::invokeMethod(_csync, "startSync", Qt::QueuedConnection);
 
@@ -250,57 +248,6 @@ void ownCloudFolder::wipe()
         ctmpFile.remove();
     }
     _wipeDb = false;
-}
-
-// TOOD: not called anywhere
-SyncFileStatus ownCloudFolder::fileStatus( const QString& file )
-{
-    if( file.isEmpty() ) return STATUS_NONE;
-    QFileInfo fi( path(), file );
-
-    foreach( const SyncFileItem item, _items ) {
-        qDebug() << "FileStatus compare: " << item.file << " <> " << fi.absoluteFilePath();
-
-        if( item.file == fi.absoluteFilePath() ) {
-            switch( item.instruction ) {
-            case   CSYNC_INSTRUCTION_NONE:
-                return STATUS_NONE;
-                break;
-            case   CSYNC_INSTRUCTION_EVAL:
-                return STATUS_EVAL;
-                break;
-            case   CSYNC_INSTRUCTION_RENAME:
-                return STATUS_RENAME;
-                break;
-            case   CSYNC_INSTRUCTION_NEW:
-                return STATUS_NEW;
-                break;
-            case   CSYNC_INSTRUCTION_CONFLICT:
-                return STATUS_CONFLICT;
-                break;
-            case   CSYNC_INSTRUCTION_IGNORE:
-                return STATUS_IGNORE;
-                break;
-            case   CSYNC_INSTRUCTION_SYNC:
-            case   CSYNC_INSTRUCTION_UPDATED:
-                return STATUS_SYNC;
-                break;
-            case   CSYNC_INSTRUCTION_STAT_ERROR:
-                return STATUS_STAT_ERROR;
-                break;
-            case   CSYNC_INSTRUCTION_ERROR:
-                return STATUS_ERROR;
-                break;
-            case   CSYNC_INSTRUCTION_DELETED:
-            case   CSYNC_INSTRUCTION_REMOVE:
-                return STATUS_REMOVE;
-                break;
-            default:
-                break;
-            }
-        }
-    }
-    return STATUS_NEW;
 }
 
 } // ns

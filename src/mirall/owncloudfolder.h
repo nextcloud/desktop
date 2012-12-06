@@ -77,7 +77,6 @@ private:
     QStringList  _errors;
     bool         _csyncError;
     bool         _wipeDb;
-    QVector<SyncFileItem> _items;
 };
 
 }

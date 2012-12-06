@@ -29,42 +29,6 @@ class QProcess;
 
 namespace Mirall {
 
-enum walkErrorTypes {
-    WALK_ERROR_NONE = 0,
-    WALK_ERROR_WALK,
-    WALK_ERROR_INSTRUCTIONS,
-    WALK_ERROR_DIR_PERMS
-};
-
-struct walkStats_s {
-    walkStats_s();
-
-    int errorType;
-
-    ulong eval;
-    ulong removed;
-    ulong renamed;
-    ulong newFiles;
-    ulong conflicts;
-    ulong ignores;
-    ulong sync;
-    ulong error;
-
-    ulong dirPermErrors;
-
-    ulong seenFiles;
-};
-
-typedef walkStats_s WalkStats;
-
-struct syncFileItem_s {
-    QString file;
-    csync_instructions_e instruction;
-};
-typedef syncFileItem_s SyncFileItem;
-
-typedef QVector<SyncFileItem> SyncFileItemVector;
-
 class CSyncThread : public QObject
 {
     Q_OBJECT
@@ -87,8 +51,6 @@ signals:
     void started();
 
 private:
-    void emitStateDb( CSYNC *csync );
-
     static int getauth(const char *prompt,
                 char *buf,
                 size_t len,
