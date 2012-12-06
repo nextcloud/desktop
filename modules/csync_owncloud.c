@@ -648,8 +648,10 @@ static void ne_notify_status_cb (void *userdata, ne_session_status status,
 {
     struct transfer_context *tc = (struct transfer_context*) userdata;
 
-    if (_progresscb && (status == ne_status_sending || status == ne_status_recving))
-        _progresscb(tc->clean_uri, CSYNC_NOTIFY_PROGRESS, info->sr.progress, info->sr.total, dav_session.userdata);
+    if (_progresscb && (status == ne_status_sending || status == ne_status_recving)) {
+        if (info->sr.total > 0)
+            _progresscb(tc->clean_uri, CSYNC_NOTIFY_PROGRESS, info->sr.progress, info->sr.total, dav_session.userdata);
+    }
 }
 
 
