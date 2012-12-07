@@ -24,6 +24,10 @@
 #ifdef Q_OS_MAC
 #include <CoreServices/CoreServices.h>
 #endif
+#ifdef Q_OS_WIN
+#include <shlobj.h>
+#include <windows.h>
+#endif
 
 #include <QDesktopServices>
 #include <QtCore>
