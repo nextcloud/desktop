@@ -158,10 +158,11 @@ static void teardown_toplevel_dir( void **state ) {
 
 static void stat_local_file( csync_stat_t *sb, const char *file )
 {
-    const _TCHAR *mpath = NULL;
+    _TCHAR *mpath = NULL;
     mpath = c_multibyte(file);
     assert_int_not_equal(_tstat(mpath, sb), -1);
     c_free_multibyte(mpath);
+    assert_null(mpath);
 }
 
 #define BUFSIZE 4096

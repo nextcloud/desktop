@@ -34,6 +34,9 @@
 #define _C_STR_H
 
 #include "c_private.h"
+#include "c_macro.h"
+
+#include <stdlib.h>
 
 struct c_strlist_s; typedef struct c_strlist_s c_strlist_t;
 
@@ -146,7 +149,7 @@ char *c_lowercase(const char* str);
  *
  * @return The malloced converted string or NULL on error.
  */
-const char*   c_utf8(const _TCHAR *str);
+ char*   c_utf8(const _TCHAR *str);
 
 /**
  * @brief Convert a utf8 encoded string to multibyte (Win32).
@@ -155,7 +158,16 @@ const char*   c_utf8(const _TCHAR *str);
  *
  * @return The malloced converted multibyte string or NULL on error.
  */
-const _TCHAR* c_multibyte(const char *wstr);
+_TCHAR* c_multibyte(const char *wstr);
+
+#if defined(_WIN32) || defined(WITH_ICONV)
+/**
+ * @brief Free buffer malloced by c_multibyte.
+ *
+ * @param  buf     The buffer to free.
+ */
+
+#define c_free_multibyte(x) SAFE_FREE(x)
 
 /**
  * @brief Free buffer malloced by c_utf8.
@@ -163,14 +175,12 @@ const _TCHAR* c_multibyte(const char *wstr);
  * @param  buf     The buffer to free.
  *
  */
-void c_free_utf8(char* buf);
+#define c_free_utf8(x) SAFE_FREE(x)
+#else
+#define c_free_multibyte(x) (void)x
+#define c_free_utf8(x) (void)x
+#endif
 
-/**
- * @brief Free buffer malloced by c_multibyte.
- *
- * @param  buf     The buffer to free.
- */
-void c_free_multibyte(const _TCHAR* buf);
 
 /**
  * }@

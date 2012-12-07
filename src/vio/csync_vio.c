@@ -57,10 +57,10 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
   char *err = NULL;
   csync_vio_method_t *m = NULL;
   csync_vio_method_init_fn init_fn;
-  const _TCHAR *mpath = NULL;
+  _TCHAR *mpath = NULL;
 #ifdef _WIN32
   _TCHAR tbuf[MAX_PATH];
-  const _TCHAR *pathBuf = NULL;
+  _TCHAR *pathBuf = NULL;
   char *buf = NULL;
   char *last_bslash = NULL;
 #endif

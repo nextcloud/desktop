@@ -55,7 +55,7 @@ int csync_get_statedb_exists(CSYNC *ctx) {
 /* Set the hide attribute in win32. That makes it invisible in normal explorers */
 static void _csync_win32_hide_file( const char *file ) {
 #ifdef _WIN32
-  const _TCHAR *fileName;
+  _TCHAR *fileName;
   if( !file ) return;
 
   fileName = c_multibyte( file );

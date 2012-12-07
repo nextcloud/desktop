@@ -32,6 +32,10 @@
 #include <sys/types.h>
 #include <stdbool.h>
 
+#ifdef WITH_ICONV
+#include <iconv.h>
+#endif
+
 #include "c_lib.h"
 #include "csync_private.h"
 #include "csync_config.h"
@@ -42,6 +46,8 @@
 #include "csync_util.h"
 #include "csync_misc.h"
 #include "c_jhash.h"
+#include "std/c_private.h"
+
 
 #include "csync_update.h"
 #include "csync_reconcile.h"
@@ -717,6 +723,10 @@ int csync_destroy(CSYNC *ctx) {
   SAFE_FREE(ctx->options.config_dir);
   SAFE_FREE(ctx->statedb.file);
 
+#ifdef WITH_ICONV
+  c_close_iconv();
+#endif
+
   SAFE_FREE(ctx);
 
   SAFE_FREE(lock);
@@ -1001,6 +1011,19 @@ int csync_set_module_property(CSYNC* ctx, const char* key, void* value)
 {
     return csync_vio_set_property(ctx, key, value);
 }
+
+#ifdef WITH_ICONV
+int csync_set_iconv_codec(const char *from)
+{
+  c_close_iconv();
+
+  if (from != NULL) {
+    c_setup_iconv(from);
+  }
+
+  return 0;
+}
+#endif
 
 int csync_set_progress_callback(CSYNC* ctx, csync_progress_callback cb)
 {
