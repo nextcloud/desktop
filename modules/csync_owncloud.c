@@ -1506,7 +1506,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
         writeCtx->req = ne_request_create( dav_session.ctx, "GET", uri );
 
         /* Allow compressed content by setting the header */
-        ne_add_request_header( writeCtx->req, "Accept-Encoding", "gzip,deflate" );
+        ne_add_request_header( writeCtx->req, "Accept-Encoding", "gzip" );
 
         /* hook called before the content is parsed to set the correct reader,
          * either the compressed- or uncompressed reader.
