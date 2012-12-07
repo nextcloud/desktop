@@ -551,17 +551,17 @@ Copyright 2012, the ownCloud developers.</source>
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="202"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="103"/>
         <source>CSync create failed.</source>
         <translation>Cஒத்திசைவு உருவாக்கல் தோல்வியுற்றது</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="239"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="133"/>
         <source>CSync failed to create a lock file.</source>
         <translation>Cஒத்திசைவு பூட்டு கோப்பை உருவாக்க தோல்வியுற்றது.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="242"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="136"/>
         <source>CSync failed to load the state db.</source>
         <translation>Cஒத்திசைவு db நிலையை ஏற்றுவதற்கு தோல்வியுற்றுது</translation>
     </message>
@@ -570,17 +570,17 @@ Copyright 2012, the ownCloud developers.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="245"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="139"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>இந்த சேவை பயனாளரின் கணணியின் நேரமானது சேவையகத்தில் உள்ள கணணியின் நேரத்திலும் வித்தியாசமானது. தயவுசெய்து சேவையகத்திலும் சேவை பயனாளரின் கணணியிலும் நேர ஒத்திசைவு சேவையொன்றை (NTP) பயன்படுத்தவும் அதனால் நேரங்கள் ஒரே மாதிரியாக இருக்கும்.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="250"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="144"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>​கோப்பு அமைப்பின் வகையை Cஒத்திசைவினால் கண்டுப்பிடிக்கமுடியவில்லை.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="253"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="147"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>உள்ளக மரத்தை முறைவழியாக்கும்போது Cஒத்திசைவு வழு ஒன்றைப் பெற்றது</translation>
     </message>
@@ -589,7 +589,7 @@ Copyright 2012, the ownCloud developers.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="256"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="150"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;குறித்த அடைவு %1 ஐ காணமுடியவில்லை.&lt;/p&gt;&lt;p&gt;தயவுசெய்து ஒத்திசைவு அமைப்பை சரிபார்க்க.&lt;/p&gt;</translation>
     </message>
@@ -598,27 +598,27 @@ Copyright 2012, the ownCloud developers.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="266"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="159"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>இடத்துரி கோப்பு அமைப்பை எழுத முடியவில்லை. தயவுசெய்து அனுமதியை சரிபார்க்கவும்.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="270"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="163"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>ஒரு தொலைவு கோப்பை எழுத முடியவில்லை. தயவுசெய்து தொலைவு அணுகலை சரிபார்க்கவும்.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="273"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="166"/>
         <source>An internal error number %1 happend.</source>
         <translation>ஒரு உள்ளக வழு இலக்கம் %1 ஏற்பட்டது</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="296"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="189"/>
         <source>CSync failed to reach the host. Either host or proxy settings are not valid.</source>
         <translation>ஓம்புனரை அடைவதில் Cஒத்திசைவு தோல்வியுற்றது. ஓம்புனரோ அல்லது proxy அமைப்புகளோ சரியானதாக இல்லை.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="299"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="192"/>
         <source>CSync Update failed.</source>
         <translation>Cஒத்திசைவு இற்றைப்படுத்தல் தோல்வியுற்றது</translation>
     </message>
@@ -629,39 +629,31 @@ Please make sure that all directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="262"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="155"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;%1 இன் cஒத்திசைவிற்கான உட்செருகலை ஏற்றமுடியாது.&lt;br/&gt;நிறுவலை தயவுசெய்து சரிபார்க்க!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="313"/>
         <source>CSync encountered an error while examining the file system.
 Syncing is not possible.</source>
-        <translation>கோப்பு அமைப்பை பரிசோதிக்கும் போது Cஒத்திசைவில் வழு ஒன்று அடையாளங் காணப்பட்டது. ⏎ ஒத்திசைவை மேற்கொள்ளமுடியாது.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="316"/>
         <source>CSync update generated a strange instruction.
 Please write a bug report.</source>
-        <translation> Cஒத்திசைவு இற்றைப்படுத்தல் ஒரு புதுமையான அறிவுறுத்தல்களை உருவாக்கியது. ⏎ தயவுசெய்து தவறு அறிக்கை ஒன்றை எழுதவும்.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="319"/>
         <source>Local filesystem problems. Better disable Syncing and check.</source>
-        <translation>இடத்துரி கோப்பு அமைப்பில் பிரச்சினை. ஒத்திசைவை நிறுதிவிட்டு சரிபார்க்கவும்.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="324"/>
-        <source>The local filesystem has %1 write protected directories.That can hinder successful syncing.&lt;p/&gt;Please make sure that all local directories are writeable.</source>
-        <translation>%1 பாதுகாக்கப்பட்ட அடைவுகளை இடத்துரி கோப்பு அமைப்பு கொண்டுள்ளது. வெற்றிகரமான ஒத்திசைவை பாதிக்க முடியும். &lt;p/&gt; தயவுசெய்து எல்லா இடத்துரி அடைவுகளும் எழுதப்படக்கூடியவை என்பதை உறுதிப்படுத்துக.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="344"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="203"/>
         <source>CSync reconcile failed.</source>
         <translation>Cஒத்திசைவு ஒருங் கூட்டல் தோல்வியுற்றது.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="348"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="207"/>
         <source>File exchange with ownCloud failed. Sync was stopped.</source>
         <translation>owncloud மூலமான கோப்பு பரிமாற்றம் தோல்வியுற்றது. ஒத்திசைவு நிறுத்தப்பட்டது.</translation>
     </message>
@@ -681,17 +673,17 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::Folder</name>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="99"/>
+        <location filename="../src/mirall/folder.cpp" line="97"/>
         <source>Local folder %1 does not exist.</source>
         <translation>இடத்துரி கோப்புறை %1 ஏற்கனவே இல்லை.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="102"/>
+        <location filename="../src/mirall/folder.cpp" line="100"/>
         <source>%1 should be a directory but is not.</source>
         <translation>%1 ஒரு அடைவாக இருக்கலாம் ஆனால் இல்லை.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="105"/>
+        <location filename="../src/mirall/folder.cpp" line="103"/>
         <source>%1 is not readable.</source>
         <translation>%1 ஐ வாசிக்கமுடியாது.</translation>
     </message>
@@ -1321,7 +1313,7 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::ownCloudFolder</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="280"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="200"/>
         <source>The CSync thread terminated.</source>
         <translation>Cஒத்திசைவு புரிஉரு முடிவு.</translation>
     </message>
