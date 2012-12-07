@@ -347,7 +347,7 @@ static char *_cleanPath( const char* uri ) {
     } else {
         re = ne_path_escape( path );
     }
-    DEBUG_WEBDAV("------------> Path in cleanpath: %s", path );
+
     SAFE_FREE( path );
     return re;
 }
@@ -1375,12 +1375,13 @@ static const char* owncloud_file_id( const char *path )
     char *buf          = NULL;
     const char *cbuf   = NULL;
     csync_vio_file_stat_t *fs = NULL;
+    bool doHeadRequest = false;
 
     if (_id_cache.uri && c_streq(path, _id_cache.uri)) {
         return c_strdup(_id_cache.uri);
     }
 
-    bool  doHeadRequest= false; /* ownCloud server doesn't have good support for HEAD yet */
+    doHeadRequest= false; /* ownCloud server doesn't have good support for HEAD yet */
 
     if( doHeadRequest ) {
         int neon_stat;
