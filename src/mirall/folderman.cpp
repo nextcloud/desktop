@@ -26,7 +26,6 @@
 #endif
 #ifdef Q_OS_WIN
 #include <shlobj.h>
-#include <windows.h>
 #endif
 
 #include <QDesktopServices>
@@ -159,9 +158,11 @@ void FolderMan::setupFavLink(const QString &folder)
     // Windows Explorer: Place under "Favorites" (Links)
     wchar_t path[MAX_PATH];
     SHGetSpecialFolderPath(0, path, CSIDL_PROFILE, FALSE);
-    QString profile = QString::fromWCharArray(path);
-    QString folderName = QDir::fromNativeSeparators(profile.left(profile.lastIndexOf('/')));
-    QFile::link(folder, profile+QLatin1String("/Links/") + folderName + QLatin1String(".lnk"));
+    QString profile =  QDir::fromNativeSeparators(QString::fromWCharArray(path));
+    QString folderName = QDir::fromNativeSeparators(folder.mid(folder.lastIndexOf('/')));
+    QString linkName = profile+QLatin1String("/Links/") + folderName + QLatin1String(".lnk");
+    if (!QFile::link(folder, linkName))
+        qDebug() << Q_FUNC_INFO << "linking" << folder << "to" << linkName << "failed!";
 #elif defined (Q_OS_MAC)
     // Finder: Place under "Places"
     QString folderUrl = QUrl::fromLocalFile(folder).toString();
