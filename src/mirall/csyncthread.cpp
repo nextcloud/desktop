@@ -50,7 +50,7 @@ void csyncLogCatcher(CSYNC *ctx,
                      const char *buffer,
                      void *userdata)
 {
-  Logger::instance()->csyncLog( QString::fromUtf8(function) + QLatin1String("> ") + QString::fromUtf8(buffer) );
+  Logger::instance()->csyncLog( QString::fromUtf8(buffer) );
 }
 
 CSyncThread::CSyncThread(const QString &source, const QString &target)
@@ -172,6 +172,7 @@ void CSyncThread::startSync()
 
     // set module properties, mainly the proxy information.
     // do not use QLatin1String here because that has to be real const char* for C.
+    csync_set_log_verbosity(csync, 11);
     csync_set_module_property(csync, "csync_context", csync);
     csync_set_module_property(csync, "proxy_type", proxyTypeToCStr( _proxy.type()).data() );
     csync_set_module_property(csync, "proxy_host", _proxy.hostName().toAscii().data() );
