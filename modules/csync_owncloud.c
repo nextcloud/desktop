@@ -48,14 +48,9 @@
 #include "vio/csync_vio_file_stat.h"
 #include "vio/csync_vio.h"
 
-#define CSYNC_LOG_CATEGORY_NAME "csync.owncloud"
 #include "csync_log.h"
 
-#if 1 || defined(NDEBUG)
-#define DEBUG_WEBDAV(...) {printf(__VA_ARGS__); printf("\n");}
-#else // FIXME: can't use CSYNC_LOG here because there is no ctx
-#define DEBUG_WEBDAV(...) CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, __VA_ARGS__)
-#endif
+#define DEBUG_WEBDAV(...) csync_log( dav_session.csync_ctx, 9, "oc_module", __VA_ARGS__);
 
 #define OC_TIMEDELTA_FAIL (NE_REDIRECT +1)
 #define OC_PROPFIND_FAIL  (NE_REDIRECT +2)
@@ -159,6 +154,7 @@ struct dav_session_s {
     long int time_delta_sum; /* What is the time delta average?         */
     long int time_delta_cnt; /* How often was the server time gathered? */
 
+    CSYNC *csync_ctx;
     void *userdata;
 };
 
@@ -2009,6 +2005,10 @@ static int owncloud_set_property(const char *key, void *data) {
     }
     if (c_streq(key, "read_timeout")) {
         dav_session.read_timeout = *(int*)(data);
+        return 0;
+    }
+    if( c_streq(key, "csync_context")) {
+        dav_session.csync_ctx = data;
         return 0;
     }
 
