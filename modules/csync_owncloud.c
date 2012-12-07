@@ -378,7 +378,7 @@ static int verify_sslcert(void *userdata, int failures,
                           const ne_ssl_certificate *cert)
 {
     char problem[LEN];
-    char buf[NE_ABUFSIZ];
+    char buf[MAX(NE_SSL_DIGESTLEN, NE_ABUFSIZ)];
     int ret = -1;
 
     (void) userdata;
@@ -408,6 +408,12 @@ static int verify_sslcert(void *userdata, int failures,
         addSSLWarning( problem, " * The server certificate has been revoked by the issuing authority.\n", LEN );
     }
 
+    if (ne_ssl_cert_digest(cert, buf) == 0) {
+        addSSLWarning( problem, "Certificate fingerprint: ", LEN );
+        addSSLWarning( problem, buf, LEN );
+        addSSLWarning( problem, "\n", LEN );
+    }
+
     addSSLWarning( problem, "Do you want to accept the certificate anyway?\nAnswer yes to do so and take the risk: ", LEN );
 
     if( _authcb ){
@@ -415,7 +421,7 @@ static int verify_sslcert(void *userdata, int failures,
         DEBUG_WEBDAV("Call the csync callback for SSL problems");
         memset( buf, 0, NE_ABUFSIZ );
         (*_authcb) ( problem, buf, NE_ABUFSIZ-1, 1, 0, dav_session.userdata );
-        if( strcmp( buf, "yes" ) == 0 ) {
+        if( buf[0] == 'y' || buf[0] == 'Y') {
             ret = 0;
         } else {
 	    DEBUG_WEBDAV("Authentication callback replied %s", buf );
