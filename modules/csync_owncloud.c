@@ -1278,32 +1278,16 @@ static ssize_t owncloud_write(csync_vio_method_handle_t *fhandle, const void *bu
     return 0;
 }
 
-static int uncompress_reader(void *userdata, const char *buf, size_t len)
+static int content_reader(void *userdata, const char *buf, size_t len)
 {
    struct transfer_context *writeCtx = userdata;
    size_t written = 0;
 
    if( buf && writeCtx->fd ) {
-       /* DEBUG_WEBDAV("Writing NON compressed %d bytes", len); */
+       /* DEBUG_WEBDAV("Writing %scompressed %d bytes", (writeCtx->decompress ? "" : "NON "), len); */
        written = write(writeCtx->fd, buf, len);
        if( len != written ) {
-           DEBUG_WEBDAV("WRN: uncompress_reader wrote wrong num of bytes");
-       }
-       return NE_OK;
-   }
-   return NE_ERROR;
-}
-
-static int compress_reader(void *userdata, const char *buf, size_t len)
-{
-   struct transfer_context *writeCtx = userdata;
-   size_t written = 0;
-
-   if( buf && writeCtx->fd ) {
-       /* DEBUG_WEBDAV("Writing compressed %d bytes", len); */
-       written = write(writeCtx->fd, buf, len);
-       if( written != len ) {
-           DEBUG_WEBDAV("WRN: compress reader wrote wrong len");
+           DEBUG_WEBDAV("WRN: content_reader wrote wrong num of bytes");
        }
        return NE_OK;
    }
@@ -1336,11 +1320,11 @@ static void install_content_reader( ne_request *req, void *userdata, const ne_st
 
     if( enc && c_streq( enc, "gzip" )) {
         writeCtx->decompress = ne_decompress_reader( req, ne_accept_2xx,
-                                                     compress_reader,     /* reader callback */
+                                                     content_reader,     /* reader callback */
                                                      (void*) writeCtx );  /* userdata        */
     } else {
         ne_add_response_body_reader( req, ne_accept_2xx,
-                                     uncompress_reader,
+                                     content_reader,
                                      (void*) writeCtx );
         writeCtx->decompress = NULL;
     }
