@@ -61,8 +61,14 @@ int c_setup_iconv(const char* to) {
 }
 
 int c_close_iconv() {
-  int ret_to = iconv_close(_iconvs.to);
-  int ret_from = iconv_close(_iconvs.from);
+    int ret_to = 0;
+    int ret_from = 0;
+    if( _iconvs.to != (iconv_t) NULL ) {
+        ret_to = iconv_close(_iconvs.to);
+    }
+    if( _iconvs.from != (iconv_t) NULL ) {
+        ret_from = iconv_close(_iconvs.from);
+    }
 
   if (ret_to == -1 || ret_from == -1)
     return -1;
