@@ -27,6 +27,7 @@ CredentialStore *CredentialStore::_instance=0;
 CredentialStore::CredState CredentialStore::_state = NotFetched;
 QString CredentialStore::_passwd = QString::null;
 QString CredentialStore::_user   = QString::null;
+QString CredentialStore::_url    = QString::null;
 int     CredentialStore::_tries  = 0;
 
 CredentialStore::CredentialStore(QObject *parent) :
@@ -201,27 +202,30 @@ QByteArray CredentialStore::basicAuthHeader() const
     return data;
 }
 
-void CredentialStore::setCredentials( const QString& url, const QString& user, const QString& pwd, bool noLocalPwd )
+void CredentialStore::setCredentials( const QString& url, const QString& user, const QString& pwd )
 {
     _passwd = pwd;
     _user = user;
+    _url  = url;
     _state = Ok;
+}
 
+void CredentialStore::saveCredentials( )
+{
 #ifdef WITH_QTKEYCHAIN
     MirallConfigFile::CredentialType t;
     t = MirallConfigFile::KeyChain;
-    if( noLocalPwd ) t = MirallConfigFile::User;
 
     switch( t ) {
     case MirallConfigFile::User:
-        deleteKeyChainCredential(keyChainKey( url ));
+        deleteKeyChainCredential(keyChainKey( _url ));
         break;
     case MirallConfigFile::KeyChain: {
         // Set password in KeyChain
         WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
         // job->setAutoDelete( false );
-        job->setKey( keyChainKey( url ) );
-        job->setTextData(pwd);
+        job->setKey( keyChainKey( _url ) );
+        job->setTextData(_passwd);
 
         connect( job, SIGNAL(finished(QKeychain::Job*)), this,
                  SLOT(slotKeyChainWriteFinished(QKeychain::Job*)));
@@ -233,8 +237,6 @@ void CredentialStore::setCredentials( const QString& url, const QString& user, c
         // unsupported.
         break;
     }
-#else
-    (void) url;
 #endif
 }
 

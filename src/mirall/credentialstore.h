@@ -96,7 +96,9 @@ public:
      * @param user - the user name
      * @param password - the password.
      */
-    void setCredentials( const QString&, const QString&, const QString&, bool );
+    void setCredentials( const QString&, const QString&, const QString& );
+
+    void saveCredentials( );
 
     /**
      * @brief canTryAgain - check if another try to get credentials makes sense.
@@ -128,6 +130,7 @@ private:
     static CredState _state;
     static QString _passwd;
     static QString _user;
+    static QString _url;
     static int     _tries;
 };
 }
