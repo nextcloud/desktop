@@ -16,7 +16,6 @@
 #include "mirall/mirallconfigfile.h"
 #include "mirall/owncloudinfo.h"
 #include "mirall/folderman.h"
-#include "mirall/credentialstore.h"
 
 #include <QtCore>
 #include <QProcess>
@@ -392,16 +391,18 @@ void OwncloudSetupWizard::setupLocalSyncFolder()
 
     if( localFolderOk ) {
         _remoteFolder = Theme::instance()->defaultServerFolder();
-        CredentialStore::instance()->reset();
-        connect( CredentialStore::instance(), SIGNAL(fetchCredentialsFinished(int)),
-                 this, SLOT(slotCreateRemoteFolder(int)));
-        CredentialStore::instance()->fetchCredentials();
+        slotCreateRemoteFolder(true);
     }
 }
 
-void OwncloudSetupWizard::slotCreateRemoteFolder(int res)
+void OwncloudSetupWizard::slotCreateRemoteFolder(bool credentialsOk )
 {
-    disconnect(CredentialStore::instance(), SIGNAL(fetchCredentialsFinished(bool)));
+    if( ! credentialsOk ) {
+        // User pressed cancel while being asked for password.
+        _ocWizard->appendToResultWidget("User canceled password dialog. Can not connect.");
+        return;
+    }
+
     if( createRemoteFolder( _remoteFolder ) ) {
         qDebug() << "Started remote folder creation ok";
     } else {

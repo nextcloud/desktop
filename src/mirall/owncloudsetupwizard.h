@@ -80,7 +80,7 @@ protected slots:
     void slotConnectToOCUrl( const QString& );
     void slotCreateOCLocalhost();
 
-    void slotCreateRemoteFolder(int);
+    void slotCreateRemoteFolder(bool);
 
 private slots:
     void slotOwnCloudFound( const QString&, const QString&, const QString&, const QString& );

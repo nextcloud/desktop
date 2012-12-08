@@ -116,6 +116,7 @@ private:
     static bool    _askedUser;
     static QString _oCVersion;
     QString        _customHandle;
+
 };
 
 }

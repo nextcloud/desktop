@@ -162,8 +162,8 @@ void MirallConfigFile::writeOwncloudConfig( const QString& connection,
     // check the perms, only read-write for the owner.
     QFile::setPermissions( file, QFile::ReadOwner|QFile::WriteOwner );
 
-    // inform the credential store about the password change.
-    CredentialStore::instance()->setCredentials( cloudsUrl, user, pwd, skipPwd );
+    // Store credentials temporar until the config is finalized.
+    CredentialStore::instance()->setCredentials( cloudsUrl, user, passwd );
 
 }
 
@@ -451,6 +451,7 @@ void MirallConfigFile::acceptCustomConfig()
     }
 
     QString srcConfig = configFile(); // this considers the custom handle
+
     _customHandle.clear();
     QString targetConfig = configFile();
     QString targetBak = targetConfig + QLatin1String(".bak");
@@ -471,6 +472,9 @@ void MirallConfigFile::acceptCustomConfig()
         }
     }
     QFile::remove( targetBak );
+
+    // inform the credential store about the password change.
+    CredentialStore::instance()->saveCredentials( );
 }
 
 QVariant MirallConfigFile::customMedia( customMediaType type )
