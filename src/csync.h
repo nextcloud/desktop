@@ -500,7 +500,7 @@ bool csync_file_known( char *statedb_file, const char* url );
 int csync_set_module_property(CSYNC *ctx, const char *key, void *value);
 
 enum csync_notify_type_e { CSYNC_NOTIFY_START_DOWNLOAD, CSYNC_NOTIFY_START_UPLOAD, CSYNC_NOTIFY_PROGRESS,
-                             CSYNC_NOTIFY_FINISHED, CSYNC_NOTFY_ERROR };
+                             CSYNC_NOTIFY_FINISHED, CSYNC_NOTIFY_ERROR };
 
 typedef void (*csync_progress_callback) (const char *remote_url, enum csync_notify_type_e kind,
                                         long long o1, long long o2, void *userdata);

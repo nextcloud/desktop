@@ -988,6 +988,10 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
             DEBUG_WEBDAV("ERROR: Request failed: status %d (%s)", req_status->code,
                          req_status->reason_phrase);
             ret = NE_CONNECT;
+
+            if (_progresscb) {
+                _progresscb(uri, CSYNC_NOTIFY_ERROR,  req_status->code, (long long)(req_status->reason_phrase) ,dav_session.userdata);
+            }
         }
         DEBUG_WEBDAV("Simple propfind result code %d.", req_status->code);
     } else {
@@ -1546,6 +1550,8 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
     struct transfer_context *write_ctx = (struct transfer_context*) hdl;
     fhandle_t *fh = (fhandle_t *) src;
     int fd;
+    int error_code = 0;
+    const char *error_string = NULL;
 
     if( ! write_ctx ) {
         errno = EINVAL;
@@ -1596,14 +1602,16 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
                     if( status->klass == 5 /* Server errors and such */ ) {
                         rc = -1; /* Abort. */
                     }
+                    error_code = status->code;
+                    error_string = status->reason_phrase;
                 } else {
                     DEBUG_WEBDAV("http request all cool, result code %d", status->code);
                 }
 
                 if (_progresscb) {
                     ne_set_notifier(dav_session.ctx, 0, 0);
-                    _progresscb(write_ctx->clean_uri, rc != NE_OK ? CSYNC_NOTFY_ERROR : CSYNC_NOTIFY_FINISHED,
-                                0, 0, dav_session.userdata);
+                    _progresscb(write_ctx->clean_uri, rc != NE_OK ? CSYNC_NOTIFY_ERROR : CSYNC_NOTIFY_FINISHED,
+                                error_code, (long long)(error_string), dav_session.userdata);
                 }
             } else {
                 DEBUG_WEBDAV("Could not stat file descriptor");
@@ -1643,6 +1651,8 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
                 if( status->klass == 5 /* Server errors and such */ ) {
                     rc = -1; /* Abort. */
                 }
+                error_code = status->code;
+                error_string = status->reason_phrase;
             } else {
                 DEBUG_WEBDAV("http request all cool, result code %d", status->code);
             }
@@ -1657,8 +1667,8 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
         }
         if (_progresscb) {
             ne_set_notifier(dav_session.ctx, 0, 0);
-            _progresscb(write_ctx->clean_uri, (rc != NE_OK) ? CSYNC_NOTFY_ERROR : CSYNC_NOTIFY_FINISHED,
-                        0,0, dav_session.userdata);
+            _progresscb(write_ctx->clean_uri, (rc != NE_OK) ? CSYNC_NOTIFY_ERROR : CSYNC_NOTIFY_FINISHED,
+                        error_code , (long long)(error_string), dav_session.userdata);
         }
     } else  {
         DEBUG_WEBDAV("Unknown method!");
