@@ -35,7 +35,6 @@
 #include <stdint.h>
 #include <unistd.h>
 #include <sys/types.h>
-#include <config.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -463,8 +462,6 @@ int csync_walk_local_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int fi
  */
 int csync_walk_remote_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int filter);
 
-
-#ifdef WITH_ICONV
 /**
  * @brief Set iconv source codec for filenames.
  *
@@ -473,7 +470,6 @@ int csync_walk_remote_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int f
  * @return              0 on success, or an iconv error number.
  */
 int csync_set_iconv_codec(const char *from);
-#endif
 
 /**
  * @brief Get the error code from the last operation.
@@ -500,7 +496,7 @@ bool csync_file_known( char *statedb_file, const char* url );
 int csync_set_module_property(CSYNC *ctx, const char *key, void *value);
 
 enum csync_notify_type_e { CSYNC_NOTIFY_START_DOWNLOAD, CSYNC_NOTIFY_START_UPLOAD, CSYNC_NOTIFY_PROGRESS,
-                             CSYNC_NOTIFY_FINISHED, CSYNC_NOTFY_ERROR };
+                             CSYNC_NOTIFY_FINISHED, CSYNC_NOTIFY_ERROR };
 
 typedef void (*csync_progress_callback) (const char *remote_url, enum csync_notify_type_e kind,
                                         long long o1, long long o2, void *userdata);

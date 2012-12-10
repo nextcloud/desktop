@@ -329,7 +329,7 @@ retry_vio_init:
   }
 
   if (ctx->callbacks.progresscb)
-    csync_set_module_property(ctx, "progress_callback", &ctx->callbacks.progresscb);
+    csync_vio_set_property(ctx, "progress_callback", &ctx->callbacks.progresscb);
 
   if (c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp) < 0) {
     ctx->error_code = CSYNC_ERR_TREE;
@@ -785,7 +785,7 @@ int csync_enable_statedb(CSYNC *ctx) {
 
   if (ctx->status & CSYNC_STATUS_INIT) {
     ctx->error_code = CSYNC_ERR_UNSPEC;
-    fprintf(stderr, "This function must be called before initialization.");
+    fprintf(stderr, "csync_enable_statedb: This function must be called before initialization.\n");
     return -1;
   }
 
@@ -802,7 +802,7 @@ int csync_disable_statedb(CSYNC *ctx) {
 
   if (ctx->status & CSYNC_STATUS_INIT) {
     ctx->error_code = CSYNC_ERR_UNSPEC;
-    fprintf(stderr, "This function must be called before initialization.");
+    fprintf(stderr, "csync_disable_statedb: This function must be called before initialization.\n");
     return -1;
   }
 
@@ -827,7 +827,7 @@ int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb) {
   ctx->error_code = CSYNC_ERR_NONE;
 
   if (ctx->status & CSYNC_STATUS_INIT) {
-    fprintf(stderr, "This function must be called before initialization.");
+    fprintf(stderr, "csync_set_auth_callback: This function must be called before initialization.\n");
     ctx->error_code = CSYNC_ERR_UNSPEC;
     return -1;
   }
@@ -861,7 +861,7 @@ int csync_set_log_callback(CSYNC *ctx, csync_log_callback cb) {
   }
 
   if (ctx->status & CSYNC_STATUS_INIT) {
-    fprintf(stderr, "This function must be called before initialization.");
+    fprintf(stderr, "csync_set_log_callback: This function must be called before initialization.\n");
     return -1;
   }
 
@@ -943,7 +943,7 @@ int csync_enable_conflictcopys(CSYNC* ctx){
   ctx->error_code = CSYNC_ERR_NONE;
 
   if (ctx->status & CSYNC_STATUS_INIT) {
-    fprintf(stderr, "This function must be called before initialization.");
+    fprintf(stderr, "csync_enable_conflictcopys: This function must be called before initialization.\n");
     ctx->error_code = CSYNC_ERR_UNSPEC;
     return -1;
   }
@@ -960,7 +960,7 @@ int csync_set_local_only(CSYNC *ctx, bool local_only) {
     ctx->error_code = CSYNC_ERR_NONE;
 
     if (ctx->status & CSYNC_STATUS_INIT) {
-        fprintf(stderr, "This function must be called before initialization.");
+        fprintf(stderr, "csync_set_local_only: This function must be called before initialization.\n");
         ctx->error_code = CSYNC_ERR_UNSPEC;
         return -1;
     }
@@ -1011,7 +1011,7 @@ int csync_set_module_property(CSYNC* ctx, const char* key, void* value)
 {
     if (!(ctx->status & CSYNC_STATUS_INIT)) {
         ctx->error_code = CSYNC_ERR_UNSPEC;
-        fprintf(stderr, "This function must be called after initialization.");
+        fprintf(stderr, "csync_set_module_property: This function must be called after initialization.\n");
         return -1;
     }
     return csync_vio_set_property(ctx, key, value);
@@ -1040,7 +1040,7 @@ int csync_set_progress_callback(CSYNC* ctx, csync_progress_callback cb)
   ctx->callbacks.progresscb = cb;
 
   if (ctx->status & CSYNC_STATUS_INIT) {
-    fprintf(stderr, "This function must be called before initialization.");
+    fprintf(stderr, "csync_set_progress_callback: This function must be called before initialization.\n");
     ctx->error_code = CSYNC_ERR_UNSPEC;
     return -1;
   }

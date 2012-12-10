@@ -189,7 +189,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   if (_push_to_tmp_first(ctx)) {
       /* create the temporary file name */
-      if (asprintf(&turi, "%s.XXXXXX", duri) < 0) {
+      if (asprintf(&turi, "%s.~XXXXXX", duri) < 0) {
           rc = -1;
           goto out;
       }
@@ -282,7 +282,14 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   /* copy file */
   if( _use_fd_based_push(ctx) ) {
+      if (ctx->current == REMOTE_REPLICA)
+	    csync_win32_set_file_hidden(turi, true);
+
       rc = csync_vio_sendfile( ctx, sfp, dfp );
+
+	  if (ctx->current == REMOTE_REPLICA)
+	    csync_win32_set_file_hidden(turi, false);
+
       if( rc != 0 ) {
           strerror_r(errno,  errbuf, sizeof(errbuf));
           CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
