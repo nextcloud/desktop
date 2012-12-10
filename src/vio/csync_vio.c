@@ -350,7 +350,6 @@ int csync_vio_sendfile(CSYNC *ctx, csync_vio_handle_t *sfp, csync_vio_handle_t *
         rc = ctx->module.method->sendfile(sfp->method_handle, dst->method_handle);
         break;
       case LOCAL_REPLICA:
-        /* Not implemented, go for the read/write syntax instead. */
         rc = ctx->module.method->sendfile(dst->method_handle, sfp->method_handle);
         break;
     }
