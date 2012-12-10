@@ -1628,9 +1628,11 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
 
         if( neon_stat != NE_OK ) {
             set_errno_from_neon_errcode(neon_stat);
+            DEBUG_WEBDAV("Error GET: Neon: %d, errno %d", neon_stat, errno);
             rc = -1;
         } else {
             status = ne_get_status( write_ctx->req );
+            DEBUG_WEBDAV("GET http result %d (%s)", status->code, status->reason_phrase ? status->reason_phrase : "<empty");
             if( status->klass != 2 ) {
                 DEBUG_WEBDAV("sendfile request failed with http status %d!", status->code);
                 set_errno_from_http_errcode( status->code );
