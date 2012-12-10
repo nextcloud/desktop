@@ -427,22 +427,26 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
 int csync_vio_local_rename(const char *olduri, const char *newuri) {
   _TCHAR *nuri = c_multibyte(newuri);
   _TCHAR *ouri = c_multibyte(olduri);
+  int re = -1;
 
 #ifdef _WIN32
   if(ouri && nuri) {
-    if (MoveFileExW(ouri, nuri, MOVEFILE_COPY_ALLOWED + MOVEFILE_REPLACE_EXISTING + MOVEFILE_WRITE_THROUGH )) {
-         return 0;
+    if (MoveFileExW(ouri, nuri, MOVEFILE_COPY_ALLOWED + MOVEFILE_REPLACE_EXISTING + MOVEFILE_WRITE_THROUGH ) != 0) {
+        /* Success */
+         re = 0;
+    } else {
+        errno = GetLastError();
     }
-    errno = GetLastError();
+    /* CSYNC_LOG( CSYNC_LOG_PRIORITY_DEBUG, "ERR: Could not rename, error %d", errno ); */
   } else {
     errno = ENOENT;
   }
 #else
-  return rename(ouri, nuri);
+  re = rename(ouri, nuri);
 #endif
   c_free_multibyte(nuri);
   c_free_multibyte(ouri);
-  return -1;
+  return re;
 }
 
 int csync_vio_local_unlink(const char *uri) {
