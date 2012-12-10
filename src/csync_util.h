@@ -33,4 +33,6 @@ int csync_merge_file_trees(CSYNC *ctx);
 
 int csync_unix_extensions(CSYNC *ctx);
 
+void csync_win32_set_file_hidden( const char *file, bool hidden );
+
 #endif /* _CSYNC_UTIL_H */

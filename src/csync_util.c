@@ -321,3 +321,27 @@ out:
 
   return rc;
 }
+
+
+void csync_win32_set_file_hidden( const char *file, bool h ) {
+#ifdef _WIN32
+  const _TCHAR *fileName;
+  if( !file ) return;
+
+  fileName = c_multibyte( file );
+
+  DWORD dwAttrs = GetFileAttributesW(fileName);
+
+  if (dwAttrs==INVALID_FILE_ATTRIBUTES) return;
+
+  if (h && !(dwAttrs & FILE_ATTRIBUTE_HIDDEN)) {
+     SetFileAttributesW(fileName, dwAttrs | FILE_ATTRIBUTE_HIDDEN );
+  } else if (!h && (dwAttrs & FILE_ATTRIBUTE_HIDDEN)) {
+     SetFileAttributesW(fileName, dwAttrs & ~FILE_ATTRIBUTE_HIDDEN );
+  }
+
+  c_free_multibyte(fileName);
+#else
+    (void) file;
+#endif
+}
