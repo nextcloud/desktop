@@ -189,7 +189,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   if (_push_to_tmp_first(ctx)) {
       /* create the temporary file name */
-      if (asprintf(&turi, "%s.XXXXXX", duri) < 0) {
+      if (asprintf(&turi, "%s.~XXXXXX", duri) < 0) {
           rc = -1;
           goto out;
       }
