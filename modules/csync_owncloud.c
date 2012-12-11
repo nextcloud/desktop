@@ -1628,7 +1628,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
         write_ctx->fd = fd;
         if (_progresscb) {
             ne_set_notifier(dav_session.ctx, ne_notify_status_cb, write_ctx);
-            _progresscb(write_ctx->clean_uri, CSYNC_NOTIFY_START_UPLOAD, 0 , 0, dav_session.userdata);
+            _progresscb(write_ctx->clean_uri, CSYNC_NOTIFY_START_DOWNLOAD, 0 , 0, dav_session.userdata);
         }
         neon_stat = ne_request_dispatch(write_ctx->req );
         /* possible return codes are:
