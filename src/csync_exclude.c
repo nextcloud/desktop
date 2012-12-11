@@ -64,6 +64,8 @@ int csync_exclude_load(CSYNC *ctx, const char *fname) {
   char *entry = NULL;
   const _TCHAR *wfname;
 
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Loading exclude file: %s", fname);
+
 #ifdef _WIN32
   _fmode = _O_BINARY;  
 #endif
