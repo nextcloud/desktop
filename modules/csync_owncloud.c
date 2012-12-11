@@ -1594,14 +1594,15 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
                     DEBUG_WEBDAV("sendfile request failed with http status %d!", status->code);
                     set_errno_from_http_errcode( status->code );
                     /* decide if soft error or hard error that stops the whole sync. */
+                    /* Currently all problems concerning one file are soft errors */
                     if( status->klass == 4 /* Forbidden and stuff, soft error */ ) {
                         rc = 1;
+                    } else if( status->klass == 5 /* Server errors and such */ ) {
+                        rc = 1; /* Abort. */
                     } else {
-                        rc = -1;
+                        rc = 1;
                     }
-                    if( status->klass == 5 /* Server errors and such */ ) {
-                        rc = -1; /* Abort. */
-                    }
+
                     error_code = status->code;
                     error_string = status->reason_phrase;
                 } else {
@@ -1646,13 +1647,13 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
                 DEBUG_WEBDAV("sendfile request failed with http status %d!", status->code);
                 set_errno_from_http_errcode( status->code );
                 /* decide if soft error or hard error that stops the whole sync. */
+                /* Currently all problems concerning one file are soft errors */
                 if( status->klass == 4 /* Forbidden and stuff, soft error */ ) {
                     rc = 1;
+                } else if( status->klass == 5 /* Server errors and such */ ) {
+                    rc = 1; /* Abort. */
                 } else {
-                    rc = -1;
-                }
-                if( status->klass == 5 /* Server errors and such */ ) {
-                    rc = -1; /* Abort. */
+                    rc = 1;
                 }
                 error_code = status->code;
                 error_string = status->reason_phrase;
