@@ -56,7 +56,23 @@ class CredentialStore : public QObject
 {
     Q_OBJECT
 public:
-    enum CredState { NotFetched = 0, Ok, UserCanceled, Fetching, AsyncFetching, Error, TooManyAttempts };
+    enum CredState { NotFetched = 0,
+                     Ok,
+                     UserCanceled,
+                     Fetching,
+                     AsyncFetching,
+                     EntryNotFound,
+                     AccessDeniedByUser,
+                     AccessDenied,
+                     NoKeychainBackend,
+                     Error,
+                     TooManyAttempts };
+
+    enum CredentialType {
+        User = 0,
+        Settings,
+        KeyChain
+    };
 
     QString password( const QString& connection = QString::null ) const;
     QString user( const QString& connection = QString::null ) const;
@@ -100,6 +116,8 @@ public:
 
     void saveCredentials( );
 
+    QString errorMessage();
+
     /**
      * @brief canTryAgain - check if another try to get credentials makes sense.
     */
@@ -131,7 +149,9 @@ private:
     static QString _passwd;
     static QString _user;
     static QString _url;
+    static QString _errorMsg;
     static int     _tries;
+    static CredentialType _type;
 };
 }
 

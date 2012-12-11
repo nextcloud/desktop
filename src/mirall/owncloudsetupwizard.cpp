@@ -16,6 +16,7 @@
 #include "mirall/mirallconfigfile.h"
 #include "mirall/owncloudinfo.h"
 #include "mirall/folderman.h"
+#include "mirall/credentialstore.h"
 
 #include <QtCore>
 #include <QProcess>
@@ -88,6 +89,7 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         qDebug() << "Rejected the new config, use the old!";
     } else if( result == QDialog::Accepted ) {
         qDebug() << "Config Changes were accepted!";
+        // save the user credentials and afterwards clear the cred store.
         cfg.acceptCustomConfig();
 
         // wipe all folder definitions so far.

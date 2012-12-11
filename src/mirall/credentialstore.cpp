@@ -19,16 +19,22 @@
 #include "mirall/mirallconfigfile.h"
 #include "mirall/theme.h"
 
-
+#define MAX_LOGIN_ATTEMPTS 3
 
 namespace Mirall {
 
 CredentialStore *CredentialStore::_instance=0;
 CredentialStore::CredState CredentialStore::_state = NotFetched;
-QString CredentialStore::_passwd = QString::null;
-QString CredentialStore::_user   = QString::null;
-QString CredentialStore::_url    = QString::null;
-int     CredentialStore::_tries  = 0;
+QString CredentialStore::_passwd   = QString::null;
+QString CredentialStore::_user     = QString::null;
+QString CredentialStore::_url      = QString::null;
+QString CredentialStore::_errorMsg = QString::null;
+int     CredentialStore::_tries    = 0;
+#ifdef WITH_QTKEYCHAIN
+CredentialStore::CredentialType CredentialStore::_type = KeyChain;
+#else
+CredentialStore::CredentialType CredentialStore::_type = Settings;
+#endif
 
 CredentialStore::CredentialStore(QObject *parent) :
     QObject(parent)
@@ -57,48 +63,52 @@ CredentialStore::CredState CredentialStore::state()
 
 bool CredentialStore::canTryAgain()
 {
-    MirallConfigFile::CredentialType t;
     MirallConfigFile cfgFile;
 
     bool canDoIt = false;
 
+    if( _tries > MAX_LOGIN_ATTEMPTS ) {
+        qDebug() << "canTryAgain: Max attempts reached.";
+        return false;
+    }
+
     if( _state == NotFetched ) {
         return true;
     }
-    t = cfgFile.credentialType();
-    switch( t ) {
-    case MirallConfigFile::User:
+
+    switch( _type ) {
+    case CredentialStore::User:
         canDoIt = true;
         break;
-    case MirallConfigFile::Settings:
+    case CredentialStore::Settings:
         break;
-    case MirallConfigFile::KeyChain:
+    case CredentialStore::KeyChain:
+        canDoIt = true;
         break;
     default:
         break;
     }
     return canDoIt;
 }
+
 void CredentialStore::fetchCredentials()
 {
     _state = Fetching;
     MirallConfigFile cfgFile;
-    MirallConfigFile::CredentialType t;
 
-    if( ++_tries == 3 ) {
+    if( ++_tries > MAX_LOGIN_ATTEMPTS ) {
         qDebug() << "Too many attempts to enter password!";
         _state = TooManyAttempts;
         return;
     }
-    t = cfgFile.credentialType();
 
     bool ok = false;
     QString pwd;
     _state = Fetching;
     _user = cfgFile.ownCloudUser();
 
-    switch( t ) {
-    case MirallConfigFile::User: {
+    switch( _type ) {
+    case CredentialStore::User: {
         /* Ask the user for the password */
         /* Fixme: Move user interaction out here. */
         pwd = QInputDialog::getText(0, QApplication::translate("MirallConfigFile","Password Required"),
@@ -111,18 +121,19 @@ void CredentialStore::fetchCredentials()
         }
         break;
     }
-    case MirallConfigFile::Settings: {
+    case CredentialStore::Settings: {
         /* Read from config file. */
         pwd = cfgFile.ownCloudPasswd();
         ok = true;
         break;
     }
-    case MirallConfigFile::KeyChain: {
+    case CredentialStore::KeyChain: {
 #ifdef WITH_QTKEYCHAIN
         _state = AsyncFetching;
         if( !_user.isEmpty() ) {
             ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
             // job->setAutoDelete( false );
+            // job->setSettings( )
             job->setKey( keyChainKey( cfgFile.ownCloudUrl() ) );
 
             connect( job, SIGNAL(finished(QKeychain::Job*)), this,
@@ -175,12 +186,51 @@ void CredentialStore::slotKeyChainReadFinished(QKeychain::Job* job)
 #ifdef WITH_QTKEYCHAIN
     ReadPasswordJob *pwdJob = static_cast<ReadPasswordJob*>(job);
     if( pwdJob ) {
-        if( pwdJob->error() ) {
-            qDebug() << "Error with keychain: " << pwdJob->errorString();
-            _state = Error;
-        } else {
+        switch( pwdJob->error() ) {
+        case QKeychain::NoError:
             _passwd = pwdJob->textData();
             _state = Ok;
+            break;
+        case QKeychain::EntryNotFound:
+            _state = EntryNotFound;
+            break;
+        case QKeychain::CouldNotDeleteEntry:
+            _state = Error;
+            break;
+        case QKeychain::AccessDeniedByUser:
+           _state = AccessDeniedByUser;
+            break;
+        case QKeychain::AccessDenied:
+            _state = AccessDenied;
+            break;
+        case QKeychain::NoBackendAvailable:
+            _state = NoKeychainBackend;
+            break;
+        case QKeychain::NotImplemented:
+            _state = NoKeychainBackend;
+            break;
+        case QKeychain::OtherError:
+        default:
+            _state = Error;
+
+        }
+        /* In case there is no backend, tranparentely switch to Settings file. */
+        if( _state == NoKeychainBackend ) {
+            qDebug() << "No Storage Backend, falling back to Settings mode.";
+            _type = CredentialStore::Settings;
+            fetchCredentials();
+            return;
+        }
+
+        if( _state == EntryNotFound ) {
+            // try to migrate.
+        }
+
+        if( _state != Ok ) {
+            qDebug() << "Error with keychain: " << pwdJob->errorString();
+            _errorMsg = pwdJob->errorString();
+        } else {
+            _errorMsg = QString::null;
         }
     } else {
         _state = Error;
@@ -192,6 +242,10 @@ void CredentialStore::slotKeyChainReadFinished(QKeychain::Job* job)
 #endif
 }
 
+QString CredentialStore::errorMessage()
+{
+    return _errorMsg;
+}
 
 QByteArray CredentialStore::basicAuthHeader() const
 {
@@ -212,17 +266,20 @@ void CredentialStore::setCredentials( const QString& url, const QString& user, c
 
 void CredentialStore::saveCredentials( )
 {
-#ifdef WITH_QTKEYCHAIN
-    MirallConfigFile::CredentialType t;
-    t = MirallConfigFile::KeyChain;
+    MirallConfigFile cfgFile;
 
-    switch( t ) {
-    case MirallConfigFile::User:
+#ifdef WITH_QTKEYCHAIN
+    WritePasswordJob *job = NULL;
+#endif
+
+    switch( _type ) {
+    case CredentialStore::User:
         deleteKeyChainCredential(keyChainKey( _url ));
         break;
-    case MirallConfigFile::KeyChain: {
+    case CredentialStore::KeyChain:
+#ifdef WITH_QTKEYCHAIN
         // Set password in KeyChain
-        WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
+        job = new WritePasswordJob(Theme::instance()->appName());
         // job->setAutoDelete( false );
         job->setKey( keyChainKey( _url ) );
         job->setTextData(_passwd);
@@ -230,14 +287,19 @@ void CredentialStore::saveCredentials( )
         connect( job, SIGNAL(finished(QKeychain::Job*)), this,
                  SLOT(slotKeyChainWriteFinished(QKeychain::Job*)));
         job->start();
-
+#endif
         break;
-    }
+    case CredentialStore::Settings:
+        cfgFile.writePassword( _passwd );
+        reset();
+        break;
     default:
         // unsupported.
         break;
     }
-#endif
+    // After saving, reset the internal state.
+
+
 }
 
 void CredentialStore::slotKeyChainWriteFinished( QKeychain::Job *job )
@@ -245,13 +307,21 @@ void CredentialStore::slotKeyChainWriteFinished( QKeychain::Job *job )
 #ifdef WITH_QTKEYCHAIN
     WritePasswordJob *pwdJob = static_cast<WritePasswordJob*>(job);
     if( pwdJob ) {
-        if( pwdJob->error() ) {
+        QKeychain::Error err = pwdJob->error();
+
+        if( err != QKeychain::NoError ) {
             qDebug() << "Error with keychain: " << pwdJob->errorString();
+            if( err == NoBackendAvailable || err == NotImplemented ||
+                    pwdJob->errorString().contains(QLatin1String("Could not open wallet"))) {
+                _type = Settings;
+                saveCredentials();
+            }
         } else {
             qDebug() << "Successfully stored password for user " << _user;
             // Try to remove password formerly stored in the config file.
             MirallConfigFile cfgFile;
             cfgFile.clearPasswordFromConfig();
+            reset();
         }
     } else {
         qDebug() << "Error: KeyChain Write Password Job failed!";

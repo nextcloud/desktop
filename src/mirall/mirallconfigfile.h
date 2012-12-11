@@ -38,12 +38,6 @@ public:
         oCSetupResultTop // ownCloud connect result page
     };
 
-    enum CredentialType {
-        User = 0,
-        Settings,
-        KeyChain
-    };
-
     QString configPath() const;
     QString configFile() const;
     QString excludeFile() const;
@@ -69,7 +63,7 @@ public:
     QByteArray caCerts();
     void setCaCerts( const QByteArray& );
 
-    CredentialType credentialType(const QString &connection = QString::null) const;
+    bool passwordStorageAllowed(const QString &);
 
     QString ownCloudVersion() const;
     void setOwnCloudVersion( const QString& );
@@ -105,9 +99,12 @@ public:
     QString proxyPassword() const;
 
 protected:
+    // these classes can only be access from CredentialStore as a friend class.
     QString ownCloudPasswd( const QString& connection = QString() ) const;
     QString ownCloudUser( const QString& connection = QString() ) const;
     void clearPasswordFromConfig( const QString& connect = QString() );
+    bool writePassword( const QString& passwd, const QString& connection = QString() );
+
 private:
     QVariant getValue(const QString& param, const QString& group) const;
 

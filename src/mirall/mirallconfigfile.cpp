@@ -153,9 +153,8 @@ void MirallConfigFile::writeOwncloudConfig( const QString& connection,
     // were successfully wiritten to delete the passwd entry from config.
     qDebug() << "Going to delete the password from settings file.";
 #else
-    // store password into settings file.
-    QByteArray pwdba = pwd.toUtf8();
-    settings.setValue( QLatin1String("passwd"), QVariant(pwdba.toBase64()) );
+    if( !skipPwd )
+        writePassword( passwd );
 #endif
     settings.setValue( QLatin1String("nostoredpassword"), QVariant(skipPwd) );
     settings.sync();
@@ -178,9 +177,27 @@ void MirallConfigFile::clearPasswordFromConfig( const QString& connection )
 
     QSettings settings( file, QSettings::IniFormat);
     settings.setIniCodec( "UTF-8" );
-    settings.beginGroup( con ); // FIXME: Connection!
+    settings.beginGroup( con );
     settings.remove(QLatin1String("passwd"));
     settings.remove(QLatin1String("password"));
+    settings.sync();
+}
+
+bool MirallConfigFile::writePassword( const QString& passwd, const QString& connection )
+{
+    const QString file = configFile();
+    QString pwd( passwd );
+    QString con( defaultConnection() );
+    if( !connection.isEmpty() )
+        con = connection;
+
+    QSettings settings( file, QSettings::IniFormat);
+    settings.setIniCodec( "UTF-8" );
+
+    // store password into settings file.
+    settings.beginGroup( con );
+    QByteArray pwdba = pwd.toUtf8();
+    settings.setValue( QLatin1String("passwd"), QVariant(pwdba.toBase64()) );
     settings.sync();
 }
 
@@ -340,27 +357,17 @@ int MirallConfigFile::pollTimerExceedFactor( const QString& connection ) const
   return pte;
 }
 
-MirallConfigFile::CredentialType MirallConfigFile::credentialType( const QString& connection) const
+bool MirallConfigFile::passwordStorageAllowed( const QString& connection )
 {
     QString con( connection );
     if( connection.isEmpty() ) con = defaultConnection();
-
-    CredentialType ct = Settings;
-#ifdef WITH_QTKEYCHAIN
-    // In case QtKeyChain is there, use it mandatory.
-    ct = KeyChain;
-#endif
 
     QSettings settings( configFile(), QSettings::IniFormat );
     settings.setIniCodec( "UTF-8" );
     settings.beginGroup( con );
 
     bool skipPwd = settings.value( QLatin1String("nostoredpassword"), false ).toBool();
-    if( skipPwd ) {
-        ct = User;
-    }
-
-    return ct;
+    return !skipPwd;
 }
 
 QString MirallConfigFile::ownCloudPasswd( const QString& connection ) const

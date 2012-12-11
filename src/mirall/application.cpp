@@ -262,7 +262,7 @@ void Application::slotFetchCredentials()
                  this, SLOT(slotCredentialsFetched(bool)) );
         CredentialStore::instance()->fetchCredentials();
         if( CredentialStore::instance()->state() == CredentialStore::TooManyAttempts ) {
-            trayMessage = tr("Too many user attempts to enter password.");
+            trayMessage = tr("Too many attempts to get a valid password.");
         }
     } else {
         qDebug() << "Can not try again to fetch Credentials.";
@@ -284,6 +284,8 @@ void Application::slotCredentialsFetched(bool ok)
         trayMessage = tr("Error: Could not retrieve the password!");
         if( CredentialStore::instance()->state() == CredentialStore::UserCanceled ) {
             trayMessage = tr("Password dialog was canceled!");
+        } else {
+            trayMessage = CredentialStore::instance()->errorMessage();
         }
 
         if( !trayMessage.isEmpty() ) {
@@ -351,8 +353,10 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
 
             _statusDialog->setFolderList( _folderMan->map() );
             computeOverallSyncStatus();
+
         }
         _actionAddFolder->setEnabled( true );
+        _actionOpenStatus->setEnabled( true );
         setupContextMenu();
     } else {
         slotFetchCredentials();
@@ -398,7 +402,7 @@ void Application::slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors )
 void Application::slotownCloudWizardDone( int res )
 {
     if( res == QDialog::Accepted ) {
-        CredentialStore::instance()->reset();
+
     }
     slotStartFolderSetup( res );
 }
@@ -409,6 +413,7 @@ void Application::setupActions()
     QObject::connect(_actionOpenoC, SIGNAL(triggered(bool)), SLOT(slotOpenOwnCloud()));
     _actionOpenStatus = new QAction(tr("Open status..."), this);
     QObject::connect(_actionOpenStatus, SIGNAL(triggered(bool)), SLOT(slotOpenStatus()));
+    _actionOpenStatus->setEnabled( false );
     _actionAddFolder = new QAction(tr("Add folder..."), this);
     QObject::connect(_actionAddFolder, SIGNAL(triggered(bool)), SLOT(slotAddFolder()));
     _actionConfigure = new QAction(tr("Configure..."), this);
@@ -602,7 +607,8 @@ void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
     // A click on the tray icon should only open the status window on Win and
     // Linux, not on Mac. They want a menu entry.
     // If the user canceled login, rather open the login window.
-    if( CredentialStore::instance()->state() == CredentialStore::UserCanceled ) {
+    if( CredentialStore::instance()->state() == CredentialStore::UserCanceled ||
+            CredentialStore::instance()->state() == CredentialStore::Error ) {
         slotFetchCredentials();
     }
 #if defined Q_WS_WIN || defined Q_WS_X11
