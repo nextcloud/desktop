@@ -107,7 +107,8 @@ Application::Application(int &argc, char **argv) :
     installTranslator(mirallTranslator);
 
     connect( this, SIGNAL(messageReceived(QString)), SLOT(slotParseOptions(QString)));
-
+    connect( Logger::instance(), SIGNAL(guiLog(QString,QString)),
+             this, SLOT(slotShowTrayMessage(QString,QString)));
     // create folder manager for sync folder management
     _folderMan = new FolderMan(this);
     connect( _folderMan, SIGNAL(folderSyncStateChange(QString)),
@@ -875,6 +876,11 @@ void Application::slotParseOptions(const QString &opts)
     QStringList options = opts.split(QLatin1Char('|'));
     parseOptions(options);
     setupLogBrowser();
+}
+
+void Application::slotShowTrayMessage(const QString &title, const QString &msg)
+{
+    _tray->showMessage(title, msg);
 }
 
 void Application::slotSyncStateChange( const QString& alias )

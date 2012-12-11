@@ -48,6 +48,7 @@ public:
 
 signals:
   void newLog(const QString&);
+  void guiLog(const QString&, const QString&);
 
 protected:
   Logger(QObject* parent=0);

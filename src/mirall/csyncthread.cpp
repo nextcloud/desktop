@@ -32,6 +32,7 @@
 #include <QTextStream>
 #include <QTime>
 #include <QApplication>
+#include <QUrl>
 
 namespace Mirall {
 
@@ -105,11 +106,7 @@ void CSyncThread::startSync()
     _csyncConfigDir = QString::fromUtf8( csync_get_config_dir( csync ));
     _mutex.unlock();
 
-    csync_set_auth_callback( csync, getauth );
-    csync_set_log_callback( csync, csyncLogCatcher );
-
     csync_enable_conflictcopys(csync);
-
 
     MirallConfigFile cfg;
     QString excludeList = cfg.excludeFile();
@@ -123,6 +120,9 @@ void CSyncThread::startSync()
 
     QTime t;
     t.start();
+
+    csync_set_log_callback( csync, csyncLogCatcher );
+    csync_set_auth_callback( csync, getauth );
 
     if( csync_init(csync) < 0 ) {
         CSYNC_ERROR_CODE err = csync_get_error( csync );
@@ -170,6 +170,10 @@ void CSyncThread::startSync()
         goto cleanup;
     }
 
+    csync_set_userdata(csync, this);
+
+    csync_set_progress_callback( csync, progress );
+
     // set module properties, mainly the proxy information.
     // do not use QLatin1String here because that has to be real const char* for C.
     csync_set_log_verbosity(csync, 11);
@@ -196,8 +200,6 @@ void CSyncThread::startSync()
         goto cleanup;
     }
     qDebug() << "<<#### Update end ###########################################################";
-
-    csync_set_userdata(csync, this);
 
     if( csync_reconcile(csync) < 0 ) {
         emit csyncError(tr("CSync reconcile failed."));
@@ -269,5 +271,19 @@ int CSyncThread::getauth(const char *prompt,
     _mutex.unlock();
     return re;
 }
+
+
+void CSyncThread::progress(const char *remote_url, enum csync_notify_type_e kind,
+                                        long long o1, long long o2, void *userdata)
+{
+    (void) o1; (void) o2;
+    if (kind == CSYNC_NOTIFY_FINISHED_DOWNLOAD) {
+        QString path = QUrl::fromEncoded(remote_url).path();
+        CSyncThread *thread = static_cast<CSyncThread*>(userdata);
+        thread->fileReceived(path);
+    }
+
+}
+
 
 }

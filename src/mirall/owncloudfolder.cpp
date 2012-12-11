@@ -17,6 +17,7 @@
 #include "mirall/mirallconfigfile.h"
 #include "mirall/owncloudinfo.h"
 #include "mirall/credentialstore.h"
+#include "mirall/logger.h"
 
 #include <csync.h>
 
@@ -46,6 +47,7 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
     , _csyncError(false)
     , _wipeDb(false)
 {
+    connect(this, SIGNAL(guiLog(QString,QString)), Logger::instance(), SIGNAL(guiLog(QString,QString)));
     qDebug() << "****** ownCloud folder using watcher *******";
     // The folder interval is set in the folder parent class.
 }
@@ -131,7 +133,8 @@ void ownCloudFolder::startSync(const QStringList &pathList)
 
     connect(_csync, SIGNAL(started()),  SLOT(slotCSyncStarted()), Qt::QueuedConnection);
     connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()), Qt::QueuedConnection);
-    connect(_csync, SIGNAL(csyncError(const QString)), SLOT(slotCSyncError(const QString)), Qt::QueuedConnection);
+    connect(_csync, SIGNAL(csyncError(QString)), SLOT(slotCSyncError(QString)), Qt::QueuedConnection);
+    connect(_csync, SIGNAL(fileReceived(QString)), SLOT(slotFileReceived(QString)), Qt::QueuedConnection);
 
     _thread->start();
     QMetaObject::invokeMethod(_csync, "startSync", Qt::QueuedConnection);
@@ -169,6 +172,11 @@ void ownCloudFolder::slotCSyncFinished()
         _thread->quit();
     }
     emit syncFinished( _syncResult );
+}
+
+void ownCloudFolder::slotFileReceived(const QString &file)
+{
+    emit guiLog(tr("New file!"), tr("'%1' is now available on this machine.").arg(file));
 }
 
 void ownCloudFolder::slotTerminateSync()

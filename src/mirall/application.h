@@ -64,6 +64,7 @@ protected slots:
     void slotConfigure();
     void slotConfigureProxy();
     void slotParseOptions( const QString& );
+    void slotShowTrayMessage(const QString&, const QString&);
 
     void slotSyncStateChange( const QString& );
     void slotownCloudWizardDone(int);

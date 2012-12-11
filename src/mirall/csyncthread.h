@@ -44,6 +44,7 @@ public:
     Q_INVOKABLE void startSync();
 
 signals:
+    void fileReceived( const QString& );
     void csyncError( const QString& );
 
     void csyncStateDbFile( const QString& );
@@ -53,6 +54,10 @@ signals:
     void started();
 
 private:
+    static void progress(const char *remote_url,
+                    enum csync_notify_type_e kind,
+                    long long o1, long long o2,
+                    void *userdata);
     static int getauth(const char *prompt,
                 char *buf,
                 size_t len,

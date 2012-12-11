@@ -69,6 +69,10 @@ private slots:
     void slotCSyncStarted();
     void slotCSyncError(const QString& );
     void slotCSyncFinished();
+    void slotFileReceived(const QString& );
+
+signals:
+    void guiLog(const QString&, const QString&);
 
 private:
     QString      _secondPath;
