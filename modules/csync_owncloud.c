@@ -1610,8 +1610,9 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
 
                 if (_progresscb) {
                     ne_set_notifier(dav_session.ctx, 0, 0);
-                    _progresscb(write_ctx->clean_uri, rc != NE_OK ? CSYNC_NOTIFY_ERROR : CSYNC_NOTIFY_FINISHED,
-                                error_code, (long long)(error_string), dav_session.userdata);
+                    _progresscb(write_ctx->clean_uri, rc != NE_OK ?  CSYNC_NOTIFY_ERROR : 
+                                CSYNC_NOTIFY_FINISHED_UPLOAD, error_code,
+                                (long long)(error_string), dav_session.userdata);
                 }
             } else {
                 DEBUG_WEBDAV("Could not stat file descriptor");
@@ -1669,8 +1670,9 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
         }
         if (_progresscb) {
             ne_set_notifier(dav_session.ctx, 0, 0);
-            _progresscb(write_ctx->clean_uri, (rc != NE_OK) ? CSYNC_NOTIFY_ERROR : CSYNC_NOTIFY_FINISHED,
-                        error_code , (long long)(error_string), dav_session.userdata);
+            _progresscb(write_ctx->clean_uri, (rc != NE_OK) ? CSYNC_NOTIFY_ERROR :
+                        CSYNC_NOTIFY_FINISHED_DOWNLOAD, error_code ,
+                        (long long)(error_string), dav_session.userdata);
         }
     } else  {
         DEBUG_WEBDAV("Unknown method!");
