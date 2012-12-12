@@ -1630,6 +1630,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
     } else if( c_streq( write_ctx->method, "GET") ) {
         /* GET a file to the file descriptor */
         /* actually do the request */
+        DEBUG_WEBDAV("  -- GET on %s", write_ctx->clean_uri);
         write_ctx->fd = fd;
         if (_progresscb) {
             ne_set_notifier(dav_session.ctx, ne_notify_status_cb, write_ctx);

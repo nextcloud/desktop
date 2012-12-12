@@ -192,7 +192,21 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 #ifdef _WIN32
       if (asprintf(&turi, "%s.~XXXXXX", duri) < 0) {
 #else
-      if (asprintf(&turi, ".%s.~XXXXXX", duri) < 0) {
+      /* split up the path */
+      int re = 0;
+      if(duri) {
+          char *path = c_dirname(duri);
+          char *base = c_basename(duri);
+
+          if( path ) {
+              re = asprintf(&turi, "%s/.%s.~XXXXXX", path, base);
+          } else {
+              re = asprintf(&turi,".%s.~XXXXXX", base);
+          }
+          SAFE_FREE(path);
+          SAFE_FREE(base);
+      }
+      if (re < 0) {
 #endif
           rc = -1;
           goto out;
