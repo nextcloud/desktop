@@ -68,23 +68,23 @@ CSyncThread::~CSyncThread()
 
 }
 
-QString CSyncThread::proxyTypeToCStr(QNetworkProxy::ProxyType type)
+const char* CSyncThread::proxyTypeToCStr(QNetworkProxy::ProxyType type)
 {
     switch (type) {
     case QNetworkProxy::NoProxy:
-        return QLatin1String("NoProxy");
+        return "NoProxy";
     case QNetworkProxy::DefaultProxy:
-        return QLatin1String("DefaultProxy");
+        return "DefaultProxy";
     case QNetworkProxy::Socks5Proxy:
-        return QLatin1String("Socks5Proxy");
+        return "Socks5Proxy";
     case  QNetworkProxy::HttpProxy:
-        return QLatin1String("HttpProxy");
+        return "HttpProxy";
     case  QNetworkProxy::HttpCachingProxy:
-        return QLatin1String("HttpCachingProxy");
+        return "HttpCachingProxy";
     case  QNetworkProxy::FtpCachingProxy:
-        return QLatin1String("FtpCachingProxy");
+        return "FtpCachingProxy";
     default:
-        return QLatin1String("NoProxy");
+        return "NoProxy";
     }
 }
 
@@ -174,7 +174,7 @@ void CSyncThread::startSync()
     // do not use QLatin1String here because that has to be real const char* for C.
     csync_set_log_verbosity(csync, 11);
     csync_set_module_property(csync, "csync_context", csync);
-    csync_set_module_property(csync, "proxy_type", proxyTypeToCStr( _proxy.type()).data() );
+    csync_set_module_property(csync, "proxy_type", (char*) proxyTypeToCStr(_proxy.type()) );
     csync_set_module_property(csync, "proxy_host", _proxy.hostName().toAscii().data() );
     csync_set_module_property(csync, "proxy_user", _proxy.user().toAscii().data()     );
     csync_set_module_property(csync, "proxy_pwd" , _proxy.password().toAscii().data() );
