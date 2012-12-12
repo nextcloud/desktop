@@ -36,6 +36,19 @@
 namespace Mirall {
 
 
+static QString replaceScheme(const QString &urlStr)
+{
+
+    QUrl url( urlStr );
+    if( url.scheme() == QLatin1String("http") ) {
+        url.setScheme( QLatin1String("owncloud") );
+    } else {
+        // connect SSL!
+        url.setScheme( QLatin1String("ownclouds") );
+    }
+    return url.toString();
+}
+
 ownCloudFolder::ownCloudFolder(const QString &alias,
                                const QString &path,
                                const QString &secondPath,
@@ -47,7 +60,9 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
     , _csyncError(false)
     , _wipeDb(false)
 {
-    connect(this, SIGNAL(guiLog(QString,QString)), Logger::instance(), SIGNAL(guiLog(QString,QString)));
+    _notifier = new DownloadNotifier(QDir::fromNativeSeparators(path),
+                                     replaceScheme(secondPath), this);
+    connect(_notifier, SIGNAL(guiLog(QString,QString)), Logger::instance(), SIGNAL(guiLog(QString,QString)));
     qDebug() << "****** ownCloud folder using watcher *******";
     // The folder interval is set in the folder parent class.
 }
@@ -103,23 +118,16 @@ void ownCloudFolder::startSync(const QStringList &pathList)
 
     MirallConfigFile cfgFile;
 
-    QUrl url( _secondPath );
-    if( url.scheme() == QLatin1String("http") ) {
-        url.setScheme( QLatin1String("owncloud") );
-    } else {
-        // connect SSL!
-        url.setScheme( QLatin1String("ownclouds") );
-    }
-
     _syncResult.clearErrors();
     // we now have watchers for everything, so every sync is remote.
     _syncResult.setLocalRunOnly( false );
     Folder::startSync( pathList );
 
+    QString url = replaceScheme(_secondPath);
 
-    qDebug() << "*** Start syncing url to ownCloud: " << url.toString();
+    qDebug() << "*** Start syncing url to ownCloud: " << url;
     _thread = new QThread(this);
-    _csync = new CSyncThread( path(), url.toString() );
+    _csync = new CSyncThread( path(), url);
     _csync->moveToThread(_thread);
 
     QList<QNetworkProxy> proxies = QNetworkProxyFactory::proxyForQuery(QUrl(cfgFile.ownCloudUrl()));
@@ -134,7 +142,8 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     connect(_csync, SIGNAL(started()),  SLOT(slotCSyncStarted()), Qt::QueuedConnection);
     connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()), Qt::QueuedConnection);
     connect(_csync, SIGNAL(csyncError(QString)), SLOT(slotCSyncError(QString)), Qt::QueuedConnection);
-    connect(_csync, SIGNAL(fileReceived(QString)), SLOT(slotFileReceived(QString)), Qt::QueuedConnection);
+    connect(_csync, SIGNAL(fileReceived(QString)),
+            _notifier, SLOT(slotFileReceived(QString)), Qt::QueuedConnection);
 
     _thread->start();
     QMetaObject::invokeMethod(_csync, "startSync", Qt::QueuedConnection);
@@ -172,11 +181,6 @@ void ownCloudFolder::slotCSyncFinished()
         _thread->quit();
     }
     emit syncFinished( _syncResult );
-}
-
-void ownCloudFolder::slotFileReceived(const QString &file)
-{
-    emit guiLog(tr("New file!"), tr("'%1' is now available on this machine.").arg(file));
 }
 
 void ownCloudFolder::slotTerminateSync()
@@ -256,6 +260,41 @@ void ownCloudFolder::wipe()
         ctmpFile.remove();
     }
     _wipeDb = false;
+}
+
+DownloadNotifier::DownloadNotifier(const QString &localPrefix, const QString &remotePrefix, QObject *parent)
+    : QObject(parent), _timer(new QTimer(this)), _items(0)
+{
+    _timer->setSingleShot(true);
+    connect(_timer, SIGNAL(timeout()), SLOT(sendResults()));
+
+    _localPrefix = localPrefix;
+    _remotePrefix = remotePrefix;
+}
+
+void DownloadNotifier::slotFileReceived(const QString & url)
+{
+    if (_url.isEmpty())
+        _url = url;
+    _items++;
+    _timer->stop();
+    _timer->start(1000);
+}
+
+void DownloadNotifier::sendResults()
+{
+    QString file = _url;
+    file.replace(_remotePrefix, _localPrefix);
+    file = QDir::toNativeSeparators(QDir::cleanPath(file));
+    if (_items == 1)
+        emit guiLog(tr("New file available"), tr("'%1' has been synced to this machine.").arg(file));
+    else
+        emit guiLog(tr("New files available"), tr("'%1' and %n other file(s) have been synced to this machine.",
+                                                  "", _items-1).arg(file).arg(_items));
+
+    // reset
+    _items = 0;
+    _url = QString::null;
 }
 
 } // ns

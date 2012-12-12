@@ -23,6 +23,7 @@
 #include "mirall/csyncthread.h"
 
 class QProcess;
+class QTimer;
 
 namespace Mirall {
 
@@ -40,6 +41,25 @@ enum SyncFileStatus_s {
     STATUS_UPDATED
 };
 typedef SyncFileStatus_s SyncFileStatus;
+
+class DownloadNotifier : public QObject
+{
+    Q_OBJECT
+public:
+    DownloadNotifier(const QString &localPrefix, const QString &remotePrefix, QObject *parent = 0);
+public slots:
+    void slotFileReceived(const QString&);
+signals:
+    void guiLog(const QString&, const QString&);
+private slots:
+    void sendResults();
+private:
+    QTimer *_timer;
+    QString _url;
+    QString _localPrefix;
+    QString _remotePrefix;
+    int _items;
+};
 
 class ownCloudFolder : public Folder
 {
@@ -69,12 +89,9 @@ private slots:
     void slotCSyncStarted();
     void slotCSyncError(const QString& );
     void slotCSyncFinished();
-    void slotFileReceived(const QString& );
-
-signals:
-    void guiLog(const QString&, const QString&);
 
 private:
+    DownloadNotifier *_notifier;
     QString      _secondPath;
     QThread     *_thread;
     CSyncThread *_csync;

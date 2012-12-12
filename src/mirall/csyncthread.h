@@ -45,6 +45,7 @@ public:
 
 signals:
     void fileReceived( const QString& );
+    void fileRemoved( const QString& );
     void csyncError( const QString& );
 
     void csyncStateDbFile( const QString& );
