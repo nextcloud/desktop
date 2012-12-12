@@ -275,12 +275,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="236"/>
+        <location filename="../src/mirall/application.cpp" line="237"/>
         <source>&lt;p&gt;The detailed error message is&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;자세한 오류 메시지:&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="238"/>
+        <location filename="../src/mirall/application.cpp" line="239"/>
         <source>&lt;p&gt;Please check your configuration by clicking on the tray icon.&lt;/p&gt;</source>
         <translation>&lt;p&gt;트레이 아이콘을 눌러서 환경 설정을 확인하십시오.&lt;/p&gt;
 </translation>
@@ -306,7 +306,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="352"/>
+        <location filename="../src/mirall/application.cpp" line="353"/>
         <source>Sync started for %1 configured sync folder(s).</source>
         <translation>설정된 동기화 폴더 %1개의 동기화가 시작되었습니다.</translation>
     </message>
@@ -315,27 +315,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="414"/>
+        <location filename="../src/mirall/application.cpp" line="415"/>
         <source>Open status...</source>
         <translation>상태 열기...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="417"/>
+        <location filename="../src/mirall/application.cpp" line="418"/>
         <source>Add folder...</source>
         <translation>폴더 추가...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="419"/>
+        <location filename="../src/mirall/application.cpp" line="420"/>
         <source>Configure...</source>
         <translation>설정...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="421"/>
+        <location filename="../src/mirall/application.cpp" line="422"/>
         <source>Configure proxy...</source>
         <translation>프록시 설정...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="425"/>
+        <location filename="../src/mirall/application.cpp" line="426"/>
         <source>Quit</source>
         <translation>끝내기</translation>
     </message>
@@ -344,99 +344,99 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="219"/>
+        <location filename="../src/mirall/application.cpp" line="220"/>
         <source>%1 Server Mismatch</source>
         <translation>%1 서버 일치하지 않음</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="220"/>
+        <location filename="../src/mirall/application.cpp" line="221"/>
         <source>&lt;p&gt;The configured server for this client is too old.&lt;/p&gt;&lt;p&gt;Please update to the latest %1 server and restart the client.&lt;/p&gt;</source>
         <translation>&lt;p&gt;이 클라이언트에 설정된 서버가 오래되었습니다.&lt;/p&gt;&lt;p&gt;서버를 최신 버전 %1(으)로 업데이트하고 클라이언트를 다시 시작하십시오.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="235"/>
+        <location filename="../src/mirall/application.cpp" line="236"/>
         <source>&lt;p&gt;The %1 at %2 could not be reached.&lt;/p&gt;</source>
         <translation>&lt;p&gt;%2의 %1에 접근할 수 없습니다.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="240"/>
+        <location filename="../src/mirall/application.cpp" line="241"/>
         <source>%1 Connection Failed</source>
         <translation>%1 접속 실패</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="265"/>
+        <location filename="../src/mirall/application.cpp" line="266"/>
         <source>Too many attempts to get a valid password.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="269"/>
+        <location filename="../src/mirall/application.cpp" line="270"/>
         <source>ownCloud user credentials are wrong. Please check configuration.</source>
         <translation>ownCloud 사용자 정보가 잘못되었습니다. 설정 상태를 확인하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="273"/>
-        <location filename="../src/mirall/application.cpp" line="292"/>
+        <location filename="../src/mirall/application.cpp" line="274"/>
+        <location filename="../src/mirall/application.cpp" line="293"/>
         <source>Credentials</source>
         <translation>로그인 정보</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="284"/>
+        <location filename="../src/mirall/application.cpp" line="285"/>
         <source>Error: Could not retrieve the password!</source>
         <translation>오류: 암호를 가져올 수 없습니다!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="286"/>
+        <location filename="../src/mirall/application.cpp" line="287"/>
         <source>Password dialog was canceled!</source>
         <translation>암호 대화상자가 취소되었습니다!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="322"/>
-        <location filename="../src/mirall/application.cpp" line="331"/>
+        <location filename="../src/mirall/application.cpp" line="323"/>
+        <location filename="../src/mirall/application.cpp" line="332"/>
         <source>No %1 Connection</source>
         <translation>%1 접속 없음</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="323"/>
+        <location filename="../src/mirall/application.cpp" line="324"/>
         <source>&lt;p&gt;Your %1 credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation>&lt;p&gt;%1 계정 정보가 올바르지 않습니다.&lt;/p&gt;&lt;p&gt;트레이의 설정 대화 상자에서 이 정보를 수정하십시오!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="332"/>
+        <location filename="../src/mirall/application.cpp" line="333"/>
         <source>&lt;p&gt;Either your user name or your password are not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation>&lt;p&gt;사용자 이름 및 암호가 올바르지 않습니다.&lt;/p&gt;&lt;p&gt;트레이에서 설정 대화 상자를 열어서 올바른 정보를 입력하십시오!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="351"/>
+        <location filename="../src/mirall/application.cpp" line="352"/>
         <source>%1 Sync Started</source>
         <translation>%1 동기화 시작됨</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="412"/>
+        <location filename="../src/mirall/application.cpp" line="413"/>
         <source>Open %1 in browser...</source>
         <translation>웹 브라우저에서 %1 열기...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="423"/>
+        <location filename="../src/mirall/application.cpp" line="424"/>
         <source>About...</source>
         <translation>ownCloud 정보...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="479"/>
+        <location filename="../src/mirall/application.cpp" line="480"/>
         <source>Open %1 folder</source>
         <translation>%1 폴더 열기</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="492"/>
+        <location filename="../src/mirall/application.cpp" line="493"/>
         <source>Managed Folders:</source>
         <translation>관리된 폴더:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="728"/>
+        <location filename="../src/mirall/application.cpp" line="729"/>
         <source>About %1</source>
         <translation>%1 정보</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="729"/>
+        <location filename="../src/mirall/application.cpp" line="730"/>
         <source>%1 client, version %2
 
 Copyright 2012, the ownCloud developers.</source>
@@ -445,110 +445,110 @@ Copyright 2012, the ownCloud developers.</source>
 저작권자 2012, ownCloud 개발자</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="740"/>
+        <location filename="../src/mirall/application.cpp" line="741"/>
         <source>Confirm Folder Remove</source>
         <translation>폴더 삭제 확인</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="741"/>
+        <location filename="../src/mirall/application.cpp" line="742"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>업로드 폴더 &lt;i&gt;%1&lt;/i&gt;을(를) 삭제하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="769"/>
+        <location filename="../src/mirall/application.cpp" line="770"/>
         <source>Undefined Folder State</source>
         <translation>정의되지 않은 폴더 상태</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="772"/>
+        <location filename="../src/mirall/application.cpp" line="773"/>
         <source>The folder waits to start syncing.</source>
         <translation>이 폴더는 동기화를 기다리고 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="775"/>
-        <location filename="../src/mirall/application.cpp" line="945"/>
+        <location filename="../src/mirall/application.cpp" line="776"/>
+        <location filename="../src/mirall/application.cpp" line="951"/>
         <source>Sync is running.</source>
         <translation>동기화 중입니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="778"/>
-        <location filename="../src/mirall/application.cpp" line="950"/>
+        <location filename="../src/mirall/application.cpp" line="779"/>
+        <location filename="../src/mirall/application.cpp" line="956"/>
         <source>Last Sync was successful.</source>
         <translation>마지막 동기화를 성공적으로 마쳤습니다. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="781"/>
-        <location filename="../src/mirall/application.cpp" line="956"/>
+        <location filename="../src/mirall/application.cpp" line="782"/>
+        <location filename="../src/mirall/application.cpp" line="962"/>
         <source>Syncing Error.</source>
         <translation>동기화 오류가 발생하였습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="784"/>
-        <location filename="../src/mirall/application.cpp" line="962"/>
+        <location filename="../src/mirall/application.cpp" line="785"/>
+        <location filename="../src/mirall/application.cpp" line="968"/>
         <source>Setup Error.</source>
         <translation>설치 오류가 발생하였습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="787"/>
-        <location filename="../src/mirall/application.cpp" line="965"/>
+        <location filename="../src/mirall/application.cpp" line="788"/>
+        <location filename="../src/mirall/application.cpp" line="971"/>
         <source>Undefined Error State.</source>
         <translation>정의되지 않은 오류 상태입니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="791"/>
+        <location filename="../src/mirall/application.cpp" line="792"/>
         <source>Folder information</source>
         <translation>폴더 정보</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="806"/>
+        <location filename="../src/mirall/application.cpp" line="807"/>
         <source>Unknown</source>
         <translation>알 수 없음</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="808"/>
+        <location filename="../src/mirall/application.cpp" line="809"/>
         <source>Changed files:
 </source>
         <translation>변경된 파일:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="810"/>
+        <location filename="../src/mirall/application.cpp" line="811"/>
         <source>Added files:
 </source>
         <translation>추가된 파일:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="812"/>
+        <location filename="../src/mirall/application.cpp" line="813"/>
         <source>New files in the server, or files deleted locally:
 </source>
         <translation>서버에 추가된 파일 및 로컬에서 삭제된 파일:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="838"/>
+        <location filename="../src/mirall/application.cpp" line="839"/>
         <source>Sync Running</source>
         <translation>동기화 진행 중</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="839"/>
+        <location filename="../src/mirall/application.cpp" line="840"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>동기화 진행 중입니다.&lt;br/&gt;작업을 종료하시겠습니까?
 
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="938"/>
+        <location filename="../src/mirall/application.cpp" line="944"/>
         <source>Undefined State.</source>
         <translation>정의되지 않은 상태.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="941"/>
+        <location filename="../src/mirall/application.cpp" line="947"/>
         <source>Waits to start syncing.</source>
         <translation>동기화 시작 대기 중.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="970"/>
+        <location filename="../src/mirall/application.cpp" line="976"/>
         <source> (Sync is paused)</source>
         <translation> (동기화 일시 정지됨)</translation>
     </message>
@@ -557,7 +557,7 @@ Copyright 2012, the ownCloud developers.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="987"/>
+        <location filename="../src/mirall/application.cpp" line="993"/>
         <source>No sync folders configured.</source>
         <translation>동기화 폴더가 구성되지 않았습니다.</translation>
     </message>
@@ -565,17 +565,17 @@ Copyright 2012, the ownCloud developers.</source>
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="103"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="104"/>
         <source>CSync create failed.</source>
         <translation>CSync 생성 실패.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="133"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="136"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSync에서 잠금 파일을 만드는 데 실패하였습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="136"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="139"/>
         <source>CSync failed to load the state db.</source>
         <translation>CSync에서 상태 데이터베이스를 불러오지 못했습니다.</translation>
     </message>
@@ -584,17 +584,17 @@ Copyright 2012, the ownCloud developers.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="139"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="142"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>이 클라이언트와 서버의 시스템 시각이 다릅니다. 서버와 클라이언트에서 시각 동기화 서비스(NTP)를 실행하여 시각을 맞추십시오.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="144"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="147"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSync에서 파일시스템 종류를 인식하지 못했습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="147"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="150"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSync에서 내부 트리를 처리하는 중 오류가 발생하였습니다.</translation>
     </message>
@@ -603,7 +603,7 @@ Copyright 2012, the ownCloud developers.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="150"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="153"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;대상 디렉터리 %1이(가) 존재하지 않습니다.&lt;/p&gt;&lt;p&gt;동기화 설정을 확인하십시오.&lt;/p&gt;</translation>
     </message>
@@ -612,27 +612,27 @@ Copyright 2012, the ownCloud developers.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="159"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="162"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>로컬 파일 시스템에 쓸 수 없습니다. 권한을 확인하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="163"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="166"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>원격 파일에 쓸 수 없습니다. 원격 접근 권한을 확인하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="166"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="169"/>
         <source>An internal error number %1 happend.</source>
         <translation>내부 오류 번호 %1이(가) 발생하였습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="189"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="192"/>
         <source>CSync failed to reach the host. Either host or proxy settings are not valid.</source>
         <translation>CSync에서 호스트에 접속할 수 없습니다. 호스트나 프록시 설정이 올바르지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="192"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="195"/>
         <source>CSync Update failed.</source>
         <translation>CSync 업데이트가 실패하였습니다.</translation>
     </message>
@@ -643,7 +643,7 @@ Please make sure that all directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="155"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="158"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;CSync %1 플러그인을 불러올 수 없습니다.&lt;br/&gt;설치 상태를 확인하십시오!&lt;/p&gt;</translation>
     </message>
@@ -662,12 +662,12 @@ Please write a bug report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="203"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="204"/>
         <source>CSync reconcile failed.</source>
         <translation>CSync 충돌 복구가 실패하였습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="207"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="208"/>
         <source>File exchange with ownCloud failed. Sync was stopped.</source>
         <translation>ownCloud 파일 교환이 실패하였습니다. 동기화가 중단되었습니다.</translation>
     </message>
@@ -682,6 +682,29 @@ Please write a bug report.</source>
         <location filename="../src/mirall/owncloudwizard.cpp" line="363"/>
         <source>mydomain.org</source>
         <translation>mydomain.org</translation>
+    </message>
+</context>
+<context>
+    <name>Mirall::DownloadNotifier</name>
+    <message>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="290"/>
+        <source>New file available</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="290"/>
+        <source>&apos;%1&apos; has been synced to this machine.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="292"/>
+        <source>New files available</source>
+        <translation type="unfinished"/>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/mirall/owncloudfolder.cpp" line="292"/>
+        <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
+        <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
 </context>
 <context>
@@ -1328,7 +1351,7 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::ownCloudFolder</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="200"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="212"/>
         <source>The CSync thread terminated.</source>
         <translation>CSync 스레드가 종료되었습니다.</translation>
     </message>

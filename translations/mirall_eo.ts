@@ -269,12 +269,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="236"/>
+        <location filename="../src/mirall/application.cpp" line="237"/>
         <source>&lt;p&gt;The detailed error message is&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;La detala erarmesaĝo estas&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="238"/>
+        <location filename="../src/mirall/application.cpp" line="239"/>
         <source>&lt;p&gt;Please check your configuration by clicking on the tray icon.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Bonvolu kontroli vian agordon alklakante la bildosimbolon de la pleto.&lt;/p&gt;</translation>
     </message>
@@ -299,7 +299,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="352"/>
+        <location filename="../src/mirall/application.cpp" line="353"/>
         <source>Sync started for %1 configured sync folder(s).</source>
         <translation>Sinkronigo komencis por %1 agordita(j) sinkroniga(j) dosierujo(j).</translation>
     </message>
@@ -308,27 +308,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="414"/>
+        <location filename="../src/mirall/application.cpp" line="415"/>
         <source>Open status...</source>
         <translation>Malfermi staton...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="417"/>
+        <location filename="../src/mirall/application.cpp" line="418"/>
         <source>Add folder...</source>
         <translation>Aldoni dosierujon...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="419"/>
+        <location filename="../src/mirall/application.cpp" line="420"/>
         <source>Configure...</source>
         <translation>Agordi...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="421"/>
+        <location filename="../src/mirall/application.cpp" line="422"/>
         <source>Configure proxy...</source>
         <translation>Agordi prokuran servilon...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="425"/>
+        <location filename="../src/mirall/application.cpp" line="426"/>
         <source>Quit</source>
         <translation>Forlasi</translation>
     </message>
@@ -337,99 +337,99 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="219"/>
+        <location filename="../src/mirall/application.cpp" line="220"/>
         <source>%1 Server Mismatch</source>
         <translation>Malĝusta kongruo de servilo%1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="220"/>
+        <location filename="../src/mirall/application.cpp" line="221"/>
         <source>&lt;p&gt;The configured server for this client is too old.&lt;/p&gt;&lt;p&gt;Please update to the latest %1 server and restart the client.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="235"/>
+        <location filename="../src/mirall/application.cpp" line="236"/>
         <source>&lt;p&gt;The %1 at %2 could not be reached.&lt;/p&gt;</source>
         <translation>&lt;p&gt;La %1 ĉe %2 ne povis atingiĝi.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="240"/>
+        <location filename="../src/mirall/application.cpp" line="241"/>
         <source>%1 Connection Failed</source>
         <translation>Konekto %1 malsukcesis</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="265"/>
+        <location filename="../src/mirall/application.cpp" line="266"/>
         <source>Too many attempts to get a valid password.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="269"/>
+        <location filename="../src/mirall/application.cpp" line="270"/>
         <source>ownCloud user credentials are wrong. Please check configuration.</source>
         <translation>Aŭtentigiloj de la uzanto de ownCloud malĝustas. Bonvolu kontroli agordon.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="273"/>
-        <location filename="../src/mirall/application.cpp" line="292"/>
+        <location filename="../src/mirall/application.cpp" line="274"/>
+        <location filename="../src/mirall/application.cpp" line="293"/>
         <source>Credentials</source>
         <translation>Aŭtentigiloj</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="284"/>
+        <location filename="../src/mirall/application.cpp" line="285"/>
         <source>Error: Could not retrieve the password!</source>
         <translation>Eraro: ne eblis venigi la pasvorton!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="286"/>
+        <location filename="../src/mirall/application.cpp" line="287"/>
         <source>Password dialog was canceled!</source>
         <translation>Pasvorta dialogo nuliĝis!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="322"/>
-        <location filename="../src/mirall/application.cpp" line="331"/>
+        <location filename="../src/mirall/application.cpp" line="323"/>
+        <location filename="../src/mirall/application.cpp" line="332"/>
         <source>No %1 Connection</source>
         <translation>Neniu konekto %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="323"/>
+        <location filename="../src/mirall/application.cpp" line="324"/>
         <source>&lt;p&gt;Your %1 credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="332"/>
+        <location filename="../src/mirall/application.cpp" line="333"/>
         <source>&lt;p&gt;Either your user name or your password are not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Aŭ via uzantonomo aŭ via pasvorto ne ĝustas.&lt;/p&gt;&lt;p&gt;Bonvolu ĝustigi ĝin per lanĉo de la agorda dialogujo el la pleto!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="351"/>
+        <location filename="../src/mirall/application.cpp" line="352"/>
         <source>%1 Sync Started</source>
         <translation>Sinkronigo %1 komencis</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="412"/>
+        <location filename="../src/mirall/application.cpp" line="413"/>
         <source>Open %1 in browser...</source>
         <translation>Malfermi %1 en foliumilo...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="423"/>
+        <location filename="../src/mirall/application.cpp" line="424"/>
         <source>About...</source>
         <translation>Pri...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="479"/>
+        <location filename="../src/mirall/application.cpp" line="480"/>
         <source>Open %1 folder</source>
         <translation>Malfermi la dosierujon %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="492"/>
+        <location filename="../src/mirall/application.cpp" line="493"/>
         <source>Managed Folders:</source>
         <translation>Mastrumataj dosierujoj:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="728"/>
+        <location filename="../src/mirall/application.cpp" line="729"/>
         <source>About %1</source>
         <translation>Pri %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="729"/>
+        <location filename="../src/mirall/application.cpp" line="730"/>
         <source>%1 client, version %2
 
 Copyright 2012, the ownCloud developers.</source>
@@ -438,107 +438,107 @@ Copyright 2012, the ownCloud developers.</source>
 Kopirajto 2012, la ellaborintoj de ownCloud.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="740"/>
+        <location filename="../src/mirall/application.cpp" line="741"/>
         <source>Confirm Folder Remove</source>
         <translation>Konfirmi forigon de dosierujo</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="741"/>
+        <location filename="../src/mirall/application.cpp" line="742"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>Ĉu vi vere volas forigi la alŝutan dosierujon &lt;i&gt;%1&lt;/i&gt;?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="769"/>
+        <location filename="../src/mirall/application.cpp" line="770"/>
         <source>Undefined Folder State</source>
         <translation>Sendifina dosieruja stato</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="772"/>
+        <location filename="../src/mirall/application.cpp" line="773"/>
         <source>The folder waits to start syncing.</source>
         <translation>La dosierujo atendas komencon de sinkronigo.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="775"/>
-        <location filename="../src/mirall/application.cpp" line="945"/>
+        <location filename="../src/mirall/application.cpp" line="776"/>
+        <location filename="../src/mirall/application.cpp" line="951"/>
         <source>Sync is running.</source>
         <translation>Sinkronigo okazas.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="778"/>
-        <location filename="../src/mirall/application.cpp" line="950"/>
+        <location filename="../src/mirall/application.cpp" line="779"/>
+        <location filename="../src/mirall/application.cpp" line="956"/>
         <source>Last Sync was successful.</source>
         <translation>La lasta sinkronigo sukcesis.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="781"/>
-        <location filename="../src/mirall/application.cpp" line="956"/>
+        <location filename="../src/mirall/application.cpp" line="782"/>
+        <location filename="../src/mirall/application.cpp" line="962"/>
         <source>Syncing Error.</source>
         <translation>Sinkroniga eraro.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="784"/>
-        <location filename="../src/mirall/application.cpp" line="962"/>
+        <location filename="../src/mirall/application.cpp" line="785"/>
+        <location filename="../src/mirall/application.cpp" line="968"/>
         <source>Setup Error.</source>
         <translation>Agorda eraro.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="787"/>
-        <location filename="../src/mirall/application.cpp" line="965"/>
+        <location filename="../src/mirall/application.cpp" line="788"/>
+        <location filename="../src/mirall/application.cpp" line="971"/>
         <source>Undefined Error State.</source>
         <translation>Sendifina erarostato.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="791"/>
+        <location filename="../src/mirall/application.cpp" line="792"/>
         <source>Folder information</source>
         <translation>Informo pri dosierujo</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="806"/>
+        <location filename="../src/mirall/application.cpp" line="807"/>
         <source>Unknown</source>
         <translation>Nekonata</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="808"/>
+        <location filename="../src/mirall/application.cpp" line="809"/>
         <source>Changed files:
 </source>
         <translation>Ŝanĝitaj dosieroj:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="810"/>
+        <location filename="../src/mirall/application.cpp" line="811"/>
         <source>Added files:
 </source>
         <translation>Aldonitaj dosieroj:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="812"/>
+        <location filename="../src/mirall/application.cpp" line="813"/>
         <source>New files in the server, or files deleted locally:
 </source>
         <translation>Dosieroj novaj en la servilo, aŭ forigitaj loke:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="838"/>
+        <location filename="../src/mirall/application.cpp" line="839"/>
         <source>Sync Running</source>
         <translation>Sinkronigo okazanta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="839"/>
+        <location filename="../src/mirall/application.cpp" line="840"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>La sinkroniga operacio funkcias.&lt;br/&gt;Ĉu vi volas fini ĝin?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="938"/>
+        <location filename="../src/mirall/application.cpp" line="944"/>
         <source>Undefined State.</source>
         <translation>Sendifina stato.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="941"/>
+        <location filename="../src/mirall/application.cpp" line="947"/>
         <source>Waits to start syncing.</source>
         <translation>Atendanta komencon de sinkronigo.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="970"/>
+        <location filename="../src/mirall/application.cpp" line="976"/>
         <source> (Sync is paused)</source>
         <translation>(Sinkronigo paŭzas)</translation>
     </message>
@@ -547,7 +547,7 @@ Kopirajto 2012, la ellaborintoj de ownCloud.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="987"/>
+        <location filename="../src/mirall/application.cpp" line="993"/>
         <source>No sync folders configured.</source>
         <translation>Neniu sinkroniga dosierujo agordita.</translation>
     </message>
@@ -555,17 +555,17 @@ Kopirajto 2012, la ellaborintoj de ownCloud.</translation>
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="103"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="104"/>
         <source>CSync create failed.</source>
         <translation>CSync malsukcesis je kreo.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="133"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="136"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSync malsukcesis je kreo de blokdosiero.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="136"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="139"/>
         <source>CSync failed to load the state db.</source>
         <translation>CSync malsukcesis pri ŝargo de la stata datumbazo.</translation>
     </message>
@@ -574,17 +574,17 @@ Kopirajto 2012, la ellaborintoj de ownCloud.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="139"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="142"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="144"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="147"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSync ne povis detekti la dosiersistemtipon.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="147"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="150"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSync eraris dum ĝi procezis enajn arbojn.</translation>
     </message>
@@ -593,7 +593,7 @@ Kopirajto 2012, la ellaborintoj de ownCloud.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="150"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="153"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;La cela dosierujo %1 ne ekzistas.&lt;/p&gt;&lt;p&gt;Bonvolu kontroli la sinkronigan agordon.&lt;/p&gt;</translation>
     </message>
@@ -602,27 +602,27 @@ Kopirajto 2012, la ellaborintoj de ownCloud.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="159"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="162"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>La loka dosiersistemo ne eblas esti skribita. Bonvolu kontroli permesojn.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="163"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="166"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>Mallokan dosieron ne eblas skribi. Bonvolu kontroli la mallokan alireblon.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="166"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="169"/>
         <source>An internal error number %1 happend.</source>
         <translation>Ena eraro numerigita %1 okazis.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="189"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="192"/>
         <source>CSync failed to reach the host. Either host or proxy settings are not valid.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="192"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="195"/>
         <source>CSync Update failed.</source>
         <translation>CSync malsukcesis je ĝisdatiĝo.</translation>
     </message>
@@ -633,7 +633,7 @@ Please make sure that all directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="155"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="158"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;La kromaĵo %1 por CSync ne povis ŝargiĝi.&lt;br/&gt;Bonvolu kontroli la instalon!&lt;/p&gt;</translation>
     </message>
@@ -652,12 +652,12 @@ Please write a bug report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="203"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="204"/>
         <source>CSync reconcile failed.</source>
         <translation>CSync malsukcesis je kongruigo.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="207"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="208"/>
         <source>File exchange with ownCloud failed. Sync was stopped.</source>
         <translation type="unfinished"/>
     </message>
@@ -672,6 +672,29 @@ Please write a bug report.</source>
         <location filename="../src/mirall/owncloudwizard.cpp" line="363"/>
         <source>mydomain.org</source>
         <translation>miaretregiono.org</translation>
+    </message>
+</context>
+<context>
+    <name>Mirall::DownloadNotifier</name>
+    <message>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="290"/>
+        <source>New file available</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="290"/>
+        <source>&apos;%1&apos; has been synced to this machine.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="292"/>
+        <source>New files available</source>
+        <translation type="unfinished"/>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/mirall/owncloudfolder.cpp" line="292"/>
+        <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
 </context>
 <context>
@@ -1318,7 +1341,7 @@ Agordado ne povas fariĝi.</translation>
 <context>
     <name>Mirall::ownCloudFolder</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="200"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="212"/>
         <source>The CSync thread terminated.</source>
         <translation>La fadeno de CSync finiĝis.</translation>
     </message>

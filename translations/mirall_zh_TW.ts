@@ -275,12 +275,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="236"/>
+        <location filename="../src/mirall/application.cpp" line="237"/>
         <source>&lt;p&gt;The detailed error message is&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;詳細的錯誤訊息在&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="238"/>
+        <location filename="../src/mirall/application.cpp" line="239"/>
         <source>&lt;p&gt;Please check your configuration by clicking on the tray icon.&lt;/p&gt;</source>
         <translation>&lt;p&gt;點擊系統匣圖示可查看您的配置&lt;/p&gt;</translation>
     </message>
@@ -305,7 +305,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="352"/>
+        <location filename="../src/mirall/application.cpp" line="353"/>
         <source>Sync started for %1 configured sync folder(s).</source>
         <translation>開始同步 %1 已組態的同步資料夾</translation>
     </message>
@@ -314,27 +314,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="414"/>
+        <location filename="../src/mirall/application.cpp" line="415"/>
         <source>Open status...</source>
         <translation>查看狀態...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="417"/>
+        <location filename="../src/mirall/application.cpp" line="418"/>
         <source>Add folder...</source>
         <translation>添加資料夾...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="419"/>
+        <location filename="../src/mirall/application.cpp" line="420"/>
         <source>Configure...</source>
         <translation>配置...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="421"/>
+        <location filename="../src/mirall/application.cpp" line="422"/>
         <source>Configure proxy...</source>
         <translation>設定代理伺服器...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="425"/>
+        <location filename="../src/mirall/application.cpp" line="426"/>
         <source>Quit</source>
         <translation>離開</translation>
     </message>
@@ -343,99 +343,99 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="219"/>
+        <location filename="../src/mirall/application.cpp" line="220"/>
         <source>%1 Server Mismatch</source>
         <translation>%1伺服器無法匹配</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="220"/>
+        <location filename="../src/mirall/application.cpp" line="221"/>
         <source>&lt;p&gt;The configured server for this client is too old.&lt;/p&gt;&lt;p&gt;Please update to the latest %1 server and restart the client.&lt;/p&gt;</source>
         <translation>&lt;p&gt;此客戶端配置的伺服器太舊了&lt;/p&gt;&lt;p&gt;請更新伺服器到最新的%1, 並重新啟動客戶端&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="235"/>
+        <location filename="../src/mirall/application.cpp" line="236"/>
         <source>&lt;p&gt;The %1 at %2 could not be reached.&lt;/p&gt;</source>
         <translation>&lt;p&gt;於%2的的%1無法訪問</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="240"/>
+        <location filename="../src/mirall/application.cpp" line="241"/>
         <source>%1 Connection Failed</source>
         <translation>%1 連線失敗</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="265"/>
+        <location filename="../src/mirall/application.cpp" line="266"/>
         <source>Too many attempts to get a valid password.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="269"/>
+        <location filename="../src/mirall/application.cpp" line="270"/>
         <source>ownCloud user credentials are wrong. Please check configuration.</source>
         <translation>ownCloud 使用者認證錯誤, 請檢查設定</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="273"/>
-        <location filename="../src/mirall/application.cpp" line="292"/>
+        <location filename="../src/mirall/application.cpp" line="274"/>
+        <location filename="../src/mirall/application.cpp" line="293"/>
         <source>Credentials</source>
         <translation>認證</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="284"/>
+        <location filename="../src/mirall/application.cpp" line="285"/>
         <source>Error: Could not retrieve the password!</source>
         <translation>錯誤. 無法取得密碼</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="286"/>
+        <location filename="../src/mirall/application.cpp" line="287"/>
         <source>Password dialog was canceled!</source>
         <translation>密碼對話框被取消!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="322"/>
-        <location filename="../src/mirall/application.cpp" line="331"/>
+        <location filename="../src/mirall/application.cpp" line="323"/>
+        <location filename="../src/mirall/application.cpp" line="332"/>
         <source>No %1 Connection</source>
         <translation>無%1 連線</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="323"/>
+        <location filename="../src/mirall/application.cpp" line="324"/>
         <source>&lt;p&gt;Your %1 credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation>&lt;p&gt;您的%1 帳號密碼不正確&lt;/P&gt; &lt;p&gt;請藉由右下角ownCloud圖示去更正&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="332"/>
+        <location filename="../src/mirall/application.cpp" line="333"/>
         <source>&lt;p&gt;Either your user name or your password are not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation>&lt;p&gt;您的帳號或密碼錯誤&lt;/p&gt;&lt;p&gt;請藉由右下角ownCloud圖示去更正&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="351"/>
+        <location filename="../src/mirall/application.cpp" line="352"/>
         <source>%1 Sync Started</source>
         <translation>%1同步已經開始</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="412"/>
+        <location filename="../src/mirall/application.cpp" line="413"/>
         <source>Open %1 in browser...</source>
         <translation>瀏覽器中開啟%1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="423"/>
+        <location filename="../src/mirall/application.cpp" line="424"/>
         <source>About...</source>
         <translation>關於...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="479"/>
+        <location filename="../src/mirall/application.cpp" line="480"/>
         <source>Open %1 folder</source>
         <translation>開啟%1資料夾</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="492"/>
+        <location filename="../src/mirall/application.cpp" line="493"/>
         <source>Managed Folders:</source>
         <translation>管理的資料夾:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="728"/>
+        <location filename="../src/mirall/application.cpp" line="729"/>
         <source>About %1</source>
         <translation>關於 %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="729"/>
+        <location filename="../src/mirall/application.cpp" line="730"/>
         <source>%1 client, version %2
 
 Copyright 2012, the ownCloud developers.</source>
@@ -444,108 +444,108 @@ Copyright 2012, the ownCloud developers.</source>
 Copyright 2012, the ownCloud developers.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="740"/>
+        <location filename="../src/mirall/application.cpp" line="741"/>
         <source>Confirm Folder Remove</source>
         <translation>確認移除資料夾</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="741"/>
+        <location filename="../src/mirall/application.cpp" line="742"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>你確定要移除上傳資料夾 &lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="769"/>
+        <location filename="../src/mirall/application.cpp" line="770"/>
         <source>Undefined Folder State</source>
         <translation>未知資料夾狀態</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="772"/>
+        <location filename="../src/mirall/application.cpp" line="773"/>
         <source>The folder waits to start syncing.</source>
         <translation>資料夾等待同步</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="775"/>
-        <location filename="../src/mirall/application.cpp" line="945"/>
+        <location filename="../src/mirall/application.cpp" line="776"/>
+        <location filename="../src/mirall/application.cpp" line="951"/>
         <source>Sync is running.</source>
         <translation>同步執行中</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="778"/>
-        <location filename="../src/mirall/application.cpp" line="950"/>
+        <location filename="../src/mirall/application.cpp" line="779"/>
+        <location filename="../src/mirall/application.cpp" line="956"/>
         <source>Last Sync was successful.</source>
         <translation>最後一次同步成功</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="781"/>
-        <location filename="../src/mirall/application.cpp" line="956"/>
+        <location filename="../src/mirall/application.cpp" line="782"/>
+        <location filename="../src/mirall/application.cpp" line="962"/>
         <source>Syncing Error.</source>
         <translation>同步失敗</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="784"/>
-        <location filename="../src/mirall/application.cpp" line="962"/>
+        <location filename="../src/mirall/application.cpp" line="785"/>
+        <location filename="../src/mirall/application.cpp" line="968"/>
         <source>Setup Error.</source>
         <translation>安裝失敗</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="787"/>
-        <location filename="../src/mirall/application.cpp" line="965"/>
+        <location filename="../src/mirall/application.cpp" line="788"/>
+        <location filename="../src/mirall/application.cpp" line="971"/>
         <source>Undefined Error State.</source>
         <translation>未知的錯誤狀態</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="791"/>
+        <location filename="../src/mirall/application.cpp" line="792"/>
         <source>Folder information</source>
         <translation>資料夾訊息</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="806"/>
+        <location filename="../src/mirall/application.cpp" line="807"/>
         <source>Unknown</source>
         <translation>未知</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="808"/>
+        <location filename="../src/mirall/application.cpp" line="809"/>
         <source>Changed files:
 </source>
         <translation>更動的檔案:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="810"/>
+        <location filename="../src/mirall/application.cpp" line="811"/>
         <source>Added files:
 </source>
         <translation>增添的檔案:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="812"/>
+        <location filename="../src/mirall/application.cpp" line="813"/>
         <source>New files in the server, or files deleted locally:
 </source>
         <translation>伺服器中的新檔案, 或本地已刪除的檔案:
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="838"/>
+        <location filename="../src/mirall/application.cpp" line="839"/>
         <source>Sync Running</source>
         <translation>同步中</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="839"/>
+        <location filename="../src/mirall/application.cpp" line="840"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>正在同步中&lt;br/&gt;你真的想要中斷？</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="938"/>
+        <location filename="../src/mirall/application.cpp" line="944"/>
         <source>Undefined State.</source>
         <translation>未知狀態</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="941"/>
+        <location filename="../src/mirall/application.cpp" line="947"/>
         <source>Waits to start syncing.</source>
         <translation>等待啟動同步</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="970"/>
+        <location filename="../src/mirall/application.cpp" line="976"/>
         <source> (Sync is paused)</source>
         <translation>(同步暫停)</translation>
     </message>
@@ -554,7 +554,7 @@ Copyright 2012, the ownCloud developers.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="987"/>
+        <location filename="../src/mirall/application.cpp" line="993"/>
         <source>No sync folders configured.</source>
         <translation>無已配置的同步資料夾</translation>
     </message>
@@ -562,17 +562,17 @@ Copyright 2012, the ownCloud developers.</translation>
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="103"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="104"/>
         <source>CSync create failed.</source>
         <translation>CSync 無法建立</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="133"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="136"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSync 無法建立一個文件鎖</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="136"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="139"/>
         <source>CSync failed to load the state db.</source>
         <translation>CSync 無法讀取狀態資料庫</translation>
     </message>
@@ -581,17 +581,17 @@ Copyright 2012, the ownCloud developers.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="139"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="142"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>本客戶端的系統時間和伺服器系統時間不一致,請在伺服器與客戶端上使用時間同步服務(NTP)讓時間保持一致</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="144"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="147"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSync 無法偵測檔案系統的類型</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="147"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="150"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSync 處理內部資料樹時發生錯誤</translation>
     </message>
@@ -600,7 +600,7 @@ Copyright 2012, the ownCloud developers.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="150"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="153"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;目標資料夾%1不存在&lt;/p&gt;&lt;p&gt;請檢查同步的設定&lt;/p&gt;</translation>
     </message>
@@ -609,27 +609,27 @@ Copyright 2012, the ownCloud developers.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="159"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="162"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>本地檔案系統無法寫入, 請確認權限。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="163"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="166"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>遠端檔案無法寫入, 請確認遠端存取權限。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="166"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="169"/>
         <source>An internal error number %1 happend.</source>
         <translation>發生內部錯誤, 錯誤編號 %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="189"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="192"/>
         <source>CSync failed to reach the host. Either host or proxy settings are not valid.</source>
         <translation>CSync無法連線到主機, 主機或代理伺服器設定錯誤</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="192"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="195"/>
         <source>CSync Update failed.</source>
         <translation>CSync 更新失敗</translation>
     </message>
@@ -640,7 +640,7 @@ Please make sure that all directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="155"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="158"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;用於csync的套件%1&lt;/p&gt;</translation>
     </message>
@@ -659,12 +659,12 @@ Please write a bug report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="203"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="204"/>
         <source>CSync reconcile failed.</source>
         <translation>CSync 調解失敗</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="207"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="208"/>
         <source>File exchange with ownCloud failed. Sync was stopped.</source>
         <translation>同步已停止, ownCloud進行檔案交換失敗</translation>
     </message>
@@ -679,6 +679,29 @@ Please write a bug report.</source>
         <location filename="../src/mirall/owncloudwizard.cpp" line="363"/>
         <source>mydomain.org</source>
         <translation>mydomain.org</translation>
+    </message>
+</context>
+<context>
+    <name>Mirall::DownloadNotifier</name>
+    <message>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="290"/>
+        <source>New file available</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="290"/>
+        <source>&apos;%1&apos; has been synced to this machine.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="292"/>
+        <source>New files available</source>
+        <translation type="unfinished"/>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/mirall/owncloudfolder.cpp" line="292"/>
+        <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
+        <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
 </context>
 <context>
@@ -1325,7 +1348,7 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::ownCloudFolder</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="200"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="212"/>
         <source>The CSync thread terminated.</source>
         <translation>CSync 執行緒終止</translation>
     </message>
