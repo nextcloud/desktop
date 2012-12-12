@@ -121,8 +121,11 @@ void CSyncThread::startSync()
     QTime t;
     t.start();
 
+    csync_set_userdata(csync, this);
+
     csync_set_log_callback( csync, csyncLogCatcher );
     csync_set_auth_callback( csync, getauth );
+    csync_set_progress_callback( csync, progress );
 
     if( csync_init(csync) < 0 ) {
         CSYNC_ERROR_CODE err = csync_get_error( csync );
@@ -169,10 +172,6 @@ void CSyncThread::startSync()
         emit csyncError(errStr);
         goto cleanup;
     }
-
-    csync_set_userdata(csync, this);
-
-    csync_set_progress_callback( csync, progress );
 
     // set module properties, mainly the proxy information.
     // do not use QLatin1String here because that has to be real const char* for C.
@@ -278,11 +277,10 @@ void CSyncThread::progress(const char *remote_url, enum csync_notify_type_e kind
 {
     (void) o1; (void) o2;
     if (kind == CSYNC_NOTIFY_FINISHED_DOWNLOAD) {
-        QString path = QUrl::fromEncoded(remote_url).path();
+        QString path = QUrl::fromEncoded(remote_url).toString();
         CSyncThread *thread = static_cast<CSyncThread*>(userdata);
         thread->fileReceived(path);
     }
-
 }
 
 
