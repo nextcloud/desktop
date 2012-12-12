@@ -298,6 +298,10 @@ static void set_errno_from_session() {
 
 static void set_errno_from_neon_errcode( int neon_code ) {
 
+    if( neon_code != NE_OK ) {
+        DEBUG_WEBDAV("Neon error code was %d", neon_code);
+    }
+
     switch(neon_code) {
     case NE_OK:     /* Success, but still the possiblity of problems */
     case NE_ERROR:  /* Generic error; use ne_get_error(session) for message */
