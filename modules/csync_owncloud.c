@@ -1185,7 +1185,6 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
     csync_vio_file_stat_t *lfs = NULL;
     struct listdir_context  *fetchCtx = NULL;
     char *decodedUri = NULL;
-    char strbuf[PATH_MAX +1];
     int len = 0;
 
     DEBUG_WEBDAV("owncloud_stat %s called", uri );
@@ -1230,11 +1229,11 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
             /* remove trailing slashes */
             len = strlen(res->uri);
             while( len > 0 && res->uri[len-1] == '/' ) --len;
-            memset( strbuf, 0, PATH_MAX+1);
-            strncpy( strbuf, res->uri, len < PATH_MAX ? len : PATH_MAX ); /* this removes the trailing slash */
             decodedUri = ne_path_unescape( fetchCtx->target ); /* allocates memory */
 
-            if( c_streq(strbuf, decodedUri )) {
+            /* Only do the comparaison of the part of the string without the trailing
+               slashes, and make sure decodedUri is not too large */
+            if( strncmp(res->uri, decodedUri, len ) == 0 && decodedUri[len] == '\0') {
                 SAFE_FREE( decodedUri );
                 break;
             }
@@ -1803,7 +1802,6 @@ static csync_vio_file_stat_t *owncloud_readdir(csync_vio_method_handle_t *dhandl
 
 static int owncloud_mkdir(const char *uri, mode_t mode) {
     int rc = NE_OK;
-    char buf[PATH_MAX +1];
     int len = 0;
 
     char *path = _cleanPath( uri );
@@ -1821,18 +1819,14 @@ static int owncloud_mkdir(const char *uri, mode_t mode) {
     /* the uri path is required to have a trailing slash */
     if( rc >= 0 ) {
         len = strlen( path );
-        if( len > PATH_MAX-1 ) {
-            DEBUG_WEBDAV("ERR: Path is too long for OS max path length!");
-        } else {
-            strcpy( buf, path );
-            if( buf[len-1] != '/' ) {
-                strcat(buf, "/");
-            }
-
-            DEBUG_WEBDAV("MKdir on %s", buf );
-            rc = ne_mkcol(dav_session.ctx, buf );
-            set_errno_from_neon_errcode(rc);
+        if( path[len-1] != '/' ) {
+            path = c_realloc(path, len+2);
+            path[len]= '/';
+            path[len+1] = 0;
         }
+        DEBUG_WEBDAV("MKdir on %s", path );
+        rc = ne_mkcol(dav_session.ctx, path );
+        set_errno_from_neon_errcode(rc);
     }
     SAFE_FREE( path );
 
