@@ -1140,6 +1140,65 @@ static int _cmp_char( const void *d1, const void *d2 )
     return 1;
 }
 
+
+/* Internal helper method for _csync_correct_id */
+static void _csync_correct_id_helper(CSYNC *ctx, char *path, c_list_t **seen_dirs, c_rbtree_t *tree)
+{
+    while( path ) {
+        uint64_t h;
+        int len;
+        c_rbnode_t *node = NULL;
+
+        char *old_path = path;
+        csync_file_stat_t *tfs = NULL;
+
+        /* do stuff with the dir here */
+
+        if( *seen_dirs && c_list_find_custom( *seen_dirs,  path, _cmp_char)) {
+            // CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "saw this dir already: %s", path);
+        } else {
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "climb on dir: %s", path);
+            *seen_dirs = c_list_prepend( *seen_dirs, c_strdup(path));
+
+            /* Find the correct target entry. */
+            len = strlen(path);
+            h = c_jhash64((uint8_t *) path, len, 0);
+
+            node = c_rbtree_find(tree, &h);
+            if (node == NULL) {
+                CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to find node");
+            } else {
+                tfs = c_rbtree_node_data(node);
+                if( tfs ) {
+                    if(tfs->instruction == CSYNC_INSTRUCTION_DELETED) {
+                        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Skipping update of MD5 because item is deleted.");
+                    } else {
+                        if(tfs->md5) SAFE_FREE(tfs->md5);
+                                tfs->md5 = _get_md5(ctx, path);
+                        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "MD5 for dir: %s %s (Instruction: %s)", tfs->path,
+                                tfs->md5, csync_instruction_str(tfs->instruction));
+                        if( tfs->md5 && tfs->instruction == CSYNC_INSTRUCTION_NONE ) {
+                            /* set instruction for the statedb merger */
+                            tfs->instruction = CSYNC_INSTRUCTION_UPDATED;
+                        }
+                    }
+                }
+            }
+        }
+        /* get the parent dir */
+        path = c_dirname( path );
+        /* free the old path memory */
+        SAFE_FREE(old_path );
+
+        /* exit on top directory */
+        if( c_streq(path, ".")) {
+            SAFE_FREE(path);
+            path = NULL;
+        }
+    }
+}
+
+
 /*
  * This function corrects the unique IDs of parent directories of changed
  * files. Other than in the file system, the change of a unique Id propagates
@@ -1199,58 +1258,18 @@ static int _csync_correct_id(CSYNC *ctx) {
           path = NULL;
       }
 
-      while( path ) {
-          uint64_t h;
-          int len;
-          c_rbnode_t *node = NULL;
+      _csync_correct_id_helper(ctx, path, &seen_dirs, tree);
 
-          char *old_path = path;
-          csync_file_stat_t *tfs = NULL;
-
-          /* do stuff with the dir here */
-
-          if( seen_dirs && c_list_find_custom( seen_dirs,  path, _cmp_char)) {
-              // CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "saw this dir already: %s", path);
-          } else {
-              CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "climb on dir: %s (%s)", path, replica);
-              seen_dirs = c_list_prepend( seen_dirs, c_strdup(path));
-
-              /* Find the correct target entry. */
-              len = strlen(path);
-              h = c_jhash64((uint8_t *) path, len, 0);
-
-              node = c_rbtree_find(tree, &h);
-              if (node == NULL) {
-                CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to find node");
-              } else {
-                  tfs = c_rbtree_node_data(node);
-                  if( tfs ) {
-                      if(tfs->instruction == CSYNC_INSTRUCTION_DELETED) {
-                          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Skipping update of MD5 because item is deleted.");
-                      } else {
-                          if(tfs->md5) SAFE_FREE(tfs->md5);
-                          tfs->md5 = _get_md5(ctx, path);
-                          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "MD5 for dir: %s %s (Instruction: %s)", tfs->path,
-                                    tfs->md5, csync_instruction_str(tfs->instruction));
-                          if( tfs->md5 && tfs->instruction == CSYNC_INSTRUCTION_NONE ) {
-                              /* set instruction for the statedb merger */
-                              tfs->instruction = CSYNC_INSTRUCTION_UPDATED;
-                          }
-                      }
-                  }
-              }
-          }
-          /* get the parent dir */
-          path = c_dirname( path );
-          /* free the old path memory */
-          SAFE_FREE(old_path );
-
-          /* exit on top directory */
-          if( c_streq(path, ".")) {
+      if (st->type == CSYNC_FTW_TYPE_FILE && ctx->current == REMOTE_REPLICA
+          && st->destpath) {
+          path = c_dirname( st->destpath );
+          if( path && path[0] == '.' && strlen(path) == 1) {
               SAFE_FREE(path);
               path = NULL;
           }
+          _csync_correct_id_helper(ctx, path, &seen_dirs, ctx->local.tree);
       }
+
     }
 
     /* Free the seen_dirs list */
