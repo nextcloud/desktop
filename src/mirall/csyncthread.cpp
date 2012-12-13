@@ -15,6 +15,7 @@
 
 #include "mirall/csyncthread.h"
 #include "mirall/mirallconfigfile.h"
+#include "mirall/sslerrordialog.h"
 #include "mirall/theme.h"
 #include "mirall/logger.h"
 
@@ -33,6 +34,7 @@
 #include <QTime>
 #include <QApplication>
 #include <QUrl>
+#include <QSslCertificate>
 
 namespace Mirall {
 
@@ -248,26 +250,55 @@ int CSyncThread::getauth(const char *prompt,
 {
     int re = 0;
 
-    QString qPrompt = QString::fromLocal8Bit( prompt ).trimmed();
-    _mutex.lock();
+    QString qPrompt = QString::fromLatin1( prompt ).trimmed();
 
     if( qPrompt == QLatin1String("Enter your username:") ) {
         // qDebug() << "OOO Username requested!";
+        QMutexLocker locker( &_mutex );
         qstrncpy( buf, _user.toUtf8().constData(), len );
     } else if( qPrompt == QLatin1String("Enter your password:") ) {
+        QMutexLocker locker( &_mutex );
         // qDebug() << "OOO Password requested!";
         qstrncpy( buf, _passwd.toUtf8().constData(), len );
     } else {
         if( qPrompt.startsWith( QLatin1String("There are problems with the SSL certificate:"))) {
             // SSL is requested. If the program came here, the SSL check was done by mirall
             // the answer is simply yes here.
-            qstrcpy( buf, "yes" );
+            QRegExp regexp("fingerprint: ([\\w\\d:]+)");
+            bool certOk = false;
+
+            if( regexp.indexIn(qPrompt) > -1 ) {
+                QString fingerprint = regexp.cap(1);
+                qDebug() << "SSL Fingerprint from neon: " << fingerprint;
+
+                MirallConfigFile cfg;
+                QByteArray ba = cfg.caCerts();
+
+                QList<QSslCertificate> certs = QSslCertificate::fromData(ba);
+                foreach( const QSslCertificate& c, certs ) {
+
+                    QString shasum = QString::fromAscii(SslErrorDialog::formatHash(c.digest(QCryptographicHash::Sha1).toHex())).trimmed();
+                    shasum.replace(QChar(' '), QChar(':'));
+                    if( shasum == fingerprint ) {
+                        certOk = true;
+                        break;
+                    }
+                }
+
+            }
+            // certOk = false;     DEBUG setting, keep disabled!
+            if( certOk ) {
+                qstrcpy( buf, "yes" );
+            } else {
+                qstrcpy( buf, "no" );
+                // FIXME: Proper error message!
+                re = -1;
+            }
         } else {
             qDebug() << "Unknown prompt: <" << prompt << ">";
             re = -1;
         }
     }
-    _mutex.unlock();
     return re;
 }
 
