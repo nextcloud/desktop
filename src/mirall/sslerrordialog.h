@@ -38,6 +38,8 @@ public:
     bool trustConnection();
 
     void setCustomConfigHandle( const QString& );
+
+    static QByteArray formatHash(const QByteArray &);
 signals:
     
 public slots:

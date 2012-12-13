@@ -126,7 +126,7 @@ bool SslErrorDialog::setErrorList( QList<QSslError> errors )
     return false;
 }
 
-static QByteArray formatHash(const QByteArray &fmhash)
+QByteArray SslErrorDialog::formatHash(const QByteArray &fmhash)
 {
     QByteArray hash;
     int steps = fmhash.length()/2;
