@@ -50,11 +50,13 @@ csync_vio_method_handle_t *csync_vio_local_open(const char *durl, int flags, mod
   _TCHAR *url = c_multibyte(durl);
 
   if ((fd = _topen(url, flags, mode)) < 0) {
+    c_free_multibyte(url);
     return NULL;
   }
 
   handle = c_malloc(sizeof(fhandle_t));
   if (handle == NULL) {
+    c_free_multibyte(url);
     close(fd);
     return NULL;
   }
@@ -72,11 +74,13 @@ csync_vio_method_handle_t *csync_vio_local_creat(const char *durl, mode_t mode) 
   _TCHAR *url = c_multibyte(durl);
 
   if(( fd = _tcreat( url, mode)) < 0) {
+      c_free_multibyte(url);
       return NULL;
   }
 
   handle = c_malloc(sizeof(fhandle_t));
   if (handle == NULL) {
+    c_free_multibyte(url);
     close(fd);
     return NULL;
   }
@@ -162,15 +166,18 @@ csync_vio_method_handle_t *csync_vio_local_opendir(const char *name) {
   _TCHAR *dirname = c_multibyte(name);
   handle = c_malloc(sizeof(dhandle_t));
   if (handle == NULL) {
+    c_free_multibyte(dirname);
     return NULL;
   }
 
   handle->dh = _topendir( dirname );
   if (handle->dh == NULL) {
+    c_free_multibyte(dirname);
     SAFE_FREE(handle);
     return NULL;
   }
   handle->path = c_utf8(dirname);
+  c_free_multibyte(dirname);
 
   return (csync_vio_method_handle_t *) handle;
 }
