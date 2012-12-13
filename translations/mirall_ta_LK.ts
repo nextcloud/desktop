@@ -551,17 +551,17 @@ Copyright 2012, the ownCloud developers.</source>
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="104"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="106"/>
         <source>CSync create failed.</source>
         <translation>Cஒத்திசைவு உருவாக்கல் தோல்வியுற்றது</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="136"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="138"/>
         <source>CSync failed to create a lock file.</source>
         <translation>Cஒத்திசைவு பூட்டு கோப்பை உருவாக்க தோல்வியுற்றது.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="139"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="141"/>
         <source>CSync failed to load the state db.</source>
         <translation>Cஒத்திசைவு db நிலையை ஏற்றுவதற்கு தோல்வியுற்றுது</translation>
     </message>
@@ -570,17 +570,17 @@ Copyright 2012, the ownCloud developers.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="142"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="144"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>இந்த சேவை பயனாளரின் கணணியின் நேரமானது சேவையகத்தில் உள்ள கணணியின் நேரத்திலும் வித்தியாசமானது. தயவுசெய்து சேவையகத்திலும் சேவை பயனாளரின் கணணியிலும் நேர ஒத்திசைவு சேவையொன்றை (NTP) பயன்படுத்தவும் அதனால் நேரங்கள் ஒரே மாதிரியாக இருக்கும்.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="147"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="149"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>​கோப்பு அமைப்பின் வகையை Cஒத்திசைவினால் கண்டுப்பிடிக்கமுடியவில்லை.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="150"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="152"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>உள்ளக மரத்தை முறைவழியாக்கும்போது Cஒத்திசைவு வழு ஒன்றைப் பெற்றது</translation>
     </message>
@@ -589,7 +589,7 @@ Copyright 2012, the ownCloud developers.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="153"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="155"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;குறித்த அடைவு %1 ஐ காணமுடியவில்லை.&lt;/p&gt;&lt;p&gt;தயவுசெய்து ஒத்திசைவு அமைப்பை சரிபார்க்க.&lt;/p&gt;</translation>
     </message>
@@ -598,27 +598,27 @@ Copyright 2012, the ownCloud developers.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="162"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="164"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>இடத்துரி கோப்பு அமைப்பை எழுத முடியவில்லை. தயவுசெய்து அனுமதியை சரிபார்க்கவும்.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="166"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="168"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>ஒரு தொலைவு கோப்பை எழுத முடியவில்லை. தயவுசெய்து தொலைவு அணுகலை சரிபார்க்கவும்.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="169"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="171"/>
         <source>An internal error number %1 happend.</source>
         <translation>ஒரு உள்ளக வழு இலக்கம் %1 ஏற்பட்டது</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="192"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="194"/>
         <source>CSync failed to reach the host. Either host or proxy settings are not valid.</source>
         <translation>ஓம்புனரை அடைவதில் Cஒத்திசைவு தோல்வியுற்றது. ஓம்புனரோ அல்லது proxy அமைப்புகளோ சரியானதாக இல்லை.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="195"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="197"/>
         <source>CSync Update failed.</source>
         <translation>Cஒத்திசைவு இற்றைப்படுத்தல் தோல்வியுற்றது</translation>
     </message>
@@ -629,7 +629,7 @@ Please make sure that all directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="158"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="160"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;%1 இன் cஒத்திசைவிற்கான உட்செருகலை ஏற்றமுடியாது.&lt;br/&gt;நிறுவலை தயவுசெய்து சரிபார்க்க!&lt;/p&gt;</translation>
     </message>
@@ -648,12 +648,12 @@ Please write a bug report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="204"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="206"/>
         <source>CSync reconcile failed.</source>
         <translation>Cஒத்திசைவு ஒருங் கூட்டல் தோல்வியுற்றது.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="208"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="210"/>
         <source>File exchange with ownCloud failed. Sync was stopped.</source>
         <translation>owncloud மூலமான கோப்பு பரிமாற்றம் தோல்வியுற்றது. ஒத்திசைவு நிறுத்தப்பட்டது.</translation>
     </message>
@@ -1156,67 +1156,67 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::SslErrorDialog</name>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="28"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="29"/>
         <source>SSL Connection</source>
         <translation>SSL இணைப்பு</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="97"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="98"/>
         <source>Warnings about current SSL Connection:</source>
         <translation>தற்போதைய SSL இணைப்பு பற்றிய எச்சரிக்கை:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="145"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="134"/>
         <source>with Certificate %1</source>
         <translation>சான்றிழதலுடன் %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="153"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="154"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="155"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="142"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="143"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="144"/>
         <source>&amp;lt;not specified&amp;gt;</source>
         <translation>&amp;lt;குறிப்பிடவில்லை&amp;gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="156"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="176"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="145"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="167"/>
         <source>Organization: %1</source>
         <translation>நிறுவனம்: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="157"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="177"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="146"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="168"/>
         <source>Unit: %1</source>
         <translation>அலகு: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="158"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="178"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="147"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="169"/>
         <source>Country: %1</source>
         <translation>நாடு: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="165"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="156"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>கைரேகை (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="166"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="157"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>கைரேகை (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="168"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="159"/>
         <source>Effective Date: %1</source>
         <translation>செயற்படும் திகதி : %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="169"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="160"/>
         <source>Expiry Date: %1</source>
         <translation>காலாவதி திகதி :%1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="173"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="164"/>
         <source>Issuer: %1</source>
         <translation>​வெளியிடுபவர்:%1</translation>
     </message>

@@ -565,17 +565,17 @@ Copyright 2012, the ownCloud developers.</source>
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="104"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="106"/>
         <source>CSync create failed.</source>
         <translation>CSync 생성 실패.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="136"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="138"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSync에서 잠금 파일을 만드는 데 실패하였습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="139"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="141"/>
         <source>CSync failed to load the state db.</source>
         <translation>CSync에서 상태 데이터베이스를 불러오지 못했습니다.</translation>
     </message>
@@ -584,17 +584,17 @@ Copyright 2012, the ownCloud developers.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="142"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="144"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>이 클라이언트와 서버의 시스템 시각이 다릅니다. 서버와 클라이언트에서 시각 동기화 서비스(NTP)를 실행하여 시각을 맞추십시오.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="147"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="149"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSync에서 파일시스템 종류를 인식하지 못했습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="150"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="152"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSync에서 내부 트리를 처리하는 중 오류가 발생하였습니다.</translation>
     </message>
@@ -603,7 +603,7 @@ Copyright 2012, the ownCloud developers.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="153"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="155"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;대상 디렉터리 %1이(가) 존재하지 않습니다.&lt;/p&gt;&lt;p&gt;동기화 설정을 확인하십시오.&lt;/p&gt;</translation>
     </message>
@@ -612,27 +612,27 @@ Copyright 2012, the ownCloud developers.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="162"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="164"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>로컬 파일 시스템에 쓸 수 없습니다. 권한을 확인하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="166"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="168"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>원격 파일에 쓸 수 없습니다. 원격 접근 권한을 확인하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="169"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="171"/>
         <source>An internal error number %1 happend.</source>
         <translation>내부 오류 번호 %1이(가) 발생하였습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="192"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="194"/>
         <source>CSync failed to reach the host. Either host or proxy settings are not valid.</source>
         <translation>CSync에서 호스트에 접속할 수 없습니다. 호스트나 프록시 설정이 올바르지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="195"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="197"/>
         <source>CSync Update failed.</source>
         <translation>CSync 업데이트가 실패하였습니다.</translation>
     </message>
@@ -643,7 +643,7 @@ Please make sure that all directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="158"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="160"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;CSync %1 플러그인을 불러올 수 없습니다.&lt;br/&gt;설치 상태를 확인하십시오!&lt;/p&gt;</translation>
     </message>
@@ -662,12 +662,12 @@ Please write a bug report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="204"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="206"/>
         <source>CSync reconcile failed.</source>
         <translation>CSync 충돌 복구가 실패하였습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="208"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="210"/>
         <source>File exchange with ownCloud failed. Sync was stopped.</source>
         <translation>ownCloud 파일 교환이 실패하였습니다. 동기화가 중단되었습니다.</translation>
     </message>
@@ -1171,67 +1171,67 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::SslErrorDialog</name>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="28"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="29"/>
         <source>SSL Connection</source>
         <translation>SSL 접속</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="97"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="98"/>
         <source>Warnings about current SSL Connection:</source>
         <translation>현재 SSL 접속 경고:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="145"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="134"/>
         <source>with Certificate %1</source>
         <translation>인증서 %1 사용</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="153"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="154"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="155"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="142"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="143"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="144"/>
         <source>&amp;lt;not specified&amp;gt;</source>
         <translation>&amp;lt;지정되지 않음&amp;gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="156"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="176"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="145"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="167"/>
         <source>Organization: %1</source>
         <translation>조직: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="157"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="177"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="146"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="168"/>
         <source>Unit: %1</source>
         <translation>조직 단위: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="158"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="178"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="147"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="169"/>
         <source>Country: %1</source>
         <translation>국가: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="165"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="156"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>지문 (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="166"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="157"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>지문 (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="168"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="159"/>
         <source>Effective Date: %1</source>
         <translation>유효 기간 시작: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="169"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="160"/>
         <source>Expiry Date: %1</source>
         <translation>유효 기간 끝: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="173"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="164"/>
         <source>Issuer: %1</source>
         <translation>발행자: %1</translation>
     </message>

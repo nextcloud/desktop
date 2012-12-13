@@ -562,17 +562,17 @@ Copyright 2012, die ownCloud Entwickler.</translation>
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="104"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="106"/>
         <source>CSync create failed.</source>
         <translation>CSync-Erstellung fehlgeschlagen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="136"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="138"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSync konnte keine lock-Datei erstellen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="139"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="141"/>
         <source>CSync failed to load the state db.</source>
         <translation>CSync konnte die state db nicht laden.</translation>
     </message>
@@ -581,17 +581,17 @@ Copyright 2012, die ownCloud Entwickler.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="142"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="144"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>Die Uhrzeit auf diesem Klienten und dem Server sind verschieden. Bitte verwenden Sie ein Zeitsynchronisationsprotokolls (NTP) auf Ihrem Server und Klienten, damit die gleiche Uhrzeit verwendet wird.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="147"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="149"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSync konnte den Typ des Dateisystem nicht feststellen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="150"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="152"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSync hatte einen Fehler bei der Verarbeitung von internen Strukturen.</translation>
     </message>
@@ -600,7 +600,7 @@ Copyright 2012, die ownCloud Entwickler.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="153"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="155"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Das Zielverzeichnis %1 existiert nicht.&lt;/p&gt;&lt;p&gt;Bitte prüfen Sie die Synchronisationseinstellungen.&lt;/p&gt;</translation>
     </message>
@@ -609,27 +609,27 @@ Copyright 2012, die ownCloud Entwickler.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="162"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="164"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>Kann auf dem lokalen Dateisystem nicht schreiben. Bitte Berechtigungen überprüfen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="166"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="168"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>Eine Remote-Datei konnte nicht geschrieben werden. Bitte den Remote-Zugriff überprüfen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="169"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="171"/>
         <source>An internal error number %1 happend.</source>
         <translation>Interne Fehlernummer %1 aufgetreten.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="192"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="194"/>
         <source>CSync failed to reach the host. Either host or proxy settings are not valid.</source>
         <translation>CSync konnte den Host nicht erreichen. Entweder stimmt die Serveradresse oder die Proxyeinstellung nicht.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="195"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="197"/>
         <source>CSync Update failed.</source>
         <translation>CSync-Update fehlgeschlagen.</translation>
     </message>
@@ -640,7 +640,7 @@ Please make sure that all directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="158"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="160"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Das %1-Plugin für csync konnte nicht geladen werden.&lt;br/&gt;Bitte überprüfen Sie die Installation!&lt;/p&gt;</translation>
     </message>
@@ -659,12 +659,12 @@ Please write a bug report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="204"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="206"/>
         <source>CSync reconcile failed.</source>
         <translation>CSync-Zusammenführung fehlgeschlagen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="208"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="210"/>
         <source>File exchange with ownCloud failed. Sync was stopped.</source>
         <translation>Datenaustausch mit ownCloud fehlgeschlagen. Die Synchronisation wurde angehalten.</translation>
     </message>
@@ -1168,67 +1168,67 @@ Das Setup kann nicht ausgeführt werden.</translation>
 <context>
     <name>Mirall::SslErrorDialog</name>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="28"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="29"/>
         <source>SSL Connection</source>
         <translation>SSL-Verbindung</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="97"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="98"/>
         <source>Warnings about current SSL Connection:</source>
         <translation>Warnungen zur aktuellen SSL-Verbindung</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="145"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="134"/>
         <source>with Certificate %1</source>
         <translation>mit Zertifikat %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="153"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="154"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="155"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="142"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="143"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="144"/>
         <source>&amp;lt;not specified&amp;gt;</source>
         <translation>&amp;lt;nicht angegeben&amp;gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="156"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="176"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="145"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="167"/>
         <source>Organization: %1</source>
         <translation>Organisation: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="157"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="177"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="146"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="168"/>
         <source>Unit: %1</source>
         <translation>Einheit: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="158"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="178"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="147"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="169"/>
         <source>Country: %1</source>
         <translation>Land: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="165"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="156"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Fingerabdruck (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="166"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="157"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Fingerabdruck (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="168"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="159"/>
         <source>Effective Date: %1</source>
         <translation>Aktuelles Datum: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="169"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="160"/>
         <source>Expiry Date: %1</source>
         <translation>Auslaufdatum: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="173"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="164"/>
         <source>Issuer: %1</source>
         <translation>Aussteller: %1</translation>
     </message>

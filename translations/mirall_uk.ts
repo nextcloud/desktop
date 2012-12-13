@@ -104,7 +104,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="20"/>
         <source>ownCloud Settings</source>
-        <translation>налаштування ownCloud</translation>
+        <translation>Налаштування ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="29"/>
@@ -147,7 +147,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="32"/>
         <source>Pick a local folder on your computer to sync:</source>
-        <translation>Оберіть локальний каталог на Вашому ПК для синхронізації:</translation>
+        <translation>Оберіть локальну теку на вашому ПК для синхронізації:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="43"/>
@@ -192,12 +192,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="29"/>
         <source>Synchronization Target</source>
-        <translation>Цільовий каталог синхронізації</translation>
+        <translation>Цільова тека синхронізації</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="51"/>
         <source>Select a destination folder for your data</source>
-        <translation>Обрати каталог для зберігання даних</translation>
+        <translation>Оберіть теку для зберігання даних</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="88"/>
@@ -207,17 +207,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="103"/>
         <source>Folder on ownCloud:</source>
-        <translation>Каталог на ownCloud:</translation>
+        <translation>Тека на ownCloud:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="152"/>
         <source>to a &amp;local folder</source>
-        <translation>в &amp;локальний каталог</translation>
+        <translation>в &amp;локальну теку</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="165"/>
         <source>Folder name:</source>
-        <translation>Ім&apos;я каталогу:</translation>
+        <translation>Ім&apos;я теки:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="175"/>
@@ -227,7 +227,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="222"/>
         <source>to a &amp;remote folder (URL)</source>
-        <translation>у &amp;віддалений каталог (URL)</translation>
+        <translation>у &amp;віддалену теку (URL)</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="235"/>
@@ -307,7 +307,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="353"/>
         <source>Sync started for %1 configured sync folder(s).</source>
-        <translation>Почалась синхронізація для %1 каталогу(ів).</translation>
+        <translation>Почалась синхронізація для %1 тек.</translation>
     </message>
     <message>
         <source>Open ownCloud...</source>
@@ -321,7 +321,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="418"/>
         <source>Add folder...</source>
-        <translation>Додати каталог...</translation>
+        <translation>Додати теку...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="420"/>
@@ -422,12 +422,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="480"/>
         <source>Open %1 folder</source>
-        <translation>Відкрити %1 каталог</translation>
+        <translation>Відкрити %1 теку</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="493"/>
         <source>Managed Folders:</source>
-        <translation>Керовані каталоги:</translation>
+        <translation>Керовані теки:</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="729"/>
@@ -446,22 +446,22 @@ Copyright 2012, the ownCloud developers.</source>
     <message>
         <location filename="../src/mirall/application.cpp" line="741"/>
         <source>Confirm Folder Remove</source>
-        <translation>Підтвердіть видалення каталогу</translation>
+        <translation>Підтвердіть видалення теки</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="742"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
-        <translation>Ви дійсно бажаєто видалити каталог завантаження  &lt;i&gt;%1&lt;/i&gt;?</translation>
+        <translation>Ви дійсно бажаєто видалити теку завантаження  &lt;i&gt;%1&lt;/i&gt;?</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="770"/>
         <source>Undefined Folder State</source>
-        <translation>Невизначений стан каталогу</translation>
+        <translation>Невизначений стан теки</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="773"/>
         <source>The folder waits to start syncing.</source>
-        <translation>Каталог очикує початку синхронізації.</translation>
+        <translation>Тека очікує на початок синхронізації.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="776"/>
@@ -496,7 +496,7 @@ Copyright 2012, the ownCloud developers.</source>
     <message>
         <location filename="../src/mirall/application.cpp" line="792"/>
         <source>Folder information</source>
-        <translation>Інформація каталогу</translation>
+        <translation>Інформація про теку</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="807"/>
@@ -556,23 +556,23 @@ Copyright 2012, the ownCloud developers.</source>
     <message>
         <location filename="../src/mirall/application.cpp" line="993"/>
         <source>No sync folders configured.</source>
-        <translation>Жодний каталог не налаштований для синхронізації.</translation>
+        <translation>Жодна тека не налаштована для синхронізації.</translation>
     </message>
 </context>
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="104"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="106"/>
         <source>CSync create failed.</source>
         <translation>Створення CSync не вдалося.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="136"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="138"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSync не вдалося створити файл блокування.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="139"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="141"/>
         <source>CSync failed to load the state db.</source>
         <translation>CSync не вдалося завантажити стан бази даних.</translation>
     </message>
@@ -581,17 +581,17 @@ Copyright 2012, the ownCloud developers.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="142"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="144"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>Системний час цього клієнта відрізняється від системного часу на сервері. Будь ласка, використовуйте сервіс синхронізації часу (NTP) на сервері та клієнті, аби час був однаковий.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="147"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="149"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSync не вдалося визначити тип файлової системи.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="150"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="152"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>У CSync виникла помилка під час сканування внутрішньої структури каталогів.</translation>
     </message>
@@ -600,7 +600,7 @@ Copyright 2012, the ownCloud developers.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="153"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="155"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Цільовий каталог %1 не існує.&lt;/p&gt;&lt;p&gt;Будь ласка, перевірте налаштування синхронізації.&lt;/p&gt;</translation>
     </message>
@@ -609,27 +609,27 @@ Copyright 2012, the ownCloud developers.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="162"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="164"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>Не можливо проводити запис у локальну файлову систему. Будь ласка, перевірте повноваження.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="166"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="168"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>Не можливо проводити запис у віддалену файлову систему. Будь ласка, перевірте повноваження доступу.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="169"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="171"/>
         <source>An internal error number %1 happend.</source>
         <translation>Виникла внутрішня помилка за номером %1 .</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="192"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="194"/>
         <source>CSync failed to reach the host. Either host or proxy settings are not valid.</source>
         <translation>CSync не вдалося підключитись до хосту. Налаштування хосту або проксі не вірні.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="195"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="197"/>
         <source>CSync Update failed.</source>
         <translation>Оновлення CSync не вдалося.</translation>
     </message>
@@ -640,7 +640,7 @@ Please make sure that all directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="158"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="160"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt; %1 плагін для синхронізації не вдалося завантажити.&lt;br/&gt;Будь ласка, перевірте його інсталяцію!&lt;/p&gt;</translation>
     </message>
@@ -659,12 +659,12 @@ Please write a bug report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="204"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="206"/>
         <source>CSync reconcile failed.</source>
         <translation>Не вдалося погодження CSync.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="208"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="210"/>
         <source>File exchange with ownCloud failed. Sync was stopped.</source>
         <translation>Не вдалося виконати обмін файлами з ownCloud. Синхронізація зупинена.</translation>
     </message>
@@ -686,22 +686,22 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="290"/>
         <source>New file available</source>
-        <translation type="unfinished"/>
+        <translation>Є новий файл</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="290"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; синхронізовано з цією машиною.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="292"/>
         <source>New files available</source>
-        <translation type="unfinished"/>
+        <translation>Є нові файли</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="292"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; та %n інших файлів було синхронізовано з цією машиною.</numerusform><numerusform>&apos;%1&apos; та %n інших файлів було синхронізовано з цією машиною.</numerusform><numerusform>&apos;%1&apos; та %n інших файлів було синхронізовано з цією машиною.</numerusform></translation>
     </message>
 </context>
 <context>
@@ -709,12 +709,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folder.cpp" line="97"/>
         <source>Local folder %1 does not exist.</source>
-        <translation>Локальний каталог %1 не існує.</translation>
+        <translation>Локальна тека %1 не існує.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="100"/>
         <source>%1 should be a directory but is not.</source>
-        <translation>%1 повинен бути каталогом, але не каталог.</translation>
+        <translation>%1 повинна бути текою, але нею не є.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="103"/>
@@ -735,7 +735,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="466"/>
         <source>%1 Folder Wizard</source>
-        <translation>Майстер Каталогу %1 </translation>
+        <translation>Тековий Майстер %1</translation>
     </message>
 </context>
 <context>
@@ -743,22 +743,22 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="74"/>
         <source>No local directory selected!</source>
-        <translation>Не обрано локального каталогу!</translation>
+        <translation>Не обрано локальної теки!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="90"/>
         <source>The local path %1 is already an upload folder.&lt;br/&gt;Please pick another one!</source>
-        <translation>Локальний шлях %1 вже належить каталогу для завантаження.&lt;br/&gt;Будь ласка, оберіть інший!</translation>
+        <translation>Локальний шлях %1 вже є текою для завантаження.&lt;br/&gt;Будь ласка, оберіть інший!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="94"/>
         <source>An already configured folder is contained in the current entry.</source>
-        <translation>Вже налаштований каталог містить даний запис.</translation>
+        <translation>В поточному запису містяться вже налаштовані теки.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="99"/>
         <source>An already configured folder contains the currently entered directory.</source>
-        <translation>Вже налаштований каталог містить вказану папку.</translation>
+        <translation>Вже налаштована тека містить вказаний каталог.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="109"/>
@@ -773,7 +773,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="141"/>
         <source>Select the source folder</source>
-        <translation>Оберіть вихідний каталог</translation>
+        <translation>Оберіть початкову теку</translation>
     </message>
 </context>
 <context>
@@ -793,22 +793,22 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="211"/>
         <source>The folder is not available on your %1.&lt;br/&gt;Click to create it.</source>
-        <translation>Каталог не доступний на Вашому %1.&lt;br/&gt;Натисніть для його створення.</translation>
+        <translation>Тека не доступна на вашому %1.&lt;br/&gt;Натисніть для її створення.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="237"/>
         <source>Folder was successfully created on %1.</source>
-        <translation>Каталог успішно створено на %1.</translation>
+        <translation>Теку успішно створено на %1.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="240"/>
         <source>Failed to create the folder on %1.&lt;br/&gt;Please check manually.</source>
-        <translation>Не вдалося створити каталог на %1.&lt;br/&gt;Будь ласка, перевірте вручну.</translation>
+        <translation>Не вдалося створити теку на %1.&lt;br/&gt;Будь ласка, перевірте вручну.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="260"/>
         <source>Better do not use the remote root directory.&lt;br/&gt;If you do, you can &lt;b&gt;not&lt;/b&gt; mirror another local folder.</source>
-        <translation>Краще не використовувати віддалений кореневий каталог.&lt;br/&gt;Інакше, Ви можете &lt;b&gt;not&lt;/b&gt; відобразити інший локальний каталог.</translation>
+        <translation>Краще не використовувати віддалений кореневий каталог.&lt;br/&gt;Інакше, ви можете &lt;b&gt;not&lt;/b&gt; відобразити іншу локальну теку.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="315"/>
@@ -840,7 +840,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="395"/>
         <source>Select the target folder</source>
-        <translation>Оберіть цільовий каталог</translation>
+        <translation>Оберіть цільову теку</translation>
     </message>
 </context>
 <context>
@@ -1017,27 +1017,27 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="411"/>
         <source>Creation of remote folder %1 could not be started.</source>
-        <translation>Створення віддаленого каталогу %1 не вдається розпочати.</translation>
+        <translation>Створення віддаленої теки %1 не вдається розпочати.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="432"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation>Віддалений каталог %1 успішно створено.</translation>
+        <translation>Віддалена тека %1 успішно створена.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="434"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>Віддалений каталог %1 вже існує. Підключення для синхронізації.</translation>
+        <translation>Віддалена тека %1 вже існує. Під&apos;єднання для синхронізації.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="436"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation>Створення каталогу завершилось HTTP помилкою %1</translation>
+        <translation>Створення теки завершилось HTTP помилкою %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="457"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation>Підключення для синхронізації %1 з віддаленим каталогом %2 було встановлено.</translation>
+        <translation>З&apos;єднання для синхронізації %1 з віддаленою текою %2 було встановлено.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="462"/>
@@ -1065,12 +1065,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="380"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>Локальна тека синхронізації %1 вже існує, налаштування її для синхронізації.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="382"/>
         <source>Creating local sync folder %1... </source>
-        <translation>Створення локального каталогу для синхронізації %1... </translation>
+        <translation>Створення локальної теки для синхронізації %1... </translation>
     </message>
     <message>
         <source>Creating local sync folder %1</source>
@@ -1097,7 +1097,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="103"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Локальний каталог синхронізації %1 успішно створено!&lt;/b&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Локальна тека синхронізації %1 успішно створена!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <source>The remote folder %1 already exists. Automatic sync setup is skipped for security reasons. Please configure your sync folder manually.</source>
@@ -1106,12 +1106,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="438"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Створення віддаленого каталогу не вдалося, можливо, через вказання не вірних облікових даних.&lt;/font&gt;&lt;br/&gt;Будь ласка, поверніться назад та перевірте облікові дані.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Створити віддалену теку не вдалося, можливо, через невірно вказані облікові дані.&lt;/font&gt;&lt;br/&gt;Будь ласка, поверніться назад та перевірте облікові дані.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="444"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation>Створення віддаленого каталогу %1 не вдалося через помилку &lt;tt&gt;%2&lt;/tt&gt;.</translation>
+        <translation>Не вдалося створити віддалену теку %1 через помилку &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
 </context>
 <context>
@@ -1168,67 +1168,67 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::SslErrorDialog</name>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="28"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="29"/>
         <source>SSL Connection</source>
         <translation>SSL з&apos;єднання</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="97"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="98"/>
         <source>Warnings about current SSL Connection:</source>
         <translation>Попередження про існуюче SSL з&apos;єднання:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="145"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="134"/>
         <source>with Certificate %1</source>
         <translation>з Сертифікатом %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="153"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="154"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="155"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="142"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="143"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="144"/>
         <source>&amp;lt;not specified&amp;gt;</source>
         <translation>&amp;lt;не вказано&amp;gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="156"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="176"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="145"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="167"/>
         <source>Organization: %1</source>
         <translation>Організація: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="157"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="177"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="146"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="168"/>
         <source>Unit: %1</source>
         <translation>Підрозділ: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="158"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="178"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="147"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="169"/>
         <source>Country: %1</source>
         <translation>Країна: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="165"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="156"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Відбиток (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="166"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="157"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Відбиток (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="168"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="159"/>
         <source>Effective Date: %1</source>
         <translation>Дата введення в дію: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="169"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="160"/>
         <source>Expiry Date: %1</source>
         <translation>Дата закінчення дії: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="173"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="164"/>
         <source>Issuer: %1</source>
         <translation>Емітент: %1</translation>
     </message>
@@ -1350,7 +1350,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="212"/>
         <source>The CSync thread terminated.</source>
-        <translation>CSync процес відмінено.</translation>
+        <translation>Процес CSync припинено.</translation>
     </message>
 </context>
 <context>

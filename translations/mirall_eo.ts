@@ -555,17 +555,17 @@ Kopirajto 2012, la ellaborintoj de ownCloud.</translation>
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="104"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="106"/>
         <source>CSync create failed.</source>
         <translation>CSync malsukcesis je kreo.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="136"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="138"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSync malsukcesis je kreo de blokdosiero.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="139"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="141"/>
         <source>CSync failed to load the state db.</source>
         <translation>CSync malsukcesis pri ŝargo de la stata datumbazo.</translation>
     </message>
@@ -574,17 +574,17 @@ Kopirajto 2012, la ellaborintoj de ownCloud.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="142"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="144"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="147"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="149"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSync ne povis detekti la dosiersistemtipon.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="150"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="152"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSync eraris dum ĝi procezis enajn arbojn.</translation>
     </message>
@@ -593,7 +593,7 @@ Kopirajto 2012, la ellaborintoj de ownCloud.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="153"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="155"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;La cela dosierujo %1 ne ekzistas.&lt;/p&gt;&lt;p&gt;Bonvolu kontroli la sinkronigan agordon.&lt;/p&gt;</translation>
     </message>
@@ -602,27 +602,27 @@ Kopirajto 2012, la ellaborintoj de ownCloud.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="162"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="164"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>La loka dosiersistemo ne eblas esti skribita. Bonvolu kontroli permesojn.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="166"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="168"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>Mallokan dosieron ne eblas skribi. Bonvolu kontroli la mallokan alireblon.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="169"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="171"/>
         <source>An internal error number %1 happend.</source>
         <translation>Ena eraro numerigita %1 okazis.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="192"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="194"/>
         <source>CSync failed to reach the host. Either host or proxy settings are not valid.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="195"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="197"/>
         <source>CSync Update failed.</source>
         <translation>CSync malsukcesis je ĝisdatiĝo.</translation>
     </message>
@@ -633,7 +633,7 @@ Please make sure that all directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="158"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="160"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;La kromaĵo %1 por CSync ne povis ŝargiĝi.&lt;br/&gt;Bonvolu kontroli la instalon!&lt;/p&gt;</translation>
     </message>
@@ -652,12 +652,12 @@ Please write a bug report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="204"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="206"/>
         <source>CSync reconcile failed.</source>
         <translation>CSync malsukcesis je kongruigo.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="208"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="210"/>
         <source>File exchange with ownCloud failed. Sync was stopped.</source>
         <translation type="unfinished"/>
     </message>
@@ -1161,67 +1161,67 @@ Agordado ne povas fariĝi.</translation>
 <context>
     <name>Mirall::SslErrorDialog</name>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="28"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="29"/>
         <source>SSL Connection</source>
         <translation>SSL-konekto</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="97"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="98"/>
         <source>Warnings about current SSL Connection:</source>
         <translation>Avertoj pri la nuna SSL-konekto:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="145"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="134"/>
         <source>with Certificate %1</source>
         <translation>kun atestilo %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="153"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="154"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="155"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="142"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="143"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="144"/>
         <source>&amp;lt;not specified&amp;gt;</source>
         <translation>&amp;lt;ne indikita&amp;gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="156"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="176"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="145"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="167"/>
         <source>Organization: %1</source>
         <translation>Organizaĵo: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="157"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="177"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="146"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="168"/>
         <source>Unit: %1</source>
         <translation>Unuo: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="158"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="178"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="147"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="169"/>
         <source>Country: %1</source>
         <translation>Lando: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="165"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="156"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Fingropremo (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="166"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="157"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Fingropremo (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="168"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="159"/>
         <source>Effective Date: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="169"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="160"/>
         <source>Expiry Date: %1</source>
         <translation>Limdato: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="173"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="164"/>
         <source>Issuer: %1</source>
         <translation>Sendinto: %1</translation>
     </message>
