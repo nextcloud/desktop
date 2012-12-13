@@ -15,9 +15,9 @@
 
 #include "mirall/csyncthread.h"
 #include "mirall/mirallconfigfile.h"
-#include "mirall/sslerrordialog.h"
 #include "mirall/theme.h"
 #include "mirall/logger.h"
+#include "mirall/utility.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -275,9 +275,10 @@ int CSyncThread::getauth(const char *prompt,
                 QByteArray ba = cfg.caCerts();
 
                 QList<QSslCertificate> certs = QSslCertificate::fromData(ba);
-                foreach( const QSslCertificate& c, certs ) {
+                Utility util;
 
-                    QString shasum = QString::fromAscii(SslErrorDialog::formatHash(c.digest(QCryptographicHash::Sha1).toHex())).trimmed();
+                foreach( const QSslCertificate& c, certs ) {
+                    QString shasum = util.formatFingerprint(c.digest(QCryptographicHash::Sha1).toHex()).trimmed();
                     shasum.replace(QChar(' '), QChar(':'));
                     if( shasum == fingerprint ) {
                         certOk = true;

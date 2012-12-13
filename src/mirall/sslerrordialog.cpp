@@ -11,8 +11,9 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-#include "sslerrordialog.h"
 #include "mirall/mirallconfigfile.h"
+#include "mirall/utility.h"
+#include "mirall/sslerrordialog.h"
 
 #include <QtGui>
 #include <QtNetwork>
@@ -126,18 +127,6 @@ bool SslErrorDialog::setErrorList( QList<QSslError> errors )
     return false;
 }
 
-QByteArray SslErrorDialog::formatHash(const QByteArray &fmhash)
-{
-    QByteArray hash;
-    int steps = fmhash.length()/2;
-    for (int i = 0; i < steps; i++) {
-        hash.append(fmhash[i*2]);
-        hash.append(fmhash[i*2+1]);
-        hash.append(' ');
-    }
-    return hash;
-}
-
 QString SslErrorDialog::certDiv( QSslCertificate cert ) const
 {
     QString msg;
@@ -160,8 +149,10 @@ QString SslErrorDialog::certDiv( QSslCertificate cert ) const
 
     msg += QL("<p>");
 
-    QString md5sum = QString::fromAscii(formatHash(cert.digest(QCryptographicHash::Md5).toHex()));
-    QString sha1sum =  QString::fromAscii(formatHash(cert.digest(QCryptographicHash::Sha1).toHex()));
+    Utility util;
+
+    QString md5sum = util.formatFingerprint(cert.digest(QCryptographicHash::Md5).toHex());
+    QString sha1sum =  util.formatFingerprint(cert.digest(QCryptographicHash::Sha1).toHex());
     msg += tr("Fingerprint (MD5): <tt>%1</tt>").arg(md5sum) + QL("<br/>");
     msg += tr("Fingerprint (SHA1): <tt>%1</tt>").arg(sha1sum) + QL("<br/>");
     msg += QL("<br/>");

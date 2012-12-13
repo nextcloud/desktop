@@ -71,6 +71,7 @@ set(libsync_SRCS
     mirall/miralltheme.cpp
     mirall/owncloudinfo.cpp
     mirall/logger.cpp
+    mirall/utility.cpp
 )
 set(libsync_HEADERS 
     mirall/folderman.h
