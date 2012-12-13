@@ -50,11 +50,13 @@ csync_vio_method_handle_t *csync_vio_local_open(const char *durl, int flags, mod
   const mbchar_t *url = c_multibyte(durl);
 
   if ((fd = _topen(url, flags, mode)) < 0) {
+    c_free_multibyte(url);
     return NULL;
   }
 
   handle = c_malloc(sizeof(fhandle_t));
   if (handle == NULL) {
+    c_free_multibyte(url);
     close(fd);
     return NULL;
   }
@@ -72,11 +74,13 @@ csync_vio_method_handle_t *csync_vio_local_creat(const char *durl, mode_t mode) 
   const mbchar_t *url = c_multibyte(durl);
 
   if(( fd = _tcreat( url, mode)) < 0) {
+      c_free_multibyte(url);
       return NULL;
   }
 
   handle = c_malloc(sizeof(fhandle_t));
   if (handle == NULL) {
+    c_free_multibyte(url);
     close(fd);
     return NULL;
   }
@@ -162,19 +166,18 @@ csync_vio_method_handle_t *csync_vio_local_opendir(const char *name) {
   const mbchar_t *dirname = c_multibyte(name);
   handle = c_malloc(sizeof(dhandle_t));
   if (handle == NULL) {
+    c_free_multibyte(dirname);
     return NULL;
   }
 
   handle->dh = _topendir( dirname );
   if (handle->dh == NULL) {
+    c_free_multibyte(dirname);
     SAFE_FREE(handle);
     return NULL;
   }
-#ifdef _WIN32
-  handle->path = c_utf8(dirname);
-#else
-  handle->path = c_strdup(dirname);
-#endif
+  handle->path = c_strdup(name);
+  c_free_multibyte(dirname);
 
   return (csync_vio_method_handle_t *) handle;
 }
@@ -220,11 +223,7 @@ csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_method_handle_t *dhandl
     goto err;
   }
 
-#ifdef _WIN32
-  file_stat->name = c_utf8(dirent->d_name);
-#else
-  file_stat->name = c_strdup(dirent->d_name);
-#endif
+  file_stat->name = (char*) c_utf8(dirent->d_name);
   file_stat->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
 
 #ifndef _WIN32

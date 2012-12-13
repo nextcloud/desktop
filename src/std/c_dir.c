@@ -170,9 +170,10 @@ int c_isdir(const char *path) {
   const mbchar_t *wpath = c_multibyte(path);
 
   if (_tstat (wpath, &sb) == 0 && S_ISDIR(sb.st_mode)) {
+    c_free_multibyte(wpath);
     return 1;
   }
-
+  c_free_multibyte(wpath);
   return 0;
 }
 
