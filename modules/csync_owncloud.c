@@ -1295,7 +1295,7 @@ static int content_reader(void *userdata, const char *buf, size_t len)
        /* DEBUG_WEBDAV("Writing %scompressed %d bytes", (writeCtx->decompress ? "" : "NON "), len); */
        written = write(writeCtx->fd, buf, len);
        if( len != written ) {
-           DEBUG_WEBDAV("WRN: content_reader wrote wrong num of bytes");
+           DEBUG_WEBDAV("WRN: content_reader wrote wrong num of bytes: %zu, %zu", len, written);
        }
        return NE_OK;
    }
@@ -1509,21 +1509,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
         writeCtx->method = "GET";
         DEBUG_WEBDAV("GET request on %s", uri );
 
-#define WITH_HTTP_COMPRESSION
-#ifdef WITH_HTTP_COMPRESSION
         writeCtx->req = ne_request_create( dav_session.ctx, "GET", uri );
-
-        /* Allow compressed content by setting the header */
-        ne_add_request_header( writeCtx->req, "Accept-Encoding", "gzip" );
-
-        /* hook called before the content is parsed to set the correct reader,
-         * either the compressed- or uncompressed reader.
-         */
-        ne_hook_post_headers( dav_session.ctx, install_content_reader, writeCtx );
-#else
-        DEBUG_WEBDAV("GET Compression not supported!");
-        rc = ne_get( dav_session.ctx, getUrl, writeCtx->fd );  /* FIX_ESCAPE? */
-#endif
         writeCtx->fd = -1;
     }
 
@@ -1636,6 +1622,15 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
             ne_set_notifier(dav_session.ctx, ne_notify_status_cb, write_ctx);
             _progresscb(write_ctx->clean_uri, CSYNC_NOTIFY_START_DOWNLOAD, 0 , 0, dav_session.userdata);
         }
+
+        /* Allow compressed content by setting the header */
+        ne_add_request_header( write_ctx->req, "Accept-Encoding", "gzip" );
+
+        /* hook called before the content is parsed to set the correct reader,
+         * either the compressed- or uncompressed reader.
+         */
+        ne_hook_post_headers( dav_session.ctx, install_content_reader, write_ctx );
+
         neon_stat = ne_request_dispatch(write_ctx->req );
         /* possible return codes are:
          *  NE_OK, NE_AUTH, NE_CONNECT, NE_TIMEOUT, NE_ERROR (from ne_request.h)
