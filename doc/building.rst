@@ -51,22 +51,32 @@ if you do not have it installed already.
 In order to cross-compile, the following repositories need to be added
 via YaST or ``zypper ar`` (adjust when using openSUSE 12.2)::
 
-  http://download.opensuse.org/repositories/isv:/ownCloud:/devel:/mingw:/win32/openSUSE_12.1/isv:ownCloud:devel:mingw:win32.repo
-  http://download.opensuse.org/repositories/windows:/mingw/openSUSE_12.1/windows:mingw.repo
-  http://download.opensuse.org/repositories/windows:/mingw:/win32/openSUSE_12.1/windows:mingw:win32.repo
+  http://download.opensuse.org/repositories/isv:/ownCloud:/devel:/mingw:/win32/openSUSE_12.1/
+  http://download.opensuse.org/repositories/windows:/mingw/openSUSE_12.1/
+  http://download.opensuse.org/repositories/windows:/mingw:/win32/openSUSE_12.1/
 
 Next, install the cross-compiler packages and the cross-compiled dependencies::
 
   zypper si -d mingw32-csync
-  zypper install kdewin-png2ico mingw32-libqt4 mingw32-libqt4-devel
-                 mingw32-libgcrypt mingw32-libgnutls mingw32-gnutls \
-                 mingw32-libneon mingw32-libbeecrypt mingw32-libopenssl \
-                 mingw32-openssl
+  zypper install kdewin-png2ico mingw32-libqt4 mingw32-libqt4-devel \
+                 mingw32-libgcrypt mingw32-libgnutls mingw32-libneon \
+                 mingw32-libbeecrypt mingw32-libopenssl mingw32-openssl \
+                 mingw32-libpng-devel mingw32-qtkeychain mingw32-qtkeychain-devel
 
-For the installer, the NSIS installer packages are also required::
+For the installer, the NSIS installer package is also required::
 
-  zypper install mingw32-cross-nsis mingw32-cross-nsis-plugin-processes \
-                 mingw32-cross-nsis-plugin-uac 
+  zypper install mingw32-cross-nsis
+
+..  Usually, the following would be needed as well, but due to a bug in mingw, they
+    will currently not build properly from source.
+
+    mingw32-cross-nsis-plugin-processes mingw32-cross-nsis-plugin-uac
+
+You will also need to manually download and install the following files with 
+``rpm -ivh <package>`` (They will also work with OpenSUSE 12.2)::
+
+http://pmbs.links2linux.org/download/mingw:/32/openSUSE_12.1/x86_64/mingw32-cross-nsis-plugin-processes-0-1.1.x86_64.rpm
+http://pmbs.links2linux.org/download/mingw:/32/openSUSE_12.1/x86_64/mingw32-cross-nsis-plugin-uac-0-3.1.x86_64.rpm
 
 Now, follow the `generic build instructions`_, but pay attention to
 the following differences:
