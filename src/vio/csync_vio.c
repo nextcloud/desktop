@@ -670,4 +670,13 @@ int csync_vio_set_property(CSYNC* ctx, const char* key, void* data)
   return rc;
 }
 
-
+char *csync_vio_get_error_string(CSYNC *ctx)
+{
+    if(ctx->error_string) {
+        return ctx->error_string;
+    }
+    if(VIO_METHOD_HAS_FUNC(ctx->module.method, get_error_string)) {
+        return ctx->module.method->get_error_string();
+    }
+    return NULL;
+}

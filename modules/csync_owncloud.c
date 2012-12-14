@@ -147,6 +147,8 @@ struct dav_session_s {
 
     char *session_key;
 
+    char *error_string;
+
     int read_timeout;
 
     long int prev_delta;
@@ -201,6 +203,13 @@ static void clean_caches() {
 char _buffer[PUT_BUFFER_SIZE];
 
 /* ***************************************************************************** */
+static void set_error_message( const char *msg )
+{
+    SAFE_FREE(dav_session.error_string);
+    if( msg )
+        dav_session.error_string = c_strdup(msg);
+}
+
 static void set_errno_from_http_errcode( int err ) {
     int new_errno = 0;
 
@@ -279,9 +288,11 @@ static int http_result_code_from_session() {
     char *q;
     int err;
 
+    set_error_message(p); /* remember the error message */
+
     err = strtol(p, &q, 10);
     if (p == q) {
-        err = EIO;
+        err = ERRNO_ERROR_STRING;
     }
     return err;
 }
@@ -289,8 +300,8 @@ static int http_result_code_from_session() {
 static void set_errno_from_session() {
     int err = http_result_code_from_session();
 
-    if( err == EIO ) {
-        errno = EIO;
+    if( err == EIO || err == ERRNO_ERROR_STRING) {
+        errno = err;
     } else {
         set_errno_from_http_errcode(err);
     }
@@ -336,7 +347,6 @@ static void set_errno_from_neon_errcode( int neon_code ) {
         errno = ERRNO_GENERAL_ERROR;
     }
 }
-
 
 /* cleanPath to return an escaped path of an uri */
 static char *_cleanPath( const char* uri ) {
@@ -428,8 +438,9 @@ static int verify_sslcert(void *userdata, int failures,
         if( buf[0] == 'y' || buf[0] == 'Y') {
             ret = 0;
         } else {
-	    DEBUG_WEBDAV("Authentication callback replied %s", buf );
-	}
+            DEBUG_WEBDAV("Authentication callback replied %s", buf );
+
+        }
     }
     DEBUG_WEBDAV("## VERIFY_SSL CERT: %d", ret  );
     return ret;
@@ -992,7 +1003,7 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
             DEBUG_WEBDAV("ERROR: Request failed: status %d (%s)", req_status->code,
                          req_status->reason_phrase);
             ret = NE_CONNECT;
-
+            set_error_message(req_status->reason_phrase);
             if (_progresscb) {
                 _progresscb(uri, CSYNC_NOTIFY_ERROR,  req_status->code, (long long)(req_status->reason_phrase) ,dav_session.userdata);
             }
@@ -1017,6 +1028,7 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
             DEBUG_WEBDAV("ERROR: Content type of propfind request not XML: %s.",
                          content_type ?  content_type: "<empty>");
             errno = ERRNO_WRONG_CONTENT;
+            set_error_message("Server error: PROPFIND reply is not XML formatted!");
             ret = NE_CONNECT;
         }
     }
@@ -1042,8 +1054,8 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
             } else if( dav_session.time_delta_cnt > 1 ) {
                 if( time_diff_delta > 5 ) {
                     DEBUG_WEBDAV("WRN: The time delta changed more than 5 second");
-                    errno = ERRNO_TIMEDELTA;
-                    ret = OC_TIMEDELTA_FAIL;
+                    // errno = ERRNO_TIMEDELTA;
+                    // ret = OC_TIMEDELTA_FAIL;
                 } else {
                     DEBUG_WEBDAV("Ok: Time delta remained (almost) the same: %llu.", (unsigned long long) time_diff);
                 }
@@ -1923,6 +1935,11 @@ static int owncloud_chown(const char *uri, uid_t owner, gid_t group) {
     return 0;
 }
 
+static char *owncloud_error_string()
+{
+    return dav_session.error_string;
+}
+
 static int owncloud_utimes(const char *uri, const struct timeval *times) {
 
     ne_proppatch_operation ops[2];
@@ -2031,7 +2048,8 @@ csync_vio_method_t _method = {
     .chmod = owncloud_chmod,
     .chown = owncloud_chown,
     .utimes = owncloud_utimes,
-    .set_property = owncloud_set_property
+    .set_property = owncloud_set_property,
+    .get_error_string = owncloud_error_string
 };
 
 csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
@@ -2059,6 +2077,7 @@ void vio_module_shutdown(csync_vio_method_t *method) {
     SAFE_FREE( dav_session.proxy_user );
     SAFE_FREE( dav_session.proxy_pwd  );
     SAFE_FREE( dav_session.session_key);
+    SAFE_FREE( dav_session.error_string );
 
     SAFE_FREE( _lastDir );
 

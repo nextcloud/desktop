@@ -723,6 +723,7 @@ int csync_destroy(CSYNC *ctx) {
   SAFE_FREE(ctx->remote.uri);
   SAFE_FREE(ctx->options.config_dir);
   SAFE_FREE(ctx->statedb.file);
+  SAFE_FREE(ctx->error_string);
 
 #ifdef WITH_ICONV
   c_close_iconv();

@@ -150,6 +150,7 @@ struct csync_s {
 
   /* error code of the last operation */
   enum csync_error_codes_e error_code;
+  char *error_string;
   
   int status;
 };
