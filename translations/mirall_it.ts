@@ -701,7 +701,7 @@ Please write a bug report.</source>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="292"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; e %n altro file sono stati sincronizzati con questa macchina.</numerusform><numerusform>&apos;%1&apos; e %n altri file sono stati sincronizzati con questa macchina.</numerusform></translation>
     </message>
 </context>
 <context>

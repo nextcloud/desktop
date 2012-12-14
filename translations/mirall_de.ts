@@ -365,12 +365,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="266"/>
         <source>Too many attempts to get a valid password.</source>
-        <translation type="unfinished"/>
+        <translation>Zu viele Versuche ein gültiges Passwort zu erstellen</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="270"/>
         <source>ownCloud user credentials are wrong. Please check configuration.</source>
-        <translation type="unfinished"/>
+        <translation>Die Anmeldedaten des ownCloud Nutzers sind nicht korrekt. Bitte die Konfiguration prüfen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="274"/>
@@ -686,22 +686,22 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="290"/>
         <source>New file available</source>
-        <translation type="unfinished"/>
+        <translation>Neue Datei verfügbar</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="290"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; wurde mit diesem Gerät synchronisiert.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="292"/>
         <source>New files available</source>
-        <translation type="unfinished"/>
+        <translation>Neue Dateien sind verfügbar</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="292"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; und %n andere Datei(en) wurde(n) mit diesem Gerät synchronisiert.</numerusform><numerusform>&apos;%1&apos; und %n andere Datei(en) wurde(n) mit diesem Gerät synchronisiert.</numerusform></translation>
     </message>
 </context>
 <context>
