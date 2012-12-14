@@ -61,7 +61,8 @@ Next, install the cross-compiler packages and the cross-compiled dependencies::
   zypper install kdewin-png2ico mingw32-libqt4 mingw32-libqt4-devel \
                  mingw32-libgcrypt mingw32-libgnutls mingw32-libneon \
                  mingw32-libbeecrypt mingw32-libopenssl mingw32-openssl \
-                 mingw32-libpng-devel mingw32-qtkeychain mingw32-qtkeychain-devel
+                 mingw32-libpng-devel mingw32-libsqlite mingw32-qtkeychain \
+                 mingw32-qtkeychain-devel mingw32-iniparser mingw32-dlfcn
 
 For the installer, the NSIS installer package is also required::
 
