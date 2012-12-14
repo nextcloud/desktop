@@ -342,6 +342,7 @@ void csync_win32_set_file_hidden( const char *file, bool h ) {
 
   c_free_multibyte(fileName);
 #else
+    (void) h;
     (void) file;
 #endif
 }
