@@ -254,6 +254,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
         break;
       case ENOENT:
         /* get the directory name */
+        SAFE_FREE(tdir);
         tdir = c_dirname(turi);
         if (tdir == NULL) {
           rc = -1;
