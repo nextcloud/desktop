@@ -530,6 +530,7 @@ int csync_propagate(CSYNC *ctx) {
  * local visitor which calls the user visitor with repacked stat info.
  */
 static int _csync_treewalk_visitor(void *obj, void *data) {
+    int rc = 0;
     csync_file_stat_t *cur         = NULL;
     CSYNC *ctx                     = NULL;
     c_rbtree_visit_func *visitor   = NULL;
@@ -568,7 +569,9 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
       trav.instruction = cur->instruction;
       trav.rename_path = cur->destpath;
 
-      return (*visitor)(&trav, twctx->userdata);
+      rc = (*visitor)(&trav, twctx->userdata);
+      cur->instruction = trav.instruction;
+      return rc;
     }
     ctx->error_code = CSYNC_ERR_TREE;
     return -1;
