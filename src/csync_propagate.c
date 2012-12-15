@@ -1195,7 +1195,7 @@ static void _csync_correct_id_helper(CSYNC *ctx, char *path, c_list_t **seen_dir
  * In this function, the unique ID is queried for each directory once and
  * stored into the according entry.
  */
-static int _csync_correct_id(CSYNC *ctx) {
+int csync_correct_id(CSYNC *ctx) {
     c_list_t *walk      = NULL;
     c_list_t *seen_dirs = NULL;
     c_list_t *list      = NULL;
@@ -1462,10 +1462,6 @@ int csync_propagate_files(CSYNC *ctx) {
   }
 
   if (_csync_propagation_cleanup(ctx) < 0) {
-    return -1;
-  }
-
-  if( _csync_correct_id(ctx) < 0) {
     return -1;
   }
   return 0;
