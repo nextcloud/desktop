@@ -963,7 +963,6 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
   enum csync_replica_e replica_bak;
   char errbuf[256] = {0};
   char *uri = NULL;
-  const char *tmd5 = NULL;
   struct timeval times[2];
   int rc = -1;
 
@@ -1018,11 +1017,7 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
 
   csync_vio_utimes(ctx, uri, times);
   if (ctx->replica == REMOTE_REPLICA) {
-    tmd5 = _get_md5(ctx, st->path);
-    if(tmd5) {
-        SAFE_FREE(st->md5);
-        st->md5 = tmd5;
-    }
+    _store_id_update(ctx, st);
   }
   /* set instruction for the statedb merger */
   st->instruction = CSYNC_INSTRUCTION_UPDATED;
