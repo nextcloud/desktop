@@ -237,11 +237,11 @@ static int _check_read_from_db(CSYNC *ctx, const char *uri) {
     int len;
     uint64_t h;
     csync_vio_file_stat_t *fs = NULL;
-    char       *md5_local  = NULL;
+    const char *md5_local  = NULL;
     const char *md5_remote = NULL;
     const char *mpath;
-    c_rbnode_t *node = NULL;
     int rc = 0; /* FIXME: Error handling! */
+    csync_file_stat_t* tmp = NULL;
 
     if( !c_streq( ctx->remote.uri, uri )) {
         /* FIXME: The top uri can not be checked because there is no db entry for it */
@@ -260,27 +260,21 @@ static int _check_read_from_db(CSYNC *ctx, const char *uri) {
         len = strlen( mpath );
         h = c_jhash64((uint8_t *) mpath, len, 0);
 
-        /* search in the local tree for the local file to get the mtime */
-        node =  c_rbtree_find(ctx->local.tree, &h);
-        if(node == NULL) {
-            /* no local file found. */
-        } else {
-            csync_file_stat_t *other = NULL;
-            /* set the mtime which is needed in statedb_get_uniqid */
-            other = (csync_file_stat_t *) node->data;
-            if( other )
-                fs->mtime = other->modtime;
-        }
-        md5_local = csync_statedb_get_uniqId( ctx, h, fs );
-        md5_remote = csync_vio_file_id(ctx, uri);
+        /* search that folder in the db and check that the hash is the md5 (etag) is still the same */
+        tmp = csync_statedb_get_stat_by_hash(ctx, h);
+        if (tmp) {
+            md5_local = tmp->md5;
+            md5_remote = csync_vio_file_id(ctx, uri);
 
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Compare directory ids for %s: %s -> %s", mpath, md5_local, md5_remote );
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Compare directory ids for %s: %s -> %s", mpath, md5_local, md5_remote );
 
-        if( c_streq(md5_local, md5_remote) ) {
-            ctx->remote.read_from_db = 1;
+            if( c_streq(md5_local, md5_remote) ) {
+                ctx->remote.read_from_db = 1;
+            }
+            SAFE_FREE(md5_remote);
+            SAFE_FREE(md5_local);
+            SAFE_FREE(tmp);
         }
-        SAFE_FREE(md5_local);
-        SAFE_FREE(md5_remote);
 
         csync_vio_file_stat_destroy(fs);
     }
