@@ -209,18 +209,18 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
   /* get file stat of the file on the replica */
   vst = csync_vio_file_stat_new();
   if (csync_vio_stat(ctx, uri, vst) < 0) {
-    rc = -1;
     strerror_r(errno, errbuf, sizeof(errbuf));
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
         "file: %s, updating stat failed, error: %s",
         uri,
         errbuf);
-    goto out;
-  }
 
-  /* update file stat */
-  fs->inode = vst->inode;
-  fs->modtime = vst->mtime;
+    /* Not a fatal error, since it is better to have outdated information than no information */
+  } else {
+    /* update file stat */
+    fs->inode = vst->inode;
+    fs->modtime = vst->mtime;
+  }
 
   /* update with the id from the remote repo. This method always works on the local repo */
   node = c_rbtree_find(ctx->remote.tree, &fs->phash);
