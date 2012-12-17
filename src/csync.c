@@ -183,7 +183,7 @@ int csync_init(CSYNC *ctx) {
 
   /* create lock file */
   if (asprintf(&lock, "%s/%s", ctx->options.config_dir, CSYNC_LOCK_FILE) < 0) {
-    ctx->error_code = CSYNC_ERR_UNSPEC;
+    ctx->error_code = CSYNC_ERR_MEM;
     rc = -1;
     goto out;
   }
@@ -198,6 +198,7 @@ int csync_init(CSYNC *ctx) {
 
   /* load config file */
   if (asprintf(&config, "%s/%s", ctx->options.config_dir, CSYNC_CONF_FILE) < 0) {
+    ctx->error_code = CSYNC_ERR_MEM;
     rc = -1;
     goto out;
   }
@@ -209,7 +210,7 @@ int csync_init(CSYNC *ctx) {
 #ifndef _WIN32
   /* load global exclude list */
   if (asprintf(&exclude, "%s/ocsync/%s", SYSCONFDIR, CSYNC_EXCLUDE_FILE) < 0) {
-    ctx->error_code = CSYNC_ERR_UNSPEC;
+    ctx->error_code = CSYNC_ERR_MEM;
     rc = -1;
     goto out;
   }
@@ -221,7 +222,7 @@ int csync_init(CSYNC *ctx) {
   }
   SAFE_FREE(exclude);
 #endif
-  /* load exclude list */
+  /* load user exclude list */
   if (asprintf(&exclude, "%s/%s", ctx->options.config_dir, CSYNC_EXCLUDE_FILE) < 0) {
     ctx->error_code = CSYNC_ERR_UNSPEC;
     rc = -1;
@@ -385,7 +386,7 @@ int csync_update(CSYNC *ctx) {
 
   if (rc < 0) {
     if(ctx->error_code == CSYNC_ERR_NONE)
-        ctx->error_code = CSYNC_ERR_TREE;
+        ctx->error_code = csync_errno_to_csync_error(CSYNC_ERR_UPDATE);
     return -1;
   }
 
@@ -406,7 +407,7 @@ int csync_update(CSYNC *ctx) {
 
       if (rc < 0) {
           if(ctx->error_code == CSYNC_ERR_NONE )
-            ctx->error_code = CSYNC_ERR_TREE;
+            ctx->error_code = csync_errno_to_csync_error(CSYNC_ERR_UPDATE);
           return -1;
       }
   }
@@ -440,7 +441,8 @@ int csync_reconcile(CSYNC *ctx) {
       c_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
 
   if (rc < 0) {
-    ctx->error_code = CSYNC_ERR_RECONCILE;
+    if( ctx->error_code == CSYNC_ERR_NONE )
+      ctx->error_code = csync_errno_to_csync_error( CSYNC_ERR_RECONCILE );
     return -1;
   }
 
@@ -459,7 +461,8 @@ int csync_reconcile(CSYNC *ctx) {
       c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
 
   if (rc < 0) {
-    ctx->error_code = CSYNC_ERR_RECONCILE;
+    if( ctx->error_code == CSYNC_ERR_NONE )
+      ctx->error_code = csync_errno_to_csync_error( CSYNC_ERR_RECONCILE );
     return -1;
   }
 
@@ -493,7 +496,8 @@ int csync_propagate(CSYNC *ctx) {
       c_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
 
   if (rc < 0) {
-    ctx->error_code = CSYNC_ERR_PROPAGATE;
+    if( ctx->error_code == CSYNC_ERR_NONE )
+      ctx->error_code = csync_errno_to_csync_error( CSYNC_ERR_PROPAGATE);
     return -1;
   }
 
@@ -512,7 +516,8 @@ int csync_propagate(CSYNC *ctx) {
       c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
 
   if (rc < 0) {
-    ctx->error_code = CSYNC_ERR_PROPAGATE;
+    if( ctx->error_code == CSYNC_ERR_NONE )
+      ctx->error_code = csync_errno_to_csync_error( CSYNC_ERR_PROPAGATE);
     return -1;
   }
 
@@ -600,9 +605,10 @@ static int _csync_walk_tree(CSYNC *ctx, c_rbtree_t *tree, csync_treewalk_visit_f
     ctx->callbacks.userdata = &tw_ctx;
 
     rc = c_rbtree_walk(tree, (void*) ctx, _csync_treewalk_visitor);
-    if( rc < 0 ) 
-        ctx->error_code = CSYNC_ERR_TREE;
-
+    if( rc < 0 ) {
+      if( ctx->error_code == CSYNC_ERR_NONE )
+        ctx->error_code = csync_errno_to_csync_error(CSYNC_ERR_TREE);
+    }
     ctx->callbacks.userdata = tw_ctx.userdata;
 
     return rc;

@@ -21,9 +21,21 @@
 #ifndef _CSYNC_MISC_H
 #define _CSYNC_MISC_H
 
+#include "csync.h"
+
 char *csync_get_user_home_dir(void);
 char *csync_get_local_username(void);
 
 int csync_fnmatch(__const char *__pattern, __const char *__name, int __flags);
+
+/**
+ * @brief csync_errno_to_csync_error - errno to csync error code
+ *
+ * This function tries to convert the value of the current set errno
+ * to a csync error code.
+ *
+ * @return the corresponding csync error code.
+ */
+CSYNC_ERROR_CODE csync_errno_to_csync_error(CSYNC_ERROR_CODE default_err);
 
 #endif /* _CSYNC_MISC_H */

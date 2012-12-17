@@ -1116,6 +1116,7 @@ static csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
 
     lfs = c_malloc(sizeof(csync_vio_file_stat_t));
     if (lfs == NULL) {
+        errno = ENOMEM;
         return NULL;
     }
 
@@ -1309,6 +1310,8 @@ static int content_reader(void *userdata, const char *buf, size_t len)
            DEBUG_WEBDAV("WRN: content_reader wrote wrong num of bytes: %zu, %zu", len, written);
        }
        return NE_OK;
+   } else {
+     errno = EBADF;
    }
    return NE_ERROR;
 }
@@ -1599,7 +1602,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
                     if( status->klass == 4 /* Forbidden and stuff, soft error */ ) {
                         rc = 1;
                     } else if( status->klass == 5 /* Server errors and such */ ) {
-                        rc = 1; /* Abort. */
+                        rc = 1; /* No Abort on individual file errors. */
                     } else {
                         rc = 1;
                     }
@@ -1662,7 +1665,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
                 if( status->klass == 4 /* Forbidden and stuff, soft error */ ) {
                     rc = 1;
                 } else if( status->klass == 5 /* Server errors and such */ ) {
-                    rc = 1; /* Abort. */
+                    rc = 1; /* No Abort on individual file errors. */
                 } else {
                     rc = 1;
                 }
@@ -1982,7 +1985,7 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
     SAFE_FREE(curi);
 
     if( rc != NE_OK ) {
-        errno = EPERM;
+        set_errno_from_neon_errcode(rc);
         DEBUG_WEBDAV("Error in propatch: %d", rc);
         return -1;
     }
