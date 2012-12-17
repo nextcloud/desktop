@@ -57,5 +57,19 @@
 /**
  * }@
  */
+
+#ifdef _WIN32
+/* missing errno codes on mingw */
+#ifndef ENOTBLK
+#define        ENOTBLK                15
+#endif
+#ifndef ETXTBSY
+#define        ETXTBSY                26
+#endif
+#ifndef ENOBUFS
+#define        ENOBUFS                WSAENOBUFS
+#endif
+#endif /* _WIN32 */
+
 #endif /* _C_MACRO_H */
 
