@@ -743,24 +743,6 @@ int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb) {
   return 0;
 }
 
-int csync_set_log_verbosity(CSYNC *ctx, int verbosity) {
-  if (ctx == NULL || verbosity < 0) {
-    return -1;
-  }
-
-  ctx->options.log_verbosity = verbosity;
-
-  return 0;
-}
-
-int csync_get_log_verbosity(CSYNC *ctx) {
-  if (ctx == NULL) {
-    return -1;
-  }
-
-  return ctx->options.log_verbosity;
-}
-
 int csync_set_log_callback(CSYNC *ctx, csync_log_callback cb) {
   if (ctx == NULL || cb == NULL) {
     return -1;

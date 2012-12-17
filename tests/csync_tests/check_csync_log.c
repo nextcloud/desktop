@@ -65,21 +65,19 @@ static void check_log_callback(CSYNC *ctx,
     assert_int_equal(rc, 0);
 }
 
-static void check_set_log_verbosity(void **state)
+static void check_set_log_level(void **state)
 {
-    CSYNC *csync = *state;
     int rc;
 
-    rc = csync_set_log_verbosity(NULL, 1);
+    (void) state;
+
+    rc = csync_set_log_level(-5);
     assert_int_equal(rc, -1);
 
-    rc = csync_set_log_verbosity(csync, -5);
-    assert_int_equal(rc, -1);
-
-    rc = csync_set_log_verbosity(csync, 5);
+    rc = csync_set_log_level(5);
     assert_int_equal(rc, 0);
 
-    rc = csync_get_log_verbosity(csync);
+    rc = csync_get_log_level();
     assert_int_equal(rc, 5);
 }
 
@@ -106,7 +104,7 @@ static void check_logging(void **state)
     int rc;
     struct stat sb;
 
-    rc = csync_set_log_verbosity(csync, 1);
+    rc = csync_set_log_level(1);
     assert_int_equal(rc, 0);
 
     rc = csync_set_log_callback(csync, check_log_callback);
@@ -121,7 +119,7 @@ static void check_logging(void **state)
 int torture_run_tests(void)
 {
     const UnitTest tests[] = {
-        unit_test_setup_teardown(check_set_log_verbosity, setup, teardown),
+        unit_test(check_set_log_level),
         unit_test_setup_teardown(check_set_auth_callback, setup, teardown),
         unit_test_setup_teardown(check_logging, setup, teardown),
     };

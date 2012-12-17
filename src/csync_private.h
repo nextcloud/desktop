@@ -43,6 +43,14 @@
 #include "vio/csync_vio_method.h"
 #include "csync_macros.h"
 
+#if defined(__GNUC__)
+# define CSYNC_THREAD __thread
+#elif defined(_MSC_VER)
+# define CSYNC_THREAD __declspec(thread)
+#else
+# define CSYNC_THREAD
+#endif
+
 /**
  * How deep to scan directories.
  */

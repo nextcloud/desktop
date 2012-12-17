@@ -33,6 +33,8 @@
 #include "csync_private.h"
 #include "csync_log.h"
 
+CSYNC_THREAD int csync_log_level;
+
 static int current_timestring(int hires, char *buf, size_t len)
 {
     char tbuf[64];
@@ -110,11 +112,25 @@ void csync_log(CSYNC *ctx,
         return;
     }
 
-    if (verbosity <= csync_get_log_verbosity(ctx)) {
+    if (verbosity <= csync_get_log_level()) {
         va_start(va, format);
         vsnprintf(buffer, sizeof(buffer), format, va);
         va_end(va);
         csync_log_function(ctx, verbosity, function, buffer);
     }
+}
+
+int csync_set_log_level(int level) {
+  if (level < 0) {
+    return -1;
+  }
+
+  csync_log_level = level;
+
+  return 0;
+}
+
+int csync_get_log_level(void) {
+  return csync_log_level;
 }
 

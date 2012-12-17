@@ -65,7 +65,6 @@ extern "C" {
  */
 #define CSYNC_CONF_DIR ".csync"
 #define CSYNC_CONF_FILE "csync.conf"
-#define CSYNC_LOG_FILE "csync_log.conf"
 #define CSYNC_EXCLUDE_FILE "csync_exclude.conf"
 #define CSYNC_LOCK_FILE "lock"
 
@@ -326,24 +325,20 @@ csync_auth_callback csync_get_auth_callback(CSYNC *ctx);
 int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb);
 
 /**
- * @brief Set the log verbosity.
+ * @brief Set the log level.
  *
- * @param ctx           The csync context.
- *
- * @param[in]  verbosity  The log verbosity.
+ * @param[in]  level  The log verbosity.
  *
  * @return 0 on success, < 0 if an error occured.
  */
-int csync_set_log_verbosity(CSYNC *ctx, int verbosity);
+int csync_set_log_level(int level);
 
 /**
  * @brief Get the log verbosity
  *
- * @param[in]  ctx    The csync context to ask for the log verbosity.
- *
  * @return            The log verbosity, -1 on error.
  */
-int csync_get_log_verbosity(CSYNC *ctx);
+int csync_get_log_level(void);
 
 /**
  * @brief Get the logging callback set.
