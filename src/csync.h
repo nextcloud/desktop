@@ -343,23 +343,19 @@ int csync_get_log_level(void);
 /**
  * @brief Get the logging callback set.
  *
- * @param ctx           The csync context.
- *
  * @return              The logging callback set or NULL if an error
  *                      occured.
  */
-csync_log_callback csync_get_log_callback(CSYNC *ctx);
+csync_log_callback csync_get_log_callback(void);
 
 /**
  * @brief Set the logging callback.
- *
- * @param ctx           The csync context.
  *
  * @param cb            The logging callback.
  *
  * @return              0 on success, less than 0 if an error occured.
  */
-int csync_set_log_callback(CSYNC *ctx, csync_log_callback cb);
+int csync_set_log_callback(csync_log_callback cb);
 
 /**
  * @brief Get the path of the statedb file used.

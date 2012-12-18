@@ -89,7 +89,6 @@ enum csync_replica_e {
 struct csync_s {
   struct {
       csync_auth_callback auth_function;
-      csync_log_callback log_function;
       void *userdata;
   } callbacks;
   c_strlist_t *excludes;

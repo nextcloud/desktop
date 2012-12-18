@@ -84,16 +84,17 @@ static void check_set_log_level(void **state)
 static void check_set_auth_callback(void **state)
 {
     csync_log_callback log_fn;
-    CSYNC *csync = *state;
     int rc;
 
-    rc = csync_set_log_callback(csync, NULL);
+    (void) state;
+
+    rc = csync_set_log_callback(NULL);
     assert_int_equal(rc, -1);
 
-    rc = csync_set_log_callback(csync, check_log_callback);
+    rc = csync_set_log_callback(check_log_callback);
     assert_int_equal(rc, 0);
 
-    log_fn = csync_get_log_callback(csync);
+    log_fn = csync_get_log_callback();
     assert_non_null(log_fn);
     assert_true(log_fn == &check_log_callback);
 }
@@ -107,7 +108,7 @@ static void check_logging(void **state)
     rc = csync_set_log_level(1);
     assert_int_equal(rc, 0);
 
-    rc = csync_set_log_callback(csync, check_log_callback);
+    rc = csync_set_log_callback(check_log_callback);
     assert_int_equal(rc, 0);
 
     csync_log(csync, 1, __FUNCTION__, "rc = %d", rc);
@@ -120,7 +121,7 @@ int torture_run_tests(void)
 {
     const UnitTest tests[] = {
         unit_test(check_set_log_level),
-        unit_test_setup_teardown(check_set_auth_callback, setup, teardown),
+        unit_test(check_set_auth_callback),
         unit_test_setup_teardown(check_logging, setup, teardown),
     };
 

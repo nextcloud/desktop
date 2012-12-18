@@ -34,6 +34,7 @@
 #include "csync_log.h"
 
 CSYNC_THREAD int csync_log_level;
+CSYNC_THREAD csync_log_callback csync_log_cb;
 
 static int current_timestring(int hires, char *buf, size_t len)
 {
@@ -82,7 +83,7 @@ static void csync_log_function(CSYNC *ctx,
                                const char *function,
                                const char *buffer)
 {
-    csync_log_callback log_fn = csync_get_log_callback(ctx);
+    csync_log_callback log_fn = csync_get_log_callback();
     if (log_fn) {
         char buf[1024];
 
@@ -132,5 +133,19 @@ int csync_set_log_level(int level) {
 
 int csync_get_log_level(void) {
   return csync_log_level;
+}
+
+int csync_set_log_callback(csync_log_callback cb) {
+  if (cb == NULL) {
+    return -1;
+  }
+
+  csync_log_cb = cb;
+
+  return 0;
+}
+
+csync_log_callback csync_get_log_callback(void) {
+  return csync_log_cb;
 }
 
