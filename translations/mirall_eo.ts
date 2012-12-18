@@ -856,7 +856,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="100"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Forviŝi</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="101"/>
