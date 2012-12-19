@@ -253,7 +253,9 @@ CSYNC_ERROR_CODE csync_errno_to_csync_error(CSYNC_ERROR_CODE default_err)
   case ECHILD:                /* No child processes */
   case ENOMEM:                /* Out of memory */
   case EFAULT:                /* Bad address */
+#ifndef _WIN32
   case ENOTBLK:               /* Block device required */
+#endif
   case EBUSY:                 /* Device or resource busy */
   case EXDEV:                 /* Cross-device link */
   case ENODEV:                /* No such device */
@@ -262,7 +264,9 @@ CSYNC_ERROR_CODE csync_errno_to_csync_error(CSYNC_ERROR_CODE default_err)
   case ENFILE:                /* File table overflow */
   case EMFILE:                /* Too many open files */
   case ENOTTY:                /* Not a typewriter */
+#ifndef _WIN32
   case ETXTBSY:               /* Text file busy */
+#endif
   case EFBIG:                 /* File too large */
   case ESPIPE:                /* Illegal seek */
   case EROFS:                 /* Read-only file system */
