@@ -265,8 +265,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
             /* we're looping */
             CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN,
                       "dir: %s, loop in mkdir detected!", tdir);
-            rc = 0;
-            st->instruction = CSYNC_INSTRUCTION_IGNORE;
+            rc = 1;
             goto out;
         }
         SAFE_FREE(prev_tdir);
