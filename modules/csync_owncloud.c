@@ -389,46 +389,49 @@ static void addSSLWarning( char *ptr, const char *warn, int len )
  */
 #define LEN 4096
 static int verify_sslcert(void *userdata, int failures,
-                          const ne_ssl_certificate *cert)
+                          const ne_ssl_certificate *certificate)
 {
     char problem[LEN];
     char buf[MAX(NE_SSL_DIGESTLEN, NE_ABUFSIZ)];
     int ret = -1;
+    const ne_ssl_certificate *cert = certificate;
 
     (void) userdata;
-    (void) cert;
     (void) userdata;
     memset( problem, 0, LEN );
 
-    addSSLWarning( problem, "There are problems with the SSL certificate:\n", LEN );
-    if( failures & NE_SSL_NOTYETVALID ) {
-        addSSLWarning( problem, " * The certificate is not yet valid.\n", LEN );
-    }
-    if( failures & NE_SSL_EXPIRED ) {
-        addSSLWarning( problem, " * The certificate has expired.\n", LEN );
-    }
+    while( cert ) {
 
-    if( failures & NE_SSL_UNTRUSTED ) {
+      addSSLWarning( problem, "There are problems with the SSL certificate:\n", LEN );
+      if( failures & NE_SSL_NOTYETVALID ) {
+        addSSLWarning( problem, " * The certificate is not yet valid.\n", LEN );
+      }
+      if( failures & NE_SSL_EXPIRED ) {
+        addSSLWarning( problem, " * The certificate has expired.\n", LEN );
+      }
+
+      if( failures & NE_SSL_UNTRUSTED ) {
         addSSLWarning( problem, " * The certificate is not trusted!\n", LEN );
-    }
-    if( failures & NE_SSL_IDMISMATCH ) {
+      }
+      if( failures & NE_SSL_IDMISMATCH ) {
         addSSLWarning( problem, " * The hostname for which the certificate was "
                        "issued does not match the hostname of the server\n", LEN );
-    }
-    if( failures & NE_SSL_BADCHAIN ) {
+      }
+      if( failures & NE_SSL_BADCHAIN ) {
         addSSLWarning( problem, " * The certificate chain contained a certificate other than the server cert\n", LEN );
-    }
-    if( failures & NE_SSL_REVOKED ) {
+      }
+      if( failures & NE_SSL_REVOKED ) {
         addSSLWarning( problem, " * The server certificate has been revoked by the issuing authority.\n", LEN );
-    }
+      }
 
-    if (ne_ssl_cert_digest(cert, buf) == 0) {
+      if (ne_ssl_cert_digest(cert, buf) == 0) {
         addSSLWarning( problem, "Certificate fingerprint: ", LEN );
         addSSLWarning( problem, buf, LEN );
         addSSLWarning( problem, "\n", LEN );
+      }
+      cert = ne_ssl_cert_signedby( cert );
     }
-
-    addSSLWarning( problem, "Do you want to accept the certificate anyway?\nAnswer yes to do so and take the risk: ", LEN );
+    addSSLWarning( problem, "Do you want to accept the certificate chain anyway?\nAnswer yes to do so and take the risk: ", LEN );
 
     if( _authcb ){
         /* call the csync callback */
