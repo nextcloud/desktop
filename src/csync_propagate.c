@@ -528,9 +528,10 @@ out:
   if (rc != 0) {
     st->instruction = CSYNC_INSTRUCTION_ERROR;
     if (turi != NULL) {
-      /* FIXME: Think again if unlink makes sense. It does not for ownCloud */
-      /* csync_vio_unlink(ctx, turi); *
-       */
+      if (_push_to_tmp_first(ctx)) {
+        /* Remove the tmp file in error case. */
+        csync_vio_unlink(ctx, turi);
+      }
     }
   }
 
