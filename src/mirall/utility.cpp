@@ -28,8 +28,10 @@ QString Utility::formatFingerprint( const QByteArray& fmhash )
         hash.append(' ');
     }
 
-    // remove the trailing space.
-    return QString::fromAscii( hash.trimmed() );
+    QString fp = QString::fromAscii( hash.trimmed() );
+    fp.replace(QChar(' '), QChar(':'));
+
+    return fp;
 }
 
 }

@@ -267,33 +267,31 @@ int CSyncThread::getauth(const char *prompt,
             QRegExp regexp("fingerprint: ([\\w\\d:]+)");
             bool certOk = false;
 
-            if( regexp.indexIn(qPrompt) > -1 ) {
-                QString fingerprint = regexp.cap(1);
-                qDebug() << "SSL Fingerprint from neon: " << fingerprint;
+            int pos = 0;
+            MirallConfigFile cfg;
+            QByteArray ba = cfg.caCerts();
 
-                MirallConfigFile cfg;
-                QByteArray ba = cfg.caCerts();
+            QList<QSslCertificate> certs = QSslCertificate::fromData(ba);
+            Utility util;
 
-                QList<QSslCertificate> certs = QSslCertificate::fromData(ba);
-                Utility util;
+            while (!certOk && (pos = regexp.indexIn(qPrompt, 1+pos)) != -1) {
+                QString neon_fingerprint = regexp.cap(1);
 
                 foreach( const QSslCertificate& c, certs ) {
-                    QString shasum = util.formatFingerprint(c.digest(QCryptographicHash::Sha1).toHex()).trimmed();
-                    shasum.replace(QChar(' '), QChar(':'));
-                    if( shasum == fingerprint ) {
+                    QString verified_shasum = util.formatFingerprint(c.digest(QCryptographicHash::Sha1).toHex());
+                    qDebug() << "SSL Fingerprint from neon: " << neon_fingerprint << " compared to verified: " << verified_shasum;
+                    if( verified_shasum == neon_fingerprint ) {
                         certOk = true;
                         break;
                     }
                 }
-
             }
             // certOk = false;     DEBUG setting, keep disabled!
-            if( certOk ) {
-                qstrcpy( buf, "yes" );
-            } else {
+            if( !certOk ) { // Problem!
                 qstrcpy( buf, "no" );
-                // FIXME: Proper error message!
                 re = -1;
+            } else {
+                qstrcpy( buf, "yes" ); // Certificate is fine!
             }
         } else {
             qDebug() << "Unknown prompt: <" << prompt << ">";

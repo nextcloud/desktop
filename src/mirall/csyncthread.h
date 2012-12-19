@@ -47,6 +47,7 @@ signals:
     void fileReceived( const QString& );
     void fileRemoved( const QString& );
     void csyncError( const QString& );
+    void csyncWarning( const QString& );
 
     void csyncStateDbFile( const QString& );
     void wipeDb();
