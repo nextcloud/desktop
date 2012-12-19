@@ -359,7 +359,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="266"/>
         <source>Too many attempts to get a valid password.</source>
-        <translation type="unfinished"/>
+        <translation>Tro multaj provoj ekhavi validan pasvorton.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="270"/>
@@ -679,22 +679,22 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="290"/>
         <source>New file available</source>
-        <translation type="unfinished"/>
+        <translation>Nova dosiero haveblas</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="290"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
-        <translation type="unfinished"/>
+        <translation>“%1” sinkroniĝis kun ĉi tiu maŝino.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="292"/>
         <source>New files available</source>
-        <translation type="unfinished"/>
+        <translation>Novaj dosieroj haveblas</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="292"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>“%1” kaj %n plia dosiero sinkroniĝis kun ĉi tiu maŝino.</numerusform><numerusform>“%1” kaj %n pliaj dosieroj sinkroniĝis kun ĉi tiu maŝino.</numerusform></translation>
     </message>
 </context>
 <context>
