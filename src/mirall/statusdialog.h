@@ -61,7 +61,7 @@ class FolderViewDelegate : public QStyledItemDelegate
                       const QModelIndex& index );
 };
 
-class StatusDialog : public QDialog, public Ui::statusDialog
+class StatusDialog : public QDialog, protected Ui::statusDialog
 {
     Q_OBJECT
 public:
