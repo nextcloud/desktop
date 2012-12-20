@@ -217,8 +217,8 @@ void CSyncThread::startSync()
     QString excludeList = cfg.excludeFile();
 
     if( !excludeList.isEmpty() ) {
-        qDebug() << "==== added CSync exclude List: " << excludeList.toAscii();
-        csync_add_exclude_list( csync, excludeList.toAscii() );
+        qDebug() << "==== added CSync exclude List: " << excludeList.toUtf8();
+        csync_add_exclude_list( csync, excludeList.toUtf8() );
     }
 
     csync_set_config_dir( csync, cfg.configPath().toUtf8() );
@@ -245,9 +245,9 @@ void CSyncThread::startSync()
     csync_set_log_verbosity(csync, 11);
     csync_set_module_property(csync, "csync_context", csync);
     csync_set_module_property(csync, "proxy_type", (char*) proxyTypeToCStr(_proxy.type()) );
-    csync_set_module_property(csync, "proxy_host", _proxy.hostName().toAscii().data() );
-    csync_set_module_property(csync, "proxy_user", _proxy.user().toAscii().data()     );
-    csync_set_module_property(csync, "proxy_pwd" , _proxy.password().toAscii().data() );
+    csync_set_module_property(csync, "proxy_host", _proxy.hostName().toUtf8().data() );
+    csync_set_module_property(csync, "proxy_user", _proxy.user().toUtf8().data()     );
+    csync_set_module_property(csync, "proxy_pwd" , _proxy.password().toUtf8().data() );
 
     qDebug() << "#### Update start #################################################### >>";
     if( csync_update(csync) < 0 ) {
