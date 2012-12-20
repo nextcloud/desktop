@@ -344,7 +344,7 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
         qDebug() << "######## Credentials are ok!";
         int cnt = _folderMan->setupFolders();
         if( cnt ) {
-            _tray->setIcon(_theme->applicationIcon());
+            _tray->setIcon( _theme->syncStateIcon( SyncResult::NotYetStarted, true ) );
             _tray->show();
             processEvents();
 
@@ -432,7 +432,7 @@ void Application::setupSystemTray()
     // Setting a parent heres will crash on X11 since by the time qapp runs
     // its childrens dtors, the X11->screen variable queried for is gone -> crash
     _tray = new QSystemTrayIcon;
-    _tray->setIcon( _theme->applicationIcon() ); // load the grey icon
+    _tray->setIcon( _theme->syncStateIcon( SyncResult::NotYetStarted, true ) );
 
     connect(_tray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             SLOT(slotTrayClicked(QSystemTrayIcon::ActivationReason)));
@@ -917,6 +917,8 @@ void Application::parseOptions(const QStringList &options)
             }
         } else if (option == QLatin1String("--logflush")) {
             _logFlush = true;
+        } else if (option == QLatin1String("--monoicons")) {
+            _theme->setSystrayUseMonoIcons(true); 
         }
     }
 }
@@ -992,7 +994,7 @@ void Application::computeOverallSyncStatus()
         else
             trayMessage = tr("No sync folders configured.");
 
-        QIcon statusIcon = _theme->syncStateIcon( overallResult.status()); // size 48 before
+        QIcon statusIcon = _theme->syncStateIcon( overallResult.status(), true); // size 48 before
 
         _tray->setIcon( statusIcon );
         _tray->setToolTip(trayMessage);
@@ -1007,7 +1009,8 @@ void Application::showHelp()
     std::cout << "Options:" << std::endl;
     std::cout << "  --logwindow          : open a window to show log output." << std::endl;
     std::cout << "  --logfile <filename> : write log output to file <filename>." << std::endl;
-    std::cout << "  --flushlog           : flush the log file after every write." << std::endl;
+    std::cout << "  --logflush           : flush the log file after every write." << std::endl;
+    std::cout << "  --monoicons          : Use black/white pictograms for systray." << std::endl;
     std::cout << std::endl;
     if (_theme->appName() == QLatin1String("ownCloud"))
         std::cout << "For more information, see http://www.owncloud.org" << std::endl;

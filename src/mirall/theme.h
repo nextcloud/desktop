@@ -49,7 +49,7 @@ public:
     /**
       * get an sync state icon
       */
-    virtual QIcon   syncStateIcon( SyncResult::Status ) const = 0;
+    virtual QIcon   syncStateIcon( SyncResult::Status, bool sysTray = false ) const = 0;
 
     virtual QIcon   folderDisabledIcon() const = 0;
     virtual QPixmap splashScreen() const = 0;
@@ -79,9 +79,18 @@ public:
      */
     virtual QString enforcedLocale() const { return QString::null; }
 
+    /**
+     * Define if the systray icons should be using mono design
+     */
+    void setSystrayUseMonoIcons(bool mono);
+
+    /**
+     * Retrieve wether to use mono icons for systray
+     */
+    bool systrayUseMonoIcons() const;
 
 protected:
-    QIcon themeIcon(const QString& name) const;
+    QIcon themeIcon(const QString& name, bool sysTray = false) const;
     Theme() {}
 
 private:
@@ -89,7 +98,7 @@ private:
     Theme& operator=(Theme const&);
 
     static Theme* _instance;
-
+    bool _mono;
 
 };
 

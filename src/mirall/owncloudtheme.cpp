@@ -18,6 +18,7 @@
 #include <QDebug>
 #include <QPixmap>
 #include <QIcon>
+#include <QStyle>
 #include <QApplication>
 
 namespace Mirall {
@@ -69,38 +70,39 @@ QIcon ownCloudTheme::folderIcon( const QString& backend ) const
 
 QIcon ownCloudTheme::trayFolderIcon( const QString& ) const
 {
-    return themeIcon( QLatin1String("owncloud-icon") );
+    QPixmap fallback = qApp->style()->standardPixmap(QStyle::SP_FileDialogNewFolder);
+    return QIcon::fromTheme("folder", fallback);
 }
 
-QIcon ownCloudTheme::syncStateIcon( SyncResult::Status status ) const
+QIcon ownCloudTheme::syncStateIcon( SyncResult::Status status, bool sysTray ) const
 {
     // FIXME: Mind the size!
     QString statusIcon;
 
     switch( status ) {
     case SyncResult::Undefined:
-        statusIcon = QLatin1String("owncloud-error");
+        statusIcon = QLatin1String("offline");
         break;
     case SyncResult::NotYetStarted:
-        statusIcon = QLatin1String("owncloud-icon");
+        statusIcon = QLatin1String("offline");
         break;
     case SyncResult::SyncRunning:
-        statusIcon = QLatin1String("owncloud-sync");
+        statusIcon = QLatin1String("sync");
         break;
     case SyncResult::Success:
-        statusIcon = QLatin1String("owncloud-sync-ok");
+        statusIcon = QLatin1String("ok");
         break;
     case SyncResult::Error:
-        statusIcon = QLatin1String("owncloud-error");
+        statusIcon = QLatin1String("error");
         break;
     case SyncResult::SetupError:
-        statusIcon = QLatin1String("owncloud-error");
+        statusIcon = QLatin1String("error");
         break;
     default:
-        statusIcon = QLatin1String("owncloud-error");
+        statusIcon = QLatin1String("error");
     }
 
-    return themeIcon( statusIcon );
+    return themeIcon( statusIcon, sysTray );
 }
 
 QIcon ownCloudTheme::folderDisabledIcon( ) const

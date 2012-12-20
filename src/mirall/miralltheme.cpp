@@ -62,7 +62,7 @@ QIcon mirallTheme::folderIcon( const QString& backend ) const
   return themeIcon( name );
 }
 
-QIcon mirallTheme::syncStateIcon( SyncResult::Status status ) const
+QIcon mirallTheme::syncStateIcon( SyncResult::Status status, bool sysTray ) const
 {
     QString statusIcon;
 
@@ -88,7 +88,7 @@ QIcon mirallTheme::syncStateIcon( SyncResult::Status status ) const
     default:
         statusIcon = QLatin1String("dialog-close");
     }
-    return themeIcon( statusIcon );
+    return themeIcon( statusIcon, sysTray );
 }
 
 

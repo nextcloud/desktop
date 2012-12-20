@@ -29,7 +29,7 @@ public:
     QPixmap splashScreen() const;
 
     QIcon   folderIcon( const QString& ) const;
-    QIcon   syncStateIcon(SyncResult::Status) const;
+    QIcon   syncStateIcon(SyncResult::Status, bool) const;
     QIcon   folderDisabledIcon() const;
     QIcon   applicationIcon() const;
 

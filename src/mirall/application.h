@@ -130,7 +130,7 @@ private:
     QString _logFile;
     bool _showLogWindow;
     bool _logFlush;
-    bool        _helpOnly;
+    bool _helpOnly;
 };
 
 } // namespace Mirall

@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/mirall">
+        <file>theme/colored/16/sync.png</file>
+        <file>theme/colored/16/pause.png</file>
+        <file>theme/colored/16/download.png</file>
+        <file>theme/colored/16/ok.png</file>
+        <file>theme/colored/16/offline.png</file>
+        <file>theme/colored/16/error.png</file>
+        <file>theme/black/16/sync.png</file>
+        <file>theme/black/16/pause.png</file>
+        <file>theme/black/16/download.png</file>
+        <file>theme/black/16/ok.png</file>
+        <file>theme/black/16/offline.png</file>
+        <file>theme/black/16/error.png</file>
+        <file>theme/white/16/sync.png</file>
+        <file>theme/white/16/pause.png</file>
+        <file>theme/white/16/download.png</file>
+        <file>theme/white/16/ok.png</file>
+        <file>theme/white/16/offline.png</file>
+        <file>theme/white/16/error.png</file>
+    </qresource>
+</RCC>
