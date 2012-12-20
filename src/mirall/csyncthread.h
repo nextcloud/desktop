@@ -40,6 +40,7 @@ public:
     static QString csyncConfigDir();
 
     const char* proxyTypeToCStr(QNetworkProxy::ProxyType);
+    QString csyncErrorToString( CSYNC_ERROR_CODE err );
 
     Q_INVOKABLE void startSync();
 

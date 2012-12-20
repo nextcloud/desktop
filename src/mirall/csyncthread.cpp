@@ -71,6 +71,109 @@ CSyncThread::~CSyncThread()
 
 }
 
+QString CSyncThread::csyncErrorToString( CSYNC_ERROR_CODE err )
+{
+    QString errStr;
+
+    switch( err ) {
+    case CSYNC_ERR_NONE:
+        errStr = tr("Success.");
+        break;
+    case CSYNC_ERR_LOG:
+        errStr = tr("CSync Logging setup failed.");
+        break;
+    case CSYNC_ERR_LOCK:
+        errStr = tr("CSync failed to create a lock file.");
+        break;
+    case CSYNC_ERR_STATEDB_LOAD:
+        errStr = tr("CSync failed to load the state db.");
+        break;
+    case CSYNC_ERR_MODULE:
+        errStr = tr("<p>The %1 plugin for csync could not be loaded.<br/>Please verify the installation!</p>").arg(Theme::instance()->appName());
+        break;
+    case CSYNC_ERR_TIMESKEW:
+        errStr = tr("The system time on this client is different than the system time on the server. "
+                    "Please use a time synchronization service (NTP) on the server and client machines "
+                    "so that the times remain the same.");
+        break;
+    case CSYNC_ERR_FILESYSTEM:
+        errStr = tr("CSync could not detect the filesystem type.");
+        break;
+    case CSYNC_ERR_TREE:
+        errStr = tr("CSync got an error while processing internal trees.");
+        break;
+    case CSYNC_ERR_MEM:
+        errStr = tr("CSync failed to reserve memory.");
+        break;
+    case CSYNC_ERR_PARAM:
+        errStr = tr("CSync fatal parameter error.");
+        break;
+    case CSYNC_ERR_UPDATE:
+        errStr = tr("CSync processing step update failed.");
+        break;
+    case CSYNC_ERR_RECONCILE:
+        errStr = tr("CSync processing step reconcile failed.");
+        break;
+    case CSYNC_ERR_PROPAGATE:
+        errStr = tr("CSync processing step propagate failed.");
+        break;
+    case CSYNC_ERR_ACCESS_FAILED:
+        errStr = tr("<p>The target directory %1 does not exist.</p><p>Please check the sync setup.</p>").arg(_target);
+        // this is critical. The database has to be removed.
+        emit wipeDb();
+        break;
+    case CSYNC_ERR_REMOTE_CREATE:
+    case CSYNC_ERR_REMOTE_STAT:
+        errStr = tr("A remote file can not be written. Please check the remote access.");
+        break;
+    case CSYNC_ERR_LOCAL_CREATE:
+    case CSYNC_ERR_LOCAL_STAT:
+        errStr = tr("The local filesystem can not be written. Please check permissions.");
+        break;
+    case CSYNC_ERR_PROXY:
+        errStr = tr("CSync failed to connect through a proxy.");
+        break;
+    case CSYNC_ERR_LOOKUP:
+        errStr = tr("CSync failed to lookup proxy or server.");
+        break;
+    case CSYNC_ERR_AUTH_SERVER:
+        errStr = tr("CSync failed to authenticate at the %1 server.").arg(Theme::instance()->appName());
+        break;
+    case CSYNC_ERR_AUTH_PROXY:
+        errStr = tr("CSync failed to authenticate at the proxy.");
+        break;
+    case CSYNC_ERR_CONNECT:
+        errStr = tr("CSync failed to connect to the network.");
+        break;
+    case CSYNC_ERR_TIMEOUT:
+        errStr = tr("A network connection timeout happend.");
+        break;
+    case CSYNC_ERR_HTTP:
+        errStr = tr("A HTTP transmission error happened.");
+        break;
+    case CSYNC_ERR_PERM:
+        errStr = tr("CSync failed due to not handled permission deniend.");
+        break;
+    case CSYNC_ERR_NOT_FOUND:
+        errStr = tr("CSync failed to find a specific file.");
+        break;
+    case CSYNC_ERR_EXISTS:
+        errStr = tr("CSync tried to create a directory that already exists.");
+        break;
+    case CSYNC_ERR_NOSPC:
+        errStr = tr("CSync: No space on %1 server available.").arg(Theme::instance()->appName());
+        break;
+    case CSYNC_ERR_UNSPEC:
+        errStr = tr("CSync unspecified error.");
+
+    default:
+        errStr = tr("An internal error number %1 happend.").arg( (int) err );
+    }
+
+    return errStr;
+
+}
+
 const char* CSyncThread::proxyTypeToCStr(QNetworkProxy::ProxyType type)
 {
     switch (type) {
@@ -131,46 +234,8 @@ void CSyncThread::startSync()
 
     if( csync_init(csync) < 0 ) {
         CSYNC_ERROR_CODE err = csync_get_error( csync );
-        QString errStr;
-
-        switch( err ) {
-        case CSYNC_ERR_LOCK:
-            errStr = tr("CSync failed to create a lock file.");
-            break;
-        case CSYNC_ERR_STATEDB_LOAD:
-            errStr = tr("CSync failed to load the state db.");
-            break;
-        case CSYNC_ERR_TIMESKEW:
-            errStr = tr("The system time on this client is different than the system time on the server. "
-                        "Please use a time synchronization service (NTP) on the server and client machines "
-                        "so that the times remain the same.");
-            break;
-        case CSYNC_ERR_FILESYSTEM:
-            errStr = tr("CSync could not detect the filesystem type.");
-            break;
-        case CSYNC_ERR_TREE:
-            errStr = tr("CSync got an error while processing internal trees.");
-            break;
-        case CSYNC_ERR_ACCESS_FAILED:
-            errStr = tr("<p>The target directory %1 does not exist.</p><p>Please check the sync setup.</p>").arg(_target);
-            // this is critical. The database has to be removed.
-            emit wipeDb();
-            break;
-        case CSYNC_ERR_MODULE:
-            errStr = tr("<p>The %1 plugin for csync could not be loaded.<br/>Please verify the installation!</p>").arg(Theme::instance()->appName());
-            break;
-        case CSYNC_ERR_LOCAL_CREATE:
-        case CSYNC_ERR_LOCAL_STAT:
-            errStr = tr("The local filesystem can not be written. Please check permissions.");
-            break;
-        case CSYNC_ERR_REMOTE_CREATE:
-        case CSYNC_ERR_REMOTE_STAT:
-            errStr = tr("A remote file can not be written. Please check the remote access.");
-            break;
-        default:
-            errStr = tr("An internal error number %1 happend.").arg( (int) err );
-        }
-        qDebug() << " #### ERROR String emitted: " << errStr;
+        QString errStr = csyncErrorToString(err);
+        qDebug() << " #### ERROR csync_init: " << errStr;
         emit csyncError(errStr);
         goto cleanup;
     }
@@ -187,42 +252,31 @@ void CSyncThread::startSync()
     qDebug() << "#### Update start #################################################### >>";
     if( csync_update(csync) < 0 ) {
         CSYNC_ERROR_CODE err = csync_get_error( csync );
-        QString errStr;
-
-        switch( err ) {
-        case CSYNC_ERR_PROXY:
-            errStr = tr("CSync failed to reach the host. Either host or proxy settings are not valid.");
-            break;
-        default:
-            errStr = tr("CSync Update failed.");
-            break;
-        }
-        emit csyncError( errStr );
+        QString errStr = csyncErrorToString(err);
+        qDebug() << " #### ERROR csync_update: " << errStr;
+        emit csyncError(errStr);
         goto cleanup;
     }
     qDebug() << "<<#### Update end ###########################################################";
 
     if( csync_reconcile(csync) < 0 ) {
-        emit csyncError(tr("CSync reconcile failed."));
+        CSYNC_ERROR_CODE err = csync_get_error( csync );
+        QString errStr = csyncErrorToString(err);
+        qDebug() << " #### ERROR csync_reconcile: " << errStr;
+        emit csyncError(errStr);
         goto cleanup;
     }
     if( csync_propagate(csync) < 0 ) {
-        emit csyncError(tr("File exchange with ownCloud failed. Sync was stopped."));
+        CSYNC_ERROR_CODE err = csync_get_error( csync );
+        QString errStr = csyncErrorToString(err);
+        qDebug() << " #### ERROR csync_propagate: " << errStr;
+        emit csyncError(errStr);
         goto cleanup;
     }
 cleanup:
     csync_destroy(csync);
 
-    /*
-     * Attention: do not delete the wStat memory here. it is deleted in the
-     * slot catching the signel treeWalkResult because this thread can faster
-     * die than the slot has read out the data.
-     */
     qDebug() << "CSync run took " << t.elapsed() << " Milliseconds";
-
-    qDebug() << "CSync Waiting a bit to let OS finish up IO";
-    qDebug() << "CSync End Waiting";
-
     emit(finished());
 }
 
