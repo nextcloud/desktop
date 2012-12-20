@@ -15,6 +15,22 @@ configure_file( ${CMAKE_SOURCE_DIR}/src/mirall/version.h.in "${CMAKE_CURRENT_BIN
 include_directories(BEFORE "${CMAKE_CURRENT_BINARY_DIR}/src/mirall/")
 
 include(GNUInstallDirs)
+
+include(GetGitRevisionDescription)
+get_git_head_revision(GIT_REFSPEC GIT_SHA1)
+
+# if we cannot get it from git, directly try .tag (packages)
+# this will work if the tar balls have been properly created
+# via git-archive.
+if (${GIT_SHA1} STREQUAL "GITDIR-NOTFOUND")
+    file(READ ${CMAKE_SOURCE_DIR}/.tag sha1_candidate)
+    string(REPLACE "\n" "" sha1_candidate ${sha1_candidate})
+    if (NOT ${sha1_candidate} STREQUAL "$Format:%H$")
+        message("${sha1_candidate}")
+        set (GIT_SHA1 "${sha1_candidate}")
+    endif()
+endif()
+
 ## stupid, we should upstream this
 if("${CMAKE_INSTALL_PREFIX}" STREQUAL "/usr" AND NOT CMAKE_INSTALL_SYSCONFDIR)
     set(CMAKE_INSTALL_SYSCONFDIR "/etc")
