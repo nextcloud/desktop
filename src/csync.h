@@ -490,6 +490,13 @@ int csync_set_iconv_codec(const char *from);
 CSYNC_ERROR_CODE csync_get_error(CSYNC *ctx);
 
 /**
+ * @brief csync_get_error_string - return a string with error information
+ * @param ctx
+ * @return A pointer to an error string or NULL.
+ */
+const char *csync_get_error_string(CSYNC *ctx);
+
+/**
  * @brief Set a property to module
  *
  * @param ctx           The csync context.

@@ -994,6 +994,11 @@ CSYNC_ERROR_CODE csync_get_error(CSYNC *ctx) {
     return ctx->error_code;
 }
 
+const char *csync_get_error_string(CSYNC *ctx)
+{
+  return csync_vio_get_error_string(ctx);
+}
+
 int csync_set_module_property(CSYNC* ctx, const char* key, void* value)
 {
     if (!(ctx->status & CSYNC_STATUS_INIT)) {
