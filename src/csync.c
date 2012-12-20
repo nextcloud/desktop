@@ -994,27 +994,6 @@ CSYNC_ERROR_CODE csync_get_error(CSYNC *ctx) {
     return ctx->error_code;
 }
 
-bool csync_file_known( char *statedb_file, const char* url ) {
-    int len;
-    uint64_t h;
-    csync_file_stat_t *sb;
-    CSYNC *ctx = NULL;
-
-    if( ! url ) return false;
-
-    ctx = c_malloc(sizeof(CSYNC));
-    ctx->statedb.file = statedb_file;
-
-    len = strlen(statedb_file);
-    h = c_jhash64((uint8_t *) url, len, 0);
-
-    sb = csync_statedb_get_stat_by_hash(ctx, h);
-
-    free(ctx);
-
-    return( sb != NULL );
-}
-
 int csync_set_module_property(CSYNC* ctx, const char* key, void* value)
 {
     if (!(ctx->status & CSYNC_STATUS_INIT)) {

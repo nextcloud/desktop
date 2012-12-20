@@ -88,7 +88,6 @@ enum csync_error_codes_e {
   CSYNC_ERR_LOCAL_CREATE,
   CSYNC_ERR_LOCAL_STAT,
   CSYNC_ERR_PROXY,
-  CSYNC_ERR_REMOTE_CLEANUP,
   CSYNC_ERR_LOOKUP,
   CSYNC_ERR_AUTH_SERVER,
   CSYNC_ERR_AUTH_PROXY,
@@ -489,10 +488,6 @@ int csync_set_iconv_codec(const char *from);
  * @return              An error code defined by structure CSYNC_ERROR_CODE
  */
 CSYNC_ERROR_CODE csync_get_error(CSYNC *ctx);
-
-/* dirty stuff from here on - EXPERIMENTAL */
-/* read the information if a file is known to csync ie. if it has an entry in the database */
-bool csync_file_known( char *statedb_file, const char* url );
 
 /**
  * @brief Set a property to module

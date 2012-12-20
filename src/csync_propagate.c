@@ -1209,19 +1209,16 @@ static int _csync_correct_id(CSYNC *ctx) {
     c_list_t *seen_dirs = NULL;
     c_list_t *list      = NULL;
     c_rbtree_t *tree    = NULL;
-    const char *replica = NULL;
     char *path          = NULL;
 
     switch (ctx->current) {
       case LOCAL_REPLICA:
         list = ctx->local.id_list;
         tree = ctx->local.tree;
-        replica = "LOCAL_REPLICA";
         break;
       case REMOTE_REPLICA:
         list = ctx->remote.id_list;
         tree = ctx->remote.tree;
-        replica = "REMOTE_REPLICA";
         break;
       default:
         break;
