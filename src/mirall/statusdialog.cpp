@@ -196,7 +196,12 @@ void FolderViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
       errorTextRect.setLeft( errorTextRect.left()+margin/2 +16);
       errorTextRect.setTop( errorTextRect.top()+margin/2 );
 
-      painter->drawText(errorTextRect, errorText);
+      int linebreak = errorText.indexOf(QLatin1String("<br"));
+      QString eText = errorText;
+      if(linebreak) {
+          eText = errorText.left(linebreak);
+      }
+      painter->drawText(errorTextRect, eText);
   }
 
   // painter->drawText(lastSyncRect, tr("Last Sync: %1").arg( statusText ));

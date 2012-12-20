@@ -71,7 +71,7 @@ CSyncThread::~CSyncThread()
 
 }
 
-QString CSyncThread::csyncErrorToString( CSYNC_ERROR_CODE err )
+QString CSyncThread::csyncErrorToString( CSYNC_ERROR_CODE err, const char *errString )
 {
     QString errStr;
 
@@ -170,6 +170,9 @@ QString CSyncThread::csyncErrorToString( CSYNC_ERROR_CODE err )
         errStr = tr("An internal error number %1 happend.").arg( (int) err );
     }
 
+    if( errString ) {
+        errStr += tr("<br/>Backend Message: ")+QString::fromUtf8(errString);
+    }
     return errStr;
 
 }
@@ -234,7 +237,8 @@ void CSyncThread::startSync()
 
     if( csync_init(csync) < 0 ) {
         CSYNC_ERROR_CODE err = csync_get_error( csync );
-        QString errStr = csyncErrorToString(err);
+        const char *errMsg = csync_get_error_string( csync );
+        QString errStr = csyncErrorToString(err, errMsg );
         qDebug() << " #### ERROR csync_init: " << errStr;
         emit csyncError(errStr);
         goto cleanup;
@@ -252,7 +256,8 @@ void CSyncThread::startSync()
     qDebug() << "#### Update start #################################################### >>";
     if( csync_update(csync) < 0 ) {
         CSYNC_ERROR_CODE err = csync_get_error( csync );
-        QString errStr = csyncErrorToString(err);
+        const char *errMsg = csync_get_error_string( csync );
+        QString errStr = csyncErrorToString(err, errMsg);
         qDebug() << " #### ERROR csync_update: " << errStr;
         emit csyncError(errStr);
         goto cleanup;
@@ -261,14 +266,16 @@ void CSyncThread::startSync()
 
     if( csync_reconcile(csync) < 0 ) {
         CSYNC_ERROR_CODE err = csync_get_error( csync );
-        QString errStr = csyncErrorToString(err);
+        const char *errMsg = csync_get_error_string( csync );
+        QString errStr = csyncErrorToString(err, errMsg);
         qDebug() << " #### ERROR csync_reconcile: " << errStr;
         emit csyncError(errStr);
         goto cleanup;
     }
     if( csync_propagate(csync) < 0 ) {
         CSYNC_ERROR_CODE err = csync_get_error( csync );
-        QString errStr = csyncErrorToString(err);
+        const char *errMsg = csync_get_error_string( csync );
+        QString errStr = csyncErrorToString(err, errMsg);
         qDebug() << " #### ERROR csync_propagate: " << errStr;
         emit csyncError(errStr);
         goto cleanup;
