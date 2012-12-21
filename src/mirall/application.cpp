@@ -744,13 +744,13 @@ void Application::slotAbout()
 #endif
     QMessageBox::about(0, tr("About %1").arg(_theme->appName()),
                        tr("<p><b>%1 Client Version %2</b></p>"
-			  "<p><b>Authors</b>"
-			  "<br><a href=\"mailto:danimo@owncloud.com\">"
-                          "Daniel Molkentin</a>, ownCloud, Inc."
-			  "<br><a href=\"mailto:freitag@owncloud.com\">"
+                          "<p><b>Authors</b>"
+                          "<br><a href=\"mailto:freitag@owncloud.com\">"
                           "Klaas Freitag</a>, ownCloud, Inc."
-			  "<br><br>Based on Mirall by Duncan Mac-Vicar P.</p>"
-			  "<p>For more information visit <a href=\"%3\">%4</a>.</p>"
+                          "<br><a href=\"mailto:danimo@owncloud.com\">"
+                          "Daniel Molkentin</a>, ownCloud, Inc."
+                          "<br><br>Based on Mirall by Duncan Mac-Vicar P.</p>"
+                          "<p>For more information visit <a href=\"%3\">%4</a>.</p>"
                           "%7"
 			  )
                        .arg(_theme->appName())
@@ -759,7 +759,6 @@ void Application::slotAbout()
                        .arg(MIRALL_STRINGIFY(APPLICATION_DOMAIN))
                        .arg(devString)
                       );
-
 }
 
 /*
