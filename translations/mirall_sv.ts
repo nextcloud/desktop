@@ -432,7 +432,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="738"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4&lt;br&gt;using OCsync %5 and Qt %6.&lt;/small&gt;&lt;p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Byggd från Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; på %3, %4&lt;br&gt;använt OCsync %5 och Qt %6.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="745"/>
@@ -442,7 +442,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="746"/>
         <source>&lt;p&gt;&lt;b&gt;%1 Client Version %2&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Authors&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;mailto:freitag@owncloud.com&quot;&gt;Klaas Freitag&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;a href=&quot;mailto:danimo@owncloud.com&quot;&gt;Daniel Molkentin&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;br&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/p&gt;&lt;p&gt;For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;.&lt;/p&gt;%7</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;b&gt;%1 Klient Version %2&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Skapare&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;mailto:freitag@owncloud.com&quot;&gt;Klaas Freitag&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;a href=&quot;mailto:danimo@owncloud.com&quot;&gt;Daniel Molkentin&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;br&gt;Baserad på Mirall av Duncan Mac-Vicar P.&lt;/p&gt;&lt;p&gt;För mer information besök &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;.&lt;/p&gt;%7</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="770"/>
@@ -575,12 +575,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="80"/>
         <source>Success.</source>
-        <translation type="unfinished"/>
+        <translation>Lyckades.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="83"/>
         <source>CSync Logging setup failed.</source>
-        <translation type="unfinished"/>
+        <translation>Konfiguration av loggning för CSync misslyckades.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="89"/>
@@ -632,87 +632,87 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="106"/>
         <source>CSync failed to reserve memory.</source>
-        <translation type="unfinished"/>
+        <translation>CSync misslyckades att reservera minne.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="109"/>
         <source>CSync fatal parameter error.</source>
-        <translation type="unfinished"/>
+        <translation>CSync fatal parameter fel.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="112"/>
         <source>CSync processing step update failed.</source>
-        <translation type="unfinished"/>
+        <translation>CSync processteg update misslyckades.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="115"/>
         <source>CSync processing step reconcile failed.</source>
-        <translation type="unfinished"/>
+        <translation>CSync processteg reconcile misslyckades.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="118"/>
         <source>CSync processing step propagate failed.</source>
-        <translation type="unfinished"/>
+        <translation>CSync processteg propagate misslyckades.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="134"/>
         <source>CSync failed to connect through a proxy.</source>
-        <translation type="unfinished"/>
+        <translation>CSync misslyckades att ansluta genom en proxy.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="137"/>
         <source>CSync failed to lookup proxy or server.</source>
-        <translation type="unfinished"/>
+        <translation>CSync misslyckades att  hitta proxy eller server.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="140"/>
         <source>CSync failed to authenticate at the %1 server.</source>
-        <translation type="unfinished"/>
+        <translation>CSync misslyckades att autentisera mot %1 servern.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="143"/>
         <source>CSync failed to authenticate at the proxy.</source>
-        <translation type="unfinished"/>
+        <translation>CSync misslyckades att autentisera mot proxy.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="146"/>
         <source>CSync failed to connect to the network.</source>
-        <translation type="unfinished"/>
+        <translation>CSync misslyckades att ansluta mot nätverket.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="149"/>
         <source>A network connection timeout happend.</source>
-        <translation type="unfinished"/>
+        <translation>Ett anslutningsfel mot nätverket uppstod.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="152"/>
         <source>A HTTP transmission error happened.</source>
-        <translation type="unfinished"/>
+        <translation>Ett HTTP överföringsfel inträffade.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="155"/>
         <source>CSync failed due to not handled permission deniend.</source>
-        <translation type="unfinished"/>
+        <translation>CSYNC misslyckades på grund av att nekad åtkomst inte hanterades.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="158"/>
         <source>CSync failed to find a specific file.</source>
-        <translation type="unfinished"/>
+        <translation>CSync misslyckades hitta en specifik fil.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="161"/>
         <source>CSync tried to create a directory that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>CSync försökte skapa en mapp som redan finns.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="164"/>
         <source>CSync: No space on %1 server available.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: Ingen plats på %1 server tillgänglig.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="167"/>
         <source>CSync unspecified error.</source>
-        <translation type="unfinished"/>
+        <translation>CSync ospecificerat fel.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="170"/>
@@ -722,7 +722,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="174"/>
         <source>&lt;br/&gt;Backend Message: </source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;Servermeddelande: </translation>
     </message>
     <message>
         <source>CSync Update failed.</source>
