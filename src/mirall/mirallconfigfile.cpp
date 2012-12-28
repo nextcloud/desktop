@@ -200,6 +200,8 @@ bool MirallConfigFile::writePassword( const QString& passwd, const QString& conn
     QByteArray pwdba = pwd.toUtf8();
     settings.setValue( QLatin1String("passwd"), QVariant(pwdba.toBase64()) );
     settings.sync();
+
+    return true;
 }
 
 // set the url, called from redirect handling.
