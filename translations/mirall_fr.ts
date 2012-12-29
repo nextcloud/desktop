@@ -432,7 +432,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/application.cpp" line="738"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4&lt;br&gt;using OCsync %5 and Qt %6.&lt;/small&gt;&lt;p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Compilé depuis la révision GIT &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; sur %3, %4&lt;br&gt;en utilisant OCsync %5 et Qt %6.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="745"/>
@@ -442,7 +442,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/application.cpp" line="746"/>
         <source>&lt;p&gt;&lt;b&gt;%1 Client Version %2&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Authors&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;mailto:freitag@owncloud.com&quot;&gt;Klaas Freitag&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;a href=&quot;mailto:danimo@owncloud.com&quot;&gt;Daniel Molkentin&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;br&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/p&gt;&lt;p&gt;For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;.&lt;/p&gt;%7</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;b&gt;%1 Version du client %2&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Auteurs&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;mailto:freitag@owncloud.com&quot;&gt;Klaas Freitag&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;a href=&quot;mailto:danimo@owncloud.com&quot;&gt;Daniel Molkentin&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;br&gt;Basé sur Mirall par Duncan Mac-Vicar P.&lt;/p&gt;&lt;p&gt;Pour plus d&apos;informations, visitez &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;.&lt;/p&gt;%7</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="770"/>
@@ -573,12 +573,12 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="80"/>
         <source>Success.</source>
-        <translation type="unfinished"/>
+        <translation>Succès.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="83"/>
         <source>CSync Logging setup failed.</source>
-        <translation type="unfinished"/>
+        <translation>Le paramétrage des logs de CSync a échoué.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="89"/>
@@ -630,7 +630,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="106"/>
         <source>CSync failed to reserve memory.</source>
-        <translation type="unfinished"/>
+        <translation>CSync a échoué à réserver de la mémoire.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="109"/>
@@ -778,17 +778,17 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="290"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; a été synchronisé sur cette machine.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="292"/>
         <source>New files available</source>
-        <translation type="unfinished"/>
+        <translation>Nouveaux fichiers disponibles</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="292"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; et %n autres fichiers ont été synchronisés avec cette machine.</numerusform><numerusform>&apos;%1&apos; et %n autres fichiers ont été synchronisés avec cette machine.</numerusform></translation>
     </message>
 </context>
 <context>

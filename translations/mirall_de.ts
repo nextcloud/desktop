@@ -637,7 +637,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="109"/>
         <source>CSync fatal parameter error.</source>
-        <translation type="unfinished"/>
+        <translation>CSync hat einen schwerwiegender Parameterfehler festgestellt.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="112"/>
@@ -657,7 +657,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="134"/>
         <source>CSync failed to connect through a proxy.</source>
-        <translation type="unfinished"/>
+        <translation>CSync konnte sich nicht über einen Proxy verbinden.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="137"/>
@@ -677,7 +677,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="146"/>
         <source>CSync failed to connect to the network.</source>
-        <translation type="unfinished"/>
+        <translation>CSync konnte sich nicht mit dem Netzwerk verbinden.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="149"/>
@@ -702,7 +702,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="161"/>
         <source>CSync tried to create a directory that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>CSync versuchte, ein Verzeichnis zu erstellen, welches bereits existiert.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="164"/>
