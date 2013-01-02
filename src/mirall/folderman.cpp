@@ -28,8 +28,8 @@
 #include <shlobj.h>
 #endif
 
-#include <QDesktopServices>
 #include <QtCore>
+#include "application.h"
 
 namespace Mirall {
 
@@ -38,9 +38,9 @@ FolderMan::FolderMan(QObject *parent) :
 {
     // if QDir::mkpath would not be so stupid, I would not need to have this
     // duplication of folderConfigPath() here
-    QDir storageDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
+    QDir storageDir(Application::getInstance()->getDataLocation());
     storageDir.mkpath(QLatin1String("folders"));
-    _folderConfigPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QLatin1String("/folders");
+    _folderConfigPath = Application::getInstance()->getDataLocation() + QLatin1String("/folders");
 
     _folderChangeSignalMapper = new QSignalMapper(this);
     connect(_folderChangeSignalMapper, SIGNAL(mapped(const QString &)),

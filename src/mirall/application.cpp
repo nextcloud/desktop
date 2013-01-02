@@ -63,6 +63,10 @@ void mirallLogCatcher(QtMsgType type, const char *msg)
 
 // ----------------------------------------------------------------------------------
 
+Application *Application::getInstance() {
+    return dynamic_cast<Application*>(qApp);
+}
+
 Application::Application(int &argc, char **argv) :
     SharedTools::QtSingleApplication(argc, argv),
     _tray(0),
@@ -74,6 +78,7 @@ Application::Application(int &argc, char **argv) :
     _theme(Theme::instance()),
     _updateDetector(0),
     _logBrowser(0),
+    _dataLocation(QDesktopServices::storageLocation(QDesktopServices::DataLocation)),
     _showLogWindow(false),
     _logFlush(false),
     _helpOnly(false)
@@ -179,6 +184,11 @@ Application::~Application()
 {
     delete _tray; // needed, see ctor
     qDebug() << "* Mirall shutdown";
+}
+
+const QString &Application::getDataLocation() const
+{
+    return _dataLocation;
 }
 
 void Application::slotStartUpdateDetector()
@@ -948,6 +958,12 @@ void Application::parseOptions(const QStringList &options)
             _logFlush = true;
         } else if (option == QLatin1String("--monoicons")) {
             _theme->setSystrayUseMonoIcons(true); 
+        } else if (option == QLatin1String("--confdir")) {
+            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+                _dataLocation=it.next();
+            } else {
+                showHelp();
+            }
         }
     }
 }
@@ -1040,6 +1056,7 @@ void Application::showHelp()
     std::cout << "  --logfile <filename> : write log output to file <filename>." << std::endl;
     std::cout << "  --logflush           : flush the log file after every write." << std::endl;
     std::cout << "  --monoicons          : Use black/white pictograms for systray." << std::endl;
+    std::cout << "  --confdir <dirname>  : Use the given configuration directory." << std::endl;
     std::cout << std::endl;
     if (_theme->appName() == QLatin1String("ownCloud"))
         std::cout << "For more information, see http://www.owncloud.org" << std::endl;

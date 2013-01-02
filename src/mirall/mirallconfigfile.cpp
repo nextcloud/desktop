@@ -18,6 +18,7 @@
 #include "mirall/owncloudtheme.h"
 #include "mirall/miralltheme.h"
 #include "mirall/credentialstore.h"
+#include "mirall/application.h"
 
 #include <QtCore>
 #include <QtGui>
@@ -40,7 +41,7 @@ MirallConfigFile::MirallConfigFile( const QString& appendix )
 
 QString MirallConfigFile::configPath() const
 {
-    QString dir = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+    QString dir = Application::getInstance()->getDataLocation();
     if( !dir.endsWith(QLatin1Char('/')) ) dir.append(QLatin1Char('/'));
     return dir;
 }
