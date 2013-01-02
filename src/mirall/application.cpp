@@ -85,7 +85,6 @@ Application::Application(int &argc, char **argv) :
     setupLogBrowser();
     //no need to waste time;
     if ( _helpOnly ) return;
-    processEvents();
 
     QTranslator *qtTranslator = new QTranslator(this);
     qtTranslator->load(QLatin1String("qt_") + QLocale::system().name(),
@@ -157,7 +156,6 @@ Application::Application(int &argc, char **argv) :
     setupActions();
     setupSystemTray();
     setupProxy();
-    processEvents();
 
     QObject::connect( this, SIGNAL(messageReceived(QString)),
                          this, SLOT(slotOpenStatus()) );
@@ -350,7 +348,6 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
         if( cnt ) {
             _tray->setIcon( _theme->syncStateIcon( SyncResult::NotYetStarted, true ) );
             _tray->show();
-            processEvents();
 
             if( _tray )
                 _tray->showMessage(tr("%1 Sync Started").arg(_theme->appName()),

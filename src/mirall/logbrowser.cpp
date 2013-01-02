@@ -188,7 +188,6 @@ void LogBrowser::search( const QString& str )
 void LogBrowser::slotSave()
 {
     _saveBtn->setEnabled(false);
-    QCoreApplication::processEvents();
 
     QString saveFile = QFileDialog::getSaveFileName( this, tr("Save log file"), QDir::homePath() );
 
