@@ -79,7 +79,7 @@ char *c_basename (const char *path);
  *
  * @return 0 on succes, < 0 on error with errno set.
  */
-int c_tmpname(char *template);
+int c_tmpname(char *_template);
 
 /**
  * @brief parse a uri and split it into components.
