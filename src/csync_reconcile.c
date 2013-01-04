@@ -24,6 +24,7 @@
 #include "csync_reconcile.h"
 #include "csync_util.h"
 #include "csync_statedb.h"
+#include "csync_rename.h"
 #include "c_jhash.h"
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.reconciler"
@@ -81,6 +82,18 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
     }
 
     node = c_rbtree_find(tree, &cur->phash);
+
+    if (!node && ctx->current == REMOTE_REPLICA) {
+        /* Check the renamed path as well. */
+        char *renamed_path = csync_rename_adjust_path(ctx, cur->path);
+        if (!c_streq(renamed_path, cur->path)) {
+            len = strlen( renamed_path );
+            h = c_jhash64((uint8_t *) renamed_path, len, 0);
+            node = c_rbtree_find(tree, &h);
+        }
+        SAFE_FREE(renamed_path);
+    }
+    
     /* file only found on current replica */
     if (node == NULL) {
         switch(cur->instruction) {
@@ -108,10 +121,17 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                         node = c_rbtree_find(tree, &h);
                     }
                     if(node) {
-                        other = (csync_file_stat_t*)node->data;
-                        other->instruction = CSYNC_INSTRUCTION_RENAME;
-                        other->destpath = c_strdup( cur->path );
-                        cur->instruction = CSYNC_INSTRUCTION_NONE;
+                        char *adjusted = csync_rename_adjust_path(ctx, cur->path);
+                        if (!c_streq(adjusted, cur->path)) {
+                            other = (csync_file_stat_t*)node->data;
+                            other->instruction = CSYNC_INSTRUCTION_RENAME;
+                            other->destpath = c_strdup( cur->path );
+                            cur->instruction = CSYNC_INSTRUCTION_NONE;
+                        } else {
+                            /* The parent directory is going to be renamed */
+                            cur->instruction = CSYNC_INSTRUCTION_NONE;
+                        }
+                        SAFE_FREE(adjusted);
                     }
                     if( ! other ) {
                         cur->instruction = CSYNC_INSTRUCTION_NEW;

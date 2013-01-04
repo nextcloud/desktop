@@ -38,6 +38,14 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.propagator"
 #include "csync_log.h"
 #include "csync_util.h"
+#include "csync_rename.h"
+
+static int _csync_build_remote_uri(CSYNC *ctx, char **dst, const char *path) {
+    char *tmp = csync_rename_adjust_path(ctx, path);
+    int ret = asprintf(dst, "%s/%s", ctx->remote.uri, tmp);
+    SAFE_FREE(tmp);
+    return ret;
+}
 
 static int _csync_cleanup_cmp(const void *a, const void *b) {
   csync_file_stat_t *st_a, *st_b;
@@ -141,15 +149,15 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
         rc = -1;
         goto out;
       }
-      if (asprintf(&duri, "%s/%s", ctx->remote.uri, st->path) < 0) {
-        rc = -1;
+      if (_csync_build_remote_uri(ctx, &duri, st->path) < 0) {
+          rc = -1;
         goto out;
       }
       break;
     case REMOTE_REPLICA:
       srep = ctx->remote.type;
       drep = ctx->local.type;
-      if (asprintf(&suri, "%s/%s", ctx->remote.uri, st->path) < 0) {
+      if (_csync_build_remote_uri(ctx, &suri, st->path) < 0) {
         rc = -1;
         goto out;
       }
@@ -693,10 +701,10 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Rename failed: src or dest path empty");
           rc = -1;
       }
-      if (asprintf(&suri, "%s/%s", ctx->remote.uri, st->path) < 0) {
+      if (_csync_build_remote_uri(ctx, &suri, st->path) < 0) {
         rc = -1;
       }
-      if (asprintf(&duri, "%s/%s", ctx->remote.uri, st->destpath) < 0) {
+      if (_csync_build_remote_uri(ctx, &duri, st->destpath) < 0) {
         rc = -1;
       }
       break;
@@ -737,7 +745,8 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
   csync_vio_utimes(ctx, duri, times);
 
   /* The the uniq ID for the destination */
-  tmd5 = _get_md5(ctx, st->destpath);
+  if (st->type != CSYNC_FTW_TYPE_DIR)
+    tmd5 = _get_md5(ctx, st->destpath);
 
   if( rc > -1 ) {
       /* Find the destination entry in the local tree and insert the uniq id */
@@ -812,7 +821,7 @@ static int _csync_remove_file(CSYNC *ctx, csync_file_stat_t *st) {
       }
       break;
     case REMOTE_REPLICA:
-      if (asprintf(&uri, "%s/%s", ctx->remote.uri, st->path) < 0) {
+      if (_csync_build_remote_uri(ctx, &uri, st->path) < 0) {
         return -1;
       }
       break;
@@ -873,7 +882,7 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
   switch (ctx->current) {
     case LOCAL_REPLICA:
       dest = ctx->remote.type;
-      if (asprintf(&uri, "%s/%s", ctx->remote.uri, st->path) < 0) {
+      if (_csync_build_remote_uri(ctx, &uri, st->path) < 0) {
         return -1;
       }
       break;
@@ -970,7 +979,7 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
   switch (ctx->current) {
     case LOCAL_REPLICA:
       dest = ctx->remote.type;
-      if (asprintf(&uri, "%s/%s", ctx->remote.uri, st->path) < 0) {
+      if (_csync_build_remote_uri(ctx, &uri, st->path) < 0) {
         return -1;
       }
       break;
@@ -1050,7 +1059,7 @@ static int _csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
       }
       break;
     case REMOTE_REPLICA:
-      if (asprintf(&uri, "%s/%s", ctx->remote.uri, st->path) < 0) {
+      if (_csync_build_remote_uri(ctx, &uri, st->path) < 0) {
         return -1;
       }
       break;
@@ -1438,6 +1447,25 @@ err:
   return -1;
 }
 
+static int _csync_propagation_dir_rename(void *obj, void *data) {
+    csync_file_stat_t *st = NULL;
+    CSYNC *ctx = NULL;
+    int ret = 0;
+
+    st = (csync_file_stat_t *) obj;
+    ctx = (CSYNC *) data;
+
+    if (st->type != CSYNC_FTW_TYPE_DIR || st->instruction != CSYNC_INSTRUCTION_RENAME)
+        return 0;
+
+    ret = _csync_rename_file(ctx, st);
+    if (ret < 0)
+        return ret;
+
+    csync_rename_record(ctx, st->path, st->destpath);
+    return ret;
+}
+
 int csync_propagate_files(CSYNC *ctx) {
   c_rbtree_t *tree = NULL;
 
@@ -1465,5 +1493,30 @@ int csync_propagate_files(CSYNC *ctx) {
   }
   return 0;
 }
+
+int csync_propagate_rename_dirs(CSYNC* ctx)
+{
+    c_rbtree_t *tree = NULL;
+    switch (ctx->current) {
+        case LOCAL_REPLICA:
+            tree = ctx->local.tree;
+            break;
+        case REMOTE_REPLICA:
+            tree = ctx->remote.tree;
+            break;
+        default:
+            break;
+    }
+
+    /* We need to start from scratch the renaming */
+    csync_rename_destroy(ctx);
+
+    if (c_rbtree_walk(tree, (void *) ctx, _csync_propagation_dir_rename) < 0) {
+        return -1;
+    }
+    
+    return 0;
+}
+
 
 /* vim: set ts=8 sw=2 et cindent: */

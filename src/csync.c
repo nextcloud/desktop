@@ -56,6 +56,7 @@
 #include "vio/csync_vio.h"
 
 #include "csync_log.h"
+#include "csync_rename.h"
 
 static int _key_cmp(const void *key, const void *data) {
   uint64_t a;
@@ -484,6 +485,15 @@ int csync_propagate(CSYNC *ctx) {
   }
   ctx->error_code = CSYNC_ERR_NONE;
 
+  ctx->current = REMOTE_REPLICA;
+  ctx->replica = ctx->remote.type;
+  rc = csync_propagate_rename_dirs(ctx);
+  if (rc < 0) {
+      if( ctx->error_code == CSYNC_ERR_NONE )
+          ctx->error_code = csync_errno_to_csync_error( CSYNC_ERR_PROPAGATE);
+      return -1;
+  }
+
   /* Reconciliation for local replica */
   csync_gettime(&start);
 
@@ -746,6 +756,8 @@ int csync_destroy(CSYNC *ctx) {
   if (c_rbtree_size(ctx->remote.tree) > 0) {
     c_rbtree_destroy(ctx->remote.tree, _tree_destructor);
   }
+
+  csync_rename_destroy(ctx);
 
   /* free memory */
   c_rbtree_free(ctx->local.tree);

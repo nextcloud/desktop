@@ -154,6 +154,7 @@ struct csync_s {
   char *error_string;
   
   int status;
+  void *rename_info;
 };
 
 

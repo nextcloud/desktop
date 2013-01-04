@@ -67,6 +67,7 @@ int csync_propagate_files(CSYNC *ctx);
 
 
 int csync_correct_id(CSYNC *ctx);
+int csync_propagate_rename_dirs(CSYNC *ctx);
 
 /**
  * }@
