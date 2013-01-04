@@ -48,6 +48,7 @@ extern "C" {
 void csync_rename_destroy(CSYNC* ctx)
 {
     delete reinterpret_cast<csync_rename_s *>(ctx->rename_info);
+    ctx->rename_info = 0;
 }
 
 void csync_rename_record(CSYNC* ctx, const char* from, const char* to)
