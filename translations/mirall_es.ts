@@ -433,7 +433,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/application.cpp" line="738"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4&lt;br&gt;using OCsync %5 and Qt %6.&lt;/small&gt;&lt;p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;Compilador de una revision en Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; el %3, %4&lt;br&gt;usando OCsync %5 y Qt %6.&lt;/small&gt;&lt;p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;Compilador de una revisión en Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; el %3, %4&lt;br&gt;usando OCsync %5 y Qt %6.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="745"/>
@@ -581,7 +581,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="83"/>
         <source>CSync Logging setup failed.</source>
-        <translation>Falló la configuracion de inicio de sesión en CSync.</translation>
+        <translation>Falló la configuración de inicio de sesión en CSync.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="89"/>
@@ -663,7 +663,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="137"/>
         <source>CSync failed to lookup proxy or server.</source>
-        <translation>CSync falló al realizar la busqueda del proxy</translation>
+        <translation>CSync falló al realizar la búsqueda del proxy</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="140"/>
@@ -683,7 +683,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="149"/>
         <source>A network connection timeout happend.</source>
-        <translation>Ha transcurrido el tiempo maximo de conexión a la red</translation>
+        <translation>Ha transcurrido el tiempo máximo de conexión a la red.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="152"/>
@@ -713,7 +713,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="167"/>
         <source>CSync unspecified error.</source>
-        <translation>Erros no especificado de CSync</translation>
+        <translation>Error no especificado de CSync</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="170"/>

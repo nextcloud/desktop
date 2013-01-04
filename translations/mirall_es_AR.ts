@@ -147,7 +147,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="54"/>
         <source>&amp;Directory alias name:</source>
-        <translation>&amp;Directorio Alias Nombre</translation>
+        <translation>&amp;Directorio Alias Nombre:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="45"/>
@@ -212,7 +212,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="175"/>
         <source>C&amp;hoose..</source>
-        <translation>&amp;CElegir...</translation>
+        <translation>C&amp;Elegir...</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="222"/>
@@ -321,12 +321,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="426"/>
         <source>Configure proxy...</source>
-        <translation>Configuración del proxy</translation>
+        <translation>Configurar el proxy...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="430"/>
         <source>Quit</source>
-        <translation>Salir...</translation>
+        <translation>Salir</translation>
     </message>
     <message>
         <source>open folder %1</source>
@@ -360,7 +360,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="274"/>
         <source>ownCloud user credentials are wrong. Please check configuration.</source>
-        <translation>Su credencia de usuario de ownCloud son incorrectas. Por favor revise la configuración</translation>
+        <translation>Su credencia de usuario de ownCloud son incorrectas. Por favor revise su configuración.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="278"/>
@@ -371,7 +371,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="289"/>
         <source>Error: Could not retrieve the password!</source>
-        <translation>Error: No se pudo recuperar la contraseña </translation>
+        <translation>Error: ¡No se pudo recuperar la contraseña!</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="291"/>
@@ -422,7 +422,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="738"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4&lt;br&gt;using OCsync %5 and Qt %6.&lt;/small&gt;&lt;p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Construido de la versión Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; en %3, %4&lt;br&gt;usando OCsync %5 y Qt %6.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="745"/>
@@ -432,7 +432,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="746"/>
         <source>&lt;p&gt;&lt;b&gt;%1 Client Version %2&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Authors&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;mailto:freitag@owncloud.com&quot;&gt;Klaas Freitag&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;a href=&quot;mailto:danimo@owncloud.com&quot;&gt;Daniel Molkentin&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;br&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/p&gt;&lt;p&gt;For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;.&lt;/p&gt;%7</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;b&gt;%1 Version del cliente %2&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Autores&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;mailto:freitag@owncloud.com&quot;&gt;Klaas Freitag&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;a href=&quot;mailto:danimo@owncloud.com&quot;&gt;Daniel Molkentin&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;br&gt;Basado en Mirall de Duncan Mac-Vicar P.&lt;/p&gt;&lt;p&gt;Para más información visitar&lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;.&lt;/p&gt;%7</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="770"/>
@@ -565,12 +565,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="80"/>
         <source>Success.</source>
-        <translation type="unfinished"/>
+        <translation>Éxito.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="83"/>
         <source>CSync Logging setup failed.</source>
-        <translation type="unfinished"/>
+        <translation>Falló la configuración de inicio de sesión de CSync</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="89"/>
@@ -622,87 +622,87 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="106"/>
         <source>CSync failed to reserve memory.</source>
-        <translation type="unfinished"/>
+        <translation>CSync falló al reservar memoria.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="109"/>
         <source>CSync fatal parameter error.</source>
-        <translation type="unfinished"/>
+        <translation>Error fatal de parámetro en CSync.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="112"/>
         <source>CSync processing step update failed.</source>
-        <translation type="unfinished"/>
+        <translation>Falló el proceso de actualización de CSync.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="115"/>
         <source>CSync processing step reconcile failed.</source>
-        <translation type="unfinished"/>
+        <translation>Falló el proceso de composición de CSync</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="118"/>
         <source>CSync processing step propagate failed.</source>
-        <translation type="unfinished"/>
+        <translation>Proceso de propagación de CSync falló</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="134"/>
         <source>CSync failed to connect through a proxy.</source>
-        <translation type="unfinished"/>
+        <translation>CSync falló al tratar de conectarse a través de un proxy</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="137"/>
         <source>CSync failed to lookup proxy or server.</source>
-        <translation type="unfinished"/>
+        <translation>CSync falló al realizar la busqueda del proxy.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="140"/>
         <source>CSync failed to authenticate at the %1 server.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: fallo al autenticarse en el servidor %1.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="143"/>
         <source>CSync failed to authenticate at the proxy.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: fallo al autenticarse en el proxy.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="146"/>
         <source>CSync failed to connect to the network.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: fallo al conectarse a la red</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="149"/>
         <source>A network connection timeout happend.</source>
-        <translation type="unfinished"/>
+        <translation>Ha transcurrido el tiempo máximo de conexión a la red.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="152"/>
         <source>A HTTP transmission error happened.</source>
-        <translation type="unfinished"/>
+        <translation>Ha ocurrido un error de transmisión HTTP.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="155"/>
         <source>CSync failed due to not handled permission deniend.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: Falló debido a un permiso denegado.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="158"/>
         <source>CSync failed to find a specific file.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: Falló en encontrar un archivo especifico.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="161"/>
         <source>CSync tried to create a directory that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>Csync trató de crear un directorio que ya existía.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="164"/>
         <source>CSync: No space on %1 server available.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: No hay más espacio disponible en el servidor %1.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="167"/>
         <source>CSync unspecified error.</source>
-        <translation type="unfinished"/>
+        <translation>Error no especificado de CSync</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="170"/>
@@ -712,7 +712,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="174"/>
         <source>&lt;br/&gt;Backend Message: </source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;Mensaje de salida:</translation>
     </message>
     <message>
         <source>CSync Update failed.</source>
@@ -765,22 +765,22 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="290"/>
         <source>New file available</source>
-        <translation type="unfinished"/>
+        <translation>Nuevo archivo disponible</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="290"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; fue sincronizado con esta computadora.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="292"/>
         <source>New files available</source>
-        <translation type="unfinished"/>
+        <translation>Nuevos archivos disponibles</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="292"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos;  archivo fue sincronizado a esta computadora.</numerusform><numerusform> &apos;%1&apos;  %n otros archivos fueron sincronizados a esta computadora.</numerusform></translation>
     </message>
 </context>
 <context>
@@ -822,7 +822,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="74"/>
         <source>No local directory selected!</source>
-        <translation>No fue seleccionado ningún directorio</translation>
+        <translation>¡No fue seleccionado ningún directorio!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="90"/>
@@ -872,7 +872,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="211"/>
         <source>The folder is not available on your %1.&lt;br/&gt;Click to create it.</source>
-        <translation>El directorio no está disponible en tu %1.&lt;br/&gt;Hacé click para crearla.</translation>
+        <translation>La carpeta no está disponible en tu %1.&lt;br/&gt;Hacé click para crearla.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="237"/>
@@ -1892,7 +1892,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="41"/>
         <source>Add Sync...</source>
-        <translation>Agregar sincronización</translation>
+        <translation>Agregar sincronización...</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="48"/>
