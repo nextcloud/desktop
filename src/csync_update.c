@@ -139,8 +139,9 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
                 CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "inodes: %ld <-> %ld", tmp->inode, fs->inode);
                 /* inode found so the file has been renamed */
                 st->instruction = CSYNC_INSTRUCTION_RENAME;
-                if (tmp->type == CSYNC_FTW_FLAG_DIR)
+                if (fs->type == CSYNC_FTW_TYPE_DIR) {
                     csync_rename_record(ctx, tmp->path, path);
+                }
                 goto out;
             } else {
                 /* file not found in statedb */

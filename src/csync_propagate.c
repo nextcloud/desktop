@@ -719,30 +719,34 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
   }
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Renaming %s => %s", suri, duri);
 
-  if (rc > -1 && csync_vio_rename(ctx, suri, duri) < 0) {
-    switch (errno) {
-      default:
-        strerror_r(errno, errbuf, sizeof(errbuf));
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
-            "dir: %s, command: rename, error: %s",
-            suri,
-            errbuf);
-        rc = -1;
-        break;
+  if (! c_streq(suri, duri)) {
+    if (rc > -1 && csync_vio_rename(ctx, suri, duri) < 0) {
+        switch (errno) {
+        default:
+            strerror_r(errno, errbuf, sizeof(errbuf));
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+                "dir: %s, command: rename, error: %s",
+                suri,
+                errbuf);
+            rc = -1;
+            break;
+        }
+        goto out;
     }
-    goto out;
+
+
+    /* set owner and group if possible */
+    if (ctx->pwd.euid == 0) {
+        csync_vio_chown(ctx, duri, st->uid, st->gid);
+    }
+
+    /* sync time */
+    times[0].tv_sec = times[1].tv_sec = st->modtime;
+    times[0].tv_usec = times[1].tv_usec = 0;
+
+    csync_vio_utimes(ctx, duri, times);
+
   }
-
-  /* set owner and group if possible */
-  if (ctx->pwd.euid == 0) {
-    csync_vio_chown(ctx, duri, st->uid, st->gid);
-  }
-
-  /* sync time */
-  times[0].tv_sec = times[1].tv_sec = st->modtime;
-  times[0].tv_usec = times[1].tv_usec = 0;
-
-  csync_vio_utimes(ctx, duri, times);
 
   /* The the uniq ID for the destination */
   if (st->type != CSYNC_FTW_TYPE_DIR)

@@ -93,7 +93,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
         }
         SAFE_FREE(renamed_path);
     }
-    
+
     /* file only found on current replica */
     if (node == NULL) {
         switch(cur->instruction) {
@@ -121,15 +121,18 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                         node = c_rbtree_find(tree, &h);
                     }
                     if(node) {
-                        char *adjusted = csync_rename_adjust_path(ctx, cur->path);
-                        if (!c_streq(adjusted, cur->path)) {
-                            other = (csync_file_stat_t*)node->data;
+                        char *adjusted;
+                        other = (csync_file_stat_t*)node->data;
+                        adjusted = csync_rename_adjust_path(ctx, other->path);
+                        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"about to move: %s -> %s  %d", adjusted, cur->path, cur->type != CSYNC_FTW_TYPE_DIR);
+                        if (!c_streq(adjusted, cur->path) || cur->type != CSYNC_FTW_TYPE_DIR) {
                             other->instruction = CSYNC_INSTRUCTION_RENAME;
                             other->destpath = c_strdup( cur->path );
                             cur->instruction = CSYNC_INSTRUCTION_NONE;
                         } else {
                             /* The parent directory is going to be renamed */
                             cur->instruction = CSYNC_INSTRUCTION_NONE;
+                            other->instruction = CSYNC_INSTRUCTION_IGNORE;
                         }
                         SAFE_FREE(adjusted);
                     }
@@ -153,6 +156,8 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
 
         switch (cur->instruction) {
         case CSYNC_INSTRUCTION_RENAME:
+            if(ctx->current != LOCAL_REPLICA )
+                break;
             /* If the file already exist on the other side, we have a conflict.
                Abort the rename and consider it is a new file. */
             cur->instruction = CSYNC_INSTRUCTION_NEW;
