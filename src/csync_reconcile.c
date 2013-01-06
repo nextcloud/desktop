@@ -116,6 +116,8 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                     if( ! other ) {
                         cur->instruction = CSYNC_INSTRUCTION_NEW;
                     }
+                    SAFE_FREE(tmp->md5);
+                    SAFE_FREE(tmp);
                 }
             }
             break;
