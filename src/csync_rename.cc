@@ -46,13 +46,12 @@ struct csync_rename_s {
     std::map<std::string, std::string> folder_renamed_to; // map from->to
 
     struct renameop {
-        //std::string from, to;
         csync_file_stat_t *st;
         bool operator<(const renameop &other) const {
             return strlen(st->destpath) < strlen(other.st->destpath);
         }
     };
-    std::vector<renameop> todo; // map to->from
+    std::vector<renameop> todo;
 };
 
 static int _csync_rename_dir_record(void *obj, void *data) {
@@ -102,7 +101,7 @@ int csync_propagate_rename_dirs(CSYNC* ctx)
         return -1;
     }
 
-    // we need to procceed in order of the file 
+    // we need to procceed in order of the size of the destpath to be sure that we do the roots first.
     std::sort(d->todo.begin(), d->todo.end());
     for (std::vector< csync_rename_s::renameop >::iterator it = d->todo.begin();
          it != d->todo.end(); ++it) {
