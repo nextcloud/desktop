@@ -1451,23 +1451,8 @@ err:
   return -1;
 }
 
-static int _csync_propagation_dir_rename(void *obj, void *data) {
-    csync_file_stat_t *st = NULL;
-    CSYNC *ctx = NULL;
-    int ret = 0;
-
-    st = (csync_file_stat_t *) obj;
-    ctx = (CSYNC *) data;
-
-    if (st->type != CSYNC_FTW_TYPE_DIR || st->instruction != CSYNC_INSTRUCTION_RENAME)
-        return 0;
-
-    ret = _csync_rename_file(ctx, st);
-    if (ret < 0)
-        return ret;
-
-    csync_rename_record(ctx, st->path, st->destpath);
-    return ret;
+int csync_propagate_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
+    return _csync_rename_file(ctx, st);
 }
 
 int csync_propagate_files(CSYNC *ctx) {
@@ -1496,30 +1481,6 @@ int csync_propagate_files(CSYNC *ctx) {
     return -1;
   }
   return 0;
-}
-
-int csync_propagate_rename_dirs(CSYNC* ctx)
-{
-    c_rbtree_t *tree = NULL;
-    switch (ctx->current) {
-        case LOCAL_REPLICA:
-            tree = ctx->local.tree;
-            break;
-        case REMOTE_REPLICA:
-            tree = ctx->remote.tree;
-            break;
-        default:
-            break;
-    }
-
-    /* We need to start from scratch the renaming */
-    csync_rename_destroy(ctx);
-
-    if (c_rbtree_walk(tree, (void *) ctx, _csync_propagation_dir_rename) < 0) {
-        return -1;
-    }
-    
-    return 0;
 }
 
 

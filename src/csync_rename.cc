@@ -20,10 +20,13 @@
 
 extern "C" {
 #include "csync_private.h"
+#include "csync_propagate.h"
 }
 
 #include <map>
 #include <string>
+#include <vector>
+#include <algorithm>
 
 static std::string _parentDir(const std::string &path) {
     int len = path.length();
@@ -40,9 +43,30 @@ struct csync_rename_s {
         return reinterpret_cast<csync_rename_s *>(ctx->rename_info);
     }
 
-    std::map<std::string, std::string> folder_renamed_to; 
+    std::map<std::string, std::string> folder_renamed_to; // map from->to
+
+    struct renameop {
+        //std::string from, to;
+        csync_file_stat_t *st;
+        bool operator<(const renameop &other) const {
+            return strlen(st->destpath) < strlen(other.st->destpath);
+        }
+    };
+    std::vector<renameop> todo; // map to->from
 };
 
+static int _csync_rename_dir_record(void *obj, void *data) {
+    CSYNC *ctx = reinterpret_cast<CSYNC*>(data);
+    csync_rename_s* d = csync_rename_s::get(ctx);
+    csync_file_stat_t *st = reinterpret_cast<csync_file_stat_t *>(obj);
+
+    if (st->type != CSYNC_FTW_TYPE_DIR || st->instruction != CSYNC_INSTRUCTION_RENAME)
+        return 0;
+
+    csync_rename_s::renameop op = { st };
+    d->todo.push_back(op);
+    return 0;
+}
 
 extern "C" {
 void csync_rename_destroy(CSYNC* ctx)
@@ -68,5 +92,31 @@ char* csync_rename_adjust_path(CSYNC* ctx, const char* path)
     }
     return c_strdup(path);
 }
+
+int csync_propagate_rename_dirs(CSYNC* ctx)
+{
+    csync_rename_s* d = csync_rename_s::get(ctx);
+    d->folder_renamed_to.clear();
+
+    if (c_rbtree_walk(ctx->remote.tree, (void *) ctx, _csync_rename_dir_record) < 0) {
+        return -1;
+    }
+
+    // we need to procceed in order of the file 
+    std::sort(d->todo.begin(), d->todo.end());
+    for (std::vector< csync_rename_s::renameop >::iterator it = d->todo.begin();
+         it != d->todo.end(); ++it) {
+
+        int r = csync_propagate_rename_file(ctx, it->st);
+        if (r < 0)
+            return -1;
+        if (r > 0)
+            continue;
+        d->folder_renamed_to[it->st->path] = it->st->destpath;
+    }
+
+    return 0;
+}
+
 
 };

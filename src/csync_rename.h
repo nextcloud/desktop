@@ -26,11 +26,10 @@
 extern "C" {
 #endif
 
-//void csync_rename_adjust_tree(CSYNC *ctx);
 char *csync_rename_adjust_path(CSYNC *ctx, const char *path);
-void csync_rename_record(CSYNC *ctx, const char *from, const char *to);
 void csync_rename_destroy(CSYNC *ctx);
-
+void csync_rename_record(CSYNC *ctx, const char *from, const char *to);
+int csync_propagate_rename_dirs(CSYNC* ctx);
 
 #ifdef __cplusplus
 }
