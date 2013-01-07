@@ -694,6 +694,7 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
   char *duri = NULL;
   const char *tmd5 = NULL;
   c_rbnode_t *node = NULL;
+  char *tdir = NULL;
 
   switch (ctx->current) {
     case REMOTE_REPLICA:
@@ -719,20 +720,40 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
   }
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Renaming %s => %s", suri, duri);
 
-  if (! c_streq(suri, duri)) {
-    if (rc > -1 && (rc = csync_vio_rename(ctx, suri, duri)) != 0) {
+  if (! c_streq(suri, duri) && rc > -1) {
+    while ((rc = csync_vio_rename(ctx, suri, duri)) != 0) {
         switch (errno) {
+        case ENOENT:
+            /* get the directory name */
+            if(tdir) {
+                /* we're looping */
+                CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN,
+                          "dir: %s, loop in mkdir detected!", tdir);
+                rc = 1;
+                goto out;
+            }
+            tdir = c_dirname(duri);
+            if (tdir == NULL) {
+                rc = -1;
+                goto out;
+            }
+
+            if (csync_vio_mkdirs(ctx, tdir, C_DIR_MODE) < 0) {
+                strerror_r(errno, errbuf, sizeof(errbuf));
+                CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN,
+                            "dir: %s, command: mkdirs, error: %s",
+                            tdir, errbuf);
+            }
+            break;
         default:
             strerror_r(errno, errbuf, sizeof(errbuf));
             CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
                 "dir: %s, command: rename, error: %s",
                 suri,
                 errbuf);
-            break;
+            goto out;
         }
-        goto out;
     }
-
 
     /* set owner and group if possible */
     if (ctx->pwd.euid == 0) {
@@ -782,6 +803,7 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
 out:
   SAFE_FREE(suri);
   SAFE_FREE(duri);
+  SAFE_FREE(tdir);
 
   /* set instruction for the statedb merger */
   if (rc != 0) {

@@ -1907,8 +1907,12 @@ static int owncloud_rename(const char *olduri, const char *newuri) {
     if( rc >= 0 ) {
         DEBUG_WEBDAV("MOVE: %s => %s: %d", src, target, rc );
         rc = ne_move(dav_session.ctx, 1, src, target );
-
-        set_errno_from_neon_errcode(rc);
+        if (rc == NE_ERROR && http_result_code_from_session() == 409) {
+            /* destination folder might not exist */
+            errno = ENOENT;
+        } else {
+            set_errno_from_neon_errcode(rc);
+        }
     }
     SAFE_FREE( src );
     SAFE_FREE( target );
