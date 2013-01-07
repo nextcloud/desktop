@@ -720,7 +720,7 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Renaming %s => %s", suri, duri);
 
   if (! c_streq(suri, duri)) {
-    if (rc > -1 && csync_vio_rename(ctx, suri, duri) < 0) {
+    if (rc > -1 && (rc = csync_vio_rename(ctx, suri, duri)) != 0) {
         switch (errno) {
         default:
             strerror_r(errno, errbuf, sizeof(errbuf));
@@ -728,7 +728,6 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
                 "dir: %s, command: rename, error: %s",
                 suri,
                 errbuf);
-            rc = -1;
             break;
         }
         goto out;
@@ -786,7 +785,7 @@ out:
 
   /* set instruction for the statedb merger */
   if (rc != 0) {
-    st->instruction = CSYNC_INSTRUCTION_NONE;
+    st->instruction = CSYNC_INSTRUCTION_ERROR;
   }
 
   return rc;

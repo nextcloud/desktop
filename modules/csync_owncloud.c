@@ -1914,7 +1914,7 @@ static int owncloud_rename(const char *olduri, const char *newuri) {
     SAFE_FREE( target );
 
     if( rc != NE_OK )
-        return -1;
+        return 1;
     return 0;
 }
 
