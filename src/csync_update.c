@@ -135,7 +135,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
         /* check if it's a file and has been renamed */
         if (ctx->current == LOCAL_REPLICA) {
             tmp = csync_statedb_get_stat_by_inode(ctx, fs->inode);
-            if (tmp && tmp->inode == fs->inode) {
+            if (tmp && tmp->inode == fs->inode && (tmp->modtime == fs->mtime || fs->type == CSYNC_FTW_TYPE_DIR)) {
                 CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "inodes: %ld <-> %ld", tmp->inode, fs->inode);
                 /* inode found so the file has been renamed */
                 st->instruction = CSYNC_INSTRUCTION_RENAME;
