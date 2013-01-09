@@ -44,3 +44,26 @@ find_package_handle_standard_args(Neon DEFAULT_MSG NEON_LIBRARIES NEON_INCLUDE_D
 
 # show the NEON_INCLUDE_DIRS and NEON_LIBRARIES variables only in the advanced view
 mark_as_advanced(NEON_INCLUDE_DIRS NEON_LIBRARIES)
+
+# Check if neon was compiled with LFS support, if so, the NE_LFS variable has to
+# be defined in the owncloud module.
+# If neon was not compiled with LFS its also ok since the underlying system
+# than probably supports large files anyway.
+FIND_PROGRAM( NEON_CONFIG_EXECUTABLE NAMES neon-config )
+
+IF ( NEON_CONFIG_EXECUTABLE )
+	MESSAGE(STATUS "neon-config executable: ${NEON_CONFIG_EXECUTABLE}")
+	# neon-config --support lfs
+	EXECUTE_PROCESS( COMMAND ${NEON_CONFIG_EXECUTABLE} "--support" "lfs"
+			    RESULT_VARIABLE LFS
+			    OUTPUT_STRIP_TRAILING_WHITESPACE )
+
+	IF (LFS EQUAL 0)
+		MESSAGE(STATUS "libneon has been compiled with LFS support")
+		SET(NEON_WITH_LFS 1 PARENT_SCOPE)
+	ELSE (LFS EQUAL 0)
+		MESSAGE(STATUS "libneon has not been compiled with LFS support, rely on OS")
+	ENDIF (LFS EQUAL 0)
+ELSE  ( NEON_CONFIG_EXECUTABLE )
+    MESSAGE(STATUS, "neon-config could not be found.")
+ENDIF ( NEON_CONFIG_EXECUTABLE )

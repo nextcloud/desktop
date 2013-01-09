@@ -21,3 +21,4 @@
 #cmakedefine HAVE_LSTAT 1
 #cmakedefine HAVE_FNMATCH 1
 
+#cmakedefine NEON_WITH_LFS 1
