@@ -122,13 +122,19 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                     }
                     if(node) {
                         other = (csync_file_stat_t*)node->data;
+                    }
+                    if(!other) {
+                        cur->instruction = CSYNC_INSTRUCTION_NEW;
+                    } else if (other->instruction == CSYNC_INSTRUCTION_NONE
+                                || cur->type == CSYNC_FTW_TYPE_DIR) {
                         other->instruction = CSYNC_INSTRUCTION_RENAME;
                         other->destpath = c_strdup( cur->path );
                         cur->instruction = CSYNC_INSTRUCTION_NONE;
+                    } else {
+                        cur->instruction = CSYNC_INSTRUCTION_NONE;
+                        other->instruction = CSYNC_INSTRUCTION_SYNC;
                     }
-                    if( ! other ) {
-                        cur->instruction = CSYNC_INSTRUCTION_NEW;
-                    }
+
                     SAFE_FREE(tmp->md5);
                     SAFE_FREE(tmp);
                 }

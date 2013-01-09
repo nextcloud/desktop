@@ -121,6 +121,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   char *duri = NULL;
   char *turi = NULL;
   char *tdir = NULL;
+  char *auri = NULL;
   const char *tmd5 = NULL;
   char *prev_tdir  = NULL;
 
@@ -141,11 +142,13 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   rep_bak = ctx->replica;
 
+  auri = csync_rename_adjust_path(ctx, st->path);
+
   switch (ctx->current) {
     case LOCAL_REPLICA:
       srep = ctx->local.type;
       drep = ctx->remote.type;
-      if (asprintf(&suri, "%s/%s", ctx->local.uri, st->path) < 0) {
+      if (asprintf(&suri, "%s/%s", ctx->local.uri, auri) < 0) {
         rc = -1;
         goto out;
       }
@@ -161,7 +164,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
         rc = -1;
         goto out;
       }
-      if (asprintf(&duri, "%s/%s", ctx->local.uri, st->path) < 0) {
+      if (asprintf(&duri, "%s/%s", ctx->local.uri, auri) < 0) {
         rc = -1;
         goto out;
       }
@@ -505,7 +508,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   /* For remote repos, after the utimes call, the ID has changed again */
   /* do a stat on the target again to get a valid md5 */
-  tmd5 = _get_md5(ctx, st->path);
+  tmd5 = _get_md5(ctx, auri);
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "FINAL MD5: %s", tmd5 ? tmd5 : "<null>");
 
   if(tmd5) {
@@ -548,6 +551,7 @@ out:
   SAFE_FREE(duri);
   SAFE_FREE(turi);
   SAFE_FREE(tdir);
+  SAFE_FREE(auri);
 
   ctx->replica = rep_bak;
 
