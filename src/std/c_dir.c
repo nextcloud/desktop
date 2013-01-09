@@ -78,7 +78,7 @@ int c_rmdirs(const char *path) {
   if ((d = _topendir(wpath)) != NULL) {
     while( _tstat(wpath, &sb) == 0) {
       /* if we can remove the directory we're done */
-      if (_trmdir(path) == 0) {
+      if (_trmdir(wpath) == 0) {
         break;
       }
       switch (errno) {
