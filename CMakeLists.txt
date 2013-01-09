@@ -46,10 +46,9 @@ if (CMOCKA_FOUND AND UNIT_TESTING)
 endif (CMOCKA_FOUND AND UNIT_TESTING)
 
 include(ConfigureChecks.cmake)
-configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+
 
 set(SOURCE_DIR ${CMAKE_SOURCE_DIR})
-configure_file(config_test.h.cmake  ${CMAKE_CURRENT_BINARY_DIR}/config_test.h)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
@@ -68,4 +67,8 @@ add_subdirectory(doc)
 if (CMOCKA_FOUND AND UNIT_TESTING)
     add_subdirectory(tests)
 endif (CMOCKA_FOUND AND UNIT_TESTING)
+
+configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+configure_file(config_test.h.cmake  ${CMAKE_CURRENT_BINARY_DIR}/config_test.h)
+
 
