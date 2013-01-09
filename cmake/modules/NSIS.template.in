@@ -6,6 +6,7 @@
 !define APPLICATION_EXECUTABLE "@APPLICATION_EXECUTABLE@.exe"
 !define APPLICATION_DOMAIN "@APPLICATION_DOMAIN@"
 !define APPLICATION_LICENSE "@APPLICATION_LICENSE@"
+!define WIN_SETUP_BITMAP_PATH "@WIN_SETUP_BITMAP_PATH@"
 
 !define MUI_FINISHPAGE_LINK_LOCATION "http://www.${APPLICATION_DOMAIN}"
 
@@ -103,11 +104,11 @@ ReserveFile "${NSISDIR}\Plugins\InstallOptions.dll"
 !define MUI_ABORTWARNING
 !define MUI_ICON ${NSI_PATH}\installer.ico
 !define MUI_UNICON ${NSI_PATH}\installer.ico
-!define MUI_WELCOMEFINISHPAGE_BITMAP ${NSI_PATH}\welcome_${APPLICATION_SHORTNAME}.bmp
+!define MUI_WELCOMEFINISHPAGE_BITMAP ${WIN_SETUP_BITMAP_PATH}/welcome.bmp
 !define MUI_WELCOMEPAGE_TITLE "Welcome to the @CPACK_PACKAGE_NAME@ ${VERSION} Setup Wizard"
 !define MUI_WELCOMEPAGE_TEXT "This wizard will guide you through the installation.$\r$\n$\r$\n$_CLICK"
 !define MUI_HEADERIMAGE
-!define MUI_HEADERIMAGE_BITMAP ${NSI_PATH}\page_header_${APPLICATION_SHORTNAME}.bmp
+!define MUI_HEADERIMAGE_BITMAP  ${WIN_SETUP_BITMAP_PATH}/page_header.bmp
 !define MUI_COMPONENTSPAGE_SMALLDESC
 !define MUI_FINISHPAGE_TITLE "@CPACK_PACKAGE_NAME@ Setup Completed"
 !define MUI_FINISHPAGE_LINK "Click here to visit the @CPACK_PACKAGE_NAME@ website."
@@ -128,7 +129,7 @@ ReserveFile "${NSISDIR}\Plugins\InstallOptions.dll"
 ;-----------------------------------------------------------------------------
 !insertmacro MUI_PAGE_WELCOME
 !ifdef OPTION_LICENSE_AGREEMENT
-   !insertmacro MUI_PAGE_LICENSE "${source_path}/${APPLICATION_LICENSE}"
+   !insertmacro MUI_PAGE_LICENSE "${APPLICATION_LICENSE}"
 !endif
 Page custom PageReinstall PageLeaveReinstall
 !insertmacro MUI_PAGE_COMPONENTS

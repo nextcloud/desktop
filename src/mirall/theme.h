@@ -30,6 +30,13 @@ class SyncResult;
 class Theme
 {
 public:
+    enum CustomMediaType {
+        oCSetupTop,      // ownCloud connect page
+        oCSetupSide,
+        oCSetupBottom,
+        oCSetupResultTop // ownCloud connect result page
+    };
+
     static Theme* instance();
 
     virtual QString appName() const = 0;
@@ -65,6 +72,13 @@ public:
     virtual bool singleSyncFolder() const;
 
     /**
+     * Setting a value here will pre-define the server url.
+     *
+     * The respective UI controls will be disabled
+     */
+    virtual QString overrideServerUrl() const;
+
+    /**
      * The default folder name without path on the server at setup time.
      */
     virtual QString defaultServerFolder() const;
@@ -78,6 +92,14 @@ public:
      * Override to encforce a particular locale, i.e. "de" or "pt_BR"
      */
     virtual QString enforcedLocale() const { return QString::null; }
+
+
+    /**
+     * Override to use a string or a custom image name.
+     * The default implementation will try to look up
+     * :/mirall/theme/<type>.png
+     */
+    virtual QVariant customMedia( CustomMediaType type );
 
     /**
      * Define if the systray icons should be using mono design

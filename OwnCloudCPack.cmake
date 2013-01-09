@@ -2,8 +2,8 @@ include( InstallRequiredSystemLibraries )
 
 set( CPACK_PACKAGE_CONTACT  "Dominik Schmidt <domme@tomahawk-player.org>" )
 
-if ( EXISTS "${CMAKE_SOURCE_DIR}/OEM.cmake" )
-     include ( "${CMAKE_SOURCE_DIR}/OEM.cmake" )
+if ( DEFINED OEM_THEME_DIR AND EXISTS ${OEM_THEME_DIR}/OEM.cmake )
+     include ( "${OEM_THEME_DIR}/OEM.cmake" )
 else ()
      include ( "${CMAKE_SOURCE_DIR}/OWNCLOUD.cmake" )
 endif()

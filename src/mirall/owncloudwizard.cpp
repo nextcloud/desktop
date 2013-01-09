@@ -34,10 +34,10 @@ namespace Mirall
 
 void setupCustomMedia( QVariant variant, QLabel *label )
 {
-    if( ! label ) return;
+    if( !label ) return;
 
     QPixmap pix = variant.value<QPixmap>();
-    if( ! pix.isNull() ) {
+    if( !pix.isNull() ) {
         label->setPixmap(pix);
         label->setAlignment( Qt::AlignTop | Qt::AlignRight );
         label->setVisible(true);
@@ -130,16 +130,15 @@ void OwncloudSetupPage::setupCustomization()
     _ui.topLabel->hide();
     _ui.bottomLabel->hide();
 
-    MirallConfigFile cfg;
-
-    QVariant variant = cfg.customMedia( MirallConfigFile::oCSetupTop );
+    Theme *theme = Theme::instance();
+    QVariant variant = theme->customMedia( Theme::oCSetupTop );
     setupCustomMedia( variant, _ui.topLabel );
-    variant = cfg.customMedia( MirallConfigFile::oCSetupSide );
+    variant = theme->customMedia( Theme::oCSetupSide );
     setupCustomMedia( variant, _ui.sideLabel );
-    variant = cfg.customMedia( MirallConfigFile::oCSetupBottom );
+    variant = theme->customMedia( Theme::oCSetupBottom );
     setupCustomMedia( variant, _ui.bottomLabel );
 
-    QString fixUrl = cfg.customMedia( MirallConfigFile::oCSetupFixUrl ).toString();
+    QString fixUrl = theme->overrideServerUrl();
     if( !fixUrl.isEmpty() ) {
         setOCUrl( fixUrl );
         _ui.leUrl->setEnabled( false );
@@ -458,9 +457,7 @@ void OwncloudWizardResultPage::setupCustomization()
     _ui.topLabel->setText( QString::null );
     _ui.topLabel->hide();
 
-    MirallConfigFile cfg;
-
-    QVariant variant = cfg.customMedia( MirallConfigFile::oCSetupResultTop );
+    QVariant variant = Theme::instance()->customMedia( Theme::oCSetupResultTop );
     setupCustomMedia( variant, _ui.topLabel );
 }
 

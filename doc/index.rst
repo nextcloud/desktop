@@ -9,7 +9,6 @@ Contents
    install
    usage 
    building 
-   branding
    architecture
    troubleshooting
    glossary 

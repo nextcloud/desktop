@@ -14,12 +14,19 @@
 
 #include "theme.h"
 #include "version.h"
+#include "config.h"
 
 #include <QtCore>
 #include <QtGui>
 
 #include "mirall/miralltheme.h"
 #include "mirall/owncloudtheme.h"
+
+#ifdef THEME_INCLUDE
+#  define QUOTEME(M)       #M
+#  define INCLUDE_FILE(M)  QUOTEME(M)
+#  include INCLUDE_FILE(THEME_INCLUDE)
+#endif
 
 #include "config.h"
 
@@ -97,9 +104,9 @@ QIcon Theme::themeIcon( const QString& name, bool sysTray ) const
         icon = QIcon::fromTheme( name );
     } else {
         QList<int> sizes;
-        sizes <<16 << 24 << 32 << 48 << 64 << 128;
+        sizes <<16 << 22 << 32 << 48 << 64 << 128;
         foreach (int size, sizes) {
-            QString pixmapName = QString::fromLatin1(":/mirall/theme/%1/%2/%3.png").arg(flavor).arg(size).arg(name);
+            QString pixmapName = QString::fromLatin1(":/mirall/theme/%1/%2-%3.png").arg(flavor).arg(name).arg(size);
             if (QFile::exists(pixmapName)) {
                 icon.addFile(pixmapName, QSize(size, size));
             }
@@ -127,6 +134,11 @@ QString Theme::defaultServerFolder() const
     return QLatin1String("clientsync");
 }
 
+QString Theme::overrideServerUrl() const
+{
+    return QString::null;
+}
+
 QString Theme::defaultClientFolder() const
 {
     return appName();
@@ -140,6 +152,40 @@ void Theme::setSystrayUseMonoIcons(bool mono)
 bool Theme::systrayUseMonoIcons() const
 {
     return _mono;
+}
+
+QVariant Theme::customMedia( CustomMediaType type )
+{
+    QVariant re;
+    QString key;
+
+    switch ( type )
+    {
+    case oCSetupTop:
+        key = QLatin1String("oCSetupTop");
+        break;
+    case oCSetupSide:
+        key = QLatin1String("oCSetupSide");
+        break;
+    case oCSetupBottom:
+        key = QLatin1String("oCSetupBottom");
+        break;
+    case oCSetupResultTop:
+        key = QLatin1String("oCSetupResultTop");
+        break;
+    }
+
+    QString imgPath = QString::fromLatin1(":/mirall/theme/colored/%1.png").arg(key);
+    if ( QFile::exists( imgPath ) ) {
+        QPixmap pix( imgPath );
+        if( pix.isNull() ) {
+            // pixmap loading hasn't succeeded. We take the text instead.
+            re.setValue( key );
+        } else {
+            re.setValue( pix );
+        }
+    }
+    return re;
 }
 
 } // end namespace mirall

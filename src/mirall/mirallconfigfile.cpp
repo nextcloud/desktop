@@ -484,69 +484,6 @@ void MirallConfigFile::acceptCustomConfig()
     CredentialStore::instance()->saveCredentials( );
 }
 
-QVariant MirallConfigFile::customMedia( customMediaType type )
-{
-    QVariant re;
-    QString key;
-
-    if( type == oCSetupTop ) {
-        key = QLatin1String("oCSetupTop");
-    } else if( type == oCSetupSide ) {
-        key = QLatin1String("oCSetupSide");
-    } else if( type == oCSetupBottom) {
-        key = QLatin1String("oCSetupBottom");
-    } else if( type == oCSetupFixUrl ) {
-        key = QLatin1String("oCSetupFixUrl");
-    } else if( type == oCSetupResultTop ) {
-        key = QLatin1String("oCSetupResultTop");
-    } else {
-        qDebug() << "Wrong media type.";
-    }
-
-    if( !key.isEmpty() ) {
-        const QString customFile("custom.ini");
-        QFileInfo fi;
-
-#ifdef Q_OS_WIN32
-        fi.setFile( QApplication::applicationDirPath(), customFile );
-#endif
-#ifdef Q_OS_MAC
-        // exec path is inside the bundle
-        fi.setFile( QApplication::applicationDirPath(),
-                    QLatin1String("../Resources/") + customFile );
-#endif
-#ifdef Q_OS_LINUX
-        fi.setFile( QString("/etc/%1").arg(Theme::instance()->appName()), customFile );
-#endif
-        QSettings settings( fi.absoluteFilePath(), QSettings::IniFormat );
-
-        QString cfg = settings.fileName();
-        qDebug() << "Trying to read config ini file at " << cfg;
-
-        settings.setIniCodec( "UTF-8" );
-        settings.beginGroup(QLatin1String("GUICustomize"));
-        QString val = settings.value( key ).toString();
-
-        // if file is relative, prepend the application dir path.
-        QFileInfo checkFi(val);
-        if( !val.isEmpty() && checkFi.isRelative() ) {
-            checkFi.setFile( QApplication::applicationDirPath(), val );
-            val = checkFi.absoluteFilePath();
-        }
-
-        if( !val.isEmpty() ) {
-            QPixmap pix( val );
-            if( pix.isNull() ) {
-                // pixmap loading hasn't succeeded. We take the text instead.
-                re.setValue( val );
-            } else {
-                re.setValue( pix );
-            }
-        }
-    }
-    return re;
-}
-
 void MirallConfigFile::setProxyType(int proxyType,
                   const QString& host,
                   int port,

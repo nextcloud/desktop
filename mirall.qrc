@@ -20,13 +20,5 @@
         <file>resources/folder-important.png</file>
         <file>resources/folder-grey.png</file>
         <file>resources/task-ongoing.png</file>
-
-        <file>resources/owncloud-icon-22.png</file>
-        <file>resources/owncloud-icon-32.png</file>
-        <file>resources/owncloud-icon-48.png</file>
-        <file>resources/owncloud-icon-64.png</file>
-        <file>resources/owncloud-icon-128.png</file>
-        <file>resources/owncloud-framed-64.png</file>
-
     </qresource>
 </RCC>
