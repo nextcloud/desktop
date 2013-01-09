@@ -29,6 +29,7 @@
 #ifdef _WIN32
 #include <windef.h>
 #include <winbase.h>
+#include <wchar.h>
 #endif
 
 #ifdef _WIN32
@@ -50,7 +51,8 @@
 #endif
 
 #ifdef _WIN32
-typedef struct _stat csync_stat_t;
+typedef struct stat64 csync_stat_t;
+#define _FILE_OFFSET_BITS 64
 #else
 typedef struct stat csync_stat_t;
 #endif
@@ -63,7 +65,7 @@ typedef struct stat csync_stat_t;
 #define lstat _stat
 #endif
 #ifdef _WIN32
-#define fstat  _fstat
+#define fstat  _fstat64
 #endif
 
 #ifndef O_NOATIME
@@ -86,7 +88,7 @@ typedef  wchar_t    _TCHAR;
 #define _ttelldir   _wtelldir
 #define _tseekdir   _wseekdir
 #define _tcreat     _wcreat
-#define _tstat      _wstat
+#define _tstat      _wstat64
 #define _tunlink    _wunlink
 #define _tmkdir     _wmkdir
 #define _trmdir	    _wrmdir

@@ -28,6 +28,11 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#include "config.h"
+#ifdef NEON_WITH_LFS /* Switch on LFS in libneon. Never remove the NE_LFS! */
+#define NE_LFS
+#endif
+
 #include <neon/ne_basic.h>
 #include <neon/ne_socket.h>
 #include <neon/ne_session.h>
@@ -1585,7 +1590,9 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
             csync_stat_t sb;
             if( fstat( fd, &sb ) == 0 ) {
                 /* Attach the request to the file descriptor */
-                ne_set_request_body_fd(request, fd, 0, sb.st_size );
+                ne_set_request_body_fd(request, fd, 0, sb.st_size);
+                DEBUG_WEBDAV("Put file size: %lld, variable sizeof: %ld", (long long int) sb.st_size,
+                             sizeof(sb.st_size));
 
                 if (_progresscb) {
                     ne_set_notifier(dav_session.ctx, ne_notify_status_cb, write_ctx);
