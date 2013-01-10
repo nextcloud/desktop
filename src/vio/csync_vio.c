@@ -477,20 +477,6 @@ int csync_vio_mkdirs(CSYNC *ctx, const char *uri, mode_t mode) {
     return -1;
   }
 
-  st = csync_vio_file_stat_new();
-  if (st == NULL) {
-    return -1;
-  }
-
-  if (csync_vio_stat(ctx, uri, st) == 0) {
-    if (! S_ISDIR(st->mode)) {
-      errno = ENOTDIR;
-      return -1;
-    }
-  }
-  csync_vio_file_stat_destroy(st);
-  st = NULL;
-
   tmp = strlen(uri);
   while(tmp > 0 && uri[tmp - 1] == '/') --tmp;
   while(tmp > 0 && uri[tmp - 1] != '/') --tmp;
