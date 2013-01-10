@@ -32,11 +32,11 @@
         <file>theme/white/state-offline-64.png</file>
         <file>theme/white/state-error-64.png</file>
 
-        <file>theme/colored/owncloud-22.png</file>
-        <file>theme/colored/owncloud-32.png</file>
-        <file>theme/colored/owncloud-48.png</file>
-        <file>theme/colored/owncloud-64.png</file>
-        <file>theme/colored/owncloud-128.png</file>
+        <file>theme/colored/owncloud-icon-22.png</file>
+        <file>theme/colored/owncloud-icon-32.png</file>
+        <file>theme/colored/owncloud-icon-48.png</file>
+        <file>theme/colored/owncloud-icon-64.png</file>
+        <file>theme/colored/owncloud-icon-128.png</file>
 
         <file>theme/colored/owncloud-framed-64.png</file>
     </qresource>
