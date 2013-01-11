@@ -763,7 +763,7 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::CreateAnOwncloudPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="362"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="369"/>
         <source>mydomain.org</source>
         <translation>mondomaine.org</translation>
     </message>
@@ -1004,7 +1004,7 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::OwncloudFTPAccessPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="320"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="327"/>
         <source>ftp.mydomain.org</source>
         <translation>ftp.mondomaine.org</translation>
     </message>
@@ -1020,16 +1020,16 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::OwncloudSetupPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="79"/>
-        <source>Create the %1 Connection</source>
-        <translation>Créer la connexion %1</translation>
-    </message>
-    <message>
         <source>john</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <source>secret</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="86"/>
+        <source>Create Connection to %1</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -1210,9 +1210,14 @@ L&apos;installation ne peut pas continuer.</translation>
         <translation>Bienvenue sur %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="68"/>
-        <source>&lt;p&gt;In order to connect to your %1 server, you need to provide the server address as well as your credentials.&lt;/p&gt;&lt;p&gt;This wizard will guide you through the process.&lt;p&gt;&lt;p&gt;If you have not received this information, please contact your %1 hosting provider.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Pour se connecter à votre serveur %1, vous devez fournir l&apos;adresse du serveur ainsi que vos identifiants.&lt;/p&gt;&lt;p&gt;Cet assistant va vous guider dans le processus.&lt;p&gt;&lt;p&gt;Si vous n&apos;avez pas reçu cette information, merci de contacter votre serveur d&apos;hébergement %1&lt;/p&gt;</translation>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="70"/>
+        <source>&lt;p&gt;In order to connect to your %1 server, you need to provide the server address as well as your credentials.&lt;/p&gt;&lt;p&gt;This wizard will guide you through the process.&lt;p&gt;&lt;p&gt;If you have not received this information, please contact your %1 provider.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="75"/>
+        <source>&lt;p&gt;In order to connect to your %1 server, you need to provide your credentials.&lt;/p&gt;&lt;p&gt;This wizard will guide you through the setup process.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1222,7 +1227,7 @@ L&apos;installation ne peut pas continuer.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="443"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="450"/>
         <source>Congratulations! Your &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;new %2&lt;/a&gt; is now up and running!</source>
         <translation>Félicitation ! Votre &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;nouvel %2&lt;/a&gt; est maintenant en ligne !</translation>
     </message>
@@ -1230,7 +1235,7 @@ L&apos;installation ne peut pas continuer.</translation>
 <context>
     <name>Mirall::OwncloudWizardSelectTypePage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="226"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="233"/>
         <source>http://owncloud.mydomain.org</source>
         <translation>http://owncloud.mondomaine.org</translation>
     </message>
