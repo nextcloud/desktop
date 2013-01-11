@@ -65,10 +65,17 @@ OwncloudWelcomePage::OwncloudWelcomePage()
     content->setAlignment(Qt::AlignTop);
     content->setTextFormat(Qt::RichText);
     content->setWordWrap(true);
-    content->setText(tr("<p>In order to connect to your %1 server, you need to provide the server address "
-                        "as well as your credentials.</p><p>This wizard will guide you through the process.<p>"
-                        "<p>If you have not received this information, please contact your %1 hosting provider.</p>")
-                     .arg(Theme::instance()->appName()));
+    Theme *theme = Theme::instance();
+    if (theme->overrideServerUrl().isEmpty()) {
+        content->setText(tr("<p>In order to connect to your %1 server, you need to provide the server address "
+                            "as well as your credentials.</p><p>This wizard will guide you through the process.<p>"
+                            "<p>If you have not received this information, please contact your %1 provider.</p>")
+                         .arg(theme->appName()));
+    } else {
+        content->setText(tr("<p>In order to connect to your %1 server, you need to provide "
+                            "your credentials.</p><p>This wizard will guide you through "
+                            "the setup process.</p>").arg(theme->appName()));
+    }
 }
 
 
@@ -76,7 +83,7 @@ OwncloudSetupPage::OwncloudSetupPage()
 {
     _ui.setupUi(this);
 
-    setTitle(tr("Create the %1 Connection").arg(Theme::instance()->appName()));
+    setTitle(tr("Create Connection to %1").arg(Theme::instance()->appName()));
 
     connect(_ui.leUrl, SIGNAL(textChanged(QString)), SLOT(handleNewOcUrl(QString)));
 
