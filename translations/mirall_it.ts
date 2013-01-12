@@ -1031,7 +1031,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="86"/>
         <source>Create Connection to %1</source>
-        <translation type="unfinished"/>
+        <translation>Crea connessione a %1</translation>
     </message>
 </context>
 <context>

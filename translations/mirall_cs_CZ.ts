@@ -1031,7 +1031,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="86"/>
         <source>Create Connection to %1</source>
-        <translation type="unfinished"/>
+        <translation>Vytvořit spojení s %1</translation>
     </message>
 </context>
 <context>
@@ -1213,12 +1213,12 @@ Nastavení nelze provést.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="70"/>
         <source>&lt;p&gt;In order to connect to your %1 server, you need to provide the server address as well as your credentials.&lt;/p&gt;&lt;p&gt;This wizard will guide you through the process.&lt;p&gt;&lt;p&gt;If you have not received this information, please contact your %1 provider.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Pro spojení s vaším serverem %1 musíte zadat adresu a přihlašovací údaje.&lt;/p&gt;&lt;p&gt;Tento průvodce vás provede tímto procesem.&lt;p&gt;&lt;p&gt;Pokud  jste nedostali potřebné údaje tak, prosím, kontaktujte svého poskytovatele %1.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="75"/>
         <source>&lt;p&gt;In order to connect to your %1 server, you need to provide your credentials.&lt;/p&gt;&lt;p&gt;This wizard will guide you through the setup process.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Pro spojení s vaším serverem %1 musíte  přihlašovací údaje.&lt;/p&gt;&lt;p&gt;Tento průvodce vás provede tímto nastavením.&lt;p&gt;</translation>
     </message>
 </context>
 <context>

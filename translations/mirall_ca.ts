@@ -1021,7 +1021,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="86"/>
         <source>Create Connection to %1</source>
-        <translation type="unfinished"/>
+        <translation>Crea connexió amb %1</translation>
     </message>
 </context>
 <context>
@@ -1203,12 +1203,12 @@ No s&apos;ha pogut configurar</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="70"/>
         <source>&lt;p&gt;In order to connect to your %1 server, you need to provide the server address as well as your credentials.&lt;/p&gt;&lt;p&gt;This wizard will guide you through the process.&lt;p&gt;&lt;p&gt;If you have not received this information, please contact your %1 provider.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Per tal de connectar el servidor %1, heu de proporcionar l&apos;adreça del servidor i les vostres credencials.&lt;/p&gt;&lt;p&gt;Aquest assistent us guiarà pel procés.&lt;p&gt;&lt;p&gt;Si no heu rebut aquesta informació contacteu amb el vostre proveïdor %1.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="75"/>
         <source>&lt;p&gt;In order to connect to your %1 server, you need to provide your credentials.&lt;/p&gt;&lt;p&gt;This wizard will guide you through the setup process.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Per tal de connectar amb el servidor %1, heu de proporcionar les vostres credencials.&lt;/p&gt;&lt;p&gt;Aquest assistent us guiarà pel procés de configuració.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
