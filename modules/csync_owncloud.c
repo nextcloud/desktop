@@ -261,7 +261,6 @@ static void set_errno_from_http_errcode( int err ) {
     case 501:           /* Not Implemented */
         new_errno = EINVAL;
         break;
-    case 413:           /* Request Entity Too Large */
     case 507:           /* Insufficient Storage */
         new_errno = ENOSPC;
         break;
@@ -277,9 +276,14 @@ static void set_errno_from_http_errcode( int err ) {
     case 422:           /* Unprocessable Entity */
     case 500:           /* Internal Server Error */
     case 502:           /* Bad Gateway */
-    case 503:           /* Service Unavailable */
     case 505:           /* HTTP Version Not Supported */
         new_errno = EIO;
+        break;
+    case 503:           /* Service Unavailable */
+        new_errno = ERRNO_SERVICE_UNAVAILABLE;
+        break;
+    case 413:           /* Request Entity too Large */
+        new_errno = EFBIG;
         break;
     default:
         new_errno = EIO;

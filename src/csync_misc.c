@@ -182,6 +182,9 @@ CSYNC_ERROR_CODE csync_errno_to_csync_error(CSYNC_ERROR_CODE default_err)
   CSYNC_ERR_NOT_FOUND,
   CSYNC_ERR_EXISTS,
   CSYNC_ERR_NOSPC,
+  CSYNC_ERR_QUOTA,
+  CSYNC_ERR_SERVICE_UNAVAILABLE,
+  CSYNC_ERR_FILE_TOO_BIG,
 
   CSYNC_ERR_UNSPEC
 */
@@ -210,6 +213,15 @@ CSYNC_ERROR_CODE csync_errno_to_csync_error(CSYNC_ERROR_CODE default_err)
     break;
   case ERRNO_TIMEOUT:
     csync_err = CSYNC_ERR_TIMEOUT; /* Network: Timeout error */
+    break;
+  case ERRNO_QUOTA_EXCEEDED:
+    csync_err = CSYNC_ERR_QUOTA;   /* Quota exceeded */
+    break;
+  case ERRNO_SERVICE_UNAVAILABLE:
+    csync_err = CSYNC_ERR_SERVICE_UNAVAILABLE;  /* Service temporarily down */
+    break;
+  case EFBIG:
+    csync_err = CSYNC_ERR_FILE_TOO_BIG;          /* File larger than 2MB */
     break;
   case ERRNO_PRECONDITION:
   case ERRNO_RETRY:
@@ -266,7 +278,6 @@ CSYNC_ERROR_CODE csync_errno_to_csync_error(CSYNC_ERROR_CODE default_err)
 #ifndef _WIN32
   case ETXTBSY:               /* Text file busy */
 #endif
-  case EFBIG:                 /* File too large */
   case ESPIPE:                /* Illegal seek */
   case EROFS:                 /* Read-only file system */
   case EMLINK:                /* Too many links */
