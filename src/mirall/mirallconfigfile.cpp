@@ -18,7 +18,6 @@
 #include "mirall/owncloudtheme.h"
 #include "mirall/miralltheme.h"
 #include "mirall/credentialstore.h"
-#include "mirall/application.h"
 
 #include <QtCore>
 #include <QtGui>
@@ -32,6 +31,7 @@
 namespace Mirall {
 
 QString MirallConfigFile::_oCVersion;
+QString MirallConfigFile::_confDir = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
 bool    MirallConfigFile::_askedUser = false;
 
 MirallConfigFile::MirallConfigFile( const QString& appendix )
@@ -39,9 +39,14 @@ MirallConfigFile::MirallConfigFile( const QString& appendix )
 {
 }
 
+void MirallConfigFile::setConfDir(const QString &value)
+{
+  _confDir=value;
+}
+
 QString MirallConfigFile::configPath() const
 {
-    QString dir = Application::getInstance()->getDataLocation();
+    QString dir = _confDir;
     if( !dir.endsWith(QLatin1Char('/')) ) dir.append(QLatin1Char('/'));
     return dir;
 }

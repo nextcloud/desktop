@@ -63,10 +63,6 @@ void mirallLogCatcher(QtMsgType type, const char *msg)
 
 // ----------------------------------------------------------------------------------
 
-Application *Application::getInstance() {
-    return dynamic_cast<Application*>(qApp);
-}
-
 Application::Application(int &argc, char **argv) :
     SharedTools::QtSingleApplication(argc, argv),
     _tray(0),
@@ -78,7 +74,6 @@ Application::Application(int &argc, char **argv) :
     _theme(Theme::instance()),
     _updateDetector(0),
     _logBrowser(0),
-    _dataLocation(QDesktopServices::storageLocation(QDesktopServices::DataLocation)),
     _showLogWindow(false),
     _logFlush(false),
     _helpOnly(false)
@@ -184,11 +179,6 @@ Application::~Application()
 {
     delete _tray; // needed, see ctor
     qDebug() << "* Mirall shutdown";
-}
-
-const QString &Application::getDataLocation() const
-{
-    return _dataLocation;
 }
 
 void Application::slotStartUpdateDetector()
@@ -960,7 +950,7 @@ void Application::parseOptions(const QStringList &options)
             _theme->setSystrayUseMonoIcons(true); 
         } else if (option == QLatin1String("--confdir")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
-                _dataLocation=it.next();
+                MirallConfigFile::setConfDir(it.next());
             } else {
                 showHelp();
             }

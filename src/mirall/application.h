@@ -53,10 +53,6 @@ public:
 
     bool giveHelp();
 
-    static Application *getInstance();
-
-    const QString &getDataLocation() const;
-
 signals:
 
 protected slots:
@@ -132,7 +128,6 @@ private:
     QMap<QString, QString> _overallStatusStrings;
     LogBrowser *_logBrowser;
     QString _logFile;
-    QString _dataLocation;
     bool _showLogWindow;
     bool _logFlush;
     bool _helpOnly;
