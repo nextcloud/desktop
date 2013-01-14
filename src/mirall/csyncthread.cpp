@@ -26,6 +26,7 @@
 #endif
 
 #include <QDebug>
+#include <QSslSocket>
 #include <QDir>
 #include <QMutexLocker>
 #include <QThread>
@@ -324,16 +325,18 @@ int CSyncThread::getauth(const char *prompt,
     } else {
         if( qPrompt.startsWith( QLatin1String("There are problems with the SSL certificate:"))) {
             // SSL is requested. If the program came here, the SSL check was done by mirall
-            // the answer is simply yes here.
+            // It needs to be checked if the  chain is still equal to the one which
+            // was verified by the user.
             QRegExp regexp("fingerprint: ([\\w\\d:]+)");
             bool certOk = false;
 
             int pos = 0;
-            MirallConfigFile cfg;
-            QByteArray ba = cfg.caCerts();
 
-            QList<QSslCertificate> certs = QSslCertificate::fromData(ba);
-            Utility util;
+            // IF we had a cert ack'ed by the user, it was added to the Qt default
+            // CA Cert list. So we get the list of certs to check against from
+            // Qt.
+            QList<QSslCertificate> certs = QSslSocket::defaultCaCertificates();
+            Utility util; // to format a Fingerprint.
 
             while (!certOk && (pos = regexp.indexIn(qPrompt, 1+pos)) != -1) {
                 QString neon_fingerprint = regexp.cap(1);
