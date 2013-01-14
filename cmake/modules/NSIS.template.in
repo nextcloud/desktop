@@ -335,14 +335,10 @@ Section "${APPLICATION_NAME}" SEC_OWNCLOUD
    File "${MING_BIN}\libpng15-15.dll"
 
    ; ownCloud plugin
-   File "${MING_BIN}\libgcrypt-11.dll"
-   File "${MING_BIN}\libgnutls-26.dll"
-   File "${MING_BIN}\libgpg-error-0.dll"
    File "${MING_BIN}\libintl-8.dll"
    File "${MING_BIN}\libneon-27.dll"
    File "${MING_BIN}\libproxy.dll"
    File "${MING_BIN}\libmodman.dll"
-   File "${MING_BIN}\libtasn1-3.dll"
    File "${MING_BIN}\libxml2-2.dll"
 
    ;MinGW stuff
