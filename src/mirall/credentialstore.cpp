@@ -321,7 +321,6 @@ void CredentialStore::slotKeyChainWriteFinished( QKeychain::Job *job )
             // Try to remove password formerly stored in the config file.
             MirallConfigFile cfgFile;
             cfgFile.clearPasswordFromConfig();
-            reset();
         }
     } else {
         qDebug() << "Error: KeyChain Write Password Job failed!";
