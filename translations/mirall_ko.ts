@@ -566,27 +566,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="212"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="213"/>
         <source>CSync create failed.</source>
         <translation>CSync 생성 실패.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="86"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="87"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSync에서 잠금 파일을 만드는 데 실패하였습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="80"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="81"/>
         <source>Success.</source>
         <translation>완료.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="83"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="84"/>
         <source>CSync Logging setup failed.</source>
         <translation>CSync의 기록 설정에 실패하였습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="89"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="90"/>
         <source>CSync failed to load the state db.</source>
         <translation>CSync에서 상태 데이터베이스를 불러오지 못했습니다.</translation>
     </message>
@@ -595,17 +595,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="95"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="96"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>이 클라이언트와 서버의 시스템 시각이 다릅니다. 서버와 클라이언트에서 시각 동기화 서비스(NTP)를 실행하여 시각을 맞추십시오.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="100"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="101"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSync에서 파일시스템 종류를 인식하지 못했습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="103"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="104"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSync에서 내부 트리를 처리하는 중 오류가 발생하였습니다.</translation>
     </message>
@@ -614,7 +614,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="121"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="122"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;대상 디렉터리 %1이(가) 존재하지 않습니다.&lt;/p&gt;&lt;p&gt;동기화 설정을 확인하십시오.&lt;/p&gt;</translation>
     </message>
@@ -623,107 +623,107 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="131"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="132"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>로컬 파일 시스템에 쓸 수 없습니다. 권한을 확인하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="127"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="128"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>원격 파일에 쓸 수 없습니다. 원격 접근 권한을 확인하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="106"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="107"/>
         <source>CSync failed to reserve memory.</source>
         <translation>CSync의 메모리 확보에 실패하였습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="109"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="110"/>
         <source>CSync fatal parameter error.</source>
         <translation>CSync의 치명적인 파라메터 에러.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="112"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="113"/>
         <source>CSync processing step update failed.</source>
         <translation>CSync 처리 단계 업데이트에 실패하였습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="115"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="116"/>
         <source>CSync processing step reconcile failed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="118"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="119"/>
         <source>CSync processing step propagate failed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="134"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="135"/>
         <source>CSync failed to connect through a proxy.</source>
         <translation>CSync가 프록시를 사용하여 연결하는데 실패하였습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="137"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="138"/>
         <source>CSync failed to lookup proxy or server.</source>
         <translation>CSync가 프록시 또는 서버를 찾는데 실패하였습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="140"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="141"/>
         <source>CSync failed to authenticate at the %1 server.</source>
         <translation>CSync가 %1 서버의 인증에 실패하였습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="143"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="144"/>
         <source>CSync failed to authenticate at the proxy.</source>
         <translation>CSync가 프록시의 인증에 실패하였습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="146"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="147"/>
         <source>CSync failed to connect to the network.</source>
         <translation>CSync가 네트워크에 연결하는데 실패하였습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="149"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="150"/>
         <source>A network connection timeout happend.</source>
         <translation>네트워크 연결 시간이 초과되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="152"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="153"/>
         <source>A HTTP transmission error happened.</source>
         <translation>HTTP 전송에 오류가 발생하였습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="155"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="156"/>
         <source>CSync failed due to not handled permission deniend.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="158"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="159"/>
         <source>CSync failed to find a specific file.</source>
         <translation>CSync가 특정 파일 검색에 실패하였습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="161"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="162"/>
         <source>CSync tried to create a directory that already exists.</source>
         <translation>CSync가 이미 존재하는 디렉토리를 생성하려 하였습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="164"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="165"/>
         <source>CSync: No space on %1 server available.</source>
         <translation>CSync: %1서버에 이용가능한 공간이 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="167"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="168"/>
         <source>CSync unspecified error.</source>
         <translation>CSync 알 수 없는 오류.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="170"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="171"/>
         <source>An internal error number %1 happend.</source>
         <translation>내부 오류 번호 %1이(가) 발생하였습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="174"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="175"/>
         <source>&lt;br/&gt;Backend Message: </source>
         <translation>&lt;br/&gt;백엔드 메시지:</translation>
     </message>
@@ -738,7 +738,7 @@ Please make sure that all directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="92"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="93"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;CSync %1 플러그인을 불러올 수 없습니다.&lt;br/&gt;설치 상태를 확인하십시오!&lt;/p&gt;</translation>
     </message>
