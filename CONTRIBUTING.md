@@ -6,9 +6,9 @@ We are also available on [IRC][irc].
 
 ### Guidelines
 * Report the issue using our [template][template], it includes all the
-  informations we need to track down the issue.  This repository is *only* for
-* issues within the ownCloud desktop client. Issues in other compontents should
-  be reported in their own repositores: 
+  informations we need to track down the issue.  
+* This repository is *only* for issues within the ownCloud desktop client. 
+  Issues in other compontents should be reported in their own repositores: 
   - [ownCloud server](https://github.com/owncloud/core/issues)
   - [ownCloud apps](https://github.com/owncloud/apps/issues) (e.g. Calendar,
     Contacts...)
