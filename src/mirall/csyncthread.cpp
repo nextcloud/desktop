@@ -186,11 +186,11 @@ const char* CSyncThread::proxyTypeToCStr(QNetworkProxy::ProxyType type)
         return "DefaultProxy";
     case QNetworkProxy::Socks5Proxy:
         return "Socks5Proxy";
-    case  QNetworkProxy::HttpProxy:
+    case QNetworkProxy::HttpProxy:
         return "HttpProxy";
-    case  QNetworkProxy::HttpCachingProxy:
+    case QNetworkProxy::HttpCachingProxy:
         return "HttpCachingProxy";
-    case  QNetworkProxy::FtpCachingProxy:
+    case QNetworkProxy::FtpCachingProxy:
         return "FtpCachingProxy";
     default:
         return "NoProxy";
