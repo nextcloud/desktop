@@ -7,13 +7,13 @@ We are also available on [IRC][irc].
 ### Guidelines
 * Report the issue using our [template][template], it includes all the
   informations we need to track down the issue.  This repository is *only* for
-* issues within the ownCloud core code. Issues in other compontents should be
-  reported in their own repositores: 
-  - [Android client](https://github.com/owncloud/android/issues)
-  - [iOS client](https://github.com/owncloud/ios-issues/issues)
-  - [Desktop client](https://github.com/owncloud/mirall/issues)
+* issues within the ownCloud desktop client. Issues in other compontents should
+  be reported in their own repositores: 
+  - [ownCloud server](https://github.com/owncloud/core/issues)
   - [ownCloud apps](https://github.com/owncloud/apps/issues) (e.g. Calendar,
     Contacts...)
+  - [Android client](https://github.com/owncloud/android/issues)
+  - [iOS client](https://github.com/owncloud/ios-issues/issues)
 * Search the existing issues first, it's likely that your issue was already
   reported.
 
