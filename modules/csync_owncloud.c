@@ -515,8 +515,8 @@ static int ne_proxy_auth( void *userdata, const char *realm, int attempt,
             strcpy( password, dav_session.proxy_pwd );
         }
     }
-
-    return attempt;
+    /* NTLM needs several attempts */
+    return (attempt < 3) ? 0 : -1;
 }
 
 /* Configure the proxy depending on the variables */
@@ -667,6 +667,10 @@ static void request_created_hook(ne_request *req, void *userdata,
         ne_add_request_header(req, "Cookie", dav_session.session_key);
     }
 
+    if(dav_session.proxy_type) {
+        /* required for NTLM */
+        ne_add_request_header(req, "Proxy-Connection", "Keep-Alive");
+    }
 }
 
 /* called from neon */
