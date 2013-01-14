@@ -137,9 +137,11 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
-    configure_file(${CMAKE_SOURCE_DIR}/mirall.desktop.in
-                   ${APPLICATION_SHORTNAME}.desktop) 
-    install(FILES ${APPLICATION_SHORTNAME}.desktop DESTINATION /share/applications )
+    if(NOT WIN32)
+        configure_file(${CMAKE_SOURCE_DIR}/mirall.desktop.in
+                       ${APPLICATION_SHORTNAME}.desktop)
+        install(FILES ${APPLICATION_SHORTNAME}.desktop DESTINATION /share/applications )
+    endif()
 else()
     install(TARGETS mirallsync owncloudsync DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS)
 endif()
