@@ -275,12 +275,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="239"/>
+        <location filename="../src/mirall/application.cpp" line="242"/>
         <source>&lt;p&gt;The detailed error message is&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Zehaztutako errore mezua:&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="241"/>
+        <location filename="../src/mirall/application.cpp" line="244"/>
         <source>&lt;p&gt;Please check your configuration by clicking on the tray icon.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Mezedez begiratu zure konfigurazioa erretilu ikonoak klik eginez&lt;/p&gt;</translation>
     </message>
@@ -305,7 +305,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="354"/>
+        <location filename="../src/mirall/application.cpp" line="357"/>
         <source>Sync started for %1 configured sync folder(s).</source>
         <translation>CSync konfiguratutako %1 karpetentzat hasi da.</translation>
     </message>
@@ -314,27 +314,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="416"/>
+        <location filename="../src/mirall/application.cpp" line="419"/>
         <source>Open status...</source>
         <translation>Ikusi egoera...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="419"/>
+        <location filename="../src/mirall/application.cpp" line="422"/>
         <source>Add folder...</source>
         <translation>Gehitu karpeta...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="421"/>
+        <location filename="../src/mirall/application.cpp" line="424"/>
         <source>Configure...</source>
         <translation>Konfiguratu...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="423"/>
+        <location filename="../src/mirall/application.cpp" line="426"/>
         <source>Configure proxy...</source>
         <translation>Konfiguratu proxya...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="427"/>
+        <location filename="../src/mirall/application.cpp" line="430"/>
         <source>Quit</source>
         <translation>Kendu</translation>
     </message>
@@ -343,210 +343,195 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="222"/>
+        <location filename="../src/mirall/application.cpp" line="225"/>
         <source>%1 Server Mismatch</source>
         <translation>%1 Zerbitzaria ez dator bat</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="223"/>
+        <location filename="../src/mirall/application.cpp" line="226"/>
         <source>&lt;p&gt;The configured server for this client is too old.&lt;/p&gt;&lt;p&gt;Please update to the latest %1 server and restart the client.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Bezero honetarako konfiguratutako zerbitzaria oso zaharra da.&lt;/p&gt;&lt;p&gt;Mesedez eguneratu zerbitzaria %1-en azkenengo bertsiora eta berrabiarazi bezeroa.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="238"/>
+        <location filename="../src/mirall/application.cpp" line="241"/>
         <source>&lt;p&gt;The %1 at %2 could not be reached.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ezin da %2-ko %1-era iritsi.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="243"/>
+        <location filename="../src/mirall/application.cpp" line="246"/>
         <source>%1 Connection Failed</source>
         <translation>%1 konexioak huts egin du</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="268"/>
+        <location filename="../src/mirall/application.cpp" line="271"/>
         <source>Too many attempts to get a valid password.</source>
         <translation>Saiakera gehiegi pasahitz egokia lortzeko.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="272"/>
+        <location filename="../src/mirall/application.cpp" line="275"/>
         <source>ownCloud user credentials are wrong. Please check configuration.</source>
         <translation>ownCloud erabiltzailearen kredentzialak gaizki daude. Mesedez egiaztatu konfigurazioa</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="276"/>
-        <location filename="../src/mirall/application.cpp" line="295"/>
+        <location filename="../src/mirall/application.cpp" line="279"/>
+        <location filename="../src/mirall/application.cpp" line="298"/>
         <source>Credentials</source>
         <translation>Kredentzialak</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="287"/>
+        <location filename="../src/mirall/application.cpp" line="290"/>
         <source>Error: Could not retrieve the password!</source>
         <translation>Errorea: Ezin izan da pasahitza eskuratu!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="289"/>
+        <location filename="../src/mirall/application.cpp" line="292"/>
         <source>Password dialog was canceled!</source>
         <translation>Pasahitza elkarrizketa koadroa ezeztatua izan da!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="325"/>
-        <location filename="../src/mirall/application.cpp" line="334"/>
+        <location filename="../src/mirall/application.cpp" line="328"/>
+        <location filename="../src/mirall/application.cpp" line="337"/>
         <source>No %1 Connection</source>
         <translation>Ez dago %1-ekin konexiorik</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="326"/>
+        <location filename="../src/mirall/application.cpp" line="329"/>
         <source>&lt;p&gt;Your %1 credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Zure %1 kredentzialak ez dira zuzenak.&lt;/p&gt;&lt;p&gt;Mesedez zuzendu erretilutiko ikonotik konfigurazio elkarrizketa koadroa abiarazten!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="335"/>
+        <location filename="../src/mirall/application.cpp" line="338"/>
         <source>&lt;p&gt;Either your user name or your password are not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Zure erabiltzaile izena edo pasahitza ez dira zuzenak.&lt;/p&gt;&lt;p&gt;Mesedez zuzendu erretilutiko ikonotik konfigurazio elkarrizketa koadroa abiarazten!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="353"/>
+        <location filename="../src/mirall/application.cpp" line="356"/>
         <source>%1 Sync Started</source>
         <translation>%1 Sinkronizazioa hasi da</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="414"/>
+        <location filename="../src/mirall/application.cpp" line="417"/>
         <source>Open %1 in browser...</source>
         <translation>Ireki %1 arakatzailean...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="425"/>
+        <location filename="../src/mirall/application.cpp" line="428"/>
         <source>About...</source>
         <translation>Honi buruz...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="481"/>
+        <location filename="../src/mirall/application.cpp" line="484"/>
         <source>Open %1 folder</source>
         <translation>Ireki %1 karpeta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="494"/>
+        <location filename="../src/mirall/application.cpp" line="497"/>
         <source>Managed Folders:</source>
         <translation>Kudeatutako karpetak:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="735"/>
+        <location filename="../src/mirall/application.cpp" line="742"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4&lt;br&gt;using OCsync %5 and Qt %6.&lt;/small&gt;&lt;p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="742"/>
+        <location filename="../src/mirall/application.cpp" line="749"/>
         <source>About %1</source>
         <translation>%1 buruz</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="743"/>
+        <location filename="../src/mirall/application.cpp" line="750"/>
         <source>&lt;p&gt;&lt;b&gt;%1 Client Version %2&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Authors&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;mailto:freitag@owncloud.com&quot;&gt;Klaas Freitag&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;a href=&quot;mailto:danimo@owncloud.com&quot;&gt;Daniel Molkentin&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;br&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/p&gt;&lt;p&gt;For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;.&lt;/p&gt;%7</source>
         <translation>&lt;p&gt;&lt;b&gt;%1 Bezeroaren Bertsioa %2&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Egileak&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;mailto:freitag@owncloud.com&quot;&gt;Klaas Freitag&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;a href=&quot;mailto:danimo@owncloud.com&quot;&gt;Daniel Molkentin&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;br&gt; Duncan Mac-Vicar P-n Mirallen oinarrituta.&lt;/p&gt;&lt;p&gt;Informazio gehiago izateko ikusi &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;.&lt;/p&gt;%7</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="767"/>
+        <location filename="../src/mirall/application.cpp" line="774"/>
         <source>Confirm Folder Remove</source>
         <translation>Baieztatu karpetaren ezabatzea</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="768"/>
+        <location filename="../src/mirall/application.cpp" line="775"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>Ziur zaude  &lt;i&gt;%1&lt;/i&gt; karpeta ezabatu nahi duzula?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="796"/>
         <source>Undefined Folder State</source>
-        <translation>Definitu gabeko karpeta egoera.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="799"/>
         <source>The folder waits to start syncing.</source>
-        <translation>Karpeta sinkronizazioa hasteko zain dago.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="802"/>
-        <location filename="../src/mirall/application.cpp" line="979"/>
+        <location filename="../src/mirall/application.cpp" line="935"/>
         <source>Sync is running.</source>
         <translation>Sinkronizazioa martxan da.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="805"/>
-        <location filename="../src/mirall/application.cpp" line="984"/>
+        <location filename="../src/mirall/application.cpp" line="940"/>
         <source>Last Sync was successful.</source>
         <translation>Azkeneko sinkronizazioa ongi burutu zen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="808"/>
-        <location filename="../src/mirall/application.cpp" line="990"/>
+        <location filename="../src/mirall/application.cpp" line="946"/>
         <source>Syncing Error.</source>
         <translation>Sinkronizazio errorea.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="811"/>
-        <location filename="../src/mirall/application.cpp" line="996"/>
+        <location filename="../src/mirall/application.cpp" line="952"/>
         <source>Setup Error.</source>
         <translation>Konfigurazio errorea.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="814"/>
-        <location filename="../src/mirall/application.cpp" line="999"/>
+        <location filename="../src/mirall/application.cpp" line="955"/>
         <source>Undefined Error State.</source>
         <translation>Definitu gabeko errore egoera.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="818"/>
         <source>Folder information</source>
-        <translation>Karpetaren informazioa</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="833"/>
         <source>Unknown</source>
-        <translation>Ezezaguna</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="835"/>
         <source>Changed files:
 </source>
-        <translation>Aldatutako fitxategiak:
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="837"/>
         <source>Added files:
 </source>
-        <translation>Gehitutako fitxategiak:
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="839"/>
         <source>New files in the server, or files deleted locally:
 </source>
-        <translation>Zerbitzariko fitxategi berriak, edo ezabtu diren bertakoak:
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="865"/>
+        <location filename="../src/mirall/application.cpp" line="817"/>
         <source>Sync Running</source>
         <translation>Sinkronizazioa martxan da</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="866"/>
+        <location filename="../src/mirall/application.cpp" line="818"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Sinkronizazio martxan da.&lt;br/&gt;Bukatu nahi al duzu?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="972"/>
+        <location filename="../src/mirall/application.cpp" line="928"/>
         <source>Undefined State.</source>
         <translation>Definitu gabeko egoera.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="975"/>
+        <location filename="../src/mirall/application.cpp" line="931"/>
         <source>Waits to start syncing.</source>
         <translation>Itxoiten sinkronizazioa hasteko.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="1004"/>
+        <location filename="../src/mirall/application.cpp" line="960"/>
         <source> (Sync is paused)</source>
         <translation>(Sinkronizazioa pausatuta dago)</translation>
     </message>
@@ -555,7 +540,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="1021"/>
+        <location filename="../src/mirall/application.cpp" line="977"/>
         <source>No sync folders configured.</source>
         <translation>Ez dago sinkronizazio karpetarik definituta.</translation>
     </message>
@@ -563,7 +548,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="213"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="298"/>
         <source>CSync create failed.</source>
         <translation>CSync sortzeak huts egin du.</translation>
     </message>
@@ -773,24 +758,127 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::DownloadNotifier</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="290"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="298"/>
         <source>New file available</source>
         <translation>Fitxategi berria eskuragarri</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="290"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="298"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
         <translation>&apos;%1&apos; makina honekin sinkronizatu da.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="292"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="300"/>
         <source>New files available</source>
         <translation>Fitxategi berriak eskuragarri</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/owncloudfolder.cpp" line="292"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="300"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
         <translation><numerusform>&apos;%1&apos; eta beste %n fitxategi makina honekin sinkronizatu dira.</numerusform><numerusform>&apos;%1&apos; eta beste %n fitxategi makina honekin sinkronizatu dira.</numerusform></translation>
+    </message>
+</context>
+<context>
+    <name>Mirall::FileItemDialog</name>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="41"/>
+        <source>Files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="42"/>
+        <source>File Count</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="50"/>
+        <source>Sync Protocol</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="61"/>
+        <source>Undefined Folder State</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="64"/>
+        <source>The folder waits to start syncing.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="67"/>
+        <source>Sync is running.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="70"/>
+        <source>Last Sync was successful.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="73"/>
+        <source>Syncing Error.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="76"/>
+        <source>Setup Error.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="79"/>
+        <source>Undefined Error State.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="115"/>
+        <source>%1  (finished %2 sec. ago)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="132"/>
+        <source>Synced Files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="138"/>
+        <source>New Files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="144"/>
+        <source>Deleted Files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="150"/>
+        <source>Renamed Files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="156"/>
+        <source>Ignored Files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="162"/>
+        <source>Errors</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="168"/>
+        <source>Conflicts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="188"/>
+        <source>Up</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="189"/>
+        <source>Down</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -814,7 +902,7 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::FolderViewDelegate</name>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="176"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="177"/>
         <source>Remote path: %1</source>
         <translation>Urruneko bidea: %1</translation>
     </message>
@@ -1330,37 +1418,37 @@ Ezin da konfigurazioa egin.</translation>
 <context>
     <name>Mirall::StatusDialog</name>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="277"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="278"/>
         <source>Pause</source>
         <translation>Pausarazi</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="279"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="280"/>
         <source>Resume</source>
         <translation>Berrekin</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="478"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="479"/>
         <source>Checking %1 connection...</source>
         <translation>Egiaztatzen %1 konexioa...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="483"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="484"/>
         <source>No %1 connection configured.</source>
         <translation>Ez dago %1 konexiorik konfiguratuta.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="506"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="507"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; as &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Konektatuta hemen &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; honela &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="508"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="509"/>
         <source>Version: %1 (%2)</source>
         <translation>Bertsioa: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="524"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="525"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;%1-era konektatzeak huts egin du: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
@@ -1381,7 +1469,7 @@ Ezin da konfigurazioa egin.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="521"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="522"/>
         <source>unknown problem.</source>
         <translation>arazo ezezaguna.</translation>
     </message>
@@ -1442,7 +1530,7 @@ Ezin da konfigurazioa egin.</translation>
 <context>
     <name>Mirall::ownCloudFolder</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="212"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="220"/>
         <source>The CSync thread terminated.</source>
         <translation>CSync haria bukatu da.</translation>
     </message>
@@ -1820,6 +1908,25 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/theme.cpp" line="66"/>
         <source>Setup Error</source>
         <translation>Konfigurazio Errorea</translation>
+    </message>
+</context>
+<context>
+    <name>_fileItemDialog</name>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.ui" line="27"/>
+        <source>Detailed Sync Protocol</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.ui" line="63"/>
+        <location filename="../src/mirall/fileitemdialog.ui" line="70"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
