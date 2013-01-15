@@ -25,6 +25,8 @@
 
 #include <csync.h>
 
+#include "mirall/syncfileitem.h"
+
 class QProcess;
 
 namespace Mirall {
@@ -49,6 +51,7 @@ signals:
     void fileRemoved( const QString& );
     void csyncError( const QString& );
     void csyncWarning( const QString& );
+    void treeWalkResult(const SyncFileItemVector&);
 
     void csyncStateDbFile( const QString& );
     void wipeDb();
@@ -61,6 +64,14 @@ private:
                     enum csync_notify_type_e kind,
                     long long o1, long long o2,
                     void *userdata);
+
+    static int treewalkLocal( TREE_WALK_FILE*, void *);
+    static int treewalkRemote( TREE_WALK_FILE*, void *);
+    int treewalkFile( TREE_WALK_FILE*, bool );
+    int treewalkError( TREE_WALK_FILE* );
+
+    static int walkFinalize(TREE_WALK_FILE*, void* );
+
     static int getauth(const char *prompt,
                 char *buf,
                 size_t len,
@@ -75,6 +86,8 @@ private:
     static QNetworkProxy _proxy;
 
     static QString _csyncConfigDir;
+
+    SyncFileItemVector _syncedItems;
 
     QString _source;
     QString _target;

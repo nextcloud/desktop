@@ -21,6 +21,7 @@
 
 #include "mirall/folder.h"
 #include "mirall/folderwatcher.h"
+#include "mirall/syncfileitem.h"
 
 class QSignalMapper;
 

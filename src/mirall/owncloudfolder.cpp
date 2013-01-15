@@ -138,6 +138,9 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     _csync->setConnectionDetails( CredentialStore::instance()->user(),
                                   CredentialStore::instance()->password(),
                                   proxy );
+    qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
+    connect( _csync, SIGNAL(treeWalkResult(const SyncFileItemVector&)),
+              this, SLOT(slotThreadTreeWalkResult(const SyncFileItemVector&)), Qt::QueuedConnection);
 
     connect(_csync, SIGNAL(started()),  SLOT(slotCSyncStarted()), Qt::QueuedConnection);
     connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()), Qt::QueuedConnection);
@@ -181,6 +184,11 @@ void ownCloudFolder::slotCSyncFinished()
         _thread->quit();
     }
     emit syncFinished( _syncResult );
+}
+
+void ownCloudFolder::slotThreadTreeWalkResult(const SyncFileItemVector& items)
+{
+    _syncResult.setSyncFileItemVector(items);
 }
 
 void ownCloudFolder::slotTerminateSync()

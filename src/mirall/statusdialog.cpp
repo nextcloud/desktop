@@ -18,6 +18,7 @@
 #include "mirall/owncloudinfo.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/credentialstore.h"
+#include "mirall/fileitemdialog.h"
 
 #include <QtCore>
 #include <QtGui>

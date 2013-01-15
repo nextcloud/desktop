@@ -17,6 +17,9 @@
 
 #include <QStringList>
 #include <QHash>
+#include <QDateTime>
+
+#include "mirall/syncfileitem.h"
 
 namespace Mirall
 {
@@ -43,25 +46,27 @@ public:
     QStringList errorStrings() const;
     void    clearErrors();
 
-    void    setSyncChanges( const QHash<QString, QStringList> &changes );
-    QHash<QString, QStringList> syncChanges() const;
+    // handle a list of changed items.
+    void    setSyncFileItemVector( const SyncFileItemVector& );
+    SyncFileItemVector syncFileItemVector() const;
 
     void setStatus( Status );
     Status status() const;
     QString statusString() const;
+    QDateTime syncTime() const;
 
     bool localRunOnly() const;
     void setLocalRunOnly( bool );
 private:
-    Status _status;
-    QHash<QString, QStringList> _syncChanges;
-
+    Status             _status;
+    SyncFileItemVector _syncItems;
+    QDateTime          _syncTime;
     /**
      * when the sync tool support this...
      */
-    QStringList _errors;
+    QStringList        _errors;
 
-    bool        _localRunOnly;
+    bool               _localRunOnly;
 };
 
 }

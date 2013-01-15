@@ -76,7 +76,8 @@ Application::Application(int &argc, char **argv) :
     _logBrowser(0),
     _showLogWindow(false),
     _logFlush(false),
-    _helpOnly(false)
+    _helpOnly(false),
+    _fileItemDialog(0)
 {
     setApplicationName( _theme->appName() );
     setWindowIcon( _theme->applicationIcon() );
@@ -176,6 +177,8 @@ Application::Application(int &argc, char **argv) :
 Application::~Application()
 {
     delete _tray; // needed, see ctor
+    if( _fileItemDialog) delete _fileItemDialog;
+    if( _statusDialog )  delete _statusDialog;
     qDebug() << "* Mirall shutdown";
 }
 
@@ -702,7 +705,11 @@ void Application::slotOpenStatus()
       _statusDialog->setFolderList( _folderMan->map() );
     }
   }
+  raiseDialog( raiseWidget );
+}
 
+void Application::raiseDialog( QWidget *raiseWidget )
+{
   // viel hilft viel ;-)
   if( raiseWidget ) {
 #if defined(Q_WS_WIN) || defined (Q_OS_MAC)
@@ -782,74 +789,19 @@ void Application::slotRemoveFolder( const QString& alias )
     setupContextMenu();
 }
 
+// Open the File list info dialog.
 void Application::slotInfoFolder( const QString& alias )
 {
     qDebug() << "details of folder with alias " << alias;
 
+    if( !_fileItemDialog ) {
+        _fileItemDialog = new FileItemDialog(_theme);
+    }
+
     SyncResult folderResult = _folderMan->syncResult( alias );
 
-    QString folderMessage;
-
-    SyncResult::Status syncStatus = folderResult.status();
-    switch( syncStatus ) {
-    case SyncResult::Undefined:
-        folderMessage = tr( "Undefined Folder State" );
-        break;
-    case SyncResult::NotYetStarted:
-        folderMessage = tr( "The folder waits to start syncing." );
-        break;
-    case SyncResult::SyncRunning:
-        folderMessage = tr("Sync is running.");
-        break;
-    case SyncResult::Success:
-        folderMessage = tr("Last Sync was successful.");
-        break;
-    case SyncResult::Error:
-        folderMessage = tr( "Syncing Error." );
-        break;
-    case SyncResult::SetupError:
-        folderMessage = tr( "Setup Error." );
-        break;
-    default:
-        folderMessage = tr( "Undefined Error State." );
-    }
-    folderMessage = QLatin1String("<b>") + folderMessage + QLatin1String("</b><br/>");
-
-    QMessageBox infoBox( QMessageBox::Information, tr( "Folder information" ), alias, QMessageBox::Ok );
-    QStringList li = folderResult.errorStrings();
-    foreach( const QString& l, li ) {
-        folderMessage += QString::fromLatin1("<p>%1</p>").arg( l );
-    }
-
-    infoBox.setText( folderMessage );
-
-    //    qDebug() << "informative text: " << infoBox.informativeText();
-
-    if ( !folderResult.syncChanges().isEmpty() ) {
-        QString details;
-        QHash < QString, QStringList > changes = folderResult.syncChanges();
-        QHash< QString, QStringList >::const_iterator change_it = changes.constBegin();
-        for(; change_it != changes.constEnd(); ++change_it ) {
-            QString changeType = tr( "Unknown" );
-            if ( change_it.key() == QLatin1String("changed") ) {
-            changeType = tr( "Changed files:\n" );
-            } else if ( change_it.key() == QLatin1String("added") ) {
-                changeType = tr( "Added files:\n" );
-            } else if ( change_it.key() == QLatin1String("deleted") ) {
-            changeType = tr( "New files in the server, or files deleted locally:\n");
-            }
-
-            QStringList files = change_it.value();
-            QString fileList;
-                foreach( const QString& file, files) {
-                    fileList += file + QLatin1Char('\n');
-            }
-            details += changeType + fileList;
-        }
-        infoBox.setDetailedText(details);
-        qDebug() << "detailed text: " << infoBox.detailedText();
-    }
-    infoBox.exec();
+    _fileItemDialog->setSyncResult( folderResult );
+    raiseDialog( _fileItemDialog );
 }
 
 void Application::slotEnableFolder(const QString& alias, const bool enable)
@@ -916,6 +868,10 @@ void Application::slotSyncStateChange( const QString& alias )
     // do not promote LocalSyncState to the status dialog.
     if( !result.localRunOnly() ) {
         _statusDialog->slotUpdateFolderState( _folderMan->folder(alias) );
+
+        if( _fileItemDialog && _fileItemDialog->isVisible() ) {
+            _fileItemDialog->setSyncResult( _folderMan->syncResult(alias) );
+        }
     }
     computeOverallSyncStatus();
 

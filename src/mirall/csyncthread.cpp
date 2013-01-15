@@ -198,14 +198,99 @@ const char* CSyncThread::proxyTypeToCStr(QNetworkProxy::ProxyType type)
     }
 }
 
+int CSyncThread::treewalkLocal( TREE_WALK_FILE* file, void *data )
+{
+    return static_cast<CSyncThread*>(data)->treewalkFile( file, false );
+}
+
+int CSyncThread::treewalkRemote( TREE_WALK_FILE* file, void *data )
+{
+    return static_cast<CSyncThread*>(data)->treewalkFile( file, true );
+}
+
+int CSyncThread::walkFinalize(TREE_WALK_FILE* file, void *data )
+{
+    return static_cast<CSyncThread*>(data)->treewalkError( file);
+}
+
+int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
+{
+    if( ! file ) return -1;
+    SyncFileItem item;
+    item._file = QString::fromUtf8( file->path );
+    item._instruction = file->instruction;
+    item._dir = SyncFileItem::None;
+
+    SyncFileItem::Direction dir;
+
+    int re = 0;
+
+    switch(file->instruction) {
+    case CSYNC_INSTRUCTION_NONE:
+        // No need to do anything.
+        return re;
+        break;
+    case CSYNC_INSTRUCTION_RENAME:
+        dir = !remote ? SyncFileItem::Down : SyncFileItem::Up;
+        item._renameTarget = QString::fromUtf8( file->rename_path );
+        break;
+    case CSYNC_INSTRUCTION_REMOVE:
+        dir = !remote ? SyncFileItem::Down : SyncFileItem::Up;
+        break;
+    case CSYNC_INSTRUCTION_CONFLICT:
+    case CSYNC_INSTRUCTION_IGNORE:
+    case CSYNC_INSTRUCTION_ERROR:
+        dir = SyncFileItem::None;
+        break;
+    case CSYNC_INSTRUCTION_EVAL:
+    case CSYNC_INSTRUCTION_NEW:
+    case CSYNC_INSTRUCTION_SYNC:
+    case CSYNC_INSTRUCTION_STAT_ERROR:
+    case CSYNC_INSTRUCTION_DELETED:
+    case CSYNC_INSTRUCTION_UPDATED:
+    default:
+        dir = remote ? SyncFileItem::Down : SyncFileItem::Up;
+        break;
+    }
+
+    item._dir = dir;
+    _mutex.lock();
+    _syncedItems.append(item);
+    _mutex.unlock();
+
+    return re;
+}
+
+int CSyncThread::treewalkError(TREE_WALK_FILE* file)
+{
+    SyncFileItem item;
+    item._file= QString::fromUtf8(file->path);
+    int indx = _syncedItems.indexOf(item);
+
+    if ( indx == -1 )
+        return 0;
+
+    if( item._instruction == CSYNC_INSTRUCTION_STAT_ERROR ||
+            item._instruction == CSYNC_INSTRUCTION_ERROR ) {
+        _mutex.lock();
+        _syncedItems[indx]._instruction = item._instruction;
+        _mutex.unlock();
+    }
+
+    return 0;
+}
+
+
 void CSyncThread::startSync()
 {
     qDebug() << "starting to sync " << qApp->thread() << QThread::currentThread();
     CSYNC *csync;
+    bool doTreeWalk = true;
 
     emit(started());
 
     _mutex.lock();
+    _syncedItems.clear();
 
     if( csync_create(&csync,
                      _source.toUtf8().data(),
@@ -265,6 +350,8 @@ void CSyncThread::startSync()
     }
     qDebug() << "<<#### Update end ###########################################################";
 
+
+
     if( csync_reconcile(csync) < 0 ) {
         CSYNC_ERROR_CODE err = csync_get_error( csync );
         const char *errMsg = csync_get_error_string( csync );
@@ -273,6 +360,16 @@ void CSyncThread::startSync()
         emit csyncError(errStr);
         goto cleanup;
     }
+
+    if( csync_walk_local_tree(csync, &treewalkLocal, 0) < 0 ) {
+         qDebug() << "Error in local treewalk.";
+         doTreeWalk = false;
+    }
+    if( doTreeWalk && csync_walk_remote_tree(csync, &treewalkRemote, 0) < 0 ) {
+         qDebug() << "Error in remote treewalk.";
+         doTreeWalk = false;
+    }
+
     if( csync_propagate(csync) < 0 ) {
         CSYNC_ERROR_CODE err = csync_get_error( csync );
         const char *errMsg = csync_get_error_string( csync );
@@ -281,6 +378,15 @@ void CSyncThread::startSync()
         emit csyncError(errStr);
         goto cleanup;
     }
+
+    if( csync_walk_local_tree(csync, &walkFinalize, 0) < 0 ||
+            csync_walk_remote_tree( csync, &walkFinalize, 0 ) < 0 ) {
+        qDebug() << "Error in finalize treewalk.";
+    } else {
+        // emit the treewalk results.
+        emit treeWalkResult(_syncedItems);
+    }
+
 cleanup:
     csync_destroy(csync);
 
