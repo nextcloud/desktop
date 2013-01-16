@@ -261,19 +261,21 @@ static int _check_read_from_db(CSYNC *ctx, const char *uri) {
         h = c_jhash64((uint8_t *) mpath, len, 0);
 
         /* search that folder in the db and check that the hash is the md5 (etag) is still the same */
-        tmp = csync_statedb_get_stat_by_hash(ctx, h);
-        if (tmp) {
+        if( csync_get_statedb_exists(ctx) ) {
+          tmp = csync_statedb_get_stat_by_hash(ctx, h);
+          if (tmp) {
             md5_local = tmp->md5;
             md5_remote = csync_vio_file_id(ctx, uri);
 
             CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Compare directory ids for %s: %s -> %s", mpath, md5_local, md5_remote );
 
             if( c_streq(md5_local, md5_remote) ) {
-                ctx->remote.read_from_db = 1;
+              ctx->remote.read_from_db = 1;
             }
             SAFE_FREE(md5_remote);
             SAFE_FREE(md5_local);
             SAFE_FREE(tmp);
+          }
         }
 
         csync_vio_file_stat_destroy(fs);
