@@ -132,8 +132,6 @@ void CredentialStore::fetchCredentials()
         _state = AsyncFetching;
         if( !_user.isEmpty() ) {
             ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
-            // job->setAutoDelete( false );
-            // job->setSettings( )
             job->setKey( keyChainKey( cfgFile.ownCloudUrl() ) );
 
             connect( job, SIGNAL(finished(QKeychain::Job*)), this,
@@ -280,7 +278,7 @@ void CredentialStore::saveCredentials( )
 #ifdef WITH_QTKEYCHAIN
         // Set password in KeyChain
         job = new WritePasswordJob(Theme::instance()->appName());
-        // job->setAutoDelete( false );
+
         job->setKey( keyChainKey( _url ) );
         job->setTextData(_passwd);
 
