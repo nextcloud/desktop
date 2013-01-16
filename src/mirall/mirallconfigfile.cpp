@@ -498,7 +498,7 @@ void MirallConfigFile::setProxyType(int proxyType,
     settings.setValue(QLatin1String("host"), host);
     settings.setValue(QLatin1String("port"), port);
     settings.setValue(QLatin1String("user"), user);
-    settings.setValue(QLatin1String("pass"), pass);
+    settings.setValue(QLatin1String("pass"), pass.toUtf8().toBase64());
 
     settings.sync();
 }

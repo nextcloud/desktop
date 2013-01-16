@@ -286,6 +286,7 @@ void CSyncThread::startSync()
     qDebug() << "starting to sync " << qApp->thread() << QThread::currentThread();
     CSYNC *csync;
     bool doTreeWalk = true;
+    int proxyPort = _proxy.port();
 
     emit(started());
 
@@ -336,6 +337,7 @@ void CSyncThread::startSync()
     csync_set_module_property(csync, "csync_context", csync);
     csync_set_module_property(csync, "proxy_type", (char*) proxyTypeToCStr(_proxy.type()) );
     csync_set_module_property(csync, "proxy_host", _proxy.hostName().toUtf8().data() );
+    csync_set_module_property(csync, "proxy_port", &proxyPort );
     csync_set_module_property(csync, "proxy_user", _proxy.user().toUtf8().data()     );
     csync_set_module_property(csync, "proxy_pwd" , _proxy.password().toUtf8().data() );
 
