@@ -1829,6 +1829,7 @@ static csync_vio_file_stat_t *owncloud_readdir(csync_vio_method_handle_t *dhandl
 static int owncloud_mkdir(const char *uri, mode_t mode) {
     int rc = NE_OK;
     int len = 0;
+    ne_request *req = NULL;
 
     char *path = _cleanPath( uri );
     (void) mode; /* unused */
@@ -1851,8 +1852,17 @@ static int owncloud_mkdir(const char *uri, mode_t mode) {
             path[len+1] = 0;
         }
         DEBUG_WEBDAV("MKdir on %s", path );
-        rc = ne_mkcol(dav_session.ctx, path );
-        set_errno_from_neon_errcode(rc);
+
+        req = ne_request_create(dav_session.ctx, "MKCOL", path);
+        rc = ne_simple_request(dav_session.ctx, req);
+
+        /* Special for mkcol: it returns 405 if a part of path is not there.
+         * to keep csync vio_mkdirs working EEXIST has to be returned. */
+        if( ne_get_status(req)->code == 405 ) {
+            errno = EEXIST;
+        } else {
+            set_errno_from_neon_errcode(rc);
+        }
     }
     SAFE_FREE( path );
 
