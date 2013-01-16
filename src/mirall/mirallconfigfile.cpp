@@ -23,8 +23,6 @@
 #include <QtGui>
 
 #define DEFAULT_REMOTE_POLL_INTERVAL 30000 // default remote poll time in milliseconds
-#define DEFAULT_LOCAL_POLL_INTERVAL  10000 // default local poll time in milliseconds
-#define DEFAULT_POLL_TIMER_EXEED     10
 
 #define CA_CERTS_KEY QLatin1String("CaCertificates")
 
@@ -309,52 +307,11 @@ int MirallConfigFile::remotePollInterval( const QString& connection ) const
   settings.beginGroup( con );
 
   int remoteInterval = settings.value( QLatin1String("remotePollInterval"), DEFAULT_REMOTE_POLL_INTERVAL ).toInt();
-  int localInterval  = settings.value(QLatin1String("localPollInterval"), DEFAULT_LOCAL_POLL_INTERVAL ).toInt();
-  if( remoteInterval < 2*localInterval ) {
-    qDebug() << "WARN: remote poll Interval should at least be twice as local poll interval!";
-  }
-  if( remoteInterval < 5000 || remoteInterval < localInterval ) {
-    qDebug() << "Remote Interval is smaller than local Interval";
+  if( remoteInterval < 5000) {
+    qDebug() << "Remote Interval is less than 5 seconds, reverting to" << DEFAULT_REMOTE_POLL_INTERVAL;
     remoteInterval = DEFAULT_REMOTE_POLL_INTERVAL;
   }
   return remoteInterval;
-}
-
-int MirallConfigFile::localPollInterval( const QString& connection ) const
-{
-  QString con( connection );
-  if( connection.isEmpty() ) con = defaultConnection();
-
-  QSettings settings( configFile(), QSettings::IniFormat );
-  settings.setIniCodec( "UTF-8" );
-  settings.beginGroup( con );
-
-  int remoteInterval = settings.value( QLatin1String("remotePollInterval"), DEFAULT_REMOTE_POLL_INTERVAL ).toInt();
-  int localInterval  = settings.value(QLatin1String("localPollInterval"), DEFAULT_LOCAL_POLL_INTERVAL ).toInt();
-  if( remoteInterval < 2*localInterval ) {
-    qDebug() << "WARN: remote poll Interval should at least be twice as local poll interval!";
-  }
-  if( localInterval < 2500 || remoteInterval < localInterval ) {
-    qDebug() << "Remote Interval is smaller than local Interval";
-    localInterval = DEFAULT_LOCAL_POLL_INTERVAL;
-  }
-  return localInterval;
-}
-
-int MirallConfigFile::pollTimerExceedFactor( const QString& connection ) const
-{
-  QString con( connection );
-  if( connection.isEmpty() ) con = defaultConnection();
-
-  QSettings settings( configFile(), QSettings::IniFormat );
-  settings.setIniCodec( "UTF-8" );
-  settings.beginGroup( con );
-
-  int pte = settings.value( QLatin1String("pollTimerExeedFactor"), DEFAULT_POLL_TIMER_EXEED).toInt();
-
-  if( pte < 1 ) pte = DEFAULT_POLL_TIMER_EXEED;
-
-  return pte;
 }
 
 bool MirallConfigFile::passwordStorageAllowed( const QString& connection )

@@ -73,10 +73,8 @@ public:
 
     bool ownCloudSkipUpdateCheck( const QString& connection = QString() ) const;
 
-    /* Poll intervals in milliseconds */
-    int localPollInterval ( const QString& connection = QString() ) const;
+    /* Server poll interval in milliseconds */
     int remotePollInterval( const QString& connection = QString() ) const;
-    int pollTimerExceedFactor( const QString& connection = QString() ) const;
 
     // Custom Config: accept the custom config to become the main one.
     void acceptCustomConfig();

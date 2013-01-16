@@ -50,18 +50,9 @@ These are config settings that may be changed:
 +===========================+===========+==============+===========+=====================================================+
 | ``remotePollinterval``    | integer   | milliseconds | ``30000`` | Poll time for the remote repository                 |
 +---------------------------+-----------+--------------+-----------+-----------------------------------------------------+
-| ``localPollinterval``     | integer   | milliseconds | ``10000`` | Poll time for local repository                      |
-+---------------------------+-----------+--------------+-----------+-----------------------------------------------------+
-| ``PollTimerExceedFactor`` | integer   | n/a          | ``10``    | Poll Timer Exceed Factor                            |
-+---------------------------+-----------+--------------+-----------+-----------------------------------------------------+
 | ``maxLogLines``           | integer   | lines        | ``20000`` | Maximum count of log lines shown in the log window  |
 +---------------------------+-----------+--------------+-----------+-----------------------------------------------------+
 
-* ``remotePollinterval`` is for systems which have notify for local file system changes (Linux only currently)
-  this is the frequency it polls for remote changes. The following two values are ignored.
+* ``remotePollinterval`` The frequency used for polling for remote changes on
+  the ownCloud Server.
 
-* ``localPollinterval`` is for systems which poll the local file system (currently Win and Mac) this is the
-  frequency they poll locally. The ``remotePollInterval`` is ignored on these systems.
-
-* ``PollTimerExceedFactor`` sets  the exceed factor is the factor after which a remote poll is done. That means the effective
-  frequency for remote poll is ``localPollInterval * pollTimerExceedFactor``.
