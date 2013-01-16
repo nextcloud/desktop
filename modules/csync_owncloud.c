@@ -1337,7 +1337,6 @@ static void install_content_reader( ne_request *req, void *userdata, const ne_st
 {
     const char *enc = NULL;
     struct transfer_context *writeCtx = userdata;
-    (void)status;
 
     (void) status;
 
