@@ -51,6 +51,7 @@ signals:
     void fileRemoved( const QString& );
     void csyncError( const QString& );
     void csyncWarning( const QString& );
+    void csyncUnavailable();
     void treeWalkResult(const SyncFileItemVector&);
 
     void csyncStateDbFile( const QString& );

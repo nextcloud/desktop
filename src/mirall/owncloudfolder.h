@@ -90,6 +90,7 @@ protected slots:
 private slots:
     void slotCSyncStarted();
     void slotCSyncError(const QString& );
+    void slotCsyncUnavailable();
     void slotCSyncFinished();
 
 private:
@@ -99,6 +100,7 @@ private:
     CSyncThread *_csync;
     QStringList  _errors;
     bool         _csyncError;
+    bool         _csyncUnavail;
     bool         _wipeDb;
     SyncFileItemVector _items;
 };

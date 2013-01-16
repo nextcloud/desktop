@@ -935,6 +935,10 @@ void Application::computeOverallSyncStatus()
                 folderMessage = tr( "Sync is running." );
                 overallResult.setStatus( SyncResult::SyncRunning );
                 break;
+            case SyncResult::Unavailable:
+                folderMessage = tr( "Server is currently not available." );
+                overallResult.setStatus( SyncResult::Unavailable );
+                break;
             case SyncResult::Success:
                 if( overallResult.status() == SyncResult::Undefined ) {
                     folderMessage = tr( "Last Sync was successful." );

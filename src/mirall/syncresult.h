@@ -34,7 +34,8 @@ public:
       SyncRunning,
       Success,
       Error,
-      SetupError
+      SetupError,
+      Unavailable
     };
 
     SyncResult();

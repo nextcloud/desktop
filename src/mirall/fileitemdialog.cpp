@@ -63,6 +63,9 @@ void FileItemDialog::setSyncResult( const SyncResult& result )
     case SyncResult::NotYetStarted:
         folderMessage = tr( "The folder waits to start syncing." );
         break;
+    case SyncResult::Unavailable:
+        folderMessage = tr( "Server is currently not available." );
+        break;
     case SyncResult::SyncRunning:
         folderMessage = tr("Sync is running.");
         break;

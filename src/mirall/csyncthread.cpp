@@ -345,7 +345,10 @@ void CSyncThread::startSync()
         const char *errMsg = csync_get_error_string( csync );
         QString errStr = csyncErrorToString(err, errMsg);
         qDebug() << " #### ERROR csync_update: " << errStr;
-        emit csyncError(errStr);
+        if (err == CSYNC_ERR_SERVICE_UNAVAILABLE)
+            emit csyncUnavailable();
+        else
+            emit csyncError(errStr);
         goto cleanup;
     }
     qDebug() << "<<#### Update end ###########################################################";
@@ -375,7 +378,10 @@ void CSyncThread::startSync()
         const char *errMsg = csync_get_error_string( csync );
         QString errStr = csyncErrorToString(err, errMsg);
         qDebug() << " #### ERROR csync_propagate: " << errStr;
-        emit csyncError(errStr);
+        if (err == CSYNC_ERR_SERVICE_UNAVAILABLE)
+            emit csyncUnavailable();
+        else
+            emit csyncError(errStr);
         goto cleanup;
     }
 

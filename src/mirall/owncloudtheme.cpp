@@ -81,9 +81,8 @@ QIcon ownCloudTheme::syncStateIcon( SyncResult::Status status, bool sysTray ) co
 
     switch( status ) {
     case SyncResult::Undefined:
-        statusIcon = QLatin1String("state-offline");
-        break;
     case SyncResult::NotYetStarted:
+    case SyncResult::Unavailable:
         statusIcon = QLatin1String("state-offline");
         break;
     case SyncResult::SyncRunning:
@@ -93,11 +92,7 @@ QIcon ownCloudTheme::syncStateIcon( SyncResult::Status status, bool sysTray ) co
         statusIcon = QLatin1String("state-ok");
         break;
     case SyncResult::Error:
-        statusIcon = QLatin1String("state-error");
-        break;
     case SyncResult::SetupError:
-        statusIcon = QLatin1String("state-error");
-        break;
     default:
         statusIcon = QLatin1String("state-error");
     }
