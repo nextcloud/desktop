@@ -103,7 +103,7 @@ QIcon ownCloudTheme::syncStateIcon( SyncResult::Status status, bool sysTray ) co
 QIcon ownCloudTheme::folderDisabledIcon( ) const
 {
     // Fixme: Do we really want the dialog-canel from theme here?
-    return themeIcon( QLatin1String("owncloud-error") );
+    return themeIcon( QLatin1String("state-pause") );
 }
 
 QIcon ownCloudTheme::applicationIcon( ) const
