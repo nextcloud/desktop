@@ -468,22 +468,27 @@ p, li { white-space: pre-wrap; }
         <translation>同期を実行中です。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="940"/>
+        <location filename="../src/mirall/application.cpp" line="939"/>
+        <source>Server is currently not available.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="944"/>
         <source>Last Sync was successful.</source>
         <translation>最後の同期は成功しました。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="946"/>
+        <location filename="../src/mirall/application.cpp" line="950"/>
         <source>Syncing Error.</source>
         <translation>同期エラー。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="952"/>
+        <location filename="../src/mirall/application.cpp" line="956"/>
         <source>Setup Error.</source>
         <translation>設定エラー。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="955"/>
+        <location filename="../src/mirall/application.cpp" line="959"/>
         <source>Undefined Error State.</source>
         <translation>未定義のエラー状態。</translation>
     </message>
@@ -531,7 +536,7 @@ p, li { white-space: pre-wrap; }
         <translation>同期開始を待機中</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="960"/>
+        <location filename="../src/mirall/application.cpp" line="964"/>
         <source> (Sync is paused)</source>
         <translation> (同期を一時停止)</translation>
     </message>
@@ -540,7 +545,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="977"/>
+        <location filename="../src/mirall/application.cpp" line="981"/>
         <source>No sync folders configured.</source>
         <translation>同期フォルダが設定されていません。</translation>
     </message>
@@ -548,7 +553,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="298"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="299"/>
         <source>CSync create failed.</source>
         <translation>CSyncは作成に失敗しました。</translation>
     </message>
@@ -758,22 +763,22 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::DownloadNotifier</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="298"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="308"/>
         <source>New file available</source>
         <translation>新しいファイルが利用可能です</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="298"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="308"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
         <translation>&apos;%1&apos; はこの計算機と同期されました。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="300"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="310"/>
         <source>New files available</source>
         <translation>新しいファイルが利用可能です</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/owncloudfolder.cpp" line="300"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="310"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
         <translation><numerusform>&apos;%1&apos; と他の %n ファイルはこの計算機と同期されました。</numerusform></translation>
     </message>
@@ -783,102 +788,107 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="41"/>
         <source>Files</source>
-        <translation type="unfinished"/>
+        <translation>ファイル</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="42"/>
         <source>File Count</source>
-        <translation type="unfinished"/>
+        <translation>ファイル数</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="50"/>
         <source>Sync Protocol</source>
-        <translation type="unfinished"/>
+        <translation>同期プロトコル</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="61"/>
         <source>Undefined Folder State</source>
-        <translation type="unfinished"/>
+        <translation>未定義のフォルダ状態</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="64"/>
         <source>The folder waits to start syncing.</source>
-        <translation type="unfinished"/>
+        <translation>フォルダの同期開始を待機しています。</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="67"/>
-        <source>Sync is running.</source>
+        <source>Server is currently not available.</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="70"/>
-        <source>Last Sync was successful.</source>
-        <translation type="unfinished"/>
+        <source>Sync is running.</source>
+        <translation>同期実行中です。</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="73"/>
-        <source>Syncing Error.</source>
-        <translation type="unfinished"/>
+        <source>Last Sync was successful.</source>
+        <translation>最後の同期は成功しました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="76"/>
-        <source>Setup Error.</source>
-        <translation type="unfinished"/>
+        <source>Syncing Error.</source>
+        <translation>同期エラー。</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="79"/>
+        <source>Setup Error.</source>
+        <translation>設定エラー。</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="82"/>
         <source>Undefined Error State.</source>
-        <translation type="unfinished"/>
+        <translation>未定義のエラー状態です。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="115"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="118"/>
         <source>%1  (finished %2 sec. ago)</source>
-        <translation type="unfinished"/>
+        <translation>%1  (%2 秒前に完了)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="132"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="135"/>
         <source>Synced Files</source>
-        <translation type="unfinished"/>
+        <translation>同期されたファイル</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="138"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="141"/>
         <source>New Files</source>
-        <translation type="unfinished"/>
+        <translation>新しいファイル</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="144"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="147"/>
         <source>Deleted Files</source>
-        <translation type="unfinished"/>
+        <translation>削除されたファイル</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="150"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="153"/>
         <source>Renamed Files</source>
-        <translation type="unfinished"/>
+        <translation>名前の変更されたファイル</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="156"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="159"/>
         <source>Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>無視されたファイル</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="162"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="165"/>
         <source>Errors</source>
-        <translation type="unfinished"/>
+        <translation>エラー</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="168"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="171"/>
         <source>Conflicts</source>
-        <translation type="unfinished"/>
+        <translation>衝突</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="188"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="191"/>
         <source>Up</source>
-        <translation type="unfinished"/>
+        <translation>上</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="189"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="192"/>
         <source>Down</source>
-        <translation type="unfinished"/>
+        <translation>下</translation>
     </message>
 </context>
 <context>
@@ -1530,7 +1540,7 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::ownCloudFolder</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="220"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="230"/>
         <source>The CSync thread terminated.</source>
         <translation>CSyncのスレッドが終了しました。</translation>
     </message>
@@ -1915,18 +1925,18 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/fileitemdialog.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>フォーム</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.ui" line="27"/>
         <source>Detailed Sync Protocol</source>
-        <translation type="unfinished"/>
+        <translation>同期プロトコルの詳細</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.ui" line="63"/>
         <location filename="../src/mirall/fileitemdialog.ui" line="70"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>テキストラベル</translation>
     </message>
 </context>
 <context>

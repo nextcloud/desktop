@@ -470,22 +470,27 @@ p, li { white-space: pre-wrap; }
         <translation>Sync is running.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="940"/>
+        <location filename="../src/mirall/application.cpp" line="939"/>
+        <source>Server is currently not available.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="944"/>
         <source>Last Sync was successful.</source>
         <translation>Last Sync was successful.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="946"/>
+        <location filename="../src/mirall/application.cpp" line="950"/>
         <source>Syncing Error.</source>
         <translation>Syncing Error.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="952"/>
+        <location filename="../src/mirall/application.cpp" line="956"/>
         <source>Setup Error.</source>
         <translation>Setup Error.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="955"/>
+        <location filename="../src/mirall/application.cpp" line="959"/>
         <source>Undefined Error State.</source>
         <translation>Undefined Error State.</translation>
     </message>
@@ -536,7 +541,7 @@ p, li { white-space: pre-wrap; }
         <translation>Waits to start syncing.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="960"/>
+        <location filename="../src/mirall/application.cpp" line="964"/>
         <source> (Sync is paused)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -545,7 +550,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Sync is paused.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="977"/>
+        <location filename="../src/mirall/application.cpp" line="981"/>
         <source>No sync folders configured.</source>
         <translation>No sync folders configured.</translation>
     </message>
@@ -553,7 +558,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="298"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="299"/>
         <source>CSync create failed.</source>
         <translation>CSync create failed.</translation>
     </message>
@@ -767,22 +772,22 @@ Please write a bug report.</translation>
 <context>
     <name>Mirall::DownloadNotifier</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="298"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="308"/>
         <source>New file available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="298"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="308"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="300"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="310"/>
         <source>New files available</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/owncloudfolder.cpp" line="300"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="310"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -819,76 +824,81 @@ Please write a bug report.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="67"/>
+        <source>Server is currently not available.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="70"/>
         <source>Sync is running.</source>
         <translation type="unfinished">Sync is running.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="70"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="73"/>
         <source>Last Sync was successful.</source>
         <translation type="unfinished">Last Sync was successful.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="73"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="76"/>
         <source>Syncing Error.</source>
         <translation type="unfinished">Syncing Error.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="76"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="79"/>
         <source>Setup Error.</source>
         <translation type="unfinished">Setup Error.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="79"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="82"/>
         <source>Undefined Error State.</source>
         <translation type="unfinished">Undefined Error State.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="115"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="118"/>
         <source>%1  (finished %2 sec. ago)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="132"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="135"/>
         <source>Synced Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="138"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="141"/>
         <source>New Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="144"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="147"/>
         <source>Deleted Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="150"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="153"/>
         <source>Renamed Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="156"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="159"/>
         <source>Ignored Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="162"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="165"/>
         <source>Errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="168"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="171"/>
         <source>Conflicts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="188"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="191"/>
         <source>Up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="189"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="192"/>
         <source>Down</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1542,7 +1552,7 @@ Setup can not be done.</translation>
 <context>
     <name>Mirall::ownCloudFolder</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="220"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="230"/>
         <source>The CSync thread terminated.</source>
         <translation>The CSync thread terminated.</translation>
     </message>
