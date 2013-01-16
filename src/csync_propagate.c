@@ -305,8 +305,8 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
       rc = csync_vio_sendfile( ctx, sfp, dfp );
 
-	  if (ctx->current == REMOTE_REPLICA)
-	    csync_win32_set_file_hidden(turi, false);
+      if (ctx->current == REMOTE_REPLICA)
+        csync_win32_set_file_hidden(turi, false);
 
       if( rc != 0 ) {
           strerror_r(errno,  errbuf, sizeof(errbuf));

@@ -232,6 +232,7 @@ static void set_errno_from_http_errcode( int err ) {
     case 401:           /* Unauthorized */
     case 402:           /* Payment Required */
     case 407:           /* Proxy Authentication Required */
+    case 405:
         new_errno = EPERM;
         break;
     case 301:           /* Moved Permanently */
@@ -246,9 +247,6 @@ static void set_errno_from_http_errcode( int err ) {
         break;
     case 423:           /* Locked */
         new_errno = EACCES;
-        break;
-    case 405:
-        new_errno = EEXIST;  /* Method Not Allowed */
         break;
     case 400:           /* Bad Request */
     case 403:           /* Forbidden */
@@ -455,7 +453,7 @@ static int verify_sslcert(void *userdata, int failures,
         }
     }
     DEBUG_WEBDAV("## VERIFY_SSL CERT: %d", ret  );
-    return ret;
+      return ret;
 }
 
 /*
