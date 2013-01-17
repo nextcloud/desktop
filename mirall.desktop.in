@@ -1,5 +1,5 @@
 [Desktop Entry]
-Categories=Utility
+Categories=Utility;X-SuSE-SyncUtility;
 Type=Application
 Exec=@APPLICATION_EXECUTABLE@
 Name=@APPLICATION_NAME@ desktop sync client 
