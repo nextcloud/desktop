@@ -47,6 +47,9 @@ FileItemDialog::FileItemDialog(Theme *theme, QWidget *parent) :
     _timer.setInterval(1000);
     connect(&_timer, SIGNAL(timeout()), this, SLOT(slotSetFolderMessage()));
 
+    QPushButton *copyBtn = _dialogButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
+    connect(copyBtn, SIGNAL(clicked()), SLOT(copyToClipboard()));
+
     setWindowTitle(tr("Sync Protocol"));
 
 }
@@ -116,6 +119,34 @@ void FileItemDialog::slotSetFolderMessage()
     int secs = _lastSyncTime.secsTo(now);
 
     _timelabel->setText(tr("%1  (finished %2 sec. ago)").arg(_folderMessage).arg(secs));
+}
+
+void FileItemDialog::copyToClipboard()
+{
+    QString text;
+    QTextStream ts(&text);
+
+    int topLevelItems = _treeWidget->topLevelItemCount();
+    for (int i = 0; i < topLevelItems; i++) {
+        QTreeWidgetItem *item = _treeWidget->topLevelItem(i);
+        ts << left << qSetFieldWidth(50)
+           << item->data(0, Qt::DisplayRole).toString()
+           << right << qSetFieldWidth(6)
+           << item->data(1, Qt::DisplayRole).toString()
+           << endl;
+        int childItems = item->childCount();
+        for (int j = 0; j < childItems; j++) {
+            QTreeWidgetItem *child =item->child(j);
+            ts << left << qSetFieldWidth(0) << QLatin1String("   ")
+               << child->data(0,Qt::DisplayRole).toString()
+               << QString::fromLatin1(" (%1)").arg(
+                      child->data(1, Qt::DisplayRole).toString()
+                      )
+               << endl;
+        }
+    }
+
+    QApplication::clipboard()->setText(text);
 }
 
 void FileItemDialog::accept()

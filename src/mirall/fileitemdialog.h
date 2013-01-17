@@ -41,6 +41,7 @@ public slots:
 
 protected slots:
     void slotSetFolderMessage();
+    void copyToClipboard();
 
 private:
     void setSyncFileItems( const SyncFileItemVector& list );
