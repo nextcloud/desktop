@@ -470,7 +470,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="939"/>
         <source>Server is currently not available.</source>
-        <translation type="unfinished"/>
+        <translation>Il server è attualmente non disponibile.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="944"/>
@@ -797,98 +797,103 @@ Please write a bug report.</source>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="50"/>
+        <source>Copy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="53"/>
         <source>Sync Protocol</source>
         <translation>Protocollo di sincronizzazione</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="61"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="64"/>
         <source>Undefined Folder State</source>
         <translation>Stato della cartella non definito</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="64"/>
-        <source>The folder waits to start syncing.</source>
-        <translation>La cartella aspetta di iniziare la sincronizzazione.</translation>
-    </message>
-    <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="67"/>
-        <source>Server is currently not available.</source>
-        <translation type="unfinished"/>
+        <source>The folder waits to start syncing.</source>
+        <translation>La cartella è in attesa di sincronizzazione.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="70"/>
-        <source>Sync is running.</source>
-        <translation>Sincronizzazione in corso</translation>
+        <source>Server is currently not available.</source>
+        <translation>Il server è attualmente non disponibile.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="73"/>
-        <source>Last Sync was successful.</source>
-        <translation>L&apos;ultima sincronizzazione è terminata con successo.</translation>
+        <source>Sync is running.</source>
+        <translation>Sincronizzazione in corso.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="76"/>
+        <source>Last Sync was successful.</source>
+        <translation>L&apos;ultima sincronizzazione è avvenuta correttamente.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="79"/>
         <source>Syncing Error.</source>
         <translation>Errore di sincronizzazione.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="79"/>
-        <source>Setup Error.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="82"/>
-        <source>Undefined Error State.</source>
-        <translation type="unfinished"/>
+        <source>Setup Error.</source>
+        <translation>Errore di configurazione.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="118"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="85"/>
+        <source>Undefined Error State.</source>
+        <translation>Stato di errore non definito.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="121"/>
         <source>%1  (finished %2 sec. ago)</source>
         <translation>%1  (terminato %2 sec. fa)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="135"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="166"/>
         <source>Synced Files</source>
         <translation>File sincronizzati</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="141"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="172"/>
         <source>New Files</source>
         <translation>File nuovi</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="147"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="178"/>
         <source>Deleted Files</source>
-        <translation>File cancellati</translation>
+        <translation>File eliminati</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="153"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="184"/>
         <source>Renamed Files</source>
         <translation>File rinominati</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="159"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="190"/>
         <source>Ignored Files</source>
         <translation>File ignorati</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="165"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="196"/>
         <source>Errors</source>
         <translation>Errori</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="171"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="202"/>
         <source>Conflicts</source>
         <translation>Conflitti</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="191"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="222"/>
         <source>Up</source>
-        <translation type="unfinished"/>
+        <translation>Su</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="192"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="223"/>
         <source>Down</source>
-        <translation type="unfinished"/>
+        <translation>Giù</translation>
     </message>
 </context>
 <context>
@@ -1927,18 +1932,18 @@ Questa procedura guidata ti aiuterà durante i passaggi necessari.&lt;/span&gt;&
     <message>
         <location filename="../src/mirall/fileitemdialog.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Modulo</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.ui" line="27"/>
         <source>Detailed Sync Protocol</source>
-        <translation type="unfinished"/>
+        <translation>Protocollo di sincronizzazione dettagliato</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.ui" line="63"/>
         <location filename="../src/mirall/fileitemdialog.ui" line="70"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>EtichettaTesto</translation>
     </message>
 </context>
 <context>

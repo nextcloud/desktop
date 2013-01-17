@@ -797,96 +797,101 @@ Please write a bug report.</source>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="50"/>
+        <source>Copy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="53"/>
         <source>Sync Protocol</source>
         <translation>Synchronisatieprotocol</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="61"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="64"/>
         <source>Undefined Folder State</source>
         <translation>Ongedefinieerde map status</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="64"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="67"/>
         <source>The folder waits to start syncing.</source>
         <translation>De map wacht met synchroniseren</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="67"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="70"/>
         <source>Server is currently not available.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="70"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="73"/>
         <source>Sync is running.</source>
         <translation>Bezig met synchroniseren.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="73"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="76"/>
         <source>Last Sync was successful.</source>
         <translation>Laatste synchronisatie was succesvol.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="76"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="79"/>
         <source>Syncing Error.</source>
         <translation>Synchronisatiefout</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="79"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="82"/>
         <source>Setup Error.</source>
         <translation>Installatiefout.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="82"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="85"/>
         <source>Undefined Error State.</source>
         <translation>Ongedefiniëerde fout.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="118"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="121"/>
         <source>%1  (finished %2 sec. ago)</source>
         <translation>%1 (%2 sec. geleden afgerond)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="135"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="166"/>
         <source>Synced Files</source>
         <translation>Gesynchroniseerde bestanden</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="141"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="172"/>
         <source>New Files</source>
         <translation>Nieuwe bestanden</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="147"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="178"/>
         <source>Deleted Files</source>
         <translation>Verwijderde bestanden</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="153"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="184"/>
         <source>Renamed Files</source>
         <translation>Hernoemde bestanden</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="159"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="190"/>
         <source>Ignored Files</source>
         <translation>Genegeerde bestanden</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="165"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="196"/>
         <source>Errors</source>
         <translation>Fouten</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="171"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="202"/>
         <source>Conflicts</source>
         <translation>Conflicten</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="191"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="222"/>
         <source>Up</source>
         <translation>Omhoog</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="192"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="223"/>
         <source>Down</source>
         <translation>Naar beneden</translation>
     </message>

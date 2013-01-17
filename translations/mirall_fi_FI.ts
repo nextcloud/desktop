@@ -392,7 +392,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/application.cpp" line="328"/>
         <location filename="../src/mirall/application.cpp" line="337"/>
         <source>No %1 Connection</source>
-        <translation type="unfinished"/>
+        <translation>Ei %1-yhteyttä</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="329"/>
@@ -422,7 +422,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="484"/>
         <source>Open %1 folder</source>
-        <translation type="unfinished"/>
+        <translation>Avaa %1-kansio</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="497"/>
@@ -470,7 +470,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="939"/>
         <source>Server is currently not available.</source>
-        <translation type="unfinished"/>
+        <translation>Palvelin ei ole juuri nyt käytettävissä.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="944"/>
@@ -677,7 +677,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="153"/>
         <source>A HTTP transmission error happened.</source>
-        <translation type="unfinished"/>
+        <translation>Tapahtui HTTP-välitysvirhe.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="156"/>
@@ -797,96 +797,101 @@ Please write a bug report.</source>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="50"/>
+        <source>Copy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="53"/>
         <source>Sync Protocol</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="61"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="64"/>
         <source>Undefined Folder State</source>
         <translation>Määrittämätön kansion tila</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="64"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="67"/>
         <source>The folder waits to start syncing.</source>
         <translation>Kansio odottaa synkronoinnin aloitusta.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="67"/>
-        <source>Server is currently not available.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="70"/>
-        <source>Sync is running.</source>
-        <translation type="unfinished"/>
+        <source>Server is currently not available.</source>
+        <translation>Palvelin ei ole juuri nyt käytettävissä.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="73"/>
-        <source>Last Sync was successful.</source>
-        <translation type="unfinished"/>
+        <source>Sync is running.</source>
+        <translation>Synkronointi on meneillään.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="76"/>
+        <source>Last Sync was successful.</source>
+        <translation>Viimeisin synkronointi valmistui onnistuneesti.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="79"/>
         <source>Syncing Error.</source>
         <translation>Synkronointivirhe.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="79"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="82"/>
         <source>Setup Error.</source>
         <translation>Asetusvirhe.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="82"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="85"/>
         <source>Undefined Error State.</source>
         <translation>Määrittämätön virheen tila.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="118"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="121"/>
         <source>%1  (finished %2 sec. ago)</source>
         <translation>%1  (valmistui %2 s sitten)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="135"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="166"/>
         <source>Synced Files</source>
         <translation>Synkronoidut tiedostot</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="141"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="172"/>
         <source>New Files</source>
         <translation>Uudet tiedostot</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="147"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="178"/>
         <source>Deleted Files</source>
         <translation>Poistetut tiedostot</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="153"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="184"/>
         <source>Renamed Files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="159"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="190"/>
         <source>Ignored Files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="165"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="196"/>
         <source>Errors</source>
         <translation>Virheet</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="171"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="202"/>
         <source>Conflicts</source>
         <translation>Ristiriidat</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="191"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="222"/>
         <source>Up</source>
         <translation>Ylös</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="192"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="223"/>
         <source>Down</source>
         <translation>Alas</translation>
     </message>
@@ -1439,12 +1444,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="479"/>
         <source>Checking %1 connection...</source>
-        <translation type="unfinished"/>
+        <translation>Tarkistetaan %1-yhteyttä...</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="484"/>
         <source>No %1 connection configured.</source>
-        <translation type="unfinished"/>
+        <translation>%1-yhteyttä ei ole määritelty.</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="507"/>
