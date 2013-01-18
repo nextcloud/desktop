@@ -470,7 +470,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="939"/>
         <source>Server is currently not available.</source>
-        <translation type="unfinished"/>
+        <translation>Server is op dit moment niet beschikbaar.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="944"/>
@@ -798,7 +798,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="50"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>Kopiëren</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="53"/>
@@ -818,7 +818,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="70"/>
         <source>Server is currently not available.</source>
-        <translation type="unfinished"/>
+        <translation>Server is op dit moment niet beschikbaar.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="73"/>
