@@ -128,6 +128,12 @@ void CredentialStore::fetchCredentials()
         break;
     }
     case CredentialStore::KeyChain: {
+        // If the credentials are here already, return.
+        if( _state == Ok ) {
+            emit(fetchCredentialsFinished(true));
+            return;
+        }
+        // otherwise fetch asynchronious.
 #ifdef WITH_QTKEYCHAIN
         _state = AsyncFetching;
         if( !_user.isEmpty() ) {
