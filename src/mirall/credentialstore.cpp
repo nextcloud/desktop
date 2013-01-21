@@ -196,6 +196,11 @@ QString CredentialStore::keyChainKey( const QString& url ) const
         qDebug() << "Empty url in keyChain, error!";
         return QString::null;
     }
+    if( _user.isEmpty() ) {
+        qDebug() << "Error: User is emty!";
+        return QString::null;
+    }
+
     if( !u.endsWith(QChar('/')) ) {
         u.append(QChar('/'));
     }
@@ -295,7 +300,6 @@ void CredentialStore::saveCredentials( )
         qDebug() << "Error: Can not save credentials, URL is zero!";
         return;
     }
-
 #ifdef WITH_QTKEYCHAIN
     WritePasswordJob *job = NULL;
 #endif
@@ -308,7 +312,6 @@ void CredentialStore::saveCredentials( )
 #ifdef WITH_QTKEYCHAIN
         // Set password in KeyChain
         job = new WritePasswordJob(Theme::instance()->appName());
-
         job->setKey( key );
         job->setTextData(_passwd);
 
@@ -325,9 +328,6 @@ void CredentialStore::saveCredentials( )
         // unsupported.
         break;
     }
-    // After saving, reset the internal state.
-
-
 }
 
 void CredentialStore::slotKeyChainWriteFinished( QKeychain::Job *job )
