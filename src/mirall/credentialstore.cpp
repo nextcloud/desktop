@@ -93,17 +93,27 @@ bool CredentialStore::canTryAgain()
 
 void CredentialStore::fetchCredentials()
 {
-     MirallConfigFile cfgFile;
-
+    MirallConfigFile cfgFile;
     if( ++_tries > MAX_LOGIN_ATTEMPTS ) {
         qDebug() << "Too many attempts to enter password!";
         _state = TooManyAttempts;
+        emit( fetchCredentialsFinished(false) );
         return;
     }
 
     bool ok = false;
     QString pwd;
     _user = cfgFile.ownCloudUser();
+    _url  = cfgFile.ownCloudUrl();
+
+    QString key = keyChainKey(_url);
+
+    if( key.isNull() ) {
+        qDebug() << "Can not fetch credentials, url is zero!";
+        _state = Error;
+        emit( fetchCredentialsFinished(false) );
+        return;
+    }
 
     switch( _type ) {
     case CredentialStore::User: {
@@ -138,7 +148,7 @@ void CredentialStore::fetchCredentials()
         _state = AsyncFetching;
         if( !_user.isEmpty() ) {
             ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
-            job->setKey( keyChainKey( cfgFile.ownCloudUrl() ) );
+            job->setKey( key );
 
             connect( job, SIGNAL(finished(QKeychain::Job*)), this,
                      SLOT(slotKeyChainReadFinished(QKeychain::Job*)));
@@ -181,7 +191,16 @@ void CredentialStore::reset()
 
 QString CredentialStore::keyChainKey( const QString& url ) const
 {
-    QString key = _user+QLatin1Char(':')+url;
+    QString u(url);
+    if( u.isEmpty() ) {
+        qDebug() << "Empty url in keyChain, error!";
+        return QString::null;
+    }
+    if( !u.endsWith(QChar('/')) ) {
+        u.append(QChar('/'));
+    }
+
+    QString key = _user+QLatin1Char(':')+u;
     return key;
 }
 
@@ -271,6 +290,11 @@ void CredentialStore::setCredentials( const QString& url, const QString& user, c
 void CredentialStore::saveCredentials( )
 {
     MirallConfigFile cfgFile;
+    QString key = keyChainKey(_url);
+    if( key.isNull() ) {
+        qDebug() << "Error: Can not save credentials, URL is zero!";
+        return;
+    }
 
 #ifdef WITH_QTKEYCHAIN
     WritePasswordJob *job = NULL;
@@ -278,14 +302,14 @@ void CredentialStore::saveCredentials( )
 
     switch( _type ) {
     case CredentialStore::User:
-        deleteKeyChainCredential(keyChainKey( _url ));
+        deleteKeyChainCredential( key );
         break;
     case CredentialStore::KeyChain:
 #ifdef WITH_QTKEYCHAIN
         // Set password in KeyChain
         job = new WritePasswordJob(Theme::instance()->appName());
 
-        job->setKey( keyChainKey( _url ) );
+        job->setKey( key );
         job->setTextData(_passwd);
 
         connect( job, SIGNAL(finished(QKeychain::Job*)), this,
