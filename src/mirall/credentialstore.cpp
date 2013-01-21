@@ -93,8 +93,7 @@ bool CredentialStore::canTryAgain()
 
 void CredentialStore::fetchCredentials()
 {
-    _state = Fetching;
-    MirallConfigFile cfgFile;
+     MirallConfigFile cfgFile;
 
     if( ++_tries > MAX_LOGIN_ATTEMPTS ) {
         qDebug() << "Too many attempts to enter password!";
@@ -104,13 +103,13 @@ void CredentialStore::fetchCredentials()
 
     bool ok = false;
     QString pwd;
-    _state = Fetching;
     _user = cfgFile.ownCloudUser();
 
     switch( _type ) {
     case CredentialStore::User: {
         /* Ask the user for the password */
         /* Fixme: Move user interaction out here. */
+        _state = Fetching;
         pwd = QInputDialog::getText(0, QApplication::translate("MirallConfigFile","Password Required"),
                                     QApplication::translate("MirallConfigFile","Please enter your %1 password:")
                                     .arg(Theme::instance()->appName()),
@@ -123,6 +122,7 @@ void CredentialStore::fetchCredentials()
     }
     case CredentialStore::Settings: {
         /* Read from config file. */
+        _state = Fetching;
         pwd = cfgFile.ownCloudPasswd();
         ok = true;
         break;
