@@ -83,6 +83,12 @@ public:
      */
     QString configHandle(QNetworkReply *reply = 0);
 
+    /**
+     * Certificate chain of the connection est. with ownCloud.
+     * Empty if the connection is HTTP-based
+     */
+    QList<QSslCertificate> certificateChain() const;
+
 signals:
     // result signal with url- and version string.
     void ownCloudInfoFound( const QString&, const QString&, const QString&, const QString& );
@@ -129,6 +135,7 @@ private:
     QUrl                           _urlRedirectedTo;
     QHash<QNetworkReply*, QString> _directories;
     QHash<QNetworkReply*, QString> _configHandleMap;
+    QList<QSslCertificate>         _certificateChain;
     bool                           _certsUntrusted;
     int                            _authAttempts;
 };

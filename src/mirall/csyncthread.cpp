@@ -18,6 +18,7 @@
 #include "mirall/theme.h"
 #include "mirall/logger.h"
 #include "mirall/utility.h"
+#include "mirall/owncloudinfo.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -446,11 +447,10 @@ int CSyncThread::getauth(const char *prompt,
 
             int pos = 0;
 
-            // IF we had a cert ack'ed by the user, it was added to the Qt default
-            // CA Cert list. So we get the list of certs to check against from
-            // Qt.
-            QList<QSslCertificate> certs = QSslSocket::defaultCaCertificates();
 
+            // This is the set of certificates which QNAM accepted, so we should accept
+            // them as well
+            QList<QSslCertificate> certs = ownCloudInfo::instance()->certificateChain();
 
             while (!certOk && (pos = regexp.indexIn(qPrompt, 1+pos)) != -1) {
                 QString neon_fingerprint = regexp.cap(1);
