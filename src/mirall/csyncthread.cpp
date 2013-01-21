@@ -450,13 +450,13 @@ int CSyncThread::getauth(const char *prompt,
             // CA Cert list. So we get the list of certs to check against from
             // Qt.
             QList<QSslCertificate> certs = QSslSocket::defaultCaCertificates();
-            Utility util; // to format a Fingerprint.
+
 
             while (!certOk && (pos = regexp.indexIn(qPrompt, 1+pos)) != -1) {
                 QString neon_fingerprint = regexp.cap(1);
 
                 foreach( const QSslCertificate& c, certs ) {
-                    QString verified_shasum = util.formatFingerprint(c.digest(QCryptographicHash::Sha1).toHex());
+                    QString verified_shasum = Utility::formatFingerprint(c.digest(QCryptographicHash::Sha1).toHex());
                     qDebug() << "SSL Fingerprint from neon: " << neon_fingerprint << " compared to verified: " << verified_shasum;
                     if( verified_shasum == neon_fingerprint ) {
                         certOk = true;

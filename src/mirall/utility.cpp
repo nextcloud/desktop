@@ -14,10 +14,6 @@
 #include "utility.h"
 namespace Mirall {
 
-Utility::Utility()
-{
-}
-
 QString Utility::formatFingerprint( const QByteArray& fmhash )
 {
     QByteArray hash;

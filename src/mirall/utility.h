@@ -23,9 +23,7 @@ namespace Mirall {
 class Utility
 {
 public:
-    Utility();
-
-    QString formatFingerprint( const QByteArray& );
+    static QString formatFingerprint( const QByteArray& );
 };
 
 }
