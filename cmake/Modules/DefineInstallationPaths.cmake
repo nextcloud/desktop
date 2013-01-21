@@ -94,6 +94,7 @@ endif (UNIX)
 
 if (WIN32)
   # Same same
+  set(SHARE_INSTALL_PREFIX "share" CACHE PATH "-")
   set(BIN_INSTALL_DIR "." CACHE PATH "-")
   set(SBIN_INSTALL_DIR "." CACHE PATH "-")
   set(LIB_INSTALL_DIR "lib" CACHE PATH "-")
@@ -103,5 +104,7 @@ if (WIN32)
   set(ICON_INSTALL_DIR "." CACHE PATH "-")
   set(SOUND_INSTALL_DIR "." CACHE PATH "-")
   set(LOCALE_INSTALL_DIR "lang" CACHE PATH "-")
+  set(SYSCONF_INSTALL_DIR "config" CACHE PATH "-")
+  set(MAN_INSTALL_DIR "man" CACHE PATH "-")
 endif (WIN32)
 
