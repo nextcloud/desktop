@@ -661,7 +661,8 @@ char *csync_vio_get_error_string(CSYNC *ctx)
     if(ctx->error_string) {
         return ctx->error_string;
     }
-    if(VIO_METHOD_HAS_FUNC(ctx->module.method, get_error_string)) {
+    if(ctx && ctx->module.method &&
+       VIO_METHOD_HAS_FUNC(ctx->module.method, get_error_string)) {
         return ctx->module.method->get_error_string();
     }
     return NULL;
