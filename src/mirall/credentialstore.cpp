@@ -217,6 +217,14 @@ void CredentialStore::slotKeyChainReadFinished(QKeychain::Job* job)
         switch( pwdJob->error() ) {
         case QKeychain::NoError:
             _passwd = pwdJob->textData();
+#ifdef Q_OS_LINUX
+            // Currently there is a bug in the keychain on linux that if no
+            // entry is there, an empty password comes back, but no error.
+            if( _passwd.isEmpty() ) {
+                _state = EntryNotFound;
+                _errorMsg = tr("No password entry found in keychain. Please reconfigure.");
+            } else
+#endif
             _state = Ok;
             break;
         case QKeychain::EntryNotFound:
@@ -256,7 +264,7 @@ void CredentialStore::slotKeyChainReadFinished(QKeychain::Job* job)
 
         if( _state != Ok ) {
             qDebug() << "Error with keychain: " << pwdJob->errorString();
-            _errorMsg = pwdJob->errorString();
+            if(_errorMsg.isEmpty()) _errorMsg = pwdJob->errorString();
         } else {
             _errorMsg = QString::null;
         }
