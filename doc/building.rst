@@ -21,7 +21,7 @@ Mac OS X
 --------
 
 Follow the `generic build instructions`_.
- 
+
 You can install the missing dependencies via MacPorts_ or Homebrew_.
 This is only needed on the build machine, since non-standard libs
 will be deployed in the app bundle.
@@ -33,7 +33,7 @@ build system. If you are using Homebrew_, you can just add it::
   brew install iniparser
 
 Otherwise, you need to copy the header and lib files to
-``/usr/local/include`` and ``/usr/local/lib`` respectively. 
+``/usr/local/include`` and ``/usr/local/lib`` respectively.
 
 .. note::
   You should not call ``make install`` at any time, since the product of the
@@ -73,7 +73,7 @@ For the installer, the NSIS installer package is also required::
 
     mingw32-cross-nsis-plugin-processes mingw32-cross-nsis-plugin-uac
 
-You will also need to manually download and install the following files with 
+You will also need to manually download and install the following files with
 ``rpm -ivh <package>`` (They will also work with OpenSUSE 12.2)::
 
 http://pmbs.links2linux.org/download/mingw:/32/openSUSE_12.1/x86_64/mingw32-cross-nsis-plugin-processes-0-1.1.x86_64.rpm
@@ -125,24 +125,26 @@ Next, make sure to check out the 'dav' branch in the newly checked out
 The first package to buidld is CSync::
 
   cd ocsync-build
-  cmake -DCMAKE_BUILD_TYPE="Debug" -DLOG_TO_CALLBACK=ON -DWITH_LOG4C=OFF ../ocsync
+  cmake -DCMAKE_BUILD_TYPE="Debug" ../ocsync
   make
 
 You probably have to satisfy some dependencies. Make sure to install all the
 needed development packages. You will need ``iniparser``, ``sqlite3`` as well as
-``neon`` for the ownCloud module. ``libssh`` and ``libsmbclient`` are optional
-and not required for the client to work. If you want to install the client, run
-``make install`` as a final step.
+``neon`` for the ownCloud module. Take special care about ``neon``. If that is
+missing, the cmake run will succeed but silently not build the ownCloud module.
+``libssh`` and ``libsmbclient`` are optional and not required for the client
+to work. If you want to install the client, run ``make install`` as a final step.
 
 Next, we build mirall::
 
   cd ../mirall-build
   cmake -DCMAKE_BUILD_TYPE="Debug" ../mirall \
-        -DCSYNC_LIBRARY_PATH=../ocsync-build \
-        -DCSYNC_INCLUDE_PATH=../ocsync/src
+        -DCSYNC_BUILD_PATH=/path/to/ocsync-build \
+        -DCSYNC_INCLUDE_PATH=/path/to/ocsync/src
 
-If this succeeds, call ``make``. The owncloud binary should appear in the
-``bin`` directory. You can also run ``make install`` to install the client to
+Note that it is important to use absolute pathes for the include- and library
+directories. If this succeeds, call ``make``. The owncloud binary should appear
+in the ``bin`` directory. You can also run ``make install`` to install the client to
 ``/usr/local/bin``.
 
 To build in installer (requires the mingw32-cross-nsis packages)::
