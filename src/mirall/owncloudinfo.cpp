@@ -290,9 +290,10 @@ QUrl ownCloudInfo::redirectUrl(const QUrl& possibleRedirectUrl,
 void ownCloudInfo::slotReplyFinished()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
-    if (reply->header(QNetworkRequest::LocationHeader).toUrl().scheme() == QLatin1String("https"))
-        _certificateChain = reply->sslConfiguration().peerCertificateChain();
-
+    QSslConfiguration sslConfig = reply->sslConfiguration();
+    if (!sslConfig.isNull()) {
+        _certificateChain = sslConfig.peerCertificateChain();
+    }
 
     if( ! reply ) {
         qDebug() << "ownCloudInfo: Reply empty!";
