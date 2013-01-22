@@ -63,8 +63,6 @@ CredentialStore::CredState CredentialStore::state()
 
 bool CredentialStore::canTryAgain()
 {
-    MirallConfigFile cfgFile;
-
     bool canDoIt = false;
 
     if( _tries > MAX_LOGIN_ATTEMPTS ) {
