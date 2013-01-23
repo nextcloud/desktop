@@ -1,6 +1,26 @@
 ChangeLog
 =========
-version 1.1.2 (release 2012-11- ), csync 0.60.2 required
+
+version 1.2.0 (release 2013-01-24 ), csync 0.70.2 required
+  * [GUI] New status dialog to show a detailed list of synced files.
+  * [GUI] New tray notifications about synced files.
+  * [GUI] New platform specific icon set.
+  * [App] Using cross platform QtKeychain library to store credentials crypted.
+  * [App] Use cross platform notification for changes in the local file system rather than regular poll.
+  * [Fixes] Improved SSL Certificate handling and SSL fixes troughout syncing.
+  * [Fixes] Fixed proxy authentication.
+  * [Fixes] Allow brackets in folder name alias.
+  * [Fixes] Lots of other minor fixes.
+  * [Platform] cmake fixes.
+  * [Platform] Improved, more detailed error reporting.
+
+version 1.1.4 (release 2012-12-19 ), csync 0.60.4 required
+  * No changes to mirall, only csync fixes.
+
+version 1.1.3 (release 2012-11-30 ), csync 0.60.3 required
+  * No changes to mirall, only csync fixes.
+
+version 1.1.2 (release 2012-11-26 ), csync 0.60.2 required
   * [Fixes] Allow to properly cancel the password dialog.
   * [Fixes] Share folder name correctly percent encoded with old Qt
             4.6 builds ie. Debian.
@@ -18,18 +38,18 @@ version 1.1.2 (release 2012-11- ), csync 0.60.2 required
   * [Platform] Fix Mac building
 
 version 1.1.1 (release 2012-10-18), csync 0.60.1 required
-  * [GUI]   Allow changing folder name in single folder mode 
+  * [GUI]   Allow changing folder name in single folder mode
   * [GUI]   Windows: Add license to installer
   * [GUI]   owncloud --logwindow will bring up the log window
             in an already running instance
   * [Fixes] Make sure SSL errors are always handled
-  * [Fixes] Allow special characters in folder alias 
-  * [Fixes] Proper workaround for Menu bug in Ubuntu 
+  * [Fixes] Allow special characters in folder alias
+  * [Fixes] Proper workaround for Menu bug in Ubuntu
   * [Fixes] csync: Fix improper memory cleanup which could
             cause memory leaks and crashes
-  * [Fixes] csync: Fix memory leak 
-  * [Fixes] csync: Allow single quote (') in file names 
-  * [Fixes] csync: Remove stray temporary files 
+  * [Fixes] csync: Fix memory leak
+  * [Fixes] csync: Allow single quote (') in file names
+  * [Fixes] csync: Remove stray temporary files
 
 version 1.1.0 (release 2012-10-10), csync 0.60.0 required
   * [GUI]   Added an about dialog
@@ -53,7 +73,7 @@ version 1.1.0 (release 2012-10-10), csync 0.60.0 required
   * [Platform] csync conf file and database were moved to the users app data
                directory, away from the .csync dir.
   *         Renamed exclude.lst to sync-exclude.lst and moved it to
-            /etc/appName()/ for more clean packaging. From the user path, 
+            /etc/appName()/ for more clean packaging. From the user path,
 	    still exclude.lst is read if sync-exclude.lst is not existing.
   *         Placed custom.ini with customization options to /etc/appName()
 
@@ -62,7 +82,7 @@ version 1.0.5 (release 2012-08-14), csync 0.50.8 required
 
 version 1.0.4 (release 2012-08-10), csync 0.50.8 required
   * [APP] ownCloud is now a single instance app, can not start twice any more.
-  * [APP] Proxy support 
+  * [APP] Proxy support
   * [APP] Handle HTTP redirection correctly, note new url.
   * [APP] More relaxed handling of read only directories in the sync paths.
   * [APP] Started to split off a library with sync functionality, eg for KDE
@@ -73,13 +93,13 @@ version 1.0.4 (release 2012-08-10), csync 0.50.8 required
   * [GUI] Removed Log Window Button, log available through command line.
   * [GUI] Proxy configuration dialog added.
   * [GUI] Added Translations to languages Slovenian, Polish, Catalan,
-          Portuguese (Brazil), German, Greek, Spanish, Czech, Italian, Slovak, 
-	  French, Russian, Japanese, Swedish, Portuguese (Portugal) 
+          Portuguese (Brazil), German, Greek, Spanish, Czech, Italian, Slovak,
+	  French, Russian, Japanese, Swedish, Portuguese (Portugal)
 	  all with translation rate >90%.
   * [Fixes] Loading of self signed certs into Networkmanager (#oc-843)
   * [Fixes] Win32: Handle SSL dll loading correctly.
   * [Fixes] Many other small fixes and improvements.
-  
+
 version 1.0.3 (release 2012-06-19), csync 0.50.7 required
   * [GUI] Added a log window which catches the logging if required and
           allows to save for information.
@@ -88,7 +108,7 @@ version 1.0.3 (release 2012-06-19), csync 0.50.7 required
   * [Fixes] Do not use csync database files from a sync before.
   * [Fixes] In Connection wizard, write the final config onyl if
             the user really accepted. Also remove the former database.
-  * [Fixes] More user expected behaviour deletion of sync folder local 
+  * [Fixes] More user expected behaviour deletion of sync folder local
             and remote.
   * [Fixes] Allow special characters in the sync directory names
   * [Fixes] Win32: Fixed directory removal with special character dirs.
