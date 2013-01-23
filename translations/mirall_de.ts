@@ -370,7 +370,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="275"/>
         <source>%1 user credentials are wrong. Please check configuration.</source>
-        <translation type="unfinished"/>
+        <translation>%1-Benutzerdaten sind nicht korrekt. Bitte überprüfen Sie die Konfiguration.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="280"/>
@@ -760,7 +760,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/credentialstore.cpp" line="223"/>
         <source>No password entry found in keychain. Please reconfigure.</source>
-        <translation type="unfinished"/>
+        <translation>Kein Passwort-Eintrag im Passwort-Speicher gefunden. Bitte durchlaufen Sie die Konfiguration erneut.</translation>
     </message>
 </context>
 <context>
@@ -1458,7 +1458,7 @@ Das Setup kann nicht ausgeführt werden.</translation>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="507"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; as &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Verbunden mit &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; as &lt;i&gt;%2&lt;/i&gt;.</translation>
+        <translation>Verbunden mit &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; als &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="509"/>
