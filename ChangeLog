@@ -1,6 +1,23 @@
 ChangeLog
 ==========
-version 0.60.2  (released 2012-11-  )
+version 0.70.2  (released 2013-01-23)
+  * [Platform] Improved module parameter system.
+  * [Platform] New logging framework. Dropped log4c dependency.
+  * [Platform] New API to provide sync progress information.
+  * [Fixes] More efficiency for the ownCloud plugin through less HTTP requests to
+            the server.
+  * [Fixes] ownCloud plugin: Improved upload performance.
+  * [Fixes] Improved error reporting to mirall.
+  * [Fixes] ownCloud plugin: Improved interpretation of HTTP error codes.
+  * [Fixes] ownCloud plugin: Do not abort on errors with individual files any
+            more.
+  * [Fixes] Lots of other minor fixes.
+  * [MacOSX] Use libneon with proper big file support.
+  * [Win32] Use libneon with openSSL support now.
+
+version 0.70.0 and 0.70.1 were beta versions.
+
+version 0.60.2  (released 2012-11-26)
   * Migration to cross platform testing system cmocka.
   * Fixed variuos minor things incl. potential mem leaks.
   * Clang fixes.
