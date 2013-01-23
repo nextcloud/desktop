@@ -159,8 +159,8 @@ void FolderMan::setupFavLink(const QString &folder)
     wchar_t path[MAX_PATH];
     SHGetSpecialFolderPath(0, path, CSIDL_PROFILE, FALSE);
     QString profile =  QDir::fromNativeSeparators(QString::fromWCharArray(path));
-    QString folderName = QDir::fromNativeSeparators(folder.mid(folder.lastIndexOf('/')));
-    QString linkName = profile+QLatin1String("/Links/") + folderName + QLatin1String(".lnk");
+    QDir folderDir(QDir::fromNativeSeparators(folder));
+    QString linkName = profile+QLatin1String("/Links/") + folderDir.dirName() + QLatin1String(".lnk");
     if (!QFile::link(folder, linkName))
         qDebug() << Q_FUNC_INFO << "linking" << folder << "to" << linkName << "failed!";
 #elif defined (Q_OS_MAC)
