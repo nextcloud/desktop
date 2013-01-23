@@ -154,6 +154,11 @@ bool Theme::systrayUseMonoIcons() const
     return _mono;
 }
 
+QString Theme::about() const
+{
+    return QString::null;
+}
+
 QVariant Theme::customMedia( CustomMediaType type )
 {
     QVariant re;

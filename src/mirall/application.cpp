@@ -513,8 +513,11 @@ void Application::setupContextMenu()
     _contextMenu->addAction(_actionConfigure);
     _contextMenu->addAction(_actionConfigureProxy);
     _contextMenu->addSeparator();
-    _contextMenu->addAction(_actionAbout);
-    _contextMenu->addSeparator();
+
+    if (!Theme::instance()->about().isEmpty()) {
+        _contextMenu->addAction(_actionAbout);
+        _contextMenu->addSeparator();
+    }
 
     _contextMenu->addAction(_actionQuit);
 }
@@ -748,22 +751,7 @@ void Application::slotAbout()
                        .arg(QT_VERSION_STR);
 #endif
     QMessageBox::about(0, tr("About %1").arg(_theme->appName()),
-                       tr("<p><b>%1 Client Version %2</b></p>"
-                          "<p><b>Authors</b>"
-                          "<br><a href=\"mailto:freitag@owncloud.com\">"
-                          "Klaas Freitag</a>, ownCloud, Inc."
-                          "<br><a href=\"mailto:danimo@owncloud.com\">"
-                          "Daniel Molkentin</a>, ownCloud, Inc."
-                          "<br><br>Based on Mirall by Duncan Mac-Vicar P.</p>"
-                          "<p>For more information visit <a href=\"%3\">%4</a>.</p>"
-                          "%7"
-			  )
-                       .arg(_theme->appName())
-                       .arg(MIRALL_STRINGIFY(MIRALL_VERSION))
-                       .arg("http://" MIRALL_STRINGIFY(APPLICATION_DOMAIN))
-                       .arg(MIRALL_STRINGIFY(APPLICATION_DOMAIN))
-                       .arg(devString)
-                      );
+                       Theme::instance()->about());
 }
 
 /*

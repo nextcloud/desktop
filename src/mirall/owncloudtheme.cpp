@@ -21,6 +21,9 @@
 #include <QStyle>
 #include <QApplication>
 
+#include "mirall/version.h"
+#include "config.h"
+
 namespace Mirall {
 
 ownCloudTheme::ownCloudTheme()
@@ -40,6 +43,39 @@ QString ownCloudTheme::appName() const
 QString ownCloudTheme::configFileName() const
 {
     return QLatin1String("owncloud.cfg");
+}
+
+QString ownCloudTheme::about() const
+{
+    QString devString;
+#ifdef GIT_SHA1
+    const QString githubPrefix(QLatin1String(
+                                   "    https://github.com/owncloud/mirall/commit/"));
+    const QString gitSha1(QLatin1String(GIT_SHA1));
+    devString = QCoreApplication::translate("ownCloudTheme::about()",
+                   "<p><small>Built from Git revision <a href=\"%1\">%2</a>"
+                   " on %3, %4<br>using OCsync %5 and Qt %6.</small><p>")
+            .arg(githubPrefix+gitSha1).arg(gitSha1.left(6))
+            .arg(__DATE__).arg(__TIME__)
+            .arg(MIRALL_STRINGIFY(LIBCSYNC_VERSION))
+            .arg(QT_VERSION_STR);
+#endif
+    return  QCoreApplication::translate("ownCloudTheme::about()",
+               "<p><b>%1 Client Version %2</b></p>"
+               "<p><b>Authors</b>"
+               "<br><a href=\"mailto:freitag@owncloud.com\">"
+               "Klaas Freitag</a>, ownCloud, Inc."
+               "<br><a href=\"mailto:danimo@owncloud.com\">"
+               "Daniel Molkentin</a>, ownCloud, Inc."
+               "<br><br>Based on Mirall by Duncan Mac-Vicar P.</p>"
+               "<p>For more information visit <a href=\"%3\">%4</a>.</p>"
+               "%7"
+               )
+            .arg(appName())
+            .arg(MIRALL_STRINGIFY(MIRALL_VERSION))
+            .arg("http://" MIRALL_STRINGIFY(APPLICATION_DOMAIN))
+            .arg(MIRALL_STRINGIFY(APPLICATION_DOMAIN))
+            .arg(devString);
 }
 
 QPixmap ownCloudTheme::splashScreen() const

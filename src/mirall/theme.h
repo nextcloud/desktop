@@ -102,6 +102,11 @@ public:
     virtual QVariant customMedia( CustomMediaType type );
 
     /**
+     * About dialog contents
+     */
+    virtual QString about() const;
+
+    /**
      * Define if the systray icons should be using mono design
      */
     void setSystrayUseMonoIcons(bool mono);
