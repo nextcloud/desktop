@@ -97,6 +97,7 @@ OwncloudSetupPage::OwncloudSetupPage()
     _ui.cbSecureConnect->setEnabled(QSslSocket::supportsSsl());
 
     connect( _ui.lePassword, SIGNAL(textChanged(QString)), this, SIGNAL(completeChanged()));
+    connect( _ui.leUsername, SIGNAL(textChanged(QString)), this, SIGNAL(completeChanged()));
 
     connect( _ui.cbNoPasswordStore, SIGNAL(stateChanged(int)), this, SLOT(slotPwdStoreChanged(int)));
     connect( _ui.cbSecureConnect, SIGNAL(stateChanged(int)), this, SLOT(slotSecureConChanged(int)));
