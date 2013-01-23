@@ -122,7 +122,7 @@ Next, make sure to check out the 'dav' branch in the newly checked out
   cd ocsync
   git checkout dav
 
-The first package to buidld is CSync::
+The first package to build is CSync::
 
   cd ocsync-build
   cmake -DCMAKE_BUILD_TYPE="Debug" ../ocsync
