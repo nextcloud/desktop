@@ -75,6 +75,14 @@ public:
     bool certsUntrusted();
 
     /**
+     * Set a NetworkAccessManager to be used
+     *
+     * This method will take ownership of the NetworkAccessManager, so you can just
+     * set it initially and forget about its memory management.
+     */
+    void setNetworkAccessManager( QNetworkAccessManager *qnam );
+
+    /**
       * Create a collection via owncloud. Provide a relative path.
       */
 #if QT46_IMPL

@@ -319,7 +319,7 @@ int MirallConfigFile::remotePollInterval( const QString& connection ) const
   return remoteInterval;
 }
 
-void MirallConfigFile::setRemotePollIntval(int interval, const QString &connection )
+void MirallConfigFile::setRemotePollInterval(int interval, const QString &connection )
 {
     QString con( connection );
     if( connection.isEmpty() ) con = defaultConnection();

@@ -77,7 +77,7 @@ public:
     /* Server poll interval in milliseconds */
     int remotePollInterval( const QString& connection = QString() ) const;
     /* Set poll interval. Value in microseconds has to be larger than 5000 */
-    void setRemotePollIntval(int, const QString&);
+    void setRemotePollInterval(int interval, const QString& connection = QString() );
 
     // Custom Config: accept the custom config to become the main one.
     void acceptCustomConfig();

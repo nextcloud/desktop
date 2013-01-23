@@ -49,11 +49,20 @@ ownCloudInfo* ownCloudInfo::instance()
 }
 
 ownCloudInfo::ownCloudInfo() :
-    QObject(0)
+    QObject(0),
+    _manager(0)
 {
     _connection = Theme::instance()->appName();
 
-    _manager = new QNetworkAccessManager( this );
+    setNetworkAccessManager( new QNetworkAccessManager( this ) );
+
+}
+
+void ownCloudInfo::setNetworkAccessManager( QNetworkAccessManager* qnam )
+{
+    delete _manager;
+    qnam->setParent( this );
+    _manager = qnam;
 
     MirallConfigFile cfg( _configHandle );
     QSettings settings( cfg.configFile(), QSettings::IniFormat);
@@ -67,6 +76,7 @@ ownCloudInfo::ownCloudInfo() :
              this, SLOT(slotAuthentication(QNetworkReply*,QAuthenticator*)));
 
     _certsUntrusted = false;
+
 }
 
 ownCloudInfo::~ownCloudInfo()
