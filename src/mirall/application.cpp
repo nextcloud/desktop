@@ -272,7 +272,8 @@ void Application::slotFetchCredentials()
         }
     } else {
         qDebug() << "Can not try again to fetch Credentials.";
-         trayMessage = tr("ownCloud user credentials are wrong. Please check configuration.");
+        trayMessage = tr("%1 user credentials are wrong. Please check configuration.")
+                .arg(Theme::instance()->appName());
     }
 
     if( !trayMessage.isEmpty() ) {
