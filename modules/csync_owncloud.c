@@ -560,7 +560,6 @@ static int configureProxy( ne_session *session )
  * if a Set-Cookie header is there for the PHPSESSID. The key is stored into
  * the webdav session to be added to subsequent requests.
  */
-#define PHPSESSID "PHPSESSID="
 static void post_request_hook(ne_request *req, void *userdata, const ne_status *status)
 {
     const char *set_cookie_header = NULL;
@@ -578,64 +577,47 @@ static void post_request_hook(ne_request *req, void *userdata, const ne_status *
             /* try to find a ', ' sequence which is the separator of neon if multiple Set-Cookie
              * headers are there.
              * The following code parses a string like this:
-             * PHPSESSID=n8feu3dsbarpvvufqae9btn5fl7m7ikgh5ml1fg37v4i2cah7k41; path=/; HttpOnly */
+             * Set-Cookie: 50ace6bd8a669=p537brtt048jh8srlp2tuep7em95nh9u98mj992fbqc47d1aecp1;
+             */
             sc = set_cookie_header;
             while(sc) {
-                if( strlen(sc) > strlen(PHPSESSID) &&
-                        strncmp( sc, PHPSESSID, strlen(PHPSESSID)) == 0 ) {
-                    const char *sc_val = sc; /* + strlen(PHPSESSID); */
-                    const char *sc_end = sc_val;
-                    int cnt = 0;
-                    int len = strlen(sc_val); /* The length of the rest of the header string. */
+                const char *sc_val = sc;
+                const char *sc_end = sc_val;
+                int cnt = 0;
+                int len = strlen(sc_val); /* The length of the rest of the header string. */
 
-                    while( cnt < len && *sc_end != ';' && *sc_end != ',') {
+                while( cnt < len && *sc_end != ';' && *sc_end != ',') {
+                    cnt++;
+                    sc_end++;
+                }
+                if( cnt == len ) {
+                    /* exit: We are at the end. */
+                    sc = NULL;
+                } else if( *sc_end == ';' ) {
+                    /* We are at the end of the session key. */
+                    int keylen = sc_end-sc_val;
+                    if( key ) SAFE_FREE(key);
+                    key = c_malloc(keylen+1);
+                    strncpy( key, sc_val, keylen );
+                    key[keylen] = '\0';
+
+                    /* now search for a ',' to find a potential other header entry */
+                    while(cnt < len && *sc_end != ',') {
                         cnt++;
                         sc_end++;
                     }
-                    if( cnt == len ) {
-                        /* exit: We are at the end. */
-                        sc = NULL;
-                    } else if( *sc_end == ';' ) {
-                        /* We are at the end of the session key. */
-                        int keylen = sc_end-sc_val;
-                        if( key ) SAFE_FREE(key);
-                        key = c_malloc(keylen+1);
-                        strncpy( key, sc_val, keylen );
-                        key[keylen] = '\0';
-
-                        /* now search for a ',' to find a potential other header entry */
-                        while(cnt < len && *sc_end != ',') {
-                            cnt++;
-                            sc_end++;
-                        }
-                        if( cnt < len )
-                            sc = sc_end+2; /* mind the space after the comma */
-                        else
-                            sc = NULL;
-                    } else if( *sc_end == ',' ) {
-                        /* A new entry is to check. */
-                        if( *(sc_end + 1) == ' ') {
-                            sc = sc_end+2;
-                        } else {
-                            /* error condition */
-                            sc = NULL;
-                        }
-                    }
-                } else {
-                    /* It is not a PHPSESSID-Header but another one which we're not interested in.
-                     * forward to next header entry (search ',' )
-                     */
-                    int len = strlen(sc);
-                    int cnt = 0;
-
-                    while(cnt < len && *sc != ',') {
-                        cnt++;
-                        sc++;
-                    }
                     if( cnt < len )
-                        sc = sc+2; /* mind the space after the comma */
+                        sc = sc_end+2; /* mind the space after the comma */
                     else
                         sc = NULL;
+                } else if( *sc_end == ',' ) {
+                    /* A new entry is to check. */
+                    if( *(sc_end + 1) == ' ') {
+                        sc = sc_end+2;
+                    } else {
+                        /* error condition */
+                        sc = NULL;
+                    }
                 }
             }
         }
