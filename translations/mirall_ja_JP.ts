@@ -370,7 +370,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="275"/>
         <source>%1 user credentials are wrong. Please check configuration.</source>
-        <translation type="unfinished"/>
+        <translation>%1 のユーザ資格情報が間違っています。設定を確認してください。</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="280"/>
