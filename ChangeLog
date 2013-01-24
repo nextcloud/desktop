@@ -1,5 +1,8 @@
 ChangeLog
 ==========
+version 0.70.3  (released 2013-01-24)
+  * [Platform] Fix session cookie extraction (mirall bug #260).
+
 version 0.70.2  (released 2013-01-23)
   * [Platform] Improved module parameter system.
   * [Platform] New logging framework. Dropped log4c dependency.

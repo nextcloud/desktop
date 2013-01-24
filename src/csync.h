@@ -51,7 +51,7 @@ extern "C" {
 /* csync version */
 #define LIBCSYNC_VERSION_MAJOR  0
 #define LIBCSYNC_VERSION_MINOR  70
-#define LIBCSYNC_VERSION_MICRO  2
+#define LIBCSYNC_VERSION_MICRO  3
 
 #define LIBCSYNC_VERSION_INT CSYNC_VERSION_INT(LIBCSYNC_VERSION_MAJOR, \
                                            LIBCSYNC_VERSION_MINOR, \
