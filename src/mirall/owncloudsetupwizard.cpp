@@ -89,11 +89,9 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         qDebug() << "Rejected the new config, use the old!";
     } else if( result == QDialog::Accepted ) {
         qDebug() << "Config Changes were accepted!";
+
         // save the user credentials and afterwards clear the cred store.
         cfg.acceptCustomConfig();
-
-        // wipe all folder definitions so far.
-        if( _folderMan ) _folderMan->removeAllFolderDefinitions();
 
         // Now write the resulting folder definition if folder names are set.
         if( !( _localFolder.isEmpty() || _remoteFolder.isEmpty() ) ) { // both variables are set.
