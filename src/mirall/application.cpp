@@ -88,8 +88,16 @@ Application::Application(int &argc, char **argv) :
     if ( _helpOnly ) return;
 
     QTranslator *qtTranslator = new QTranslator(this);
-    qtTranslator->load(QLatin1String("qt_") + QLocale::system().name(),
-                      QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+#if defined(Q_OS_MAC)
+    qtTranslator->load(QLatin1String("qt_") + locale, applicationDirPath()+QLatin1String("/../translations") ); // path defaults to app dir.
+#endif
+#elif defined(Q_OS_WIN32)
+    qtTranslator->load(QLatin1String("qt_") + locale, applicationDirPath());
+#endif
+    if (qtTranslator->isEmpty()) {
+        qtTranslator->load(QLatin1String("qt_") + QLocale::system().name(),
+                           QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    }
     installTranslator(qtTranslator);
 
     QTranslator *mirallTranslator = new QTranslator(this);
