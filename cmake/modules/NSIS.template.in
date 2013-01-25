@@ -8,9 +8,6 @@
 !define APPLICATION_LICENSE "@APPLICATION_LICENSE@"
 !define WIN_SETUP_BITMAP_PATH "@WIN_SETUP_BITMAP_PATH@"
 
-!define MUI_FINISHPAGE_LINK_LOCATION "http://www.${APPLICATION_DOMAIN}"
-
-
 ;-----------------------------------------------------------------------------
 ; Some installer script options (comment-out options not required)
 ;-----------------------------------------------------------------------------
@@ -64,7 +61,6 @@
 ; Initial installer setup and definitions.
 ;-----------------------------------------------------------------------------
 Name "@CPACK_NSIS_PACKAGE_NAME@"
-Caption "${APPLICATION_NAME} Setup"
 BrandingText "${APPLICATION_NAME} ${VERSION}  -- ${BUILD_TIME}"
 OutFile "@CPACK_TOPLEVEL_DIRECTORY@/@CPACK_OUTPUT_FILE_NAME@"
 InstallDir "$PROGRAMFILES\@CPACK_PACKAGE_INSTALL_DIRECTORY@"
@@ -105,13 +101,11 @@ ReserveFile "${NSISDIR}\Plugins\InstallOptions.dll"
 !define MUI_ICON ${NSI_PATH}\installer.ico
 !define MUI_UNICON ${NSI_PATH}\installer.ico
 !define MUI_WELCOMEFINISHPAGE_BITMAP ${WIN_SETUP_BITMAP_PATH}/welcome.bmp
-!define MUI_WELCOMEPAGE_TITLE "Welcome to the @CPACK_PACKAGE_NAME@ ${VERSION} Setup Wizard"
-!define MUI_WELCOMEPAGE_TEXT "This wizard will guide you through the installation.$\r$\n$\r$\n$_CLICK"
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_BITMAP  ${WIN_SETUP_BITMAP_PATH}/page_header.bmp
 !define MUI_COMPONENTSPAGE_SMALLDESC
-!define MUI_FINISHPAGE_TITLE "@CPACK_PACKAGE_NAME@ Setup Completed"
-!define MUI_FINISHPAGE_LINK "Click here to visit the @CPACK_PACKAGE_NAME@ website."
+!define MUI_FINISHPAGE_LINK "www.${APPLICATION_DOMAIN}"
+!define MUI_FINISHPAGE_LINK_LOCATION "http://www.${APPLICATION_DOMAIN}"
 !define MUI_FINISHPAGE_NOREBOOTSUPPORT
 !ifdef OPTION_FINISHPAGE_RELEASE_NOTES
    !define MUI_FINISHPAGE_SHOWREADME_NOTCHECKED
