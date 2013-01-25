@@ -87,10 +87,12 @@ Application::Application(int &argc, char **argv) :
     //no need to waste time;
     if ( _helpOnly ) return;
 
+    QString locale = Theme::instance()->enforcedLocale();
+    if (locale.isEmpty()) locale = QLocale::system().name();
+
     QTranslator *qtTranslator = new QTranslator(this);
 #if defined(Q_OS_MAC)
     qtTranslator->load(QLatin1String("qt_") + locale, applicationDirPath()+QLatin1String("/../translations") ); // path defaults to app dir.
-#endif
 #elif defined(Q_OS_WIN32)
     qtTranslator->load(QLatin1String("qt_") + locale, applicationDirPath());
 #endif
@@ -101,9 +103,6 @@ Application::Application(int &argc, char **argv) :
     installTranslator(qtTranslator);
 
     QTranslator *mirallTranslator = new QTranslator(this);
-
-    QString locale = Theme::instance()->enforcedLocale();
-    if (locale.isEmpty()) locale = QLocale::system().name();
 
 #ifdef Q_OS_LINUX
     // FIXME - proper path!
