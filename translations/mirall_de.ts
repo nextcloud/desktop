@@ -432,7 +432,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="753"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4&lt;br&gt;using OCsync %5 and Qt %6.&lt;/small&gt;&lt;p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;Erstellt aus Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; vom %3, %4&lt;br&gt;mit OCsync %5 and Qt %6.&lt;/small&gt;&lt;p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;Erstellt aus Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; vom %3, %4&lt;br&gt;mit OCsync %5 und Qt %6.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="760"/>
@@ -560,7 +560,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="82"/>
         <source>Success.</source>
-        <translation>Erfolg.</translation>
+        <translation>Erfolgreich</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="85"/>
@@ -677,7 +677,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="157"/>
         <source>CSync failed due to not handled permission deniend.</source>
-        <translation>CSync wegen fehlende Berechtigung fehlgeschlagen.</translation>
+        <translation>CSync wegen fehlender Berechtigung fehlgeschlagen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="160"/>
@@ -1959,7 +1959,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="55"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4&lt;br&gt;using OCsync %5 and Qt %6.&lt;/small&gt;&lt;p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;Erstellt aus Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; vom %3, %4&lt;br&gt;mit OCsync %5 and Qt %6.&lt;/small&gt;&lt;p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;Erstellt aus Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; vom %3, %4&lt;br&gt;mit OCsync %5 und Qt %6.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="63"/>
