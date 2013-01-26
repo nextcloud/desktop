@@ -302,7 +302,7 @@ void DownloadNotifier::slotFileReceived(const QString & url)
 void DownloadNotifier::sendResults()
 {
     QString file = _url;
-    file.replace(_remotePrefix, _localPrefix);
+    file.replace(_remotePrefix, _localPrefix + QDir::separator());
     file = QDir::toNativeSeparators(QDir::cleanPath(file));
     if (_items == 1)
         emit guiLog(tr("New file available"), tr("'%1' has been synced to this machine.").arg(file));
