@@ -282,7 +282,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="251"/>
         <source>&lt;p&gt;Please check your configuration by clicking on the tray icon.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;點擊系統匣圖示可查看您的配置&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;點擊選取工具列圖示可查看您的配置&lt;/p&gt;</translation>
     </message>
     <message>
         <source>ownCloud Connection Failed</source>
