@@ -1,0 +1,29 @@
+This is a little code that does ownCloud file chunking.
+
+Basically to put a local file to an url:
+(Also see the client example code in client dir.)
+
+/* Initialize the transfer, get a transfer struct. */
+hbf_transfer_t *trans = hbf_init_transfer( url );
+
+Hbf_State state;
+if( trans ) {
+  int fd = open_local_file( file );
+
+  /* create a neon session to use for the transfer */
+  ne_session *session = create_neon_session(uri);
+ 
+  if( session && fd > -1 ) {
+    /* Prepare the list of chunks, ie. calculate chunks and write back to trans. */
+    state = hbf_splitlist(trans, fd);
+
+    if( state == HBF_SUCCESS ) {
+      /* Transfer all the chunks through the HTTP session using PUT. */
+      state = hbf_transfer( session, trans, "PUT" );
+    }
+  }
+}
+
+GET a large file:
+Do GET Range requests.
+
