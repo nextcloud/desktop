@@ -6,6 +6,7 @@
 
 #include "torture.h"
 
+#include "std/c_private.h"
 #include "std/c_dir.h"
 
 const char *check_dir = "/tmp/check/c_mkdirs//with/check//";

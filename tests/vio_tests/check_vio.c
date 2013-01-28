@@ -32,10 +32,12 @@ static void setup(void **state)
 
 static void setup_dir(void **state) {
     int rc;
+    const mbchar_t *dir = c_multibyte(CSYNC_TEST_DIR);
 
     setup(state);
 
-    rc = mkdir(CSYNC_TEST_DIR, 0755);
+    rc = _tmkdir(dir, 0755);
+    c_free_multibyte(dir);
     assert_int_equal(rc, 0);
 }
 
@@ -101,54 +103,62 @@ static void check_csync_vio_load_bad_plugin(void **state)
 static void check_csync_vio_mkdir(void **state)
 {
     CSYNC *csync = *state;
-    struct stat sb;
+    csync_stat_t sb;
     int rc;
+    const mbchar_t *dir = c_multibyte(CSYNC_TEST_DIR);
 
     rc = csync_vio_mkdir(csync, CSYNC_TEST_DIR, 0755);
     assert_int_equal(rc, 0);
 
-    rc = lstat(CSYNC_TEST_DIR, &sb);
+    rc = _tstat(dir, &sb);
     assert_int_equal(rc, 0);
 
-    rmdir(CSYNC_TEST_DIR);
+    _trmdir(dir);
+    c_free_multibyte(dir);
 }
 
 static void check_csync_vio_mkdirs(void **state)
 {
     CSYNC *csync = *state;
-    struct stat sb;
+    csync_stat_t sb;
     int rc;
+    const mbchar_t *dir = c_multibyte(CSYNC_TEST_DIR);
 
     rc = csync_vio_mkdirs(csync, CSYNC_TEST_DIRS, 0755);
     assert_int_equal(rc, 0);
 
-    rc = lstat(CSYNC_TEST_DIRS, &sb);
+    rc = _tstat(dir, &sb);
     assert_int_equal(rc, 0);
 
-    rmdir(CSYNC_TEST_DIR);
+    _trmdir(dir);
+    c_free_multibyte(dir);
 }
 
 static void check_csync_vio_mkdirs_some_exist(void **state)
 {
     CSYNC *csync = *state;
-    struct stat sb;
+    csync_stat_t sb;
+    const mbchar_t *this_dir = c_multibyte("/tmp/csync/this");
+    const mbchar_t *stat_dir = c_multibyte(CSYNC_TEST_DIRS);
     int rc;
 
-    rc = mkdir("/tmp/csync/this", 0755);
+    rc = _tmkdir(this_dir, 0755);
     assert_int_equal(rc, 0);
     rc = csync_vio_mkdirs(csync, CSYNC_TEST_DIRS, 0755);
     assert_int_equal(rc, 0);
 
-    rc = lstat(CSYNC_TEST_DIRS, &sb);
+    rc = _tstat(stat_dir, &sb);
     assert_int_equal(rc, 0);
 
-    rmdir(CSYNC_TEST_DIR);
+    _trmdir(stat_dir);
+    c_free_multibyte(this_dir);
+    c_free_multibyte(stat_dir);
 }
 
 static void check_csync_vio_rmdir(void **state)
 {
     CSYNC *csync = *state;
-    struct stat sb;
+    csync_stat_t sb;
     int rc;
 
     rc = csync_vio_mkdir(csync, CSYNC_TEST_DIR, 0755);
@@ -182,9 +192,13 @@ static void check_csync_vio_opendir_perm(void **state)
     CSYNC *csync = *state;
     csync_vio_method_handle_t *dh;
     int rc;
+    const mbchar_t *dir = c_multibyte(CSYNC_TEST_DIR);
 
-    rc = mkdir(CSYNC_TEST_DIR, 0200);
+    assert_non_null(dir);
+
+    rc = _tmkdir(dir, 0200);
     assert_int_equal(rc, 0);
+    c_free_multibyte(dir);
 
     dh = csync_vio_opendir(csync, CSYNC_TEST_DIR);
     assert_null(dh);
@@ -409,42 +423,51 @@ static void check_csync_vio_stat_file(void **state)
 static void check_csync_vio_rename_dir(void **state)
 {
     CSYNC *csync = *state;
-    struct stat sb;
+    csync_stat_t sb;
     int rc;
 
-    rc = mkdir("test", 0755);
+    const mbchar_t *dir = c_multibyte("test");
+    const mbchar_t *dir2 = c_multibyte("test2");
+
+    assert_non_null(dir);
+    assert_non_null(dir2);
+
+    rc = _tmkdir(dir, 0755);
     assert_int_equal(rc, 0);
 
     rc = csync_vio_rename(csync, "test", "test2");
     assert_int_equal(rc, 0);
 
-    rc = lstat("test2", &sb);
+
+    rc = _tstat(dir2, &sb);
     assert_int_equal(rc, 0);
 }
 
 static void check_csync_vio_rename_file(void **state)
 {
     CSYNC *csync = *state;
-    struct stat sb;
+    const mbchar_t *file = c_multibyte(CSYNC_TEST_DIR "file2.txt");
+    csync_stat_t sb;
     int rc;
 
     rc = csync_vio_rename(csync, CSYNC_TEST_FILE, CSYNC_TEST_DIR "file2.txt");
     assert_int_equal(rc, 0);
 
-    rc = lstat(CSYNC_TEST_DIR "file2.txt", &sb);
+    rc = _tstat(file, &sb);
     assert_int_equal(rc, 0);
 }
 
 static void check_csync_vio_unlink(void **state)
 {
     CSYNC *csync = *state;
-    struct stat sb;
+    csync_stat_t sb;
+    const mbchar_t *file = c_multibyte(CSYNC_TEST_FILE);
     int rc;
 
     rc = csync_vio_unlink(csync, CSYNC_TEST_FILE);
     assert_int_equal(rc, 0);
 
-    rc = lstat(CSYNC_TEST_FILE, &sb);
+    rc = _tstat(file, &sb);
     assert_int_equal(rc, -1);
 }
 
@@ -457,6 +480,7 @@ static void check_csync_vio_chmod(void **state)
     assert_int_equal(rc, 0);
 }
 
+#ifndef _WIN32
 static void check_csync_vio_chown(void **state)
 {
     CSYNC *csync = *state;
@@ -465,16 +489,18 @@ static void check_csync_vio_chown(void **state)
     rc = csync_vio_chown(csync, CSYNC_TEST_FILE, getuid(), getgid());
     assert_int_equal(rc, 0);
 }
+#endif
 
 static void check_csync_vio_utimes(void **state)
 {
     CSYNC *csync = *state;
-    struct stat sb;
+    csync_stat_t sb;
     struct timeval times[2];
     long modtime = 0;
+    const mbchar_t *file = c_multibyte(CSYNC_TEST_FILE);
     int rc;
 
-    rc = lstat(CSYNC_TEST_FILE, &sb);
+    rc = _tstat(file, &sb);
     assert_int_equal(rc, 0);
     modtime = sb.st_mtime + 10;
 
@@ -487,7 +513,7 @@ static void check_csync_vio_utimes(void **state)
     rc = csync_vio_utimes(csync, CSYNC_TEST_FILE, times);
     assert_int_equal(rc, 0);
 
-    rc = lstat(CSYNC_TEST_FILE, &sb);
+    rc = _tstat(file, &sb);
     assert_int_equal(rc, 0);
 
     assert_int_equal(modtime, sb.st_mtime);
@@ -526,7 +552,9 @@ int torture_run_tests(void)
         unit_test_setup_teardown(check_csync_vio_rename_file, setup_file, teardown),
         unit_test_setup_teardown(check_csync_vio_unlink, setup_file, teardown),
         unit_test_setup_teardown(check_csync_vio_chmod, setup_file, teardown),
+#ifndef _WIN32
         unit_test_setup_teardown(check_csync_vio_chown, setup_file, teardown),
+#endif
         unit_test_setup_teardown(check_csync_vio_utimes, setup_file, teardown),
     };
 
