@@ -884,7 +884,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
         gtp = GetTempPathW( PATH_MAX, winTmp );
         winTmpUtf8 = c_utf8( winTmp );
         strcpy( getUrl, winTmpUtf8 );
-        DEBUG_WEBDAV("win32 tmp path: %s", getUrl);
+        DEBUG_WEBDAV(("win32 tmp path: %s", getUrl));
 
         if ( gtp > MAX_PATH || (gtp == 0) ) {
             DEBUG_WEBDAV(("Failed to compute Win32 tmp path, trying /tmp\n"));
