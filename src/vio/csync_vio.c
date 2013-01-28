@@ -49,7 +49,7 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
   char *err = NULL;
   csync_vio_method_t *m = NULL;
   csync_vio_method_init_fn init_fn;
-  const _TCHAR *mpath = NULL;
+  const mbchar_t *mpath = NULL;
 
 
   if (asprintf(&path, "%s/csync_%s.%s", PLUGINDIR, module, MODULE_EXTENSION) < 0) {

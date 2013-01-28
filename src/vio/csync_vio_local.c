@@ -47,7 +47,7 @@ typedef struct fhandle_s {
 csync_vio_method_handle_t *csync_vio_local_open(const char *durl, int flags, mode_t mode) {
   fhandle_t *handle = NULL;
   int fd = -1;
-  const _TCHAR *url = c_multibyte(durl);
+  const mbchar_t *url = c_multibyte(durl);
 
   if ((fd = _topen(url, flags, mode)) < 0) {
     return NULL;
@@ -69,7 +69,7 @@ csync_vio_method_handle_t *csync_vio_local_open(const char *durl, int flags, mod
 csync_vio_method_handle_t *csync_vio_local_creat(const char *durl, mode_t mode) {
   fhandle_t *handle = NULL;
   int fd = -1;
-  const _TCHAR *url = c_multibyte(durl);
+  const mbchar_t *url = c_multibyte(durl);
 
   if(( fd = _tcreat( url, mode)) < 0) {
       return NULL;
@@ -159,7 +159,7 @@ typedef struct dhandle_s {
 
 csync_vio_method_handle_t *csync_vio_local_opendir(const char *name) {
   dhandle_t *handle = NULL;
-  const _TCHAR *dirname = c_multibyte(name);
+  const mbchar_t *dirname = c_multibyte(name);
   handle = c_malloc(sizeof(dhandle_t));
   if (handle == NULL) {
     return NULL;
@@ -264,7 +264,7 @@ int csync_vio_local_mkdir(const char *uri, mode_t mode) {
 }
 
 int csync_vio_local_rmdir(const char *uri) {
-  const _TCHAR *dirname = c_multibyte(uri);
+  const mbchar_t *dirname = c_multibyte(uri);
   int re = -1;
 
   re = _trmdir(dirname);
@@ -275,7 +275,7 @@ int csync_vio_local_rmdir(const char *uri) {
 
 int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   csync_stat_t sb;
-  const _TCHAR *wuri = c_multibyte( uri );
+  const mbchar_t *wuri = c_multibyte( uri );
   if( _tstat(wuri, &sb) < 0) {
     c_free_multibyte(wuri);
     return -1;
@@ -374,8 +374,8 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
 
 int csync_vio_local_rename(const char *olduri, const char *newuri) {
 #ifdef _WIN32
-  const _TCHAR *nuri = c_multibyte(newuri);
-  const _TCHAR *ouri = c_multibyte(olduri);
+  const mbchar_t *nuri = c_multibyte(newuri);
+  const mbchar_t *ouri = c_multibyte(olduri);
 
   if(ouri && nuri) {
     if (MoveFileExW(ouri, nuri, MOVEFILE_COPY_ALLOWED + MOVEFILE_REPLACE_EXISTING + MOVEFILE_WRITE_THROUGH )) {
@@ -395,14 +395,14 @@ int csync_vio_local_rename(const char *olduri, const char *newuri) {
 }
 
 int csync_vio_local_unlink(const char *uri) {
-  const _TCHAR *nuri = c_multibyte(uri);
+  const mbchar_t *nuri = c_multibyte(uri);
   int re = _tunlink( nuri );
   c_free_multibyte(nuri);
   return re;
 }
 
 int csync_vio_local_chmod(const char *uri, mode_t mode) {
-  const _TCHAR *nuri = c_multibyte(uri);
+  const mbchar_t *nuri = c_multibyte(uri);
   int re = -1;
 
   re = _tchmod(nuri, mode);

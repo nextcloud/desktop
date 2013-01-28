@@ -39,7 +39,7 @@
 /* check if path is a file */
 int c_isfile(const char *path) {
   csync_stat_t sb;
-  const _TCHAR *wpath = c_multibyte(path);
+  const mbchar_t *wpath = c_multibyte(path);
   int re = _tstat(wpath, &sb);
   c_free_multibyte(wpath);
 

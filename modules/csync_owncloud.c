@@ -815,8 +815,8 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
 #ifdef _WIN32
     int gtp = 0;
     char tmpname[13];
-    _TCHAR winTmp[PATH_MAX];
-    const _TCHAR *winUrlMB = NULL;
+    mbchar_t winTmp[PATH_MAX];
+    const mbchar_t *winUrlMB = NULL;
     const char *winTmpUtf8 = NULL;
     csync_stat_t sb;
 #endif
@@ -1026,7 +1026,7 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
     int rc;
     int ret = 0;
     size_t len = 0;
-    const _TCHAR *tmpFileName = 0;
+    const mbchar_t *tmpFileName = 0;
 
     writeCtx = (struct transfer_context*) fhandle;
 
@@ -1139,7 +1139,7 @@ static ssize_t owncloud_read(csync_vio_method_handle_t *fhandle, void *buf, size
     struct transfer_context *writeCtx;
     size_t len = 0;
     csync_stat_t st;
-    const _TCHAR *tmpFileName;
+    const mbchar_t *tmpFileName;
 
     writeCtx = (struct transfer_context*) fhandle;
 
@@ -1154,7 +1154,7 @@ static ssize_t owncloud_read(csync_vio_method_handle_t *fhandle, void *buf, size
 #ifdef _WIN32
 	_fmode = _O_BINARY;
 #endif
-        const mbchar_t *tmpFileName = c_multibyte(writeCtx->tmpFileName);
+        tmpFileName = c_multibyte(writeCtx->tmpFileName);
         if (( writeCtx->fd = _topen( tmpFileName, O_RDONLY )) < 0) {
             c_free_multibyte(tmpFileName);
             DEBUG_WEBDAV(("Could not open local file %s", writeCtx->tmpFileName ));
