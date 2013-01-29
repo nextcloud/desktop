@@ -465,7 +465,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="935"/>
         <source>Server is currently not available.</source>
-        <translation type="unfinished"/>
+        <translation>Serwer jest obecnie niedostępny.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="940"/>
@@ -801,12 +801,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="50"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>Kopiuj</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="53"/>
         <source>Sync Protocol</source>
-        <translation type="unfinished"/>
+        <translation>Protokół synchronizacji</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="64"/>
@@ -816,27 +816,27 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="67"/>
         <source>The folder waits to start syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Katalog oczekuje na synchronizację.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="70"/>
         <source>Server is currently not available.</source>
-        <translation type="unfinished"/>
+        <translation>Serwer jest obecnie niedostępny.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="73"/>
         <source>Sync is running.</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizacja w toku</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="76"/>
         <source>Last Sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>Ostatnia synchronizacja zakończona powodzeniem.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="79"/>
         <source>Syncing Error.</source>
-        <translation type="unfinished"/>
+        <translation>Błąd synchronizacji.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="82"/>
@@ -856,17 +856,17 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="166"/>
         <source>Synced Files</source>
-        <translation type="unfinished"/>
+        <translation>Pliki zsynchronizowane</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="172"/>
         <source>New Files</source>
-        <translation type="unfinished"/>
+        <translation>Nowe pliki</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="178"/>
         <source>Deleted Files</source>
-        <translation type="unfinished"/>
+        <translation>Pliki usnięte</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="184"/>
@@ -876,22 +876,22 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="190"/>
         <source>Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Pliki ignorowane</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="196"/>
         <source>Errors</source>
-        <translation type="unfinished"/>
+        <translation>Błędy</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="202"/>
         <source>Conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Konflikty</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="222"/>
         <source>Up</source>
-        <translation type="unfinished"/>
+        <translation>Do góry</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="223"/>
@@ -1933,18 +1933,18 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/fileitemdialog.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formularz</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.ui" line="27"/>
         <source>Detailed Sync Protocol</source>
-        <translation type="unfinished"/>
+        <translation>Szczegółowy protokół synchronizacji</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.ui" line="63"/>
         <location filename="../src/mirall/fileitemdialog.ui" line="70"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Etykieta</translation>
     </message>
 </context>
 <context>

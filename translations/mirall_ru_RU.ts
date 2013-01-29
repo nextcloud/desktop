@@ -791,12 +791,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="50"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>Копировать</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="53"/>
         <source>Sync Protocol</source>
-        <translation type="unfinished"/>
+        <translation>Протокол синхронизации</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="64"/>
@@ -816,7 +816,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="73"/>
         <source>Sync is running.</source>
-        <translation type="unfinished"/>
+        <translation>Идет синхронизация.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="76"/>
@@ -826,12 +826,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="79"/>
         <source>Syncing Error.</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка синхронизации.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="82"/>
         <source>Setup Error.</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка установки.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="85"/>
@@ -851,17 +851,17 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="172"/>
         <source>New Files</source>
-        <translation type="unfinished"/>
+        <translation>Новые файлы</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="178"/>
         <source>Deleted Files</source>
-        <translation type="unfinished"/>
+        <translation>Удаленные файлы</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="184"/>
         <source>Renamed Files</source>
-        <translation type="unfinished"/>
+        <translation>Переименованные файлы</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="190"/>
@@ -871,7 +871,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="196"/>
         <source>Errors</source>
-        <translation type="unfinished"/>
+        <translation>Ошибки</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="202"/>
@@ -881,12 +881,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="222"/>
         <source>Up</source>
-        <translation type="unfinished"/>
+        <translation>Выше</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="223"/>
         <source>Down</source>
-        <translation type="unfinished"/>
+        <translation>Ниже</translation>
     </message>
 </context>
 <context>
@@ -1127,7 +1127,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="86"/>
         <source>Create Connection to %1</source>
-        <translation type="unfinished"/>
+        <translation>Создать соединение с %1</translation>
     </message>
 </context>
 <context>
@@ -1923,7 +1923,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/fileitemdialog.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Форма</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.ui" line="27"/>
@@ -1934,7 +1934,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/fileitemdialog.ui" line="63"/>
         <location filename="../src/mirall/fileitemdialog.ui" line="70"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Текстовая метка</translation>
     </message>
 </context>
 <context>
