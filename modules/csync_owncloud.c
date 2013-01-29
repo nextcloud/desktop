@@ -48,6 +48,7 @@
 #include "csync_misc.h"
 #include "csync_macros.h"
 #include "c_private.h"
+#include "httpbf.h"
 
 #include "vio/csync_vio_module.h"
 #include "vio/csync_vio_file_stat.h"
@@ -1571,22 +1572,24 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
      */
 
     if( c_streq( write_ctx->method, "PUT") ) {
-        /* Transmit a file through PUT */
-        ne_request *request = ne_request_create(dav_session.ctx, "PUT", clean_uri);
-        write_ctx->req = request;
-        if( request ) {
-            /* stat the source-file to get the file size. */
-            csync_stat_t sb;
-            if( fstat( fd, &sb ) == 0 ) {
+        /* stat the source-file to get the file size. */
+        csync_stat_t sb;
+        if (_progresscb) {
+            ne_set_notifier(dav_session.ctx, ne_notify_status_cb, write_ctx);
+            _progresscb(write_ctx->url, CSYNC_NOTIFY_START_UPLOAD, 0 , 0, dav_session.userdata);
+        }
+        if( fstat( fd, &sb ) != 0 ) {
+            DEBUG_WEBDAV("Could not stat file descriptor");
+            rc = 1;
+        } else if (sb.st_size < 1024*1024*2) {
+            /* Transmit a file through PUT */
+            ne_request *request = ne_request_create(dav_session.ctx, "PUT", clean_uri);
+            write_ctx->req = request;
+            if( request ) {
                 /* Attach the request to the file descriptor */
                 ne_set_request_body_fd(request, fd, 0, sb.st_size);
                 DEBUG_WEBDAV("Put file size: %lld, variable sizeof: %ld", (long long int) sb.st_size,
                              sizeof(sb.st_size));
-
-                if (_progresscb) {
-                    ne_set_notifier(dav_session.ctx, ne_notify_status_cb, write_ctx);
-                    _progresscb(write_ctx->url, CSYNC_NOTIFY_START_UPLOAD, 0 , 0, dav_session.userdata);
-                }
 
                 /* Start the request. */
                 neon_stat = ne_request_dispatch( write_ctx->req );
@@ -1611,20 +1614,34 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
                 } else {
                     DEBUG_WEBDAV("http request all cool, result code %d", status->code);
                 }
-
-                if (_progresscb) {
-                    ne_set_notifier(dav_session.ctx, 0, 0);
-                    _progresscb(write_ctx->url, rc != NE_OK ?  CSYNC_NOTIFY_ERROR :
-                                CSYNC_NOTIFY_FINISHED_UPLOAD, error_code,
-                                (long long)(error_string), dav_session.userdata);
-                }
             } else {
-                DEBUG_WEBDAV("Could not stat file descriptor");
+                DEBUG_WEBDAV("Did not find a valid request!");
                 rc = 1;
             }
         } else {
-            DEBUG_WEBDAV("Did not find a valid request!");
-            rc = 1;
+            /* use httpbf */
+            hbf_transfer_t *trans = hbf_init_transfer(clean_uri);
+            if (!trans) {
+                DEBUG_WEBDAV("hbf_init_transfer failed");
+                rc = 1;
+            } else {
+                Hbf_State state = hbf_splitlist(trans, fd);
+                if( state == HBF_SUCCESS ) {
+                    /* Transfer all the chunks through the HTTP session using PUT. */
+                    state = hbf_transfer( dav_session.ctx, trans, "PUT" );
+                }
+
+                if ( state != HBF_SUCCESS ) {
+                    error_string = hbf_error_string(state);
+                    rc = 1;
+                }
+            }
+        }
+        if (_progresscb) {
+            ne_set_notifier(dav_session.ctx, 0, 0);
+            _progresscb(write_ctx->url, rc != NE_OK ? CSYNC_NOTIFY_ERROR :
+                                CSYNC_NOTIFY_FINISHED_UPLOAD, error_code,
+                                (long long)(error_string), dav_session.userdata);
         }
     } else if( c_streq( write_ctx->method, "GET") ) {
         ne_request *request = ne_request_create(dav_session.ctx, "GET", clean_uri);

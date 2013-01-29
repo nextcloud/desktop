@@ -1,7 +1,7 @@
 project(httpbflib C)
 
 set(HTTPBF_PUBLIC_INCLUDE_DIRS
-  ${CMAKE_CURRENT_SOURCE_DIR}
+  ${CMAKE_CURRENT_SOURCE_DIR}/src
   CACHE INTERNAL "httpbflib public include directories"
 )
 

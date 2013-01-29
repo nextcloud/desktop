@@ -9,10 +9,11 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMOCKA_INCLUDE_DIRS}
     ${NEON_INCLUDE_DIRS}
+    ${HTTPBF_PUBLIC_INCLUDE_DIRS}
 )
 
 
 add_executable(ocmod_test ocmod_test.c)
 
-target_link_libraries(ocmod_test ${CMOCKA_LIBRARIES} ${NEON_LIBRARIES} ${CSYNC_LIBRARY} )
+target_link_libraries(ocmod_test ${CMOCKA_LIBRARIES} ${NEON_LIBRARIES} ${CSYNC_LIBRARY} ${HTTPBF_LIBRARY})
 
