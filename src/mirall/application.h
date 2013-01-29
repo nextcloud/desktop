@@ -53,6 +53,7 @@ public:
     ~Application();
 
     bool giveHelp();
+    void showHelp();
 
 signals:
 
@@ -98,7 +99,7 @@ protected slots:
     void slotStartUpdateDetector();
 
 private:
-    void showHelp();
+    void setHelp();
     void raiseDialog( QWidget* );
 
     // configuration file -> folder

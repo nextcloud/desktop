@@ -32,8 +32,10 @@ int main(int argc, char **argv)
         return 0;
     }
     // if help requested, show on command line and exit.
-    if( ! app.giveHelp() )
+    if( ! app.giveHelp() ) {
         return app.exec();
-
+    } else {
+        app.showHelp();
+    }
 }
 

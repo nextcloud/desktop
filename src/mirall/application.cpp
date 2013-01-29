@@ -185,7 +185,7 @@ Application::~Application()
 {
     delete _tray; // needed, see ctor
     if( _fileItemDialog) delete _fileItemDialog;
-    if( _statusDialog )  delete _statusDialog;
+    if( _statusDialog && ! _helpOnly)  delete _statusDialog;
     qDebug() << "* Mirall shutdown";
 }
 
@@ -880,10 +880,12 @@ void Application::parseOptions(const QStringList &options)
     // skip file name;
     if (it.hasNext()) it.next();
 
+    //parse options; if help or bad option exit
     while (it.hasNext()) {
         QString option = it.next();
-        if (option == QLatin1String("--help")) {
-            showHelp();
+       	if (option == QLatin1String("--help") || option == QLatin1String("-h")) {
+            setHelp();
+            break;
         } else if (option == QLatin1String("--logwindow") ||
                 option == QLatin1String("-l")) {
             _showLogWindow = true;
@@ -891,13 +893,17 @@ void Application::parseOptions(const QStringList &options)
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
                 _logFile = it.next();
             } else {
-                showHelp();
+                setHelp();
             }
         } else if (option == QLatin1String("--logflush")) {
             _logFlush = true;
         } else if (option == QLatin1String("--monoicons")) {
             _theme->setSystrayUseMonoIcons(true); 
-        }
+	} else {
+	    setHelp();
+	    std::cout << "Option not recognized:  " << option.toStdString() << std::endl;
+	    break;
+	}
     }
 }
 
@@ -985,10 +991,12 @@ void Application::computeOverallSyncStatus()
 
 void Application::showHelp()
 {
+setHelp();
     std::cout << _theme->appName().toLatin1().constData() << " version " <<
                  _theme->version().toLatin1().constData() << std::endl << std::endl;
     std::cout << "File synchronisation desktop utility." << std::endl << std::endl;
     std::cout << "Options:" << std::endl;
+    std::cout << "  -h --help            : show this help screen." << std::endl;
     std::cout << "  --logwindow          : open a window to show log output." << std::endl;
     std::cout << "  --logfile <filename> : write log output to file <filename>." << std::endl;
     std::cout << "  --logflush           : flush the log file after every write." << std::endl;
@@ -996,6 +1004,10 @@ void Application::showHelp()
     std::cout << std::endl;
     if (_theme->appName() == QLatin1String("ownCloud"))
         std::cout << "For more information, see http://www.owncloud.org" << std::endl;
+}
+
+void Application::setHelp()
+{
     _helpOnly = true;
 }
 
