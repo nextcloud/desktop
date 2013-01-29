@@ -307,9 +307,9 @@ mbchar_t* c_multibyte(const char *str)
   int size_needed = MultiByteToWideChar(CP_UTF8, 0, str, len, NULL, 0);
   if(size_needed > 0) {
     int size_char = (size_needed+1)*sizeof(mbchar_t);
-    wstrTo = c_malloc(size_char);
-    memset( (void*)wstrTo, 0, size_char);
-    MultiByteToWideChar(CP_UTF8, 0, str, -1, wstrTo, size_needed);
+    dst = c_malloc(size_char);
+    memset( (void*)dst, 0, size_char);
+    MultiByteToWideChar(CP_UTF8, 0, str, -1, dst, size_needed);
   }
 #else
 #ifdef WITH_ICONV
