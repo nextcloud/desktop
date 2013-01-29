@@ -188,7 +188,7 @@ char* get_transfer_url( hbf_transfer_t *transfer, int indx ) {
     block = transfer->block_arr[indx];
     if( ! block ) return NULL;
 
-    if( asprintf(&res, "%s-chunking-%d-%d-%d", transfer->url, transfer->transfer_id,
+    if( asprintf(&res, "%s-chunking-%u-%u-%u", transfer->url, transfer->transfer_id,
             transfer->block_cnt, indx ) < 0 ) {
         return NULL;
     }
