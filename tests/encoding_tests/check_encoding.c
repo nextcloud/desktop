@@ -8,18 +8,101 @@
 
 static void setup(void **state)
 {
+    int rc = 0;
 
+    (void) state; /* unused */
+
+#ifdef HAVE_ICONV
+#ifdef __APPLE__
+    /* this test only works on apple because linux does not know the
+     * UTF-8-MAC encoding that we use here. */
+    rc = c_setup_iconv("UTF-8-MAC");
+#endif
+#endif
+    assert_int_equal(rc, 0);
 }
 
 static void teardown(void **state)
 {
+    int rc = 0;
 
+    (void) state; /* unused */
+#ifdef HAVE_ICONV
+    // this must never crash
+    rc = c_close_iconv();
+#endif
+    assert_int_equal(rc, 0);
 }
 
-#define TESTSTRING "#äA\\#fß§4"
-#ifdef _WIN32
-#define LTESTSTRING L"#äA\\#fß§4"
+static void check_iconv_to_native_normalization(void **state)
+{
+    mbchar_t *out = NULL;
+    const char *in= "\x48\xc3\xa4"; // UTF8
+#ifdef __APPLE__
+    const char *exp_out = "\x48\x61\xcc\x88"; // UTF-8-MAC
+#else
+    const char *exp_out = "\x48\xc3\xa4"; // UTF8
 #endif
+
+    out = c_multibyte(in);
+    assert_string_equal(out, exp_out);
+
+    c_free_multibyte(out);
+    assert_null(out);
+
+    (void) state; /* unused */
+}
+
+static void check_iconv_from_native_normalization(void **state)
+{
+    char *out = NULL;
+#ifdef _WIN32
+    const mbchar_t *in = L"\x48\xc3\xa4"; // UTF-8
+#else
+#ifdef __APPLE__
+    const mbchar_t *in = "\x48\x61\xcc\x88"; // UTF-8-MAC
+#else
+    const mbchar_t *in = "\x48\xc3\xa4"; // UTF-8
+#endif
+#endif
+    const char *exp_out = "\x48\xc3\xa4"; // UTF-8
+
+    out = c_utf8(in);
+    assert_string_equal(out, exp_out);
+
+    c_free_utf8(out);
+    assert_null(out);
+
+    (void) state; /* unused */
+}
+
+static void check_iconv_ascii(void **state)
+{
+#ifdef _WIN32
+    const mbchar_t *in = L"abc/ABC\\123"; // UTF-8
+#else
+#ifdef __APPLE__
+    const mbchar_t *in = "abc/ABC\\123"; // UTF-8-MAC
+#else
+    const mbchar_t *in = "abc/ABC\\123"; // UTF-8
+#endif
+#endif
+    char *out = NULL;
+    const char *exp_out = "abc/ABC\\123";
+
+    out = c_utf8(in);
+    assert_string_equal(out, exp_out);
+
+    c_free_utf8(out);
+    assert_null(out);
+
+    (void) state; /* unused */
+}
+
+
+
+#define TESTSTRING "#äA\\#fß§4"
+#define LTESTSTRING L"#äA\\#fß§4"
 
 static void check_to_multibyte(void **state)
 {
@@ -27,6 +110,9 @@ static void check_to_multibyte(void **state)
 
     const mbchar_t *mb_string = c_multibyte( TESTSTRING );
     const mbchar_t *mb_null   = c_multibyte( NULL );
+
+    (void) state;
+
 #ifdef _WIN32
     assert_int_equal( wcscmp( LTESTSTRING, mb_string), 0 );
 #else
@@ -36,16 +122,14 @@ static void check_to_multibyte(void **state)
     assert_int_equal(rc, -1);
 }
 
-static void check_to_utf8( void **state)
-{
-
-}
 
 int torture_run_tests(void)
 {
     const UnitTest tests[] = {
-        unit_test_setup_teardown(check_to_multibyte, setup, teardown),
-        unit_test_setup_teardown(check_to_utf8, setup, teardown)
+        unit_test_setup_teardown(check_to_multibyte,                    setup, teardown),
+        unit_test_setup_teardown(check_iconv_ascii,                     setup, teardown),
+        unit_test_setup_teardown(check_iconv_to_native_normalization,   setup, teardown),
+        unit_test_setup_teardown(check_iconv_from_native_normalization, setup, teardown),
     };
 
     return run_tests(tests);

@@ -174,82 +174,7 @@ static void check_c_uppercase_null(void **state)
     assert_null(str);
 }
 
-static void check_iconv_setup(void **state)
-{
-    int rc = 0;
 
-    (void) state; /* unused */
-
-#ifdef __APPLE__
-    rc = c_setup_iconv("UTF-8-MAC");
-    assert_int_equal(rc, 0);
-#endif
-}
-
-static void check_iconv_teardown(void **state)
-{
-    int rc = 0;
-
-    (void) state; /* unused */
-#ifdef HAVE_ICONV
-    // this must never crash
-    rc = c_close_iconv();
-#endif
-    assert_int_equal(rc, 0);
-}
-
-static void check_iconv_to_native_normalization(void **state)
-{
-    mbchar_t *out = NULL;
-    const char *in= "\x48\xc3\xa4"; // UTF8
-#ifdef __APPLE__
-    const char *exp_out = "\x48\x61\xcc\x88"; // UTF-8-MAC
-#else
-    const char *exp_out = "\x48\xc3\xa4"; // UTF8
-#endif
-
-    out = c_multibyte(in);
-    assert_string_equal(out, exp_out);
-
-    c_free_multibyte(out);
-    assert_null(out);
-
-    (void) state; /* unused */
-}
-
-static void check_iconv_from_native_normalization(void **state)
-{
-    char *out = NULL;
-#ifdef __APPLE__
-    const char* in = "\x48\x61\xcc\x88"; // UTF-8-MAC
-#else
-    const char *in = "\x48\xc3\xa4"; // UTF-8
-#endif
-    const char *exp_out = "\x48\xc3\xa4"; // UTF-8
-
-    out = c_utf8(in);
-    assert_string_equal(out, exp_out);
-
-    c_free_utf8(out);
-    assert_null(out);
-
-    (void) state; /* unused */
-}
-
-static void check_iconv_ascii(void **state)
-{
-    const char *out = NULL;
-    const char* in = "abc/ABC\\123";
-    const char *exp_out = "abc/ABC\\123";
-
-    out = c_utf8(in);
-    assert_string_equal(out, exp_out);
-
-    c_free_utf8(out);
-    assert_null(out);
-
-    (void) state; /* unused */
-}
 
 int torture_run_tests(void)
 {
@@ -267,9 +192,6 @@ int torture_run_tests(void)
         unit_test(check_c_uppercase),
         unit_test(check_c_uppercase_empty),
         unit_test(check_c_uppercase_null),
-        unit_test_setup_teardown(check_iconv_ascii, check_iconv_setup, check_iconv_teardown),
-        unit_test_setup_teardown(check_iconv_to_native_normalization, check_iconv_setup, check_iconv_teardown),
-        unit_test_setup_teardown(check_iconv_from_native_normalization, check_iconv_setup, check_iconv_teardown),
     };
 
     return run_tests(tests);
