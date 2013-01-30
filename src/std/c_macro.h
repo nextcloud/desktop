@@ -55,6 +55,25 @@
 #define ARRAY_SIZE(a) (sizeof(a)/sizeof(a[0]))
 
 /**
+ * This is a hack to fix warnings. The idea is to use this everywhere that we
+ * get the "discarding const" warning by the compiler. That doesn't actually
+ * fix the real issue, but marks the place and you can search the code for
+ * discard_const.
+ *
+ * Please use this macro only when there is no other way to fix the warning.
+ * We should use this function in only in a very few places.
+ *
+ * Also, please call this via the discard_const_p() macro interface, as that
+ * makes the return type safe.
+ */
+#define discard_const(ptr) ((void *)((uintptr_t)(ptr)))
+
+/**
+ * Type-safe version of discard_const
+ */
+#define discard_const_p(type, ptr) ((type *)discard_const(ptr))
+
+/**
  * }@
  */
 #endif /* _C_MACRO_H */
