@@ -185,6 +185,8 @@ int _connected = 0;                   /* flag to indicate if a connection exists
 
 csync_auth_callback _authcb;
 csync_progress_callback _progresscb;
+long long chunked_total_size = 0;
+long long chunked_done = 0;
 
 struct listdir_context *propfind_cache = 0;
 csync_vio_file_stat_t _stat_cache;
@@ -664,7 +666,13 @@ static void ne_notify_status_cb (void *userdata, ne_session_status status,
 
     if (_progresscb && (status == ne_status_sending || status == ne_status_recving)) {
         if (info->sr.total > 0)
-            _progresscb(tc->url, CSYNC_NOTIFY_PROGRESS, info->sr.progress, info->sr.total, dav_session.userdata);
+            _progresscb(tc->url, CSYNC_NOTIFY_PROGRESS,
+                        chunked_done + info->sr.progress,
+                        chunked_total_size ? chunked_total_size : info->sr.total,
+                        dav_session.userdata);
+
+        if (chunked_total_size && info->sr.total == info->sr.progress)
+            chunked_done += info->sr.total;
     }
 }
 
@@ -1565,6 +1573,9 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
 
     clean_uri = _cleanPath( write_ctx->url );
 
+    chunked_total_size = 0;
+    chunked_done = 0;
+
     DEBUG_WEBDAV("Sendfile handling request type %s.", write_ctx->method);
 
     /* Copy from the file descriptor if method == PUT
@@ -1627,6 +1638,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
             } else {
                 Hbf_State state = hbf_splitlist(trans, fd);
                 if( state == HBF_SUCCESS ) {
+                    chunked_total_size = sb.st_size;
                     /* Transfer all the chunks through the HTTP session using PUT. */
                     state = hbf_transfer( dav_session.ctx, trans, "PUT" );
                 }
@@ -1712,6 +1724,9 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
         DEBUG_WEBDAV("Unknown method!");
         rc = -1;
     }
+
+    chunked_total_size = 0;
+    chunked_done = 0;
 
     SAFE_FREE(clean_uri);
     return rc;
