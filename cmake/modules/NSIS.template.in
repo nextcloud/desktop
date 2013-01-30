@@ -347,7 +347,6 @@ Section "${APPLICATION_NAME}" SEC_OWNCLOUD
    File "${MING_BIN}\libssl-8.dll"
 
    ; CSync configs
-   File "${CSYNC_CONFIG_DIR}/ocsync.conf"
    File "${SOURCE_PATH}/sync-exclude.lst"
 
 SectionEnd
