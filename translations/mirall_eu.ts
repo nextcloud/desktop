@@ -370,7 +370,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="282"/>
         <source>%1 user credentials are wrong. Please check configuration.</source>
-        <translation type="unfinished"/>
+        <translation>%1 erabiltzailearen kredentzialak ez dira egokia. Mesedez egiaztatu konfigurazioa.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="287"/>
@@ -760,7 +760,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/credentialstore.cpp" line="223"/>
         <source>No password entry found in keychain. Please reconfigure.</source>
-        <translation type="unfinished"/>
+        <translation>Ez da pasahitzik aurkitu. Mesedez birkonfiguratu.</translation>
     </message>
 </context>
 <context>
