@@ -160,3 +160,23 @@ out:
 #endif
 }
 
+int c_rename( const char *src, const char *dst ) {
+  mbchar_t *nuri = c_multibyte(dst);
+  mbchar_t *ouri = c_multibyte(src);
+
+#ifdef _WIN32
+  if(ouri && nuri) {
+    if (MoveFileExW(ouri, nuri, MOVEFILE_COPY_ALLOWED + MOVEFILE_REPLACE_EXISTING + MOVEFILE_WRITE_THROUGH )) {
+         return 0;
+    }
+    errno = GetLastError();
+  } else {
+    errno = ENOENT;
+  }
+#else
+  return rename(ouri, nuri);
+#endif
+  c_free_multibyte(nuri);
+  c_free_multibyte(ouri);
+  return -1;
+}

@@ -35,6 +35,7 @@
 #define _C_FILE_H
 
 #include <sys/types.h>
+#include <stdio.h>
 
 #ifndef BUFFER_SIZE
 #define BUFFER_SIZE (16 * 1024)
@@ -58,10 +59,20 @@ int c_isfile(const char *path);
  * @param mode   File creation mode of the destination. If mode is 0 then the
  *               mode from the source will be used.
  *
- * @return       0 on success, less then 0 on error with errno set.
+ * @return       0 on success, less than 0 on error with errno set.
  *               EISDIR if src or dst is a file.
  */
 int c_copy(const char *src, const char *dst, mode_t mode);
+
+/**
+ * @brief move a file from source to destination.
+ *
+ * @param src    Path to the source file
+ * @param dst    Path to the destination file
+ *
+ * @return       0 on success, less than 0 on error with errno set.
+ */
+int c_rename( const char *src, const char *dst );
 
 /**
  * }@
