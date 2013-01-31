@@ -27,11 +27,6 @@
 #include <dirent.h>
 #include <stdio.h>
 
-#ifdef _WIN32
-#include "windows.h"
-#define _UNICODE
-#endif
-
 #include "c_private.h"
 #include "c_lib.h"
 #include "c_string.h"
@@ -226,7 +221,8 @@ csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_method_handle_t *dhandl
   file_stat->name = c_utf8(dirent->d_name);
   file_stat->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
 
-#ifndef _WIN32
+  /* Check for availability of d_type, see manpage. */
+#ifdef _DIRENT_HAVE_D_TYPE
   switch (dirent->d_type) {
     case DT_FIFO:
     case DT_SOCK:
@@ -303,18 +299,14 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
     case S_IFIFO:
       buf->type = CSYNC_VIO_FILE_TYPE_FIFO;
       break;
-#ifndef _WIN32
     case S_IFLNK:
       buf->type = CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK;
       break;
-#endif
     case S_IFREG:
       buf->type = CSYNC_VIO_FILE_TYPE_REGULAR;
       break;
-#ifndef _WIN32
     case S_IFSOCK:
       buf->type = CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK;
-#endif
       break;
     default:
       buf->type = CSYNC_VIO_FILE_TYPE_UNKNOWN;
@@ -351,13 +343,10 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   buf->size = sb.st_size;
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
 
-#ifndef _WIN32
-  buf->blksize = sb.st_blksize;
-  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_SIZE;
-
-  buf->blkcount = sb.st_blocks;
-  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_COUNT;
-#endif
+  /* Both values are only initialized to zero as they are not used in csync */
+  /* They are deprecated and will be rmemoved later. */
+  buf->blksize  = 0;
+  buf->blkcount = 0;
 
   buf->atime = sb.st_atime;
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ATIME;
@@ -373,24 +362,7 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
 }
 
 int csync_vio_local_rename(const char *olduri, const char *newuri) {
-  mbchar_t *nuri = c_multibyte(newuri);
-  mbchar_t *ouri = c_multibyte(olduri);
-
-#ifdef _WIN32
-  if(ouri && nuri) {
-    if (MoveFileExW(ouri, nuri, MOVEFILE_COPY_ALLOWED + MOVEFILE_REPLACE_EXISTING + MOVEFILE_WRITE_THROUGH )) {
-         return 0;
-    }
-    errno = GetLastError();
-  } else {
-    errno = ENOENT;
-  }
-#else
-  return rename(ouri, nuri);
-#endif
-  c_free_multibyte(nuri);
-  c_free_multibyte(ouri);
-  return -1;
+  return c_rename( olduri, newuri );
 }
 
 int csync_vio_local_unlink(const char *uri) {
@@ -410,11 +382,7 @@ int csync_vio_local_chmod(const char *uri, mode_t mode) {
 }
 
 int csync_vio_local_chown(const char *uri, uid_t owner, gid_t group) {
-#ifdef _WIN32
-  return 0;
-#else
-  return chown(uri, owner, group);
-#endif
+  return _tchown(uri, owner, group);
 }
 
 int csync_vio_local_utimes(const char *uri, const struct timeval *times) {

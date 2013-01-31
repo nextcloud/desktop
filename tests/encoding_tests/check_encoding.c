@@ -122,7 +122,6 @@ static void check_to_multibyte(void **state)
     assert_int_equal(rc, -1);
 }
 
-
 int torture_run_tests(void)
 {
     const UnitTest tests[] = {

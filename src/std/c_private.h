@@ -38,6 +38,10 @@
 #define S_IROTH 0
 #define S_IXGRP 0
 #define S_IXOTH 0
+
+#define S_IFSOCK 10000 /* dummy val on Win32 */
+#define S_IFLNK 10001  /* dummy val on Win32 */
+
 #define O_NOFOLLOW 0
 #define O_NOATIME 0
 #define O_NOCTTY 0
@@ -89,6 +93,7 @@ typedef  wchar_t    mbchar_t;
 #define _trmdir	    _rmdir
 #define _tchmod     _wchmod
 #define _trewinddir _wrewinddir
+#define _tchown(X, Y, Z) /* no chown on Win32 */
 #else
 typedef char        mbchar_t;
 #define _tdirent    dirent
@@ -108,6 +113,7 @@ typedef char        mbchar_t;
 #define _trmdir	    rmdir
 #define _tchmod     chmod
 #define _trewinddir rewinddir
+#define _tchown(X, Y, Z) chown(X, Y, Z)
 #endif
 
 #ifdef WITH_ICONV
