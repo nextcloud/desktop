@@ -61,8 +61,8 @@ enum csync_vio_file_stat_fields_e {
   CSYNC_VIO_FILE_STAT_FIELDS_INODE = 1 << 4,
   CSYNC_VIO_FILE_STAT_FIELDS_LINK_COUNT = 1 << 5,
   CSYNC_VIO_FILE_STAT_FIELDS_SIZE = 1 << 6,
-  CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_COUNT = 1 << 7,
-  CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_SIZE = 1 << 8,
+  CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_COUNT = 1 << 7, /* will be removed */
+  CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_SIZE = 1 << 8,  /* will be removed */
   CSYNC_VIO_FILE_STAT_FIELDS_ATIME = 1 << 9,
   CSYNC_VIO_FILE_STAT_FIELDS_MTIME = 1 << 10,
   CSYNC_VIO_FILE_STAT_FIELDS_CTIME = 1 << 11,
@@ -91,8 +91,8 @@ struct csync_vio_file_stat_s {
   time_t ctime;
 
   off_t size;
-  off_t blksize;
-  unsigned long blkcount;
+  off_t blksize;   /* will be removed in future, not used in csync */
+  unsigned long blkcount; /* will be removed in future, not used in csync */
 
   mode_t mode;
 
