@@ -448,32 +448,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="931"/>
+        <location filename="../src/mirall/application.cpp" line="937"/>
         <source>Sync is running.</source>
         <translation>S&apos;està sincronitzant.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="935"/>
+        <location filename="../src/mirall/application.cpp" line="941"/>
         <source>Server is currently not available.</source>
         <translation>El servidor no està disponible actualment.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="940"/>
+        <location filename="../src/mirall/application.cpp" line="946"/>
         <source>Last Sync was successful.</source>
         <translation>La darrera sincronització va ser correcta.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="946"/>
+        <location filename="../src/mirall/application.cpp" line="952"/>
         <source>Syncing Error.</source>
         <translation>Error de sincronització.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="952"/>
+        <location filename="../src/mirall/application.cpp" line="958"/>
         <source>Setup Error.</source>
         <translation>Error de configuració.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="955"/>
+        <location filename="../src/mirall/application.cpp" line="961"/>
         <source>Undefined Error State.</source>
         <translation>Estat d&apos;error no definit.</translation>
     </message>
@@ -511,17 +511,17 @@ p, li { white-space: pre-wrap; }
         <translation>S&apos;està sincronitzant.&lt;br/&gt;Voleu parar-la?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="924"/>
+        <location filename="../src/mirall/application.cpp" line="930"/>
         <source>Undefined State.</source>
         <translation>Estat indefinit.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="927"/>
+        <location filename="../src/mirall/application.cpp" line="933"/>
         <source>Waits to start syncing.</source>
         <translation>Espera per començar la sincronització.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="960"/>
+        <location filename="../src/mirall/application.cpp" line="966"/>
         <source> (Sync is paused)</source>
         <translation>(La sincronització està pausada)</translation>
     </message>
@@ -530,7 +530,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="977"/>
+        <location filename="../src/mirall/application.cpp" line="983"/>
         <source>No sync folders configured.</source>
         <translation>No hi ha fitxers de sincronització configurats</translation>
     </message>

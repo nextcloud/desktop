@@ -458,32 +458,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="931"/>
+        <location filename="../src/mirall/application.cpp" line="937"/>
         <source>Sync is running.</source>
         <translation>Synchronizácia prebieha.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="935"/>
+        <location filename="../src/mirall/application.cpp" line="941"/>
         <source>Server is currently not available.</source>
         <translation>Server je teraz nedostupný.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="940"/>
+        <location filename="../src/mirall/application.cpp" line="946"/>
         <source>Last Sync was successful.</source>
         <translation>Posledná synchronizácia úspešne skončila.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="946"/>
+        <location filename="../src/mirall/application.cpp" line="952"/>
         <source>Syncing Error.</source>
         <translation>Synchronizačná chyba.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="952"/>
+        <location filename="../src/mirall/application.cpp" line="958"/>
         <source>Setup Error.</source>
         <translation>Chyba pri inštalácii.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="955"/>
+        <location filename="../src/mirall/application.cpp" line="961"/>
         <source>Undefined Error State.</source>
         <translation>Nedefinovaný chybový stav.</translation>
     </message>
@@ -521,17 +521,17 @@ p, li { white-space: pre-wrap; }
         <translation>Proces synchronizácie práve prebieha.&lt;br/&gt;Chcete ho ukončiť?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="924"/>
+        <location filename="../src/mirall/application.cpp" line="930"/>
         <source>Undefined State.</source>
         <translation>Nedefinovaný stav.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="927"/>
+        <location filename="../src/mirall/application.cpp" line="933"/>
         <source>Waits to start syncing.</source>
         <translation>Čakanie na štart synchronizácie.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="960"/>
+        <location filename="../src/mirall/application.cpp" line="966"/>
         <source> (Sync is paused)</source>
         <translation>(Synchronizácia zapauzovaná)</translation>
     </message>
@@ -540,7 +540,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="977"/>
+        <location filename="../src/mirall/application.cpp" line="983"/>
         <source>No sync folders configured.</source>
         <translation>Nenastavené žiadne synchronizačné priečinky.</translation>
     </message>

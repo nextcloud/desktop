@@ -458,32 +458,32 @@ p, li { white-space: pre-wrap; }⏎
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="931"/>
+        <location filename="../src/mirall/application.cpp" line="937"/>
         <source>Sync is running.</source>
         <translation>La synchronisation est en cours.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="935"/>
+        <location filename="../src/mirall/application.cpp" line="941"/>
         <source>Server is currently not available.</source>
         <translation>Le serveur est indisponible pour le moment.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="940"/>
+        <location filename="../src/mirall/application.cpp" line="946"/>
         <source>Last Sync was successful.</source>
         <translation>Dernière synchronisation effectuée avec succès</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="946"/>
+        <location filename="../src/mirall/application.cpp" line="952"/>
         <source>Syncing Error.</source>
         <translation>Erreur de synchronisation.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="952"/>
+        <location filename="../src/mirall/application.cpp" line="958"/>
         <source>Setup Error.</source>
         <translation>Erreur d&apos;installation.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="955"/>
+        <location filename="../src/mirall/application.cpp" line="961"/>
         <source>Undefined Error State.</source>
         <translation>Status d&apos;erreur indéfini</translation>
     </message>
@@ -521,17 +521,17 @@ p, li { white-space: pre-wrap; }⏎
         <translation>La synchronisation est en cours.&lt;br/&gt;Voulez-vous y mettre un terme?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="924"/>
+        <location filename="../src/mirall/application.cpp" line="930"/>
         <source>Undefined State.</source>
         <translation>Statut indéfini.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="927"/>
+        <location filename="../src/mirall/application.cpp" line="933"/>
         <source>Waits to start syncing.</source>
         <translation>En attente de synchronisation .</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="960"/>
+        <location filename="../src/mirall/application.cpp" line="966"/>
         <source> (Sync is paused)</source>
         <translation>(La synchronisation est en pause)</translation>
     </message>
@@ -540,7 +540,7 @@ p, li { white-space: pre-wrap; }⏎
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="977"/>
+        <location filename="../src/mirall/application.cpp" line="983"/>
         <source>No sync folders configured.</source>
         <translation>Aucun répertoire synchronisé n&apos;est configuré.</translation>
     </message>

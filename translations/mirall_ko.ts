@@ -282,8 +282,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="251"/>
         <source>&lt;p&gt;Please check your configuration by clicking on the tray icon.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;트레이 아이콘을 눌러서 환경 설정을 확인하십시오.&lt;/p&gt;
-</translation>
+        <translation>&lt;p&gt;트레이 아이콘을 눌러서 환경 설정을 확인하십시오.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>ownCloud Connection Failed</source>
@@ -371,7 +370,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="282"/>
         <source>%1 user credentials are wrong. Please check configuration.</source>
-        <translation type="unfinished"/>
+        <translation>%1의 사용자 계정 정보가 잘못되었습니다. 설정을 확인하십시오.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="287"/>
@@ -433,7 +432,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="753"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4&lt;br&gt;using OCsync %5 and Qt %6.&lt;/small&gt;&lt;p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Git 리비전 &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;을(를) 사용하여 %4 %3에 빌드됨&lt;br&gt;OCsync %5 및 Qt %6 사용.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="760"/>
@@ -459,32 +458,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="931"/>
+        <location filename="../src/mirall/application.cpp" line="937"/>
         <source>Sync is running.</source>
         <translation>동기화 중입니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="935"/>
+        <location filename="../src/mirall/application.cpp" line="941"/>
         <source>Server is currently not available.</source>
-        <translation type="unfinished"/>
+        <translation>서버를 사용할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="940"/>
+        <location filename="../src/mirall/application.cpp" line="946"/>
         <source>Last Sync was successful.</source>
         <translation>마지막 동기화를 성공적으로 마쳤습니다. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="946"/>
+        <location filename="../src/mirall/application.cpp" line="952"/>
         <source>Syncing Error.</source>
         <translation>동기화 오류가 발생하였습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="952"/>
+        <location filename="../src/mirall/application.cpp" line="958"/>
         <source>Setup Error.</source>
         <translation>설치 오류가 발생하였습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="955"/>
+        <location filename="../src/mirall/application.cpp" line="961"/>
         <source>Undefined Error State.</source>
         <translation>정의되지 않은 오류 상태입니다.</translation>
     </message>
@@ -524,17 +523,17 @@ p, li { white-space: pre-wrap; }
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="924"/>
+        <location filename="../src/mirall/application.cpp" line="930"/>
         <source>Undefined State.</source>
         <translation>정의되지 않은 상태.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="927"/>
+        <location filename="../src/mirall/application.cpp" line="933"/>
         <source>Waits to start syncing.</source>
         <translation>동기화 시작 대기 중.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="960"/>
+        <location filename="../src/mirall/application.cpp" line="966"/>
         <source> (Sync is paused)</source>
         <translation> (동기화 일시 정지됨)</translation>
     </message>
@@ -543,7 +542,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="977"/>
+        <location filename="../src/mirall/application.cpp" line="983"/>
         <source>No sync folders configured.</source>
         <translation>동기화 폴더가 구성되지 않았습니다.</translation>
     </message>
@@ -824,7 +823,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="70"/>
         <source>Server is currently not available.</source>
-        <translation type="unfinished"/>
+        <translation>서버를 사용할 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="73"/>
@@ -1941,7 +1940,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/fileitemdialog.ui" line="27"/>
         <source>Detailed Sync Protocol</source>
-        <translation type="unfinished"/>
+        <translation>자세한 동기화 프로토콜</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.ui" line="63"/>
@@ -1962,7 +1961,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="55"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4&lt;br&gt;using OCsync %5 and Qt %6.&lt;/small&gt;&lt;p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Git 리비전 &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;을(를) 사용하여 %4 %3에 빌드됨&lt;br&gt;OCsync %5 및 Qt %6 사용.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="63"/>
