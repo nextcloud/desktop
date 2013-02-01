@@ -816,8 +816,8 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
     int gtp = 0;
     char tmpname[13];
     mbchar_t winTmp[PATH_MAX];
-    const mbchar_t *winUrlMB = NULL;
-    const char *winTmpUtf8 = NULL;
+    mbchar_t *winUrlMB = NULL;
+    char *winTmpUtf8 = NULL;
     csync_stat_t sb;
 #endif
 
@@ -1026,7 +1026,7 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
     int rc;
     int ret = 0;
     size_t len = 0;
-    const mbchar_t *tmpFileName = 0;
+    mbchar_t *tmpFileName = 0;
 
     writeCtx = (struct transfer_context*) fhandle;
 
@@ -1139,7 +1139,7 @@ static ssize_t owncloud_read(csync_vio_method_handle_t *fhandle, void *buf, size
     struct transfer_context *writeCtx;
     size_t len = 0;
     csync_stat_t st;
-    const mbchar_t *tmpFileName;
+    mbchar_t *tmpFileName;
 
     writeCtx = (struct transfer_context*) fhandle;
 

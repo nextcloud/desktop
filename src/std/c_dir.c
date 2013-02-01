@@ -35,8 +35,8 @@
 int c_mkdirs(const char *path, mode_t mode) {
   int tmp;
   csync_stat_t sb;
-  const mbchar_t *wpath = c_multibyte(path);
-  const mbchar_t *swpath = NULL;
+  mbchar_t *wpath = c_multibyte(path);
+  mbchar_t *swpath = NULL;
 
   if (path == NULL) {
     errno = EINVAL;
@@ -92,8 +92,8 @@ int c_rmdirs(const char *path) {
   struct _tdirent *dp;
   csync_stat_t sb;
   char *fname = NULL;
-  const mbchar_t *wfname = NULL;
-  const mbchar_t *wpath = c_multibyte(path);
+  mbchar_t *wfname = NULL;
+  mbchar_t *wpath = c_multibyte(path);
   char *rd_name = NULL;
 
   if ((d = _topendir(wpath)) != NULL) {
@@ -167,7 +167,7 @@ int c_rmdirs(const char *path) {
 
 int c_isdir(const char *path) {
   csync_stat_t sb;
-  const mbchar_t *wpath = c_multibyte(path);
+  mbchar_t *wpath = c_multibyte(path);
 
   if (_tstat (wpath, &sb) == 0 && S_ISDIR(sb.st_mode)) {
     c_free_multibyte(wpath);
