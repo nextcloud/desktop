@@ -284,7 +284,7 @@ char* c_utf8(const mbchar_t *wstr)
   char *mdst = NULL;
 
   if(!wstr) return NULL;
-  size_t len = _tcslen( wstr );
+  size_t len = wcslen( wstr );
   /* Call once to get the required size. */
   int size_needed = WideCharToMultiByte(CP_UTF8, 0, wstr, len, NULL, 0, NULL, NULL);
   if( size_needed > 0 ) {
