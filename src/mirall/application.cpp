@@ -52,6 +52,10 @@
 #include <QNetworkProxy>
 #include <QNetworkProxyFactory>
 
+#ifdef Q_OS_LINUX
+#include <dlfcn.h>
+#endif
+
 namespace Mirall {
 
 // application logging handler.
@@ -86,6 +90,16 @@ Application::Application(int &argc, char **argv) :
     setupLogBrowser();
     //no need to waste time;
     if ( _helpOnly ) return;
+
+#ifdef Q_OS_LINUX
+    // HACK: bump the refcount for libgnutls by calling dlopen()
+    // so gnutls, which is an dependency of libneon on some linux
+    // distros, and does not cleanup it's FDs properly, does
+    // not get unloaded. This works around a FD exhaustion crash
+    // (#154). We are not using gnutls at directlu all and it's
+    // fine if loading fails, so no error handling is performed here.
+    dlopen("libgnutls.so", RTLD_LAZY|RTLD_NODELETE);
+#endif
 
     QString locale = Theme::instance()->enforcedLocale();
     if (locale.isEmpty()) locale = QLocale::system().name();
