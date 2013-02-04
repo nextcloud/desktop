@@ -43,11 +43,20 @@ if(SPHINX_FOUND)
 				-d ${SPHINX_CACHE_DIR}
 				${CMAKE_CURRENT_SOURCE_DIR}
 				${SPHINX_HTML_DIR} )
-    add_custom_target( doc-man  ${SPHINX_EXECUTABLE}
+    add_custom_target( doc-sphinx-man  ${SPHINX_EXECUTABLE}
 	                        -q -c . -b man
 				-d ${SPHINX_CACHE_DIR}
 				${CMAKE_CURRENT_SOURCE_DIR}
 				${SPHINX_MAN_DIR} )
+
+    file(GLOB _manpages *.[0-9].txt)
+    add_custom_target(doc-man
+         COMMAND
+     	    MAN_DIR=${SPHINX_MAN_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/makeman.sh ${_manpages}
+         WORKING_DIRECTORY
+             ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+
     ## Building CHM files requires HTML Help Workshop. Since it requires wine
     ## with special dependencies, it's impossible to write a cmake check for it.
     ## This is why doc-chm is not a dependency for doc. Instead, run
