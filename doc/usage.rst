@@ -30,6 +30,9 @@ ownCloud Client supports the following command line switches:
 +--------------------------+------------------------------------------------+
 | ``--flushlog``           | flush the log file after every write.          |
 +--------------------------+------------------------------------------------+
+| ``--monoicons``          | Use black/white pictograms for systray.        |
++--------------------------+------------------------------------------------+
+
 
 Config File
 -----------
