@@ -423,12 +423,19 @@ OwncloudWizardResultPage::~OwncloudWizardResultPage()
 
 void OwncloudWizardResultPage::initializePage()
 {
+    _complete = false;
     // _ui.lineEditOCAlias->setText( "Owncloud" );
+}
+
+void OwncloudWizardResultPage::setComplete(bool complete)
+{
+    _complete = complete;
+    emit completeChanged();
 }
 
 bool OwncloudWizardResultPage::isComplete() const
 {
-    return true;
+    return _complete;
 }
 
 void OwncloudWizardResultPage::appendResultText( const QString& msg, OwncloudWizard::LogType type )
@@ -507,6 +514,12 @@ QString OwncloudWizard::ocUrl() const
         url.prepend(QLatin1String("http://"));
     }
     return url;
+}
+
+void OwncloudWizard::enableFinishOnResultWidget(bool enable)
+{
+    OwncloudWizardResultPage *p = static_cast<OwncloudWizardResultPage*> (page( Page_Install ));
+    p->setComplete(enable);
 }
 
 void OwncloudWizard::slotCurrentPageChanged( int id )
