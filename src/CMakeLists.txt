@@ -115,6 +115,7 @@ qt4_wrap_cpp(syncMoc ${libsync_HEADERS})
 list(APPEND libsync_LINK_TARGETS
     ${QT_LIBRARIES}
     ${CSYNC_LIBRARY}
+    dl
 )
 
 if(QTKEYCHAIN_FOUND)
