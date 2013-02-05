@@ -1365,7 +1365,7 @@ static char*_lastDir = NULL;
  *  int  unix_extensions     - oC supports unix extensions.
  *  bool propagate_on_fd     - oC supports the send_file method.
  */
-static csync_vio_capabilities_t _owncloud_capabilities = { true, false, false, 1, true };
+static csync_vio_capabilities_t _owncloud_capabilities = { true, false, false, 0, true };
 
 static csync_vio_capabilities_t *owncloud_capabilities(void)
 {
