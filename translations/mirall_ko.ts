@@ -1242,7 +1242,7 @@ Setup can not be done.</source>
         <translation>%1에 연결하였습니다!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="466"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="467"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>%1에 연결할 수 없습니다. 다시 시도하십시오.</translation>
     </message>
@@ -1336,7 +1336,7 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="451"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="458"/>
         <source>Congratulations! Your &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;new %2&lt;/a&gt; is now up and running!</source>
         <translation>축하합니다! 이제부터 &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;새로운 %2&lt;/a&gt;을(를) 사용할 수 있습니다!</translation>
     </message>

@@ -1234,7 +1234,7 @@ Agordado ne povas fariĝi.</translation>
         <translation>Sukcesis konektado al %1!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="466"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="467"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Konekto al %1 ne povis stariĝi. Bonvolu rekontroli.</translation>
     </message>
@@ -1328,7 +1328,7 @@ Agordado ne povas fariĝi.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="451"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="458"/>
         <source>Congratulations! Your &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;new %2&lt;/a&gt; is now up and running!</source>
         <translation>Gratulon! Via &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;nova %2&lt;/a&gt; nun leviĝis kaj funkcias!</translation>
     </message>

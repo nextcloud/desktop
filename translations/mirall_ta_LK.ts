@@ -1230,7 +1230,7 @@ Setup can not be done.</source>
         <translation>%1 இற்கு வெற்றிகரமாக இணைக்கப்பட்டது!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="466"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="467"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>%1 இற்கு இணைப்பை ஏற்படுத்தமுடியவில்லை. தயவுசெய்து மீண்டும் சரிபார்க்க.</translation>
     </message>
@@ -1324,7 +1324,7 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="451"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="458"/>
         <source>Congratulations! Your &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;new %2&lt;/a&gt; is now up and running!</source>
         <translation>வாழ்த்துக்கள்! உங்களுடைய &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt; புதிய %2 &lt;/a&gt; இப்போது ஓடுகிறது!</translation>
     </message>

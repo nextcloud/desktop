@@ -1240,7 +1240,7 @@ De setup kan niet worden uitgevoerd.</translation>
         <translation>Verbinding naar %1 was succesvol!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="466"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="467"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Verbinding met %1 niet geslaagd. Probeer het nog eens.</translation>
     </message>
@@ -1334,7 +1334,7 @@ De setup kan niet worden uitgevoerd.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="451"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="458"/>
         <source>Congratulations! Your &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;new %2&lt;/a&gt; is now up and running!</source>
         <translation>Gefeliciteerd! Uw &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;nieuwe %2&lt;/a&gt; draait!</translation>
     </message>

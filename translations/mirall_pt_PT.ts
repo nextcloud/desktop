@@ -1241,7 +1241,7 @@ Não é possível correr o programa de instalação ou configuração.</translat
         <translation>Ligação com sucesso a %1 !</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="466"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="467"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Não foi possível ligar a %1 . Por Favor verifique novamente.</translation>
     </message>
@@ -1335,7 +1335,7 @@ Não é possível correr o programa de instalação ou configuração.</translat
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="451"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="458"/>
         <source>Congratulations! Your &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;new %2&lt;/a&gt; is now up and running!</source>
         <translation>Parabéns! O seu &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt; novo %2 &lt;/a&gt; está ligado e a correr!</translation>
     </message>
