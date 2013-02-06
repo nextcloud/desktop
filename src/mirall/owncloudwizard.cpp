@@ -597,11 +597,11 @@ void OwncloudWizard::setOCUser( const QString& user )
   _oCUser = user;
 #ifdef OWNCLOUD_CLIENT
   OwncloudSetupPage *p = static_cast<OwncloudSetupPage*>(page(Page_oCSetup));
+  if( p )
+      p->setOCUser( user );
 #else
   OwncloudWizardSelectTypePage *p = static_cast<OwncloudWizardSelectTypePage*>(page( Page_SelectType ));
 #endif
-  if( p )
-      p->setOCUser( user );
 
 }
 
