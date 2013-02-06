@@ -332,6 +332,9 @@ retry_vio_init:
   if (ctx->callbacks.progresscb)
     csync_vio_set_property(ctx, "progress_callback", &ctx->callbacks.progresscb);
 
+  if (ctx->options.timeout)
+    csync_vio_set_property(ctx, "timeout", &ctx->options.timeout);
+
   if (c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp) < 0) {
     ctx->error_code = CSYNC_ERR_TREE;
     rc = -1;

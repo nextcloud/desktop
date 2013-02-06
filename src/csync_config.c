@@ -144,6 +144,10 @@ int csync_config_load(CSYNC *ctx, const char *config) {
   CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Config: sync_symbolic_links = %d",
       ctx->options.sync_symbolic_links);
 
+  ctx->options.timeout = iniparser_getint(dict, "global:timeout", 0);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Config: timeout = %d",
+            ctx->options.timeout);
+
   iniparser_freedict(dict);
 
   return 0;
