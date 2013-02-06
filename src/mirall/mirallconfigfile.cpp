@@ -15,6 +15,7 @@
 #include "config.h"
 
 #include "mirall/mirallconfigfile.h"
+#include "mirall/owncloudinfo.h"
 #include "mirall/owncloudtheme.h"
 #include "mirall/miralltheme.h"
 #include "mirall/credentialstore.h"
@@ -125,7 +126,6 @@ void MirallConfigFile::writeOwncloudConfig( const QString& connection,
 {
     const QString file = configFile();
     qDebug() << "*** writing mirall config to " << file << " Skippwd: " << skipPwd;
-    QString pwd( passwd );
 
     QSettings settings( file, QSettings::IniFormat);
     settings.setIniCodec( "UTF-8" );
@@ -141,9 +141,7 @@ void MirallConfigFile::writeOwncloudConfig( const QString& connection,
     settings.beginGroup( connection );
     settings.setValue( QLatin1String("url"), cloudsUrl );
     settings.setValue( QLatin1String("user"), user );
-    if( skipPwd ) {
-        pwd.clear();
-    }
+
 
 #ifdef WITH_QTKEYCHAIN
     // Password is stored to QtKeyChain now by default in CredentialStore
@@ -154,13 +152,18 @@ void MirallConfigFile::writeOwncloudConfig( const QString& connection,
     if( !skipPwd )
         writePassword( passwd );
 #endif
+    if( !skipPwd )
+        writePassword( passwd );
+    else
+        clearPasswordFromConfig();  // wipe the password.
+
     settings.setValue( QLatin1String("nostoredpassword"), QVariant(skipPwd) );
     settings.sync();
     // check the perms, only read-write for the owner.
     QFile::setPermissions( file, QFile::ReadOwner|QFile::WriteOwner );
 
     // Store credentials temporar until the config is finalized.
-    CredentialStore::instance()->setCredentials( cloudsUrl, user, passwd );
+    ownCloudInfo::instance()->setCredentials( user, passwd, _customHandle );
 
 }
 
@@ -438,7 +441,15 @@ void MirallConfigFile::acceptCustomConfig()
     QFile::remove( targetBak );
 
     // inform the credential store about the password change.
-    CredentialStore::instance()->saveCredentials( );
+    QString url  = ownCloudUrl();
+    QString user = ownCloudUser();
+    QString pwd  = ownCloudPasswd();
+    if( pwd.isEmpty() ) {
+        qDebug() << "Password is empty, skipping to write cred store.";
+    } else {
+        CredentialStore::instance()->setCredentials(url, user, pwd);
+        CredentialStore::instance()->saveCredentials();
+    }
 }
 
 void MirallConfigFile::setProxyType(int proxyType,
