@@ -47,11 +47,11 @@ CredentialStore *CredentialStore::instance()
     return CredentialStore::_instance;
 }
 
-QString CredentialStore::password( const QString& ) const
+QString CredentialStore::password() const
 {
     return _passwd;
 }
-QString CredentialStore::user( const QString& ) const
+QString CredentialStore::user() const
 {
     return _user;
 }
@@ -279,15 +279,6 @@ void CredentialStore::slotKeyChainReadFinished(QKeychain::Job* job)
 QString CredentialStore::errorMessage()
 {
     return _errorMsg;
-}
-
-QByteArray CredentialStore::basicAuthHeader() const
-{
-    QString concatenated = _user + QLatin1Char(':') + _passwd;
-    const QString b(QLatin1String("Basic "));
-    QByteArray data = b.toLocal8Bit() + concatenated.toLocal8Bit().toBase64();
-
-    return data;
 }
 
 void CredentialStore::setCredentials( const QString& url, const QString& user, const QString& pwd )

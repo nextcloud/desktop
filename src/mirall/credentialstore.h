@@ -74,8 +74,8 @@ public:
         KeyChain
     };
 
-    QString password( const QString& connection = QString::null ) const;
-    QString user( const QString& connection = QString::null ) const;
+    QString password( ) const;
+    QString user( ) const;
 
     /**
      * @brief state
@@ -92,12 +92,6 @@ public:
     void fetchCredentials();
 
     /**
-     * @brief basicAuthHeader - return a basic authentication header.
-     * @return a QByteArray with a ready to use Header for HTTP basic auth.
-     */
-    QByteArray basicAuthHeader() const;
-
-    /**
      * @brief instance - singleton pointer.
      * @return the singleton pointer to access the object.
      */
@@ -109,6 +103,7 @@ public:
      * This function is called from the setup wizard to set the credentials
      * int this store. Note that it does not store the password.
      * The function also sets the state to ok.
+     * @param url - the connection url
      * @param user - the user name
      * @param password - the password.
      */
