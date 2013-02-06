@@ -132,6 +132,7 @@ struct csync_s {
     bool local_only_mode;
     bool remote_push_atomar;
     int log_verbosity;
+    int timeout;
 #ifdef WITH_ICONV
     iconv_t iconv_cd;
 #endif

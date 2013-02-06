@@ -2059,7 +2059,7 @@ static int owncloud_set_property(const char *key, void *data) {
         _progresscb = *(csync_progress_callback*)(data);
         return 0;
     }
-    if (c_streq(key, "read_timeout")) {
+    if (c_streq(key, "read_timeout") || c_streq(key, "timeout")) {
         dav_session.read_timeout = *(int*)(data);
         return 0;
     }
