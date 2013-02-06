@@ -133,14 +133,6 @@ void ownCloudInfo::mkdirRequest( const QString& dir )
 
     QHttp* qhttp = new QHttp(QString(url.encodedHost()), conMode, 0, this);
 
-    QString con = _configHandle;
-    if( con.isEmpty() ) con = DEFAULT_CONNECTION;
-    if( _credentials.contains(con)) {
-        oCICredentials creds = _credentials.value(con);
-
-        qhttp->setUser( creds.user, creds.passwd );
-    }
-
     connect(qhttp, SIGNAL(requestStarted(int)), this,SLOT(qhttpRequestStarted(int)));
     connect(qhttp, SIGNAL(requestFinished(int, bool)), this,SLOT(qhttpRequestFinished(int,bool)));
     connect(qhttp, SIGNAL(responseHeaderReceived(QHttpResponseHeader)), this, SLOT(qhttpResponseHeaderReceived(QHttpResponseHeader)));
@@ -163,6 +155,8 @@ void ownCloudInfo::mkdirRequest( const QString& dir )
         const QString b(QLatin1String("Basic "));
         QByteArray data = b.toLocal8Bit() + concatenated.toLocal8Bit().toBase64();
         header.setValue("Authorization", data);
+
+        qhttp->setUser( creds.user, creds.passwd );
     }
 
     int david = qhttp->request(header,0,0);
