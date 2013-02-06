@@ -450,6 +450,9 @@ void OwncloudSetupWizard::slotCreateRemoteFolderFinished( QNetworkReply::Network
 
 void OwncloudSetupWizard::finalizeSetup( bool success )
 {
+    // enable/disable the finish button.
+    _ocWizard->enableFinishOnResultWidget(success);
+
     if( success ) {
         if( !(_localFolder.isEmpty() || _remoteFolder.isEmpty() )) {
             _ocWizard->appendToResultWidget( tr("A sync connection from %1 to remote directory %2 was set up.")
@@ -461,7 +464,6 @@ void OwncloudSetupWizard::finalizeSetup( bool success )
                                          .arg(Theme::instance()->appName())
                                          + QLatin1String("</b></font></p>"));
         _ocWizard->appendToResultWidget( tr("Press Finish to permanently accept this connection."));
-        _ocWizard->enableFinishOnResultWidget(true);
     } else {
         _ocWizard->appendToResultWidget(QLatin1String("<p><font color=\"red\">")
                                         + tr("Connection to %1 could not be established. Please check again.")
