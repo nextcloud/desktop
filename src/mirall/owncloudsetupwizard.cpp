@@ -336,6 +336,10 @@ void OwncloudSetupWizard::startWizard(bool intro)
     if( !url.isEmpty() ) {
         _ocWizard->setOCUrl( url );
     }
+    QString user = cfgFile.ownCloudUser();
+    if( !user.isEmpty() ) {
+        _ocWizard->setOCUser( user );
+    }
 #ifdef OWNCLOUD_CLIENT
     if (intro)
         _ocWizard->setStartId(OwncloudWizard::Page_oCWelcome);

@@ -110,6 +110,13 @@ OwncloudSetupPage::~OwncloudSetupPage()
 {
 }
 
+void OwncloudSetupPage::setOCUser( const QString & user )
+{
+    if( _ui.leUsername->text().isEmpty() ) {
+        _ui.leUsername->setText(user);
+    }
+}
+
 void OwncloudSetupPage::setOCUrl( const QString& newUrl )
 {
     QString url( newUrl );
@@ -582,6 +589,19 @@ void OwncloudWizard::setOCUrl( const QString& url )
 #endif
   if( p )
       p->setOCUrl( url );
+
+}
+
+void OwncloudWizard::setOCUser( const QString& user )
+{
+  _oCUser = user;
+#ifdef OWNCLOUD_CLIENT
+  OwncloudSetupPage *p = static_cast<OwncloudSetupPage*>(page(Page_oCSetup));
+#else
+  OwncloudWizardSelectTypePage *p = static_cast<OwncloudWizardSelectTypePage*>(page( Page_SelectType ));
+#endif
+  if( p )
+      p->setOCUser( user );
 
 }
 

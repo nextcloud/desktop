@@ -41,6 +41,7 @@ public:
   virtual void initializePage();
   virtual int nextId() const;
   void setOCUrl( const QString& );
+  void setOCUser( const QString& );
 
 protected slots:
   void slotPwdStoreChanged( int );
@@ -74,6 +75,7 @@ public:
     OwncloudWizard(QWidget *parent = 0L);
 
     void setOCUrl( const QString& );
+    void setOCUser( const QString& );
 
     void setupCustomMedia( QVariant, QLabel* );
     QString ocUrl() const;
@@ -94,6 +96,7 @@ signals:
 private:
     QString _configFile;
     QString _oCUrl;
+    QString _oCUser;
 };
 
 
