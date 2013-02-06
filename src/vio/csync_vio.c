@@ -51,6 +51,12 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
   csync_vio_method_init_fn init_fn;
   const mbchar_t *mpath = NULL;
 
+#ifdef _WIN32
+  mbchar_t tbuf[MAX_PATH];
+  mbchar_t *pathBuf = NULL;
+  char *buf = NULL;
+  char *last_bslash = NULL;
+#endif
 
   if (asprintf(&path, "%s/csync_%s.%s", PLUGINDIR, module, MODULE_EXTENSION) < 0) {
     return -1;

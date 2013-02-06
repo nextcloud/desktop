@@ -40,6 +40,10 @@
 #include "c_private.h"
 #include "csync.h"
 
+#ifdef WITH_ICONV
+#include <iconv.h>
+#endif
+
 #include "vio/csync_vio_method.h"
 #include "csync_macros.h"
 
@@ -128,6 +132,9 @@ struct csync_s {
     char *config_dir;
     bool with_conflict_copys;
     bool local_only_mode;
+#ifdef WITH_ICONV
+    iconv_t iconv_cd;
+#endif
   } options;
 
   struct {

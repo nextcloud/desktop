@@ -32,6 +32,10 @@
 #include <sys/types.h>
 #include <stdbool.h>
 
+#ifdef WITH_ICONV
+#include <iconv.h>
+#endif
+
 #include "c_lib.h"
 #include "csync_private.h"
 #include "csync_config.h"
@@ -41,6 +45,7 @@
 #include "csync_time.h"
 #include "csync_util.h"
 #include "csync_misc.h"
+#include "std/c_private.h"
 
 #include "csync_update.h"
 #include "csync_reconcile.h"
@@ -215,7 +220,7 @@ int csync_init(CSYNC *ctx) {
 
   if (csync_exclude_load(ctx, exclude) < 0) {
     strerror_r(errno, errbuf, sizeof(errbuf));
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Could not load %s - %s", exclude, 
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Could not load %s - %s", exclude,
               errbuf);
   }
 #endif
@@ -644,6 +649,10 @@ int csync_destroy(CSYNC *ctx) {
   SAFE_FREE(ctx->options.config_dir);
   SAFE_FREE(ctx->statedb.file);
 
+#ifdef WITH_ICONV
+  c_close_iconv();
+#endif
+
   SAFE_FREE(ctx);
 
   SAFE_FREE(lock);
@@ -832,5 +841,18 @@ bool csync_get_local_only( CSYNC *ctx ) {
 
     return ctx->options.local_only_mode;
 }
+
+#ifdef WITH_ICONV
+int csync_set_iconv_codec(const char *from)
+{
+  c_close_iconv();
+
+  if (from != NULL) {
+    c_setup_iconv(from);
+  }
+
+  return 0;
+}
+#endif
 
 /* vim: set ts=8 sw=2 et cindent: */

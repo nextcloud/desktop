@@ -35,6 +35,7 @@
 #include <stdint.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <config.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -420,6 +421,17 @@ int csync_walk_local_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int fi
  * @return              0 on success, less than 0 if an error occured.
  */
 int csync_walk_remote_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int filter);
+
+#ifdef WITH_ICONV
+/**
+ * @brief Set iconv source codec for filenames.
+ *
+ * @param from          Source codec.
+ *
+ * @return              0 on success, or an iconv error number.
+ */
+int csync_set_iconv_codec(const char *from);
+#endif
 
 #ifdef __cplusplus
 }

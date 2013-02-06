@@ -31,7 +31,6 @@
 #include <winbase.h>
 #endif
 
-
 #ifdef _WIN32
 #define EDQUOT 0
 #define ENODATA 0
@@ -109,6 +108,13 @@ typedef char        mbchar_t;
 #define _trmdir	    rmdir
 #define _tchmod     chmod
 #define _trewinddir rewinddir
+#endif
+
+#ifdef WITH_ICONV
+/** @internal */
+int c_setup_iconv(const char* to);
+/** @internal */
+int c_close_iconv(void);
 #endif
 
 #endif //_C_PRIVATE_H

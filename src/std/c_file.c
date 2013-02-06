@@ -39,7 +39,8 @@
 /* check if path is a file */
 int c_isfile(const char *path) {
   csync_stat_t sb;
-  const mbchar_t *wpath = c_multibyte(path);
+  mbchar_t *wpath = c_multibyte(path);
+
   int re = _tstat(wpath, &sb);
   c_free_multibyte(wpath);
 
@@ -69,8 +70,10 @@ int c_copy(const char* src, const char *dst, mode_t mode) {
 
 #ifdef _WIN32
   if(src && dst) {
-      if (CopyFile(src, dst, FALSE)) {
-          return 0;
+      mbchar_t *wsrc = c_multibyte(src);
+      mbchar_t *wdst = c_multibyte(dst);
+      if (CopyFileW(wsrc, wdst, FALSE)) {
+          rc = 0;
       }
       errno = GetLastError();
 

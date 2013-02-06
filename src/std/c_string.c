@@ -20,6 +20,9 @@
  * vim: ts=2 sw=2 et cindent
  */
 
+#include "config.h"
+
+#include <assert.h>
 #include <errno.h>
 #include <ctype.h>
 #include <string.h>
@@ -29,14 +32,84 @@
 #include <sys/types.h>
 #include <wchar.h>
 
-#include "config.h"
-
 #include "c_string.h"
 #include "c_alloc.h"
 #include "c_macro.h"
 
 #ifdef _WIN32
 #include <windows.h>
+#endif
+
+#ifdef WITH_ICONV
+#include <iconv.h>
+
+typedef struct {
+  iconv_t to;
+  iconv_t from;
+} iconv_conversions;
+
+static iconv_conversions _iconvs = { NULL, NULL };
+
+int c_setup_iconv(const char* to) {
+  _iconvs.to = iconv_open(to, "UTF-8");
+  _iconvs.from = iconv_open("UTF-8", to);
+
+  if (_iconvs.to == (iconv_t)-1 || _iconvs.from == (iconv_t)-1)
+    return -1;
+
+  return 0;
+}
+
+int c_close_iconv() {
+  int ret_to = iconv_close(_iconvs.to);
+  int ret_from = iconv_close(_iconvs.from);
+
+  if (ret_to == -1 || ret_from == -1)
+    return -1;
+
+  _iconvs.to = (iconv_t) 0;
+  _iconvs.from = (iconv_t) 0;
+
+  return 0;
+}
+
+enum iconv_direction { iconv_from_native, iconv_to_native };
+
+static char *c_iconv(const char* str, enum iconv_direction dir)
+{
+  char *in = (char*)str;
+  size_t size;
+  size_t outsize;
+  char *out;
+  char *out_in;
+  size_t ret;
+
+  if (str == NULL)
+    return NULL;
+
+  if(_iconvs.from == NULL && _iconvs.to == NULL) {
+#ifdef __APPLE__
+    c_setup_iconv("UTF-8-MAC");
+#else
+    return c_strdup(str);
+#endif
+  }
+
+  size = strlen(in);
+  outsize = size*2;
+  out = c_malloc(outsize);
+  out_in = out;
+
+  if (dir == iconv_to_native) {
+      ret = iconv(_iconvs.to, &in, &size, &out, &outsize);
+  } else {
+      ret = iconv(_iconvs.from, &in, &size, &out, &outsize);
+  }
+
+  assert(ret != (size_t)-1);
+
+  return out_in;
+}
 #endif
 
 int c_streq(const char *a, const char *b) {
@@ -197,9 +270,9 @@ char *c_lowercase(const char* str) {
 }
 
 /* Convert a wide multibyte String to UTF8 */
-const char* c_utf8(const mbchar_t *wstr)
+char* c_utf8(const mbchar_t *wstr)
 {
-  const char *dst = NULL;
+  char *dst = NULL;
 
 #ifdef _WIN32
   char *mdst = NULL;
@@ -215,18 +288,21 @@ const char* c_utf8(const mbchar_t *wstr)
     dst = mdst;
   }
 #else
+#ifdef WITH_ICONV
+  dst = c_iconv(wstr, iconv_from_native);
+#else
   dst = wstr;
+#endif
 #endif
   return dst;
 }
 
 /* Convert a an UTF8 string to multibyte */
-const mbchar_t* c_multibyte(const char *str)
+mbchar_t* c_multibyte(const char *str)
 {
+  mbchar_t *dst = NULL;
 #ifdef _WIN32
-  mbchar_t *wstrTo = NULL;
   if(!str) return NULL;
-
   size_t len = strlen( str );
   int size_needed = MultiByteToWideChar(CP_UTF8, 0, str, len, NULL, 0);
   if(size_needed > 0) {
@@ -235,26 +311,12 @@ const mbchar_t* c_multibyte(const char *str)
     memset( (void*)wstrTo, 0, size_char);
     MultiByteToWideChar(CP_UTF8, 0, str, -1, wstrTo, size_needed);
   }
-  return wstrTo;
 #else
-  return str;
-#endif
-}
-
-void c_free_utf8(char* buf)
-{
-#ifdef _WIN32
-    SAFE_FREE(buf);
+#ifdef WITH_ICONV
+  dst = c_iconv(str, iconv_to_native);
 #else
-    (void)buf;
+  dst = str;
 #endif
-}
-
-void c_free_multibyte(const mbchar_t* buf)
-{
-#ifdef _WIN32
-    SAFE_FREE(buf);
-#else
-    (void)buf;
 #endif
+  return dst;
 }

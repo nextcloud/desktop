@@ -53,8 +53,11 @@ at LOCAL with the ones at REMOTE.\n\
     --disable-statedb      Disable the usage and creation of a statedb.\n\
     --dry-run              This runs only update detection and reconcilation.\n\
 \n\
-    --exclude-file=<file>  Add an additional exclude file\n\
-    --test-statedb         Test creation of the statedb. Runs update\n\
+    --exclude-file=<file>  Add an additional exclude file\n"
+#ifdef WITH_ICONV
+"    --iconv=codec          Request charset conversion of local filenames\n"
+#endif
+"    --test-statedb         Test creation of the statedb. Runs update\n\
                            detection.\n\
     --test-update          Test the update detection\n\
 -?, --help                 Give this help list\n\
@@ -68,6 +71,9 @@ static const struct option long_options[] =
     {"exclude-file",    required_argument, 0,  0  },
     {"debug-level",     required_argument, 0, 'd' },
     {"disable-statedb", no_argument,       0,  0  },
+#ifdef WITH_ICONV
+    {"iconv",           required_argument, 0,  0  },
+#endif
     {"dry-run",         no_argument,       0,  0  },
     {"test-statedb",    no_argument,       0,  0  },
     {"conflict-copies", no_argument,       0, 'c' },
@@ -82,6 +88,7 @@ struct argument_s {
   char *args[2]; /* SOURCE and DESTINATION */
   char *exclude_file;
   int debug_level;
+  char *iconv;
   int disable_statedb;
   int create_statedb;
   int update;
@@ -149,7 +156,9 @@ static int parse_args(struct argument_s *csync_args, int argc, char **argv)
                 csync_args->reconcile = 1;
                 csync_args->propagate = 0;
                 /* printf("Argument: dry-run\n" ); */
-
+            } else if(c_streq(opt->name, "iconv")) {
+                csync_args->iconv = c_strdup(optarg);
+                /* printf("Argument: iconv\n" ); */
             } else if(c_streq(opt->name, "test-statedb")) {
                 csync_args->create_statedb = 1;
                 csync_args->update = 1;
@@ -158,7 +167,6 @@ static int parse_args(struct argument_s *csync_args, int argc, char **argv)
                 /* printf("Argument: test-statedb\n"); */
             } else {
                 fprintf(stderr, "Argument: No idea what!\n");
-
             }
             break;
         default:
@@ -181,6 +189,7 @@ int main(int argc, char **argv) {
   /* Default values. */
   arguments.exclude_file = NULL;
   arguments.debug_level = 4;
+  arguments.iconv = NULL;
   arguments.disable_statedb = 0;
   arguments.create_statedb = 0;
   arguments.update = 1;
@@ -226,6 +235,12 @@ int main(int argc, char **argv) {
   if (arguments.disable_statedb) {
     csync_disable_statedb(csync);
   }
+
+#ifdef WITH_ICONV
+  if (arguments.iconv) {
+    csync_set_iconv_codec(arguments.iconv);
+  }
+#endif
 
   if(arguments.with_conflict_copys)
   {

@@ -21,6 +21,8 @@
  */
 
 #include "config.h"
+#include "c_private.h"
+#include "c_string.h"
 
 #include "c_time.h"
 
@@ -68,7 +70,10 @@ double c_secdiff(struct timespec clock1, struct timespec clock0) {
 
 #ifdef HAVE_UTIMES
 int c_utimes(const char *uri, const struct timeval *times) {
-    return utimes(uri, times);
+    mbchar_t *wuri = c_multibyte(uri);
+    int ret = utimes(wuri, times);
+    c_free_multibyte(wuri);
+    return ret;
 }
 #else // HAVE_UTIMES
 
@@ -92,6 +97,7 @@ int c_utimes(const char *uri, const struct timeval *times) {
     FILETIME LastAccessTime;
     FILETIME LastModificationTime;
     HANDLE hFile;
+    mbchar_t *wuri = c_multibyte( uri );
 
     if(times) {
         UnixTimevalToFileTime(times[0], &LastAccessTime);
