@@ -568,6 +568,9 @@ static void post_request_hook(ne_request *req, void *userdata, const ne_status *
 
     (void) userdata;
 
+    if (dav_session.session_key)
+        return; /* We already have a session cookie, and we should ignore other ones */
+
     if(!(status && req)) return;
     if( status->klass == 2 || status->code == 401 ) {
         /* successful request */
@@ -596,10 +599,17 @@ static void post_request_hook(ne_request *req, void *userdata, const ne_status *
                 } else if( *sc_end == ';' ) {
                     /* We are at the end of the session key. */
                     int keylen = sc_end-sc_val;
-                    if( key ) SAFE_FREE(key);
-                    key = c_malloc(keylen+1);
-                    strncpy( key, sc_val, keylen );
-                    key[keylen] = '\0';
+                    if( key ) {
+                        int oldlen = strlen(key);
+                        key = c_realloc(key, oldlen + 2 + keylen+1);
+                        strcpy(key + oldlen, "; ");
+                        strncpy(key + oldlen + 2, sc_val, keylen);
+                        key[oldlen + 2 + keylen] = '\0';
+                    } else {
+                        key = c_malloc(keylen+1);
+                        strncpy( key, sc_val, keylen );
+                        key[keylen] = '\0';
+                    }
 
                     /* now search for a ',' to find a potential other header entry */
                     while(cnt < len && *sc_end != ',') {
