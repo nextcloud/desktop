@@ -62,24 +62,24 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
     return -1;
   }
 
-  mpath = c_multibyte(path);
+  mpath = c_utf8_to_locale(path);
   if (_tstat(mpath, &sb) < 0) {
     SAFE_FREE(path);
     if (asprintf(&path, "%s/modules/csync_%s.%s", BINARYDIR, module, MODULE_EXTENSION) < 0) {
       return -1;
     }
   }
-  c_free_multibyte(mpath);
+  c_free_locale_string(mpath);
 
 #ifdef _WIN32
-  mpath = c_multibyte(path);
+  mpath = c_utf8_to_locale(path);
   if (_tstat(mpath, &sb) < 0) {
     SAFE_FREE(path);
     if (asprintf(&path, "modules/csync_%s.%s", module, MODULE_EXTENSION) < 0) {
       return -1;
     }
   }
-  c_free_multibyte(mpath);
+  c_free_locale_string(mpath);
 #endif
 
 #ifdef __APPLE__

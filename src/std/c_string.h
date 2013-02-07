@@ -143,7 +143,7 @@ char *c_uppercase(const char* str);
 char *c_lowercase(const char* str);
 
 /**
- * @brief Convert a multibyte string to utf8 (Win32).
+ * @brief Convert a platform locale string to utf8.
  *
  * This function is part of the multi platform abstraction of basic file
  * operations to handle various platform encoding correctly.
@@ -153,22 +153,21 @@ char *c_lowercase(const char* str);
  *
  * To convert path names returned by these functions to the internally used
  * utf8 format this function has to be used. The returned string has to
- * be freed by c_free_utf(). On some platforms this method allocates memory
- * and on others not but it has never to be cared about as long as
- * c_free_utf8() is used.
+ * be freed by c_free_locale_string(). On some platforms this method allocates
+ * memory and on others not but it has never to be cared about.
  *
  * @param  str     The multibyte encoded string to convert
  *
  * @return The malloced converted string or NULL on error.
  *
- * @see c_free_utf8()
- * @see c_multibyte()
+ * @see c_free_locale_string()
+ * @see c_utf8_to_locale()
  *
  */
- char*   c_utf8(const mbchar_t *str);
+ char*   c_utf8_from_locale(const mbchar_t *str);
 
 /**
- * @brief Convert a utf8 encoded string to multibyte (Win32).
+ * @brief Convert a utf8 encoded string to platform specific locale.
  *
  * This function is part of the multi platform abstraction of basic file
  * operations to handle various platform encoding correctly.
@@ -178,23 +177,24 @@ char *c_lowercase(const char* str);
  *
  * To convert path names as input for the cross platform functions from the
  * internally used utf8 format, this function has to be used.
- * The returned string has to be freed by c_free_multibyte(). On some
+ * The returned string has to be freed by c_free_locale_string(). On some
  * platforms this method allocates memory and on others not but it has never
- * sto be cared about as long as c_free_multibyte() is used.
+ * sto be cared about.
  *
  * @param  str     The utf8 string to convert.
  *
  * @return The malloced converted multibyte string or NULL on error.
  *
- * @see c_free_multibyte()
- * @see c_utf8()
+ * @see c_free_locale_string()
+ * @see c_utf8_from_locale()
  *
  */
-mbchar_t* c_multibyte(const char *wstr);
+mbchar_t* c_utf8_to_locale(const char *wstr);
 
 #if defined(_WIN32) || defined(WITH_ICONV)
+
 /**
- * @brief Free buffer malloced by c_utf8().
+ * @brief Free buffer malloced by c_utf8_from_locale or c_utf8_to_locale().
  *
  * This function is part of the multi platform abstraction of basic file
  * operations to handle various platform encoding correctly.
@@ -203,37 +203,16 @@ mbchar_t* c_multibyte(const char *wstr);
  * defined in c_private.h have to be used instead.
  *
  * This function frees the memory that was allocated by a previous call to
- * c_utf8().
+ * c_utf8_to_locale() or c_utf8_from_locale().
  *
  * @param  buf     The buffer to free.
  *
- * @see c_utf8()
+ * @see c_utf8_from_locale(), c_utf8_to_locale()
  *
  */
-
-#define c_free_multibyte(x) SAFE_FREE(x)
-
-/**
- * @brief Free buffer malloced by c_multibyte().
- *
- * This function is part of the multi platform abstraction of basic file
- * operations to handle various platform encoding correctly.
- *
- * Instead of using the standard file operations the multi platform aliases
- * defined in c_private.h have to be used instead.
- *
- * This function frees the memory that was allocated by a previous call to
- * c_multibyte().
- *
- * @param  buf     The buffer to free.
- *
- * @see c_multibyte()
- *
- */
-#define c_free_utf8(x) SAFE_FREE(x)
+#define c_free_locale_string(x) SAFE_FREE(x)
 #else
-#define c_free_multibyte(x) (void)x
-#define c_free_utf8(x) (void)x
+#define c_free_locale_string(x) (void)x
 #endif
 
 /**

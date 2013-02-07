@@ -882,7 +882,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
 #ifdef _WIN32
         memset( tmpname, '\0', 13 );
         gtp = GetTempPathW( PATH_MAX, winTmp );
-        winTmpUtf8 = c_utf8( winTmp );
+        winTmpUtf8 = c_utf8_from_locale( winTmp );
         strcpy( getUrl, winTmpUtf8 );
         DEBUG_WEBDAV(("win32 tmp path: %s", getUrl));
 
@@ -899,7 +899,7 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
             writeCtx->tmpFileName = c_strdup( getUrl );
 
             /* Open the file finally. */
-            winUrlMB = c_multibyte( getUrl );
+            winUrlMB = c_utf8_to_locale( getUrl );
 
             /* check if the file exists by chance. */
             if( _tstat( winUrlMB, &sb ) == 0 ) {
@@ -910,8 +910,8 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
             writeCtx->fd = _topen( winUrlMB, O_RDWR | O_CREAT | O_EXCL, 0600 );
 
             /* free the extra bytes */
-            c_free_multibyte( winUrlMB );
-            c_free_utf8( winTmpUtf8 );
+            c_free_locale_string( winUrlMB );
+            c_free_locale_string( winTmpUtf8 );
 	} else {
 	   writeCtx->fd = -1;
 	}
@@ -1064,7 +1064,7 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
             if( writeCtx->fileWritten ) {
                 DEBUG_WEBDAV(("Putting file through file cache.\n"));
                 /* we need to go the slow way and close and open the file and read from fd. */
-                tmpFileName = c_multibyte( writeCtx->tmpFileName );
+                tmpFileName = c_utf8_to_locale( writeCtx->tmpFileName );
 
                 if (( writeCtx->fd = _topen( tmpFileName, O_RDONLY )) < 0) {
                     errno = EIO;
@@ -1096,7 +1096,7 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
                         ret = -1;
                     }
                 }
-                c_free_multibyte(tmpFileName);
+                c_free_locale_string(tmpFileName);
             } else {
                 /* all content is in the buffer. */
                 DEBUG_WEBDAV(("Putting file through memory cache.\n"));
@@ -1154,14 +1154,14 @@ static ssize_t owncloud_read(csync_vio_method_handle_t *fhandle, void *buf, size
 #ifdef _WIN32
 	_fmode = _O_BINARY;
 #endif
-        tmpFileName = c_multibyte(writeCtx->tmpFileName);
+        tmpFileName = c_utf8_to_locale(writeCtx->tmpFileName);
         if (( writeCtx->fd = _topen( tmpFileName, O_RDONLY )) < 0) {
-            c_free_multibyte(tmpFileName);
+            c_free_locale_string(tmpFileName);
             DEBUG_WEBDAV(("Could not open local file %s", writeCtx->tmpFileName ));
             errno = EIO;
             return -1;
         } else {
-            c_free_multibyte(tmpFileName);
+            c_free_locale_string(tmpFileName);
             if (fstat( writeCtx->fd, &st ) < 0) {
                 DEBUG_WEBDAV(("Could not stat file %s\n", writeCtx->tmpFileName ));
                 errno = EIO;

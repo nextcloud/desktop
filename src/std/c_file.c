@@ -39,10 +39,10 @@
 /* check if path is a file */
 int c_isfile(const char *path) {
   csync_stat_t sb;
-  mbchar_t *wpath = c_multibyte(path);
+  mbchar_t *wpath = c_utf8_to_locale(path);
 
   int re = _tstat(wpath, &sb);
-  c_free_multibyte(wpath);
+  c_free_locale_string(wpath);
 
   if (re< 0) {
     return 0;
@@ -70,8 +70,8 @@ int c_copy(const char* src, const char *dst, mode_t mode) {
 
 #ifdef _WIN32
   if(src && dst) {
-      mbchar_t *wsrc = c_multibyte(src);
-      mbchar_t *wdst = c_multibyte(dst);
+      mbchar_t *wsrc = c_utf8_to_locale(src);
+      mbchar_t *wdst = c_utf8_to_locale(dst);
       if (CopyFileW(wsrc, wdst, FALSE)) {
           rc = 0;
       }
@@ -161,8 +161,8 @@ out:
 }
 
 int c_rename( const char *src, const char *dst ) {
-  mbchar_t *nuri = c_multibyte(dst);
-  mbchar_t *ouri = c_multibyte(src);
+  mbchar_t *nuri = c_utf8_to_locale(dst);
+  mbchar_t *ouri = c_utf8_to_locale(src);
 
 #ifdef _WIN32
   if(ouri && nuri) {
@@ -176,7 +176,7 @@ int c_rename( const char *src, const char *dst ) {
 #else
   return rename(ouri, nuri);
 #endif
-  c_free_multibyte(nuri);
-  c_free_multibyte(ouri);
+  c_free_locale_string(nuri);
+  c_free_locale_string(ouri);
   return -1;
 }

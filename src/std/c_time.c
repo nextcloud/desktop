@@ -70,9 +70,9 @@ double c_secdiff(struct timespec clock1, struct timespec clock0) {
 
 #ifdef HAVE_UTIMES
 int c_utimes(const char *uri, const struct timeval *times) {
-    mbchar_t *wuri = c_multibyte(uri);
+    mbchar_t *wuri = c_utf8_to_locale(uri);
     int ret = utimes(wuri, times);
-    c_free_multibyte(wuri);
+    c_free_locale_string(wuri);
     return ret;
 }
 #else // HAVE_UTIMES
@@ -97,7 +97,7 @@ int c_utimes(const char *uri, const struct timeval *times) {
     FILETIME LastAccessTime;
     FILETIME LastModificationTime;
     HANDLE hFile;
-    mbchar_t *wuri = c_multibyte( uri );
+    mbchar_t *wuri = c_utf8_to_locale( uri );
 
     if(times) {
         UnixTimevalToFileTime(times[0], &LastAccessTime);

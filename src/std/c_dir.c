@@ -35,7 +35,7 @@
 int c_mkdirs(const char *path, mode_t mode) {
   int tmp;
   csync_stat_t sb;
-  mbchar_t *wpath = c_multibyte(path);
+  mbchar_t *wpath = c_utf8_to_locale(path);
   mbchar_t *swpath = NULL;
 
   if (path == NULL) {
@@ -59,17 +59,17 @@ int c_mkdirs(const char *path, mode_t mode) {
     char subpath[tmp + 1];
     memcpy(subpath, path, tmp);
     subpath[tmp] = '\0';
-    swpath = c_multibyte(subpath);
+    swpath = c_utf8_to_locale(subpath);
     if (_tstat(swpath, &sb) == 0) {
       if (! S_ISDIR(sb.st_mode)) {
         errno = ENOTDIR;
         return -1;
       }
     } else if (errno != ENOENT) {
-      c_free_multibyte(swpath);
+      c_free_locale_string(swpath);
       return -1;
     } else if (c_mkdirs(subpath, mode) < 0) {
-      c_free_multibyte(swpath);
+      c_free_locale_string(swpath);
       return -1;
     }
   }
@@ -78,8 +78,8 @@ int c_mkdirs(const char *path, mode_t mode) {
 #else
   tmp = _tmkdir(wpath, mode);
 #endif
-  c_free_multibyte(swpath);
-  c_free_multibyte(wpath);
+  c_free_locale_string(swpath);
+  c_free_locale_string(wpath);
 
   if ((tmp < 0) && (errno == EEXIST)) {
     return 0;
@@ -93,7 +93,7 @@ int c_rmdirs(const char *path) {
   csync_stat_t sb;
   char *fname = NULL;
   mbchar_t *wfname = NULL;
-  mbchar_t *wpath = c_multibyte(path);
+  mbchar_t *wpath = c_utf8_to_locale(path);
   char *rd_name = NULL;
 
   if ((d = _topendir(wpath)) != NULL) {
@@ -114,10 +114,10 @@ int c_rmdirs(const char *path) {
 
       while ((dp = _treaddir(d)) != NULL) {
         size_t len;
-	rd_name = c_utf8(dp->d_name);
+	rd_name = c_utf8_from_locale(dp->d_name);
         /* skip '.' and '..' */
 	if( c_streq( rd_name, "." ) || c_streq( rd_name, ".." ) ) {
-	  c_free_utf8(rd_name);
+	  c_free_locale_string(rd_name);
           continue;
         }
 
@@ -128,7 +128,7 @@ int c_rmdirs(const char *path) {
           return -1;
         }
         snprintf(fname, len, "%s/%s", path, rd_name);
-	wfname = c_multibyte(fname);
+	wfname = c_utf8_to_locale(fname);
 
         /* stat the file */
         if (_tstat(wfname, &sb) != -1) {
@@ -141,7 +141,7 @@ int c_rmdirs(const char *path) {
               if (errno == EACCES) {
                 _tclosedir(d);
                 SAFE_FREE(fname);
-		c_free_multibyte(wfname);
+		c_free_locale_string(wfname);
                 return -1;
               }
               c_rmdirs(fname);
@@ -151,8 +151,8 @@ int c_rmdirs(const char *path) {
           }
         } /* lstat */
         SAFE_FREE(fname);
-	c_free_multibyte(wfname);
-	c_free_utf8(rd_name);
+	c_free_locale_string(wfname);
+	c_free_locale_string(rd_name);
       } /* readdir */
 
       _trewinddir(d);
@@ -167,13 +167,13 @@ int c_rmdirs(const char *path) {
 
 int c_isdir(const char *path) {
   csync_stat_t sb;
-  mbchar_t *wpath = c_multibyte(path);
+  mbchar_t *wpath = c_utf8_to_locale(path);
 
   if (_tstat (wpath, &sb) == 0 && S_ISDIR(sb.st_mode)) {
-    c_free_multibyte(wpath);
+    c_free_locale_string(wpath);
     return 1;
   }
-  c_free_multibyte(wpath);
+  c_free_locale_string(wpath);
   return 0;
 }
 

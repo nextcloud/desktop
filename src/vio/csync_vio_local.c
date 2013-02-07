@@ -42,23 +42,23 @@ typedef struct fhandle_s {
 csync_vio_method_handle_t *csync_vio_local_open(const char *durl, int flags, mode_t mode) {
   fhandle_t *handle = NULL;
   int fd = -1;
-  mbchar_t *url = c_multibyte(durl);
+  mbchar_t *url = c_utf8_to_locale(durl);
 
   if ((fd = _topen(url, flags, mode)) < 0) {
-    c_free_multibyte(url);
+    c_free_locale_string(url);
     return NULL;
   }
 
   handle = c_malloc(sizeof(fhandle_t));
   if (handle == NULL) {
-    c_free_multibyte(url);
+    c_free_locale_string(url);
     close(fd);
     return NULL;
   }
 
   handle->fd = fd;
 
-  c_free_multibyte(url);
+  c_free_locale_string(url);
 
   return (csync_vio_method_handle_t *) handle;
 }
@@ -66,22 +66,22 @@ csync_vio_method_handle_t *csync_vio_local_open(const char *durl, int flags, mod
 csync_vio_method_handle_t *csync_vio_local_creat(const char *durl, mode_t mode) {
   fhandle_t *handle = NULL;
   int fd = -1;
-  mbchar_t *url = c_multibyte(durl);
+  mbchar_t *url = c_utf8_to_locale(durl);
 
   if(( fd = _tcreat( url, mode)) < 0) {
-      c_free_multibyte(url);
+      c_free_locale_string(url);
       return NULL;
   }
 
   handle = c_malloc(sizeof(fhandle_t));
   if (handle == NULL) {
-    c_free_multibyte(url);
+    c_free_locale_string(url);
     close(fd);
     return NULL;
   }
 
   handle->fd = fd;
-  c_free_multibyte(url);
+  c_free_locale_string(url);
   return (csync_vio_method_handle_t *) handle;
 }
 
@@ -158,21 +158,21 @@ typedef struct dhandle_s {
 
 csync_vio_method_handle_t *csync_vio_local_opendir(const char *name) {
   dhandle_t *handle = NULL;
-  mbchar_t *dirname = c_multibyte(name);
+  mbchar_t *dirname = c_utf8_to_locale(name);
 
   handle = c_malloc(sizeof(dhandle_t));
   if (handle == NULL) {
-    c_free_multibyte(dirname);
+    c_free_locale_string(dirname);
     return NULL;
   }
 
   handle->dh = _topendir( dirname );
   if (handle->dh == NULL) {
-    c_free_multibyte(dirname);
+    c_free_locale_string(dirname);
     SAFE_FREE(handle);
     return NULL;
   }
-  handle->path = c_utf8(dirname);
+  handle->path = c_utf8_from_locale(dirname);
 
   return (csync_vio_method_handle_t *) handle;
 }
@@ -218,7 +218,7 @@ csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_method_handle_t *dhandl
     goto err;
   }
 
-  file_stat->name = c_utf8(dirent->d_name);
+  file_stat->name = c_utf8_from_locale(dirent->d_name);
   file_stat->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
 
   /* Check for availability of d_type, see manpage. */
@@ -259,21 +259,21 @@ int csync_vio_local_mkdir(const char *uri, mode_t mode) {
 }
 
 int csync_vio_local_rmdir(const char *uri) {
-  mbchar_t *dirname = c_multibyte(uri);
+  mbchar_t *dirname = c_utf8_to_locale(uri);
   int re = -1;
 
   re = _trmdir(dirname);
-  c_free_multibyte(dirname);
+  c_free_locale_string(dirname);
   return re;
 }
 
 
 int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   csync_stat_t sb;
-  mbchar_t *wuri = c_multibyte( uri );
+  mbchar_t *wuri = c_utf8_to_locale( uri );
 
   if( _tstat(wuri, &sb) < 0) {
-    c_free_multibyte(wuri);
+    c_free_locale_string(wuri);
     return -1;
   }
 
@@ -281,7 +281,7 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
 
   if (buf->name == NULL) {
     csync_vio_file_stat_destroy(buf);
-    c_free_multibyte(wuri);
+    c_free_locale_string(wuri);
     return -1;
   }
   buf->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
@@ -357,7 +357,7 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   buf->ctime = sb.st_ctime;
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_CTIME;
 
-  c_free_multibyte(wuri);
+  c_free_locale_string(wuri);
   return 0;
 }
 
@@ -366,18 +366,18 @@ int csync_vio_local_rename(const char *olduri, const char *newuri) {
 }
 
 int csync_vio_local_unlink(const char *uri) {
-  mbchar_t *nuri = c_multibyte(uri);
+  mbchar_t *nuri = c_utf8_to_locale(uri);
   int re = _tunlink( nuri );
-  c_free_multibyte(nuri);
+  c_free_locale_string(nuri);
   return re;
 }
 
 int csync_vio_local_chmod(const char *uri, mode_t mode) {
-  mbchar_t *nuri = c_multibyte(uri);
+  mbchar_t *nuri = c_utf8_to_locale(uri);
   int re = -1;
 
   re = _tchmod(nuri, mode);
-  c_free_multibyte(nuri);
+  c_free_locale_string(nuri);
   return re;
 }
 

@@ -276,7 +276,7 @@ char *c_lowercase(const char* str) {
 }
 
 /* Convert a wide multibyte String to UTF8 */
-char* c_utf8(const mbchar_t *wstr)
+char* c_utf8_from_locale(const mbchar_t *wstr)
 {
   char *dst = NULL;
 
@@ -304,7 +304,7 @@ char* c_utf8(const mbchar_t *wstr)
 }
 
 /* Convert a an UTF8 string to multibyte */
-mbchar_t* c_multibyte(const char *str)
+mbchar_t* c_utf8_to_locale(const char *str)
 {
   mbchar_t *dst = NULL;
 #ifdef _WIN32
