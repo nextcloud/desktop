@@ -1,25 +1,25 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="uk" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="lv" version="2.0">
 <context>
     <name>CreateAnOwncloudPage</name>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="14"/>
         <source>Form</source>
-        <translation>Форма</translation>
+        <translation>Forma</translation>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="39"/>
         <source>Create a new ownCloud</source>
-        <translation>Створити новий ownCloud</translation>
+        <translation>Izveidot jaunu ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="61"/>
         <source>Where do you want to create your ownCloud?</source>
-        <translation>Де Ви хочете створити свій ownCloud?</translation>
+        <translation>Kur vēlaties izveidot savu ownCloud?</translation>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="73"/>
         <source>create ownCloud on this computer</source>
-        <translation>створити ownCloud на цьому комп&apos;ютері</translation>
+        <translation>izveidot ownCloud uz šī datora</translation>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="105"/>
@@ -32,12 +32,12 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;встановлює ownCloud на цьому комп&apos;ютері. Інші користувачі не матимуть доступу до Ваших даних за замовчуванням.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Instalē ownCloud uz šī datora. Pēc noklusējuma citi cilvēki nevarēs piekļūt jūsu datiem.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="132"/>
         <source>create ownCloud on my internet domain</source>
-        <translation>створити ownCloud в моєму інтернет-домені</translation>
+        <translation>izveidot ownCloud uz mana interneta domēna</translation>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="155"/>
@@ -52,14 +52,14 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;встановлює ownCloud у домені, який Ви контролюєте. Вам необхідні дані авторизації FTP для інсталяції.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;instalē ownCloud uz domēna, ko jūs kontrolējat. Jums vajag FTP datus, lai varētu instalēt.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#585858;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Цей примірник ownCloud буде доступний із Інтернет.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Šis ownCloud būs pieejams no interneta.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="177"/>
         <source>&amp;Domain:</source>
-        <translation>&amp;Домен:</translation>
+        <translation>&amp;Domēns:</translation>
     </message>
     <message>
         <source>mydomain.org</source>
@@ -71,27 +71,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardnetworkpage.ui" line="14"/>
         <source>Form</source>
-        <translation>Форма</translation>
+        <translation>Forma</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardnetworkpage.ui" line="27"/>
         <source>Network Settings</source>
-        <translation>Налаштування мережі</translation>
+        <translation>Tīkla iestatījumi</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardnetworkpage.ui" line="34"/>
         <source>Set networking options:</source>
-        <translation>Встановіть параметри мережі:</translation>
+        <translation>Iestatīt tīklošanas opcijas:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardnetworkpage.ui" line="40"/>
         <source>Only enable if network is available</source>
-        <translation>Включайте лише при доступності мережі</translation>
+        <translation>Aktivēt tikai, ja ir pieejams tīkls</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardnetworkpage.ui" line="47"/>
         <source>restrict to this local network</source>
-        <translation>обмеження для цієї локальної мережі</translation>
+        <translation>ierobežot uz lokālo tīklu</translation>
     </message>
 </context>
 <context>
@@ -99,12 +99,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="14"/>
         <source>Form</source>
-        <translation>Форма</translation>
+        <translation>Forma</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="20"/>
         <source>ownCloud Settings</source>
-        <translation>Налаштування ownCloud</translation>
+        <translation>ownCloud iestatījumi</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="29"/>
@@ -114,17 +114,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="36"/>
         <source>User:</source>
-        <translation>Користувач:</translation>
+        <translation>Lietotājs:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="46"/>
         <source>Password:</source>
-        <translation>Пароль:</translation>
+        <translation>Parole:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="63"/>
         <source>Alias:</source>
-        <translation>Псевдонім:</translation>
+        <translation>Segvārds:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="93"/>
@@ -137,27 +137,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="14"/>
         <source>Form</source>
-        <translation>Форма</translation>
+        <translation>Forma</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="25"/>
         <source>Sync Directory</source>
-        <translation>Синхронізовані каталоги</translation>
+        <translation>Sinhronizējamā direktorija</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="32"/>
         <source>Pick a local folder on your computer to sync:</source>
-        <translation>Оберіть локальну теку на вашому ПК для синхронізації:</translation>
+        <translation>Izvēlieties lokālu mapi uz sava datora, ko sinhronizēt:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="43"/>
         <source>&amp;Choose...</source>
-        <translation>&amp;Вибір...</translation>
+        <translation>&amp;Izvēlēties...</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="54"/>
         <source>&amp;Directory alias name:</source>
-        <translation>&amp;Псевдонім каталогу:</translation>
+        <translation>&amp;Direktorijas segvārda nosaukums:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="45"/>
@@ -167,7 +167,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="46"/>
         <source>Music</source>
-        <translation>Музика</translation>
+        <translation>Mūzika</translation>
     </message>
 </context>
 <context>
@@ -175,7 +175,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="14"/>
         <source>Form</source>
-        <translation>Форма</translation>
+        <translation>Forma</translation>
     </message>
     <message>
         <source>Express Upload Target</source>
@@ -192,42 +192,42 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="29"/>
         <source>Synchronization Target</source>
-        <translation>Цільова тека синхронізації</translation>
+        <translation>Sinhronizēšanas mērķis</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="51"/>
         <source>Select a destination folder for your data</source>
-        <translation>Оберіть теку для зберігання даних</translation>
+        <translation>Izvēlieties savu datu mērķa mpi</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="85"/>
         <source>on your &amp;ownCloud server</source>
-        <translation>на Вашому &amp;ownCloud сервері</translation>
+        <translation>uz jūsu &amp;ownCloud servera</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="100"/>
         <source>Folder on ownCloud:</source>
-        <translation>Тека на ownCloud:</translation>
+        <translation>Mape uz ownCloud:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="149"/>
         <source>to a &amp;local folder</source>
-        <translation>в &amp;локальну теку</translation>
+        <translation>uz &amp;lokālu mapi</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="162"/>
         <source>Folder name:</source>
-        <translation>Ім&apos;я теки:</translation>
+        <translation>Mapes nosaukums:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="172"/>
         <source>C&amp;hoose..</source>
-        <translation>В&amp;ибір..</translation>
+        <translation>I&amp;zvēlēties...</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="219"/>
         <source>to a &amp;remote folder (URL)</source>
-        <translation>у &amp;віддалену теку (URL)</translation>
+        <translation>uz &amp;attālinātu mapi (URL)</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="232"/>
@@ -237,12 +237,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="362"/>
         <source>TextLabel</source>
-        <translation>Мітка</translation>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="384"/>
         <source>create</source>
-        <translation>створити</translation>
+        <translation>izveidot</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="177"/>
@@ -257,7 +257,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="179"/>
         <source>scp://john@host.com//myfolder</source>
-        <translation>scp://john@host.com//myfolder</translation>
+        <translation>scp://juris@serveris.lv//manamape</translation>
     </message>
 </context>
 <context>
@@ -277,12 +277,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="263"/>
         <source>&lt;p&gt;The detailed error message is&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Деталізоване повідомлення про помилку&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Sīkāks kļūdas ziņojums ir&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="265"/>
         <source>&lt;p&gt;Please check your configuration by clicking on the tray icon.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Будь ласка, перевірте свої налаштування, натиснувши іконку в треї.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Lūdzu, pārbaudi savu konfigurāciju, spiežot uz paplātes ikonas.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>ownCloud Connection Failed</source>
@@ -307,7 +307,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="381"/>
         <source>Sync started for %1 configured sync folder(s).</source>
-        <translation>Почалась синхронізація для %1 тек.</translation>
+        <translation>Sinhronizēšana ir sākta %1 konfigurētai(-ām) sinhronizēšanas mapei(-ēm)</translation>
     </message>
     <message>
         <source>Open ownCloud...</source>
@@ -316,27 +316,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="443"/>
         <source>Open status...</source>
-        <translation>Відкривається статус...</translation>
+        <translation>Atvērt statusu...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="446"/>
         <source>Add folder...</source>
-        <translation>Додати теку...</translation>
+        <translation>Pievienot mapi...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="448"/>
         <source>Configure...</source>
-        <translation>Налаштування...</translation>
+        <translation>Konfigurēt...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="450"/>
         <source>Configure proxy...</source>
-        <translation>Налаштування проксі...</translation>
+        <translation>Konfigurēt starpnieku...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="454"/>
         <source>Quit</source>
-        <translation>Вийти</translation>
+        <translation>Iziet</translation>
     </message>
     <message>
         <source>open folder %1</source>
@@ -345,109 +345,109 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="246"/>
         <source>%1 Server Mismatch</source>
-        <translation>Невідповідність %1 сервера</translation>
+        <translation>%1 serveru neatbilstība</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="247"/>
         <source>&lt;p&gt;The configured server for this client is too old.&lt;/p&gt;&lt;p&gt;Please update to the latest %1 server and restart the client.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Налаштований сервер для цього клієнта занадто старий.&lt;/p&gt;&lt;p&gt;Будь ласка, оновіть до останньої версії %1 сервер та оновіть клієнт.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Šim klientam konfigurētais serveris ir pārāk vecs.&lt;/p&gt;&lt;p&gt;Lūdzu, atjauniniet serveri uz vismaz versiju %1 un pārstartējiet klientu.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="262"/>
         <source>&lt;p&gt;The %1 at %2 could not be reached.&lt;/p&gt;</source>
-        <translation>&lt;p&gt; %1 на %2 не вдається знайти.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Nevarēja sasnieg %1 pie %2.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="267"/>
         <source>%1 Connection Failed</source>
-        <translation>Збій відключення %1</translation>
+        <translation>%1 savienojums neizdevās</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="292"/>
         <source>Too many attempts to get a valid password.</source>
-        <translation>Занадто багато спроб отримати вірний пароль.</translation>
+        <translation>Pārāk daudz mēģinājumu saņemt derīgu paroli.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="296"/>
         <source>%1 user credentials are wrong. Please check configuration.</source>
-        <translation>%1 облікові дані невірні. Будь ласка, перевірте налаштування.</translation>
+        <translation>%1 lietotāja akreditācijas dati nav pareizi. Lūdzu, pārbaudiet konfigurāciju.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="301"/>
         <location filename="../src/mirall/application.cpp" line="320"/>
         <source>Credentials</source>
-        <translation>Облікові дані</translation>
+        <translation>Akreditācijas dati</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="312"/>
         <source>Error: Could not retrieve the password!</source>
-        <translation>Помилка: не вдалося отримати пароль!</translation>
+        <translation>Kļūda — nevarēja saņemt paroli!</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="314"/>
         <source>Password dialog was canceled!</source>
-        <translation>Діалог вводу пароля був скасований!</translation>
+        <translation>Paroles dialoglodziņš tika atcelts!</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="352"/>
         <location filename="../src/mirall/application.cpp" line="361"/>
         <source>No %1 Connection</source>
-        <translation>Відсутнє %1 підключення</translation>
+        <translation>Nav %1 savienojuma</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="353"/>
         <source>&lt;p&gt;Your %1 credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Ваші %1 облікові дані помилкові.&lt;/p&gt;&lt;p&gt;Будь ласка, виправте їх шляхом запуску діалогу конфігурації із трея!&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Jūsu %1 akreditācijas dati nav pareizi.&lt;/p&gt;&lt;p&gt;Lūdzu, izlabojiet tos, palaižot konfigurācijas dialoglodziņu no paplātes!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="362"/>
         <source>&lt;p&gt;Either your user name or your password are not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Ваше ім&apos;я користувача або пароль вказано не вірно.&lt;/p&gt;&lt;p&gt;Будь ласка, виправте їх шляхом запуску діалогу конфігурації із трея!&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Lietotājvārds vai parole nav pareizi.&lt;/p&gt;&lt;p&gt;Lūdzu, izlabojiet tos, palaižot konfigurācijas dialoglodziņu no paplātes!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="380"/>
         <source>%1 Sync Started</source>
-        <translation>%1 синхронізація розпочата</translation>
+        <translation>%1 sinhronizēšana ir sākta</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="441"/>
         <source>Open %1 in browser...</source>
-        <translation>Відкрити %1 у браузері...</translation>
+        <translation>Atvērt %1 pārlūkā...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="452"/>
         <source>About...</source>
-        <translation>Про...</translation>
+        <translation>Par...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="508"/>
         <source>Open %1 folder</source>
-        <translation>Відкрити %1 теку</translation>
+        <translation>Atvērt %1 mapi</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="521"/>
         <source>Managed Folders:</source>
-        <translation>Керовані теки:</translation>
+        <translation>Pārvaldītās mapes:</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="769"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4&lt;br&gt;using OCsync %5 and Qt %6.&lt;/small&gt;&lt;p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;Створено з версії Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; на %3, %4&lt;br&gt;використовуючи OCsync %5 та Qt %6.&lt;/small&gt;&lt;p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;Būvēts no Git revīzijas &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; %3, %4&lt;br&gt;izmantojot OCsync %5 un Qt %6.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="776"/>
         <source>About %1</source>
-        <translation>Про %1</translation>
+        <translation>Par %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="786"/>
         <source>Confirm Folder Remove</source>
-        <translation>Підтвердіть видалення теки</translation>
+        <translation>Apstiprināt mapes izņemšanu</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="787"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
-        <translation>Ви дійсно бажаєто видалити теку завантаження  &lt;i&gt;%1&lt;/i&gt;?</translation>
+        <translation>Vai tiešām vēlaties izņemt augšupielādes mapi &lt;i&gt;%1&lt;/i&gt;?</translation>
     </message>
     <message>
         <source>Undefined Folder State</source>
@@ -460,32 +460,32 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="953"/>
         <source>Sync is running.</source>
-        <translation>Синхронізація запущена.</translation>
+        <translation>Sinhronizācija darbojas.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="957"/>
         <source>Server is currently not available.</source>
-        <translation>Сервер зараз недоступний.</translation>
+        <translation>Serveris pašlaik nav pieejams.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="962"/>
         <source>Last Sync was successful.</source>
-        <translation>Остання синхронізація була успішною.</translation>
+        <translation>Pēdējā sinhronizācija bija veiksmīga.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="968"/>
         <source>Syncing Error.</source>
-        <translation>Помилка синхронізації.</translation>
+        <translation>Sinhronizēšanas kļūda.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="974"/>
         <source>Setup Error.</source>
-        <translation>Помилка установки.</translation>
+        <translation>Iestatīšanas kļūda.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="977"/>
         <source>Undefined Error State.</source>
-        <translation>Невизначена помилка.</translation>
+        <translation>Nedefinēts kļūdas stāvoklis.</translation>
     </message>
     <message>
         <source>Folder information</source>
@@ -513,27 +513,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="829"/>
         <source>Sync Running</source>
-        <translation>Виконується синхронізація</translation>
+        <translation>Sinhronizācija darbojas</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="830"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>Виконується процедура синхронізації.&lt;br/&gt;Бажаєте відмінити?</translation>
+        <translation>Darbojas sinhronizēšanas darbība.&lt;br/&gt;Vai vēlaties to apturēt?</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="946"/>
         <source>Undefined State.</source>
-        <translation>Невизначений стан.</translation>
+        <translation>Nedefinēts stāvoklis</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="949"/>
         <source>Waits to start syncing.</source>
-        <translation>Очікування початку синхронізації.</translation>
+        <translation>Gaida uz sinhronizēšanas sākumu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="982"/>
         <source> (Sync is paused)</source>
-        <translation> (Синхронізація призупинена)</translation>
+        <translation>(Sinhronizēšana ir pauzēta)</translation>
     </message>
     <message>
         <source>Sync is paused.</source>
@@ -542,7 +542,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="999"/>
         <source>No sync folders configured.</source>
-        <translation>Жодна тека не налаштована для синхронізації.</translation>
+        <translation>Nav konfigurētu sinhronizēšanas mapju.</translation>
     </message>
 </context>
 <context>
@@ -550,27 +550,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="300"/>
         <source>CSync create failed.</source>
-        <translation>Створення CSync не вдалося.</translation>
+        <translation>Neizdevās izveidot CSync.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="88"/>
         <source>CSync failed to create a lock file.</source>
-        <translation>CSync не вдалося створити файл блокування.</translation>
+        <translation>CSync neizdevās izveidot slēgšanas datni.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="82"/>
         <source>Success.</source>
-        <translation>Успішно.</translation>
+        <translation>Veiksmīgi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="85"/>
         <source>CSync Logging setup failed.</source>
-        <translation>CSync не вдалася зробити налаштування реєстрації.</translation>
+        <translation>Neizdevās iestatīt CSync reģistrēšanu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="91"/>
         <source>CSync failed to load the state db.</source>
-        <translation>CSync не вдалося завантажити стан бази даних.</translation>
+        <translation>CSync neizdevās ielādēt stāvokļa db.</translation>
     </message>
     <message>
         <source>The system time between the local machine and the server differs too much. Please use a time syncronization service (ntp) on both machines.</source>
@@ -579,17 +579,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="97"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
-        <translation>Системний час цього клієнта відрізняється від системного часу на сервері. Будь ласка, використовуйте сервіс синхронізації часу (NTP) на сервері та клієнті, аби час був однаковий.</translation>
+        <translation>Sistēmas laiks uz šī klienta atšķiras no sistēmas laika uz servera. Lūdzu, izmantojiet laika sinhronizēšanas pakalpojumu (NTP) uz servera un klienta datoriem, lai laiks būtu tāds pats.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="102"/>
         <source>CSync could not detect the filesystem type.</source>
-        <translation>CSync не вдалося визначити тип файлової системи.</translation>
+        <translation>CSync nevarēja noteikt datņu sistēmas tipu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="105"/>
         <source>CSync got an error while processing internal trees.</source>
-        <translation>У CSync виникла помилка під час сканування внутрішньої структури каталогів.</translation>
+        <translation>CSync saņēma kļūdu, apstrādājot iekšējos kokus.</translation>
     </message>
     <message>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please create it and try again.&lt;/p&gt;</source>
@@ -598,7 +598,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="123"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Цільовий каталог %1 не існує.&lt;/p&gt;&lt;p&gt;Будь ласка, перевірте налаштування синхронізації.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Mērķa direktorija %1 neeksistē.&lt;/p&gt;&lt;p&gt;Lūdzu, pārbaudiet sinhronizēšanas iestatījumus.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>&lt;p&gt;The ownCloud plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
@@ -607,107 +607,107 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="133"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
-        <translation>Не можливо проводити запис у локальну файлову систему. Будь ласка, перевірте повноваження.</translation>
+        <translation>Nevar rakstīt lokālo datņu sistēmu. Lūdzu, pārbaudiet atļaujas.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="129"/>
         <source>A remote file can not be written. Please check the remote access.</source>
-        <translation>Не можливо проводити запис у віддалену файлову систему. Будь ласка, перевірте повноваження доступу.</translation>
+        <translation>Nevar rakstīt attālināto datni. Lūdzu, pārbaudiet attālināto pieeju.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="108"/>
         <source>CSync failed to reserve memory.</source>
-        <translation>CSync не вдалося зарезервувати пам&apos;ять.</translation>
+        <translation>CSync neizdevās rezervēt atmiņu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="111"/>
         <source>CSync fatal parameter error.</source>
-        <translation>У CSync сталася фатальна помилка параметра.</translation>
+        <translation>CSybx gadījās fatāla parametra kļūda.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="114"/>
         <source>CSync processing step update failed.</source>
-        <translation>CSync не вдалася зробити оновлення .</translation>
+        <translation>CSync neizdevās atjaunināt parametra soli.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="117"/>
         <source>CSync processing step reconcile failed.</source>
-        <translation>CSync не вдалася зробити врегулювання.</translation>
+        <translation>CSync neizdevās pieņemt parametra soli.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="120"/>
         <source>CSync processing step propagate failed.</source>
-        <translation>CSync не вдалася зробити розповсюдження.</translation>
+        <translation>CSync neizdevās pavairot parametra soli.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="136"/>
         <source>CSync failed to connect through a proxy.</source>
-        <translation>CSync не вдалося приєднатися через Проксі.</translation>
+        <translation>CSync neizdevās savienoties caur starpnieku.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="139"/>
         <source>CSync failed to lookup proxy or server.</source>
-        <translation>CSync не вдалося знайти Проксі або Сервер.</translation>
+        <translation>CSync neizdevās uzmeklēt starpnieku vai serveri.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="142"/>
         <source>CSync failed to authenticate at the %1 server.</source>
-        <translation>CSync не вдалося аутентифікуватися на %1 сервері.</translation>
+        <translation>CSync neizdevās autentificēties ar serveri %1.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="145"/>
         <source>CSync failed to authenticate at the proxy.</source>
-        <translation>CSync не вдалося аутентифікуватися на Проксі.</translation>
+        <translation>CSync neizdevās autentificēties ar starpnieku.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="148"/>
         <source>CSync failed to connect to the network.</source>
-        <translation>CSync не вдалося приєднатися до мережі.</translation>
+        <translation>CSync neizdevās savienoties ar tīklu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="151"/>
         <source>A network connection timeout happend.</source>
-        <translation>Час під&apos;єднання до мережі вичерпався.</translation>
+        <translation>Gadījās tīkla savienojuma noildze.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="154"/>
         <source>A HTTP transmission error happened.</source>
-        <translation>Сталася помилка передачі даних по HTTP.</translation>
+        <translation>Gadījās HTTP pārraides kļūda.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="157"/>
         <source>CSync failed due to not handled permission deniend.</source>
-        <translation>CSync завершився неуспішно через порушення прав доступу.</translation>
+        <translation>CSync cieta neveiksmi dēļ atļauju lieguma.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="160"/>
         <source>CSync failed to find a specific file.</source>
-        <translation>CSync не вдалося знайти вказаний файл.</translation>
+        <translation>CSync neizdevās atrast noteiktu datni.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="163"/>
         <source>CSync tried to create a directory that already exists.</source>
-        <translation>CSync намагалася створити каталог, який вже існує.</translation>
+        <translation>CSync mēģināja izveidot mapi, kas jau eksistē.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="166"/>
         <source>CSync: No space on %1 server available.</source>
-        <translation>CSync: на сервері %1 скінчилося місце.</translation>
+        <translation>CSync — uz servera %1 nepietiek vietas.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="169"/>
         <source>CSync unspecified error.</source>
-        <translation>Невизначена помилка CSync.</translation>
+        <translation>CSync nespecificēta kļūda.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="172"/>
         <source>An internal error number %1 happend.</source>
-        <translation>Виникла внутрішня помилка за номером %1 .</translation>
+        <translation>Gadījās iekšēja kļūda ar numuru %1.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="176"/>
         <source>&lt;br/&gt;Backend Message: </source>
-        <translation>&lt;br/&gt;Повідомлення кінцевої системи: </translation>
+        <translation>&lt;br/&gt;aizmugures ziņojums:</translation>
     </message>
     <message>
         <source>CSync Update failed.</source>
@@ -722,7 +722,7 @@ Please make sure that all directories are writeable.</source>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="94"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation>&lt;p&gt; %1 плагін для синхронізації не вдалося завантажити.&lt;br/&gt;Будь ласка, перевірте його інсталяцію!&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;%1 csync spraudni nevarēja ielādēt.&lt;br/&gt;Lūdzu, pārbaudiet instalācijas!&lt;/p&gt;</translation>
     </message>
     <message>
         <source>CSync encountered an error while examining the file system.
@@ -752,7 +752,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="377"/>
         <source>mydomain.org</source>
-        <translation>mydomain.org</translation>
+        <translation>mansdomēns.lv</translation>
     </message>
 </context>
 <context>
@@ -760,7 +760,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/credentialstore.cpp" line="223"/>
         <source>No password entry found in keychain. Please reconfigure.</source>
-        <translation>Не знайдено запису про пароль в брелку. Будь ласка, переналаштуйте.</translation>
+        <translation>Atslēgu saišķi nav atrasts ieraksts. Lūdzu, konfigurējiet.</translation>
     </message>
 </context>
 <context>
@@ -768,22 +768,22 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="308"/>
         <source>New file available</source>
-        <translation>Є новий файл</translation>
+        <translation>Ir pieejama jauna datne</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="308"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
-        <translation>&apos;%1&apos; синхронізовано з цією машиною.</translation>
+        <translation>“%1” tika sinhronizēts ar šo datoru.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="310"/>
         <source>New files available</source>
-        <translation>Є нові файли</translation>
+        <translation>Ir pieejamas jaunas datnes</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="310"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
-        <translation><numerusform>&apos;%1&apos; та %n інших файлів було синхронізовано з цією машиною.</numerusform><numerusform>&apos;%1&apos; та %n інших файлів було синхронізовано з цією машиною.</numerusform><numerusform>&apos;%1&apos; та %n інших файлів було синхронізовано з цією машиною.</numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; un %n citu datņu tika sinhronizēta ar šo datoru.</numerusform><numerusform>&apos;%1&apos; un %n cita datne tika sinhronizēta ar šo datoru.</numerusform><numerusform>&apos;%1&apos; un %n citas datnes tika sinhronizētas ar šo datoru.</numerusform></translation>
     </message>
 </context>
 <context>
@@ -791,112 +791,112 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="41"/>
         <source>Files</source>
-        <translation>Файли</translation>
+        <translation>Datnes</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="42"/>
         <source>File Count</source>
-        <translation>Кількість Файлів</translation>
+        <translation>Datņu skaits</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="50"/>
         <source>Copy</source>
-        <translation>Копіювати</translation>
+        <translation>Kopēt</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="53"/>
         <source>Sync Protocol</source>
-        <translation>Протокол Синхронізації</translation>
+        <translation>Sinhronizēšanas protokols</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="64"/>
         <source>Undefined Folder State</source>
-        <translation>Невизначений стан теки</translation>
+        <translation>Nedefinēts mapes stāvoklis</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="67"/>
         <source>The folder waits to start syncing.</source>
-        <translation>Тека очікує на початок синхронізації.</translation>
+        <translation>Mape gaida sinhronizēšanas sākumu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="70"/>
         <source>Server is currently not available.</source>
-        <translation>Сервер зараз недоступний.</translation>
+        <translation>Serveris pašlaik nav pieejams.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="73"/>
         <source>Sync is running.</source>
-        <translation>Синхронізація запущена</translation>
+        <translation>Sinhronizācija darbojas.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="76"/>
         <source>Last Sync was successful.</source>
-        <translation>Остання синхронізація була неуспішна.</translation>
+        <translation>Pēdējā sinhronizācija bija veiksmīga.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="79"/>
         <source>Syncing Error.</source>
-        <translation>Помилка синхронізації.</translation>
+        <translation>Sinhronizēšanas kļūda.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="82"/>
         <source>Setup Error.</source>
-        <translation>Помилка налаштування.</translation>
+        <translation>Iestatīšanas kļūda.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="85"/>
         <source>Undefined Error State.</source>
-        <translation>Невизначена помилка.</translation>
+        <translation>Nedefinēts kļūdas stāvoklis.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="121"/>
         <source>%1  (finished %2 sec. ago)</source>
-        <translation>%1  (завершено %2 сек. назад)</translation>
+        <translation>%1  (pabeigts pirms %2 sekundēm)</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="166"/>
         <source>Synced Files</source>
-        <translation>Синхронізовано Файлів</translation>
+        <translation>Sinhronizētās datnes</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="172"/>
         <source>New Files</source>
-        <translation>Нових Файлів</translation>
+        <translation>Jaunās datnes</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="178"/>
         <source>Deleted Files</source>
-        <translation>Видалено Файлів</translation>
+        <translation>Dzēstās datnes</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="184"/>
         <source>Renamed Files</source>
-        <translation>Переіменовано Файлів</translation>
+        <translation>Pārsauktās datnes</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="190"/>
         <source>Ignored Files</source>
-        <translation>Проігноровано Файлів</translation>
+        <translation>Ignorēt datnes</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="196"/>
         <source>Errors</source>
-        <translation>Помилок</translation>
+        <translation>Kļūdas</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="202"/>
         <source>Conflicts</source>
-        <translation>Конфліктів</translation>
+        <translation>Konflikti</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="222"/>
         <source>Up</source>
-        <translation>Вгору</translation>
+        <translation>Augšup</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="223"/>
         <source>Down</source>
-        <translation>Вниз</translation>
+        <translation>Lejup</translation>
     </message>
 </context>
 <context>
@@ -904,17 +904,17 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folder.cpp" line="97"/>
         <source>Local folder %1 does not exist.</source>
-        <translation>Локальна тека %1 не існує.</translation>
+        <translation>Lokālā mape %1 neeksistē.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="100"/>
         <source>%1 should be a directory but is not.</source>
-        <translation>%1 повинна бути текою, але нею не є.</translation>
+        <translation>%1 vajadzētu būt direktorijai, bet tas tā nav.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="103"/>
         <source>%1 is not readable.</source>
-        <translation>%1 не читається.</translation>
+        <translation>%1 nav lasāms.</translation>
     </message>
 </context>
 <context>
@@ -922,7 +922,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="177"/>
         <source>Remote path: %1</source>
-        <translation>Віддалений шлях: %1</translation>
+        <translation>Attālinātais ceļš: %1</translation>
     </message>
 </context>
 <context>
@@ -930,7 +930,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="466"/>
         <source>%1 Folder Wizard</source>
-        <translation>Тековий Майстер %1</translation>
+        <translation>%1 mapju vednis</translation>
     </message>
 </context>
 <context>
@@ -938,37 +938,37 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="74"/>
         <source>No local directory selected!</source>
-        <translation>Не обрано локальної теки!</translation>
+        <translation>Nav izvēlēta direktorija!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="90"/>
         <source>The local path %1 is already an upload folder.&lt;br/&gt;Please pick another one!</source>
-        <translation>Локальний шлях %1 вже є текою для завантаження.&lt;br/&gt;Будь ласка, оберіть інший!</translation>
+        <translation>Lokālais ceļš %1 jau ir augšupielādes mape.&lt;br/&gt;Lūdzu, izvēlieties citu!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="94"/>
         <source>An already configured folder is contained in the current entry.</source>
-        <translation>В поточному запису містяться вже налаштовані теки.</translation>
+        <translation>Jau konfigurēta mape satur pašreizējo ierakstu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="99"/>
         <source>An already configured folder contains the currently entered directory.</source>
-        <translation>Вже налаштована тека містить вказаний каталог.</translation>
+        <translation>Jau konfigurēta mape satur pašlaik ievadīto direktoriju.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="109"/>
         <source>The alias can not be empty. Please provide a descriptive alias word.</source>
-        <translation>Псевдонім не може бути порожнім. Будь ласка, вкажіть описове слово-псевдонім.</translation>
+        <translation>Aizstājvārds nedrīkst būt tukšs. Lūdzu, norādiet aprakstošu aizstājvārdu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="120"/>
         <source>&lt;br/&gt;The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
-        <translation>&lt;br/&gt;Псевдонім &lt;i&gt;%1&lt;/i&gt; уже використовується. Будь ласка, оберіть інший.</translation>
+        <translation>&lt;br/&gt;Aizstājvārds &lt;i&gt;%1&lt;/i&gt; jau tiek izmantots. Lūdzu, izvēlieties citu aizstājvārdu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="141"/>
         <source>Select the source folder</source>
-        <translation>Оберіть початкову теку</translation>
+        <translation>Izvēlieties avota mapi</translation>
     </message>
 </context>
 <context>
@@ -988,37 +988,37 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="211"/>
         <source>The folder is not available on your %1.&lt;br/&gt;Click to create it.</source>
-        <translation>Тека не доступна на вашому %1.&lt;br/&gt;Натисніть для її створення.</translation>
+        <translation>Mape nav pieejama uz jūsu %1.&lt;br/&gt;Spiediet šeit, lai to izveidotu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="237"/>
         <source>Folder was successfully created on %1.</source>
-        <translation>Теку успішно створено на %1.</translation>
+        <translation>Mape uz %1 tika veiksmīgi izveidota.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="240"/>
         <source>Failed to create the folder on %1.&lt;br/&gt;Please check manually.</source>
-        <translation>Не вдалося створити теку на %1.&lt;br/&gt;Будь ласка, перевірте вручну.</translation>
+        <translation>Neizdevās izveidot mapi uz %1.&lt;br/&gt;Lūdzu, pārbaudiet pašrocīgi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="260"/>
         <source>Better do not use the remote root directory.&lt;br/&gt;If you do, you can &lt;b&gt;not&lt;/b&gt; mirror another local folder.</source>
-        <translation>Краще не використовувати віддалений кореневий каталог.&lt;br/&gt;Інакше, ви можете &lt;b&gt;not&lt;/b&gt; відобразити іншу локальну теку.</translation>
+        <translation>Labāk neizmantot attālinātu saknes direktoriju.&lt;br/&gt;Ja nu tomēr, jūs &lt;b&gt;ne&lt;/b&gt;varat dublēt citu lokālo mapi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="315"/>
         <source>to your &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; (version %3)</source>
-        <translation>для Вашого &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; (version %3)</translation>
+        <translation>uz savu &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; (versija %3)</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="326"/>
         <source>no configured %1 found!</source>
-        <translation>не знайдено налаштованого %1 !</translation>
+        <translation>nav atrastu konfigurētu %1!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="327"/>
         <source>%1 could not be reached:&lt;br/&gt;&lt;tt&gt;%2&lt;/tt&gt;</source>
-        <translation>%1 не вдалося знайти:&lt;br/&gt;&lt;tt&gt;%2&lt;/tt&gt;</translation>
+        <translation>%1 nevar sasniegt:&lt;br/&gt;&lt;tt&gt;%2&lt;/tt&gt;</translation>
     </message>
     <message>
         <source>to your &lt;a href=&quot;%1&quot;&gt;ownCloud&lt;/a&gt; (version %2)</source>
@@ -1035,7 +1035,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="395"/>
         <source>Select the target folder</source>
-        <translation>Оберіть цільову теку</translation>
+        <translation>Izvēlieties mērķa mapi</translation>
     </message>
 </context>
 <context>
@@ -1043,58 +1043,58 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="62"/>
         <source>Log Output</source>
-        <translation>Вивід журналу</translation>
+        <translation>Izvadi reģistrēt žurnālā</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="74"/>
         <source>&amp;Search: </source>
-        <translation>&amp;Пошук: </translation>
+        <translation>&amp;Meklēt:</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="82"/>
         <source>&amp;Find</source>
-        <translation>&amp;Знайти</translation>
+        <translation>&amp;Arast</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="100"/>
         <source>Clear</source>
-        <translation>Очистити</translation>
+        <translation>Attīrīt</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="101"/>
         <source>Clear the log display.</source>
-        <translation>Очистити дисплей журналу.</translation>
+        <translation>Attīrīt žurnāla attēlošanu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="107"/>
         <source>S&amp;ave</source>
-        <translation>З&amp;берегти</translation>
+        <translation>&amp;Saglabāt</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="108"/>
         <source>Save the log file to a file on disk for debugging.</source>
-        <translation>Зберегти файл журналу у файл на диску для обробки.</translation>
+        <translation>Saglabāt žurnāla datni uz diska atkļūdošanai.</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="146"/>
         <location filename="../src/mirall/logbrowser.cpp" line="202"/>
         <source>Error</source>
-        <translation>Помилка</translation>
+        <translation>Kļūda</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="147"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;Файл &apos;%1&apos;&lt;br/&gt;не вдається відкрити на запис.&lt;br/&gt;&lt;br/&gt;Журнал  &lt;b&gt;не&lt;/b&gt; можливо зберегти!&lt;/nobr&gt;</translation>
+        <translation>&lt;nobr&gt;Datni &apos;%1&apos;&lt;br/&gt;nevar atvērt rakstīšanai.&lt;br/&gt;&lt;br/&gt;Žurnāla izvadi &lt;b&gt;ne&lt;/b&gt;var saglabāt!&lt;/nobr&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="192"/>
         <source>Save log file</source>
-        <translation>Зберегти файл журналу</translation>
+        <translation>Saglabāt žurnāla datni</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="202"/>
         <source>Could not write to log file </source>
-        <translation>Не вдалося записати файл журналу</translation>
+        <translation>Nevarēja rakstīt žurnāla datnē</translation>
     </message>
 </context>
 <context>
@@ -1113,7 +1113,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="335"/>
         <source>ftp.mydomain.org</source>
-        <translation>ftp.mydomain.org</translation>
+        <translation>ftp.mansdomēns.lv</translation>
     </message>
     <message>
         <source>john</source>
@@ -1137,7 +1137,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="86"/>
         <source>Create Connection to %1</source>
-        <translation>Створити З&apos;єднання з %1</translation>
+        <translation>Izveidot savienojumu ar %1</translation>
     </message>
 </context>
 <context>
@@ -1145,7 +1145,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="71"/>
         <source>%1 Connection Wizard</source>
-        <translation>Майстер з&apos;єднання %1 </translation>
+        <translation>%1 savienojumu vednis</translation>
     </message>
     <message>
         <source>Trying to connect to ownCloud at %1...</source>
@@ -1162,27 +1162,27 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="130"/>
         <source>Trying to connect to %1 at %2...</source>
-        <translation>Спроба підключення до %1 на %2...</translation>
+        <translation>Mēģina savienoties ar %1 pie %2...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="164"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;Успішно підключено до %1: %2 версія %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;Veiksmīgi savienojās ar %1: %2 versija %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="176"/>
         <source>&lt;font color=&quot;red&quot;&gt;Failed to connect to %1!&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;red&quot;&gt;Не вдалося підключитись до %1!&lt;/font&gt;</translation>
+        <translation>&lt;font color=&quot;red&quot;&gt;Neizdevās savienoties ar %1!&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="178"/>
         <source>Error: &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>Помилка: &lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation>Kļūda: &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="263"/>
         <source>Starting script owncloud-admin...</source>
-        <translation>Запускається скрипт owncloud-admin...</translation>
+        <translation>Palaiž skriptu owncloud-admin...</translation>
     </message>
     <message>
         <source>&lt;font color=&quot;red&quot;&gt;Installation of ownCloud failed!&lt;/font&gt;</source>
@@ -1195,59 +1195,59 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="314"/>
         <source>&lt;font color=&quot;red&quot;&gt;Installation of %1 failed!&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;red&quot;&gt;Інсталяція %1 не вдала!&lt;/font&gt;</translation>
+        <translation>&lt;font color=&quot;red&quot;&gt;%1 instalēšana neizdevās!&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="319"/>
         <source>&lt;font color=&quot;green&quot;&gt;Installation of %1 succeeded!&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;Інсталяція %1 завершилась успішно!&lt;/font&gt;</translation>
+        <translation>&lt;font color=&quot;red&quot;&gt;%1 instalēšana bija veiksmīga!&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="362"/>
         <source>The owncloud admin script can not be found.
 Setup can not be done.</source>
-        <translation>Відсутній owncloud admin скрипт.
-Установка не можлива.</translation>
+        <translation>Nevar atrast owncloud admin skriptu.
+Nevar instalēt.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="413"/>
         <source>Creation of remote folder %1 could not be started.</source>
-        <translation>Створення віддаленої теки %1 не вдається розпочати.</translation>
+        <translation>Nevarēja sākt attālinātās mapes %1 veidošanu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="434"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation>Віддалена тека %1 успішно створена.</translation>
+        <translation>Attālinātā mape %1 ir veiksmīgi izveidota.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="436"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>Віддалена тека %1 вже існує. Під&apos;єднання для синхронізації.</translation>
+        <translation>Attālinātā mape %1 jau eksistē. Savienojas ar to, lai sinhronizētos.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="438"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation>Створення теки завершилось HTTP помилкою %1</translation>
+        <translation>Mapes veidošana beidzās ar HTTP kļūdas kodu %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="462"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation>З&apos;єднання для синхронізації %1 з віддаленою текою %2 було встановлено.</translation>
+        <translation>Sinhronizēšanas savienojums no %1 uz attālināto mapi %2 tika iestatīts.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="467"/>
         <source>Succesfully connected to %1!</source>
-        <translation>Успішно підключено до %1!</translation>
+        <translation>Veiksmīgi savienojies ar %1!</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="473"/>
         <source>Connection to %1 could not be established. Please check again.</source>
-        <translation>Підключення до %1 встановити не вдалося. Будь ласка, перевірте ще раз.</translation>
+        <translation>Nevarēja izveidot savienojumu ar %1. Lūdzu, pārbaudiet atkal.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="470"/>
         <source>Press Finish to permanently accept this connection.</source>
-        <translation>Натисніть Готово, щоб постійно приймати це підключення.</translation>
+        <translation>Spiediet Pabeigt, lai pavisam pieņemtu šo savienojumu.</translation>
     </message>
     <message>
         <source>Skipping automatic setup of sync folders as there are already sync folders.</source>
@@ -1260,12 +1260,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="382"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>Локальна тека синхронізації %1 вже існує, налаштування її для синхронізації.&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>Jau eksistē lokālā sinhronizēšanas mape %1, iestata to sinhronizēšanai.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="384"/>
         <source>Creating local sync folder %1... </source>
-        <translation>Створення локальної теки для синхронізації %1... </translation>
+        <translation>Izveido lokālo sinhronizēšanas mapi %1...</translation>
     </message>
     <message>
         <source>Creating local sync folder %1</source>
@@ -1274,12 +1274,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="387"/>
         <source>ok</source>
-        <translation>ok</translation>
+        <translation>sanāca</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="389"/>
         <source>failed.</source>
-        <translation>не вдалося.</translation>
+        <translation>cieta neveiksmi.</translation>
     </message>
     <message>
         <source>Start Creation of remote folder %1 failed.</source>
@@ -1292,7 +1292,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="101"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Локальна тека синхронізації %1 успішно створена!&lt;/b&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Lokālā sinhronizēšanas mape %1 ir veiksmīgi izveidota!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <source>The remote folder %1 already exists. Automatic sync setup is skipped for security reasons. Please configure your sync folder manually.</source>
@@ -1301,12 +1301,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="440"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Створити віддалену теку не вдалося, можливо, через невірно вказані облікові дані.&lt;/font&gt;&lt;br/&gt;Будь ласка, поверніться назад та перевірте облікові дані.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Attālinātā mapju izveide cieta neveiksmi, jo, visdrīzāk, dotie akreditācijas dati bija nepareizi.&lt;/font&gt;&lt;br/&gt;Lūdzu, dotieties atpakaļ un pārbaudiet savus akreditācijas datus.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="446"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation>Не вдалося створити віддалену теку %1 через помилку &lt;tt&gt;%2&lt;/tt&gt;.</translation>
+        <translation>Attālinātās mapes %1 veidošana cieta neveiksmi ar kļūdu &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
 </context>
 <context>
@@ -1314,17 +1314,17 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="60"/>
         <source>Welcome to %1</source>
-        <translation>Вітаємо у %1</translation>
+        <translation>Laipni lūdzam %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="70"/>
         <source>&lt;p&gt;In order to connect to your %1 server, you need to provide the server address as well as your credentials.&lt;/p&gt;&lt;p&gt;This wizard will guide you through the process.&lt;p&gt;&lt;p&gt;If you have not received this information, please contact your %1 provider.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Для того, щоб під&apos;єднатися до сервера %1, необхідно надати адресу сервера, а також ваші облікові дані.&lt;/p&gt;&lt;p&gt;Цей майстер проведе вас через весь процес.&lt;p&gt;&lt;p&gt;Якщо ви не отримали цю інформацію, будь ласка, зв&apos;яжіться з вашим постачальником %1.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Lai savienotos ar savu %1 serveri, jums vajadzēs norādīt servera adresi un savus akreditācijas datus.&lt;/p&gt;&lt;p&gt;Šis vednis palīdzēs jums tikt galā ar šo procesu.&lt;p&gt;&lt;p&gt;Ja neesat saņēmis šo informāciju, lūdzu, sazinieties ar savu %1 piegādātāju.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="75"/>
         <source>&lt;p&gt;In order to connect to your %1 server, you need to provide your credentials.&lt;/p&gt;&lt;p&gt;This wizard will guide you through the setup process.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Для того, щоб під&apos;єднатися до сервера %1, ви повинні надати свої облікові дані.&lt;/p&gt;&lt;p&gt;This wizard will guide you through the setup process.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Lai savienotos ar savu %1 serveri, jums vajadzēs norādīt servera adresi un savus akreditācijas datus.&lt;/p&gt;&lt;p&gt;Šis vednis palīdzēs jums tikt galā ar šo procesu.&lt;p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1336,7 +1336,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="465"/>
         <source>Congratulations! Your &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;new %2&lt;/a&gt; is now up and running!</source>
-        <translation>Вітаємо! Ваш &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;новий %2&lt;/a&gt; встановлено і запущено!</translation>
+        <translation>Apsveicu! Jūsu &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;jaunais %2&lt;/a&gt; ir gatavs un darbojas!</translation>
     </message>
 </context>
 <context>
@@ -1344,7 +1344,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="241"/>
         <source>http://owncloud.mydomain.org</source>
-        <translation>http://owncloud.mydomain.org</translation>
+        <translation>http://owncloud.mansdomēns.lv</translation>
     </message>
 </context>
 <context>
@@ -1352,17 +1352,17 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/proxydialog.cpp" line="31"/>
         <source>Hostname of proxy server</source>
-        <translation>Ім&apos;я хоста проксі-сервера</translation>
+        <translation>Starpniekservera nosaukums</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.cpp" line="32"/>
         <source>Username for proxy server</source>
-        <translation>Ім&apos;я користувача проксі-сервера</translation>
+        <translation>Starpniekservera lietotājvārds</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.cpp" line="33"/>
         <source>Password for proxy server</source>
-        <translation>Пароль для проксі-сервера</translation>
+        <translation>Starpniekservera parole</translation>
     </message>
 </context>
 <context>
@@ -1370,67 +1370,67 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="29"/>
         <source>SSL Connection</source>
-        <translation>SSL з&apos;єднання</translation>
+        <translation>SSL savienojums</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="98"/>
         <source>Warnings about current SSL Connection:</source>
-        <translation>Попередження про існуюче SSL з&apos;єднання:</translation>
+        <translation>Brīdinājumi par pašreizējo SSL savienojumu:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="134"/>
         <source>with Certificate %1</source>
-        <translation>з Сертифікатом %1</translation>
+        <translation>ar sertifikātu %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="142"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="143"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="144"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation>&amp;lt;не вказано&amp;gt;</translation>
+        <translation>&amp;lt;nav norādīts&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="145"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="167"/>
         <source>Organization: %1</source>
-        <translation>Організація: %1</translation>
+        <translation>Organizācija: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="146"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="168"/>
         <source>Unit: %1</source>
-        <translation>Підрозділ: %1</translation>
+        <translation>Vienums: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="147"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="169"/>
         <source>Country: %1</source>
-        <translation>Країна: %1</translation>
+        <translation>Valsts: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="156"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>Відбиток (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation>Nospiedums (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="157"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>Відбиток (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation>Nospiedums (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="159"/>
         <source>Effective Date: %1</source>
-        <translation>Дата введення в дію: %1</translation>
+        <translation>Sākuma datums: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="160"/>
         <source>Expiry Date: %1</source>
-        <translation>Дата закінчення дії: %1</translation>
+        <translation>Termiņa datums: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="164"/>
         <source>Issuer: %1</source>
-        <translation>Емітент: %1</translation>
+        <translation>Sniedzējs: %1</translation>
     </message>
 </context>
 <context>
@@ -1438,37 +1438,37 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="278"/>
         <source>Pause</source>
-        <translation>Пауза</translation>
+        <translation>Pauze</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="280"/>
         <source>Resume</source>
-        <translation>Відновлення</translation>
+        <translation>Turpināt</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="479"/>
         <source>Checking %1 connection...</source>
-        <translation>Перевірка %1 підключення...</translation>
+        <translation>Pārbauda %1 savienojumu...</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="484"/>
         <source>No %1 connection configured.</source>
-        <translation>Жодного %1 підключення не налаштовано.</translation>
+        <translation>Nav konfigurēts %1 savienojums.</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="507"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; as &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Підключено до &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; як &lt;i&gt;%2&lt;/i&gt;.</translation>
+        <translation>Savienoties ar &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; kā &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="509"/>
         <source>Version: %1 (%2)</source>
-        <translation>Версія: %1 (%2)</translation>
+        <translation>Versija — %1 (%2)</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="525"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Не вдалося підключитись до %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Neizdevās savienoties ar %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Checking ownCloud connection...</source>
@@ -1489,7 +1489,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="522"/>
         <source>unknown problem.</source>
-        <translation>невідома проблема.</translation>
+        <translation>nezināma problēma.</translation>
     </message>
     <message>
         <source>&lt;p&gt;Failed to connect to ownCloud: &lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</source>
@@ -1528,12 +1528,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="114"/>
         <source>Client Version Check</source>
-        <translation>Перевірка версії Клієнта</translation>
+        <translation>Klienta versijas pārbaude</translation>
     </message>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="116"/>
         <source>&lt;p&gt;A new version of the %1 client is available.</source>
-        <translation>&lt;p&gt;Доступна нова версія %1 клієнту.</translation>
+        <translation>&lt;p&gt;Ir pieejama jauna %1 klienta versija.</translation>
     </message>
     <message>
         <source>&lt;p&gt;A new version of the ownCloud Client is available.</source>
@@ -1542,7 +1542,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="117"/>
         <source>%1 is available. The installed version is %3.&lt;p/&gt;&lt;p&gt;For more information see &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</source>
-        <translation>%1 доступна. Встановлена версія %3.&lt;p/&gt;&lt;p&gt;Для детальної інформації див &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</translation>
+        <translation>%1 ir pieejams. Instalētā versija ir %3. &lt;p/&gt;&lt;p&gt;Lai uzzinātu vairāk, skatiet &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1550,7 +1550,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="230"/>
         <source>The CSync thread terminated.</source>
-        <translation>Процес CSync припинено.</translation>
+        <translation>CSync pavediens ir pārtraukts.</translation>
     </message>
 </context>
 <context>
@@ -1566,12 +1566,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/credentialstore.cpp" line="121"/>
         <source>Password Required</source>
-        <translation>Необхідний пароль</translation>
+        <translation>Nepieciešama parole</translation>
     </message>
     <message>
         <location filename="../src/mirall/credentialstore.cpp" line="122"/>
         <source>Please enter your %1 password:</source>
-        <translation>Будь ласка, введіть свій %1 пароль:</translation>
+        <translation>Lūdzu, ievadiet savu %1 paroli:</translation>
     </message>
 </context>
 <context>
@@ -1579,17 +1579,17 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="14"/>
         <source>Form</source>
-        <translation>Форма</translation>
+        <translation>Forma</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="29"/>
         <source>ownCloud Credentials</source>
-        <translation>ownCloud повноваження</translation>
+        <translation>ownCloud akreditācijas dati</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="51"/>
         <source>Provide ownCloud Credentials</source>
-        <translation>Надайте ownCloud повноваження</translation>
+        <translation>Sniegt ownCloud akreditācijas datus</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="57"/>
@@ -1604,9 +1604,9 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Будь ласка, введіть ім&apos;я користувача та пароль для Вашого примірника ownCloud. &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Lūdzu, ievadiet savas ownCloud instances lietotājvārdu un paroli. &lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt; color:#585858;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Якщо Ви не бажаєте зберігати облікові дані на локальному комп&apos;ютері, поставте галку. ownCloud буде запитувати Ваш пароль щоразу при включенні клієнта.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Ja nevēlaties glabāt akreditācijas datus uz sava datora, atzīmējiet kastīt. ownCloud prasīs jūsu paroli katrā pieteikšanās reizē.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1621,17 +1621,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="84"/>
         <source>ownCloud-User:</source>
-        <translation>ownCloud-Користувач:</translation>
+        <translation>ownCloud-lietotājs:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="98"/>
         <source>Password:</source>
-        <translation>Пароль:</translation>
+        <translation>Parole:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="115"/>
         <source>Do not store password on local machine.</source>
-        <translation>Не зберігайте пароль на локальному комп&apos;ютері.</translation>
+        <translation>Uz lokālā datora neglabāt paroles.</translation>
     </message>
     <message>
         <source>john</source>
@@ -1647,17 +1647,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="14"/>
         <source>Form</source>
-        <translation>Форма</translation>
+        <translation>Forma</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="29"/>
         <source>FTP Access to your Webaccount:</source>
-        <translation>FTP досту до Вашого Web-облікового запису:</translation>
+        <translation>FTP pieeja jūsu tīmekļa kontam:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="51"/>
         <source>FTP Details and Credentials</source>
-        <translation>Подробиці і повноваження FTP</translation>
+        <translation>FTP informācija un akreditācijas dati</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="57"/>
@@ -1670,7 +1670,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Ці дані використовуються для встановлення owncloud на Вашому веб-просторі, що доступний по ftp. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Šeit pieejamā informācija tiks izmantota, lai instalētu owncloud datus uz jūsu tīmekļa servera, kas ir pieejams caur ftp. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="79"/>
@@ -1680,12 +1680,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="93"/>
         <source>FTP-User:</source>
-        <translation>FTP-Користувач:</translation>
+        <translation>FTP-lietotājs:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="107"/>
         <source>Password:</source>
-        <translation>Пароль:</translation>
+        <translation>Parole:</translation>
     </message>
     <message>
         <source>ftp.mydomain.org</source>
@@ -1701,12 +1701,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="14"/>
         <source>Form</source>
-        <translation>Форма</translation>
+        <translation>Forma</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="20"/>
         <source>Server &amp;address:</source>
-        <translation>&amp;Адреса сервера:</translation>
+        <translation>Servera &amp;adrese:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="140"/>
@@ -1716,54 +1716,54 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="147"/>
         <source>Enter the url of the ownCloud you want to connect to (without http or https).</source>
-        <translation>Введіть адресу ownCloud, до якого Ви бажаєте підключитись (без http чи https).</translation>
+        <translation>Ievadiet url adresi ownCloud, ar ko vēlaties savienoties (bez http vai https).</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="47"/>
         <source>Use &amp;secure connection</source>
-        <translation>Використання &amp;безпечного підключення</translation>
+        <translation>Lietot drošu &amp;savienojumu</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="60"/>
         <source>CheckBox</source>
-        <translation>Чекбокс</translation>
+        <translation>Kastīte</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="75"/>
         <source>&amp;Username:</source>
-        <translation>&amp;Ім&apos;я користувача:</translation>
+        <translation>&amp;Lietotājvārds</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="85"/>
         <source>Enter the ownCloud username.</source>
-        <translation>Введіть ім&apos;я користувача ownCloud.</translation>
+        <translation>Ievadiet ownCloud lietotājvārdu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="92"/>
         <source>&amp;Password:</source>
-        <translation>&amp;Пароль:</translation>
+        <translation>&amp;Parole:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="102"/>
         <source>Enter the ownCloud password.</source>
-        <translation>Введіть пароль для ownCloud.</translation>
+        <translation>Ievadiet ownCloud paroli.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="117"/>
         <source>Do not allow the local storage of the password.</source>
-        <translation>Не допускати локального зберігання паролів.</translation>
+        <translation>Neļaut paroli glabāt lokāli.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="120"/>
         <source>&amp;Do not store password on local machine.</source>
-        <translation>&amp;Не зберігати пароль на локальному комп&apos;ютері.</translation>
+        <translation>Paroles neglabāt uz lokālā &amp;datora.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="36"/>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="129"/>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="156"/>
         <source>TextLabel</source>
-        <translation>Мітка</translation>
+        <translation>TextLabel</translation>
     </message>
 </context>
 <context>
@@ -1771,12 +1771,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudwizardresultpage.ui" line="14"/>
         <source>Form</source>
-        <translation>Форма</translation>
+        <translation>Forma</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardresultpage.ui" line="43"/>
         <source>Result</source>
-        <translation>Результат</translation>
+        <translation>Rezultāts</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardresultpage.ui" line="65"/>
@@ -1789,13 +1789,13 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Ця сторінка показує статус підключення.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Šī lapa rāda savienojuma statusu.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardresultpage.ui" line="27"/>
         <location filename="../src/mirall/owncloudwizardresultpage.ui" line="85"/>
         <source>TextLabel</source>
-        <translation>Мітка</translation>
+        <translation>TextLabel</translation>
     </message>
 </context>
 <context>
@@ -1803,22 +1803,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="14"/>
         <source>Form</source>
-        <translation>Форма</translation>
+        <translation>Forma</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="29"/>
         <source>Create an ownCloud Connection</source>
-        <translation>Створити ownCloud з&apos;єднання</translation>
+        <translation>Izveidot ownCloud savienojumu</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="51"/>
         <source>Select the ownCloud you want to connect to</source>
-        <translation>Оберіть ownCloud, до якого Ви хочете приєднатись</translation>
+        <translation>Izvēlieties ownCloud, ar ko vēlaties savienoties</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="63"/>
         <source>connect my ownCloud</source>
-        <translation>з&apos;єднатись з моїм ownCloud</translation>
+        <translation>savienoties ar savu ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="89"/>
@@ -1832,13 +1832,13 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Визначте ownCloud, до якого Ви бажаєте підключитись.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Нижче введіть веб-адресу ownCloud серверу.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Specify the ownCloud you want to connect to.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Ievadiet zemāk sava ownCloud servera tīmekļa adresi.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="110"/>
         <source>ownCloud-Link:</source>
-        <translation>ownCloud-адреса:</translation>
+        <translation>ownCloud-saite:</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1857,12 +1857,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="120"/>
         <source>Note: To specify an SSL secured connection, start the url with https.</source>
-        <translation>Примітка: Для використання безпечного SSL підключення, на початку адреси введіть https.</translation>
+        <translation>Piezīme — lai norādītu, ka jāizmanto drošais SSL savienojums, url jāsāk ar https.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="133"/>
         <source>create a new ownCloud</source>
-        <translation>сторити новий ownCloud</translation>
+        <translation>izveidot jaunu ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="156"/>
@@ -1877,9 +1877,9 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Оберіть, створити ownCloud на локальному комп&apos;ютері чи на Вашому сервері. &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Izvēlieties to, ja vēlaties izveidot jaunu ownCloud uz lokālā datora vai uz sava servera. &lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#585858;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Цей майстер проведе вас через всі необхідні кроки.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Šis vednis jums palīdzēs iziet cauri vajadzīgajiem soļiem.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>http://owncloud.mydomain.org</source>
@@ -1900,32 +1900,32 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/theme.cpp" line="51"/>
         <location filename="../src/mirall/theme.cpp" line="69"/>
         <source>Status undefined</source>
-        <translation>Статус не визначено</translation>
+        <translation>Statuss nav definēts</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="54"/>
         <source>Waiting to start sync</source>
-        <translation>Очікування початку синхронізації</translation>
+        <translation>Gaida uz sinhronizēšanas sākumu</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="57"/>
         <source>Sync is running</source>
-        <translation>Проводиться синхронізація</translation>
+        <translation>Sinhronizēšana darbojas</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="60"/>
         <source>Sync Success</source>
-        <translation>Синхронізація успішно виконана</translation>
+        <translation>Sinhronizēšana ir veiksmīga</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>
         <source>Sync Error - Click info button for details.</source>
-        <translation>Помилка синхронізації - Натисніть інформаційну кнопку для з&apos;ясування подробиць.</translation>
+        <translation>Sinhronizēšanas kļūda — spiediet informācijas pogu, lai uzzinātu vairāk.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="66"/>
         <source>Setup Error</source>
-        <translation>Помилка налаштування</translation>
+        <translation>Iestatīšanas kļūda</translation>
     </message>
 </context>
 <context>
@@ -1933,18 +1933,18 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/fileitemdialog.ui" line="14"/>
         <source>Form</source>
-        <translation>Форма</translation>
+        <translation>Forma</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.ui" line="27"/>
         <source>Detailed Sync Protocol</source>
-        <translation>Докладний Протокол Синхронізації</translation>
+        <translation>Detalizēts sinhronizēšanas protokols</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.ui" line="63"/>
         <location filename="../src/mirall/fileitemdialog.ui" line="70"/>
         <source>TextLabel</source>
-        <translation>ТекстоваМітка</translation>
+        <translation>TextLabel</translation>
     </message>
 </context>
 <context>
@@ -1959,12 +1959,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="55"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4&lt;br&gt;using OCsync %5 and Qt %6.&lt;/small&gt;&lt;p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;Створено з версії Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; на %3, %4&lt;br&gt;використовуючи OCsync %5 та Qt %6.&lt;/small&gt;&lt;p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;Būvēts no Git revīzijas &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4&lt;br&gt;izmantojot OCsync %5 un Qt %6.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="63"/>
         <source>&lt;p&gt;&lt;b&gt;%1 Client Version %2&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Authors&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;mailto:freitag@owncloud.com&quot;&gt;Klaas Freitag&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;a href=&quot;mailto:danimo@owncloud.com&quot;&gt;Daniel Molkentin&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;br&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/p&gt;&lt;p&gt;For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;.&lt;/p&gt;%7</source>
-        <translation>&lt;p&gt;&lt;b&gt;%1 Клієнтська версія %2&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Автори&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;mailto:freitag@owncloud.com&quot;&gt;Klaas Freitag&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;a href=&quot;mailto:danimo@owncloud.com&quot;&gt;Daniel Molkentin&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;br&gt;Працює на Mirall розробки Duncan Mac-Vicar P.&lt;/p&gt;&lt;p&gt;Подробиці тут &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;.&lt;/p&gt;%7</translation>
+        <translation>&lt;p&gt;&lt;b&gt;%1 Klienta versija %2&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Autori&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;mailto:freitag@owncloud.com&quot;&gt;Klaas Freitag&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;a href=&quot;mailto:danimo@owncloud.com&quot;&gt;Daniel Molkentin&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;br&gt;Balstīts uz Mirall, ko sarakstījis Duncan Mac-Vicar P.&lt;/p&gt;&lt;p&gt;Lai uzzinātu vairāk, skatiet &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;.&lt;/p&gt;%7</translation>
     </message>
 </context>
 <context>
@@ -1972,52 +1972,52 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="14"/>
         <source>Proxy Settings</source>
-        <translation>Налаштування проксі</translation>
+        <translation>Starpnieka iestatījumi</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="26"/>
         <source>Configure Proxies</source>
-        <translation>Налаштування проксі</translation>
+        <translation>Konfigurēt starpniekums</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="43"/>
         <source>No Proxy</source>
-        <translation>Без проксі</translation>
+        <translation>Nav starpnieku</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="53"/>
         <source>Use system proxy</source>
-        <translation>Використовувати системні налаштування проксі</translation>
+        <translation>Lietot sistēmas starpnieku</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="60"/>
         <source>Manual proxy configuration</source>
-        <translation>Ручне налаштування проксі</translation>
+        <translation>Pašrocīgā starpnieka konfigurācija</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="90"/>
         <source>User</source>
-        <translation>Користувач</translation>
+        <translation>Lietotājs</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="116"/>
         <source>Password</source>
-        <translation>Пароль</translation>
+        <translation>Parole</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="142"/>
         <source>Port</source>
-        <translation>Порт</translation>
+        <translation>Ports</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="149"/>
         <source>Host</source>
-        <translation>Хост</translation>
+        <translation>Resursdators</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="172"/>
         <source>Proxy server requires password</source>
-        <translation>Поксі-севрер вимагає пароль</translation>
+        <translation>Starpniekserveris pieprasa paroli</translation>
     </message>
 </context>
 <context>
@@ -2025,17 +2025,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="14"/>
         <source>Form</source>
-        <translation>Форма</translation>
+        <translation>Forma</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
         <source>Trust this certificate anyway</source>
-        <translation>Все одно довіряти цьому сертифікату</translation>
+        <translation>Tomēr uzticēties šim sertifikātam</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>
         <source>SSL Connection</source>
-        <translation>SSL з&apos;єднання</translation>
+        <translation>SSL savienojums</translation>
     </message>
 </context>
 <context>
@@ -2058,52 +2058,52 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="14"/>
         <source>Form</source>
-        <translation>Форма</translation>
+        <translation>Forma</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="25"/>
         <source>Sync Directory Status</source>
-        <translation>Статус каталогу синхронізації</translation>
+        <translation>Sinhronizēšanas direktorijas statuss</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="41"/>
         <source>Add Sync...</source>
-        <translation>Додати синхронізацію...</translation>
+        <translation>Pievienot sinhronizāciju...</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="48"/>
         <source>Remove...</source>
-        <translation>Видалити...</translation>
+        <translation>Izņemt...</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="58"/>
         <source>Fetch...</source>
-        <translation>Отримати...</translation>
+        <translation>Saņemt...</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="65"/>
         <source>Push...</source>
-        <translation>Штовхнути...</translation>
+        <translation>Grūst..</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="72"/>
         <source>Pause</source>
-        <translation>Пауза</translation>
+        <translation>Pauze</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="79"/>
         <source>Info...</source>
-        <translation>Інформація...</translation>
+        <translation>Informācija...</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="103"/>
         <source>TextLabel</source>
-        <translation>Мітка</translation>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="132"/>
         <source>Close</source>
-        <translation>Закрити</translation>
+        <translation>Aizvērt</translation>
     </message>
 </context>
 </TS>
