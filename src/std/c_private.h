@@ -75,43 +75,43 @@ typedef struct stat csync_stat_t;
 #define _UNICODE
 
 #if defined _WIN32 && defined _UNICODE
-typedef  wchar_t    mbchar_t;
-#define _topen      _wopen
-#define _tdirent    _wdirent
-#define _TDIR       _WDIR
-#define _topendir   _wopendir
-#define _tclosedir  _wclosedir
-#define _treaddir   _wreaddir
-#define _trewinddir _wrewinddir
-#define _ttelldir   _wtelldir
-#define _tseekdir   _wseekdir
-#define _tcreat     _wcreat
-#define _tstat      _wstat
-#define _tunlink    _wunlink
-#define _tmkdir     _wmkdir
-#define _trmdir	    _rmdir
-#define _tchmod     _wchmod
-#define _trewinddir _wrewinddir
+typedef  wchar_t         mbchar_t;
+#define _topen           _wopen
+#define _tdirent         _wdirent
+#define _TDIR            _WDIR
+#define _topendir        _wopendir
+#define _tclosedir       _wclosedir
+#define _treaddir        _wreaddir
+#define _trewinddir      _wrewinddir
+#define _ttelldir        _wtelldir
+#define _tseekdir        _wseekdir
+#define _tcreat          _wcreat
+#define _tstat           _wstat
+#define _tunlink         _wunlink
+#define _tmkdir(X,Y)     _wmkdir(X)
+#define _trmdir	         _rmdir
+#define _tchmod          _wchmod
+#define _trewinddir      _wrewinddir
 #define _tchown(X, Y, Z) /* no chown on Win32 */
 #else
-typedef char        mbchar_t;
-#define _tdirent    dirent
-#define _topen      open
-#define _TDIR       DIR
-#define _topendir   opendir
-#define _tclosedir  closedir
-#define _treaddir   readdir
-#define _trewinddir rewinddir
-#define _ttelldir   telldir
-#define _tseekdir   seekdir
-#define _tcreat     creat
-#define _tstat      stat
-#define _tunlink    unlink
-#define _tmkdir     mkdir
-#define _trmdir	    rmdir
-#define _tchmod     chmod
-#define _trewinddir rewinddir
-#define _tchown(X, Y, Z) chown(X, Y, Z)
+typedef char           mbchar_t;
+#define _tdirent       dirent
+#define _topen         open
+#define _TDIR          DIR
+#define _topendir      opendir
+#define _tclosedir     closedir
+#define _treaddir      readdir
+#define _trewinddir    rewinddir
+#define _ttelldir      telldir
+#define _tseekdir      seekdir
+#define _tcreat        creat
+#define _tstat         stat
+#define _tunlink       unlink
+#define _tmkdir(X,Y)   mkdir(X,Y)
+#define _trmdir	       rmdir
+#define _tchmod        chmod
+#define _trewinddir    rewinddir
+#define _tchown(X,Y,Z) chown(X,Y,Z)
 #endif
 
 #ifdef WITH_ICONV
