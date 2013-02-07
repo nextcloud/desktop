@@ -46,6 +46,7 @@ int c_mkdirs(const char *path, mode_t mode) {
   if (_tstat(wpath, &sb) == 0) {
     if (! S_ISDIR(sb.st_mode)) {
       errno = ENOTDIR;
+      c_free_locale_string(wpath);
       return -1;
     }
   }
@@ -62,14 +63,18 @@ int c_mkdirs(const char *path, mode_t mode) {
     swpath = c_utf8_to_locale(subpath);
     if (_tstat(swpath, &sb) == 0) {
       if (! S_ISDIR(sb.st_mode)) {
+	c_free_locale_string(swpath);
+	c_free_locale_string(wpath);
         errno = ENOTDIR;
         return -1;
       }
     } else if (errno != ENOENT) {
+      c_free_locale_string(wpath);
       c_free_locale_string(swpath);
       return -1;
     } else if (c_mkdirs(subpath, mode) < 0) {
       c_free_locale_string(swpath);
+      c_free_locale_string(wpath);
       return -1;
     }
   }
@@ -109,6 +114,7 @@ int c_rmdirs(const char *path) {
           break; /* continue */
         default:
           _tclosedir(d);
+	  c_free_locale_string(wpath);
           return 0;
       }
 
@@ -125,6 +131,8 @@ int c_rmdirs(const char *path) {
         fname = c_malloc(len);
         if (fname == NULL) {
           _tclosedir(d);
+	  c_free_locale_string(rd_name);
+	  c_free_locale_string(wpath);
           return -1;
         }
         snprintf(fname, len, "%s/%s", path, rd_name);
@@ -142,6 +150,8 @@ int c_rmdirs(const char *path) {
                 _tclosedir(d);
                 SAFE_FREE(fname);
 		c_free_locale_string(wfname);
+		c_free_locale_string(rd_name);
+		c_free_locale_string(wpath);
                 return -1;
               }
               c_rmdirs(fname);
@@ -158,9 +168,11 @@ int c_rmdirs(const char *path) {
       _trewinddir(d);
     }
   } else {
+    c_free_locale_string(wpath);
     return -1;
   }
 
+  c_free_locale_string(wpath);
   _tclosedir(d);
   return 0;
 }
@@ -168,12 +180,12 @@ int c_rmdirs(const char *path) {
 int c_isdir(const char *path) {
   csync_stat_t sb;
   mbchar_t *wpath = c_utf8_to_locale(path);
+  int re = 0;
 
   if (_tstat (wpath, &sb) == 0 && S_ISDIR(sb.st_mode)) {
-    c_free_locale_string(wpath);
-    return 1;
+   re = 1;
   }
   c_free_locale_string(wpath);
-  return 0;
+  return re;
 }
 
