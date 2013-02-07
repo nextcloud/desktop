@@ -44,10 +44,10 @@ static void check_iconv_to_native_normalization(void **state)
     const char *exp_out = "\x48\xc3\xa4"; // UTF8
 #endif
 
-    out = c_multibyte(in);
+    out = c_utf8_to_locale(in);
     assert_string_equal(out, exp_out);
 
-    c_free_multibyte(out);
+    c_free_locale_string(out);
     assert_null(out);
 
     (void) state; /* unused */
@@ -67,10 +67,10 @@ static void check_iconv_from_native_normalization(void **state)
 #endif
     const char *exp_out = "\x48\xc3\xa4"; // UTF-8
 
-    out = c_utf8(in);
+    out = c_utf8_from_locale(in);
     assert_string_equal(out, exp_out);
 
-    c_free_utf8(out);
+    c_free_locale_string(out);
     assert_null(out);
 
     (void) state; /* unused */
@@ -90,10 +90,10 @@ static void check_iconv_ascii(void **state)
     char *out = NULL;
     const char *exp_out = "abc/ABC\\123";
 
-    out = c_utf8(in);
+    out = c_utf8_from_locale(in);
     assert_string_equal(out, exp_out);
 
-    c_free_utf8(out);
+    c_free_locale_string(out);
     assert_null(out);
 
     (void) state; /* unused */
@@ -108,8 +108,8 @@ static void check_to_multibyte(void **state)
 {
     int rc = -1;
 
-    const mbchar_t *mb_string = c_multibyte( TESTSTRING );
-    const mbchar_t *mb_null   = c_multibyte( NULL );
+    const mbchar_t *mb_string = c_utf8_to_locale( TESTSTRING );
+    const mbchar_t *mb_null   = c_utf8_to_locale( NULL );
 
     (void) state;
 

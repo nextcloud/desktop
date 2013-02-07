@@ -75,13 +75,13 @@ static void check_csync_statedb_check(void **state)
 static void check_csync_statedb_load(void **state)
 {
     CSYNC *csync = *state;
-    struct stat sb;
+    csync_stat_t sb;
     int rc;
 
     rc = csync_statedb_load(csync, TESTDB);
     assert_int_equal(rc, 0);
 
-    rc = lstat(TESTDBTMP, &sb);
+    rc = _tstat(TESTDBTMP, &sb);
     assert_int_equal(rc, 0);
 
     sqlite3_close(csync->statedb.db);
@@ -90,27 +90,27 @@ static void check_csync_statedb_load(void **state)
 static void check_csync_statedb_close(void **state)
 {
     CSYNC *csync = *state;
-    struct stat sb;
+    csync_stat_t sb;
     time_t modtime;
     int rc;
 
     /* statedb not written */
     csync_statedb_load(csync, TESTDB);
 
-    rc = lstat(TESTDB, &sb);
+    rc = _tstat(TESTDB, &sb);
     assert_int_equal(rc, 0);
     modtime = sb.st_mtime;
 
     rc = csync_statedb_close(csync, TESTDB, 0);
     assert_int_equal(rc, 0);
 
-    rc = lstat(TESTDB, &sb);
+    rc = _tstat(TESTDB, &sb);
     assert_int_equal(rc, 0);
     assert_int_equal(modtime, sb.st_mtime);
 
     csync_statedb_load(csync, TESTDB);
 
-    rc = lstat(TESTDB, &sb);
+    rc = _tstat(TESTDB, &sb);
     assert_int_equal(rc, 0);
     modtime = sb.st_mtime;
 
@@ -121,7 +121,7 @@ static void check_csync_statedb_close(void **state)
     rc = csync_statedb_close(csync, TESTDB, 1);
     assert_int_equal(rc, 0);
 
-    rc = lstat(TESTDB, &sb);
+    rc = _tstat(TESTDB, &sb);
     assert_int_equal(rc, 0);
     assert_true(modtime < sb.st_mtime);
 }

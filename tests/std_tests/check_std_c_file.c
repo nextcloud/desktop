@@ -14,8 +14,8 @@ const char *check_src_file = "/tmp/check/foo.txt";
 const char *check_dst_file = "/tmp/check/bar.txt";
 
 static int test_file(const char *path, mode_t mode) {
-  struct stat sb;
-  if (lstat(path, &sb) < 0) {
+  csync_stat_t sb;
+  if (_tstat(path, &sb) < 0) {
     return -1;
   }
 

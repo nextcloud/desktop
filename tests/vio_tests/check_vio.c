@@ -32,12 +32,12 @@ static void setup(void **state)
 
 static void setup_dir(void **state) {
     int rc;
-    const mbchar_t *dir = c_multibyte(CSYNC_TEST_DIR);
+    mbchar_t *dir = c_utf8_to_locale(CSYNC_TEST_DIR);
 
     setup(state);
 
     rc = _tmkdir(dir, 0755);
-    c_free_multibyte(dir);
+    c_free_locale_string(dir);
     assert_int_equal(rc, 0);
 }
 
@@ -105,7 +105,7 @@ static void check_csync_vio_mkdir(void **state)
     CSYNC *csync = *state;
     csync_stat_t sb;
     int rc;
-    const mbchar_t *dir = c_multibyte(CSYNC_TEST_DIR);
+    mbchar_t *dir = c_utf8_to_locale(CSYNC_TEST_DIR);
 
     rc = csync_vio_mkdir(csync, CSYNC_TEST_DIR, 0755);
     assert_int_equal(rc, 0);
@@ -114,7 +114,7 @@ static void check_csync_vio_mkdir(void **state)
     assert_int_equal(rc, 0);
 
     _trmdir(dir);
-    c_free_multibyte(dir);
+    c_free_locale_string(dir);
 }
 
 static void check_csync_vio_mkdirs(void **state)
@@ -122,7 +122,7 @@ static void check_csync_vio_mkdirs(void **state)
     CSYNC *csync = *state;
     csync_stat_t sb;
     int rc;
-    const mbchar_t *dir = c_multibyte(CSYNC_TEST_DIR);
+    mbchar_t *dir = c_utf8_to_locale(CSYNC_TEST_DIR);
 
     rc = csync_vio_mkdirs(csync, CSYNC_TEST_DIRS, 0755);
     assert_int_equal(rc, 0);
@@ -131,15 +131,15 @@ static void check_csync_vio_mkdirs(void **state)
     assert_int_equal(rc, 0);
 
     _trmdir(dir);
-    c_free_multibyte(dir);
+    c_free_locale_string(dir);
 }
 
 static void check_csync_vio_mkdirs_some_exist(void **state)
 {
     CSYNC *csync = *state;
     csync_stat_t sb;
-    const mbchar_t *this_dir = c_multibyte("/tmp/csync/this");
-    const mbchar_t *stat_dir = c_multibyte(CSYNC_TEST_DIRS);
+    mbchar_t *this_dir = c_utf8_to_locale("/tmp/csync/this");
+    mbchar_t *stat_dir = c_utf8_to_locale(CSYNC_TEST_DIRS);
     int rc;
 
     rc = _tmkdir(this_dir, 0755);
@@ -151,8 +151,8 @@ static void check_csync_vio_mkdirs_some_exist(void **state)
     assert_int_equal(rc, 0);
 
     _trmdir(stat_dir);
-    c_free_multibyte(this_dir);
-    c_free_multibyte(stat_dir);
+    c_free_locale_string(this_dir);
+    c_free_locale_string(stat_dir);
 }
 
 static void check_csync_vio_rmdir(void **state)
@@ -192,13 +192,13 @@ static void check_csync_vio_opendir_perm(void **state)
     CSYNC *csync = *state;
     csync_vio_method_handle_t *dh;
     int rc;
-    const mbchar_t *dir = c_multibyte(CSYNC_TEST_DIR);
+    mbchar_t *dir = c_utf8_to_locale(CSYNC_TEST_DIR);
 
     assert_non_null(dir);
 
     rc = _tmkdir(dir, 0200);
     assert_int_equal(rc, 0);
-    c_free_multibyte(dir);
+    c_free_locale_string(dir);
 
     dh = csync_vio_opendir(csync, CSYNC_TEST_DIR);
     assert_null(dh);
@@ -426,8 +426,8 @@ static void check_csync_vio_rename_dir(void **state)
     csync_stat_t sb;
     int rc;
 
-    const mbchar_t *dir = c_multibyte("test");
-    const mbchar_t *dir2 = c_multibyte("test2");
+    const mbchar_t *dir = c_utf8_to_locale("test");
+    const mbchar_t *dir2 = c_utf8_to_locale("test2");
 
     assert_non_null(dir);
     assert_non_null(dir2);
@@ -446,7 +446,7 @@ static void check_csync_vio_rename_dir(void **state)
 static void check_csync_vio_rename_file(void **state)
 {
     CSYNC *csync = *state;
-    const mbchar_t *file = c_multibyte(CSYNC_TEST_DIR "file2.txt");
+    const mbchar_t *file = c_utf8_to_locale(CSYNC_TEST_DIR "file2.txt");
     csync_stat_t sb;
     int rc;
 
@@ -461,7 +461,7 @@ static void check_csync_vio_unlink(void **state)
 {
     CSYNC *csync = *state;
     csync_stat_t sb;
-    const mbchar_t *file = c_multibyte(CSYNC_TEST_FILE);
+    const mbchar_t *file = c_utf8_to_locale(CSYNC_TEST_FILE);
     int rc;
 
     rc = csync_vio_unlink(csync, CSYNC_TEST_FILE);
@@ -497,7 +497,7 @@ static void check_csync_vio_utimes(void **state)
     csync_stat_t sb;
     struct timeval times[2];
     long modtime = 0;
-    const mbchar_t *file = c_multibyte(CSYNC_TEST_FILE);
+    const mbchar_t *file = c_utf8_to_locale(CSYNC_TEST_FILE);
     int rc;
 
     rc = _tstat(file, &sb);

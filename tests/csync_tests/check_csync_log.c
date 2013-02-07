@@ -6,6 +6,7 @@
 
 #include "csync.h"
 #include "csync_log.c"
+#include "c_private.h"
 
 static void setup(void **state) {
     CSYNC *csync;
@@ -103,7 +104,11 @@ static void check_logging(void **state)
 {
     CSYNC *csync = *state;
     int rc;
-    struct stat sb;
+    csync_stat_t sb;
+    mbchar_t *path;
+    path = c_utf8_to_locale("/tmp/check_csync1/cb_called");
+
+    assert_non_null(path);
 
     rc = csync_set_log_level(1);
     assert_int_equal(rc, 0);
@@ -113,7 +118,10 @@ static void check_logging(void **state)
 
     csync_log(csync, 1, __FUNCTION__, "rc = %d", rc);
 
-    rc = lstat("/tmp/check_csync1/cb_called", &sb);
+    rc = _tstat(path, &sb);
+
+    c_free_locale_string(path);
+
     assert_int_equal(rc, 0);
 }
 

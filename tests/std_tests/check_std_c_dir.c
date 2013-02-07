@@ -33,7 +33,7 @@ static void teardown(void **state) {
 }
 
 static int test_dir(const char *path, mode_t mode) {
-  struct stat sb;
+  csync_stat_t sb;
   if (lstat(path, &sb) < 0) {
     return -1;
   }
@@ -52,7 +52,7 @@ static int test_dir(const char *path, mode_t mode) {
 
 static void check_c_mkdirs_rmdirs(void **state)
 {
-    struct stat sb;
+    csync_stat_t sb;
     int rc;
 
     (void) state; /* unused */
@@ -63,13 +63,13 @@ static void check_c_mkdirs_rmdirs(void **state)
     assert_int_equal(rc, 0);
     rc = c_rmdirs(check_dir);
     assert_int_equal(rc, 0);
-    rc = lstat(check_dir, &sb);
+    rc = _tstat(check_dir, &sb);
     assert_int_equal(rc, -1);
 }
 
 static void check_c_mkdirs_mode(void **state)
 {
-    struct stat sb;
+    csync_stat_t sb;
     int rc;
 
     (void) state; /* unused */
@@ -80,7 +80,7 @@ static void check_c_mkdirs_mode(void **state)
     assert_int_equal(rc, 0);
     rc = c_rmdirs(check_dir);
     assert_int_equal(rc, 0);
-    rc = lstat(check_dir, &sb);
+    rc = _tstat(check_dir, &sb);
     assert_int_equal(rc, -1);
 }
 
