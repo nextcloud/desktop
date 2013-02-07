@@ -267,6 +267,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     /* Check if file is excluded */
     if (csync_excluded(ctx, path)) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s excluded", path);
+      SAFE_FREE(filename);
       csync_vio_file_stat_destroy(dirent);
       dirent = NULL;
       continue;
