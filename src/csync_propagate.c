@@ -699,6 +699,7 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
   const char *tmd5 = NULL;
   c_rbnode_t *node = NULL;
   char *tdir = NULL;
+  csync_file_stat_t *other = NULL;
 
   switch (ctx->current) {
     case REMOTE_REPLICA:
@@ -725,6 +726,17 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Renaming %s => %s", suri, duri);
 
   if (! c_streq(suri, duri) && rc > -1) {
+
+    /* Find the destination entry in the local tree and insert the uniq id */
+    int len = strlen(st->destpath);
+    uint64_t h = c_jhash64((uint8_t *) st->destpath, len, 0);
+
+    /* search in the local tree for the local file to get the mtime */
+    node =  c_rbtree_find(ctx->local.tree, &h);
+    if(node)
+        other = (csync_file_stat_t *) node->data;
+
+
     while ((rc = csync_vio_rename(ctx, suri, duri)) != 0) {
         switch (errno) {
         case ENOENT:
@@ -777,23 +789,9 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
     tmd5 = _get_md5(ctx, st->destpath);
 
   if( rc > -1 ) {
-      /* Find the destination entry in the local tree and insert the uniq id */
-      int len = strlen(st->destpath);
-      uint64_t h = c_jhash64((uint8_t *) st->destpath, len, 0);
-      h = c_jhash64((uint8_t *) st->destpath, len, 0);
-
-      /* search in the local tree for the local file to get the mtime */
-      node =  c_rbtree_find(ctx->local.tree, &h);
-      if(node == NULL) {
-          /* no local file found. */
-
-      } else {
-          csync_file_stat_t *other = NULL;
-          /* set the mtime which is needed in statedb_get_uniqid */
-          other = (csync_file_stat_t *) node->data;
-          if( other ) {
-              other->md5 = tmd5;
-          }
+      /* set the mtime which is needed in statedb_get_uniqid */
+      if( other ) {
+         other->md5 = tmd5;
       }
       /* set instruction for the statedb merger */
       st->instruction = CSYNC_INSTRUCTION_DELETED;
@@ -812,6 +810,8 @@ out:
   /* set instruction for the statedb merger */
   if (rc != 0) {
     st->instruction = CSYNC_INSTRUCTION_ERROR;
+    if (other)
+        other->instruction = CSYNC_INSTRUCTION_ERROR;
   }
 
   return rc;
