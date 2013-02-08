@@ -36,11 +36,13 @@ Config File
 .. index:: config file
 
 ownCloud Client reads a configuration file which on Linux can be found at ``$HOME/.local/share/data/ownCloud/owncloud.cfg``
-On Windows, it can be found in ``\Users\<name>\AppData\Local\ownCloud\owncloud.cfg``
+On Windows, it can be found in ``%LOCALAPPDATA%\ownCloud\owncloud.cfg``
 .. todo:: Mac?
 It contains settings in the ini file format known from Windows. 
 
 .. note:: Changes here should be done carefully as wrong settings can cause disfunctionality.
+
+.. note:: Changes may be overwritten by using ownCloud's configuration dialog.
 
 
 These are config settings that may be changed:
