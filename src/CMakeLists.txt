@@ -126,6 +126,16 @@ endif()
 add_library(mirallsync   SHARED ${libsync_SRCS} ${syncMoc})
 add_library(owncloudsync SHARED ${libsync_SRCS} ${syncMoc})
 set_target_properties( owncloudsync PROPERTIES COMPILE_DEFINITIONS OWNCLOUD_CLIENT)
+set_target_properties( owncloudsync  PROPERTIES
+	VERSION ${VERSION}
+	SOVERSION ${SOVERSION}
+)
+
+set_target_properties( mirallsync  PROPERTIES
+	VERSION ${VERSION}
+	SOVERSION ${SOVERSION}
+)
+
 
 target_link_libraries(mirallsync ${libsync_LINK_TARGETS} )
 target_link_libraries(owncloudsync ${libsync_LINK_TARGETS} )
