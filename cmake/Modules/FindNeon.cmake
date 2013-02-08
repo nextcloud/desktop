@@ -49,7 +49,11 @@ mark_as_advanced(NEON_INCLUDE_DIRS NEON_LIBRARIES)
 # be defined in the owncloud module.
 # If neon was not compiled with LFS its also ok since the underlying system
 # than probably supports large files anyway.
-FIND_PROGRAM( NEON_CONFIG_EXECUTABLE NAMES neon-config HINTS ${CMAKE_FIND_ROOT_PATH}/bin )
+IF( CMAKE_FIND_ROOT_PATH )
+	FIND_PROGRAM( NEON_CONFIG_EXECUTABLE NAMES neon-config HINTS ${CMAKE_FIND_ROOT_PATH}/bin )
+ELSE( CMAKE_FIND_ROOT_PATH )
+	FIND_PROGRAM( NEON_CONFIG_EXECUTABLE NAMES neon-config )
+ENDIF( CMAKE_FIND_ROOT_PATH )
 
 IF ( NEON_CONFIG_EXECUTABLE )
 	MESSAGE(STATUS "neon-config executable: ${NEON_CONFIG_EXECUTABLE}")
