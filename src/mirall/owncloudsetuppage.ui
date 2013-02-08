@@ -117,7 +117,7 @@
           <string>Do not allow the local storage of the password.</string>
          </property>
          <property name="text">
-          <string>&amp;Do not store password on local machine.</string>
+          <string>&amp;Do not store password on local machine</string>
          </property>
         </widget>
        </item>
