@@ -1850,16 +1850,12 @@ static int owncloud_mkdir(const char *uri, mode_t mode) {
         }
         DEBUG_WEBDAV("MKdir on %s", path );
 
-        req = ne_request_create(dav_session.ctx, "MKCOL", path);
-        rc = ne_simple_request(dav_session.ctx, req);
-
+        rc = ne_mkcol(dav_session.ctx, path );
+        set_errno_from_neon_errcode(rc);
         /* Special for mkcol: it returns 405 if the directory already exists.
          * To keep csync vio_mkdirs working errno EEXIST has to be returned. */
-        if( ne_get_status(req)->code == 405 ) {
+        if (errno == EPERM && http_result_code_from_session() == 405)
             errno = EEXIST;
-        } else {
-            set_errno_from_neon_errcode(rc);
-        }
     }
     SAFE_FREE( path );
 
