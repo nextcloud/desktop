@@ -130,12 +130,6 @@ set_target_properties( owncloudsync  PROPERTIES
 	SOVERSION ${SOVERSION}
 )
 
-set_target_properties( mirallsync  PROPERTIES
-	VERSION ${VERSION}
-	SOVERSION ${SOVERSION}
-)
-
-
 target_link_libraries(owncloudsync ${libsync_LINK_TARGETS} )
 
 if ( APPLE )
