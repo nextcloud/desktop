@@ -1656,20 +1656,34 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
                                 (long long)(error_string), dav_session.userdata);
         }
     } else if( c_streq( write_ctx->method, "GET") ) {
-        ne_request *request = ne_request_create(dav_session.ctx, "GET", clean_uri);
-        write_ctx->req = request;
+      /* GET a file to the file descriptor */
+      /* actually do the request */
+      int retry = 0;
+      DEBUG_WEBDAV("  -- GET on %s", write_ctx->url);
+      write_ctx->fd = fd;
+      if (_progresscb) {
+        ne_set_notifier(dav_session.ctx, ne_notify_status_cb, write_ctx);
+        _progresscb(write_ctx->url, CSYNC_NOTIFY_START_DOWNLOAD, 0 , 0, dav_session.userdata);
+      }
 
-        /* GET a file to the file descriptor */
-        /* actually do the request */
-        DEBUG_WEBDAV("  -- GET on %s", write_ctx->url);
-        write_ctx->fd = fd;
-        if (_progresscb) {
-            ne_set_notifier(dav_session.ctx, ne_notify_status_cb, write_ctx);
-            _progresscb(write_ctx->url, CSYNC_NOTIFY_START_DOWNLOAD, 0 , 0, dav_session.userdata);
-        }
+      do {
+        csync_stat_t sb;
+
+        if (write_ctx->req)
+          ne_request_destroy( write_ctx->req );
+
+        write_ctx->req = ne_request_create(dav_session.ctx, "GET", clean_uri);;
 
         /* Allow compressed content by setting the header */
         ne_add_request_header( write_ctx->req, "Accept-Encoding", "gzip" );
+
+        if (fstat(fd, &sb) >= 0 && sb.st_size > 0) {
+            char brange[64];
+            ne_snprintf(brange, sizeof brange, "bytes=%lld-", (long long) sb.st_size);
+            ne_add_request_header(write_ctx->req, "Range", brange);
+            ne_add_request_header(write_ctx->req, "Accept-Ranges", "bytes");
+            DEBUG_WEBDAV("Retry with range %s", brange);
+        }
 
         /* hook called before the content is parsed to set the correct reader,
          * either the compressed- or uncompressed reader.
@@ -1682,6 +1696,9 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
          */
 
         if( neon_stat != NE_OK ) {
+            if (neon_stat == NE_TIMEOUT && (++retry) < 3)
+                continue;
+
             set_errno_from_neon_errcode(neon_stat);
             DEBUG_WEBDAV("Error GET: Neon: %d, errno %d", neon_stat, errno);
             rc = -1;
@@ -1714,12 +1731,14 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
         if( write_ctx->decompress ) {
             ne_decompress_destroy( write_ctx->decompress );
         }
-        if (_progresscb) {
-            ne_set_notifier(dav_session.ctx, 0, 0);
-            _progresscb(write_ctx->url, (rc != NE_OK) ? CSYNC_NOTIFY_ERROR :
-                        CSYNC_NOTIFY_FINISHED_DOWNLOAD, error_code ,
-                        (long long)(error_string), dav_session.userdata);
-        }
+        break;
+      } while (1);
+      if (_progresscb) {
+          ne_set_notifier(dav_session.ctx, 0, 0);
+          _progresscb(write_ctx->url, (rc != NE_OK) ? CSYNC_NOTIFY_ERROR :
+                      CSYNC_NOTIFY_FINISHED_DOWNLOAD, error_code ,
+                      (long long)(error_string), dav_session.userdata);
+      }
     } else  {
         DEBUG_WEBDAV("Unknown method!");
         rc = -1;
