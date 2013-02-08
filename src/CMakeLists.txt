@@ -125,6 +125,10 @@ endif()
 
 add_library(owncloudsync SHARED ${libsync_SRCS} ${syncMoc})
 set_target_properties( owncloudsync PROPERTIES COMPILE_DEFINITIONS OWNCLOUD_CLIENT)
+set_target_properties( owncloudsync  PROPERTIES
+	VERSION ${VERSION}
+	SOVERSION ${SOVERSION}
+)
 
 target_link_libraries(owncloudsync ${libsync_LINK_TARGETS} )
 
