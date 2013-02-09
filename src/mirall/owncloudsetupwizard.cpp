@@ -464,7 +464,7 @@ void OwncloudSetupWizard::finalizeSetup( bool success )
         }
         _ocWizard->appendToResultWidget( QLatin1String(" "));
         _ocWizard->appendToResultWidget( QLatin1String("<p><font color=\"green\"><b>")
-                                         + tr("Succesfully connected to %1!")
+                                         + tr("Successfully connected to %1!")
                                          .arg(Theme::instance()->appName())
                                          + QLatin1String("</b></font></p>"));
         _ocWizard->appendToResultWidget( tr("Press Finish to permanently accept this connection."));

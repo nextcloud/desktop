@@ -282,7 +282,7 @@ install(TARGETS ${APPLICATION_EXECUTABLE}
         BUNDLE  DESTINATION "."
 )
 
-#FIXME: find a nice solution to make the second if(BUILD_OWNCLOUD_OSX_BUNDLE) unneccessary
+#FIXME: find a nice solution to make the second if(BUILD_OWNCLOUD_OSX_BUNDLE) unnecessary
 # currently it needs to be done because the code right above needs to be executed no matter
 # if building a bundle or not and the install_qt4_executable needs to be called afterwards
 if(BUILD_OWNCLOUD_OSX_BUNDLE)
