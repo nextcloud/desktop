@@ -40,7 +40,11 @@ Config File
 
 ownCloud Client reads a configuration file which on Linux can be found at ``$HOME/.local/share/data/ownCloud/owncloud.cfg``
 On Windows, it can be found in ``%LOCALAPPDATA%\ownCloud\owncloud.cfg``
-.. todo:: Mac?
+.. note:: The new version is less precise in this regard.
+
+On Mac, it can be found in ``$HOME/Library/Application Support/ownCloud`` or ``/Users/<user>/Library/Application Support/ownCloud``
+
+
 It contains settings in the ini file format known from Windows. 
 
 .. note:: Changes here should be done carefully as wrong settings can cause disfunctionality.
