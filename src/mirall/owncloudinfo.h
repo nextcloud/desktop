@@ -105,6 +105,7 @@ public:
 signals:
     // result signal with url- and version string.
     void ownCloudInfoFound( const QString&, const QString&, const QString&, const QString& );
+    void customPollIntervalFound( uint );
     void noOwncloudFound( QNetworkReply* );
     void ownCloudDirExists( const QString&, QNetworkReply* );
 

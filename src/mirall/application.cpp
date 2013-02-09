@@ -216,7 +216,8 @@ void Application::slotStartFolderSetup( int result )
         if( ownCloudInfo::instance()->isConfigured() ) {
             connect( ownCloudInfo::instance(),SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
                      SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
-
+            connect( ownCloudInfo::instance(), SIGNAL(customPollIntervalFound(uint)),
+                     SLOT(slotCustomPollInterval(uint)));
             connect( ownCloudInfo::instance(),SIGNAL(noOwncloudFound(QNetworkReply*)),
                      SLOT(slotNoOwnCloudFound(QNetworkReply*)));
 
@@ -241,6 +242,9 @@ void Application::slotOwnCloudFound( const QString& url, const QString& versionS
 
     disconnect( ownCloudInfo::instance(),SIGNAL(noOwncloudFound(QNetworkReply*)),
                 this, SLOT(slotNoOwnCloudFound(QNetworkReply*)));
+
+    disconnect( ownCloudInfo::instance(), SIGNAL(customPollIntervalFound(uint)),
+                this, SLOT(slotCustomPollInterval(unit)));
 
     if( version.startsWith("4.0") ) {
         QMessageBox::warning(0, tr("%1 Server Mismatch").arg(_theme->appName()),
@@ -276,6 +280,9 @@ void Application::slotNoOwnCloudFound( QNetworkReply* reply )
 
     disconnect( ownCloudInfo::instance(),SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
                 this,SLOT(slotAuthCheck(QString,QNetworkReply*)));
+
+    disconnect( ownCloudInfo::instance(), SIGNAL(customPollIntervalFound(uint)),
+                this, SLOT(slotCustomPollInterval(unit)));
 
     setupContextMenu();
 }
@@ -434,6 +441,11 @@ void Application::slotownCloudWizardDone( int res )
 
     }
     slotStartFolderSetup( res );
+}
+
+void Application::slotCustomPollInterval(uint interval)
+{
+    _folderMan->slotSetCustomPollInterval(interval);
 }
 
 void Application::setupActions()

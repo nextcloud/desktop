@@ -34,7 +34,8 @@
 namespace Mirall {
 
 FolderMan::FolderMan(QObject *parent) :
-    QObject(parent)
+    QObject(parent),
+    _customPollInterval(0)
 {
     // if QDir::mkpath would not be so stupid, I would not need to have this
     // duplication of folderConfigPath() here
@@ -264,7 +265,8 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
         folder->setBackend( backend );
         // folder->setOnlyOnlineEnabled(settings.value("folder/onlyOnline", false).toBool());
         folder->setOnlyThisLANEnabled(settings.value(QLatin1String("folder/onlyThisLAN"), false).toBool());
-
+        if( _customPollInterval > 0 )
+            folder->setPollInterval(_customPollInterval);
         _folderMap[alias] = folder;
 
         qDebug() << "Adding folder to Folder Map " << folder;
@@ -308,6 +310,19 @@ void FolderMan::slotEnableFolder( const QString& alias, bool enable )
     Folder *f = _folderMap[alias];
     if( f ) {
         f->setSyncEnabled(enable);
+    }
+}
+
+void FolderMan::slotSetCustomPollInterval( uint microseconds )
+{
+    if( microseconds > 5000 ) {
+        foreach( Folder *f, _folderMap ) {
+            f->setPollInterval( microseconds );
+        }
+        qDebug() << "setCustomPollInterval: Set value to " << microseconds;
+        _customPollInterval = microseconds;
+    } else {
+        qDebug() << "setCustomPollInterval: " << microseconds << " is a too small value.";
     }
 }
 

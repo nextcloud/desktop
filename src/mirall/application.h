@@ -97,6 +97,7 @@ protected slots:
     void slotFetchCredentials();
     void slotCredentialsFetched( bool );
     void slotStartUpdateDetector();
+    void slotCustomPollInterval(uint );
 
 private:
     void setHelp();
