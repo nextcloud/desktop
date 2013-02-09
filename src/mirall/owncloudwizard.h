@@ -41,6 +41,7 @@ public:
   virtual void initializePage();
   virtual int nextId() const;
   void setOCUrl( const QString& );
+  void setOCUser( const QString& );
 
 protected slots:
   void slotPwdStoreChanged( int );
@@ -74,9 +75,12 @@ public:
     OwncloudWizard(QWidget *parent = 0L);
 
     void setOCUrl( const QString& );
+    void setOCUser( const QString& );
 
     void setupCustomMedia( QVariant, QLabel* );
     QString ocUrl() const;
+
+    void enableFinishOnResultWidget(bool enable);
 
 public slots:
     void appendToResultWidget( const QString& msg, LogType type = LogParagraph );
@@ -92,6 +96,7 @@ signals:
 private:
     QString _configFile;
     QString _oCUrl;
+    QString _oCUser;
 };
 
 
@@ -198,6 +203,8 @@ public:
   virtual bool isComplete() const;
   virtual void initializePage();
 
+  void setComplete(bool complete);
+
 public slots:
   void appendResultText( const QString&, OwncloudWizard::LogType type = OwncloudWizard::LogParagraph );
   void showOCUrlLabel( const QString&, bool );
@@ -206,6 +213,7 @@ protected:
   void setupCustomization();
 
 private:
+  bool _complete;
   Ui_OwncloudWizardResultPage _ui;
 
 };

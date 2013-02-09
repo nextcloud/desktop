@@ -324,6 +324,8 @@ void Application::slotCredentialsFetched(bool ok)
         _actionAddFolder->setEnabled( false );
         _actionOpenStatus->setEnabled( false );
     } else {
+        ownCloudInfo::instance()->setCredentials( CredentialStore::instance()->user(),
+                                                  CredentialStore::instance()->password() );
         // Credential fetched ok.
         QTimer::singleShot( 0, this, SLOT( slotCheckAuthentication() ));
     }

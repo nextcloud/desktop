@@ -110,6 +110,13 @@ OwncloudSetupPage::~OwncloudSetupPage()
 {
 }
 
+void OwncloudSetupPage::setOCUser( const QString & user )
+{
+    if( _ui.leUsername->text().isEmpty() ) {
+        _ui.leUsername->setText(user);
+    }
+}
+
 void OwncloudSetupPage::setOCUrl( const QString& newUrl )
 {
     QString url( newUrl );
@@ -423,12 +430,19 @@ OwncloudWizardResultPage::~OwncloudWizardResultPage()
 
 void OwncloudWizardResultPage::initializePage()
 {
+    _complete = false;
     // _ui.lineEditOCAlias->setText( "Owncloud" );
+}
+
+void OwncloudWizardResultPage::setComplete(bool complete)
+{
+    _complete = complete;
+    emit completeChanged();
 }
 
 bool OwncloudWizardResultPage::isComplete() const
 {
-    return true;
+    return _complete;
 }
 
 void OwncloudWizardResultPage::appendResultText( const QString& msg, OwncloudWizard::LogType type )
@@ -509,6 +523,12 @@ QString OwncloudWizard::ocUrl() const
     return url;
 }
 
+void OwncloudWizard::enableFinishOnResultWidget(bool enable)
+{
+    OwncloudWizardResultPage *p = static_cast<OwncloudWizardResultPage*> (page( Page_Install ));
+    p->setComplete(enable);
+}
+
 void OwncloudWizard::slotCurrentPageChanged( int id )
 {
   qDebug() << "Current Wizard page changed to " << id;
@@ -569,6 +589,19 @@ void OwncloudWizard::setOCUrl( const QString& url )
 #endif
   if( p )
       p->setOCUrl( url );
+
+}
+
+void OwncloudWizard::setOCUser( const QString& user )
+{
+  _oCUser = user;
+#ifdef OWNCLOUD_CLIENT
+  OwncloudSetupPage *p = static_cast<OwncloudSetupPage*>(page(Page_oCSetup));
+  if( p )
+      p->setOCUser( user );
+#else
+  OwncloudWizardSelectTypePage *p = static_cast<OwncloudWizardSelectTypePage*>(page( Page_SelectType ));
+#endif
 
 }
 

@@ -337,6 +337,10 @@ void OwncloudSetupWizard::startWizard(bool intro)
         _ocWizard->setOCUrl( url );
     }
 #ifdef OWNCLOUD_CLIENT
+    QString user = cfgFile.ownCloudUser();
+    if( !user.isEmpty() ) {
+        _ocWizard->setOCUser( user );
+    }
     if (intro)
         _ocWizard->setStartId(OwncloudWizard::Page_oCWelcome);
     else
@@ -450,6 +454,9 @@ void OwncloudSetupWizard::slotCreateRemoteFolderFinished( QNetworkReply::Network
 
 void OwncloudSetupWizard::finalizeSetup( bool success )
 {
+    // enable/disable the finish button.
+    _ocWizard->enableFinishOnResultWidget(success);
+
     if( success ) {
         if( !(_localFolder.isEmpty() || _remoteFolder.isEmpty() )) {
             _ocWizard->appendToResultWidget( tr("A sync connection from %1 to remote directory %2 was set up.")

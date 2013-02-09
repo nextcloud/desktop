@@ -27,6 +27,12 @@
 namespace Mirall
 {
 
+typedef struct {
+    QString user;
+    QString passwd;
+    QString connection;
+} oCICredentials;
+
 class ownCloudInfo : public QObject
 {
     Q_OBJECT
@@ -89,6 +95,13 @@ public:
      */
     QList<QSslCertificate> certificateChain() const;
 
+    /**
+     * Store credentials for a given connection. Empty connection parameter
+     * means "default connection".
+     */
+    void setCredentials( const QString&, const QString&,
+                         const QString& configHandle = QString::null );
+
 signals:
     // result signal with url- and version string.
     void ownCloudInfoFound( const QString&, const QString&, const QString&, const QString& );
@@ -138,6 +151,7 @@ private:
     QList<QSslCertificate>         _certificateChain;
     bool                           _certsUntrusted;
     int                            _authAttempts;
+    QMap<QString, oCICredentials>  _credentials;
 };
 
 };
