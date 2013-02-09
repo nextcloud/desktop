@@ -1021,10 +1021,18 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
          */
         content_type =  ne_get_response_header( request, "Content-Type" );
         if( !(content_type && c_streq(content_type, "application/xml; charset=utf-8") ) ) {
+            ssize_t resp_size;
+            char buffer[4096];
+            ZERO_STRUCT(buffer);
+
             DEBUG_WEBDAV("ERROR: Content type of propfind request not XML: %s.",
                          content_type ?  content_type: "<empty>");
             errno = ERRNO_WRONG_CONTENT;
             set_error_message("Server error: PROPFIND reply is not XML formatted!");
+
+            /* Read the response buffer to log the actual problem. */
+            resp_size = ne_read_response_block(request, buffer, 4095);
+            DEBUG_WEBDAV("ERROR: Content was of size %ld: %s", resp_size, buffer );
             ret = NE_CONNECT;
         }
     }
