@@ -149,6 +149,12 @@ public:
      QIcon icon( int size ) const;
      QTimer   *_pollTimer;
 
+signals:
+    void syncStateChange();
+    void syncStarted();
+    void syncFinished(const SyncResult &result);
+    void scheduleToSync( const QString& );
+
 public slots:
      void slotSyncFinished(const SyncResult &);
 
@@ -162,29 +168,38 @@ public slots:
        */
      virtual void slotTerminateSync() = 0;
 
+     /**
+      * Sets minimum amounts of milliseconds that will separate
+      * poll intervals
+      */
+     void setPollInterval( uint );
+
 protected:
     /**
      * The minimum amounts of seconds to wait before
      * doing a full sync to see if the remote changed
      */
-    int pollInterval() const;
+    uint pollInterval() const;
 
-    /**
-     * Sets minimum amounts of milliseconds that will separate
-     * poll intervals
-     */
-    void setPollInterval( int );
-
-signals:
-    void syncStateChange();
-    void syncStarted();
-    void syncFinished(const SyncResult &result);
-    void scheduleToSync( const QString& );
-
-protected:
     FolderWatcher *_watcher;
     int _errorCount;
     SyncResult _syncResult;
+
+protected slots:
+
+    void slotOnlineChanged(bool online);
+
+    void slotPollTimerTimeout();
+
+    /* called when the watcher detect a list of changed
+       paths */
+
+    void slotSyncStarted();
+
+    /**
+     * Triggered by a file system watcher on the local sync dir
+     */
+    virtual void slotLocalPathChanged( const QString& );
 
 private:
 
@@ -211,22 +226,6 @@ private:
     bool       _online;
     bool       _enabled;
     QString    _backend;
-
-protected slots:
-
-    void slotOnlineChanged(bool online);
-
-    void slotPollTimerTimeout();
-
-    /* called when the watcher detect a list of changed
-       paths */
-
-    void slotSyncStarted();
-
-    /**
-     * Triggered by a file system watcher on the local sync dir
-     */
-    virtual void slotLocalPathChanged( const QString& );
 
 };
 
