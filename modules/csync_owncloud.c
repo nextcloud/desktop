@@ -1107,6 +1107,18 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
     return fetchCtx;
 }
 
+static struct listdir_context *fetch_resource_list_attempts(const char *uri, int depth)
+{
+    struct listdir_context *fetchCtx = NULL;
+    for(int i = 0; i < 10; ++i) {
+        fetchCtx = fetch_resource_list(uri, depth);
+        if(fetchCtx) break;
+        DEBUG_WEBDAV("=> Errno after fetch resource list for %s: %d", uri, errno);
+        DEBUG_WEBDAV("   New attempt %i", i);
+    }
+    return fetchCtx;
+}
+
 /*
  * helper: convert a resource struct to file_stat struct.
  */
@@ -1235,7 +1247,8 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
     }
 
     /* fetch data via a propfind call. */
-    fetchCtx = fetch_resource_list( uri, NE_DEPTH_ONE);
+    /* fetchCtx = fetch_resource_list( uri, NE_DEPTH_ONE); */
+    fetchCtx = fetch_resource_list_attempts( uri, NE_DEPTH_ONE);
     DEBUG_WEBDAV("=> Errno after fetch resource list for %s: %d", uri, errno);
     if (!fetchCtx) {
         return -1;
@@ -1758,7 +1771,8 @@ static csync_vio_method_handle_t *owncloud_opendir(const char *uri) {
 
     dav_connect( uri );
 
-    fetchCtx = fetch_resource_list( uri, NE_DEPTH_ONE );
+    /* fetchCtx = fetch_resource_list( uri, NE_DEPTH_ONE ); */
+    fetchCtx = fetch_resource_list_attempts( uri, NE_DEPTH_ONE);
     if( !fetchCtx ) {
         /* errno is set properly in fetch_resource_list */
         DEBUG_WEBDAV("Errno set to %d", errno);
