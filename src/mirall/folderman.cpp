@@ -35,7 +35,8 @@ namespace Mirall {
 
 FolderMan::FolderMan(QObject *parent) :
     QObject(parent),
-    _customPollInterval(0)
+    _customPollInterval(0),
+    _syncEnabled( true )
 {
     // if QDir::mkpath would not be so stupid, I would not need to have this
     // duplication of folderConfigPath() here
@@ -85,7 +86,17 @@ int FolderMan::setupKnownFolders()
 {
   qDebug() << "* Setup folders from " << _folderConfigPath;
 
-  _folderMap.clear(); // FIXME: check if delete of folder structure happens
+  // first terminate sync jobs.
+  if( ! _currentSyncFolder.isEmpty() )
+      terminateSyncProcess(_currentSyncFolder);
+
+  // clear the list of existing folders.
+  Folder::MapIterator i(_folderMap);
+  while (i.hasNext()) {
+      i.next();
+      delete _folderMap.take( i.key() );
+  }
+
 
   QDir dir( _folderConfigPath );
   dir.setFilter(QDir::Files);
@@ -281,25 +292,6 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
     return folder;
 }
 
-void FolderMan::disableFoldersWithRestore()
-{
-  _folderEnabledMap.clear();
-  foreach( Folder *f, _folderMap ) {
-    // store the enabled state, then make sure it is disabled
-    _folderEnabledMap.insert(f->alias(), f->syncEnabled());
-    f->setSyncEnabled(false);
-  }
-}
-
-void FolderMan::restoreEnabledFolders()
-{
-  foreach( Folder *f, _folderMap ) {
-    if (_folderEnabledMap.contains( f->alias() )) {
-        f->setSyncEnabled( _folderEnabledMap.value( f->alias() ) );
-    }
-  }
-}
-
 void FolderMan::slotEnableFolder( const QString& alias, bool enable )
 {
     if( ! _folderMap.contains( alias ) ) {
@@ -379,6 +371,12 @@ void FolderMan::slotScheduleSync( const QString& alias )
     }
 }
 
+void FolderMan::setSyncEnabled( bool enabled )
+{
+    _syncEnabled = enabled;
+    slotScheduleFolderSync();
+}
+
 /*
   * slot to start folder syncs.
   * It is either called from the slot where folders enqueue themselves for
@@ -388,6 +386,11 @@ void FolderMan::slotScheduleFolderSync()
 {
     if( !_currentSyncFolder.isEmpty() ) {
         qDebug() << "Currently folder " << _currentSyncFolder << " is running, wait for finish!";
+        return;
+    }
+
+    if( ! _syncEnabled ) {
+        qDebug() << "FolderMan: Syncing is disabled, no scheduling.";
         return;
     }
 
