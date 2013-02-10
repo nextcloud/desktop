@@ -267,7 +267,7 @@ void ownCloudInfo::slotAuthentication( QNetworkReply *reply, QAuthenticator *aut
     } else {
         qDebug() << "WRN: attempt to authenticate to different url - attempt " <<_authAttempts;
     }
-    if( _authAttempts > 10 ) {
+    if( _authAttempts > 1) {
         qDebug() << "Too many attempts to authenticate. Stop request.";
         reply->close();
     }
