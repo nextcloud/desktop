@@ -1109,8 +1109,10 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
 
 static struct listdir_context *fetch_resource_list_attempts(const char *uri, int depth)
 {
+    int i;
+
     struct listdir_context *fetchCtx = NULL;
-    for(int i = 0; i < 10; ++i) {
+    for(i = 0; i < 10; ++i) {
         fetchCtx = fetch_resource_list(uri, depth);
         if(fetchCtx) break;
         DEBUG_WEBDAV("=> Errno after fetch resource list for %s: %d", uri, errno);
