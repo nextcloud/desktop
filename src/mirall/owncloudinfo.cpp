@@ -96,10 +96,10 @@ bool ownCloudInfo::isConfigured()
     return cfgFile.connectionExists( _connection );
 }
 
-void ownCloudInfo::checkInstallation()
+QNetworkReply *ownCloudInfo::checkInstallation()
 {
     /* No authentication required for this. */
-    getRequest( QLatin1String("status.php"), false );
+    return getRequest( QLatin1String("status.php"), false );
 }
 
 QNetworkReply* ownCloudInfo::getWebDAVPath( const QString& path )
@@ -132,7 +132,7 @@ QNetworkReply* ownCloudInfo::getRequest( const QString& path, bool webdav )
 }
 
 #if QT46_IMPL
-void ownCloudInfo::mkdirRequest( const QString& dir )
+QNetworkReply* ownCloudInfo::mkdirRequest( const QString& dir )
 {
     qDebug() << "OCInfo Making dir " << dir;
 
@@ -176,7 +176,7 @@ void ownCloudInfo::mkdirRequest( const QString& dir )
     //connect(_http, SIGNAL(requestFinished(int, bool)), this,SLOT(qhttpRequestFinished(int,bool)));
     ///////////connect(davinfo, SIGNAL(responseHeaderReceived(constQHttpResponseHeader &)), this, SLOT(RegisterBackHeader(constQHttpResponseHeader &)));
 
-
+    return NULL;
 }
 
 void ownCloudInfo::qhttpResponseHeaderReceived(const QHttpResponseHeader& header)
