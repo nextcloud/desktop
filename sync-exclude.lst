@@ -2,6 +2,7 @@
 *~
 *.bak
 *.part
+*.crdownload
 
 *.unison*
 *csync_timedif.ctmp*
