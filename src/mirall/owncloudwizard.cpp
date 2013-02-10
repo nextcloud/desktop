@@ -565,6 +565,9 @@ void OwncloudWizard::slotCurrentPageChanged( int id )
     } else {
     }
   }
+  if( id == Page_oCSetup ) {
+      emit clearPendingRequests();
+  }
 }
 
 void OwncloudWizard::showOCUrlLabel( bool show )

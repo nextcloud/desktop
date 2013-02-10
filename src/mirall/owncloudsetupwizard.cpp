@@ -29,6 +29,8 @@ class Theme;
 
 OwncloudSetupWizard::OwncloudSetupWizard( FolderMan *folderMan, Theme *theme, QObject *parent ) :
     QObject( parent ),
+    _mkdirRequestReply(0),
+    _checkInstallationRequest(0),
     _folderMan(folderMan)
 {
     _process = new QProcess( this );
@@ -67,6 +69,9 @@ OwncloudSetupWizard::OwncloudSetupWizard( FolderMan *folderMan, Theme *theme, QO
 
     // in case of cancel, terminate the owncloud-admin script.
     connect( _ocWizard, SIGNAL(rejected()), _process, SLOT(terminate()));
+
+    connect( _ocWizard, SIGNAL(clearPendingRequests()),
+             this, SLOT(slotClearPendingRequests()));
 
     _ocWizard->setWindowTitle( tr("%1 Connection Wizard").arg( theme ? theme->appName() : QLatin1String("Mirall") ) );
 
@@ -132,6 +137,19 @@ void OwncloudSetupWizard::slotConnectToOCUrl( const QString& url )
   testOwnCloudConnect();
 }
 
+void OwncloudSetupWizard::slotClearPendingRequests()
+{
+    qDebug() << "Pending request: " << _mkdirRequestReply;
+    if( _mkdirRequestReply && _mkdirRequestReply->isRunning() ) {
+        qDebug() << "ABORTing pending mkdir request.";
+        _mkdirRequestReply->abort();
+    }
+    if( _checkInstallationRequest && _checkInstallationRequest->isRunning() ) {
+        qDebug() << "ABORTing pending check installation request.";
+        _checkInstallationRequest->abort();
+    }
+}
+
 void OwncloudSetupWizard::testOwnCloudConnect()
 {
     // write a temporary config.
@@ -153,7 +171,7 @@ void OwncloudSetupWizard::testOwnCloudConnect()
     if( info->isConfigured() ) {
         // reset the SSL Untrust flag to let the SSL dialog appear again.
         info->resetSSLUntrust();
-        info->checkInstallation();
+        _checkInstallationRequest = info->checkInstallation();
     } else {
         qDebug() << "   ownCloud seems not to be configured, can not start test connect.";
     }
@@ -420,7 +438,7 @@ bool OwncloudSetupWizard::createRemoteFolder( const QString& folder )
 
     qDebug() << "creating folder on ownCloud: " << folder;
 
-    ownCloudInfo::instance()->mkdirRequest( folder );
+    _mkdirRequestReply = ownCloudInfo::instance()->mkdirRequest( folder );
 
     return true;
 }

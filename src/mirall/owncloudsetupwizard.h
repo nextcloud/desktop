@@ -19,6 +19,7 @@
 #include <QWidget>
 #include <QProcess>
 #include <QNetworkReply>
+#include <QPointer>
 
 #include "mirall/owncloudwizard.h"
 #include "mirall/theme.h"
@@ -87,6 +88,7 @@ private slots:
     void slotNoOwnCloudFound( QNetworkReply* );
     void slotCreateRemoteFolderFinished( QNetworkReply::NetworkError );
     void slotAssistantFinished( int );
+    void slotClearPendingRequests();
 
 private:
     bool checkOwncloudAdmin( const QString& );
@@ -98,6 +100,8 @@ private:
     void testOwnCloudConnect();
 
     OwncloudWizard *_ocWizard;
+    QPointer<QNetworkReply>  _mkdirRequestReply;
+    QPointer<QNetworkReply>  _checkInstallationRequest;
     FolderMan      *_folderMan;
     QProcess       *_process;
 

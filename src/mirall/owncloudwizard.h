@@ -92,6 +92,7 @@ signals:
     void connectToOCUrl( const QString& );
     void installOCServer();
     void installOCLocalhost();
+    void clearPendingRequests();
 
 private:
     QString _configFile;
