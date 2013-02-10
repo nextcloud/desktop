@@ -71,6 +71,11 @@ public:
      */
     void removeAllFolderDefinitions();
 
+    /**
+     * Removes csync journals from all folders.
+     */
+    void wipeAllJournals();
+
 signals:
     /**
       * signal to indicate a folder named by alias has changed its sync state.
@@ -105,6 +110,7 @@ private:
     // and create the folders
     int setupKnownFolders();
     void setupFavLink(const QString& folder);
+    void terminateCurrentSync();
 
     // Escaping of the alias which is used in QSettings AND the file
     // system, thus need to be escaped.

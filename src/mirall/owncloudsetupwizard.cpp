@@ -95,6 +95,13 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
     } else if( result == QDialog::Accepted ) {
         qDebug() << "Config Changes were accepted!";
 
+        // go through all folders and remove the journals if the server changed.
+        MirallConfigFile prevCfg;
+        if( prevCfg.ownCloudUrl() != cfg.ownCloudUrl() ) {
+            qDebug() << "ownCloud URL has changed, journals needs to be wiped.";
+            _folderMan->wipeAllJournals();
+        }
+
         // save the user credentials and afterwards clear the cred store.
         cfg.acceptCustomConfig();
 

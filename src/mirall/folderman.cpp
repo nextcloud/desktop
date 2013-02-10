@@ -86,8 +86,7 @@ int FolderMan::setupKnownFolders()
   qDebug() << "* Setup folders from " << _folderConfigPath;
 
   // first terminate sync jobs.
-  if( ! _currentSyncFolder.isEmpty() )
-      terminateSyncProcess(_currentSyncFolder);
+  terminateCurrentSync();
 
   // clear the list of existing folders.
   Folder::MapIterator i(_folderMap);
@@ -108,6 +107,23 @@ int FolderMan::setupKnownFolders()
   }
   // return the number of valid folders.
   return _folderMap.size();
+}
+
+void FolderMan::wipeAllJournals()
+{
+    terminateCurrentSync();
+
+    foreach( Folder *f, _folderMap.values() ) {
+        f->wipe();
+    }
+}
+
+void FolderMan::terminateCurrentSync()
+{
+    if( !_currentSyncFolder.isEmpty() ) {
+        qDebug() << "Terminating syncing on folder " << _currentSyncFolder;
+        terminateSyncProcess( _currentSyncFolder );
+    }
 }
 
 #define SLASH_TAG   QLatin1String("__SLASH__")
@@ -309,6 +325,9 @@ void FolderMan::terminateSyncProcess( const QString& alias )
     Folder *f = _folderMap[alias];
     if( f ) {
         f->slotTerminateSync();
+
+        if(_currentSyncFolder == alias )
+            _currentSyncFolder = QString::null;
     }
 }
 
