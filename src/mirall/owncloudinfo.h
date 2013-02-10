@@ -77,7 +77,11 @@ public:
     /**
       * Create a collection via owncloud. Provide a relative path.
       */
+#if QT46_IMPL
     void mkdirRequest( const QString& );
+#else
+    QNetworkReply* mkdirRequest( const QString& );
+#endif
 
     /**
      * Use a custom ownCloud configuration file identified by handle
