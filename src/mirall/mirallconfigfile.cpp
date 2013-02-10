@@ -319,6 +319,22 @@ int MirallConfigFile::remotePollInterval( const QString& connection ) const
   return remoteInterval;
 }
 
+void MirallConfigFile::setRemotePollIntval(int interval, const QString &connection )
+{
+    QString con( connection );
+    if( connection.isEmpty() ) con = defaultConnection();
+
+    if( interval < 5000 ) {
+        qDebug() << "Remote Poll interval of " << interval << " is below fife seconds.";
+        return;
+    }
+    QSettings settings( configFile(), QSettings::IniFormat );
+    settings.setIniCodec( "UTF-8" );
+    settings.beginGroup( con );
+    settings.setValue("remotePollInterval", interval );
+    settings.sync();
+}
+
 bool MirallConfigFile::passwordStorageAllowed( const QString& connection )
 {
     QString con( connection );

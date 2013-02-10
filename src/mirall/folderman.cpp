@@ -97,7 +97,6 @@ int FolderMan::setupKnownFolders()
       delete _folderMap.take( i.key() );
   }
 
-
   QDir dir( _folderConfigPath );
   dir.setFilter(QDir::Files);
   QStringList list = dir.entryList();
