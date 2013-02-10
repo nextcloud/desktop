@@ -187,16 +187,13 @@ void Folder::setOnlyThisLANEnabled(bool enabled)
     _onlyThisLANEnabled = enabled;
 }
 
-uint Folder::pollInterval() const
+int Folder::pollInterval() const
 {
     return _pollTimer->interval();
 }
 
-void Folder::setPollInterval(uint milliseconds)
+void Folder::setPollInterval(int milliseconds)
 {
-    if( milliseconds < 5000 ) return;
-    milliseconds -= 2000;
-    milliseconds += (uint)( 4000.0*qrand()/(RAND_MAX+1.0));
     _pollTimer->setInterval( milliseconds );
 }
 

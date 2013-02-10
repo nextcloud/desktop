@@ -399,7 +399,6 @@ void ownCloudInfo::slotReplyFinished()
             QString versionStr;
             QString version;
             QString edition;
-            QString pollInterval;
 
             foreach ( const QString& infoString, li ) {
                 QStringList touple = infoString.split( QLatin1Char(':'));
@@ -417,20 +416,11 @@ void ownCloudInfo::slotReplyFinished()
                 } else if( key == QLatin1String( "edition") ) {
                     // get version out
                     edition = val;
-                } else if( key == QLatin1String( "poll-interval") ) {
-                    // get poll interval out. Hacky.
-                    pollInterval = val;
-                }else {
+                } else {
                     qDebug() << "Unknown info from ownCloud status.php: "<< key << "=" << val;
                 }
             }
             emit ownCloudInfoFound( plainUrl, versionStr, version, edition );
-            if( !pollInterval.isEmpty() ) {
-                bool ok;
-                uint seconds = pollInterval.toUInt( &ok );
-                if( ok )
-                    emit customPollIntervalFound( seconds );
-            }
         } else {
             qDebug() << "No proper answer on " << url;
 

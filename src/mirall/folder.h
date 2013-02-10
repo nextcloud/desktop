@@ -173,14 +173,14 @@ public slots:
       * Sets minimum amounts of milliseconds that will separate
       * poll intervals
       */
-     void setPollInterval( uint );
+     void setPollInterval( int );
 
 protected:
     /**
      * The minimum amounts of seconds to wait before
      * doing a full sync to see if the remote changed
      */
-    uint pollInterval() const;
+    int pollInterval() const;
 
     FolderWatcher *_watcher;
     int _errorCount;

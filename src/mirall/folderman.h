@@ -89,8 +89,6 @@ public slots:
 
     void terminateSyncProcess( const QString& );
 
-    void   slotSetCustomPollInterval( uint );
-
     // if enabled is set to false, no new folders will start to sync.
     // the current one will finish.
     void setSyncEnabled( bool );
@@ -121,7 +119,6 @@ private:
     QSignalMapper *_folderChangeSignalMapper;
     QString        _currentSyncFolder;
     QStringList    _scheduleQueue;
-    uint           _customPollInterval;
     bool           _syncEnabled;
 };
 
