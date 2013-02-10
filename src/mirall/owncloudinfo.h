@@ -51,12 +51,12 @@ public:
       * a general GET request to the ownCloud. If the second bool parameter is
       * true, the WebDAV server is queried.
       */
-    void getRequest( const QString&, bool );
+    QNetworkReply* getRequest( const QString&, bool );
 
     /**
       * convenience: GET request to the WebDAV server.
       */
-    void getWebDAVPath( const QString& );
+    QNetworkReply* getWebDAVPath( const QString& );
 
     /**
       * There is a global flag here if the user once decided against trusting the

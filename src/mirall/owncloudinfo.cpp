@@ -92,12 +92,12 @@ void ownCloudInfo::checkInstallation()
     getRequest( QLatin1String("status.php"), false );
 }
 
-void ownCloudInfo::getWebDAVPath( const QString& path )
+QNetworkReply* ownCloudInfo::getWebDAVPath( const QString& path )
 {
-    getRequest( path, true );
+    return getRequest( path, true );
 }
 
-void ownCloudInfo::getRequest( const QString& path, bool webdav )
+QNetworkReply* ownCloudInfo::getRequest( const QString& path, bool webdav )
 {
     qDebug() << "Get Request to " << path;
 
@@ -118,6 +118,7 @@ void ownCloudInfo::getRequest( const QString& path, bool webdav )
 
     connect( reply, SIGNAL( error(QNetworkReply::NetworkError )),
              this, SLOT(slotError( QNetworkReply::NetworkError )));
+    return reply;
 }
 
 #if QT46_IMPL
