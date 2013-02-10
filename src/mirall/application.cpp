@@ -440,6 +440,7 @@ void Application::slotownCloudWizardDone( int res )
     if( res == QDialog::Accepted ) {
 
     }
+    _folderMan->setSyncEnabled( true );
     slotStartFolderSetup( res );
 }
 
@@ -664,7 +665,7 @@ void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
 
 void Application::slotAddFolder()
 {
-  _folderMan->disableFoldersWithRestore();
+  _folderMan->setSyncEnabled(false); // do not start more syncs.
 
   Folder::Map folderMap = _folderMan->map();
 
@@ -704,6 +705,8 @@ void Application::slotAddFolder()
       goodData = false;
     }
 
+    _folderMan->setSyncEnabled(true); // do not start more syncs.
+
     if( goodData ) {
         _folderMan->addFolderDefinition( backend, alias, sourceFolder, targetPath, onlyThisLAN );
         Folder *f = _folderMan->setupFolderFromConfigFile( alias );
@@ -716,8 +719,10 @@ void Application::slotAddFolder()
 
   } else {
     qDebug() << "* Folder wizard cancelled";
+    _folderMan->setSyncEnabled(true); // do not start more syncs.
+
   }
-  _folderMan->restoreEnabledFolders();
+  _folderMan->setSyncEnabled(true); // do not start more syncs.
 }
 
 void Application::slotOpenStatus()
@@ -737,6 +742,7 @@ void Application::slotOpenStatus()
 
     if( !cfgFile.exists() ) {
       qDebug() << "No configured folders yet, start the Owncloud integration dialog.";
+      _folderMan->setSyncEnabled(false);
       _owncloudSetupWizard->startWizard(true); // with intro
     } else {
       qDebug() << "#============# Status dialog starting #=============#";
@@ -859,9 +865,8 @@ void Application::slotEnableFolder(const QString& alias, const bool enable)
 
 void Application::slotConfigure()
 {
-  _folderMan->disableFoldersWithRestore();
-  _owncloudSetupWizard->startWizard(false);
-  _folderMan->restoreEnabledFolders();
+    _folderMan->setSyncEnabled(false); // do not start more syncs.
+    _owncloudSetupWizard->startWizard(false);
 }
 
 void Application::slotConfigureProxy()

@@ -37,8 +37,6 @@ public:
     ~FolderMan();
 
     int setupFolders();
-    void disableFoldersWithRestore();
-    void restoreEnabledFolders();
 
     Mirall::Folder::Map map();
 
@@ -93,6 +91,10 @@ public slots:
 
     void   slotSetCustomPollInterval( uint );
 
+    // if enabled is set to false, no new folders will start to sync.
+    // the current one will finish.
+    void setSyncEnabled( bool );
+
 private slots:
     // slot to add a folder to the syncing queue
     void slotScheduleSync( const QString & );
@@ -115,12 +117,12 @@ private:
 
     FolderWatcher *_configFolderWatcher;
     Folder::Map    _folderMap;
-    QHash<QString, bool> _folderEnabledMap;
     QString        _folderConfigPath;
     QSignalMapper *_folderChangeSignalMapper;
     QString        _currentSyncFolder;
     QStringList    _scheduleQueue;
     uint           _customPollInterval;
+    bool           _syncEnabled;
 };
 
 }

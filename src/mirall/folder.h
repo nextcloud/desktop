@@ -46,6 +46,7 @@ public:
     virtual ~Folder();
 
     typedef QHash<QString, Folder*> Map;
+    typedef QHashIterator<QString, Folder*> MapIterator;
 
     /**
      * alias or nickname
