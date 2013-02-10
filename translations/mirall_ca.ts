@@ -265,12 +265,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="267"/>
+        <location filename="../src/mirall/application.cpp" line="263"/>
         <source>&lt;p&gt;The detailed error message is&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;El missatge d&apos;error concret és&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="269"/>
+        <location filename="../src/mirall/application.cpp" line="265"/>
         <source>&lt;p&gt;Please check your configuration by clicking on the tray icon.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Comproveu la configuració fent clic a la  icona de la safata.&lt;/p&gt;</translation>
     </message>
@@ -295,7 +295,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="388"/>
+        <location filename="../src/mirall/application.cpp" line="381"/>
         <source>Sync started for %1 configured sync folder(s).</source>
         <translation>la sincronització ha començat per les carpetes %1 configurades.</translation>
     </message>
@@ -304,27 +304,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="455"/>
+        <location filename="../src/mirall/application.cpp" line="444"/>
         <source>Open status...</source>
         <translation>Obre l&apos;estat...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="458"/>
+        <location filename="../src/mirall/application.cpp" line="447"/>
         <source>Add folder...</source>
         <translation>Afegeix una carpeta...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="460"/>
+        <location filename="../src/mirall/application.cpp" line="449"/>
         <source>Configure...</source>
         <translation>Configura...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="462"/>
+        <location filename="../src/mirall/application.cpp" line="451"/>
         <source>Configure proxy...</source>
         <translation>Configura proxy...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="466"/>
+        <location filename="../src/mirall/application.cpp" line="455"/>
         <source>Quit</source>
         <translation>Surt</translation>
     </message>
@@ -333,109 +333,109 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="250"/>
+        <location filename="../src/mirall/application.cpp" line="246"/>
         <source>%1 Server Mismatch</source>
         <translation>%1 Servidor no coincideix</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="251"/>
+        <location filename="../src/mirall/application.cpp" line="247"/>
         <source>&lt;p&gt;The configured server for this client is too old.&lt;/p&gt;&lt;p&gt;Please update to the latest %1 server and restart the client.&lt;/p&gt;</source>
         <translation>&lt;p&gt;El servidor configurat per aquest client és massa antic.&lt;/p&gt;&lt;p&gt;Actualitzeu a l&apos;última versió del sevidor %1 i reinicieu el client.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="266"/>
+        <location filename="../src/mirall/application.cpp" line="262"/>
         <source>&lt;p&gt;The %1 at %2 could not be reached.&lt;/p&gt;</source>
         <translation>&lt;p&gt;El %1 a %2 no s&apos;ha pogut aconseguir.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="271"/>
+        <location filename="../src/mirall/application.cpp" line="267"/>
         <source>%1 Connection Failed</source>
         <translation>%1 Error de Connexió</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="299"/>
+        <location filename="../src/mirall/application.cpp" line="292"/>
         <source>Too many attempts to get a valid password.</source>
         <translation>Massa intents d&apos;obtenir una contrasenya vàlida.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="303"/>
+        <location filename="../src/mirall/application.cpp" line="296"/>
         <source>%1 user credentials are wrong. Please check configuration.</source>
         <translation>Les credencials de l&apos;usuari %1 són incorrectes. Comproveu la configuració.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="308"/>
-        <location filename="../src/mirall/application.cpp" line="327"/>
+        <location filename="../src/mirall/application.cpp" line="301"/>
+        <location filename="../src/mirall/application.cpp" line="320"/>
         <source>Credentials</source>
         <translation>Credencials</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="319"/>
+        <location filename="../src/mirall/application.cpp" line="312"/>
         <source>Error: Could not retrieve the password!</source>
         <translation>Error no s&apos;ha pogut obtenir la contrasenya!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="321"/>
+        <location filename="../src/mirall/application.cpp" line="314"/>
         <source>Password dialog was canceled!</source>
         <translation>El diàleg de contrasenya s&apos;ha cancel·lat!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="359"/>
-        <location filename="../src/mirall/application.cpp" line="368"/>
+        <location filename="../src/mirall/application.cpp" line="352"/>
+        <location filename="../src/mirall/application.cpp" line="361"/>
         <source>No %1 Connection</source>
         <translation>No %1 Connexió</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="360"/>
+        <location filename="../src/mirall/application.cpp" line="353"/>
         <source>&lt;p&gt;Your %1 credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Les credencials %1 no són correctes.&lt;/p&gt;&lt;p&gt;Corregiu-les inicant el diàleg de configuració des de la safata!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="369"/>
+        <location filename="../src/mirall/application.cpp" line="362"/>
         <source>&lt;p&gt;Either your user name or your password are not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation>&lt;p&gt;El nom d&apos;usuari o la contrasenya ownCloud no són correctes.&lt;/p&gt;&lt;p&gt;Corregiu-les iniciant el diàleg de configuració des de la safata!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="387"/>
+        <location filename="../src/mirall/application.cpp" line="380"/>
         <source>%1 Sync Started</source>
         <translation>%1 Sincronització iniciada</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="453"/>
+        <location filename="../src/mirall/application.cpp" line="442"/>
         <source>Open %1 in browser...</source>
         <translation>Obre %1 en el navegador...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="464"/>
+        <location filename="../src/mirall/application.cpp" line="453"/>
         <source>About...</source>
         <translation>Sobre...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="520"/>
+        <location filename="../src/mirall/application.cpp" line="509"/>
         <source>Open %1 folder</source>
         <translation>Obre la carpeta %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="533"/>
+        <location filename="../src/mirall/application.cpp" line="522"/>
         <source>Managed Folders:</source>
         <translation>Fitxers gestionats:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="781"/>
+        <location filename="../src/mirall/application.cpp" line="775"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4&lt;br&gt;using OCsync %5 and Qt %6.&lt;/small&gt;&lt;p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Construït des de la revisió &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; a %3, %4&lt;br&gt;de Git, usant OCsync %5 i Qt %6.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="788"/>
+        <location filename="../src/mirall/application.cpp" line="782"/>
         <source>About %1</source>
         <translation>Sobre %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="798"/>
+        <location filename="../src/mirall/application.cpp" line="792"/>
         <source>Confirm Folder Remove</source>
         <translation>Confirma l&apos;eliminació de la carpeta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="799"/>
+        <location filename="../src/mirall/application.cpp" line="793"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>Esteu segurs d&apos;eliminar la carpeta de pujada &lt;i&gt;%1&lt;/i&gt;?</translation>
     </message>
@@ -448,32 +448,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="965"/>
+        <location filename="../src/mirall/application.cpp" line="958"/>
         <source>Sync is running.</source>
         <translation>S&apos;està sincronitzant.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="969"/>
+        <location filename="../src/mirall/application.cpp" line="962"/>
         <source>Server is currently not available.</source>
         <translation>El servidor no està disponible actualment.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="974"/>
+        <location filename="../src/mirall/application.cpp" line="967"/>
         <source>Last Sync was successful.</source>
         <translation>La darrera sincronització va ser correcta.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="980"/>
+        <location filename="../src/mirall/application.cpp" line="973"/>
         <source>Syncing Error.</source>
         <translation>Error de sincronització.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="986"/>
+        <location filename="../src/mirall/application.cpp" line="979"/>
         <source>Setup Error.</source>
         <translation>Error de configuració.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="989"/>
+        <location filename="../src/mirall/application.cpp" line="982"/>
         <source>Undefined Error State.</source>
         <translation>Estat d&apos;error no definit.</translation>
     </message>
@@ -501,27 +501,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="841"/>
+        <location filename="../src/mirall/application.cpp" line="835"/>
         <source>Sync Running</source>
         <translation>S&apos;està sincronitzant</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="842"/>
+        <location filename="../src/mirall/application.cpp" line="836"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>S&apos;està sincronitzant.&lt;br/&gt;Voleu parar-la?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="958"/>
+        <location filename="../src/mirall/application.cpp" line="951"/>
         <source>Undefined State.</source>
         <translation>Estat indefinit.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="961"/>
+        <location filename="../src/mirall/application.cpp" line="954"/>
         <source>Waits to start syncing.</source>
         <translation>Espera per començar la sincronització.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="994"/>
+        <location filename="../src/mirall/application.cpp" line="987"/>
         <source> (Sync is paused)</source>
         <translation>(La sincronització està pausada)</translation>
     </message>
@@ -530,7 +530,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="1011"/>
+        <location filename="../src/mirall/application.cpp" line="1004"/>
         <source>No sync folders configured.</source>
         <translation>No hi ha fitxers de sincronització configurats</translation>
     </message>
@@ -1133,7 +1133,7 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="71"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="76"/>
         <source>%1 Connection Wizard</source>
         <translation>Assistent de connexió %1</translation>
     </message>
@@ -1150,27 +1150,27 @@ Please write a bug report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="130"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="142"/>
         <source>Trying to connect to %1 at %2...</source>
         <translation>Intentant connectar amb %1 a %2...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="164"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="189"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;S&apos;ha connectat correctament amb %1: %2 versió %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="176"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="201"/>
         <source>&lt;font color=&quot;red&quot;&gt;Failed to connect to %1!&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;red&quot;&gt;La connexió amb %1 ha fallat!&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="178"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="203"/>
         <source>Error: &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Error: &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="263"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="288"/>
         <source>Starting script owncloud-admin...</source>
         <translation>Iniciant l&apos;script owncloud-admin...</translation>
     </message>
@@ -1183,59 +1183,59 @@ Please write a bug report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="314"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="339"/>
         <source>&lt;font color=&quot;red&quot;&gt;Installation of %1 failed!&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;red&quot;&gt;La instal·lació de %1 ha fallat!&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="319"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="344"/>
         <source>&lt;font color=&quot;green&quot;&gt;Installation of %1 succeeded!&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;La instal·lació de %1 ha tingut èxit!&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="362"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="387"/>
         <source>The owncloud admin script can not be found.
 Setup can not be done.</source>
         <translation>No s&apos;ha trobat l&apos;script de owncloud-admin.
 No s&apos;ha pogut configurar</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="413"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="438"/>
         <source>Creation of remote folder %1 could not be started.</source>
         <translation>No s&apos;ha pogut crear la carpeta remota %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="434"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="459"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>La carpeta remota %1 s&apos;ha creat correctament.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="436"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="461"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>La carpeta remota %1 ja existeix. S&apos;hi està connectant per sincronitzar-les.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="438"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="463"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>La creació de la carpeta ha resultat en el codi d&apos;error HTTP %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="462"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="487"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>S&apos;ha establert una connexió de sincronització des de %1 a la carpeta remota %2.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="467"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="492"/>
         <source>Successfully connected to %1!</source>
-        <translation type="unfinished"/>
+        <translation>Connectat amb èxit a %1!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="473"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="498"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>No s&apos;ha pogut establir la connexió amb %1. Comproveu-ho de nou.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="470"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="495"/>
         <source>Press Finish to permanently accept this connection.</source>
         <translation>Premeu Acaba per acceptar permanentment aquesta connexió</translation>
     </message>
@@ -1248,12 +1248,12 @@ No s&apos;ha pogut configurar</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="382"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="407"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>La carpeta local %1 ja existeix, s&apos;està configurant per sincronitzar.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="384"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="409"/>
         <source>Creating local sync folder %1... </source>
         <translation>Creant carpeta local de sincronització %1...</translation>
     </message>
@@ -1262,12 +1262,12 @@ No s&apos;ha pogut configurar</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="387"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="412"/>
         <source>ok</source>
         <translation>correcte</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="389"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="414"/>
         <source>failed.</source>
         <translation>ha fallat.</translation>
     </message>
@@ -1280,7 +1280,7 @@ No s&apos;ha pogut configurar</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="101"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="113"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;la carpeta de sincronització %1 s&apos;ha creat correctament!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -1289,12 +1289,12 @@ No s&apos;ha pogut configurar</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="440"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="465"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;La creació de la carpeta remota ha fallat, provablement perquè les credencials facilitades són incorrectes.&lt;/font&gt;&lt;br/&gt;Comproveu les vostres credencials.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="446"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="471"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>La creació de la carpeta remota %1 ha fallat amb l&apos;error &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
@@ -1839,7 +1839,13 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Select if you want to create a new ownCloud either on the local machine or on your server. &lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#585858;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;This wizard will guide you through all necessary steps.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Seleccioneu si voleu crear un compte ownCloud nou, ja sigui a la l&apos;equip local o en el vostre servidor. &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#585858;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Aquest assistent us guiarà a través de tots els passos necessaris.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
