@@ -693,7 +693,7 @@ void Application::slotAddFolder()
       goodData = false;
     }
 
-    _folderMan->setSyncEnabled(true); // do not start more syncs.
+    _folderMan->setSyncEnabled(true); // do start sync again.
 
     if( goodData ) {
         _folderMan->addFolderDefinition( backend, alias, sourceFolder, targetPath, onlyThisLAN );
@@ -707,10 +707,8 @@ void Application::slotAddFolder()
 
   } else {
     qDebug() << "* Folder wizard cancelled";
-    _folderMan->setSyncEnabled(true); // do not start more syncs.
-
   }
-  _folderMan->setSyncEnabled(true); // do not start more syncs.
+  _folderMan->setSyncEnabled(true);
 }
 
 void Application::slotOpenStatus()
