@@ -12,6 +12,7 @@
  */
 
 #include <QtGui>
+#include <QInputDialog>
 
 #include "config.h"
 
@@ -103,6 +104,9 @@ void CredentialStore::fetchCredentials()
     QString pwd;
     _user = cfgFile.ownCloudUser();
     _url  = cfgFile.ownCloudUrl();
+    if( !cfgFile.passwordStorageAllowed() ) {
+        _type = CredentialStore::User;
+    }
 
     QString key = keyChainKey(_url);
 
@@ -117,15 +121,16 @@ void CredentialStore::fetchCredentials()
     case CredentialStore::User: {
         /* Ask the user for the password */
         /* Fixme: Move user interaction out here. */
-        _state = Fetching;
-        pwd = QInputDialog::getText(0, QApplication::translate("MirallConfigFile","Password Required"),
-                                    QApplication::translate("MirallConfigFile","Please enter your %1 password:")
-                                    .arg(Theme::instance()->appName()),
-                                    QLineEdit::Password,
-                                    QString::null, &ok);
-        if( !ok ) {
-            _state = UserCanceled;
-        }
+        _state = AsyncFetching;
+        _inputDialog = new QInputDialog;
+        _inputDialog->setWindowTitle(QApplication::translate("MirallConfigFile","Password Required") );
+        _inputDialog->setLabelText( QApplication::translate("MirallConfigFile","Please enter your %1 password:")
+                .arg(Theme::instance()->appName()));
+        _inputDialog->setInputMode( QInputDialog::TextInput );
+        _inputDialog->setTextEchoMode( QLineEdit::Password );
+
+        connect(_inputDialog, SIGNAL(finished(int)), SLOT(slotUserDialogDone(int)));
+        _inputDialog->exec();
         break;
     }
     case CredentialStore::Settings: {
@@ -177,6 +182,19 @@ void CredentialStore::fetchCredentials()
         // in case of AsyncFetching nothing happens here. The finished-Slot
         // will emit the finish signal.
     }
+}
+
+void CredentialStore::slotUserDialogDone( int result )
+{
+    if( result == QDialog::Accepted ) {
+        _passwd = _inputDialog->textValue();
+        _state = Ok;
+    } else {
+        _state = UserCanceled;
+        _passwd = QString::null;
+    }
+    _inputDialog->deleteLater();
+    emit(fetchCredentialsFinished(_state == Ok));
 }
 
 void CredentialStore::reset()
@@ -281,10 +299,20 @@ QString CredentialStore::errorMessage()
     return _errorMsg;
 }
 
-void CredentialStore::setCredentials( const QString& url, const QString& user, const QString& pwd )
+void CredentialStore::setCredentials( const QString& url, const QString& user,
+                                      const QString& pwd, bool allowToStore )
 {
     _passwd = pwd;
     _user = user;
+    if( allowToStore ) {
+#ifdef WITH_QTKEYCHAIN
+        _type = KeyChain;
+#else
+        _type = Settings;
+#endif
+    } else {
+        _type = User;
+    }
     _url  = url;
     _state = Ok;
 }

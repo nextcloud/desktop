@@ -16,6 +16,7 @@
 
 #include "config.h"
 #include <QObject>
+#include <QInputDialog>
 
 #ifdef WITH_QTKEYCHAIN
 #include "qtkeychain/keychain.h"
@@ -107,7 +108,7 @@ public:
      * @param user - the user name
      * @param password - the password.
      */
-    void setCredentials( const QString&, const QString&, const QString& );
+    void setCredentials( const QString&, const QString&, const QString&, bool );
 
     void saveCredentials( );
 
@@ -133,6 +134,7 @@ signals:
 protected slots:
     void slotKeyChainReadFinished( QKeychain::Job* );
     void slotKeyChainWriteFinished( QKeychain::Job* );
+    void slotUserDialogDone(int);
 
 private:
     explicit CredentialStore(QObject *parent = 0);
@@ -147,6 +149,7 @@ private:
     static QString _errorMsg;
     static int     _tries;
     static CredentialType _type;
+    QInputDialog   *_inputDialog;
 };
 }
 
