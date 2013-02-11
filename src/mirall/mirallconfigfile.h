@@ -64,7 +64,7 @@ public:
     QByteArray caCerts();
     void setCaCerts( const QByteArray& );
 
-    bool passwordStorageAllowed(const QString &);
+    bool passwordStorageAllowed(const QString &connection = QString::null );
 
     QString ownCloudVersion() const;
     void setOwnCloudVersion( const QString& );
