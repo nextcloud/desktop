@@ -117,6 +117,11 @@ void OwncloudSetupPage::setOCUser( const QString & user )
     }
 }
 
+void  OwncloudSetupPage::setAllowPasswordStorage( bool allow )
+{
+    _ui.cbNoPasswordStore->setChecked( ! allow );
+}
+
 void OwncloudSetupPage::setOCUrl( const QString& newUrl )
 {
     QString url( newUrl );
@@ -605,7 +610,15 @@ void OwncloudWizard::setOCUser( const QString& user )
 #else
   OwncloudWizardSelectTypePage *p = static_cast<OwncloudWizardSelectTypePage*>(page( Page_SelectType ));
 #endif
+}
 
+void OwncloudWizard::setAllowPasswordStorage( bool allow )
+{
+#ifdef OWNCLOUD_CLIENT
+  OwncloudSetupPage *p = static_cast<OwncloudSetupPage*>(page(Page_oCSetup));
+  if( p )
+      p->setAllowPasswordStorage( allow );
+#endif
 }
 
 } // end namespace

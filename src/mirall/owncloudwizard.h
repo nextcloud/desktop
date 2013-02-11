@@ -42,6 +42,7 @@ public:
   virtual int nextId() const;
   void setOCUrl( const QString& );
   void setOCUser( const QString& );
+  void setAllowPasswordStorage( bool );
 
 protected slots:
   void slotPwdStoreChanged( int );
@@ -76,6 +77,7 @@ public:
 
     void setOCUrl( const QString& );
     void setOCUser( const QString& );
+    void setAllowPasswordStorage( bool );
 
     void setupCustomMedia( QVariant, QLabel* );
     QString ocUrl() const;

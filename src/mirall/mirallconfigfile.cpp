@@ -462,10 +462,12 @@ void MirallConfigFile::acceptCustomConfig()
     QString url  = ownCloudUrl();
     QString user = ownCloudUser();
     QString pwd  = ownCloudPasswd();
+    bool allow   = passwordStorageAllowed();
+
     if( pwd.isEmpty() ) {
         qDebug() << "Password is empty, skipping to write cred store.";
     } else {
-        CredentialStore::instance()->setCredentials(url, user, pwd);
+        CredentialStore::instance()->setCredentials(url, user, pwd, allow);
         CredentialStore::instance()->saveCredentials();
     }
 }

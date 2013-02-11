@@ -366,6 +366,10 @@ void OwncloudSetupWizard::startWizard(bool intro)
     if( !user.isEmpty() ) {
         _ocWizard->setOCUser( user );
     }
+
+    bool doStore = cfgFile.passwordStorageAllowed();
+    _ocWizard->setAllowPasswordStorage( doStore );
+
     if (intro)
         _ocWizard->setStartId(OwncloudWizard::Page_oCWelcome);
     else
