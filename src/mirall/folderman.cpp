@@ -377,7 +377,6 @@ void FolderMan::slotScheduleSync( const QString& alias )
 void FolderMan::setSyncEnabled( bool enabled )
 {
     _syncEnabled = enabled;
-    slotScheduleFolderSync();
 }
 
 /*
