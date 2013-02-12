@@ -810,8 +810,12 @@ out:
   /* set instruction for the statedb merger */
   if (rc != 0) {
     st->instruction = CSYNC_INSTRUCTION_ERROR;
-    if (other)
-        other->instruction = CSYNC_INSTRUCTION_ERROR;
+    if (other) {
+      other->instruction = CSYNC_INSTRUCTION_ERROR;
+
+      /* We set the instruction to UPDATED so next try we try to rename again */
+      st->instruction = CSYNC_INSTRUCTION_UPDATED;
+    }
   }
 
   return rc;

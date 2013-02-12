@@ -1913,7 +1913,7 @@ static int owncloud_rename(const char *olduri, const char *newuri) {
         } else {
             set_errno_from_neon_errcode(rc);
             if (rc != NE_OK && _progresscb) {
-                _progresscb(newuri, CSYNC_NOTIFY_ERROR,  http_result_code_from_session(),
+                _progresscb(olduri, CSYNC_NOTIFY_ERROR,  http_result_code_from_session(),
                             (long long)(dav_session.error_string) ,dav_session.userdata);
             }
         }
