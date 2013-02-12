@@ -48,6 +48,7 @@ if(SPHINX_FOUND)
 				-d ${SPHINX_CACHE_DIR}
 				${CMAKE_CURRENT_SOURCE_DIR}
 				${SPHINX_MAN_DIR} )
+
     ## Building CHM files requires HTML Help Workshop. Since it requires wine
     ## with special dependencies, it's impossible to write a cmake check for it.
     ## This is why doc-chm is not a dependency for doc. Instead, run
