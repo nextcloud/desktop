@@ -1,6 +1,3 @@
-#ifndef CSYNCTHREAD_H
-#define CSYNCTHREAD_H
-
 /*
  * Copyright (C) by Duncan Mac-Vicar P. <duncan@kde.org>
  * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
@@ -15,6 +12,9 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
+
+#ifndef CSYNCTHREAD_H
+#define CSYNCTHREAD_H
 
 #include <stdint.h>
 
