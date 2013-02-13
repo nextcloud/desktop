@@ -125,6 +125,9 @@ csync_vio_method_handle_t *csync_dbtree_opendir(CSYNC *ctx, const char *name)
         }
         if( cnt < tpath_len ) continue;
 
+        if (!list->vector[base+8][0])
+            continue; /* If md5 is empty, the file was removed on the server */
+
         fs = csync_vio_file_stat_new();
         fs->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
 
