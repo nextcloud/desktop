@@ -61,9 +61,9 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
     , _csyncUnavail(false)
     , _wipeDb(false)
 {
-    _notifier = new DownloadNotifier(QDir::fromNativeSeparators(path),
-                                     replaceScheme(secondPath), this);
-    connect(_notifier, SIGNAL(guiLog(QString,QString)), Logger::instance(), SIGNAL(guiLog(QString,QString)));
+    ServerActionNotifier *notifier = new ServerActionNotifier(this);
+    connect(notifier, SIGNAL(guiLog(QString,QString)), Logger::instance(), SIGNAL(guiLog(QString,QString)));
+    connect(this, SIGNAL(syncFinished(SyncResult)), notifier, SLOT(slotSyncFinished(SyncResult)));
     qDebug() << "****** ownCloud folder using watcher *******";
     // The folder interval is set in the folder parent class.
 }
@@ -148,9 +148,6 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()), Qt::QueuedConnection);
     connect(_csync, SIGNAL(csyncError(QString)), SLOT(slotCSyncError(QString)), Qt::QueuedConnection);
     connect(_csync, SIGNAL(csyncUnavailable()), SLOT(slotCsyncUnavailable()), Qt::QueuedConnection);
-    connect(_csync, SIGNAL(fileReceived(QString)),
-            _notifier, SLOT(slotFileReceived(QString)), Qt::QueuedConnection);
-
     _thread->start();
     QMetaObject::invokeMethod(_csync, "startSync", Qt::QueuedConnection);
 
@@ -280,39 +277,68 @@ void ownCloudFolder::wipe()
     _wipeDb = false;
 }
 
-DownloadNotifier::DownloadNotifier(const QString &localPrefix, const QString &remotePrefix, QObject *parent)
-    : QObject(parent), _timer(new QTimer(this)), _items(0)
+ServerActionNotifier::ServerActionNotifier(QObject *parent)
+    : QObject(parent)
 {
-    _timer->setSingleShot(true);
-    connect(_timer, SIGNAL(timeout()), SLOT(sendResults()));
-
-    _localPrefix = localPrefix;
-    _remotePrefix = remotePrefix;
 }
 
-void DownloadNotifier::slotFileReceived(const QString & url)
+void ServerActionNotifier::slotSyncFinished(const SyncResult &result)
 {
-    if (_url.isEmpty())
-        _url = url;
-    _items++;
-    _timer->stop();
-    _timer->start(1000);
-}
+    SyncFileItemVector items = result.syncFileItemVector();
+    if (items.count() == 0)
+        return;
 
-void DownloadNotifier::sendResults()
-{
-    QString file = _url;
-    file.replace(_remotePrefix, _localPrefix + QDir::separator());
-    file = QDir::toNativeSeparators(QDir::cleanPath(file));
-    if (_items == 1)
-        emit guiLog(tr("New file available"), tr("'%1' has been synced to this machine.").arg(file));
-    else
-        emit guiLog(tr("New files available"), tr("'%1' and %n other file(s) have been synced to this machine.",
-                                                  "", _items-1).arg(file).arg(_items));
+    int newItems = 0;
+    int removedItems = 0;
+    int updatedItems = 0;
+    SyncFileItem firstItemNew;
+    SyncFileItem firstItemDeleted;
+    SyncFileItem firstItemUpdated;
+    foreach (const SyncFileItem &item, items) {
+        if (item._dir == SyncFileItem::Down) {
+            switch (item._instruction) {
+            case CSYNC_INSTRUCTION_NEW:
+                newItems++;
+                if (firstItemNew.isEmpty())
+                    firstItemNew = item;
+                break;
+            case CSYNC_INSTRUCTION_REMOVE:
+                removedItems++;
+                if (firstItemDeleted.isEmpty())
+                    firstItemDeleted = item;
+                break;
+            case CSYNC_INSTRUCTION_UPDATED:
+                updatedItems++;
+                if (firstItemUpdated.isEmpty())
+                    firstItemUpdated = item;
+            }
+        }
+    }
 
-    // reset
-    _items = 0;
-    _url = QString::null;
+    if (newItems > 0) {
+        QString file = QDir::toNativeSeparators(firstItemNew._file);
+        if (newItems == 1)
+            emit guiLog(tr("New file available"), tr("'%1' has been synced to this machine.").arg(file));
+        else
+            emit guiLog(tr("New files available"), tr("'%1' and %n other file(s) have been synced to this machine.",
+                                                      "", newItems-1).arg(file));
+    }
+    if (removedItems > 0) {
+        QString file = QDir::toNativeSeparators(firstItemDeleted._file);
+        if (removedItems == 1)
+            emit guiLog(tr("File removed"), tr("'%1' has been removed.").arg(file));
+        else
+            emit guiLog(tr("New files available"), tr("'%1' and %n other file(s) have been removed.",
+                                                      "", removedItems-1).arg(file));
+    }
+    if (updatedItems > 0) {
+        QString file = QDir::toNativeSeparators(firstItemUpdated._file);
+        if (updatedItems == 1)
+            emit guiLog(tr("File removed"), tr("'%1' has been updated.").arg(file));
+        else
+            emit guiLog(tr("New files available"), tr("'%1' and %n other file(s) have been updated.",
+                                                      "", updatedItems-1).arg(file));
+    }
 }
 
 } // ns
