@@ -111,6 +111,7 @@ void ownCloudFolder::startSync(const QStringList &pathList)
         qCritical() << "* ERROR csync is still running and new sync requested.";
         return;
     }
+
     delete _csync;
     delete _thread;
     _errors.clear();
@@ -209,10 +210,7 @@ void ownCloudFolder::slotTerminateSync()
     if( _thread ) {
         _thread->terminate();
         _thread->wait();
-// TODO: crashes on win, leak for now, fix properly after 1.1.0
-#ifndef Q_OS_WIN
-        delete _csync;
-#endif
+        _csync->deleteLater();
         delete _thread;
         _csync = 0;
         _thread = 0;
