@@ -61,6 +61,22 @@ void mirallLogCatcher(QtMsgType type, const char *msg)
   Logger::instance()->mirallLog( QString::fromUtf8(msg) );
 }
 
+namespace {
+QString applicationTrPath()
+{
+#ifdef Q_OS_LINUX
+    // FIXME - proper path!
+    return QLatin1String("/usr/share/mirall/i18n/");
+#endif
+#ifdef Q_OS_MAC
+    return QApplication::applicationDirPath()+QLatin1String("/../Resources/Translations"); // path defaults to app dir.
+#endif
+#ifdef Q_OS_WIN32
+   return QApplication::applicationDirPath();
+#endif
+}
+}
+
 // ----------------------------------------------------------------------------------
 
 Application::Application(int &argc, char **argv) :
@@ -83,49 +99,20 @@ Application::Application(int &argc, char **argv) :
     setWindowIcon( _theme->applicationIcon() );
 
     parseOptions(arguments());
+    setupTranslations();
     setupLogBrowser();
     //no need to waste time;
     if ( _helpOnly ) return;
 
 #ifdef Q_OS_LINUX
-    // HACK: bump the refcount for libgnutls by calling dlopen()
-    // so gnutls, which is an dependency of libneon on some linux
-    // distros, and does not cleanup it's FDs properly, does
-    // not get unloaded. This works around a FD exhaustion crash
-    // (#154). We are not using gnutls at all and it's fine
-    // if loading fails, so no error handling is performed here.
-    dlopen("libgnutls.so", RTLD_LAZY|RTLD_NODELETE);
+        // HACK: bump the refcount for libgnutls by calling dlopen()
+        // so gnutls, which is an dependency of libneon on some linux
+        // distros, and does not cleanup it's FDs properly, does
+        // not get unloaded. This works around a FD exhaustion crash
+        // (#154). We are not using gnutls at all and it's fine
+        // if loading fails, so no error handling is performed here.
+        dlopen("libgnutls.so", RTLD_LAZY|RTLD_NODELETE);
 #endif
-
-    QString locale = Theme::instance()->enforcedLocale();
-    if (locale.isEmpty()) locale = QLocale::system().name();
-
-    QTranslator *qtTranslator = new QTranslator(this);
-#if defined(Q_OS_MAC)
-    qtTranslator->load(QLatin1String("qt_") + locale, applicationDirPath()+QLatin1String("/../translations") ); // path defaults to app dir.
-#elif defined(Q_OS_WIN32)
-    qtTranslator->load(QLatin1String("qt_") + locale, applicationDirPath());
-#endif
-    if (qtTranslator->isEmpty()) {
-        qtTranslator->load(QLatin1String("qt_") + QLocale::system().name(),
-                           QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    }
-    installTranslator(qtTranslator);
-
-    QTranslator *mirallTranslator = new QTranslator(this);
-
-#ifdef Q_OS_LINUX
-    // FIXME - proper path!
-    mirallTranslator->load(QLatin1String("mirall_") + locale, QLatin1String("/usr/share/mirall/i18n/"));
-#endif
-#ifdef Q_OS_MAC
-    mirallTranslator->load(QLatin1String("mirall_") + locale, applicationDirPath()+QLatin1String("/../translations") ); // path defaults to app dir.
-#endif
-#ifdef Q_OS_WIN32
-    mirallTranslator->load(QLatin1String("mirall_") + locale, applicationDirPath());
-#endif
-
-    installTranslator(mirallTranslator);
 
     connect( this, SIGNAL(messageReceived(QString)), SLOT(slotParseOptions(QString)));
     connect( Logger::instance(), SIGNAL(guiLog(QString,QString)),
@@ -560,8 +547,9 @@ void Application::setupLogBrowser()
     if (_showLogWindow)
         slotOpenLogBrowser();
 
-    qDebug() << QString::fromLatin1( "################## %1 %2 %3 ").arg(_theme->appName())
+    qDebug() << QString::fromLatin1( "################## %1 %2 (%3) %4").arg(_theme->appName())
                 .arg( QLocale::system().name() )
+                .arg(property("ui_lang").toString())
                 .arg(_theme->version());
 
 }
@@ -1018,6 +1006,52 @@ setHelp();
 void Application::setHelp()
 {
     _helpOnly = true;
+}
+
+void Application::setupTranslations()
+{
+    QStringList uiLanguages;
+    // uiLanguages crashes on Windows with 4.8.0 release builds
+    #if (QT_VERSION >= 0x040801) || (QT_VERSION >= 0x040800 && !defined(Q_OS_WIN))
+        uiLanguages = QLocale::system().uiLanguages();
+    #else
+        // older versions need to fall back to the systems locale
+        uiLanguages << QLocale::system().name();
+    #endif
+
+    QString enforcedLocale = Theme::instance()->enforcedLocale();
+    if (!enforcedLocale.isEmpty())
+        uiLanguages.prepend(enforcedLocale);
+
+    QTranslator *translator = new QTranslator(this);
+    QTranslator *qtTranslator = new QTranslator(this);
+    QTranslator *qtkeychainTranslator = new QTranslator(this);
+
+    foreach(QString lang, uiLanguages) {
+        lang.replace(QLatin1Char('-'), QLatin1Char('_')); // work around QTBUG-25973
+        const QString trPath = applicationTrPath();
+        const QString trFile = QLatin1String("mirall_") + lang;
+        qDebug() << Q_FUNC_INFO << "Trying to load" << trFile;
+        if (translator->load(trFile, trPath)) {
+            const QString qtTrPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+            const QString qtTrFile = QLatin1String("qt_") + lang;
+            const QString qtkeychainFile = QLatin1String("qt_") + lang;
+            // try, but it's fine if we fail
+            qtkeychainTranslator->load(qtkeychainFile, qtTrPath);
+            qtkeychainTranslator->load(qtkeychainFile, trPath);
+            if (qtTranslator->load(qtTrFile, qtTrPath) || qtTranslator->load(qtTrFile, trPath)) {
+                qDebug() << Q_FUNC_INFO << "Successfully loaded" << trFile << "and" << qtTrFile;
+                installTranslator(translator);
+                installTranslator(qtTranslator);
+                setProperty("ui_lang", lang);
+                break;
+            }
+            translator->load(QString()); // unload, we want no inconsistent UI
+            qtkeychainTranslator->load(QString());
+        }
+        if (property("ui_lang").isNull())
+            setProperty("ui_lang", "C");
+    }
 }
 
 bool Application::giveHelp()

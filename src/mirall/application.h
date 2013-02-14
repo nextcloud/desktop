@@ -73,6 +73,7 @@ protected slots:
 protected:
 
     void parseOptions(const QStringList& );
+    void setupTranslations();
     void setupActions();
     void setupSystemTray();
     void setupContextMenu();
