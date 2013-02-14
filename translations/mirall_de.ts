@@ -275,12 +275,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="263"/>
+        <location filename="../src/mirall/application.cpp" line="259"/>
         <source>&lt;p&gt;The detailed error message is&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Die genaue Fehlermeldung lautet:&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="265"/>
+        <location filename="../src/mirall/application.cpp" line="261"/>
         <source>&lt;p&gt;Please check your configuration by clicking on the tray icon.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Bitte überprüfen Sie Ihre Konfiguration, indem Sie auf das Tray-Symbol klicken.&lt;/p&gt;</translation>
     </message>
@@ -305,7 +305,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="381"/>
+        <location filename="../src/mirall/application.cpp" line="377"/>
         <source>Sync started for %1 configured sync folder(s).</source>
         <translation>Synchronisation wurde für %1 konfigurierte Sync-Ordner gestartet</translation>
     </message>
@@ -314,27 +314,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="444"/>
+        <location filename="../src/mirall/application.cpp" line="440"/>
         <source>Open status...</source>
         <translation>Status anzeigen...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="447"/>
+        <location filename="../src/mirall/application.cpp" line="443"/>
         <source>Add folder...</source>
         <translation>Ordner hinzufügen...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="449"/>
+        <location filename="../src/mirall/application.cpp" line="445"/>
         <source>Configure...</source>
         <translation>Konfiguriere...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="451"/>
+        <location filename="../src/mirall/application.cpp" line="447"/>
         <source>Configure proxy...</source>
         <translation>Proxy-Einstellungen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="455"/>
+        <location filename="../src/mirall/application.cpp" line="451"/>
         <source>Quit</source>
         <translation>Beenden</translation>
     </message>
@@ -343,109 +343,104 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="246"/>
+        <location filename="../src/mirall/application.cpp" line="242"/>
         <source>%1 Server Mismatch</source>
         <translation>%1-Server-Konflikt</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="247"/>
+        <location filename="../src/mirall/application.cpp" line="243"/>
         <source>&lt;p&gt;The configured server for this client is too old.&lt;/p&gt;&lt;p&gt;Please update to the latest %1 server and restart the client.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Der konfigurierte Server ist für diesen Client zu alt.&lt;/p&gt;&lt;p&gt;Bitte nutzen Sie einen aktuellen %1-Server und starten Sie den Client erneut.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="262"/>
+        <location filename="../src/mirall/application.cpp" line="258"/>
         <source>&lt;p&gt;The %1 at %2 could not be reached.&lt;/p&gt;</source>
         <translation>&lt;p&gt;%1 unter %2 konnte nicht erreicht werden.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="267"/>
+        <location filename="../src/mirall/application.cpp" line="263"/>
         <source>%1 Connection Failed</source>
         <translation>%1-Verbindung fehlgeschlagen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="292"/>
+        <location filename="../src/mirall/application.cpp" line="288"/>
         <source>Too many attempts to get a valid password.</source>
         <translation>Zu viele Versuche ein gültiges Passwort zu erstellen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="296"/>
+        <location filename="../src/mirall/application.cpp" line="292"/>
         <source>%1 user credentials are wrong. Please check configuration.</source>
         <translation>%1-Benutzerdaten sind nicht korrekt. Bitte überprüfen Sie die Konfiguration.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="301"/>
-        <location filename="../src/mirall/application.cpp" line="320"/>
+        <location filename="../src/mirall/application.cpp" line="297"/>
+        <location filename="../src/mirall/application.cpp" line="316"/>
         <source>Credentials</source>
         <translation>Zugangsdaten</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="312"/>
+        <location filename="../src/mirall/application.cpp" line="308"/>
         <source>Error: Could not retrieve the password!</source>
         <translation>Fehler:  Das Passwort konnte nicht abgerufen werden!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="314"/>
+        <location filename="../src/mirall/application.cpp" line="310"/>
         <source>Password dialog was canceled!</source>
         <translation>Die Passwortabfrage wurde abgebrochen!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="352"/>
-        <location filename="../src/mirall/application.cpp" line="361"/>
+        <location filename="../src/mirall/application.cpp" line="348"/>
+        <location filename="../src/mirall/application.cpp" line="357"/>
         <source>No %1 Connection</source>
         <translation>Keine %1-Verbindung</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="353"/>
+        <location filename="../src/mirall/application.cpp" line="349"/>
         <source>&lt;p&gt;Your %1 credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ihre %1 Eingaben sind nicht korrekt.&lt;/p&gt;&lt;p&gt;Bitte berichtigen Sie diese, indem Sie den Konfigurations-Bildschirm über den Tray öffnen!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="362"/>
+        <location filename="../src/mirall/application.cpp" line="358"/>
         <source>&lt;p&gt;Either your user name or your password are not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Entweder Ihr Benutzername oder Ihr Passwort ist nicht korrekt.&lt;/p&gt;&lt;p&gt;Bitte berichtigen Sie dies, indem Sie den Konfigurations-Bildschirm öffnen!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="380"/>
+        <location filename="../src/mirall/application.cpp" line="376"/>
         <source>%1 Sync Started</source>
         <translation>%1 Sync gestartet</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="442"/>
+        <location filename="../src/mirall/application.cpp" line="438"/>
         <source>Open %1 in browser...</source>
         <translation>%1 im Browser öffnen...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="453"/>
+        <location filename="../src/mirall/application.cpp" line="449"/>
         <source>About...</source>
         <translation>Über...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="509"/>
+        <location filename="../src/mirall/application.cpp" line="505"/>
         <source>Open %1 folder</source>
         <translation>Ordner %1 öffnen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="522"/>
+        <location filename="../src/mirall/application.cpp" line="518"/>
         <source>Managed Folders:</source>
         <translation>Verwaltete Ordner:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="773"/>
-        <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4&lt;br&gt;using OCsync %5 and Qt %6.&lt;/small&gt;&lt;p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;Erstellt aus Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; vom %3, %4&lt;br&gt;mit OCsync %5 und Qt %6.&lt;/small&gt;&lt;p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="780"/>
+        <location filename="../src/mirall/application.cpp" line="764"/>
         <source>About %1</source>
         <translation>Über %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="790"/>
+        <location filename="../src/mirall/application.cpp" line="774"/>
         <source>Confirm Folder Remove</source>
         <translation>Löschen des Ordners bestätigen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="791"/>
+        <location filename="../src/mirall/application.cpp" line="775"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>Soll der Upload-Ordner &lt;i&gt;%1&lt;/i&gt; wirklich gelöscht werden?</translation>
     </message>
@@ -458,32 +453,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="956"/>
+        <location filename="../src/mirall/application.cpp" line="944"/>
         <source>Sync is running.</source>
         <translation>Synchronisation läuft.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="960"/>
+        <location filename="../src/mirall/application.cpp" line="948"/>
         <source>Server is currently not available.</source>
         <translation>Der Server ist momentan nicht erreichbar.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="965"/>
+        <location filename="../src/mirall/application.cpp" line="953"/>
         <source>Last Sync was successful.</source>
         <translation>Die letzte Synchronisation war erfolgreich.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="971"/>
+        <location filename="../src/mirall/application.cpp" line="959"/>
         <source>Syncing Error.</source>
         <translation>Fehler bei der Synchronisation.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="977"/>
+        <location filename="../src/mirall/application.cpp" line="965"/>
         <source>Setup Error.</source>
         <translation>Setup-Fehler.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="980"/>
+        <location filename="../src/mirall/application.cpp" line="968"/>
         <source>Undefined Error State.</source>
         <translation>Undefinierter Fehler-Zustand.</translation>
     </message>
@@ -511,27 +506,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="833"/>
+        <location filename="../src/mirall/application.cpp" line="817"/>
         <source>Sync Running</source>
         <translation>Synchronisation läuft</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="834"/>
+        <location filename="../src/mirall/application.cpp" line="818"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Die Synchronistation läuft gerade.&lt;br/&gt;Wollen Sie diese beenden?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="949"/>
+        <location filename="../src/mirall/application.cpp" line="933"/>
         <source>Undefined State.</source>
         <translation>Undefinierter Zustand.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="952"/>
+        <location filename="../src/mirall/application.cpp" line="936"/>
         <source>Waits to start syncing.</source>
         <translation>Wartet auf Beginn der Synchronistation</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="985"/>
+        <location filename="../src/mirall/application.cpp" line="940"/>
+        <source>Preparing for sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="973"/>
         <source> (Sync is paused)</source>
         <translation>(Synchronisation pausiert)</translation>
     </message>
@@ -540,7 +540,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="1002"/>
+        <location filename="../src/mirall/application.cpp" line="990"/>
         <source>No sync folders configured.</source>
         <translation>Keine Sync-Ordner konfiguriert.</translation>
     </message>
@@ -548,7 +548,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="300"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="308"/>
         <source>CSync create failed.</source>
         <translation>CSync-Erstellung fehlgeschlagen.</translation>
     </message>
@@ -761,29 +761,6 @@ Please write a bug report.</source>
         <location filename="../src/mirall/credentialstore.cpp" line="241"/>
         <source>No password entry found in keychain. Please reconfigure.</source>
         <translation>Kein Passwort-Eintrag im Passwort-Speicher gefunden. Bitte durchlaufen Sie die Konfiguration erneut.</translation>
-    </message>
-</context>
-<context>
-    <name>Mirall::DownloadNotifier</name>
-    <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="308"/>
-        <source>New file available</source>
-        <translation>Neue Datei verfügbar</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="308"/>
-        <source>&apos;%1&apos; has been synced to this machine.</source>
-        <translation>&apos;%1&apos; wurde mit diesem Gerät synchronisiert.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="310"/>
-        <source>New files available</source>
-        <translation>Neue Dateien sind verfügbar</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/mirall/owncloudfolder.cpp" line="310"/>
-        <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
-        <translation><numerusform>&apos;%1&apos; und %n andere Datei(en) wurde(n) mit diesem Gerät synchronisiert.</numerusform><numerusform>&apos;%1&apos; und %n andere Datei(en) wurde(n) mit diesem Gerät synchronisiert.</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1366,6 +1343,57 @@ Das Setup kann nicht ausgeführt werden.</translation>
     </message>
 </context>
 <context>
+    <name>Mirall::ServerActionNotifier</name>
+    <message>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="321"/>
+        <source>New file available</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="321"/>
+        <source>&apos;%1&apos; has been synced to this machine.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="323"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="331"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="339"/>
+        <source>New files available</source>
+        <translation type="unfinished"/>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/mirall/owncloudfolder.cpp" line="323"/>
+        <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="329"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="337"/>
+        <source>File removed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="329"/>
+        <source>&apos;%1&apos; has been removed.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/mirall/owncloudfolder.cpp" line="331"/>
+        <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="337"/>
+        <source>&apos;%1&apos; has been updated.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/mirall/owncloudfolder.cpp" line="339"/>
+        <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+</context>
+<context>
     <name>Mirall::SslErrorDialog</name>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="29"/>
@@ -1548,7 +1576,7 @@ Das Setup kann nicht ausgeführt werden.</translation>
 <context>
     <name>Mirall::ownCloudFolder</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="230"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="227"/>
         <source>The CSync thread terminated.</source>
         <translation>Der CSync-Thread wurde beendet.</translation>
     </message>
@@ -1709,6 +1737,11 @@ p, li { white-space: pre-wrap; }
         <translation>Server-&amp;Adresse</translation>
     </message>
     <message>
+        <location filename="../src/mirall/owncloudsetuppage.ui" line="120"/>
+        <source>&amp;Do not store password on local machine</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="140"/>
         <source>https://</source>
         <translation>https://</translation>
@@ -1752,11 +1785,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/owncloudsetuppage.ui" line="117"/>
         <source>Do not allow the local storage of the password.</source>
         <translation>Verbiete die Speicherung des Passwortes auf diesem System.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetuppage.ui" line="120"/>
-        <source>&amp;Do not store password on local machine.</source>
-        <translation>&amp;Das Passwort nicht auf diesem Computer speichern.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="36"/>
@@ -1979,47 +2007,42 @@ p, li { white-space: pre-wrap; }
         <translation>Proxy-Einstellungen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/proxydialog.ui" line="26"/>
-        <source>Configure Proxies</source>
-        <translation>Proxy Einrichten</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/proxydialog.ui" line="43"/>
+        <location filename="../src/mirall/proxydialog.ui" line="50"/>
         <source>No Proxy</source>
         <translation>Kein Proxy</translation>
     </message>
     <message>
-        <location filename="../src/mirall/proxydialog.ui" line="53"/>
+        <location filename="../src/mirall/proxydialog.ui" line="60"/>
         <source>Use system proxy</source>
         <translation>Benutze System-Proxy</translation>
     </message>
     <message>
-        <location filename="../src/mirall/proxydialog.ui" line="60"/>
+        <location filename="../src/mirall/proxydialog.ui" line="67"/>
         <source>Manual proxy configuration</source>
         <translation>Manuelle Proxy-Konfiguration</translation>
     </message>
     <message>
-        <location filename="../src/mirall/proxydialog.ui" line="90"/>
+        <location filename="../src/mirall/proxydialog.ui" line="97"/>
         <source>User</source>
         <translation>Benutzer</translation>
     </message>
     <message>
-        <location filename="../src/mirall/proxydialog.ui" line="116"/>
+        <location filename="../src/mirall/proxydialog.ui" line="123"/>
         <source>Password</source>
         <translation>Passwort</translation>
     </message>
     <message>
-        <location filename="../src/mirall/proxydialog.ui" line="142"/>
+        <location filename="../src/mirall/proxydialog.ui" line="149"/>
         <source>Port</source>
         <translation>Port</translation>
     </message>
     <message>
-        <location filename="../src/mirall/proxydialog.ui" line="149"/>
+        <location filename="../src/mirall/proxydialog.ui" line="156"/>
         <source>Host</source>
         <translation>Host</translation>
     </message>
     <message>
-        <location filename="../src/mirall/proxydialog.ui" line="172"/>
+        <location filename="../src/mirall/proxydialog.ui" line="179"/>
         <source>Proxy server requires password</source>
         <translation>Der Proxyserver erfordert ein Passwort</translation>
     </message>
