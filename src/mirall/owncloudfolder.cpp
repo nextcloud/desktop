@@ -123,7 +123,8 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     _syncResult.clearErrors();
     // we now have watchers for everything, so every sync is remote.
     _syncResult.setLocalRunOnly( false );
-    Folder::startSync( pathList );
+    _syncResult.setStatus( SyncResult::SyncPrepare );
+    emit syncStateChange();
 
     QString url = replaceScheme(_secondPath);
 
@@ -150,13 +151,14 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     connect(_csync, SIGNAL(csyncUnavailable()), SLOT(slotCsyncUnavailable()), Qt::QueuedConnection);
     _thread->start();
     QMetaObject::invokeMethod(_csync, "startSync", Qt::QueuedConnection);
-
+    emit syncStarted();
 }
 
 void ownCloudFolder::slotCSyncStarted()
 {
     qDebug() << "    * csync thread started";
-    emit syncStarted();
+    _syncResult.setStatus(SyncResult::SyncRunning);
+    emit syncStateChange();
 }
 
 void ownCloudFolder::slotCSyncError(const QString& err)

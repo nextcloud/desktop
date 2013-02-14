@@ -124,6 +124,7 @@ QIcon ownCloudTheme::syncStateIcon( SyncResult::Status status, bool sysTray ) co
     case SyncResult::SyncRunning:
         statusIcon = QLatin1String("state-sync");
         break;
+    case SyncResult::SyncPrepare:
     case SyncResult::Success:
         statusIcon = QLatin1String("state-ok");
         break;

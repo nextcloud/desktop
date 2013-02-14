@@ -92,6 +92,7 @@ private:
 
     QString _source;
     QString _target;
+    bool _needsUpdate;
 };
 }
 

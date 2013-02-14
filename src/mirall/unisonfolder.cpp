@@ -61,6 +61,8 @@ bool UnisonFolder::isBusy() const
 void UnisonFolder::startSync(const QStringList &pathList)
 {
     QMutexLocker locker(&_syncMutex);
+    _syncResult.setStatus( SyncResult::SyncRunning );
+    emit syncStateChange();
 
     emit syncStarted();
 

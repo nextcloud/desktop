@@ -21,6 +21,10 @@ public:
         return item._file == this->_file;
     }
 
+    bool isEmpty() const {
+        return _file.isEmpty();
+    }
+
     // variables
     QString _file;
     QString _renameTarget;

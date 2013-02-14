@@ -936,6 +936,10 @@ void Application::computeOverallSyncStatus()
                 folderMessage = tr( "Waits to start syncing." );
                 overallResult.setStatus( SyncResult::NotYetStarted );
                 break;
+            case SyncResult::SyncPrepare:
+                folderMessage = tr( "Preparing for sync." );
+                overallResult.setStatus( SyncResult::SyncPrepare );
+                break;
             case SyncResult::SyncRunning:
                 folderMessage = tr( "Sync is running." );
                 overallResult.setStatus( SyncResult::SyncRunning );

@@ -31,6 +31,7 @@ public:
     {
       Undefined,
       NotYetStarted,
+      SyncPrepare,
       SyncRunning,
       Success,
       Error,

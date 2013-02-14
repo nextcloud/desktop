@@ -71,6 +71,7 @@ QIcon mirallTheme::syncStateIcon( SyncResult::Status status, bool sysTray ) cons
         statusIcon = QLatin1String("dialog-close");
         break;
     case SyncResult::NotYetStarted:
+    case SyncResult::SyncPrepare:
         statusIcon = QLatin1String("task-ongoing");
         break;
     case SyncResult::SyncRunning:

@@ -58,6 +58,8 @@ void CSyncFolder::startSync(const QStringList &pathList)
     delete _thread;
     _errors.clear();
     _csyncError = false;
+    _syncResult.setStatus( SyncResult::SyncRunning );
+    emit syncStateChange();
 
     _thread = new QThread(this);
     _csync = new CSyncThread( path(), secondPath() );

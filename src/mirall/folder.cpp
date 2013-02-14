@@ -247,12 +247,6 @@ void Folder::evaluateSync(const QStringList &pathList)
 
 }
 
-void Folder::startSync( const QStringList &pathList )
-{
-    _syncResult.setStatus( SyncResult::SyncRunning );
-    emit syncStateChange();
-}
-
 void Folder::slotPollTimerTimeout()
 {
     qDebug() << "* Polling" << alias() << "for changes. Ignoring all pending events until now";

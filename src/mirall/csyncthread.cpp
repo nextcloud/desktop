@@ -228,6 +228,14 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
 
     switch(file->instruction) {
     case CSYNC_INSTRUCTION_NONE:
+    case CSYNC_INSTRUCTION_IGNORE:
+        break;
+    default:
+        if (!_needsUpdate)
+            _needsUpdate = true;
+    }
+    switch(file->instruction) {
+    case CSYNC_INSTRUCTION_NONE:
         // No need to do anything.
         return re;
         break;
@@ -289,10 +297,9 @@ void CSyncThread::startSync()
     bool doTreeWalk = true;
     int proxyPort = _proxy.port();
 
-    emit(started());
-
     _mutex.lock();
     _syncedItems.clear();
+    _needsUpdate = false;
 
     if( csync_create(&csync,
                      _source.toUtf8().data(),
@@ -375,6 +382,9 @@ void CSyncThread::startSync()
          qDebug() << "Error in remote treewalk.";
          doTreeWalk = false;
     }
+
+    if (_needsUpdate)
+        emit(started());
 
     if( csync_propagate(csync) < 0 ) {
         CSYNC_ERROR_CODE err = csync_get_error( csync );
