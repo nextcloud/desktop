@@ -64,7 +64,6 @@ set(libsync_SRCS
     mirall/folderman.cpp
     mirall/folder.cpp
     mirall/folderwatcher.cpp
-    mirall/gitfolder.cpp
     mirall/syncresult.cpp
     mirall/unisonfolder.cpp
     mirall/networklocation.cpp
@@ -85,7 +84,6 @@ set(libsync_HEADERS
     mirall/folderman.h
     mirall/folder.h
     mirall/folderwatcher.h
-    mirall/gitfolder.h
     mirall/unisonfolder.h
     mirall/csyncfolder.h
     mirall/owncloudfolder.h
