@@ -300,26 +300,27 @@ void CSyncThread::startSync()
     _mutex.lock();
     _syncedItems.clear();
     _needsUpdate = false;
+    _mutex.unlock();
 
     if( csync_create(&csync,
                      _source.toUtf8().data(),
                      _target.toUtf8().data()) < 0 ) {
         emit csyncError( tr("CSync create failed.") );
     }
-    _csyncConfigDir = QString::fromUtf8( csync_get_config_dir( csync ));
+
+    MirallConfigFile cfg;
+    csync_set_config_dir( csync, cfg.configPath().toUtf8() );
+
+    _mutex.lock();
+    _csyncConfigDir = cfg.configPath();
     _mutex.unlock();
 
     csync_enable_conflictcopys(csync);
-
-    MirallConfigFile cfg;
     QString excludeList = cfg.excludeFile();
-
     if( !excludeList.isEmpty() ) {
         qDebug() << "==== added CSync exclude List: " << excludeList.toUtf8();
         csync_add_exclude_list( csync, excludeList.toUtf8() );
     }
-
-    csync_set_config_dir( csync, cfg.configPath().toUtf8() );
 
     QTime t;
     t.start();
