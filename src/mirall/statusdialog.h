@@ -78,7 +78,6 @@ signals:
     void enableFolderAlias( const QString&, const bool );
     void infoFolderAlias( const QString& );
     void openFolderAlias( const QString& );
-    void openLogBrowser();
 
     /* start the add a folder wizard. */
     void addASync();
