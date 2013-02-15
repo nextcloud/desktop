@@ -55,6 +55,7 @@ void UpdateDetector::versionCheck( Theme *theme )
     }
     url.addQueryItem( QLatin1String("version"), ver );
     url.addQueryItem( QLatin1String("platform"), platform );
+    url.addQueryItem( QLatin1String("oem"),  theme->appName());
 
     _accessManager->get( QNetworkRequest( url ));
 }
