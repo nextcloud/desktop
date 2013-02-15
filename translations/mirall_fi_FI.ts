@@ -548,7 +548,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="308"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="339"/>
         <source>CSync create failed.</source>
         <translation>Csync-synkronoinnin luominen ei onnistunut.</translation>
     </message>
@@ -1346,19 +1346,19 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="321"/>
         <source>New file available</source>
-        <translation type="unfinished"/>
+        <translation>Uusi tiedosto saataville</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="321"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; on synkronoitu tälle koneelle.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="323"/>
         <location filename="../src/mirall/owncloudfolder.cpp" line="331"/>
         <location filename="../src/mirall/owncloudfolder.cpp" line="339"/>
         <source>New files available</source>
-        <translation type="unfinished"/>
+        <translation>Uusia tiedostoja saatavilla</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="323"/>
@@ -1553,12 +1553,12 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::UpdateDetector</name>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="114"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="115"/>
         <source>Client Version Check</source>
         <translation>Asiakasohjelmiston version tarkistus</translation>
     </message>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="116"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="117"/>
         <source>&lt;p&gt;A new version of the %1 client is available.</source>
         <translation>&lt;p&gt;Uusi versio %1-sovelluksesta on saatavilla.</translation>
     </message>
@@ -1567,7 +1567,7 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="117"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="118"/>
         <source>%1 is available. The installed version is %3.&lt;p/&gt;&lt;p&gt;For more information see &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</source>
         <translation>%1 on saatavilla. Asennettu versio on %3.&lt;p/&gt;&lt;p&gt;Lue lisää sivulta &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</translation>
     </message>

@@ -518,7 +518,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="940"/>
         <source>Preparing for sync.</source>
-        <translation type="unfinished"/>
+        <translation>Preparando para sincronizar</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="973"/>
@@ -538,7 +538,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="308"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="339"/>
         <source>CSync create failed.</source>
         <translation>Hubo un error al crear CSync.</translation>
     </message>
@@ -1336,50 +1336,50 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="321"/>
         <source>New file available</source>
-        <translation type="unfinished"/>
+        <translation>Nuevo archivo disponible</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="321"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; fue sincronizado con esta computadora.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="323"/>
         <location filename="../src/mirall/owncloudfolder.cpp" line="331"/>
         <location filename="../src/mirall/owncloudfolder.cpp" line="339"/>
         <source>New files available</source>
-        <translation type="unfinished"/>
+        <translation>Nuevos archivos disponibles</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="323"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; y otros %n archivo(s) han sido sincronizados con esta computadora.</numerusform><numerusform>&apos;%1&apos; y otros %n archivo(s) han sido sincronizados con esta computadora.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="329"/>
         <location filename="../src/mirall/owncloudfolder.cpp" line="337"/>
         <source>File removed</source>
-        <translation type="unfinished"/>
+        <translation>Archivo removido</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="329"/>
         <source>&apos;%1&apos; has been removed.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; fue removido</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="331"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; y otros %n archivo(s) han sido removidos.</numerusform><numerusform>&apos;%1&apos; y otros %n archivo(s) han sido removidos.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="337"/>
         <source>&apos;%1&apos; has been updated.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; ha sido actualizado</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="339"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; y otros %n archivo(s) han sido actualizados.</numerusform><numerusform>&apos;%1&apos; y otros %n archivo(s) han sido actualizados.</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1543,12 +1543,12 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::UpdateDetector</name>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="114"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="115"/>
         <source>Client Version Check</source>
         <translation>Comprobación de la version del cliente</translation>
     </message>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="116"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="117"/>
         <source>&lt;p&gt;A new version of the %1 client is available.</source>
         <translation>&lt;p&gt;Hay disponible wna nueva versión del cliente de %1.</translation>
     </message>
@@ -1557,7 +1557,7 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="117"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="118"/>
         <source>%1 is available. The installed version is %3.&lt;p/&gt;&lt;p&gt;For more information see &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</source>
         <translation>%1 está disponible. La versión instalada es %3.&lt;p/&gt;&lt;p&gt;Para más información mirá &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</translation>
     </message>
@@ -1718,7 +1718,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="120"/>
         <source>&amp;Do not store password on local machine</source>
-        <translation type="unfinished"/>
+        <translation>&amp;No guarde la contraseña en el equipo local</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="140"/>

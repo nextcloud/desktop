@@ -549,7 +549,7 @@ p, li { white-space: pre-wrap; }⏎
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="308"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="339"/>
         <source>CSync create failed.</source>
         <translation>Falló CSync al crearse.</translation>
     </message>
@@ -1348,19 +1348,19 @@ No se puede completar la instalación.</translation>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="321"/>
         <source>New file available</source>
-        <translation type="unfinished"/>
+        <translation>Nuevo archivo disponible</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="321"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; se ha sincronizado en este equipo.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="323"/>
         <location filename="../src/mirall/owncloudfolder.cpp" line="331"/>
         <location filename="../src/mirall/owncloudfolder.cpp" line="339"/>
         <source>New files available</source>
-        <translation type="unfinished"/>
+        <translation>Nuevos archivos disponibles</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="323"/>
@@ -1555,12 +1555,12 @@ No se puede completar la instalación.</translation>
 <context>
     <name>Mirall::UpdateDetector</name>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="114"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="115"/>
         <source>Client Version Check</source>
         <translation>Comprobación de la versión del cliente</translation>
     </message>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="116"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="117"/>
         <source>&lt;p&gt;A new version of the %1 client is available.</source>
         <translation>&lt;p&gt;Una nueva versión del cliente de %1 está disponible.</translation>
     </message>
@@ -1569,7 +1569,7 @@ No se puede completar la instalación.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="117"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="118"/>
         <source>%1 is available. The installed version is %3.&lt;p/&gt;&lt;p&gt;For more information see &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</source>
         <translation>%1 está disponible. La versión instalada es %3.&lt;p/&gt;&lt;p&gt;Para más información ver &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</translation>
     </message>

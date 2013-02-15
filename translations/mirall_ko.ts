@@ -550,7 +550,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="308"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="339"/>
         <source>CSync create failed.</source>
         <translation>CSync 생성 실패.</translation>
     </message>
@@ -1349,19 +1349,19 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="321"/>
         <source>New file available</source>
-        <translation type="unfinished"/>
+        <translation>새로운 파일 이용가능</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="321"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; 가 현재 장치에 동기화 되었습니다.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="323"/>
         <location filename="../src/mirall/owncloudfolder.cpp" line="331"/>
         <location filename="../src/mirall/owncloudfolder.cpp" line="339"/>
         <source>New files available</source>
-        <translation type="unfinished"/>
+        <translation>새로운 파일 이용가능</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="323"/>
@@ -1556,12 +1556,12 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::UpdateDetector</name>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="114"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="115"/>
         <source>Client Version Check</source>
         <translation>클라이언트 버전 확인</translation>
     </message>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="116"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="117"/>
         <source>&lt;p&gt;A new version of the %1 client is available.</source>
         <translation>&lt;p&gt;%1 클라이언트의 새 버전을 사용할 수 있습니다.</translation>
     </message>
@@ -1570,7 +1570,7 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="117"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="118"/>
         <source>%1 is available. The installed version is %3.&lt;p/&gt;&lt;p&gt;For more information see &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</source>
         <translation>%1이(가) 사용 가능합니다. 설치된 버전은 %3입니다.&lt;p/&gt;&lt;p&gt;더 많은 정보를 보려면 &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;을(를) 방문하십시오.&lt;/p&gt;</translation>
     </message>

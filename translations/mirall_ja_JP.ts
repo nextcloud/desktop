@@ -528,7 +528,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="940"/>
         <source>Preparing for sync.</source>
-        <translation type="unfinished"/>
+        <translation>同期の準備中。</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="973"/>
@@ -548,7 +548,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="308"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="339"/>
         <source>CSync create failed.</source>
         <translation>CSyncは作成に失敗しました。</translation>
     </message>
@@ -1347,50 +1347,50 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="321"/>
         <source>New file available</source>
-        <translation type="unfinished"/>
+        <translation>新しいファイルが利用可能です</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="321"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; はこの計算機と同期されました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="323"/>
         <location filename="../src/mirall/owncloudfolder.cpp" line="331"/>
         <location filename="../src/mirall/owncloudfolder.cpp" line="339"/>
         <source>New files available</source>
-        <translation type="unfinished"/>
+        <translation>新しいファイルが利用可能です</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="323"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; と %n 個の他のファイルはこのマシンと同期されました。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="329"/>
         <location filename="../src/mirall/owncloudfolder.cpp" line="337"/>
         <source>File removed</source>
-        <translation type="unfinished"/>
+        <translation>ファイルを削除しました</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="329"/>
         <source>&apos;%1&apos; has been removed.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; は削除されました。</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="331"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; と %n 個の他のファイルは削除されました。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="337"/>
         <source>&apos;%1&apos; has been updated.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; は更新されました。</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="339"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; と %n 個の他のファイルは更新されました。</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1554,12 +1554,12 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::UpdateDetector</name>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="114"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="115"/>
         <source>Client Version Check</source>
         <translation>クライアントのバージョンをチェック</translation>
     </message>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="116"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="117"/>
         <source>&lt;p&gt;A new version of the %1 client is available.</source>
         <translation>&lt;p&gt;%1 クライアントの新しいバージョンが利用可能です。</translation>
     </message>
@@ -1568,7 +1568,7 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="117"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="118"/>
         <source>%1 is available. The installed version is %3.&lt;p/&gt;&lt;p&gt;For more information see &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</source>
         <translation>%1 が利用可能です。インストールされているバージョンは %3 です。&lt;p/&gt;&lt;p&gt;より詳細な情報は &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt; を確認してください。&lt;/p&gt;</translation>
     </message>
@@ -1739,7 +1739,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="120"/>
         <source>&amp;Do not store password on local machine</source>
-        <translation type="unfinished"/>
+        <translation>パスワードをローカルマシンに保存しない(&amp;D)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="140"/>
