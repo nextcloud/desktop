@@ -289,6 +289,37 @@ int CSyncThread::treewalkError(TREE_WALK_FILE* file)
     return 0;
 }
 
+struct CSyncRunScopeHelper {
+    CSyncRunScopeHelper(CSYNC *_ctx, CSyncThread *_parent)
+        : ctx(_ctx), parent(_parent)
+    {
+        t.start();
+    }
+    ~CSyncRunScopeHelper() {
+        csync_destroy(ctx);
+
+        qDebug() << "CSync run took " << t.elapsed() << " Milliseconds";
+        emit(parent->finished());
+    }
+    CSYNC *ctx;
+    QTime t;
+    CSyncThread *parent;
+};
+
+void CSyncThread::handleSyncError(CSYNC *ctx, const char *state) {
+    CSYNC_ERROR_CODE err = csync_get_error( ctx );
+    const char *errMsg = csync_get_error_string( ctx );
+    QString errStr = csyncErrorToString(err, errMsg);
+    qDebug() << " #### ERROR during "<< state << ": " << errStr;
+    switch (err) {
+    case CSYNC_ERR_SERVICE_UNAVAILABLE:
+    case CSYNC_ERR_CONNECT:
+        emit csyncUnavailable();
+        break;
+    default:
+        emit csyncError(errStr);
+    }
+}
 
 void CSyncThread::startSync()
 {
@@ -322,8 +353,8 @@ void CSyncThread::startSync()
         csync_add_exclude_list( csync, excludeList.toUtf8() );
     }
 
-    QTime t;
-    t.start();
+    // cleans up behind us and emits finished() to ease error handling
+    CSyncRunScopeHelper helper(csync, this);
 
     csync_set_userdata(csync, this);
 
@@ -332,12 +363,8 @@ void CSyncThread::startSync()
     csync_set_progress_callback( csync, progress );
 
     if( csync_init(csync) < 0 ) {
-        CSYNC_ERROR_CODE err = csync_get_error( csync );
-        const char *errMsg = csync_get_error_string( csync );
-        QString errStr = csyncErrorToString(err, errMsg );
-        qDebug() << " #### ERROR csync_init: " << errStr;
-        emit csyncError(errStr);
-        goto cleanup;
+        handleSyncError(csync, "csync_init");
+        return;
     }
 
     // set module properties, mainly the proxy information.
@@ -352,51 +379,31 @@ void CSyncThread::startSync()
 
     qDebug() << "#### Update start #################################################### >>";
     if( csync_update(csync) < 0 ) {
-        CSYNC_ERROR_CODE err = csync_get_error( csync );
-        const char *errMsg = csync_get_error_string( csync );
-        QString errStr = csyncErrorToString(err, errMsg);
-        qDebug() << " #### ERROR csync_update: " << errStr;
-        if (err == CSYNC_ERR_SERVICE_UNAVAILABLE)
-            emit csyncUnavailable();
-        else
-            emit csyncError(errStr);
-        goto cleanup;
+        handleSyncError(csync, "csync_update");
+        return;
     }
     qDebug() << "<<#### Update end ###########################################################";
 
-
-
     if( csync_reconcile(csync) < 0 ) {
-        CSYNC_ERROR_CODE err = csync_get_error( csync );
-        const char *errMsg = csync_get_error_string( csync );
-        QString errStr = csyncErrorToString(err, errMsg);
-        qDebug() << " #### ERROR csync_reconcile: " << errStr;
-        emit csyncError(errStr);
-        goto cleanup;
+        handleSyncError(csync, "cysnc_reconcile");
+        return;
     }
 
     if( csync_walk_local_tree(csync, &treewalkLocal, 0) < 0 ) {
-         qDebug() << "Error in local treewalk.";
-         doTreeWalk = false;
+        qDebug() << "Error in local treewalk.";
+        doTreeWalk = false;
     }
     if( doTreeWalk && csync_walk_remote_tree(csync, &treewalkRemote, 0) < 0 ) {
-         qDebug() << "Error in remote treewalk.";
-         doTreeWalk = false;
+        qDebug() << "Error in remote treewalk.";
+        doTreeWalk = false;
     }
 
     if (_needsUpdate)
         emit(started());
 
     if( csync_propagate(csync) < 0 ) {
-        CSYNC_ERROR_CODE err = csync_get_error( csync );
-        const char *errMsg = csync_get_error_string( csync );
-        QString errStr = csyncErrorToString(err, errMsg);
-        qDebug() << " #### ERROR csync_propagate: " << errStr;
-        if (err == CSYNC_ERR_SERVICE_UNAVAILABLE)
-            emit csyncUnavailable();
-        else
-            emit csyncError(errStr);
-        goto cleanup;
+        handleSyncError(csync, "cysnc_reconcile");
+        return;
     }
 
     if( csync_walk_local_tree(csync, &walkFinalize, 0) < 0 ||
@@ -406,12 +413,6 @@ void CSyncThread::startSync()
         // emit the treewalk results.
         emit treeWalkResult(_syncedItems);
     }
-
-cleanup:
-    csync_destroy(csync);
-
-    qDebug() << "CSync run took " << t.elapsed() << " Milliseconds";
-    emit(finished());
 }
 
 void CSyncThread::setConnectionDetails( const QString &user, const QString &passwd, const QNetworkProxy &proxy )
