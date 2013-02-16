@@ -518,7 +518,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="940"/>
         <source>Preparing for sync.</source>
-        <translation type="unfinished"/>
+        <translation>Perparant la sincronització.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="973"/>
@@ -1354,33 +1354,33 @@ No s&apos;ha pogut configurar</translation>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="323"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; i %n altres fitxer(s) s&apos;han sincronitzat amb aquest equip.</numerusform><numerusform>&apos;%1&apos; i %n altres fitxer(s) s&apos;han sincronitzat amb aquest equip.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="329"/>
         <location filename="../src/mirall/owncloudfolder.cpp" line="337"/>
         <source>File removed</source>
-        <translation type="unfinished"/>
+        <translation>Fitxer esborrat</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="329"/>
         <source>&apos;%1&apos; has been removed.</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha esborrat &apos;%1&apos;</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="331"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; i %n altres fitxer(s) s&apos;han esborrat.</numerusform><numerusform>&apos;%1&apos; i %n altres fitxer(s) s&apos;han esborrat.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="337"/>
         <source>&apos;%1&apos; has been updated.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; s&apos;ha actualitzat</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="339"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; i %n altres fitxer(s) s&apos;han actualitzat.</numerusform><numerusform>&apos;%1&apos; i %n altres fitxer(s) s&apos;han actualitzat.</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1729,7 +1729,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="120"/>
         <source>&amp;Do not store password on local machine</source>
-        <translation type="unfinished"/>
+        <translation>&amp;No desis contrasenyes a l&apos;equip local</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="140"/>

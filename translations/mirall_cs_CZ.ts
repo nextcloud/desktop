@@ -1364,7 +1364,7 @@ Nastavení nelze provést.</translation>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="323"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform> &apos;%1&apos; a %n další soubor byly synchronizovány s tímto počítačem.</numerusform><numerusform> &apos;%1&apos; a %n další soubory byly synchronizovány s tímto počítačem.</numerusform><numerusform> &apos;%1&apos; a %n dalších souborů bylo synchronizováno s tímto počítačem.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="329"/>
@@ -1380,7 +1380,7 @@ Nastavení nelze provést.</translation>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="331"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform> &apos;%1&apos; a %n další soubor byly odebrány.</numerusform><numerusform> &apos;%1&apos; a %n další soubory byly odebrány.</numerusform><numerusform> &apos;%1&apos; a %n dalších souborů bylo odebráno.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="337"/>
@@ -1390,7 +1390,7 @@ Nastavení nelze provést.</translation>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="339"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform> &apos;%1&apos; a %n další soubor byly aktualizovány.</numerusform><numerusform> &apos;%1&apos; a %n další soubory byly aktualizovány.</numerusform><numerusform> &apos;%1&apos; a %n dalších souborů bylo aktualizováno.</numerusform></translation>
     </message>
 </context>
 <context>

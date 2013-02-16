@@ -760,7 +760,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/credentialstore.cpp" line="241"/>
         <source>No password entry found in keychain. Please reconfigure.</source>
-        <translation type="unfinished"/>
+        <translation>Ни одного введённого пароля не нашлось в ключевой цепочке. Пожалуйста, переконфигурируйте.</translation>
     </message>
 </context>
 <context>
@@ -1296,7 +1296,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="70"/>
         <source>&lt;p&gt;In order to connect to your %1 server, you need to provide the server address as well as your credentials.&lt;/p&gt;&lt;p&gt;This wizard will guide you through the process.&lt;p&gt;&lt;p&gt;If you have not received this information, please contact your %1 provider.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Для подключения к Вашему серверу %1 Вам нужно предоставить как адрес сервера, так и доступ.&lt;/p&gt;&lt;p&gt; Этот помошник поможет Вам с процессом.&lt;p&gt;&lt;p&gt; Если Вы не получили эту информацию, пожалуйста, обратитесь к Вашему провайдеру %1.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="75"/>
@@ -1370,12 +1370,12 @@ Setup can not be done.</source>
         <location filename="../src/mirall/owncloudfolder.cpp" line="329"/>
         <location filename="../src/mirall/owncloudfolder.cpp" line="337"/>
         <source>File removed</source>
-        <translation type="unfinished"/>
+        <translation>Файл удалён</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="329"/>
         <source>&apos;%1&apos; has been removed.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; был удалён</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="331"/>
@@ -1385,7 +1385,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="337"/>
         <source>&apos;%1&apos; has been updated.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; был обновлён</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="339"/>
@@ -1739,7 +1739,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="120"/>
         <source>&amp;Do not store password on local machine</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Не хранить пароль на локальной машине</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="140"/>

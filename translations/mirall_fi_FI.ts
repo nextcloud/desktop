@@ -528,7 +528,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="940"/>
         <source>Preparing for sync.</source>
-        <translation type="unfinished"/>
+        <translation>Valmistellaan synkronointia varten.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="973"/>
@@ -1369,12 +1369,12 @@ Setup can not be done.</source>
         <location filename="../src/mirall/owncloudfolder.cpp" line="329"/>
         <location filename="../src/mirall/owncloudfolder.cpp" line="337"/>
         <source>File removed</source>
-        <translation type="unfinished"/>
+        <translation>Tiedosto poistettu</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="329"/>
         <source>&apos;%1&apos; has been removed.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; on poistettu.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="331"/>
@@ -1384,7 +1384,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="337"/>
         <source>&apos;%1&apos; has been updated.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; on päivitetty.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="339"/>
@@ -1728,7 +1728,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="120"/>
         <source>&amp;Do not store password on local machine</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Älä tallenna salasanaa paikalliselle koneelle</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="140"/>
