@@ -192,6 +192,11 @@ int Folder::pollInterval() const
     return _pollTimer->interval();
 }
 
+void Folder::setSyncState(SyncResult::Status state)
+{
+    _syncResult.setStatus(state);
+}
+
 void Folder::setPollInterval(int milliseconds)
 {
     _pollTimer->setInterval( milliseconds );

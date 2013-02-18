@@ -312,6 +312,7 @@ void StatusDialog::slotAddFolder( Folder *folder )
     QStandardItem *item = new QStandardItem();
     folderToModelItem( item, folder );
     _model->appendRow( item );
+    slotCheckConnection();
 }
 
 
@@ -359,6 +360,7 @@ void StatusDialog::slotUpdateFolderState( Folder *folder )
     } else {
         // the dialog is not visible.
     }
+    slotCheckConnection();
 }
 
 void StatusDialog::folderToModelItem( QStandardItem *item, Folder *f )
@@ -399,6 +401,7 @@ void StatusDialog::slotRemoveFolder()
             // _model->removeRow( selected.row() );
         }
     }
+    slotCheckConnection();
 }
 
 void StatusDialog::slotRemoveSelectedFolder()
@@ -408,6 +411,7 @@ void StatusDialog::slotRemoveSelectedFolder()
         _model->removeRow( selected.row() );
     }
     buttonsSetEnabled();
+    slotCheckConnection();
 }
 
 void StatusDialog::slotFetchFolder()

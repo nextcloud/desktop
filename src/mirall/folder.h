@@ -181,6 +181,7 @@ protected:
      * doing a full sync to see if the remote changed
      */
     int pollInterval() const;
+    void setSyncState(SyncResult::Status state);
 
     FolderWatcher *_watcher;
     int _errorCount;

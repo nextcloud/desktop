@@ -250,17 +250,10 @@ void Application::slotOwnCloudFound( const QString& url, const QString& versionS
 
 void Application::slotNoOwnCloudFound( QNetworkReply* reply )
 {
-    qDebug() << "** Application: NO ownCloud found!";
-    QString msg;
-    if( reply ) {
-        QString url( reply->url().toString() );
-        url.remove( QLatin1String("/status.php") );
-        msg = tr("<p>The %1 at %2 could not be reached.</p>").arg(_theme->appName()).arg( url );
-        msg += tr("<p>The detailed error message is<br/><tt>%1</tt></p>").arg( reply->errorString() );
-    }
-    msg += tr("<p>Please check your configuration by clicking on the tray icon.</p>");
+    Q_UNUSED(reply)
 
-    QMessageBox::warning(0, tr("%1 Connection Failed").arg(_theme->appName()), msg );
+    qDebug() << "** Application: NO ownCloud found! Going offline";
+
     _actionAddFolder->setEnabled( false );
 
     // Disconnect.
@@ -274,6 +267,7 @@ void Application::slotNoOwnCloudFound( QNetworkReply* reply )
                 this,SLOT(slotAuthCheck(QString,QNetworkReply*)));
 
     setupContextMenu();
+    QTimer::singleShot( 30*1000, this, SLOT( slotStartFolderSetup() ));
 }
 
 void Application::slotFetchCredentials()
