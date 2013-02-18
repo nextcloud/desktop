@@ -134,6 +134,7 @@ Application::Application(int &argc, char **argv) :
     _folderMan = new FolderMan(this);
     connect( _folderMan, SIGNAL(folderSyncStateChange(QString)),
              this,SLOT(slotSyncStateChange(QString)));
+    _folderMan->setSyncEnabled(false);
 
     /* use a signal mapper to map the open requests to the alias names */
     _folderOpenActionMapper = new QSignalMapper(this);
@@ -171,6 +172,11 @@ Application::Application(int &argc, char **argv) :
     setupActions();
     setupSystemTray();
     setupProxy();
+
+
+    int cnt = _folderMan->setupFolders();
+    _statusDialog->setFolderList( _folderMan->map() );
+
 
     QObject::connect( this, SIGNAL(messageReceived(QString)),
                          this, SLOT(slotOpenStatus()) );
@@ -358,19 +364,18 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
 
     if( ok ) {
         qDebug() << "######## Credentials are ok!";
-        int cnt = _folderMan->setupFolders();
-        if( cnt ) {
-            _tray->setIcon( _theme->syncStateIcon( SyncResult::NotYetStarted, true ) );
-            _tray->show();
+        _folderMan->setSyncEnabled(true);
+        QMetaObject::invokeMethod(_folderMan, "slotScheduleFolderSync");
 
-            if( _tray )
-                _tray->showMessage(tr("%1 Sync Started").arg(_theme->appName()),
-                                   tr("Sync started for %1 configured sync folder(s).").arg(cnt));
+        _tray->setIcon( _theme->syncStateIcon( SyncResult::NotYetStarted, true ) );
+        _tray->show();
 
-            _statusDialog->setFolderList( _folderMan->map() );
-            computeOverallSyncStatus();
+        int cnt = _folderMan->map().size();
+        if( _tray )
+            _tray->showMessage(tr("%1 Sync Started").arg(_theme->appName()),
+                               tr("Sync started for %1 configured sync folder(s).").arg(cnt));
+        computeOverallSyncStatus();
 
-        }
         _actionAddFolder->setEnabled( true );
         _actionOpenStatus->setEnabled( true );
         setupContextMenu();
