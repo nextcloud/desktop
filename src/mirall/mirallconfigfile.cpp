@@ -405,6 +405,20 @@ bool MirallConfigFile::ownCloudSkipUpdateCheck( const QString& connection ) cons
     return skipIt;
 }
 
+void MirallConfigFile::setOwnCloudSkipUpdateCheck( bool skip, const QString& connection )
+{
+    QString con( connection );
+    if( connection.isEmpty() ) con = defaultConnection();
+
+    QSettings settings( configFile(), QSettings::IniFormat );
+    settings.setIniCodec( "UTF-8" );
+    settings.beginGroup( con );
+
+    settings.setValue( QLatin1String("skipUpdateCheck"), QVariant(skip) );
+    settings.sync();
+
+}
+
 int MirallConfigFile::maxLogLines() const
 {
     QSettings settings( configFile(), QSettings::IniFormat );
@@ -412,6 +426,16 @@ int MirallConfigFile::maxLogLines() const
     settings.beginGroup(QLatin1String("Logging"));
     int logLines = settings.value( QLatin1String("maxLogLines"), 20000 ).toInt();
     return logLines;
+}
+
+void MirallConfigFile::setMaxLogLines( int lines )
+{
+    QSettings settings( configFile(), QSettings::IniFormat );
+    settings.setIniCodec( "UTF-8" );
+
+    settings.beginGroup(QLatin1String("Logging"));
+    settings.setValue(QLatin1String("maxLogLines"), lines);
+    settings.sync();
 }
 
 // remove a custom config file.

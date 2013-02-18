@@ -71,8 +71,10 @@ public:
 
     // max count of lines in the log window
     int  maxLogLines() const;
+    void setMaxLogLines(int);
 
     bool ownCloudSkipUpdateCheck( const QString& connection = QString() ) const;
+    void setOwnCloudSkipUpdateCheck( bool, const QString& );
 
     /* Server poll interval in milliseconds */
     int remotePollInterval( const QString& connection = QString() ) const;
