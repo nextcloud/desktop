@@ -172,6 +172,15 @@ void OwncloudSetupWizard::testOwnCloudConnect()
                                  _ocWizard->field(QLatin1String("secureConnect")).toBool(),
                                  _ocWizard->field(QLatin1String("PwdNoLocalStore")).toBool() );
 
+    // If there is already a config, take its proxy config.
+    if( ownCloudInfo::instance()->isConfigured() ) {
+        MirallConfigFile prevCfg;
+        if( prevCfg.proxyType() != QNetworkProxy::DefaultProxy ) {
+            cfgFile.setProxyType( prevCfg.proxyType(), prevCfg.proxyHostName(), prevCfg.proxyPort(),
+                                  prevCfg.proxyUser(), prevCfg.proxyPassword() );
+        }
+    }
+
     // now start ownCloudInfo to check the connection.
     ownCloudInfo* info = ownCloudInfo::instance();
     info->setCustomConfigHandle( _configHandle );
