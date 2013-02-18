@@ -275,14 +275,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="259"/>
         <source>&lt;p&gt;The detailed error message is&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Деталізоване повідомлення про помилку&lt;br/&gt;&lt;tt&gt;%1&lt;/tt&gt;&lt;/p&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="261"/>
         <source>&lt;p&gt;Please check your configuration by clicking on the tray icon.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Будь ласка, перевірте свої налаштування, натиснувши іконку в треї.&lt;/p&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>ownCloud Connection Failed</source>
@@ -305,7 +303,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="377"/>
+        <location filename="../src/mirall/application.cpp" line="376"/>
         <source>Sync started for %1 configured sync folder(s).</source>
         <translation>Почалась синхронізація для %1 тек.</translation>
     </message>
@@ -314,27 +312,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="440"/>
+        <location filename="../src/mirall/application.cpp" line="436"/>
         <source>Open status...</source>
         <translation>Відкривається статус...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="443"/>
+        <location filename="../src/mirall/application.cpp" line="439"/>
         <source>Add folder...</source>
         <translation>Додати теку...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="445"/>
+        <location filename="../src/mirall/application.cpp" line="441"/>
         <source>Configure...</source>
         <translation>Налаштування...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="447"/>
+        <location filename="../src/mirall/application.cpp" line="443"/>
         <source>Configure proxy...</source>
         <translation>Налаштування проксі...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="451"/>
+        <location filename="../src/mirall/application.cpp" line="447"/>
         <source>Quit</source>
         <translation>Вийти</translation>
     </message>
@@ -343,104 +341,94 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="242"/>
+        <location filename="../src/mirall/application.cpp" line="245"/>
         <source>%1 Server Mismatch</source>
         <translation>Невідповідність %1 сервера</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="243"/>
+        <location filename="../src/mirall/application.cpp" line="246"/>
         <source>&lt;p&gt;The configured server for this client is too old.&lt;/p&gt;&lt;p&gt;Please update to the latest %1 server and restart the client.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Налаштований сервер для цього клієнта занадто старий.&lt;/p&gt;&lt;p&gt;Будь ласка, оновіть до останньої версії %1 сервер та оновіть клієнт.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="258"/>
-        <source>&lt;p&gt;The %1 at %2 could not be reached.&lt;/p&gt;</source>
-        <translation>&lt;p&gt; %1 на %2 не вдається знайти.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="263"/>
-        <source>%1 Connection Failed</source>
-        <translation>Збій відключення %1</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="288"/>
+        <location filename="../src/mirall/application.cpp" line="285"/>
         <source>Too many attempts to get a valid password.</source>
         <translation>Занадто багато спроб отримати вірний пароль.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="292"/>
+        <location filename="../src/mirall/application.cpp" line="289"/>
         <source>%1 user credentials are wrong. Please check configuration.</source>
         <translation>%1 облікові дані невірні. Будь ласка, перевірте налаштування.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="297"/>
-        <location filename="../src/mirall/application.cpp" line="316"/>
+        <location filename="../src/mirall/application.cpp" line="294"/>
+        <location filename="../src/mirall/application.cpp" line="313"/>
         <source>Credentials</source>
         <translation>Облікові дані</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="308"/>
+        <location filename="../src/mirall/application.cpp" line="305"/>
         <source>Error: Could not retrieve the password!</source>
         <translation>Помилка: не вдалося отримати пароль!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="310"/>
+        <location filename="../src/mirall/application.cpp" line="307"/>
         <source>Password dialog was canceled!</source>
         <translation>Діалог вводу пароля був скасований!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="348"/>
-        <location filename="../src/mirall/application.cpp" line="357"/>
+        <location filename="../src/mirall/application.cpp" line="345"/>
+        <location filename="../src/mirall/application.cpp" line="354"/>
         <source>No %1 Connection</source>
         <translation>Відсутнє %1 підключення</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="349"/>
+        <location filename="../src/mirall/application.cpp" line="346"/>
         <source>&lt;p&gt;Your %1 credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ваші %1 облікові дані помилкові.&lt;/p&gt;&lt;p&gt;Будь ласка, виправте їх шляхом запуску діалогу конфігурації із трея!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="358"/>
+        <location filename="../src/mirall/application.cpp" line="355"/>
         <source>&lt;p&gt;Either your user name or your password are not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ваше ім&apos;я користувача або пароль вказано не вірно.&lt;/p&gt;&lt;p&gt;Будь ласка, виправте їх шляхом запуску діалогу конфігурації із трея!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="376"/>
+        <location filename="../src/mirall/application.cpp" line="375"/>
         <source>%1 Sync Started</source>
         <translation>%1 синхронізація розпочата</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="438"/>
+        <location filename="../src/mirall/application.cpp" line="434"/>
         <source>Open %1 in browser...</source>
         <translation>Відкрити %1 у браузері...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="449"/>
+        <location filename="../src/mirall/application.cpp" line="445"/>
         <source>About...</source>
         <translation>Про...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="505"/>
+        <location filename="../src/mirall/application.cpp" line="501"/>
         <source>Open %1 folder</source>
         <translation>Відкрити %1 теку</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="518"/>
+        <location filename="../src/mirall/application.cpp" line="514"/>
         <source>Managed Folders:</source>
         <translation>Керовані теки:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="764"/>
+        <location filename="../src/mirall/application.cpp" line="760"/>
         <source>About %1</source>
         <translation>Про %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="774"/>
+        <location filename="../src/mirall/application.cpp" line="770"/>
         <source>Confirm Folder Remove</source>
         <translation>Підтвердіть видалення теки</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="775"/>
+        <location filename="../src/mirall/application.cpp" line="771"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>Ви дійсно бажаєто видалити теку завантаження  &lt;i&gt;%1&lt;/i&gt;?</translation>
     </message>
@@ -453,32 +441,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="944"/>
+        <location filename="../src/mirall/application.cpp" line="940"/>
         <source>Sync is running.</source>
         <translation>Синхронізація запущена.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="948"/>
+        <location filename="../src/mirall/application.cpp" line="944"/>
         <source>Server is currently not available.</source>
         <translation>Сервер зараз недоступний.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="953"/>
+        <location filename="../src/mirall/application.cpp" line="949"/>
         <source>Last Sync was successful.</source>
         <translation>Остання синхронізація була успішною.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="959"/>
+        <location filename="../src/mirall/application.cpp" line="955"/>
         <source>Syncing Error.</source>
         <translation>Помилка синхронізації.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="965"/>
+        <location filename="../src/mirall/application.cpp" line="961"/>
         <source>Setup Error.</source>
         <translation>Помилка установки.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="968"/>
+        <location filename="../src/mirall/application.cpp" line="964"/>
         <source>Undefined Error State.</source>
         <translation>Невизначена помилка.</translation>
     </message>
@@ -506,32 +494,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="817"/>
+        <location filename="../src/mirall/application.cpp" line="813"/>
         <source>Sync Running</source>
         <translation>Виконується синхронізація</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="818"/>
+        <location filename="../src/mirall/application.cpp" line="814"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Виконується процедура синхронізації.&lt;br/&gt;Бажаєте відмінити?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="933"/>
+        <location filename="../src/mirall/application.cpp" line="929"/>
         <source>Undefined State.</source>
         <translation>Невизначений стан.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="936"/>
+        <location filename="../src/mirall/application.cpp" line="932"/>
         <source>Waits to start syncing.</source>
         <translation>Очікування початку синхронізації.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="940"/>
+        <location filename="../src/mirall/application.cpp" line="936"/>
         <source>Preparing for sync.</source>
-        <translation type="unfinished"/>
+        <translation>Підготовка до синхронізації</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="973"/>
+        <location filename="../src/mirall/application.cpp" line="969"/>
         <source> (Sync is paused)</source>
         <translation> (Синхронізація призупинена)</translation>
     </message>
@@ -540,7 +528,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="990"/>
+        <location filename="../src/mirall/application.cpp" line="986"/>
         <source>No sync folders configured.</source>
         <translation>Жодна тека не налаштована для синхронізації.</translation>
     </message>
@@ -1142,22 +1130,22 @@ Please write a bug report.</source>
         <translation>Спроба підключення до %1 на %2...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="189"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="198"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;Успішно підключено до %1: %2 версія %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="201"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="210"/>
         <source>&lt;font color=&quot;red&quot;&gt;Failed to connect to %1!&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;red&quot;&gt;Не вдалося підключитись до %1!&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="203"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="212"/>
         <source>Error: &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Помилка: &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="288"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="297"/>
         <source>Starting script owncloud-admin...</source>
         <translation>Запускається скрипт owncloud-admin...</translation>
     </message>
@@ -1170,59 +1158,59 @@ Please write a bug report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="339"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="348"/>
         <source>&lt;font color=&quot;red&quot;&gt;Installation of %1 failed!&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;red&quot;&gt;Інсталяція %1 не вдала!&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="344"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="353"/>
         <source>&lt;font color=&quot;green&quot;&gt;Installation of %1 succeeded!&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;Інсталяція %1 завершилась успішно!&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="391"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="400"/>
         <source>The owncloud admin script can not be found.
 Setup can not be done.</source>
         <translation>Відсутній owncloud admin скрипт.
 Установка не можлива.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="442"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="451"/>
         <source>Creation of remote folder %1 could not be started.</source>
         <translation>Створення віддаленої теки %1 не вдається розпочати.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="463"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="472"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Віддалена тека %1 успішно створена.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="465"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="474"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>Віддалена тека %1 вже існує. Під&apos;єднання для синхронізації.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="467"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="476"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Створення теки завершилось HTTP помилкою %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="491"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="500"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>З&apos;єднання для синхронізації %1 з віддаленою текою %2 було встановлено.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="496"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="505"/>
         <source>Successfully connected to %1!</source>
-        <translation type="unfinished"/>
+        <translation>Успішно під&apos;єднано до %1!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="502"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="511"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Підключення до %1 встановити не вдалося. Будь ласка, перевірте ще раз.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="499"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="508"/>
         <source>Press Finish to permanently accept this connection.</source>
         <translation>Натисніть Готово, щоб постійно приймати це підключення.</translation>
     </message>
@@ -1235,12 +1223,12 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="411"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="420"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Локальна тека синхронізації %1 вже існує, налаштування її для синхронізації.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="413"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="422"/>
         <source>Creating local sync folder %1... </source>
         <translation>Створення локальної теки для синхронізації %1... </translation>
     </message>
@@ -1249,12 +1237,12 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="416"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="425"/>
         <source>ok</source>
         <translation>ok</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="418"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="427"/>
         <source>failed.</source>
         <translation>не вдалося.</translation>
     </message>
@@ -1276,12 +1264,12 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="469"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="478"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Створити віддалену теку не вдалося, можливо, через невірно вказані облікові дані.&lt;/font&gt;&lt;br/&gt;Будь ласка, поверніться назад та перевірте облікові дані.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="475"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="484"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Не вдалося створити віддалену теку %1 через помилку &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
@@ -1364,33 +1352,33 @@ Setup can not be done.</source>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="323"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; та %n інших файлів було синхронізовано з цим комп&apos;ютером.</numerusform><numerusform>&apos;%1&apos; та %n інших файлів було синхронізовано з цим комп&apos;ютером.</numerusform><numerusform>&apos;%1&apos; та %n інших файлів було синхронізовано з цим комп&apos;ютером.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="329"/>
         <location filename="../src/mirall/owncloudfolder.cpp" line="337"/>
         <source>File removed</source>
-        <translation type="unfinished"/>
+        <translation>Файл видалено</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="329"/>
         <source>&apos;%1&apos; has been removed.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; було видалено.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="331"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; та %n інших файлів було видалено.</numerusform><numerusform>&apos;%1&apos; та %n інших файлів було видалено.</numerusform><numerusform>&apos;%1&apos; та %n інших файлів було видалено.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="337"/>
         <source>&apos;%1&apos; has been updated.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; було оновлено.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="339"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; та %n інших файлів було оновлено.</numerusform><numerusform>&apos;%1&apos; та %n інших файлів було оновлено.</numerusform><numerusform>&apos;%1&apos; та %n інших файлів було оновлено.</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1474,27 +1462,27 @@ Setup can not be done.</source>
         <translation>Відновлення</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="479"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="483"/>
         <source>Checking %1 connection...</source>
         <translation>Перевірка %1 підключення...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="484"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="488"/>
         <source>No %1 connection configured.</source>
         <translation>Жодного %1 підключення не налаштовано.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="507"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="511"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; as &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Підключено до &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; як &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="509"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="513"/>
         <source>Version: %1 (%2)</source>
         <translation>Версія: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="525"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="529"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Не вдалося підключитись до %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
@@ -1515,7 +1503,7 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="522"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="526"/>
         <source>unknown problem.</source>
         <translation>невідома проблема.</translation>
     </message>
@@ -1739,7 +1727,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="120"/>
         <source>&amp;Do not store password on local machine</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Не зберігайте пароль на локальному комп&apos;ютері.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="140"/>
@@ -1877,7 +1865,13 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Select if you want to create a new ownCloud either on the local machine or on your server. &lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#585858;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;This wizard will guide you through all necessary steps.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Виберіть, якщо ви хочете створити новий ownCloud на локальному комп&apos;ютері або на сервері. &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#585858;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Цей майстер проведе вас через всі необхідні кроки.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
