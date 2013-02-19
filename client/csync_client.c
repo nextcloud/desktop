@@ -114,7 +114,7 @@ static int parse_args(struct argument_s *csync_args, int argc, char **argv)
     while(optind < argc) {
         int c = -1;
         struct option *opt = NULL;
-        int result = getopt_long( argc, argv, "dcVh", long_options, &c );
+        int result = getopt_long( argc, argv, "d:cVh", long_options, &c );
 
         if( result == -1 ) {
             break;
@@ -141,6 +141,8 @@ static int parse_args(struct argument_s *csync_args, int argc, char **argv)
             if(c_streq(opt->name, "exclude-file")) {
                 csync_args->exclude_file = c_strdup(optarg);
                 /* printf("Argument: exclude-file: %s\n", csync_args->exclude_file); */
+            } else if(c_streq(opt->name, "debug-level")) {
+                csync_args->debug_level = atoi(optarg);
             } else if(c_streq(opt->name, "disable-statedb")) {
                 csync_args->disable_statedb = 1;
             } else if(c_streq(opt->name, "test-update")) {
