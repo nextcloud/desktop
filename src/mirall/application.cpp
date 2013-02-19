@@ -373,6 +373,10 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
         if( _tray )
             _tray->showMessage(tr("%1 Sync Started").arg(_theme->appName()),
                                tr("Sync started for %1 configured sync folder(s).").arg(cnt));
+
+        // queue up the sync for all folders.
+        _folderMan->slotScheduleAllFolders();
+
         computeOverallSyncStatus();
 
         _actionAddFolder->setEnabled( true );

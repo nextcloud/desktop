@@ -98,6 +98,8 @@ public slots:
     // the current one will finish.
     void setSyncEnabled( bool );
 
+    void slotScheduleAllFolders();
+
 private slots:
     // slot to add a folder to the syncing queue
     void slotScheduleSync( const QString & );

@@ -47,8 +47,7 @@ FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
       _eventsEnabled(true),
       _eventInterval(DEFAULT_EVENT_INTERVAL_MSEC),
       _root(root),
-      _processTimer(new QTimer(this)),
-      _initialSyncDone(false)
+      _processTimer(new QTimer(this))
 {
     _d = new FolderWatcherPrivate(this);
 
@@ -147,13 +146,12 @@ void FolderWatcher::slotProcessTimerTimeout()
 {
     qDebug() << "* Processing of event queue for" << root();
 
-    if (!_pendingPathes.empty() || !_initialSyncDone) {
+    if (!_pendingPathes.empty() ) {
         QStringList notifyPaths = _pendingPathes.keys();
         _pendingPathes.clear();
         //qDebug() << lastEventTime << eventTime;
         qDebug() << "  * Notify" << notifyPaths.size() << "change items for" << root();
         emit folderChanged(notifyPaths);
-        _initialSyncDone = true;
     }
 }
 

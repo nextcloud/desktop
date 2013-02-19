@@ -352,6 +352,13 @@ SyncResult FolderMan::syncResult( const QString& alias )
     return res;
 }
 
+void FolderMan::slotScheduleAllFolders()
+{
+    foreach( Folder *f, _folderMap.values() ) {
+        slotScheduleSync( f->alias() );
+    }
+}
+
 /*
   * if a folder wants to be synced, it calls this slot and is added
   * to the queue. The slot to actually start a sync is called afterwards.
