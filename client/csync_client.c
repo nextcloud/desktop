@@ -206,6 +206,16 @@ int main(int argc, char **argv) {
       print_help();
   }
 
+  if (arguments.debug_level) {
+    csync_set_log_level(arguments.debug_level);
+  }
+
+  if (csync_create(&csync, argv[optind], argv[optind+1]) < 0) {
+    fprintf(stderr, "csync_create: failed\n");
+    exit(1);
+  }
+
+
   /*
    * Protect password from ps listing
    * Find and replace :password@ by :********@
@@ -221,15 +231,6 @@ int main(int argc, char **argv) {
         argv[i][curser] = '*';
       }
     }
-  }
-
-  if (arguments.debug_level) {
-    csync_set_log_level(arguments.debug_level);
-  }
-
-  if (csync_create(&csync, argv[optind], argv[optind+1]) < 0) {
-    fprintf(stderr, "csync_create: failed\n");
-    exit(1);
   }
 
   csync_set_auth_callback(csync, csync_getpass);
