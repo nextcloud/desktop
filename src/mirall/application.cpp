@@ -177,7 +177,6 @@ Application::Application(int &argc, char **argv) :
     int cnt = _folderMan->setupFolders();
     _statusDialog->setFolderList( _folderMan->map() );
 
-
     QObject::connect( this, SIGNAL(messageReceived(QString)),
                          this, SLOT(slotOpenStatus()) );
 
@@ -423,7 +422,9 @@ void Application::slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors )
 void Application::slotownCloudWizardDone( int res )
 {
     if( res == QDialog::Accepted ) {
-
+        int cnt = _folderMan->setupFolders();
+        qDebug() << "Set up " << cnt << " folders.";
+        _statusDialog->setFolderList( _folderMan->map() );
     }
     _folderMan->setSyncEnabled( true );
     slotStartFolderSetup( res );
