@@ -142,9 +142,6 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
             switch (other->instruction) {
             /* file on other replica is new too */
             case CSYNC_INSTRUCTION_NEW:
-                /* if (cur->modtime > other->modtime) { */
-                CSYNC_LOG( CSYNC_LOG_PRIORITY_DEBUG, "** size compare: %lld <-> %lld", (long long) cur->size,
-                           (long long) other->size);
                 if(cur->modtime - other->modtime > ACCEPTED_TIME_DIFF) {
                     if( other->size == cur->size &&
                             _time_dst_off( cur->modtime, other->modtime, ONE_HOUR ) ) {
@@ -164,8 +161,6 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                             other->instruction = CSYNC_INSTRUCTION_NONE;
                         }
                     }
-
-                    /* } else if (cur->modtime < other->modtime) { */
                 } else if (other->modtime - cur->modtime > ACCEPTED_TIME_DIFF) {
                     /* Check if we have the dst problem. Older versions of ocsync wrote a wrong
                      * (ie. localized) mtime to the files which can be ignored if the size is equal
