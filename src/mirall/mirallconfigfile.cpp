@@ -269,13 +269,6 @@ QString MirallConfigFile::ownCloudUrl( const QString& connection, bool webdav ) 
     settings.setIniCodec( "UTF-8" );
     settings.beginGroup( con );
 
-    // For the WebDAV connect it is required to know which version the server is running
-    // because the url changed :-/
-    if( webdav && _oCVersion.isEmpty() ) {
-        qDebug() << "######## Config does not yet know the ownCloud server version #########";
-        qDebug() << "###################### THIS SHOULD NOT HAPPEN! ########################";
-    }
-
     QString url = settings.value( QLatin1String("url") ).toString();
     if( ! url.isEmpty() ) {
         if( ! url.endsWith(QLatin1Char('/'))) url.append(QLatin1String("/"));
