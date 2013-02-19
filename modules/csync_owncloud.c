@@ -488,6 +488,9 @@ static int fetch_resource_list( const char *curi,
 {
     int ret = 0;
 
+    if (!curi)
+        return NE_ERROR;
+
     /* do a propfind request and parse the results in the results function, set as callback */
     ret = ne_simple_propfind( dav_session.ctx, curi, depth, ls_props, results, fetchCtx );
 
@@ -538,7 +541,7 @@ static csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
 /* cleanPath to return an escaped path of an uri */
 static char *_cleanPath( const char* uri ) {
     int rc = 0;
-    char *path;
+    char *path = NULL;
     char *re = NULL;
 
     rc = c_parse_uri( uri, NULL, NULL, NULL, NULL, NULL, &path );
@@ -546,7 +549,8 @@ static char *_cleanPath( const char* uri ) {
         DEBUG_WEBDAV(("Unable to cleanPath %s\n", uri ? uri: "" ));
         re = NULL;
     } else {
-        re = ne_path_escape( path );
+        if (path)
+            re = ne_path_escape( path );
     }
     SAFE_FREE( path );
     return re;
