@@ -1064,17 +1064,17 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
             /* check the changing of the time delta */
             time_diff_delta = llabs(dav_session.time_delta - time_diff);
             if( dav_session.time_delta_cnt == 1 ) {
-                DEBUG_WEBDAV( "The first time_delta is %llu", (unsigned long long) time_diff );
+                DEBUG_WEBDAV( "The first time_delta is %ld", time_diff );
             } else if( dav_session.time_delta_cnt > 1 ) {
                 if( time_diff_delta > 5 ) {
                     DEBUG_WEBDAV("WRN: The time delta changed more than 5 second");
                     // errno = ERRNO_TIMEDELTA;
                     // ret = OC_TIMEDELTA_FAIL;
                 } else {
-                    DEBUG_WEBDAV("Ok: Time delta remained (almost) the same: %llu.", (unsigned long long) time_diff);
+                    DEBUG_WEBDAV("Ok: Time delta remained (almost) the same: %ld.", time_diff);
                 }
             } else {
-                DEBUG_WEBDAV("Difference to last server time delta: %llu", (unsigned long long) time_diff_delta );
+                DEBUG_WEBDAV("Difference to last server time delta: %ld", time_diff_delta );
             }
             dav_session.time_delta = time_diff;
         } else {
@@ -1125,6 +1125,10 @@ static struct listdir_context *fetch_resource_list_attempts(const char *uri, int
     for(i = 0; i < 10; ++i) {
         fetchCtx = fetch_resource_list(uri, depth);
         if(fetchCtx) break;
+        /* only loop in case the content is not XML formatted. Otherwise for every
+         * non successful stat (for non existing directories) its tried 10 times. */
+        if( errno != ERRNO_WRONG_CONTENT ) break;
+
         DEBUG_WEBDAV("=> Errno after fetch resource list for %s: %d", uri, errno);
         DEBUG_WEBDAV("   New attempt %i", i);
     }
