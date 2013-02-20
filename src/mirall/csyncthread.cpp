@@ -388,10 +388,12 @@ void CSyncThread::startSync()
         return;
     }
 
+    bool walkOk = true;
     if( csync_walk_local_tree(csync, &treewalkLocal, 0) < 0 ) {
         qDebug() << "Error in local treewalk.";
+        walkOk = false;
     }
-    if( csync_walk_remote_tree(csync, &treewalkRemote, 0) < 0 ) {
+    if( walkOk && csync_walk_remote_tree(csync, &treewalkRemote, 0) < 0 ) {
         qDebug() << "Error in remote treewalk.";
     }
 
@@ -403,12 +405,14 @@ void CSyncThread::startSync()
         return;
     }
 
-    if( csync_walk_local_tree(csync, &walkFinalize, 0) < 0 ||
+    if( walkOk ) {
+        if( csync_walk_local_tree(csync, &walkFinalize, 0) < 0 ||
             csync_walk_remote_tree( csync, &walkFinalize, 0 ) < 0 ) {
-        qDebug() << "Error in finalize treewalk.";
-    } else {
+          qDebug() << "Error in finalize treewalk.";
+        } else {
         // emit the treewalk results.
-        emit treeWalkResult(_syncedItems);
+            emit treeWalkResult(_syncedItems);
+        }
     }
 }
 
