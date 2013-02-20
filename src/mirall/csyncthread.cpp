@@ -325,7 +325,6 @@ void CSyncThread::startSync()
 {
     qDebug() << "starting to sync " << qApp->thread() << QThread::currentThread();
     CSYNC *csync;
-    bool doTreeWalk = true;
     int proxyPort = _proxy.port();
 
     _mutex.lock();
@@ -391,11 +390,9 @@ void CSyncThread::startSync()
 
     if( csync_walk_local_tree(csync, &treewalkLocal, 0) < 0 ) {
         qDebug() << "Error in local treewalk.";
-        doTreeWalk = false;
     }
-    if( doTreeWalk && csync_walk_remote_tree(csync, &treewalkRemote, 0) < 0 ) {
+    if( csync_walk_remote_tree(csync, &treewalkRemote, 0) < 0 ) {
         qDebug() << "Error in remote treewalk.";
-        doTreeWalk = false;
     }
 
     if (_needsUpdate)
