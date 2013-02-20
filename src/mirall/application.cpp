@@ -706,6 +706,7 @@ void Application::slotAddFolder()
     qDebug() << "* Folder wizard cancelled";
   }
   _folderMan->setSyncEnabled(true);
+  _folderMan->slotScheduleAllFolders();
 }
 
 void Application::slotOpenStatus()

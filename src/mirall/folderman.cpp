@@ -370,15 +370,17 @@ void FolderMan::slotScheduleSync( const QString& alias )
     qDebug() << "Schedule folder " << alias << " to sync!";
     if( _currentSyncFolder == alias ) {
         // the current folder is currently syncing.
+        return;
     }
 
-    if( _scheduleQueue.contains( alias ) ) {
-        qDebug() << " II> Sync for folder " << alias << " already scheduled, do not enqueue!";
+    if( ! _scheduleQueue.contains(alias )) {
+        _scheduleQueue.append(alias);
     } else {
-        _scheduleQueue.append( alias );
-
-        slotScheduleFolderSync();
+        qDebug() << " II> Sync for folder " << alias << " already scheduled, do not enqueue!";
     }
+
+    slotScheduleFolderSync();
+
 }
 
 void FolderMan::setSyncEnabled( bool enabled )
