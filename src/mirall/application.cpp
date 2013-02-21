@@ -79,7 +79,7 @@ Application::Application(int &argc, char **argv) :
     _helpOnly(false),
     _fileItemDialog(0)
 {
-    setApplicationName( _theme->appName() );
+    setApplicationName( _theme->appNameGUI() );
     setWindowIcon( _theme->applicationIcon() );
 
     parseOptions(arguments());
@@ -241,9 +241,9 @@ void Application::slotOwnCloudFound( const QString& url, const QString& versionS
                 this, SLOT(slotNoOwnCloudFound(QNetworkReply*)));
 
     if( version.startsWith("4.0") ) {
-        QMessageBox::warning(0, tr("%1 Server Mismatch").arg(_theme->appName()),
+        QMessageBox::warning(0, tr("%1 Server Mismatch").arg(_theme->appNameGUI()),
                              tr("<p>The configured server for this client is too old.</p>"
-                                "<p>Please update to the latest %1 server and restart the client.</p>").arg(_theme->appName()));
+                                "<p>Please update to the latest %1 server and restart the client.</p>").arg(_theme->appNameGUI()));
         return;
     }
 
@@ -286,7 +286,7 @@ void Application::slotFetchCredentials()
     } else {
         qDebug() << "Can not try again to fetch Credentials.";
         trayMessage = tr("%1 user credentials are wrong. Please check configuration.")
-                .arg(Theme::instance()->appName());
+                .arg(Theme::instance()->appNameGUI());
     }
 
     if( !trayMessage.isEmpty() ) {
@@ -341,16 +341,16 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
 
     if( reply->error() == QNetworkReply::AuthenticationRequiredError ) { // returned if the user is wrong.
         qDebug() << "******** Password is wrong!";
-        QMessageBox::warning(0, tr("No %1 Connection").arg(_theme->appName()),
+        QMessageBox::warning(0, tr("No %1 Connection").arg(_theme->appNameGUI()),
                              tr("<p>Your %1 credentials are not correct.</p>"
                                 "<p>Please correct them by starting the configuration dialog from the tray!</p>")
-                             .arg(_theme->appName()));
+                             .arg(_theme->appNameGUI()));
         _actionAddFolder->setEnabled( false );
         ok = false;
     } else if( reply->error() == QNetworkReply::OperationCanceledError ) {
         // the username was wrong and ownCloudInfo was closing the request after a couple of auth tries.
         qDebug() << "******** Username or password is wrong!";
-        QMessageBox::warning(0, tr("No %1 Connection").arg(_theme->appName()),
+        QMessageBox::warning(0, tr("No %1 Connection").arg(_theme->appNameGUI()),
                              tr("<p>Either your user name or your password are not correct.</p>"
                                 "<p>Please correct it by starting the configuration dialog from the tray!</p>"));
         _actionAddFolder->setEnabled( false );
@@ -371,7 +371,7 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
 
         int cnt = _folderMan->map().size();
         if( _tray )
-            _tray->showMessage(tr("%1 Sync Started").arg(_theme->appName()),
+            _tray->showMessage(tr("%1 Sync Started").arg(_theme->appNameGUI()),
                                tr("Sync started for %1 configured sync folder(s).").arg(cnt));
 
         // queue up the sync for all folders.
@@ -436,7 +436,7 @@ void Application::slotownCloudWizardDone( int res )
 
 void Application::setupActions()
 {
-    _actionOpenoC = new QAction(tr("Open %1 in browser...").arg(_theme->appName()), this);
+    _actionOpenoC = new QAction(tr("Open %1 in browser...").arg(_theme->appNameGUI()), this);
     QObject::connect(_actionOpenoC, SIGNAL(triggered(bool)), SLOT(slotOpenOwnCloud()));
     _actionOpenStatus = new QAction(tr("Open status..."), this);
     QObject::connect(_actionOpenStatus, SIGNAL(triggered(bool)), SLOT(slotOpenStatus()));
@@ -484,7 +484,7 @@ void Application::setupContextMenu()
         // it will trigger a bug in Ubuntu's SNI bridge patch (11.10, 12.04).
         _tray->setContextMenu(_contextMenu);
     }
-    _contextMenu->setTitle(_theme->appName() );
+    _contextMenu->setTitle(_theme->appNameGUI() );
     _contextMenu->addAction(_actionOpenStatus);
     _contextMenu->addAction(_actionOpenoC);
 
@@ -503,7 +503,7 @@ void Application::setupContextMenu()
                 Folder *folder = _folderMan->map().value(li.first());
                 if( folder ) {
                     // if there is singleFolder mode, a generic open action is displayed.
-                    QAction *action = new QAction( tr("Open %1 folder").arg(_theme->appName()), this);
+                    QAction *action = new QAction( tr("Open %1 folder").arg(_theme->appNameGUI()), this);
                     action->setIcon( _theme->trayFolderIcon( folder->backend()) );
 
                     connect( action, SIGNAL(triggered()),_folderOpenActionMapper,SLOT(map()));
@@ -763,7 +763,7 @@ void Application::slotOpenLogBrowser()
 
 void Application::slotAbout()
 {
-    QMessageBox::about(0, tr("About %1").arg(_theme->appName()),
+    QMessageBox::about(0, tr("About %1").arg(_theme->appNameGUI()),
                        Theme::instance()->about());
 }
 

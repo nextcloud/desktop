@@ -224,7 +224,7 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
     _theme( theme )
 {
   setupUi( this );
-  setWindowTitle( QString::fromLatin1( "%1 %2" ).arg(_theme->appName(), _theme->version() ) );
+  setWindowTitle( QString::fromLatin1( "%1 %2" ).arg(_theme->appNameGUI(), _theme->version() ) );
 
   _model = new FolderStatusModel();
   FolderViewDelegate *delegate = new FolderViewDelegate();
@@ -480,12 +480,12 @@ void StatusDialog::slotCheckConnection()
         connect(ownCloudInfo::instance(), SIGNAL(noOwncloudFound(QNetworkReply*)),
                 this, SLOT(slotOCInfoFail(QNetworkReply*)));
 
-        _ocUrlLabel->setText( tr("Checking %1 connection...").arg(Theme::instance()->appName()));
+        _ocUrlLabel->setText( tr("Checking %1 connection...").arg(Theme::instance()->appNameGUI()));
         qDebug() << "Check status.php from statusdialog.";
         ownCloudInfo::instance()->checkInstallation();
     } else {
         // ownCloud is not yet configured.
-        _ocUrlLabel->setText( tr("No %1 connection configured.").arg(Theme::instance()->appName()));
+        _ocUrlLabel->setText( tr("No %1 connection configured.").arg(Theme::instance()->appNameGUI()));
         _ButtonAdd->setEnabled( false);
     }
 }
@@ -526,7 +526,7 @@ void StatusDialog::slotOCInfoFail( QNetworkReply *reply)
     QString errStr = tr("unknown problem.");
     if( reply ) errStr = reply->errorString();
 
-    _ocUrlLabel->setText( tr("<p>Failed to connect to %1: <tt>%2</tt></p>").arg(Theme::instance()->appName()).arg(errStr) );
+    _ocUrlLabel->setText( tr("<p>Failed to connect to %1: <tt>%2</tt></p>").arg(Theme::instance()->appNameGUI()).arg(errStr) );
     _ButtonAdd->setEnabled( false);
 
     disconnect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(const QString&, const QString&, const QString&, const QString&)),

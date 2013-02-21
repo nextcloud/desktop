@@ -57,7 +57,7 @@ void setupCustomMedia( QVariant variant, QLabel *label )
 
 OwncloudWelcomePage::OwncloudWelcomePage()
 {
-    setTitle(tr("Welcome to %1").arg(Theme::instance()->appName()));
+    setTitle(tr("Welcome to %1").arg(Theme::instance()->appNameGUI()));
 
     QVBoxLayout *lay = new QVBoxLayout(this);
     QLabel *content = new QLabel;
@@ -70,11 +70,11 @@ OwncloudWelcomePage::OwncloudWelcomePage()
         content->setText(tr("<p>In order to connect to your %1 server, you need to provide the server address "
                             "as well as your credentials.</p><p>This wizard will guide you through the process.<p>"
                             "<p>If you have not received this information, please contact your %1 provider.</p>")
-                         .arg(theme->appName()));
+                         .arg(theme->appNameGUI()));
     } else {
         content->setText(tr("<p>In order to connect to your %1 server, you need to provide "
                             "your credentials.</p><p>This wizard will guide you through "
-                            "the setup process.</p>").arg(theme->appName()));
+                            "the setup process.</p>").arg(theme->appNameGUI()));
     }
 }
 
@@ -83,7 +83,7 @@ OwncloudSetupPage::OwncloudSetupPage()
 {
     _ui.setupUi(this);
 
-    setTitle(tr("Create Connection to %1").arg(Theme::instance()->appName()));
+    setTitle(tr("Create Connection to %1").arg(Theme::instance()->appNameGUI()));
 
     connect(_ui.leUrl, SIGNAL(textChanged(QString)), SLOT(handleNewOcUrl(QString)));
 
@@ -468,7 +468,7 @@ void OwncloudWizardResultPage::appendResultText( const QString& msg, OwncloudWiz
 void OwncloudWizardResultPage::showOCUrlLabel( const QString& url, bool show )
 {
   _ui.ocLinkLabel->setText( tr("Congratulations! Your <a href=\"%1\" title=\"%1\">new %2</a> is now up and running!")
-		  .arg(url).arg( Theme::instance()->appName()));
+          .arg(url).arg( Theme::instance()->appNameGUI()));
   _ui.ocLinkLabel->setOpenExternalLinks( true );
 
   if( show ) {

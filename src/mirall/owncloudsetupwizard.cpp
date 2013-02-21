@@ -73,7 +73,7 @@ OwncloudSetupWizard::OwncloudSetupWizard( FolderMan *folderMan, Theme *theme, QO
     connect( _ocWizard, SIGNAL(clearPendingRequests()),
              this, SLOT(slotClearPendingRequests()));
 
-    _ocWizard->setWindowTitle( tr("%1 Connection Wizard").arg( theme ? theme->appName() : QLatin1String("Mirall") ) );
+    _ocWizard->setWindowTitle( tr("%1 Connection Wizard").arg( theme ? theme->appNameGUI() : QLatin1String("Mirall") ) );
 
 }
 
@@ -140,7 +140,7 @@ void OwncloudSetupWizard::slotConnectToOCUrl( const QString& url )
   qDebug() << "Connect to url: " << url;
   _ocWizard->setField(QLatin1String("OCUrl"), url );
   _ocWizard->appendToResultWidget(tr("Trying to connect to %1 at %2...")
-                                  .arg( Theme::instance()->appName() ).arg(url) );
+                                  .arg( Theme::instance()->appNameGUI() ).arg(url) );
   testOwnCloudConnect();
 }
 
@@ -196,7 +196,7 @@ void OwncloudSetupWizard::testOwnCloudConnect()
 void OwncloudSetupWizard::slotOwnCloudFound( const QString& url, const QString& infoString, const QString& version, const QString& )
 {
     _ocWizard->appendToResultWidget(tr("<font color=\"green\">Successfully connected to %1: %2 version %3 (%4)</font><br/><br/>")
-                                    .arg( url ).arg(Theme::instance()->appName()).arg(infoString).arg(version));
+                                    .arg( url ).arg(Theme::instance()->appNameGUI()).arg(infoString).arg(version));
 
     // enable the finish button.
     _ocWizard->button( QWizard::FinishButton )->setEnabled( true );
@@ -208,7 +208,7 @@ void OwncloudSetupWizard::slotOwnCloudFound( const QString& url, const QString& 
 void OwncloudSetupWizard::slotNoOwnCloudFound( QNetworkReply *err )
 {
     _ocWizard->appendToResultWidget(tr("<font color=\"red\">Failed to connect to %1!</font>")
-                                    .arg(Theme::instance()->appName()));
+                                    .arg(Theme::instance()->appNameGUI()));
     _ocWizard->appendToResultWidget(tr("Error: <tt>%1</tt>").arg(err->errorString()) );
 
     // remove the config file again
@@ -345,12 +345,12 @@ void OwncloudSetupWizard::slotProcessFinished( int res, QProcess::ExitStatus )
 
   qDebug() << "exit code: " << res;
   if( res ) {
-    _ocWizard->appendToResultWidget( tr("<font color=\"red\">Installation of %1 failed!</font>").arg(Theme::instance()->appName()));
+    _ocWizard->appendToResultWidget( tr("<font color=\"red\">Installation of %1 failed!</font>").arg(Theme::instance()->appNameGUI()));
     _ocWizard->showOCUrlLabel( false );
     emit ownCloudSetupFinished( false );
   } else {
     // Successful installation. Write the config.
-    _ocWizard->appendToResultWidget( tr("<font color=\"green\">Installation of %1 succeeded!</font>").arg(Theme::instance()->appName()));
+    _ocWizard->appendToResultWidget( tr("<font color=\"green\">Installation of %1 succeeded!</font>").arg(Theme::instance()->appNameGUI()));
     _ocWizard->showOCUrlLabel( true );
 
     testOwnCloudConnect();
@@ -503,13 +503,13 @@ void OwncloudSetupWizard::finalizeSetup( bool success )
         _ocWizard->appendToResultWidget( QLatin1String(" "));
         _ocWizard->appendToResultWidget( QLatin1String("<p><font color=\"green\"><b>")
                                          + tr("Successfully connected to %1!")
-                                         .arg(Theme::instance()->appName())
+                                         .arg(Theme::instance()->appNameGUI())
                                          + QLatin1String("</b></font></p>"));
         _ocWizard->appendToResultWidget( tr("Press Finish to permanently accept this connection."));
     } else {
         _ocWizard->appendToResultWidget(QLatin1String("<p><font color=\"red\">")
                                         + tr("Connection to %1 could not be established. Please check again.")
-                                        .arg(Theme::instance()->appName())
+                                        .arg(Theme::instance()->appNameGUI())
                                         + QLatin1String("</font></p>"));
     }
 }

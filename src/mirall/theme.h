@@ -37,10 +37,36 @@ public:
         oCSetupResultTop // ownCloud connect result page
     };
 
+    /* returns a singleton instance. */
     static Theme* instance();
 
+    /**
+     * @brief appNameGUI - Human readable application name.
+     *
+     * Use and redefine this if the human readable name contains spaces,
+     * special chars and such.
+     *
+     * By default, appName() is returned.
+     *
+     * @return QString with human readable app name.
+     */
+    virtual QString appNameGUI() const;
+
+    /**
+     * @brief appName - Application name (short)
+     *
+     * Use and redefine this as an application name. Keep it straight as
+     * it is used for config files etc. If you need a more sophisticated
+     * name in the GUI, redefine appNameGUI.
+     *
+     * @return QString with app name.
+     */
     virtual QString appName() const = 0;
 
+    /**
+     * @brief configFileName
+     * @return the name of the config file.
+     */
     virtual QString configFileName() const = 0;
 
     /**

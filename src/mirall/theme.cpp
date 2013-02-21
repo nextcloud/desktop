@@ -71,6 +71,11 @@ QString Theme::statusHeaderText( SyncResult::Status status ) const
     return resultStr;
 }
 
+QString Theme::appNameGUI() const
+{
+    return appName();
+}
+
 QString Theme::version() const
 {
     return QString::fromLocal8Bit( MIRALL_STRINGIFY( MIRALL_VERSION ));

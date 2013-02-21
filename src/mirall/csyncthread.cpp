@@ -91,7 +91,7 @@ QString CSyncThread::csyncErrorToString( CSYNC_ERROR_CODE err, const char *errSt
         errStr = tr("CSync failed to load the state db.");
         break;
     case CSYNC_ERR_MODULE:
-        errStr = tr("<p>The %1 plugin for csync could not be loaded.<br/>Please verify the installation!</p>").arg(Theme::instance()->appName());
+        errStr = tr("<p>The %1 plugin for csync could not be loaded.<br/>Please verify the installation!</p>").arg(Theme::instance()->appNameGUI());
         break;
     case CSYNC_ERR_TIMESKEW:
         errStr = tr("The system time on this client is different than the system time on the server. "
@@ -139,7 +139,7 @@ QString CSyncThread::csyncErrorToString( CSYNC_ERROR_CODE err, const char *errSt
         errStr = tr("CSync failed to lookup proxy or server.");
         break;
     case CSYNC_ERR_AUTH_SERVER:
-        errStr = tr("CSync failed to authenticate at the %1 server.").arg(Theme::instance()->appName());
+        errStr = tr("CSync failed to authenticate at the %1 server.").arg(Theme::instance()->appNameGUI());
         break;
     case CSYNC_ERR_AUTH_PROXY:
         errStr = tr("CSync failed to authenticate at the proxy.");
@@ -163,7 +163,7 @@ QString CSyncThread::csyncErrorToString( CSYNC_ERROR_CODE err, const char *errSt
         errStr = tr("CSync tried to create a directory that already exists.");
         break;
     case CSYNC_ERR_NOSPC:
-        errStr = tr("CSync: No space on %1 server available.").arg(Theme::instance()->appName());
+        errStr = tr("CSync: No space on %1 server available.").arg(Theme::instance()->appNameGUI());
         break;
     case CSYNC_ERR_UNSPEC:
         errStr = tr("CSync unspecified error.");

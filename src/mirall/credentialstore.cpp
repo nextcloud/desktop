@@ -125,7 +125,7 @@ void CredentialStore::fetchCredentials()
         _inputDialog = new QInputDialog;
         _inputDialog->setWindowTitle(QApplication::translate("MirallConfigFile","Password Required") );
         _inputDialog->setLabelText( QApplication::translate("MirallConfigFile","Please enter your %1 password:")
-                .arg(Theme::instance()->appName()));
+                .arg(Theme::instance()->appNameGUI()));
         _inputDialog->setInputMode( QInputDialog::TextInput );
         _inputDialog->setTextEchoMode( QLineEdit::Password );
 

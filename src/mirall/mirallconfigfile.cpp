@@ -84,7 +84,7 @@ QString MirallConfigFile::excludeFile() const
 QString MirallConfigFile::configFile() const
 {
     if( qApp->applicationName().isEmpty() ) {
-        qApp->setApplicationName( Theme::instance()->appName() );
+        qApp->setApplicationName( Theme::instance()->appNameGUI() );
     }
     QString dir = configPath() + Theme::instance()->configFileName();
     if( !_customHandle.isEmpty() ) {
