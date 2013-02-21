@@ -14,7 +14,8 @@ if(SPHINX_FOUND)
 
     configure_file("${CMAKE_CURRENT_SOURCE_DIR}/conf.py.in" conf.py @ONLY)
 
-    add_custom_target(doc ALL DEPENDS doc-html doc-man COMMENT "Building documentation...")
+    add_custom_target(doc DEPENDS doc-html doc-man COMMENT "Building documentation...")
+
     install(DIRECTORY ${SPHINX_HTML_DIR} DESTINATION ${CMAKE_INSTALL_DOCDIR})
     install(DIRECTORY ${SPHINX_MAN_DIR} DESTINATION ${CMAKE_INSTALL_MANDIR})
 
