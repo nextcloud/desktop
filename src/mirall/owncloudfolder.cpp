@@ -311,6 +311,10 @@ void ServerActionNotifier::slotSyncFinished(const SyncResult &result)
                 updatedItems++;
                 if (firstItemUpdated.isEmpty())
                     firstItemUpdated = item;
+		break;
+	    default:
+		// nothing.
+		break;
             }
         }
     }
