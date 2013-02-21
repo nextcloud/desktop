@@ -1048,6 +1048,9 @@ void Application::setupTranslations()
             }
             translator->load(QString()); // unload, we want no inconsistent UI
             qtkeychainTranslator->load(QString());
+        } else if (lang.startsWith(QLatin1String("en")) /* "English" is built-in */) {
+            // use built-in
+            break;
         }
         if (property("ui_lang").isNull())
             setProperty("ui_lang", "C");
