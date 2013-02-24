@@ -1031,25 +1031,30 @@ void Application::setupTranslations()
         lang.replace(QLatin1Char('-'), QLatin1Char('_')); // work around QTBUG-25973
         const QString trPath = applicationTrPath();
         const QString trFile = QLatin1String("mirall_") + lang;
-        qDebug() << Q_FUNC_INFO << "Trying to load" << trFile;
-        if (translator->load(trFile, trPath)) {
+        if (translator->load(trFile, trPath) ||
+            lang.startsWith(QLatin1String("en"))) {
+            // Permissive approach: Qt and keychain translations
+            // may be missing, but Qt translations must be there in order
+            // for us to accept the language. Otherwise, we try with the next.
+            // "en" is an exeption as it is the default language and may not
+            // have a translation file provided.
+            qDebug() << Q_FUNC_INFO << "Using" << lang << "translation";
+            setProperty("ui_lang", lang);
             const QString qtTrPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
             const QString qtTrFile = QLatin1String("qt_") + lang;
-            const QString qtkeychainFile = QLatin1String("qt_") + lang;
-            // try, but it's fine if we fail
-            qtkeychainTranslator->load(qtkeychainFile, qtTrPath);
-            qtkeychainTranslator->load(qtkeychainFile, trPath);
-            if (qtTranslator->load(qtTrFile, qtTrPath) || qtTranslator->load(qtTrFile, trPath)) {
-                qDebug() << Q_FUNC_INFO << "Successfully loaded" << trFile << "and" << qtTrFile;
-                installTranslator(translator);
-                installTranslator(qtTranslator);
-                setProperty("ui_lang", lang);
-                break;
+            if (qtTranslator->load(qtTrFile, qtTrPath)) {
+                qtTranslator->load(qtTrFile, trPath);
             }
-            translator->load(QString()); // unload, we want no inconsistent UI
-            qtkeychainTranslator->load(QString());
-        } else if (lang.startsWith(QLatin1String("en")) /* "English" is built-in */) {
-            // use built-in
+            const QString qtkeychainFile = QLatin1String("qt_") + lang;
+            if (!qtkeychainTranslator->load(qtkeychainFile, qtTrPath)) {
+               qtkeychainTranslator->load(qtkeychainFile, trPath);
+            }
+            if (!translator->isEmpty())
+                installTranslator(translator);
+            if (!qtTranslator->isEmpty())
+                installTranslator(qtTranslator);
+            if (!qtkeychainTranslator->isEmpty())
+                installTranslator(qtkeychainTranslator);
             break;
         }
         if (property("ui_lang").isNull())
