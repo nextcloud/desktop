@@ -1008,6 +1008,21 @@ void Application::setHelp()
     _helpOnly = true;
 }
 
+QString substLang(const QString &lang)
+{
+    // Map the more apropriate script codes
+    // to country codes as used by Qt and
+    // transifex translation conventions.
+
+    // Simplified Chinese
+    if (lang == QLatin1String("zh_Hans"))
+        return QLatin1String("zh_CN");
+    // Traditional Chinese
+    if (lang == QLatin1String("zh_Hant"))
+        return QLatin1String("zh_TW");
+    return lang;
+}
+
 void Application::setupTranslations()
 {
     QStringList uiLanguages;
@@ -1029,6 +1044,7 @@ void Application::setupTranslations()
 
     foreach(QString lang, uiLanguages) {
         lang.replace(QLatin1Char('-'), QLatin1Char('_')); // work around QTBUG-25973
+        lang = substLang(lang);
         const QString trPath = applicationTrPath();
         const QString trFile = QLatin1String("mirall_") + lang;
         if (translator->load(trFile, trPath) ||
