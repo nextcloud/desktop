@@ -20,6 +20,11 @@
 #include "mirall/mirallconfigfile.h"
 #include "mirall/theme.h"
 
+#ifdef WITH_QTKEYCHAIN
+#include <qtkeychain/keychain.h>
+using namespace QKeychain;
+#endif
+
 #define MAX_LOGIN_ATTEMPTS 3
 
 namespace Mirall {

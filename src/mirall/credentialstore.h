@@ -14,22 +14,12 @@
 #ifndef CREDENTIALSTORE_H
 #define CREDENTIALSTORE_H
 
-#include "config.h"
 #include <QObject>
 #include <QInputDialog>
 
-#ifdef WITH_QTKEYCHAIN
-#include "qtkeychain/keychain.h"
-
-using namespace QKeychain;
-#else
-// FIXME: If the slot definition below is ifdefed for some reason the slot is
-// not there even if WITH_QTKEYCHAIN is defined.
 namespace QKeychain {
-   typedef void Job;
+  class Job;
 }
-#endif
-
 
 namespace Mirall {
 
