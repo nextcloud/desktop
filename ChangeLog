@@ -1,6 +1,28 @@
 ChangeLog
 =========
 
+version 1.2.1 (release 2013-02-26 ), csync 0.70.4 required
+  * [Fixes] Leave configured folders on configuration changes.
+  * [Fixes] Do not allow to finish the setup dialog if connection can't be established.
+  * [Fixes] Better handling of credentials in setup dialog.
+  * [Fixes] Do not leak fd's to /dev/null when using gnutls
+  * [Fixes] Stop sync scheduling when configuration wizard starts.
+  * [Fixes] Clear pending network requests when stepping back in config wizard.
+  * [Fixes] User password dialog asynchronous issues.
+  * [Fixes] Make folderman starting and stoping the scheduling.
+  * [Fixes] Various minor fixes and cleanups.
+  * [Fixes] Crash on pausing sync
+  * [Fixes] Stale lock file after pausing sync
+  * [App] Load translations from app dir or bundle as well.
+  * [Platform] Build fixes and simplifications, ie. build only one lib.
+  * [Platform] Added some getter/setters for configuration values.
+  * [Platform] Added man pages.
+  * [Platform] Simplified/fixed credential store usage and custom configs.
+  * [Platform] Added soname version to libowncloudsync.
+  * [Platform] Pull in Qt translations
+  * [Gui]  Make sync result popups less annoyingq
+  * [Gui] Fix for result popup
+
 version 1.2.0 (release 2013-01-24 ), csync 0.70.2 required
   * [GUI] New status dialog to show a detailed list of synced files.
   * [GUI] New tray notifications about synced files.
