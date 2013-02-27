@@ -738,6 +738,12 @@ int csync_destroy(CSYNC *ctx) {
   }
 #endif
 
+  while (ctx->progress) {
+    csync_progressinfo_t *next = ctx->progress->next;
+    csync_statedb_free_progressinfo(ctx->progress);
+    ctx->progress = next;
+  }
+
   /* destroy the rbtrees */
   if (c_rbtree_size(ctx->local.tree) > 0) {
     c_rbtree_destroy(ctx->local.tree, _tree_destructor);
