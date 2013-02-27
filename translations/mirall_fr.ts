@@ -1353,7 +1353,7 @@ L&apos;installation ne peut pas continuer.</translation>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="327"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; et %n autre(s) fichier(s) ont été synchronisés avec cette machine.</numerusform><numerusform>&apos;%1&apos; et %n autre(s) fichier(s) ont été synchronisés avec cette machine.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="333"/>
@@ -1369,7 +1369,7 @@ L&apos;installation ne peut pas continuer.</translation>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="335"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; et %n autre(s) fichier(s) ont été supprimés.</numerusform><numerusform>&apos;%1&apos; et %n autre(s) fichier(s) ont été supprimés.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="341"/>
@@ -1379,7 +1379,7 @@ L&apos;installation ne peut pas continuer.</translation>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="343"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; et %n autre(s) fichiers(s) ont été mis à jour.</numerusform><numerusform>&apos;%1&apos; et %n autre(s) fichiers(s) ont été mis à jour.</numerusform></translation>
     </message>
 </context>
 <context>

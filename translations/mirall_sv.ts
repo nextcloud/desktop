@@ -516,7 +516,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="930"/>
         <source>Preparing for sync.</source>
-        <translation type="unfinished"/>
+        <translation>Förbereder synkronisering.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="963"/>
@@ -1352,33 +1352,33 @@ Inställning kan inte utföras.</translation>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="327"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; och %n andra fil(er) har synkroniserats till denna dator.</numerusform><numerusform>&apos;%1&apos; och %n andra fil(er) har synkroniserats till denna dator.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="333"/>
         <location filename="../src/mirall/owncloudfolder.cpp" line="341"/>
         <source>File removed</source>
-        <translation type="unfinished"/>
+        <translation>Filen raderad</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="333"/>
         <source>&apos;%1&apos; has been removed.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; har tagits bort.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="335"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; och %n andra fil(er) har tagits bort.</numerusform><numerusform>&apos;%1&apos; och %n andra fil(er) har tagits bort.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="341"/>
         <source>&apos;%1&apos; has been updated.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; har uppdaterats.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="343"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; och %n andra fil(er) har uppdaterats.</numerusform><numerusform>&apos;%1&apos; och %n andra fil(er) har uppdaterats.</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1727,7 +1727,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="120"/>
         <source>&amp;Do not store password on local machine</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Spara inte lösenordet på denna dator.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="140"/>
