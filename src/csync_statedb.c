@@ -251,6 +251,11 @@ int csync_statedb_write(CSYNC *ctx) {
     return -1;
   }
 
+  /* progress info */
+  if (csync_statedb_write_progressinfo(ctx, ctx->progress) < 0) {
+    return -1;
+  }
+
   return 0;
 }
 
@@ -360,6 +365,23 @@ int csync_statedb_create_tables(CSYNC *ctx) {
     return -1;
   }
   c_strlist_destroy(result);
+  
+  result = csync_statedb_query(ctx,
+                               "CREATE TABLE IF NOT EXISTS progress("
+                               "phash INTEGER(8),"
+                               "modtime INTEGER(8),"
+                               "md5 VARCHAR(32),"
+                               "chunk INTEGER(8),"
+                               "error_count INTEGER(8),"
+                               "tmpfile VARCHAR(4096),"
+                               "PRIMARY KEY(phash)"
+                               ");"
+  );
+  if (result == NULL) {
+    return -1;
+  }
+  c_strlist_destroy(result);
+  
 
   /* write the version table. */
   stmt = sqlite3_mprintf( "INSERT INTO version (major, minor, patch) VALUES (%d, %d, %d);",
@@ -372,6 +394,7 @@ int csync_statedb_create_tables(CSYNC *ctx) {
     return -1;
   }
   sqlite3_free(stmt);
+  
 
   return 0;
 }
@@ -381,6 +404,14 @@ int csync_statedb_drop_tables(CSYNC *ctx) {
 
   result = csync_statedb_query(ctx,
       "DROP TABLE IF EXISTS metadata;"
+      );
+  if (result == NULL) {
+    return -1;
+  }
+  c_strlist_destroy(result);
+  
+  result = csync_statedb_query(ctx,
+      "DROP TABLE IF EXISTS progress;"
       );
   if (result == NULL) {
     return -1;
@@ -843,5 +874,77 @@ int csync_statedb_insert(CSYNC *ctx, const char *statement) {
 
   return sqlite3_last_insert_rowid(ctx->statedb.db);
 }
+
+csync_progressinfo_t* csync_statedb_get_progressinfo(CSYNC *ctx, uint64_t phash, uint64_t modtime, const char* md5) {
+  char *stmt = NULL;
+  csync_progressinfo_t *ret = NULL;
+  c_strlist_t *result = NULL;
+
+  if( ! csync_get_statedb_exists(ctx)) return ret;
+  stmt = sqlite3_mprintf("SELECT error_count, chunk, tmpfile FROM progress WHERE phash='%llu' AND modtime='%lld' AND md5='%q'",
+                         (long long unsigned int) phash, (long long signed int) modtime, md5);
+  if (!stmt) return ret;
+
+  result = csync_statedb_query(ctx, stmt);
+  sqlite3_free(stmt);
+  if (result == NULL) {
+    return NULL;
+  }
+
+  
+  if (result->count == 3) {
+    ret = c_malloc(sizeof(csync_progressinfo_t));
+    if (!ret) goto out;
+    ret->next = NULL;
+    ret->chunk = atoi(result->vector[1]);
+    ret->error = atoi(result->vector[0]);
+    ret->tmpfile = c_strdup(result->vector[2]);
+    ret->md5 = md5 ? c_strdup(md5) : NULL;
+    ret->modtime = modtime;
+    ret->phash = phash;
+  }
+out:
+  c_strlist_destroy(result);
+  return ret;
+}
+
+void csync_statedb_free_progressinfo(csync_progressinfo_t* pi)
+{
+  if (!pi) return;
+  SAFE_FREE(pi->md5);
+  SAFE_FREE(pi->tmpfile);
+  SAFE_FREE(pi);
+}
+
+int csync_statedb_write_progressinfo(CSYNC* ctx, csync_progressinfo_t* pi)
+{
+  int rc = 0;
+  char *stmt = NULL;
+
+  while (rc > -1 && pi) {
+    stmt = sqlite3_mprintf("INSERT INTO progress "
+    "(phash, modtime, md5, chunk, error_count, tmpfile) VALUES"
+    "(%llu, %lld, '%q', %d, %d, '%q');",
+      (long long signed int) pi->phash,
+      (long long int) pi->modtime,
+      pi->md5,
+      pi->chunk,
+      pi->error,
+      pi->tmpfile);
+
+    if (stmt == NULL) {
+      return -1;
+    }
+
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s" , stmt);
+
+    rc = csync_statedb_insert(ctx, stmt);
+    sqlite3_free(stmt);
+    pi = pi->next;
+  }
+  return 0;
+}
+
+
 
 /* vim: set ts=8 sw=2 et cindent: */

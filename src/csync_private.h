@@ -143,6 +143,8 @@ struct csync_s {
     uid_t euid;
   } pwd;
 
+  struct csync_progressinfo_s *progress;
+
   /* replica we are currently walking */
   enum csync_replica_e current;
 

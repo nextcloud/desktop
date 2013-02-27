@@ -32,6 +32,7 @@
 
 #include "csync_private.h"
 #include "csync_propagate.h"
+#include "csync_statedb.h"
 #include "vio/csync_vio.h"
 #include "c_jhash.h"
 
@@ -75,6 +76,27 @@ static void _store_id_update(CSYNC *ctx, csync_file_stat_t *st) {
         break;
 
     }
+}
+
+
+/* Record the error in the ctx->progress
+  pi may be a previous csync_progressinfo_t from the database.
+  If pi is NULL, a new one is created, else it is re-used
+  */
+static void _csync_record_error(CSYNC *ctx, csync_file_stat_t *st, csync_progressinfo_t *pi) {
+  if (pi) {
+    pi->error++;
+  } else {
+    pi = c_malloc(sizeof(csync_progressinfo_t));
+    pi->chunk = 0;
+    pi->tmpfile = NULL;
+    pi->md5 = st->md5 ? c_strdup(st->md5) : NULL;
+    pi->modtime = st->modtime;
+    pi->phash = st->phash;
+    pi->error = 1;
+  }
+  pi->next = ctx->progress;
+  ctx->progress = pi;
 }
 
 static bool _push_to_tmp_first(CSYNC *ctx)
@@ -139,6 +161,13 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   int rc = -1;
   int count = 0;
   int flags = 0;
+
+  csync_progressinfo_t *pi = NULL;
+  pi = csync_statedb_get_progressinfo(ctx, st->phash, st->modtime, st->md5);
+  if (pi && pi->error > 3) {
+    rc = 1;
+    goto out;
+  }
 
   rep_bak = ctx->replica;
 
@@ -544,7 +573,11 @@ out:
         csync_vio_unlink(ctx, turi);
       }
     }
+    _csync_record_error(ctx, st, pi);
+    pi = NULL;
   }
+
+  csync_statedb_free_progressinfo(pi);
 
   SAFE_FREE(prev_tdir);
   SAFE_FREE(suri);
@@ -700,6 +733,12 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
   c_rbnode_t *node = NULL;
   char *tdir = NULL;
   csync_file_stat_t *other = NULL;
+  csync_progressinfo_t *pi = NULL;
+  pi = csync_statedb_get_progressinfo(ctx, st->phash, st->modtime, st->md5);
+  if (pi && pi->error > 3) {
+    rc = 1;
+    goto out;
+  }
 
   switch (ctx->current) {
     case REMOTE_REPLICA:
@@ -816,8 +855,11 @@ out:
       /* We set the instruction to UPDATED so next try we try to rename again */
       st->instruction = CSYNC_INSTRUCTION_UPDATED;
     }
+    _csync_record_error(ctx, st, pi);
+    pi = NULL;
   }
 
+  csync_statedb_free_progressinfo(pi);
   return rc;
 }
 
@@ -846,6 +888,14 @@ static int _csync_remove_file(CSYNC *ctx, csync_file_stat_t *st) {
   char errbuf[256] = {0};
   char *uri = NULL;
   int rc = -1;
+
+  csync_progressinfo_t *pi = NULL;
+  pi = csync_statedb_get_progressinfo(ctx, st->phash, st->modtime, st->md5);
+  if (pi && pi->error > 3) {
+    rc = 1;
+    goto out;
+  }
+
 
   switch (ctx->current) {
     case LOCAL_REPLICA:
@@ -897,8 +947,11 @@ out:
   if (rc != 0) {
     /* Write file to statedb, to try to sync again on the next run. */
     st->instruction = CSYNC_INSTRUCTION_NONE;
+    _csync_record_error(ctx, st, pi);
+    pi = NULL;
   }
 
+  csync_statedb_free_progressinfo(pi);
   return rc;
 }
 
@@ -909,6 +962,13 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
   char *uri = NULL;
   struct timeval times[2];
   int rc = -1;
+
+  csync_progressinfo_t *pi = NULL;
+  pi = csync_statedb_get_progressinfo(ctx, st->phash, st->modtime, st->md5);
+  if (pi && pi->error > 3) {
+    rc = 1;
+    goto out;
+  }
 
   replica_bak = ctx->replica;
 
@@ -994,8 +1054,11 @@ out:
   /* set instruction for the statedb merger */
   if (rc != 0) {
     st->instruction = CSYNC_INSTRUCTION_ERROR;
+    _csync_record_error(ctx, st, pi);
+    pi = NULL;
   }
 
+  csync_statedb_free_progressinfo(pi);
   return rc;
 }
 
@@ -1006,6 +1069,13 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
   char *uri = NULL;
   struct timeval times[2];
   int rc = -1;
+
+  csync_progressinfo_t *pi = NULL;
+  pi = csync_statedb_get_progressinfo(ctx, st->phash, st->modtime, st->md5);
+  if (pi && pi->error > 3) {
+    rc = 1;
+    goto out;
+  }
 
   replica_bak = ctx->replica;
 
@@ -1074,8 +1144,11 @@ out:
   /* set instruction for the statedb merger */
   if (rc != 0) {
     st->instruction = CSYNC_INSTRUCTION_ERROR;
+    _csync_record_error(ctx, st, pi);
+    pi = NULL;
   }
 
+  csync_statedb_free_progressinfo(pi);
   return rc;
 }
 
@@ -1389,6 +1462,7 @@ static int _csync_propagation_cleanup(CSYNC *ctx) {
 static int _csync_propagation_file_visitor(void *obj, void *data) {
   csync_file_stat_t *st = NULL;
   CSYNC *ctx = NULL;
+  int rc = 0;
 
   st = (csync_file_stat_t *) obj;
   ctx = (CSYNC *) data;
@@ -1399,32 +1473,32 @@ static int _csync_propagation_file_visitor(void *obj, void *data) {
     case CSYNC_FTW_TYPE_FILE:
       switch (st->instruction) {
         case CSYNC_INSTRUCTION_NEW:
-          if (_csync_new_file(ctx, st) < 0) {
+          if ((rc = _csync_new_file(ctx, st)) < 0) {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"FAIL NEW: %s",st->path);
             goto err;
           }
           break;
         case CSYNC_INSTRUCTION_RENAME:
-          if (_csync_rename_file(ctx, st) < 0) {
+          if ((rc = _csync_rename_file(ctx, st)) < 0) {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"FAIL RENAME: %s",st->path);
             goto err;
           }
           break;
       case CSYNC_INSTRUCTION_SYNC:
-          if (_csync_sync_file(ctx, st) < 0) {
+          if ((rc = _csync_sync_file(ctx, st)) < 0) {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"FAIL SYNC: %s",st->path);
             goto err;
           }
           break;
         case CSYNC_INSTRUCTION_REMOVE:
-          if (_csync_remove_file(ctx, st) < 0) {
+          if ((rc = _csync_remove_file(ctx, st)) < 0) {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"FAIL REMOVE: %s",st->path);
             goto err;
           }
           break;
         case CSYNC_INSTRUCTION_CONFLICT:
           CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"case CSYNC_INSTRUCTION_CONFLICT: %s",st->path);
-          if (_csync_conflict_file(ctx, st) < 0) {
+          if ((rc = _csync_conflict_file(ctx, st)) < 0) {
             goto err;
           }
           break;
@@ -1443,7 +1517,7 @@ static int _csync_propagation_file_visitor(void *obj, void *data) {
       break;
   }
 
-  return 0;
+  return rc;
 err:
   return -1;
 }
