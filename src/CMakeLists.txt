@@ -30,20 +30,18 @@ mirall/fileitemdialog.ui
 
 set(3rdparty_SRC
 3rdparty/qtsingleapplication/qtsingleapplication.cpp
-3rdparty/qtsingleapplication/qtlocalpeer.h
 3rdparty/qtsingleapplication/qtlocalpeer.cpp
-3rdparty/qtsingleapplication/qtsingleapplication.h
-3rdparty/qtsingleapplication/qtsinglecoreapplication.h
 3rdparty/qtsingleapplication/qtsinglecoreapplication.cpp
-
-3rdparty/qtlockedfile/qtlockedfile.h
 3rdparty/qtlockedfile/qtlockedfile.cpp
+3rdparty/fancylineedit/fancylineedit.cpp
 )
 
 set(3rdparty_HEADER
 3rdparty/qtsingleapplication/qtlocalpeer.h
 3rdparty/qtsingleapplication/qtsingleapplication.h
 3rdparty/qtsingleapplication/qtsinglecoreapplication.h
+3rdparty/fancylineedit/fancylineedit.h
+3rdparty/QProgressIndicator/QProgressIndicator.h
 )
 qt4_wrap_cpp(3rdparty_MOC ${3rdparty_HEADER})
 
