@@ -702,7 +702,7 @@ void Application::slotOpenStatus()
     if( !cfgFile.exists() ) {
       qDebug() << "No configured folders yet, start the Owncloud integration dialog.";
       _folderMan->setSyncEnabled(false);
-      _owncloudSetupWizard->startWizard(true); // with intro
+      _owncloudSetupWizard->startWizard();
     } else {
       qDebug() << "#============# Status dialog starting #=============#";
       raiseWidget = _statusDialog;

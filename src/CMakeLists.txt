@@ -56,6 +56,8 @@ endif()
 set(3rdparty_INC
     ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/qtlockedfile
     ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/qtsingleapplication
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/QProgressIndicator
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/fancylineedit
     )
 
 qt4_wrap_ui(mirall_UI_SRCS ${mirall_UI})

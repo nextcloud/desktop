@@ -83,11 +83,37 @@ OwncloudSetupWizard::~OwncloudSetupWizard()
 
 }
 
+void OwncloudSetupWizard::startWizard()
+{
+    // Set useful default values.
+    MirallConfigFile cfgFile;
+    // Fill the entry fields with existing values.
+    QString url = cfgFile.ownCloudUrl();
+    if( !url.isEmpty() ) {
+        _ocWizard->setOCUrl( url );
+    }
+    QString user = cfgFile.ownCloudUser();
+    if( !user.isEmpty() ) {
+        _ocWizard->setOCUser( user );
+    }
+
+    QString d( QDir::homePath()+QLatin1Char('/')+Theme::instance()->defaultClientFolder() );
+
+    QString localPath = QDir::toNativeSeparators(d);
+    _ocWizard->setLocalFolder( localPath );
+    _ocWizard->setStartId(OwncloudWizard::Page_oCSetup);
+
+    _ocWizard->restart();
+    _ocWizard->show();
+}
+
+
 // Method executed when the user ends the wizard, either with 'accept' or 'reject'.
 // accept the custom config to be the main one if Accepted.
 void OwncloudSetupWizard::slotAssistantFinished( int result )
 {
     MirallConfigFile cfg( _configHandle );
+
 
     if( result == QDialog::Rejected ) {
         // the old config remains valid. Remove the temporary one.
@@ -123,14 +149,6 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
     // clear the custom config handle
     _configHandle.clear();
     ownCloudInfo::instance()->setCustomConfigHandle( QString::null );
-
-    // disconnect the ocInfo object
-    disconnect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
-               this, SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
-    disconnect(ownCloudInfo::instance(), SIGNAL(noOwncloudFound(QNetworkReply*)),
-               this, SLOT(slotNoOwnCloudFound(QNetworkReply*)));
-    disconnect(ownCloudInfo::instance(), SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),
-               this, SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
 
     // notify others.
     emit ownCloudWizardDone( result );
@@ -413,6 +431,7 @@ void OwncloudSetupWizard::setupLocalSyncFolder()
 
     qDebug() << "Setup local sync folder for new oC connection " << _localFolder;
     QDir fi( _localFolder );
+    // FIXME: Show problems with local folder properly.
 
     bool localFolderOk = true;
     if( fi.exists() ) {
