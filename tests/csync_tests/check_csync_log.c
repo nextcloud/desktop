@@ -45,15 +45,13 @@ static void teardown(void **state) {
     *state = NULL;
 }
 
-static void check_log_callback(CSYNC *ctx,
-                               int verbosity,
+static void check_log_callback(int verbosity,
                                const char *function,
                                const char *buffer,
                                void *userdata)
 {
     int rc;
 
-    assert_non_null(ctx);
     assert_true(verbosity >= 0);
     assert_non_null(function);
     assert_false(function[0] == '\0');
@@ -102,11 +100,12 @@ static void check_set_auth_callback(void **state)
 
 static void check_logging(void **state)
 {
-    CSYNC *csync = *state;
     int rc;
     csync_stat_t sb;
     mbchar_t *path;
     path = c_utf8_to_locale("/tmp/check_csync1/cb_called");
+
+    (void) state; /* unused */
 
     assert_non_null(path);
 
@@ -116,7 +115,7 @@ static void check_logging(void **state)
     rc = csync_set_log_callback(check_log_callback);
     assert_int_equal(rc, 0);
 
-    csync_log(csync, 1, __FUNCTION__, "rc = %d", rc);
+    csync_log(1, __FUNCTION__, "rc = %d", rc);
 
     rc = _tstat(path, &sb);
 

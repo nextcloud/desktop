@@ -19,7 +19,7 @@ static void check_csync_memstat(void **state)
 {
   (void) state; /* unused */
 
-  csync_memstat_check(NULL);
+  csync_memstat_check();
 }
 
 int torture_run_tests(void)
