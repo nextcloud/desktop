@@ -181,7 +181,7 @@ int csync_init(CSYNC *ctx) {
   }
 
 #ifndef _WIN32
-  if (csync_lock(ctx, lock) < 0) {
+  if (csync_lock(lock) < 0) {
     rc = -1;
     goto out;
   }
@@ -330,7 +330,7 @@ int csync_update(CSYNC *ctx) {
     return -1;
   }
 
-  csync_memstat_check(ctx);
+  csync_memstat_check();
 
   /* update detection for local replica */
   csync_gettime(&start);
@@ -344,7 +344,7 @@ int csync_update(CSYNC *ctx) {
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
       "Update detection for local replica took %.2f seconds walking %zu files.",
       c_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
-  csync_memstat_check(ctx);
+  csync_memstat_check();
 
   if (rc < 0) {
     return -1;
@@ -364,7 +364,7 @@ int csync_update(CSYNC *ctx) {
                 "Update detection for remote replica took %.2f seconds "
                 "walking %zu files.",
                 c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
-      csync_memstat_check(ctx);
+      csync_memstat_check();
 
       if (rc < 0) {
           return -1;
@@ -626,7 +626,7 @@ int csync_destroy(CSYNC *ctx) {
 #ifndef _WIN32
   /* remove the lock file */
   if (asprintf(&lock, "%s/%s", ctx->options.config_dir, CSYNC_LOCK_FILE) > 0) {
-    csync_lock_remove(ctx, lock);
+    csync_lock_remove(lock);
   }
 #endif
 
@@ -854,5 +854,3 @@ int csync_set_iconv_codec(const char *from)
   return 0;
 }
 #endif
-
-/* vim: set ts=8 sw=2 et cindent: */

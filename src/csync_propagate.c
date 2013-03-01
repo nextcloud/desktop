@@ -386,7 +386,7 @@ out:
   return rc;
 }
 
-static int _backup_path(CSYNC *ctx, char** duri, const char* uri, const char* path)
+static int _backup_path(char** duri, const char* uri, const char* path)
 {
 	int rc=0;
 	C_PATHINFO *info=NULL;
@@ -436,7 +436,7 @@ static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st) {
 			goto out;
 		}
 
-		if (_backup_path(ctx, &duri, ctx->remote.uri,st->path) < 0) {
+		if (_backup_path(&duri, ctx->remote.uri,st->path) < 0) {
 			rc = -1;
 			goto out;
 		}
@@ -448,7 +448,7 @@ static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st) {
 			goto out;
 		}
 
-		if ( _backup_path(ctx, &duri, ctx->local.uri, st->path) < 0) {
+		if ( _backup_path(&duri, ctx->local.uri, st->path) < 0) {
 			rc = -1;
 			goto out;
 		}

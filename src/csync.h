@@ -126,8 +126,7 @@ typedef struct csync_s CSYNC;
 typedef int (*csync_auth_callback) (const char *prompt, char *buf, size_t len,
     int echo, int verify, void *userdata);
 
-typedef void (*csync_log_callback) (CSYNC *ctx,
-                                    int verbosity,
+typedef void (*csync_log_callback) (int verbosity,
                                     const char *function,
                                     const char *buffer,
                                     void *userdata);
@@ -357,6 +356,22 @@ csync_log_callback csync_get_log_callback(void);
  * @return              0 on success, less than 0 if an error occured.
  */
 int csync_set_log_callback(csync_log_callback cb);
+
+/**
+ * @brief get the userdata set for the logging callback.
+ *
+ * @return              The userdata or NULL.
+ */
+void *csync_get_log_userdata(void);
+
+/**
+ * @brief Set the userdata passed to the logging callback.
+ *
+ * @param[in]  data     The userdata to set.
+ *
+ * @return              0 on success, less than 0 if an error occured.
+ */
+int csync_set_log_userdata(void *data);
 
 /**
  * @brief Get the path of the statedb file used.

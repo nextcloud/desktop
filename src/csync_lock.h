@@ -47,7 +47,7 @@
  * @return  0 if the lock was successfull, less than 0 if the lock file
  *          couldn't be created or if it is already locked.
  */
-int csync_lock(CSYNC *ctx, const char *lockfile);
+int csync_lock(const char *lockfile);
 
 /**
  * @brief  Remove the lockfile
@@ -57,7 +57,7 @@ int csync_lock(CSYNC *ctx, const char *lockfile);
  *
  * @param lockfile  The lock file to remove.
  */
-void csync_lock_remove(CSYNC *ctx, const char *lockfile);
+void csync_lock_remove(const char *lockfile);
 
 /**
  * }@

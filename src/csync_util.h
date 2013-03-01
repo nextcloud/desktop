@@ -27,7 +27,7 @@
 
 const char *csync_instruction_str(enum csync_instructions_e instr);
 
-void csync_memstat_check(CSYNC *ctx);
+void csync_memstat_check(void);
 
 int csync_merge_file_trees(CSYNC *ctx);
 

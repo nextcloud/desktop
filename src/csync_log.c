@@ -35,6 +35,7 @@
 
 CSYNC_THREAD int csync_log_level;
 CSYNC_THREAD csync_log_callback csync_log_cb;
+CSYNC_THREAD void *csync_log_userdata;
 
 static int current_timestring(int hires, char *buf, size_t len)
 {
@@ -78,8 +79,7 @@ static void csync_log_stderr(int verbosity,
 
     fprintf(stderr, "  %s\n", buffer);
 }
-static void csync_log_function(CSYNC *ctx,
-                               int verbosity,
+static void csync_log_function(int verbosity,
                                const char *function,
                                const char *buffer)
 {
@@ -89,11 +89,10 @@ static void csync_log_function(CSYNC *ctx,
 
         snprintf(buf, sizeof(buf), "%s: %s", function, buffer);
 
-        log_fn(ctx,
-               verbosity,
+        log_fn(verbosity,
                function,
                buf,
-               csync_get_userdata(ctx));
+               csync_get_log_userdata());
         return;
     }
 
@@ -101,23 +100,18 @@ static void csync_log_function(CSYNC *ctx,
 }
 
 
-void csync_log(CSYNC *ctx,
-               int verbosity,
+void csync_log(int verbosity,
                const char *function,
                const char *format, ...)
 {
     char buffer[1024];
     va_list va;
 
-    if (ctx == NULL) {
-        return;
-    }
-
     if (verbosity <= csync_get_log_level()) {
         va_start(va, format);
         vsnprintf(buffer, sizeof(buffer), format, va);
         va_end(va);
-        csync_log_function(ctx, verbosity, function, buffer);
+        csync_log_function(verbosity, function, buffer);
     }
 }
 
@@ -147,5 +141,17 @@ int csync_set_log_callback(csync_log_callback cb) {
 
 csync_log_callback csync_get_log_callback(void) {
   return csync_log_cb;
+}
+
+void *csync_get_log_userdata(void)
+{
+    return csync_log_userdata;
+}
+
+int csync_set_log_userdata(void *data)
+{
+    csync_log_userdata = data;
+
+    return 0;
 }
 
