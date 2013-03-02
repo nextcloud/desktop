@@ -1648,6 +1648,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
                     rc = 1;
                 }
             }
+            hbf_free_transfer(trans);
         }
         if (_progresscb) {
             ne_set_notifier(dav_session.ctx, 0, 0);
