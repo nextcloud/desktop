@@ -217,6 +217,17 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   }
 
   if (_push_to_tmp_first(ctx)) {
+
+      if (pi && pi->tmpfile && pi->tmpfile[0] && _push_to_tmp_first(ctx)) {
+          turi = c_strdup(pi->tmpfile);
+          /*  Try to see if we can resume. */
+          ctx->replica = drep;
+          dfp = csync_vio_open(ctx, turi, O_APPEND|O_NOCTTY, 0);
+          if (dfp) {
+              goto start_fd_based;
+          }
+      }
+
       /* create the temporary file name */
 #ifdef _WIN32
       if (asprintf(&turi, "%s.~XXXXXX", duri) < 0) {
@@ -329,19 +340,47 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   /* copy file */
   if( _use_fd_based_push(ctx) ) {
-      if (ctx->current == REMOTE_REPLICA)
-	    csync_win32_set_file_hidden(turi, true);
+start_fd_based:
+      if (ctx->current == REMOTE_REPLICA) {
+        csync_win32_set_file_hidden(turi, true);
+      }
 
       rc = csync_vio_sendfile( ctx, sfp, dfp );
 
-      if (ctx->current == REMOTE_REPLICA)
+      if (ctx->current == REMOTE_REPLICA) {
         csync_win32_set_file_hidden(turi, false);
+      }
 
       if( rc != 0 ) {
           strerror_r(errno,  errbuf, sizeof(errbuf));
           CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
                     "file: %s, command: sendfile, error: %s from errno %d",
                     suri, errbuf, errno);
+
+          if (_push_to_tmp_first(ctx)) {
+            csync_vio_file_stat_t* sb = csync_vio_file_stat_new();
+            if (csync_vio_stat(ctx, turi, sb) == 0 && sb->size > 0) {
+              CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
+                        "keeping tmp file: %s", turi);
+              if (!pi) {
+                pi = c_malloc(sizeof(csync_progressinfo_t));
+                pi->error = 0;
+                pi->md5 = st->md5 ? c_strdup(st->md5) : NULL;
+                pi->modtime = st->modtime;
+                pi->phash = st->phash;
+              } else {
+                SAFE_FREE(pi->tmpfile);
+              }
+              pi->chunk = 0;
+              pi->tmpfile = turi;
+              turi = NULL;
+              pi->next = ctx->progress;
+              ctx->progress = pi;
+              pi = NULL;
+              rc = 123;
+            }
+            csync_vio_file_stat_destroy(sb);
+          }
           goto out;
       }
   } else {
@@ -556,14 +595,16 @@ out:
   /* set instruction for the statedb merger */
   if (rc != 0) {
     st->instruction = CSYNC_INSTRUCTION_ERROR;
-    if (turi != NULL) {
-      if (_push_to_tmp_first(ctx)) {
-        /* Remove the tmp file in error case. */
-        csync_vio_unlink(ctx, turi);
+    if (_push_to_tmp_first(ctx)) {
+      if (turi != NULL) {
+            /* Remove the tmp file in error case. */
+            csync_vio_unlink(ctx, turi);
       }
     }
-    _csync_record_error(ctx, st, pi);
-    pi = NULL;
+    if (rc != 123) {
+      _csync_record_error(ctx, st, pi);
+      pi = NULL;
+    }
   }
 
   csync_statedb_free_progressinfo(pi);
