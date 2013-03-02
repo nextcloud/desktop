@@ -1739,7 +1739,9 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
 
             set_errno_from_neon_errcode(neon_stat);
             DEBUG_WEBDAV("Error GET: Neon: %d, errno %d", neon_stat, errno);
-            rc = -1;
+            error_string = dav_session.error_string;
+            error_code = errno;
+            rc = 1;
         } else {
             status = ne_get_status( write_ctx->req );
             DEBUG_WEBDAV("GET http result %d (%s)", status->code, status->reason_phrase ? status->reason_phrase : "<empty");
