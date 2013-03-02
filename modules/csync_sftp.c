@@ -304,7 +304,7 @@ static int _sftp_connect(const char *uri) {
       break;
     case SSH_SERVER_FOUND_OTHER:
       fprintf(stderr, "csync_sftp - the host key for this server was not "
-          "found but an other type of key exists.\n");
+          "found but another type of key exists.\n");
       fprintf(stderr, "csync_sftp - an attacker might change the default "
           "server key to confuse your client into thinking the key does not "
           "exist\n");

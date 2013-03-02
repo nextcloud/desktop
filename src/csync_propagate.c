@@ -1037,6 +1037,27 @@ out:
   return rc;
 }
 
+/* If a remove operation failed, we need to update the st so the information
+   that will be stored in the database will make it so that we try to remove
+   again on the next sync. */
+static void _csync_remove_error(CSYNC *ctx, csync_file_stat_t *st, char *uri) {
+  /* Write it back to statedb, that we try to delete it next time. */
+  st->instruction = CSYNC_INSTRUCTION_NONE;
+
+  if (ctx->replica == LOCAL_REPLICA) {
+    /* Update the mtime */
+    csync_vio_file_stat_t* vst = csync_vio_file_stat_new();
+    if (csync_vio_stat(ctx, uri, vst) == 0) {
+      st->inode = vst->inode;
+      st->modtime = vst->mtime;
+    }
+    csync_vio_file_stat_destroy(vst);
+
+    /* don't write the md5 to the database */
+    SAFE_FREE(st->md5);
+  }
+}
+
 static int _csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
   c_list_t *list = NULL;
   char errbuf[256] = {0};
@@ -1108,13 +1129,13 @@ static int _csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
 
   rc = 0;
 out:
-  SAFE_FREE(uri);
 
   /* set instruction for the statedb merger */
   if (rc != 0) {
-    st->instruction = CSYNC_INSTRUCTION_NONE;
+    _csync_remove_error(ctx, st, uri);
   }
 
+  SAFE_FREE(uri);
   return rc;
 }
 
@@ -1310,8 +1331,7 @@ static int _csync_propagation_cleanup(CSYNC *ctx) {
     }
 
     if (csync_vio_rmdir(ctx, dir) < 0) {
-      /* Write it back to statedb, that we try to delete it next time. */
-      st->instruction = CSYNC_INSTRUCTION_NONE;
+      _csync_remove_error(ctx, st, uri);
     } else {
       st->instruction = CSYNC_INSTRUCTION_DELETED;
     }

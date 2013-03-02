@@ -571,6 +571,9 @@ static void post_request_hook(ne_request *req, void *userdata, const ne_status *
 
     (void) userdata;
 
+    if (dav_session.session_key)
+        return; /* We already have a session cookie, and we should ignore other ones */
+
     if(!(status && req)) return;
     if( status->klass == 2 || status->code == 401 ) {
         /* successful request */
@@ -599,10 +602,17 @@ static void post_request_hook(ne_request *req, void *userdata, const ne_status *
                 } else if( *sc_end == ';' ) {
                     /* We are at the end of the session key. */
                     int keylen = sc_end-sc_val;
-                    if( key ) SAFE_FREE(key);
-                    key = c_malloc(keylen+1);
-                    strncpy( key, sc_val, keylen );
-                    key[keylen] = '\0';
+                    if( key ) {
+                        int oldlen = strlen(key);
+                        key = c_realloc(key, oldlen + 2 + keylen+1);
+                        strcpy(key + oldlen, "; ");
+                        strncpy(key + oldlen + 2, sc_val, keylen);
+                        key[oldlen + 2 + keylen] = '\0';
+                    } else {
+                        key = c_malloc(keylen+1);
+                        strncpy( key, sc_val, keylen );
+                        key[keylen] = '\0';
+                    }
 
                     /* now search for a ',' to find a potential other header entry */
                     while(cnt < len && *sc_end != ',') {
@@ -1030,10 +1040,18 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
          */
         content_type =  ne_get_response_header( request, "Content-Type" );
         if( !(content_type && c_streq(content_type, "application/xml; charset=utf-8") ) ) {
+            ssize_t resp_size;
+            char buffer[4096];
+            ZERO_STRUCT(buffer);
+
             DEBUG_WEBDAV("ERROR: Content type of propfind request not XML: %s.",
                          content_type ?  content_type: "<empty>");
             errno = ERRNO_WRONG_CONTENT;
             set_error_message("Server error: PROPFIND reply is not XML formatted!");
+
+            /* Read the response buffer to log the actual problem. */
+            resp_size = ne_read_response_block(request, buffer, 4095);
+            DEBUG_WEBDAV("ERROR: Content was of size %ld: %s", resp_size, buffer );
             ret = NE_CONNECT;
         }
     }
@@ -1055,17 +1073,17 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
             /* check the changing of the time delta */
             time_diff_delta = llabs(dav_session.time_delta - time_diff);
             if( dav_session.time_delta_cnt == 1 ) {
-                DEBUG_WEBDAV( "The first time_delta is %llu", (unsigned long long) time_diff );
+                DEBUG_WEBDAV( "The first time_delta is %ld", time_diff );
             } else if( dav_session.time_delta_cnt > 1 ) {
                 if( time_diff_delta > 5 ) {
                     DEBUG_WEBDAV("WRN: The time delta changed more than 5 second");
                     // errno = ERRNO_TIMEDELTA;
                     // ret = OC_TIMEDELTA_FAIL;
                 } else {
-                    DEBUG_WEBDAV("Ok: Time delta remained (almost) the same: %llu.", (unsigned long long) time_diff);
+                    DEBUG_WEBDAV("Ok: Time delta remained (almost) the same: %ld.", time_diff);
                 }
             } else {
-                DEBUG_WEBDAV("Difference to last server time delta: %llu", (unsigned long long) time_diff_delta );
+                DEBUG_WEBDAV("Difference to last server time delta: %ld", time_diff_delta );
             }
             dav_session.time_delta = time_diff;
         } else {
@@ -1105,6 +1123,24 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
     free_fetchCtx(propfind_cache);
     propfind_cache = fetchCtx;
     propfind_cache->ref++;
+    return fetchCtx;
+}
+
+static struct listdir_context *fetch_resource_list_attempts(const char *uri, int depth)
+{
+    int i;
+
+    struct listdir_context *fetchCtx = NULL;
+    for(i = 0; i < 10; ++i) {
+        fetchCtx = fetch_resource_list(uri, depth);
+        if(fetchCtx) break;
+        /* only loop in case the content is not XML formatted. Otherwise for every
+         * non successful stat (for non existing directories) its tried 10 times. */
+        if( errno != ERRNO_WRONG_CONTENT ) break;
+
+        DEBUG_WEBDAV("=> Errno after fetch resource list for %s: %d", uri, errno);
+        DEBUG_WEBDAV("   New attempt %i", i);
+    }
     return fetchCtx;
 }
 
@@ -1236,7 +1272,8 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
     }
 
     /* fetch data via a propfind call. */
-    fetchCtx = fetch_resource_list( uri, NE_DEPTH_ONE);
+    /* fetchCtx = fetch_resource_list( uri, NE_DEPTH_ONE); */
+    fetchCtx = fetch_resource_list_attempts( uri, NE_DEPTH_ONE);
     DEBUG_WEBDAV("=> Errno after fetch resource list for %s: %d", uri, errno);
     if (!fetchCtx) {
         return -1;
@@ -1374,7 +1411,7 @@ static char*_lastDir = NULL;
  *  int  unix_extensions     - oC supports unix extensions.
  *  bool propagate_on_fd     - oC supports the send_file method.
  */
-static csync_vio_capabilities_t _owncloud_capabilities = { true, false, false, 1, true };
+static csync_vio_capabilities_t _owncloud_capabilities = { true, false, false, 0, true };
 
 static csync_vio_capabilities_t *owncloud_capabilities(void)
 {
@@ -1808,7 +1845,8 @@ static csync_vio_method_handle_t *owncloud_opendir(const char *uri) {
 
     dav_connect( uri );
 
-    fetchCtx = fetch_resource_list( uri, NE_DEPTH_ONE );
+    /* fetchCtx = fetch_resource_list( uri, NE_DEPTH_ONE ); */
+    fetchCtx = fetch_resource_list_attempts( uri, NE_DEPTH_ONE);
     if( !fetchCtx ) {
         /* errno is set properly in fetch_resource_list */
         DEBUG_WEBDAV("Errno set to %d", errno);
@@ -1874,7 +1912,6 @@ static csync_vio_file_stat_t *owncloud_readdir(csync_vio_method_handle_t *dhandl
 static int owncloud_mkdir(const char *uri, mode_t mode) {
     int rc = NE_OK;
     int len = 0;
-    ne_request *req = NULL;
 
     char *path = _cleanPath( uri );
     (void) mode; /* unused */
@@ -1898,16 +1935,12 @@ static int owncloud_mkdir(const char *uri, mode_t mode) {
         }
         DEBUG_WEBDAV("MKdir on %s", path );
 
-        req = ne_request_create(dav_session.ctx, "MKCOL", path);
-        rc = ne_simple_request(dav_session.ctx, req);
-
+        rc = ne_mkcol(dav_session.ctx, path );
+        set_errno_from_neon_errcode(rc);
         /* Special for mkcol: it returns 405 if the directory already exists.
          * To keep csync vio_mkdirs working errno EEXIST has to be returned. */
-        if( ne_get_status(req)->code == 405 ) {
+        if (errno == EPERM && http_result_code_from_session() == 405)
             errno = EEXIST;
-        } else {
-            set_errno_from_neon_errcode(rc);
-        }
     }
     SAFE_FREE( path );
 
@@ -2083,7 +2116,7 @@ static int owncloud_set_property(const char *key, void *data) {
         _progresscb = *(csync_progress_callback*)(data);
         return 0;
     }
-    if (c_streq(key, "read_timeout")) {
+    if (c_streq(key, "read_timeout") || c_streq(key, "timeout")) {
         dav_session.read_timeout = *(int*)(data);
         return 0;
     }
