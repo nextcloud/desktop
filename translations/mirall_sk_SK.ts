@@ -380,7 +380,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/application.cpp" line="331"/>
         <location filename="../src/mirall/application.cpp" line="340"/>
         <source>No %1 Connection</source>
-        <translation>Žiadne %1 Spojenie</translation>
+        <translation>Žiadne %1 pripojenie</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="332"/>
@@ -521,7 +521,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="963"/>
         <source> (Sync is paused)</source>
-        <translation>(Synchronizácia zapauzovaná)</translation>
+        <translation>(Synchronizácia je prerušená)</translation>
     </message>
     <message>
         <source>Sync is paused.</source>
@@ -928,7 +928,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="120"/>
         <source>&lt;br/&gt;The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
-        <translation>&lt;br/&gt;Alias &lt;i&gt;%1&lt;/i&gt; sa už používa. Vyberte prosím odlišný.</translation>
+        <translation>&lt;br/&gt;Alias &lt;i&gt;%1&lt;/i&gt; sa už používa. Vyberte prosím iný.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="141"/>
@@ -1038,7 +1038,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="108"/>
         <source>Save the log file to a file on disk for debugging.</source>
-        <translation>Uložiť záznamový súbor do súboru na disk pre proces debugovania.</translation>
+        <translation>Uložiť log súbor do súboru na disk pre proces debugovania.</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="146"/>
@@ -1127,7 +1127,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="142"/>
         <source>Trying to connect to %1 at %2...</source>
-        <translation>Pokúšam sa o spojenie k %1 na %2...</translation>
+        <translation>Pokúšam sa o pripojenie k %1 na %2...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="198"/>
@@ -1171,7 +1171,7 @@ Please write a bug report.</source>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="400"/>
         <source>The owncloud admin script can not be found.
 Setup can not be done.</source>
-        <translation>Skript potrebný k administrácii nebol nájdený.
+        <translation>Skript potrebný na administráciu nebol nájdený.
 Inštalácia nemôže pokračovať.</translation>
     </message>
     <message>
@@ -1202,7 +1202,7 @@ Inštalácia nemôže pokračovať.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="505"/>
         <source>Successfully connected to %1!</source>
-        <translation>Úspešne spojené s %1!</translation>
+        <translation>Úspešne pripojené s %1!</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="511"/>
@@ -1225,7 +1225,7 @@ Inštalácia nemôže pokračovať.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="420"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>Lokálny synch. priečinok %1 už existuje, prebieha jeho nastavovanie pre synchronizáciu.&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>Lokálny synchronizačný priečinok %1 už existuje, prebieha jeho nastavovanie pre synchronizáciu.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="422"/>
@@ -1257,7 +1257,7 @@ Inštalácia nemôže pokračovať.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="113"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Lokálny synch. priečinok %1 úspešne vytvorený!&lt;/b&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Lokálny synchronizačný priečinok %1 bol úspešne vytvorený!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <source>The remote folder %1 already exists. Automatic sync setup is skipped for security reasons. Please configure your sync folder manually.</source>
@@ -1284,12 +1284,12 @@ Inštalácia nemôže pokračovať.</translation>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="70"/>
         <source>&lt;p&gt;In order to connect to your %1 server, you need to provide the server address as well as your credentials.&lt;/p&gt;&lt;p&gt;This wizard will guide you through the process.&lt;p&gt;&lt;p&gt;If you have not received this information, please contact your %1 provider.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Pre spojenie so serverom %1 musíte zadať adresu a prihlasovacie údaje.&lt;/p&gt;&lt;p&gt;Tento sprievodca vás prevedie nastavením.&lt;/p&gt;&lt;p&gt;Ak nemáte potrebné údaje, kontaktujte svojho správcu, alebo providera %1.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Pre pripojenie so serverom %1 musíte zadať adresu a prihlasovacie údaje.&lt;/p&gt;&lt;p&gt;Tento sprievodca vás prevedie nastavením.&lt;/p&gt;&lt;p&gt;Ak nemáte potrebné údaje, kontaktujte svojho správcu, alebo providera %1.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="75"/>
         <source>&lt;p&gt;In order to connect to your %1 server, you need to provide your credentials.&lt;/p&gt;&lt;p&gt;This wizard will guide you through the setup process.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Pre spojenie so serverom %1 musíte zadať prihlasovacie údaje.&lt;/p&gt;&lt;p&gt;Tento sprievodca vás prevedie nastavením.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Pre pripojenie so serverom %1 musíte zadať prihlasovacie údaje.&lt;/p&gt;&lt;p&gt;Tento sprievodca vás prevedie nastavením.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1358,12 +1358,12 @@ Inštalácia nemôže pokračovať.</translation>
         <location filename="../src/mirall/owncloudfolder.cpp" line="333"/>
         <location filename="../src/mirall/owncloudfolder.cpp" line="341"/>
         <source>File removed</source>
-        <translation>Súbor zmazaný</translation>
+        <translation>Súbor odstránený</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="333"/>
         <source>&apos;%1&apos; has been removed.</source>
-        <translation>&apos;%1&apos; bol zmazaný.</translation>
+        <translation>&apos;%1&apos; bol odstránený.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="335"/>
@@ -1464,12 +1464,12 @@ Inštalácia nemôže pokračovať.</translation>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="483"/>
         <source>Checking %1 connection...</source>
-        <translation>Kontrolujem %1 spojenie...</translation>
+        <translation>Kontrolujem %1 pripojenie...</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="488"/>
         <source>No %1 connection configured.</source>
-        <translation>Žiadne nakonfigurované  %1 spojenie</translation>
+        <translation>Žiadne nakonfigurované  %1 pripojenie</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.cpp" line="511"/>
@@ -1637,7 +1637,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="84"/>
         <source>ownCloud-User:</source>
-        <translation>ownCloud-Používateľ:</translation>
+        <translation>ownCloud-používateľ:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="98"/>
@@ -1854,7 +1854,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="110"/>
         <source>ownCloud-Link:</source>
-        <translation>ownCloud-Odkaz:</translation>
+        <translation>ownCloud-odkaz:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="156"/>
@@ -1946,7 +1946,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>
         <source>Sync Error - Click info button for details.</source>
-        <translation>Chyba synchronizácie - Kliknite na informačné tlačidlo pre detaily.</translation>
+        <translation>Chyba synchronizácie - kliknite na informačné tlačidlo pre detaily.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="66"/>
@@ -2084,7 +2084,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="25"/>
         <source>Sync Directory Status</source>
-        <translation>Status synch. priečinka</translation>
+        <translation>Status synchronizačného priečinka</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="41"/>
