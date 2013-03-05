@@ -65,9 +65,6 @@
  */
 int csync_propagate_files(CSYNC *ctx);
 
-
-int csync_correct_id(CSYNC *ctx);
-
 /**
  * }@
  */

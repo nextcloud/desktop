@@ -154,9 +154,7 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
   }
 
   ctx->local.list     = 0;
-  ctx->local.id_list  = 0;
   ctx->remote.list    = 0;
-  ctx->remote.id_list = 0;
 
   *csync = ctx;
   return 0;
@@ -528,29 +526,6 @@ int csync_propagate(CSYNC *ctx) {
     return -1;
   }
 
-  csync_gettime(&start);
-  ctx->current = LOCAL_REPLICA;
-  ctx->replica = ctx->local.type;
-  rc = csync_correct_id(ctx);
-  if (rc < 0) {
-      ctx->error_code = CSYNC_ERR_PROPAGATE;
-      return -1;
-  }
-
-  ctx->current = REMOTE_REPLICA;
-  ctx->replica = ctx->remote.type;
-  rc = csync_correct_id(ctx);
-  if (rc < 0) {
-      ctx->error_code = CSYNC_ERR_PROPAGATE;
-      return -1;
-  }
-  csync_gettime(&finish);
-
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Correct Id took. %.2f seconds ",
-            c_secdiff(finish, start));
-  
-
   ctx->status |= CSYNC_STATUS_PROPAGATE;
 
   return 0;
@@ -762,15 +737,11 @@ int csync_commit(CSYNC *ctx) {
   /* free memory */
   c_rbtree_free(ctx->local.tree);
   c_list_free(ctx->local.list);
-  c_list_free(ctx->local.id_list);
   c_rbtree_free(ctx->remote.tree);
   c_list_free(ctx->remote.list);
-  c_list_free(ctx->remote.id_list);
 
   ctx->remote.list = 0;
-  ctx->remote.id_list = 0;
   ctx->local.list = 0;
-  ctx->local.id_list = 0;
 
   ctx->remote.read_from_db = 0;
 
@@ -860,10 +831,8 @@ int csync_destroy(CSYNC *ctx) {
   /* free memory */
   c_rbtree_free(ctx->local.tree);
   c_list_free(ctx->local.list);
-  c_list_free(ctx->local.id_list);
   c_rbtree_free(ctx->remote.tree);
   c_list_free(ctx->remote.list);
-  c_list_free(ctx->remote.id_list);
   SAFE_FREE(ctx->local.uri);
   SAFE_FREE(ctx->remote.uri);
   SAFE_FREE(ctx->options.config_dir);
