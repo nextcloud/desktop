@@ -87,24 +87,28 @@ char *csync_get_local_username(void) {
 #endif /* NSS_BUFLEN_PASSWD */
 
 char *csync_get_user_home_dir(void) {
-    char *szPath = NULL;
+    char home[PATH_MAX] = {0};
+    const char *envp;
     struct passwd pwd;
     struct passwd *pwdbuf;
     char buf[NSS_BUFLEN_PASSWD];
     int rc;
 
-    szPath = getenv("HOME");
-    if( szPath ) {
-        return c_strdup(szPath);
+    envp = getenv("HOME");
+    if (envp != NULL) {
+        snprintf(home, sizeof(home), "%s", envp);
+        if (home[0] != '\0') {
+            return c_strdup(home);
+        }
     }
 
     /* Still nothing found, read the password file */
     rc = getpwuid_r(getuid(), &pwd, buf, NSS_BUFLEN_PASSWD, &pwdbuf);
     if (rc != 0) {
-        szPath = c_strdup(pwd.pw_dir);
+        return c_strdup(pwd.pw_dir);
     }
 
-    return szPath;
+    return NULL;
 }
 
 char *csync_get_local_username(void) {
