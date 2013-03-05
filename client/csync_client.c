@@ -57,7 +57,8 @@ at LOCAL with the ones at REMOTE.\n\
 #ifdef WITH_ICONV
 "    --iconv=codec          Request charset conversion of local filenames\n"
 #endif
-"    --test-statedb         Test creation of the statedb. Runs update\n\
+"-p  --proxy=<host:port>    Use an http proxy (ownCloud module only)\n\
+    --test-statedb         Test creation of the statedb. Runs update\n\
                            detection.\n\
     --test-update          Test the update detection\n\
 -?, --help                 Give this help list\n\
@@ -80,6 +81,7 @@ static const struct option long_options[] =
     {"test-update",     no_argument,       0,  0  },
     {"version",         no_argument,       0, 'V' },
     {"usage",           no_argument,       0, 'h' },
+    {"proxy",           required_argument, 0, 'p' },
     {0, 0, 0, 0}
 };
 
@@ -95,6 +97,7 @@ struct argument_s {
   int reconcile;
   int propagate;
   bool with_conflict_copys;
+  char *http_proxy;
 };
 
 static void print_version()
@@ -114,7 +117,7 @@ static int parse_args(struct argument_s *csync_args, int argc, char **argv)
     while(optind < argc) {
         int c = -1;
         struct option *opt = NULL;
-        int result = getopt_long( argc, argv, "dcVh", long_options, &c );
+        int result = getopt_long( argc, argv, "d:cVhp:", long_options, &c );
 
         if( result == -1 ) {
             break;
@@ -135,6 +138,11 @@ static int parse_args(struct argument_s *csync_args, int argc, char **argv)
             break;
         case 'h':
             print_help();
+            break;
+        case 'p':
+            if (optarg != NULL) {
+                csync_args->http_proxy = c_strdup(optarg);
+            }
             break;
         case 0:
             opt = (struct option*)&(long_options[c]);
@@ -159,6 +167,8 @@ static int parse_args(struct argument_s *csync_args, int argc, char **argv)
             } else if(c_streq(opt->name, "iconv")) {
                 csync_args->iconv = c_strdup(optarg);
                 /* printf("Argument: iconv\n" ); */
+            } else if(c_streq(opt->name, "http-proxy")) {
+                csync_args->http_proxy = c_strdup(optarg);
             } else if(c_streq(opt->name, "test-statedb")) {
                 csync_args->create_statedb = 1;
                 csync_args->update = 1;
@@ -196,6 +206,7 @@ int main(int argc, char **argv) {
   arguments.reconcile = 1;
   arguments.propagate = 1;
   arguments.with_conflict_copys = false;
+  arguments.http_proxy = NULL;
 
   parse_args(&arguments, argc, argv);
   /* two options must remain as source and target       */
@@ -251,6 +262,23 @@ int main(int argc, char **argv) {
     perror("csync_init");
     rc = 1;
     goto out;
+  }
+
+  if (arguments.http_proxy) {
+    char *host = NULL;
+    int port = 0;
+    char *colon;
+
+    host = arguments.http_proxy;
+    colon = strrchr( arguments.http_proxy, ':');
+    if( colon ) {
+        port = atoi(colon+1);
+        *colon = '\0';
+    }
+    csync_set_module_property(csync, "proxy_type", (void*) "HttpProxy");
+    csync_set_module_property(csync, "proxy_host", host);
+    if( port )
+        csync_set_module_property(csync, "proxy_port", (void*) &port);
   }
 
   if (arguments.exclude_file != NULL) {
