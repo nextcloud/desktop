@@ -709,10 +709,19 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
   char *tdir = NULL;
   csync_file_stat_t *other = NULL;
   csync_progressinfo_t *pi = NULL;
-  pi = csync_statedb_get_progressinfo(ctx, st->phash, st->modtime, st->md5);
-  if (pi && pi->error > 3) {
-    rc = 1;
-    goto out;
+
+  /* Find the destination entry in the local tree  */
+  uint64_t h = c_jhash64((uint8_t *) st->destpath, strlen(st->destpath), 0);
+  node =  c_rbtree_find(ctx->local.tree, &h);
+  if(node)
+      other = (csync_file_stat_t *) node->data;
+
+  if (other) {
+    pi = csync_statedb_get_progressinfo(ctx, other->phash, other->modtime, other->md5);
+    if (pi && pi->error > 3) {
+      rc = 1;
+      goto out;
+    }
   }
 
   switch (ctx->current) {
@@ -740,17 +749,6 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Renaming %s => %s", suri, duri);
 
   if (! c_streq(suri, duri) && rc > -1) {
-
-    /* Find the destination entry in the local tree and insert the uniq id */
-    int len = strlen(st->destpath);
-    uint64_t h = c_jhash64((uint8_t *) st->destpath, len, 0);
-
-    /* search in the local tree for the local file to get the mtime */
-    node =  c_rbtree_find(ctx->local.tree, &h);
-    if(node)
-        other = (csync_file_stat_t *) node->data;
-
-
     while ((rc = csync_vio_rename(ctx, suri, duri)) != 0) {
         switch (errno) {
         case ENOENT:
@@ -825,9 +823,10 @@ out:
 
       /* We set the instruction to UPDATED so next try we try to rename again */
       st->instruction = CSYNC_INSTRUCTION_UPDATED;
+
+      _csync_record_error(ctx, other, pi);
+      pi = NULL;
     }
-    _csync_record_error(ctx, st, pi);
-    pi = NULL;
   }
 
   csync_statedb_free_progressinfo(pi);
