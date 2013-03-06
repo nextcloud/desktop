@@ -719,7 +719,7 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
             "dir: %s, command: rename, error: %s",
             suri,
             errbuf);
-        rc = -1;
+        rc = 1;
         break;
     }
     goto out;
