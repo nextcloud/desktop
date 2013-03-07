@@ -137,16 +137,26 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     goto out;
   }
 
-  /* create the temporary file name */
-  if (asprintf(&turi, "%s.XXXXXX", duri) < 0) {
-    rc = -1;
-    goto out;
-  }
+  if (_push_to_tmp_first(ctx)) {
+    /* create the temporary file name */
+    if (asprintf(&turi, "%s.XXXXXX", duri) < 0) {
+      rc = -1;
+      goto out;
+    }
 
-  /* We just want a random file name here, open checks if the file exists. */
-  if (c_tmpname(turi) < 0) {
-    rc = -1;
-    goto out;
+    /* We just want a random file name here, open checks if the file exists. */
+    if (c_tmpname(turi) < 0) {
+      rc = -1;
+      goto out;
+    }
+  } else {
+    /* write to the target file directly as the HTTP server does it atomically */
+    if (asprintf(&turi, "%s", duri) < 0) {
+      rc = -1;
+      goto out;
+    }
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
+              "Remote repository atomar push enabled for %s.", turi );
   }
 
   /* Create the destination file */
@@ -162,9 +172,11 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
           rc = 1;
           goto out;
         }
-        if (c_tmpname(turi) < 0) {
-          rc = -1;
-          goto out;
+        if(_push_to_tmp_first(ctx)) {
+          if (c_tmpname(turi) < 0) {
+            rc = -1;
+            goto out;
+          }
         }
         break;
       case ENOENT:
@@ -311,22 +323,24 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     goto out;
   }
 
-  /* override original file */
-  ctx->replica = drep;
-  if (csync_vio_rename(ctx, turi, duri) < 0) {
-    switch (errno) {
+  if (_push_to_tmp_first(ctx)) {
+    /* override original file */
+    ctx->replica = drep;
+    if (csync_vio_rename(ctx, turi, duri) < 0) {
+      switch (errno) {
       case ENOMEM:
         rc = -1;
         break;
       default:
         rc = 1;
         break;
+      }
     }
     strerror_r(errno, errbuf, sizeof(errbuf));
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
-        "file: %s, command: rename, error: %s",
-        duri,
-        errbuf);
+              "file: %s, command: rename, error: %s",
+              duri,
+              errbuf);
     goto out;
   }
 
