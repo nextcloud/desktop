@@ -108,8 +108,8 @@ static void check_to_multibyte(void **state)
 {
     int rc = -1;
 
-    const mbchar_t *mb_string = c_utf8_to_locale( TESTSTRING );
-    const mbchar_t *mb_null   = c_utf8_to_locale( NULL );
+    mbchar_t *mb_string = c_utf8_to_locale( TESTSTRING );
+    mbchar_t *mb_null   = c_utf8_to_locale( NULL );
 
     (void) state;
 
@@ -120,6 +120,9 @@ static void check_to_multibyte(void **state)
 #endif
     assert_true( mb_null == NULL );
     assert_int_equal(rc, -1);
+
+    c_free_locale_string(mb_string);
+    c_free_locale_string(mb_null);
 }
 
 int torture_run_tests(void)
