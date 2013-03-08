@@ -426,8 +426,8 @@ static void check_csync_vio_rename_dir(void **state)
     csync_stat_t sb;
     int rc;
 
-    const mbchar_t *dir = c_utf8_to_locale("test");
-    const mbchar_t *dir2 = c_utf8_to_locale("test2");
+    mbchar_t *dir = c_utf8_to_locale("test");
+    mbchar_t *dir2 = c_utf8_to_locale("test2");
 
     assert_non_null(dir);
     assert_non_null(dir2);
@@ -441,12 +441,15 @@ static void check_csync_vio_rename_dir(void **state)
 
     rc = _tstat(dir2, &sb);
     assert_int_equal(rc, 0);
+
+    c_free_locale_string(dir);
+    c_free_locale_string(dir2);
 }
 
 static void check_csync_vio_rename_file(void **state)
 {
     CSYNC *csync = *state;
-    const mbchar_t *file = c_utf8_to_locale(CSYNC_TEST_DIR "file2.txt");
+    mbchar_t *file = c_utf8_to_locale(CSYNC_TEST_DIR "file2.txt");
     csync_stat_t sb;
     int rc;
 
@@ -455,13 +458,15 @@ static void check_csync_vio_rename_file(void **state)
 
     rc = _tstat(file, &sb);
     assert_int_equal(rc, 0);
+
+    c_free_locale_string(file);
 }
 
 static void check_csync_vio_unlink(void **state)
 {
     CSYNC *csync = *state;
     csync_stat_t sb;
-    const mbchar_t *file = c_utf8_to_locale(CSYNC_TEST_FILE);
+    mbchar_t *file = c_utf8_to_locale(CSYNC_TEST_FILE);
     int rc;
 
     rc = csync_vio_unlink(csync, CSYNC_TEST_FILE);
@@ -469,6 +474,8 @@ static void check_csync_vio_unlink(void **state)
 
     rc = _tstat(file, &sb);
     assert_int_equal(rc, -1);
+
+    c_free_locale_string(file);
 }
 
 static void check_csync_vio_chmod(void **state)
@@ -497,7 +504,7 @@ static void check_csync_vio_utimes(void **state)
     csync_stat_t sb;
     struct timeval times[2];
     long modtime = 0;
-    const mbchar_t *file = c_utf8_to_locale(CSYNC_TEST_FILE);
+    mbchar_t *file = c_utf8_to_locale(CSYNC_TEST_FILE);
     int rc;
 
     rc = _tstat(file, &sb);
@@ -517,6 +524,8 @@ static void check_csync_vio_utimes(void **state)
     assert_int_equal(rc, 0);
 
     assert_int_equal(modtime, sb.st_mtime);
+
+    c_free_locale_string(file);
 }
 
 int torture_run_tests(void)
