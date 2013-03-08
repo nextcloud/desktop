@@ -29,6 +29,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <sys/types.h>
+#include <errno.h>
 
 #if _WIN32
 # ifndef _WIN32_IE
@@ -42,6 +43,7 @@
 
 #include "c_lib.h"
 #include "csync_misc.h"
+#include "csync_macros.h"
 
 #ifdef _WIN32
 char *csync_get_user_home_dir(void) {
@@ -152,3 +154,146 @@ int csync_fnmatch(__const char *__pattern, __const char *__name, int __flags) {
 }
 
 #endif /* HAVE_FNMATCH */
+
+CSYNC_STATUS_CODE csync_errno_to_csync_error(CSYNC_STATUS_CODE default_err)
+{
+
+  /*
+   * Defined csync error codes:
+  CSYNC_ERR_NONE          = 0,
+  CSYNC_ERR_LOG,
+  CSYNC_ERR_LOCK,
+  CSYNC_ERR_STATEDB_LOAD,
+  CSYNC_ERR_MODULE,
+  CSYNC_ERR_TIMESKEW,
+  CSYNC_ERR_FILESYSTEM,
+  CSYNC_ERR_TREE,
+  CSYNC_ERR_MEM,
+  CSYNC_ERR_PARAM,
+  CSYNC_ERR_UPDATE,
+  CSYNC_ERR_RECONCILE,
+  CSYNC_ERR_PROPAGATE,
+  CSYNC_ERR_ACCESS_FAILED,
+  CSYNC_ERR_REMOTE_CREATE,
+  CSYNC_ERR_REMOTE_STAT,
+  CSYNC_ERR_LOCAL_CREATE,
+  CSYNC_ERR_LOCAL_STAT,
+  CSYNC_ERR_PROXY,
+  CSYNC_ERR_LOOKUP,
+  CSYNC_ERR_AUTH_SERVER,
+  CSYNC_ERR_AUTH_PROXY,
+  CSYNC_ERR_CONNECT,
+  CSYNC_ERR_TIMEOUT,
+  CSYNC_ERR_HTTP,
+  CSYNC_ERR_PERM,
+  CSYNC_ERR_NOT_FOUND,
+  CSYNC_ERR_EXISTS,
+  CSYNC_ERR_NOSPC,
+  CSYNC_ERR_QUOTA,
+  CSYNC_ERR_SERVICE_UNAVAILABLE,
+  CSYNC_ERR_FILE_TOO_BIG,
+
+  CSYNC_ERR_UNSPEC
+*/
+
+  CSYNC_STATUS_CODE csync_err = CSYNC_STATUS_OK;
+
+  switch( errno ) {
+  case 0:
+    csync_err = CSYNC_STATUS_OK;
+    break;
+    /* The custom errnos first. */
+  case ERRNO_GENERAL_ERROR:
+    csync_err = CSYNC_STATUS_UNSPEC_ERROR;
+    break;
+  case ERRNO_LOOKUP_ERROR: /* In Neon: Server or proxy hostname lookup failed */
+    csync_err = CSYNC_STATUS_LOOKUP_ERROR;
+    break;
+  case ERRNO_USER_UNKNOWN_ON_SERVER: /* Neon: User authentication on server failed. */
+    csync_err = CSYNC_STATUS_SERVER_AUTH_ERROR;
+    break;
+  case ERRNO_PROXY_AUTH:
+    csync_err = CSYNC_STATUS_PROXY_AUTH_ERROR; /* Neon: User authentication on proxy failed */
+    break;
+  case ERRNO_CONNECT:
+    csync_err = CSYNC_STATUS_CONNECT_ERROR; /* Network: Connection error */
+    break;
+  case ERRNO_TIMEOUT:
+    csync_err = CSYNC_STATUS_TIMEOUT; /* Network: Timeout error */
+    break;
+  case ERRNO_QUOTA_EXCEEDED:
+    csync_err = CSYNC_STATUS_QUOTA_EXCEEDED;   /* Quota exceeded */
+    break;
+  case ERRNO_SERVICE_UNAVAILABLE:
+    csync_err = CSYNC_STATUS_SERVICE_UNAVAILABLE;  /* Service temporarily down */
+    break;
+  case EFBIG:
+    csync_err = CSYNC_STATUS_FILE_TOO_BIG;          /* File larger than 2MB */
+    break;
+  case ERRNO_PRECONDITION:
+  case ERRNO_RETRY:
+  case ERRNO_REDIRECT:
+  case ERRNO_WRONG_CONTENT:
+    csync_err = CSYNC_STATUS_HTTP_ERROR;
+    break;
+
+  case ERRNO_TIMEDELTA:
+    csync_err = CSYNC_STATUS_TIMESKEW;
+    break;
+  case EPERM:                  /* Operation not permitted */
+  case EACCES:                /* Permission denied */
+    csync_err = CSYNC_STATUS_PERMISSION_DENIED;
+    break;
+  case ENOENT:                 /* No such file or directory */
+    csync_err = CSYNC_STATUS_NOT_FOUND;
+    break;
+  case EAGAIN:                /* Try again */
+    csync_err = CSYNC_STATUS_TIMEOUT;
+    break;
+  case EEXIST:                /* File exists */
+    csync_err = CSYNC_STATUS_FILE_EXISTS;
+    break;
+  case EINVAL:
+    csync_err = CSYNC_STATUS_PARAM_ERROR;
+    break;
+  case ENOSPC:
+    csync_err = CSYNC_STATUS_OUT_OF_SPACE;
+    break;
+
+    /* All the remaining basic errnos: */
+  case EIO:                    /* I/O error */
+  case ESRCH:                  /* No such process */
+  case EINTR:                  /* Interrupted system call */
+  case ENXIO:                  /* No such device or address */
+  case E2BIG:                  /* Argument list too long */
+  case ENOEXEC:                /* Exec format error */
+  case EBADF:                  /* Bad file number */
+  case ECHILD:                /* No child processes */
+  case ENOMEM:                /* Out of memory */
+  case EFAULT:                /* Bad address */
+#ifndef _WIN32
+  case ENOTBLK:               /* Block device required */
+#endif
+  case EBUSY:                 /* Device or resource busy */
+  case EXDEV:                 /* Cross-device link */
+  case ENODEV:                /* No such device */
+  case ENOTDIR:               /* Not a directory */
+  case EISDIR:                /* Is a directory */
+  case ENFILE:                /* File table overflow */
+  case EMFILE:                /* Too many open files */
+  case ENOTTY:                /* Not a typewriter */
+#ifndef _WIN32
+  case ETXTBSY:               /* Text file busy */
+#endif
+  case ESPIPE:                /* Illegal seek */
+  case EROFS:                 /* Read-only file system */
+  case EMLINK:                /* Too many links */
+  case EPIPE:                 /* Broken pipe */
+
+  case ERRNO_ERROR_STRING:
+  default:
+    csync_err = default_err;
+  }
+
+  return csync_err;
+}
