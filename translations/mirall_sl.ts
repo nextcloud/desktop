@@ -9,17 +9,17 @@
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="39"/>
         <source>Create a new ownCloud</source>
-        <translation>Ustvari nov ownCloud</translation>
+        <translation>Ustvari nov oblak ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="61"/>
         <source>Where do you want to create your ownCloud?</source>
-        <translation>Kje želite ustvariti vaš ownCloud?</translation>
+        <translation>Kje želite ustvariti vaš oblak ownCloud?</translation>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="73"/>
         <source>create ownCloud on this computer</source>
-        <translation>ustvari ownCloud na tem računalniku</translation>
+        <translation>ustvari ownCloud na temu računalniku</translation>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="105"/>
@@ -32,7 +32,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Namesti ownCloud na ta računalnik. Ostali uporabniki privzeto ne bodo mogli dostopati do vaših podatkov.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Namesti sistem ownCloud na ta računalnik. Drugi uporabniki (brez ustreznih dovoljenj) do oblaka in podatkov ne bodo imeli dostopa.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="132"/>
@@ -52,9 +52,9 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;namesti ownCloud na domeno pod vašim nadzorom. Za namestitev potrebujete FTP poverila.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;namesti ownCloud na domeno pod vašim nadzorom. Za namestitev potrebujete poverila za dostop do FTP.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#585858;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Ta ownCloud bo dostopen preko interneta.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Oblak ownCloud bo dostopen preko interneta.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/createanowncloudpage.ui" line="177"/>
@@ -104,12 +104,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="20"/>
         <source>ownCloud Settings</source>
-        <translation>ownCloud nastavitve</translation>
+        <translation>Nastavitve ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="29"/>
         <source>URL:</source>
-        <translation>URL:</translation>
+        <translation>Naslov URL:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardowncloudpage.ui" line="36"/>
@@ -147,17 +147,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="32"/>
         <source>Pick a local folder on your computer to sync:</source>
-        <translation>Izberite lokalno mapo na vašem računalniku:</translation>
+        <translation>Izberite krajevno mapo na računalniku za usklajevanje:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="43"/>
         <source>&amp;Choose...</source>
-        <translation>&amp;Izberi...</translation>
+        <translation>&amp;Izberi ...</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="54"/>
         <source>&amp;Directory alias name:</source>
-        <translation>&amp;Vzdevek za mapo:</translation>
+        <translation>&amp;Vzdevek mape:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="45"/>
@@ -212,7 +212,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="149"/>
         <source>to a &amp;local folder</source>
-        <translation>v &amp;lokalno mapo</translation>
+        <translation>v &amp;krajevno mapo</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="162"/>
@@ -222,7 +222,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="172"/>
         <source>C&amp;hoose..</source>
-        <translation>I&amp;zberi..</translation>
+        <translation>I&amp;zberi ...</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="219"/>
@@ -232,7 +232,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="232"/>
         <source>URL:</source>
-        <translation>URL:</translation>
+        <translation>Naslov URL:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="362"/>
@@ -257,7 +257,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="179"/>
         <source>scp://john@host.com//myfolder</source>
-        <translation>scp://janez@gostitelj.si//mojamapa</translation>
+        <translation>scp://uporabnik@gostitelj.si//mojamapa</translation>
     </message>
 </context>
 <context>
@@ -305,7 +305,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="362"/>
         <source>Sync started for %1 configured sync folder(s).</source>
-        <translation>Usklajevanje se je začelo za naslednje število map: %1.</translation>
+        <translation>Začelo se je usklajevanje nastavljenih map (%1).</translation>
     </message>
     <message>
         <source>Open ownCloud...</source>
@@ -314,17 +314,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="428"/>
         <source>Open status...</source>
-        <translation>Odpri stanje...</translation>
+        <translation>Pokaži stanje ...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="431"/>
         <source>Add folder...</source>
-        <translation>Dodaj mapo...</translation>
+        <translation>Dodaj mapo ...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="433"/>
         <source>Configure...</source>
-        <translation>Nastavi...</translation>
+        <translation>Nastavi ...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="435"/>
@@ -430,7 +430,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="765"/>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
-        <translation>Ali res želite odstraniti naloženo mapo &lt;i&gt;%1&lt;/i&gt;?</translation>
+        <translation>Ali res želite odstraniti mapo &lt;i&gt;%1&lt;/i&gt;?</translation>
     </message>
     <message>
         <source>Undefined Folder State</source>
@@ -453,12 +453,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="943"/>
         <source>Last Sync was successful.</source>
-        <translation>Zadnje usklajevanje je bilo uspešno.</translation>
+        <translation>Zadnje usklajevanje je bilo uspešno končano.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="949"/>
         <source>Syncing Error.</source>
-        <translation>Napaka pri usklajevanju.</translation>
+        <translation>Napaka med usklajevanjem.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="955"/>
@@ -501,7 +501,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="808"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>Izvaja se usklajevanje.&lt;br/&gt;Ali ga želite prekiniti?</translation>
+        <translation>Usklajevanje se trenutno Izvaja.&lt;br/&gt;Ali želite opravilo prekiniti?</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="923"/>
@@ -791,17 +791,17 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="73"/>
         <source>Sync is running.</source>
-        <translation type="unfinished"/>
+        <translation>Usklajevanje se izvaja.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="76"/>
         <source>Last Sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>Zadnje usklajevanje je bilo uspešno končano.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="79"/>
         <source>Syncing Error.</source>
-        <translation type="unfinished"/>
+        <translation>Napaka med usklajevanjem.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="82"/>
@@ -1230,7 +1230,7 @@ Namestitev ne se ne more izvesti.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="422"/>
         <source>Creating local sync folder %1... </source>
-        <translation>Ustvarjam mapo za lokalno usklajevanje %1... </translation>
+        <translation>Ustvarjanje mape za krajevno usklajevanje %1... </translation>
     </message>
     <message>
         <source>Creating local sync folder %1</source>
@@ -1386,7 +1386,7 @@ Namestitev ne se ne more izvesti.</translation>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="29"/>
         <source>SSL Connection</source>
-        <translation>SSL povezava</translation>
+        <translation>Povezava SSL</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="98"/>
