@@ -38,4 +38,10 @@ int csync_fnmatch(__const char *__pattern, __const char *__name, int __flags);
  */
 CSYNC_ERROR_CODE csync_errno_to_csync_error(CSYNC_ERROR_CODE default_err);
 
+struct csync_hbf_info_s {
+    int start_id;
+    int transfer_id;
+};
+typedef struct csync_hbf_info_s csync_hbf_info_t;
+
 #endif /* _CSYNC_MISC_H */

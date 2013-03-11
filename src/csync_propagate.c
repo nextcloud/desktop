@@ -39,6 +39,7 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.propagator"
 #include "csync_log.h"
 #include "csync_util.h"
+#include "csync_misc.h"
 
 static int _csync_cleanup_cmp(const void *a, const void *b) {
   csync_file_stat_t *st_a, *st_b;
@@ -81,6 +82,7 @@ static void _csync_record_error(CSYNC *ctx, csync_file_stat_t *st, csync_progres
   } else {
     pi = c_malloc(sizeof(csync_progressinfo_t));
     pi->chunk = 0;
+    pi->transferId = 0;
     pi->tmpfile = NULL;
     pi->md5 = st->md5 ? c_strdup(st->md5) : NULL;
     pi->modtime = st->modtime;
@@ -153,11 +155,19 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   int count = 0;
   int flags = 0;
 
+  csync_hbf_info_t hbf_info = { 0, 0 };
   csync_progressinfo_t *pi = NULL;
   pi = csync_statedb_get_progressinfo(ctx, st->phash, st->modtime, st->md5);
   if (pi && pi->error > 3) {
     rc = 1;
     goto out;
+  }
+  if (pi) {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
+                "continuation: %d %d",
+                pi->chunk, pi->transferId );
+    hbf_info.start_id = pi->chunk;
+    hbf_info.transfer_id = pi->transferId;
   }
 
   rep_bak = ctx->replica;
@@ -341,8 +351,13 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   /* copy file */
   if( _use_fd_based_push(ctx) ) {
 start_fd_based:
+
       if (ctx->current == REMOTE_REPLICA) {
         csync_win32_set_file_hidden(turi, true);
+      }
+
+      if (!_push_to_tmp_first(ctx)) {
+        csync_vio_set_property(ctx, "hbf_info", &hbf_info);
       }
 
       rc = csync_vio_sendfile( ctx, sfp, dfp );
@@ -365,6 +380,7 @@ start_fd_based:
               if (!pi) {
                 pi = c_malloc(sizeof(csync_progressinfo_t));
                 pi->error = 0;
+                pi->transferId = 0;
                 pi->md5 = st->md5 ? c_strdup(st->md5) : NULL;
                 pi->modtime = st->modtime;
                 pi->phash = st->phash;
@@ -373,13 +389,26 @@ start_fd_based:
               }
               pi->chunk = 0;
               pi->tmpfile = turi;
+              pi->error <<= 1;
               turi = NULL;
-              pi->next = ctx->progress;
-              ctx->progress = pi;
-              pi = NULL;
-              rc = 123;
             }
             csync_vio_file_stat_destroy(sb);
+          } else {
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
+                      "remember chunk: %d  (transfer id %d )", hbf_info.start_id, hbf_info.transfer_id);
+            if (!pi) {
+              pi = c_malloc(sizeof(csync_progressinfo_t));
+              pi->error = 0;
+              pi->md5 = st->md5 ? c_strdup(st->md5) : NULL;
+              pi->modtime = st->modtime;
+              pi->phash = st->phash;
+              pi->tmpfile = NULL;
+            } else {
+              SAFE_FREE(pi->tmpfile);
+            }
+            pi->transferId = hbf_info.transfer_id;
+            pi->chunk = hbf_info.start_id;
+            csync_vio_set_property(ctx, "hbf_info", 0);
           }
           goto out;
       }

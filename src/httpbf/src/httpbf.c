@@ -80,6 +80,7 @@ hbf_transfer_t *hbf_init_transfer( const char *dest_uri ) {
     transfer->url = strdup(dest_uri);
     transfer->status_code = 200;
     transfer->error_string = NULL;
+    transfer->start_id = 0;
 
     return transfer;
 }
@@ -131,6 +132,7 @@ Hbf_State hbf_splitlist(hbf_transfer_t *transfer, int fd ) {
       transfer->block_arr = calloc(num_blocks, sizeof(hbf_block_t*));
       transfer->block_cnt = num_blocks;
       transfer->transfer_id = transfer_id(&sb);
+      transfer->start_id = 0;
 
       for( cnt=0; cnt < num_blocks; cnt++ ) {
           /* allocate a block struct and fill */
@@ -196,9 +198,10 @@ char* get_transfer_url( hbf_transfer_t *transfer, int indx ) {
 }
 
 static int dav_request( ne_request *req, int fd, hbf_block_t *blk ) {
-    Hbf_State state = HBF_SUCCESS;
+    Hbf_State state = HBF_TRANSFER_SUCCESS;
     int res;
     const ne_status *req_status = NULL;
+    const char *etag = NULL;
 
     if( ! (blk && req) ) return HBF_PARAM_FAIL;
 
@@ -209,9 +212,13 @@ static int dav_request( ne_request *req, int fd, hbf_block_t *blk ) {
     req_status = ne_get_status( req );
 
     switch(res) {
-        case NE_OK:
-            state = HBF_SUCCESS;
+        case NE_OK: {
+            state = HBF_TRANSFER_SUCCESS;
+            etag = ne_get_response_header(req, "ETag");
+            if (etag && etag[0])
+                state = HBF_SUCCESS;
             break;
+        }
         case NE_AUTH:
             state = HBF_AUTH_FAIL;
             break;
@@ -238,7 +245,7 @@ static int dav_request( ne_request *req, int fd, hbf_block_t *blk ) {
 }
 
 Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const char *verb ) {
-    Hbf_State state = HBF_SUCCESS;
+    Hbf_State state = HBF_TRANSFER_SUCCESS;
     int cnt;
     int goOn = 1;
 
@@ -253,37 +260,31 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
     }
 
     for( cnt=0; goOn && cnt < transfer->block_cnt; cnt++ ) {
-        hbf_block_t *block = transfer->block_arr[cnt];
+        int block_id = (cnt + transfer->start_id) % transfer->block_cnt;
+        hbf_block_t *block = transfer->block_arr[block_id];
         char *transfer_url = NULL;
 
         if( ! block ) state = HBF_PARAM_FAIL;
 
-        if( state == HBF_SUCCESS ) {
-            transfer_url = get_transfer_url( transfer, cnt );
+        if( state == HBF_TRANSFER_SUCCESS ) {
+            transfer_url = get_transfer_url( transfer, block_id );
             if( ! transfer_url ) {
                 state = HBF_PARAM_FAIL;
             }
         }
-        if( state == HBF_SUCCESS ) {
+        if( state == HBF_TRANSFER_SUCCESS ) {
             ne_request *req = ne_request_create(session, "PUT", transfer_url);
 
             if( req ) {
                 ne_add_request_header(req, "OC_CHUNKED", "1");
-                state = dav_request( req, transfer->fd, transfer->block_arr[cnt] );
+                state = dav_request( req, transfer->fd, transfer->block_arr[block_id] );
 
-                if( state != HBF_SUCCESS ) {
+                if( state != HBF_TRANSFER_SUCCESS) {
+                    transfer->start_id = block_id  % transfer->block_cnt;
                     transfer->error_string = strdup( ne_get_error(session) );
                     /* Set the code of the last transmission. */
-                    transfer->status_code = transfer->block_arr[cnt]->http_result_code;
+                    transfer->status_code = transfer->block_arr[block_id]->http_result_code;
                     goOn = 0;
-
-                    if( state == HBF_FAIL ) {
-                        /* not every problem here is a critical one. Try other parts */
-                        if( transfer->status_code == 405 ) {
-                            /* continue to upload... */
-                            goOn = 1;
-                        }
-                    }
                 }
                 ne_request_destroy(req);
             } else {

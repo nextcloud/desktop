@@ -117,6 +117,7 @@ typedef struct csync_progressinfo_s {
   char *md5;
   int error;
   int chunk;
+  int transferId;
   char *tmpfile;
 } csync_progressinfo_t;
 

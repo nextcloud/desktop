@@ -371,7 +371,8 @@ int csync_statedb_create_tables(CSYNC *ctx) {
                                "phash INTEGER(8),"
                                "modtime INTEGER(8),"
                                "md5 VARCHAR(32),"
-                               "chunk INTEGER(8),"
+                               "chunk INTEGER(4),"
+                               "transferid INTEGER(4),"
                                "error_count INTEGER(8),"
                                "tmpfile VARCHAR(4096),"
                                "PRIMARY KEY(phash)"
@@ -881,7 +882,7 @@ csync_progressinfo_t* csync_statedb_get_progressinfo(CSYNC *ctx, uint64_t phash,
   c_strlist_t *result = NULL;
 
   if( ! csync_get_statedb_exists(ctx)) return ret;
-  stmt = sqlite3_mprintf("SELECT error_count, chunk, tmpfile FROM progress WHERE phash='%llu' AND modtime='%lld' AND md5='%q'",
+  stmt = sqlite3_mprintf("SELECT error_count, chunk, transferid, tmpfile FROM progress WHERE phash='%llu' AND modtime='%lld' AND md5='%q'",
                          (long long unsigned int) phash, (long long signed int) modtime, md5);
   if (!stmt) return ret;
 
@@ -891,14 +892,14 @@ csync_progressinfo_t* csync_statedb_get_progressinfo(CSYNC *ctx, uint64_t phash,
     return NULL;
   }
 
-  
-  if (result->count == 3) {
+  if (result->count == 4) {
     ret = c_malloc(sizeof(csync_progressinfo_t));
     if (!ret) goto out;
     ret->next = NULL;
-    ret->chunk = atoi(result->vector[1]);
     ret->error = atoi(result->vector[0]);
-    ret->tmpfile = c_strdup(result->vector[2]);
+    ret->chunk = atoi(result->vector[1]);
+    ret->transferId = atoi(result->vector[2]);
+    ret->tmpfile = c_strdup(result->vector[3]);
     ret->md5 = md5 ? c_strdup(md5) : NULL;
     ret->modtime = modtime;
     ret->phash = phash;
@@ -923,12 +924,13 @@ int csync_statedb_write_progressinfo(CSYNC* ctx, csync_progressinfo_t* pi)
 
   while (rc > -1 && pi) {
     stmt = sqlite3_mprintf("INSERT INTO progress "
-    "(phash, modtime, md5, chunk, error_count, tmpfile) VALUES"
-    "(%llu, %lld, '%q', %d, %d, '%q');",
+    "(phash, modtime, md5, chunk, transferid, error_count, tmpfile) VALUES"
+    "(%llu, %lld, '%q', %d, %d, %d, '%q');",
       (long long signed int) pi->phash,
       (long long int) pi->modtime,
       pi->md5,
       pi->chunk,
+      pi->transferId,
       pi->error,
       pi->tmpfile);
 

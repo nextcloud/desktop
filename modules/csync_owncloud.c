@@ -164,6 +164,8 @@ struct dav_session_s {
 
     CSYNC *csync_ctx;
     void *userdata;
+
+    csync_hbf_info_t *chunk_info;
 };
 
 /* The list of properties that is fetched in PropFind on a collection */
@@ -1674,6 +1676,11 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
                 rc = 1;
             } else {
                 Hbf_State state = hbf_splitlist(trans, fd);
+                if (dav_session.chunk_info && dav_session.chunk_info->transfer_id) {
+                    DEBUG_WEBDAV("We have chunk info %d %d ", dav_session.chunk_info->start_id, dav_session.chunk_info->transfer_id);
+                    trans->start_id = dav_session.chunk_info->start_id;
+                    trans->transfer_id = dav_session.chunk_info->transfer_id;
+                }
                 if( state == HBF_SUCCESS ) {
                     chunked_total_size = sb.st_size;
                     /* Transfer all the chunks through the HTTP session using PUT. */
@@ -1683,6 +1690,10 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
                 if ( state != HBF_SUCCESS ) {
                     error_string = hbf_error_string(state);
                     rc = 1;
+                    if (dav_session.chunk_info) {
+                        dav_session.chunk_info->start_id = trans->start_id;
+                        dav_session.chunk_info->transfer_id = trans->transfer_id;
+                    }
                 }
             }
             hbf_free_transfer(trans);
@@ -2124,6 +2135,10 @@ static int owncloud_set_property(const char *key, void *data) {
     }
     if( c_streq(key, "csync_context")) {
         dav_session.csync_ctx = data;
+        return 0;
+    }
+    if( c_streq(key, "hbf_info")) {
+        dav_session.chunk_info = (csync_hbf_info_t *)(data);
         return 0;
     }
 
