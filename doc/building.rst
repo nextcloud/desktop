@@ -151,6 +151,10 @@ To build in installer (requires the mingw32-cross-nsis packages)::
 
   make package
 
+Known cmake parameters:
+
+* WITH_DOC=TRUE: create doc and manpages via running ``make``; also adds install statements to be able to install it via ``make install``.
+
 .. _`ownCloud repository from OBS`: http://software.opensuse.org/download/package?project=isv:ownCloud:devel&package=owncloud-client
 .. _CSync: http://www.csync.org
 .. _`Client Download Page`: http://owncloud.org/sync-clients/
