@@ -91,6 +91,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   /* Set instruction by default to none */
   st->instruction = CSYNC_INSTRUCTION_NONE;
   st->md5 = NULL;
+  st->child_modified = 0;
 
   /* check hardlink count */
   if (type == CSYNC_FTW_TYPE_FILE && fs->nlink > 1) {
@@ -157,6 +158,13 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   }
 
 out:
+
+  if (st->instruction != CSYNC_INSTRUCTION_NONE && st->instruction != CSYNC_INSTRUCTION_IGNORE
+      && type != CSYNC_FTW_TYPE_DIR) {
+    st->child_modified = 1;
+  }
+  ctx->current_fs = st;
+
   if( tmp) SAFE_FREE(tmp->md5);
   SAFE_FREE(tmp);
   st->inode = fs->inode;
@@ -296,6 +304,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   csync_vio_handle_t *dh = NULL;
   csync_vio_file_stat_t *dirent = NULL;
   csync_vio_file_stat_t *fs = NULL;
+  csync_file_stat_t *previous_fs = NULL;
   int read_from_db = 0;
   int rc = 0;
   int res = 0;
@@ -430,8 +439,13 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "walk: %s", filename);
 
+    previous_fs = ctx->current_fs;
+
     /* Call walker function for each file */
     rc = fn(ctx, filename, fs, flag);
+
+    if (ctx->current_fs && previous_fs && ctx->current_fs->child_modified)
+        previous_fs->child_modified = ctx->current_fs->child_modified;
 
     if( ! do_read_from_db )
         csync_vio_file_stat_destroy(fs);
@@ -440,16 +454,23 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
     if (rc < 0) {
       csync_vio_closedir(ctx, dh);
+      ctx->current_fs = previous_fs;
       goto done;
     }
 
     if (flag == CSYNC_FTW_FLAG_DIR && depth) {
       rc = csync_ftw(ctx, filename, fn, depth - 1);
       if (rc < 0) {
+        ctx->current_fs = previous_fs;
         csync_vio_closedir(ctx, dh);
         goto done;
       }
+
+      if (ctx->current_fs && !ctx->current_fs->child_modified
+          && ctx->current_fs->instruction == CSYNC_INSTRUCTION_EVAL)
+        ctx->current_fs->instruction = CSYNC_INSTRUCTION_NONE;
     }
+    ctx->current_fs = previous_fs;
     SAFE_FREE(filename);
     csync_vio_file_stat_destroy(dirent);
     dirent = NULL;
