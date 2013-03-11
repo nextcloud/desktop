@@ -155,6 +155,7 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
 
   ctx->local.list     = 0;
   ctx->remote.list    = 0;
+  ctx->current_fs = NULL;
 
   *csync = ctx;
   return 0;

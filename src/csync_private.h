@@ -79,6 +79,9 @@ enum csync_replica_e {
   REMOTE_REPLICA
 };
 
+typedef struct csync_file_stat_s csync_file_stat_t;
+
+
 /**
  * @brief csync public structure
  */
@@ -149,6 +152,10 @@ struct csync_s {
   /* replica we want to work on */
   enum csync_replica_e replica;
 
+  /* Used in the update phase so changes in the sub directories can be notified to
+     parent directories */
+  csync_file_stat_t *current_fs;
+
   /* error code of the last operation */
   enum csync_error_codes_e error_code;
   char *error_string;
@@ -171,6 +178,7 @@ struct csync_file_stat_s {
   mode_t mode;      /* u32 */
   int nlink;        /* u32 */
   int type;         /* u32 */
+  int child_modified;/*bool*/
 
   char *destpath;   /* for renames */
   const char *md5;
@@ -185,8 +193,6 @@ __attribute__ ((packed))
 #pragma pack()
 #endif
 ;
-
-typedef struct csync_file_stat_s csync_file_stat_t;
 
 /*
  * context for the treewalk function
