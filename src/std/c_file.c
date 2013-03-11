@@ -16,8 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * vim: ts=2 sw=2 et cindent
  */
 
 #ifdef _WIN32
@@ -161,22 +159,39 @@ out:
 }
 
 int c_rename( const char *src, const char *dst ) {
-  mbchar_t *nuri = c_utf8_to_locale(dst);
-  mbchar_t *ouri = c_utf8_to_locale(src);
+    mbchar_t *nuri;
+    mbchar_t *ouri;
+    int rc;
+
+    nuri = c_utf8_to_locale(dst);
+    if (nuri == NULL) {
+        return -1;
+    }
+
+    ouri = c_utf8_to_locale(src);
+    if (ouri == NULL) {
+        return -1;
+    }
 
 #ifdef _WIN32
-  if(ouri && nuri) {
-    if (MoveFileExW(ouri, nuri, MOVEFILE_COPY_ALLOWED + MOVEFILE_REPLACE_EXISTING + MOVEFILE_WRITE_THROUGH )) {
-         return 0;
+    {
+        BOOL ok;
+        ok = MoveFileExW(ouri,
+                         nuri,
+                         MOVEFILE_COPY_ALLOWED +
+                         MOVEFILE_REPLACE_EXISTING +
+                         MOVEFILE_WRITE_THROUGH));
+        if (!ok) {
+            /* error */
+            rc = -1;
+        }
     }
-    errno = GetLastError();
-  } else {
-    errno = ENOENT;
-  }
 #else
-  return rename(ouri, nuri);
+    rc = rename(ouri, nuri);
 #endif
-  c_free_locale_string(nuri);
-  c_free_locale_string(ouri);
-  return -1;
+
+    c_free_locale_string(nuri);
+    c_free_locale_string(ouri);
+
+    return rc;
 }
