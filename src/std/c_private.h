@@ -121,6 +121,14 @@ int c_setup_iconv(const char* to);
 int c_close_iconv(void);
 #endif
 
+#if defined(__GNUC__)
+# define CSYNC_THREAD __thread
+#elif defined(_MSC_VER)
+# define CSYNC_THREAD __declspec(thread)
+#else
+# define CSYNC_THREAD
+#endif
+
 #endif //_C_PRIVATE_H
 
 /* vim: set ft=c.doxygen ts=8 sw=2 et cindent: */

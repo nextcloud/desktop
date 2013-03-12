@@ -48,7 +48,7 @@ typedef struct {
   iconv_t from;
 } iconv_conversions;
 
-static iconv_conversions _iconvs = { NULL, NULL };
+CSYNC_THREAD iconv_conversions _iconvs = { NULL, NULL };
 
 int c_setup_iconv(const char* to) {
   _iconvs.to = iconv_open(to, "UTF-8");
