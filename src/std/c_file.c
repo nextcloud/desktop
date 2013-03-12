@@ -180,7 +180,7 @@ int c_rename( const char *src, const char *dst ) {
                          nuri,
                          MOVEFILE_COPY_ALLOWED +
                          MOVEFILE_REPLACE_EXISTING +
-                         MOVEFILE_WRITE_THROUGH));
+                         MOVEFILE_WRITE_THROUGH);
         if (!ok) {
             /* error */
             rc = -1;
