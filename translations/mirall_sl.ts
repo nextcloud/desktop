@@ -192,7 +192,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="29"/>
         <source>Synchronization Target</source>
-        <translation>Ciljno mesto za usklajevanje</translation>
+        <translation>Ciljno mesto usklajevanja</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="51"/>
@@ -329,7 +329,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="435"/>
         <source>Configure proxy...</source>
-        <translation>Nastavi proxy...</translation>
+        <translation>Nastavi posredniški strežnik ...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="439"/>
@@ -369,7 +369,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="291"/>
         <source>Error: Could not retrieve the password!</source>
-        <translation>Napaka: Gesla ne morem pridobiti!</translation>
+        <translation>Napaka: gesla ni mogoče pridobiti!</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="293"/>
@@ -405,7 +405,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="437"/>
         <source>About...</source>
-        <translation>O ...</translation>
+        <translation>O sistemu ...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="493"/>
@@ -538,12 +538,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="338"/>
         <source>CSync create failed.</source>
-        <translation>Napaka pri ustvarjanju CSync.</translation>
+        <translation>Napaka med ustvarjanjem CSync.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="88"/>
         <source>CSync failed to create a lock file.</source>
-        <translation>CSync ni uspel ustvariti zaklepne datoteke.</translation>
+        <translation>Ustvarjanje datoteke zaklepa s CSync je spodletelo.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="82"/>
@@ -558,7 +558,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="91"/>
         <source>CSync failed to load the state db.</source>
-        <translation>CSync ni uspel naložiti podatkovno zbirko stanj.</translation>
+        <translation>Nalaganje podatkovne zbirke stanj s CSync je spodletelo.</translation>
     </message>
     <message>
         <source>The system time between the local machine and the server differs too much. Please use a time syncronization service (ntp) on both machines.</source>
@@ -572,12 +572,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="102"/>
         <source>CSync could not detect the filesystem type.</source>
-        <translation>CSync ni uspel zaznati tipa datotečnega sistema.</translation>
+        <translation>Zaznavanje vrste datotečnega sistema s CSync je spodletelo.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="105"/>
         <source>CSync got an error while processing internal trees.</source>
-        <translation>CSync je naletel na napako pri obdelovanju notranje drevesne strukture.</translation>
+        <translation>Pri obdelavi notranje drevesne strukture s CSync je prišlo do napake.</translation>
     </message>
     <message>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please create it and try again.&lt;/p&gt;</source>
@@ -690,7 +690,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="172"/>
         <source>An internal error number %1 happend.</source>
-        <translation>Zgodila se je notranja napaka s številko %1.</translation>
+        <translation>Prišlo je do notranje napake s številko %1.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="176"/>
@@ -856,12 +856,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="222"/>
         <source>Up</source>
-        <translation>Gor</translation>
+        <translation>Navzgor</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="223"/>
         <source>Down</source>
-        <translation>Dol</translation>
+        <translation>Navzdol</translation>
     </message>
 </context>
 <context>
@@ -903,7 +903,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="74"/>
         <source>No local directory selected!</source>
-        <translation>Nobena lokalna mapa ni izbrana!</translation>
+        <translation>Ni izbrane krajevne mape!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="90"/>
@@ -1013,7 +1013,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="74"/>
         <source>&amp;Search: </source>
-        <translation>&amp;Iskanje: </translation>
+        <translation>&amp;Poišči: </translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="82"/>
@@ -1059,7 +1059,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="202"/>
         <source>Could not write to log file </source>
-        <translation>Ne morem pisati v dnevniško datoteko</translation>
+        <translation>V dnevniško datoteko ni mogoče pisati.</translation>
     </message>
 </context>
 <context>
@@ -1177,17 +1177,17 @@ Namestitev ne se ne more izvesti.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="451"/>
         <source>Creation of remote folder %1 could not be started.</source>
-        <translation>Ustvarjanje oddaljene mape %1 ni bilo mogoče začeti.</translation>
+        <translation>Ustvarjanja oddaljene mape %1 ni mogoče začeti.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="472"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation>Oddaljena mapa %1 je bila uspešno ustvarjena.</translation>
+        <translation>Oddaljena mapa %1 je uspešno ustvarjena.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="474"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>Oddaljena mapa %1 že obstaja. Povezujem jo za usklajevanje.</translation>
+        <translation>Oddaljena mapa %1 že obstaja. Vzpostavljena bo povezava za usklajevanje.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="476"/>
@@ -1197,7 +1197,7 @@ Namestitev ne se ne more izvesti.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="500"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation>Usklajevalna povezava med %1 in oddaljeno mapo %2 je bila nastavljena.</translation>
+        <translation>Povezava za usklajevanje med %1 in oddaljeno mapo %2 je vzpostavljena.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="505"/>
@@ -1212,7 +1212,7 @@ Namestitev ne se ne more izvesti.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="508"/>
         <source>Press Finish to permanently accept this connection.</source>
-        <translation>Pritisnite Končaj, da trajno sprejmete to povezavo.</translation>
+        <translation>S pritiskom gumb za končanje, bo povezava nastavljena kot trajna.</translation>
     </message>
     <message>
         <source>Skipping automatic setup of sync folders as there are already sync folders.</source>
@@ -1317,17 +1317,17 @@ Namestitev ne se ne more izvesti.</translation>
     <message>
         <location filename="../src/mirall/proxydialog.cpp" line="31"/>
         <source>Hostname of proxy server</source>
-        <translation>Ime gostitelja proxy strežnika</translation>
+        <translation>Ime gostitelja posredniškega strežnika</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.cpp" line="32"/>
         <source>Username for proxy server</source>
-        <translation>Uporabniško ime za proxy strežnik</translation>
+        <translation>Uporabniško ime posredniškega strežnika</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.cpp" line="33"/>
         <source>Password for proxy server</source>
-        <translation>Geslo za proxy strežnik</translation>
+        <translation>Geslo posredniškega strežnika</translation>
     </message>
 </context>
 <context>
@@ -1396,7 +1396,7 @@ Namestitev ne se ne more izvesti.</translation>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="134"/>
         <source>with Certificate %1</source>
-        <translation>s certifikatom %1</translation>
+        <translation>s potrdilom %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="142"/>
@@ -1409,13 +1409,13 @@ Namestitev ne se ne more izvesti.</translation>
         <location filename="../src/mirall/sslerrordialog.cpp" line="145"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="167"/>
         <source>Organization: %1</source>
-        <translation>Organizacija: %1</translation>
+        <translation>Ustanova: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="146"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="168"/>
         <source>Unit: %1</source>
-        <translation>Organizacijska enota: %1</translation>
+        <translation>Enota: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="147"/>
@@ -1441,7 +1441,7 @@ Namestitev ne se ne more izvesti.</translation>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="160"/>
         <source>Expiry Date: %1</source>
-        <translation>Velja do: %1</translation>
+        <translation>Datum poteka: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="164"/>
@@ -1566,7 +1566,7 @@ Namestitev ne se ne more izvesti.</translation>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="227"/>
         <source>The CSync thread terminated.</source>
-        <translation>CSync nit je zaključena.</translation>
+        <translation>Nit CSync je zaključena.</translation>
     </message>
 </context>
 <context>
@@ -1600,12 +1600,12 @@ Namestitev ne se ne more izvesti.</translation>
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="29"/>
         <source>ownCloud Credentials</source>
-        <translation>ownCloud poverila</translation>
+        <translation>Poverila ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="51"/>
         <source>Provide ownCloud Credentials</source>
-        <translation>Vnesite ownCloud poverila</translation>
+        <translation>Vnos poveril ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="57"/>
@@ -1620,9 +1620,9 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Prosimo, če vnesete uporabniško ime in geslo za vašo ownCloud namestitev. &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Vnesti je treba uporabniško ime in geslo za vstop v oblak ownCloud. &lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt; color:#585858;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Označite polje, če ne želite shraniti poveril na vašem računalniku. ownCloud vas bo v tem primeru ob vsakem zagonu odjemalca prosil za vaše geslo.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Če poveril ne želite shraniti na trenutnem računalniku, označite ustrezno polje. Pred vstopom v sistem bo zahtevano geslo.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1637,17 +1637,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="84"/>
         <source>ownCloud-User:</source>
-        <translation>ownCloud-uporabnik:</translation>
+        <translation>Uporabnik ownCloud:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="98"/>
         <source>Password:</source>
-        <translation>Geslo</translation>
+        <translation>Geslo:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudcredentialspage.ui" line="115"/>
         <source>Do not store password on local machine.</source>
-        <translation>Ne shrani gesla na lokalnem računalniku.</translation>
+        <translation>Ne shrani gesla na krajevnem računalniku.</translation>
     </message>
     <message>
         <source>john</source>
@@ -1668,12 +1668,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="29"/>
         <source>FTP Access to your Webaccount:</source>
-        <translation>FTP dostop do vašega spletnega računa:</translation>
+        <translation>Dostop s FTP do spletnega računa:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="51"/>
         <source>FTP Details and Credentials</source>
-        <translation>FTP podrobnosti in poverila</translation>
+        <translation>Podrobnosti FTP in poverila</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="57"/>
@@ -1686,22 +1686,22 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Naslednje podrobnosti so uporabljene za namestitev ownCloud podatkov na vaš spletni prostor dosegljiv preko ftp. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Navedeni podatki so uporabljeni za namestitev sistema ownCloud na spletni prostor, dosegljiv preko FTP. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="79"/>
         <source>FTP-URL:</source>
-        <translation>FTP-URL:</translation>
+        <translation>Naslov URL za FTP:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="93"/>
         <source>FTP-User:</source>
-        <translation>FTP-uporabnik:</translation>
+        <translation>Uporabnik FTP:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudftpaccesspage.ui" line="107"/>
         <source>Password:</source>
-        <translation>Geslo</translation>
+        <translation>Geslo:</translation>
     </message>
     <message>
         <source>ftp.mydomain.org</source>
@@ -1757,7 +1757,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="85"/>
         <source>Enter the ownCloud username.</source>
-        <translation>Vnesite ownCloud uporabniško ime.</translation>
+        <translation>Vnos uporabniškega imena za oblak ownCloud.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="92"/>
@@ -1767,12 +1767,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="102"/>
         <source>Enter the ownCloud password.</source>
-        <translation>Vnesite ownCloud geslo.</translation>
+        <translation>Vnos gesla za oblak ownCloud.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="117"/>
         <source>Do not allow the local storage of the password.</source>
-        <translation>Ne dovoli shranjevanja gesla.</translation>
+        <translation>Ne dovoli shranjevanja gesla na krajevnem računalniku.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="36"/>
@@ -1805,13 +1805,13 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Ta stran kaže stanje povezave.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Na strani je prikazano stanje povezave.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardresultpage.ui" line="27"/>
         <location filename="../src/mirall/owncloudwizardresultpage.ui" line="85"/>
         <source>TextLabel</source>
-        <translation>Oznaka</translation>
+        <translation>Besedilna oznaka</translation>
     </message>
 </context>
 <context>
@@ -1824,17 +1824,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="29"/>
         <source>Create an ownCloud Connection</source>
-        <translation>Ustvari ownCloud povezavo</translation>
+        <translation>Ustvari povezavo ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="51"/>
         <source>Select the ownCloud you want to connect to</source>
-        <translation>Izberite ownCloud na katerega se želite povezati</translation>
+        <translation>Izbor oblaka ownCloud, s katerim naj se vzpostavi povezava</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="63"/>
         <source>connect my ownCloud</source>
-        <translation>poveži moj ownCloud</translation>
+        <translation>poveži z oblakom ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="89"/>
@@ -1848,8 +1848,8 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Navedite ownCloud na katerega se želite povezati.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Spodaj vnesite naslov vašega ownCloud spletnega strežnika.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Navedite strežnik ownCloud s katerim želite vzpostaviti povezavo.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Spodaj vnesite naslov spletnega strežnika ownCloud.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="110"/>
@@ -1890,12 +1890,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="120"/>
         <source>Note: To specify an SSL secured connection, start the url with https.</source>
-        <translation>Opomba: Če želite uporabiti SSL zaščiteno povezavo, začne url naslov z https.</translation>
+        <translation>Opomba: za uporabo varne povezave SSL se mora naslov URL začeti s predpono HTTPS.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="133"/>
         <source>create a new ownCloud</source>
-        <translation>ustvari nov ownCloud</translation>
+        <translation>ustvari nov oblak ownCloud</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1926,7 +1926,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/theme.cpp" line="51"/>
         <location filename="../src/mirall/theme.cpp" line="69"/>
         <source>Status undefined</source>
-        <translation>Stanje je nedoločeno</translation>
+        <translation>Stanje ni določeno</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="54"/>
@@ -2008,7 +2008,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="60"/>
         <source>Use system proxy</source>
-        <translation>Uporabi sistemski proxy</translation>
+        <translation>Uporabi sistemski posredniški strežnik</translation>
     </message>
     <message>
         <location filename="../src/mirall/proxydialog.ui" line="67"/>
@@ -2056,7 +2056,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>
         <source>SSL Connection</source>
-        <translation>SSL povezava</translation>
+        <translation>Povezava SSL</translation>
     </message>
 </context>
 <context>
@@ -2094,7 +2094,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="48"/>
         <source>Remove...</source>
-        <translation>Odstrani...</translation>
+        <translation>Odstrani ...</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="58"/>
