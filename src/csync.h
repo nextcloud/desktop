@@ -76,8 +76,10 @@ extern "C" {
 enum csync_status_codes_e {
   CSYNC_STATUS_OK         = 0,
 
-  CSYNC_STATUS_NO_LOCK    = 1000,
+  CSYNC_STATUS_ERROR      = 1000, /* don't use this code, just use in csync_status_ok */
+  CSYNC_STATUS_NO_LOCK,
   CSYNC_STATUS_STATEDB_LOAD_ERROR,
+  CSYNC_STATUS_STATEDB_WRITE_ERROR,
   CSYNC_STATUS_NO_MODULE,
   CSYNC_STATUS_TIMESKEW,
   CSYNC_STATUS_FILESYSTEM_UNKNOWN,
@@ -106,6 +108,9 @@ enum csync_status_codes_e {
   CSYNC_STATUS_QUOTA_EXCEEDED,
   CSYNC_STATUS_SERVICE_UNAVAILABLE,
   CSYNC_STATUS_FILE_TOO_BIG,
+  CSYNC_STATUS_CONTEXT_LOST,
+  CSYNC_STATUS_MERGE_FILETREE_ERROR,
+  CSYNC_STATUS_CSYNC_STATUS_ERROR,
 
   CSYNC_STATUS_UNSPEC_ERROR
 };
@@ -169,6 +174,15 @@ typedef void (*csync_log_callback) (int verbosity,
                                     const char *function,
                                     const char *buffer,
                                     void *userdata);
+
+/**
+ * @brief Check internal csync status.
+ *
+ * @param csync  The context to check.
+ *
+ * @return  true if status is error free, false for error states.
+ */
+bool csync_status_ok(CSYNC *ctx);
 
 /**
  * @brief Allocate a csync context.
