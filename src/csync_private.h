@@ -144,6 +144,8 @@ struct csync_s {
   /* csync error code */
   enum csync_status_codes_e status_code;
 
+  char *error_string;
+
   int status;
 };
 

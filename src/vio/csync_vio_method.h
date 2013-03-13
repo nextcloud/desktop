@@ -70,6 +70,10 @@ typedef int (*csync_method_chown_fn)(const char *uri, uid_t owner, gid_t group);
 
 typedef int (*csync_method_utimes_fn)(const char *uri, const struct timeval times[2]);
 
+typedef int (*csync_method_set_property_fn)(const char *key, void *data);
+
+typedef char* (*csync_method_get_error_string_fn)();
+
 struct csync_vio_method_s {
         size_t method_table_size;           /* Used for versioning */
         csync_method_get_capabilities_fn get_capabilities;
@@ -90,6 +94,8 @@ struct csync_vio_method_s {
         csync_method_chmod_fn chmod;
         csync_method_chown_fn chown;
         csync_method_utimes_fn utimes;
+        csync_method_set_property_fn set_property;
+        csync_method_get_error_string_fn get_error_string;
 };
 
 #endif /* _CSYNC_VIO_H */

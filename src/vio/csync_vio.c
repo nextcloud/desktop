@@ -576,3 +576,13 @@ int csync_vio_utimes(CSYNC *ctx, const char *uri, const struct timeval *times) {
   return rc;
 }
 
+char *csync_vio_get_status_string(CSYNC *ctx)
+{
+    if(ctx->error_string) {
+        return ctx->error_string;
+    }
+    if(VIO_METHOD_HAS_FUNC(ctx->module.method, get_error_string)) {
+        return ctx->module.method->get_error_string();
+    }
+    return NULL;
+}

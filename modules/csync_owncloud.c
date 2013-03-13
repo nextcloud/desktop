@@ -40,6 +40,7 @@
 #include "c_lib.h"
 #include "csync.h"
 #include "c_private.h"
+#include "csync_macros.h"
 
 #include "vio/csync_vio_module.h"
 #include "vio/csync_vio_file_stat.h"
@@ -115,6 +116,8 @@ struct dav_session_s {
     ne_session *ctx;
     char *user;
     char *pwd;
+
+    char *error_string;
 };
 
 /* The list of properties that is fetched in PropFind on a collection */
@@ -142,17 +145,17 @@ void *_userdata;
 char _buffer[PUT_BUFFER_SIZE];
 
 /* ***************************************************************************** */
-static int ne_session_error_errno(ne_session *session)
-{
-    const char *p = ne_get_error(session);
-    char *q;
-    int err;
 
-    err = strtol(p, &q, 10);
-    if (p == q) {
-        return EIO;
-    }
-    DEBUG_WEBDAV(("Session error string %s\n", p));
+static void set_error_message( const char *msg )
+{
+    SAFE_FREE(dav_session.error_string);
+    if( msg )
+        dav_session.error_string = c_strdup(msg);
+}
+
+
+static void set_errno_from_http_errcode( int err ) {
+        int new_errno = 0;
 
     switch(err) {
     case 200:           /* OK */
@@ -163,23 +166,23 @@ static int ne_session_error_errno(ne_session *session)
     case 205:           /* Reset Content */
     case 207:           /* Multi-Status */
     case 304:           /* Not Modified */
-        return 0;
+        new_errno = 0;
     case 401:           /* Unauthorized */
     case 402:           /* Payment Required */
     case 407:           /* Proxy Authentication Required */
-        return EPERM;
+        new_errno = EPERM;
     case 301:           /* Moved Permanently */
     case 303:           /* See Other */
     case 404:           /* Not Found */
     case 410:           /* Gone */
-        return ENOENT;
+        new_errno = ENOENT;
     case 408:           /* Request Timeout */
     case 504:           /* Gateway Timeout */
-        return EAGAIN;
+        new_errno = EAGAIN;
     case 423:           /* Locked */
-        return EACCES;
+        new_errno = EACCES;
     case 405:
-        return EEXIST;  /* Method Not Allowed */
+        new_errno = EEXIST;  /* Method Not Allowed */
     case 400:           /* Bad Request */
     case 403:           /* Forbidden */
     case 409:           /* Conflict */
@@ -189,10 +192,10 @@ static int ne_session_error_errno(ne_session *session)
     case 415:           /* Unsupported Media Type */
     case 424:           /* Failed Dependency */
     case 501:           /* Not Implemented */
-        return EINVAL;
+        new_errno = EINVAL;
     case 413:           /* Request Entity Too Large */
     case 507:           /* Insufficient Storage */
-        return ENOSPC;
+        new_errno = ENOSPC;
     case 206:           /* Partial Content */
     case 300:           /* Multiple Choices */
     case 302:           /* Found */
@@ -207,12 +210,92 @@ static int ne_session_error_errno(ne_session *session)
     case 502:           /* Bad Gateway */
     case 503:           /* Service Unavailable */
     case 505:           /* HTTP Version Not Supported */
-        return EIO;
     default:
-        return EIO;
+        new_errno = EIO;
+    }
+    errno = new_errno;
+}
+
+static int http_result_code_from_session() {
+    const char *p = ne_get_error( dav_session.ctx );
+    char *q;
+    int err;
+
+    set_error_message(p); /* remember the error message */
+
+    err = strtol(p, &q, 10);
+    if (p == q) {
+        err = ERRNO_ERROR_STRING;
+    }
+    return err;
+}
+
+static void set_errno_from_session() {
+    int err = http_result_code_from_session();
+
+    if( err == EIO || err == ERRNO_ERROR_STRING) {
+        errno = err;
+    } else {
+        set_errno_from_http_errcode(err);
+    }
+}
+
+static void set_errno_from_neon_errcode( int neon_code ) {
+
+    if( neon_code != NE_OK ) {
+        DEBUG_WEBDAV(("Neon error code was %d", neon_code));
     }
 
-    return EIO;
+    switch(neon_code) {
+    case NE_OK:     /* Success, but still the possiblity of problems */
+    case NE_ERROR:  /* Generic error; use ne_get_error(session) for message */
+        set_errno_from_session(); /* Something wrong with http communication */
+        break;
+    case NE_LOOKUP:  /* Server or proxy hostname lookup failed */
+        errno = ERRNO_LOOKUP_ERROR;
+        break;
+    case NE_AUTH:     /* User authentication failed on server */
+        errno = ERRNO_USER_UNKNOWN_ON_SERVER;
+        break;
+    case NE_PROXYAUTH:  /* User authentication failed on proxy */
+        errno = ERRNO_PROXY_AUTH;
+        break;
+    case NE_CONNECT:  /* Could not connect to server */
+        errno = ERRNO_CONNECT;
+        break;
+    case NE_TIMEOUT:  /* Connection timed out */
+        errno = ERRNO_TIMEOUT;
+        break;
+    case NE_FAILED:   /* The precondition failed */
+        errno = ERRNO_PRECONDITION;
+        break;
+    case NE_RETRY:    /* Retry request (ne_end_request ONLY) */
+        errno = ERRNO_RETRY;
+        break;
+    case NE_REDIRECT: /* See ne_redirect.h */
+        errno = ERRNO_REDIRECT;
+        break;
+    default:
+        errno = ERRNO_GENERAL_ERROR;
+    }
+}
+
+/* cleanPath to return an escaped path of an uri */
+static char *_cleanPath( const char* uri ) {
+    int rc = 0;
+    char *path = NULL;
+    char *re = NULL;
+
+    rc = c_parse_uri( uri, NULL, NULL, NULL, NULL, NULL, &path );
+    if( rc  < 0 ) {
+        DEBUG_WEBDAV(("Unable to cleanPath %s", uri ? uri: "<zero>" ));
+        re = NULL;
+    } else {
+        re = ne_path_escape( path );
+    }
+
+    SAFE_FREE( path );
+    return re;
 }
 
 /*
@@ -538,24 +621,6 @@ static csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
     return lfs;
 }
 
-/* cleanPath to return an escaped path of an uri */
-static char *_cleanPath( const char* uri ) {
-    int rc = 0;
-    char *path = NULL;
-    char *re = NULL;
-
-    rc = c_parse_uri( uri, NULL, NULL, NULL, NULL, NULL, &path );
-    if( rc  < 0 ) {
-        DEBUG_WEBDAV(("Unable to cleanPath %s\n", uri ? uri: "" ));
-        re = NULL;
-    } else {
-        if (path)
-            re = ne_path_escape( path );
-    }
-    SAFE_FREE( path );
-    return re;
-}
-
 /* WebDAV does not deliver permissions. Set a default here. */
 static int _stat_perms( int type ) {
     int ret = 0;
@@ -638,7 +703,7 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
 
         rc = fetch_resource_list( curi, NE_DEPTH_ONE, fetchCtx );
         if( rc != NE_OK ) {
-            errno = ne_session_error_errno( dav_session.ctx );
+            set_errno_from_session();
 
             DEBUG_WEBDAV(("stat fails with errno %d\n", errno ));
             SAFE_FREE(fetchCtx);
@@ -1227,7 +1292,7 @@ static csync_vio_method_handle_t *owncloud_opendir(const char *uri) {
 
     rc = fetch_resource_list( curi, NE_DEPTH_ONE, fetchCtx );
     if( rc != NE_OK ) {
-        errno = ne_session_error_errno( dav_session.ctx );
+        set_errno_from_session();
         return NULL;
     } else {
         fetchCtx->currResource = fetchCtx->list;
@@ -1318,7 +1383,7 @@ static int owncloud_mkdir(const char *uri, mode_t mode) {
       DEBUG_WEBDAV(("MKdir on %s\n", buf ));
       rc = ne_mkcol(dav_session.ctx, buf );
       if (rc != NE_OK ) {
-          errno = ne_session_error_errno( dav_session.ctx );
+          set_errno_from_session();
       }
     }
     SAFE_FREE( path );
@@ -1341,7 +1406,7 @@ static int owncloud_rmdir(const char *uri) {
     if( rc >= 0 ) {
         rc = ne_delete(dav_session.ctx, curi);
         if ( rc != NE_OK ) {
-            errno = ne_session_error_errno( dav_session.ctx );
+          set_errno_from_session();
         }
     }
     SAFE_FREE( curi );
@@ -1371,7 +1436,7 @@ static int owncloud_rename(const char *olduri, const char *newuri) {
         rc = ne_move(dav_session.ctx, 1, src, target );
 
         if (rc != NE_OK ) {
-            errno = ne_session_error_errno(dav_session.ctx);
+          set_errno_from_session();
         }
     }
     SAFE_FREE( src );
@@ -1399,7 +1464,7 @@ static int owncloud_unlink(const char *uri) {
     if( rc == NE_OK ) {
         rc = ne_delete( dav_session.ctx, path );
         if ( rc != NE_OK )
-            errno = ne_session_error_errno( dav_session.ctx );
+            set_errno_from_session();
     }
     SAFE_FREE( path );
 
@@ -1419,6 +1484,11 @@ static int owncloud_chown(const char *uri, uid_t owner, gid_t group) {
     (void) group;
 
     return 0;
+}
+
+static char *owncloud_error_string()
+{
+    return dav_session.error_string;
 }
 
 static int owncloud_utimes(const char *uri, const struct timeval *times) {
@@ -1481,7 +1551,8 @@ csync_vio_method_t _method = {
     .unlink = owncloud_unlink,
     .chmod = owncloud_chmod,
     .chown = owncloud_chown,
-    .utimes = owncloud_utimes
+    .utimes = owncloud_utimes,
+    .get_error_string = owncloud_error_string
 };
 
 csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
@@ -1499,6 +1570,10 @@ void vio_module_shutdown(csync_vio_method_t *method) {
 
     SAFE_FREE( dav_session.user );
     SAFE_FREE( dav_session.pwd );
+
+    SAFE_FREE( dav_session.error_string );
+
+    SAFE_FREE( _lastDir );
 
     if( dav_session.ctx )
         ne_session_destroy( dav_session.ctx );
