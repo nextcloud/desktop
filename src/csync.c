@@ -920,6 +920,11 @@ bool csync_get_local_only( CSYNC *ctx ) {
     return ctx->options.local_only_mode;
 }
 
+const char *csync_get_status_string(CSYNC *ctx)
+{
+  return csync_vio_get_status_string(ctx);
+}
+
 #ifdef WITH_ICONV
 int csync_set_iconv_codec(const char *from)
 {

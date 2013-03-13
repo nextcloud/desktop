@@ -493,6 +493,15 @@ int csync_walk_local_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int fi
  */
 int csync_walk_remote_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int filter);
 
+/**
+ * @brief Get the csync status string.
+ *
+ * @param ctx            The csync context.
+ *
+ * @return               A const pointer to a string with more precise status info.
+ */
+const char *csync_get_status_string(CSYNC *ctx);
+
 #ifdef WITH_ICONV
 /**
  * @brief Set iconv source codec for filenames.
