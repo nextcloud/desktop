@@ -1,4 +1,4 @@
-project( ocmod C )
+project(hbf_test  C )
 
 add_definitions(-DUNIT_TESTING=1)
 
@@ -12,8 +12,7 @@ include_directories(
     ${HTTPBF_PUBLIC_INCLUDE_DIRS}
 )
 
+add_executable(send_test hbf_send_test.c)
+target_link_libraries(send_test ${CMOCKA_LIBRARIES} ${NEON_LIBRARIES} ${HBF_LIBRARY} )
 
-add_executable(ocmod_test ocmod_test.c)
-
-target_link_libraries(ocmod_test ${CMOCKA_LIBRARIES} ${NEON_LIBRARIES} ${CSYNC_LIBRARY} ${HTTPBF_LIBRARY})
 

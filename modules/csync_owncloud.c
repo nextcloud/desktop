@@ -48,6 +48,7 @@
 #include "csync_misc.h"
 #include "csync_macros.h"
 #include "c_private.h"
+#include "httpbf.h"
 
 #include "vio/csync_vio_module.h"
 #include "vio/csync_vio_file_stat.h"
@@ -135,7 +136,7 @@ struct transfer_context {
     int         fd;             /* file descriptor of the file to read or write from */
     const char  *method;        /* the HTTP method, either PUT or GET  */
     ne_decompress *decompress;  /* the decompress context */
-    char        *clean_uri;
+    char        *url;
 };
 
 /* Struct with the WebDAV session */
@@ -184,6 +185,8 @@ int _connected = 0;                   /* flag to indicate if a connection exists
 
 csync_auth_callback _authcb;
 csync_progress_callback _progresscb;
+long long chunked_total_size = 0;
+long long chunked_done = 0;
 
 struct listdir_context *propfind_cache = 0;
 csync_vio_file_stat_t _stat_cache;
@@ -673,7 +676,13 @@ static void ne_notify_status_cb (void *userdata, ne_session_status status,
 
     if (_progresscb && (status == ne_status_sending || status == ne_status_recving)) {
         if (info->sr.total > 0)
-            _progresscb(tc->clean_uri, CSYNC_NOTIFY_PROGRESS, info->sr.progress, info->sr.total, dav_session.userdata);
+            _progresscb(tc->url, CSYNC_NOTIFY_PROGRESS,
+                        chunked_done + info->sr.progress,
+                        chunked_total_size ? chunked_total_size : info->sr.total,
+                        dav_session.userdata);
+
+        if (chunked_total_size && info->sr.total == info->sr.progress)
+            chunked_done += info->sr.total;
     }
 }
 
@@ -1380,7 +1389,7 @@ static void install_content_reader( ne_request *req, void *userdata, const ne_st
     if (enc && *enc) {
         SAFE_FREE(_id_cache.uri);
         SAFE_FREE(_id_cache.id);
-        _id_cache.uri = c_strdup(writeCtx->clean_uri);
+        _id_cache.uri = c_strdup(writeCtx->url);
         _id_cache.id = c_strdup(enc);
     }
 }
@@ -1535,21 +1544,18 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
     }
 
     writeCtx = c_malloc( sizeof(struct transfer_context) );
-    writeCtx->clean_uri = c_strdup(durl);
+    writeCtx->url = c_strdup(durl);
+    writeCtx->req = NULL;
+    writeCtx->fd = -1;
 
     if( rc == NE_OK && put) {
         DEBUG_WEBDAV("PUT request on %s!", uri);
-        writeCtx->req = ne_request_create(dav_session.ctx, "PUT", uri);
         writeCtx->method = "PUT";
     }
 
     if( rc == NE_OK && ! put ) {
-        writeCtx->req = 0;
         writeCtx->method = "GET";
         DEBUG_WEBDAV("GET request on %s", uri );
-
-        writeCtx->req = ne_request_create( dav_session.ctx, "GET", uri );
-        writeCtx->fd = -1;
     }
 
     if( rc != NE_OK ) {
@@ -1581,6 +1587,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
     int fd;
     int error_code = 0;
     const char *error_string = NULL;
+    char *clean_uri = NULL;
 
     if( ! write_ctx ) {
         errno = EINVAL;
@@ -1593,6 +1600,11 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
     }
     fd = fh->fd;
 
+    clean_uri = _cleanPath( write_ctx->url );
+
+    chunked_total_size = 0;
+    chunked_done = 0;
+
     DEBUG_WEBDAV("Sendfile handling request type %s.", write_ctx->method);
 
     /* Copy from the file descriptor if method == PUT
@@ -1600,21 +1612,24 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
      */
 
     if( c_streq( write_ctx->method, "PUT") ) {
-        /* Transmit a file through PUT */
-        ne_request *request = write_ctx->req;
-        if( request ) {
-            /* stat the source-file to get the file size. */
-            csync_stat_t sb;
-            if( fstat( fd, &sb ) == 0 ) {
+        /* stat the source-file to get the file size. */
+        csync_stat_t sb;
+        if (_progresscb) {
+            ne_set_notifier(dav_session.ctx, ne_notify_status_cb, write_ctx);
+            _progresscb(write_ctx->url, CSYNC_NOTIFY_START_UPLOAD, 0 , 0, dav_session.userdata);
+        }
+        if( fstat( fd, &sb ) != 0 ) {
+            DEBUG_WEBDAV("Could not stat file descriptor");
+            rc = 1;
+        } else if (sb.st_size < 1024*1024*2) {
+            /* Transmit a file through PUT */
+            ne_request *request = ne_request_create(dav_session.ctx, "PUT", clean_uri);
+            write_ctx->req = request;
+            if( request ) {
                 /* Attach the request to the file descriptor */
                 ne_set_request_body_fd(request, fd, 0, sb.st_size);
                 DEBUG_WEBDAV("Put file size: %lld, variable sizeof: %ld", (long long int) sb.st_size,
                              sizeof(sb.st_size));
-
-                if (_progresscb) {
-                    ne_set_notifier(dav_session.ctx, ne_notify_status_cb, write_ctx);
-                    _progresscb(write_ctx->clean_uri, CSYNC_NOTIFY_START_UPLOAD, 0 , 0, dav_session.userdata);
-                }
 
                 /* Start the request. */
                 neon_stat = ne_request_dispatch( write_ctx->req );
@@ -1639,33 +1654,65 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
                 } else {
                     DEBUG_WEBDAV("http request all cool, result code %d", status->code);
                 }
-
-                if (_progresscb) {
-                    ne_set_notifier(dav_session.ctx, 0, 0);
-                    _progresscb(write_ctx->clean_uri, rc != NE_OK ?  CSYNC_NOTIFY_ERROR : 
-                                CSYNC_NOTIFY_FINISHED_UPLOAD, error_code,
-                                (long long)(error_string), dav_session.userdata);
-                }
             } else {
-                DEBUG_WEBDAV("Could not stat file descriptor");
+                DEBUG_WEBDAV("Did not find a valid request!");
                 rc = 1;
             }
         } else {
-            DEBUG_WEBDAV("Did not find a valid request!");
-            rc = 1;
+            /* use httpbf */
+            hbf_transfer_t *trans = hbf_init_transfer(clean_uri);
+            if (!trans) {
+                DEBUG_WEBDAV("hbf_init_transfer failed");
+                rc = 1;
+            } else {
+                Hbf_State state = hbf_splitlist(trans, fd);
+                if( state == HBF_SUCCESS ) {
+                    chunked_total_size = sb.st_size;
+                    /* Transfer all the chunks through the HTTP session using PUT. */
+                    state = hbf_transfer( dav_session.ctx, trans, "PUT" );
+                }
+
+                if ( state != HBF_SUCCESS ) {
+                    error_string = hbf_error_string(state);
+                    rc = 1;
+                }
+            }
+        }
+        if (_progresscb) {
+            ne_set_notifier(dav_session.ctx, 0, 0);
+            _progresscb(write_ctx->url, rc != NE_OK ? CSYNC_NOTIFY_ERROR :
+                                CSYNC_NOTIFY_FINISHED_UPLOAD, error_code,
+                                (long long)(error_string), dav_session.userdata);
         }
     } else if( c_streq( write_ctx->method, "GET") ) {
-        /* GET a file to the file descriptor */
-        /* actually do the request */
-        DEBUG_WEBDAV("  -- GET on %s", write_ctx->clean_uri);
-        write_ctx->fd = fd;
-        if (_progresscb) {
-            ne_set_notifier(dav_session.ctx, ne_notify_status_cb, write_ctx);
-            _progresscb(write_ctx->clean_uri, CSYNC_NOTIFY_START_DOWNLOAD, 0 , 0, dav_session.userdata);
-        }
+      /* GET a file to the file descriptor */
+      /* actually do the request */
+      int retry = 0;
+      DEBUG_WEBDAV("  -- GET on %s", write_ctx->url);
+      write_ctx->fd = fd;
+      if (_progresscb) {
+        ne_set_notifier(dav_session.ctx, ne_notify_status_cb, write_ctx);
+        _progresscb(write_ctx->url, CSYNC_NOTIFY_START_DOWNLOAD, 0 , 0, dav_session.userdata);
+      }
+
+      do {
+        csync_stat_t sb;
+
+        if (write_ctx->req)
+          ne_request_destroy( write_ctx->req );
+
+        write_ctx->req = ne_request_create(dav_session.ctx, "GET", clean_uri);;
 
         /* Allow compressed content by setting the header */
         ne_add_request_header( write_ctx->req, "Accept-Encoding", "gzip" );
+
+        if (fstat(fd, &sb) >= 0 && sb.st_size > 0) {
+            char brange[64];
+            ne_snprintf(brange, sizeof brange, "bytes=%lld-", (long long) sb.st_size);
+            ne_add_request_header(write_ctx->req, "Range", brange);
+            ne_add_request_header(write_ctx->req, "Accept-Ranges", "bytes");
+            DEBUG_WEBDAV("Retry with range %s", brange);
+        }
 
         /* hook called before the content is parsed to set the correct reader,
          * either the compressed- or uncompressed reader.
@@ -1678,6 +1725,9 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
          */
 
         if( neon_stat != NE_OK ) {
+            if (neon_stat == NE_TIMEOUT && (++retry) < 3)
+                continue;
+
             set_errno_from_neon_errcode(neon_stat);
             DEBUG_WEBDAV("Error GET: Neon: %d, errno %d", neon_stat, errno);
             rc = -1;
@@ -1710,17 +1760,23 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
         if( write_ctx->decompress ) {
             ne_decompress_destroy( write_ctx->decompress );
         }
-        if (_progresscb) {
-            ne_set_notifier(dav_session.ctx, 0, 0);
-            _progresscb(write_ctx->clean_uri, (rc != NE_OK) ? CSYNC_NOTIFY_ERROR :
-                        CSYNC_NOTIFY_FINISHED_DOWNLOAD, error_code ,
-                        (long long)(error_string), dav_session.userdata);
-        }
+        break;
+      } while (1);
+      if (_progresscb) {
+          ne_set_notifier(dav_session.ctx, 0, 0);
+          _progresscb(write_ctx->url, (rc != NE_OK) ? CSYNC_NOTIFY_ERROR :
+                      CSYNC_NOTIFY_FINISHED_DOWNLOAD, error_code ,
+                      (long long)(error_string), dav_session.userdata);
+      }
     } else  {
         DEBUG_WEBDAV("Unknown method!");
         rc = -1;
     }
 
+    chunked_total_size = 0;
+    chunked_done = 0;
+
+    SAFE_FREE(clean_uri);
     return rc;
 }
 
@@ -1737,7 +1793,8 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
         return -1;
     }
 
-    ne_request_destroy( writeCtx->req );
+    if (writeCtx->req)
+        ne_request_destroy( writeCtx->req );
 
     if( ret != -1 && strcmp( writeCtx->method, "PUT" ) == 0 ) {
         // Clear the cache so get_id gets the updates
@@ -1745,7 +1802,7 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
     }
 
     /* free mem. Note that the request mem is freed by the ne_request_destroy call */
-    SAFE_FREE( writeCtx->clean_uri );
+    SAFE_FREE( writeCtx->url );
     SAFE_FREE( writeCtx );
 
     return ret;

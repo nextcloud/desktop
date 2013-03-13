@@ -14,6 +14,7 @@ set(MODULES_PUBLIC_INCLUDE_DIRS
 set(MODULES_PRIVATE_INCLUDE_DIRS
   ${CSTDLIB_PUBLIC_INCLUDE_DIRS}
   ${CSYNC_PUBLIC_INCLUDE_DIRS}
+  ${HTTPBF_PUBLIC_INCLUDE_DIRS}
 )
 
 set(SMB_PLUGIN
@@ -64,7 +65,7 @@ endif (LIBSSH_FOUND)
 if (NEON_FOUND)
     include_directories( ${NEON_INCLUDE_DIRS} )
     macro_add_plugin(${OWNCLOUD_PLUGIN} csync_owncloud.c)
-    target_link_libraries(${OWNCLOUD_PLUGIN} ${CSYNC_LIBRARY} ${NEON_LIBRARIES})
+    target_link_libraries(${OWNCLOUD_PLUGIN} ${CSYNC_LIBRARY} ${NEON_LIBRARIES} ${HTTPBF_LIBRARY})
 
     install(
         TARGETS

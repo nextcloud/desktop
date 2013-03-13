@@ -1,6 +1,7 @@
 project(libcsync C)
 
 add_subdirectory(std)
+add_subdirectory(httpbf)
 
 # Statically include sqlite and iniparser
 if (CSYNC_STATIC_COMPILE_DIR)
