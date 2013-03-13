@@ -36,6 +36,7 @@
 #include "csync_statedb.h"
 #include "csync_update.h"
 #include "csync_util.h"
+#include "csync_misc.h"
 
 #include "vio/csync_vio.h"
 
@@ -53,6 +54,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
   if ((file == NULL) || (fs == NULL)) {
     errno = EINVAL;
+    ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
     return -1;
   }
 
@@ -60,18 +62,21 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   switch (ctx->current) {
     case LOCAL_REPLICA:
       if (strlen(path) <= strlen(ctx->local.uri)) {
+        ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
         return -1;
       }
       path += strlen(ctx->local.uri) + 1;
       break;
     case REMOTE_REPLICA:
       if (strlen(path) <= strlen(ctx->remote.uri)) {
+        ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
         return -1;
       }
       path += strlen(ctx->remote.uri) + 1;
       break;
     default:
       path = NULL;
+      ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
       return -1;
       break;
   }
@@ -82,6 +87,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
   st = c_malloc(size);
   if (st == NULL) {
+    ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
     return -1;
   }
   CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - hash %llu, st size: %zu",
@@ -109,7 +115,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     } else {
       /* check if the file has been renamed */
       if (ctx->current == LOCAL_REPLICA) {
-        free(tmp);
+        SAFE_FREE(tmp);
         tmp = csync_statedb_get_stat_by_inode(ctx, fs->inode);
         if (tmp && tmp->inode == fs->inode) {
           /* inode found so the file has been renamed */
@@ -147,12 +153,14 @@ out:
     case LOCAL_REPLICA:
       if (c_rbtree_insert(ctx->local.tree, (void *) st) < 0) {
         SAFE_FREE(st);
+        ctx->status_code = CSYNC_STATUS_TREE_ERROR;
         return -1;
       }
       break;
     case REMOTE_REPLICA:
       if (c_rbtree_insert(ctx->remote.tree, (void *) st) < 0) {
         SAFE_FREE(st);
+        ctx->status_code = CSYNC_STATUS_TREE_ERROR;
         return -1;
       }
       break;
@@ -212,11 +220,13 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
   if (uri[0] == '\0') {
     errno = ENOENT;
+    ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
     goto error;
   }
 
   if ((dh = csync_vio_opendir(ctx, uri)) == NULL) {
     /* permission denied */
+    ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_OPENDIR_ERROR);
     if (errno == EACCES) {
       return 0;
     } else {
@@ -235,6 +245,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
     d_name = dirent->name;
     if (d_name == NULL) {
+      ctx->status_code = CSYNC_STATUS_READDIR_ERROR;
       goto error;
     }
 
@@ -249,6 +260,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     if (asprintf(&filename, "%s/%s", uri, d_name) < 0) {
       csync_vio_file_stat_destroy(dirent);
       dirent = NULL;
+      ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
       goto error;
     }
 
@@ -305,6 +317,9 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     csync_vio_file_stat_destroy(fs);
 
     if (rc < 0) {
+      if( csync_status_ok(ctx) )
+        ctx->status_code = CSYNC_STATUS_UPDATE_ERROR;
+
       csync_vio_closedir(ctx, dh);
       goto done;
     }

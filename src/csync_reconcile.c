@@ -294,7 +294,9 @@ int csync_reconcile_updates(CSYNC *ctx) {
   }
 
   rc = c_rbtree_walk(tree, (void *) ctx, _csync_merge_algorithm_visitor);
-
+  if( rc < 0 ) {
+    ctx->status_code = CSYNC_STATUS_RECONCILE_ERROR;
+  }
   return rc;
 }
 

@@ -30,6 +30,7 @@
 #include <time.h>
 
 #include "csync_private.h"
+#include "csync_misc.h"
 #include "csync_propagate.h"
 #include "vio/csync_vio.h"
 
@@ -88,10 +89,12 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
       srep = ctx->local.type;
       drep = ctx->remote.type;
       if (asprintf(&suri, "%s/%s", ctx->local.uri, st->path) < 0) {
+        ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
         rc = -1;
         goto out;
       }
       if (asprintf(&duri, "%s/%s", ctx->remote.uri, st->path) < 0) {
+        ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
         rc = -1;
         goto out;
       }
@@ -100,10 +103,12 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
       srep = ctx->remote.type;
       drep = ctx->local.type;
       if (asprintf(&suri, "%s/%s", ctx->remote.uri, st->path) < 0) {
+        ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
         rc = -1;
         goto out;
       }
       if (asprintf(&duri, "%s/%s", ctx->local.uri, st->path) < 0) {
+        ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
         rc = -1;
         goto out;
       }
@@ -123,6 +128,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 #endif
   sfp = csync_vio_open(ctx, suri, flags, 0);
   if (sfp == NULL) {
+    ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
     if (errno == ENOMEM) {
       rc = -1;
     } else {
@@ -140,18 +146,21 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   if (_push_to_tmp_first(ctx)) {
     /* create the temporary file name */
     if (asprintf(&turi, "%s.XXXXXX", duri) < 0) {
+      ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
       rc = -1;
       goto out;
     }
 
     /* We just want a random file name here, open checks if the file exists. */
     if (c_tmpname(turi) < 0) {
+      ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
       rc = -1;
       goto out;
     }
   } else {
     /* write to the target file directly as the HTTP server does it atomically */
     if (asprintf(&turi, "%s", duri) < 0) {
+      ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
       rc = -1;
       goto out;
     }
@@ -163,17 +172,20 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   ctx->replica = drep;
   while ((dfp = csync_vio_open(ctx, turi, O_CREAT|O_EXCL|O_WRONLY|O_NOCTTY,
           C_FILE_MODE)) == NULL) {
+    ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
     switch (errno) {
       case EEXIST:
         if (count++ > 10) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
               "file: %s, command: open(O_CREAT), error: max count exceeded",
               duri);
+          ctx->status_code = CSYNC_STATUS_OPEN_ERROR;
           rc = 1;
           goto out;
         }
         if(_push_to_tmp_first(ctx)) {
           if (c_tmpname(turi) < 0) {
+            ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
             rc = -1;
             goto out;
           }
@@ -188,6 +200,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
         }
 
         if (csync_vio_mkdirs(ctx, tdir, C_DIR_MODE) < 0) {
+          ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
           strerror_r(errno, errbuf, sizeof(errbuf));
           CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN,
               "dir: %s, command: mkdirs, error: %s",
@@ -221,6 +234,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
     if (bread < 0) {
       /* read error */
+      ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
       strerror_r(errno,  errbuf, sizeof(errbuf));
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
           "file: %s, command: read, error: %s",
@@ -236,6 +250,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     bwritten = csync_vio_write(ctx, dfp, buf, bread);
 
     if (bwritten < 0 || bread != bwritten) {
+      ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
       strerror_r(errno, errbuf, sizeof(errbuf));
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
           "file: %s, command: write, error: bread = %zu, bwritten = %zu - %s",
@@ -250,6 +265,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   ctx->replica = srep;
   if (csync_vio_close(ctx, sfp) < 0) {
+    ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
     strerror_r(errno, errbuf, sizeof(errbuf));
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
         "file: %s, command: close, error: %s",
@@ -261,6 +277,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   ctx->replica = drep;
   if (csync_vio_close(ctx, dfp) < 0) {
     dfp = NULL;
+    ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
     switch (errno) {
       /* stop if no space left or quota exceeded */
       case ENOSPC:
@@ -289,16 +306,13 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   ctx->replica = drep;
   tstat = csync_vio_file_stat_new();
   if (tstat == NULL) {
-    strerror_r(errno, errbuf, sizeof(errbuf));
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
-        "file: %s, command: stat, error: %s",
-        turi,
-        errbuf);
+    ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
     rc = -1;
     goto out;
   }
 
   if (csync_vio_stat(ctx, turi, tstat) < 0) {
+    ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
     switch (errno) {
       case ENOMEM:
         rc = -1;
@@ -319,6 +333,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
         "file: %s, error: incorrect filesize (size: %jd should be %jd)",
         turi, tstat->size, st->size);
+    ctx->status_code = CSYNC_STATUS_FILE_SIZE_ERROR;
     rc = 1;
     goto out;
   }
@@ -327,6 +342,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     /* override original file */
     ctx->replica = drep;
     if (csync_vio_rename(ctx, turi, duri) < 0) {
+      ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
       switch (errno) {
       case ENOMEM:
         rc = -1;
@@ -347,6 +363,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   /* set mode only if it is not the default mode */
   if ((st->mode & 07777) != C_FILE_MODE) {
     if (csync_vio_chmod(ctx, duri, st->mode) < 0) {
+      ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
       switch (errno) {
         case ENOMEM:
           rc = -1;
@@ -427,7 +444,8 @@ static int _backup_path(char** duri, const char* uri, const char* path)
 	CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"filename : %s",info->filename);
 	CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"extension: %s",info->extension);
 
-	if (asprintf(duri, "%s/%s%s_conflict-%s%s", uri,info->directory ,info->filename,timestring,info->extension) < 0) {
+    if (asprintf(duri, "%s/%s%s_conflict-%s%s", uri,info->directory ,
+                 info->filename,timestring,info->extension) < 0) {
 		rc = -1;
 	}
 
@@ -451,40 +469,46 @@ static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st) {
   
   if(st->instruction==CSYNC_INSTRUCTION_CONFLICT)
   {
-	CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"CSYNC_INSTRUCTION_CONFLICT");
-	switch (ctx->current) {
-		case LOCAL_REPLICA:
-		drep = ctx->remote.type;
-		if (asprintf(&suri, "%s/%s", ctx->remote.uri, st->path) < 0) {
-			rc = -1;
-			goto out;
-		}
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"CSYNC_INSTRUCTION_CONFLICT");
+    switch (ctx->current) {
+    case LOCAL_REPLICA:
+      drep = ctx->remote.type;
+      if (asprintf(&suri, "%s/%s", ctx->remote.uri, st->path) < 0) {
+        ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
+        rc = -1;
+        goto out;
+      }
 
-		if (_backup_path(&duri, ctx->remote.uri,st->path) < 0) {
-			rc = -1;
-			goto out;
-		}
-		break;
-		case REMOTE_REPLICA:
-		drep = ctx->local.type;
-		if (asprintf(&suri, "%s/%s", ctx->local.uri, st->path) < 0) {
-			rc = -1;
-			goto out;
-		}
+      if (_backup_path(&duri, ctx->remote.uri,st->path) < 0) {
+        ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
+        rc = -1;
+        goto out;
+      }
+      break;
+    case REMOTE_REPLICA:
+      drep = ctx->local.type;
+      if (asprintf(&suri, "%s/%s", ctx->local.uri, st->path) < 0) {
+        ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
+        rc = -1;
+        goto out;
+      }
 
-		if ( _backup_path(&duri, ctx->local.uri, st->path) < 0) {
-			rc = -1;
-			goto out;
-		}
-		break;
-		default:
-		break;
-	}
+      if ( _backup_path(&duri, ctx->local.uri, st->path) < 0) {
+        ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
+        rc = -1;
+        goto out;
+      }
+      break;
+    default:
+      break;
+    }
   }
 
   else
   {
-	  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"instruction not allowed: %i %s",st->instruction,csync_instruction_str(st->instruction));
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"instruction not allowed: %i %s",
+                st->instruction, csync_instruction_str(st->instruction));
+      ctx->status_code = CSYNC_STATUS_UNSPEC_ERROR;
 	  rc = -1;
       goto out;
   }
@@ -496,6 +520,7 @@ static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st) {
   /* rename the older file to conflict */
   ctx->replica = drep;
   if (csync_vio_rename(ctx, suri, duri) < 0) {
+    ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
     switch (errno) {
       case ENOMEM:
         rc = -1;
@@ -571,11 +596,13 @@ static int _csync_remove_file(CSYNC *ctx, csync_file_stat_t *st) {
   switch (ctx->current) {
     case LOCAL_REPLICA:
       if (asprintf(&uri, "%s/%s", ctx->local.uri, st->path) < 0) {
+        ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
         return -1;
       }
       break;
     case REMOTE_REPLICA:
       if (asprintf(&uri, "%s/%s", ctx->remote.uri, st->path) < 0) {
+        ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
         return -1;
       }
       break;
@@ -584,6 +611,7 @@ static int _csync_remove_file(CSYNC *ctx, csync_file_stat_t *st) {
   }
 
   if (csync_vio_unlink(ctx, uri) < 0) {
+    ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
     switch (errno) {
       case ENOMEM:
         rc = -1;
@@ -632,12 +660,14 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
     case LOCAL_REPLICA:
       dest = ctx->remote.type;
       if (asprintf(&uri, "%s/%s", ctx->remote.uri, st->path) < 0) {
+        ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
         return -1;
       }
       break;
     case REMOTE_REPLICA:
       dest = ctx->local.type;
       if (asprintf(&uri, "%s/%s", ctx->local.uri, st->path) < 0) {
+        ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
         return -1;
       }
       break;
@@ -647,6 +677,7 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
 
   ctx->replica = dest;
   if (csync_vio_mkdirs(ctx, uri, C_DIR_MODE) < 0) {
+    ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
     switch (errno) {
       case ENOMEM:
         rc = -1;
@@ -666,6 +697,7 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
   /* chmod is if it is not the default mode */
   if ((st->mode & 07777) != C_DIR_MODE) {
     if (csync_vio_chmod(ctx, uri, st->mode) < 0) {
+      ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
       switch (errno) {
         case ENOMEM:
           rc = -1;
@@ -725,12 +757,14 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
     case LOCAL_REPLICA:
       dest = ctx->remote.type;
       if (asprintf(&uri, "%s/%s", ctx->remote.uri, st->path) < 0) {
+        ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
         return -1;
       }
       break;
     case REMOTE_REPLICA:
       dest = ctx->local.type;
       if (asprintf(&uri, "%s/%s", ctx->local.uri, st->path) < 0) {
+        ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
         return -1;
       }
       break;
@@ -743,6 +777,7 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
   /* chmod is if it is not the default mode */
   if ((st->mode & 07777) != C_DIR_MODE) {
     if (csync_vio_chmod(ctx, uri, st->mode) < 0) {
+      ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
       switch (errno) {
         case ENOMEM:
           rc = -1;
@@ -797,11 +832,13 @@ static int _csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
   switch (ctx->current) {
     case LOCAL_REPLICA:
       if (asprintf(&uri, "%s/%s", ctx->local.uri, st->path) < 0) {
+        ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
         return -1;
       }
       break;
     case REMOTE_REPLICA:
       if (asprintf(&uri, "%s/%s", ctx->remote.uri, st->path) < 0) {
+        ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
         return -1;
       }
       break;
@@ -810,6 +847,7 @@ static int _csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
   }
 
   if (csync_vio_rmdir(ctx, uri) < 0) {
+    ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
     switch (errno) {
       case ENOMEM:
         strerror_r(errno, errbuf, sizeof(errbuf));
@@ -824,6 +862,7 @@ static int _csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
           case LOCAL_REPLICA:
             list = c_list_prepend(ctx->local.list, (void *) st);
             if (list == NULL) {
+              ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
               return -1;
             }
             ctx->local.list = list;
@@ -831,6 +870,7 @@ static int _csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
           case REMOTE_REPLICA:
             list = c_list_prepend(ctx->remote.list, (void *) st);
             if (list == NULL) {
+              ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
               return -1;
             }
             ctx->remote.list = list;
@@ -889,11 +929,13 @@ static int _csync_propagation_cleanup(CSYNC *ctx) {
   }
 
   if (list == NULL) {
+    ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
     return 0;
   }
 
   list = c_list_sort(list, _csync_cleanup_cmp);
   if (list == NULL) {
+    ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
     return -1;
   }
 
@@ -903,6 +945,7 @@ static int _csync_propagation_cleanup(CSYNC *ctx) {
     st = (csync_file_stat_t *) walk->data;
 
     if (asprintf(&dir, "%s/%s", uri, st->path) < 0) {
+      ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
       return -1;
     }
 
