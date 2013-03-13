@@ -208,7 +208,7 @@ int csync_statedb_create_tables(CSYNC *ctx) {
    * creation of the statedb.
    */
   result = csync_statedb_query(ctx,
-      "CREATE TEMPORARY TABLE IF NOT EXISTS metadata_temp("
+      "CREATE TABLE IF NOT EXISTS metadata_temp("
       "phash INTEGER(8),"
       "pathlen INTEGER,"
       "path VARCHAR(4096),"
@@ -245,14 +245,14 @@ int csync_statedb_create_tables(CSYNC *ctx) {
   c_strlist_destroy(result);
 
   result = csync_statedb_query(ctx,
-      "CREATE INDEX metadata_phash ON metadata(phash);");
+      "CREATE INDEX IF NOT EXISTS metadata_phash ON metadata(phash);");
   if (result == NULL) {
     return -1;
   }
   c_strlist_destroy(result);
 
   result = csync_statedb_query(ctx,
-      "CREATE INDEX metadata_inode ON metadata(inode);");
+      "CREATE INDEX IF NOT EXISTS metadata_inode ON metadata(inode);");
   if (result == NULL) {
     return -1;
   }
@@ -278,68 +278,70 @@ int csync_statedb_drop_tables(CSYNC *ctx) {
 static int _insert_metadata_visitor(void *obj, void *data) {
   csync_file_stat_t *fs = NULL;
   CSYNC *ctx = NULL;
-  char *stmt = NULL;
   int rc = -1;
+  sqlite3_stmt* stmt;
 
   fs = (csync_file_stat_t *) obj;
   ctx = (CSYNC *) data;
+  stmt = csync_get_userdata(ctx);
+  if (stmt == NULL) {
+    return -1;
+  }
 
   switch (fs->instruction) {
-    /*
+  /*
      * Don't write ignored, deleted or files with an error to the statedb.
      * They will be visited on the next synchronization again as a new file.
      */
-    case CSYNC_INSTRUCTION_DELETED:
-    case CSYNC_INSTRUCTION_IGNORE:
-    case CSYNC_INSTRUCTION_ERROR:
-      rc = 0;
-      break;
-    case CSYNC_INSTRUCTION_NONE:
+  case CSYNC_INSTRUCTION_DELETED:
+  case CSYNC_INSTRUCTION_IGNORE:
+  case CSYNC_INSTRUCTION_ERROR:
+    rc = 0;
+    break;
+  case CSYNC_INSTRUCTION_NONE:
     /* As we only sync the local tree we need this flag here */
-    case CSYNC_INSTRUCTION_UPDATED:
-    case CSYNC_INSTRUCTION_CONFLICT:
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
-        "SQL statement: INSERT INTO metadata_temp \n"
-        "\t\t\t(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES \n"
-        "\t\t\t(%llu, %lu, %s, %llu, %u, %u, %u, %lu);",
-        (long long unsigned int) fs->phash,
-        (long unsigned int) fs->pathlen,
-        fs->path,
-        (long long unsigned int) fs->inode,
-        fs->uid,
-        fs->gid,
-        fs->mode,
-        fs->modtime);
+  case CSYNC_INSTRUCTION_UPDATED:
+  case CSYNC_INSTRUCTION_CONFLICT:
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
+              "SQL statement: INSERT INTO metadata_temp \n"
+              "\t\t\t(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES \n"
+              "\t\t\t(%llu, %lu, %s, %llu, %u, %u, %u, %lu);",
+              (long long unsigned int) fs->phash,
+              (long unsigned int) fs->pathlen,
+              fs->path,
+              (long long unsigned int) fs->inode,
+              fs->uid,
+              fs->gid,
+              fs->mode,
+              fs->modtime);
 
-      /*
+    /*
        * The phash needs to be long long unsigned int or it segfaults on PPC
        */
-      stmt = sqlite3_mprintf("INSERT INTO metadata_temp "
-        "(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES "
-        "(%llu, %lu, '%q', %llu, %u, %u, %u, %lu);",
-        (long long unsigned int) fs->phash,
-        (long unsigned int) fs->pathlen,
-        fs->path,
-        (long long unsigned int) fs->inode,
-        fs->uid,
-        fs->gid,
-        fs->mode,
-        fs->modtime);
+    sqlite3_bind_int64(stmt, 1, (long long signed int) fs->phash);
+    sqlite3_bind_int64(stmt, 2, (long unsigned int) fs->pathlen);
+    sqlite3_bind_text( stmt, 3, fs->path, fs->pathlen, SQLITE_STATIC);
+    sqlite3_bind_int64(stmt, 4, (long long signed int) fs->inode);
+    sqlite3_bind_int(  stmt, 5, fs->uid);
+    sqlite3_bind_int(  stmt, 6, fs->gid);
+    sqlite3_bind_int(  stmt, 7, fs->mode);
+    sqlite3_bind_int64(stmt, 8, fs->modtime);
 
-      if (stmt == NULL) {
-        return -1;
-      }
+    rc = 0;
+    if (sqlite3_step(stmt) != SQLITE_DONE) {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "sqlite insert failed!");
+      rc = -1;
+    }
 
-      rc = csync_statedb_insert(ctx, stmt);
+    sqlite3_reset(stmt);
 
-      sqlite3_free(stmt);
-      break;
-    default:
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN,
-          "file: %s, instruction: %s (%d), not added to statedb!",
-          fs->path, csync_instruction_str(fs->instruction), fs->instruction);
-      rc = 1;
-      break;
+    break;
+  default:
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN,
+              "file: %s, instruction: %s (%d), not added to statedb!",
+              fs->path, csync_instruction_str(fs->instruction), fs->instruction);
+    rc = 1;
+    break;
   }
 
   return rc;
@@ -347,20 +349,35 @@ static int _insert_metadata_visitor(void *obj, void *data) {
 
 int csync_statedb_insert_metadata(CSYNC *ctx) {
   c_strlist_t *result = NULL;
+  char* errorMessage;
+  char buffer[] = "INSERT INTO metadata_temp VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)";
+  sqlite3_stmt* stmt;
+
+  /* start a transaction */
+  sqlite3_exec(ctx->statedb.db, "BEGIN TRANSACTION", NULL, NULL, &errorMessage);
+
+  /* prepare the INSERT statement */
+  if( ! sqlite3_prepare_v2(ctx->statedb.db, buffer, strlen(buffer), &stmt, NULL) == SQLITE_OK ) {
+    return -1;
+  }
+
+  /* and store the insert statement handle to the ctx as userdata. */
+  csync_set_userdata(ctx, stmt);
 
   if (c_rbtree_walk(ctx->local.tree, ctx, _insert_metadata_visitor) < 0) {
     return -1;
   }
 
-  if (csync_statedb_insert(ctx, "INSERT INTO metadata SELECT * FROM metadata_temp;") < 0) {
-    return -1;
-  }
+  sqlite3_exec(ctx->statedb.db, "COMMIT TRANSACTION", NULL, NULL, &errorMessage);
+  sqlite3_finalize(stmt);
 
-  result = csync_statedb_query(ctx, "DROP TABLE metadata_temp;");
-  if (result == NULL) {
-    return -1;
-  }
+  result = csync_statedb_query(ctx, "ALTER TABLE metadata RENAME TO metadata_wait;");
+  c_strlist_destroy(result);
 
+  result = csync_statedb_query(ctx, "ALTER TABLE metadata_temp RENAME TO metadata;");
+  c_strlist_destroy(result);
+
+  result = csync_statedb_query(ctx, "DROP TABLE metadata_wait;");
   c_strlist_destroy(result);
 
   return 0;
