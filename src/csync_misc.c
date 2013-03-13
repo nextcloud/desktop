@@ -155,7 +155,7 @@ int csync_fnmatch(__const char *__pattern, __const char *__name, int __flags) {
 
 #endif /* HAVE_FNMATCH */
 
-CSYNC_STATUS_CODE csync_errno_to_csync_error(CSYNC_STATUS_CODE default_err)
+CSYNC_STATUS_CODE csync_errno_to_csync_status(CSYNC_STATUS_CODE default_err)
 {
 
   /*
@@ -228,7 +228,7 @@ CSYNC_STATUS_CODE csync_errno_to_csync_error(CSYNC_STATUS_CODE default_err)
     csync_err = CSYNC_STATUS_SERVICE_UNAVAILABLE;  /* Service temporarily down */
     break;
   case EFBIG:
-    csync_err = CSYNC_STATUS_FILE_TOO_BIG;          /* File larger than 2MB */
+    csync_err = CSYNC_STATUS_FILE_SIZE_ERROR;          /* File larger than 2MB */
     break;
   case ERRNO_PRECONDITION:
   case ERRNO_RETRY:

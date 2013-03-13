@@ -28,6 +28,6 @@ char *csync_get_local_username(void);
 
 int csync_fnmatch(__const char *__pattern, __const char *__name, int __flags);
 
-CSYNC_STATUS_CODE csync_errno_to_csync_error(CSYNC_STATUS_CODE default_err);
+CSYNC_STATUS_CODE csync_errno_to_csync_status(CSYNC_STATUS_CODE default_err);
 
 #endif /* _CSYNC_MISC_H */
