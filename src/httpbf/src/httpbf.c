@@ -142,6 +142,7 @@ Hbf_State hbf_splitlist(hbf_transfer_t *transfer, int fd ) {
               block->start = cnt * blk_size;
           }
           block->size  = blk_size;
+          block->state = HBF_NOT_TRANSFERED;
 
           /* consider the remainder if we're already at the end */
           if( cnt == num_blocks-1 && remainder > 0 ) {
@@ -185,12 +186,21 @@ char* get_transfer_url( hbf_transfer_t *transfer, int indx ) {
     hbf_block_t *block = NULL;
 
     if( ! transfer ) return NULL;
+    if( indx >= transfer->block_cnt ) return NULL;
+
     block = transfer->block_arr[indx];
     if( ! block ) return NULL;
 
-    if( asprintf(&res, "%s-chunking-%u-%u-%u", transfer->url, transfer->transfer_id,
-            transfer->block_cnt, indx ) < 0 ) {
+    if( transfer->block_cnt == 1 ) {
+      /* Just one chunk. We send as an ordinary request without chunking. */
+      if( asprintf(&res, "%s", transfer->url) < 0 ) {
+          return NULL;
+      }
+    } else {
+      if( asprintf(&res, "%s-chunking-%u-%u-%u", transfer->url, transfer->transfer_id,
+                   transfer->block_cnt, indx ) < 0 ) {
         return NULL;
+      }
     }
     return res;
 }
@@ -211,24 +221,30 @@ static int dav_request( ne_request *req, int fd, hbf_block_t *blk ) {
     switch(res) {
         case NE_OK:
             state = HBF_SUCCESS;
+            blk->state = HBF_TRANSFER_SUCCESS;
             break;
         case NE_AUTH:
             state = HBF_AUTH_FAIL;
+            blk->state = HBF_TRANSFER_FAILED;
             break;
         case NE_PROXYAUTH:
             state = HBF_PROXY_AUTH_FAIL;
-            break;
+            blk->state = HBF_TRANSFER_FAILED;
+        break;
         case NE_CONNECT:
             state = HBF_CONNECT_FAIL;
-            break;
+            blk->state = HBF_TRANSFER_FAILED;
+        break;
         case NE_TIMEOUT:
             state = HBF_TIMEOUT_FAIL;
+            blk->state = HBF_TRANSFER_FAILED;
             break;
         case NE_ERROR:
             state = HBF_FAIL;
+            blk->state = HBF_TRANSFER_FAILED;
             break;
     }
-    blk->state = state;
+
     blk->http_result_code = req_status->code;
     if( req_status->reason_phrase ) {
         blk->http_error_msg = strdup(req_status->reason_phrase);
@@ -240,7 +256,7 @@ static int dav_request( ne_request *req, int fd, hbf_block_t *blk ) {
 Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const char *verb ) {
     Hbf_State state = HBF_SUCCESS;
     int cnt;
-    int goOn = 1;
+    int fail_cnt = 0;
 
     if( ! session ) {
         state = HBF_SESSION_FAIL;
@@ -252,8 +268,10 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
         state = HBF_PARAM_FAIL;
     }
 
-    for( cnt=0; goOn && cnt < transfer->block_cnt; cnt++ ) {
+    for( cnt=0; state == HBF_SUCCESS && cnt < transfer->block_cnt; cnt++ ) {
         hbf_block_t *block = transfer->block_arr[cnt];
+        Hbf_State block_state = HBF_SUCCESS;
+
         char *transfer_url = NULL;
 
         if( ! block ) state = HBF_PARAM_FAIL;
@@ -268,30 +286,40 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
             ne_request *req = ne_request_create(session, "PUT", transfer_url);
 
             if( req ) {
-                ne_add_request_header(req, "OC_CHUNKED", "1");
-                state = dav_request( req, transfer->fd, transfer->block_arr[cnt] );
+                if( transfer->block_cnt > 1 )
+                  ne_add_request_header(req, "OC_CHUNKED", "1");
+                block_state = dav_request( req, transfer->fd, transfer->block_arr[cnt] );
 
-                if( state != HBF_SUCCESS ) {
+                if( block_state != HBF_SUCCESS ) {
+                  if( transfer->error_string ) free( transfer->error_string );
                     transfer->error_string = strdup( ne_get_error(session) );
+
                     /* Set the code of the last transmission. */
                     transfer->status_code = transfer->block_arr[cnt]->http_result_code;
-                    goOn = 0;
+                    state = HBF_FAIL;
+                    fail_cnt++;
 
-                    if( state == HBF_FAIL ) {
+                    if( block_state == HBF_FAIL ) {
                         /* not every problem here is a critical one. Try other parts */
                         if( transfer->status_code == 405 ) {
                             /* continue to upload... */
-                            goOn = 1;
+                            state = HBF_SUCCESS;
                         }
                     }
                 }
                 ne_request_destroy(req);
             } else {
                 state = HBF_MEMORY_FAIL;
-                goOn = 0;
             }
             free( transfer_url );
         }
+    }
+    if( state == HBF_SUCCESS && fail_cnt > 0 ) {
+      state = HBF_FAIL;        /* All failed! */
+      if( fail_cnt < transfer->block_cnt ) {
+        /* Not all failed actually. */
+        state = HBF_PARTIAL_TRANSFER_SUCCESS;
+      }
     }
     return state;
 }
