@@ -208,7 +208,7 @@ char* get_transfer_url( hbf_transfer_t *transfer, int indx ) {
 }
 
 static int dav_request( ne_request *req, int fd, hbf_block_t *blk ) {
-    Hbf_State state = HBF_TRANSFER_SUCCESS;
+    Hbf_State state = HBF_SUCCESS;
     int res;
     const ne_status *req_status = NULL;
     const char *etag = NULL;
@@ -220,6 +220,7 @@ static int dav_request( ne_request *req, int fd, hbf_block_t *blk ) {
     res = ne_request_dispatch(req);
 
     req_status = ne_get_status( req );
+
 
     switch(res) {
         case NE_OK:
@@ -260,9 +261,8 @@ static int dav_request( ne_request *req, int fd, hbf_block_t *blk ) {
 }
 
 Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const char *verb ) {
-    Hbf_State state = HBF_TRANSFER_SUCCESS;
+    Hbf_State state = HBF_SUCCESS;
     int cnt;
-    int fail_cnt = 0;
 
     if( ! session ) {
         state = HBF_SESSION_FAIL;
