@@ -243,7 +243,6 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
       if (asprintf(&turi, "%s.~XXXXXX", duri) < 0) {
 #else
       /* split up the path */
-      int re = 0;
       if(duri) {
           char *path = c_dirname(duri);
           char *base = c_basename(duri);
