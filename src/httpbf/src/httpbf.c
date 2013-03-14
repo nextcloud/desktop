@@ -40,7 +40,7 @@
 #define DEBUG_HBF(...) printf(__VA_ARGS__)
 #endif
 
-#define DEFAULT_BLOG_SIZE (1024*1024)
+#define DEFAULT_BLOG_SIZE (10*1024*1024)
 
 static int get_transfer_block_size() {
   return DEFAULT_BLOG_SIZE;
