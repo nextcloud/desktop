@@ -1,7 +1,7 @@
 # define system dependent compiler flags
 
 include(CheckCCompilerFlag)
-include(MacroCheckCCompilerFlagSSP)
+include(CheckCCompilerFlagSSP)
 
 if (UNIX AND NOT WIN32)
     #
@@ -26,10 +26,15 @@ if (UNIX AND NOT WIN32)
             set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fstack-protector")
         endif (WITH_STACK_PROTECTOR)
 
-        check_c_compiler_flag("-D_FORTIFY_SOURCE=2" WITH_FORTIFY_SOURCE)
-        if (WITH_FORTIFY_SOURCE)
-            set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_FORTIFY_SOURCE=2")
-        endif (WITH_FORTIFY_SOURCE)
+        if (CMAKE_BUILD_TYPE)
+            string(TOLOWER "${CMAKE_BUILD_TYPE}" CMAKE_BUILD_TYPE_LOWER)
+            if (NOT CMAKE_BUILD_TYPE_LOWER MATCHES debug)
+                check_c_compiler_flag("-D_FORTIFY_SOURCE=2" WITH_FORTIFY_SOURCE)
+                if (WITH_FORTIFY_SOURCE)
+                    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_FORTIFY_SOURCE=2")
+                endif (WITH_FORTIFY_SOURCE)
+            endif()
+        endif()
     endif (${CMAKE_C_COMPILER_ID} MATCHES "(GNU|Clang)")
 
     #
@@ -62,3 +67,11 @@ if (UNIX AND NOT WIN32)
     endif (_lfs_CFLAGS)
 
 endif (UNIX AND NOT WIN32)
+
+if (MSVC)
+    # Use secure functions by defaualt and suppress warnings about
+    #"deprecated" functions
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /D _CRT_NONSTDC_NO_WARNINGS=1 /D _CRT_SECURE_NO_WARNINGS=1")
+endif (MSVC)
