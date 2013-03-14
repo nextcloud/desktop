@@ -14,10 +14,16 @@
 #define CSYNC_TEST_DIRS "/tmp/csync/this/is/a/mkdirs/test"
 #define CSYNC_TEST_FILE "/tmp/csync/file.txt"
 
+#define WD_BUFFER_SIZE 255
+
+static char wd_buffer[WD_BUFFER_SIZE];
+
 static void setup(void **state)
 {
     CSYNC *csync;
     int rc;
+
+    assert_non_null(getcwd(wd_buffer, WD_BUFFER_SIZE));
 
     rc = system("rm -rf /tmp/csync/");
     assert_int_equal(rc, 0);
@@ -37,6 +43,11 @@ static void setup_dir(void **state) {
 
     rc = mkdir(CSYNC_TEST_DIR, 0755);
     assert_int_equal(rc, 0);
+
+    assert_non_null(getcwd(wd_buffer, WD_BUFFER_SIZE));
+
+    rc = chdir(CSYNC_TEST_DIR);
+    assert_int_equal(rc, 0);
 }
 
 static void setup_file(void **state) {
@@ -53,6 +64,9 @@ static void teardown(void **state) {
     int rc;
 
     rc = csync_destroy(csync);
+    assert_int_equal(rc, 0);
+
+    rc = chdir(wd_buffer);
     assert_int_equal(rc, 0);
 
     rc = system("rm -rf /tmp/csync/");
@@ -109,8 +123,6 @@ static void check_csync_vio_mkdir(void **state)
 
     rc = lstat(CSYNC_TEST_DIR, &sb);
     assert_int_equal(rc, 0);
-
-    rmdir(CSYNC_TEST_DIR);
 }
 
 static void check_csync_vio_mkdirs(void **state)
@@ -124,8 +136,6 @@ static void check_csync_vio_mkdirs(void **state)
 
     rc = lstat(CSYNC_TEST_DIRS, &sb);
     assert_int_equal(rc, 0);
-
-    rmdir(CSYNC_TEST_DIR);
 }
 
 static void check_csync_vio_mkdirs_some_exist(void **state)
@@ -141,8 +151,6 @@ static void check_csync_vio_mkdirs_some_exist(void **state)
 
     rc = lstat(CSYNC_TEST_DIRS, &sb);
     assert_int_equal(rc, 0);
-
-    rmdir(CSYNC_TEST_DIR);
 }
 
 static void check_csync_vio_rmdir(void **state)
