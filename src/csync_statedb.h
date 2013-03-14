@@ -110,6 +110,22 @@ int csync_statedb_drop_tables(CSYNC *ctx);
 
 int csync_statedb_insert_metadata(CSYNC *ctx);
 
+typedef struct csync_progressinfo_s {
+  struct csync_progressinfo_s *next;
+  uint64_t phash;
+  uint64_t modtime;
+  char *md5;
+  int error;
+  int chunk;
+  int transferId;
+  char *tmpfile;
+} csync_progressinfo_t;
+
+csync_progressinfo_t *csync_statedb_get_progressinfo(CSYNC *ctx, uint64_t phash, uint64_t modtime, const char *md5);
+void csync_statedb_free_progressinfo(csync_progressinfo_t *pi);
+int csync_statedb_write_progressinfo(CSYNC *ctx, csync_progressinfo_t *pi);
+
+
 /**
  * }@
  */

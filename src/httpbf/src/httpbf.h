@@ -72,6 +72,7 @@ struct hbf_transfer_s {
     int fd;
     int transfer_id;
     char *url;
+    int start_id;
 
     int status_code;
     char *error_string;
