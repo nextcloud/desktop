@@ -25,7 +25,7 @@ QStringList FileUtils::subFoldersList(QString folder,
                                       SubFolderListOptions options)
 {
     QDir dir(folder);
-    dir.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
+    dir.setFilter(QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
 
     QFileInfoList list = dir.entryInfoList();
     QStringList dirList;
