@@ -97,6 +97,12 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     goto out;
   }
 
+  /* Ignore non statable files and other strange cases. */
+  if (type == CSYNC_FTW_TYPE_IGNORE) {
+    st->instruction = CSYNC_INSTRUCTION_NONE;
+    goto out;
+  }
+
   /* Update detection: Check if a database entry exists.
    * If not, the file is either new or has been renamed. To see if it is
    * renamed, the db gets queried by the inode of the file as that one
@@ -195,36 +201,34 @@ out:
 
 int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
     enum csync_ftw_flags_e flag) {
+  int rc = -1;
+  int type = CSYNC_FTW_TYPE_IGNORE;
+
   switch (flag) {
     case CSYNC_FTW_FLAG_FILE:
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s", file);
-
-      return _csync_detect_update(ctx, file, fs, CSYNC_FTW_TYPE_FILE);
+      type = CSYNC_FTW_TYPE_FILE;
       break;
-    case CSYNC_FTW_FLAG_SLINK:
-      /* FIXME: implement support for symlinks, see csync_propagate.c too */
-#if 0
-      if (ctx->options.sync_symbolic_links) {
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "symlink: %s", file);
-
-        return _csync_detect_update(ctx, file, fs, CSYNC_FTW_TYPE_SLINK);
-      }
-#endif
+  case CSYNC_FTW_FLAG_DIR: /* enter directory */
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "directory: %s", file);
+      type = CSYNC_FTW_TYPE_DIR;
       break;
-    case CSYNC_FTW_FLAG_DIR: /* enter directory */
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "directory: %s", file);
-
-      return _csync_detect_update(ctx, file, fs, CSYNC_FTW_TYPE_DIR);
-    case CSYNC_FTW_FLAG_NSTAT: /* not statable file */
-    case CSYNC_FTW_FLAG_DNR:
-    case CSYNC_FTW_FLAG_DP:
-    case CSYNC_FTW_FLAG_SLN:
-      break;
-    default:
-      break;
+  case CSYNC_FTW_FLAG_SLINK:
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "symlink: %s - not supported", file);
+    type = CSYNC_FTW_TYPE_IGNORE;
+    break;
+  case CSYNC_FTW_FLAG_NSTAT: /* not statable file */
+  case CSYNC_FTW_FLAG_DNR:
+  case CSYNC_FTW_FLAG_DP:
+  case CSYNC_FTW_FLAG_SLN:
+  default:
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s non statable!", file);
+    type = CSYNC_FTW_TYPE_IGNORE;
   }
 
-  return 0;
+  rc = _csync_detect_update(ctx, file, fs, type );
+
+  return rc;
 }
 
 /* check if the dirent entries for the directory can be read from db
