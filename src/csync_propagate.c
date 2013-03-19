@@ -335,13 +335,13 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
         rc = 1;
         break;
       }
+      strerror_r(errno, errbuf, sizeof(errbuf));
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+                "file: %s, command: rename, error: %s",
+                duri,
+                errbuf);
+      goto out;
     }
-    strerror_r(errno, errbuf, sizeof(errbuf));
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
-              "file: %s, command: rename, error: %s",
-              duri,
-              errbuf);
-    goto out;
   }
 
   /* set mode only if it is not the default mode */
