@@ -401,8 +401,18 @@ static int _utimes(const char *uri, const struct timeval *times) {
   return smbc_utimes(uri, (struct timeval *) times);
 }
 
+static struct csync_vio_capabilities_s _smb_capabilities = {
+    .atomar_copy_support = false
+};
+
+static struct csync_vio_capabilities_s *_smb_get_capabilities(void)
+{
+    return &_smb_capabilities;
+}
+
 csync_vio_method_t _method = {
   .method_table_size = sizeof(csync_vio_method_t),
+  .get_capabilities = _smb_get_capabilities,
   .open = _open,
   .creat = _creat,
   .close = _close,
