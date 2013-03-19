@@ -359,8 +359,7 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   HANDLE h = CreateFileW( wuri, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
 			  FILE_ATTRIBUTE_NORMAL+FILE_FLAG_BACKUP_SEMANTICS, NULL );
   if( h == INVALID_HANDLE_VALUE ) {
-     DWORD err = GetLastError();
-     /* CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "ERR: Failed to create a handle for %s: %ld", uri,err ); */
+     errno = GetLastError();
      csync_vio_file_stat_destroy(buf);
      c_free_multibyte(wuri);
      return -1;

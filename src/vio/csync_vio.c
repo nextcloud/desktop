@@ -552,8 +552,13 @@ int csync_vio_stat(CSYNC *ctx, const char *uri, csync_vio_file_stat_t *buf) {
       break;
     case LOCAL_REPLICA:
       rc = csync_vio_local_stat(uri, buf);
+      if (rc < 0) {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Local stat failed, errno %d", errno);
+      }
 #ifdef _WIN32
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Win32: STAT-inode for %s: %llu", uri, buf->inode );
+      else {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Win32: STAT-inode for %s: %llu", uri, buf->inode );
+      }
 #endif
       break;
     default:
