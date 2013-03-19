@@ -48,7 +48,7 @@
 #ifdef _WIN32
 char *csync_get_user_home_dir(void) {
     wchar_t tmp[MAX_PATH];
-    const char *szPath = NULL;
+    char *szPath = NULL;
 
     if( SHGetFolderPathW( NULL,
                           CSIDL_PROFILE|CSIDL_FLAG_CREATE,
