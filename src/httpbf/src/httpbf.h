@@ -25,9 +25,6 @@
 
 #include <neon/ne_session.h>
 
-/* FIXME define */
-#define NDEBUG
-
 enum hbf_state_e {
     HBF_SUCCESS,
     HBF_NOT_TRANSFERED,           /* never tried to transfer     */
