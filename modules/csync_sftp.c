@@ -952,8 +952,18 @@ static int _sftp_utimes(const char *uri, const struct timeval *times) {
   return rc;
 }
 
+static struct csync_vio_capabilities_s _sftp_capabilities = {
+    .atomar_copy_support = false
+};
+
+static struct csync_vio_capabilities_s *_sftp_get_capabilities(void)
+{
+    return &_sftp_capabilities;
+}
+
 csync_vio_method_t _method = {
   .method_table_size = sizeof(csync_vio_method_t),
+  .get_capabilities = _sftp_get_capabilities,
   .open = _sftp_open,
   .creat = _sftp_creat,
   .close = _sftp_close,
