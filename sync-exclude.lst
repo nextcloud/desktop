@@ -31,3 +31,6 @@ Thumbs.db
 .htaccess
 
 Icon\r*
+
+~$*
+.~lock.*
