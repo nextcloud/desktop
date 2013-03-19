@@ -42,6 +42,40 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.updater"
 #include "csync_log.h"
 
+/* calculate the hash of a given uri */
+static uint64_t _hash_of_file(CSYNC *ctx, const char *file) {
+  const char *path;
+  int len;
+  uint64_t h = 0;
+
+  if( ctx && file ) {
+    path = file;
+    switch (ctx->current) {
+    case LOCAL_REPLICA:
+      if (strlen(path) <= strlen(ctx->local.uri)) {
+        return 0;
+      }
+      path += strlen(ctx->local.uri) + 1;
+      break;
+    case REMOTE_REPLICA:
+      if (strlen(path) <= strlen(ctx->remote.uri)) {
+        return 0;
+      }
+      path += strlen(ctx->remote.uri) + 1;
+      break;
+    default:
+      path = NULL;
+      return 0;
+      break;
+    }
+    len = strlen(path);
+
+    h = c_jhash64((uint8_t *) path, len, 0);
+  }
+  return h;
+}
+
+
 static int _csync_detect_update(CSYNC *ctx, const char *file,
     const csync_vio_file_stat_t *fs, const int type) {
   uint64_t h = 0;
@@ -56,29 +90,10 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     return -1;
   }
 
-  path = file;
-  switch (ctx->current) {
-    case LOCAL_REPLICA:
-      if (strlen(path) <= strlen(ctx->local.uri)) {
-        return -1;
-      }
-      path += strlen(ctx->local.uri) + 1;
-      break;
-    case REMOTE_REPLICA:
-      if (strlen(path) <= strlen(ctx->remote.uri)) {
-        return -1;
-      }
-      path += strlen(ctx->remote.uri) + 1;
-      break;
-    default:
-      path = NULL;
-      return -1;
-      break;
-  }
-  len = strlen(path);
+  h = _hash_of_file(ctx, file );
+  // FIXME: What if h == 0?
 
-  h = c_jhash64((uint8_t *) path, len, 0);
-  size = sizeof(csync_file_stat_t) + len + 1;
+  size = sizeof(csync_file_stat_t) + strlen(file) + 1;
 
   st = c_malloc(size);
   if (st == NULL) {
@@ -98,7 +113,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   }
 
   /* Ignore non statable files and other strange cases. */
-  if (type == CSYNC_FTW_TYPE_IGNORE) {
+  if (type == CSYNC_FTW_TYPE_SKIP) {
     st->instruction = CSYNC_INSTRUCTION_NONE;
     goto out;
   }
@@ -202,7 +217,9 @@ out:
 int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
     enum csync_ftw_flags_e flag) {
   int rc = -1;
-  int type = CSYNC_FTW_TYPE_IGNORE;
+  int type = CSYNC_FTW_TYPE_SKIP;
+  csync_file_stat_t *st = NULL;
+  uint64_t h;
 
   switch (flag) {
     case CSYNC_FTW_FLAG_FILE:
@@ -213,17 +230,31 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "directory: %s", file);
       type = CSYNC_FTW_TYPE_DIR;
       break;
+  case CSYNC_FTW_FLAG_NSTAT: /* not statable file */
+    /* if file was here before and now is not longer stat-able, still
+     * add it to the db, otherwise not. */
+    h = _hash_of_file( ctx, file );
+    if( h == 0 ) {
+      return 0;
+    }
+    st = csync_statedb_get_stat_by_hash(ctx, h);
+    if( !st ) {
+      return 0;
+    }
+    SAFE_FREE(st->md5);
+    SAFE_FREE(st->destpath);
+    SAFE_FREE(st);
+
+    type = CSYNC_FTW_TYPE_SKIP;
+    break;
   case CSYNC_FTW_FLAG_SLINK:
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "symlink: %s - not supported", file);
-    type = CSYNC_FTW_TYPE_IGNORE;
-    break;
-  case CSYNC_FTW_FLAG_NSTAT: /* not statable file */
   case CSYNC_FTW_FLAG_DNR:
   case CSYNC_FTW_FLAG_DP:
   case CSYNC_FTW_FLAG_SLN:
   default:
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s non statable!", file);
-    type = CSYNC_FTW_TYPE_IGNORE;
+    return 0;
+    break;
   }
 
   rc = _csync_detect_update(ctx, file, fs, type );

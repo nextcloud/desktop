@@ -431,6 +431,7 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
 
   c_free_multibyte(wuri);
+
   return 0;
 }
 
