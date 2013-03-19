@@ -90,6 +90,27 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     return -1;
   }
 
+  path = file;
+  len = strlen(path);
+  switch (ctx->current) {
+  case LOCAL_REPLICA:
+    if (strlen(path) <= strlen(ctx->local.uri)) {
+      return -1;
+    }
+    path += strlen(ctx->local.uri) + 1;
+    break;
+  case REMOTE_REPLICA:
+    if (strlen(path) <= strlen(ctx->remote.uri)) {
+      return -1;
+    }
+    path += strlen(ctx->remote.uri) + 1;
+    break;
+  default:
+    path = NULL;
+    return -1;
+    break;
+  }
+
   h = _hash_of_file(ctx, file );
   // FIXME: What if h == 0?
 
