@@ -112,7 +112,9 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   }
 
   h = _hash_of_file(ctx, file );
-  // FIXME: What if h == 0?
+  if( h == 0 ) {
+    return -1;
+  }
 
   size = sizeof(csync_file_stat_t) + strlen(file) + 1;
 
@@ -128,15 +130,27 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   st->md5 = NULL;
 
   /* check hardlink count */
-  if (type == CSYNC_FTW_TYPE_FILE && fs->nlink > 1) {
-    st->instruction = CSYNC_INSTRUCTION_IGNORE;
-    goto out;
-  }
+  if (type == CSYNC_FTW_TYPE_FILE ) {
+    if( fs->nlink > 1) {
+      st->instruction = CSYNC_INSTRUCTION_IGNORE;
+      goto out;
+    }
 
-  /* Ignore non statable files and other strange cases. */
-  if (type == CSYNC_FTW_TYPE_SKIP) {
-    st->instruction = CSYNC_INSTRUCTION_NONE;
-    goto out;
+    if (fs->mtime == 0) {
+      tmp = csync_statedb_get_stat_by_hash(ctx, h);
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - mtime is zero!", path);
+      if (tmp == NULL) {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - not found in db, IGNORE!", path);
+        st->instruction = CSYNC_INSTRUCTION_IGNORE;
+      } else {
+        SAFE_FREE(st);
+        st = tmp;
+        st->instruction = CSYNC_INSTRUCTION_NONE;
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - tmp non zero, mtime %llu", path, st->modtime );
+        tmp = NULL;
+      }
+      goto fastout;
+    }
   }
 
   /* Update detection: Check if a database entry exists.
@@ -188,7 +202,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             }
         }
         /* directory, remote and file not found in statedb */
-            st->instruction = CSYNC_INSTRUCTION_NEW;
+        st->instruction = CSYNC_INSTRUCTION_NEW;
     }
   } else  {
       st->instruction = CSYNC_INSTRUCTION_NEW;
@@ -198,14 +212,14 @@ out:
   if( tmp) SAFE_FREE(tmp->md5);
   SAFE_FREE(tmp);
   st->inode = fs->inode;
-  st->mode = fs->mode;
-  st->size = fs->size;
+  st->mode  = fs->mode;
+  st->size  = fs->size;
   st->modtime = fs->mtime;
-  st->uid = fs->uid;
-  st->gid = fs->gid;
+  st->uid   = fs->uid;
+  st->gid   = fs->gid;
   st->nlink = fs->nlink;
-  st->type = type;
-  st->md5 = NULL;
+  st->type  = type;
+  st->md5   = NULL;
   if( fs->md5 ) {
       st->md5  = c_strdup(fs->md5);
   }
@@ -213,6 +227,7 @@ out:
   st->pathlen = len;
   memcpy(st->path, (len ? path : ""), len + 1);
 
+fastout:  /* target if the file information is read from database into st */
   switch (ctx->current) {
     case LOCAL_REPLICA:
       if (c_rbtree_insert(ctx->local.tree, (void *) st) < 0) {
@@ -239,34 +254,21 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
     enum csync_ftw_flags_e flag) {
   int rc = -1;
   int type = CSYNC_FTW_TYPE_SKIP;
-  csync_file_stat_t *st = NULL;
-  uint64_t h;
 
   switch (flag) {
-    case CSYNC_FTW_FLAG_FILE:
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s", file);
-      type = CSYNC_FTW_TYPE_FILE;
-      break;
+  case CSYNC_FTW_FLAG_FILE:
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s", file);
+    type = CSYNC_FTW_TYPE_FILE;
+    break;
   case CSYNC_FTW_FLAG_DIR: /* enter directory */
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "directory: %s", file);
-      type = CSYNC_FTW_TYPE_DIR;
-      break;
+    type = CSYNC_FTW_TYPE_DIR;
+    break;
   case CSYNC_FTW_FLAG_NSTAT: /* not statable file */
     /* if file was here before and now is not longer stat-able, still
      * add it to the db, otherwise not. */
-    h = _hash_of_file( ctx, file );
-    if( h == 0 ) {
-      return 0;
-    }
-    st = csync_statedb_get_stat_by_hash(ctx, h);
-    if( !st ) {
-      return 0;
-    }
-    SAFE_FREE(st->md5);
-    SAFE_FREE(st->destpath);
-    SAFE_FREE(st);
-
-    type = CSYNC_FTW_TYPE_SKIP;
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "non statable file: %s", file);
+    type = CSYNC_FTW_TYPE_FILE;
     break;
   case CSYNC_FTW_FLAG_SLINK:
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "symlink: %s - not supported", file);
@@ -466,7 +468,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       flag = CSYNC_FTW_FLAG_NSTAT;
     }
 
-    if( ctx->current == LOCAL_REPLICA ) {
+    if( flag != CSYNC_FTW_FLAG_NSTAT && ctx->current == LOCAL_REPLICA ) {
         char *md5 = NULL;
         int len = strlen( path );
         uint64_t h = c_jhash64((uint8_t *) path, len, 0);
