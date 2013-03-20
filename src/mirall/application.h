@@ -16,7 +16,6 @@
 #define APPLICATION_H
 
 #include <QApplication>
-#include <QSystemTrayIcon>
 #include <QNetworkReply>
 #include <QSslError>
 
@@ -27,6 +26,7 @@
 #include "mirall/logbrowser.h"
 #include "mirall/folderman.h"
 #include "mirall/fileitemdialog.h"
+#include "mirall/systray.h"
 
 class QAction;
 class QMenu;
@@ -104,7 +104,7 @@ private:
     void raiseDialog( QWidget* );
 
     // configuration file -> folder
-    QSystemTrayIcon *_tray;
+    Systray *_tray;
     QAction *_actionQuit;
     QAction *_actionAddFolder;
     QAction *_actionOpenStatus;

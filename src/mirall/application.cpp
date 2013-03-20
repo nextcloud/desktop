@@ -15,6 +15,7 @@
 #include <iostream>
 
 #include "mirall/application.h"
+#include "mirall/systray.h"
 #include "mirall/folder.h"
 #include "mirall/folderwatcher.h"
 #include "mirall/folderwizard.h"
@@ -444,7 +445,7 @@ void Application::setupSystemTray()
 {
     // Setting a parent heres will crash on X11 since by the time qapp runs
     // its childrens dtors, the X11->screen variable queried for is gone -> crash
-    _tray = new QSystemTrayIcon;
+    _tray = new Systray();
     _tray->setIcon( _theme->syncStateIcon( SyncResult::NotYetStarted, true ) );
 
     connect(_tray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
