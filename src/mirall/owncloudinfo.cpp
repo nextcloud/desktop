@@ -65,9 +65,7 @@ void ownCloudInfo::setNetworkAccessManager( QNetworkAccessManager* qnam )
     _manager = qnam;
 
     MirallConfigFile cfg( _configHandle );
-    QSettings settings( cfg.configFile(), QSettings::IniFormat);
-    QByteArray certs = settings.value(QLatin1String("CaCertificates")).toByteArray();
-    QSslSocket::addDefaultCaCertificates(QSslCertificate::fromData(certs));
+    QSslSocket::addDefaultCaCertificates(QSslCertificate::fromData(cfg.caCerts()));
 
     connect( _manager, SIGNAL( sslErrors(QNetworkReply*, QList<QSslError>)),
              this, SIGNAL(sslFailed(QNetworkReply*, QList<QSslError>)) );

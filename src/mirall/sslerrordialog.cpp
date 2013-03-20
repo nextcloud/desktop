@@ -14,14 +14,13 @@
 #include "mirall/mirallconfigfile.h"
 #include "mirall/utility.h"
 #include "mirall/sslerrordialog.h"
+#include "mirall/owncloudinfo.h"
 
 #include <QtGui>
 #include <QtNetwork>
 
 namespace Mirall
 {
-#define CA_CERTS_KEY QLatin1String("CaCertificates")
-
 SslErrorDialog::SslErrorDialog(QWidget *parent) :
     QDialog(parent), _allTrusted(false)
 {
@@ -42,14 +41,6 @@ SslErrorDialog::SslErrorDialog(QWidget *parent) :
     }
 }
 
-QList<QSslCertificate> SslErrorDialog::storedCACerts()
-{
-    MirallConfigFile cfg( _customConfigHandle );
-
-    QList<QSslCertificate> cacerts = QSslCertificate::fromData(cfg.caCerts());
-
-    return cacerts;
-}
 
 QString SslErrorDialog::styleSheet() const
 {
@@ -68,12 +59,13 @@ QString SslErrorDialog::styleSheet() const
 
 bool SslErrorDialog::setErrorList( QList<QSslError> errors )
 {
-    QList<QSslCertificate> ourCerts = storedCACerts();
+    QList<QSslCertificate> ourCerts = ownCloudInfo::instance()->certificateChain();
 
     // check if unknown certs caused errors.
     _unknownCerts.clear();
 
     QStringList errorStrings;
+
     for (int i = 0; i < errors.count(); ++i) {
         if (ourCerts.contains(errors.at(i).certificate()) ||
                 _unknownCerts.contains(errors.at(i).certificate() ))
@@ -191,9 +183,7 @@ void SslErrorDialog::accept()
         QSslSocket::addDefaultCaCertificates(_unknownCerts);
 
         MirallConfigFile cfg( _customConfigHandle );
-
         QByteArray certs = cfg.caCerts();
-
         qDebug() << "Saving " << _unknownCerts.count() << " unknown certs.";
         foreach( const QSslCertificate& cert, _unknownCerts ) {
             certs += cert.toPem() + '\n';
