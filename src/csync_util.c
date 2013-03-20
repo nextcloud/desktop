@@ -139,10 +139,10 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
   /* check if the file is new or has been synced */
   node = c_rbtree_find(tree, &fs->phash);
   if (node == NULL) {
-    csync_file_stat_t *new = NULL;
+    csync_file_stat_t *new_stat = NULL;
 
-    new = c_malloc(sizeof(csync_file_stat_t) + fs->pathlen + 1);
-    if (new == NULL) {
+    new_stat = c_malloc(sizeof(csync_file_stat_t) + fs->pathlen + 1);
+    if (new_stat == NULL) {
       strerror_r(errno, errbuf, sizeof(errbuf));
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
           "file: %s, merge malloc, error: %s",
@@ -151,15 +151,15 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
       rc = -1;
       goto out;
     }
-    new = memcpy(new, fs, sizeof(csync_file_stat_t) + fs->pathlen + 1);
+    new_stat = memcpy(new_stat, fs, sizeof(csync_file_stat_t) + fs->pathlen + 1);
     if (fs->md5)
-        new->md5 = c_strdup(fs->md5);
+        new_stat->md5 = c_strdup(fs->md5);
     if (fs->destpath)
-        new->destpath = c_strdup(fs->destpath);
+        new_stat->destpath = c_strdup(fs->destpath);
 
-    if (c_rbtree_insert(tree, new) < 0) {
+    if (c_rbtree_insert(tree, new_stat) < 0) {
       strerror_r(errno, errbuf, sizeof(errbuf));
-      SAFE_FREE(new);
+      SAFE_FREE(new_stat);
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
           "file: %s, rb tree insert, error: %s",
           fs->path,
