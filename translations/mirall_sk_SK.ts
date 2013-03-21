@@ -1108,7 +1108,7 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="76"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="77"/>
         <source>%1 Connection Wizard</source>
         <translation>%1 Asistent pripojenia</translation>
     </message>
@@ -1125,27 +1125,27 @@ Please write a bug report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="142"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="143"/>
         <source>Trying to connect to %1 at %2...</source>
         <translation>Pokúšam sa o pripojenie k %1 na %2...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="198"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="199"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;Úspešne pripojené k %1: %2 verzie %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="210"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="211"/>
         <source>&lt;font color=&quot;red&quot;&gt;Failed to connect to %1!&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;red&quot;&gt;Pripojenie k %1 zlyhalo!&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="212"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="213"/>
         <source>Error: &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Chyba: &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="297"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="298"/>
         <source>Starting script owncloud-admin...</source>
         <translation>Štartovanie skriptu owncloud-admin...</translation>
     </message>
@@ -1158,59 +1158,59 @@ Please write a bug report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="348"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="349"/>
         <source>&lt;font color=&quot;red&quot;&gt;Installation of %1 failed!&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;red&quot;&gt;Inštalácia %1 zlyhala!&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="353"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="354"/>
         <source>&lt;font color=&quot;green&quot;&gt;Installation of %1 succeeded!&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;Inštalácia %1 úspešná!&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="400"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="401"/>
         <source>The owncloud admin script can not be found.
 Setup can not be done.</source>
         <translation>Skript potrebný na administráciu nebol nájdený.
 Inštalácia nemôže pokračovať.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="451"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="453"/>
         <source>Creation of remote folder %1 could not be started.</source>
         <translation>Proces vytvárania vzdialeného priečinka %1 nebolo možné iniciovať.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="472"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="474"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Vzdialený priečinok %1 úspešne vytvorený.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="474"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="476"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>Vzdialený priečinok %1 už existuje. Prebieha jeho pripájanie pre synchronizáciu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="476"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="478"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Vytváranie priečinka skončilo z HTTP chybovým kódom %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="500"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="502"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>Synchronizačné spojenie z %1 do vzidaleného priečinka %2 bolo práve nastavené.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="505"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="507"/>
         <source>Successfully connected to %1!</source>
         <translation>Úspešne pripojené s %1!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="511"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="513"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Pripojenie k %1 nemohlo byť iniciované. Prosím skontrolujte znova.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="508"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="510"/>
         <source>Press Finish to permanently accept this connection.</source>
         <translation>Stlačte Dokončiť pre trvalé schválenie daného spojenia.</translation>
     </message>
@@ -1223,12 +1223,12 @@ Inštalácia nemôže pokračovať.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="420"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="421"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Lokálny synchronizačný priečinok %1 už existuje, prebieha jeho nastavovanie pre synchronizáciu.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="422"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="423"/>
         <source>Creating local sync folder %1... </source>
         <translation>Vytváranie lokálneho synch. priečinka %1 ...</translation>
     </message>
@@ -1237,12 +1237,12 @@ Inštalácia nemôže pokračovať.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="425"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="427"/>
         <source>ok</source>
         <translation>v poriadku</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="427"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="429"/>
         <source>failed.</source>
         <translation>neúspešné.</translation>
     </message>
@@ -1255,7 +1255,7 @@ Inštalácia nemôže pokračovať.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="113"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="114"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Lokálny synchronizačný priečinok %1 bol úspešne vytvorený!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -1264,12 +1264,12 @@ Inštalácia nemôže pokračovať.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="478"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="480"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Vytvorenie vzdialeného priečinka pravdepodobne zlyhalo kvôli nesprávnym prihlasovacím údajom.&lt;/font&gt;&lt;br/&gt;Prosím choďte späť a skontrolujte ich.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="484"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="486"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Vytvorenie vzdialeného priečinka %1 zlyhalo s chybou &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>

@@ -1108,7 +1108,7 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="76"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="77"/>
         <source>%1 Connection Wizard</source>
         <translation>%1 Connection Wizard</translation>
     </message>
@@ -1125,27 +1125,27 @@ Please write a bug report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="142"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="143"/>
         <source>Trying to connect to %1 at %2...</source>
         <translation>thử kết nối tới %1 tại %2...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="198"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="199"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;Kết nối thành công đến %1: %2 phiên bản %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="210"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="211"/>
         <source>&lt;font color=&quot;red&quot;&gt;Failed to connect to %1!&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;red&quot;&gt;Kết nối thất bại đến %1!&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="212"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="213"/>
         <source>Error: &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Lỗi : &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="297"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="298"/>
         <source>Starting script owncloud-admin...</source>
         <translation>Bắt đầu script owncloud-admin...</translation>
     </message>
@@ -1158,58 +1158,58 @@ Please write a bug report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="348"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="349"/>
         <source>&lt;font color=&quot;red&quot;&gt;Installation of %1 failed!&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;red&quot;&gt;Cài đặt của %1 đã thất bại!&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="353"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="354"/>
         <source>&lt;font color=&quot;green&quot;&gt;Installation of %1 succeeded!&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;Cài đặt của %1 đã thành công!&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="400"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="401"/>
         <source>The owncloud admin script can not be found.
 Setup can not be done.</source>
         <translation>script owncloud-admin không được tìm thấy.⏎ Hệ thống không thể thực hiện.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="451"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="453"/>
         <source>Creation of remote folder %1 could not be started.</source>
         <translation>Khởi tạo thư mục từ xa %1 không thể thực hiện.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="472"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="474"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Thư mục từ xa %1 đã được tạo thành công.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="474"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="476"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>Thư mục từ xa %1 đã tồn tại. Kết nối nó để đồng bộ dữ liệu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="476"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="478"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Việc tạo thư mục đã dẫn đến mã lỗi HTTP %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="500"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="502"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>Một kết nối đồng bộ từ %1 đến thư mục từ xa %2 được thiết lập.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="505"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="507"/>
         <source>Successfully connected to %1!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="511"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="513"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Kết nối đến %1 không thể thiết lập. Vui lòng kiểm tra lại.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="508"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="510"/>
         <source>Press Finish to permanently accept this connection.</source>
         <translation>Nhấn hoàn thành để chấp nhận kết nối này.</translation>
     </message>
@@ -1222,12 +1222,12 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="420"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="421"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Đồng bộ thư mục cục bộ %1 đã tồn tại, thiết lập nó để đồng bộ. &lt;br/&gt; &lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="422"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="423"/>
         <source>Creating local sync folder %1... </source>
         <translation>Tạo thư mục đồng bộ cục bộ %1...</translation>
     </message>
@@ -1236,12 +1236,12 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="425"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="427"/>
         <source>ok</source>
         <translation>Đồng ý</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="427"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="429"/>
         <source>failed.</source>
         <translation>Thất bại.</translation>
     </message>
@@ -1254,7 +1254,7 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="113"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="114"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Thư mục đồng bộ cục bộ %1 đã được tạo thành công!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -1263,12 +1263,12 @@ Setup can not be done.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="478"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="480"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;tạo thư mục từ xa không thành công có thể là các thông tin cung cấp bị sai. &lt;/ font&gt; &lt;br/&gt; Xin vui lòng quay trở lại và kiểm tra lại thông tin của bạn. &lt;/ p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="484"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="486"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Truy cập thư mục %1 tạo thất bại với lỗi &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
