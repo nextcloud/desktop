@@ -35,6 +35,7 @@
 !define BUILD_PATH "@CMAKE_BINARY_DIR@"
 !define SOURCE_PATH "@CMAKE_SOURCE_DIR@"
 !define QT_DLL_PATH "${MING_BIN}"
+!define ACCESSIBLE_DLL_PATH "${MING_LIB}/qt4/plugins/accessible"
 !define SQLITE_DLL_PATH "${MING_LIB}/qt4/plugins/sqldrivers"
 !define IMAGEFORMATS_DLL_PATH "${MING_LIB}/qt4/plugins/imageformats"
 
@@ -357,6 +358,9 @@ Section "${APPLICATION_NAME}" SEC_OWNCLOUD
         File "${MING_SHARE}\qt4\translations\qt_zh_TW.qm"
 
         File "${MING_SHARE}\qt4\translations\qtkeychain_de.qm"
+
+        SetOutPath "$INSTDIR\accessible"
+        File "${ACCESSIBLE_DLL_PATH}\qtaccessiblewidgets4.dll"
 
         SetOutPath "$INSTDIR\modules"
         ; FIXME: fix installation dir of module, currently needs manual copying to
