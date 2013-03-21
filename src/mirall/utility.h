@@ -24,6 +24,7 @@ class Utility
 {
 public:
     static QString formatFingerprint( const QByteArray& );
+    static void setupFavLink( const QString &folder );
 };
 
 }

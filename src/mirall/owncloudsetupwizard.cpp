@@ -17,6 +17,7 @@
 #include "mirall/owncloudinfo.h"
 #include "mirall/folderman.h"
 #include "mirall/credentialstore.h"
+#include "mirall/utility.h"
 
 #include <QtCore>
 #include <QProcess>
@@ -421,6 +422,7 @@ void OwncloudSetupWizard::setupLocalSyncFolder()
     } else {
         QString res = tr("Creating local sync folder %1... ").arg(_localFolder);
         if( fi.mkpath( _localFolder ) ) {
+            Utility::setupFavLink( _localFolder );
             // FIXME: Create a local sync folder.
             res += tr("ok");
         } else {
