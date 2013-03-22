@@ -387,6 +387,14 @@ int csync_statedb_drop_tables(CSYNC *ctx) {
   }
   c_strlist_destroy(result);
 
+  result = csync_statedb_query(ctx,
+      "DROP TABLE IF EXISTS version;"
+      );
+  if (result == NULL) {
+    return -1;
+  }
+  c_strlist_destroy(result);
+
   return 0;
 }
 
