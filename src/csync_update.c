@@ -91,7 +91,6 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   }
 
   path = file;
-  len = strlen(path);
   switch (ctx->current) {
   case LOCAL_REPLICA:
     if (strlen(path) <= strlen(ctx->local.uri)) {
@@ -115,8 +114,9 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   if( h == 0 ) {
     return -1;
   }
+  len = strlen(path);
 
-  size = sizeof(csync_file_stat_t) + strlen(file) + 1;
+  size = sizeof(csync_file_stat_t) + len + 1;
 
   st = c_malloc(size);
   if (st == NULL) {
