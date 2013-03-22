@@ -163,3 +163,80 @@ out:
 #endif
 }
 
+int c_compare_file( const char *f1, const char *f2 ) {
+  _TCHAR *wf1, *wf2;
+  int fd1 = -1, fd2 = -1;
+  size_t size1, size2, i;
+  char buffer1[BUFFER_SIZE];
+  char buffer2[BUFFER_SIZE];
+  csync_stat_t stat1;
+  csync_stat_t stat2;
+
+  register const char *s1;
+  register const char *s2;
+  int re = -1;
+
+  if( ! (f1 && f2) ) return -1;
+
+  wf1 = c_multibyte(f1);
+  wf2 = c_multibyte(f2);
+
+  /* compare size first. */
+  if( _tstat(wf1, &stat1) < 0 ) {
+    re = -1;
+    goto out;
+  }
+  if( _tstat(wf2, &stat2) < 0 ) {
+    re = -1;
+    goto out;
+  }
+
+  /* if sizes are different, the files can not be equal. */
+  if( stat1.st_size != stat2.st_size ) {
+    re = 0;
+    goto out;
+  }
+
+#ifdef _WIN32
+  _fmode = _O_BINARY;
+#endif
+
+  fd1 = _topen(wf1, O_RDONLY);
+  fd2 = _topen(wf2, O_RDONLY);
+
+  if( !(fd1 > -1 && fd2 > -1)) {
+    re = -1;
+    goto out;
+  }
+
+  while( (size1 = read(fd1, buffer1, BUFFER_SIZE)) > 0 ) {
+    size2 = read( fd2, buffer2, BUFFER_SIZE );
+
+    if( size1 != size2 ) {
+      re = 0;
+      goto out;
+    }
+    s1 = buffer1;
+    s2 = buffer2;
+
+    for( i = 0; i < size1; i++ ) {
+      if( *s1++ != *s2++ ) {
+        re = 0;
+        goto out;
+      }
+    }
+  }
+
+  re = 1;
+
+out:
+
+  if( fd1 > -1) close(fd1);
+  if( fd2 > -1) close(fd2);
+
+  c_free_multibyte( wf1 );
+  c_free_multibyte( wf2 );
+  return re;
+
+}
+

@@ -85,12 +85,34 @@ static void check_c_copy_isdir(void **state)
     assert_int_equal(errno, EISDIR);
 }
 
+static void check_c_compare_file(void **state)
+{
+  int rc;
+  (void) state;
+
+  rc = c_copy(check_src_file, check_dst_file, 0644);
+  assert_int_equal(rc, 0);
+
+  rc = c_compare_file( check_src_file, check_dst_file );
+  assert_int_equal(rc, 1);
+
+  rc = system("echo \"hallo42\" > /tmp/check/foo.txt");
+  assert_int_equal(rc, 0);
+  rc = system("echo \"hallo52\" > /tmp/check/bar.txt");
+  assert_int_equal(rc, 0);
+
+  rc = c_compare_file( check_src_file, check_dst_file );
+  assert_int_equal(rc, 0);
+
+}
+
 int torture_run_tests(void)
 {
   const UnitTest tests[] = {
       unit_test_setup_teardown(check_c_copy, setup, teardown),
       unit_test(check_c_copy_same_file),
       unit_test_setup_teardown(check_c_copy_isdir, setup, teardown),
+      unit_test_setup_teardown(check_c_compare_file, setup, teardown),
   };
 
   return run_tests(tests);
