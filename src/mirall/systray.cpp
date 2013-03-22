@@ -16,19 +16,31 @@
 
 #ifdef USE_FDO_NOTIFICATIONS
 #include <QDBusConnection>
+#include <QDBusInterface>
 #include <QDBusMessage>
 #include <QDBusPendingCall>
+#define NOTIFICATIONS_SERVICE "org.freedesktop.Notifications"
+#define NOTIFICATIONS_PATH "/org/freedesktop/Notifications"
+#define NOTIFICATIONS_IFACE "org.freedesktop.Notifications"
 #endif
 
 void Systray::showMessage(const QString & title, const QString & message, MessageIcon icon, int millisecondsTimeoutHint)
 {
+    bool useFdoNotifications = false;
+
 #ifdef USE_FDO_NOTIFICATIONS
-    QList<QVariant> args = QList<QVariant>() << "owncloud" << quint32(0) << "owncloud"
-                                             << title << message << QStringList () << QVariantMap() << qint32(-1);
-    QDBusMessage method = QDBusMessage::createMethodCall("org.freedesktop.Notifications","/org/freedesktop/Notifications", "", "Notify");
-    method.setArguments(args);
-    QDBusConnection::sessionBus().asyncCall(method);
-#else
-    QSystemTrayIcon::showMessage(title, message, icon, millisecondsTimeoutHint);
+    if(QDBusInterface(NOTIFICATIONS_SERVICE, NOTIFICATIONS_PATH, NOTIFICATIONS_IFACE).isValid()) {
+        useFdoNotifications = true;
+    }
 #endif
+
+    if (useFdoNotifications) {
+        QList<QVariant> args = QList<QVariant>() << "owncloud" << quint32(0) << "owncloud"
+                                                 << title << message << QStringList () << QVariantMap() << qint32(-1);
+        QDBusMessage method = QDBusMessage::createMethodCall(NOTIFICATIONS_SERVICE, NOTIFICATIONS_PATH, NOTIFICATIONS_IFACE, "Notify");
+        method.setArguments(args);
+        QDBusConnection::sessionBus().asyncCall(method);
+    } else {
+        QSystemTrayIcon::showMessage(title, message, icon, millisecondsTimeoutHint);
+    }
 }
