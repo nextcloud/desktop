@@ -63,6 +63,8 @@ int c_isfile(const char *path);
  */
 int c_copy(const char *src, const char *dst, mode_t mode);
 
+int c_compare_file( const char *f1, const char *f2 );
+
 /**
  * }@
  */
