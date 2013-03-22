@@ -186,7 +186,6 @@ endif()
 
 # csync is required.
 include_directories(${CSYNC_INCLUDE_DIR}/csync ${CSYNC_INCLUDE_DIR} ${CMAKE_BINARY_DIR})
-include_directories(${QT_QTDBUS_INCLUDE_DIR})
 include_directories(${3rdparty_INC})
 
 qt4_wrap_cpp(mirallMoc ${mirall_HEADERS})
@@ -235,7 +234,7 @@ endif(NOT WIN32)
     # mirall is not built for the bundle
     add_executable( mirall WIN32 main.cpp ${final_src})
 
-    target_link_libraries(mirall ${QT_LIBRARIES} ${QT_QTDBUS_LIBRARIES} )
+    target_link_libraries(mirall ${QT_LIBRARIES})
     target_link_libraries(mirall owncloudsync)
     target_link_libraries(mirall ${CSYNC_LIBRARY})
 
@@ -277,7 +276,7 @@ endif()
 set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY}
 )
-target_link_libraries( ${APPLICATION_EXECUTABLE} ${QT_LIBRARIES} ${QT_QTDBUS_LIBRARIES} )
+target_link_libraries( ${APPLICATION_EXECUTABLE} ${QT_LIBRARIES} )
 target_link_libraries( ${APPLICATION_EXECUTABLE} owncloudsync )
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${CSYNC_LIBRARY} )
 

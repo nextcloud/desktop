@@ -53,8 +53,18 @@ else()
 endif()
 #####
 
+#####
+## handle DBUS for Fdo notifications
+if( UNIX AND NOT APPLE )
+    add_definitions( -DUSE_FDO_NOTIFICATIONS)
+endif()
+####
+
 #### find libs
 find_package(Qt4 4.6.0 COMPONENTS QtCore QtGui QtXml QtNetwork QtTest REQUIRED )
+if( UNIX AND NOT APPLE ) # Fdo notifications
+find_package(Qt4 4.6.0 COMPONENTS QtDBus REQUIRED )
+endif()
 find_package(Csync)
 if(UNIX)
 find_package(INotify REQUIRED)

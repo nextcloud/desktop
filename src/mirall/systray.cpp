@@ -14,7 +14,7 @@
 
 #include "systray.h"
 
-#ifdef Q_OS_LINUX
+#ifdef USE_FDO_NOTIFICATIONS
 #include <QDBusConnection>
 #include <QDBusMessage>
 #include <QDBusPendingCall>
@@ -22,8 +22,8 @@
 
 void Systray::showMessage(const QString & title, const QString & message, MessageIcon icon, int millisecondsTimeoutHint)
 {
-#ifdef Q_OS_LINUX
-    QList<QVariant> args = QList<QVariant>() << "owncloud" << quint32(0) << "dialog-information"
+#ifdef USE_FDO_NOTIFICATIONS
+    QList<QVariant> args = QList<QVariant>() << "owncloud" << quint32(0) << "owncloud"
                                              << title << message << QStringList () << QVariantMap() << qint32(-1);
     QDBusMessage method = QDBusMessage::createMethodCall("org.freedesktop.Notifications","/org/freedesktop/Notifications", "", "Notify");
     method.setArguments(args);
