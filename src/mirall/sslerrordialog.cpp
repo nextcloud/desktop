@@ -57,17 +57,15 @@ QString SslErrorDialog::styleSheet() const
 }
 #define QL(x) QLatin1String(x)
 
-bool SslErrorDialog::setErrorList( QList<QSslError> errors )
+bool SslErrorDialog::setErrorList( QList<QSslError> errors, QList<QSslCertificate> certs )
 {
-    QList<QSslCertificate> ourCerts = ownCloudInfo::instance()->certificateChain();
-
     // check if unknown certs caused errors.
     _unknownCerts.clear();
 
     QStringList errorStrings;
 
     for (int i = 0; i < errors.count(); ++i) {
-        if (ourCerts.contains(errors.at(i).certificate()) ||
+        if (certs.contains(errors.at(i).certificate()) ||
                 _unknownCerts.contains(errors.at(i).certificate() ))
             continue;
         errorStrings += errors.at(i).errorString();

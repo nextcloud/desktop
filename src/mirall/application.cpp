@@ -392,7 +392,8 @@ void Application::slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors )
     }
     _sslErrorDialog->setCustomConfigHandle( configHandle );
 
-    if( _sslErrorDialog->setErrorList( errors ) ) {
+    QList<QSslCertificate> certs = reply->sslConfiguration().peerCertificateChain();
+    if( _sslErrorDialog->setErrorList( errors, certs) ) {
         // all ssl certs are known and accepted. We can ignore the problems right away.
         qDebug() << "Certs are already known and trusted, Warnings are not valid.";
         reply->ignoreSslErrors();

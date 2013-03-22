@@ -22,6 +22,7 @@
 #include "ui_sslerrordialog.h"
 
 class QSslError;
+class QSslCertificate;
 
 
 namespace Mirall
@@ -33,7 +34,7 @@ class SslErrorDialog : public QDialog, public Ui::sslErrorDialog
 public:
     explicit SslErrorDialog(QWidget *parent = 0);
     
-    bool setErrorList( QList<QSslError> errors );
+    bool setErrorList( QList<QSslError> errors, QList<QSslCertificate> certs );
 
     bool trustConnection();
 
