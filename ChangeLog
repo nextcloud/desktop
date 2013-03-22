@@ -1,5 +1,18 @@
 ChangeLog
 ==========
+version 0.70.5  (released 2013-03-2x)
+
+version 0.70.4  (released 2013-02-26)
+  * [Win32] Ship with upto-date openssl version to fix SSL problems we saw.
+  * [Fixes] Fix crash during mkdir.
+  * [Fixes] Added workaround for problem that server sometimes does
+            not respond properly to PROPFIND (mirall#285)
+  * [Fixes] Fix handling of deletion of non empty or locked
+            directories.
+  * [Fixes] Fixed some potential memory leaks.
+  * [Fixes] Files with filenames with unix extensions
+	    are ignored now.
+
 version 0.70.3  (released 2013-01-24)
   * [Platform] Fix session cookie extraction (mirall bug #260).
 
