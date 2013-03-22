@@ -234,7 +234,7 @@ endif(NOT WIN32)
     # mirall is not built for the bundle
     add_executable( mirall WIN32 main.cpp ${final_src})
 
-    target_link_libraries(mirall ${QT_LIBRARIES})
+    target_link_libraries(mirall ${QT_LIBRARIES} )
     target_link_libraries(mirall owncloudsync)
     target_link_libraries(mirall ${CSYNC_LIBRARY})
 
