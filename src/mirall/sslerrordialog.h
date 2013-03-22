@@ -45,7 +45,6 @@ public slots:
     void accept();
 
 private:
-    QList<QSslCertificate> storedCACerts();
     QString styleSheet() const;
     bool _allTrusted;
 
