@@ -516,7 +516,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="930"/>
         <source>Preparing for sync.</source>
-        <translation type="unfinished"/>
+        <translation>正在準備同步。</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="963"/>
@@ -1358,27 +1358,27 @@ Setup can not be done.</source>
         <location filename="../src/mirall/owncloudfolder.cpp" line="333"/>
         <location filename="../src/mirall/owncloudfolder.cpp" line="341"/>
         <source>File removed</source>
-        <translation type="unfinished"/>
+        <translation>文件已被移除</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="333"/>
         <source>&apos;%1&apos; has been removed.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos;已被移除。</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="335"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos;和其他%n個文件已被移除。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="341"/>
         <source>&apos;%1&apos; has been updated.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos;已被更新。</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="343"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos;和其他%n個文件已被更新。</numerusform></translation>
     </message>
 </context>
 <context>

@@ -1352,7 +1352,7 @@ Das Setup kann nicht ausgeführt werden.</translation>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="327"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
-        <translation><numerusform>%1&apos; und %n andere Dateien wurden mit der Gerät synchronisiert.</numerusform><numerusform>%1&apos; und %n andere Dateien wurden mit der Gerät synchronisiert.</numerusform></translation>
+        <translation><numerusform>%1&apos; und %n andere Dateien wurden mit der Gerät synchronisiert.</numerusform><numerusform>&apos;%1&apos; und %n andere Dateien wurden mit der Gerät synchronisiert.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="333"/>
@@ -1727,7 +1727,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="120"/>
         <source>&amp;Do not store password on local machine</source>
-        <translation>&amp;Bitte sichern Sie kein Passwort auf dem lokalen Gerät</translation>
+        <translation>&amp;Passwort nicht auf dem Gerät speichern</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="140"/>
