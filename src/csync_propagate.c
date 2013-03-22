@@ -32,6 +32,8 @@
 #include "csync_private.h"
 #include "csync_misc.h"
 #include "csync_propagate.h"
+#include "csync_statedb.h"
+#include "vio/csync_vio_local.h"
 #include "vio/csync_vio.h"
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.propagator"
@@ -454,12 +456,11 @@ static int _backup_path(char** duri, const char* uri, const char* path)
 }
 
 
-static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st) {
+static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st, char **duri) {
   enum csync_replica_e drep = -1;
   enum csync_replica_e rep_bak = -1;
 
   char *suri = NULL;
-  char *duri = NULL;
 
   char errbuf[256] = {0};
 
@@ -479,7 +480,7 @@ static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st) {
         goto out;
       }
 
-      if (_backup_path(&duri, ctx->remote.uri,st->path) < 0) {
+      if (_backup_path(duri, ctx->remote.uri,st->path) < 0) {
         ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
         rc = -1;
         goto out;
@@ -493,7 +494,7 @@ static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st) {
         goto out;
       }
 
-      if ( _backup_path(&duri, ctx->local.uri, st->path) < 0) {
+      if ( _backup_path(duri, ctx->local.uri, st->path) < 0) {
         ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
         rc = -1;
         goto out;
@@ -514,12 +515,12 @@ static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st) {
   }
 	
 	CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"suri: %s",suri);
-	CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"duri: %s",duri);
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"duri: %s",*duri);
 
 
   /* rename the older file to conflict */
   ctx->replica = drep;
-  if (csync_vio_rename(ctx, suri, duri) < 0) {
+  if (csync_vio_rename(ctx, suri, *duri) < 0) {
     ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
     switch (errno) {
       case ENOMEM:
@@ -532,7 +533,7 @@ static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st) {
     strerror_r(errno, errbuf, sizeof(errbuf));
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
         "file: %s, command: rename, error: %s",
-        duri,
+        *duri,
         errbuf);
     goto out;
   }
@@ -541,7 +542,7 @@ static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st) {
   /* set instruction for the statedb merger */
   st->instruction = CSYNC_INSTRUCTION_NONE;
  
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "BACKUP  file: %s", duri);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "BACKUP  file: %s", *duri);
 
   rc = 0;
 
@@ -552,7 +553,6 @@ out:
   }
 
   SAFE_FREE(suri);
-  SAFE_FREE(duri);
  
   ctx->replica = rep_bak;
 
@@ -577,12 +577,33 @@ static int _csync_sync_file(CSYNC *ctx, csync_file_stat_t *st) {
 
 static int _csync_conflict_file(CSYNC *ctx, csync_file_stat_t *st) {
   int rc = -1;
- 
-  rc = _csync_backup_file(ctx, st);
+  char *conflict_file_name;
+  char *uri = NULL;
+
+  rc = _csync_backup_file(ctx, st, &conflict_file_name);
   
   if(rc>=0)
   {
 	 rc = _csync_push_file(ctx, st);
+  }
+
+  if( rc >= 0 ) {
+    /* if its the local repository, check if both files are equal. */
+    if( ctx->current == REMOTE_REPLICA ) {
+      if (asprintf(&uri, "%s/%s", ctx->local.uri, st->path) < 0) {
+        return -1;
+      }
+
+      if( c_compare_file(uri, conflict_file_name) == 1 ) {
+        /* the files are byte wise equal. The conflict can be erased. */
+        if (csync_vio_local_unlink(conflict_file_name) < 0) {
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "REMOVE of csync conflict file %s failed.", conflict_file_name );
+        } else {
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "REMOVED csync conflict file %s as files are equal.",
+                    conflict_file_name );
+        }
+      }
+    }
   }
 
   return rc;
