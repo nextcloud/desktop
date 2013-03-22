@@ -1,5 +1,10 @@
 ChangeLog
 =========
+version 1.2.2 (release 2013-03-22 ), csync 0.70.5 required
+
+  * [Fixes] Do not crash when local file tree contains symlinks
+  * [Fixes] Correctly handle locked files on Windows
+  * [Fixes] Display errors in all members of the SSL chain
 
 version 1.2.1 (release 2013-02-26 ), csync 0.70.4 required
   * [Fixes] Leave configured folders on configuration changes.
@@ -73,10 +78,6 @@ version 1.1.1 (release 2012-10-18), csync 0.60.1 required
   * [Fixes] csync: Allow single quote (') in file names
   * [Fixes] csync: Remove stray temporary files
 
-version 1.1.0 (release 2012-10-10), csync 0.60.0 required
-  * [GUI]   Added an about dialog
-  * [GUI]   Improved themeing capabilities of the client.
-  * [GUI]   Minor fixes in folder assistant.
   * [GUI]   Reworked tray context menu.
   * [GUI]   Users can now sync the server root folder.
   * [Fixes] Proxy support: now supports Proxy Auto-Configuration (PAC)
@@ -172,3 +173,7 @@ version 1.0.1 (release 2012-04-18), csync 0.50.5 required
   * [Platform] Enabled ranslations on Windows.
 
 
+ChangeLog
+=========
+
+version 1.2.1 (release 2013-02-26 ), csync 0.70.4 required
