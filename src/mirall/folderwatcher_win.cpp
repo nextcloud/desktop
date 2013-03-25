@@ -57,7 +57,7 @@ void WatcherThread::run()
                 _handle = 0;
                 return;
             }
-            qDebug() << Q_FUNC_INFO << "Change detected in" << _path << "from" << QThread::currentThread    ();
+            // qDebug() << Q_FUNC_INFO << "Change detected in" << _path << "from" << QThread::currentThread    ();
             emit changed(_path);
             break;
         default:

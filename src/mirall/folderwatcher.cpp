@@ -170,7 +170,7 @@ void FolderWatcher::setProcessTimer()
 void FolderWatcher::changeDetected(const QString& f)
 {
     if( ! eventsEnabled() ) {
-        qDebug() << "FolderWatcher::changeDetected when eventsEnabled() -> ignore";
+        // qDebug() << "FolderWatcher::changeDetected when eventsEnabled() -> ignore";
         return;
     }
 
