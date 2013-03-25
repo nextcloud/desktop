@@ -72,6 +72,21 @@ void Utility::setupFavLink(const QString &folder)
     CFRelease(placesItems);
     CFRelease(folderCFStr);
     CFRelease(urlRef);
+#elif defined (Q_OS_UNIX)
+    // Nautilus: add to ~/.gtk-bookmarks
+    QFile gtkBookmarks(QDir::homePath()+QLatin1String("/.gtk-bookmarks"));
+    QByteArray folderUrl = "file://" + folder.toUtf8();
+    if (gtkBookmarks.open(QFile::ReadWrite)) {
+        QByteArray places = gtkBookmarks.readAll();
+        if (!places.contains(folderUrl)) {
+            places += folderUrl;
+            gtkBookmarks.reset();
+            gtkBookmarks.write(places + '\n');
+        }
+
+
+    }
+
 #endif
 }
 
