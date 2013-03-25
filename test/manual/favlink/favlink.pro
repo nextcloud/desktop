@@ -7,8 +7,9 @@ CONFIG -= app_bundle
 
 DEPENDPATH += .
 INCLUDEPATH += .
-LIBS += -framework CoreFoundation -framework CoreServices
-
+macx {
+  LIBS += -framework CoreFoundation -framework CoreServices
+}
 
 # Input
 HEADERS += ../../../src/mirall/utility.h
