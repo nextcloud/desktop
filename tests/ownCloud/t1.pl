@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# Test script for the ownCloud module of csync. 
+# Test script for the ownCloud module of csync.
 # This script requires a running ownCloud instance accessible via HTTP.
 # It does quite some fancy tests and asserts the results.
 #
@@ -25,7 +25,7 @@ print "Hello, this is t1, a tester for csync with ownCloud.\n";
 #  user   => "joe",
 #  passwd => "XXXXXX",
 #  url    => "http://localhost/oc/files/webdav.php"
- 
+
 my $owncloud = "http://localhost/oc/files/webdav.php/";
 my $user = "joe";
 my $passwd = 'XXXXX'; # Mind to be secure.
@@ -52,7 +52,7 @@ sub remoteDir( $$ )
     my ($d, $dir) = @_;
 
     my $url = $owncloud . $dir ;
- 
+
     $d->open( $owncloud );
     print $d->message . "\n";
 
@@ -81,7 +81,7 @@ sub remoteCleanup( $;$ )
     $d->open( -url => $owncloud );
 
     print "Cleaning Remote!\n";
-    
+
     my $re = $d->delete( $dir );
 
     if( $re == 0 ) {
@@ -108,15 +108,15 @@ sub csync( $$ )
     $url =~ s#^http://##;    # Remove the leading http://
     $url = "owncloud://$user:$passwd@". $url . $remote;
     print "CSync URL: $url\n";
-    
-    my $cmd = "LD_LIBRARY_PATH=$ld_libpath $csync $local $url";
+
+    my $cmd = "LD_LIBRARY_PATH=$ld_libpath $csync --debug-level=11 $local $url";
     print "Starting: $cmd\n";
 
     system( $cmd ) == 0 or die("CSync died!\n");
 }
 
 #
-# Check local directories if they have the same content. 
+# Check local directories if they have the same content.
 #
 sub assertLocalDirs( $$ )
 {
@@ -135,7 +135,7 @@ sub assertLocalDirs( $$ )
 }
 
 #
-# Check if a local and a remote dir have the same content 
+# Check if a local and a remote dir have the same content
 #
 sub assertLocalAndRemoteDir( $$$ )
 {
@@ -145,7 +145,7 @@ sub assertLocalAndRemoteDir( $$$ )
     if( my $r = $d->propfind( -url => $owncloud . $remote, -depth => 1 ) ) {
 	if( $r->is_collection ) {
 	    print "\nXX" . $r->get_resourcelist->as_string ."\n";
-	    
+
 	    foreach my $res ( $r->get_resourcelist->get_resources() ) {
 		print "Checking " . $res-> get_uri()->as_string ."\n";
 		my $filename = $res->get_property("rel_uri");
@@ -156,12 +156,14 @@ sub assertLocalAndRemoteDir( $$$ )
 		my $remoteModTime = $res->get_property( "lastmodifiedepoch" ) ;
 		my @info = stat( "$local/$filename" );
 		my $localModTime = $info[9];
-		assert( $remoteModTime == $localModTime, "Modfied-Times differ: remote: $remoteModTime <-> local: $localModTime" );
-		
+		assert( abs($remoteModTime - $localModTime) < 5, "Modfied-Times differ for $filename: remote: $remoteModTime <-> local: $localModTime" );
+
 		# check for the same file size
 		my $localSize = $info[7];
 		my $remoteSize = $res->get_property( "getcontentlength" );
-		assert( $localSize == $remoteSize );
+		if( $remoteSize ) { # Directories have no contentlength
+		  assert( $localSize == $remoteSize, "Local size <$localSize> different from remote size <$remoteSize>" );
+		}
 
 		# remember the files seen on the server.
 		$seen{$filename} = 1;
@@ -169,17 +171,18 @@ sub assertLocalAndRemoteDir( $$$ )
 	}
 	# Now loop over the local directory content and check if all files in the dir
 	# were seen on the server.
-	    
+
         print "\n* Cross checking with local dir: \n";
 
 	opendir(my $dh, $local ) || die;
 	while( readdir $dh ) {
 	    next if( /^\.+$/ );
 	    assert( -e "$local/$_" );
-	    assert( $seen{$_} == 1, "Filename only local, but not remte: $_\n" );
+	    my $isHere = (exists $seen{$_} || exists $seen{$_ . "/"});
+	    assert( $isHere, "Filename only local, but not remote: $_\n" );
 	}
     closedir $dh;
-	
+
     }
 
 }
@@ -189,7 +192,7 @@ sub glob_put( $$$ )
     my( $d, $globber, $target ) = @_;
 
     $d->open( $target );
-    
+
     my @puts = bsd_glob( $globber );
     foreach my $lfile( @puts ) {
         if( $lfile =~ /.*\/(.+)$/g ) {
