@@ -88,6 +88,12 @@ void hbf_free_transfer( hbf_transfer_t *transfer );
 
 const char *hbf_error_string( Hbf_State state );
 
+/* returns an http (error) code of the transmission. If the transmission
+ * succeeded, the code is 200. If it failed, its the error code of the
+ * first part transmission that failed.
+ */
+int hbf_fail_http_code( hbf_transfer_t *transfer );
+
 #ifdef NDEBUG
 char* get_transfer_url( hbf_transfer_t *transfer, int indx );
 #endif

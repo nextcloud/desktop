@@ -282,18 +282,19 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
 
         if( ! block ) state = HBF_PARAM_FAIL;
 
-        if( state == HBF_TRANSFER_SUCCESS ) {
+        if( state == HBF_SUCCESS ) {
             transfer_url = get_transfer_url( transfer, block_id );
             if( ! transfer_url ) {
                 state = HBF_PARAM_FAIL;
             }
         }
-        if( state == HBF_TRANSFER_SUCCESS ) {
+        if( state == HBF_SUCCESS ) {
             ne_request *req = ne_request_create(session, "PUT", transfer_url);
 
             if( req ) {
-                if( transfer->block_cnt > 1 )
+                if( transfer->block_cnt > 1 ) {
                   ne_add_request_header(req, "OC_CHUNKED", "1");
+                }
                 block_state = dav_request( req, transfer->fd, transfer->block_arr[cnt] );
 
                 if( block_state != HBF_SUCCESS ) {
@@ -314,6 +315,22 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
     return state;
 }
 
+int hbf_fail_http_code( hbf_transfer_t *transfer )
+{
+  int cnt;
+
+  if( ! transfer ) return 0;
+
+  for( cnt = 0; cnt < transfer->block_cnt; cnt++ ) {
+    int block_id = (cnt + transfer->start_id) % transfer->block_cnt;
+    hbf_block_t *block = transfer->block_arr[block_id];
+
+    if( block->state != HBF_NOT_TRANSFERED && block->state != HBF_TRANSFER_SUCCESS ) {
+      return block->http_result_code;
+    }
+  }
+  return 200;
+}
 
 const char *hbf_error_string( Hbf_State state )
 {
