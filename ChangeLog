@@ -1,6 +1,12 @@
 ChangeLog
 ==========
 version 0.70.5  (released 2013-03-2x)
+  * detect 'wrong' conflict files on client side. 
+  * [Fixes] Give context to module to enable logging (cmd client).
+  * [Fixes] Fix version table contents.
+  * [Fixes] Fix handling of non statable files on Win32.
+  * [Fixes] Fix renames on clientside on read only shares.
+  * [Fixes] Various small fixes and improvements.
 
 version 0.70.4  (released 2013-02-26)
   * [Win32] Ship with upto-date openssl version to fix SSL problems we saw.
