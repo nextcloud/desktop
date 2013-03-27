@@ -1623,7 +1623,9 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
         if( fstat( fd, &sb ) != 0 ) {
             DEBUG_WEBDAV("Could not stat file descriptor");
             rc = 1;
-        } else if (sb.st_size < 1024*1024*2) {
+#if 0
+        }
+        else if (sb.st_size < 1024*1024*2) {
             /* Transmit a file through PUT */
             ne_request *request = ne_request_create(dav_session.ctx, "PUT", clean_uri);
             write_ctx->req = request;
@@ -1660,6 +1662,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
                 DEBUG_WEBDAV("Did not find a valid request!");
                 rc = 1;
             }
+#endif
         } else {
             /* use httpbf */
             hbf_transfer_t *trans = hbf_init_transfer(clean_uri);
@@ -1681,6 +1684,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
 
                 if ( state != HBF_SUCCESS ) {
                     error_string = hbf_error_string(state);
+                    error_code = hbf_fail_http_code(trans);
                     rc = 1;
                     if (dav_session.chunk_info) {
                         dav_session.chunk_info->start_id = trans->start_id;
@@ -1692,7 +1696,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
         }
         if (_progresscb) {
             ne_set_notifier(dav_session.ctx, 0, 0);
-            _progresscb(write_ctx->url, rc != NE_OK ? CSYNC_NOTIFY_ERROR :
+            _progresscb(write_ctx->url, rc != 0 ? CSYNC_NOTIFY_ERROR :
                                 CSYNC_NOTIFY_FINISHED_UPLOAD, error_code,
                                 (long long)(error_string), dav_session.userdata);
         }
