@@ -74,6 +74,7 @@ static void _csync_record_error(CSYNC *ctx, csync_file_stat_t *st, csync_progres
   _csync_file_stat_set_error(st, csync_get_error_string(ctx));
   if (pi) {
     pi->error++;
+    SAFE_FREE(pi->error_string);
   } else {
     pi = c_malloc(sizeof(csync_progressinfo_t));
     pi->chunk = 0;
@@ -83,6 +84,7 @@ static void _csync_record_error(CSYNC *ctx, csync_file_stat_t *st, csync_progres
     pi->phash = st->phash;
     pi->error = 1;
   }
+  pi->error_string = st->error_string ? c_strdup(st->error_string) : NULL;
   pi->next = ctx->progress;
   ctx->progress = pi;
 }
@@ -153,6 +155,8 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   csync_progressinfo_t *pi = NULL;
   pi = csync_statedb_get_progressinfo(ctx, st->phash, st->modtime, st->md5);
   if (pi && pi->error > 3) {
+    if (!st->error_string && pi->error_string)
+        st->error_string = c_strdup(pi->error_string);
     rc = 1;
     goto out;
   }
@@ -728,6 +732,8 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
   if (other) {
     pi = csync_statedb_get_progressinfo(ctx, other->phash, other->modtime, other->md5);
     if (pi && pi->error > 3) {
+      if (!st->error_string && pi->error_string)
+        st->error_string = c_strdup(pi->error_string);
       rc = 1;
       goto out;
     }
@@ -870,7 +876,8 @@ static int _csync_remove_file(CSYNC *ctx, csync_file_stat_t *st) {
   csync_progressinfo_t *pi = NULL;
   pi = csync_statedb_get_progressinfo(ctx, st->phash, st->modtime, st->md5);
   if (pi && pi->error > 3) {
-    rc = 1;
+    if (!st->error_string && pi->error_string)
+      st->error_string = c_strdup(pi->error_string);
     goto out;
   }
 
@@ -939,6 +946,9 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
   csync_progressinfo_t *pi = NULL;
   pi = csync_statedb_get_progressinfo(ctx, st->phash, st->modtime, st->md5);
   if (pi && pi->error > 3) {
+    if (!st->error_string && pi->error_string)
+      st->error_string = c_strdup(pi->error_string);
+
     rc = 1;
     goto out;
   }
@@ -1041,6 +1051,8 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
   csync_progressinfo_t *pi = NULL;
   pi = csync_statedb_get_progressinfo(ctx, st->phash, st->modtime, st->md5);
   if (pi && pi->error > 3) {
+    if (!st->error_string && pi->error_string)
+      st->error_string = c_strdup(pi->error_string);
     rc = 1;
     goto out;
   }
