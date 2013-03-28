@@ -57,11 +57,21 @@ static int _csync_cleanup_cmp(const void *a, const void *b) {
   return strcmp(st_a->path, st_b->path);
 }
 
+static void _csync_file_stat_set_error(csync_file_stat_t *st, const char *error)
+{
+    st->instruction = CSYNC_INSTRUCTION_ERROR;
+    if (st->error_string)
+        return; // do not override first error.
+        st->error_string = c_strdup(error);
+}
+
 /* Record the error in the ctx->progress
   pi may be a previous csync_progressinfo_t from the database.
   If pi is NULL, a new one is created, else it is re-used
   */
-static void _csync_record_error(CSYNC *ctx, csync_file_stat_t *st, csync_progressinfo_t *pi) {
+static void _csync_record_error(CSYNC *ctx, csync_file_stat_t *st, csync_progressinfo_t *pi)
+{
+  _csync_file_stat_set_error(st, csync_get_error_string(ctx));
   if (pi) {
     pi->error++;
   } else {
@@ -541,7 +551,6 @@ out:
 
   /* set instruction for the statedb merger */
   if (rc != 0) {
-    st->instruction = CSYNC_INSTRUCTION_ERROR;
     if (turi != NULL) {
       if (_push_to_tmp_first(ctx)) {
         /* Remove the tmp file in error case. */
@@ -679,7 +688,7 @@ static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st) {
 out:
   /* set instruction for the statedb merger */
   if (rc != 0) {
-    st->instruction = CSYNC_INSTRUCTION_ERROR;
+    _csync_file_stat_set_error(st, csync_get_error_string(ctx));
   }
 
   SAFE_FREE(suri);
@@ -817,9 +826,8 @@ out:
 
   /* set instruction for the statedb merger */
   if (rc != 0) {
-    st->instruction = CSYNC_INSTRUCTION_ERROR;
+    _csync_file_stat_set_error(st, csync_get_error_string(ctx));
     if (other) {
-      other->instruction = CSYNC_INSTRUCTION_ERROR;
 
       /* We set the instruction to UPDATED so next try we try to rename again */
       st->instruction = CSYNC_INSTRUCTION_UPDATED;
@@ -1014,7 +1022,6 @@ out:
 
   /* set instruction for the statedb merger */
   if (rc != 0) {
-    st->instruction = CSYNC_INSTRUCTION_ERROR;
     _csync_record_error(ctx, st, pi);
     pi = NULL;
   }
@@ -1101,7 +1108,6 @@ out:
 
   /* set instruction for the statedb merger */
   if (rc != 0) {
-    st->instruction = CSYNC_INSTRUCTION_ERROR;
     _csync_record_error(ctx, st, pi);
     pi = NULL;
   }

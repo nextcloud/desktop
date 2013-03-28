@@ -583,6 +583,7 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
       trav.type =   cur->type;
       trav.instruction = cur->instruction;
       trav.rename_path = cur->destpath;
+      trav.error_string = cur->error_string;
 
       rc = (*visitor)(&trav, twctx->userdata);
       cur->instruction = trav.instruction;
@@ -672,6 +673,7 @@ static void _tree_destructor(void *data) {
   freedata = (csync_file_stat_t *) data;
   SAFE_FREE(freedata->md5);
   SAFE_FREE(freedata->destpath);
+  SAFE_FREE(freedata->error_string);
   SAFE_FREE(freedata);
 }
 

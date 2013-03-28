@@ -161,6 +161,7 @@ struct csync_tree_walk_file_s {
     enum csync_instructions_e instruction;
 
     const char *rename_path;
+    const char *error_string;
 };
 typedef struct csync_tree_walk_file_s TREE_WALK_FILE;
 

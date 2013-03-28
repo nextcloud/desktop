@@ -184,6 +184,7 @@ struct csync_file_stat_s {
 
   char *destpath;   /* for renames */
   const char *md5;
+  const char *error_string;
 
   enum csync_instructions_e instruction; /* u32 */
   char path[1]; /* u8 */
