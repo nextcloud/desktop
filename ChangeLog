@@ -1,5 +1,9 @@
 ChangeLog
 =========
+version 1.2.3 (release 2013-04-02 ), csync 0.70.5 required
+
+  * [Fixes] Unbreak self-signed certificate handling
+
 version 1.2.2 (release 2013-04-02 ), csync 0.70.5 required
 
   * [Fixes] Do not crash when local file tree contains symlinks
