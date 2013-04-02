@@ -1,10 +1,14 @@
 ChangeLog
 =========
-version 1.2.2 (release 2013-03-22 ), csync 0.70.5 required
+version 1.2.2 (release 2013-04-02 ), csync 0.70.5 required
 
   * [Fixes] Do not crash when local file tree contains symlinks
   * [Fixes] Correctly handle locked files on Windows
   * [Fixes] Display errors in all members of the SSL chain
+  * [Fixes] Enable Accessibility features on Windows
+  * [Fixes] Make setupFavLink work properly on Mac OS
+  * [Fixes] Ignore temporary files created by MS Office
+  * [Gui] Support Nautilus in setupFavLink
 
 version 1.2.1 (release 2013-02-26 ), csync 0.70.4 required
   * [Fixes] Leave configured folders on configuration changes.
