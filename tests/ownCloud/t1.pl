@@ -109,7 +109,7 @@ sub csync( $$ )
     $url = "owncloud://$user:$passwd@". $url . $remote;
     print "CSync URL: $url\n";
 
-    my $cmd = "LD_LIBRARY_PATH=$ld_libpath $csync $local $url";
+    my $cmd = "LD_LIBRARY_PATH=$ld_libpath $csync --debug-level=11 $local $url";
     print "Starting: $cmd\n";
 
     system( $cmd ) == 0 or die("CSync died!\n");
@@ -157,7 +157,6 @@ sub assertLocalAndRemoteDir( $$$ )
 		my @info = stat( "$local/$filename" );
 		my $localModTime = $info[9];
 		assert( abs($remoteModTime - $localModTime) < 5, "Modfied-Times differ: remote: $remoteModTime <-> local: $localModTime" );
-
 		# check for the same file size
 		my $localSize = $info[7];
 		my $remoteSize = $res->get_property( "getcontentlength" );
@@ -174,13 +173,13 @@ sub assertLocalAndRemoteDir( $$$ )
 	# were seen on the server.
 
         print "\n* Cross checking with local dir: \n";
-	print Dumper( %seen );
+	# print Dumper( %seen );
 	opendir(my $dh, $local ) || die;
 	while( readdir $dh ) {
 	    next if( /^\.+$/ );
 	    assert( -e "$local/$_" );
-	    my $f = $seen{$_} || $seen{$_ . "/"};
-	    assert( $f == 1, "Filename only local, but not remote: <$_>\n" );
+	    my $isHere = (exists $seen{$_} || exists $seen{$_ . "/"});
+	    assert( $isHere, "Filename only local, but not remote: $_\n" );
 	}
     closedir $dh;
 

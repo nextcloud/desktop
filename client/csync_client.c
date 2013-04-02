@@ -47,7 +47,7 @@ static char doc[] = "Usage: csync [OPTION...] LOCAL REMOTE\n\
 csync -- a user level file synchronizer which synchronizes the files\n\
 at LOCAL with the ones at REMOTE.\n\
 \n\
--c, --conflict-copys       Create conflict copys if file changed on both\n\
+-c, --conflict-copies      Create conflict copys if file changed on both\n\
                            sides.\n\
 -d, --debug-level=DEBUGLVL Set debug level\n\
     --disable-statedb      Disable the usage and creation of a statedb.\n\

@@ -176,14 +176,14 @@ static void check_c_uppercase_null(void **state)
 
 static void check_iconv_setup(void **state)
 {
+#ifdef __APPLE__
     int rc = 0;
 
-    (void) state; /* unused */
-
-#ifdef __APPLE__
     rc = c_setup_iconv("UTF-8-MAC");
     assert_int_equal(rc, 0);
 #endif
+    (void) state; /* unused */
+
 }
 
 static void check_iconv_teardown(void **state)

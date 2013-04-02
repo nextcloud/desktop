@@ -1,5 +1,24 @@
 ChangeLog
 ==========
+version 0.70.5  (released 2013-04-02)
+  * detect 'wrong' conflict files on client side. 
+  * [Fixes] Give context to module to enable logging (cmd client).
+  * [Fixes] Fix version table contents.
+  * [Fixes] Fix handling of non statable files on Win32.
+  * [Fixes] Fix renames on clientside on read only shares.
+  * [Fixes] Various small fixes and improvements.
+
+version 0.70.4  (released 2013-02-26)
+  * [Win32] Ship with upto-date openssl version to fix SSL problems we saw.
+  * [Fixes] Fix crash during mkdir.
+  * [Fixes] Added workaround for problem that server sometimes does
+            not respond properly to PROPFIND (mirall#285)
+  * [Fixes] Fix handling of deletion of non empty or locked
+            directories.
+  * [Fixes] Fixed some potential memory leaks.
+  * [Fixes] Files with filenames with unix extensions
+	    are ignored now.
+
 version 0.70.3  (released 2013-01-24)
   * [Platform] Fix session cookie extraction (mirall bug #260).
 
