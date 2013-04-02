@@ -34,11 +34,13 @@ class SslErrorDialog : public QDialog, public Ui::sslErrorDialog
 public:
     explicit SslErrorDialog(QWidget *parent = 0);
     
-    bool setErrorList( QList<QSslError> errors, QList<QSslCertificate> certs );
+    bool setErrorList( QList<QSslError> errors );
 
     bool trustConnection();
 
     void setCustomConfigHandle( const QString& );
+
+    QList<QSslCertificate> storedCACerts();
 
 signals:
     
