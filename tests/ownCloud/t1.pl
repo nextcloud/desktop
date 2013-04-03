@@ -24,9 +24,9 @@ print "Hello, this is t1, a tester for csync with ownCloud.\n";
 # content:
 #  user   => "joe",
 #  passwd => "XXXXXX",
-#  url    => "http://localhost/oc/files/webdav.php"
+#  url    => "http://localhost/oc/remote.php/webdav/"
 
-my $owncloud = "http://localhost/oc/files/webdav.php/";
+my $owncloud = "http://localhost/oc/remote.php/webdav/";
 my $user = "joe";
 my $passwd = 'XXXXX'; # Mind to be secure.
 
