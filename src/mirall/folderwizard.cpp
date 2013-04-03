@@ -82,6 +82,13 @@ bool FolderWizardSourcePage::isComplete() const
     while( isOk && i != map->constEnd() ) {
       Folder *f = static_cast<Folder*>(i.value());
       QString folderDir = QDir( f->path() ).canonicalPath();
+      if( folderDir.isEmpty() )
+      {
+        isOk = true;
+        qDebug() << "Absolute path for folder: " << f->path() << " doesn't exist. Skipping.";
+        i++;
+        continue;
+      }
       if( ! folderDir.endsWith(QLatin1Char('/')) ) folderDir.append(QLatin1Char('/'));
 
       qDebug() << "Checking local path: " << folderDir << " <-> " << userInput;
