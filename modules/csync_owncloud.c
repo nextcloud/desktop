@@ -2076,8 +2076,8 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
 
     newmodtime = modtime->tv_sec;
 
-    DEBUG_WEBDAV("Add a time delta to modtime %lu: %llu",
-                 modtime->tv_sec, (unsigned long long) dav_session.time_delta);
+    DEBUG_WEBDAV("Add a time delta to modtime %lu: %ld",
+                 modtime->tv_sec, (long) dav_session.time_delta);
     newmodtime += dav_session.time_delta;
 
     snprintf( val, sizeof(val), "%ld", newmodtime );
