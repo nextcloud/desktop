@@ -21,6 +21,13 @@
 #include "mirall/inotify.h"
 #include "mirall/theme.h"
 
+#ifdef Q_OS_MAC
+#include <CoreServices/CoreServices.h>
+#endif
+#ifdef Q_OS_WIN
+#include <shlobj.h>
+#endif
+
 #include <QDesktopServices>
 #include <QtCore>
 
@@ -32,9 +39,10 @@ FolderMan::FolderMan(QObject *parent) :
 {
     // if QDir::mkpath would not be so stupid, I would not need to have this
     // duplication of folderConfigPath() here
-    QDir storageDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
+    MirallConfigFile cfg;
+    QDir storageDir(cfg.configPath());
     storageDir.mkpath(QLatin1String("folders"));
-    _folderConfigPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation) + QLatin1String("/folders");
+    _folderConfigPath = cfg.configPath() + QLatin1String("folders");
 
     _folderChangeSignalMapper = new QSignalMapper(this);
     connect(_folderChangeSignalMapper, SIGNAL(mapped(const QString &)),

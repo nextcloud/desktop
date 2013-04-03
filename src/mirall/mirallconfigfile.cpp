@@ -30,6 +30,7 @@
 namespace Mirall {
 
 QString MirallConfigFile::_oCVersion;
+QString MirallConfigFile::_confDir = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
 bool    MirallConfigFile::_askedUser = false;
 
 MirallConfigFile::MirallConfigFile( const QString& appendix )
@@ -37,9 +38,20 @@ MirallConfigFile::MirallConfigFile( const QString& appendix )
 {
 }
 
+void MirallConfigFile::setConfDir(const QString &value)
+{
+    if( value.isEmpty() ) return;
+
+    QFileInfo fi(value);
+    if( fi.exists() && fi.isDir() ) {
+        qDebug() << "** Using custom dir " << value;
+        _confDir=value;
+    }
+}
+
 QString MirallConfigFile::configPath() const
 {
-    QString dir = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+    QString dir = _confDir;
     if( !dir.endsWith(QLatin1Char('/')) ) dir.append(QLatin1Char('/'));
     return dir;
 }
