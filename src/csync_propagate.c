@@ -60,9 +60,9 @@ static int _csync_cleanup_cmp(const void *a, const void *b) {
 static void _csync_file_stat_set_error(csync_file_stat_t *st, const char *error)
 {
     st->instruction = CSYNC_INSTRUCTION_ERROR;
-    if (st->error_string)
+    if (st->error_string || !error)
         return; // do not override first error.
-        st->error_string = c_strdup(error);
+    st->error_string = c_strdup(error);
 }
 
 /* Record the error in the ctx->progress
