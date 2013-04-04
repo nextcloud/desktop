@@ -536,27 +536,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="338"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="346"/>
         <source>CSync create failed.</source>
         <translation>CSync sortzeak huts egin du.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="88"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="90"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSyncek huts egin du lock fitxategia sortzean.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="82"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="84"/>
         <source>Success.</source>
         <translation>Arrakasta.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="85"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="87"/>
         <source>CSync Logging setup failed.</source>
         <translation>CSync erregistroaren konfigurazioak huts egin du.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="91"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="93"/>
         <source>CSync failed to load the state db.</source>
         <translation>CSyncek huts egin du egoera db kargatzean.</translation>
     </message>
@@ -565,17 +565,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="97"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="99"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>Bezero honetako sistemaren ordua zerbitzariarenaren ezberdina da. Mesedez erabili sinkronizazio zerbitzari bat (NTP) zerbitzari eta bezeroan orduak berdinak izan daitezen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="102"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="104"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSyncek ezin du fitxategi sistema mota antzeman.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="105"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="107"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSyncek errorea izan du barne zuhaitzak prozesatzerakoan.</translation>
     </message>
@@ -584,7 +584,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="123"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="125"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;%1 helmuga karpeta ez da existitzen.&lt;/p&gt;&lt;p&gt;Mesedez egiaztatu sinkronizazio konfigurazioa.&lt;/p&gt;</translation>
     </message>
@@ -593,107 +593,107 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="133"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="135"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>Ezin da idatzi bertako fitxategi sisteman. Mesedez egiaztatu baimenak.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="129"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="131"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>Urruneko fitxategi bat ezin da idatzi. Mesedez egiaztatu urreneko sarbidea.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="108"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="110"/>
         <source>CSync failed to reserve memory.</source>
         <translation>CSyncek huts egin du memoria alokatzean.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="111"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="113"/>
         <source>CSync fatal parameter error.</source>
         <translation>CSync parametro larri errorea.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="114"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="116"/>
         <source>CSync processing step update failed.</source>
         <translation>CSync prozesatzearen eguneratu urratsak huts egin du.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="117"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="119"/>
         <source>CSync processing step reconcile failed.</source>
         <translation>CSync prozesatzearen berdinkatze urratsak huts egin du.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="120"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="122"/>
         <source>CSync processing step propagate failed.</source>
         <translation>CSync prozesatzearen hedatu urratsak huts egin du.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="136"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="138"/>
         <source>CSync failed to connect through a proxy.</source>
         <translation>CSyncek huts egin du proxiaren bidez konektatzean.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="139"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="141"/>
         <source>CSync failed to lookup proxy or server.</source>
         <translation>CSyncek huts egin du zerbitzaria edo proxia bilatzean.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="142"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="144"/>
         <source>CSync failed to authenticate at the %1 server.</source>
         <translation>CSyncek huts egin du %1 zerbitzarian autentikatzean.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="145"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="147"/>
         <source>CSync failed to authenticate at the proxy.</source>
         <translation>CSyncek proxyan autentikatzean huts egin du.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="148"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="150"/>
         <source>CSync failed to connect to the network.</source>
         <translation>CSyncek sarera konektatzean huts egin du.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="151"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="153"/>
         <source>A network connection timeout happend.</source>
         <translation>Sarearen konexioan denbora-muga gertatu da.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="154"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="156"/>
         <source>A HTTP transmission error happened.</source>
         <translation>HTTP transmisio errore bat gertatu da.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="157"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="159"/>
         <source>CSync failed due to not handled permission deniend.</source>
         <translation>CSyncek huts egin du kudeatu gabeko baimen ukapen bat dela eta.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="160"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="162"/>
         <source>CSync failed to find a specific file.</source>
         <translation>CSyncek huts egin du fitxategi zehatz bat aurkitzen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="163"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="165"/>
         <source>CSync tried to create a directory that already exists.</source>
         <translation>CSyncek dagoeneko existitzen zen karpeta bat sortzen saiatu da.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="166"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="168"/>
         <source>CSync: No space on %1 server available.</source>
         <translation>CSync: Ez dago lekurik %1 zerbitzarian.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="169"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="171"/>
         <source>CSync unspecified error.</source>
         <translation>CSyncen zehaztugabeko errorea.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="172"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="174"/>
         <source>An internal error number %1 happend.</source>
         <translation>Barne errore bat gertatu da, zenbakia %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="176"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="178"/>
         <source>&lt;br/&gt;Backend Message: </source>
         <translation>&lt;br/&gt;Motorraren Mezua:</translation>
     </message>
@@ -708,7 +708,7 @@ Please make sure that all directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="94"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="96"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;csyncen %1 plugina ezin da kargatu.&lt;br/&gt;Mesedez egiaztatu instalazioa!&lt;/p&gt;</translation>
     </message>

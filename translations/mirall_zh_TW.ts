@@ -536,27 +536,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="338"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="346"/>
         <source>CSync create failed.</source>
         <translation>CSync 無法建立</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="88"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="90"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSync 無法建立一個文件鎖</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="82"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="84"/>
         <source>Success.</source>
         <translation>成功。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="85"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="87"/>
         <source>CSync Logging setup failed.</source>
         <translation>CSync Logging 設定失敗。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="91"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="93"/>
         <source>CSync failed to load the state db.</source>
         <translation>CSync 無法讀取狀態資料庫</translation>
     </message>
@@ -565,17 +565,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="97"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="99"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>本客戶端的系統時間和伺服器系統時間不一致,請在伺服器與客戶端上使用時間同步服務(NTP)讓時間保持一致</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="102"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="104"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSync 無法偵測檔案系統的類型</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="105"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="107"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSync 處理內部資料樹時發生錯誤</translation>
     </message>
@@ -584,7 +584,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="123"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="125"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;目標資料夾%1不存在&lt;/p&gt;&lt;p&gt;請檢查同步的設定&lt;/p&gt;</translation>
     </message>
@@ -593,107 +593,107 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="133"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="135"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>本地檔案系統無法寫入, 請確認權限。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="129"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="131"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>遠端檔案無法寫入, 請確認遠端存取權限。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="108"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="110"/>
         <source>CSync failed to reserve memory.</source>
         <translation>CSync 無法取得記憶體空間。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="111"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="113"/>
         <source>CSync fatal parameter error.</source>
         <translation>CSync 參數錯誤。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="114"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="116"/>
         <source>CSync processing step update failed.</source>
         <translation>CSync 處理步驟 &quot;update&quot; 失敗。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="117"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="119"/>
         <source>CSync processing step reconcile failed.</source>
         <translation>CSync 處理步驟 &quot;reconcile&quot; 失敗。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="120"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="122"/>
         <source>CSync processing step propagate failed.</source>
         <translation>CSync 處理步驟 &quot;propagate&quot; 失敗。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="136"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="138"/>
         <source>CSync failed to connect through a proxy.</source>
         <translation>CSync 透過代理伺服器連線失敗。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="139"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="141"/>
         <source>CSync failed to lookup proxy or server.</source>
         <translation>CSync 查詢代理伺服器或伺服器失敗。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="142"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="144"/>
         <source>CSync failed to authenticate at the %1 server.</source>
         <translation>CSync 於伺服器 %1 認證失敗。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="145"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="147"/>
         <source>CSync failed to authenticate at the proxy.</source>
         <translation>CSync 於代理伺服器認證失敗。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="148"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="150"/>
         <source>CSync failed to connect to the network.</source>
         <translation>CSync 無法連接到網路。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="151"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="153"/>
         <source>A network connection timeout happend.</source>
         <translation>網路連線逾時。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="154"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="156"/>
         <source>A HTTP transmission error happened.</source>
         <translation>HTTP 傳輸錯誤。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="157"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="159"/>
         <source>CSync failed due to not handled permission deniend.</source>
         <translation>CSync 失敗，由於未處理的存取被拒。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="160"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="162"/>
         <source>CSync failed to find a specific file.</source>
         <translation>CSync 沒辦法找到某一個檔案。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="163"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="165"/>
         <source>CSync tried to create a directory that already exists.</source>
         <translation>CSync 試圖建立一個已經存在的目錄。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="166"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="168"/>
         <source>CSync: No space on %1 server available.</source>
         <translation>CSync：伺服器 %1 沒有可用空間。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="169"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="171"/>
         <source>CSync unspecified error.</source>
         <translation>CSync 未知的錯誤。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="172"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="174"/>
         <source>An internal error number %1 happend.</source>
         <translation>發生內部錯誤, 錯誤編號 %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="176"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="178"/>
         <source>&lt;br/&gt;Backend Message: </source>
         <translation>&lt;br/&gt;後端訊息：</translation>
     </message>
@@ -708,7 +708,7 @@ Please make sure that all directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="94"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="96"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;用於csync的套件%1&lt;/p&gt;</translation>
     </message>

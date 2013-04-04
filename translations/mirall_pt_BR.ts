@@ -536,27 +536,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="338"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="346"/>
         <source>CSync create failed.</source>
         <translation>Criação do CSync falhou.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="88"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="90"/>
         <source>CSync failed to create a lock file.</source>
         <translation>Falha ao criar o arquivo de trava pelo CSync.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="82"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="84"/>
         <source>Success.</source>
         <translation>Sucesso.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="85"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="87"/>
         <source>CSync Logging setup failed.</source>
         <translation>Falha na instalação do CSync Logging.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="91"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="93"/>
         <source>CSync failed to load the state db.</source>
         <translation>CSync falhou ao carregar a base de estado.</translation>
     </message>
@@ -565,17 +565,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="97"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="99"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>A hora do sistema neste cliente é diferente do que o tempo de sistema no servidor. Por favor, use um serviço de sincronização de tempo (NTP) no servidor e máquinas clientes para que os tempos continuam os mesmos.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="102"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="104"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>Tipo de sistema de arquivo não detectado pelo CSync.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="105"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="107"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>Erro do CSync enquanto processava árvores internas.</translation>
     </message>
@@ -584,7 +584,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="123"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="125"/>
         <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;O diretório alvo %1 não existe.&lt;/p&gt;&lt;p&gt;Por favor cheque a configuração de sincronia.&lt;/p&gt;</translation>
     </message>
@@ -593,107 +593,107 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="133"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="135"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>O sistema de arquivos local não pode ser escrito. Verifique as permissões, por favor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="129"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="131"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>O arquivo remoto não pode ser escrito. Verifique o acesso remoto, por favor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="108"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="110"/>
         <source>CSync failed to reserve memory.</source>
         <translation>CSync falhou ao reservar memória.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="111"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="113"/>
         <source>CSync fatal parameter error.</source>
         <translation>Erro fatal permanente do CSync.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="114"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="116"/>
         <source>CSync processing step update failed.</source>
         <translation>Processamento da atualização do CSync falhou.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="117"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="119"/>
         <source>CSync processing step reconcile failed.</source>
         <translation>Processamento da conciliação do CSync falhou.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="120"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="122"/>
         <source>CSync processing step propagate failed.</source>
         <translation>Processamento da propagação do CSync falhou.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="136"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="138"/>
         <source>CSync failed to connect through a proxy.</source>
         <translation>CSync falhou ao conectar por um proxy.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="139"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="141"/>
         <source>CSync failed to lookup proxy or server.</source>
         <translation>CSync falhou ao localizar o proxy ou servidor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="142"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="144"/>
         <source>CSync failed to authenticate at the %1 server.</source>
         <translation>CSync falhou ao autenticar no servidor %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="145"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="147"/>
         <source>CSync failed to authenticate at the proxy.</source>
         <translation>CSync falhou ao autenticar no proxy.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="148"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="150"/>
         <source>CSync failed to connect to the network.</source>
         <translation>CSync falhou ao conectar à rede.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="151"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="153"/>
         <source>A network connection timeout happend.</source>
         <translation>Atingido o tempo limite para conexão à rede.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="154"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="156"/>
         <source>A HTTP transmission error happened.</source>
         <translation>Houve um erro na transmissão HTTP.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="157"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="159"/>
         <source>CSync failed due to not handled permission deniend.</source>
         <translation>CSync falhou devido a uma negativa de permissão não resolvida.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="160"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="162"/>
         <source>CSync failed to find a specific file.</source>
         <translation>CSync falhou ao procurar um arquivo específico.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="163"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="165"/>
         <source>CSync tried to create a directory that already exists.</source>
         <translation>CSync tentou criar um diretório que já existe.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="166"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="168"/>
         <source>CSync: No space on %1 server available.</source>
         <translation>CSync: sem espaço disponível no servidor %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="169"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="171"/>
         <source>CSync unspecified error.</source>
         <translation>Erro não especificado no CSync.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="172"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="174"/>
         <source>An internal error number %1 happend.</source>
         <translation>Um erro interno número %1 ocorreu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="176"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="178"/>
         <source>&lt;br/&gt;Backend Message: </source>
         <translation>&lt;br/&gt;Mensagem do Backend:</translation>
     </message>
@@ -708,7 +708,7 @@ Please make sure that all directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="94"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="96"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;O plugin %1 para csync não foi carregado.&lt;br/&gt;Por favor verifique a instalação!&lt;/p&gt;</translation>
     </message>
