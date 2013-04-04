@@ -303,7 +303,6 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   buf->name = c_basename(uri);
 
   if (buf->name == NULL) {
-    csync_vio_file_stat_destroy(buf);
     c_free_multibyte(wuri);
     return -1;
   }
@@ -360,7 +359,6 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
 			  FILE_ATTRIBUTE_NORMAL+FILE_FLAG_BACKUP_SEMANTICS, NULL );
   if( h == INVALID_HANDLE_VALUE ) {
      errno = GetLastError();
-     csync_vio_file_stat_destroy(buf);
      c_free_multibyte(wuri);
      return -1;
 
