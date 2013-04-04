@@ -240,30 +240,9 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
       }
 
       /* create the temporary file name */
-#ifdef _WIN32
-      if (asprintf(&turi, "%s.~XXXXXX", duri) < 0) {
-#else
-      /* split up the path */
-      if(duri) {
-          char *path = c_dirname(duri);
-          char *base = c_basename(duri);
+      turi = c_tmpname(duri);
 
-          if( path ) {
-              re = asprintf(&turi, "%s/.%s.~XXXXXX", path, base);
-          } else {
-              re = asprintf(&turi,".%s.~XXXXXX", base);
-          }
-          SAFE_FREE(path);
-          SAFE_FREE(base);
-      }
-      if (re < 0) {
-#endif
-          rc = -1;
-          goto out;
-      }
-
-      /* We just want a random file name here, open checks if the file exists. */
-      if (c_tmpname(turi) < 0) {
+      if (!turi) {
           rc = -1;
           goto out;
       }
@@ -296,7 +275,9 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
           goto out;
         }
         if(_push_to_tmp_first(ctx)) {
-          if (c_tmpname(turi) < 0) {
+          SAFE_FREE(turi);
+          turi = c_tmpname(duri);
+          if (!turi) {
             rc = -1;
             goto out;
           }
