@@ -118,18 +118,55 @@ char *c_basename (const char *path) {
   return new;
 }
 
-int c_tmpname(char *template) {
-  char *tmp = template + strlen(template) - 6;
+
+char *c_tmpname(const char *templ) {
+  char *tmp = NULL;
+  char *target = NULL;
+  int rc;
   int i = 0;
 
-  if (tmp < template) {
+  if (!templ) {
     goto err;
   }
 
-  for (i = 0; i < 6; i++) {
-    if (tmp[i] != 'X') {
-      goto err;
-    }
+  /* If the template does not contain the XXXXXX it will be appended. */
+  if( !strstr( templ, "XXXXXX" )) {
+#ifdef _WIN32
+      if (asprintf(&target, "%s.~XXXXXX", duri) < 0) {
+#else
+      /* split up the path */
+      char *path = c_dirname(templ);
+      char *base = c_basename(templ);
+
+      if (!base) {
+        if (path) {
+          SAFE_FREE(path);
+        }
+        goto err;
+      }
+      /* Create real hidden files for unixoide. */
+      if( path ) {
+        rc = asprintf(&target, "%s/.%s.~XXXXXX", path, base);
+      } else {
+        rc = asprintf(&target,".%s.~XXXXXX", base);
+      }
+      SAFE_FREE(path);
+      SAFE_FREE(base);
+
+      if (rc < 0) {
+#endif
+        goto err;
+      }
+  } else {
+    target = c_strdup(templ);
+  }
+
+  if (!target) {
+    goto err;
+  }
+  tmp = strstr( target, "XXXXXX" );
+  if (!tmp) {
+    goto err;
   }
 
   for (i = 0; i < 6; ++i) {
@@ -144,11 +181,11 @@ int c_tmpname(char *template) {
     tmp[i] = hexdigit > 9 ? hexdigit + 'a' - 10 : hexdigit + '0';
   }
 
-  return 0;
+  return target;
 
 err:
   errno = EINVAL;
-  return -1;
+  return NULL;
 }
 
 int c_parse_uri(const char *uri,

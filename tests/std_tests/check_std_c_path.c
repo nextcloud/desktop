@@ -115,7 +115,8 @@ static void check_c_tmpname(void **state)
 {
     char tmpl[22]={0};
     char prev[22]={0};
-    int i = 0, rc;
+    char *tmp;
+    int i = 0;
 
     (void) state; /* unused */
 
@@ -125,13 +126,14 @@ static void check_c_tmpname(void **state)
      * They may never be the same. */
     for(i = 0; i < 100; i++){
         strcpy(tmpl, "check_tmpname.XXXXXX");
-        rc = c_tmpname(tmpl);
-        assert_int_equal(rc, 0);
+        tmp = c_tmpname(tmpl);
+        assert_non_null(tmp);
 
         if (strlen(prev)) {
-            assert_string_not_equal(tmpl, prev);
+            assert_string_not_equal(tmp, prev);
         }
-        strcpy(prev, tmpl);
+        strcpy(prev, tmp);
+        SAFE_FREE(tmp);
     }
 }
 

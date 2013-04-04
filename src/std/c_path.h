@@ -71,15 +71,15 @@ char *c_basename (const char *path);
 /**
  * @brief Make a temporary filename.
  *
- * @param template  Template to replace. The last six characters of template
- *                  must be XXXXXX and these are replaced with a string that
- *                  makes the filename more or less unique. Since it will be
- *                  modified, template must not be a string constant, but
- *                  should be declared as a character array.
+ * @param templ  The template to replace. If the template contains six X like
+ *               'XXXXXX', these are replaced by a random string. If not, the
+ *               templ is interpreted as a path, and a name to a hidden file
+ *               with six random is returned.
+ *               The caller has to free the memory.
  *
- * @return 0 on succes, < 0 on error with errno set.
+ * @return a poitner to the random hidden filename or NULL.
  */
-int c_tmpname(char *template);
+char *c_tmpname(const char *templ);
 
 /**
  * @brief parse a uri and split it into components.
