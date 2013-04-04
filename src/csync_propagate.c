@@ -157,18 +157,20 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   int flags = 0;
 
   csync_hbf_info_t hbf_info = { 0, 0 };
-  csync_progressinfo_t *pi = NULL;
-  pi = csync_statedb_get_progressinfo(ctx, st->phash, st->modtime, st->md5);
-  if (pi && pi->error > 3) {
+  csync_progressinfo_t *progress_info = NULL;
+  /* Check if there is progress info stored in the database for this file */
+  progress_info = csync_statedb_get_progressinfo(ctx, st->phash, st->modtime, st->md5);
+  if (progress_info && progress_info->error > 3) {
     rc = 1;
     goto out;
   }
-  if (pi) {
+
+  if (progress_info) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
                 "continuation: %d %d",
-                pi->chunk, pi->transferId );
-    hbf_info.start_id = pi->chunk;
-    hbf_info.transfer_id = pi->transferId;
+                progress_info->chunk, progress_info->transferId );
+    hbf_info.start_id = progress_info->chunk;
+    hbf_info.transfer_id = progress_info->transferId;
   }
 
   rep_bak = ctx->replica;
@@ -228,9 +230,8 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   }
 
   if (_push_to_tmp_first(ctx)) {
-      int re = 0;
-      if (pi && pi->tmpfile && pi->tmpfile[0] && _push_to_tmp_first(ctx)) {
-          turi = c_strdup(pi->tmpfile);
+      if (progress_info && progress_info->tmpfile && progress_info->tmpfile[0] && _push_to_tmp_first(ctx)) {
+          turi = c_strdup(progress_info->tmpfile);
           /*  Try to see if we can resume. */
           ctx->replica = drep;
           dfp = csync_vio_open(ctx, turi, O_APPEND|O_NOCTTY, 0);
@@ -358,37 +359,37 @@ start_fd_based:
             if (csync_vio_stat(ctx, turi, sb) == 0 && sb->size > 0) {
               CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
                         "keeping tmp file: %s", turi);
-              if (!pi) {
-                pi = c_malloc(sizeof(csync_progressinfo_t));
-                pi->error = 0;
-                pi->transferId = 0;
-                pi->md5 = st->md5 ? c_strdup(st->md5) : NULL;
-                pi->modtime = st->modtime;
-                pi->phash = st->phash;
+              if (!progress_info) {
+                progress_info = c_malloc(sizeof(csync_progressinfo_t));
+                progress_info->error = 0;
+                progress_info->transferId = 0;
+                progress_info->md5 = st->md5 ? c_strdup(st->md5) : NULL;
+                progress_info->modtime = st->modtime;
+                progress_info->phash = st->phash;
               } else {
-                SAFE_FREE(pi->tmpfile);
+                SAFE_FREE(progress_info->tmpfile);
               }
-              pi->chunk = 0;
-              pi->tmpfile = turi;
-              pi->error <<= 1;
+              progress_info->chunk = 0;
+              progress_info->tmpfile = turi;
+              progress_info->error <<= 1;
               turi = NULL;
             }
             csync_vio_file_stat_destroy(sb);
           } else {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
                       "remember chunk: %d  (transfer id %d )", hbf_info.start_id, hbf_info.transfer_id);
-            if (!pi) {
-              pi = c_malloc(sizeof(csync_progressinfo_t));
-              pi->error = 0;
-              pi->md5 = st->md5 ? c_strdup(st->md5) : NULL;
-              pi->modtime = st->modtime;
-              pi->phash = st->phash;
-              pi->tmpfile = NULL;
+            if (!progress_info) {
+              progress_info = c_malloc(sizeof(csync_progressinfo_t));
+              progress_info->error = 0;
+              progress_info->md5 = st->md5 ? c_strdup(st->md5) : NULL;
+              progress_info->modtime = st->modtime;
+              progress_info->phash = st->phash;
+              progress_info->tmpfile = NULL;
             } else {
-              SAFE_FREE(pi->tmpfile);
+              SAFE_FREE(progress_info->tmpfile);
             }
-            pi->transferId = hbf_info.transfer_id;
-            pi->chunk = hbf_info.start_id;
+            progress_info->transferId = hbf_info.transfer_id;
+            progress_info->chunk = hbf_info.start_id;
             csync_vio_set_property(ctx, "hbf_info", 0);
           }
           goto out;
@@ -612,12 +613,12 @@ out:
       }
     }
     if (rc != 123) {
-      _csync_record_error(ctx, st, pi);
-      pi = NULL;
+      _csync_record_error(ctx, st, progress_info);
+      progress_info = NULL;
     }
   }
 
-  csync_statedb_free_progressinfo(pi);
+  csync_statedb_free_progressinfo(progress_info);
 
   SAFE_FREE(prev_tdir);
   SAFE_FREE(suri);
