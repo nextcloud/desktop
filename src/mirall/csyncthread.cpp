@@ -26,6 +26,8 @@
 #include <unistd.h>
 #endif
 
+#include <assert.h>
+
 #include <QDebug>
 #include <QSslSocket>
 #include <QDir>
@@ -323,6 +325,12 @@ void CSyncThread::handleSyncError(CSYNC *ctx, const char *state) {
 
 void CSyncThread::startSync()
 {
+    qDebug() << Q_FUNC_INFO << "Sync started";
+
+    static int syncsRunning = 0;
+    syncsRunning++;
+    assert(syncsRunning == 1);
+
     qDebug() << "starting to sync " << qApp->thread() << QThread::currentThread();
     CSYNC *csync;
     int proxyPort = _proxy.port();
@@ -414,6 +422,8 @@ void CSyncThread::startSync()
             emit treeWalkResult(_syncedItems);
         }
     }
+    syncsRunning--;
+    qDebug() << Q_FUNC_INFO << "Sync finished";
 }
 
 void CSyncThread::setConnectionDetails( const QString &user, const QString &passwd, const QNetworkProxy &proxy )
