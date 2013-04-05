@@ -1352,7 +1352,7 @@ Das Setup kann nicht ausgeführt werden.</translation>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="327"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
-        <translation><numerusform>%1&apos; und %n andere Dateien wurden mit der Gerät synchronisiert.</numerusform><numerusform>&apos;%1&apos; und %n andere Dateien wurden mit den Gerät synchronisiert.</numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; und %n andere Datei wurden mit der Gerät synchronisiert.</numerusform><numerusform>&apos;%1&apos; und %n andere Dateien wurden mit den Gerät synchronisiert.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="333"/>
