@@ -1058,10 +1058,14 @@ int csync_set_iconv_codec(const char *from)
 
 int csync_set_progress_callback(CSYNC* ctx, csync_progress_callback cb)
 {
-  if (ctx == NULL || cb == NULL) {
+  if (ctx == NULL) {
+    return -1;
+  }
+  if (cb == NULL ) {
     ctx->error_code = CSYNC_ERR_PARAM;
     return -1;
   }
+
   ctx->error_code = CSYNC_ERR_NONE;
   ctx->callbacks.progresscb = cb;
 
