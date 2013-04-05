@@ -568,8 +568,11 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
     cur = (csync_file_stat_t *) obj;
     ctx = (CSYNC *) data;
 
+    if (!ctx) {
+      return -1;
+    }
 
-    if (!(ctx && obj && data)) {
+    if (!obj || !data) {
       ctx->error_code = CSYNC_ERR_PARAM;
       return -1;
     }
