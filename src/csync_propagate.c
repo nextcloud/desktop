@@ -130,7 +130,8 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 #endif
   sfp = csync_vio_open(ctx, suri, flags, 0);
   if (sfp == NULL) {
-    ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
+    ctx->status_code = csync_errno_to_status(errno,
+                                             CSYNC_STATUS_PROPAGATE_ERROR);
     if (errno == ENOMEM) {
       rc = -1;
     } else {
@@ -174,7 +175,8 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   ctx->replica = drep;
   while ((dfp = csync_vio_open(ctx, turi, O_CREAT|O_EXCL|O_WRONLY|O_NOCTTY,
           C_FILE_MODE)) == NULL) {
-    ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
+    ctx->status_code = csync_errno_to_status(errno,
+                                             CSYNC_STATUS_PROPAGATE_ERROR);
     switch (errno) {
       case EEXIST:
         if (count++ > 10) {
@@ -202,7 +204,8 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
         }
 
         if (csync_vio_mkdirs(ctx, tdir, C_DIR_MODE) < 0) {
-          ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
+          ctx->status_code = csync_errno_to_status(errno,
+                                                   CSYNC_STATUS_PROPAGATE_ERROR);
           strerror_r(errno, errbuf, sizeof(errbuf));
           CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN,
               "dir: %s, command: mkdirs, error: %s",
@@ -236,7 +239,8 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
     if (bread < 0) {
       /* read error */
-      ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
+      ctx->status_code = csync_errno_to_status(errno,
+                                               CSYNC_STATUS_PROPAGATE_ERROR);
       strerror_r(errno,  errbuf, sizeof(errbuf));
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
           "file: %s, command: read, error: %s",
@@ -252,7 +256,8 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     bwritten = csync_vio_write(ctx, dfp, buf, bread);
 
     if (bwritten < 0 || bread != bwritten) {
-      ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
+      ctx->status_code = csync_errno_to_status(errno,
+                                               CSYNC_STATUS_PROPAGATE_ERROR);
       strerror_r(errno, errbuf, sizeof(errbuf));
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
           "file: %s, command: write, error: bread = %zu, bwritten = %zu - %s",
@@ -267,7 +272,8 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   ctx->replica = srep;
   if (csync_vio_close(ctx, sfp) < 0) {
-    ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
+    ctx->status_code = csync_errno_to_status(errno,
+                                             CSYNC_STATUS_PROPAGATE_ERROR);
     strerror_r(errno, errbuf, sizeof(errbuf));
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
         "file: %s, command: close, error: %s",
@@ -279,7 +285,8 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   ctx->replica = drep;
   if (csync_vio_close(ctx, dfp) < 0) {
     dfp = NULL;
-    ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
+    ctx->status_code = csync_errno_to_status(errno,
+                                             CSYNC_STATUS_PROPAGATE_ERROR);
     switch (errno) {
       /* stop if no space left or quota exceeded */
       case ENOSPC:
@@ -314,7 +321,8 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   }
 
   if (csync_vio_stat(ctx, turi, tstat) < 0) {
-    ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
+    ctx->status_code = csync_errno_to_status(errno,
+                                             CSYNC_STATUS_PROPAGATE_ERROR);
     switch (errno) {
       case ENOMEM:
         rc = -1;
@@ -344,7 +352,8 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     /* override original file */
     ctx->replica = drep;
     if (csync_vio_rename(ctx, turi, duri) < 0) {
-      ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
+      ctx->status_code = csync_errno_to_status(errno,
+                                               CSYNC_STATUS_PROPAGATE_ERROR);
       switch (errno) {
       case ENOMEM:
         rc = -1;
@@ -365,7 +374,8 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   /* set mode only if it is not the default mode */
   if ((st->mode & 07777) != C_FILE_MODE) {
     if (csync_vio_chmod(ctx, duri, st->mode) < 0) {
-      ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
+      ctx->status_code = csync_errno_to_status(errno,
+                                               CSYNC_STATUS_PROPAGATE_ERROR);
       switch (errno) {
         case ENOMEM:
           rc = -1;
@@ -521,7 +531,8 @@ static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st, char **duri) {
   /* rename the older file to conflict */
   ctx->replica = drep;
   if (csync_vio_rename(ctx, suri, *duri) < 0) {
-    ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
+    ctx->status_code = csync_errno_to_status(errno,
+                                             CSYNC_STATUS_PROPAGATE_ERROR);
     switch (errno) {
       case ENOMEM:
         rc = -1;
@@ -632,7 +643,8 @@ static int _csync_remove_file(CSYNC *ctx, csync_file_stat_t *st) {
   }
 
   if (csync_vio_unlink(ctx, uri) < 0) {
-    ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
+    ctx->status_code = csync_errno_to_status(errno,
+                                             CSYNC_STATUS_PROPAGATE_ERROR);
     switch (errno) {
       case ENOMEM:
         rc = -1;
@@ -698,7 +710,8 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
 
   ctx->replica = dest;
   if (csync_vio_mkdirs(ctx, uri, C_DIR_MODE) < 0) {
-    ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
+    ctx->status_code = csync_errno_to_status(errno,
+                                             CSYNC_STATUS_PROPAGATE_ERROR);
     switch (errno) {
       case ENOMEM:
         rc = -1;
@@ -718,7 +731,8 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
   /* chmod is if it is not the default mode */
   if ((st->mode & 07777) != C_DIR_MODE) {
     if (csync_vio_chmod(ctx, uri, st->mode) < 0) {
-      ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
+      ctx->status_code = csync_errno_to_status(errno,
+                                               CSYNC_STATUS_PROPAGATE_ERROR);
       switch (errno) {
         case ENOMEM:
           rc = -1;
@@ -798,7 +812,8 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
   /* chmod is if it is not the default mode */
   if ((st->mode & 07777) != C_DIR_MODE) {
     if (csync_vio_chmod(ctx, uri, st->mode) < 0) {
-      ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
+      ctx->status_code = csync_errno_to_status(errno,
+                                               CSYNC_STATUS_PROPAGATE_ERROR);
       switch (errno) {
         case ENOMEM:
           rc = -1;
@@ -868,7 +883,8 @@ static int _csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
   }
 
   if (csync_vio_rmdir(ctx, uri) < 0) {
-    ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_PROPAGATE_ERROR);
+    ctx->status_code = csync_errno_to_status(errno,
+                                             CSYNC_STATUS_PROPAGATE_ERROR);
     switch (errno) {
       case ENOMEM:
         strerror_r(errno, errbuf, sizeof(errbuf));

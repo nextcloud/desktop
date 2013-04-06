@@ -155,7 +155,7 @@ int csync_fnmatch(__const char *__pattern, __const char *__name, int __flags) {
 
 #endif /* HAVE_FNMATCH */
 
-CSYNC_STATUS_CODE csync_errno_to_csync_status(CSYNC_STATUS_CODE default_err)
+CSYNC_STATUS csync_errno_to_status(int error, CSYNC_STATUS default_status)
 {
 
   /*
@@ -196,68 +196,68 @@ CSYNC_STATUS_CODE csync_errno_to_csync_status(CSYNC_STATUS_CODE default_err)
   CSYNC_ERR_UNSPEC
 */
 
-  CSYNC_STATUS_CODE csync_err = CSYNC_STATUS_OK;
+  CSYNC_STATUS status = CSYNC_STATUS_OK;
 
-  switch( errno ) {
+  switch (error) {
   case 0:
-    csync_err = CSYNC_STATUS_OK;
+    status = CSYNC_STATUS_OK;
     break;
     /* The custom errnos first. */
   case ERRNO_GENERAL_ERROR:
-    csync_err = CSYNC_STATUS_UNSUCCESSFUL;
+    status = CSYNC_STATUS_UNSUCCESSFUL;
     break;
   case ERRNO_LOOKUP_ERROR: /* In Neon: Server or proxy hostname lookup failed */
-    csync_err = CSYNC_STATUS_LOOKUP_ERROR;
+    status = CSYNC_STATUS_LOOKUP_ERROR;
     break;
   case ERRNO_USER_UNKNOWN_ON_SERVER: /* Neon: User authentication on server failed. */
-    csync_err = CSYNC_STATUS_SERVER_AUTH_ERROR;
+    status = CSYNC_STATUS_SERVER_AUTH_ERROR;
     break;
   case ERRNO_PROXY_AUTH:
-    csync_err = CSYNC_STATUS_PROXY_AUTH_ERROR; /* Neon: User authentication on proxy failed */
+    status = CSYNC_STATUS_PROXY_AUTH_ERROR; /* Neon: User authentication on proxy failed */
     break;
   case ERRNO_CONNECT:
-    csync_err = CSYNC_STATUS_CONNECT_ERROR; /* Network: Connection error */
+    status = CSYNC_STATUS_CONNECT_ERROR; /* Network: Connection error */
     break;
   case ERRNO_TIMEOUT:
-    csync_err = CSYNC_STATUS_TIMEOUT; /* Network: Timeout error */
+    status = CSYNC_STATUS_TIMEOUT; /* Network: Timeout error */
     break;
   case ERRNO_QUOTA_EXCEEDED:
-    csync_err = CSYNC_STATUS_QUOTA_EXCEEDED;   /* Quota exceeded */
+    status = CSYNC_STATUS_QUOTA_EXCEEDED;   /* Quota exceeded */
     break;
   case ERRNO_SERVICE_UNAVAILABLE:
-    csync_err = CSYNC_STATUS_SERVICE_UNAVAILABLE;  /* Service temporarily down */
+    status = CSYNC_STATUS_SERVICE_UNAVAILABLE;  /* Service temporarily down */
     break;
   case EFBIG:
-    csync_err = CSYNC_STATUS_FILE_SIZE_ERROR;          /* File larger than 2MB */
+    status = CSYNC_STATUS_FILE_SIZE_ERROR;          /* File larger than 2MB */
     break;
   case ERRNO_PRECONDITION:
   case ERRNO_RETRY:
   case ERRNO_REDIRECT:
   case ERRNO_WRONG_CONTENT:
-    csync_err = CSYNC_STATUS_HTTP_ERROR;
+    status = CSYNC_STATUS_HTTP_ERROR;
     break;
 
   case ERRNO_TIMEDELTA:
-    csync_err = CSYNC_STATUS_TIMESKEW;
+    status = CSYNC_STATUS_TIMESKEW;
     break;
   case EPERM:                  /* Operation not permitted */
   case EACCES:                /* Permission denied */
-    csync_err = CSYNC_STATUS_PERMISSION_DENIED;
+    status = CSYNC_STATUS_PERMISSION_DENIED;
     break;
   case ENOENT:                 /* No such file or directory */
-    csync_err = CSYNC_STATUS_NOT_FOUND;
+    status = CSYNC_STATUS_NOT_FOUND;
     break;
   case EAGAIN:                /* Try again */
-    csync_err = CSYNC_STATUS_TIMEOUT;
+    status = CSYNC_STATUS_TIMEOUT;
     break;
   case EEXIST:                /* File exists */
-    csync_err = CSYNC_STATUS_FILE_EXISTS;
+    status = CSYNC_STATUS_FILE_EXISTS;
     break;
   case EINVAL:
-    csync_err = CSYNC_STATUS_PARAM_ERROR;
+    status = CSYNC_STATUS_PARAM_ERROR;
     break;
   case ENOSPC:
-    csync_err = CSYNC_STATUS_OUT_OF_SPACE;
+    status = CSYNC_STATUS_OUT_OF_SPACE;
     break;
 
     /* All the remaining basic errnos: */
@@ -292,8 +292,8 @@ CSYNC_STATUS_CODE csync_errno_to_csync_status(CSYNC_STATUS_CODE default_err)
 
   case ERRNO_ERROR_STRING:
   default:
-    csync_err = default_err;
+    status = default_status;
   }
 
-  return csync_err;
+  return status;
 }

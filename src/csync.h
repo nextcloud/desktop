@@ -117,8 +117,8 @@ enum csync_status_codes_e {
   CSYNC_STATUS_READDIR_ERROR,
   CSYNC_STATUS_OPEN_ERROR,
 };
-typedef enum csync_status_codes_e CSYNC_STATUS_CODE;
 
+typedef enum csync_status_codes_e CSYNC_STATUS;
 
 enum csync_instructions_e {
   CSYNC_INSTRUCTION_NONE       = 0x00000000,

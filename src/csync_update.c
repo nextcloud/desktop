@@ -226,7 +226,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
   if ((dh = csync_vio_opendir(ctx, uri)) == NULL) {
     /* permission denied */
-    ctx->status_code = csync_errno_to_csync_status(CSYNC_STATUS_OPENDIR_ERROR);
+    ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_OPENDIR_ERROR);
     if (errno == EACCES) {
       return 0;
     } else {
