@@ -317,8 +317,9 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     csync_vio_file_stat_destroy(fs);
 
     if (rc < 0) {
-      if( csync_status_ok(ctx) )
-        ctx->status_code = CSYNC_STATUS_UPDATE_ERROR;
+      if (!CSYNC_STATUS_IS_OK(ctx->status_code)) {
+          ctx->status_code = CSYNC_STATUS_UPDATE_ERROR;
+      }
 
       csync_vio_closedir(ctx, dh);
       goto done;

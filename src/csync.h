@@ -120,6 +120,17 @@ enum csync_status_codes_e {
 
 typedef enum csync_status_codes_e CSYNC_STATUS;
 
+#ifndef likely
+# define likely(x) (x)
+#endif
+#ifndef unlikely
+# define unlikely(x) (x)
+#endif
+
+#define CSYNC_STATUS_IS_OK(x) (likely((x) == CSYNC_STATUS_OK))
+#define CSYNC_STATUS_IS_ERR(x) (unlikely((x) >= CSYNC_STATUS_ERROR))
+#define CSYNC_STATUS_IS_EQUAL(x, y) ((x) == (y))
+
 enum csync_instructions_e {
   CSYNC_INSTRUCTION_NONE       = 0x00000000,
   CSYNC_INSTRUCTION_EVAL       = 0x00000001,

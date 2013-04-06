@@ -86,14 +86,6 @@ static int _data_cmp(const void *key, const void *data) {
   return 0;
 }
 
-bool csync_status_ok(CSYNC *ctx)
-{
-  if( ctx ) {
-    return ctx->status_code < CSYNC_STATUS_ERROR;
-  }
-  return false;
-}
-
 int csync_create(CSYNC **csync, const char *local, const char *remote) {
   CSYNC *ctx;
   size_t len = 0;
@@ -397,8 +389,9 @@ int csync_update(CSYNC *ctx) {
     csync_memstat_check();
 
     if (rc < 0) {
-      if( csync_status_ok( ctx ) )
-        ctx->status_code = CSYNC_STATUS_UPDATE_ERROR;
+      if (!CSYNC_STATUS_IS_OK(ctx->status_code)) {
+          ctx->status_code = CSYNC_STATUS_UPDATE_ERROR;
+      }
 
       return -1;
     }
@@ -433,9 +426,10 @@ int csync_reconcile(CSYNC *ctx) {
       c_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
 
   if (rc < 0) {
-    if( csync_status_ok(ctx) )
-      ctx->status_code = CSYNC_STATUS_RECONCILE_ERROR;
-    return -1;
+      if (!CSYNC_STATUS_IS_OK(ctx->status_code)) {
+          ctx->status_code = CSYNC_STATUS_RECONCILE_ERROR;
+      }
+      return -1;
   }
 
   /* Reconciliation for local replica */
@@ -453,9 +447,10 @@ int csync_reconcile(CSYNC *ctx) {
       c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
 
   if (rc < 0) {
-    if( csync_status_ok(ctx) )
-      ctx->status_code = CSYNC_STATUS_RECONCILE_ERROR;
-    return -1;
+      if (!CSYNC_STATUS_IS_OK(ctx->status_code)) {
+          ctx->status_code = CSYNC_STATUS_RECONCILE_ERROR;
+      }
+      return -1;
   }
 
   ctx->status |= CSYNC_STATUS_RECONCILE;
@@ -489,9 +484,10 @@ int csync_propagate(CSYNC *ctx) {
       c_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
 
   if (rc < 0) {
-    if( csync_status_ok(ctx) )
-      ctx->status_code = CSYNC_STATUS_PROPAGATE_ERROR;
-    return -1;
+      if (!CSYNC_STATUS_IS_OK(ctx->status_code)) {
+          ctx->status_code = CSYNC_STATUS_PROPAGATE_ERROR;
+      }
+      return -1;
   }
 
   /* Reconciliation for local replica */
@@ -509,9 +505,10 @@ int csync_propagate(CSYNC *ctx) {
       c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
 
   if (rc < 0) {
-    if( csync_status_ok(ctx) )
-      ctx->status_code = CSYNC_STATUS_PROPAGATE_ERROR;
-    return -1;
+      if (!CSYNC_STATUS_IS_OK(ctx->status_code)) {
+          ctx->status_code = CSYNC_STATUS_PROPAGATE_ERROR;
+      }
+      return -1;
   }
 
   ctx->status |= CSYNC_STATUS_PROPAGATE;

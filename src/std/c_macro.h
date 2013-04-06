@@ -73,6 +73,22 @@
  */
 #define discard_const_p(type, ptr) ((type *)discard_const(ptr))
 
+#if (__GNUC__ >= 3)
+# ifndef likely
+#  define likely(x)   __builtin_expect(!!(x), 1)
+# endif
+# ifndef unlikely
+#  define unlikely(x) __builtin_expect(!!(x), 0)
+# endif
+#else /* __GNUC__ */
+# ifndef likely
+#  define likely(x) (x)
+# endif
+# ifndef unlikely
+#  define unlikely(x) (x)
+# endif
+#endif /* __GNUC__ */
+
 /**
  * }@
  */
