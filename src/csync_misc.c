@@ -204,7 +204,7 @@ CSYNC_STATUS_CODE csync_errno_to_csync_status(CSYNC_STATUS_CODE default_err)
     break;
     /* The custom errnos first. */
   case ERRNO_GENERAL_ERROR:
-    csync_err = CSYNC_STATUS_UNSPEC_ERROR;
+    csync_err = CSYNC_STATUS_UNSUCCESSFUL;
     break;
   case ERRNO_LOOKUP_ERROR: /* In Neon: Server or proxy hostname lookup failed */
     csync_err = CSYNC_STATUS_LOOKUP_ERROR;

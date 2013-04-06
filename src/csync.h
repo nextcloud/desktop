@@ -76,7 +76,9 @@ extern "C" {
 enum csync_status_codes_e {
   CSYNC_STATUS_OK         = 0,
 
-  CSYNC_STATUS_ERROR      = 1000, /* don't use this code, just use in csync_status_ok */
+  CSYNC_STATUS_ERROR      = 1024, /* don't use this code,
+                                     just use in csync_status_ok */
+  CSYNC_STATUS_UNSUCCESSFUL,
   CSYNC_STATUS_NO_LOCK,
   CSYNC_STATUS_STATEDB_LOAD_ERROR,
   CSYNC_STATUS_STATEDB_WRITE_ERROR,
@@ -114,8 +116,6 @@ enum csync_status_codes_e {
   CSYNC_STATUS_OPENDIR_ERROR,
   CSYNC_STATUS_READDIR_ERROR,
   CSYNC_STATUS_OPEN_ERROR,
-
-  CSYNC_STATUS_UNSPEC_ERROR
 };
 typedef enum csync_status_codes_e CSYNC_STATUS_CODE;
 

@@ -509,8 +509,8 @@ static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st, char **duri) {
   {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"instruction not allowed: %i %s",
                 st->instruction, csync_instruction_str(st->instruction));
-      ctx->status_code = CSYNC_STATUS_UNSPEC_ERROR;
-	  rc = -1;
+      ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
+      rc = -1;
       goto out;
   }
 	
