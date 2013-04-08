@@ -114,6 +114,7 @@ INotify::~INotify()
 
     close(_fd);
     free(_buffer);
+    delete _notifier;
 }
 
 void INotify::addPath(const QString &path)

@@ -149,11 +149,13 @@ public:
     };
 
     FolderWizard(QWidget *parent = 0);
+    ~FolderWizard();
     void setFolderMap( Folder::Map* );
 
 private:
 
     FolderWizardSourcePage *_folderWizardSourcePage;
+    FolderWizardTargetPage *_folderWizardTargetPage;
 };
 
 

@@ -106,6 +106,7 @@ private:
     void folderToModelItem( QStandardItem*, Folder* );
 
     QStandardItemModel *_model;
+    FolderViewDelegate *_delegate;
     QUrl   _OCUrl;
     Theme *_theme;
 };
