@@ -1896,6 +1896,10 @@ static int owncloud_rmdir(const char *uri) {
     int rc = NE_OK;
     char* curi = _cleanPath( uri );
 
+    if( curi == NULL ) {
+      DEBUG_WEBDAV("Can not clean path for %s, bailing out.", uri ? uri:"<empty>");
+      return -1;
+    }
     rc = dav_connect(uri);
     if (rc < 0) {
         errno = EINVAL;
@@ -2026,8 +2030,10 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
     SAFE_FREE(curi);
 
     if( rc != NE_OK ) {
+        const char *err = ne_get_error(dav_session.ctx);
         set_errno_from_neon_errcode(rc);
-        DEBUG_WEBDAV("Error in propatch: %d", rc);
+
+        DEBUG_WEBDAV("Error in propatch: %s", err == NULL ? "<empty err msg.>" : err);
         return -1;
     }
 
