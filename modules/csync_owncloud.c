@@ -1004,7 +1004,7 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
     if( ret == NE_OK ) {
         fetchCtx->currResource = fetchCtx->list;
         /* Check the request status. */
-        if( req_status->klass != 2 ) {
+        if( req_status && req_status->klass != 2 ) {
             set_errno_from_http_errcode(req_status->code);
             DEBUG_WEBDAV("ERROR: Request failed: status %d (%s)", req_status->code,
                          req_status->reason_phrase);
