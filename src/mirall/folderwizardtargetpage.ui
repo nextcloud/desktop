@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>520</width>
-    <height>360</height>
+    <height>367</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -97,7 +97,7 @@
            <item>
             <widget class="QLabel" name="label_4">
              <property name="text">
-              <string>Folder on ownCloud:</string>
+              <string>Remote folder:</string>
              </property>
             </widget>
            </item>
@@ -130,7 +130,7 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="../../mirall.qrc">:/mirall/resources/folder-grey-32.png</pixmap>
+            <pixmap>:/mirall/resources/folder-grey-32.png</pixmap>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
