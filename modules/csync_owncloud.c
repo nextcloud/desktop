@@ -746,7 +746,7 @@ static int dav_connect(const char *base_url) {
     }
 
     if (dav_session.read_timeout == 0)
-        dav_session.read_timeout = 30; // Default from old code
+        dav_session.read_timeout = 300;  // set 300 seconds as default.
 
     ne_set_read_timeout(dav_session.ctx, dav_session.read_timeout);
 
