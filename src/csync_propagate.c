@@ -122,6 +122,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   csync_vio_handle_t *dfp = NULL;
 
   csync_vio_file_stat_t *tstat = NULL;
+  csync_vio_file_stat_t *vst   = NULL;
 
   char errbuf[256] = {0};
   char buf[MAX_XFER_BUF_SIZE] = {0};
@@ -132,6 +133,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   int rc = -1;
   int count = 0;
   int flags = 0;
+  bool do_pre_copy_stat = false; /* do an additional stat before actually copying */
 
   rep_bak = ctx->replica;
 
@@ -147,6 +149,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
         rc = -1;
         goto out;
       }
+      do_pre_copy_stat = true;
       break;
     case REMOTE_REPLICA:
       srep = ctx->remote.type;
@@ -162,6 +165,27 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
       break;
     default:
       break;
+  }
+
+  /* Check if the file is still untouched since the update run. */
+  if (do_pre_copy_stat) {
+    vst = csync_vio_file_stat_new();
+    if (csync_vio_stat(ctx, suri, vst) < 0) {
+      /* Pre copy stat failed */
+      rc = 1;
+      goto out;
+    } else {
+      /* Pre copy stat succeeded */
+      if (st->modtime != vst->mtime ||
+          st->size    != vst->size) {
+        /* The size or modtime has changed. Skip this file copy for now. */
+        rc = 1; /* soft problem */
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+            "Source file has changed since update run, SKIP it for now.");
+        goto out;
+      }
+      csync_vio_file_stat_destroy(vst);
+    }
   }
 
   /* Open the source file */
