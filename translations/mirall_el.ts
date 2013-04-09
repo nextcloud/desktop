@@ -192,7 +192,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="29"/>
         <source>Synchronization Target</source>
-        <translation type="unfinished"/>
+        <translation>Στοχος συγχρονισμου</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="51"/>
@@ -567,7 +567,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="99"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
-        <translation type="unfinished"/>
+        <translation>Η ώρα του συστήματος μεταξύ του τοπικού υπολογιστή και του διακομιστή διαφέρει πάρα πολύ. Παρακαλούμε χρησιμοποιήστε μια υπηρεσία συγχρονισμός του χρόνου (NTP) και στους δύο υπολογιστές.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="104"/>
