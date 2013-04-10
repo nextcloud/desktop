@@ -620,7 +620,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="119"/>
         <source>CSync processing step reconcile failed.</source>
-        <translation type="unfinished"/>
+        <translation>CSync tasakaalustuse protsess ebaõnnestus.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="122"/>
@@ -665,7 +665,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="159"/>
         <source>CSync failed due to not handled permission deniend.</source>
-        <translation type="unfinished"/>
+        <translation>CSync ebaõnnestus ligipääsu puudumisel.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="162"/>
@@ -695,7 +695,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="178"/>
         <source>&lt;br/&gt;Backend Message: </source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;Tagarakendi teade:</translation>
     </message>
     <message>
         <source>CSync Update failed.</source>
@@ -1352,7 +1352,7 @@ Seadistamist ei saa teha.</translation>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="327"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; ja %n fail(i) sünkroniseeriti siia.</numerusform><numerusform>&apos;%1&apos; ja %n fail(i) sünkroniseeriti siia.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="333"/>
@@ -1368,7 +1368,7 @@ Seadistamist ei saa teha.</translation>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="335"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; ja %n fail(i) eemaldati.</numerusform><numerusform>&apos;%1&apos; ja %n fail(i) eemaldati.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="341"/>
@@ -1378,7 +1378,7 @@ Seadistamist ei saa teha.</translation>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="343"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; ja %n fail(i) uuendati.</numerusform><numerusform>&apos;%1&apos; ja %n fail(i) uuendati.</numerusform></translation>
     </message>
 </context>
 <context>
