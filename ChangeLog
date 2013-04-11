@@ -1,5 +1,14 @@
 ChangeLog
 =========
+
+version 1.2.4 (release 2013-04-11 ), csync 0.70.6 required
+  * [Fixes] Clarify string in folder wizard
+  * [Fixes] Fixed some valgrind warnings
+  * [Fixes] Ensure that only one sync thread can ever run 
+  * [Fixes] Fix default config storage path
+  * [Fixes] Skip folders with no absolute path
+  * [Fixes] Allow setting the configuration directory on command line
+
 version 1.2.3 (release 2013-04-02 ), csync 0.70.5 required
 
   * [Fixes] Unbreak self-signed certificate handling
@@ -180,8 +189,3 @@ version 1.0.1 (release 2012-04-18), csync 0.50.5 required
   * [Platform] MacOSX Bundle creation added
   * [Platform] Enabled ranslations on Windows.
 
-
-ChangeLog
-=========
-
-version 1.2.1 (release 2013-02-26 ), csync 0.70.4 required
