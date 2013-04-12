@@ -211,7 +211,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="100"/>
         <source>Remote folder:</source>
-        <translation type="unfinished"/>
+        <translation>Externe map:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="149"/>
