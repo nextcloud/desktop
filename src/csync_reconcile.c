@@ -233,6 +233,9 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
             case CSYNC_INSTRUCTION_NONE:
                 cur->instruction = CSYNC_INSTRUCTION_SYNC;
                 break;
+            case CSYNC_INSTRUCTION_IGNORE:
+                cur->instruction = CSYNC_INSTRUCTION_IGNORE;
+            break;
             default:
                 break;
             }

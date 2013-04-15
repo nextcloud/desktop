@@ -73,7 +73,7 @@ int csync_exclude_load(CSYNC *ctx, const char *fname) {
 
   fd = _topen(wfname, O_RDONLY);
   c_free_multibyte(wfname);
-  if ( !fd ) {
+  if ( fd < 0 ) {
     return -1;
   }
 

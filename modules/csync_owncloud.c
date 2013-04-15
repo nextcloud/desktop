@@ -757,7 +757,7 @@ static int dav_connect(const char *base_url) {
     }
 
     if (dav_session.read_timeout == 0)
-        dav_session.read_timeout = 30; // Default from old code
+        dav_session.read_timeout = 300;  // set 300 seconds as default.
 
     ne_set_read_timeout(dav_session.ctx, dav_session.read_timeout);
 
@@ -1015,7 +1015,7 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
     if( ret == NE_OK ) {
         fetchCtx->currResource = fetchCtx->list;
         /* Check the request status. */
-        if( req_status->klass != 2 ) {
+        if( req_status && req_status->klass != 2 ) {
             set_errno_from_http_errcode(req_status->code);
             DEBUG_WEBDAV("ERROR: Request failed: status %d (%s)", req_status->code,
                          req_status->reason_phrase);
@@ -1963,6 +1963,10 @@ static int owncloud_rmdir(const char *uri) {
     int rc = NE_OK;
     char* curi = _cleanPath( uri );
 
+    if( curi == NULL ) {
+      DEBUG_WEBDAV("Can not clean path for %s, bailing out.", uri ? uri:"<empty>");
+      return -1;
+    }
     rc = dav_connect(uri);
     if (rc < 0) {
         errno = EINVAL;
@@ -2093,8 +2097,10 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
     SAFE_FREE(curi);
 
     if( rc != NE_OK ) {
+        const char *err = ne_get_error(dav_session.ctx);
         set_errno_from_neon_errcode(rc);
-        DEBUG_WEBDAV("Error in propatch: %d", rc);
+
+        DEBUG_WEBDAV("Error in propatch: %s", err == NULL ? "<empty err msg.>" : err);
         return -1;
     }
 

@@ -1,5 +1,14 @@
 ChangeLog
 ==========
+version 0.70.6  (released 2013-04-11)
+  * [Fixes] Try to avoid to upload incomplete files
+  * [Fixes] Increase read timeout to 300 seconds
+  * [Fixes] Handle IGNORE status correctly
+  * [Fixes] Set path and phash for ignored files
+  * [Fixes] Fix some issues discovered by Coverity
+  * [Fixes] Make sure to never allow empty pathes in rmdir
+  * [Fixes] Fix a crash caused by superfluous free() calls
+
 version 0.70.5  (released 2013-04-02)
   * detect 'wrong' conflict files on client side. 
   * [Fixes] Give context to module to enable logging (cmd client).

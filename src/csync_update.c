@@ -149,7 +149,8 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
         CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - tmp non zero, mtime %llu", path, st->modtime );
         tmp = NULL;
       }
-      goto fastout;
+      goto fastout; /* Skip copying of the etag. That's an important difference to upstream
+                     * without etags. */
     }
   }
 
@@ -229,11 +230,12 @@ out:
   if( fs->md5 ) {
       st->md5  = c_strdup(fs->md5);
   }
+
+fastout:  /* target if the file information is read from database into st */
   st->phash = h;
   st->pathlen = len;
   memcpy(st->path, (len ? path : ""), len + 1);
 
-fastout:  /* target if the file information is read from database into st */
   switch (ctx->current) {
     case LOCAL_REPLICA:
       if (c_rbtree_insert(ctx->local.tree, (void *) st) < 0) {
