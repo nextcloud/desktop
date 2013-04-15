@@ -83,6 +83,7 @@ private:
     );
 
     static QMutex _mutex;
+    static QMutex _syncMutex;
     static QString _user;
     static QString _passwd;
     static QNetworkProxy _proxy;

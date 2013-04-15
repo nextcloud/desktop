@@ -50,6 +50,7 @@ QNetworkProxy CSyncThread::_proxy;
 QString CSyncThread::_csyncConfigDir;  // to be able to remove the lock file.
 
 QMutex CSyncThread::_mutex;
+QMutex CSyncThread::_syncMutex;
 
 void csyncLogCatcher(CSYNC *ctx,
                      int verbosity,
@@ -303,6 +304,7 @@ struct CSyncRunScopeHelper {
 
         qDebug() << "CSync run took " << t.elapsed() << " Milliseconds";
         emit(parent->finished());
+        parent->_syncMutex.unlock();
     }
     CSYNC *ctx;
     QTime t;
@@ -326,6 +328,11 @@ void CSyncThread::handleSyncError(CSYNC *ctx, const char *state) {
 
 void CSyncThread::startSync()
 {
+    if (!_syncMutex.tryLock()) {
+        qDebug() << Q_FUNC_INFO << "WARNING: Another sync seems to be running. Not starting a new one.";
+        return;
+    }
+
     qDebug() << Q_FUNC_INFO << "Sync started";
 
     qDebug() << "starting to sync " << qApp->thread() << QThread::currentThread();
