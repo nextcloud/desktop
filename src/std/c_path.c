@@ -131,9 +131,6 @@ char *c_tmpname(const char *templ) {
 
   /* If the template does not contain the XXXXXX it will be appended. */
   if( !strstr( templ, "XXXXXX" )) {
-#ifdef _WIN32
-      if (asprintf(&target, "%s.~XXXXXX", duri) < 0) {
-#else
       /* split up the path */
       char *path = c_dirname(templ);
       char *base = c_basename(templ);
@@ -146,15 +143,23 @@ char *c_tmpname(const char *templ) {
       }
       /* Create real hidden files for unixoide. */
       if( path ) {
+#ifdef _WIN32
+	rc = asprintf(&target, "%s/%s.~XXXXXX", path, base);
+#else
         rc = asprintf(&target, "%s/.%s.~XXXXXX", path, base);
+#endif
       } else {
-        rc = asprintf(&target,".%s.~XXXXXX", base);
+#ifdef _WIN32
+	rc = asprintf(&target, "%s.~XXXXXX", base);
+#else
+        rc = asprintf(&target, ".%s.~XXXXXX", base);
+#endif
+
       }
       SAFE_FREE(path);
       SAFE_FREE(base);
 
       if (rc < 0) {
-#endif
         goto err;
       }
   } else {
