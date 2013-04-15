@@ -1,5 +1,8 @@
 project(httpbflib C)
 
+find_package(Neon)
+
+
 set(HTTPBF_PUBLIC_INCLUDE_DIRS
   ${CMAKE_CURRENT_SOURCE_DIR}/src
   CACHE INTERNAL "httpbflib public include directories"
