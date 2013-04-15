@@ -119,7 +119,7 @@ static int _csync_statedb_check(CSYNC *ctx, const char *statedb) {
     _csync_win32_hide_file(statedb);
     return 0;
   }
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "%s %s", sqlite3_errmsg(db), statedb);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "sqlite3_open failed: %s %s", sqlite3_errmsg(db), statedb);
   sqlite3_close(db);
 
   return -1;
@@ -188,6 +188,8 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb) {
    * its not there.
    */
   if (_csync_statedb_check(ctx, statedb) < 0) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "ERR: checking csync database failed - bail out.");
+
     rc = -1;
     goto out;
   }
@@ -199,19 +201,27 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb) {
    * statedb.
    */
   if (asprintf(&statedb_tmp, "%s.ctmp", statedb) < 0) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "ERR: could not create statedb name - bail out.");
+
     rc = -1;
     goto out;
   }
 
   if (c_copy(statedb, statedb_tmp, 0644) < 0) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "ERR: Failed to copy statedb -> statedb_tmp - bail out.");
+
     rc = -1;
     goto out;
   }
 
   _csync_win32_hide_file( statedb_tmp );
 
-  /* Open the temporary database */
+  /* Open or create the temporary database */
   if (sqlite3_open(statedb_tmp, &ctx->statedb.db) != SQLITE_OK) {
+    const char *errmsg= sqlite3_errmsg(ctx->statedb.db);
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "ERR: Failed to sqlite3 open statedb - bail out: %s.",
+              errmsg ? errmsg : "<no sqlite3 errormsg>");
+
     rc = -1;
     goto out;
   }
