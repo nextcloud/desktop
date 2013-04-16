@@ -16,6 +16,7 @@
 #include "mirall/fileitemdialog.h"
 #include "mirall/theme.h"
 #include "mirall/syncresult.h"
+#include "mirall/logger.h"
 
 #define TYPE_SUCCESS  1
 #define TYPE_CONFLICT 2
@@ -46,6 +47,7 @@ FileItemDialog::FileItemDialog(Theme *theme, QWidget *parent) :
     _treeWidget->setColumnWidth(0, 480);
     _timer.setInterval(1000);
     connect(&_timer, SIGNAL(timeout()), this, SLOT(slotSetFolderMessage()));
+    connect(this, SIGNAL(guiLog(QString,QString)), Logger::instance(), SIGNAL(guiLog(QString,QString)));
 
     QPushButton *copyBtn = _dialogButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
     connect(copyBtn, SIGNAL(clicked()), SLOT(copyToClipboard()));
@@ -118,7 +120,7 @@ void FileItemDialog::slotSetFolderMessage()
     QDateTime now = QDateTime::currentDateTime();
     int secs = _lastSyncTime.secsTo(now);
 
-    _timelabel->setText(tr("%1  (finished %2 sec. ago)").arg(_folderMessage).arg(secs));
+    _timelabel->setText(tr("%1 (finished %n sec. ago)", secs).arg(_folderMessage));
 }
 
 void FileItemDialog::copyToClipboard()
@@ -147,6 +149,7 @@ void FileItemDialog::copyToClipboard()
     }
 
     QApplication::clipboard()->setText(text);
+    emit guiLog(tr("Copied to clipboard"), tr("The sync protocol has been copied to the clipboard."));
 }
 
 void FileItemDialog::accept()
