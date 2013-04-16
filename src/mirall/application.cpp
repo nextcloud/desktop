@@ -268,7 +268,7 @@ void Application::slotFetchCredentials()
                  this, SLOT(slotCredentialsFetched(bool)) );
         CredentialStore::instance()->fetchCredentials();
         if( CredentialStore::instance()->state() == CredentialStore::TooManyAttempts ) {
-            trayMessage = tr("Too many attempts to get a valid password.");
+            trayMessage = tr("Too many incorrect password attempts.");
         }
     } else {
         qDebug() << "Can not try again to fetch Credentials.";
