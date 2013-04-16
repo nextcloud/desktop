@@ -222,8 +222,8 @@ void FileItemDialog::setSyncFileItems( const SyncFileItemVector& list )
 
         QString dir;
         QStringList str( item._file );
-        if( item._dir == SyncFileItem::Up )   dir = tr("Up");
-        if( item._dir == SyncFileItem::Down ) dir = tr("Down");
+        if( item._dir == SyncFileItem::Up )   dir = tr("Uploaded");
+        if( item._dir == SyncFileItem::Down ) dir = tr("Downloaded");
         str << dir;
 
         switch( item._instruction ) {
