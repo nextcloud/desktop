@@ -332,15 +332,15 @@ void ServerActionNotifier::slotSyncFinished(const SyncResult &result)
         if (removedItems == 1)
             emit guiLog(tr("File removed"), tr("'%1' has been removed.").arg(file));
         else
-            emit guiLog(tr("New files available"), tr("'%1' and %n other file(s) have been removed.",
+            emit guiLog(tr("Files removed"), tr("'%1' and %n other file(s) have been removed.",
                                                       "", removedItems-1).arg(file));
     }
     if (updatedItems > 0) {
         QString file = QDir::toNativeSeparators(firstItemUpdated._file);
         if (updatedItems == 1)
-            emit guiLog(tr("File removed"), tr("'%1' has been updated.").arg(file));
+            emit guiLog(tr("File updated"), tr("'%1' has been updated.").arg(file));
         else
-            emit guiLog(tr("New files available"), tr("'%1' and %n other file(s) have been updated.",
+            emit guiLog(tr("Files updated"), tr("'%1' and %n other file(s) have been updated.",
                                                       "", updatedItems-1).arg(file));
     }
 }
