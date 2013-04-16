@@ -1609,97 +1609,81 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
 
     DEBUG_WEBDAV("Sendfile handling request type %s.", write_ctx->method);
 
-    /* Copy from the file descriptor if method == PUT
+    /*
+     * Copy from the file descriptor if method == PUT
      * Copy to the file descriptor if method == GET
      */
 
     if( c_streq( write_ctx->method, "PUT") ) {
-        /* stat the source-file to get the file size. */
-        csync_stat_t sb;
-        if (_progresscb) {
+
+      bool finished = true;
+      int  attempts = 0;
+      /*
+       * do ten tries to upload the file chunked. Check the file size and mtime
+       * before submitting a chunk and after having submitted the last one.
+       * If the file has changed, retry.
+       */
+      do {
+        Hbf_State state = HBF_SUCCESS;
+        hbf_transfer_t *trans = hbf_init_transfer(clean_uri);
+        finished = true;
+
+        if (!trans) {
+          DEBUG_WEBDAV("hbf_init_transfer failed");
+          rc = 1;
+        } else {
+          state = hbf_splitlist(trans, fd);
+
+          /* Reuse chunk info that was stored in database if existing. */
+          if (dav_session.chunk_info && dav_session.chunk_info->transfer_id) {
+            DEBUG_WEBDAV("Existing chunk info %d %d ", dav_session.chunk_info->start_id, dav_session.chunk_info->transfer_id);
+            trans->start_id = dav_session.chunk_info->start_id;
+            trans->transfer_id = dav_session.chunk_info->transfer_id;
+          }
+
+          if (state == HBF_SUCCESS && _progresscb) {
             ne_set_notifier(dav_session.ctx, ne_notify_status_cb, write_ctx);
             _progresscb(write_ctx->url, CSYNC_NOTIFY_START_UPLOAD, 0 , 0, dav_session.userdata);
-        }
-        if( fstat( fd, &sb ) != 0 ) {
-            DEBUG_WEBDAV("Could not stat file descriptor");
-            rc = 1;
-#if 0
-        }
-        else if (sb.st_size < 1024*1024*2) {
-            /* Transmit a file through PUT */
-            ne_request *request = ne_request_create(dav_session.ctx, "PUT", clean_uri);
-            write_ctx->req = request;
-            if( request ) {
-                /* Attach the request to the file descriptor */
-                ne_set_request_body_fd(request, fd, 0, sb.st_size);
-                DEBUG_WEBDAV("Put file size: %lld, variable sizeof: %ld", (long long int) sb.st_size,
-                             sizeof(sb.st_size));
+          }
 
-                /* Start the request. */
-                neon_stat = ne_request_dispatch( write_ctx->req );
-                set_errno_from_neon_errcode( neon_stat );
+          if( state == HBF_SUCCESS ) {
+            chunked_total_size = trans->stat_size;
+            /* Transfer all the chunks through the HTTP session using PUT. */
+            state = hbf_transfer( dav_session.ctx, trans, "PUT" );
+          }
 
-                status = ne_get_status( request );
-                if( status->klass != 2 ) {
-                    DEBUG_WEBDAV("sendfile request failed with http status %d!", status->code);
-                    set_errno_from_http_errcode( status->code );
-                    /* decide if soft error or hard error that stops the whole sync. */
-                    /* Currently all problems concerning one file are soft errors */
-                    if( status->klass == 4 /* Forbidden and stuff, soft error */ ) {
-                        rc = 1;
-                    } else if( status->klass == 5 /* Server errors and such */ ) {
-                        rc = 1; /* No Abort on individual file errors. */
-                    } else {
-                        rc = 1;
-                    }
+          /* Handle errors. */
+          if ( state != HBF_SUCCESS ) {
 
-                    error_code = status->code;
-                    error_string = status->reason_phrase;
-                } else {
-                    DEBUG_WEBDAV("http request all cool, result code %d", status->code);
-                }
-            } else {
-                DEBUG_WEBDAV("Did not find a valid request!");
-                rc = 1;
+            /* If the source file changed during submission, lets try again */
+            if( state == HBF_SOURCE_FILE_CHANGE ) {
+              if( attempts++ < 30 ) { /* FIXME: How often do we want to try? */
+                finished = false; /* make it try again from scratch. */
+                DEBUG_WEBDAV("SOURCE file has changed during upload, retry #%d in two seconds!", attempts);
+                sleep(2);
+              }
             }
-#endif
-        } else {
-            /* use httpbf */
-            hbf_transfer_t *trans = hbf_init_transfer(clean_uri);
-            if (!trans) {
-                DEBUG_WEBDAV("hbf_init_transfer failed");
-                rc = 1;
-            } else {
-                Hbf_State state = hbf_splitlist(trans, fd);
-                if (dav_session.chunk_info && dav_session.chunk_info->transfer_id) {
-                    DEBUG_WEBDAV("We have chunk info %d %d ", dav_session.chunk_info->start_id, dav_session.chunk_info->transfer_id);
-                    trans->start_id = dav_session.chunk_info->start_id;
-                    trans->transfer_id = dav_session.chunk_info->transfer_id;
-                }
-                if( state == HBF_SUCCESS ) {
-                    chunked_total_size = sb.st_size;
-                    /* Transfer all the chunks through the HTTP session using PUT. */
-                    state = hbf_transfer( dav_session.ctx, trans, "PUT" );
-                }
 
-                if ( state != HBF_SUCCESS ) {
-                    error_string = hbf_error_string(state);
-                    error_code = hbf_fail_http_code(trans);
-                    rc = 1;
-                    if (dav_session.chunk_info) {
-                        dav_session.chunk_info->start_id = trans->start_id;
-                        dav_session.chunk_info->transfer_id = trans->transfer_id;
-                    }
-                }
+            if( finished ) {
+              error_string = hbf_error_string(state);
+              error_code = hbf_fail_http_code(trans);
+              rc = 1;
+              if (dav_session.chunk_info) {
+                dav_session.chunk_info->start_id = trans->start_id;
+                dav_session.chunk_info->transfer_id = trans->transfer_id;
+              }
             }
-            hbf_free_transfer(trans);
+          }
         }
-        if (_progresscb) {
-            ne_set_notifier(dav_session.ctx, 0, 0);
-            _progresscb(write_ctx->url, rc != 0 ? CSYNC_NOTIFY_ERROR :
-                                CSYNC_NOTIFY_FINISHED_UPLOAD, error_code,
-                                (long long)(error_string), dav_session.userdata);
-        }
+        hbf_free_transfer(trans);
+      } while( !finished );
+
+      if (_progresscb) {
+        ne_set_notifier(dav_session.ctx, 0, 0);
+        _progresscb(write_ctx->url, rc != 0 ? CSYNC_NOTIFY_ERROR :
+                                              CSYNC_NOTIFY_FINISHED_UPLOAD, error_code,
+                    (long long)(error_string), dav_session.userdata);
+      }
     } else if( c_streq( write_ctx->method, "GET") ) {
       /* GET a file to the file descriptor */
       /* actually do the request */

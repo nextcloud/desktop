@@ -106,10 +106,11 @@ Hbf_State hbf_splitlist(hbf_transfer_t *transfer, int fd ) {
     return HBF_FILESTAT_FAIL;
   }
   
-  
-  transfer->fd = fd;
-#ifdef NDEBUG
+  /* Store the file characteristics. */
+  transfer->fd        = fd;
   transfer->stat_size = sb.st_size;
+  transfer->modtime   = sb.st_mtime;
+#ifdef NDEBUG
   transfer->calc_size = 0;
 #endif
 
@@ -260,6 +261,35 @@ static int dav_request( ne_request *req, int fd, hbf_block_t *blk ) {
     return state;
 }
 
+static Hbf_State validate_source_file( hbf_transfer_t *transfer ) {
+  Hbf_State state = HBF_SUCCESS;
+  struct stat sb;
+
+  if( transfer == NULL ) {
+    state = HBF_PARAM_FAIL;
+  }
+
+  if( state == HBF_SUCCESS ) {
+    if( transfer->fd <= 0 ) {
+      state = HBF_PARAM_FAIL;
+    }
+  }
+
+  if( state == HBF_SUCCESS ) {
+    int rc = fstat( transfer->fd, &sb );
+    if( rc != 0 ) {
+      state = HBF_STAT_FAIL;
+    }
+  }
+
+  if( state == HBF_SUCCESS ) {
+    if( sb.st_mtime != transfer->modtime || sb.st_size != transfer->stat_size ) {
+      state = HBF_SOURCE_FILE_CHANGE;
+    }
+  }
+  return state;
+}
+
 Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const char *verb ) {
     Hbf_State state = HBF_SUCCESS;
     int cnt;
@@ -288,6 +318,14 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
                 state = HBF_PARAM_FAIL;
             }
         }
+        if( transfer->block_cnt > 1 && cnt > 0 ) {
+          /* The block count is > 1, check size and mtime before transmitting. */
+          state = validate_source_file(transfer);
+          if( state == HBF_SOURCE_FILE_CHANGE ) {
+            /* The source file has changed meanwhile */
+          }
+
+        }
         if( state == HBF_SUCCESS ) {
             ne_request *req = ne_request_create(session, "PUT", transfer_url);
 
@@ -312,6 +350,10 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
             free( transfer_url );
         }
     }
+
+    /* do the source file validation finally (again). */
+    state = validate_source_file(transfer);
+
     return state;
 }
 
@@ -378,6 +420,10 @@ const char *hbf_error_string( Hbf_State state )
     case HBF_MEMORY_FAIL:
         re = "Out of memory.";
         break;
+    case HBF_SOURCE_FILE_CHANGE:
+      re = "Source file changed too often during upload.";
+      break;
+
     case HBF_FAIL:
     default:
         re = "Unknown error.";

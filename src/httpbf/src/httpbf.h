@@ -40,6 +40,8 @@ enum hbf_state_e {
     HBF_CONNECT_FAIL,
     HBF_TIMEOUT_FAIL,
     HBF_MEMORY_FAIL,
+    HBF_STAT_FAIL,
+    HBF_SOURCE_FILE_CHANGE,
     HBF_FAIL
 };
 
@@ -72,9 +74,11 @@ struct hbf_transfer_s {
 
     int status_code;
     char *error_string;
+
+    off_t stat_size;
+    time_t modtime;
 #ifdef NDEBUG
     off_t calc_size;
-    off_t stat_size;
 #endif
 };
 
