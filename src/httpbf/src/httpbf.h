@@ -77,7 +77,8 @@ struct hbf_transfer_s {
 
     off_t stat_size;
     time_t modtime;
-#ifdef NDEBUG
+    off_t block_size;
+#ifndef NDEBUG
     off_t calc_size;
 #endif
 };
@@ -97,9 +98,5 @@ const char *hbf_error_string( Hbf_State state );
  * first part transmission that failed.
  */
 int hbf_fail_http_code( hbf_transfer_t *transfer );
-
-#ifdef NDEBUG
-char* get_transfer_url( hbf_transfer_t *transfer, int indx );
-#endif
 
 #endif

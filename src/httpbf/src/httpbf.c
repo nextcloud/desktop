@@ -40,11 +40,7 @@
 #define DEBUG_HBF(...) printf(__VA_ARGS__)
 #endif
 
-#define DEFAULT_BLOG_SIZE (10*1024*1024)
-
-static int get_transfer_block_size() {
-  return DEFAULT_BLOG_SIZE;
-}
+#define DEFAULT_BLOCK_SIZE (10*1024*1024)
 
 static int transfer_id( struct stat *sb ) {
     struct timeval tp;
@@ -81,6 +77,7 @@ hbf_transfer_t *hbf_init_transfer( const char *dest_uri ) {
     transfer->status_code = 200;
     transfer->error_string = NULL;
     transfer->start_id = 0;
+    transfer->block_size = DEFAULT_BLOCK_SIZE;
 
     return transfer;
 }
@@ -110,12 +107,12 @@ Hbf_State hbf_splitlist(hbf_transfer_t *transfer, int fd ) {
   transfer->fd        = fd;
   transfer->stat_size = sb.st_size;
   transfer->modtime   = sb.st_mtime;
-#ifdef NDEBUG
+#ifndef NDEBUG
   transfer->calc_size = 0;
 #endif
 
   /* calc the number of blocks to split in */
-  blk_size = get_transfer_block_size();
+  blk_size = transfer->block_size;
   num_blocks = sb.st_size / blk_size;
 
   /* there migth be a remainder. */
@@ -155,7 +152,7 @@ Hbf_State hbf_splitlist(hbf_transfer_t *transfer, int fd ) {
           /* store the block data into the result array in the transfer */
           *((transfer->block_arr)+cnt) = block;
       }
-#ifdef NDEBUG
+#ifndef NDEBUG
   transfer->calc_size = overall;
 #endif
   }
@@ -179,11 +176,8 @@ void hbf_free_transfer( hbf_transfer_t *transfer ) {
 
     free( transfer );
 }
-/* keep this function hidden if non debug. Public for unit test. */
-#ifndef NDEBUG
-static
-#endif
-char* get_transfer_url( hbf_transfer_t *transfer, int indx ) {
+
+static char* get_transfer_url( hbf_transfer_t *transfer, int indx ) {
     char *res = NULL;
 
     hbf_block_t *block = NULL;
