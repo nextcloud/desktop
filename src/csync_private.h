@@ -181,6 +181,7 @@ struct csync_file_stat_s {
   int nlink;        /* u32 */
   int type;         /* u32 */
   int child_modified;/*bool*/
+  int should_update_md5; /*bool */
 
   char *destpath;   /* for renames */
   const char *md5;

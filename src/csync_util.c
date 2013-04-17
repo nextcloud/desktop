@@ -120,7 +120,7 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
   ctx = (CSYNC *) data;
 
   /* search for UPDATED file */
-  if (fs->instruction != CSYNC_INSTRUCTION_UPDATED) {
+  if (fs->instruction != CSYNC_INSTRUCTION_UPDATED && !fs->should_update_md5) {
     rc = 0;
     goto out;
   }
