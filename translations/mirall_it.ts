@@ -357,7 +357,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="271"/>
         <source>Too many incorrect password attempts.</source>
-        <translation type="unfinished"/>
+        <translation>Troppi tentativi non corretti della password.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="275"/>
@@ -820,27 +820,27 @@ Please write a bug report.</source>
     <message numerus="yes">
         <location filename="../src/mirall/fileitemdialog.cpp" line="123"/>
         <source>%1 (finished %n sec. ago)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 (terminato %n sec. fa)</numerusform><numerusform>%1 (terminato %n sec. fa)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="152"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Copiato negli appunti</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="152"/>
         <source>The sync protocol has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Il protocollo di sincronizzazione è stato copiato negli appunti.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="225"/>
         <source>Uploaded</source>
-        <translation type="unfinished"/>
+        <translation>Caricato</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="226"/>
         <source>Downloaded</source>
-        <translation type="unfinished"/>
+        <translation>Scaricato</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="169"/>
@@ -1384,7 +1384,7 @@ La configurazione non può essere completata.</translation>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="335"/>
         <source>Files removed</source>
-        <translation type="unfinished"/>
+        <translation>File rimossi</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="341"/>
@@ -1394,7 +1394,7 @@ La configurazione non può essere completata.</translation>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="341"/>
         <source>File updated</source>
-        <translation type="unfinished"/>
+        <translation>File aggiornato</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="343"/>
@@ -1404,7 +1404,7 @@ La configurazione non può essere completata.</translation>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="343"/>
         <source>Files updated</source>
-        <translation type="unfinished"/>
+        <translation>File aggiornati</translation>
     </message>
 </context>
 <context>

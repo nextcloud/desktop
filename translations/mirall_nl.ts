@@ -357,7 +357,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="271"/>
         <source>Too many incorrect password attempts.</source>
-        <translation type="unfinished"/>
+        <translation>Teveel onjuiste wachtwoordpogingen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="275"/>
@@ -825,22 +825,22 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="152"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Gekopieerd naar klembord</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="152"/>
         <source>The sync protocol has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Het synch protocol is gekopieerd naar het klembord.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="225"/>
         <source>Uploaded</source>
-        <translation type="unfinished"/>
+        <translation>Geüpload</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="226"/>
         <source>Downloaded</source>
-        <translation type="unfinished"/>
+        <translation>Gedownload</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="169"/>
@@ -1384,7 +1384,7 @@ De setup kan niet worden uitgevoerd.</translation>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="335"/>
         <source>Files removed</source>
-        <translation type="unfinished"/>
+        <translation>Bestand verwijderd</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="341"/>
@@ -1394,7 +1394,7 @@ De setup kan niet worden uitgevoerd.</translation>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="341"/>
         <source>File updated</source>
-        <translation type="unfinished"/>
+        <translation>Bestand bijgewerkt</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="343"/>
@@ -1404,7 +1404,7 @@ De setup kan niet worden uitgevoerd.</translation>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="343"/>
         <source>Files updated</source>
-        <translation type="unfinished"/>
+        <translation>Bestanden bijgewerkt</translation>
     </message>
 </context>
 <context>

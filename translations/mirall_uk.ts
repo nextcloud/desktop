@@ -357,7 +357,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="271"/>
         <source>Too many incorrect password attempts.</source>
-        <translation type="unfinished"/>
+        <translation>Занадто багато невдалих спроб введення пароля.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="275"/>
@@ -820,27 +820,27 @@ Please write a bug report.</source>
     <message numerus="yes">
         <location filename="../src/mirall/fileitemdialog.cpp" line="123"/>
         <source>%1 (finished %n sec. ago)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 (завершено %n сек. назад)</numerusform><numerusform>%1 (завершено %n сек. назад)</numerusform><numerusform>%1 (завершено %n сек. назад)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="152"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Скопійовано в буфер обміну</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="152"/>
         <source>The sync protocol has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Протокол синхронізації був скопійований в буфер обміну.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="225"/>
         <source>Uploaded</source>
-        <translation type="unfinished"/>
+        <translation>Вивантажено</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="226"/>
         <source>Downloaded</source>
-        <translation type="unfinished"/>
+        <translation>Завантажено</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="169"/>
@@ -1384,7 +1384,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="335"/>
         <source>Files removed</source>
-        <translation type="unfinished"/>
+        <translation>Файлів видалено</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="341"/>
@@ -1394,7 +1394,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="341"/>
         <source>File updated</source>
-        <translation type="unfinished"/>
+        <translation>Файл оновлено</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="343"/>
@@ -1404,7 +1404,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="343"/>
         <source>Files updated</source>
-        <translation type="unfinished"/>
+        <translation>Файлів оновлено</translation>
     </message>
 </context>
 <context>

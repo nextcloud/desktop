@@ -357,7 +357,7 @@ p, li { white-space: pre-wrap; }⏎
     <message>
         <location filename="../src/mirall/application.cpp" line="271"/>
         <source>Too many incorrect password attempts.</source>
-        <translation type="unfinished"/>
+        <translation>ბევრჯერ პაროლის არასწორად შეყვანის მცდელობა.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="275"/>
@@ -820,27 +820,27 @@ Please write a bug report.</source>
     <message numerus="yes">
         <location filename="../src/mirall/fileitemdialog.cpp" line="123"/>
         <source>%1 (finished %n sec. ago)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1 (დამთავრდა %n წმ. წინ)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="152"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>კოპირებულია კლიპბორდში</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="152"/>
         <source>The sync protocol has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>სინქრონიზაციის პროტოკოლი კოპირებულ იქნა კლიპბორდში.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="225"/>
         <source>Uploaded</source>
-        <translation type="unfinished"/>
+        <translation>ატვირთულია</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="226"/>
         <source>Downloaded</source>
-        <translation type="unfinished"/>
+        <translation>ჩამოტვირთულია</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="169"/>
@@ -1383,7 +1383,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="335"/>
         <source>Files removed</source>
-        <translation type="unfinished"/>
+        <translation>ფაილები წაიშლილია</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="341"/>
@@ -1393,7 +1393,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="341"/>
         <source>File updated</source>
-        <translation type="unfinished"/>
+        <translation>ფაილი განახლდა</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="343"/>
@@ -1403,7 +1403,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="343"/>
         <source>Files updated</source>
-        <translation type="unfinished"/>
+        <translation>ფაილები განახლდა</translation>
     </message>
 </context>
 <context>
