@@ -542,8 +542,10 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       }
 
       if (ctx->current_fs && !ctx->current_fs->child_modified
-          && ctx->current_fs->instruction == CSYNC_INSTRUCTION_EVAL)
+          && ctx->current_fs->instruction == CSYNC_INSTRUCTION_EVAL) {
         ctx->current_fs->instruction = CSYNC_INSTRUCTION_NONE;
+        ctx->current_fs->should_update_md5 = true;
+      }
     }
     ctx->current_fs = previous_fs;
     SAFE_FREE(filename);
