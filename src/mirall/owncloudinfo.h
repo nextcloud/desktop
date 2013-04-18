@@ -160,6 +160,7 @@ private:
     bool                           _certsUntrusted;
     int                            _authAttempts;
     QMap<QString, oCICredentials>  _credentials;
+    QMutex                         _certChainMutex;
 };
 
 };

@@ -294,6 +294,7 @@ QString ownCloudInfo::configHandle(QNetworkReply *reply)
 
 QList<QSslCertificate> ownCloudInfo::certificateChain() const
 {
+    QMutexLocker lock(const_cast<QMutex*>(&_certChainMutex));
     return _certificateChain;
 }
 
@@ -321,6 +322,7 @@ void ownCloudInfo::slotReplyFinished()
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
     QSslConfiguration sslConfig = reply->sslConfiguration();
     if (!sslConfig.isNull()) {
+        QMutexLocker lock(&_certChainMutex);
         _certificateChain = sslConfig.peerCertificateChain();
     }
 
