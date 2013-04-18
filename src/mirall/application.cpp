@@ -93,7 +93,8 @@ Application::Application(int &argc, char **argv) :
     _showLogWindow(false),
     _logFlush(false),
     _helpOnly(false),
-    _fileItemDialog(0)
+    _fileItemDialog(0),
+    _statusDialog(0)
 {
     setApplicationName( _theme->appNameGUI() );
     setWindowIcon( _theme->applicationIcon() );
@@ -183,8 +184,8 @@ Application::Application(int &argc, char **argv) :
 Application::~Application()
 {
     delete _tray; // needed, see ctor
-    if( _fileItemDialog) delete _fileItemDialog;
-    if( _statusDialog && ! _helpOnly)  delete _statusDialog;
+    delete _fileItemDialog;
+    delete _statusDialog;
     qDebug() << "* Mirall shutdown";
 }
 
