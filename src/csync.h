@@ -246,6 +246,15 @@ int csync_reconcile(CSYNC *ctx);
 int csync_propagate(CSYNC *ctx);
 
 /**
+ * @brief Commit the sync results to journal
+ *
+ * @param ctx  The context to commit.
+ *
+ * @return  0 on success, less than 0 if an error occured.
+ */
+int csync_commit(CSYNC *ctx);
+
+/**
  * @brief Destroy the csync context
  *
  * Writes the statedb, unlocks csync and frees the memory.
