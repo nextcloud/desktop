@@ -181,6 +181,7 @@ static pid_t _csync_lock_read(CSYNC *ctx, const char *lockfile) {
 }
 
 int csync_lock(CSYNC *ctx, const char *lockfile) {
+#ifndef _WIN32
   /* Check if lock already exists. */
   if (_csync_lock_read(ctx, lockfile) > 0) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Aborting, another synchronization process is running.");
@@ -190,9 +191,14 @@ int csync_lock(CSYNC *ctx, const char *lockfile) {
   CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Creating lock file: %s", lockfile);
 
   return _csync_lock_create(ctx, lockfile);
+#else
+  return 0;
+#endif
+
 }
 
 void csync_lock_remove(CSYNC *ctx, const char *lockfile) {
+#ifndef _WIN32
   char errbuf[256] = {0};
   /* You can't remove the lock if it is from another process */
   if (_csync_lock_read(ctx, lockfile) == getpid()) {
@@ -205,5 +211,6 @@ void csync_lock_remove(CSYNC *ctx, const char *lockfile) {
           errbuf);
     }
   }
+#endif
 }
 
