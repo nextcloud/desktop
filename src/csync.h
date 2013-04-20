@@ -73,6 +73,7 @@ enum csync_error_codes_e {
   CSYNC_ERR_LOG,
   CSYNC_ERR_LOCK,
   CSYNC_ERR_STATEDB_LOAD,
+  CSYNC_ERR_STATEDB_WRITE,
   CSYNC_ERR_MODULE,
   CSYNC_ERR_TIMESKEW,
   CSYNC_ERR_FILESYSTEM,
@@ -225,6 +226,15 @@ int csync_reconcile(CSYNC *ctx);
  * @return  0 on success, less than 0 if an error occured.
  */
 int csync_propagate(CSYNC *ctx);
+
+/**
+ * @brief Commit the sync results to journal
+ *
+ * @param ctx  The context to commit.
+ *
+ * @return  0 on success, less than 0 if an error occured.
+ */
+int csync_commit(CSYNC *ctx);
 
 /**
  * @brief Destroy the csync context

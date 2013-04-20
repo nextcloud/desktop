@@ -233,7 +233,6 @@ int csync_init(CSYNC *ctx) {
               errbuf);
   }
 
-
   /* create/load statedb */
   if (! csync_is_statedb_disabled(ctx)) {
     rc = asprintf(&ctx->statedb.file, "%s/.csync_journal.db",
@@ -689,19 +688,11 @@ static void _tree_destructor(void *data) {
   SAFE_FREE(freedata);
 }
 
-int csync_destroy(CSYNC *ctx) {
+static int  _merge_and_write_statedb(CSYNC *ctx) {
   struct timespec start, finish;
-  char *lock = NULL;
   char errbuf[256] = {0};
   int jwritten = 0;
-
-  if (ctx == NULL) {
-    errno = EBADF;
-    return -1;
-  }
-  ctx->error_code = CSYNC_ERR_NONE;
-
-  csync_vio_shutdown(ctx);
+  int rc = 0;
 
   /* if we have a statedb */
   if (ctx->statedb.db != NULL) {
@@ -712,6 +703,7 @@ int csync_destroy(CSYNC *ctx) {
         strerror_r(errno, errbuf, sizeof(errbuf));
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to merge trees: %s",
                   errbuf);
+        rc = -1;
       } else {
         csync_gettime(&start);
         /* write the statedb to disk */
@@ -725,10 +717,104 @@ int csync_destroy(CSYNC *ctx) {
           strerror_r(errno, errbuf, sizeof(errbuf));
           CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to write statedb: %s",
                     errbuf);
+          rc = -1;
         }
       }
     }
-    csync_statedb_close(ctx, ctx->statedb.file, jwritten);
+    if (csync_statedb_close(ctx, ctx->statedb.file, jwritten) < 0) {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "ERR: closing of statedb failed.");
+      rc = -1;
+    }
+  }
+  return rc;
+}
+
+int csync_commit(CSYNC *ctx) {
+  int rc = 0;
+
+  ctx->error_code = CSYNC_ERR_NONE;
+
+  if (_merge_and_write_statedb(ctx) < 0) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Merge and Write database failed!");
+    if (ctx->error_code == CSYNC_ERR_NONE) {
+      ctx->error_code = CSYNC_ERR_STATEDB_WRITE;
+    }
+    rc = 1;  /* Set to soft error. */
+    /* The other steps happen anyway, what else can we do? */
+  }
+
+  /* destroy the rbtrees */
+  if (c_rbtree_size(ctx->local.tree) > 0) {
+    c_rbtree_destroy(ctx->local.tree, _tree_destructor);
+  }
+
+  if (c_rbtree_size(ctx->remote.tree) > 0) {
+    c_rbtree_destroy(ctx->remote.tree, _tree_destructor);
+  }
+
+  /* free memory */
+  c_rbtree_free(ctx->local.tree);
+  c_list_free(ctx->local.list);
+  c_list_free(ctx->local.id_list);
+  c_rbtree_free(ctx->remote.tree);
+  c_list_free(ctx->remote.list);
+  c_list_free(ctx->remote.id_list);
+
+  /* create/load statedb */
+  if (! csync_is_statedb_disabled(ctx)) {
+    if(!ctx->statedb.file) {
+      rc = asprintf(&ctx->statedb.file, "%s/.csync_journal.db",
+                    ctx->local.uri);
+      if (rc < 0) {
+        ctx->error_code = CSYNC_ERR_MEM;
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Failed to assemble statedb file name.");
+        goto out;
+      }
+    }
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Journal: %s", ctx->statedb.file);
+
+    if (csync_statedb_load(ctx, ctx->statedb.file) < 0) {
+      ctx->error_code = CSYNC_ERR_STATEDB_LOAD;
+      rc = -1;
+      goto out;
+    }
+  }
+
+  /* Create new trees */
+  if (c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp) < 0) {
+    ctx->error_code = CSYNC_ERR_TREE;
+    rc = -1;
+    goto out;
+  }
+
+  if (c_rbtree_create(&ctx->remote.tree, _key_cmp, _data_cmp) < 0) {
+    ctx->error_code = CSYNC_ERR_TREE;
+    rc = -1;
+    goto out;
+  }
+
+  ctx->status = CSYNC_STATUS_INIT;
+  out:
+  return rc;
+}
+
+int csync_destroy(CSYNC *ctx) {
+  char *lock = NULL;
+
+  if (ctx == NULL) {
+    errno = EBADF;
+    return -1;
+  }
+  ctx->error_code = CSYNC_ERR_NONE;
+
+  csync_vio_shutdown(ctx);
+
+  if (_merge_and_write_statedb(ctx) < 0) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "destroy: Merge and Write database failed!");
+    if (ctx->error_code == CSYNC_ERR_NONE) {
+      ctx->error_code = CSYNC_ERR_STATEDB_WRITE;
+    }
+    /* The other steps happen anyway, what else can we do? */
   }
 
   /* clear exclude list */
@@ -875,7 +961,6 @@ int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb) {
     ctx->error_code = CSYNC_ERR_UNSPEC;
     return -1;
   }
-
   ctx->callbacks.auth_function = cb;
 
   return 0;
