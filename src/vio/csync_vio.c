@@ -576,8 +576,7 @@ int csync_vio_utimes(CSYNC *ctx, const char *uri, const struct timeval *times) {
   return rc;
 }
 
-char *csync_vio_get_status_string(CSYNC *ctx)
-{
+char *csync_vio_get_status_string(CSYNC *ctx) {
     if(ctx->error_string) {
         return ctx->error_string;
     }
@@ -587,10 +586,16 @@ char *csync_vio_get_status_string(CSYNC *ctx)
     return NULL;
 }
 
-int csync_vio_set_property(CSYNC* ctx, const char* key, void* data)
-{
+int csync_vio_set_property(CSYNC* ctx, const char* key, void* data) {
   int rc = -1;
   if(VIO_METHOD_HAS_FUNC(ctx->module.method, set_property))
     rc = ctx->module.method->set_property(key, data);
+  return rc;
+}
+
+int csync_vio_commit(CSYNC *ctx) {
+  int rc = -1;
+  if(VIO_METHOD_HAS_FUNC(ctx->module.method, commit))
+    rc = ctx->module.method->commit();
   return rc;
 }

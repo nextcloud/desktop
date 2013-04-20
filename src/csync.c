@@ -159,9 +159,7 @@ int csync_init(CSYNC *ctx) {
   char *exclude = NULL;
   char *lock = NULL;
   char *config = NULL;
-#ifndef _WIN32
   char errbuf[256] = {0};
-#endif
   if (ctx == NULL) {
     errno = EBADF;
     return -1;
@@ -685,6 +683,12 @@ int csync_commit(CSYNC *ctx) {
     /* The other steps happen anyway, what else can we do? */
   }
 
+  if (csync_vio_commit(ctx) < 0) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "commit failed: %s",
+              ctx->error_string ? ctx->error_string : "");
+    rc = -1;
+  }
+
   /* destroy the rbtrees */
   if (c_rbtree_size(ctx->local.tree) > 0) {
     c_rbtree_destroy(ctx->local.tree, _tree_destructor);
@@ -699,6 +703,9 @@ int csync_commit(CSYNC *ctx) {
   c_list_free(ctx->local.list);
   c_rbtree_free(ctx->remote.tree);
   c_list_free(ctx->remote.list);
+
+  ctx->local.list = 0;
+  ctx->remote.list = 0;
 
   /* create/load statedb */
   if (! csync_is_statedb_disabled(ctx)) {
@@ -734,6 +741,7 @@ int csync_commit(CSYNC *ctx) {
   }
 
   ctx->status = CSYNC_STATUS_INIT;
+  SAFE_FREE(ctx->error_string);
   out:
   return rc;
 }
