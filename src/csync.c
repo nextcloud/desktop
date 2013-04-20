@@ -902,11 +902,6 @@ int csync_set_log_callback(CSYNC *ctx, csync_log_callback cb) {
     return -1;
   }
 
-  if (ctx->status & CSYNC_STATUS_INIT) {
-    fprintf(stderr, "csync_set_log_callback: This function must be called before initialization.\n");
-    return -1;
-  }
-
   ctx->callbacks.log_function = cb;
 
   return 0;
@@ -1068,12 +1063,6 @@ int csync_set_progress_callback(CSYNC* ctx, csync_progress_callback cb)
 
   ctx->error_code = CSYNC_ERR_NONE;
   ctx->callbacks.progresscb = cb;
-
-  if (ctx->status & CSYNC_STATUS_INIT) {
-    fprintf(stderr, "csync_set_progress_callback: This function must be called before initialization.\n");
-    ctx->error_code = CSYNC_ERR_UNSPEC;
-    return -1;
-  }
 
   return 0;
 
