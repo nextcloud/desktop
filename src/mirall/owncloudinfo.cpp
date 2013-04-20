@@ -416,7 +416,9 @@ void ownCloudInfo::slotReplyFinished()
                 } else if( key == QLatin1String( "edition") ) {
                     // get version out
                     edition = val;
-                } else {
+                } else if(key == QLatin1String("installed")) {
+		    // Silently ignoring "installed = true" information
+		} else {
                     qDebug() << "Unknown info from ownCloud status.php: "<< key << "=" << val;
                 }
             }
