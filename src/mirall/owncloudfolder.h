@@ -88,6 +88,15 @@ private slots:
     void slotCSyncFinished();
 
 private:
+    static int getauth(const char *prompt,
+                             char *buf,
+                             size_t len,
+                             int echo,
+                             int verify,
+                             void *userdata
+                             );
+    const char* proxyTypeToCStr(QNetworkProxy::ProxyType type);
+
     QString      _secondPath;
     QThread     *_thread;
     CSyncThread *_csync;
@@ -96,6 +105,8 @@ private:
     bool         _csyncUnavail;
     bool         _wipeDb;
     SyncFileItemVector _items;
+
+    CSYNC *_csync_ctx;
 };
 
 }

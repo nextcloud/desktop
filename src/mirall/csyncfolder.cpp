@@ -62,7 +62,7 @@ void CSyncFolder::startSync(const QStringList &pathList)
     emit syncStateChange();
 
     _thread = new QThread(this);
-    _csync = new CSyncThread( path(), secondPath() );
+    // _csync = new CSyncThread( _csync );
     connect(_csync, SIGNAL(started()), SLOT(slotCSyncStarted()), Qt::QueuedConnection);
     connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()), Qt::QueuedConnection);
     connect(_csync, SIGNAL(csyncError(QString)), SLOT(slotCSyncError(QString)), Qt::QueuedConnection);

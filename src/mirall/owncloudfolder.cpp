@@ -18,6 +18,7 @@
 #include "mirall/owncloudinfo.h"
 #include "mirall/credentialstore.h"
 #include "mirall/logger.h"
+#include "mirall/utility.h"
 
 #include <csync.h>
 
@@ -35,6 +36,14 @@
 
 namespace Mirall {
 
+void csyncLogCatcher(CSYNC *ctx,
+                     int verbosity,
+                     const char *function,
+                     const char *buffer,
+                     void *userdata)
+{
+  Logger::instance()->csyncLog( QString::fromUtf8(buffer) );
+}
 
 static QString replaceScheme(const QString &urlStr)
 {
@@ -50,10 +59,10 @@ static QString replaceScheme(const QString &urlStr)
 }
 
 ownCloudFolder::ownCloudFolder(const QString &alias,
-                               const QString &path,
+                               const QString &mpath,
                                const QString &secondPath,
                                QObject *parent)
-    : Folder(alias, path, secondPath, parent)
+    : Folder(alias, mpath, secondPath, parent)
     , _secondPath(secondPath)
     , _thread(0)
     , _csync(0)
@@ -66,12 +75,142 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
     connect(this, SIGNAL(syncFinished(SyncResult)), notifier, SLOT(slotSyncFinished(SyncResult)));
     qDebug() << "****** ownCloud folder using watcher *******";
     // The folder interval is set in the folder parent class.
+
+    QString url = replaceScheme(_secondPath);
+    QString localpath = path();
+
+    if( csync_create( &_csync_ctx, localpath.toUtf8().data(), url.toUtf8().data() ) < 0 ) {
+        qDebug() << "Unable to create csync-context!";
+        _csync_ctx = 0;
+    } else {
+        csync_set_log_callback(   _csync_ctx, csyncLogCatcher );
+        csync_set_log_verbosity(_csync_ctx, 11);
+
+        MirallConfigFile cfgFile;
+        csync_set_config_dir( _csync_ctx, cfgFile.configPath().toUtf8() );
+
+        csync_enable_conflictcopys(_csync_ctx);
+        QString excludeList = cfgFile.excludeFile();
+        if( !excludeList.isEmpty() ) {
+            qDebug() << "==== added CSync exclude List: " << excludeList.toUtf8();
+            csync_add_exclude_list( _csync_ctx, excludeList.toUtf8() );
+        }
+        csync_set_auth_callback( _csync_ctx, getauth );
+
+        if( csync_init( _csync_ctx ) < 0 ) {
+            qDebug() << "Could not initialize csync!";
+            _csync_ctx = 0;
+        }
+
+        if( _csync_ctx ) {
+            /* Store proxy */
+            QList<QNetworkProxy> proxies = QNetworkProxyFactory::proxyForQuery(QUrl(cfgFile.ownCloudUrl()));
+            // We set at least one in Application
+            Q_ASSERT(proxies.count() > 0);
+            QNetworkProxy proxy = proxies.first();
+            int proxyPort = proxy.port();
+
+            csync_set_module_property(_csync_ctx, "proxy_type", (char*) proxyTypeToCStr(proxy.type()) );
+            csync_set_module_property(_csync_ctx, "proxy_host", proxy.hostName().toUtf8().data() );
+            csync_set_module_property(_csync_ctx, "proxy_port", &proxyPort );
+            csync_set_module_property(_csync_ctx, "proxy_user", proxy.user().toUtf8().data()     );
+            csync_set_module_property(_csync_ctx, "proxy_pwd" , proxy.password().toUtf8().data() );
+
+            csync_set_module_property(_csync_ctx, "csync_context", _csync_ctx);
+        }
+    }
 }
 
 ownCloudFolder::~ownCloudFolder()
 {
-
+    // Destroy csync here.
+    csync_destroy(_csync_ctx);
 }
+
+const char* ownCloudFolder::proxyTypeToCStr(QNetworkProxy::ProxyType type)
+{
+    switch (type) {
+    case QNetworkProxy::NoProxy:
+        return "NoProxy";
+    case QNetworkProxy::DefaultProxy:
+        return "DefaultProxy";
+    case QNetworkProxy::Socks5Proxy:
+        return "Socks5Proxy";
+    case QNetworkProxy::HttpProxy:
+        return "HttpProxy";
+    case QNetworkProxy::HttpCachingProxy:
+        return "HttpCachingProxy";
+    case QNetworkProxy::FtpCachingProxy:
+        return "FtpCachingProxy";
+    default:
+        return "NoProxy";
+    }
+}
+
+int ownCloudFolder::getauth(const char *prompt,
+                         char *buf,
+                         size_t len,
+                         int echo,
+                         int verify,
+                         void *userdata
+                         )
+{
+    int re = 0;
+    QMutex mutex;
+
+    QString qPrompt = QString::fromLatin1( prompt ).trimmed();
+    QString user = CredentialStore::instance()->user();
+    QString pwd  = CredentialStore::instance()->password();
+
+    if( qPrompt == QLatin1String("Enter your username:") ) {
+        // qDebug() << "OOO Username requested!";
+        QMutexLocker locker( &mutex );
+        qstrncpy( buf, user.toUtf8().constData(), len );
+    } else if( qPrompt == QLatin1String("Enter your password:") ) {
+        QMutexLocker locker( &mutex );
+        // qDebug() << "OOO Password requested!";
+        qstrncpy( buf, pwd.toUtf8().constData(), len );
+    } else {
+        if( qPrompt.startsWith( QLatin1String("There are problems with the SSL certificate:"))) {
+            // SSL is requested. If the program came here, the SSL check was done by mirall
+            // It needs to be checked if the  chain is still equal to the one which
+            // was verified by the user.
+            QRegExp regexp("fingerprint: ([\\w\\d:]+)");
+            bool certOk = false;
+
+            int pos = 0;
+
+            // This is the set of certificates which QNAM accepted, so we should accept
+            // them as well
+            QList<QSslCertificate> certs = ownCloudInfo::instance()->certificateChain();
+
+            while (!certOk && (pos = regexp.indexIn(qPrompt, 1+pos)) != -1) {
+                QString neon_fingerprint = regexp.cap(1);
+
+                foreach( const QSslCertificate& c, certs ) {
+                    QString verified_shasum = Utility::formatFingerprint(c.digest(QCryptographicHash::Sha1).toHex());
+                    qDebug() << "SSL Fingerprint from neon: " << neon_fingerprint << " compared to verified: " << verified_shasum;
+                    if( verified_shasum == neon_fingerprint ) {
+                        certOk = true;
+                        break;
+                    }
+                }
+            }
+            // certOk = false;     DEBUG setting, keep disabled!
+            if( !certOk ) { // Problem!
+                qstrcpy( buf, "no" );
+                re = -1;
+            } else {
+                qstrcpy( buf, "yes" ); // Certificate is fine!
+            }
+        } else {
+            qDebug() << "Unknown prompt: <" << prompt << ">";
+            re = -1;
+        }
+    }
+    return re;
+}
+
 
 bool ownCloudFolder::isBusy() const
 {
@@ -127,21 +266,12 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     _syncResult.setStatus( SyncResult::SyncPrepare );
     emit syncStateChange();
 
-    QString url = replaceScheme(_secondPath);
 
-    qDebug() << "*** Start syncing url to ownCloud: " << url;
+    qDebug() << "*** Start syncing";
     _thread = new QThread(this);
-    _csync = new CSyncThread( path(), url);
+    _csync = new CSyncThread( _csync_ctx );
     _csync->moveToThread(_thread);
 
-    QList<QNetworkProxy> proxies = QNetworkProxyFactory::proxyForQuery(QUrl(cfgFile.ownCloudUrl()));
-    // We set at least one in Application
-    Q_ASSERT(proxies.count() > 0);
-    QNetworkProxy proxy = proxies.first();
-
-    _csync->setConnectionDetails( CredentialStore::instance()->user(),
-                                  CredentialStore::instance()->password(),
-                                  proxy );
     qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
     connect( _csync, SIGNAL(treeWalkResult(const SyncFileItemVector&)),
               this, SLOT(slotThreadTreeWalkResult(const SyncFileItemVector&)), Qt::QueuedConnection);

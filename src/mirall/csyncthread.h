@@ -35,13 +35,11 @@ class CSyncThread : public QObject
 {
     Q_OBJECT
 public:
-    CSyncThread(const QString &source, const QString &target);
+    CSyncThread(CSYNC *);
     ~CSyncThread();
 
-    static void setConnectionDetails( const QString&, const QString&, const QNetworkProxy& );
     static QString csyncConfigDir();
 
-    const char* proxyTypeToCStr(QNetworkProxy::ProxyType);
     QString csyncErrorToString( CSYNC_ERROR_CODE, const char * );
 
     Q_INVOKABLE void startSync();
@@ -74,26 +72,16 @@ private:
 
     static int walkFinalize(TREE_WALK_FILE*, void* );
 
-    static int getauth(const char *prompt,
-                char *buf,
-                size_t len,
-                int echo,
-                int verify,
-                void *userdata
-    );
+
 
     static QMutex _mutex;
     static QMutex _syncMutex;
-    static QString _user;
-    static QString _passwd;
-    static QNetworkProxy _proxy;
 
     static QString _csyncConfigDir;
 
     SyncFileItemVector _syncedItems;
 
-    QString _source;
-    QString _target;
+    CSYNC *_csync_ctx;
     bool _needsUpdate;
 
     friend class CSyncRunScopeHelper;
