@@ -1989,6 +1989,7 @@ static char *owncloud_error_string()
 }
 
 static void owncloud_commit() {
+
   SAFE_FREE( _lastDir );
 
   clean_caches();
@@ -2147,15 +2148,7 @@ void vio_module_shutdown(csync_vio_method_t *method) {
     SAFE_FREE( dav_session.session_key);
     SAFE_FREE( dav_session.error_string );
 
-    SAFE_FREE( _lastDir );
-
-    clean_caches();
-
-    if( dav_session.ctx )
-        ne_session_destroy( dav_session.ctx );
     /* DEBUG_WEBDAV( "********** vio_module_shutdown" ); */
-
-    ne_sock_exit();
 }
 
 /* vim: set ts=4 sw=4 et cindent: */
