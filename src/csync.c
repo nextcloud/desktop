@@ -672,6 +672,10 @@ static int  _merge_and_write_statedb(CSYNC *ctx) {
 int csync_commit(CSYNC *ctx) {
   int rc = 0;
 
+  if (ctx == NULL) {
+    return -1;
+  }
+
   ctx->status_code = CSYNC_STATUS_OK;
 
   if (_merge_and_write_statedb(ctx) < 0) {
@@ -709,12 +713,12 @@ int csync_commit(CSYNC *ctx) {
 
   /* create/load statedb */
   if (! csync_is_statedb_disabled(ctx)) {
-    if(!ctx->statedb.file) {
-      rc = asprintf(&ctx->statedb.file, "%s/.csync_journal.db",
-                    ctx->local.uri);
-      if (rc < 0) {
+    if (ctx->statedb.file == NULL) {
+      if (asprintf(&ctx->statedb.file, "%s/.csync_journal.db",
+                    ctx->local.uri) < 0) {
         ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
         CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Failed to assemble statedb file name.");
+        rc = -1;
         goto out;
       }
     }

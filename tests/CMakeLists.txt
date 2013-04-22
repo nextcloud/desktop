@@ -47,6 +47,7 @@ add_cmocka_test(check_csync_util csync_tests/check_csync_util.c ${TEST_TARGET_LI
 # csync tests which require init
 add_cmocka_test(check_csync_init csync_tests/check_csync_init.c ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_csync_statedb_query csync_tests/check_csync_statedb_query.c ${TEST_TARGET_LIBRARIES})
+add_cmocka_test(check_csync_commit csync_tests/check_csync_commit.c ${TEST_TARGET_LIBRARIES})
 
 # treewalk
 add_cmocka_test(check_csync_treewalk csync_tests/check_csync_treewalk.c ${TEST_TARGET_LIBRARIES})

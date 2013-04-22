@@ -171,6 +171,10 @@ static int dummy_utimes(const char *uri, const struct timeval *times) {
   return 0;
 }
 
+static int dummy_commit() {
+  return 0;
+}
+
 csync_vio_method_t dummy_method = {
   .method_table_size = sizeof(csync_vio_method_t),
   .open = dummy_open,
@@ -189,7 +193,8 @@ csync_vio_method_t dummy_method = {
   .unlink = dummy_unlink,
   .chmod = dummy_chmod,
   .chown = dummy_chown,
-  .utimes = dummy_utimes
+  .utimes = dummy_utimes,
+  .commit = dummy_commit
 };
 
 csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
