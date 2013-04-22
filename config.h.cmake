@@ -22,3 +22,5 @@
 #cmakedefine HAVE_FNMATCH 1
 
 #cmakedefine NEON_WITH_LFS 1
+#cmakedefine HAVE___MINGW_ASPRINTF 1
+

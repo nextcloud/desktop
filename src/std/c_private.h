@@ -72,6 +72,10 @@ typedef struct stat csync_stat_t;
 #define O_NOATIME 0
 #endif
 
+#if !defined(HAVE_ASPRINTF) && defined(HAVE___MINGW_ASPRINTF)
+#define asprintf __mingw_asprintf
+#endif
+
 /* tchar definitions for clean win32 filenames */
 #define _UNICODE
 
