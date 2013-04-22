@@ -190,11 +190,41 @@ static char* get_transfer_url( hbf_transfer_t *transfer, int indx ) {
 
     if( transfer->block_cnt == 1 ) {
       /* Just one chunk. We send as an ordinary request without chunking. */
-      if( asprintf(&res, "%s", transfer->url) < 0 ) {
-          return NULL;
-      }
+      res = strdup( transfer->url );
     } else {
-      if( asprintf(&res, "%s-chunking-%u-%u-%u", transfer->url, transfer->transfer_id,
+      char trans_id_str[32];
+      char trans_block_str[32];
+      char indx_str[32];
+      int len = 1; /* trailing zero. */
+      int tlen = 0;
+
+      tlen = sprintf( trans_id_str,    "%u", transfer->transfer_id );
+      if( tlen < 0 ) {
+        return NULL;
+      }
+      len += tlen;
+
+      tlen = sprintf( trans_block_str, "%u", transfer->block_cnt );
+      if( tlen < 0 ) {
+        return NULL;
+      }
+      len += tlen;
+
+      tlen = sprintf( indx_str,        "%u", indx );
+      if( tlen < 0 ) {
+        return NULL;
+      }
+      len += tlen;
+
+      len += strlen(transfer->url);
+      len += strlen("-chunking---");
+
+      res = malloc(len);
+      if( res == NULL ) {
+        return NULL;
+      }
+
+      if( sprintf(res, "%s-chunking-%u-%u-%u", transfer->url, transfer->transfer_id,
                    transfer->block_cnt, indx ) < 0 ) {
         return NULL;
       }

@@ -31,6 +31,7 @@
 #include <string.h>
 #include <time.h>
 
+#include "c_private.h"
 #include "c_alloc.h"
 #include "c_path.h"
 
