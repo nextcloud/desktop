@@ -41,6 +41,7 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.lock"
 #include "csync_log.h"
 
+#ifndef _WIN32
 static int _csync_lock_create(CSYNC *ctx, const char *lockfile) {
   int fd = -1;
   pid_t pid = 0;
@@ -131,9 +132,6 @@ static pid_t _csync_lock_read(CSYNC *ctx, const char *lockfile) {
   const _TCHAR *wlockfile;
 
   /* Read PID from existing lock */
-#ifdef _WIN32
-  _fmode = _O_BINARY;
-#endif
   wlockfile = c_multibyte(lockfile);
   fd = _topen(wlockfile, O_RDONLY);
   c_free_multibyte(wlockfile);
@@ -179,6 +177,7 @@ static pid_t _csync_lock_read(CSYNC *ctx, const char *lockfile) {
 
   return pid;
 }
+#endif
 
 int csync_lock(CSYNC *ctx, const char *lockfile) {
 #ifndef _WIN32
