@@ -67,4 +67,6 @@ int csync_vio_set_property(CSYNC *ctx, const char *key, void *data);
 
 char *csync_vio_get_error_string(CSYNC *ctx);
 
+void csync_vio_commit(CSYNC *ctx);
+
 #endif /* _CSYNC_VIO_H */

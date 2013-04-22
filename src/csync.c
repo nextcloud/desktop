@@ -750,6 +750,8 @@ int csync_commit(CSYNC *ctx) {
     /* The other steps happen anyway, what else can we do? */
   }
 
+  csync_vio_commit(ctx);
+
   /* destroy the rbtrees */
   if (c_rbtree_size(ctx->local.tree) > 0) {
     c_rbtree_destroy(ctx->local.tree, _tree_destructor);
