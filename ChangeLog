@@ -1,6 +1,16 @@
 ChangeLog
 =========
 
+version 1.2.5 (release 2013-04-23 ), csync 0.70.7 required
+  * [Fixes] NSIS installer fixes
+  * [Fixes] Fix crash race by making certificateChain() thread safe
+  * [Fixes] Build with older CMake versions (CentOS/RHEL 6) 
+  * [Fixes] Wording in GUI
+  * [Fixes] Silently ignore "installed = true" status.php
+  * Set log verbosity before calling csync_init.
+  * GUI feedback for the statistics copy action
+  * Safer approach for detecting duplicate sync runs
+
 version 1.2.4 (release 2013-04-11 ), csync 0.70.6 required
   * [Fixes] Clarify string in folder wizard
   * [Fixes] Fixed some valgrind warnings
@@ -10,11 +20,9 @@ version 1.2.4 (release 2013-04-11 ), csync 0.70.6 required
   * [Fixes] Allow setting the configuration directory on command line
 
 version 1.2.3 (release 2013-04-02 ), csync 0.70.5 required
-
   * [Fixes] Unbreak self-signed certificate handling
 
 version 1.2.2 (release 2013-04-02 ), csync 0.70.5 required
-
   * [Fixes] Do not crash when local file tree contains symlinks
   * [Fixes] Correctly handle locked files on Windows
   * [Fixes] Display errors in all members of the SSL chain
