@@ -104,7 +104,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                         len = strlen( tmp->path );
                         h = c_jhash64((uint8_t *) tmp->path, len, 0);
 
-                        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"PHash of temporar opposite: %llu", h);
+                        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"PHash of temporar opposite: %ld", h);
                         node = c_rbtree_find(tree, &h);
                     }
                     if(node) {

@@ -153,6 +153,11 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
     return -1;
   }
 
+  ctx->local.list     = 0;
+  ctx->local.id_list  = 0;
+  ctx->remote.list    = 0;
+  ctx->remote.id_list = 0;
+
   *csync = ctx;
   return 0;
 }
@@ -743,6 +748,8 @@ int csync_commit(CSYNC *ctx) {
     /* The other steps happen anyway, what else can we do? */
   }
 
+  csync_vio_commit(ctx);
+
   /* destroy the rbtrees */
   if (c_rbtree_size(ctx->local.tree) > 0) {
     c_rbtree_destroy(ctx->local.tree, _tree_destructor);
@@ -759,6 +766,13 @@ int csync_commit(CSYNC *ctx) {
   c_rbtree_free(ctx->remote.tree);
   c_list_free(ctx->remote.list);
   c_list_free(ctx->remote.id_list);
+
+  ctx->remote.list = 0;
+  ctx->remote.id_list = 0;
+  ctx->local.list = 0;
+  ctx->local.id_list = 0;
+
+  ctx->remote.read_from_db = 0;
 
   /* create/load statedb */
   if (! csync_is_statedb_disabled(ctx)) {
@@ -794,6 +808,9 @@ int csync_commit(CSYNC *ctx) {
   }
 
   ctx->status = CSYNC_STATUS_INIT;
+  ctx->error_code = CSYNC_ERR_NONE;
+  SAFE_FREE(ctx->error_string);
+
   out:
   return rc;
 }

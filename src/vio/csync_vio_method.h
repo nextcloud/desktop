@@ -81,6 +81,7 @@ typedef int (*csync_method_utimes_fn)(const char *uri, const struct timeval time
 typedef int (*csync_method_set_property_fn)(const char *key, void *data);
 
 typedef char* (*csync_method_get_error_string_fn)();
+typedef void (*csync_method_commit_fn)();
 
 struct csync_vio_method_s {
         size_t method_table_size;           /* Used for versioning */
@@ -106,6 +107,7 @@ struct csync_vio_method_s {
         csync_method_sendfile_fn sendfile;
         csync_method_set_property_fn set_property;
         csync_method_get_error_string_fn get_error_string;
+        csync_method_commit_fn commit;
 };
 
 #endif /* _CSYNC_VIO_H */

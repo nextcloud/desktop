@@ -2039,6 +2039,23 @@ static char *owncloud_error_string()
     return dav_session.error_string;
 }
 
+static void owncloud_commit() {
+
+  SAFE_FREE( _lastDir );
+
+  clean_caches();
+
+  if( dav_session.ctx )
+    ne_session_destroy( dav_session.ctx );
+  /* DEBUG_WEBDAV( "********** vio_module_shutdown" ); */
+
+  ne_sock_exit();
+  _connected = 0;  /* triggers dav_connect to go through the whole neon setup */
+
+}
+
+
+
 static int owncloud_utimes(const char *uri, const struct timeval *times) {
 
     ne_proppatch_operation ops[2];
@@ -2154,7 +2171,9 @@ csync_vio_method_t _method = {
     .chown = owncloud_chown,
     .utimes = owncloud_utimes,
     .set_property = owncloud_set_property,
-    .get_error_string = owncloud_error_string
+    .get_error_string = owncloud_error_string,
+    .commit = owncloud_commit
+
 };
 
 csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
@@ -2184,15 +2203,7 @@ void vio_module_shutdown(csync_vio_method_t *method) {
     SAFE_FREE( dav_session.session_key);
     SAFE_FREE( dav_session.error_string );
 
-    SAFE_FREE( _lastDir );
-
-    clean_caches();
-
-    if( dav_session.ctx )
-        ne_session_destroy( dav_session.ctx );
     /* DEBUG_WEBDAV( "********** vio_module_shutdown" ); */
-
-    ne_sock_exit();
 }
 
 /* vim: set ts=4 sw=4 et cindent: */

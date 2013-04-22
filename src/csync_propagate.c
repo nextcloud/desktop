@@ -45,25 +45,29 @@
 static int _csync_cleanup_cmp(const void *a, const void *b) {
   csync_file_stat_t *st_a, *st_b;
 
-  st_a = (csync_file_stat_t *) a;
-  st_b = (csync_file_stat_t *) b;
+  st_a = *((csync_file_stat_t **) a);
+  st_b = *((csync_file_stat_t **) b);
 
   return strcmp(st_a->path, st_b->path);
 }
 
 static void _store_id_update(CSYNC *ctx, csync_file_stat_t *st) {
     c_list_t *list = NULL;
+    csync_file_stat_t **pst;
+
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "SYNCED remember  dir: %s", st->path);
 
+    pst = c_malloc(sizeof(csync_file_stat_t*));
+    *pst = st;
     switch (ctx->current) {
       case LOCAL_REPLICA:
-        list = c_list_prepend(ctx->local.id_list, (void*)st);
+        list = c_list_prepend(ctx->local.id_list, (void*)pst);
         if( list != NULL ) {
             ctx->local.id_list = list;
         }
         break;
       case REMOTE_REPLICA:
-        list = c_list_prepend(ctx->remote.id_list, (void*)st);
+        list = c_list_prepend(ctx->remote.id_list, (void*)pst);
         if(list != NULL ) {
             ctx->remote.id_list = list;
         }
@@ -1417,7 +1421,7 @@ int csync_correct_id(CSYNC *ctx) {
     for (walk = c_list_last(list); walk != NULL; walk = c_list_prev(walk)) {
       csync_file_stat_t *st = NULL;
 
-      st = (csync_file_stat_t *) walk->data;
+      st = *((csync_file_stat_t **) walk->data);
       if( st->type == CSYNC_FTW_TYPE_FILE ) {
           path = c_dirname( st->path );
       } else if( st->type == CSYNC_FTW_TYPE_DIR ) {
