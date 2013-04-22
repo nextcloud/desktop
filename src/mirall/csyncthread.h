@@ -38,8 +38,6 @@ public:
     CSyncThread(CSYNC *);
     ~CSyncThread();
 
-    static QString csyncConfigDir();
-
     QString csyncErrorToString( CSYNC_ERROR_CODE, const char * );
 
     Q_INVOKABLE void startSync();
@@ -76,9 +74,6 @@ private:
 
     static QMutex _mutex;
     static QMutex _syncMutex;
-
-    static QString _csyncConfigDir;
-
     SyncFileItemVector _syncedItems;
 
     CSYNC *_csync_ctx;

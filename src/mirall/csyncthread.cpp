@@ -43,8 +43,6 @@ namespace Mirall {
 
 /* static variables to hold the credentials */
 
-QString CSyncThread::_csyncConfigDir;  // to be able to remove the lock file.
-
 QMutex CSyncThread::_mutex;
 QMutex CSyncThread::_syncMutex;
 
@@ -309,11 +307,6 @@ void CSyncThread::startSync()
     _needsUpdate = false;
     _mutex.unlock();
 
-    MirallConfigFile cfg;
-    _mutex.lock();
-    _csyncConfigDir = cfg.configPath();
-    _mutex.unlock();
-
     // cleans up behind us and emits finished() to ease error handling
     CSyncRunScopeHelper helper(_csync_ctx, this);
 
@@ -354,18 +347,13 @@ void CSyncThread::startSync()
     if( walkOk ) {
         if( csync_walk_local_tree(_csync_ctx, &walkFinalize, 0) < 0 ||
             csync_walk_remote_tree( _csync_ctx, &walkFinalize, 0 ) < 0 ) {
-          qDebug() << "Error in finalize treewalk.";
+            qDebug() << "Error in finalize treewalk.";
         } else {
         // emit the treewalk results.
             emit treeWalkResult(_syncedItems);
         }
     }
     qDebug() << Q_FUNC_INFO << "Sync finished";
-}
-
-QString CSyncThread::csyncConfigDir()
-{
-    return _csyncConfigDir;
 }
 
 void CSyncThread::progress(const char *remote_url, enum csync_notify_type_e kind,

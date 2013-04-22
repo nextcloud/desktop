@@ -334,7 +334,8 @@ void ownCloudFolder::slotThreadTreeWalkResult(const SyncFileItemVector& items)
 void ownCloudFolder::slotTerminateSync()
 {
     qDebug() << "folder " << alias() << " Terminating!";
-    QString configDir = _csync->csyncConfigDir();
+    MirallConfigFile cfg;
+    QString configDir = cfg.configPath();
     qDebug() << "csync's Config Dir: " << configDir;
 
     if( _thread ) {
