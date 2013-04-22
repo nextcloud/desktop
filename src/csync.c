@@ -762,10 +762,17 @@ int csync_commit(CSYNC *ctx) {
   /* free memory */
   c_rbtree_free(ctx->local.tree);
   c_list_free(ctx->local.list);
-  // c_list_free(ctx->local.id_list);
+  c_list_free(ctx->local.id_list);
   c_rbtree_free(ctx->remote.tree);
   c_list_free(ctx->remote.list);
-  // c_list_free(ctx->remote.id_list);
+  c_list_free(ctx->remote.id_list);
+
+  ctx->remote.list = 0;
+  ctx->remote.id_list = 0;
+  ctx->local.list = 0;
+  ctx->local.id_list = 0;
+
+  ctx->remote.read_from_db = 0;
 
   /* create/load statedb */
   if (! csync_is_statedb_disabled(ctx)) {
@@ -801,6 +808,8 @@ int csync_commit(CSYNC *ctx) {
   }
 
   ctx->status = CSYNC_STATUS_INIT;
+  ctx->error_code = CSYNC_ERR_NONE;
+  SAFE_FREE(ctx->error_string);
   out:
   return rc;
 }
