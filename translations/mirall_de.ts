@@ -357,7 +357,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="258"/>
         <source>Too many incorrect password attempts.</source>
-        <translation>Zu viele inkorrekte Passworteingaben.</translation>
+        <translation>Zu viele falsche Passworteingaben.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="262"/>
