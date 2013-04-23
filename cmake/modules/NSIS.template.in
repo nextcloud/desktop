@@ -374,7 +374,7 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
 
    ;License & release notes.
    File "@CPACK_RESOURCE_FILE_LICENSE@"
-   File /oname=NOTES.txt ${NSI_PATH}\RELEASE_NOTES.txt
+   ;File /oname=NOTES.txt ${NSI_PATH}\RELEASE_NOTES.txt
 
    ;QT stuff:
    File "${QT_DLL_PATH}\QtCore4.dll"
@@ -425,9 +425,9 @@ SectionGroup "Shortcuts"
       SetShellVarContext all
       RMDir /r "$SMPROGRAMS\${APPLICATION_NAME}"
       CreateDirectory "$SMPROGRAMS\${APPLICATION_NAME}"
-      CreateShortCut "$SMPROGRAMS\${APPLICATION_NAME}\LICENSE.lnk" "$INSTDIR\LICENSE.txt"
+      ;CreateShortCut "$SMPROGRAMS\${APPLICATION_NAME}\LICENSE.lnk" "$INSTDIR\LICENSE.txt"
       CreateShortCut "$SMPROGRAMS\${APPLICATION_NAME}\${APPLICATION_NAME}.lnk" "$INSTDIR\${APPLICATION_EXECUTABLE}"
-      CreateShortCut "$SMPROGRAMS\${APPLICATION_NAME}\Release notes.lnk" "$INSTDIR\NOTES.txt"
+      ;CreateShortCut "$SMPROGRAMS\${APPLICATION_NAME}\Release notes.lnk" "$INSTDIR\NOTES.txt"
       CreateShortCut "$SMPROGRAMS\${APPLICATION_NAME}\Uninstall.lnk" "$INSTDIR\uninstall.exe"
       SetShellVarContext current
    ${MementoSectionEnd}
