@@ -531,27 +531,26 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="350"/>
         <source>CSync create failed.</source>
-        <translation>Cஒத்திசைவு உருவாக்கல் தோல்வியுற்றது</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="91"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="73"/>
         <source>CSync failed to create a lock file.</source>
         <translation>Cஒத்திசைவு பூட்டு கோப்பை உருவாக்க தோல்வியுற்றது.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="85"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="67"/>
         <source>Success.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="88"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="70"/>
         <source>CSync Logging setup failed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="94"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="76"/>
         <source>CSync failed to load the state db.</source>
         <translation>Cஒத்திசைவு db நிலையை ஏற்றுவதற்கு தோல்வியுற்றுது</translation>
     </message>
@@ -560,17 +559,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="100"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="82"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>இந்த சேவை பயனாளரின் கணணியின் நேரமானது சேவையகத்தில் உள்ள கணணியின் நேரத்திலும் வித்தியாசமானது. தயவுசெய்து சேவையகத்திலும் சேவை பயனாளரின் கணணியிலும் நேர ஒத்திசைவு சேவையொன்றை (NTP) பயன்படுத்தவும் அதனால் நேரங்கள் ஒரே மாதிரியாக இருக்கும்.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="105"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="87"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>​கோப்பு அமைப்பின் வகையை Cஒத்திசைவினால் கண்டுப்பிடிக்கமுடியவில்லை.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="108"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="90"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>உள்ளக மரத்தை முறைவழியாக்கும்போது Cஒத்திசைவு வழு ஒன்றைப் பெற்றது</translation>
     </message>
@@ -579,116 +578,116 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="126"/>
-        <source>&lt;p&gt;The target directory %1 does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;குறித்த அடைவு %1 ஐ காணமுடியவில்லை.&lt;/p&gt;&lt;p&gt;தயவுசெய்து ஒத்திசைவு அமைப்பை சரிபார்க்க.&lt;/p&gt;</translation>
-    </message>
-    <message>
         <source>&lt;p&gt;The ownCloud plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="136"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="118"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>இடத்துரி கோப்பு அமைப்பை எழுத முடியவில்லை. தயவுசெய்து அனுமதியை சரிபார்க்கவும்.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="132"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="114"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>ஒரு தொலைவு கோப்பை எழுத முடியவில்லை. தயவுசெய்து தொலைவு அணுகலை சரிபார்க்கவும்.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="111"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="93"/>
         <source>CSync failed to reserve memory.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="114"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="96"/>
         <source>CSync fatal parameter error.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="117"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="99"/>
         <source>CSync processing step update failed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="120"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="102"/>
         <source>CSync processing step reconcile failed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="123"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="105"/>
         <source>CSync processing step propagate failed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="139"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="108"/>
+        <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/csyncthread.cpp" line="121"/>
         <source>CSync failed to connect through a proxy.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="142"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="124"/>
         <source>CSync failed to lookup proxy or server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="145"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="127"/>
         <source>CSync failed to authenticate at the %1 server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="148"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="130"/>
         <source>CSync failed to authenticate at the proxy.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="151"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="133"/>
         <source>CSync failed to connect to the network.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="154"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="136"/>
         <source>A network connection timeout happend.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="157"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="139"/>
         <source>A HTTP transmission error happened.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="160"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="142"/>
         <source>CSync failed due to not handled permission deniend.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="163"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="145"/>
         <source>CSync failed to find a specific file.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="166"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="148"/>
         <source>CSync tried to create a directory that already exists.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="169"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="151"/>
         <source>CSync: No space on %1 server available.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="172"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="154"/>
         <source>CSync unspecified error.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="175"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="157"/>
         <source>An internal error number %1 happend.</source>
         <translation>ஒரு உள்ளக வழு இலக்கம் %1 ஏற்பட்டது</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="179"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="161"/>
         <source>&lt;br/&gt;Backend Message: </source>
         <translation type="unfinished"/>
     </message>
@@ -703,7 +702,7 @@ Please make sure that all directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="97"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="79"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;%1 இன் cஒத்திசைவிற்கான உட்செருகலை ஏற்றமுடியாது.&lt;br/&gt;நிறுவலை தயவுசெய்து சரிபார்க்க!&lt;/p&gt;</translation>
     </message>
@@ -1337,62 +1336,62 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::ServerActionNotifier</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="325"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="456"/>
         <source>New file available</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="325"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="456"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="327"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="458"/>
         <source>New files available</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/owncloudfolder.cpp" line="327"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="458"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="333"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="464"/>
         <source>File removed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="333"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="464"/>
         <source>&apos;%1&apos; has been removed.</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/owncloudfolder.cpp" line="335"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="466"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="335"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="466"/>
         <source>Files removed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="341"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="472"/>
         <source>&apos;%1&apos; has been updated.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="341"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="472"/>
         <source>File updated</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/owncloudfolder.cpp" line="343"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="474"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="343"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="474"/>
         <source>Files updated</source>
         <translation type="unfinished"/>
     </message>
@@ -1580,7 +1579,7 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::ownCloudFolder</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="227"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="358"/>
         <source>The CSync thread terminated.</source>
         <translation>Cஒத்திசைவு புரிஉரு முடிவு.</translation>
     </message>
