@@ -17,7 +17,6 @@
 #include "mirall/mirallconfigfile.h"
 #include "mirall/theme.h"
 #include "mirall/logger.h"
-#include "mirall/utility.h"
 #include "mirall/owncloudinfo.h"
 
 #ifdef Q_OS_WIN
@@ -43,31 +42,14 @@
 namespace Mirall {
 
 /* static variables to hold the credentials */
-QString CSyncThread::_user;
-QString CSyncThread::_passwd;
-QNetworkProxy CSyncThread::_proxy;
-
-QString CSyncThread::_csyncConfigDir;  // to be able to remove the lock file.
 
 QMutex CSyncThread::_mutex;
 QMutex CSyncThread::_syncMutex;
 
-void csyncLogCatcher(CSYNC *ctx,
-                     int verbosity,
-                     const char *function,
-                     const char *buffer,
-                     void *userdata)
-{
-  Logger::instance()->csyncLog( QString::fromUtf8(buffer) );
-}
-
-CSyncThread::CSyncThread(const QString &source, const QString &target)
-    : _source(source)
-    , _target(target)
-
+CSyncThread::CSyncThread(CSYNC *csync)
 {
     _mutex.lock();
-    if( ! _source.endsWith(QLatin1Char('/'))) _source.append(QLatin1Char('/'));
+    _csync_ctx = csync;
     _mutex.unlock();
 }
 
@@ -123,7 +105,7 @@ QString CSyncThread::csyncErrorToString( CSYNC_ERROR_CODE err, const char *errSt
         errStr = tr("CSync processing step propagate failed.");
         break;
     case CSYNC_ERR_ACCESS_FAILED:
-        errStr = tr("<p>The target directory %1 does not exist.</p><p>Please check the sync setup.</p>").arg(_target);
+        errStr = tr("<p>The target directory does not exist.</p><p>Please check the sync setup.</p>");
         // this is critical. The database has to be removed.
         emit wipeDb();
         break;
@@ -180,26 +162,6 @@ QString CSyncThread::csyncErrorToString( CSYNC_ERROR_CODE err, const char *errSt
     }
     return errStr;
 
-}
-
-const char* CSyncThread::proxyTypeToCStr(QNetworkProxy::ProxyType type)
-{
-    switch (type) {
-    case QNetworkProxy::NoProxy:
-        return "NoProxy";
-    case QNetworkProxy::DefaultProxy:
-        return "DefaultProxy";
-    case QNetworkProxy::Socks5Proxy:
-        return "Socks5Proxy";
-    case QNetworkProxy::HttpProxy:
-        return "HttpProxy";
-    case QNetworkProxy::HttpCachingProxy:
-        return "HttpCachingProxy";
-    case QNetworkProxy::FtpCachingProxy:
-        return "FtpCachingProxy";
-    default:
-        return "NoProxy";
-    }
 }
 
 int CSyncThread::treewalkLocal( TREE_WALK_FILE* file, void *data )
@@ -294,21 +256,21 @@ int CSyncThread::treewalkError(TREE_WALK_FILE* file)
 }
 
 struct CSyncRunScopeHelper {
-    CSyncRunScopeHelper(CSYNC *_ctx, CSyncThread *_parent)
-        : ctx(_ctx), parent(_parent)
+    CSyncRunScopeHelper(CSYNC *ctx, CSyncThread *parent)
+        : _ctx(ctx), _parent(parent)
     {
-        t.start();
+        _t.start();
     }
     ~CSyncRunScopeHelper() {
-        csync_destroy(ctx);
+        csync_commit(_ctx);
 
-        qDebug() << "CSync run took " << t.elapsed() << " Milliseconds";
-        emit(parent->finished());
-        parent->_syncMutex.unlock();
+        qDebug() << "CSync run took " << _t.elapsed() << " Milliseconds";
+        emit(_parent->finished());
+        _parent->_syncMutex.unlock();
     }
-    CSYNC *ctx;
-    QTime t;
-    CSyncThread *parent;
+    CSYNC *_ctx;
+    QTime _t;
+    CSyncThread *_parent;
 };
 
 void CSyncThread::handleSyncError(CSYNC *ctx, const char *state) {
@@ -333,94 +295,59 @@ void CSyncThread::startSync()
         return;
     }
 
+    if( ! _csync_ctx ) {
+        qDebug() << "XXXXXXXXXXXXXXXX FAIL: do not have csync_ctx!";
+    }
     qDebug() << Q_FUNC_INFO << "Sync started";
 
     qDebug() << "starting to sync " << qApp->thread() << QThread::currentThread();
-    CSYNC *csync;
-    int proxyPort = _proxy.port();
 
     _mutex.lock();
     _syncedItems.clear();
     _needsUpdate = false;
     _mutex.unlock();
 
-    if( csync_create(&csync,
-                     _source.toUtf8().data(),
-                     _target.toUtf8().data()) < 0 ) {
-        emit csyncError( tr("CSync create failed.") );
-    }
-    csync_set_log_verbosity(csync, 11);
-
-    MirallConfigFile cfg;
-    csync_set_config_dir( csync, cfg.configPath().toUtf8() );
-
-    _mutex.lock();
-    _csyncConfigDir = cfg.configPath();
-    _mutex.unlock();
-
-    csync_enable_conflictcopys(csync);
-    QString excludeList = cfg.excludeFile();
-    if( !excludeList.isEmpty() ) {
-        qDebug() << "==== added CSync exclude List: " << excludeList.toUtf8();
-        csync_add_exclude_list( csync, excludeList.toUtf8() );
-    }
-
     // cleans up behind us and emits finished() to ease error handling
-    CSyncRunScopeHelper helper(csync, this);
+    CSyncRunScopeHelper helper(_csync_ctx, this);
 
-    csync_set_userdata(csync, this);
+    csync_set_userdata(_csync_ctx, this);
 
-    csync_set_log_callback( csync, csyncLogCatcher );
-    csync_set_auth_callback( csync, getauth );
-    csync_set_progress_callback( csync, progress );
-
-    if( csync_init(csync) < 0 ) {
-        handleSyncError(csync, "csync_init");
-        return;
-    }
-
-    // set module properties, mainly the proxy information.
-    // do not use QLatin1String here because that has to be real const char* for C.
-    csync_set_module_property(csync, "csync_context", csync);
-    csync_set_module_property(csync, "proxy_type", (char*) proxyTypeToCStr(_proxy.type()) );
-    csync_set_module_property(csync, "proxy_host", _proxy.hostName().toUtf8().data() );
-    csync_set_module_property(csync, "proxy_port", &proxyPort );
-    csync_set_module_property(csync, "proxy_user", _proxy.user().toUtf8().data()     );
-    csync_set_module_property(csync, "proxy_pwd" , _proxy.password().toUtf8().data() );
+    // csync_set_auth_callback( _csync_ctx, getauth );
+    csync_set_progress_callback( _csync_ctx, progress );
 
     qDebug() << "#### Update start #################################################### >>";
-    if( csync_update(csync) < 0 ) {
-        handleSyncError(csync, "csync_update");
+    if( csync_update(_csync_ctx) < 0 ) {
+        handleSyncError(_csync_ctx, "csync_update");
         return;
     }
     qDebug() << "<<#### Update end ###########################################################";
 
-    if( csync_reconcile(csync) < 0 ) {
-        handleSyncError(csync, "cysnc_reconcile");
+    if( csync_reconcile(_csync_ctx) < 0 ) {
+        handleSyncError(_csync_ctx, "cysnc_reconcile");
         return;
     }
 
     bool walkOk = true;
-    if( csync_walk_local_tree(csync, &treewalkLocal, 0) < 0 ) {
+    if( csync_walk_local_tree(_csync_ctx, &treewalkLocal, 0) < 0 ) {
         qDebug() << "Error in local treewalk.";
         walkOk = false;
     }
-    if( walkOk && csync_walk_remote_tree(csync, &treewalkRemote, 0) < 0 ) {
+    if( walkOk && csync_walk_remote_tree(_csync_ctx, &treewalkRemote, 0) < 0 ) {
         qDebug() << "Error in remote treewalk.";
     }
 
     if (_needsUpdate)
         emit(started());
 
-    if( csync_propagate(csync) < 0 ) {
-        handleSyncError(csync, "cysnc_reconcile");
+    if( csync_propagate(_csync_ctx) < 0 ) {
+        handleSyncError(_csync_ctx, "cysnc_reconcile");
         return;
     }
 
     if( walkOk ) {
-        if( csync_walk_local_tree(csync, &walkFinalize, 0) < 0 ||
-            csync_walk_remote_tree( csync, &walkFinalize, 0 ) < 0 ) {
-          qDebug() << "Error in finalize treewalk.";
+        if( csync_walk_local_tree(_csync_ctx, &walkFinalize, 0) < 0 ||
+            csync_walk_remote_tree( _csync_ctx, &walkFinalize, 0 ) < 0 ) {
+            qDebug() << "Error in finalize treewalk.";
         } else {
         // emit the treewalk results.
             emit treeWalkResult(_syncedItems);
@@ -428,83 +355,6 @@ void CSyncThread::startSync()
     }
     qDebug() << Q_FUNC_INFO << "Sync finished";
 }
-
-void CSyncThread::setConnectionDetails( const QString &user, const QString &passwd, const QNetworkProxy &proxy )
-{
-    _mutex.lock();
-    _user = user;
-    _passwd = passwd;
-    _proxy = proxy;
-    _mutex.unlock();
-}
-
-QString CSyncThread::csyncConfigDir()
-{
-    return _csyncConfigDir;
-}
-
-int CSyncThread::getauth(const char *prompt,
-                         char *buf,
-                         size_t len,
-                         int echo,
-                         int verify,
-                         void *userdata
-                         )
-{
-    int re = 0;
-
-    QString qPrompt = QString::fromLatin1( prompt ).trimmed();
-
-    if( qPrompt == QLatin1String("Enter your username:") ) {
-        // qDebug() << "OOO Username requested!";
-        QMutexLocker locker( &_mutex );
-        qstrncpy( buf, _user.toUtf8().constData(), len );
-    } else if( qPrompt == QLatin1String("Enter your password:") ) {
-        QMutexLocker locker( &_mutex );
-        // qDebug() << "OOO Password requested!";
-        qstrncpy( buf, _passwd.toUtf8().constData(), len );
-    } else {
-        if( qPrompt.startsWith( QLatin1String("There are problems with the SSL certificate:"))) {
-            // SSL is requested. If the program came here, the SSL check was done by mirall
-            // It needs to be checked if the  chain is still equal to the one which
-            // was verified by the user.
-            QRegExp regexp("fingerprint: ([\\w\\d:]+)");
-            bool certOk = false;
-
-            int pos = 0;
-
-
-            // This is the set of certificates which QNAM accepted, so we should accept
-            // them as well
-            QList<QSslCertificate> certs = ownCloudInfo::instance()->certificateChain();
-
-            while (!certOk && (pos = regexp.indexIn(qPrompt, 1+pos)) != -1) {
-                QString neon_fingerprint = regexp.cap(1);
-
-                foreach( const QSslCertificate& c, certs ) {
-                    QString verified_shasum = Utility::formatFingerprint(c.digest(QCryptographicHash::Sha1).toHex());
-                    qDebug() << "SSL Fingerprint from neon: " << neon_fingerprint << " compared to verified: " << verified_shasum;
-                    if( verified_shasum == neon_fingerprint ) {
-                        certOk = true;
-                        break;
-                    }
-                }
-            }
-            // certOk = false;     DEBUG setting, keep disabled!
-            if( !certOk ) { // Problem!
-                qstrcpy( buf, "no" );
-                re = -1;
-            } else {
-                qstrcpy( buf, "yes" ); // Certificate is fine!
-            }
-        } else {
-            qDebug() << "Unknown prompt: <" << prompt << ">";
-            re = -1;
-        }
-    }
-    return re;
-}
-
 
 void CSyncThread::progress(const char *remote_url, enum csync_notify_type_e kind,
                                         long long o1, long long o2, void *userdata)
