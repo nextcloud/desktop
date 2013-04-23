@@ -4,8 +4,8 @@ If you have questions about how to use the ownCloud Desktop Client, please
 direct these to the [mailing list][mailinglist] or our [forum][forum].
 We are also available on [IRC][irc].
 
-### Guidelines
-* Report the issue using our [template][template], it includes all the
+### Bug Reporting Guidelines
+* Important: Report the issue using our [template][template], it includes all the
   informations we need to track down the issue.  
 * This repository is *only* for issues within the ownCloud desktop client. 
   Issues in other compontents should be reported in their own repositores: 
