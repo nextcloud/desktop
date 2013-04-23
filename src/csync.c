@@ -678,7 +678,8 @@ int csync_commit(CSYNC *ctx) {
 
   ctx->status_code = CSYNC_STATUS_OK;
 
-  if (_merge_and_write_statedb(ctx) < 0) {
+  rc = _merge_and_write_statedb(ctx);
+  if (rc < 0) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Merge and Write database failed!");
     if (ctx->status_code == CSYNC_STATUS_OK) {
       ctx->status_code = CSYNC_STATUS_STATEDB_WRITE_ERROR;
@@ -687,18 +688,20 @@ int csync_commit(CSYNC *ctx) {
     /* The other steps happen anyway, what else can we do? */
   }
 
-  if (csync_vio_commit(ctx) < 0) {
+  rc = csync_vio_commit(ctx);
+  if (rc < 0) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "commit failed: %s",
               ctx->error_string ? ctx->error_string : "");
-    rc = -1;
   }
 
   /* destroy the rbtrees */
-  if (c_rbtree_size(ctx->local.tree) > 0) {
+  rc = c_rbtree_size(ctx->local.tree);
+  if (rc > 0) {
     c_rbtree_destroy(ctx->local.tree, _tree_destructor);
   }
 
-  if (c_rbtree_size(ctx->remote.tree) > 0) {
+  rc = c_rbtree_size(ctx->remote.tree);
+  if (rc > 0) {
     c_rbtree_destroy(ctx->remote.tree, _tree_destructor);
   }
 
@@ -712,46 +715,49 @@ int csync_commit(CSYNC *ctx) {
   ctx->remote.list = 0;
 
   /* create/load statedb */
-  if (! csync_is_statedb_disabled(ctx)) {
+  rc = csync_is_statedb_disabled(ctx);
+  if (rc == 0) {
     if (ctx->statedb.file == NULL) {
-      if (asprintf(&ctx->statedb.file, "%s/.csync_journal.db",
-                    ctx->local.uri) < 0) {
+      rc = asprintf(&ctx->statedb.file, "%s/.csync_journal.db",
+                    ctx->local.uri);
+      if (rc < 0) {
         ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
         CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Failed to assemble statedb file name.");
-        rc = -1;
         goto out;
       }
     }
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Journal: %s", ctx->statedb.file);
 
-    if (csync_statedb_load(ctx, ctx->statedb.file) < 0) {
+    rc = csync_statedb_load(ctx, ctx->statedb.file);
+    if (rc < 0) {
       ctx->status_code = CSYNC_STATUS_STATEDB_LOAD_ERROR;
-      rc = -1;
       goto out;
     }
   }
 
   /* Create new trees */
-  if (c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp) < 0) {
+  rc = c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp);
+  if (rc < 0) {
     ctx->status_code = CSYNC_STATUS_TREE_ERROR;
-    rc = -1;
     goto out;
   }
 
-  if (c_rbtree_create(&ctx->remote.tree, _key_cmp, _data_cmp) < 0) {
+  rc = c_rbtree_create(&ctx->remote.tree, _key_cmp, _data_cmp);
+  if (rc < 0) {
     ctx->status_code = CSYNC_STATUS_TREE_ERROR;
-    rc = -1;
     goto out;
   }
 
   ctx->status = CSYNC_STATUS_INIT;
   SAFE_FREE(ctx->error_string);
-  out:
+
+out:
   return rc;
 }
 
 int csync_destroy(CSYNC *ctx) {
   char *lock = NULL;
+  int rc;
 
   if (ctx == NULL) {
     errno = EBADF;
@@ -761,7 +767,8 @@ int csync_destroy(CSYNC *ctx) {
 
   csync_vio_shutdown(ctx);
 
-  if (_merge_and_write_statedb(ctx) < 0) {
+  rc = _merge_and_write_statedb(ctx);
+  if (rc < 0) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "destroy: Merge and Write database failed!");
     if (ctx->status_code == CSYNC_STATUS_OK) {
       ctx->status_code = CSYNC_STATUS_STATEDB_WRITE_ERROR;
@@ -774,17 +781,20 @@ int csync_destroy(CSYNC *ctx) {
 
 #ifndef _WIN32
   /* remove the lock file */
-  if (asprintf(&lock, "%s/%s", ctx->options.config_dir, CSYNC_LOCK_FILE) > 0) {
+  rc = asprintf(&lock, "%s/%s", ctx->options.config_dir, CSYNC_LOCK_FILE);
+  if (rc > 0) {
     csync_lock_remove(lock);
   }
 #endif
 
   /* destroy the rbtrees */
-  if (c_rbtree_size(ctx->local.tree) > 0) {
+  rc = c_rbtree_size(ctx->local.tree);
+  if (rc > 0) {
     c_rbtree_destroy(ctx->local.tree, _tree_destructor);
   }
 
-  if (c_rbtree_size(ctx->remote.tree) > 0) {
+  rc = c_rbtree_size(ctx->remote.tree);
+  if (rc > 0) {
     c_rbtree_destroy(ctx->remote.tree, _tree_destructor);
   }
 
