@@ -156,6 +156,8 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
         new->md5 = c_strdup(fs->md5);
     if (fs->destpath)
         new->destpath = c_strdup(fs->destpath);
+    if (fs->error_string)
+        new->error_string = c_strdup(fs->error_string);
 
     if (c_rbtree_insert(tree, new) < 0) {
       strerror_r(errno, errbuf, sizeof(errbuf));
