@@ -188,7 +188,8 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             st->instruction = CSYNC_INSTRUCTION_EVAL;
             goto out;
         }
-        if( !c_streq(fs->md5, tmp->md5 )) {
+        if((ctx->current == REMOTE_REPLICA && !c_streq(fs->md5, tmp->md5 ))
+            || (ctx->current == LOCAL_REPLICA && fs->mtime != tmp->modtime)) {
             // if (!fs->mtime > tmp->modtime) {
             st->instruction = CSYNC_INSTRUCTION_EVAL;
             goto out;

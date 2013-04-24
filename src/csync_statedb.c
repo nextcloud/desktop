@@ -661,10 +661,11 @@ char *csync_statedb_get_uniqId( CSYNC *ctx, uint64_t jHash, csync_vio_file_stat_
     char *ret = NULL;
     c_strlist_t *result = NULL;
     char *stmt = NULL;
+    (void)buf;
 
     if( ! csync_get_statedb_exists(ctx)) return ret;
 
-    stmt = sqlite3_mprintf("SELECT md5 FROM metadata WHERE phash='%lld' AND modtime=%lu", jHash, buf->mtime);
+    stmt = sqlite3_mprintf("SELECT md5 FROM metadata WHERE phash='%lld'", jHash);
 
     result = csync_statedb_query(ctx, stmt);
     sqlite3_free(stmt);
