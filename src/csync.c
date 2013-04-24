@@ -692,6 +692,7 @@ int csync_commit(CSYNC *ctx) {
   if (rc < 0) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "commit failed: %s",
               ctx->error_string ? ctx->error_string : "");
+    goto out;
   }
 
   /* destroy the rbtrees */
@@ -750,6 +751,8 @@ int csync_commit(CSYNC *ctx) {
 
   ctx->status = CSYNC_STATUS_INIT;
   SAFE_FREE(ctx->error_string);
+
+  rc = 0;
 
 out:
   return rc;

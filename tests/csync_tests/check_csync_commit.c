@@ -77,10 +77,9 @@ static void check_csync_commit(void **state)
     int rc;
 
     rc = csync_commit(csync);
-    assert_int_equal(rc, -1);
+    assert_int_equal(rc, 0);
 
     assert_int_equal(csync->status & CSYNC_STATUS_INIT, 1);
-
 }
 
 static void check_csync_commit_dummy(void **state)

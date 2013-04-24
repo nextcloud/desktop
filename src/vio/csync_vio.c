@@ -594,8 +594,11 @@ int csync_vio_set_property(CSYNC* ctx, const char* key, void* data) {
 }
 
 int csync_vio_commit(CSYNC *ctx) {
-  int rc = -1;
-  if(VIO_METHOD_HAS_FUNC(ctx->module.method, commit))
-    rc = ctx->module.method->commit();
+  int rc = 0;
+
+  if (VIO_METHOD_HAS_FUNC(ctx->module.method, commit)) {
+      rc = ctx->module.method->commit();
+  }
+
   return rc;
 }
