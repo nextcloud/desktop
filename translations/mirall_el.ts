@@ -467,7 +467,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="948"/>
         <source>Setup Error.</source>
-        <translation>Σφάλμα Ρύθμισης.</translation>
+        <translation>Σφάλμα Ρυθμίσεων.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="951"/>
@@ -628,7 +628,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="108"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Ο στοχευμένος κατάλογος δεν υπάρχει.&lt;/p&gt;&lt;p&gt;Παρακαλώ ελέγξτε τις ρυθμίσεις συγχρονισμού.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="121"/>

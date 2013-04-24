@@ -357,7 +357,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="258"/>
         <source>Too many incorrect password attempts.</source>
-        <translation type="unfinished"/>
+        <translation>Liian monta epäonnistunutta salasanayritystä.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="262"/>
@@ -546,12 +546,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="73"/>
         <source>CSync failed to create a lock file.</source>
-        <translation>Csync-synkronointipalvelu ei onnistunut luomaan lukitustiedostoa.</translation>
+        <translation>Csync ei onnistunut luomaan lukitustiedostoa.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="67"/>
         <source>Success.</source>
-        <translation type="unfinished"/>
+        <translation>Onnistui.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="70"/>
@@ -561,7 +561,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="76"/>
         <source>CSync failed to load the state db.</source>
-        <translation>Csync-synkronointipalvelu ei onnistunut lataamaan tilatietokantaa.</translation>
+        <translation>Csync ei onnistunut lataamaan tilatietokantaa.</translation>
     </message>
     <message>
         <source>The system time between the local machine and the server differs too much. Please use a time syncronization service (ntp) on both machines.</source>
@@ -603,7 +603,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="93"/>
         <source>CSync failed to reserve memory.</source>
-        <translation type="unfinished"/>
+        <translation>CSync ei onnistunut varaamaan muistia.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="96"/>
@@ -633,7 +633,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="121"/>
         <source>CSync failed to connect through a proxy.</source>
-        <translation type="unfinished"/>
+        <translation>CSync ei onnistunut muodostamaan yhteyttä välityspalvelimen välityksellä.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="124"/>
@@ -653,7 +653,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="133"/>
         <source>CSync failed to connect to the network.</source>
-        <translation type="unfinished"/>
+        <translation>CSync ei onnistunut yhdistämään verkkoon.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="136"/>
@@ -673,7 +673,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="145"/>
         <source>CSync failed to find a specific file.</source>
-        <translation type="unfinished"/>
+        <translation>CSync ei löytänyt tiettyä tiedostoa.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="148"/>
@@ -764,7 +764,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="43"/>
         <source>File Count</source>
-        <translation type="unfinished"/>
+        <translation>Tiedostomäärä</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="52"/>
@@ -824,7 +824,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="152"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kopioitu leikepöydälle</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="152"/>
@@ -1392,7 +1392,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="472"/>
         <source>File updated</source>
-        <translation type="unfinished"/>
+        <translation>Tiedosto päivitetty</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudfolder.cpp" line="474"/>
@@ -1958,7 +1958,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/fileitemdialog.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Lomake</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.ui" line="27"/>
@@ -1969,7 +1969,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/fileitemdialog.ui" line="63"/>
         <location filename="../src/mirall/fileitemdialog.ui" line="70"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Tekstiselite</translation>
     </message>
 </context>
 <context>
