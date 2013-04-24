@@ -15,6 +15,7 @@
 #include "mirall/owncloudwizard.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/theme.h"
+#include "QProgressIndicator.h"
 
 #include <QDebug>
 #include <QDesktopServices>

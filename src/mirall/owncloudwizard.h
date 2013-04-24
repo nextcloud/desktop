@@ -18,15 +18,12 @@
 
 #include <QWizard>
 
-#include "ui_owncloudwizardselecttypepage.h"
-#include "ui_createanowncloudpage.h"
-#include "ui_owncloudftpaccesspage.h"
 #include "ui_owncloudwizardresultpage.h"
-#include "ui_owncloudcredentialspage.h"
-#include "ui_owncloudsetuppage.h"
+#include "ui_owncloudsetuppage_ng.h"
 
 class QLabel;
 class QVariant;
+class QProgressIndicator;
 
 namespace Mirall {
 
