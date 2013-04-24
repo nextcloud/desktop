@@ -734,6 +734,8 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
     if (pi && pi->error > 3) {
       if (!st->error_string && pi->error_string)
         st->error_string = c_strdup(pi->error_string);
+      if (!other->error_string && pi->error_string)
+          other->error_string = c_strdup(pi->error_string);
       rc = 1;
       goto out;
     }
