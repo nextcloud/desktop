@@ -1346,62 +1346,62 @@ La configurazione non può essere completata.</translation>
 <context>
     <name>Mirall::ServerActionNotifier</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="456"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="449"/>
         <source>New file available</source>
         <translation>Nuovo file disponibile</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="456"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="449"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
         <translation>&apos;%1&apos; è stato sincronizzato con questa macchina.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="458"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="451"/>
         <source>New files available</source>
         <translation>Nuovi file disponibili</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/owncloudfolder.cpp" line="458"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="451"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
         <translation><numerusform>&apos;%1&apos; e %n altro file sono stati sincronizzati con questa macchina.</numerusform><numerusform>&apos;%1&apos; e %n altri file sono stati sincronizzati con questa macchina.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="464"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="457"/>
         <source>File removed</source>
         <translation>File rimosso</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="464"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="457"/>
         <source>&apos;%1&apos; has been removed.</source>
         <translation>&apos;%1&apos; è stato rimosso.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/owncloudfolder.cpp" line="466"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="459"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
         <translation><numerusform>&apos;%1&apos; e %n altro file sono stati rimossi.</numerusform><numerusform>&apos;%1&apos; e %n altri file sono stati rimossi.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="466"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="459"/>
         <source>Files removed</source>
         <translation>File rimossi</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="472"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="465"/>
         <source>&apos;%1&apos; has been updated.</source>
         <translation>&apos;%1&apos; è stato aggiornato.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="472"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="465"/>
         <source>File updated</source>
         <translation>File aggiornato</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/owncloudfolder.cpp" line="474"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="467"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
         <translation><numerusform>&apos;%1&apos; e %n altro file sono stati aggiornati.</numerusform><numerusform>&apos;%1&apos; e %n altri file sono stati aggiornati.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="474"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="467"/>
         <source>Files updated</source>
         <translation>File aggiornati</translation>
     </message>
@@ -1589,7 +1589,7 @@ La configurazione non può essere completata.</translation>
 <context>
     <name>Mirall::ownCloudFolder</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="358"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="351"/>
         <source>The CSync thread terminated.</source>
         <translation>Il thread di CSync è stato terminato.</translation>
     </message>

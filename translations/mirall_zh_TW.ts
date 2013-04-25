@@ -628,7 +628,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="108"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;目標資料夾不存在&lt;/p&gt;&lt;p&gt;請檢查同步設定&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="121"/>
@@ -1346,62 +1346,62 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::ServerActionNotifier</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="456"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="449"/>
         <source>New file available</source>
         <translation>新的可用檔案</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="456"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="449"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
         <translation>%1 已經被同步到這台機器。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="458"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="451"/>
         <source>New files available</source>
         <translation>新的可用檔案</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/owncloudfolder.cpp" line="458"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="451"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
         <translation><numerusform>%1 和 %n 個其他檔案已經被同步到這台機器。</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="464"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="457"/>
         <source>File removed</source>
         <translation>文件已被移除</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="464"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="457"/>
         <source>&apos;%1&apos; has been removed.</source>
         <translation>&apos;%1&apos;已被移除。</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/owncloudfolder.cpp" line="466"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="459"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
         <translation><numerusform>&apos;%1&apos;和其他%n個文件已被移除。</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="466"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="459"/>
         <source>Files removed</source>
         <translation>檔案已移除</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="472"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="465"/>
         <source>&apos;%1&apos; has been updated.</source>
         <translation>&apos;%1&apos;已被更新。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="472"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="465"/>
         <source>File updated</source>
         <translation>檔案已上傳</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/owncloudfolder.cpp" line="474"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="467"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
         <translation><numerusform>&apos;%1&apos;和其他%n個文件已被更新。</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="474"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="467"/>
         <source>Files updated</source>
         <translation>檔案已上傳</translation>
     </message>
@@ -1589,7 +1589,7 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::ownCloudFolder</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="358"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="351"/>
         <source>The CSync thread terminated.</source>
         <translation>CSync 執行緒終止</translation>
     </message>

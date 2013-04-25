@@ -211,7 +211,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="100"/>
         <source>Remote folder:</source>
-        <translation type="unfinished"/>
+        <translation>Удалённая папка:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="149"/>
@@ -357,7 +357,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="258"/>
         <source>Too many incorrect password attempts.</source>
-        <translation type="unfinished"/>
+        <translation>Слишком много раз введён неверный пароль.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="262"/>
@@ -409,7 +409,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="424"/>
         <source>About...</source>
-        <translation>Про...</translation>
+        <translation>О программе...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="480"/>
@@ -628,7 +628,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="108"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Целевая папка не существует.&lt;/p&gt;&lt;p&gt;Проверьте настройки синхронизации.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="121"/>
@@ -819,27 +819,27 @@ Please write a bug report.</source>
     <message numerus="yes">
         <location filename="../src/mirall/fileitemdialog.cpp" line="123"/>
         <source>%1 (finished %n sec. ago)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 (завершено %n сек. назад)</numerusform><numerusform>%1 (завершено %n сек. назад)</numerusform><numerusform>%1 (завершено %n сек. назад)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="152"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Скопировано в буфер обмена</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="152"/>
         <source>The sync protocol has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Протокол синхронизации был скопирован в буфер обмена.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="225"/>
         <source>Uploaded</source>
-        <translation type="unfinished"/>
+        <translation>Загружено</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="226"/>
         <source>Downloaded</source>
-        <translation type="unfinished"/>
+        <translation>Скачано</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="169"/>
@@ -1346,64 +1346,64 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::ServerActionNotifier</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="456"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="449"/>
         <source>New file available</source>
         <translation>Доступен новый файл</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="456"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="449"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
         <translation>&apos;%1&apos; было синхронизировано с этой машиной.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="458"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="451"/>
         <source>New files available</source>
         <translation>Доступны новые файлы</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/owncloudfolder.cpp" line="458"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="451"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
         <translation><numerusform>&apos;%1&apos; и ещё %n другой файл(ов) были синхронизированны с этой машиной.</numerusform><numerusform>&apos;%1&apos; и ещё %n других файл(ов) были синхронизированны с этой машиной.</numerusform><numerusform>&apos;%1&apos; и ещё %n других файл(ов) были синхронизированны с этой машиной.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="464"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="457"/>
         <source>File removed</source>
         <translation>Файл удалён</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="464"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="457"/>
         <source>&apos;%1&apos; has been removed.</source>
         <translation>&apos;%1&apos; был удалён</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/owncloudfolder.cpp" line="466"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="459"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
         <translation><numerusform>&apos;%1&apos; и ещё %n другой файл(ов) были удалены.</numerusform><numerusform>&apos;%1&apos; и ещё %n других файл(ов) были удалены.</numerusform><numerusform>&apos;%1&apos; и ещё %n других файл(ов) были удалены.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="466"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="459"/>
         <source>Files removed</source>
-        <translation type="unfinished"/>
+        <translation>Файлы удалены</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="472"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="465"/>
         <source>&apos;%1&apos; has been updated.</source>
         <translation>&apos;%1&apos; был обновлён</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="472"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="465"/>
         <source>File updated</source>
-        <translation type="unfinished"/>
+        <translation>Файл обновлён</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/owncloudfolder.cpp" line="474"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="467"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
         <translation><numerusform>&apos;%1&apos; и ещё %n другой файл(ов) были обновленны.</numerusform><numerusform>&apos;%1&apos; и ещё %n других файл(ов) были обновленны.</numerusform><numerusform>&apos;%1&apos; и ещё %n других файл(ов) были обновленны.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="474"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="467"/>
         <source>Files updated</source>
-        <translation type="unfinished"/>
+        <translation>Файлы обновлены</translation>
     </message>
 </context>
 <context>
@@ -1589,7 +1589,7 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::ownCloudFolder</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="358"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="351"/>
         <source>The CSync thread terminated.</source>
         <translation>CSync поток закрыт.</translation>
     </message>
@@ -2004,12 +2004,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="55"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4&lt;br&gt;using OCsync %5 and Qt %6.&lt;/small&gt;&lt;p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;Построенный по Git-пересмотру&lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;на %3, %4&lt;br&gt;с использованием OCsync %5 и Qt %6.&lt;/small&gt;&lt;p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;Собрано из Git-ревизии &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; %3, %4&lt;br&gt;с использованием OCsync %5 и Qt %6.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="63"/>
         <source>&lt;p&gt;&lt;b&gt;%1 Client Version %2&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Authors&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;mailto:freitag@owncloud.com&quot;&gt;Klaas Freitag&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;a href=&quot;mailto:danimo@owncloud.com&quot;&gt;Daniel Molkentin&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;br&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/p&gt;&lt;p&gt;For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;.&lt;/p&gt;%7</source>
-        <translation>&lt;p&gt;&lt;b&gt;%1 Версия клиента %2&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Авторы&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;mailto:freitag@owncloud.com&quot;&gt;Klaas Freitag&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;a href=&quot;mailto:danimo@owncloud.com&quot;&gt;Daniel Molkentin&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;br&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/p&gt;&lt;p&gt;Для получения дополнительной информации посетите&lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;.&lt;/p&gt;%7</translation>
+        <translation>&lt;p&gt;&lt;b&gt;%1 Версия клиента %2&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Авторы&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;mailto:freitag@owncloud.com&quot;&gt;Klaas Freitag&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;a href=&quot;mailto:danimo@owncloud.com&quot;&gt;Daniel Molkentin&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;br&gt;На основе Mirall от Duncan Mac-Vicar P.&lt;/p&gt;&lt;p&gt;Для получения дополнительной информации посетите &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;.&lt;/p&gt;%7</translation>
     </message>
 </context>
 <context>

@@ -1346,62 +1346,62 @@ Nevar instalēt.</translation>
 <context>
     <name>Mirall::ServerActionNotifier</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="456"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="449"/>
         <source>New file available</source>
         <translation>Ir pieejama jauna datne</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="456"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="449"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
         <translation>“%1” tika sinhronizēts ar šo datoru.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="458"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="451"/>
         <source>New files available</source>
         <translation>Ir pieejamas jaunas datnes</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/owncloudfolder.cpp" line="458"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="451"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
         <translation><numerusform>“%1” un %n citu datņu tika sinhronizētas ar šo datoru.</numerusform><numerusform>“%1” un %n cita datne tika sinhronizēta ar šo datoru.</numerusform><numerusform>“%1” un %n citas datnes tika sinhronizētas ar šo datoru.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="464"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="457"/>
         <source>File removed</source>
         <translation>Datne ir izņemta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="464"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="457"/>
         <source>&apos;%1&apos; has been removed.</source>
         <translation>“%1” ir izņemts.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/owncloudfolder.cpp" line="466"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="459"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
         <translation><numerusform>“%1” un %n citu datņu tika izņemtas.</numerusform><numerusform>“%1” un %n cita datne tika izņemta.</numerusform><numerusform>“%1” un %n citas datnes tika izņemtas.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="466"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="459"/>
         <source>Files removed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="472"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="465"/>
         <source>&apos;%1&apos; has been updated.</source>
         <translation>“%1” ir atjaunināts.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="472"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="465"/>
         <source>File updated</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/owncloudfolder.cpp" line="474"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="467"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
         <translation><numerusform>“%1” un %n citu datņu tika atjauninātas.</numerusform><numerusform>“%1” un %n cita datne tika atjaunināta.</numerusform><numerusform>“%1” un %n citas datnes tika atjauninātas.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="474"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="467"/>
         <source>Files updated</source>
         <translation type="unfinished"/>
     </message>
@@ -1589,7 +1589,7 @@ Nevar instalēt.</translation>
 <context>
     <name>Mirall::ownCloudFolder</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="358"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="351"/>
         <source>The CSync thread terminated.</source>
         <translation>CSync pavediens ir pārtraukts.</translation>
     </message>

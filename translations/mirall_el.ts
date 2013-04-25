@@ -1346,62 +1346,62 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::ServerActionNotifier</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="456"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="449"/>
         <source>New file available</source>
         <translation>Νέο αρχείο διαθέσιμο</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="456"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="449"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
         <translation>&apos;%1&apos; συγχρονιστηκαν σε αυτη την συσκευη.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="458"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="451"/>
         <source>New files available</source>
         <translation>Νέα αρχεία διαθέσιμα</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/owncloudfolder.cpp" line="458"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="451"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
         <translation><numerusform>&apos;%1&apos; και %n αλλα αρχεια συγχρονιστηκαν σε αυτη την συσκευη.</numerusform><numerusform>&apos;%1&apos; and %n other file(s) have been synced to this machine.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="464"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="457"/>
         <source>File removed</source>
         <translation>Απομακρυνθηκε το αρχειο</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="464"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="457"/>
         <source>&apos;%1&apos; has been removed.</source>
         <translation>&apos;%1&apos; μετακινηθηκε.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/owncloudfolder.cpp" line="466"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="459"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
         <translation><numerusform>&apos;%1&apos; και %n αλλα αρχεια απομακρυνθηκαν.</numerusform><numerusform>&apos;%1&apos; και %n αλλα αρχεια απομακρυνθηκαν.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="466"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="459"/>
         <source>Files removed</source>
         <translation>Αρχεια απομακρυνθηκαν</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="472"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="465"/>
         <source>&apos;%1&apos; has been updated.</source>
         <translation>&apos;%1&apos; ανανεωθηκε.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="472"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="465"/>
         <source>File updated</source>
         <translation>Το αρχειο ανανεωθηκε</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/owncloudfolder.cpp" line="474"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="467"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
         <translation><numerusform>&apos;%1&apos; και %n αλλα αρχειο(α) ανανεωθηκαν.</numerusform><numerusform>&apos;%1&apos; και %n αλλα αρχεια ανανεωθηκαν.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="474"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="467"/>
         <source>Files updated</source>
         <translation>Τα αρχεια ανανεωθηκαν</translation>
     </message>
@@ -1589,7 +1589,7 @@ Setup can not be done.</source>
 <context>
     <name>Mirall::ownCloudFolder</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="358"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="351"/>
         <source>The CSync thread terminated.</source>
         <translation>Η διεργασία CSync τερματίζεται.</translation>
     </message>
