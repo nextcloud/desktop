@@ -62,7 +62,6 @@ public:
      * local folder path with native separators
      */
     QString nativePath() const;
-    virtual QString nativeSecondPath() const;
     /**
      * switch sync on or off
      * If the sync is switched off, the startSync method is not going to

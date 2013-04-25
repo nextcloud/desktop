@@ -139,11 +139,6 @@ QString Folder::nativePath() const
     return QDir::toNativeSeparators(_path);
 }
 
-QString Folder::nativeSecondPath() const
-{
-    return secondPath();
-}
-
 bool Folder::syncEnabled() const
 {
   return _enabled;

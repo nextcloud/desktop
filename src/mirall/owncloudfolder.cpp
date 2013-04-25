@@ -63,7 +63,6 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
                                const QString &secondPath,
                                QObject *parent)
     : Folder(alias, mpath, secondPath, parent)
-    , _secondPath(secondPath)
     , _thread(0)
     , _csync(0)
     , _csyncError(false)
@@ -76,7 +75,7 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
     qDebug() << "****** ownCloud folder using watcher *******";
     // The folder interval is set in the folder parent class.
 
-    QString url = replaceScheme(_secondPath);
+    QString url = replaceScheme(secondPath);
     QString localpath = path();
 
     if( csync_create( &_csync_ctx, localpath.toUtf8().data(), url.toUtf8().data() ) < 0 ) {
@@ -219,24 +218,18 @@ bool ownCloudFolder::isBusy() const
 
 QString ownCloudFolder::secondPath() const
 {
-    QString re(_secondPath);
+    QString re(Folder::secondPath());
     MirallConfigFile cfg;
-    const QString ocUrl = cfg.ownCloudUrl(QString::null, true);
+    QString ocUrl = cfg.ownCloudUrl(QString::null, true);
+    if (ocUrl.endsWith(QLatin1Char('/')))
+        ocUrl.chop(1);
+
     // qDebug() << "**** " << ocUrl << " <-> " << re;
     if( re.startsWith( ocUrl ) ) {
         re.remove( ocUrl );
     }
 
     return re;
-}
-
-QString ownCloudFolder::nativeSecondPath() const
-{
-    // TODO: fold into secondPath() after 1.1.0 release
-    QString path = secondPath();
-    if (!path.startsWith(QLatin1Char('/')) || path.isEmpty())
-        path.prepend(QLatin1Char('/'));
-    return path;
 }
 
 void ownCloudFolder::startSync()

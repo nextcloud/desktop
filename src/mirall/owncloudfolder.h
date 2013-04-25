@@ -64,7 +64,6 @@ public:
                    const QString &secondPath, QObject *parent = 0L);
     virtual ~ownCloudFolder();
     QString secondPath() const;
-    QString nativeSecondPath() const;
     virtual bool isBusy() const;
     virtual void startSync(const QStringList &pathList);
 
