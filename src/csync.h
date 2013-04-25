@@ -36,29 +36,11 @@
 #include <unistd.h>
 #include <sys/types.h>
 
+#include "csync_version.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#define CSYNC_STRINGIFY(s) CSYNC_TOSTRING(s)
-#define CSYNC_TOSTRING(s) #s
-
-/* csync version macros */
-#define CSYNC_VERSION_INT(a, b, c) ((a) << 16 | (b) << 8 | (c))
-#define CSYNC_VERSION_DOT(a, b, c) a ##.## b ##.## c
-#define CSYNC_VERSION(a, b, c) CSYNC_VERSION_DOT(a, b, c)
-
-/* csync version */
-#define LIBCSYNC_VERSION_MAJOR  0
-#define LIBCSYNC_VERSION_MINOR  70
-#define LIBCSYNC_VERSION_MICRO  6
-
-#define LIBCSYNC_VERSION_INT CSYNC_VERSION_INT(LIBCSYNC_VERSION_MAJOR, \
-                                           LIBCSYNC_VERSION_MINOR, \
-                                           LIBCSYNC_VERSION_MICRO)
-#define LIBCSYNC_VERSION     CSYNC_VERSION(LIBCSYNC_VERSION_MAJOR, \
-                                           LIBCSYNC_VERSION_MINOR, \
-                                           LIBCSYNC_VERSION_MICRO)
 
 /*
  * csync file declarations

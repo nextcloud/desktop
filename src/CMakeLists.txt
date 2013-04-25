@@ -17,6 +17,7 @@ endif()
 
 
 set(CSYNC_PUBLIC_INCLUDE_DIRS
+  ${CMAKE_CURRENT_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_SOURCE_DIR}
   CACHE INTERNAL "csync public include directories"
@@ -69,7 +70,10 @@ set(csync_SRCS
   vio/csync_vio_local.c
 )
 
+configure_file(csync_version.h.in csync_version.h)
+
 set(csync_HDRS
+  ${CMAKE_CURRENT_BINARY_DIR}/csync_version.h
   csync.h
   vio/csync_vio.h
   vio/csync_vio_file_stat.h
