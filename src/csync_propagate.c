@@ -1237,6 +1237,8 @@ static int _csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
   char errbuf[256] = {0};
   char *uri = NULL;
   int rc = -1;
+  csync_file_stat_t **pst;
+
 
   switch (ctx->current) {
     case LOCAL_REPLICA:
@@ -1264,16 +1266,19 @@ static int _csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
         rc = -1;
         break;
       case ENOTEMPTY:
+      pst = c_malloc(sizeof(csync_file_stat_t*));
+      *pst = st;
+
         switch (ctx->current) {
           case LOCAL_REPLICA:
-            list = c_list_prepend(ctx->local.list, (void *) st);
+            list = c_list_prepend(ctx->local.list, (void *) pst);
             if (list == NULL) {
               return -1;
             }
             ctx->local.list = list;
             break;
           case REMOTE_REPLICA:
-            list = c_list_prepend(ctx->remote.list, (void *) st);
+            list = c_list_prepend(ctx->remote.list, (void *) pst);
             if (list == NULL) {
               return -1;
             }
@@ -1498,7 +1503,7 @@ static int _csync_propagation_cleanup(CSYNC *ctx) {
   for (walk = c_list_last(list); walk != NULL; walk = c_list_prev(walk)) {
     csync_file_stat_t *st = NULL;
 
-    st = (csync_file_stat_t *) walk->data;
+    st = *((csync_file_stat_t **) walk->data);
 
     if (asprintf(&dir, "%s/%s", uri, st->path) < 0) {
       return -1;
