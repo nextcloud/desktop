@@ -94,10 +94,9 @@ the following differences:
 
 1. For building ``libocsync``, you need to use ``mingw32-cmake`` instead
    of cmake.
-2. Since there is no cross-compiled LOG4C, the parameter ``-DWITH_LOG4C=OFF`` needs to be used
-3. for building ``mirall``, you need to use ``cmake`` again, but make sure
+2. for building ``mirall``, you need to use ``cmake`` again, but make sure
    to append the following parameter::
-4. Also, you need to specify *absolute pathes* for ``CSYNC_LIBRARY_PATH``
+3. Also, you need to specify *absolute pathes* for ``CSYNC_LIBRARY_PATH``
    and ``CSYNC_LIBRARY_PATH`` when running ``cmake`` on mirall.
 
   ``-DCMAKE_TOOLCHAIN_FILE=../mirall/admin/win/Toolchain-mingw32-openSUSE.cmake``
