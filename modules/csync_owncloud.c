@@ -49,7 +49,6 @@
 #include "csync_macros.h"
 #include "c_private.h"
 #include "httpbf.h"
-#include "csync_version.h"
 
 #include "vio/csync_vio_module.h"
 #include "vio/csync_vio_file_stat.h"

@@ -36,6 +36,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 
+#include "csync_version.h"
 
 #ifdef __cplusplus
 extern "C" {

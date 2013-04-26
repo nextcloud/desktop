@@ -47,7 +47,7 @@
 #include "csync_misc.h"
 #include "c_jhash.h"
 #include "std/c_private.h"
-#include "csync_version.h"
+
 
 #include "csync_update.h"
 #include "csync_reconcile.h"

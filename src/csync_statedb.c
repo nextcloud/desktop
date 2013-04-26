@@ -36,7 +36,6 @@
 #include "csync_statedb.h"
 #include "csync_util.h"
 #include "csync_misc.h"
-#include "csync_version.h"
 
 #include "c_string.h"
 
