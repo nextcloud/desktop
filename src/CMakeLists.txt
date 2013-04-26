@@ -34,6 +34,7 @@ set(3rdparty_SRC
 3rdparty/qtsingleapplication/qtsinglecoreapplication.cpp
 3rdparty/qtlockedfile/qtlockedfile.cpp
 3rdparty/fancylineedit/fancylineedit.cpp
+3rdparty/QProgressIndicator/QProgressIndicator.cpp
 )
 
 set(3rdparty_HEADER
