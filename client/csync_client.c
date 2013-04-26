@@ -35,6 +35,7 @@
 #include <c_string.h>
 #include <c_alloc.h>
 
+#include "csync_version.h"
 #include "csync_auth.h"
 #include "../src/std/c_private.h"
 #include "../src/csync_misc.h"
