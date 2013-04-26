@@ -170,10 +170,42 @@ static void test_hbf_splitlist_odd( void **state ){
     hbf_free_transfer( list );
 }
 
+/* test with a file size that is not a multiply of the slize size. */
+static void test_hbf_splitlist_zero( void **state ){
+
+    hbf_transfer_t *list = NULL;
+    const char *dest_url = "http://localhost/ocm/remote.php/webdav/big/zerofile.txt";
+    int i, fd;
+    Hbf_State hbf_state;
+
+    (void) state;
+
+    /* open a file */
+    fd = open(test_file("zerofile.txt"), O_RDONLY);
+    assert_true(fd >= 0);
+
+    list = hbf_init_transfer(dest_url);
+    assert_non_null(list);
+
+    hbf_state = hbf_splitlist(list, fd);
+    assert_non_null(list);
+    assert_int_equal(list->stat_size, 0);
+    assert_int_equal(list->calc_size, list->stat_size);
+
+    assert_int_equal(list->block_cnt, 1);
+
+    assert_true( hbf_state == HBF_SUCCESS);
+
+    hbf_free_transfer( list );
+}
+
+
+
 int main(void) {
     const UnitTest tests[] = {
         unit_test(null_test_success),
         unit_test(test_hbf_splitlist_odd),
+      unit_test(test_hbf_splitlist_zero),
         unit_test(test_hbf_init_transfer),
         unit_test(test_get_transfer_url),
       unit_test(test_get_transfer_url_bigfile)

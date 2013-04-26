@@ -123,6 +123,12 @@ Hbf_State hbf_splitlist(hbf_transfer_t *transfer, int fd ) {
       num_blocks++;
   }
 
+  /* The file has size 0. There still needs to be at least one block. */
+  if( sb.st_size == 0 ) {
+    num_blocks = 1;
+    blk_size   = 0;
+  }
+
   if( num_blocks ) {
       int cnt;
       off_t overall = 0;
