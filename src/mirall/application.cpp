@@ -194,7 +194,7 @@ void Application::slotStartFolderSetup( int result )
 
             ownCloudInfo::instance()->checkInstallation();
         } else {
-            _owncloudSetupWizard->startWizard(true); // with intro
+            _owncloudSetupWizard->startWizard();
         }
     } else {
         qDebug() << "Setup Wizard was canceled. No reparsing of config.";
@@ -813,7 +813,7 @@ void Application::slotEnableFolder(const QString& alias, const bool enable)
 void Application::slotConfigure()
 {
     _folderMan->setSyncEnabled(false); // do not start more syncs.
-    _owncloudSetupWizard->startWizard(false);
+    _owncloudSetupWizard->startWizard();
 }
 
 void Application::slotConfigureProxy()

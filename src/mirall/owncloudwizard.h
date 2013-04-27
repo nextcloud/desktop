@@ -18,14 +18,17 @@
 
 #include <QWizard>
 
-#include "ui_owncloudwizardresultpage.h"
 #include "ui_owncloudsetuppage_ng.h"
+#include "ui_owncloudwizardresultpage.h"
 
 class QLabel;
 class QVariant;
 class QProgressIndicator;
 
 namespace Mirall {
+
+class OwncloudSetupPage;
+class OwncloudWizardResultPage;
 
 class OwncloudSetupPage: public QWizardPage
 {
@@ -34,18 +37,39 @@ public:
   OwncloudSetupPage();
   ~OwncloudSetupPage();
 
+  enum SyncMode {
+      SelectiveMode,
+      BoxMode
+  };
+
   virtual bool isComplete() const;
   virtual void initializePage();
   virtual int nextId() const;
   void setOCUrl( const QString& );
   void setOCUser( const QString& );
   void setAllowPasswordStorage( bool );
+  bool validatePage();
+  QString url() const;
+  void setConnected(bool complete);
+  QString selectedLocalFolder() const;
+  void setFolderNames( const QString&, const QString& remoteFolder = QString::null);
+
+  SyncMode syncMode();
+
+public slots:
+  void setErrorString( const QString&  );
+  void stopSpinner();
 
 protected slots:
-  void slotPwdStoreChanged( int );
-  void slotSecureConChanged( int );
   void handleNewOcUrl(const QString& ocUrl);
   void setupCustomization();
+  void slotToggleAdvanced(int state);
+  void slotChangedSelective(QAbstractButton*);
+  void slotSelectFolder();
+
+signals:
+  void connectToOCUrl( const QString& );
+
 private:
   Ui_OwncloudSetupPage _ui;
   QString _oCUrl;
@@ -53,6 +77,7 @@ private:
   bool    _checking;
   QProgressIndicator *_progressIndi;
   QButtonGroup       *_selectiveSyncButtons;
+  QString _remoteFolder;
 };
 
 class OwncloudWizard: public QWizard
@@ -74,108 +99,41 @@ public:
 
     void setOCUrl( const QString& );
     void setOCUser( const QString& );
-    void setAllowPasswordStorage( bool );
 
     void setupCustomMedia( QVariant, QLabel* );
     QString ocUrl() const;
 
     void enableFinishOnResultWidget(bool enable);
 
-public slots:
-    void appendToResultWidget( const QString& msg, LogType type = LogParagraph );
-    void slotCurrentPageChanged( int );
-    void showOCUrlLabel( bool );
+    void displayError( const QString& );
+    OwncloudSetupPage::SyncMode syncMode();
 
+public slots:
+    void setFolderNames( const QString&, const QString& );
+    void appendToConfigurationLog( const QString& msg, LogType type = LogParagraph );
+    void slotCurrentPageChanged( int );
+
+    void showConnectInfo( const QString& );
+    void successfullyConnected(bool);
 
 signals:
-    void connectToOCUrl( const QString& );
-    void installOCServer();
-    void installOCLocalhost();
     void clearPendingRequests();
+    void connectToOCUrl( const QString& );
 
 private:
+    OwncloudSetupPage *_setupPage;
+    OwncloudWizardResultPage *_resultPage;
+
     QString _configFile;
     QString _oCUrl;
     QString _oCUser;
+    QStringList _setupLog;
 };
 
 
 /**
  * page to ask for the type of Owncloud to connect to
  */
-
-class OwncloudWizardSelectTypePage: public QWizardPage
-{
-    Q_OBJECT
-public:
-  OwncloudWizardSelectTypePage();
-  ~OwncloudWizardSelectTypePage();
-
-  virtual bool isComplete() const;
-  virtual void initializePage();
-  int nextId() const;
-  void setOCUrl( const QString& );
-  void showOCUrlLabel( const QString& );
-
-private:
-  Ui_OwncloudWizardSelectTypePage _ui;
-};
-
-class CreateAnOwncloudPage: public QWizardPage
-{
-    Q_OBJECT
-public:
-  CreateAnOwncloudPage();
-  ~CreateAnOwncloudPage();
-
-  virtual bool isComplete() const;
-  virtual void initializePage();
-  virtual int nextId() const;
-
-  QString domain() const;
-
-private:
-  Ui_CreateAnOwncloudPage _ui;
-
-};
-
-class OwncloudCredentialsPage: public QWizardPage
-{
-    Q_OBJECT
-public:
-  OwncloudCredentialsPage();
-  ~OwncloudCredentialsPage();
-
-  virtual bool isComplete() const;
-  virtual void initializePage();
-  virtual int nextId() const;
-
-protected slots:
-  void slotPwdStoreChanged( int );
-
-private:
-  Ui_OwncloudCredentialsPage _ui;
-
-};
-/**
- * page to ask for the ftp credentials etc. for ftp install
- */
-class OwncloudFTPAccessPage : public QWizardPage
-{
-  Q_OBJECT
-public:
-  OwncloudFTPAccessPage();
-  ~OwncloudFTPAccessPage();
-
-  virtual bool isComplete() const;
-  virtual void initializePage();
-  void setFTPUrl( const QString& );
-  virtual int nextId() const;
-
-private:
-  Ui_OwncloudFTPAccessPage _ui;
-
-};
 
 /**
  * page to display the install result
@@ -187,16 +145,19 @@ public:
   OwncloudWizardResultPage();
   ~OwncloudWizardResultPage();
 
+  bool isComplete() const;
+
 public slots:
+  void setComplete(bool complete);
   void setOwncloudUrl( const QString& );
-  void setLocalFolder( const QString& );
+  void setFolderNames( const QString&, const QString& );
 
 protected:
   void setupCustomization();
 
 private:
   QString _url;
-  QString _localFolder;
+  bool _complete;
 
   Ui_OwncloudWizardResultPage _ui;
 };
