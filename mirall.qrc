@@ -12,5 +12,6 @@
         <file>resources/mirall-48.png</file>
         <file>resources/task-ongoing.png</file>
         <file>resources/view-refresh.png</file>
+        <file>resources/owncloud_logo.png</file>
     </qresource>
 </RCC>
