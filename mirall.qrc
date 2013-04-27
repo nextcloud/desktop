@@ -13,5 +13,6 @@
         <file>resources/task-ongoing.png</file>
         <file>resources/view-refresh.png</file>
         <file>resources/owncloud_logo.png</file>
+        <file>resources/owncloud_logo_blue.png</file>
     </qresource>
 </RCC>
