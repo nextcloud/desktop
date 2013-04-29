@@ -55,9 +55,6 @@ public:
     void setAutoHide(bool hide) { m_autoHide = hide; }
     bool hasAutoHide() const { return m_autoHide; }
 
-#if QT_VERSION <= 0x040700
-    void setPlaceholderText( const QString& ) { }
-#endif
 private:
     float m_iconOpacity;
     bool m_autoHide;
@@ -94,6 +91,9 @@ public:
     // Set if icon should be hidden when text is empty
     void setAutoHideButton(Side side, bool h);
     bool hasAutoHideButton(Side side) const;
+#if QT_VERSION <= 0x040700
+    void setPlaceholderText( const QString& ) { }
+#endif
 
 signals:
     void buttonClicked(Utils::FancyLineEdit::Side side);
