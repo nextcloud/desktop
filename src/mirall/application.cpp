@@ -194,7 +194,7 @@ void Application::slotStartFolderSetup( int result )
 
             ownCloudInfo::instance()->checkInstallation();
         } else {
-            _owncloudSetupWizard->startWizard(true); // with intro
+            _owncloudSetupWizard->startWizard();
         }
     } else {
         qDebug() << "Setup Wizard was canceled. No reparsing of config.";
@@ -702,7 +702,7 @@ void Application::slotOpenStatus()
     if( !cfgFile.exists() ) {
       qDebug() << "No configured folders yet, start the Owncloud integration dialog.";
       _folderMan->setSyncEnabled(false);
-      _owncloudSetupWizard->startWizard(true); // with intro
+      _owncloudSetupWizard->startWizard();
     } else {
       qDebug() << "#============# Status dialog starting #=============#";
       raiseWidget = _statusDialog;
@@ -813,7 +813,7 @@ void Application::slotEnableFolder(const QString& alias, const bool enable)
 void Application::slotConfigure()
 {
     _folderMan->setSyncEnabled(false); // do not start more syncs.
-    _owncloudSetupWizard->startWizard(false);
+    _owncloudSetupWizard->startWizard();
 }
 
 void Application::slotConfigureProxy()

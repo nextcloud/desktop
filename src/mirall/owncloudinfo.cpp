@@ -30,6 +30,17 @@
 namespace Mirall
 {
 
+class oCCookieJar : public QNetworkCookieJar
+{
+public:
+    QList<QNetworkCookie> cookiesForUrl ( const QUrl & url ) const {
+        QList<QNetworkCookie> list;
+        return list;
+    }
+
+};
+
+
 ownCloudInfo *ownCloudInfo::_instance = 0;
 
 ownCloudInfo* ownCloudInfo::instance()
@@ -70,8 +81,15 @@ void ownCloudInfo::setNetworkAccessManager( QNetworkAccessManager* qnam )
     connect( _manager, SIGNAL( sslErrors(QNetworkReply*, QList<QSslError>)),
              this, SIGNAL(sslFailed(QNetworkReply*, QList<QSslError>)) );
 
+    // The authenticationRequired signal is not handled because the creds are set
+    // in the request header.
+#if 0
     connect( _manager, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
              this, SLOT(slotAuthentication(QNetworkReply*,QAuthenticator*)));
+#endif
+
+    // no cookie jar so far.
+    _manager->setCookieJar(new oCCookieJar);
 
     _certsUntrusted = false;
 
@@ -246,6 +264,8 @@ void ownCloudInfo::slotMkdirFinished()
 }
 #endif
 
+// FIXME: remove this later, once the new connection dialog has settled.
+#if 0
 void ownCloudInfo::slotAuthentication( QNetworkReply *reply, QAuthenticator *auth )
 {
     if( !(auth && reply) ) return;
@@ -282,6 +302,7 @@ void ownCloudInfo::slotAuthentication( QNetworkReply *reply, QAuthenticator *aut
         reply->close();
     }
 }
+#endif
 
 QString ownCloudInfo::configHandle(QNetworkReply *reply)
 {

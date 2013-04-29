@@ -136,25 +136,17 @@ bool MirallConfigFile::connectionExists( const QString& conn )
 void MirallConfigFile::writeOwncloudConfig( const QString& connection,
                                             const QString& url,
                                             const QString& user,
-                                            const QString& passwd,
-                                            bool https, bool skipPwd )
+                                            const QString& passwd )
 {
     const QString file = configFile();
+    bool skipPwd = false; // can be refactored - remove it.
     qDebug() << "*** writing mirall config to " << file << " Skippwd: " << skipPwd;
 
     QSettings settings( file, QSettings::IniFormat);
     settings.setIniCodec( "UTF-8" );
-    QString cloudsUrl( url );
-
-    if( !cloudsUrl.startsWith( QLatin1String("http")) ) {
-        if (https)
-            cloudsUrl.prepend(QLatin1String("https://"));
-        else
-            cloudsUrl.prepend(QLatin1String("http://"));
-    }
 
     settings.beginGroup( connection );
-    settings.setValue( QLatin1String("url"), cloudsUrl );
+    settings.setValue( QLatin1String("url"), url );
     settings.setValue( QLatin1String("user"), user );
 
 

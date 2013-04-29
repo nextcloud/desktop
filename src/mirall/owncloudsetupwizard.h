@@ -42,7 +42,7 @@ public:
     /**
      * @intro wether or not to show the intro wizard page
      */
-    void startWizard(bool intro = false);
+    void startWizard();
 
     void installServer();
 
@@ -68,20 +68,8 @@ signals:
 public slots:
 
 protected slots:
-    // QProcess related slots:
-    void slotReadyReadStandardOutput();
-    void slotReadyReadStandardError();
-    void slotStateChanged( QProcess::ProcessState );
-    void slotError( QProcess::ProcessError );
-    void slotStarted();
-    void slotProcessFinished( int, QProcess::ExitStatus );
-
     // wizard dialog signals
-    void slotInstallOCServer();
     void slotConnectToOCUrl( const QString& );
-    void slotCreateOCLocalhost();
-
-    void slotCreateRemoteFolder(bool);
 
 private slots:
     void slotOwnCloudFound( const QString&, const QString&, const QString&, const QString& );
@@ -89,11 +77,11 @@ private slots:
     void slotCreateRemoteFolderFinished( QNetworkReply::NetworkError );
     void slotAssistantFinished( int );
     void slotClearPendingRequests();
-
+    void slotAuthCheckReply( const QString&, QNetworkReply * );
 private:
-    bool checkOwncloudAdmin( const QString& );
-    void runOwncloudAdmin( const QStringList& );
-    bool createRemoteFolder( const QString& );
+    bool createRemoteFolder();
+    void checkRemoteFolder();
+
     void finalizeSetup( bool );
 
     /* Start a request to the newly installed ownCloud to check the connection */
@@ -102,8 +90,9 @@ private:
     OwncloudWizard *_ocWizard;
     QPointer<QNetworkReply>  _mkdirRequestReply;
     QPointer<QNetworkReply>  _checkInstallationRequest;
+    QPointer<QNetworkReply>  _checkRemoteFolderRequest;
+
     FolderMan      *_folderMan;
-    QProcess       *_process;
 
     QString         _configHandle;
     QString         _localFolder;
