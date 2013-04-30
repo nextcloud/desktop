@@ -44,7 +44,7 @@ void MirallConfigFile::setConfDir(const QString &value)
 
     QFileInfo fi(value);
     if( fi.exists() && fi.isDir() ) {
-        qDebug() << "** Using custom dir " << value;
+        qDebug() << "** Using custom config dir " << value;
         _confDir=value;
     }
 }
