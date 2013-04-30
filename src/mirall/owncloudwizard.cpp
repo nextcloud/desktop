@@ -274,9 +274,9 @@ void OwncloudSetupPage::setFolderNames( const QString& localFolder, const QStrin
 
     QString t;
     if( _remoteFolder.isEmpty() || _remoteFolder == QLatin1String("/") ) {
-        t = tr("Your entire account will be synced to the local folder %1").arg(localFolder);
+        t = tr("Your entire account will be synced to the local folder '%1'").arg(localFolder);
     } else {
-        t = tr("ownCloud folder %1 is synced to local folder %2").arg(_remoteFolder).arg(localFolder);
+        t = tr("ownCloud folder '%1' is synced to local folder '%2'").arg(_remoteFolder).arg(localFolder);
     }
 
     _ui.syncModeLabel->setText(t);
