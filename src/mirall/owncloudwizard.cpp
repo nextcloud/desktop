@@ -105,6 +105,7 @@ OwncloudSetupPage::~OwncloudSetupPage()
 void OwncloudSetupPage::slotToggleAdvanced(int state)
 {
     _ui.advancedBox->setVisible( state == Qt::Checked );
+    wizard()->resize(wizard()->sizeHint());
 }
 
 void OwncloudSetupPage::slotChangedSelective(QAbstractButton* button)
@@ -393,7 +394,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
 
     connect( _setupPage, SIGNAL(connectToOCUrl(QString)), SIGNAL(connectToOCUrl(QString)));
 
-    QPixmap pix(QSize(540, 78));
+    QPixmap pix(QSize(600, 78));
     pix.fill(QColor("#1d2d42"));
     setPixmap( QWizard::BannerPixmap, pix );
 
@@ -405,7 +406,6 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setOption( QWizard::NoCancelButton );
     setTitleFormat(Qt::RichText);
     setSubTitleFormat(Qt::RichText);
-
 }
 
 QString OwncloudWizard::ocUrl() const
