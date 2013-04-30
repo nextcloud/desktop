@@ -15,6 +15,7 @@
 #include "mirall/updatedetector.h"
 #include "mirall/theme.h"
 #include "mirall/version.h"
+#include "mirall/mirallconfigfile.h"
 #include "mirall/occinfo.h"
 
 #include <QtCore>
@@ -60,6 +61,17 @@ void UpdateDetector::versionCheck( Theme *theme )
     _accessManager->get( QNetworkRequest( url ));
 }
 
+void UpdateDetector::slotOpenUpdateUrl()
+{
+    QDesktopServices::openUrl(ocClient.web());
+}
+
+void UpdateDetector::slotSetVersionSeen()
+{
+    MirallConfigFile cfg;
+    cfg.setSeenVersion(ocClient.version());
+}
+
 QString UpdateDetector::getSystemInfo()
 {
 #ifdef Q_OS_LINUX
@@ -76,6 +88,57 @@ QString UpdateDetector::getSystemInfo()
 #endif
 }
 
+void UpdateDetector::showDialog()
+{
+    // if the version tag is set, there is a newer version.
+    QString ver = QString::fromLatin1("%1.%2.%3")
+            .arg(MIRALL_VERSION_MAJOR).arg(MIRALL_VERSION_MINOR).arg(MIRALL_VERSION_MICRO);
+    QDialog *msgBox = new QDialog;
+
+    QIcon info = msgBox->style()->standardIcon(QStyle::SP_MessageBoxInformation, 0, 0);
+    int iconSize = msgBox->style()->pixelMetric(QStyle::PM_MessageBoxIconSize, 0, 0);
+
+    msgBox->setWindowIcon(info);
+
+    QVBoxLayout *layout = new QVBoxLayout(msgBox);
+    QHBoxLayout *hlayout = new QHBoxLayout;
+    layout->addLayout(hlayout);
+
+    msgBox->setWindowTitle(tr("New Version Available"));
+
+    QLabel *ico = new QLabel;
+    ico->setFixedSize(iconSize, iconSize);
+    ico->setPixmap(info.pixmap(iconSize));
+    QLabel *lbl = new QLabel;
+    QString txt = tr("<p>A new version of the %1 Client is available.</p>"
+                     "<p><b>%2</b> is available for download. The installed version is %3.<p>")
+            .arg(Theme::instance()->appNameGUI()).arg(ocClient.versionstring()).arg(ver);
+
+    lbl->setText(txt);
+    lbl->setTextFormat(Qt::RichText);
+    lbl->setWordWrap(true);
+
+    hlayout->addWidget(ico);
+    hlayout->addWidget(lbl);
+
+    QDialogButtonBox *bb = new QDialogButtonBox;
+    QPushButton *skip = bb->addButton(tr("Skip update"), QDialogButtonBox::ResetRole);
+    QPushButton *reject = bb->addButton(tr("Skip this time"), QDialogButtonBox::AcceptRole);
+    QPushButton  *getupdate = bb->addButton(tr("Get update"), QDialogButtonBox::AcceptRole);
+
+    connect(skip, SIGNAL(clicked()), msgBox, SLOT(reject()));
+    connect(reject, SIGNAL(clicked()), msgBox, SLOT(reject()));
+    connect(getupdate, SIGNAL(clicked()), msgBox, SLOT(accept()));
+
+    connect(skip, SIGNAL(clicked()), SLOT(slotSetVersionSeen()));
+    connect(getupdate, SIGNAL(clicked()), SLOT(slotOpenUpdateUrl()));
+
+    layout->addWidget(bb);
+
+    msgBox->open();
+    msgBox->resize(400, msgBox->sizeHint().height());
+}
+
 void UpdateDetector::slotVersionInfoArrived( QNetworkReply* reply )
 {
     if( reply->error() != QNetworkReply::NoError ) {
@@ -83,10 +146,10 @@ void UpdateDetector::slotVersionInfoArrived( QNetworkReply* reply )
         return;
     }
 
-    QString xml = QString::fromAscii( reply->readAll() );
+    QString xml = QString::fromUtf8(reply->readAll());
 
     bool ok;
-    Owncloudclient ocClient = Owncloudclient::parseString( xml, &ok );
+    ocClient = Owncloudclient::parseString( xml, &ok );
     if( ok ) {
 
     //        Thats how it looks like if a new version is available:
@@ -104,24 +167,11 @@ void UpdateDetector::slotVersionInfoArrived( QNetworkReply* reply )
     //                  <versionstring></versionstring>
     //                  <web></web>
     //                </owncloudclient>
-        if( ocClient.version().isEmpty() ) {
+        MirallConfigFile cfg;
+        if( ocClient.version().isEmpty() || ocClient.version() == cfg.seenVersion() ) {
             qDebug() << "Client is on latest version!";
         } else {
-            // if the version tag is set, there is a newer version.
-            QString ver = QString::fromLatin1("%1.%2.%3")
-                    .arg(MIRALL_VERSION_MAJOR).arg(MIRALL_VERSION_MINOR).arg(MIRALL_VERSION_MICRO);
-            QMessageBox msgBox;
-            msgBox.setTextFormat( Qt::RichText );
-            msgBox.setWindowTitle(tr("Client Version Check"));
-            msgBox.setIcon( QMessageBox::Information );
-            msgBox.setText(tr("<p>A new version of the %1 client is available.").arg(Theme::instance()->appNameGUI()));
-            QString txt = tr("%1 is available. The installed version is %3.<p/><p>For more information see <a href=\"%2\">%2</a></p>")
-                    .arg(ocClient.versionstring()).arg(ocClient.web()).arg(ver);
-
-            msgBox.setInformativeText( txt );
-            msgBox.setStandardButtons( QMessageBox::Ok );
-            msgBox.setDefaultButton( QMessageBox::Ok );
-            msgBox.exec();
+            showDialog();
         }
     } else {
         qDebug() << "Could not parse update information.";

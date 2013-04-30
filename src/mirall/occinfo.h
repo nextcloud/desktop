@@ -7,6 +7,8 @@
 #include <QDomElement>
 #include <QtXml/QXmlStreamWriter>
 
+namespace Mirall {
+
 class Owncloudclient
 {
   public:
@@ -30,5 +32,7 @@ class Owncloudclient
     QString mVersionstring;
     QString mWeb;
 };
+
+} // namespace Mirall
 
 #endif

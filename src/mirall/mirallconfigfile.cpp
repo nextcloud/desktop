@@ -49,6 +49,23 @@ void MirallConfigFile::setConfDir(const QString &value)
     }
 }
 
+QString MirallConfigFile::seenVersion() const
+{
+    QSettings settings( configFile(), QSettings::IniFormat );
+    settings.setIniCodec( "UTF-8" );
+    settings.beginGroup(QLatin1String("Updater"));
+    return settings.value(QLatin1String("seenVersion")).toString();
+}
+
+void MirallConfigFile::setSeenVersion(const QString &version)
+{
+    QSettings settings( configFile(), QSettings::IniFormat );
+    settings.setIniCodec( "UTF-8" );
+    settings.beginGroup(QLatin1String("Updater"));
+    settings.setValue(QLatin1String("seenVersion"), version);
+    settings.sync();
+}
+
 QString MirallConfigFile::configPath() const
 {
     QString dir = _confDir;

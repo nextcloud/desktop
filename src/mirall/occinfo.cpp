@@ -9,6 +9,8 @@
 #include <QtCore/QtDebug>
 #include <QtCore/QFile>
 
+namespace Mirall {
+
 void Owncloudclient::setVersion( const QString &v )
 {
   mVersion = v;
@@ -147,4 +149,4 @@ bool Owncloudclient::writeFile( const QString &filename )
   return true;
 }
 
-
+} // namespace Mirall

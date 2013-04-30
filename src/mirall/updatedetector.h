@@ -17,6 +17,8 @@
 
 #include <QObject>
 
+#include "mirall/occinfo.h"
+
 class QNetworkAccessManager;
 class QNetworkReply;
 
@@ -35,13 +37,17 @@ signals:
     
 public slots:
 
-protected slots:
+private slots:
+    void slotOpenUpdateUrl();
+    void slotSetVersionSeen();
     void slotVersionInfoArrived( QNetworkReply* );
 
 private:
     QString getSystemInfo();
+    void showDialog();
 
     QNetworkAccessManager *_accessManager;
+    Owncloudclient ocClient;
 };
 
 }

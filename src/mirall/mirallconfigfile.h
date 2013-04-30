@@ -100,6 +100,8 @@ public:
     
     static void setConfDir(const QString &value);
 
+    QString seenVersion() const;
+    void setSeenVersion(const QString &version);
 protected:
     // these classes can only be access from CredentialStore as a friend class.
     QString ownCloudPasswd( const QString& connection = QString() ) const;
