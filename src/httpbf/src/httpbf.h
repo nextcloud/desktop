@@ -25,6 +25,11 @@
 
 #include <neon/ne_session.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 enum hbf_state_e {
     HBF_SUCCESS,
     HBF_NOT_TRANSFERED,           /* never tried to transfer     */
@@ -98,5 +103,10 @@ const char *hbf_error_string( Hbf_State state );
  * first part transmission that failed.
  */
 int hbf_fail_http_code( hbf_transfer_t *transfer );
+
+#ifdef __cplusplus
+}
+#endif
+
 
 #endif
