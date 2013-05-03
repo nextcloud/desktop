@@ -2,6 +2,7 @@
 #define SYNCFILEITEM_H
 
 #include <QVector>
+#include <QString>
 
 #include <csync.h>
 
@@ -17,8 +18,12 @@ public:
 
     SyncFileItem() {}
 
-    bool operator==(const SyncFileItem& item) const {
-        return item._file == this->_file;
+    friend bool operator==(const SyncFileItem& item1, const SyncFileItem& item2) {
+        return item1._file == item2._file;
+    }
+
+    friend bool operator<(const SyncFileItem& item1, const SyncFileItem& item2) {
+        return item1._file < item2._file;
     }
 
     bool isEmpty() const {
@@ -30,7 +35,11 @@ public:
     QString _renameTarget;
     csync_instructions_e _instruction;
     Direction _dir;
+    bool _isDirectory;
+    time_t _modtime;
 };
+
+
 
 typedef QVector<SyncFileItem> SyncFileItemVector;
 

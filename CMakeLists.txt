@@ -64,6 +64,7 @@ endif()
 find_package(Sphinx)
 find_package(PdfLatex)
 find_package(QtKeychain)
+find_package(Neon)
 
 set(WITH_CSYNC CSYNC_FOUND)
 set(WITH_QTKEYCHAIN ${QTKEYCHAIN_FOUND})

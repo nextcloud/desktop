@@ -34,8 +34,16 @@ namespace Mirall {
 class CSyncThread : public QObject
 {
     Q_OBJECT
+
+    // Keep the actions that have been performed, in order to update the db
+    struct Action {
+        QByteArray etag;
+        csync_instructions_e instruction;
+    };
+    QHash<QString, Action> performedActions;
+
 public:
-    CSyncThread(CSYNC *);
+    CSyncThread(CSYNC *, const QString &localPath, const QString &remotePath);
     ~CSyncThread();
 
     QString csyncErrorToString( CSYNC_ERROR_CODE, const char * );
@@ -71,13 +79,15 @@ private:
     static int walkFinalize(TREE_WALK_FILE*, void* );
 
 
-
     static QMutex _mutex;
     static QMutex _syncMutex;
     SyncFileItemVector _syncedItems;
 
+
     CSYNC *_csync_ctx;
     bool _needsUpdate;
+    QString _localPath;
+    QString _remotePath;
 
     friend class CSyncRunScopeHelper;
 };

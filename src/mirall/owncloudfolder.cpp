@@ -262,7 +262,7 @@ void ownCloudFolder::startSync(const QStringList &pathList)
 
     qDebug() << "*** Start syncing";
     _thread = new QThread(this);
-    _csync = new CSyncThread( _csync_ctx );
+    _csync = new CSyncThread( _csync_ctx, path(), QUrl(Folder::secondPath()).path() );
     _csync->moveToThread(_thread);
 
     qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");

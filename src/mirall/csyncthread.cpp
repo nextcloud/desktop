@@ -18,6 +18,7 @@
 #include "mirall/theme.h"
 #include "mirall/logger.h"
 #include "mirall/owncloudinfo.h"
+#include "owncloudpropagator.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -46,9 +47,11 @@ namespace Mirall {
 QMutex CSyncThread::_mutex;
 QMutex CSyncThread::_syncMutex;
 
-CSyncThread::CSyncThread(CSYNC *csync)
+CSyncThread::CSyncThread(CSYNC *csync, const QString &localPath, const QString &remotePath)
 {
     _mutex.lock();
+    _localPath = localPath;
+    _remotePath = remotePath;
     _csync_ctx = csync;
     _mutex.unlock();
 }
@@ -186,6 +189,8 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     item._file = QString::fromUtf8( file->path );
     item._instruction = file->instruction;
     item._dir = SyncFileItem::None;
+    item._isDirectory = file->type == CSYNC_FTW_TYPE_DIR;
+    item._modtime = file->modtime;
 
     SyncFileItem::Direction dir;
 
@@ -237,19 +242,29 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
 
 int CSyncThread::treewalkError(TREE_WALK_FILE* file)
 {
-    SyncFileItem item;
-    item._file= QString::fromUtf8(file->path);
-    int indx = _syncedItems.indexOf(item);
-
-    if ( indx == -1 )
+    if (file->instruction == CSYNC_INSTRUCTION_IGNORE || file->instruction == CSYNC_INSTRUCTION_NONE)
         return 0;
 
-    if( file &&
-        file->instruction == CSYNC_INSTRUCTION_STAT_ERROR ||
+    SyncFileItem item;
+    item._file= QString::fromUtf8(file->path);
+
+
+    QHash<QString, Action>::const_iterator action = performedActions.constFind(item._file);
+    if (action != performedActions.constEnd()) {
+        file->instruction = action->instruction;
+        if (!action->etag.isNull()) {
+            file->md5 = action->etag.constData();
+        }
+    }
+
+
+    if( file->instruction == CSYNC_INSTRUCTION_STAT_ERROR ||
         file->instruction == CSYNC_INSTRUCTION_ERROR ) {
-        _mutex.lock();
-        _syncedItems[indx]._instruction = file->instruction;
-        _mutex.unlock();
+        QMutexLocker locker(&_mutex);
+        SyncFileItemVector::iterator it = qBinaryFind(_syncedItems.begin(), _syncedItems.end(), item);
+        if ( it == _syncedItems.end())
+            return 0;
+        it->_instruction = file->instruction;
     }
 
     return 0;
@@ -336,13 +351,44 @@ void CSyncThread::startSync()
         qDebug() << "Error in remote treewalk.";
     }
 
+    qSort(_syncedItems);
+
     if (_needsUpdate)
         emit(started());
 
-    if( csync_propagate(_csync_ctx) < 0 ) {
-        handleSyncError(_csync_ctx, "cysnc_reconcile");
-        return;
+    ne_session_s *session = 0;
+    // that call to set property actually is a get which will return the session
+    csync_set_module_property(_csync_ctx, "get_dav_session", &session);
+    Q_ASSERT(session);
+
+    QString lastDeleted;
+    OwncloudPropagator propagator(session, _localPath, _remotePath);
+    foreach (const SyncFileItem &item , _syncedItems) {
+        Action a;
+        if (!lastDeleted.isEmpty() && item._file.startsWith(lastDeleted)
+                && item._instruction == CSYNC_INSTRUCTION_REMOVE) {
+            a.instruction = CSYNC_INSTRUCTION_DELETED;
+            performedActions.insert(item._file, a);
+            continue;
+        }
+        propagator.etag.clear(); // FIXME : set to the right one
+        a.instruction = propagator.propagate(item);
+        if (a.instruction == CSYNC_INSTRUCTION_DELETED) {
+            lastDeleted = item._file;
+        } else {
+            lastDeleted.clear();
+        }
+
+        a.etag = propagator.etag;
+        performedActions.insert(item._file, a);
+
+        //TODO record errors and process;
     }
+
+//     if( csync_propagate(_csync_ctx) < 0 ) {
+//         handleSyncError(_csync_ctx, "cysnc_reconcile");
+//         return;
+//     }
 
     if( walkOk ) {
         if( csync_walk_local_tree(_csync_ctx, &walkFinalize, 0) < 0 ||
@@ -366,6 +412,5 @@ void CSyncThread::progress(const char *remote_url, enum csync_notify_type_e kind
         thread->fileReceived(path);
     }
 }
-
 
 }
