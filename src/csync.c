@@ -577,9 +577,14 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
       trav.type =   cur->type;
       trav.instruction = cur->instruction;
       trav.rename_path = cur->destpath;
+      trav.md5 =    cur->md5;
 
       rc = (*visitor)(&trav, twctx->userdata);
       cur->instruction = trav.instruction;
+      if (trav.md5 != cur->md5) {
+          SAFE_FREE(cur->md5);
+          cur->md5 = c_strdup(trav.md5);
+      }
       return rc;
     }
     ctx->error_code = CSYNC_ERR_TREE;
@@ -714,6 +719,9 @@ int csync_commit(CSYNC *ctx) {
   int rc = 0;
 
   ctx->error_code = CSYNC_ERR_NONE;
+
+  /* maybe the propagate was done using another propagator, let the merger think it has been done */
+  ctx->status = CSYNC_STATUS_DONE;
 
   if (_merge_and_write_statedb(ctx) < 0) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Merge and Write database failed!");

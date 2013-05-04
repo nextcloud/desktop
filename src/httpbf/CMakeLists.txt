@@ -31,3 +31,14 @@ target_link_libraries(${HTTPBF_LIBRARY} ${NEON_LIBRARIES})
 if(NOT WIN32)
     add_definitions( -fPIC )
 endif()
+
+INSTALL(
+    TARGETS
+    ${HTTPBF_LIBRARY}
+    LIBRARY DESTINATION
+    ${LIB_INSTALL_DIR}
+    ARCHIVE DESTINATION
+    ${LIB_INSTALL_DIR}
+    RUNTIME DESTINATION
+    ${BIN_INSTALL_DIR}
+)

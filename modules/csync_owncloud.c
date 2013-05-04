@@ -2144,6 +2144,11 @@ static int owncloud_set_property(const char *key, void *data) {
         dav_session.chunk_info = (csync_hbf_info_t *)(data);
         return 0;
     }
+    if( c_streq(key, "get_dav_session")) {
+        /* Give the ne_session to the caller */
+        *(ne_session**)data = dav_session.ctx;
+        return 0;
+    }
 
     return -1;
 }
