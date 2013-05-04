@@ -254,14 +254,19 @@ static int dav_request( ne_request *req, int fd, hbf_block_t *blk ) {
 
 
     switch(res) {
-        case NE_OK:
-            state = HBF_SUCCESS;
-            blk->state = HBF_TRANSFER_SUCCESS;
+    case NE_OK:
+        blk->state = HBF_TRANSFER_FAILED;
+        state = HBF_FAIL;
+        etag = 0;
+        if( req_status->klass == 2 ) {
             etag = ne_get_response_header(req, "ETag");
-            if (etag && etag[0])
+            if (etag && etag[0]) {
                 state = HBF_SUCCESS;
-            break;
-        case NE_AUTH:
+                blk->state = HBF_TRANSFER_SUCCESS;
+            }
+        }
+        break;
+    case NE_AUTH:
             state = HBF_AUTH_FAIL;
             blk->state = HBF_TRANSFER_FAILED;
             break;
@@ -382,7 +387,9 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
     }
 
     /* do the source file validation finally (again). */
-    state = validate_source_file(transfer);
+    if( state == HBF_SUCCESS ) {
+        state = validate_source_file(transfer);
+    }
 
     return state;
 }
