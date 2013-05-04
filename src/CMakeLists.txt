@@ -116,7 +116,6 @@ if(QTKEYCHAIN_FOUND)
 endif()
 
 add_library(owncloudsync SHARED ${libsync_SRCS} ${syncMoc})
-set_target_properties( owncloudsync PROPERTIES COMPILE_DEFINITIONS OWNCLOUD_CLIENT)
 set_target_properties( owncloudsync  PROPERTIES
 	VERSION ${VERSION}
 	SOVERSION ${SOVERSION}
@@ -221,7 +220,6 @@ endif(NOT WIN32)
 
     # add_executable( ${APPLICATION_EXECUTABLE} main.cpp ${final_src})
     add_executable( ${APPLICATION_EXECUTABLE} WIN32 main.cpp ${final_src})
-    set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES COMPILE_DEFINITIONS OWNCLOUD_CLIENT)
 
 else()
     set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
@@ -232,7 +230,6 @@ else()
 
     # we must add MACOSX_BUNDLE only if building a bundle
     add_executable( ${APPLICATION_EXECUTABLE} WIN32 MACOSX_BUNDLE main.cpp ${final_src})
-    set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES COMPILE_DEFINITIONS OWNCLOUD_CLIENT)
 
     #FIXME: hardcoded path
     if ( EXISTS ${CSYNC_BINARY_DIR}/modules/ocsync_owncloud.so )
