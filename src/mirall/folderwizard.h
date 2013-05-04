@@ -23,9 +23,6 @@
 
 #include "ui_folderwizardsourcepage.h"
 #include "ui_folderwizardtargetpage.h"
-#include "ui_folderwizardnetworkpage.h"
-#include "ui_folderwizardowncloudpage.h"
-
 
 namespace Mirall {
 
