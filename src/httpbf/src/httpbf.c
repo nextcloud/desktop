@@ -173,6 +173,7 @@ void hbf_free_transfer( hbf_transfer_t *transfer ) {
     for( cnt = 0; cnt < transfer->block_cnt; cnt++ ) {
         hbf_block_t *block = transfer->block_arr[cnt];
         if( block->http_error_msg ) free( block->http_error_msg );
+        if( block->etag ) free( block->etag );
         if( block ) free(block);
     }
     free( transfer->block_arr );
@@ -261,9 +262,17 @@ static int dav_request( ne_request *req, int fd, hbf_block_t *blk ) {
         if( req_status->klass == 2 ) {
             etag = ne_get_response_header(req, "ETag");
             if (etag && etag[0]) {
-                state = HBF_SUCCESS;
-                blk->state = HBF_TRANSFER_SUCCESS;
+                if( etag[0] == '"' && etag[ strlen(etag)-1] == '"') {
+                     int len = strlen( etag )-2;
+                     blk->etag = malloc( len+1 );
+                     strncpy( blk->etag, etag+1, len );
+                     blk->etag[len] = '\0';
+                } else {
+                    blk->etag = strdup( etag );
+                }
             }
+            state = HBF_SUCCESS;
+            blk->state = HBF_TRANSFER_SUCCESS;
         }
         break;
     case NE_AUTH:

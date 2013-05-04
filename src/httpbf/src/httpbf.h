@@ -58,6 +58,7 @@ struct hbf_block_s {
     Hbf_State state;
     int http_result_code;
     char *http_error_msg;
+    char *etag;
 
     int tries;
 };
