@@ -131,6 +131,11 @@ int csync_excluded(CSYNC *ctx, const char *path) {
   int rc;
   int match = 0;
 
+  /* exclude the lock file */
+  if (c_streq( path, CSYNC_LOCK_FILE )) {
+      return 1;
+  }
+
   if (! ctx->options.unix_extensions) {
     for (p = path; *p; p++) {
       switch (*p) {

@@ -48,7 +48,7 @@ extern "C" {
 #define CSYNC_CONF_DIR ".ocsync"
 #define CSYNC_CONF_FILE "ocsync.conf"
 #define CSYNC_EXCLUDE_FILE "ocsync_exclude.conf"
-#define CSYNC_LOCK_FILE "lock"
+#define CSYNC_LOCK_FILE ".csync.lock"
 
 enum csync_error_codes_e {
   CSYNC_ERR_NONE          = 0,

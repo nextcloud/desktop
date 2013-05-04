@@ -186,7 +186,7 @@ int csync_init(CSYNC *ctx) {
   }
 
   /* create lock file */
-  if (asprintf(&lock, "%s/%s", ctx->options.config_dir, CSYNC_LOCK_FILE) < 0) {
+  if (asprintf(&lock, "%s/%s", ctx->local.uri, CSYNC_LOCK_FILE) < 0) {
     ctx->error_code = CSYNC_ERR_MEM;
     rc = -1;
     goto out;
@@ -350,6 +350,8 @@ retry_vio_init:
 
   ctx->status = CSYNC_STATUS_INIT;
 
+  csync_lock_remove(ctx, lock);
+
   csync_set_module_property(ctx, "csync_context", ctx);
 
   /* initialize random generator */
@@ -367,12 +369,26 @@ out:
 int csync_update(CSYNC *ctx) {
   int rc = -1;
   struct timespec start, finish;
-  
+  char *lock = NULL;
+
   if (ctx == NULL) {
     errno = EBADF;
     return -1;
   }
   ctx->error_code = CSYNC_ERR_NONE;
+
+  /* try to create lock file */
+  if (asprintf(&lock, "%s/%s", ctx->local.uri, CSYNC_LOCK_FILE) < 0) {
+    ctx->error_code = CSYNC_ERR_MEM;
+    rc = -1;
+    return rc;
+  }
+
+  if (csync_lock(ctx, lock) < 0) {
+    ctx->error_code = CSYNC_ERR_LOCK;
+    rc = -1;
+    return rc;
+  }
 
   csync_memstat_check(ctx);
 
@@ -717,6 +733,7 @@ static int  _merge_and_write_statedb(CSYNC *ctx) {
 
 int csync_commit(CSYNC *ctx) {
   int rc = 0;
+  char *lock = NULL;
 
   ctx->error_code = CSYNC_ERR_NONE;
 
@@ -790,6 +807,14 @@ int csync_commit(CSYNC *ctx) {
   ctx->status = CSYNC_STATUS_INIT;
   ctx->error_code = CSYNC_ERR_NONE;
   SAFE_FREE(ctx->error_string);
+
+  /* create lock file */
+  if (asprintf(&lock, "%s/%s", ctx->local.uri, CSYNC_LOCK_FILE) < 0) {
+    ctx->error_code = CSYNC_ERR_MEM;
+    rc = -1;
+    goto out;
+  }
+  csync_lock_remove(ctx, lock);
 
   out:
   return rc;
