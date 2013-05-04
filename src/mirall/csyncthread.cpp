@@ -179,7 +179,7 @@ int CSyncThread::treewalkRemote( TREE_WALK_FILE* file, void *data )
 
 int CSyncThread::walkFinalize(TREE_WALK_FILE* file, void *data )
 {
-    return static_cast<CSyncThread*>(data)->treewalkError( file);
+    return static_cast<CSyncThread*>(data)->treewalkFinalize( file);
 }
 
 int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
@@ -240,23 +240,31 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     return re;
 }
 
-int CSyncThread::treewalkError(TREE_WALK_FILE* file)
+int CSyncThread::treewalkFinalize(TREE_WALK_FILE* file)
 {
-    if (file->instruction == CSYNC_INSTRUCTION_IGNORE || file->instruction == CSYNC_INSTRUCTION_NONE)
+    if (file->instruction == CSYNC_INSTRUCTION_IGNORE)
         return 0;
 
     SyncFileItem item;
     item._file= QString::fromUtf8(file->path);
 
+    // Update the instruction and etag in the csync rb_tree so it is saved on the database
 
     QHash<QString, Action>::const_iterator action = performedActions.constFind(item._file);
     if (action != performedActions.constEnd()) {
-        file->instruction = action->instruction;
+        if (file->instruction != CSYNC_INSTRUCTION_NONE) {
+            // it is NONE if we are in the wrong tree (remote vs. local)
+            file->instruction = action->instruction;
+        }
+
         if (!action->etag.isNull()) {
+            // Update the etag even for INSTRUCTION_NONE (eg. renames)
             file->md5 = action->etag.constData();
         }
     }
 
+    // Put the error in _syncedItems so the UI can display them
+    // (FIXME, this should not be done here but in the propagate step instead)
 
     if( file->instruction == CSYNC_INSTRUCTION_STAT_ERROR ||
         file->instruction == CSYNC_INSTRUCTION_ERROR ) {
@@ -367,13 +375,17 @@ void CSyncThread::startSync()
         Action a;
         if (!lastDeleted.isEmpty() && item._file.startsWith(lastDeleted)
                 && item._instruction == CSYNC_INSTRUCTION_REMOVE) {
+            // If the item's name starts with the name of the previously deleted directory, we
+            // can assume this file was already destroyed by the previous recursive call.
             a.instruction = CSYNC_INSTRUCTION_DELETED;
             performedActions.insert(item._file, a);
             continue;
         }
         propagator.etag.clear(); // FIXME : set to the right one
         a.instruction = propagator.propagate(item);
-        if (a.instruction == CSYNC_INSTRUCTION_DELETED) {
+
+        if (item._isDirectory && item._instruction == CSYNC_INSTRUCTION_REMOVE
+            && a.instruction == CSYNC_INSTRUCTION_DELETED) {
             lastDeleted = item._file;
         } else {
             lastDeleted.clear();
@@ -382,7 +394,13 @@ void CSyncThread::startSync()
         a.etag = propagator.etag;
         performedActions.insert(item._file, a);
 
-        //TODO record errors and process;
+        if (item._instruction == CSYNC_INSTRUCTION_RENAME) {
+            // we should update the etag on the destination as well
+            a.instruction = CSYNC_INSTRUCTION_NONE;
+            performedActions.insert(item._renameTarget, a);
+        }
+
+        //TODO record errors and progress;
     }
 
 //     if( csync_propagate(_csync_ctx) < 0 ) {

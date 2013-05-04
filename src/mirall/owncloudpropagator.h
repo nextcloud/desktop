@@ -37,6 +37,8 @@ class OwncloudPropagator {
     csync_instructions_e uploadFile(const SyncFileItem &);
     csync_instructions_e remoteRename(const SyncFileItem &);
 
+    void updateMTimeAndETag(const char *uri, time_t);
+
     /* fetch the error code and string from the session */
     void updateErrorFromSession(int neon_code = 0);
 

@@ -218,10 +218,13 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
 //                     (long long)(error_string), dav_session.userdata);
 //       }
 
-    //Update mtime;
+    updateMTimeAndETag(uri.data(), item._modtime);
+    return CSYNC_INSTRUCTION_UPDATED;
+}
 
-
-    QByteArray modtime = QByteArray::number(qlonglong(item._modtime));
+void OwncloudPropagator::updateMTimeAndETag(const char* uri, time_t mtime)
+{
+    QByteArray modtime = QByteArray::number(qlonglong(mtime));
     ne_propname pname;
     pname.nspace = "DAV:";
     pname.name = "lastmodified";
@@ -231,13 +234,13 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
     ops[0].value = modtime.constData();
     ops[1].name = NULL;
 
-    int rc = ne_proppatch( _session, uri.data(), ops );
+    int rc = ne_proppatch( _session, uri, ops );
     if( rc != NE_OK ) {
         //FIXME
     }
 
     // get the etag
-    QScopedPointer<ne_request, ScopedPointerHelpers> req(ne_request_create(_session, "HEAD", uri.data()));
+    QScopedPointer<ne_request, ScopedPointerHelpers> req(ne_request_create(_session, "HEAD", uri));
     int neon_stat = ne_request_dispatch(req.data());
     if (neon_stat != NE_OK) {
         //FIXME
@@ -249,9 +252,9 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
             etag = header;
         }
     }
-
-    return CSYNC_INSTRUCTION_UPDATED;
 }
+
+
 
 struct DownloadContext {
 
@@ -400,12 +403,18 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item)
     return CSYNC_INSTRUCTION_UPDATED;
 }
 
-
-
-csync_instructions_e OwncloudPropagator::remoteRename(const SyncFileItem& )
+csync_instructions_e OwncloudPropagator::remoteRename(const SyncFileItem &item)
 {
-    qFatal("unimplemented");
-    return CSYNC_INSTRUCTION_ERROR;
+    QScopedPointer<char, QScopedPointerPodDeleter> uri1(ne_path_escape((_remoteDir + item._file).toUtf8()));
+    QScopedPointer<char, QScopedPointerPodDeleter> uri2(ne_path_escape((_remoteDir + item._renameTarget).toUtf8()));
+
+    int rc = ne_move(_session, 1, uri1.data(), uri2.data());
+    if (rc != NE_OK)
+        return CSYNC_INSTRUCTION_ERROR;
+
+    updateMTimeAndETag(uri2.data(), item._modtime);
+
+    return CSYNC_INSTRUCTION_DELETED;
 }
 
 void OwncloudPropagator::updateErrorFromSession(int neon_code)

@@ -74,7 +74,7 @@ private:
     static int treewalkLocal( TREE_WALK_FILE*, void *);
     static int treewalkRemote( TREE_WALK_FILE*, void *);
     int treewalkFile( TREE_WALK_FILE*, bool );
-    int treewalkError( TREE_WALK_FILE* );
+    int treewalkFinalize( TREE_WALK_FILE* );
 
     static int walkFinalize(TREE_WALK_FILE*, void* );
 
