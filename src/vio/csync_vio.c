@@ -661,6 +661,7 @@ int csync_vio_set_property(CSYNC* ctx, const char* key, void* data) {
 }
 
 char *csync_vio_get_error_string(CSYNC *ctx) {
+    if( ! ctx ) return 0;
     if(ctx->error_string) {
         return ctx->error_string;
     }
