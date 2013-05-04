@@ -20,6 +20,7 @@
 #include <qdiriterator.h>
 #include <qtemporaryfile.h>
 #include <qabstractfileengine.h>
+#include <qdebug.h>
 
 #include <neon/ne_basic.h>
 #include <neon/ne_socket.h>
@@ -101,7 +102,7 @@ csync_instructions_e OwncloudPropagator::localRemove(const SyncFileItem& item)
         _errorString = file.errorString();
     }
     //FIXME: we should update the md5
-    etag.clear();
+    _etag.clear();
     //FIXME: we should update the mtime
     return CSYNC_INSTRUCTION_NONE; // not ERROR so it is still written to the database
 }
@@ -133,14 +134,17 @@ csync_instructions_e OwncloudPropagator::remoteRemove(const SyncFileItem &item)
 csync_instructions_e OwncloudPropagator::remoteMkdir(const SyncFileItem &item)
 {
     QScopedPointer<char, QScopedPointerPodDeleter> uri(ne_path_escape((_remoteDir + item._file).toUtf8()));
+    bool error = false;
+
     int rc = ne_mkcol(_session, uri.data());
-    if (rc != NE_OK) {
-        updateErrorFromSession();
+    error = updateErrorFromSession( rc );
+
+    if( error ) {
         /* Special for mkcol: it returns 405 if the directory already exists.
          * Ignre that error */
-        if (_errorCode != 405)
-
+        if (_httpStatusCode != 405) {
             return CSYNC_INSTRUCTION_ERROR;
+        }
     }
     return CSYNC_INSTRUCTION_UPDATED;
 }
@@ -205,7 +209,7 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
 
             if( finished ) {
                 _errorString = hbf_error_string(state);
-//                 errorCode = hbf_fail_http_code(trans);
+                _httpStatusCode = hbf_fail_http_code(trans.data());
 //                 if (dav_session.chunk_info) {
 //                     dav_session.chunk_info->start_id = trans->start_id;
 //                     dav_session.chunk_info->transfer_id = trans->transfer_id;
@@ -239,29 +243,39 @@ void OwncloudPropagator::updateMTimeAndETag(const char* uri, time_t mtime)
     ops[1].name = NULL;
 
     int rc = ne_proppatch( _session, uri, ops );
-    if( rc != NE_OK ) {
-        //FIXME
+    bool error = updateErrorFromSession( rc );
+    if( error ) {
+        // FIXME: We could not set the mtime. Error or not?
     }
 
     // get the etag
     QScopedPointer<ne_request, ScopedPointerHelpers> req(ne_request_create(_session, "HEAD", uri));
     int neon_stat = ne_request_dispatch(req.data());
-    if (neon_stat != NE_OK) {
-        //FIXME
+
+    if( neon_stat != NE_OK ) {
+        updateErrorFromSession(neon_stat);
     } else {
+        const ne_status *stat = ne_get_status( req.data() );
+
+        if( stat && stat->klass != 2 ) {
+            _httpStatusCode = stat->code;
+            _errorCode = CSYNC_ERR_HTTP;
+            _errorString = QString::fromUtf8( stat->reason_phrase );
+        }
+    }
+    if( _errorCode == CSYNC_ERR_NONE ) {
         const char *header = ne_get_response_header(req.data(), "etag");
         if(header && header [0] == '"' && header[ strlen(header)-1] == '"') {
-            etag = QByteArray(header + 1, strlen(header)-2);
+            _etag = QByteArray(header + 1, strlen(header)-2);
         } else {
-            etag = header;
+            _etag = header;
         }
     }
 }
 
+class DownloadContext {
 
-
-struct DownloadContext {
-
+public:
     QFile *file;
     QScopedPointer<ne_decompress, ScopedPointerHelpers> decompress;
 
@@ -269,7 +283,7 @@ struct DownloadContext {
 
     static int content_reader(void *userdata, const char *buf, size_t len)
     {
-        DownloadContext *writeCtx = reinterpret_cast<DownloadContext *>(userdata);
+        DownloadContext *writeCtx = static_cast<DownloadContext *>(userdata);
         size_t written = 0;
 
         if(buf) {
@@ -291,7 +305,7 @@ struct DownloadContext {
     */
     static void install_content_reader( ne_request *req, void *userdata, const ne_status *status )
     {
-        DownloadContext *writeCtx = reinterpret_cast<DownloadContext *>(userdata);
+        DownloadContext *writeCtx = static_cast<DownloadContext *>(userdata);
 
         Q_UNUSED(status);
 
@@ -330,6 +344,7 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item)
     QTemporaryFile tmpFile(_localDir + item._file);
     if (!tmpFile.open()) {
         _errorString = tmpFile.errorString();
+        _errorCode = CSYNC_ERR_FILESYSTEM;
         return CSYNC_INSTRUCTION_ERROR;
     }
 
@@ -364,8 +379,9 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item)
 
         int neon_stat = ne_request_dispatch(req.data());
 
-        if (neon_stat == NE_TIMEOUT && (++retry) < 3)
+        if (neon_stat == NE_TIMEOUT && (++retry) < 3) {
             continue;
+        }
 
         /* delete the hook again, otherwise they get chained as they are with the session */
         ne_unhook_post_headers( _session, DownloadContext::install_content_reader, &writeCtx );
@@ -374,8 +390,8 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item)
         /* possible return codes are:
          *  NE_OK, NE_AUTH, NE_CONNECT, NE_TIMEOUT, NE_ERROR (from ne_request.h)
          */
-        if( neon_stat != NE_OK ) {
 
+        if( neon_stat != NE_OK ) {
             updateErrorFromSession(neon_stat);
             qDebug("Error GET: Neon: %d", neon_stat);
             return CSYNC_INSTRUCTION_ERROR;
@@ -468,39 +484,51 @@ bool OwncloudPropagator::check_neon_session()
 
 bool OwncloudPropagator::updateErrorFromSession(int neon_code)
 {
+    bool re = false;
+
     if( neon_code != NE_OK ) {
          qDebug("Neon error code was %d", neon_code);
      }
-#if 0
-     switch(neon_code) {
-     case NE_OK:     /* Success, but still the possiblity of problems */
-         check_neon_session();
-     case NE_ERROR:  /* Generic error; use ne_get_error(session) for message */
-         _errorString = QString::fromUtf8( ne_get_error(_session) );
-         break;
-     case NE_LOOKUP:  /* Server or proxy hostname lookup failed */
-         break;
-     case NE_AUTH:     /* User authentication failed on server */
-         break;
-     case NE_PROXYAUTH:  /* User authentication failed on proxy */
-         break;
-     case NE_CONNECT:  /* Could not connect to server */
-         break;
-     case NE_TIMEOUT:  /* Connection timed out */
-         break;
-     case NE_FAILED:   /* The precondition failed */
-         break;
-     case NE_RETRY:    /* Retry request (ne_end_request ONLY) */
-         break;
 
-     case NE_REDIRECT: /* See ne_redirect.h */
-         break;
-     default:
-     }
-#endif
-
-    qFatal("unimplemented");
-    //don't forget to update errorCode to the http code
+    switch(neon_code) {
+    case NE_OK:     /* Success, but still the possiblity of problems */
+        if( check_neon_session() ) {
+            re = true;
+        }
+        break;
+    case NE_ERROR:  /* Generic error; use ne_get_error(session) for message */
+        _errorString = QString::fromUtf8( ne_get_error(_session) );
+        _errorCode = CSYNC_ERR_HTTP;
+        break;
+    case NE_LOOKUP:  /* Server or proxy hostname lookup failed */
+        _errorString = QString::fromUtf8( ne_get_error(_session) );
+        _errorCode = CSYNC_ERR_LOOKUP;
+        break;
+    case NE_AUTH:     /* User authentication failed on server */
+        _errorString = QString::fromUtf8( ne_get_error(_session) );
+        _errorCode = CSYNC_ERR_AUTH_SERVER;
+        break;
+    case NE_PROXYAUTH:  /* User authentication failed on proxy */
+        _errorString = QString::fromUtf8( ne_get_error(_session) );
+        _errorCode = CSYNC_ERR_AUTH_PROXY;
+        break;
+    case NE_CONNECT:  /* Could not connect to server */
+        _errorString = QString::fromUtf8( ne_get_error(_session) );
+        _errorCode = CSYNC_ERR_CONNECT;
+        break;
+    case NE_TIMEOUT:  /* Connection timed out */
+        _errorString = QString::fromUtf8( ne_get_error(_session) );
+        _errorCode = CSYNC_ERR_TIMEOUT;
+        break;
+    case NE_FAILED:   /* The precondition failed */
+    case NE_RETRY:    /* Retry request (ne_end_request ONLY) */
+    case NE_REDIRECT: /* See ne_redirect.h */
+    default:
+        _errorString = QString::fromUtf8( ne_get_error(_session) );
+        _errorCode = CSYNC_ERR_HTTP;
+        break;
+    }
+    return re;
 }
 
 

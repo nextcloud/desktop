@@ -381,7 +381,7 @@ void CSyncThread::startSync()
             performedActions.insert(item._file, a);
             continue;
         }
-        propagator.etag.clear(); // FIXME : set to the right one
+        propagator._etag.clear(); // FIXME : set to the right one
         a.instruction = propagator.propagate(item);
 
         if (item._isDirectory && item._instruction == CSYNC_INSTRUCTION_REMOVE
@@ -391,7 +391,7 @@ void CSyncThread::startSync()
             lastDeleted.clear();
         }
 
-        a.etag = propagator.etag;
+        a.etag = propagator._etag;
         performedActions.insert(item._file, a);
 
         if (item._instruction == CSYNC_INSTRUCTION_RENAME) {

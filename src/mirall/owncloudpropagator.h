@@ -58,7 +58,7 @@ public:
 
     CSYNC_ERROR_CODE _errorCode;
     int              _httpStatusCode;
-    QByteArray etag;
+    QByteArray _etag;
 
 };
 
