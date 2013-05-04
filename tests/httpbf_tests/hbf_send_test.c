@@ -175,7 +175,7 @@ static void test_hbf_splitlist_zero( void **state ){
 
     hbf_transfer_t *list = NULL;
     const char *dest_url = "http://localhost/ocm/remote.php/webdav/big/zerofile.txt";
-    int i, fd;
+    int fd;
     Hbf_State hbf_state;
 
     (void) state;
