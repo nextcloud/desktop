@@ -207,8 +207,6 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 if(NOT WIN32)
-    install(FILES ${CMAKE_SOURCE_DIR}/resources/mirall-48.png 
-        DESTINATION share/icons/hicolor/48x48/apps/ RENAME mirall.png)
     install(FILES
         ${theme_dir}/colored/${APPLICATION_SHORTNAME}-icon-48.png 
         DESTINATION share/icons/hicolor/48x48/apps/ RENAME ${APPLICATION_SHORTNAME}.png)
