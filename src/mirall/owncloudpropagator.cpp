@@ -393,10 +393,26 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item)
     tmpFile.close();
     tmpFile.flush();
 
+    // We want a rename that also overwite.  QFile::rename does not overwite.
+    // Qt 5.1 has QFile::renameOverwrite we cold use.  (Or even better: QSaveFile)
+#ifndef QT_OS_WIN
     if (!tmpFile.fileEngine()->rename(_localDir + item._file)) {
         errorString = tmpFile.errorString();
         return CSYNC_INSTRUCTION_ERROR;
     }
+#else //QT_OS_WIN
+    if (::MoveFileEx((wchar_t*)tmpFile.fileName().utf16(),
+                            (wchar_t*)QString(_localDir + item._file).utf16(),
+                        MOVEFILE_REPLACE_EXISTING) != 0) {
+        wchar_t *string = 0;
+        FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
+                      NULL, ::GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                      (LPWSTR)&string, 0, NULL);
+        errorString = QString::fromWCharArray(string);
+        LocalFree((HLOCAL)string);
+        return CSYNC_INSTRUCTION_ERROR;
+    }
+#endif
 
     tmpFile.setAutoRemove(false);
 
