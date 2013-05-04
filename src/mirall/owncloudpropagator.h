@@ -27,6 +27,7 @@ class OwncloudPropagator {
     QString _remoteDir; // path to the root of the remote. ends with '/'
     ne_session_s *_session;
 
+    bool check_neon_session();
 
 
     csync_instructions_e localRemove(const SyncFileItem &);
@@ -40,21 +41,23 @@ class OwncloudPropagator {
     void updateMTimeAndETag(const char *uri, time_t);
 
     /* fetch the error code and string from the session */
-    void updateErrorFromSession(int neon_code = 0);
+    bool updateErrorFromSession(int neon_code = 0);
 
 
 public:
     OwncloudPropagator(ne_session_s *session, const QString &localDir, const QString &remoteDir)
             : _session(session)
-            , errorCode(0)
+            , _errorCode(CSYNC_ERR_NONE)
             , _localDir(localDir)
             , _remoteDir(remoteDir) {
         if (!localDir.endsWith(QChar('/'))) _localDir+='/';
         if (!remoteDir.endsWith(QChar('/'))) _remoteDir+='/';
     }
     csync_instructions_e  propagate(const SyncFileItem &);
-    QString errorString;
-    int errorCode;
+    QString _errorString;
+
+    CSYNC_ERROR_CODE _errorCode;
+    int              _httpStatusCode;
     QByteArray etag;
 
 };

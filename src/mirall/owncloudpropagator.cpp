@@ -98,7 +98,7 @@ csync_instructions_e OwncloudPropagator::localRemove(const SyncFileItem& item)
         QFile file(filename);
         if (!file.exists() || file.remove())
             return CSYNC_INSTRUCTION_DELETED;
-        errorString = file.errorString();
+        _errorString = file.errorString();
     }
     //FIXME: we should update the md5
     etag.clear();
@@ -118,10 +118,13 @@ csync_instructions_e OwncloudPropagator::localMkdir(const SyncFileItem &item)
 
 csync_instructions_e OwncloudPropagator::remoteRemove(const SyncFileItem &item)
 {
+    bool error = false;
+
     QScopedPointer<char, QScopedPointerPodDeleter> uri(ne_path_escape((_remoteDir + item._file).toUtf8()));
     int rc = ne_delete(_session, uri.data());
-    if (rc != NE_OK) {
-        updateErrorFromSession();
+
+    error = updateErrorFromSession(rc);
+    if (error) {
         return CSYNC_INSTRUCTION_ERROR;
     }
     return CSYNC_INSTRUCTION_DELETED;
@@ -135,7 +138,8 @@ csync_instructions_e OwncloudPropagator::remoteMkdir(const SyncFileItem &item)
         updateErrorFromSession();
         /* Special for mkcol: it returns 405 if the directory already exists.
          * Ignre that error */
-        if (errorCode != 405)
+        if (_errorCode != 405)
+
             return CSYNC_INSTRUCTION_ERROR;
     }
     return CSYNC_INSTRUCTION_UPDATED;
@@ -146,7 +150,7 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
 {
     QFile file(_localDir + item._file);
     if (!file.open(QIODevice::ReadOnly)) {
-        errorString = file.errorString();
+        _errorString = file.errorString();
         return CSYNC_INSTRUCTION_ERROR;
     }
     QScopedPointer<char, QScopedPointerPodDeleter> uri(ne_path_escape((_remoteDir + item._file).toUtf8()));
@@ -200,7 +204,7 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
             }
 
             if( finished ) {
-                errorString = hbf_error_string(state);
+                _errorString = hbf_error_string(state);
 //                 errorCode = hbf_fail_http_code(trans);
 //                 if (dav_session.chunk_info) {
 //                     dav_session.chunk_info->start_id = trans->start_id;
@@ -325,7 +329,7 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item)
 {
     QTemporaryFile tmpFile(_localDir + item._file);
     if (!tmpFile.open()) {
-        errorString = tmpFile.errorString();
+        _errorString = tmpFile.errorString();
         return CSYNC_INSTRUCTION_ERROR;
     }
 
@@ -380,8 +384,8 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item)
             qDebug("GET http result %d (%s)", status->code, status->reason_phrase ? status->reason_phrase : "<empty");
             if( status->klass != 2 ) {
                 qDebug("sendfile request failed with http status %d!", status->code);
-                errorCode = status->code;
-                errorString = QString::fromUtf8(status->reason_phrase);
+                _httpStatusCode = status->code;
+                _errorString = QString::fromUtf8(status->reason_phrase);
                 return CSYNC_INSTRUCTION_ERROR;
             }
         }
@@ -397,7 +401,7 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item)
     // Qt 5.1 has QFile::renameOverwrite we cold use.  (Or even better: QSaveFile)
 #ifndef QT_OS_WIN
     if (!tmpFile.fileEngine()->rename(_localDir + item._file)) {
-        errorString = tmpFile.errorString();
+        _errorString = tmpFile.errorString();
         return CSYNC_INSTRUCTION_ERROR;
     }
 #else //QT_OS_WIN
@@ -433,8 +437,68 @@ csync_instructions_e OwncloudPropagator::remoteRename(const SyncFileItem &item)
     return CSYNC_INSTRUCTION_DELETED;
 }
 
-void OwncloudPropagator::updateErrorFromSession(int neon_code)
+bool OwncloudPropagator::check_neon_session()
 {
+    bool isOk = true;
+    if( !_session ) {
+        _errorCode = CSYNC_ERR_PARAM;
+        isOk = false;
+    } else {
+        const char *p = ne_get_error( _session );
+        char *q;
+
+        _errorString = QString::fromUtf8(p);
+
+        if( !_errorString.isEmpty() ) {
+            int firstSpace = _errorString.indexOf(QChar(' '));
+            if( firstSpace > 0 ) {
+                bool ok;
+                QString numStr = _errorString.mid(0, firstSpace);
+                _httpStatusCode = numStr.toInt(&ok);
+
+                if( !ok ) {
+                    _httpStatusCode = 0;
+                }
+            }
+            isOk = false;
+        }
+    }
+    return isOk;
+}
+
+bool OwncloudPropagator::updateErrorFromSession(int neon_code)
+{
+    if( neon_code != NE_OK ) {
+         qDebug("Neon error code was %d", neon_code);
+     }
+#if 0
+     switch(neon_code) {
+     case NE_OK:     /* Success, but still the possiblity of problems */
+         check_neon_session();
+     case NE_ERROR:  /* Generic error; use ne_get_error(session) for message */
+         _errorString = QString::fromUtf8( ne_get_error(_session) );
+         break;
+     case NE_LOOKUP:  /* Server or proxy hostname lookup failed */
+         break;
+     case NE_AUTH:     /* User authentication failed on server */
+         break;
+     case NE_PROXYAUTH:  /* User authentication failed on proxy */
+         break;
+     case NE_CONNECT:  /* Could not connect to server */
+         break;
+     case NE_TIMEOUT:  /* Connection timed out */
+         break;
+     case NE_FAILED:   /* The precondition failed */
+         break;
+     case NE_RETRY:    /* Retry request (ne_end_request ONLY) */
+         break;
+
+     case NE_REDIRECT: /* See ne_redirect.h */
+         break;
+     default:
+     }
+#endif
+
     qFatal("unimplemented");
     //don't forget to update errorCode to the http code
 }
