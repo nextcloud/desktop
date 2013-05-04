@@ -326,6 +326,8 @@ endif()
 
 set(OWNCLOUDCMD_SRC owncloudcmd/owncloudcmd.cpp)
 add_executable(owncloudcmd ${OWNCLOUDCMD_SRC})
+set_target_properties( owncloudcmd PROPERTIES
+	        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
 target_link_libraries(owncloudcmd owncloudsync)
 target_link_libraries(owncloudcmd ${CSYNC_LIBRARY})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/mirall)
