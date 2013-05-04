@@ -324,3 +324,13 @@ if(KRAZY2_EXECUTABLE)
 )
 endif()
 
+set(OWNCLOUDCMD_SRC owncloudcmd/owncloudcmd.cpp)
+add_executable(owncloudcmd ${OWNCLOUDCMD_SRC})
+target_link_libraries(owncloudcmd owncloudsync)
+target_link_libraries(owncloudcmd ${CSYNC_LIBRARY})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/mirall)
+install(TARGETS owncloudcmd
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+)
