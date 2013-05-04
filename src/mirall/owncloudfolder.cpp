@@ -254,8 +254,6 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     MirallConfigFile cfgFile;
 
     _syncResult.clearErrors();
-    // we now have watchers for everything, so every sync is remote.
-    _syncResult.setLocalRunOnly( false );
     _syncResult.setStatus( SyncResult::SyncPrepare );
     emit syncStateChange();
 
