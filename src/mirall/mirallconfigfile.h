@@ -27,6 +27,7 @@ class MirallConfigFile
     /* let only CredentialStore read the password from the file. All other classes
      *  should work with CredentialStore to get the credentials.  */
     friend class CredentialStore;
+    friend class ConnectionValidator;
 public:
     MirallConfigFile( const QString& appendix = QString() );
 

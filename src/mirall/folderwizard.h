@@ -30,7 +30,6 @@
 namespace Mirall {
 
 class ownCloudInfo;
-class ownCloudDirCheck;
 
 /**
  * page to ask for the local source folder
@@ -74,15 +73,6 @@ public:
     virtual void cleanupPage();
 
 protected slots:
-    void slotToggleItems();
-    void on_localFolder2ChooseBtn_clicked();
-
-    void on_localFolderRadioBtn_toggled();
-    void on_urlFolderRadioBtn_toggled();
-
-    void on_localFolder2LineEdit_textChanged();
-    void on_urlFolderLineEdit_textChanged();
-
     void slotOwnCloudFound( const QString&, const QString&, const QString&, const QString& );
     void slotNoOwnCloudFound(QNetworkReply*);
 
@@ -99,38 +89,6 @@ private:
     ownCloudInfo *_ownCloudDirCheck;
     bool _dirChecked;
     bool _warnWasVisible;
-};
-
-class FolderWizardNetworkPage : public QWizardPage
-{
-    Q_OBJECT
-public:
-    FolderWizardNetworkPage();
-    ~FolderWizardNetworkPage();
-
-    virtual bool isComplete() const;
-
-protected slots:
-
-private:
-    Ui_FolderWizardNetworkPage _ui;
-};
-
-class FolderWizardOwncloudPage : public QWizardPage
-{
-    Q_OBJECT
-public:
-    FolderWizardOwncloudPage();
-    ~FolderWizardOwncloudPage();
-
-    virtual bool isComplete() const;
-    void initializePage();
-
-protected slots:
-
-private:
-    Ui_FolderWizardOwncloudPage _ui;
-
 };
 
 /**

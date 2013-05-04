@@ -166,11 +166,6 @@ FolderWizardTargetPage::FolderWizardTargetPage()
     _ui.setupUi(this);
     _ui.warnFrame->hide();
 
-    registerField(QLatin1String("local?"),            _ui.localFolderRadioBtn);
-    registerField(QLatin1String("remote?"),           _ui.urlFolderRadioBtn);
-    registerField(QLatin1String("OC?"),               _ui.OCRadioBtn);
-    registerField(QLatin1String("targetLocalFolder"), _ui.localFolder2LineEdit);
-    registerField(QLatin1String("targetURLFolder"),   _ui.urlFolderLineEdit);
     registerField(QLatin1String("targetOCFolder"),    _ui.OCFolderLineEdit);
 
     connect( _ui.OCFolderLineEdit, SIGNAL(textChanged(QString)),
@@ -179,12 +174,6 @@ FolderWizardTargetPage::FolderWizardTargetPage()
     _timer = new QTimer(this);
     _timer->setSingleShot( true );
     connect( _timer, SIGNAL(timeout()), SLOT(slotTimerFires()));
-
-#if QT_Version >= 0x040700
-    _ui.OCFolderLineEdit->setPlaceholderText(QApplication::translate("FolderWizardTargetPage", "root", 0, QApplication::UnicodeUTF8));
-    _ui.localFolder2LineEdit->setPlaceholderText(QApplication::translate("FolderWizardTargetPage", "/home/local", 0, QApplication::UnicodeUTF8));
-    _ui.urlFolderLineEdit->setPlaceholderText(QApplication::translate("FolderWizardTargetPage", "scp://john@host.com//myfolder", 0, QApplication::UnicodeUTF8));
-#endif
 }
 
 void FolderWizardTargetPage::slotFolderTextChanged( const QString& t)
@@ -254,26 +243,16 @@ FolderWizardTargetPage::~FolderWizardTargetPage()
 
 bool FolderWizardTargetPage::isComplete() const
 {
-    if (_ui.localFolderRadioBtn->isChecked()) {
-        return QFileInfo(_ui.localFolder2LineEdit->text()).isDir();
-    } else if (_ui.urlFolderRadioBtn->isChecked()) {
-        QUrl url(_ui.urlFolderLineEdit->text());
-        return url.isValid() && (url.scheme() == QLatin1String("sftp")
-                                 || url.scheme() == QLatin1String("smb"));
-    } else if( _ui.OCRadioBtn->isChecked()) {
-      /* owncloud selected */
-      QString dir = _ui.OCFolderLineEdit->text();
-      if( dir.isEmpty() ) {
+    QString dir = _ui.OCFolderLineEdit->text();
+    if( dir.isEmpty() ) {
         showWarn( tr("Better do not use the remote root directory.<br/>If you do, you can <b>not</b> mirror another local folder."), false);
         return true;
-      } else {
+    } else {
         if( _dirChecked ) {
-          showWarn();
+            showWarn();
         }
         return _dirChecked;
-      }
     }
-    return false;
 }
 
 void FolderWizardTargetPage::cleanupPage()
@@ -283,35 +262,31 @@ void FolderWizardTargetPage::cleanupPage()
 
 void FolderWizardTargetPage::initializePage()
 {
-    slotToggleItems();
     showWarn();
 
     /* check the owncloud configuration file and query the ownCloud */
     ownCloudInfo *ocInfo = ownCloudInfo::instance();
     if( ocInfo->isConfigured() ) {
-      connect( ocInfo, SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
-               SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
-      connect( ocInfo, SIGNAL(noOwncloudFound(QNetworkReply*)),
-               SLOT(slotNoOwnCloudFound(QNetworkReply*)));
-      connect( ocInfo, SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
-               SLOT(slotDirCheckReply(QString,QNetworkReply*)));
-      connect( ocInfo, SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),
-               SLOT(slotCreateRemoteFolderFinished( QNetworkReply::NetworkError )));
+        connect( ocInfo, SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
+                 SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
+        connect( ocInfo, SIGNAL(noOwncloudFound(QNetworkReply*)),
+                 SLOT(slotNoOwnCloudFound(QNetworkReply*)));
+        connect( ocInfo, SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
+                 SLOT(slotDirCheckReply(QString,QNetworkReply*)));
+        connect( ocInfo, SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),
+                 SLOT(slotCreateRemoteFolderFinished( QNetworkReply::NetworkError )));
 
-      connect(_ui._buttCreateFolder, SIGNAL(clicked()), SLOT(slotCreateRemoteFolder()));
-      ocInfo->checkInstallation();
+        connect(_ui._buttCreateFolder, SIGNAL(clicked()), SLOT(slotCreateRemoteFolder()));
+        ocInfo->checkInstallation();
 
-    } else {
-      _ui.OCRadioBtn->setEnabled( false );
-      _ui.OCFolderLineEdit->setEnabled( false );
-    }
+        _ui.OCFolderLineEdit->setEnabled( false );
 
-    QString dir = _ui.OCFolderLineEdit->text();
-    if( !dir.isEmpty() ) {
-        slotFolderTextChanged( dir );
+        QString dir = _ui.OCFolderLineEdit->text();
+        if( !dir.isEmpty() ) {
+            slotFolderTextChanged( dir );
+        }
     }
 }
-
 void FolderWizardTargetPage::slotOwnCloudFound( const QString& url, const QString& infoStr, const QString& version, const QString& edition)
 {
     Q_UNUSED(version);
@@ -319,10 +294,9 @@ void FolderWizardTargetPage::slotOwnCloudFound( const QString& url, const QStrin
 
     if( infoStr.isEmpty() ) {
     } else {
-        _ui.OCLabel->setText( tr("to your <a href=\"%1\">%2</a> (version %3)").arg(url)
-                              .arg(Theme::instance()->appNameGUI()).arg(infoStr));
+//        _ui.OCLabel->setText( tr("to your <a href=\"%1\">%2</a> (version %3)").arg(url)
+//                              .arg(Theme::instance()->appNameGUI()).arg(infoStr));
         _ui.OCFolderLineEdit->setEnabled( true );
-        _ui.OCRadioBtn->setEnabled( true );
         qDebug() << "ownCloud found on " << url << " with version: " << infoStr;
     }
 }
@@ -330,10 +304,9 @@ void FolderWizardTargetPage::slotOwnCloudFound( const QString& url, const QStrin
 void FolderWizardTargetPage::slotNoOwnCloudFound( QNetworkReply* error )
 {
   qDebug() << "No ownCloud configured: " << error->error();
-  _ui.OCLabel->setText( tr("no configured %1 found!").arg(Theme::instance()->appNameGUI()) );
+//  _ui.OCLabel->setText( tr("no configured %1 found!").arg(Theme::instance()->appNameGUI()) );
   showWarn( tr("%1 could not be reached:<br/><tt>%2</tt>")
             .arg(Theme::instance()->appNameGUI()).arg(error->errorString()));
-  _ui.OCRadioBtn->setEnabled( false );
   _ui.OCFolderLineEdit->setEnabled( false );
 }
 
@@ -350,111 +323,7 @@ void FolderWizardTargetPage::showWarn( const QString& msg, bool showCreateButton
   }
 }
 
-void FolderWizardTargetPage::on_localFolderRadioBtn_toggled()
-{
-    slotToggleItems();
-    emit completeChanged();
-}
-
-void FolderWizardTargetPage::on_urlFolderRadioBtn_toggled()
-{
-    slotToggleItems();
-    emit completeChanged();
-
-}
-
-void FolderWizardTargetPage::on_localFolder2LineEdit_textChanged()
-{
-    emit completeChanged();
-}
-
-void FolderWizardTargetPage::on_urlFolderLineEdit_textChanged()
-{
-    emit completeChanged();
-}
-
-void FolderWizardTargetPage::slotToggleItems()
-{
-
-  bool enabled = _ui.localFolderRadioBtn->isChecked();
-  _ui.localFolder2LineEdit->setEnabled(enabled);
-  _ui.localFolder2ChooseBtn->setEnabled(enabled);
-  if( enabled ) {
-    _warnWasVisible = _ui.warnFrame->isVisible();
-    _ui.warnFrame->hide();
-  }
-
-  enabled = _ui.urlFolderRadioBtn->isChecked();
-  _ui.urlFolderLineEdit->setEnabled(enabled);
-  if( enabled ) {
-    _warnWasVisible = _ui.warnFrame->isVisible();
-    _ui.warnFrame->hide();
-  }
-
-  enabled = _ui.OCRadioBtn->isChecked();
-  _ui.OCFolderLineEdit->setEnabled(enabled);
-  if( enabled ) _ui.warnFrame->setVisible( _warnWasVisible );
-}
-
-void FolderWizardTargetPage::on_localFolder2ChooseBtn_clicked()
-{
-    QString dir = QFileDialog::getExistingDirectory(this,
-                                                    tr("Select the target folder"),
-                                                    QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-    if (!dir.isEmpty()) {
-        _ui.localFolder2LineEdit->setText(dir);
-    }
-}
-
-
 // ====================================================================================
-
-FolderWizardNetworkPage::FolderWizardNetworkPage()
-{
-    _ui.setupUi(this);
-    registerField(QLatin1String("onlyNetwork*"), _ui.checkBoxOnlyOnline);
-    registerField(QLatin1String("onlyLocalNetwork*"), _ui.checkBoxOnlyThisLAN );
-}
-
-FolderWizardNetworkPage::~FolderWizardNetworkPage()
-{
-}
-
-bool FolderWizardNetworkPage::isComplete() const
-{
-    return true;
-}
-
-FolderWizardOwncloudPage::FolderWizardOwncloudPage()
-{
-    _ui.setupUi(this);
-    registerField(QLatin1String("OCUrl*"),       _ui.lineEditOCUrl);
-    registerField(QLatin1String("OCUser*"),      _ui.lineEditOCUser );
-    registerField(QLatin1String("OCPasswd"),     _ui.lineEditOCPasswd);
-    registerField(QLatin1String("OCSiteAlias*"), _ui.lineEditOCAlias);
-}
-
-FolderWizardOwncloudPage::~FolderWizardOwncloudPage()
-{
-}
-
-void FolderWizardOwncloudPage::initializePage()
-{
-    _ui.lineEditOCAlias->setText( QLatin1String("ownCloud") );
-    _ui.lineEditOCUrl->setText( QLatin1String("http://localhost/owncloud") );
-    QString user = QString::fromLocal8Bit(qgetenv("USER"));
-    _ui.lineEditOCUser->setText( user );
-}
-
-bool FolderWizardOwncloudPage::isComplete() const
-{
-
-    bool hasAlias = !(_ui.lineEditOCAlias->text().isEmpty());
-    QUrl u( _ui.lineEditOCUrl->text() );
-    bool hasUrl   = u.isValid();
-
-    return hasAlias && hasUrl;
-}
 
 /**
  * Folder wizard itself

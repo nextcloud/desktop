@@ -19,7 +19,6 @@
 #include "mirall/folderwatcher.h"
 #include "mirall/folderwizard.h"
 #include "mirall/networklocation.h"
-#include "mirall/unisonfolder.h"
 #include "mirall/owncloudfolder.h"
 #include "mirall/statusdialog.h"
 #include "mirall/owncloudsetupwizard.h"
@@ -33,9 +32,6 @@
 #include "mirall/credentialstore.h"
 #include "mirall/logger.h"
 
-#ifdef WITH_CSYNC
-#include "mirall/csyncfolder.h"
-#endif
 #include "mirall/inotify.h"
 
 #include <QtCore>

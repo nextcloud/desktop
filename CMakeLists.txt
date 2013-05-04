@@ -55,7 +55,7 @@ endif()
 
 #### find libs
 find_package(Qt4 4.6.0 COMPONENTS QtCore QtGui QtXml QtNetwork QtTest REQUIRED )
-find_package(Csync)
+find_package(Csync REQUIRED)
 if(UNIX)
 find_package(INotify REQUIRED)
 else()
@@ -65,7 +65,6 @@ find_package(Sphinx)
 find_package(PdfLatex)
 find_package(QtKeychain)
 
-set(WITH_CSYNC CSYNC_FOUND)
 set(WITH_QTKEYCHAIN ${QTKEYCHAIN_FOUND})
 set(USE_INOTIFY ${INOTIFY_FOUND})
 
@@ -92,12 +91,6 @@ set(CPACK_SOURCE_IGNORE_FILES
 
 include(OwnCloudCPack.cmake)
 
-#
-# This cmake builds two targets (aka apps), mirall and owncloud. For the owncloud
-# target, OWNCLOUD_CLIENT needs to be a compile flag. It is set in src/CMakeLists.txt
-# but if that fails because cmake is too old, uncomment this here if you want to build
-# owncloud.
-# add_definitions(-DOWNCLOUD_CLIENT)
 add_definitions(-DUNICODE)
 add_definitions(-D_UNICODE)
 

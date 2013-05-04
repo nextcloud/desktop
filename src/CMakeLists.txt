@@ -14,13 +14,8 @@ endif()
 set(mirall_UI
 mirall/folderwizardsourcepage.ui
 mirall/folderwizardtargetpage.ui
-mirall/folderwizardnetworkpage.ui
-mirall/folderwizardowncloudpage.ui
 mirall/statusdialog.ui
-mirall/owncloudwizardselecttypepage.ui
 mirall/owncloudsetuppage_ng.ui
-mirall/createanowncloudpage.ui
-mirall/owncloudftpaccesspage.ui
 mirall/owncloudwizardresultpage.ui
 mirall/owncloudcredentialspage.ui
 mirall/sslerrordialog.ui
@@ -66,11 +61,9 @@ set(libsync_SRCS
     mirall/folder.cpp
     mirall/folderwatcher.cpp
     mirall/syncresult.cpp
-    mirall/unisonfolder.cpp
     mirall/networklocation.cpp
     mirall/mirallconfigfile.cpp
     mirall/credentialstore.cpp
-    mirall/csyncfolder.cpp
     mirall/owncloudfolder.cpp
     mirall/csyncthread.cpp
     mirall/fileutils.cpp
@@ -80,18 +73,18 @@ set(libsync_SRCS
     mirall/owncloudinfo.cpp
     mirall/logger.cpp
     mirall/utility.cpp
+    mirall/connectionvalidator.cpp
 )
 set(libsync_HEADERS 
     mirall/folderman.h
     mirall/folder.h
     mirall/folderwatcher.h
-    mirall/unisonfolder.h
-    mirall/csyncfolder.h
     mirall/owncloudfolder.h
     mirall/csyncthread.h
     mirall/owncloudinfo.h
     mirall/credentialstore.h
     mirall/logger.h
+    mirall/connectionvalidator.h
 )
 
 IF( INOTIFY_FOUND )
@@ -230,20 +223,6 @@ endif(NOT WIN32)
     add_executable( ${APPLICATION_EXECUTABLE} WIN32 main.cpp ${final_src})
     set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES COMPILE_DEFINITIONS OWNCLOUD_CLIENT)
 
-    # mirall is not built for the bundle
-    add_executable( mirall WIN32 main.cpp ${final_src})
-
-    target_link_libraries(mirall ${QT_LIBRARIES} )
-    target_link_libraries(mirall owncloudsync)
-    target_link_libraries(mirall ${CSYNC_LIBRARY})
-
-    set_target_properties( mirall PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
-    install(TARGETS mirall
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    )
 else()
     set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
     include(DeployQt4)
