@@ -465,7 +465,7 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
         fn.insert(dotLocation, "_conflict-" + QDateTime::fromTime_t(item._modtime).toString("yyyyMMdd-hhmmss"));
         if (!f.rename(fn)) {
             //If the rename fails, don't replace it.
-            errorString = f.errorString();
+            _errorString = f.errorString();
             return CSYNC_INSTRUCTION_ERROR;
         }
     }
@@ -485,7 +485,7 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
         FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
                       NULL, ::GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
                       (LPWSTR)&string, 0, NULL);
-        errorString = QString::fromWCharArray(string);
+        _errorString = QString::fromWCharArray(string);
         LocalFree((HLOCAL)string);
         return CSYNC_INSTRUCTION_ERROR;
     }
