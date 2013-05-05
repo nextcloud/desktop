@@ -15,6 +15,8 @@
 #ifndef OWNCLOUDPROPAGATOR_H
 #define OWNCLOUDPROPAGATOR_H
 
+#include <neon/ne_request.h>
+
 #include "syncfileitem.h"
 
 struct ne_session_s;
@@ -41,7 +43,7 @@ class OwncloudPropagator {
     void updateMTimeAndETag(const char *uri, time_t);
 
     /* fetch the error code and string from the session */
-    bool updateErrorFromSession(int neon_code = 0);
+    bool updateErrorFromSession(int neon_code = 0, ne_request *req = NULL);
 
 
 public:

@@ -37,6 +37,11 @@ public:
     Direction _dir;
     bool _isDirectory;
     time_t _modtime;
+
+    QString _errorString;
+    QString _errorDetail;
+    int     _httpCode;
+
 };
 
 

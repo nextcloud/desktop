@@ -46,7 +46,7 @@ public:
     CSyncThread(CSYNC *, const QString &localPath, const QString &remotePath);
     ~CSyncThread();
 
-    QString csyncErrorToString( CSYNC_ERROR_CODE, const char * );
+    QString csyncErrorToString(CSYNC_ERROR_CODE) const;
 
     Q_INVOKABLE void startSync();
 

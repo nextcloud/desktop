@@ -26,7 +26,6 @@
 #include <neon/ne_basic.h>
 #include <neon/ne_socket.h>
 #include <neon/ne_session.h>
-#include <neon/ne_request.h>
 #include <neon/ne_props.h>
 #include <neon/ne_auth.h>
 #include <neon/ne_dates.h>
@@ -294,18 +293,10 @@ void OwncloudPropagator::updateMTimeAndETag(const char* uri, time_t mtime)
     QScopedPointer<ne_request, ScopedPointerHelpers> req(ne_request_create(_session, "HEAD", uri));
     int neon_stat = ne_request_dispatch(req.data());
 
-    if( neon_stat != NE_OK ) {
-        updateErrorFromSession(neon_stat);
+    if( updateErrorFromSession(neon_stat, req.data()) ) {
+        // error happend
+        qDebug() << "Could not issue HEAD request for ETag.";
     } else {
-        const ne_status *stat = ne_get_status( req.data() );
-
-        if( stat && stat->klass != 2 ) {
-            _httpStatusCode = stat->code;
-            _errorCode = CSYNC_ERR_HTTP;
-            _errorString = QString::fromUtf8( stat->reason_phrase );
-        }
-    }
-    if( _errorCode == CSYNC_ERR_NONE ) {
         _etag = parseEtag(req.data());
     }
 }
@@ -415,19 +406,9 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
         ne_unhook_post_headers( _session, DownloadContext::install_content_reader, &writeCtx );
 //         ne_set_notifier(_session, 0, 0);
 
-        if( neon_stat != NE_OK ) {
-            updateErrorFromSession(neon_stat);
+        if( updateErrorFromSession(neon_stat, req.data() ) ) {
             qDebug("Error GET: Neon: %d", neon_stat);
             return CSYNC_INSTRUCTION_ERROR;
-        } else {
-            const ne_status *status = ne_get_status( req.data() );
-            qDebug("GET http result %d (%s)", status->code, status->reason_phrase ? status->reason_phrase : "<empty");
-            if( status->klass != 2 ) {
-                qDebug("sendfile request failed with http status %d!", status->code);
-                _httpStatusCode = status->code;
-                _errorString = QString::fromUtf8(status->reason_phrase);
-                return CSYNC_INSTRUCTION_ERROR;
-            }
         }
 
         _etag = parseEtag(req.data());
@@ -531,18 +512,31 @@ bool OwncloudPropagator::check_neon_session()
     return isOk;
 }
 
-bool OwncloudPropagator::updateErrorFromSession(int neon_code)
+bool OwncloudPropagator::updateErrorFromSession(int neon_code, ne_request *req)
 {
     bool re = false;
 
     if( neon_code != NE_OK ) {
-         qDebug("Neon error code was %d", neon_code);
-     }
+        qDebug("Neon error code was %d", neon_code);
+    }
 
     switch(neon_code) {
     case NE_OK:     /* Success, but still the possiblity of problems */
-        if( check_neon_session() ) {
-            re = true;
+        if( req != NULL ) {
+            const ne_status *status = ne_get_status(req);
+            if( status ) {
+                if( status->klass != 2 ) {
+                    _httpStatusCode = status->code;
+                    _errorCode = CSYNC_ERR_HTTP;
+                    _errorString = QString::fromUtf8( status->reason_phrase );
+                    re = true;
+                }
+            } else {
+                re = true; // can not get the status
+            }
+        } else {
+            // no neon request available.
+            re = check_neon_session();
         }
         break;
     case NE_ERROR:  /* Generic error; use ne_get_error(session) for message */

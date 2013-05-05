@@ -61,7 +61,7 @@ CSyncThread::~CSyncThread()
 
 }
 
-QString CSyncThread::csyncErrorToString( CSYNC_ERROR_CODE err, const char *errString )
+QString CSyncThread::csyncErrorToString( CSYNC_ERROR_CODE err ) const
 {
     QString errStr;
 
@@ -110,7 +110,7 @@ QString CSyncThread::csyncErrorToString( CSYNC_ERROR_CODE err, const char *errSt
     case CSYNC_ERR_ACCESS_FAILED:
         errStr = tr("<p>The target directory does not exist.</p><p>Please check the sync setup.</p>");
         // this is critical. The database has to be removed.
-        emit wipeDb();
+        // emit wipeDb(); FIXME - what about this?
         break;
     case CSYNC_ERR_REMOTE_CREATE:
     case CSYNC_ERR_REMOTE_STAT:
@@ -160,9 +160,6 @@ QString CSyncThread::csyncErrorToString( CSYNC_ERROR_CODE err, const char *errSt
         errStr = tr("An internal error number %1 happend.").arg( (int) err );
     }
 
-    if( errString ) {
-        errStr += tr("<br/>Backend Message: ")+QString::fromUtf8(errString);
-    }
     return errStr;
 
 }
@@ -299,7 +296,11 @@ struct CSyncRunScopeHelper {
 void CSyncThread::handleSyncError(CSYNC *ctx, const char *state) {
     CSYNC_ERROR_CODE err = csync_get_error( ctx );
     const char *errMsg = csync_get_error_string( ctx );
-    QString errStr = csyncErrorToString(err, errMsg);
+    QString errStr = csyncErrorToString(err);
+    if( errMsg ) {
+        errStr += QLatin1String("<br/>");
+        errStr += QString::fromUtf8(errMsg);
+    }
     qDebug() << " #### ERROR during "<< state << ": " << errStr;
     switch (err) {
     case CSYNC_ERR_SERVICE_UNAVAILABLE:
@@ -384,6 +385,19 @@ void CSyncThread::startSync()
         propagator._etag.clear(); // FIXME : set to the right one
         a.instruction = propagator.propagate(item);
 
+        // if the propagator had an error for a file, put the error string into the synced item
+        if( propagator._errorCode != CSYNC_ERR_NONE ) {
+            // find the real object to add the err message. The loop only handles const refs.
+            SyncFileItemVector::iterator it = qBinaryFind(_syncedItems.begin(), _syncedItems.end(), item);
+            if ( it != _syncedItems.end()) {
+                QMutexLocker locker(&_mutex);
+                it->_errorString = csyncErrorToString( propagator._errorCode );
+                it->_errorDetail = propagator._errorString;
+                it->_httpCode    = propagator._httpStatusCode;
+                qDebug() << "File " << item._file << " propagator error " << item._errorString;
+            }
+        }
+
         if (item._isDirectory && item._instruction == CSYNC_INSTRUCTION_REMOVE
             && a.instruction == CSYNC_INSTRUCTION_DELETED) {
             lastDeleted = item._file;
@@ -400,7 +414,7 @@ void CSyncThread::startSync()
             performedActions.insert(item._renameTarget, a);
         }
 
-        //TODO record errors and progress;
+        //TODO progress;
     }
 
 //     if( csync_propagate(_csync_ctx) < 0 ) {
