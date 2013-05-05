@@ -287,6 +287,7 @@ void OwncloudPropagator::updateMTimeAndETag(const char* uri, time_t mtime)
     bool error = updateErrorFromSession( rc );
     if( error ) {
         // FIXME: We could not set the mtime. Error or not?
+        qDebug() << "PROP-Patching of modified date failed.";
     }
 
     // get the etag
@@ -512,12 +513,14 @@ bool OwncloudPropagator::check_neon_session()
     return isOk;
 }
 
+// returns true in case there was an error
 bool OwncloudPropagator::updateErrorFromSession(int neon_code, ne_request *req)
 {
     bool re = false;
 
     if( neon_code != NE_OK ) {
         qDebug("Neon error code was %d", neon_code);
+        re = true; // there was an error.
     }
 
     switch(neon_code) {
