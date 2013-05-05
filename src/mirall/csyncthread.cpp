@@ -399,7 +399,7 @@ void CSyncThread::startSync()
         }
 
         if (item._isDirectory && item._instruction == CSYNC_INSTRUCTION_REMOVE
-            && a.instruction == CSYNC_INSTRUCTION_DELETED) {
+                && a.instruction == CSYNC_INSTRUCTION_DELETED) {
             lastDeleted = item._file;
         } else {
             lastDeleted.clear();
@@ -408,13 +408,19 @@ void CSyncThread::startSync()
         a.etag = propagator._etag;
         performedActions.insert(item._file, a);
 
-        if (item._instruction == CSYNC_INSTRUCTION_RENAME) {
+        if (item._instruction == CSYNC_INSTRUCTION_RENAME
+                && a.instruction == CSYNC_INSTRUCTION_DELETED) {
             // we should update the etag on the destination as well
             a.instruction = CSYNC_INSTRUCTION_NONE;
             performedActions.insert(item._renameTarget, a);
         }
 
-        //TODO progress;
+        if (!item._isDirectory && a.instruction == CSYNC_INSTRUCTION_UPDATED
+                && item._dir == SyncFileItem::Down) {
+            emit fileReceived(item._file);
+        }
+
+        //TODO progress %;
     }
 
 //     if( csync_propagate(_csync_ctx) < 0 ) {
@@ -434,6 +440,7 @@ void CSyncThread::startSync()
     qDebug() << Q_FUNC_INFO << "Sync finished";
 }
 
+// TODO: remove:  this is no longer used with the new propagator
 void CSyncThread::progress(const char *remote_url, enum csync_notify_type_e kind,
                                         long long o1, long long o2, void *userdata)
 {
