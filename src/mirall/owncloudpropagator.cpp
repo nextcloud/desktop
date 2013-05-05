@@ -263,6 +263,15 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
     return CSYNC_INSTRUCTION_UPDATED;
 }
 
+static QByteArray parseEtag(ne_request *req) {
+    const char *header = ne_get_response_header(req, "etag");
+    if(header && header [0] == '"' && header[ strlen(header)-1] == '"') {
+        return QByteArray(header + 1, strlen(header)-2);
+    } else {
+        return header;
+    }
+}
+
 void OwncloudPropagator::updateMTimeAndETag(const char* uri, time_t mtime)
 {
     QByteArray modtime = QByteArray::number(qlonglong(mtime));
@@ -297,12 +306,7 @@ void OwncloudPropagator::updateMTimeAndETag(const char* uri, time_t mtime)
         }
     }
     if( _errorCode == CSYNC_ERR_NONE ) {
-        const char *header = ne_get_response_header(req.data(), "etag");
-        if(header && header [0] == '"' && header[ strlen(header)-1] == '"') {
-            _etag = QByteArray(header + 1, strlen(header)-2);
-        } else {
-            _etag = header;
-        }
+        _etag = parseEtag(req.data());
     }
 }
 
@@ -360,15 +364,6 @@ public:
                                         content_reader,
                                         (void*) writeCtx );
         }
-
-        //enc = ne_get_response_header( req, "ETag" );
-        //FIXME: save ETAG
-//         if (enc && *enc) {
-//             SAFE_FREE(_id_cache.uri);
-//             SAFE_FREE(_id_cache.id);
-//             _id_cache.uri = c_strdup(writeCtx->url);
-//             _id_cache.id = c_strdup(enc);
-//         }
     }
 };
 
@@ -420,10 +415,6 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
         ne_unhook_post_headers( _session, DownloadContext::install_content_reader, &writeCtx );
 //         ne_set_notifier(_session, 0, 0);
 
-        /* possible return codes are:
-         *  NE_OK, NE_AUTH, NE_CONNECT, NE_TIMEOUT, NE_ERROR (from ne_request.h)
-         */
-
         if( neon_stat != NE_OK ) {
             updateErrorFromSession(neon_stat);
             qDebug("Error GET: Neon: %d", neon_stat);
@@ -439,6 +430,7 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
             }
         }
 
+        _etag = parseEtag(req.data());
         break;
     } while (1);
 
