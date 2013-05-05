@@ -97,6 +97,7 @@ int main(int argc, char **argv) {
 
     //csync_set_log_callback(   _csync_ctx, csyncLogCatcher );
     csync_set_log_verbosity(_csync_ctx, 11);
+    csync_enable_conflictcopys(_csync_ctx);
 
 
     csync_set_auth_callback( _csync_ctx, getauth );
