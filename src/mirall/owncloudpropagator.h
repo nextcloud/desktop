@@ -34,7 +34,7 @@ class OwncloudPropagator {
     csync_instructions_e localMkdir(const SyncFileItem &);
     csync_instructions_e remoteRemove(const SyncFileItem &);
     csync_instructions_e remoteMkdir(const SyncFileItem &);
-    csync_instructions_e downloadFile(const SyncFileItem &);
+    csync_instructions_e downloadFile(const SyncFileItem &, bool isConflict = false);
     csync_instructions_e uploadFile(const SyncFileItem &);
     csync_instructions_e remoteRename(const SyncFileItem &);
 

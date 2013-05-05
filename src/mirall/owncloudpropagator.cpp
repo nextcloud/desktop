@@ -21,6 +21,7 @@
 #include <qtemporaryfile.h>
 #include <qabstractfileengine.h>
 #include <qdebug.h>
+#include <QDateTime>
 
 #include <neon/ne_basic.h>
 #include <neon/ne_socket.h>
@@ -60,12 +61,44 @@ csync_instructions_e  OwncloudPropagator::propagate(const SyncFileItem &item)
                 return item._dir == SyncFileItem::Down ? downloadFile(item) : uploadFile(item);
             }
         case CSYNC_INSTRUCTION_CONFLICT:
-            return downloadFile(item);
+            return downloadFile(item, true);
         case CSYNC_INSTRUCTION_RENAME:
             return remoteRename(item);
         default:
             return item._instruction;
     }
+}
+
+// compare two files with given filename and return true if they have the same content
+static bool fileEquals(const QString &fn1, const QString &fn2) {
+    QFile f1(fn1);
+    QFile f2(fn2);
+    if (!f1.open(QIODevice::ReadOnly) || !f2.open(QIODevice::ReadOnly)) {
+        qDebug() << "fileEquals: Failed to open " << fn1 << "or" << fn2;
+        return false;
+    }
+
+    if (f1.size() != f2.size()) {
+        return false;
+    }
+
+    const int BufferSize = 16 * 1024;
+    char buffer1[BufferSize];
+    char buffer2[BufferSize];
+    do {
+        int r = f1.read(buffer1, BufferSize);
+        if (f2.read(buffer2, BufferSize) != r) {
+            // this should normaly not happen: the file are supposed to have the same size.
+            return false;
+        }
+        if (r <= 0) {
+            return true;
+        }
+        if (memcmp(buffer1, buffer2, r) != 0) {
+            return false;
+        }
+    } while (true);
+    return false;
 }
 
 // Code copied from Qt5's QDir::removeRecursively
@@ -339,7 +372,7 @@ public:
     }
 };
 
-csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item)
+csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, bool isConflict)
 {
     QTemporaryFile tmpFile(_localDir + item._file);
     if (!tmpFile.open()) {
@@ -412,6 +445,30 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item)
 
     tmpFile.close();
     tmpFile.flush();
+
+    //In case of conflict, make a backup of the old file
+    if (isConflict) {
+        QString fn = _localDir + item._file;
+
+        // compare the files to see if there was an actual conflict.
+        if (fileEquals(fn, tmpFile.fileName())) {
+            return CSYNC_INSTRUCTION_UPDATED;
+        }
+
+        QFile f(fn);
+        // Add _conflict-XXXX  before the extention.
+        int dotLocation = fn.lastIndexOf('.');
+        // If no extention, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
+        if (dotLocation <= fn.lastIndexOf('/') + 1) {
+            dotLocation = fn.size();
+        }
+        fn.insert(dotLocation, "_conflict-" + QDateTime::fromTime_t(item._modtime).toString("yyyyMMdd-hhmmss"));
+        if (!f.rename(fn)) {
+            //If the rename fails, don't replace it.
+            errorString = f.errorString();
+            return CSYNC_INSTRUCTION_ERROR;
+        }
+    }
 
     // We want a rename that also overwite.  QFile::rename does not overwite.
     // Qt 5.1 has QFile::renameOverwrite we cold use.  (Or even better: QSaveFile)
