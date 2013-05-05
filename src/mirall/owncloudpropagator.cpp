@@ -313,10 +313,10 @@ void OwncloudPropagator::updateMTimeAndETag(const char* uri, time_t mtime)
 class DownloadContext {
 
 public:
-    QFile *file;
-    QScopedPointer<ne_decompress, ScopedPointerHelpers> decompress;
+    QFile *_file;
+    QScopedPointer<ne_decompress, ScopedPointerHelpers> _decompress;
 
-    explicit DownloadContext(QFile *file) : file(file) {}
+    explicit DownloadContext(QFile *file) : _file(file) {}
 
     static int content_reader(void *userdata, const char *buf, size_t len)
     {
@@ -324,7 +324,7 @@ public:
         size_t written = 0;
 
         if(buf) {
-            written = writeCtx->file->write(buf, len);
+            written = writeCtx->_file->write(buf, len);
             if( len != written ) {
                 qDebug("WRN: content_reader wrote wrong num of bytes: %zu, %zu", len, written);
             }
@@ -356,7 +356,7 @@ public:
                     status ? status->code : -1 );
 
         if( enc == QLatin1String("gzip") ) {
-            writeCtx->decompress.reset(ne_decompress_reader( req, ne_accept_2xx,
+            writeCtx->_decompress.reset(ne_decompress_reader( req, ne_accept_2xx,
                                                              content_reader,     /* reader callback */
                                                              writeCtx ));  /* userdata        */
         } else {
