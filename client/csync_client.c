@@ -62,6 +62,7 @@ at LOCAL with the ones at REMOTE.\n\
     --test-update          Test the update detection\n\
 -?, --help                 Give this help list\n\
     --usage                Give a short usage message\n\
+-v, --verbose              Print progress information about up- and download.\n\
 -V, --version              Print program version\n\
 ";
 
@@ -78,6 +79,7 @@ static const struct option long_options[] =
     {"test-statedb",    no_argument,       0,  0  },
     {"conflict-copies", no_argument,       0, 'c' },
     {"test-update",     no_argument,       0,  0  },
+    {"verbose",         no_argument,       0, 'v' },
     {"version",         no_argument,       0, 'V' },
     {"usage",           no_argument,       0, 'h' },
     {0, 0, 0, 0}
@@ -94,6 +96,7 @@ struct argument_s {
   int update;
   int reconcile;
   int propagate;
+  int verbose;
   bool with_conflict_copys;
 };
 
@@ -114,7 +117,7 @@ static int parse_args(struct argument_s *csync_args, int argc, char **argv)
     while(optind < argc) {
         int c = -1;
         struct option *opt = NULL;
-        int result = getopt_long( argc, argv, "d:cVh", long_options, &c );
+        int result = getopt_long( argc, argv, "d:cvVh", long_options, &c );
 
         if( result == -1 ) {
             break;
@@ -129,6 +132,9 @@ static int parse_args(struct argument_s *csync_args, int argc, char **argv)
         case 'c':
             csync_args->with_conflict_copys = true;
             /* printf("Argument: With conflict copies\n"); */
+            break;
+        case 'v':
+            csync_args->verbose = 1;
             break;
         case 'V':
             print_version();
@@ -178,6 +184,11 @@ static int parse_args(struct argument_s *csync_args, int argc, char **argv)
     return optind;
 }
 
+static void _overall_callback(const char *file_name, int file_no,
+                              int file_cnt, long long o1, long long o2)
+{
+    printf("File #%2d/%2d: %s (%lld/%lld bytes)\n", file_no, file_cnt, file_name, o1, o2 );
+}
 
 int main(int argc, char **argv) {
   int rc = 0;
@@ -198,6 +209,7 @@ int main(int argc, char **argv) {
   arguments.reconcile = 1;
   arguments.propagate = 1;
   arguments.with_conflict_copys = false;
+  arguments.verbose = 0;
 
   parse_args(&arguments, argc, argv);
   /* two options must remain as source and target       */
@@ -214,7 +226,6 @@ int main(int argc, char **argv) {
     fprintf(stderr, "csync_create: failed\n");
     exit(1);
   }
-
 
   /*
    * Protect password from ps listing
@@ -254,6 +265,10 @@ int main(int argc, char **argv) {
     perror("csync_init");
     rc = 1;
     goto out;
+  }
+
+  if (arguments.verbose > 0) {
+      csync_set_overall_progress_callback(csync, _overall_callback);
   }
 
   if (arguments.exclude_file != NULL) {
