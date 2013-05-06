@@ -59,7 +59,7 @@ int _connected = 0;                   /* flag to indicate if a connection exists
                                      the dav_session is valid */
 
 csync_auth_callback _authcb;
-csync_progress_callback _progresscb;
+csync_file_progress_callback _file_progress_cb;
 long long chunked_total_size = 0;
 long long chunked_done = 0;
 
@@ -397,9 +397,9 @@ static void ne_notify_status_cb (void *userdata, ne_session_status status,
 {
     struct transfer_context *tc = (struct transfer_context*) userdata;
 
-    if (_progresscb && (status == ne_status_sending || status == ne_status_recving)) {
+    if (_file_progress_cb && (status == ne_status_sending || status == ne_status_recving)) {
         if (info->sr.total > 0)
-            _progresscb(tc->url, CSYNC_NOTIFY_PROGRESS,
+            _file_progress_cb(tc->url, CSYNC_NOTIFY_PROGRESS,
                         chunked_done + info->sr.progress,
                         chunked_total_size ? chunked_total_size : info->sr.total,
                         csync_get_userdata(dav_session.csync_ctx));
@@ -690,8 +690,8 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
                          req_status->reason_phrase);
             ret = NE_CONNECT;
             set_error_message(req_status->reason_phrase);
-            if (_progresscb) {
-                _progresscb(uri, CSYNC_NOTIFY_ERROR,  req_status->code, (long long)(req_status->reason_phrase) ,
+            if (_file_progress_cb) {
+                _file_progress_cb(uri, CSYNC_NOTIFY_ERROR,  req_status->code, (long long)(req_status->reason_phrase) ,
                             csync_get_userdata(dav_session.csync_ctx));
             }
         }
@@ -1217,9 +1217,9 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
             trans->transfer_id = dav_session.chunk_info->transfer_id;
           }
 
-          if (state == HBF_SUCCESS && _progresscb) {
+          if (state == HBF_SUCCESS && _file_progress_cb) {
             ne_set_notifier(dav_session.ctx, ne_notify_status_cb, write_ctx);
-            _progresscb(write_ctx->url, CSYNC_NOTIFY_START_UPLOAD, 0 , 0, csync_get_userdata(dav_session.csync_ctx));
+            _file_progress_cb(write_ctx->url, CSYNC_NOTIFY_START_UPLOAD, 0 , 0, csync_get_userdata(dav_session.csync_ctx));
           }
 
           /* Register the abort callback */
@@ -1262,9 +1262,9 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
         hbf_free_transfer(trans);
       } while( !finished );
 
-      if (_progresscb) {
+      if (_file_progress_cb) {
         ne_set_notifier(dav_session.ctx, 0, 0);
-        _progresscb(write_ctx->url, rc != 0 ? CSYNC_NOTIFY_ERROR :
+        _file_progress_cb(write_ctx->url, rc != 0 ? CSYNC_NOTIFY_ERROR :
                                               CSYNC_NOTIFY_FINISHED_UPLOAD, error_code,
                     (long long)(error_string), csync_get_userdata(dav_session.csync_ctx));
       }
@@ -1274,9 +1274,9 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
       int retry = 0;
       DEBUG_WEBDAV("  -- GET on %s", write_ctx->url);
       write_ctx->fd = fd;
-      if (_progresscb) {
+      if (_file_progress_cb) {
         ne_set_notifier(dav_session.ctx, ne_notify_status_cb, write_ctx);
-        _progresscb(write_ctx->url, CSYNC_NOTIFY_START_DOWNLOAD, 0 , 0, csync_get_userdata(dav_session.csync_ctx));
+        _file_progress_cb(write_ctx->url, CSYNC_NOTIFY_START_DOWNLOAD, 0 , 0, csync_get_userdata(dav_session.csync_ctx));
       }
 
       do {
@@ -1353,9 +1353,9 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
         }
         break;
       } while (1);
-      if (_progresscb) {
+      if (_file_progress_cb) {
           ne_set_notifier(dav_session.ctx, 0, 0);
-          _progresscb(write_ctx->url, (rc != NE_OK) ? CSYNC_NOTIFY_ERROR :
+          _file_progress_cb(write_ctx->url, (rc != NE_OK) ? CSYNC_NOTIFY_ERROR :
                       CSYNC_NOTIFY_FINISHED_DOWNLOAD, error_code ,
                       (long long)(error_string), csync_get_userdata(dav_session.csync_ctx));
       }
@@ -1520,8 +1520,8 @@ static int owncloud_mkdir(const char *uri, mode_t mode) {
          * To keep csync vio_mkdirs working errno EEXIST has to be returned. */
         if (errno == EPERM && http_result_code_from_session() == 405) {
             errno = EEXIST;
-        } else if (rc != NE_OK && _progresscb) {
-            _progresscb(uri, CSYNC_NOTIFY_ERROR,  http_result_code_from_session(),
+        } else if (rc != NE_OK && _file_progress_cb) {
+            _file_progress_cb(uri, CSYNC_NOTIFY_ERROR,  http_result_code_from_session(),
                         (long long)(dav_session.error_string) , csync_get_userdata(dav_session.csync_ctx));
         }
     }
@@ -1580,8 +1580,8 @@ static int owncloud_rename(const char *olduri, const char *newuri) {
             errno = ENOENT;
         } else {
             set_errno_from_neon_errcode(rc);
-            if (rc != NE_OK && _progresscb) {
-                _progresscb(olduri, CSYNC_NOTIFY_ERROR,  http_result_code_from_session(),
+            if (rc != NE_OK && _file_progress_cb) {
+                _file_progress_cb(olduri, CSYNC_NOTIFY_ERROR,  http_result_code_from_session(),
                             (long long)(dav_session.error_string) ,csync_get_userdata(dav_session.csync_ctx));
             }
         }
@@ -1725,7 +1725,7 @@ static int owncloud_set_property(const char *key, void *data) {
         return 0;
     }
     if (c_streq(key, "progress_callback")) {
-        _progresscb = *(csync_progress_callback*)(data);
+        _file_progress_cb = *(csync_file_progress_callback*)(data);
         return 0;
     }
     if (c_streq(key, "read_timeout") || c_streq(key, "timeout")) {
@@ -1735,7 +1735,7 @@ static int owncloud_set_property(const char *key, void *data) {
     if( c_streq(key, "csync_context")) {
         dav_session.csync_ctx = data;
         if( data ) {
-          _progresscb = csync_get_progress_callback(dav_session.csync_ctx);
+          _file_progress_cb = csync_get_file_progress_callback(dav_session.csync_ctx);
         }
         return 0;
     }

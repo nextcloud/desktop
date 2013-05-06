@@ -224,7 +224,8 @@ static void results_recursive(void *userdata,
 /*
  * fetches a resource list from the WebDAV server. This is equivalent to list dir.
  */
-extern csync_progress_callback _progresscb;
+extern csync_file_progress_callback _file_progress_cb;
+
 struct listdir_context *fetch_resource_list_recursive(const char *uri, const char *curi)
 {
     int ret = 0;
@@ -253,8 +254,8 @@ struct listdir_context *fetch_resource_list_recursive(const char *uri, const cha
                          req_status->reason_phrase);
             ret = NE_CONNECT;
             set_error_message(req_status->reason_phrase);
-            if (_progresscb) {
-                _progresscb(uri, CSYNC_NOTIFY_ERROR,  req_status->code, (long long)(req_status->reason_phrase),
+            if (_file_progress_cb) {
+                _file_progress_cb(uri, CSYNC_NOTIFY_ERROR,  req_status->code, (long long)(req_status->reason_phrase),
                             csync_get_userdata(dav_session.csync_ctx));
             }
         }

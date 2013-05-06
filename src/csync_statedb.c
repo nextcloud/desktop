@@ -305,7 +305,7 @@ int csync_statedb_write(CSYNC *ctx) {
   }
 
   /* progress info */
-  if (csync_statedb_write_progressinfo(ctx, ctx->progress) < 0) {
+  if (csync_statedb_write_progressinfo(ctx, ctx->progress_info) < 0) {
     return -1;
   }
 

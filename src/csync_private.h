@@ -89,7 +89,9 @@ struct csync_s {
   struct {
       csync_auth_callback auth_function;
       csync_log_callback log_function;
-      csync_progress_callback progresscb;
+      csync_file_progress_callback progresscb;
+      csync_overall_progress_callback overall_progress_cb;
+      csync_file_progress_callback file_progress_cb;
       void *userdata;
   } callbacks;
   c_strlist_t *excludes;
@@ -144,7 +146,14 @@ struct csync_s {
     uid_t euid;
   } pwd;
 
-  struct csync_progressinfo_s *progress;
+  struct {
+    int file_count;
+    int current_file_no;
+    long long byte_sum;
+    long long byte_current;
+  } progress;
+
+  struct csync_progressinfo_s *progress_info;
 
   /* replica we are currently walking */
   enum csync_replica_e current;

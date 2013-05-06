@@ -518,27 +518,54 @@ int csync_set_module_property(CSYNC *ctx, const char *key, void *value);
 enum csync_notify_type_e { CSYNC_NOTIFY_START_DOWNLOAD, CSYNC_NOTIFY_START_UPLOAD,
                            CSYNC_NOTIFY_PROGRESS, CSYNC_NOTIFY_FINISHED_DOWNLOAD,
                            CSYNC_NOTIFY_FINISHED_UPLOAD, CSYNC_NOTIFY_ERROR };
-
-typedef void (*csync_progress_callback) (const char *remote_url, enum csync_notify_type_e kind,
-                                        long long o1, long long o2, void *userdata);
+/**
+ * @brief Callback definition for individual file progress callback.
+ *
+ * @param remote_url    The currently handled file.
+ *
+ * @param kind          The type of progress.
+ *
+ * @param o1            The current transmitted bytes.
+ *
+ * @param o2            The size of the file.
+ */
+typedef void (*csync_file_progress_callback) (const char *remote_url, enum csync_notify_type_e kind,
+                                              long long o1, long long o2, void *userdata);
 
 /**
- * @brief Get the progress callback from the context.
+ * @brief Set a progress callback for individual files.
+ *
+ * This callback reports about up- or download progress of a individual file.
+ */
+
+int csync_set_file_progress_callback(CSYNC* ctx, csync_file_progress_callback cb);
+
+csync_file_progress_callback csync_get_file_progress_callback(CSYNC *ctx);
+
+/**
+ * @brief Callback definition for overall progress callback.
+ *
+ * @param file_no       The current number of up- or downloaded files.
+ *
+ * @param file_cnt      The overall number of files to transmit.
+ *
+ * @param o1            The current transmitted bytes.
+ *
+ * @param o2            The overall sum of bytes to transmit.
+ */
+typedef void (*csync_overall_progress_callback) (const char *file_name, int file_no,
+                                                 int file_cnt, long long o1, long long o2);
+
+/**
+ * @brief Set a progress callback for the overall files.
+ *
+ * This callback reports about overall up- or download progress.
  *
  * @param ctx           The csync context.
  *
  * @param cb            The callback
  */
-csync_progress_callback csync_get_progress_callback(CSYNC *ctx);
-
-/**
- * @brief Set a progress callback
- *
- * @param ctx           The csync context.
- *
- * @param cb            The callback
- */
-int csync_set_progress_callback(CSYNC *ctx, csync_progress_callback cb);
+int csync_set_overall_progress_callback (CSYNC* ctx, csync_overall_progress_callback cb);
 
 /**
  * @brief Aborts the current sync run as soon as possible. Can be called from another thread.

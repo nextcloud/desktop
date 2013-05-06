@@ -119,8 +119,8 @@ static void _csync_record_error(CSYNC *ctx, csync_file_stat_t *st, csync_progres
     pi->error = 1;
   }
   pi->error_string = st->error_string ? c_strdup(st->error_string) : NULL;
-  pi->next = ctx->progress;
-  ctx->progress = pi;
+  pi->next = ctx->progress_info;
+  ctx->progress_info = pi;
 }
 
 static bool _push_to_tmp_first(CSYNC *ctx)
@@ -655,6 +655,13 @@ start_fd_based:
 
   /* set instruction for the statedb merger */
   st->instruction = CSYNC_INSTRUCTION_UPDATED;
+
+  /* Notify the overall progress */
+  if (ctx->callbacks.overall_progress_cb) {
+      ctx->progress.byte_current += st->size;
+      ctx->callbacks.overall_progress_cb(duri, ++ctx->progress.current_file_no, ctx->progress.file_count,
+                                         ctx->progress.byte_current, ctx->progress.byte_sum);
+  }
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "PUSHED  file: %s", duri);
 
@@ -1456,6 +1463,48 @@ static int _csync_propagation_cleanup(CSYNC *ctx) {
   return 0;
 }
 
+static int _csync_propagation_file_count_visitor(void *obj, void *data) {
+  csync_file_stat_t *st = NULL;
+  CSYNC *ctx = NULL;
+
+  st = (csync_file_stat_t *) obj;
+  ctx = (CSYNC *) data;
+
+  if (st == NULL) {
+      return -1;
+  }
+  if (ctx == NULL) {
+      return -1;
+  }
+
+  switch(st->type) {
+    case CSYNC_FTW_TYPE_SLINK:
+      break;
+    case CSYNC_FTW_TYPE_FILE:
+      switch (st->instruction) {
+        case CSYNC_INSTRUCTION_NEW:
+        case CSYNC_INSTRUCTION_SYNC:
+        case CSYNC_INSTRUCTION_CONFLICT:
+          ctx->progress.file_count++;
+          ctx->progress.byte_sum += st->size;
+          break;
+        default:
+          break;
+      }
+      break;
+    case CSYNC_FTW_TYPE_DIR:
+      /*
+       * No counting of directories.
+       */
+      break;
+    default:
+      break;
+  }
+
+  return 0;
+}
+
+
 static int _csync_propagation_file_visitor(void *obj, void *data) {
   csync_file_stat_t *st = NULL;
   CSYNC *ctx = NULL;
@@ -1593,6 +1642,13 @@ int csync_propagate_files(CSYNC *ctx) {
       break;
     default:
       break;
+  }
+
+  /* If there is a overall progress callback set, count the number of files first. */
+  if (ctx->callbacks.overall_progress_cb) {
+      if (c_rbtree_walk(tree, (void *) ctx, _csync_propagation_file_count_visitor) < 0) {
+          return -1;
+      }
   }
 
   if (c_rbtree_walk(tree, (void *) ctx, _csync_propagation_file_visitor) < 0) {

@@ -333,11 +333,29 @@ retry_vio_init:
     }
   }
 
-  if (ctx->callbacks.progresscb)
-    csync_vio_set_property(ctx, "progress_callback", &ctx->callbacks.progresscb);
-
   if (ctx->options.timeout)
     csync_vio_set_property(ctx, "timeout", &ctx->options.timeout);
+
+  /* Install progress callbacks in the module. */
+  if (ctx->callbacks.file_progress_cb != NULL) {
+      int prc;
+      prc = csync_vio_set_property(ctx, "file_progress_callback", &ctx->callbacks.file_progress_cb);
+      if (prc == -1) {
+          /* The module does not support the callbacks */
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Could not install file progress callback!");
+          ctx->callbacks.file_progress_cb = NULL;
+      }
+  }
+
+  if (ctx->callbacks.overall_progress_cb != NULL) {
+      int prc;
+      prc = csync_vio_set_property(ctx, "overall_progress_callback", &ctx->callbacks.overall_progress_cb);
+      if (prc == -1) {
+          /* The module does not support the callbacks */
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Could not install overall progress callback!");
+          ctx->callbacks.overall_progress_cb = NULL;
+      }
+  }
 
   if (c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp) < 0) {
     ctx->error_code = CSYNC_ERR_TREE;
@@ -765,10 +783,10 @@ int csync_commit(CSYNC *ctx) {
 
   csync_vio_commit(ctx);
 
-  while (ctx->progress) {
-    csync_progressinfo_t *next = ctx->progress->next;
-    csync_statedb_free_progressinfo(ctx->progress);
-    ctx->progress = next;
+  while (ctx->progress_info) {
+    csync_progressinfo_t *next = ctx->progress_info->next;
+    csync_statedb_free_progressinfo(ctx->progress_info);
+    ctx->progress_info = next;
   }
 
   /* destroy the rbtrees */
@@ -826,6 +844,12 @@ int csync_commit(CSYNC *ctx) {
     goto out;
   }
 
+  /* reset the progress */
+  ctx->progress.file_count = 0;
+  ctx->progress.current_file_no = 0;
+  ctx->progress.byte_sum = 0;
+  ctx->progress.byte_current = 0;
+
   ctx->status = CSYNC_STATUS_INIT;
   ctx->error_code = CSYNC_ERR_NONE;
   SAFE_FREE(ctx->error_string);
@@ -870,10 +894,10 @@ int csync_destroy(CSYNC *ctx) {
     csync_lock_remove(ctx, lock);
   }
 
-  while (ctx->progress) {
-    csync_progressinfo_t *next = ctx->progress->next;
-    csync_statedb_free_progressinfo(ctx->progress);
-    ctx->progress = next;
+  while (ctx->progress_info) {
+    csync_progressinfo_t *next = ctx->progress_info->next;
+    csync_statedb_free_progressinfo(ctx->progress_info);
+    ctx->progress_info = next;
   }
 
   /* destroy the rbtrees */
@@ -1188,32 +1212,6 @@ int csync_set_iconv_codec(const char *from)
 }
 #endif
 
-csync_progress_callback csync_get_progress_callback(CSYNC *ctx)
-{
-  if ( ctx==NULL ) {
-    return NULL;
-  }
-  return ctx->callbacks.progresscb;
-}
-
-
-int csync_set_progress_callback(CSYNC* ctx, csync_progress_callback cb)
-{
-  if (ctx == NULL) {
-    return -1;
-  }
-  if (cb == NULL ) {
-    ctx->error_code = CSYNC_ERR_PARAM;
-    return -1;
-  }
-
-  ctx->error_code = CSYNC_ERR_NONE;
-  ctx->callbacks.progresscb = cb;
-
-  return 0;
-
-}
-
 void csync_request_abort(CSYNC *ctx)
 {
   if (ctx != NULL) {
@@ -1247,4 +1245,44 @@ void csync_file_stat_free(csync_file_stat_t *st)
   }
 }
 
+int csync_set_file_progress_callback(CSYNC* ctx, csync_file_progress_callback cb)
+{
+  if (ctx == NULL) {
+    return -1;
+  }
+  if (cb == NULL ) {
+    ctx->error_code = CSYNC_ERR_PARAM;
+    return -1;
+  }
+
+  ctx->callbacks.file_progress_cb = cb;
+
+  return 0;
+
+}
+
+csync_file_progress_callback csync_get_file_progress_callback(CSYNC *ctx)
+{
+  if (ctx == NULL) {
+    return NULL;
+  }
+
+  return ctx->callbacks.file_progress_cb;
+}
+
+int csync_set_overall_progress_callback(CSYNC* ctx, csync_overall_progress_callback cb)
+{
+  if (ctx == NULL) {
+    return -1;
+  }
+  if (cb == NULL ) {
+    ctx->error_code = CSYNC_ERR_PARAM;
+    return -1;
+  }
+
+  ctx->callbacks.overall_progress_cb = cb;
+
+  return 0;
+
+}
 /* vim: set ts=8 sw=2 et cindent: */
