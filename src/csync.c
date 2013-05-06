@@ -311,6 +311,27 @@ retry_vio_init:
       }
   }
 
+  /* Install progress callbacks in the module. */
+  if (ctx->callbacks.file_progress_cb != NULL) {
+      int prc;
+      prc = csync_vio_set_property(ctx, "file_progress_callback", &ctx->callbacks.file_progress_cb);
+      if (prc == -1) {
+          /* The module does not support the callbacks */
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Could not install file progress callback!");
+          ctx->callbacks.file_progress_cb = NULL;
+      }
+  }
+
+  if (ctx->callbacks.overall_progress_cb != NULL) {
+      int prc;
+      prc = csync_vio_set_property(ctx, "overall_progress_callback", &ctx->callbacks.overall_progress_cb);
+      if (prc == -1) {
+          /* The module does not support the callbacks */
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Could not install overall progress callback!");
+          ctx->callbacks.overall_progress_cb = NULL;
+      }
+  }
+
   if (c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp) < 0) {
     ctx->status_code = CSYNC_STATUS_TREE_ERROR;
     rc = -1;
@@ -749,6 +770,12 @@ int csync_commit(CSYNC *ctx) {
     goto out;
   }
 
+  /* reset the progress */
+  ctx->progress.file_count = 0;
+  ctx->progress.current_file_no = 0;
+  ctx->progress.byte_sum = 0;
+  ctx->progress.byte_current = 0;
+
   ctx->status = CSYNC_STATUS_INIT;
   SAFE_FREE(ctx->error_string);
 
@@ -1047,4 +1074,37 @@ int csync_set_module_property(CSYNC* ctx, const char* key, void* value)
     return csync_vio_set_property(ctx, key, value);
 }
 
+int csync_set_file_progress_callback(CSYNC* ctx, csync_file_progress_callback cb)
+{
+  if (ctx == NULL) {
+    return -1;
+  }
+  if (cb == NULL ) {
+    ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
+    return -1;
+  }
+
+  ctx->status_code = CSYNC_STATUS_OK;
+  ctx->callbacks.file_progress_cb = cb;
+
+  return 0;
+
+}
+
+int csync_set_overall_progress_callback(CSYNC* ctx, csync_overall_progress_callback cb)
+{
+  if (ctx == NULL) {
+    return -1;
+  }
+  if (cb == NULL ) {
+    ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
+    return -1;
+  }
+
+  ctx->status_code = CSYNC_STATUS_OK;
+  ctx->callbacks.overall_progress_cb = cb;
+
+  return 0;
+
+}
 /* vim: set ts=8 sw=2 et cindent: */
