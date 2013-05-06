@@ -1526,6 +1526,24 @@ static int owncloud_chown(const char *uri, uid_t owner, gid_t group) {
     return 0;
 }
 
+static int owncloud_set_property(const char *key, void *data) {
+#define READ_STRING_PROPERTY(P) \
+    if (c_streq(key, #P)) { \
+        SAFE_FREE(dav_session.P); \
+        dav_session.P = c_strdup((const char*)data); \
+        return 0; \
+    }
+#undef READ_STRING_PROPERTY
+
+    if (c_streq(key, "file_progress_callback")) {
+        _file_progress_cb = *(csync_file_progress_callback*)(data);
+        return 0;
+    }
+
+    return -1;
+}
+
+
 static char *owncloud_error_string()
 {
     return dav_session.error_string;
@@ -1575,24 +1593,25 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
 csync_vio_method_t _method = {
     .method_table_size = sizeof(csync_vio_method_t),
     .get_capabilities = owncloud_get_capabilities,
-    .open = owncloud_open,
-    .creat = owncloud_creat,
-    .close = owncloud_close,
-    .read = owncloud_read,
-    .write = owncloud_write,
-    .lseek = owncloud_lseek,
-    .opendir = owncloud_opendir,
-    .closedir = owncloud_closedir,
-    .readdir = owncloud_readdir,
-    .mkdir = owncloud_mkdir,
-    .rmdir = owncloud_rmdir,
-    .stat = owncloud_stat,
-    .rename = owncloud_rename,
-    .unlink = owncloud_unlink,
-    .chmod = owncloud_chmod,
-    .chown = owncloud_chown,
-    .utimes = owncloud_utimes,
-    .get_error_string = owncloud_error_string
+    .open             = owncloud_open,
+    .creat            = owncloud_creat,
+    .close            = owncloud_close,
+    .read             = owncloud_read,
+    .write            = owncloud_write,
+    .lseek            = owncloud_lseek,
+    .opendir          = owncloud_opendir,
+    .closedir         = owncloud_closedir,
+    .readdir          = owncloud_readdir,
+    .mkdir            = owncloud_mkdir,
+    .rmdir            = owncloud_rmdir,
+    .stat             = owncloud_stat,
+    .rename           = owncloud_rename,
+    .unlink           = owncloud_unlink,
+    .chmod            = owncloud_chmod,
+    .chown            = owncloud_chown,
+    .utimes           = owncloud_utimes,
+    .get_error_string = owncloud_error_string,
+    .set_property     = owncloud_set_property
 };
 
 csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
