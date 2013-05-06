@@ -19,6 +19,7 @@
 #include "mirall/logger.h"
 #include "mirall/owncloudinfo.h"
 #include "owncloudpropagator.h"
+#include "progressdatabase.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -188,6 +189,7 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     item._dir = SyncFileItem::None;
     item._isDirectory = file->type == CSYNC_FTW_TYPE_DIR;
     item._modtime = file->modtime;
+    item._etag = file->md5;
 
     SyncFileItem::Direction dir;
 
@@ -370,8 +372,11 @@ void CSyncThread::startSync()
     csync_set_module_property(_csync_ctx, "get_dav_session", &session);
     Q_ASSERT(session);
 
+    ProgressDatabase db;
+    db.load(_localPath);
+
     QString lastDeleted;
-    OwncloudPropagator propagator(session, _localPath, _remotePath);
+    OwncloudPropagator propagator(session, _localPath, _remotePath, &db);
     foreach (const SyncFileItem &item , _syncedItems) {
         Action a;
         if (!lastDeleted.isEmpty() && item._file.startsWith(lastDeleted)
@@ -427,6 +432,8 @@ void CSyncThread::startSync()
 //         handleSyncError(_csync_ctx, "cysnc_reconcile");
 //         return;
 //     }
+
+    db.save(_localPath);
 
     if( walkOk ) {
         if( csync_walk_local_tree(_csync_ctx, &walkFinalize, 0) < 0 ||

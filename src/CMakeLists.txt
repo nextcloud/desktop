@@ -74,6 +74,7 @@ set(libsync_SRCS
     mirall/owncloudfolder.cpp
     mirall/csyncthread.cpp
     mirall/owncloudpropagator.cpp
+    mirall/progressdatabase.cpp
     mirall/fileutils.cpp
     mirall/theme.cpp
     mirall/owncloudtheme.cpp

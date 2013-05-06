@@ -14,6 +14,7 @@
  */
 
 #include "owncloudpropagator.h"
+#include "progressdatabase.h"
 #include <httpbf.h>
 #include <qfile.h>
 #include <qdir.h>
@@ -363,19 +364,41 @@ public:
 
 csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, bool isConflict)
 {
-    QTemporaryFile tmpFile(_localDir + item._file);
-    if (!tmpFile.open()) {
+    QString tmpFileName;
+    const ProgressDatabase::DownloadInfo* progressInfo = _progressDb->getDownloadInfo(item._file);
+    if (progressInfo) {
+        if (progressInfo->etag != item._etag) {
+            QFile::remove(_localDir + progressInfo->tmpfile);
+        } else {
+            tmpFileName = progressInfo->tmpfile;
+        }
+        _progressDb->remove(item._file);
+    }
+    if (tmpFileName.isEmpty()) {
+        tmpFileName = item._file + "." + QString::number(uint(qrand()), 16);
+    }
+
+    QFile tmpFile(_localDir + tmpFileName);
+    if (!tmpFile.open(QIODevice::Append)) {
         _errorString = tmpFile.errorString();
         _errorCode = CSYNC_ERR_FILESYSTEM;
         return CSYNC_INSTRUCTION_ERROR;
     }
 
+    //TODO: make tmpFile hidden and excluded in case it is still there in the next sync.
+
+    {
+        ProgressDatabase::DownloadInfo pi;
+        pi.etag = item._etag;
+        pi.tmpfile = tmpFileName;
+        _progressDb->setDownloadInfo(item._file, pi);
+        _progressDb->save(_localDir);
+    }
+
     /* actually do the request */
     int retry = 0;
-//     if (_progresscb) {
+
 //         ne_set_notifier(dav_session.ctx, ne_notify_status_cb, write_ctx);
-//         _progresscb(write_ctx->url, CSYNC_NOTIFY_START_DOWNLOAD, 0 , 0, dav_session.userdata);
-//     }
 
     QScopedPointer<char, QScopedPointerPodDeleter> uri(ne_path_escape((_remoteDir + item._file).toUtf8()));
     DownloadContext writeCtx(&tmpFile);
@@ -411,6 +434,12 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
 
         if( updateErrorFromSession(neon_stat, req.data() ) ) {
             qDebug("Error GET: Neon: %d", neon_stat);
+            if (tmpFile.size() == 0) {
+                // don't keep the temporary file if it is empty.
+                tmpFile.close();
+                tmpFile.remove();
+                _progressDb->remove(item._file);
+            }
             return CSYNC_INSTRUCTION_ERROR;
         }
 
@@ -428,6 +457,8 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
 
         // compare the files to see if there was an actual conflict.
         if (fileEquals(fn, tmpFile.fileName())) {
+            tmpFile.remove();
+            _progressDb->remove(item._file);
             return CSYNC_INSTRUCTION_UPDATED;
         }
 
@@ -467,7 +498,7 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
     }
 #endif
 
-    tmpFile.setAutoRemove(false);
+    _progressDb->remove(item._file);
 
     struct timeval times[2];
     times[0].tv_sec = times[1].tv_sec = item._modtime;

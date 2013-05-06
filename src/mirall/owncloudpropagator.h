@@ -24,10 +24,13 @@ struct ne_decompress_s;
 
 namespace Mirall {
 
+class ProgressDatabase;
+
 class OwncloudPropagator {
     QString _localDir; // absolute path to the local directory. ends with '/'
     QString _remoteDir; // path to the root of the remote. ends with '/'
     ne_session_s *_session;
+    ProgressDatabase *_progressDb;
 
     bool check_neon_session();
 
@@ -47,11 +50,13 @@ class OwncloudPropagator {
 
 
 public:
-    OwncloudPropagator(ne_session_s *session, const QString &localDir, const QString &remoteDir)
+    OwncloudPropagator(ne_session_s *session, const QString &localDir, const QString &remoteDir,
+                       ProgressDatabase *progressDb)
             : _session(session)
             , _errorCode(CSYNC_ERR_NONE)
             , _localDir(localDir)
-            , _remoteDir(remoteDir) {
+            , _remoteDir(remoteDir)
+            , _progressDb(progressDb) {
         if (!localDir.endsWith(QChar('/'))) _localDir+='/';
         if (!remoteDir.endsWith(QChar('/'))) _remoteDir+='/';
     }
