@@ -109,6 +109,7 @@ struct transfer_context {
     const char  *method;        /* the HTTP method, either PUT or GET  */
     ne_decompress *decompress;  /* the decompress context */
     int         fileWritten;    /* flag to indicate that a buffer file was written for PUTs */
+    char        *url;
 };
 
 /* Struct with the WebDAV session */
@@ -138,6 +139,8 @@ int _connected;                   /* flag to indicate if a connection exists, ie
 csync_vio_file_stat_t _fs;
 
 csync_auth_callback _authcb;
+csync_file_progress_callback    _file_progress_cb;
+
 void *_userdata;
 
 #define PUT_BUFFER_SIZE 1024*5
@@ -402,6 +405,22 @@ static int ne_auth( void *userdata, const char *realm, int attempt,
         }
     }
     return attempt;
+}
+
+/* called from neon */
+static void ne_notify_status_cb (void *userdata, ne_session_status status,
+                                 const ne_session_status_info *info)
+{
+    struct transfer_context *tc = (struct transfer_context*) userdata;
+
+    if (_file_progress_cb && (status == ne_status_sending || status == ne_status_recving)) {
+        if (info->sr.total > 0) {
+            _file_progress_cb(tc->url, CSYNC_NOTIFY_PROGRESS,
+                              info->sr.progress,
+                              info->sr.total,
+                              userdata);
+        }
+    }
 }
 
 /*
@@ -887,7 +906,6 @@ static csync_vio_capabilities_t *owncloud_get_capabilities(void)
 static csync_vio_method_handle_t *owncloud_open(const char *durl,
                                                 int flags,
                                                 mode_t mode) {
-    char *uri = NULL;
     char *dir = NULL;
     char getUrl[PATH_MAX];
     int put = 0;
@@ -907,13 +925,6 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
 
     (void) mode; /* unused on webdav server */
     DEBUG_WEBDAV(( "=> open called for %s\n", durl ));
-
-    uri = _cleanPath( durl );
-    if( ! uri ) {
-        DEBUG_WEBDAV(("Failed to clean path for %s\n", durl ));
-        errno = EACCES;
-        rc = NE_ERROR;
-    }
 
     if( rc == NE_OK )
         dav_connect( durl );
@@ -957,6 +968,13 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
 
     writeCtx = c_malloc( sizeof(struct transfer_context) );
     writeCtx->bytes_written = 0;
+
+    writeCtx->url = _cleanPath( durl );
+    if( ! writeCtx->url ) {
+        errno = EACCES;
+        rc = NE_ERROR;
+    }
+
     if( rc == NE_OK ) {
         /* open a temp file to store the incoming data */
 #ifdef _WIN32
@@ -1013,8 +1031,8 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
         writeCtx->bytes_written = 0;
         writeCtx->fileWritten = 0;   /* flag to indicate if contents was pushed to file */
 
-        writeCtx->req = ne_request_create(dav_session.ctx, "PUT", uri);
-	writeCtx->method = "PUT";
+        writeCtx->req = ne_request_create(dav_session.ctx, "PUT", writeCtx->url);
+        writeCtx->method = "PUT";
     }
 
 
@@ -1039,6 +1057,12 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
          * either the compressed- or uncompressed reader.
          */
         ne_hook_post_headers( dav_session.ctx, install_content_reader, writeCtx );
+
+        /* Call the progress callback */
+        if (_file_progress_cb) {
+            ne_set_notifier(dav_session.ctx, ne_notify_status_cb, writeCtx);
+            _file_progress_cb( writeCtx->url, CSYNC_NOTIFY_START_DOWNLOAD, 0 , 0, _userdata);
+        }
 
         /* actually do the request */
         rc = ne_request_dispatch(writeCtx->req );
@@ -1084,7 +1108,6 @@ static csync_vio_method_handle_t *owncloud_open(const char *durl,
         SAFE_FREE( writeCtx );
     }
 
-    SAFE_FREE( uri );
     SAFE_FREE( dir );
 
     return (csync_vio_method_handle_t *) writeCtx;
@@ -1107,6 +1130,7 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
     int ret = 0;
     size_t len = 0;
     mbchar_t *tmpFileName = 0;
+    enum csync_notify_type_e notify_tag;
 
     writeCtx = (struct transfer_context*) fhandle;
 
@@ -1158,6 +1182,12 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
 
                     /* successfully opened for read. Now start the request via ne_put */
                     ne_set_request_body_fd( writeCtx->req, writeCtx->fd, 0, st.st_size );
+
+                    if (_file_progress_cb) {
+                        ne_set_notifier(dav_session.ctx, ne_notify_status_cb, writeCtx);
+                        _file_progress_cb(writeCtx->url, CSYNC_NOTIFY_START_UPLOAD, 0 , 0, _userdata);
+                    }
+
                     rc = ne_request_dispatch( writeCtx->req );
                     if( close( writeCtx->fd ) == -1 ) {
                         errno = EBADF;
@@ -1194,6 +1224,7 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
                     ret = -1;
                 }
             }
+            notify_tag = CSYNC_NOTIFY_FINISHED_UPLOAD;
         }
         ne_request_destroy( writeCtx->req );
     } else  {
@@ -1204,12 +1235,21 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
                 ret = -1;
             }
         }
+        notify_tag = CSYNC_NOTIFY_FINISHED_DOWNLOAD;
     }
+
+    /* Finish callback */
+    if (_file_progress_cb) {
+        ne_set_notifier(dav_session.ctx, 0, 0);
+        _file_progress_cb(writeCtx->url, notify_tag, 0, 0, _userdata );
+    }
+
     /* Remove the local file. */
     unlink( writeCtx->tmpFileName );
 
     /* free mem. Note that the request mem is freed by the ne_request_destroy call */
     SAFE_FREE( writeCtx->tmpFileName );
+    SAFE_FREE( writeCtx->url );
     SAFE_FREE( writeCtx );
 
     return ret;
