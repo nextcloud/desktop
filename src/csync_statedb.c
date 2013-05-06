@@ -390,8 +390,10 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
   char *stmt = NULL;
   size_t len = 0;
 
-  stmt = sqlite3_mprintf("SELECT * FROM metadata WHERE phash='%llu'",
-      (long long unsigned int) phash);
+  /* Use %lld instead of %llu otherwise there is an overflow in sqlite
+   * which only supports signed */
+  stmt = sqlite3_mprintf("SELECT * FROM metadata WHERE phash='%lld'",
+      (long long int) phash);
   if (stmt == NULL) {
     return NULL;
   }
