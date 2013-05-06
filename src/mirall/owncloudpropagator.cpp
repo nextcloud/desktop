@@ -32,6 +32,8 @@
 #include <neon/ne_compress.h>
 #include <neon/ne_redirect.h>
 
+extern "C" int c_utimes(const char *, const struct timeval *); // this comes from csync
+
 namespace Mirall {
 
 /* Helper for QScopedPointer<>, to be used as the deleter.
@@ -466,6 +468,11 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
 #endif
 
     tmpFile.setAutoRemove(false);
+
+    struct timeval times[2];
+    times[0].tv_sec = times[1].tv_sec = item._modtime;
+    times[0].tv_usec = times[1].tv_usec = 0;
+    c_utimes(item._file.toUtf8().data(), times);
 
     return CSYNC_INSTRUCTION_UPDATED;
 }
