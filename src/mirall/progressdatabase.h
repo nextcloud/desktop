@@ -33,7 +33,7 @@ public:
     struct UploadInfo {
         int chunk;
         int transferid;
-        quint64 size;
+        quint64 size; //currently unused
         time_t mtime;
     };
     typedef QHash<QString, UploadInfo > UploadInfoHash;

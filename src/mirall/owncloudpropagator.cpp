@@ -210,20 +210,17 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
         Q_ASSERT(trans);
         state = hbf_splitlist(trans.data(), file.handle());
 
-        //FIXME TODO
-#if 0
-        /* Reuse chunk info that was stored in database if existing. */
-        if (dav_session.chunk_info && dav_session.chunk_info->transfer_id) {
-            DEBUG_WEBDAV("Existing chunk info %d %d ", dav_session.chunk_info->start_id, dav_session.chunk_info->transfer_id);
-            trans->start_id = dav_session.chunk_info->start_id;
-            trans->transfer_id = dav_session.chunk_info->transfer_id;
+        if (const ProgressDatabase::UploadInfo* progressInfo = _progressDb->getUploadInfo(item._file)) {
+            if (progressInfo->mtime == item._modtime) {
+                trans->start_id = progressInfo->chunk;
+                trans->transfer_id = progressInfo->transferid;
+            }
+            _progressDb->remove(item._file);
         }
 
-        if (state == HBF_SUCCESS && _progresscb) {
-            ne_set_notifier(dav_session.ctx, ne_notify_status_cb, write_ctx);
-            _progresscb(write_ctx->url, CSYNC_NOTIFY_START_UPLOAD, 0 , 0, dav_session.userdata);
-        }
-#endif
+        //TODO
+        //ne_set_notifier(dav_session.ctx, ne_notify_status_cb, write_ctx);
+
         if( state == HBF_SUCCESS ) {
             //chunked_total_size = trans->stat_size;
             /* Transfer all the chunks through the HTTP session using PUT. */
@@ -245,10 +242,14 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
             if( finished ) {
                 _errorString = hbf_error_string(state);
                 _httpStatusCode = hbf_fail_http_code(trans.data());
-//                 if (dav_session.chunk_info) {
-//                     dav_session.chunk_info->start_id = trans->start_id;
-//                     dav_session.chunk_info->transfer_id = trans->transfer_id;
-//                 }
+
+                if (trans->start_id > 0) {
+                    ProgressDatabase::UploadInfo pi;
+                    pi.chunk = trans->start_id;
+                    pi.transferid = trans->transfer_id;
+                    pi.mtime = item._modtime;
+                    _progressDb->setUploadInfo(item._file, pi);
+                }
                 return CSYNC_INSTRUCTION_ERROR;
             }
         }
