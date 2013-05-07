@@ -41,6 +41,14 @@
 #include "csync_log.h"
 #include "csync_util.h"
 #include "csync_misc.h"
+#include "csync_rename.h"
+
+static int _csync_build_remote_uri(CSYNC *ctx, char **dst, const char *path) {
+    char *tmp = csync_rename_adjust_path(ctx, path);
+    int ret = asprintf(dst, "%s/%s", ctx->remote.uri, tmp);
+    SAFE_FREE(tmp);
+    return ret;
+}
 
 static int _csync_cleanup_cmp(const void *a, const void *b) {
   csync_file_stat_t *st_a, *st_b;
@@ -51,13 +59,24 @@ static int _csync_cleanup_cmp(const void *a, const void *b) {
   return strcmp(st_a->path, st_b->path);
 }
 
+static void _csync_file_stat_set_error(csync_file_stat_t *st, const char *error)
+{
+    st->instruction = CSYNC_INSTRUCTION_ERROR;
+    if (st->error_string || !error)
+        return; // do not override first error.
+    st->error_string = c_strdup(error);
+}
+
 /* Record the error in the ctx->progress
   pi may be a previous csync_progressinfo_t from the database.
   If pi is NULL, a new one is created, else it is re-used
   */
-static void _csync_record_error(CSYNC *ctx, csync_file_stat_t *st, csync_progressinfo_t *pi) {
+static void _csync_record_error(CSYNC *ctx, csync_file_stat_t *st, csync_progressinfo_t *pi)
+{
+  _csync_file_stat_set_error(st, csync_get_error_string(ctx));
   if (pi) {
     pi->error++;
+    SAFE_FREE(pi->error_string);
   } else {
     pi = c_malloc(sizeof(csync_progressinfo_t));
     pi->chunk = 0;
@@ -68,6 +87,7 @@ static void _csync_record_error(CSYNC *ctx, csync_file_stat_t *st, csync_progres
     pi->phash = st->phash;
     pi->error = 1;
   }
+  pi->error_string = st->error_string ? c_strdup(st->error_string) : NULL;
   pi->next = ctx->progress;
   ctx->progress = pi;
 }
@@ -116,6 +136,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   char *duri = NULL;
   char *turi = NULL;
   char *tdir = NULL;
+  char *auri = NULL;
   const char *tmd5 = NULL;
   char *prev_tdir  = NULL;
 
@@ -153,18 +174,29 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     hbf_info.transfer_id = progress_info->transferId;
   }
 
+  csync_progressinfo_t *pi = NULL;
+  pi = csync_statedb_get_progressinfo(ctx, st->phash, st->modtime, st->md5);
+  if (pi && pi->error > 3) {
+    if (!st->error_string && pi->error_string)
+        st->error_string = c_strdup(pi->error_string);
+    rc = 1;
+    goto out;
+  }
+
   rep_bak = ctx->replica;
+
+  auri = csync_rename_adjust_path(ctx, st->path);
 
   switch (ctx->current) {
     case LOCAL_REPLICA:
       srep = ctx->local.type;
       drep = ctx->remote.type;
-      if (asprintf(&suri, "%s/%s", ctx->local.uri, st->path) < 0) {
+      if (asprintf(&suri, "%s/%s", ctx->local.uri, auri) < 0) {
         rc = -1;
         goto out;
       }
-      if (asprintf(&duri, "%s/%s", ctx->remote.uri, st->path) < 0) {
-        rc = -1;
+      if (_csync_build_remote_uri(ctx, &duri, st->path) < 0) {
+          rc = -1;
         goto out;
       }
       do_pre_copy_stat = true;
@@ -172,11 +204,11 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     case REMOTE_REPLICA:
       srep = ctx->remote.type;
       drep = ctx->local.type;
-      if (asprintf(&suri, "%s/%s", ctx->remote.uri, st->path) < 0) {
+      if (_csync_build_remote_uri(ctx, &suri, st->path) < 0) {
         rc = -1;
         goto out;
       }
-      if (asprintf(&duri, "%s/%s", ctx->local.uri, st->path) < 0) {
+      if (asprintf(&duri, "%s/%s", ctx->local.uri, auri) < 0) {
         rc = -1;
         goto out;
       }
@@ -578,7 +610,7 @@ start_fd_based:
 
   /* For remote repos, after the utimes call, the ID has changed again */
   /* do a stat on the target again to get a valid md5 */
-  tmd5 = _get_md5(ctx, st->path);
+  tmd5 = _get_md5(ctx, auri);
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "FINAL MD5: %s", tmd5 ? tmd5 : "<null>");
 
   if(tmd5) {
@@ -604,7 +636,6 @@ out:
 
   /* set instruction for the statedb merger */
   if (rc != 0) {
-    st->instruction = CSYNC_INSTRUCTION_ERROR;
     if (_push_to_tmp_first(ctx)) {
       if (turi != NULL) {
             /* Remove the tmp file in error case. */
@@ -624,6 +655,7 @@ out:
   SAFE_FREE(duri);
   SAFE_FREE(turi);
   SAFE_FREE(tdir);
+  SAFE_FREE(auri);
 
   ctx->replica = rep_bak;
 
@@ -742,7 +774,7 @@ static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st, char **duri) {
 out:
   /* set instruction for the statedb merger */
   if (rc != 0) {
-    st->instruction = CSYNC_INSTRUCTION_ERROR;
+    _csync_file_stat_set_error(st, csync_get_error_string(ctx));
   }
 
   SAFE_FREE(suri);
@@ -768,12 +800,26 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
   char *duri = NULL;
   const char *tmd5 = NULL;
   c_rbnode_t *node = NULL;
-
+  char *tdir = NULL;
+  csync_file_stat_t *other = NULL;
   csync_progressinfo_t *pi = NULL;
-  pi = csync_statedb_get_progressinfo(ctx, st->phash, st->modtime, st->md5);
-  if (pi && pi->error > 3) {
-    rc = 1;
-    goto out;
+
+  /* Find the destination entry in the local tree  */
+  uint64_t h = c_jhash64((uint8_t *) st->destpath, strlen(st->destpath), 0);
+  node =  c_rbtree_find(ctx->local.tree, &h);
+  if(node)
+      other = (csync_file_stat_t *) node->data;
+
+  if (other) {
+    pi = csync_statedb_get_progressinfo(ctx, other->phash, other->modtime, other->md5);
+    if (pi && pi->error > 3) {
+      if (!st->error_string && pi->error_string)
+        st->error_string = c_strdup(pi->error_string);
+      if (!other->error_string && pi->error_string)
+          other->error_string = c_strdup(pi->error_string);
+      rc = 1;
+      goto out;
+    }
   }
 
   switch (ctx->current) {
@@ -782,10 +828,10 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Rename failed: src or dest path empty");
           rc = -1;
       }
-      if (asprintf(&suri, "%s/%s", ctx->remote.uri, st->path) < 0) {
+      if (_csync_build_remote_uri(ctx, &suri, st->path) < 0) {
         rc = -1;
       }
-      if (asprintf(&duri, "%s/%s", ctx->remote.uri, st->destpath) < 0) {
+      if (_csync_build_remote_uri(ctx, &duri, st->destpath) < 0) {
         rc = -1;
       }
       break;
@@ -800,52 +846,62 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
   }
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Renaming %s => %s", suri, duri);
 
-  if (rc > -1 && csync_vio_rename(ctx, suri, duri) < 0) {
-    switch (errno) {
-      default:
-        strerror_r(errno, errbuf, sizeof(errbuf));
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
-            "dir: %s, command: rename, error: %s",
-            suri,
-            errbuf);
-        rc = 1;
-        break;
+  if (! c_streq(suri, duri) && rc > -1) {
+    while ((rc = csync_vio_rename(ctx, suri, duri)) != 0) {
+        switch (errno) {
+        case ENOENT:
+            /* get the directory name */
+            if(tdir) {
+                /* we're looping */
+                CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN,
+                          "dir: %s, loop in mkdir detected!", tdir);
+                rc = 1;
+                goto out;
+            }
+            tdir = c_dirname(duri);
+            if (tdir == NULL) {
+                rc = -1;
+                goto out;
+            }
+
+            if (csync_vio_mkdirs(ctx, tdir, C_DIR_MODE) < 0) {
+                strerror_r(errno, errbuf, sizeof(errbuf));
+                CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN,
+                            "dir: %s, command: mkdirs, error: %s",
+                            tdir, errbuf);
+            }
+            break;
+        default:
+            strerror_r(errno, errbuf, sizeof(errbuf));
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+                "dir: %s, command: rename, error: %s",
+                suri,
+                errbuf);
+            goto out;
+        }
     }
-    goto out;
+
+    /* set owner and group if possible */
+    if (ctx->pwd.euid == 0) {
+        csync_vio_chown(ctx, duri, st->uid, st->gid);
+    }
+
+    /* sync time */
+    times[0].tv_sec = times[1].tv_sec = st->modtime;
+    times[0].tv_usec = times[1].tv_usec = 0;
+
+    csync_vio_utimes(ctx, duri, times);
+
   }
-
-  /* set owner and group if possible */
-  if (ctx->pwd.euid == 0) {
-    csync_vio_chown(ctx, duri, st->uid, st->gid);
-  }
-
-  /* sync time */
-  times[0].tv_sec = times[1].tv_sec = st->modtime;
-  times[0].tv_usec = times[1].tv_usec = 0;
-
-  csync_vio_utimes(ctx, duri, times);
 
   /* The the uniq ID for the destination */
-  tmd5 = _get_md5(ctx, st->destpath);
+  if (st->type != CSYNC_FTW_TYPE_DIR)
+    tmd5 = _get_md5(ctx, st->destpath);
 
   if( rc > -1 ) {
-      /* Find the destination entry in the local tree and insert the uniq id */
-      int len = strlen(st->destpath);
-      uint64_t h = c_jhash64((uint8_t *) st->destpath, len, 0);
-      h = c_jhash64((uint8_t *) st->destpath, len, 0);
-
-      /* search in the local tree for the local file to get the mtime */
-      node =  c_rbtree_find(ctx->local.tree, &h);
-      if(node == NULL) {
-          /* no local file found. */
-
-      } else {
-          csync_file_stat_t *other = NULL;
-          /* set the mtime which is needed in statedb_get_uniqid */
-          other = (csync_file_stat_t *) node->data;
-          if( other ) {
-              other->md5 = tmd5;
-          }
+      /* set the mtime which is needed in statedb_get_uniqid */
+      if( other ) {
+         other->md5 = tmd5;
       }
       /* set instruction for the statedb merger */
       st->instruction = CSYNC_INSTRUCTION_DELETED;
@@ -855,13 +911,19 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
 out:
   SAFE_FREE(suri);
   SAFE_FREE(duri);
+  SAFE_FREE(tdir);
 
   /* set instruction for the statedb merger */
   if (rc != 0) {
-    st->instruction = CSYNC_INSTRUCTION_NONE;
+    _csync_file_stat_set_error(st, csync_get_error_string(ctx));
+    if (other) {
 
-    _csync_record_error(ctx, st, pi);
-    pi = NULL;
+      /* We set the instruction to UPDATED so next try we try to rename again */
+      st->instruction = CSYNC_INSTRUCTION_UPDATED;
+
+      _csync_record_error(ctx, other, pi);
+      pi = NULL;
+    }
   }
 
   csync_statedb_free_progressinfo(pi);
@@ -919,6 +981,8 @@ static int _csync_remove_file(CSYNC *ctx, csync_file_stat_t *st) {
   pi = csync_statedb_get_progressinfo(ctx, st->phash, st->modtime, st->md5);
   if (pi && pi->error > 3) {
     rc = 1;
+    if (!st->error_string && pi->error_string)
+      st->error_string = c_strdup(pi->error_string);
     goto out;
   }
 
@@ -930,7 +994,7 @@ static int _csync_remove_file(CSYNC *ctx, csync_file_stat_t *st) {
       }
       break;
     case REMOTE_REPLICA:
-      if (asprintf(&uri, "%s/%s", ctx->remote.uri, st->path) < 0) {
+      if (_csync_build_remote_uri(ctx, &uri, st->path) < 0) {
         return -1;
       }
       break;
@@ -987,6 +1051,8 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
   csync_progressinfo_t *pi = NULL;
   pi = csync_statedb_get_progressinfo(ctx, st->phash, st->modtime, st->md5);
   if (pi && pi->error > 3) {
+    if (!st->error_string && pi->error_string)
+      st->error_string = c_strdup(pi->error_string);
     rc = 1;
     goto out;
   }
@@ -996,7 +1062,7 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
   switch (ctx->current) {
     case LOCAL_REPLICA:
       dest = ctx->remote.type;
-      if (asprintf(&uri, "%s/%s", ctx->remote.uri, st->path) < 0) {
+      if (_csync_build_remote_uri(ctx, &uri, st->path) < 0) {
         return -1;
       }
       break;
@@ -1070,7 +1136,6 @@ out:
 
   /* set instruction for the statedb merger */
   if (rc != 0) {
-    st->instruction = CSYNC_INSTRUCTION_ERROR;
     _csync_record_error(ctx, st, pi);
     pi = NULL;
   }
@@ -1090,6 +1155,8 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
   csync_progressinfo_t *pi = NULL;
   pi = csync_statedb_get_progressinfo(ctx, st->phash, st->modtime, st->md5);
   if (pi && pi->error > 3) {
+    if (!st->error_string && pi->error_string)
+      st->error_string = c_strdup(pi->error_string);
     rc = 1;
     goto out;
   }
@@ -1099,7 +1166,7 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
   switch (ctx->current) {
     case LOCAL_REPLICA:
       dest = ctx->remote.type;
-      if (asprintf(&uri, "%s/%s", ctx->remote.uri, st->path) < 0) {
+      if (_csync_build_remote_uri(ctx, &uri, st->path) < 0) {
         return -1;
       }
       break;
@@ -1157,7 +1224,6 @@ out:
 
   /* set instruction for the statedb merger */
   if (rc != 0) {
-    st->instruction = CSYNC_INSTRUCTION_ERROR;
     _csync_record_error(ctx, st, pi);
     pi = NULL;
   }
@@ -1202,7 +1268,7 @@ static int _csync_remove_dir(CSYNC *ctx, csync_file_stat_t *st) {
       }
       break;
     case REMOTE_REPLICA:
-      if (asprintf(&uri, "%s/%s", ctx->remote.uri, st->path) < 0) {
+      if (_csync_build_remote_uri(ctx, &uri, st->path) < 0) {
         return -1;
       }
       break;
@@ -1448,6 +1514,10 @@ err:
   return -1;
 }
 
+int csync_propagate_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
+    return _csync_rename_file(ctx, st);
+}
+
 int csync_propagate_files(CSYNC *ctx) {
   c_rbtree_t *tree = NULL;
 
@@ -1475,5 +1545,6 @@ int csync_propagate_files(CSYNC *ctx) {
   }
   return 0;
 }
+
 
 /* vim: set ts=8 sw=2 et cindent: */

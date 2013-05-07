@@ -146,6 +146,7 @@ struct csync_tree_walk_file_s {
 
     const char *rename_path;
     const char *md5;
+    const char *error_string;
 };
 typedef struct csync_tree_walk_file_s TREE_WALK_FILE;
 

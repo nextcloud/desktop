@@ -1,4 +1,4 @@
-project(libcsync C)
+project(libcsync)
 
 add_subdirectory(std)
 add_subdirectory(httpbf)
@@ -63,6 +63,8 @@ set(csync_SRCS
   csync_update.c
   csync_reconcile.c
   csync_propagate.c
+
+  csync_rename.cc
 
   vio/csync_vio.c
   vio/csync_vio_handle.c

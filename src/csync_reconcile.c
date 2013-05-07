@@ -24,6 +24,7 @@
 #include "csync_reconcile.h"
 #include "csync_util.h"
 #include "csync_statedb.h"
+#include "csync_rename.h"
 #include "c_jhash.h"
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.reconciler"
@@ -72,6 +73,18 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
     }
 
     node = c_rbtree_find(tree, &cur->phash);
+
+    if (!node && ctx->current == REMOTE_REPLICA) {
+        /* Check the renamed path as well. */
+        char *renamed_path = csync_rename_adjust_path(ctx, cur->path);
+        if (!c_streq(renamed_path, cur->path)) {
+            len = strlen( renamed_path );
+            h = c_jhash64((uint8_t *) renamed_path, len, 0);
+            node = c_rbtree_find(tree, &h);
+        }
+        SAFE_FREE(renamed_path);
+    }
+
     /* file only found on current replica */
     if (node == NULL) {
         switch(cur->instruction) {
@@ -100,13 +113,19 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                     }
                     if(node) {
                         other = (csync_file_stat_t*)node->data;
+                    }
+                    if(!other) {
+                        cur->instruction = CSYNC_INSTRUCTION_NEW;
+                    } else if (other->instruction == CSYNC_INSTRUCTION_NONE
+                                || cur->type == CSYNC_FTW_TYPE_DIR) {
                         other->instruction = CSYNC_INSTRUCTION_RENAME;
                         other->destpath = c_strdup( cur->path );
                         cur->instruction = CSYNC_INSTRUCTION_NONE;
+                    } else {
+                        cur->instruction = CSYNC_INSTRUCTION_NONE;
+                        other->instruction = CSYNC_INSTRUCTION_SYNC;
                     }
-                    if( ! other ) {
-                        cur->instruction = CSYNC_INSTRUCTION_NEW;
-                    }
+
                     SAFE_FREE(tmp->md5);
                     SAFE_FREE(tmp);
                 }
@@ -123,6 +142,8 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
 
         switch (cur->instruction) {
         case CSYNC_INSTRUCTION_RENAME:
+            if(ctx->current != LOCAL_REPLICA )
+                break;
             /* If the file already exist on the other side, we have a conflict.
                Abort the rename and consider it is a new file. */
             cur->instruction = CSYNC_INSTRUCTION_NEW;

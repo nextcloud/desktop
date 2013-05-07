@@ -385,6 +385,7 @@ int csync_statedb_create_tables(CSYNC *ctx) {
                                "transferid INTEGER(4),"
                                "error_count INTEGER(8),"
                                "tmpfile VARCHAR(4096),"
+                               "error_string VARCHAR(4096),"
                                "PRIMARY KEY(phash)"
                                ");"
   );
@@ -901,7 +902,7 @@ csync_progressinfo_t* csync_statedb_get_progressinfo(CSYNC *ctx, uint64_t phash,
   c_strlist_t *result = NULL;
 
   if( ! csync_get_statedb_exists(ctx)) return ret;
-  stmt = sqlite3_mprintf("SELECT error_count, chunk, transferid, tmpfile FROM progress WHERE phash='%llu' AND modtime='%lld' AND md5='%q'",
+  stmt = sqlite3_mprintf("SELECT error_count, chunk, transferid, tmpfile, error_string FROM progress WHERE phash='%llu' AND modtime='%lld' AND md5='%q'",
                          (long long unsigned int) phash, (long long signed int) modtime, md5);
   if (!stmt) return ret;
 
@@ -911,17 +912,18 @@ csync_progressinfo_t* csync_statedb_get_progressinfo(CSYNC *ctx, uint64_t phash,
     return NULL;
   }
 
-  if (result->count == 4) {
+  if (result->count == 5) {
     ret = c_malloc(sizeof(csync_progressinfo_t));
     if (!ret) goto out;
     ret->next = NULL;
-    ret->error = atoi(result->vector[0]);
     ret->chunk = atoi(result->vector[1]);
+    ret->error = atoi(result->vector[0]);
     ret->transferId = atoi(result->vector[2]);
     ret->tmpfile = c_strdup(result->vector[3]);
     ret->md5 = md5 ? c_strdup(md5) : NULL;
     ret->modtime = modtime;
     ret->phash = phash;
+    ret->error_string = c_strdup(result->vector[4]);
   }
 out:
   c_strlist_destroy(result);
@@ -933,6 +935,7 @@ void csync_statedb_free_progressinfo(csync_progressinfo_t* pi)
   if (!pi) return;
   SAFE_FREE(pi->md5);
   SAFE_FREE(pi->tmpfile);
+  SAFE_FREE(pi->error_string);
   SAFE_FREE(pi);
 }
 
@@ -943,15 +946,18 @@ int csync_statedb_write_progressinfo(CSYNC* ctx, csync_progressinfo_t* pi)
 
   while (rc > -1 && pi) {
     stmt = sqlite3_mprintf("INSERT INTO progress "
-    "(phash, modtime, md5, chunk, transferid, error_count, tmpfile) VALUES"
-    "(%llu, %lld, '%q', %d, %d, %d, '%q');",
+    "(phash, modtime, md5, chunk, transferid, error_count, tmpfile, error_string) VALUES"
+    "(%llu, %lld, '%q', %d, %d, %d, '%q', '%q');",
       (long long signed int) pi->phash,
       (long long int) pi->modtime,
       pi->md5,
       pi->chunk,
       pi->transferId,
       pi->error,
-      pi->tmpfile);
+      pi->error,
+      pi->tmpfile,
+      pi->error_string
+    );
 
     if (stmt == NULL) {
       return -1;
