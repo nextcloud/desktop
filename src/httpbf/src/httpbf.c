@@ -239,8 +239,13 @@ static char* get_transfer_url( hbf_transfer_t *transfer, int indx ) {
     return res;
 }
 
+/*
+ * perform one transfer of one block.
+ * returns HBF_TRANSFER_SUCCESS if the transfer of this block was a success
+ * returns HBF_SUCCESS if the server aknoweldge that he received all the blocks
+ */
 static int dav_request( ne_request *req, int fd, hbf_block_t *blk ) {
-    Hbf_State state = HBF_SUCCESS;
+    Hbf_State state = HBF_TRANSFER_SUCCESS;
     int res;
     const ne_status *req_status = NULL;
     const char *etag = NULL;
@@ -248,7 +253,7 @@ static int dav_request( ne_request *req, int fd, hbf_block_t *blk ) {
     if( ! (blk && req) ) return HBF_PARAM_FAIL;
 
     ne_set_request_body_fd(req, fd, blk->start, blk->size);
-    /* printf("Start: %d and Size: %d\n", blk->start, blk->size ); */
+    DEBUG_HBF("HBF: Block: %d , Start: %ld and Size: %ld\n", blk->seq_number, blk->start, blk->size );
     res = ne_request_dispatch(req);
 
     req_status = ne_get_status( req );
@@ -260,8 +265,13 @@ static int dav_request( ne_request *req, int fd, hbf_block_t *blk ) {
         state = HBF_FAIL;
         etag = 0;
         if( req_status->klass == 2 ) {
+            state = HBF_TRANSFER_SUCCESS;
+            blk->state = HBF_TRANSFER_SUCCESS;
             etag = ne_get_response_header(req, "ETag");
             if (etag && etag[0]) {
+                /* When there is an etag, it means the transfer was complete */
+                state = HBF_SUCCESS;
+
                 if( etag[0] == '"' && etag[ strlen(etag)-1] == '"') {
                      int len = strlen( etag )-2;
                      blk->etag = malloc( len+1 );
@@ -271,8 +281,6 @@ static int dav_request( ne_request *req, int fd, hbf_block_t *blk ) {
                     blk->etag = strdup( etag );
                 }
             }
-            state = HBF_SUCCESS;
-            blk->state = HBF_TRANSFER_SUCCESS;
         }
         break;
     case NE_AUTH:
@@ -335,7 +343,7 @@ static Hbf_State validate_source_file( hbf_transfer_t *transfer ) {
 }
 
 Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const char *verb ) {
-    Hbf_State state = HBF_SUCCESS;
+    Hbf_State state = HBF_TRANSFER_SUCCESS;
     int cnt;
 
     if( ! session ) {
@@ -348,15 +356,18 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
         state = HBF_PARAM_FAIL;
     }
 
-    for( cnt=0; state == HBF_SUCCESS && cnt < transfer->block_cnt; cnt++ ) {
+    for( cnt=0; state == HBF_TRANSFER_SUCCESS && cnt < transfer->block_cnt; cnt++ ) {
+        /* cnt goes from O to block_cnt,  but block_id starts at start_id and wrap around
+         * That way if we have not finished uploaded when we reach block_cnt, we re-upload
+         * the beginning of the file that the server did not have in cache anymore.
+         */
         int block_id = (cnt + transfer->start_id) % transfer->block_cnt;
-        Hbf_State block_state = HBF_SUCCESS;
         hbf_block_t *block = transfer->block_arr[block_id];
         char *transfer_url = NULL;
 
         if( ! block ) state = HBF_PARAM_FAIL;
 
-        if( state == HBF_SUCCESS ) {
+        if( state == HBF_TRANSFER_SUCCESS ) {
             transfer_url = get_transfer_url( transfer, block_id );
             if( ! transfer_url ) {
                 state = HBF_PARAM_FAIL;
@@ -370,16 +381,16 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
           }
 
         }
-        if( state == HBF_SUCCESS ) {
+        if( state == HBF_TRANSFER_SUCCESS || state == HBF_SUCCESS ) {
             ne_request *req = ne_request_create(session, "PUT", transfer_url);
 
             if( req ) {
                 if( transfer->block_cnt > 1 ) {
                   ne_add_request_header(req, "OC_CHUNKED", "1");
                 }
-                block_state = dav_request( req, transfer->fd, transfer->block_arr[cnt] );
+                state = dav_request( req, transfer->fd, block );
 
-                if( block_state != HBF_SUCCESS ) {
+                if( state != HBF_TRANSFER_SUCCESS && state != HBF_SUCCESS) {
                   if( transfer->error_string ) free( transfer->error_string );
                   transfer->error_string = strdup( ne_get_error(session) );
                   transfer->start_id = block_id  % transfer->block_cnt;
