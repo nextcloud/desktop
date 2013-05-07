@@ -95,7 +95,6 @@ static void test_get_transfer_url_bigfile( void **state ) {
                 list->block_cnt, i );
         /* printf( "XX: %s\n", res ); */
         assert_string_equal( turl, res );
-
     }
     hbf_free_transfer(list);
 }
@@ -205,10 +204,10 @@ int main(void) {
     const UnitTest tests[] = {
         unit_test(null_test_success),
         unit_test(test_hbf_splitlist_odd),
-      unit_test(test_hbf_splitlist_zero),
+        unit_test(test_hbf_splitlist_zero),
         unit_test(test_hbf_init_transfer),
         unit_test(test_get_transfer_url),
-      unit_test(test_get_transfer_url_bigfile)
+        unit_test(test_get_transfer_url_bigfile)
     };
     return run_tests(tests);
 }
