@@ -104,8 +104,6 @@ static void connect_test_success(void **state) {
 
     assert_int_equal( re, 0 );
     assert_int_equal( _connected, 1 );
-    assert_int_equal( dav_session.time_delta_sum, 0);
-    assert_int_equal( dav_session.time_delta_cnt, 0);
 }
 
 static void fetch_a_context(void **state) {

@@ -58,10 +58,6 @@
 
 #define DEBUG_WEBDAV(...) csync_log( dav_session.csync_ctx, 9, "oc_module", __VA_ARGS__);
 
-#define OC_TIMEDELTA_FAIL (NE_REDIRECT +1)
-#define OC_PROPFIND_FAIL  (NE_REDIRECT +2)
-
-
 enum resource_type {
     resr_normal = 0,
     resr_collection,
@@ -156,11 +152,6 @@ struct dav_session_s {
     char *error_string;
 
     int read_timeout;
-
-    long int prev_delta;
-    long int time_delta;     /* The time delta to use.                  */
-    long int time_delta_sum; /* What is the time delta average?         */
-    long int time_delta_cnt; /* How often was the server time gathered? */
 
     CSYNC *csync_ctx;
     void *userdata;
@@ -709,10 +700,6 @@ static int dav_connect(const char *base_url) {
         return 0;
     }
 
-    dav_session.time_delta_sum = 0;
-    dav_session.time_delta_cnt = 0;
-    dav_session.prev_delta     = 0;
-
     rc = c_parse_uri( base_url, &scheme, &dav_session.user, &dav_session.pwd, &host, &port, &path );
     if( rc < 0 ) {
         DEBUG_WEBDAV("Failed to parse uri %s", base_url );
@@ -973,13 +960,8 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
     int ret = 0;
     ne_propfind_handler *hdl = NULL;
     ne_request *request = NULL;
-    const char *date_header = NULL;
     const char *content_type = NULL;
     char *curi = NULL;
-    time_t server_time;
-    time_t now;
-    time_t time_diff;
-    time_t time_diff_delta;
     const ne_status *req_status = NULL;
 
     curi = _cleanPath( uri );
@@ -1050,41 +1032,6 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
         }
     }
 
-    if( ret == NE_OK ) {
-        date_header =  ne_get_response_header( request, "Date" );
-        DEBUG_WEBDAV("Server Date from HTTP header value: %s", date_header);
-        server_time = oc_httpdate_parse(date_header);
-        if( server_time ) {
-            now = time(NULL);
-            time_diff = server_time - now;
-
-            dav_session.time_delta_sum += time_diff;
-            dav_session.time_delta_cnt++;
-
-            /* Store the previous time delta */
-            dav_session.prev_delta = dav_session.time_delta;
-
-            /* check the changing of the time delta */
-            time_diff_delta = llabs(dav_session.time_delta - time_diff);
-            if( dav_session.time_delta_cnt == 1 ) {
-                DEBUG_WEBDAV( "The first time_delta is %ld", time_diff );
-            } else if( dav_session.time_delta_cnt > 1 ) {
-                if( time_diff_delta > 5 ) {
-                    DEBUG_WEBDAV("WRN: The time delta changed more than 5 second");
-                    // errno = ERRNO_TIMEDELTA;
-                    // ret = OC_TIMEDELTA_FAIL;
-                } else {
-                    DEBUG_WEBDAV("Ok: Time delta remained (almost) the same: %ld.", time_diff);
-                }
-            } else {
-                DEBUG_WEBDAV("Difference to last server time delta: %ld", time_diff_delta );
-            }
-            dav_session.time_delta = time_diff;
-        } else {
-            DEBUG_WEBDAV("ERROR: Unable to parse server time.");
-        }
-    }
-
     if( ret != NE_OK ) {
         const char *err = NULL;
 
@@ -1103,10 +1050,6 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
             redir_uri = ne_uri_unparse(redir_ne_uri);
             DEBUG_WEBDAV("Permanently moved to %s", redir_uri);
         }
-    }
-    if( ret == OC_TIMEDELTA_FAIL ) {
-        DEBUG_WEBDAV("WRN: Time delta changed too much!");
-        /* FIXME: Reasonable user warning */
     }
 
     if( ret != NE_OK ) {
@@ -1168,10 +1111,7 @@ static csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
         DEBUG_WEBDAV("ERROR: Unknown resource type %d", res->type);
     }
 
-    /* Correct the mtime of the file with the server time delta */
-    DEBUG_WEBDAV("  :> Subtracting %ld from modtime %llu", dav_session.time_delta,
-		 (unsigned long long) res->modtime);
-    lfs->mtime = res->modtime - dav_session.time_delta ;
+    lfs->mtime = res->modtime;
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
     lfs->size  = res->size;
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
@@ -2080,10 +2020,6 @@ static int owncloud_utimes(const char *uri, const struct timeval *times) {
     pname.name = "lastmodified";
 
     newmodtime = modtime->tv_sec;
-
-    DEBUG_WEBDAV("Add a time delta to modtime %lu: %ld",
-                 modtime->tv_sec, (long) dav_session.time_delta);
-    newmodtime += dav_session.time_delta;
 
     snprintf( val, sizeof(val), "%ld", newmodtime );
     DEBUG_WEBDAV("Setting LastModified of %s to %s", curi, val );

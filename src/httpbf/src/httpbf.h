@@ -35,7 +35,7 @@ enum hbf_state_e {
     HBF_NOT_TRANSFERED,           /* never tried to transfer     */
     HBF_TRANSFER,                 /* transfer currently running  */
     HBF_TRANSFER_FAILED,          /* transfer tried but failed   */
-    HBF_TRANSFER_SUCCESS,         /* transfer succeeded.         */
+    HBF_TRANSFER_SUCCESS,         /* block transfer succeeded.   */
     HBF_SPLITLIST_FAIL,           /* the file could not be split */
     HBF_SESSION_FAIL,
     HBF_FILESTAT_FAIL,
