@@ -58,7 +58,8 @@ csync_instructions_e  OwncloudPropagator::propagate(const SyncFileItem &item)
             }   //fall trough
         case CSYNC_INSTRUCTION_SYNC:
             if (item._isDirectory) {
-                return CSYNC_INSTRUCTION_UPDATED; //FIXME
+                // Should we set the mtime?
+                return CSYNC_INSTRUCTION_UPDATED;
             } else {
                 return item._dir == SyncFileItem::Down ? downloadFile(item) : uploadFile(item);
             }
@@ -136,9 +137,6 @@ csync_instructions_e OwncloudPropagator::localRemove(const SyncFileItem& item)
             return CSYNC_INSTRUCTION_DELETED;
         _errorString = file.errorString();
     }
-    //FIXME: we should update the md5
-    _etag.clear();
-    //FIXME: we should update the mtime
     return CSYNC_INSTRUCTION_NONE; // not ERROR so it is still written to the database
 }
 
@@ -146,7 +144,7 @@ csync_instructions_e OwncloudPropagator::localMkdir(const SyncFileItem &item)
 {
     QDir d;
     if (!d.mkpath(_localDir + item._file)) {
-        //FIXME: errorString
+        _errorString = "could not create directory " + _localDir + item._file;
         return CSYNC_INSTRUCTION_ERROR;
     }
     return CSYNC_INSTRUCTION_UPDATED;
@@ -193,8 +191,6 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
         return CSYNC_INSTRUCTION_ERROR;
     }
     QScopedPointer<char, QScopedPointerPodDeleter> uri(ne_path_escape((_remoteDir + item._file).toUtf8()));
-
-    //TODO: FIXME: check directory
 
     bool finished = true;
     int  attempts = 0;
