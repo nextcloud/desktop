@@ -232,9 +232,7 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     }
 
     item._dir = dir;
-    _mutex.lock();
     _syncedItems.append(item);
-    _mutex.unlock();
 
     return re;
 }
@@ -261,19 +259,6 @@ int CSyncThread::treewalkFinalize(TREE_WALK_FILE* file)
             file->md5 = action->etag.constData();
         }
     }
-
-    // Put the error in _syncedItems so the UI can display them
-    // (FIXME, this should not be done here but in the propagate step instead)
-
-    if( file->instruction == CSYNC_INSTRUCTION_STAT_ERROR ||
-        file->instruction == CSYNC_INSTRUCTION_ERROR ) {
-        QMutexLocker locker(&_mutex);
-        SyncFileItemVector::iterator it = qBinaryFind(_syncedItems.begin(), _syncedItems.end(), item);
-        if ( it == _syncedItems.end())
-            return 0;
-        it->_instruction = file->instruction;
-    }
-
     return 0;
 }
 
@@ -327,9 +312,9 @@ void CSyncThread::startSync()
     qDebug() << Q_FUNC_INFO << "Sync started";
 
     qDebug() << "starting to sync " << qApp->thread() << QThread::currentThread();
+    _syncedItems.clear();
 
     _mutex.lock();
-    _syncedItems.clear();
     _needsUpdate = false;
     _mutex.unlock();
 
@@ -377,7 +362,9 @@ void CSyncThread::startSync()
 
     QString lastDeleted;
     OwncloudPropagator propagator(session, _localPath, _remotePath, &db);
-    foreach (const SyncFileItem &item , _syncedItems) {
+
+    for (SyncFileItemVector::iterator it = _syncedItems.begin(); it != _syncedItems.end(); ++it) {
+        const SyncFileItem &item = *it;
         Action a;
         if (!lastDeleted.isEmpty() && item._file.startsWith(lastDeleted)
                 && item._instruction == CSYNC_INSTRUCTION_REMOVE) {
@@ -391,16 +378,13 @@ void CSyncThread::startSync()
         a.instruction = propagator.propagate(item);
 
         // if the propagator had an error for a file, put the error string into the synced item
-        if( propagator._errorCode != CSYNC_ERR_NONE ) {
-            // find the real object to add the err message. The loop only handles const refs.
-            SyncFileItemVector::iterator it = qBinaryFind(_syncedItems.begin(), _syncedItems.end(), item);
-            if ( it != _syncedItems.end()) {
-                QMutexLocker locker(&_mutex);
-                it->_errorString = csyncErrorToString( propagator._errorCode );
-                it->_errorDetail = propagator._errorString;
-                it->_httpCode    = propagator._httpStatusCode;
-                qDebug() << "File " << item._file << " propagator error " << item._errorString;
-            }
+        if( propagator._errorCode != CSYNC_ERR_NONE
+                || a.instruction == CSYNC_INSTRUCTION_ERROR) {
+            it->_instruction = CSYNC_INSTRUCTION_ERROR;
+            it->_errorString = csyncErrorToString( propagator._errorCode );
+            it->_errorDetail = propagator._errorString;
+            it->_httpCode    = propagator._httpStatusCode;
+            qDebug() << "File " << item._file << " propagator error " << item._errorString;
         }
 
         if (item._isDirectory && item._instruction == CSYNC_INSTRUCTION_REMOVE

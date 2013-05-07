@@ -49,6 +49,9 @@ struct ScopedPointerHelpers {
 
 csync_instructions_e  OwncloudPropagator::propagate(const SyncFileItem &item)
 {
+    _errorCode = CSYNC_ERR_NONE;
+    _errorString.clear();
+    _httpStatusCode = 0;
     switch(item._instruction) {
         case CSYNC_INSTRUCTION_REMOVE:
             return item._dir == SyncFileItem::Down ? localRemove(item) : remoteRemove(item);
