@@ -106,9 +106,9 @@ struct listdir_context {
 };
 
 
-// Our cache, key is a char*
+/* Our cache, key is a char* */
 extern c_rbtree_t *propfind_recursive_cache;
-// Values are propfind_recursive_element:
+/* Values are propfind_recursive_element: */
 struct propfind_recursive_element {
     struct resource *self;
     struct resource *children;
@@ -177,4 +177,4 @@ void set_errno_from_http_errcode( int err );
 void set_error_message( const char *msg );
 void set_errno_from_neon_errcode( int neon_code );
 
-#endif // CSYNC_OWNCLOUD_H
+#endif /* CSYNC_OWNCLOUD_H */

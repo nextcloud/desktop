@@ -85,7 +85,7 @@ struct listdir_context *get_listdir_context_from_cache(const char *curi)
         return NULL;
     }
 
-    // Out of the element, create a listdir_context.. if we could be sure that it is immutable, we could ref instead.. need to investigate
+    /* Out of the element, create a listdir_context.. if we could be sure that it is immutable, we could ref instead.. need to investigate */
     struct listdir_context *fetchCtx = c_malloc( sizeof( struct listdir_context ));
     fetchCtx->list = NULL;
     fetchCtx->target = c_strdup(curi);
@@ -186,9 +186,9 @@ static void results_recursive(void *userdata,
     /* Create new item in rb tree */
     if (newres->type == resr_collection) {
         DEBUG_WEBDAV("results_recursiveIt is a collection %s", newres->uri);
-        // Check if in rb tree
+        /* Check if in rb tree */
         propfind_recursive_element_t *element = c_rbtree_node_data(c_rbtree_find(propfind_recursive_cache,uri->path));
-        // If not, create a new item and insert it
+        /* If not, create a new item and insert it */
         if (!element) {
             element = c_malloc(sizeof(propfind_recursive_element_t));
             element->self = resource_dup(newres);
