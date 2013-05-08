@@ -69,8 +69,7 @@ int main(int argc, char **argv) {
     for (int i = 1; i < argc; ++i) {
         if (argv[i][0] == '-') {
             //TODO: parse arguments
-            std::cerr << "Argument not impemented" << std::endl;
-            return 1;
+            std::cerr << "Argument not impemented " << argv[i] << std::endl;
         } else if (!source_dir) {
             source_dir =  argv[i];
         } else if (!target_url) {
