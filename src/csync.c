@@ -1179,9 +1179,14 @@ int csync_set_progress_callback(CSYNC* ctx, csync_progress_callback cb)
 
 }
 
-void csync_abort(CSYNC *ctx)
+void csync_request_abort(CSYNC *ctx)
 {
     ctx->abort = true;
+}
+
+void csync_resume(CSYNC *ctx)
+{
+    ctx->abort = false;
 }
 
 /* vim: set ts=8 sw=2 et cindent: */

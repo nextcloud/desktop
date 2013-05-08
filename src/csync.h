@@ -527,7 +527,16 @@ int csync_set_progress_callback(CSYNC *ctx, csync_progress_callback cb);
  *
  * @param ctx           The csync context.
  */
-void csync_abort(CSYNC *ctx);
+void csync_request_abort(CSYNC *ctx);
+
+/**
+ * @brief Clears the abort flag. Can be called from another thread.
+ *
+ * @param ctx           The csync context.
+ */
+void csync_resume(CSYNC *ctx);
+
+
 
 #ifdef __cplusplus
 }
