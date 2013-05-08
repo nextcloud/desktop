@@ -43,6 +43,8 @@
 #include <neon/ne_compress.h>
 #include <neon/ne_redirect.h>
 
+#include "c_rbtree.h"
+
 #include "c_lib.h"
 #include "csync.h"
 #include "csync_misc.h"
@@ -191,11 +193,18 @@ long long chunked_total_size = 0;
 long long chunked_done = 0;
 
 struct listdir_context *propfind_cache = 0;
+
+bool is_first_propfind = true;
+static void clear_propfind_recursive_cache();
+
 csync_vio_file_stat_t _stat_cache;
 /* id cache, cache the ETag: header of a GET request */
 struct { char *uri; char *id;  } _id_cache = { NULL, NULL };
 
 static void clean_caches() {
+    clear_propfind_recursive_cache();
+    is_first_propfind = true;
+
     free_fetchCtx(propfind_cache);
     propfind_cache = NULL;
 
@@ -377,6 +386,10 @@ static char *_cleanPath( const char* uri ) {
     SAFE_FREE( path );
     return re;
 }
+/* ***************************************************************************** */
+#include "csync_owncloud_recursive_propfind.c"
+/* ***************************************************************************** */
+
 
 /*
  * helper method to build up a user text for SSL problems, called from the
@@ -991,6 +1004,20 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
             return propfind_cache;
         }
     }
+
+    if (propfind_recursive_cache) {
+        fetchCtx = get_listdir_context_from_cache(curi);
+        if (fetchCtx) {
+            return fetchCtx;
+        } else {
+            /* Not found in the recursive cache, fetch some */
+            return fetch_resource_list_recursive(uri, curi);
+        }
+    } else if (!is_first_propfind) {
+        /* 2nd propfind */
+        return fetch_resource_list_recursive(uri, curi);
+    }
+    is_first_propfind = false;
 
     fetchCtx = c_malloc( sizeof( struct listdir_context ));
     if (!fetchCtx) {
