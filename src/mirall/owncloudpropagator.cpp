@@ -33,7 +33,9 @@
 #include <neon/ne_compress.h>
 #include <neon/ne_redirect.h>
 
-extern "C" int c_utimes(const char *, const struct timeval *); // this comes from csync
+// We use some internals of csync:
+extern "C" int c_utimes(const char *, const struct timeval *);
+extern "C" void csync_win32_set_file_hidden( const char *file, bool h );
 
 namespace Mirall {
 
@@ -375,7 +377,12 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
         _progressDb->remove(item._file);
     }
     if (tmpFileName.isEmpty()) {
-        tmpFileName = item._file + "." + QString::number(uint(qrand()), 16);
+        tmpFileName = item._file;
+        //add a dot at the begining of the filename to hide the file.
+        int slashPos = tmpFileName.lastIndexOf('/');
+        tmpFileName.insert(slashPos+1, '.');
+        //add the suffix
+        tmpFileName += ".~" + QString::number(uint(qrand()), 16);
     }
 
     QFile tmpFile(_localDir + tmpFileName);
@@ -385,7 +392,7 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
         return CSYNC_INSTRUCTION_ERROR;
     }
 
-    //TODO: make tmpFile hidden and excluded in case it is still there in the next sync.
+    csync_win32_set_file_hidden(tmpFileName.toUtf8().constData(), true);
 
     {
         ProgressDatabase::DownloadInfo pi;
@@ -476,6 +483,8 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
             return CSYNC_INSTRUCTION_ERROR;
         }
     }
+
+    csync_win32_set_file_hidden(tmpFileName.toUtf8().constData(), false);
 
     // We want a rename that also overwite.  QFile::rename does not overwite.
     // Qt 5.1 has QFile::renameOverwrite we cold use.  (Or even better: QSaveFile)
