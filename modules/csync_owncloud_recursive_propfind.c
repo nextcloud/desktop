@@ -19,12 +19,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <errno.h>
-#include <stdio.h>
-#include <time.h>
-#include <limits.h>
-#include <stdlib.h>
-
 #include "csync_owncloud.h"
 
 

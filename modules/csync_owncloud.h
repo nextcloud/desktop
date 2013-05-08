@@ -118,8 +118,6 @@ void clear_propfind_recursive_cache();
 struct listdir_context *get_listdir_context_from_cache(const char *curi);
 struct listdir_context *fetch_resource_list_recursive(const char *uri, const char *curi);
 
-time_t oc_httpdate_parse( const char *date );
-
 
 /*
  * context to store info about a temp file for GET and PUT requests
@@ -178,5 +176,14 @@ static const ne_propname ls_props[] = {
 void set_errno_from_http_errcode( int err );
 void set_error_message( const char *msg );
 void set_errno_from_neon_errcode( int neon_code );
+int http_result_code_from_session();
+void set_errno_from_session();
+
+time_t oc_httpdate_parse( const char *date );
+
+char *_cleanPath( const char* uri );
+
+int _stat_perms( int type );
+csync_vio_file_stat_t *resourceToFileStat( struct resource *res );
 
 #endif /* CSYNC_OWNCLOUD_H */
