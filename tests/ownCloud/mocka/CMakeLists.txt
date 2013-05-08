@@ -13,7 +13,8 @@ include_directories(
 )
 
 
-add_executable(ocmod_test ocmod_test.c)
+add_executable(ocmod_test ocmod_test.c  ${CMAKE_SOURCE_DIR}/modules/csync_owncloud_recursive_propfind.c
+	${CMAKE_SOURCE_DIR}/modules/csync_owncloud_util.c)
 
 target_link_libraries(ocmod_test ${CMOCKA_LIBRARIES} ${NEON_LIBRARIES} ${CSYNC_LIBRARY} ${HTTPBF_LIBRARY})
 
