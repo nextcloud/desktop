@@ -1,13 +1,36 @@
-static time_t oc_httpdate_parse( const char *date );
+/*
+ * libcsync -- a library to sync a directory with another
+ *
+ * Copyright (c) 2011      by Andreas Schneider <asn@cryptomilk.org>
+ * Copyright (c) 2012      by Klaas Freitag <freitag@owncloud.com>
+ *
+ * This program is free software = NULL, you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation = NULL, either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY = NULL, without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program = NULL, if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
 
-// Our cache, key is a char*
+#include <errno.h>
+#include <stdio.h>
+#include <time.h>
+#include <limits.h>
+#include <stdlib.h>
+
+#include "csync_owncloud.h"
+
+
+
 c_rbtree_t *propfind_recursive_cache = NULL;
-// Values are propfind_recursive_element:
-struct propfind_recursive_element {
-    struct resource *self;
-    struct resource *children;
-};
-typedef struct propfind_recursive_element propfind_recursive_element_t;
+
 
 static struct resource* resource_dup(struct resource* o) {
     struct resource *r = c_malloc (sizeof( struct resource ));
@@ -39,13 +62,13 @@ static void _tree_destructor(void *data) {
     resource_free(element->children);
     SAFE_FREE(element);
 }
-static void clear_propfind_recursive_cache()
+void clear_propfind_recursive_cache()
 {
     c_rbtree_destroy(propfind_recursive_cache, _tree_destructor);
     propfind_recursive_cache = NULL;
 }
 
-static struct listdir_context *get_listdir_context_from_cache(const char *curi)
+struct listdir_context *get_listdir_context_from_cache(const char *curi)
 {
     if (!propfind_recursive_cache) {
         DEBUG_WEBDAV("get_listdir_context_from_cache No cache");
@@ -197,7 +220,8 @@ static void results_recursive(void *userdata,
 /*
  * fetches a resource list from the WebDAV server. This is equivalent to list dir.
  */
-static struct listdir_context *fetch_resource_list_recursive(const char *uri, const char *curi)
+extern csync_progress_callback _progresscb;
+struct listdir_context *fetch_resource_list_recursive(const char *uri, const char *curi)
 {
     int ret = 0;
     ne_propfind_handler *hdl = NULL;

@@ -18,87 +18,9 @@
  * along with this program = NULL, if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-#include <errno.h>
-#include <stdio.h>
-#include <time.h>
-#include <limits.h>
-#include <stdlib.h>
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+#include "csync_owncloud.h"
 
-#include "config.h"
-#ifdef NEON_WITH_LFS /* Switch on LFS in libneon. Never remove the NE_LFS! */
-#define NE_LFS
-#endif
-
-#include <neon/ne_basic.h>
-#include <neon/ne_socket.h>
-#include <neon/ne_session.h>
-#include <neon/ne_request.h>
-#include <neon/ne_props.h>
-#include <neon/ne_auth.h>
-#include <neon/ne_dates.h>
-#include <neon/ne_compress.h>
-#include <neon/ne_redirect.h>
-
-#include "c_rbtree.h"
-
-#include "c_lib.h"
-#include "csync.h"
-#include "csync_misc.h"
-#include "csync_macros.h"
-#include "c_private.h"
-#include "httpbf.h"
-
-#include "vio/csync_vio_module.h"
-#include "vio/csync_vio_file_stat.h"
-#include "vio/csync_vio.h"
-
-#include "csync_log.h"
-
-#define DEBUG_WEBDAV(...) csync_log( dav_session.csync_ctx, 9, "oc_module", __VA_ARGS__);
-
-#define OC_TIMEDELTA_FAIL (NE_REDIRECT +1)
-#define OC_PROPFIND_FAIL  (NE_REDIRECT +2)
-
-
-enum resource_type {
-    resr_normal = 0,
-    resr_collection,
-    resr_reference,
-    resr_error
-};
-
-#define DAV_STRTOL strtoll
-
-/* Struct to store data for each resource found during an opendir operation.
- * It represents a single file entry.
- */
-
-typedef struct resource {
-    char *uri;           /* The complete uri */
-    char *name;          /* The filename only */
-
-    enum resource_type type;
-    off_t              size;
-    time_t             modtime;
-    char*              md5;
-
-    struct resource    *next;
-} resource;
-
-/* Struct to hold the context of a WebDAV PropFind operation to fetch
- * a directory listing from the server.
- */
-struct listdir_context {
-    struct resource *list;           /* The list of result resources */
-    struct resource *currResource;   /* A pointer to the current resource */
-    char            *target;        /* Request-URI of the PROPFIND */
-    unsigned int     result_count;   /* number of elements stored in list */
-    int ref; /* reference count, only destroy when it reaches 0 */
-};
 
 /*
  * free the fetchCtx
@@ -128,56 +50,6 @@ static void free_fetchCtx( struct listdir_context *ctx )
 }
 
 
-/*
- * context to store info about a temp file for GET and PUT requests
- * which store the data in a local file to save memory and secure the
- * transmission.
- */
-struct transfer_context {
-    ne_request *req;            /* the neon request */
-    int         fd;             /* file descriptor of the file to read or write from */
-    const char  *method;        /* the HTTP method, either PUT or GET  */
-    ne_decompress *decompress;  /* the decompress context */
-    char        *url;
-};
-
-/* Struct with the WebDAV session */
-struct dav_session_s {
-    ne_session *ctx;
-    char *user;
-    char *pwd;
-
-    char *proxy_type;
-    char *proxy_host;
-    int   proxy_port;
-    char *proxy_user;
-    char *proxy_pwd;
-
-    char *session_key;
-
-    char *error_string;
-
-    int read_timeout;
-
-    long int prev_delta;
-    long int time_delta;     /* The time delta to use.                  */
-    long int time_delta_sum; /* What is the time delta average?         */
-    long int time_delta_cnt; /* How often was the server time gathered? */
-
-    CSYNC *csync_ctx;
-    void *userdata;
-
-    csync_hbf_info_t *chunk_info;
-};
-
-/* The list of properties that is fetched in PropFind on a collection */
-static const ne_propname ls_props[] = {
-    { "DAV:", "getlastmodified" },
-    { "DAV:", "getcontentlength" },
-    { "DAV:", "resourcetype" },
-    { "DAV:", "getetag"},
-    { NULL, NULL }
-};
 
 /*
  * local variables.
@@ -195,7 +67,7 @@ long long chunked_done = 0;
 struct listdir_context *propfind_cache = 0;
 
 bool is_first_propfind = true;
-static void clear_propfind_recursive_cache();
+
 
 csync_vio_file_stat_t _stat_cache;
 /* id cache, cache the ETag: header of a GET request */
@@ -222,14 +94,14 @@ static void clean_caches() {
 char _buffer[PUT_BUFFER_SIZE];
 
 /* ***************************************************************************** */
-static void set_error_message( const char *msg )
+void set_error_message( const char *msg )
 {
     SAFE_FREE(dav_session.error_string);
     if( msg )
         dav_session.error_string = c_strdup(msg);
 }
 
-static void set_errno_from_http_errcode( int err ) {
+void set_errno_from_http_errcode( int err ) {
     int new_errno = 0;
 
     switch(err) {
@@ -328,7 +200,7 @@ static void set_errno_from_session() {
     }
 }
 
-static void set_errno_from_neon_errcode( int neon_code ) {
+void set_errno_from_neon_errcode( int neon_code ) {
 
     if( neon_code != NE_OK ) {
         DEBUG_WEBDAV("Neon error code was %d", neon_code);
@@ -386,10 +258,6 @@ static char *_cleanPath( const char* uri ) {
     SAFE_FREE( path );
     return re;
 }
-/* ***************************************************************************** */
-#include "csync_owncloud_recursive_propfind.c"
-/* ***************************************************************************** */
-
 
 /*
  * helper method to build up a user text for SSL problems, called from the
@@ -872,7 +740,7 @@ static const char short_months[12][4] = {
  * needed.
  * This one uses timegm instead, which returns UTC.
  */
-static time_t oc_httpdate_parse( const char *date ) {
+time_t oc_httpdate_parse( const char *date ) {
     struct tm gmt;
     char wkday[4], mon[4];
     int n;
