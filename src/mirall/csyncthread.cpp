@@ -363,7 +363,8 @@ void CSyncThread::startSync()
     QString lastDeleted;
     OwncloudPropagator propagator(session, _localPath, _remotePath, &db);
 
-    for (SyncFileItemVector::iterator it = _syncedItems.begin(); it != _syncedItems.end(); ++it) {
+    for (SyncFileItemVector::iterator it = _syncedItems.begin();
+            it != _syncedItems.end() && !propagator._hasFatalError; ++it) {
         const SyncFileItem &item = *it;
         Action a;
         if (!lastDeleted.isEmpty() && item._file.startsWith(lastDeleted)

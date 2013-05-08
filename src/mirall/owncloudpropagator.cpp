@@ -587,22 +587,27 @@ bool OwncloudPropagator::updateErrorFromSession(int neon_code, ne_request *req)
     case NE_LOOKUP:  /* Server or proxy hostname lookup failed */
         _errorString = QString::fromUtf8( ne_get_error(_session) );
         _errorCode = CSYNC_ERR_LOOKUP;
+        _hasFatalError = true;
         break;
     case NE_AUTH:     /* User authentication failed on server */
         _errorString = QString::fromUtf8( ne_get_error(_session) );
         _errorCode = CSYNC_ERR_AUTH_SERVER;
+        _hasFatalError = true;
         break;
     case NE_PROXYAUTH:  /* User authentication failed on proxy */
         _errorString = QString::fromUtf8( ne_get_error(_session) );
         _errorCode = CSYNC_ERR_AUTH_PROXY;
+        _hasFatalError = true;
         break;
     case NE_CONNECT:  /* Could not connect to server */
         _errorString = QString::fromUtf8( ne_get_error(_session) );
         _errorCode = CSYNC_ERR_CONNECT;
+        _hasFatalError = true;
         break;
     case NE_TIMEOUT:  /* Connection timed out */
         _errorString = QString::fromUtf8( ne_get_error(_session) );
         _errorCode = CSYNC_ERR_TIMEOUT;
+        _hasFatalError = true;
         break;
     case NE_FAILED:   /* The precondition failed */
     case NE_RETRY:    /* Retry request (ne_end_request ONLY) */

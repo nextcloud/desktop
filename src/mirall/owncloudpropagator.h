@@ -53,18 +53,21 @@ public:
     OwncloudPropagator(ne_session_s *session, const QString &localDir, const QString &remoteDir,
                        ProgressDatabase *progressDb)
             : _session(session)
-            , _errorCode(CSYNC_ERR_NONE)
             , _localDir(localDir)
             , _remoteDir(remoteDir)
-            , _progressDb(progressDb) {
+            , _progressDb(progressDb)
+            , _errorCode(CSYNC_ERR_NONE)
+            , _httpStatusCode(0)
+            , _hasFatalError(false)
+    {
         if (!localDir.endsWith(QChar('/'))) _localDir+='/';
         if (!remoteDir.endsWith(QChar('/'))) _remoteDir+='/';
     }
     csync_instructions_e  propagate(const SyncFileItem &);
-    QString _errorString;
-
+    QString          _errorString;
     CSYNC_ERROR_CODE _errorCode;
     int              _httpStatusCode;
+    bool             _hasFatalError;
     QByteArray _etag;
 
 };
