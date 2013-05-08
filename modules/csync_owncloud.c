@@ -873,7 +873,7 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
         }
     }
 
-    if (propfind_recursive_cache) {
+    if (propfind_recursive_cache && !dav_session.no_recursive_propfind) {
         fetchCtx = get_listdir_context_from_cache(curi);
         if (fetchCtx) {
             return fetchCtx;
@@ -881,7 +881,7 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
             /* Not found in the recursive cache, fetch some */
             return fetch_resource_list_recursive(uri, curi);
         }
-    } else if (!is_first_propfind) {
+    } else if (!is_first_propfind && !dav_session.no_recursive_propfind) {
         /* 2nd propfind */
         return fetch_resource_list_recursive(uri, curi);
     }
@@ -2042,6 +2042,10 @@ static int owncloud_set_property(const char *key, void *data) {
     if( c_streq(key, "get_dav_session")) {
         /* Give the ne_session to the caller */
         *(ne_session**)data = dav_session.ctx;
+        return 0;
+    }
+    if( c_streq(key, "no_recursive_propfind")) {
+        dav_session.no_recursive_propfind = *(bool*)(data);
         return 0;
     }
 
