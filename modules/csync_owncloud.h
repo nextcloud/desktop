@@ -65,10 +65,6 @@
 
 #define DEBUG_WEBDAV(...) csync_log( dav_session.csync_ctx, 9, "oc_module", __VA_ARGS__);
 
-#define OC_TIMEDELTA_FAIL (NE_REDIRECT +1)
-#define OC_PROPFIND_FAIL  (NE_REDIRECT +2)
-
-
 enum resource_type {
     resr_normal = 0,
     resr_collection,
@@ -149,11 +145,6 @@ struct dav_session_s {
     char *error_string;
 
     int read_timeout;
-
-    long int prev_delta;
-    long int time_delta;     /* The time delta to use.                  */
-    long int time_delta_sum; /* What is the time delta average?         */
-    long int time_delta_cnt; /* How often was the server time gathered? */
 
     CSYNC *csync_ctx;
     void *userdata;

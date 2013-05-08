@@ -303,10 +303,7 @@ csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
         DEBUG_WEBDAV("ERROR: Unknown resource type %d", res->type);
     }
 
-    /* Correct the mtime of the file with the server time delta */
-    DEBUG_WEBDAV("  :> Subtracting %ld from modtime %llu", dav_session.time_delta,
-         (unsigned long long) res->modtime);
-    lfs->mtime = res->modtime - dav_session.time_delta ;
+    lfs->mtime = res->modtime;
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
     lfs->size  = res->size;
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
