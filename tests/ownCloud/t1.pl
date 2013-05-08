@@ -38,7 +38,7 @@ if( -r "./t1.cfg" ) {
     $user   = $config{user} if( $config{user} );
     $passwd = $config{passwd} if( $config{passwd} );
     $owncloud = $config{url}  if( $config{url} );
-    print "Read t1.cfg\n";
+    print "Read t1.cfg: $config{url}\n";
 }
 
 $owncloud .= "/" unless( $owncloud =~ /\/$/ );
@@ -109,7 +109,8 @@ sub csync( $$ )
     $url = "owncloud://$user:$passwd@". $url . $remote;
     print "CSync URL: $url\n";
 
-    my $cmd = "LD_LIBRARY_PATH=$ld_libpath $csync --debug-level=11 $local $url";
+    my $args = "--exclude-file=exclude.cfg -c";
+    my $cmd = "LD_LIBRARY_PATH=$ld_libpath $csync $args $local $url";
     print "Starting: $cmd\n";
 
     system( $cmd ) == 0 or die("CSync died!\n");
@@ -137,55 +138,110 @@ sub assertLocalDirs( $$ )
 #
 # Check if a local and a remote dir have the same content
 #
-sub assertLocalAndRemoteDir( $$$ )
+
+sub assertFile($$)
 {
-    my ($d, $local, $remote) = @_;
+  my ($localFile, $res) = @_;
+
+   print "Asserting $localFile and " . $res->get_property("rel_uri") . "\n";
+
+  my $remoteModTime = $res->get_property( "lastmodifiedepoch" ) ;
+  my @info = stat( $localFile );
+  my $localModTime = $info[9];
+  assert( $remoteModTime == $localModTime, "Modfied-Times differ: remote: $remoteModTime <-> local: $localModTime" );
+  print "local versuse Remote modtime: $localModTime <-> $remoteModTime\n";
+  # check for the same file size
+  my $localSize = $info[7];
+  my $remoteSize = $res->get_property( "getcontentlength" );
+  if( $remoteSize ) { # directories do not have a contentlength
+    print "Local versus Remote size: $localSize <-> $remoteSize\n";
+    assert( $localSize == $remoteSize, "File sizes differ!\n" );
+  }
+}
+
+sub registerSeen($$)
+{
+  my ($seenRef, $file) = @_;
+
+  $file =~ s/t1-\d+\//t1\//;
+  $seenRef->{$file} = 1;
+}
+
+sub traverse( $$$$ )
+{
+    my ($d, $localDir, $remote, $acceptConflicts) = @_;
+    printf("===============> $remote\n");
+    my $url = $owncloud . $remote;
     my %seen;
 
-    if( my $r = $d->propfind( -url => $owncloud . $remote, -depth => 1 ) ) {
-	if( $r->is_collection ) {
-	    print "\nXX" . $r->get_resourcelist->as_string ."\n";
+    if( my $r = $d->propfind( -url => $url, -depth => 1 ) ) {
 
+        if( $r->get_resourcelist ) {
 	    foreach my $res ( $r->get_resourcelist->get_resources() ) {
-		print "Checking " . $res-> get_uri()->as_string ."\n";
 		my $filename = $res->get_property("rel_uri");
-		# check if the file exists.
-		assert( -e "$local/$filename" );
 
-		# check for equal mod times
-		my $remoteModTime = $res->get_property( "lastmodifiedepoch" ) ;
-		my @info = stat( "$local/$filename" );
-		my $localModTime = $info[9];
-		assert( abs($remoteModTime - $localModTime) < 5, "Modfied-Times differ: remote: $remoteModTime <-> local: $localModTime" );
-		# check for the same file size
-		my $localSize = $info[7];
-		my $remoteSize = $res->get_property( "getcontentlength" );
-		if( $remoteSize ) { # directories do not have a contentlength
-		  print "Local versus Remote size: $localSize <-> $remoteSize\n";
-		  assert( $localSize == $remoteSize );
+		if( $res->is_collection ) {
+		    # print "Checking " . $res-> get_uri()->as_string ."\n";
+		    print "Traversing into directory: $filename\n";
+		    my $dirname = $remote . $filename;
+		    traverse( $d, $localDir, $dirname );
+		    registerSeen( \%seen, $dirname );
+		} else {
+		    # Check files here.
+		    print "Checking file: $remote\n";
+		    my $localFile = $remote . $filename;
+		    registerSeen( \%seen, $localFile );
+		    $localFile =~ s/t1-\d+\//t1\//;
+
+		    assertFile( $localFile, $res );
 		}
-
-		# remember the files seen on the server.
-		$seen{$filename} = 1;
-            }
+	    }
 	}
-	# Now loop over the local directory content and check if all files in the dir
-	# were seen on the server.
-
-        print "\n* Cross checking with local dir: \n";
-	# print Dumper( %seen );
-	opendir(my $dh, $local ) || die;
-	while( readdir $dh ) {
-	    next if( /^\.+$/ );
-	    assert( -e "$local/$_" );
-	    my $isHere = (exists $seen{$_} || exists $seen{$_ . "/"});
-	    assert( $isHere, "Filename only local, but not remote: $_\n" );
-	}
-    closedir $dh;
-
+    } else {
+        print "Propfind failed: " . $d->message() . "\n";
     }
 
+    # Check the directory contents
+    my $localpath = $remote;
+    $localpath =~ s/t1-\d+\//t1\//;
+
+    opendir(my $dh, $localpath ) || die;
+    # print Dumper( %seen );
+    while( readdir $dh ) {
+	next if( /^\.+$/ );
+	my $f = $localpath . $_;
+	chomp $f;
+	assert( -e $f );
+	my $isHere = undef;
+	if( exists $seen{$f} ) {
+	    $isHere = 1;
+	    $seen{$f} = 2;
+	}
+	if( !$isHere && exists $seen{$f . "/"} ) {
+	    $isHere = 1;
+	    $seen{$f."/"} = 3;
+	}
+
+	$isHere = 1 if( $acceptConflicts && !$isHere && $f =~ /_conflict/ );
+	assert( $isHere, "Filename only local, but not remote: $f" );
+    }
+
+    # Check if there was something remote that we havent locally.
+    foreach my $f ( keys %seen ) {
+	assert( $seen{$f} > 1, "File on remote, but not locally: $f " . $seen{$f} );
+    }
+    # print Dumper %seen;
+    print "<================ Done $remote\n";
+    closedir $dh;
 }
+
+sub assertLocalAndRemoteDir( $$$$ )
+{
+    my ($d, $local, $remote, $acceptConflicts ) = @_;
+    # %seen = ();
+    traverse( $d, $local, $remote, $acceptConflicts );
+}
+
 
 sub glob_put( $$$ )
 {
@@ -205,6 +261,22 @@ sub glob_put( $$$ )
 	}
     }
 }
+
+sub put_to_dir( $$$ )
+{
+    my ($d, $file, $dir) = @_;
+
+    $d->open($dir);
+
+    my $filename = $file;
+    $filename =~ s/^.*\///;
+    my $puturl = $dir. $filename;
+    print "put_to_dir puts to $puturl\n";
+    unless ($d->put( -local => $file, -url => $puturl )) {
+      print "  ### FAILED to put a single file!\n";
+    }
+}
+
 # ====================================================================
 
 my $d = HTTP::DAV->new();
@@ -247,13 +319,13 @@ assertLocalDirs( "./toremote1", "$localDir/remoteToLocal1" );
 
 # Check if the synced files from ownCloud have the same timestamp as the local ones.
 print "\nNow assert remote 'toremote1' with local \"$localDir/remoteToLocal1\" :\n";
-assertLocalAndRemoteDir( $d, "$localDir/remoteToLocal1", $remoteDir . "remoteToLocal1" );
+assertLocalAndRemoteDir( $d, $localDir, $remoteDir . "remoteToLocal1/", 0);
 
 # remove a local file.
 print "\nRemove a local file\n";
 unlink( "$localDir/remoteToLocal1/kernelcrash.txt" );
 csync( $localDir, $remoteDir );
-assertLocalAndRemoteDir( $d, "$localDir/remoteToLocal1", $remoteDir . "remoteToLocal1" );
+assertLocalAndRemoteDir( $d, $localDir, $remoteDir . "remoteToLocal1/", 0);
 
 # add local files to a new dir1
 print "\nAdd some more files to local:\n";
@@ -267,29 +339,51 @@ foreach my $file ( <./tolocal1/*> ) {
 }
 csync( $localDir, $remoteDir );
 print "\nAssert local and remote dirs.\n";
-assertLocalAndRemoteDir( $d, $locDir, $remoteDir . "fromLocal1" );
+# assertLocalAndRemoteDir( $d, $locDir, $remoteDir . "fromLocal1" );
+assertLocalAndRemoteDir( $d, $localDir, $remoteDir . "fromLocal1/", 0);
 
 # move a local file
 print "\nMove a file locally.\n";
 move( "$locDir/kramer.jpg", "$locDir/oldtimer.jpg" );
 csync( $localDir, $remoteDir );
-assertLocalAndRemoteDir( $d, $locDir, $remoteDir . "fromLocal1" );
+# assertLocalAndRemoteDir( $d, $locDir, $remoteDir . "fromLocal1" );
+assertLocalAndRemoteDir( $d, $localDir, $remoteDir . "fromLocal1/", 0);
 
 # move a local directory.
 print "\nMove a local directory.\n";
 move( "$localDir/remoteToLocal1/rtl1", "$localDir/remoteToLocal1/rtlX");
 csync( $localDir, $remoteDir );
-assertLocalAndRemoteDir( $d, $locDir, $remoteDir . "fromLocal1" );
+# assertLocalAndRemoteDir( $d, $locDir, $remoteDir . "fromLocal1" );
+assertLocalAndRemoteDir( $d, $localDir, $remoteDir . "fromLocal1/", 0);
 
 # remove a local dir
 print "\nRemove a local directory.\n";
 localCleanup( "$localDir/remoteToLocal1/rtlX" );
 csync( $localDir, $remoteDir );
-assertLocalAndRemoteDir( $d, $locDir, $remoteDir . "fromLocal1" );
+# assertLocalAndRemoteDir( $d, $locDir, $remoteDir . "fromLocal1" );
+assertLocalAndRemoteDir( $d, $localDir, $remoteDir . "fromLocal1/", 0);
 
+# create a false conflict, only the mtimes are changed, by content are equal.
+print "\nCreate a false conflict.\n";
+put_to_dir( $d, 'toremote1/kernelcrash.txt', $owncloud . $remoteDir . "remoteToLocal1/" );
+system( "sleep 2 && touch $localDir/remoteToLocal1/kernelcrash.txt" );
+csync( $localDir, $remoteDir );
+# assertLocalAndRemoteDir( $d, $locDir, $remoteDir . "fromLocal1" );
+assertLocalAndRemoteDir( $d, $localDir, $remoteDir . "fromLocal1/", 0);
+
+# create a true conflict.
+print "\nCreate a conflict.\n";
+system( "echo \"This is more stuff\" >> /tmp/kernelcrash.txt" );
+put_to_dir( $d, '/tmp/kernelcrash.txt', $owncloud . $remoteDir . "remoteToLocal1/" );
+system( "sleep 2 && touch $localDir/remoteToLocal1/kernelcrash.txt" );
+csync( $localDir, $remoteDir );
+# assertLocalAndRemoteDir( $d, $locDir, $remoteDir . "fromLocal1" );
+assertLocalAndRemoteDir( $d, $localDir, $remoteDir . "remoteToLocal1/", 1);
+
+# ==================================================================
 
 print "\n###########################################\n";
-print "            all cool - tests succeeded in $remoteDir.\n";
+print "    all cool - tests succeeded in $remoteDir.\n";
 print "###########################################\n";
 
 print "\nInterrupt before cleanup in 4 seconds...\n";
