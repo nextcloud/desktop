@@ -50,7 +50,6 @@ static void free_fetchCtx( struct listdir_context *ctx )
 }
 
 
-
 /*
  * local variables.
  */
@@ -735,7 +734,6 @@ static struct listdir_context *fetch_resource_list_attempts(const char *uri, int
     }
     return fetchCtx;
 }
-
 
 static void fill_stat_cache( csync_vio_file_stat_t *lfs ) {
 
