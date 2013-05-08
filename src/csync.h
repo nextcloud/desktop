@@ -84,6 +84,7 @@ enum csync_error_codes_e {
   CSYNC_ERR_QUOTA,
   CSYNC_ERR_SERVICE_UNAVAILABLE,
   CSYNC_ERR_FILE_TOO_BIG,
+  CSYNC_ERR_ABORTED,
 
   CSYNC_ERR_UNSPEC
 };
@@ -521,7 +522,12 @@ typedef void (*csync_progress_callback) (const char *remote_url, enum csync_noti
  */
 int csync_set_progress_callback(CSYNC *ctx, csync_progress_callback cb);
 
-
+/**
+ * @brief Aborts the current sync run as soon as possible. Can be called from another thread.
+ *
+ * @param ctx           The csync context.
+ */
+void csync_abort(CSYNC *ctx);
 
 #ifdef __cplusplus
 }

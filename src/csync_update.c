@@ -274,6 +274,11 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
   csync_file_stat_t *st = NULL;
   uint64_t h;
 
+  if (ctx->abort) {
+    ctx->error_code = CSYNC_ERR_ABORTED;
+    return -1;
+  }
+
   switch (flag) {
     case CSYNC_FTW_FLAG_FILE:
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s", file);

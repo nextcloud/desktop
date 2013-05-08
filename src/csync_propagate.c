@@ -1341,6 +1341,11 @@ static int _csync_propagation_file_visitor(void *obj, void *data) {
   st = (csync_file_stat_t *) obj;
   ctx = (CSYNC *) data;
 
+  if (ctx->abort) {
+    ctx->error_code = CSYNC_ERR_ABORTED;
+    return -1;
+  }
+
   switch(st->type) {
     case CSYNC_FTW_TYPE_SLINK:
       break;
@@ -1402,6 +1407,11 @@ static int _csync_propagation_dir_visitor(void *obj, void *data) {
 
   st = (csync_file_stat_t *) obj;
   ctx = (CSYNC *) data;
+
+  if (ctx->abort) {
+    ctx->error_code = CSYNC_ERR_ABORTED;
+    return -1;
+  }
 
   switch(st->type) {
     case CSYNC_FTW_TYPE_SLINK:

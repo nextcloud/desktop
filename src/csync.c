@@ -157,6 +157,8 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
   ctx->remote.list    = 0;
   ctx->current_fs = NULL;
 
+  ctx->abort = false;
+
   *csync = ctx;
   return 0;
 }
@@ -735,10 +737,12 @@ int csync_commit(CSYNC *ctx) {
   int rc = 0;
   char *lock = NULL;
 
-  ctx->error_code = CSYNC_ERR_NONE;
 
   /* maybe the propagate was done using another propagator, let the merger think it has been done */
-  ctx->status = CSYNC_STATUS_DONE;
+  if (!ctx->error_code == CSYNC_ERR_NONE)
+    ctx->status = CSYNC_STATUS_DONE;
+
+  ctx->error_code = CSYNC_ERR_NONE;
 
   if (_merge_and_write_statedb(ctx) < 0) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Merge and Write database failed!");
@@ -1173,6 +1177,11 @@ int csync_set_progress_callback(CSYNC* ctx, csync_progress_callback cb)
 
   return 0;
 
+}
+
+void csync_abort(CSYNC *ctx)
+{
+    ctx->abort = true;
 }
 
 /* vim: set ts=8 sw=2 et cindent: */

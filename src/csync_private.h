@@ -161,6 +161,7 @@ struct csync_s {
   char *error_string;
   
   int status;
+  volatile int abort;
 };
 
 
