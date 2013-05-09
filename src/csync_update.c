@@ -36,6 +36,7 @@
 #include "csync_statedb.h"
 #include "csync_update.h"
 #include "csync_util.h"
+#include "csync_misc.h"
 
 #include "vio/csync_vio.h"
 
@@ -413,7 +414,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   if ((dh = csync_vio_opendir(ctx, uri)) == NULL) {
     /* permission denied */
     if (errno == EACCES) {
-      return 0;
+       return 0;
     } else if(errno == EIO ) {
       /* Proxy problems (ownCloud) */
       ctx->error_code = CSYNC_ERR_PROXY;
@@ -423,6 +424,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
           "opendir failed for %s - %s (errno %d)",
           uri, errbuf, errno);
+      ctx->error_code = csync_errno_to_csync_error( CSYNC_ERR_UPDATE );
       goto error;
     }
   }
@@ -433,6 +435,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
     d_name = dirent->name;
     if (d_name == NULL) {
+      ctx->error_code = CSYNC_ERR_PARAM;
       goto error;
     }
 
@@ -447,6 +450,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     if (asprintf(&filename, "%s/%s", uri, d_name) < 0) {
       csync_vio_file_stat_destroy(dirent);
       dirent = NULL;
+      ctx->error_code = CSYNC_ERR_PARAM;
       goto error;
     }
 
