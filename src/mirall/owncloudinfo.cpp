@@ -520,7 +520,7 @@ void ownCloudInfo::setupHeaders( QNetworkRequest & req, quint64 size )
         oCICredentials creds = _credentials.value(con);
         QString concatenated = creds.user + QLatin1Char(':') + creds.passwd;
         const QString b(QLatin1String("Basic "));
-        QByteArray data = b.toLocal8Bit() + concatenated.toLocal8Bit().toBase64();
+        QByteArray data = b.toUtf8() + concatenated.toUtf8().toBase64();
         req.setRawHeader( QByteArray("Authorization"), data );
     }
 
