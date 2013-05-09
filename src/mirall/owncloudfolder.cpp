@@ -122,6 +122,9 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
 
 ownCloudFolder::~ownCloudFolder()
 {
+    _thread->quit();
+    csync_request_abort(_csync_ctx);
+    _thread->wait();
     // Destroy csync here.
     csync_destroy(_csync_ctx);
 }
@@ -243,7 +246,8 @@ void ownCloudFolder::startSync(const QStringList &pathList)
         qCritical() << "* ERROR csync is still running and new sync requested.";
         return;
     }
-
+    if (_thread)
+        _thread->quit();
     delete _csync;
     delete _thread;
     _errors.clear();
@@ -329,13 +333,14 @@ void ownCloudFolder::slotTerminateSync()
     QString configDir = cfg.configPath();
     qDebug() << "csync's Config Dir: " << configDir;
 
-    if( _thread ) {
-        _thread->terminate();
+    if( _thread && _csync ) {
+        csync_request_abort(_csync_ctx);
         _thread->wait();
         _csync->deleteLater();
         delete _thread;
         _csync = 0;
         _thread = 0;
+        csync_resume(_csync_ctx);
     }
 
     if( ! configDir.isEmpty() ) {
