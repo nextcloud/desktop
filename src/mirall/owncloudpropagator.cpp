@@ -69,6 +69,9 @@ csync_instructions_e  OwncloudPropagator::propagate(const SyncFileItem &item)
                 return item._dir == SyncFileItem::Down ? downloadFile(item) : uploadFile(item);
             }
         case CSYNC_INSTRUCTION_CONFLICT:
+            if (item._isDirectory) {
+                return CSYNC_INSTRUCTION_UPDATED;
+            }
             return downloadFile(item, true);
         case CSYNC_INSTRUCTION_RENAME:
             return remoteRename(item);
