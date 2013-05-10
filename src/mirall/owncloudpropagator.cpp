@@ -515,7 +515,7 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
     struct timeval times[2];
     times[0].tv_sec = times[1].tv_sec = item._modtime;
     times[0].tv_usec = times[1].tv_usec = 0;
-    c_utimes(item._file.toUtf8().data(), times);
+    c_utimes((_localDir + item._file).toUtf8().data(), times);
 
     return CSYNC_INSTRUCTION_UPDATED;
 }
