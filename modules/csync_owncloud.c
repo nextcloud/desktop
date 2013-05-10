@@ -502,6 +502,9 @@ static int dav_connect(const char *base_url) {
         ne_set_proxy_auth( dav_session.ctx, ne_proxy_auth, 0 );
     }
 
+    /* Disable, it is broken right now */
+    dav_session.no_recursive_propfind = true;
+
     _connected = 1;
     rc = 0;
 out:
