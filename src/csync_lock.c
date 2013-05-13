@@ -180,7 +180,7 @@ static pid_t _csync_lock_read(CSYNC *ctx, const char *lockfile) {
 #endif
 
 int csync_lock(CSYNC *ctx, const char *lockfile) {
-#ifndef _WIN32
+#ifdef _DO_CREATE_A_LOCK_FILE /* disable lock file for ownCloud client, not only _WIN32 */
   /* Check if lock already exists. */
   if (_csync_lock_read(ctx, lockfile) > 0) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Aborting, another synchronization process is running.");
@@ -191,12 +191,15 @@ int csync_lock(CSYNC *ctx, const char *lockfile) {
 
   return _csync_lock_create(ctx, lockfile);
 #else
+  (void) ctx;
+  (void) lockfile;
   return 0;
 #endif
 
 }
 
 void csync_lock_remove(CSYNC *ctx, const char *lockfile) {
+#ifdef _DO_CREATE_A_LOCK_FILE
 #ifndef _WIN32
   char errbuf[256] = {0};
   /* You can't remove the lock if it is from another process */
@@ -211,5 +214,10 @@ void csync_lock_remove(CSYNC *ctx, const char *lockfile) {
     }
   }
 #endif
+#else
+  (void) ctx;
+  (void) lockfile;
+#endif
+
 }
 
