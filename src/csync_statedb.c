@@ -248,12 +248,34 @@ out:
 int csync_statedb_write(CSYNC *ctx) {
   /* drop tables */
   if (csync_statedb_drop_tables(ctx) < 0) {
-    return -1;
+    goto retry_create;
   }
 
   /* create tables */
   if (csync_statedb_create_tables(ctx) < 0) {
-    return -1;
+    goto retry_create;
+  }
+
+  if (0) {
+    char *statedb_tmp;
+    int rc;
+retry_create:
+    if (asprintf(&statedb_tmp, "%s.ctmp", ctx->statedb.file) < 0) {
+      return -1;
+    }
+    /* close the temporary database */
+    sqlite3_close(ctx->statedb.db);
+    /*  remove a possible corrupted file if it exists */
+    unlink(statedb_tmp);
+    rc = sqlite3_open(statedb_tmp, &ctx->statedb.db);
+    SAFE_FREE(statedb_tmp);
+    if (rc != SQLITE_OK) {
+      return -1;
+    }
+    /* create tables */
+    if (csync_statedb_create_tables(ctx) < 0) {
+        return -1;
+    }
   }
 
   /* insert metadata */
@@ -796,7 +818,7 @@ c_strlist_t *csync_statedb_query(CSYNC *ctx, const char *statement) {
         if (result != NULL) {
           c_strlist_destroy(result);
         }
-        result = c_strlist_new(1);
+        return NULL;
       }
 
       if (rc == SQLITE_SCHEMA) {
