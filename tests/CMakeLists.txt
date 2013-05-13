@@ -35,9 +35,8 @@ add_cmocka_test(check_std_c_time std_tests/check_std_c_time.c ${TEST_TARGET_LIBR
 #add_cmocka_test(check_logger log_tests/check_log.c ${TEST_TARGET_LIBRARIES})
 
 add_cmocka_test(check_csync_create csync_tests/check_csync_create.c ${TEST_TARGET_LIBRARIES})
-if ( NOT WIN32 )
-add_cmocka_test(check_csync_lock csync_tests/check_csync_lock.c ${TEST_TARGET_LIBRARIES})
-endif( NOT WIN32)
+# Disable lock testing for us.
+# add_cmocka_test(check_csync_lock csync_tests/check_csync_lock.c ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_csync_log csync_tests/check_csync_log.c ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_csync_config csync_tests/check_csync_config.c ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_csync_exclude csync_tests/check_csync_exclude.c ${TEST_TARGET_LIBRARIES})
