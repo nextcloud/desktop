@@ -231,7 +231,8 @@ static char* get_transfer_url( hbf_transfer_t *transfer, int indx ) {
         return NULL;
       }
 
-      if( sprintf(res, "%s-chunking-%d-%d-%d", transfer->url, transfer->transfer_id,
+      /* Note: must be %u for unsigned because one does not want '--' */
+      if( sprintf(res, "%s-chunking-%u-%u-%u", transfer->url, transfer->transfer_id,
                    transfer->block_cnt, indx ) < 0 ) {
         return NULL;
       }
