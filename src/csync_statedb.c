@@ -246,20 +246,22 @@ out:
 }
 
 int csync_statedb_write(CSYNC *ctx) {
+  bool recreate_db = false;
   /* drop tables */
   if (csync_statedb_drop_tables(ctx) < 0) {
-    goto retry_create;
+    recreate_db = true;
   }
 
   /* create tables */
-  if (csync_statedb_create_tables(ctx) < 0) {
-    goto retry_create;
+  if (! recreate_db) {
+    if (csync_statedb_create_tables(ctx) < 0) {
+      recreate_db = true;
+    }
   }
 
-  if (0) {
+  if (recreate_db) {
     char *statedb_tmp;
     int rc;
-retry_create:
     if (asprintf(&statedb_tmp, "%s.ctmp", ctx->statedb.file) < 0) {
       return -1;
     }
