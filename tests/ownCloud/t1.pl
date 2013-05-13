@@ -24,11 +24,17 @@ print "Hello, this is t1, a tester for csync with ownCloud.\n";
 # content:
 #  user   => "joe",
 #  passwd => "XXXXXX",
-#  url    => "http://localhost/oc/remote.php/webdav/"
+#  url    => "http://localhost/oc/remote.php/webdav/",
+#  ld_libpath => "/home/kf/owncloud.com/buildcsync/modules",
+#  csync => "/home/kf/owncloud.com/buildcsync/client/ocsync"
+
 
 my $owncloud = "http://localhost/oc/remote.php/webdav/";
 my $user = "joe";
 my $passwd = 'XXXXX'; # Mind to be secure.
+my $ld_libpath = "/home/kf/owncloud.com/buildcsync/modules";
+my $csync = "/home/kf/owncloud.com/buildcsync/client/ocsync";
+
 
 if( -r "./t1.cfg" ) {
     my %config = do 't1.cfg';
@@ -38,6 +44,8 @@ if( -r "./t1.cfg" ) {
     $user   = $config{user} if( $config{user} );
     $passwd = $config{passwd} if( $config{passwd} );
     $owncloud = $config{url}  if( $config{url} );
+    $ld_libpath = $config{ld_libpath} if( $config{ld_libpath} );
+    $csync   = $config{csync} if( $config{csync} );
     print "Read t1.cfg: $config{url}\n";
 }
 
@@ -101,8 +109,6 @@ sub csync( $$ )
 {
     my ($local, $remote) = @_;
 
-    my $ld_libpath = "/home/kf/owncloud.com/buildcsync/modules";
-    my $csync = "/home/kf/owncloud.com/buildcsync/client/ocsync";
 
     my $url = $owncloud;
     $url =~ s#^http://##;    # Remove the leading http://

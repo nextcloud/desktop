@@ -739,7 +739,7 @@ int csync_commit(CSYNC *ctx) {
 
 
   /* maybe the propagate was done using another propagator, let the merger think it has been done */
-  if (!ctx->error_code == CSYNC_ERR_NONE)
+  if (ctx->error_code == CSYNC_ERR_NONE)
     ctx->status = CSYNC_STATUS_DONE;
 
   ctx->error_code = CSYNC_ERR_NONE;
