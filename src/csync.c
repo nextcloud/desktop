@@ -393,6 +393,7 @@ int csync_update(CSYNC *ctx) {
     return rc;
   }
 
+  SAFE_FREE(lock);
   csync_memstat_check(ctx);
 
   /* update detection for local replica */
@@ -831,6 +832,7 @@ int csync_commit(CSYNC *ctx) {
     goto out;
   }
   csync_lock_remove(ctx, lock);
+  SAFE_FREE(lock);
 
   out:
   return rc;
