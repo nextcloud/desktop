@@ -1468,8 +1468,12 @@ static int owncloud_mkdir(const char *uri, mode_t mode) {
         set_errno_from_neon_errcode(rc);
         /* Special for mkcol: it returns 405 if the directory already exists.
          * To keep csync vio_mkdirs working errno EEXIST has to be returned. */
-        if (errno == EPERM && http_result_code_from_session() == 405)
+        if (errno == EPERM && http_result_code_from_session() == 405) {
             errno = EEXIST;
+        } else if (rc != NE_OK && _progresscb) {
+            _progresscb(uri, CSYNC_NOTIFY_ERROR,  http_result_code_from_session(),
+                        (long long)(dav_session.error_string) ,dav_session.userdata);
+        }
     }
     SAFE_FREE( path );
 
@@ -1521,14 +1525,22 @@ static int owncloud_rename(const char *olduri, const char *newuri) {
     if( rc >= 0 ) {
         DEBUG_WEBDAV("MOVE: %s => %s: %d", src, target, rc );
         rc = ne_move(dav_session.ctx, 1, src, target );
-
-        set_errno_from_neon_errcode(rc);
+        if (rc == NE_ERROR && http_result_code_from_session() == 409) {
+            /* destination folder might not exist */
+            errno = ENOENT;
+        } else {
+            set_errno_from_neon_errcode(rc);
+            if (rc != NE_OK && _progresscb) {
+                _progresscb(olduri, CSYNC_NOTIFY_ERROR,  http_result_code_from_session(),
+                            (long long)(dav_session.error_string) ,dav_session.userdata);
+            }
+        }
     }
     SAFE_FREE( src );
     SAFE_FREE( target );
 
     if( rc != NE_OK )
-        return -1;
+        return 1;
     return 0;
 }
 

@@ -21,10 +21,7 @@
 
 #include "csync_owncloud.h"
 
-
-
 c_rbtree_t *propfind_recursive_cache = NULL;
-
 
 static struct resource* resource_dup(struct resource* o) {
     struct resource *r = c_malloc (sizeof( struct resource ));
@@ -56,6 +53,7 @@ static void _tree_destructor(void *data) {
     resource_free(element->children);
     SAFE_FREE(element);
 }
+
 void clear_propfind_recursive_cache()
 {
     c_rbtree_destroy(propfind_recursive_cache, _tree_destructor);
@@ -64,12 +62,16 @@ void clear_propfind_recursive_cache()
 
 struct listdir_context *get_listdir_context_from_cache(const char *curi)
 {
+    propfind_recursive_element_t *element = NULL;
+    struct listdir_context *fetchCtx = NULL;
+    struct resource *iterator, *r;
+
     if (!propfind_recursive_cache) {
         DEBUG_WEBDAV("get_listdir_context_from_cache No cache");
         return NULL;
     }
 
-    propfind_recursive_element_t *element = c_rbtree_node_data(c_rbtree_find(propfind_recursive_cache, curi));
+    element = c_rbtree_node_data(c_rbtree_find(propfind_recursive_cache, curi));
     if (!element) {
         DEBUG_WEBDAV("get_listdir_context_from_cache No element %s in cache found", curi);
         return NULL;
@@ -80,14 +82,14 @@ struct listdir_context *get_listdir_context_from_cache(const char *curi)
     }
 
     /* Out of the element, create a listdir_context.. if we could be sure that it is immutable, we could ref instead.. need to investigate */
-    struct listdir_context *fetchCtx = c_malloc( sizeof( struct listdir_context ));
+    fetchCtx = c_malloc( sizeof( struct listdir_context ));
     fetchCtx->list = NULL;
     fetchCtx->target = c_strdup(curi);
     fetchCtx->currResource = NULL;
     fetchCtx->ref = 1;
 
-    struct resource *iterator = element->children;
-    struct resource *r = NULL;
+    iterator = element->children;
+    r = NULL;
     while (iterator) {
         r = resource_dup(iterator);
         r->next = fetchCtx->list;
@@ -96,6 +98,7 @@ struct listdir_context *get_listdir_context_from_cache(const char *curi)
         fetchCtx->result_count++;
         /* DEBUG_WEBDAV("get_listdir_context_from_cache Returning cache for %s element %s", fetchCtx->target, fetchCtx->list->uri); */
     }
+
     r = resource_dup(element->self);
     r->next = fetchCtx->list;
     fetchCtx->result_count++;
@@ -125,8 +128,10 @@ static void results_recursive(void *userdata,
     const char *md5sum = NULL;
     const ne_status *status = NULL;
     char *path = ne_path_unescape( uri->path );
+    char *parentPath;
 
     (void) status;
+    (void) userdata;
 
     if (!propfind_recursive_cache) {
         c_rbtree_create(&propfind_recursive_cache, _key_cmp, _data_cmp);
@@ -179,9 +184,11 @@ static void results_recursive(void *userdata,
 
     /* Create new item in rb tree */
     if (newres->type == resr_collection) {
+        propfind_recursive_element_t *element = NULL;
+
         DEBUG_WEBDAV("results_recursiveIt is a collection %s", newres->uri);
         /* Check if in rb tree */
-        propfind_recursive_element_t *element = c_rbtree_node_data(c_rbtree_find(propfind_recursive_cache,uri->path));
+        element = c_rbtree_node_data(c_rbtree_find(propfind_recursive_cache,uri->path));
         /* If not, create a new item and insert it */
         if (!element) {
             element = c_malloc(sizeof(propfind_recursive_element_t));
@@ -193,10 +200,13 @@ static void results_recursive(void *userdata,
     }
 
     /* Check for parent in tree. If exists: Insert it into the children elements there */
-    char *parentPath = ne_path_parent(uri->path);
+    parentPath = ne_path_parent(uri->path);
     if (parentPath) {
+        propfind_recursive_element_t *element = NULL;
+
         free(parentPath);
-        propfind_recursive_element_t *element = c_rbtree_node_data(c_rbtree_find(propfind_recursive_cache,parentPath));
+        element = c_rbtree_node_data(c_rbtree_find(propfind_recursive_cache,parentPath));
+
         if (element) {
             newres->next = element->children;
             element->children = newres;

@@ -65,6 +65,7 @@
  */
 int csync_propagate_files(CSYNC *ctx);
 
+int csync_propagate_rename_file(CSYNC *ctx, csync_file_stat_t *st);
 /**
  * }@
  */
