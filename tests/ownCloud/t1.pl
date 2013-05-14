@@ -133,7 +133,7 @@ sub assertLocalDirs( $$ )
     opendir(my $dh, $dir1 ) || die;
     while(readdir $dh) {
 	assert( -e "$dir2/$_" );
-
+        next if( -d "$dir1/$_"); # don't compare directory sizes.
 	my $s1 = -s "$dir1/$_";
 	my $s2 = -s "$dir2/$_";
 	assert( $s1 == $s2 );
@@ -260,11 +260,16 @@ sub glob_put( $$$ )
         if( $lfile =~ /.*\/(.+)$/g ) {
 	    my $rfile = $1;
 	    my $puturl = "$target"."$rfile";
-	    print "   *** Putting $lfile to $puturl\n";
-	    if( ! $d->put( -local=>$lfile, -url=> $puturl ) ) {
-	      print "   ### FAILED to put: ". $d->message . '\n';
+	    if( -d $lfile ) {
+	      $d->mkcol( $puturl );
+	    } else {
+	      print "   *** Putting $lfile to $puturl\n";
+	      if( ! $d->put( -local=>$lfile, -url=> $puturl ) ) {
+		print "   ### FAILED to put: ". $d->message . '\n';
+	      }
 	    }
 	}
+	  
     }
 }
 
