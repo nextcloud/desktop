@@ -14,6 +14,8 @@ use Data::Dumper;
 use HTTP::DAV;
 use File::Copy;
 use File::Glob ':glob';
+use Digest::MD5;
+use Unicode::Normalize;
 
 use strict;
 
@@ -264,7 +266,9 @@ sub glob_put( $$$ )
 	      $d->mkcol( $puturl );
 	    } else {
 	      print "   *** Putting $lfile to $puturl\n";
-	      if( ! $d->put( -local=>$lfile, -url=> $puturl ) ) {
+	          my $nputurl = NFC $puturl;
+
+	      if( ! $d->put( -local=>$lfile, -url=> $nputurl ) ) {
 		print "   ### FAILED to put: ". $d->message . '\n';
 	      }
 	    }
@@ -283,11 +287,37 @@ sub put_to_dir( $$$ )
     $filename =~ s/^.*\///;
     my $puturl = $dir. $filename;
     print "put_to_dir puts to $puturl\n";
-    unless ($d->put( -local => $file, -url => $puturl )) {
+    my $nputurl = NFC $puturl;
+    unless ($d->put( -local => $file, -url => $nputurl )) {
       print "  ### FAILED to put a single file!\n";
     }
 }
 
+sub createLocalFile( $$ ) 
+{
+  my ($fname, $size) = @_;
+  $size = 1024 unless( $size );
+  
+  my $md5 = Digest::MD5->new;
+   
+  open(FILE, ">", $fname) or die "Can't open $fname for writing ($!)";
+  
+  my $minimum = 32;
+  my $range = 96;
+
+  for (my $bytes = 0; $bytes < $size; $bytes += 4) {
+    my $rand = int(rand($range ** 4));
+    my $string = '';
+    for (1..4) {
+        $string .= chr($rand % $range + $minimum);
+        $rand = int($rand / $range);
+    }
+    print FILE $string;
+    $md5->add($string);
+  }
+  close FILE;
+  return $md5->hexdigest; 
+}
 # ====================================================================
 
 my $d = HTTP::DAV->new();
@@ -350,28 +380,24 @@ foreach my $file ( <./tolocal1/*> ) {
 }
 csync( $localDir, $remoteDir );
 print "\nAssert local and remote dirs.\n";
-# assertLocalAndRemoteDir( $d, $locDir, $remoteDir . "fromLocal1" );
 assertLocalAndRemoteDir( $d, $localDir, $remoteDir . "fromLocal1/", 0);
 
 # move a local file
 print "\nMove a file locally.\n";
 move( "$locDir/kramer.jpg", "$locDir/oldtimer.jpg" );
 csync( $localDir, $remoteDir );
-# assertLocalAndRemoteDir( $d, $locDir, $remoteDir . "fromLocal1" );
 assertLocalAndRemoteDir( $d, $localDir, $remoteDir . "fromLocal1/", 0);
 
 # move a local directory.
 print "\nMove a local directory.\n";
 move( "$localDir/remoteToLocal1/rtl1", "$localDir/remoteToLocal1/rtlX");
 csync( $localDir, $remoteDir );
-# assertLocalAndRemoteDir( $d, $locDir, $remoteDir . "fromLocal1" );
 assertLocalAndRemoteDir( $d, $localDir, $remoteDir . "fromLocal1/", 0);
 
 # remove a local dir
 print "\nRemove a local directory.\n";
 localCleanup( "$localDir/remoteToLocal1/rtlX" );
 csync( $localDir, $remoteDir );
-# assertLocalAndRemoteDir( $d, $locDir, $remoteDir . "fromLocal1" );
 assertLocalAndRemoteDir( $d, $localDir, $remoteDir . "fromLocal1/", 0);
 
 # create a false conflict, only the mtimes are changed, by content are equal.
@@ -379,7 +405,6 @@ print "\nCreate a false conflict.\n";
 put_to_dir( $d, 'toremote1/kernelcrash.txt', $owncloud . $remoteDir . "remoteToLocal1/" );
 system( "sleep 2 && touch $localDir/remoteToLocal1/kernelcrash.txt" );
 csync( $localDir, $remoteDir );
-# assertLocalAndRemoteDir( $d, $locDir, $remoteDir . "fromLocal1" );
 assertLocalAndRemoteDir( $d, $localDir, $remoteDir . "fromLocal1/", 0);
 
 # create a true conflict.
@@ -388,8 +413,9 @@ system( "echo \"This is more stuff\" >> /tmp/kernelcrash.txt" );
 put_to_dir( $d, '/tmp/kernelcrash.txt', $owncloud . $remoteDir . "remoteToLocal1/" );
 system( "sleep 2 && touch $localDir/remoteToLocal1/kernelcrash.txt" );
 csync( $localDir, $remoteDir );
-# assertLocalAndRemoteDir( $d, $locDir, $remoteDir . "fromLocal1" );
 assertLocalAndRemoteDir( $d, $localDir, $remoteDir . "remoteToLocal1/", 1);
+
+
 
 # ==================================================================
 
