@@ -1,5 +1,9 @@
 t1 - a test script for csync syncing to ownCloud.
 
+Note: This test script uses perl HTTP::DAV. This package needs to
+be in version 0.46 at least. Many distros deliver older versions.
+Update than.
+
 t1 uses a perl WebDAV client lib to sync to an existing instance of
 ownCloud. For that, various files are copied around, synced and the
 results are tested through their existance, the filesize and the 
