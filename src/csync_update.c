@@ -306,6 +306,7 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
     }
     SAFE_FREE(st->md5);
     SAFE_FREE(st->destpath);
+    SAFE_FREE(st->error_string);
     SAFE_FREE(st);
 
     type = CSYNC_FTW_TYPE_SKIP;
