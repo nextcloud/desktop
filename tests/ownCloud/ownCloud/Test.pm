@@ -30,6 +30,9 @@ use File::Glob ':glob';
 use Carp::Assert;
 use Digest::MD5;
 use Unicode::Normalize;
+use Encode;
+require Encode::UTF8Mac if $^O == "darwin";
+use utf8;
 
 use vars qw( @ISA @EXPORT @EXPORT_OK $d %config);
 
@@ -45,6 +48,31 @@ our $localDir   = "turbo";
 @ISA        = qw(Exporter);
 @EXPORT     = qw( initTesting createRemoteDir createLocalDir cleanup csync assertLocalDirs assertLocalAndRemoteDir 
                   glob_put put_to_dir localDir remoteDir localCleanup createLocalFile);
+
+sub toFileName($)
+{
+  my ($file) = @_;
+  if ( $^O == "darwin" ) {
+    my $toFileName = ( Encode::encode('utf-8-mac', $file) ); 
+    print "toFileName($file) = $toFileName\n";
+    return $toFileName;
+  } else {
+    return $file;
+  }
+}
+
+sub fromFileName($)
+{
+  my ($file) = @_;
+  if ( $^O == "darwin" ) {
+    my $fromFileName = NFC( Encode::decode('utf-8-mac', $file) ); 
+    print "fromFileName($file) = $fromFileName\n";
+    return $fromFileName;
+  } else {
+    return $file;
+  }
+}
+
 
 sub initTesting()
 {
@@ -106,7 +134,7 @@ sub createLocalDir($)
 
     $dir = $localDir . $dir;
     print "Creating local dir: $dir\n";
-    mkdir( $dir, 0777 );
+    mkdir( toFileName( $dir ), 0777 );
 }
 
 sub cleanup()
@@ -143,7 +171,8 @@ sub localCleanup($)
 {
     my ($dir) = @_;
     # don't play child games here:
-    system( "rm -rf $localDir/$dir" );
+    $dir = toFileName( "$localDir/$dir" );
+    system( "rm -rf $dir" );
 }
 
 sub csync(  )
@@ -165,11 +194,13 @@ sub csync(  )
 #
 sub assertLocalDirs( $$ )
 {
+    # keep all strings in local file format 
     my ($dir1, $dir2) = @_;
-    
+    $dir1 = toFileName( $dir1 );
+    $dir2 = toFileName( $dir2 );
     print "Asserting $dir1 <-> $dir2\n";
 
-    opendir(my $dh, $dir1 ) || die;
+    opendir(my $dh, toFileName( $dir1 ) ) || die;
     while(readdir $dh) {
 	assert( -e "$dir2/$_" );
         next if( -d "$dir1/$_"); # don't compare directory sizes.
@@ -200,9 +231,9 @@ sub assertFile($$)
    print "Asserting $localFile and " . $res->get_property("rel_uri") . "\n";
 
   my $remoteModTime = $res->get_property( "lastmodifiedepoch" ) ;
-  my @info = stat( $localFile );
+  my @info = stat( toFileName($localFile) );
   my $localModTime = $info[9];
-  assert( $remoteModTime == $localModTime, "Modfied-Times differ: remote: $remoteModTime <-> local: $localModTime" );
+  assert( $remoteModTime == $localModTime, "Modified-Times differ: remote: $remoteModTime <-> local: $localModTime" );
   print "local versuse Remote modtime: $localModTime <-> $remoteModTime\n";
   # check for the same file size
   my $localSize = $info[7];
@@ -244,7 +275,7 @@ sub traverse( $$ )
 		    registerSeen( \%seen, $localDir . $dirname );
 		} else {
 		    # Check files here.
-		    print "Checking file: $remote\n";
+		    print "Checking file: $remote$filename\n";
 		    my $localFile = $localDir . $remote . $filename;
 		    registerSeen( \%seen, $localFile );
 		    $localFile =~ s/t1-\d+\//t1\//;
@@ -261,13 +292,13 @@ sub traverse( $$ )
     my $localpath = localDir().$remote;
     $localpath =~ s/t1-\d+\//t1\//;
 
-    opendir(my $dh, $localpath ) || die;
+    opendir(my $dh, toFileName( $localpath ) ) || die;
     # print Dumper( %seen );
     while( readdir $dh ) {
 	next if( /^\.+$/ );
-	my $f = $localpath . $_;
+	my $f = $localpath . fromFileName($_);
 	chomp $f;
-	assert( -e $f );
+	assert( -e toFileName( $f ) );
 	my $isHere = undef;
 	if( exists $seen{$f} ) {
 	    $isHere = 1;
@@ -307,17 +338,17 @@ sub glob_put( $$ )
     $d->open( $target );
 
     my @puts = bsd_glob( $globber );
-    foreach my $lfile( @puts ) {
+    foreach my $llfile( @puts ) {
+	my $lfile = fromFileName($llfile);
         if( $lfile =~ /.*\/(.+)$/g ) {
 	    my $rfile = $1;
 	    my $puturl = "$target"."$rfile";
-	    if( -d $lfile ) {
+	    if( -d toFileName( $lfile ) ) {
 	      $d->mkcol( $puturl );
 	    } else {
 	      print "   *** Putting $lfile to $puturl\n";
-	          my $nputurl = $puturl;
 
-	      if( ! $d->put( -local=>$lfile, -url=> $nputurl ) ) {
+	      if( ! $d->put( -local=>$lfile, -url=> $puturl ) ) {
 		print "   ### FAILED to put: ". $d->message . '\n';
 	      }
 	    }
@@ -337,8 +368,7 @@ sub put_to_dir( $$ )
     $filename =~ s/^.*\///;
     my $puturl = $owncloud . $dir. $filename;
     print "put_to_dir puts to $puturl\n";
-    my $nputurl = $puturl;
-    unless ($d->put( -local => $file, -url => $nputurl )) {
+    unless ($d->put( -local => $file, -url => $puturl )) {
       print "  ### FAILED to put a single file!\n";
     }
 }
@@ -350,7 +380,7 @@ sub createLocalFile( $$ )
   
   my $md5 = Digest::MD5->new;
    
-  open(FILE, ">", $localDir . $fname) or die "Can't open $fname for writing ($!)";
+  open(FILE, ">", toFileName($localDir . $fname)) or die "Can't open $fname for writing ($!)";
   
   my $minimum = 32;
   my $range = 96;
@@ -369,5 +399,5 @@ sub createLocalFile( $$ )
   return $md5->hexdigest; 
 }
 
-
 #
+
