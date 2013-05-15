@@ -310,6 +310,7 @@ sub traverse( $$ )
 	}
 
 	$isHere = 1 if( $acceptConflicts && !$isHere && $f =~ /_conflict/ );
+	$isHere = 1 if( $f =~ /\.csync/ );
 	assert( $isHere, "Filename only local, but not remote: $f" );
     }
 
