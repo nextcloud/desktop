@@ -23,8 +23,21 @@ public:
     }
 
     friend bool operator<(const SyncFileItem& item1, const SyncFileItem& item2) {
-        return item1._file < item2._file;
+        // Delete at the end:
+        if (item1._instruction == CSYNC_INSTRUCTION_REMOVE && item2._instruction != CSYNC_INSTRUCTION_REMOVE)
+            return false;
+        if (item1._instruction != CSYNC_INSTRUCTION_REMOVE && item2._instruction == CSYNC_INSTRUCTION_REMOVE)
+            return true;
+
+        // Sort by destination
+        return item1.destination() < item2.destination();
     }
+
+    QString destination() const {
+        return _instruction == CSYNC_INSTRUCTION_RENAME ? _renameTarget : _file;
+    }
+
+
 
     bool isEmpty() const {
         return _file.isEmpty();
@@ -33,6 +46,7 @@ public:
     // variables
     QString _file;
     QString _renameTarget;
+    QByteArray _originalFile; // as it is in the csync tree
     csync_instructions_e _instruction;
     Direction _dir;
     bool _isDirectory;

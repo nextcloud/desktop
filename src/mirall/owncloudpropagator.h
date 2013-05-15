@@ -16,6 +16,7 @@
 #define OWNCLOUDPROPAGATOR_H
 
 #include <neon/ne_request.h>
+#include <QHash>
 
 #include "syncfileitem.h"
 

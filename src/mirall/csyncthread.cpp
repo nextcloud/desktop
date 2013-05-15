@@ -185,6 +185,7 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     if( ! file ) return -1;
     SyncFileItem item;
     item._file = QString::fromUtf8( file->path );
+    item._originalFile = file->path;
     item._instruction = file->instruction;
     item._dir = SyncFileItem::None;
     item._isDirectory = file->type == CSYNC_FTW_TYPE_DIR;
@@ -211,6 +212,8 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     case CSYNC_INSTRUCTION_RENAME:
         dir = !remote ? SyncFileItem::Down : SyncFileItem::Up;
         item._renameTarget = QString::fromUtf8( file->rename_path );
+        if (item._isDirectory)
+            _renamedFolders.insert(item._file, item._renameTarget);
         break;
     case CSYNC_INSTRUCTION_REMOVE:
         dir = !remote ? SyncFileItem::Down : SyncFileItem::Up;
@@ -242,13 +245,10 @@ int CSyncThread::treewalkFinalize(TREE_WALK_FILE* file)
     if (file->instruction == CSYNC_INSTRUCTION_IGNORE)
         return 0;
 
-    SyncFileItem item;
-    item._file= QString::fromUtf8(file->path);
-
     // Update the instruction and etag in the csync rb_tree so it is saved on the database
 
-    QHash<QString, Action>::const_iterator action = performedActions.constFind(item._file);
-    if (action != performedActions.constEnd()) {
+    QHash<QByteArray, Action>::const_iterator action = _performedActions.constFind(file->path);
+    if (action != _performedActions.constEnd()) {
         if (file->instruction != CSYNC_INSTRUCTION_NONE) {
             // it is NONE if we are in the wrong tree (remote vs. local)
             file->instruction = action->instruction;
@@ -347,6 +347,12 @@ void CSyncThread::startSync()
         qDebug() << "Error in remote treewalk.";
     }
 
+    // Adjust the paths for the renames.
+    for (SyncFileItemVector::iterator it = _syncedItems.begin();
+            it != _syncedItems.end(); ++it) {
+        it->_file = adjustRenamedPath(it->_file);
+    }
+
     qSort(_syncedItems);
 
     if (_needsUpdate)
@@ -372,7 +378,7 @@ void CSyncThread::startSync()
             // If the item's name starts with the name of the previously deleted directory, we
             // can assume this file was already destroyed by the previous recursive call.
             a.instruction = CSYNC_INSTRUCTION_DELETED;
-            performedActions.insert(item._file, a);
+            _performedActions.insert(item._originalFile, a);
             continue;
         }
         propagator._etag.clear(); // FIXME : set to the right one
@@ -396,13 +402,16 @@ void CSyncThread::startSync()
         }
 
         a.etag = propagator._etag;
-        performedActions.insert(item._file, a);
+        _performedActions.insert(item._originalFile, a);
 
-        if (item._instruction == CSYNC_INSTRUCTION_RENAME
-                && a.instruction == CSYNC_INSTRUCTION_DELETED) {
-            // we should update the etag on the destination as well
-            a.instruction = CSYNC_INSTRUCTION_NONE;
-            performedActions.insert(item._renameTarget, a);
+        if (item._instruction == CSYNC_INSTRUCTION_RENAME) {
+            if (a.instruction == CSYNC_INSTRUCTION_DELETED) {
+                // we should update the etag on the destination as well
+                a.instruction = CSYNC_INSTRUCTION_NONE;
+            } else { // ERROR
+                a.instruction = CSYNC_INSTRUCTION_ERROR;
+            }
+            _performedActions.insert(item._renameTarget.toUtf8(), a);
         }
 
         if (!item._isDirectory && a.instruction == CSYNC_INSTRUCTION_UPDATED
@@ -443,5 +452,19 @@ void CSyncThread::progress(const char *remote_url, enum csync_notify_type_e kind
         thread->fileReceived(path);
     }
 }
+
+/* Given a path on the remote, give the path as it is when the rename is done */
+QString CSyncThread::adjustRenamedPath(const QString& original)
+{
+    int slashPos = original.size();
+    while ((slashPos = original.lastIndexOf('/' , slashPos - 1)) > 0) {
+        QHash< QString, QString >::const_iterator it = _renamedFolders.constFind(original.left(slashPos));
+        if (it != _renamedFolders.constEnd()) {
+            return *it + original.mid(slashPos);
+        }
+    }
+    return original;
+}
+
 
 }

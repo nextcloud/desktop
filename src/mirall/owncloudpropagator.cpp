@@ -522,12 +522,17 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
 
 csync_instructions_e OwncloudPropagator::remoteRename(const SyncFileItem &item)
 {
+    if (item._file == item._renameTarget)
+        return CSYNC_INSTRUCTION_DELETED; // nothing to do;
     QScopedPointer<char, QScopedPointerPodDeleter> uri1(ne_path_escape((_remoteDir + item._file).toUtf8()));
     QScopedPointer<char, QScopedPointerPodDeleter> uri2(ne_path_escape((_remoteDir + item._renameTarget).toUtf8()));
 
+
     int rc = ne_move(_session, 1, uri1.data(), uri2.data());
-    if (rc != NE_OK)
-        return CSYNC_INSTRUCTION_ERROR;
+    if (updateErrorFromSession(rc)) {
+        // We set the instruction to UPDATED so next try we try to rename again
+        return CSYNC_INSTRUCTION_UPDATED;
+    }
 
     updateMTimeAndETag(uri2.data(), item._modtime);
 

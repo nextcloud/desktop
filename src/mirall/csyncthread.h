@@ -40,7 +40,7 @@ class CSyncThread : public QObject
         QByteArray etag;
         csync_instructions_e instruction;
     };
-    QHash<QString, Action> performedActions;
+    QHash<QByteArray, Action> _performedActions;
 
 public:
     CSyncThread(CSYNC *, const QString &localPath, const QString &remotePath);
@@ -88,6 +88,10 @@ private:
     bool _needsUpdate;
     QString _localPath;
     QString _remotePath;
+
+    // maps the origin and the target of the folders that have been renamed
+    QHash<QString, QString> _renamedFolders;
+    QString adjustRenamedPath(const QString &original);
 
     friend class CSyncRunScopeHelper;
 };
