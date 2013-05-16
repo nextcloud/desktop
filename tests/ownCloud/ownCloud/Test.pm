@@ -29,11 +29,12 @@ use Data::Dumper;
 use File::Glob ':glob';
 use Carp::Assert;
 use Digest::MD5;
-use Data::Hexdumper qw(hexdump);
 use Unicode::Normalize;
 use Encode qw(from_to);
-require Encode::UTF8Mac if $^O == "darwin";
 use utf8;
+if ($^O == "darwin") {
+  eval "require Encode::UTF8Mac";
+}
 
 use vars qw( @ISA @EXPORT @EXPORT_OK $d %config);
 
@@ -218,7 +219,9 @@ sub assertFile($$)
   my $remoteModTime = $res->get_property( "lastmodifiedepoch" ) ;
 
   my $localFile2 = $localFile;
-  from_to($localFile2, 'utf-8-mac', 'utf-8');
+  if ($^O == "darwin") {
+    from_to($localFile2, 'utf-8-mac', 'utf-8');
+  }
   my $stat_ok = stat( $localFile2 );
   print " *** STAT failed for $localFile2\n" unless( $stat_ok );
   my @info = stat( $localFile2 );
