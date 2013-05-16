@@ -85,7 +85,12 @@ void OwncloudPropagator::propagate(const SyncFileItem &item)
             _instruction = item._instruction;
             break;
     }
-    emit completed(item);
+    SyncFileItem newItem = item;
+    newItem._instruction = _instruction;
+    newItem._errorDetail = _errorString;
+    newItem._httpCode = _httpStatusCode;
+    newItem._etag = _etag;
+    emit completed(newItem, _errorCode);
 }
 
 // compare two files with given filename and return true if they have the same content

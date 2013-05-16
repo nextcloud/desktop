@@ -31,6 +31,8 @@
 
 class QProcess;
 
+Q_DECLARE_METATYPE(CSYNC_ERROR_CODE)
+
 namespace Mirall {
 
 class OwncloudPropagator;
@@ -70,7 +72,7 @@ signals:
     void started();
 
 private slots:
-    void transferCompleted(const SyncFileItem &);
+    void transferCompleted(const SyncFileItem& item, CSYNC_ERROR_CODE error);
     void startNextTransfer();
 
 private:

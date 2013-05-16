@@ -56,6 +56,7 @@ CSyncThread::CSyncThread(CSYNC *csync, const QString &localPath, const QString &
     _csync_ctx = csync;
     _mutex.unlock();
     qRegisterMetaType<SyncFileItem>("SyncFileItem");
+    qRegisterMetaType<CSYNC_ERROR_CODE>("CSYNC_ERROR_CODE");
 }
 
 CSyncThread::~CSyncThread()
@@ -350,8 +351,8 @@ void CSyncThread::startSync()
 
     _progressDataBase.load(_localPath);
     _propagator.reset(new OwncloudPropagator (session, _localPath, _remotePath, &_progressDataBase));
-    connect(_propagator.data(), SIGNAL(completed(SyncFileItem)),
-            this, SLOT(transferCompleted(SyncFileItem)), Qt::QueuedConnection);
+    connect(_propagator.data(), SIGNAL(completed(SyncFileItem, CSYNC_ERROR_CODE)),
+            this, SLOT(transferCompleted(SyncFileItem, CSYNC_ERROR_CODE)), Qt::QueuedConnection);
     _iterator = 0;
     startNextTransfer();
 
@@ -361,24 +362,25 @@ void CSyncThread::startSync()
     //     }
 }
 
-void CSyncThread::transferCompleted(const SyncFileItem &item)
+void CSyncThread::transferCompleted(const SyncFileItem &item, CSYNC_ERROR_CODE error)
 {
     Action a;
-    a.instruction = _propagator->_instruction;
+    a.instruction = item._instruction;
 
     // if the propagator had an error for a file, put the error string into the synced item
-    if( _propagator->_errorCode != CSYNC_ERR_NONE
+    if( error != CSYNC_ERR_NONE
             || a.instruction == CSYNC_INSTRUCTION_ERROR) {
 
-        // search for the item in the starting from _iterator because it should be a bit before it.
+        // Search for the item in the starting from _iterator because it should be a bit before it.
+        // This works because SyncFileItem::operator== only compare the file name;
         int idx = _syncedItems.lastIndexOf(item, _iterator);
         if (idx >= 0) {
             _syncedItems[idx]._instruction = CSYNC_INSTRUCTION_ERROR;
-            _syncedItems[idx]._errorString = csyncErrorToString( _propagator->_errorCode );
-            _syncedItems[idx]._errorDetail = _propagator->_errorString;
-            _syncedItems[idx]._httpCode    = _propagator->_httpStatusCode;
+            _syncedItems[idx]._errorString = csyncErrorToString( error );
+            _syncedItems[idx]._errorDetail = item._errorString;
+            _syncedItems[idx]._httpCode    = item._httpCode;
             qDebug() << "File " << item._file << " propagator error " << _syncedItems[idx]._errorString
-                << "(" << _propagator->_errorString << ")";
+                     << "(" << item._errorString << ")";
         }
 
         if (item._isDirectory && item._instruction == CSYNC_INSTRUCTION_REMOVE
@@ -389,7 +391,7 @@ void CSyncThread::transferCompleted(const SyncFileItem &item)
         }
     }
 
-    a.etag = _propagator->_etag;
+    a.etag = item._etag;
     _performedActions.insert(item._originalFile, a);
 
     if (item._instruction == CSYNC_INSTRUCTION_RENAME) {

@@ -36,6 +36,11 @@ class OwncloudPropagator : public QObject {
     ne_session_s *_session;
     ProgressDatabase *_progressDb;
 
+    QString          _errorString;
+    CSYNC_ERROR_CODE _errorCode;
+    int              _httpStatusCode;
+    csync_instructions_e _instruction;
+
     bool check_neon_session();
 
 
@@ -68,15 +73,11 @@ public:
         if (!remoteDir.endsWith(QChar('/'))) _remoteDir+='/';
     }
     void  propagate(const SyncFileItem &);
-    QString          _errorString;
-    CSYNC_ERROR_CODE _errorCode;
-    int              _httpStatusCode;
-    bool             _hasFatalError;
     QByteArray _etag;
-    csync_instructions_e _instruction;
+    bool             _hasFatalError;
 
 signals:
-    void completed(const SyncFileItem &);
+    void completed(const SyncFileItem &, CSYNC_ERROR_CODE);
 
 };
 
