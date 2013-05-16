@@ -29,8 +29,9 @@ use Data::Dumper;
 use File::Glob ':glob';
 use Carp::Assert;
 use Digest::MD5;
+use Data::Hexdumper qw(hexdump);
 use Unicode::Normalize;
-use Encode;
+use Encode qw(from_to);
 require Encode::UTF8Mac if $^O == "darwin";
 use utf8;
 
@@ -49,24 +50,11 @@ our $localDir   = "turbo";
 @EXPORT     = qw( initTesting createRemoteDir createLocalDir cleanup csync assertLocalDirs assertLocalAndRemoteDir 
                   glob_put put_to_dir localDir remoteDir localCleanup createLocalFile);
 
-sub toFileName($)
-{
-  my ($file) = @_;
-  if ( $^O == "darwin" ) {
-    my $toFileName = ( Encode::encode('utf-8-mac', $file) ); 
-    print "toFileName($file) = $toFileName\n";
-    return $toFileName;
-  } else {
-    return $file;
-  }
-}
-
 sub fromFileName($)
 {
   my ($file) = @_;
   if ( $^O == "darwin" ) {
-    my $fromFileName = NFC( Encode::decode('utf-8-mac', $file) ); 
-    print "fromFileName($file) = $fromFileName\n";
+    my $fromFileName = NFC( Encode::decode('utf-8', $file) ); 
     return $fromFileName;
   } else {
     return $file;
@@ -134,7 +122,7 @@ sub createLocalDir($)
 
     $dir = $localDir . $dir;
     print "Creating local dir: $dir\n";
-    mkdir( toFileName( $dir ), 0777 );
+    mkdir( $dir, 0777 );
 }
 
 sub cleanup()
@@ -171,7 +159,7 @@ sub localCleanup($)
 {
     my ($dir) = @_;
     # don't play child games here:
-    $dir = toFileName( "$localDir/$dir" );
+    $dir = "$localDir/$dir";
     system( "rm -rf $dir" );
 }
 
@@ -194,13 +182,10 @@ sub csync(  )
 #
 sub assertLocalDirs( $$ )
 {
-    # keep all strings in local file format 
     my ($dir1, $dir2) = @_;
-    $dir1 = toFileName( $dir1 );
-    $dir2 = toFileName( $dir2 );
     print "Asserting $dir1 <-> $dir2\n";
 
-    opendir(my $dh, toFileName( $dir1 ) ) || die;
+    opendir(my $dh, $dir1 ) || die;
     while(readdir $dh) {
 	assert( -e "$dir2/$_" );
         next if( -d "$dir1/$_"); # don't compare directory sizes.
@@ -232,10 +217,11 @@ sub assertFile($$)
 
   my $remoteModTime = $res->get_property( "lastmodifiedepoch" ) ;
 
-  my $stat_ok = stat( toFileName($localFile));
-  print " *** STAT failed for $localFile\n" unless( $stat_ok );
-
-  my @info = stat( toFileName($localFile) );
+  my $localFile2 = $localFile;
+  from_to($localFile2, 'utf-8-mac', 'utf-8');
+  my $stat_ok = stat( $localFile2 );
+  print " *** STAT failed for $localFile2\n" unless( $stat_ok );
+  my @info = stat( $localFile2 );
   my $localModTime = $info[9];
   assert( $remoteModTime == $localModTime, "Modified-Times differ: remote: $remoteModTime <-> local: $localModTime" );
   print "local versuse Remote modtime: $localModTime <-> $remoteModTime\n";
@@ -296,13 +282,13 @@ sub traverse( $$ )
     my $localpath = localDir().$remote;
     $localpath =~ s/t1-\d+\//t1\//;
 
-    opendir(my $dh, toFileName( $localpath ) ) || die;
+    opendir(my $dh, $localpath ) || die;
     # print Dumper( %seen );
     while( readdir $dh ) {
 	next if( /^\.+$/ );
 	my $f = $localpath . fromFileName($_);
 	chomp $f;
-	assert( -e toFileName( $f ) );
+	assert( -e $f );
 	my $isHere = undef;
 	if( exists $seen{$f} ) {
 	    $isHere = 1;
@@ -348,7 +334,7 @@ sub glob_put( $$ )
         if( $lfile =~ /.*\/(.+)$/g ) {
 	    my $rfile = $1;
 	    my $puturl = "$target"."$rfile";
-	    if( -d toFileName( $lfile ) ) {
+	    if( -d $lfile ) {
 	      $d->mkcol( $puturl );
 	    } else {
 	      print "   *** Putting $lfile to $puturl\n";
@@ -385,7 +371,7 @@ sub createLocalFile( $$ )
   
   my $md5 = Digest::MD5->new;
    
-  open(FILE, ">", toFileName($localDir . $fname)) or die "Can't open $fname for writing ($!)";
+  open(FILE, ">", $localDir . $fname) or die "Can't open $fname for writing ($!)";
   
   my $minimum = 32;
   my $range = 96;
