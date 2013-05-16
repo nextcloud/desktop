@@ -32,7 +32,7 @@ use Digest::MD5;
 use Unicode::Normalize;
 use Encode qw(from_to);
 use utf8;
-if ($^O == "darwin") {
+if ($^O eq "darwin") {
   eval "require Encode::UTF8Mac";
 }
 
@@ -54,7 +54,7 @@ our $localDir   = "turbo";
 sub fromFileName($)
 {
   my ($file) = @_;
-  if ( $^O == "darwin" ) {
+  if ( $^O eq "darwin" ) {
     my $fromFileName = NFC( Encode::decode('utf-8', $file) ); 
     return $fromFileName;
   } else {
@@ -219,7 +219,7 @@ sub assertFile($$)
   my $remoteModTime = $res->get_property( "lastmodifiedepoch" ) ;
 
   my $localFile2 = $localFile;
-  if ($^O == "darwin") {
+  if ($^O eq "darwin") {
     from_to($localFile2, 'utf-8-mac', 'utf-8');
   }
   my $stat_ok = stat( $localFile2 );
