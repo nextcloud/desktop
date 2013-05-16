@@ -122,9 +122,11 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
 
 ownCloudFolder::~ownCloudFolder()
 {
-    _thread->quit();
-    csync_request_abort(_csync_ctx);
-    _thread->wait();
+    if( _thread ) {
+        _thread->quit();
+        csync_request_abort(_csync_ctx);
+        _thread->wait();
+    }
     // Destroy csync here.
     csync_destroy(_csync_ctx);
 }
