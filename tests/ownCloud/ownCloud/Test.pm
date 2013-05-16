@@ -228,9 +228,13 @@ sub assertFile($$)
 {
   my ($localFile, $res) = @_;
 
-   print "Asserting $localFile and " . $res->get_property("rel_uri") . "\n";
+  print "Asserting $localFile and " . $res->get_property("rel_uri") . "\n";
 
   my $remoteModTime = $res->get_property( "lastmodifiedepoch" ) ;
+
+  my $stat_ok = stat( toFileName($localFile));
+  print " *** STAT failed for $localFile\n" unless( $stat_ok );
+
   my @info = stat( toFileName($localFile) );
   my $localModTime = $info[9];
   assert( $remoteModTime == $localModTime, "Modified-Times differ: remote: $remoteModTime <-> local: $localModTime" );
