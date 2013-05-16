@@ -47,6 +47,7 @@ enum hbf_state_e {
     HBF_MEMORY_FAIL,
     HBF_STAT_FAIL,
     HBF_SOURCE_FILE_CHANGE,
+    HBF_USER_ABORTED,
     HBF_FAIL
 };
 
@@ -68,6 +69,9 @@ struct hbf_block_s {
     int tries;
 };
 
+/* Callback for to check on abort */
+typedef int (*hbf_abort_callback) ();
+
 typedef struct hbf_transfer_s hbf_transfer_t;
 
 struct hbf_transfer_s {
@@ -84,6 +88,8 @@ struct hbf_transfer_s {
     off_t stat_size;
     time_t modtime;
     off_t block_size;
+
+    hbf_abort_callback abort_cb;
 #ifndef NDEBUG
     off_t calc_size;
 #endif
@@ -98,6 +104,8 @@ Hbf_State hbf_splitlist( hbf_transfer_t *transfer, int fd );
 void hbf_free_transfer( hbf_transfer_t *transfer );
 
 const char *hbf_error_string( Hbf_State state );
+
+void hbf_set_abort_callback( hbf_transfer_t *transfer, hbf_abort_callback cb);
 
 /* returns an http (error) code of the transmission. If the transmission
  * succeeded, the code is 200. If it failed, its the error code of the

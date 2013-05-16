@@ -368,20 +368,30 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
 
         if( ! block ) state = HBF_PARAM_FAIL;
 
+        if( transfer->abort_cb ) {
+            int abort = (transfer->abort_cb)();
+            if( abort ) {
+              state = HBF_USER_ABORTED;
+            }
+        }
+
         if( state == HBF_TRANSFER_SUCCESS ) {
             transfer_url = get_transfer_url( transfer, block_id );
             if( ! transfer_url ) {
                 state = HBF_PARAM_FAIL;
             }
         }
-        if( transfer->block_cnt > 1 && cnt > 0 ) {
-          /* The block count is > 1, check size and mtime before transmitting. */
-          state = validate_source_file(transfer);
-          if( state == HBF_SOURCE_FILE_CHANGE ) {
-            /* The source file has changed meanwhile */
-          }
 
+        if( state == HBF_TRANSFER_SUCCESS ) {
+          if( transfer->block_cnt > 1 && cnt > 0 ) {
+            /* The block count is > 1, check size and mtime before transmitting. */
+            state = validate_source_file(transfer);
+            if( state == HBF_SOURCE_FILE_CHANGE ) {
+              /* The source file has changed meanwhile */
+            }
+          }
         }
+
         if( state == HBF_TRANSFER_SUCCESS || state == HBF_SUCCESS ) {
             ne_request *req = ne_request_create(session, "PUT", transfer_url);
 
@@ -487,4 +497,11 @@ const char *hbf_error_string( Hbf_State state )
         re = "Unknown error.";
     }
     return re;
+}
+
+void hbf_set_abort_callback( hbf_transfer_t *transfer, hbf_abort_callback cb)
+{
+  if( transfer ) {
+    transfer->abort_cb = cb;
+  }
 }
