@@ -337,6 +337,7 @@ void ownCloudFolder::slotTerminateSync()
 
     if( _thread && _csync ) {
         csync_request_abort(_csync_ctx);
+        _thread->quit();
         _thread->wait();
         _csync->deleteLater();
         delete _thread;
