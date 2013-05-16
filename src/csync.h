@@ -537,7 +537,12 @@ void csync_request_abort(CSYNC *ctx);
  */
 void csync_resume(CSYNC *ctx);
 
-
+/**
+ * @brief Checks for the abort flag, to be used from the modules.
+ *
+ * @param ctx           The csync context.
+ */
+int  csync_abort_requested(CSYNC *ctx);
 
 #ifdef __cplusplus
 }

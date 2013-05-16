@@ -426,6 +426,11 @@ start_fd_based:
             progress_info->chunk = hbf_info.start_id;
             csync_vio_set_property(ctx, "hbf_info", 0);
           }
+
+          if( errno == ERRNO_USER_ABORT ) {
+            ctx->error_code = CSYNC_ERR_ABORTED;
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Csync file transmission was ABORTED by user!");
+          }
           goto out;
       }
   } else {

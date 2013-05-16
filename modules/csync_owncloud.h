@@ -167,8 +167,8 @@ static const ne_propname ls_props[] = {
 void set_errno_from_http_errcode( int err );
 void set_error_message( const char *msg );
 void set_errno_from_neon_errcode( int neon_code );
-int http_result_code_from_session();
-void set_errno_from_session();
+int http_result_code_from_session(void);
+void set_errno_from_session(void);
 
 time_t oc_httpdate_parse( const char *date );
 

@@ -45,6 +45,7 @@
 #define ERRNO_ERROR_STRING           CSYNC_CUSTOM_ERRNO_BASE+13
 #define ERRNO_SERVICE_UNAVAILABLE    CSYNC_CUSTOM_ERRNO_BASE+14
 #define ERRNO_QUOTA_EXCEEDED         CSYNC_CUSTOM_ERRNO_BASE+15
+#define ERRNO_USER_ABORT             CSYNC_CUSTOM_ERRNO_BASE+16
 
 #endif /* _CSYNC_MACROS_H */
 /* vim: set ft=c.doxygen ts=8 sw=2 et cindent: */

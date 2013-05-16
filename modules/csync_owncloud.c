@@ -1116,6 +1116,11 @@ static csync_vio_method_handle_t *owncloud_creat(const char *durl, mode_t mode) 
     return handle;
 }
 
+static int _user_want_abort()
+{
+    return csync_abort_requested(dav_session.csync_ctx);
+}
+
 static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_handle_t *hdl ) {
     int rc  = 0;
     int neon_stat;
@@ -1182,6 +1187,9 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
             _progresscb(write_ctx->url, CSYNC_NOTIFY_START_UPLOAD, 0 , 0, dav_session.userdata);
           }
 
+          /* Register the abort callback */
+          hbf_set_abort_callback( trans, _user_want_abort );
+
           if( state == HBF_SUCCESS ) {
             chunked_total_size = trans->stat_size;
             /* Transfer all the chunks through the HTTP session using PUT. */
@@ -1191,6 +1199,12 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
           /* Handle errors. */
           if ( state != HBF_SUCCESS ) {
 
+            if( state == HBF_USER_ABORTED ) {
+              DEBUG_WEBDAV("User Aborted file upload!");
+              errno = ERRNO_USER_ABORT;
+              error_code = errno;
+              rc = -1;
+            }
             /* If the source file changed during submission, lets try again */
             if( state == HBF_SOURCE_FILE_CHANGE ) {
               if( attempts++ < 30 ) { /* FIXME: How often do we want to try? */
@@ -1236,6 +1250,12 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
 
         if (write_ctx->req)
           ne_request_destroy( write_ctx->req );
+
+        if( _user_want_abort() ) {
+            errno = ERRNO_USER_ABORT;
+            error_code = errno;
+            break;
+        }
 
         write_ctx->req = ne_request_create(dav_session.ctx, "GET", clean_uri);;
 
