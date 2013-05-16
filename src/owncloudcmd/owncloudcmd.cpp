@@ -26,7 +26,7 @@ using namespace Mirall;
 
 int getauth(const char* prompt, char* buf, size_t len, int echo, int verify, void*)
 {
-    std::cout << prompt << std::endl;
+    std::cout << "AUTH CALLBACK\n" << prompt << std::endl;
     std::string s;
     std::getline(std::cin, s);
     strncpy( buf, s.c_str(), len );
@@ -111,7 +111,10 @@ int main(int argc, char **argv) {
 
 
     CSyncThread csyncthread(_csync_ctx, QString::fromLocal8Bit(source_dir), QUrl(target_url).path());
+    QObject::connect(&csyncthread, SIGNAL(finished()), &app, SLOT(quit()));
     csyncthread.startSync();
+
+    app.exec();
 
     csync_destroy(_csync_ctx);
     return 0;

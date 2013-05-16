@@ -17,6 +17,7 @@
 
 #include <neon/ne_request.h>
 #include <QHash>
+#include <QObject>
 
 #include "syncfileitem.h"
 
@@ -27,7 +28,9 @@ namespace Mirall {
 
 class ProgressDatabase;
 
-class OwncloudPropagator {
+class OwncloudPropagator : public QObject {
+    Q_OBJECT
+
     QString _localDir; // absolute path to the local directory. ends with '/'
     QString _remoteDir; // path to the root of the remote. ends with '/'
     ne_session_s *_session;
@@ -64,12 +67,16 @@ public:
         if (!localDir.endsWith(QChar('/'))) _localDir+='/';
         if (!remoteDir.endsWith(QChar('/'))) _remoteDir+='/';
     }
-    csync_instructions_e  propagate(const SyncFileItem &);
+    void  propagate(const SyncFileItem &);
     QString          _errorString;
     CSYNC_ERROR_CODE _errorCode;
     int              _httpStatusCode;
     bool             _hasFatalError;
     QByteArray _etag;
+    csync_instructions_e _instruction;
+
+signals:
+    void completed(const SyncFileItem &);
 
 };
 

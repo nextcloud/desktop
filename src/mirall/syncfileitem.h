@@ -3,6 +3,7 @@
 
 #include <QVector>
 #include <QString>
+#include <QMetaType>
 
 #include <csync.h>
 
@@ -64,5 +65,7 @@ public:
 typedef QVector<SyncFileItem> SyncFileItemVector;
 
 }
+
+Q_DECLARE_METATYPE(Mirall::SyncFileItem);
 
 #endif // SYNCFILEITEM_H

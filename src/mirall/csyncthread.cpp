@@ -55,6 +55,7 @@ CSyncThread::CSyncThread(CSYNC *csync, const QString &localPath, const QString &
     _remotePath = remotePath;
     _csync_ctx = csync;
     _mutex.unlock();
+    qRegisterMetaType<SyncFileItem>("SyncFileItem");
 }
 
 CSyncThread::~CSyncThread()
@@ -262,24 +263,6 @@ int CSyncThread::treewalkFinalize(TREE_WALK_FILE* file)
     return 0;
 }
 
-struct CSyncRunScopeHelper {
-    CSyncRunScopeHelper(CSYNC *ctx, CSyncThread *parent)
-        : _ctx(ctx), _parent(parent)
-    {
-        _t.start();
-    }
-    ~CSyncRunScopeHelper() {
-        csync_commit(_ctx);
-
-        qDebug() << "CSync run took " << _t.elapsed() << " Milliseconds";
-        emit(_parent->finished());
-        _parent->_syncMutex.unlock();
-    }
-    CSYNC *_ctx;
-    QTime _t;
-    CSyncThread *_parent;
-};
-
 void CSyncThread::handleSyncError(CSYNC *ctx, const char *state) {
     CSYNC_ERROR_CODE err = csync_get_error( ctx );
     const char *errMsg = csync_get_error_string( ctx );
@@ -318,20 +301,22 @@ void CSyncThread::startSync()
     _needsUpdate = false;
     _mutex.unlock();
 
-    // cleans up behind us and emits finished() to ease error handling
-    CSyncRunScopeHelper helper(_csync_ctx, this);
 
     csync_set_userdata(_csync_ctx, this);
 
     // csync_set_auth_callback( _csync_ctx, getauth );
     csync_set_progress_callback( _csync_ctx, progress );
 
+    _syncTime.start();
+
+    QElapsedTimer updateTime;
+    updateTime.start();
     qDebug() << "#### Update start #################################################### >>";
     if( csync_update(_csync_ctx) < 0 ) {
         handleSyncError(_csync_ctx, "csync_update");
         return;
     }
-    qDebug() << "<<#### Update end ###########################################################";
+    qDebug() << "<<#### Update end #################################################### " << updateTime.elapsed();
 
     if( csync_reconcile(_csync_ctx) < 0 ) {
         handleSyncError(_csync_ctx, "cysnc_reconcile");
@@ -363,83 +348,108 @@ void CSyncThread::startSync()
     csync_set_module_property(_csync_ctx, "get_dav_session", &session);
     Q_ASSERT(session);
 
-    ProgressDatabase db;
-    db.load(_localPath);
+    _progressDataBase.load(_localPath);
+    _propagator.reset(new OwncloudPropagator (session, _localPath, _remotePath, &_progressDataBase));
+    connect(_propagator.data(), SIGNAL(completed(SyncFileItem)),
+            this, SLOT(transferCompleted(SyncFileItem)), Qt::QueuedConnection);
+    _iterator = 0;
+    startNextTransfer();
 
-    QString lastDeleted;
-    OwncloudPropagator propagator(session, _localPath, _remotePath, &db);
+    //     if( csync_propagate(_csync_ctx) < 0 ) {
+    //         handleSyncError(_csync_ctx, "cysnc_reconcile");
+    //         return;
+    //     }
+}
 
-    for (SyncFileItemVector::iterator it = _syncedItems.begin();
-            it != _syncedItems.end() && !propagator._hasFatalError; ++it) {
-        const SyncFileItem &item = *it;
-        Action a;
-        if (!lastDeleted.isEmpty() && item._file.startsWith(lastDeleted)
-                && item._instruction == CSYNC_INSTRUCTION_REMOVE) {
-            // If the item's name starts with the name of the previously deleted directory, we
-            // can assume this file was already destroyed by the previous recursive call.
-            a.instruction = CSYNC_INSTRUCTION_DELETED;
-            _performedActions.insert(item._originalFile, a);
-            continue;
-        }
-        propagator._etag.clear(); // FIXME : set to the right one
-        a.instruction = propagator.propagate(item);
+void CSyncThread::transferCompleted(const SyncFileItem &item)
+{
+    Action a;
+    a.instruction = _propagator->_instruction;
 
-        // if the propagator had an error for a file, put the error string into the synced item
-        if( propagator._errorCode != CSYNC_ERR_NONE
-                || a.instruction == CSYNC_INSTRUCTION_ERROR) {
-            it->_instruction = CSYNC_INSTRUCTION_ERROR;
-            it->_errorString = csyncErrorToString( propagator._errorCode );
-            it->_errorDetail = propagator._errorString;
-            it->_httpCode    = propagator._httpStatusCode;
-            qDebug() << "File " << item._file << " propagator error " << item._errorString;
+    // if the propagator had an error for a file, put the error string into the synced item
+    if( _propagator->_errorCode != CSYNC_ERR_NONE
+            || a.instruction == CSYNC_INSTRUCTION_ERROR) {
+
+        // search for the item in the starting from _iterator because it should be a bit before it.
+        int idx = _syncedItems.lastIndexOf(item, _iterator);
+        if (idx >= 0) {
+            _syncedItems[idx]._instruction = CSYNC_INSTRUCTION_ERROR;
+            _syncedItems[idx]._errorString = csyncErrorToString( _propagator->_errorCode );
+            _syncedItems[idx]._errorDetail = _propagator->_errorString;
+            _syncedItems[idx]._httpCode    = _propagator->_httpStatusCode;
+            qDebug() << "File " << item._file << " propagator error " << _syncedItems[idx]._errorString
+                << "(" << _propagator->_errorString << ")";
         }
 
         if (item._isDirectory && item._instruction == CSYNC_INSTRUCTION_REMOVE
                 && a.instruction == CSYNC_INSTRUCTION_DELETED) {
-            lastDeleted = item._file;
+            _lastDeleted = item._file;
         } else {
-            lastDeleted.clear();
+            _lastDeleted.clear();
         }
-
-        a.etag = propagator._etag;
-        _performedActions.insert(item._originalFile, a);
-
-        if (item._instruction == CSYNC_INSTRUCTION_RENAME) {
-            if (a.instruction == CSYNC_INSTRUCTION_DELETED) {
-                // we should update the etag on the destination as well
-                a.instruction = CSYNC_INSTRUCTION_NONE;
-            } else { // ERROR
-                a.instruction = CSYNC_INSTRUCTION_ERROR;
-            }
-            _performedActions.insert(item._renameTarget.toUtf8(), a);
-        }
-
-        if (!item._isDirectory && a.instruction == CSYNC_INSTRUCTION_UPDATED
-                && item._dir == SyncFileItem::Down) {
-            emit fileReceived(item._file);
-        }
-
-        //TODO progress %;
     }
 
-//     if( csync_propagate(_csync_ctx) < 0 ) {
-//         handleSyncError(_csync_ctx, "cysnc_reconcile");
-//         return;
-//     }
+    a.etag = _propagator->_etag;
+    _performedActions.insert(item._originalFile, a);
 
-    db.save(_localPath);
-
-    if( walkOk ) {
-        if( csync_walk_local_tree(_csync_ctx, &walkFinalize, 0) < 0 ||
-            csync_walk_remote_tree( _csync_ctx, &walkFinalize, 0 ) < 0 ) {
-            qDebug() << "Error in finalize treewalk.";
-        } else {
-        // emit the treewalk results.
-            emit treeWalkResult(_syncedItems);
+    if (item._instruction == CSYNC_INSTRUCTION_RENAME) {
+        if (a.instruction == CSYNC_INSTRUCTION_DELETED) {
+            // we should update the etag on the destination as well
+            a.instruction = CSYNC_INSTRUCTION_NONE;
+        } else { // ERROR
+            a.instruction = CSYNC_INSTRUCTION_ERROR;
         }
+        _performedActions.insert(item._renameTarget.toUtf8(), a);
     }
-    qDebug() << Q_FUNC_INFO << "Sync finished";
+
+    if (!item._isDirectory && a.instruction == CSYNC_INSTRUCTION_UPDATED
+            && item._dir == SyncFileItem::Down) {
+        emit fileReceived(item._file);
+    }
+
+    //TODO progress %;
+
+    startNextTransfer();
 }
+
+void CSyncThread::startNextTransfer()
+{
+    while (_iterator < _syncedItems.size() && !_propagator->_hasFatalError) {
+        const SyncFileItem &item = _syncedItems.at(_iterator);
+        ++_iterator;
+        if (!_lastDeleted.isEmpty() && item._file.startsWith(_lastDeleted)
+                && item._instruction == CSYNC_INSTRUCTION_REMOVE) {
+            // If the item's name starts with the name of the previously deleted directory, we
+            // can assume this file was already destroyed by the previous recursive call.
+            Action a;
+            a.instruction = CSYNC_INSTRUCTION_DELETED;
+            _performedActions.insert(item._originalFile, a);
+            continue;
+        }
+        _propagator->_etag.clear(); // FIXME : set to the right one
+        _propagator->propagate(item);
+        return; //propagate is async.
+    }
+
+    // Everything is finished.
+    _progressDataBase.save(_localPath);
+
+    if( csync_walk_local_tree(_csync_ctx, &walkFinalize, 0) < 0 ||
+        csync_walk_remote_tree( _csync_ctx, &walkFinalize, 0 ) < 0 ) {
+        qDebug() << "Error in finalize treewalk.";
+    } else {
+    // emit the treewalk results.
+        emit treeWalkResult(_syncedItems);
+    }
+
+    csync_commit(_csync_ctx);
+
+    qDebug() << "CSync run took " << _syncTime.elapsed() << " Milliseconds";
+    emit finished();
+    _propagator.reset(0);
+    _syncMutex.unlock();
+}
+
 
 // TODO: remove:  this is no longer used with the new propagator
 void CSyncThread::progress(const char *remote_url, enum csync_notify_type_e kind,

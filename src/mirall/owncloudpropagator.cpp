@@ -49,35 +49,43 @@ struct ScopedPointerHelpers {
 //     static inline void cleanup(ne_propfind_handler *pointer) { if (pointer) ne_propfind_destroy(pointer); }
 };
 
-csync_instructions_e  OwncloudPropagator::propagate(const SyncFileItem &item)
+void OwncloudPropagator::propagate(const SyncFileItem &item)
 {
     _errorCode = CSYNC_ERR_NONE;
     _errorString.clear();
     _httpStatusCode = 0;
     switch(item._instruction) {
         case CSYNC_INSTRUCTION_REMOVE:
-            return item._dir == SyncFileItem::Down ? localRemove(item) : remoteRemove(item);
+            _instruction = item._dir == SyncFileItem::Down ? localRemove(item) : remoteRemove(item);
+            break;
         case CSYNC_INSTRUCTION_NEW:
             if (item._isDirectory) {
-                return item._dir == SyncFileItem::Down ? localMkdir(item) : remoteMkdir(item);
+                _instruction = item._dir == SyncFileItem::Down ? localMkdir(item) : remoteMkdir(item);
+                break;
             }   //fall trough
         case CSYNC_INSTRUCTION_SYNC:
             if (item._isDirectory) {
                 // Should we set the mtime?
-                return CSYNC_INSTRUCTION_UPDATED;
-            } else {
-                return item._dir == SyncFileItem::Down ? downloadFile(item) : uploadFile(item);
+                _instruction = CSYNC_INSTRUCTION_UPDATED;
+                break;
             }
+            _instruction = item._dir == SyncFileItem::Down ? downloadFile(item) : uploadFile(item);
+            break;
         case CSYNC_INSTRUCTION_CONFLICT:
             if (item._isDirectory) {
-                return CSYNC_INSTRUCTION_UPDATED;
+                _instruction = CSYNC_INSTRUCTION_UPDATED;
+                break;
             }
-            return downloadFile(item, true);
+            _instruction = downloadFile(item, true);
+            break;
         case CSYNC_INSTRUCTION_RENAME:
-            return remoteRename(item);
+            _instruction = remoteRename(item);
+            break;
         default:
-            return item._instruction;
+            _instruction = item._instruction;
+            break;
     }
+    emit completed(item);
 }
 
 // compare two files with given filename and return true if they have the same content

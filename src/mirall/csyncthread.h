@@ -21,15 +21,20 @@
 #include <QMutex>
 #include <QThread>
 #include <QString>
+#include <qelapsedtimer.h>
 #include <QNetworkProxy>
 
 #include <csync.h>
 
 #include "mirall/syncfileitem.h"
+#include "progressdatabase.h"
 
 class QProcess;
 
 namespace Mirall {
+
+class OwncloudPropagator;
+
 
 class CSyncThread : public QObject
 {
@@ -64,6 +69,10 @@ signals:
     void finished();
     void started();
 
+private slots:
+    void transferCompleted(const SyncFileItem &);
+    void startNextTransfer();
+
 private:
     void handleSyncError(CSYNC *ctx, const char *state);
     static void progress(const char *remote_url,
@@ -82,12 +91,19 @@ private:
     static QMutex _mutex;
     static QMutex _syncMutex;
     SyncFileItemVector _syncedItems;
+    int _iterator; // index in _syncedItems for the next item to process.
+    ProgressDatabase _progressDataBase;
 
 
     CSYNC *_csync_ctx;
     bool _needsUpdate;
     QString _localPath;
     QString _remotePath;
+    QScopedPointer <OwncloudPropagator> _propagator;
+    QElapsedTimer _syncTime;
+    QString _lastDeleted; // if the last item was a path and it has been deleted
+
+
 
     // maps the origin and the target of the folders that have been renamed
     QHash<QString, QString> _renamedFolders;
