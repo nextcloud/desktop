@@ -35,6 +35,9 @@ public:
     QIcon   folderDisabledIcon() const;
     QIcon   applicationIcon() const;
 
+    QColor  wizardHeaderBackgroundColor() const;
+    QColor  wizardHeaderTitleColor() const;
+
 private:
 
 

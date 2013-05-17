@@ -198,5 +198,27 @@ QVariant Theme::customMedia( CustomMediaType type )
     return re;
 }
 
+QColor Theme::wizardHeaderTitleColor() const
+{
+    return QColor();
+}
+
+QColor Theme::wizardHeaderBackgroundColor() const
+{
+    return QColor();
+}
+
+QPixmap Theme::wizardHeaderLogo() const
+{
+    return QPixmap(":/mirall/theme/colored/wizard_logo.png");
+}
+
+QPixmap Theme::wizardHeaderBanner() const
+{
+    QPixmap pix(QSize(600, 78));
+    pix.fill(wizardHeaderBackgroundColor());
+    return pix;
+}
+
 } // end namespace mirall
 

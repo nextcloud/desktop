@@ -51,8 +51,11 @@ OwncloudSetupPage::OwncloudSetupPage()
 {
     _ui.setupUi(this);
 
-    // Backgroundcolor for owncloud logo #1d2d42
-    setTitle(tr("Create Connection to %1").arg(Theme::instance()->appNameGUI()));
+    Theme *theme = Theme::instance();
+    setTitle( tr("<font color=\"%1\" size=\"5\">Connect to your %2 Server</font>")
+              .arg(theme->wizardHeaderTitleColor().name()).arg( theme->appNameGUI()));
+    setSubTitle( tr("<font color=\"%1\">Enter user credentials to access your %2</font>")
+                 .arg(theme->wizardHeaderTitleColor().name()).arg(theme->appNameGUI()));
 
     connect(_ui.leUrl, SIGNAL(textChanged(QString)), SLOT(handleNewOcUrl(QString)));
 
@@ -78,8 +81,6 @@ OwncloudSetupPage::OwncloudSetupPage()
     _ui.errorLabel->setStyleSheet( style );
     _ui.errorLabel->setWordWrap(true);
     _ui.errorLabel->setVisible(false);
-    setTitle( tr("<font color=\"#ffffff\" size=\"5\">Connect to your %1 Server</font>").arg( Theme::instance()->appNameGUI()));
-    setSubTitle( tr("<font color=\"#1d2d42\">Enter user credentials to access your %1</font>").arg(Theme::instance()->appNameGUI()));
 
     // ButtonGroup for
     _selectiveSyncButtons = new QButtonGroup;
@@ -310,12 +311,14 @@ OwncloudWizardResultPage::OwncloudWizardResultPage()
     _ui.setupUi(this);
     // no fields to register.
 
+    Theme *theme = Theme::instance();
+    setTitle( tr("<font color=\"%1\" size=\"5\">Everything set up!</font>")
+              .arg(theme->wizardHeaderTitleColor().name()));
+    setSubTitle( tr("<font color=\"%1\">Enter user credentials to access your %2</font>")
+                 .arg(theme->wizardHeaderTitleColor().name()).arg(theme->appNameGUI()));
+
     _ui.pbOpenLocal->setText("Open local folder");
-
     _ui.pbOpenServer->setText(tr("Open %1").arg(Theme::instance()->appNameGUI()));
-
-    setTitle( tr("<font color=\"#ffffff\" size=\"5\">Everything set up!</font>").arg( Theme::instance()->appNameGUI()));
-    setSubTitle( tr("<font color=\"#1d2d42\">Enter user credentials to access your %1</font>").arg(Theme::instance()->appNameGUI()));
 
     _ui.pbOpenLocal->setIcon(QIcon(":/mirall/resources/folder-sync.png"));
     _ui.pbOpenLocal->setText(tr("Open Local Folder"));
@@ -323,8 +326,9 @@ OwncloudWizardResultPage::OwncloudWizardResultPage()
 
     _ui.pbOpenLocal->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
-    _ui.pbOpenServer->setIcon(QIcon(":/mirall/resources/owncloud_logo_blue.png"));
-    _ui.pbOpenServer->setText(tr("Open Server"));
+//    _ui.pbOpenServer->setIcon(QIcon(":/mirall/resources/owncloud_logo_blue.png"));
+    _ui.pbOpenServer->setIcon(theme->applicationIcon().pixmap(48));
+    _ui.pbOpenServer->setText(tr("Open %1").arg(theme->appNameGUI()));
     _ui.pbOpenServer->setIconSize(QSize(48, 48));
     _ui.pbOpenServer->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     setupCustomization();
@@ -394,13 +398,11 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
 
     connect( _setupPage, SIGNAL(connectToOCUrl(QString)), SIGNAL(connectToOCUrl(QString)));
 
-    QPixmap pix(QSize(600, 78));
-    pix.fill(QColor("#1d2d42"));
-    setPixmap( QWizard::BannerPixmap, pix );
 
-    QPixmap logo( ":/mirall/resources/owncloud_logo.png");
-    setPixmap( QWizard::LogoPixmap, logo );
+    Theme *theme = Theme::instance();
     setWizardStyle(QWizard::ModernStyle);
+    setPixmap( QWizard::BannerPixmap, theme->wizardHeaderBanner() );
+    setPixmap( QWizard::LogoPixmap, theme->wizardHeaderLogo() );
     setOption( QWizard::NoBackButtonOnStartPage );
     setOption( QWizard::NoBackButtonOnLastPage );
     setOption( QWizard::NoCancelButton );

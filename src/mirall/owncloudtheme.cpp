@@ -148,5 +148,15 @@ QIcon ownCloudTheme::applicationIcon( ) const
     return themeIcon( QLatin1String("owncloud") );
 }
 
+QColor ownCloudTheme::wizardHeaderBackgroundColor() const
+{
+    return QColor("#1d2d42");
+}
+
+QColor ownCloudTheme::wizardHeaderTitleColor() const
+{
+    return QColor("#ffffff");
+}
+
 }
 

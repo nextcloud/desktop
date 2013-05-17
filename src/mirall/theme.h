@@ -22,6 +22,7 @@ class QIcon;
 class QString;
 class QObject;
 class QPixmap;
+class QColor;
 
 namespace Mirall {
 
@@ -126,6 +127,24 @@ public:
      * :/mirall/theme/<type>.png
      */
     virtual QVariant customMedia( CustomMediaType type );
+
+    /** @return color for the setup wizard */
+    virtual QColor wizardHeaderTitleColor() const;
+
+    /** @return color for the setup wizard. */
+    virtual QColor wizardHeaderBackgroundColor() const;
+
+    /** @return logo for the setup wizard. */
+    virtual QPixmap wizardHeaderLogo() const;
+
+    /**
+     * The default implementation creates a
+     * background based on
+     * \ref wizardHeaderTitleColor().
+     *
+     * @return banner for the setup wizard.
+     */
+    virtual QPixmap wizardHeaderBanner() const;
 
     /**
      * About dialog contents
