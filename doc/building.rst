@@ -28,11 +28,11 @@ This is only needed on the build machine, since non-standard libs
 will be deployed in the app bundle.
 
 The tested and preferred way is to use HomeBrew_. The ownCloud team has
-its own repository which contains non-standard recipes.  Add it with:
+its own repository which contains non-standard recipes.  Add it with::
 
   brew tap owncloud/owncloud
 
-Next, install the missing dependencies:
+Next, install the missing dependencies::
 
   brew install $(brew deps ocsync)
   brew install $(brew deps mirall)
