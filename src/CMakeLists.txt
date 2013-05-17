@@ -3,7 +3,7 @@ include(${QT_USE_FILE})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
 QT4_ADD_RESOURCES ( MIRALL_RC_SRC ../mirall.qrc)
-if ( DEFINED OEM_THEME_DIR)
+if ( IS_DIRECTORY ${OEM_THEME_DIR} )
     QT4_ADD_RESOURCES ( MIRALL_RC_SRC ${OEM_THEME_DIR}/theme.qrc)
     set(theme_dir ${OEM_THEME_DIR}/theme)
 else()

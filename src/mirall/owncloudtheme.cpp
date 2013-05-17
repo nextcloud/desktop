@@ -110,33 +110,6 @@ QIcon ownCloudTheme::trayFolderIcon( const QString& ) const
     return QIcon::fromTheme("folder", fallback);
 }
 
-QIcon ownCloudTheme::syncStateIcon( SyncResult::Status status, bool sysTray ) const
-{
-    // FIXME: Mind the size!
-    QString statusIcon;
-
-    switch( status ) {
-    case SyncResult::Undefined:
-    case SyncResult::NotYetStarted:
-    case SyncResult::Unavailable:
-        statusIcon = QLatin1String("state-offline");
-        break;
-    case SyncResult::SyncRunning:
-        statusIcon = QLatin1String("state-sync");
-        break;
-    case SyncResult::SyncPrepare:
-    case SyncResult::Success:
-        statusIcon = QLatin1String("state-ok");
-        break;
-    case SyncResult::Error:
-    case SyncResult::SetupError:
-    default:
-        statusIcon = QLatin1String("state-error");
-    }
-
-    return themeIcon( statusIcon, sysTray );
-}
-
 QIcon ownCloudTheme::folderDisabledIcon( ) const
 {
     // Fixme: Do we really want the dialog-canel from theme here?

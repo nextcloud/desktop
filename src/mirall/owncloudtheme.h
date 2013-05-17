@@ -31,7 +31,6 @@ public:
 
     QIcon   folderIcon( const QString& ) const;
     QIcon   trayFolderIcon( const QString& ) const;
-    QIcon   syncStateIcon( SyncResult::Status, bool sysTray ) const;
     QIcon   folderDisabledIcon() const;
     QIcon   applicationIcon() const;
 

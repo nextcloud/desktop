@@ -83,7 +83,7 @@ public:
     /**
       * get an sync state icon
       */
-    virtual QIcon   syncStateIcon( SyncResult::Status, bool sysTray = false ) const = 0;
+    virtual QIcon   syncStateIcon( SyncResult::Status, bool sysTray = false ) const;
 
     virtual QIcon   folderDisabledIcon() const = 0;
     virtual QPixmap splashScreen() const = 0;

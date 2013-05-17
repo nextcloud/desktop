@@ -197,9 +197,36 @@ QVariant Theme::customMedia( CustomMediaType type )
     return re;
 }
 
+QIcon Theme::syncStateIcon( SyncResult::Status status, bool sysTray ) const
+{
+    // FIXME: Mind the size!
+    QString statusIcon;
+
+    switch( status ) {
+    case SyncResult::Undefined:
+    case SyncResult::NotYetStarted:
+    case SyncResult::Unavailable:
+        statusIcon = QLatin1String("state-offline");
+        break;
+    case SyncResult::SyncRunning:
+        statusIcon = QLatin1String("state-sync");
+        break;
+    case SyncResult::SyncPrepare:
+    case SyncResult::Success:
+        statusIcon = QLatin1String("state-ok");
+        break;
+    case SyncResult::Error:
+    case SyncResult::SetupError:
+    default:
+        statusIcon = QLatin1String("state-error");
+    }
+
+    return themeIcon( statusIcon, sysTray );
+}
+
 QColor Theme::wizardHeaderTitleColor() const
 {
-    return QColor();
+    return qApp->palette().text().color();
 }
 
 QColor Theme::wizardHeaderBackgroundColor() const
@@ -214,6 +241,10 @@ QPixmap Theme::wizardHeaderLogo() const
 
 QPixmap Theme::wizardHeaderBanner() const
 {
+    QColor c = wizardHeaderBackgroundColor();
+    if (!c.isValid())
+        return QPixmap();
+
     QPixmap pix(QSize(600, 78));
     pix.fill(wizardHeaderBackgroundColor());
     return pix;
