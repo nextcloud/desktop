@@ -19,7 +19,6 @@
 #include <QtCore>
 #include <QtGui>
 
-#include "mirall/miralltheme.h"
 #include "mirall/owncloudtheme.h"
 
 #ifdef THEME_INCLUDE
