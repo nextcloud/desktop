@@ -1202,7 +1202,6 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
             if( state == HBF_USER_ABORTED ) {
               DEBUG_WEBDAV("User Aborted file upload!");
               errno = ERRNO_USER_ABORT;
-              error_code = errno;
               rc = -1;
             }
             /* If the source file changed during submission, lets try again */
@@ -1253,7 +1252,6 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
 
         if( _user_want_abort() ) {
             errno = ERRNO_USER_ABORT;
-            error_code = errno;
             break;
         }
 
