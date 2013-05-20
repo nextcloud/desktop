@@ -35,6 +35,7 @@
 #include "csync_private.h"
 #include "csync_statedb.h"
 #include "csync_util.h"
+#include "csync_time.h"
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.statedb"
 #include "csync_log.h"
@@ -147,7 +148,7 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb) {
   }
 
   /* optimization for speeding up SQLite */
-  result = csync_statedb_query(ctx, "PRAGMA default_synchronous = OFF;");
+  result = csync_statedb_query(ctx, "PRAGMA default_synchronous = FULL;");
   c_strlist_destroy(result);
 
   rc = 0;
@@ -157,20 +158,38 @@ out:
 }
 
 int csync_statedb_write(CSYNC *ctx) {
+
+  struct timespec start, finish;
+
+  csync_gettime(&start);
   /* drop tables */
   if (csync_statedb_drop_tables(ctx) < 0) {
     return -1;
   }
+  csync_gettime(&finish);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+                "## DROPPING tables took %.2f seconds",
+                c_secdiff(finish, start));
 
   /* create tables */
+  csync_gettime(&start);
   if (csync_statedb_create_tables(ctx) < 0) {
     return -1;
   }
+  csync_gettime(&finish);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+                "## CREATE tables took %.2f seconds",
+                c_secdiff(finish, start));
 
   /* insert metadata */
+  csync_gettime(&start);
   if (csync_statedb_insert_metadata(ctx) < 0) {
     return -1;
   }
+  csync_gettime(&finish);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+                "## INSERT took %.2f seconds",
+                c_secdiff(finish, start));
 
   return 0;
 }
@@ -225,39 +244,6 @@ int csync_statedb_create_tables(CSYNC *ctx) {
     return -1;
   }
   c_strlist_destroy(result);
-
-  result = csync_statedb_query(ctx,
-      "CREATE TABLE IF NOT EXISTS metadata("
-      "phash INTEGER(8),"
-      "pathlen INTEGER,"
-      "path VARCHAR(4096),"
-      "inode INTEGER,"
-      "uid INTEGER,"
-      "gid INTEGER,"
-      "mode INTEGER,"
-      "modtime INTEGER(8),"
-      "PRIMARY KEY(phash)"
-      ");"
-      );
-  if (result == NULL) {
-    return -1;
-  }
-  c_strlist_destroy(result);
-
-  result = csync_statedb_query(ctx,
-      "CREATE INDEX IF NOT EXISTS metadata_phash ON metadata(phash);");
-  if (result == NULL) {
-    return -1;
-  }
-  c_strlist_destroy(result);
-
-  result = csync_statedb_query(ctx,
-      "CREATE INDEX IF NOT EXISTS metadata_inode ON metadata(inode);");
-  if (result == NULL) {
-    return -1;
-  }
-  c_strlist_destroy(result);
-
   return 0;
 }
 
@@ -265,7 +251,7 @@ int csync_statedb_drop_tables(CSYNC *ctx) {
   c_strlist_t *result = NULL;
 
   result = csync_statedb_query(ctx,
-      "DROP TABLE IF EXISTS metadata;"
+      "DROP TABLE IF EXISTS metadata_temp;"
       );
   if (result == NULL) {
     return -1;
@@ -349,12 +335,12 @@ static int _insert_metadata_visitor(void *obj, void *data) {
 
 int csync_statedb_insert_metadata(CSYNC *ctx) {
   c_strlist_t *result = NULL;
-  char* errorMessage;
+  struct timespec start, step1, step2, finish;
+
   char buffer[] = "INSERT INTO metadata_temp VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)";
   sqlite3_stmt* stmt;
 
-  /* start a transaction */
-  sqlite3_exec(ctx->statedb.db, "BEGIN TRANSACTION", NULL, NULL, &errorMessage);
+  csync_gettime(&start);
 
   /* prepare the INSERT statement */
   if( ! sqlite3_prepare_v2(ctx->statedb.db, buffer, strlen(buffer), &stmt, NULL) == SQLITE_OK ) {
@@ -364,21 +350,75 @@ int csync_statedb_insert_metadata(CSYNC *ctx) {
   /* and store the insert statement handle to the ctx as userdata. */
   csync_set_userdata(ctx, stmt);
 
+  /* Use transactions as that really speeds up processing */
+  result = csync_statedb_query(ctx, "BEGIN TRANSACTION;");
+  c_strlist_destroy(result);
+
   if (c_rbtree_walk(ctx->local.tree, ctx, _insert_metadata_visitor) < 0) {
+    /* inserting failed. Drop the metadata_temp table. */
+    result = csync_statedb_query(ctx, "ROLLBACK TRANSACTION;");
+    c_strlist_destroy(result);
+
+    result = csync_statedb_query(ctx, "DROP TABLE IF EXISTS metadata_temp;");
+    c_strlist_destroy(result);
+
     return -1;
   }
 
-  sqlite3_exec(ctx->statedb.db, "COMMIT TRANSACTION", NULL, NULL, &errorMessage);
-  sqlite3_finalize(stmt);
-
-  result = csync_statedb_query(ctx, "ALTER TABLE metadata RENAME TO metadata_wait;");
+  result = csync_statedb_query(ctx, "COMMIT TRANSACTION;");
   c_strlist_destroy(result);
 
+  sqlite3_finalize(stmt);
+  csync_gettime(&step1);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+                "Transaction1 took %.2f seconds",
+                 c_secdiff(step1, start));
+
+  /* Drop table metadata */
+  result = csync_statedb_query(ctx, "BEGIN TRANSACTION;");
+  c_strlist_destroy(result);
+
+  result = csync_statedb_query(ctx, "DROP TABLE IF EXISTS metadata;");
+  c_strlist_destroy(result);
+
+  /* Rename temp table to real table. */
   result = csync_statedb_query(ctx, "ALTER TABLE metadata_temp RENAME TO metadata;");
   c_strlist_destroy(result);
 
-  result = csync_statedb_query(ctx, "DROP TABLE metadata_wait;");
+  result = csync_statedb_query(ctx, "COMMIT TRANSACTION;");
   c_strlist_destroy(result);
+
+  csync_gettime(&step2);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+                "ALTERING tables took %.2f seconds",
+                c_secdiff(step2, step1));
+
+  /* Recreate indices */
+  result = csync_statedb_query(ctx, "BEGIN TRANSACTION;");
+  c_strlist_destroy(result);
+
+  result = csync_statedb_query(ctx,
+      "CREATE INDEX IF NOT EXISTS metadata_phash ON metadata(phash);");
+  if (result == NULL) {
+    return -1;
+  }
+  c_strlist_destroy(result);
+
+  result = csync_statedb_query(ctx,
+      "CREATE INDEX IF NOT EXISTS metadata_inode ON metadata(inode);");
+  if (result == NULL) {
+    return -1;
+  }
+  c_strlist_destroy(result);
+
+  result = csync_statedb_query(ctx, "COMMIT TRANSACTION;");
+  c_strlist_destroy(result);
+
+  csync_gettime(&finish);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+                "INDEXING took %.2f seconds",
+                c_secdiff(finish, step2));
+
 
   return 0;
 }
