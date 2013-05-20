@@ -2,50 +2,12 @@
 
 ## Introduction
 
-Mirall synchronizes your folders with another computer.
-
-The ultimate goals of Mirall are:
-
-* Network location aware: should not try to sync against your NAS if you are
-  not in the home network
-* It is a zero-interaction tool. So forget about resolving conflicts.
-* It should work silently and realiably.
-
-Mirall is in early stages of development, and may still eat your
-files or hang your computer.
-
-* Network location awareness not implemented yet
-* Current version supports local and remote (sftp and smb) folders.
-* It is powered by csync (http://www.csync.org), however
-  the user does not know and other tools will be incorporated to provide other
-  functionality.
-
-## Current issues
-
-* No sane way to backup conflicting versions yet, this should be solved
-  in a near csync release (--conflictcopy, available in Jann's branch).
-  Right now the newest copy wins.
-* You can't remove folder configurations
-  Workaround: delete ~/.local/share/data/Mirall/folders/$alias and restart
-* Some tasks block the GUI (initial setup of watchers)
-* May be some concurrency issues
-
-## Roadmap
-
-* Improve robustness to minimize user interaction
-* Improve feedback and sync results
-* Add support for other folder types: tarsnap, duplicity, git (SparkleShare)
-
-## Requirements
-
-* Linux (currently it uses inotify to detect file changes)
-* unison installed in the local and remote machine
-  (you should not care if you got Mirall with your favorite
-   distribution)
+Mirall is a tool to synchronize files from ownCloud Server with your computer.
+It uses OCSync as its syncing backend.
 
 ## Download
 
-### openSUSE
+### Binary packages
 
 * Refer to the download page http://owncloud.org/sync-clients/
 
@@ -55,23 +17,12 @@ files or hang your computer.
 
 ## Building the source code
 
-You need Qt 4.7 and cmake:
-
-    mkdir build
-    cd build
-    cmake ..
-    make
-
-To generate a tarball:
-
-    mkdir build
-    cd build
-    cmake ..
-    make package_source
+Please refer to [Building the Client](http://doc.owncloud.org/desktop/1.2/building.html)
+in the ownCloud client manual.
 
 ## Authors
 
-* Duncan Mac-Vicar P. <duncan@kde.org>
+* Duncan Mac-Vicar P. <duncan@kde.org> (original Mirall author)
 * Klaas Freitag <freitag@owncloud.com>
 * Daniel Molkentin <danimo@owncloud.com>
 
