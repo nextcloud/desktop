@@ -74,55 +74,89 @@ static void _csync_win32_hide_file( const char *file ) {
 #endif
 }
 
-static int _csync_statedb_check(CSYNC *ctx, const char *statedb) {
-  int fd = -1, rc;
-  ssize_t r;
-  char buf[BUF_SIZE] = {0};
-  sqlite3 *db = NULL;
-  const _TCHAR *wstatedb;
+static int _csync_check_db_integrity(CSYNC *ctx) {
+    c_strlist_t *result = NULL;
+    int rc = -1;
 
-  /* check db version */
+    if (ctx == NULL) {
+        return -1;
+    }
+    if (ctx->statedb.db == NULL) {
+        return -1;
+    }
+
+    result = csync_statedb_query(ctx, "PRAGMA quick_check;");
+    if (result != NULL) {
+        /* There is  a result */
+        if (result->count > 0) {
+            if (c_streq(result->vector[0], "ok")) {
+                rc = 0;
+            }
+        }
+        c_strlist_destroy(result);
+    }
+
+    return rc;
+
+}
+
+
+static int _csync_statedb_check(CSYNC *ctx, const char *statedb) {
+    int fd = -1, rc;
+    ssize_t r;
+    char buf[BUF_SIZE] = {0};
+    const _TCHAR *wstatedb;
+
+    /* check db version */
 #ifdef _WIN32
-  _fmode = _O_BINARY;
+    _fmode = _O_BINARY;
 #endif
 
-  wstatedb = c_multibyte(statedb);
-  fd = _topen(wstatedb, O_RDONLY);
-  c_free_multibyte(wstatedb);
+    wstatedb = c_multibyte(statedb);
+    fd = _topen(wstatedb, O_RDONLY);
 
-  if (fd >= 0) {
-    r = read(fd, (void *) buf, sizeof(buf) - 1);
-    close(fd);
-    if (r >= 0) {
-      buf[BUF_SIZE - 1] = '\0';
-      if (c_streq(buf, "SQLite format 3")) {
-        if (sqlite3_open(statedb, &db ) == SQLITE_OK) {
-          /* everything is fine */
-          sqlite3_close(db);
-          return 0;
-        } else {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "database corrupted, removing!");
-          unlink(statedb);
+    if (fd >= 0) {
+        r = read(fd, (void *) buf, sizeof(buf) - 1);
+        close(fd);
+        if (r >= 0) {
+            buf[BUF_SIZE - 1] = '\0';
+            if (c_streq(buf, "SQLite format 3")) {
+                if (sqlite3_open(statedb, &ctx->statedb.db ) == SQLITE_OK) {
+                    rc = _csync_check_db_integrity(ctx);
+                    if( rc < 0 ) {
+                        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Integrity check failed!");
+                    } else {
+                        /* everything is fine */
+                        sqlite3_close(ctx->statedb.db);
+                        ctx->statedb.db = 0;
+                        c_free_multibyte(wstatedb);
+                        return 0;
+                    }
+                } else {
+                    // FIXME: Better error analysis.
+                    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "database corrupted, removing!");
+                }
+                sqlite3_close(ctx->statedb.db);
+            } else {
+                CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "sqlite version mismatch");
+            }
         }
-        sqlite3_close(db);
-      } else {
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "sqlite version mismatch");
-        unlink(statedb);
-      }
+        _tunlink(wstatedb);
     }
-  }
 
-  /* create database */
-  rc = sqlite3_open(statedb, &db);
-  if (rc == SQLITE_OK) {
-    sqlite3_close(db);
-    _csync_win32_hide_file(statedb);
-    return 0;
-  }
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "sqlite3_open failed: %s %s", sqlite3_errmsg(db), statedb);
-  sqlite3_close(db);
+    c_free_multibyte(wstatedb);
 
-  return -1;
+    /* create database */
+    rc = sqlite3_open(statedb, &ctx->statedb.db);
+    if (rc == SQLITE_OK) {
+        sqlite3_close(ctx->statedb.db);
+        _csync_win32_hide_file(statedb);
+        return 0;
+    }
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "sqlite3_open failed: %s %s", sqlite3_errmsg(ctx->statedb.db), statedb);
+    sqlite3_close(ctx->statedb.db);
+    ctx->statedb.db = 0;
+    return -1;
 }
 
 static int _csync_statedb_is_empty(CSYNC *ctx) {
@@ -143,47 +177,6 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb) {
   c_strlist_t *result = NULL;
   char *statedb_tmp = NULL;
 
-#if 0
-  /* This was commented out to recreate the db after upgrading. */
-
-  /* check if the statedb is existing. If not, check if there is still one
-   * left over in $HOME/.csync and copy it over (migration path)
-   */
-  if( !c_isfile(statedb) ) {
-      char *home = NULL;
-      char *home_statedb = NULL;
-      char *statedb_file = NULL;
-
-      /* there is no statedb at the expected place. */
-
-      home = csync_get_user_home_dir();
-      statedb_file = c_basename(statedb);
-
-      rc = asprintf(&home_statedb, "%s/%s/%s", home, CSYNC_CONF_DIR, statedb_file);
-      SAFE_FREE(home);
-      SAFE_FREE(statedb_file);
-
-      if (rc < 0) {
-          goto out;
-      }
-
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "statedb %s not found, checking %s",
-                statedb, home_statedb);
-
-      /* check the home file and copy to new statedb if existing. */
-      if(c_isfile(home_statedb)) {
-          if (c_copy(home_statedb, statedb, 0644) < 0) {
-            /* copy failed, but that is not reason to die. */
-              CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Could not copy file %s => %s",
-                        home_statedb, statedb );
-          } else {
-              CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "Copied %s => %s",
-                        home_statedb, statedb );
-          }
-      }
-      SAFE_FREE(home_statedb);
-  }
-#endif
   /* csync_statedb_check tries to open the statedb and creates it in case
    * its not there.
    */
@@ -234,7 +227,7 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb) {
   }
 
   /* optimization for speeding up SQLite */
-  result = csync_statedb_query(ctx, "PRAGMA default_synchronous = FULL;");
+  result = csync_statedb_query(ctx, "PRAGMA synchronous = FULL;");
   c_strlist_destroy(result);
   result = csync_statedb_query(ctx, "PRAGMA case_sensitive_like = ON;");
   c_strlist_destroy(result);
@@ -247,6 +240,7 @@ out:
 
 int csync_statedb_write(CSYNC *ctx) {
   bool recreate_db = false;
+
   /* drop tables */
   if (csync_statedb_drop_tables(ctx) < 0) {
     recreate_db = true;
@@ -337,7 +331,7 @@ int csync_statedb_create_tables(CSYNC *ctx) {
    * creation of the statedb.
    */
   result = csync_statedb_query(ctx,
-      "CREATE TEMPORARY TABLE IF NOT EXISTS metadata_temp("
+      "CREATE TABLE IF NOT EXISTS metadata_temp("
       "phash INTEGER(8),"
       "pathlen INTEGER,"
       "path VARCHAR(4096),"
@@ -352,47 +346,6 @@ int csync_statedb_create_tables(CSYNC *ctx) {
       ");"
       );
 
-  if (result == NULL) {
-    return -1;
-  }
-  c_strlist_destroy(result);
-
-  result = csync_statedb_query(ctx,
-      "CREATE TABLE IF NOT EXISTS metadata("
-      "phash INTEGER(8),"
-      "pathlen INTEGER,"
-      "path VARCHAR(4096),"
-      "inode INTEGER,"
-      "uid INTEGER,"
-      "gid INTEGER,"
-      "mode INTEGER,"
-      "modtime INTEGER(8),"
-      "type INTEGER,"
-      "md5 VARCHAR(32),"
-      "PRIMARY KEY(phash)"
-      ");"
-      );
-  if (result == NULL) {
-    return -1;
-  }
-  c_strlist_destroy(result);
-
-  result = csync_statedb_query(ctx,
-      "CREATE INDEX metadata_phash ON metadata(phash);");
-  if (result == NULL) {
-    return -1;
-  }
-  c_strlist_destroy(result);
-
-  result = csync_statedb_query(ctx,
-      "CREATE INDEX metadata_inode ON metadata(inode);");
-  if (result == NULL) {
-    return -1;
-  }
-  c_strlist_destroy(result);
-
-  result = csync_statedb_query(ctx,
-      "CREATE INDEX metadata_md5 ON metadata(md5);");
   if (result == NULL) {
     return -1;
   }
@@ -448,7 +401,7 @@ int csync_statedb_drop_tables(CSYNC *ctx) {
   c_strlist_t *result = NULL;
 
   result = csync_statedb_query(ctx,
-      "DROP TABLE IF EXISTS metadata;"
+      "DROP TABLE IF EXISTS metadata_temp;"
       );
   if (result == NULL) {
     return -1;
@@ -477,11 +430,21 @@ int csync_statedb_drop_tables(CSYNC *ctx) {
 static int _insert_metadata_visitor(void *obj, void *data) {
   csync_file_stat_t *fs = NULL;
   CSYNC *ctx = NULL;
-  char *stmt = NULL;
+  sqlite3_stmt *stmt = NULL;
   int rc = -1;
 
   fs = (csync_file_stat_t *) obj;
   ctx = (CSYNC *) data;
+  if (ctx == NULL) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Statement visitor data invalid!");
+    return -1;
+  }
+
+  stmt = csync_get_userdata(ctx);
+  if (stmt == NULL) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Statement visitor data invalid!");
+    return -1;
+  }
 
   switch (fs->instruction) {
     /*
@@ -496,46 +459,44 @@ static int _insert_metadata_visitor(void *obj, void *data) {
     case CSYNC_INSTRUCTION_NONE:
     /* As we only sync the local tree we need this flag here */
     case CSYNC_INSTRUCTION_UPDATED:
-    case CSYNC_INSTRUCTION_CONFLICT:
+  case CSYNC_INSTRUCTION_CONFLICT:
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
-        "SQL statement: INSERT INTO metadata_temp \n"
-        "\t\t\t(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5) VALUES \n"
-        "\t\t\t(%lld, %lu, %s, %lld, %u, %u, %u, %lu, %d, %s);",
-        (long long signed int) fs->phash,
-        (long unsigned int) fs->pathlen,
-        fs->path,
-        (long long signed int) fs->inode,
-        fs->uid,
-        fs->gid,
-        fs->mode,
-        fs->modtime,
-        fs->type,
+                "SQL statement: INSERT INTO metadata_temp \n"
+                "\t\t\t(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5) VALUES \n"
+                "\t\t\t(%lld, %lu, %s, %lld, %u, %u, %u, %lu, %d, %s);",
+                (long long signed int) fs->phash,
+                (long unsigned int) fs->pathlen,
+                fs->path,
+                (long long signed int) fs->inode,
+                fs->uid,
+                fs->gid,
+                fs->mode,
+                fs->modtime,
+                fs->type,
                 fs->md5 ? fs->md5 : "<empty>");
 
       /*
        * The phash needs to be long long unsigned int or it segfaults on PPC
        */
-      stmt = sqlite3_mprintf("INSERT INTO metadata_temp "
-        "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5) VALUES "
-        "(%lld, %lu, '%q', %lld, %u, %u, %u, %lu, %d, '%s');",
-        (long long signed int) fs->phash,
-        (long unsigned int) fs->pathlen,
-        fs->path,
-        (long long signed int) fs->inode,
-        fs->uid,
-        fs->gid,
-        fs->mode,
-        fs->modtime,
-        fs->type,
-        fs->md5);
+      sqlite3_bind_int64(stmt, 1, (long long signed int) fs->phash);
+      sqlite3_bind_int64(stmt, 2, (long unsigned int) fs->pathlen);
+      sqlite3_bind_text( stmt, 3, fs->path, fs->pathlen, SQLITE_STATIC);
+      sqlite3_bind_int64(stmt, 4, (long long signed int) fs->inode);
+      sqlite3_bind_int(  stmt, 5, fs->uid);
+      sqlite3_bind_int(  stmt, 6, fs->gid);
+      sqlite3_bind_int(  stmt, 7, fs->mode);
+      sqlite3_bind_int64(stmt, 8, fs->modtime);
+      sqlite3_bind_int(  stmt, 9, fs->type);
+      sqlite3_bind_text( stmt,10, fs->md5, strlen(fs->md5), SQLITE_STATIC);
 
-      if (stmt == NULL) {
-        return -1;
+      rc = sqlite3_step(stmt);
+      if ( rc != SQLITE_DONE) {
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "sqlite insert failed: %s", sqlite3_errmsg(ctx->statedb.db));
+          rc = -1;
       }
 
-      rc = csync_statedb_insert(ctx, stmt);
+    sqlite3_reset(stmt);
 
-      sqlite3_free(stmt);
       break;
     default:
       CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN,
@@ -550,20 +511,64 @@ static int _insert_metadata_visitor(void *obj, void *data) {
 
 int csync_statedb_insert_metadata(CSYNC *ctx) {
   c_strlist_t *result = NULL;
+  char buffer[] = "INSERT INTO metadata_temp VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)";
+  sqlite3_stmt* stmt;
+  int rc;
 
-  if (c_rbtree_walk(ctx->local.tree, ctx, _insert_metadata_visitor) < 0) {
+  /* start a transaction */
+  result = csync_statedb_query(ctx, "BEGIN TRANSACTION;");
+  c_strlist_destroy(result);
+
+  /* prepare the INSERT statement */
+  rc = sqlite3_prepare_v2(ctx->statedb.db, buffer, strlen(buffer), &stmt, NULL);
+  if( rc != SQLITE_OK ) {
     return -1;
   }
 
-  if (csync_statedb_insert(ctx, "INSERT INTO metadata SELECT * FROM metadata_temp;") < 0) {
+  /* and store the insert statement handle to the ctx as userdata. */
+  csync_set_userdata(ctx, stmt);
+
+  rc = c_rbtree_walk(ctx->local.tree, ctx, _insert_metadata_visitor);
+
+  /* Commit the result even if there was an error */
+  result = csync_statedb_query(ctx, "COMMIT TRANSACTION;");
+  c_strlist_destroy(result);
+
+  /* FIXME: How do we deal with an error in rbtree_walk? No rollback needed actually */
+  if (rc < 0) {
+    /* We stay with metadata and remove the tmp database */
+    result = csync_statedb_query(ctx, "DROP TABLE metadata_temp;");
+    c_strlist_destroy(result);
+
     return -1;
   }
 
-  result = csync_statedb_query(ctx, "DROP TABLE metadata_temp;");
+  /* If all goes well, drop metadata and rename metadata_temp */
+  result = csync_statedb_query(ctx, "BEGIN TRANSACTION;");
+  c_strlist_destroy(result);
+
+  result = csync_statedb_query(ctx, "DROP TABLE IF EXISTS metadata;");
+  c_strlist_destroy(result);
+
+  result = csync_statedb_query(ctx, "ALTER TABLE metadata_temp RENAME TO metadata;");
+  c_strlist_destroy(result);
+
+  result = csync_statedb_query(ctx,
+                               "CREATE INDEX IF NOT EXISTS metadata_phash ON metadata(phash);");
   if (result == NULL) {
-    return -1;
+      return -1;
   }
+  c_strlist_destroy(result);
 
+  result = csync_statedb_query(ctx,
+                               "CREATE INDEX IF NOT EXISTS metadata_inode ON metadata(inode);");
+  if (result == NULL) {
+      return -1;
+  }
+  c_strlist_destroy(result);
+
+
+  result = csync_statedb_query(ctx, "COMMIT TRANSACTION;");
   c_strlist_destroy(result);
 
   return 0;
@@ -986,7 +991,6 @@ int csync_statedb_write_progressinfo(CSYNC* ctx, csync_progressinfo_t* pi)
       pi->md5,
       pi->chunk,
       pi->transferId,
-      pi->error,
       pi->error,
       pi->tmpfile,
       pi->error_string
