@@ -39,9 +39,6 @@ OwncloudSetupWizard::OwncloudSetupWizard( FolderMan *folderMan, Theme *theme, QO
     connect( _ocWizard, SIGNAL(connectToOCUrl( const QString& ) ),
              this, SLOT(slotConnectToOCUrl( const QString& )));
 
-    connect( _ocWizard, SIGNAL(installOCServer()),
-             this, SLOT(slotInstallOCServer()));
-
     connect( _ocWizard, SIGNAL(finished(int)),this,SLOT(slotAssistantFinished(int)));
 
     connect( _ocWizard, SIGNAL(clearPendingRequests()),
