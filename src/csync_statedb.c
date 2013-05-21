@@ -261,14 +261,20 @@ int csync_statedb_write(CSYNC *ctx) {
 
   if (recreate_db) {
     char *statedb_tmp;
+    _TCHAR *wstatedb_tmp = NULL;
+
     int rc;
     if (asprintf(&statedb_tmp, "%s.ctmp", ctx->statedb.file) < 0) {
       return -1;
     }
     /* close the temporary database */
     sqlite3_close(ctx->statedb.db);
+
     /*  remove a possible corrupted file if it exists */
-    unlink(statedb_tmp);
+    wstatedb_tmp = c_multibyte(statedb_tmp);
+    _tunlink(wstatedb_tmp);
+    c_free_multibyte(wstatedb_tmp);
+
     rc = sqlite3_open(statedb_tmp, &ctx->statedb.db);
     SAFE_FREE(statedb_tmp);
     if (rc != SQLITE_OK) {
@@ -296,6 +302,7 @@ int csync_statedb_write(CSYNC *ctx) {
 int csync_statedb_close(CSYNC *ctx, const char *statedb, int jwritten) {
   char *statedb_tmp = NULL;
   int rc = 0;
+  _TCHAR *wstatedb_tmp = NULL;
 
   /* close the temporary database */
   sqlite3_close(ctx->statedb.db);
@@ -306,13 +313,15 @@ int csync_statedb_close(CSYNC *ctx, const char *statedb, int jwritten) {
 
   /* if we successfully synchronized, overwrite the original statedb */
   if (jwritten) {
-    rc = c_copy(statedb_tmp, statedb, 0644);
-    if (rc == 0) {
-      unlink(statedb_tmp);
-    }
-  } else {
-    unlink(statedb_tmp);
+      rc = c_copy(statedb_tmp, statedb, 0644);
   }
+
+  wstatedb_tmp = c_multibyte(statedb_tmp);
+  if (wstatedb_tmp) {
+      _tunlink(wstatedb_tmp);
+      c_free_multibyte(wstatedb_tmp);
+  }
+
   SAFE_FREE(statedb_tmp);
 
   return rc;
