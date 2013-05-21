@@ -125,7 +125,7 @@ void OwncloudSetupPage::setOCUser( const QString & user )
     }
 }
 
-void OwncloudSetupPage::setOCUrl( const QString& newUrl )
+void OwncloudSetupPage::setServerUrl( const QString& newUrl )
 {
     QString url( newUrl );
     if( url.isEmpty() ) {
@@ -157,7 +157,7 @@ void OwncloudSetupPage::setupCustomization()
 
     QString fixUrl = theme->overrideServerUrl();
     if( !fixUrl.isEmpty() ) {
-        setOCUrl( fixUrl );
+        setServerUrl( fixUrl );
         _ui.leUrl->setEnabled( false );
         _ui.leUrl->hide();
     }
@@ -323,6 +323,7 @@ OwncloudWizardResultPage::OwncloudWizardResultPage()
     _ui.pbOpenLocal->setIcon(QIcon(":/mirall/resources/folder-sync.png"));
     _ui.pbOpenLocal->setText(tr("Open Local Folder"));
     _ui.pbOpenLocal->setIconSize(QSize(48, 48));
+    connect(_ui.pbOpenLocal, SIGNAL(clicked()), SLOT(slotOpenLocal()));
 
     _ui.pbOpenLocal->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
@@ -331,6 +332,7 @@ OwncloudWizardResultPage::OwncloudWizardResultPage()
     _ui.pbOpenServer->setText(tr("Open %1").arg(theme->appNameGUI()));
     _ui.pbOpenServer->setIconSize(QSize(48, 48));
     _ui.pbOpenServer->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    connect(_ui.pbOpenServer, SIGNAL(clicked()), SLOT(slotOpenServer()));
     setupCustomization();
 }
 
@@ -349,13 +351,9 @@ bool OwncloudWizardResultPage::isComplete() const
     return _complete;
 }
 
-void OwncloudWizardResultPage::setOwncloudUrl( const QString& url )
-{
-    _url = url;
-}
-
 void OwncloudWizardResultPage::setFolderNames( const QString& localFolder, const QString& remoteFolder )
 {
+    _localFolder = localFolder;
     QString text;
     if( remoteFolder == QLatin1String("/") ||
             remoteFolder.isEmpty() ) {
@@ -365,6 +363,7 @@ void OwncloudWizardResultPage::setFolderNames( const QString& localFolder, const
     }
     _ui.localFolderLabel->setText( text );
 }
+
 
 void OwncloudWizardResultPage::setupCustomization()
 {
@@ -473,13 +472,25 @@ void OwncloudWizard::appendToConfigurationLog( const QString& msg, LogType type 
 void OwncloudWizard::setOCUrl( const QString& url )
 {
   _oCUrl = url;
-  _setupPage->setOCUrl( url );
+  _setupPage->setServerUrl( url );
 }
 
 void OwncloudWizard::setOCUser( const QString& user )
 {
   _oCUser = user;
   _setupPage->setOCUser( user );
+}
+
+void OwncloudWizardResultPage::slotOpenLocal()
+{
+    QDesktopServices::openUrl(QUrl(_localFolder));
+}
+
+void OwncloudWizardResultPage::slotOpenServer()
+{
+    QUrl url = field("OCUrl").toUrl();
+    qDebug() << Q_FUNC_INFO << url;
+    QDesktopServices::openUrl(url);
 }
 
 } // end namespace

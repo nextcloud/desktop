@@ -45,7 +45,7 @@ public:
   virtual bool isComplete() const;
   virtual void initializePage();
   virtual int nextId() const;
-  void setOCUrl( const QString& );
+  void setServerUrl( const QString& );
   void setOCUser( const QString& );
   void setAllowPasswordStorage( bool );
   bool validatePage();
@@ -149,14 +149,17 @@ public:
 
 public slots:
   void setComplete(bool complete);
-  void setOwncloudUrl( const QString& );
   void setFolderNames( const QString&, const QString& );
+
+protected slots:
+  void slotOpenLocal();
+  void slotOpenServer();
 
 protected:
   void setupCustomization();
 
 private:
-  QString _url;
+  QString _localFolder;
   bool _complete;
 
   Ui_OwncloudWizardResultPage _ui;
