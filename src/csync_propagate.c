@@ -156,6 +156,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   int count = 0;
   int flags = 0;
   bool do_pre_copy_stat = false; /* do an additional stat before actually copying */
+  csync_progressinfo_t *pi = NULL;
 
   csync_hbf_info_t hbf_info = { 0, 0 };
   csync_progressinfo_t *progress_info = NULL;
@@ -174,7 +175,6 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     hbf_info.transfer_id = progress_info->transferId;
   }
 
-  csync_progressinfo_t *pi = NULL;
   pi = csync_statedb_get_progressinfo(ctx, st->phash, st->modtime, st->md5);
   if (pi && pi->error > 3) {
     if (!st->error_string && pi->error_string)
