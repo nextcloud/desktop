@@ -26,21 +26,17 @@
 
 void Systray::showMessage(const QString & title, const QString & message, MessageIcon icon, int millisecondsTimeoutHint)
 {
-    bool useFdoNotifications = false;
 
 #ifdef USE_FDO_NOTIFICATIONS
     if(QDBusInterface(NOTIFICATIONS_SERVICE, NOTIFICATIONS_PATH, NOTIFICATIONS_IFACE).isValid()) {
-        useFdoNotifications = true;
-    }
-#endif
-
-    if (useFdoNotifications) {
         QList<QVariant> args = QList<QVariant>() << "owncloud" << quint32(0) << "owncloud"
                                                  << title << message << QStringList () << QVariantMap() << qint32(-1);
         QDBusMessage method = QDBusMessage::createMethodCall(NOTIFICATIONS_SERVICE, NOTIFICATIONS_PATH, NOTIFICATIONS_IFACE, "Notify");
         method.setArguments(args);
         QDBusConnection::sessionBus().asyncCall(method);
-    } else {
+    } else
+#endif
+    {
         QSystemTrayIcon::showMessage(title, message, icon, millisecondsTimeoutHint);
     }
 }
