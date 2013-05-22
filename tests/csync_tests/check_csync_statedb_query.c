@@ -36,6 +36,7 @@ static void setup_db(void **state)
     CSYNC *csync;
     char *stmt = NULL;
     int rc;
+    c_strlist_t *result = NULL;
 
     setup(state);
     csync = *state;
@@ -43,19 +44,39 @@ static void setup_db(void **state)
     rc = csync_statedb_create_tables(csync);
     assert_int_equal(rc, 0);
 
-  stmt = sqlite3_mprintf("INSERT INTO metadata"
-    "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5) VALUES"
-    "(%lu, %d, '%q', %d, %d, %d, %d, %lu, %d, %lu);",
-    42,
-    42,
-    "It's a rainy day",
-    23,
-    42,
-    42,
-    42,
-    42,
-     2,
-    43);
+    result = csync_statedb_query(csync,
+        "CREATE TABLE IF NOT EXISTS metadata ("
+        "phash INTEGER(8),"
+        "pathlen INTEGER,"
+        "path VARCHAR(4096),"
+        "inode INTEGER,"
+        "uid INTEGER,"
+        "gid INTEGER,"
+        "mode INTEGER,"
+        "modtime INTEGER(8),"
+        "type INTEGER,"
+        "md5 VARCHAR(32),"
+        "PRIMARY KEY(phash)"
+        ");"
+        );
+
+    assert_non_null(result);
+    c_strlist_destroy(result);
+
+
+    stmt = sqlite3_mprintf("INSERT INTO metadata"
+                           "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5) VALUES"
+                           "(%lu, %d, '%q', %d, %d, %d, %d, %lu, %d, %lu);",
+                           42,
+                           42,
+                           "It's a rainy day",
+                           23,
+                           42,
+                           42,
+                           42,
+                           42,
+                           2,
+                           43);
 
     rc = csync_statedb_insert(csync, stmt);
     sqlite3_free(stmt);
@@ -169,16 +190,17 @@ static void check_csync_statedb_create_tables(void **state)
     assert_int_equal(rc, 0);
 
     stmt = sqlite3_mprintf("INSERT INTO metadata_temp"
-           "(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES"
-           "(%lu, %d, '%q', %d, %d, %d, %d, %lu);",
-           42,
+           "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5) VALUES"
+                           "(%lu, %d, '%q', %d, %d, %d, %d, %ld, %d, '%q');",
+           (ulong)42,
            42,
            "It's a rainy day",
            42,
            42,
            42,
            42,
-           42);
+           (long)42,
+            2, "xsyxcmfkdsjaf");
 
     rc = csync_statedb_insert(csync, stmt);
     assert_true(rc > 0);
