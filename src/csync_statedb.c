@@ -152,7 +152,7 @@ static int _csync_statedb_check(CSYNC *ctx, const char *statedb) {
 
     if (rc == SQLITE_OK) {
         _csync_win32_hide_file(statedb);
-        return 0;
+        return 1;
     }
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "sqlite3_open failed: %s %s", sqlite3_errmsg(ctx->statedb.db), statedb);
     return -1;
@@ -173,13 +173,15 @@ static int _csync_statedb_is_empty(CSYNC *ctx) {
 
 int csync_statedb_load(CSYNC *ctx, const char *statedb) {
   int rc = -1;
+  int check_rc = -1;
   c_strlist_t *result = NULL;
   char *statedb_tmp = NULL;
 
   /* csync_statedb_check tries to open the statedb and creates it in case
    * its not there.
    */
-  if (_csync_statedb_check(ctx, statedb) < 0) {
+  check_rc = _csync_statedb_check(ctx, statedb);
+  if (check_rc < 0) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "ERR: checking csync database failed - bail out.");
 
     rc = -1;
@@ -218,7 +220,8 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb) {
     goto out;
   }
 
-  if (_csync_statedb_is_empty(ctx)) {
+  /* If check_rc == 1 the database is new and empty as a result. */
+  if ((check_rc == 1) || _csync_statedb_is_empty(ctx)) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "statedb doesn't exist");
     csync_set_statedb_exists(ctx, 0);
   } else {
