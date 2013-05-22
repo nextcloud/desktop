@@ -176,7 +176,8 @@ csync_vio_method_handle_t *csync_vio_local_opendir(const char *name) {
     SAFE_FREE(handle);
     return NULL;
   }
-  handle->path = c_utf8(dirname);
+
+  handle->path = c_strdup(name);
   c_free_multibyte(dirname);
 
   return (csync_vio_method_handle_t *) handle;
