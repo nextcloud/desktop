@@ -123,20 +123,19 @@ static int _csync_statedb_check(CSYNC *ctx, const char *statedb) {
             if (c_streq(buf, "SQLite format 3")) {
                 if (sqlite3_open(statedb, &ctx->statedb.db ) == SQLITE_OK) {
                     rc = _csync_check_db_integrity(ctx);
-                    if( rc < 0 ) {
-                        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Integrity check failed!");
-                    } else {
+                    sqlite3_close(ctx->statedb.db);
+                    ctx->statedb.db = 0;
+
+                    if( rc >= 0 ) {
                         /* everything is fine */
-                        sqlite3_close(ctx->statedb.db);
-                        ctx->statedb.db = 0;
                         c_free_multibyte(wstatedb);
                         return 0;
                     }
+                    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Integrity check failed!");
                 } else {
                     // FIXME: Better error analysis.
                     CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "database corrupted, removing!");
                 }
-                sqlite3_close(ctx->statedb.db);
             } else {
                 CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "sqlite version mismatch");
             }
@@ -148,14 +147,14 @@ static int _csync_statedb_check(CSYNC *ctx, const char *statedb) {
 
     /* create database */
     rc = sqlite3_open(statedb, &ctx->statedb.db);
+    sqlite3_close(ctx->statedb.db);
+    ctx->statedb.db = 0;
+
     if (rc == SQLITE_OK) {
-        sqlite3_close(ctx->statedb.db);
         _csync_win32_hide_file(statedb);
         return 0;
     }
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "sqlite3_open failed: %s %s", sqlite3_errmsg(ctx->statedb.db), statedb);
-    sqlite3_close(ctx->statedb.db);
-    ctx->statedb.db = 0;
     return -1;
 }
 
@@ -299,7 +298,10 @@ int csync_statedb_close(CSYNC *ctx, const char *statedb, int jwritten) {
   _TCHAR *wstatedb_tmp = NULL;
 
   /* close the temporary database */
-  sqlite3_close(ctx->statedb.db);
+  rc = sqlite3_close(ctx->statedb.db);
+  if( rc == SQLITE_BUSY ) {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "WARN: sqlite3_close got busy!");
+  }
 
   if (asprintf(&statedb_tmp, "%s.ctmp", statedb) < 0) {
     return -1;
