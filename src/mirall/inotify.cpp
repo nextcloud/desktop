@@ -97,8 +97,6 @@ void INotify::slotActivated(int fd)
             foreach (QString path, paths)
                 emit notifyEvent(event->mask, event->cookie, path + "/" + QString::fromUtf8(event->name));
         }
-        else
-            qWarning() << "n is NULL";
 
         // increment counter
         i += sizeof(struct inotify_event) + event->len;
