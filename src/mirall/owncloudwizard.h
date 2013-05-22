@@ -51,8 +51,7 @@ public:
   bool validatePage();
   QString url() const;
   void setConnected(bool complete);
-  QString selectedLocalFolder() const;
-  void setFolderNames( const QString&, const QString& remoteFolder = QString::null);
+  void setRemoteFolder( const QString& remoteFolder);
 
   SyncMode syncMode();
 
@@ -69,6 +68,9 @@ protected slots:
 
 signals:
   void connectToOCUrl( const QString& );
+
+protected:
+    void updateFoldersInfo();
 
 private:
   Ui_OwncloudSetupPage _ui;
@@ -109,7 +111,7 @@ public:
     OwncloudSetupPage::SyncMode syncMode();
 
 public slots:
-    void setFolderNames( const QString&, const QString& );
+    void setRemoteFolder( const QString& );
     void appendToConfigurationLog( const QString& msg, LogType type = LogParagraph );
     void slotCurrentPageChanged( int );
 
@@ -146,10 +148,11 @@ public:
   ~OwncloudWizardResultPage();
 
   bool isComplete() const;
+  void initializePage();
+  void setRemoteFolder( const QString& remoteFolder);
 
 public slots:
   void setComplete(bool complete);
-  void setFolderNames( const QString&, const QString& );
 
 protected slots:
   void slotOpenLocal();
@@ -160,6 +163,7 @@ protected:
 
 private:
   QString _localFolder;
+  QString _remoteFolder;
   bool _complete;
 
   Ui_OwncloudWizardResultPage _ui;

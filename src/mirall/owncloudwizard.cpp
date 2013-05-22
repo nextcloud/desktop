@@ -196,6 +196,21 @@ void OwncloudSetupPage::initializePage()
 {
     _connected = false;
     _checking  = false;
+    updateFoldersInfo();
+}
+
+void OwncloudSetupPage::updateFoldersInfo()
+{
+    const QString localFolder = wizard()->property("localFolder").toString();
+    _ui.pbSelectLocalFolder->setText(localFolder);
+    QString t;
+    if( _remoteFolder.isEmpty() || _remoteFolder == QLatin1String("/") ) {
+        t = tr("Your entire account will be synced to the local folder '%1'").arg(localFolder);
+    } else {
+        t = tr("ownCloud folder '%1' is synced to local folder '%2'").arg(_remoteFolder).arg(localFolder);
+    }
+
+    _ui.syncModeLabel->setText(t);
 }
 
 int OwncloudSetupPage::nextId() const
@@ -268,25 +283,12 @@ OwncloudSetupPage::SyncMode OwncloudSetupPage::syncMode()
     return BoxMode;
 }
 
-void OwncloudSetupPage::setFolderNames( const QString& localFolder, const QString& remoteFolder )
+void OwncloudSetupPage::setRemoteFolder( const QString& remoteFolder )
 {
-    _ui.pbSelectLocalFolder->setText(localFolder);
-    if( !remoteFolder.isEmpty() )
+    if( !remoteFolder.isEmpty() ) {
         _remoteFolder = remoteFolder;
-
-    QString t;
-    if( _remoteFolder.isEmpty() || _remoteFolder == QLatin1String("/") ) {
-        t = tr("Your entire account will be synced to the local folder '%1'").arg(localFolder);
-    } else {
-        t = tr("ownCloud folder '%1' is synced to local folder '%2'").arg(_remoteFolder).arg(localFolder);
+        updateFoldersInfo();
     }
-
-    _ui.syncModeLabel->setText(t);
-}
-
-QString OwncloudSetupPage::selectedLocalFolder() const
-{
-    return _ui.pbSelectLocalFolder->text();
 }
 
 void OwncloudSetupPage::slotSelectFolder()
@@ -294,7 +296,8 @@ void OwncloudSetupPage::slotSelectFolder()
 
     QString dir = QFileDialog::getExistingDirectory(0, tr("Local Sync Folder"), QDir::homePath());
     if( !dir.isEmpty() ) {
-        setFolderNames(dir);
+        wizard()->setProperty("localFolder", dir);
+        updateFoldersInfo();
     }
 }
 
@@ -351,19 +354,23 @@ bool OwncloudWizardResultPage::isComplete() const
     return _complete;
 }
 
-void OwncloudWizardResultPage::setFolderNames( const QString& localFolder, const QString& remoteFolder )
+void OwncloudWizardResultPage::initializePage()
 {
-    _localFolder = localFolder;
+    const QString localFolder = wizard()->property("localFolder").toString();
     QString text;
-    if( remoteFolder == QLatin1String("/") ||
-            remoteFolder.isEmpty() ) {
+    if( _remoteFolder == QLatin1String("/") || _remoteFolder.isEmpty() ) {
         text = tr("Your entire account is synced to the local folder <i>%1</i>").arg(localFolder);
     } else {
-        text = tr("ownCloud folder <i>%1</i> is synced to local folder <i>%2</i>").arg(remoteFolder).arg(localFolder);
+        text = tr("ownCloud folder <i>%1</i> is synced to local folder <i>%2</i>").arg(_remoteFolder).arg(localFolder);
     }
     _ui.localFolderLabel->setText( text );
+
 }
 
+void OwncloudWizardResultPage::setRemoteFolder(const QString &remoteFolder)
+{
+    _remoteFolder = remoteFolder;
+}
 
 void OwncloudWizardResultPage::setupCustomization()
 {
@@ -420,10 +427,10 @@ void OwncloudWizard::enableFinishOnResultWidget(bool enable)
     _resultPage->setComplete(enable);
 }
 
-void OwncloudWizard::setFolderNames( const QString& localFolder, const QString& remoteFolder )
+void OwncloudWizard::setRemoteFolder( const QString& remoteFolder )
 {
-    _setupPage->setFolderNames( localFolder, remoteFolder );
-    _resultPage->setFolderNames( localFolder, remoteFolder );
+    _setupPage->setRemoteFolder( remoteFolder );
+    _resultPage->setRemoteFolder( remoteFolder );
 }
 
 void OwncloudWizard::showConnectInfo( const QString& msg )
@@ -483,7 +490,8 @@ void OwncloudWizard::setOCUser( const QString& user )
 
 void OwncloudWizardResultPage::slotOpenLocal()
 {
-    QDesktopServices::openUrl(QUrl(_localFolder));
+    const QString localFolder = wizard()->property("localFolder").toString();
+    QDesktopServices::openUrl(QUrl::fromLocalFile(localFolder));
 }
 
 void OwncloudWizardResultPage::slotOpenServer()

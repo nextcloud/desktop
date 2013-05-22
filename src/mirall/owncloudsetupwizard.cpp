@@ -74,13 +74,14 @@ void OwncloudSetupWizard::startWizard()
     _remoteFolder = Theme::instance()->defaultServerFolder();
     // remoteFolder may be empty, which means /
 
-    _localFolder = Theme::instance()->defaultClientFolder();
+    QString localFolder = Theme::instance()->defaultClientFolder();
 
     // if its a relative path, prepend with users home dir, otherwise use as absolute path
-    if( !_localFolder.startsWith(QLatin1Char('/')) ) {
-        _localFolder = QDir::homePath() + QDir::separator() + Theme::instance()->defaultClientFolder();
+    if( !localFolder.startsWith(QLatin1Char('/')) ) {
+        localFolder = QDir::homePath() + QDir::separator() + Theme::instance()->defaultClientFolder();
     }
-    _ocWizard->setFolderNames(_localFolder, _remoteFolder);
+    _ocWizard->setProperty("localFolder", localFolder);
+    _ocWizard->setRemoteFolder(_remoteFolder);
 
     _ocWizard->setStartId(OwncloudWizard::Page_oCSetup);
 
@@ -114,11 +115,12 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         cfg.acceptCustomConfig();
 
         // Now write the resulting folder definition if folder names are set.
-        if( !( _localFolder.isEmpty() || _remoteFolder.isEmpty() ) ) { // both variables are set.
+        const QString localFolder = _ocWizard->property("localFolder").toString();
+        if( !( localFolder.isEmpty() || _remoteFolder.isEmpty() ) ) { // both variables are set.
             if( _folderMan ) {
                 _folderMan->addFolderDefinition( QLatin1String("owncloud"), Theme::instance()->appName(),
-				_localFolder, _remoteFolder, false );
-                _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(_localFolder));
+                localFolder, _remoteFolder, false );
+                _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
             } else {
                 qDebug() << "WRN: Folderman is zero in Setup Wizzard.";
             }
@@ -251,26 +253,27 @@ void OwncloudSetupWizard::setupLocalSyncFolder()
 {
     if( ! _folderMan ) return;
 
-    qDebug() << "Setup local sync folder for new oC connection " << _localFolder;
-    QDir fi( _localFolder );
+    const QString localFolder = _ocWizard->property("localFolder").toString();
+    qDebug() << "Setup local sync folder for new oC connection " << localFolder;
+    QDir fi( localFolder );
     // FIXME: Show problems with local folder properly.
 
     bool localFolderOk = true;
     if( fi.exists() ) {
         // there is an existing local folder. If its non empty, it can only be synced if the
         // ownCloud is newly created.
-        _ocWizard->appendToConfigurationLog( tr("Local sync folder %1 already exists, setting it up for sync.<br/><br/>").arg(_localFolder));
+        _ocWizard->appendToConfigurationLog( tr("Local sync folder %1 already exists, setting it up for sync.<br/><br/>").arg(localFolder));
     } else {
-        QString res = tr("Creating local sync folder %1... ").arg(_localFolder);
-        if( fi.mkpath( _localFolder ) ) {
-            Utility::setupFavLink( _localFolder );
+        QString res = tr("Creating local sync folder %1... ").arg(localFolder);
+        if( fi.mkpath( localFolder ) ) {
+            Utility::setupFavLink( localFolder );
             // FIXME: Create a local sync folder.
             res += tr("ok");
         } else {
             res += tr("failed.");
             qDebug() << "Failed to create " << fi.path();
             localFolderOk = false;
-            _ocWizard->displayError(tr("Could not create local folder %1").arg(_localFolder));
+            _ocWizard->displayError(tr("Could not create local folder %1").arg(localFolder));
         }
         _ocWizard->appendToConfigurationLog( res );
     }
@@ -328,7 +331,7 @@ void OwncloudSetupWizard::slotAuthCheckReply( const QString&, QNetworkReply *rep
     if( !ok ) {
         _ocWizard->displayError(error);
     } else {
-        _ocWizard->setFolderNames( _localFolder, _remoteFolder );
+        _ocWizard->setRemoteFolder( _remoteFolder );
     }
 
     finalizeSetup( ok );
@@ -369,13 +372,11 @@ void OwncloudSetupWizard::slotCreateRemoteFolderFinished( QNetworkReply::Network
                                     "<br/>Please go back and check your credentials.</p>"));
         _ocWizard->appendToConfigurationLog( tr("<p><font color=\"red\">Remote folder creation failed probably because the provided credentials are wrong.</font>"
                                             "<br/>Please go back and check your credentials.</p>"));
-        _localFolder.clear();
         _remoteFolder.clear();
         success = false;
     } else {
         _ocWizard->appendToConfigurationLog( tr("Remote folder %1 creation failed with error <tt>%2</tt>.").arg(_remoteFolder).arg(error));
         _ocWizard->displayError( tr("Remote folder %1 creation failed with error <tt>%2</tt>.").arg(_remoteFolder).arg(error) );
-        _localFolder.clear();
         _remoteFolder.clear();
         success = false;
     }
@@ -388,10 +389,11 @@ void OwncloudSetupWizard::finalizeSetup( bool success )
     // enable/disable the finish button.
     _ocWizard->enableFinishOnResultWidget(success);
 
+    const QString localFolder = _ocWizard->property("localFolder").toString();
     if( success ) {
-        if( !(_localFolder.isEmpty() || _remoteFolder.isEmpty() )) {
+        if( !(localFolder.isEmpty() || _remoteFolder.isEmpty() )) {
             _ocWizard->appendToConfigurationLog( tr("A sync connection from %1 to remote directory %2 was set up.")
-                                             .arg(_localFolder).arg(_remoteFolder));
+                                             .arg(localFolder).arg(_remoteFolder));
         }
         _ocWizard->appendToConfigurationLog( QLatin1String(" "));
         _ocWizard->appendToConfigurationLog( QLatin1String("<p><font color=\"green\"><b>")

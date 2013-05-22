@@ -95,7 +95,6 @@ private:
     FolderMan      *_folderMan;
 
     QString         _configHandle;
-    QString         _localFolder;
     QString         _remoteFolder;
 };
 
