@@ -42,6 +42,7 @@ static void teardown(void **state) {
 
 static void check_csync_statedb_check(void **state)
 {
+    CSYNC *csync = *state;
     int rc;
 
     (void) state; /* unused */
@@ -51,20 +52,20 @@ static void check_csync_statedb_check(void **state)
     /* old db */
     rc = system("echo \"SQLite format 2\" > /tmp/check_csync1/test.db");
     assert_int_equal(rc, 0);
-    rc = _csync_statedb_check(NULL, TESTDB);
-    assert_int_equal(rc, 0);
+    rc = _csync_statedb_check(csync, TESTDB);
+    assert_int_equal(rc, 1);
 
     /* db already exists */
-    rc = _csync_statedb_check(NULL, TESTDB);
-    assert_int_equal(rc, 0);
+    rc = _csync_statedb_check(csync, TESTDB);
+    assert_int_equal(rc, 1);
 
     /* no db exists */
     rc = system("rm -f /tmp/check_csync1/test.db");
     assert_int_equal(rc, 0);
-    rc = _csync_statedb_check(NULL, TESTDB);
-    assert_int_equal(rc, 0);
+    rc = _csync_statedb_check(csync, TESTDB);
+    assert_int_equal(rc, 1);
 
-    rc = _csync_statedb_check(NULL, "/tmp/check_csync1/");
+    rc = _csync_statedb_check(csync, "/tmp/check_csync1/");
     assert_int_equal(rc, -1);
 
     rc = system("rm -rf /tmp/check_csync1");
@@ -132,7 +133,7 @@ static void check_csync_statedb_close(void **state)
 int torture_run_tests(void)
 {
     const UnitTest tests[] = {
-        unit_test(check_csync_statedb_check),
+        unit_test_setup_teardown(check_csync_statedb_check, setup, teardown),
         unit_test_setup_teardown(check_csync_statedb_load, setup, teardown),
         unit_test_setup_teardown(check_csync_statedb_close, setup, teardown),
     };
