@@ -1383,8 +1383,10 @@ static int _csync_propagation_cleanup(CSYNC *ctx) {
 
   for (walk = c_list_last(list); walk != NULL; walk = c_list_prev(walk)) {
     csync_file_stat_t *st = NULL;
+    csync_file_stat_t **pst = NULL;
 
-    st = *((csync_file_stat_t **) walk->data);
+    pst = (csync_file_stat_t **) walk->data;
+    st = *(pst);
 
     if (asprintf(&dir, "%s/%s", uri, st->path) < 0) {
       return -1;
@@ -1399,6 +1401,7 @@ static int _csync_propagation_cleanup(CSYNC *ctx) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "CLEANUP  dir: %s", dir);
 
     SAFE_FREE(dir);
+    SAFE_FREE(pst);
   }
 
   return 0;
