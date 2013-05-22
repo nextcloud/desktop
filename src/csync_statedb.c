@@ -433,6 +433,7 @@ static int _insert_metadata_visitor(void *obj, void *data) {
   csync_file_stat_t *fs = NULL;
   CSYNC *ctx = NULL;
   sqlite3_stmt *stmt = NULL;
+  const char *md5 = "";
   int rc = -1;
 
   fs = (csync_file_stat_t *) obj;
@@ -489,7 +490,13 @@ static int _insert_metadata_visitor(void *obj, void *data) {
       sqlite3_bind_int(  stmt, 7, fs->mode);
       sqlite3_bind_int64(stmt, 8, fs->modtime);
       sqlite3_bind_int(  stmt, 9, fs->type);
-      sqlite3_bind_text( stmt,10, fs->md5, strlen(fs->md5), SQLITE_STATIC);
+
+      /* The md5 sum might be zero for directories. They will be investigated in the next
+       * sync, called "Oliviers patch". */
+      if (fs->md5 != NULL) {
+          md5 = fs->md5;
+      }
+      sqlite3_bind_text( stmt,10, md5, strlen(md5), SQLITE_STATIC);
 
       rc = sqlite3_step(stmt);
       if ( rc != SQLITE_DONE) {
