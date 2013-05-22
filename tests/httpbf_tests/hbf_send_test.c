@@ -91,7 +91,7 @@ static void test_get_transfer_url_bigfile( void **state ) {
         turl = get_transfer_url( list, i );
         assert_non_null(turl);
 
-        sprintf(res, "%s-chunking-%d-%d-%d", url, list->transfer_id,
+        sprintf(res, "%s-chunking-%u-%u-%u", url, list->transfer_id,
                 list->block_cnt, i );
         /* printf( "XX: %s\n", res ); */
         assert_string_equal( turl, res );
