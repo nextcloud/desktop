@@ -538,9 +538,11 @@ int csync_statedb_insert_metadata(CSYNC *ctx) {
   csync_set_userdata(ctx, stmt);
 
   rc = c_rbtree_walk(ctx->local.tree, ctx, _insert_metadata_visitor);
+  sqlite3_finalize( stmt );
 
   /* Commit the result even if there was an error */
   result = csync_statedb_query(ctx, "COMMIT TRANSACTION;");
+
   c_strlist_destroy(result);
 
   /* FIXME: How do we deal with an error in rbtree_walk? No rollback needed actually */
