@@ -135,7 +135,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
             break;
         }
     } else {
-        bool is_equal_files;
+        bool is_equal_files = false;
         /*
      * file found on the other replica
      */
