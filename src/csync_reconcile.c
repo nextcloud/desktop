@@ -135,6 +135,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
             break;
         }
     } else {
+        bool is_equal_files;
         /*
      * file found on the other replica
      */
@@ -155,7 +156,13 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
             /* file on other replica is changed or new */
             case CSYNC_INSTRUCTION_NEW:
             case CSYNC_INSTRUCTION_EVAL:
-                if (other->size == cur->size &&  other->modtime == cur->modtime) {
+                if (other->type == CSYNC_VIO_FILE_TYPE_DIRECTORY &&
+                        cur->type == CSYNC_VIO_FILE_TYPE_DIRECTORY) {
+                    is_equal_files = (other->modtime == cur->modtime);
+                } else {
+                    is_equal_files = ((other->size == cur->size) &&  (other->modtime == cur->modtime));
+                }
+                if (is_equal_files) {
                     /* The files are considered equal. */
                     cur->instruction = CSYNC_INSTRUCTION_NONE;
                     other->instruction = CSYNC_INSTRUCTION_NONE;
