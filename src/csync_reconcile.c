@@ -160,7 +160,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                         cur->type == CSYNC_VIO_FILE_TYPE_DIRECTORY) {
                     is_equal_files = (other->modtime == cur->modtime);
                 } else {
-                    is_equal_files = ((other->size == cur->size) &&  (other->modtime == cur->modtime));
+                    is_equal_files = ((other->size == cur->size) && (other->modtime == cur->modtime));
                 }
                 if (is_equal_files) {
                     /* The files are considered equal. */
