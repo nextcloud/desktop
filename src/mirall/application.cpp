@@ -637,30 +637,11 @@ void Application::slotAddFolder()
 
     QString alias        = _folderWizard->field(QLatin1String("alias")).toString();
     QString sourceFolder = _folderWizard->field(QLatin1String("sourceFolder")).toString();
-    QString backend      = QLatin1String("csync");
+    QString backend      = QLatin1String("owncloud");
     QString targetPath;
     bool onlyThisLAN = false;
-    bool onlyOnline  = false;
 
-    if (_folderWizard->field(QLatin1String("local?")).toBool()) {
-        // setup a local csync folder
-        targetPath = _folderWizard->field(QLatin1String("targetLocalFolder")).toString();
-    } else if (_folderWizard->field(QLatin1String("remote?")).toBool()) {
-        // setup a remote csync folder
-        targetPath  = _folderWizard->field(QLatin1String("targetURLFolder")).toString();
-        onlyOnline  = _folderWizard->field(QLatin1String("onlyOnline?")).toBool();
-        onlyThisLAN = _folderWizard->field(QLatin1String("onlyThisLAN?")).toBool();
-        (void) onlyOnline;
-        (void) onlyThisLAN;
-    } else if( _folderWizard->field(QLatin1String("OC?")).toBool() ||
-               Theme::instance()->singleSyncFolder()) {
-        // setup a ownCloud folder
-        backend    = QLatin1String("owncloud");
-        targetPath = _folderWizard->field(QLatin1String("targetOCFolder")).toString(); //empty in single folder mode
-    } else {
-      qWarning() << "* Folder not local and note remote?";
-      goodData = false;
-    }
+    targetPath = _folderWizard->field(QLatin1String("OCFolderLineEdit")).toString();
 
     _folderMan->setSyncEnabled(true); // do start sync again.
 

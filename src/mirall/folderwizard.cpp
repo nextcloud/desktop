@@ -166,7 +166,7 @@ FolderWizardTargetPage::FolderWizardTargetPage()
     _ui.setupUi(this);
     _ui.warnFrame->hide();
 
-    registerField(QLatin1String("targetOCFolder"),    _ui.OCFolderLineEdit);
+    registerField(QLatin1String("OCFolderLineEdit"),    _ui.OCFolderLineEdit);
 
     connect( _ui.OCFolderLineEdit, SIGNAL(textChanged(QString)),
              SLOT(slotFolderTextChanged(QString)));
@@ -213,11 +213,10 @@ void FolderWizardTargetPage::slotDirCheckReply(const QString &url, QNetworkReply
 
 void FolderWizardTargetPage::slotCreateRemoteFolder()
 {
-    _ui.OCFolderLineEdit->setEnabled( false );
-
     const QString folder = _ui.OCFolderLineEdit->text();
     if( folder.isEmpty() ) return;
 
+    _ui.OCFolderLineEdit->setEnabled( false );
     qDebug() << "creating folder on ownCloud: " << folder;
     ownCloudInfo::instance()->mkdirRequest( folder );
 }
@@ -244,8 +243,8 @@ FolderWizardTargetPage::~FolderWizardTargetPage()
 bool FolderWizardTargetPage::isComplete() const
 {
     QString dir = _ui.OCFolderLineEdit->text();
-    if( dir.isEmpty() ) {
-        showWarn( tr("Better do not use the remote root directory.<br/>If you do, you can <b>not</b> mirror another local folder."), false);
+    if( dir.isEmpty() || dir == QLatin1String("/") ) {
+        showWarn( tr("If you sync the root folder, you can <b>not</b> configure another sync directory."), false);
         return true;
     } else {
         if( _dirChecked ) {
