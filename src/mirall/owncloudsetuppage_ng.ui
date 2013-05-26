@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>540</width>
+    <width>577</width>
     <height>374</height>
    </rect>
   </property>
@@ -255,7 +255,7 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
+        <item row="2" column="0">
          <widget class="QLabel" name="selectiveSyncLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
@@ -268,7 +268,7 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
+        <item row="2" column="1">
          <layout class="QHBoxLayout" name="selectiveSyncLayout">
           <item>
            <widget class="QPushButton" name="pbBoxMode">
@@ -309,6 +309,19 @@
            </widget>
           </item>
          </layout>
+        </item>
+        <item row="1" column="1">
+         <widget class="QCheckBox" name="cbSyncFromScratch">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local directory will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers directory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>&amp;Start with a clean sync from the server and erase the local directory..</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
