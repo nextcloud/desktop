@@ -57,6 +57,7 @@ public:
                      AccessDenied,
                      NoKeychainBackend,
                      Error,
+                     AsyncWriting,
                      TooManyAttempts };
 
     enum CredentialType {

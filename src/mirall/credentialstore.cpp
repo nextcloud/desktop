@@ -76,23 +76,14 @@ bool CredentialStore::canTryAgain()
         return false;
     }
 
-    if( _state == NotFetched ) {
+    /* Since QtKeyChain is required now, it makes to only
+     * query once. */
+    if( _state == NotFetched || _state == AsyncWriting ) {
         return true;
+    } else {
+        return false;
     }
 
-    switch( _type ) {
-    case CredentialStore::User:
-        canDoIt = true;
-        break;
-    case CredentialStore::Settings:
-        break;
-    case CredentialStore::KeyChain:
-        canDoIt = true;
-        break;
-    default:
-        break;
-    }
-    return canDoIt;
 }
 
 void CredentialStore::fetchCredentials()
@@ -147,7 +138,7 @@ void CredentialStore::fetchCredentials()
     }
     case CredentialStore::KeyChain: {
         // If the credentials are here already, return.
-        if( _state == Ok ) {
+        if( _state == Ok || _state == AsyncWriting ) {
             emit(fetchCredentialsFinished(true));
             return;
         }
@@ -347,6 +338,7 @@ void CredentialStore::saveCredentials( )
 
         connect( job, SIGNAL(finished(QKeychain::Job*)), this,
                  SLOT(slotKeyChainWriteFinished(QKeychain::Job*)));
+        _state = AsyncWriting;
         job->start();
 #endif
         break;
@@ -373,15 +365,21 @@ void CredentialStore::slotKeyChainWriteFinished( QKeychain::Job *job )
                     pwdJob->errorString().contains(QLatin1String("Could not open wallet"))) {
                 _type = Settings;
                 saveCredentials();
+                _state = NoKeychainBackend;
+            } else {
+                _state = Error;
             }
         } else {
             qDebug() << "Successfully stored password for user " << _user;
             // Try to remove password formerly stored in the config file.
             MirallConfigFile cfgFile;
             cfgFile.clearPasswordFromConfig();
+            _state = NotFetched;
+            _tries = 0;
         }
     } else {
         qDebug() << "Error: KeyChain Write Password Job failed!";
+        _state = Error;
     }
 #else
     (void) job;
