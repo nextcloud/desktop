@@ -63,12 +63,16 @@ void OwncloudSetupWizard::startWizard()
     MirallConfigFile cfgFile;
     // Fill the entry fields with existing values.
     QString url = cfgFile.ownCloudUrl();
-    if( !url.isEmpty() ) {
-        _ocWizard->setOCUrl( url );
-    }
     QString user = cfgFile.ownCloudUser();
+    bool configExists = !( url.isEmpty() || user.isEmpty() );
+    _ocWizard->setConfigExists( configExists );
+
     if( !user.isEmpty() ) {
         _ocWizard->setOCUser( user );
+    }
+
+    if( !url.isEmpty() ) {
+        _ocWizard->setOCUrl( url );
     }
 
     _remoteFolder = Theme::instance()->defaultServerFolder();
@@ -106,23 +110,41 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
 
         // go through all folders and remove the journals if the server changed.
         MirallConfigFile prevCfg;
-        if( prevCfg.ownCloudUrl() != cfg.ownCloudUrl() ) {
-            qDebug() << "ownCloud URL has changed, journals needs to be wiped.";
-            _folderMan->wipeAllJournals();
+        QUrl prevUrl( prevCfg.ownCloudUrl() );
+        QUrl newUrl( cfg.ownCloudUrl() );
+
+        bool urlHasChanged = (prevUrl.host() != newUrl.host() || prevUrl.path() != newUrl.path());
+
+        // if the user changed, its also a changed url.
+        if( prevCfg.ownCloudUser() != cfg.ownCloudUser() ) {
+            urlHasChanged = true;
+            qDebug() << "The User has changed, same as url change.";
         }
 
         // save the user credentials and afterwards clear the cred store.
         cfg.acceptCustomConfig();
 
         // Now write the resulting folder definition if folder names are set.
-        const QString localFolder = _ocWizard->property("localFolder").toString();
+        const QString localFolder = _ocWizard->localFolder();
         if( !( localFolder.isEmpty() || _remoteFolder.isEmpty() ) ) { // both variables are set.
-            if( _folderMan ) {
+            if( urlHasChanged ) {
+                _folderMan->removeAllFolderDefinitions();
                 _folderMan->addFolderDefinition( QLatin1String("owncloud"), Theme::instance()->appName(),
-                localFolder, _remoteFolder, false );
+                                                 localFolder, _remoteFolder, false );
                 _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
+
+                bool startFromScratch = _ocWizard->field( "OCSyncFromScratch" ).toBool();
+                if( startFromScratch ) {
+                    // clean the entire directory.
+                    if( _folderMan->startFromScratch( localFolder ) ) {
+                        _ocWizard->appendToConfigurationLog(tr("<font color=\"green\">Successfully prepared syncing from scratch!</font>"));
+                    } else {
+                        _ocWizard->appendToConfigurationLog(tr("<font color=\"red\">Failed to prepare syncing from scratch!</font>"));
+                    }
+                }
             } else {
-                qDebug() << "WRN: Folderman is zero in Setup Wizzard.";
+                // url is unchanged. Only the password was changed.
+                qDebug() << "Only password was changed, no changes to folder configuration.";
             }
         }
     } else {
@@ -308,7 +330,7 @@ void OwncloudSetupWizard::slotAuthCheckReply( const QString&, QNetworkReply *rep
         qDebug() << "******** Remote folder found, all cool!";
     } else if( errId == QNetworkReply::AuthenticationRequiredError ) { // returned if the user is wrong.
         qDebug() << "******** Password is wrong!";
-        error = tr("Credentials are wrong!");
+        error = tr("The given credentials do not authenticate.");
         ok = false;
     } else if( errId == QNetworkReply::OperationCanceledError ) {
         // the username was wrong and ownCloudInfo was closing the request after a couple of auth tries.

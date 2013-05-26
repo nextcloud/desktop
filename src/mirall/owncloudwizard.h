@@ -50,6 +50,7 @@ public:
   void setAllowPasswordStorage( bool );
   bool validatePage();
   QString url() const;
+  QString localFolder() const;
   void setConnected(bool complete);
   void setRemoteFolder( const QString& remoteFolder);
 
@@ -57,10 +58,13 @@ public:
 
 public slots:
   void setErrorString( const QString&  );
+  void setConfigExists(  bool );
   void stopSpinner();
 
 protected slots:
-  void handleNewOcUrl(const QString& ocUrl);
+  void slotUrlChanged(const QString&);
+  void slotUserChanged(const QString&);
+
   void setupCustomization();
   void slotToggleAdvanced(int state);
   void slotChangedSelective(QAbstractButton*);
@@ -72,11 +76,19 @@ signals:
 protected:
     void updateFoldersInfo();
 
+private slots:
+    void slotHandleUserInput();
+
 private:
+    bool urlHasChanged();
+
   Ui_OwncloudSetupPage _ui;
   QString _oCUrl;
+  QString _ocUser;
   bool    _connected;
   bool    _checking;
+  bool    _configExists;
+
   QProgressIndicator *_progressIndi;
   QButtonGroup       *_selectiveSyncButtons;
   QString _remoteFolder;
@@ -104,11 +116,14 @@ public:
 
     void setupCustomMedia( QVariant, QLabel* );
     QString ocUrl() const;
+    QString localFolder() const;
 
     void enableFinishOnResultWidget(bool enable);
 
     void displayError( const QString& );
     OwncloudSetupPage::SyncMode syncMode();
+    void setConfigExists( bool );
+    bool configExists();
 
 public slots:
     void setRemoteFolder( const QString& );
@@ -127,9 +142,9 @@ private:
     OwncloudWizardResultPage *_resultPage;
 
     QString _configFile;
-    QString _oCUrl;
     QString _oCUser;
     QStringList _setupLog;
+    bool _configExists;
 };
 
 
