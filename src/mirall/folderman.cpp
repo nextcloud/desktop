@@ -455,4 +455,39 @@ void FolderMan::removeFolder( const QString& alias )
     }
 }
 
+QString FolderMan::getBackupName( const QString& fullPathName ) const
+{
+    if( fullPathName.isEmpty() ) return QString::null;
+
+     QString newName = fullPathName + QLatin1String(".oC_bak");
+     QFileInfo fi( newName );
+     int cnt = 1;
+     do {
+         if( fi.exists() ) {
+             newName += fullPathName + QString( ".oC_bak_%1").arg(cnt++);
+             fi.setFile(newName);
+         }
+     } while( fi.exists() );
+
+     return newName;
+}
+
+bool FolderMan::startFromScratch( const QString& localFolder )
+{
+    if( localFolder.isEmpty() ) return false;
+
+    QFileInfo fi( localFolder );
+    if( fi.exists() && fi.isDir() ) {
+        QDir file = fi.dir();
+        QString newName = getBackupName( fi.absoluteFilePath() );
+
+        if( file.rename( fi.absoluteFilePath(), newName )) {
+            if( file.mkdir( fi.absoluteFilePath() ) ) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 }

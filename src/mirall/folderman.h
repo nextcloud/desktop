@@ -76,6 +76,11 @@ public:
      */
     void wipeAllJournals();
 
+    /**
+     * Creates a new and empty local directory.
+     */
+    bool startFromScratch( const QString& );
+
 signals:
     /**
       * signal to indicate a folder named by alias has changed its sync state.
@@ -112,6 +117,7 @@ private:
     // and create the folders
     int setupKnownFolders();
     void terminateCurrentSync();
+    QString getBackupName( const QString& ) const;
 
     // Escaping of the alias which is used in QSettings AND the file
     // system, thus need to be escaped.
