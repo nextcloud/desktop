@@ -52,10 +52,10 @@ OwncloudSetupPage::OwncloudSetupPage()
     _ui.setupUi(this);
 
     Theme *theme = Theme::instance();
-    setTitle( tr("<font color=\"%1\" size=\"5\">Connect to your %2 Server</font>")
+    setTitle( tr("<font color=\"%1\" size=\"5\">Connect to %2</font>")
               .arg(theme->wizardHeaderTitleColor().name()).arg( theme->appNameGUI()));
-    setSubTitle( tr("<font color=\"%1\">Enter user credentials to access your %2</font>")
-                 .arg(theme->wizardHeaderTitleColor().name()).arg(theme->appNameGUI()));
+    setSubTitle( tr("<font color=\"%1\">Enter user credentials</font>")
+                 .arg(theme->wizardHeaderTitleColor().name()));
 
     connect(_ui.leUrl, SIGNAL(textChanged(QString)), SLOT(slotUrlChanged(QString)));
     connect( _ui.leUsername, SIGNAL(textChanged(QString)), this, SLOT(slotUserChanged(QString)));
@@ -76,6 +76,7 @@ OwncloudSetupPage::OwncloudSetupPage()
     _progressIndi = new QProgressIndicator;
     _ui.resultLayout->addWidget( _progressIndi );
     _progressIndi->setVisible(false);
+    _ui.resultLayout->setEnabled(false);
 
     // Error label
     QString style = QLatin1String("border: 1px solid #eed3d7; border-radius: 5px; padding: 3px;"
@@ -99,8 +100,13 @@ OwncloudSetupPage::~OwncloudSetupPage()
 void OwncloudSetupPage::slotToggleAdvanced(int state)
 {
     _ui.advancedBox->setVisible( state == Qt::Checked );
-    wizard()->resize(wizard()->sizeHint());
+    slotHandleUserInput();
+    QSize size = wizard()->sizeHint();
+    // need to substract header for some reason
+    size -= QSize(0, 100);
 
+    wizard()->setMinimumSize(size);
+    wizard()->resize(size);
 }
 
 void OwncloudSetupPage::setOCUser( const QString & user )
@@ -248,26 +254,28 @@ void OwncloudSetupPage::slotHandleUserInput()
     if( !urlHasChanged() && _configExists ) {
         // This is the password change mode: No change to the url and a config
         // to an ownCloud exists.
-        t = tr("Change the Password for your configured ownCloud.");
+        t = tr("Change the Password for your configured account.");
     } else {
         // Complete new setup.
         _ui.pbSelectLocalFolder->setText(locFolder);
 
         if( _remoteFolder.isEmpty() || _remoteFolder == QLatin1String("/") ) {
-            t = tr("Your entire account will be synced to the local folder '%1'").arg(locFolder);
+            t = tr("Your entire account will be synced to the local folder '%1'.").arg(locFolder);
         } else {
-            t = tr("ownCloud folder '%1' is synced to local folder '%2'").arg(_remoteFolder).arg(locFolder);
+            t = tr("%1 folder '%2' is synced to local folder '%3'")
+                    .arg(Theme::instance()->appName()).arg(_remoteFolder).arg(locFolder);
         }
 
-        if( entries.count() > 0 ) {
+        if( entries.count() > 0) {
             // the directory is not empty
-            // setErrorString( tr("The local directory is not empty! Open advanced settings for detailed settings.") );
-            t += QLatin1String("<p/>");
-            t += tr("The local directory is not empty. Check the advanced settings!");
-            _ui.cbSyncFromScratch->setEnabled(true);
+            if (!_ui.cbAdvanced->isChecked()) {
+                t += tr("<p><small><strong>Warning:</strong> The local directory is not empty. "
+                        "Pick a resolution in the advanced settings!</small></p>");
+            }
+            _ui.resolutionWidget->setVisible(true);
         } else {
             // the dir is empty, which means that there is no problem.
-            _ui.cbSyncFromScratch->setEnabled(false);
+            _ui.resolutionWidget->setVisible(false);
         }
     }
 
@@ -294,6 +302,7 @@ QString OwncloudSetupPage::localFolder() const
 void OwncloudSetupPage::setConnected( bool comp )
 {
     _connected = comp;
+    _ui.resultLayout->setEnabled(true);
     _progressIndi->setVisible(false);
     _progressIndi->stopAnimation();
 }
@@ -305,6 +314,7 @@ bool OwncloudSetupPage::validatePage()
     if( ! _connected) {
         setErrorString(QString::null);
         _checking = true;
+        _ui.resultLayout->setEnabled(true);
         _progressIndi->setVisible(true);
         _progressIndi->startAnimation();
         emit completeChanged();
@@ -335,6 +345,7 @@ void OwncloudSetupPage::setErrorString( const QString& err )
 
 void OwncloudSetupPage::stopSpinner()
 {
+    _ui.resultLayout->setEnabled(false);
     _progressIndi->setVisible(false);
     _progressIndi->stopAnimation();
 }
@@ -371,6 +382,8 @@ OwncloudSetupPage::SyncMode OwncloudWizard::syncMode()
 void OwncloudSetupPage::setConfigExists(  bool config )
 {
     _configExists = config;
+    setSubTitle( tr("<font color=\"%1\">Change your user credentials</font>")
+                 .arg(Theme::instance()->wizardHeaderTitleColor().name()));
 }
 
 // ======================================================================
@@ -383,8 +396,8 @@ OwncloudWizardResultPage::OwncloudWizardResultPage()
     Theme *theme = Theme::instance();
     setTitle( tr("<font color=\"%1\" size=\"5\">Everything set up!</font>")
               .arg(theme->wizardHeaderTitleColor().name()));
-    setSubTitle( tr("<font color=\"%1\">Enter user credentials to access your %2</font>")
-                 .arg(theme->wizardHeaderTitleColor().name()).arg(theme->appNameGUI()));
+    // required to show header in QWizard's modern style
+    setSubTitle( QLatin1String(" ") );
 
     _ui.pbOpenLocal->setText("Open local folder");
     _ui.pbOpenServer->setText(tr("Open %1").arg(Theme::instance()->appNameGUI()));
@@ -396,8 +409,8 @@ OwncloudWizardResultPage::OwncloudWizardResultPage()
 
     _ui.pbOpenLocal->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
-//    _ui.pbOpenServer->setIcon(QIcon(":/mirall/resources/owncloud_logo_blue.png"));
-    _ui.pbOpenServer->setIcon(theme->applicationIcon().pixmap(48));
+    QIcon appIcon = theme->applicationIcon();
+    _ui.pbOpenServer->setIcon(appIcon.pixmap(48));
     _ui.pbOpenServer->setText(tr("Open %1").arg(theme->appNameGUI()));
     _ui.pbOpenServer->setIconSize(QSize(48, 48));
     _ui.pbOpenServer->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
