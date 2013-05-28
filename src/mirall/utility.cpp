@@ -13,6 +13,7 @@
 
 #include "utility.h"
 
+#include <QCoreApplication>
 #include <QDir>
 #include <QFile>
 #include <QUrl>
@@ -87,6 +88,30 @@ void Utility::setupFavLink(const QString &folder)
 
     }
 
+#endif
+}
+
+// Qtified version of get_platforms() in csync_owncloud.c
+QString Utility::platform()
+{
+#if defined(Q_OS_WIN32)
+    return QLatin1String("Windows");
+#elif defined(Q_OS_MAC)
+    return QLatin1String("Macintosh");
+#elif defined(Q_OS_LINUX)
+    return QLatin1String("Linux");
+#elif defined(__DragonFly__) // Q_OS_FREEBSD also defined
+    return "DragonFlyBSD";
+#elif defined(Q_OS_FREEBSD)
+    return QLatin1String("FreeBSD");
+#elif defined(Q_OS_NETBSD)
+    return QLatin1String("NetBSD");
+#elif defined(Q_OS_OPENBSD)
+    return QLatin1String("OpenBSD");
+#elif defined(Q_OS_SOLARIS)
+    return "Solaris";
+#else
+    return "Unknown OS"
 #endif
 }
 
