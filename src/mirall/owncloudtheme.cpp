@@ -118,7 +118,7 @@ QIcon ownCloudTheme::folderDisabledIcon( ) const
 
 QIcon ownCloudTheme::applicationIcon( ) const
 {
-    return themeIcon( QLatin1String("owncloud") );
+    return themeIcon( QLatin1String("owncloud-icon") );
 }
 
 QColor ownCloudTheme::wizardHeaderBackgroundColor() const
