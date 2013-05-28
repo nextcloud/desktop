@@ -34,7 +34,7 @@ OwncloudSetupWizard::OwncloudSetupWizard( FolderMan *folderMan, Theme *theme, QO
     _checkInstallationRequest(0),
     _folderMan(folderMan)
 {
-    _ocWizard = new OwncloudWizard;
+    _ocWizard = new OwncloudWizard();
 
     connect( _ocWizard, SIGNAL(connectToOCUrl( const QString& ) ),
              this, SLOT(slotConnectToOCUrl( const QString& )));
@@ -49,7 +49,7 @@ OwncloudSetupWizard::OwncloudSetupWizard( FolderMan *folderMan, Theme *theme, QO
 
 OwncloudSetupWizard::~OwncloudSetupWizard()
 {
-    // delete _ocWizard; FIXME: this crashes!
+    _ocWizard->deleteLater();
 }
 
 OwncloudWizard *OwncloudSetupWizard::wizard() {
