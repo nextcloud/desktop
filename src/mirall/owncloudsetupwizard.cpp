@@ -44,8 +44,7 @@ OwncloudSetupWizard::OwncloudSetupWizard( FolderMan *folderMan, Theme *theme, QO
     connect( _ocWizard, SIGNAL(clearPendingRequests()),
              this, SLOT(slotClearPendingRequests()));
 
-    _ocWizard->setWindowTitle( tr("%1 Connection Wizard").arg( theme ? theme->appNameGUI() : QLatin1String("Mirall") ) );
-
+    _ocWizard->setWindowTitle( tr("%1 Connection Wizard").arg( theme->appNameGUI() ) );
 }
 
 OwncloudSetupWizard::~OwncloudSetupWizard()
@@ -90,6 +89,10 @@ void OwncloudSetupWizard::startWizard()
     _ocWizard->setStartId(OwncloudWizard::Page_oCSetup);
 
     _ocWizard->restart();
+
+    // settings re-initialized in initPage must be set here after restart
+    _ocWizard->setMultipleFoldersExist(_folderMan->map().count() > 1);
+
     _ocWizard->show();
 }
 

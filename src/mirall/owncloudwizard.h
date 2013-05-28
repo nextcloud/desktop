@@ -53,6 +53,7 @@ public:
   QString localFolder() const;
   void setConnected(bool complete);
   void setRemoteFolder( const QString& remoteFolder);
+  void setMultipleFoldersExist( bool exist );
 
   SyncMode syncMode();
 
@@ -87,6 +88,7 @@ private:
   bool    _connected;
   bool    _checking;
   bool    _configExists;
+  bool    _multipleFoldersExist;
 
   QProgressIndicator *_progressIndi;
   QButtonGroup       *_selectiveSyncButtons;
@@ -121,6 +123,7 @@ public:
 
     void displayError( const QString& );
     OwncloudSetupPage::SyncMode syncMode();
+    void setMultipleFoldersExist( bool );
     void setConfigExists( bool );
     bool configExists();
 

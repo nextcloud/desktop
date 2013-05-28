@@ -15,7 +15,8 @@
 #include "mirall/owncloudwizard.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/theme.h"
-#include <QProgressIndicator.h>
+
+#include "QProgressIndicator.h"
 
 #include <QtCore>
 #include <QtGui>
@@ -103,7 +104,7 @@ void OwncloudSetupPage::slotToggleAdvanced(int state)
     slotHandleUserInput();
     QSize size = wizard()->sizeHint();
     // need to substract header for some reason
-    size -= QSize(0, 100);
+    size -= QSize(0, 63);
 
     wizard()->setMinimumSize(size);
     wizard()->resize(size);
@@ -192,6 +193,7 @@ void OwncloudSetupPage::initializePage()
 {
     _connected = false;
     _checking  = false;
+    _multipleFoldersExist = false;
 
     if( _configExists ) {
         _ui.lePassword->setFocus();
@@ -264,6 +266,12 @@ void OwncloudSetupPage::slotHandleUserInput()
         } else {
             t = tr("%1 folder '%2' is synced to local folder '%3'")
                     .arg(Theme::instance()->appName()).arg(_remoteFolder).arg(locFolder);
+        }
+
+        if ( _multipleFoldersExist ) {
+            t += tr("<p><small><strong>Warning:</strong> You currently have multiple folders "
+                    "configured. If you continue with the current settings, the settings will be "
+                    "discarded and a single root folder sync will be created!</small></p>");
         }
 
         if( entries.count() > 0) {
@@ -362,6 +370,11 @@ void OwncloudSetupPage::setRemoteFolder( const QString& remoteFolder )
     }
 }
 
+void OwncloudSetupPage::setMultipleFoldersExist(bool exist)
+{
+    _multipleFoldersExist = exist;
+}
+
 void OwncloudSetupPage::slotSelectFolder()
 {
 
@@ -377,6 +390,11 @@ OwncloudSetupPage::SyncMode OwncloudWizard::syncMode()
 {
     return _setupPage->syncMode();
     return OwncloudSetupPage::BoxMode;
+}
+
+void OwncloudWizard::setMultipleFoldersExist(bool exist)
+{
+    _setupPage->setMultipleFoldersExist(exist);
 }
 
 void OwncloudSetupPage::setConfigExists(  bool config )
