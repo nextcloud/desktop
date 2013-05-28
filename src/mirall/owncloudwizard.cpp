@@ -270,8 +270,8 @@ void OwncloudSetupPage::slotHandleUserInput()
 
         if ( _multipleFoldersExist ) {
             t += tr("<p><small><strong>Warning:</strong> You currently have multiple folders "
-                    "configured. If you continue with the current settings, the settings will be "
-                    "discarded and a single root folder sync will be created!</small></p>");
+                    "configured. If you continue with the current settings, the folder configurations "
+                    "will be discarded and a single root folder sync will be created!</small></p>");
         }
 
         if( entries.count() > 0) {
