@@ -37,19 +37,18 @@ Mirall::ProxyDialog::ProxyDialog( QWidget* parent )
     Mirall::MirallConfigFile cfgFile;
     if (cfgFile.proxyType() == QNetworkProxy::NoProxy)
         noProxyRadioButton->setChecked(true);
-    if (cfgFile.proxyType() == QNetworkProxy::DefaultProxy)
+    else if (cfgFile.proxyType() == QNetworkProxy::DefaultProxy)
         systemProxyRadioButton->setChecked(true);
-    if (cfgFile.proxyType() == QNetworkProxy::HttpProxy)
-    {
+    else if (cfgFile.proxyType() == QNetworkProxy::HttpProxy)
         manualProxyRadioButton->setChecked(true);
-        hostLineEdit->setText(cfgFile.proxyHostName());
-        portSpinBox->setValue(cfgFile.proxyPort());
-        if (!cfgFile.proxyUser().isEmpty())
-        {
-            authRequiredcheckBox->setChecked(true);
-            userLineEdit->setText(cfgFile.proxyUser());
-            passwordLineEdit->setText(cfgFile.proxyPassword());
-        }
+
+    hostLineEdit->setText(cfgFile.proxyHostName());
+    portSpinBox->setValue(cfgFile.proxyPort());
+    if (!cfgFile.proxyUser().isEmpty())
+    {
+        authRequiredcheckBox->setChecked(true);
+        userLineEdit->setText(cfgFile.proxyUser());
+        passwordLineEdit->setText(cfgFile.proxyPassword());
     }
 }
 

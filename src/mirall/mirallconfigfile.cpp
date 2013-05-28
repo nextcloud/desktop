@@ -524,11 +524,13 @@ void MirallConfigFile::setProxyType(int proxyType,
     settings.beginGroup(QLatin1String("proxy"));
 
     settings.setValue(QLatin1String("type"), proxyType);
-    settings.setValue(QLatin1String("host"), host);
-    settings.setValue(QLatin1String("port"), port);
-    settings.setValue(QLatin1String("user"), user);
-    settings.setValue(QLatin1String("pass"), pass.toUtf8().toBase64());
 
+    if (proxyType == QNetworkProxy::HttpProxy) {
+        settings.setValue(QLatin1String("host"), host);
+        settings.setValue(QLatin1String("port"), port);
+        settings.setValue(QLatin1String("user"), user);
+        settings.setValue(QLatin1String("pass"), pass.toUtf8().toBase64());
+    }
     settings.sync();
 }
 
