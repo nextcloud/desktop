@@ -288,6 +288,7 @@ void OwncloudSetupPage::slotHandleUserInput()
     }
 
     _ui.syncModeLabel->setText(t);
+    _ui.syncModeLabel->setFixedHeight(_ui.syncModeLabel->sizeHint().height());
 }
 
 int OwncloudSetupPage::nextId() const
