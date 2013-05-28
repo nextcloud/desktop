@@ -306,7 +306,7 @@ QString OwncloudSetupPage::url() const
 
 QString OwncloudSetupPage::localFolder() const
 {
-    QString folder = _ui.pbSelectLocalFolder->text();
+    QString folder = wizard()->property("localFolder").toString();
     return folder;
 }
 
@@ -380,6 +380,7 @@ void OwncloudSetupPage::slotSelectFolder()
     QString dir = QFileDialog::getExistingDirectory(0, tr("Local Sync Folder"), QDir::homePath());
     if( !dir.isEmpty() ) {
         _ui.pbSelectLocalFolder->setText(dir);
+        wizard()->setProperty("localFolder", dir);
         slotHandleUserInput();
     }
 }
