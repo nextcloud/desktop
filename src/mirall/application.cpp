@@ -791,7 +791,10 @@ void Application::slotEnableFolder(const QString& alias, const bool enable)
 void Application::slotConfigure()
 {
     _folderMan->setSyncEnabled(false); // do not start more syncs.
-    _owncloudSetupWizard->startWizard();
+    if (!_owncloudSetupWizard->wizard()->isVisible())
+        _owncloudSetupWizard->startWizard();
+    else
+        raiseDialog(_owncloudSetupWizard->wizard());
 }
 
 void Application::slotConfigureProxy()
