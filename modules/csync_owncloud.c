@@ -473,7 +473,7 @@ static int dav_connect(const char *base_url) {
 
     ne_set_read_timeout(dav_session.ctx, dav_session.read_timeout);
 
-    snprintf( uaBuf, sizeof(uaBuf), "csyncoC/%s",CSYNC_STRINGIFY( LIBCSYNC_VERSION ));
+    snprintf( uaBuf, sizeof(uaBuf), "Mozilla/5.0 (compatible; csyncoC/%s)",CSYNC_STRINGIFY( LIBCSYNC_VERSION ));
     ne_set_useragent( dav_session.ctx, uaBuf);
     ne_set_server_auth(dav_session.ctx, ne_auth, 0 );
 
