@@ -86,17 +86,6 @@ OwncloudSetupPage::OwncloudSetupPage()
     _ui.errorLabel->setWordWrap(true);
     _ui.errorLabel->setVisible(false);
 
-    // ButtonGroup for
-    _selectiveSyncButtons = new QButtonGroup;
-    _selectiveSyncButtons->addButton( _ui.pbBoxMode );
-    _selectiveSyncButtons->addButton( _ui.pbSelectiveMode );
-    connect( _selectiveSyncButtons, SIGNAL(buttonClicked (QAbstractButton*)),
-             SLOT(slotChangedSelective(QAbstractButton*)));
-
-    _ui.selectiveSyncLabel->setVisible(false);
-    _ui.pbBoxMode->setVisible(false);
-    _ui.pbSelectiveMode->setVisible(false);
-
     _checking = false;
 
     setupCustomization();
@@ -111,15 +100,7 @@ void OwncloudSetupPage::slotToggleAdvanced(int state)
 {
     _ui.advancedBox->setVisible( state == Qt::Checked );
     wizard()->resize(wizard()->sizeHint());
-}
 
-void OwncloudSetupPage::slotChangedSelective(QAbstractButton* button)
-{
-    if( button == _ui.pbBoxMode ) {
-        // box mode - sync the entire oC
-    } else {
-        // content mode, select folder list.
-    }
 }
 
 void OwncloudSetupPage::setOCUser( const QString & user )
@@ -360,10 +341,6 @@ void OwncloudSetupPage::stopSpinner()
 
 OwncloudSetupPage::SyncMode OwncloudSetupPage::syncMode()
 {
-    if( _selectiveSyncButtons->checkedButton() &&
-            _selectiveSyncButtons->checkedButton() == _ui.pbSelectiveMode ) {
-        return SelectiveMode;
-    }
     return BoxMode;
 }
 
