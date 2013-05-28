@@ -511,7 +511,7 @@ void ownCloudInfo::setupHeaders( QNetworkRequest & req, quint64 size )
     QUrl url( cfgFile.ownCloudUrl( QString::null, false ) );
     qDebug() << "Setting up host header: " << url.host();
     req.setRawHeader( QByteArray("Host"), url.host().toUtf8() );
-    req.setRawHeader( QByteArray("User-Agent"), QString::fromLatin1("mirall-%1")
+    req.setRawHeader( QByteArray("User-Agent"), QString::fromLatin1("Mozilla/5.0 (compatible; mirall-%1)")
                       .arg(QLatin1String(MIRALL_STRINGIFY(MIRALL_VERSION))).toAscii());
 
     QString con = _configHandle;
