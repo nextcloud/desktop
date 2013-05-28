@@ -404,6 +404,30 @@ static void ne_notify_status_cb (void *userdata, ne_session_status status,
     }
 }
 
+// as per http://sourceforge.net/p/predef/wiki/OperatingSystems/
+// extend as required
+static const char* get_platform() {
+#if defined (_WIN32)
+    return "Windows";
+#elif defined(__APPLE__)
+    return "Macintosh";
+#elif defined(__gnu_linux__)
+    return "Linux";
+#elif defined(__DragonFly__)
+    /* might also define __FreeBSD__ */
+    return "DragonFlyBSD";
+#elif defined(__FreeBSD__)
+    return "FreeBSD";
+#elif defined(__NetBSD__)
+    return "NetBSD";
+#elif defined(__OpenBSD__)
+    return "OpenBSD";
+#elif defined(sun) || defined(__sun)
+    return "Solaris";
+#else
+    return "Unknown OS";
+#endif
+}
 
 /*
  * Connect to a DAV server
@@ -473,7 +497,8 @@ static int dav_connect(const char *base_url) {
 
     ne_set_read_timeout(dav_session.ctx, dav_session.read_timeout);
 
-    snprintf( uaBuf, sizeof(uaBuf), "Mozilla/5.0 (compatible; csyncoC/%s)",CSYNC_STRINGIFY( LIBCSYNC_VERSION ));
+    snprintf( uaBuf, sizeof(uaBuf), "Mozilla/5.0 (%s) csyncoC/%s",
+              get_platform(), CSYNC_STRINGIFY( LIBCSYNC_VERSION ));
     ne_set_useragent( dav_session.ctx, uaBuf);
     ne_set_server_auth(dav_session.ctx, ne_auth, 0 );
 
