@@ -26,6 +26,7 @@ public:
     static QString formatFingerprint( const QByteArray& );
     static void setupFavLink( const QString &folder );
     static QString platform();
+    static QByteArray userAgentString();
 };
 
 }

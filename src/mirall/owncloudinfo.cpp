@@ -14,7 +14,6 @@
 
 #include "mirall/owncloudinfo.h"
 #include "mirall/mirallconfigfile.h"
-#include "mirall/version.h"
 #include "mirall/theme.h"
 #include "mirall/utility.h"
 
@@ -167,9 +166,7 @@ QNetworkReply* ownCloudInfo::mkdirRequest( const QString& dir )
     //connect(qhttp, SIGNAL(authenticationRequired(QString,quint16,QAuthenticator*)), this, SLOT(qhttpAuthenticationRequired(QString,quint16,QAuthenticator*)));
     QHttpRequestHeader header("MKCOL", QString(url.encodedPath()), 1,1);   /* header */
     header.setValue("Host", QString(url.encodedHost()));
-    header.setValue("User-Agent", QString::fromLatin1("Mozilla/5.0 (%1) mirall/%2")
-                    .arg(Utility::platform())
-                    .arg(QLatin1String(MIRALL_STRINGIFY(MIRALL_VERSION))).toAscii());
+    header.setValue("User-Agent", Utility::userAgentString());
     header.setValue("Accept-Charset", "ISO-8859-1,utf-8;q=0.7,*;q=0.7");
     header.setValue("Accept-Language", "it,de-de;q=0.8,it-it;q=0.6,en-us;q=0.4,en;q=0.2");
     header.setValue("Connection", "keep-alive");
@@ -513,9 +510,7 @@ void ownCloudInfo::setupHeaders( QNetworkRequest & req, quint64 size )
     QUrl url( cfgFile.ownCloudUrl( QString::null, false ) );
     qDebug() << "Setting up host header: " << url.host();
     req.setRawHeader( QByteArray("Host"), url.host().toUtf8() );
-    req.setRawHeader( QByteArray("User-Agent"), QString::fromLatin1("Mozilla/5.0 (%1) mirall/%2")
-                      .arg(Utility::platform())
-                      .arg(QLatin1String(MIRALL_STRINGIFY(MIRALL_VERSION))).toAscii());
+    req.setRawHeader( QByteArray("User-Agent"), Utility::userAgentString());
 
     QString con = _configHandle;
     if( con.isEmpty() ) con = DEFAULT_CONNECTION;

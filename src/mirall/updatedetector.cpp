@@ -17,6 +17,7 @@
 #include "mirall/version.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/occinfo.h"
+#include "mirall/utility.h"
 
 #include <QtCore>
 #include <QtNetwork>
@@ -56,9 +57,13 @@ void UpdateDetector::versionCheck( Theme *theme )
     }
     url.addQueryItem( QLatin1String("version"), ver );
     url.addQueryItem( QLatin1String("platform"), platform );
-    url.addQueryItem( QLatin1String("oem"),  theme->appName());
+    url.addQueryItem( QLatin1String("oem"), theme->appName() );
 
-    _accessManager->get( QNetworkRequest( url ));
+    QNetworkRequest req( url );
+    req.setRawHeader( QByteArray("Host"), url.host().toUtf8() );
+    req.setRawHeader( QByteArray("User-Agent"), Utility::userAgentString() );
+
+    _accessManager->get( req );
 }
 
 void UpdateDetector::slotOpenUpdateUrl()
