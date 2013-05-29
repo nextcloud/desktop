@@ -538,42 +538,41 @@ void Application::setupLogBrowser()
 
 }
 
+QNetworkProxy proxyFromConfig(const MirallConfigFile& cfg)
+{
+    QNetworkProxy proxy;
+    proxy.setHostName(cfg.proxyHostName());
+    proxy.setPort(cfg.proxyPort());
+    if (cfg.proxyNeedsAuth()) {
+        proxy.setUser(cfg.proxyUser());
+        proxy.setPassword(cfg.proxyPassword());
+    }
+    return proxy;
+}
+
 void Application::setupProxy()
 {
-    //
     Mirall::MirallConfigFile cfg;
-    int proxy = cfg.proxyType();
+    int proxyType = cfg.proxyType();
+    QNetworkProxy proxy = proxyFromConfig(cfg);
 
-    switch(proxy) {
-    case QNetworkProxy::NoProxy: {
+    switch(proxyType) {
+    case QNetworkProxy::NoProxy:
         QNetworkProxy::setApplicationProxy(QNetworkProxy::NoProxy);
-        break;
-    }
-    case QNetworkProxy::DefaultProxy: {
+        return;
+    case QNetworkProxy::DefaultProxy:
         QNetworkProxyFactory::setUseSystemConfiguration(true);
-        break;
-    }
-
-    case QNetworkProxy::Socks5Proxy: {
-        QNetworkProxy proxy;
+        return;
+    case QNetworkProxy::Socks5Proxy:
         proxy.setType(QNetworkProxy::Socks5Proxy);
-        proxy.setHostName(cfg.proxyHostName());
-        proxy.setPort(cfg.proxyPort());
-        proxy.setUser(cfg.proxyUser());
-        proxy.setPassword(cfg.proxyPassword());
         QNetworkProxy::setApplicationProxy(proxy);
-        break;
-    }
-    case QNetworkProxy::HttpProxy:{
-        QNetworkProxy proxy;
+        return;
+    case QNetworkProxy::HttpProxy:
         proxy.setType(QNetworkProxy::HttpProxy);
-        proxy.setHostName(cfg.proxyHostName());
-        proxy.setPort(cfg.proxyPort());
-        proxy.setUser(cfg.proxyUser());
-        proxy.setPassword(cfg.proxyPassword());
         QNetworkProxy::setApplicationProxy(proxy);
-        break;
-    }
+        return;
+    default:
+        return;
     }
 }
 

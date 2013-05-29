@@ -89,13 +89,14 @@ public:
     // proxy settings
     void setProxyType(int proxyType,
                       const QString& host = QString(),
-                      int port = 0,
+                      int port = 0, bool needsAuth = false,
                       const QString& user = QString(),
                       const QString& pass = QString());
 
     int proxyType() const;
     QString proxyHostName() const;
     int proxyPort() const;
+    bool proxyNeedsAuth() const;
     QString proxyUser() const;
     QString proxyPassword() const;
     

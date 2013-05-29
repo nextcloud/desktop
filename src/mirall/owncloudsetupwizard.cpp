@@ -221,7 +221,7 @@ void OwncloudSetupWizard::testOwnCloudConnect()
         MirallConfigFile prevCfg;
         if( prevCfg.proxyType() != QNetworkProxy::DefaultProxy ) {
             cfgFile.setProxyType( prevCfg.proxyType(), prevCfg.proxyHostName(), prevCfg.proxyPort(),
-                                  prevCfg.proxyUser(), prevCfg.proxyPassword() );
+                                  prevCfg.proxyNeedsAuth(), prevCfg.proxyUser(), prevCfg.proxyPassword() );
         }
     }
 

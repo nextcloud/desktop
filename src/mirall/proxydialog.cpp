@@ -82,7 +82,9 @@ void Mirall::ProxyDialog::saveSettings()
         QString user = userLineEdit->text();
         QString pass = passwordLineEdit->text();
         cfgFile.setProxyType(proxyType, hostLineEdit->text(),
-                             portSpinBox->value(), user, pass);
+                             portSpinBox->value(),
+                             authRequiredcheckBox->isChecked(),
+                             user, pass);
     }
 
 }

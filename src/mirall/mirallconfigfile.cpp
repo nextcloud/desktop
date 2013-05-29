@@ -515,7 +515,7 @@ void MirallConfigFile::acceptCustomConfig()
 
 void MirallConfigFile::setProxyType(int proxyType,
                   const QString& host,
-                  int port,
+                  int port, bool needsAuth,
                   const QString& user,
                   const QString& pass)
 {
@@ -529,6 +529,7 @@ void MirallConfigFile::setProxyType(int proxyType,
         proxyType == QNetworkProxy::Socks5Proxy) {
         settings.setValue(QLatin1String("host"), host);
         settings.setValue(QLatin1String("port"), port);
+        settings.setValue(QLatin1String("needsAuth"), needsAuth);
         settings.setValue(QLatin1String("user"), user);
         settings.setValue(QLatin1String("pass"), pass.toUtf8().toBase64());
     }
@@ -557,6 +558,11 @@ QString MirallConfigFile::proxyHostName() const
 int MirallConfigFile::proxyPort() const
 {
     return getValue(QLatin1String("port"), QLatin1String("proxy")).toInt();
+}
+
+bool MirallConfigFile::proxyNeedsAuth() const
+{
+    return getValue(QLatin1String("needsAuth"), QLatin1String("proxy")).toInt();
 }
 
 QString MirallConfigFile::proxyUser() const
