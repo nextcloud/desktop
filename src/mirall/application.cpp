@@ -29,7 +29,6 @@
 #include "mirall/mirallconfigfile.h"
 #include "mirall/updatedetector.h"
 #include "mirall/proxydialog.h"
-#include "mirall/version.h"
 #include "mirall/credentialstore.h"
 #include "mirall/logger.h"
 
