@@ -258,18 +258,24 @@ static int configureProxy( ne_session *session )
         re = 0;
     } else if( c_streq(dav_session.proxy_type, "DefaultProxy") ||
                c_streq(dav_session.proxy_type, "HttpProxy")    ||
-               c_streq(dav_session.proxy_type, "HttpCachingProxy") ) {
+               c_streq(dav_session.proxy_type, "HttpCachingProxy") ||
+               c_streq(dav_session.proxy_type, "Socks5Proxy")) {
+
         if( dav_session.proxy_host ) {
             DEBUG_WEBDAV("%s at %s:%d", dav_session.proxy_type, dav_session.proxy_host, port );
-            ne_session_proxy(session, dav_session.proxy_host, port );
+            if (c_streq(dav_session.proxy_type, "Socks5Proxy")) {
+                ne_session_socks_proxy(session, NE_SOCK_SOCKSV5, dav_session.proxy_host, port,
+                                       dav_session.proxy_user, dav_session.proxy_pwd);
+            } else {
+                ne_session_proxy(session, dav_session.proxy_host, port );
+            }
             re = 2;
         } else {
             DEBUG_WEBDAV("%s requested but no proxy host defined.", dav_session.proxy_type );
 	    /* we used to try ne_system_session_proxy here, but we should rather err out
 	       to behave exactly like the caller. */
         }
-    } else if( c_streq(dav_session.proxy_type, "FtpCachingProxy") ||
-               c_streq(dav_session.proxy_type, "Socks5Proxy") ) {
+    } else {
         DEBUG_WEBDAV( "Unsupported Proxy: %s", dav_session.proxy_type );
     }
 
