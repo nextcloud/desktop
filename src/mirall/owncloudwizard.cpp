@@ -262,10 +262,12 @@ void OwncloudSetupPage::slotHandleUserInput()
         _ui.pbSelectLocalFolder->setText(locFolder);
 
         if( _remoteFolder.isEmpty() || _remoteFolder == QLatin1String("/") ) {
-            t = tr("Your entire account will be synced to the local folder '%1'.").arg(locFolder);
+            t = tr("Your entire account will be synced to the local folder '%1'.")
+                    .arg(QDir::toNativeSeparators(locFolder));
         } else {
             t = tr("%1 folder '%2' is synced to local folder '%3'")
-                    .arg(Theme::instance()->appName()).arg(_remoteFolder).arg(locFolder);
+                    .arg(Theme::instance()->appName()).arg(_remoteFolder)
+                    .arg(QDir::toNativeSeparators(locFolder));
         }
 
         if ( _multipleFoldersExist ) {
@@ -457,9 +459,11 @@ void OwncloudWizardResultPage::initializePage()
     const QString localFolder = wizard()->property("localFolder").toString();
     QString text;
     if( _remoteFolder == QLatin1String("/") || _remoteFolder.isEmpty() ) {
-        text = tr("Your entire account is synced to the local folder <i>%1</i>").arg(localFolder);
+        text = tr("Your entire account is synced to the local folder <i>%1</i>")
+                .arg(QDir::toNativeSeparators(localFolder));
     } else {
-        text = tr("ownCloud folder <i>%1</i> is synced to local folder <i>%2</i>").arg(_remoteFolder).arg(localFolder);
+        text = tr("ownCloud folder <i>%1</i> is synced to local folder <i>%2</i>")
+                .arg(_remoteFolder).arg(QDir::toNativeSeparators(localFolder));
     }
     _ui.localFolderLabel->setText( text );
 
