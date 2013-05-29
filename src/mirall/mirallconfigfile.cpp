@@ -525,7 +525,8 @@ void MirallConfigFile::setProxyType(int proxyType,
 
     settings.setValue(QLatin1String("type"), proxyType);
 
-    if (proxyType == QNetworkProxy::HttpProxy) {
+    if (proxyType == QNetworkProxy::HttpProxy ||
+        proxyType == QNetworkProxy::Socks5Proxy) {
         settings.setValue(QLatin1String("host"), host);
         settings.setValue(QLatin1String("port"), port);
         settings.setValue(QLatin1String("user"), user);

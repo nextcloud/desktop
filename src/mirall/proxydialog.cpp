@@ -35,12 +35,23 @@ Mirall::ProxyDialog::ProxyDialog( QWidget* parent )
 
     // load current proxy settings
     Mirall::MirallConfigFile cfgFile;
-    if (cfgFile.proxyType() == QNetworkProxy::NoProxy)
+    switch (cfgFile.proxyType()) {
+    case QNetworkProxy::NoProxy:
         noProxyRadioButton->setChecked(true);
-    else if (cfgFile.proxyType() == QNetworkProxy::DefaultProxy)
+        break;
+    case QNetworkProxy::DefaultProxy:
         systemProxyRadioButton->setChecked(true);
-    else if (cfgFile.proxyType() == QNetworkProxy::HttpProxy)
+        break;
+    case QNetworkProxy::Socks5Proxy:
+        cbSocks->setChecked(true);
+        // fall through
+    case QNetworkProxy::HttpProxy:
+    case QNetworkProxy::HttpCachingProxy:
         manualProxyRadioButton->setChecked(true);
+        break;
+    default:
+        break;
+    }
 
     hostLineEdit->setText(cfgFile.proxyHostName());
     portSpinBox->setValue(cfgFile.proxyPort());
@@ -66,18 +77,12 @@ void Mirall::ProxyDialog::saveSettings()
     }
     if (manualProxyRadioButton->isChecked())
     {
-        if (authRequiredcheckBox->isChecked())
-        {
-            QString user = userLineEdit->text();
-            QString pass = passwordLineEdit->text();
-            cfgFile.setProxyType(QNetworkProxy::HttpProxy, hostLineEdit->text(),
-                                 portSpinBox->value(), user, pass);
-        }
-        else
-        {
-            cfgFile.setProxyType(QNetworkProxy::HttpProxy, hostLineEdit->text(),
-                                 portSpinBox->value(), QString::null, QString::null);
-        }
+        int proxyType = cbSocks->isChecked() ? QNetworkProxy::Socks5Proxy
+                                             : QNetworkProxy::HttpProxy;
+        QString user = userLineEdit->text();
+        QString pass = passwordLineEdit->text();
+        cfgFile.setProxyType(proxyType, hostLineEdit->text(),
+                             portSpinBox->value(), user, pass);
     }
 
 }

@@ -555,9 +555,14 @@ void Application::setupProxy()
     }
 
     case QNetworkProxy::Socks5Proxy: {
-        proxy = QNetworkProxy::HttpProxy;
-        cfg.setProxyType(proxy);
-        // fall through
+        QNetworkProxy proxy;
+        proxy.setType(QNetworkProxy::Socks5Proxy);
+        proxy.setHostName(cfg.proxyHostName());
+        proxy.setPort(cfg.proxyPort());
+        proxy.setUser(cfg.proxyUser());
+        proxy.setPassword(cfg.proxyPassword());
+        QNetworkProxy::setApplicationProxy(proxy);
+        break;
     }
     case QNetworkProxy::HttpProxy:{
         QNetworkProxy proxy;
