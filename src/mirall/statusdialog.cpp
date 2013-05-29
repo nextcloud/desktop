@@ -146,7 +146,7 @@ void FolderViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
   aliasRect.setLeft(iconRect.right()+margin);
 
   aliasRect.setTop(aliasRect.top() + aliasFm.height()/2 );
-  aliasRect.setBottom(aliasRect.top()+subFm.height());
+  aliasRect.setBottom(aliasRect.top()+aliasFm.height());
 
   // local directory box
   QRect localPathRect = aliasRect;
