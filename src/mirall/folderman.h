@@ -81,6 +81,11 @@ public:
      */
     bool startFromScratch( const QString& );
 
+    /**
+     *  called whenever proxy configuration changes
+     */
+    void setProxy();
+
 signals:
     /**
       * signal to indicate a folder named by alias has changed its sync state.

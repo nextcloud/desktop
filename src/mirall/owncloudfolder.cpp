@@ -100,23 +100,8 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
             qDebug() << "Could not initialize csync!";
             _csync_ctx = 0;
         }
+        setProxy();
 
-        if( _csync_ctx ) {
-            /* Store proxy */
-            QList<QNetworkProxy> proxies = QNetworkProxyFactory::proxyForQuery(QUrl(cfgFile.ownCloudUrl()));
-            // We set at least one in Application
-            Q_ASSERT(proxies.count() > 0);
-            QNetworkProxy proxy = proxies.first();
-            int proxyPort = proxy.port();
-
-            csync_set_module_property(_csync_ctx, "proxy_type", (char*) proxyTypeToCStr(proxy.type()) );
-            csync_set_module_property(_csync_ctx, "proxy_host", proxy.hostName().toUtf8().data() );
-            csync_set_module_property(_csync_ctx, "proxy_port", &proxyPort );
-            csync_set_module_property(_csync_ctx, "proxy_user", proxy.user().toUtf8().data()     );
-            csync_set_module_property(_csync_ctx, "proxy_pwd" , proxy.password().toUtf8().data() );
-
-            csync_set_module_property(_csync_ctx, "csync_context", _csync_ctx);
-        }
     }
 }
 
@@ -129,6 +114,34 @@ ownCloudFolder::~ownCloudFolder()
     }
     // Destroy csync here.
     csync_destroy(_csync_ctx);
+}
+
+void ownCloudFolder::setProxy()
+{
+    if( _csync_ctx ) {
+        /* Store proxy */
+        MirallConfigFile cfgFile;
+        QUrl proxyUrl(cfgFile.ownCloudUrl());
+        QList<QNetworkProxy> proxies = QNetworkProxyFactory::proxyForQuery(proxyUrl);
+        // We set at least one in Application
+        Q_ASSERT(proxies.count() > 0);
+        QNetworkProxy proxy = proxies.first();
+        if (proxy.type() == QNetworkProxy::NoProxy) {
+            qDebug() << "Passing NO proxy to csync for" << cfgFile.ownCloudUrl();
+        } else {
+            qDebug() << "Passing" << proxy.hostName() << "of proxy type " << proxy.type()
+                     << " to csync for" << cfgFile.ownCloudUrl();
+        }
+        int proxyPort = proxy.port();
+
+        csync_set_module_property(_csync_ctx, "proxy_type", (char*) proxyTypeToCStr(proxy.type()) );
+        csync_set_module_property(_csync_ctx, "proxy_host", proxy.hostName().toUtf8().data() );
+        csync_set_module_property(_csync_ctx, "proxy_port", &proxyPort );
+        csync_set_module_property(_csync_ctx, "proxy_user", proxy.user().toUtf8().data()     );
+        csync_set_module_property(_csync_ctx, "proxy_pwd" , proxy.password().toUtf8().data() );
+
+        csync_set_module_property(_csync_ctx, "csync_context", _csync_ctx);
+    }
 }
 
 const char* ownCloudFolder::proxyTypeToCStr(QNetworkProxy::ProxyType type)

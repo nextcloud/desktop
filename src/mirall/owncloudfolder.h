@@ -72,6 +72,8 @@ public:
     /* get status about a singel file. */
     SyncFileStatus fileStatus( const QString& );
 
+    void setProxy();
+
 public slots:
     void startSync();
     void slotTerminateSync();

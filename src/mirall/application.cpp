@@ -558,21 +558,22 @@ void Application::setupProxy()
     switch(proxyType) {
     case QNetworkProxy::NoProxy:
         QNetworkProxy::setApplicationProxy(QNetworkProxy::NoProxy);
-        return;
+        break;
     case QNetworkProxy::DefaultProxy:
         QNetworkProxyFactory::setUseSystemConfiguration(true);
-        return;
+        break;
     case QNetworkProxy::Socks5Proxy:
         proxy.setType(QNetworkProxy::Socks5Proxy);
         QNetworkProxy::setApplicationProxy(proxy);
-        return;
+        break;
     case QNetworkProxy::HttpProxy:
         proxy.setType(QNetworkProxy::HttpProxy);
         QNetworkProxy::setApplicationProxy(proxy);
-        return;
+        break;
     default:
-        return;
+        break;
     }
+    _folderMan->setProxy();
 }
 
 /*
