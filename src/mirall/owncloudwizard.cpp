@@ -148,6 +148,7 @@ void OwncloudSetupPage::setupCustomization()
 
     QString fixUrl = theme->overrideServerUrl();
     if( !fixUrl.isEmpty() ) {
+        _ui.label_2->hide();
         setServerUrl( fixUrl );
         _ui.leUrl->setEnabled( false );
         _ui.leUrl->hide();
