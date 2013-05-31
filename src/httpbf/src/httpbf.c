@@ -28,11 +28,10 @@
 #include <sys/timeb.h>
 #include <sys/time.h>
 
+#include "httpbf.h"
+
 #include <neon/ne_session.h>
 #include <neon/ne_request.h>
-
-
-#include "httpbf.h"
 
 #ifdef NDEBUG
 #define DEBUG_HBF(...)
@@ -258,7 +257,6 @@ static int dav_request( ne_request *req, int fd, hbf_block_t *blk ) {
     res = ne_request_dispatch(req);
 
     req_status = ne_get_status( req );
-
 
     switch(res) {
     case NE_OK:

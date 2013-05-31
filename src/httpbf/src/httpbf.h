@@ -23,12 +23,16 @@
 #ifndef _HBF_SEND_H
 #define _HBF_SEND_H
 
+#include "config.h"
+#ifdef NEON_WITH_LFS /* Switch on LFS in libneon. Never remove the NE_LFS! */
+#define NE_LFS
+#endif
+
 #include <neon/ne_session.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 
 enum hbf_state_e {
     HBF_SUCCESS,
