@@ -58,18 +58,10 @@ OwncloudSetupPage::OwncloudSetupPage()
     setSubTitle( tr("<font color=\"%1\">Enter user credentials</font>")
                  .arg(theme->wizardHeaderTitleColor().name()));
 
-    connect(_ui.leUrl, SIGNAL(textChanged(QString)), SLOT(slotUrlChanged(QString)));
-    connect( _ui.leUsername, SIGNAL(textChanged(QString)), this, SLOT(slotUserChanged(QString)));
-
     registerField( QLatin1String("OCUrl"),    _ui.leUrl );
     registerField( QLatin1String("OCUser"),   _ui.leUsername );
     registerField( QLatin1String("OCPasswd"), _ui.lePassword);
     registerField( QLatin1String("OCSyncFromScratch"), _ui.cbSyncFromScratch);
-
-    connect( _ui.lePassword, SIGNAL(textChanged(QString)), this, SIGNAL(completeChanged()));
-    connect( _ui.leUsername, SIGNAL(textChanged(QString)), this, SIGNAL(completeChanged()));
-    connect( _ui.cbAdvanced, SIGNAL(stateChanged (int)), SLOT(slotToggleAdvanced(int)));
-    connect( _ui.pbSelectLocalFolder, SIGNAL(clicked()), SLOT(slotSelectFolder()));
 
     _ui.errorLabel->setVisible(true);
     _ui.advancedBox->setVisible(false);
@@ -91,6 +83,14 @@ OwncloudSetupPage::OwncloudSetupPage()
     _checking = false;
 
     setupCustomization();
+
+    connect(_ui.leUrl, SIGNAL(textChanged(QString)), SLOT(slotUrlChanged(QString)));
+    connect( _ui.leUsername, SIGNAL(textChanged(QString)), this, SLOT(slotUserChanged(QString)));
+
+    connect( _ui.lePassword, SIGNAL(textChanged(QString)), this, SIGNAL(completeChanged()));
+    connect( _ui.leUsername, SIGNAL(textChanged(QString)), this, SIGNAL(completeChanged()));
+    connect( _ui.cbAdvanced, SIGNAL(stateChanged (int)), SLOT(slotToggleAdvanced(int)));
+    connect( _ui.pbSelectLocalFolder, SIGNAL(clicked()), SLOT(slotSelectFolder()));
 }
 
 OwncloudSetupPage::~OwncloudSetupPage()
@@ -148,6 +148,7 @@ void OwncloudSetupPage::setupCustomization()
 
     QString fixUrl = theme->overrideServerUrl();
     if( !fixUrl.isEmpty() ) {
+        _ui.label_2->hide();
         setServerUrl( fixUrl );
         _ui.leUrl->setEnabled( false );
         _ui.leUrl->hide();
