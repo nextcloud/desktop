@@ -118,7 +118,7 @@ signals:
 
     void webdavColCreated( QNetworkReply::NetworkError );
     void sslFailed( QNetworkReply *reply, QList<QSslError> errors );
-
+    void guiLog( const QString& title, const QString& content );
 public slots:
 
 protected slots:

@@ -16,6 +16,7 @@
 #include "mirall/mirallconfigfile.h"
 #include "mirall/theme.h"
 #include "mirall/utility.h"
+#include "mirall/logger.h"
 
 #include <QtCore>
 #include <QtGui>
@@ -64,7 +65,8 @@ ownCloudInfo::ownCloudInfo() :
     _manager(0)
 {
     _connection = Theme::instance()->appName();
-
+    connect(this, SIGNAL(guiLog(QString,QString)),
+            Logger::instance(), SIGNAL(guiLog(QString,QString)));
     setNetworkAccessManager( new QNetworkAccessManager( this ) );
 
 }
@@ -481,7 +483,36 @@ bool ownCloudInfo::certsUntrusted()
 
 void ownCloudInfo::slotError( QNetworkReply::NetworkError err)
 {
-  qDebug() << "ownCloudInfo Network Error: " << err;
+    qDebug() << "ownCloudInfo Network Error: " << err;
+
+    switch (err) {
+    case QNetworkReply::ProxyConnectionRefusedError:
+        emit guiLog(tr("Proxy Refused Connection "),
+                    tr("The configured proxy has refused the connection. "
+                       "Please check the proxy settings."));
+        break;
+    case QNetworkReply::ProxyConnectionClosedError:
+        emit guiLog(tr("Proxy Closed Connection"),
+                    tr("The configured proxy has closed the connection. "
+                       "Please check the proxy settings."));
+        break;
+    case QNetworkReply::ProxyNotFoundError:
+        emit guiLog(tr("Proxy Not Found"),
+                    tr("The configured proxy could not be found. "
+                       "Please check the proxy settings."));
+        break;
+    case QNetworkReply::ProxyAuthenticationRequiredError:
+        emit guiLog(tr("Proxy Authentication Error"),
+                    tr("The configured proxy requires login but the proxy credentials "
+                       "are invalid. Please check the proxy settings."));
+        break;
+    case QNetworkReply::ProxyTimeoutError:
+        emit guiLog(tr("Proxy Connection Timed Out"),
+                    tr("The connection to the configured proxy has timed out."));
+        break;
+    default:
+        break;
+    }
 }
 
 void ownCloudInfo::setCredentials( const QString& user, const QString& passwd,
