@@ -124,34 +124,50 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
             qDebug() << "The User has changed, same as url change.";
         }
 
-        // save the user credentials and afterwards clear the cred store.
-        cfg.acceptCustomConfig();
-
-        // Now write the resulting folder definition if folder names are set.
         const QString localFolder = _ocWizard->localFolder();
-        if( !( localFolder.isEmpty() || _remoteFolder.isEmpty() ) ) { // both variables are set.
-            if( urlHasChanged ) {
-                _folderMan->removeAllFolderDefinitions();
-                _folderMan->addFolderDefinition( QLatin1String("owncloud"), Theme::instance()->appName(),
-                                                 localFolder, _remoteFolder, false );
-                _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
+        bool acceptCfg = true;
 
-                bool startFromScratch = _ocWizard->field( "OCSyncFromScratch" ).toBool();
-                if( startFromScratch ) {
-                    // clean the entire directory.
-                    if( _folderMan->startFromScratch( localFolder ) ) {
-                        _ocWizard->appendToConfigurationLog(tr("<font color=\"green\">Successfully prepared syncing from scratch!</font>"));
-                    } else {
-                        _ocWizard->appendToConfigurationLog(tr("<font color=\"red\">Failed to prepare syncing from scratch!</font>"));
+        if( urlHasChanged ) {
+            _folderMan->terminateSyncProcess( QString::null ); // terminate the current sync.
+
+            bool startFromScratch = _ocWizard->field( "OCSyncFromScratch" ).toBool();
+            if( startFromScratch ) {
+                // first try to rename (backup) the current local dir.
+                bool renameOk = false;
+                while( !renameOk ) {
+                    renameOk = _folderMan->startFromScratch(localFolder);
+                    if( ! renameOk ) {
+                        QMessageBox::StandardButton but;
+                        but = QMessageBox::question( 0, tr("Folder rename failed"),
+                                                     tr("The existing local folder can not be renamed for backup reasons."
+                                                        "Please check manually and hit retry or cancel the setup."), QMessageBox::Retry | QMessageBox::Abort, QMessageBox::Retry);
+                        if( but == QMessageBox::Abort ) {
+                            renameOk = true;
+                            acceptCfg = false;
+                        }
                     }
                 }
-            } else {
-                // url is unchanged. Only the password was changed.
-                qDebug() << "Only password was changed, no changes to folder configuration.";
             }
         }
-    } else {
-        qDebug() << "WRN: Got unknown dialog result code " << result;
+        // save the user credentials and afterwards clear the cred store.
+        if( acceptCfg ) {
+            cfg.acceptCustomConfig();
+        }
+
+        // Now write the resulting folder definition if folder names are set.
+        if( acceptCfg && urlHasChanged ) {
+            _folderMan->removeAllFolderDefinitions();
+            _folderMan->addFolderDefinition( QLatin1String("owncloud"), Theme::instance()->appName(),
+                                             localFolder, _remoteFolder, false );
+            _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
+        } else {
+            // url is unchanged. Only the password was changed.
+            if( acceptCfg ) {
+                qDebug() << "Only password was changed, no changes to folder configuration.";
+            } else {
+                qDebug() << "User interrupted change of configuration.";
+            }
+        }
     }
 
     // clear the custom config handle
