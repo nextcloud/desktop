@@ -275,12 +275,18 @@ void FolderMan::slotEnableFolder( const QString& alias, bool enable )
 // csync still remains in a stable state, regardless of that.
 void FolderMan::terminateSyncProcess( const QString& alias )
 {
-    Folder *f = _folderMap[alias];
-    if( f ) {
-        f->slotTerminateSync();
+    QString folderAlias = alias;
+    if( alias.isEmpty() ) {
+        folderAlias = _currentSyncFolder;
+    }
+    if( ! folderAlias.isEmpty() ) {
+        Folder *f = _folderMap[folderAlias];
+        if( f ) {
+            f->slotTerminateSync();
 
-        if(_currentSyncFolder == alias )
-            _currentSyncFolder = QString::null;
+            if(_currentSyncFolder == folderAlias )
+                _currentSyncFolder = QString::null;
+        }
     }
 }
 
