@@ -69,15 +69,12 @@ CredentialStore::CredState CredentialStore::state()
 
 bool CredentialStore::canTryAgain()
 {
-    bool canDoIt = false;
-
     if( _tries > MAX_LOGIN_ATTEMPTS ) {
         qDebug() << "canTryAgain: Max attempts reached.";
         return false;
     }
 
-    /* Since QtKeyChain is required now, it makes to only
-     * query once. */
+    /* Since QtKeyChain is required now, it makes sense to only query once. */
     if( _state == NotFetched || _state == AsyncWriting ) {
         return true;
     } else {
