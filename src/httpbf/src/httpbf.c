@@ -32,6 +32,7 @@
 
 #include <neon/ne_session.h>
 #include <neon/ne_request.h>
+#include <neon/ne_basic.h>
 
 #ifdef NDEBUG
 #define DEBUG_HBF(...)
@@ -341,6 +342,42 @@ static Hbf_State validate_source_file( hbf_transfer_t *transfer ) {
   return state;
 }
 
+/* Get the HTTP error code for the last request  */
+static int _hbf_http_error_code(ne_session *session) {
+    const char *msg = ne_get_error( session );
+    char *msg2;
+    int err;
+    err = strtol(msg, &msg2, 10);
+    if (msg == msg2) {
+        err = 0;
+    }
+    return err;
+}
+
+Hbf_State _hbf_transfer_no_chunk(ne_session *session, hbf_transfer_t *transfer, const char *verb) {
+    int res;
+    const ne_status* req_status;
+    ne_request *req = ne_request_create(session, "PUT", transfer->url);
+    if (!req)
+        return HBF_MEMORY_FAIL;
+
+    ne_set_request_body_fd(req, transfer->fd, 0, transfer->stat_size);
+    DEBUG_HBF("HBF: chunking not supported for %s\n", transfer->url);
+    res = ne_request_dispatch(req);
+    req_status = ne_get_status( req );
+
+    if (res == NE_OK && req_status->klass == 2) {
+        ne_request_destroy(req);
+        return HBF_SUCCESS;
+    }
+
+    if( transfer->error_string ) free( transfer->error_string );
+    transfer->error_string = strdup( ne_get_error(session) );
+    transfer->status_code = req_status->code;
+    ne_request_destroy(req);
+    return HBF_FAIL;
+}
+
 Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const char *verb ) {
     Hbf_State state = HBF_TRANSFER_SUCCESS;
     int cnt;
@@ -408,6 +445,19 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
                   transfer->status_code = transfer->block_arr[block_id]->http_result_code;
                 }
                 ne_request_destroy(req);
+
+                if (transfer->block_cnt > 1 && state == HBF_SUCCESS && cnt == 0) {
+                    /* Success on the first chunk is suspicious.
+                       It could happen that the server did not support chunking */
+                    int rc = ne_delete(session, transfer_url);
+                    if (rc == NE_OK && _hbf_http_error_code(session) == 204) {
+                        /* If delete suceeded, it means some proxy strips the OC_CHUNKING header
+                           start again without chunking: */
+                       free( transfer_url );
+                       return _hbf_transfer_no_chunk(session, transfer, verb);
+                    }
+                }
+
             } else {
                 state = HBF_MEMORY_FAIL;
             }
