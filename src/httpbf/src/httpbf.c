@@ -354,10 +354,11 @@ static int _hbf_http_error_code(ne_session *session) {
     return err;
 }
 
-Hbf_State _hbf_transfer_no_chunk(ne_session *session, hbf_transfer_t *transfer, const char *verb) {
+static Hbf_State _hbf_transfer_no_chunk(ne_session *session, hbf_transfer_t *transfer, const char *verb) {
     int res;
     const ne_status* req_status;
-    ne_request *req = ne_request_create(session, "PUT", transfer->url);
+
+    ne_request *req = ne_request_create(session, verb ? verb : "PUT", transfer->url);
     if (!req)
         return HBF_MEMORY_FAIL;
 
@@ -428,7 +429,7 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
         }
 
         if( state == HBF_TRANSFER_SUCCESS || state == HBF_SUCCESS ) {
-            ne_request *req = ne_request_create(session, "PUT", transfer_url);
+            ne_request *req = ne_request_create(session, verb, transfer_url);
 
             if( req ) {
                 if( transfer->block_cnt > 1 ) {
