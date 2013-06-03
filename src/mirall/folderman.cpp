@@ -470,7 +470,7 @@ QString FolderMan::getBackupName( const QString& fullPathName ) const
      int cnt = 1;
      do {
          if( fi.exists() ) {
-             newName += fullPathName + QString( ".oC_bak_%1").arg(cnt++);
+             newName = fullPathName + QString( ".oC_bak_%1").arg(cnt++);
              fi.setFile(newName);
          }
      } while( fi.exists() );
