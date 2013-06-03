@@ -139,8 +139,8 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
                     if( ! renameOk ) {
                         QMessageBox::StandardButton but;
                         but = QMessageBox::question( 0, tr("Folder rename failed"),
-                                                     tr("The existing local folder can not be renamed for backup reasons."
-                                                        "Please check manually and hit retry or cancel the setup."), QMessageBox::Retry | QMessageBox::Abort, QMessageBox::Retry);
+                                                     tr("Can't remove and back up the folder because the folder or a file in it is open in another program."
+                                                        "Please close the folder or file and hit retry or cancel the setup."), QMessageBox::Retry | QMessageBox::Abort, QMessageBox::Retry);
                         if( but == QMessageBox::Abort ) {
                             renameOk = true;
                             acceptCfg = false;
