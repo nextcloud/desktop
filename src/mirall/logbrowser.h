@@ -67,7 +67,7 @@ private:
 
     QFile       _logFile;
     bool        _doFileFlush;
-    QTextStream *_logstream;
+    QScopedPointer<QTextStream> _logstream;
 };
 
 } // namespace

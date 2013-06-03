@@ -79,6 +79,7 @@ protected:
     void setupContextMenu();
     void setupLogBrowser();
     void setupProxy();
+    void enterNextLogFile();
 
     //folders have to be disabled while making config changes
     void computeOverallSyncStatus();
@@ -133,6 +134,7 @@ private:
     QMap<QString, QString> _overallStatusStrings;
     LogBrowser *_logBrowser;
     QString _logFile;
+    QString _logDirectory;
     bool _showLogWindow;
     bool _logFlush;
     bool _helpOnly;

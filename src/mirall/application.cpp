@@ -526,7 +526,9 @@ void Application::setupLogBrowser()
         _logBrowser = new LogBrowser;
         qInstallMsgHandler( mirallLogCatcher );
         // ## TODO: allow new log name maybe?
-        if (!_logFile.isEmpty()) {
+        if (!_logDirectory.isEmpty()) {
+            enterNextLogFile();
+        } else if (!_logFile.isEmpty()) {
             qDebug() << "Logging into logfile: " << _logFile << " with flush " << _logFlush;
             _logBrowser->setLogFile( _logFile, _logFlush );
         }
@@ -540,6 +542,30 @@ void Application::setupLogBrowser()
                 .arg(property("ui_lang").toString())
                 .arg(_theme->version());
 
+}
+
+void Application::enterNextLogFile()
+{
+    if (_logBrowser && !_logDirectory.isEmpty()) {
+        QDir dir(_logDirectory);
+        if (!dir.exists()) {
+            dir.mkpath(".");
+        }
+
+        // Find out what is the file with the highest nymber if any
+        QStringList files = dir.entryList(QStringList("owncloud.log.*"),
+                                    QDir::Files);
+        QRegExp rx("owncloud.log.(\\d+)");
+        uint maxNumber = 0;
+        foreach(const QString &s, files) {
+            if (rx.exactMatch(s)) {
+                maxNumber = qMax(maxNumber, rx.cap(1).toUInt());
+            }
+        }
+
+        QString filename = _logDirectory + "/owncloud.log." + QString::number(maxNumber+1);
+        _logBrowser->setLogFile(filename  , _logFlush);
+    }
 }
 
 QNetworkProxy proxyFromConfig(const MirallConfigFile& cfg)
@@ -839,6 +865,10 @@ void Application::slotSyncStateChange( const QString& alias )
     computeOverallSyncStatus();
 
     qDebug() << "Sync state changed for folder " << alias << ": "  << result.statusString();
+
+    if (result.status() == SyncResult::Success || result.status() == SyncResult::Error) {
+        enterNextLogFile();
+    }
 }
 
 void Application::parseOptions(const QStringList &options)
@@ -859,6 +889,12 @@ void Application::parseOptions(const QStringList &options)
         } else if (option == QLatin1String("--logfile")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
                 _logFile = it.next();
+            } else {
+                setHelp();
+            }
+        } else if (option == QLatin1String("--logdir")) {
+            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+                _logDirectory = it.next();
             } else {
                 setHelp();
             }
@@ -974,6 +1010,7 @@ setHelp();
     std::cout << "  -h --help            : show this help screen." << std::endl;
     std::cout << "  --logwindow          : open a window to show log output." << std::endl;
     std::cout << "  --logfile <filename> : write log output to file <filename>." << std::endl;
+    std::cout << "  --logdir <name>      : write each sync log output in a different file in directory <name>." << std::endl;
     std::cout << "  --logflush           : flush the log file after every write." << std::endl;
     std::cout << "  --monoicons          : Use black/white pictograms for systray." << std::endl;
     std::cout << "  --confdir <dirname>  : Use the given configuration directory." << std::endl;
