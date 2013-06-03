@@ -260,7 +260,7 @@ void OwncloudSetupPage::slotHandleUserInput()
         t = tr("Change the Password for your configured account.");
     } else {
         // Complete new setup.
-        _ui.pbSelectLocalFolder->setText(locFolder);
+        _ui.pbSelectLocalFolder->setText(QDir::toNativeSeparators(locFolder));
 
         if( _remoteFolder.isEmpty() || _remoteFolder == QLatin1String("/") ) {
             t = tr("Your entire account will be synced to the local folder '%1'.")
