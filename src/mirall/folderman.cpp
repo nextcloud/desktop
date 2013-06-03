@@ -485,6 +485,13 @@ bool FolderMan::startFromScratch( const QString& localFolder )
     QFileInfo fi( localFolder );
     if( fi.exists() && fi.isDir() ) {
         QDir file = fi.dir();
+
+        // check if there are files in the directory.
+        if( file.count() == 0 ) {
+            // directory is existing, but its empty. Use it.
+            qDebug() << "startFromScratch: Directory is empty!";
+            return true;
+        }
         QString newName = getBackupName( fi.absoluteFilePath() );
 
         if( file.rename( fi.absoluteFilePath(), newName )) {
