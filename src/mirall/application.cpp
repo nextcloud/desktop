@@ -246,23 +246,28 @@ void Application::slotFetchCredentials()
 {
     QString trayMessage;
 
-    if( CredentialStore::instance()->canTryAgain() ) {
-        connect( CredentialStore::instance(), SIGNAL(fetchCredentialsFinished(bool)),
-                 this, SLOT(slotCredentialsFetched(bool)) );
-        CredentialStore::instance()->fetchCredentials();
-        if( CredentialStore::instance()->state() == CredentialStore::TooManyAttempts ) {
-            trayMessage = tr("Too many incorrect password attempts.");
-        }
+    if( CredentialStore::instance()->state() == CredentialStore::Ok ) {
+        // the credentials are still valid and ok.
+        slotCredentialsFetched( true );
     } else {
-        qDebug() << "Can not try again to fetch Credentials.";
-        trayMessage = tr("%1 user credentials are wrong. Please check configuration.")
-                .arg(Theme::instance()->appNameGUI());
-    }
+        if( CredentialStore::instance()->canTryAgain() ) {
+            connect( CredentialStore::instance(), SIGNAL(fetchCredentialsFinished(bool)),
+                     this, SLOT(slotCredentialsFetched(bool)) );
+            CredentialStore::instance()->fetchCredentials();
+            if( CredentialStore::instance()->state() == CredentialStore::TooManyAttempts ) {
+                trayMessage = tr("Too many incorrect password attempts.");
+            }
+        } else {
+            qDebug() << "Can not try again to fetch Credentials.";
+            trayMessage = tr("%1 user credentials are wrong. Please check configuration.")
+                    .arg(Theme::instance()->appNameGUI());
+        }
 
-    if( !trayMessage.isEmpty() ) {
-        _tray->showMessage(tr("Credentials"), trayMessage);
-        _actionOpenStatus->setEnabled( false );
-        _actionAddFolder->setEnabled( false );
+        if( !trayMessage.isEmpty() ) {
+            _tray->showMessage(tr("Credentials"), trayMessage);
+            _actionOpenStatus->setEnabled( false );
+            _actionAddFolder->setEnabled( false );
+        }
     }
 }
 
