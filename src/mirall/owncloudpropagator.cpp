@@ -23,6 +23,7 @@
 #include <qabstractfileengine.h>
 #include <qdebug.h>
 #include <QDateTime>
+#include <QCoreApplication>
 
 #include <neon/ne_basic.h>
 #include <neon/ne_socket.h>
@@ -48,6 +49,118 @@ struct ScopedPointerHelpers {
     static inline void cleanup(ne_decompress *pointer) { if (pointer) ne_decompress_destroy(pointer); }
 //     static inline void cleanup(ne_propfind_handler *pointer) { if (pointer) ne_propfind_destroy(pointer); }
 };
+
+OwncloudPropagator::~OwncloudPropagator()
+{
+    if (_session) ne_session_destroy( _session );
+}
+
+ne_session_s* OwncloudPropagator::createSession(const Qurl &remoteUrl)
+{
+#if 0
+    int useSSL = 0;
+    int rc;
+    char protocol[6] = {'\0'};
+    char uaBuf[256];
+    char *path = NULL;
+    char *scheme = NULL;
+    char *host = NULL;
+    unsigned int port = 0;
+    int proxystate = -1;
+
+    if (_connected) {
+        return 0;
+    }
+
+    rc = c_parse_uri( base_url, &scheme, &dav_session.user, &dav_session.pwd, &host, &port, &path );
+    if( rc < 0 ) {
+        DEBUG_WEBDAV("Failed to parse uri %s", base_url );
+        goto out;
+    }
+
+    DEBUG_WEBDAV("* scheme %s", scheme );
+    DEBUG_WEBDAV("* host %s", host );
+    DEBUG_WEBDAV("* port %u", port );
+    DEBUG_WEBDAV("* path %s", path );
+
+#endif
+
+    QUrl url = remoteUrl;
+    bool useSSL;
+    if (url.scheme() == "owncloud") {
+        url.setScheme("http");
+    } else if (url.scheme() == "ownclouds") {
+        url.setScheme("https");
+        useSSL = true;
+    } else {
+        _errorCode = CSYNC_ERR_CONNECT;
+        _errorString = "invalid scheme " + url.scheme();
+        _hasFatalError = true;
+        return 0;
+    }
+
+
+    int port = url.port();
+    if (port() < 0) {
+        port = ne_uri_defaultport(url.scheme().toUtf8().data());
+    }
+
+    if (ne_sock_init() < 0) {
+        _errorCode = CSYNC_ERR_CONNECT;
+        _errorString = "ne_sock_init failed";
+        _hasFatalError = true;
+        return 0;
+    }
+
+    ne_session* session = ne_session_create( url.scheme().toUtf8().constBegin(), url.host().toUtf8().constBegin(), port);
+
+    if (!session) {
+        _errorCode = CSYNC_ERR_CONNECT;
+        _errorString = "ne_ssession_create failed";
+        _hasFatalError = true;
+        return 0;
+    }
+
+
+    QByteArray agent = qApp->applicationName().toUtf8() +  "/" + qApp->applicationVersion().toUtf8();
+    ne_set_useragent( session, agent.constData());
+    ne_set_server_auth(session, ne_auth, this );
+
+    if( useSSL ) {
+        if (!ne_has_support(NE_FEATURE_SSL)) {
+            _errorCode = CSYNC_ERR_CONNECT;
+            _errorString = "SSL not enabled";
+            _hasFatalError = true;
+            return session;
+        }
+
+        ne_ssl_trust_default_ca( session );
+        ne_ssl_set_verify( session, verify_sslcert, this );
+    }
+    ne_redirect_register( session );
+
+    /* Hook to get the Session ID */
+    ne_hook_post_headers( session, post_request_hook, this );
+    /* Hook called when a request is built. It sets the PHPSESSID header */
+    ne_hook_create_request( session, request_created_hook, this );
+
+    /* Proxy support */
+    proxystate = configureProxy( dav_session.ctx );
+    if( proxystate < 0 ) {
+        DEBUG_WEBDAV("Error: Proxy-Configuration failed.");
+    } else if( proxystate > 0 ) {
+        ne_set_proxy_auth( dav_session.ctx, ne_proxy_auth, 0 );
+    }
+
+    return session;
+}
+
+void OwncloudPropagator::setHttpTimeout(int timeout)
+{
+    if (_session)
+        ne_set_read_timeout(_session, timeout);
+}
+
 
 void OwncloudPropagator::propagate(const SyncFileItem &item)
 {
@@ -92,6 +205,8 @@ void OwncloudPropagator::propagate(const SyncFileItem &item)
     newItem._etag = _etag;
     emit completed(newItem, _errorCode);
 }
+
+
 
 // compare two files with given filename and return true if they have the same content
 static bool fileEquals(const QString &fn1, const QString &fn2) {

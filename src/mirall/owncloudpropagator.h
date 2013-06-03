@@ -18,6 +18,7 @@
 #include <neon/ne_request.h>
 #include <QHash>
 #include <QObject>
+#include <QUrl>
 
 #include "syncfileitem.h"
 
@@ -41,7 +42,9 @@ class OwncloudPropagator : public QObject {
     int              _httpStatusCode;
     csync_instructions_e _instruction;
 
+    ne_session_s *createSession(const QUrl &remoteUrl);
     bool check_neon_session();
+
 
 
     csync_instructions_e localRemove(const SyncFileItem &);
@@ -59,20 +62,23 @@ class OwncloudPropagator : public QObject {
 
 
 public:
-    OwncloudPropagator(ne_session_s *session, const QString &localDir, const QString &remoteDir,
+    OwncloudPropagator(const QString &localDir, const QUrl &remoteUrl,
                        ProgressDatabase *progressDb)
-            : _session(session)
+            : _session(0)
             , _localDir(localDir)
-            , _remoteDir(remoteDir)
+            , _remoteDir(remoteUrl.path())
             , _progressDb(progressDb)
             , _errorCode(CSYNC_ERR_NONE)
             , _httpStatusCode(0)
             , _hasFatalError(false)
     {
-        if (!localDir.endsWith(QChar('/'))) _localDir+='/';
-        if (!remoteDir.endsWith(QChar('/'))) _remoteDir+='/';
+        if (!_localDir.endsWith(QChar('/'))) _localDir+='/';
+        if (!_remoteDir.endsWith(QChar('/'))) _remoteDir+='/';
+        _session = createSession(remoteUrl);
     }
-    void  propagate(const SyncFileItem &);
+    Q_INVOKABLE void propagate(const SyncFileItem &);
+    void setHttpTimeout(int timeout);
+
     QByteArray _etag;
     bool             _hasFatalError;
 
