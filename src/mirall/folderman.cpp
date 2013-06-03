@@ -79,20 +79,28 @@ void FolderMan::slotReparseConfiguration()
     setupKnownFolders();
 }
 
+int FolderMan::unloadAllFolders()
+{
+    // first terminate sync jobs.
+    terminateCurrentSync();
+
+    int cnt = 0;
+
+    // clear the list of existing folders.
+    Folder::MapIterator i(_folderMap);
+    while (i.hasNext()) {
+        i.next();
+        delete _folderMap.take( i.key() );
+        cnt++;
+    }
+    return cnt;
+}
 
 int FolderMan::setupKnownFolders()
 {
   qDebug() << "* Setup folders from " << _folderConfigPath;
 
-  // first terminate sync jobs.
-  terminateCurrentSync();
-
-  // clear the list of existing folders.
-  Folder::MapIterator i(_folderMap);
-  while (i.hasNext()) {
-      i.next();
-      delete _folderMap.take( i.key() );
-  }
+  unloadAllFolders();
 
   QDir dir( _folderConfigPath );
   dir.setFilter(QDir::Files);

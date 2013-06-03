@@ -128,9 +128,9 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         bool acceptCfg = true;
 
         if( urlHasChanged ) {
-            _folderMan->terminateSyncProcess( QString::null ); // terminate the current sync.
+            _folderMan->unloadAllFolders();
 
-            bool startFromScratch = _ocWizard->field( "OCSyncFromScratch" ).toBool();
+           bool startFromScratch = _ocWizard->field( "OCSyncFromScratch" ).toBool();
             if( startFromScratch ) {
                 // first try to rename (backup) the current local dir.
                 bool renameOk = false;
