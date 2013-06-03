@@ -433,7 +433,7 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
 
             if( req ) {
                 if( transfer->block_cnt > 1 ) {
-                  ne_add_request_header(req, "OC_CHUNKED", "1");
+                  ne_add_request_header(req, "OC-Chunked", "1");
                 }
                 state = dav_request( req, transfer->fd, block );
 
