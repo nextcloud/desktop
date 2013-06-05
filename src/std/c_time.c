@@ -134,6 +134,7 @@ int c_utimes(const char *uri, const struct timeval *times) {
     if(!SetFileTime(hFile, NULL, &LastAccessTime, &LastModificationTime)) {
         //can this happen?
         errno=ENOENT;
+	CloseHandle(hFile);
         return -1;
     }
 
