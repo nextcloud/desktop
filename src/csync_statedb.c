@@ -56,11 +56,18 @@ static int _csync_statedb_check(const char *statedb) {
   char buf[BUF_SIZE] = {0};
   sqlite3 *db = NULL;
 
+  mbchar_t *wstatedb = c_utf8_to_locale(statedb);
+
+  if (wstatedb == NULL) {
+    return -1;
+  }
+
   /* check db version */
 #ifdef _WIN32
    _fmode = _O_BINARY;
 #endif
-  fd = open(statedb, O_RDONLY);
+  fd = _topen(wstatedb, O_RDONLY);
+
   if (fd >= 0) {
     r = read(fd, (void *) buf, sizeof(buf) - 1);
     close(fd);
@@ -70,19 +77,22 @@ static int _csync_statedb_check(const char *statedb) {
         if (sqlite3_open(statedb, &db ) == SQLITE_OK) {
           /* everything is fine */
           sqlite3_close(db);
+	  c_free_locale_string(wstatedb);
+
           return 0;
         } else {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "database corrupted, removing!");
-          unlink(statedb);
         }
         sqlite3_close(db);
       } else {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "sqlite version mismatch");
-        unlink(statedb);
       }
     }
+    _tunlink(wstatedb);
   }
 
+  c_free_locale_string(wstatedb);
+ 
   /* create database */
   rc = sqlite3_open(statedb, &db);
   if (rc == SQLITE_OK) {
