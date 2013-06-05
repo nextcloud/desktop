@@ -125,6 +125,7 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
   ctx->module.handle = dlopen(path, RTLD_LAZY);
   SAFE_FREE(path);
   if ((err = dlerror()) != NULL) {
+    (void) err;
     /* Disable this log message as that tremendously confuses users. See log in csync.c */
     /* CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "loading %s plugin failed - %s",
      *        module, err); */
