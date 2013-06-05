@@ -19,7 +19,7 @@ Mac OS X
 Installing the ownCloud client on your Mac follows the normal app installation
 pattern: 
 
-1. Download the installation file Click ownCloud-1.1.1.dmg, a window with the
+1. Download the installation file Click ownCloud-x.y.z.dmg, a window with the
 2. ownCloud icon opens In that window, drag the ownCloud application into the
 3. ‘Applications’ folder on the right hand side From ‘Applications’, choose
    ownCloud

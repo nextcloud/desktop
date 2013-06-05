@@ -41,7 +41,7 @@ Here are a couple of useful steps to isolate the problem.
 Logfiles
 ========
 
-Doing effective debugging requires to provide as much as relevant logfiles as
+Doing effective debugging requires to provide as much as relevant logs as
 possible. The log output can help you with tracking down problem, and if you 
 report a bug, you're advised to include the output.
 
@@ -57,11 +57,12 @@ starting the client again with this parameter. Syntax:
   * Mac OS X: ``/Applications/owncloud.app/Contents/MacOS/owncloud --logwindow``
   * Linux: ``owncloud --logwindow``
 
-It is also possible to directly log into a file, which is an useful option
+It is also possible to directly log to a directory, which is an useful option
 in case the problem only happens ocassionally. In that case it is better to
-create a huge logfile than piping the whole log through the log window.
+create a huge amount of data, as the log window has a limited buffer.
 
-To create a log file, start the client with ``--logfile <filename>``.
+To write logs to disk, start the client with ``--logdir <dir>``, where ``<dir>``
+is an existing directory. Each sync run will create a new file.
 
 :ownCloud server Logfile:
 The ownCloud server maintains an ownCloud specific logfile as well. It can and

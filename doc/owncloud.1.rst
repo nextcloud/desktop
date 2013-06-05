@@ -9,7 +9,7 @@ SYNOPSIS
 
 DESCRIPTION
 ===========
-owncloud is a file synchronisation desktop utility it is based on mirall.
+ownCloud is a file synchronisation desktop utility it is based on mirall.
 It synchronizes files on your local machine with an ownCloud Server. If you
 make a change to the files on one computer, it will flow across the others
 using this desktop sync clients.
