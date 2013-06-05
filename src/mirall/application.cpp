@@ -34,6 +34,10 @@
 
 #include "mirall/inotify.h"
 
+#if defined(Q_OS_WIN)
+#include <windows.h>
+#endif
+
 #include <QtCore>
 #include <QtGui>
 #include <QHash>
@@ -1023,6 +1027,30 @@ void Application::setHelp()
 {
     _helpOnly = true;
 }
+
+#if defined(Q_OS_WIN)
+bool Application::winEventFilter(MSG *pMsg, long *result)
+{
+    if (pMsg->message == WM_POWERBROADCAST) {
+        switch(pMsg->wParam) {
+        case PBT_APMPOWERSTATUSCHANGE:
+            qDebug() << "WM_POWERBROADCAST: Power state changed";
+            break;
+        case PBT_APMSUSPEND:
+            qDebug() << "WM_POWERBROADCAST: Entering low power state";
+            break;
+        case PBT_APMRESUMEAUTOMATIC:
+            qDebug() << "WM_POWERBROADCAST: Resuming from low power state";
+            break;
+        default:
+            break;
+        }
+        return true;
+    }
+
+    SharedTools::QtSingleApplication::winEventFilter(pMsg, result);
+}
+#endif
 
 QString substLang(const QString &lang)
 {

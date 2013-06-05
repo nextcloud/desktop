@@ -84,6 +84,11 @@ protected:
     //folders have to be disabled while making config changes
     void computeOverallSyncStatus();
 
+    // reimplemented
+#if defined(Q_WS_WIN)
+    bool winEventFilter( MSG * message, long * result );
+#endif
+
 protected slots:
     void slotTrayClicked( QSystemTrayIcon::ActivationReason );
     void slotFolderOpenAction(const QString & );
