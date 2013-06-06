@@ -402,6 +402,11 @@ int csync_update(CSYNC *ctx) {
   ctx->replica = ctx->local.type;
 
   rc = csync_ftw(ctx, ctx->local.uri, csync_walker, MAX_DEPTH);
+  if (rc < 0) {
+    if(ctx->error_code == CSYNC_ERR_NONE)
+        ctx->error_code = csync_errno_to_csync_error(CSYNC_ERR_UPDATE);
+    return -1;
+  }
 
   csync_gettime(&finish);
 
@@ -410,11 +415,6 @@ int csync_update(CSYNC *ctx) {
       c_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
   csync_memstat_check(ctx);
 
-  if (rc < 0) {
-    if(ctx->error_code == CSYNC_ERR_NONE)
-        ctx->error_code = csync_errno_to_csync_error(CSYNC_ERR_UPDATE);
-    return -1;
-  }
 
   /* update detection for remote replica */
   if( ! ctx->options.local_only_mode ) {
@@ -423,6 +423,11 @@ int csync_update(CSYNC *ctx) {
       ctx->replica = ctx->remote.type;
 
       rc = csync_ftw(ctx, ctx->remote.uri, csync_walker, MAX_DEPTH);
+      if (rc < 0) {
+          if(ctx->error_code == CSYNC_ERR_NONE )
+            ctx->error_code = csync_errno_to_csync_error(CSYNC_ERR_UPDATE);
+          return -1;
+      }
       csync_gettime(&finish);
 
       CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
@@ -431,11 +436,6 @@ int csync_update(CSYNC *ctx) {
                 c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
       csync_memstat_check(ctx);
 
-      if (rc < 0) {
-          if(ctx->error_code == CSYNC_ERR_NONE )
-            ctx->error_code = csync_errno_to_csync_error(CSYNC_ERR_UPDATE);
-          return -1;
-      }
   }
   ctx->status |= CSYNC_STATUS_UPDATE;
 
