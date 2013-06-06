@@ -169,6 +169,10 @@ void FolderViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
   painter->drawPixmap(QPoint(statusRect.left(), statusRect.top()), statusIcon.pixmap(48,48));
 
+  if ((option.state & QStyle::State_Selected) && (option.state & QStyle::State_Active))
+      painter->setPen(option.palette.color(QPalette::HighlightedText));
+  else
+      painter->setPen(option.palette.color(QPalette::Text));
   painter->setFont(aliasFont);
   painter->drawText(aliasRect, aliasText);
 
