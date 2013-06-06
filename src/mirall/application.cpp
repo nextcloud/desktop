@@ -58,6 +58,19 @@ void mirallLogCatcher(QtMsgType type, const char *msg)
 }
 
 namespace {
+
+static const char optionsC[] =
+        "Options:\n"
+        "  -h --help            : show this help screen.\n"
+        "  --logwindow          : open a window to show log output.\n"
+        "  --logfile <filename> : write log output to file <filename>.\n"
+        "  --logdir <name>      : write each sync log output in a new file\n"
+        "                         in directory <name>.\n"
+        "  --logflush           : flush the log file after every write.\n"
+        "  --monoicons          : Use black/white pictograms for systray.\n"
+        "  --confdir <dirname>  : Use the given configuration directory.\n"
+        ;
+
 QString applicationTrPath()
 {
 #ifdef Q_OS_LINUX
@@ -1004,23 +1017,48 @@ void Application::computeOverallSyncStatus()
     }
 }
 
+// Helpers for displaying messages. Note that there is no console on Windows.
+#ifdef Q_OS_WIN
+// Format as <pre> HTML
+static inline void toHtml(QString &t)
+{
+    t.replace(QLatin1Char('&'), QLatin1String("&amp;"));
+    t.replace(QLatin1Char('<'), QLatin1String("&lt;"));
+    t.replace(QLatin1Char('>'), QLatin1String("&gt;"));
+    t.insert(0, QLatin1String("<html><pre>"));
+    t.append(QLatin1String("</pre></html>"));
+}
+
+static void displayHelpText(QString t) // No console on Windows.
+{
+    toHtml(t);
+    QMessageBox::information(0, Theme::instance()->appNameGUI(), t);
+}
+
+#else
+
+static void displayHelpText(const QString &t)
+{
+    std::cout << qPrintable(t);
+}
+#endif
+
 void Application::showHelp()
 {
-setHelp();
-    std::cout << _theme->appName().toLatin1().constData() << " version " <<
-                 _theme->version().toLatin1().constData() << std::endl << std::endl;
-    std::cout << "File synchronisation desktop utility." << std::endl << std::endl;
-    std::cout << "Options:" << std::endl;
-    std::cout << "  -h --help            : show this help screen." << std::endl;
-    std::cout << "  --logwindow          : open a window to show log output." << std::endl;
-    std::cout << "  --logfile <filename> : write log output to file <filename>." << std::endl;
-    std::cout << "  --logdir <name>      : write each sync log output in a different file in directory <name>." << std::endl;
-    std::cout << "  --logflush           : flush the log file after every write." << std::endl;
-    std::cout << "  --monoicons          : Use black/white pictograms for systray." << std::endl;
-    std::cout << "  --confdir <dirname>  : Use the given configuration directory." << std::endl;
-    std::cout << std::endl;
+    setHelp();
+    QString helpText;
+    QTextStream stream(&helpText);
+    stream << _theme->appName().toLatin1().constData()
+           << QLatin1String(" version ")
+           << _theme->version().toLatin1().constData() << endl;
+
+    stream << QLatin1String("File synchronisation desktop utility.") << endl << endl
+           << QLatin1String(optionsC);
+
     if (_theme->appName() == QLatin1String("ownCloud"))
-        std::cout << "For more information, see http://www.owncloud.org" << std::endl;
+        stream << endl << "For more information, see http://www.owncloud.org" << endl;
+
+    displayHelpText(helpText);
 }
 
 void Application::setHelp()
