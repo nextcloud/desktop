@@ -33,6 +33,19 @@ class FolderMan : public QObject
 {
     Q_OBJECT
 public:
+    /** Helper class to ensure sync is always switched back on */
+    class SyncDisabler
+    {
+    public:
+        SyncDisabler(Mirall::FolderMan *man) : _man(man)
+        {
+            _man->setSyncEnabled(false);
+        }
+        ~SyncDisabler() { _man->setSyncEnabled(true); }
+    private:
+        FolderMan *_man;
+    };
+
     explicit FolderMan(QObject *parent = 0);
     ~FolderMan();
 

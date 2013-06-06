@@ -674,46 +674,35 @@ void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
 
 void Application::slotAddFolder()
 {
-  _folderMan->setSyncEnabled(false); // do not start more syncs.
+    // disables sync queuing while in scope
+    FolderMan::SyncDisabler disableSync(_folderMan);
 
-  Folder::Map folderMap = _folderMan->map();
+    Folder::Map folderMap = _folderMan->map();
+    _folderWizard->setFolderMap( &folderMap );
+    _folderWizard->restart();
 
-  _folderWizard->setFolderMap( &folderMap );
+    if (_folderWizard->exec() == QDialog::Accepted) {
+        qDebug() << "* Folder wizard completed";
 
-  _folderWizard->restart();
+        QString alias        = _folderWizard->field(QLatin1String("alias")).toString();
+        QString sourceFolder = _folderWizard->field(QLatin1String("sourceFolder")).toString();
+        QString targetPath   = _folderWizard->field(QLatin1String("OCFolderLineEdit")).toString();
+        QString backend      = QLatin1String("owncloud");
 
-  if (_folderWizard->exec() == QDialog::Accepted) {
-    qDebug() << "* Folder wizard completed";
-
-    bool goodData = true;
-
-    QString alias        = _folderWizard->field(QLatin1String("alias")).toString();
-    QString sourceFolder = _folderWizard->field(QLatin1String("sourceFolder")).toString();
-    QString backend      = QLatin1String("owncloud");
-    QString targetPath;
-    bool onlyThisLAN = false;
-
-    targetPath = _folderWizard->field(QLatin1String("OCFolderLineEdit")).toString();
-
-    _folderMan->setSyncEnabled(true); // do start sync again.
-
-    if( goodData ) {
         if (!FolderMan::ensureJournalGone( sourceFolder ))
             return;
-        _folderMan->addFolderDefinition( backend, alias, sourceFolder, targetPath, onlyThisLAN );
+        _folderMan->addFolderDefinition( backend, alias, sourceFolder, targetPath, false );
         Folder *f = _folderMan->setupFolderFromConfigFile( alias );
         if( f ) {
             _statusDialog->slotAddFolder( f );
             _statusDialog->buttonsSetEnabled();
             setupContextMenu();
         }
-    }
 
-  } else {
-    qDebug() << "* Folder wizard cancelled";
-  }
-  _folderMan->setSyncEnabled(true);
-  _folderMan->slotScheduleAllFolders();
+    } else {
+        qDebug() << "* Folder wizard cancelled";
+    }
+    _folderMan->slotScheduleAllFolders();
 }
 
 void Application::slotOpenStatus()
