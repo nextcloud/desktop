@@ -284,8 +284,6 @@ QString MirallConfigFile::ownCloudUrl( const QString& connection) const
         if( ! url.endsWith(QLatin1Char('/'))) url.append(QLatin1String("/"));
     }
 
-    qDebug() << "Returning configured owncloud url: " << url;
-
   return url;
 }
 
