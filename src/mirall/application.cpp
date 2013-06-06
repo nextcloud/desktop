@@ -698,6 +698,8 @@ void Application::slotAddFolder()
     _folderMan->setSyncEnabled(true); // do start sync again.
 
     if( goodData ) {
+        if (!FolderMan::ensureJournalGone( sourceFolder ))
+            return;
         _folderMan->addFolderDefinition( backend, alias, sourceFolder, targetPath, onlyThisLAN );
         Folder *f = _folderMan->setupFolderFromConfigFile( alias );
         if( f ) {

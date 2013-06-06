@@ -77,6 +77,13 @@ public:
     void wipeAllJournals();
 
     /**
+     * Ensures that a given directory does not contain a .csync_journal.
+     *
+     * @returns false if the journal could not be removed, false otherwise.
+     */
+    static bool ensureJournalGone(const QString &path);
+
+    /**
      * Creates a new and empty local directory.
      */
     bool startFromScratch( const QString& );
