@@ -81,9 +81,6 @@ void FolderMan::slotReparseConfiguration()
 
 int FolderMan::unloadAllFolders()
 {
-    // first terminate sync jobs.
-    terminateCurrentSync();
-
     int cnt = 0;
 
     // clear the list of existing folders.

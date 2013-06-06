@@ -129,6 +129,9 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         bool acceptCfg = true;
 
         if( urlHasChanged ) {
+            // first terminate sync jobs.
+            _folderMan->terminateSyncProcess();
+
             _folderMan->unloadAllFolders();
 
            bool startFromScratch = _ocWizard->field( "OCSyncFromScratch" ).toBool();
