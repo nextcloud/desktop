@@ -107,8 +107,8 @@ void FolderViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
   painter->save();
 
-  QFont aliasFont    = QApplication::font();
-  QFont subFont = QApplication::font();
+  QFont aliasFont = option.font;
+  QFont subFont   = option.font;
   QFont errorFont = subFont;
 
   //font.setPixelSize(font.weight()+);
