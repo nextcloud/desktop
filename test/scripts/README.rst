@@ -30,9 +30,8 @@ Usage
 
 In order to create a reference layout and create a tree from it::
 
-  ./torture_create_files.pl > reference.lay
-  ./torture_gen_layout.pl reference.lay <targetdir>
-
+  ./torture_gen_layout.pl > reference.lay
+  ./torture_create_files.pl reference.lay <targetdir>
 
 TODO
 ----
