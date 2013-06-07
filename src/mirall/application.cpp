@@ -54,7 +54,8 @@ namespace Mirall {
 void mirallLogCatcher(QtMsgType type, const char *msg)
 {
   Q_UNUSED(type)
-  Logger::instance()->mirallLog( QString::fromUtf8(msg) );
+  // qDebug() exports to local8Bit, which is not always UTF-8
+  Logger::instance()->mirallLog( QString::fromLocal8Bit(msg) );
 }
 
 namespace {
