@@ -47,7 +47,7 @@
 #include "vio/csync_vio_file_stat.h"
 
 #ifdef NDEBUG
-#define DEBUG_WEBDAV(x)
+#define DEBUG_WEBDAV(...)
 #else
 #define DEBUG_WEBDAV(...) csync_log( 9, "oc_module", __VA_ARGS__);
 #endif
@@ -870,6 +870,7 @@ static void install_content_reader( ne_request *req, void *userdata, const ne_st
     const char *enc = NULL;
     struct transfer_context *writeCtx = userdata;
 
+    (void) status;
     if( !writeCtx ) {
         DEBUG_WEBDAV("Error: install_content_reader called without valid write context!");
         return;
