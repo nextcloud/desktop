@@ -223,7 +223,7 @@ static void check_csync_detect_update_db_eval(void **state)
     csync_vio_file_stat_t *fs;
     int rc;
 
-    fs = create_fstat("file.txt", 0, 1, 0);
+    fs = create_fstat("file.txt", 0, 1, 42);
     assert_non_null(fs);
 
     rc = _csync_detect_update(csync,
@@ -251,9 +251,31 @@ static void check_csync_detect_update_db_rename(void **state)
     csync_file_stat_t *st;
     csync_vio_file_stat_t *fs;
     int rc;
+    char *stmt = NULL;
 
-    fs = create_fstat("wurst.txt", 0, 1, 0);
+    rc = csync_statedb_create_tables(csync);
+
+    assert_int_equal(rc, 0);
+    stmt = sqlite3_mprintf("INSERT INTO metadata"
+                           "(phash, pathlen, path, inode, uid, gid, mode, modtime,type,md5) VALUES"
+                           "(%lu, %d, '%q', %d, %d, %d, %d, %lu, %d, '%q');",
+                           42,
+                           42,
+                           "I_was_wurst_before_I_became_wurstsalat",
+                           619070,
+                           42,
+                           42,
+                           42,
+                           42,
+                           0,
+                           "4711");
+
+    rc = csync_statedb_insert(csync, stmt);
+    sqlite3_free(stmt);
+
+    fs = create_fstat("wurst.txt", 0, 1, 42);
     assert_non_null(fs);
+    csync_set_statedb_exists(csync, 1);
 
     rc = _csync_detect_update(csync,
                               "/tmp/check_csync1/wurst.txt",
