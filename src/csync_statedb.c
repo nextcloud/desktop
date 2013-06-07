@@ -286,6 +286,32 @@ int csync_statedb_create_tables(CSYNC *ctx) {
     return -1;
   }
   c_strlist_destroy(result);
+
+  /*
+   * Create the 'real' table in case it does not exist. This is important
+   * for first time sync. Otherwise other functions that query metadata
+   * table whine about the table not existing.
+   */
+  result = csync_statedb_query(ctx,
+      "CREATE TABLE IF NOT EXISTS metadata("
+      "phash INTEGER(8),"
+      "pathlen INTEGER,"
+      "path VARCHAR(4096),"
+      "inode INTEGER,"
+      "uid INTEGER,"
+      "gid INTEGER,"
+      "mode INTEGER,"
+      "modtime INTEGER(8),"
+      "PRIMARY KEY(phash)"
+      ");"
+      );
+
+  if (result == NULL) {
+    return -1;
+  }
+  c_strlist_destroy(result);
+
+
   return 0;
 }
 
