@@ -50,7 +50,33 @@ int csync_get_statedb_exists(CSYNC *ctx) {
   return ctx->statedb.exists;
 }
 
-static int _csync_statedb_check(const char *statedb) {
+static int _csync_check_db_integrity(CSYNC *ctx) {
+    c_strlist_t *result = NULL;
+    int rc = -1;
+
+    if (ctx == NULL) {
+        return -1;
+    }
+    if (ctx->statedb.db == NULL) {
+        return -1;
+    }
+
+    result = csync_statedb_query(ctx, "PRAGMA quick_check;");
+    if (result != NULL) {
+        /* There is  a result */
+        if (result->count > 0) {
+            if (c_streq(result->vector[0], "ok")) {
+                rc = 0;
+            }
+        }
+        c_strlist_destroy(result);
+    }
+
+    return rc;
+
+}
+
+static int _csync_statedb_check(CSYNC *ctx, const char *statedb) {
   int fd = -1, rc;
   ssize_t r;
   char buf[BUF_SIZE] = {0};
@@ -75,11 +101,16 @@ static int _csync_statedb_check(const char *statedb) {
       buf[BUF_SIZE - 1] = '\0';
       if (c_streq(buf, "SQLite format 3")) {
         if (sqlite3_open(statedb, &db ) == SQLITE_OK) {
-          /* everything is fine */
-          sqlite3_close(db);
-	  c_free_locale_string(wstatedb);
+          rc = _csync_check_db_integrity(ctx);
 
-          return 0;
+          sqlite3_close(db);
+          ctx->statedb.db = 0;
+
+          if( rc >= 0 ) {
+            /* everything is fine */
+            c_free_locale_string(wstatedb);
+            return 0;
+          }
         } else {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "database corrupted, removing!");
         }
@@ -123,7 +154,7 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb) {
   c_strlist_t *result = NULL;
   char *statedb_tmp = NULL;
 
-  if (_csync_statedb_check(statedb) < 0) {
+  if (_csync_statedb_check(ctx, statedb) < 0) {
     rc = -1;
     goto out;
   }
@@ -234,7 +265,8 @@ int csync_statedb_create_tables(CSYNC *ctx) {
 
   /*
    * Create temorary table to work on, this speeds up the
-   * creation of the statedb.
+   * creation of the statedb if we later just rename it to its
+   * final name metadata
    */
   result = csync_statedb_query(ctx,
       "CREATE TABLE IF NOT EXISTS metadata_temp("
