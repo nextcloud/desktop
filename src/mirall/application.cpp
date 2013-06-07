@@ -781,7 +781,8 @@ void Application::slotAbout()
 void Application::slotRemoveFolder( const QString& alias )
 {
     int ret = QMessageBox::question( 0, tr("Confirm Folder Remove"),
-                                     tr("Do you really want to remove upload folder <i>%1</i>?").arg(alias),
+                                     tr("<p>Do you really want to stop syncing the upload folder <i>%1</i>?</p>"
+                                        "<p><b>Note:</b> This will not remove the files from your client.</p>").arg(alias),
                                      QMessageBox::Yes|QMessageBox::No );
 
     if( ret == QMessageBox::No ) {
