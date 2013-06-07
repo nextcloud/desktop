@@ -67,6 +67,8 @@ static const char optionsC[] =
         "  --logfile <filename> : write log output to file <filename>.\n"
         "  --logdir <name>      : write each sync log output in a new file\n"
         "                         in directory <name>.\n"
+        "  --logexpire <hours>  : removes logs older than <hours> hours.\n"
+        "                         (to be used with --logdir)\n"
         "  --logflush           : flush the log file after every write.\n"
         "  --monoicons          : Use black/white pictograms for systray.\n"
         "  --confdir <dirname>  : Use the given configuration directory.\n"
@@ -100,6 +102,7 @@ Application::Application(int &argc, char **argv) :
     _theme(Theme::instance()),
     _updateDetector(0),
     _logBrowser(0),
+    _logExpire(0),
     _showLogWindow(false),
     _logFlush(false),
     _helpOnly(false),
@@ -575,9 +578,16 @@ void Application::enterNextLogFile()
                                     QDir::Files);
         QRegExp rx("owncloud.log.(\\d+)");
         uint maxNumber = 0;
+        QDateTime now = QDateTime::currentDateTime();
         foreach(const QString &s, files) {
             if (rx.exactMatch(s)) {
                 maxNumber = qMax(maxNumber, rx.cap(1).toUInt());
+                if (_logExpire > 0) {
+                    QFileInfo fileInfo = dir.absoluteFilePath(s);
+                    if (fileInfo.lastModified().addSecs(60*60 * _logExpire) < now) {
+                        dir.remove(s);
+                    }
+                }
             }
         }
 
@@ -904,6 +914,12 @@ void Application::parseOptions(const QStringList &options)
         } else if (option == QLatin1String("--logdir")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
                 _logDirectory = it.next();
+            } else {
+                setHelp();
+            }
+        } else if (option == QLatin1String("--logexpire")) {
+            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+                _logExpire = it.next().toInt();
             } else {
                 setHelp();
             }
