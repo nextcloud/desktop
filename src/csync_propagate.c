@@ -639,10 +639,8 @@ out:
             csync_vio_unlink(ctx, turi);
       }
     }
-    if (rc != 123) {
-      _csync_record_error(ctx, st, progress_info);
-      progress_info = NULL;
-    }
+    _csync_record_error(ctx, st, progress_info);
+    progress_info = NULL;
   }
 
   csync_statedb_free_progressinfo(progress_info);
