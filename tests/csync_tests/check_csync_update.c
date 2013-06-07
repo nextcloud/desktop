@@ -41,6 +41,8 @@ static void setup_ftw(void **state)
     rc = csync_init(csync);
     assert_int_equal(rc, 0);
 
+
+
     *state = csync;
 }
 
@@ -205,7 +207,7 @@ static void check_csync_detect_update_db_none(void **state)
 
     /* the instruction should be set to new  */
     st = c_rbtree_node_data(csync->local.tree->root);
-    assert_int_equal(st->instruction, CSYNC_INSTRUCTION_NONE);
+    assert_int_equal(st->instruction, CSYNC_INSTRUCTION_NEW);
 
     /* set the instruction to UPDATED that it gets written to the statedb */
     st->instruction = CSYNC_INSTRUCTION_UPDATED;
@@ -234,7 +236,7 @@ static void check_csync_detect_update_db_eval(void **state)
 
     /* the instruction should be set to new  */
     st = c_rbtree_node_data(csync->local.tree->root);
-    assert_int_equal(st->instruction, CSYNC_INSTRUCTION_EVAL);
+    assert_int_equal(st->instruction, CSYNC_INSTRUCTION_NEW);
 
     /* set the instruction to UPDATED that it gets written to the statedb */
     st->instruction = CSYNC_INSTRUCTION_UPDATED;
@@ -251,9 +253,29 @@ static void check_csync_detect_update_db_rename(void **state)
     csync_file_stat_t *st;
     csync_vio_file_stat_t *fs;
     int rc;
+    char *stmt = NULL;
+
+    rc = csync_statedb_create_tables(csync);
+    assert_int_equal(rc, 0);
+
+    stmt = sqlite3_mprintf("INSERT INTO metadata"
+        "(phash, pathlen, path, inode, uid, gid, mode, modtime) VALUES"
+        "(%lu, %d, '%q', %d, %d, %d, %d, %lu);",
+        42,
+        42,
+        "I_was_wurst_before_I_became_wurstsalat",
+        619070,
+        42,
+        42,
+        42,
+        42);
+
+    rc = csync_statedb_insert(csync, stmt);
+    sqlite3_free(stmt);
 
     fs = create_fstat("wurst.txt", 0, 1, 0);
     assert_non_null(fs);
+    csync_set_statedb_exists(csync, 1);
 
     rc = _csync_detect_update(csync,
                               "/tmp/check_csync1/wurst.txt",
