@@ -161,6 +161,8 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   csync_progressinfo_t *progress_info = NULL;
   /* Check if there is progress info stored in the database for this file */
   progress_info = csync_statedb_get_progressinfo(ctx, st->phash, st->modtime, st->md5);
+  rep_bak = ctx->replica;
+
   if (progress_info && progress_info->error > 3) {
     rc = 1;
     goto out;
@@ -174,7 +176,6 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     hbf_info.transfer_id = progress_info->transferId;
   }
 
-  rep_bak = ctx->replica;
 
   auri = csync_rename_adjust_path(ctx, st->path);
 
