@@ -33,6 +33,7 @@
 #include <QNetworkProxy>
 #include <QNetworkAccessManager>
 #include <QNetworkProxyFactory>
+#include <QMessageBox>
 
 namespace Mirall {
 
@@ -290,6 +291,10 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()), Qt::QueuedConnection);
     connect(_csync, SIGNAL(csyncError(QString)), SLOT(slotCSyncError(QString)), Qt::QueuedConnection);
     connect(_csync, SIGNAL(csyncUnavailable()), SLOT(slotCsyncUnavailable()), Qt::QueuedConnection);
+
+    //blocking connection so the message box happens in this thread, but block the csync thread.
+    connect(_csync, SIGNAL(aboutToRemoveAllFiles(bool*)), SLOT(slotAboutToRemoveAllFiles(bool*)), Qt::BlockingQueuedConnection);
+
     _thread->start();
     QMetaObject::invokeMethod(_csync, "startSync", Qt::QueuedConnection);
     emit syncStarted();
@@ -487,6 +492,18 @@ void ServerActionNotifier::slotSyncFinished(const SyncResult &result)
                                                       "", updatedItems-1).arg(file));
     }
 }
+
+void ownCloudFolder::slotAboutToRemoveAllFiles(bool *cancel)
+{
+    QMessageBox::StandardButton ret = QMessageBox::warning(0,
+        tr("All files removed"),
+        tr("The sync operation is about to remove all the file in the current folder."
+            "Do you want to continue and remove all the files?"),
+         QMessageBox::Ok| QMessageBox::Abort, QMessageBox::Ok);
+
+    *cancel = (ret == QMessageBox::Abort);
+}
+
 
 } // ns
 

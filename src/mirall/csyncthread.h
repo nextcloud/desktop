@@ -56,6 +56,8 @@ signals:
     void finished();
     void started();
 
+    void aboutToRemoveAllFiles(bool *cancel);
+
 private:
     void handleSyncError(CSYNC *ctx, const char *state);
     static void progress(const char *remote_url,
@@ -78,6 +80,8 @@ private:
 
     CSYNC *_csync_ctx;
     bool _needsUpdate;
+
+    bool _hasFiles; // true if there is at least one file that is not ignored or removed
 
     friend class CSyncRunScopeHelper;
 };

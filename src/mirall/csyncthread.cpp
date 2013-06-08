@@ -191,6 +191,11 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
 
     int re = 0;
 
+    if (file->instruction != CSYNC_INSTRUCTION_IGNORE
+        && file->instruction != CSYNC_INSTRUCTION_REMOVE) {
+      _hasFiles = true;
+    }
+
     switch(file->instruction) {
     case CSYNC_INSTRUCTION_NONE:
     case CSYNC_INSTRUCTION_IGNORE:
@@ -327,6 +332,7 @@ void CSyncThread::startSync()
         return;
     }
 
+    _hasFiles = false;
     bool walkOk = true;
     if( csync_walk_local_tree(_csync_ctx, &treewalkLocal, 0) < 0 ) {
         qDebug() << "Error in local treewalk.";
@@ -334,6 +340,16 @@ void CSyncThread::startSync()
     }
     if( walkOk && csync_walk_remote_tree(_csync_ctx, &treewalkRemote, 0) < 0 ) {
         qDebug() << "Error in remote treewalk.";
+    }
+
+    if (!_hasFiles && !_syncedItems.isEmpty()) {
+        qDebug() << Q_FUNC_INFO << "All the files are going to be removed, asking the user";
+        bool cancel = true;
+        emit aboutToRemoveAllFiles(&cancel);
+        if (cancel) {
+            qDebug() << Q_FUNC_INFO << "Abort sync";
+            return;
+        }
     }
 
     if (_needsUpdate)
