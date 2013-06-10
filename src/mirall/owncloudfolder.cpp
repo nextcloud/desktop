@@ -34,6 +34,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkProxyFactory>
 #include <QMessageBox>
+#include <QPushButton>
 
 namespace Mirall {
 
@@ -284,6 +285,8 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     _csync->moveToThread(_thread);
 
     qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
+    qRegisterMetaType<SyncFileItem::Direction>("SyncFileItem::Direction");
+
     connect( _csync, SIGNAL(treeWalkResult(const SyncFileItemVector&)),
               this, SLOT(slotThreadTreeWalkResult(const SyncFileItemVector&)), Qt::QueuedConnection);
 
@@ -293,7 +296,8 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     connect(_csync, SIGNAL(csyncUnavailable()), SLOT(slotCsyncUnavailable()), Qt::QueuedConnection);
 
     //blocking connection so the message box happens in this thread, but block the csync thread.
-    connect(_csync, SIGNAL(aboutToRemoveAllFiles(bool*)), SLOT(slotAboutToRemoveAllFiles(bool*)), Qt::BlockingQueuedConnection);
+    connect(_csync, SIGNAL(aboutToRemoveAllFiles(SyncFileItem::Direction,bool*)),
+                    SLOT(slotAboutToRemoveAllFiles(SyncFileItem::Direction,bool*)), Qt::BlockingQueuedConnection);
 
     _thread->start();
     QMetaObject::invokeMethod(_csync, "startSync", Qt::QueuedConnection);
@@ -493,15 +497,28 @@ void ServerActionNotifier::slotSyncFinished(const SyncResult &result)
     }
 }
 
-void ownCloudFolder::slotAboutToRemoveAllFiles(bool *cancel)
+void ownCloudFolder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *cancel)
 {
-    QMessageBox::StandardButton ret = QMessageBox::warning(0,
-        tr("All files removed"),
-        tr("The sync operation is about to remove all the file in the current folder."
-            "Do you want to continue and remove all the files?"),
-         QMessageBox::Ok| QMessageBox::Abort, QMessageBox::Ok);
-
-    *cancel = (ret == QMessageBox::Abort);
+    QString msg = direction == SyncFileItem::Down ?
+        tr("This sync would remove all the files in the local sync folder '%1'.\n"
+           "If you or your administrator have reset your account on the server, choose"
+           "\"Keep files\". If you want your data to be removed, choose \"Remove all files\".") :
+        tr("This sync would remove all the files in the sync folder '%1'.\n"
+           "This might be because the folder was silently reconfigured, or that all"
+           "the file were manually removed.\n"
+           "Are you sure you want to perform this operation?");
+    QMessageBox msgBox(QMessageBox::Warning, tr("Remove All Files?"),
+                       msg.arg(alias()));
+    msgBox.addButton(tr("Remove all files"), QMessageBox::DestructiveRole);
+    QPushButton* keepBtn = msgBox.addButton(tr("Keep files"), QMessageBox::ActionRole);
+    if (msgBox.exec() == -1) {
+        *cancel = true;
+        return;
+    }
+    *cancel = msgBox.clickedButton() == keepBtn;
+    if (*cancel) {
+        wipe();
+    }
 }
 
 

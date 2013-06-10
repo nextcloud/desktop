@@ -56,7 +56,7 @@ signals:
     void finished();
     void started();
 
-    void aboutToRemoveAllFiles(bool *cancel);
+    void aboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *cancel);
 
 private:
     void handleSyncError(CSYNC *ctx, const char *state);

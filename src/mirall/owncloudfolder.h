@@ -77,7 +77,7 @@ public:
 public slots:
     void startSync();
     void slotTerminateSync();
-    void slotAboutToRemoveAllFiles(bool*);
+    void slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool*);
 
 protected slots:
     void slotLocalPathChanged( const QString& );
