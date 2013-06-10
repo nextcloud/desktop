@@ -239,6 +239,7 @@ csync_vio_handle_t *csync_vio_open(CSYNC *ctx, const char *uri, int flags, mode_
       mh = csync_vio_local_open(uri, flags, mode);
       break;
     default:
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ALERT, "Invalid replica (%d)", (int)ctx->replica);
       break;
   }
 
@@ -262,6 +263,7 @@ csync_vio_handle_t *csync_vio_creat(CSYNC *ctx, const char *uri, mode_t mode) {
       mh = csync_vio_local_creat(uri, mode);
       break;
     default:
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ALERT, "Invalid replica (%d)", (int)ctx->replica);
       break;
   }
 
@@ -289,6 +291,7 @@ int csync_vio_close(CSYNC *ctx, csync_vio_handle_t *fhandle) {
       rc = csync_vio_local_close(fhandle->method_handle);
       break;
     default:
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ALERT, "Invalid replica (%d)", (int)ctx->replica);
       break;
   }
 
@@ -315,6 +318,7 @@ ssize_t csync_vio_read(CSYNC *ctx, csync_vio_handle_t *fhandle, void *buf, size_
       rs = csync_vio_local_read(fhandle->method_handle, buf, count);
       break;
     default:
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ALERT, "Invalid replica (%d)", (int)ctx->replica);
       break;
   }
 
@@ -337,6 +341,7 @@ ssize_t csync_vio_write(CSYNC *ctx, csync_vio_handle_t *fhandle, const void *buf
       rs = csync_vio_local_write(fhandle->method_handle, buf, count);
       break;
     default:
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ALERT, "Invalid replica (%d)", (int)ctx->replica);
       break;
   }
 
@@ -353,6 +358,9 @@ int csync_vio_sendfile(CSYNC *ctx, csync_vio_handle_t *sfp, csync_vio_handle_t *
       case LOCAL_REPLICA:
         rc = ctx->module.method->sendfile(dst->method_handle, sfp->method_handle);
         break;
+      default:
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ALERT, "Invalid replica (%d)", (int)ctx->replica);
+        break;
     }
 
     return rc;
@@ -367,6 +375,9 @@ off_t csync_vio_lseek(CSYNC *ctx, csync_vio_handle_t *fhandle, off_t offset, int
       break;
     case LOCAL_REPLICA:
       ro = csync_vio_local_lseek(fhandle->method_handle, offset, whence);
+      break;
+    default:
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ALERT, "Invalid replica (%d)", (int)ctx->replica);
       break;
   }
 
@@ -390,6 +401,7 @@ csync_vio_handle_t *csync_vio_opendir(CSYNC *ctx, const char *name) {
       mh = csync_vio_local_opendir(name);
       break;
     default:
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ALERT, "Invalid replica (%d)", (int)ctx->replica);
       break;
   }
 
@@ -421,6 +433,7 @@ int csync_vio_closedir(CSYNC *ctx, csync_vio_handle_t *dhandle) {
       rc = csync_vio_local_closedir(dhandle->method_handle);
       break;
     default:
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ALERT, "Invalid replica (%d)", (int)ctx->replica);
       break;
   }
 
@@ -445,6 +458,7 @@ csync_vio_file_stat_t *csync_vio_readdir(CSYNC *ctx, csync_vio_handle_t *dhandle
       fs = csync_vio_local_readdir(dhandle->method_handle);
       break;
     default:
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ALERT, "Invalid replica (%d)", (int)ctx->replica);
       break;
   }
 
@@ -462,6 +476,7 @@ int csync_vio_mkdir(CSYNC *ctx, const char *uri, mode_t mode) {
       rc = csync_vio_local_mkdir(uri, mode);
       break;
     default:
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ALERT, "Invalid replica (%d)", (int)ctx->replica);
       break;
   }
 
@@ -527,6 +542,7 @@ int csync_vio_rmdir(CSYNC *ctx, const char *uri) {
       rc = csync_vio_local_rmdir(uri);
       break;
     default:
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ALERT, "Invalid replica (%d)", (int)ctx->replica);
       break;
   }
 
@@ -580,6 +596,7 @@ int csync_vio_rename(CSYNC *ctx, const char *olduri, const char *newuri) {
       rc = csync_vio_local_rename(olduri, newuri);
       break;
     default:
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ALERT, "Invalid replica (%d)", (int)ctx->replica);
       break;
   }
 
@@ -597,6 +614,7 @@ int csync_vio_unlink(CSYNC *ctx, const char *uri) {
       rc = csync_vio_local_unlink(uri);
       break;
     default:
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ALERT, "Invalid replica (%d)", (int)ctx->replica);
       break;
   }
 
@@ -614,6 +632,7 @@ int csync_vio_chmod(CSYNC *ctx, const char *uri, mode_t mode) {
       rc = csync_vio_local_chmod(uri, mode);
       break;
     default:
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ALERT, "Invalid replica (%d)", (int)ctx->replica);
       break;
   }
 
@@ -631,6 +650,7 @@ int csync_vio_chown(CSYNC *ctx, const char *uri, uid_t owner, gid_t group) {
       rc = csync_vio_local_chown(uri, owner, group);
       break;
     default:
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ALERT, "Invalid replica (%d)", (int)ctx->replica);
       break;
   }
 
@@ -648,6 +668,7 @@ int csync_vio_utimes(CSYNC *ctx, const char *uri, const struct timeval *times) {
       rc = csync_vio_local_utimes(uri, times);
       break;
     default:
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ALERT, "Invalid replica (%d)", (int)ctx->replica);
       break;
   }
 
