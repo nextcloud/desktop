@@ -282,7 +282,7 @@ void Application::slotFetchCredentials()
         }
 
         if( !trayMessage.isEmpty() ) {
-            _tray->showMessage(tr("Credentials"), trayMessage);
+            slotShowTrayMessage(tr("Credentials"), trayMessage);
             _actionOpenStatus->setEnabled( false );
             _actionAddFolder->setEnabled( false );
         }
@@ -302,7 +302,7 @@ void Application::slotCredentialsFetched(bool ok)
         }
 
         if( !trayMessage.isEmpty() ) {
-            _tray->showMessage(tr("Credentials"), trayMessage);
+            slotShowTrayMessage(tr("Credentials"), trayMessage);
         }
 
         qDebug() << "Could not fetch credentials";
@@ -953,7 +953,10 @@ void Application::slotParseOptions(const QString &opts)
 
 void Application::slotShowTrayMessage(const QString &title, const QString &msg)
 {
-    _tray->showMessage(title, msg);
+    if( _tray != NULL )
+        _tray->showMessage(title, msg);
+    else
+        qDebug() << "Tray not ready: " << msg;
 }
 
 void Application::slotSyncStateChange( const QString& alias )
