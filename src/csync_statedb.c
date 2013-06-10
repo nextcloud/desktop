@@ -562,7 +562,8 @@ csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx, ino_t inode) {
   return st;
 #endif
 
-  stmt = sqlite3_mprintf("SELECT * FROM metadata WHERE inode='%llu'", inode);
+  stmt = sqlite3_mprintf("SELECT * FROM metadata WHERE inode='%llu'",
+                         (long long unsigned int)inode);
   if (stmt == NULL) {
     return NULL;
   }
