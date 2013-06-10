@@ -768,6 +768,12 @@ int csync_commit(CSYNC *ctx) {
 
   csync_vio_commit(ctx);
 
+  while (ctx->progress) {
+    csync_progressinfo_t *next = ctx->progress->next;
+    csync_statedb_free_progressinfo(ctx->progress);
+    ctx->progress = next;
+  }
+
   /* destroy the rbtrees */
   if (c_rbtree_size(ctx->local.tree) > 0) {
     c_rbtree_destroy(ctx->local.tree, _tree_destructor);
@@ -865,12 +871,6 @@ int csync_destroy(CSYNC *ctx) {
   /* remove the lock file */
   if (asprintf(&lock, "%s/%s", ctx->options.config_dir, CSYNC_LOCK_FILE) > 0) {
     csync_lock_remove(ctx, lock);
-  }
-
-  while (ctx->progress) {
-    csync_progressinfo_t *next = ctx->progress->next;
-    csync_statedb_free_progressinfo(ctx->progress);
-    ctx->progress = next;
   }
 
   while (ctx->progress) {
