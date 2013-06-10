@@ -777,6 +777,8 @@ int csync_commit(CSYNC *ctx) {
     c_rbtree_destroy(ctx->remote.tree, _tree_destructor);
   }
 
+  csync_rename_destroy(ctx);
+
   /* free memory */
   c_rbtree_free(ctx->local.tree);
   c_list_free(ctx->local.list);
