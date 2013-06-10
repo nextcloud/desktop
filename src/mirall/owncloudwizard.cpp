@@ -196,6 +196,9 @@ void OwncloudSetupPage::initializePage()
     _checking  = false;
     _multipleFoldersExist = false;
 
+    // call to init label
+    slotHandleUserInput();
+
     if( _configExists ) {
         _ui.lePassword->setFocus();
     } else {
