@@ -28,7 +28,7 @@ if (UNIX AND NOT WIN32)
 
         if (CMAKE_BUILD_TYPE)
             string(TOLOWER "${CMAKE_BUILD_TYPE}" CMAKE_BUILD_TYPE_LOWER)
-            if (NOT CMAKE_BUILD_TYPE_LOWER MATCHES debug)
+            if (CMAKE_BUILD_TYPE_LOWER MATCHES (release|relwithdebinfo|minsizerel))
                 check_c_compiler_flag("-D_FORTIFY_SOURCE=2" WITH_FORTIFY_SOURCE)
                 if (WITH_FORTIFY_SOURCE)
                     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_FORTIFY_SOURCE=2")
