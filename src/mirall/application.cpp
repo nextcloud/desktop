@@ -1095,7 +1095,7 @@ bool Application::winEventFilter(MSG *pMsg, long *result)
         return true;
     }
 
-    SharedTools::QtSingleApplication::winEventFilter(pMsg, result);
+    return SharedTools::QtSingleApplication::winEventFilter(pMsg, result);
 }
 #endif
 
