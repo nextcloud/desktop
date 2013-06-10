@@ -169,10 +169,15 @@ void FolderViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
   painter->drawPixmap(QPoint(statusRect.left(), statusRect.top()), statusIcon.pixmap(48,48));
 
-  if ((option.state & QStyle::State_Selected) && (option.state & QStyle::State_Active))
+  if ((option.state & QStyle::State_Selected)
+          && (option.state & QStyle::State_Active)
+          // Hack: Windows Vista's light blue is not contrasting enough for white
+          && !Application::style()->inherits("QWindowsVistaStyle")) {
       painter->setPen(option.palette.color(QPalette::HighlightedText));
-  else
+  }
+  else {
       painter->setPen(option.palette.color(QPalette::Text));
+  }
   painter->setFont(aliasFont);
   painter->drawText(aliasRect, aliasText);
 
