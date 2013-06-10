@@ -341,8 +341,8 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   if (st->size != tstat->size) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
-        "file: %s, error: incorrect filesize (size: %jd should be %jd)",
-        turi, tstat->size, st->size);
+        "file: %s, error: incorrect filesize (size: %ld should be %ld)",
+        turi, (long)tstat->size, (long)st->size);
     ctx->status_code = CSYNC_STATUS_FILE_SIZE_ERROR;
     rc = 1;
     goto out;
