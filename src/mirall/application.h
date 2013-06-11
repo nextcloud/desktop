@@ -136,7 +136,6 @@ private:
     Theme *_theme;
     QSignalMapper *_folderOpenActionMapper;
     UpdateDetector *_updateDetector;
-    QMap<QString, QString> _overallStatusStrings;
     LogBrowser *_logBrowser;
     QString _logFile;
     QString _logDirectory;

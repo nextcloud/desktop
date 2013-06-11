@@ -792,9 +792,6 @@ void Application::slotRemoveFolder( const QString& alias )
         return;
     }
     Folder *f = _folderMan->folder(alias);
-    if( f && _overallStatusStrings.contains( f->alias() )) {
-        _overallStatusStrings.remove( f->alias() );
-    }
 
     _folderMan->slotRemoveFolder( alias );
     _statusDialog->slotRemoveSelectedFolder( );
@@ -956,11 +953,12 @@ void Application::computeOverallSyncStatus()
 
     // display the info of the least successful sync (eg. not just display the result of the latest sync
     SyncResult overallResult(SyncResult::Undefined );
+    QMap<QString, QString> overallStatusStrings;
     QString trayMessage;
     Folder::Map map = _folderMan->map();
 
     foreach ( Folder *syncedFolder, map.values() ) {
-        QString folderMessage = _overallStatusStrings[syncedFolder->alias()];
+        QString folderMessage;
 
         SyncResult folderResult = syncedFolder->syncResult();
         SyncResult::Status syncStatus = folderResult.status();
@@ -990,9 +988,9 @@ void Application::computeOverallSyncStatus()
             break;
         case SyncResult::Success:
             if( overallResult.status() == SyncResult::Undefined ) {
-                folderMessage = tr( "Last Sync was successful." );
                 overallResult.setStatus( SyncResult::Success );
             }
+            folderMessage = tr( "Last Sync was successful." );
             break;
         case SyncResult::Error:
             overallResult.setStatus( SyncResult::Error );
@@ -1014,15 +1012,15 @@ void Application::computeOverallSyncStatus()
         }
 
         qDebug() << "Folder in overallStatus Message: " << syncedFolder << " with name " << syncedFolder->alias();
-        QString msg = QString::fromLatin1("Folder %1: %2").arg(syncedFolder->alias()).arg(folderMessage);
-        if( msg != _overallStatusStrings[syncedFolder->alias()] ) {
-            _overallStatusStrings[syncedFolder->alias()] = msg;
+        QString msg = tr("Folder %1: %2").arg(syncedFolder->alias()).arg(folderMessage);
+        if( msg != overallStatusStrings[syncedFolder->alias()] ) {
+            overallStatusStrings[syncedFolder->alias()] = msg;
         }
     }
 
     // create the tray blob message, check if we have an defined state
     if( overallResult.status() != SyncResult::Undefined ) {
-        QStringList allStatusStrings = _overallStatusStrings.values();
+        QStringList allStatusStrings = overallStatusStrings.values();
         if( ! allStatusStrings.isEmpty() )
             trayMessage = allStatusStrings.join(QLatin1String("\n"));
         else
