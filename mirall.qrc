@@ -9,6 +9,7 @@
         <file>resources/folder-grey.png</file>
         <file>resources/task-ongoing.png</file>
         <file>resources/view-refresh.png</file>
+        <file>resources/warning-16.png</file>
         <file>resources/owncloud_logo_blue.png</file>
     </qresource>
 </RCC>
