@@ -123,7 +123,10 @@ void FileItemDialog::slotSetFolderMessage()
     QDateTime now = QDateTime::currentDateTime();
     int secs = _lastSyncTime.secsTo(now);
 
-    _timelabel->setText(tr("%1 (finished %n sec. ago)", "", secs).arg(_folderMessage));
+    if (secs < 60)
+        _timelabel->setText(tr("%1 (last finished %n sec. ago)", "", secs).arg(_folderMessage));
+    else
+        _timelabel->setText(tr("%1 (last finished %n min. ago)", "", secs/60).arg(_folderMessage));
 }
 
 void FileItemDialog::copyToClipboard()
