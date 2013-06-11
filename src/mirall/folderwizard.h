@@ -98,9 +98,7 @@ public:
 
     enum {
         Page_Source,
-        Page_Target,
-        Page_Network,
-        Page_Owncloud
+        Page_Target
     };
 
     FolderWizard(QWidget *parent = 0);
