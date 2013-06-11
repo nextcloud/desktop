@@ -107,7 +107,8 @@ Application::Application(int &argc, char **argv) :
     _logFlush(false),
     _helpOnly(false),
     _fileItemDialog(0),
-    _statusDialog(0)
+    _statusDialog(0),
+    _folderWizard(0)
 {
     setApplicationName( _theme->appNameGUI() );
     setWindowIcon( _theme->applicationIcon() );
@@ -133,8 +134,6 @@ Application::Application(int &argc, char **argv) :
             this, SLOT(slotFolderOpenAction(const QString &)));
 
     setQuitOnLastWindowClosed(false);
-
-    _folderWizard = new FolderWizard;
 
     _owncloudSetupWizard = new OwncloudSetupWizard( _folderMan, _theme, this );
     connect( _owncloudSetupWizard, SIGNAL(ownCloudWizardDone(int)),
@@ -685,12 +684,17 @@ void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
 
 void Application::slotAddFolder()
 {
+    if (_folderWizard) {
+        raiseDialog(_folderWizard);
+        return;
+    }
+
     // disables sync queuing while in scope
     FolderMan::SyncDisabler disableSync(_folderMan);
 
     Folder::Map folderMap = _folderMan->map();
+    _folderWizard = new FolderWizard;
     _folderWizard->setFolderMap( &folderMap );
-    _folderWizard->restart();
 
     if (_folderWizard->exec() == QDialog::Accepted) {
         qDebug() << "* Folder wizard completed";
@@ -713,6 +717,9 @@ void Application::slotAddFolder()
     } else {
         qDebug() << "* Folder wizard cancelled";
     }
+    _folderWizard->deleteLater();
+    _folderWizard = 0;
+
     _folderMan->slotScheduleAllFolders();
 }
 
