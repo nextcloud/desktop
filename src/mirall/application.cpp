@@ -673,7 +673,7 @@ void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
         slotFetchCredentials();
     }
 #if defined Q_WS_WIN || defined Q_WS_X11
-    if( reason == QSystemTrayIcon::Trigger && _actionOpenStatus->isEnabled() ) {
+    if( reason == QSystemTrayIcon::Trigger ) {
         slotOpenStatus();
     }
 #endif
