@@ -124,7 +124,7 @@ private:
 #endif
 
     FolderWizard  *_folderWizard;
-    OwncloudSetupWizard *_owncloudSetupWizard;
+    QScopedPointer<OwncloudSetupWizard> _owncloudSetupWizard;
     SslErrorDialog *_sslErrorDialog;
 
     // tray's menu

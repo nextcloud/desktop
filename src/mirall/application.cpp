@@ -135,10 +135,6 @@ Application::Application(int &argc, char **argv) :
 
     setQuitOnLastWindowClosed(false);
 
-    _owncloudSetupWizard = new OwncloudSetupWizard( _folderMan, _theme, this );
-    connect( _owncloudSetupWizard, SIGNAL(ownCloudWizardDone(int)),
-             this, SLOT(slotownCloudWizardDone(int)));
-
     _statusDialog = new StatusDialog( _theme );
     connect( _statusDialog, SIGNAL(addASync()), this, SLOT(slotAddFolder()) );
 
@@ -210,7 +206,7 @@ void Application::slotStartFolderSetup( int result )
 
             ownCloudInfo::instance()->checkInstallation();
         } else {
-            _owncloudSetupWizard->startWizard();
+            slotConfigure();
         }
     } else {
         qDebug() << "Setup Wizard was canceled. No reparsing of config.";
@@ -427,6 +423,7 @@ void Application::slotownCloudWizardDone( int res )
     }
     _folderMan->setSyncEnabled( true );
     slotStartFolderSetup( res );
+    _owncloudSetupWizard.reset(0);
 }
 
 void Application::setupActions()
@@ -730,7 +727,7 @@ void Application::slotOpenStatus()
   QWidget *raiseWidget = 0;
 
   // check if there is a mirall.cfg already.
-  if( _owncloudSetupWizard->wizard()->isVisible() ) {
+  if( _owncloudSetupWizard && _owncloudSetupWizard->wizard()->isVisible() ) {
     raiseWidget = _owncloudSetupWizard->wizard();
   }
 
@@ -740,8 +737,7 @@ void Application::slotOpenStatus()
 
     if( !cfgFile.exists() ) {
       qDebug() << "No configured folders yet, start the Owncloud integration dialog.";
-      _folderMan->setSyncEnabled(false);
-      _owncloudSetupWizard->startWizard();
+      slotConfigure();
     } else {
       qDebug() << "#============# Status dialog starting #=============#";
       raiseWidget = _statusDialog;
@@ -852,11 +848,17 @@ void Application::slotEnableFolder(const QString& alias, const bool enable)
 
 void Application::slotConfigure()
 {
-    _folderMan->setSyncEnabled(false); // do not start more syncs.
-    if (!_owncloudSetupWizard->wizard()->isVisible())
-        _owncloudSetupWizard->startWizard();
-    else
+    if (_owncloudSetupWizard && !_owncloudSetupWizard->wizard()->isVisible()) {
         raiseDialog(_owncloudSetupWizard->wizard());
+        return;
+    }
+
+    _owncloudSetupWizard.reset(new OwncloudSetupWizard( _folderMan, _theme, this ));;
+    connect( _owncloudSetupWizard.data(), SIGNAL(ownCloudWizardDone(int)),
+             this, SLOT(slotownCloudWizardDone(int)));
+
+    _folderMan->setSyncEnabled(false); // do not start more syncs.
+    _owncloudSetupWizard->startWizard();
 }
 
 void Application::slotConfigureProxy()
