@@ -36,7 +36,8 @@ FolderWizardSourcePage::FolderWizardSourcePage()
 {
     _ui.setupUi(this);
     registerField(QLatin1String("sourceFolder*"), _ui.localFolderLineEdit);
-    _ui.localFolderLineEdit->setText( QString::fromLatin1( "%1/%2").arg( QDir::homePath() ).arg(Theme::instance()->appName() ) );
+    QString defaultPath = QString::fromLatin1( "%1/%2").arg( QDir::homePath() ).arg(Theme::instance()->appName() );
+    _ui.localFolderLineEdit->setText( QDir::toNativeSeparators( defaultPath ) );
     registerField(QLatin1String("alias*"), _ui.aliasLineEdit);
     _ui.aliasLineEdit->setText( Theme::instance()->appNameGUI() );
 
@@ -64,7 +65,7 @@ void FolderWizardSourcePage::cleanupPage()
 
 bool FolderWizardSourcePage::isComplete() const
 {
-  QFileInfo selFile( _ui.localFolderLineEdit->text() );
+  QFileInfo selFile( QDir::fromNativeSeparators(_ui.localFolderLineEdit->text()) );
   QString   userInput = selFile.canonicalFilePath();
 
   QString warnString;
@@ -94,7 +95,8 @@ bool FolderWizardSourcePage::isComplete() const
       qDebug() << "Checking local path: " << folderDir << " <-> " << userInput;
       if( QFileInfo( f->path() ) == userInput ) {
         isOk = false;
-        warnString.append( tr("The local path %1 is already an upload folder.<br/>Please pick another one!").arg(userInput) );
+        warnString.append( tr("The local path %1 is already an upload folder.<br/>Please pick another one!")
+                           .arg(QDir::toNativeSeparators(userInput)) );
       }
       if( isOk && folderDir.startsWith( userInput )) {
         qDebug() << "A already configured folder is child of the current selected";
@@ -148,7 +150,7 @@ void FolderWizardSourcePage::on_localFolderChooseBtn_clicked()
                                                     tr("Select the source folder"),
                                                     QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
     if (!dir.isEmpty()) {
-        _ui.localFolderLineEdit->setText(dir);
+        _ui.localFolderLineEdit->setText(QDir::toNativeSeparators(dir));
     }
 }
 
