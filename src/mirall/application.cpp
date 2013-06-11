@@ -1012,10 +1012,8 @@ void Application::computeOverallSyncStatus()
         }
 
         qDebug() << "Folder in overallStatus Message: " << syncedFolder << " with name " << syncedFolder->alias();
-        QString msg = tr("Folder %1: %2").arg(syncedFolder->alias()).arg(folderMessage);
-        if( msg != overallStatusStrings[syncedFolder->alias()] ) {
-            overallStatusStrings[syncedFolder->alias()] = msg;
-        }
+        QString msg = tr("Folder %1: %2").arg(syncedFolder->alias(), folderMessage);
+        overallStatusStrings[syncedFolder->alias()] = msg;
     }
 
     // create the tray blob message, check if we have an defined state
