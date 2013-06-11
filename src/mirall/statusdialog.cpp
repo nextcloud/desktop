@@ -89,7 +89,6 @@ QSize FolderViewDelegate::sizeHint(const QStyleOptionViewItem & option ,
   if( ! qvariant_cast<QString>(index.data(FolderErrorMsg)).isEmpty() ) {
       h += aliasMargin*2+fm.height();
   }
-  qDebug() << Q_FUNC_INFO << QSize(0, h);
 
   return QSize( 0, h);
 }
@@ -127,7 +126,6 @@ void FolderViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
   QRect iconRect = option.rect;
   QRect aliasRect = option.rect;
-  qDebug() << Q_FUNC_INFO << option.rect;
 
   iconRect.setLeft( aliasMargin );
   iconRect.setTop( iconRect.top() + aliasMargin ); // (iconRect.height()-iconsize.height())/2);
