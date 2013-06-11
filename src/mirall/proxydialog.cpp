@@ -54,7 +54,9 @@ Mirall::ProxyDialog::ProxyDialog( QWidget* parent )
     }
 
     hostLineEdit->setText(cfgFile.proxyHostName());
-    portSpinBox->setValue(cfgFile.proxyPort());
+    int port = cfgFile.proxyPort();
+    if (port == 0) port = 8080;
+    portSpinBox->setValue(port);
     if (!cfgFile.proxyUser().isEmpty())
     {
         authRequiredcheckBox->setChecked(true);
