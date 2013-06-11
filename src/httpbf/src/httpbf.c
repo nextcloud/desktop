@@ -254,7 +254,7 @@ static int dav_request( ne_request *req, int fd, hbf_block_t *blk ) {
     if( ! (blk && req) ) return HBF_PARAM_FAIL;
 
     ne_set_request_body_fd(req, fd, blk->start, blk->size);
-    DEBUG_HBF("HBF: Block: %d , Start: %ld and Size: %ld\n", blk->seq_number, blk->start, blk->size );
+    /* DEBUG_HBF("HBF: Block: %d , Start: %ld and Size: %ld\n", blk->seq_number, blk->start, blk->size ); */
     res = ne_request_dispatch(req);
 
     req_status = ne_get_status( req );
