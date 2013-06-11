@@ -38,6 +38,7 @@ class QNetworkReply;
 namespace Mirall {
 class Theme;
 class FolderWatcher;
+class FolderWizard;
 class StatusDialog;
 class OwncloudSetupWizard;
 class ownCloudInfo;
@@ -122,6 +123,7 @@ private:
     QNetworkConfigurationManager *_networkMgr;
 #endif
 
+    FolderWizard  *_folderWizard;
     OwncloudSetupWizard *_owncloudSetupWizard;
     SslErrorDialog *_sslErrorDialog;
 

@@ -134,6 +134,8 @@ Application::Application(int &argc, char **argv) :
 
     setQuitOnLastWindowClosed(false);
 
+    _folderWizard = new FolderWizard;
+
     _owncloudSetupWizard = new OwncloudSetupWizard( _folderMan, _theme, this );
     connect( _owncloudSetupWizard, SIGNAL(ownCloudWizardDone(int)),
              this, SLOT(slotownCloudWizardDone(int)));
@@ -685,16 +687,17 @@ void Application::slotAddFolder()
 {
     // disables sync queuing while in scope
     FolderMan::SyncDisabler disableSync(_folderMan);
-    FolderWizard folderWizard;
-    Folder::Map folderMap = _folderMan->map();
-    folderWizard.setFolderMap( &folderMap );
 
-    if (folderWizard.exec() == QDialog::Accepted) {
+    Folder::Map folderMap = _folderMan->map();
+    _folderWizard->setFolderMap( &folderMap );
+    _folderWizard->restart();
+
+    if (_folderWizard->exec() == QDialog::Accepted) {
         qDebug() << "* Folder wizard completed";
 
-        QString alias        = folderWizard.field(QLatin1String("alias")).toString();
-        QString sourceFolder = QDir::fromNativeSeparators(folderWizard.field(QLatin1String("sourceFolder")).toString());
-        QString targetPath   = folderWizard.field(QLatin1String("OCFolderLineEdit")).toString();
+        QString alias        = _folderWizard->field(QLatin1String("alias")).toString();
+        QString sourceFolder = _folderWizard->field(QLatin1String("sourceFolder")).toString();
+        QString targetPath   = _folderWizard->field(QLatin1String("OCFolderLineEdit")).toString();
         QString backend      = QLatin1String("owncloud");
 
         if (!FolderMan::ensureJournalGone( sourceFolder ))
