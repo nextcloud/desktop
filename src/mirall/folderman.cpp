@@ -471,6 +471,8 @@ void FolderMan::removeFolder( const QString& alias )
 {
     Folder *f = 0;
 
+    _scheduleQueue.removeAll(alias);
+
     if( _folderMap.contains( alias )) {
         qDebug() << "Removing " << alias;
         f = _folderMap.take( alias );
