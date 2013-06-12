@@ -59,6 +59,18 @@ static bool _push_to_tmp_first(CSYNC *ctx)
     return false;
 }
 
+static bool _module_supports_put(CSYNC *ctx)
+{
+    /* If destination is the remote replica check if the switch is set. */
+    return ( ctx->module.capabilities.put_support );
+}
+
+static bool _module_supports_get(CSYNC *ctx)
+{
+    /* If destination is the remote replica check if the switch is set. */
+    return ( ctx->module.capabilities.get_support );
+}
+
 static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   enum csync_replica_e srep = -1;
   enum csync_replica_e drep = -1;
@@ -83,6 +95,8 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   int rc = -1;
   int count = 0;
   int flags = 0;
+
+  bool transmission_done = false;
 
   rep_bak = ctx->replica;
 
@@ -232,41 +246,81 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   }
 
-  /* copy file */
-  for (;;) {
-    ctx->replica = srep;
-    bread = csync_vio_read(ctx, sfp, buf, MAX_XFER_BUF_SIZE);
-
-    if (bread < 0) {
-      /* read error */
-      ctx->status_code = csync_errno_to_status(errno,
-                                               CSYNC_STATUS_PROPAGATE_ERROR);
-      strerror_r(errno,  errbuf, sizeof(errbuf));
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
-          "file: %s, command: read, error: %s",
-          suri, errbuf);
-      rc = 1;
-      goto out;
-    } else if (bread == 0) {
-      /* done */
-      break;
+  /* Check if we have put/get */
+  if (_module_supports_put(ctx)) {
+    if (srep == ctx->local.type) {
+      /* get case: get from remote to a local file descriptor */
+      rc = csync_vio_put(ctx, sfp, dfp, st);
+      if (rc < 0) {
+        ctx->status_code = csync_errno_to_status(errno,
+                                                 CSYNC_STATUS_PROPAGATE_ERROR);
+        strerror_r(errno, errbuf, sizeof(errbuf));
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+                  "file: %s, command: put, error %s",
+                  duri,
+                  errbuf);
+        rc = 1;
+        goto out;
+      }
+      transmission_done = true;
     }
+  }
+  if (_module_supports_get(ctx)) {
+    if (srep == ctx->remote.type) {
+      /* put case: put from a local file descriptor to remote. */
+      rc = csync_vio_get(ctx, dfp, sfp, st);
+      if (rc < 0) {
+        ctx->status_code = csync_errno_to_status(errno,
+                                                 CSYNC_STATUS_PROPAGATE_ERROR);
+        strerror_r(errno, errbuf, sizeof(errbuf));
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+                  "file: %s, command: get, error: %s",
+                  duri,
+                  errbuf);
+        rc = 1;
+        goto out;
+      }
+      transmission_done = true;
+    }
+  }
 
-    ctx->replica = drep;
-    bwritten = csync_vio_write(ctx, dfp, buf, bread);
+  if (!transmission_done) {
+    /* no get and put, copy file through own buffers. */
+    for (;;) {
+      ctx->replica = srep;
+      bread = csync_vio_read(ctx, sfp, buf, MAX_XFER_BUF_SIZE);
 
-    if (bwritten < 0 || bread != bwritten) {
-      ctx->status_code = csync_errno_to_status(errno,
-                                               CSYNC_STATUS_PROPAGATE_ERROR);
-      strerror_r(errno, errbuf, sizeof(errbuf));
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
-          "file: %s, command: write, error: bread = %zu, bwritten = %zu - %s",
-          duri,
-          bread,
-          bwritten,
-          errbuf);
-      rc = 1;
-      goto out;
+      if (bread < 0) {
+        /* read error */
+        ctx->status_code = csync_errno_to_status(errno,
+                                                 CSYNC_STATUS_PROPAGATE_ERROR);
+        strerror_r(errno,  errbuf, sizeof(errbuf));
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+                  "file: %s, command: read, error: %s",
+                  suri, errbuf);
+        rc = 1;
+        goto out;
+      } else if (bread == 0) {
+        /* done */
+        break;
+      }
+
+      ctx->replica = drep;
+      bwritten = csync_vio_write(ctx, dfp, buf, bread);
+
+      if (bwritten < 0 || bread != bwritten) {
+        ctx->status_code = csync_errno_to_status(errno,
+                                                 CSYNC_STATUS_PROPAGATE_ERROR);
+        strerror_r(errno, errbuf, sizeof(errbuf));
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+                  "file: %s, command: write, error: bread = %zu, bwritten = %zu - %s",
+                  duri,
+                  bread,
+                  bwritten,
+                  errbuf);
+        rc = 1;
+        goto out;
+      }
     }
   }
 
