@@ -315,6 +315,7 @@ void CSyncThread::startSync()
     // cleans up behind us and emits finished() to ease error handling
     CSyncRunScopeHelper helper(_csync_ctx, this);
 
+    csync_set_module_property(_csync_ctx, "csync_context", _csync_ctx);
     csync_set_userdata(_csync_ctx, this);
 
     // csync_set_auth_callback( _csync_ctx, getauth );
