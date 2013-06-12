@@ -30,13 +30,26 @@
 #include "c_private.h"
 #include "c_lib.h"
 #include "c_string.h"
-
+#include "vio/csync_vio_handle.h"
 #include "vio/csync_vio_local.h"
+#include "vio/csync_vio_handle_private.h"
 
 typedef struct fhandle_s {
   int fd;
 } fhandle_t;
 
+int csync_vio_local_getfd(csync_vio_handle_t *hnd)
+{
+    fhandle_t *fh;
+
+    if (hnd == NULL) {
+        return -1;
+    }
+
+    fh = (struct fhandle_s*)(hnd->method_handle);
+
+    return fh->fd;
+}
 
 /* the url comes in as utf-8 and in windows, it needs to be multibyte. */
 csync_vio_method_handle_t *csync_vio_local_open(const char *durl, int flags, mode_t mode) {

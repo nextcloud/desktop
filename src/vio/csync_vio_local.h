@@ -26,6 +26,8 @@
 #include "vio/csync_vio_method.h"
 #include <sys/time.h>
 
+int csync_vio_local_getfd(csync_vio_handle_t *hnd);
+
 csync_vio_method_handle_t *csync_vio_local_open(const char *durl, int flags, mode_t mode);
 csync_vio_method_handle_t *csync_vio_local_creat(const char *durl, mode_t mode);
 int csync_vio_local_close(csync_vio_method_handle_t *fhandle);
