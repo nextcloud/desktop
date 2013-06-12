@@ -8,6 +8,7 @@
 
 #include "std/c_private.h"
 #include "std/c_file.h"
+#include "std/c_string.h"
 
 const char *check_dir = "/tmp/check";
 const char *check_src_file = "/tmp/check/foo.txt";
@@ -15,7 +16,11 @@ const char *check_dst_file = "/tmp/check/bar.txt";
 
 static int test_file(const char *path, mode_t mode) {
   csync_stat_t sb;
-  if (_tstat(path, &sb) < 0) {
+  mbchar_t *mbpath = c_utf8_to_locale(path);
+  int rc = _tstat(mbpath, &sb);
+  c_free_locale_string(mbpath);
+
+  if (rc < 0) {
     return -1;
   }
 
