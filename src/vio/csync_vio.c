@@ -29,6 +29,7 @@
 #include <dlfcn.h> /* dlopen(), dlclose(), dlsym() ... */
 
 #include "csync_private.h"
+#include "csync_util.h"
 #include "vio/csync_vio.h"
 #include "vio/csync_vio_handle_private.h"
 #include "vio/csync_vio_local.h"
@@ -152,6 +153,9 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
 
   /* Useful defaults to the module capabilities */
   ctx->module.capabilities.atomar_copy_support = false;
+  ctx->module.capabilities.put_support         = false;
+  ctx->module.capabilities.get_support         = false;
+
   /* Load the module capabilities from the module if it implements the it. */
   if( VIO_METHOD_HAS_FUNC(m, get_capabilities)) {
     ctx->module.capabilities = *(m->get_capabilities());
@@ -254,6 +258,67 @@ int csync_vio_close(CSYNC *ctx, csync_vio_handle_t *fhandle) {
   SAFE_FREE(fhandle->uri);
   SAFE_FREE(fhandle);
 
+  return rc;
+}
+
+int csync_vio_getfd(CSYNC *ctx, csync_vio_handle_t *fhandle) {
+  int fd = -1;
+  (void) ctx;
+
+  if (fhandle == NULL) {
+    errno = EBADF;
+    return -1;
+  }
+
+  fd = csync_vio_local_getfd( fhandle );
+  // Return the correct handle here.
+  return fd;
+
+}
+
+int csync_vio_put(CSYNC *ctx,
+                  csync_vio_handle_t *flocal,
+                  csync_vio_handle_t *fremote,
+                  csync_file_stat_t *st) {
+  int rc = 0;
+  csync_vio_file_stat_t *vfs = csync_vio_convert_file_stat(st);
+
+  if (flocal == NULL) {
+    rc = -1;
+  }
+  if (vfs ==  NULL) {
+    rc = -1;
+  }
+
+  if (rc == 0) {
+    rc = ctx->module.method->put(flocal->method_handle,
+                                 fremote->method_handle,
+                                 vfs);
+  }
+  csync_vio_file_stat_destroy(vfs);
+  return rc;
+}
+
+int csync_vio_get(CSYNC *ctx,
+                  csync_vio_handle_t *flocal,
+                  csync_vio_handle_t *fremote,
+                  csync_file_stat_t *st) {
+  int rc = 0;
+  csync_vio_file_stat_t *vfs = csync_vio_convert_file_stat(st);
+
+  if (flocal == NULL) {
+    rc = -1;
+  }
+  if (vfs ==  NULL) {
+    rc = -1;
+  }
+
+  if (rc == 0) {
+    rc = ctx->module.method->get(flocal->method_handle,
+                                 fremote->method_handle,
+                                 vfs);
+  }
+  csync_vio_file_stat_destroy(vfs);
   return rc;
 }
 

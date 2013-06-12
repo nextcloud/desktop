@@ -37,6 +37,8 @@ typedef struct csync_vio_method_s csync_vio_method_t;
 
 struct csync_vio_capabilities_s {
  bool atomar_copy_support;
+ bool get_support;
+ bool put_support;
 };
 
 typedef struct csync_vio_capabilities_s csync_vio_capabilities_t;
@@ -76,6 +78,13 @@ typedef char* (*csync_method_get_error_string_fn)();
 
 typedef int (*csync_method_commit_fn)();
 
+typedef int (*csync_method_get_fn)(csync_vio_method_handle_t *flocal,
+                                   csync_vio_method_handle_t *fremote,
+                                   csync_vio_file_stat_t *st);
+typedef int (*csync_method_put_fn)(csync_vio_method_handle_t *flocal,
+                                   csync_vio_method_handle_t *fremote,
+                                   csync_vio_file_stat_t *st);
+
 struct csync_vio_method_s {
   size_t method_table_size;           /* Used for versioning */
   csync_method_get_capabilities_fn get_capabilities;
@@ -99,6 +108,8 @@ struct csync_vio_method_s {
   csync_method_set_property_fn set_property;
   csync_method_get_error_string_fn get_error_string;
   csync_method_commit_fn commit;
+  csync_method_put_fn put;
+  csync_method_get_fn get;
 };
 
 #endif /* _CSYNC_VIO_H */
