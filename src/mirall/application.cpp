@@ -681,13 +681,30 @@ void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
 
 void Application::slotAddFolder()
 {
+    /** Helper class to ensure sync is always switched back on */
+    class SyncDisabler
+    {
+    public:
+        SyncDisabler(Application *app) : _app(app)
+        {
+            _app->_folderMan->setSyncEnabled(false);
+        }
+        ~SyncDisabler() {
+            _app->_folderMan->setSyncEnabled(true);
+            _app->computeOverallSyncStatus();
+            _app->_folderMan->slotScheduleAllFolders();
+        }
+    private:
+        Application *_app;
+    };
+
     if (_folderWizard) {
         raiseDialog(_folderWizard);
         return;
     }
 
     // disables sync queuing while in scope
-    FolderMan::SyncDisabler disableSync(_folderMan);
+    SyncDisabler disableSync(this);
 
     Folder::Map folderMap = _folderMan->map();
     _folderWizard = new FolderWizard;
@@ -716,8 +733,6 @@ void Application::slotAddFolder()
     }
     _folderWizard->deleteLater();
     _folderWizard = 0;
-
-    _folderMan->slotScheduleAllFolders();
 }
 
 void Application::slotOpenStatus()
