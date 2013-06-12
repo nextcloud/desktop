@@ -114,6 +114,7 @@ ownCloudFolder::~ownCloudFolder()
         csync_request_abort(_csync_ctx);
         _thread->wait();
     }
+    delete _csync;
     // Destroy csync here.
     csync_destroy(_csync_ctx);
 }
