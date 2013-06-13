@@ -513,7 +513,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       flag = CSYNC_FTW_FLAG_NSTAT;
     }
 
-    if( flag != CSYNC_FTW_FLAG_NSTAT && ctx->current == LOCAL_REPLICA ) {
+    if( ctx->current == LOCAL_REPLICA ) {
         char *md5 = NULL;
         int len = strlen( path );
         uint64_t h = c_jhash64((uint8_t *) path, len, 0);
