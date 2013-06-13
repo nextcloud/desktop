@@ -71,11 +71,6 @@ public:
     virtual QString configFileName() const = 0;
 
     /**
-      * get a folder icon for a given backend in a given size.
-      */
-    virtual QIcon   folderIcon( const QString& ) const = 0;
-
-    /**
       * the icon that is shown in the tray context menu left of the folder name
       */
     virtual QIcon   trayFolderIcon( const QString& ) const;
@@ -86,7 +81,6 @@ public:
     virtual QIcon   syncStateIcon( SyncResult::Status, bool sysTray = false ) const;
 
     virtual QIcon   folderDisabledIcon() const = 0;
-    virtual QPixmap splashScreen() const = 0;
 
     virtual QIcon   applicationIcon() const = 0;
 

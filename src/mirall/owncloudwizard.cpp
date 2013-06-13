@@ -130,16 +130,12 @@ void OwncloudSetupPage::setServerUrl( const QString& newUrl )
 void OwncloudSetupPage::setupCustomization()
 {
     // set defaults for the customize labels.
-
-    // _ui.topLabel->hide();
+    _ui.topLabel->hide();
     _ui.bottomLabel->hide();
 
     Theme *theme = Theme::instance();
     QVariant variant = theme->customMedia( Theme::oCSetupTop );
-    if( variant.isNull() ) {
-        _ui.topLabel->setOpenExternalLinks(true);
-        _ui.topLabel->setText("If you don't have an ownCloud server yet, see <a href=\"https://owncloud.com\">owncloud.com</a> for more info.");
-    } else {
+    if( !variant.isNull() ) {
         setupCustomMedia( variant, _ui.topLabel );
     }
 

@@ -371,8 +371,6 @@ void StatusDialog::folderToModelItem( QStandardItem *item, Folder *f )
 {
     if( ! item || !f ) return;
 
-    QIcon icon = _theme->folderIcon( f->backend() );
-    item->setData( icon,                   FolderViewDelegate::FolderStatusIconRole );
     item->setData( f->nativePath(),        FolderViewDelegate::FolderPathRole );
     item->setData( f->secondPath(),  FolderViewDelegate::FolderSecondPathRole );
     item->setData( f->alias(),             FolderViewDelegate::FolderAliasRole );

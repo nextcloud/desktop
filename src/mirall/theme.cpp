@@ -82,7 +82,8 @@ QString Theme::version() const
 
 QIcon Theme::trayFolderIcon( const QString& backend ) const
 {
-    return folderIcon( backend );
+    Q_UNUSED(backend)
+    return applicationIcon();
 }
 
 /*

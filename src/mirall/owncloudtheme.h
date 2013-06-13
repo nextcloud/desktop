@@ -34,6 +34,8 @@ public:
     QIcon   folderDisabledIcon() const;
     QIcon   applicationIcon() const;
 
+    QVariant customMedia(CustomMediaType type);
+
     QColor  wizardHeaderBackgroundColor() const;
     QColor  wizardHeaderTitleColor() const;
 

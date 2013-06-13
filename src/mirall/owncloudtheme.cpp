@@ -78,32 +78,6 @@ QString ownCloudTheme::about() const
             .arg(devString);
 }
 
-QPixmap ownCloudTheme::splashScreen() const
-{
-    return QPixmap(QLatin1String(":/mirall/resources/owncloud_splash.png"));
-}
-
-QIcon ownCloudTheme::folderIcon( const QString& backend ) const
-{
-  QString name;
-
-  if( backend == QLatin1String("owncloud")) {
-      name = QLatin1String( "owncloud-framed" );
-  }
-  if( backend == QLatin1String("unison" )) {
-      name  = QLatin1String( "folder-sync" );
-  }
-  if( backend == QLatin1String("csync" )) {
-      name   = QLatin1String( "folder-remote" );
-  }
-  if( backend.isEmpty() || backend == QLatin1String("none") ) {
-      name = QLatin1String("folder-grey");
-  }
-
-  qDebug() << "==> load folder icon " << name;
-  return themeIcon( name );
-}
-
 QIcon ownCloudTheme::trayFolderIcon( const QString& ) const
 {
     QPixmap fallback = qApp->style()->standardPixmap(QStyle::SP_FileDialogNewFolder);
@@ -119,6 +93,18 @@ QIcon ownCloudTheme::folderDisabledIcon( ) const
 QIcon ownCloudTheme::applicationIcon( ) const
 {
     return themeIcon( QLatin1String("owncloud-icon") );
+}
+
+QVariant ownCloudTheme::customMedia(Theme::CustomMediaType type)
+{
+    if (type == Theme::oCSetupTop) {
+        return QCoreApplication::translate("ownCloudTheme",
+                                           "If you don't have an ownCloud server yet, "
+                                           "see <a href=\"https://owncloud.com\">owncloud.com</a> for more info.",
+                                           "Top text in setup wizard. Keep short!");
+    } else {
+        return QVariant();
+    }
 }
 
 QColor ownCloudTheme::wizardHeaderBackgroundColor() const
