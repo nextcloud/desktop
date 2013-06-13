@@ -15,11 +15,13 @@
 #include "owncloudtheme.h"
 
 #include <QString>
-#include <QDebug>
+#include <QVariant>
 #include <QPixmap>
 #include <QIcon>
 #include <QStyle>
 #include <QApplication>
+
+#include <QDebug>
 
 #include "mirall/version.h"
 #include "config.h"
