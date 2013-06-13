@@ -407,8 +407,11 @@ void OwncloudWizard::setMultipleFoldersExist(bool exist)
 void OwncloudSetupPage::setConfigExists(  bool config )
 {
     _configExists = config;
-    setSubTitle( tr("<font color=\"%1\">Change your user credentials</font>")
-                 .arg(Theme::instance()->wizardHeaderTitleColor().name()));
+
+    if (config == true) {
+        setSubTitle( tr("<font color=\"%1\">Change your user credentials</font>")
+                     .arg(Theme::instance()->wizardHeaderTitleColor().name()));
+    }
 }
 
 // ======================================================================
