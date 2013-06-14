@@ -235,10 +235,8 @@ void OwncloudSetupWizard::testOwnCloudConnect()
     // If there is already a config, take its proxy config.
     if( ownCloudInfo::instance()->isConfigured() ) {
         MirallConfigFile prevCfg;
-        if( prevCfg.proxyType() != QNetworkProxy::DefaultProxy ) {
-            cfgFile.setProxyType( prevCfg.proxyType(), prevCfg.proxyHostName(), prevCfg.proxyPort(),
-                                  prevCfg.proxyNeedsAuth(), prevCfg.proxyUser(), prevCfg.proxyPassword() );
-        }
+        cfgFile.setProxyType( prevCfg.proxyType(), prevCfg.proxyHostName(), prevCfg.proxyPort(),
+                              prevCfg.proxyNeedsAuth(), prevCfg.proxyUser(), prevCfg.proxyPassword() );
     }
 
     // now start ownCloudInfo to check the connection.
