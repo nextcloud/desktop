@@ -373,8 +373,6 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
         _actionAddFolder->setEnabled( true );
         _actionOpenStatus->setEnabled( true );
         setupContextMenu();
-    } else {
-        slotFetchCredentials();
     }
 }
 
