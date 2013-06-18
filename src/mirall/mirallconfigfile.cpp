@@ -374,26 +374,23 @@ QString MirallConfigFile::ownCloudPasswd( const QString& connection ) const
     settings.setIniCodec( "UTF-8" );
     settings.beginGroup( con );
 
-    QString pwd;
-
     QByteArray pwdba = settings.value(QLatin1String("passwd")).toByteArray();
-    if( pwdba.isEmpty() ) {
-        // check the password entry, cleartext from before
-        // read it and convert to base64, delete the cleartext entry.
-        QString p = settings.value(QLatin1String("password")).toString();
-
-        if( ! p.isEmpty() ) {
-            // its there, save base64-encoded and delete.
-
-            pwdba = p.toUtf8();
-            settings.setValue( QLatin1String("passwd"), QVariant(pwdba.toBase64()) );
-            settings.remove( QLatin1String("password") );
-            settings.sync();
-        }
+    if( !pwdba.isEmpty() ) {
+        return QString::fromUtf8( QByteArray::fromBase64(pwdba) );
     }
-    pwd = QString::fromUtf8( QByteArray::fromBase64(pwdba) );
 
-    return pwd;
+    // check the password entry, cleartext from before
+    // read it and convert to base64, delete the cleartext entry.
+    QString p = settings.value(QLatin1String("password")).toString();
+
+    if( ! p.isEmpty() ) {
+        // its there, save base64-encoded and delete.
+        pwdba = p.toUtf8();
+        settings.setValue( QLatin1String("passwd"), QVariant(pwdba.toBase64()) );
+        settings.remove( QLatin1String("password") );
+        settings.sync();
+    }
+    return p;
 }
 
 QString MirallConfigFile::ownCloudVersion() const
