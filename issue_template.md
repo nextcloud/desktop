@@ -20,6 +20,8 @@ PHP version:
 
 ownCloud version:
 
+Storage backend:
+
 ### Client configuration
 Client version:
 
