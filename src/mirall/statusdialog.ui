@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>544</width>
-    <height>308</height>
+    <height>313</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -46,23 +46,6 @@
       <widget class="QPushButton" name="_ButtonRemove">
        <property name="text">
         <string>Remove...</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="_ButtonFetch">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="text">
-        <string>Fetch...</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="_ButtonPush">
-       <property name="text">
-        <string>Push...</string>
        </property>
       </widget>
      </item>

@@ -238,17 +238,11 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
   connect(_ButtonClose,  SIGNAL(clicked()), this, SLOT(accept()));
   connect(_ButtonRemove, SIGNAL(clicked()), this, SLOT(slotRemoveFolder()));
 
-  // hide these two for now...
-  _ButtonFetch->setVisible( false );
-  _ButtonPush->setVisible( false );
-
   connect(_ButtonEnable, SIGNAL(clicked()), this, SLOT(slotEnableFolder()));
   connect(_ButtonInfo,   SIGNAL(clicked()), this, SLOT(slotInfoFolder()));
   connect(_ButtonAdd,    SIGNAL(clicked()), this, SLOT(slotAddSync()));
 
   _ButtonRemove->setEnabled(false);
-  _ButtonFetch->setEnabled(false);
-  _ButtonPush->setEnabled(false);
   _ButtonEnable->setEnabled(false);
   _ButtonInfo->setEnabled(false);
   _ButtonAdd->setEnabled(true);
@@ -270,8 +264,6 @@ void StatusDialog::slotFolderActivated( const QModelIndex& indx )
   bool state = indx.isValid();
 
   _ButtonRemove->setEnabled( state );
-  _ButtonFetch->setEnabled( state );
-  _ButtonPush->setEnabled( state );
   _ButtonEnable->setEnabled( state );
   _ButtonInfo->setEnabled( state );
 
@@ -338,9 +330,7 @@ void StatusDialog::buttonsSetEnabled()
 
     _ButtonEnable->setEnabled(isSelected);
     _ButtonRemove->setEnabled(isSelected);
-    _ButtonFetch->setEnabled(isSelected);
     _ButtonInfo->setEnabled(isSelected);
-    _ButtonPush->setEnabled(isSelected);
 }
 
 void StatusDialog::slotUpdateFolderState( Folder *folder )
@@ -414,30 +404,6 @@ void StatusDialog::slotRemoveSelectedFolder()
     }
     buttonsSetEnabled();
     slotCheckConnection();
-}
-
-void StatusDialog::slotFetchFolder()
-{
-  QModelIndex selected = _folderList->selectionModel()->currentIndex();
-  if( selected.isValid() ) {
-    QString alias = _model->data( selected, FolderViewDelegate::FolderAliasRole ).toString();
-    qDebug() << "Fetch Folder alias " << alias;
-    if( !alias.isEmpty() ) {
-      emit(fetchFolderAlias( alias ));
-    }
-  }
-}
-
-void StatusDialog::slotPushFolder()
-{
-  QModelIndex selected = _folderList->selectionModel()->currentIndex();
-  if( selected.isValid() ) {
-    QString alias = _model->data( selected, FolderViewDelegate::FolderAliasRole ).toString();
-    qDebug() << "Push Folder alias " << alias;
-    if( !alias.isEmpty() ) {
-      emit(pushFolderAlias( alias ));
-    }
-  }
 }
 
 void StatusDialog::slotEnableFolder()

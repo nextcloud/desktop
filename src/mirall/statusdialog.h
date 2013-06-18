@@ -72,8 +72,6 @@ public:
 
 signals:
     void removeFolderAlias( const QString& );
-    void fetchFolderAlias( const QString& );
-    void pushFolderAlias( const QString& );
     void enableFolderAlias( const QString&, const bool );
     void infoFolderAlias( const QString& );
     void openFolderAlias( const QString& );
@@ -84,8 +82,6 @@ signals:
 public slots:
     void slotRemoveFolder();
     void slotRemoveSelectedFolder();
-    void slotFetchFolder();
-    void slotPushFolder();
     void slotFolderActivated( const QModelIndex& );
     void slotOpenOC();
     void slotEnableFolder();
