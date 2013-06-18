@@ -123,7 +123,7 @@ void CredentialStore::fetchCredentials()
         _inputDialog->setTextEchoMode( QLineEdit::Password );
 
         connect(_inputDialog, SIGNAL(finished(int)), SLOT(slotUserDialogDone(int)));
-        _inputDialog->exec();
+        _inputDialog->open();
         break;
     }
     case CredentialStore::Settings: {
