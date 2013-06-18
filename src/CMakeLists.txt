@@ -48,6 +48,13 @@ if(ICONV_FOUND AND WITH_ICONV)
     list(APPEND CSYNC_LINK_LIBRARIES ${ICONV_LIBRARIES})
 endif()
 
+set(BLACKLIST_ON_ERROR 0 CACHE BOOL
+  "If an errors occurs three times on the same file, do not attempt to process that file any further.")
+
+if(BLACKLIST_ON_ERROR)
+    add_definitions(-DBLACKLIST_ON_ERROR)
+endif()
+
 set(csync_SRCS
   csync.c
   csync_config.c

@@ -163,10 +163,15 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   progress_info = csync_statedb_get_progressinfo(ctx, st->phash, st->modtime, st->md5);
   rep_bak = ctx->replica;
 
+#ifdef BLACKLIST_ON_ERROR
   if (progress_info && progress_info->error > 3) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+       "'%s' was blacklisted after %d errors: %s",
+       st->path, progress_info->error,  progress_info->error_string);
     rc = 1;
     goto out;
   }
+#endif
 
   if (progress_info) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
@@ -805,9 +810,13 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
   if(node)
       other = (csync_file_stat_t *) node->data;
 
+#ifdef BLACKLIST_ON_ERROR
   if (other) {
     pi = csync_statedb_get_progressinfo(ctx, other->phash, other->modtime, other->md5);
     if (pi && pi->error > 3) {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+                "'%s' was blacklisted after %d errors: %s",
+                  st->path, pi->error,  pi->error_string);
       if (!st->error_string && pi->error_string)
         st->error_string = c_strdup(pi->error_string);
       if (!other->error_string && pi->error_string)
@@ -816,6 +825,7 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
       goto out;
     }
   }
+#endif
 
   switch (ctx->current) {
     case REMOTE_REPLICA:
@@ -973,13 +983,18 @@ static int _csync_remove_file(CSYNC *ctx, csync_file_stat_t *st) {
   int rc = -1;
 
   csync_progressinfo_t *pi = NULL;
+#ifdef BLACKLIST_ON_ERROR
   pi = csync_statedb_get_progressinfo(ctx, st->phash, st->modtime, st->md5);
   if (pi && pi->error > 3) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+                "'%s' was blacklisted after %d errors: %s",
+                st->path, pi->error,  pi->error_string);
     rc = 1;
     if (!st->error_string && pi->error_string)
       st->error_string = c_strdup(pi->error_string);
     goto out;
   }
+#endif
 
 
   switch (ctx->current) {
@@ -1044,13 +1059,18 @@ static int _csync_new_dir(CSYNC *ctx, csync_file_stat_t *st) {
   int rc = -1;
 
   csync_progressinfo_t *pi = NULL;
+#ifdef BLACKLIST_ON_ERROR
   pi = csync_statedb_get_progressinfo(ctx, st->phash, st->modtime, st->md5);
   if (pi && pi->error > 3) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+              "'%s' was blacklisted after %d errors: %s",
+              st->path, pi->error,  pi->error_string);
     if (!st->error_string && pi->error_string)
       st->error_string = c_strdup(pi->error_string);
     rc = 1;
     goto out;
   }
+#endif
 
   replica_bak = ctx->replica;
 
@@ -1148,13 +1168,18 @@ static int _csync_sync_dir(CSYNC *ctx, csync_file_stat_t *st) {
   int rc = -1;
 
   csync_progressinfo_t *pi = NULL;
+#ifdef BLACKLIST_ON_ERROR
   pi = csync_statedb_get_progressinfo(ctx, st->phash, st->modtime, st->md5);
   if (pi && pi->error > 3) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+                "'%s' was blacklisted after %d errors: %s",
+                st->path, pi->error,  pi->error_string);
     if (!st->error_string && pi->error_string)
       st->error_string = c_strdup(pi->error_string);
     rc = 1;
     goto out;
   }
+#endif
 
   replica_bak = ctx->replica;
 
