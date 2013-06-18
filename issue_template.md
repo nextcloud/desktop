@@ -33,18 +33,14 @@ Installation path of client:
 
 ### Logs
 
-#### output of `owncloud --logwindow` or `owncloud --logfile log.txt`
-```
-Insert your log output here
-```
+Please use Gist (https://gist.github.com/) or a similar code paster for longer
+logs.
 
-#### Web server error log
-```
-Insert your webserver log here
-```
+```Template for output < 10 lines```
 
-#### ownCloud log (data/owncloud.log)
-```
-Insert your ownCloud log here
-```
+1. Output of `owncloud --logwindow` or `owncloud --logfile log.txt`
+
+2. Web server error log:
+
+3. ownCloud log (data/owncloud.log):
 
