@@ -16,8 +16,6 @@ It contains settings in the ini file format known from Windows.
 
 .. note:: Changes may be overwritten by using ownCloud's configuration dialog.
 
-.. note:: The new version is less precise in this regard.
-
 These are config settings that may be changed:
 
 ``remotePollinterval`` (default: ``30000``)
@@ -25,7 +23,4 @@ These are config settings that may be changed:
 
 ``maxLogLines`` (default:  ``20000``)
         Maximum count of log lines shown in the log window
-
-``remotePollinterval``
-        The frequency used for polling for remote changes on the ownCloud Server.
 
