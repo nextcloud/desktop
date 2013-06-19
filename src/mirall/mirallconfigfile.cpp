@@ -559,7 +559,7 @@ int MirallConfigFile::proxyPort() const
 
 bool MirallConfigFile::proxyNeedsAuth() const
 {
-    return getValue(QLatin1String("needsAuth"), QLatin1String("proxy")).toInt();
+    return getValue(QLatin1String("needsAuth"), QLatin1String("proxy")).toBool();
 }
 
 QString MirallConfigFile::proxyUser() const
