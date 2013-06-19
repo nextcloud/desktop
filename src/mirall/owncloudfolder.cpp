@@ -69,7 +69,6 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
     , _csync(0)
     , _csyncError(false)
     , _csyncUnavail(false)
-    , _wipeDb(false)
 {
     ServerActionNotifier *notifier = new ServerActionNotifier(this);
     connect(notifier, SIGNAL(guiLog(QString,QString)), Logger::instance(), SIGNAL(guiLog(QString,QString)));
@@ -271,7 +270,6 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     _errors.clear();
     _csyncError = false;
     _csyncUnavail = false;
-    _wipeDb = false;
 
     MirallConfigFile cfgFile;
 
@@ -333,7 +331,6 @@ void ownCloudFolder::slotCSyncFinished()
         qDebug() << "  ** error Strings: " << _errors;
         _syncResult.setErrorStrings( _errors );
         qDebug() << "    * owncloud csync thread finished with error";
-        if( _wipeDb ) wipe();
     } else if (_csyncUnavail) {
         _syncResult.setStatus(SyncResult::Unavailable);
     } else {
@@ -427,7 +424,6 @@ void ownCloudFolder::wipe()
     if( ctmpFile.exists() ) {
         ctmpFile.remove();
     }
-    _wipeDb = false;
 }
 
 ServerActionNotifier::ServerActionNotifier(QObject *parent)

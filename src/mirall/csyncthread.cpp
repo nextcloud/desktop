@@ -106,8 +106,6 @@ QString CSyncThread::csyncErrorToString( CSYNC_ERROR_CODE err, const char *errSt
         break;
     case CSYNC_ERR_ACCESS_FAILED:
         errStr = tr("<p>The target directory does not exist.</p><p>Please check the sync setup.</p>");
-        // this is critical. The database has to be removed.
-        emit wipeDb();
         break;
     case CSYNC_ERR_REMOTE_CREATE:
     case CSYNC_ERR_REMOTE_STAT:
