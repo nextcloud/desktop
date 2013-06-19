@@ -248,8 +248,8 @@ int CSyncThread::treewalkError(TREE_WALK_FILE* file)
         return 0;
 
     if( file &&
-        file->instruction == CSYNC_INSTRUCTION_STAT_ERROR ||
-        file->instruction == CSYNC_INSTRUCTION_ERROR ) {
+        (file->instruction == CSYNC_INSTRUCTION_STAT_ERROR ||
+        file->instruction == CSYNC_INSTRUCTION_ERROR) ) {
         _mutex.lock();
         _syncedItems[indx]._instruction = file->instruction;
         _mutex.unlock();
