@@ -1431,6 +1431,7 @@ static int _csync_propagation_file_visitor(void *obj, void *data) {
   ctx = (CSYNC *) data;
 
   if (ctx->abort) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Aborted!");
     ctx->error_code = CSYNC_ERR_ABORTED;
     return -1;
   }
@@ -1498,6 +1499,7 @@ static int _csync_propagation_dir_visitor(void *obj, void *data) {
   ctx = (CSYNC *) data;
 
   if (ctx->abort) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Aborted!");
     ctx->error_code = CSYNC_ERR_ABORTED;
     return -1;
   }

@@ -280,6 +280,7 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
   uint64_t h;
 
   if (ctx->abort) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Aborted!");
     ctx->error_code = CSYNC_ERR_ABORTED;
     return -1;
   }
