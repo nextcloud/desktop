@@ -6,9 +6,10 @@ basic reasons: Either the server setup has a problem or the client
 has a bug. When reporting bugs, it is crucial to find out what part
 of the system causes the problem.
 
-Here are a couple of useful steps to isolate the problem.
+Identifying basic functionality problems
+----------------------------------------
 
-:A general ownCloud Server test:
+:Perform a general ownCloud Server test:
   A very first check is to verify that you can log on to ownClouds web 
   application. Assuming your ownCloud instance is installed at 
   ``http://yourserver.com/owncloud``, type
@@ -18,7 +19,7 @@ Here are a couple of useful steps to isolate the problem.
   see a red warning box on the page, your server setup is not correct or needs
   fixes. Please verify that your server installation is working correctly.
 
-:All desktop clients fail to connect to ownCloud:
+:Problem: All desktop clients fail to connect to ownCloud:
   The ownCloud syncing use the built in WebDAV server of ownCloud. 
   Verify that you can log on to ownClouds WebDAV server. Assuming your ownCloud
   instance is installed at ``http://yourserver.com/owncloud``, type
@@ -31,22 +32,30 @@ Here are a couple of useful steps to isolate the problem.
 
 :Use a WebDAV command line tool to test:  
   A more sophisticated test is to use a WebDAV command line client and log
-  into the ownCloud WebDAV server, such as a little app called cadaver, available
-  on Linux. It can be used to further verify that the WebDAV server is running
-  properly, for example by performing PROPFIND calls:
+  into the ownCloud WebDAV server, such as a little app called cadaver,
+  available on Linux. It can be used to further verify that the WebDAV server is
+  running properly, for example by performing PROPFIND calls:
 
   ``propget .`` called within cadaver will return some properties of the current
   directory and thus be a successful WebDAV connect.
 
-If the sync is unreliable, please ensure that the folder synced with ownCloud is
-not shared with other syncing apps. Syncing a file with ownCloud and other sync
-software such as Unison, rsync, Microsoft Windows Offline Folders or cloud
-services such as DropBox or Microsoft SkyDrive is not supported and should not
-be attempted. In the worst case, doing so can result in data loss.
+Isolating other issues
+----------------------
+
+If the sync result is unreliable, please ensure that the folder synced with
+ownCloud is not shared with other syncing apps.
+
+.. note:: Syncing a directory with ownCloud and other sync software such as
+          Unison, rsync, Microsoft Windows Offline Folders or cloud services
+          such as DropBox or Microsoft SkyDrive is not supported and should
+          not be attempted. In the worst case, doing so can result in data
+          loss.
 
 If you are operating your own server and use the local storage backend (the
-default), make sure that ownCloud has exclusive access to the directory. The
-files must not be modified manually.
+default), make sure that ownCloud has exclusive access to the directory.
+
+.. note:: The data directory on the server is exclusive to ownCloud and must
+          not be modified manually.
 
 If you are using a different backend, you can try to exclude a bug in the
 backend by reverting to the local backend.
@@ -99,4 +108,3 @@ log line contains a lot of information of every request and it's result.
 More information about the apache logging can be found at
 ``http://httpd.apache.org/docs/current/logs.html``.
 
- 
