@@ -19,8 +19,12 @@ Identifying basic functionality problems
   see a red warning box on the page, your server setup is not correct or needs
   fixes. Please verify that your server installation is working correctly.
 
-:Problem: All desktop clients fail to connect to ownCloud:
-  The ownCloud syncing use the built in WebDAV server of ownCloud. 
+:Ensure the WebDAV API is working:
+  If all desktop clients fail to connect to ownCloud, but the access via the
+  web interface works, the problem often is a mis-configuration of the WebDAV
+  API.
+
+  The ownCloud client uses the built-in WebDAV access of the server content.
   Verify that you can log on to ownClouds WebDAV server. Assuming your ownCloud
   instance is installed at ``http://yourserver.com/owncloud``, type
   ``http://yourserver.com/owncloud/remote.php/webdav`` into your browsers
@@ -45,8 +49,8 @@ Isolating other issues
 If the sync result is unreliable, please ensure that the folder synced with
 ownCloud is not shared with other syncing apps.
 
-.. note:: Syncing a directory with ownCloud and other sync software such as
-          Unison, rsync, Microsoft Windows Offline Folders or cloud services
+.. note:: Syncing the same directory with ownCloud and other sync software such
+          as Unison, rsync, Microsoft Windows Offline Folders or cloud services
           such as DropBox or Microsoft SkyDrive is not supported and should
           not be attempted. In the worst case, doing so can result in data
           loss.
