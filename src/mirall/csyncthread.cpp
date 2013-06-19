@@ -58,6 +58,8 @@ CSyncThread::~CSyncThread()
 
 }
 
+//Convert an error code from csync to a user readable string.
+// Keep that function thread safe as it can be called from the sync thread or the main thread
 QString CSyncThread::csyncErrorToString( CSYNC_ERROR_CODE err, const char *errString )
 {
     QString errStr;
