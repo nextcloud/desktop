@@ -215,8 +215,6 @@ latex_documents = [
 man_pages = [
     ('owncloud.1', 'owncloud', u'File synchronisation desktop utility.',
      [u'The ownCloud developers'], 1),
-    ('mirall.1', 'mirall', u'File synchronisation desktop utility.',
-     [u'The ownCloud developers'], 1)
 ]
 
 # If true, show URL addresses after external links.

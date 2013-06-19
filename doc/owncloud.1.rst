@@ -33,5 +33,5 @@ Please report bugs at https://github.com/owncloud/core/issues.
 
 SEE ALSO
 ========
- `csync(1)`, `mirall(1)`
+ `csync(1)`
 
