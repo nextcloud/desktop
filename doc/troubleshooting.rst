@@ -61,20 +61,23 @@ It is also possible to directly log to a directory, which is an useful option
 in case the problem only happens ocassionally. In that case it is better to
 create a huge amount of data, as the log window has a limited buffer.
 
-To write logs to disk, start the client with ``--logdir <dir>``, where ``<dir>``
-is an existing directory. Each sync run will create a new file.
+To write logs to disk, start the client with ``--logfile <file>``, where
+``<file`` is the file you want to log to, or ``--logdir <dir>``, where ``<dir>``
+is an existing directory. In case of ``--logdir``, each sync run will create a
+new file.
 
 :ownCloud server Logfile:
 The ownCloud server maintains an ownCloud specific logfile as well. It can and
 must be enabled through the ownCloud Administration page. There you can adjust
-the loglevel. It is advisable to set it to a verbose level like ``Debug`` or ``Info``.
+the loglevel. It is advisable to set it to a verbose level like ``Debug`` or
+``Info``.
   
 The logfile can be viewed either in the web interface or can be found in the
 filesystem in the ownCloud server data dir.
 
 :Webserver Logfiles:
 Also, please take a look at your webservers error log file to check if there
-are problems. For apache on linux, the error logs usually can be found at
+are problems. For Apache on Linux, the error logs usually can be found at
 ``/var/log/apache2``. A file called ``error_log`` shows errors like PHP code
 problems. A file called ``access_log`` usually records all requests handled
 by the server. Especially the access_log is a very good debugging tool as the
