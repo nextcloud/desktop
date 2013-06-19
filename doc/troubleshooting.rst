@@ -38,6 +38,19 @@ Here are a couple of useful steps to isolate the problem.
   ``propget .`` called within cadaver will return some properties of the current
   directory and thus be a successful WebDAV connect.
 
+If the sync is unreliable, please ensure that the folder synced with ownCloud is
+not shared with other syncing apps. Syncing a file with ownCloud and other sync
+software such as Unison, rsync, Microsoft Windows Offline Folders or cloud
+services such as DropBox or Microsoft SkyDrive is not supported and should not
+be attempted. In the worst case, doing so can result in data loss.
+
+If you are operating your own server and use the local storage backend (the
+default), make sure that ownCloud has exclusive access to the directory. The
+files must not be modified manually.
+
+If you are using a different backend, you can try to exclude a bug in the
+backend by reverting to the local backend.
+
 Logfiles
 ========
 
