@@ -228,19 +228,6 @@ bool MirallConfigFile::writePassword( const QString& passwd, const QString& conn
     return true;
 }
 
-// set the url, called from redirect handling.
-void MirallConfigFile::setOwnCloudUrl( const QString& connection, const QString & url )
-{
-    const QString file = configFile();
-
-    QSettings settings( file, QSettings::IniFormat);
-    settings.setIniCodec( "UTF-8" );
-    settings.beginGroup( connection );
-    settings.setValue( QLatin1String("url"), url );
-
-    settings.sync();
-}
-
 QByteArray MirallConfigFile::caCerts( )
 {
     QSettings settings( configFile(), QSettings::IniFormat );

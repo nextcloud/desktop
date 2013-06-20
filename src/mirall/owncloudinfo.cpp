@@ -116,28 +116,32 @@ bool ownCloudInfo::isConfigured()
 
 QNetworkReply *ownCloudInfo::checkInstallation()
 {
+    _redirectCount = 0;
+    MirallConfigFile cfgFile(  _configHandle );
+    QUrl url ( cfgFile.ownCloudUrl( _connection ) +  QLatin1String("status.php") );
     /* No authentication required for this. */
-    return getRequest( QLatin1String("status.php"), false );
+    return getRequest(url);
 }
 
 QNetworkReply* ownCloudInfo::getWebDAVPath( const QString& path )
 {
-    return getRequest( path, true );
+    _redirectCount = 0;
+    QUrl url ( webdavUrl( _connection ) +  path );
+    QNetworkReply *reply = getRequest(url);
+    _directories[reply] = path;
+    return reply;
 }
 
-QNetworkReply* ownCloudInfo::getRequest( const QString& path, bool webdav )
+QNetworkReply* ownCloudInfo::getRequest( const QUrl& url )
 {
-    qDebug() << "Get Request to " << path;
+    qDebug() << "Get Request to " << url;
 
-    MirallConfigFile cfgFile(  _configHandle );
-    QString url = cfgFile.ownCloudUrl( _connection, webdav ) + path;
     QNetworkRequest request;
-    request.setUrl( QUrl( url ) );
+    request.setUrl( url );
     setupHeaders( request, 0 );
 
     QNetworkReply *reply = _manager->get( request );
     connect( reply, SIGNAL(finished()), SLOT(slotReplyFinished()));
-    _directories[reply] = path;
 
     if( !_configHandle.isEmpty() ) {
         qDebug() << "Setting config handle " << _configHandle;
@@ -155,7 +159,7 @@ QNetworkReply* ownCloudInfo::mkdirRequest( const QString& dir )
     qDebug() << "OCInfo Making dir " << dir;
 
     MirallConfigFile cfgFile( _configHandle );
-    QUrl url = QUrl( cfgFile.ownCloudUrl( _connection, true ) + dir );
+    QUrl url = QUrl( webdavUrl(_connection) + dir );
     QHttp::ConnectionMode conMode = QHttp::ConnectionModeHttp;
     if (url.scheme() == "https")
         conMode = QHttp::ConnectionModeHttps;
@@ -320,20 +324,6 @@ QList<QSslCertificate> ownCloudInfo::certificateChain() const
     return _certificateChain;
 }
 
-QUrl ownCloudInfo::redirectUrl(const QUrl& possibleRedirectUrl,
-                               const QUrl& oldRedirectUrl) const {
-    QUrl redirectUrl;
-    /*
-     * Check if the URL is empty and
-     * that we aren't being fooled into a infinite redirect loop.
-     */
-    if(!possibleRedirectUrl.isEmpty() &&
-       possibleRedirectUrl != oldRedirectUrl) {
-        redirectUrl = possibleRedirectUrl;
-    }
-    return redirectUrl;
-}
-
 //
 // There have been problems with the finish-signal coming from the networkmanager.
 // To avoid that, the reply-signals were connected and the data is taken from the
@@ -354,12 +344,17 @@ void ownCloudInfo::slotReplyFinished()
     }
 
     // Detect redirect url
-    QVariant possibleRedirUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
+    QUrl possibleRedirUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
     /* We'll deduct if the redirection is valid in the redirectUrl function */
-    _urlRedirectedTo = redirectUrl( possibleRedirUrl.toUrl(),
-                                    _urlRedirectedTo );
 
-    if(!_urlRedirectedTo.isEmpty()) {
+
+    if (!possibleRedirUrl.isEmpty() && _redirectCount++  > 10) {
+        // Are we in a redirect loop
+        qDebug() << "Redirect loop while redirecting to" << possibleRedirUrl;
+        possibleRedirUrl.clear();
+    }
+
+    if(!possibleRedirUrl.isEmpty()) {
         QString configHandle;
 
         qDebug() << "Redirected to " << possibleRedirUrl;
@@ -374,22 +369,21 @@ void ownCloudInfo::slotReplyFinished()
         QString path = _directories[reply];
         qDebug() << "This path was redirected: " << path;
 
-        MirallConfigFile cfgFile( configHandle );
-        QString newUrl = _urlRedirectedTo.toString();
+        QString newUrl = possibleRedirUrl.toString();
         if( newUrl.endsWith( path )) {
             // cut off the trailing path
             newUrl.chop( path.length() );
-            cfgFile.setOwnCloudUrl( _connection, newUrl );
-
-            qDebug() << "Update the config file url to " << newUrl;
-            getRequest( path, false ); // FIXME: Redirect for webdav!
-            reply->deleteLater();
-            return;
+            _urlRedirectedTo = newUrl;
+            qDebug() << "Updated url to" << newUrl;
         } else {
             qDebug() << "WRN: Path is not part of the redirect URL. NO redirect.";
         }
+        getRequest( possibleRedirUrl );
+        reply->deleteLater();
+        _directories.remove(reply);
+        _configHandleMap.remove(reply);
+        return;
     }
-    _urlRedirectedTo.clear();
 
     // TODO: check if this is always the correct encoding
     const QString version = QString::fromUtf8( reply->readAll() );
@@ -455,15 +449,13 @@ void ownCloudInfo::slotReplyFinished()
         QString dir(QLatin1String("unknown"));
         if( _directories.contains(reply) ) {
             dir = _directories[reply];
-            _directories.remove(reply);
         }
 
         emit ownCloudDirExists( dir, reply );
     }
-    if( _configHandleMap.contains(reply)) {
-        _configHandleMap.remove(reply);
-    }
     reply->deleteLater();
+    _directories.remove(reply);
+    _configHandleMap.remove(reply);
 }
 
 void ownCloudInfo::resetSSLUntrust()
@@ -536,9 +528,7 @@ void ownCloudInfo::setCredentials( const QString& user, const QString& passwd,
 // ============================================================================
 void ownCloudInfo::setupHeaders( QNetworkRequest & req, quint64 size )
 {
-    MirallConfigFile cfgFile(_configHandle );
-
-    QUrl url( cfgFile.ownCloudUrl( QString::null, false ) );
+    QUrl url( webdavUrl() );
     qDebug() << "Setting up host header: " << url.host();
     req.setRawHeader( QByteArray("Host"), url.host().toUtf8() );
     req.setRawHeader( QByteArray("User-Agent"), Utility::userAgentString());
@@ -572,5 +562,14 @@ QNetworkReply* ownCloudInfo::davRequest(const QString& reqVerb,  QNetworkRequest
     }
 }
 #endif
+
+QString ownCloudInfo::webdavUrl(const QString &connection)
+{
+    if (!_urlRedirectedTo.isEmpty())
+        return _urlRedirectedTo.toString();
+
+    MirallConfigFile cfgFile(_configHandle );
+    return cfgFile.ownCloudUrl( connection, true );
 }
 
+}
