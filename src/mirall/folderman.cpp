@@ -250,15 +250,13 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
     if (!backend.isEmpty()) {
 
         if( backend == QLatin1String("owncloud") ) {
-            // assemble the owncloud url to pass to csync, incl. webdav
-            QString oCUrl = ownCloudInfo::instance()->webdavUrl( );
 
             // cut off the leading slash, oCUrl always has a trailing.
             if( targetPath.startsWith(QLatin1Char('/')) ) {
                 targetPath.remove(0,1);
             }
 
-            folder = new ownCloudFolder( alias, path, oCUrl + targetPath, this );
+            folder = new ownCloudFolder( alias, path, targetPath, this );
             folder->setConfigFile(file);
         } else {
             qWarning() << "unknown backend" << backend;

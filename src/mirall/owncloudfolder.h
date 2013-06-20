@@ -99,6 +99,8 @@ private:
                              );
     const char* proxyTypeToCStr(QNetworkProxy::ProxyType type);
 
+    bool init();
+
     QString      _secondPath;
     QThread     *_thread;
     CSyncThread *_csync;
