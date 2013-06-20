@@ -48,6 +48,12 @@ public:
     QNetworkReply* checkInstallation();
 
     /**
+      * a general GET request to the ownCloud. If the second bool parameter is
+      * true, the WebDAV server is queried.
+      */
+    QNetworkReply* getRequest( const QString&, bool );
+
+    /**
       * convenience: GET request to the WebDAV server.
       */
     QNetworkReply* getWebDAVPath( const QString& );
@@ -104,12 +110,6 @@ public:
     void setCredentials( const QString&, const QString&,
                          const QString& configHandle = QString::null );
 
-    /**
-     * returns the owncloud webdav url.
-     * It may be different from the one in the config if there was a HTTP redirection
-     */
-    QString webdavUrl(const QString& connection = QString());
-
 signals:
     // result signal with url- and version string.
     void ownCloudInfoFound( const QString&, const QString&, const QString&, const QString& );
@@ -138,11 +138,7 @@ protected slots:
 private:
     explicit ownCloudInfo();
 
-    /**
-     * a general GET request to the ownCloud WebDAV.
-     */
-    QNetworkReply* getRequest( const QUrl &url);
-
+    QUrl redirectUrl(const QUrl&, const QUrl& ) const;
 
     ~ownCloudInfo();
 
@@ -165,7 +161,6 @@ private:
     int                            _authAttempts;
     QMap<QString, oCICredentials>  _credentials;
     QMutex                         _certChainMutex;
-    int                            _redirectCount;
 };
 
 };

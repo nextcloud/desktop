@@ -58,6 +58,8 @@ public:
     QString ownCloudUser( const QString& connection = QString() ) const;
     QString ownCloudUrl( const QString& connection = QString(), bool webdav = false ) const;
 
+    void setOwnCloudUrl(const QString &connection, const QString& );
+
     // the certs do not depend on a connection.
     QByteArray caCerts();
     void setCaCerts( const QByteArray& );

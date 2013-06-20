@@ -329,7 +329,7 @@ void OwncloudSetupWizard::checkRemoteFolder()
 
     qDebug() << "# checking for authentication settings.";
     ownCloudInfo::instance()->setCustomConfigHandle(_configHandle);
-    _checkRemoteFolderRequest = ownCloudInfo::instance()->getWebDAVPath(_remoteFolder ); // this call needs to be authenticated.
+    _checkRemoteFolderRequest = ownCloudInfo::instance()->getRequest(_remoteFolder, true ); // this call needs to be authenticated.
     // continue in slotAuthCheckReply
 }
 
