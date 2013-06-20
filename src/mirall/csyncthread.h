@@ -38,7 +38,7 @@ public:
     CSyncThread(CSYNC *);
     ~CSyncThread();
 
-    QString csyncErrorToString( CSYNC_ERROR_CODE, const char * );
+    static QString csyncErrorToString( CSYNC_ERROR_CODE, const char * );
 
     Q_INVOKABLE void startSync();
 

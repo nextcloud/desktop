@@ -98,7 +98,9 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
         csync_set_auth_callback( _csync_ctx, getauth );
 
         if( csync_init( _csync_ctx ) < 0 ) {
-            qDebug() << "Could not initialize csync!";
+            qDebug() << "Could not initialize csync!" << csync_get_error(_csync_ctx) << csync_get_error_string(_csync_ctx);
+            slotCSyncError(CSyncThread::csyncErrorToString(csync_get_error(_csync_ctx), csync_get_error_string(_csync_ctx)));
+            csync_destroy(_csync_ctx);
             _csync_ctx = 0;
         }
         setProxy();
@@ -259,6 +261,13 @@ void ownCloudFolder::startSync()
 
 void ownCloudFolder::startSync(const QStringList &pathList)
 {
+    if (!_csync_ctx) {
+        qDebug() << Q_FUNC_INFO << "_csync_ctx is empty. probably because csync_init has failed.";
+        // the error should already be set
+        QMetaObject::invokeMethod(this, "slotCSyncFinished", Qt::QueuedConnection);
+        return;
+    }
+
     if (_thread && _thread->isRunning()) {
         qCritical() << "* ERROR csync is still running and new sync requested.";
         return;
