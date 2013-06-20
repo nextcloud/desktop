@@ -163,7 +163,7 @@ void ConnectionValidator::slotCheckAuthentication()
              this, SLOT(slotAuthCheck(QString,QNetworkReply*)));
 
     qDebug() << "# checking for authentication settings.";
-    ownCloudInfo::instance()->getRequest(QLatin1String("/"), true ); // this call needs to be authenticated.
+    ownCloudInfo::instance()->getWebDAVPath(QLatin1String("/") ); // this call needs to be authenticated.
     // simply GET the webdav root, will fail if credentials are wrong.
     // continue in slotAuthCheck here :-)
 }

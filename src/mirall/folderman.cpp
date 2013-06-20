@@ -18,6 +18,7 @@
 #include "mirall/syncresult.h"
 #include "mirall/inotify.h"
 #include "mirall/theme.h"
+#include "owncloudinfo.h"
 
 #ifdef Q_OS_MAC
 #include <CoreServices/CoreServices.h>
@@ -249,10 +250,8 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
     if (!backend.isEmpty()) {
 
         if( backend == QLatin1String("owncloud") ) {
-            MirallConfigFile cfgFile;
-
             // assemble the owncloud url to pass to csync, incl. webdav
-            QString oCUrl = cfgFile.ownCloudUrl( QString::null, true );
+            QString oCUrl = ownCloudInfo::instance()->webdavUrl( );
 
             // cut off the leading slash, oCUrl always has a trailing.
             if( targetPath.startsWith(QLatin1Char('/')) ) {

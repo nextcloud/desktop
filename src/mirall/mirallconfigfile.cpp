@@ -228,19 +228,6 @@ bool MirallConfigFile::writePassword( const QString& passwd, const QString& conn
     return true;
 }
 
-// set the url, called from redirect handling.
-void MirallConfigFile::setOwnCloudUrl( const QString& connection, const QString & url )
-{
-    const QString file = configFile();
-
-    QSettings settings( file, QSettings::IniFormat);
-    settings.setIniCodec( "UTF-8" );
-    settings.beginGroup( connection );
-    settings.setValue( QLatin1String("url"), url );
-
-    settings.sync();
-}
-
 QByteArray MirallConfigFile::caCerts( )
 {
     QSettings settings( configFile(), QSettings::IniFormat );
@@ -282,9 +269,8 @@ void MirallConfigFile::removeConnection( const QString& connection )
  * returns the configured owncloud url if its already configured, otherwise an empty
  * string.
  * The returned url always has a trailing hash.
- * If webdav is true, the webdav-server url is returned.
  */
-QString MirallConfigFile::ownCloudUrl( const QString& connection, bool webdav ) const
+QString MirallConfigFile::ownCloudUrl( const QString& connection) const
 {
     QString con( connection );
     if( connection.isEmpty() ) con = defaultConnection();
@@ -296,7 +282,6 @@ QString MirallConfigFile::ownCloudUrl( const QString& connection, bool webdav ) 
     QString url = settings.value( QLatin1String("url") ).toString();
     if( ! url.isEmpty() ) {
         if( ! url.endsWith(QLatin1Char('/'))) url.append(QLatin1String("/"));
-        if( webdav ) url.append( QLatin1String("remote.php/webdav/") );
     }
 
     qDebug() << "Returning configured owncloud url: " << url;

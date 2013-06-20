@@ -124,17 +124,16 @@ void ownCloudFolder::setProxy()
 {
     if( _csync_ctx ) {
         /* Store proxy */
-        MirallConfigFile cfgFile;
-        QUrl proxyUrl(cfgFile.ownCloudUrl());
+        QUrl proxyUrl(ownCloudInfo::instance()->webdavUrl());
         QList<QNetworkProxy> proxies = QNetworkProxyFactory::proxyForQuery(proxyUrl);
         // We set at least one in Application
         Q_ASSERT(proxies.count() > 0);
         QNetworkProxy proxy = proxies.first();
         if (proxy.type() == QNetworkProxy::NoProxy) {
-            qDebug() << "Passing NO proxy to csync for" << cfgFile.ownCloudUrl();
+            qDebug() << "Passing NO proxy to csync for" << proxyUrl;
         } else {
             qDebug() << "Passing" << proxy.hostName() << "of proxy type " << proxy.type()
-                     << " to csync for" << cfgFile.ownCloudUrl();
+                     << " to csync for" << proxyUrl;
         }
         int proxyPort = proxy.port();
 
@@ -241,8 +240,7 @@ bool ownCloudFolder::isBusy() const
 QString ownCloudFolder::secondPath() const
 {
     QString re(Folder::secondPath());
-    MirallConfigFile cfg;
-    QString ocUrl = cfg.ownCloudUrl(QString::null, true);
+    QString ocUrl = ownCloudInfo::instance()->webdavUrl();
     if (ocUrl.endsWith(QLatin1Char('/')))
         ocUrl.chop(1);
 
