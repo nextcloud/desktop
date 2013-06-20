@@ -237,6 +237,7 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
   _folderList->setEditTriggers( QAbstractItemView::NoEditTriggers );
   connect(_ButtonClose,  SIGNAL(clicked()), this, SLOT(accept()));
   connect(_ButtonRemove, SIGNAL(clicked()), this, SLOT(slotRemoveFolder()));
+  connect(_ButtonReset, SIGNAL(clicked()), this, SLOT(slotResetFolder()));
 
   connect(_ButtonEnable, SIGNAL(clicked()), this, SLOT(slotEnableFolder()));
   connect(_ButtonInfo,   SIGNAL(clicked()), this, SLOT(slotInfoFolder()));
@@ -244,6 +245,7 @@ StatusDialog::StatusDialog( Theme *theme, QWidget *parent) :
 
   _ButtonRemove->setEnabled(false);
   _ButtonEnable->setEnabled(false);
+  _ButtonReset->setEnabled(false);
   _ButtonInfo->setEnabled(false);
   _ButtonAdd->setEnabled(true);
 
@@ -265,6 +267,7 @@ void StatusDialog::slotFolderActivated( const QModelIndex& indx )
 
   _ButtonRemove->setEnabled( state );
   _ButtonEnable->setEnabled( state );
+  _ButtonReset->setEnabled( state );
   _ButtonInfo->setEnabled( state );
 
   if ( state ) {
@@ -316,7 +319,6 @@ void StatusDialog::buttonsSetEnabled()
 {
     bool haveFolders = _folderList->model()->rowCount() > 0;
 
-    _ButtonRemove->setEnabled(false);
     if( _theme->singleSyncFolder() ) {
         // only one folder synced folder allowed.
         _ButtonAdd->setVisible(!haveFolders);
@@ -331,6 +333,8 @@ void StatusDialog::buttonsSetEnabled()
     _ButtonEnable->setEnabled(isSelected);
     _ButtonRemove->setEnabled(isSelected);
     _ButtonInfo->setEnabled(isSelected);
+    _ButtonReset->setEnabled(isSelected);
+
 }
 
 void StatusDialog::slotUpdateFolderState( Folder *folder )
@@ -394,6 +398,15 @@ void StatusDialog::slotRemoveFolder()
         }
     }
     slotCheckConnection();
+}
+
+void StatusDialog::slotResetFolder()
+{
+    QModelIndex selected = _folderList->selectionModel()->currentIndex();
+    if( selected.isValid() ) {
+        QString alias = _model->data( selected, FolderViewDelegate::FolderAliasRole ).toString();
+        emit(resetFolderAlias( alias ));
+    }
 }
 
 void StatusDialog::slotRemoveSelectedFolder()
