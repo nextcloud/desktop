@@ -483,7 +483,10 @@ bool ownCloudInfo::certsUntrusted()
 
 void ownCloudInfo::slotError( QNetworkReply::NetworkError err)
 {
-    qDebug() << "ownCloudInfo Network Error: " << err;
+    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+
+    qDebug() << "ownCloudInfo Network Error"
+             << err << ":" << reply->errorString();
 
     switch (err) {
     case QNetworkReply::ProxyConnectionRefusedError:
