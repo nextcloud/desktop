@@ -61,6 +61,7 @@ protected slots:
     void slotAddFolder();
     void slotOpenStatus();
     void slotRemoveFolder( const QString& );
+    void slotResetFolder( const QString& );
     void slotEnableFolder( const QString&, const bool );
     void slotInfoFolder( const QString& );
     void slotConfigure();

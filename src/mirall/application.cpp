@@ -140,6 +140,8 @@ Application::Application(int &argc, char **argv) :
 
     connect( _statusDialog, SIGNAL(removeFolderAlias( const QString&)),
              SLOT(slotRemoveFolder(const QString&)));
+    connect( _statusDialog, SIGNAL(resetFolderAlias( const QString&)),
+             SLOT(slotResetFolder(const QString&)));
     connect( _statusDialog, SIGNAL(enableFolderAlias(QString,bool)),
              SLOT(slotEnableFolder(QString,bool)));
     connect( _statusDialog, SIGNAL(infoFolderAlias(const QString&)),
@@ -797,19 +799,34 @@ void Application::slotAbout()
 void Application::slotRemoveFolder( const QString& alias )
 {
     int ret = QMessageBox::question( 0, tr("Confirm Folder Remove"),
-                                     tr("<p>Do you really want to stop syncing the upload folder <i>%1</i>?</p>"
+                                     tr("<p>Do you really want to stop syncing the folder <i>%1</i>?</p>"
                                         "<p><b>Note:</b> This will not remove the files from your client.</p>").arg(alias),
                                      QMessageBox::Yes|QMessageBox::No );
 
     if( ret == QMessageBox::No ) {
         return;
     }
-    Folder *f = _folderMan->folder(alias);
-
     _folderMan->slotRemoveFolder( alias );
     _statusDialog->slotRemoveSelectedFolder( );
     computeOverallSyncStatus();
     setupContextMenu();
+}
+
+void Application::slotResetFolder( const QString & alias )
+{
+    int ret = QMessageBox::question( 0, tr("Confirm Folder Reset"),
+                                     tr("<p>Do you really want to reset folder<i>%1</i> and rebuild your client database?</p>"
+                                        "<p><b>Note:</b> While no files will be removed, this can cause significant data "
+                                        "traffic and take several minutes to hours, depending on the size of the folder.</p>").arg(alias),
+                                     QMessageBox::Yes|QMessageBox::No );
+    if( ret == QMessageBox::No ) {
+        return;
+    }
+
+    Folder *f = _folderMan->folder(alias);
+    f->slotTerminateSync();
+    f->wipe();
+    _folderMan->slotScheduleAllFolders();
 }
 
 // Open the File list info dialog.
