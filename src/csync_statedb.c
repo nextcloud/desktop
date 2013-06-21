@@ -100,11 +100,11 @@ static int _csync_statedb_check(CSYNC *ctx, const char *statedb) {
     if (r >= 0) {
       buf[BUF_SIZE - 1] = '\0';
       if (c_streq(buf, "SQLite format 3")) {
-        if (sqlite3_open(statedb, &db ) == SQLITE_OK) {
+        if (sqlite3_open(statedb, &ctx->statedb.db ) == SQLITE_OK) {
           rc = _csync_check_db_integrity(ctx);
 
-          sqlite3_close(db);
-          ctx->statedb.db = 0;
+          sqlite3_close(ctx->statedb.db);
+          ctx->statedb.db = NULL;
 
           if( rc >= 0 ) {
             /* everything is fine */
@@ -112,9 +112,10 @@ static int _csync_statedb_check(CSYNC *ctx, const char *statedb) {
             return 0;
           }
         } else {
+          /* resources need to be freed even when open failed */
+          sqlite3_close(ctx->statedb.db);
           CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "database corrupted, removing!");
         }
-        sqlite3_close(db);
       } else {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "sqlite version mismatch");
       }
