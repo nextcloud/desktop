@@ -332,13 +332,11 @@ int csync_statedb_drop_tables(CSYNC *ctx) {
 
 static int _insert_metadata_visitor(void *obj, void *data) {
   csync_file_stat_t *fs = NULL;
-  CSYNC *ctx = NULL;
   int rc = -1;
   sqlite3_stmt* stmt;
 
   fs = (csync_file_stat_t *) obj;
-  ctx = (CSYNC *) data;
-  stmt = csync_get_userdata(ctx);
+  stmt = (sqlite3_stmt *) data;
   if (stmt == NULL) {
     return -1;
   }
@@ -416,14 +414,11 @@ int csync_statedb_insert_metadata(CSYNC *ctx) {
     return -1;
   }
 
-  /* and store the insert statement handle to the ctx as userdata. */
-  csync_set_userdata(ctx, stmt);
-
   /* Use transactions as that really speeds up processing */
   result = csync_statedb_query(ctx, "BEGIN TRANSACTION;");
   c_strlist_destroy(result);
 
-  if (c_rbtree_walk(ctx->local.tree, ctx, _insert_metadata_visitor) < 0) {
+  if (c_rbtree_walk(ctx->local.tree, stmt, _insert_metadata_visitor) < 0) {
     /* inserting failed. Drop the metadata_temp table. */
     result = csync_statedb_query(ctx, "ROLLBACK TRANSACTION;");
     c_strlist_destroy(result);
