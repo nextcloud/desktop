@@ -391,12 +391,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="802"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Vill du verkligen stoppa synkroniseringen av mappen &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Notera:&lt;/b&gt; Detta kommer inte att radera filer från din klienten.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="817"/>
         <source>Confirm Folder Reset</source>
-        <translation type="unfinished"/>
+        <translation>Bekräfta återställning av mapp</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="818"/>
@@ -2372,7 +2372,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="75"/>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>Återställ</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="95"/>
