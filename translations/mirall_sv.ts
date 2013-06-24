@@ -1710,18 +1710,15 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="509"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
-If you or your administrator have reset your account on the server, choose&quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
-        <translation>Att synka nu skulle medföra att alla filer i den lokala synkmappen &apos;%1&apos;.
-Om din administratör har nollställt ditt konto på servern, välj &quot;Behåll filer&quot;. Om du vill att all data tas bort, välj &quot;Ta bort alla filer&quot;.</translation>
+If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="512"/>
         <source>This sync would remove all the files in the sync folder '%1'.
-This might be because the folder was silently reconfigured, or that allthe file were manually removed.
+This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
-        <translation>Detta kommer att ta bort alla filer i synkmappen &apos;%1&apos;.
-Detta kan ha orsakats av att mappen har omkonfigurerats i bakgrunden eller för att filerna tagits bort manuellt. 
-Är du säker på att du vill fortsätta denna operation?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="516"/>
