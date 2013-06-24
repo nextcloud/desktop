@@ -2,45 +2,34 @@
 <context>
     <name>CreateAnOwncloudPage</name>
     <message>
-        <location filename="../src/mirall/createanowncloudpage.ui" line="14"/>
         <source>Form</source>
-        <translation>Formulário</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/createanowncloudpage.ui" line="39"/>
         <source>Create a new ownCloud</source>
-        <translation>Criar uma nova ownCloud</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/createanowncloudpage.ui" line="61"/>
         <source>Where do you want to create your ownCloud?</source>
-        <translation>Onde você quer criar sua ownCloud?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/createanowncloudpage.ui" line="73"/>
         <source>create ownCloud on this computer</source>
-        <translation>criar ownCloud neste computador</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/createanowncloudpage.ui" line="105"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;installs the ownCloud on this computer. Other people will not be able to access your data by default.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;instala o OwnCloud neste computador. Outras pessoas não poderão acessar seus dados por padrão.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/createanowncloudpage.ui" line="132"/>
         <source>create ownCloud on my internet domain</source>
-        <translation>cirar ownCloud no meu domínio na Internet</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/createanowncloudpage.ui" line="155"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -48,18 +37,11 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;installs ownCloud on a domain you control. You need the FTP credentials for the installation.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#585858;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;This ownCloud will be accessible from the internet.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;installs ownCloud on a domain you control. You need the FTP credentials for the installation.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#585858;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Este Owncloud será acessível pela Internet.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/createanowncloudpage.ui" line="177"/>
         <source>&amp;Domain:</source>
-        <translation>&amp;Domínio:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>mydomain.org</source>
@@ -69,67 +51,55 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>FolderWizardNetworkPage</name>
     <message>
-        <location filename="../src/mirall/folderwizardnetworkpage.ui" line="14"/>
         <source>Form</source>
-        <translation>Formulário</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizardnetworkpage.ui" line="27"/>
         <source>Network Settings</source>
-        <translation>Configuração de Conexão</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizardnetworkpage.ui" line="34"/>
         <source>Set networking options:</source>
-        <translation>Definir opções de conexão:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizardnetworkpage.ui" line="40"/>
         <source>Only enable if network is available</source>
-        <translation>Somente ativo se a conexão está disponível</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizardnetworkpage.ui" line="47"/>
         <source>restrict to this local network</source>
-        <translation>restringir à rede local</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>FolderWizardOwncloudPage</name>
     <message>
-        <location filename="../src/mirall/folderwizardowncloudpage.ui" line="14"/>
         <source>Form</source>
-        <translation>Formulário</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizardowncloudpage.ui" line="20"/>
         <source>ownCloud Settings</source>
-        <translation>Configurações da ownCloud</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizardowncloudpage.ui" line="29"/>
         <source>URL:</source>
-        <translation>URL:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizardowncloudpage.ui" line="36"/>
         <source>User:</source>
-        <translation>Usuário:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizardowncloudpage.ui" line="46"/>
         <source>Password:</source>
-        <translation>Senha:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizardowncloudpage.ui" line="63"/>
         <source>Alias:</source>
-        <translation>Apelido:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizardowncloudpage.ui" line="93"/>
         <source>ownCloud</source>
-        <translation>ownCloud</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -160,12 +130,12 @@ p, li { white-space: pre-wrap; }
         <translation>Apelido do &amp;Diretório:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="45"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="46"/>
         <source>/home/local1</source>
         <translation>/home/local1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="46"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="47"/>
         <source>Music</source>
         <translation>Música</translation>
     </message>
@@ -195,73 +165,60 @@ p, li { white-space: pre-wrap; }
         <translation>Alvo de Sincronização</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizardtargetpage.ui" line="51"/>
-        <source>Select a destination folder for your data</source>
-        <translation>Selecione uma pasta de destino para seus dados</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folderwizardtargetpage.ui" line="85"/>
-        <source>on your &amp;ownCloud server</source>
-        <translation>no seu servidor &amp;ownCloud</translation>
-    </message>
-    <message>
         <source>Folder on ownCloud:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizardtargetpage.ui" line="100"/>
+        <location filename="../src/mirall/folderwizardtargetpage.ui" line="81"/>
         <source>Remote folder:</source>
         <translation>Pasta remota:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizardtargetpage.ui" line="149"/>
         <source>to a &amp;local folder</source>
-        <translation>para a pasta &amp;local</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizardtargetpage.ui" line="162"/>
         <source>Folder name:</source>
-        <translation>Nome da pasta:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizardtargetpage.ui" line="172"/>
         <source>C&amp;hoose..</source>
-        <translation>Escol&amp;ha..</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizardtargetpage.ui" line="219"/>
         <source>to a &amp;remote folder (URL)</source>
-        <translation>para uma pasta &amp;remota (URL)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizardtargetpage.ui" line="232"/>
         <source>URL:</source>
-        <translation>URL:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizardtargetpage.ui" line="362"/>
+        <location filename="../src/mirall/folderwizardtargetpage.ui" line="51"/>
+        <source>Select a destination folder</source>
+        <translation>Selecione uma pasta destino</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizardtargetpage.ui" line="186"/>
         <source>TextLabel</source>
         <translation>TextLabel</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizardtargetpage.ui" line="384"/>
+        <location filename="../src/mirall/folderwizardtargetpage.ui" line="208"/>
         <source>create</source>
         <translation>criar</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="184"/>
         <source>root</source>
-        <translation>raiz</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="185"/>
         <source>/home/local</source>
-        <translation>/home/local</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="186"/>
         <source>scp://john@host.com//myfolder</source>
-        <translation>scp://john@host.com//minhapasta</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -307,7 +264,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="349"/>
+        <location filename="../src/mirall/application.cpp" line="368"/>
         <source>Sync started for %1 configured sync folder(s).</source>
         <translation>Sincronização iniciada para %1 pasta(s) configuradas.</translation>
     </message>
@@ -316,27 +273,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="415"/>
+        <location filename="../src/mirall/application.cpp" line="433"/>
         <source>Open status...</source>
         <translation>Mostrar status...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="418"/>
+        <location filename="../src/mirall/application.cpp" line="436"/>
         <source>Add folder...</source>
         <translation>Adicionar pasta...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="420"/>
+        <location filename="../src/mirall/application.cpp" line="438"/>
         <source>Configure...</source>
         <translation>Configurar...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="422"/>
+        <location filename="../src/mirall/application.cpp" line="440"/>
         <source>Configure proxy...</source>
         <translation>Configurar proxy...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="426"/>
+        <location filename="../src/mirall/application.cpp" line="444"/>
         <source>Quit</source>
         <translation>Sair</translation>
     </message>
@@ -345,96 +302,115 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="218"/>
+        <location filename="../src/mirall/application.cpp" line="232"/>
         <source>%1 Server Mismatch</source>
         <translation>%1 Incompatibilidade do Servidor</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="219"/>
+        <location filename="../src/mirall/application.cpp" line="233"/>
         <source>&lt;p&gt;The configured server for this client is too old.&lt;/p&gt;&lt;p&gt;Please update to the latest %1 server and restart the client.&lt;/p&gt;</source>
         <translation>&lt;p&gt;O servidor configurado para este cliente é muito antigo.&lt;/p&gt;&lt;p&gt;Por favor atualize para a última versão do servidor %1 e reinicie o cliente.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="258"/>
+        <location filename="../src/mirall/application.cpp" line="276"/>
         <source>Too many incorrect password attempts.</source>
         <translation>Muitas tentativas de senha incorreta.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="262"/>
+        <location filename="../src/mirall/application.cpp" line="280"/>
         <source>%1 user credentials are wrong. Please check configuration.</source>
         <translation>Credenciais de usuário de %1 erradas. Verifique a configuração.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="267"/>
-        <location filename="../src/mirall/application.cpp" line="286"/>
+        <location filename="../src/mirall/application.cpp" line="285"/>
+        <location filename="../src/mirall/application.cpp" line="305"/>
         <source>Credentials</source>
         <translation>Credenciais</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="278"/>
+        <location filename="../src/mirall/application.cpp" line="297"/>
         <source>Error: Could not retrieve the password!</source>
         <translation>Erro: Não pude recuperar a senha!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="280"/>
+        <location filename="../src/mirall/application.cpp" line="299"/>
         <source>Password dialog was canceled!</source>
         <translation>O diálogo de senha foi cancelado!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="318"/>
-        <location filename="../src/mirall/application.cpp" line="327"/>
+        <location filename="../src/mirall/application.cpp" line="337"/>
+        <location filename="../src/mirall/application.cpp" line="346"/>
         <source>No %1 Connection</source>
         <translation>Sem Conexão %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="319"/>
+        <location filename="../src/mirall/application.cpp" line="338"/>
         <source>&lt;p&gt;Your %1 credentials are not correct.&lt;/p&gt;&lt;p&gt;Please correct them by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Suas %1 credenciais não estão corretas.&lt;/p&gt;&lt;p&gt;Por favor as corrija ao iniciar a configuração através do ícone na barra de tarefas!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="328"/>
+        <location filename="../src/mirall/application.cpp" line="347"/>
         <source>&lt;p&gt;Either your user name or your password are not correct.&lt;/p&gt;&lt;p&gt;Please correct it by starting the configuration dialog from the tray!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ou seu usuário ou senha estão incorretos.&lt;/p&gt;&lt;p&gt;Por favor as corrija ao iniciar a configuração através do ícone na barra de tarefas!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="348"/>
+        <location filename="../src/mirall/application.cpp" line="367"/>
         <source>%1 Sync Started</source>
         <translation>%1 Sincronização Iniciada</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="413"/>
+        <location filename="../src/mirall/application.cpp" line="431"/>
         <source>Open %1 in browser...</source>
         <translation>Abrir %1 no navegador...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="424"/>
+        <location filename="../src/mirall/application.cpp" line="442"/>
         <source>About...</source>
         <translation>Sobre...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="480"/>
+        <location filename="../src/mirall/application.cpp" line="498"/>
         <source>Open %1 folder</source>
         <translation>Abrir pasta %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="493"/>
+        <location filename="../src/mirall/application.cpp" line="511"/>
         <source>Managed Folders:</source>
         <translation>Pastas Gerenciadas:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="741"/>
+        <location filename="../src/mirall/application.cpp" line="791"/>
         <source>About %1</source>
         <translation>Sobre %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="751"/>
+        <location filename="../src/mirall/application.cpp" line="801"/>
         <source>Confirm Folder Remove</source>
         <translation>Confirmar Remoção da Pasta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="752"/>
+        <location filename="../src/mirall/application.cpp" line="802"/>
+        <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="817"/>
+        <source>Confirm Folder Reset</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="818"/>
+        <source>&lt;p&gt;Do you really want to reset folder&lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; While no files will be removed, this can cause significant data traffic and take several minutes to hours, depending on the size of the folder.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="1045"/>
+        <source>Folder %1: %2</source>
+        <translation>Pasta %1: %2</translation>
+    </message>
+    <message>
         <source>Do you really want to remove upload folder &lt;i&gt;%1&lt;/i&gt;?</source>
-        <translation>Tem certeza que deseja remover a pasta que foi feito upload  &lt;i&gt;%1&lt;/i&gt;?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Undefined Folder State</source>
@@ -445,32 +421,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="927"/>
+        <location filename="../src/mirall/application.cpp" line="1012"/>
         <source>Sync is running.</source>
         <translation>Sincronização em andamento.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="931"/>
+        <location filename="../src/mirall/application.cpp" line="1016"/>
         <source>Server is currently not available.</source>
         <translation>Servidor indisponível no momento.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="936"/>
+        <location filename="../src/mirall/application.cpp" line="1023"/>
         <source>Last Sync was successful.</source>
         <translation>Última sincronização realizada com sucesso.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="942"/>
+        <location filename="../src/mirall/application.cpp" line="1027"/>
         <source>Syncing Error.</source>
         <translation>Erro na Sincronização.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="948"/>
+        <location filename="../src/mirall/application.cpp" line="1033"/>
         <source>Setup Error.</source>
         <translation>Erro de Configuração.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="951"/>
+        <location filename="../src/mirall/application.cpp" line="1036"/>
         <source>Undefined Error State.</source>
         <translation>Erro de Estado indefinido.</translation>
     </message>
@@ -498,32 +474,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="794"/>
+        <location filename="../src/mirall/application.cpp" line="857"/>
         <source>Sync Running</source>
         <translation>Sincronização em Andamento</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="795"/>
+        <location filename="../src/mirall/application.cpp" line="858"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>A operação de sincronização está em andamento.&lt;br/&gt;Deseja finaliza-la?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="916"/>
+        <location filename="../src/mirall/application.cpp" line="1001"/>
         <source>Undefined State.</source>
         <translation>Estado Indefinido.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="919"/>
+        <location filename="../src/mirall/application.cpp" line="1004"/>
         <source>Waits to start syncing.</source>
         <translation>Aguardando o inicio da sincronização.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="923"/>
+        <location filename="../src/mirall/application.cpp" line="1008"/>
         <source>Preparing for sync.</source>
         <translation>Preparando para sincronização.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="956"/>
+        <location filename="../src/mirall/application.cpp" line="1041"/>
         <source> (Sync is paused)</source>
         <translation>(Sincronização está pausada)</translation>
     </message>
@@ -532,7 +508,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="973"/>
+        <location filename="../src/mirall/application.cpp" line="1055"/>
         <source>No sync folders configured.</source>
         <translation>Pastas de sincronização não configuradas.</translation>
     </message>
@@ -544,22 +520,22 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="73"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="75"/>
         <source>CSync failed to create a lock file.</source>
         <translation>Falha ao criar o arquivo de trava pelo CSync.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="67"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="69"/>
         <source>Success.</source>
         <translation>Sucesso.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="70"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="72"/>
         <source>CSync Logging setup failed.</source>
         <translation>Falha na instalação do CSync Logging.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="76"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="78"/>
         <source>CSync failed to load the state db.</source>
         <translation>CSync falhou ao carregar a base de estado.</translation>
     </message>
@@ -568,17 +544,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="82"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="84"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>A hora do sistema neste cliente é diferente do que o tempo de sistema no servidor. Por favor, use um serviço de sincronização de tempo (NTP) no servidor e máquinas clientes para que os tempos continuam os mesmos.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="87"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="89"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>Tipo de sistema de arquivo não detectado pelo CSync.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="90"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="92"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>Erro do CSync enquanto processava árvores internas.</translation>
     </message>
@@ -601,32 +577,32 @@ p, li { white-space: pre-wrap; }
         <translation>O arquivo remoto não pode ser escrito. Verifique o acesso remoto, por favor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="93"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="95"/>
         <source>CSync failed to reserve memory.</source>
         <translation>CSync falhou ao reservar memória.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="96"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="98"/>
         <source>CSync fatal parameter error.</source>
         <translation>Erro fatal permanente do CSync.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="99"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="101"/>
         <source>CSync processing step update failed.</source>
         <translation>Processamento da atualização do CSync falhou.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="102"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="104"/>
         <source>CSync processing step reconcile failed.</source>
         <translation>Processamento da conciliação do CSync falhou.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="105"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="107"/>
         <source>CSync processing step propagate failed.</source>
         <translation>Processamento da propagação do CSync falhou.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="108"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="110"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;O diretório de destino não existe.&lt;/p&gt; &lt;p&gt;Por favor, verifique a configuração de sincronização. &lt;/p&gt;</translation>
     </message>
@@ -711,7 +687,7 @@ Please make sure that all directories are writeable.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="79"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="81"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;O plugin %1 para csync não foi carregado.&lt;br/&gt;Por favor verifique a instalação!&lt;/p&gt;</translation>
     </message>
@@ -739,17 +715,39 @@ Please write a bug report.</source>
     </message>
 </context>
 <context>
+    <name>Mirall::ConnectionValidator</name>
+    <message>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="79"/>
+        <source>&lt;p&gt;The configured server for this client is too old.&lt;/p&gt;&lt;p&gt;Please update to the latest server and restart the client.&lt;/p&gt;</source>
+        <translation>&lt;p&gt;O servidor configurado para este cliente é muito antigo&lt;/p&gt;&lt;p&gt;Por favor atualize para o mais novo servidor e reinicialize o cliente&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="113"/>
+        <source>Too many attempts to get a valid password.</source>
+        <translation>Muitas tentativas para conseguir uma senha válida.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="129"/>
+        <source>Error: Could not retrieve the password!</source>
+        <translation>Erro: Não pude recuperar a senha!</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="132"/>
+        <source>Password dialog was canceled!</source>
+        <translation>O diálogo de senha foi cancelado!</translation>
+    </message>
+</context>
+<context>
     <name>Mirall::CreateAnOwncloudPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="382"/>
         <source>mydomain.org</source>
-        <translation>meudominio.org</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>Mirall::CredentialStore</name>
     <message>
-        <location filename="../src/mirall/credentialstore.cpp" line="246"/>
+        <location filename="../src/mirall/credentialstore.cpp" line="234"/>
         <source>No password entry found in keychain. Please reconfigure.</source>
         <translation>Senha não contrada no chaveiro. Por favor reconfigure.</translation>
     </message>
@@ -788,91 +786,101 @@ Please write a bug report.</source>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="72"/>
+        <source>Determining which files to sync.</source>
+        <translation>Determinar quais arquivos para sincronizar.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="75"/>
         <source>Server is currently not available.</source>
         <translation>Servidor indisponível no momento.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="75"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="78"/>
         <source>Sync is running.</source>
         <translation>Sincronização em andamento.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="78"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="81"/>
         <source>Last Sync was successful.</source>
         <translation>A última sincronização feita com sucesso.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="81"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="84"/>
         <source>Syncing Error.</source>
         <translation>Erro na sincronização.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="84"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="87"/>
         <source>Setup Error.</source>
         <translation>Erro de configuração.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="87"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="90"/>
         <source>Undefined Error State.</source>
         <translation>Erro de estado indefinido.</translation>
     </message>
-    <message numerus="yes">
-        <location filename="../src/mirall/fileitemdialog.cpp" line="123"/>
-        <source>%1 (finished %n sec. ago)</source>
-        <translation><numerusform>%1 (finalizado %n seg. atrás)</numerusform><numerusform>%1 (finalizado %n seg. atrás)</numerusform></translation>
-    </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="152"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="158"/>
         <source>Copied to clipboard</source>
         <translation>Copiados para a área de transferência</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="152"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="158"/>
         <source>The sync protocol has been copied to the clipboard.</source>
         <translation>O protocolo de sincronização foi copiado para a área de transferência.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="225"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="231"/>
         <source>Uploaded</source>
         <translation>Enviado</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="226"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="232"/>
         <source>Downloaded</source>
         <translation>Baixado</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="169"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="175"/>
         <source>Synced Files</source>
         <translation>Arquivos Sincronizados</translation>
     </message>
+    <message numerus="yes">
+        <location filename="../src/mirall/fileitemdialog.cpp" line="127"/>
+        <source>%1 (last finished %n sec. ago)</source>
+        <translation><numerusform>%1 (último terminou %n seg. atrás)</numerusform><numerusform>%1 (último terminou %n seg. atrás)</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/mirall/fileitemdialog.cpp" line="129"/>
+        <source>%1 (last finished %n min. ago)</source>
+        <translation><numerusform>%1 (último terminou %n min. atrás)</numerusform><numerusform>%1 (último terminou %n min. atrás)</numerusform></translation>
+    </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="175"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="181"/>
         <source>New Files</source>
         <translation>Novos Arquivos</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="181"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="187"/>
         <source>Deleted Files</source>
         <translation>Arquivos Apagados</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="187"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="193"/>
         <source>Renamed Files</source>
         <translation>Arquivos Renomeados</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="193"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="199"/>
         <source>Ignored Files</source>
         <translation>Arquivos Ignorados</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="199"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="205"/>
         <source>Errors</source>
         <translation>Erros</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="205"/>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="211"/>
         <source>Conflicts</source>
         <translation>Conflitos</translation>
     </message>
@@ -896,9 +904,22 @@ Please write a bug report.</source>
     </message>
 </context>
 <context>
+    <name>Mirall::FolderMan</name>
+    <message>
+        <location filename="../src/mirall/folderman.cpp" line="136"/>
+        <source>Could not reset folder state</source>
+        <translation>Não foi possível redefinir o estado da pasta</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderman.cpp" line="137"/>
+        <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
+        <translation>Uma velha revista de sincronização &apos;%1&apos; foi encontrada, mas não pôde ser removida. Por favor, certifique-se de que nenhuma aplicação está a usá-la.</translation>
+    </message>
+</context>
+<context>
     <name>Mirall::FolderViewDelegate</name>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="177"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="176"/>
         <source>Remote path: %1</source>
         <translation>Caminho remoto: %1</translation>
     </message>
@@ -906,7 +927,7 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::FolderWizard</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="475"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="345"/>
         <source>%1 Folder Wizard</source>
         <translation>%1 Assistente de pastas</translation>
     </message>
@@ -914,37 +935,37 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::FolderWizardSourcePage</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="74"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="75"/>
         <source>No local directory selected!</source>
         <translation>Diretório local não selecionado!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="97"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="98"/>
         <source>The local path %1 is already an upload folder.&lt;br/&gt;Please pick another one!</source>
         <translation>O caminho local %1 já é uma pasta de upload.&lt;br/&gt;escolha outra, por favor!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="101"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="103"/>
         <source>An already configured folder is contained in the current entry.</source>
         <translation>Uma pasta já configurada já está contida na entrada atual.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="106"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="108"/>
         <source>An already configured folder contains the currently entered directory.</source>
         <translation>Uma pasta já configurada já contém o diretório selecionado.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="116"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="118"/>
         <source>The alias can not be empty. Please provide a descriptive alias word.</source>
         <translation>O apelido não pode estar vazio. Coloque um apelido que seja descritivo, por favor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="127"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="129"/>
         <source>&lt;br/&gt;The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
         <translation>&lt;br/&gt;O apelido &lt;i&gt;%1&lt;/i&gt; já está em uso. Escolha outro apelido, por favor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="148"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="150"/>
         <source>Select the source folder</source>
         <translation>Selecione a pasta de origem</translation>
     </message>
@@ -964,37 +985,31 @@ Please write a bug report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="218"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="209"/>
         <source>The folder is not available on your %1.&lt;br/&gt;Click to create it.</source>
         <translation>A pasta não está disponível no seu %1.&lt;br/&gt;Clique para cria-la.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="244"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="234"/>
         <source>Folder was successfully created on %1.</source>
         <translation>Pasta foi criada com sucesso em %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="247"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="237"/>
         <source>Failed to create the folder on %1.&lt;br/&gt;Please check manually.</source>
         <translation>Falha ao criar pasta em %1.&lt;br/&gt;Por favor verifique manualmente.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="267"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="249"/>
+        <source>If you sync the root folder, you can &lt;b&gt;not&lt;/b&gt; configure another sync directory.</source>
+        <translation>Se você sincronizar a pasta raiz, você &lt;b&gt; não &lt;/b&gt;pode  configurar outro diretório de sincronização.</translation>
+    </message>
+    <message>
         <source>Better do not use the remote root directory.&lt;br/&gt;If you do, you can &lt;b&gt;not&lt;/b&gt; mirror another local folder.</source>
-        <translation>É recomendado não utilizar o diretório raiz.&lt;br/&gt;Se fizer, você pode &lt;b&gt;não&lt;/&gt; espelhar outra pasta local.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="322"/>
-        <source>to your &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; (version %3)</source>
-        <translation>para o seu &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; (versão %3)</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="333"/>
-        <source>no configured %1 found!</source>
-        <translation>nenhum %1 configurado foi encontrado!</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="334"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="309"/>
         <source>%1 could not be reached:&lt;br/&gt;&lt;tt&gt;%2&lt;/tt&gt;</source>
         <translation>%1 está inalcançável:&lt;br/&gt;&lt;tt&gt;%2&lt;/tt&gt;</translation>
     </message>
@@ -1011,9 +1026,8 @@ Please write a bug report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="402"/>
         <source>Select the target folder</source>
-        <translation>Selecione a pasta destino</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1089,9 +1103,8 @@ Please write a bug report.</source>
 <context>
     <name>Mirall::OwncloudFTPAccessPage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="340"/>
         <source>ftp.mydomain.org</source>
-        <translation>ftp.meudominio.org</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>john</source>
@@ -1113,15 +1126,65 @@ Please write a bug report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="86"/>
-        <source>Create Connection to %1</source>
-        <translation>Criar Conexão com %1</translation>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="56"/>
+        <source>&lt;font color=&quot;%1&quot; size=&quot;5&quot;&gt;Connect to %2&lt;/font&gt;</source>
+        <translation>&lt;font color=&quot;%1&quot; size=&quot;5&quot;&gt;Conectar a %2&lt;/font&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="58"/>
+        <source>&lt;font color=&quot;%1&quot;&gt;Enter user credentials&lt;/font&gt;</source>
+        <translation>&lt;font color=&quot;%1&quot;&gt;Entraras credenciais de usuário&lt;/font&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="170"/>
+        <source>This url is secure. You can use it.</source>
+        <translation>Esta url é segura. Você pode usá-la.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="175"/>
+        <source>This url is NOT secure. You should not use it.</source>
+        <translation>Este URL não é seguro. Você não deve usá-lo.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="259"/>
+        <source>Change the Password for your configured account.</source>
+        <translation>Alterar a Senha configurada para sua conta.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="265"/>
+        <source>Your entire account will be synced to the local folder &apos;%1&apos;.</source>
+        <translation>Toda a sua conta será sincronizado com a pasta local &apos;%1&apos;.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="268"/>
+        <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
+        <translation>%1 Pasta &apos;% 2&apos; está sincronizada com pasta local &apos;% 3&apos;</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="274"/>
+        <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; You currently have multiple folders configured. If you continue with the current settings, the folder configurations will be discarded and a single root folder sync will be created!&lt;/small&gt;&lt;/p&gt;</source>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt; Atenção: &lt;/strong&gt; Você está atualmente com várias pastas configuradas. Se você continuar com as configurações atuais, as configurações de pasta serão descartadas e uma única sincronizaçãoda  pasta raiz será criada! &lt;/small&gt;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="282"/>
+        <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local directory is not empty. Pick a resolution in the advanced settings!&lt;/small&gt;&lt;/p&gt;</source>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Atenção:&lt;/strong&gt; O diretório local não está vazia. Escolha a resolução nas configurações avançadas!&lt;/small&gt;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="384"/>
+        <source>Local Sync Folder</source>
+        <translation>Sincronizar Pasta Local</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="408"/>
+        <source>&lt;font color=&quot;%1&quot;&gt;Change your user credentials&lt;/font&gt;</source>
+        <translation>&lt;font color=&quot;%1&quot;&gt; Mude suas credenciais de usuário &lt;/font&gt;</translation>
     </message>
 </context>
 <context>
     <name>Mirall::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="77"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="47"/>
         <source>%1 Connection Wizard</source>
         <translation>%1 Assistente de conexões</translation>
     </message>
@@ -1138,29 +1201,22 @@ Please write a bug report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="143"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="185"/>
         <source>Trying to connect to %1 at %2...</source>
         <translation>Tentando conectar a %1 em %2...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="199"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="265"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;Conectado com sucesso a %1: versão %2 %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="211"/>
-        <source>&lt;font color=&quot;red&quot;&gt;Failed to connect to %1!&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;red&quot;&gt;Falha ao conectar a %1!&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="213"/>
         <source>Error: &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>Erro: &lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="298"/>
         <source>Starting script owncloud-admin...</source>
-        <translation>Iniciando o script owncloud-admin...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>&lt;font color=&quot;red&quot;&gt;Installation of ownCloud failed!&lt;/font&gt;</source>
@@ -1171,61 +1227,90 @@ Please write a bug report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="349"/>
-        <source>&lt;font color=&quot;red&quot;&gt;Installation of %1 failed!&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;red&quot;&gt;Instalação de %1 falhou!&lt;/font&gt;</translation>
+        <source>The owncloud admin script can not be found.
+Setup can not be done.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="354"/>
-        <source>&lt;font color=&quot;green&quot;&gt;Installation of %1 succeeded!&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;Instalação de %1 bem sucedida!&lt;/font&gt;</translation>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="141"/>
+        <source>Folder rename failed</source>
+        <translation>Falha no nome da pasta</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="142"/>
+        <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program.Please close the folder or file and hit retry or cancel the setup.</source>
+        <translation>Não é possível remover e fazer o backup da pasta porque a pasta ou um arquivo que está na pasta, está aberto em outro program. Por favor feche a pasta ou o arquivo e clique novamente ou cancelar a configuração.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="282"/>
+        <source>Failed to connect to %1:&lt;br/&gt;%2</source>
+        <translation>Falha na conexão para %1:&lt;br/&gt;%2</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="315"/>
+        <source>Could not create local folder %1</source>
+        <translation>Não foi possível criar pasta local %1</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="350"/>
+        <source>The given credentials do not authenticate.</source>
+        <translation>As credenciais fornecidas não autenticam.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="355"/>
+        <source>Username or password is wrong!</source>
+        <translation>Nome de usuário ou senha está errada!</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="360"/>
+        <source>The remote folder could not be accessed!</source>
+        <translation>A pasta remota não pôde ser acessada!</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="366"/>
+        <source>Error: %1</source>
+        <translation>Erro: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="383"/>
+        <source>creating folder on ownCloud: %1</source>
+        <translation>criar pasta no ownCloud: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="401"/>
-        <source>The owncloud admin script can not be found.
-Setup can not be done.</source>
-        <translation>O script owncloud-admin não foi encontrado.
-A configuração não pôde ser concluida.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="453"/>
-        <source>Creation of remote folder %1 could not be started.</source>
-        <translation>Criação da pasta remota %1 não pode ser iniciada.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="474"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Pasta remota %1 criada com sucesso.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="476"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="403"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>Pasta remota %1 já existe. Conectando para sincronizar.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="478"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="405"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="407"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>A criação da pasta resultou em um erro HTTP %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="502"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="409"/>
+        <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
+        <translation>A criação da pasta remota falhou porque as credenciais fornecidas estão erradas! &lt;br/&gt;Por favor volte e verifique suas credenciais.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="434"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>Uma conexão de sincronização de %1 para o diretório remoto %2 foi realizada.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="507"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="439"/>
         <source>Successfully connected to %1!</source>
         <translation>Conectado com sucesso a %1!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="513"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="444"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Conexão à %1 não foi estabelecida. Por favor verifique novamente.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="510"/>
-        <source>Press Finish to permanently accept this connection.</source>
-        <translation>Pressione Finalizar para aceitar permanentemente essa conexão;</translation>
     </message>
     <message>
         <source>Skipping automatic setup of sync folders as there are already sync folders.</source>
@@ -1236,12 +1321,12 @@ A configuração não pôde ser concluida.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="421"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="304"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Pasta local de sincronização %1 já existe, configurando para sincronização. &lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="423"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="306"/>
         <source>Creating local sync folder %1... </source>
         <translation>Criando pasta local de sincronização %1...</translation>
     </message>
@@ -1250,12 +1335,12 @@ A configuração não pôde ser concluida.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="427"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="310"/>
         <source>ok</source>
         <translation>ok</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="429"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="312"/>
         <source>failed.</source>
         <translation>falhou.</translation>
     </message>
@@ -1268,7 +1353,7 @@ A configuração não pôde ser concluida.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="114"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="162"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Pasta de sincronização local %1 criada com sucesso!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -1277,32 +1362,23 @@ A configuração não pôde ser concluida.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="480"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="412"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Prováveis causas da falha na criação da pasta remota são credenciais erradas&lt;/font&gt;&lt;br/&gt;Volte e verifique suas credenciais, por favor.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="486"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="417"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="418"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Criação da pasta remota %1 com erro &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
 </context>
 <context>
-    <name>Mirall::OwncloudWelcomePage</name>
+    <name>Mirall::OwncloudWizard</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="60"/>
-        <source>Welcome to %1</source>
-        <translation>Bem vindo a %1</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="70"/>
-        <source>&lt;p&gt;In order to connect to your %1 server, you need to provide the server address as well as your credentials.&lt;/p&gt;&lt;p&gt;This wizard will guide you through the process.&lt;p&gt;&lt;p&gt;If you have not received this information, please contact your %1 provider.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Para conectar ao servidor %1, é necessário informar o endereço do mesmo, e suas credenciais.&lt;/p&gt;&lt;p&gt;Este guia ajudá-lo-á neste processo.&lt;p&gt;&lt;p&gt;Se você não recebeu esta informação, comunique-se com o administrador do %1.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="75"/>
-        <source>&lt;p&gt;In order to connect to your %1 server, you need to provide your credentials.&lt;/p&gt;&lt;p&gt;This wizard will guide you through the setup process.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Para conectar ao servidor %1, é necessário informar o endereço do mesmo, e suas credenciais.&lt;/p&gt;&lt;p&gt;Este guia ajudá-lo-á neste processo.&lt;/p&gt;</translation>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="568"/>
+        <source>Connect...</source>
+        <translation>Conectar...</translation>
     </message>
 </context>
 <context>
@@ -1312,17 +1388,37 @@ A configuração não pôde ser concluida.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="470"/>
-        <source>Congratulations! Your &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;new %2&lt;/a&gt; is now up and running!</source>
-        <translation>Parabéns! Seu &lt;a href=&quot;%1&quot; title=&quot;%1&quot;&gt;novo %2&lt;/a&gt; está configurado e funcionando!</translation>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="421"/>
+        <source>&lt;font color=&quot;%1&quot; size=&quot;5&quot;&gt;Everything set up!&lt;/font&gt;</source>
+        <translation>&lt;font color=&quot;%1&quot; size=&quot;5&quot;&gt;Tudo configurado!&lt;/font&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="427"/>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="438"/>
+        <source>Open %1</source>
+        <translation>Abrir %1</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="430"/>
+        <source>Open Local Folder</source>
+        <translation>Abrir Pasta Local</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="465"/>
+        <source>Your entire account is synced to the local folder &lt;i&gt;%1&lt;/i&gt;</source>
+        <translation>Toda a sua conta está sincronizada com a pasta local &lt;i&gt;%1&lt;/i&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudwizard.cpp" line="468"/>
+        <source>ownCloud folder &lt;i&gt;%1&lt;/i&gt; is synced to local folder &lt;i&gt;%2&lt;/i&gt;</source>
+        <translation>Pasta ownCloud &lt;i&gt;%1&lt;/i&gt; está sincronizada com a pasta local &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
 </context>
 <context>
     <name>Mirall::OwncloudWizardSelectTypePage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizard.cpp" line="246"/>
         <source>http://owncloud.mydomain.org</source>
-        <translation>http://owncloud.meudominio.org</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1346,62 +1442,62 @@ A configuração não pôde ser concluida.</translation>
 <context>
     <name>Mirall::ServerActionNotifier</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="449"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="481"/>
         <source>New file available</source>
         <translation>Novo arquivo disponível</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="449"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="481"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
         <translation>&apos;%1&apos; foi sincronizado com esta máquiba</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="451"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="483"/>
         <source>New files available</source>
         <translation>Novos arquivos disponíveis</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/owncloudfolder.cpp" line="451"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="483"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
         <translation><numerusform>&apos;%1&apos; e %n outro(s) arquivo(s) não foram sincronizados para esta máquina.</numerusform><numerusform>&apos;%1&apos; e %n outro(s) arquivo(s) não foram sincronizados para esta máquina.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="457"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="489"/>
         <source>File removed</source>
         <translation>Arquivo removido</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="457"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="489"/>
         <source>&apos;%1&apos; has been removed.</source>
         <translation>&apos;%1&apos; foi removido.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/owncloudfolder.cpp" line="459"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="491"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
         <translation><numerusform>&apos;%1&apos; e %n outro(s) arquivo(s) foram removidos.</numerusform><numerusform>&apos;%1&apos; e %n outro(s) arquivo(s) foram removidos.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="459"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="491"/>
         <source>Files removed</source>
         <translation>Arquivos removidos</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="465"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="497"/>
         <source>&apos;%1&apos; has been updated.</source>
         <translation>&apos;%1&apos; foi atualizado.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="465"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="497"/>
         <source>File updated</source>
         <translation>Arquivo atualizado</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/owncloudfolder.cpp" line="467"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="499"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
         <translation><numerusform>&apos;%1&apos; e %n outro(s) arquivo(s) foram atualizados.</numerusform><numerusform>&apos;%1&apos; e %n outro(s) arquivo(s) foram atualizados.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="467"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="499"/>
         <source>Files updated</source>
         <translation>Arquivos atualizados</translation>
     </message>
@@ -1477,37 +1573,37 @@ A configuração não pôde ser concluida.</translation>
 <context>
     <name>Mirall::StatusDialog</name>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="280"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="277"/>
         <source>Pause</source>
         <translation>Pausa</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="282"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="279"/>
         <source>Resume</source>
         <translation>Resumir</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="485"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="464"/>
         <source>Checking %1 connection...</source>
         <translation>Checando conexão a %1...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="490"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="469"/>
         <source>No %1 connection configured.</source>
         <translation>Sem %1 conexão configurada.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="513"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="492"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; as &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Conectar em &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; como &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="515"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="494"/>
         <source>Version: %1 (%2)</source>
         <translation>Versão: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="531"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="510"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Falha ao conectar à %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
@@ -1528,7 +1624,7 @@ A configuração não pôde ser concluida.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.cpp" line="528"/>
+        <location filename="../src/mirall/statusdialog.cpp" line="507"/>
         <source>unknown problem.</source>
         <translation>problema desconhecido.</translation>
     </message>
@@ -1567,31 +1663,138 @@ A configuração não pôde ser concluida.</translation>
 <context>
     <name>Mirall::UpdateDetector</name>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="115"/>
         <source>Client Version Check</source>
-        <translation>Verificação de versão do cliente</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="117"/>
-        <source>&lt;p&gt;A new version of the %1 client is available.</source>
-        <translation>&lt;p&gt;Uma nova versão do cliente %1 está disponível.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>&lt;p&gt;A new version of the ownCloud Client is available.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="118"/>
         <source>%1 is available. The installed version is %3.&lt;p/&gt;&lt;p&gt;For more information see &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</source>
-        <translation>%1 estã disponível. A versão instalada é %3.&lt;p/&gt;&lt;p&gt;Para mais informações veja &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;</translation>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/updatedetector.cpp" line="112"/>
+        <source>New Version Available</source>
+        <translation>Nova Versão Disponínel</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/updatedetector.cpp" line="118"/>
+        <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
+        <translation>&lt;p&gt;Uma nova versão do Cliente %1 está disponível.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; está disponível para baixar. A versão instalada é %3.&lt;p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/updatedetector.cpp" line="130"/>
+        <source>Skip update</source>
+        <translation>Pular atualização</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/updatedetector.cpp" line="131"/>
+        <source>Skip this time</source>
+        <translation>Pular desta vêz</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/updatedetector.cpp" line="132"/>
+        <source>Get update</source>
+        <translation>Atualizar</translation>
     </message>
 </context>
 <context>
     <name>Mirall::ownCloudFolder</name>
     <message>
-        <location filename="../src/mirall/owncloudfolder.cpp" line="351"/>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="88"/>
+        <source>Unable to create csync-context</source>
+        <translation>Não foi possível criar c-sync-context</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="384"/>
         <source>The CSync thread terminated.</source>
         <translation>A thread CSync foi terminada.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="507"/>
+        <source>This sync would remove all the files in the local sync folder '%1'.
+If you or your administrator have reset your account on the server, choose&quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
+        <translation>Essa sincronização vai remover todos os arquivos na pasta de sincronização local.
+Se você ou o administrador reiniciaram sua conta no servidor, escolha &quot;Manter arquivos&quot;. Se você quer remover todos os seus dados, escolha &quot;Remover todos os arquivos&quot;.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="510"/>
+        <source>This sync would remove all the files in the sync folder '%1'.
+This might be because the folder was silently reconfigured, or that allthe file were manually removed.
+Are you sure you want to perform this operation?</source>
+        <translation>Essa sincronização vai remover todos os arquivos na pasta de sincronização.
+Isso pode ocorrer porque a pasta foi reconfigurada em segundo plano, ou porque todos os arquivos foram manualmente removidos.
+Tem certeza que quer concluir essa operação?</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="514"/>
+        <source>Remove All Files?</source>
+        <translation>Tem certeza que quer remover todos os arquivos?</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="516"/>
+        <source>Remove all files</source>
+        <translation>Remover todos os arquivos</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudfolder.cpp" line="517"/>
+        <source>Keep files</source>
+        <translation>Manter arquivos</translation>
+    </message>
+</context>
+<context>
+    <name>Mirall::ownCloudInfo</name>
+    <message>
+        <location filename="../src/mirall/owncloudinfo.cpp" line="490"/>
+        <source>Proxy Refused Connection </source>
+        <translation>Conexão Rejeitada pelo Proxy</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudinfo.cpp" line="491"/>
+        <source>The configured proxy has refused the connection. Please check the proxy settings.</source>
+        <translation>O proxy configurado recusou a conexão. Por favor, verifique as configurações do proxy.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudinfo.cpp" line="495"/>
+        <source>Proxy Closed Connection</source>
+        <translation>Proxy Conexão fechada</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudinfo.cpp" line="496"/>
+        <source>The configured proxy has closed the connection. Please check the proxy settings.</source>
+        <translation>O proxy configurado fechou a conexão. Por favor, verifique as configurações do proxy.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudinfo.cpp" line="500"/>
+        <source>Proxy Not Found</source>
+        <translation>Proxy Não Encontrado</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudinfo.cpp" line="501"/>
+        <source>The configured proxy could not be found. Please check the proxy settings.</source>
+        <translation>O proxy configurado para não pôde ser encontrado. Por favor, verifique as configurações do proxy.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudinfo.cpp" line="505"/>
+        <source>Proxy Authentication Error</source>
+        <translation>Erro de Autenticação Proxy</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudinfo.cpp" line="506"/>
+        <source>The configured proxy requires login but the proxy credentials are invalid. Please check the proxy settings.</source>
+        <translation>O proxy configurado requer login, mas as credenciais de proxy são inválidos. Por favor, verifique as configurações do proxy.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudinfo.cpp" line="510"/>
+        <source>Proxy Connection Timed Out</source>
+        <translation>Conexão Proxy Expirou</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudinfo.cpp" line="511"/>
+        <source>The connection to the configured proxy has timed out.</source>
+        <translation>A conexão com o proxy configurado expirou.</translation>
     </message>
 </context>
 <context>
@@ -1605,12 +1808,12 @@ A configuração não pôde ser concluida.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/credentialstore.cpp" line="131"/>
+        <location filename="../src/mirall/credentialstore.cpp" line="119"/>
         <source>Password Required</source>
         <translation>Senha Requerida</translation>
     </message>
     <message>
-        <location filename="../src/mirall/credentialstore.cpp" line="132"/>
+        <location filename="../src/mirall/credentialstore.cpp" line="120"/>
         <source>Please enter your %1 password:</source>
         <translation>Digite sua senha %1:</translation>
     </message>
@@ -1686,47 +1889,36 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>OwncloudFTPAccessPage</name>
     <message>
-        <location filename="../src/mirall/owncloudftpaccesspage.ui" line="14"/>
         <source>Form</source>
-        <translation>Formulário</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudftpaccesspage.ui" line="29"/>
         <source>FTP Access to your Webaccount:</source>
-        <translation>Acesso FTP para sua conta web:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudftpaccesspage.ui" line="51"/>
         <source>FTP Details and Credentials</source>
-        <translation>Detalhes e credenciais FTP</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudftpaccesspage.ui" line="57"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;The details here are used to install the owncloud data on your web space which is accessible over ftp. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Os detalhes aqui são usados para instalar os dados do ownCloud em seu espaço na web que é acessível via ftp. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudftpaccesspage.ui" line="79"/>
         <source>FTP-URL:</source>
-        <translation>Endereço FTP:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudftpaccesspage.ui" line="93"/>
         <source>FTP-User:</source>
-        <translation>Usuário FTP:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudftpaccesspage.ui" line="107"/>
         <source>Password:</source>
-        <translation>Senha:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>ftp.mydomain.org</source>
@@ -1741,6 +1933,7 @@ p, li { white-space: pre-wrap; }
     <name>OwncloudSetupPage</name>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="14"/>
+        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="20"/>
         <source>Form</source>
         <translation>Formulário</translation>
     </message>
@@ -1761,6 +1954,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="147"/>
+        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="267"/>
         <source>Enter the url of the ownCloud you want to connect to (without http or https).</source>
         <translation>Digite a URL do ownCloud que você deseja se conectar (sem http ou https)</translation>
     </message>
@@ -1781,6 +1975,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="85"/>
+        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="293"/>
         <source>Enter the ownCloud username.</source>
         <translation>Digite o usuário ownCloud.</translation>
     </message>
@@ -1791,6 +1986,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="102"/>
+        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="322"/>
         <source>Enter the ownCloud password.</source>
         <translation>Digite a senha ownCloud:</translation>
     </message>
@@ -1803,8 +1999,80 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/owncloudsetuppage.ui" line="36"/>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="129"/>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="156"/>
+        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="35"/>
+        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="441"/>
         <source>TextLabel</source>
         <translation>TextLabel</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="107"/>
+        <source>&amp;Local Folder</source>
+        <translation>&amp;Pasta Local</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="123"/>
+        <source>pbSelectLocalFolder</source>
+        <translation>pbSelecionarPastaLocal</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="136"/>
+        <source>&amp;Keep local data</source>
+        <translation>&amp;Manter dado local</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="168"/>
+        <source>&lt;small&gt;Syncs your existing data to new location.&lt;/small&gt;</source>
+        <translation>&lt;small&gt;Sincroniza seus dados existentes para o novo local. &lt;/small&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="187"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local directory will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers directory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;p&gt;&lt;body&gt;Se esta opção estiver marcada, os conteúdos existentes no diretório local serão apagados para iniciar uma sincronização limpa a partir do servidor. &lt;/p&gt; Não marque esta opção se o conteúdo local deve ser enviado para o diretório de servidores. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="190"/>
+        <source>&amp;Start a clean sync</source>
+        <translation>&amp;Iniciar sincronização limpa</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="222"/>
+        <source>&lt;small&gt;Erases the contents of the local folder before syncing using the new settings.&lt;/small&gt;</source>
+        <translation>&lt;small&gt; Apaga o conteúdo da pasta local antes de sincronizar com as novas configurações. &lt;/small&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="251"/>
+        <source>Server &amp;Address</source>
+        <translation>&amp;Endereço do Servidor</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="270"/>
+        <source>https://...</source>
+        <translation>https://...</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="277"/>
+        <source>&amp;Username</source>
+        <translation>&amp;Nome do Usuário</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="306"/>
+        <source>&amp;Password</source>
+        <translation>&amp;Senha</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="344"/>
+        <source>Error Label</source>
+        <translation>Rótulo de Erro</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="390"/>
+        <source>Advanced &amp;Settings</source>
+        <translation>&amp;Configurações Avançadas</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="412"/>
+        <source>Status message</source>
+        <translation>Status da mensagem</translation>
     </message>
 </context>
 <context>
@@ -1815,26 +2083,30 @@ p, li { white-space: pre-wrap; }
         <translation>Formulário</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizardresultpage.ui" line="43"/>
-        <source>Result</source>
-        <translation>Resultado</translation>
+        <location filename="../src/mirall/owncloudwizardresultpage.ui" line="66"/>
+        <source>Your entire account is synced to the local folder </source>
+        <translation>Toda a sua conta está sincronizada com a pasta local</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizardresultpage.ui" line="65"/>
+        <location filename="../src/mirall/owncloudwizardresultpage.ui" line="100"/>
+        <location filename="../src/mirall/owncloudwizardresultpage.ui" line="116"/>
+        <source>PushButton</source>
+        <translation>AperteoBotão</translation>
+    </message>
+    <message>
+        <source>Result</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;This page shows the status of the connection.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Esta pagina mostra o status da conexão.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizardresultpage.ui" line="27"/>
-        <location filename="../src/mirall/owncloudwizardresultpage.ui" line="85"/>
+        <location filename="../src/mirall/owncloudwizardresultpage.ui" line="20"/>
         <source>TextLabel</source>
         <translation>TextLabel</translation>
     </message>
@@ -1842,55 +2114,20 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>OwncloudWizardSelectTypePage</name>
     <message>
-        <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="14"/>
         <source>Form</source>
-        <translation>Formulário</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="29"/>
         <source>Create an ownCloud Connection</source>
-        <translation>Crie uma conexão ownCloud</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="51"/>
         <source>Select the ownCloud you want to connect to</source>
-        <translation>Selecione o ownCloud que deseja se conectar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="63"/>
         <source>connect my ownCloud</source>
-        <translation>conecte meu ownCloud</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="89"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Specify the ownCloud you want to connect to.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Enter the web address of your ownCloud server below.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Especifique o ownCloud que você quer se conectar.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; color:#585858;&quot;&gt;Entre com o endereço do seu servidor ownCloud abaixo.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="110"/>
-        <source>ownCloud-Link:</source>
-        <translation>Sucesso da Sincronização</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="156"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Select if you want to create a new ownCloud either on the local machine or on your server. &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#585858;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;This wizard will guide you through all necessary steps.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;⏎ &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;⏎ p, li { white-space: pre-wrap; }⏎ &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;⏎ &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Escolha se você quer criar um novo ownCloud na máquina local ou no seu servidor.&lt;/span&gt;&lt;/p&gt;⏎ &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; color:#585858;&quot;&gt;&lt;/p&gt;⏎ &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#585858;&quot;&gt;Este instalador irá guiá-lo por todos os passos necessários.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1907,14 +2144,8 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="120"/>
-        <source>Note: To specify an SSL secured connection, start the url with https.</source>
-        <translation>Nota: Para especificar uma conexão segura SSL, inicie a URL com https;</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudwizardselecttypepage.ui" line="133"/>
         <source>create a new ownCloud</source>
-        <translation>Crie um novo ownCloud</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1942,33 +2173,33 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/theme.cpp" line="51"/>
-        <location filename="../src/mirall/theme.cpp" line="69"/>
+        <location filename="../src/mirall/theme.cpp" line="50"/>
+        <location filename="../src/mirall/theme.cpp" line="68"/>
         <source>Status undefined</source>
         <translation>Status indefinido</translation>
     </message>
     <message>
-        <location filename="../src/mirall/theme.cpp" line="54"/>
+        <location filename="../src/mirall/theme.cpp" line="53"/>
         <source>Waiting to start sync</source>
         <translation>Aguardando para iniciar sincronização</translation>
     </message>
     <message>
-        <location filename="../src/mirall/theme.cpp" line="57"/>
+        <location filename="../src/mirall/theme.cpp" line="56"/>
         <source>Sync is running</source>
         <translation>Sincronização em andamento</translation>
     </message>
     <message>
-        <location filename="../src/mirall/theme.cpp" line="60"/>
+        <location filename="../src/mirall/theme.cpp" line="59"/>
         <source>Sync Success</source>
         <translation>Sucesso da Sincronização</translation>
     </message>
     <message>
-        <location filename="../src/mirall/theme.cpp" line="63"/>
+        <location filename="../src/mirall/theme.cpp" line="62"/>
         <source>Sync Error - Click info button for details.</source>
         <translation>Erro da Sincronização - Clique no botão info para detalhes</translation>
     </message>
     <message>
-        <location filename="../src/mirall/theme.cpp" line="66"/>
+        <location filename="../src/mirall/theme.cpp" line="65"/>
         <source>Setup Error</source>
         <translation>Erro na Configuração</translation>
     </message>
@@ -2000,14 +2231,23 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>ownCloudTheme</name>
+    <message>
+        <location filename="../src/mirall/owncloudtheme.cpp" line="103"/>
+        <source>If you don&apos;t have an ownCloud server yet, see &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt; for more info.</source>
+        <comment>Top text in setup wizard. Keep short!</comment>
+        <translation>Se você ainda não tem um servidor ownCloud, acesse &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt; for more info.</translation>
+    </message>
+</context>
+<context>
     <name>ownCloudTheme::about()</name>
     <message>
-        <location filename="../src/mirall/owncloudtheme.cpp" line="55"/>
+        <location filename="../src/mirall/owncloudtheme.cpp" line="57"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4&lt;br&gt;using OCsync %5 and Qt %6.&lt;/small&gt;&lt;p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Feito a partir da revisão Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; em %3, %4&lt;br&gt;usando OCsync %5 e Qt %6.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudtheme.cpp" line="63"/>
+        <location filename="../src/mirall/owncloudtheme.cpp" line="65"/>
         <source>&lt;p&gt;&lt;b&gt;%1 Client Version %2&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Authors&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;mailto:freitag@owncloud.com&quot;&gt;Klaas Freitag&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;a href=&quot;mailto:danimo@owncloud.com&quot;&gt;Daniel Molkentin&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;br&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/p&gt;&lt;p&gt;For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;.&lt;/p&gt;%7</source>
         <translation>&lt;p&gt;&lt;b&gt;Versão de cliente de %1 é %2&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Autores&lt;/b&gt;&lt;br&gt;&lt;a href=&quot;mailto:freitag@owncloud.com&quot;&gt;Klaas Freitag&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;a href=&quot;mailto:danimo@owncloud.com&quot;&gt;Daniel Molkentin&lt;/a&gt;, ownCloud, Inc.&lt;br&gt;&lt;br&gt;Baseado no Mirall de Duncan Mac-Vicar P.&lt;/p&gt;&lt;p&gt;Para mais informações visite &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;.&lt;/p&gt;%7</translation>
     </message>
@@ -2020,42 +2260,47 @@ p, li { white-space: pre-wrap; }
         <translation>Ajustes de Proxy</translation>
     </message>
     <message>
-        <location filename="../src/mirall/proxydialog.ui" line="50"/>
+        <location filename="../src/mirall/proxydialog.ui" line="27"/>
         <source>No Proxy</source>
         <translation>Sem proxy</translation>
     </message>
     <message>
-        <location filename="../src/mirall/proxydialog.ui" line="60"/>
+        <location filename="../src/mirall/proxydialog.ui" line="37"/>
         <source>Use system proxy</source>
         <translation>Usar proxy do sistema</translation>
     </message>
     <message>
-        <location filename="../src/mirall/proxydialog.ui" line="67"/>
+        <location filename="../src/mirall/proxydialog.ui" line="44"/>
         <source>Manual proxy configuration</source>
         <translation>Configuração manual de proxy</translation>
     </message>
     <message>
-        <location filename="../src/mirall/proxydialog.ui" line="97"/>
+        <location filename="../src/mirall/proxydialog.ui" line="116"/>
+        <source>Use as SOCKSv5 proxy</source>
+        <translation>Use como proxy SOCKSv5</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/proxydialog.ui" line="138"/>
         <source>User</source>
         <translation>Usuário</translation>
     </message>
     <message>
-        <location filename="../src/mirall/proxydialog.ui" line="123"/>
+        <location filename="../src/mirall/proxydialog.ui" line="164"/>
         <source>Password</source>
         <translation>Senha</translation>
     </message>
     <message>
-        <location filename="../src/mirall/proxydialog.ui" line="149"/>
+        <location filename="../src/mirall/proxydialog.ui" line="79"/>
         <source>Port</source>
         <translation>Porta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/proxydialog.ui" line="156"/>
+        <location filename="../src/mirall/proxydialog.ui" line="59"/>
         <source>Host</source>
         <translation>Host</translation>
     </message>
     <message>
-        <location filename="../src/mirall/proxydialog.ui" line="179"/>
+        <location filename="../src/mirall/proxydialog.ui" line="128"/>
         <source>Proxy server requires password</source>
         <translation>Servidor proxy requer senha</translation>
     </message>
@@ -2111,37 +2356,44 @@ p, li { white-space: pre-wrap; }
         <translation>Adicionar Sincronização...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.ui" line="48"/>
         <source>Remove...</source>
-        <translation>Remover...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.ui" line="58"/>
         <source>Fetch...</source>
-        <translation>Busca...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.ui" line="65"/>
         <source>Push...</source>
-        <translation>Enviar...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.ui" line="72"/>
+        <location filename="../src/mirall/statusdialog.ui" line="48"/>
         <source>Pause</source>
         <translation>Pause</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.ui" line="79"/>
+        <location filename="../src/mirall/statusdialog.ui" line="68"/>
+        <source>Remove</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/statusdialog.ui" line="75"/>
+        <source>Reset</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/statusdialog.ui" line="95"/>
         <source>Info...</source>
         <translation>Informação...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.ui" line="103"/>
+        <location filename="../src/mirall/statusdialog.ui" line="106"/>
         <source>TextLabel</source>
         <translation>TextLabel</translation>
     </message>
     <message>
-        <location filename="../src/mirall/statusdialog.ui" line="132"/>
+        <location filename="../src/mirall/statusdialog.ui" line="135"/>
         <source>Close</source>
         <translation>Fechar</translation>
     </message>
