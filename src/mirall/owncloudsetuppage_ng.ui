@@ -130,6 +130,9 @@
            <property name="sizeConstraint">
             <enum>QLayout::SetMinimumSize</enum>
            </property>
+           <property name="fieldGrowthPolicy">
+            <enum>QFormLayout::ExpandingFieldsGrow</enum>
+           </property>
            <item row="0" column="0" colspan="2">
             <widget class="QRadioButton" name="radioButton">
              <property name="text">
@@ -159,7 +162,7 @@
            <item row="1" column="1">
             <widget class="QLabel" name="label_6">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -174,7 +177,7 @@
               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
              </property>
              <property name="wordWrap">
-              <bool>false</bool>
+              <bool>true</bool>
              </property>
              <property name="indent">
               <number>0</number>
@@ -213,7 +216,7 @@
            <item row="3" column="1">
             <widget class="QLabel" name="label_5">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -228,7 +231,7 @@
               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
              </property>
              <property name="wordWrap">
-              <bool>false</bool>
+              <bool>true</bool>
              </property>
              <property name="indent">
               <number>0</number>
