@@ -159,7 +159,7 @@
            <item row="1" column="1">
             <widget class="QLabel" name="label_6">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -174,7 +174,7 @@
               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
              </property>
              <property name="wordWrap">
-              <bool>true</bool>
+              <bool>false</bool>
              </property>
              <property name="indent">
               <number>0</number>
@@ -213,7 +213,7 @@
            <item row="3" column="1">
             <widget class="QLabel" name="label_5">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -228,7 +228,7 @@
               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
              </property>
              <property name="wordWrap">
-              <bool>true</bool>
+              <bool>false</bool>
              </property>
              <property name="indent">
               <number>0</number>
