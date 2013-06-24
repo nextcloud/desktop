@@ -391,17 +391,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="802"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Wollen Sie wirklich die Synchronisation des Ordners &lt;i&gt;%1&lt;/i&gt; beenden?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Anmerkung:&lt;/b&gt; Dies wird keine Dateien von ihrem Rechner löschen.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="817"/>
         <source>Confirm Folder Reset</source>
-        <translation type="unfinished"/>
+        <translation>Zurücksetzen des Ordners bestätigen</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="818"/>
         <source>&lt;p&gt;Do you really want to reset folder&lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; While no files will be removed, this can cause significant data traffic and take several minutes to hours, depending on the size of the folder.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Wollen Sie wirklich den Ordner &lt;i&gt;%1&lt;/i&gt; zurücksetzen und die Datenbank auf diesem Rechner neu aufbauen?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Anmerkung:&lt;/b&gt; Es werden keine Dateien entfernt, jedoch kann diese Aktion erheblichen Datenverkehr verursachen und je nach Umfang des Ordners mehrere Minuten oder Stunden in Anspruch nehmen.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="1045"/>
@@ -847,12 +847,12 @@ Please write a bug report.</source>
     <message numerus="yes">
         <location filename="../src/mirall/fileitemdialog.cpp" line="127"/>
         <source>%1 (last finished %n sec. ago)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 (zuletzt vor %n Sekunde beendet)</numerusform><numerusform>%1 (zuletzt vor %n Sekunden beendet)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/fileitemdialog.cpp" line="129"/>
         <source>%1 (last finished %n min. ago)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 (zuletzt vor %n Minute beendet)</numerusform><numerusform>%1 (zuletzt vor %n Minuten beendet)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="181"/>
@@ -908,12 +908,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="136"/>
         <source>Could not reset folder state</source>
-        <translation type="unfinished"/>
+        <translation>Konnte Ordner-Zustand nicht zurücksetzen</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="137"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation type="unfinished"/>
+        <translation>Ein altes Synchronisations-Journal &apos;%1&apos; wurde gefunden, konnte jedoch nicht entfernt werden. Bitte stellen Sie sicher dass keine Anwendung es verwendet.</translation>
     </message>
 </context>
 <context>
@@ -1163,7 +1163,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="274"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; You currently have multiple folders configured. If you continue with the current settings, the folder configurations will be discarded and a single root folder sync will be created!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warnung:&lt;/strong&gt; Sie haben zur Zeit mehrere Ordner konfiguriert. Wenn Sie mit den aktuellen Einstellungen fortfahren, werden diese Einstellungen verworfen und eine vollständige Server-Synchronisation wird erstellt!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="282"/>
@@ -1239,7 +1239,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="142"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program.Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished"/>
+        <translation>Kann den Ordner nicht entfernen und sichern, da der Ordner oder einer seiner Dateien in einem anderen Programm geöffnet ist. Bitte schließen Sie den Ordner ode die Datei oder beenden Sie das Setup.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="282"/>
@@ -1254,7 +1254,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="350"/>
         <source>The given credentials do not authenticate.</source>
-        <translation type="unfinished"/>
+        <translation>Eine Anmeldung mit den angegebenen Zugangsdaten war nicht möglich.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="355"/>
@@ -1705,7 +1705,7 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="88"/>
         <source>Unable to create csync-context</source>
-        <translation type="unfinished"/>
+        <translation>Kann keinen CSync-Kontext erstellen</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="384"/>
@@ -1716,14 +1716,17 @@ Setup can not be done.</source>
         <location filename="../src/mirall/owncloudfolder.cpp" line="507"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose&quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Dieser Synchronisationsvorgang würde alle Dateien in dem lokalen Ordner &apos;%1&apos; entfernen.
+Wenn Sie oder Ihr Administrator Ihr Konto auf dem Server zurückgesetzt haben, wählen Sie &quot;Dateien behalten&quot;. Wenn Sie ihre Daten löschen wollen, wählen Sie &quot;Alle Dateien entfernen&quot;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="510"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that allthe file were manually removed.
 Are you sure you want to perform this operation?</source>
-        <translation type="unfinished"/>
+        <translation>Dieser Synchronisationsvorgang würde alle Dateien in dem lokalen Ordner &apos;%1&apos; entfernen.
+Vielleicht wurde der Ordner neu konfiguriert, oder alle Dateien wurden händisch gelöscht.
+Sind Sie sicher, dass sie diese Operation durchführen wollen?</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="514"/>
@@ -1738,7 +1741,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="517"/>
         <source>Keep files</source>
-        <translation type="unfinished"/>
+        <translation>Dateien behalten</translation>
     </message>
 </context>
 <context>
@@ -1746,12 +1749,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/owncloudinfo.cpp" line="490"/>
         <source>Proxy Refused Connection </source>
-        <translation>Proxy hat die Verbindung zurückgewiesen</translation>
+        <translation>Proxy-Verbindung zurückgewiesen</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudinfo.cpp" line="491"/>
         <source>The configured proxy has refused the connection. Please check the proxy settings.</source>
-        <translation type="unfinished"/>
+        <translation>Der ausgewählte Proxy-Server hat die Verbindung verweigert. Bitte überprüfen Sie die Proxy-Einstellungen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudinfo.cpp" line="495"/>
@@ -1761,7 +1764,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/owncloudinfo.cpp" line="496"/>
         <source>The configured proxy has closed the connection. Please check the proxy settings.</source>
-        <translation type="unfinished"/>
+        <translation>Der ausgewählte Proxy-Server hat die Verbindung geschlossen. Bitte überprüfen Sie die Proxy-Einstellungen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudinfo.cpp" line="500"/>
@@ -1771,7 +1774,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/owncloudinfo.cpp" line="501"/>
         <source>The configured proxy could not be found. Please check the proxy settings.</source>
-        <translation type="unfinished"/>
+        <translation>Der ausgewählte Proxy-Server konnte nicht gefunden werden. Bitte überprüfen Sie die Proxy-Einstellungen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudinfo.cpp" line="505"/>
@@ -1781,17 +1784,17 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/owncloudinfo.cpp" line="506"/>
         <source>The configured proxy requires login but the proxy credentials are invalid. Please check the proxy settings.</source>
-        <translation type="unfinished"/>
+        <translation>Der ausgewählte Proxy-Server erfordert einen Benutzernamen, aber die Proxy-Zugangsdaten sind ungültig. Bitte überprüfen Sie die Proxy-Einstellungen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudinfo.cpp" line="510"/>
         <source>Proxy Connection Timed Out</source>
-        <translation type="unfinished"/>
+        <translation>Zeitüberschreitung bei der Verbindung mit Proxy-Server.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudinfo.cpp" line="511"/>
         <source>The connection to the configured proxy has timed out.</source>
-        <translation type="unfinished"/>
+        <translation>Zeitüberschreitung beim Versuch, den mit dem ausgewählten Proxy-Server zu erreichen.</translation>
     </message>
 </context>
 <context>
@@ -2009,7 +2012,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="123"/>
         <source>pbSelectLocalFolder</source>
-        <translation type="unfinished"/>
+        <translation>pbSelectLocalFolder</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="136"/>
@@ -2024,12 +2027,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="187"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local directory will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers directory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wenn diese Option gesetzt ist, werden bestehende Inhalte im lokalen Verzeichnis gelöscht, um eine saubere Synchronisation der Serverdaten zu ermöglichen.&lt;/p&gt;&lt;p&gt;Wählen Sie diese Option nicht, wenn die lokale Inhalte auf den Server übertragen werden sollen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="190"/>
         <source>&amp;Start a clean sync</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Mit sauberem Ordner beginnen</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="222"/>
@@ -2059,7 +2062,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="344"/>
         <source>Error Label</source>
-        <translation type="unfinished"/>
+        <translation>Error Label</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="390"/>
@@ -2233,7 +2236,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/owncloudtheme.cpp" line="103"/>
         <source>If you don&apos;t have an ownCloud server yet, see &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt; for more info.</source>
         <comment>Top text in setup wizard. Keep short!</comment>
-        <translation type="unfinished"/>
+        <translation>Wenn Sie noch keinen ownCloud-Server haben, informieren Sie sich unter &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt;.</translation>
     </message>
 </context>
 <context>
@@ -2372,12 +2375,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="68"/>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>Entfernen</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="75"/>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>Zurücksetzen</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="95"/>
