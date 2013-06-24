@@ -505,10 +505,10 @@ void ownCloudFolder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction
 {
     QString msg = direction == SyncFileItem::Down ?
         tr("This sync would remove all the files in the local sync folder '%1'.\n"
-           "If you or your administrator have reset your account on the server, choose"
+           "If you or your administrator have reset your account on the server, choose "
            "\"Keep files\". If you want your data to be removed, choose \"Remove all files\".") :
         tr("This sync would remove all the files in the sync folder '%1'.\n"
-           "This might be because the folder was silently reconfigured, or that all"
+           "This might be because the folder was silently reconfigured, or that all "
            "the file were manually removed.\n"
            "Are you sure you want to perform this operation?");
     QMessageBox msgBox(QMessageBox::Warning, tr("Remove All Files?"),
