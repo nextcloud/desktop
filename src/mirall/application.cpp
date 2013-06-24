@@ -815,7 +815,7 @@ void Application::slotRemoveFolder( const QString& alias )
 void Application::slotResetFolder( const QString & alias )
 {
     int ret = QMessageBox::question( 0, tr("Confirm Folder Reset"),
-                                     tr("<p>Do you really want to reset folder<i>%1</i> and rebuild your client database?</p>"
+                                     tr("<p>Do you really want to reset folder <i>%1</i> and rebuild your client database?</p>"
                                         "<p><b>Note:</b> While no files will be removed, this can cause significant data "
                                         "traffic and take several minutes to hours, depending on the size of the folder.</p>").arg(alias),
                                      QMessageBox::Yes|QMessageBox::No );
