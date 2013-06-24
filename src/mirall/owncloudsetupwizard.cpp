@@ -94,6 +94,7 @@ void OwncloudSetupWizard::startWizard()
     _ocWizard->setMultipleFoldersExist(_folderMan->map().count() > 1);
 
     _ocWizard->show();
+    _ocWizard->raise();
 }
 
 
