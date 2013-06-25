@@ -1,5 +1,22 @@
 ChangeLog
 ==========
+version 0.80.0  (released 2013  *06  *25)
+  * Big file chunking (e.g. up/download of big files should now be no
+    problem anymore)
+  * Resuming (download of big files will resume)
+  * Fix false conflicts when database is corrupt/missing
+  * Fix false conflicts when file is locked
+  * Put legitimate conflict files only on client side
+  * Fix unreliable sync after push_file failed
+  * Fix rename due to inode cast error
+  * Make chunking work on nginx setups or through nginx proxies
+  * Improve error reporting in csync_update
+  * Clean progress database on csync_commit
+  * Fix issues detected by Coverity
+  * Fix conflict file appearing when a file cannot be stated
+  * Do not shadow server errors by not downloading files that have
+    failed to download in the past
+
 version 0.70.6  (released 2013-04-11)
   * [Fixes] Try to avoid to upload incomplete files
   * [Fixes] Increase read timeout to 300 seconds
