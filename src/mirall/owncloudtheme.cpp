@@ -119,5 +119,10 @@ QColor ownCloudTheme::wizardHeaderTitleColor() const
     return QColor("#ffffff");
 }
 
+QPixmap ownCloudTheme::wizardHeaderLogo() const
+{
+    return QPixmap(":/mirall/theme/colored/wizard_logo.png");
+}
+
 }
 

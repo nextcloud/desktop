@@ -237,7 +237,7 @@ QColor Theme::wizardHeaderBackgroundColor() const
 
 QPixmap Theme::wizardHeaderLogo() const
 {
-    return QPixmap(":/mirall/theme/colored/wizard_logo.png");
+    return applicationIcon().pixmap(64);
 }
 
 QPixmap Theme::wizardHeaderBanner() const
