@@ -51,15 +51,15 @@ int csync_get_statedb_exists(CSYNC *ctx);
  *
  * @return 0 on success, less than 0 if an error occured with errno set.
  */
-int csync_statedb_load(CSYNC *ctx, const char *statedb);
+int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **pdb);
 
-int csync_statedb_write(CSYNC *ctx);
+int csync_statedb_write(CSYNC *ctx, sqlite3 *db);
 
-int csync_statedb_close(CSYNC *ctx, const char *statedb, int jwritten);
+int csync_statedb_close(CSYNC *ctx, const char *statedb, sqlite3 *db, int jwritten);
 
-csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash);
+csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx, sqlite3 *db, uint64_t phash);
 
-csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx, ino_t inode);
+csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx, sqlite3 *db, ino_t inode);
 
 /**
  * @brief A generic statedb query.
@@ -70,7 +70,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx, ino_t inode);
  * @return   A stringlist of the entries of a column. An emtpy stringlist if
  *           nothing has been found. NULL on error.
  */
-c_strlist_t *csync_statedb_query(CSYNC *ctx, const char *statement);
+c_strlist_t *csync_statedb_query(CSYNC *ctx, sqlite3 *db, const char *statement);
 
 /**
  * @brief Insert function for the statedb.
@@ -81,13 +81,13 @@ c_strlist_t *csync_statedb_query(CSYNC *ctx, const char *statement);
  * @return  The rowid of the most recent INSERT on success, 0 if the query
  *          wasn't successful.
  */
-int csync_statedb_insert(CSYNC *ctx, const char *statement);
+int csync_statedb_insert(CSYNC *ctx, sqlite3 *db, const char *statement);
 
-int csync_statedb_create_tables(CSYNC *ctx);
+int csync_statedb_create_tables(CSYNC *ctx, sqlite3 *db);
 
-int csync_statedb_drop_tables(CSYNC *ctx);
+int csync_statedb_drop_tables(CSYNC *ctx, sqlite3 *db);
 
-int csync_statedb_insert_metadata(CSYNC *ctx);
+int csync_statedb_insert_metadata(CSYNC *ctx, sqlite3 *db);
 
 /**
  * }@

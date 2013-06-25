@@ -104,7 +104,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
   /* Update detection */
   if (csync_get_statedb_exists(ctx)) {
-    tmp = csync_statedb_get_stat_by_hash(ctx, h);
+    tmp = csync_statedb_get_stat_by_hash(ctx, ctx->statedb.db, h);
     if (tmp && tmp->phash == h) {
       /* we have an update! */
       if (fs->mtime > tmp->modtime) {
@@ -116,7 +116,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
       /* check if the file has been renamed */
       if (ctx->current == LOCAL_REPLICA) {
         SAFE_FREE(tmp);
-        tmp = csync_statedb_get_stat_by_inode(ctx, fs->inode);
+        tmp = csync_statedb_get_stat_by_inode(ctx, ctx->statedb.db, fs->inode);
         if (tmp && tmp->inode == fs->inode) {
           /* inode found so the file has been renamed */
           st->instruction = CSYNC_INSTRUCTION_RENAME;

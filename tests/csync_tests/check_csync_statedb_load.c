@@ -79,7 +79,7 @@ static void check_csync_statedb_load(void **state)
     mbchar_t *testdbtmp = c_utf8_to_locale(TESTDBTMP);
     assert_non_null( testdbtmp );
 
-    rc = csync_statedb_load(csync, TESTDB);
+    rc = csync_statedb_load(csync, TESTDB, &csync->statedb.db);
     assert_int_equal(rc, 0);
 
     rc = _tstat(testdbtmp, &sb);
@@ -98,20 +98,20 @@ static void check_csync_statedb_close(void **state)
     int rc;
 
     /* statedb not written */
-    csync_statedb_load(csync, TESTDB);
+    csync_statedb_load(csync, TESTDB, &csync->statedb.db);
 
     rc = _tstat(testdb, &sb);
     assert_int_equal(rc, 0);
     modtime = sb.st_mtime;
 
-    rc = csync_statedb_close(csync, TESTDB, 0);
+    rc = csync_statedb_close(csync, TESTDB, csync->statedb.db, 0);
     assert_int_equal(rc, 0);
 
     rc = _tstat(testdb, &sb);
     assert_int_equal(rc, 0);
     assert_int_equal(modtime, sb.st_mtime);
 
-    csync_statedb_load(csync, TESTDB);
+    csync_statedb_load(csync, TESTDB, &csync->statedb.db);
 
     rc = _tstat(testdb, &sb);
     assert_int_equal(rc, 0);
@@ -121,7 +121,7 @@ static void check_csync_statedb_close(void **state)
     sleep(1);
 
     /* statedb written */
-    rc = csync_statedb_close(csync, TESTDB, 1);
+    rc = csync_statedb_close(csync, TESTDB, csync->statedb.db, 1);
     assert_int_equal(rc, 0);
 
     rc = _tstat(testdb, &sb);

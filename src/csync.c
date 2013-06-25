@@ -242,9 +242,9 @@ int csync_init(CSYNC *ctx) {
     }
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Journal: %s", ctx->statedb.file);
 
-    if (csync_statedb_load(ctx, ctx->statedb.file) < 0) {
+    rc = csync_statedb_load(ctx, ctx->statedb.file, &ctx->statedb.db);
+    if (rc < 0) {
       ctx->status_code = CSYNC_STATUS_STATEDB_LOAD_ERROR;
-      rc = -1;
       goto out;
     }
   }
@@ -667,7 +667,8 @@ static int  _merge_and_write_statedb(CSYNC *ctx) {
       } else {
         csync_gettime(&start);
         /* write the statedb to disk */
-        if (csync_statedb_write(ctx) == 0) {
+        rc = csync_statedb_write(ctx, ctx->statedb.db);
+        if (rc == 0) {
           jwritten = 1;
           csync_gettime(&finish);
           CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
@@ -682,11 +683,13 @@ static int  _merge_and_write_statedb(CSYNC *ctx) {
         }
       }
     }
-    if (csync_statedb_close(ctx, ctx->statedb.file, jwritten) < 0) {
+    rc = csync_statedb_close(ctx, ctx->statedb.file, ctx->statedb.db, jwritten);
+    ctx->statedb.db = NULL;
+    if (rc < 0) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "ERR: closing of statedb failed.");
-      rc = -1;
     }
   }
+
   return rc;
 }
 
@@ -750,7 +753,7 @@ int csync_commit(CSYNC *ctx) {
     }
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Journal: %s", ctx->statedb.file);
 
-    rc = csync_statedb_load(ctx, ctx->statedb.file);
+    rc = csync_statedb_load(ctx, ctx->statedb.file, &ctx->statedb.db);
     if (rc < 0) {
       ctx->status_code = CSYNC_STATUS_STATEDB_LOAD_ERROR;
       goto out;
