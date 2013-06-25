@@ -391,17 +391,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="802"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Wil je echt stoppen met het synchroniseren van de map &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Let op:&lt;/b&gt; Dit verwijdert geen bestanden van je client(s).&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="817"/>
         <source>Confirm Folder Reset</source>
-        <translation type="unfinished"/>
+        <translation>Bevestig het verwijderen van de map</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="818"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; While no files will be removed, this can cause significant data traffic and take several minutes to hours, depending on the size of the folder.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Wilt u deze map echt resetten: &lt;i&gt;%1&lt;/i&gt; en uw client database opnieuw opbouwen?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Let op:&lt;/b&gt; Hoewel er geen bestanden worden verwijderd, kan dit een aanzienlijke hoeveelheid gegevenstransport tot gevolg hebben en minuten tot zelfs uren duren, afhankelijk van de omvan van de map.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="1045"/>
@@ -847,12 +847,12 @@ Please write a bug report.</source>
     <message numerus="yes">
         <location filename="../src/mirall/fileitemdialog.cpp" line="127"/>
         <source>%1 (last finished %n sec. ago)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 (laatst geëindigd %n sec. geleden)</numerusform><numerusform>%1 (laatst geëindigd %n sec. geleden)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/fileitemdialog.cpp" line="129"/>
         <source>%1 (last finished %n min. ago)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 (laatst geëindigd %n min. geleden)</numerusform><numerusform>%1 (laatst geëindigd %n min. geleden)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="181"/>
@@ -908,12 +908,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="135"/>
         <source>Could not reset folder state</source>
-        <translation type="unfinished"/>
+        <translation>Kan je beginstaat van de map niet resetten</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="136"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation type="unfinished"/>
+        <translation>Een oud synchronisatieverslag  &apos;%1&apos; is gevonden maar kan niet worden verwijderd. Zorg ervoor dat geen applicatie dit bestand gebruikt.</translation>
     </message>
 </context>
 <context>
@@ -1711,14 +1711,17 @@ Setup can not be done.</source>
         <location filename="../src/mirall/owncloudfolder.cpp" line="509"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Deze synch verwijdert alle bestanden in lokale synchmap &apos;%1&apos;.
+Als u of uw beheerder uw account heeft gereset, kies dan &quot;Bewaar bestanden&quot;. Als u de bestanden wilt verwijderen, kies dan &quot;Verwijder alle bestanden&quot;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="512"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
-        <translation type="unfinished"/>
+        <translation>Deze sync zou alle bestanden verwijderen uit syncmap &apos;%1&apos;.
+Dat zou kunnen doordat de map stil was geconfigureerd, of doordat de bestanden handmatig werden verwijderd.
+Weet u zeker dat u hiermee wilt doorgaan?</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="516"/>
@@ -2228,7 +2231,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mirall/owncloudtheme.cpp" line="103"/>
         <source>If you don&apos;t have an ownCloud server yet, see &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt; for more info.</source>
         <comment>Top text in setup wizard. Keep short!</comment>
-        <translation type="unfinished"/>
+        <translation>Als je nog geen ownCloud-server hebt, bezoek dan &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt; voor meer informatie.</translation>
     </message>
 </context>
 <context>
@@ -2372,7 +2375,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="75"/>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>Reset</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="95"/>

@@ -391,17 +391,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/application.cpp" line="802"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;¿Realmente querés detener la sincronización del directorio &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; Hacer esto no ǘa a borrar los archivos de tu cliente.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="817"/>
         <source>Confirm Folder Reset</source>
-        <translation type="unfinished"/>
+        <translation>Confirmar resetear del directorio</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="818"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; While no files will be removed, this can cause significant data traffic and take several minutes to hours, depending on the size of the folder.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;¿Estás seguro que querés resetear el directorio &lt;i&gt;%1&lt;/i&gt; y reconstruir la base de datos del cliente?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; A pesar de que ningún archivo va a ser borrado, esto puede provocar un gran tráfico de datos y tomar muchos minutos o horas, dependiendo del tamaño del directorio.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="1045"/>
@@ -908,12 +908,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="135"/>
         <source>Could not reset folder state</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo  </translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="136"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation type="unfinished"/>
+        <translation>Una antigua sincronización con journaling &apos;%1&apos; fue encontrada, pero no se pudo eliminar. Por favor, asegurate que ninguna aplicación la está utilizando.</translation>
     </message>
 </context>
 <context>
@@ -1163,12 +1163,12 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="274"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; You currently have multiple folders configured. If you continue with the current settings, the folder configurations will be discarded and a single root folder sync will be created!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Advertencia:&lt;/strong&gt;Actualmente, tenés múltiples carpetas configuradas. ¡Si mantenés la configuración actual, el directorio de configuración va a ser descartado y un solamente se va a crear el directorio principal!</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="282"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local directory is not empty. Pick a resolution in the advanced settings!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Advertencia:&lt;/strong&gt;El directorio local no está vacío. Seleccioná una resolución en las opciones avanzadas!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="384"/>
@@ -1178,7 +1178,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="408"/>
         <source>&lt;font color=&quot;%1&quot;&gt;Change your user credentials&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;%1&quot;&gt;Cambiá tus credenciales de usuario&lt;/font&gt;</translation>
     </message>
 </context>
 <context>
@@ -1234,12 +1234,12 @@ Setup can not be done.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="142"/>
         <source>Folder rename failed</source>
-        <translation type="unfinished"/>
+        <translation>Error Al Renombrar Directorio</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="143"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program.Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished"/>
+        <translation>No es posible borrar y hacer una copia de seguridad del directorio porque el directorio o archivo en su interior está abierto por otro programa. Cerrá el directorio o archivo y pulsá Reintentar o Cancelar Configuración.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="283"/>
@@ -1711,14 +1711,17 @@ Setup can not be done.</source>
         <location filename="../src/mirall/owncloudfolder.cpp" line="509"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizar esto borraría todos los archivos en el directorio de sincronización local &apos;%1&apos;.
+Si vos o el administrador resetearon tu cuenta en el servidor, elegí &quot;mantener archivos&quot;. Si querés que tus datos sean borrados, elegí &quot;borrar todos los archivos&quot;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="512"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizar esto borraría todos los archivos en el directorio de sincronización local &apos;%1&apos;.
+Esto puede ser porque el directorio fue reconfigurada sin notificación, o que el archivo fue borrado de manera manual
+¿Estás seguro de querer llevar a cabo esta operación?</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudfolder.cpp" line="516"/>
@@ -1766,7 +1769,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/owncloudinfo.cpp" line="504"/>
         <source>The configured proxy could not be found. Please check the proxy settings.</source>
-        <translation type="unfinished"/>
+        <translation>No se puede encontrar el proxy configurado Por favor, verificá los ajustes del proxy.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudinfo.cpp" line="508"/>
@@ -1776,17 +1779,17 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/owncloudinfo.cpp" line="509"/>
         <source>The configured proxy requires login but the proxy credentials are invalid. Please check the proxy settings.</source>
-        <translation type="unfinished"/>
+        <translation>El proxy configurado requiere inicio de sesión pero las credenciales no son válidas. Por favor, comprobá la configuración del proxy.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudinfo.cpp" line="513"/>
         <source>Proxy Connection Timed Out</source>
-        <translation type="unfinished"/>
+        <translation>Tiempo de Espera de Conexión al Proxy Agotado.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudinfo.cpp" line="514"/>
         <source>The connection to the configured proxy has timed out.</source>
-        <translation type="unfinished"/>
+        <translation>La conexión con el proxy configurado caducó.</translation>
     </message>
 </context>
 <context>
@@ -2008,12 +2011,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="171"/>
         <source>&lt;small&gt;Syncs your existing data to new location.&lt;/small&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;small&gt;Sincronizá tus datos existentes en una nueva localización.&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="190"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local directory will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers directory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt; Si marcás esta casilla, el contenido existente en el directorio local va a ser eliminado para empezar una sincronización limpia con el servidor.&lt;/p&gt;&lt;p&gt;No marques esta casilla si el contenido local tiene que ser subido al directorio del servidor.&lt;/p&gt;&lt;/body&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="193"/>
@@ -2023,7 +2026,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="225"/>
         <source>&lt;small&gt;Erases the contents of the local folder before syncing using the new settings.&lt;/small&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;small&gt;Borra el contenido del directorio local antes de sincronizar usando la nueva configuración.&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="254"/>
@@ -2367,7 +2370,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="75"/>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>Resetear</translation>
     </message>
     <message>
         <location filename="../src/mirall/statusdialog.ui" line="95"/>

@@ -787,7 +787,7 @@ Please write a bug report.</source>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="72"/>
         <source>Determining which files to sync.</source>
-        <translation>Avgöra vilka filer som ska synkroniseras.</translation>
+        <translation>Avgör vilka filer som ska synkroniseras.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="75"/>
@@ -2206,7 +2206,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mirall/fileitemdialog.ui" line="27"/>
         <source>Detailed Sync Protocol</source>
-        <translation>Detaljerad Synkprotokoll</translation>
+        <translation>Detaljerat Synkprotokoll</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.ui" line="63"/>
