@@ -100,15 +100,12 @@ Application::Application(int &argc, char **argv) :
     _sslErrorDialog(0),
     _contextMenu(0),
     _theme(Theme::instance()),
-    _updateDetector(0),
     _logBrowser(0),
     _logExpire(0),
     _showLogWindow(false),
     _logFlush(false),
     _helpOnly(false),
-    _fileItemDialog(0),
-    _statusDialog(0),
-    _folderWizard(0)
+    _fileItemDialog(0)
 {
     setApplicationName( _theme->appNameGUI() );
     setWindowIcon( _theme->applicationIcon() );
@@ -159,7 +156,7 @@ Application::Application(int &argc, char **argv) :
 #endif
     setupActions();
     setupSystemTray();
-    setupProxy();
+    slotSetupProxy();
 
 
     int cnt = _folderMan->setupFolders();
@@ -191,8 +188,8 @@ Application::~Application()
 
 void Application::slotStartUpdateDetector()
 {
-    _updateDetector = new UpdateDetector(this);
-    _updateDetector->versionCheck(_theme);
+    UpdateDetector *updateDetector = new UpdateDetector(this);
+    updateDetector->versionCheck(_theme);
 
 }
 
@@ -604,7 +601,7 @@ QNetworkProxy proxyFromConfig(const MirallConfigFile& cfg)
     return proxy;
 }
 
-void Application::setupProxy()
+void Application::slotSetupProxy()
 {
     Mirall::MirallConfigFile cfg;
     int proxyType = cfg.proxyType();
@@ -698,7 +695,7 @@ void Application::slotAddFolder()
         Application *_app;
     };
 
-    if (_folderWizard) {
+    if (!_folderWizard.isNull()) {
         raiseDialog(_folderWizard);
         return;
     }
@@ -732,7 +729,6 @@ void Application::slotAddFolder()
         qDebug() << "* Folder wizard cancelled";
     }
     _folderWizard->deleteLater();
-    _folderWizard = 0;
 }
 
 void Application::slotOpenStatus()
@@ -742,7 +738,8 @@ void Application::slotOpenStatus()
   QWidget *raiseWidget = 0;
 
   // check if there is a mirall.cfg already.
-  if( _owncloudSetupWizard && _owncloudSetupWizard->wizard()->isVisible() ) {
+  if( !_owncloudSetupWizard.isNull() &&
+       _owncloudSetupWizard->wizard()->isVisible() ) {
     raiseWidget = _owncloudSetupWizard->wizard();
   }
 
@@ -875,7 +872,8 @@ void Application::slotEnableFolder(const QString& alias, const bool enable)
 
 void Application::slotConfigure()
 {
-    if (_owncloudSetupWizard && !_owncloudSetupWizard->wizard()->isVisible()) {
+    if (!_owncloudSetupWizard.isNull() &&
+        !_owncloudSetupWizard->wizard()->isVisible()) {
         raiseDialog(_owncloudSetupWizard->wizard());
         return;
     }
@@ -890,10 +888,12 @@ void Application::slotConfigure()
 
 void Application::slotConfigureProxy()
 {
-    ProxyDialog dlg;
-    if (dlg.exec() == QDialog::Accepted)
-    {
-        setupProxy();
+    if (_proxyDialog.isNull()) {
+        _proxyDialog = new ProxyDialog;
+        _proxyDialog->open();
+        connect(_proxyDialog, SIGNAL(accept()), SLOT(slotSetupProxy()));
+    } else {
+        raiseDialog(_proxyDialog);
     }
 }
 

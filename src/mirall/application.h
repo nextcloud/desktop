@@ -18,6 +18,7 @@
 #include <QApplication>
 #include <QNetworkReply>
 #include <QSslError>
+#include <QPointer>
 
 #include "qtsingleapplication.h"
 
@@ -43,7 +44,7 @@ class StatusDialog;
 class OwncloudSetupWizard;
 class ownCloudInfo;
 class SslErrorDialog;
-class UpdateDetector;
+class ProxyDialog;
 
 class Application : public SharedTools::QtSingleApplication
 {
@@ -79,7 +80,6 @@ protected:
     void setupSystemTray();
     void setupContextMenu();
     void setupLogBrowser();
-    void setupProxy();
     void enterNextLogFile();
 
     //folders have to be disabled while making config changes
@@ -105,6 +105,7 @@ protected slots:
     void slotFetchCredentials();
     void slotCredentialsFetched( bool );
     void slotStartUpdateDetector();
+    void slotSetupProxy();
 
 private:
     void setHelp();
@@ -124,7 +125,7 @@ private:
     QNetworkConfigurationManager *_networkMgr;
 #endif
 
-    FolderWizard  *_folderWizard;
+    QPointer<FolderWizard> _folderWizard;
     QScopedPointer<OwncloudSetupWizard> _owncloudSetupWizard;
     SslErrorDialog *_sslErrorDialog;
 
@@ -136,8 +137,8 @@ private:
     FolderMan *_folderMan;
     Theme *_theme;
     QSignalMapper *_folderOpenActionMapper;
-    UpdateDetector *_updateDetector;
     LogBrowser *_logBrowser;
+    QPointer<ProxyDialog> _proxyDialog;
     QString _logFile;
     QString _logDirectory;
     int _logExpire;
