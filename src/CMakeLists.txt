@@ -17,7 +17,6 @@ mirall/folderwizardtargetpage.ui
 mirall/statusdialog.ui
 mirall/owncloudsetuppage_ng.ui
 mirall/owncloudwizardresultpage.ui
-mirall/owncloudcredentialspage.ui
 mirall/sslerrordialog.ui
 mirall/proxydialog.ui
 mirall/fileitemdialog.ui

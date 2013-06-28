@@ -38,7 +38,7 @@ public:
 
     QColor  wizardHeaderBackgroundColor() const;
     QColor  wizardHeaderTitleColor() const;
-
+    QPixmap wizardHeaderLogo() const;
 private:
 
 
