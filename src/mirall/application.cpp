@@ -175,6 +175,9 @@ Application::Application(int &argc, char **argv) :
     connect( ownCloudInfo::instance(), SIGNAL(sslFailed(QNetworkReply*, QList<QSslError>)),
              this,SLOT(slotSSLFailed(QNetworkReply*, QList<QSslError>)));
 
+    connect( ownCloudInfo::instance(), SIGNAL(quotaUpdated(qint64,qint64)),
+             SLOT(slotRefreshQuotaDisplay(qint64, qint64)));
+
     qDebug() << "Network Location: " << NetworkLocation::currentLocation().encoded();
 }
 
@@ -430,6 +433,8 @@ void Application::setupActions()
     _actionOpenStatus = new QAction(tr("Open status..."), this);
     QObject::connect(_actionOpenStatus, SIGNAL(triggered(bool)), SLOT(slotOpenStatus()));
     _actionOpenStatus->setEnabled( false );
+    _actionQuota = new QAction(tr("Calculating quota..."), this);
+    _actionQuota->setEnabled( false );
     _actionAddFolder = new QAction(tr("Add folder..."), this);
     QObject::connect(_actionAddFolder, SIGNAL(triggered(bool)), SLOT(slotAddFolder()));
     _actionConfigure = new QAction(tr("Configure..."), this);
@@ -477,6 +482,8 @@ void Application::setupContextMenu()
     _contextMenu->addAction(_actionOpenStatus);
     _contextMenu->addAction(_actionOpenoC);
 
+    _contextMenu->addSeparator();
+    _contextMenu->addAction(_actionQuota);
     _contextMenu->addSeparator();
 
     int folderCnt = _folderMan->map().size();
@@ -626,6 +633,42 @@ void Application::slotSetupProxy()
         break;
     }
     _folderMan->setProxy();
+}
+
+static QString octetsToString( qint64 octets )
+{
+    const qint64 kb = 1024;
+    const qint64 mb = 1024 * kb;
+    const qint64 gb = 1024 * mb;
+
+    if (octets >= gb) {
+        return QString::number(octets/gb) + QLatin1String(" GB");
+    } else if (octets >= mb) {
+        return QString::number(octets/mb) + QLatin1String(" MB");
+    } else if (octets >= kb) {
+        return QString::number(octets/kb) + QLatin1String(" KB");
+    } else {
+        return octets + QLatin1String(" bytes");
+    }
+}
+
+void Application::slotRefreshQuotaDisplay( qint64 total, qint64 used )
+{
+    if (total == 0) {
+        _actionQuota->setText(tr("Quota n/a"));
+        return;
+    }
+
+    int percent = used/(double)total * 100;
+    QString percentFormatted;
+    // Don't display floating point numbers. Nobody cares.
+    if (percent == 0) {
+        percentFormatted = QLatin1String("<1");
+    } else {
+        percentFormatted = QString::number(percent);
+    }
+    QString totalFormatted = octetsToString(total);
+    _actionQuota->setText(tr("%1% of %2 used").arg(percentFormatted).arg(totalFormatted));
 }
 
 /*

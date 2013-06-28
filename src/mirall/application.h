@@ -106,6 +106,7 @@ protected slots:
     void slotCredentialsFetched( bool );
     void slotStartUpdateDetector();
     void slotSetupProxy();
+    void slotRefreshQuotaDisplay( qint64 total, qint64 used );
 
 private:
     void setHelp();
@@ -116,6 +117,7 @@ private:
     QAction *_actionQuit;
     QAction *_actionAddFolder;
     QAction *_actionOpenStatus;
+    QAction *_actionQuota;
     QAction *_actionConfigure;
     QAction *_actionOpenoC;
     QAction *_actionConfigureProxy;

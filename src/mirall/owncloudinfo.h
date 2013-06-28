@@ -82,6 +82,11 @@ public:
     QNetworkReply* mkdirRequest( const QString& );
 
     /**
+      * Create a collection via owncloud. Provide a relative path.
+      */
+    QNetworkReply* getQuotaRequest( const QString& );
+
+    /**
      * Use a custom ownCloud configuration file identified by handle
      */
     void setCustomConfigHandle( const QString& );
@@ -119,6 +124,7 @@ signals:
     void webdavColCreated( QNetworkReply::NetworkError );
     void sslFailed( QNetworkReply *reply, QList<QSslError> errors );
     void guiLog( const QString& title, const QString& content );
+    void quotaUpdated( qint64 total, qint64 quotaUsedBytes );
 public slots:
 
 protected slots:
@@ -133,6 +139,7 @@ protected slots:
 //    void qhttpAuthenticationRequired(const QString& hostname, quint16 port ,QAuthenticator* authenticator);
 #else
     void slotMkdirFinished();
+    void slotGetQuotaFinished();
 #endif
 
 private:
@@ -149,7 +156,7 @@ private:
     void setupHeaders(QNetworkRequest &req, quint64 size );
 #if QT46_IMPL
 #else
-    QNetworkReply* davRequest(const QString&, QNetworkRequest&, QByteArray* );
+    QNetworkReply* davRequest(const QByteArray&, QNetworkRequest&, QIODevice* );
 #endif
 
     static ownCloudInfo           *_instance;

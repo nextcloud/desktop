@@ -345,6 +345,7 @@ void ownCloudFolder::slotCSyncFinished()
     if( _thread && _thread->isRunning() ) {
         _thread->quit();
     }
+    ownCloudInfo::instance()->getQuotaRequest("/");
     emit syncFinished( _syncResult );
 }
 

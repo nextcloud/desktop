@@ -391,6 +391,7 @@ void FolderMan::slotScheduleFolderSync()
     if( ! _scheduleQueue.isEmpty() ) {
         const QString alias = _scheduleQueue.takeFirst();
         if( _folderMap.contains( alias ) ) {
+            ownCloudInfo::instance()->getQuotaRequest("/");
             Folder *f = _folderMap[alias];
             _currentSyncFolder = alias;
             f->startSync( QStringList() );

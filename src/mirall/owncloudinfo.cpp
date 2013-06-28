@@ -201,6 +201,12 @@ QNetworkReply* ownCloudInfo::mkdirRequest( const QString& dir )
     return NULL;
 }
 
+QNetworkReply* ownCloudInfo::getQuotaRequest( const QString& dir )
+{
+// implement me
+    return NULL;
+}
+
 void ownCloudInfo::qhttpResponseHeaderReceived(const QHttpResponseHeader& header)
 {
     qDebug() << "Resp:" << header.toString();
@@ -233,7 +239,7 @@ QNetworkReply* ownCloudInfo::mkdirRequest( const QString& dir )
     _authAttempts = 0;
     QNetworkRequest req;
     req.setUrl( QUrl( webdavUrl(_connection) + dir ) );
-    QNetworkReply *reply = davRequest(QLatin1String("MKCOL"), req, 0);
+    QNetworkReply *reply = davRequest("MKCOL", req, 0);
 
     // remember the confighandle used for this request
     if( ! _configHandle.isEmpty() )
@@ -247,6 +253,34 @@ QNetworkReply* ownCloudInfo::mkdirRequest( const QString& dir )
     connect( reply, SIGNAL(finished()), SLOT(slotMkdirFinished()) );
     connect( reply, SIGNAL( error(QNetworkReply::NetworkError )),
              this, SLOT(slotError(QNetworkReply::NetworkError )));
+    return reply;
+}
+
+QNetworkReply* ownCloudInfo::getQuotaRequest( const QString& dir )
+{
+    QNetworkRequest req;
+    req.setUrl( QUrl( webdavUrl(_connection) + dir ) );
+    req.setRawHeader("Depth", "0");
+    QByteArray xml("<?xml version=\"1.0\" ?>\n"
+                   "<D:propfind xmlns:D=\"DAV:\">\n"
+                   "  <D:prop>\n"
+                   "    <D:quota-available-bytes/>\n"
+                   "    <D:quota-used-bytes/>\n"
+                   "  </D:prop>\n"
+                   "</D:propfind>\n");
+    QBuffer *buf = new QBuffer;
+    buf->setData(xml);
+    buf->open(QIODevice::ReadOnly);
+    QNetworkReply *reply = davRequest("PROPFIND", req, buf);
+    buf->setParent(reply);
+
+    if( reply->error() != QNetworkReply::NoError ) {
+        qDebug() << "getting quota: request network error: " << reply->errorString();
+    }
+
+    connect( reply, SIGNAL( finished()), SLOT(slotGetQuotaFinished()) );
+    connect( reply, SIGNAL( error(QNetworkReply::NetworkError)),
+             this, SLOT( slotError(QNetworkReply::NetworkError)));
     return reply;
 }
 
@@ -264,6 +298,39 @@ void ownCloudInfo::slotMkdirFinished()
     if( _configHandleMap.contains( reply ) ) {
         _configHandleMap.remove( reply );
     }
+
+    reply->deleteLater();
+}
+
+void ownCloudInfo::slotGetQuotaFinished()
+{
+    bool ok = false;
+    QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
+    QXmlStreamReader reader(reply);
+    reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration("d", "DAV:"));
+
+    qint64 quotaUsedBytes = 0;
+    qint64 quotaAvailableBytes = 0;
+
+    while (!reader.atEnd()) {
+        QXmlStreamReader::TokenType type = reader.readNext();
+        if (type == QXmlStreamReader::StartElement &&
+            reader.namespaceUri() == QLatin1String("DAV:")) {
+            QString name = reader.name().toString();
+            QString ns = reader.namespaceUri().toString();
+            if (name == QLatin1String("quota-used-bytes")) {
+                quotaUsedBytes = reader.readElementText().toLongLong(&ok);
+                if (!ok) quotaUsedBytes = 0;
+            } else if (name == QLatin1String("quota-available-bytes")) {
+                quotaAvailableBytes = reader.readElementText().toLongLong(&ok);
+                if (!ok) quotaAvailableBytes = 0;
+            }
+        }
+    }
+
+    qint64 total = quotaUsedBytes + quotaAvailableBytes;
+
+    emit quotaUpdated(total, quotaUsedBytes);
 
     reply->deleteLater();
 }
@@ -559,15 +626,10 @@ void ownCloudInfo::setupHeaders( QNetworkRequest & req, quint64 size )
 
 #if QT46_IMPL
 #else
-QNetworkReply* ownCloudInfo::davRequest(const QString& reqVerb,  QNetworkRequest& req, QByteArray *data)
+QNetworkReply* ownCloudInfo::davRequest(const QByteArray& reqVerb,  QNetworkRequest& req, QIODevice *data)
 {
     setupHeaders(req, quint64(data ? data->size() : 0));
-    if( data ) {
-        QBuffer iobuf( data );
-        return _manager->sendCustomRequest(req, reqVerb.toUtf8(), &iobuf );
-    } else {
-        return _manager->sendCustomRequest(req, reqVerb.toUtf8(), 0 );
-    }
+    return _manager->sendCustomRequest(req, reqVerb, data );
 }
 #endif
 
