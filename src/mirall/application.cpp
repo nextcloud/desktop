@@ -669,7 +669,7 @@ void Application::slotRefreshQuotaDisplay( qint64 total, qint64 used )
             percentFormatted = QLatin1String("<1");
         }
     } else {
-        percentFormatted = QString::number(percent);
+        percentFormatted = QString::number((int)percent);
     }
     QString totalFormatted = octetsToString(total);
     _actionQuota->setText(tr("%1% of %2 used").arg(percentFormatted).arg(totalFormatted));
