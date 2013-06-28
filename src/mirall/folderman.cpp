@@ -51,9 +51,7 @@ FolderMan::FolderMan(QObject *parent) :
 
 FolderMan::~FolderMan()
 {
-    foreach (Folder *folder, _folderMap) {
-        delete folder;
-    }
+    qDeleteAll(_folderMap);
 }
 
 Mirall::Folder::Map FolderMan::map()
