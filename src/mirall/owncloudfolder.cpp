@@ -278,8 +278,6 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     _csyncError = false;
     _csyncUnavail = false;
 
-    MirallConfigFile cfgFile;
-
     _syncResult.clearErrors();
     _syncResult.setStatus( SyncResult::SyncPrepare );
     emit syncStateChange();
