@@ -262,12 +262,12 @@ QNetworkReply* ownCloudInfo::getQuotaRequest( const QString& dir )
     req.setUrl( QUrl( webdavUrl(_connection) + dir ) );
     req.setRawHeader("Depth", "0");
     QByteArray xml("<?xml version=\"1.0\" ?>\n"
-                   "<D:propfind xmlns:D=\"DAV:\">\n"
-                   "  <D:prop>\n"
-                   "    <D:quota-available-bytes/>\n"
-                   "    <D:quota-used-bytes/>\n"
-                   "  </D:prop>\n"
-                   "</D:propfind>\n");
+                   "<d:propfind xmlns:d=\"DAV:\">\n"
+                   "  <d:prop>\n"
+                   "    <d:quota-available-bytes/>\n"
+                   "    <d:quota-used-bytes/>\n"
+                   "  </d:prop>\n"
+                   "</d:propfind>\n");
     QBuffer *buf = new QBuffer;
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
