@@ -99,6 +99,7 @@ Application::Application(int &argc, char **argv) :
 #endif
     _sslErrorDialog(0),
     _contextMenu(0),
+    _statusDialog(0),
     _theme(Theme::instance()),
     _logBrowser(0),
     _logExpire(0),
