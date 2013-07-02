@@ -34,6 +34,7 @@
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.util"
 #include "csync_log.h"
+#include "csync_statedb.h"
 
 typedef struct {
   const char *instr_str;
@@ -257,12 +258,63 @@ out:
   return rc;
 }
 
+static int _fix_errors_visitor(void *obj, void *data) {
+  csync_file_stat_t *fs = NULL;
+  csync_file_stat_t *tfs = NULL;
+
+  CSYNC *ctx = NULL;
+
+  int rc = -1;
+
+  fs = (csync_file_stat_t *) obj;
+  ctx = (CSYNC *) data;
+
+  /* search for ERROR */
+  if (fs->instruction != CSYNC_INSTRUCTION_ERROR) {
+    rc = 0;
+    goto out;
+  }
+
+  /* check if the file is new or has been synced */
+  tfs = csync_statedb_get_stat_by_hash(ctx, fs->phash);
+  if (tfs == NULL) {
+    rc = 0;
+    goto out;
+  }
+
+  /* update file stat */
+  fs->inode = tfs->inode;
+  fs->modtime = tfs->modtime;
+
+  fs->instruction = CSYNC_INSTRUCTION_UPDATED;
+
+  rc = 0;
+out:
+  csync_file_stat_free(tfs);
+
+  if (rc != 0) {
+    fs->instruction = CSYNC_INSTRUCTION_ERROR;
+  }
+
+  return rc;
+}
+
+
 /*
  * merge the local tree with the new files from remote and update the
  * inode numbers
  */
 int csync_merge_file_trees(CSYNC *ctx) {
   int rc = -1;
+
+  /* walk over the local tree, in case of error take the value from the database  */
+  ctx->current = REMOTE_REPLICA;
+  ctx->replica = ctx->remote.type;
+
+  rc = c_rbtree_walk(ctx->local.tree, ctx, _fix_errors_visitor);
+  if (rc < 0) {
+    goto out;
+  }
 
   /* walk over remote tree, stat on local system */
   ctx->current = LOCAL_REPLICA;
@@ -272,20 +324,6 @@ int csync_merge_file_trees(CSYNC *ctx) {
   if (rc < 0) {
     goto out;
   }
-
-#if 0
-  /* We don't have to merge the remote tree atm. */
-
-  /* walk over local tree, stat on remote system */
-  ctx->current = REMOTE_REPLICA;
-  ctx->replica = ctx->remote.type;
-
-  rc = c_rbtree_walk(ctx->local.tree, ctx, _merge_file_trees_visitor);
-  if (rc < 0) {
-    goto out;
-  }
-#endif
-
 out:
   return rc;
 }
