@@ -699,10 +699,7 @@ static void _tree_destructor(void *data) {
   csync_file_stat_t *freedata = NULL;
 
   freedata = (csync_file_stat_t *) data;
-  SAFE_FREE(freedata->md5);
-  SAFE_FREE(freedata->destpath);
-  SAFE_FREE(freedata->error_string);
-  SAFE_FREE(freedata);
+  csync_file_stat_free(freedata);
 }
 
 static int  _merge_and_write_statedb(CSYNC *ctx) {
@@ -1223,6 +1220,16 @@ int  csync_abort_requested(CSYNC *ctx)
     return ctx->abort;
   } else {
     return (1 == 0);
+  }
+}
+
+void csync_file_stat_free(csync_file_stat_t *st)
+{
+  if (st) {
+    SAFE_FREE(st->md5);
+    SAFE_FREE(st->error_string);
+    SAFE_FREE(st->destpath);
+    SAFE_FREE(st);
   }
 }
 
