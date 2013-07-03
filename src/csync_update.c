@@ -230,8 +230,7 @@ out:
   }
   ctx->current_fs = st;
 
-  if( tmp) SAFE_FREE(tmp->md5);
-  SAFE_FREE(tmp);
+  csync_file_stat_free(tmp);
   st->inode = fs->inode;
   st->mode  = fs->mode;
   st->size  = fs->size;
@@ -305,10 +304,8 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
     if( !st ) {
       return 0;
     }
-    SAFE_FREE(st->md5);
-    SAFE_FREE(st->destpath);
-    SAFE_FREE(st->error_string);
-    SAFE_FREE(st);
+    csync_file_stat_free(st);
+    st = NULL;
 
     type = CSYNC_FTW_TYPE_SKIP;
     break;

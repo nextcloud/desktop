@@ -737,6 +737,7 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
         if( redir_ne_uri ) {
             redir_uri = ne_uri_unparse(redir_ne_uri);
             DEBUG_WEBDAV("Permanently moved to %s", redir_uri);
+            SAFE_FREE(redir_uri);
         }
     }
 
