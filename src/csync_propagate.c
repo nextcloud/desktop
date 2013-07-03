@@ -1422,6 +1422,52 @@ static int _csync_propagation_cleanup(CSYNC *ctx) {
   return 0;
 }
 
+static int _csync_propagation_rename_file_visitor(void *obj, void *data) {
+  csync_file_stat_t *st = NULL;
+  CSYNC *ctx = NULL;
+  int rc = 0;
+
+  st = (csync_file_stat_t *) obj;
+  ctx = (CSYNC *) data;
+
+  if (ctx->abort) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Aborted!");
+    ctx->error_code = CSYNC_ERR_ABORTED;
+    return -1;
+  }
+
+  switch(st->type) {
+    case CSYNC_FTW_TYPE_SLINK:
+      break;
+    case CSYNC_FTW_TYPE_FILE:
+      switch (st->instruction) {
+        case CSYNC_INSTRUCTION_RENAME:
+          if ((rc = _csync_rename_file(ctx, st)) < 0) {
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"FAIL RENAME: %s",st->path);
+            goto err;
+          }
+          break;
+        default:
+          break;
+      }
+      break;
+    case CSYNC_FTW_TYPE_DIR:
+      /*
+       * We have to walk over the files first. If you create or rename a file
+       * in a directory on unix. The modification time of the directory gets
+       * changed.
+       */
+      break;
+    default:
+      break;
+  }
+
+  return rc;
+err:
+  return -1;
+}
+
+
 static int _csync_propagation_file_visitor(void *obj, void *data) {
   csync_file_stat_t *st = NULL;
   CSYNC *ctx = NULL;
@@ -1444,12 +1490,6 @@ static int _csync_propagation_file_visitor(void *obj, void *data) {
         case CSYNC_INSTRUCTION_NEW:
           if ((rc = _csync_new_file(ctx, st)) < 0) {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"FAIL NEW: %s",st->path);
-            goto err;
-          }
-          break;
-        case CSYNC_INSTRUCTION_RENAME:
-          if ((rc = _csync_rename_file(ctx, st)) < 0) {
-            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"FAIL RENAME: %s",st->path);
             goto err;
           }
           break;
@@ -1565,6 +1605,10 @@ int csync_propagate_files(CSYNC *ctx) {
       break;
     default:
       break;
+  }
+
+  if (c_rbtree_walk(tree, (void *) ctx, _csync_propagation_rename_file_visitor) < 0) {
+    return -1;
   }
 
   if (c_rbtree_walk(tree, (void *) ctx, _csync_propagation_file_visitor) < 0) {
