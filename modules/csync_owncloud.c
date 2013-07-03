@@ -1480,7 +1480,6 @@ static csync_vio_file_stat_t *owncloud_readdir(csync_vio_method_handle_t *dhandl
         }
 
         /* This is the target URI */
-        DEBUG_WEBDAV( "Skipping target resource.");
         SAFE_FREE( escaped_path );
     }
 
