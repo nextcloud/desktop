@@ -1,6 +1,5 @@
 project(modules C)
 
-find_package(Libsmbclient)
 find_package(LibSSH 0.4.0)
 find_package(Neon)
 
@@ -33,18 +32,19 @@ include_directories(
   ${MODULES_PRIVATE_INCLUDE_DIRS}
 )
 
-if(LIBSMBCLIENT_FOUND)
-include_directories(${LIBSMBCLIENT_INCLUDE_DIRS})
-macro_add_plugin(${SMB_PLUGIN} csync_smb.c)
-target_link_libraries(${SMB_PLUGIN} ${CSYNC_LIBRARY} ${LIBSMBCLIENT_LIBRARIES})
+find_package(SMBClient)
+if(SMBCLIENT_LIBRARY)
+    include_directories(${SMBCLIENT_INCLUDE_DIRS})
+    macro_add_plugin(${SMB_PLUGIN} csync_smb.c)
+    target_link_libraries(${SMB_PLUGIN} ${CSYNC_LIBRARY} ${SMBCLIENT_LIBRARIES})
 
-install(
-  TARGETS
-    ${SMB_PLUGIN}
-  DESTINATION
-    ${PLUGIN_VERSION_INSTALL_DIR}
-)
-endif()
+    install(
+        TARGETS
+            ${SMB_PLUGIN}
+        DESTINATION
+            ${PLUGIN_VERSION_INSTALL_DIR}
+    )
+endif(SMBCLIENT_LIBRARY)
 
 macro_add_plugin(csync_dummy csync_dummy.c)
 target_link_libraries(csync_dummy ${CSYNC_LIBRARY})
