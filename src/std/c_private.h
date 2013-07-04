@@ -43,7 +43,6 @@
 #define S_IFLNK 10001  /* dummy val on Win32 */
 
 #define O_NOFOLLOW 0
-#define O_NOATIME 0
 #define O_NOCTTY 0
 
 #define uid_t int
@@ -57,6 +56,10 @@
 typedef struct _stat csync_stat_t;
 #else
 typedef struct stat csync_stat_t;
+#endif
+
+#ifndef O_NOATIME
+#define O_NOATIME 0
 #endif
 
 #ifndef HAVE_STRERROR_R
