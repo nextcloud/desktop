@@ -832,6 +832,7 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
       if( !(st->path && st->destpath) ) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Rename failed: src or dest path empty");
           rc = -1;
+	  goto out;
       }
       if (_csync_build_remote_uri(ctx, &suri, st->path) < 0) {
         rc = -1;
@@ -849,9 +850,9 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
     default:
       break;
   }
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Renaming %s => %s", suri, duri);
 
   if (! c_streq(suri, duri) && rc > -1) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Renaming %s => %s", suri, duri);
     while ((rc = csync_vio_rename(ctx, suri, duri)) != 0) {
         switch (errno) {
         case ENOENT:
