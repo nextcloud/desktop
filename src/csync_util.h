@@ -33,4 +33,7 @@ int csync_merge_file_trees(CSYNC *ctx);
 
 int csync_unix_extensions(CSYNC *ctx);
 
+/* Convert a csync_file_stat_t to csync_vio_file_stat_t */
+csync_vio_file_stat_t *csync_vio_convert_file_stat(csync_file_stat_t *st);
+
 #endif /* _CSYNC_UTIL_H */
