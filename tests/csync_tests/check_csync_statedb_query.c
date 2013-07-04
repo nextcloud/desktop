@@ -99,6 +99,8 @@ static void check_csync_statedb_create_error(void **state)
 
     result = csync_statedb_query(csync->statedb.db, "CREATE TABLE test(phash INTEGER, text VARCHAR(10));");
     assert_null(result);
+
+    c_strlist_destroy(result);
 }
 
 static void check_csync_statedb_insert_statement(void **state)
