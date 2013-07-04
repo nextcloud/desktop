@@ -146,10 +146,10 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **pdb) {
   int rc = -1;
   c_strlist_t *result = NULL;
   char *statedb_tmp = NULL;
-  sqlite3 *db;
+  sqlite3 *db = NULL;
 
-  if (_csync_statedb_check(statedb) < 0) {
-    rc = -1;
+  rc = _csync_statedb_check(statedb);
+  if (rc < 0) {
     goto out;
   }
 
@@ -159,13 +159,14 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **pdb) {
    * The intention is that if something goes wrong we will not loose the
    * statedb.
    */
-  if (asprintf(&statedb_tmp, "%s.ctmp", statedb) < 0) {
+  rc = asprintf(&statedb_tmp, "%s.ctmp", statedb);
+  if (rc < 0) {
     rc = -1;
     goto out;
   }
 
-  if (c_copy(statedb, statedb_tmp, 0644) < 0) {
-    rc = -1;
+  rc = c_copy(statedb, statedb_tmp, 0644);
+  if (rc < 0) {
     goto out;
   }
 
