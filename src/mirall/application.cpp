@@ -392,6 +392,8 @@ void Application::slotownCloudWizardDone( int res )
     if( res == QDialog::Accepted ) {
         int cnt = _folderMan->setupFolders();
         qDebug() << "Set up " << cnt << " folders.";
+        // We have some sort of configuration. Enable autostart
+        Utility::setLaunchOnStartup(true);
 // FIXME!
 //        _statusDialog->setFolderList( _folderMan->map() );
     }
