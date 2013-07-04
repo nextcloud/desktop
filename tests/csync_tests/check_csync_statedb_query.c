@@ -259,6 +259,8 @@ static void check_csync_statedb_get_stat_by_hash_not_found(void **state)
 
     tmp = csync_statedb_get_stat_by_hash(csync->statedb.db, (uint64_t) 666);
     assert_null(tmp);
+
+    free(tmp);
 }
 
 static void check_csync_statedb_get_stat_by_inode(void **state)
