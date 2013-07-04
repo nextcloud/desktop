@@ -17,6 +17,7 @@
 #include "mirall/theme.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/application.h"
+#include "mirall/utility.h"
 
 #include <QNetworkProxy>
 
@@ -39,7 +40,8 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
 
     // not implemented yet
     _ui->desktopNotificationsCheckBox->setEnabled(false);
-    _ui->autostartCheckBox->setEnabled(false);
+    _ui->autostartCheckBox->setChecked(Utility::hasLaunchOnStartup());
+    connect(_ui->autostartCheckBox, SIGNAL(toggled(bool)), SLOT(slotToggleLaunchOnStartup(bool)));
 
     // setup about section
     QString about = Theme::instance()->about();
@@ -125,6 +127,11 @@ void GeneralSettings::saveMiscSettings()
     bool isChecked = _ui->monoIconsCheckBox->isChecked();
     cfgFile.setMonoIcons(isChecked);
     Theme::instance()->setSystrayUseMonoIcons(isChecked);
+}
+
+void GeneralSettings::slotToggleLaunchOnStartup(bool enable)
+{
+    Utility::setLaunchOnStartup(enable);
 }
 
 void GeneralSettings::saveProxySettings()

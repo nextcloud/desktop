@@ -14,13 +14,14 @@
 #include "utility.h"
 
 #include "mirall/version.h"
+#include "mirall/theme.h"
 
 #include <QCoreApplication>
+#include <QSettings>
 #include <QDir>
 #include <QFile>
 #include <QUrl>
 #include <QWidget>
-
 #include <QDebug>
 
 #ifdef Q_OS_MAC
@@ -87,8 +88,6 @@ void Utility::setupFavLink(const QString &folder)
             gtkBookmarks.reset();
             gtkBookmarks.write(places + '\n');
         }
-
-
     }
 
 #endif
@@ -159,6 +158,84 @@ void Utility::raiseDialog( QWidget *raiseWidget )
         raiseWidget->raise();
         raiseWidget->activateWindow();
     }
+}
+
+static const char runPathC[] = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
+
+bool Utility::hasLaunchOnStartup()
+{
+    QString appName = Theme::instance()->appName();
+#if defined(Q_OS_WIN)
+    QString runPath(QLatin1String(runPathC));
+    QSettings settings(runPath, QSettings::NativeFormat);
+    return settings.contains(appName);
+#elif defined(Q_OS_MAC)
+// implement me
+#elif defined(Q_OS_UNIX)
+    QString userAutoStartPath = QDir::homePath()+QLatin1String("/.config/autostart/");
+    QString desktopFileLocation = userAutoStartPath+appName+QLatin1String(".desktop");
+    return QFile::exists(desktopFileLocation);
+#endif
+}
+
+void Utility::setLaunchOnStartup(bool enable)
+{
+    QString appName = Theme::instance()->appName();
+#if defined(Q_OS_WIN)
+    QString runPath(QLatin1String(runPathC));
+    QSettings settings(runPath, QSettings::NativeFormat);
+    if (enable) {
+        settings.setValue(appName, QCoreApplication::applicationFilePath().replace('/','\\'));
+    } else {
+        settings.remove(appName);
+    }
+#elif defined(Q_OS_MAC)
+    if (enable) {
+        // Finder: Place under "Places"/"Favorites" on the left sidebar
+        QString filePath = QDir(applicationDirPath+QLatin1String("/../..")).absolutePath();
+        CFStringRef folderCFStr = CFStringCreateWithCString(0, filePath.toUtf8().data(), kCFStringEncodingUTF8);
+        CFURLRef urlRef = CFURLCreateWithFileSystemPath (0, folderCFStr, kCFURLPOSIXPathStyle, true);
+
+        LSSharedFileListRef loginItems = LSSharedFileListCreate(0, kLSSharedFileListSessionLoginItems, 0);
+        if (loginItems) {
+            //Insert an item to the list.
+            LSSharedFileListItemRef item = LSSharedFileListInsertItemURL(loginItems,
+                                                                         kLSSharedFileListItemLast, 0, 0,
+                                                                         urlRef, 0, 0);
+            if (item)
+                CFRelease(item);
+        }
+        CFRelease(loginItems);
+        CFRelease(folderCFStr);
+        CFRelease(urlRef);
+    } else {
+        // implement me
+    }
+#elif defined(Q_OS_UNIX)
+    QString userAutoStartPath = QDir::homePath()+QLatin1String("/.config/autostart/");
+    QString desktopFileLocation = userAutoStartPath+appName+QLatin1String(".desktop");
+    if (enable) {
+        if (!QDir().exists(userAutoStartPath) && !QDir().mkdir(userAutoStartPath)) {
+            qDebug() << "Could not create autostart directory";
+            return;
+        }
+        QSettings desktopFile(desktopFileLocation, QSettings::IniFormat);
+        desktopFile.beginGroup("Desktop Entry");
+        desktopFile.setValue(QLatin1String("Name"), Theme::instance()->appNameGUI());
+        desktopFile.setValue(QLatin1String("GenericName"), QLatin1String("File Synchronizer"));
+        desktopFile.setValue(QLatin1String("Exec"), QCoreApplication::applicationFilePath());
+        desktopFile.setValue(QLatin1String("Terminal"), false);
+        desktopFile.setValue(QLatin1String("Icon"), appName);
+        desktopFile.setValue(QLatin1String("Categories"), QLatin1String("Network"));
+        desktopFile.setValue(QLatin1String("StartupNotify"), false);
+        desktopFile.endGroup();
+    } else {
+        if (!QFile::remove(desktopFileLocation)) {
+            qDebug() << "Could not remove autostart desktop file";
+        }
+    }
+
+#endif
 }
 
 } // namespace Mirall

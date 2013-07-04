@@ -37,6 +37,7 @@ signals:
 private slots:
     void saveProxySettings();
     void saveMiscSettings();
+    void slotToggleLaunchOnStartup(bool);
 
 private:
     void loadProxySettings();
