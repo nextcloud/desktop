@@ -65,4 +65,6 @@ char *csync_vio_get_status_string(CSYNC *ctx);
 
 int csync_vio_commit(CSYNC *ctx);
 
+int csync_vio_getfd(csync_vio_handle_t *fhandle);
+
 #endif /* _CSYNC_VIO_H */
