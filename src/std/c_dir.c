@@ -178,8 +178,10 @@ int c_isdir(const char *path) {
   mbchar_t *wpath = c_utf8_to_locale(path);
   int re = 0;
 
-  if (_tstat (wpath, &sb) == 0 && S_ISDIR(sb.st_mode)) {
-   re = 1;
+  if (path != NULL) {
+      if (_tstat (wpath, &sb) == 0 && S_ISDIR(sb.st_mode)) {
+          re = 1;
+      }
   }
   c_free_locale_string(wpath);
   return re;
