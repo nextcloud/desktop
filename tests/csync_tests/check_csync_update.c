@@ -184,6 +184,9 @@ static void check_csync_detect_update(void **state)
     csync_vio_file_stat_destroy(fs);
 }
 
+/* Test behaviour in case no db is there. For that its important that the
+ * test before this one uses teardown_rm.
+ */
 static void check_csync_detect_update_db_none(void **state)
 {
     CSYNC *csync = *state;
@@ -396,7 +399,7 @@ static void check_csync_ftw_failing_fn(void **state)
 int torture_run_tests(void)
 {
     const UnitTest tests[] = {
-        unit_test_setup_teardown(check_csync_detect_update, setup, teardown),
+        unit_test_setup_teardown(check_csync_detect_update, setup, teardown_rm),
         unit_test_setup_teardown(check_csync_detect_update_db_none, setup, teardown),
         unit_test_setup_teardown(check_csync_detect_update_db_eval, setup, teardown),
         unit_test_setup_teardown(check_csync_detect_update_db_rename, setup, teardown),
