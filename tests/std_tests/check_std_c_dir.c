@@ -116,14 +116,14 @@ static void check_c_isdir(void **state)
 {
     (void) state; /* unused */
 
-    assert_int_equal(c_isdir(NULL), 0);
+    assert_int_equal(c_isdir(check_dir), 1);
 }
 
 static void check_c_isdir_on_file(void **state)
 {
     (void) state; /* unused */
 
-    assert_int_equal(c_isdir(NULL), 0);
+    assert_int_equal(c_isdir(check_file), 0);
 }
 
 static void check_c_isdir_null(void **state)
