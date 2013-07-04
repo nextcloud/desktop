@@ -247,7 +247,7 @@ static void check_csync_detect_update_db_rename(void **state)
     int rc;
     char *stmt = NULL;
 
-    rc = csync_statedb_create_tables(csync, csync->statedb.db);
+    rc = csync_statedb_create_tables(csync->statedb.db);
     assert_int_equal(rc, 0);
 
     stmt = sqlite3_mprintf("INSERT INTO metadata"
@@ -262,7 +262,7 @@ static void check_csync_detect_update_db_rename(void **state)
         42,
         42);
 
-    rc = csync_statedb_insert(csync, csync->statedb.db, stmt);
+    rc = csync_statedb_insert(csync->statedb.db, stmt);
     sqlite3_free(stmt);
 
     fs = create_fstat("wurst.txt", 0, 1, 0);

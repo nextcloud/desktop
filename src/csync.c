@@ -683,7 +683,7 @@ static int  _merge_and_write_statedb(CSYNC *ctx) {
         }
       }
     }
-    rc = csync_statedb_close(ctx, ctx->statedb.file, ctx->statedb.db, jwritten);
+    rc = csync_statedb_close(ctx->statedb.file, ctx->statedb.db, jwritten);
     ctx->statedb.db = NULL;
     if (rc < 0) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "ERR: closing of statedb failed.");

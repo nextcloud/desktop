@@ -44,27 +44,28 @@ static void teardown(void **state) {
 static void check_csync_statedb_check(void **state)
 {
     int rc;
-    CSYNC *csync = *state;
+
+    (void) state; /* unused */
 
     rc = system("mkdir -p /tmp/check_csync1");
 
     /* old db */
     rc = system("echo \"SQLite format 2\" > /tmp/check_csync1/test.db");
     assert_int_equal(rc, 0);
-    rc = _csync_statedb_check(csync, TESTDB);
+    rc = _csync_statedb_check(TESTDB);
     assert_int_equal(rc, 0);
 
     /* db already exists */
-    rc = _csync_statedb_check(csync, TESTDB);
+    rc = _csync_statedb_check(TESTDB);
     assert_int_equal(rc, 0);
 
     /* no db exists */
     rc = system("rm -f /tmp/check_csync1/test.db");
     assert_int_equal(rc, 0);
-    rc = _csync_statedb_check(csync, TESTDB);
+    rc = _csync_statedb_check(TESTDB);
     assert_int_equal(rc, 0);
 
-    rc = _csync_statedb_check(csync, "/tmp/check_csync1/");
+    rc = _csync_statedb_check("/tmp/check_csync1/");
     assert_int_equal(rc, -1);
 
     rc = system("rm -rf /tmp/check_csync1");
@@ -104,7 +105,7 @@ static void check_csync_statedb_close(void **state)
     assert_int_equal(rc, 0);
     modtime = sb.st_mtime;
 
-    rc = csync_statedb_close(csync, TESTDB, csync->statedb.db, 0);
+    rc = csync_statedb_close(TESTDB, csync->statedb.db, 0);
     assert_int_equal(rc, 0);
 
     rc = _tstat(testdb, &sb);
@@ -121,7 +122,7 @@ static void check_csync_statedb_close(void **state)
     sleep(1);
 
     /* statedb written */
-    rc = csync_statedb_close(csync, TESTDB, csync->statedb.db, 1);
+    rc = csync_statedb_close(TESTDB, csync->statedb.db, 1);
     assert_int_equal(rc, 0);
 
     rc = _tstat(testdb, &sb);
