@@ -74,10 +74,15 @@ int c_copy(const char* src, const char *dst, mode_t mode) {
       if (CopyFileW(wsrc, wdst, FALSE)) {
           rc = 0;
       }
-      errno = GetLastError();
 
-      return -1;
+      if( rc < 0 ) {
+          errno = GetLastError();
+          _tunlink(wdst);
+      }
+      c_free_locale_string(wsrc);
+      c_free_locale_string(wdst);
   }
+  return rc;
 #else
 
   /* Win32 does not come here. */
