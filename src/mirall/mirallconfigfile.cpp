@@ -49,6 +49,21 @@ void MirallConfigFile::setConfDir(const QString &value)
     }
 }
 
+bool MirallConfigFile::optionalDesktopNotifications() const
+{
+    QSettings settings( configFile(), QSettings::IniFormat );
+    settings.setIniCodec( "UTF-8" );
+    return settings.value(QLatin1String("optionalDesktopNotifications"), true).toBool();
+}
+
+void MirallConfigFile::setOptionalDesktopNotifications(bool show)
+{
+    QSettings settings( configFile(), QSettings::IniFormat );
+    settings.setIniCodec( "UTF-8" );
+    settings.setValue(QLatin1String("optionalDesktopNotifications"), show);
+    settings.sync();
+}
+
 QString MirallConfigFile::seenVersion() const
 {
     QSettings settings( configFile(), QSettings::IniFormat );

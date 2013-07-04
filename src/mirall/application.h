@@ -85,6 +85,7 @@ protected slots:
     void slotSettings();
     void slotParseOptions( const QString& );
     void slotShowTrayMessage(const QString&, const QString&);
+    void slotShowOptionalTrayMessage(const QString&, const QString&);
 
     void slotSyncStateChange( const QString& );
     void slotTrayClicked( QSystemTrayIcon::ActivationReason );

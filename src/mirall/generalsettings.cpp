@@ -18,6 +18,7 @@
 #include "mirall/mirallconfigfile.h"
 #include "mirall/application.h"
 #include "mirall/utility.h"
+#include "mirall/mirallconfigfile.h"
 
 #include <QNetworkProxy>
 
@@ -38,8 +39,11 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
     _ui->typeComboBox->addItem(tr("HTTP(S) proxy"), QNetworkProxy::HttpProxy);
     _ui->typeComboBox->addItem(tr("SOCKS5 proxy"), QNetworkProxy::Socks5Proxy);
 
-    // not implemented yet
-    _ui->desktopNotificationsCheckBox->setEnabled(false);
+    MirallConfigFile cfgFile;
+    _ui->desktopNotificationsCheckBox->setChecked(cfgFile.optionalDesktopNotifications());
+    connect(_ui->desktopNotificationsCheckBox, SIGNAL(toggled(bool)),
+            SLOT(slotToggleOptionalDesktopNotifications(bool)));
+
     _ui->autostartCheckBox->setChecked(Utility::hasLaunchOnStartup());
     connect(_ui->autostartCheckBox, SIGNAL(toggled(bool)), SLOT(slotToggleLaunchOnStartup(bool)));
 
@@ -132,6 +136,12 @@ void GeneralSettings::saveMiscSettings()
 void GeneralSettings::slotToggleLaunchOnStartup(bool enable)
 {
     Utility::setLaunchOnStartup(enable);
+}
+
+void GeneralSettings::slotToggleOptionalDesktopNotifications(bool enable)
+{
+    MirallConfigFile cfgFile;
+    cfgFile.setOptionalDesktopNotifications(enable);
 }
 
 void GeneralSettings::saveProxySettings()

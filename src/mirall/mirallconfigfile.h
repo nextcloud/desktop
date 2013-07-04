@@ -103,6 +103,9 @@ public:
     
     static void setConfDir(const QString &value);
 
+    bool optionalDesktopNotifications() const;
+    void setOptionalDesktopNotifications(bool show);
+
     QString seenVersion() const;
     void setSeenVersion(const QString &version);
 protected:

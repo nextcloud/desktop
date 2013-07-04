@@ -72,7 +72,7 @@ ownCloudFolder::ownCloudFolder(const QString &alias,
     , _csync_ctx(0)
 {
     ServerActionNotifier *notifier = new ServerActionNotifier(this);
-    connect(notifier, SIGNAL(guiLog(QString,QString)), Logger::instance(), SIGNAL(guiLog(QString,QString)));
+    connect(notifier, SIGNAL(guiLog(QString,QString)), Logger::instance(), SIGNAL(optionalGuiLog(QString,QString)));
     connect(this, SIGNAL(syncFinished(SyncResult)), notifier, SLOT(slotSyncFinished(SyncResult)));
     qDebug() << "****** ownCloud folder using watcher *******";
     // The folder interval is set in the folder parent class.

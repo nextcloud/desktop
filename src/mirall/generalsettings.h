@@ -38,6 +38,7 @@ private slots:
     void saveProxySettings();
     void saveMiscSettings();
     void slotToggleLaunchOnStartup(bool);
+    void slotToggleOptionalDesktopNotifications(bool);
 
 private:
     void loadProxySettings();

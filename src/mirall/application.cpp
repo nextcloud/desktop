@@ -116,6 +116,8 @@ Application::Application(int &argc, char **argv) :
     connect( this, SIGNAL(messageReceived(QString)), SLOT(slotParseOptions(QString)));
     connect( Logger::instance(), SIGNAL(guiLog(QString,QString)),
              this, SLOT(slotShowTrayMessage(QString,QString)));
+    connect( Logger::instance(), SIGNAL(optionalGuiLog(QString,QString)),
+             this, SLOT(slotShowOptionalTrayMessage(QString,QString)));
     // create folder manager for sync folder management
     _folderMan = new FolderMan(this);
     connect( _folderMan, SIGNAL(folderSyncStateChange(QString)),
@@ -715,6 +717,13 @@ void Application::slotShowTrayMessage(const QString &title, const QString &msg)
         _tray->showMessage(title, msg);
     else
         qDebug() << "Tray not ready: " << msg;
+}
+
+void Application::slotShowOptionalTrayMessage(const QString &title, const QString &msg)
+{
+    MirallConfigFile cfg;
+    if (cfg.optionalDesktopNotifications())
+        slotShowTrayMessage(title, msg);
 }
 
 void Application::slotSyncStateChange( const QString& alias )
