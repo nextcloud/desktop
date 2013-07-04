@@ -15,8 +15,6 @@
 #ifndef FOLDERSTATUSMODEL_H
 #define FOLDERSTATUSMODEL_H
 
-#include "ui_statusdialog.h"
-
 #include <QStyledItemDelegate>
 #include <QStandardItemModel>
 
