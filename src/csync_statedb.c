@@ -240,6 +240,7 @@ int csync_statedb_write(CSYNC *ctx, sqlite3 *db)
 int csync_statedb_close(const char *statedb, sqlite3 *db, int jwritten) {
   char *statedb_tmp = NULL;
   int rc = 0;
+  mbchar_t *mb_statedb = NULL;
 
   /* close the temporary database */
   sqlite3_close(db);
@@ -248,14 +249,35 @@ int csync_statedb_close(const char *statedb, sqlite3 *db, int jwritten) {
     return -1;
   }
 
-  /* if we successfully synchronized, overwrite the original statedb */
+  /* If we successfully synchronized, overwrite the original statedb */
+
+  /*
+   * Check the integrity of the tmp db. If ok, overwrite the old database with
+   * the tmp db.
+   */
   if (jwritten) {
-    rc = c_copy(statedb_tmp, statedb, 0644);
-    if (rc == 0) {
-      unlink(statedb_tmp);
-    }
-  } else {
-    unlink(statedb_tmp);
+      if (_csync_statedb_check(ctx, statedb_tmp) == 0) {
+          /* New statedb is valid. */
+          mb_statedb = c_utf8_to_locale(statedb);
+
+          /* Move the tmp-db to the real one. */
+          if (c_rename(statedb_tmp, statedb) < 0) {
+              CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+                        "Renaming tmp db to original db failed.");
+              rc = -1;
+          } else {
+              CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+                        "Successfully moved tmp db to original db.");
+          }
+      } else {
+          mb_statedb = c_utf8_to_locale(statedb_tmp);
+          _tunlink(mb_statedb);
+
+          /* new statedb_tmp is not integer. */
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "  ## csync tmp statedb corrupt. Original one is not replaced. ");
+          rc = -1;
+      }
+      c_free_locale_string(mb_statedb);
   }
   SAFE_FREE(statedb_tmp);
 
