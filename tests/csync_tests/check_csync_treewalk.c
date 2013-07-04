@@ -5,112 +5,179 @@
 #define CSYNC_TEST 1
 #include "csync_config.c"
 
-CSYNC *csync;
-int    file_count;
-
 static void setup_local(void **state) {
-  (void) state; /* unused */
-  assert_int_equal(system("mkdir -p /tmp/check_csync1"), 0);
-  assert_int_equal(system("mkdir -p /tmp/check_csync2"), 0);
-  assert_int_equal(system("mkdir -p /tmp/check_csync"), 0);
-  assert_int_equal(system("echo \"This is test data\" > /tmp/check_csync1/testfile1.txt"), 0);
-  assert_int_equal(system("echo \"This is also test data\" > /tmp/check_csync1/testfile2.txt"), 0);
+    CSYNC *csync;
+    int rc;
 
-  assert_int_equal(csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2"), 0);
-  assert_int_equal(csync_set_config_dir(csync, "/tmp/check_csync/"), 0);
-  assert_int_equal(csync_init(csync), 0);
-  
-  file_count = 0;
-  printf("********** setting up local!\n");
+    rc = system("mkdir -p /tmp/check_csync1");
+    assert_int_equal(rc, 0);
+
+    rc = system("mkdir -p /tmp/check_csync2");
+    assert_int_equal(rc, 0);
+
+    rc = system("mkdir -p /tmp/check_csync");
+    assert_int_equal(rc, 0);
+
+    rc = system("echo \"This is test data\" > /tmp/check_csync1/testfile1.txt");
+    assert_int_equal(rc, 0);
+
+    rc = system("echo \"This is also test data\" > /tmp/check_csync1/testfile2.txt");
+    assert_int_equal(rc, 0);
+
+    rc = csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
+    assert_int_equal(rc, 0);
+
+    rc = csync_set_config_dir(csync, "/tmp/check_csync/");
+    assert_int_equal(rc, 0);
+
+    rc = csync_init(csync);
+    assert_int_equal(rc, 0);
+
+    *state = csync;
 }
 
 static void teardown_local(void **state) {
-  (void) state; /* unused */
-  assert_int_equal(csync_destroy(csync),0 );
-  assert_int_equal(system("rm -rf /tmp/check_csync1"), 0);
-  assert_int_equal(system("rm -rf /tmp/check_csync2"), 0);
-  assert_int_equal(system("rm -rf /tmp/check_csync"), 0);
-  printf("********** tearing down local\n");
+    CSYNC *csync = (CSYNC *)*state;
+
+    csync_destroy(csync);
+    system("rm -rf /tmp/check_csync1");
+    system("rm -rf /tmp/check_csync2");
+    system("rm -rf /tmp/check_csync");
 }
 
 static void setup_remote(void **state) {
-  (void) state; /* unused */
-  assert_int_equal(system("mkdir -p /tmp/check_csync1"), 0);
-  assert_int_equal(system("mkdir -p /tmp/check_csync2"), 0);
-  assert_int_equal(system("echo \"This is test data\" > /tmp/check_csync1/testfile1.txt"), 0);
-  assert_int_equal(system("echo \"This is also test data\" > /tmp/check_csync1/testfile2.txt"), 0);
+    CSYNC *csync = (CSYNC *)*state;
+    int rc;
 
-  assert_int_equal(csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2"), 0);
-  assert_int_equal(csync_set_config_dir(csync, "/tmp/check_csync/"), 0);
-  assert_int_equal(csync_init(csync), 0);
-  assert_int_equal(csync_update(csync), 0);
-  assert_int_equal(csync_reconcile(csync), 0);
-  assert_int_equal(csync_propagate(csync), 0);
-  
-  file_count = 0;
+    rc = system("mkdir -p /tmp/check_csync1");
+    assert_int_equal(rc, 0);
+
+    rc = system("mkdir -p /tmp/check_csync2");
+    assert_int_equal(rc, 0);
+
+    rc = system("echo \"This is test data\" > /tmp/check_csync1/testfile1.txt");
+    assert_int_equal(rc, 0);
+
+    rc = system("echo \"This is also test data\" > /tmp/check_csync1/testfile2.txt");
+    assert_int_equal(rc, 0);
+
+    rc = csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
+    assert_int_equal(rc, 0);
+
+    rc = csync_set_config_dir(csync, "/tmp/check_csync/");
+    assert_int_equal(rc, 0);
+
+    rc = csync_init(csync);
+    assert_int_equal(rc, 0);
+
+    rc = csync_update(csync);
+    assert_int_equal(rc, 0);
+
+    rc = csync_reconcile(csync);
+    assert_int_equal(rc, 0);
+
+    rc = csync_propagate(csync);
+    assert_int_equal(rc, 0);
+
+    *state = csync;
 }
 
 static void teardown_remote(void **state) {
-  (void) state; /* unused */
-  assert_int_equal(csync_destroy(csync), 0);
-  assert_int_equal(system("rm -rf /tmp/check_csync1"), 0);
-  assert_int_equal(system("rm -rf /tmp/check_csync2"), 0);
+    CSYNC *csync = (CSYNC *)*state;
+
+    csync_destroy(csync);
+    system("rm -rf /tmp/check_csync1");
+    system("rm -rf /tmp/check_csync2");
 }
-
-
 
 static int visitor(TREE_WALK_FILE* file, void *userdata)
 {
-  if( userdata ) printf("Userdata is set!\n");
-  assert_non_null(file);
-  printf("Found path: %s\n", file->path);
-  file_count++;
-  return 0;
+    int *file_count;
+
+    assert_non_null(userdata);
+    assert_non_null(file);
+
+    file_count = (int *)userdata;
+
+    (*file_count)++;
+
+    return 0;
 }
 
 static void check_csync_treewalk_local(void **state)
 {
-  (void) state; /* unused */
-  assert_int_equal(csync_walk_local_tree(csync, &visitor, 0), 0);
-  assert_int_equal(file_count, 0);
-  assert_int_equal(csync_update(csync), 0);
-  assert_int_equal(csync_walk_local_tree(csync, &visitor, 0), 0);
-  assert_int_equal(file_count, 2 );
+    CSYNC *csync = (CSYNC *)*state;
+    int file_count = 0;
+    int rc;
+
+    csync_set_userdata(csync, (void *)&file_count);
+
+    rc = csync_walk_local_tree(csync, &visitor, 0);
+    assert_int_equal(rc, 0);
+    assert_int_equal(file_count, 0);
+
+    rc = csync_update(csync);
+    assert_int_equal(rc, 0);
+
+    rc = csync_walk_local_tree(csync, &visitor, 0);
+    assert_int_equal(rc, 0);
+    assert_int_equal(file_count, 2);
 }
 
 static void check_csync_treewalk_remote(void **state)
 {
-  (void) state; /* unused */
-  assert_non_null(csync->remote.tree);
+    CSYNC *csync = (CSYNC *)*state;
+    int file_count = 0;
+    int rc;
 
-  assert_int_equal(csync_walk_remote_tree(csync, &visitor, 0), 0);
-  assert_int_equal(file_count, 0);
-  /* reconcile doesn't update the tree */
-  assert_int_equal(csync_update(csync), 0);
+    csync_set_userdata(csync, &file_count);
 
-  assert_int_equal(csync_walk_remote_tree(csync, &visitor, 0), 0);
+    assert_non_null(csync->remote.tree);
 
-  assert_int_equal(file_count, 2);
+    rc = csync_walk_remote_tree(csync, &visitor, 0);
+    assert_int_equal(rc, 0);
+    assert_int_equal(file_count, 0);
+
+    /* reconcile doesn't update the tree */
+    rc = csync_update(csync);
+    assert_int_equal(rc, 0);
+
+    rc = csync_walk_remote_tree(csync, &visitor, 0);
+    assert_int_equal(rc, 0);
+
+    assert_int_equal(file_count, 2);
 }
 
 static void check_csync_treewalk_local_with_filter(void **state)
 {
-  (void) state; /* unused */
-  assert_int_equal(csync_walk_local_tree(csync, &visitor, 0), 0);
-  assert_int_equal(file_count, 0);
-  assert_int_equal(csync_update(csync), 0);
+    CSYNC *csync = (CSYNC *)*state;
+    int file_count = 0;
+    int rc;
 
-  assert_int_equal(csync_walk_local_tree(csync, &visitor, CSYNC_INSTRUCTION_NEW), 0);
-  assert_int_equal(file_count, 2 );
+    csync_set_userdata(csync, &file_count);
 
-  file_count = 0;
-  assert_int_equal(csync_walk_local_tree(csync, &visitor, CSYNC_INSTRUCTION_NEW | CSYNC_INSTRUCTION_REMOVE), 0);
-  assert_int_equal(file_count, 2 );
+    rc = csync_walk_local_tree(csync, &visitor, 0);
+    assert_int_equal(rc, 0);
+    assert_int_equal(file_count, 0);
 
-  file_count = 0;
-  assert_int_equal(csync_walk_local_tree(csync, &visitor, CSYNC_INSTRUCTION_RENAME), 0);
-  assert_int_equal(file_count, 0);
+    rc = csync_update(csync);
+    assert_int_equal(rc, 0);
 
+    rc = csync_walk_local_tree(csync, &visitor, CSYNC_INSTRUCTION_NEW);
+    assert_int_equal(rc, 0);
+    assert_int_equal(file_count, 2 );
+
+    file_count = 0;
+    rc = csync_walk_local_tree(csync,
+                               &visitor,
+                               CSYNC_INSTRUCTION_NEW|CSYNC_INSTRUCTION_REMOVE);
+    assert_int_equal(rc, 0);
+    assert_int_equal(file_count, 2);
+
+    file_count = 0;
+    rc = csync_walk_local_tree(csync, &visitor, CSYNC_INSTRUCTION_RENAME);
+    assert_int_equal(rc, 0);
+    assert_int_equal(file_count, 0);
 }
 
 int torture_run_tests(void)
