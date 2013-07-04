@@ -256,7 +256,7 @@ int csync_statedb_close(const char *statedb, sqlite3 *db, int jwritten) {
    * the tmp db.
    */
   if (jwritten) {
-      if (_csync_statedb_check(ctx, statedb_tmp) == 0) {
+      if (_csync_statedb_check(statedb_tmp) == 0) {
           /* New statedb is valid. */
           mb_statedb = c_utf8_to_locale(statedb);
 
