@@ -261,9 +261,8 @@ int csync_vio_close(CSYNC *ctx, csync_vio_handle_t *fhandle) {
   return rc;
 }
 
-int csync_vio_getfd(CSYNC *ctx, csync_vio_handle_t *fhandle) {
+int csync_vio_getfd(csync_vio_handle_t *fhandle) {
   int fd = -1;
-  (void) ctx;
 
   if (fhandle == NULL) {
     errno = EBADF;

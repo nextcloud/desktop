@@ -29,4 +29,7 @@ extern csync_vio_method_t *vio_module_init(const char *method_name,
     const char *args, csync_auth_callback cb, void *userdata);
 extern void vio_module_shutdown(csync_vio_method_t *method);
 
+extern int csync_vio_getfd(csync_vio_handle_t *hnd);
+
+
 #endif /* _CSYNC_VIO_MODULE_H */
