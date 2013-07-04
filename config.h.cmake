@@ -20,3 +20,4 @@
 #cmakedefine HAVE_LSTAT 1
 #cmakedefine HAVE_FNMATCH 1
 
+#cmakedefine WITH_UNIT_TESTING 1

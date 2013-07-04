@@ -58,18 +58,23 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
   char *last_bslash = NULL;
 #endif
 
-  if (asprintf(&path, "%s/csync_%s.%s", PLUGINDIR, module, MODULE_EXTENSION) < 0) {
-    return -1;
-  }
-
-  mpath = c_utf8_to_locale(path);
-  if (_tstat(mpath, &sb) < 0) {
-    SAFE_FREE(path);
+#ifdef WITH_UNIT_TESTING
     if (asprintf(&path, "%s/modules/csync_%s.%s", BINARYDIR, module, MODULE_EXTENSION) < 0) {
-      return -1;
+        return -1;
     }
+
+    mpath = c_utf8_to_locale(path);
+    if (_tstat(mpath, &sb) < 0) {
+        SAFE_FREE(path);
+    }
+    c_free_locale_string(mpath);
+#endif
+
+  if (path == NULL) {
+      if (asprintf(&path, "%s/csync_%s.%s", PLUGINDIR, module, MODULE_EXTENSION) < 0) {
+          return -1;
+      }
   }
-  c_free_locale_string(mpath);
 
 #ifdef _WIN32
   mpath = c_utf8_to_locale(path);
