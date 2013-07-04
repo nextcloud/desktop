@@ -31,6 +31,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <string.h>
+#include <stdio.h>
 
 #include "c_file.h"
 #include "c_string.h"
@@ -162,6 +163,44 @@ out:
   }
   return rc;
 #endif
+}
+
+int c_rename( const char *src, const char *dst ) {
+    _TCHAR *nuri;
+    _TCHAR *ouri;
+    int rc;
+
+    nuri = c_multibyte(dst);
+    if (nuri == NULL) {
+        return -1;
+    }
+
+    ouri = c_multibyte(src);
+    if (ouri == NULL) {
+        return -1;
+    }
+
+#ifdef _WIN32
+    {
+        BOOL ok;
+        ok = MoveFileExW(ouri,
+                         nuri,
+                         MOVEFILE_COPY_ALLOWED +
+                         MOVEFILE_REPLACE_EXISTING +
+                         MOVEFILE_WRITE_THROUGH);
+        if (!ok) {
+            /* error */
+            rc = -1;
+        }
+    }
+#else
+    rc = rename(ouri, nuri);
+#endif
+
+    c_free_multibyte(nuri);
+    c_free_multibyte(ouri);
+
+    return rc;
 }
 
 int c_compare_file( const char *f1, const char *f2 ) {

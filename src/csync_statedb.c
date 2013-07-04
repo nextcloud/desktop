@@ -310,9 +310,34 @@ int csync_statedb_close(CSYNC *ctx, const char *statedb, int jwritten) {
     return -1;
   }
 
-  /* if we successfully synchronized, overwrite the original statedb */
+  /* If we successfully synchronized, overwrite the original statedb */
+
+  /*
+   * Check the integrity of the tmp db. If ok, overwrite the old database with
+   * the tmp db.
+   */
   if (jwritten) {
-      rc = c_copy(statedb_tmp, statedb, 0644);
+      if (_csync_statedb_check(ctx, statedb_tmp) == 0) {
+          /* New statedb is valid. */
+
+          /* Move the tmp-db to the real one. */
+          if (c_rename(statedb_tmp, statedb) < 0) {
+              CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+                        "Renaming tmp db to original db failed.");
+              rc = -1;
+          } else {
+              CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+                        "Successfully moved tmp db to original db.");
+          }
+      } else {
+          wstatedb_tmp = c_multibyte(statedb_tmp);
+          _tunlink(wstatedb_tmp);
+
+          /* new statedb_tmp is not integer. */
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "  ## csync tmp statedb corrupt. Original one is not replaced. ");
+          c_free_multibyte(wstatedb_tmp);
+          rc = -1;
+      }
   }
 
   wstatedb_tmp = c_multibyte(statedb_tmp);
