@@ -19,6 +19,7 @@
 #include <QDir>
 #include <QFile>
 #include <QUrl>
+#include <QWidget>
 
 #include <QDebug>
 
@@ -93,6 +94,23 @@ void Utility::setupFavLink(const QString &folder)
 #endif
 }
 
+QString Utility::octetsToString( qint64 octets )
+{
+    const qint64 kb = 1024;
+    const qint64 mb = 1024 * kb;
+    const qint64 gb = 1024 * mb;
+
+    if (octets >= gb) {
+        return QString::number(octets/gb) + QLatin1String(" GB");
+    } else if (octets >= mb) {
+        return QString::number(octets/mb) + QLatin1String(" MB");
+    } else if (octets >= kb) {
+        return QString::number(octets/kb) + QLatin1String(" KB");
+    } else {
+        return octets + QLatin1String(" bytes");
+    }
+}
+
 // Qtified version of get_platforms() in csync_owncloud.c
 QString Utility::platform()
 {
@@ -123,6 +141,24 @@ QByteArray Utility::userAgentString()
             .arg(Utility::platform())
             .arg(QLatin1String(MIRALL_STRINGIFY(MIRALL_VERSION)))
             .toLatin1();
+}
+
+void Utility::raiseDialog( QWidget *raiseWidget )
+{
+    // viel hilft viel ;-)
+    if( raiseWidget ) {
+#if defined(Q_WS_WIN) || defined (Q_OS_MAC)
+        Qt::WindowFlags eFlags = raiseWidget->windowFlags();
+        eFlags |= Qt::WindowStaysOnTopHint;
+        raiseWidget->setWindowFlags(eFlags);
+        raiseWidget->show();
+        eFlags &= ~Qt::WindowStaysOnTopHint;
+        raiseWidget->setWindowFlags(eFlags);
+#endif
+        raiseWidget->show();
+        raiseWidget->raise();
+        raiseWidget->activateWindow();
+    }
 }
 
 } // namespace Mirall

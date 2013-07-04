@@ -42,14 +42,14 @@ public:
     void initializePage();
     void cleanupPage();
 
-    void setFolderMap( Folder::Map *fm ) { _folderMap = fm; }
+    void setFolderMap( const Folder::Map &fm ) { _folderMap = fm; }
 protected slots:
     void on_localFolderChooseBtn_clicked();
     void on_localFolderLineEdit_textChanged();
 
 private:
     Ui_FolderWizardSourcePage _ui;
-    Folder::Map *_folderMap;
+    Folder::Map _folderMap;
 };
 
 
@@ -103,7 +103,7 @@ public:
 
     FolderWizard(QWidget *parent = 0);
     ~FolderWizard();
-    void setFolderMap( Folder::Map* );
+    void setFolderMap( const Folder::Map &map );
 
 private:
 

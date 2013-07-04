@@ -84,6 +84,9 @@ public:
     // Custom Config: remove the custom config file.
     void cleanupCustomConfig();
 
+    bool monoIcons() const;
+    void setMonoIcons(bool);
+
     // proxy settings
     void setProxyType(int proxyType,
                       const QString& host = QString(),

@@ -17,17 +17,19 @@
 #include <QString>
 #include <QByteArray>
 
+class QWidget;
+
 namespace Mirall {
 
-
-class Utility
+namespace Utility
 {
-public:
-    static QString formatFingerprint( const QByteArray& );
-    static void setupFavLink( const QString &folder );
-    static QString platform();
-    static QByteArray userAgentString();
-};
+    QString formatFingerprint( const QByteArray& );
+    void setupFavLink( const QString &folder );
+    QString octetsToString( qint64 octets );
+    QString platform();
+    QByteArray userAgentString();
+    void raiseDialog(QWidget *);
+}
 
 }
 #endif // UTILITY_H

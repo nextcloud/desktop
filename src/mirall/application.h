@@ -23,10 +23,8 @@
 #include "qtsingleapplication.h"
 
 #include "mirall/syncresult.h"
-#include "mirall/folder.h"
 #include "mirall/logbrowser.h"
 #include "mirall/folderman.h"
-#include "mirall/fileitemdialog.h"
 #include "mirall/systray.h"
 
 class QAction;
@@ -38,42 +36,29 @@ class QNetworkReply;
 
 namespace Mirall {
 class Theme;
+class Folder;
 class FolderWatcher;
 class FolderWizard;
-class StatusDialog;
-class OwncloudSetupWizard;
 class ownCloudInfo;
 class SslErrorDialog;
-class ProxyDialog;
+class SettingsDialog;
 
 class Application : public SharedTools::QtSingleApplication
 {
     Q_OBJECT
 public:
+    friend class SettingsDialog;
     explicit Application(int &argc, char **argv);
     ~Application();
 
     bool giveHelp();
     void showHelp();
 
-signals:
-
-protected slots:
-    void slotAddFolder();
-    void slotOpenStatus();
-    void slotRemoveFolder( const QString& );
-    void slotResetFolder( const QString& );
-    void slotEnableFolder( const QString&, const bool );
-    void slotInfoFolder( const QString& );
-    void slotConfigure();
-    void slotConfigureProxy();
-    void slotParseOptions( const QString& );
-    void slotShowTrayMessage(const QString&, const QString&);
-
-    void slotSyncStateChange( const QString& );
+public slots:
+    // TODO: this should not be public
     void slotownCloudWizardDone(int);
-protected:
 
+protected:
     void parseOptions(const QStringList& );
     void setupTranslations();
     void setupActions();
@@ -90,7 +75,18 @@ protected:
     bool winEventFilter( MSG * message, long * result );
 #endif
 
+signals:
+    void folderRemoved();
+    void folderStateChanged(Folder*);
+
 protected slots:
+    void slotFoldersChanged();
+    void slotCheckConfig();
+    void slotSettings();
+    void slotParseOptions( const QString& );
+    void slotShowTrayMessage(const QString&, const QString&);
+
+    void slotSyncStateChange( const QString& );
     void slotTrayClicked( QSystemTrayIcon::ActivationReason );
     void slotFolderOpenAction(const QString & );
     void slotOpenOwnCloud();
@@ -100,47 +96,40 @@ protected slots:
     void slotCheckAuthentication();
     void slotAuthCheck( const QString& ,QNetworkReply* );
     void slotOpenLogBrowser();
-    void slotAbout();
     void slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors );
     void slotFetchCredentials();
     void slotCredentialsFetched( bool );
     void slotStartUpdateDetector();
     void slotSetupProxy();
     void slotRefreshQuotaDisplay( qint64 total, qint64 used );
-
+    void slotUseMonoIconsChanged( bool );
+    void slotHelp();
 private:
     void setHelp();
     void raiseDialog( QWidget* );
 
-    // configuration file -> folder
     Systray *_tray;
-    QAction *_actionQuit;
-    QAction *_actionAddFolder;
-    QAction *_actionOpenStatus;
-    QAction *_actionQuota;
-    QAction *_actionConfigure;
     QAction *_actionOpenoC;
-    QAction *_actionConfigureProxy;
-    QAction *_actionAbout;
+    QAction *_actionSettings;
+    QAction *_actionQuota;
+    QAction *_actionHelp;
+    QAction *_actionQuit;
 
 #if QT_VERSION >= 0x040700
     QNetworkConfigurationManager *_networkMgr;
 #endif
 
     QPointer<FolderWizard> _folderWizard;
-    QScopedPointer<OwncloudSetupWizard> _owncloudSetupWizard;
     SslErrorDialog *_sslErrorDialog;
 
     // tray's menu
     QMenu *_contextMenu;
-    StatusDialog *_statusDialog;
-    FileItemDialog *_fileItemDialog;
 
     FolderMan *_folderMan;
     Theme *_theme;
     QSignalMapper *_folderOpenActionMapper;
     LogBrowser *_logBrowser;
-    QPointer<ProxyDialog> _proxyDialog;
+    QPointer<SettingsDialog> _settingsDialog;
     QString _logFile;
     QString _logDirectory;
     int _logExpire;

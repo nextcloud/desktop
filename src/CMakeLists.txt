@@ -14,11 +14,12 @@ endif()
 set(mirall_UI
 mirall/folderwizardsourcepage.ui
 mirall/folderwizardtargetpage.ui
-mirall/statusdialog.ui
 mirall/owncloudsetuppage_ng.ui
 mirall/owncloudwizardresultpage.ui
 mirall/sslerrordialog.ui
-mirall/proxydialog.ui
+mirall/settingsdialog.ui
+mirall/generalsettings.ui
+mirall/accountsettings.ui
 mirall/fileitemdialog.ui
 )
 
@@ -144,15 +145,17 @@ set(mirall_SRCS
     mirall/application.cpp
     mirall/systray.cpp
     mirall/folderwizard.cpp
-    mirall/statusdialog.cpp
+    mirall/folderstatusmodel.cpp
     mirall/owncloudwizard.cpp
     mirall/owncloudsetupwizard.cpp
     mirall/updatedetector.cpp
     mirall/occinfo.cpp
     mirall/sslerrordialog.cpp
     mirall/logbrowser.cpp
-    mirall/proxydialog.cpp
     mirall/fileitemdialog.cpp
+    mirall/settingsdialog.cpp
+    mirall/generalsettings.cpp
+    mirall/accountsettings.cpp
 )
 
 set(mirall_HEADERS
@@ -161,12 +164,15 @@ set(mirall_HEADERS
     mirall/folderwizard.h
     mirall/owncloudsetupwizard.h
     mirall/owncloudwizard.h
-    mirall/statusdialog.h
+    mirall/folderstatusmodel.h
     mirall/updatedetector.h
     mirall/sslerrordialog.h
     mirall/logbrowser.h
-    mirall/proxydialog.h
     mirall/fileitemdialog.h
+    mirall/settingsdialog.h
+    mirall/generalsettings.h
+    mirall/accountsettings.h
+    mirall/theme.h
 )
 
 if( UNIX AND NOT APPLE)

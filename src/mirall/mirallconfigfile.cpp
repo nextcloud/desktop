@@ -556,4 +556,16 @@ QString MirallConfigFile::proxyPassword() const
     return QString::fromUtf8(QByteArray::fromBase64(pass));
 }
 
+bool MirallConfigFile::monoIcons() const
+{
+    QSettings settings( configFile(), QSettings::IniFormat );
+    return settings.value("monoIcons", false).toBool();
+}
+
+void MirallConfigFile::setMonoIcons(bool useMonoIcons)
+{
+    QSettings settings( configFile(), QSettings::IniFormat );
+    settings.setValue("monoIcons", useMonoIcons);
+}
+
 }

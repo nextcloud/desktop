@@ -26,9 +26,7 @@
 
 namespace Mirall {
 
-class Theme;
-
-OwncloudSetupWizard::OwncloudSetupWizard( FolderMan *folderMan, Theme *theme, QObject *parent ) :
+OwncloudSetupWizard::OwncloudSetupWizard( FolderMan *folderMan, QObject *parent ) :
     QObject( parent ),
     _mkdirRequestReply(0),
     _checkInstallationRequest(0),
@@ -44,7 +42,7 @@ OwncloudSetupWizard::OwncloudSetupWizard( FolderMan *folderMan, Theme *theme, QO
     connect( _ocWizard, SIGNAL(clearPendingRequests()),
              this, SLOT(slotClearPendingRequests()));
 
-    _ocWizard->setWindowTitle( tr("%1 Connection Wizard").arg( theme->appNameGUI() ) );
+    _ocWizard->setWindowTitle( tr("%1 Connection Wizard").arg( Theme::instance()->appNameGUI() ) );
 }
 
 OwncloudSetupWizard::~OwncloudSetupWizard()
@@ -54,6 +52,14 @@ OwncloudSetupWizard::~OwncloudSetupWizard()
 
 OwncloudWizard *OwncloudSetupWizard::wizard() {
     return _ocWizard;
+}
+
+void OwncloudSetupWizard::runWizard(FolderMan *folderMan, QObject* obj, const char* amember, QWidget *parent)
+{
+    OwncloudSetupWizard *wiz = new OwncloudSetupWizard(folderMan, parent);
+    connect( wiz, SIGNAL(ownCloudWizardDone(int)), obj, amember);
+    folderMan->setSyncEnabled(false);
+    wiz->startWizard();
 }
 
 void OwncloudSetupWizard::startWizard()
@@ -93,7 +99,7 @@ void OwncloudSetupWizard::startWizard()
     // settings re-initialized in initPage must be set here after restart
     _ocWizard->setMultipleFoldersExist(_folderMan->map().count() > 1);
 
-    _ocWizard->show();
+    _ocWizard->open();
     _ocWizard->raise();
 }
 

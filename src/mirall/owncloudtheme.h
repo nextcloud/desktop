@@ -35,6 +35,7 @@ public:
     QIcon   applicationIcon() const;
 
     QVariant customMedia(CustomMediaType type);
+    QString helpUrl() const;
 
     QColor  wizardHeaderBackgroundColor() const;
     QColor  wizardHeaderTitleColor() const;

@@ -115,6 +115,9 @@ public:
      */
     QString webdavUrl(const QString& connection = QString());
 
+    qint64 lastQuotaUsedBytes() const { return _lastQuotaUsedBytes; }
+    qint64 lastQuotaTotalBytes() const  { return _lastQuotaTotalBytes; }
+
 signals:
     // result signal with url- and version string.
     void ownCloudInfoFound( const QString&, const QString&, const QString&, const QString& );
@@ -125,7 +128,6 @@ signals:
     void sslFailed( QNetworkReply *reply, QList<QSslError> errors );
     void guiLog( const QString& title, const QString& content );
     void quotaUpdated( qint64 total, qint64 quotaUsedBytes );
-public slots:
 
 protected slots:
     void slotReplyFinished( );
@@ -173,6 +175,8 @@ private:
     QMap<QString, oCICredentials>  _credentials;
     QMutex                         _certChainMutex;
     int                            _redirectCount;
+    qint64                         _lastQuotaUsedBytes;
+    qint64                         _lastQuotaTotalBytes;
 };
 
 };

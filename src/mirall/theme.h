@@ -28,8 +28,9 @@ namespace Mirall {
 
 class SyncResult;
 
-class Theme
+class Theme : public QObject
 {
+    Q_OBJECT
 public:
     enum CustomMediaType {
         oCSetupTop,      // ownCloud connect page
@@ -91,6 +92,11 @@ public:
      * Characteristics: bool if more than one sync folder is allowed
      */
     virtual bool singleSyncFolder() const;
+
+    /**
+    * URL to help file
+    */
+    virtual QString helpUrl() const { return QString::null; }
 
     /**
      * Setting a value here will pre-define the server url.
@@ -158,6 +164,9 @@ public:
 protected:
     QIcon themeIcon(const QString& name, bool sysTray = false) const;
     Theme() {}
+
+signals:
+    void systrayUseMonoIconsChanged(bool);
 
 private:
     Theme(Theme const&);

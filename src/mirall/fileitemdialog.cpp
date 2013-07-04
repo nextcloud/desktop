@@ -14,9 +14,10 @@
 #include <QtGui>
 
 #include "mirall/fileitemdialog.h"
-#include "mirall/theme.h"
 #include "mirall/syncresult.h"
 #include "mirall/logger.h"
+
+#include "ui_fileitemdialog.h"
 
 #define TYPE_SUCCESS  1
 #define TYPE_CONFLICT 2
@@ -30,30 +31,35 @@
 
 namespace Mirall {
 
-FileItemDialog::FileItemDialog(Theme *theme, QWidget *parent) :
+FileItemDialog::FileItemDialog(QWidget *parent) :
     QDialog(parent),
-    _theme(theme)
+    _ui(new Ui::FileItemDialog)
 {
-    setupUi(this);
-    connect(_dialogButtonBox->button(QDialogButtonBox::Close), SIGNAL(clicked()),
+    _ui->setupUi(this);
+    connect(_ui->_dialogButtonBox->button(QDialogButtonBox::Close), SIGNAL(clicked()),
             this, SLOT(accept()));
 
     QStringList header;
     header << tr("Files");
     QString firstColString = tr("File Count");
     header << firstColString;
-    _treeWidget->setHeaderLabels( header );
+    _ui->_treeWidget->setHeaderLabels( header );
 
-    _treeWidget->setColumnWidth(0, 480);
+    _ui->_treeWidget->setColumnWidth(0, 480);
     _timer.setInterval(1000);
     connect(&_timer, SIGNAL(timeout()), this, SLOT(slotSetFolderMessage()));
     connect(this, SIGNAL(guiLog(QString,QString)), Logger::instance(), SIGNAL(guiLog(QString,QString)));
 
-    QPushButton *copyBtn = _dialogButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
+    QPushButton *copyBtn = _ui->_dialogButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
     connect(copyBtn, SIGNAL(clicked()), SLOT(copyToClipboard()));
 
     setWindowTitle(tr("Sync Protocol"));
 
+}
+
+FileItemDialog::~FileItemDialog()
+{
+    delete _ui;
 }
 
 void FileItemDialog::setSyncResult( const SyncResult& result )
@@ -94,17 +100,17 @@ void FileItemDialog::setSyncResult( const SyncResult& result )
     _lastSyncTime = result.syncTime();
 
     if( result.errorStrings().count() ) {
-        _errorLabel->setVisible(true);
-        _errorLabel->setTextFormat(Qt::RichText);
+        _ui->_errorLabel->setVisible(true);
+        _ui->_errorLabel->setTextFormat(Qt::RichText);
         QString errStr;
         foreach( QString err, result.errorStrings() ) {
             errStr.append(QString("<p>%1</p>").arg(err));
         }
 
-        _errorLabel->setText(errStr);
+        _ui->_errorLabel->setText(errStr);
     } else {
-        _errorLabel->setText(QString::null);
-        _errorLabel->setVisible(false);
+        _ui->_errorLabel->setText(QString::null);
+        _ui->_errorLabel->setVisible(false);
     }
 
     slotSetFolderMessage();
@@ -124,9 +130,9 @@ void FileItemDialog::slotSetFolderMessage()
     int secs = _lastSyncTime.secsTo(now);
 
     if (secs < 60)
-        _timelabel->setText(tr("%1 (last finished %n sec. ago)", "", secs).arg(_folderMessage));
+        _ui->_timelabel->setText(tr("%1 (last finished %n sec. ago)", "", secs).arg(_folderMessage));
     else
-        _timelabel->setText(tr("%1 (last finished %n min. ago)", "", secs/60).arg(_folderMessage));
+        _ui->_timelabel->setText(tr("%1 (last finished %n min. ago)", "", secs/60).arg(_folderMessage));
 }
 
 void FileItemDialog::copyToClipboard()
@@ -134,9 +140,9 @@ void FileItemDialog::copyToClipboard()
     QString text;
     QTextStream ts(&text);
 
-    int topLevelItems = _treeWidget->topLevelItemCount();
+    int topLevelItems = _ui->_treeWidget->topLevelItemCount();
     for (int i = 0; i < topLevelItems; i++) {
-        QTreeWidgetItem *item = _treeWidget->topLevelItem(i);
+        QTreeWidgetItem *item = _ui->_treeWidget->topLevelItem(i);
         ts << left << qSetFieldWidth(50)
            << item->data(0, Qt::DisplayRole).toString()
            << right << qSetFieldWidth(6)
@@ -166,52 +172,52 @@ void FileItemDialog::accept()
 
 void FileItemDialog::setSyncFileItems( const SyncFileItemVector& list )
 {
-    _treeWidget->clear();
+    _ui->_treeWidget->clear();
     QStringList strings;
     QFont headerFont;
     headerFont.setWeight(QFont::Bold);
 
     strings.clear();
     strings.append(tr("Synced Files"));
-    _syncedFileItem = new QTreeWidgetItem( _treeWidget, strings, TYPE_SUCCESS );
+    _syncedFileItem = new QTreeWidgetItem( _ui->_treeWidget, strings, TYPE_SUCCESS );
     _syncedFileItem->setChildIndicatorPolicy(QTreeWidgetItem::DontShowIndicatorWhenChildless);
-    _treeWidget->addTopLevelItem(_syncedFileItem);
+    _ui->_treeWidget->addTopLevelItem(_syncedFileItem);
 
     strings.clear();
     strings.append(tr("New Files"));
-    _newFileItem = new QTreeWidgetItem( _treeWidget, strings, TYPE_NEW );
+    _newFileItem = new QTreeWidgetItem( _ui->_treeWidget, strings, TYPE_NEW );
     _newFileItem->setChildIndicatorPolicy(QTreeWidgetItem::DontShowIndicatorWhenChildless);
-    _treeWidget->addTopLevelItem(_newFileItem);
+    _ui->_treeWidget->addTopLevelItem(_newFileItem);
 
     strings.clear();
     strings.append(tr("Deleted Files"));
-    _deletedFileItem = new QTreeWidgetItem( _treeWidget, strings, TYPE_DELETED );
+    _deletedFileItem = new QTreeWidgetItem( _ui->_treeWidget, strings, TYPE_DELETED );
     _deletedFileItem->setChildIndicatorPolicy(QTreeWidgetItem::DontShowIndicatorWhenChildless);
-    _treeWidget->addTopLevelItem(_deletedFileItem);
+    _ui->_treeWidget->addTopLevelItem(_deletedFileItem);
 
     strings.clear();
     strings.append(tr("Renamed Files"));
-    _renamedFileItem = new QTreeWidgetItem( _treeWidget, strings, TYPE_RENAME);
+    _renamedFileItem = new QTreeWidgetItem( _ui->_treeWidget, strings, TYPE_RENAME);
     _renamedFileItem->setChildIndicatorPolicy(QTreeWidgetItem::DontShowIndicatorWhenChildless);
-    _treeWidget->addTopLevelItem(_renamedFileItem);
+    _ui->_treeWidget->addTopLevelItem(_renamedFileItem);
 
     strings.clear();
     strings.append(tr("Ignored Files"));
-    _ignoredFileItem = new QTreeWidgetItem( _treeWidget, strings, TYPE_IGNORE);
+    _ignoredFileItem = new QTreeWidgetItem( _ui->_treeWidget, strings, TYPE_IGNORE);
     _ignoredFileItem->setChildIndicatorPolicy(QTreeWidgetItem::DontShowIndicatorWhenChildless);
-    _treeWidget->addTopLevelItem(_renamedFileItem);
+    _ui->_treeWidget->addTopLevelItem(_renamedFileItem);
 
     strings.clear();
     strings.append(tr("Errors"));
-    _errorFileItem = new QTreeWidgetItem( _treeWidget, strings, TYPE_ERROR );
+    _errorFileItem = new QTreeWidgetItem( _ui->_treeWidget, strings, TYPE_ERROR );
     _errorFileItem->setChildIndicatorPolicy(QTreeWidgetItem::DontShowIndicatorWhenChildless);
-    _treeWidget->addTopLevelItem(_errorFileItem);
+    _ui->_treeWidget->addTopLevelItem(_errorFileItem);
 
     strings.clear();
     strings.append(tr("Conflicts"));
-    _conflictFileItem = new QTreeWidgetItem( _treeWidget, strings, TYPE_CONFLICT);
+    _conflictFileItem = new QTreeWidgetItem( _ui->_treeWidget, strings, TYPE_CONFLICT);
     _conflictFileItem->setChildIndicatorPolicy(QTreeWidgetItem::DontShowIndicatorWhenChildless);
-    _treeWidget->addTopLevelItem(_conflictFileItem);
+    _ui->_treeWidget->addTopLevelItem(_conflictFileItem);
 
     QList<QTreeWidgetItem*> syncedItems;
     QList<QTreeWidgetItem*> renamedItems;

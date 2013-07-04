@@ -113,14 +113,22 @@ QIcon Theme::themeIcon( const QString& name, bool sysTray ) const
         foreach (int size, sizes) {
             QString pixmapName = QString::fromLatin1(":/mirall/theme/%1/%2-%3.png").arg(flavor).arg(name).arg(size);
             if (QFile::exists(pixmapName)) {
-                icon.addFile(pixmapName, QSize(size, size));
+                QPixmap px(pixmapName);
+                // HACK, get rid of it by supporting FDO icon themes, this is really just emulating ubuntu-mono
+                if (qgetenv("DESKTOP_SESSION") == "ubuntu") {
+                    QBitmap mask = px.createMaskFromColor(Qt::white, Qt::MaskOutColor);
+                    QPainter p(&px);
+                    p.setPen(QColor("#dfdbd2"));
+                    p.drawPixmap(px.rect(), mask, mask.rect());
+                }
+                icon.addPixmap(px);
             }
         }
         if (icon.isNull()) {
             foreach (int size, sizes) {
                 QString pixmapName = QString::fromLatin1(":/mirall/resources/%1-%2.png").arg(name).arg(size);
                 if (QFile::exists(pixmapName)) {
-                    icon.addFile(pixmapName, QSize(size, size));
+                    icon.addFile(pixmapName);
                 }
             }
         }
@@ -152,6 +160,7 @@ QString Theme::defaultClientFolder() const
 void Theme::setSystrayUseMonoIcons(bool mono)
 {
     _mono = mono;
+    emit systrayUseMonoIconsChanged(mono);
 }
 
 bool Theme::systrayUseMonoIcons() const

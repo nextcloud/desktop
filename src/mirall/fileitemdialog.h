@@ -23,15 +23,18 @@
 #include "ui_fileitemdialog.h"
 
 namespace Mirall {
-class Theme;
 class SyncResult;
 
+namespace Ui {
+  class FileItemDialog;
+}
 
-class FileItemDialog : public QDialog, public Ui::_fileItemDialog
+class FileItemDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit FileItemDialog(Theme*, QWidget *parent = 0);
+    explicit FileItemDialog(QWidget *parent = 0);
+    ~FileItemDialog();
     void setSyncResult( const SyncResult& );
 
 signals:
@@ -58,10 +61,10 @@ private:
     QTreeWidgetItem *_conflictFileItem;
     QTreeWidgetItem *_ignoredFileItem;
 
-    Theme    *_theme;
     QString   _folderMessage;
     QDateTime _lastSyncTime;
     QTimer    _timer;
+    Ui::FileItemDialog *_ui;
 };
 
 }

@@ -21,17 +21,16 @@
 #include "mirall/folderwizard.h"
 #include "mirall/networklocation.h"
 #include "mirall/owncloudfolder.h"
-#include "mirall/statusdialog.h"
 #include "mirall/owncloudsetupwizard.h"
 #include "mirall/owncloudinfo.h"
 #include "mirall/sslerrordialog.h"
 #include "mirall/theme.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/updatedetector.h"
-#include "mirall/proxydialog.h"
 #include "mirall/credentialstore.h"
 #include "mirall/logger.h"
-
+#include "mirall/settingsdialog.h"
+#include "mirall/utility.h"
 #include "mirall/inotify.h"
 
 #if defined(Q_OS_WIN)
@@ -70,7 +69,6 @@ static const char optionsC[] =
         "  --logexpire <hours>  : removes logs older than <hours> hours.\n"
         "                         (to be used with --logdir)\n"
         "  --logflush           : flush the log file after every write.\n"
-        "  --monoicons          : Use black/white pictograms for systray.\n"
         "  --confdir <dirname>  : Use the given configuration directory.\n"
         ;
 
@@ -105,8 +103,7 @@ Application::Application(int &argc, char **argv) :
     _logExpire(0),
     _showLogWindow(false),
     _logFlush(false),
-    _helpOnly(false),
-    _fileItemDialog(0)
+    _helpOnly(false)
 {
     setApplicationName( _theme->appNameGUI() );
     setWindowIcon( _theme->applicationIcon() );
@@ -133,20 +130,6 @@ Application::Application(int &argc, char **argv) :
 
     setQuitOnLastWindowClosed(false);
 
-    _statusDialog = new StatusDialog( _theme );
-    connect( _statusDialog, SIGNAL(addASync()), this, SLOT(slotAddFolder()) );
-
-    connect( _statusDialog, SIGNAL(removeFolderAlias( const QString&)),
-             SLOT(slotRemoveFolder(const QString&)));
-    connect( _statusDialog, SIGNAL(resetFolderAlias( const QString&)),
-             SLOT(slotResetFolder(const QString&)));
-    connect( _statusDialog, SIGNAL(enableFolderAlias(QString,bool)),
-             SLOT(slotEnableFolder(QString,bool)));
-    connect( _statusDialog, SIGNAL(infoFolderAlias(const QString&)),
-             SLOT(slotInfoFolder( const QString&)));
-    connect( _statusDialog, SIGNAL(openFolderAlias(const QString&)),
-             SLOT(slotFolderOpenAction(QString)));
-
 #if 0
 #if QT_VERSION >= 0x040700
     qDebug() << "* Network is" << (_networkMgr->isOnline() ? "online" : "offline");
@@ -155,20 +138,19 @@ Application::Application(int &argc, char **argv) :
     }
 #endif
 #endif
+
+    MirallConfigFile cfg;
+    _theme->setSystrayUseMonoIcons(cfg.monoIcons());
+    connect (_theme, SIGNAL(systrayUseMonoIconsChanged(bool)), SLOT(slotUseMonoIconsChanged(bool)));
+
     setupActions();
     setupSystemTray();
     slotSetupProxy();
 
-
     int cnt = _folderMan->setupFolders();
-    _statusDialog->setFolderList( _folderMan->map() );
-
-    QObject::connect( this, SIGNAL(messageReceived(QString)),
-                         this, SLOT(slotOpenStatus()) );
 
     QTimer::singleShot( 0, this, SLOT( slotStartFolderSetup() ));
 
-    MirallConfigFile cfg;
     if( !cfg.ownCloudSkipUpdateCheck() ) {
         QTimer::singleShot( 3000, this, SLOT( slotStartUpdateDetector() ));
     }
@@ -185,8 +167,7 @@ Application::Application(int &argc, char **argv) :
 Application::~Application()
 {
     delete _tray; // needed, see ctor
-    delete _fileItemDialog;
-    delete _statusDialog;
+
     qDebug() << "* Mirall shutdown";
 }
 
@@ -209,7 +190,7 @@ void Application::slotStartFolderSetup( int result )
 
             ownCloudInfo::instance()->checkInstallation();
         } else {
-            slotConfigure();
+            slotCheckConfig();
         }
     } else {
         qDebug() << "Setup Wizard was canceled. No reparsing of config.";
@@ -244,8 +225,6 @@ void Application::slotNoOwnCloudFound( QNetworkReply* reply )
     Q_UNUSED(reply)
 
     qDebug() << "** Application: NO ownCloud found! Going offline";
-
-    _actionAddFolder->setEnabled( false );
 
     // Disconnect.
     disconnect( ownCloudInfo::instance(),SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
@@ -284,8 +263,6 @@ void Application::slotFetchCredentials()
 
         if( !trayMessage.isEmpty() ) {
             slotShowTrayMessage(tr("Credentials"), trayMessage);
-            _actionOpenStatus->setEnabled( false );
-            _actionAddFolder->setEnabled( false );
         }
     }
 }
@@ -307,8 +284,6 @@ void Application::slotCredentialsFetched(bool ok)
         }
 
         qDebug() << "Could not fetch credentials";
-        _actionAddFolder->setEnabled( false );
-        _actionOpenStatus->setEnabled( false );
     } else {
         ownCloudInfo::instance()->setCredentials( CredentialStore::instance()->user(),
                                                   CredentialStore::instance()->password() );
@@ -339,7 +314,6 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
                              tr("<p>Your %1 credentials are not correct.</p>"
                                 "<p>Please correct them by starting the configuration dialog from the tray!</p>")
                              .arg(_theme->appNameGUI()));
-        _actionAddFolder->setEnabled( false );
         ok = false;
     } else if( reply->error() == QNetworkReply::OperationCanceledError ) {
         // the username was wrong and ownCloudInfo was closing the request after a couple of auth tries.
@@ -347,11 +321,10 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
         QMessageBox::warning(0, tr("No %1 Connection").arg(_theme->appNameGUI()),
                              tr("<p>Either your user name or your password are not correct.</p>"
                                 "<p>Please correct it by starting the configuration dialog from the tray!</p>"));
-        _actionAddFolder->setEnabled( false );
         ok = false;
     }
 
-    // disconnect from ownCloud Info signals
+    // disconnect from o`   wnCloud Info signals
     disconnect( ownCloudInfo::instance(),SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
              this,SLOT(slotAuthCheck(QString,QNetworkReply*)));
 
@@ -373,8 +346,6 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
 
         computeOverallSyncStatus();
 
-        _actionAddFolder->setEnabled( true );
-        _actionOpenStatus->setEnabled( true );
         setupContextMenu();
     }
 }
@@ -420,30 +391,23 @@ void Application::slotownCloudWizardDone( int res )
     if( res == QDialog::Accepted ) {
         int cnt = _folderMan->setupFolders();
         qDebug() << "Set up " << cnt << " folders.";
-        _statusDialog->setFolderList( _folderMan->map() );
+// FIXME!
+//        _statusDialog->setFolderList( _folderMan->map() );
     }
     _folderMan->setSyncEnabled( true );
     slotStartFolderSetup( res );
-    _owncloudSetupWizard.reset(0);
 }
 
 void Application::setupActions()
 {
-    _actionOpenoC = new QAction(tr("Open %1 in browser...").arg(_theme->appNameGUI()), this);
+    _actionOpenoC = new QAction(tr("Open %1 in browser").arg(_theme->appNameGUI()), this);
     QObject::connect(_actionOpenoC, SIGNAL(triggered(bool)), SLOT(slotOpenOwnCloud()));
-    _actionOpenStatus = new QAction(tr("Open status..."), this);
-    QObject::connect(_actionOpenStatus, SIGNAL(triggered(bool)), SLOT(slotOpenStatus()));
-    _actionOpenStatus->setEnabled( false );
     _actionQuota = new QAction(tr("Calculating quota..."), this);
     _actionQuota->setEnabled( false );
-    _actionAddFolder = new QAction(tr("Add folder..."), this);
-    QObject::connect(_actionAddFolder, SIGNAL(triggered(bool)), SLOT(slotAddFolder()));
-    _actionConfigure = new QAction(tr("Configure..."), this);
-    QObject::connect(_actionConfigure, SIGNAL(triggered(bool)), SLOT(slotConfigure()));
-    _actionConfigureProxy = new QAction(tr("Configure proxy..."), this);
-    QObject::connect(_actionConfigureProxy, SIGNAL(triggered(bool)), SLOT(slotConfigureProxy()));
-    _actionAbout = new QAction(tr("About..."), this);
-    QObject::connect(_actionAbout, SIGNAL(triggered(bool)), SLOT(slotAbout()));
+    _actionSettings = new QAction(tr("Settings..."), this);
+    QObject::connect(_actionSettings, SIGNAL(triggered(bool)), SLOT(slotSettings()));
+    _actionHelp = new QAction(tr("Help"), this);
+    QObject::connect(_actionHelp, SIGNAL(triggered(bool)), SLOT(slotHelp()));
     _actionQuit = new QAction(tr("Quit"), this);
     QObject::connect(_actionQuit, SIGNAL(triggered(bool)), SLOT(quit()));
 }
@@ -467,9 +431,7 @@ void Application::setupContextMenu()
 {
     bool isConfigured = ownCloudInfo::instance()->isConfigured();
 
-    _actionOpenStatus->setEnabled(isConfigured);
     _actionOpenoC->setEnabled(isConfigured);
-    _actionAddFolder->setEnabled(isConfigured);
 
     if( _contextMenu ) {
         _contextMenu->clear();
@@ -480,62 +442,46 @@ void Application::setupContextMenu()
         _tray->setContextMenu(_contextMenu);
     }
     _contextMenu->setTitle(_theme->appNameGUI() );
-    _contextMenu->addAction(_actionOpenStatus);
     _contextMenu->addAction(_actionOpenoC);
-
-    _contextMenu->addSeparator();
-    _contextMenu->addAction(_actionQuota);
-    _contextMenu->addSeparator();
 
     int folderCnt = _folderMan->map().size();
     // add open actions for all sync folders to the tray menu
     if( _theme->singleSyncFolder() ) {
-        if( folderCnt == 0 ) {
-            // if there is no folder configured yet, show the add action.
-            _contextMenu->addAction(_actionAddFolder);
-        } else {
-            // there should be exactly one folder. No sync-folder add action will be shown.
-            QStringList li = _folderMan->map().keys();
-            if( li.size() == 1 ) {
-                Folder *folder = _folderMan->map().value(li.first());
-                if( folder ) {
-                    // if there is singleFolder mode, a generic open action is displayed.
-                    QAction *action = new QAction( tr("Open %1 folder").arg(_theme->appNameGUI()), this);
-                    action->setIcon( _theme->trayFolderIcon( folder->backend()) );
+        // there should be exactly one folder. No sync-folder add action will be shown.
+        QStringList li = _folderMan->map().keys();
+        if( li.size() == 1 ) {
+            Folder *folder = _folderMan->map().value(li.first());
+            if( folder ) {
+                // if there is singleFolder mode, a generic open action is displayed.
+                QAction *action = new QAction( tr("Open local folder '%1'").arg(_theme->appNameGUI()), this);
+                action->setIcon( _theme->trayFolderIcon( folder->backend()) );
 
-                    connect( action, SIGNAL(triggered()),_folderOpenActionMapper,SLOT(map()));
-                    _folderOpenActionMapper->setMapping( action, folder->alias() );
+                connect( action, SIGNAL(triggered()),_folderOpenActionMapper,SLOT(map()));
+                _folderOpenActionMapper->setMapping( action, folder->alias() );
 
-                    _contextMenu->addAction(action);
-                }
+                _contextMenu->addAction(action);
             }
         }
     } else {
         // show a grouping with more than one folder.
-        if ( folderCnt ) {
+        if ( folderCnt > 1) {
             _contextMenu->addAction(tr("Managed Folders:"))->setDisabled(true);
         }
         foreach (Folder *folder, _folderMan->map() ) {
-            QAction *action = new QAction( folder->alias(), this );
-            action->setIcon( _theme->trayFolderIcon( folder->backend()) );
-
+            QAction *action = new QAction( tr("Open folder '%1'").arg(folder->alias()), this );
             connect( action, SIGNAL(triggered()),_folderOpenActionMapper,SLOT(map()));
             _folderOpenActionMapper->setMapping( action, folder->alias() );
 
             _contextMenu->addAction(action);
         }
-        _contextMenu->addAction(_actionAddFolder);
     }
 
     _contextMenu->addSeparator();
-    _contextMenu->addAction(_actionConfigure);
-    _contextMenu->addAction(_actionConfigureProxy);
+    _contextMenu->addAction(_actionQuota);
     _contextMenu->addSeparator();
-
-    if (!Theme::instance()->about().isEmpty()) {
-        _contextMenu->addAction(_actionAbout);
-        _contextMenu->addSeparator();
-    }
+    _contextMenu->addAction(_actionSettings);
+    _contextMenu->addAction(_actionHelp);
+    _contextMenu->addSeparator();
 
     _contextMenu->addAction(_actionQuit);
 }
@@ -600,6 +546,10 @@ void Application::enterNextLogFile()
 QNetworkProxy proxyFromConfig(const MirallConfigFile& cfg)
 {
     QNetworkProxy proxy;
+
+    if (cfg.proxyHostName().isEmpty())
+        return QNetworkProxy();
+
     proxy.setHostName(cfg.proxyHostName());
     proxy.setPort(cfg.proxyPort());
     if (cfg.proxyNeedsAuth()) {
@@ -636,23 +586,6 @@ void Application::slotSetupProxy()
     _folderMan->setProxy();
 }
 
-static QString octetsToString( qint64 octets )
-{
-    const qint64 kb = 1024;
-    const qint64 mb = 1024 * kb;
-    const qint64 gb = 1024 * mb;
-
-    if (octets >= gb) {
-        return QString::number(octets/gb) + QLatin1String(" GB");
-    } else if (octets >= mb) {
-        return QString::number(octets/mb) + QLatin1String(" MB");
-    } else if (octets >= kb) {
-        return QString::number(octets/kb) + QLatin1String(" KB");
-    } else {
-        return octets + QLatin1String(" bytes");
-    }
-}
-
 void Application::slotRefreshQuotaDisplay( qint64 total, qint64 used )
 {
     if (total == 0) {
@@ -672,8 +605,18 @@ void Application::slotRefreshQuotaDisplay( qint64 total, qint64 used )
     } else {
         percentFormatted = QString::number((int)percent);
     }
-    QString totalFormatted = octetsToString(total);
+    QString totalFormatted = Utility::octetsToString(total);
     _actionQuota->setText(tr("%1% of %2 used").arg(percentFormatted).arg(totalFormatted));
+}
+
+void Application::slotUseMonoIconsChanged(bool)
+{
+    computeOverallSyncStatus();
+}
+
+void Application::slotHelp()
+{
+    QDesktopServices::openUrl(QUrl(_theme->helpUrl()));
 }
 
 /*
@@ -719,110 +662,22 @@ void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
     }
 #if defined Q_WS_WIN || defined Q_WS_X11
     if( reason == QSystemTrayIcon::Trigger ) {
-        slotOpenStatus();
+        slotCheckConfig();
     }
 #endif
 }
 
-void Application::slotAddFolder()
+void Application::slotCheckConfig()
 {
-    /** Helper class to ensure sync is always switched back on */
-    class SyncDisabler
-    {
-    public:
-        SyncDisabler(Application *app) : _app(app)
-        {
-            _app->_folderMan->setSyncEnabled(false);
-        }
-        ~SyncDisabler() {
-            _app->_folderMan->setSyncEnabled(true);
-            _app->computeOverallSyncStatus();
-            _app->_folderMan->slotScheduleAllFolders();
-        }
-    private:
-        Application *_app;
-    };
-
-    if (!_folderWizard.isNull()) {
-        raiseDialog(_folderWizard);
-        return;
-    }
-
-    // disables sync queuing while in scope
-    SyncDisabler disableSync(this);
-
-    Folder::Map folderMap = _folderMan->map();
-    _folderWizard = new FolderWizard;
-    _folderWizard->setFolderMap( &folderMap );
-
-    if (_folderWizard->exec() == QDialog::Accepted) {
-        qDebug() << "* Folder wizard completed";
-
-        QString alias        = _folderWizard->field(QLatin1String("alias")).toString();
-        QString sourceFolder = _folderWizard->field(QLatin1String("sourceFolder")).toString();
-        QString targetPath   = _folderWizard->field(QLatin1String("OCFolderLineEdit")).toString();
-        QString backend      = QLatin1String("owncloud");
-
-        if (!FolderMan::ensureJournalGone( sourceFolder ))
-            return;
-        _folderMan->addFolderDefinition( backend, alias, sourceFolder, targetPath, false );
-        Folder *f = _folderMan->setupFolderFromConfigFile( alias );
-        if( f ) {
-            _statusDialog->slotAddFolder( f );
-            _statusDialog->buttonsSetEnabled();
-            setupContextMenu();
-        }
-
-    } else {
-        qDebug() << "* Folder wizard cancelled";
-    }
-    _folderWizard->deleteLater();
-}
-
-void Application::slotOpenStatus()
-{
-  if( ! _statusDialog ) return;
-
-  QWidget *raiseWidget = 0;
-
-  // check if there is a mirall.cfg already.
-  if( !_owncloudSetupWizard.isNull() &&
-       _owncloudSetupWizard->wizard()->isVisible() ) {
-    raiseWidget = _owncloudSetupWizard->wizard();
-  }
-
-  // if no config file is there, start the configuration wizard.
-  if( ! raiseWidget ) {
+    // if no config file is there, start the configuration wizard.
     MirallConfigFile cfgFile;
 
-    if( !cfgFile.exists() ) {
-      qDebug() << "No configured folders yet, start the Owncloud integration dialog.";
-      slotConfigure();
+    if( cfgFile.exists() ) {
+        slotSettings();
     } else {
-      qDebug() << "#============# Status dialog starting #=============#";
-      raiseWidget = _statusDialog;
-      _statusDialog->setFolderList( _folderMan->map() );
+        qDebug() << "No configured folders yet, starting setup wizard";
+        OwncloudSetupWizard::runWizard(_folderMan, this, SLOT(slotownCloudWizardDone(int)));
     }
-  }
-  raiseDialog( raiseWidget );
-}
-
-void Application::raiseDialog( QWidget *raiseWidget )
-{
-  // viel hilft viel ;-)
-  if( raiseWidget ) {
-#if defined(Q_WS_WIN) || defined (Q_OS_MAC)
-    Qt::WindowFlags eFlags = raiseWidget->windowFlags();
-    eFlags |= Qt::WindowStaysOnTopHint;
-    raiseWidget->setWindowFlags(eFlags);
-    raiseWidget->show();
-    eFlags &= ~Qt::WindowStaysOnTopHint;
-    raiseWidget->setWindowFlags(eFlags);
-#endif
-    raiseWidget->show();
-    raiseWidget->raise();
-    raiseWidget->activateWindow();
-  }
 }
 
 void Application::slotOpenLogBrowser()
@@ -831,117 +686,19 @@ void Application::slotOpenLogBrowser()
     _logBrowser->raise();
 }
 
-void Application::slotAbout()
+void Application::slotFoldersChanged()
 {
-    QMessageBox::about(0, tr("About %1").arg(_theme->appNameGUI()),
-                       Theme::instance()->about());
-}
-
-/*
-  * the folder is to be removed. The slot is called from a signal emitted by
-  * the status dialog, which removes the folder from its list by itself.
-  */
-void Application::slotRemoveFolder( const QString& alias )
-{
-    int ret = QMessageBox::question( 0, tr("Confirm Folder Remove"),
-                                     tr("<p>Do you really want to stop syncing the folder <i>%1</i>?</p>"
-                                        "<p><b>Note:</b> This will not remove the files from your client.</p>").arg(alias),
-                                     QMessageBox::Yes|QMessageBox::No );
-
-    if( ret == QMessageBox::No ) {
-        return;
-    }
-    _folderMan->slotRemoveFolder( alias );
-    _statusDialog->slotRemoveSelectedFolder( );
     computeOverallSyncStatus();
     setupContextMenu();
 }
 
-void Application::slotResetFolder( const QString & alias )
+void Application::slotSettings()
 {
-    int ret = QMessageBox::question( 0, tr("Confirm Folder Reset"),
-                                     tr("<p>Do you really want to reset folder <i>%1</i> and rebuild your client database?</p>"
-                                        "<p><b>Note:</b> While no files will be removed, this can cause significant data "
-                                        "traffic and take several minutes to hours, depending on the size of the folder.</p>").arg(alias),
-                                     QMessageBox::Yes|QMessageBox::No );
-    if( ret == QMessageBox::No ) {
-        return;
-    }
-
-    Folder *f = _folderMan->folder(alias);
-    f->slotTerminateSync();
-    f->wipe();
-    _folderMan->slotScheduleAllFolders();
-}
-
-// Open the File list info dialog.
-void Application::slotInfoFolder( const QString& alias )
-{
-    qDebug() << "details of folder with alias " << alias;
-
-    if( !_fileItemDialog ) {
-        _fileItemDialog = new FileItemDialog(_theme);
-    }
-
-    SyncResult folderResult = _folderMan->syncResult( alias );
-
-    _fileItemDialog->setSyncResult( folderResult );
-    raiseDialog( _fileItemDialog );
-}
-
-void Application::slotEnableFolder(const QString& alias, const bool enable)
-{
-    qDebug() << "Application: enable folder with alias " << alias;
-    bool terminate = false;
-
-    // this sets the folder status to disabled but does not interrupt it.
-    Folder *f = _folderMan->folder( alias );
-    if( f && !enable ) {
-        // check if a sync is still running and if so, ask if we should terminate.
-        if( f->isBusy() ) { // its still running
-            int reply = QMessageBox::question( 0, tr("Sync Running"),
-                                               tr("The syncing operation is running.<br/>Do you want to terminate it?"),
-                                               QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes );
-            if ( reply == QMessageBox::Yes )
-                terminate = true;
-            else
-                return; // do nothing
-        }
-    }
-
-    // message box can return at any time while the thread keeps running,
-    // so better check again after the user has responded.
-    if ( f->isBusy() && terminate )
-        _folderMan->terminateSyncProcess( alias );
-
-    _folderMan->slotEnableFolder( alias, enable );
-    _statusDialog->slotUpdateFolderState( f );
-}
-
-void Application::slotConfigure()
-{
-    if (!_owncloudSetupWizard.isNull() &&
-        !_owncloudSetupWizard->wizard()->isVisible()) {
-        raiseDialog(_owncloudSetupWizard->wizard());
-        return;
-    }
-
-    _owncloudSetupWizard.reset(new OwncloudSetupWizard( _folderMan, _theme, this ));;
-    connect( _owncloudSetupWizard.data(), SIGNAL(ownCloudWizardDone(int)),
-             this, SLOT(slotownCloudWizardDone(int)));
-
-    _folderMan->setSyncEnabled(false); // do not start more syncs.
-    _owncloudSetupWizard->startWizard();
-}
-
-void Application::slotConfigureProxy()
-{
-    if (_proxyDialog.isNull()) {
-        _proxyDialog = new ProxyDialog;
-        _proxyDialog->open();
-        connect(_proxyDialog, SIGNAL(accept()), SLOT(slotSetupProxy()));
+    if (_settingsDialog.isNull()) {
+        _settingsDialog = new SettingsDialog(this);
+        _settingsDialog->open();
     } else {
-        raiseDialog(_proxyDialog);
+        Utility::raiseDialog(_settingsDialog);
     }
 }
 
@@ -954,7 +711,7 @@ void Application::slotParseOptions(const QString &opts)
 
 void Application::slotShowTrayMessage(const QString &title, const QString &msg)
 {
-    if( _tray != NULL )
+    if( _tray )
         _tray->showMessage(title, msg);
     else
         qDebug() << "Tray not ready: " << msg;
@@ -964,11 +721,8 @@ void Application::slotSyncStateChange( const QString& alias )
 {
     SyncResult result = _folderMan->syncResult( alias );
 
-    _statusDialog->slotUpdateFolderState( _folderMan->folder(alias) );
+    emit folderStateChanged( _folderMan->folder(alias) );
 
-    if( _fileItemDialog && _fileItemDialog->isVisible() ) {
-        _fileItemDialog->setSyncResult( _folderMan->syncResult(alias) );
-    }
     computeOverallSyncStatus();
 
     qDebug() << "Sync state changed for folder " << alias << ": "  << result.statusString();
@@ -1013,8 +767,6 @@ void Application::parseOptions(const QStringList &options)
             }
         } else if (option == QLatin1String("--logflush")) {
             _logFlush = true;
-        } else if (option == QLatin1String("--monoicons")) {
-            _theme->setSystrayUseMonoIcons(true); 
         } else if (option == QLatin1String("--confdir")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
                 QString confDir = it.next();

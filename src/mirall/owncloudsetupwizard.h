@@ -35,7 +35,7 @@ class OwncloudSetupWizard : public QObject
 {
     Q_OBJECT
 public:
-    explicit OwncloudSetupWizard( FolderMan *folderMan = 0, Theme *theme = 0, QObject *parent = 0 );
+    explicit OwncloudSetupWizard( FolderMan *folderMan, QObject *parent = 0 );
 
     ~OwncloudSetupWizard();
 
@@ -58,6 +58,9 @@ public:
     void    setupLocalSyncFolder();
 
     OwncloudWizard *wizard();
+
+    /** Run the wizard */
+    static void runWizard( FolderMan *folderMan, QObject *obj, const char* amember, QWidget *parent = 0 );
 
 signals:
     // issued if the oC Setup process (owncloud-admin) is finished.

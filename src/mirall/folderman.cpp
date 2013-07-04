@@ -322,13 +322,13 @@ Folder *FolderMan::folder( const QString& alias )
 
 SyncResult FolderMan::syncResult( const QString& alias )
 {
-    SyncResult res;
     Folder *f = folder( alias );
+    return syncResult(f);
+}
 
-    if( f ) {
-        res = f->syncResult();
-    }
-    return res;
+SyncResult FolderMan::syncResult( Folder *f )
+{
+   return f ? f->syncResult() : SyncResult();
 }
 
 void FolderMan::slotScheduleAllFolders()

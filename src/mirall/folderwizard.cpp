@@ -32,7 +32,7 @@ namespace Mirall
 {
 
 FolderWizardSourcePage::FolderWizardSourcePage()
-  :_folderMap(0)
+    : QWizardPage()
 {
     _ui.setupUi(this);
     registerField(QLatin1String("sourceFolder*"), _ui.localFolderLineEdit);
@@ -75,12 +75,11 @@ bool FolderWizardSourcePage::isComplete() const
     warnString = tr("No local directory selected!");
   }
   // check if the local directory isn't used yet in another ownCloud sync
-  Folder::Map *map = _folderMap;
-  if( ! map ) return false;
+  Folder::Map map = _folderMap;
 
   if( isOk ) {
-    Folder::Map::const_iterator i = map->constBegin();
-    while( isOk && i != map->constEnd() ) {
+    Folder::Map::const_iterator i = map.constBegin();
+    while( isOk && i != map.constEnd() ) {
       Folder *f = static_cast<Folder*>(i.value());
       QString folderDir = QDir( f->path() ).canonicalPath();
       if( folderDir.isEmpty() )
@@ -119,9 +118,9 @@ bool FolderWizardSourcePage::isComplete() const
     isOk = false;
   }
 
-  Folder::Map::const_iterator i = map->constBegin();
+  Folder::Map::const_iterator i = map.constBegin();
   bool goon = true;
-  while( goon && i != map->constEnd() ) {
+  while( goon && i != map.constEnd() ) {
     Folder *f = static_cast<Folder*>(i.value());
     qDebug() << "Checking local alias: " << f->alias();
     if( f ) {
@@ -332,11 +331,10 @@ void FolderWizardTargetPage::showWarn( const QString& msg, bool showCreateButton
 
 FolderWizard::FolderWizard( QWidget *parent )
     : QWizard(parent),
-    _folderWizardSourcePage(0),
+    _folderWizardSourcePage(new FolderWizardSourcePage),
     _folderWizardTargetPage(0)
 {
-    _folderWizardSourcePage = new FolderWizardSourcePage();
-    setPage(Page_Source,   _folderWizardSourcePage );
+    setPage(Page_Source, _folderWizardSourcePage );
     if (!Theme::instance()->singleSyncFolder()) {
         _folderWizardTargetPage = new FolderWizardTargetPage();
         setPage(Page_Target, _folderWizardTargetPage );
@@ -350,16 +348,11 @@ FolderWizard::FolderWizard( QWidget *parent )
 
 FolderWizard::~FolderWizard()
 {
-  delete _folderWizardSourcePage;
-  if( _folderWizardTargetPage )
-    delete _folderWizardTargetPage;
 }
 
-void FolderWizard::setFolderMap( Folder::Map *fm)
+void FolderWizard::setFolderMap( const Folder::Map& fm)
 {
-  if( _folderWizardSourcePage ) {
     _folderWizardSourcePage->setFolderMap( fm );
-  }
 }
 
 } // end namespace

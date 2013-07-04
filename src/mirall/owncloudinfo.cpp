@@ -63,7 +63,9 @@ ownCloudInfo* ownCloudInfo::instance()
 
 ownCloudInfo::ownCloudInfo() :
     QObject(0),
-    _manager(0)
+    _manager(0),
+    _lastQuotaTotalBytes(0),
+    _lastQuotaUsedBytes(0)
 {
     _connection = Theme::instance()->appName();
     connect(this, SIGNAL(guiLog(QString,QString)),
@@ -317,7 +319,6 @@ void ownCloudInfo::slotGetQuotaFinished()
         if (type == QXmlStreamReader::StartElement &&
             reader.namespaceUri() == QLatin1String("DAV:")) {
             QString name = reader.name().toString();
-            QString ns = reader.namespaceUri().toString();
             if (name == QLatin1String("quota-used-bytes")) {
                 quotaUsedBytes = reader.readElementText().toLongLong(&ok);
                 if (!ok) quotaUsedBytes = 0;
@@ -330,6 +331,8 @@ void ownCloudInfo::slotGetQuotaFinished()
 
     qint64 total = quotaUsedBytes + quotaAvailableBytes;
 
+    _lastQuotaTotalBytes = total;
+    _lastQuotaUsedBytes = quotaUsedBytes;
     emit quotaUpdated(total, quotaUsedBytes);
 
     reply->deleteLater();

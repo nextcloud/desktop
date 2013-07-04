@@ -62,6 +62,11 @@ public:
     SyncResult syncResult( const QString& );
 
     /**
+      * return the last sync result by Folder
+      */
+    SyncResult syncResult( Folder* );
+
+    /**
       * creates a folder for a specific configuration, identified by alias.
       */
     Folder* setupFolderFromConfigFile(const QString & );
