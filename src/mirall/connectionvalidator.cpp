@@ -38,9 +38,42 @@ QStringList ConnectionValidator::errors() const
     return _errors;
 }
 
-QString ConnectionValidator::statusString( Status )
+QString ConnectionValidator::statusString( Status stat ) const
 {
-    return QLatin1String("Get your street creds!");
+    QString re;
+
+    switch( stat ) {
+    case Undefined:
+        re = QLatin1String("Undefined");
+        break;
+    case Connected:
+        re = QLatin1String("Connected");
+        break;
+    case NotConfigured:
+        re = QLatin1String("NotConfigured");
+        break;
+    case ServerVersionMismatch:
+        re = QLatin1String("Server Version Mismatch");
+        break;
+    case CredentialsTooManyAttempts:
+        re = QLatin1String("Credentials Too Many Attempts");
+        break;
+     case CredentialError:
+        re = QLatin1String("CredentialError");
+        break;
+    case CredentialsUserCanceled:
+        re = QLatin1String("Credential User Canceled");
+        break;
+    case CredentialsWrong:
+        re = QLatin1String("Credentials Wrong");
+        break;
+    case StatusNotFound:
+        re = QLatin1String("Status not found");
+        break;
+    default:
+        re = QLatin1String("status undeclared.");
+    }
+    return re;
 }
 
 

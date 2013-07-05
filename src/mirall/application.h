@@ -26,6 +26,7 @@
 #include "mirall/logbrowser.h"
 #include "mirall/folderman.h"
 #include "mirall/systray.h"
+#include "mirall/connectionvalidator.h"
 
 class QAction;
 class QMenu;
@@ -86,20 +87,14 @@ protected slots:
     void slotParseOptions( const QString& );
     void slotShowTrayMessage(const QString&, const QString&);
     void slotShowOptionalTrayMessage(const QString&, const QString&);
-
+    void slotCheckConnection();
+    void slotConnectionValidatorResult(ConnectionValidator::Status);
     void slotSyncStateChange( const QString& );
     void slotTrayClicked( QSystemTrayIcon::ActivationReason );
     void slotFolderOpenAction(const QString & );
     void slotOpenOwnCloud();
-    void slotStartFolderSetup(int result = QDialog::Accepted); // defaulting to Accepted
-    void slotOwnCloudFound( const QString&, const QString&, const QString&, const QString& );
-    void slotNoOwnCloudFound( QNetworkReply* );
-    void slotCheckAuthentication();
-    void slotAuthCheck( const QString& ,QNetworkReply* );
     void slotOpenLogBrowser();
     void slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors );
-    void slotFetchCredentials();
-    void slotCredentialsFetched( bool );
     void slotStartUpdateDetector();
     void slotSetupProxy();
     void slotRefreshQuotaDisplay( qint64 total, qint64 used );
@@ -122,6 +117,7 @@ private:
 
     QPointer<FolderWizard> _folderWizard;
     SslErrorDialog *_sslErrorDialog;
+    ConnectionValidator *_conValidator;
 
     // tray's menu
     QMenu *_contextMenu;

@@ -45,12 +45,12 @@ public:
 
     void checkConnection();
 
-    QString statusString( Status );
+    QString statusString( Status ) const;
 
 signals:
     void connectionResult( ConnectionValidator::Status );
-    void connectionAvailable();
-    void connectionFailed();
+    // void connectionAvailable();
+    // void connectionFailed();
 
 public slots:
 

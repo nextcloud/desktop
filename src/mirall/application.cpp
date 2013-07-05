@@ -1,5 +1,7 @@
 /*
  * Copyright (C) by Duncan Mac-Vicar P. <duncan@kde.org>
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +34,7 @@
 #include "mirall/settingsdialog.h"
 #include "mirall/utility.h"
 #include "mirall/inotify.h"
+#include "mirall/connectionvalidator.h"
 
 #if defined(Q_OS_WIN)
 #include <windows.h>
@@ -150,7 +153,8 @@ Application::Application(int &argc, char **argv) :
 
     int cnt = _folderMan->setupFolders();
 
-    QTimer::singleShot( 0, this, SLOT( slotStartFolderSetup() ));
+    // startup procedure.
+    QTimer::singleShot( 0, this, SLOT( slotCheckConnection() ));
 
     if( !cfg.ownCloudSkipUpdateCheck() ) {
         QTimer::singleShot( 3000, this, SLOT( slotStartUpdateDetector() ));
@@ -176,171 +180,30 @@ void Application::slotStartUpdateDetector()
 {
     UpdateDetector *updateDetector = new UpdateDetector(this);
     updateDetector->versionCheck(_theme);
-
 }
 
-void Application::slotStartFolderSetup( int result )
+void Application::slotCheckConnection()
 {
-    if( result == QDialog::Accepted ) {
-        if( ownCloudInfo::instance()->isConfigured() ) {
-            connect( ownCloudInfo::instance(),SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
-                     SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
-
-            connect( ownCloudInfo::instance(),SIGNAL(noOwncloudFound(QNetworkReply*)),
-                     SLOT(slotNoOwnCloudFound(QNetworkReply*)));
-
-            ownCloudInfo::instance()->checkInstallation();
-        } else {
-            slotCheckConfig();
-        }
-    } else {
-        qDebug() << "Setup Wizard was canceled. No reparsing of config.";
-    }
+    _conValidator = new ConnectionValidator();
+    connect( _conValidator, SIGNAL(connectionResult(ConnectionValidator::Status)),
+             this, SLOT(slotConnectionValidatorResult(ConnectionValidator::Status)) );
+    _conValidator->checkConnection();
 }
 
-void Application::slotOwnCloudFound( const QString& url, const QString& versionStr, const QString& version, const QString& edition)
+
+void Application::slotConnectionValidatorResult(ConnectionValidator::Status status)
 {
-    qDebug() << "** Application: ownCloud found: " << url << " with version " << versionStr << "(" << version << ")";
-    // now check the authentication
-    MirallConfigFile cfgFile;
-    cfgFile.setOwnCloudVersion( version );
-    // disconnect from ownCloudInfo
-    disconnect( ownCloudInfo::instance(),SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
-                this, SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
+    qDebug() << "Connection Validator Result: " << _conValidator->statusString(status);
 
-    disconnect( ownCloudInfo::instance(),SIGNAL(noOwncloudFound(QNetworkReply*)),
-                this, SLOT(slotNoOwnCloudFound(QNetworkReply*)));
-
-    if( version.startsWith("4.0") ) {
-        QMessageBox::warning(0, tr("%1 Server Mismatch").arg(_theme->appNameGUI()),
-                             tr("<p>The configured server for this client is too old.</p>"
-                                "<p>Please update to the latest %1 server and restart the client.</p>").arg(_theme->appNameGUI()));
-        return;
-    }
-
-    QTimer::singleShot( 0, this, SLOT( slotFetchCredentials() ));
-}
-
-void Application::slotNoOwnCloudFound( QNetworkReply* reply )
-{
-    Q_UNUSED(reply)
-
-    qDebug() << "** Application: NO ownCloud found! Going offline";
-
-    // Disconnect.
-    disconnect( ownCloudInfo::instance(),SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
-                this, SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
-
-    disconnect( ownCloudInfo::instance(),SIGNAL(noOwncloudFound(QNetworkReply*)),
-                this, SLOT(slotNoOwnCloudFound(QNetworkReply*)));
-
-    disconnect( ownCloudInfo::instance(),SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
-                this,SLOT(slotAuthCheck(QString,QNetworkReply*)));
-
-    setupContextMenu();
-    QTimer::singleShot( 30*1000, this, SLOT( slotStartFolderSetup() ));
-}
-
-void Application::slotFetchCredentials()
-{
-    QString trayMessage;
-
-    if( CredentialStore::instance()->state() == CredentialStore::Ok ) {
-        // the credentials are still valid and ok.
-        slotCredentialsFetched( true );
-    } else {
-        if( CredentialStore::instance()->canTryAgain() ) {
-            connect( CredentialStore::instance(), SIGNAL(fetchCredentialsFinished(bool)),
-                     this, SLOT(slotCredentialsFetched(bool)) );
-            CredentialStore::instance()->fetchCredentials();
-            if( CredentialStore::instance()->state() == CredentialStore::TooManyAttempts ) {
-                trayMessage = tr("Too many incorrect password attempts.");
-            }
-        } else {
-            qDebug() << "Can not try again to fetch Credentials.";
-            trayMessage = tr("%1 user credentials are wrong. Please check configuration.")
-                    .arg(Theme::instance()->appNameGUI());
-        }
-
-        if( !trayMessage.isEmpty() ) {
-            slotShowTrayMessage(tr("Credentials"), trayMessage);
-        }
-    }
-}
-
-void Application::slotCredentialsFetched(bool ok)
-{
-    qDebug() << "Credentials successfully fetched: " << ok;
-    if( ! ok ) {
-        QString trayMessage;
-        trayMessage = tr("Error: Could not retrieve the password!");
-        if( CredentialStore::instance()->state() == CredentialStore::UserCanceled ) {
-            trayMessage = tr("Password dialog was canceled!");
-        } else {
-            trayMessage = CredentialStore::instance()->errorMessage();
-        }
-
-        if( !trayMessage.isEmpty() ) {
-            slotShowTrayMessage(tr("Credentials"), trayMessage);
-        }
-
-        qDebug() << "Could not fetch credentials";
-    } else {
-        ownCloudInfo::instance()->setCredentials( CredentialStore::instance()->user(),
-                                                  CredentialStore::instance()->password() );
-        // Credential fetched ok.
-        QTimer::singleShot( 0, this, SLOT( slotCheckAuthentication() ));
-    }
-    disconnect( CredentialStore::instance(), SIGNAL(fetchCredentialsFinished(bool)) );
-}
-
-void Application::slotCheckAuthentication()
-{
-    connect( ownCloudInfo::instance(),SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
-             this,SLOT(slotAuthCheck(QString,QNetworkReply*)));
-
-    qDebug() << "# checking for authentication settings.";
-    ownCloudInfo::instance()->getWebDAVPath(QLatin1String("/") ); // this call needs to be authenticated.
-    // simply GET the webdav root, will fail if credentials are wrong.
-    // continue in slotAuthCheck here :-)
-}
-
-void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
-{
-    bool ok = true;
-
-    if( reply->error() == QNetworkReply::AuthenticationRequiredError ) { // returned if the user is wrong.
-        qDebug() << "******** Password is wrong!";
-        QMessageBox::warning(0, tr("No %1 Connection").arg(_theme->appNameGUI()),
-                             tr("<p>Your %1 credentials are not correct.</p>"
-                                "<p>Please correct them by starting the configuration dialog from the tray!</p>")
-                             .arg(_theme->appNameGUI()));
-        ok = false;
-    } else if( reply->error() == QNetworkReply::OperationCanceledError ) {
-        // the username was wrong and ownCloudInfo was closing the request after a couple of auth tries.
-        qDebug() << "******** Username or password is wrong!";
-        QMessageBox::warning(0, tr("No %1 Connection").arg(_theme->appNameGUI()),
-                             tr("<p>Either your user name or your password are not correct.</p>"
-                                "<p>Please correct it by starting the configuration dialog from the tray!</p>"));
-        ok = false;
-    }
-
-    // disconnect from o`   wnCloud Info signals
-    disconnect( ownCloudInfo::instance(),SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
-             this,SLOT(slotAuthCheck(QString,QNetworkReply*)));
-
-    if( ok ) {
-        qDebug() << "######## Credentials are ok!";
+    if( status == ConnectionValidator::Connected ) {
+        qDebug() << "######## Connection and Credentials are ok!";
         _folderMan->setSyncEnabled(true);
-        QMetaObject::invokeMethod(_folderMan, "slotScheduleFolderSync");
-
         _tray->setIcon( _theme->syncStateIcon( SyncResult::NotYetStarted, true ) );
         _tray->show();
 
         int cnt = _folderMan->map().size();
-        if( _tray )
-            _tray->showMessage(tr("%1 Sync Started").arg(_theme->appNameGUI()),
-                               tr("Sync started for %1 configured sync folder(s).").arg(cnt));
+        slotShowTrayMessage(tr("%1 Sync Started").arg(_theme->appNameGUI()),
+                            tr("Sync started for %1 configured sync folder(s).").arg(cnt));
 
         // queue up the sync for all folders.
         _folderMan->slotScheduleAllFolders();
@@ -348,7 +211,10 @@ void Application::slotAuthCheck( const QString& ,QNetworkReply *reply )
         computeOverallSyncStatus();
 
         setupContextMenu();
+    } else {
+        // What else?
     }
+    _conValidator->deleteLater();
 }
 
 void Application::slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors )
@@ -398,7 +264,10 @@ void Application::slotownCloudWizardDone( int res )
 //        _statusDialog->setFolderList( _folderMan->map() );
     }
     _folderMan->setSyncEnabled( true );
-    slotStartFolderSetup( res );
+    if( res == QDialog::Accepted ) {
+        slotCheckConnection();
+    }
+
 }
 
 void Application::setupActions()
@@ -658,11 +527,6 @@ void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
 {
     // A click on the tray icon should only open the status window on Win and
     // Linux, not on Mac. They want a menu entry.
-    // If the user canceled login, rather open the login window.
-    if( CredentialStore::instance()->state() == CredentialStore::UserCanceled ||
-            CredentialStore::instance()->state() == CredentialStore::Error ) {
-        slotFetchCredentials();
-    }
 #if defined Q_WS_WIN || defined Q_WS_X11
     if( reason == QSystemTrayIcon::Trigger ) {
         slotCheckConfig();
@@ -689,6 +553,7 @@ void Application::slotOpenLogBrowser()
     _logBrowser->raise();
 }
 
+// slot hit when a folder gets changed in the settings dialog.
 void Application::slotFoldersChanged()
 {
     computeOverallSyncStatus();
