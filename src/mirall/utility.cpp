@@ -106,7 +106,7 @@ QString Utility::octetsToString( qint64 octets )
     } else if (octets >= kb) {
         return QString::number(octets/kb) + QLatin1String(" KB");
     } else {
-        return octets + QLatin1String(" bytes");
+        return QString::number(octets) + QLatin1String(" bytes");
     }
 }
 
