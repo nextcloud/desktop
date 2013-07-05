@@ -26,6 +26,7 @@
 #include <csync.h>
 
 #include "mirall/syncfileitem.h"
+#include "mirall/progressdispatcher.h"
 
 class QProcess;
 
@@ -50,6 +51,8 @@ signals:
     void csyncUnavailable();
     void treeWalkResult(const SyncFileItemVector&);
 
+    void transmissionProgress( Progress::Kind, const QString&, long, long);
+
     void csyncStateDbFile( const QString& );
     void wipeDb();
 
@@ -60,10 +63,10 @@ signals:
 
 private:
     void handleSyncError(CSYNC *ctx, const char *state);
-    static void progress(const char *remote_url,
-                    enum csync_notify_type_e kind,
-                    long long o1, long long o2,
-                    void *userdata);
+    static void cb_progress(const char *remote_url,
+                            enum csync_notify_type_e kind,
+                            long long o1, long long o2,
+                            void *userdata);
 
     static int treewalkLocal( TREE_WALK_FILE*, void *);
     static int treewalkRemote( TREE_WALK_FILE*, void *);

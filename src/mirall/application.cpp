@@ -134,6 +134,8 @@ Application::Application(int &argc, char **argv) :
 
     setQuitOnLastWindowClosed(false);
 
+    qRegisterMetaType<Progress::Kind>("Progress::Kind");
+
 #if 0
 #if QT_VERSION >= 0x040700
     qDebug() << "* Network is" << (_networkMgr->isOnline() ? "online" : "offline");

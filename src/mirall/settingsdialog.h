@@ -17,6 +17,8 @@
 #include <QDialog>
 #include <QStyledItemDelegate>
 
+#include "mirall/progressdispatcher.h"
+
 class QStandardItemModel;
 class QListWidgetItem;
 
@@ -41,7 +43,7 @@ public slots:
     // Progress, parameter is
     //  - filename
     //  - progress bytes, overall size.
-    void slotFolderUploadProgress( const QString&, const QString&, long, long );
+    void slotFolderProgress( Progress::Kind, const QString&, const QString&, long, long );
 
 protected:
     void closeEvent(QCloseEvent *event);

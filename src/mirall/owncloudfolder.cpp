@@ -19,6 +19,7 @@
 #include "mirall/credentialstore.h"
 #include "mirall/logger.h"
 #include "mirall/utility.h"
+#include "mirall/progressdispatcher.h"
 
 #include <csync.h>
 
@@ -152,8 +153,6 @@ void ownCloudFolder::setProxy()
         csync_set_module_property(_csync_ctx, "proxy_port", &proxyPort );
         csync_set_module_property(_csync_ctx, "proxy_user", proxy.user().toUtf8().data()     );
         csync_set_module_property(_csync_ctx, "proxy_pwd" , proxy.password().toUtf8().data() );
-
-        csync_set_module_property(_csync_ctx, "csync_context", _csync_ctx);
     }
 }
 
@@ -307,6 +306,8 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     //blocking connection so the message box happens in this thread, but block the csync thread.
     connect(_csync, SIGNAL(aboutToRemoveAllFiles(SyncFileItem::Direction,bool*)),
                     SLOT(slotAboutToRemoveAllFiles(SyncFileItem::Direction,bool*)), Qt::BlockingQueuedConnection);
+    connect(_csync, SIGNAL(transmissionProgress(Progress::Kind, QString,long,long)),
+             SLOT(slotTransmissionProgress(Progress::Kind, QString,long,long)));
 
     _thread->start();
     QMetaObject::invokeMethod(_csync, "startSync", Qt::QueuedConnection);
@@ -410,6 +411,24 @@ void ownCloudFolder::slotLocalPathChanged( const QString& dir )
         }
     }
 }
+
+void ownCloudFolder::slotTransmissionProgress(Progress::Kind kind, const QString& file ,long p1, long p2)
+{
+    if( kind == Progress::StartDownload ) {
+        _progressKind = Progress::Download;
+    }
+    if( kind == Progress::StartUpload ) {
+        _progressKind = Progress::Upload;
+    }
+
+    // qDebug() << "Upload Progress: " << file << p1 << p2;
+    ProgressDispatcher::instance()->setFolderProgress( _progressKind, alias(), file, p1, p2 );
+
+    if( kind == Progress::EndDownload || kind == Progress::EndUpload ) {
+        _progressKind = Progress::Inactive;
+    }
+}
+
 
 // This removes the csync File database if the sync folder definition is removed
 // permanentely. This is needed to provide a clean startup again in case another

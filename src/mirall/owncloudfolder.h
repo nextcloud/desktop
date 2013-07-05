@@ -21,6 +21,7 @@
 
 #include "mirall/folder.h"
 #include "mirall/csyncthread.h"
+#include "mirall/progressdispatcher.h"
 
 class QProcess;
 class QTimer;
@@ -89,6 +90,8 @@ private slots:
     void slotCsyncUnavailable();
     void slotCSyncFinished();
 
+    void slotTransmissionProgress(Progress::Kind, const QString&,long, long);
+
 private:
     static int getauth(const char *prompt,
                              char *buf,
@@ -109,6 +112,7 @@ private:
     bool         _csyncUnavail;
     bool         _wipeDb;
     SyncFileItemVector _items;
+    Progress::Kind _progressKind;
 
     CSYNC *_csync_ctx;
 };

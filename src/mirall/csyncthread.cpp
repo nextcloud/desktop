@@ -315,11 +315,12 @@ void CSyncThread::startSync()
     // cleans up behind us and emits finished() to ease error handling
     CSyncRunScopeHelper helper(_csync_ctx, this);
 
+    csync_set_progress_callback( _csync_ctx, cb_progress );
+
     csync_set_module_property(_csync_ctx, "csync_context", _csync_ctx);
     csync_set_userdata(_csync_ctx, this);
 
     // csync_set_auth_callback( _csync_ctx, getauth );
-    csync_set_progress_callback( _csync_ctx, progress );
 
     qDebug() << "#### Update start #################################################### >>";
     if( csync_update(_csync_ctx) < 0 ) {
@@ -373,14 +374,24 @@ void CSyncThread::startSync()
     qDebug() << Q_FUNC_INFO << "Sync finished";
 }
 
-void CSyncThread::progress(const char *remote_url, enum csync_notify_type_e kind,
-                                        long long o1, long long o2, void *userdata)
+void CSyncThread::cb_progress(const char *remote_url, enum csync_notify_type_e kind,
+                           long long o1, long long o2, void *userdata)
 {
-    (void) o1; (void) o2;
+    QString path = QUrl::fromEncoded(remote_url).toString();
+    CSyncThread *thread = static_cast<CSyncThread*>(userdata);
+
     if (kind == CSYNC_NOTIFY_FINISHED_DOWNLOAD) {
-        QString path = QUrl::fromEncoded(remote_url).toString();
-        CSyncThread *thread = static_cast<CSyncThread*>(userdata);
         thread->fileReceived(path);
+    } else if( kind == CSYNC_NOTIFY_START_UPLOAD ) {
+        thread->transmissionProgress( Progress::StartUpload, path, (long)0, (long)0 ); // indicate the upload start.
+    } else if( kind == CSYNC_NOTIFY_PROGRESS ) {
+        thread->transmissionProgress( Progress::Context, path, o1, o2 );
+    } else if( kind == CSYNC_NOTIFY_FINISHED_UPLOAD ) {
+        thread->transmissionProgress( Progress::EndUpload, path, o2, o2 );
+    } else if( kind == CSYNC_NOTIFY_START_DOWNLOAD ) {
+        thread->transmissionProgress( Progress::StartDownload, path, 0, 0 );
+    } else if( kind == CSYNC_NOTIFY_FINISHED_DOWNLOAD ) {
+        thread->transmissionProgress( Progress::EndDownload, path, o2, o2 );
     }
 }
 

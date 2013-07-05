@@ -76,6 +76,7 @@ set(libsync_SRCS
     mirall/logger.cpp
     mirall/utility.cpp
     mirall/connectionvalidator.cpp
+    mirall/progressdispatcher.cpp
 )
 set(libsync_HEADERS 
     mirall/folderman.h
@@ -89,6 +90,7 @@ set(libsync_HEADERS
     mirall/credentialstore.h
     mirall/logger.h
     mirall/connectionvalidator.h
+    mirall/progressdispatcher.h
 )
 
 IF( INOTIFY_FOUND )

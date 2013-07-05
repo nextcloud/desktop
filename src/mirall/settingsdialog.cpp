@@ -20,6 +20,7 @@
 #include "mirall/application.h"
 #include "mirall/ignorelisteditor.h"
 #include "mirall/mirallconfigfile.h"
+#include "mirall/progressdispatcher.h"
 
 #include <QLabel>
 #include <QStandardItemModel>
@@ -71,6 +72,12 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
     connect( _accountSettings, SIGNAL(openFolderAlias(const QString&)),
              app, SLOT(slotFolderOpenAction(QString)));
 
+    connect( ProgressDispatcher::instance(), SIGNAL(folderProgress(Progress::Kind, QString,QString,long,long)),
+             this, SLOT(slotFolderProgress(Progress::Kind, QString,QString,long,long)));
+
+    connect(ProgressDispatcher::instance(), SIGNAL(shortFolderProgress(QString, QString)),
+            this, SLOT(slotShortFolderProgress(QString, QString)));
+
     _ui->labelWidget->setCurrentRow(_ui->labelWidget->row(general));
 
     connect(_ui->labelWidget, SIGNAL(currentRowChanged(int)),
@@ -98,10 +105,10 @@ void SettingsDialog::addAccount(const QString &title, QWidget *widget)
 
 }
 
-void SettingsDialog::slotFolderUploadProgress( const QString& folderAlias, const QString& file, long p1, long p2)
+void SettingsDialog::slotFolderProgress( Progress::Kind kind, const QString& folderAlias, const QString& file, long p1, long p2)
 {
-    qDebug() << " SettingsDialog: XX - File " << file << p1 << p2;
-    _accountSettings->slotSetProgress(folderAlias, file, p1, p2);
+    qDebug() << " SettingsDialog: XXOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO - File " << file << p1 << p2;
+    _accountSettings->slotSetProgress(kind, folderAlias, file, p1, p2);
 }
 
 void SettingsDialog::closeEvent(QCloseEvent *event)

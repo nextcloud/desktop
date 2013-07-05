@@ -19,6 +19,7 @@
 #include <QPointer>
 
 #include "mirall/folder.h"
+#include "mirall/progressdispatcher.h"
 
 class QStandardItemModel;
 class QModelIndex;
@@ -61,7 +62,7 @@ public slots:
     void slotOCInfoFail( QNetworkReply* );
     void slotDoubleClicked( const QModelIndex& );
     void slotFolderOpenAction( const QString& );
-    void slotSetProgress( const QString&, const QString&, long, long );
+    void slotSetProgress( Progress::Kind, const QString&, const QString&, long, long );
     void slotUpdateQuota( qint64,qint64 );
 
 protected slots:
