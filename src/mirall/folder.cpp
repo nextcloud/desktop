@@ -53,7 +53,8 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
 
     MirallConfigFile cfg;
 
-    _watcher->setIgnoreListFile( cfg.excludeFile() );
+    _watcher->addIgnoreListFile( cfg.excludeFile(MirallConfigFile::SystemScope) );
+    _watcher->addIgnoreListFile( cfg.excludeFile(MirallConfigFile::UserScope) );
 
     QObject::connect(_watcher, SIGNAL(folderChanged(const QStringList &)),
                      SLOT(slotChanged(const QStringList &)));

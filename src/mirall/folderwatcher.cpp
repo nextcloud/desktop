@@ -69,7 +69,7 @@ QString FolderWatcher::root() const
     return _root;
 }
 
-void FolderWatcher::setIgnoreListFile( const QString& file )
+void FolderWatcher::addIgnoreListFile( const QString& file )
 {
     if( file.isEmpty() ) return;
 

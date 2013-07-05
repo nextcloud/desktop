@@ -59,7 +59,7 @@ public:
     /**
       * Set a file name to load a file with ignore patterns.
       */
-    void setIgnoreListFile( const QString& );
+    void addIgnoreListFile( const QString& );
 
     /**
      * Add an ignore pattern that will not be

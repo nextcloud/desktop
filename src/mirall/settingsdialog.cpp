@@ -18,6 +18,7 @@
 #include "mirall/generalsettings.h"
 #include "mirall/accountsettings.h"
 #include "mirall/application.h"
+#include "mirall/ignorelisteditor.h"
 
 #include <QLabel>
 #include <QStandardItemModel>
@@ -49,6 +50,12 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
     connect(generalSettings, SIGNAL(proxySettingsChanged()), app, SLOT(slotSetupProxy()));
     connect(generalSettings, SIGNAL(proxySettingsChanged()), app->_folderMan, SLOT(slotScheduleAllFolders()));
     _ui->stack->addWidget(generalSettings);
+
+    QListWidgetItem *ignoredFiles = new QListWidgetItem(tr("Ignored Files"), _ui->labelWidget);
+    ignoredFiles->setSizeHint(QSize(0, 32));
+    _ui->labelWidget->addItem(ignoredFiles);
+    IgnoreListEditor *ignoreEditor = new IgnoreListEditor;
+    _ui->stack->addWidget(ignoreEditor);
 
     //connect(generalSettings, SIGNAL(resizeToSizeHint()), SLOT(resizeToSizeHint()));
 

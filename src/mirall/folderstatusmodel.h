@@ -44,7 +44,7 @@ class FolderStatusDelegate : public QStyledItemDelegate
                     FolderErrorMsg,
                     FolderSyncEnabled,
                     FolderStatusIconRole
-    };
+                  };
     void paint( QPainter*, const QStyleOptionViewItem&, const QModelIndex& ) const;
     QSize sizeHint( const QStyleOptionViewItem&, const QModelIndex& ) const;
     bool editorEvent( QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& option,

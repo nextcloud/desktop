@@ -91,39 +91,43 @@ QString MirallConfigFile::configPath() const
     return dir;
 }
 
-QString MirallConfigFile::excludeFile() const
+QString MirallConfigFile::excludeFile(Scope scope) const
 {
     // prefer sync-exclude.lst, but if it does not exist, check for
-    // exclude.lst for compatibility reasonsin the user writeable
+    // exclude.lst for compatibility reasons in the user writeable
     // directories.
     const QString exclFile("sync-exclude.lst");
-
     QFileInfo fi;
-    fi.setFile( configPath(), exclFile );
 
-    if( ! fi.isReadable() ) {
-        fi.setFile( configPath(), QLatin1String("exclude.lst") );
+    if (scope != SystemScope) {
+        fi.setFile( configPath(), exclFile );
+
+        if( ! fi.isReadable() ) {
+            fi.setFile( configPath(), QLatin1String("exclude.lst") );
+        }
+        if( ! fi.isReadable() ) {
+            fi.setFile( configPath(), exclFile );
+        }
     }
 
-    // Check alternative places...
-    if( ! fi.isReadable() ) {
+    if (scope != UserScope) {
+        // Check alternative places...
+        if( ! fi.isReadable() ) {
 #ifdef Q_OS_WIN32
-        fi.setFile( QApplication::applicationDirPath(), exclFile );
+            fi.setFile( QApplication::applicationDirPath(), exclFile );
 #endif
 #ifdef Q_OS_LINUX
-        fi.setFile( QString("/etc/%1").arg(Theme::instance()->appName()), exclFile );
+            fi.setFile( QString("/etc/%1").arg(Theme::instance()->appName()), exclFile );
 #endif
 #ifdef Q_OS_MAC
-        // exec path is inside the bundle
-        fi.setFile( QApplication::applicationDirPath(),
-                    QLatin1String("../Resources/") + exclFile );
+            // exec path is inside the bundle
+            fi.setFile( QApplication::applicationDirPath(),
+                        QLatin1String("../Resources/") + exclFile );
 #endif
+        }
     }
-
-    if( fi.isReadable() ) {
-        qDebug() << "  ==> returning exclude file path: " << fi.absoluteFilePath();
-        return fi.absoluteFilePath();
-    }
+    qDebug() << "  ==> returning exclude file path: " << fi.absoluteFilePath();
+    return fi.absoluteFilePath();
     qDebug() << "EMPTY exclude file path!";
     return QString::null;
 }

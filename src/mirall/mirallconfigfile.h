@@ -31,17 +31,11 @@ class MirallConfigFile
 public:
     MirallConfigFile( const QString& appendix = QString() );
 
-//    enum customMediaType {
-//        oCSetupTop,      // ownCloud connect page
-//        oCSetupSide,
-//        oCSetupBottom,
-//        oCSetupFixUrl,
-//        oCSetupResultTop // ownCloud connect result page
-//    };
+    enum Scope { UserScope, SystemScope };
 
     QString configPath() const;
     QString configFile() const;
-    QString excludeFile() const;
+    QString excludeFile(Scope scope) const;
 
     bool exists();
 

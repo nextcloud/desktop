@@ -20,6 +20,7 @@ mirall/sslerrordialog.ui
 mirall/settingsdialog.ui
 mirall/generalsettings.ui
 mirall/accountsettings.ui
+mirall/ignorelisteditor.ui
 mirall/fileitemdialog.ui
 )
 
@@ -155,6 +156,7 @@ set(mirall_SRCS
     mirall/fileitemdialog.cpp
     mirall/settingsdialog.cpp
     mirall/generalsettings.cpp
+    mirall/ignorelisteditor.cpp
     mirall/accountsettings.cpp
 )
 
@@ -172,6 +174,7 @@ set(mirall_HEADERS
     mirall/settingsdialog.h
     mirall/generalsettings.h
     mirall/accountsettings.h
+    mirall/ignorelisteditor.h
     mirall/theme.h
 )
 
