@@ -514,6 +514,16 @@ enum csync_notify_type_e { CSYNC_NOTIFY_START_DOWNLOAD, CSYNC_NOTIFY_START_UPLOA
 
 typedef void (*csync_progress_callback) (const char *remote_url, enum csync_notify_type_e kind,
                                         long long o1, long long o2, void *userdata);
+
+/**
+ * @brief Get the progress callback from the context.
+ *
+ * @param ctx           The csync context.
+ *
+ * @param cb            The callback
+ */
+csync_progress_callback csync_get_progress_callback(CSYNC *ctx);
+
 /**
  * @brief Set a progress callback
  *

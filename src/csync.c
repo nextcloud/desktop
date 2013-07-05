@@ -1183,6 +1183,15 @@ int csync_set_iconv_codec(const char *from)
 }
 #endif
 
+csync_progress_callback csync_get_progress_callback(CSYNC *ctx)
+{
+  if ( ctx==NULL ) {
+    return NULL;
+  }
+  return ctx->callbacks.progresscb;
+}
+
+
 int csync_set_progress_callback(CSYNC* ctx, csync_progress_callback cb)
 {
   if (ctx == NULL) {
