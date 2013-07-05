@@ -254,7 +254,8 @@ struct listdir_context *fetch_resource_list_recursive(const char *uri, const cha
             ret = NE_CONNECT;
             set_error_message(req_status->reason_phrase);
             if (_progresscb) {
-                _progresscb(uri, CSYNC_NOTIFY_ERROR,  req_status->code, (long long)(req_status->reason_phrase) ,dav_session.userdata);
+                _progresscb(uri, CSYNC_NOTIFY_ERROR,  req_status->code, (long long)(req_status->reason_phrase),
+                            csync_get_userdata(dav_session.csync_ctx));
             }
         }
         DEBUG_WEBDAV("Recursive propfind result code %d.", req_status->code);

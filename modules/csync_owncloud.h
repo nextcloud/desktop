@@ -147,7 +147,6 @@ struct dav_session_s {
     int read_timeout;
 
     CSYNC *csync_ctx;
-    void *userdata;
 
     csync_hbf_info_t *chunk_info;
 

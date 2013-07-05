@@ -125,7 +125,6 @@ static int verify_sslcert(void *userdata, int failures,
     const ne_ssl_certificate *cert = certificate;
 
     (void) userdata;
-    (void) userdata;
     memset( problem, 0, LEN );
 
     while( cert ) {
@@ -165,7 +164,7 @@ static int verify_sslcert(void *userdata, int failures,
         /* call the csync callback */
         DEBUG_WEBDAV("Call the csync callback for SSL problems");
         memset( buf, 0, NE_ABUFSIZ );
-        (*_authcb) ( problem, buf, NE_ABUFSIZ-1, 1, 0, dav_session.userdata );
+        (*_authcb) ( problem, buf, NE_ABUFSIZ-1, 1, 0, NULL );
         if( buf[0] == 'y' || buf[0] == 'Y') {
             ret = 0;
         } else {
@@ -204,12 +203,12 @@ static int ne_auth( void *userdata, const char *realm, int attempt,
             /* call the csync callback */
             DEBUG_WEBDAV("Call the csync callback for %s", realm );
             memset( buf, 0, NE_ABUFSIZ );
-            (*_authcb) ("Enter your username: ", buf, NE_ABUFSIZ-1, 1, 0, dav_session.userdata );
+            (*_authcb) ("Enter your username: ", buf, NE_ABUFSIZ-1, 1, 0, NULL );
             if( strlen(buf) < NE_ABUFSIZ ) {
                 strcpy( username, buf );
             }
             memset( buf, 0, NE_ABUFSIZ );
-            (*_authcb) ("Enter your password: ", buf, NE_ABUFSIZ-1, 0, 0, dav_session.userdata );
+            (*_authcb) ("Enter your password: ", buf, NE_ABUFSIZ-1, 0, 0, NULL );
             if( strlen(buf) < NE_ABUFSIZ) {
                 strcpy( password, buf );
             }
@@ -403,7 +402,7 @@ static void ne_notify_status_cb (void *userdata, ne_session_status status,
             _progresscb(tc->url, CSYNC_NOTIFY_PROGRESS,
                         chunked_done + info->sr.progress,
                         chunked_total_size ? chunked_total_size : info->sr.total,
-                        dav_session.userdata);
+                        csync_get_userdata(dav_session.csync_ctx));
 
         if (chunked_total_size && info->sr.total == info->sr.progress)
             chunked_done += info->sr.total;
@@ -692,7 +691,8 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
             ret = NE_CONNECT;
             set_error_message(req_status->reason_phrase);
             if (_progresscb) {
-                _progresscb(uri, CSYNC_NOTIFY_ERROR,  req_status->code, (long long)(req_status->reason_phrase) ,dav_session.userdata);
+                _progresscb(uri, CSYNC_NOTIFY_ERROR,  req_status->code, (long long)(req_status->reason_phrase) ,
+                            csync_get_userdata(dav_session.csync_ctx));
             }
         }
         DEBUG_WEBDAV("Simple propfind result code %d.", req_status->code);
@@ -1216,7 +1216,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
 
           if (state == HBF_SUCCESS && _progresscb) {
             ne_set_notifier(dav_session.ctx, ne_notify_status_cb, write_ctx);
-            _progresscb(write_ctx->url, CSYNC_NOTIFY_START_UPLOAD, 0 , 0, dav_session.userdata);
+            _progresscb(write_ctx->url, CSYNC_NOTIFY_START_UPLOAD, 0 , 0, csync_get_userdata(dav_session.csync_ctx));
           }
 
           /* Register the abort callback */
@@ -1263,7 +1263,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
         ne_set_notifier(dav_session.ctx, 0, 0);
         _progresscb(write_ctx->url, rc != 0 ? CSYNC_NOTIFY_ERROR :
                                               CSYNC_NOTIFY_FINISHED_UPLOAD, error_code,
-                    (long long)(error_string), dav_session.userdata);
+                    (long long)(error_string), csync_get_userdata(dav_session.csync_ctx));
       }
     } else if( c_streq( write_ctx->method, "GET") ) {
       /* GET a file to the file descriptor */
@@ -1273,7 +1273,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
       write_ctx->fd = fd;
       if (_progresscb) {
         ne_set_notifier(dav_session.ctx, ne_notify_status_cb, write_ctx);
-        _progresscb(write_ctx->url, CSYNC_NOTIFY_START_DOWNLOAD, 0 , 0, dav_session.userdata);
+        _progresscb(write_ctx->url, CSYNC_NOTIFY_START_DOWNLOAD, 0 , 0, csync_get_userdata(dav_session.csync_ctx));
       }
 
       do {
@@ -1354,7 +1354,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
           ne_set_notifier(dav_session.ctx, 0, 0);
           _progresscb(write_ctx->url, (rc != NE_OK) ? CSYNC_NOTIFY_ERROR :
                       CSYNC_NOTIFY_FINISHED_DOWNLOAD, error_code ,
-                      (long long)(error_string), dav_session.userdata);
+                      (long long)(error_string), csync_get_userdata(dav_session.csync_ctx));
       }
     } else  {
         DEBUG_WEBDAV("Unknown method!");
@@ -1521,7 +1521,7 @@ static int owncloud_mkdir(const char *uri, mode_t mode) {
             errno = EEXIST;
         } else if (rc != NE_OK && _progresscb) {
             _progresscb(uri, CSYNC_NOTIFY_ERROR,  http_result_code_from_session(),
-                        (long long)(dav_session.error_string) ,dav_session.userdata);
+                        (long long)(dav_session.error_string) , csync_get_userdata(dav_session.csync_ctx));
         }
     }
     SAFE_FREE( path );
@@ -1581,7 +1581,7 @@ static int owncloud_rename(const char *olduri, const char *newuri) {
             set_errno_from_neon_errcode(rc);
             if (rc != NE_OK && _progresscb) {
                 _progresscb(olduri, CSYNC_NOTIFY_ERROR,  http_result_code_from_session(),
-                            (long long)(dav_session.error_string) ,dav_session.userdata);
+                            (long long)(dav_session.error_string) ,csync_get_userdata(dav_session.csync_ctx));
             }
         }
     }
@@ -1733,6 +1733,9 @@ static int owncloud_set_property(const char *key, void *data) {
     }
     if( c_streq(key, "csync_context")) {
         dav_session.csync_ctx = data;
+        if( data ) {
+          _progresscb = csync_get_progress_callback(dav_session.csync_ctx);
+        }
         return 0;
     }
     if( c_streq(key, "hbf_info")) {
@@ -1784,12 +1787,12 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
                                     csync_auth_callback cb, void *userdata) {
     (void) method_name;
     (void) args;
+    (void) userdata;
 
     _authcb = cb;
     _connected = 0;  /* triggers dav_connect to go through the whole neon setup */
 
     memset(&dav_session, 0, sizeof(dav_session));
-    dav_session.userdata = userdata;
 
     return &_method;
 }
