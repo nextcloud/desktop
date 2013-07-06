@@ -259,7 +259,7 @@ void Application::slotownCloudWizardDone( int res )
         int cnt = _folderMan->setupFolders();
         qDebug() << "Set up " << cnt << " folders.";
         // We have some sort of configuration. Enable autostart
-        Utility::setLaunchOnStartup(true);
+        Utility::setLaunchOnStartup(_theme->appName(), _theme->appNameGUI(), true);
 // FIXME!
 //        _statusDialog->setFolderList( _folderMan->map() );
     }

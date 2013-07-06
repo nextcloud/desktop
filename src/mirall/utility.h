@@ -29,8 +29,8 @@ namespace Utility
     QString platform();
     QByteArray userAgentString();
     void raiseDialog(QWidget *);
-    bool hasLaunchOnStartup();
-    void setLaunchOnStartup(bool launch);
+    bool hasLaunchOnStartup(const QString &appName);
+    void setLaunchOnStartup(const QString &appName, const QString& guiName, bool launch);
 }
 
 }

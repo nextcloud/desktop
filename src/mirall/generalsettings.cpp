@@ -44,7 +44,7 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
     connect(_ui->desktopNotificationsCheckBox, SIGNAL(toggled(bool)),
             SLOT(slotToggleOptionalDesktopNotifications(bool)));
 
-    _ui->autostartCheckBox->setChecked(Utility::hasLaunchOnStartup());
+    _ui->autostartCheckBox->setChecked(Utility::hasLaunchOnStartup(Theme::instance()->appName()));
     connect(_ui->autostartCheckBox, SIGNAL(toggled(bool)), SLOT(slotToggleLaunchOnStartup(bool)));
 
     // setup about section
@@ -135,7 +135,8 @@ void GeneralSettings::saveMiscSettings()
 
 void GeneralSettings::slotToggleLaunchOnStartup(bool enable)
 {
-    Utility::setLaunchOnStartup(enable);
+    Theme *theme = Theme::instance();
+    Utility::setLaunchOnStartup(theme->appName(), theme->appNameGUI(), enable);
 }
 
 void GeneralSettings::slotToggleOptionalDesktopNotifications(bool enable)

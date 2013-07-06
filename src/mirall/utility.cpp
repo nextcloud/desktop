@@ -14,7 +14,6 @@
 #include "utility.h"
 
 #include "mirall/version.h"
-#include "mirall/theme.h"
 
 #include <QCoreApplication>
 #include <QSettings>
@@ -162,9 +161,8 @@ void Utility::raiseDialog( QWidget *raiseWidget )
 
 static const char runPathC[] = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
 
-bool Utility::hasLaunchOnStartup()
+bool Utility::hasLaunchOnStartup(const QString &appName)
 {
-    QString appName = Theme::instance()->appName();
 #if defined(Q_OS_WIN)
     QString runPath(QLatin1String(runPathC));
     QSettings settings(runPath, QSettings::NativeFormat);
@@ -178,9 +176,11 @@ bool Utility::hasLaunchOnStartup()
 #endif
 }
 
-void Utility::setLaunchOnStartup(bool enable)
+namespace {
+}
+
+void Utility::setLaunchOnStartup(const QString &appName, const QString& guiName, bool enable)
 {
-    QString appName = Theme::instance()->appName();
 #if defined(Q_OS_WIN)
     QString runPath(QLatin1String(runPathC));
     QSettings settings(runPath, QSettings::NativeFormat);
@@ -190,6 +190,7 @@ void Utility::setLaunchOnStartup(bool enable)
         settings.remove(appName);
     }
 #elif defined(Q_OS_MAC)
+    Q_UNUSED(guiName)
     if (enable) {
         // Finder: Place under "Places"/"Favorites" on the left sidebar
         QString filePath = QDir(applicationDirPath+QLatin1String("/../..")).absolutePath();
@@ -221,7 +222,7 @@ void Utility::setLaunchOnStartup(bool enable)
         }
         QSettings desktopFile(desktopFileLocation, QSettings::IniFormat);
         desktopFile.beginGroup("Desktop Entry");
-        desktopFile.setValue(QLatin1String("Name"), Theme::instance()->appNameGUI());
+        desktopFile.setValue(QLatin1String("Name"), guiName);
         desktopFile.setValue(QLatin1String("GenericName"), QLatin1String("File Synchronizer"));
         desktopFile.setValue(QLatin1String("Exec"), QCoreApplication::applicationFilePath());
         desktopFile.setValue(QLatin1String("Terminal"), false);
