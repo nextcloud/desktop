@@ -124,22 +124,22 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
   iconRect.setLeft( aliasMargin );
   iconRect.setTop( iconRect.top() + aliasMargin ); // (iconRect.height()-iconsize.height())/2);
 
-  // local directory box
+  // alias box
   aliasRect.setTop(aliasRect.top() + aliasMargin );
   aliasRect.setBottom(aliasRect.top() + aliasFm.height());
   aliasRect.setRight(aliasRect.right() - aliasMargin );
 
-  // local directory box
-  QRect localPathRect = aliasRect;
-  localPathRect.setTop(aliasRect.bottom() + margin );
-  localPathRect.setBottom(localPathRect.top() + subFm.height());
-
   // remote directory box
-  QRect remotePathRect = localPathRect;
-  remotePathRect.setTop( localPathRect.bottom() + margin );
-  remotePathRect.setBottom( remotePathRect.top() + subFm.height());
+  QRect remotePathRect = aliasRect;
+  remotePathRect.setTop(aliasRect.bottom() + margin );
+  remotePathRect.setBottom(remotePathRect.top() + subFm.height());
 
-  iconRect.setBottom(remotePathRect.bottom());
+  // local directory box
+  QRect localPathRect = remotePathRect;
+  localPathRect.setTop( remotePathRect.bottom() + margin );
+  localPathRect.setBottom( localPathRect.top() + subFm.height());
+
+  iconRect.setBottom(localPathRect.bottom());
   iconRect.setWidth(iconRect.height());
 
   int nextToIcon = iconRect.right()+aliasMargin;
@@ -165,11 +165,19 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
   painter->drawText(aliasRect, elidedAlias);
 
   painter->setFont(subFont);
+  QString elidedRemotePathText;
+
+  if (remotePath.isEmpty() || remotePath == QLatin1String("/")) {
+      elidedRemotePathText = subFm.elidedText(tr("Syncing all files of your account with"),
+                                              Qt::ElideRight, remotePathRect.width());
+  } else {
+      elidedRemotePathText = subFm.elidedText(tr("Remote path: %1").arg(remotePath),
+                                              Qt::ElideMiddle, remotePathRect.width());
+  }
+  painter->drawText(remotePathRect, elidedRemotePathText);
+
   QString elidedPathText = subFm.elidedText(pathText, Qt::ElideMiddle, localPathRect.width());
   painter->drawText(localPathRect, elidedPathText);
-  QString elidedRemotePathText = subFm.elidedText(tr("Remote path: %1").arg(remotePath),
-                                                  Qt::ElideMiddle, remotePathRect.width());
-  painter->drawText(remotePathRect, elidedRemotePathText);
 
   // paint an error overlay if there is an error string
   if( !errorText.isEmpty() ) {
