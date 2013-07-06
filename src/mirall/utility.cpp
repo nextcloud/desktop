@@ -164,7 +164,7 @@ static const char runPathC[] = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\
 bool Utility::hasLaunchOnStartup(const QString &appName)
 {
 #if defined(Q_OS_WIN)
-    QString runPath(QLatin1String(runPathC));
+    QString runPath = QLatin1String(runPathC);
     QSettings settings(runPath, QSettings::NativeFormat);
     return settings.contains(appName);
 #elif defined(Q_OS_MAC)
@@ -182,7 +182,8 @@ namespace {
 void Utility::setLaunchOnStartup(const QString &appName, const QString& guiName, bool enable)
 {
 #if defined(Q_OS_WIN)
-    QString runPath(QLatin1String(runPathC));
+    Q_UNUSED(guiName)
+    QString runPath = QLatin1String(runPathC);
     QSettings settings(runPath, QSettings::NativeFormat);
     if (enable) {
         settings.setValue(appName, QCoreApplication::applicationFilePath().replace('/','\\'));

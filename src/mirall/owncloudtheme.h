@@ -21,6 +21,7 @@ namespace Mirall {
 
 class ownCloudTheme : public Theme
 {
+    Q_OBJECT
 public:
     ownCloudTheme();
 

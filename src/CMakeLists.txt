@@ -81,6 +81,8 @@ set(libsync_HEADERS
     mirall/folderwatcher.h
     mirall/owncloudfolder.h
     mirall/csyncthread.h
+    mirall/theme.h
+    mirall/owncloudtheme.h
     mirall/owncloudinfo.h
     mirall/credentialstore.h
     mirall/logger.h
@@ -175,7 +177,6 @@ set(mirall_HEADERS
     mirall/generalsettings.h
     mirall/accountsettings.h
     mirall/ignorelisteditor.h
-    mirall/theme.h
 )
 
 if( UNIX AND NOT APPLE)
