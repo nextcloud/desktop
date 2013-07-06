@@ -23,11 +23,14 @@
 #include <QWidget>
 #include <QDebug>
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_UNIX
+#include <sys/statvfs.h>
+#include <sys/types.h>
+#elif defined(Q_OS_MAC)
 #include <CoreServices/CoreServices.h>
-#endif
-#ifdef Q_OS_WIN
+#elif defined(Q_OS_WIN)
 #include <shlobj.h>
+#include <winbase.h>
 #endif
 
 namespace Mirall {
@@ -237,6 +240,27 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString& guiName,
         }
     }
 
+#endif
+}
+
+qint64 Utility::freeDiskSpace(const QString &path, bool *ok)
+{
+#ifdef Q_OS_UNIX
+    Q_UNUSED(ok)
+    struct statvfs64 stat;
+    statvfs64(path.toUtf8().data(), &stat);
+    return (qint64) stat.f_bavail * stat.f_frsize;
+#elif defined(Q_OS_WIN)
+    ULARGE_INTEGER freeBytes;
+    freeBytes.QuadPart = 0L;
+    QString drive = QDir().absoluteFilePath(path).left(2);
+    if( !GetDiskFreeSpaceEx( reinterpret_cast<const wchar_t *>(drive.utf16()), &freeBytes, NULL, NULL ) ) {
+        if (ok) *ok = false;
+    }
+    return freeBytes.QuadPart;
+#else
+    if (ok) *ok = false;
+    return 0;
 #endif
 }
 
