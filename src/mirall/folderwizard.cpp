@@ -121,7 +121,7 @@ bool FolderWizardSourcePage::isComplete() const
   Folder::Map::const_iterator i = map.constBegin();
   bool goon = true;
   while( goon && i != map.constEnd() ) {
-    Folder *f = static_cast<Folder*>(i.value());
+    Folder *f = i.value();
     qDebug() << "Checking local alias: " << f->alias();
     if( f ) {
       if( f->alias() == alias ) {
