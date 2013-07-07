@@ -11,6 +11,8 @@ else()
     set(theme_dir ${CMAKE_CURRENT_SOURCE_DIR}/../theme)
 endif()
 
+set(synclib_NAME ${APPLICATION_SHORTNAME}sync)
+
 set(mirall_UI
 mirall/folderwizardsourcepage.ui
 mirall/folderwizardtargetpage.ui
@@ -117,20 +119,20 @@ if(QTKEYCHAIN_FOUND)
     include_directories(${QTKEYCHAIN_INCLUDE_DIR})
 endif()
 
-add_library(owncloudsync SHARED ${libsync_SRCS} ${syncMoc})
-set_target_properties( owncloudsync  PROPERTIES
+add_library(${synclib_NAME} SHARED ${libsync_SRCS} ${syncMoc})
+set_target_properties( ${synclib_NAME}  PROPERTIES
 	VERSION ${VERSION}
 	SOVERSION ${SOVERSION}
 )
 
-target_link_libraries(owncloudsync ${libsync_LINK_TARGETS} )
+target_link_libraries(${synclib_NAME} ${libsync_LINK_TARGETS} )
 
 if ( APPLE )
-    target_link_libraries(owncloudsync /System/Library/Frameworks/CoreServices.framework)
+    target_link_libraries(${synclib_NAME} /System/Library/Frameworks/CoreServices.framework)
 endif()
 
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
-    install(TARGETS owncloudsync
+    install(TARGETS ${synclib_NAME}
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -141,7 +143,7 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
         install(FILES  ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_SHORTNAME}.desktop DESTINATION share/applications )
     endif()
 else()
-    install(TARGETS owncloudsync DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS)
+    install(TARGETS ${synclib_NAME} DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS)
 endif()
 
 set(mirall_SRCS
@@ -222,7 +224,7 @@ if(NOT WIN32)
         DESTINATION share/icons/hicolor/48x48/apps/ RENAME ${APPLICATION_SHORTNAME}.png)
 endif(NOT WIN32)
 
-    install(FILES ${mirall_I18N} DESTINATION share/mirall/i18n)
+    install(FILES ${mirall_I18N} DESTINATION share/${APPLICATION_SHORTNAME}/i18n)
 
     # we may not add MACOSX_BUNDLE here, if not building one
 
@@ -260,7 +262,7 @@ set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY}
 )
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${QT_LIBRARIES} )
-target_link_libraries( ${APPLICATION_EXECUTABLE} owncloudsync )
+target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${CSYNC_LIBRARY} )
 
 install(TARGETS ${APPLICATION_EXECUTABLE}

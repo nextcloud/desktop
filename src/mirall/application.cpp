@@ -79,7 +79,7 @@ QString applicationTrPath()
 {
 #ifdef Q_OS_LINUX
     // FIXME - proper path!
-    return QLatin1String("/usr/share/mirall/i18n/");
+    return QString::fromLatin1("/usr/share/%1/i18n/").arg(Theme::instance()->appName());
 #endif
 #ifdef Q_OS_MAC
     return QApplication::applicationDirPath()+QLatin1String("/../Resources/Translations"); // path defaults to app dir.
