@@ -564,7 +564,6 @@ void Application::slotSettings()
 {
     if (_settingsDialog.isNull()) {
         _settingsDialog = new SettingsDialog(this);
-        connect(_settingsDialog, SIGNAL(accepted()), _settingsDialog, SLOT(deleteLater()));
         _settingsDialog->open();
     } else {
         Utility::raiseDialog(_settingsDialog);

@@ -37,12 +37,17 @@ public:
     ~SettingsDialog();
 
     void addAccount(const QString &title, QWidget *widget);
-
 public slots:
     // Progress, parameter is
     //  - filename
     //  - progress bytes, overall size.
     void slotFolderUploadProgress( const QString&, const QString&, long, long );
+
+protected:
+    void closeEvent(QCloseEvent *event);
+
+private slots:
+    void done();
 
 private:
     Ui::SettingsDialog *_ui;

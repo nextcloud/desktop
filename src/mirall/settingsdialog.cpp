@@ -19,11 +19,13 @@
 #include "mirall/accountsettings.h"
 #include "mirall/application.h"
 #include "mirall/ignorelisteditor.h"
+#include "mirall/mirallconfigfile.h"
 
 #include <QLabel>
 #include <QStandardItemModel>
 #include <QPushButton>
 #include <QDebug>
+#include <QSettings>
 
 namespace Mirall {
 
@@ -75,8 +77,11 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
             _ui->stack, SLOT(setCurrentIndex(int)));
 
     QPushButton *closeButton = _ui->buttonBox->button(QDialogButtonBox::Close);
-    connect(closeButton, SIGNAL(pressed()), SLOT(accept()));
+    connect(closeButton, SIGNAL(pressed()), SLOT(done()));
 
+    MirallConfigFile cfg;
+    QSettings settings(cfg.configFile(), QSettings::IniFormat);
+    restoreGeometry(settings.value("Settings/geometry").toByteArray());
 }
 
 SettingsDialog::~SettingsDialog()
@@ -97,6 +102,19 @@ void SettingsDialog::slotFolderUploadProgress( const QString& folderAlias, const
 {
     qDebug() << " SettingsDialog: XX - File " << file << p1 << p2;
     _accountSettings->slotSetProgress(folderAlias, file, p1, p2);
+}
+
+void SettingsDialog::closeEvent(QCloseEvent *event)
+{
+    MirallConfigFile cfg;
+    QSettings settings(cfg.configFile(), QSettings::IniFormat);
+    settings.setValue("Settings/geometry", saveGeometry());
+    QWidget::closeEvent(event);
+}
+
+void SettingsDialog::done()
+{
+    QDialog::done(0);
 }
 
 } // namespace Mirall
