@@ -203,7 +203,7 @@ void Application::slotConnectionValidatorResult(ConnectionValidator::Status stat
 
         int cnt = _folderMan->map().size();
         slotShowTrayMessage(tr("%1 Sync Started").arg(_theme->appNameGUI()),
-                            tr("Sync started for %1 configured sync folder(s).").arg(cnt));
+                            tr("Sync started for %n configured sync folder(s).","", cnt));
 
         // queue up the sync for all folders.
         _folderMan->slotScheduleAllFolders();
