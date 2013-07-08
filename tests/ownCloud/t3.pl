@@ -52,11 +52,20 @@ system( "rm -rf " . localDir() . 'remoteToLocal1' );
 system( "echo \"my file\" >> /tmp/myfile.txt" );
 put_to_dir( '/tmp/myfile.txt', 'remoteToLocal1/rtl1/rtl11' );
 
+
 csync();
 assertLocalAndRemoteDir( '', 0);
 
 #TODO: test that newfile.dat and myfile.txt exists in newdir/rtl1
 #      and test that there is no newdir/rtl11/test.txt
+
+move( localDir() . 'newdir/myfile.txt', localDir() . 'newdir/oldfile.txt' );
+system( "echo \"super new\" >> " . localDir() . 'newdir/myfile.txt' );
+
+csync();
+assertLocalAndRemoteDir( '', 0);
+
+
 
 cleanup();
 

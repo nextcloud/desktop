@@ -54,12 +54,12 @@ struct csync_rename_s {
     std::vector<renameop> todo;
 };
 
-static int _csync_rename_dir_record(void *obj, void *data) {
+static int _csync_rename_record(void *obj, void *data) {
     CSYNC *ctx = reinterpret_cast<CSYNC*>(data);
     csync_rename_s* d = csync_rename_s::get(ctx);
     csync_file_stat_t *st = reinterpret_cast<csync_file_stat_t *>(obj);
 
-    if (st->type != CSYNC_FTW_TYPE_DIR || st->instruction != CSYNC_INSTRUCTION_RENAME)
+    if ( st->instruction != CSYNC_INSTRUCTION_RENAME)
         return 0;
 
     csync_rename_s::renameop op = { st };
@@ -92,12 +92,12 @@ char* csync_rename_adjust_path(CSYNC* ctx, const char* path)
     return c_strdup(path);
 }
 
-int csync_propagate_rename_dirs(CSYNC* ctx)
+int csync_propagate_renames(CSYNC* ctx)
 {
     csync_rename_s* d = csync_rename_s::get(ctx);
     d->folder_renamed_to.clear();
 
-    if (c_rbtree_walk(ctx->remote.tree, (void *) ctx, _csync_rename_dir_record) < 0) {
+    if (c_rbtree_walk(ctx->remote.tree, (void *) ctx, _csync_rename_record) < 0) {
         return -1;
     }
 

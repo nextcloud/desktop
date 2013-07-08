@@ -509,7 +509,7 @@ int csync_propagate(CSYNC *ctx) {
 
   ctx->current = REMOTE_REPLICA;
   ctx->replica = ctx->remote.type;
-  rc = csync_propagate_rename_dirs(ctx);
+  rc = csync_propagate_renames(ctx);
   if (rc < 0) {
       if( ctx->error_code == CSYNC_ERR_NONE )
           ctx->error_code = csync_errno_to_csync_error( CSYNC_ERR_PROPAGATE);
