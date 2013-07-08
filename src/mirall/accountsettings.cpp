@@ -25,6 +25,7 @@
 #include "mirall/application.h"
 #include "mirall/fileitemdialog.h"
 #include "mirall/owncloudsetupwizard.h"
+#include "mirall/mirallconfigfile.h"
 
 #include <QDebug>
 #include <QDesktopServices>
@@ -64,6 +65,8 @@ AccountSettings::AccountSettings(FolderMan *folderMan, QWidget *parent) :
 
     connect(ui->_folderList, SIGNAL(clicked(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
     connect(ui->_folderList, SIGNAL(doubleClicked(QModelIndex)),SLOT(slotDoubleClicked(QModelIndex)));
+
+    connect(ui->changePasswordButton, SIGNAL(clicked()), SLOT(slotPasswordDialog()));
 
     ownCloudInfo *ocInfo = ownCloudInfo::instance();
     slotUpdateQuota(ocInfo->lastQuotaTotalBytes(), ocInfo->lastQuotaUsedBytes());
@@ -146,6 +149,22 @@ void AccountSettings::slotFolderWizardRejected()
 void AccountSettings::slotOpenAccountWizard()
 {
     OwncloudSetupWizard::runWizard(_folderMan, qApp, SLOT(slotownCloudWizardDone(int)), this);
+}
+
+void AccountSettings::slotPasswordDialog()
+{
+    QInputDialog *dlg = new QInputDialog(this);
+    dlg->setLabelText(tr("Enter new password:"));
+    dlg->setTextEchoMode(QLineEdit::Password);
+    dlg->open(this, SLOT(slotChangePassword(const QString&)));
+}
+
+void AccountSettings::slotChangePassword(const QString& password)
+{
+    MirallConfigFile cfg;
+    CredentialStore::instance()
+            ->setCredentials(cfg.ownCloudUrl(), cfg.ownCloudUser(), password, true);
+    _folderMan->slotScheduleAllFolders();
 }
 
 void AccountSettings::slotAddFolder( Folder *folder )

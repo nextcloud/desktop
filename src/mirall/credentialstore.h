@@ -99,7 +99,7 @@ public:
      * @param user - the user name
      * @param password - the password.
      */
-    void setCredentials( const QString&, const QString&, const QString&, bool );
+    void setCredentials( const QString& url, const QString& user, const QString& pwd, bool allowToStore);
 
     void saveCredentials( );
 

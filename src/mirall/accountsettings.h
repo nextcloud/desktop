@@ -74,6 +74,8 @@ protected slots:
     void slotFolderWizardAccepted();
     void slotFolderWizardRejected();
     void slotOpenAccountWizard();
+    void slotPasswordDialog();
+    void slotChangePassword(const QString&);
 
 private:
     void folderToModelItem( QStandardItem *, Folder * );
