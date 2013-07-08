@@ -184,8 +184,12 @@ int c_parse_uri(const char *uri,
   if (*p == ':') {
     if (scheme != NULL) {
       *scheme = c_strndup(z, p - z);
-    }
 
+      if (*scheme == NULL) {
+        errno = ENOMEM;
+        return -1;
+      }
+    }
     p++;
     z = p;
   }
@@ -238,15 +242,31 @@ int c_parse_uri(const char *uri,
       if (*q == ':') {
         if (user != NULL) {
           *user = c_strndup(z, q - z);
+          if (*user == NULL) {
+            errno = ENOMEM;
+            if (scheme != NULL) SAFE_FREE(*scheme);
+            return -1;
+          }
         }
 
         if (passwd != NULL) {
           *passwd = c_strndup(q + 1, p - (q + 1));
+          if (*passwd == NULL) {
+            if (scheme != NULL) SAFE_FREE(*scheme);
+            if (user   != NULL) SAFE_FREE(*user);
+            errno = ENOMEM;
+            return -1;
+          }
         }
       } else {
         /* user only */
         if (user != NULL) {
           *user = c_strndup(z, p - z);
+          if( *user == NULL) {
+            if (scheme != NULL) SAFE_FREE(*scheme);
+            errno = ENOMEM;
+            return -1;
+          }
         }
       }
 
@@ -291,6 +311,13 @@ int c_parse_uri(const char *uri,
 
         if (host != NULL) {
           *host = c_strndup(z, p - z);
+          if (*host == NULL) {
+            if (scheme != NULL) SAFE_FREE(*scheme);
+            if (user   != NULL) SAFE_FREE(*user);
+            if (passwd != NULL) SAFE_FREE(*passwd);
+            errno = ENOMEM;
+            return -1;
+          }
         }
 
         /*
@@ -314,6 +341,13 @@ int c_parse_uri(const char *uri,
 
         if (host != NULL) {
           *host = c_strndup(z, p - z);
+          if (*host == NULL) {
+            if (scheme != NULL) SAFE_FREE(*scheme);
+            if (user   != NULL) SAFE_FREE(*user);
+            if (passwd != NULL) SAFE_FREE(*passwd);
+            errno = ENOMEM;
+            return -1;
+          }
         }
       }
     } else {
@@ -329,6 +363,13 @@ int c_parse_uri(const char *uri,
 
       if (host != NULL) {
         *host = c_strndup(z, p - z);
+        if (*host == NULL) {
+          if (scheme != NULL) SAFE_FREE(*scheme);
+          if (user   != NULL) SAFE_FREE(*user);
+          if (passwd != NULL) SAFE_FREE(*passwd);
+          errno = ENOMEM;
+          return -1;
+        }
       }
     }
 
@@ -372,6 +413,14 @@ int c_parse_uri(const char *uri,
   if (*p == '/') {
     if (path != NULL) {
       *path = c_strdup(p);
+      if (*path == NULL) {
+        if (scheme != NULL) SAFE_FREE(*scheme);
+        if (user   != NULL) SAFE_FREE(*user);
+        if (passwd != NULL) SAFE_FREE(*passwd);
+        if (host   != NULL) SAFE_FREE(*host);
+        errno = ENOMEM;
+        return -1;
+      }
     }
 
     return 0;
