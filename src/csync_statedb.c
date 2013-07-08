@@ -38,9 +38,11 @@
 #include "csync_misc.h"
 
 #include "c_string.h"
+#include "c_jhash.h"
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.statedb"
 #include "csync_log.h"
+#include "csync_rename.h"
 
 #define BUF_SIZE 16
 
@@ -488,6 +490,9 @@ static int _insert_metadata_visitor(void *obj, void *data) {
   CSYNC *ctx = NULL;
   sqlite3_stmt *stmt = NULL;
   const char *md5 = "";
+  uint64_t phash = 0;
+  size_t pathlen;
+  const char *path;
   int rc = -1;
 
   fs = (csync_file_stat_t *) obj;
@@ -517,13 +522,19 @@ static int _insert_metadata_visitor(void *obj, void *data) {
     /* As we only sync the local tree we need this flag here */
     case CSYNC_INSTRUCTION_UPDATED:
   case CSYNC_INSTRUCTION_CONFLICT:
+
+      path = csync_rename_adjust_path(ctx, fs->path);
+      pathlen = strlen(path);
+      phash = c_jhash64((uint8_t *) path, pathlen, 0);
+
+
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
                 "SQL statement: INSERT INTO metadata_temp \n"
                 "\t\t\t(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5) VALUES \n"
                 "\t\t\t(%lld, %lu, %s, %lld, %u, %u, %u, %lu, %d, %s);",
-                (long long signed int) fs->phash,
-                (long unsigned int) fs->pathlen,
-                fs->path,
+                (long long signed int) phash,
+                (long unsigned int) pathlen,
+                path,
                 (long long signed int) fs->inode,
                 fs->uid,
                 fs->gid,
@@ -535,9 +546,9 @@ static int _insert_metadata_visitor(void *obj, void *data) {
       /*
        * The phash needs to be long long unsigned int or it segfaults on PPC
        */
-      sqlite3_bind_int64(stmt, 1, (long long signed int) fs->phash);
-      sqlite3_bind_int64(stmt, 2, (long unsigned int) fs->pathlen);
-      sqlite3_bind_text( stmt, 3, fs->path, fs->pathlen, SQLITE_STATIC);
+      sqlite3_bind_int64(stmt, 1, (long long signed int) phash);
+      sqlite3_bind_int64(stmt, 2, (long unsigned int) pathlen);
+      sqlite3_bind_text( stmt, 3, path, pathlen, SQLITE_STATIC);
       sqlite3_bind_int64(stmt, 4, (long long signed int) fs->inode);
       sqlite3_bind_int(  stmt, 5, fs->uid);
       sqlite3_bind_int(  stmt, 6, fs->gid);
@@ -558,7 +569,8 @@ static int _insert_metadata_visitor(void *obj, void *data) {
           rc = -1;
       }
 
-    sqlite3_reset(stmt);
+      sqlite3_reset(stmt);
+      SAFE_FREE(path);
 
       break;
     default:
