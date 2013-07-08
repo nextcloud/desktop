@@ -38,7 +38,7 @@
  * dirname - parse directory component.
  */
 char *c_dirname (const char *path) {
-  char *new = NULL;
+  char *newbuf = NULL;
   unsigned int len;
 
   if (path == NULL || *path == '\0') {
@@ -67,19 +67,19 @@ char *c_dirname (const char *path) {
   /* Remove slashes again */
   while(len > 0 && path[len - 1] == '/') --len;
 
-  new = c_malloc(len + 1);
-  if (new == NULL) {
+  newbuf = c_malloc(len + 1);
+  if (newbuf == NULL) {
     return NULL;
   }
 
-  strncpy(new, path, len);
-  new[len] = '\0';
+  strncpy(newbuf, path, len);
+  newbuf[len] = '\0';
 
-  return new;
+  return newbuf;
 }
 
 char *c_basename (const char *path) {
-  char *new = NULL;
+  char *newbuf = NULL;
   const char *s;
   unsigned int len;
 
@@ -107,15 +107,15 @@ char *c_basename (const char *path) {
     return c_strdup(path);
   }
 
-  new = c_malloc(len + 1);
-  if (new == NULL) {
+  newbuf = c_malloc(len + 1);
+  if (newbuf == NULL) {
     return NULL;
   }
 
-  strncpy(new, s, len);
-  new[len] = '\0';
+  strncpy(newbuf, s, len);
+  newbuf[len] = '\0';
 
-  return new;
+  return newbuf;
 }
 
 int c_tmpname(char *template) {
