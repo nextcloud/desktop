@@ -13,6 +13,9 @@
  */
 
 #include "mirall/application.h"
+#include "mirall/theme.h"
+
+#include <QMessageBox>
 
 int main(int argc, char **argv)
 {
@@ -30,6 +33,15 @@ int main(int argc, char **argv)
                 return -1;
         }
         return 0;
+    } else {
+        if (!QSystemTrayIcon::isSystemTrayAvailable()) {
+            QMessageBox::critical(0, qApp->translate("main.cpp", "System Tray not available"),
+                                  qApp->translate("main.cpp", "%1 requires on a working system tray. "
+                                  "If you are running XFCE, please follow "
+                                  "<a href=\"http://docs.xfce.org/xfce/xfce4-panel/systray\">these instructions</a>. "
+                                  "Otherwise, please install a system tray application such as 'trayer' and try again.")
+                    .arg(Mirall::Theme::instance()->appNameGUI()));
+        }
     }
     // if help requested, show on command line and exit.
     if( ! app.giveHelp() ) {
