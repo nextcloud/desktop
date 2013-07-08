@@ -798,7 +798,6 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
   struct timeval times[2];
   char *suri = NULL;
   char *duri = NULL;
-  const char *tmd5 = NULL;
   c_rbnode_t *node = NULL;
   char *tdir = NULL;
   csync_file_stat_t *other = NULL;
@@ -900,14 +899,15 @@ static int _csync_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   }
 
-  /* The the uniq ID for the destination */
-  if (st->type != CSYNC_FTW_TYPE_DIR)
-    tmd5 = _get_md5(ctx, st->destpath);
-
   if( rc > -1 ) {
       /* set the mtime which is needed in statedb_get_uniqid */
       if( other ) {
-         other->md5 = tmd5;
+        if (st->type != CSYNC_FTW_TYPE_DIR) {
+            other->md5 = _get_md5(ctx, st->destpath);
+        } else {
+            /* For directories, re-use the old md5 */
+            other->md5 = c_strdup(st->md5);
+        }
       }
       /* set instruction for the statedb merger */
       st->instruction = CSYNC_INSTRUCTION_DELETED;
