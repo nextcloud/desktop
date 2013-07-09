@@ -108,6 +108,7 @@ static int _csync_statedb_check(CSYNC *ctx, const char *statedb) {
     ssize_t r;
     char buf[BUF_SIZE] = {0};
     const _TCHAR *wstatedb;
+    struct stat sb;
 
     /* check db version */
 #ifdef _WIN32
@@ -118,30 +119,40 @@ static int _csync_statedb_check(CSYNC *ctx, const char *statedb) {
     fd = _topen(wstatedb, O_RDONLY);
 
     if (fd >= 0) {
-        r = read(fd, (void *) buf, sizeof(buf) - 1);
-        close(fd);
-        if (r >= 0) {
-            buf[BUF_SIZE - 1] = '\0';
-            if (c_streq(buf, "SQLite format 3")) {
-                if (sqlite3_open(statedb, &ctx->statedb.db ) == SQLITE_OK) {
-                    rc = _csync_check_db_integrity(ctx);
-                    sqlite3_close(ctx->statedb.db);
-                    ctx->statedb.db = 0;
+        /* Check size. Size of zero is a valid database actually. */
+        rc = fstat(fd, &sb);
 
-                    if( rc >= 0 ) {
-                        /* everything is fine */
-                        c_free_multibyte(wstatedb);
-                        return 0;
-                    }
-                    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Integrity check failed!");
-                } else {
-                    // FIXME: Better error analysis.
-                    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "database corrupted, removing!");
-                }
+        if (rc == 0) {
+            if (sb.st_size == 0) {
+                CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Database size is zero byte!");
             } else {
-                CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "sqlite version mismatch");
+                r = read(fd, (void *) buf, sizeof(buf) - 1);
+                close(fd);
+                if (r >= 0) {
+                    buf[BUF_SIZE - 1] = '\0';
+                    if (c_streq(buf, "SQLite format 3")) {
+                        if (sqlite3_open(statedb, &ctx->statedb.db ) == SQLITE_OK) {
+                            rc = _csync_check_db_integrity(ctx);
+                            sqlite3_close(ctx->statedb.db);
+                            ctx->statedb.db = 0;
+
+                            if( rc >= 0 ) {
+                                /* everything is fine */
+                                c_free_multibyte(wstatedb);
+                                return 0;
+                            }
+                            CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Integrity check failed!");
+                        } else {
+                            // FIXME: Better error analysis.
+                            CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "database corrupted, removing!");
+                        }
+                    } else {
+                        CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "sqlite version mismatch");
+                    }
+                }
             }
         }
+        /* if it comes here, the database is broken and should be recreated. */
         _tunlink(wstatedb);
     }
 
