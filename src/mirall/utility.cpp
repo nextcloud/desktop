@@ -26,8 +26,11 @@
 #ifdef Q_OS_UNIX
 #include <sys/statvfs.h>
 #include <sys/types.h>
-#elif defined(Q_OS_MAC)
+#endif
+
+#if defined(Q_OS_MAC)
 #include <CoreServices/CoreServices.h>
+#include <CoreFoundation/CoreFoundation.h>
 #elif defined(Q_OS_WIN)
 #include <shlobj.h>
 #include <winbase.h>
@@ -172,6 +175,7 @@ bool Utility::hasLaunchOnStartup(const QString &appName)
     return settings.contains(appName);
 #elif defined(Q_OS_MAC)
 // implement me
+    return false;
 #elif defined(Q_OS_UNIX)
     QString userAutoStartPath = QDir::homePath()+QLatin1String("/.config/autostart/");
     QString desktopFileLocation = userAutoStartPath+appName+QLatin1String(".desktop");
@@ -196,8 +200,7 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString& guiName,
 #elif defined(Q_OS_MAC)
     Q_UNUSED(guiName)
     if (enable) {
-        // Finder: Place under "Places"/"Favorites" on the left sidebar
-        QString filePath = QDir(applicationDirPath+QLatin1String("/../..")).absolutePath();
+        QString filePath = QDir(QCoreApplication::applicationDirPath()+QLatin1String("/../..")).absolutePath();
         CFStringRef folderCFStr = CFStringCreateWithCString(0, filePath.toUtf8().data(), kCFStringEncodingUTF8);
         CFURLRef urlRef = CFURLCreateWithFileSystemPath (0, folderCFStr, kCFURLPOSIXPathStyle, true);
 
@@ -245,7 +248,11 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString& guiName,
 
 qint64 Utility::freeDiskSpace(const QString &path, bool *ok)
 {
-#ifdef Q_OS_UNIX
+#ifdef Q_OS_MAC
+    struct statvfs stat;
+    statvfs(path.toUtf8().data(), &stat);
+    return (qint64) stat.f_bavail * stat.f_frsize;
+#elif Q_OS_UNIX
     Q_UNUSED(ok)
     struct statvfs64 stat;
     statvfs64(path.toUtf8().data(), &stat);
