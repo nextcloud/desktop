@@ -174,8 +174,35 @@ bool Utility::hasLaunchOnStartup(const QString &appName)
     QSettings settings(runPath, QSettings::NativeFormat);
     return settings.contains(appName);
 #elif defined(Q_OS_MAC)
-// implement me
-    return false;
+    // this is quite some duplicate code with setLaunchOnStartup, at some point we should fix this FIXME.
+    bool returnValue = false;
+    QString filePath = QDir(QCoreApplication::applicationDirPath()+QLatin1String("/../..")).absolutePath();
+    CFStringRef folderCFStr = CFStringCreateWithCString(0, filePath.toUtf8().data(), kCFStringEncodingUTF8);
+    CFURLRef urlRef = CFURLCreateWithFileSystemPath (0, folderCFStr, kCFURLPOSIXPathStyle, true);
+    LSSharedFileListRef loginItems = LSSharedFileListCreate(0, kLSSharedFileListSessionLoginItems, 0);
+    if (loginItems) {
+        // We need to iterate over the items and check which one is "ours".
+        UInt32 seedValue;
+        CFArrayRef itemsArray = LSSharedFileListCopySnapshot(loginItems, &seedValue);
+        CFStringRef appUrlRefString = CFURLGetString(urlRef); // no need for release
+        for (int i = 0; i < CFArrayGetCount(itemsArray); i++) {
+            LSSharedFileListItemRef item = (LSSharedFileListItemRef)CFArrayGetValueAtIndex(itemsArray, i);
+            CFURLRef itemUrlRef = NULL;
+
+            if (LSSharedFileListItemResolve(item, 0, &itemUrlRef, NULL) == noErr) {
+                CFStringRef itemUrlString = CFURLGetString(itemUrlRef);
+                if (CFStringCompare(itemUrlString,appUrlRefString,0) == kCFCompareEqualTo) {
+                    returnValue = true;
+                }
+                CFRelease(itemUrlRef);
+            }
+        }
+        CFRelease(itemsArray);
+    }
+    CFRelease(loginItems);
+    CFRelease(folderCFStr);
+    CFRelease(urlRef);
+    return returnValue;
 #elif defined(Q_OS_UNIX)
     QString userAutoStartPath = QDir::homePath()+QLatin1String("/.config/autostart/");
     QString desktopFileLocation = userAutoStartPath+appName+QLatin1String(".desktop");
