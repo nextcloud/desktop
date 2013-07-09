@@ -330,7 +330,12 @@ int csync_statedb_close(CSYNC *ctx, const char *statedb, int jwritten) {
    * the tmp db.
    */
   if (jwritten) {
-      if (_csync_statedb_check(ctx, statedb_tmp) == 0) {
+      /* statedb check returns either
+       * 0  : database exists and is fine
+       * 1  : new database was set up
+       * -1 : error.
+       */
+      if (_csync_statedb_check(ctx, statedb_tmp) >= 0) {
           /* New statedb is valid. */
 
           /* Move the tmp-db to the real one. */
