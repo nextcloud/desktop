@@ -252,7 +252,7 @@ qint64 Utility::freeDiskSpace(const QString &path, bool *ok)
     struct statvfs stat;
     statvfs(path.toUtf8().data(), &stat);
     return (qint64) stat.f_bavail * stat.f_frsize;
-#elif Q_OS_UNIX
+#elif defined(Q_OS_UNIX)
     Q_UNUSED(ok)
     struct statvfs64 stat;
     statvfs64(path.toUtf8().data(), &stat);
