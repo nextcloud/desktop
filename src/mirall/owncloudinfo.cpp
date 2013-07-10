@@ -32,17 +32,6 @@ static const char WEBDAV_PATH[] = "remote.php/webdav/";
 namespace Mirall
 {
 
-class oCCookieJar : public QNetworkCookieJar
-{
-public:
-    QList<QNetworkCookie> cookiesForUrl ( const QUrl & url ) const {
-        QList<QNetworkCookie> list;
-        return list;
-    }
-
-};
-
-
 ownCloudInfo *ownCloudInfo::_instance = 0;
 
 ownCloudInfo* ownCloudInfo::instance()
@@ -91,8 +80,6 @@ void ownCloudInfo::setNetworkAccessManager( QNetworkAccessManager* qnam )
     // in the request header.
     connect( _manager, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
              this, SLOT(slotAuthentication(QNetworkReply*,QAuthenticator*)));
-    // no cookie jar so far.
-    _manager->setCookieJar(new oCCookieJar);
 
     _certsUntrusted = false;
 
