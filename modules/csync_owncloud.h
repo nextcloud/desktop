@@ -151,6 +151,7 @@ struct dav_session_s {
     csync_hbf_info_t *chunk_info;
 
     bool no_recursive_propfind;
+    off_t hbf_block_size;
 };
 extern struct dav_session_s dav_session;
 

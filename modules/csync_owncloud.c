@@ -1199,6 +1199,9 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
       do {
         Hbf_State state = HBF_SUCCESS;
         hbf_transfer_t *trans = hbf_init_transfer(clean_uri);
+        if (dav_session.hbf_block_size > 0) {
+          trans->block_size = dav_session.hbf_block_size;
+        }
         finished = true;
 
         if (!trans) {
@@ -1749,6 +1752,10 @@ static int owncloud_set_property(const char *key, void *data) {
     }
     if( c_streq(key, "no_recursive_propfind")) {
         dav_session.no_recursive_propfind = *(bool*)(data);
+        return 0;
+    }
+    if( c_streq(key, "hbf_block_size")) {
+        dav_session.hbf_block_size = *(off_t*)(data);
         return 0;
     }
 
