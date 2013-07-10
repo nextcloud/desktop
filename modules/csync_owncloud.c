@@ -811,7 +811,6 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
         fetchCtx = c_malloc( sizeof( struct listdir_context ));
         if( ! fetchCtx ) {
             errno = ENOMEM;
-            csync_vio_file_stat_destroy(buf);
             return -1;
         }
 
