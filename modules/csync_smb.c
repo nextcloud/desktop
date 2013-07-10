@@ -322,6 +322,7 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
       break;
     case S_IFSOCK:
       buf->type = CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK;
+      break;
     default:
       buf->type = CSYNC_VIO_FILE_TYPE_UNKNOWN;
       break;
