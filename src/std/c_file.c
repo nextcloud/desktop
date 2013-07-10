@@ -176,6 +176,7 @@ int c_rename( const char *src, const char *dst ) {
 
     ouri = c_utf8_to_locale(src);
     if (ouri == NULL) {
+        c_free_locale_string(nuri);
         return -1;
     }
 
