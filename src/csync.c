@@ -595,9 +595,13 @@ static int _csync_walk_tree(CSYNC *ctx, c_rbtree_t *tree, csync_treewalk_visit_f
     _csync_treewalk_context tw_ctx;
     int rc = -1;
 
-    if( !(visitor && tree && ctx)) {
-      ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
-      return rc;
+    if (ctx == NULL) {
+        return rc;
+    }
+
+    if (visitor == NULL || tree == NULL) {
+        ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
+        return rc;
     }
 
     tw_ctx.userdata = ctx->callbacks.userdata;
@@ -1113,4 +1117,3 @@ int csync_set_overall_progress_callback(CSYNC* ctx, csync_overall_progress_callb
   return 0;
 
 }
-/* vim: set ts=8 sw=2 et cindent: */
