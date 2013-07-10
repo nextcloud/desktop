@@ -223,6 +223,7 @@ int c_compare_file( const char *f1, const char *f2 ) {
 
   wf2 = c_utf8_to_locale(f2);
   if(wf2 == NULL) {
+    c_free_locale_string(wf1);
     return -1;
   }
 
