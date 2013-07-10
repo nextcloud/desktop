@@ -32,6 +32,8 @@ namespace Utility
     bool hasLaunchOnStartup(const QString &appName);
     void setLaunchOnStartup(const QString &appName, const QString& guiName, bool launch);
     qint64 freeDiskSpace(const QString &path, bool *ok = 0);
+    /** Like QLocale::toString(double, 'f', prec), but drops trailing zeros after the decimal point */
+    QString compactFormatDouble(double value, int prec);
 }
 
 }

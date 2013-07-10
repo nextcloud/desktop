@@ -28,6 +28,8 @@
 #include <sys/types.h>
 #endif
 
+#include <stdarg.h>
+
 #if defined(Q_OS_MAC)
 #include <CoreServices/CoreServices.h>
 #include <CoreFoundation/CoreFoundation.h>
@@ -312,6 +314,21 @@ qint64 Utility::freeDiskSpace(const QString &path, bool *ok)
     if (ok) *ok = false;
     return 0;
 #endif
+}
+
+QString Utility::compactFormatDouble(double value, int prec)
+{
+    QLocale locale = QLocale::system();
+    QChar decPoint = locale.decimalPoint();
+    QString str = locale.toString(value, 'f', prec);
+    while (str.endsWith('0') || str.endsWith(decPoint)) {
+        if (str.endsWith(decPoint)) {
+            str.chop(1);
+            break;
+        }
+        str.chop(1);
+    }
+    return str;
 }
 
 } // namespace Mirall
