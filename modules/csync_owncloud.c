@@ -1384,14 +1384,12 @@ static csync_vio_file_stat_t *owncloud_readdir(csync_vio_method_handle_t *dhandl
     struct listdir_context *fetchCtx = dhandle;
     csync_vio_file_stat_t *lfs = NULL;
 
-    if( fetchCtx->currResource ) {
-        // DEBUG_WEBDAV("readdir method called for %s, fetchCtx->currResource->uri);
-    } else {
+    if( fetchCtx == NULL) {
         /* DEBUG_WEBDAV("An empty dir or at end); */
         return NULL;
     }
 
-    if( fetchCtx && fetchCtx->currResource ) {
+    if( fetchCtx->currResource ) {
         /* FIXME: Who frees the allocated mem for lfs, allocated in the helper func? */
         lfs = resourceToFileStat( fetchCtx->currResource );
 
