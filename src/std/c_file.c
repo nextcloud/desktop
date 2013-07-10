@@ -177,6 +177,7 @@ int c_rename( const char *src, const char *dst ) {
 
     ouri = c_multibyte(src);
     if (ouri == NULL) {
+	c_free_multibyte(nuri);
         return -1;
     }
 
