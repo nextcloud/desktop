@@ -83,9 +83,15 @@ static void check_csync_statedb_query_statement(void **state)
 
     result = csync_statedb_query(csync->statedb.db, "");
     assert_null(result);
+    if (result != NULL) {
+      c_strlist_destroy(result);
+    }
 
     result = csync_statedb_query(csync->statedb.db, "SELECT;");
     assert_null(result);
+    if (result != NULL) {
+      c_strlist_destroy(result);
+    }
 }
 
 static void check_csync_statedb_create_error(void **state)
