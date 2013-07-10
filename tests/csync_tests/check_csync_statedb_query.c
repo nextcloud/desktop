@@ -284,6 +284,10 @@ static void check_csync_statedb_get_stat_by_inode_not_found(void **state)
 
     tmp = csync_statedb_get_stat_by_inode(csync->statedb.db, (ino_t) 666);
     assert_null(tmp);
+    if (tmp != NULL) {
+      SAFE_FREE(tmp->path);
+      SAFE_FREE(tmp);
+    }
 }
 
 int torture_run_tests(void)
