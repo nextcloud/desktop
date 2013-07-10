@@ -100,7 +100,6 @@ int csync_exclude_load(CSYNC *ctx, const char *fname) {
     rc = -1;
     goto out;
   }
-  close(fd);
 
   /* FIXME: Don't add duplicates */
   entry = buf;
