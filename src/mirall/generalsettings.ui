@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>450</width>
-    <height>384</height>
+    <width>468</width>
+    <height>408</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -134,7 +134,7 @@
            <item>
             <widget class="QSpinBox" name="portSpinBox">
              <property name="enabled">
-              <bool>true</bool>
+              <bool>false</bool>
              </property>
              <property name="sizePolicy">
               <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -158,7 +158,7 @@
          <item>
           <widget class="QCheckBox" name="authRequiredcheckBox">
            <property name="enabled">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
            <property name="text">
             <string>Proxy server requires authentication</string>
@@ -177,7 +177,7 @@
             <item>
              <widget class="QLineEdit" name="userLineEdit">
               <property name="enabled">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
               <property name="text">
                <string/>
@@ -187,7 +187,7 @@
             <item>
              <widget class="QLineEdit" name="passwordLineEdit">
               <property name="enabled">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
               <property name="text">
                <string/>
@@ -221,6 +221,19 @@
       </item>
      </layout>
     </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>
