@@ -27,6 +27,8 @@
 #include "mirall/owncloudsetupwizard.h"
 #include "mirall/mirallconfigfile.h"
 
+#include <math.h>
+
 #include <QDebug>
 #include <QDesktopServices>
 #include <QListWidgetItem>
@@ -483,7 +485,7 @@ void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
     ui->quotaProgressBar->setEnabled(true);
     // workaround the label only accepting ints (which may be only 32 bit wide)
     ui->quotaProgressBar->setMaximum(100);
-    ui->quotaProgressBar->setValue(used/(double)total * 100);
+    ui->quotaProgressBar->setValue(round(used/(double)total * 100));
     QString usedStr = Utility::octetsToString(used);
     QString totalStr = Utility::octetsToString(total);
     ui->quotaLabel->setText(tr("You are using %1 of your available %2 storage.").arg(usedStr, totalStr));
