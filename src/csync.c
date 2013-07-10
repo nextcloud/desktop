@@ -624,9 +624,9 @@ int csync_walk_remote_tree(CSYNC *ctx,  csync_treewalk_visit_func *visitor, int 
 {
     c_rbtree_t *tree = NULL;
 
-    ctx->status_code = CSYNC_STATUS_OK;
+    if (ctx != NULL) {
+        ctx->status_code = CSYNC_STATUS_OK;
 
-    if( ctx ) {
         tree = ctx->remote.tree;
     }
     return _csync_walk_tree(ctx, tree, visitor, filter);
@@ -639,9 +639,9 @@ int csync_walk_local_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int fi
 {
     c_rbtree_t *tree = NULL;
 
-    ctx->status_code = CSYNC_STATUS_OK;
+    if (ctx != NULL) {
+        ctx->status_code = CSYNC_STATUS_OK;
 
-    if( ctx ) {
         tree = ctx->local.tree;
     }
     return _csync_walk_tree(ctx, tree, visitor, filter);
