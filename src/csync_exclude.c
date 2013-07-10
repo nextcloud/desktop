@@ -88,6 +88,8 @@ int csync_exclude_load(CSYNC *ctx, const char *fname) {
     goto out;
   }
   buf = c_malloc(size);
+  memset(buf, 0, size);
+
   if (read(fd, buf, size) != size) {
     rc = -1;
     goto out;
