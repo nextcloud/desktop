@@ -47,9 +47,8 @@ public:
 
     void setLogFile(const QString& , bool );
 
-signals:
-
-public slots:
+protected:
+    void closeEvent(QCloseEvent *event);
 
 protected slots:
     void slotNewLog( const QString &msg );

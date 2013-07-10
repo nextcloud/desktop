@@ -28,6 +28,7 @@
 #include <QMessageBox>
 #include <QCoreApplication>
 #include <QDebug>
+#include <QSettings>
 
 #include "mirall/mirallconfigfile.h"
 #include "mirall/logger.h"
@@ -115,6 +116,10 @@ LogBrowser::LogBrowser(QWidget *parent) :
 
     // Direct connection for log comming from this thread, and queued for the one in a different thread
     connect(Logger::instance(), SIGNAL(newLog(QString)),this,SLOT(slotNewLog(QString)), Qt::AutoConnection);
+
+    MirallConfigFile cfg;
+    QSettings settings(cfg.configFile(), QSettings::IniFormat);
+    restoreGeometry(settings.value("LogBrowser/geometry").toByteArray());
 }
 
 LogBrowser::~LogBrowser()
@@ -209,6 +214,14 @@ void LogBrowser::slotSave()
 void LogBrowser::slotClearLog()
 {
     _logWidget->clear();
+}
+
+void LogBrowser::closeEvent(QCloseEvent *event)
+{
+    MirallConfigFile cfg;
+    QSettings settings(cfg.configFile(), QSettings::IniFormat);
+    settings.setValue("LogBrowser/geometry", saveGeometry());
+    QWidget::closeEvent(event);
 }
 
 } // namespace
