@@ -174,7 +174,7 @@ QNetworkReply* ownCloudInfo::mkdirRequest( const QString& dir )
     connect(qhttp, SIGNAL(responseHeaderReceived(QHttpResponseHeader)), this, SLOT(qhttpResponseHeaderReceived(QHttpResponseHeader)));
     //connect(qhttp, SIGNAL(authenticationRequired(QString,quint16,QAuthenticator*)), this, SLOT(qhttpAuthenticationRequired(QString,quint16,QAuthenticator*)));
     QHttpRequestHeader header("MKCOL", QString(url.encodedPath()), 1,1);   /* header */
-    QByteArray host = url.toAce();
+    QByteArray host = QUrl::toAce(url.host());
     int port = url.port();
     if (port != -1) {
         host += ':';
