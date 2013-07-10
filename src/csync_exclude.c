@@ -62,11 +62,23 @@ int csync_exclude_load(CSYNC *ctx, const char *fname) {
   off_t size;
   char *buf = NULL;
   char *entry = NULL;
+  mbchar_t *w_fname;
+
+  if (ctx == NULL || fname == NULL) {
+      return -1;
+  }
 
 #ifdef _WIN32
-  _fmode = _O_BINARY;  
+  _fmode = _O_BINARY;
 #endif
-  fd = open(fname, O_RDONLY);
+
+  w_fname = c_utf8_to_locale(fname);
+  if (w_fname == NULL) {
+      return -1;
+  }
+
+  fd = _topen(w_fname, O_RDONLY);
+  c_free_locale_string(w_fname);
   if (fd < 0) {
     return -1;
   }
