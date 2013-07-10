@@ -231,7 +231,8 @@ static void check_csync_statedb_insert_metadata(void **state)
     assert_int_equal(rc, 0);
 
     for (i = 0; i < 100; i++) {
-        st = c_malloc(sizeof(csync_file_stat_t));
+        st = c_malloc(sizeof(csync_file_stat_t) + 30 );
+        snprintf(st->path, 29, "file_%d" , i );
         st->phash = i;
 
         rc = c_rbtree_insert(csync->local.tree, (void *) st);
@@ -249,7 +250,8 @@ static void check_csync_statedb_write(void **state)
     int i, rc;
 
     for (i = 0; i < 100; i++) {
-        st = c_malloc(sizeof(csync_file_stat_t));
+        st = c_malloc(sizeof(csync_file_stat_t) + 30);
+        snprintf(st->path, 29, "file_%d" , i );
         st->phash = i;
 
         rc = c_rbtree_insert(csync->local.tree, (void *) st);
