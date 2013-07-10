@@ -465,18 +465,8 @@ void Application::slotRefreshQuotaDisplay( qint64 total, qint64 used )
         return;
     }
 
-    double percent = used/(double)total * 100;
-    QString percentFormatted;
-    // Don't display floating point numbers. Nobody cares.
-    if ((int)percent == 0) {
-        if (percent == .0) {
-            percentFormatted = QLatin1String("0");
-        } else {
-            percentFormatted = QLatin1String("<1");
-        }
-    } else {
-        percentFormatted = QString::number((int)percent);
-    }
+    double percent = used/(double)total*100;
+    QString percentFormatted = Utility::compactFormatDouble(percent, 1);
     QString totalFormatted = Utility::octetsToString(total);
     _actionQuota->setText(tr("%1% of %2 used").arg(percentFormatted).arg(totalFormatted));
 }
