@@ -218,6 +218,7 @@ bool OwncloudSetupPage::urlHasChanged()
     if( ! initialPath.endsWith( slash )) initialPath += slash;
 
     if( currentUrl.host() != initialUrl.host() ||
+        currentUrl.port() != initialUrl.port() ||
             currentPath != initialPath ) {
         change = true;
     }

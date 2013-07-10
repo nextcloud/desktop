@@ -60,7 +60,6 @@ void UpdateDetector::versionCheck( Theme *theme )
     url.addQueryItem( QLatin1String("oem"), theme->appName() );
 
     QNetworkRequest req( url );
-    req.setRawHeader( QByteArray("Host"), url.host().toUtf8() );
     req.setRawHeader( QByteArray("User-Agent"), Utility::userAgentString() );
 
     _accessManager->get( req );

@@ -174,7 +174,13 @@ QNetworkReply* ownCloudInfo::mkdirRequest( const QString& dir )
     connect(qhttp, SIGNAL(responseHeaderReceived(QHttpResponseHeader)), this, SLOT(qhttpResponseHeaderReceived(QHttpResponseHeader)));
     //connect(qhttp, SIGNAL(authenticationRequired(QString,quint16,QAuthenticator*)), this, SLOT(qhttpAuthenticationRequired(QString,quint16,QAuthenticator*)));
     QHttpRequestHeader header("MKCOL", QString(url.encodedPath()), 1,1);   /* header */
-    header.setValue("Host", QString(url.encodedHost()));
+    QByteArray host = url.toAce();
+    int port = url.port();
+    if (port != -1) {
+        host += ':';
+        host += QByteArray::number(port);
+    }
+    header.setValue("Host", host);
     header.setValue("User-Agent", Utility::userAgentString());
     header.setValue("Accept-Charset", "ISO-8859-1,utf-8;q=0.7,*;q=0.7");
     header.setValue("Accept-Language", "it,de-de;q=0.8,it-it;q=0.6,en-us;q=0.4,en;q=0.2");
@@ -608,7 +614,6 @@ void ownCloudInfo::setupHeaders( QNetworkRequest & req, quint64 size )
 {
     QUrl url( req.url() );
     qDebug() << "Setting up host header: " << url.host();
-    req.setRawHeader( QByteArray("Host"), url.host().toUtf8() );
     req.setRawHeader( QByteArray("User-Agent"), Utility::userAgentString());
 
     QString con = _configHandle;

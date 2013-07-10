@@ -123,7 +123,9 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         QUrl prevUrl( prevCfg.ownCloudUrl() );
         QUrl newUrl( cfg.ownCloudUrl() );
 
-        bool urlHasChanged = (prevUrl.host() != newUrl.host() || prevUrl.path() != newUrl.path());
+        bool urlHasChanged = (prevUrl.host() != newUrl.host() ||
+                prevUrl.port() != newUrl.port() ||
+                prevUrl.path() != newUrl.path());
 
         // if the user changed, its also a changed url.
         if( prevCfg.ownCloudUser() != cfg.ownCloudUser() ) {
