@@ -64,6 +64,7 @@ ownCloudInfo* ownCloudInfo::instance()
 ownCloudInfo::ownCloudInfo() :
     QObject(0),
     _manager(0),
+    _authAttempts(0),
     _lastQuotaTotalBytes(0),
     _lastQuotaUsedBytes(0)
 {
@@ -88,11 +89,8 @@ void ownCloudInfo::setNetworkAccessManager( QNetworkAccessManager* qnam )
 
     // The authenticationRequired signal is not handled because the creds are set
     // in the request header.
-#if 0
     connect( _manager, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
              this, SLOT(slotAuthentication(QNetworkReply*,QAuthenticator*)));
-#endif
-
     // no cookie jar so far.
     _manager->setCookieJar(new oCCookieJar);
 
@@ -346,7 +344,6 @@ void ownCloudInfo::slotGetQuotaFinished()
 #endif
 
 // FIXME: remove this later, once the new connection dialog has settled.
-#if 0
 void ownCloudInfo::slotAuthentication( QNetworkReply *reply, QAuthenticator *auth )
 {
     if( !(auth && reply) ) return;
@@ -360,10 +357,8 @@ void ownCloudInfo::slotAuthentication( QNetworkReply *reply, QAuthenticator *aut
 
     qDebug() << "Auth request to me and I am " << this;
     _authAttempts++;
-    MirallConfigFile cfgFile( configHandle );
     qDebug() << "Authenticating request for " << reply->url();
-    if( reply->url().toString().startsWith( cfgFile.ownCloudUrl( _connection, true )) ) {
-
+    if( reply->url().toString().startsWith( webdavUrl( _connection ) ) ) {
         QString con = configHandle;
         if( con.isEmpty() ) con = DEFAULT_CONNECTION;
         if( _credentials.contains(con)) {
@@ -383,7 +378,6 @@ void ownCloudInfo::slotAuthentication( QNetworkReply *reply, QAuthenticator *aut
         reply->close();
     }
 }
-#endif
 
 QString ownCloudInfo::configHandle(QNetworkReply *reply)
 {
@@ -615,16 +609,6 @@ void ownCloudInfo::setupHeaders( QNetworkRequest & req, quint64 size )
     QUrl url( req.url() );
     qDebug() << "Setting up host header: " << url.host();
     req.setRawHeader( QByteArray("User-Agent"), Utility::userAgentString());
-
-    QString con = _configHandle;
-    if( con.isEmpty() ) con = DEFAULT_CONNECTION;
-    if( _credentials.contains(con)) {
-        oCICredentials creds = _credentials.value(con);
-        QString concatenated = creds.user + QLatin1Char(':') + creds.passwd;
-        const QString b(QLatin1String("Basic "));
-        QByteArray data = b.toUtf8() + concatenated.toUtf8().toBase64();
-        req.setRawHeader( QByteArray("Authorization"), data );
-    }
 
     if (size) {
         req.setHeader( QNetworkRequest::ContentLengthHeader, size);
