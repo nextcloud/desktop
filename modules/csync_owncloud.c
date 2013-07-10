@@ -470,10 +470,10 @@ static int dav_connect(const char *base_url) {
         goto out;
     }
 
-    DEBUG_WEBDAV("* scheme %s", scheme );
-    DEBUG_WEBDAV("* host %s", host );
+    DEBUG_WEBDAV("* scheme %s", scheme ? scheme : "empty");
+    DEBUG_WEBDAV("* host %s", host ? host : "empty");
     DEBUG_WEBDAV("* port %u", port );
-    DEBUG_WEBDAV("* path %s", path );
+    DEBUG_WEBDAV("* path %s", path ? path : "empty");
 
     if( strcmp( scheme, "owncloud" ) == 0 ) {
         strncpy( protocol, "http", 6);
@@ -527,6 +527,10 @@ static int dav_connect(const char *base_url) {
     _connected = 1;
     rc = 0;
 out:
+    SAFE_FREE(path);
+    SAFE_FREE(host);
+    SAFE_FREE(scheme);
+
     return rc;
 }
 
