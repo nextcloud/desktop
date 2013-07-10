@@ -1456,14 +1456,12 @@ static csync_vio_file_stat_t *owncloud_readdir(csync_vio_method_handle_t *dhandl
 
     struct listdir_context *fetchCtx = dhandle;
 
-    if( fetchCtx->currResource ) {
-        // DEBUG_WEBDAV("readdir method called for %s", fetchCtx->currResource->uri);
-    } else {
+    if( fetchCtx == NULL) {
         /* DEBUG_WEBDAV("An empty dir or at end"); */
         return NULL;
     }
 
-    while( fetchCtx && fetchCtx->currResource ) {
+    while( fetchCtx->currResource ) {
         resource* currResource = fetchCtx->currResource;
         char *escaped_path = NULL;
 
