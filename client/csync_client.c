@@ -165,8 +165,10 @@ static int parse_args(struct argument_s *csync_args, int argc, char **argv)
                 csync_args->propagate = 0;
                 /* printf("Argument: dry-run\n" ); */
             } else if(c_streq(opt->name, "iconv")) {
+              if (optarg != NULL) {
                 csync_args->iconv = c_strdup(optarg);
                 /* printf("Argument: iconv\n" ); */
+              }
             } else if(c_streq(opt->name, "test-statedb")) {
                 csync_args->create_statedb = 1;
                 csync_args->update = 1;
