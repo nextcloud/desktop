@@ -90,7 +90,16 @@ create a huge amount of data, as the log window has a limited buffer.
 To write logs to disk, start the client with ``--logfile <file>``, where
 ``<file`` is the file you want to log to, or ``--logdir <dir>``, where ``<dir>``
 is an existing directory. In case of ``--logdir``, each sync run will create a
-new file.
+new file. To limit the amount of data that accumulates over time, there is another
+useful parameter: ``--logexpire <hours>```. If that is combined with ```--logdir```
+the client automatically erases log data in that directory that is older than the
+given expiry period.
+
+For example, for a long running test where you intend to keep the log data of the
+last two days, this would be the command line:
+```
+owncloud --logdir /tmp/owncloud_logs --logexpire 48
+```
 
 :ownCloud server Logfile:
 The ownCloud server maintains an ownCloud specific logfile as well. It can and
