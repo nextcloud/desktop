@@ -1,224 +1,56 @@
 #!/usr/bin/perl
 #
-# Test script for the ownCloud module of csync. 
+# Test script for the ownCloud module of csync.
 # This script requires a running ownCloud instance accessible via HTTP.
 # It does quite some fancy tests and asserts the results.
 #
 # Copyright (C) by Klaas Freitag <freitag@owncloud.com>
 #
 
+use lib ".";
+
 use Carp::Assert;
-use HTTP::DAV;
-use Data::Dumper;
 use File::Copy;
+use ownCloud::Test;
 
 use strict;
 
 print "Hello, this is t1, a tester for csync with ownCloud.\n";
 
-#
-# Adjust data as needed here or better us a t1.cfg file with the following
-# content:
-#  user   => "joe",
-#  passwd => "XXXXXX",
-#  url    => "http://localhost/oc/files/webdav.php"
- 
-my $owncloud = "http://localhost/oc/files/webdav.php/";
-my $user = "joe";
-my $passwd = 'XXXXX'; # Mind to be secure.
+initTesting();
 
-if( -r "./t1.cfg" ) {
-    my %config = do 't1.cfg';
-    $user   = $config{user} if( $config{user} );
-    $passwd = $config{passwd} if( $config{passwd} );
-    $owncloud = $config{url}  if( $config{url} );
-    print "Read t1.cfg\n";
-}
+print "Copy some files to the remote location\n";
+createRemoteDir( "remoteToLocal1" );
+createRemoteDir( "remoteToLocal1/rtl1" );
+createRemoteDir( "remoteToLocal1/rtl1/rtl11" );
+createRemoteDir( "remoteToLocal1/rtl2" );
 
-$owncloud .= "/" unless( $owncloud =~ /\/$/ );
-
-
-print "Connecting to ownCloud at ". $owncloud ."\n";
-
-
-sub remoteDir( $$ )
-{
-    my ($d, $dir) = @_;
-
-    my $url = $owncloud . $dir ;
-
-    $d->open( -url => $owncloud );
-    print $d->message . "\n";
-
-    my $re = $d->mkcol( $url );
-    if( $re == 0 ) {
-	print "Failed to create directory <$dir>\n";
-    }
-    return $re;
-}
-
-sub createLocalDir( $  )
-{
-    my ($dir) = (@_);
-
-    mkdir( $dir, 0777 );
-}
-
-sub remoteCleanup( $;$ )
-{
-    my ($d, $dir) = @_;
-
-    $dir = "t1" unless $dir;
-    my $url = $owncloud . $dir;
-    $d->open( -url => $owncloud );
-
-    print "Cleaning Remote!\n";
-    
-    my $re = $d->delete( $dir );
-
-    if( $re == 0 ) {
-	print "Failed to clenup directory <$dir>\n";
-    }
-    return $re;
-}
-
-sub localCleanup( $ )
-{
-    my ($dir) = @_;
-    # don't play child games here:
-    system( "rm -rf $dir" );
-}
-
-sub csync( $$ )
-{
-    my ($local, $remote) = @_;
-
-    my $ld_libpath = "/home/kf/owncloud.com/buildcsync/modules";
-    my $csync = "/home/kf/owncloud.com/buildcsync/client/csync";
-
-    my $url = $owncloud;
-    $url =~ s#^http://##;    # Remove the leading http://
-    $url = "owncloud://$user:$passwd@". $url . $remote;
-    print "CSync URL: $url\n";
-    
-    my $cmd = "LD_LIBRARY_PATH=$ld_libpath $csync $local $url";
-    print "Starting: $cmd\n";
-
-    system( $cmd );
-}
-
-#
-# Check local directories if they have the same content. 
-#
-sub assertLocalDirs( $$ )
-{
-    my ($dir1, $dir2) = @_;
-    print "Asserting $dir1 <-> $dir2\n";
-
-    opendir(my $dh, $dir1 ) || die;
-    while(readdir $dh) {
-	assert( -e "$dir2/$_" );
-
-	my $s1 = -s "$dir1/$_";
-	my $s2 = -s "$dir2/$_";
-	assert( $s1 == $s2 );
-    }
-    closedir $dh;
-}
-
-#
-# Check if a local and a remote dir have the same content 
-#
-sub assertLocalAndRemoteDir( $$$ )
-{
-    my ($d, $local, $remote) = @_;
-    my %seen;
-
-    if( my $r = $d->propfind( -url => $owncloud . $remote, -depth => 1 ) ) {
-	if( $r->is_collection ) {
-	    print "\nXX" . $r->get_resourcelist->as_string ."\n";
-	    
-	    foreach my $res ( $r->get_resourcelist->get_resources() ) {
-		print "Checking " . $res-> get_uri()->as_string ."\n";
-		my $filename = $res->get_property("rel_uri");
-		# check if the file exists.
-		assert( -e "$local/$filename" );
-
-		# check for equal mod times
-		my $remoteModTime = $res->get_property( "lastmodifiedepoch" ) ;
-		my @info = stat( "$local/$filename" );
-		my $localModTime = $info[9];
-		assert( $remoteModTime == $localModTime, "Modfied-Times differ: remote: $remoteModTime <-> local: $localModTime" );
-		
-		# check for the same file size
-		my $localSize = $info[7];
-		my $remoteSize = $res->get_property( "getcontentlength" );
-		assert( $localSize == $remoteSize );
-
-		# remember the files seen on the server.
-		$seen{$filename} = 1;
-            }
-	}
-	# Now loop over the local directory content and check if all files in the dir
-	# were seen on the server.
-	    
-        print "\n* Cross checking with local dir: \n";
-
-	opendir(my $dh, $local ) || die;
-	while( readdir $dh ) {
-	    next if( /^\.+$/ );
-	    assert( -e "$local/$_" );
-	    assert( $seen{$_} == 1, "Filename only local, but not remte: $_\n" );
-	}
-    closedir $dh;
-	
-    }
-
-}
-# ====================================================================
-
-my $d = HTTP::DAV->new();
-
-
-$d->credentials( -url=> $owncloud, -realm=>"ownCloud",
-                 -user=> $user,
-                 -pass=> $passwd );
-$d->DebugLevel(1);
-
-my $remoteDir = "t1/";
-
-remoteDir( $d, $remoteDir );
-
-# $d->open("localhost/oc/files/webdav.php/t1");
-remoteDir( $d, $remoteDir . "remoteToLocal1" );
-
-# put some files remote.
-$d->put( -local=>"toremote1/*", -url=> $owncloud . $remoteDir . "remoteToLocal1" );
-
-# 
-my $localDir = "./t1";
-
-createLocalDir( $localDir );
+glob_put( 'toremote1/*', "remoteToLocal1/" );
+glob_put( 'toremote1/rtl1/*', "remoteToLocal1/rtl1/" );
+glob_put( 'toremote1/rtl1/rtl11/*',  "remoteToLocal1/rtl1/rtl11/" );
+glob_put( 'toremote1/rtl2/*', "remoteToLocal1/rtl2/" );
 
 # call csync, sync local t1 to remote t1
-csync( $localDir, $remoteDir );
-
-print "\nNow assertions:\n";
+csync();
 
 # Check if the files from toremote1 are now in t1/remoteToLocal1
 # they should have taken the way via the ownCloud.
-assertLocalDirs( "./toremote1", "$localDir/remoteToLocal1" );
+print "Assert the local file copy\n";
+assertLocalDirs( 'toremote1', localDir().'remoteToLocal1' );
 
 # Check if the synced files from ownCloud have the same timestamp as the local ones.
-assertLocalAndRemoteDir( $d, "$localDir/remoteToLocal1", $remoteDir . "remoteToLocal1" );
+print "\nNow assert remote 'toremote1' with local " . localDir() . " :\n";
+assertLocalAndRemoteDir( 'remoteToLocal1', 0);
 
 # remove a local file.
-unlink( "$localDir/remoteToLocal1/kernelcrash.txt" );
-csync( $localDir, $remoteDir );
-assertLocalAndRemoteDir( $d, "$localDir/remoteToLocal1", $remoteDir . "remoteToLocal1" );
+print "\nRemove a local file\n";
+unlink( localDir() . 'remoteToLocal1/kernelcrash.txt' );
+csync();
+assertLocalAndRemoteDir( 'remoteToLocal1', 0);
 
 # add local files to a new dir1
-my $locDir = $localDir . "/fromLocal1";
+print "\nAdd some more files to local:\n";
+my $locDir = localDir() . 'fromLocal1';
 
 mkdir( $locDir );
 assert( -d $locDir );
@@ -226,20 +58,47 @@ foreach my $file ( <./tolocal1/*> ) {
     print "Copying $file to $locDir\n";
     copy( $file, $locDir );
 }
-csync( $localDir, $remoteDir );
-assertLocalAndRemoteDir( $d, $locDir, $remoteDir . "fromLocal1" );
+csync( );
+print "\nAssert local and remote dirs.\n";
+assertLocalAndRemoteDir( 'fromLocal1', 0);
 
 # move a local file
+print "\nMove a file locally.\n";
 move( "$locDir/kramer.jpg", "$locDir/oldtimer.jpg" );
-csync( $localDir, $remoteDir );
-assertLocalAndRemoteDir( $d, $locDir, $remoteDir . "fromLocal1" );
+csync( );
+assertLocalAndRemoteDir( 'fromLocal1', 0);
 
+# move a local directory.
+print "\nMove a local directory.\n";
+move( localDir() . 'remoteToLocal1/rtl1', localDir(). 'remoteToLocal1/rtlX');
+csync();
+assertLocalAndRemoteDir( 'fromLocal1', 0);
 
-print "\nInterrupt before cleanup in 4 seconds...\n";
-sleep(4);
+# remove a local dir
+print "\nRemove a local directory.\n";
+localCleanup( localDir() . 'remoteToLocal1/rtlX' );
+csync();
+assertLocalAndRemoteDir( 'fromLocal1', 0);
 
-remoteCleanup( $d, $remoteDir );
-localCleanup( $localDir );
+# create a false conflict, only the mtimes are changed, by content are equal.
+print "\nCreate a false conflict.\n";
+my $srcFile = 'toremote1/kernelcrash.txt';
+put_to_dir( $srcFile, 'remoteToLocal1' );
+system( "sleep 2 && touch $srcFile" );
+csync( );
+assertLocalAndRemoteDir( 'fromLocal1', 0);
 
+# create a true conflict.
+print "\nCreate a conflict.\n";
+system( "echo \"This is more stuff\" >> /tmp/kernelcrash.txt" );
+put_to_dir( '/tmp/kernelcrash.txt', 'remoteToLocal1' );
+system( "sleep 2 && touch $srcFile" );
+csync();
+assertLocalAndRemoteDir( 'remoteToLocal1', 1);
 
-# end.
+# ==================================================================
+
+cleanup();
+
+# --
+
