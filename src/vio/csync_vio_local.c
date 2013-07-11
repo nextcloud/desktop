@@ -46,7 +46,7 @@ int csync_vio_local_getfd(csync_vio_handle_t *hnd)
         return -1;
     }
 
-    fh = (struct fhandle_s*)(hnd->method_handle);
+    fh = (struct fhandle_s*)(hnd);
 
     return fh->fd;
 }
