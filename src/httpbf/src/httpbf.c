@@ -405,8 +405,8 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
         if( ! block ) state = HBF_PARAM_FAIL;
 
         if( transfer->abort_cb ) {
-            int abort = (transfer->abort_cb)();
-            if( abort ) {
+            int do_abort = (transfer->abort_cb)();
+            if( do_abort ) {
               state = HBF_USER_ABORTED;
             }
         }
