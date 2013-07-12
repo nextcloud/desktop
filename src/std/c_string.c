@@ -40,8 +40,13 @@
 #include <windows.h>
 #endif
 
-#ifdef WITH_ICONV
-#include <iconv.h>
+#if defined(HAVE_ICONV) && defined(WITH_ICONV)
+# ifdef HAVE_ICONV_H
+#  include <iconv.h>
+# endif
+# ifdef HAVE_SYS_ICONV_H
+#  include <sys/iconv.h>
+# endif
 
 typedef struct {
   iconv_t to;
@@ -119,7 +124,7 @@ static char *c_iconv(const char* str, enum iconv_direction dir)
 
   return out;
 }
-#endif
+#endif /* defined(HAVE_ICONV) && defined(WITH_ICONV) */
 
 int c_streq(const char *a, const char *b) {
   register const char *s1 = a;

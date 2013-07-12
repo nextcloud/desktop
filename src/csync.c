@@ -32,8 +32,11 @@
 #include <sys/types.h>
 #include <stdbool.h>
 
-#ifdef WITH_ICONV
+#ifdef HAVE_ICONV_H
 #include <iconv.h>
+#endif
+#ifdef HAVE_SYS_ICONV_H
+#include <sys/iconv.h>
 #endif
 
 #include "c_lib.h"

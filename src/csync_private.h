@@ -40,8 +40,11 @@
 #include "c_private.h"
 #include "csync.h"
 
-#ifdef WITH_ICONV
+#ifdef HAVE_ICONV_H
 #include <iconv.h>
+#endif
+#ifdef HAVE_SYS_ICONV_H
+#include <sys/iconv.h>
 #endif
 
 #include "vio/csync_vio_method.h"
@@ -127,7 +130,7 @@ struct csync_s {
     char *config_dir;
     bool with_conflict_copys;
     bool local_only_mode;
-#ifdef WITH_ICONV
+#if defined(HAVE_ICONV) && defined(WITH_ICONV)
     iconv_t iconv_cd;
 #endif
   } options;
