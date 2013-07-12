@@ -105,6 +105,7 @@ public:
 
 protected:
     // these classes can only be access from CredentialStore as a friend class.
+    bool ownCloudPasswordExists( const QString& connection = QString() ) const;
     QString ownCloudPasswd( const QString& connection = QString() ) const;
     void clearPasswordFromConfig( const QString& connect = QString() );
     bool writePassword( const QString& passwd, const QString& connection = QString() );

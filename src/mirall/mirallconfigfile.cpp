@@ -367,6 +367,22 @@ bool MirallConfigFile::passwordStorageAllowed( const QString& connection )
     return !skipPwd;
 }
 
+bool MirallConfigFile::ownCloudPasswordExists( const QString& connection ) const
+{
+    QString con( connection );
+    if( connection.isEmpty() ) con = defaultConnection();
+
+    QSettings settings( configFile(), QSettings::IniFormat );
+    settings.setIniCodec( "UTF-8" );
+    settings.beginGroup( con );
+
+    bool rc = false;
+    if( settings.contains(QLatin1String("passwd")) ) {
+        rc = true;
+    }
+    return rc;
+}
+
 QString MirallConfigFile::ownCloudPasswd( const QString& connection ) const
 {
     QString con( connection );
