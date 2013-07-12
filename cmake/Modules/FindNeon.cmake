@@ -6,7 +6,7 @@
 #  NEON_LIBRARIES - Link these to use Neon
 #  NEON_DEFINITIONS - Compiler switches required for using Neon
 #
-#  Copyright (c) 2011 Andreas Schneider <asn@cryptomilk.org>
+#  Copyright (c) 2011-2013 Andreas Schneider <asn@cryptomilk.org>
 #
 #  Redistribution and use is allowed according to the terms of the New
 #  BSD license.
@@ -14,52 +14,44 @@
 #
 
 
-if (NEON_LIBRARIES AND NEON_INCLUDE_DIRS)
-  # in cache already
-  set(NEON_FOUND TRUE)
-else (NEON_LIBRARIES AND NEON_INCLUDE_DIRS)
+if (UNIX)
   find_package(PkgConfig)
   if (PKG_CONFIG_FOUND)
     pkg_check_modules(_NEON neon)
   endif (PKG_CONFIG_FOUND)
+endif (UNIX)
 
-  find_path(NEON_INCLUDE_DIR
+find_path(NEON_INCLUDE_DIR
     NAMES
-      neon/ne_basic.h
+        neon/neon_basics.h
     PATHS
-      ${_NEON_INCLUDEDIR}
-      /usr/include
-      /usr/local/include
-      /opt/local/include
-      /sw/include
-  )
+        ${_NEON_INCLUDEDIR}
+)
 
-  find_library(NEON_LIBRARY
+find_library(NEON_LIBRARY
     NAMES
-      neon
+        neon
     PATHS
-      ${_NEON_LIBDIR}
-      /usr/lib
-      /usr/local/lib
-      /opt/local/lib
-      /sw/lib
-  )
+        ${_NEON_LIBDIR}
+)
 
-  set(NEON_INCLUDE_DIRS
+set(NEON_INCLUDE_DIRS
     ${NEON_INCLUDE_DIR}
-  )
+)
 
-  if (NEON_LIBRARY)
+if (NEON_LIBRARY)
     set(NEON_LIBRARIES
         ${NEON_LIBRARIES}
         ${NEON_LIBRARY}
     )
-  endif (NEON_LIBRARY)
+endif (NEON_LIBRARY)
 
-  include(FindPackageHandleStandardArgs)
-  find_package_handle_standard_args(Neon DEFAULT_MSG NEON_LIBRARIES NEON_INCLUDE_DIRS)
+if (Neon_FIND_VERSION AND _NEON_VERSION)
+    set(Neon_VERSION _NEON_VERSION)
+endif (Neon_FIND_VERSION AND _NEON_VERSION)
 
-  # show the NEON_INCLUDE_DIRS and NEON_LIBRARIES variables only in the advanced view
-  mark_as_advanced(NEON_INCLUDE_DIRS NEON_LIBRARIES)
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(Neon DEFAULT_MSG NEON_LIBRARIES NEON_INCLUDE_DIRS)
 
-endif (NEON_LIBRARIES AND NEON_INCLUDE_DIRS)
+# show the NEON_INCLUDE_DIRS and NEON_LIBRARIES variables only in the advanced view
+mark_as_advanced(NEON_INCLUDE_DIRS NEON_LIBRARIES)

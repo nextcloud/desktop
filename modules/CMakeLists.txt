@@ -1,7 +1,7 @@
 project(modules C)
 
 find_package(LibSSH 0.4.0)
-find_package(Neon)
+find_package(Neon 0.29.0)
 
 set(PLUGIN_VERSION_INSTALL_DIR "${PLUGIN_INSTALL_DIR}-${LIBRARY_SOVERSION}")
 
