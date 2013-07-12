@@ -72,8 +72,14 @@ bool FolderWizardSourcePage::isComplete() const
 
   bool isOk = selFile.isDir();
   if( !isOk ) {
-    warnString = tr("No local directory selected!");
+    warnString = tr("No local folder selected!");
   }
+
+  if (isOk && !selFile.isWritable()) {
+      isOk = false;
+      warnString += tr("You have no permission to write to the selected folder!");
+  }
+
   // check if the local directory isn't used yet in another ownCloud sync
   Folder::Map map = _folderMap;
 
