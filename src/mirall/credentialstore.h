@@ -34,10 +34,8 @@ namespace Mirall {
  * The fetchCredentials() call changes the internal state of the credential store
  * to one of
  *   Ok: There are credentials. Note that it's unknown if they are correct!!
- *   UserCanceled: The fetching involved user interaction and the user canceled
- *                 the operation. No valid credentials are there.
- *   TooManyAttempts: The user tried to often to enter a password.
  *   Fetching: The fetching is not yet finished.
+ *   EntryNotFound: No password entry found in the storage.
  *   Error:    A general error happened.
  * After fetching has finished, signal fetchCredentialsFinished(bool) is emitted.
  * The result can be retrieved with state() and password() and user() methods.
@@ -49,20 +47,16 @@ class CredentialStore : public QObject
 public:
     enum CredState { NotFetched = 0,
                      Ok,
-                     UserCanceled,
                      Fetching,
                      AsyncFetching,
                      EntryNotFound,
-                     AccessDeniedByUser,
                      AccessDenied,
                      NoKeychainBackend,
                      Error,
-                     AsyncWriting,
-                     TooManyAttempts };
+                     AsyncWriting        };
 
     enum CredentialType {
-        User = 0,
-        Settings,
+        Settings = 0,
         KeyChain
     };
 
@@ -105,11 +99,6 @@ public:
 
     QString errorMessage();
 
-    /**
-     * @brief canTryAgain - check if another try to get credentials makes sense.
-    */
-    bool canTryAgain();
-
     void reset();
 signals:
     /**
@@ -125,7 +114,6 @@ signals:
 protected slots:
     void slotKeyChainReadFinished( QKeychain::Job* );
     void slotKeyChainWriteFinished( QKeychain::Job* );
-    void slotUserDialogDone(int);
 
 private:
     explicit CredentialStore(QObject *parent = 0);
@@ -138,9 +126,7 @@ private:
     static QString _user;
     static QString _url;
     static QString _errorMsg;
-    static int     _tries;
     static CredentialType _type;
-    QInputDialog   *_inputDialog;
 };
 }
 

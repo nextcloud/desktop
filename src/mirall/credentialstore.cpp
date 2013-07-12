@@ -35,7 +35,6 @@ QString CredentialStore::_passwd   = QString::null;
 QString CredentialStore::_user     = QString::null;
 QString CredentialStore::_url      = QString::null;
 QString CredentialStore::_errorMsg = QString::null;
-int     CredentialStore::_tries    = 0;
 #ifdef WITH_QTKEYCHAIN
 CredentialStore::CredentialType CredentialStore::_type = KeyChain;
 #else
@@ -67,39 +66,14 @@ CredentialStore::CredState CredentialStore::state()
     return _state;
 }
 
-bool CredentialStore::canTryAgain()
-{
-    if( _tries > MAX_LOGIN_ATTEMPTS ) {
-        qDebug() << "canTryAgain: Max attempts reached.";
-        return false;
-    }
-
-    /* Since QtKeyChain is required now, it makes sense to only query once. */
-    if( _state == NotFetched || _state == AsyncWriting ) {
-        return true;
-    } else {
-        return false;
-    }
-
-}
-
 void CredentialStore::fetchCredentials()
 {
     MirallConfigFile cfgFile;
-    if( ++_tries > MAX_LOGIN_ATTEMPTS ) {
-        qDebug() << "Too many attempts to enter password!";
-        _state = TooManyAttempts;
-        emit( fetchCredentialsFinished(false) );
-        return;
-    }
 
     bool ok = false;
     QString pwd;
     _user = cfgFile.ownCloudUser();
     _url  = cfgFile.ownCloudUrl();
-    if( !cfgFile.passwordStorageAllowed() ) {
-        _type = CredentialStore::User;
-    }
 
     QString key = keyChainKey(_url);
 
@@ -111,26 +85,16 @@ void CredentialStore::fetchCredentials()
     }
 
     switch( _type ) {
-    case CredentialStore::User: {
-        /* Ask the user for the password */
-        /* Fixme: Move user interaction out here. */
-        _state = AsyncFetching;
-        _inputDialog = new QInputDialog;
-        _inputDialog->setWindowTitle(QApplication::translate("MirallConfigFile","Password Required") );
-        _inputDialog->setLabelText( QApplication::translate("MirallConfigFile","Please enter your %1 password:")
-                .arg(Theme::instance()->appNameGUI()));
-        _inputDialog->setInputMode( QInputDialog::TextInput );
-        _inputDialog->setTextEchoMode( QLineEdit::Password );
-
-        connect(_inputDialog, SIGNAL(finished(int)), SLOT(slotUserDialogDone(int)));
-        _inputDialog->open();
-        break;
-    }
     case CredentialStore::Settings: {
         /* Read from config file. */
         _state = Fetching;
-        pwd = cfgFile.ownCloudPasswd();
-        ok = true;
+        if( cfgFile.ownCloudPasswordExists() ) {
+            pwd = cfgFile.ownCloudPasswd();
+            ok = true;
+        } else {
+            ok = false;
+            _state = EntryNotFound;
+        }
         break;
     }
     case CredentialStore::KeyChain: {
@@ -177,25 +141,11 @@ void CredentialStore::fetchCredentials()
     }
 }
 
-void CredentialStore::slotUserDialogDone( int result )
-{
-    if( result == QDialog::Accepted ) {
-        _passwd = _inputDialog->textValue();
-        _state = Ok;
-    } else {
-        _state = UserCanceled;
-        _passwd = QString::null;
-    }
-    _inputDialog->deleteLater();
-    emit(fetchCredentialsFinished(_state == Ok));
-}
-
 void CredentialStore::reset()
 {
     _state = NotFetched;
     _user   = QString::null;
     _passwd = QString::null;
-    _tries = 0;
 }
 
 QString CredentialStore::keyChainKey( const QString& url ) const
@@ -241,9 +191,6 @@ void CredentialStore::slotKeyChainReadFinished(QKeychain::Job* job)
             break;
         case QKeychain::CouldNotDeleteEntry:
             _state = Error;
-            break;
-        case QKeychain::AccessDeniedByUser:
-           _state = AccessDeniedByUser;
             break;
         case QKeychain::AccessDenied:
             _state = AccessDenied;
@@ -303,8 +250,6 @@ void CredentialStore::setCredentials( const QString& url, const QString& user,
 #else
         _type = Settings;
 #endif
-    } else {
-        _type = User;
     }
     _url  = url;
     _state = Ok;
@@ -323,9 +268,6 @@ void CredentialStore::saveCredentials( )
 #endif
 
     switch( _type ) {
-    case CredentialStore::User:
-        deleteKeyChainCredential( key );
-        break;
     case CredentialStore::KeyChain:
 #ifdef WITH_QTKEYCHAIN
         // Set password in KeyChain
@@ -372,7 +314,6 @@ void CredentialStore::slotKeyChainWriteFinished( QKeychain::Job *job )
             MirallConfigFile cfgFile;
             cfgFile.clearPasswordFromConfig();
             _state = NotFetched;
-            _tries = 0;
         }
     } else {
         qDebug() << "Error: KeyChain Write Password Job failed!";

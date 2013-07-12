@@ -136,16 +136,9 @@ void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 void ConnectionValidator::slotFetchCredentials()
 {
     if( _connection.isEmpty() ) {
-        if( CredentialStore::instance()->canTryAgain() ) {
-            connect( CredentialStore::instance(), SIGNAL(fetchCredentialsFinished(bool)),
-                     this, SLOT(slotCredentialsFetched(bool)) );
-            CredentialStore::instance()->fetchCredentials();
-        }
-
-        if( CredentialStore::instance()->state() == CredentialStore::TooManyAttempts ) {
-            _errors << tr("Too many attempts to get a valid password.");
-            emit connectionResult( CredentialsTooManyAttempts );
-        }
+        connect( CredentialStore::instance(), SIGNAL(fetchCredentialsFinished(bool)),
+                 this, SLOT(slotCredentialsFetched(bool)) );
+        CredentialStore::instance()->fetchCredentials();
     } else {
         // Pull credentials from Mirall config.
         slotCredentialsFetched( true );
@@ -160,14 +153,8 @@ void ConnectionValidator::slotCredentialsFetched( bool ok )
     if( ! ok ) {
         Status stat;
         _errors << tr("Error: Could not retrieve the password!");
-
-        if( CredentialStore::instance()->state() == CredentialStore::UserCanceled ) {
-            _errors << tr("Password dialog was canceled!");
-            stat = CredentialsUserCanceled;
-        } else {
-            _errors << CredentialStore::instance()->errorMessage();
-            stat = CredentialError;
-        }
+        _errors << CredentialStore::instance()->errorMessage();
+        stat = CredentialError;
 
         qDebug() << "Could not fetch credentials" << _errors;
 
