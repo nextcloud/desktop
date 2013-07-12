@@ -316,11 +316,16 @@ int csync_statedb_close(CSYNC *ctx, const char *statedb, int jwritten) {
   int rc = 0;
   _TCHAR *wstatedb_tmp = NULL;
 
+  /* deallocate query resources */
+  rc = sqlite3_finalize(_by_hash_stmt);
+  _by_hash_stmt = NULL;
+
   /* close the temporary database */
   rc = sqlite3_close(ctx->statedb.db);
   if( rc == SQLITE_BUSY ) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "WARN: sqlite3_close got busy!");
   }
+
 
   if (asprintf(&statedb_tmp, "%s.ctmp", statedb) < 0) {
     return -1;
