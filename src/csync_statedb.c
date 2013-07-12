@@ -45,6 +45,9 @@
 #include "csync_rename.h"
 
 #define BUF_SIZE 16
+#define HASH_QUERY "SELECT * FROM metadata WHERE phash=?1"
+
+static sqlite3_stmt* _by_hash_stmt = NULL;
 
 void csync_set_statedb_exists(CSYNC *ctx, int val) {
   ctx->statedb.exists = val;
@@ -670,71 +673,75 @@ int csync_statedb_insert_metadata(CSYNC *ctx) {
 /* caller must free the memory */
 csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
   csync_file_stat_t *st = NULL;
-  c_strlist_t *result = NULL;
-  char *stmt = NULL;
   size_t len = 0;
+  int column_count = 0;
+  int rc;
 
-  stmt = sqlite3_mprintf("SELECT * FROM metadata WHERE phash='%lld'",
-      (long long signed int) phash);
-  if (stmt == NULL) {
+  if( _by_hash_stmt == NULL ) {
+    rc = sqlite3_prepare_v2(ctx->statedb.db, HASH_QUERY, strlen(HASH_QUERY), &_by_hash_stmt, NULL);
+    if( rc != SQLITE_OK ) {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Unable to create stmt for hash query.");
+      return NULL;
+    }
+  }
+
+  if( _by_hash_stmt == NULL ) {
     return NULL;
   }
 
-  result = csync_statedb_query(ctx, stmt);
-  sqlite3_free(stmt);
-  if (result == NULL) {
-    return NULL;
-  }
+  column_count = sqlite3_column_count(_by_hash_stmt);
 
-  if (result->count != 0 && result->count < 10) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Amount of result columns wrong, db version mismatch!");
-  }
-  if(result->count > 7) {
+  sqlite3_bind_int64(_by_hash_stmt, 1, (long long signed int)phash);
+  rc = sqlite3_step(_by_hash_stmt);
+
+  if( rc == SQLITE_ROW ) {
+    if(column_count > 7) {
       /* phash, pathlen, path, inode, uid, gid, mode, modtime */
-      len = strlen(result->vector[2]);
+      len = sqlite3_column_int(_by_hash_stmt, 1);
       st = c_malloc(sizeof(csync_file_stat_t) + len + 1);
       if (st == NULL) {
-          c_strlist_destroy(result);
-          return NULL;
+        return NULL;
       }
       /* clear the whole structure */
       ZERO_STRUCTP(st);
 
       /*
-   * FIXME:
-   * We use an INTEGER(8) which is signed to the phash in the sqlite3 db,
-   * but the phash is an uint64_t. So for some values we get a string like
-   * "1.66514565505016e+19". For such a string strtoull() returns 1.
-   * phash = 1
-   *
-   * st->phash = strtoull(result->vector[0], NULL, 10);
-   */
+       * FIXME:
+       * We use an INTEGER(8) which is signed to the phash in the sqlite3 db,
+       * but the phash is an uint64_t. So for some values we get a string like
+       * "1.66514565505016e+19". For such a string strtoull() returns 1.
+       * phash = 1
+       *
+       * st->phash = strtoull(result->vector[0], NULL, 10);
+       */
 
       /* The query suceeded so use the phash we pass to the function. */
       st->phash = phash;
 
-      st->pathlen = atoi(result->vector[1]);
-      memcpy(st->path, (len ? result->vector[2] : ""), len + 1);
-      st->inode = atoi(result->vector[3]);
-      st->uid = atoi(result->vector[4]);
-      st->gid = atoi(result->vector[5]);
-      st->mode = atoi(result->vector[6]);
-      st->modtime = strtoul(result->vector[7], NULL, 10);
+      st->pathlen = sqlite3_column_int(_by_hash_stmt, 1);
+      memcpy(st->path, (len ? (char*) sqlite3_column_text(_by_hash_stmt, 2) : ""), len + 1);
+      st->inode = sqlite3_column_int(_by_hash_stmt,3);
+      st->uid = sqlite3_column_int(_by_hash_stmt, 4);
+      st->gid = sqlite3_column_int(_by_hash_stmt, 5);
+      st->mode = sqlite3_column_int(_by_hash_stmt, 6);
+      st->modtime = strtoul((char*)sqlite3_column_text(_by_hash_stmt, 7), NULL, 10);
 
-      if(st && result->count > 8 && result->vector[8]) {
-          st->type = atoi(result->vector[8]);
+      if(st && column_count > 8 ) {
+        st->type = sqlite3_column_int(_by_hash_stmt, 8);
       }
 
-      if(result->count > 9 && result->vector[9]) {
-          st->md5 = c_strdup( result->vector[9] );
+      if(column_count > 9 && sqlite3_column_text(_by_hash_stmt, 9)) {
+        st->md5 = c_strdup( (char*) sqlite3_column_text(_by_hash_stmt, 9) );
       }
+    }
   } else {
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "No result record found for phash = %llu",
-                (long long unsigned int) phash);
-      SAFE_FREE(st);
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "sqlite hash query fail: %s", sqlite3_errmsg(ctx->statedb.db));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "No result record found for phash = %llu",
+              (long long unsigned int) phash);
+    SAFE_FREE(st);
   }
 
-  c_strlist_destroy(result);
+  sqlite3_reset(_by_hash_stmt);
 
   return st;
 }
@@ -834,7 +841,6 @@ c_strlist_t *csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
 
     return list;
 }
-
 
 /* query the statedb, caller must free the memory */
 c_strlist_t *csync_statedb_query(CSYNC *ctx, const char *statement) {
