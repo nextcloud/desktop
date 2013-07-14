@@ -43,18 +43,22 @@ else()
     check_function_exists(iconv HAVE_ICONV)
 endif()
 
-if (HAVE_ICONV_H)
-    set(_ICONV_PROTO_INCLUDE "iconv.h")
-endif (HAVE_ICONV_H)
-if (HAVE_SYS_ICONV_H)
-    set(_ICONV_PROTO_INCLUDE "sys/iconv.h")
-endif (HAVE_SYS_ICONV_H)
+if (HAVE_ICONV_H OR HAVE_SYS_ICONV_H)
+    if (HAVE_ICONV_H)
+        set(_ICONV_PROTO_INCLUDE "iconv.h")
+    endif (HAVE_ICONV_H)
+    if (HAVE_SYS_ICONV_H)
+        set(_ICONV_PROTO_INCLUDE "sys/iconv.h")
+    endif (HAVE_SYS_ICONV_H)
 
-check_prototype_definition(iconv
-    "size_t iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char **outbuf, size_t *outbytesleft)"
-    "-1"
-    ${_ICONV_PROTO_INCLUDE}
-    HAVE_ICONV_CONST)
+    set(CMAKE_REQUIRED_INCLUDES ${ICONV_INCLUDE_DIR})
+    check_prototype_definition(iconv
+        "size_t iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char **outbuf, size_t *outbytesleft)"
+        "-1"
+        ${_ICONV_PROTO_INCLUDE}
+        HAVE_ICONV_CONST)
+    set(CMAKE_REQUIRED_INCLUDES)
+endif (HAVE_ICONV_H OR HAVE_SYS_ICONV_H)
 
 set(ICONV_INCLUDE_DIRS
     ${ICONV_INCLUDE_DIR}
