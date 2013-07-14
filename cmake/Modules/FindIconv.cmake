@@ -21,7 +21,6 @@ include(CheckPrototypeDefinition)
 find_path(ICONV_INCLUDE_DIR
     NAMES
         iconv.h sys/iconv.h
-    PATHS
 )
 
 set(CMAKE_REQUIRED_INCLUDES ${ICONV_INCLUDE_DIR})
@@ -37,8 +36,8 @@ find_library(ICONV_LIBRARY
 )
 
 if (ICONV_LIBRARY)
-    get_filename_component(NAME _ICONV_NAME)
-    get_filename_component(PATH _ICONV_PATH)
+    get_filename_component(NAME ${ICONV_LIBRARY} _ICONV_NAME)
+    get_filename_component(PATH ${ICONV_LIBRARY} _ICONV_PATH)
     check_library_exists(${_ICONV_NAME} iconv ${_ICONV_PATH} HAVE_ICONV)
 else()
     check_function_exists(iconv HAVE_ICONV)
