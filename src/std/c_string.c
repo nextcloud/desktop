@@ -88,14 +88,19 @@ enum iconv_direction { iconv_from_native, iconv_to_native };
 
 static char *c_iconv(const char* str, enum iconv_direction dir)
 {
-  char *in = (char*)str;
+#ifdef HAVE_ICONV_CONST
+    const char *in = str;
+#else
+    char *in = discard_const(str);
+#endif
   size_t size;
   size_t outsize;
   char *out;
   size_t ret;
 
-  if (str == NULL)
+  if (str == NULL) {
     return NULL;
+  }
 
   if(_iconvs.from == NULL && _iconvs.to == NULL) {
 #ifdef __APPLE__
