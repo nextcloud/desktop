@@ -36,8 +36,8 @@ find_library(ICONV_LIBRARY
 )
 
 if (ICONV_LIBRARY)
-    get_filename_component(NAME ${ICONV_LIBRARY} _ICONV_NAME)
-    get_filename_component(PATH ${ICONV_LIBRARY} _ICONV_PATH)
+    get_filename_component(_ICONV_NAME ${ICONV_LIBRARY} NAME)
+    get_filename_component(_ICONV_PATH ${ICONV_LIBRARY} PATH)
     check_library_exists(${_ICONV_NAME} iconv ${_ICONV_PATH} HAVE_ICONV)
 else()
     check_function_exists(iconv HAVE_ICONV)
