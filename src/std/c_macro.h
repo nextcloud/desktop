@@ -33,6 +33,9 @@
 #ifndef _C_MACRO_H
 #define _C_MACRO_H
 
+#include <stdint.h>
+#include <string.h>
+
 #define INT_TO_POINTER(i) (void *) i
 #define POINTER_TO_INT(p) *((int *) (p))
 
