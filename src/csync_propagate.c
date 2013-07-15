@@ -387,7 +387,9 @@ start_fd_based:
 
           if (_push_to_tmp_first(ctx)) {
             csync_vio_file_stat_t* sb = csync_vio_file_stat_new();
-            if (csync_vio_stat(ctx, turi, sb) == 0 && sb->size > 0) {
+            if (csync_vio_stat(ctx, turi, sb) == 0 && sb->size > 0
+                && errno != EIO) {
+                /* EIO is mapped to error from owncloud like 500 for which we don't want to resume */
               CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
                         "keeping tmp file: %s", turi);
               if (!progress_info) {
