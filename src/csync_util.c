@@ -270,7 +270,8 @@ static int _fix_errors_visitor(void *obj, void *data) {
   ctx = (CSYNC *) data;
 
   /* search for ERROR */
-  if (fs->instruction != CSYNC_INSTRUCTION_ERROR) {
+  if (fs->instruction != CSYNC_INSTRUCTION_ERROR
+      || fs->type == CSYNC_FTW_TYPE_DIR) {
     rc = 0;
     goto out;
   }

@@ -67,6 +67,36 @@ static void _csync_file_stat_set_error(csync_file_stat_t *st, const char *error)
     st->error_string = c_strdup(error);
 }
 
+/* Recursively mark the parent flder as an error */
+void _csync_report_parent_error(CSYNC *ctx, csync_file_stat_t *st) {
+    const char *dir = NULL;
+    uint64_t h;
+    c_rbnode_t* node;
+
+    dir = c_dirname(st->path);
+    if (!dir) return;
+
+    h = c_jhash64((uint8_t *) dir, strlen(dir), 0);
+    node =  c_rbtree_find(ctx->local.tree, &h);
+
+    if (!node) {
+        /* Not in the local tree, mark the remote tree as an error then */
+        node =  c_rbtree_find(ctx->remote.tree, &h);
+    }
+
+    if (node) {
+        st = node->data;
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
+                  "Mark parent directoy `%s` as an error",
+                  dir);
+
+        _csync_file_stat_set_error(st, "Error within the directory");
+        _csync_report_parent_error(ctx, st);
+    }
+
+    SAFE_FREE(dir);
+}
+
 /* Record the error in the ctx->progress
   pi may be a previous csync_progressinfo_t from the database.
   If pi is NULL, a new one is created, else it is re-used
@@ -74,6 +104,7 @@ static void _csync_file_stat_set_error(csync_file_stat_t *st, const char *error)
 static void _csync_record_error(CSYNC *ctx, csync_file_stat_t *st, csync_progressinfo_t *pi)
 {
   _csync_file_stat_set_error(st, csync_get_error_string(ctx));
+  _csync_report_parent_error(ctx, st);
   if (pi) {
     pi->error++;
     SAFE_FREE(pi->error_string);
