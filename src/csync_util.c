@@ -244,7 +244,9 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: UPDATED (%s)", uri, fs->md5);
 
-  fs->instruction = CSYNC_INSTRUCTION_NONE;
+  if (fs->instruction != CSYNC_INSTRUCTION_ERROR) {
+      fs->instruction = CSYNC_INSTRUCTION_NONE;
+  }
 
   rc = 0;
 out:
