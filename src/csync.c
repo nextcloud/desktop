@@ -862,7 +862,7 @@ int csync_destroy(CSYNC *ctx) {
     /* The other steps happen anyway, what else can we do? */
   }
 
-  /* clear exclude list */
+  /* destroy exclude list */
   csync_exclude_destroy(ctx);
 
   /* remove the lock file */
@@ -925,6 +925,11 @@ int csync_add_exclude_list(CSYNC *ctx, const char *path) {
   ctx->error_code = CSYNC_ERR_NONE;
 
   return csync_exclude_load(ctx, path);
+}
+
+void csync_clear_exclude_list(CSYNC *ctx)
+{
+    csync_exclude_clear(ctx);
 }
 
 const char *csync_get_config_dir(CSYNC *ctx) {

@@ -103,6 +103,15 @@ c_strlist_t *c_strlist_expand(c_strlist_t *strlist, size_t size);
 int c_strlist_add(c_strlist_t *strlist, const char *string);
 
 /**
+ * @brief Removes all strings from the list.
+ *
+ * Frees the strings.
+ *
+ * @param strlist  Stringlist to clear
+ */
+void c_strlist_clear(c_strlist_t *strlist);
+
+/**
  * @brief Destroy the memory of the stringlist.
  *
  * Frees the strings and the stringlist.

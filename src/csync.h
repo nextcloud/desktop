@@ -269,6 +269,13 @@ const char *csync_version(int req_version);
 int csync_add_exclude_list(CSYNC *ctx, const char *path);
 
 /**
+ * @brief Removes all items imported from exclude lists.
+ *
+ * @param ctx           The context to add the exclude list.
+ */
+void csync_clear_exclude_list(CSYNC *ctx);
+
+/**
  * @brief Get the config directory.
  *
  * @param ctx          The csync context.

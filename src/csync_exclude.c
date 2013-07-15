@@ -121,6 +121,10 @@ out:
   return rc;
 }
 
+void csync_exclude_clear(CSYNC *ctx) {
+  c_strlist_clear(ctx->excludes);
+}
+
 void csync_exclude_destroy(CSYNC *ctx) {
   c_strlist_destroy(ctx->excludes);
 }

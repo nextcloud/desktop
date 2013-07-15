@@ -198,7 +198,7 @@ int c_strlist_add(c_strlist_t *strlist, const char *string) {
   return 0;
 }
 
-void c_strlist_destroy(c_strlist_t *strlist) {
+void c_strlist_clear(c_strlist_t *strlist) {
   size_t i = 0;
 
   if (strlist == NULL) {
@@ -208,6 +208,17 @@ void c_strlist_destroy(c_strlist_t *strlist) {
   for (i = 0; i < strlist->count; i++) {
     SAFE_FREE(strlist->vector[i]);
   }
+
+  strlist->count = 0;
+}
+
+void c_strlist_destroy(c_strlist_t *strlist) {
+
+  if (strlist == NULL) {
+    return;
+  }
+
+  c_strlist_clear(strlist);
   SAFE_FREE(strlist->vector);
   SAFE_FREE(strlist);
 }

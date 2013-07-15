@@ -32,6 +32,13 @@
 int csync_exclude_load(CSYNC *ctx, const char *fname);
 
 /**
+ * @brief Clear the exclude list in memory.
+ *
+ * @param ctx   The synchronizer context.
+ */
+void csync_exclude_clear(CSYNC *ctx);
+
+/**
  * @brief Destroy the exclude list in memory.
  *
  * @param ctx   The synchronizer context.
