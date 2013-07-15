@@ -18,7 +18,6 @@
 !define OPTION_SECTION_SC_START_MENU
 !define OPTION_SECTION_SC_DESKTOP
 !define OPTION_SECTION_SC_QUICK_LAUNCH
-!define OPTION_SECTION_SC_AUTOSTART
 !define OPTION_FINISHPAGE
 !define OPTION_FINISHPAGE_LAUNCHER
 ; !define OPTION_FINISHPAGE_RELEASE_NOTES
@@ -455,17 +454,6 @@ SectionGroup "Shortcuts"
 
 SectionGroupEnd
 
-!ifdef OPTION_SECTION_SC_AUTOSTART
-   ${MementoSection} "Autostart" SEC_AUTOSTART
-      SectionIn 1 2
-      SetDetailsPrint textonly
-      DetailPrint "Creating Windows Start Entry"
-      SetDetailsPrint listonly
-      WriteRegStr HKEY_LOCAL_MACHINE "Software\Microsoft\Windows\CurrentVersion\Run" \
-               "${APPLICATION_NAME}" "$INSTDIR\${APPLICATION_EXECUTABLE}"
-  ${MementoSectionEnd}
-!endif
-
 ${MementoSectionDone}
 
 ; Installer section descriptions
@@ -475,7 +463,6 @@ ${MementoSectionDone}
 !insertmacro MUI_DESCRIPTION_TEXT ${SEC_START_MENU} "${APPLICATION_NAME} program group."
 !insertmacro MUI_DESCRIPTION_TEXT ${SEC_DESKTOP} "Desktop shortcut for ${APPLICATION_NAME}."
 !insertmacro MUI_DESCRIPTION_TEXT ${SEC_QUICK_LAUNCH} "Quick Launch shortcut for ${APPLICATION_NAME}."
-!insertmacro MUI_DESCRIPTION_TEXT ${SEC_AUTOSTART} "Register ${APPLICATION_NAME} to run on Windows startup."
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 Section -post
@@ -577,11 +564,6 @@ Section Uninstall
    DeleteRegKey HKLM "Software\${APPLICATION_NAME}"
 
    DeleteRegKey HKCR "${APPLICATION_NAME}"
-
-   ;Windows Start entry
-   !ifdef OPTION_SECTION_SC_AUTOSTART
-      DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "${APPLICATION_NAME}"
-   !endif
 
    ;Start menu shortcuts.
    !ifdef OPTION_SECTION_SC_START_MENU
