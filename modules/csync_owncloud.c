@@ -912,7 +912,7 @@ static int content_reader(void *userdata, const char *buf, size_t len)
        /* DEBUG_WEBDAV("Writing %scompressed %d bytes", (writeCtx->decompress ? "" : "NON "), len); */
        written = write(writeCtx->fd, buf, len);
        if( len != written ) {
-           DEBUG_WEBDAV("WRN: content_reader wrote wrong num of bytes: %zu, %zu", len, written);
+           DEBUG_WEBDAV("WRN: content_reader wrote wrong num of bytes: %zu, %zu %d %d %d", len, written, written, errno, writeCtx->fd);
        }
        return NE_OK;
    } else {
@@ -1180,7 +1180,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
     chunked_total_size = 0;
     chunked_done = 0;
 
-    DEBUG_WEBDAV("Sendfile handling request type %s.", write_ctx->method);
+    DEBUG_WEBDAV("Sendfile handling request type %s. fd %d", write_ctx->method, fd);
 
     /*
      * Copy from the file descriptor if method == PUT
@@ -1300,7 +1300,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
             ne_snprintf(brange, sizeof brange, "bytes=%lld-", (long long) sb.st_size);
             ne_add_request_header(write_ctx->req, "Range", brange);
             ne_add_request_header(write_ctx->req, "Accept-Ranges", "bytes");
-            DEBUG_WEBDAV("Retry with range %s", brange);
+            DEBUG_WEBDAV("Retry with range %s fd %d", brange, fd);
         }
 
         /* hook called before the content is parsed to set the correct reader,

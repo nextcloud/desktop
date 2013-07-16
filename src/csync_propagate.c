@@ -265,7 +265,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
           turi = c_strdup(progress_info->tmpfile);
           /*  Try to see if we can resume. */
           ctx->replica = drep;
-          dfp = csync_vio_open(ctx, turi, O_APPEND|O_NOCTTY, 0);
+          dfp = csync_vio_open(ctx, turi, O_WRONLY|O_APPEND|O_NOCTTY, 0);
           if (dfp) {
               goto start_fd_based;
           }
