@@ -73,7 +73,6 @@ public:
     /* get status about a singel file. */
     SyncFileStatus fileStatus( const QString& );
 
-    void setProxy();
 
 public slots:
     void startSync();
@@ -93,6 +92,8 @@ private slots:
     void slotTransmissionProgress(Progress::Kind, const QString&,long, long);
 
 private:
+    void setIgnoredFiles();
+    void setProxy();
     static int getauth(const char *prompt,
                              char *buf,
                              size_t len,

@@ -38,9 +38,6 @@ public:
     INotify(QObject *parent, int mask);
     ~INotify();
 
-    static void initialize();
-    static void cleanup();
-
     void addPath(const QString &name);
     void removePath(const QString &name);
 

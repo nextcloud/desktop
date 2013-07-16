@@ -52,7 +52,6 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
     _watcher = new Mirall::FolderWatcher(path, this);
 
     MirallConfigFile cfg;
-
     _watcher->addIgnoreListFile( cfg.excludeFile(MirallConfigFile::SystemScope) );
     _watcher->addIgnoreListFile( cfg.excludeFile(MirallConfigFile::UserScope) );
 

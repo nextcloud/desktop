@@ -96,16 +96,7 @@ bool ownCloudFolder::init()
         csync_set_config_dir( _csync_ctx, cfgFile.configPath().toUtf8() );
 
         csync_enable_conflictcopys(_csync_ctx);
-        QString excludeList = cfgFile.excludeFile(MirallConfigFile::SystemScope);
-        if( !excludeList.isEmpty() ) {
-            qDebug() << "==== added system ignore list to csync:" << excludeList.toUtf8();
-            csync_add_exclude_list( _csync_ctx, excludeList.toUtf8() );
-        }
-        excludeList = cfgFile.excludeFile(MirallConfigFile::UserScope);
-        if( !excludeList.isEmpty() ) {
-            qDebug() << "==== added user defined ignore list to csync:" << excludeList.toUtf8();
-            csync_add_exclude_list( _csync_ctx, excludeList.toUtf8() );
-        }
+        setIgnoredFiles();
         csync_set_auth_callback( _csync_ctx, getauth );
 
         if( csync_init( _csync_ctx ) < 0 ) {
@@ -114,7 +105,6 @@ bool ownCloudFolder::init()
             csync_destroy(_csync_ctx);
             _csync_ctx = 0;
         }
-        setProxy();
     }
     return _csync_ctx;
 }
@@ -129,6 +119,22 @@ ownCloudFolder::~ownCloudFolder()
     delete _csync;
     // Destroy csync here.
     csync_destroy(_csync_ctx);
+}
+
+void ownCloudFolder::setIgnoredFiles()
+{
+    MirallConfigFile cfgFile;
+    csync_clear_exclude_list( _csync_ctx );
+    QString excludeList = cfgFile.excludeFile( MirallConfigFile::SystemScope );
+    if( !excludeList.isEmpty() ) {
+        qDebug() << "==== added system ignore list to csync:" << excludeList.toUtf8();
+        csync_add_exclude_list( _csync_ctx, excludeList.toUtf8() );
+    }
+    excludeList = cfgFile.excludeFile( MirallConfigFile::UserScope );
+    if( !excludeList.isEmpty() ) {
+        qDebug() << "==== added user defined ignore list to csync:" << excludeList.toUtf8();
+        csync_add_exclude_list( _csync_ctx, excludeList.toUtf8() );
+    }
 }
 
 void ownCloudFolder::setProxy()
@@ -289,6 +295,7 @@ void ownCloudFolder::startSync(const QStringList &pathList)
 
     qDebug() << "*** Start syncing";
     _thread = new QThread(this);
+    setIgnoredFiles();
     _csync = new CSyncThread( _csync_ctx );
     _csync->moveToThread(_thread);
 

@@ -526,11 +526,4 @@ bool FolderMan::startFromScratch( const QString& localFolder )
     return false;
 }
 
-void FolderMan::setProxy()
-{
-    foreach( Folder *f, _folderMap.values() ) {
-        f->setProxy();
-    }
-}
-
 }

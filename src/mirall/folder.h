@@ -173,11 +173,6 @@ public slots:
       */
      void setPollInterval( int );
 
-     /**
-      * If folder is network-based, reimplement to react to proxy changes
-      */
-     virtual void setProxy() {}
-
 protected:
     /**
      * The minimum amounts of seconds to wait before

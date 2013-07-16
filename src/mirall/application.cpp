@@ -457,7 +457,6 @@ void Application::slotSetupProxy()
     default:
         break;
     }
-    _folderMan->setProxy();
 }
 
 void Application::slotRefreshQuotaDisplay( qint64 total, qint64 used )
