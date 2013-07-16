@@ -107,11 +107,12 @@ static int _csync_check_db_integrity(CSYNC *ctx) {
 
 
 static int _csync_statedb_check(CSYNC *ctx, const char *statedb) {
-    int fd = -1, rc;
+    int fd = -1;
+    int rc;
     ssize_t r;
     char buf[BUF_SIZE] = {0};
     const _TCHAR *wstatedb;
-    struct stat sb;
+    csync_stat_t sb;
 
     /* check db version */
 #ifdef _WIN32
