@@ -295,6 +295,7 @@ void ownCloudFolder::startSync(const QStringList &pathList)
 
     qDebug() << "*** Start syncing";
     _thread = new QThread(this);
+    _thread->setPriority(QThread::LowPriority);
     setIgnoredFiles();
     _csync = new CSyncThread( _csync_ctx );
     _csync->moveToThread(_thread);
