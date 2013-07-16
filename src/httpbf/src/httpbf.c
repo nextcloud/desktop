@@ -42,7 +42,16 @@
 
 #define DEFAULT_BLOCK_SIZE (10*1024*1024)
 
-static int transfer_id( struct stat *sb ) {
+/* Platform specific defines go here. */
+#ifdef _WIN32
+#define fstat  _fstat64
+typedef struct stat64 hbf_stat_t;
+#define _FILE_OFFSET_BITS 64
+#else
+typedef struct stat hbf_stat_t;
+#endif
+
+static int transfer_id( hbf_stat_t *sb ) {
     struct timeval tp;
     int res;
     int r;
@@ -84,7 +93,7 @@ hbf_transfer_t *hbf_init_transfer( const char *dest_uri ) {
 
 /* Create the splitlist of a given file descriptor */
 Hbf_State hbf_splitlist(hbf_transfer_t *transfer, int fd ) {
-  struct stat sb;
+  hbf_stat_t sb;
   off_t num_blocks;
   off_t blk_size;
   off_t remainder = 0;
@@ -315,7 +324,7 @@ static int dav_request( ne_request *req, int fd, hbf_block_t *blk ) {
 
 static Hbf_State validate_source_file( hbf_transfer_t *transfer ) {
   Hbf_State state = HBF_SUCCESS;
-  struct stat sb;
+  hbf_stat_t sb;
 
   if( transfer == NULL ) {
     state = HBF_PARAM_FAIL;
