@@ -19,16 +19,23 @@ add_custom_target(userguide
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-install(
-  FILES
-    csync.1
-  DESTINATION
-    ${MAN_INSTALL_DIR}/man1
-)
+if (UNIX)
+    install(
+        FILES
+            csync.1
+        DESTINATION
+            ${MAN_INSTALL_DIR}/man1
+        )
+    set(DOC_INSTALL_PATH ${SHARE_INSTALL_PREFIX}/doc/csync)
+endif(UNIX)
+
+if (WIN32)
+    set(DOC_INSTALL_PATH ${SHARE_INSTALL_PREFIX}/doc)
+endif (WIN32)
 
 install(
   DIRECTORY
     userguide
   DESTINATION
-    ${SHARE_INSTALL_PREFIX}/doc/csync
+    ${DOC_INSTALL_PATH}
 )
