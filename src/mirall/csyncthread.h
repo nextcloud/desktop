@@ -22,6 +22,7 @@
 #include <QThread>
 #include <QString>
 #include <QNetworkProxy>
+#include <QNetworkCookie>
 
 #include <csync.h>
 
@@ -42,6 +43,8 @@ public:
     static QString csyncErrorToString( CSYNC_ERROR_CODE, const char * );
 
     Q_INVOKABLE void startSync();
+
+    void setLastAuthCookies(QList<QNetworkCookie> c);
 
 signals:
     void fileReceived( const QString& );
@@ -85,6 +88,8 @@ private:
     bool _needsUpdate;
 
     bool _hasFiles; // true if there is at least one file that is not ignored or removed
+
+    QList<QNetworkCookie> _lastAuthCookies;
 
     friend class CSyncRunScopeHelper;
 };

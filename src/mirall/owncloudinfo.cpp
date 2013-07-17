@@ -373,6 +373,13 @@ void ownCloudInfo::slotAuthentication( QNetworkReply *reply, QAuthenticator *aut
     }
 }
 
+QList<QNetworkCookie> ownCloudInfo::getLastAuthCookies()
+{
+    QUrl url = QUrl( webdavUrl(_connection));
+    QList<QNetworkCookie> cookies = _manager->cookieJar()->cookiesForUrl(url);
+    return cookies;
+}
+
 QString ownCloudInfo::configHandle(QNetworkReply *reply)
 {
     QString configHandle;

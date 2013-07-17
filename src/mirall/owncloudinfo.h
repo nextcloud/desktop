@@ -118,6 +118,8 @@ public:
     qint64 lastQuotaUsedBytes() const { return _lastQuotaUsedBytes; }
     qint64 lastQuotaTotalBytes() const  { return _lastQuotaTotalBytes; }
 
+    QList<QNetworkCookie> getLastAuthCookies();
+
 signals:
     // result signal with url- and version string.
     void ownCloudInfoFound( const QString&, const QString&, const QString&, const QString& );

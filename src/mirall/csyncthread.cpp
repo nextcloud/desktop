@@ -320,6 +320,19 @@ void CSyncThread::startSync()
     csync_set_module_property(_csync_ctx, "csync_context", _csync_ctx);
     csync_set_userdata(_csync_ctx, this);
 
+    if (_lastAuthCookies.length() > 0) {
+        // Stuff cookies inside csync, then we can avoid the intermediate HTTP 401 reply
+        // when https://github.com/owncloud/core/pull/4042 is merged.
+        QString cookiesAsString;
+        foreach(QNetworkCookie c, _lastAuthCookies) {
+            cookiesAsString += c.name();
+            cookiesAsString += '=';
+            cookiesAsString += c.value();
+            cookiesAsString += "; ";
+        }
+        csync_set_module_property(_csync_ctx, "session_key", cookiesAsString.toAscii().data());
+    }
+
     // csync_set_auth_callback( _csync_ctx, getauth );
 
     qDebug() << "#### Update start #################################################### >>";
@@ -393,6 +406,11 @@ void CSyncThread::cb_progress(const char *remote_url, enum csync_notify_type_e k
     } else if( kind == CSYNC_NOTIFY_FINISHED_DOWNLOAD ) {
         thread->transmissionProgress( Progress::EndDownload, path, o2, o2 );
     }
+}
+
+void CSyncThread::setLastAuthCookies(QList<QNetworkCookie> c)
+{
+    _lastAuthCookies = c;
 }
 
 

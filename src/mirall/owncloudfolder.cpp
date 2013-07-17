@@ -298,7 +298,9 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     _thread->setPriority(QThread::LowPriority);
     setIgnoredFiles();
     _csync = new CSyncThread( _csync_ctx );
+    _csync->setLastAuthCookies(ownCloudInfo::instance()->getLastAuthCookies());
     _csync->moveToThread(_thread);
+
 
     qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
     qRegisterMetaType<SyncFileItem::Direction>("SyncFileItem::Direction");
