@@ -41,16 +41,17 @@ void *_userdata;
 /*
  * Authentication callback for libsmbclient
  */
-static void get_auth_data_with_context_fn(SMBCCTX *c,
+static void get_auth_data_with_context_fn(SMBCCTX *smb_ctx,
     const char *srv,
     const char *shr,
     char *wg, int wglen,
     char *un, int unlen,
-    char *pw, int pwlen) {
-
+    char *pw, int pwlen)
+{
   static int try_krb5 = 1;
+  char *h;
 
-  (void) c;
+  (void) smb_ctx;
   (void) shr;
   (void) wg;
   (void) wglen;
@@ -71,11 +72,25 @@ static void get_auth_data_with_context_fn(SMBCCTX *c,
     return;
   }
 
-  /* Call the passwort prompt */
+  /* check for an existing user */
+  h = smbc_getUser(smb_ctx);
+  if (h != NULL) {
+    /* The username is known from the url. */
+    DEBUG_SMB(("csync_smb - have username from url: %s\n", h));
+    if (snprintf(un, unlen, "%s", h) < 0) {
+      /* Even if that fials, go on. */
+    }
+  } else {
+    if (_authcb != NULL) {
+      DEBUG_SMB(("csync_smb - execute authentication callback\n"));
+      (*_authcb) ("Username:", un, unlen, 1, 0, smbc_getOptionUserData(smb_ctx));
+    }
+  }
+
+  /* Always ask for the password */
   if (_authcb != NULL) {
-    DEBUG_SMB(("csync_smb - execute authentication callback\n"));
-    (*_authcb) ("Username:", un, unlen, 1, 0, smbc_getOptionUserData(c));
-    (*_authcb) ("Password:", pw, pwlen, 0, 0, smbc_getOptionUserData(c));
+    /* Call the passwort prompt */
+    (*_authcb) ("Password:", pw, pwlen, 0, 0, smbc_getOptionUserData(smb_ctx));
   }
 
   DEBUG_SMB(("csync_smb - user=%s, workgroup=%s, server=%s, share=%s\n",
