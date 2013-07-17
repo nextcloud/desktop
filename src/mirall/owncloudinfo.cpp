@@ -299,32 +299,39 @@ void ownCloudInfo::slotGetQuotaFinished()
 {
     bool ok = false;
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
-    QXmlStreamReader reader(reply);
-    reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration("d", "DAV:"));
 
-    qint64 quotaUsedBytes = 0;
-    qint64 quotaAvailableBytes = 0;
+    if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) == 207) {
+        // Parse DAV response
+        QXmlStreamReader reader(reply);
+        reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration("d", "DAV:"));
 
-    while (!reader.atEnd()) {
-        QXmlStreamReader::TokenType type = reader.readNext();
-        if (type == QXmlStreamReader::StartElement &&
-            reader.namespaceUri() == QLatin1String("DAV:")) {
-            QString name = reader.name().toString();
-            if (name == QLatin1String("quota-used-bytes")) {
-                quotaUsedBytes = reader.readElementText().toLongLong(&ok);
-                if (!ok) quotaUsedBytes = 0;
-            } else if (name == QLatin1String("quota-available-bytes")) {
-                quotaAvailableBytes = reader.readElementText().toLongLong(&ok);
-                if (!ok) quotaAvailableBytes = 0;
+        qint64 quotaUsedBytes = 0;
+        qint64 quotaAvailableBytes = 0;
+
+        while (!reader.atEnd()) {
+            QXmlStreamReader::TokenType type = reader.readNext();
+            if (type == QXmlStreamReader::StartElement &&
+                    reader.namespaceUri() == QLatin1String("DAV:")) {
+                QString name = reader.name().toString();
+                if (name == QLatin1String("quota-used-bytes")) {
+                    quotaUsedBytes = reader.readElementText().toLongLong(&ok);
+                    if (!ok) quotaUsedBytes = 0;
+                } else if (name == QLatin1String("quota-available-bytes")) {
+                    quotaAvailableBytes = reader.readElementText().toLongLong(&ok);
+                    if (!ok) quotaAvailableBytes = 0;
+                }
             }
         }
+
+        qint64 total = quotaUsedBytes + quotaAvailableBytes;
+
+        _lastQuotaTotalBytes = total;
+        _lastQuotaUsedBytes = quotaUsedBytes;
+        emit quotaUpdated(total, quotaUsedBytes);
+    } else {
+        _lastQuotaTotalBytes = 0;
+        _lastQuotaUsedBytes = 0;
     }
-
-    qint64 total = quotaUsedBytes + quotaAvailableBytes;
-
-    _lastQuotaTotalBytes = total;
-    _lastQuotaUsedBytes = quotaUsedBytes;
-    emit quotaUpdated(total, quotaUsedBytes);
 
     reply->deleteLater();
 }
