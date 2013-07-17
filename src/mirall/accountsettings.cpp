@@ -459,28 +459,97 @@ void AccountSettings::slotOpenOC()
     QDesktopServices::openUrl( _OCUrl );
 }
 
-void AccountSettings::slotSetProgress( Progress::Kind, const QString& folder, const QString& file, long p1, long p2 )
+void AccountSettings::slotSetProgress( Progress::Kind kind, const QString& folder, const QString& file, long p1, long p2 )
 {
-    qDebug() << "================================> Progress for folder " << folder << " file " << file << ": "<< p1;
-#if 0
-    if( p1 == 0 && p2 > 0 ) {
-        // sync start
-        ui->progressBar->setMaximum( p2 );
-        ui->progressBar->setValue( p1 );
-        ui->progressBar->setEnabled(true);
-        ui->fileProgressLabel->setText(tr("Uploading %1").arg(file));
-        // ui->progressBar->show();
-    } else if( p1 == p2 ) {
-        // sync end
-        // ui->progressBar->setMaximum(0);
-        ui->progressBar->setValue(0);
-        ui->progressBar->setEnabled(false);
-        ui->fileProgressLabel->setText(tr("No activity."));
-        // ui->progressBar->hide();
-    } else {
-        ui->progressBar->setValue( p1 );
+    // qDebug() << "================================> Progress for folder " << folder << " file " << file << ": "<< p1;
+    int row = 0;
+
+    if( folder.isEmpty() ) return;
+
+    QStandardItem *item = _model->item( row );
+
+    while( item ) {
+        if( item->data( FolderStatusDelegate::FolderAliasRole ) == folder ) {
+            // its the item to update!
+            break;
+        }
+        item = _model->item( ++row );
     }
-#endif
+
+    if( item ) {
+        if( p1 == p2 ) { // File upload finished.
+            item->setData( 100, FolderStatusDelegate::SyncProgress1);
+            item->setData( 100, FolderStatusDelegate::SyncProgress2);
+            // item->setData( QVariant(QString::null), FolderStatusDelegate::SyncFileName );
+
+            // start a timer to stop the progress display
+            QTimer *timer;
+            if( _hideProgressTimers.contains(item) ) {
+                timer = _hideProgressTimers[item];
+                // there is already one timer running.
+            } else {
+                timer = new QTimer;
+                connect(timer, SIGNAL(timeout()), this, SLOT(slotHideProgress()));
+                timer->setSingleShot(true);
+                _hideProgressTimers.insert(item, timer);
+            }
+            timer->start(5000);
+        } else if( p1 == 0 ) { // File upload starts.
+            if( _hideProgressTimers.contains(item) ) {
+                // The timer is still running.
+                QTimer *t = _hideProgressTimers.take(item);
+                t->stop();
+                t->deleteLater();
+            }
+            // calculate the normalization factor and set the min and max
+            _progressFactor = 100.0/p2;
+            item->setData( QVariant(true), FolderStatusDelegate::AddProgressSpace );
+            item->setData( 0,   FolderStatusDelegate::SyncProgress1);
+            item->setData( 100, FolderStatusDelegate::SyncProgress2);
+
+            // strip off the server prefix from the file name
+            QString shortFile(file);
+            if(shortFile.startsWith(QLatin1String("ownclouds://")) ||
+                    shortFile.startsWith(QLatin1String("owncloud://")) ) {
+                // rip off the whole ownCloud URL.
+                Folder *f = _folderMan->folder(folder);
+                if( f ) {
+                    QString regexp = QString("^owncloud[s]*://.*/remote.php/webdav/%1/").arg(f->secondPath());
+                    QRegExp re( regexp );
+                    re.setMinimal(true);
+                    shortFile.remove(re);
+                }
+            }
+            // Set the verb if up- or download
+            QString kindString = Progress::asString(kind);
+
+            shortFile = kindString + QLatin1String(" ") + shortFile;
+            item->setData( shortFile, FolderStatusDelegate::SyncFileName );
+        } else {               // File progress
+            item->setData( int(_progressFactor * p1),   FolderStatusDelegate::SyncProgress1);
+            item->setData( 100,   FolderStatusDelegate::SyncProgress2);
+        }
+    }
+
+    ui->_folderList->repaint();
+}
+
+void AccountSettings::slotHideProgress()
+{
+    QTimer *t_send = qobject_cast<QTimer*>(this->sender());
+    QHash<QStandardItem*, QTimer*>::const_iterator i = _hideProgressTimers.constBegin();
+    while (i != _hideProgressTimers.constEnd()) {
+        if( i.value() == t_send ) {
+            QStandardItem *item = i.key();
+            item->setData( QVariant(false),  FolderStatusDelegate::AddProgressSpace );
+            item->setData( QVariant(QString::null), FolderStatusDelegate::SyncFileName );
+            ui->_folderList->repaint();
+            _hideProgressTimers.remove(item);
+            break;
+        }
+        ++i;
+    }
+    t_send->deleteLater();
 }
 
 void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)

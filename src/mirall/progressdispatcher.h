@@ -36,6 +36,8 @@ public:
         EndUpload
     };
     typedef ProgressKind_s Kind;
+
+    static QString asString( Kind );
 };
 
 class ProgressDispatcher : public QObject

@@ -40,10 +40,6 @@ public:
 
     void addAccount(const QString &title, QWidget *widget);
 public slots:
-    // Progress, parameter is
-    //  - filename
-    //  - progress bytes, overall size.
-    void slotFolderProgress( Progress::Kind, const QString&, const QString&, long, long );
 
 protected:
     void closeEvent(QCloseEvent *event);

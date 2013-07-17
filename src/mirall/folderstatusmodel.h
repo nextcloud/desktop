@@ -43,12 +43,19 @@ class FolderStatusDelegate : public QStyledItemDelegate
                     FolderStatus,
                     FolderErrorMsg,
                     FolderSyncEnabled,
-                    FolderStatusIconRole
+                    FolderStatusIconRole,
+                    SyncFileName,
+                    SyncProgress1,
+                    SyncProgress2,
+                    AddProgressSpace
                   };
     void paint( QPainter*, const QStyleOptionViewItem&, const QModelIndex& ) const;
     QSize sizeHint( const QStyleOptionViewItem&, const QModelIndex& ) const;
     bool editorEvent( QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& option,
                       const QModelIndex& index );
+
+private:
+    bool _addProgressSpace;
 };
 
 } // namespace Mirall

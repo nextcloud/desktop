@@ -17,6 +17,9 @@
 #include <QWidget>
 #include <QUrl>
 #include <QPointer>
+#include <QHash>
+#include <QTimer>
+#include <QStandardItem>
 
 #include "mirall/folder.h"
 #include "mirall/progressdispatcher.h"
@@ -77,6 +80,7 @@ protected slots:
     void slotOpenAccountWizard();
     void slotPasswordDialog();
     void slotChangePassword(const QString&);
+    void slotHideProgress();
 
 private:
     void folderToModelItem( QStandardItem *, Folder * );
@@ -86,6 +90,9 @@ private:
     QStandardItemModel *_model;
     QListWidgetItem *_item;
     QUrl   _OCUrl;
+    double _progressFactor;
+    QHash<QStandardItem*, QTimer*> _hideProgressTimers;
+    QTimer *_timer;
 };
 
 } // namespace Mirall

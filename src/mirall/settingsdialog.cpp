@@ -73,7 +73,7 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
              app, SLOT(slotFolderOpenAction(QString)));
 
     connect( ProgressDispatcher::instance(), SIGNAL(folderProgress(Progress::Kind, QString,QString,long,long)),
-             this, SLOT(slotFolderProgress(Progress::Kind, QString,QString,long,long)));
+             _accountSettings, SLOT(slotSetProgress(Progress::Kind, QString,QString,long,long)));
 
     connect(ProgressDispatcher::instance(), SIGNAL(shortFolderProgress(QString, QString)),
             this, SLOT(slotShortFolderProgress(QString, QString)));
@@ -103,12 +103,6 @@ void SettingsDialog::addAccount(const QString &title, QWidget *widget)
     _ui->labelWidget->addItem(item);
     _ui->stack->addWidget(widget);
 
-}
-
-void SettingsDialog::slotFolderProgress( Progress::Kind kind, const QString& folderAlias, const QString& file, long p1, long p2)
-{
-    qDebug() << " SettingsDialog: XXOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO - File " << file << p1 << p2;
-    _accountSettings->slotSetProgress(kind, folderAlias, file, p1, p2);
 }
 
 void SettingsDialog::closeEvent(QCloseEvent *event)
