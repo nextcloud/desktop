@@ -398,7 +398,7 @@ static int verify_sslcert(void *userdata, int failures,
 static int ne_auth( void *userdata, const char *realm, int attempt,
                     char *username, char *password)
 {
-    char buf[NE_ABUFSIZ];
+    char buf[NE_ABUFSIZ] = {0};
 
     (void) userdata;
     (void) realm;
@@ -408,19 +408,21 @@ static int ne_auth( void *userdata, const char *realm, int attempt,
         DEBUG_WEBDAV( "Authentication required %s", username );
         if( dav_session.user ) {
             /* allow user without password */
-            strncpy( username, dav_session.user, NE_ABUFSIZ);
+            snprintf(username, NE_ABUFSIZ, "%s", dav_session.user);
+
             if( dav_session.pwd ) {
                 strncpy( password, dav_session.pwd, NE_ABUFSIZ );
+            } else {
+                (*_authcb) ("Enter your password: ", buf, NE_ABUFSIZ-1, 0, 0, userdata );
+                snprintf(password, NE_ABUFSIZ, "%s", buf );
             }
         } else if( _authcb != NULL ){
             /* call the csync callback */
             DEBUG_WEBDAV("Call the csync callback for %s", realm );
-            memset( buf, 0, NE_ABUFSIZ );
             (*_authcb) ("Enter your username: ", buf, NE_ABUFSIZ-1, 1, 0, userdata );
-            strncpy( username, buf, NE_ABUFSIZ );
-            memset( buf, 0, NE_ABUFSIZ );
+            snprintf(username, NE_ABUFSIZ, "%s", buf );
             (*_authcb) ("Enter your password: ", buf, NE_ABUFSIZ-1, 0, 0, userdata );
-            strncpy( password, buf, NE_ABUFSIZ );
+            snprintf(password, NE_ABUFSIZ, "%s", buf );
         } else {
             DEBUG_WEBDAV("I can not authenticate!");
         }
