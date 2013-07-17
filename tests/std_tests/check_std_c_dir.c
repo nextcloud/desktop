@@ -8,6 +8,7 @@
 
 #include "std/c_private.h"
 #include "std/c_dir.h"
+#include "std/c_string.h"
 
 const char *check_dir = "/tmp/check/c_mkdirs//with/check//";
 const char *check_file = "/tmp/check/c_mkdirs/with/check/foobar.txt";
@@ -54,6 +55,7 @@ static void check_c_mkdirs_rmdirs(void **state)
 {
     csync_stat_t sb;
     int rc;
+    mbchar_t *wcheck_dir;
 
     (void) state; /* unused */
 
@@ -63,7 +65,9 @@ static void check_c_mkdirs_rmdirs(void **state)
     assert_int_equal(rc, 0);
     rc = c_rmdirs(check_dir);
     assert_int_equal(rc, 0);
-    rc = _tstat(check_dir, &sb);
+    wcheck_dir = c_utf8_to_locale(check_dir);
+    rc = _tstat(wcheck_dir, &sb);
+    c_free_locale_string(wcheck_dir);
     assert_int_equal(rc, -1);
 }
 
@@ -71,17 +75,19 @@ static void check_c_mkdirs_mode(void **state)
 {
     csync_stat_t sb;
     int rc;
+    mbchar_t *wcheck_dir;
 
     (void) state; /* unused */
-
     rc = c_mkdirs(check_dir, 0700);
     assert_int_equal(rc, 0);
     rc = test_dir(check_dir, 0700);
     assert_int_equal(rc, 0);
     rc = c_rmdirs(check_dir);
     assert_int_equal(rc, 0);
-    rc = _tstat(check_dir, &sb);
+    wcheck_dir = c_utf8_to_locale(check_dir);
+    rc = _tstat(wcheck_dir, &sb);
     assert_int_equal(rc, -1);
+    c_free_locale_string(wcheck_dir);
 }
 
 static void check_c_mkdirs_existing_path(void **state)
