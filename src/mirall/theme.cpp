@@ -27,8 +27,6 @@
 #  include INCLUDE_FILE(THEME_INCLUDE)
 #endif
 
-#include "config.h"
-
 namespace Mirall {
 
 Theme* Theme::_instance = 0;
