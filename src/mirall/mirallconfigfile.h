@@ -111,7 +111,7 @@ protected:
     bool writePassword( const QString& passwd, const QString& connection = QString() );
 
 private:
-    QVariant getValue(const QString& param, const QString& group) const;
+    QVariant getValue(const QString& param, const QString& group = QString::null) const;
 
 
 private:
