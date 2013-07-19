@@ -585,8 +585,13 @@ void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
 
 void AccountSettings::slotIgnoreFilesEditor()
 {
-    IgnoreListEditor *ignoreEditor = new IgnoreListEditor;
-    ignoreEditor->open();
+    if (_ignoreEditor.isNull()) {
+        _ignoreEditor = new IgnoreListEditor(this);
+        _ignoreEditor->setAttribute( Qt::WA_DeleteOnClose, true );
+        _ignoreEditor->open();
+    } else {
+        Utility::raiseDialog(_ignoreEditor);
+    }
 }
 
 void AccountSettings::slotInfoAboutCurrentFolder()

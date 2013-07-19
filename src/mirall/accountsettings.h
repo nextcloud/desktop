@@ -38,6 +38,7 @@ class AccountSettings;
 
 class FolderMan;
 class FileItemDialog;
+class IgnoreListEditor;
 
 class AccountSettings : public QWidget
 {
@@ -88,6 +89,7 @@ private:
 
     Ui::AccountSettings *ui;
     QPointer<FileItemDialog> _fileItemDialog;
+    QPointer<IgnoreListEditor> _ignoreEditor;
     FolderMan *_folderMan;
     QStandardItemModel *_model;
     QListWidgetItem *_item;

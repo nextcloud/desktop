@@ -29,7 +29,7 @@ class IgnoreListEditor : public QDialog
     Q_OBJECT
 
 public:
-    explicit IgnoreListEditor(QDialog *parent = 0);
+    explicit IgnoreListEditor(QWidget *parent = 0);
     ~IgnoreListEditor();
 
 private slots:

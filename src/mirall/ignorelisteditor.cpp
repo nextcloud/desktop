@@ -26,7 +26,7 @@
 
 namespace Mirall {
 
-IgnoreListEditor::IgnoreListEditor(QDialog *parent) :
+IgnoreListEditor::IgnoreListEditor(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::IgnoreListEditor)
 {
