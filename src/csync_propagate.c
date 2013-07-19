@@ -465,8 +465,12 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   /* Notify the overall progress */
   if (ctx->callbacks.overall_progress_cb) {
       ctx->progress.byte_current += st->size;
-      ctx->callbacks.overall_progress_cb(duri, ++ctx->progress.current_file_no, ctx->progress.file_count,
-                                         ctx->progress.byte_current, ctx->progress.byte_sum);
+      ctx->callbacks.overall_progress_cb(duri,
+                                         ++ctx->progress.current_file_no,
+                                         ctx->progress.file_count,
+                                         ctx->progress.byte_current,
+                                         ctx->progress.byte_sum,
+                                         ctx->callbacks.userdata);
   }
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "PUSHED  file: %s", duri);

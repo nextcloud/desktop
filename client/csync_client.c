@@ -186,8 +186,12 @@ static int parse_args(struct argument_s *csync_args, int argc, char **argv)
     return optind;
 }
 
-static void _overall_callback(const char *file_name, int file_no,
-                              int file_cnt, long long o1, long long o2)
+static void _overall_callback(const char *file_name,
+                              int file_no,
+                              int file_cnt,
+                              long long o1,
+                              long long o2,
+                              void *userdata)
 {
     printf("File #%2d/%2d: %s (%lld/%lld bytes)\n", file_no, file_cnt, file_name, o1, o2 );
 }

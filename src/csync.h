@@ -589,9 +589,15 @@ int csync_set_file_progress_callback(CSYNC* ctx, csync_file_progress_callback cb
  * @param o1            The current transmitted bytes.
  *
  * @param o2            The overall sum of bytes to transmit.
+ *
+ * @param userdata      The user data pointer.
  */
-typedef void (*csync_overall_progress_callback) (const char *file_name, int file_no,
-                                                 int file_cnt, long long o1, long long o2);
+typedef void (*csync_overall_progress_callback) (const char *file_name,
+                                                 int file_no,
+                                                 int file_cnt,
+                                                 long long o1,
+                                                 long long o2,
+                                                 void *userdata);
 
 /**
  * @brief Set a progress callback for the overall files.
