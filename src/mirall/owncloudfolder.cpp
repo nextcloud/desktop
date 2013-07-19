@@ -316,8 +316,11 @@ void ownCloudFolder::startSync(const QStringList &pathList)
     //blocking connection so the message box happens in this thread, but block the csync thread.
     connect(_csync, SIGNAL(aboutToRemoveAllFiles(SyncFileItem::Direction,bool*)),
                     SLOT(slotAboutToRemoveAllFiles(SyncFileItem::Direction,bool*)), Qt::BlockingQueuedConnection);
-    connect(_csync, SIGNAL(transmissionProgress(Progress::Kind, QString,long,long)),
-             SLOT(slotTransmissionProgress(Progress::Kind, QString,long,long)));
+    connect(_csync, SIGNAL(fileTransmissionProgress(Progress::Kind, QString,long,long)),
+             SLOT(slotFileTransmissionProgress(Progress::Kind, QString,long,long)));
+    connect(_csync, SIGNAL(overallTransmissionProgress(QString, int, int, long long, long long)),
+             SLOT(slotOverallTransmissionProgress(QString, int, int, long long, long long)));
+
 
     _thread->start();
     QMetaObject::invokeMethod(_csync, "startSync", Qt::QueuedConnection);
@@ -422,7 +425,7 @@ void ownCloudFolder::slotLocalPathChanged( const QString& dir )
     }
 }
 
-void ownCloudFolder::slotTransmissionProgress(Progress::Kind kind, const QString& file ,long p1, long p2)
+void ownCloudFolder::slotFileTransmissionProgress(Progress::Kind kind, const QString& file ,long p1, long p2)
 {
     if( kind == Progress::StartDownload ) {
         _progressKind = Progress::Download;
@@ -437,6 +440,12 @@ void ownCloudFolder::slotTransmissionProgress(Progress::Kind kind, const QString
     if( kind == Progress::EndDownload || kind == Progress::EndUpload ) {
         _progressKind = Progress::Inactive;
     }
+}
+
+void ownCloudFolder::slotOverallTransmissionProgress( const QString& fileName, int fileNo, int fileCnt,
+                                                      long long o1, long long o2)
+{
+    ProgressDispatcher::instance()->setOverallProgress( fileName, fileNo, fileCnt, qlonglong(o1), qlonglong(o2));
 }
 
 

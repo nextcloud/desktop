@@ -89,7 +89,8 @@ private slots:
     void slotCsyncUnavailable();
     void slotCSyncFinished();
 
-    void slotTransmissionProgress(Progress::Kind, const QString&,long, long);
+    void slotFileTransmissionProgress(Progress::Kind, const QString&,long, long);
+    void slotOverallTransmissionProgress( const QString&, int, int, long long, long long);
 
 private:
     void setIgnoredFiles();
