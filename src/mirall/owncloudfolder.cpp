@@ -445,7 +445,7 @@ void ownCloudFolder::slotFileTransmissionProgress(Progress::Kind kind, const QSt
 void ownCloudFolder::slotOverallTransmissionProgress( const QString& fileName, int fileNo, int fileCnt,
                                                       long long o1, long long o2)
 {
-    ProgressDispatcher::instance()->setOverallProgress( fileName, fileNo, fileCnt, qlonglong(o1), qlonglong(o2));
+    ProgressDispatcher::instance()->setOverallProgress( alias(), fileName, fileNo, fileCnt, qlonglong(o1), qlonglong(o2));
 }
 
 

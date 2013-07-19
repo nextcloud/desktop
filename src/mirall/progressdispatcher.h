@@ -49,11 +49,11 @@ public:
 
 public:
     void setFolderProgress( Progress::Kind, const QString&, const QString&, long, long );
-    void setOverallProgress( const QString&, int, int, qlonglong, qlonglong);
+    void setOverallProgress(const QString&, const QString&, int, int, qlonglong, qlonglong);
 
 signals:
     void folderProgress( Progress::Kind, const QString&, const QString&, long, long );
-    void overallProgress(const QString&, int, int, qlonglong, qlonglong );
+    void overallProgress(const QString&, const QString&, int, int, qlonglong, qlonglong );
 
 public slots:
 

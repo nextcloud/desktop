@@ -74,6 +74,8 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
 
     connect( ProgressDispatcher::instance(), SIGNAL(folderProgress(Progress::Kind, QString,QString,long,long)),
              _accountSettings, SLOT(slotSetProgress(Progress::Kind, QString,QString,long,long)));
+    connect( ProgressDispatcher::instance(), SIGNAL(overallProgress(QString,QString, int,int,qlonglong,qlonglong)),
+             _accountSettings, SLOT(slotSetOverallProgress( const QString&, const QString&, int, int, qlonglong , qlonglong )));
 
     connect(ProgressDispatcher::instance(), SIGNAL(shortFolderProgress(QString, QString)),
             this, SLOT(slotShortFolderProgress(QString, QString)));

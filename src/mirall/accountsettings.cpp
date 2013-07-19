@@ -459,14 +459,17 @@ void AccountSettings::slotOpenOC()
     QDesktopServices::openUrl( _OCUrl );
 }
 
-void AccountSettings::slotSetProgress( Progress::Kind kind, const QString& folder, const QString& file, long p1, long p2 )
+QStandardItem* AccountSettings::itemForFolder(const QString& folder)
 {
-    // qDebug() << "================================> Progress for folder " << folder << " file " << file << ": "<< p1;
+    QStandardItem *item = NULL;
+
+    if( folder.isEmpty() ) {
+        return item;
+    }
+
     int row = 0;
 
-    if( folder.isEmpty() ) return;
-
-    QStandardItem *item = _model->item( row );
+    item = _model->item( row );
 
     while( item ) {
         if( item->data( FolderStatusDelegate::FolderAliasRole ) == folder ) {
@@ -475,6 +478,28 @@ void AccountSettings::slotSetProgress( Progress::Kind kind, const QString& folde
         }
         item = _model->item( ++row );
     }
+    return item;
+}
+
+void AccountSettings::slotSetOverallProgress( const QString& folder, const QString& file, int fileNo, int fileCnt,
+                                              qlonglong p1, qlonglong p2)
+{
+    QStandardItem *item = itemForFolder(folder);
+    if( item ) {
+        item->setData( p1,      FolderStatusDelegate::OverallProgress1);
+        item->setData( p2,      FolderStatusDelegate::OverallProgress2);
+        item->setData( fileNo,  FolderStatusDelegate::OverallFileNo);
+        item->setData( fileCnt, FolderStatusDelegate::OverallFileCount);
+        item->setData( file,    FolderStatusDelegate::OverallCurrentFile);
+
+    }
+}
+
+void AccountSettings::slotSetProgress( Progress::Kind kind, const QString& folder, const QString& file, long p1, long p2 )
+{
+    // qDebug() << "================================> Progress for folder " << folder << " file " << file << ": "<< p1;
+
+    QStandardItem *item = itemForFolder( folder );
 
     if( item ) {
         if( p1 == p2 ) { // File upload finished.
@@ -509,7 +534,7 @@ void AccountSettings::slotSetProgress( Progress::Kind kind, const QString& folde
                 t->deleteLater();
             }
             // calculate the normalization factor and set the min and max
-            _progressFactor = 100.0/p2;
+            // _progressFactor = 100.0/p2;
             item->setData( QVariant(true), FolderStatusDelegate::AddProgressSpace );
             item->setData( 0,   FolderStatusDelegate::SyncProgressPercent1);
             item->setData( 100, FolderStatusDelegate::SyncProgressPercent2);
@@ -535,7 +560,7 @@ void AccountSettings::slotSetProgress( Progress::Kind kind, const QString& folde
             shortFile = kindString + QLatin1String(" ") + shortFile;
             item->setData( shortFile, FolderStatusDelegate::SyncFileName );
         } else {               // File progress
-            item->setData( int(_progressFactor * p1),   FolderStatusDelegate::SyncProgressPercent1);
+            // item->setData( int(_progressFactor * p1),   FolderStatusDelegate::SyncProgressPercent1);
             item->setData( (qlonglong) p1,   FolderStatusDelegate::SyncProgressBytes1);
             _lastSyncProgress = p1;
 

@@ -418,7 +418,6 @@ void CSyncThread::cb_overall_progress(const char *file_name, int file_no, int fi
     if(thread) {
         thread->overallTransmissionProgress( file, file_no, file_cnt, o1, o2 );
     }
-
 }
 
 void CSyncThread::setLastAuthCookies(QList<QNetworkCookie> c)

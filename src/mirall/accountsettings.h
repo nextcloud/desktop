@@ -66,6 +66,7 @@ public slots:
     void slotDoubleClicked( const QModelIndex& );
     void slotFolderOpenAction( const QString& );
     void slotSetProgress( Progress::Kind, const QString&, const QString&, long, long );
+    void slotSetOverallProgress( const QString&, const QString&, int, int, qlonglong, qlonglong );
     void slotUpdateQuota( qint64,qint64 );
 
 protected slots:
@@ -84,6 +85,8 @@ protected slots:
 
 private:
     void folderToModelItem( QStandardItem *, Folder * );
+    QStandardItem* itemForFolder(const QString& );
+
     Ui::AccountSettings *ui;
     QPointer<FileItemDialog> _fileItemDialog;
     FolderMan *_folderMan;
