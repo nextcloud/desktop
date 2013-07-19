@@ -102,11 +102,14 @@ void Utility::setupFavLink(const QString &folder)
 
 QString Utility::octetsToString( qint64 octets )
 {
-    const qint64 kb = 1024;
-    const qint64 mb = 1024 * kb;
-    const qint64 gb = 1024 * mb;
+    static const qint64 kb = 1024;
+    static const qint64 mb = 1024 * kb;
+    static const qint64 gb = 1024 * mb;
+    static const qint64 tb = 1024 * gb;
 
-    if (octets >= gb) {
+    if (octets >= tb) {
+        return QString::number(octets/tb) + QLatin1String(" TB");
+    } else if (octets >= gb) {
         return QString::number(octets/gb) + QLatin1String(" GB");
     } else if (octets >= mb) {
         return QString::number(octets/mb) + QLatin1String(" MB");
