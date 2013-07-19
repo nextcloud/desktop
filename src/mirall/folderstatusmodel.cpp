@@ -235,9 +235,9 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
       progressRect.setRight( option.rect.right()-aliasMargin);
 
       painter->save();
-      painter->setBrush( option.palette.brightText() );
-      // painter->setPen( QColor(0x06, 0x46, 0x06));
-      painter->drawRoundedRect( progressRect, 2, 2 );
+      // painter->setBrush( option.palette.brightText() );
+      // painter->drawRoundedRect( progressRect, 2, 2 ); // do not draw the box.
+
       painter->setFont(progressFont);
 
       QRect fileNameRect;
@@ -248,17 +248,17 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
       QString pText = subFm.elidedText( tr("File %1: ").arg(syncFile), Qt::ElideLeft, fileNameRect.width());
       painter->drawText(fileNameRect, pText);
-      painter->restore();
 
       // Sizes-Text
       QString s1 = Utility::octetsToString( progressBytes2 );
       QRect octetRect = subFm.boundingRect( tr("%1 of %2").arg(s1).arg(s1) );
+      int progressTextWidth = octetRect.width()+20;
 
       QRect pBRect;
       pBRect.setTop( fileNameRect.bottom() + margin );
       pBRect.setLeft( fileNameRect.left());
       pBRect.setHeight(barHeight);
-      pBRect.setWidth( fileNameRect.width() - octetRect.width()-margin );
+      pBRect.setWidth( fileNameRect.width() - progressTextWidth - margin );
 
       QStyleOptionProgressBarV2 pBarOpt;
       pBarOpt.state    = option.state | QStyle::State_Horizontal;
@@ -276,11 +276,12 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
       sizeRect.setHeight(pBRect.height());
 
       sizeRect.setLeft(pBRect.right() + margin);
-      sizeRect.setWidth( octetRect.width() );
+      sizeRect.setWidth( progressTextWidth );
       QString ps1 = Utility::octetsToString( progressBytes1 );
       QString ps2 = Utility::octetsToString( progressBytes2 );
 
       painter->drawText(sizeRect, tr("%1 of %2").arg(ps1).arg(ps2));
+      painter->restore();
 
   }
   // painter->drawText(lastSyncRect, tr("Last Sync: %1").arg( statusText ));
