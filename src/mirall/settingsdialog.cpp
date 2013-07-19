@@ -80,7 +80,7 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
             _ui->stack, SLOT(setCurrentIndex(int)));
 
     QPushButton *closeButton = _ui->buttonBox->button(QDialogButtonBox::Close);
-    connect(closeButton, SIGNAL(pressed()), SLOT(done()));
+    connect(closeButton, SIGNAL(pressed()), SLOT(accept()));
 
     MirallConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
@@ -107,11 +107,6 @@ void SettingsDialog::closeEvent(QCloseEvent *event)
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
     settings.setValue("Settings/geometry", saveGeometry());
     QWidget::closeEvent(event);
-}
-
-void SettingsDialog::done()
-{
-    QDialog::done(0);
 }
 
 } // namespace Mirall

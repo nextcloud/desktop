@@ -555,11 +555,10 @@ void Application::slotSettings()
 {
     if (_settingsDialog.isNull()) {
         _settingsDialog = new SettingsDialog(this);
+        _settingsDialog->setAttribute( Qt::WA_DeleteOnClose, true );
         _settingsDialog->open();
-        Utility::raiseDialog(_settingsDialog);
-    } else {
-        Utility::raiseDialog(_settingsDialog);
     }
+    Utility::raiseDialog(_settingsDialog);
 }
 
 void Application::slotParseOptions(const QString &opts)
