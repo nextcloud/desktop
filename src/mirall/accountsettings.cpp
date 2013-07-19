@@ -478,8 +478,15 @@ void AccountSettings::slotSetProgress( Progress::Kind kind, const QString& folde
 
     if( item ) {
         if( p1 == p2 ) { // File upload finished.
-            item->setData( 100, FolderStatusDelegate::SyncProgress1);
-            item->setData( 100, FolderStatusDelegate::SyncProgress2);
+            item->setData( 100, FolderStatusDelegate::SyncProgressPercent1);
+            item->setData( 100, FolderStatusDelegate::SyncProgressPercent2);
+            if( p1 == 0 ) {
+                item->setData( (qlonglong) _lastSyncProgress, FolderStatusDelegate::SyncProgressBytes1);
+                item->setData( (qlonglong) _lastSyncProgress, FolderStatusDelegate::SyncProgressBytes2);
+            } else {
+                item->setData( (qlonglong) p1,  FolderStatusDelegate::SyncProgressBytes1);
+                item->setData( (qlonglong) p2,  FolderStatusDelegate::SyncProgressBytes2);
+            }
             // item->setData( QVariant(QString::null), FolderStatusDelegate::SyncFileName );
 
             // start a timer to stop the progress display
@@ -504,8 +511,10 @@ void AccountSettings::slotSetProgress( Progress::Kind kind, const QString& folde
             // calculate the normalization factor and set the min and max
             _progressFactor = 100.0/p2;
             item->setData( QVariant(true), FolderStatusDelegate::AddProgressSpace );
-            item->setData( 0,   FolderStatusDelegate::SyncProgress1);
-            item->setData( 100, FolderStatusDelegate::SyncProgress2);
+            item->setData( 0,   FolderStatusDelegate::SyncProgressPercent1);
+            item->setData( 100, FolderStatusDelegate::SyncProgressPercent2);
+            item->setData( (qlonglong) 0,   FolderStatusDelegate::SyncProgressBytes1);
+            item->setData( (qlonglong) p2,  FolderStatusDelegate::SyncProgressBytes2);
 
             // strip off the server prefix from the file name
             QString shortFile(file);
@@ -526,8 +535,10 @@ void AccountSettings::slotSetProgress( Progress::Kind kind, const QString& folde
             shortFile = kindString + QLatin1String(" ") + shortFile;
             item->setData( shortFile, FolderStatusDelegate::SyncFileName );
         } else {               // File progress
-            item->setData( int(_progressFactor * p1),   FolderStatusDelegate::SyncProgress1);
-            item->setData( 100,   FolderStatusDelegate::SyncProgress2);
+            item->setData( int(_progressFactor * p1),   FolderStatusDelegate::SyncProgressPercent1);
+            item->setData( (qlonglong) p1,   FolderStatusDelegate::SyncProgressBytes1);
+            _lastSyncProgress = p1;
+
         }
     }
 

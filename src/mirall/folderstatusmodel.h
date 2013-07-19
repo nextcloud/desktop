@@ -45,8 +45,10 @@ class FolderStatusDelegate : public QStyledItemDelegate
                     FolderSyncEnabled,
                     FolderStatusIconRole,
                     SyncFileName,
-                    SyncProgress1,
-                    SyncProgress2,
+                    SyncProgressPercent1,
+                    SyncProgressPercent2,
+                    SyncProgressBytes1,
+                    SyncProgressBytes2,
                     AddProgressSpace
                   };
     void paint( QPainter*, const QStyleOptionViewItem&, const QModelIndex& ) const;
