@@ -26,6 +26,7 @@
 #include "mirall/fileitemdialog.h"
 #include "mirall/owncloudsetupwizard.h"
 #include "mirall/mirallconfigfile.h"
+#include "mirall/ignorelisteditor.h"
 
 #include <math.h>
 
@@ -63,12 +64,11 @@ AccountSettings::AccountSettings(FolderMan *folderMan, QWidget *parent) :
     connect(ui->_ButtonEnable, SIGNAL(clicked()), this, SLOT(slotEnableCurrentFolder()));
     connect(ui->_ButtonInfo,   SIGNAL(clicked()), this, SLOT(slotInfoAboutCurrentFolder()));
     connect(ui->_ButtonAdd,    SIGNAL(clicked()), this, SLOT(slotAddFolder()));
-    connect(ui->modifyAccountButton, SIGNAL(clicked()), this, SLOT(slotOpenAccountWizard()));
+    connect(ui->modifyAccountButton, SIGNAL(clicked()), SLOT(slotOpenAccountWizard()));
+    connect(ui->ignoredFilesButton, SIGNAL(clicked()), SLOT(slotIgnoreFilesEditor()));;
 
     connect(ui->_folderList, SIGNAL(clicked(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
     connect(ui->_folderList, SIGNAL(doubleClicked(QModelIndex)),SLOT(slotDoubleClicked(QModelIndex)));
-
-    connect(ui->changePasswordButton, SIGNAL(clicked()), SLOT(slotPasswordDialog()));
 
     ownCloudInfo *ocInfo = ownCloudInfo::instance();
     slotUpdateQuota(ocInfo->lastQuotaTotalBytes(), ocInfo->lastQuotaUsedBytes());
@@ -151,22 +151,6 @@ void AccountSettings::slotFolderWizardRejected()
 void AccountSettings::slotOpenAccountWizard()
 {
     OwncloudSetupWizard::runWizard(_folderMan, qApp, SLOT(slotownCloudWizardDone(int)), this);
-}
-
-void AccountSettings::slotPasswordDialog()
-{
-    QInputDialog *dlg = new QInputDialog(this);
-    dlg->setLabelText(tr("Enter new password:"));
-    dlg->setTextEchoMode(QLineEdit::Password);
-    dlg->open(this, SLOT(slotChangePassword(const QString&)));
-}
-
-void AccountSettings::slotChangePassword(const QString& password)
-{
-    MirallConfigFile cfg;
-    CredentialStore::instance()
-            ->setCredentials(cfg.ownCloudUrl(), cfg.ownCloudUser(), password);
-    _folderMan->slotScheduleAllFolders();
 }
 
 void AccountSettings::slotAddFolder( Folder *folder )
@@ -597,6 +581,12 @@ void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
     QString usedStr = Utility::octetsToString(used);
     QString totalStr = Utility::octetsToString(total);
     ui->quotaLabel->setText(tr("You are using %1 of your available %2 storage.").arg(usedStr, totalStr));
+}
+
+void AccountSettings::slotIgnoreFilesEditor()
+{
+    IgnoreListEditor *ignoreEditor = new IgnoreListEditor;
+    ignoreEditor->open();
 }
 
 void AccountSettings::slotInfoAboutCurrentFolder()

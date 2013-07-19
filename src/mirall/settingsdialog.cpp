@@ -18,7 +18,6 @@
 #include "mirall/generalsettings.h"
 #include "mirall/accountsettings.h"
 #include "mirall/application.h"
-#include "mirall/ignorelisteditor.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/progressdispatcher.h"
 
@@ -46,7 +45,8 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
 
     setWindowTitle(tr("%1 Settings").arg(Theme::instance()->appNameGUI()));
 
-    QListWidgetItem *general = new QListWidgetItem(tr("General Settings"), _ui->labelWidget);
+    QIcon generalIcon(QLatin1String(":/mirall/resources/settings.png"));
+    QListWidgetItem *general = new QListWidgetItem(generalIcon, tr("General"), _ui->labelWidget);
     general->setSizeHint(QSize(0, 32));
     _ui->labelWidget->addItem(general);
     GeneralSettings *generalSettings = new GeneralSettings;
@@ -54,16 +54,10 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
     connect(generalSettings, SIGNAL(proxySettingsChanged()), app->_folderMan, SLOT(slotScheduleAllFolders()));
     _ui->stack->addWidget(generalSettings);
 
-    QListWidgetItem *ignoredFiles = new QListWidgetItem(tr("Ignored Files"), _ui->labelWidget);
-    ignoredFiles->setSizeHint(QSize(0, 32));
-    _ui->labelWidget->addItem(ignoredFiles);
-    IgnoreListEditor *ignoreEditor = new IgnoreListEditor;
-    _ui->stack->addWidget(ignoreEditor);
-
     //connect(generalSettings, SIGNAL(resizeToSizeHint()), SLOT(resizeToSizeHint()));
 
     _accountSettings = new AccountSettings(app->_folderMan);
-    addAccount(tr("Account Details"), _accountSettings);
+    addAccount(tr("Account"), _accountSettings);
 
     connect( app, SIGNAL(folderStateChanged(Folder*)), _accountSettings, SLOT(slotUpdateFolderState(Folder*)));
 
@@ -100,7 +94,7 @@ SettingsDialog::~SettingsDialog()
 
 void SettingsDialog::addAccount(const QString &title, QWidget *widget)
 {
-    QListWidgetItem *item = new QListWidgetItem(title);
+    QListWidgetItem *item = new QListWidgetItem(Theme::instance()->syncStateIcon(SyncResult::Success, true), title);
     item->setSizeHint(QSize(0, 32));
     _ui->labelWidget->addItem(item);
     _ui->stack->addWidget(widget);

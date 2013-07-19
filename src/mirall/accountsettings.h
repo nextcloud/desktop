@@ -68,6 +68,7 @@ public slots:
     void slotSetProgress( Progress::Kind, const QString&, const QString&, long, long );
     void slotSetOverallProgress( const QString&, const QString&, int, int, qlonglong, qlonglong );
     void slotUpdateQuota( qint64,qint64 );
+    void slotIgnoreFilesEditor();
 
 protected slots:
     void slotAddFolder();
@@ -79,8 +80,6 @@ protected slots:
     void slotFolderWizardAccepted();
     void slotFolderWizardRejected();
     void slotOpenAccountWizard();
-    void slotPasswordDialog();
-    void slotChangePassword(const QString&);
     void slotHideProgress();
 
 private:

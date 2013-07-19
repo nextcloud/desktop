@@ -1,3 +1,16 @@
+/*
+ * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ */
+
 #include "mirall/mirallconfigfile.h"
 
 #include "ignorelisteditor.h"
@@ -13,8 +26,8 @@
 
 namespace Mirall {
 
-IgnoreListEditor::IgnoreListEditor(QWidget *parent) :
-    QWidget(parent),
+IgnoreListEditor::IgnoreListEditor(QDialog *parent) :
+    QDialog(parent),
     ui(new Ui::IgnoreListEditor)
 {
     ui->setupUi(this);
@@ -25,12 +38,12 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent) :
     readIgnoreFile(cfgFile.excludeFile(MirallConfigFile::SystemScope), true);
     readIgnoreFile(cfgFile.excludeFile(MirallConfigFile::UserScope), false);
 
+    connect(this, SIGNAL(accepted()), SLOT(slotUpdateLocalIgnoreList()));
     ui->removePushButton->setEnabled(false);
     connect(ui->listWidget, SIGNAL(itemSelectionChanged()), SLOT(slotItemSelectionChanged()));
     connect(ui->listWidget, SIGNAL(itemActivated(QListWidgetItem*)), SLOT(slotItemChanged(QListWidgetItem*)));
     connect(ui->removePushButton, SIGNAL(clicked()), SLOT(slotRemoveCurrentItem()));
     connect(ui->addPushButton, SIGNAL(clicked()), SLOT(slotAddPattern()));
-    connect(ui->listWidget, SIGNAL(itemChanged(QListWidgetItem*)), SLOT(slotUpdateLocalIgnoreList()));
     connect(ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), SLOT(slotEditPattern(QListWidgetItem*)));
 }
 
@@ -59,7 +72,6 @@ void IgnoreListEditor::slotItemSelectionChanged()
 void IgnoreListEditor::slotRemoveCurrentItem()
 {
     delete ui->listWidget->currentItem();
-    slotUpdateLocalIgnoreList();
 }
 
 void IgnoreListEditor::slotUpdateLocalIgnoreList()
@@ -87,7 +99,6 @@ void IgnoreListEditor::slotAddPattern()
     setupItemFlags(item);
     ui->listWidget->addItem(item);
     ui->listWidget->scrollToItem(item);
-    slotUpdateLocalIgnoreList();
 }
 
 void IgnoreListEditor::slotEditPattern(QListWidgetItem *item)
@@ -100,7 +111,6 @@ void IgnoreListEditor::slotEditPattern(QListWidgetItem *item)
                                             QLineEdit::Normal, item->text());
     if (!pattern.isEmpty()) {
         item->setText(pattern);
-        slotUpdateLocalIgnoreList();
     }
 }
 

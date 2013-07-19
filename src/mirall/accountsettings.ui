@@ -21,12 +21,12 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <widget class="QPushButton" name="changePasswordButton">
+       <widget class="QPushButton" name="ignoredFilesButton">
         <property name="enabled">
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>Change Password</string>
+         <string>Edit Ignored Files</string>
         </property>
        </widget>
       </item>
