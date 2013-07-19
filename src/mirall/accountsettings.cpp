@@ -165,7 +165,7 @@ void AccountSettings::slotChangePassword(const QString& password)
 {
     MirallConfigFile cfg;
     CredentialStore::instance()
-            ->setCredentials(cfg.ownCloudUrl(), cfg.ownCloudUser(), password, true);
+            ->setCredentials(cfg.ownCloudUrl(), cfg.ownCloudUser(), password);
     _folderMan->slotScheduleAllFolders();
 }
 

@@ -91,9 +91,8 @@ public:
      * The function also sets the state to ok.
      * @param url - the connection url
      * @param user - the user name
-     * @param password - the password.
      */
-    void setCredentials( const QString& url, const QString& user, const QString& pwd, bool allowToStore);
+    void setCredentials( const QString& url, const QString& user, const QString& pwd);
 
     void saveCredentials( );
 

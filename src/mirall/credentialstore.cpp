@@ -240,17 +240,15 @@ QString CredentialStore::errorMessage()
 }
 
 void CredentialStore::setCredentials( const QString& url, const QString& user,
-                                      const QString& pwd, bool allowToStore )
+                                      const QString& pwd )
 {
     _passwd = pwd;
     _user = user;
-    if( allowToStore ) {
 #ifdef WITH_QTKEYCHAIN
-        _type = KeyChain;
+     _type = KeyChain;
 #else
-        _type = Settings;
+     _type = Settings;
 #endif
-    }
     _url  = url;
     _state = Ok;
 }

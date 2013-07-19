@@ -175,8 +175,7 @@ void MirallConfigFile::writeOwncloudConfig( const QString& connection,
                                             const QString& passwd )
 {
     const QString file = configFile();
-    bool skipPwd = false; // can be refactored - remove it.
-    qDebug() << "*** writing mirall config to " << file << " Skippwd: " << skipPwd;
+    qDebug() << "*** writing mirall config to " << file;
 
     QSettings settings( file, QSettings::IniFormat);
     settings.setIniCodec( "UTF-8" );
@@ -191,16 +190,9 @@ void MirallConfigFile::writeOwncloudConfig( const QString& connection,
     // The CredentialStore calls clearPasswordFromConfig after the creds
     // were successfully wiritten to delete the passwd entry from config.
     qDebug() << "Going to delete the password from settings file.";
-#else
-    if( !skipPwd )
-        writePassword( passwd );
 #endif
-    if( !skipPwd )
-        writePassword( passwd );
-    else
-        clearPasswordFromConfig();  // wipe the password.
+    writePassword( passwd );
 
-    settings.setValue( QLatin1String("nostoredpassword"), QVariant(skipPwd) );
     settings.sync();
     // check the perms, only read-write for the owner.
     QFile::setPermissions( file, QFile::ReadOwner|QFile::WriteOwner );
@@ -354,19 +346,6 @@ void MirallConfigFile::setRemotePollInterval(int interval, const QString &connec
     settings.sync();
 }
 
-bool MirallConfigFile::passwordStorageAllowed( const QString& connection )
-{
-    QString con( connection );
-    if( connection.isEmpty() ) con = defaultConnection();
-
-    QSettings settings( configFile(), QSettings::IniFormat );
-    settings.setIniCodec( "UTF-8" );
-    settings.beginGroup( con );
-
-    bool skipPwd = settings.value( QLatin1String("nostoredpassword"), false ).toBool();
-    return !skipPwd;
-}
-
 bool MirallConfigFile::ownCloudPasswordExists( const QString& connection ) const
 {
     QString con( connection );
@@ -518,12 +497,11 @@ void MirallConfigFile::acceptCustomConfig()
     QString url  = ownCloudUrl();
     QString user = ownCloudUser();
     QString pwd  = ownCloudPasswd();
-    bool allow   = passwordStorageAllowed();
 
     if( pwd.isEmpty() ) {
         qDebug() << "Password is empty, skipping to write cred store.";
     } else {
-        CredentialStore::instance()->setCredentials(url, user, pwd, allow);
+        CredentialStore::instance()->setCredentials(url, user, pwd);
         CredentialStore::instance()->saveCredentials();
     }
 }
