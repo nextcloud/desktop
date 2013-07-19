@@ -660,7 +660,8 @@ start_fd_based:
   if (ctx->callbacks.overall_progress_cb) {
       ctx->progress.byte_current += st->size;
       ctx->callbacks.overall_progress_cb(duri, ++ctx->progress.current_file_no, ctx->progress.file_count,
-                                         ctx->progress.byte_current, ctx->progress.byte_sum);
+                                         ctx->progress.byte_current, ctx->progress.byte_sum,
+					 ctx->callbacks.userdata);
   }
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "PUSHED  file: %s", duri);
@@ -1649,6 +1650,10 @@ int csync_propagate_files(CSYNC *ctx) {
       if (c_rbtree_walk(tree, (void *) ctx, _csync_propagation_file_count_visitor) < 0) {
           return -1;
       }
+      /* Notify the overall progress */
+      ctx->callbacks.overall_progress_cb("", ctx->progress.current_file_no, ctx->progress.file_count,
+                                         ctx->progress.byte_current, ctx->progress.byte_sum,
+                                         ctx->callbacks.userdata);
   }
 
   if (c_rbtree_walk(tree, (void *) ctx, _csync_propagation_file_visitor) < 0) {
