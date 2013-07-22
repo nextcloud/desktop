@@ -1290,6 +1290,7 @@ static int owncloud_close(csync_vio_method_handle_t *fhandle) {
     if( ret != -1 && strcmp( writeCtx->method, "PUT" ) == 0 ) {
       notify_tag = CSYNC_NOTIFY_FINISHED_UPLOAD;
       ne_request_destroy( writeCtx->req );
+      _fs.name = NULL;
     } else  {
       /* Its a GET request. */
       notify_tag = CSYNC_NOTIFY_FINISHED_DOWNLOAD;
