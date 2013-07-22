@@ -1,5 +1,6 @@
 /*
  * Copyright (C) by Klaas Freitag <freitag@kde.org>
+ * Copyright (C) by Krzesimir Nowak <krzesimir@endocode.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,11 +13,13 @@
  * for more details.
  */
 
+#include <QAbstractButton>
 #include <QtCore>
 #include <QProcess>
 #include <QMessageBox>
 #include <QDesktopServices>
 
+#include "mirall/wizard/owncloudwizardcommon.h"
 #include "mirall/owncloudsetupwizard.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/owncloudinfo.h"
@@ -35,6 +38,9 @@ OwncloudSetupWizard::OwncloudSetupWizard(QObject *parent ) :
 
     connect( _ocWizard, SIGNAL(connectToOCUrl( const QString& ) ),
              this, SLOT(slotConnectToOCUrl( const QString& )));
+
+    connect( _ocWizard, SIGNAL(determineAuthType(const QString&)),
+	     this, SLOT(slotDetermineAuthType(const QString&)));
 
     connect( _ocWizard, SIGNAL(finished(int)),this,SLOT(slotAssistantFinished(int)));
 
@@ -91,7 +97,7 @@ void OwncloudSetupWizard::startWizard()
     _ocWizard->setProperty("localFolder", localFolder);
     _ocWizard->setRemoteFolder(_remoteFolder);
 
-    _ocWizard->setStartId(OwncloudWizard::Page_oCSetup);
+    _ocWizard->setStartId(WizardCommon::Page_oCSetup);
 
     _ocWizard->restart();
 
@@ -250,53 +256,11 @@ void OwncloudSetupWizard::testOwnCloudConnect()
                               prevCfg.proxyNeedsAuth(), prevCfg.proxyUser(), prevCfg.proxyPassword() );
     }
 
-    // now start ownCloudInfo to check the connection.
-    ownCloudInfo* info = ownCloudInfo::instance();
-    info->setCustomConfigHandle( _configHandle );
-    if( info->isConfigured() ) {
-        // reset the SSL Untrust flag to let the SSL dialog appear again.
-        info->resetSSLUntrust();
-        connect(info, SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
-                SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
-        connect(info, SIGNAL(noOwncloudFound(QNetworkReply*)),
-                SLOT(slotNoOwnCloudFound(QNetworkReply*)));
-        _checkInstallationRequest = info->checkInstallation();
-    } else {
-        qDebug() << "   ownCloud seems not to be configured, can not start test connect.";
-    }
-}
-
-void OwncloudSetupWizard::slotOwnCloudFound( const QString& url, const QString& infoString, const QString& version, const QString& )
-{
-    disconnect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
-               this, SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
-    disconnect(ownCloudInfo::instance(), SIGNAL(noOwncloudFound(QNetworkReply*)),
-               this, SLOT(slotNoOwnCloudFound(QNetworkReply*)));
-
-    _ocWizard->appendToConfigurationLog(tr("<font color=\"green\">Successfully connected to %1: %2 version %3 (%4)</font><br/><br/>")
-                                    .arg( url ).arg(Theme::instance()->appNameGUI()).arg(infoString).arg(version));
-
     // enable the finish button.
     _ocWizard->button( QWizard::FinishButton )->setEnabled( true );
 
     // start the local folder creation
     setupLocalSyncFolder();
-}
-
-void OwncloudSetupWizard::slotNoOwnCloudFound( QNetworkReply *err )
-{
-    disconnect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
-               this, SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
-    disconnect(ownCloudInfo::instance(), SIGNAL(noOwncloudFound(QNetworkReply*)),
-               this, SLOT(slotNoOwnCloudFound(QNetworkReply*)));
-
-    _ocWizard->displayError(tr("Failed to connect to %1:<br/>%2").
-                            arg(Theme::instance()->appNameGUI()).arg(err->errorString()));
-
-    // remove the config file again
-    MirallConfigFile cfgFile( _configHandle );
-    cfgFile.cleanupCustomConfig();
-    finalizeSetup( false );
 }
 
 void OwncloudSetupWizard::setupLocalSyncFolder()
@@ -455,6 +419,144 @@ void OwncloudSetupWizard::finalizeSetup( bool success )
                                         + QLatin1String("</font></p>"));
     }
     _ocWizard->successfullyConnected(success);
+}
+
+void OwncloudSetupWizard::slotDetermineAuthType(const QString& serverUrl)
+{
+    QString url(serverUrl);
+    qDebug() << "Connect to url: " << url;
+    _ocWizard->setField(QLatin1String("OCUrl"), url );
+    _ocWizard->appendToConfigurationLog(tr("Trying to connect to %1 at %2 to determine authentication type...")
+					.arg( Theme::instance()->appNameGUI() ).arg(url) );
+    // write a temporary config.
+    QDateTime now = QDateTime::currentDateTime();
+
+    // remove a possibly existing custom config.
+    if( ! _configHandle.isEmpty() ) {
+        // remove the old config file.
+        MirallConfigFile oldConfig( _configHandle );
+        oldConfig.cleanupCustomConfig();
+    }
+
+    _configHandle = now.toString(QLatin1String("MMddyyhhmmss"));
+
+    MirallConfigFile cfgFile( _configHandle );
+    if( url.isEmpty() ) return;
+    if( !( url.startsWith(QLatin1String("https://")) || url.startsWith(QLatin1String("http://"))) ) {
+        qDebug() << "url does not start with a valid protocol, assuming https.";
+        url.prepend(QLatin1String("https://"));
+        // FIXME: give a hint about the auto completion
+        _ocWizard->setOCUrl(url);
+    }
+    // FIXME: Create AbstractUserCreds class and maybe three subclasses:
+    // DummyCreds (empty), ShibbolethCreds and HttpCreds
+    // writeOwnCloudConfig could then take AbstractUserCreds instead.
+    // no user and no password - we are trying to determine whether
+    // the auth type is the old HTTPS headers one or rather a
+    // shibboleth one.
+    cfgFile.writeOwncloudConfig( Theme::instance()->appName(),
+                                 url,
+                                 QLatin1String(""),
+                                 QLatin1String(""));
+
+    // If there is already a config, take its proxy config.
+    if( ownCloudInfo::instance()->isConfigured() ) {
+        MirallConfigFile prevCfg;
+        cfgFile.setProxyType( prevCfg.proxyType(), prevCfg.proxyHostName(), prevCfg.proxyPort(),
+                              prevCfg.proxyNeedsAuth(), prevCfg.proxyUser(), prevCfg.proxyPassword() );
+    }
+
+    // now start ownCloudInfo to check the connection.
+    ownCloudInfo* info = ownCloudInfo::instance();
+    info->setCustomConfigHandle( _configHandle );
+    if( info->isConfigured() ) {
+        // reset the SSL Untrust flag to let the SSL dialog appear again.
+        info->resetSSLUntrust();
+        connect(info, SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
+                SLOT(slotOwnCloudFoundAuth(QString,QString,QString,QString)));
+        connect(info, SIGNAL(noOwncloudFound(QNetworkReply*)),
+                SLOT(slotNoOwnCloudFoundAuth(QNetworkReply*)));
+        _checkInstallationRequest = info->checkInstallation();
+    } else {
+        qDebug() << "   ownCloud seems not to be configured, can not start test connect.";
+    }  
+}
+
+void OwncloudSetupWizard::slotOwnCloudFoundAuth( const QString& url, const QString& infoString, const QString& version, const QString& )
+{
+    disconnect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
+               this, SLOT(slotOwnCloudFoundAuth(QString,QString,QString,QString)));
+    disconnect(ownCloudInfo::instance(), SIGNAL(noOwncloudFound(QNetworkReply*)),
+               this, SLOT(slotNoOwnCloudFoundAuth(QNetworkReply*)));
+
+    _ocWizard->appendToConfigurationLog(tr("<font color=\"green\">Successfully connected to %1: %2 version %3 (%4)</font><br/><br/>")
+                                    .arg( url ).arg(Theme::instance()->appNameGUI()).arg(infoString).arg(version));
+
+    QNetworkAccessManager* nm = new QNetworkAccessManager(this);
+    QNetworkReply* reply = nm->get (QNetworkRequest (url + "/remote.php/webdav/"));
+
+    connect (reply, SIGNAL(finished()),
+	     this, SLOT(slotAuthCheckReplyFinished()));
+
+    nm->setProperty ("mirallRedirs", QVariant (0));
+}
+
+void OwncloudSetupWizard::slotAuthCheckReplyFinished()
+{
+  QNetworkReply* reply = qobject_cast< QNetworkReply* > (sender ());
+  QUrl redirection = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+  QNetworkAccessManager* nm = reply->manager ();
+  const int redirCount = nm->property ("mirallRedirs").toInt();
+
+  if (redirCount > 10) {
+    redirection.clear ();
+  }
+
+  disconnect (reply, SIGNAL(finished()),
+	      this, SLOT(slotAuthCheckReplyFinished()));
+  if ((reply->error () == QNetworkReply::AuthenticationRequiredError) || redirection.isEmpty()) {
+    reply->deleteLater();
+    nm->deleteLater();
+    _ocWizard->setAuthType (WizardCommon::HttpCreds);
+  } else if (redirection.toString().endsWith ("remote.php/webdav/")) {
+    QNetworkReply* newReply = nm->get (QNetworkRequest(redirection));
+
+    connect (newReply, SIGNAL(error(QNetworkReply::NetworkError)),
+	     this, SLOT(slotAuthCheckReplyError(QNetworkReply::NetworkError)));
+    connect (newReply, SIGNAL(finished()),
+	     this, SLOT(slotAuthCheckReplyFinished(QNetworkReply::NetworkError)));
+    reply->deleteLater();
+
+    nm->setProperty ("mirallRedirs", QVariant(redirCount + 1));
+  } else {
+    QRegExp shibbolethyWords ("SAML|wayf");
+
+    shibbolethyWords.setCaseSensitivity (Qt::CaseInsensitive);
+    if (redirection.toString ().contains (shibbolethyWords)) {
+      _ocWizard->setAuthType(WizardCommon::Shibboleth);
+    } else {
+      // eh?
+      _ocWizard->setAuthType (WizardCommon::HttpCreds);
+    }
+    reply->deleteLater();
+    nm->deleteLater();
+  }
+}
+
+void OwncloudSetupWizard::slotNoOwnCloudFoundAuth( QNetworkReply *err )
+{
+    disconnect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
+               this, SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
+    disconnect(ownCloudInfo::instance(), SIGNAL(noOwncloudFound(QNetworkReply*)),
+               this, SLOT(slotNoOwnCloudFound(QNetworkReply*)));
+
+    _ocWizard->displayError(tr("Failed to connect to %1:<br/>%2").
+                            arg(Theme::instance()->appNameGUI()).arg(err->errorString()));
+
+    // remove the config file again
+    MirallConfigFile cfgFile( _configHandle );
+    cfgFile.cleanupCustomConfig();
+    finalizeSetup( false );
 }
 
 }

@@ -21,7 +21,7 @@
 #include <QNetworkReply>
 #include <QPointer>
 
-#include "mirall/owncloudwizard.h"
+#include "mirall/wizard/owncloudwizard.h"
 #include "mirall/theme.h"
 
 namespace Mirall {
@@ -72,14 +72,17 @@ public slots:
 protected slots:
     // wizard dialog signals
     void slotConnectToOCUrl( const QString& );
+    void slotDetermineAuthType(const QString&);
 
 private slots:
-    void slotOwnCloudFound( const QString&, const QString&, const QString&, const QString& );
-    void slotNoOwnCloudFound( QNetworkReply* );
     void slotCreateRemoteFolderFinished( QNetworkReply::NetworkError );
     void slotAssistantFinished( int );
     void slotClearPendingRequests();
     void slotAuthCheckReply( const QString&, QNetworkReply * );
+
+    void slotOwnCloudFoundAuth( const QString&, const QString&, const QString&, const QString& );
+    void slotNoOwnCloudFoundAuth( QNetworkReply* );
+    void slotAuthCheckReplyFinished();
 private:
     bool createRemoteFolder();
     void checkRemoteFolder();

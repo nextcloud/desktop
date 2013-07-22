@@ -16,8 +16,6 @@ set(synclib_NAME ${APPLICATION_SHORTNAME}sync)
 set(mirall_UI
 mirall/folderwizardsourcepage.ui
 mirall/folderwizardtargetpage.ui
-mirall/owncloudsetuppage_ng.ui
-mirall/owncloudwizardresultpage.ui
 mirall/sslerrordialog.ui
 mirall/settingsdialog.ui
 mirall/generalsettings.ui
@@ -25,6 +23,9 @@ mirall/networksettings.ui
 mirall/accountsettings.ui
 mirall/ignorelisteditor.ui
 mirall/fileitemdialog.ui
+mirall/owncloudsetupnocredspage.ui
+mirall/owncloudhttpcredspage.ui
+mirall/owncloudwizardresultpage.ui
 )
 
 set(3rdparty_SRC
@@ -152,7 +153,11 @@ set(mirall_SRCS
     mirall/systray.cpp
     mirall/folderwizard.cpp
     mirall/folderstatusmodel.cpp
-    mirall/owncloudwizard.cpp
+    mirall/wizard/owncloudwizard.cpp
+    mirall/wizard/owncloudsetuppage.cpp
+    mirall/wizard/owncloudhttpcredspage.cpp
+    mirall/wizard/owncloudwizardresultpage.cpp
+    mirall/wizard/owncloudwizardcommon.cpp
     mirall/owncloudsetupwizard.cpp
     mirall/updatedetector.cpp
     mirall/occinfo.cpp
@@ -171,7 +176,11 @@ set(mirall_HEADERS
     mirall/systray.h
     mirall/folderwizard.h
     mirall/owncloudsetupwizard.h
-    mirall/owncloudwizard.h
+    mirall/wizard/owncloudwizard.h
+    mirall/wizard/owncloudsetuppage.h
+    mirall/wizard/owncloudhttpcredspage.h
+    mirall/wizard/owncloudwizardresultpage.h
+    mirall/wizard/owncloudwizardcommon.h
     mirall/folderstatusmodel.h
     mirall/updatedetector.h
     mirall/sslerrordialog.h
