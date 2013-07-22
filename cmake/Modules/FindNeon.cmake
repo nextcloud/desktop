@@ -23,7 +23,7 @@ endif (UNIX)
 
 find_path(NEON_INCLUDE_DIR
     NAMES
-        neon/neon_basics.h
+        neon/ne_basic.h
     PATHS
         ${_NEON_INCLUDEDIR}
 )
