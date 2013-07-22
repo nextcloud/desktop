@@ -490,6 +490,15 @@ int csync_propagate(CSYNC *ctx) {
 
   ctx->status_code = CSYNC_STATUS_OK;
 
+  /* Initialize the database for the overall progress callback. */
+  rc = csync_init_overall_progress(ctx);
+  if (rc < 0) {
+      if (ctx->status_code == CSYNC_STATUS_OK) {
+          ctx->status_code = CSYNC_STATUS_PROPAGATE_ERROR;
+      }
+      return -1;
+  }
+
   /* Reconciliation for local replica */
   csync_gettime(&start);
 

@@ -466,7 +466,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   if (ctx->callbacks.overall_progress_cb) {
       ctx->progress.byte_current += st->size;
       ctx->callbacks.overall_progress_cb(duri,
-                                         ++ctx->progress.current_file_no,
+                                         ctx->progress.current_file_no++,
                                          ctx->progress.file_count,
                                          ctx->progress.byte_current,
                                          ctx->progress.byte_sum,
@@ -1210,6 +1210,54 @@ err:
   return -1;
 }
 
+/* Count the files to transmit for both up- and download, ie. in both replicas. */
+int csync_init_overall_progress(CSYNC *ctx) {
+    int rc;
+
+    if (ctx == NULL) {
+        return -1;
+    }
+
+    if (ctx->callbacks.overall_progress_cb == NULL) {
+        /* No progress callback, no need to count */
+        return 0;
+    }
+
+    ctx->current = REMOTE_REPLICA;
+    ctx->replica = ctx->remote.type;
+
+    rc = c_rbtree_walk(ctx->remote.tree,
+                       (void *)ctx,
+                       _csync_propagation_file_count_visitor);
+    if (rc < 0) {
+        ctx->status_code = CSYNC_STATUS_TREE_ERROR;
+        return -1;
+    }
+    ctx->current = LOCAL_REPLICA;
+    ctx->replica = ctx->local.type;
+
+    rc = c_rbtree_walk(ctx->local.tree,
+                       (void *)ctx,
+                       _csync_propagation_file_count_visitor);
+    if (rc < 0) {
+        ctx->status_code = CSYNC_STATUS_TREE_ERROR;
+        return -1;
+    }
+
+    /* Notify the overall progress */
+    if (ctx->progress.file_count >0) {
+        ctx->progress.current_file_no = 1; /* start with file 1 */
+    }
+    ctx->callbacks.overall_progress_cb("",
+                                       ctx->progress.current_file_no,
+                                       ctx->progress.file_count,
+                                       ctx->progress.byte_current,
+                                       ctx->progress.byte_sum,
+                                       ctx->callbacks.userdata);
+
+    return 0;
+}
+
 int csync_propagate_files(CSYNC *ctx) {
   c_rbtree_t *tree = NULL;
 
@@ -1222,13 +1270,6 @@ int csync_propagate_files(CSYNC *ctx) {
       break;
     default:
       break;
-  }
-
-  /* If there is a overall progress callback set, count the number of files first. */
-  if (ctx->callbacks.overall_progress_cb) {
-      if (c_rbtree_walk(tree, (void *) ctx, _csync_propagation_file_count_visitor) < 0) {
-          return -1;
-      }
   }
 
   if (c_rbtree_walk(tree, (void *) ctx, _csync_propagation_file_visitor) < 0) {
@@ -1245,5 +1286,3 @@ int csync_propagate_files(CSYNC *ctx) {
 
   return 0;
 }
-
-/* vim: set ts=8 sw=2 et cindent: */

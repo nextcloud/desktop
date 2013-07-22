@@ -66,6 +66,15 @@
 int csync_propagate_files(CSYNC *ctx);
 
 /**
+ * @brief Initialize the data base for overall progress information.
+ *
+ * @param  ctx          The csync context to use for propagation.
+ *
+ * @return 0 on success, < 0 on error.
+ */
+int csync_init_overall_progress(CSYNC *ctx);
+
+/**
  * }@
  */
 #endif /* _CSYNC_PROPAGATE_H */
