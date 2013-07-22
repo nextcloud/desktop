@@ -128,11 +128,10 @@ void AccountSettings::slotFolderWizardAccepted()
     QString alias        = folderWizard->field(QLatin1String("alias")).toString();
     QString sourceFolder = folderWizard->field(QLatin1String("sourceFolder")).toString();
     QString targetPath   = folderWizard->field(QLatin1String("OCFolderLineEdit")).toString();
-    QString backend      = QLatin1String("owncloud");
 
     if (!FolderMan::ensureJournalGone( sourceFolder ))
         return;
-    folderMan->addFolderDefinition( backend, alias, sourceFolder, targetPath, false );
+    folderMan->addFolderDefinition(alias, sourceFolder, targetPath );
     Folder *f = folderMan->setupFolderFromConfigFile( alias );
     slotAddFolder( f );
     folderMan->setSyncEnabled(true);

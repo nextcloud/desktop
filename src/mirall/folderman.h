@@ -44,13 +44,11 @@ public:
     /**
       * Add a folder definition to the config
       * Params:
-      * QString backend
       * QString alias
       * QString sourceFolder on local machine
       * QString targetPath on remote
-      * bool    onlyThisLAN, currently unused.
       */
-    void addFolderDefinition( const QString&, const QString&, const QString&, const QString&, bool );
+    void addFolderDefinition(const QString&, const QString&, const QString& );
 
     /**
       * return the folder by alias or NULL if no folder with the alias exists.

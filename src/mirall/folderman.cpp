@@ -14,7 +14,7 @@
 
 #include "mirall/folderman.h"
 #include "mirall/mirallconfigfile.h"
-#include "mirall/owncloudfolder.h"
+#include "mirall/folder.h"
 #include "mirall/syncresult.h"
 #include "mirall/inotify.h"
 #include "mirall/theme.h"
@@ -252,39 +252,28 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
     // QString connection = settings.value( QLatin1String("connection") ).toString();
     QString alias = unescapeAlias( escapedAlias );
 
-    if (!backend.isEmpty()) {
-
-        if( backend == QLatin1String("owncloud") ) {
-
-            // cut off the leading slash, oCUrl always has a trailing.
-            if( targetPath.startsWith(QLatin1Char('/')) ) {
-                targetPath.remove(0,1);
-            }
-
-            folder = new ownCloudFolder( alias, path, targetPath, this );
-            folder->setConfigFile(file);
-        } else {
-            qWarning() << "unknown backend" << backend;
-            return 0;
-        }
+    if (backend.isEmpty() || backend != QLatin1String("owncloud")) {
+        qWarning() << "obsolete configuration of type" << backend;
+        return 0;
     }
 
-    if( folder ) {
-        folder->setBackend( backend );
-        // folder->setOnlyOnlineEnabled(settings.value("folder/onlyOnline", false).toBool());
-        folder->setOnlyThisLANEnabled(settings.value(QLatin1String("folder/onlyThisLAN"), false).toBool());
-
-        _folderMap[alias] = folder;
-
-        qDebug() << "Adding folder to Folder Map " << folder;
-        /* Use a signal mapper to connect the signals to the alias */
-        connect(folder, SIGNAL(scheduleToSync(const QString&)), SLOT(slotScheduleSync(const QString&)));
-        connect(folder, SIGNAL(syncStateChange()), _folderChangeSignalMapper, SLOT(map()));
-        connect(folder, SIGNAL(syncStarted()), SLOT(slotFolderSyncStarted()));
-        connect(folder, SIGNAL(syncFinished(SyncResult)), SLOT(slotFolderSyncFinished(SyncResult)));
-
-        _folderChangeSignalMapper->setMapping( folder, folder->alias() );
+    // cut off the leading slash, oCUrl always has a trailing.
+    if( targetPath.startsWith(QLatin1Char('/')) ) {
+        targetPath.remove(0,1);
     }
+
+    folder = new Folder( alias, path, targetPath, this );
+    folder->setConfigFile(file);
+    qDebug() << "Adding folder to Folder Map " << folder;
+    _folderMap[alias] = folder;
+
+    /* Use a signal mapper to connect the signals to the alias */
+    connect(folder, SIGNAL(scheduleToSync(const QString&)), SLOT(slotScheduleSync(const QString&)));
+    connect(folder, SIGNAL(syncStateChange()), _folderChangeSignalMapper, SLOT(map()));
+    connect(folder, SIGNAL(syncStarted()), SLOT(slotFolderSyncStarted()));
+    connect(folder, SIGNAL(syncFinished(SyncResult)), SLOT(slotFolderSyncFinished(SyncResult)));
+
+    _folderChangeSignalMapper->setMapping( folder, folder->alias() );
     return folder;
 }
 
@@ -426,15 +415,11 @@ void FolderMan::slotFolderSyncFinished( const SyncResult& )
 /**
   * Add a folder definition to the config
   * Params:
-  * QString backend
   * QString alias
   * QString sourceFolder on local machine
   * QString targetPath on remote
-  * bool    onlyThisLAN, currently unused.
   */
-void FolderMan::addFolderDefinition( const QString& backend, const QString& alias,
-                                     const QString& sourceFolder, const QString& targetPath,
-                                     bool onlyThisLAN )
+void FolderMan::addFolderDefinition(const QString& alias, const QString& sourceFolder, const QString& targetPath )
 {
     QString escapedAlias = escapeAlias(alias);
     // Create a settings file named after the alias
@@ -442,9 +427,9 @@ void FolderMan::addFolderDefinition( const QString& backend, const QString& alia
 
     settings.setValue(QString::fromLatin1("%1/localPath").arg(escapedAlias),   sourceFolder );
     settings.setValue(QString::fromLatin1("%1/targetPath").arg(escapedAlias),  targetPath );
-    settings.setValue(QString::fromLatin1("%1/backend").arg(escapedAlias),     backend );
+    // for compat reasons
+    settings.setValue(QString::fromLatin1("%1/backend").arg(escapedAlias),     "owncloud" );
     settings.setValue(QString::fromLatin1("%1/connection").arg(escapedAlias),  Theme::instance()->appName());
-    settings.setValue(QString::fromLatin1("%1/onlyThisLAN").arg(escapedAlias), onlyThisLAN );
     settings.sync();
 }
 

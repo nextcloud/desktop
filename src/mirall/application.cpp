@@ -23,7 +23,7 @@
 #include "mirall/folderwatcher.h"
 #include "mirall/folderwizard.h"
 #include "mirall/networklocation.h"
-#include "mirall/owncloudfolder.h"
+#include "mirall/folder.h"
 #include "mirall/owncloudsetupwizard.h"
 #include "mirall/owncloudinfo.h"
 #include "mirall/sslerrordialog.h"
@@ -332,8 +332,6 @@ void Application::setupContextMenu()
             if( folder ) {
                 // if there is singleFolder mode, a generic open action is displayed.
                 QAction *action = new QAction( tr("Open local folder '%1'").arg(_theme->appNameGUI()), this);
-                action->setIcon( _theme->trayFolderIcon( folder->backend()) );
-
                 connect( action, SIGNAL(triggered()),_folderOpenActionMapper,SLOT(map()));
                 _folderOpenActionMapper->setMapping( action, folder->alias() );
 

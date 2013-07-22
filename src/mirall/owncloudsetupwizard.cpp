@@ -168,8 +168,8 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         // Now write the resulting folder definition if folder names are set.
         if( acceptCfg && urlHasChanged ) {
             folderMan->removeAllFolderDefinitions();
-            folderMan->addFolderDefinition( QLatin1String("owncloud"), Theme::instance()->appName(),
-                                             localFolder, _remoteFolder, false );
+            folderMan->addFolderDefinition(Theme::instance()->appName(),
+                                             localFolder, _remoteFolder );
             _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
         } else {
             // url is unchanged. Only the password was changed.

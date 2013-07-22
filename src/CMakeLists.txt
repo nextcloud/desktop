@@ -67,7 +67,6 @@ set(libsync_SRCS
     mirall/networklocation.cpp
     mirall/mirallconfigfile.cpp
     mirall/credentialstore.cpp
-    mirall/owncloudfolder.cpp
     mirall/csyncthread.cpp
     mirall/fileutils.cpp
     mirall/theme.cpp
@@ -82,7 +81,6 @@ set(libsync_HEADERS
     mirall/folderman.h
     mirall/folder.h
     mirall/folderwatcher.h
-    mirall/owncloudfolder.h
     mirall/csyncthread.h
     mirall/theme.h
     mirall/owncloudtheme.h
