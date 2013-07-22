@@ -131,7 +131,7 @@ void FolderWatcherPrivate::slotINotifyEvent(int mask, int cookie, const QString 
 
     foreach (const QString& pattern, _parent->ignores()) {
         QRegExp regexp(pattern);
-        regexp.exactMatch(QRegExp::Wildcard);
+        regexp.setPatternSyntax(QRegExp::Wildcard);
 
         if (regexp.exactMatch(path)) {
             qDebug() << "* Discarded by ignore pattern: " << path;
