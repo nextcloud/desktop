@@ -45,6 +45,8 @@ class FolderStatusDelegate : public QStyledItemDelegate
                     FolderSyncEnabled,
                     FolderStatusIconRole,
                     SyncFileName,
+                    SyncFileKind,
+                    SyncFileProgressString, // stuff like Currently ... or Finished...
                     SyncProgressPercent1,
                     SyncProgressPercent2,
                     SyncProgressBytes1,

@@ -479,8 +479,8 @@ void AccountSettings::slotSetOverallProgress( const QString& folder, const QStri
         item->setData( fileNo,  FolderStatusDelegate::OverallFileNo);
         item->setData( fileCnt, FolderStatusDelegate::OverallFileCount);
         item->setData( file,    FolderStatusDelegate::OverallCurrentFile);
-
     }
+    _lastOverallProgress = p1;
 }
 
 void AccountSettings::slotSetProgress( Progress::Kind kind, const QString& folder, const QString& file, long p1, long p2 )
@@ -489,70 +489,72 @@ void AccountSettings::slotSetProgress( Progress::Kind kind, const QString& folde
 
     QStandardItem *item = itemForFolder( folder );
 
-    if( item ) {
-        if( p1 == p2 ) { // File upload finished.
-            item->setData( 100, FolderStatusDelegate::SyncProgressPercent1);
-            item->setData( 100, FolderStatusDelegate::SyncProgressPercent2);
-            if( p1 == 0 ) {
-                item->setData( (qlonglong) _lastSyncProgress, FolderStatusDelegate::SyncProgressBytes1);
-                item->setData( (qlonglong) _lastSyncProgress, FolderStatusDelegate::SyncProgressBytes2);
-            } else {
-                item->setData( (qlonglong) p1,  FolderStatusDelegate::SyncProgressBytes1);
-                item->setData( (qlonglong) p2,  FolderStatusDelegate::SyncProgressBytes2);
-            }
-            // item->setData( QVariant(QString::null), FolderStatusDelegate::SyncFileName );
+    if( item == NULL ) {
+        return;
+    }
+    // Set the verb if up- or download
+    if( kind != Progress::Context ) {
+        _kindContext = Progress::asString(kind);
+    }
+    QString kindString = _kindContext;
+    item->setData( kindString, FolderStatusDelegate::SyncFileKind );
 
-            // start a timer to stop the progress display
-            QTimer *timer;
-            if( _hideProgressTimers.contains(item) ) {
-                timer = _hideProgressTimers[item];
-                // there is already one timer running.
-            } else {
-                timer = new QTimer;
-                connect(timer, SIGNAL(timeout()), this, SLOT(slotHideProgress()));
-                timer->setSingleShot(true);
-                _hideProgressTimers.insert(item, timer);
-            }
-            timer->start(5000);
-        } else if( p1 == 0 ) { // File upload starts.
-            if( _hideProgressTimers.contains(item) ) {
-                // The timer is still running.
-                QTimer *t = _hideProgressTimers.take(item);
-                t->stop();
-                t->deleteLater();
-            }
-            // calculate the normalization factor and set the min and max
-            // _progressFactor = 100.0/p2;
-            item->setData( QVariant(true), FolderStatusDelegate::AddProgressSpace );
-            item->setData( 0,   FolderStatusDelegate::SyncProgressPercent1);
-            item->setData( 100, FolderStatusDelegate::SyncProgressPercent2);
-            item->setData( (qlonglong) 0,   FolderStatusDelegate::SyncProgressBytes1);
-            item->setData( (qlonglong) p2,  FolderStatusDelegate::SyncProgressBytes2);
+    if( kind == Progress::EndDownload ||
+            kind == Progress::EndUpload ) { // File upload/download finished.
+        item->setData( 100, FolderStatusDelegate::SyncProgressPercent1);
+        item->setData( 100, FolderStatusDelegate::SyncProgressPercent2);
+        item->setData( (qlonglong) _lastSyncProgress, FolderStatusDelegate::SyncProgressBytes1);
+        item->setData( (qlonglong) _lastSyncProgress, FolderStatusDelegate::SyncProgressBytes2);
+        item->setData( tr("Finished"), FolderStatusDelegate::SyncFileProgressString);
 
-            // strip off the server prefix from the file name
-            QString shortFile(file);
-            if(shortFile.startsWith(QLatin1String("ownclouds://")) ||
-                    shortFile.startsWith(QLatin1String("owncloud://")) ) {
-                // rip off the whole ownCloud URL.
-                Folder *f = FolderMan::instance()->folder(folder);
-                if( f ) {
-                    QString regexp = QString("^owncloud[s]*://.*/remote.php/webdav/%1/").arg(f->secondPath());
-                    QRegExp re( regexp );
-                    re.setMinimal(true);
-                    shortFile.remove(re);
-                }
-            }
-            // Set the verb if up- or download
-            QString kindString = Progress::asString(kind);
-
-            shortFile = kindString + QLatin1String(" ") + shortFile;
-            item->setData( shortFile, FolderStatusDelegate::SyncFileName );
-        } else {               // File progress
-            // item->setData( int(_progressFactor * p1),   FolderStatusDelegate::SyncProgressPercent1);
-            item->setData( (qlonglong) p1,   FolderStatusDelegate::SyncProgressBytes1);
-            _lastSyncProgress = p1;
-
+        // start a timer to stop the progress display
+        QTimer *timer;
+        if( _hideProgressTimers.contains(item) ) {
+            timer = _hideProgressTimers[item];
+            // there is already one timer running.
+        } else {
+            timer = new QTimer;
+            connect(timer, SIGNAL(timeout()), this, SLOT(slotHideProgress()));
+            timer->setSingleShot(true);
+            _hideProgressTimers.insert(item, timer);
         }
+        timer->start(5000);
+    } else if( kind == Progress::StartDownload ||
+               kind == Progress::StartUpload ) { // File upload starts.
+        if( _hideProgressTimers.contains(item) ) {
+            // The timer is still running.
+            QTimer *t = _hideProgressTimers.take(item);
+            t->stop();
+            t->deleteLater();
+        }
+        item->setData( QVariant(true), FolderStatusDelegate::AddProgressSpace );
+        item->setData( 0,              FolderStatusDelegate::SyncProgressPercent1);
+        item->setData( 100,            FolderStatusDelegate::SyncProgressPercent2);
+        item->setData( (qlonglong) 0,  FolderStatusDelegate::SyncProgressBytes1);
+        item->setData( (qlonglong) p2, FolderStatusDelegate::SyncProgressBytes2);
+
+        // strip off the server prefix from the file name
+        QString shortFile(file);
+        if(shortFile.startsWith(QLatin1String("ownclouds://")) ||
+                shortFile.startsWith(QLatin1String("owncloud://")) ) {
+            // rip off the whole ownCloud URL.
+            Folder *f = FolderMan::instance()->folder(folder);
+            if( f ) {
+                QString regexp = QString("^owncloud[s]*://.*/remote.php/webdav/%1/").arg(f->secondPath());
+                QRegExp re( regexp );
+                re.setMinimal(true);
+                shortFile.remove(re);
+            }
+        }
+        item->setData( shortFile, FolderStatusDelegate::SyncFileName );
+        item->setData( tr("Start"), FolderStatusDelegate::SyncFileProgressString);
+    } else {               // File progress
+        item->setData( (qlonglong) p1,   FolderStatusDelegate::SyncProgressBytes1);
+        item->setData( (qlonglong) p2,   FolderStatusDelegate::SyncProgressBytes2);
+        item->setData( (qlonglong) _lastOverallProgress+p1, FolderStatusDelegate::OverallProgress1 );
+        item->setData( tr("Currently"), FolderStatusDelegate::SyncFileProgressString);
+
+        _lastSyncProgress = p1;
     }
 
     ui->_folderList->repaint();

@@ -635,19 +635,7 @@ void Folder::slotCSyncFinished()
 
 void Folder::slotFileTransmissionProgress(Progress::Kind kind, const QString& file ,long p1, long p2)
 {
-    if( kind == Progress::StartDownload ) {
-        _progressKind = Progress::Download;
-    }
-    if( kind == Progress::StartUpload ) {
-        _progressKind = Progress::Upload;
-    }
-
-    // qDebug() << "Upload Progress: " << file << p1 << p2;
-    ProgressDispatcher::instance()->setFolderProgress( _progressKind, alias(), file, p1, p2 );
-
-    if( kind == Progress::EndDownload || kind == Progress::EndUpload ) {
-        _progressKind = Progress::Inactive;
-    }
+    ProgressDispatcher::instance()->setFolderProgress( kind, alias(), file, p1, p2 );
 }
 
 void Folder::slotOverallTransmissionProgress( const QString& fileName, int fileNo, int fileCnt,

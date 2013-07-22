@@ -97,6 +97,8 @@ private:
     QHash<QStandardItem*, QTimer*> _hideProgressTimers;
     QTimer *_timer;
     long _lastSyncProgress;
+    QString _kindContext;
+    qlonglong _lastOverallProgress;
 };
 
 } // namespace Mirall
