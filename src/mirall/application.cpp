@@ -651,80 +651,25 @@ void Application::computeOverallSyncStatus()
 {
 
     // display the info of the least successful sync (eg. not just display the result of the latest sync
-    SyncResult overallResult(SyncResult::Undefined );
-    QMap<QString, QString> overallStatusStrings;
     QString trayMessage;
     Folder::Map map = _folderMan->map();
-
-    foreach ( Folder *syncedFolder, map.values() ) {
-        QString folderMessage;
-
-        SyncResult folderResult = syncedFolder->syncResult();
-        SyncResult::Status syncStatus = folderResult.status();
-
-        switch( syncStatus ) {
-        case SyncResult::Undefined:
-            if ( overallResult.status() != SyncResult::Error ) {
-                overallResult.setStatus(SyncResult::Error);
-            }
-            folderMessage = tr( "Undefined State." );
-            break;
-        case SyncResult::NotYetStarted:
-            folderMessage = tr( "Waits to start syncing." );
-            overallResult.setStatus( SyncResult::NotYetStarted );
-            break;
-        case SyncResult::SyncPrepare:
-            folderMessage = tr( "Preparing for sync." );
-            overallResult.setStatus( SyncResult::SyncPrepare );
-            break;
-        case SyncResult::SyncRunning:
-            folderMessage = tr( "Sync is running." );
-            overallResult.setStatus( SyncResult::SyncRunning );
-            break;
-        case SyncResult::Unavailable:
-            folderMessage = tr( "Server is currently not available." );
-            overallResult.setStatus( SyncResult::Unavailable );
-            break;
-        case SyncResult::Success:
-            if( overallResult.status() == SyncResult::Undefined ) {
-                overallResult.setStatus( SyncResult::Success );
-            }
-            folderMessage = tr( "Last Sync was successful." );
-            break;
-        case SyncResult::Error:
-            overallResult.setStatus( SyncResult::Error );
-            folderMessage = tr( "Syncing Error." );
-            break;
-        case SyncResult::SetupError:
-            if ( overallResult.status() != SyncResult::Error ) {
-                overallResult.setStatus( SyncResult::SetupError );
-            }
-            folderMessage = tr( "Setup Error." );
-            break;
-        default:
-            folderMessage = tr( "Undefined Error State." );
-            overallResult.setStatus( SyncResult::Error );
-        }
-        if( !syncedFolder->syncEnabled() ) {
-            // sync is disabled.
-            folderMessage += tr( " (Sync is paused)" );
-        }
-
-        qDebug() << "Folder in overallStatus Message: " << syncedFolder << " with name " << syncedFolder->alias();
-        QString msg = tr("Folder %1: %2").arg(syncedFolder->alias(), folderMessage);
-        overallStatusStrings[syncedFolder->alias()] = msg;
-    }
+    SyncResult overallResult = FolderMan::accountStatus(map.values());
 
     // create the tray blob message, check if we have an defined state
     if( overallResult.status() != SyncResult::Undefined ) {
-        QStringList allStatusStrings = overallStatusStrings.values();
+        QStringList allStatusStrings;
+        foreach(Folder* folder, map.values()) {
+            qDebug() << "Folder in overallStatus Message: " << folder << " with name " << folder->alias();
+            QString folderMessage = _folderMan->statusToString(folder->syncResult().status());
+            allStatusStrings += tr("Folder %1: %2").arg(folder->alias(), folderMessage);
+        }
+
         if( ! allStatusStrings.isEmpty() )
             trayMessage = allStatusStrings.join(QLatin1String("\n"));
         else
             trayMessage = tr("No sync folders configured.");
 
-        QIcon statusIcon = _theme->syncStateIcon( overallResult.status(), true); // size 48 before
-
+        QIcon statusIcon = _theme->syncStateIcon( overallResult.status(), true);
         _tray->setIcon( statusIcon );
         _tray->setToolTip(trayMessage);
     }

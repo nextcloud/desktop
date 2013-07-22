@@ -18,6 +18,7 @@
 
 #include <QObject>
 #include <QQueue>
+#include <QList>
 
 #include "mirall/folder.h"
 #include "mirall/folderwatcher.h"
@@ -25,9 +26,9 @@
 
 class QSignalMapper;
 
-namespace Mirall {
-
 class SyncResult;
+
+namespace Mirall {
 
 class FolderMan : public QObject
 {
@@ -93,6 +94,10 @@ public:
      */
     bool startFromScratch( const QString& );
 
+    QString statusToString( SyncResult ) const;
+
+    static SyncResult accountStatus( const QList<Folder*> &folders );
+
 signals:
     /**
       * signal to indicate a folder named by alias has changed its sync state.
@@ -150,5 +155,5 @@ private:
     bool           _syncEnabled;
 };
 
-}
+} // namespace Mirall
 #endif // FOLDERMAN_H

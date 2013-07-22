@@ -526,4 +526,84 @@ bool FolderMan::startFromScratch( const QString& localFolder )
     return false;
 }
 
+SyncResult FolderMan::accountStatus(const QList<Folder*> &folders)
+{
+    SyncResult overallResult(SyncResult::Undefined);
+
+    foreach ( Folder *folder, folders ) {
+        SyncResult folderResult = folder->syncResult();
+        SyncResult::Status syncStatus = folderResult.status();
+
+        switch( syncStatus ) {
+        case SyncResult::Undefined:
+            if ( overallResult.status() != SyncResult::Error )
+                overallResult.setStatus(SyncResult::Error);
+            break;
+        case SyncResult::NotYetStarted:
+            overallResult.setStatus( SyncResult::NotYetStarted );
+            break;
+        case SyncResult::SyncPrepare:
+            overallResult.setStatus( SyncResult::SyncPrepare );
+            break;
+        case SyncResult::SyncRunning:
+            overallResult.setStatus( SyncResult::SyncRunning );
+            break;
+        case SyncResult::Unavailable:
+            overallResult.setStatus( SyncResult::Unavailable );
+            break;
+        case SyncResult::Success:
+            if( overallResult.status() == SyncResult::Undefined )
+                overallResult.setStatus( SyncResult::Success );
+            break;
+        case SyncResult::Error:
+            overallResult.setStatus( SyncResult::Error );
+            break;
+        case SyncResult::SetupError:
+            if ( overallResult.status() != SyncResult::Error )
+                overallResult.setStatus( SyncResult::SetupError );
+            break;
+        // no default case on purpose, check compiler warnings
+        }
+    }
+    return overallResult;
 }
+
+QString FolderMan::statusToString( SyncResult syncStatus ) const
+{
+    QString folderMessage;
+    switch( syncStatus.status() ) {
+    case SyncResult::Undefined:
+        folderMessage = tr( "Undefined State." );
+        break;
+    case SyncResult::NotYetStarted:
+        folderMessage = tr( "Waits to start syncing." );
+        break;
+    case SyncResult::SyncPrepare:
+        folderMessage = tr( "Preparing for sync." );
+        break;
+    case SyncResult::SyncRunning:
+        folderMessage = tr( "Sync is running." );
+        break;
+    case SyncResult::Unavailable:
+        folderMessage = tr( "Server is currently not available." );
+        break;
+    case SyncResult::Success:
+        folderMessage = tr( "Last Sync was successful." );
+        break;
+    case SyncResult::Error:
+        break;
+    case SyncResult::SetupError:
+
+        folderMessage = tr( "Setup Error." );
+        break;
+    // no default case on purpose, check compiler warnings
+    }
+// FIXME!
+//    if( !folder->syncEnabled() ) {
+//        // sync is disabled.
+//        folderMessage = tr( "%1 (Sync is paused)" ).arg(folderMessage);
+//    }
+    return folderMessage;
+}
+
+} // namespace Mirall
