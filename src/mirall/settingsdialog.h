@@ -51,7 +51,6 @@ private:
     Ui::SettingsDialog *_ui;
     AccountSettings *_accountSettings;
     QListWidgetItem *_accountItem;
-    FolderMan *_folderMan;
 
 };
 

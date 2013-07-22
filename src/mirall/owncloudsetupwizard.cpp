@@ -26,11 +26,10 @@
 
 namespace Mirall {
 
-OwncloudSetupWizard::OwncloudSetupWizard( FolderMan *folderMan, QObject *parent ) :
+OwncloudSetupWizard::OwncloudSetupWizard(QObject *parent ) :
     QObject( parent ),
     _mkdirRequestReply(0),
-    _checkInstallationRequest(0),
-    _folderMan(folderMan)
+    _checkInstallationRequest(0)
 {
     _ocWizard = new OwncloudWizard();
 
@@ -54,11 +53,11 @@ OwncloudWizard *OwncloudSetupWizard::wizard() {
     return _ocWizard;
 }
 
-void OwncloudSetupWizard::runWizard(FolderMan *folderMan, QObject* obj, const char* amember, QWidget *parent)
+void OwncloudSetupWizard::runWizard(QObject* obj, const char* amember, QWidget *parent)
 {
-    OwncloudSetupWizard *wiz = new OwncloudSetupWizard(folderMan, parent);
+    OwncloudSetupWizard *wiz = new OwncloudSetupWizard(parent);
     connect( wiz, SIGNAL(ownCloudWizardDone(int)), obj, amember);
-    folderMan->setSyncEnabled(false);
+    FolderMan::instance()->setSyncEnabled(false);
     wiz->startWizard();
 }
 
@@ -97,7 +96,7 @@ void OwncloudSetupWizard::startWizard()
     _ocWizard->restart();
 
     // settings re-initialized in initPage must be set here after restart
-    _ocWizard->setMultipleFoldersExist(_folderMan->map().count() > 1);
+    _ocWizard->setMultipleFoldersExist(FolderMan::instance()->map().count() > 1);
 
     _ocWizard->open();
     _ocWizard->raise();
@@ -109,7 +108,7 @@ void OwncloudSetupWizard::startWizard()
 void OwncloudSetupWizard::slotAssistantFinished( int result )
 {
     MirallConfigFile cfg( _configHandle );
-
+    FolderMan *folderMan = FolderMan::instance();
 
     if( result == QDialog::Rejected ) {
         // the old config remains valid. Remove the temporary one.
@@ -138,16 +137,16 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
 
         if( urlHasChanged ) {
             // first terminate sync jobs.
-            _folderMan->terminateSyncProcess();
+            folderMan->terminateSyncProcess();
 
-            _folderMan->unloadAllFolders();
+            folderMan->unloadAllFolders();
 
            bool startFromScratch = _ocWizard->field( "OCSyncFromScratch" ).toBool();
             if( startFromScratch ) {
                 // first try to rename (backup) the current local dir.
                 bool renameOk = false;
                 while( !renameOk ) {
-                    renameOk = _folderMan->startFromScratch(localFolder);
+                    renameOk = folderMan->startFromScratch(localFolder);
                     if( ! renameOk ) {
                         QMessageBox::StandardButton but;
                         but = QMessageBox::question( 0, tr("Folder rename failed"),
@@ -168,8 +167,8 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
 
         // Now write the resulting folder definition if folder names are set.
         if( acceptCfg && urlHasChanged ) {
-            _folderMan->removeAllFolderDefinitions();
-            _folderMan->addFolderDefinition( QLatin1String("owncloud"), Theme::instance()->appName(),
+            folderMan->removeAllFolderDefinitions();
+            folderMan->addFolderDefinition( QLatin1String("owncloud"), Theme::instance()->appName(),
                                              localFolder, _remoteFolder, false );
             _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
         } else {
@@ -302,8 +301,6 @@ void OwncloudSetupWizard::slotNoOwnCloudFound( QNetworkReply *err )
 
 void OwncloudSetupWizard::setupLocalSyncFolder()
 {
-    if( ! _folderMan ) return;
-
     const QString localFolder = _ocWizard->property("localFolder").toString();
     qDebug() << "Setup local sync folder for new oC connection " << localFolder;
     QDir fi( localFolder );

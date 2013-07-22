@@ -37,10 +37,9 @@
 
 namespace Mirall {
 
-AccountSettings::AccountSettings(FolderMan *folderMan, QWidget *parent) :
+AccountSettings::AccountSettings(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::AccountSettings),
-    _folderMan(folderMan),
     _item(0)
 {
     ui->setupUi(this);
@@ -76,7 +75,7 @@ AccountSettings::AccountSettings(FolderMan *folderMan, QWidget *parent) :
 
     ui->connectLabel->setWordWrap( true );
 
-    setFolderList(folderMan->map());
+    setFolderList(FolderMan::instance()->map());
 
     slotCheckConnection();
 }
@@ -106,10 +105,11 @@ void AccountSettings::slotFolderActivated( const QModelIndex& indx )
 
 void AccountSettings::slotAddFolder()
 {
-    _folderMan->setSyncEnabled(false); // do not start more syncs.
+    FolderMan *folderMan = FolderMan::instance();
+    folderMan->setSyncEnabled(false); // do not start more syncs.
 
     FolderWizard *folderWizard = new FolderWizard(this);
-    Folder::Map folderMap = _folderMan->map();
+    Folder::Map folderMap = folderMan->map();
     folderWizard->setFolderMap( folderMap );
 
     connect(folderWizard, SIGNAL(accepted()), SLOT(slotFolderWizardAccepted()));
@@ -121,6 +121,7 @@ void AccountSettings::slotAddFolder()
 void AccountSettings::slotFolderWizardAccepted()
 {
     FolderWizard *folderWizard = qobject_cast<FolderWizard*>(sender());
+    FolderMan *folderMan = FolderMan::instance();
 
     qDebug() << "* Folder wizard completed";
 
@@ -131,12 +132,12 @@ void AccountSettings::slotFolderWizardAccepted()
 
     if (!FolderMan::ensureJournalGone( sourceFolder ))
         return;
-    _folderMan->addFolderDefinition( backend, alias, sourceFolder, targetPath, false );
-    Folder *f = _folderMan->setupFolderFromConfigFile( alias );
+    folderMan->addFolderDefinition( backend, alias, sourceFolder, targetPath, false );
+    Folder *f = folderMan->setupFolderFromConfigFile( alias );
     slotAddFolder( f );
-    _folderMan->setSyncEnabled(true);
+    folderMan->setSyncEnabled(true);
     if( f ) {
-        _folderMan->slotScheduleAllFolders();
+        folderMan->slotScheduleAllFolders();
         emit folderChanged();
     }
 }
@@ -144,13 +145,14 @@ void AccountSettings::slotFolderWizardAccepted()
 void AccountSettings::slotFolderWizardRejected()
 {
     qDebug() << "* Folder wizard cancelled";
-    _folderMan->setSyncEnabled(true);
-    _folderMan->slotScheduleAllFolders();
+    FolderMan *folderMan = FolderMan::instance();
+    folderMan->setSyncEnabled(true);
+    folderMan->slotScheduleAllFolders();
 }
 
 void AccountSettings::slotOpenAccountWizard()
 {
-    OwncloudSetupWizard::runWizard(_folderMan, qApp, SLOT(slotownCloudWizardDone(int)), this);
+    OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)), this);
 }
 
 void AccountSettings::slotAddFolder( Folder *folder )
@@ -234,8 +236,9 @@ void AccountSettings::slotRemoveCurrentFolder()
             if( ret == QMessageBox::No ) {
                 return;
             }
-            _folderMan->slotRemoveFolder( alias );
-            setFolderList(_folderMan->map());
+            FolderMan *folderMan = FolderMan::instance();
+            folderMan->slotRemoveFolder( alias );
+            setFolderList(folderMan->map());
             emit folderChanged();
             slotCheckConnection();
         }
@@ -252,10 +255,11 @@ void AccountSettings::slotResetCurrentFolder()
                                             "traffic and take several minutes to hours, depending on the size of the folder.</p>").arg(alias),
                                          QMessageBox::Yes|QMessageBox::No );
         if( ret == QMessageBox::Yes ) {
-            Folder *f = _folderMan->folder(alias);
+            FolderMan *folderMan = FolderMan::instance();
+            Folder *f = folderMan->folder(alias);
             f->slotTerminateSync();
             f->wipe();
-            _folderMan->slotScheduleAllFolders();
+            folderMan->slotScheduleAllFolders();
         }
     }
 }
@@ -304,7 +308,7 @@ void AccountSettings::setFolderList( const Folder::Map &folders )
 // move from Application
 void AccountSettings::slotFolderOpenAction( const QString& alias )
 {
-    Folder *f = _folderMan->folder(alias);
+    Folder *f = FolderMan::instance()->folder(alias);
     qDebug() << "opening local url " << f->path();
     if( f ) {
         QUrl url(f->path(), QUrl::TolerantMode);
@@ -332,12 +336,13 @@ void AccountSettings::slotEnableCurrentFolder()
         bool folderEnabled = _model->data( selected, FolderStatusDelegate::FolderSyncEnabled).toBool();
         qDebug() << "Toggle enabled/disabled Folder alias " << alias << " - current state: " << folderEnabled;
         if( !alias.isEmpty() ) {
+            FolderMan *folderMan = FolderMan::instance();
 
             qDebug() << "Application: enable folder with alias " << alias;
             bool terminate = false;
 
             // this sets the folder status to disabled but does not interrupt it.
-            Folder *f = _folderMan->folder( alias );
+            Folder *f = folderMan->folder( alias );
             if( f && !folderEnabled ) {
                 // check if a sync is still running and if so, ask if we should terminate.
                 if( f->isBusy() ) { // its still running
@@ -354,9 +359,9 @@ void AccountSettings::slotEnableCurrentFolder()
             // message box can return at any time while the thread keeps running,
             // so better check again after the user has responded.
             if ( f->isBusy() && terminate )
-                _folderMan->terminateSyncProcess( alias );
+                folderMan->terminateSyncProcess( alias );
 
-            _folderMan->slotEnableFolder( alias, !folderEnabled );
+            folderMan->slotEnableFolder( alias, !folderEnabled );
             slotUpdateFolderState (f);
             // set the button text accordingly.
             slotFolderActivated( selected );
@@ -383,7 +388,7 @@ void AccountSettings::slotUpdateFolderState( Folder *folder )
 
 
     if( !_fileItemDialog.isNull() && _fileItemDialog->isVisible() ) {
-        _fileItemDialog->setSyncResult( _folderMan->syncResult(folder) );
+        _fileItemDialog->setSyncResult( FolderMan::instance()->syncResult(folder) );
     }
 
     if( item ) {
@@ -530,7 +535,7 @@ void AccountSettings::slotSetProgress( Progress::Kind kind, const QString& folde
             if(shortFile.startsWith(QLatin1String("ownclouds://")) ||
                     shortFile.startsWith(QLatin1String("owncloud://")) ) {
                 // rip off the whole ownCloud URL.
-                Folder *f = _folderMan->folder(folder);
+                Folder *f = FolderMan::instance()->folder(folder);
                 if( f ) {
                     QString regexp = QString("^owncloud[s]*://.*/remote.php/webdav/%1/").arg(f->secondPath());
                     QRegExp re( regexp );
@@ -611,9 +616,7 @@ void AccountSettings::slotInfoAboutCurrentFolder()
                 Utility::raiseDialog( _fileItemDialog );
             }
 
-            _fileItemDialog->setSyncResult( _folderMan->syncResult( alias ) );
-
-
+            _fileItemDialog->setSyncResult( FolderMan::instance()->syncResult( alias ) );
         }
     }
 }

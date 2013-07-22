@@ -24,7 +24,6 @@
 
 #include "mirall/syncresult.h"
 #include "mirall/logbrowser.h"
-#include "mirall/folderman.h"
 #include "mirall/systray.h"
 #include "mirall/connectionvalidator.h"
 
@@ -48,7 +47,6 @@ class Application : public SharedTools::QtSingleApplication
 {
     Q_OBJECT
 public:
-    friend class SettingsDialog;
     explicit Application(int &argc, char **argv);
     ~Application();
 
@@ -122,7 +120,6 @@ private:
     // tray's menu
     QMenu *_contextMenu;
 
-    FolderMan *_folderMan;
     Theme *_theme;
     QSignalMapper *_folderOpenActionMapper;
     LogBrowser *_logBrowser;

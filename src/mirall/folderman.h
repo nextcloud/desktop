@@ -34,7 +34,7 @@ class FolderMan : public QObject
 {
     Q_OBJECT
 public:
-    explicit FolderMan(QObject *parent = 0);
+    static FolderMan* instance();
     ~FolderMan();
 
     int setupFolders();
@@ -153,6 +153,10 @@ private:
     QString        _currentSyncFolder;
     QStringList    _scheduleQueue;
     bool           _syncEnabled;
+
+    explicit FolderMan(QObject *parent = 0);
+    static FolderMan *_instance;
+
 };
 
 } // namespace Mirall

@@ -29,13 +29,12 @@ namespace Mirall {
 class SiteCopyFolder;
 class SyncResult;
 class ownCloudInfo;
-class FolderMan;
 
 class OwncloudSetupWizard : public QObject
 {
     Q_OBJECT
 public:
-    explicit OwncloudSetupWizard( FolderMan *folderMan, QObject *parent = 0 );
+    explicit OwncloudSetupWizard(QObject *parent = 0 );
 
     ~OwncloudSetupWizard();
 
@@ -60,7 +59,7 @@ public:
     OwncloudWizard *wizard();
 
     /** Run the wizard */
-    static void runWizard( FolderMan *folderMan, QObject *obj, const char* amember, QWidget *parent = 0 );
+    static void runWizard(QObject *obj, const char* amember, QWidget *parent = 0 );
 
 signals:
     // issued if the oC Setup process (owncloud-admin) is finished.
@@ -94,8 +93,6 @@ private:
     QPointer<QNetworkReply>  _mkdirRequestReply;
     QPointer<QNetworkReply>  _checkInstallationRequest;
     QPointer<QNetworkReply>  _checkRemoteFolderRequest;
-
-    FolderMan      *_folderMan;
 
     QString         _configHandle;
     QString         _remoteFolder;

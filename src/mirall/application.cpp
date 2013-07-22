@@ -19,6 +19,7 @@
 #include "mirall/application.h"
 #include "mirall/systray.h"
 #include "mirall/folder.h"
+#include "mirall/folderman.h"
 #include "mirall/folderwatcher.h"
 #include "mirall/folderwizard.h"
 #include "mirall/networklocation.h"
@@ -122,10 +123,10 @@ Application::Application(int &argc, char **argv) :
     connect( Logger::instance(), SIGNAL(optionalGuiLog(QString,QString)),
              this, SLOT(slotShowOptionalTrayMessage(QString,QString)));
     // create folder manager for sync folder management
-    _folderMan = new FolderMan(this);
-    connect( _folderMan, SIGNAL(folderSyncStateChange(QString)),
+    FolderMan *folderMan = FolderMan::instance();
+    connect( folderMan, SIGNAL(folderSyncStateChange(QString)),
              this,SLOT(slotSyncStateChange(QString)));
-    _folderMan->setSyncEnabled(false);
+    folderMan->setSyncEnabled(false);
 
     /* use a signal mapper to map the open requests to the alias names */
     _folderOpenActionMapper = new QSignalMapper(this);
@@ -153,7 +154,7 @@ Application::Application(int &argc, char **argv) :
     setupSystemTray();
     slotSetupProxy();
 
-    int cnt = _folderMan->setupFolders();
+    int cnt = folderMan->setupFolders();
 
     // startup procedure.
     QTimer::singleShot( 0, this, SLOT( slotCheckConnection() ));
@@ -198,17 +199,18 @@ void Application::slotConnectionValidatorResult(ConnectionValidator::Status stat
     qDebug() << "Connection Validator Result: " << _conValidator->statusString(status);
 
     if( status == ConnectionValidator::Connected ) {
+        FolderMan *folderMan = FolderMan::instance();
         qDebug() << "######## Connection and Credentials are ok!";
-        _folderMan->setSyncEnabled(true);
+        folderMan->setSyncEnabled(true);
         _tray->setIcon( _theme->syncStateIcon( SyncResult::NotYetStarted, true ) );
         _tray->show();
 
-        int cnt = _folderMan->map().size();
+        int cnt = folderMan->map().size();
         slotShowTrayMessage(tr("%1 Sync Started").arg(_theme->appNameGUI()),
                             tr("Sync started for %n configured sync folder(s).","", cnt));
 
         // queue up the sync for all folders.
-        _folderMan->slotScheduleAllFolders();
+        folderMan->slotScheduleAllFolders();
 
         computeOverallSyncStatus();
 
@@ -257,15 +259,16 @@ void Application::slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors )
 
 void Application::slotownCloudWizardDone( int res )
 {
+    FolderMan *folderMan = FolderMan::instance();
     if( res == QDialog::Accepted ) {
-        int cnt = _folderMan->setupFolders();
+        int cnt = folderMan->setupFolders();
         qDebug() << "Set up " << cnt << " folders.";
         // We have some sort of configuration. Enable autostart
         Utility::setLaunchOnStartup(_theme->appName(), _theme->appNameGUI(), true);
 // FIXME!
-//        _statusDialog->setFolderList( _folderMan->map() );
+//        _statusDialog->setFolderList( folderMan->map() );
     }
-    _folderMan->setSyncEnabled( true );
+    folderMan->setSyncEnabled( true );
     if( res == QDialog::Accepted ) {
         slotCheckConnection();
     }
@@ -304,6 +307,7 @@ void Application::setupSystemTray()
 void Application::setupContextMenu()
 {
     bool isConfigured = ownCloudInfo::instance()->isConfigured();
+    FolderMan *folderMan = FolderMan::instance();
 
     _actionOpenoC->setEnabled(isConfigured);
 
@@ -318,13 +322,13 @@ void Application::setupContextMenu()
     _contextMenu->setTitle(_theme->appNameGUI() );
     _contextMenu->addAction(_actionOpenoC);
 
-    int folderCnt = _folderMan->map().size();
+    int folderCnt = folderMan->map().size();
     // add open actions for all sync folders to the tray menu
     if( _theme->singleSyncFolder() ) {
         // there should be exactly one folder. No sync-folder add action will be shown.
-        QStringList li = _folderMan->map().keys();
+        QStringList li = folderMan->map().keys();
         if( li.size() == 1 ) {
-            Folder *folder = _folderMan->map().value(li.first());
+            Folder *folder = folderMan->map().value(li.first());
             if( folder ) {
                 // if there is singleFolder mode, a generic open action is displayed.
                 QAction *action = new QAction( tr("Open local folder '%1'").arg(_theme->appNameGUI()), this);
@@ -341,7 +345,7 @@ void Application::setupContextMenu()
         if ( folderCnt > 1) {
             _contextMenu->addAction(tr("Managed Folders:"))->setDisabled(true);
         }
-        foreach (Folder *folder, _folderMan->map() ) {
+        foreach (Folder *folder, folderMan->map() ) {
             QAction *action = new QAction( tr("Open folder '%1'").arg(folder->alias()), this );
             connect( action, SIGNAL(triggered()),_folderOpenActionMapper,SLOT(map()));
             _folderOpenActionMapper->setMapping( action, folder->alias() );
@@ -487,7 +491,7 @@ void Application::slotHelp()
  */
 void Application::slotFolderOpenAction( const QString& alias )
 {
-    Folder *f = _folderMan->folder(alias);
+    Folder *f = FolderMan::instance()->folder(alias);
     qDebug() << "opening local url " << f->path();
     if( f ) {
         QUrl url(f->path(), QUrl::TolerantMode);
@@ -534,7 +538,7 @@ void Application::slotCheckConfig()
         slotSettings();
     } else {
         qDebug() << "No configured folders yet, starting setup wizard";
-        OwncloudSetupWizard::runWizard(_folderMan, this, SLOT(slotownCloudWizardDone(int)));
+        OwncloudSetupWizard::runWizard(this, SLOT(slotownCloudWizardDone(int)));
     }
 }
 
@@ -585,9 +589,9 @@ void Application::slotShowOptionalTrayMessage(const QString &title, const QStrin
 
 void Application::slotSyncStateChange( const QString& alias )
 {
-    SyncResult result = _folderMan->syncResult( alias );
-
-    emit folderStateChanged( _folderMan->folder(alias) );
+    FolderMan *folderMan = FolderMan::instance();
+    SyncResult result = folderMan->syncResult( alias );
+    emit folderStateChanged( folderMan->folder(alias) );
 
     computeOverallSyncStatus();
 
@@ -652,7 +656,8 @@ void Application::computeOverallSyncStatus()
 
     // display the info of the least successful sync (eg. not just display the result of the latest sync
     QString trayMessage;
-    Folder::Map map = _folderMan->map();
+    FolderMan *folderMan = FolderMan::instance();
+    Folder::Map map = folderMan->map();
     SyncResult overallResult = FolderMan::accountStatus(map.values());
 
     // create the tray blob message, check if we have an defined state
@@ -660,7 +665,7 @@ void Application::computeOverallSyncStatus()
         QStringList allStatusStrings;
         foreach(Folder* folder, map.values()) {
             qDebug() << "Folder in overallStatus Message: " << folder << " with name " << folder->alias();
-            QString folderMessage = _folderMan->statusToString(folder->syncResult().status());
+            QString folderMessage = folderMan->statusToString(folder->syncResult().status());
             allStatusStrings += tr("Folder %1: %2").arg(folder->alias(), folderMessage);
         }
 

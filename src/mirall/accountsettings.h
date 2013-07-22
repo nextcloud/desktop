@@ -45,7 +45,7 @@ class AccountSettings : public QWidget
     Q_OBJECT
 
 public:
-    explicit AccountSettings(FolderMan *folderMan, QWidget *parent = 0);
+    explicit AccountSettings(QWidget *parent = 0);
     ~AccountSettings();
 
     void setFolderList( const Folder::Map& );
@@ -90,7 +90,6 @@ private:
     Ui::AccountSettings *ui;
     QPointer<FileItemDialog> _fileItemDialog;
     QPointer<IgnoreListEditor> _ignoreEditor;
-    FolderMan *_folderMan;
     QStandardItemModel *_model;
     QListWidgetItem *_item;
     QUrl   _OCUrl;

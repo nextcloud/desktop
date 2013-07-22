@@ -33,6 +33,8 @@
 
 namespace Mirall {
 
+FolderMan* FolderMan::_instance = 0;
+
 FolderMan::FolderMan(QObject *parent) :
     QObject(parent),
     _syncEnabled( true )
@@ -47,6 +49,14 @@ FolderMan::FolderMan(QObject *parent) :
     _folderChangeSignalMapper = new QSignalMapper(this);
     connect(_folderChangeSignalMapper, SIGNAL(mapped(const QString &)),
             this, SIGNAL(folderSyncStateChange(const QString &)));
+}
+
+FolderMan *FolderMan::instance()
+{
+    if(!_instance)
+        _instance = new FolderMan;
+
+    return _instance;
 }
 
 FolderMan::~FolderMan()

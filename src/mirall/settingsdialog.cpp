@@ -14,6 +14,7 @@
 #include "settingsdialog.h"
 #include "ui_settingsdialog.h"
 
+#include "mirall/folderman.h"
 #include "mirall/theme.h"
 #include "mirall/generalsettings.h"
 #include "mirall/accountsettings.h"
@@ -39,7 +40,7 @@ QIcon createDummy() {
 
 SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
     QDialog(parent),
-    _ui(new Ui::SettingsDialog), _folderMan(app->_folderMan)
+    _ui(new Ui::SettingsDialog)
 {
     _ui->setupUi(this);
     setObjectName("Settings"); // required as group for saveGeometry call
@@ -52,12 +53,12 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
     _ui->labelWidget->addItem(general);
     GeneralSettings *generalSettings = new GeneralSettings;
     connect(generalSettings, SIGNAL(proxySettingsChanged()), app, SLOT(slotSetupProxy()));
-    connect(generalSettings, SIGNAL(proxySettingsChanged()), app->_folderMan, SLOT(slotScheduleAllFolders()));
+    connect(generalSettings, SIGNAL(proxySettingsChanged()), FolderMan::instance(), SLOT(slotScheduleAllFolders()));
     _ui->stack->addWidget(generalSettings);
 
     //connect(generalSettings, SIGNAL(resizeToSizeHint()), SLOT(resizeToSizeHint()));
 
-    _accountSettings = new AccountSettings(app->_folderMan);
+    _accountSettings = new AccountSettings(this);
     addAccount(tr("Account"), _accountSettings);
     slotUpdateAccountState();
 
@@ -112,7 +113,8 @@ void SettingsDialog::closeEvent(QCloseEvent *event)
 
 void SettingsDialog::slotUpdateAccountState()
 {
-    SyncResult state = _folderMan->accountStatus(_folderMan->map().values());
+    FolderMan *folderMan = FolderMan::instance();
+    SyncResult state = folderMan->accountStatus(folderMan->map().values());
     _accountItem->setIcon(Theme::instance()->syncStateIcon(state.status()));
 }
 
