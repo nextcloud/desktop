@@ -19,12 +19,13 @@
 
 #include <QDebug>
 #include <QDesktopServices>
+#include <QDir>
 #include <QFileDialog>
 #include <QFileInfo>
+#include <QInputDialog>
 #include <QUrl>
 #include <QValidator>
 #include <QWizardPage>
-#include <QDir>
 
 #include <stdlib.h>
 
@@ -167,64 +168,29 @@ void FolderWizardSourcePage::on_localFolderLineEdit_textChanged()
 
 // =================================================================================
 FolderWizardTargetPage::FolderWizardTargetPage()
-: _dirChecked( false ),
-  _warnWasVisible(false)
+: _warnWasVisible(false)
 {
     _ui.setupUi(this);
     _ui.warnFrame->hide();
 
-    registerField(QLatin1String("OCFolderLineEdit"),    _ui.OCFolderLineEdit);
-
-    connect( _ui.OCFolderLineEdit, SIGNAL(textChanged(QString)),
-             SLOT(slotFolderTextChanged(QString)));
-
-    _timer = new QTimer(this);
-    _timer->setSingleShot( true );
-    connect( _timer, SIGNAL(timeout()), SLOT(slotTimerFires()));
+    // FIXME
+    registerField(QLatin1String("OCFolderLineEdit"), _ui.folderListWidget);
+    connect(_ui.addFolderButton, SIGNAL(clicked()), SLOT(slotAddRemoteFolder()));
+    connect(_ui.refreshButton, SIGNAL(clicked()), SLOT(slotRefreshFolders())),
+    connect(_ui.folderListWidget, SIGNAL(currentTextChanged(QString)),
+            SIGNAL(completeChanged()));
 }
 
-void FolderWizardTargetPage::slotFolderTextChanged( const QString& t)
+void FolderWizardTargetPage::slotAddRemoteFolder()
 {
-  _dirChecked = false;
-  emit completeChanged();
-
-  if( t.isEmpty() ) {
-    _timer->stop();
-    return;
-  }
-
-  if( _timer->isActive() ) _timer->stop();
-  _timer->start(500);
+    QInputDialog *dlg = new QInputDialog(this);
+    dlg->open(this, SLOT(slotCreateRemoteFolder(QString)));
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
 }
 
-void FolderWizardTargetPage::slotTimerFires()
+void FolderWizardTargetPage::slotCreateRemoteFolder(QString folder)
 {
-    const QString folder = _ui.OCFolderLineEdit->text();
-    qDebug() << "Querying folder " << folder;
-    ownCloudInfo::instance()->getWebDAVPath( folder );
-}
-
-void FolderWizardTargetPage::slotDirCheckReply(const QString &url, QNetworkReply *reply)
-{
-    qDebug() << "Got reply from owncloud dir check: " << url << " :" << reply->error();
-    _dirChecked = (reply->error() == QNetworkReply::NoError);
-    if( _dirChecked ) {
-        showWarn();
-    } else {
-        showWarn( tr("The folder is not available on your %1.<br/>Click to create it." )
-                  .arg( Theme::instance()->appNameGUI() ), true );
-    }
-
-    emit completeChanged();
-}
-
-void FolderWizardTargetPage::slotCreateRemoteFolder()
-{
-    const QString folder = _ui.OCFolderLineEdit->text();
     if( folder.isEmpty() ) return;
-
-    _ui.OCFolderLineEdit->setEnabled( false );
-    qDebug() << "creating folder on ownCloud: " << folder;
     ownCloudInfo::instance()->mkdirRequest( folder );
 }
 
@@ -232,15 +198,28 @@ void FolderWizardTargetPage::slotCreateRemoteFolderFinished( QNetworkReply::Netw
 {
   qDebug() << "** webdav mkdir request finished " << error;
 
-  _ui.OCFolderLineEdit->setEnabled( true );
   // the webDAV server seems to return a 202 even if mkdir was successful.
   if( error == QNetworkReply::NoError ||
           error == QNetworkReply::ContentOperationNotPermittedError) {
-    showWarn( tr("Folder was successfully created on %1.").arg( Theme::instance()->appNameGUI() ), false );
-    slotTimerFires();
+    showWarn( tr("Folder was successfully created on %1.").arg( Theme::instance()->appNameGUI() ) );
+    slotRefreshFolders();
   } else {
-    showWarn( tr("Failed to create the folder on %1.<br/>Please check manually.").arg( Theme::instance()->appNameGUI() ), false );
+    showWarn( tr("Failed to create the folder on %1.<br/>Please check manually.").arg( Theme::instance()->appNameGUI() ) );
   }
+}
+
+void FolderWizardTargetPage::slotUpdateDirectories(QStringList list)
+{
+    _ui.folderListWidget->clear();
+    foreach (QString item, list) {
+        item.remove(QLatin1String("/remote.php/webdav"));
+        _ui.folderListWidget->addItem(item);
+    }
+}
+
+void FolderWizardTargetPage::slotRefreshFolders()
+{
+    ownCloudInfo::instance()->getDirectoryListing("/");
 }
 
 FolderWizardTargetPage::~FolderWizardTargetPage()
@@ -249,15 +228,16 @@ FolderWizardTargetPage::~FolderWizardTargetPage()
 
 bool FolderWizardTargetPage::isComplete() const
 {
-    QString dir = _ui.OCFolderLineEdit->text();
-    if( dir.isEmpty() || dir == QLatin1String("/") ) {
-        showWarn( tr("If you sync the root folder, you can <b>not</b> configure another sync directory."), false);
+    if (!_ui.folderListWidget->currentItem())
+        return false;
+
+    QString dir = _ui.folderListWidget->currentItem()->text();
+    if( dir == QLatin1String("/") ) {
+        showWarn( tr("If you sync the root folder, you can <b>not</b> configure another sync directory."));
         return true;
     } else {
-        if( _dirChecked ) {
-            showWarn();
-        }
-        return _dirChecked;
+        showWarn();
+        return true;
     }
 }
 
@@ -273,53 +253,19 @@ void FolderWizardTargetPage::initializePage()
     /* check the owncloud configuration file and query the ownCloud */
     ownCloudInfo *ocInfo = ownCloudInfo::instance();
     if( ocInfo->isConfigured() ) {
-        connect( ocInfo, SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
-                 SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
-        connect( ocInfo, SIGNAL(noOwncloudFound(QNetworkReply*)),
-                 SLOT(slotNoOwnCloudFound(QNetworkReply*)));
         connect( ocInfo, SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
                  SLOT(slotDirCheckReply(QString,QNetworkReply*)));
         connect( ocInfo, SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),
                  SLOT(slotCreateRemoteFolderFinished( QNetworkReply::NetworkError )));
+        connect( ocInfo, SIGNAL(directoryListingUpdated(QStringList)),
+                 SLOT(slotUpdateDirectories(QStringList)));
 
-        connect(_ui._buttCreateFolder, SIGNAL(clicked()), SLOT(slotCreateRemoteFolder()));
-        ocInfo->checkInstallation();
-
-        _ui.OCFolderLineEdit->setEnabled( false );
-
-        QString dir = _ui.OCFolderLineEdit->text();
-        if( !dir.isEmpty() ) {
-            slotFolderTextChanged( dir );
-        }
-    }
-}
-void FolderWizardTargetPage::slotOwnCloudFound( const QString& url, const QString& infoStr, const QString& version, const QString& edition)
-{
-    Q_UNUSED(version);
-    Q_UNUSED(edition);
-
-    if( infoStr.isEmpty() ) {
-    } else {
-//        _ui.OCLabel->setText( tr("to your <a href=\"%1\">%2</a> (version %3)").arg(url)
-//                              .arg(Theme::instance()->appNameGUI()).arg(infoStr));
-        _ui.OCFolderLineEdit->setEnabled( true );
-        qDebug() << "ownCloud found on " << url << " with version: " << infoStr;
+        slotRefreshFolders();
     }
 }
 
-void FolderWizardTargetPage::slotNoOwnCloudFound( QNetworkReply* error )
+void FolderWizardTargetPage::showWarn( const QString& msg ) const
 {
-  qDebug() << "No ownCloud configured: " << error->error();
-//  _ui.OCLabel->setText( tr("no configured %1 found!").arg(Theme::instance()->appNameGUI()) );
-  showWarn( tr("%1 could not be reached:<br/><tt>%2</tt>")
-            .arg(Theme::instance()->appNameGUI()).arg(error->errorString()));
-  _ui.OCFolderLineEdit->setEnabled( false );
-}
-
-void FolderWizardTargetPage::showWarn( const QString& msg, bool showCreateButton ) const
-{
-    _ui._buttCreateFolder->setVisible( showCreateButton && !msg.isEmpty() );
-
   if( msg.isEmpty() ) {
     _ui.warnFrame->hide();
 

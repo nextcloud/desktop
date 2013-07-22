@@ -82,9 +82,14 @@ public:
     QNetworkReply* mkdirRequest( const QString& );
 
     /**
-      * Create a collection via owncloud. Provide a relative path.
+      * Retrieve quota for a path. Provide a relative path.
       */
     QNetworkReply* getQuotaRequest( const QString& );
+
+    /**
+      * provide collections in a directory via owncloud. Provide a relative path.
+      */
+    QNetworkReply* getDirectoryListing( const QString& dir );
 
     /**
      * Use a custom ownCloud configuration file identified by handle
@@ -130,6 +135,7 @@ signals:
     void sslFailed( QNetworkReply *reply, QList<QSslError> errors );
     void guiLog( const QString& title, const QString& content );
     void quotaUpdated( qint64 total, qint64 quotaUsedBytes );
+    void directoryListingUpdated(const QStringList &directories);
 
 protected slots:
     void slotReplyFinished( );
@@ -144,6 +150,7 @@ protected slots:
 #else
     void slotMkdirFinished();
     void slotGetQuotaFinished();
+    void slotGetDirectoryListingFinished();
 #endif
 
 private:

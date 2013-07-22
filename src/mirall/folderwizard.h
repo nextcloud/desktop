@@ -70,19 +70,16 @@ public:
     virtual void cleanupPage();
 
 protected slots:
-    void slotOwnCloudFound( const QString&, const QString&, const QString&, const QString& );
-    void slotNoOwnCloudFound(QNetworkReply*);
 
-    void slotFolderTextChanged( const QString& );
-    void slotTimerFires();
-    void slotDirCheckReply( const QString&, QNetworkReply* );
-    void showWarn( const QString& = QString(), bool showCreateButton = false ) const;
-    void slotCreateRemoteFolder();
+    void showWarn( const QString& = QString() ) const;
+    void slotAddRemoteFolder();
+    void slotCreateRemoteFolder(QString);
     void slotCreateRemoteFolderFinished( QNetworkReply::NetworkError error );
+    void slotUpdateDirectories(QStringList);
+    void slotRefreshFolders();
 
 private:
     Ui_FolderWizardTargetPage _ui;
-    QTimer *_timer;
     ownCloudInfo *_ownCloudDirCheck;
     bool _dirChecked;
     bool _warnWasVisible;
