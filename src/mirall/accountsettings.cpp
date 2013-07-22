@@ -127,7 +127,7 @@ void AccountSettings::slotFolderWizardAccepted()
 
     QString alias        = folderWizard->field(QLatin1String("alias")).toString();
     QString sourceFolder = folderWizard->field(QLatin1String("sourceFolder")).toString();
-    QString targetPath   = folderWizard->field(QLatin1String("OCFolderLineEdit")).toString();
+    QString targetPath   = folderWizard->property("targetPath").toString();
 
     if (!FolderMan::ensureJournalGone( sourceFolder ))
         return;

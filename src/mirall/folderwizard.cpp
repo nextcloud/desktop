@@ -173,8 +173,6 @@ FolderWizardTargetPage::FolderWizardTargetPage()
     _ui.setupUi(this);
     _ui.warnFrame->hide();
 
-    // FIXME
-    registerField(QLatin1String("OCFolderLineEdit"), _ui.folderListWidget);
     connect(_ui.addFolderButton, SIGNAL(clicked()), SLOT(slotAddRemoteFolder()));
     connect(_ui.refreshButton, SIGNAL(clicked()), SLOT(slotRefreshFolders())),
     connect(_ui.folderListWidget, SIGNAL(currentTextChanged(QString)),
@@ -232,6 +230,8 @@ bool FolderWizardTargetPage::isComplete() const
         return false;
 
     QString dir = _ui.folderListWidget->currentItem()->text();
+    wizard()->setProperty("targetPath", dir);
+
     if( dir == QLatin1String("/") ) {
         showWarn( tr("If you sync the root folder, you can <b>not</b> configure another sync directory."));
         return true;
