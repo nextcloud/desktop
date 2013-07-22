@@ -39,7 +39,7 @@ QIcon createDummy() {
 
 SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
     QDialog(parent),
-    _ui(new Ui::SettingsDialog)
+    _ui(new Ui::SettingsDialog), _folderMan(app->_folderMan)
 {
     _ui->setupUi(this);
 
@@ -58,8 +58,10 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
 
     _accountSettings = new AccountSettings(app->_folderMan);
     addAccount(tr("Account"), _accountSettings);
+    slotUpdateAccountState();
 
     connect( app, SIGNAL(folderStateChanged(Folder*)), _accountSettings, SLOT(slotUpdateFolderState(Folder*)));
+    connect( app, SIGNAL(folderStateChanged(Folder*)), SLOT(slotUpdateAccountState()));
 
     connect( _accountSettings, SIGNAL(addASync()), app, SLOT(slotFolderAdded()) );
     connect( _accountSettings, SIGNAL(folderChanged()), app, SLOT(slotFoldersChanged()));
@@ -94,9 +96,9 @@ SettingsDialog::~SettingsDialog()
 
 void SettingsDialog::addAccount(const QString &title, QWidget *widget)
 {
-    QListWidgetItem *item = new QListWidgetItem(Theme::instance()->syncStateIcon(SyncResult::Success, true), title);
-    item->setSizeHint(QSize(0, 32));
-    _ui->labelWidget->addItem(item);
+    _accountItem = new QListWidgetItem(Theme::instance()->syncStateIcon(SyncResult::Undefined, true), title);
+    _accountItem->setSizeHint(QSize(0, 32));
+    _ui->labelWidget->addItem(_accountItem);
     _ui->stack->addWidget(widget);
 
 }
@@ -107,6 +109,12 @@ void SettingsDialog::closeEvent(QCloseEvent *event)
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
     settings.setValue("Settings/geometry", saveGeometry());
     QWidget::closeEvent(event);
+}
+
+void SettingsDialog::slotUpdateAccountState()
+{
+    SyncResult state = _folderMan->accountStatus(_folderMan->map().values());
+    _accountItem->setIcon(Theme::instance()->syncStateIcon(state.status()));
 }
 
 } // namespace Mirall

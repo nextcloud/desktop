@@ -29,6 +29,7 @@ class SettingsDialog;
 }
 class AccountSettings;
 class Application;
+class FolderMan;
 
 class SettingsDialog : public QDialog
 {
@@ -39,15 +40,18 @@ public:
     ~SettingsDialog();
 
     void addAccount(const QString &title, QWidget *widget);
-public slots:
 
 protected:
     void closeEvent(QCloseEvent *event);
 
+protected slots:
+    void slotUpdateAccountState();
+
 private:
     Ui::SettingsDialog *_ui;
-    QListWidgetItem *_addItem;
     AccountSettings *_accountSettings;
+    QListWidgetItem *_accountItem;
+    FolderMan *_folderMan;
 
 };
 
