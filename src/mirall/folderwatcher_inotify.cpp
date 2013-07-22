@@ -38,10 +38,10 @@ FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p)
 
 {
     _inotify = new INotify(this, standard_event_mask);
-    slotAddFolderRecursive(_parent->root());
     QObject::connect(_inotify, SIGNAL(notifyEvent(int, int, const QString &)),
                      this, SLOT(slotINotifyEvent(int, int, const QString &)));
 
+    QMetaObject::invokeMethod(this, "slotAddFolderRecursive", Q_ARG(QString, _parent->root()));
 }
 
 void FolderWatcherPrivate::slotAddFolderRecursive(const QString &path)
@@ -131,7 +131,7 @@ void FolderWatcherPrivate::slotINotifyEvent(int mask, int cookie, const QString 
 
     foreach (const QString& pattern, _parent->ignores()) {
         QRegExp regexp(pattern);
-        regexp.setPatternSyntax(QRegExp::Wildcard);
+        regexp.exactMatch(QRegExp::Wildcard);
 
         if (regexp.exactMatch(path)) {
             qDebug() << "* Discarded by ignore pattern: " << path;

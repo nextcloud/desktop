@@ -58,16 +58,11 @@ public:
 
     /**
       * Set a file name to load a file with ignore patterns.
+      *
+      * Valid entries do not start with a hash sign (#)
+      * and may contain wildcards
       */
     void addIgnoreListFile( const QString& );
-
-    /**
-     * Add an ignore pattern that will not be
-     * notified
-     *
-     * You can use wildcards
-     */
-    void addIgnore(const QString &pattern);
 
     /**
      * If true, folderChanged() events are sent
