@@ -152,6 +152,7 @@ struct dav_session_s {
 
     bool no_recursive_propfind;
     off_t hbf_block_size;
+    off_t hbf_threshold;
 };
 extern struct dav_session_s dav_session;
 

@@ -87,6 +87,7 @@ hbf_transfer_t *hbf_init_transfer( const char *dest_uri ) {
     transfer->error_string = NULL;
     transfer->start_id = 0;
     transfer->block_size = DEFAULT_BLOCK_SIZE;
+    transfer->threshold = transfer->block_size;
 
     return transfer;
 }
@@ -122,6 +123,10 @@ Hbf_State hbf_splitlist(hbf_transfer_t *transfer, int fd ) {
 
   /* calc the number of blocks to split in */
   blk_size = transfer->block_size;
+  if (sb.st_size < transfer->threshold) {
+      blk_size = transfer->threshold;
+  }
+
   num_blocks = sb.st_size / blk_size;
 
   /* there migth be a remainder. */

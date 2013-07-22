@@ -1200,7 +1200,10 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
         Hbf_State state = HBF_SUCCESS;
         hbf_transfer_t *trans = hbf_init_transfer(clean_uri);
         if (dav_session.hbf_block_size > 0) {
-          trans->block_size = dav_session.hbf_block_size;
+          trans->threshold = trans->block_size = dav_session.hbf_block_size;
+        }
+        if (dav_session.hbf_threshold > 0) {
+          trans->threshold = dav_session.hbf_threshold;
         }
         finished = true;
 
@@ -1754,6 +1757,10 @@ static int owncloud_set_property(const char *key, void *data) {
     }
     if( c_streq(key, "hbf_block_size")) {
         dav_session.hbf_block_size = *(off_t*)(data);
+        return 0;
+    }
+    if( c_streq(key, "hbf_threshold")) {
+        dav_session.hbf_threshold = *(off_t*)(data);
         return 0;
     }
 

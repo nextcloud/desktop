@@ -92,6 +92,7 @@ struct hbf_transfer_s {
     off_t stat_size;
     time_t modtime;
     off_t block_size;
+    off_t threshold;
 
     hbf_abort_callback abort_cb;
 #ifndef NDEBUG
