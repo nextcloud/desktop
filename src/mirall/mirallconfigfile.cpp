@@ -37,6 +37,7 @@ static const char remotePollIntervalC[] = "remotePollInterval";
 static const char monoIconsC[] = "monoIcons";
 static const char optionalDesktopNoficationsC[] = "optionalDesktopNotifications";
 static const char skipUpdateCheckC[] = "skipUpdateCheck";
+static const char geometryC[] = "geometry";
 
 static const char proxyHostC[] = "Proxy/host";
 static const char proxyTypeC[] = "Proxy/type";
@@ -97,6 +98,21 @@ void MirallConfigFile::setSeenVersion(const QString &version)
     settings.setIniCodec( "UTF-8" );
     settings.setValue(QLatin1String(seenVersionC), version);
     settings.sync();
+}
+
+void MirallConfigFile::saveGeometry(QWidget *w)
+{
+    Q_ASSERT(!w->objectName().isNull());
+    QSettings settings( configFile(), QSettings::IniFormat );
+    settings.setIniCodec( "UTF-8" );
+    settings.beginGroup(w->objectName());
+    settings.setValue(QLatin1String(geometryC), w->saveGeometry());
+    settings.sync();
+}
+
+void MirallConfigFile::restoreGeometry(QWidget *w)
+{
+    w->restoreGeometry(getValue(geometryC, w->objectName()).toByteArray());
 }
 
 QString MirallConfigFile::configPath() const

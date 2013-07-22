@@ -18,9 +18,9 @@
 #include <QString>
 
 class QVariant;
+class QWidget;
 
 namespace Mirall {
-
 
 class MirallConfigFile
 {
@@ -102,6 +102,9 @@ public:
 
     QString seenVersion() const;
     void setSeenVersion(const QString &version);
+
+    void saveGeometry(QWidget *w);
+    void restoreGeometry(QWidget *w);
 
 protected:
     // these classes can only be access from CredentialStore as a friend class.

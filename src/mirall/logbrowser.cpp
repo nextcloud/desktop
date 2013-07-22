@@ -60,6 +60,7 @@ LogBrowser::LogBrowser(QWidget *parent) :
     _logstream(0),
     _doFileFlush(false)
 {
+    setObjectName("LogBrowser"); // for save/restoreGeometry()
     setWindowTitle(tr("Log Output"));
     setMinimumWidth(600);
 
@@ -118,8 +119,7 @@ LogBrowser::LogBrowser(QWidget *parent) :
     connect(Logger::instance(), SIGNAL(newLog(QString)),this,SLOT(slotNewLog(QString)), Qt::AutoConnection);
 
     MirallConfigFile cfg;
-    QSettings settings(cfg.configFile(), QSettings::IniFormat);
-    restoreGeometry(settings.value("LogBrowser/geometry").toByteArray());
+    cfg.restoreGeometry(this);
 }
 
 LogBrowser::~LogBrowser()
@@ -219,8 +219,7 @@ void LogBrowser::slotClearLog()
 void LogBrowser::closeEvent(QCloseEvent *event)
 {
     MirallConfigFile cfg;
-    QSettings settings(cfg.configFile(), QSettings::IniFormat);
-    settings.setValue("LogBrowser/geometry", saveGeometry());
+    cfg.saveGeometry(this);
     QWidget::closeEvent(event);
 }
 

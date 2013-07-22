@@ -42,6 +42,7 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
     _ui(new Ui::SettingsDialog), _folderMan(app->_folderMan)
 {
     _ui->setupUi(this);
+    setObjectName("Settings"); // required as group for saveGeometry call
 
     setWindowTitle(tr("%1 Settings").arg(Theme::instance()->appNameGUI()));
 
@@ -85,8 +86,7 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
     connect(closeButton, SIGNAL(pressed()), SLOT(accept()));
 
     MirallConfigFile cfg;
-    QSettings settings(cfg.configFile(), QSettings::IniFormat);
-    restoreGeometry(settings.value("Settings/geometry").toByteArray());
+    cfg.restoreGeometry(this);
 }
 
 SettingsDialog::~SettingsDialog()
@@ -106,8 +106,7 @@ void SettingsDialog::addAccount(const QString &title, QWidget *widget)
 void SettingsDialog::closeEvent(QCloseEvent *event)
 {
     MirallConfigFile cfg;
-    QSettings settings(cfg.configFile(), QSettings::IniFormat);
-    settings.setValue("Settings/geometry", saveGeometry());
+    cfg.saveGeometry(this);
     QWidget::closeEvent(event);
 }
 
