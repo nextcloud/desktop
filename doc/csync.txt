@@ -1,6 +1,6 @@
 CSYNC User Guide
 ================
-Andreas Schneider <mail@cynapses.org>
+Andreas Schneider <asn@cryptomilk.org>
 :Author Initials: ADS
 
 csync is a lightweight utility to synchronize files between two directories

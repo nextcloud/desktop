@@ -94,7 +94,7 @@ SEE ALSO
 AUTHORS
 -------
 
-Andreas Schneider <mail@cynapses.org>
+Andreas Schneider <asn@cryptomilk.org>
 
 
 COPYING

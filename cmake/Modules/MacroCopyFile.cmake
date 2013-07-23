@@ -6,7 +6,7 @@
 # Copies file icon.png to ${CMAKE_CURRENT_BINARY_DIR} directory
 #
 # Copyright (c) 2006-2007  Wengo
-# Copyright (c) 2006-2008  Andreas Schneider <mail@cynapses.org>
+# Copyright (c) 2006-2008  Andreas Schneider <asn@cryptomilk.org>
 #
 # Redistribution and use is allowed according to the terms of the BSD license.
 # For details see the accompanying COPYING file.

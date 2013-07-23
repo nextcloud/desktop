@@ -1,7 +1,7 @@
 /*
  * libcsync -- a library to sync a replica with another
  *
- * Copyright (c) 2006-2007 by Andreas Schneider <mail@cynapses.org>
+ * Copyright (c) 2006-2007 by Andreas Schneider <asn@cryptomilk.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
