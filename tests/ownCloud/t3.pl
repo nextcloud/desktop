@@ -62,6 +62,16 @@ assertLocalAndRemoteDir( '', 0);
 move( localDir() . 'newdir/myfile.txt', localDir() . 'newdir/oldfile.txt' );
 system( "echo \"super new\" >> " . localDir() . 'newdir/myfile.txt' );
 
+#Add some files for the next test.
+system( "echo \"un\" > " . localDir() . '1.txt' );
+system( "echo \"deux\" > " . localDir() . '2.txt' );
+
+csync();
+assertLocalAndRemoteDir( '', 0);
+
+unlink( localDir() . '1.txt' );
+move( localDir() . '2.txt', localDir() . '1.txt' );
+
 csync();
 assertLocalAndRemoteDir( '', 0);
 

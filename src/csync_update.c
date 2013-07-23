@@ -184,14 +184,14 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 #endif
     if(tmp && tmp->phash == h ) { /* there is an entry in the database */
         /* we have an update! */
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Database entry found, compare: %lu <-> %lu, md5: %s <-> %s",
-                  fs->mtime, tmp->modtime, fs->md5, tmp->md5);
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Database entry found, compare: %lu <-> %lu, md5: %s <-> %s, inode: %lu <-> %lu",
+                  fs->mtime, tmp->modtime, fs->md5, tmp->md5, fs->inode, tmp->inode);
         if( !fs->md5) {
             st->instruction = CSYNC_INSTRUCTION_EVAL;
             goto out;
         }
         if((ctx->current == REMOTE_REPLICA && !c_streq(fs->md5, tmp->md5 ))
-            || (ctx->current == LOCAL_REPLICA && fs->mtime != tmp->modtime)) {
+            || (ctx->current == LOCAL_REPLICA && (fs->mtime != tmp->modtime || fs->inode != tmp->inode))) {
             // if (!fs->mtime > tmp->modtime) {
             st->instruction = CSYNC_INSTRUCTION_EVAL;
             goto out;
