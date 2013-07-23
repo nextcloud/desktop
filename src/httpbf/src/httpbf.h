@@ -108,7 +108,7 @@ Hbf_State hbf_splitlist( hbf_transfer_t *transfer, int fd );
 
 void hbf_free_transfer( hbf_transfer_t *transfer );
 
-const char *hbf_error_string( Hbf_State state );
+const char *hbf_error_string(hbf_transfer_t* transfer, Hbf_State state);
 
 void hbf_set_abort_callback( hbf_transfer_t *transfer, hbf_abort_callback cb);
 

@@ -1252,7 +1252,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
             }
 
             if( finished ) {
-              error_string = hbf_error_string(state);
+              error_string = c_strdup(hbf_error_string(trans, state));
               error_code = hbf_fail_http_code(trans);
               rc = 1;
               if (dav_session.chunk_info) {
@@ -1271,6 +1271,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
                                               CSYNC_NOTIFY_FINISHED_UPLOAD, error_code,
                     (long long)(error_string), csync_get_userdata(dav_session.csync_ctx));
       }
+      SAFE_FREE(error_string);
     } else if( c_streq( write_ctx->method, "GET") ) {
       /* GET a file to the file descriptor */
       /* actually do the request */

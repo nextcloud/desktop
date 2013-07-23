@@ -505,9 +505,10 @@ int hbf_fail_http_code( hbf_transfer_t *transfer )
   return 200;
 }
 
-const char *hbf_error_string( Hbf_State state )
+const char *hbf_error_string(hbf_transfer_t *transfer, Hbf_State state)
 {
     const char *re;
+    int cnt;
     switch( state ) {
     case HBF_SUCCESS:
         re = "Ok.";
@@ -557,6 +558,14 @@ const char *hbf_error_string( Hbf_State state )
 
     case HBF_FAIL:
     default:
+        for( cnt = 0; cnt < transfer->block_cnt; cnt++ ) {
+            int block_id = (cnt + transfer->start_id) % transfer->block_cnt;
+            hbf_block_t *block = transfer->block_arr[block_id];
+
+            if( block->state != HBF_NOT_TRANSFERED && block->state != HBF_TRANSFER_SUCCESS ) {
+                return block->http_error_msg;
+            }
+        }
         re = "Unknown error.";
     }
     return re;
