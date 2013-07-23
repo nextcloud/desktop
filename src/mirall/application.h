@@ -97,6 +97,8 @@ protected slots:
     void slotSetupProxy();
     void slotRefreshQuotaDisplay( qint64 total, qint64 used );
     void slotUseMonoIconsChanged( bool );
+    void slotUpdateProgress(QString,QString,int,int,qlonglong,qlonglong);
+    void slotDisplayIdle();
     void slotHelp();
 private:
     void setHelp();
@@ -106,6 +108,7 @@ private:
     QAction *_actionOpenoC;
     QAction *_actionSettings;
     QAction *_actionQuota;
+    QAction *_actionStatus;
     QAction *_actionHelp;
     QAction *_actionQuit;
 

@@ -36,6 +36,7 @@
 #include "mirall/utility.h"
 #include "mirall/inotify.h"
 #include "mirall/connectionvalidator.h"
+#include "mirall/progressdispatcher.h"
 
 #if defined(Q_OS_WIN)
 #include <windows.h>
@@ -122,6 +123,10 @@ Application::Application(int &argc, char **argv) :
              this, SLOT(slotShowTrayMessage(QString,QString)));
     connect( Logger::instance(), SIGNAL(optionalGuiLog(QString,QString)),
              this, SLOT(slotShowOptionalTrayMessage(QString,QString)));
+    ProgressDispatcher *pd = ProgressDispatcher::instance();
+
+    connect( pd, SIGNAL(overallProgress(QString,QString,int,int,qlonglong,qlonglong)),
+             SLOT(slotUpdateProgress(QString,QString,int,int,qlonglong,qlonglong)));
     // create folder manager for sync folder management
     FolderMan *folderMan = FolderMan::instance();
     connect( folderMan, SIGNAL(folderSyncStateChange(QString)),
@@ -281,6 +286,8 @@ void Application::setupActions()
     QObject::connect(_actionOpenoC, SIGNAL(triggered(bool)), SLOT(slotOpenOwnCloud()));
     _actionQuota = new QAction(tr("Calculating quota..."), this);
     _actionQuota->setEnabled( false );
+    _actionStatus = new QAction(tr("Unknown status"), this);
+    _actionStatus->setEnabled( false );
     _actionSettings = new QAction(tr("Settings..."), this);
     QObject::connect(_actionSettings, SIGNAL(triggered(bool)), SLOT(slotSettings()));
     _actionHelp = new QAction(tr("Help"), this);
@@ -354,6 +361,8 @@ void Application::setupContextMenu()
 
     _contextMenu->addSeparator();
     _contextMenu->addAction(_actionQuota);
+    _contextMenu->addSeparator();
+    _contextMenu->addAction(_actionStatus);
     _contextMenu->addSeparator();
     _contextMenu->addAction(_actionSettings);
     _contextMenu->addAction(_actionHelp);
@@ -477,6 +486,25 @@ void Application::slotRefreshQuotaDisplay( qint64 total, qint64 used )
 void Application::slotUseMonoIconsChanged(bool)
 {
     computeOverallSyncStatus();
+}
+
+void Application::slotUpdateProgress(QString folder, QString file, int fileNo, int fileCnt, qlonglong o1, qlonglong o2)
+{
+    Q_UNUSED(folder)
+    Q_UNUSED(file)
+
+    QString curAmount = Utility::octetsToString(o1);
+    QString totalAmount = Utility::octetsToString(o2);
+    _actionStatus->setText(tr("Syncing %1 of %2 (%3 of %4) ").arg(fileNo).arg(fileCnt).arg(curAmount, totalAmount));
+
+    if (o1 == o2) {
+        QTimer::singleShot(2000, this, SLOT(slotDisplayIdle()));
+    }
+}
+
+void Application::slotDisplayIdle()
+{
+    _actionStatus->setText(tr("Idle"));
 }
 
 void Application::slotHelp()
