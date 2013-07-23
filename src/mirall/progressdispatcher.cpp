@@ -15,6 +15,7 @@
 
 #include <QObject>
 #include <QMetaType>
+#include <QDebug>
 
 
 namespace Mirall {
@@ -27,28 +28,28 @@ QString Progress::asString( Kind kind )
 
     switch(kind) {
     case Download:
-        re = QObject::tr("Download");
+        re = QObject::tr("downloading");
         break;
     case Upload:
-        re = QObject::tr("Upload");
+        re = QObject::tr("uploading");
         break;
     case Context:
         re = QObject::tr("Context");
         break;
     case Inactive:
-        re = QObject::tr("Inactive");
+        re = QObject::tr("inactive");
         break;
     case StartDownload:
-        re = QObject::tr("Start download");
+        re = QObject::tr("downloading");
         break;
     case StartUpload:
-        re = QObject::tr("Start upload");
+        re = QObject::tr("uploading");
         break;
     case EndDownload:
-        re = QObject::tr("End download");
+        re = QObject::tr("downloading");
         break;
     case EndUpload:
-        re = QObject::tr("End upload");
+        re = QObject::tr("uploading");
         break;
     default:
         re = QObject::tr("What do I know?");
@@ -74,10 +75,9 @@ ProgressDispatcher::~ProgressDispatcher()
 
 }
 
-void ProgressDispatcher::setFolderProgress( Progress::Kind kind, const QString& alias, const QString& file, long p1, long p2)
+void ProgressDispatcher::setFolderProgress( Progress::Kind kind, const QString& folder, const QString& file, long p1, long p2)
 {
-
-    emit folderProgress( kind, alias, file, p1, p2 );
+    emit itemProgress( kind, folder, file, p1, p2 );
 }
 
 void ProgressDispatcher::setOverallProgress( const QString& folder, const QString& file, int fileNo, int fileCnt,
