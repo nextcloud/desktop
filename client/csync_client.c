@@ -193,7 +193,8 @@ static void _overall_callback(const char *file_name,
                               long long o2,
                               void *userdata)
 {
-    printf("File #%2d/%2d: %s (%lld/%lld bytes)\n", file_no, file_cnt, file_name, o1, o2 );
+  (void) userdata;
+  printf("File #%2d/%2d: %s (%lld/%lld bytes)\n", file_no, file_cnt, file_name, o1, o2 );
 }
 
 int main(int argc, char **argv) {
