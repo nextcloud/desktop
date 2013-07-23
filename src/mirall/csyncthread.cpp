@@ -397,15 +397,15 @@ void CSyncThread::cb_file_progress(const char *remote_url, enum csync_notify_typ
     if (kind == CSYNC_NOTIFY_FINISHED_DOWNLOAD) {
         thread->fileReceived(path);
     } else if( kind == CSYNC_NOTIFY_START_UPLOAD ) {
-        thread->fileTransmissionProgress( Progress::StartUpload, path, (long)0, (long)0 ); // indicate the upload start.
+        thread->fileTransmissionProgress( Progress::StartUpload, path, (qint64)0, (qint64)0 ); // indicate the upload start.
     } else if( kind == CSYNC_NOTIFY_PROGRESS ) {
-        thread->fileTransmissionProgress( Progress::Context, path, o1, o2 );
+        thread->fileTransmissionProgress( Progress::Context, path, (qint64)o1, (qint64)o2 );
     } else if( kind == CSYNC_NOTIFY_FINISHED_UPLOAD ) {
-        thread->fileTransmissionProgress( Progress::EndUpload, path, o2, o2 );
+        thread->fileTransmissionProgress( Progress::EndUpload, path, (qint64)o2, (qint64)o2 );
     } else if( kind == CSYNC_NOTIFY_START_DOWNLOAD ) {
-        thread->fileTransmissionProgress( Progress::StartDownload, path, 0, 0 );
+        thread->fileTransmissionProgress( Progress::StartDownload, path, (qint64)0, (qint64)0 );
     } else if( kind == CSYNC_NOTIFY_FINISHED_DOWNLOAD ) {
-        thread->fileTransmissionProgress( Progress::EndDownload, path, o2, o2 );
+        thread->fileTransmissionProgress( Progress::EndDownload, path, (qint64)o2, (qint64)o2 );
     }
 }
 
@@ -416,7 +416,7 @@ void CSyncThread::cb_overall_progress(const char *file_name, int file_no, int fi
     CSyncThread *thread = static_cast<CSyncThread*>(userdata);
 
     if(thread) {
-        thread->overallTransmissionProgress( file, file_no, file_cnt, o1, o2 );
+        thread->overallTransmissionProgress( file, file_no, file_cnt, qint64(o1), qint64(o2) );
     }
 }
 

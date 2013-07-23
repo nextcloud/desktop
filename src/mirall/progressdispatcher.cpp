@@ -75,15 +75,15 @@ ProgressDispatcher::~ProgressDispatcher()
 
 }
 
-void ProgressDispatcher::setFolderProgress( Progress::Kind kind, const QString& folder, const QString& file, long p1, long p2)
+void ProgressDispatcher::setFolderProgress( Progress::Kind kind, const QString& folder, const QString& file, qint64 p1, qint64 p2)
 {
     emit itemProgress( kind, folder, file, p1, p2 );
 }
 
 void ProgressDispatcher::setOverallProgress( const QString& folder, const QString& file, int fileNo, int fileCnt,
-                                             qlonglong o1, qlonglong o2 )
+                                             qint64 p1, qint64 p2 )
 {
-    emit overallProgress( folder, file, fileNo, fileCnt, o1, o2 );
+    emit overallProgress( folder, file, fileNo, fileCnt, p1, p2 );
 }
 
 }

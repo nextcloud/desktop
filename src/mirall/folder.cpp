@@ -633,15 +633,15 @@ void Folder::slotCSyncFinished()
 }
 
 
-void Folder::slotFileTransmissionProgress(Progress::Kind kind, const QString& file ,long p1, long p2)
+void Folder::slotFileTransmissionProgress(Progress::Kind kind, const QString& file ,qint64 p1, qint64 p2)
 {
     ProgressDispatcher::instance()->setFolderProgress( kind, alias(), file, p1, p2 );
 }
 
 void Folder::slotOverallTransmissionProgress( const QString& fileName, int fileNo, int fileCnt,
-                                                      long long o1, long long o2)
+                                                      qint64 o1, qint64 o2)
 {
-    ProgressDispatcher::instance()->setOverallProgress( alias(), fileName, fileNo, fileCnt, qlonglong(o1), qlonglong(o2));
+    ProgressDispatcher::instance()->setOverallProgress( alias(), fileName, fileNo, fileCnt, o1, o2);
 }
 
 
