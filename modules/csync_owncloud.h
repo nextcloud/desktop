@@ -158,8 +158,9 @@ struct dav_session_s {
     off_t hbf_block_size;
     off_t hbf_threshold;
 
-    int bandwidth_limit_upload; //in B/s
-    int bandwidth_limit_download; //in B/s
+    /* If 0, it is disabled.   If >0,  in Byte/seconds. If < 0,  in % of the available bandwidth*/
+    int bandwidth_limit_upload;
+    int bandwidth_limit_download;
 };
 extern struct dav_session_s dav_session;
 

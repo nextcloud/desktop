@@ -429,6 +429,16 @@ static void ne_notify_status_cb (void *userdata, ne_session_status status,
         }
         tc->last_progress = info->sr.progress;
         gettimeofday(&tc->last_time, NULL);
+    } else if (bandwidth_limit < 0 && bandwidth_limit > -100 && gettimeofday(&now, NULL) == 0) {
+        int64_t diff = _timediff(tc->last_time, now);
+        if (diff > 0) {
+            // -bandwidth_limit is the % of bandwidth
+            int64_t wait = -diff * (1 + 100.0 / bandwidth_limit);
+            if (wait > 0) {
+                usleep(wait);
+            }
+        }
+        gettimeofday(&tc->last_time, NULL);
     }
 }
 
@@ -985,8 +995,6 @@ static void install_content_reader( ne_request *req, void *userdata, const ne_st
         _id_cache.uri = c_strdup(writeCtx->url);
         _id_cache.id = c_strdup(enc);
     }
-
-    gettimeofday(&writeCtx->last_time, NULL);
 }
 
 static char*_lastDir = NULL;
@@ -1204,6 +1212,8 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
 
     chunked_total_size = 0;
     chunked_done = 0;
+
+    gettimeofday(&write_ctx->last_time, NULL);
 
     DEBUG_WEBDAV("Sendfile handling request type %s. fd %d", write_ctx->method, fd);
 
