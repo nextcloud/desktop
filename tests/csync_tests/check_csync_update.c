@@ -409,7 +409,7 @@ int torture_run_tests(void)
 
         unit_test_setup_teardown(check_csync_ftw, setup_ftw, teardown_rm),
         unit_test_setup_teardown(check_csync_ftw_empty_uri, setup_ftw, teardown_rm),
-        unit_test_setup_teardown(check_csync_ftw_failing_fn, setup, teardown_rm),
+        unit_test_setup_teardown(check_csync_ftw_failing_fn, setup_ftw, teardown_rm),
     };
 
     return run_tests(tests);
