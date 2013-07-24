@@ -93,6 +93,11 @@ static void clean_caches() {
 char _buffer[PUT_BUFFER_SIZE];
 
 
+/* Differance in usec between two time  */
+static int64_t _timediff(struct timeval x , struct timeval y)
+{
+    return (y.tv_sec - x.tv_sec)*1000000 + (y.tv_usec - x.tv_usec);
+}
 
 /*
  * helper method to build up a user text for SSL problems, called from the
@@ -396,6 +401,7 @@ static void ne_notify_status_cb (void *userdata, ne_session_status status,
                                  const ne_session_status_info *info)
 {
     struct transfer_context *tc = (struct transfer_context*) userdata;
+    struct timeval now;
 
     if (_file_progress_cb && (status == ne_status_sending || status == ne_status_recving)) {
         if (info->sr.total > 0)
@@ -406,6 +412,23 @@ static void ne_notify_status_cb (void *userdata, ne_session_status status,
 
         if (chunked_total_size && info->sr.total == info->sr.progress)
             chunked_done += info->sr.total;
+    }
+
+    /* throttle connection */
+    int bandwidth_limit = 0;
+    if (status == ne_status_sending) bandwidth_limit = dav_session.bandwidth_limit_upload;
+    if (status == ne_status_recving) bandwidth_limit = dav_session.bandwidth_limit_download;
+    if (bandwidth_limit > 0 && gettimeofday(&now, NULL) == 0) {
+        int64_t diff = _timediff(tc->last_time, now);
+        int64_t len = info->sr.progress - tc->last_progress;
+        if (len > 0 && diff > 0 && (1000000 * len / diff) > (int64_t)bandwidth_limit) {
+            int64_t wait = (1000000 * len / bandwidth_limit) - diff;
+            if (wait > 0) {
+                usleep(wait);
+            }
+        }
+        tc->last_progress = info->sr.progress;
+        gettimeofday(&tc->last_time, NULL);
     }
 }
 
@@ -962,6 +985,8 @@ static void install_content_reader( ne_request *req, void *userdata, const ne_st
         _id_cache.uri = c_strdup(writeCtx->url);
         _id_cache.id = c_strdup(enc);
     }
+
+    gettimeofday(&writeCtx->last_time, NULL);
 }
 
 static char*_lastDir = NULL;
@@ -1764,6 +1789,15 @@ static int owncloud_set_property(const char *key, void *data) {
         dav_session.hbf_threshold = *(off_t*)(data);
         return 0;
     }
+    if( c_streq(key, "bandwidth_limit_upload")) {
+        dav_session.bandwidth_limit_upload = *(int*)(data);
+        return 0;
+    }
+    if( c_streq(key, "bandwidth_limit_download")) {
+        dav_session.bandwidth_limit_download = *(int*)(data);
+        return 0;
+    }
+
 
     return -1;
 }

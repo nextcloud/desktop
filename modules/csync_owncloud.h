@@ -126,6 +126,10 @@ struct transfer_context {
     const char  *method;        /* the HTTP method, either PUT or GET  */
     ne_decompress *decompress;  /* the decompress context */
     char        *url;
+
+    /* Used for limiting the bandwidth */
+    struct timeval last_time;
+    ne_off_t last_progress;
 };
 
 /* Struct with the WebDAV session */
@@ -153,6 +157,9 @@ struct dav_session_s {
     bool no_recursive_propfind;
     off_t hbf_block_size;
     off_t hbf_threshold;
+
+    int bandwidth_limit_upload; //in B/s
+    int bandwidth_limit_download; //in B/s
 };
 extern struct dav_session_s dav_session;
 
