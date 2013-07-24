@@ -200,9 +200,15 @@ void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f )
     if( ! item || !f ) return;
 
     item->setData( f->nativePath(),        FolderStatusDelegate::FolderPathRole );
-    item->setData( f->secondPath(),  FolderStatusDelegate::FolderSecondPathRole );
+    item->setData( f->secondPath(),        FolderStatusDelegate::FolderSecondPathRole );
     item->setData( f->alias(),             FolderStatusDelegate::FolderAliasRole );
     item->setData( f->syncEnabled(),       FolderStatusDelegate::FolderSyncEnabled );
+    item->setData( 0,                      FolderStatusDelegate::SyncProgressOverallPercent );
+    item->setData( QVariant(QString::null),FolderStatusDelegate::SyncProgressOverallString );
+    item->setData( QVariant(QString::null),FolderStatusDelegate::SyncProgressItemString );
+    item->setData( QVariant(false),        FolderStatusDelegate::AddProgressSpace);
+
+
 
     SyncResult res = f->syncResult();
     SyncResult::Status status = res.status();
@@ -485,6 +491,7 @@ void AccountSettings::slotSetOverallProgress(const QString& folder, const QStrin
         // begin of a sequence of up- and downloads.
         _overallProgressBase = 0;
         _lastProgress = 0;
+        _previousFileProgressString = QString::null;
     }
 
     if( item ) {
@@ -549,8 +556,6 @@ void AccountSettings::slotSetProgress( Progress::Kind kind, const QString& folde
                 t->stop();
                 t->deleteLater();
             }
-            item->setData( QVariant(true), FolderStatusDelegate::AddProgressSpace );
-
             syncFileProgressString = tr("Start");
     } else if( kind == Progress::EndDownload || kind == Progress::EndUpload ) {
         syncFileProgressString = tr("Finished");
@@ -571,7 +576,6 @@ void AccountSettings::slotSetProgress( Progress::Kind kind, const QString& folde
 
         prog1 = prog2 = _lastProgress;
     } else if( kind == Progress::Context ) {               // File progress
-        item->setData( QVariant(true), FolderStatusDelegate::AddProgressSpace );
         _lastProgress = prog1;
         syncFileProgressString = tr("Currently");
     }
@@ -584,7 +588,8 @@ void AccountSettings::slotSetProgress( Progress::Kind kind, const QString& folde
             arg(itemFileName).arg(s1).arg(s2);
 
     // only publish to item if there really is a change
-    if( fileProgressString != _previousFileProgressString ) {
+    item->setData( QVariant(true), FolderStatusDelegate::AddProgressSpace );
+    if( fileProgressString != _previousFileProgressString || _previousFileProgressString.isNull() ) {
         item->setData( fileProgressString,FolderStatusDelegate::SyncProgressItemString);
         slotSetOverallProgress(folder, itemFileName, _overallFileNo, _overallFileCnt,
                                _overallProgressBase + prog1, _overallFileSize);
@@ -616,6 +621,8 @@ void AccountSettings::slotHideProgress()
         }
         ++i;
     }
+    _previousFileProgressString = QString::null;
+
     send_timer->deleteLater();
 }
 
