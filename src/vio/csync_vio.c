@@ -45,12 +45,14 @@
 #include "csync_log.h"
 
 int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
+#ifdef WITH_UNIT_TESTING
   csync_stat_t sb;
+  mbchar_t *mpath = NULL;
+#endif
   char *path = NULL;
   char *err = NULL;
   csync_vio_method_t *m = NULL;
   csync_vio_method_init_fn init_fn;
-  mbchar_t *mpath = NULL;
 
 #ifdef _WIN32
   mbchar_t tbuf[MAX_PATH];
