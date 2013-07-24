@@ -404,24 +404,17 @@ void FolderMan::slotFolderSyncFinished( const SyncResult& )
     QTimer::singleShot(200, this, SLOT(slotScheduleFolderSync()));
 }
 
-/**
-  * Add a folder definition to the config
-  * Params:
-  * QString alias
-  * QString sourceFolder on local machine
-  * QString targetPath on remote
-  */
 void FolderMan::addFolderDefinition(const QString& alias, const QString& sourceFolder, const QString& targetPath )
 {
     QString escapedAlias = escapeAlias(alias);
     // Create a settings file named after the alias
     QSettings settings( _folderConfigPath + QLatin1Char('/') + escapedAlias, QSettings::IniFormat);
-
-    settings.setValue(QString::fromLatin1("%1/localPath").arg(escapedAlias),   sourceFolder );
-    settings.setValue(QString::fromLatin1("%1/targetPath").arg(escapedAlias),  targetPath );
+    settings.beginGroup(escapedAlias);
+    settings.setValue(QLatin1String("localPath"),   sourceFolder );
+    settings.setValue(QLatin1String("targetPath"),  targetPath );
     // for compat reasons
-    settings.setValue(QString::fromLatin1("%1/backend").arg(escapedAlias),     "owncloud" );
-    settings.setValue(QString::fromLatin1("%1/connection").arg(escapedAlias),  Theme::instance()->appName());
+    settings.setValue(QLatin1String("backend"),     "owncloud" );
+    settings.setValue(QLatin1String("connection"),  Theme::instance()->appName());
     settings.sync();
 }
 
