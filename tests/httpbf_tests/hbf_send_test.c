@@ -77,7 +77,7 @@ static void test_get_transfer_url_bigfile( void **state ) {
     list = hbf_init_transfer( url );
     assert_non_null( list );
 
-    list->block_size = (1024*1024); /* block size 1 MB */
+    list->threshold = list->block_size = (1024*1024); /* block size 1 MB */
 
     /* open a file */
     fd = open( test_file("church.jpg"), O_RDONLY );
