@@ -152,7 +152,8 @@ void AccountSettings::slotFolderWizardRejected()
 
 void AccountSettings::slotOpenAccountWizard()
 {
-    OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)), this);
+    this->topLevelWidget()->close();
+    OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)), 0);
 }
 
 void AccountSettings::slotAddFolder( Folder *folder )
