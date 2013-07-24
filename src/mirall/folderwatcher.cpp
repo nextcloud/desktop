@@ -37,8 +37,8 @@
 #elif defined(Q_OS_MAC)
 #include "mirall/folderwatcher_mac.h"
 #elif defined(USE_INOTIFY)
-#endif
 #include "mirall/folderwatcher_inotify.h"
+#endif
 
 namespace Mirall {
 
