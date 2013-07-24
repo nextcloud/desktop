@@ -676,24 +676,24 @@ static int fetch_resource_list( const char *uri,
       ret = NE_CONNECT;
     }
   }
+#ifndef NDEBUG
   if( ret != NE_OK ) {
-    const char *err = NULL;
-
-    err = ne_get_error( dav_session.ctx );
+    const char *err = ne_get_error(dav_session.ctx);
     DEBUG_WEBDAV("WRN: propfind named failed with %d, request error: %s", ret, err ? err : "<nil>");
   }
-
+#endif
   if( hdl )
     ne_propfind_destroy(hdl);
 
   if( ret == NE_REDIRECT ) {
     const ne_uri *redir_ne_uri = NULL;
-    char *redir_uri = NULL;
     redir_ne_uri = ne_redirect_location(dav_session.ctx);
-    if( redir_ne_uri ) {
-      redir_uri = ne_uri_unparse(redir_ne_uri);
+#ifndef NDEBUG
+    if (redir_ne_uri) {
+      char *redir_uri = ne_uri_unparse(redir_ne_uri);
       DEBUG_WEBDAV("Permanently moved to %s", redir_uri);
     }
+#endif
   }
 
   if( ret != NE_OK ) {
