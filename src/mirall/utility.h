@@ -33,7 +33,16 @@ namespace Utility
     void setLaunchOnStartup(const QString &appName, const QString& guiName, bool launch);
     qint64 freeDiskSpace(const QString &path, bool *ok = 0);
     /** Like QLocale::toString(double, 'f', prec), but drops trailing zeros after the decimal point */
-    QString compactFormatDouble(double value, int prec);
+
+    /**
+     * @brief compactFormatDouble - formats a double value human readable.
+     *
+     * @param value the value to format.
+     * @param prec the precision.
+     * @param unit an optional unit that is appended if present.
+     * @return the formatted string.
+     */
+    QString compactFormatDouble(double value, int prec, const QString& unit = QString::null);
 }
 
 }

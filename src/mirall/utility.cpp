@@ -108,10 +108,19 @@ QString Utility::octetsToString( qint64 octets )
     static const qint64 tb = 1024 * gb;
 
     if (octets >= tb) {
+        if (octets < 10*tb) {
+            return compactFormatDouble(double(octets)/double(tb), 1, QLatin1String("TB"));
+        }
         return QString::number(octets/tb) + QLatin1String(" TB");
     } else if (octets >= gb) {
+        if (octets < 10*gb) {
+            return compactFormatDouble(double(octets)/double(gb), 1, QLatin1String("GB"));
+        }
         return QString::number(octets/gb) + QLatin1String(" GB");
     } else if (octets >= mb) {
+        if (octets < 10*mb) {
+            return compactFormatDouble(double(octets)/double(mb), 1, QLatin1String("MB"));
+        }
         return QString::number(octets/mb) + QLatin1String(" MB");
     } else if (octets >= kb) {
         return QString::number(octets/kb) + QLatin1String(" KB");
@@ -319,7 +328,7 @@ qint64 Utility::freeDiskSpace(const QString &path, bool *ok)
 #endif
 }
 
-QString Utility::compactFormatDouble(double value, int prec)
+QString Utility::compactFormatDouble(double value, int prec, const QString& unit)
 {
     QLocale locale = QLocale::system();
     QChar decPoint = locale.decimalPoint();
@@ -331,6 +340,8 @@ QString Utility::compactFormatDouble(double value, int prec)
         }
         str.chop(1);
     }
+    if( !unit.isEmpty() )
+        str += (QLatin1Char(' ')+unit);
     return str;
 }
 
