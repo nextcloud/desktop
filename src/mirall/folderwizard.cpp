@@ -43,10 +43,6 @@ FolderWizardSourcePage::FolderWizardSourcePage()
     _ui.aliasLineEdit->setText( Theme::instance()->appNameGUI() );
 
     _ui.warnLabel->hide();
-#if QT_VERSION >= 0x040700
-    _ui.localFolderLineEdit->setPlaceholderText(QApplication::translate("FolderWizardSourcePage", "/home/local1", 0, QApplication::UnicodeUTF8));
-    _ui.aliasLineEdit->setPlaceholderText(QApplication::translate("FolderWizardSourcePage", "Music", 0, QApplication::UnicodeUTF8));
-#endif
 }
 
 FolderWizardSourcePage::~FolderWizardSourcePage()

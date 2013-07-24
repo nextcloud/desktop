@@ -97,9 +97,7 @@ QString applicationTrPath()
 Application::Application(int &argc, char **argv) :
     SharedTools::QtSingleApplication(argc, argv),
     _tray(0),
-#if QT_VERSION >= 0x040700
     _networkMgr(new QNetworkConfigurationManager(this)),
-#endif
     _sslErrorDialog(0),
     _contextMenu(0),
     _theme(Theme::instance()),
@@ -143,12 +141,10 @@ Application::Application(int &argc, char **argv) :
     qRegisterMetaType<Progress::Kind>("Progress::Kind");
 
 #if 0
-#if QT_VERSION >= 0x040700
     qDebug() << "* Network is" << (_networkMgr->isOnline() ? "online" : "offline");
     foreach (const QNetworkConfiguration& netCfg, _networkMgr->allConfigurations(QNetworkConfiguration::Active)) {
         //qDebug() << "Network:" << netCfg.identifier();
     }
-#endif
 #endif
 
     MirallConfigFile cfg;

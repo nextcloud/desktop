@@ -112,9 +112,7 @@ private:
     QAction *_actionHelp;
     QAction *_actionQuit;
 
-#if QT_VERSION >= 0x040700
     QNetworkConfigurationManager *_networkMgr;
-#endif
 
     QPointer<FolderWizard> _folderWizard;
     SslErrorDialog *_sslErrorDialog;

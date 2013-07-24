@@ -30,11 +30,9 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
 {
     _ui->setupUi(this);
 
-#if QT_VERSION >= 0x040700
     _ui->hostLineEdit->setPlaceholderText(tr("Hostname of proxy server"));
     _ui->userLineEdit->setPlaceholderText(tr("Username for proxy server"));
     _ui->passwordLineEdit->setPlaceholderText(tr("Password for proxy server"));
-#endif
 
     _ui->typeComboBox->addItem(tr("HTTP(S) proxy"), QNetworkProxy::HttpProxy);
     _ui->typeComboBox->addItem(tr("SOCKS5 proxy"), QNetworkProxy::Socks5Proxy);
