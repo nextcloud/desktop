@@ -40,7 +40,8 @@ namespace Mirall {
 AccountSettings::AccountSettings(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::AccountSettings),
-    _item(0)
+    _item(0),
+    _overallProgressBase(0)
 {
     ui->setupUi(this);
 
@@ -469,43 +470,89 @@ QStandardItem* AccountSettings::itemForFolder(const QString& folder)
     return item;
 }
 
-void AccountSettings::slotSetOverallProgress( const QString& folder, const QString& file, int fileNo, int fileCnt,
-                                              qlonglong p1, qlonglong p2)
+void AccountSettings::slotSetOverallProgress(const QString& folder, const QString& file, int fileNo, int fileCnt,
+                                              qint64 p1, qint64 p2)
 {
     QStandardItem *item = itemForFolder(folder);
-    if( item ) {
-        item->setData( p1,      FolderStatusDelegate::OverallProgress1);
-        item->setData( p2,      FolderStatusDelegate::OverallProgress2);
-        item->setData( fileNo,  FolderStatusDelegate::OverallFileNo);
-        item->setData( fileCnt, FolderStatusDelegate::OverallFileCount);
-        item->setData( file,    FolderStatusDelegate::OverallCurrentFile);
+    _overallFolder   = folder;
+    _overallFile     = file;
+    _overallFileNo   = fileNo;
+    _overallFileCnt  = fileCnt;
+    _overallFileSize = p2;
+
+    if( p1 == 0 ) {
+        // begin of a sequence of up- and downloads.
+        _overallProgressBase = 0;
+        _lastProgress = 0;
     }
-    _lastOverallProgress = p1;
+
+    if( item ) {
+        QString s1 = Utility::octetsToString( p1 );
+        QString s2 = Utility::octetsToString( p2 );
+        QString overallSyncString = tr("%1 of %2, file %3 of %4").arg(s1).arg(s2).arg(fileNo).arg(fileCnt);
+        item->setData( overallSyncString, FolderStatusDelegate::SyncProgressOverallString );
+
+        int overallPercent = 0;
+        if( p2 > 0 ) overallPercent = qRound(double(p1)/double(p2) * 100.0);
+        item->setData( overallPercent, FolderStatusDelegate::SyncProgressOverallPercent);
+    }
 }
 
-void AccountSettings::slotSetProgress( Progress::Kind kind, const QString& folder, const QString& file, long p1, long p2 )
+QString AccountSettings::shortenFilename( const QString& folder, const QString& file ) const
+{
+    // strip off the server prefix from the file name
+    QString shortFile(file);
+    if( shortFile.isEmpty() ) {
+        return QString::null;
+    }
+
+    if(shortFile.startsWith(QLatin1String("ownclouds://")) ||
+            shortFile.startsWith(QLatin1String("owncloud://")) ) {
+        // rip off the whole ownCloud URL.
+        Folder *f = FolderMan::instance()->folder(folder);
+        if( f ) {
+            QString regexp = QString("^owncloud[s]*://.*/remote.php/webdav/%1/").arg(f->secondPath());
+            QRegExp re( regexp );
+            re.setMinimal(true);
+            shortFile.remove(re);
+        }
+    }
+    return shortFile;
+}
+
+void AccountSettings::slotSetProgress( Progress::Kind kind, const QString& folder, const QString& file, qint64 p1, qint64 p2 )
 {
     // qDebug() << "================================> Progress for folder " << folder << " file " << file << ": "<< p1;
 
     QStandardItem *item = itemForFolder( folder );
+    qint64 prog1 = p1;
+    qint64 prog2 = p2;
 
     if( item == NULL ) {
         return;
     }
+
+    QString itemFileName = shortenFilename(folder, file);
+    QString syncFileProgressString;
+
     // Set the verb if up- or download
     if( kind != Progress::Context ) {
         _kindContext = Progress::asString(kind);
     }
     QString kindString = _kindContext;
-    item->setData( kindString, FolderStatusDelegate::SyncFileKind );
 
-    if( kind == Progress::EndDownload ||
-            kind == Progress::EndUpload ) { // File upload/download finished.
-        item->setData( 100, FolderStatusDelegate::SyncProgressPercent1);
-        item->setData( 100, FolderStatusDelegate::SyncProgressPercent2);
-        item->setData( (qlonglong) _lastSyncProgress, FolderStatusDelegate::SyncProgressBytes1);
-        item->setData( (qlonglong) _lastSyncProgress, FolderStatusDelegate::SyncProgressBytes2);
-        item->setData( tr("Finished"), FolderStatusDelegate::SyncFileProgressString);
+    if( kind == Progress::StartDownload || kind == Progress::StartUpload ) { // File upload starts.
+            if( _hideProgressTimers.contains(item) ) {
+                // The timer is still running.
+                QTimer *t = _hideProgressTimers.take(item);
+                t->stop();
+                t->deleteLater();
+            }
+            item->setData( QVariant(true), FolderStatusDelegate::AddProgressSpace );
+
+            syncFileProgressString = tr("Start");
+    } else if( kind == Progress::EndDownload || kind == Progress::EndUpload ) {
+        syncFileProgressString = tr("Finished");
 
         // start a timer to stop the progress display
         QTimer *timer;
@@ -519,63 +566,56 @@ void AccountSettings::slotSetProgress( Progress::Kind kind, const QString& folde
             _hideProgressTimers.insert(item, timer);
         }
         timer->start(5000);
-    } else if( kind == Progress::StartDownload ||
-               kind == Progress::StartUpload ) { // File upload starts.
-        if( _hideProgressTimers.contains(item) ) {
-            // The timer is still running.
-            QTimer *t = _hideProgressTimers.take(item);
-            t->stop();
-            t->deleteLater();
-        }
+
+
+        prog1 = prog2 = _lastProgress;
+    } else if( kind == Progress::Context ) {               // File progress
         item->setData( QVariant(true), FolderStatusDelegate::AddProgressSpace );
-        item->setData( 0,              FolderStatusDelegate::SyncProgressPercent1);
-        item->setData( 100,            FolderStatusDelegate::SyncProgressPercent2);
-        item->setData( (qlonglong) 0,  FolderStatusDelegate::SyncProgressBytes1);
-        item->setData( (qlonglong) p2, FolderStatusDelegate::SyncProgressBytes2);
-
-        // strip off the server prefix from the file name
-        QString shortFile(file);
-        if(shortFile.startsWith(QLatin1String("ownclouds://")) ||
-                shortFile.startsWith(QLatin1String("owncloud://")) ) {
-            // rip off the whole ownCloud URL.
-            Folder *f = FolderMan::instance()->folder(folder);
-            if( f ) {
-                QString regexp = QString("^owncloud[s]*://.*/remote.php/webdav/%1/").arg(f->secondPath());
-                QRegExp re( regexp );
-                re.setMinimal(true);
-                shortFile.remove(re);
-            }
-        }
-        item->setData( shortFile, FolderStatusDelegate::SyncFileName );
-        item->setData( tr("Start"), FolderStatusDelegate::SyncFileProgressString);
-    } else {               // File progress
-        item->setData( (qlonglong) p1,   FolderStatusDelegate::SyncProgressBytes1);
-        item->setData( (qlonglong) p2,   FolderStatusDelegate::SyncProgressBytes2);
-        item->setData( (qlonglong) _lastOverallProgress+p1, FolderStatusDelegate::OverallProgress1 );
-        item->setData( tr("Currently"), FolderStatusDelegate::SyncFileProgressString);
-
-        _lastSyncProgress = p1;
+        _lastProgress = prog1;
+        syncFileProgressString = tr("Currently");
     }
+    QString fileProgressString;
+    QString s1 = Utility::octetsToString( prog1 );
+    QString s2 = Utility::octetsToString( prog2 );
 
-    ui->_folderList->repaint();
+    // Example text: "Currently uploading foobar.png (1MB of 2MB)"
+    fileProgressString = tr("%1 %2 %3 (%4 of %5)").arg(syncFileProgressString).arg(kindString).
+            arg(itemFileName).arg(s1).arg(s2);
+
+    // only publish to item if there really is a change
+    if( fileProgressString != _previousFileProgressString ) {
+        item->setData( fileProgressString,FolderStatusDelegate::SyncProgressItemString);
+        slotSetOverallProgress(folder, itemFileName, _overallFileNo, _overallFileCnt,
+                               _overallProgressBase + prog1, _overallFileSize);
+        ui->_folderList->repaint();
+    }
+    _previousFileProgressString = fileProgressString;
+
+    // move the overall progress on. Don't do before it was set in the item.
+    if( kind == Progress::EndDownload || kind == Progress::EndUpload ) {
+        _overallProgressBase += _lastProgress;
+    }
 }
 
 void AccountSettings::slotHideProgress()
 {
-    QTimer *t_send = qobject_cast<QTimer*>(this->sender());
+    QTimer *send_timer = qobject_cast<QTimer*>(this->sender());
     QHash<QStandardItem*, QTimer*>::const_iterator i = _hideProgressTimers.constBegin();
     while (i != _hideProgressTimers.constEnd()) {
-        if( i.value() == t_send ) {
+        if( i.value() == send_timer ) {
             QStandardItem *item = i.key();
             item->setData( QVariant(false),  FolderStatusDelegate::AddProgressSpace );
-            item->setData( QVariant(QString::null), FolderStatusDelegate::SyncFileName );
+            item->setData( QVariant(QString::null), FolderStatusDelegate::SyncProgressOverallString );
+            item->setData( QVariant(QString::null), FolderStatusDelegate::SyncProgressItemString );
+            item->setData( 0,                       FolderStatusDelegate::SyncProgressOverallPercent );
+
             ui->_folderList->repaint();
             _hideProgressTimers.remove(item);
             break;
         }
         ++i;
     }
-    t_send->deleteLater();
+    send_timer->deleteLater();
 }
 
 void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)

@@ -84,6 +84,7 @@ protected slots:
     void slotHideProgress();
 
 private:
+    QString shortenFilename( const QString& folder, const QString& file ) const;
     void folderToModelItem( QStandardItem *, Folder * );
     QStandardItem* itemForFolder(const QString& );
 
@@ -96,9 +97,16 @@ private:
     double _progressFactor;
     QHash<QStandardItem*, QTimer*> _hideProgressTimers;
     QTimer *_timer;
-    long _lastSyncProgress;
+
+    QString _previousFileProgressString;
     QString _kindContext;
-    qlonglong _lastOverallProgress;
+    QString _overallFolder;
+    QString _overallFile;
+    int _overallFileNo;
+    int _overallFileCnt;
+    qint64 _overallFileSize;
+    qint64 _overallProgressBase;
+    qint64 _lastProgress;
 };
 
 } // namespace Mirall
