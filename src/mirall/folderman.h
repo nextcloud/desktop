@@ -50,46 +50,32 @@ public:
       */
     void addFolderDefinition(const QString&, const QString&, const QString& );
 
-    /**
-      * return the folder by alias or NULL if no folder with the alias exists.
-      */
+    /** Returns the folder by alias or NULL if no folder with the alias exists. */
     Folder *folder( const QString& );
 
-    /**
-      * return the last sync result by alias
-      */
+    /** Returns the last sync result by alias */
     SyncResult syncResult( const QString& );
 
-    /**
-      * return the last sync result by Folder
-      */
+    /** Returns the last sync result by Folder */
     SyncResult syncResult( Folder* );
 
-    /**
-      * creates a folder for a specific configuration, identified by alias.
-      */
+    /** Creates a folder for a specific configuration, identified by alias. */
     Folder* setupFolderFromConfigFile(const QString & );
 
-    /**
-     * wipes all folder defintions. No way back!
-     */
+    /** Wipes all folder defintions. No way back! */
     void removeAllFolderDefinitions();
 
-    /**
-     * Removes csync journals from all folders.
-     */
+    /** Removes csync journals from all folders. */
     void wipeAllJournals();
 
     /**
      * Ensures that a given directory does not contain a .csync_journal.
      *
-     * @returns false if the journal could not be removed, false otherwise.
+     * @returns false if the journal could not be removed, true otherwise.
      */
     static bool ensureJournalGone(const QString &path);
 
-    /**
-     * Creates a new and empty local directory.
-     */
+    /** Creates a new and empty local directory. */
     bool startFromScratch( const QString& );
 
     QString statusToString( SyncResult ) const;
