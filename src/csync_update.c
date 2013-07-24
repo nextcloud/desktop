@@ -241,6 +241,8 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
   while ((dirent = csync_vio_readdir(ctx, dh))) {
     const char *path = NULL;
+    size_t ulen;
+    int flen;
     int flag;
 
     d_name = dirent->name;
@@ -257,7 +259,8 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       continue;
     }
 
-    if (asprintf(&filename, "%s/%s", uri, d_name) < 0) {
+    flen = asprintf(&filename, "%s/%s", uri, d_name);
+    if (flen < 0) {
       csync_vio_file_stat_destroy(dirent);
       dirent = NULL;
       ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
@@ -267,14 +270,23 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     /* Create relative path for checking the exclude list */
     switch (ctx->current) {
       case LOCAL_REPLICA:
-        path = filename + strlen(ctx->local.uri) + 1;
+        ulen = strlen(ctx->local.uri) + 1;
         break;
       case REMOTE_REPLICA:
-        path = filename + strlen(ctx->remote.uri) + 1;
+        ulen = strlen(ctx->remote.uri) + 1;
         break;
       default:
         break;
     }
+
+    if (((size_t)flen) < ulen) {
+      csync_vio_file_stat_destroy(dirent);
+      dirent = NULL;
+      ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
+      goto error;
+    }
+
+    path = filename + ulen;
 
     /* Check if file is excluded */
     if (csync_excluded(ctx, path)) {
