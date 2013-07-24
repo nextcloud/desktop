@@ -691,6 +691,7 @@ static int fetch_resource_list( const char *uri,
       char *redir_uri = ne_uri_unparse(redir_ne_uri);
       DEBUG_WEBDAV("Permanently moved to %s", redir_uri);
     }
+#endif
   }
 #endif
 
