@@ -22,10 +22,6 @@
 #include <QtGui>
 #include <QAuthenticator>
 
-#if QT46_IMPL
-#include <QHttp>
-#endif
-
 #define DEFAULT_CONNECTION QLatin1String("default");
 static const char WEBDAV_PATH[] = "remote.php/webdav/";
 
@@ -141,91 +137,6 @@ QNetworkReply* ownCloudInfo::getRequest( const QUrl& url )
     return reply;
 }
 
-#if QT46_IMPL
-QNetworkReply* ownCloudInfo::mkdirRequest( const QString& dir )
-{
-    qDebug() << "OCInfo Making dir " << dir;
-
-    MirallConfigFile cfgFile( _configHandle );
-    QUrl url = QUrl( webdavUrl(_connection) + dir );
-    QHttp::ConnectionMode conMode = QHttp::ConnectionModeHttp;
-    if (url.scheme() == "https")
-        conMode = QHttp::ConnectionModeHttps;
-
-    QHttp* qhttp = new QHttp(QString(url.encodedHost()), conMode, 0, this);
-
-    connect(qhttp, SIGNAL(requestStarted(int)), this,SLOT(qhttpRequestStarted(int)));
-    connect(qhttp, SIGNAL(requestFinished(int, bool)), this,SLOT(qhttpRequestFinished(int,bool)));
-    connect(qhttp, SIGNAL(responseHeaderReceived(QHttpResponseHeader)), this, SLOT(qhttpResponseHeaderReceived(QHttpResponseHeader)));
-    //connect(qhttp, SIGNAL(authenticationRequired(QString,quint16,QAuthenticator*)), this, SLOT(qhttpAuthenticationRequired(QString,quint16,QAuthenticator*)));
-    QHttpRequestHeader header("MKCOL", QString(url.encodedPath()), 1,1);   /* header */
-    QByteArray host = QUrl::toAce(url.host());
-    int port = url.port();
-    if (port != -1) {
-        host += ':';
-        host += QByteArray::number(port);
-    }
-    header.setValue("Host", host);
-    header.setValue("User-Agent", Utility::userAgentString());
-    header.setValue("Accept-Charset", "ISO-8859-1,utf-8;q=0.7,*;q=0.7");
-    header.setValue("Accept-Language", "it,de-de;q=0.8,it-it;q=0.6,en-us;q=0.4,en;q=0.2");
-    header.setValue("Connection", "keep-alive");
-    header.setContentType("application/x-www-form-urlencoded"); //important
-    header.setContentLength(0);
-
-    QString con = _configHandle;
-    if( con.isEmpty() ) con = DEFAULT_CONNECTION;
-    if( _credentials.contains(con)) {
-        oCICredentials creds = _credentials.value(con);
-        QString concatenated = creds.user + QLatin1Char(':') + creds.passwd;
-        const QString b(QLatin1String("Basic "));
-        QByteArray data = b.toLocal8Bit() + concatenated.toLocal8Bit().toBase64();
-        header.setValue("Authorization", data);
-
-        qhttp->setUser( creds.user, creds.passwd );
-    }
-
-    int david = qhttp->request(header,0,0);
-    //////////////// connect(davinfo, SIGNAL(dataSendProgress(int,int)), this, SLOT(SendStatus(int, int)));
-    /////////////////connect(davinfo, SIGNAL(done(bool)), this,SLOT(DavWake(bool)));
-    //connect(_http, SIGNAL(requestFinished(int, bool)), this,SLOT(qhttpRequestFinished(int,bool)));
-    ///////////connect(davinfo, SIGNAL(responseHeaderReceived(constQHttpResponseHeader &)), this, SLOT(RegisterBackHeader(constQHttpResponseHeader &)));
-
-    return NULL;
-}
-
-QNetworkReply* ownCloudInfo::getQuotaRequest( const QString& dir )
-{
-// implement me
-    return NULL;
-}
-
-void ownCloudInfo::qhttpResponseHeaderReceived(const QHttpResponseHeader& header)
-{
-    qDebug() << "Resp:" << header.toString();
-    if (header.statusCode() == 201)
-        emit webdavColCreated( QNetworkReply::NoError );
-    else
-        qDebug() << "http request failed" << header.toString();
-}
-
-void ownCloudInfo::qhttpRequestStarted(int id)
-{
-    qDebug() << "QHttp based request started " << id;
-}
-
-void ownCloudInfo::qhttpRequestFinished(int id, bool success )
-{
-     qDebug() << "HIT!";
-     QHttp* qhttp = qobject_cast<QHttp*>(sender());
-
-     if( success ) {
-         qDebug() << "QHttp based request successful";
-     } else {
-         qDebug() << "QHttp based request failed: " << qhttp->errorString();
-     }
-}
-#else
 QNetworkReply* ownCloudInfo::mkdirRequest( const QString& dir )
 {
     qDebug() << "OCInfo Making dir " << dir;
@@ -394,7 +305,6 @@ void ownCloudInfo::slotGetDirectoryListingFinished()
 
     reply->deleteLater();
 }
-#endif
 
 // FIXME: remove this later, once the new connection dialog has settled.
 void ownCloudInfo::slotAuthentication( QNetworkReply *reply, QAuthenticator *auth )
@@ -676,14 +586,11 @@ void ownCloudInfo::setupHeaders( QNetworkRequest & req, quint64 size )
     }
 }
 
-#if QT46_IMPL
-#else
 QNetworkReply* ownCloudInfo::davRequest(const QByteArray& reqVerb,  QNetworkRequest& req, QIODevice *data)
 {
     setupHeaders(req, quint64(data ? data->size() : 0));
     return _manager->sendCustomRequest(req, reqVerb, data );
 }
-#endif
 
 QString ownCloudInfo::webdavUrl(const QString &connection)
 {

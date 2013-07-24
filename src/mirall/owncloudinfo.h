@@ -18,12 +18,6 @@
 #include <QObject>
 #include <QtNetwork>
 
-#if QT_VERSION >= 0x040700
-#define QT46_IMPL 0
-#else
-#define QT46_IMPL 1
-#endif
-
 namespace Mirall
 {
 
@@ -142,16 +136,9 @@ protected slots:
     void slotError( QNetworkReply::NetworkError );
     void slotAuthentication( QNetworkReply*, QAuthenticator *);
 
-#if QT46_IMPL
-    void qhttpRequestFinished(int id, bool success );
-    void qhttpRequestStarted(int id);
-    void qhttpResponseHeaderReceived(const QHttpResponseHeader& header);
-//    void qhttpAuthenticationRequired(const QString& hostname, quint16 port ,QAuthenticator* authenticator);
-#else
     void slotMkdirFinished();
     void slotGetQuotaFinished();
     void slotGetDirectoryListingFinished();
-#endif
 
 private:
     explicit ownCloudInfo();
@@ -160,15 +147,11 @@ private:
      * a general GET request to the ownCloud WebDAV.
      */
     QNetworkReply* getRequest( const QUrl &url);
-
+    QNetworkReply* davRequest(const QByteArray&, QNetworkRequest&, QIODevice* );
 
     ~ownCloudInfo();
 
     void setupHeaders(QNetworkRequest &req, quint64 size );
-#if QT46_IMPL
-#else
-    QNetworkReply* davRequest(const QByteArray&, QNetworkRequest&, QIODevice* );
-#endif
 
     static ownCloudInfo           *_instance;
 

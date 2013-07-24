@@ -62,9 +62,9 @@ endif()
 ####
 
 #### find libs
-find_package(Qt4 4.6.0 COMPONENTS QtCore QtGui QtXml QtNetwork QtTest REQUIRED )
+find_package(Qt4 4.7.0 COMPONENTS QtCore QtGui QtXml QtNetwork QtTest REQUIRED )
 if( UNIX AND NOT APPLE ) # Fdo notifications
-    find_package(Qt4 4.6.0 COMPONENTS QtDBus REQUIRED )
+    find_package(Qt4 4.7.0 COMPONENTS QtDBus REQUIRED )
 endif()
 find_package(Csync REQUIRED)
 if(UNIX)
