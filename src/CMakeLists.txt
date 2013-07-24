@@ -21,6 +21,7 @@ mirall/owncloudwizardresultpage.ui
 mirall/sslerrordialog.ui
 mirall/settingsdialog.ui
 mirall/generalsettings.ui
+mirall/networksettings.ui
 mirall/accountsettings.ui
 mirall/ignorelisteditor.ui
 mirall/fileitemdialog.ui
@@ -160,8 +161,9 @@ set(mirall_SRCS
     mirall/fileitemdialog.cpp
     mirall/settingsdialog.cpp
     mirall/generalsettings.cpp
-    mirall/ignorelisteditor.cpp
+    mirall/networksettings.cpp
     mirall/accountsettings.cpp
+    mirall/ignorelisteditor.cpp
 )
 
 set(mirall_HEADERS
@@ -177,6 +179,7 @@ set(mirall_HEADERS
     mirall/fileitemdialog.h
     mirall/settingsdialog.h
     mirall/generalsettings.h
+    mirall/networksettings.h
     mirall/accountsettings.h
     mirall/ignorelisteditor.h
 )

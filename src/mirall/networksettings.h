@@ -11,8 +11,8 @@
  * for more details.
  */
 
-#ifndef MIRALL_GENERALSETTINGS_H
-#define MIRALL_GENERALSETTINGS_H
+#ifndef MIRALL_NETWORKSETTINGS_H
+#define MIRALL_NETWORKSETTINGS_H
 
 #include <QWidget>
 
@@ -20,31 +20,31 @@
 namespace Mirall {
 
 namespace Ui {
-class GeneralSettings;
+class NetworkSettings;
 }
 
-class GeneralSettings : public QWidget
+class NetworkSettings : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit GeneralSettings(QWidget *parent = 0);
-    ~GeneralSettings();
+    explicit NetworkSettings(QWidget *parent = 0);
+    ~NetworkSettings();
 
 signals:
     void proxySettingsChanged();
 
 private slots:
-    void saveMiscSettings();
-    void slotToggleLaunchOnStartup(bool);
-    void slotToggleOptionalDesktopNotifications(bool);
+    void saveProxySettings();
+    void saveBWLimitSettings();
 
 private:
-    void loadMiscSettings();
+    void loadProxySettings();
+    void loadBWLimitSettings();
 
-    Ui::GeneralSettings *_ui;
+    Ui::NetworkSettings *_ui;
 };
 
 
 } // namespace Mirall
-#endif // MIRALL_GENERALSETTINGS_H
+#endif // MIRALL_NETWORKSETTINGS_H

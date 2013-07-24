@@ -46,6 +46,11 @@ static const char proxyUserC[] = "Proxy/user";
 static const char proxyPassC[] = "Proxy/pass";
 static const char proxyNeedsAuthC[] = "Proxy/needsAuth";
 
+static const char useUploadLimitC[]   = "BWLimit/useUploadLimit";
+static const char useDownloadLimitC[] = "BWLimit/useDownloadLimit";
+static const char uploadLimitC[]      = "BWLimit/uploadLimit";
+static const char downloadLimitC[]    = "BWLimit/downloadLimit";
+
 static const char seenVersionC[] = "Updater/seenVersion";
 static const char maxLogLinesC[] = "Logging/maxLogLines";
 
@@ -556,14 +561,23 @@ void MirallConfigFile::setProxyType(int proxyType,
     settings.sync();
 }
 
-QVariant MirallConfigFile::getValue(const QString& param, const QString& group) const
+QVariant MirallConfigFile::getValue(const QString& param, const QString& group,
+                                    const QVariant& defaultValue) const
 {
     QSettings settings( configFile(), QSettings::IniFormat );
     settings.setIniCodec( "UTF-8" );
     if (!group.isEmpty())
         settings.beginGroup(group);
 
-    return settings.value(param);
+    return settings.value(param, defaultValue);
+}
+
+void MirallConfigFile::setValue(const QString& key, const QVariant &value)
+{
+    QSettings settings( configFile(), QSettings::IniFormat );
+    settings.setIniCodec( "UTF-8" );
+
+    settings.setValue(key, value);
 }
 
 int MirallConfigFile::proxyType() const
@@ -595,6 +609,46 @@ QString MirallConfigFile::proxyPassword() const
 {
     QByteArray pass = getValue(proxyPassC).toByteArray();
     return QString::fromUtf8(QByteArray::fromBase64(pass));
+}
+
+int MirallConfigFile::useUploadLimit() const
+{
+    return getValue(useUploadLimitC, QString::null, -1).toInt();
+}
+
+bool MirallConfigFile::useDownloadLimit() const
+{
+    return getValue(useDownloadLimitC, QString::null, false).toBool();
+}
+
+void MirallConfigFile::setUseUploadLimit(int val)
+{
+    setValue(useUploadLimitC, val);
+}
+
+void MirallConfigFile::setUseDownloadLimit(bool enable)
+{
+    setValue(useDownloadLimitC, enable);
+}
+
+int MirallConfigFile::uploadLimit() const
+{
+    return getValue(uploadLimitC, QString::null, 10).toInt();
+}
+
+int MirallConfigFile::downloadLimit() const
+{
+    return getValue(downloadLimitC, QString::null, 80).toInt();
+}
+
+void MirallConfigFile::setUploadLimit(int kbytes)
+{
+    setValue(uploadLimitC, kbytes);
+}
+
+void MirallConfigFile::setDownloadLimit(int kbytes)
+{
+    setValue(downloadLimitC, kbytes);
 }
 
 bool MirallConfigFile::monoIcons() const

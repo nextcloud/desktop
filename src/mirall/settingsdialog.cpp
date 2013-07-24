@@ -17,6 +17,7 @@
 #include "mirall/folderman.h"
 #include "mirall/theme.h"
 #include "mirall/generalsettings.h"
+#include "mirall/networksettings.h"
 #include "mirall/accountsettings.h"
 #include "mirall/application.h"
 #include "mirall/mirallconfigfile.h"
@@ -52,9 +53,16 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
     general->setSizeHint(QSize(0, 32));
     _ui->labelWidget->addItem(general);
     GeneralSettings *generalSettings = new GeneralSettings;
-    connect(generalSettings, SIGNAL(proxySettingsChanged()), app, SLOT(slotSetupProxy()));
-    connect(generalSettings, SIGNAL(proxySettingsChanged()), FolderMan::instance(), SLOT(slotScheduleAllFolders()));
     _ui->stack->addWidget(generalSettings);
+
+    QIcon networkIcon(QLatin1String(":/mirall/resources/network.png"));
+    QListWidgetItem *network = new QListWidgetItem(networkIcon, tr("Network"), _ui->labelWidget);
+    network->setSizeHint(QSize(0, 32));
+    _ui->labelWidget->addItem(network);
+    NetworkSettings *networkSettings = new NetworkSettings;
+    _ui->stack->addWidget(networkSettings);
+    connect(networkSettings, SIGNAL(proxySettingsChanged()), app, SLOT(slotSetupProxy()));
+    connect(networkSettings, SIGNAL(proxySettingsChanged()), FolderMan::instance(), SLOT(slotScheduleAllFolders()));
 
     //connect(generalSettings, SIGNAL(resizeToSizeHint()), SLOT(resizeToSizeHint()));
 

@@ -16,8 +16,8 @@
 #define MIRALLCONFIGFILE_H
 
 #include <QString>
+#include <QVariant>
 
-class QVariant;
 class QWidget;
 
 namespace Mirall {
@@ -95,6 +95,16 @@ public:
     QString proxyUser() const;
     QString proxyPassword() const;
     
+    /** 0: no limit, 1: manual, >0: automatic */
+    int useUploadLimit() const;
+    bool useDownloadLimit() const;
+    void setUseUploadLimit(int);
+    void setUseDownloadLimit(bool);
+    int uploadLimit() const;
+    int downloadLimit() const;
+    void setUploadLimit(int kbytes);
+    void setDownloadLimit(int kbytes);
+
     static void setConfDir(const QString &value);
 
     bool optionalDesktopNotifications() const;
@@ -114,15 +124,15 @@ protected:
     bool writePassword( const QString& passwd, const QString& connection = QString() );
 
 private:
-    QVariant getValue(const QString& param, const QString& group = QString::null) const;
-
+    QVariant getValue(const QString& param, const QString& group = QString::null,
+                      const QVariant& defaultValue = QVariant()) const;
+    void setValue(const QString& key, const QVariant &value);
 
 private:
     static bool    _askedUser;
     static QString _oCVersion;
     static QString _confDir;
     QString        _customHandle;
-
 };
 
 }

@@ -315,6 +315,24 @@ void CSyncThread::startSync()
     // cleans up behind us and emits finished() to ease error handling
     CSyncRunScopeHelper helper(_csync_ctx, this);
 
+    // maybe move this somewhere else where it can influence a running sync?
+    MirallConfigFile cfg;
+
+    int downloadLimit = 0;
+    if (cfg.useDownloadLimit()) {
+         downloadLimit = cfg.downloadLimit();
+    }
+    csync_set_module_property(_csync_ctx, "bandwidth_limit_download", &downloadLimit);
+
+    int uploadLimit = -75; // 75%
+    int useDlLimit = cfg.useDownloadLimit();
+    if ( useDlLimit > 1) {
+         uploadLimit = cfg.downloadLimit();
+    } else if (useDlLimit == 0) {
+        uploadLimit = 0;
+    }
+    csync_set_module_property(_csync_ctx, "bandwidth_limit_upload", &uploadLimit);
+
     csync_set_file_progress_callback( _csync_ctx, cb_file_progress );
     csync_set_overall_progress_callback( _csync_ctx, cb_overall_progress );
 
