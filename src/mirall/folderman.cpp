@@ -73,15 +73,7 @@ Mirall::Folder::Map FolderMan::map()
 int FolderMan::setupFolders()
 {
     // setup a handler to look for configuration changes
-#ifdef CHECK_FOR_SETUP_CHANGES
-    _configFolderWatcher = new FolderWatcher( _folderConfigPath );
-    _configFolderWatcher->setEventInterval(20000);
-    connect(_configFolderWatcher, SIGNAL(folderChanged(const QStringList &)),
-            this, SLOT( slotReparseConfiguration()) );
-#endif
-    int cnt = setupKnownFolders();
-
-    return cnt;
+    return setupKnownFolders();
 }
 
 void FolderMan::slotReparseConfiguration()

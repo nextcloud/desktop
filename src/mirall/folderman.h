@@ -130,7 +130,6 @@ private:
 
     void removeFolder( const QString& );
 
-    FolderWatcher *_configFolderWatcher;
     Folder::Map    _folderMap;
     QString        _folderConfigPath;
     QSignalMapper *_folderChangeSignalMapper;
