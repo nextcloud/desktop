@@ -580,10 +580,10 @@ void Folder::startSync(const QStringList &pathList)
     //blocking connection so the message box happens in this thread, but block the csync thread.
     connect(_csync, SIGNAL(aboutToRemoveAllFiles(SyncFileItem::Direction,bool*)),
                     SLOT(slotAboutToRemoveAllFiles(SyncFileItem::Direction,bool*)), Qt::BlockingQueuedConnection);
-    connect(_csync, SIGNAL(fileTransmissionProgress(Progress::Kind, QString,long,long)),
-             SLOT(slotFileTransmissionProgress(Progress::Kind, QString,long,long)));
-    connect(_csync, SIGNAL(overallTransmissionProgress(QString, int, int, long long, long long)),
-             SLOT(slotOverallTransmissionProgress(QString, int, int, long long, long long)));
+    connect(_csync, SIGNAL(fileTransmissionProgress(Progress::Kind, QString,qint64,qint64)),
+             SLOT(slotFileTransmissionProgress(Progress::Kind, QString,qint64,qint64)));
+    connect(_csync, SIGNAL(overallTransmissionProgress(QString, int, int, qint64, qint64)),
+             SLOT(slotOverallTransmissionProgress(QString, int, int, qint64, qint64)));
 
 
     _thread->start();

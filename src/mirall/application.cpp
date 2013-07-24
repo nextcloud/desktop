@@ -125,8 +125,8 @@ Application::Application(int &argc, char **argv) :
              this, SLOT(slotShowOptionalTrayMessage(QString,QString)));
     ProgressDispatcher *pd = ProgressDispatcher::instance();
 
-    connect( pd, SIGNAL(overallProgress(QString,QString,int,int,qlonglong,qlonglong)),
-             SLOT(slotUpdateProgress(QString,QString,int,int,qlonglong,qlonglong)));
+    connect( pd, SIGNAL(overallProgress(QString,QString,int,int,qint64,qint64)),
+             SLOT(slotUpdateProgress(QString,QString,int,int,qint64,qint64)));
     // create folder manager for sync folder management
     FolderMan *folderMan = FolderMan::instance();
     connect( folderMan, SIGNAL(folderSyncStateChange(QString)),

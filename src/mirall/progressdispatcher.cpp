@@ -75,7 +75,8 @@ ProgressDispatcher::~ProgressDispatcher()
 
 }
 
-void ProgressDispatcher::setFolderProgress( Progress::Kind kind, const QString& folder, const QString& file, qint64 p1, qint64 p2)
+void ProgressDispatcher::setFolderProgress( Progress::Kind kind, const QString& folder, const QString& file,
+                                            qint64 p1, qint64 p2)
 {
     emit itemProgress( kind, folder, file, p1, p2 );
 }

@@ -70,13 +70,10 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
     connect( _accountSettings, SIGNAL(openFolderAlias(const QString&)),
              app, SLOT(slotFolderOpenAction(QString)));
 
-    connect( ProgressDispatcher::instance(), SIGNAL(itemProgress(Progress::Kind, QString,QString,long,long)),
-             _accountSettings, SLOT(slotSetProgress(Progress::Kind, QString,QString,long,long)));
-    connect( ProgressDispatcher::instance(), SIGNAL(overallProgress(QString,QString, int,int,qlonglong,qlonglong)),
-             _accountSettings, SLOT(slotSetOverallProgress( const QString&, const QString&, int, int, qlonglong , qlonglong )));
-
-    connect(ProgressDispatcher::instance(), SIGNAL(shortFolderProgress(QString, QString)),
-            this, SLOT(slotShortFolderProgress(QString, QString)));
+    connect( ProgressDispatcher::instance(), SIGNAL(itemProgress(Progress::Kind, QString,QString,qint64,qint64)),
+             _accountSettings, SLOT(slotSetProgress(Progress::Kind, QString,QString,qint64,qint64)));
+    connect( ProgressDispatcher::instance(), SIGNAL(overallProgress(QString,QString, int,int,qint64,qint64)),
+             _accountSettings, SLOT(slotSetOverallProgress( const QString&, const QString&, int, int, qint64, qint64)));
 
     _ui->labelWidget->setCurrentRow(_ui->labelWidget->row(general));
 
