@@ -44,4 +44,11 @@ struct csync_hbf_info_s {
 };
 typedef struct csync_hbf_info_s csync_hbf_info_t;
 
+typedef struct {
+    off_t file_count;
+    off_t current_file_no;
+    off_t byte_sum;
+    off_t byte_current;
+} csync_overall_progress_t;
+
 #endif /* _CSYNC_MISC_H */

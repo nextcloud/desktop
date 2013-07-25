@@ -117,6 +117,34 @@ enum csync_ftw_type_e {
     CSYNC_FTW_TYPE_SKIP
 };
 
+enum csync_notify_type_e {
+  CSYNC_NOTIFY_INVALID,
+  CSYNC_NOTIFY_START_SYNC_SEQUENCE,
+  CSYNC_NOTIFY_START_DOWNLOAD,
+  CSYNC_NOTIFY_START_UPLOAD,
+  CSYNC_NOTIFY_PROGRESS,
+  CSYNC_NOTIFY_FINISHED_DOWNLOAD,
+  CSYNC_NOTIFY_FINISHED_UPLOAD,
+  CSYNC_NOTIFY_FINISHED_SYNC_SEQUENCE,
+  CSYNC_NOTIFY_ERROR
+};
+
+struct csync_progress_s {
+  enum csync_notify_type_e kind;
+
+  /* individual file progress information */
+  const char *path;
+  off_t curr_bytes;
+  off_t file_size;
+
+  /* overall progress */
+  off_t overall_transmission_size;
+  off_t current_overall_bytes;
+  off_t overall_file_count;
+  off_t current_file_no;
+
+};
+typedef struct csync_progress_s CSYNC_PROGRESS;
 
 /**
  * CSync File Traversal structure.
@@ -515,57 +543,24 @@ const char *csync_get_error_string(CSYNC *ctx);
  */
 int csync_set_module_property(CSYNC *ctx, const char *key, void *value);
 
-enum csync_notify_type_e { CSYNC_NOTIFY_START_DOWNLOAD, CSYNC_NOTIFY_START_UPLOAD,
-                           CSYNC_NOTIFY_PROGRESS, CSYNC_NOTIFY_FINISHED_DOWNLOAD,
-                           CSYNC_NOTIFY_FINISHED_UPLOAD, CSYNC_NOTIFY_ERROR };
 /**
- * @brief Callback definition for individual file progress callback.
+ * @brief Callback definition for file progress callback.
  *
- * @param remote_url    The currently handled file.
+ * @param progress  A struct containing progress information.
  *
- * @param kind          The type of progress.
- *
- * @param o1            The current transmitted bytes.
- *
- * @param o2            The size of the file.
+ * @param userdata  User defined data for the callback.
  */
-typedef void (*csync_file_progress_callback) (const char *remote_url, enum csync_notify_type_e kind,
-                                              long long o1, long long o2, void *userdata);
+typedef void (*csync_progress_callback)( CSYNC_PROGRESS *progress, void *userdata);
 
 /**
- * @brief Set a progress callback for individual files.
+ * @brief Set a progress callback.
  *
- * This callback reports about up- or download progress of a individual file.
+ * This callback reports about up- or download progress of a individual file
+ * as well as overall progress.
  */
+int csync_set_progress_callback( CSYNC *ctx, csync_progress_callback cb);
 
-int csync_set_file_progress_callback(CSYNC* ctx, csync_file_progress_callback cb);
-
-csync_file_progress_callback csync_get_file_progress_callback(CSYNC *ctx);
-
-/**
- * @brief Callback definition for overall progress callback.
- *
- * @param file_no       The current number of up- or downloaded files.
- *
- * @param file_cnt      The overall number of files to transmit.
- *
- * @param o1            The current transmitted bytes.
- *
- * @param o2            The overall sum of bytes to transmit.
- */
-typedef void (*csync_overall_progress_callback) (const char *file_name, int file_no,
-                                                 int file_cnt, long long o1, long long o2, void *userdata);
-
-/**
- * @brief Set a progress callback for the overall files.
- *
- * This callback reports about overall up- or download progress.
- *
- * @param ctx           The csync context.
- *
- * @param cb            The callback
- */
-int csync_set_overall_progress_callback (CSYNC* ctx, csync_overall_progress_callback cb);
+csync_progress_callback csync_get_progress_callback(CSYNC *ctx);
 
 /**
  * @brief Aborts the current sync run as soon as possible. Can be called from another thread.

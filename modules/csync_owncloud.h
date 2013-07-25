@@ -161,6 +161,8 @@ struct dav_session_s {
     /* If 0, it is disabled.   If >0,  in Byte/seconds. If < 0,  in % of the available bandwidth*/
     int bandwidth_limit_upload;
     int bandwidth_limit_download;
+
+    csync_overall_progress_t *overall_progress_data;
 };
 extern struct dav_session_s dav_session;
 
@@ -185,5 +187,7 @@ char *_cleanPath( const char* uri );
 
 int _stat_perms( int type );
 csync_vio_file_stat_t *resourceToFileStat( struct resource *res );
+
+void oc_notify_progress(const char *file, enum csync_notify_type_e kind, off_t current_size, off_t full_size);
 
 #endif /* CSYNC_OWNCLOUD_H */

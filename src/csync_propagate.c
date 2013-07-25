@@ -134,6 +134,26 @@ static bool _push_to_tmp_first(CSYNC *ctx)
     return false;
 }
 
+static void _notify_progress(CSYNC *ctx, const char *file, enum csync_notify_type_e kind)
+{
+  if (ctx == NULL) {
+    return;
+  }
+  if (ctx->callbacks.progress_cb) {
+    CSYNC_PROGRESS progress;
+    progress.kind = kind;
+    progress.path = file;
+    progress.curr_bytes = 0;
+    progress.file_size  = 0;
+    progress.overall_transmission_size = ctx->overall_progress.byte_sum;
+    progress.current_overall_bytes     = ctx->overall_progress.byte_current;
+    progress.overall_file_count        = ctx->overall_progress.file_count;
+    progress.current_file_no           = ctx->overall_progress.current_file_no;
+
+    ctx->callbacks.progress_cb(&progress, ctx->callbacks.userdata);
+  }
+}
+
 static bool _use_fd_based_push(CSYNC *ctx)
 {
     if(!ctx) return false;
@@ -190,6 +210,11 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   csync_hbf_info_t hbf_info = { 0, 0 };
   csync_progressinfo_t *progress_info = NULL;
+
+  enum csync_notify_type_e notify_start_kind = CSYNC_NOTIFY_START_UPLOAD;
+  enum csync_notify_type_e notify_end_kind = CSYNC_NOTIFY_FINISHED_UPLOAD;
+
+
   /* Check if there is progress info stored in the database for this file */
   progress_info = csync_statedb_get_progressinfo(ctx, st->phash, st->modtime, st->md5);
   rep_bak = ctx->replica;
@@ -232,6 +257,9 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     case REMOTE_REPLICA:
       srep = ctx->remote.type;
       drep = ctx->local.type;
+      notify_start_kind = CSYNC_NOTIFY_START_DOWNLOAD;
+      notify_end_kind   = CSYNC_NOTIFY_FINISHED_DOWNLOAD;
+
       if (_csync_build_remote_uri(ctx, &suri, st->path) < 0) {
         rc = -1;
         goto out;
@@ -244,6 +272,8 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
     default:
       break;
   }
+
+  _notify_progress(ctx, duri, notify_start_kind);
 
   /* Check if the file is still untouched since the update run. */
   if (do_pre_copy_stat) {
@@ -656,13 +686,8 @@ start_fd_based:
   /* set instruction for the statedb merger */
   st->instruction = CSYNC_INSTRUCTION_UPDATED;
 
-  /* Notify the overall progress */
-  if (ctx->callbacks.overall_progress_cb) {
-      ctx->progress.byte_current += st->size;
-      ctx->callbacks.overall_progress_cb(duri, ctx->progress.current_file_no++, ctx->progress.file_count,
-                                         ctx->progress.byte_current, ctx->progress.byte_sum,
-					 ctx->callbacks.userdata);
-  }
+  /* Notify the progress */
+  _notify_progress(ctx, duri, notify_end_kind);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "PUSHED  file: %s", duri);
 
@@ -1486,8 +1511,8 @@ static int _csync_propagation_file_count_visitor(void *obj, void *data) {
         case CSYNC_INSTRUCTION_NEW:
         case CSYNC_INSTRUCTION_SYNC:
         case CSYNC_INSTRUCTION_CONFLICT:
-          ctx->progress.file_count++;
-          ctx->progress.byte_sum += st->size;
+          ctx->overall_progress.file_count++;
+          ctx->overall_progress.byte_sum += st->size;
           break;
         default:
           break;
@@ -1638,8 +1663,7 @@ int csync_init_overall_progress(CSYNC *ctx) {
     return -1;
   }
 
-  if (ctx->callbacks.overall_progress_cb == NULL) {
-    /* No progress callback, no need to count */
+  if (ctx->callbacks.progress_cb == NULL) {
     return 0;
   }
 
@@ -1658,15 +1682,22 @@ int csync_init_overall_progress(CSYNC *ctx) {
     return -1;
   }
 
-  /* Notify the overall progress */
-  if (ctx->progress.file_count >0) {
-    ctx->progress.current_file_no = 1; /* start with file 1 */
+  /* Notify the progress */
+  csync_set_module_property(ctx, "overall_progress_data", &(ctx->overall_progress));
+
+  if (ctx->overall_progress.file_count >0) {
+    _notify_progress(ctx, NULL, CSYNC_NOTIFY_START_SYNC_SEQUENCE);
   }
-  ctx->callbacks.overall_progress_cb("", ctx->progress.current_file_no, ctx->progress.file_count,
-                                     ctx->progress.byte_current, ctx->progress.byte_sum,
-                                     ctx->callbacks.userdata);
 
   return 0;
+}
+
+void csync_finalize_progress(CSYNC *ctx) {
+  if (ctx->overall_progress.file_count >0) {
+    _notify_progress(ctx, NULL, CSYNC_NOTIFY_FINISHED_SYNC_SEQUENCE);
+  }
+
+   csync_set_module_property(ctx, "overall_progress_data", NULL);
 }
 
 int csync_propagate_files(CSYNC *ctx) {

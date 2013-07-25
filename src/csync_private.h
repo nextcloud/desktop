@@ -39,6 +39,7 @@
 #include "c_lib.h"
 #include "c_private.h"
 #include "csync.h"
+#include "csync_misc.h"
 
 #ifdef WITH_ICONV
 #include <iconv.h>
@@ -81,7 +82,6 @@ enum csync_replica_e {
 
 typedef struct csync_file_stat_s csync_file_stat_t;
 
-
 /**
  * @brief csync public structure
  */
@@ -89,9 +89,7 @@ struct csync_s {
   struct {
       csync_auth_callback auth_function;
       csync_log_callback log_function;
-      csync_file_progress_callback progresscb;
-      csync_overall_progress_callback overall_progress_cb;
-      csync_file_progress_callback file_progress_cb;
+      csync_progress_callback progress_cb;
       void *userdata;
   } callbacks;
   c_strlist_t *excludes;
@@ -146,12 +144,7 @@ struct csync_s {
     uid_t euid;
   } pwd;
 
-  struct {
-    int file_count;
-    int current_file_no;
-    long long byte_sum;
-    long long byte_current;
-  } progress;
+  csync_overall_progress_t overall_progress;
 
   struct csync_progressinfo_s *progress_info;
 

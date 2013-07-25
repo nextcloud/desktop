@@ -69,6 +69,8 @@ int csync_propagate_rename_file(CSYNC *ctx, csync_file_stat_t *st);
 
 int csync_init_overall_progress(CSYNC *ctx);
 
+void csync_finalize_progress(CSYNC *ctx);
+
 /**
  * }@
  */

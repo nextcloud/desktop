@@ -20,6 +20,7 @@
  */
 
 #include "csync_owncloud.h"
+#include "csync_misc.h"
 
 void set_error_message( const char *msg )
 {
@@ -332,4 +333,30 @@ int _stat_perms( int type ) {
                 | S_IROTH;                        /* others read perm */
     }
     return ret;
+}
+
+void oc_notify_progress(const char *file, enum csync_notify_type_e kind, off_t current_size, off_t full_size)
+{
+  csync_progress_callback progress_cb = csync_get_progress_callback(dav_session.csync_ctx);
+
+  csync_overall_progress_t overall_progress;
+  ZERO_STRUCT(overall_progress);
+
+  if( dav_session.overall_progress_data) {
+    overall_progress = *dav_session.overall_progress_data;
+  }
+
+  if (progress_cb) {
+    CSYNC_PROGRESS progress;
+    progress.kind = kind;
+    progress.path = file;
+    progress.curr_bytes = current_size;
+    progress.file_size  = full_size;
+    progress.overall_transmission_size = overall_progress.byte_sum;
+    progress.current_overall_bytes     = overall_progress.byte_current+current_size;
+    progress.overall_file_count        = overall_progress.file_count;
+    progress.current_file_no           = overall_progress.current_file_no;
+
+    progress_cb(&progress, csync_get_userdata(dav_session.csync_ctx));
+  }
 }
