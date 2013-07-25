@@ -227,22 +227,6 @@ int c_compare_file( const char *f1, const char *f2 ) {
     return -1;
   }
 
-  /* compare size first. */
-  rc = _tstat(wf1, &stat1);
-  if(rc< 0) {
-    goto out;
-  }
-  rc = _tstat(wf2, &stat2);
-  if(rc < 0) {
-    goto out;
-  }
-
-  /* if sizes are different, the files can not be equal. */
-  if( stat1.st_size != stat2.st_size ) {
-    rc = 0;
-    goto out;
-  }
-
 #ifdef _WIN32
   _fmode = _O_BINARY;
 #endif
@@ -252,9 +236,27 @@ int c_compare_file( const char *f1, const char *f2 ) {
     rc = -1;
     goto out;
   }
+
   fd2 = _topen(wf2, O_RDONLY);
   if(fd2 < 0) {
     rc = -1;
+    goto out;
+  }
+
+  /* compare size first. */
+  rc = fstat(fd1, &stat1);
+  if (rc < 0) {
+    goto out;
+  }
+
+  rc = fstat(fd2, &stat2);
+  if (rc < 0) {
+    goto out;
+  }
+
+  /* if sizes are different, the files can not be equal. */
+  if (stat1.st_size != stat2.st_size) {
+    rc = 0;
     goto out;
   }
 
