@@ -685,16 +685,15 @@ static int fetch_resource_list( const char *uri,
   if( hdl )
     ne_propfind_destroy(hdl);
 
-  if( ret == NE_REDIRECT ) {
-    const ne_uri *redir_ne_uri = NULL;
-    redir_ne_uri = ne_redirect_location(dav_session.ctx);
 #ifndef NDEBUG
+  if (ret == NE_REDIRECT) {
+    const ne_uri *redir_ne_uri = ne_redirect_location(dav_session.ctx);
     if (redir_ne_uri) {
       char *redir_uri = ne_uri_unparse(redir_ne_uri);
       DEBUG_WEBDAV("Permanently moved to %s", redir_uri);
     }
-#endif
   }
+#endif
 
   if( ret != NE_OK ) {
     free_fetchCtx(fetchCtx);
