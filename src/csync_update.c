@@ -241,7 +241,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
   while ((dirent = csync_vio_readdir(ctx, dh))) {
     const char *path = NULL;
-    size_t ulen;
+    size_t ulen = 0;
     int flen;
     int flag;
 
