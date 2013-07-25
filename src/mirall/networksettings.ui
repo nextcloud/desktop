@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>558</width>
-    <height>390</height>
+    <width>518</width>
+    <height>384</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -229,7 +229,7 @@
       <item row="0" column="0" colspan="2">
        <widget class="QRadioButton" name="noDownloadLimitRadioButton">
         <property name="text">
-         <string>Do not Limit</string>
+         <string>No Limit</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -261,14 +261,14 @@
       <item row="0" column="0" colspan="2">
        <widget class="QRadioButton" name="noUploadLimitRadioButton">
         <property name="text">
-         <string>Do Not Limit</string>
+         <string>No Limit</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0" colspan="2">
        <widget class="QRadioButton" name="autoUploadLimitRadioButton">
         <property name="text">
-         <string>Automatically Limit</string>
+         <string>Limit automatically</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -309,37 +309,9 @@
         </item>
        </layout>
       </item>
-      <item row="2" column="2">
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="3" column="0" colspan="2">
-       <spacer name="verticalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>147</width>
-          <height>6</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
      </layout>
      <zorder>autoUploadLimitRadioButton</zorder>
      <zorder>uploadLimitRadioButton</zorder>
-     <zorder>verticalSpacer_3</zorder>
-     <zorder>horizontalSpacer_2</zorder>
      <zorder>noUploadLimitRadioButton</zorder>
     </widget>
    </item>
