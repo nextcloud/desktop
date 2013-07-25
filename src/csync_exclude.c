@@ -93,15 +93,19 @@ int csync_exclude_load(CSYNC *ctx, const char *fname) {
     rc = 0;
     goto out;
   }
-  buf = c_malloc(size);
-  memset(buf, 0, size);
+  buf = c_malloc(size + 1);
+  if (buf == NULL) {
+      rc = -1;
+      goto out;
+  }
+  memset(buf, 0, size + 1);
 
   if (read(fd, buf, size) != size) {
     rc = -1;
     goto out;
   }
 
-  /* FIXME: Don't add duplicates */
+  /* FIXME: Use fgets and don't add duplicates */
   entry = buf;
   for (i = 0; i < size; i++) {
     if (buf[i] == '\n') {
