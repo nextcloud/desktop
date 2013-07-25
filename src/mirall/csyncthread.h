@@ -54,6 +54,7 @@ signals:
     void csyncUnavailable();
     void treeWalkResult(const SyncFileItemVector&);
 
+    void transmissionProgress( Progress::Info progress );
     void fileTransmissionProgress( Progress::Kind, const QString&, qint64, qint64);
     void overallTransmissionProgress( const QString& file, int file_no, int file_cnt, qint64 o1, qint64 o2 );
     void csyncStateDbFile( const QString& );
@@ -72,6 +73,7 @@ private:
                                  void *userdata);
     static void cb_overall_progress(const char *file_name, int file_no,
                                     int file_cnt, long long o1, long long o2, void *userdata);
+    static void cb_progress( CSYNC_PROGRESS *progress, void *userdata );
 
     static int treewalkLocal( TREE_WALK_FILE*, void *);
     static int treewalkRemote( TREE_WALK_FILE*, void *);

@@ -37,6 +37,17 @@ public:
     };
     typedef ProgressKind_s Kind;
 
+    struct ProgressInfo_s {
+        QString file;
+        Kind    kind;
+        qint64  file_count;
+        qint64  current_file_no;
+        qint64  byte_sum;
+        qint64  byte_current;
+
+    };
+    typedef ProgressInfo_s Info;
+
     static QString asString( Kind );
 };
 

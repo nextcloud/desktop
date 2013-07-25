@@ -333,8 +333,7 @@ void CSyncThread::startSync()
     }
     csync_set_module_property(_csync_ctx, "bandwidth_limit_upload", &uploadLimit);
 
-    csync_set_file_progress_callback( _csync_ctx, cb_file_progress );
-    csync_set_overall_progress_callback( _csync_ctx, cb_overall_progress );
+    csync_set_progress_callback( _csync_ctx, cb_progress );
 
     csync_set_module_property(_csync_ctx, "csync_context", _csync_ctx);
     csync_set_userdata(_csync_ctx, this);
@@ -404,6 +403,22 @@ void CSyncThread::startSync()
         }
     }
     qDebug() << Q_FUNC_INFO << "Sync finished";
+}
+
+void CSyncThread::cb_progress( CSYNC_PROGRESS *progress, void *userdata )
+{
+    if( !progress ) {
+        qDebug() << "No progress block in progress callback found!";
+        return;
+    }
+    if( !userdata ) {
+        qDebug() << "No thread given in progress callback!";
+        return;
+    }
+    QString path = QUrl::fromEncoded(progress->path).toString();
+    CSyncThread *thread = static_cast<CSyncThread*>(userdata);
+
+
 }
 
 void CSyncThread::cb_file_progress(const char *remote_url, enum csync_notify_type_e kind,
