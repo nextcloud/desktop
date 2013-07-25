@@ -145,8 +145,10 @@ static int parse_args(struct argument_s *csync_args, int argc, char **argv)
         case 0:
             opt = (struct option*)&(long_options[c]);
             if(c_streq(opt->name, "exclude-file")) {
+              if (optarg != NULL) {
                 csync_args->exclude_file = c_strdup(optarg);
                 /* printf("Argument: exclude-file: %s\n", csync_args->exclude_file); */
+              }
             } else if(c_streq(opt->name, "debug-level")) {
                 csync_args->debug_level = atoi(optarg);
             } else if(c_streq(opt->name, "disable-statedb")) {
