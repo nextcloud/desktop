@@ -273,6 +273,8 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
       break;
   }
 
+  /* Increment by one as its started now. */
+  ctx->overall_progress.current_file_no++;
   _notify_progress(ctx, duri, notify_start_kind);
 
   /* Check if the file is still untouched since the update run. */
@@ -687,6 +689,7 @@ start_fd_based:
   st->instruction = CSYNC_INSTRUCTION_UPDATED;
 
   /* Notify the progress */
+  ctx->overall_progress.byte_current += st->size;
   _notify_progress(ctx, duri, notify_end_kind);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "PUSHED  file: %s", duri);
@@ -1694,6 +1697,7 @@ int csync_init_overall_progress(CSYNC *ctx) {
 
 void csync_finalize_progress(CSYNC *ctx) {
   if (ctx->overall_progress.file_count >0) {
+
     _notify_progress(ctx, NULL, CSYNC_NOTIFY_FINISHED_SYNC_SEQUENCE);
   }
 

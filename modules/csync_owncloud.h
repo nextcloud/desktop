@@ -130,6 +130,7 @@ struct transfer_context {
     /* Used for limiting the bandwidth */
     struct timeval last_time;
     ne_off_t last_progress;
+    off_t get_size;
 };
 
 /* Struct with the WebDAV session */

@@ -943,8 +943,9 @@ static int content_reader(void *userdata, const char *buf, size_t len)
        /* DEBUG_WEBDAV("Writing %scompressed %d bytes", (writeCtx->decompress ? "" : "NON "), len); */
        written = write(writeCtx->fd, buf, len);
        if( len != written ) {
-           DEBUG_WEBDAV("WRN: content_reader wrote wrong num of bytes: %zu, %zu %d %d %d", len, written, written, errno, writeCtx->fd);
+           DEBUG_WEBDAV("WRN: content_reader wrote wrong num of bytes: %zu, %zu %d %d", len, written, errno, writeCtx->fd);
        }
+       writeCtx->get_size += len;
        return NE_OK;
    } else {
      errno = EBADF;
@@ -1194,6 +1195,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
     int error_code = 0;
     const char *error_string = NULL;
     char *clean_uri = NULL;
+    off_t file_size;
 
     if( ! write_ctx ) {
         errno = EINVAL;
@@ -1245,6 +1247,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
           rc = 1;
         } else {
           state = hbf_splitlist(trans, fd);
+          file_size = trans->stat_size;
 
           /* Reuse chunk info that was stored in database if existing. */
           if (dav_session.chunk_info && dav_session.chunk_info->transfer_id) {
@@ -1300,7 +1303,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
 
       ne_set_notifier(dav_session.ctx, 0, 0);
       if( rc == 0 ) {
-        oc_notify_progress(write_ctx->url, CSYNC_NOTIFY_FINISHED_UPLOAD, 0, 0);
+        oc_notify_progress(write_ctx->url, CSYNC_NOTIFY_FINISHED_UPLOAD, file_size, file_size);
       } else {
         oc_notify_progress(write_ctx->url, CSYNC_NOTIFY_ERROR, error_code, (long long)(error_string));
       }
@@ -1392,7 +1395,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
 
       ne_set_notifier(dav_session.ctx, 0, 0);
       if( rc == 0 ) {
-        oc_notify_progress( write_ctx->url, CSYNC_NOTIFY_START_DOWNLOAD, 0 , 0 );
+        oc_notify_progress( write_ctx->url, CSYNC_NOTIFY_FINISHED_DOWNLOAD, write_ctx->get_size , write_ctx->get_size );
       } else {
         oc_notify_progress( write_ctx->url, CSYNC_NOTIFY_ERROR, error_code , (long long)(error_string));
       }
