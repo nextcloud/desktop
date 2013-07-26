@@ -58,9 +58,8 @@ QString Progress::asString( Kind kind )
         re = QObject::tr("finished");
         break;
     default:
-        re = QObject::tr("What do I know?");
+        Q_ASSERT(false);
     }
-    qDebug() << "PROGRESS: " << re;
     return re;
 }
 

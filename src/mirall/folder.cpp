@@ -582,12 +582,6 @@ void Folder::startSync(const QStringList &pathList)
                     SLOT(slotAboutToRemoveAllFiles(SyncFileItem::Direction,bool*)), Qt::BlockingQueuedConnection);
     connect(_csync, SIGNAL(transmissionProgress(Progress::Info)), this, SLOT(slotTransmissionProgress(Progress::Info)));
 
-    connect(_csync, SIGNAL(fileTransmissionProgress(Progress::Kind, QString,qint64,qint64)),
-             SLOT(slotFileTransmissionProgress(Progress::Kind, QString,qint64,qint64)));
-    connect(_csync, SIGNAL(overallTransmissionProgress(QString, int, int, qint64, qint64)),
-             SLOT(slotOverallTransmissionProgress(QString, int, int, qint64, qint64)));
-
-
     _thread->start();
     QMetaObject::invokeMethod(_csync, "startSync", Qt::QueuedConnection);
     emit syncStarted();
