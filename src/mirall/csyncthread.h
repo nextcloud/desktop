@@ -55,8 +55,6 @@ signals:
     void treeWalkResult(const SyncFileItemVector&);
 
     void transmissionProgress( Progress::Info progress );
-    void fileTransmissionProgress( Progress::Kind, const QString&, qint64, qint64);
-    void overallTransmissionProgress( const QString& file, int file_no, int file_cnt, qint64 o1, qint64 o2 );
     void csyncStateDbFile( const QString& );
     void wipeDb();
 
@@ -67,12 +65,7 @@ signals:
 
 private:
     void handleSyncError(CSYNC *ctx, const char *state);
-    static void cb_file_progress(const char *remote_url,
-                                 enum csync_notify_type_e kind,
-                                 long long o1, long long o2,
-                                 void *userdata);
-    static void cb_overall_progress(const char *file_name, int file_no,
-                                    int file_cnt, long long o1, long long o2, void *userdata);
+
     static void cb_progress( CSYNC_PROGRESS *progress, void *userdata );
 
     static int treewalkLocal( TREE_WALK_FILE*, void *);
@@ -80,6 +73,7 @@ private:
     int treewalkFile( TREE_WALK_FILE*, bool );
     int treewalkError( TREE_WALK_FILE* );
 
+    Progress::Kind csyncToProgressKind( enum csync_notify_type_e kind );
     static int walkFinalize(TREE_WALK_FILE*, void* );
 
 

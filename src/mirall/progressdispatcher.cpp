@@ -51,9 +51,16 @@ QString Progress::asString( Kind kind )
     case EndUpload:
         re = QObject::tr("uploading");
         break;
+    case StartSync:
+        re = QObject::tr("starting");
+        break;
+    case EndSync:
+        re = QObject::tr("finished");
+        break;
     default:
         re = QObject::tr("What do I know?");
     }
+    qDebug() << "PROGRESS: " << re;
     return re;
 }
 
@@ -75,16 +82,23 @@ ProgressDispatcher::~ProgressDispatcher()
 
 }
 
-void ProgressDispatcher::setFolderProgress( Progress::Kind kind, const QString& folder, const QString& file,
-                                            qint64 p1, qint64 p2)
+void ProgressDispatcher::setProgressInfo(const QString& folder, Progress::Info newProgress)
 {
-    emit itemProgress( kind, folder, file, p1, p2 );
+    if( folder.isEmpty() ) {
+        return;
+    }
+
+    if( newProgress.kind == Progress::EndSync ) {
+        newProgress.overall_current_bytes = newProgress.overall_transmission_size;
+        newProgress.current_file_no = newProgress.overall_file_count;
+    }
+    _lastProgressHash[folder] = newProgress;
+
+    emit progressInfo( folder, newProgress );
 }
 
-void ProgressDispatcher::setOverallProgress( const QString& folder, const QString& file, int fileNo, int fileCnt,
-                                             qint64 p1, qint64 p2 )
-{
-    emit overallProgress( folder, file, fileNo, fileCnt, p1, p2 );
+Progress::Info ProgressDispatcher::lastProgressInfo(const QString& folder) {
+    return _lastProgressHash[folder];
 }
 
 }

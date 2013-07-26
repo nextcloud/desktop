@@ -580,6 +580,8 @@ void Folder::startSync(const QStringList &pathList)
     //blocking connection so the message box happens in this thread, but block the csync thread.
     connect(_csync, SIGNAL(aboutToRemoveAllFiles(SyncFileItem::Direction,bool*)),
                     SLOT(slotAboutToRemoveAllFiles(SyncFileItem::Direction,bool*)), Qt::BlockingQueuedConnection);
+    connect(_csync, SIGNAL(transmissionProgress(Progress::Info)), this, SLOT(slotTransmissionProgress(Progress::Info)));
+
     connect(_csync, SIGNAL(fileTransmissionProgress(Progress::Kind, QString,qint64,qint64)),
              SLOT(slotFileTransmissionProgress(Progress::Kind, QString,qint64,qint64)));
     connect(_csync, SIGNAL(overallTransmissionProgress(QString, int, int, qint64, qint64)),
@@ -632,18 +634,10 @@ void Folder::slotCSyncFinished()
     emit syncFinished( _syncResult );
 }
 
-
-void Folder::slotFileTransmissionProgress(Progress::Kind kind, const QString& file ,qint64 p1, qint64 p2)
+void Folder::slotTransmissionProgress(Progress::Info progress)
 {
-    ProgressDispatcher::instance()->setFolderProgress( kind, alias(), file, p1, p2 );
+    ProgressDispatcher::instance()->setProgressInfo(alias(), progress);
 }
-
-void Folder::slotOverallTransmissionProgress( const QString& fileName, int fileNo, int fileCnt,
-                                                      qint64 o1, qint64 o2)
-{
-    ProgressDispatcher::instance()->setOverallProgress( alias(), fileName, fileNo, fileCnt, o1, o2);
-}
-
 
 ServerActionNotifier::ServerActionNotifier(QObject *parent)
     : QObject(parent)

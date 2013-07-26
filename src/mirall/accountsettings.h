@@ -66,8 +66,8 @@ public slots:
     void slotOCInfoFail( QNetworkReply* );
     void slotDoubleClicked( const QModelIndex& );
     void slotFolderOpenAction( const QString& );
-    void slotSetProgress( Progress::Kind, const QString&, const QString&, qint64, qint64);
-    void slotSetOverallProgress( const QString&, const QString&, int, int, qint64, qint64);
+    void slotSetProgress(const QString&, Progress::Info progress);
+
     void slotUpdateQuota( qint64,qint64 );
     void slotIgnoreFilesEditor();
 
@@ -94,19 +94,9 @@ private:
     QStandardItemModel *_model;
     QListWidgetItem *_item;
     QUrl   _OCUrl;
-    double _progressFactor;
     QHash<QStandardItem*, QTimer*> _hideProgressTimers;
-    QTimer *_timer;
-
-    QString _previousFileProgressString;
     QString _kindContext;
-    QString _overallFolder;
-    QString _overallFile;
-    int _overallFileNo;
-    int _overallFileCnt;
-    qint64 _overallFileSize;
-    qint64 _overallProgressBase;
-    qint64 _lastProgress;
+
 };
 
 } // namespace Mirall

@@ -26,6 +26,7 @@
 #include "mirall/logbrowser.h"
 #include "mirall/systray.h"
 #include "mirall/connectionvalidator.h"
+#include "mirall/progressdispatcher.h"
 
 class QAction;
 class QMenu;
@@ -97,7 +98,7 @@ protected slots:
     void slotSetupProxy();
     void slotRefreshQuotaDisplay( qint64 total, qint64 used );
     void slotUseMonoIconsChanged( bool );
-    void slotUpdateProgress(QString,QString,int,int,qlonglong,qlonglong);
+    void slotUpdateProgress(const QString&,Progress::Info);
     void slotDisplayIdle();
     void slotHelp();
 private:

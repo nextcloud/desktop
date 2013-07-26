@@ -405,6 +405,42 @@ void CSyncThread::startSync()
     qDebug() << Q_FUNC_INFO << "Sync finished";
 }
 
+Progress::Kind CSyncThread::csyncToProgressKind( enum csync_notify_type_e kind )
+{
+    Progress::Kind pKind = Progress::Invalid;
+
+    switch(kind) {
+    case CSYNC_NOTIFY_INVALID:
+        pKind = Progress::Invalid;
+        break;
+    case CSYNC_NOTIFY_START_SYNC_SEQUENCE:
+        pKind = Progress::StartSync;
+        break;
+    case CSYNC_NOTIFY_START_DOWNLOAD:
+        pKind = Progress::StartDownload;
+        break;
+    case CSYNC_NOTIFY_START_UPLOAD:
+        pKind = Progress::StartUpload;
+        break;
+    case CSYNC_NOTIFY_PROGRESS:
+        pKind = Progress::Context;
+        break;
+    case CSYNC_NOTIFY_FINISHED_DOWNLOAD:
+        pKind = Progress::EndDownload;
+        break;
+    case CSYNC_NOTIFY_FINISHED_UPLOAD:
+        pKind = Progress::EndUpload;
+        break;
+    case CSYNC_NOTIFY_FINISHED_SYNC_SEQUENCE:
+        pKind = Progress::EndSync;
+        break;
+    default:
+        pKind = Progress::Invalid;
+        break;
+    }
+    return pKind;
+}
+
 void CSyncThread::cb_progress( CSYNC_PROGRESS *progress, void *userdata )
 {
     if( !progress ) {
@@ -415,41 +451,22 @@ void CSyncThread::cb_progress( CSYNC_PROGRESS *progress, void *userdata )
         qDebug() << "No thread given in progress callback!";
         return;
     }
-    QString path = QUrl::fromEncoded(progress->path).toString();
+    Progress::Info pInfo;
     CSyncThread *thread = static_cast<CSyncThread*>(userdata);
 
+    pInfo.kind                  = thread->csyncToProgressKind( progress->kind );
+    pInfo.current_file          = QUrl::fromEncoded( progress->path ).toString();
+    pInfo.file_size             = progress->file_size;
+    pInfo.current_file_bytes    = progress->curr_bytes;
 
-}
+    pInfo.overall_file_count    = progress->overall_file_count;
+    pInfo.current_file_no       = progress->current_file_no;
+    pInfo.overall_transmission_size = progress->overall_transmission_size;
+    pInfo.overall_current_bytes = progress->current_overall_bytes;
 
-void CSyncThread::cb_file_progress(const char *remote_url, enum csync_notify_type_e kind,
-                                   long long o1, long long o2, void *userdata)
-{
-    QString path = QUrl::fromEncoded(remote_url).toString();
-    CSyncThread *thread = static_cast<CSyncThread*>(userdata);
+    // Connect to something in folder!
+    thread->transmissionProgress( pInfo );
 
-    if (kind == CSYNC_NOTIFY_FINISHED_DOWNLOAD) {
-        thread->fileTransmissionProgress( Progress::EndDownload, path, (qint64)o2, (qint64)o2 );
-        thread->fileReceived(path);
-    } else if( kind == CSYNC_NOTIFY_START_UPLOAD ) {
-        thread->fileTransmissionProgress( Progress::StartUpload, path, (qint64)0, (qint64)0 ); // indicate the upload start.
-    } else if( kind == CSYNC_NOTIFY_PROGRESS ) {
-        thread->fileTransmissionProgress( Progress::Context, path, (qint64)o1, (qint64)o2 );
-    } else if( kind == CSYNC_NOTIFY_FINISHED_UPLOAD ) {
-        thread->fileTransmissionProgress( Progress::EndUpload, path, (qint64)o2, (qint64)o2 );
-    } else if( kind == CSYNC_NOTIFY_START_DOWNLOAD ) {
-        thread->fileTransmissionProgress( Progress::StartDownload, path, (qint64)0, (qint64)0 );
-    }
-}
-
-void CSyncThread::cb_overall_progress(const char *file_name, int file_no, int file_cnt,
-                                      long long o1, long long o2, void *userdata)
-{
-    QString file = QUrl::fromEncoded(file_name).toString();
-    CSyncThread *thread = static_cast<CSyncThread*>(userdata);
-
-    if(thread) {
-        thread->overallTransmissionProgress( file, file_no, file_cnt, qint64(o1), qint64(o2) );
-    }
 }
 
 void CSyncThread::setLastAuthCookies(QList<QNetworkCookie> c)

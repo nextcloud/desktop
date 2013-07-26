@@ -178,10 +178,7 @@ private slots:
     void slotCsyncUnavailable();
     void slotCSyncFinished();
 
-    void slotFileTransmissionProgress(Progress::Kind kind, const QString& file ,qint64 p1, qint64 p2);
-
-    void slotOverallTransmissionProgress( const QString& fileName, int fileNo, int fileCnt,
-                                          qint64 o1, qint64 o2);
+    void slotTransmissionProgress(Progress::Info progress);
 
     void slotPollTimerTimeout();
 

@@ -36,7 +36,6 @@
 #include "mirall/utility.h"
 #include "mirall/inotify.h"
 #include "mirall/connectionvalidator.h"
-#include "mirall/progressdispatcher.h"
 
 #if defined(Q_OS_WIN)
 #include <windows.h>
@@ -123,8 +122,9 @@ Application::Application(int &argc, char **argv) :
              this, SLOT(slotShowOptionalTrayMessage(QString,QString)));
     ProgressDispatcher *pd = ProgressDispatcher::instance();
 
-    connect( pd, SIGNAL(overallProgress(QString,QString,int,int,qint64,qint64)),
-             SLOT(slotUpdateProgress(QString,QString,int,int,qint64,qint64)));
+    connect( pd, SIGNAL(progressInfo(QString,Progress::Info)), this,
+             SLOT(slotUpdateProgress(QString,Progress::Info)) );
+
     // create folder manager for sync folder management
     FolderMan *folderMan = FolderMan::instance();
     connect( folderMan, SIGNAL(folderSyncStateChange(QString)),
@@ -139,7 +139,7 @@ Application::Application(int &argc, char **argv) :
     setQuitOnLastWindowClosed(false);
 
     qRegisterMetaType<Progress::Kind>("Progress::Kind");
-
+    qRegisterMetaType<Progress::Info>("Progress::Info");
 #if 0
     qDebug() << "* Network is" << (_networkMgr->isOnline() ? "online" : "offline");
     foreach (const QNetworkConfiguration& netCfg, _networkMgr->allConfigurations(QNetworkConfiguration::Active)) {
@@ -484,16 +484,16 @@ void Application::slotUseMonoIconsChanged(bool)
     computeOverallSyncStatus();
 }
 
-void Application::slotUpdateProgress(QString folder, QString file, int fileNo, int fileCnt, qlonglong o1, qlonglong o2)
+void Application::slotUpdateProgress(const QString &folder, Progress::Info progress)
 {
-    Q_UNUSED(folder)
-    Q_UNUSED(file)
+    Q_UNUSED(folder);
 
-    QString curAmount = Utility::octetsToString(o1);
-    QString totalAmount = Utility::octetsToString(o2);
-    _actionStatus->setText(tr("Syncing %1 of %2 (%3 of %4) ").arg(fileNo).arg(fileCnt).arg(curAmount, totalAmount));
+    QString curAmount = Utility::octetsToString(progress.overall_current_bytes);
+    QString totalAmount = Utility::octetsToString(progress.overall_transmission_size);
+    _actionStatus->setText(tr("Syncing %1 of %2 (%3 of %4) ").arg(progress.current_file_no)
+                           .arg(progress.overall_file_count).arg(curAmount, totalAmount));
 
-    if (o1 == o2) {
+    if (progress.kind == Progress::EndSync) {
         QTimer::singleShot(2000, this, SLOT(slotDisplayIdle()));
     }
 }

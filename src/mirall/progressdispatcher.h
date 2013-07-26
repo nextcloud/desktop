@@ -15,6 +15,7 @@
 #define PROGRESSDISPATCHER_H
 
 #include <QObject>
+#include <QHash>
 
 namespace Mirall {
 
@@ -26,6 +27,8 @@ class Progress
 {
 public:
     enum ProgressKind_s {
+        Invalid,
+        StartSync,
         Download,
         Upload,
         Context,
@@ -33,17 +36,21 @@ public:
         StartDownload,
         StartUpload,
         EndDownload,
-        EndUpload
+        EndUpload,
+        EndSync
     };
     typedef ProgressKind_s Kind;
 
     struct ProgressInfo_s {
-        QString file;
         Kind    kind;
-        qint64  file_count;
+        QString current_file;
+        qint64  file_size;
+        qint64  current_file_bytes;
+
+        qint64  overall_file_count;
         qint64  current_file_no;
-        qint64  byte_sum;
-        qint64  byte_current;
+        qint64  overall_transmission_size;
+        qint64  overall_current_bytes;
 
     };
     typedef ProgressInfo_s Info;
@@ -69,43 +76,27 @@ public:
     static ProgressDispatcher* instance();
     ~ProgressDispatcher();
 
+    Progress::Info lastProgressInfo(const QString& folder);
 signals:
     /**
-      @brief Signals the progress of a single file item.
-
-      @param[out]  kind   The progress kind
-      @param[out]  folder The folder which is being processed
-      @param[out]  file   The current file.
-      @param[out]  p1     The current progress in byte.
-      @param[out]  p2     The maximum progress in byte.
-
-     */
-    void itemProgress( Progress::Kind kind, const QString& folder, const QString& file, qint64 p1, qint64 p2);
-
-    /**
-      @brief Signals the overall progress of a sync run.
-
-      This signals the overall sync progress of a single sync run.
-      If p1 == 0, the sync starts.
-      If p1 == p2, the sync is finished.
+      @brief Signals the progress of data transmission.
 
       @param[out]  folder The folder which is being processed
-      @param[out]  file   The current file.
-      @param[out]  fileNo The current file number
-      @param[out]  fileNo The overall file count to process.
-      @param[out]  p1     The current progress in byte.
-      @param[out]  p2     The maximum progress in byte.
+      @param[out]  newProgress   A struct with all progress info.
+
      */
-    void overallProgress(const QString& folder, const QString& file, int fileNo, int fileCnt, qint64 p1, qint64 p2);
+
+    void progressInfo( const QString& folder, Progress::Info progress );
 
 protected:
-    void setFolderProgress(Progress::Kind,  const QString&, const QString&, qint64, qint64);
-    void setOverallProgress(const QString&, const QString&, int, int, qint64, qint64);
+    void setProgressInfo(const QString &folder, Progress::Info newProgress);
 
 private:
     ProgressDispatcher(QObject* parent = 0);
 
     static ProgressDispatcher* _instance;
+
+    QHash<QString, Progress::Info> _lastProgressHash;
 };
 
 }
