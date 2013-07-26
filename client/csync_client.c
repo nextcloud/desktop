@@ -112,10 +112,31 @@ static void print_help()
     exit(0);
 }
 
+static int c_atoi(const char *string, int *result)
+{
+    char *errptr;
+    int i;
+
+    if (string == NULL) {
+        return -1;
+    }
+
+    i = strtol(string, &errptr, 10);
+    if (errptr == NULL) {
+        /* error case, the input string had an error. */
+        return -1;
+    }
+
+    *result = i;
+
+    return 0;
+}
+
 static int parse_args(struct argument_s *csync_args, int argc, char **argv)
 {
     while(optind < argc) {
         int c = -1;
+        int rc;
         struct option *opt = NULL;
         int result = getopt_long( argc, argv, "d:cvVh", long_options, &c );
 
@@ -125,8 +146,9 @@ static int parse_args(struct argument_s *csync_args, int argc, char **argv)
 
         switch(result) {
         case 'd':
-            if (optarg != NULL) {
-              csync_args->debug_level = atoi(optarg);
+            rc = c_atoi(optarg, &csync_args->debug_level);
+            if (rc < 0) {
+                fprintf(stderr, "Can't parse debug level argument");
             }
             break;
         case 'c':
@@ -150,7 +172,10 @@ static int parse_args(struct argument_s *csync_args, int argc, char **argv)
                 /* printf("Argument: exclude-file: %s\n", csync_args->exclude_file); */
               }
             } else if(c_streq(opt->name, "debug-level")) {
-                csync_args->debug_level = atoi(optarg);
+                rc = c_atoi(optarg, &csync_args->debug_level);
+                if (rc < 0) {
+                    fprintf(stderr, "Can't parse debug level argument");
+                }
             } else if(c_streq(opt->name, "disable-statedb")) {
                 csync_args->disable_statedb = 1;
             } else if(c_streq(opt->name, "test-update")) {
@@ -159,7 +184,6 @@ static int parse_args(struct argument_s *csync_args, int argc, char **argv)
                 csync_args->reconcile = 0;
                 csync_args->propagate = 0;
                 /* printf("Argument: test-update\n"); */
-
             } else if(c_streq(opt->name, "dry-run")) {
                 csync_args->create_statedb = 0;
                 csync_args->update = 1;
@@ -323,5 +347,3 @@ out:
 
   return rc;
 }
-
-/* vim: set ts=8 sw=2 et cindent: */
