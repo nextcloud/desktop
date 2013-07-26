@@ -562,7 +562,8 @@ const char *hbf_error_string(hbf_transfer_t *transfer, Hbf_State state)
             int block_id = (cnt + transfer->start_id) % transfer->block_cnt;
             hbf_block_t *block = transfer->block_arr[block_id];
 
-            if( block->state != HBF_NOT_TRANSFERED && block->state != HBF_TRANSFER_SUCCESS ) {
+            if( block->state != HBF_NOT_TRANSFERED && block->state != HBF_TRANSFER_SUCCESS
+                    && block->http_error_msg != NULL) {
                 return block->http_error_msg;
             }
         }
