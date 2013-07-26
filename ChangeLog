@@ -5,6 +5,25 @@ version 0.50.0 (released 2012-xx-xx)
   * Added owncloud module.
   * Added backup reconciler.
   * Fixed serveral bugs.
+  * Cross platform ability: Support for FreeBSD, Windows and MacOSX
+  * new logging framework, removed log4c dependency
+  * some additions in std lib: c_tmpname
+  * cmocka tests
+  * compile with CLang, MingW and latest GCC
+  * exported file_tree_walk functions
+  * module capabilities
+  * push to temp optional, handled through capabilities
+  * Improved error reporting: status codes, custom errnos
+  * iconv support to support various char sets.
+  * API to push information to the modules
+  * Database optimizations: more performance, more integrity checks
+  * Content check in conflict case.
+  * csync_commit to persist the context
+  * Progress information on file level and overall, also client
+  * New module functions get and put
+  * Relicensing to LGPLv2.1
+
+  => 421 commits in git.
 
 version 0.44.0 (released 2010-02-15)
   * Migrated sftp module to libssh 0.4.
