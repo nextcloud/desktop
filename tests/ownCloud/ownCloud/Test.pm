@@ -49,7 +49,7 @@ our $localDir   = "turbo";
 
 @ISA        = qw(Exporter);
 @EXPORT     = qw( initTesting createRemoteDir createLocalDir cleanup csync assertLocalDirs assertLocalAndRemoteDir 
-                  glob_put put_to_dir localDir remoteDir localCleanup createLocalFile);
+                  glob_put put_to_dir localDir remoteDir localCleanup createLocalFile remoteCleanup);
 
 sub fromFileName($)
 {
@@ -137,21 +137,22 @@ sub cleanup()
   print "\nInterrupt before cleanup in 4 seconds...\n";
   sleep(4);
 
-  remoteCleanup( );
+  remoteCleanup( '' );
   localCleanup( '' );
 
 }
 
-sub remoteCleanup( )
+sub remoteCleanup($)
 {
-    $d->open( -url => $owncloud );
+    my ($dir) = @_;
+    $d->open( -url => $owncloud . $dir );
 
     print "Cleaning Remote!\n";
 
-    my $re = $d->delete( $owncloud );
+    my $re = $d->delete( $owncloud . $dir );
 
     if( $re == 0 ) {
-	print "Failed to clenup directory <$owncloud>\n";
+	print "Failed to clenup directory <$owncloud $dir>\n";
     }
     return $re;
 }

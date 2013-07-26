@@ -750,6 +750,50 @@ static int  _merge_and_write_statedb(CSYNC *ctx) {
   return rc;
 }
 
+/* reset all the list to empty.
+ * used by csync_commit and csync_destroy */
+static void _csync_clean_ctx(CSYNC *ctx)
+{
+    c_list_t * walk;
+
+    while (ctx->progress_info) {
+        csync_progressinfo_t *next = ctx->progress_info->next;
+        csync_statedb_free_progressinfo(ctx->progress_info);
+        ctx->progress_info = next;
+    }
+
+    /* destroy the rbtrees */
+    if (c_rbtree_size(ctx->local.tree) > 0) {
+        c_rbtree_destroy(ctx->local.tree, _tree_destructor);
+    }
+
+    if (c_rbtree_size(ctx->remote.tree) > 0) {
+        c_rbtree_destroy(ctx->remote.tree, _tree_destructor);
+    }
+
+    csync_rename_destroy(ctx);
+
+    for (walk = c_list_last(ctx->local.ignored_cleanup); walk != NULL; walk = c_list_prev(walk)) {
+        SAFE_FREE(walk->data);
+    }
+    for (walk = c_list_last(ctx->remote.ignored_cleanup); walk != NULL; walk = c_list_prev(walk)) {
+        SAFE_FREE(walk->data);
+    }
+
+    /* free memory */
+    c_rbtree_free(ctx->local.tree);
+    c_list_free(ctx->local.list);
+    c_list_free(ctx->local.ignored_cleanup);
+    c_rbtree_free(ctx->remote.tree);
+    c_list_free(ctx->remote.list);
+    c_list_free(ctx->remote.ignored_cleanup);
+
+    ctx->remote.list = 0;
+    ctx->local.list = 0;
+    ctx->remote.ignored_cleanup = 0;
+    ctx->local.ignored_cleanup = 0;
+}
+
 int csync_commit(CSYNC *ctx) {
   int rc = 0;
   char *lock = NULL;
@@ -772,31 +816,7 @@ int csync_commit(CSYNC *ctx) {
 
   csync_vio_commit(ctx);
 
-  while (ctx->progress_info) {
-    csync_progressinfo_t *next = ctx->progress_info->next;
-    csync_statedb_free_progressinfo(ctx->progress_info);
-    ctx->progress_info = next;
-  }
-
-  /* destroy the rbtrees */
-  if (c_rbtree_size(ctx->local.tree) > 0) {
-    c_rbtree_destroy(ctx->local.tree, _tree_destructor);
-  }
-
-  if (c_rbtree_size(ctx->remote.tree) > 0) {
-    c_rbtree_destroy(ctx->remote.tree, _tree_destructor);
-  }
-
-  csync_rename_destroy(ctx);
-
-  /* free memory */
-  c_rbtree_free(ctx->local.tree);
-  c_list_free(ctx->local.list);
-  c_rbtree_free(ctx->remote.tree);
-  c_list_free(ctx->remote.list);
-
-  ctx->remote.list = 0;
-  ctx->local.list = 0;
+  _csync_clean_ctx(ctx);
 
   ctx->remote.read_from_db = 0;
 
@@ -883,28 +903,8 @@ int csync_destroy(CSYNC *ctx) {
     csync_lock_remove(ctx, lock);
   }
 
-  while (ctx->progress_info) {
-    csync_progressinfo_t *next = ctx->progress_info->next;
-    csync_statedb_free_progressinfo(ctx->progress_info);
-    ctx->progress_info = next;
-  }
+  _csync_clean_ctx(ctx);
 
-  /* destroy the rbtrees */
-  if (c_rbtree_size(ctx->local.tree) > 0) {
-    c_rbtree_destroy(ctx->local.tree, _tree_destructor);
-  }
-
-  if (c_rbtree_size(ctx->remote.tree) > 0) {
-    c_rbtree_destroy(ctx->remote.tree, _tree_destructor);
-  }
-
-  csync_rename_destroy(ctx);
-
-  /* free memory */
-  c_rbtree_free(ctx->local.tree);
-  c_list_free(ctx->local.list);
-  c_rbtree_free(ctx->remote.tree);
-  c_list_free(ctx->remote.list);
   SAFE_FREE(ctx->local.uri);
   SAFE_FREE(ctx->remote.uri);
   SAFE_FREE(ctx->options.config_dir);

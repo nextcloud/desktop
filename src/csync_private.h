@@ -106,6 +106,7 @@ struct csync_s {
     c_rbtree_t *tree;
     c_list_t *list;
     enum csync_replica_e type;
+    c_list_t *ignored_cleanup;
   } local;
 
   struct {
@@ -114,6 +115,7 @@ struct csync_s {
     c_list_t *list;
     enum csync_replica_e type;
     int  read_from_db;
+    c_list_t *ignored_cleanup;
   } remote;
 
   struct {

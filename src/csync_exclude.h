@@ -53,7 +53,7 @@ void csync_exclude_destroy(CSYNC *ctx);
  * @param ctx   The synchronizer context.
  * @param path  The patch to check.
  *
- * @return  1 if excluded, 0 if not.
+ * @return  2 if excluded and needs cleanup, 1 if excluded, 0 if not.
  */
 int csync_excluded(CSYNC *ctx, const char *path);
 

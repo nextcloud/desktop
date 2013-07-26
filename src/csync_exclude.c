@@ -135,6 +135,8 @@ int csync_excluded(CSYNC *ctx, const char *path) {
   char *bname;
   int rc;
   int match = 0;
+  const char *it;
+  int type = 0;
 
   /* exclude the lock file */
   if (c_streq( path, CSYNC_LOCK_FILE )) {
@@ -180,14 +182,22 @@ int csync_excluded(CSYNC *ctx, const char *path) {
   }
 
   for (i = 0; match == 0 && i < ctx->excludes->count; i++) {
-      rc = csync_fnmatch(ctx->excludes->vector[i], path, 0);
-      if (rc == 0) {
-          match = 1;
+      it = ctx->excludes->vector[i];
+      type = 1;
+      /* Ecludes starting with ']' means it can be cleanup */
+      if (it[0] == ']') {
+        ++it;
+        type = 2;
       }
 
-      rc = csync_fnmatch(ctx->excludes->vector[i], bname, 0);
+      rc = csync_fnmatch(it, path, 0);
       if (rc == 0) {
-          match = 1;
+          match = type;
+      }
+
+      rc = csync_fnmatch(it, bname, 0);
+      if (rc == 0) {
+          match = type;
       }
   }
 

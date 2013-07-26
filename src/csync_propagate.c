@@ -1441,16 +1441,20 @@ static int _cmp_char( const void *d1, const void *d2 )
 static int _csync_propagation_cleanup(CSYNC *ctx) {
   c_list_t *list = NULL;
   c_list_t *walk = NULL;
+  c_list_t *walk2 = NULL;
+  c_list_t *ignored_cleanup = NULL;
   char *uri = NULL;
   char *dir = NULL;
 
   switch (ctx->current) {
     case LOCAL_REPLICA:
       list = ctx->local.list;
+      ignored_cleanup = ctx->local.ignored_cleanup;
       uri = ctx->local.uri;
       break;
     case REMOTE_REPLICA:
       list = ctx->remote.list;
+      ignored_cleanup = ctx->remote.ignored_cleanup;
       uri = ctx->remote.uri;
       break;
     default:
@@ -1473,9 +1477,33 @@ static int _csync_propagation_cleanup(CSYNC *ctx) {
     pst = (csync_file_stat_t **) walk->data;
     st = *(pst);
 
+
+    /* Cleanup ignored files */
+    for (walk2 = c_list_last(ignored_cleanup); walk2 != NULL; walk2 = c_list_prev(walk2)) {
+      const char *fn = (const char*) walk2->data;
+      /* check if the file name does not starts with the path to remove.  */
+      if (strlen(fn) < st->pathlen || fn[st->pathlen] != '/'
+          || strncmp(fn, st->path, st->pathlen) != 0) {
+        continue;
+      }
+
+      if (asprintf(&dir, "%s/%s", uri, fn) < 0) {
+        return -1;
+      }
+
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Removing ignored file %s ", dir);
+
+      if (csync_vio_unlink(ctx, dir) < 0) {
+        return -1;
+      }
+
+      SAFE_FREE(dir);
+    }
+
     if (asprintf(&dir, "%s/%s", uri, st->path) < 0) {
       return -1;
     }
+
 
     if (csync_vio_rmdir(ctx, dir) < 0) {
       _csync_remove_error(ctx, st, uri);

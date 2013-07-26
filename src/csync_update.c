@@ -435,6 +435,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   while ((dirent = csync_vio_readdir(ctx, dh))) {
     const char *path = NULL;
     int flag;
+    int excluded;
 
     d_name = dirent->name;
     if (d_name == NULL) {
@@ -470,8 +471,21 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     }
 
     /* Check if file is excluded */
-    if (csync_excluded(ctx, path)) {
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s excluded", path);
+    excluded = csync_excluded(ctx, path);
+    if (excluded) {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s excluded  (%d)", path, excluded);
+      if (excluded == 2) {
+        switch (ctx->current) {
+          case LOCAL_REPLICA:
+            ctx->local.ignored_cleanup = c_list_append(ctx->local.ignored_cleanup, c_strdup(path));
+            break;
+          case REMOTE_REPLICA:
+            ctx->remote.ignored_cleanup = c_list_append(ctx->remote.ignored_cleanup, c_strdup(path));
+            break;
+          default:
+            break;
+        }
+      }
       csync_vio_file_stat_destroy(dirent);
       dirent = NULL;
       SAFE_FREE(filename);
