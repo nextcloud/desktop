@@ -222,9 +222,13 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 if(NOT WIN32)
-    install(FILES
-        ${theme_dir}/colored/${APPLICATION_SHORTNAME}-icon-48.png 
-        DESTINATION share/icons/hicolor/48x48/apps/ RENAME ${APPLICATION_SHORTNAME}.png)
+    file( GLOB _icons "${theme_dir}/colored/${APPLICATION_SHORTNAME}-icon-*.png" )
+    foreach( _file ${_icons} )
+        string( REPLACE "${theme_dir}/colored/${APPLICATION_SHORTNAME}-icon-" "" _res ${_file} )
+        string( REPLACE ".png" "" _res ${_res} )
+        install( FILES ${_file} RENAME ${APPLICATION_SHORTNAME}.png DESTINATION
+${CMAKE_INSTALL_DATADIR}/icons/hicolor/${_res}x${_res}/apps )
+    endforeach( _file )
 endif(NOT WIN32)
 
     install(FILES ${mirall_I18N} DESTINATION share/${APPLICATION_SHORTNAME}/i18n)
