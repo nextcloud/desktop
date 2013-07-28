@@ -34,5 +34,7 @@
  */
 int csync_config_load(CSYNC *ctx, const char *config);
 
+int csync_config_parse_file(CSYNC *ctx, const char *config);
+
 #endif /* _CSYNC_X_H */
 /* vim: set ft=c.doxygen ts=8 sw=2 et cindent: */
