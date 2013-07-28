@@ -202,7 +202,8 @@ int csync_init(CSYNC *ctx) {
     goto out;
   }
 
-  if (csync_config_load(ctx, config) < 0) {
+  rc = csync_config_parse_file(ctx, config);
+  if (rc < 0) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Could not load config file %s, using defaults.", config);
   }
 
