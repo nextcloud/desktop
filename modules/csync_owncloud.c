@@ -409,7 +409,7 @@ static void ne_notify_status_cb (void *userdata, ne_session_status status,
                         chunked_done + info->sr.progress,
                         chunked_total_size ? chunked_total_size : info->sr.total );
         }
-        if (chunked_total_size && info->sr.total == info->sr.progress) {
+        if (chunked_total_size && info->sr.total > 0 && info->sr.total == info->sr.progress) {
             chunked_done += info->sr.total;
             DEBUG_WEBDAV("Chunk upload completed for '%s' (%lld bytes out of %lld)", tc->url , chunked_done, chunked_total_size);
         }
