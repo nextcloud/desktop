@@ -28,7 +28,8 @@ namespace CredentialsFactory
 
 AbstractCredentials* create(const QString& type)
 {
-    if (type == "http") {
+    // empty string might happen for old version of configuration
+    if (type == "http" || type == "") {
         return new HttpCredentials;
     } else if (type == "dummy") {
         return new DummyCredentials;
