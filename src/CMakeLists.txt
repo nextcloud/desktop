@@ -69,7 +69,6 @@ set(libsync_SRCS
     mirall/syncresult.cpp
     mirall/networklocation.cpp
     mirall/mirallconfigfile.cpp
-    mirall/credentialstore.cpp
     mirall/csyncthread.cpp
     mirall/fileutils.cpp
     mirall/theme.cpp
@@ -82,11 +81,12 @@ set(libsync_SRCS
     mirall/creds/dummycredentials.cpp
     mirall/creds/httpcredentials.cpp
     mirall/creds/credentialsfactory.cpp
-    mirall/creds/httpconfigfile.cpp
+    mirall/creds/http/credentialstore.cpp
+    mirall/creds/http/httpconfigfile.cpp
     mirall/creds/shibbolethcredentials.cpp
-    mirall/creds/shibbolethaccessmanager.cpp
-    mirall/creds/shibbolethcookiejar.cpp
-    mirall/creds/shibbolethwebview.cpp
+    mirall/creds/shibboleth/shibbolethaccessmanager.cpp
+    mirall/creds/shibboleth/shibbolethcookiejar.cpp
+    mirall/creds/shibboleth/shibbolethwebview.cpp
 )
 
 set(libsync_HEADERS
@@ -97,7 +97,6 @@ set(libsync_HEADERS
     mirall/theme.h
     mirall/owncloudtheme.h
     mirall/owncloudinfo.h
-    mirall/credentialstore.h
     mirall/logger.h
     mirall/connectionvalidator.h
     mirall/progressdispatcher.h
@@ -105,11 +104,12 @@ set(libsync_HEADERS
     mirall/creds/dummycredentials.h
     mirall/creds/httpcredentials.h
     mirall/creds/credentialsfactory.h
-    mirall/creds/httpconfigfile.h
+    mirall/creds/http/credentialstore.h
+    mirall/creds/http/httpconfigfile.h
     mirall/creds/shibbolethcredentials.h
-    mirall/creds/shibbolethaccessmanager.h
-    mirall/creds/shibbolethcookiejar.h
-    mirall/creds/shibbolethwebview.h
+    mirall/creds/shibboleth/shibbolethaccessmanager.h
+    mirall/creds/shibboleth/shibbolethcookiejar.h
+    mirall/creds/shibboleth/shibbolethwebview.h
 )
 
 IF( INOTIFY_FOUND )

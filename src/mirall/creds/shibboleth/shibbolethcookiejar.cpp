@@ -12,7 +12,7 @@
  * for more details.
  */
 
-#include "mirall/creds/shibbolethcookiejar.h"
+#include "mirall/creds/shibboleth/shibbolethcookiejar.h"
 
 namespace Mirall
 {

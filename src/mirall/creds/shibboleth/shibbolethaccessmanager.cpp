@@ -14,7 +14,7 @@
 
 #include <QNetworkRequest>
 
-#include "mirall/creds/shibbolethaccessmanager.h"
+#include "mirall/creds/shibboleth/shibbolethaccessmanager.h"
 
 namespace Mirall
 {

@@ -16,8 +16,8 @@
 
 #include "config.h"
 
-#include "mirall/credentialstore.h"
-#include "mirall/creds/httpconfigfile.h"
+#include "mirall/creds/http/credentialstore.h"
+#include "mirall/creds/http/httpconfigfile.h"
 #include "mirall/theme.h"
 
 #ifdef WITH_QTKEYCHAIN

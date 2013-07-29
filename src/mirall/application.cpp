@@ -30,7 +30,6 @@
 #include "mirall/theme.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/updatedetector.h"
-#include "mirall/credentialstore.h"
 #include "mirall/logger.h"
 #include "mirall/settingsdialog.h"
 #include "mirall/utility.h"

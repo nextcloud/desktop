@@ -20,7 +20,7 @@
 #include "mirall/owncloudinfo.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/utility.h"
-#include "mirall/credentialstore.h"
+#include "mirall/creds/http/credentialstore.h"
 
 namespace Mirall
 {

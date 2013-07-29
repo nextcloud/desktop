@@ -15,8 +15,8 @@
  */
 
 #include "mirall/creds/shibbolethcredentials.h"
-#include "mirall/creds/shibbolethaccessmanager.h"
-#include "mirall/creds/shibbolethwebview.h"
+#include "mirall/creds/shibboleth/shibbolethaccessmanager.h"
+#include "mirall/creds/shibboleth/shibbolethwebview.h"
 #include "mirall/owncloudinfo.h"
 #include "mirall/mirallconfigfile.h"
 

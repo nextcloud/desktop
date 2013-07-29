@@ -14,7 +14,7 @@
  * for more details.
  */
 
-#include "mirall/creds/httpconfigfile.h"
+#include "mirall/creds/http/httpconfigfile.h"
 
 namespace Mirall
 {

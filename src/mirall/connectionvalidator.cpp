@@ -17,7 +17,6 @@
 #include "mirall/owncloudinfo.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/theme.h"
-#include "mirall/credentialstore.h"
 
 namespace Mirall {
 

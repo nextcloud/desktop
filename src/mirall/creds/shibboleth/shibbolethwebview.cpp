@@ -16,8 +16,8 @@
 #include <QWebFrame>
 #include <QWebPage>
 
-#include "mirall/creds/shibbolethcookiejar.h"
-#include "mirall/creds/shibbolethwebview.h"
+#include "mirall/creds/shibboleth/shibbolethcookiejar.h"
+#include "mirall/creds/shibboleth/shibbolethwebview.h"
 
 namespace Mirall
 {

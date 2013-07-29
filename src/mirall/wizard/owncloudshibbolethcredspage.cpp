@@ -18,7 +18,7 @@
 #include "mirall/theme.h"
 #include "mirall/wizard/owncloudwizardcommon.h"
 #include "mirall/creds/shibbolethcredentials.h"
-#include "mirall/creds/shibbolethwebview.h"
+#include "mirall/creds/shibboleth/shibbolethwebview.h"
 
 namespace Mirall
 {

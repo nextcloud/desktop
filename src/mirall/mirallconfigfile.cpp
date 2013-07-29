@@ -18,7 +18,6 @@
 #include "mirall/owncloudinfo.h"
 #include "mirall/owncloudtheme.h"
 #include "mirall/theme.h"
-#include "mirall/credentialstore.h"
 #include "mirall/creds/abstractcredentials.h"
 #include "mirall/creds/credentialsfactory.h"
 #include <QtCore>
