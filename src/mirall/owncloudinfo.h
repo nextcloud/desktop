@@ -21,12 +21,6 @@
 namespace Mirall
 {
 
-typedef struct {
-    QString user;
-    QString passwd;
-    QString connection;
-} oCICredentials;
-
 class ownCloudInfo : public QObject
 {
     Q_OBJECT
@@ -102,13 +96,6 @@ public:
     QList<QSslCertificate> certificateChain() const;
 
     /**
-     * Store credentials for a given connection. Empty connection parameter
-     * means "default connection".
-     */
-    void setCredentials( const QString&, const QString&,
-                         const QString& configHandle = QString::null );
-
-    /**
      * returns the owncloud webdav url.
      * It may be different from the one in the config if there was a HTTP redirection
      */
@@ -163,7 +150,6 @@ private:
     QList<QSslCertificate>         _certificateChain;
     bool                           _certsUntrusted;
     int                            _authAttempts;
-    QMap<QString, oCICredentials>  _credentials;
     QMutex                         _certChainMutex;
     int                            _redirectCount;
     qint64                         _lastQuotaUsedBytes;

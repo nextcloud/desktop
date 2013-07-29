@@ -516,24 +516,6 @@ void ownCloudInfo::slotError( QNetworkReply::NetworkError err)
     }
 }
 
-void ownCloudInfo::setCredentials( const QString& user, const QString& passwd,
-                                   const QString& configHandle )
-{
-    QString con( configHandle );
-    if( configHandle.isEmpty() )
-        con = DEFAULT_CONNECTION;
-
-    if( _credentials.contains(con) ) {
-        qDebug() << "Overwriting credentials for connection " << con;
-    }
-
-    oCICredentials creds;
-    creds.user = user;
-    creds.passwd = passwd;
-    creds.connection = con;
-    _credentials[con] = creds;
-}
-
 // ============================================================================
 void ownCloudInfo::setupHeaders( QNetworkRequest & req, quint64 size )
 {

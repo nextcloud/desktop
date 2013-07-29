@@ -613,7 +613,7 @@ void MirallConfigFile::setMonoIcons(bool useMonoIcons)
 
 AbstractCredentials* MirallConfigFile::getCredentials() const
 {
-  return credentialsPerConfig[_customHandle].data();
+    return credentialsPerConfig[_customHandle].data();
 }
 
 }
