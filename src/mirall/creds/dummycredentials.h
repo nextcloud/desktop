@@ -27,7 +27,8 @@ class DummyCredentials : public AbstractCredentials
   Q_OBJECT
 
 public:
-  void prepareSyncContext(CSYNC* ctx);
+  void syncContextPreInit(CSYNC* ctx);
+  void syncContextPreStart(CSYNC* ctx);
   bool changed(AbstractCredentials* credentials) const;
   QString authType() const;
   QNetworkAccessManager* getQNAM() const;

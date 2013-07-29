@@ -32,7 +32,8 @@ class AbstractCredentials : public QObject
 
 public:
   // No need for virtual destructor - QObject already has one.
-  virtual void prepareSyncContext(CSYNC* ctx) = 0;
+  virtual void syncContextPreInit(CSYNC* ctx) = 0;
+  virtual void syncContextPreStart(CSYNC* ctx) = 0;
   virtual bool changed(AbstractCredentials* credentials) const = 0;
   virtual QString authType() const = 0;
   virtual QNetworkAccessManager* getQNAM() const = 0;

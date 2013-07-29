@@ -120,10 +120,7 @@ bool Folder::init()
 
         csync_enable_conflictcopys(_csync_ctx);
         setIgnoredFiles();
-        AbstractCredentials* credentials(cfgFile.getCredentials());
-        if (credentials) {
-            credentials->prepareSyncContext (_csync_ctx);
-        }
+        cfgFile.getCredentials()->syncContextPreInit(_csync_ctx);
 
         if( csync_init( _csync_ctx ) < 0 ) {
             qDebug() << "Could not initialize csync!" << csync_get_error(_csync_ctx) << csync_get_error_string(_csync_ctx);

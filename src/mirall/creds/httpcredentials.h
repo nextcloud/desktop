@@ -35,7 +35,8 @@ public:
   HttpCredentials();
   HttpCredentials(const QString& user, const QString& password);
 
-  void prepareSyncContext (CSYNC* ctx);
+  void syncContextPreInit(CSYNC* ctx);
+  void syncContextPreStart(CSYNC* ctx);
   bool changed(AbstractCredentials* credentials) const;
   QString authType() const;
   QNetworkAccessManager* getQNAM() const;

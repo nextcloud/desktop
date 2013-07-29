@@ -35,7 +35,10 @@ ShibbolethCredentials::ShibbolethCredentials(const QNetworkCookie& cookie)
       _browser(0)
 {}
 
-void ShibbolethCredentials::prepareSyncContext (CSYNC* ctx)
+void ShibbolethCredentials::syncContextPreInit (CSYNC*)
+{}
+
+void ShibbolethCredentials::syncContextPreStart (CSYNC* ctx)
 {
   QString cookiesAsString;
   // TODO: This should not be a part of this method, but we don't

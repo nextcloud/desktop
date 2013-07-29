@@ -21,7 +21,10 @@
 namespace Mirall
 {
 
-void DummyCredentials::prepareSyncContext(CSYNC*)
+void DummyCredentials::syncContextPreInit(CSYNC*)
+{}
+
+void DummyCredentials::syncContextPreStart(CSYNC*)
 {}
 
 bool DummyCredentials::changed(AbstractCredentials* credentials) const

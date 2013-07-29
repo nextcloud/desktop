@@ -18,6 +18,7 @@
 #include "mirall/theme.h"
 #include "mirall/logger.h"
 #include "mirall/owncloudinfo.h"
+#include "mirall/creds/abstractcredentials.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -342,9 +343,9 @@ void CSyncThread::startSync()
     // any way to get "session_key" module property from csync. Had we
     // have it, then we could keep this code and remove it from
     // AbstractCredentials implementations.
-
+    cfg.getCredentials()->syncContextPreStart(_csync_ctx);
     // if (_lastAuthCookies.length() > 0) {
-    //     // Stuff cookies inside csync, then we can avoid the intermediate HTTP
+    //     // Stuff cookies inside csync, then we can avoid the intermediate HTTP 401 reply
     //     // when https://github.com/owncloud/core/pull/4042 is merged.
     //     QString cookiesAsString;
     //     foreach(QNetworkCookie c, _lastAuthCookies) {

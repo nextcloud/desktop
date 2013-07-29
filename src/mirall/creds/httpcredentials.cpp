@@ -113,7 +113,12 @@ HttpCredentials::HttpCredentials(const QString& user, const QString& password)
       _ready(true)
 {}
 
-void HttpCredentials::prepareSyncContext (CSYNC* ctx)
+void HttpCredentials::syncContextPreInit (CSYNC* ctx)
+{
+    csync_set_auth_callback (ctx, getauth);
+}
+
+void HttpCredentials::syncContextPreStart (CSYNC* ctx)
 {
     // TODO: This should not be a part of this method, but we don't have
     // any way to get "session_key" module property from csync. Had we
@@ -132,7 +137,6 @@ void HttpCredentials::prepareSyncContext (CSYNC* ctx)
     }
 
     csync_set_module_property(ctx, "session_key", cookiesAsString.toLatin1().data());
-    csync_set_auth_callback (ctx, getauth);
 }
 
 bool HttpCredentials::changed(AbstractCredentials* credentials) const
