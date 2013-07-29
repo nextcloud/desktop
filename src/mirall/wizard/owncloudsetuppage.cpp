@@ -238,12 +238,11 @@ void OwncloudSetupPage::slotHandleUserInput()
 
 int OwncloudSetupPage::nextId() const
 {
-  if (_authType == WizardCommon::HttpCreds) {
-    return WizardCommon::Page_HttpCreds;
-  } else {
-    // TODO: rather display some browser component. maybe different page.
-    return WizardCommon::Page_Result;
-  }
+    if (_authType == WizardCommon::HttpCreds) {
+        return WizardCommon::Page_HttpCreds;
+    } else {
+        return WizardCommon::Page_ShibbolethCreds;
+    }
 }
 
 QString OwncloudSetupPage::url() const

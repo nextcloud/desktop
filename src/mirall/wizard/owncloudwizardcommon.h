@@ -44,6 +44,7 @@ enum SyncMode {
 enum Pages {
     Page_oCSetup,
     Page_HttpCreds,
+    Page_ShibbolethCreds,
     Page_Result
 };
 

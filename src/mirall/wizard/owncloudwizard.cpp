@@ -19,6 +19,7 @@
 #include "mirall/theme.h"
 #include "mirall/wizard/owncloudsetuppage.h"
 #include "mirall/wizard/owncloudhttpcredspage.h"
+#include "mirall/wizard/owncloudshibbolethcredspage.h"
 #include "mirall/wizard/owncloudwizardresultpage.h"
 
 #include "QProgressIndicator.h"
@@ -35,6 +36,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     : QWizard(parent),
       _setupPage(new OwncloudSetupPage),
       _httpCredsPage(new OwncloudHttpCredsPage),
+      _shibbolethCredsPage(new OwncloudShibbolethCredsPage),
       _resultPage(new OwncloudWizardResultPage),
       _credentialsPage(0),
       _configFile(),
@@ -44,6 +46,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
 {
     setPage(WizardCommon::Page_oCSetup, _setupPage  );
     setPage(WizardCommon::Page_HttpCreds, _httpCredsPage);
+    setPage(WizardCommon::Page_ShibbolethCreds, _shibbolethCredsPage);
     setPage(WizardCommon::Page_Result,  _resultPage );
 
     // note: start Id is set by the calling class depending on if the
@@ -53,7 +56,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     connect( this, SIGNAL(currentIdChanged(int)), SLOT(slotCurrentPageChanged(int)));
     connect( _setupPage, SIGNAL(determineAuthType(QString)), SIGNAL(determineAuthType(QString)));
     connect( _httpCredsPage, SIGNAL(connectToOCUrl(QString)), SIGNAL(connectToOCUrl(QString)));
-
+    connect( _shibbolethCredsPage, SIGNAL(connectToOCUrl(QString)), SIGNAL(connectToOCUrl(QString)));
 
     Theme *theme = Theme::instance();
     setWizardStyle(QWizard::ModernStyle);
@@ -119,7 +122,7 @@ void OwncloudWizard::setAuthType(WizardCommon::AuthType type)
 {
   _setupPage->setAuthType(type);
   if (type == WizardCommon::Shibboleth) {
-    _credentialsPage = 0;
+    _credentialsPage = _shibbolethCredsPage;
   } else {
     _credentialsPage = _httpCredsPage;
   }
@@ -144,10 +147,14 @@ void OwncloudWizard::slotCurrentPageChanged( int id )
 
 void OwncloudWizard::displayError( const QString& msg )
 {
-    if (currentId() == WizardCommon::Page_oCSetup) {
+    int id(currentId());
+
+    if (id == WizardCommon::Page_oCSetup) {
         _setupPage->setErrorString( msg );
-    } else {
+    } else if (id == WizardCommon::Page_HttpCreds) {
         _httpCredsPage->setErrorString(msg);
+    } else if (id == WizardCommon::Page_ShibbolethCreds) {
+        _shibbolethCredsPage->setErrorString(msg);
     }
 }
 

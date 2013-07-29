@@ -26,6 +26,7 @@ mirall/fileitemdialog.ui
 mirall/owncloudsetupnocredspage.ui
 mirall/owncloudhttpcredspage.ui
 mirall/owncloudwizardresultpage.ui
+mirall/owncloudshibbolethcredspage.ui
 )
 
 set(3rdparty_SRC
@@ -82,7 +83,12 @@ set(libsync_SRCS
     mirall/creds/httpcredentials.cpp
     mirall/creds/credentialsfactory.cpp
     mirall/creds/httpconfigfile.cpp
+    mirall/creds/shibbolethcredentials.cpp
+    mirall/creds/shibbolethaccessmanager.cpp
+    mirall/creds/shibbolethcookiejar.cpp
+    mirall/creds/shibbolethwebview.cpp
 )
+
 set(libsync_HEADERS
     mirall/folderman.h
     mirall/folder.h
@@ -100,6 +106,10 @@ set(libsync_HEADERS
     mirall/creds/httpcredentials.h
     mirall/creds/credentialsfactory.h
     mirall/creds/httpconfigfile.h
+    mirall/creds/shibbolethcredentials.h
+    mirall/creds/shibbolethaccessmanager.h
+    mirall/creds/shibbolethcookiejar.h
+    mirall/creds/shibbolethwebview.h
 )
 
 IF( INOTIFY_FOUND )
@@ -167,6 +177,7 @@ set(mirall_SRCS
     mirall/wizard/owncloudhttpcredspage.cpp
     mirall/wizard/owncloudwizardresultpage.cpp
     mirall/wizard/owncloudwizardcommon.cpp
+    mirall/wizard/owncloudshibbolethcredspage.cpp
     mirall/owncloudsetupwizard.cpp
     mirall/updatedetector.cpp
     mirall/occinfo.cpp
@@ -190,6 +201,7 @@ set(mirall_HEADERS
     mirall/wizard/owncloudhttpcredspage.h
     mirall/wizard/owncloudwizardresultpage.h
     mirall/wizard/owncloudwizardcommon.h
+    mirall/wizard/owncloudshibbolethcredspage.h
     mirall/folderstatusmodel.h
     mirall/updatedetector.h
     mirall/sslerrordialog.h

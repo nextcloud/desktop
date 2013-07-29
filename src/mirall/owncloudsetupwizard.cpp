@@ -456,12 +456,6 @@ void OwncloudSetupWizard::slotDetermineAuthType(const QString& serverUrl)
         // FIXME: give a hint about the auto completion
         _ocWizard->setOCUrl(url);
     }
-    // FIXME: Create AbstractUserCreds class and maybe three subclasses:
-    // DummyCreds (empty), ShibbolethCreds and HttpCreds
-    // writeOwnCloudConfig could then take AbstractUserCreds instead.
-    // no user and no password - we are trying to determine whether
-    // the auth type is the old HTTPS headers one or rather a
-    // shibboleth one.
     cfgFile.writeOwncloudConfig( Theme::instance()->appName(),
                                  url,
                                  new DummyCredentials);

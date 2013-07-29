@@ -25,6 +25,7 @@ namespace Mirall {
 
 class OwncloudSetupPage;
 class OwncloudHttpCredsPage;
+class OwncloudShibbolethCredsPage;
 class OwncloudWizardResultPage;
 class AbstractCredentials;
 class AbstractCredentialsWizardPage;
@@ -74,6 +75,7 @@ signals:
 private:
     OwncloudSetupPage* _setupPage;
     OwncloudHttpCredsPage* _httpCredsPage;
+    OwncloudShibbolethCredsPage* _shibbolethCredsPage;
     OwncloudWizardResultPage* _resultPage;
     AbstractCredentialsWizardPage* _credentialsPage;
 

@@ -18,6 +18,7 @@
 
 #include "mirall/creds/httpcredentials.h"
 #include "mirall/creds/dummycredentials.h"
+#include "mirall/creds/shibbolethcredentials.h"
 
 namespace Mirall
 {
@@ -31,8 +32,10 @@ AbstractCredentials* create(const QString& type)
         return new HttpCredentials;
     } else if (type == "dummy") {
         return new DummyCredentials;
+    } else if (type == "shibboleth") {
+        return new ShibbolethCredentials;
     } else {
-        // TODO: warn!
+        qWarning("Unknown credentials type: %d", qPrintable(type));
         return new DummyCredentials;
     }
 }
