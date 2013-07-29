@@ -58,8 +58,6 @@ protected slots:
     void slotStatusFound( const QString&, const QString&, const QString&, const QString& );
     void slotNoStatusFound(QNetworkReply *);
 
-    void slotFetchCredentials();
-    void slotCredentialsFetched( bool );
     void slotCheckAuthentication();
     void slotAuthCheck( const QString& ,QNetworkReply * );
 

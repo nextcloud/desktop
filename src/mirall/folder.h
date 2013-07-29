@@ -205,13 +205,6 @@ protected:
 
     void setIgnoredFiles();
     void setProxy();
-    static int getauth(const char *prompt,
-                             char *buf,
-                             size_t len,
-                             int echo,
-                             int verify,
-                             void *userdata
-                             );
     const char* proxyTypeToCStr(QNetworkProxy::ProxyType type);
 
     /**

@@ -1,0 +1,43 @@
+/*
+ * Copyright (C) by Duncan Mac-Vicar P. <duncan@kde.org>
+ * Copyright (C) by Klaas Freitag <freitag@kde.org>
+ * Copyright (C) by Krzesimir Nowak <krzesimir@endocode.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ */
+
+#ifndef MIRALL_CREDS_HTTP_CONFIG_FILE_H
+#define MIRALL_CREDS_HTTP_CONFIG_FILE_H
+
+#include "mirall/mirallconfigfile.h"
+
+namespace Mirall
+{
+
+class HttpConfigFile : public MirallConfigFile
+{
+public:
+  QString user() const;
+  void setUser(const QString& user);
+
+  QString password() const;
+  void setPassword(const QString& password);
+  bool passwordExists() const;
+  void removePassword();
+  void fixupOldPassword();
+
+private:
+  void removeOldPassword();
+};
+
+} // ns Mirall
+
+#endif

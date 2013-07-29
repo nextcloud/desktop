@@ -44,8 +44,6 @@ public:
 
     Q_INVOKABLE void startSync();
 
-    void setLastAuthCookies(QList<QNetworkCookie> c);
-
 signals:
     void fileReceived( const QString& );
     void fileRemoved( const QString& );
@@ -86,8 +84,6 @@ private:
     bool _needsUpdate;
 
     bool _hasFiles; // true if there is at least one file that is not ignored or removed
-
-    QList<QNetworkCookie> _lastAuthCookies;
 
     friend class CSyncRunScopeHelper;
 };

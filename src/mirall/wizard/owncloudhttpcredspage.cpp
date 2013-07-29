@@ -19,12 +19,13 @@
 #include "mirall/wizard/owncloudhttpcredspage.h"
 #include "mirall/theme.h"
 #include "mirall/wizard/owncloudwizardcommon.h"
+#include "mirall/creds/httpcredentials.h"
 
 namespace Mirall
 {
 
 OwncloudHttpCredsPage::OwncloudHttpCredsPage()
-  : QWizardPage(),
+  : AbstractCredentialsWizardPage(),
     _ui(),
     _connected(false),
     _checking(false),
@@ -132,6 +133,11 @@ void OwncloudHttpCredsPage::setErrorString(const QString& err)
     _checking = false;
     emit completeChanged();
     stopSpinner();
+}
+
+AbstractCredentials* OwncloudHttpCredsPage::getCredentials() const
+{
+    return new HttpCredentials(_ui.leUsername->text(), _ui.lePassword->text());
 }
 
 } // ns Mirall

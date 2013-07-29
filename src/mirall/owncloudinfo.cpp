@@ -17,6 +17,7 @@
 #include "mirall/theme.h"
 #include "mirall/utility.h"
 #include "mirall/logger.h"
+#include "mirall/creds/abstractcredentials.h"
 
 #include <QtCore>
 #include <QtGui>
@@ -56,8 +57,8 @@ ownCloudInfo::ownCloudInfo() :
     _connection = Theme::instance()->appName();
     connect(this, SIGNAL(guiLog(QString,QString)),
             Logger::instance(), SIGNAL(guiLog(QString,QString)));
-    setNetworkAccessManager( new QNetworkAccessManager( this ) );
-
+    // this will set credentials specific qnam
+    setCustomConfigHandle(QString());
 }
 
 void ownCloudInfo::setNetworkAccessManager( QNetworkAccessManager* qnam )
@@ -72,13 +73,7 @@ void ownCloudInfo::setNetworkAccessManager( QNetworkAccessManager* qnam )
     connect( _manager, SIGNAL( sslErrors(QNetworkReply*, QList<QSslError>)),
              this, SIGNAL(sslFailed(QNetworkReply*, QList<QSslError>)) );
 
-    // The authenticationRequired signal is not handled because the creds are set
-    // in the request header.
-    connect( _manager, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
-             this, SLOT(slotAuthentication(QNetworkReply*,QAuthenticator*)));
-
     _certsUntrusted = false;
-
 }
 
 ownCloudInfo::~ownCloudInfo()
@@ -90,6 +85,8 @@ void ownCloudInfo::setCustomConfigHandle( const QString& handle )
     _configHandle = handle;
     _authAttempts = 0; // allow a couple of tries again.
     resetSSLUntrust();
+    MirallConfigFile cfg(_configHandle);
+    setNetworkAccessManager (cfg.getCredentials()->getQNAM());
 }
 
 bool ownCloudInfo::isConfigured()
@@ -306,42 +303,6 @@ void ownCloudInfo::slotGetDirectoryListingFinished()
     reply->deleteLater();
 }
 
-// FIXME: remove this later, once the new connection dialog has settled.
-void ownCloudInfo::slotAuthentication( QNetworkReply *reply, QAuthenticator *auth )
-{
-    if( !(auth && reply) ) return;
-    QString configHandle;
-
-    // an empty config handle is ok for the default config.
-    if( _configHandleMap.contains(reply) ) {
-        configHandle = _configHandleMap[reply];
-        qDebug() << "Auth: Have a custom config handle: " << configHandle;
-    }
-
-    qDebug() << "Auth request to me and I am " << this;
-    _authAttempts++;
-    qDebug() << "Authenticating request for " << reply->url();
-    if( reply->url().toString().startsWith( webdavUrl( _connection ) ) ) {
-        QString con = configHandle;
-        if( con.isEmpty() ) con = DEFAULT_CONNECTION;
-        if( _credentials.contains(con)) {
-            oCICredentials creds = _credentials.value(con);
-
-            auth->setUser( creds.user );
-            auth->setPassword( creds.passwd );
-        } else {
-            qDebug() << "Unable to get Credentials, not set!";
-            reply->close();
-        }
-    } else {
-        qDebug() << "WRN: attempt to authenticate to different url - attempt " <<_authAttempts;
-    }
-    if( _authAttempts > 1) {
-        qDebug() << "Too many attempts to authenticate. Stop request.";
-        reply->close();
-    }
-}
-
 QList<QNetworkCookie> ownCloudInfo::getLastAuthCookies()
 {
     QUrl url = QUrl( webdavUrl(_connection));
@@ -478,8 +439,8 @@ void ownCloudInfo::slotReplyFinished()
                     // get version out
                     edition = val;
                 } else if(key == QLatin1String("installed")) {
-		    // Silently ignoring "installed = true" information
-		} else {
+                    // Silently ignoring "installed = true" information
+                } else {
                     qDebug() << "Unknown info from ownCloud status.php: "<< key << "=" << val;
                 }
             }
@@ -606,4 +567,4 @@ QString ownCloudInfo::webdavUrl(const QString &connection)
     return url;
 }
 
-}
+} // ns Mirall

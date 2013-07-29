@@ -26,6 +26,8 @@
 #include "mirall/folderman.h"
 #include "mirall/credentialstore.h"
 #include "mirall/utility.h"
+#include "mirall/creds/abstractcredentials.h"
+#include "mirall/creds/dummycredentials.h"
 
 namespace Mirall {
 
@@ -40,7 +42,7 @@ OwncloudSetupWizard::OwncloudSetupWizard(QObject *parent ) :
              this, SLOT(slotConnectToOCUrl( const QString& )));
 
     connect( _ocWizard, SIGNAL(determineAuthType(const QString&)),
-	     this, SLOT(slotDetermineAuthType(const QString&)));
+             this, SLOT(slotDetermineAuthType(const QString&)));
 
     connect( _ocWizard, SIGNAL(finished(int)),this,SLOT(slotAssistantFinished(int)));
 
@@ -73,13 +75,13 @@ void OwncloudSetupWizard::startWizard()
     MirallConfigFile cfgFile;
     // Fill the entry fields with existing values.
     QString url = cfgFile.ownCloudUrl();
-    QString user = cfgFile.ownCloudUser();
-    bool configExists = !( url.isEmpty() || user.isEmpty() );
+    //QString user = cfgFile.ownCloudUser();
+    bool configExists = !( url.isEmpty()/* || user.isEmpty()*/ );
     _ocWizard->setConfigExists( configExists );
 
-    if( !user.isEmpty() ) {
-        _ocWizard->setOCUser( user );
-    }
+    //if( !user.isEmpty() ) {
+    //    _ocWizard->setOCUser( user );
+    //}
 
     if( !url.isEmpty() ) {
         _ocWizard->setOCUrl( url );
@@ -121,19 +123,22 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         cfg.cleanupCustomConfig();
         qDebug() << "Rejected the new config, use the old!";
     } else if( result == QDialog::Accepted ) {
+        AbstractCredentials* credentials(_ocWizard->getCredentials());
+
         qDebug() << "Config Changes were accepted!";
 
         // go through all folders and remove the journals if the server changed.
         MirallConfigFile prevCfg;
         QUrl prevUrl( prevCfg.ownCloudUrl() );
         QUrl newUrl( cfg.ownCloudUrl() );
+        AbstractCredentials* oldCredentials(prevCfg.getCredentials());
 
         bool urlHasChanged = (prevUrl.host() != newUrl.host() ||
                 prevUrl.port() != newUrl.port() ||
                 prevUrl.path() != newUrl.path());
 
         // if the user changed, its also a changed url.
-        if( prevCfg.ownCloudUser() != cfg.ownCloudUser() ) {
+        if(credentials->changed(oldCredentials)) {
             urlHasChanged = true;
             qDebug() << "The User has changed, same as url change.";
         }
@@ -147,7 +152,7 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
 
             folderMan->unloadAllFolders();
 
-           bool startFromScratch = _ocWizard->field( "OCSyncFromScratch" ).toBool();
+            bool startFromScratch = _ocWizard->field( "OCSyncFromScratch" ).toBool();
             if( startFromScratch ) {
                 // first try to rename (backup) the current local dir.
                 bool renameOk = false;
@@ -246,11 +251,12 @@ void OwncloudSetupWizard::testOwnCloudConnect()
     }
     cfgFile.writeOwncloudConfig( Theme::instance()->appName(),
                                  url,
-                                 _ocWizard->field(QLatin1String("OCUser")).toString(),
-                                 _ocWizard->field(QLatin1String("OCPasswd")).toString() );
+                                 _ocWizard->getCredentials());
 
+    ownCloudInfo* info(ownCloudInfo::instance());
+    info->setCustomConfigHandle( _configHandle );
     // If there is already a config, take its proxy config.
-    if( ownCloudInfo::instance()->isConfigured() ) {
+    if( info->isConfigured() ) {
         MirallConfigFile prevCfg;
         cfgFile.setProxyType( prevCfg.proxyType(), prevCfg.proxyHostName(), prevCfg.proxyPort(),
                               prevCfg.proxyNeedsAuth(), prevCfg.proxyUser(), prevCfg.proxyPassword() );
@@ -297,12 +303,13 @@ void OwncloudSetupWizard::setupLocalSyncFolder()
 
 void OwncloudSetupWizard::checkRemoteFolder()
 {
-    connect( ownCloudInfo::instance(),SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
+    ownCloudInfo* info(ownCloudInfo::instance());
+    connect( info,SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
              this,SLOT(slotAuthCheckReply(QString,QNetworkReply*)));
 
     qDebug() << "# checking for authentication settings.";
-    ownCloudInfo::instance()->setCustomConfigHandle(_configHandle);
-    _checkRemoteFolderRequest = ownCloudInfo::instance()->getWebDAVPath(_remoteFolder ); // this call needs to be authenticated.
+    info->setCustomConfigHandle(_configHandle);
+    _checkRemoteFolderRequest = info->getWebDAVPath(_remoteFolder ); // this call needs to be authenticated.
     // continue in slotAuthCheckReply
 }
 
@@ -354,10 +361,11 @@ bool OwncloudSetupWizard::createRemoteFolder()
     if( _remoteFolder.isEmpty() ) return false;
 
     _ocWizard->appendToConfigurationLog( tr("creating folder on ownCloud: %1" ).arg( _remoteFolder ));
-    connect(ownCloudInfo::instance(), SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),
+    ownCloudInfo* info(ownCloudInfo::instance());
+    connect(info, SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),
             this, SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
 
-    _mkdirRequestReply = ownCloudInfo::instance()->mkdirRequest( _remoteFolder );
+    _mkdirRequestReply = info->mkdirRequest( _remoteFolder );
 
     return (_mkdirRequestReply != NULL);
 }
@@ -427,7 +435,7 @@ void OwncloudSetupWizard::slotDetermineAuthType(const QString& serverUrl)
     qDebug() << "Connect to url: " << url;
     _ocWizard->setField(QLatin1String("OCUrl"), url );
     _ocWizard->appendToConfigurationLog(tr("Trying to connect to %1 at %2 to determine authentication type...")
-					.arg( Theme::instance()->appNameGUI() ).arg(url) );
+                                        .arg( Theme::instance()->appNameGUI() ).arg(url) );
     // write a temporary config.
     QDateTime now = QDateTime::currentDateTime();
 
@@ -456,18 +464,16 @@ void OwncloudSetupWizard::slotDetermineAuthType(const QString& serverUrl)
     // shibboleth one.
     cfgFile.writeOwncloudConfig( Theme::instance()->appName(),
                                  url,
-                                 QLatin1String(""),
-                                 QLatin1String(""));
+                                 new DummyCredentials);
 
+    ownCloudInfo* info(ownCloudInfo::instance());
     // If there is already a config, take its proxy config.
-    if( ownCloudInfo::instance()->isConfigured() ) {
+    if( info->isConfigured() ) {
         MirallConfigFile prevCfg;
         cfgFile.setProxyType( prevCfg.proxyType(), prevCfg.proxyHostName(), prevCfg.proxyPort(),
                               prevCfg.proxyNeedsAuth(), prevCfg.proxyUser(), prevCfg.proxyPassword() );
     }
 
-    // now start ownCloudInfo to check the connection.
-    ownCloudInfo* info = ownCloudInfo::instance();
     info->setCustomConfigHandle( _configHandle );
     if( info->isConfigured() ) {
         // reset the SSL Untrust flag to let the SSL dialog appear again.
@@ -479,7 +485,7 @@ void OwncloudSetupWizard::slotDetermineAuthType(const QString& serverUrl)
         _checkInstallationRequest = info->checkInstallation();
     } else {
         qDebug() << "   ownCloud seems not to be configured, can not start test connect.";
-    }  
+    }
 }
 
 void OwncloudSetupWizard::slotOwnCloudFoundAuth( const QString& url, const QString& infoString, const QString& version, const QString& )
@@ -496,7 +502,7 @@ void OwncloudSetupWizard::slotOwnCloudFoundAuth( const QString& url, const QStri
     QNetworkReply* reply = nm->get (QNetworkRequest (url + "/remote.php/webdav/"));
 
     connect (reply, SIGNAL(finished()),
-	     this, SLOT(slotAuthCheckReplyFinished()));
+             this, SLOT(slotAuthCheckReplyFinished()));
 
     nm->setProperty ("mirallRedirs", QVariant (0));
 }
@@ -513,7 +519,7 @@ void OwncloudSetupWizard::slotAuthCheckReplyFinished()
   }
 
   disconnect (reply, SIGNAL(finished()),
-	      this, SLOT(slotAuthCheckReplyFinished()));
+              this, SLOT(slotAuthCheckReplyFinished()));
   if ((reply->error () == QNetworkReply::AuthenticationRequiredError) || redirection.isEmpty()) {
     reply->deleteLater();
     nm->deleteLater();
@@ -522,9 +528,9 @@ void OwncloudSetupWizard::slotAuthCheckReplyFinished()
     QNetworkReply* newReply = nm->get (QNetworkRequest(redirection));
 
     connect (newReply, SIGNAL(error(QNetworkReply::NetworkError)),
-	     this, SLOT(slotAuthCheckReplyError(QNetworkReply::NetworkError)));
+             this, SLOT(slotAuthCheckReplyError(QNetworkReply::NetworkError)));
     connect (newReply, SIGNAL(finished()),
-	     this, SLOT(slotAuthCheckReplyFinished(QNetworkReply::NetworkError)));
+             this, SLOT(slotAuthCheckReplyFinished(QNetworkReply::NetworkError)));
     reply->deleteLater();
 
     nm->setProperty ("mirallRedirs", QVariant(redirCount + 1));
@@ -556,7 +562,6 @@ void OwncloudSetupWizard::slotNoOwnCloudFoundAuth( QNetworkReply *err )
     // remove the config file again
     MirallConfigFile cfgFile( _configHandle );
     cfgFile.cleanupCustomConfig();
-    finalizeSetup( false );
 }
 
 }

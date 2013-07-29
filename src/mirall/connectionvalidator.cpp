@@ -115,7 +115,7 @@ void ConnectionValidator::slotStatusFound( const QString& url, const QString& ve
         return;
     }
 
-    QTimer::singleShot( 0, this, SLOT( slotFetchCredentials() ));
+    QTimer::singleShot( 0, this, SLOT( slotCheckAuthentication() ));
 }
 
 // status.php could not be loaded.
@@ -131,50 +131,6 @@ void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
     _errors.append( reply->errorString() );
     emit connectionResult( StatusNotFound );
 
-}
-
-void ConnectionValidator::slotFetchCredentials()
-{
-    if( _connection.isEmpty() ) {
-        connect( CredentialStore::instance(), SIGNAL(fetchCredentialsFinished(bool)),
-                 this, SLOT(slotCredentialsFetched(bool)) );
-        CredentialStore::instance()->fetchCredentials();
-    } else {
-        // Pull credentials from Mirall config.
-        slotCredentialsFetched( true );
-    }
-}
-
-void ConnectionValidator::slotCredentialsFetched( bool ok )
-{
-    qDebug() << "Credentials successfully fetched: " << ok;
-    disconnect( CredentialStore::instance(), SIGNAL(fetchCredentialsFinished(bool)) );
-
-    if( ! ok ) {
-        Status stat;
-        _errors << tr("Error: Could not retrieve the password!");
-        _errors << CredentialStore::instance()->errorMessage();
-        stat = CredentialError;
-
-        qDebug() << "Could not fetch credentials" << _errors;
-
-        emit connectionResult( stat );
-    } else {
-        QString user, pwd;
-        if( _connection.isEmpty() ) {
-            user = CredentialStore::instance()->user();
-            pwd  = CredentialStore::instance()->password();
-        } else {
-            // in case of reconfiguration, the _connection is set.
-            MirallConfigFile cfg(_connection);
-            user = cfg.ownCloudUser();
-            pwd  = cfg.ownCloudPasswd();
-        }
-        ownCloudInfo::instance()->setCredentials( user, pwd );
-
-        // Credential fetched ok.
-        QTimer::singleShot( 0, this, SLOT( slotCheckAuthentication() ));
-    }
 }
 
 void ConnectionValidator::slotCheckAuthentication()

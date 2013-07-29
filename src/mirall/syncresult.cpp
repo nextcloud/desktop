@@ -56,9 +56,9 @@ QString SyncResult::statusString() const
         case SetupError:
             re = QLatin1String("SetupError");
             break;
-	case SyncPrepare:
-	    re = QLatin1String("SyncPrepare");
-	    break;
+        case SyncPrepare:
+            re = QLatin1String("SyncPrepare");
+            break;
         case Unavailable:
             re = QLatin1String("Not availabe");
             break;

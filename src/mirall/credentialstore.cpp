@@ -17,7 +17,7 @@
 #include "config.h"
 
 #include "mirall/credentialstore.h"
-#include "mirall/mirallconfigfile.h"
+#include "mirall/creds/httpconfigfile.h"
 #include "mirall/theme.h"
 
 #ifdef WITH_QTKEYCHAIN
@@ -68,11 +68,11 @@ CredentialStore::CredState CredentialStore::state()
 
 void CredentialStore::fetchCredentials()
 {
-    MirallConfigFile cfgFile;
+    HttpConfigFile cfgFile;
 
     bool ok = false;
     QString pwd;
-    _user = cfgFile.ownCloudUser();
+    _user = cfgFile.user();
     _url  = cfgFile.ownCloudUrl();
 
     QString key = keyChainKey(_url);
@@ -88,8 +88,9 @@ void CredentialStore::fetchCredentials()
     case CredentialStore::Settings: {
         /* Read from config file. */
         _state = Fetching;
-        if( cfgFile.ownCloudPasswordExists() ) {
-            pwd = cfgFile.ownCloudPasswd();
+        cfgFile.fixupOldPassword();
+        if( cfgFile.passwordExists() ) {
+            pwd = cfgFile.password();
             ok = true;
         } else {
             ok = false;
@@ -210,7 +211,7 @@ void CredentialStore::slotKeyChainReadFinished(QKeychain::Job* job)
         if( _state == NoKeychainBackend ) {
             qDebug() << "No Storage Backend, falling back to Settings mode.";
             _type = CredentialStore::Settings;
-            fetchCredentials();
+            fetchCredentials(_user);
             return;
         }
 
@@ -255,21 +256,21 @@ void CredentialStore::setCredentials( const QString& url, const QString& user,
 
 void CredentialStore::saveCredentials( )
 {
-    MirallConfigFile cfgFile;
+    HttpConfigFile cfgFile;
     QString key = keyChainKey(_url);
     if( key.isNull() ) {
         qDebug() << "Error: Can not save credentials, URL is zero!";
         return;
     }
 #ifdef WITH_QTKEYCHAIN
-    WritePasswordJob *job = NULL;
 #endif
 
+    cfgFile.setUser(_user);
     switch( _type ) {
-    case CredentialStore::KeyChain:
+    case CredentialStore::KeyChain: {
 #ifdef WITH_QTKEYCHAIN
+        WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
         // Set password in KeyChain
-        job = new WritePasswordJob(Theme::instance()->appName());
         job->setKey( key );
         job->setTextData(_passwd);
 
@@ -278,9 +279,10 @@ void CredentialStore::saveCredentials( )
         _state = AsyncWriting;
         job->start();
 #endif
+        }
         break;
     case CredentialStore::Settings:
-        cfgFile.writePassword( _passwd );
+        cfgFile.setPassword( _passwd );
         reset();
         break;
     default:
@@ -309,8 +311,8 @@ void CredentialStore::slotKeyChainWriteFinished( QKeychain::Job *job )
         } else {
             qDebug() << "Successfully stored password for user " << _user;
             // Try to remove password formerly stored in the config file.
-            MirallConfigFile cfgFile;
-            cfgFile.clearPasswordFromConfig();
+            HttpConfigFile cfgFile;
+            cfgFile.removePassword();
             _state = NotFetched;
         }
     } else {

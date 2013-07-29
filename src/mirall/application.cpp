@@ -37,6 +37,8 @@
 #include "mirall/inotify.h"
 #include "mirall/connectionvalidator.h"
 
+#include "mirall/creds/abstractcredentials.h"
+
 #if defined(Q_OS_WIN)
 #include <windows.h>
 #endif
@@ -192,12 +194,35 @@ void Application::slotStartUpdateDetector()
 
 void Application::slotCheckConnection()
 {
+    MirallConfigFile cfg;
+    AbstractCredentials* credentials(cfg.getCredentials());
+
+    if (! credentials->ready()) {
+        connect( credentials, SIGNAL(fetched()),
+                 this, SLOT(slotCredentialsFetched()));
+        credentials->fetch();
+    } else {
+        runValidator();
+    }
+}
+
+void Application::slotCredentialsFetched()
+{
+    MirallConfigFile cfg;
+    AbstractCredentials* credentials(cfg.getCredentials());
+
+    disconnect(credentials, SIGNAL(fetched()),
+               this, SLOT(slotCredentialsFetched()));
+    runValidator();
+}
+
+void Application::runValidator()
+{
     _conValidator = new ConnectionValidator();
     connect( _conValidator, SIGNAL(connectionResult(ConnectionValidator::Status)),
              this, SLOT(slotConnectionValidatorResult(ConnectionValidator::Status)) );
     _conValidator->checkConnection();
 }
-
 
 void Application::slotConnectionValidatorResult(ConnectionValidator::Status status)
 {
@@ -698,7 +723,7 @@ void Application::parseOptions(const QStringList &options)
     //parse options; if help or bad option exit
     while (it.hasNext()) {
         QString option = it.next();
-       	if (option == QLatin1String("--help") || option == QLatin1String("-h")) {
+        if (option == QLatin1String("--help") || option == QLatin1String("-h")) {
             setHelp();
             break;
         } else if (option == QLatin1String("--logwindow") ||
@@ -735,7 +760,7 @@ void Application::parseOptions(const QStringList &options)
             setHelp();
             break;
         }
-	}
+        }
 }
 
 void Application::computeOverallSyncStatus()

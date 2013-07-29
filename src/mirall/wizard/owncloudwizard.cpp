@@ -31,24 +31,17 @@
 namespace Mirall
 {
 
-WizardCommon::SyncMode OwncloudWizard::syncMode()
-{
-    return _setupPage->syncMode();
-    return WizardCommon::BoxMode;
-}
-
-void OwncloudWizard::setMultipleFoldersExist(bool exist)
-{
-    _setupPage->setMultipleFoldersExist(exist);
-}
-
 OwncloudWizard::OwncloudWizard(QWidget *parent)
     : QWizard(parent),
+      _setupPage(new OwncloudSetupPage),
+      _httpCredsPage(new OwncloudHttpCredsPage),
+      _resultPage(new OwncloudWizardResultPage),
+      _credentialsPage(0),
+      _configFile(),
+      _oCUser(),
+      _setupLog(),
       _configExists(false)
 {
-    _setupPage  = new OwncloudSetupPage;
-    _httpCredsPage  = new OwncloudHttpCredsPage;
-    _resultPage = new OwncloudWizardResultPage;
     setPage(WizardCommon::Page_oCSetup, _setupPage  );
     setPage(WizardCommon::Page_HttpCreds, _httpCredsPage);
     setPage(WizardCommon::Page_Result,  _resultPage );
@@ -71,6 +64,17 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setOption( QWizard::NoCancelButton );
     setTitleFormat(Qt::RichText);
     setSubTitleFormat(Qt::RichText);
+}
+
+WizardCommon::SyncMode OwncloudWizard::syncMode()
+{
+    return _setupPage->syncMode();
+    return WizardCommon::BoxMode;
+}
+
+void OwncloudWizard::setMultipleFoldersExist(bool exist)
+{
+    _setupPage->setMultipleFoldersExist(exist);
 }
 
 QString OwncloudWizard::localFolder() const
@@ -114,6 +118,11 @@ void OwncloudWizard::successfullyConnected(bool enable)
 void OwncloudWizard::setAuthType(WizardCommon::AuthType type)
 {
   _setupPage->setAuthType(type);
+  if (type == WizardCommon::Shibboleth) {
+    _credentialsPage = 0;
+  } else {
+    _credentialsPage = _httpCredsPage;
+  }
   next();
 }
 
@@ -169,5 +178,15 @@ bool OwncloudWizard::configExists()
 {
     return _configExists;
 }
+
+AbstractCredentials* OwncloudWizard::getCredentials() const
+{
+  if (_credentialsPage) {
+    return _credentialsPage->getCredentials();
+  }
+
+  return 0;
+}
+
 
 } // end namespace

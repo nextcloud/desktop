@@ -134,7 +134,6 @@ signals:
 protected slots:
     void slotReplyFinished( );
     void slotError( QNetworkReply::NetworkError );
-    void slotAuthentication( QNetworkReply*, QAuthenticator *);
 
     void slotMkdirFinished();
     void slotGetQuotaFinished();

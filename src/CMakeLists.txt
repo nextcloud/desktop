@@ -78,8 +78,12 @@ set(libsync_SRCS
     mirall/utility.cpp
     mirall/connectionvalidator.cpp
     mirall/progressdispatcher.cpp
+    mirall/creds/dummycredentials.cpp
+    mirall/creds/httpcredentials.cpp
+    mirall/creds/credentialsfactory.cpp
+    mirall/creds/httpconfigfile.cpp
 )
-set(libsync_HEADERS 
+set(libsync_HEADERS
     mirall/folderman.h
     mirall/folder.h
     mirall/folderwatcher.h
@@ -91,6 +95,11 @@ set(libsync_HEADERS
     mirall/logger.h
     mirall/connectionvalidator.h
     mirall/progressdispatcher.h
+    mirall/creds/abstractcredentials.h
+    mirall/creds/dummycredentials.h
+    mirall/creds/httpcredentials.h
+    mirall/creds/credentialsfactory.h
+    mirall/creds/httpconfigfile.h
 )
 
 IF( INOTIFY_FOUND )

@@ -17,7 +17,7 @@
 #ifndef MIRALL_OWNCLOUD_HTTP_CREDS_PAGE_H
 #define MIRALL_OWNCLOUD_HTTP_CREDS_PAGE_H
 
-#include <QWizardPage>
+#include "mirall/wizard/abstractcredswizardpage.h"
 
 #include "ui_owncloudhttpcredspage.h"
 
@@ -25,11 +25,13 @@ class QProgressIndicator;
 
 namespace Mirall {
 
-class OwncloudHttpCredsPage : public QWizardPage
+class OwncloudHttpCredsPage : public AbstractCredentialsWizardPage
 {
   Q_OBJECT
 public:
   OwncloudHttpCredsPage();
+
+  AbstractCredentials* getCredentials() const;
 
   void setOCUser(const QString& user);
   void initializePage();

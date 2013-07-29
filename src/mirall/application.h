@@ -104,10 +104,12 @@ protected slots:
     void slotDisplayIdle();
     void slotHelp();
     void slotShowRecentChanges();
+    void slotCredentialsFetched();
 private:
     void setHelp();
     void raiseDialog( QWidget* );
     void rebuildRecentMenus();
+    void runValidator();
 
     Systray *_tray;
     QAction *_actionOpenoC;

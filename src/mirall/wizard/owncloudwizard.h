@@ -26,6 +26,8 @@ namespace Mirall {
 class OwncloudSetupPage;
 class OwncloudHttpCredsPage;
 class OwncloudWizardResultPage;
+class AbstractCredentials;
+class AbstractCredentialsWizardPage;
 
 class OwncloudWizard: public QWizard
 {
@@ -53,6 +55,9 @@ public:
     void setMultipleFoldersExist( bool );
     void setConfigExists( bool );
     bool configExists();
+    void successfullyConnected(bool);
+    void setAuthType(WizardCommon::AuthType type);
+    AbstractCredentials* getCredentials() const;
 
 public slots:
     void setRemoteFolder( const QString& );
@@ -60,10 +65,6 @@ public slots:
     void slotCurrentPageChanged( int );
 
     void showConnectInfo( const QString& );
-
-public:
-    void successfullyConnected(bool);
-    void setAuthType(WizardCommon::AuthType type);
 
 signals:
     void clearPendingRequests();
@@ -74,6 +75,7 @@ private:
     OwncloudSetupPage* _setupPage;
     OwncloudHttpCredsPage* _httpCredsPage;
     OwncloudWizardResultPage* _resultPage;
+    AbstractCredentialsWizardPage* _credentialsPage;
 
     QString _configFile;
     QString _oCUser;

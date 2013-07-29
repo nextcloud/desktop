@@ -265,10 +265,10 @@ bool OwncloudSetupPage::validatePage()
     if( ! _authTypeKnown) {
         setErrorString(QString::null);
         _checking = true;
-	startSpinner ();
+        startSpinner ();
         emit completeChanged();
 
-	emit determineAuthType(url());
+        emit determineAuthType(url());
         return false;
     } else {
         // connecting is running
