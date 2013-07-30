@@ -86,9 +86,10 @@ static void check_c_copy_isdir(void **state)
     rc = c_copy(check_src_file, check_dir, 0644);
     assert_int_equal(rc, -1);
     assert_int_equal(errno, EISDIR);
+
     rc = c_copy(check_dir, check_dst_file, 0644);
     assert_int_equal(rc, -1);
-    assert_int_equal(errno, EISDIR);
+    assert_int_equal(errno, ENOENT);
 }
 
 static void check_c_compare_file(void **state)

@@ -91,34 +91,39 @@ int c_copy(const char* src, const char *dst, mode_t mode) {
     return -1;
   }
 
-  if (lstat(src, &sb) < 0) {
-    return -1;
+  srcfd = open(src, O_RDONLY, 0);
+  if (srcfd < 0) {
+      goto out;
+  }
+
+  rc = fstat(srcfd, &sb);
+  if (rc < 0) {
+      goto out;
   }
 
   if (S_ISDIR(sb.st_mode)) {
-    errno = EISDIR;
-    return -1;
+      errno = EISDIR;
+      rc = -1;
+      goto out;
   }
 
   if (mode == 0) {
-    mode = sb.st_mode;
+      mode = sb.st_mode;
   }
 
-  if (lstat(dst, &sb) == 0) {
-    if (S_ISDIR(sb.st_mode)) {
-      errno = EISDIR;
-      return -1;
-    }
+  dstfd = open(dst, O_CREAT|O_WRONLY|O_TRUNC, mode);
+  if (dstfd < 0) {
+      rc = -1;
+      goto out;
   }
 
-  if ((srcfd = open(src, O_RDONLY, 0)) < 0) {
-    rc = -1;
-    goto out;
-  }
-
-  if ((dstfd = open(dst, O_CREAT|O_WRONLY|O_TRUNC, mode)) < 0) {
-    rc = -1;
-    goto out;
+  rc = fstat(dstfd, &sb);
+  if (rc == 0) {
+      if (S_ISDIR(sb.st_mode)) {
+          errno = EISDIR;
+          rc = -1;
+          goto out;
+      }
   }
 
   for (;;) {
