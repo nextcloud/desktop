@@ -20,6 +20,7 @@
 #include "mirall/theme.h"
 #include "wizard/owncloudwizardcommon.h"
 #include "creds/httpcredentials.h"
+#include "mirall/mirallconfigfile.h"
 
 namespace Mirall
 {
@@ -62,8 +63,18 @@ void OwncloudHttpCredsPage::setupCustomization()
 
 void OwncloudHttpCredsPage::initializePage()
 {
-  WizardCommon::initErrorLabel(_ui.errorLabel);
-  _ui.leUsername->setFocus();
+    WizardCommon::initErrorLabel(_ui.errorLabel);
+    MirallConfigFile cfgFile;
+    HttpCredentials* httpCreds(dynamic_cast< HttpCredentials* >(cfgFile.getCredentials()));
+
+    if (httpCreds) {
+        const QString user = httpCreds->user();
+
+        if (!user.isEmpty()) {
+            _ui.leUsername->setText(user);
+        }
+    }
+    _ui.leUsername->setFocus();
 }
 
 void OwncloudHttpCredsPage::cleanupPage()

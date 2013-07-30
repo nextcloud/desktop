@@ -79,10 +79,6 @@ void OwncloudSetupWizard::startWizard()
     bool configExists = !( url.isEmpty()/* || user.isEmpty()*/ );
     _ocWizard->setConfigExists( configExists );
 
-    //if( !user.isEmpty() ) {
-    //    _ocWizard->setOCUser( user );
-    //}
-
     if( !url.isEmpty() ) {
         _ocWizard->setOCUrl( url );
     }
