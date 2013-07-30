@@ -61,6 +61,7 @@ void OwncloudShibbolethCredsPage::initializePage()
     WizardCommon::initErrorLabel(_ui.errorLabel);
     _browser = new ShibbolethWebView(QUrl(field("OCUrl").toString().simplified()), this);
 
+    _browser->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     connect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie)),
             this, SLOT(onShibbolethCookieReceived(QNetworkCookie)));
 

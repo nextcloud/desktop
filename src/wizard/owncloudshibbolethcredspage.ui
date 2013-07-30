@@ -29,22 +29,6 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>45</width>
-           <height>17</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
         <layout class="QVBoxLayout" name="contentLayout">
          <item>
           <widget class="QLabel" name="errorLabel">
@@ -67,22 +51,6 @@
           </widget>
          </item>
         </layout>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>48</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
        </item>
       </layout>
      </item>
@@ -109,12 +77,6 @@
     </layout>
    </item>
   </layout>
-  <zorder>horizontalSpacer</zorder>
-  <zorder>verticalSpacer</zorder>
-  <zorder>horizontalSpacer_2</zorder>
-  <zorder>topLabel</zorder>
-  <zorder>bottomLabel</zorder>
-  <zorder>errorLabel_2</zorder>
  </widget>
  <resources/>
  <connections/>
