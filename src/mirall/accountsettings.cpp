@@ -503,6 +503,13 @@ void AccountSettings::slotSetProgress( const QString& folder, Progress::Info pro
         return;
     }
 
+    // Hotfix for a crash that I experienced in a very rare case/setup
+    if (progress.kind == Mirall::Progress::Invalid) {
+        qDebug() << "================================> INVALID Progress for folder " << folder;
+        return;
+    }
+
+
     QString itemFileName = shortenFilename(folder, progress.current_file);
     QString syncFileProgressString;
 
