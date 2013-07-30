@@ -54,6 +54,11 @@ void OwncloudShibbolethCredsPage::setupCustomization()
     WizardCommon::setupCustomMedia( variant, _ui.bottomLabel );
 }
 
+bool OwncloudShibbolethCredsPage::isComplete() const
+{
+    return _stage == GOT_COOKIE;
+}
+
 void OwncloudShibbolethCredsPage::initializePage()
 {
     WizardCommon::initErrorLabel(_ui.errorLabel);
@@ -126,6 +131,7 @@ void OwncloudShibbolethCredsPage::setConnected( bool comp )
         // sets stage to INITIAL
         initializePage();
     }
+    emit completeChanged();
 }
 
 void OwncloudShibbolethCredsPage::setErrorString(const QString& err)
@@ -151,6 +157,7 @@ void OwncloudShibbolethCredsPage::onShibbolethCookieReceived(const QNetworkCooki
     _stage = GOT_COOKIE;
     _cookie = cookie;
     _ui.infoLabel->setText("Please click \"Connect\" to check received Shibboleth session.");
+    emit completeChanged();
 }
 
 } // ns Mirall

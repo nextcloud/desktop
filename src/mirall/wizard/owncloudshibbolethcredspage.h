@@ -35,6 +35,7 @@ public:
 
   AbstractCredentials* getCredentials() const;
 
+  bool isComplete() const;
   void initializePage();
   void cleanupPage();
   bool validatePage();

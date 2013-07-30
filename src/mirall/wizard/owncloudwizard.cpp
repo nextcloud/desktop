@@ -111,7 +111,22 @@ void OwncloudWizard::showConnectInfo( const QString& msg )
 
 void OwncloudWizard::successfullyConnected(bool enable)
 {
-    _httpCredsPage->setConnected( enable );
+    const int id(currentId());
+
+    switch (id) {
+    case WizardCommon::Page_HttpCreds:
+        _httpCredsPage->setConnected( enable );
+        break;
+
+    case WizardCommon::Page_ShibbolethCreds:
+        _shibbolethCredsPage->setConnected( enable );
+        break;
+
+    case WizardCommon::Page_oCSetup:
+    case WizardCommon::Page_Result:
+        qWarning("Should not happen at this stage.");
+        break;
+    }
 
     if( enable ) {
         next();
