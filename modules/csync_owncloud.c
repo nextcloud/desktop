@@ -680,9 +680,11 @@ static int fetch_resource_list( const char *uri,
     const char *err = ne_get_error(dav_session.ctx);
     DEBUG_WEBDAV("WRN: propfind named failed with %d, request error: %s", ret, err ? err : "<nil>");
   }
-#endif
-  if( hdl )
+#endif /* NDEBUG */
+
+  if (hdl != NULL) {
     ne_propfind_destroy(hdl);
+  }
 
 #ifndef NDEBUG
   if (ret == NE_REDIRECT) {
@@ -691,9 +693,8 @@ static int fetch_resource_list( const char *uri,
       char *redir_uri = ne_uri_unparse(redir_ne_uri);
       DEBUG_WEBDAV("Permanently moved to %s", redir_uri);
     }
-#endif
   }
-#endif
+#endif /* NDEBUG */
 
   if( ret != NE_OK ) {
     free_fetchCtx(fetchCtx);
