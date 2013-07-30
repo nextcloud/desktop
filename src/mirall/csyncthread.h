@@ -54,7 +54,7 @@ signals:
     void csyncUnavailable();
     void treeWalkResult(const SyncFileItemVector&);
 
-    void transmissionProgress( Progress::Info progress );
+    void transmissionProgress( const Progress::Info& progress );
     void csyncStateDbFile( const QString& );
     void wipeDb();
 

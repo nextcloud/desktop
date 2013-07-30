@@ -178,7 +178,7 @@ private slots:
     void slotCsyncUnavailable();
     void slotCSyncFinished();
 
-    void slotTransmissionProgress(Progress::Info progress);
+    void slotTransmissionProgress(const Progress::Info& progress);
 
     void slotPollTimerTimeout();
 

@@ -66,7 +66,7 @@ public slots:
     void slotOCInfoFail( QNetworkReply* );
     void slotDoubleClicked( const QModelIndex& );
     void slotFolderOpenAction( const QString& );
-    void slotSetProgress(const QString&, Progress::Info progress);
+    void slotSetProgress(const QString&, const Progress::Info& progress);
 
     void slotUpdateQuota( qint64,qint64 );
     void slotIgnoreFilesEditor();

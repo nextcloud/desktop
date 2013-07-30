@@ -628,7 +628,7 @@ void Folder::slotCSyncFinished()
     emit syncFinished( _syncResult );
 }
 
-void Folder::slotTransmissionProgress(Progress::Info progress)
+void Folder::slotTransmissionProgress(const Progress::Info& progress)
 {
     ProgressDispatcher::instance()->setProgressInfo(alias(), progress);
 }
