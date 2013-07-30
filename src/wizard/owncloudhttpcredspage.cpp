@@ -32,17 +32,17 @@ OwncloudHttpCredsPage::OwncloudHttpCredsPage()
     _checking(false),
     _progressIndi(new QProgressIndicator (this))
 {
-  _ui.setupUi(this);
+    _ui.setupUi(this);
 
-  registerField( QLatin1String("OCUser*"),   _ui.leUsername);
-  registerField( QLatin1String("OCPasswd*"), _ui.lePassword);
+    registerField( QLatin1String("OCUser*"),   _ui.leUsername);
+    registerField( QLatin1String("OCPasswd*"), _ui.lePassword);
 
-  setTitle(WizardCommon::titleTemplate().arg(tr("Connect to %1").arg(Theme::instance()->appNameGUI())));
-  setSubTitle(WizardCommon::subTitleTemplate().arg(tr("Enter user credentials")));
+    setTitle(WizardCommon::titleTemplate().arg(tr("Connect to %1").arg(Theme::instance()->appNameGUI())));
+    setSubTitle(WizardCommon::subTitleTemplate().arg(tr("Enter user credentials")));
 
-  _ui.resultLayout->addWidget( _progressIndi );
-  stopSpinner();
-  setupCustomization();
+    _ui.resultLayout->addWidget( _progressIndi );
+    stopSpinner();
+    setupCustomization();
 }
 
 void OwncloudHttpCredsPage::setupCustomization()
@@ -79,33 +79,33 @@ void OwncloudHttpCredsPage::initializePage()
 
 void OwncloudHttpCredsPage::cleanupPage()
 {
-  _ui.leUsername->clear();
-  _ui.lePassword->clear();
+    _ui.leUsername->clear();
+    _ui.lePassword->clear();
 }
 
 bool OwncloudHttpCredsPage::validatePage()
 {
-  if (_ui.leUsername->text().isEmpty() || _ui.lePassword->text().isEmpty()) {
-    return false;
-  }
+    if (_ui.leUsername->text().isEmpty() || _ui.lePassword->text().isEmpty()) {
+        return false;
+    }
 
-  if (!_connected) {
-    _checking = true;
-    emit completeChanged();
-    emit connectToOCUrl(field("OCUrl").toString().simplified());
+    if (!_connected) {
+        _checking = true;
+        emit completeChanged();
+        emit connectToOCUrl(field("OCUrl").toString().simplified());
 
-    return false;
-  } else {
-    _checking = false;
-    emit completeChanged();
+        return false;
+    } else {
+        _checking = false;
+        emit completeChanged();
+        return true;
+    }
     return true;
-  }
-  return true;
 }
 
 int OwncloudHttpCredsPage::nextId() const
 {
-  return WizardCommon::Page_Result;
+    return WizardCommon::Page_Result;
 }
 
 void OwncloudHttpCredsPage::setConnected( bool comp )
