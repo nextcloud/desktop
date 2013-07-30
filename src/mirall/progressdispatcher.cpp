@@ -71,7 +71,8 @@ ProgressDispatcher* ProgressDispatcher::instance() {
 }
 
 ProgressDispatcher::ProgressDispatcher(QObject *parent) :
-    QObject(parent)
+    QObject(parent),
+    _problemQueueSize(50)
 {
 
 }
@@ -81,27 +82,45 @@ ProgressDispatcher::~ProgressDispatcher()
 
 }
 
-void ProgressDispatcher::setProgressInfo(const QString& folder, Progress::Info newProgress)
+QList<Progress::Info> ProgressDispatcher::recentChangedItems(int count)
+{
+    return _recentChanges.mid(0, count);
+}
+
+QList<Progress::SyncProblem> ProgressDispatcher::recentProblems(int count)
+{
+    return _recentProblems.mid(0, count);
+}
+
+void ProgressDispatcher::setProgressInfo(const QString& folder, const Progress::Info& progress)
 {
     if( folder.isEmpty() ) {
         return;
     }
+    Progress::Info newProgress = progress;
 
     if( newProgress.kind == Progress::Error ) {
-        const char *msg = (const char*)newProgress.file_size;
-        qDebug() << "Progress-Error:" << QString::fromLocal8Bit(msg);
-    }
-    if( newProgress.kind == Progress::EndSync ) {
-        newProgress.overall_current_bytes = newProgress.overall_transmission_size;
-        newProgress.current_file_no = newProgress.overall_file_count;
-    }
-    _lastProgressHash[folder] = newProgress;
+        Progress::SyncProblem err;
+        err.folder        = folder;
+        err.current_file  = newProgress.current_file;
+        err.error_message = QString::fromLocal8Bit( (const char*)newProgress.file_size );
+        err.error_code    = newProgress.file_size;
 
-    emit progressInfo( folder, newProgress );
-}
-
-Progress::Info ProgressDispatcher::lastProgressInfo(const QString& folder) {
-    return _lastProgressHash[folder];
+        _recentProblems.enqueue( err );
+        if( _recentProblems.size() > _problemQueueSize ) {
+            _recentProblems.dequeue();
+        }
+        emit progressSyncProblem( folder, err );
+    } else {
+        if( newProgress.kind == Progress::EndSync ) {
+            newProgress.overall_current_bytes = newProgress.overall_transmission_size;
+            newProgress.current_file_no = newProgress.overall_file_count;
+        }
+        if( newProgress.kind == Progress::EndDownload || newProgress.kind == Progress::EndUpload ) {
+            _recentChanges.enqueue(newProgress);
+        }
+        emit progressInfo( folder, newProgress );
+    }
 }
 
 }

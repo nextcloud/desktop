@@ -630,7 +630,19 @@ void Folder::slotCSyncFinished()
 
 void Folder::slotTransmissionProgress(const Progress::Info& progress)
 {
-    ProgressDispatcher::instance()->setProgressInfo(alias(), progress);
+    Progress::Info newInfo = progress;
+    newInfo.folder = alias();
+
+    if(newInfo.current_file.startsWith(QLatin1String("ownclouds://")) ||
+            newInfo.current_file.startsWith(QLatin1String("owncloud://")) ) {
+        // rip off the whole ownCloud URL.
+        QString regexp = QString("^owncloud[s]*://.*/remote.php/webdav/%1/").arg(secondPath());
+        QRegExp re( regexp );
+        re.setMinimal(true);
+        newInfo.current_file.remove(re);
+    }
+
+    ProgressDispatcher::instance()->setProgressInfo(alias(), newInfo);
 }
 
 ServerActionNotifier::ServerActionNotifier(QObject *parent)
@@ -667,7 +679,10 @@ void ServerActionNotifier::slotSyncFinished(const SyncResult &result)
                 updatedItems++;
                 if (firstItemUpdated.isEmpty())
                     firstItemUpdated = item;
-        break;
+                break;
+            case CSYNC_INSTRUCTION_ERROR:
+                qDebug() << "Got Instruction ERROR. " << result.errorString();
+                break;
         default:
         // nothing.
         break;

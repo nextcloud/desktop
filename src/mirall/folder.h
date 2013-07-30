@@ -62,7 +62,7 @@ public slots:
     void slotSyncFinished(const SyncResult &result);
 signals:
     void guiLog(const QString&, const QString&);
-    void sendResults();
+
 private:
 };
 

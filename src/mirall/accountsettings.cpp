@@ -492,7 +492,7 @@ QString AccountSettings::shortenFilename( const QString& folder, const QString& 
     return shortFile;
 }
 
-void AccountSettings::slotSetProgress( const QString& folder, Progress::Info progress )
+void AccountSettings::slotSetProgress(const QString& folder, const Progress::Info &progress )
 {
     // qDebug() << "================================> Progress for folder " << folder << " file " << file << ": "<< p1;
     QStandardItem *item = itemForFolder( folder );

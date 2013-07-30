@@ -16,6 +16,8 @@
 
 #include <QObject>
 #include <QHash>
+#include <QTime>
+#include <QQueue>
 
 namespace Mirall {
 
@@ -26,7 +28,7 @@ namespace Mirall {
 class Progress
 {
 public:
-    enum ProgressKind_s {
+    typedef enum {
         Invalid,
         StartSync,
         Download,
@@ -39,11 +41,11 @@ public:
         EndUpload,
         EndSync,
         Error
-    };
-    typedef ProgressKind_s Kind;
+    } Kind;
 
-    struct ProgressInfo_s {
+    typedef struct {
         Kind    kind;
+        QString folder;
         QString current_file;
         qint64  file_size;
         qint64  current_file_bytes;
@@ -53,8 +55,16 @@ public:
         qint64  overall_transmission_size;
         qint64  overall_current_bytes;
 
-    };
-    typedef ProgressInfo_s Info;
+        QTime  timestamp;
+
+    } Info;
+
+    typedef struct {
+        QString folder;
+        QString current_file;
+        QString error_message;
+        int     error_code;
+    } SyncProblem;
 
     static QString asString( Kind );
 };
@@ -77,7 +87,8 @@ public:
     static ProgressDispatcher* instance();
     ~ProgressDispatcher();
 
-    Progress::Info lastProgressInfo(const QString& folder);
+    QList<Progress::Info> recentChangedItems(int count);
+    QList<Progress::SyncProblem> recentProblems(int count);
 signals:
     /**
       @brief Signals the progress of data transmission.
@@ -87,17 +98,19 @@ signals:
 
      */
 
-    void progressInfo( const QString& folder, Progress::Info progress );
+    void progressInfo( const QString& folder, const Progress::Info& progress );
+    void progressSyncProblem( const QString& folder, const Progress::SyncProblem& problem );
 
 protected:
-    void setProgressInfo(const QString &folder, Progress::Info newProgress);
+    void setProgressInfo(const QString &folder, const Progress::Info& progress);
 
 private:
     ProgressDispatcher(QObject* parent = 0);
+    const int _problemQueueSize;
+    QQueue<Progress::Info> _recentChanges;
+    QQueue<Progress::SyncProblem> _recentProblems;
 
     static ProgressDispatcher* _instance;
-
-    QHash<QString, Progress::Info> _lastProgressHash;
 };
 
 }

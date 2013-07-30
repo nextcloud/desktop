@@ -19,6 +19,7 @@
 #include <QNetworkReply>
 #include <QSslError>
 #include <QPointer>
+#include <QQueue>
 
 #include "qtsingleapplication.h"
 
@@ -98,18 +99,22 @@ protected slots:
     void slotSetupProxy();
     void slotRefreshQuotaDisplay( qint64 total, qint64 used );
     void slotUseMonoIconsChanged( bool );
-    void slotUpdateProgress(const QString&,Progress::Info);
+    void slotUpdateProgress(const QString&, const Progress::Info&);
+    void slotProgressSyncProblem(const QString& folder, const Progress::SyncProblem &problem);
     void slotDisplayIdle();
     void slotHelp();
+    void slotShowRecentChanges();
 private:
     void setHelp();
     void raiseDialog( QWidget* );
+    void rebuildRecentMenus();
 
     Systray *_tray;
     QAction *_actionOpenoC;
     QAction *_actionSettings;
     QAction *_actionQuota;
     QAction *_actionStatus;
+    QAction *_actionRecent;
     QAction *_actionHelp;
     QAction *_actionQuit;
 
@@ -121,6 +126,7 @@ private:
 
     // tray's menu
     QMenu *_contextMenu;
+    QMenu *_recentActionsMenu;
 
     Theme *_theme;
     QSignalMapper *_folderOpenActionMapper;
@@ -128,6 +134,7 @@ private:
     QPointer<SettingsDialog> _settingsDialog;
     QString _logFile;
     QString _logDirectory;
+
     int _logExpire;
     bool _showLogWindow;
     bool _logFlush;

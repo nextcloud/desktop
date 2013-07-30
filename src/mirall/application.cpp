@@ -99,6 +99,7 @@ Application::Application(int &argc, char **argv) :
     _networkMgr(new QNetworkConfigurationManager(this)),
     _sslErrorDialog(0),
     _contextMenu(0),
+    _recentActionsMenu(0),
     _theme(Theme::instance()),
     _logBrowser(0),
     _logExpire(0),
@@ -124,6 +125,9 @@ Application::Application(int &argc, char **argv) :
 
     connect( pd, SIGNAL(progressInfo(QString,Progress::Info)), this,
              SLOT(slotUpdateProgress(QString,Progress::Info)) );
+
+    connect( pd, SIGNAL(progressSyncProblem(QString,Progress::SyncProblem)),
+             SLOT(slotProgressSyncProblem(QString,Progress::SyncProblem)));
 
     // create folder manager for sync folder management
     FolderMan *folderMan = FolderMan::instance();
@@ -285,6 +289,10 @@ void Application::setupActions()
     _actionStatus = new QAction(tr("Unknown status"), this);
     _actionStatus->setEnabled( false );
     _actionSettings = new QAction(tr("Settings..."), this);
+    _actionRecent = new QAction(tr("more..."), this);
+    _actionRecent->setEnabled( true );
+
+    QObject::connect(_actionRecent, SIGNAL(triggered(bool)), SLOT(slotShowRecentChanges()));
     QObject::connect(_actionSettings, SIGNAL(triggered(bool)), SLOT(slotSettings()));
     _actionHelp = new QAction(tr("Help"), this);
     QObject::connect(_actionHelp, SIGNAL(triggered(bool)), SLOT(slotHelp()));
@@ -316,8 +324,11 @@ void Application::setupContextMenu()
 
     if( _contextMenu ) {
         _contextMenu->clear();
+        _recentActionsMenu->clear();
+        _recentActionsMenu->addAction(tr("None."));
     } else {
         _contextMenu = new QMenu();
+        _recentActionsMenu = _contextMenu->addMenu(tr("Recent Changes..."));
         // this must be called only once after creating the context menu, or
         // it will trigger a bug in Ubuntu's SNI bridge patch (11.10, 12.04).
         _tray->setContextMenu(_contextMenu);
@@ -359,6 +370,7 @@ void Application::setupContextMenu()
     _contextMenu->addAction(_actionQuota);
     _contextMenu->addSeparator();
     _contextMenu->addAction(_actionStatus);
+    _contextMenu->addMenu(_recentActionsMenu);
     _contextMenu->addSeparator();
     _contextMenu->addAction(_actionSettings);
     _contextMenu->addAction(_actionHelp);
@@ -484,23 +496,71 @@ void Application::slotUseMonoIconsChanged(bool)
     computeOverallSyncStatus();
 }
 
-void Application::slotUpdateProgress(const QString &folder, Progress::Info progress)
+void Application::slotProgressSyncProblem(const QString& folder, const Progress::SyncProblem& problem)
+{
+    Q_UNUSED(folder);
+    Q_UNUSED(problem);
+
+    // display a warn icon if warnings happend.
+    QIcon warnIcon(":/mirall/resources/warning-16");
+    _actionRecent->setIcon(warnIcon);
+
+    rebuildRecentMenus();
+}
+
+void Application::rebuildRecentMenus()
+{
+    _recentActionsMenu->clear();
+    QList<Progress::Info> progressInfoList;
+    progressInfoList = ProgressDispatcher::instance()->recentChangedItems(5);
+
+    if( progressInfoList.size() == 0 ) {
+        _recentActionsMenu->addAction(tr("No items synced recently"));
+    } else {
+        foreach( Progress::Info info, progressInfoList ) {
+            QString kindStr = tr("Upload");
+            if( info.kind == Progress::EndDownload ) {
+                kindStr = tr("Download");
+            }
+            QString timeStr = info.timestamp.toString("hh:mm");
+
+            QString actionText = tr("%1 (%2, %3)").arg(info.current_file).arg(kindStr).arg(timeStr);
+            _recentActionsMenu->addAction( actionText );
+        }
+    }
+    // add a more... entry.
+    _recentActionsMenu->addAction(_actionRecent);
+}
+
+void Application::slotUpdateProgress(const QString &folder, const Progress::Info& progress)
 {
     Q_UNUSED(folder);
 
+    // shows an entry in the context menu.
     QString curAmount = Utility::octetsToString(progress.overall_current_bytes);
     QString totalAmount = Utility::octetsToString(progress.overall_transmission_size);
     _actionStatus->setText(tr("Syncing %1 of %2 (%3 of %4) ").arg(progress.current_file_no)
                            .arg(progress.overall_file_count).arg(curAmount, totalAmount));
 
+    // wipe the problem list at start of sync.
+    if( progress.kind == Progress::StartSync ) {
+        _actionRecent->setIcon( QIcon() ); // Fixme: Set a "in-progress"-item eventually.
+    }
+
+    // If there was a change in the file list, redo the progress menu.
+    if( progress.kind == Progress::EndDownload || progress.kind == Progress::EndUpload ) {
+        rebuildRecentMenus();
+    }
+
     if (progress.kind == Progress::EndSync) {
+        rebuildRecentMenus();  // show errors.
         QTimer::singleShot(2000, this, SLOT(slotDisplayIdle()));
     }
 }
 
 void Application::slotDisplayIdle()
 {
-    _actionStatus->setText(tr("Idle"));
+    _actionStatus->setText(tr("In Sync"));
 }
 
 void Application::slotHelp()
@@ -575,6 +635,11 @@ void Application::slotFoldersChanged()
 {
     computeOverallSyncStatus();
     setupContextMenu();
+}
+
+void Application::slotShowRecentChanges()
+{
+    // not yet here.
 }
 
 void Application::slotSettings()

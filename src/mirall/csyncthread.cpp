@@ -395,7 +395,7 @@ void CSyncThread::startSync()
 
     if( walkOk ) {
         if( csync_walk_local_tree(_csync_ctx, &walkFinalize, 0) < 0 ||
-            csync_walk_remote_tree( _csync_ctx, &walkFinalize, 0 ) < 0 ) {
+            csync_walk_remote_tree(_csync_ctx, &walkFinalize, 0 ) < 0 ) {
             qDebug() << "Error in finalize treewalk.";
         } else {
         // emit the treewalk results.
@@ -466,6 +466,7 @@ void CSyncThread::cb_progress( CSYNC_PROGRESS *progress, void *userdata )
     pInfo.current_file_no       = progress->current_file_no;
     pInfo.overall_transmission_size = progress->overall_transmission_size;
     pInfo.overall_current_bytes = progress->current_overall_bytes;
+    pInfo.timestamp = QTime::currentTime();
 
     // Connect to something in folder!
     thread->transmissionProgress( pInfo );
