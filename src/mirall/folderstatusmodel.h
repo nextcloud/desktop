@@ -24,7 +24,7 @@ class FolderStatusModel : public QStandardItemModel
 {
 public:
     FolderStatusModel();
-    virtual Qt::ItemFlags flags( const QModelIndex& );
+    virtual Qt::ItemFlags flags( const QModelIndex& ) const;
     QVariant data(const QModelIndex &index, int role) const;
 
 };

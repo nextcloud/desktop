@@ -26,7 +26,7 @@ FolderStatusModel::FolderStatusModel()
 
 }
 
-Qt::ItemFlags FolderStatusModel::flags ( const QModelIndex&  )
+Qt::ItemFlags FolderStatusModel::flags ( const QModelIndex&  ) const
 {
     return Qt::ItemIsSelectable;
 }

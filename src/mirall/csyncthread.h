@@ -85,7 +85,7 @@ private:
 
     bool _hasFiles; // true if there is at least one file that is not ignored or removed
 
-    friend class CSyncRunScopeHelper;
+    friend struct CSyncRunScopeHelper;
 };
 }
 
