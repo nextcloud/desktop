@@ -73,15 +73,17 @@ void OwncloudShibbolethCredsPage::initializePage()
 
 void OwncloudShibbolethCredsPage::disposeBrowser(bool later)
 {
-    _browser->hide();
-    disconnect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie)),
-               this, SLOT(onShibbolethCookieReceived(QNetworkCookie)));
-    if (later) {
-        _browser->deleteLater();
-    } else {
-        delete _browser;
+    if (_browser) {
+        _browser->hide();
+        disconnect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie)),
+                   this, SLOT(onShibbolethCookieReceived(QNetworkCookie)));
+        if (later) {
+            _browser->deleteLater();
+        } else {
+            delete _browser;
+        }
+        _browser = 0;
     }
-    _browser = 0;
 }
 
 void OwncloudShibbolethCredsPage::cleanupPage()
