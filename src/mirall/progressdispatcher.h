@@ -37,7 +37,8 @@ public:
         StartUpload,
         EndDownload,
         EndUpload,
-        EndSync
+        EndSync,
+        Error
     };
     typedef ProgressKind_s Kind;
 

@@ -87,6 +87,10 @@ void ProgressDispatcher::setProgressInfo(const QString& folder, Progress::Info n
         return;
     }
 
+    if( newProgress.kind == Progress::Error ) {
+        const char *msg = (const char*)newProgress.file_size;
+        qDebug() << "Progress-Error:" << QString::fromLocal8Bit(msg);
+    }
     if( newProgress.kind == Progress::EndSync ) {
         newProgress.overall_current_bytes = newProgress.overall_transmission_size;
         newProgress.current_file_no = newProgress.overall_file_count;

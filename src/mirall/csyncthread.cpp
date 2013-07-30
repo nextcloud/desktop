@@ -251,7 +251,7 @@ int CSyncThread::treewalkError(TREE_WALK_FILE* file)
 
     if( file &&
         (file->instruction == CSYNC_INSTRUCTION_STAT_ERROR ||
-        file->instruction == CSYNC_INSTRUCTION_ERROR) ) {
+         file->instruction == CSYNC_INSTRUCTION_ERROR) ) {
         _mutex.lock();
         _syncedItems[indx]._instruction = file->instruction;
         _mutex.unlock();
@@ -433,6 +433,9 @@ Progress::Kind CSyncThread::csyncToProgressKind( enum csync_notify_type_e kind )
         break;
     case CSYNC_NOTIFY_FINISHED_SYNC_SEQUENCE:
         pKind = Progress::EndSync;
+        break;
+    case CSYNC_NOTIFY_ERROR:
+        pKind = Progress::Error;
         break;
     default:
         pKind = Progress::Invalid;
