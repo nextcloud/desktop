@@ -263,6 +263,8 @@ static int csync_config_parse_line(CSYNC *ctx,
                       keyword, count);
             break;
     }
+
+    free(x);
     return 0;
 }
 
