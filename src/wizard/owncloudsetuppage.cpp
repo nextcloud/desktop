@@ -109,7 +109,7 @@ void OwncloudSetupPage::setupCustomization()
 }
 
 // slot hit from textChanged of the url entry field.
-void OwncloudSetupPage::slotUrlChanged(const QString& ocUrl)
+void OwncloudSetupPage::slotUrlChanged(const QString& /*ocUrl*/)
 {
     slotHandleUserInput();
 
@@ -259,8 +259,6 @@ QString OwncloudSetupPage::localFolder() const
 
 bool OwncloudSetupPage::validatePage()
 {
-    bool re = false;
-
     if( ! _authTypeKnown) {
         setErrorString(QString::null);
         _checking = true;

@@ -281,7 +281,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
   painter->restore();
 }
 
-bool FolderStatusDelegate::editorEvent ( QEvent * event, QAbstractItemModel * model, const QStyleOptionViewItem & option, const QModelIndex & index )
+bool FolderStatusDelegate::editorEvent ( QEvent * /*event*/, QAbstractItemModel * /*model*/, const QStyleOptionViewItem & /*option*/, const QModelIndex & /*index*/ )
 {
     return false;
 }

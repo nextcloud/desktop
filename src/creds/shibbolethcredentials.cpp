@@ -107,7 +107,7 @@ void ShibbolethCredentials::fetch()
     }
 }
 
-void ShibbolethCredentials::persistForUrl(const QString& url)
+void ShibbolethCredentials::persistForUrl(const QString& /*url*/)
 {
     // nothing to do here, we don't store session cookies.
 }

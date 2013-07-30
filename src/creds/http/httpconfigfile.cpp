@@ -55,7 +55,7 @@ void HttpConfigFile::setPassword(const QString& password)
 
 bool HttpConfigFile::passwordExists() const
 {
-    dataExists(QString(), QLatin1String(passwdC));
+    return dataExists(QString(), QLatin1String(passwdC));
 }
 
 void HttpConfigFile::removePassword()
@@ -71,7 +71,7 @@ void HttpConfigFile::fixupOldPassword()
     if (dataExists(QString(), old)) {
         setPassword(retrieveData(QString(), old).toString());
     }
-};
+}
 
 void HttpConfigFile::removeOldPassword()
 {

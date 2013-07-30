@@ -552,6 +552,11 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
         }
         timer->start(5000);
         break;
+    case Progress::Invalid:
+    case Progress::Download:
+    case Progress::Upload:
+    case Progress::Inactive:
+        break;
     }
 
     QString fileProgressString;

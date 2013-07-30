@@ -51,8 +51,8 @@ ownCloudInfo::ownCloudInfo() :
     QObject(0),
     _manager(0),
     _authAttempts(0),
-    _lastQuotaTotalBytes(0),
-    _lastQuotaUsedBytes(0)
+    _lastQuotaUsedBytes(0),
+    _lastQuotaTotalBytes(0)
 {
     _connection = Theme::instance()->appName();
     connect(this, SIGNAL(guiLog(QString,QString)),

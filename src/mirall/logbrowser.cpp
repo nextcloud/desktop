@@ -57,8 +57,8 @@ LogWidget::LogWidget(QWidget *parent)
 LogBrowser::LogBrowser(QWidget *parent) :
     QDialog(parent),
     _logWidget( new LogWidget(parent) ),
-    _logstream(0),
-    _doFileFlush(false)
+    _doFileFlush(false),
+    _logstream(0)
 {
     setObjectName("LogBrowser"); // for save/restoreGeometry()
     setWindowTitle(tr("Log Output"));

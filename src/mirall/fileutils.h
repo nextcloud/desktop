@@ -25,7 +25,7 @@ class FileUtils
 public:
     enum SubFolderListOption {
         SubFolderNoOptions = 0x0,
-        SubFolderRecursive = 0x1,
+        SubFolderRecursive = 0x1
     };
     Q_DECLARE_FLAGS(SubFolderListOptions, SubFolderListOption)
 

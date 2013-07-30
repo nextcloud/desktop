@@ -173,7 +173,7 @@ void OwncloudWizard::displayError( const QString& msg )
     }
 }
 
-void OwncloudWizard::appendToConfigurationLog( const QString& msg, LogType type )
+void OwncloudWizard::appendToConfigurationLog( const QString& msg, LogType /*type*/ )
 {
     _setupLog << msg;
     qDebug() << "Setup-Log: " << msg;

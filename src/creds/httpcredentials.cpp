@@ -31,9 +31,9 @@ namespace
 int getauth(const char *prompt,
             char *buf,
             size_t len,
-            int echo,
-            int verify,
-            void *userdata)
+            int /*echo*/,
+            int /*verify*/,
+            void */*userdata*/)
 {
     int re = 0;
     QMutex mutex;

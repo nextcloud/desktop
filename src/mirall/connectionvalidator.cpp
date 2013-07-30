@@ -27,7 +27,8 @@ ConnectionValidator::ConnectionValidator(QObject *parent) :
 }
 
 ConnectionValidator::ConnectionValidator(const QString& connection, QObject *parent)
-    :_connection(connection)
+    : QObject(parent),
+      _connection(connection)
 {
     ownCloudInfo::instance()->setCustomConfigHandle(_connection);
 }
@@ -92,7 +93,7 @@ void ConnectionValidator::checkConnection()
     }
 }
 
-void ConnectionValidator::slotStatusFound( const QString& url, const QString& versionStr, const QString& version, const QString& edition)
+void ConnectionValidator::slotStatusFound( const QString& url, const QString& versionStr, const QString& version, const QString& /*edition*/)
 {
     // status.php was found.
     qDebug() << "** Application: ownCloud found: " << url << " with version " << versionStr << "(" << version << ")";
@@ -145,7 +146,6 @@ void ConnectionValidator::slotCheckAuthentication()
 
 void ConnectionValidator::slotAuthCheck( const QString& ,QNetworkReply *reply )
 {
-    bool ok = true;
     Status stat = Connected;
 
     if( reply->error() == QNetworkReply::AuthenticationRequiredError ||
@@ -153,7 +153,6 @@ void ConnectionValidator::slotAuthCheck( const QString& ,QNetworkReply *reply )
         qDebug() << "******** Password is wrong!";
         _errors << "The provided credentials are wrong.";
         stat = CredentialsWrong;
-        ok = false;
     }
 
     // disconnect from ownCloud Info signals
@@ -161,7 +160,6 @@ void ConnectionValidator::slotAuthCheck( const QString& ,QNetworkReply *reply )
              this,SLOT(slotAuthCheck(QString,QNetworkReply*)));
 
     emit connectionResult( stat );
-
 }
 
 

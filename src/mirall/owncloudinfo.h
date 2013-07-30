@@ -156,6 +156,6 @@ private:
     qint64                         _lastQuotaTotalBytes;
 };
 
-};
+} // ns Mirall
 
 #endif // OWNCLOUDINFO_H

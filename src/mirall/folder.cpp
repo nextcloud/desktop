@@ -33,11 +33,11 @@
 
 namespace Mirall {
 
-void csyncLogCatcher(CSYNC *ctx,
-                     int verbosity,
-                     const char *function,
+void csyncLogCatcher(CSYNC */*ctx*/,
+                     int /*verbosity*/,
+                     const char */*function*/,
                      const char *buffer,
-                     void *userdata)
+                     void */*userdata*/)
 {
   Logger::instance()->csyncLog( QString::fromUtf8(buffer) );
 }
@@ -57,9 +57,9 @@ static QString replaceScheme(const QString &urlStr)
 
 Folder::Folder(const QString &alias, const QString &path, const QString& secondPath, QObject *parent)
     : QObject(parent)
+      , _pollTimer(new QTimer(this))
       , _path(path)
       , _secondPath(secondPath)
-      , _pollTimer(new QTimer(this))
       , _alias(alias)
       , _enabled(true)
       , _thread(0)
@@ -252,7 +252,7 @@ SyncResult Folder::syncResult() const
   return _syncResult;
 }
 
-void Folder::evaluateSync(const QStringList &pathList)
+void Folder::evaluateSync(const QStringList &/*pathList*/)
 {
   if( !_enabled ) {
     qDebug() << "*" << alias() << "sync skipped, disabled!";

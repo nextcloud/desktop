@@ -33,7 +33,7 @@ AbstractCredentials* create(const QString& type)
     } else if (type == "shibboleth") {
         return new ShibbolethCredentials;
     } else {
-        qWarning("Unknown credentials type: %d", qPrintable(type));
+        qWarning("Unknown credentials type: %s", qPrintable(type));
         return new DummyCredentials;
     }
 }

@@ -35,7 +35,7 @@ ShibbolethWebView::ShibbolethWebView(const QUrl& url, QWidget* parent)
   this->setPage (page);
 }
 
-void ShibbolethWebView::onNewCookiesForUrl (const QList<QNetworkCookie>& cookieList, const QUrl& url)
+void ShibbolethWebView::onNewCookiesForUrl (const QList<QNetworkCookie>& cookieList, const QUrl& /*url*/)
 {
   Q_FOREACH (const QNetworkCookie& cookie, cookieList) {
     if (cookie.name().startsWith ("_shibsession_")) {

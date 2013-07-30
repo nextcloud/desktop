@@ -160,7 +160,7 @@ Application::Application(int &argc, char **argv) :
     setupSystemTray();
     slotSetupProxy();
 
-    int cnt = folderMan->setupFolders();
+    folderMan->setupFolders();
 
     // startup procedure.
     QTimer::singleShot( 0, this, SLOT( slotCheckConnection() ));
