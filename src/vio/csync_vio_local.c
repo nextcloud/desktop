@@ -140,11 +140,11 @@ ssize_t csync_vio_local_write(csync_vio_method_handle_t *fhandle, const void *bu
   return n;
 }
 
-off_t csync_vio_local_lseek(csync_vio_method_handle_t *fhandle, off_t offset, int whence) {
+int64_t csync_vio_local_lseek(csync_vio_method_handle_t *fhandle, int64_t offset, int whence) {
   fhandle_t *handle = NULL;
 
   if (fhandle == NULL) {
-    return (off_t) -1;
+    return (int64_t) -1;
   }
 
   handle = (fhandle_t *) fhandle;

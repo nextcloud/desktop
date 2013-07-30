@@ -59,7 +59,7 @@ int csync_exclude_load(CSYNC *ctx, const char *fname) {
   int fd = -1;
   int i = 0;
   int rc = -1;
-  off_t size;
+  int64_t size;
   char *buf = NULL;
   char *entry = NULL;
   const _TCHAR *wfname;

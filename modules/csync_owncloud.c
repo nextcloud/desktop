@@ -1195,7 +1195,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
     int fd;
     int error_code = 0;
     char *clean_uri = NULL;
-    off_t file_size;
+    int64_t file_size;
 
     if( ! write_ctx ) {
         errno = EINVAL;
@@ -1451,7 +1451,7 @@ static ssize_t owncloud_read(csync_vio_method_handle_t *fhandle, void *buf, size
     return len;
 }
 
-static off_t owncloud_lseek(csync_vio_method_handle_t *fhandle, off_t offset, int whence) {
+static int64_t owncloud_lseek(csync_vio_method_handle_t *fhandle, int64_t offset, int whence) {
     (void) fhandle;
     (void) offset;
     (void) whence;
@@ -1788,11 +1788,11 @@ static int owncloud_set_property(const char *key, void *data) {
         return 0;
     }
     if( c_streq(key, "hbf_block_size")) {
-        dav_session.hbf_block_size = *(off_t*)(data);
+        dav_session.hbf_block_size = *(int64_t*)(data);
         return 0;
     }
     if( c_streq(key, "hbf_threshold")) {
-        dav_session.hbf_threshold = *(off_t*)(data);
+        dav_session.hbf_threshold = *(int64_t*)(data);
         return 0;
     }
     if( c_streq(key, "bandwidth_limit_upload")) {

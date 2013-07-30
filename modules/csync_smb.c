@@ -173,12 +173,12 @@ static ssize_t _write(csync_vio_method_handle_t *fhandle, const void *buf, size_
   return smbc_write(handle->fd, (char *) buf, count);
 }
 
-static off_t _lseek(csync_vio_method_handle_t *fhandle, off_t offset, int whence) {
+static int64_t _lseek(csync_vio_method_handle_t *fhandle, int64_t offset, int whence) {
   smb_fhandle_t *handle = NULL;
 
   if (fhandle == NULL) {
     errno = EBADF;
-    return (off_t) -1;
+    return (int64_t) -1;
   }
 
   handle = (smb_fhandle_t *) fhandle;

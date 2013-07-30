@@ -60,7 +60,7 @@ typedef int (*csync_method_close_fn)(csync_vio_method_handle_t *fhandle);
 typedef ssize_t (*csync_method_read_fn)(csync_vio_method_handle_t *fhandle, void *buf, size_t count);
 typedef ssize_t (*csync_method_write_fn)(csync_vio_method_handle_t *fhandle, const void *buf, size_t count);
 typedef int (*csync_method_sendfile_fn)(csync_vio_method_handle_t *src, csync_vio_method_handle_t *dst);
-typedef off_t (*csync_method_lseek_fn)(csync_vio_method_handle_t *fhandle, off_t offset, int whence);
+typedef int64_t (*csync_method_lseek_fn)(csync_vio_method_handle_t *fhandle, int64_t offset, int whence);
 
 typedef csync_vio_method_handle_t *(*csync_method_opendir_fn)(const char *name);
 typedef int (*csync_method_closedir_fn)(csync_vio_method_handle_t *dhandle);

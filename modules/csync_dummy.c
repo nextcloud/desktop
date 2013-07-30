@@ -76,7 +76,7 @@ static ssize_t dummy_write(csync_vio_method_handle_t *fhandle, const void *buf, 
   return 0;
 }
 
-static off_t dummy_lseek(csync_vio_method_handle_t *fhandle, off_t offset, int whence) {
+static int64_t dummy_lseek(csync_vio_method_handle_t *fhandle, int64_t offset, int whence) {
   (void) fhandle;
   (void) offset;
   (void) whence;

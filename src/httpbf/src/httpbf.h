@@ -62,8 +62,8 @@ typedef struct hbf_block_s hbf_block_t;
 struct hbf_block_s {
     int seq_number;
 
-    off_t start;
-    off_t size;
+    int64_t start;
+    int64_t size;
 
     Hbf_State state;
     int http_result_code;
@@ -89,14 +89,14 @@ struct hbf_transfer_s {
     int status_code;
     char *error_string;
 
-    off_t stat_size;
+    int64_t stat_size;
     time_t modtime;
-    off_t block_size;
-    off_t threshold;
+    int64_t block_size;
+    int64_t threshold;
 
     hbf_abort_callback abort_cb;
 #ifndef NDEBUG
-    off_t calc_size;
+    int64_t calc_size;
 #endif
 };
 

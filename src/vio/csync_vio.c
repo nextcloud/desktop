@@ -366,8 +366,8 @@ int csync_vio_sendfile(CSYNC *ctx, csync_vio_handle_t *sfp, csync_vio_handle_t *
     return rc;
 }
 
-off_t csync_vio_lseek(CSYNC *ctx, csync_vio_handle_t *fhandle, off_t offset, int whence) {
-  off_t ro = 0;
+int64_t csync_vio_lseek(CSYNC *ctx, csync_vio_handle_t *fhandle, int64_t offset, int whence) {
+  int64_t ro = 0;
 
   switch(ctx->replica) {
     case REMOTE_REPLICA:

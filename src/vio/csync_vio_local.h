@@ -31,7 +31,7 @@ csync_vio_method_handle_t *csync_vio_local_creat(const char *durl, mode_t mode);
 int csync_vio_local_close(csync_vio_method_handle_t *fhandle);
 ssize_t csync_vio_local_read(csync_vio_method_handle_t *fhandle, void *buf, size_t count);
 ssize_t csync_vio_local_write(csync_vio_method_handle_t *fhandle, const void *buf, size_t count);
-off_t csync_vio_local_lseek(csync_vio_method_handle_t *fhandle, off_t offset, int whence);
+int64_t csync_vio_local_lseek(csync_vio_method_handle_t *fhandle, int64_t offset, int whence);
 
 csync_vio_method_handle_t *csync_vio_local_opendir(const char *name);
 int csync_vio_local_closedir(csync_vio_method_handle_t *dhandle);

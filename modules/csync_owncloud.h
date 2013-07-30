@@ -83,7 +83,7 @@ typedef struct resource {
     char *name;          /* The filename only */
 
     enum resource_type type;
-    off_t              size;
+    int64_t              size;
     time_t             modtime;
     char*              md5;
 
@@ -130,7 +130,7 @@ struct transfer_context {
     /* Used for limiting the bandwidth */
     struct timeval last_time;
     ne_off_t last_progress;
-    off_t get_size;
+    int64_t get_size;
 };
 
 /* Struct with the WebDAV session */
@@ -156,8 +156,8 @@ struct dav_session_s {
     csync_hbf_info_t *chunk_info;
 
     bool no_recursive_propfind;
-    off_t hbf_block_size;
-    off_t hbf_threshold;
+    int64_t hbf_block_size;
+    int64_t hbf_threshold;
 
     /* If 0, it is disabled.   If >0,  in Byte/seconds. If < 0,  in % of the available bandwidth*/
     int bandwidth_limit_upload;
@@ -189,6 +189,6 @@ char *_cleanPath( const char* uri );
 int _stat_perms( int type );
 csync_vio_file_stat_t *resourceToFileStat( struct resource *res );
 
-void oc_notify_progress(const char *file, enum csync_notify_type_e kind, off_t current_size, off_t full_size);
+void oc_notify_progress(const char *file, enum csync_notify_type_e kind, int64_t current_size, int64_t full_size);
 
 #endif /* CSYNC_OWNCLOUD_H */

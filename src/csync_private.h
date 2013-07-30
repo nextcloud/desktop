@@ -176,7 +176,7 @@ struct csync_s {
 struct csync_file_stat_s {
   uint64_t phash;   /* u64 */
   time_t modtime;   /* u64 */
-  off_t size;       /* u64 */
+  int64_t size;       /* u64 */
   size_t pathlen;   /* u64 */
   uint64_t inode;   /* u64 */
   uid_t uid;        /* u32 */

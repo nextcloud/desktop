@@ -93,8 +93,8 @@ struct csync_vio_file_stat_s {
   time_t mtime;
   time_t ctime;
 
-  off_t size;
-  off_t blksize;
+  int64_t size;
+  int64_t blksize;
   unsigned long blkcount;
 
   mode_t mode;

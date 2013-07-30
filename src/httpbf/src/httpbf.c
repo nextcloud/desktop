@@ -95,9 +95,9 @@ hbf_transfer_t *hbf_init_transfer( const char *dest_uri ) {
 /* Create the splitlist of a given file descriptor */
 Hbf_State hbf_splitlist(hbf_transfer_t *transfer, int fd ) {
   hbf_stat_t sb;
-  off_t num_blocks;
-  off_t blk_size;
-  off_t remainder = 0;
+  int64_t num_blocks;
+  int64_t blk_size;
+  int64_t remainder = 0;
 
   if( ! transfer ) {
       return HBF_PARAM_FAIL;
@@ -145,7 +145,7 @@ Hbf_State hbf_splitlist(hbf_transfer_t *transfer, int fd ) {
 
   if( num_blocks ) {
       int cnt;
-      off_t overall = 0;
+      int64_t overall = 0;
       /* create a datastructure for the transfer data */
       transfer->block_arr = calloc(num_blocks, sizeof(hbf_block_t*));
       transfer->block_cnt = num_blocks;

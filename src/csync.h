@@ -134,14 +134,14 @@ struct csync_progress_s {
 
   /* individual file progress information */
   const char *path;
-  off_t curr_bytes;
-  off_t file_size;
+  int64_t curr_bytes;
+  int64_t file_size;
 
   /* overall progress */
-  off_t overall_transmission_size;
-  off_t current_overall_bytes;
-  off_t overall_file_count;
-  off_t current_file_no;
+  int64_t overall_transmission_size;
+  int64_t current_overall_bytes;
+  int64_t overall_file_count;
+  int64_t current_file_no;
 
 };
 typedef struct csync_progress_s CSYNC_PROGRESS;
@@ -151,7 +151,7 @@ typedef struct csync_progress_s CSYNC_PROGRESS;
  *
  * This structure is passed to the visitor function for every file
  * which is seen.
- * Note: The file size is missing here because type off_t is depending
+ * Note: The file size is missing here because type int64_t is depending
  *       on the large file support in your build. Make sure to check
  *       that cmake and the callback app are compiled with the same
  *       setting for it, such as:

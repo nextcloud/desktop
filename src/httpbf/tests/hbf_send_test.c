@@ -112,7 +112,7 @@ static void test_hbf_splitlist_odd( void **state ){
     /* checks on the block list */
     int seen_zero_seq = 0;
     int prev_seq = -1;
-    off_t prev_block_end = -1;
+    int64_t prev_block_end = -1;
 
     for( i=0; i < list->block_cnt; i++) {
         hbf_block_t *blk = list->block_arr[i];

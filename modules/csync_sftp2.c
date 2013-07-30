@@ -456,7 +456,7 @@ static ssize_t _write(csync_vio_method_handle_t *fhandle, const void *buf, size_
   return rc;
 }
 
-static off_t _lseek(csync_vio_method_handle_t *fhandle, off_t offset, int whence) {
+static int64_t _lseek(csync_vio_method_handle_t *fhandle, int64_t offset, int whence) {
   /* FIXME: really implement seek for lseek? */
   (void) whence;
 

@@ -335,7 +335,7 @@ int _stat_perms( int type ) {
     return ret;
 }
 
-void oc_notify_progress(const char *file, enum csync_notify_type_e kind, off_t current_size, off_t full_size)
+void oc_notify_progress(const char *file, enum csync_notify_type_e kind, int64_t current_size, int64_t full_size)
 {
   csync_progress_callback progress_cb = csync_get_progress_callback(dav_session.csync_ctx);
 
