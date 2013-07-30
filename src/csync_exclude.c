@@ -98,12 +98,12 @@ int csync_exclude_load(CSYNC *ctx, const char *fname) {
       rc = -1;
       goto out;
   }
-  memset(buf, 0, size + 1);
 
   if (read(fd, buf, size) != size) {
     rc = -1;
     goto out;
   }
+  buf[size] = '\0';
 
   /* FIXME: Use fgets and don't add duplicates */
   entry = buf;
