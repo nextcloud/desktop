@@ -81,7 +81,11 @@ QNetworkCookie ShibbolethCredentials::cookie() const
 
 QNetworkAccessManager* ShibbolethCredentials::getQNAM() const
 {
-    return new ShibbolethAccessManager(_shibCookie);
+    ShibbolethAccessManager* qnam(new ShibbolethAccessManager(_shibCookie));
+
+    connect(this, SIGNAL(newCookie(QNetworkCookie)),
+            qnam, SLOT(setCookie(QNetworkCookie)));
+    return qnam;
 }
 
 bool ShibbolethCredentials::ready() const
@@ -117,6 +121,7 @@ void ShibbolethCredentials::onShibbolethCookieReceived(const QNetworkCookie& coo
     _browser = 0;
     _ready = true;
     _shibCookie = cookie;
+    Q_EMIT newCookie(_shibCookie);
     Q_EMIT fetched();
 }
 

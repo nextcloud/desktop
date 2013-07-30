@@ -45,6 +45,9 @@ public:
 private Q_SLOTS:
     void onShibbolethCookieReceived(const QNetworkCookie& cookie);
 
+Q_SIGNALS:
+    void newCookie(const QNetworkCookie& cookie);
+
 private:
     QNetworkCookie _shibCookie;
     bool _ready;

@@ -25,10 +25,13 @@ class ShibbolethAccessManager : public QNetworkAccessManager
     Q_OBJECT
 
 public:
-    ShibbolethAccessManager (const QNetworkCookie& cookie, QObject* parent = 0);
+    ShibbolethAccessManager(const QNetworkCookie& cookie, QObject* parent = 0);
+
+public Q_SLOTS:
+    void setCookie(const QNetworkCookie& cookie);
 
 protected:
-    QNetworkReply* createRequest (QNetworkAccessManager::Operation op, const QNetworkRequest& request, QIODevice* outgoingData = 0);
+    QNetworkReply* createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest& request, QIODevice* outgoingData = 0);
 
 private:
     QNetworkCookie _cookie;

@@ -11,6 +11,7 @@
  * for more details.
  */
 
+#include <QDebug>
 #include <QNetworkRequest>
 
 #include "creds/shibboleth/shibbolethaccessmanager.h"
@@ -18,20 +19,37 @@
 namespace Mirall
 {
 
-ShibbolethAccessManager::ShibbolethAccessManager (const QNetworkCookie& cookie, QObject* parent)
+ShibbolethAccessManager::ShibbolethAccessManager(const QNetworkCookie& cookie, QObject* parent)
     : QNetworkAccessManager (parent),
       _cookie(cookie)
 {}
 
-QNetworkReply* ShibbolethAccessManager::createRequest (QNetworkAccessManager::Operation op, const QNetworkRequest& request, QIODevice* outgoingData)
+QNetworkReply* ShibbolethAccessManager::createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest& request, QIODevice* outgoingData)
 {
-    QNetworkRequest newRequest(request);
-    QList<QNetworkCookie> cookies(request.header(QNetworkRequest::CookieHeader).value< QList< QNetworkCookie > >());
+    if (!_cookie.name().isEmpty()) {
+        QNetworkCookieJar* jar(cookieJar());
+        QUrl url(request.url());
+        QList<QNetworkCookie> cookies;
 
-    cookies << _cookie;
-    newRequest.setHeader(QNetworkRequest::CookieHeader, QVariant::fromValue (cookies));
+        Q_FOREACH(const QNetworkCookie& cookie, jar->cookiesForUrl(url)) {
+            if (!cookie.name().startsWith("_shibsession_")) {
+                cookies << cookie;
+            }
+        }
 
-    return QNetworkAccessManager::createRequest (op, newRequest, outgoingData);
+        cookies << _cookie;
+        jar->setCookiesFromUrl(cookies, url);
+    }
+
+    qDebug() << "Creating a request to " << request.url().toString() << " with shibboleth cookie:" << _cookie.name();
+
+    return QNetworkAccessManager::createRequest (op, request, outgoingData);
+}
+
+void ShibbolethAccessManager::setCookie(const QNetworkCookie& cookie)
+{
+    qDebug() << "Got new shibboleth cookie:" << cookie.name();
+    _cookie = cookie;
 }
 
 } // ns Mirall
