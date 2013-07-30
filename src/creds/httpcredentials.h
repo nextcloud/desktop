@@ -19,7 +19,7 @@
 
 #include <QMap>
 
-#include "mirall/creds/abstractcredentials.h"
+#include "creds/abstractcredentials.h"
 
 class QNetworkReply;
 class QAuthenticator;

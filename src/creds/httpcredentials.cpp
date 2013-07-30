@@ -16,11 +16,11 @@
 
 #include <QMutex>
 
-#include "mirall/creds/httpcredentials.h"
+#include "creds/httpcredentials.h"
 #include "mirall/owncloudinfo.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/utility.h"
-#include "mirall/creds/http/credentialstore.h"
+#include "creds/http/credentialstore.h"
 
 namespace Mirall
 {

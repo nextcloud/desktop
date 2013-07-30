@@ -11,29 +11,24 @@
  * for more details.
  */
 
-#ifndef MIRALL_CREDS_DUMMY_CREDENTIALS_H
-#define MIRALL_CREDS_DUMMY_CREDENTIALS_H
-
-#include "mirall/creds/abstractcredentials.h"
+#include "creds/shibboleth/shibbolethcookiejar.h"
 
 namespace Mirall
 {
 
-class DummyCredentials : public AbstractCredentials
-{
-  Q_OBJECT
+ShibbolethCookieJar::ShibbolethCookieJar (QObject* parent)
+  : QNetworkCookieJar (parent)
+{}
 
-public:
-  void syncContextPreInit(CSYNC* ctx);
-  void syncContextPreStart(CSYNC* ctx);
-  bool changed(AbstractCredentials* credentials) const;
-  QString authType() const;
-  QNetworkAccessManager* getQNAM() const;
-  bool ready() const;
-  void fetch();
-  void persistForUrl(const QString& url);
-};
+bool ShibbolethCookieJar::setCookiesFromUrl (const QList<QNetworkCookie>& cookieList, const QUrl& url)
+{
+  if (QNetworkCookieJar::setCookiesFromUrl (cookieList, url)) {
+    Q_EMIT newCookiesForUrl (cookieList, url);
+
+    return true;
+  }
+
+  return false;
+}
 
 } // ns Mirall
-
-#endif

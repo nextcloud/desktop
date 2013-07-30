@@ -16,7 +16,7 @@
 
 #include <QNetworkCookie>
 
-#include "mirall/creds/abstractcredentials.h"
+#include "creds/abstractcredentials.h"
 
 namespace Mirall
 {

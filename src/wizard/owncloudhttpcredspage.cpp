@@ -16,10 +16,10 @@
 
 #include "QProgressIndicator.h"
 
-#include "mirall/wizard/owncloudhttpcredspage.h"
+#include "wizard/owncloudhttpcredspage.h"
 #include "mirall/theme.h"
-#include "mirall/wizard/owncloudwizardcommon.h"
-#include "mirall/creds/httpcredentials.h"
+#include "wizard/owncloudwizardcommon.h"
+#include "creds/httpcredentials.h"
 
 namespace Mirall
 {

@@ -21,7 +21,6 @@
 #include <QNetworkReply>
 #include <QPointer>
 
-#include "mirall/wizard/owncloudwizard.h"
 #include "mirall/theme.h"
 
 namespace Mirall {
@@ -29,6 +28,7 @@ namespace Mirall {
 class SiteCopyFolder;
 class SyncResult;
 class ownCloudInfo;
+class OwncloudWizard;
 
 class OwncloudSetupWizard : public QObject
 {

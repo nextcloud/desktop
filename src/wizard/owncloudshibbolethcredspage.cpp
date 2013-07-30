@@ -11,11 +11,11 @@
  * for more details.
  */
 
-#include "mirall/wizard/owncloudshibbolethcredspage.h"
+#include "wizard/owncloudshibbolethcredspage.h"
 #include "mirall/theme.h"
-#include "mirall/wizard/owncloudwizardcommon.h"
-#include "mirall/creds/shibbolethcredentials.h"
-#include "mirall/creds/shibboleth/shibbolethwebview.h"
+#include "wizard/owncloudwizardcommon.h"
+#include "creds/shibbolethcredentials.h"
+#include "creds/shibboleth/shibbolethwebview.h"
 
 namespace Mirall
 {

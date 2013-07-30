@@ -21,7 +21,7 @@
 #include "mirall/syncresult.h"
 #include "mirall/logger.h"
 #include "mirall/owncloudinfo.h"
-#include "mirall/creds/abstractcredentials.h"
+#include "creds/abstractcredentials.h"
 
 #include <QDebug>
 #include <QTimer>

@@ -18,7 +18,7 @@
 #include <QPixmap>
 #include <QVariant>
 
-#include "mirall/wizard/owncloudwizardcommon.h"
+#include "wizard/owncloudwizardcommon.h"
 #include "mirall/theme.h"
 
 namespace Mirall

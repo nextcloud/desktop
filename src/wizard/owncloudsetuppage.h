@@ -19,7 +19,7 @@
 
 #include <QWizard>
 
-#include "mirall/wizard/owncloudwizardcommon.h"
+#include "wizard/owncloudwizardcommon.h"
 #include "ui_owncloudsetupnocredspage.h"
 
 class QLabel;

@@ -12,9 +12,9 @@
  * for more details.
  */
 
-#include "mirall/creds/shibbolethcredentials.h"
-#include "mirall/creds/shibboleth/shibbolethaccessmanager.h"
-#include "mirall/creds/shibboleth/shibbolethwebview.h"
+#include "creds/shibbolethcredentials.h"
+#include "creds/shibboleth/shibbolethaccessmanager.h"
+#include "creds/shibboleth/shibbolethwebview.h"
 #include "mirall/owncloudinfo.h"
 #include "mirall/mirallconfigfile.h"
 

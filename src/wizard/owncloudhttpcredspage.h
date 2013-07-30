@@ -1,9 +1,12 @@
 /*
+ * Copyright (C) by Duncan Mac-Vicar P. <duncan@kde.org>
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
  * Copyright (C) by Krzesimir Nowak <krzesimir@endocode.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 2 of the License.
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -11,56 +14,45 @@
  * for more details.
  */
 
-#ifndef MIRALL_OWNCLOUD_SHIBBOLETH_CREDS_PAGE_H
-#define MIRALL_OWNCLOUD_SHIBBOLETH_CREDS_PAGE_H
+#ifndef MIRALL_OWNCLOUD_HTTP_CREDS_PAGE_H
+#define MIRALL_OWNCLOUD_HTTP_CREDS_PAGE_H
 
-#include <QNetworkCookie>
+#include "wizard/abstractcredswizardpage.h"
 
-#include "mirall/wizard/abstractcredswizardpage.h"
+#include "ui_owncloudhttpcredspage.h"
 
-#include "ui_owncloudshibbolethcredspage.h"
+class QProgressIndicator;
 
 namespace Mirall {
 
-class ShibbolethWebView;
-
-class OwncloudShibbolethCredsPage : public AbstractCredentialsWizardPage
+class OwncloudHttpCredsPage : public AbstractCredentialsWizardPage
 {
   Q_OBJECT
 public:
-  OwncloudShibbolethCredsPage();
+  OwncloudHttpCredsPage();
 
   AbstractCredentials* getCredentials() const;
 
-  bool isComplete() const;
+  void setOCUser(const QString& user);
   void initializePage();
   void cleanupPage();
   bool validatePage();
   int nextId() const;
   void setConnected(bool connected);
-  void setErrorString(const QString& err);
+  void setErrorString( const QString& err );
 
 Q_SIGNALS:
   void connectToOCUrl(const QString&);
 
-private Q_SLOTS:
-  void onShibbolethCookieReceived(const QNetworkCookie& cookie);
-
 private:
-  enum Stage {
-    INITIAL_STEP,
-    GOT_COOKIE,
-    CHECKING,
-    CONNECTED
-  };
-
+  void startSpinner();
+  void stopSpinner();
   void setupCustomization();
-  void disposeBrowser(bool later);
 
-  Ui_OwncloudShibbolethCredsPage _ui;
-  Stage _stage;
-  ShibbolethWebView* _browser;
-  QNetworkCookie _cookie;
+  Ui_OwncloudHttpCredsPage _ui;
+  bool _connected;
+  bool _checking;
+  QProgressIndicator* _progressIndi;
 };
 
 } // ns Mirall

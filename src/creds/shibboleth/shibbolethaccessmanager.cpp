@@ -13,7 +13,7 @@
 
 #include <QNetworkRequest>
 
-#include "mirall/creds/shibboleth/shibbolethaccessmanager.h"
+#include "creds/shibboleth/shibbolethaccessmanager.h"
 
 namespace Mirall
 {

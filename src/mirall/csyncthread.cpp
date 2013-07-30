@@ -18,7 +18,7 @@
 #include "mirall/theme.h"
 #include "mirall/logger.h"
 #include "mirall/owncloudinfo.h"
-#include "mirall/creds/abstractcredentials.h"
+#include "creds/abstractcredentials.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>

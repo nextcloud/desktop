@@ -19,14 +19,15 @@
 #include <QMessageBox>
 #include <QDesktopServices>
 
-#include "mirall/wizard/owncloudwizardcommon.h"
+#include "wizard/owncloudwizardcommon.h"
+#include "wizard/owncloudwizard.h"
 #include "mirall/owncloudsetupwizard.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/owncloudinfo.h"
 #include "mirall/folderman.h"
 #include "mirall/utility.h"
-#include "mirall/creds/abstractcredentials.h"
-#include "mirall/creds/dummycredentials.h"
+#include "creds/abstractcredentials.h"
+#include "creds/dummycredentials.h"
 
 namespace Mirall {
 

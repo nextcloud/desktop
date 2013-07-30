@@ -19,7 +19,7 @@
 
 #include <QWizard>
 
-#include "owncloudwizardcommon.h"
+#include "wizard/owncloudwizardcommon.h"
 
 namespace Mirall {
 

@@ -20,8 +20,8 @@
 
 #include "QProgressIndicator.h"
 
-#include "mirall/wizard/owncloudwizardcommon.h"
-#include "mirall/wizard/owncloudsetuppage.h"
+#include "wizard/owncloudwizardcommon.h"
+#include "wizard/owncloudsetuppage.h"
 #include "mirall/theme.h"
 
 namespace Mirall

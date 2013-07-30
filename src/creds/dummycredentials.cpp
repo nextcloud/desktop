@@ -13,7 +13,7 @@
 
 #include <QNetworkAccessManager>
 
-#include "dummycredentials.h"
+#include "creds/dummycredentials.h"
 
 namespace Mirall
 {

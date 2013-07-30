@@ -17,7 +17,7 @@
 #include "mirall/theme.h"
 #include "mirall/utility.h"
 #include "mirall/logger.h"
-#include "mirall/creds/abstractcredentials.h"
+#include "creds/abstractcredentials.h"
 
 #include <QtCore>
 #include <QtGui>

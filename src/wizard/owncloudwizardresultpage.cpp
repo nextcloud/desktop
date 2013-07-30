@@ -19,8 +19,8 @@
 #include <QDir>
 #include <QUrl>
 
-#include "mirall/wizard/owncloudwizardresultpage.h"
-#include "mirall/wizard/owncloudwizardcommon.h"
+#include "wizard/owncloudwizardresultpage.h"
+#include "wizard/owncloudwizardcommon.h"
 #include "mirall/theme.h"
 
 namespace Mirall

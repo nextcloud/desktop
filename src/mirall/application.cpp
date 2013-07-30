@@ -36,7 +36,7 @@
 #include "mirall/inotify.h"
 #include "mirall/connectionvalidator.h"
 
-#include "mirall/creds/abstractcredentials.h"
+#include "creds/abstractcredentials.h"
 
 #if defined(Q_OS_WIN)
 #include <windows.h>

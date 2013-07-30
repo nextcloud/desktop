@@ -13,9 +13,9 @@
 
 #include <QString>
 
-#include "mirall/creds/httpcredentials.h"
-#include "mirall/creds/dummycredentials.h"
-#include "mirall/creds/shibbolethcredentials.h"
+#include "creds/httpcredentials.h"
+#include "creds/dummycredentials.h"
+#include "creds/shibbolethcredentials.h"
 
 namespace Mirall
 {

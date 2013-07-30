@@ -14,13 +14,13 @@
  * for more details.
  */
 
-#include "mirall/wizard/owncloudwizard.h"
+#include "wizard/owncloudwizard.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/theme.h"
-#include "mirall/wizard/owncloudsetuppage.h"
-#include "mirall/wizard/owncloudhttpcredspage.h"
-#include "mirall/wizard/owncloudshibbolethcredspage.h"
-#include "mirall/wizard/owncloudwizardresultpage.h"
+#include "wizard/owncloudsetuppage.h"
+#include "wizard/owncloudhttpcredspage.h"
+#include "wizard/owncloudshibbolethcredspage.h"
+#include "wizard/owncloudwizardresultpage.h"
 
 #include "QProgressIndicator.h"
 
