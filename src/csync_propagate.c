@@ -443,10 +443,28 @@ start_fd_based:
       }
 
       if( rc != 0 ) {
+          if (rc == -1) {
+            /* Severe error */
+            switch(errno) {
+            case EINVAL:
+              ctx->error_code = CSYNC_ERR_PARAM;
+              break;
+            case ERRNO_USER_ABORT:
+              ctx->error_code = CSYNC_ERR_ABORTED;
+              break;
+            case ERRNO_GENERAL_ERROR:
+            default:
+              ctx->error_code = CSYNC_ERR_PROPAGATE;
+              break;
+            }
+            /* fetch the error string from module. */
+            ctx->error_string = csync_vio_get_error_string(ctx);
+          }
+
           strerror_r(errno,  errbuf, sizeof(errbuf));
           CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
                     "file: %s, command: sendfile, error: %s from errno %d",
-                    suri, errbuf, errno);
+                    suri, c_streq(errbuf, "") ? csync_vio_get_error_string(ctx): errbuf, errno);
 
           if (_push_to_tmp_first(ctx)) {
             csync_vio_file_stat_t* sb = csync_vio_file_stat_new();

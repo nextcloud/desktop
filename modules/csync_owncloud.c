@@ -1194,7 +1194,6 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
     fhandle_t *fh = (fhandle_t *) src;
     int fd;
     int error_code = 0;
-    const char *error_string = NULL;
     char *clean_uri = NULL;
     off_t file_size;
 
@@ -1289,8 +1288,11 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
             }
 
             if( finished ) {
-              error_string = c_strdup(hbf_error_string(trans, state));
+              SAFE_FREE(dav_session.error_string);
+              dav_session.error_string = c_strdup(hbf_error_string(trans, state));
               error_code = hbf_fail_http_code(trans);
+              set_errno_from_http_errcode(error_code);
+
               rc = 1;
               if (dav_session.chunk_info) {
                 dav_session.chunk_info->start_id = trans->start_id;
@@ -1306,10 +1308,8 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
       if( rc == 0 ) {
         oc_notify_progress(write_ctx->url, CSYNC_NOTIFY_FINISHED_UPLOAD, file_size, file_size);
       } else {
-        oc_notify_progress(write_ctx->url, CSYNC_NOTIFY_ERROR, error_code, (long long)(error_string));
+        oc_notify_progress(write_ctx->url, CSYNC_NOTIFY_ERROR, error_code, (long long)(dav_session.error_string));
       }
-
-      SAFE_FREE(error_string);
     } else if( c_streq( write_ctx->method, "GET") ) {
       /* GET a file to the file descriptor */
       /* actually do the request */
@@ -1359,7 +1359,6 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
 
             set_errno_from_neon_errcode(neon_stat);
             DEBUG_WEBDAV("Error GET: Neon: %d, errno %d", neon_stat, errno);
-            error_string = dav_session.error_string;
             error_code = errno;
             rc = 1;
         } else {
@@ -1378,7 +1377,8 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
                     rc = 1;
                 }
                 error_code = status->code;
-                error_string = status->reason_phrase;
+                SAFE_FREE(dav_session.error_string);
+                dav_session.error_string = c_strdup(status->reason_phrase);
             } else {
                 DEBUG_WEBDAV("http request all cool, result code %d", status->code);
             }
@@ -1398,10 +1398,11 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
       if( rc == 0 ) {
         oc_notify_progress( write_ctx->url, CSYNC_NOTIFY_FINISHED_DOWNLOAD, write_ctx->get_size , write_ctx->get_size );
       } else {
-        oc_notify_progress( write_ctx->url, CSYNC_NOTIFY_ERROR, error_code , (long long)(error_string));
+        oc_notify_progress( write_ctx->url, CSYNC_NOTIFY_ERROR, error_code , (long long)(dav_session.error_string));
       }
     } else  {
         DEBUG_WEBDAV("Unknown method!");
+        errno = ERRNO_GENERAL_ERROR;
         rc = -1;
     }
 
