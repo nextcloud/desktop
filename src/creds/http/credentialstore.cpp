@@ -211,7 +211,7 @@ void CredentialStore::slotKeyChainReadFinished(QKeychain::Job* job)
         if( _state == NoKeychainBackend ) {
             qDebug() << "No Storage Backend, falling back to Settings mode.";
             _type = CredentialStore::Settings;
-            fetchCredentials(_user);
+            fetchCredentials();
             return;
         }
 
