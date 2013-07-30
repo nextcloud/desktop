@@ -415,7 +415,7 @@ void AccountSettings::slotOCInfo( const QString& url, const QString& versionStr,
     qDebug() << "#-------# oC found on " << url;
     /* enable the open button */
     ui->connectLabel->setOpenExternalLinks(true);
-    ui->connectLabel->setText( tr("Connected to <a href=\"%1\">%1</a>.") );
+    ui->connectLabel->setText( tr("Connected to <a href=\"%1\">%1</a>.").arg(url) );
     ui->connectLabel->setToolTip( tr("Version: %1 (%2)").arg(versionStr).arg(version));
     ui->_ButtonAdd->setEnabled(true);
 
