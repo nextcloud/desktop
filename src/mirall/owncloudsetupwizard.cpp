@@ -1,5 +1,5 @@
 /*
- * Copyright (C) by Klaas Freitag <freitag@kde.org>
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
  * Copyright (C) by Krzesimir Nowak <krzesimir@endocode.com>
  *
  * This program is free software; you can redistribute it and/or modify
