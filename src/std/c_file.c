@@ -61,6 +61,27 @@ int c_isfile(const char *path) {
 }
 
 /* copy file from src to dst, overwrites dst */
+#ifdef _WIN32
+int c_copy(const char* src, const char *dst, mode_t mode) {
+  int rc = -1;
+  _TCHAR *wsrc = 0;
+  _TCHAR *wdst = 0;
+  (void) mode; /* unused on win32 */
+  if(src && dst) {
+    wsrc = c_multibyte(src);
+    wdst = c_multibyte(dst);
+    if (CopyFileW(wsrc, wdst, FALSE)) {
+      rc = 0;
+    }
+    c_free_multibyte(wsrc);
+    c_free_multibyte(wdst);
+    if( rc < 0 ) {
+      errno = GetLastError();
+    }
+  }
+  return rc;
+}
+#else
 int c_copy(const char* src, const char *dst, mode_t mode) {
   int srcfd = -1;
   int dstfd = -1;
@@ -68,23 +89,6 @@ int c_copy(const char* src, const char *dst, mode_t mode) {
   ssize_t bread, bwritten;
   csync_stat_t sb;
   char buf[4096];
-
-#ifdef _WIN32
-  if(src && dst) {
-      _TCHAR *wsrc = c_multibyte(src);
-      _TCHAR *wdst = c_multibyte(dst);
-      if (CopyFileW(wsrc, wdst, FALSE)) {
-          rc = 0;
-      }
-      c_free_multibyte(wsrc);
-      c_free_multibyte(wdst);
-
-      if( rc < 0 ) {
-          errno = GetLastError();
-      }
-  }
-  return rc;
-#else
 
   /* Win32 does not come here. */
   if (c_streq(src, dst)) {
@@ -162,8 +166,8 @@ out:
     unlink(dst);
   }
   return rc;
-#endif
 }
+#endif // _WIN32
 
 int c_rename( const char *src, const char *dst ) {
     _TCHAR *nuri;

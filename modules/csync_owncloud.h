@@ -110,7 +110,7 @@ struct propfind_recursive_element {
     struct resource *children;
 };
 typedef struct propfind_recursive_element propfind_recursive_element_t;
-void clear_propfind_recursive_cache();
+void clear_propfind_recursive_cache(void);
 struct listdir_context *get_listdir_context_from_cache(const char *curi);
 struct listdir_context *fetch_resource_list_recursive(const char *uri, const char *curi);
 

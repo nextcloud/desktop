@@ -54,7 +54,7 @@ static void _tree_destructor(void *data) {
     SAFE_FREE(element);
 }
 
-void clear_propfind_recursive_cache()
+void clear_propfind_recursive_cache(void)
 {
     c_rbtree_destroy(propfind_recursive_cache, _tree_destructor);
     propfind_recursive_cache = NULL;
@@ -253,7 +253,7 @@ struct listdir_context *fetch_resource_list_recursive(const char *uri, const cha
                          req_status->reason_phrase);
             ret = NE_CONNECT;
             set_error_message(req_status->reason_phrase);
-            oc_notify_progress(uri, CSYNC_NOTIFY_ERROR,  req_status->code, (long long)(req_status->reason_phrase));
+            oc_notify_progress(uri, CSYNC_NOTIFY_ERROR,  req_status->code, (intptr_t)(req_status->reason_phrase));
         }
         DEBUG_WEBDAV("Recursive propfind result code %d.", req_status ? req_status->code : 0);
     } else {

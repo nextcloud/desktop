@@ -21,6 +21,7 @@
 
 #include "csync_owncloud.h"
 
+#include <inttypes.h>
 
 /*
  * free the fetchCtx
@@ -725,7 +726,7 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
             set_error_message(req_status->reason_phrase);
             oc_notify_progress( uri, CSYNC_NOTIFY_ERROR,
                                 req_status->code,
-                                (long long)(req_status->reason_phrase) );
+                                (intptr_t)(req_status->reason_phrase) );
         }
         DEBUG_WEBDAV("Simple propfind result code %d.", req_status->code);
     } else {
@@ -1308,7 +1309,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
       if( rc == 0 ) {
         oc_notify_progress(write_ctx->url, CSYNC_NOTIFY_FINISHED_UPLOAD, file_size, file_size);
       } else {
-        oc_notify_progress(write_ctx->url, CSYNC_NOTIFY_ERROR, error_code, (long long)(dav_session.error_string));
+        oc_notify_progress(write_ctx->url, CSYNC_NOTIFY_ERROR, error_code, (intptr_t)(dav_session.error_string));
       }
     } else if( c_streq( write_ctx->method, "GET") ) {
       /* GET a file to the file descriptor */
@@ -1335,9 +1336,9 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
         /* Allow compressed content by setting the header */
         ne_add_request_header( write_ctx->req, "Accept-Encoding", "gzip" );
 
-        if (fstat(fd, &sb) >= 0 && sb.st_size > 0) {
+        if (_tfstat(fd, &sb) >= 0 && sb.st_size > 0) {
             char brange[64];
-            ne_snprintf(brange, sizeof brange, "bytes=%lld-", (long long) sb.st_size);
+            snprintf(brange, sizeof brange, "bytes=%"PRId64"-", (int64_t) sb.st_size);
             ne_add_request_header(write_ctx->req, "Range", brange);
             ne_add_request_header(write_ctx->req, "Accept-Ranges", "bytes");
             DEBUG_WEBDAV("Retry with range %s fd %d", brange, fd);
@@ -1398,7 +1399,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
       if( rc == 0 ) {
         oc_notify_progress( write_ctx->url, CSYNC_NOTIFY_FINISHED_DOWNLOAD, write_ctx->get_size , write_ctx->get_size );
       } else {
-        oc_notify_progress( write_ctx->url, CSYNC_NOTIFY_ERROR, error_code , (long long)(dav_session.error_string));
+        oc_notify_progress( write_ctx->url, CSYNC_NOTIFY_ERROR, error_code , (intptr_t)(dav_session.error_string));
       }
     } else  {
         DEBUG_WEBDAV("Unknown method!");
@@ -1564,7 +1565,7 @@ static int owncloud_mkdir(const char *uri, mode_t mode) {
             errno = EEXIST;
         } else if (rc != NE_OK) {
             oc_notify_progress(uri, CSYNC_NOTIFY_ERROR,  http_result_code_from_session(),
-                               (long long)(dav_session.error_string) );
+                               (intptr_t)(dav_session.error_string) );
         }
     }
     SAFE_FREE( path );
@@ -1624,7 +1625,7 @@ static int owncloud_rename(const char *olduri, const char *newuri) {
             set_errno_from_neon_errcode(rc);
             if (rc != NE_OK) {
                 oc_notify_progress(olduri, CSYNC_NOTIFY_ERROR,  http_result_code_from_session(),
-                                   (long long)(dav_session.error_string) );
+                                   (intptr_t)(dav_session.error_string) );
             }
         }
     }

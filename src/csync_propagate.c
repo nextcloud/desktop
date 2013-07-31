@@ -68,7 +68,7 @@ static void _csync_file_stat_set_error(csync_file_stat_t *st, const char *error)
 }
 
 /* Recursively mark the parent flder as an error */
-void _csync_report_parent_error(CSYNC *ctx, csync_file_stat_t *st) {
+static void _csync_report_parent_error(CSYNC *ctx, csync_file_stat_t *st) {
     const char *dir = NULL;
     uint64_t h;
     c_rbnode_t* node;
@@ -1445,15 +1445,6 @@ out:
 
   SAFE_FREE(uri);
   return rc;
-}
-
-static int _cmp_char( const void *d1, const void *d2 )
-{
-    const char *c1 = (const char*) d1;
-    const char *c2 = (const char*) d2;
-    // CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "COMPARE: %s <-> %s", c1, c2);
-    if( c_streq(c1, c2) ) return 0;
-    return 1;
 }
 
 static int _csync_propagation_cleanup(CSYNC *ctx) {

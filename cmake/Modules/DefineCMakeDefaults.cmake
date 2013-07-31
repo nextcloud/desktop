@@ -18,6 +18,9 @@ set(CMAKE_COLOR_MAKEFILE ON)
 set(GENERIC_LIB_VERSION "0.1.0")
 set(GENERIC_LIB_SOVERSION "0")
 
+# set -Werror
+set(CMAKE_ENABLE_WERROR ON)
+
 # Set the default build type to release with debug info
 if (NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE RelWithDebInfo

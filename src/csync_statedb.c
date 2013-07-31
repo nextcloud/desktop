@@ -61,11 +61,12 @@ int csync_get_statedb_exists(CSYNC *ctx) {
 static void _csync_win32_hide_file( const char *file ) {
 #ifdef _WIN32
   _TCHAR *fileName;
+  DWORD dwAttrs;
+
   if( !file ) return;
 
   fileName = c_multibyte( file );
-
-  DWORD dwAttrs = GetFileAttributesW(fileName);
+  dwAttrs = GetFileAttributesW(fileName);
 
   if (dwAttrs==INVALID_FILE_ATTRIBUTES) return;
 
@@ -124,7 +125,7 @@ static int _csync_statedb_check(CSYNC *ctx, const char *statedb) {
 
     if (fd >= 0) {
         /* Check size. Size of zero is a valid database actually. */
-        rc = fstat(fd, &sb);
+        rc = _tfstat(fd, &sb);
 
         if (rc == 0) {
             if (sb.st_size == 0) {

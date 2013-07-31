@@ -125,12 +125,12 @@ int csync_getpass(const char *prompt,
                 int verify,
                 void *userdata
                ) {
-    /* unused variables */
-    (void) userdata;
-
     HANDLE h;
     DWORD mode = 0;
     int ok;
+
+    /* unused variables */
+    (void) userdata;
 
     /* fgets needs at least len - 1 */
     if (prompt == NULL || buf == NULL || len < 2) {

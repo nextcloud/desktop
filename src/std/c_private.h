@@ -64,9 +64,6 @@ typedef struct stat csync_stat_t;
 #ifndef HAVE_LSTAT
 #define lstat _stat
 #endif
-#ifdef _WIN32
-#define fstat  _fstat64
-#endif
 
 #ifndef O_NOATIME
 #define O_NOATIME 0
@@ -79,7 +76,7 @@ typedef struct stat csync_stat_t;
 /* tchar definitions for clean win32 filenames */
 #define _UNICODE
 
-#if defined _WIN32 && defined _UNICODE 
+#if defined _WIN32 && defined _UNICODE
 typedef  wchar_t    _TCHAR;
 #define _topen      _wopen
 #define _tdirent    _wdirent
@@ -92,6 +89,7 @@ typedef  wchar_t    _TCHAR;
 #define _tseekdir   _wseekdir
 #define _tcreat     _wcreat
 #define _tstat      _wstat64
+#define _tfstat     _fstat64
 #define _tunlink    _wunlink
 #define _tmkdir     _wmkdir
 #define _trmdir	    _wrmdir
@@ -110,6 +108,7 @@ typedef char        _TCHAR;
 #define _tseekdir   seekdir
 #define _tcreat     creat
 #define _tstat      lstat
+#define _tfstat     fstat
 #define _tunlink    unlink
 #define _tmkdir     mkdir
 #define _trmdir	    rmdir

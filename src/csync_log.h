@@ -33,11 +33,13 @@
 #define _CSYNC_LOG_H
 
 /* GCC have printf type attribute check.  */
+#ifndef PRINTF_ATTRIBUTE
 #ifdef __GNUC__
-#define PRINTF_ATTRIBUTE(a,b) __attribute__ ((__format__ (__printf__, a, b)))
+#define PRINTF_ATTRIBUTE(a,b) __attribute__ ((__format__ (__gnu_printf__, a, b)))
 #else
 #define PRINTF_ATTRIBUTE(a,b)
 #endif /* __GNUC__ */
+#endif /* ndef PRINTF_ATTRIBUTE */
 
 enum csync_log_priority_e {
     CSYNC_LOG_PRIORITY_NOLOG = 0,

@@ -290,11 +290,13 @@ char *c_lowercase(const char* str) {
 char* c_utf8(const _TCHAR *wstr)
 {
   char *dst = NULL;  
-#ifdef _WIN32  
+#ifdef _WIN32
+  size_t len;
+  int size_needed;
   if(!wstr) return NULL;
-  size_t len = wcslen( wstr );
+  len = wcslen( wstr );
   /* Call once to get the required size. */
-  int size_needed = WideCharToMultiByte(CP_UTF8, 0, wstr, len, NULL, 0, NULL, NULL);
+  size_needed = WideCharToMultiByte(CP_UTF8, 0, wstr, len, NULL, 0, NULL, NULL);
   if( size_needed > 0 ) {
     dst = c_malloc(1+size_needed);
     memset(dst, 0, 1+size_needed);
@@ -315,11 +317,14 @@ _TCHAR* c_multibyte(const char *str)
 {
   _TCHAR *dst = NULL;
 #ifdef _WIN32
+  int size_needed = 0;
+  int size_char = 0;
+  size_t len;
   if(!str) return NULL;
-  size_t len = strlen( str );
-  int size_needed = MultiByteToWideChar(CP_UTF8, 0, str, len, NULL, 0);
+  len = strlen( str );
+  size_needed = MultiByteToWideChar(CP_UTF8, 0, str, len, NULL, 0);
   if(size_needed > 0) {
-    int size_char = (size_needed+1)*sizeof(_TCHAR);
+    size_char = (size_needed+1)*sizeof(_TCHAR);
     dst = c_malloc(size_char);
     memset(dst, 0, size_char);
     MultiByteToWideChar(CP_UTF8, 0, str, -1, dst, size_needed);

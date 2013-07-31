@@ -296,6 +296,9 @@ static time_t FileTimeToUnixTime(FILETIME *filetime, DWORD *remainder)
 int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   csync_stat_t sb;
   _TCHAR *wuri = c_multibyte( uri );
+#ifdef _WIN32
+  HANDLE h;
+#endif
   if( _tstat(wuri, &sb) < 0) {
     c_free_multibyte(wuri);
     return -1;
@@ -356,8 +359,8 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   buf->inode = sb.st_ino;
 #ifdef _WIN32
   /* Get the Windows file id as an inode replacement. */
-  HANDLE h = CreateFileW( wuri, 0, FILE_SHARE_READ, NULL, OPEN_EXISTING,
-			  FILE_ATTRIBUTE_NORMAL+FILE_FLAG_BACKUP_SEMANTICS, NULL );
+  h = CreateFileW( wuri, 0, FILE_SHARE_READ, NULL, OPEN_EXISTING,
+                   FILE_ATTRIBUTE_NORMAL+FILE_FLAG_BACKUP_SEMANTICS, NULL );
   if( h == INVALID_HANDLE_VALUE ) {
      errno = GetLastError();
      c_free_multibyte(wuri);
@@ -365,7 +368,7 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
 
   } else {
      FILETIME ftCreate, ftAccess, ftWrite;
-     SYSTEMTIME stUTC;
+//     SYSTEMTIME stUTC;
 
      BY_HANDLE_FILE_INFORMATION fileInfo;
 
@@ -456,6 +459,7 @@ int csync_vio_local_chmod(const char *uri, mode_t mode) {
 
 int csync_vio_local_chown(const char *uri, uid_t owner, gid_t group) {
 #ifdef _WIN32
+  (void) uri, (void) owner, (void) group;
   return 0;
 #else
   return chown(uri, owner, group);

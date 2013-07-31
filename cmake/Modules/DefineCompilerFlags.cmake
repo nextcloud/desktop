@@ -3,38 +3,43 @@
 include(CheckCCompilerFlag)
 include(MacroCheckCCompilerFlagSSP)
 
+#
+# Define GNUCC compiler flags
+#
+if (${CMAKE_C_COMPILER_ID} MATCHES "(GNU|Clang)")
+
+    # add -Wconversion ?
+    # cannot be pedantic with sqlite3 directly linked
+    if (NOT CSYNC_STATIC_COMPILE_DIR)
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -pedantic -pedantic-errors")
+    endif()
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wshadow -Wmissing-prototypes -Wdeclaration-after-statement")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wunused -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wformat-security")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wmissing-format-attribute")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror")
+
+    if (CSYNC_ENABLE_WERROR)
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D__STDC_FORMAT_MACROS=1")
+    endif(CSYNC_ENABLE_WERROR)
+
+    # with -fPIC
+    check_c_compiler_flag("-fPIC" WITH_FPIC)
+    if (WITH_FPIC AND NOT WIN32)
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
+    endif (WITH_FPIC AND NOT WIN32)
+
+    check_c_compiler_flag_ssp("-fstack-protector" WITH_STACK_PROTECTOR)
+    if (WITH_STACK_PROTECTOR AND NOT WIN32)
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fstack-protector")
+    endif (WITH_STACK_PROTECTOR AND NOT WIN32)
+
+    check_c_compiler_flag("-D_FORTIFY_SOURCE=2" WITH_FORTIFY_SOURCE)
+    if (WITH_FORTIFY_SOURCE)
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_FORTIFY_SOURCE=2")
+    endif (WITH_FORTIFY_SOURCE)
+endif (${CMAKE_C_COMPILER_ID} MATCHES "(GNU|Clang)")
+
 if (UNIX AND NOT WIN32)
-    #
-    # Define GNUCC compiler flags
-    #
-    if (${CMAKE_C_COMPILER_ID} MATCHES "(GNU|Clang)")
-
-        # add -Wconversion ?
-        # cannot be pedantic with sqlite3 directly linked
-        if (NOT CSYNC_STATIC_COMPILE_DIR)
-            set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -pedantic -pedantic-errors")
-        endif()
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wshadow -Wmissing-prototypes -Wdeclaration-after-statement")
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wunused -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wformat-security")
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wmissing-format-attribute")
-
-        # with -fPIC
-        check_c_compiler_flag("-fPIC" WITH_FPIC)
-        if (WITH_FPIC)
-            set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
-        endif (WITH_FPIC)
-
-        check_c_compiler_flag_ssp("-fstack-protector" WITH_STACK_PROTECTOR)
-        if (WITH_STACK_PROTECTOR)
-            set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fstack-protector")
-        endif (WITH_STACK_PROTECTOR)
-
-        check_c_compiler_flag("-D_FORTIFY_SOURCE=2" WITH_FORTIFY_SOURCE)
-        if (WITH_FORTIFY_SOURCE)
-            set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_FORTIFY_SOURCE=2")
-        endif (WITH_FORTIFY_SOURCE)
-    endif (${CMAKE_C_COMPILER_ID} MATCHES "(GNU|Clang)")
-
     #
     # Check for large filesystem support
     #
@@ -63,5 +68,7 @@ if (UNIX AND NOT WIN32)
         string(REGEX REPLACE "[\r\n]" " " "${_lfs_CFLAGS}" "${${_lfs_CFLAGS}}")
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${_lfs_CFLAGS}")
     endif (_lfs_CFLAGS)
-
+else(UNIX AND NOT WIN32)
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_FILE_OFFSET_BITS=64")
 endif (UNIX AND NOT WIN32)
+

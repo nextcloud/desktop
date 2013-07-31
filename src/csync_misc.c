@@ -146,6 +146,7 @@ int csync_fnmatch(__const char *__pattern, __const char *__name, int __flags) {
 
 #include <shlwapi.h>
 int csync_fnmatch(__const char *__pattern, __const char *__name, int __flags) {
+    (void) __flags;
     if(PathMatchSpec(__name, __pattern))
         return 0;
     else

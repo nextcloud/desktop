@@ -45,10 +45,10 @@
 
 /* Platform specific defines go here. */
 #ifdef _WIN32
-#define fstat  _fstat64
+#define _hbf_fstat _fstat64
 typedef struct stat64 hbf_stat_t;
-#define _FILE_OFFSET_BITS 64
 #else
+#define _hbf_fstat fstat
 typedef struct stat hbf_stat_t;
 #endif
 
@@ -109,7 +109,7 @@ Hbf_State hbf_splitlist(hbf_transfer_t *transfer, int fd ) {
     return HBF_PARAM_FAIL;
   }
   
-  if( fstat(fd, &sb) < 0 ) {
+  if( _hbf_fstat(fd, &sb) < 0 ) {
     DEBUG_HBF("Failed to stat the file descriptor: errno = %d", errno);
     return HBF_FILESTAT_FAIL;
   }
@@ -343,7 +343,7 @@ static Hbf_State validate_source_file( hbf_transfer_t *transfer ) {
   }
 
   if( state == HBF_SUCCESS ) {
-    int rc = fstat( transfer->fd, &sb );
+    int rc = _hbf_fstat( transfer->fd, &sb );
     if( rc != 0 ) {
       state = HBF_STAT_FAIL;
     }

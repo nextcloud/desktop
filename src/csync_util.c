@@ -369,11 +369,11 @@ out:
 void csync_win32_set_file_hidden( const char *file, bool h ) {
 #ifdef _WIN32
   const _TCHAR *fileName;
+  DWORD dwAttrs;
   if( !file ) return;
 
   fileName = c_multibyte( file );
-
-  DWORD dwAttrs = GetFileAttributesW(fileName);
+  dwAttrs = GetFileAttributesW(fileName);
 
   if (dwAttrs==INVALID_FILE_ATTRIBUTES) return;
 
