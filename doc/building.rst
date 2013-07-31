@@ -37,7 +37,7 @@ Next, install the missing dependencies::
   brew install $(brew deps ocsync)
   brew install $(brew deps mirall)
 
-To build mirall and cmake, follow the `generic build instructions`_.
+To build mirall and csync, follow the `generic build instructions`_.
 
 .. note::
   You should not call ``make install`` at any time, since the product of the
