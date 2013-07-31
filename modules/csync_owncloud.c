@@ -1250,6 +1250,9 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
           state = hbf_splitlist(trans, fd);
           file_size = trans->stat_size;
 
+          DEBUG_WEBDAV("about to send %d block", trans->block_cnt);
+
+
           /* Reuse chunk info that was stored in database if existing. */
           if (dav_session.chunk_info && dav_session.chunk_info->transfer_id) {
             DEBUG_WEBDAV("Existing chunk info %d %d ", dav_session.chunk_info->start_id, dav_session.chunk_info->transfer_id);
