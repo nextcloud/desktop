@@ -282,7 +282,7 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    !ifndef INSTALL_PATH
         ;Main executable.
         File "${BUILD_PATH}\bin\${APPLICATION_EXECUTABLE}"
-        File "${BUILD_PATH}\src\libowncloudsync.dll"
+        File "${BUILD_PATH}\src\lib${APPLICATION_SHORTNAME}sync.dll"
 
         File "${BUILD_PATH}\src\mirall_ca.qm"
         File "${BUILD_PATH}\src\mirall_cs_CZ.qm"
