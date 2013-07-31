@@ -28,6 +28,7 @@
 #include <errno.h>
 #include <sys/timeb.h>
 #include <sys/time.h>
+#include <inttypes.h>
 
 #include "httpbf.h"
 
@@ -122,7 +123,7 @@ Hbf_State hbf_splitlist(hbf_transfer_t *transfer, int fd ) {
   transfer->calc_size = 0;
 #endif
 
-  DEBUG_HBF("hbf_splitlist: block_size: %ld threshold: %ld st_size: %ld\n", transfer->block_size, transfer->threshold, sb.st_size );
+  DEBUG_HBF("hbf_splitlist: block_size: %" PRId64 " threshold: %" PRId64 " st_size: %" PRId64 "\n", transfer->block_size, transfer->threshold, sb.st_size );
 
 
   /* calc the number of blocks to split in */
@@ -147,7 +148,7 @@ Hbf_State hbf_splitlist(hbf_transfer_t *transfer, int fd ) {
     blk_size   = 0;
   }
 
-  DEBUG_HBF("hbf_splitlist: num_blocks: %ld rmainder: %ld blk_size: %ld\n", num_blocks, remainder, blk_size );
+  DEBUG_HBF("hbf_splitlist: num_blocks: %" PRId64 " rmainder: %" PRId64 " blk_size: %" PRId64 "\n", num_blocks, remainder, blk_size );
 
 
   if( num_blocks ) {
@@ -179,7 +180,7 @@ Hbf_State hbf_splitlist(hbf_transfer_t *transfer, int fd ) {
           /* store the block data into the result array in the transfer */
           *((transfer->block_arr)+cnt) = block;
 
-          DEBUG_HBF("hbf_splitlist: created block %d   (start: %ld  size: %ld)\n", cnt, block->start, block->size );
+          DEBUG_HBF("hbf_splitlist: created block %d   (start: %" PRId64 "  size: %" PRId64 ")\n", cnt, block->start, block->size );
       }
 
 #ifndef NDEBUG
@@ -278,7 +279,7 @@ static int dav_request( ne_request *req, int fd, hbf_block_t *blk ) {
     if( ! (blk && req) ) return HBF_PARAM_FAIL;
 
     ne_set_request_body_fd(req, fd, blk->start, blk->size);
-    DEBUG_HBF("HBF: Block: %d , Start: %ld and Size: %ld\n", blk->seq_number, blk->start, blk->size );
+    DEBUG_HBF("HBF: Block: %d , Start: %" PRId64 " and Size: %" PRId64 "\n", blk->seq_number, blk->start, blk->size );
     res = ne_request_dispatch(req);
 
     req_status = ne_get_status( req );
