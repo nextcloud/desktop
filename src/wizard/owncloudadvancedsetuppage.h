@@ -14,66 +14,56 @@
  * for more details.
  */
 
-#ifndef MIRALL_OWNCLOUD_SETUP_PAGE_H
-#define MIRALL_OWNCLOUD_SETUP_PAGE_H
+#ifndef MIRALL_OWNCLOUD_ADVANCED_SETUP_PAGE_H
+#define MIRALL_OWNCLOUD_ADVANCED_SETUP_PAGE_H
 
 #include <QWizard>
 
 #include "wizard/owncloudwizardcommon.h"
-#include "ui_owncloudsetupnocredspage.h"
+#include "ui_owncloudadvancedsetuppage.h"
 
-class QLabel;
-class QVariant;
 class QProgressIndicator;
 
 namespace Mirall {
 
-class OwncloudSetupPage: public QWizardPage
+class OwncloudAdvancedSetupPage: public QWizardPage
 {
     Q_OBJECT
 public:
-  OwncloudSetupPage();
+  OwncloudAdvancedSetupPage();
 
   virtual bool isComplete() const;
   virtual void initializePage();
   virtual int nextId() const;
-  void setServerUrl( const QString& );
-  void setAllowPasswordStorage( bool );
   bool validatePage();
-  QString url() const;
   QString localFolder() const;
   void setRemoteFolder( const QString& remoteFolder);
   void setMultipleFoldersExist( bool exist );
-  void setAuthType(WizardCommon::AuthType type);
+  void directoriesCreated();
+
+signals:
+  void createLocalAndRemoteFolders(const QString&, const QString&);
 
 public slots:
   void setErrorString( const QString&  );
   void setConfigExists(  bool );
+
+private slots:
+  void slotSelectFolder();
+
+private:
+  void setupCustomization();
+  void updateStatus();
   void startSpinner();
   void stopSpinner();
 
-protected slots:
-  void slotUrlChanged(const QString&);
-
-  void setupCustomization();
-
-signals:
-  void determineAuthType(const QString&);
-
-private:
-  bool urlHasChanged();
-
-  Ui_OwncloudSetupPage _ui;
-  QString _oCUrl;
-  QString _ocUser;
-  bool    _authTypeKnown;
-  bool    _checking;
-  bool    _configExists;
-  bool    _multipleFoldersExist;
-  WizardCommon::AuthType _authType;
-
+  Ui_OwncloudAdvancedSetupPage _ui;
+  bool _checking;
+  bool _created;
+  bool _configExists;
+  bool _multipleFoldersExist;
   QProgressIndicator* _progressIndi;
-  QButtonGroup* _selectiveSyncButtons;
+
   QString _remoteFolder;
 };
 

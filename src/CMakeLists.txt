@@ -27,6 +27,7 @@ wizard/owncloudsetupnocredspage.ui
 wizard/owncloudhttpcredspage.ui
 wizard/owncloudwizardresultpage.ui
 wizard/owncloudshibbolethcredspage.ui
+wizard/owncloudadvancedsetuppage.ui
 )
 
 set(3rdparty_SRC
@@ -178,6 +179,7 @@ set(mirall_SRCS
     wizard/owncloudwizardresultpage.cpp
     wizard/owncloudwizardcommon.cpp
     wizard/owncloudshibbolethcredspage.cpp
+    wizard/owncloudadvancedsetuppage.cpp
     mirall/owncloudsetupwizard.cpp
     mirall/updatedetector.cpp
     mirall/occinfo.cpp
@@ -202,6 +204,7 @@ set(mirall_HEADERS
     wizard/owncloudwizardresultpage.h
     wizard/owncloudwizardcommon.h
     wizard/owncloudshibbolethcredspage.h
+    wizard/owncloudadvancedsetuppage.h
     mirall/folderstatusmodel.h
     mirall/updatedetector.h
     mirall/sslerrordialog.h

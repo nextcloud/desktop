@@ -118,7 +118,7 @@ bool OwncloudShibbolethCredsPage::validatePage()
 
 int OwncloudShibbolethCredsPage::nextId() const
 {
-  return WizardCommon::Page_Result;
+  return WizardCommon::Page_AdvancedSetup;
 }
 
 void OwncloudShibbolethCredsPage::setConnected( bool comp )

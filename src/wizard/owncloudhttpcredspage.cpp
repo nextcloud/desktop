@@ -90,7 +90,9 @@ bool OwncloudHttpCredsPage::validatePage()
     }
 
     if (!_connected) {
+        _ui.errorLabel->setVisible(false);
         _checking = true;
+        startSpinner();
         emit completeChanged();
         emit connectToOCUrl(field("OCUrl").toString().simplified());
 
@@ -98,6 +100,7 @@ bool OwncloudHttpCredsPage::validatePage()
     } else {
         _checking = false;
         emit completeChanged();
+        stopSpinner();
         return true;
     }
     return true;
@@ -105,7 +108,7 @@ bool OwncloudHttpCredsPage::validatePage()
 
 int OwncloudHttpCredsPage::nextId() const
 {
-    return WizardCommon::Page_Result;
+    return WizardCommon::Page_AdvancedSetup;
 }
 
 void OwncloudHttpCredsPage::setConnected( bool comp )

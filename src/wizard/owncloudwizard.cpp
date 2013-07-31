@@ -20,6 +20,7 @@
 #include "wizard/owncloudsetuppage.h"
 #include "wizard/owncloudhttpcredspage.h"
 #include "wizard/owncloudshibbolethcredspage.h"
+#include "wizard/owncloudadvancedsetuppage.h"
 #include "wizard/owncloudwizardresultpage.h"
 
 #include "QProgressIndicator.h"
@@ -37,6 +38,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
       _setupPage(new OwncloudSetupPage),
       _httpCredsPage(new OwncloudHttpCredsPage),
       _shibbolethCredsPage(new OwncloudShibbolethCredsPage),
+      _advancedSetupPage(new OwncloudAdvancedSetupPage),
       _resultPage(new OwncloudWizardResultPage),
       _credentialsPage(0),
       _configFile(),
@@ -44,10 +46,11 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
       _setupLog(),
       _configExists(false)
 {
-    setPage(WizardCommon::Page_oCSetup, _setupPage  );
+    setPage(WizardCommon::Page_ServerSetup, _setupPage  );
     setPage(WizardCommon::Page_HttpCreds, _httpCredsPage);
     setPage(WizardCommon::Page_ShibbolethCreds, _shibbolethCredsPage);
-    setPage(WizardCommon::Page_Result,  _resultPage );
+    setPage(WizardCommon::Page_AdvancedSetup, _advancedSetupPage);
+    setPage(WizardCommon::Page_Result, _resultPage );
 
     // note: start Id is set by the calling class depending on if the
     // welcome text is to be shown or not.
@@ -57,8 +60,11 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     connect( _setupPage, SIGNAL(determineAuthType(QString)), SIGNAL(determineAuthType(QString)));
     connect( _httpCredsPage, SIGNAL(connectToOCUrl(QString)), SIGNAL(connectToOCUrl(QString)));
     connect( _shibbolethCredsPage, SIGNAL(connectToOCUrl(QString)), SIGNAL(connectToOCUrl(QString)));
+    connect( _advancedSetupPage, SIGNAL(createLocalAndRemoteFolders(QString, QString)),
+             SIGNAL(createLocalAndRemoteFolders(QString, QString)));
 
     Theme *theme = Theme::instance();
+    setWindowTitle( tr("%1 Connection Wizard").arg(theme->appNameGUI()));
     setWizardStyle(QWizard::ModernStyle);
     setPixmap( QWizard::BannerPixmap, theme->wizardHeaderBanner() );
     setPixmap( QWizard::LogoPixmap, theme->wizardHeaderLogo() );
@@ -69,20 +75,14 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setSubTitleFormat(Qt::RichText);
 }
 
-WizardCommon::SyncMode OwncloudWizard::syncMode()
-{
-    return _setupPage->syncMode();
-    return WizardCommon::BoxMode;
-}
-
 void OwncloudWizard::setMultipleFoldersExist(bool exist)
 {
-    _setupPage->setMultipleFoldersExist(exist);
+    _advancedSetupPage->setMultipleFoldersExist(exist);
 }
 
 QString OwncloudWizard::localFolder() const
 {
-    return(_setupPage->localFolder());
+    return(_advancedSetupPage->localFolder());
 }
 
 QString OwncloudWizard::ocUrl() const
@@ -98,39 +98,34 @@ void OwncloudWizard::enableFinishOnResultWidget(bool enable)
 
 void OwncloudWizard::setRemoteFolder( const QString& remoteFolder )
 {
-    _setupPage->setRemoteFolder( remoteFolder );
+    _advancedSetupPage->setRemoteFolder( remoteFolder );
     _resultPage->setRemoteFolder( remoteFolder );
 }
 
-void OwncloudWizard::showConnectInfo( const QString& msg )
-{
-    if( _setupPage ) {
-        _setupPage->setErrorString( msg );
-    }
-}
-
-void OwncloudWizard::successfullyConnected(bool enable)
+void OwncloudWizard::successfulStep()
 {
     const int id(currentId());
 
     switch (id) {
     case WizardCommon::Page_HttpCreds:
-        _httpCredsPage->setConnected( enable );
+        _httpCredsPage->setConnected(true);
         break;
 
     case WizardCommon::Page_ShibbolethCreds:
-        _shibbolethCredsPage->setConnected( enable );
+        _shibbolethCredsPage->setConnected(true);
         break;
 
-    case WizardCommon::Page_oCSetup:
+    case WizardCommon::Page_AdvancedSetup:
+        _advancedSetupPage->directoriesCreated();
+        break;
+
+    case WizardCommon::Page_ServerSetup:
     case WizardCommon::Page_Result:
         qWarning("Should not happen at this stage.");
         break;
     }
 
-    if( enable ) {
-        next();
-    }
+    next();
 }
 
 void OwncloudWizard::setAuthType(WizardCommon::AuthType type)
@@ -144,15 +139,15 @@ void OwncloudWizard::setAuthType(WizardCommon::AuthType type)
   next();
 }
 
+// TODO: update this function
 void OwncloudWizard::slotCurrentPageChanged( int id )
 {
     qDebug() << "Current Wizard page changed to " << id;
 
-    if( id == WizardCommon::Page_oCSetup ) {
+    if( id == WizardCommon::Page_ServerSetup ) {
         setButtonText( QWizard::NextButton, tr("Connect...") );
         emit clearPendingRequests();
         _setupPage->initializePage();
-
     }
 
     if( id == WizardCommon::Page_Result ) {
@@ -164,12 +159,22 @@ void OwncloudWizard::displayError( const QString& msg )
 {
     int id(currentId());
 
-    if (id == WizardCommon::Page_oCSetup) {
+    switch (currentId()) {
+    case WizardCommon::Page_ServerSetup:
         _setupPage->setErrorString( msg );
-    } else if (id == WizardCommon::Page_HttpCreds) {
+        break;
+
+    case WizardCommon::Page_HttpCreds:
         _httpCredsPage->setErrorString(msg);
-    } else if (id == WizardCommon::Page_ShibbolethCreds) {
+        break;
+
+    case WizardCommon::Page_ShibbolethCreds:
         _shibbolethCredsPage->setErrorString(msg);
+        break;
+
+    case WizardCommon::Page_AdvancedSetup:
+        _advancedSetupPage->setErrorString(msg);
+        break;
     }
 }
 

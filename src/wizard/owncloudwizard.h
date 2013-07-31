@@ -26,6 +26,7 @@ namespace Mirall {
 class OwncloudSetupPage;
 class OwncloudHttpCredsPage;
 class OwncloudShibbolethCredsPage;
+class OwncloudAdvancedSetupPage;
 class OwncloudWizardResultPage;
 class AbstractCredentials;
 class AbstractCredentialsWizardPage;
@@ -52,11 +53,10 @@ public:
     void enableFinishOnResultWidget(bool enable);
 
     void displayError( const QString& );
-    WizardCommon::SyncMode syncMode();
     void setMultipleFoldersExist( bool );
     void setConfigExists( bool );
     bool configExists();
-    void successfullyConnected(bool);
+    void successfulStep();
     void setAuthType(WizardCommon::AuthType type);
     AbstractCredentials* getCredentials() const;
 
@@ -65,17 +65,17 @@ public slots:
     void appendToConfigurationLog( const QString& msg, LogType type = LogParagraph );
     void slotCurrentPageChanged( int );
 
-    void showConnectInfo( const QString& );
-
 signals:
     void clearPendingRequests();
-    void connectToOCUrl( const QString& );
     void determineAuthType(const QString&);
+    void connectToOCUrl( const QString& );
+    void createLocalAndRemoteFolders(const QString&, const QString&);
 
 private:
     OwncloudSetupPage* _setupPage;
     OwncloudHttpCredsPage* _httpCredsPage;
     OwncloudShibbolethCredsPage* _shibbolethCredsPage;
+    OwncloudAdvancedSetupPage* _advancedSetupPage;
     OwncloudWizardResultPage* _resultPage;
     AbstractCredentialsWizardPage* _credentialsPage;
 
