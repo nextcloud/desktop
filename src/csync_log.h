@@ -35,7 +35,11 @@
 /* GCC have printf type attribute check.  */
 #ifndef PRINTF_ATTRIBUTE
 #ifdef __GNUC__
+#ifdef _WIN32
 #define PRINTF_ATTRIBUTE(a,b) __attribute__ ((__format__ (__gnu_printf__, a, b)))
+#else
+#define PRINTF_ATTRIBUTE(a,b) __attribute__ ((__format__ (__printf__, a, b)))
+#endif
 #else
 #define PRINTF_ATTRIBUTE(a,b)
 #endif /* __GNUC__ */

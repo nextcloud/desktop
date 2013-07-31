@@ -192,7 +192,7 @@ static void check_csync_statedb_create_tables(void **state)
     stmt = sqlite3_mprintf("INSERT INTO metadata_temp"
            "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5) VALUES"
                            "(%lu, %d, '%q', %d, %d, %d, %d, %ld, %d, '%q');",
-           (ulong)42,
+           (unsigned long)42,
            42,
            "It's a rainy day",
            42,

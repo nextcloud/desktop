@@ -27,6 +27,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
+#include <inttypes.h>
 #include <time.h>
 #include <limits.h>
 
@@ -621,7 +622,7 @@ start_fd_based:
 
     if (st->size != tstat->size) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
-                "file: %s, error: incorrect filesize (size: %jd should be %jd)",
+                "file: %s, error: incorrect filesize (size: %" PRId64 " should be %" PRId64 ")",
                 turi, tstat->size, st->size);
       rc = 1;
       goto out;

@@ -423,9 +423,9 @@ static void ne_notify_status_cb (void *userdata, ne_session_status status,
         int64_t diff = _timediff(tc->last_time, now);
         int64_t len = info->sr.progress - tc->last_progress;
         if (len > 0 && diff > 0 && (1000000 * len / diff) > (int64_t)bandwidth_limit) {
-            int64_t wait = (1000000 * len / bandwidth_limit) - diff;
-            if (wait > 0) {
-                usleep(wait);
+            int64_t wait_time = (1000000 * len / bandwidth_limit) - diff;
+            if (wait_time > 0) {
+                usleep(wait_time);
             }
         }
         tc->last_progress = info->sr.progress;
@@ -434,9 +434,9 @@ static void ne_notify_status_cb (void *userdata, ne_session_status status,
         int64_t diff = _timediff(tc->last_time, now);
         if (diff > 0) {
             // -bandwidth_limit is the % of bandwidth
-            int64_t wait = -diff * (1 + 100.0 / bandwidth_limit);
-            if (wait > 0) {
-                usleep(wait);
+            int64_t wait_time = -diff * (1 + 100.0 / bandwidth_limit);
+            if (wait_time > 0) {
+                usleep(wait_time);
             }
         }
         gettimeofday(&tc->last_time, NULL);

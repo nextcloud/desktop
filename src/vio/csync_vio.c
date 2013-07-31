@@ -106,14 +106,14 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
 
 #ifdef __APPLE__
   if (lstat(path, &sb) < 0) {
+    char path_tmp[1024];
+    char* path2 = NULL;
+    uint32_t size = sizeof(path_tmp);
     SAFE_FREE(path);
 
-    char path_tmp[1024];
-    uint32_t size = sizeof(path_tmp);
     if (_NSGetExecutablePath(path_tmp, &size) == 0)
         printf("executable path is %s\n", path_tmp);
 
-    char* path2 = NULL;
     path2 = c_dirname(path_tmp);
 
     if (asprintf(&path, "%s/../Plugins/ocsync_%s.%s", path2, module, MODULE_EXTENSION) < 0) {
