@@ -109,21 +109,21 @@ QString Utility::octetsToString( qint64 octets )
 
     if (octets >= tb) {
         if (octets < 10*tb) {
-            return compactFormatDouble(double(octets)/double(tb), 1, QLatin1String("TB"));
+            return compactFormatDouble(qreal(octets)/qreal(tb), 1, QLatin1String("TB"));
         }
-        return QString::number(octets/tb) + QLatin1String(" TB");
+        return QString::number(qRound64(qreal(octets)/qreal(tb))) + QLatin1String(" TB");
     } else if (octets >= gb) {
         if (octets < 10*gb) {
-            return compactFormatDouble(double(octets)/double(gb), 1, QLatin1String("GB"));
+            return compactFormatDouble(qreal(octets)/qreal(gb), 1, QLatin1String("GB"));
         }
-        return QString::number(octets/gb) + QLatin1String(" GB");
+        return QString::number(qRound64(qreal(octets)/qreal(gb))) + QLatin1String(" GB");
     } else if (octets >= mb) {
         if (octets < 10*mb) {
-            return compactFormatDouble(double(octets)/double(mb), 1, QLatin1String("MB"));
+            return compactFormatDouble(qreal(octets)/qreal(mb), 1, QLatin1String("MB"));
         }
-        return QString::number(octets/mb) + QLatin1String(" MB");
+        return QString::number(qRound64(qreal(octets)/qreal(mb))) + QLatin1String(" MB");
     } else if (octets >= kb) {
-        return QString::number(octets/kb) + QLatin1String(" KB");
+        return QString::number(qRound64(qreal(octets)/qreal(kb))) + QLatin1String(" KB");
     } else {
         return QString::number(octets) + QLatin1String(" bytes");
     }
