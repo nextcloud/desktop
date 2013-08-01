@@ -17,7 +17,7 @@ is t1.cfg.in as an example. Yeah, this test script is not secure,
 make sure to run it with a weak account and in a save environment.
 
 Second, unpack the test file collection with 
-tar xzf testfiles.tar.gz 
+tar xf testfiles.tar.xz
 in the directory where the tarball can be found.
 
 To start the script, call ./t1.pl on the commandline. A lot of 
