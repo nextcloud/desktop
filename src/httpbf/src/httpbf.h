@@ -75,6 +75,8 @@ struct hbf_block_s {
 
 /* Callback for to check on abort */
 typedef int (*hbf_abort_callback) ();
+typedef void (*hbf_log_callback) (const char *, const char *);
+
 
 typedef struct hbf_transfer_s hbf_transfer_t;
 
@@ -95,6 +97,8 @@ struct hbf_transfer_s {
     int64_t threshold;
 
     hbf_abort_callback abort_cb;
+    hbf_log_callback log_cb;
+
 #ifndef NDEBUG
     int64_t calc_size;
 #endif
@@ -111,6 +115,7 @@ void hbf_free_transfer( hbf_transfer_t *transfer );
 const char *hbf_error_string(hbf_transfer_t* transfer, Hbf_State state);
 
 void hbf_set_abort_callback( hbf_transfer_t *transfer, hbf_abort_callback cb);
+void hbf_set_log_callback( hbf_transfer_t *transfer, hbf_log_callback cb);
 
 /* returns an http (error) code of the transmission. If the transmission
  * succeeded, the code is 200. If it failed, its the error code of the

@@ -39,7 +39,11 @@
 #ifdef NDEBUG
 #define DEBUG_HBF(...)
 #else
-#define DEBUG_HBF(...) printf(__VA_ARGS__)
+#define DEBUG_HBF(...) { if(transfer->log_cb) { \
+        char buf[1024];                         \
+        snprintf(buf, 1024, __VA_ARGS__);       \
+        transfer->log_cb(__FUNCTION__, buf);    \
+  }  }
 #endif
 
 #define DEFAULT_BLOCK_SIZE (10*1024*1024)
@@ -270,7 +274,7 @@ static char* get_transfer_url( hbf_transfer_t *transfer, int indx ) {
  * returns HBF_TRANSFER_SUCCESS if the transfer of this block was a success
  * returns HBF_SUCCESS if the server aknoweldge that he received all the blocks
  */
-static int dav_request( ne_request *req, int fd, hbf_block_t *blk ) {
+static int _hbf_dav_request(hbf_transfer_t *transfer, ne_request *req, int fd, hbf_block_t *blk ) {
     Hbf_State state = HBF_TRANSFER_SUCCESS;
     int res;
     const ne_status *req_status = NULL;
@@ -460,7 +464,7 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
                 if( transfer->block_cnt > 1 ) {
                   ne_add_request_header(req, "OC-Chunked", "1");
                 }
-                state = dav_request( req, transfer->fd, block );
+                state = _hbf_dav_request(transfer,  req, transfer->fd, block );
 
                 if( state != HBF_TRANSFER_SUCCESS && state != HBF_SUCCESS) {
                   if( transfer->error_string ) free( transfer->error_string );
@@ -588,4 +592,11 @@ void hbf_set_abort_callback( hbf_transfer_t *transfer, hbf_abort_callback cb)
   if( transfer ) {
     transfer->abort_cb = cb;
   }
+}
+
+void hbf_set_log_callback(hbf_transfer_t* transfer, hbf_log_callback cb)
+{
+    if( transfer ) {
+        transfer->log_cb = cb;
+    }
 }

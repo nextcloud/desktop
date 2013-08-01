@@ -1187,6 +1187,11 @@ static int _user_want_abort()
     return csync_abort_requested(dav_session.csync_ctx);
 }
 
+static void _log_callback(const char *func, const char *text)
+{
+    csync_log(dav_session.csync_ctx, CSYNC_LOG_PRIORITY_TRACE, func, "%s", text);
+}
+
 static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_handle_t *hdl ) {
     int rc  = 0;
     int neon_stat;
@@ -1235,6 +1240,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
       do {
         Hbf_State state = HBF_SUCCESS;
         hbf_transfer_t *trans = hbf_init_transfer(clean_uri);
+        hbf_set_log_callback(trans, _log_callback);
         if (dav_session.hbf_block_size > 0) {
           trans->threshold = trans->block_size = dav_session.hbf_block_size;
         }
