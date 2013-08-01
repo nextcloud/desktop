@@ -157,8 +157,6 @@ void OwncloudWizard::slotCurrentPageChanged( int id )
 
 void OwncloudWizard::displayError( const QString& msg )
 {
-    int id(currentId());
-
     switch (currentId()) {
     case WizardCommon::Page_ServerSetup:
         _setupPage->setErrorString( msg );
