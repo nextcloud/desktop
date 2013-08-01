@@ -22,6 +22,7 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QFileInfo>
+#include <QFileIconProvider>
 #include <QInputDialog>
 #include <QUrl>
 #include <QValidator>
@@ -178,6 +179,8 @@ FolderWizardTargetPage::FolderWizardTargetPage()
 void FolderWizardTargetPage::slotAddRemoteFolder()
 {
     QInputDialog *dlg = new QInputDialog(this);
+    dlg->setWindowTitle(tr("Add Remote Folder"));
+    dlg->setLabelText(tr("Enter the name of the new folder:"));
     dlg->open(this, SLOT(slotCreateRemoteFolder(QString)));
     dlg->setAttribute(Qt::WA_DeleteOnClose);
 }
@@ -205,9 +208,11 @@ void FolderWizardTargetPage::slotCreateRemoteFolderFinished( QNetworkReply::Netw
 void FolderWizardTargetPage::slotUpdateDirectories(QStringList list)
 {
     _ui.folderListWidget->clear();
-    foreach (QString item, list) {
-        item.remove(QLatin1String("/remote.php/webdav"));
-        _ui.folderListWidget->addItem(item);
+    QFileIconProvider prov;
+    QIcon folderIcon = prov.icon(QFileIconProvider::Folder);
+    foreach (QString path, list) {
+        path.remove(QLatin1String("/remote.php/webdav"));
+        new QListWidgetItem(folderIcon, path, _ui.folderListWidget);
     }
 }
 
