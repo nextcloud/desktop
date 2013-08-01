@@ -241,6 +241,11 @@
 </context>
 <context>
     <name>Mirall::Application</name>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="214"/>
+        <source>%1 Sync Started</source>
+        <translation>%1 Synchronizácia začala</translation>
+    </message>
     <message numerus="yes">
         <location filename="../src/mirall/application.cpp" line="215"/>
         <source>Sync started for %n configured sync folder(s).</source>
@@ -297,6 +302,11 @@
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/mirall/application.cpp" line="358"/>
+        <source>Managed Folders:</source>
+        <translation>Spravované priečinky:</translation>
+    </message>
+    <message>
         <location filename="../src/mirall/application.cpp" line="361"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation type="unfinished"/>
@@ -337,16 +347,6 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="214"/>
-        <source>%1 Sync Started</source>
-        <translation>%1 Synchronizácia začala</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="358"/>
-        <source>Managed Folders:</source>
-        <translation>Spravované priečinky:</translation>
-    </message>
-    <message>
         <location filename="../src/mirall/application.cpp" line="563"/>
         <source>In Sync</source>
         <translation type="unfinished"/>
@@ -365,11 +365,6 @@
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="75"/>
-        <source>CSync failed to create a lock file.</source>
-        <translation>Vytvorenie &quot;zamykacieho&quot; súboru cez &quot;CSync&quot; zlyhalo.</translation>
-    </message>
-    <message>
         <location filename="../src/mirall/csyncthread.cpp" line="69"/>
         <source>Success.</source>
         <translation>Úspech.</translation>
@@ -380,9 +375,19 @@
         <translation>CSync sa nepodarilo nastaviť prihlasovanie.</translation>
     </message>
     <message>
+        <location filename="../src/mirall/csyncthread.cpp" line="75"/>
+        <source>CSync failed to create a lock file.</source>
+        <translation>Vytvorenie &quot;zamykacieho&quot; súboru cez &quot;CSync&quot; zlyhalo.</translation>
+    </message>
+    <message>
         <location filename="../src/mirall/csyncthread.cpp" line="78"/>
         <source>CSync failed to load the state db.</source>
         <translation>Načítanie stavu databázy vrámci &quot;CSync&quot; zlyhalo.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/csyncthread.cpp" line="81"/>
+        <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
+        <translation>&lt;p&gt;%1 zásuvný modul pre &quot;CSync&quot; nebolo možné načítať.&lt;br/&gt;Prosím skontrolujte inštaláciu!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="84"/>
@@ -398,16 +403,6 @@
         <location filename="../src/mirall/csyncthread.cpp" line="92"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>Spracovanie &quot;vnútorných stromov&quot; vrámci &quot;CSync&quot; zlyhalo.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="118"/>
-        <source>The local filesystem can not be written. Please check permissions.</source>
-        <translation>Lokálny súborový systém nie je možné zapísať. Prosím skontrolujte povolenia.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="114"/>
-        <source>A remote file can not be written. Please check the remote access.</source>
-        <translation>Vzdialený súbor nie je možné zapísať. Prosím skontrolujte vzdialený prístup.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="95"/>
@@ -438,6 +433,16 @@
         <location filename="../src/mirall/csyncthread.cpp" line="110"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Cieľový priečinok neexistuje.&lt;/p&gt;&lt;p&gt;Skontrolujte, prosím, nastavenia synchronizácie.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/csyncthread.cpp" line="114"/>
+        <source>A remote file can not be written. Please check the remote access.</source>
+        <translation>Vzdialený súbor nie je možné zapísať. Prosím skontrolujte vzdialený prístup.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/csyncthread.cpp" line="118"/>
+        <source>The local filesystem can not be written. Please check permissions.</source>
+        <translation>Lokálny súborový systém nie je možné zapísať. Prosím skontrolujte povolenia.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="121"/>
@@ -509,11 +514,6 @@
         <source>&lt;br/&gt;Backend Message: </source>
         <translation>&lt;br/&gt;Backend správa: </translation>
     </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="81"/>
-        <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation>&lt;p&gt;%1 zásuvný modul pre &quot;CSync&quot; nebolo možné načítať.&lt;br/&gt;Prosím skontrolujte inštaláciu!&lt;/p&gt;</translation>
-    </message>
 </context>
 <context>
     <name>Mirall::ConnectionValidator</name>
@@ -538,6 +538,22 @@
 </context>
 <context>
     <name>Mirall::FileItemDialog</name>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.ui" line="14"/>
+        <source>Form</source>
+        <translation>Formulár</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.ui" line="27"/>
+        <source>Detailed Sync Protocol</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.ui" line="63"/>
+        <location filename="../src/mirall/fileitemdialog.ui" line="70"/>
+        <source>TextLabel</source>
+        <translation>TextLabel</translation>
+    </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="43"/>
         <source>Files</source>
@@ -603,6 +619,16 @@
         <source>Undefined Error State.</source>
         <translation>Nedefinovaná chyba.</translation>
     </message>
+    <message numerus="yes">
+        <location filename="../src/mirall/fileitemdialog.cpp" line="133"/>
+        <source>%1 (last finished %n sec. ago)</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/mirall/fileitemdialog.cpp" line="135"/>
+        <source>%1 (last finished %n min. ago)</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="164"/>
         <source>Copied to clipboard</source>
@@ -614,29 +640,9 @@
         <translation>Protokol synchronizácie bol nakopírovaný do schránky.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="237"/>
-        <source>Uploaded</source>
-        <translation>Odoslané</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="238"/>
-        <source>Downloaded</source>
-        <translation>Stiahnuté</translation>
-    </message>
-    <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="181"/>
         <source>Synced Files</source>
         <translation>Zosynchronizované súbory</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/mirall/fileitemdialog.cpp" line="133"/>
-        <source>%1 (last finished %n sec. ago)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/mirall/fileitemdialog.cpp" line="135"/>
-        <source>%1 (last finished %n min. ago)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="187"/>
@@ -669,20 +675,14 @@
         <translation>Kolízie</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.ui" line="14"/>
-        <source>Form</source>
-        <translation>Formulár</translation>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="237"/>
+        <source>Uploaded</source>
+        <translation>Odoslané</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.ui" line="27"/>
-        <source>Detailed Sync Protocol</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/mirall/fileitemdialog.ui" line="63"/>
-        <location filename="../src/mirall/fileitemdialog.ui" line="70"/>
-        <source>TextLabel</source>
-        <translation>TextLabel</translation>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="238"/>
+        <source>Downloaded</source>
+        <translation>Stiahnuté</translation>
     </message>
 </context>
 <context>
@@ -1187,16 +1187,6 @@ Are you sure you want to perform this operation?</source>
         <translation>%1 Asistent pripojenia</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="196"/>
-        <source>Trying to connect to %1 at %2...</source>
-        <translation>Pokúšam sa o pripojenie k %1 na %2...</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="276"/>
-        <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;Úspešne pripojené k %1: %2 verzie %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="152"/>
         <source>Folder rename failed</source>
         <translation type="unfinished"/>
@@ -1207,9 +1197,44 @@ Are you sure you want to perform this operation?</source>
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="173"/>
+        <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Lokálny synchronizačný priečinok %1 bol úspešne vytvorený!&lt;/b&gt;&lt;/font&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="196"/>
+        <source>Trying to connect to %1 at %2...</source>
+        <translation>Pokúšam sa o pripojenie k %1 na %2...</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="276"/>
+        <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
+        <translation>&lt;font color=&quot;green&quot;&gt;Úspešne pripojené k %1: %2 verzie %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
+    </message>
+    <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="293"/>
         <source>Failed to connect to %1:&lt;br/&gt;%2</source>
         <translation>Nepodarilo sa pripojiť k %1:&lt;br/&gt;%2</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="313"/>
+        <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation>Lokálny synchronizačný priečinok %1 už existuje, prebieha jeho nastavovanie pre synchronizáciu.&lt;br/&gt;&lt;br/&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="315"/>
+        <source>Creating local sync folder %1... </source>
+        <translation>Vytváranie lokálneho synch. priečinka %1 ...</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="319"/>
+        <source>ok</source>
+        <translation>v poriadku</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="321"/>
+        <source>failed.</source>
+        <translation>neúspešné.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="324"/>
@@ -1263,6 +1288,17 @@ Are you sure you want to perform this operation?</source>
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="421"/>
+        <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Vytvorenie vzdialeného priečinka pravdepodobne zlyhalo kvôli nesprávnym prihlasovacím údajom.&lt;/font&gt;&lt;br/&gt;Prosím choďte späť a skontrolujte ich.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="426"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="427"/>
+        <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
+        <translation>Vytvorenie vzdialeného priečinka %1 zlyhalo s chybou &lt;tt&gt;%2&lt;/tt&gt;.</translation>
+    </message>
+    <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="443"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>Synchronizačné spojenie z %1 do vzidaleného priečinka %2 bolo práve nastavené.</translation>
@@ -1276,42 +1312,6 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="453"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Pripojenie k %1 nemohlo byť iniciované. Prosím skontrolujte znova.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="313"/>
-        <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>Lokálny synchronizačný priečinok %1 už existuje, prebieha jeho nastavovanie pre synchronizáciu.&lt;br/&gt;&lt;br/&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="315"/>
-        <source>Creating local sync folder %1... </source>
-        <translation>Vytváranie lokálneho synch. priečinka %1 ...</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="319"/>
-        <source>ok</source>
-        <translation>v poriadku</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="321"/>
-        <source>failed.</source>
-        <translation>neúspešné.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="173"/>
-        <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Lokálny synchronizačný priečinok %1 bol úspešne vytvorený!&lt;/b&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="421"/>
-        <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Vytvorenie vzdialeného priečinka pravdepodobne zlyhalo kvôli nesprávnym prihlasovacím údajom.&lt;/font&gt;&lt;br/&gt;Prosím choďte späť a skontrolujte ich.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="426"/>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="427"/>
-        <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation>Vytvorenie vzdialeného priečinka %1 zlyhalo s chybou &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
 </context>
 <context>
@@ -1383,15 +1383,20 @@ Are you sure you want to perform this operation?</source>
         <source>&apos;%1&apos; has been removed.</source>
         <translation>&apos;%1&apos; bol odstránený.</translation>
     </message>
+    <message>
+        <location filename="../src/mirall/folder.cpp" line="706"/>
+        <source>Files removed</source>
+        <translation>Súbory vymazané</translation>
+    </message>
     <message numerus="yes">
         <location filename="../src/mirall/folder.cpp" line="706"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
         <translation><numerusform>&apos;%1&apos; a %n iný súbor bol odstránený.</numerusform><numerusform>&apos;%1&apos; and %n iné súbory boli odstránené.</numerusform><numerusform>&apos;%1&apos; and %n iné súbory boli odstránené.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="706"/>
-        <source>Files removed</source>
-        <translation>Súbory vymazané</translation>
+        <location filename="../src/mirall/folder.cpp" line="712"/>
+        <source>File updated</source>
+        <translation>Súbor aktualizovaný</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="712"/>
@@ -1399,19 +1404,14 @@ Are you sure you want to perform this operation?</source>
         <translation>&apos;%1&apos; bol aktualizovaný.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="712"/>
-        <source>File updated</source>
-        <translation>Súbor aktualizovaný</translation>
+        <location filename="../src/mirall/folder.cpp" line="714"/>
+        <source>Files updated</source>
+        <translation>Súbory aktualizované</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/folder.cpp" line="714"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
         <translation><numerusform>&apos;%1&apos; a %n iný súbor bol aktualizovaný.</numerusform><numerusform>&apos;%1&apos; and %n iné súbory boli aktualizované.</numerusform><numerusform>&apos;%1&apos; and %n iné súbory boli aktualizované.</numerusform></translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folder.cpp" line="714"/>
-        <source>Files updated</source>
-        <translation>Súbory aktualizované</translation>
     </message>
 </context>
 <context>
@@ -1605,20 +1605,13 @@ Are you sure you want to perform this operation?</source>
         <translation>&amp;Adresa servera:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetuppage.ui" line="120"/>
-        <source>&amp;Do not store password on local machine</source>
-        <translation>&amp;Neukladať heslo na lokálnom počítači</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetuppage.ui" line="140"/>
-        <source>https://</source>
-        <translation>https://</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetuppage.ui" line="147"/>
-        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="270"/>
-        <source>Enter the url of the ownCloud you want to connect to (without http or https).</source>
-        <translation>Vložte URL inštancie ownCloud ku ktorej sa chcete pripojiť (bez http alebo https)</translation>
+        <location filename="../src/mirall/owncloudsetuppage.ui" line="36"/>
+        <location filename="../src/mirall/owncloudsetuppage.ui" line="129"/>
+        <location filename="../src/mirall/owncloudsetuppage.ui" line="156"/>
+        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="35"/>
+        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="444"/>
+        <source>TextLabel</source>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="47"/>
@@ -1658,13 +1651,20 @@ Are you sure you want to perform this operation?</source>
         <translation>Nepovoliť lokálne uloženie hesla.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetuppage.ui" line="36"/>
-        <location filename="../src/mirall/owncloudsetuppage.ui" line="129"/>
-        <location filename="../src/mirall/owncloudsetuppage.ui" line="156"/>
-        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="35"/>
-        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="444"/>
-        <source>TextLabel</source>
-        <translation>TextLabel</translation>
+        <location filename="../src/mirall/owncloudsetuppage.ui" line="120"/>
+        <source>&amp;Do not store password on local machine</source>
+        <translation>&amp;Neukladať heslo na lokálnom počítači</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetuppage.ui" line="140"/>
+        <source>https://</source>
+        <translation>https://</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetuppage.ui" line="147"/>
+        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="270"/>
+        <source>Enter the url of the ownCloud you want to connect to (without http or https).</source>
+        <translation>Vložte URL inštancie ownCloud ku ktorej sa chcete pripojiť (bez http alebo https)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="107"/>
@@ -1745,6 +1745,11 @@ Are you sure you want to perform this operation?</source>
         <translation>Formulár</translation>
     </message>
     <message>
+        <location filename="../src/mirall/owncloudwizardresultpage.ui" line="20"/>
+        <source>TextLabel</source>
+        <translation>Štítok</translation>
+    </message>
+    <message>
         <location filename="../src/mirall/owncloudwizardresultpage.ui" line="66"/>
         <source>Your entire account is synced to the local folder </source>
         <translation type="unfinished"/>
@@ -1755,45 +1760,9 @@ Are you sure you want to perform this operation?</source>
         <source>PushButton</source>
         <translation type="unfinished"/>
     </message>
-    <message>
-        <location filename="../src/mirall/owncloudwizardresultpage.ui" line="20"/>
-        <source>TextLabel</source>
-        <translation>Štítok</translation>
-    </message>
 </context>
 <context>
     <name>QObject</name>
-    <message>
-        <location filename="../src/mirall/theme.cpp" line="48"/>
-        <location filename="../src/mirall/theme.cpp" line="66"/>
-        <source>Status undefined</source>
-        <translation>Nedefinovaný status</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/theme.cpp" line="51"/>
-        <source>Waiting to start sync</source>
-        <translation>Čakanie na začiatok synchronizácie</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/theme.cpp" line="54"/>
-        <source>Sync is running</source>
-        <translation>Prebieha synchronizácia</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/theme.cpp" line="57"/>
-        <source>Sync Success</source>
-        <translation>Úspešná synchronizácia</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/theme.cpp" line="60"/>
-        <source>Sync Error - Click info button for details.</source>
-        <translation>Chyba synchronizácie - kliknite na informačné tlačidlo pre detaily.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/theme.cpp" line="63"/>
-        <source>Setup Error</source>
-        <translation>Chyba inštalácie</translation>
-    </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="31"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="43"/>
@@ -1827,6 +1796,37 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/mirall/progressdispatcher.cpp" line="58"/>
         <source>finished</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/theme.cpp" line="48"/>
+        <location filename="../src/mirall/theme.cpp" line="66"/>
+        <source>Status undefined</source>
+        <translation>Nedefinovaný status</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/theme.cpp" line="51"/>
+        <source>Waiting to start sync</source>
+        <translation>Čakanie na začiatok synchronizácie</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/theme.cpp" line="54"/>
+        <source>Sync is running</source>
+        <translation>Prebieha synchronizácia</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/theme.cpp" line="57"/>
+        <source>Sync Success</source>
+        <translation>Úspešná synchronizácia</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/theme.cpp" line="60"/>
+        <source>Sync Error - Click info button for details.</source>
+        <translation>Chyba synchronizácie - kliknite na informačné tlačidlo pre detaily.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/theme.cpp" line="63"/>
+        <source>Setup Error</source>
+        <translation>Chyba inštalácie</translation>
     </message>
 </context>
 <context>

@@ -241,6 +241,11 @@
 </context>
 <context>
     <name>Mirall::Application</name>
+    <message>
+        <location filename="../src/mirall/application.cpp" line="214"/>
+        <source>%1 Sync Started</source>
+        <translation>Comezou a sincronización %1</translation>
+    </message>
     <message numerus="yes">
         <location filename="../src/mirall/application.cpp" line="215"/>
         <source>Sync started for %n configured sync folder(s).</source>
@@ -297,6 +302,11 @@
         <translation>Abrir o cartafol local «%1»</translation>
     </message>
     <message>
+        <location filename="../src/mirall/application.cpp" line="358"/>
+        <source>Managed Folders:</source>
+        <translation>Cartafoles xestionados:</translation>
+    </message>
+    <message>
         <location filename="../src/mirall/application.cpp" line="361"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>Abrir o cartafol «%1»</translation>
@@ -337,16 +347,6 @@
         <translation>Sincronizando %1 de %2 (%3 de %4) </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="214"/>
-        <source>%1 Sync Started</source>
-        <translation>Comezou a sincronización %1</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="358"/>
-        <source>Managed Folders:</source>
-        <translation>Cartafoles xestionados:</translation>
-    </message>
-    <message>
         <location filename="../src/mirall/application.cpp" line="563"/>
         <source>In Sync</source>
         <translation>Sincronizandose</translation>
@@ -365,11 +365,6 @@
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="75"/>
-        <source>CSync failed to create a lock file.</source>
-        <translation>Produciuse un fallo en CSync ao crear un ficheiro de bloqueo.</translation>
-    </message>
-    <message>
         <location filename="../src/mirall/csyncthread.cpp" line="69"/>
         <source>Success.</source>
         <translation>Correcto.</translation>
@@ -380,9 +375,19 @@
         <translation>Produciuse un fallo ao configurar o acceso a CSync.</translation>
     </message>
     <message>
+        <location filename="../src/mirall/csyncthread.cpp" line="75"/>
+        <source>CSync failed to create a lock file.</source>
+        <translation>Produciuse un fallo en CSync ao crear un ficheiro de bloqueo.</translation>
+    </message>
+    <message>
         <location filename="../src/mirall/csyncthread.cpp" line="78"/>
         <source>CSync failed to load the state db.</source>
         <translation>Produciuse un fallo en CSync ao cargar o estado da BD.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/csyncthread.cpp" line="81"/>
+        <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Non foi posíbel cargar o engadido %1 para CSync.&lt;br/&gt;Verifique a instalación!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="84"/>
@@ -398,16 +403,6 @@
         <location filename="../src/mirall/csyncthread.cpp" line="92"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSync tivo un erro ao procesar árbores internas.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="118"/>
-        <source>The local filesystem can not be written. Please check permissions.</source>
-        <translation>Non é posíbel escribir no sistema de ficheiros local. Comprobe os permisos.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="114"/>
-        <source>A remote file can not be written. Please check the remote access.</source>
-        <translation>Non é posíbel escribir un ficheiro remoto. Comprobe o acceso remoto.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="95"/>
@@ -438,6 +433,16 @@
         <location filename="../src/mirall/csyncthread.cpp" line="110"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Non existe o directorio de destino.&lt;/p&gt;&lt;p&gt;Comprobe a configuración da sincronización.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/csyncthread.cpp" line="114"/>
+        <source>A remote file can not be written. Please check the remote access.</source>
+        <translation>Non é posíbel escribir un ficheiro remoto. Comprobe o acceso remoto.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/csyncthread.cpp" line="118"/>
+        <source>The local filesystem can not be written. Please check permissions.</source>
+        <translation>Non é posíbel escribir no sistema de ficheiros local. Comprobe os permisos.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="121"/>
@@ -509,11 +514,6 @@
         <source>&lt;br/&gt;Backend Message: </source>
         <translation>&lt;br/&gt;Mensaxe da infraestrutura: </translation>
     </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="81"/>
-        <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Non foi posíbel cargar o engadido %1 para CSync.&lt;br/&gt;Verifique a instalación!&lt;/p&gt;</translation>
-    </message>
 </context>
 <context>
     <name>Mirall::ConnectionValidator</name>
@@ -538,6 +538,22 @@
 </context>
 <context>
     <name>Mirall::FileItemDialog</name>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.ui" line="14"/>
+        <source>Form</source>
+        <translation>Formulario</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.ui" line="27"/>
+        <source>Detailed Sync Protocol</source>
+        <translation>Protocolo de sincronización detallado</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/fileitemdialog.ui" line="63"/>
+        <location filename="../src/mirall/fileitemdialog.ui" line="70"/>
+        <source>TextLabel</source>
+        <translation>Etiqueta de texto</translation>
+    </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="43"/>
         <source>Files</source>
@@ -603,6 +619,16 @@
         <source>Undefined Error State.</source>
         <translation>Estado de erro sen definir.</translation>
     </message>
+    <message numerus="yes">
+        <location filename="../src/mirall/fileitemdialog.cpp" line="133"/>
+        <source>%1 (last finished %n sec. ago)</source>
+        <translation><numerusform>%1 (o último rematou vai %n seg.)</numerusform><numerusform>%1 (os últimos remataron vai %n seg.)</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/mirall/fileitemdialog.cpp" line="135"/>
+        <source>%1 (last finished %n min. ago)</source>
+        <translation><numerusform>%1 (o último rematou vai  %n min.)</numerusform><numerusform>%1 (os últimos remataron vai %n min.)</numerusform></translation>
+    </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="164"/>
         <source>Copied to clipboard</source>
@@ -614,29 +640,9 @@
         <translation>O protocolo de sincronización foi copiado no portapapeis.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="237"/>
-        <source>Uploaded</source>
-        <translation>Enviado</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/fileitemdialog.cpp" line="238"/>
-        <source>Downloaded</source>
-        <translation>Descargado</translation>
-    </message>
-    <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="181"/>
         <source>Synced Files</source>
         <translation>Ficheiros sincronizados</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/mirall/fileitemdialog.cpp" line="133"/>
-        <source>%1 (last finished %n sec. ago)</source>
-        <translation><numerusform>%1 (o último rematou vai %n seg.)</numerusform><numerusform>%1 (os últimos remataron vai %n seg.)</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/mirall/fileitemdialog.cpp" line="135"/>
-        <source>%1 (last finished %n min. ago)</source>
-        <translation><numerusform>%1 (o último rematou vai  %n min.)</numerusform><numerusform>%1 (os últimos remataron vai %n min.)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="187"/>
@@ -669,20 +675,14 @@
         <translation>Conflitos</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.ui" line="14"/>
-        <source>Form</source>
-        <translation>Formulario</translation>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="237"/>
+        <source>Uploaded</source>
+        <translation>Enviado</translation>
     </message>
     <message>
-        <location filename="../src/mirall/fileitemdialog.ui" line="27"/>
-        <source>Detailed Sync Protocol</source>
-        <translation>Protocolo de sincronización detallado</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/fileitemdialog.ui" line="63"/>
-        <location filename="../src/mirall/fileitemdialog.ui" line="70"/>
-        <source>TextLabel</source>
-        <translation>Etiqueta de texto</translation>
+        <location filename="../src/mirall/fileitemdialog.cpp" line="238"/>
+        <source>Downloaded</source>
+        <translation>Descargado</translation>
     </message>
 </context>
 <context>
@@ -1190,16 +1190,6 @@ Confirma que quere realizar esta operación?</translation>
         <translation>Asistente de conexión %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="196"/>
-        <source>Trying to connect to %1 at %2...</source>
-        <translation>Tentando conectarse a %1 en %2...</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="276"/>
-        <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;Conectouse correctamente a %1: %2 versión %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="152"/>
         <source>Folder rename failed</source>
         <translation>Non foi posíbel renomear o cartafol</translation>
@@ -1210,9 +1200,44 @@ Confirma que quere realizar esta operación?</translation>
         <translation>Non é posíbel retirar ou facer copias de seguranza do cartafol ou dun ficheiro que estea aberto noutro programa. Peche o cartafol ou o ficheiro e prema en tentar de novo ou cancele o proceso.</translation>
     </message>
     <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="173"/>
+        <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;O cartafol local de sincronización %1 creouse correctamente!&lt;/b&gt;&lt;/font&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="196"/>
+        <source>Trying to connect to %1 at %2...</source>
+        <translation>Tentando conectarse a %1 en %2...</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="276"/>
+        <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
+        <translation>&lt;font color=&quot;green&quot;&gt;Conectouse correctamente a %1: %2 versión %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
+    </message>
+    <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="293"/>
         <source>Failed to connect to %1:&lt;br/&gt;%2</source>
         <translation>Non foi posíbel conectar con %1:&lt;br/&gt;%2</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="313"/>
+        <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation>O cartafol de sincronización local %1 xa existe. Configurándoo para a sincronización.&lt;br/&gt;&lt;br/&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="315"/>
+        <source>Creating local sync folder %1... </source>
+        <translation>Creando un cartafol local de sincronización %1...</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="319"/>
+        <source>ok</source>
+        <translation>aceptar</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="321"/>
+        <source>failed.</source>
+        <translation>fallou.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="324"/>
@@ -1266,6 +1291,17 @@ Confirma que quere realizar esta operación?</translation>
         <translation>A creación do cartafol remoto fracasou por por de seren incorrectas as credenciais!&lt;br/&gt;Volva atrás e comprobe as súas credenciais.&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="421"/>
+        <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;A creación do cartafol remoto fallou probabelmente debido a que as credenciais que se deron non foran as correctas.&lt;/font&gt;&lt;br/&gt;Volva atrás e comprobe as súas credenciais.&lt;/p&gt; </translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="426"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="427"/>
+        <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
+        <translation>Produciuse un fallo ao crear o cartafol remoto %1 e dou o erro &lt;tt&gt;%2&lt;/tt&gt;.</translation>
+    </message>
+    <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="443"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>Estabeleceuse a conexión de sincronización de %1 ao directorio remoto %2.</translation>
@@ -1279,42 +1315,6 @@ Confirma que quere realizar esta operación?</translation>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="453"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Non foi posíbel estabelecer a conexión con %1. Compróbeo de novo.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="313"/>
-        <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>O cartafol de sincronización local %1 xa existe. Configurándoo para a sincronización.&lt;br/&gt;&lt;br/&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="315"/>
-        <source>Creating local sync folder %1... </source>
-        <translation>Creando un cartafol local de sincronización %1...</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="319"/>
-        <source>ok</source>
-        <translation>aceptar</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="321"/>
-        <source>failed.</source>
-        <translation>fallou.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="173"/>
-        <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;O cartafol local de sincronización %1 creouse correctamente!&lt;/b&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="421"/>
-        <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;A creación do cartafol remoto fallou probabelmente debido a que as credenciais que se deron non foran as correctas.&lt;/font&gt;&lt;br/&gt;Volva atrás e comprobe as súas credenciais.&lt;/p&gt; </translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="426"/>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="427"/>
-        <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation>Produciuse un fallo ao crear o cartafol remoto %1 e dou o erro &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
 </context>
 <context>
@@ -1386,15 +1386,20 @@ Confirma que quere realizar esta operación?</translation>
         <source>&apos;%1&apos; has been removed.</source>
         <translation>«%1» foi retirado.</translation>
     </message>
+    <message>
+        <location filename="../src/mirall/folder.cpp" line="706"/>
+        <source>Files removed</source>
+        <translation>Ficheiros retirados</translation>
+    </message>
     <message numerus="yes">
         <location filename="../src/mirall/folder.cpp" line="706"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
         <translation><numerusform>«%1» e outro ficheiro foi retirado.</numerusform><numerusform>«%1» e outros %n ficheiros foron retirados.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="706"/>
-        <source>Files removed</source>
-        <translation>Ficheiros retirados</translation>
+        <location filename="../src/mirall/folder.cpp" line="712"/>
+        <source>File updated</source>
+        <translation>Ficheiro actualizado</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="712"/>
@@ -1402,19 +1407,14 @@ Confirma que quere realizar esta operación?</translation>
         <translation>«%1» foi actualizado.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="712"/>
-        <source>File updated</source>
-        <translation>Ficheiro actualizado</translation>
+        <location filename="../src/mirall/folder.cpp" line="714"/>
+        <source>Files updated</source>
+        <translation>Ficheiros actualizados</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/folder.cpp" line="714"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
         <translation><numerusform>«%1» e outro ficheiro foi actualizado.</numerusform><numerusform>«%1» e outros %n ficheiros foron actualizados.</numerusform></translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folder.cpp" line="714"/>
-        <source>Files updated</source>
-        <translation>Ficheiros actualizados</translation>
     </message>
 </context>
 <context>
@@ -1608,20 +1608,13 @@ Confirma que quere realizar esta operación?</translation>
         <translation>Enderezo do &amp;servidor:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetuppage.ui" line="120"/>
-        <source>&amp;Do not store password on local machine</source>
-        <translation>&amp;Non almacenar o contrasinal na máquina local.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetuppage.ui" line="140"/>
-        <source>https://</source>
-        <translation>https://</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetuppage.ui" line="147"/>
-        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="270"/>
-        <source>Enter the url of the ownCloud you want to connect to (without http or https).</source>
-        <translation>Introduza o URL de ownCloud se quere conectarse a (sen o http ou https).</translation>
+        <location filename="../src/mirall/owncloudsetuppage.ui" line="36"/>
+        <location filename="../src/mirall/owncloudsetuppage.ui" line="129"/>
+        <location filename="../src/mirall/owncloudsetuppage.ui" line="156"/>
+        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="35"/>
+        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="444"/>
+        <source>TextLabel</source>
+        <translation>Etiqueta de texto</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="47"/>
@@ -1661,13 +1654,20 @@ Confirma que quere realizar esta operación?</translation>
         <translation>Non permitir o almacenamento local do contrasinal.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetuppage.ui" line="36"/>
-        <location filename="../src/mirall/owncloudsetuppage.ui" line="129"/>
-        <location filename="../src/mirall/owncloudsetuppage.ui" line="156"/>
-        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="35"/>
-        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="444"/>
-        <source>TextLabel</source>
-        <translation>Etiqueta de texto</translation>
+        <location filename="../src/mirall/owncloudsetuppage.ui" line="120"/>
+        <source>&amp;Do not store password on local machine</source>
+        <translation>&amp;Non almacenar o contrasinal na máquina local.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetuppage.ui" line="140"/>
+        <source>https://</source>
+        <translation>https://</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetuppage.ui" line="147"/>
+        <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="270"/>
+        <source>Enter the url of the ownCloud you want to connect to (without http or https).</source>
+        <translation>Introduza o URL de ownCloud se quere conectarse a (sen o http ou https).</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="107"/>
@@ -1748,6 +1748,11 @@ Confirma que quere realizar esta operación?</translation>
         <translation>Formulario</translation>
     </message>
     <message>
+        <location filename="../src/mirall/owncloudwizardresultpage.ui" line="20"/>
+        <source>TextLabel</source>
+        <translation>Etiqueta de texto</translation>
+    </message>
+    <message>
         <location filename="../src/mirall/owncloudwizardresultpage.ui" line="66"/>
         <source>Your entire account is synced to the local folder </source>
         <translation>Toda a súa conta está sincronizada co cartafol local</translation>
@@ -1758,45 +1763,9 @@ Confirma que quere realizar esta operación?</translation>
         <source>PushButton</source>
         <translation>PremaOBotón</translation>
     </message>
-    <message>
-        <location filename="../src/mirall/owncloudwizardresultpage.ui" line="20"/>
-        <source>TextLabel</source>
-        <translation>Etiqueta de texto</translation>
-    </message>
 </context>
 <context>
     <name>QObject</name>
-    <message>
-        <location filename="../src/mirall/theme.cpp" line="48"/>
-        <location filename="../src/mirall/theme.cpp" line="66"/>
-        <source>Status undefined</source>
-        <translation>Estado sen definir</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/theme.cpp" line="51"/>
-        <source>Waiting to start sync</source>
-        <translation>Agardando o comezo da sincronización</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/theme.cpp" line="54"/>
-        <source>Sync is running</source>
-        <translation>Sincronización en proceso</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/theme.cpp" line="57"/>
-        <source>Sync Success</source>
-        <translation>Sincronización realizada</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/theme.cpp" line="60"/>
-        <source>Sync Error - Click info button for details.</source>
-        <translation>Produciuse un erro de sincronización - Prema no botón de información para ver os detalles.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/theme.cpp" line="63"/>
-        <source>Setup Error</source>
-        <translation>Produciuse un erro de configuración</translation>
-    </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="31"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="43"/>
@@ -1830,6 +1799,37 @@ Confirma que quere realizar esta operación?</translation>
         <location filename="../src/mirall/progressdispatcher.cpp" line="58"/>
         <source>finished</source>
         <translation>rematado</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/theme.cpp" line="48"/>
+        <location filename="../src/mirall/theme.cpp" line="66"/>
+        <source>Status undefined</source>
+        <translation>Estado sen definir</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/theme.cpp" line="51"/>
+        <source>Waiting to start sync</source>
+        <translation>Agardando o comezo da sincronización</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/theme.cpp" line="54"/>
+        <source>Sync is running</source>
+        <translation>Sincronización en proceso</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/theme.cpp" line="57"/>
+        <source>Sync Success</source>
+        <translation>Sincronización realizada</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/theme.cpp" line="60"/>
+        <source>Sync Error - Click info button for details.</source>
+        <translation>Produciuse un erro de sincronización - Prema no botón de información para ver os detalles.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/theme.cpp" line="63"/>
+        <source>Setup Error</source>
+        <translation>Produciuse un erro de configuración</translation>
     </message>
 </context>
 <context>
