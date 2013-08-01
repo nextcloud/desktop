@@ -33,7 +33,6 @@ public:
 
   AbstractCredentials* getCredentials() const;
 
-  void setOCUser(const QString& user);
   void initializePage();
   void cleanupPage();
   bool validatePage();

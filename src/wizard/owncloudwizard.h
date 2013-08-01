@@ -44,7 +44,6 @@ public:
     OwncloudWizard(QWidget *parent = 0);
 
     void setOCUrl( const QString& );
-    void setOCUser( const QString& );
 
     void setupCustomMedia( QVariant, QLabel* );
     QString ocUrl() const;

@@ -132,11 +132,6 @@ void OwncloudHttpCredsPage::stopSpinner()
     _progressIndi->stopAnimation();
 }
 
-void OwncloudHttpCredsPage::setOCUser(const QString& user)
-{
-  _ui.leUsername->setText(user);
-}
-
 void OwncloudHttpCredsPage::setErrorString(const QString& err)
 {
     if( err.isEmpty()) {
