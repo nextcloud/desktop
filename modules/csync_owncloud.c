@@ -1310,7 +1310,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
 
       ne_set_notifier(dav_session.ctx, 0, 0);
       if( rc == 0 ) {
-        oc_notify_progress(write_ctx->url, CSYNC_NOTIFY_FINISHED_UPLOAD, file_size, file_size);
+        DEBUG_WEBDAV(" * Upload finished %s", write_ctx->url);
       } else {
         oc_notify_progress(write_ctx->url, CSYNC_NOTIFY_ERROR, error_code, (intptr_t)(dav_session.error_string));
       }
@@ -1400,7 +1400,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
 
       ne_set_notifier(dav_session.ctx, 0, 0);
       if( rc == 0 ) {
-        oc_notify_progress( write_ctx->url, CSYNC_NOTIFY_FINISHED_DOWNLOAD, write_ctx->get_size , write_ctx->get_size );
+        DEBUG_WEBDAV(" ** Finished download %s", write_ctx->url);
       } else {
         oc_notify_progress( write_ctx->url, CSYNC_NOTIFY_ERROR, error_code , (intptr_t)(dav_session.error_string));
       }
