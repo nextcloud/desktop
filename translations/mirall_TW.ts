@@ -1,30 +1,30 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="eu" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_TW" version="2.0">
 <context>
     <name>FolderWizardSourcePage</name>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>格式</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="25"/>
         <source>Sync Directory</source>
-        <translation>Sinkronizazio direktorioa</translation>
+        <translation>同步目錄</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="32"/>
         <source>Pick a local folder on your computer to sync:</source>
-        <translation>Hautatu zure ordenagailuko karpeta lokala sinkronizatzeko:</translation>
+        <translation>選擇一個進行同步的本地資料夾</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="43"/>
         <source>&amp;Choose...</source>
-        <translation>&amp;Aukeratu...</translation>
+        <translation>選擇(&amp;C)...</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="54"/>
         <source>&amp;Directory alias name:</source>
-        <translation>&amp;Karpetaren ezizena:</translation>
+        <translation>目錄別名(&amp;D): </translation>
     </message>
 </context>
 <context>
@@ -32,32 +32,32 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>表格</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="29"/>
         <source>Synchronization Target</source>
-        <translation>Sinkronizazio helburua</translation>
+        <translation>同步目標</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="51"/>
         <source>Select a destination folder</source>
-        <translation>Hautatu helburu karpeta</translation>
+        <translation>選擇目標資料夾</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="63"/>
         <source>Add Folder</source>
-        <translation>Gehitu Karpeta</translation>
+        <translation>新增資料夾</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="86"/>
         <source>Refresh</source>
-        <translation>Birkargatu</translation>
+        <translation>重新整理</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="183"/>
         <source>TextLabel</source>
-        <translation>TestuEtiketa</translation>
+        <translation>文字標籤</translation>
     </message>
 </context>
 <context>
@@ -65,7 +65,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>格式</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="20"/>
@@ -100,18 +100,18 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="74"/>
         <source>Add Sync...</source>
-        <translation>Gehitu sinkronizazioa...</translation>
+        <translation>增加同步...</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="81"/>
         <location filename="../src/mirall/accountsettings.cpp" line="97"/>
         <source>Pause</source>
-        <translation>Pausarazi</translation>
+        <translation>暫停</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="101"/>
         <source>Remove</source>
-        <translation>Ezabatu</translation>
+        <translation>移除</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="108"/>
@@ -121,7 +121,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="128"/>
         <source>Info...</source>
-        <translation>Info...</translation>
+        <translation>資訊...</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="140"/>
@@ -141,12 +141,12 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="99"/>
         <source>Resume</source>
-        <translation>Berrekin</translation>
+        <translation>繼續</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="231"/>
         <source>Confirm Folder Remove</source>
-        <translation>Baieztatu karpetaren ezabatzea</translation>
+        <translation>確認移除資料夾</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="232"/>
@@ -166,42 +166,42 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="283"/>
         <source>Checking %1 connection...</source>
-        <translation>Egiaztatzen %1 konexioa...</translation>
+        <translation>檢查%1連線...</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="288"/>
         <source>No %1 connection configured.</source>
-        <translation>Ez dago %1 konexiorik konfiguratuta.</translation>
+        <translation>無%1連線設定</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="349"/>
         <source>Sync Running</source>
-        <translation>Sinkronizazioa martxan da</translation>
+        <translation>同步中</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="350"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>Sinkronizazio martxan da.&lt;br/&gt;Bukatu nahi al duzu?</translation>
+        <translation>正在同步中&lt;br/&gt;你真的想要中斷？</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="419"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; as &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>連線到 &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; 當 &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="421"/>
         <source>Version: %1 (%2)</source>
-        <translation>Bertsioa: %1 (%2)</translation>
+        <translation>版本: : %1 (%2)</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="432"/>
         <source>unknown problem.</source>
-        <translation>arazo ezezaguna.</translation>
+        <translation>未知的問題</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="435"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;%1-era konektatzeak huts egin du: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;連線到 %1: &lt;tt&gt;%2&lt;/tt&gt;失敗&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="527"/>
@@ -244,7 +244,7 @@
     <message numerus="yes">
         <location filename="../src/mirall/application.cpp" line="215"/>
         <source>Sync started for %n configured sync folder(s).</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="285"/>
@@ -274,12 +274,12 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="297"/>
         <source>Help</source>
-        <translation>Laguntza</translation>
+        <translation>說明</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="299"/>
         <source>Quit</source>
-        <translation>Kendu</translation>
+        <translation>離開</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="328"/>
@@ -319,12 +319,12 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="521"/>
         <source>Upload</source>
-        <translation>Igo</translation>
+        <translation>上傳</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="523"/>
         <source>Download</source>
-        <translation>Deskargatu</translation>
+        <translation>下載</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="527"/>
@@ -339,12 +339,12 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="214"/>
         <source>%1 Sync Started</source>
-        <translation>%1 Sinkronizazioa hasi da</translation>
+        <translation>%1同步已經開始</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="358"/>
         <source>Managed Folders:</source>
-        <translation>Kudeatutako karpetak:</translation>
+        <translation>管理的資料夾:</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="563"/>
@@ -359,7 +359,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="762"/>
         <source>No sync folders configured.</source>
-        <translation>Ez dago sinkronizazio karpetarik definituta.</translation>
+        <translation>無已配置的同步資料夾</translation>
     </message>
 </context>
 <context>
@@ -367,152 +367,152 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="75"/>
         <source>CSync failed to create a lock file.</source>
-        <translation>CSyncek huts egin du lock fitxategia sortzean.</translation>
+        <translation>CSync 無法建立一個文件鎖</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="69"/>
         <source>Success.</source>
-        <translation>Arrakasta.</translation>
+        <translation>成功。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="72"/>
         <source>CSync Logging setup failed.</source>
-        <translation>CSync erregistroaren konfigurazioak huts egin du.</translation>
+        <translation>CSync Logging 設定失敗。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="78"/>
         <source>CSync failed to load the state db.</source>
-        <translation>CSyncek huts egin du egoera db kargatzean.</translation>
+        <translation>CSync 無法讀取狀態資料庫</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="84"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
-        <translation>Bezero honetako sistemaren ordua zerbitzariarenaren ezberdina da. Mesedez erabili sinkronizazio zerbitzari bat (NTP) zerbitzari eta bezeroan orduak berdinak izan daitezen.</translation>
+        <translation>本客戶端的系統時間和伺服器系統時間不一致,請在伺服器與客戶端上使用時間同步服務(NTP)讓時間保持一致</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="89"/>
         <source>CSync could not detect the filesystem type.</source>
-        <translation>CSyncek ezin du fitxategi sistema mota antzeman.</translation>
+        <translation>CSync 無法偵測檔案系統的類型</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="92"/>
         <source>CSync got an error while processing internal trees.</source>
-        <translation>CSyncek errorea izan du barne zuhaitzak prozesatzerakoan.</translation>
+        <translation>CSync 處理內部資料樹時發生錯誤</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="118"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
-        <translation>Ezin da idatzi bertako fitxategi sisteman. Mesedez egiaztatu baimenak.</translation>
+        <translation>本地檔案系統無法寫入, 請確認權限。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="114"/>
         <source>A remote file can not be written. Please check the remote access.</source>
-        <translation>Urruneko fitxategi bat ezin da idatzi. Mesedez egiaztatu urreneko sarbidea.</translation>
+        <translation>遠端檔案無法寫入, 請確認遠端存取權限。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="95"/>
         <source>CSync failed to reserve memory.</source>
-        <translation>CSyncek huts egin du memoria alokatzean.</translation>
+        <translation>CSync 無法取得記憶體空間。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="98"/>
         <source>CSync fatal parameter error.</source>
-        <translation>CSync parametro larri errorea.</translation>
+        <translation>CSync 參數錯誤。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="101"/>
         <source>CSync processing step update failed.</source>
-        <translation>CSync prozesatzearen eguneratu urratsak huts egin du.</translation>
+        <translation>CSync 處理步驟 &quot;update&quot; 失敗。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="104"/>
         <source>CSync processing step reconcile failed.</source>
-        <translation>CSync prozesatzearen berdinkatze urratsak huts egin du.</translation>
+        <translation>CSync 處理步驟 &quot;reconcile&quot; 失敗。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="107"/>
         <source>CSync processing step propagate failed.</source>
-        <translation>CSync prozesatzearen hedatu urratsak huts egin du.</translation>
+        <translation>CSync 處理步驟 &quot;propagate&quot; 失敗。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="110"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Helburu direktorioa ez da existitzen.&lt;/p&gt;&lt;p&gt;Egiazt6atu sinkronizazio konfigurazioa.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;目標資料夾不存在&lt;/p&gt;&lt;p&gt;請檢查同步設定&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="121"/>
         <source>CSync failed to connect through a proxy.</source>
-        <translation>CSyncek huts egin du proxiaren bidez konektatzean.</translation>
+        <translation>CSync 透過代理伺服器連線失敗。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="124"/>
         <source>CSync failed to lookup proxy or server.</source>
-        <translation>CSyncek huts egin du zerbitzaria edo proxia bilatzean.</translation>
+        <translation>CSync 查詢代理伺服器或伺服器失敗。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="127"/>
         <source>CSync failed to authenticate at the %1 server.</source>
-        <translation>CSyncek huts egin du %1 zerbitzarian autentikatzean.</translation>
+        <translation>CSync 於伺服器 %1 認證失敗。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="130"/>
         <source>CSync failed to authenticate at the proxy.</source>
-        <translation>CSyncek proxyan autentikatzean huts egin du.</translation>
+        <translation>CSync 於代理伺服器認證失敗。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="133"/>
         <source>CSync failed to connect to the network.</source>
-        <translation>CSyncek sarera konektatzean huts egin du.</translation>
+        <translation>CSync 無法連接到網路。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="136"/>
         <source>A network connection timeout happend.</source>
-        <translation>Sarearen konexioan denbora-muga gertatu da.</translation>
+        <translation>網路連線逾時。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="139"/>
         <source>A HTTP transmission error happened.</source>
-        <translation>HTTP transmisio errore bat gertatu da.</translation>
+        <translation>HTTP 傳輸錯誤。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="142"/>
         <source>CSync failed due to not handled permission deniend.</source>
-        <translation>CSyncek huts egin du kudeatu gabeko baimen ukapen bat dela eta.</translation>
+        <translation>CSync 失敗，由於未處理的存取被拒。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="145"/>
         <source>CSync failed to find a specific file.</source>
-        <translation>CSyncek huts egin du fitxategi zehatz bat aurkitzen.</translation>
+        <translation>CSync 沒辦法找到某一個檔案。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="148"/>
         <source>CSync tried to create a directory that already exists.</source>
-        <translation>CSyncek dagoeneko existitzen zen karpeta bat sortzen saiatu da.</translation>
+        <translation>CSync 試圖建立一個已經存在的目錄。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="151"/>
         <source>CSync: No space on %1 server available.</source>
-        <translation>CSync: Ez dago lekurik %1 zerbitzarian.</translation>
+        <translation>CSync：伺服器 %1 沒有可用空間。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="154"/>
         <source>CSync unspecified error.</source>
-        <translation>CSyncen zehaztugabeko errorea.</translation>
+        <translation>CSync 未知的錯誤。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="157"/>
         <source>An internal error number %1 happend.</source>
-        <translation>Barne errore bat gertatu da, zenbakia %1.</translation>
+        <translation>發生內部錯誤, 錯誤編號 %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="161"/>
         <source>&lt;br/&gt;Backend Message: </source>
-        <translation>&lt;br/&gt;Motorraren Mezua:</translation>
+        <translation>&lt;br/&gt;後端訊息：</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="81"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation>&lt;p&gt;csyncen %1 plugina ezin da kargatu.&lt;br/&gt;Mesedez egiaztatu instalazioa!&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;用於csync的套件%1&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -520,12 +520,12 @@
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="112"/>
         <source>&lt;p&gt;The configured server for this client is too old.&lt;/p&gt;&lt;p&gt;Please update to the latest server and restart the client.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Bezero honetan konfiguratutako zerbitzaria zaharregia da.&lt;/p&gt;&lt;p&gt;Eguneratu zerbitzaria eta bezero berrabiarazi..&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;此客戶端配置的伺服器太舊了。&lt;/p&gt;&lt;p&gt;請更新伺服器到最新的版本，並重新啟動客戶端。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="155"/>
         <source>Error: Could not retrieve the password!</source>
-        <translation>Errorea: Ezin izan da pasahitza eskuratu!</translation>
+        <translation>錯誤. 無法取得密碼</translation>
     </message>
 </context>
 <context>
@@ -533,7 +533,7 @@
     <message>
         <location filename="../src/mirall/credentialstore.cpp" line="184"/>
         <source>No password entry found in keychain. Please reconfigure.</source>
-        <translation>Ez da pasahitzik aurkitu. Mesedez birkonfiguratu.</translation>
+        <translation>在鑰匙圈當中找不到密碼資訊，請重新設定。</translation>
     </message>
 </context>
 <context>
@@ -541,137 +541,137 @@
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="43"/>
         <source>Files</source>
-        <translation>Fitxategiak</translation>
+        <translation>檔案</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="44"/>
         <source>File Count</source>
-        <translation>Fitxategi kopurua</translation>
+        <translation>檔案數目</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="53"/>
         <source>Copy</source>
-        <translation>Kopiatu</translation>
+        <translation>複製</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="56"/>
         <source>Sync Protocol</source>
-        <translation>Sinkronizazio protokoloa</translation>
+        <translation>同步協定</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="72"/>
         <source>Undefined Folder State</source>
-        <translation>Definitu gabeko karpeta egoera</translation>
+        <translation>未定義的資料夾狀態</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="75"/>
         <source>The folder waits to start syncing.</source>
-        <translation>Karpetak sinkronizazioa hasteko itxoiten ari da.</translation>
+        <translation>資料夾等待同步開始。</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="78"/>
         <source>Determining which files to sync.</source>
-        <translation>Zein fitxategi sinkronizatu erabakitzen</translation>
+        <translation>正在決定要同步哪些檔案。</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="81"/>
         <source>Server is currently not available.</source>
-        <translation>Zerbitzaria orain ez dago eskuragarri.</translation>
+        <translation>伺服器目前無法使用。</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="84"/>
         <source>Sync is running.</source>
-        <translation>Sinkronizazioa martxan da.</translation>
+        <translation>同步中。</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="87"/>
         <source>Last Sync was successful.</source>
-        <translation>Azkeneko sinkronizazioa ongi egin zen.</translation>
+        <translation>上次的同步成功。</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="90"/>
         <source>Syncing Error.</source>
-        <translation>Sinkronizazio errorea.</translation>
+        <translation>同步錯誤。</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="93"/>
         <source>Setup Error.</source>
-        <translation>Konfigurazio errorea.</translation>
+        <translation>設定錯誤。</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="96"/>
         <source>Undefined Error State.</source>
-        <translation>Definitu gabeko errore egoera.</translation>
+        <translation>未定義的錯誤狀態。</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="164"/>
         <source>Copied to clipboard</source>
-        <translation>Arbelera kopiatua</translation>
+        <translation>複製至剪貼簿中</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="164"/>
         <source>The sync protocol has been copied to the clipboard.</source>
-        <translation>Sinkronizazio protokoloa arbelera kopiatu da.</translation>
+        <translation>同步協定已複製至剪貼簿</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="237"/>
         <source>Uploaded</source>
-        <translation>Igoa</translation>
+        <translation>已上傳</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="238"/>
         <source>Downloaded</source>
-        <translation>Deskargatua</translation>
+        <translation>已下載</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="181"/>
         <source>Synced Files</source>
-        <translation>Sinkronizatutako Fitxategiak</translation>
+        <translation>已同步的檔案</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/fileitemdialog.cpp" line="133"/>
         <source>%1 (last finished %n sec. ago)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/fileitemdialog.cpp" line="135"/>
         <source>%1 (last finished %n min. ago)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="187"/>
         <source>New Files</source>
-        <translation>Fitxategi Berriak</translation>
+        <translation>新檔案</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="193"/>
         <source>Deleted Files</source>
-        <translation>Ezabatutako Fitxategiak</translation>
+        <translation>已刪除的檔案</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="199"/>
         <source>Renamed Files</source>
-        <translation>Berrizendatutako Fitxategiak</translation>
+        <translation>已更名的檔案</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="205"/>
         <source>Ignored Files</source>
-        <translation>Kontutan hartu gabeko Fitxategiak</translation>
+        <translation>忽略的檔案</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="211"/>
         <source>Errors</source>
-        <translation>Erroreak</translation>
+        <translation>錯誤</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="217"/>
         <source>Conflicts</source>
-        <translation>Gatazkak</translation>
+        <translation>衝突</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>格式</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.ui" line="27"/>
@@ -682,7 +682,7 @@
         <location filename="../src/mirall/fileitemdialog.ui" line="63"/>
         <location filename="../src/mirall/fileitemdialog.ui" line="70"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>文字標籤</translation>
     </message>
 </context>
 <context>
@@ -695,22 +695,22 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="163"/>
         <source>Local folder %1 does not exist.</source>
-        <translation>Bertako %1 karpeta ez da existitzen.</translation>
+        <translation>本地資料夾 %1 不存在</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="166"/>
         <source>%1 should be a directory but is not.</source>
-        <translation>%1 karpeta bat izan behar zen baina ez da.</translation>
+        <translation>資料夾不存在, %1 必須是資料夾</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="169"/>
         <source>%1 is not readable.</source>
-        <translation>%1 ezin da irakurri.</translation>
+        <translation>%1 是不可讀的</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="370"/>
         <source>The CSync thread terminated.</source>
-        <translation>CSync haria bukatu da.</translation>
+        <translation>CSync 執行緒終止</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="722"/>
@@ -756,12 +756,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="556"/>
         <source>Undefined State.</source>
-        <translation>Definitu gabeko egoera.</translation>
+        <translation>未知狀態</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="559"/>
         <source>Waits to start syncing.</source>
-        <translation>Itxoiten sinkronizazioa hasteko.</translation>
+        <translation>等待啟動同步</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="562"/>
@@ -771,7 +771,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="565"/>
         <source>Sync is running.</source>
-        <translation>Sinkronizazioa martxan da.</translation>
+        <translation>同步執行中</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="568"/>
@@ -781,12 +781,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="571"/>
         <source>Last Sync was successful.</source>
-        <translation>Azkeneko sinkronizazioa ongi burutu zen.</translation>
+        <translation>最後一次同步成功</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="577"/>
         <source>Setup Error.</source>
-        <translation>Konfigurazio errorea.</translation>
+        <translation>安裝失敗</translation>
     </message>
 </context>
 <context>
@@ -805,7 +805,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="188"/>
         <source>Remote path: %1</source>
-        <translation>Urruneko bidea: %1</translation>
+        <translation>遠端路徑: %1</translation>
     </message>
 </context>
 <context>
@@ -813,7 +813,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="291"/>
         <source>%1 Folder Wizard</source>
-        <translation>%1 Karpeta Morroia</translation>
+        <translation>%1 資料夾精靈</translation>
     </message>
 </context>
 <context>
@@ -831,32 +831,32 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="100"/>
         <source>The local path %1 is already an upload folder.&lt;br/&gt;Please pick another one!</source>
-        <translation>Bertako %1 karpeta dagoeneko igoerako karpeta bat da.&lt;br/&gt;Mesdez hautatu beste bat!</translation>
+        <translation>本地路徑 %1 已是上傳資料夾.&lt;br/&gt;請選擇其他資料夾！</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="105"/>
         <source>An already configured folder is contained in the current entry.</source>
-        <translation>Karpeta honek dagoeneko konfiguratuta dagoen beste karpeta bat du barnean</translation>
+        <translation>目前紀錄中已經有一個已配置的資料夾</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="110"/>
         <source>An already configured folder contains the currently entered directory.</source>
-        <translation>Dagoeneko konfiguratuta dagoen karpeta batek zehaztutako  karpeta du barnean.</translation>
+        <translation>已配置的資料夾包含了目前輸入的資料夾</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="120"/>
         <source>The alias can not be empty. Please provide a descriptive alias word.</source>
-        <translation>Ezizena ezin da hutsa izan. Mesedez jarri hitz esanguratsu bat.</translation>
+        <translation>別名不能空白, 請提供一個描述性的別名</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="131"/>
         <source>&lt;br/&gt;The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
-        <translation>&lt;br/&gt;&lt;i&gt;%1&lt;/i&gt; ezizena dagoeneko erabiltzen ari da. Mesedez hautatu beste bat.</translation>
+        <translation>&lt;br/&gt;別名 &lt;i&gt;%1&lt;/i&gt; 重複. 請取別的別名.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="152"/>
         <source>Select the source folder</source>
-        <translation>Hautatu jatorrizko karpeta</translation>
+        <translation>選擇來源資料夾</translation>
     </message>
 </context>
 <context>
@@ -864,17 +864,17 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="198"/>
         <source>Folder was successfully created on %1.</source>
-        <translation>%1-en karpeta ongi sortu da.</translation>
+        <translation>資料夾成功建立在%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="201"/>
         <source>Failed to create the folder on %1.&lt;br/&gt;Please check manually.</source>
-        <translation>%1-en karpeta sortzeak huts egin du.&lt;br/&gt;Mesedez egiazta ezazu eskuz.</translation>
+        <translation>在%1建立資料夾失敗&lt;br/&gt;請手動檢查</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="232"/>
         <source>If you sync the root folder, you can &lt;b&gt;not&lt;/b&gt; configure another sync directory.</source>
-        <translation>Erro karpeta sinkronizatzen baduzu, &lt;b&gt;ez&lt;/b&gt;ingo duzu beste sinkronizazio direktorio bat konfiguratu.</translation>
+        <translation>如果您選擇同步根目錄（最上層資料夾），就&lt;b&gt;不能&lt;/b&gt;再設定另一個同步資料夾。</translation>
     </message>
 </context>
 <context>
@@ -882,12 +882,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>格式</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="20"/>
         <source>General</source>
-        <translation>Orokorra</translation>
+        <translation>一般</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="26"/>
@@ -908,7 +908,7 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/mirall/generalsettings.ui" line="50"/>
         <location filename="../src/mirall/generalsettings.ui" line="56"/>
         <source>About</source>
-        <translation>Honi buruz</translation>
+        <translation>關於</translation>
     </message>
 </context>
 <context>
@@ -921,12 +921,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/ignorelisteditor.ui" line="40"/>
         <source>Add</source>
-        <translation>Gehitu</translation>
+        <translation>增加</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.ui" line="50"/>
         <source>Remove</source>
-        <translation>Ezabatu</translation>
+        <translation>移除</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="35"/>
@@ -966,58 +966,58 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="64"/>
         <source>Log Output</source>
-        <translation>Egunkari Irteera</translation>
+        <translation>記錄輸出</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="76"/>
         <source>&amp;Search: </source>
-        <translation>&amp;Bilatu:</translation>
+        <translation>&amp;搜尋:</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="84"/>
         <source>&amp;Find</source>
-        <translation>&amp;Aurkitu:</translation>
+        <translation>&amp;尋找:</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="102"/>
         <source>Clear</source>
-        <translation>Garbitu</translation>
+        <translation>清除</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="103"/>
         <source>Clear the log display.</source>
-        <translation>Garbitu egunkari bistaratzea.</translation>
+        <translation>清除所顯示的記錄</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="109"/>
         <source>S&amp;ave</source>
-        <translation>&amp;Gorde</translation>
+        <translation>儲存</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="110"/>
         <source>Save the log file to a file on disk for debugging.</source>
-        <translation>Gorde egunkari fitxategia fitxategi batean arazteko.</translation>
+        <translation>將記錄檔儲存到硬碟用於除錯</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="151"/>
         <location filename="../src/mirall/logbrowser.cpp" line="207"/>
         <source>Error</source>
-        <translation>Errorea</translation>
+        <translation>錯誤</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="152"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&apos;%1&apos; Fitxategia&lt;br/&gt; ezin da idazteko ireki.&lt;br/&gt;&lt;br/&gt;Egunkariaren irteera &lt;b&gt;ezin&lt;/b&gt; da gorde!&lt;/nobr&gt;</translation>
+        <translation>&lt;nobr&gt;檔案 &apos;%1&apos;&lt;br/&gt;無法開啟與寫入&lt;br/&gt;&lt;br/&gt;記錄 &lt;b&gt;無法&lt;/b&gt; 被儲存&lt;/nobr&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="197"/>
         <source>Save log file</source>
-        <translation>Gorde egunkari fitxategia</translation>
+        <translation>儲存記錄檔</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="207"/>
         <source>Could not write to log file </source>
-        <translation>Ezin da egunkari fitxategia idatzi</translation>
+        <translation>無法寫入記錄檔</translation>
     </message>
 </context>
 <context>
@@ -1025,22 +1025,22 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>格式</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="23"/>
         <source>Proxy Settings</source>
-        <translation>Proxy Ezarpenak</translation>
+        <translation>代理伺服器設定</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="29"/>
         <source>No Proxy</source>
-        <translation>Proxyrik ez</translation>
+        <translation>不使用代理伺服器</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="42"/>
         <source>Use system proxy</source>
-        <translation>Erabili sistemaren proxya</translation>
+        <translation>使用系統預設代理伺服器</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="52"/>
@@ -1050,7 +1050,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="80"/>
         <source>Host</source>
-        <translation>Hostalaria</translation>
+        <translation>主機</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="100"/>
@@ -1098,17 +1098,17 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="33"/>
         <source>Hostname of proxy server</source>
-        <translation>Proxy zerbitzariaren hostalari izena</translation>
+        <translation>代理伺服器主機名稱</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="34"/>
         <source>Username for proxy server</source>
-        <translation>Proxy zerbitzariaren erabiltzaile izena</translation>
+        <translation>代理伺服器使用者名稱</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="35"/>
         <source>Password for proxy server</source>
-        <translation>Proxy zerbitzarirako pasahitza</translation>
+        <translation>代理伺服器密碼</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="37"/>
@@ -1126,37 +1126,37 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="56"/>
         <source>&lt;font color=&quot;%1&quot; size=&quot;5&quot;&gt;Connect to %2&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;%1&quot; size=&quot;5&quot;&gt;連線至 %2&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="58"/>
         <source>&lt;font color=&quot;%1&quot;&gt;Enter user credentials&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;%1&quot;&gt;輸入帳號密碼&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="170"/>
         <source>This url is secure. You can use it.</source>
-        <translation>Url hau segurua da. Berau erabili dezakezu.</translation>
+        <translation>這個 URL 是安全的，您可以使用它。</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="175"/>
         <source>This url is NOT secure. You should not use it.</source>
-        <translation>Url hau ez da segurua. Ez zenuke berau erabili beharko.</translation>
+        <translation>這個 URL 不安全，您不應該使用它。</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="260"/>
         <source>Change the Password for your configured account.</source>
-        <translation type="unfinished"/>
+        <translation>更改帳戶密碼。</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="266"/>
         <source>Your entire account will be synced to the local folder &apos;%1&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>您整個帳號的資料會與本地資料夾 %1 同步。</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="269"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
-        <translation type="unfinished"/>
+        <translation>%1 資料夾 &apos;%2&apos; 與本地資料夾 &apos;%3&apos; 同步</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="275"/>
@@ -1171,7 +1171,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="385"/>
         <source>Local Sync Folder</source>
-        <translation>Sinkronizazio karpeta lokala</translation>
+        <translation>本地同步資料夾</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="409"/>
@@ -1184,22 +1184,22 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="44"/>
         <source>%1 Connection Wizard</source>
-        <translation>%1 Konexio Morroia</translation>
+        <translation>%1連線精靈</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="196"/>
         <source>Trying to connect to %1 at %2...</source>
-        <translation>%2 zerbitzarian dagoen %1 konektatzen...</translation>
+        <translation>嘗試連線到%1從%2</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="276"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;Konexioa ongi burutu da  %1 zerbitzarian: %2 bertsioa %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;成功連線到 %1: %2 版本 %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="152"/>
         <source>Folder rename failed</source>
-        <translation type="unfinished"/>
+        <translation>重新命名資料夾失敗</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="153"/>
@@ -1209,109 +1209,109 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="293"/>
         <source>Failed to connect to %1:&lt;br/&gt;%2</source>
-        <translation>Huts %1 -era konektatzean:&lt;br/&gt;%2</translation>
+        <translation>無法連線到 %1 ：&lt;br/&gt;%2</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="324"/>
         <source>Could not create local folder %1</source>
-        <translation>Ezin da %1 karpeta lokala sortu</translation>
+        <translation>無法建立本地資料夾 %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="359"/>
         <source>The given credentials do not authenticate.</source>
-        <translation type="unfinished"/>
+        <translation>提供的登入資料無法通過認證。</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="364"/>
         <source>Username or password is wrong!</source>
-        <translation>Erabiltzaile-izena edo pasahitza okerra da!</translation>
+        <translation>帳號名稱或密碼不正確！</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="369"/>
         <source>The remote folder could not be accessed!</source>
-        <translation>Ezin da urruneko karpeta atzitu!</translation>
+        <translation>無法存取遠端資料夾！</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="375"/>
         <source>Error: %1</source>
-        <translation>Errorea: %1</translation>
+        <translation>錯誤： %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="392"/>
         <source>creating folder on ownCloud: %1</source>
-        <translation type="unfinished"/>
+        <translation>在 ownCloud 建立資料夾： %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="410"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation>Urruneko %1 karpeta ongi sortu da.</translation>
+        <translation>遠端資料夾%1建立成功!</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="412"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>Urruneko %1 karpeta dagoeneko existintzen da. Bertara konetatuko da sinkronizatzeko.</translation>
+        <translation>遠端資料夾%1已存在,連線同步中</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="414"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="416"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation>Karpeta sortzeak HTTP %1 errore kodea igorri du</translation>
+        <translation>在HTTP建立資料夾失敗, error code %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="418"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>由於帳號或密碼錯誤，遠端資料夾建立失敗&lt;br/&gt;請檢查您的帳號密碼。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="443"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation>Sinkronizazio konexio bat konfiguratu da %1 karpetatik urruneko %2 karpetara.</translation>
+        <translation>從%1到遠端資料夾%2的連線已建立</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="448"/>
         <source>Successfully connected to %1!</source>
-        <translation>%1-era ongi konektatu da!</translation>
+        <translation>成功連接到 %1 ！</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="453"/>
         <source>Connection to %1 could not be established. Please check again.</source>
-        <translation>%1 konexioa ezin da ezarri. Mesedez egiaztatu berriz.</translation>
+        <translation>無法建立連線%1, 請重新檢查</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="313"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>Bertako %1 karpeta dagoeneko existitzen da, sinkronizaziorako prestatzen.&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>本地同步資料夾%1已存在, 將其設置為同步&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="315"/>
         <source>Creating local sync folder %1... </source>
-        <translation>Bertako sinkronizazio %1 karpeta sortzen...</translation>
+        <translation>建立本地同步資料夾 %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="319"/>
         <source>ok</source>
-        <translation>ados</translation>
+        <translation>ok</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="321"/>
         <source>failed.</source>
-        <translation>huts egin du.</translation>
+        <translation>失敗</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="173"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Bertako sinkronizazio %1 karpeta ongi sortu da!&lt;/b&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;本地同步資料夾 %1 建立成功!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="421"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Urruneko karpeten sortzeak  huts egin du ziuraski emandako kredentzialak gaizki daudelako.&lt;/font&gt;&lt;br/&gt;Mesedez atzera joan eta egiaztatu zure kredentzialak.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;遠端資料夾建立失敗,也許是因為所提供的帳號密碼錯誤&lt;/font&gt;&lt;br/&gt;請重新檢查您的帳號密碼&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="426"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="427"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation>Urruneko %1 karpetaren sortzeak huts egin du &lt;tt&gt;%2&lt;/tt&gt; errorearekin.</translation>
+        <translation>建立遠端資料夾%1發生錯誤&lt;tt&gt;%2&lt;/tt&gt;失敗</translation>
     </message>
 </context>
 <context>
@@ -1319,7 +1319,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="569"/>
         <source>Connect...</source>
-        <translation type="unfinished"/>
+        <translation>連線中...</translation>
     </message>
 </context>
 <context>
@@ -1327,28 +1327,28 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="422"/>
         <source>&lt;font color=&quot;%1&quot; size=&quot;5&quot;&gt;Everything set up!&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;%1&quot; size=&quot;5&quot;&gt;Dena konfiguraturik!&lt;/font&gt;</translation>
+        <translation>&lt;font color=&quot;%1&quot; size=&quot;5&quot;&gt;一切設定完成！&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="428"/>
         <location filename="../src/mirall/owncloudwizard.cpp" line="439"/>
         <source>Open %1</source>
-        <translation type="unfinished"/>
+        <translation>打開 %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="431"/>
         <source>Open Local Folder</source>
-        <translation>Ireki karpeta lokala</translation>
+        <translation>打開本地資料夾</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="466"/>
         <source>Your entire account is synced to the local folder &lt;i&gt;%1&lt;/i&gt;</source>
-        <translation>Zure kontu osoa  &lt;i&gt;%1&lt;/i&gt; karpeta lokalarekin sinkronizaturik dago</translation>
+        <translation>您整個帳號的資料會與本地資料夾 &lt;i&gt;%1&lt;/i&gt; 同步</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizard.cpp" line="469"/>
         <source>ownCloud folder &lt;i&gt;%1&lt;/i&gt; is synced to local folder &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation>&lt;i&gt;%1&lt;/i&gt; ownCloud kapeta &lt;i&gt;%2&lt;/i&gt; karpeta lokalarekin sinkronizaturik dago</translation>
+        <translation>ownCloud 資料夾 &lt;i&gt;%1&lt;/i&gt; 已經與本地資料夾 &lt;i&gt;%2&lt;/i&gt; 同步</translation>
     </message>
 </context>
 <context>
@@ -1356,62 +1356,62 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folder.cpp" line="696"/>
         <source>New file available</source>
-        <translation>Fitxategi berria eskuragarri</translation>
+        <translation>新的可用檔案</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="696"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
-        <translation>&apos;%1&apos; makina honekin sinkronizatu da.</translation>
+        <translation>%1 已經被同步到這台機器。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="698"/>
         <source>New files available</source>
-        <translation>Fitxategi berriak eskuragarri</translation>
+        <translation>新的可用檔案</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/folder.cpp" line="698"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
-        <translation><numerusform>&apos;%1&apos;  eta beste %n fitxategi makina honekin sinkronizatu dira.</numerusform><numerusform>&apos;%1&apos;  eta beste %n fitxategi makina honekin sinkronizatu dira.</numerusform></translation>
+        <translation><numerusform>%1 和 %n 個其他檔案已經被同步到這台機器。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="704"/>
         <source>File removed</source>
-        <translation>Fitxategia ezabatua</translation>
+        <translation>文件已被移除</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="704"/>
         <source>&apos;%1&apos; has been removed.</source>
-        <translation>&apos;%1&apos; ezabatua izan da.</translation>
+        <translation>&apos;%1&apos;已被移除。</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/folder.cpp" line="706"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
-        <translation><numerusform>&apos;%1&apos;  eta beste %n fitxategi ezabatu dira.</numerusform><numerusform>&apos;%1&apos;  eta beste %n fitxategi ezabatu dira.</numerusform></translation>
+        <translation><numerusform>&apos;%1&apos;和其他%n個文件已被移除。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="706"/>
         <source>Files removed</source>
-        <translation>Fitxategiak ezabatuak</translation>
+        <translation>檔案已移除</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="712"/>
         <source>&apos;%1&apos; has been updated.</source>
-        <translation>&apos;%1&apos; eguneratua izan da.</translation>
+        <translation>&apos;%1&apos;已被更新。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="712"/>
         <source>File updated</source>
-        <translation>Fitxategia eguneratua</translation>
+        <translation>檔案已上傳</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/folder.cpp" line="714"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
-        <translation><numerusform>&apos;%1&apos;  eta beste %n fitxategi eguneratu dira.</numerusform><numerusform>&apos;%1&apos;  eta beste %n fitxategi eguneratu dira.</numerusform></translation>
+        <translation><numerusform>&apos;%1&apos;和其他%n個文件已被更新。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="714"/>
         <source>Files updated</source>
-        <translation>Fitxategiak eguneratuak</translation>
+        <translation>檔案已上傳</translation>
     </message>
 </context>
 <context>
@@ -1419,7 +1419,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/settingsdialog.ui" line="14"/>
         <source>Settings</source>
-        <translation>Ezarpenak</translation>
+        <translation>設定</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="49"/>
@@ -1429,7 +1429,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="52"/>
         <source>General</source>
-        <translation>Orokorra</translation>
+        <translation>一般</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="59"/>
@@ -1439,7 +1439,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="70"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>帳號</translation>
     </message>
 </context>
 <context>
@@ -1447,67 +1447,67 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="30"/>
         <source>SSL Connection</source>
-        <translation>SSL konexioa</translation>
+        <translation>SSL連線</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="104"/>
         <source>Warnings about current SSL Connection:</source>
-        <translation>Abisua uneko SSL konexioari buruz:</translation>
+        <translation>目前的SSL連線的警告</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="140"/>
         <source>with Certificate %1</source>
-        <translation>%1 ziurtagiriarekin</translation>
+        <translation>使用認證%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="148"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="149"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="150"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation>&amp;lt;zehaztu gabe&amp;gt;</translation>
+        <translation>&amp;lt;未指定&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="151"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="171"/>
         <source>Organization: %1</source>
-        <translation>Erakundea: %1</translation>
+        <translation>組織:%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="152"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="172"/>
         <source>Unit: %1</source>
-        <translation>Unitatea: %1</translation>
+        <translation>單位:%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="153"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="173"/>
         <source>Country: %1</source>
-        <translation>Herrialdea: %1</translation>
+        <translation>國家:%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="160"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>Hatz-marka (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation>指紋 (MD5): &amp;lt;tt&amp;gt;%1&amp;lt;/tt&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="161"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>Hatz-marka (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation>指紋 (SHA1): &amp;lt;tt&amp;gt;%1&amp;lt;/tt&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="163"/>
         <source>Effective Date: %1</source>
-        <translation>Balio-data: %1</translation>
+        <translation>有效日期:%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="164"/>
         <source>Expiry Date: %1</source>
-        <translation>Iraungitze-data: %1</translation>
+        <translation>失效日期:%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="168"/>
         <source>Issuer: %1</source>
-        <translation>Jaulkitzailea: %1</translation>
+        <translation>發行者:%1</translation>
     </message>
 </context>
 <context>
@@ -1515,27 +1515,27 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="111"/>
         <source>New Version Available</source>
-        <translation>Bertsio berria eskuragarri</translation>
+        <translation>有新版本</translation>
     </message>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="117"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;%1 客戶端有新版本了。&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; 可供下載，目前安裝的版本是 %3 。&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="129"/>
         <source>Skip update</source>
-        <translation>Utzi eguneraketa</translation>
+        <translation>略過更新</translation>
     </message>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="130"/>
         <source>Skip this time</source>
-        <translation>Utzi aldi honetan</translation>
+        <translation>跳過這次更新</translation>
     </message>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="131"/>
         <source>Get update</source>
-        <translation>Eskuratu eguneraketa</translation>
+        <translation>取得更新</translation>
     </message>
 </context>
 <context>
@@ -1543,52 +1543,52 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/owncloudinfo.cpp" line="530"/>
         <source>Proxy Refused Connection </source>
-        <translation type="unfinished"/>
+        <translation>代理伺服器拒絕連線</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudinfo.cpp" line="531"/>
         <source>The configured proxy has refused the connection. Please check the proxy settings.</source>
-        <translation type="unfinished"/>
+        <translation>所設定的代理伺服器拒絕連線，請檢查代理伺服器設定。</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudinfo.cpp" line="535"/>
         <source>Proxy Closed Connection</source>
-        <translation type="unfinished"/>
+        <translation>代理伺服器關閉了連線</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudinfo.cpp" line="536"/>
         <source>The configured proxy has closed the connection. Please check the proxy settings.</source>
-        <translation type="unfinished"/>
+        <translation>所設定的代理伺服器關閉了連線，請檢查代理伺服器設定。</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudinfo.cpp" line="540"/>
         <source>Proxy Not Found</source>
-        <translation type="unfinished"/>
+        <translation>找不到代理伺服器</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudinfo.cpp" line="541"/>
         <source>The configured proxy could not be found. Please check the proxy settings.</source>
-        <translation type="unfinished"/>
+        <translation>找不到所設定的代理伺服器，請檢查代理伺服器設定。</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudinfo.cpp" line="545"/>
         <source>Proxy Authentication Error</source>
-        <translation type="unfinished"/>
+        <translation>代理伺服器認證錯誤</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudinfo.cpp" line="546"/>
         <source>The configured proxy requires login but the proxy credentials are invalid. Please check the proxy settings.</source>
-        <translation type="unfinished"/>
+        <translation>所設定的代理伺服器帳密無法登入，請檢查代理伺服器設定。</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudinfo.cpp" line="550"/>
         <source>Proxy Connection Timed Out</source>
-        <translation type="unfinished"/>
+        <translation>代理伺服器連線逾時</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudinfo.cpp" line="551"/>
         <source>The connection to the configured proxy has timed out.</source>
-        <translation type="unfinished"/>
+        <translation>代理伺服器的連線已經逾時。</translation>
     </message>
 </context>
 <context>
@@ -1597,17 +1597,17 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="14"/>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>格式</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="20"/>
         <source>Server &amp;address:</source>
-        <translation>Zerbitzariaren &amp;helbidea:</translation>
+        <translation>伺服器&amp;位置:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="120"/>
         <source>&amp;Do not store password on local machine</source>
-        <translation>&amp;Ez gorde pasahitza ordenagailuan</translation>
+        <translation>&amp;不儲存密碼在本地機器上</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="140"/>
@@ -1618,44 +1618,44 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="147"/>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="270"/>
         <source>Enter the url of the ownCloud you want to connect to (without http or https).</source>
-        <translation>Sartu konektatu nahi duzun ownCloud zerbitzariaren urla (http edo https gabe).</translation>
+        <translation>輸入欲連線的ownCloud的url(不需要輸入http或http)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="47"/>
         <source>Use &amp;secure connection</source>
-        <translation>Erabili konexio &amp;segurua</translation>
+        <translation>使用&amp;安全連線</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="60"/>
         <source>CheckBox</source>
-        <translation>Aukerakutxa</translation>
+        <translation>核取方塊</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="75"/>
         <source>&amp;Username:</source>
-        <translation>&amp;Erabiltzaile izena:</translation>
+        <translation>&amp;使用者名稱</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="85"/>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="296"/>
         <source>Enter the ownCloud username.</source>
-        <translation>Sartu zure ownCloud erabiltzaile izena.</translation>
+        <translation>輸入ownCloud使用者名稱</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="92"/>
         <source>&amp;Password:</source>
-        <translation>&amp;Pasahitza:</translation>
+        <translation>&amp;密碼:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="102"/>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="325"/>
         <source>Enter the ownCloud password.</source>
-        <translation>Sartu zure ownCloud pasahitza.</translation>
+        <translation>輸入ownCloud使用者密碼</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="117"/>
         <source>Do not allow the local storage of the password.</source>
-        <translation>Ez baimendu pasahitzaren bertako biltegiratzea.</translation>
+        <translation>不儲存密碼在本地機器上</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="36"/>
@@ -1664,47 +1664,47 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="35"/>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="444"/>
         <source>TextLabel</source>
-        <translation>TestuEtiketa</translation>
+        <translation>文字標籤</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="107"/>
         <source>&amp;Local Folder</source>
-        <translation>Karpeta &amp;lokala</translation>
+        <translation>本地資料夾</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="123"/>
         <source>pbSelectLocalFolder</source>
-        <translation type="unfinished"/>
+        <translation>pbSelectLocalFolder</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="139"/>
         <source>&amp;Keep local data</source>
-        <translation type="unfinished"/>
+        <translation>保留本地資料</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="171"/>
         <source>&lt;small&gt;Syncs your existing data to new location.&lt;/small&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;small&gt;將現有的資料同步至新地點。&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="190"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local directory will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers directory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;如果勾選這個選項，本地資料夾當中現存的內容會被刪除，然後從伺服器端重新進行一次全新的同步。&lt;/p&gt;&lt;p&gt;如果您要將本地資料同步至伺服器上，請勿勾選這個選項。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="193"/>
         <source>&amp;Start a clean sync</source>
-        <translation type="unfinished"/>
+        <translation>開始一個全新的同步</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="225"/>
         <source>&lt;small&gt;Erases the contents of the local folder before syncing using the new settings.&lt;/small&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;small&gt;在使用新設定來同步之前，請清空本地資料夾。&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="254"/>
         <source>Server &amp;Address</source>
-        <translation>Zerbitzari %helbidea</translation>
+        <translation>伺服器位址</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="273"/>
@@ -1714,27 +1714,27 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="280"/>
         <source>&amp;Username</source>
-        <translation>&amp;Erabiltzaile-izena</translation>
+        <translation>使用者名稱</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="309"/>
         <source>&amp;Password</source>
-        <translation>&amp;Pasahitza</translation>
+        <translation>密碼</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="347"/>
         <source>Error Label</source>
-        <translation type="unfinished"/>
+        <translation>錯誤標籤</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="393"/>
         <source>Advanced &amp;Settings</source>
-        <translation>E&amp;zarpen aurreratuak</translation>
+        <translation>進階選項</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="415"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>狀態訊息</translation>
     </message>
 </context>
 <context>
@@ -1742,23 +1742,23 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/owncloudwizardresultpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>格式</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardresultpage.ui" line="66"/>
         <source>Your entire account is synced to the local folder </source>
-        <translation>Zure kontu osoa karpeta lokalera sinkronizaturik dago</translation>
+        <translation>您整個帳號的資料會與本地資料夾同步</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardresultpage.ui" line="100"/>
         <location filename="../src/mirall/owncloudwizardresultpage.ui" line="116"/>
         <source>PushButton</source>
-        <translation type="unfinished"/>
+        <translation>按鈕</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudwizardresultpage.ui" line="20"/>
         <source>TextLabel</source>
-        <translation>TestuEtiketa</translation>
+        <translation>文字標籤</translation>
     </message>
 </context>
 <context>
@@ -1767,32 +1767,32 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/mirall/theme.cpp" line="48"/>
         <location filename="../src/mirall/theme.cpp" line="66"/>
         <source>Status undefined</source>
-        <translation>Definitu gabeko egoera</translation>
+        <translation>未定義的狀態</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="51"/>
         <source>Waiting to start sync</source>
-        <translation>Itxoiten sinkronizazioaren hasiera</translation>
+        <translation>等待開始同步</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="54"/>
         <source>Sync is running</source>
-        <translation>Sinkronizazioa martxan da</translation>
+        <translation>同步中</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="57"/>
         <source>Sync Success</source>
-        <translation>Sinkronizazioa ongi burutu da</translation>
+        <translation>同步完成</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="60"/>
         <source>Sync Error - Click info button for details.</source>
-        <translation>Sinkronizazio Errorea -Klikatu info botoia xehetasun gehiagorako.</translation>
+        <translation>同步錯誤- 請點擊 資訊按鈕 以獲取詳細資訊</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>
         <source>Setup Error</source>
-        <translation>Konfigurazio Errorea</translation>
+        <translation>安裝錯誤</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="31"/>
@@ -1834,17 +1834,17 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>格式</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
         <source>Trust this certificate anyway</source>
-        <translation type="unfinished"/>
+        <translation>信任此憑證</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>
         <source>SSL Connection</source>
-        <translation>SSL Konexioa</translation>
+        <translation>SSL連線</translation>
     </message>
 </context>
 <context>

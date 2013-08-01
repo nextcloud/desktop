@@ -70,32 +70,32 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="20"/>
         <source>Account Maintenance</source>
-        <translation type="unfinished"/>
+        <translation>Mantemento da conta</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="29"/>
         <source>Edit Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Editar ficheiros ignorados</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="39"/>
         <source>Remove Account</source>
-        <translation type="unfinished"/>
+        <translation>Retirar a conta</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="46"/>
         <source>Modify Account</source>
-        <translation type="unfinished"/>
+        <translation>Modificar a conta</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="56"/>
         <source>Sync Status</source>
-        <translation type="unfinished"/>
+        <translation>Estado da sincronización</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="62"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Conectado con &lt;server&gt; como &lt;user&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="74"/>
@@ -136,7 +136,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="166"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Nota:&lt;/b&gt; Algúns cartafoles, como os cartafoles de rede montados ou os compartidos, poden ten diferentes límites.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="99"/>
@@ -206,7 +206,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="527"/>
         <source>Start</source>
-        <translation type="unfinished"/>
+        <translation>Iniciar</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="536"/>
@@ -216,7 +216,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="542"/>
         <source>Completely</source>
-        <translation type="unfinished"/>
+        <translation>Completado</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="568"/>
@@ -226,7 +226,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="571"/>
         <source>Completely finished.</source>
-        <translation type="unfinished"/>
+        <translation>Totalmente terminada.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="578"/>
@@ -236,7 +236,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="619"/>
         <source>You are using %1 of your available %2 storage.</source>
-        <translation type="unfinished"/>
+        <translation>Esta a usar %1 do seu almacenamento dispoñíbel de %2.</translation>
     </message>
 </context>
 <context>
@@ -244,7 +244,7 @@
     <message numerus="yes">
         <location filename="../src/mirall/application.cpp" line="215"/>
         <source>Sync started for %n configured sync folder(s).</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Comezou a sincronización para %n cartafol con sincronización configurada.</numerusform><numerusform>Comezou a sincronización para %n cartafoles con sincronización configurada.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="285"/>
@@ -254,7 +254,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="287"/>
         <source>Calculating quota...</source>
-        <translation type="unfinished"/>
+        <translation>Calculando a cota...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="289"/>
@@ -304,7 +304,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="484"/>
         <source>Quota n/a</source>
-        <translation type="unfinished"/>
+        <translation>Cota n/d</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="491"/>
@@ -314,7 +314,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="518"/>
         <source>No items synced recently</source>
-        <translation type="unfinished"/>
+        <translation>Non hai elementos sincronizados recentemente</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="521"/>
@@ -334,7 +334,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="542"/>
         <source>Syncing %1 of %2 (%3 of %4) </source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando %1 de %2 (%3 de %4) </translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="214"/>
@@ -349,7 +349,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="563"/>
         <source>In Sync</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizandose</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="756"/>
@@ -803,7 +803,7 @@ Confirma que quere realizar esta operación?</translation>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="185"/>
         <source>Syncing all files in your account with</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando todos os ficheiros na súa conta con</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="188"/>
@@ -895,12 +895,12 @@ Confirma que quere realizar esta operación?</translation>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="26"/>
         <source>Launch on System Startup</source>
-        <translation type="unfinished"/>
+        <translation>Iniciar cando arrinque o sistema</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="33"/>
         <source>Show Desktop Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Amosar notificacións no escritorio</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="40"/>
@@ -919,7 +919,7 @@ Confirma que quere realizar esta operación?</translation>
     <message>
         <location filename="../src/mirall/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation type="unfinished"/>
+        <translation>Editor de ficheiros ignorados</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.ui" line="40"/>
@@ -934,7 +934,7 @@ Confirma que quere realizar esta operación?</translation>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="35"/>
         <source>Files matching the following patterns will not be synchronized:</source>
-        <translation type="unfinished"/>
+        <translation>Os ficheiros que coincidan cos seguintes patróns non se sincronizarán:</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="90"/>
@@ -944,24 +944,24 @@ Confirma que quere realizar esta operación?</translation>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="91"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>Non é posíbel escribir os cambios en «%1».</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="97"/>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="109"/>
         <source>Add Ignore Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Engadir o patrón a ignorar</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="97"/>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="110"/>
         <source>Add a new ignore pattern:</source>
-        <translation type="unfinished"/>
+        <translation>Engadir un novo patrón a ignorar:</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="121"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
-        <translation type="unfinished"/>
+        <translation>Esta entrada é fornecida polo sistema en «%1» e non pode ser modificado nesta vista.</translation>
     </message>
 </context>
 <context>
@@ -1048,7 +1048,7 @@ Confirma que quere realizar esta operación?</translation>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="52"/>
         <source>Specify proxy manually as</source>
-        <translation type="unfinished"/>
+        <translation>Especifique o proxy manualmente como</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="80"/>
@@ -1063,18 +1063,18 @@ Confirma que quere realizar esta operación?</translation>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="134"/>
         <source>Proxy server requires authentication</source>
-        <translation type="unfinished"/>
+        <translation>O servidor proxy precisa autenticación</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="182"/>
         <source>Download Bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Largo de banda de descarga</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="188"/>
         <location filename="../src/mirall/networksettings.ui" line="281"/>
         <source>Limit to</source>
-        <translation type="unfinished"/>
+        <translation>Limitar a</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="210"/>
@@ -1091,12 +1091,12 @@ Confirma que quere realizar esta operación?</translation>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="258"/>
         <source>Upload Bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Largo de banda de envíos</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="271"/>
         <source>Limit automatically</source>
-        <translation type="unfinished"/>
+        <translation>Limitar automáticamente</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="33"/>
@@ -1427,7 +1427,7 @@ Confirma que quere realizar esta operación?</translation>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="49"/>
         <source>%1 Settings</source>
-        <translation type="unfinished"/>
+        <translation>Xustes de %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="52"/>
@@ -1437,7 +1437,7 @@ Confirma que quere realizar esta operación?</translation>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="59"/>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>Rede</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="70"/>
@@ -1882,7 +1882,7 @@ Confirma que quere realizar esta operación?</translation>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="65"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;written by Klaas Freitag, Daniel Molkentin, ownCloud Inc., based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;%7</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versión %2. Para obter máis información visite &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;escrito por Klaas Freitag, Daniel Molkentin, ownCloud Inc., baseado no Mirall por Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;%7</translation>
     </message>
 </context>
 </TS>

@@ -1,25 +1,46 @@
 [main]
 host = https://www.transifex.net
-minimum_perc = 70
 
 [owncloud.mirall]
 host = https://www.transifex.net
-file_filter = mirall_<lang>.ts
 source_file = mirall_en.ts
 source_lang = en
+
+# simple one-to-one language mappings
 trans.ca = mirall_ca.ts
-trans.de = mirall_de.ts
+trans.el = mirall_el.ts  
+trans.es = mirall_es.ts  
+trans.es_AR = mirall_es_AR.ts  
+trans.eu = mirall_eu.ts  
+trans.fa = mirall_fa.ts 
 trans.fr = mirall_fr.ts 
-trans.ja_JP = mirall_ja_JP.ts  
+trans.gl = mirall_gl.ts  
+trans.it = mirall_it.ts  
+trans.nl = mirall_nl.ts    
+trans.pl = mirall_pl.ts     
 trans.pt_BR = mirall_pt_BR.ts  
 trans.ru = mirall_ru.ts    
 trans.sl = mirall_sl.ts
-trans.cs_CZ = mirall_cs_CZ.ts 
-trans.el = mirall_el.ts 
-trans.es = mirall_es.ts  
-trans.it = mirall_it.ts  
-trans.pl = mirall_pl.ts     
-trans.pt_PT = mirall_pt_PT.ts  
-trans.sk_SK = mirall_sk_SK.ts  
 trans.sv = mirall_sv.ts
+trans.uk = mirall_uk.ts     
+trans.zh_TW = mirall_zh_TW.ts  
+trans.zh_CN = mirall_zh_CN.ts  
+
+# special handling below
+
+# de_DE holds the formal translation which we want as default
+trans.de_DE = mirall_de.ts
+
+# choose one of the given translations on transifex as default
+trans.pt_PT = mirall_pt.ts  
+trans.zh_CN = mirall_zh.ts  
+
+# choose a special language as more generic default
+trans.cs_CZ = mirall_cs.ts 
+trans.et_EE = mirall_et.ts 
+trans.fi_FI = mirall_fi.ts  
+trans.ja_JP = mirall_ja.ts  
+trans.hu_HU = mirall_hu.ts  
+trans.sk_SK = mirall_sk.ts  
+trans.th_TH = mirall_th.ts  
 
