@@ -114,15 +114,15 @@ static void print_help()
 
 static int c_atoi(const char *string, int *result)
 {
-    char *errptr;
+    char *end = NULL;
     int i;
 
     if (string == NULL) {
         return -1;
     }
 
-    i = strtol(string, &errptr, 10);
-    if (errptr == NULL) {
+    i = strtol(string, &end, 10);
+    if (!(end != NULL && end[0] == '\0')) {
         /* error case, the input string had an error. */
         return -1;
     }
