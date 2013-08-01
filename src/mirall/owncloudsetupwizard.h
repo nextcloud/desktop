@@ -59,7 +59,7 @@ private:
 
     void startWizard();
     void testOwnCloudConnect();
-    void checkRemoteFolder();
+    void checkRemoteFolder(const QString& remoteFolder);
     bool createRemoteFolder();
     void finalizeSetup( bool );
 

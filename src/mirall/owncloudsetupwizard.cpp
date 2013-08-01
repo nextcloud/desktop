@@ -331,11 +331,11 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString& localFo
     }
 
     if( localFolderOk ) {
-        checkRemoteFolder();
+        checkRemoteFolder(remoteFolder);
     }
 }
 
-void OwncloudSetupWizard::checkRemoteFolder()
+void OwncloudSetupWizard::checkRemoteFolder(const QString& remoteFolder)
 {
     ownCloudInfo* info(ownCloudInfo::instance());
     connect( info,SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
@@ -343,7 +343,7 @@ void OwncloudSetupWizard::checkRemoteFolder()
 
     qDebug() << "# checking for existence of remote folder.";
     info->setCustomConfigHandle(_configHandle);
-    _checkRemoteFolderRequest = info->getWebDAVPath(_remoteFolder ); // this call needs to be authenticated.
+    _checkRemoteFolderRequest = info->getWebDAVPath(remoteFolder); // this call needs to be authenticated.
     // continue in slotAuthCheckReply
 }
 
