@@ -237,13 +237,12 @@ void OwncloudAdvancedSetupPage::slotSelectFolder()
     }
 }
 
-void OwncloudAdvancedSetupPage::setConfigExists(  bool config )
+void OwncloudAdvancedSetupPage::setConfigExists(bool config)
 {
     _configExists = config;
 
     if (config == true) {
-        setSubTitle( tr("<font color=\"%1\">Change your user credentials</font>")
-                     .arg(Theme::instance()->wizardHeaderTitleColor().name()));
+        setSubTitle(WizardCommon::subTitleTemplate().arg(tr("Update advanced setup")));
     }
 }
 

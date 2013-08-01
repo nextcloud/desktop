@@ -40,13 +40,13 @@ public:
   void setRemoteFolder( const QString& remoteFolder);
   void setMultipleFoldersExist( bool exist );
   void directoriesCreated();
+  void setConfigExists(bool config);
 
 signals:
   void createLocalAndRemoteFolders(const QString&, const QString&);
 
 public slots:
   void setErrorString( const QString&  );
-  void setConfigExists(  bool );
 
 private slots:
   void slotSelectFolder();

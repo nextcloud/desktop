@@ -30,6 +30,7 @@ OwncloudHttpCredsPage::OwncloudHttpCredsPage()
     _ui(),
     _connected(false),
     _checking(false),
+    _configExists(false),
     _progressIndi(new QProgressIndicator (this))
 {
     _ui.setupUi(this);
@@ -152,6 +153,15 @@ void OwncloudHttpCredsPage::setErrorString(const QString& err)
 AbstractCredentials* OwncloudHttpCredsPage::getCredentials() const
 {
     return new HttpCredentials(_ui.leUsername->text(), _ui.lePassword->text());
+}
+
+void OwncloudHttpCredsPage::setConfigExists(bool config)
+{
+    _configExists = config;
+
+    if (config == true) {
+        setSubTitle(WizardCommon::subTitleTemplate().arg(tr("Update user credentials")));
+    }
 }
 
 } // ns Mirall

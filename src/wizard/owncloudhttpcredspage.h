@@ -40,6 +40,7 @@ public:
   int nextId() const;
   void setConnected(bool connected);
   void setErrorString( const QString& err );
+  void setConfigExists(bool config);
 
 Q_SIGNALS:
   void connectToOCUrl(const QString&);
@@ -52,6 +53,7 @@ private:
   Ui_OwncloudHttpCredsPage _ui;
   bool _connected;
   bool _checking;
+  bool _configExists;
   QProgressIndicator* _progressIndi;
 };
 

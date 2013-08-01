@@ -189,16 +189,12 @@ void OwncloudWizard::setOCUrl( const QString& url )
   _setupPage->setServerUrl( url );
 }
 
-void OwncloudWizard::setOCUser( const QString& user )
-{
-  _oCUser = user;
-  _httpCredsPage->setOCUser( user );
-}
-
 void OwncloudWizard::setConfigExists( bool config )
 {
     _configExists = config;
     _setupPage->setConfigExists( config );
+    _httpCredsPage->setConfigExists(config);
+    _advancedSetupPage->setConfigExists(config);
 }
 
 bool OwncloudWizard::configExists()
