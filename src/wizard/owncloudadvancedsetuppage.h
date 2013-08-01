@@ -54,6 +54,7 @@ private slots:
 private:
   void setupCustomization();
   void updateStatus();
+  bool dataChanged();
   void startSpinner();
   void stopSpinner();
 
@@ -63,7 +64,7 @@ private:
   bool _configExists;
   bool _multipleFoldersExist;
   QProgressIndicator* _progressIndi;
-
+  QString _oldLocalFolder;
   QString _remoteFolder;
 };
 

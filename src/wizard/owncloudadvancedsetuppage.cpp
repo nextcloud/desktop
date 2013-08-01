@@ -20,9 +20,12 @@
 
 #include "QProgressIndicator.h"
 
+#include "wizard/owncloudwizard.h"
 #include "wizard/owncloudwizardcommon.h"
 #include "wizard/owncloudadvancedsetuppage.h"
 #include "mirall/theme.h"
+#include "mirall/mirallconfigfile.h"
+#include "creds/abstractcredentials.h"
 
 namespace Mirall
 {
@@ -34,8 +37,9 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
     _created(false),
     _configExists(false),
     _multipleFoldersExist(false),
-    _remoteFolder(),
-    _progressIndi(new QProgressIndicator (this))
+    _progressIndi(new QProgressIndicator (this)),
+    _oldLocalFolder(),
+    _remoteFolder()
 {
     _ui.setupUi(this);
 
@@ -79,6 +83,7 @@ void OwncloudAdvancedSetupPage::initializePage()
 
     _checking  = false;
     _multipleFoldersExist = false;
+    _oldLocalFolder = localFolder();
 
     // call to init label
     updateStatus();
@@ -95,30 +100,55 @@ void OwncloudAdvancedSetupPage::updateStatus()
     // check if the local folder exists. If so, and if its not empty, show a warning.
     QString t;
 
-    // TODO: Maybe handle "modify" mode differently.
     _ui.pbSelectLocalFolder->setText(QDir::toNativeSeparators(locFolder));
+    if (dataChanged()) {
+        if( _remoteFolder.isEmpty() || _remoteFolder == QLatin1String("/") ) {
+            t = tr("Your entire account will be synced to the local folder '%1'.")
+                .arg(QDir::toNativeSeparators(locFolder));
+        } else {
+            t = tr("%1 folder '%2' is synced to local folder '%3'")
+                .arg(Theme::instance()->appName()).arg(_remoteFolder)
+                .arg(QDir::toNativeSeparators(locFolder));
+        }
 
-    if( _remoteFolder.isEmpty() || _remoteFolder == QLatin1String("/") ) {
-        t = tr("Your entire account will be synced to the local folder '%1'.")
-            .arg(QDir::toNativeSeparators(locFolder));
+        if ( _multipleFoldersExist ) {
+            t += tr("<p><small><strong>Warning:</strong> You currently have multiple folders "
+                    "configured. If you continue with the current settings, the folder configurations "
+                    "will be discarded and a single root folder sync will be created!</small></p>");
+        }
+
+        const bool dirNotEmpty(QDir(locFolder).entryList(QDir::AllEntries | QDir::NoDotAndDotDot).count() > 0);
+        if(dirNotEmpty) {
+            t += tr("<p><small><strong>Warning:</strong> The local directory is not empty. "
+                    "Pick a resolution!</small></p>");
+        }
+        _ui.resolutionWidget->setVisible(dirNotEmpty);
     } else {
-        t = tr("%1 folder '%2' is synced to local folder '%3'")
-            .arg(Theme::instance()->appName()).arg(_remoteFolder)
-            .arg(QDir::toNativeSeparators(locFolder));
-    }
-
-    if ( _multipleFoldersExist ) {
-        t += tr("<p><small><strong>Warning:</strong> You currently have multiple folders "
-                "configured. If you continue with the current settings, the folder configurations "
-                "will be discarded and a single root folder sync will be created!</small></p>");
-    }
-
-    if(QDir(locFolder).entryList(QDir::AllEntries | QDir::NoDotAndDotDot).count() > 0) {
-        t += tr("<p><small><strong>Warning:</strong> The local directory is not empty.</small></p>");
+        _ui.resolutionWidget->setVisible(false);
     }
 
     _ui.syncModeLabel->setText(t);
     _ui.syncModeLabel->setFixedHeight(_ui.syncModeLabel->sizeHint().height());
+}
+
+bool OwncloudAdvancedSetupPage::dataChanged()
+{
+    OwncloudWizard* ocWizard(dynamic_cast< OwncloudWizard* >(wizard()));
+
+    if (!ocWizard) {
+        return false;
+    }
+
+    MirallConfigFile cfgFile;
+    const QString url(field("OCUrl").toString());
+    AbstractCredentials* newCredentials(ocWizard->getCredentials());
+    AbstractCredentials* oldCredentials(cfgFile.getCredentials());
+    const bool differentCreds(oldCredentials->changed(newCredentials));
+    delete newCredentials;
+    const QString newLocalFolder(QDir::toNativeSeparators(_ui.pbSelectLocalFolder->text()));
+    const QString oldLocalFolder(QDir::toNativeSeparators(_oldLocalFolder));
+
+    return ((url != cfgFile.ownCloudUrl()) || differentCreds || (oldLocalFolder != newLocalFolder));
 }
 
 void OwncloudAdvancedSetupPage::startSpinner()
