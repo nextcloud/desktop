@@ -33,7 +33,6 @@ trans.de_DE = mirall_de.ts
 
 # choose one of the given translations on transifex as default
 trans.pt_PT = mirall_pt.ts  
-trans.zh_CN = mirall_zh.ts  
 
 # choose a special language as more generic default
 trans.cs_CZ = mirall_cs.ts 
