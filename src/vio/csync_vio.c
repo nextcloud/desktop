@@ -32,6 +32,10 @@
 #include "vio/csync_vio_handle_private.h"
 #include "vio/csync_vio_local.h"
 
+#ifdef __APPLE__
+#include <mach-o/dyld.h>
+#endif
+
 #define CSYNC_LOG_CATEGORY_NAME "csync.vio.main"
 
 #ifdef _WIN32
