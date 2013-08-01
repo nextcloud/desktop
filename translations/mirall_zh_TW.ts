@@ -319,12 +319,12 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="521"/>
         <source>Upload</source>
-        <translation type="unfinished"/>
+        <translation>上傳</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="523"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>下載</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="527"/>

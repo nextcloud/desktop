@@ -269,7 +269,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="292"/>
         <source>more...</source>
-        <translation type="unfinished"/>
+        <translation>Mehr...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="297"/>
@@ -284,12 +284,12 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="328"/>
         <source>None.</source>
-        <translation type="unfinished"/>
+        <translation>Keine.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="331"/>
         <source>Recent Changes...</source>
-        <translation type="unfinished"/>
+        <translation>Letzte Änderungen...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="348"/>
@@ -314,22 +314,22 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="518"/>
         <source>No items synced recently</source>
-        <translation type="unfinished"/>
+        <translation>Keine kürzlich synchronisierten Elemente</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="521"/>
         <source>Upload</source>
-        <translation type="unfinished"/>
+        <translation>Hochladen</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="523"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>Herunterladen</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="527"/>
         <source>%1 (%2, %3)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2, %3)</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="542"/>
@@ -349,7 +349,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="563"/>
         <source>In Sync</source>
-        <translation type="unfinished"/>
+        <translation>Synchron</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="756"/>

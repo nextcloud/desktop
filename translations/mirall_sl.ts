@@ -70,22 +70,22 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="20"/>
         <source>Account Maintenance</source>
-        <translation type="unfinished"/>
+        <translation>Vzdrževanje računa</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="29"/>
         <source>Edit Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Uredi prezrte datoteke</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="39"/>
         <source>Remove Account</source>
-        <translation type="unfinished"/>
+        <translation>Odstrani račun</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="46"/>
         <source>Modify Account</source>
-        <translation type="unfinished"/>
+        <translation>Spremeni račun</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="56"/>
@@ -116,7 +116,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="108"/>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>Ponastavi</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="128"/>
@@ -126,12 +126,12 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="140"/>
         <source>Storage Usage</source>
-        <translation type="unfinished"/>
+        <translation>Poraba prostora</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="159"/>
         <source>Retrieving usage information...</source>
-        <translation type="unfinished"/>
+        <translation>Pridobivanje podatkov o porabi...</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="166"/>
@@ -206,17 +206,17 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="527"/>
         <source>Start</source>
-        <translation type="unfinished"/>
+        <translation>Začni</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="536"/>
         <source>Currently</source>
-        <translation type="unfinished"/>
+        <translation>Trenutno</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="542"/>
         <source>Completely</source>
-        <translation type="unfinished"/>
+        <translation>Skupno</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="568"/>
@@ -254,17 +254,17 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="287"/>
         <source>Calculating quota...</source>
-        <translation type="unfinished"/>
+        <translation>Preračunavanje kvote...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="289"/>
         <source>Unknown status</source>
-        <translation type="unfinished"/>
+        <translation>Neznan status</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="291"/>
         <source>Settings...</source>
-        <translation type="unfinished"/>
+        <translation>Nastavitve...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="292"/>
@@ -319,12 +319,12 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="521"/>
         <source>Upload</source>
-        <translation type="unfinished"/>
+        <translation>Pošlji</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="523"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>Prejmi</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="527"/>
@@ -733,12 +733,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folder.cpp" line="731"/>
         <source>Remove all files</source>
-        <translation type="unfinished"/>
+        <translation>Odstrani vse dokumente</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="732"/>
         <source>Keep files</source>
-        <translation type="unfinished"/>
+        <translation>Ohrani dokumente</translation>
     </message>
 </context>
 <context>
@@ -776,7 +776,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="568"/>
         <source>Server is currently not available.</source>
-        <translation type="unfinished"/>
+        <translation>Strežnik trenutno ni na voljo.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="571"/>
@@ -795,7 +795,7 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="91"/>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="233"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="185"/>
@@ -821,12 +821,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="72"/>
         <source>No local folder selected!</source>
-        <translation type="unfinished"/>
+        <translation>Niste izbrali lokalne mape!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="77"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation type="unfinished"/>
+        <translation>Nimate pravic pisanja v izbrano mapo!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="100"/>
@@ -936,7 +936,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="90"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>Datoteke ni bilo mogoče odpreti.</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="91"/>

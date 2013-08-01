@@ -116,7 +116,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="108"/>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>Ripristina</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="128"/>
@@ -126,7 +126,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="140"/>
         <source>Storage Usage</source>
-        <translation type="unfinished"/>
+        <translation>Utilizzo archiviazione</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="159"/>
@@ -136,7 +136,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="166"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Nota:&lt;/b&gt; alcune cartelle, incluse le cartelle montate o condivise in rete, potrebbero avere limiti diversi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="99"/>
@@ -151,17 +151,17 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="232"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Vuoi davvero fermare la sincronizzazione della cartella &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; ciò non rimuoverà i file dal tuo client.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="252"/>
         <source>Confirm Folder Reset</source>
-        <translation type="unfinished"/>
+        <translation>Conferma il ripristino della cartella</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="253"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; While no files will be removed, this can cause significant data traffic and take several minutes to hours, depending on the size of the folder.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Vuoi davvero ripristinare la cartella &lt;i&gt;%1&lt;/i&gt; e ricostruire il database del client?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; anche se nessun file sarà rimosso, questa operazione causerà un significativo traffico di dati e richiederà diversi minuti oppure ore, in base alla dimensione della cartella.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="283"/>
@@ -206,7 +206,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="527"/>
         <source>Start</source>
-        <translation type="unfinished"/>
+        <translation>Avvia</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="536"/>
@@ -269,7 +269,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="292"/>
         <source>more...</source>
-        <translation type="unfinished"/>
+        <translation>altro...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="297"/>
@@ -284,12 +284,12 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="328"/>
         <source>None.</source>
-        <translation type="unfinished"/>
+        <translation>Nessuna.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="331"/>
         <source>Recent Changes...</source>
-        <translation type="unfinished"/>
+        <translation>Modifiche recenti...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="348"/>
@@ -319,17 +319,17 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="521"/>
         <source>Upload</source>
-        <translation type="unfinished"/>
+        <translation>Carica</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="523"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>Scarica</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="527"/>
         <source>%1 (%2, %3)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2, %3)</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="542"/>
@@ -349,7 +349,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="563"/>
         <source>In Sync</source>
-        <translation type="unfinished"/>
+        <translation>In sincronizzazione</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="756"/>
@@ -716,14 +716,17 @@
         <location filename="../src/mirall/folder.cpp" line="722"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Questa sincronizzazione rimuoverà tutti i file nella cartella di sincronizzazione locale &apos;%1&apos;.
+Se tu o il tuo amministratore avete ripristinato il tuo account sul server, scegli &quot;Mantieni i file&quot;. Se desideri che i dati siano rimossi, scegli &quot;Rimuovi tutti i file&quot;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="725"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
-        <translation type="unfinished"/>
+        <translation>Questa sincronizzazione rimuoverà tutti i file nella cartella di sincronizzazione &apos;%1&apos;.
+Ciò potrebbe accadere in caso di riconfigurazione della cartella o di rimozione manuale di tutti i file.
+Sei sicuro di voler eseguire questa operazione?</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="729"/>
@@ -931,7 +934,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="35"/>
         <source>Files matching the following patterns will not be synchronized:</source>
-        <translation type="unfinished"/>
+        <translation>I file che corrispondono ai seguenti modelli non saranno sincronizzati:</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="90"/>
@@ -1065,7 +1068,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="182"/>
         <source>Download Bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Ampiezza di banda in entrata</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="188"/>
@@ -1088,7 +1091,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="258"/>
         <source>Upload Bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Ampiezza di banda in uscita</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="271"/>
@@ -1816,7 +1819,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="40"/>
         <source>inactive</source>
-        <translation type="unfinished"/>
+        <translation>inattivo</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="55"/>
