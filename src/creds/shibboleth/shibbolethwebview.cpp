@@ -17,6 +17,7 @@
 
 #include "creds/shibboleth/shibbolethcookiejar.h"
 #include "creds/shibboleth/shibbolethwebview.h"
+#include "mirall/mirallaccessmanager.h"
 
 namespace Mirall
 {
@@ -24,13 +25,15 @@ namespace Mirall
 ShibbolethWebView::ShibbolethWebView(const QUrl& url, QWidget* parent)
   : QWebView(parent)
 {
+  MirallAccessManager* nm = new MirallAccessManager(this);
   ShibbolethCookieJar* jar = new ShibbolethCookieJar(this);
   QWebPage* page = new QWebPage(this);
 
   connect (jar, SIGNAL (newCookiesForUrl (QList<QNetworkCookie>, QUrl)),
            this, SLOT (onNewCookiesForUrl (QList<QNetworkCookie>, QUrl)));
 
-  page->networkAccessManager()->setCookieJar(jar);
+  nm->setCookieJar(jar);
+  page->setNetworkAccessManager(nm);
   page->mainFrame ()->load (url);
   this->setPage (page);
 }

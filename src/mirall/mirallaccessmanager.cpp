@@ -11,33 +11,24 @@
  * for more details.
  */
 
-#ifndef MIRALL_WIZARD_SHIBBOLETH_ACCESS_MANAGER_H
-#define MIRALL_WIZARD_SHIBBOLETH_ACCESS_MANAGER_H
-
-#include <QNetworkCookie>
+#include <QNetworkRequest>
 
 #include "mirall/mirallaccessmanager.h"
+#include "mirall/utility.h"
 
 namespace Mirall
 {
 
-class ShibbolethAccessManager : public MirallAccessManager
+MirallAccessManager::MirallAccessManager(QObject* parent)
+    : QNetworkAccessManager (parent)
+{}
+
+QNetworkReply* MirallAccessManager::createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest& request, QIODevice* outgoingData)
 {
-    Q_OBJECT
+    QNetworkRequest newRequest(request);
 
-public:
-    ShibbolethAccessManager(const QNetworkCookie& cookie, QObject* parent = 0);
-
-public Q_SLOTS:
-    void setCookie(const QNetworkCookie& cookie);
-
-protected:
-    QNetworkReply* createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest& request, QIODevice* outgoingData = 0);
-
-private:
-    QNetworkCookie _cookie;
-};
+    newRequest.setRawHeader( QByteArray("User-Agent"), Utility::userAgentString());
+    return QNetworkAccessManager::createRequest (op, newRequest, outgoingData);
+}
 
 } // ns Mirall
-
-#endif

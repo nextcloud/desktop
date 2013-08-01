@@ -11,31 +11,23 @@
  * for more details.
  */
 
-#ifndef MIRALL_WIZARD_SHIBBOLETH_ACCESS_MANAGER_H
-#define MIRALL_WIZARD_SHIBBOLETH_ACCESS_MANAGER_H
+#ifndef MIRALL_ACCESS_MANAGER_H
+#define MIRALL_ACCESS_MANAGER_H
 
-#include <QNetworkCookie>
-
-#include "mirall/mirallaccessmanager.h"
+#include <QNetworkAccessManager>
 
 namespace Mirall
 {
 
-class ShibbolethAccessManager : public MirallAccessManager
+class MirallAccessManager : public QNetworkAccessManager
 {
     Q_OBJECT
 
 public:
-    ShibbolethAccessManager(const QNetworkCookie& cookie, QObject* parent = 0);
-
-public Q_SLOTS:
-    void setCookie(const QNetworkCookie& cookie);
+    MirallAccessManager(QObject* parent = 0);
 
 protected:
     QNetworkReply* createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest& request, QIODevice* outgoingData = 0);
-
-private:
-    QNetworkCookie _cookie;
 };
 
 } // ns Mirall

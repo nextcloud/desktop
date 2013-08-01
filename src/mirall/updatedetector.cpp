@@ -18,6 +18,7 @@
 #include "mirall/mirallconfigfile.h"
 #include "mirall/occinfo.h"
 #include "mirall/utility.h"
+#include "mirall/mirallaccessmanager.h"
 
 #include <QtCore>
 #include <QtNetwork>
@@ -28,7 +29,7 @@ namespace Mirall {
 
 UpdateDetector::UpdateDetector(QObject *parent) :
     QObject(parent)
-  , _accessManager( new QNetworkAccessManager(this))
+  , _accessManager(new MirallAccessManager(this))
 {
 }
 

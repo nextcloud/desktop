@@ -20,7 +20,7 @@ namespace Mirall
 {
 
 ShibbolethAccessManager::ShibbolethAccessManager(const QNetworkCookie& cookie, QObject* parent)
-    : QNetworkAccessManager (parent),
+    : MirallAccessManager (parent),
       _cookie(cookie)
 {}
 
@@ -43,7 +43,7 @@ QNetworkReply* ShibbolethAccessManager::createRequest(QNetworkAccessManager::Ope
 
     qDebug() << "Creating a request to " << request.url().toString() << " with shibboleth cookie:" << _cookie.name();
 
-    return QNetworkAccessManager::createRequest (op, request, outgoingData);
+    return MirallAccessManager::createRequest (op, request, outgoingData);
 }
 
 void ShibbolethAccessManager::setCookie(const QNetworkCookie& cookie)

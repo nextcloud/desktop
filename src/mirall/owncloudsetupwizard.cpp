@@ -26,6 +26,7 @@
 #include "mirall/owncloudinfo.h"
 #include "mirall/folderman.h"
 #include "mirall/utility.h"
+#include "mirall/mirallaccessmanager.h"
 #include "creds/abstractcredentials.h"
 #include "creds/dummycredentials.h"
 
@@ -165,7 +166,7 @@ void OwncloudSetupWizard::slotOwnCloudFoundAuth( const QString& url, const QStri
     _ocWizard->appendToConfigurationLog(tr("<font color=\"green\">Successfully connected to %1: %2 version %3 (%4)</font><br/><br/>")
                                     .arg( url ).arg(Theme::instance()->appNameGUI()).arg(infoString).arg(version));
 
-    QNetworkAccessManager* nm = new QNetworkAccessManager(this);
+    MirallAccessManager* nm = new MirallAccessManager(this);
     // TODO: We should get this path from owncloud info.
     QNetworkReply* reply = nm->get (QNetworkRequest (url + "/remote.php/webdav/"));
 

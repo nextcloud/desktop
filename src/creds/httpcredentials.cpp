@@ -19,6 +19,7 @@
 #include "creds/httpcredentials.h"
 #include "mirall/owncloudinfo.h"
 #include "mirall/mirallconfigfile.h"
+#include "mirall/mirallaccessmanager.h"
 #include "mirall/utility.h"
 #include "creds/http/credentialstore.h"
 
@@ -167,7 +168,7 @@ QString HttpCredentials::password() const
 
 QNetworkAccessManager* HttpCredentials::getQNAM() const
 {
-    QNetworkAccessManager* qnam = new QNetworkAccessManager;
+    MirallAccessManager* qnam = new MirallAccessManager;
 
     connect( qnam, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
              this, SLOT(slotAuthentication(QNetworkReply*,QAuthenticator*)));

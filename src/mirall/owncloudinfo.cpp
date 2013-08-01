@@ -15,7 +15,6 @@
 #include "mirall/owncloudinfo.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/theme.h"
-#include "mirall/utility.h"
 #include "mirall/logger.h"
 #include "creds/abstractcredentials.h"
 
@@ -521,7 +520,6 @@ void ownCloudInfo::setupHeaders( QNetworkRequest & req, quint64 size )
 {
     QUrl url( req.url() );
     qDebug() << "Setting up host header: " << url.host();
-    req.setRawHeader( QByteArray("User-Agent"), Utility::userAgentString());
 
     if (size) {
         req.setHeader( QNetworkRequest::ContentLengthHeader, size);

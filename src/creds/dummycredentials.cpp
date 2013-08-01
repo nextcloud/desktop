@@ -11,9 +11,8 @@
  * for more details.
  */
 
-#include <QNetworkAccessManager>
-
 #include "creds/dummycredentials.h"
+#include "mirall/mirallaccessmanager.h"
 
 namespace Mirall
 {
@@ -38,7 +37,7 @@ QString DummyCredentials::authType() const
 
 QNetworkAccessManager* DummyCredentials::getQNAM() const
 {
-    return new QNetworkAccessManager;
+    return new MirallAccessManager;
 }
 
 bool DummyCredentials::ready() const
