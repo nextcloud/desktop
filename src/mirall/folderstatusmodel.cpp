@@ -28,7 +28,7 @@ FolderStatusModel::FolderStatusModel()
 
 Qt::ItemFlags FolderStatusModel::flags ( const QModelIndex&  ) const
 {
-    return Qt::ItemIsSelectable;
+    return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
 }
 
 QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
