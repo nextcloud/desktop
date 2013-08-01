@@ -59,15 +59,16 @@ bool OwncloudShibbolethCredsPage::isComplete() const
 void OwncloudShibbolethCredsPage::initializePage()
 {
     WizardCommon::initErrorLabel(_ui.errorLabel);
-    _browser = new ShibbolethWebView(QUrl(field("OCUrl").toString().simplified()), this);
+    _browser = new ShibbolethWebView(QUrl(field("OCUrl").toString().simplified()));
 
     _browser->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     connect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie)),
             this, SLOT(onShibbolethCookieReceived(QNetworkCookie)));
 
-    _ui.contentLayout->insertWidget(0, _browser);
+    //_ui.contentLayout->insertWidget(0, _browser);
     _browser->show();
     _browser->setFocus();
+    wizard()->hide();
     _ui.infoLabel->show();
     _ui.infoLabel->setText(tr("Please follow the steps on displayed page above"));
     _stage = INITIAL_STEP;
@@ -130,6 +131,7 @@ void OwncloudShibbolethCredsPage::setConnected( bool comp )
         initializePage();
     }
     emit completeChanged();
+    wizard()->show();
 }
 
 void OwncloudShibbolethCredsPage::setErrorString(const QString& err)
@@ -156,6 +158,7 @@ void OwncloudShibbolethCredsPage::onShibbolethCookieReceived(const QNetworkCooki
     _cookie = cookie;
     _ui.infoLabel->setText("Please click \"Connect\" to check received Shibboleth session.");
     emit completeChanged();
+    validatePage();
 }
 
 } // ns Mirall
