@@ -1249,7 +1249,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
         } else {
           state = hbf_splitlist(trans, fd);
           file_size = trans->stat_size;
-
+          (void) file_size;
           DEBUG_WEBDAV("about to send %d block", trans->block_cnt);
 
 
