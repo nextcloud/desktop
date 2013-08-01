@@ -104,7 +104,7 @@
            <item>
             <widget class="QSpinBox" name="portSpinBox">
              <property name="enabled">
-              <bool>false</bool>
+              <bool>true</bool>
              </property>
              <property name="sizePolicy">
               <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -147,7 +147,7 @@
             <item>
              <widget class="QLineEdit" name="userLineEdit">
               <property name="enabled">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
               <property name="text">
                <string/>
@@ -157,7 +157,7 @@
             <item>
              <widget class="QLineEdit" name="passwordLineEdit">
               <property name="enabled">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
               <property name="text">
                <string/>
