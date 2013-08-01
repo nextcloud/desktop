@@ -25,6 +25,7 @@ mirall/networksettings.ui
 mirall/accountsettings.ui
 mirall/ignorelisteditor.ui
 mirall/fileitemdialog.ui
+mirall/itemprogressdialog.ui
 )
 
 set(3rdparty_SRC
@@ -164,6 +165,7 @@ set(mirall_SRCS
     mirall/networksettings.cpp
     mirall/accountsettings.cpp
     mirall/ignorelisteditor.cpp
+    mirall/itemprogressdialog.cpp
 )
 
 set(mirall_HEADERS
@@ -182,6 +184,7 @@ set(mirall_HEADERS
     mirall/networksettings.h
     mirall/accountsettings.h
     mirall/ignorelisteditor.h
+    mirall/itemprogressdialog.h
 )
 
 if( UNIX AND NOT APPLE)

@@ -84,12 +84,18 @@ ProgressDispatcher::~ProgressDispatcher()
 
 QList<Progress::Info> ProgressDispatcher::recentChangedItems(int count)
 {
-    return _recentChanges.mid(0, count);
+    if( count > 0 ) {
+        return _recentChanges.mid(0, count);
+    }
+    return _recentChanges;
 }
 
 QList<Progress::SyncProblem> ProgressDispatcher::recentProblems(int count)
 {
-    return _recentProblems.mid(0, count);
+    if( count > 0 ) {
+        return _recentProblems.mid(0, count);
+    }
+    return _recentProblems;
 }
 
 void ProgressDispatcher::setProgressInfo(const QString& folder, const Progress::Info& progress)
@@ -105,6 +111,7 @@ void ProgressDispatcher::setProgressInfo(const QString& folder, const Progress::
         err.current_file  = newProgress.current_file;
         err.error_message = QString::fromLocal8Bit( (const char*)newProgress.file_size );
         err.error_code    = newProgress.file_size;
+        err.timestamp     = QTime::currentTime();
 
         _recentProblems.enqueue( err );
         if( _recentProblems.size() > _problemQueueSize ) {

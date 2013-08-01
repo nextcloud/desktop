@@ -64,6 +64,7 @@ public:
         QString current_file;
         QString error_message;
         int     error_code;
+        QTime  timestamp;
     } SyncProblem;
 
     static QString asString( Kind );

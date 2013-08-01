@@ -23,6 +23,7 @@
 
 #include "mirall/folder.h"
 #include "mirall/progressdispatcher.h"
+#include "mirall/itemprogressdialog.h"
 
 class QStandardItemModel;
 class QModelIndex;
@@ -37,7 +38,7 @@ class AccountSettings;
 }
 
 class FolderMan;
-class FileItemDialog;
+class ItemProgressDialog;
 class IgnoreListEditor;
 
 class AccountSettings : public QWidget
@@ -89,7 +90,7 @@ private:
     QStandardItem* itemForFolder(const QString& );
 
     Ui::AccountSettings *ui;
-    QPointer<FileItemDialog> _fileItemDialog;
+    QPointer<ItemProgressDialog> _fileItemDialog;
     QPointer<IgnoreListEditor> _ignoreEditor;
     QStandardItemModel *_model;
     QListWidgetItem *_item;

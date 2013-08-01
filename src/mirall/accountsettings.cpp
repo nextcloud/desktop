@@ -27,6 +27,7 @@
 #include "mirall/owncloudsetupwizard.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/ignorelisteditor.h"
+#include "mirall/itemprogressdialog.h"
 
 #include <math.h>
 
@@ -386,11 +387,11 @@ void AccountSettings::slotUpdateFolderState( Folder *folder )
         item = _model->item( ++row );
     }
 
-
+#if 0
     if( !_fileItemDialog.isNull() && _fileItemDialog->isVisible() ) {
         _fileItemDialog->setSyncResult( FolderMan::instance()->syncResult(folder) );
     }
-
+#endif
     if( item ) {
         folderToModelItem( item, folder );
     } else {
@@ -641,13 +642,14 @@ void AccountSettings::slotInfoAboutCurrentFolder()
             qDebug() << "details of folder with alias " << alias;
 
             if( _fileItemDialog.isNull() ) {
-                _fileItemDialog = new FileItemDialog(this);
+                _fileItemDialog = new ItemProgressDialog(this);
                 _fileItemDialog->open();
+                _fileItemDialog->setupList();
             } else {
                 Utility::raiseDialog( _fileItemDialog );
             }
 
-            _fileItemDialog->setSyncResult( FolderMan::instance()->syncResult( alias ) );
+            // _fileItemDialog->setSyncResult( FolderMan::instance()->syncResult( alias ) );
         }
     }
 }
