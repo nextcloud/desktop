@@ -16,6 +16,10 @@ First, configure the script. For that, create a file t1.cfg. There
 is t1.cfg.in as an example. Yeah, this test script is not secure,
 make sure to run it with a weak account and in a save environment.
 
+Second, unpack the test file collection with 
+tar xzf testfiles.tar.gz 
+in the directory where the tarball can be found.
+
 To start the script, call ./t1.pl on the commandline. A lot of 
 output is generated. If the script does not fail, everything works.
 
