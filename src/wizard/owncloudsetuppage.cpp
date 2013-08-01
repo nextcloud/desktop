@@ -120,7 +120,14 @@ void OwncloudSetupPage::initializePage()
     _authTypeKnown = false;
     _checking  = false;
 
-    _ui.leUrl->setFocus();
+    // URL entry is disabled when url is overriden by theme. In that
+    // case we just check the server type and switch to second page
+    // immediately.
+    if (_ui.leUrl->isEnabled()) {
+        _ui.leUrl->setFocus();
+    } else {
+        validatePage();
+    }
 }
 
 bool OwncloudSetupPage::urlHasChanged()
