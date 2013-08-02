@@ -34,6 +34,7 @@ public:
       SyncPrepare,
       SyncRunning,
       Success,
+      Problem,
       Error,
       SetupError,
       Unavailable

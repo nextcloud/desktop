@@ -33,6 +33,7 @@
 #include "mirall/credentialstore.h"
 #include "mirall/logger.h"
 #include "mirall/settingsdialog.h"
+#include "mirall/itemprogressdialog.h"
 #include "mirall/utility.h"
 #include "mirall/inotify.h"
 #include "mirall/connectionvalidator.h"
@@ -292,7 +293,7 @@ void Application::setupActions()
     _actionRecent = new QAction(tr("more..."), this);
     _actionRecent->setEnabled( true );
 
-    QObject::connect(_actionRecent, SIGNAL(triggered(bool)), SLOT(slotShowRecentChanges()));
+    QObject::connect(_actionRecent, SIGNAL(triggered(bool)), SLOT(slotItemProgressDialog()));
     QObject::connect(_actionSettings, SIGNAL(triggered(bool)), SLOT(slotSettings()));
     _actionHelp = new QAction(tr("Help"), this);
     QObject::connect(_actionHelp, SIGNAL(triggered(bool)), SLOT(slotHelp()));
@@ -637,11 +638,6 @@ void Application::slotFoldersChanged()
     setupContextMenu();
 }
 
-void Application::slotShowRecentChanges()
-{
-    // not yet here.
-}
-
 void Application::slotSettings()
 {
     if (_settingsDialog.isNull()) {
@@ -650,6 +646,16 @@ void Application::slotSettings()
         _settingsDialog->open();
     }
     Utility::raiseDialog(_settingsDialog);
+}
+
+void Application::slotItemProgressDialog()
+{
+    if (_progressDialog.isNull()) {
+        _progressDialog = new ItemProgressDialog(this);
+        _progressDialog->setAttribute( Qt::WA_DeleteOnClose, true );
+        _progressDialog->open();
+    }
+    Utility::raiseDialog(_progressDialog);
 }
 
 void Application::slotParseOptions(const QString &opts)

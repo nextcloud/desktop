@@ -82,7 +82,6 @@ public:
     virtual QIcon   syncStateIcon( SyncResult::Status, bool sysTray = false ) const;
 
     virtual QIcon   folderDisabledIcon() const = 0;
-
     virtual QIcon   applicationIcon() const = 0;
 
     virtual QString statusHeaderText( SyncResult::Status ) const;

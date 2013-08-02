@@ -55,6 +55,7 @@ public:
 
 signals:
     void folderChanged();
+    void openProgressDialog();
     void openFolderAlias( const QString& );
     void infoFolderAlias( const QString& );
 

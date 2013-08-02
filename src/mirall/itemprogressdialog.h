@@ -27,12 +27,13 @@ class SyncResult;
 namespace Ui {
   class ItemProgressDialog;
 }
+class Application;
 
 class ItemProgressDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit ItemProgressDialog(QWidget *parent = 0);
+    explicit ItemProgressDialog(Application *app, QWidget *parent = 0);
     ~ItemProgressDialog();
 
     void setupList();

@@ -633,25 +633,7 @@ void AccountSettings::slotIgnoreFilesEditor()
 
 void AccountSettings::slotInfoAboutCurrentFolder()
 {
-    QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
-    if( selected.isValid() ) {
-        QString alias = _model->data( selected, FolderStatusDelegate::FolderAliasRole ).toString();
-        qDebug() << "Info Folder alias " << alias;
-        if( !alias.isEmpty() ) {
-
-            qDebug() << "details of folder with alias " << alias;
-
-            if( _fileItemDialog.isNull() ) {
-                _fileItemDialog = new ItemProgressDialog(this);
-                _fileItemDialog->open();
-                _fileItemDialog->setupList();
-            } else {
-                Utility::raiseDialog( _fileItemDialog );
-            }
-
-            // _fileItemDialog->setSyncResult( FolderMan::instance()->syncResult( alias ) );
-        }
-    }
+    emit(openProgressDialog());
 }
 
 AccountSettings::~AccountSettings()

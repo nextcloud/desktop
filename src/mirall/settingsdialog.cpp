@@ -77,6 +77,7 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
     connect( _accountSettings, SIGNAL(folderChanged()), app, SLOT(slotFoldersChanged()));
     connect( _accountSettings, SIGNAL(openFolderAlias(const QString&)),
              app, SLOT(slotFolderOpenAction(QString)));
+    connect( _accountSettings, SIGNAL(openProgressDialog()), app, SLOT(slotItemProgressDialog()));
 
     connect( ProgressDispatcher::instance(), SIGNAL(progressInfo(QString, Progress::Info)),
              _accountSettings, SLOT(slotSetProgress(QString, Progress::Info)) );

@@ -33,7 +33,7 @@
 
 namespace Mirall {
 
-ItemProgressDialog::ItemProgressDialog(QWidget *parent) :
+ItemProgressDialog::ItemProgressDialog(Application*, QWidget *parent) :
     QDialog(parent),
     _ui(new Ui::ItemProgressDialog),
     ErrorIndicatorRole( Qt::UserRole +1 )
@@ -210,7 +210,7 @@ void ItemProgressDialog::slotProgressErrors( const QString& folder, const Progre
 
   QTreeWidgetItem *item = new QTreeWidgetItem(folderItem, columns);
   item->setData(0, ErrorIndicatorRole, QVariant(true) );
-  _problemCounter++;
+  item->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Problem, true));
 
   Q_UNUSED(item);
 }

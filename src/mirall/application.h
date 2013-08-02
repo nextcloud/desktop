@@ -44,6 +44,7 @@ class FolderWizard;
 class ownCloudInfo;
 class SslErrorDialog;
 class SettingsDialog;
+class ItemProgressDialog;
 
 class Application : public SharedTools::QtSingleApplication
 {
@@ -84,6 +85,7 @@ protected slots:
     void slotFoldersChanged();
     void slotCheckConfig();
     void slotSettings();
+    void slotItemProgressDialog();
     void slotParseOptions( const QString& );
     void slotShowTrayMessage(const QString&, const QString&);
     void slotShowOptionalTrayMessage(const QString&, const QString&);
@@ -103,7 +105,6 @@ protected slots:
     void slotProgressSyncProblem(const QString& folder, const Progress::SyncProblem &problem);
     void slotDisplayIdle();
     void slotHelp();
-    void slotShowRecentChanges();
 private:
     void setHelp();
     void raiseDialog( QWidget* );
@@ -132,6 +133,8 @@ private:
     QSignalMapper *_folderOpenActionMapper;
     LogBrowser *_logBrowser;
     QPointer<SettingsDialog> _settingsDialog;
+    QPointer<ItemProgressDialog> _progressDialog;
+
     QString _logFile;
     QString _logDirectory;
 
