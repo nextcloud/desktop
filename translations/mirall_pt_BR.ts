@@ -104,7 +104,7 @@
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="81"/>
-        <location filename="../src/mirall/accountsettings.cpp" line="97"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="98"/>
         <source>Pause</source>
         <translation>Pause</translation>
     </message>
@@ -139,102 +139,102 @@
         <translation>&lt;b&gt;Nota:&lt;/b&gt; Algumas pastas, incluindo as montadas na rede ou pastas compartilhadas, podem ter limites diferentes.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="99"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="100"/>
         <source>Resume</source>
         <translation>Resumir</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="231"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="232"/>
         <source>Confirm Folder Remove</source>
         <translation>Confirma remoção da pasta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="232"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="233"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Você realmente deseja parar de sincronizar a pasta &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; Isso não vai remover os arquivos de seu cliente.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="252"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="253"/>
         <source>Confirm Folder Reset</source>
         <translation>Confirme Reiniciar Pasta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="253"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="254"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; While no files will be removed, this can cause significant data traffic and take several minutes to hours, depending on the size of the folder.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Você realmente deseja redefinir a pasta &lt;i&gt;%1&lt;/i&gt; e reconstruir sua base de clientes?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; Enquanto que nenhum arquivo será removido, isso pode causar o tráfego de dados significativo e levar vários minutos ou horas, dependendo do tamanho da pasta.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="283"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="284"/>
         <source>Checking %1 connection...</source>
         <translation>Checando conexão a %1...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="288"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="289"/>
         <source>No %1 connection configured.</source>
         <translation>Sem %1 conexão configurada.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="349"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="350"/>
         <source>Sync Running</source>
         <translation>Sincronização acontecendo</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="350"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="351"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>A operação de sincronização está acontecendo.&lt;br/&gt;deseja finaliza-la?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="419"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="420"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; as &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Conectar em &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; como &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="421"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="422"/>
         <source>Version: %1 (%2)</source>
         <translation>Versão: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="432"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="433"/>
         <source>unknown problem.</source>
         <translation>problema desconhecido.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="435"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="436"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Falha ao conectar à %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="527"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="528"/>
         <source>Start</source>
         <translation>Iniciar</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="536"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="537"/>
         <source>Currently</source>
         <translation>Atualmente</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="542"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="543"/>
         <source>Completely</source>
         <translation>Completamente</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="568"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="569"/>
         <source>%1 %2 %3 (%4 of %5)</source>
         <translation>%1 %2 %3 (%4 de %5)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="571"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="572"/>
         <source>Completely finished.</source>
         <translation>Completamente finalizado.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="578"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="579"/>
         <source>%1 of %2, file %3 of %4</source>
         <translation>%1 of %2, file %3 de %4</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="619"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="620"/>
         <source>You are using %1 of your available %2 storage.</source>
         <translation>Você está usando %1 de seus %2 disponível para armazenamento.</translation>
     </message>
@@ -814,7 +814,7 @@ Você tem certeza que quer executar esta operação?</translation>
 <context>
     <name>Mirall::FolderWizard</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="291"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="296"/>
         <source>%1 Folder Wizard</source>
         <translation>%1 Assistente de pastas</translation>
     </message>
@@ -822,42 +822,42 @@ Você tem certeza que quer executar esta operação?</translation>
 <context>
     <name>Mirall::FolderWizardSourcePage</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="72"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="73"/>
         <source>No local folder selected!</source>
         <translation>Nenhuma pasta local selecionada!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="77"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="78"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Voce não tem permissão para escrita na pasta selecionada!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="100"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="101"/>
         <source>The local path %1 is already an upload folder.&lt;br/&gt;Please pick another one!</source>
         <translation>O caminho local %1 já é uma pasta de upload.&lt;br/&gt;escolha outra, por favor!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="105"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="106"/>
         <source>An already configured folder is contained in the current entry.</source>
         <translation>Uma pasta já configurada já está contida na entrada atual.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="110"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="111"/>
         <source>An already configured folder contains the currently entered directory.</source>
         <translation>Uma pasta já configurada já contém o diretório selecionado.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="120"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="121"/>
         <source>The alias can not be empty. Please provide a descriptive alias word.</source>
         <translation>O apelido não pode estar vazio. Coloque um apelido que seja descritivo, por favor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="131"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="132"/>
         <source>&lt;br/&gt;The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
         <translation>&lt;br/&gt;O apelido &lt;i&gt;%1&lt;/i&gt; já está em uso. Escolha outro apelido, por favor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="152"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="153"/>
         <source>Select the source folder</source>
         <translation>Selecione a pasta de origem</translation>
     </message>
@@ -865,17 +865,27 @@ Você tem certeza que quer executar esta operação?</translation>
 <context>
     <name>Mirall::FolderWizardTargetPage</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="198"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="182"/>
+        <source>Add Remote Folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="183"/>
+        <source>Enter the name of the new folder:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="201"/>
         <source>Folder was successfully created on %1.</source>
         <translation>Pasta foi criada com sucesso em %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="201"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="204"/>
         <source>Failed to create the folder on %1.&lt;br/&gt;Please check manually.</source>
         <translation>Falha ao criar pasta em %1.&lt;br/&gt;Por favor verifique manualmente.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="232"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="237"/>
         <source>If you sync the root folder, you can &lt;b&gt;not&lt;/b&gt; configure another sync directory.</source>
         <translation>Se você sincronizar a pasta raiz, você &lt;b&gt; não &lt;/b&gt;pode  configurar outro diretório de sincronização.</translation>
     </message>
@@ -962,6 +972,80 @@ Você tem certeza que quer executar esta operação?</translation>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="121"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
         <translation>Esta entrada é fornecida pelo sistema em &apos;%1&apos; e não pode ser modificado aqui.</translation>
+    </message>
+</context>
+<context>
+    <name>Mirall::ItemProgressDialog</name>
+    <message>
+        <location filename="../src/mirall/itemprogressdialog.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/itemprogressdialog.ui" line="27"/>
+        <source>Detailed Sync Protocol</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/itemprogressdialog.ui" line="60"/>
+        <source>3</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/itemprogressdialog.ui" line="65"/>
+        <source>4</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/itemprogressdialog.ui" line="73"/>
+        <location filename="../src/mirall/itemprogressdialog.ui" line="80"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="51"/>
+        <source>Folder/Time</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="52"/>
+        <source>File</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="53"/>
+        <source>Action</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="54"/>
+        <source>Size</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="62"/>
+        <source>Copy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="65"/>
+        <source>Sync Protocol</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="123"/>
+        <source>Copied to clipboard</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="123"/>
+        <source>The sync protocol has been copied to the clipboard.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="207"/>
+        <source>Problem: %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
