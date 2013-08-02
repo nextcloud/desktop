@@ -280,6 +280,8 @@ static int _hbf_dav_request(hbf_transfer_t *transfer, ne_request *req, int fd, h
     const ne_status *req_status = NULL;
     const char *etag = NULL;
 
+    (void) transfer;
+
     if( ! (blk && req) ) return HBF_PARAM_FAIL;
 
     ne_set_request_body_fd(req, fd, blk->start, blk->size);
