@@ -28,6 +28,12 @@ public:
 
 protected:
     QNetworkReply* createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest& request, QIODevice* outgoingData = 0);
+
+private Q_SLOTS:
+    void logReply();
+
+private:
+    void logRequest(unsigned int requestNo, QNetworkAccessManager::Operation op, const QNetworkRequest& request, QIODevice* outgoingData);
 };
 
 } // ns Mirall
