@@ -1700,7 +1700,7 @@ int csync_propagate_rename_file(CSYNC *ctx, csync_file_stat_t *st) {
 }
 
 /* Count the files to transmit for both up- and download, ie. in both replicas. */
-int csync_init_overall_progress(CSYNC *ctx) {
+int csync_init_progress(CSYNC *ctx) {
 
   if (ctx == NULL) {
     return -1;
