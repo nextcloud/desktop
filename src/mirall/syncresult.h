@@ -47,6 +47,8 @@ public:
     void    setErrorStrings( const QStringList& );
     QString errorString() const;
     QStringList errorStrings() const;
+    int     warnCount() const;
+    void    setWarnCount(int wc);
     void    clearErrors();
 
     // handle a list of changed items.
@@ -66,6 +68,7 @@ private:
      * when the sync tool support this...
      */
     QStringList        _errors;
+    int                _warnCount;
 };
 
 }

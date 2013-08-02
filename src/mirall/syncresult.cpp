@@ -18,12 +18,14 @@ namespace Mirall
 {
 
 SyncResult::SyncResult()
-: _status( Undefined )
+    : _status( Undefined ),
+      _warnCount(0)
 {
 }
 
 SyncResult::SyncResult(SyncResult::Status status )
-    : _status(status)
+    : _status(status),
+      _warnCount(0)
 {
 }
 
@@ -85,6 +87,16 @@ SyncFileItemVector SyncResult::syncFileItemVector() const
 QDateTime SyncResult::syncTime() const
 {
     return _syncTime;
+}
+
+void SyncResult::setWarnCount(int wc)
+{
+    _warnCount = wc;
+}
+
+int SyncResult::warnCount() const
+{
+    return _warnCount;
 }
 
 void SyncResult::setErrorStrings( const QStringList& list )

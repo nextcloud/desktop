@@ -81,6 +81,8 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
 
     connect( ProgressDispatcher::instance(), SIGNAL(progressInfo(QString, Progress::Info)),
              _accountSettings, SLOT(slotSetProgress(QString, Progress::Info)) );
+    connect( ProgressDispatcher::instance(), SIGNAL(progressSyncProblem(QString,Progress::SyncProblem)),
+             _accountSettings, SLOT(slotProgressProblem(QString,Progress::SyncProblem)) );
 
     _ui->labelWidget->setCurrentRow(_ui->labelWidget->row(general));
 

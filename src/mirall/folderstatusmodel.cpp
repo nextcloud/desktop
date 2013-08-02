@@ -118,16 +118,17 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
   int aliasMargin = aliasFm.height()/2;
   int margin = subFm.height()/4;
 
-  QIcon statusIcon          = qvariant_cast<QIcon>(index.data(FolderStatusIconRole));
-  QString aliasText         = qvariant_cast<QString>(index.data(FolderAliasRole));
-  QString pathText          = qvariant_cast<QString>(index.data(FolderPathRole));
-  QString remotePath        = qvariant_cast<QString>(index.data(FolderSecondPathRole));
-  QString errorText         = qvariant_cast<QString>(index.data(FolderErrorMsg));
+  QIcon statusIcon      = qvariant_cast<QIcon>(index.data(FolderStatusIconRole));
+  QString aliasText     = qvariant_cast<QString>(index.data(FolderAliasRole));
+  QString pathText      = qvariant_cast<QString>(index.data(FolderPathRole));
+  QString remotePath    = qvariant_cast<QString>(index.data(FolderSecondPathRole));
+  QString errorText     = qvariant_cast<QString>(index.data(FolderErrorMsg));
 
   int overallPercent    = qvariant_cast<int>(index.data(SyncProgressOverallPercent));
   QString overallString = qvariant_cast<QString>(index.data(SyncProgressOverallString));
   QString itemString    = qvariant_cast<QString>(index.data(SyncProgressItemString));
-
+  int warningCount      = qvariant_cast<int>(index.data(WarningCount));
+  bool syncOngoing      = qvariant_cast<bool>(index.data(SyncRunning));
   // QString statusText = qvariant_cast<QString>(index.data(FolderStatus));
   bool syncEnabled = index.data(FolderSyncEnabled).toBool();
   // QString syncStatus = syncEnabled? tr( "Enabled" ) : tr( "Disabled" );
@@ -165,6 +166,20 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
   QPixmap pm = statusIcon.pixmap(iconSize, iconSize, syncEnabled ? QIcon::Normal : QIcon::Disabled );
   painter->drawPixmap(QPoint(iconRect.left(), iconRect.top()), pm);
+
+  // only show the warning icon if the sync is running. Otherwise its
+  // encoded in the status icon.
+  if( warningCount > 0 && syncOngoing) {
+      QRect warnRect;
+      warnRect.setLeft(iconRect.left());
+      warnRect.setTop(iconRect.bottom()-17);
+      warnRect.setWidth(16);
+      warnRect.setHeight(16);
+
+      QIcon warnIcon(":/mirall/resources/warning-16");
+      QPixmap pm = warnIcon.pixmap(16,16, syncEnabled ? QIcon::Normal : QIcon::Disabled );
+      painter->drawPixmap(QPoint(warnRect.left(), warnRect.top()),pm );
+  }
 
   if ((option.state & QStyle::State_Selected)
           && (option.state & QStyle::State_Active)

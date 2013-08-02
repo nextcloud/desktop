@@ -617,6 +617,9 @@ void Folder::slotCSyncFinished()
         qDebug() << "    * owncloud csync thread finished with error";
     } else if (_csyncUnavail) {
         _syncResult.setStatus(SyncResult::Unavailable);
+    } else if( _syncResult.warnCount() > 0 ) {
+        // there have been warnings on the way.
+        _syncResult.setStatus(SyncResult::Problem);
     } else {
         _syncResult.setStatus(SyncResult::Success);
     }
@@ -645,6 +648,14 @@ void Folder::slotTransmissionProgress(const Progress::Info& progress)
     if( newInfo.current_file.startsWith(localPath) ) {
         // remove the local dir.
         newInfo.current_file = newInfo.current_file.right( newInfo.current_file.length() - localPath.length());
+    }
+
+    // remember problems happening to set the correct Sync status in slot slotCSyncFinished.
+    if( newInfo.kind == Progress::StartSync ) {
+        _syncResult.setWarnCount(0);
+    }
+    if( newInfo.kind == Progress::Error ) {
+        _syncResult.setWarnCount( _syncResult.warnCount()+1 );
     }
 
     ProgressDispatcher::instance()->setProgressInfo(alias(), newInfo);

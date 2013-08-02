@@ -214,10 +214,18 @@ void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f )
     if( f->syncEnabled() ) {
         item->setData( theme->syncStateIcon( status ), FolderStatusDelegate::FolderStatusIconRole );
     } else {
-        item->setData( theme->folderDisabledIcon( ), FolderStatusDelegate::FolderStatusIconRole ); // size 48 before
+        item->setData( theme->folderDisabledIcon( ),   FolderStatusDelegate::FolderStatusIconRole ); // size 48 before
     }
     item->setData( theme->statusHeaderText( status ),  FolderStatusDelegate::FolderStatus );
-    item->setData( errors,                              FolderStatusDelegate::FolderErrorMsg );
+    item->setData( errors,                             FolderStatusDelegate::FolderErrorMsg );
+
+    bool ongoing = false;
+    item->setData( QVariant(res.warnCount()), FolderStatusDelegate::WarningCount );
+    if( status == SyncResult::SyncRunning ) {
+        ongoing = true;
+    }
+    item->setData( ongoing, FolderStatusDelegate::SyncRunning);
+
 }
 
 void AccountSettings::slotRemoveCurrentFolder()
@@ -493,6 +501,18 @@ QString AccountSettings::shortenFilename( const QString& folder, const QString& 
     return shortFile;
 }
 
+void AccountSettings::slotProgressProblem(const QString& folder, const Progress::SyncProblem& problem)
+{
+    Q_UNUSED(problem);
+
+    QStandardItem *item = itemForFolder( folder );
+    if( !item ) return;
+
+    int warnCount = qvariant_cast<int>( item->data(FolderStatusDelegate::WarningCount) );
+    warnCount++;
+    item->setData( QVariant(warnCount), FolderStatusDelegate::WarningCount );
+}
+
 void AccountSettings::slotSetProgress(const QString& folder, const Progress::Info &progress )
 {
     // qDebug() << "================================> Progress for folder " << folder << " file " << file << ": "<< p1;
@@ -522,6 +542,7 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
 
     switch( progress.kind ) {
     case Progress::StartSync:
+        item->setData( QVariant(0), FolderStatusDelegate::WarningCount );
         break;
     case Progress::StartDownload:
     case Progress::StartUpload:

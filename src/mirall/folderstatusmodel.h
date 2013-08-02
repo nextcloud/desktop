@@ -48,7 +48,9 @@ class FolderStatusDelegate : public QStyledItemDelegate
                     SyncProgressOverallPercent,
                     SyncProgressOverallString,
                     SyncProgressItemString,
-                    AddProgressSpace
+                    AddProgressSpace,
+                    WarningCount,
+                    SyncRunning
                   };
     void paint( QPainter*, const QStyleOptionViewItem&, const QModelIndex& ) const;
     QSize sizeHint( const QStyleOptionViewItem&, const QModelIndex& ) const;

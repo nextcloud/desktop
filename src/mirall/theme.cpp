@@ -56,6 +56,9 @@ QString Theme::statusHeaderText( SyncResult::Status status ) const
     case SyncResult::Success:
         resultStr = QObject::tr("Sync Success");
         break;
+    case SyncResult::Problem:
+        resultStr = QObject::tr("Sync Success, problems with individual files.");
+        break;
     case SyncResult::Error:
         resultStr = QObject::tr("Sync Error - Click info button for details.");
         break;
