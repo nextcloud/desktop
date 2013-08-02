@@ -135,7 +135,7 @@ static bool _push_to_tmp_first(CSYNC *ctx)
     return false;
 }
 
-static void _notify_progress(CSYNC *ctx, const char *file, enum csync_notify_type_e kind)
+static void _notify_progress(CSYNC *ctx, const char *file, int64_t filesize, enum csync_notify_type_e kind)
 {
   if (ctx == NULL) {
     return;
@@ -145,7 +145,7 @@ static void _notify_progress(CSYNC *ctx, const char *file, enum csync_notify_typ
     progress.kind = kind;
     progress.path = file;
     progress.curr_bytes = 0;
-    progress.file_size  = 0;
+    progress.file_size  = filesize;
     progress.overall_transmission_size = ctx->overall_progress.byte_sum;
     progress.current_overall_bytes     = ctx->overall_progress.byte_current;
     progress.overall_file_count        = ctx->overall_progress.file_count;
@@ -276,7 +276,7 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   /* Increment by one as its started now. */
   ctx->overall_progress.current_file_no++;
-  _notify_progress(ctx, duri, notify_start_kind);
+  _notify_progress(ctx, duri, 0, notify_start_kind);
 
   /* Check if the file is still untouched since the update run. */
   if (do_pre_copy_stat) {
@@ -709,7 +709,7 @@ start_fd_based:
 
   /* Notify the progress */
   ctx->overall_progress.byte_current += st->size;
-  _notify_progress(ctx, duri, notify_end_kind);
+  _notify_progress(ctx, duri, st->size, notify_end_kind);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "PUSHED  file: %s", duri);
 
@@ -1729,7 +1729,7 @@ int csync_init_overall_progress(CSYNC *ctx) {
   csync_set_module_property(ctx, "overall_progress_data", &(ctx->overall_progress));
 
   if (ctx->overall_progress.file_count >0) {
-    _notify_progress(ctx, NULL, CSYNC_NOTIFY_START_SYNC_SEQUENCE);
+    _notify_progress(ctx, NULL, 0, CSYNC_NOTIFY_START_SYNC_SEQUENCE);
   }
 
   return 0;
@@ -1738,7 +1738,7 @@ int csync_init_overall_progress(CSYNC *ctx) {
 void csync_finalize_progress(CSYNC *ctx) {
   if (ctx->overall_progress.file_count >0) {
 
-    _notify_progress(ctx, NULL, CSYNC_NOTIFY_FINISHED_SYNC_SEQUENCE);
+    _notify_progress(ctx, NULL, 0, CSYNC_NOTIFY_FINISHED_SYNC_SEQUENCE);
   }
 
    csync_set_module_property(ctx, "overall_progress_data", NULL);
