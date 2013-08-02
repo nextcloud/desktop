@@ -113,6 +113,7 @@ static char *c_iconv(const char* str, enum iconv_direction dir)
   }
 
   assert(ret != (size_t)-1);
+  (void) ret; // silence Werror=unused-but-set-variable
 
   return out_in;
 }

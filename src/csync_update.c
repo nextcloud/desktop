@@ -424,7 +424,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       ctx->error_code = CSYNC_ERR_PROXY;
       goto error;
     } else {
-      strerror_r(errno, errbuf, sizeof(errbuf));
+      C_STRERROR(errno, errbuf, sizeof(errbuf));
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
           "opendir failed for %s - %s (errno %d)",
           uri, errbuf, errno);

@@ -144,7 +144,7 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
 
     new_stat = c_malloc(sizeof(csync_file_stat_t) + fs->pathlen + 1);
     if (new_stat == NULL) {
-      strerror_r(errno, errbuf, sizeof(errbuf));
+      C_STRERROR(errno, errbuf, sizeof(errbuf));
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
           "file: %s, merge malloc, error: %s",
           fs->path,
@@ -161,7 +161,7 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
         new_stat->error_string = c_strdup(fs->error_string);
 
     if (c_rbtree_insert(tree, new_stat) < 0) {
-      strerror_r(errno, errbuf, sizeof(errbuf));
+      C_STRERROR(errno, errbuf, sizeof(errbuf));
       SAFE_FREE(new_stat);
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
           "file: %s, rb tree insert, error: %s",
@@ -184,12 +184,19 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
   case LOCAL_REPLICA:
       /* If there is a destpath, this is a rename and the target must be used. */
       if( fs->destpath ) {
-          asprintf(&uri, "%s/%s", ctx->local.uri, fs->destpath);
+          if (asprintf(&uri, "%s/%s", ctx->local.uri, fs->destpath) < 0) {
+              rc = -1;
+              C_STRERROR(errno, errbuf, sizeof(errbuf));
+              CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file uri alloc failed: %s",
+                        errbuf);
+              SAFE_FREE(fs->destpath);
+              goto out;
+          }
           SAFE_FREE(fs->destpath);
       } else {
           if (asprintf(&uri, "%s/%s", ctx->local.uri, fs->path) < 0) {
               rc = -1;
-              strerror_r(errno, errbuf, sizeof(errbuf));
+              C_STRERROR(errno, errbuf, sizeof(errbuf));
               CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file uri alloc failed: %s",
                         errbuf);
               goto out;
@@ -199,7 +206,7 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
     case REMOTE_REPLICA:
       if (asprintf(&uri, "%s/%s", ctx->remote.uri, fs->path) < 0) {
           rc = -1;
-          strerror_r(errno, errbuf, sizeof(errbuf));
+          C_STRERROR(errno, errbuf, sizeof(errbuf));
           CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "file uri alloc failed: %s",
                     errbuf);
           goto out;
@@ -212,7 +219,7 @@ static int _merge_file_trees_visitor(void *obj, void *data) {
   /* get file stat of the file on the replica */
   vst = csync_vio_file_stat_new();
   if (csync_vio_stat(ctx, uri, vst) < 0) {
-    strerror_r(errno, errbuf, sizeof(errbuf));
+    C_STRERROR(errno, errbuf, sizeof(errbuf));
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
         "file: %s, updating stat failed, error: %s",
         uri,

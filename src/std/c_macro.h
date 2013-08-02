@@ -54,6 +54,9 @@
 /** Get the size of an array */
 #define ARRAY_SIZE(a) (sizeof(a)/sizeof(a[0]))
 
+/** Macro to make strerror_r work with -Werror=unused-result */
+#define C_STRERROR(errno, buf, size) if(strerror_r(errno, buf, size)) {}
+
 /**
  * }@
  */

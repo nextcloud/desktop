@@ -16,11 +16,12 @@ if (${CMAKE_C_COMPILER_ID} MATCHES "(GNU|Clang)")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wshadow -Wmissing-prototypes -Wdeclaration-after-statement")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wunused -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wformat-security")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wmissing-format-attribute")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror")
 
-    if (CSYNC_ENABLE_WERROR)
+    set(CSYNC_STRICT ON CACHE BOOL "Strict error checking, enabled -Werror and friends")
+    if (CSYNC_STRICT)
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror")
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D__STDC_FORMAT_MACROS=1")
-    endif(CSYNC_ENABLE_WERROR)
+    endif(CSYNC_STRICT)
 
     # with -fPIC
     check_c_compiler_flag("-fPIC" WITH_FPIC)

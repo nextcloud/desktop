@@ -221,7 +221,7 @@ int csync_init(CSYNC *ctx) {
   }
 
   if (csync_exclude_load(ctx, exclude) < 0) {
-    strerror_r(errno, errbuf, sizeof(errbuf));
+    C_STRERROR(errno, errbuf, sizeof(errbuf));
     CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Could not load %s - %s", exclude,
               errbuf);
   }
@@ -235,7 +235,7 @@ int csync_init(CSYNC *ctx) {
   }
 
   if (csync_exclude_load(ctx, exclude) < 0) {
-    strerror_r(errno, errbuf, sizeof(errbuf));
+    C_STRERROR(errno, errbuf, sizeof(errbuf));
     CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Could not load %s - %s", exclude, 
               errbuf);
   }
@@ -721,7 +721,7 @@ static int  _merge_and_write_statedb(CSYNC *ctx) {
     if (ctx->status >= CSYNC_STATUS_DONE) {
       /* merge trees */
       if (csync_merge_file_trees(ctx) < 0) {
-        strerror_r(errno, errbuf, sizeof(errbuf));
+        C_STRERROR(errno, errbuf, sizeof(errbuf));
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to merge trees: %s",
                   errbuf);
         rc = -1;
@@ -735,7 +735,7 @@ static int  _merge_and_write_statedb(CSYNC *ctx) {
               "Writing the statedb of %zu files to disk took %.2f seconds",
               c_rbtree_size(ctx->local.tree), c_secdiff(finish, start));
         } else {
-          strerror_r(errno, errbuf, sizeof(errbuf));
+          C_STRERROR(errno, errbuf, sizeof(errbuf));
           CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to write statedb: %s",
                     errbuf);
           rc = -1;
