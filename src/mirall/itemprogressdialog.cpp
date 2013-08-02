@@ -18,6 +18,7 @@
 #include "mirall/logger.h"
 #include "mirall/utility.h"
 #include "mirall/theme.h"
+#include "mirall/folderman.h"
 
 #include "ui_itemprogressdialog.h"
 
@@ -68,6 +69,12 @@ ItemProgressDialog::ItemProgressDialog(Application*, QWidget *parent) :
 
 void ItemProgressDialog::setupList()
 {
+  // get the folders to set up the top level list.
+  Folder::Map map = FolderMan::instance()->map();
+  foreach( Folder *f, map.values() ) {
+    findFolderItem(f->alias());
+  }
+
   QList<Progress::Info> progressList = ProgressDispatcher::instance()->recentChangedItems(0); // All.
 
   QHash <QString, int> folderHash;

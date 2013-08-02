@@ -641,6 +641,11 @@ void Folder::slotTransmissionProgress(const Progress::Info& progress)
         re.setMinimal(true);
         newInfo.current_file.remove(re);
     }
+    QString localPath = path();
+    if( newInfo.current_file.startsWith(localPath) ) {
+        // remove the local dir.
+        newInfo.current_file = newInfo.current_file.right( newInfo.current_file.length() - localPath.length());
+    }
 
     ProgressDispatcher::instance()->setProgressInfo(alias(), newInfo);
 }

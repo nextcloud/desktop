@@ -290,7 +290,7 @@ void Application::setupActions()
     _actionStatus = new QAction(tr("Unknown status"), this);
     _actionStatus->setEnabled( false );
     _actionSettings = new QAction(tr("Settings..."), this);
-    _actionRecent = new QAction(tr("more..."), this);
+    _actionRecent = new QAction(tr("Details..."), this);
     _actionRecent->setEnabled( true );
 
     QObject::connect(_actionRecent, SIGNAL(triggered(bool)), SLOT(slotItemProgressDialog()));
@@ -327,6 +327,7 @@ void Application::setupContextMenu()
         _contextMenu->clear();
         _recentActionsMenu->clear();
         _recentActionsMenu->addAction(tr("None."));
+        _recentActionsMenu->addAction(_actionRecent);
     } else {
         _contextMenu = new QMenu();
         _recentActionsMenu = _contextMenu->addMenu(tr("Recent Changes..."));
@@ -653,6 +654,7 @@ void Application::slotItemProgressDialog()
     if (_progressDialog.isNull()) {
         _progressDialog = new ItemProgressDialog(this);
         _progressDialog->setAttribute( Qt::WA_DeleteOnClose, true );
+        _progressDialog->setupList();
         _progressDialog->open();
     }
     Utility::raiseDialog(_progressDialog);
