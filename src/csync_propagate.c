@@ -1101,6 +1101,7 @@ static int _csync_remove_file(CSYNC *ctx, csync_file_stat_t *st) {
       break;
   }
 
+  _notify_progress(ctx, uri, st->size, CSYNC_NOTIFY_START_DELETE);
   if (csync_vio_unlink(ctx, uri) < 0) {
     switch (errno) {
       case ENOMEM:
@@ -1120,6 +1121,7 @@ static int _csync_remove_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   /* set instruction for the statedb merger */
   st->instruction = CSYNC_INSTRUCTION_DELETED;
+  _notify_progress(ctx, uri, st->size, CSYNC_NOTIFY_END_DELETE);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "REMOVED file: %s", uri);
 
