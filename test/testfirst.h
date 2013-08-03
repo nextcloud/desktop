@@ -4,18 +4,18 @@
    any purpose.
 */
 
-#ifndef MIRALL_TESTDANIMOSTINKT_H
-#define MIRALL_TESTDANIMOSTINKT_H
+#ifndef MIRALL_TESTFIRST_H
+#define MIRALL_TESTFIRST_H
 
 #include <QtTest>
 
 
-class TestDanimoStinkt : public QObject
+class TestFirst : public QObject
 {
     Q_OBJECT
 
 private slots:
-    void testBadSmell()
+    void testTheFirstThing()
     {
         QVERIFY( true );
     }
