@@ -238,7 +238,7 @@ void ItemProgressDialog::slotProgressInfo( const QString& folder, const Progress
     }
 
     // Ingore other events than finishing an individual up- or download.
-    if( !(progress.kind == Progress::EndDownload || progress.kind == Progress::EndUpload)) {
+    if( !(progress.kind == Progress::EndDownload || progress.kind == Progress::EndUpload || progress.kind == Progress::EndDelete)) {
         return;
     }
 

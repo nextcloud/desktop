@@ -40,6 +40,8 @@ public:
         EndDownload,
         EndUpload,
         EndSync,
+        StartDelete,
+        EndDelete,
         Error
     } Kind;
 

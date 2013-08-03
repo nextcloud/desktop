@@ -57,6 +57,12 @@ QString Progress::asString( Kind kind )
     case EndSync:
         re = QObject::tr("finished");
         break;
+    case StartDelete:
+        re = QObject::tr("start delete");
+        break;
+    case EndDelete:
+        re = QObject::tr("deleted");
+        break;
     default:
         Q_ASSERT(false);
     }
