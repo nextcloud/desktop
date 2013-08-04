@@ -126,7 +126,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="140"/>
         <source>Storage Usage</source>
-        <translation type="unfinished"/>
+        <translation>Uso de Almacenamiento</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="159"/>
@@ -206,22 +206,22 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="549"/>
         <source>Start</source>
-        <translation type="unfinished"/>
+        <translation>Iniciar</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="558"/>
         <source>Currently</source>
-        <translation type="unfinished"/>
+        <translation>Actualmente</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="564"/>
         <source>Completely</source>
-        <translation type="unfinished"/>
+        <translation>Completamente</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="590"/>
         <source>%1 %2 %3 (%4 of %5)</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2 %3 (%4 de %5)</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="593"/>
@@ -231,7 +231,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="600"/>
         <source>%1 of %2, file %3 of %4</source>
-        <translation type="unfinished"/>
+        <translation>%1 de %2, archivo %3 de %4</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="641"/>
@@ -274,7 +274,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="293"/>
         <source>Details...</source>
-        <translation type="unfinished"/>
+        <translation>Detalles...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="298"/>
@@ -294,7 +294,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="333"/>
         <source>Recent Changes...</source>
-        <translation type="unfinished"/>
+        <translation>Cambios Recientes...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="350"/>
@@ -339,7 +339,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="529"/>
         <source>%1 (%2, %3)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2, %3)</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="544"/>
@@ -795,7 +795,7 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="91"/>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="248"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>Archivo</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="200"/>
@@ -986,12 +986,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/itemprogressdialog.ui" line="60"/>
         <source>3</source>
-        <translation type="unfinished"/>
+        <translation>3</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.ui" line="65"/>
         <source>4</source>
-        <translation type="unfinished"/>
+        <translation>4</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.ui" line="73"/>
@@ -1007,7 +1007,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="53"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>Archivo</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="54"/>
@@ -1022,7 +1022,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="63"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>Copiar</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="66"/>
@@ -1139,7 +1139,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="100"/>
         <source>:</source>
-        <translation type="unfinished"/>
+        <translation>:</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="134"/>
@@ -1852,14 +1852,14 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/mirall/progressdispatcher.cpp" line="43"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="49"/>
         <source>downloading</source>
-        <translation type="unfinished"/>
+        <translation>descargando</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="34"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="46"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="52"/>
         <source>uploading</source>
-        <translation type="unfinished"/>
+        <translation>subiendo</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="37"/>
@@ -1879,7 +1879,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="58"/>
         <source>finished</source>
-        <translation type="unfinished"/>
+        <translation>finalizado</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="48"/>

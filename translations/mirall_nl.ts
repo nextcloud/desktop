@@ -70,22 +70,22 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="20"/>
         <source>Account Maintenance</source>
-        <translation type="unfinished"/>
+        <translation>Accountonderhoud</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="29"/>
         <source>Edit Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Wijzig genegeerde bestanden</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="39"/>
         <source>Remove Account</source>
-        <translation type="unfinished"/>
+        <translation>Verwijder account</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="46"/>
         <source>Modify Account</source>
-        <translation type="unfinished"/>
+        <translation>Aanpassen account</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="56"/>
@@ -126,7 +126,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="140"/>
         <source>Storage Usage</source>
-        <translation type="unfinished"/>
+        <translation>Opslaggebruik</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="159"/>
@@ -264,12 +264,12 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="290"/>
         <source>Unknown status</source>
-        <translation type="unfinished"/>
+        <translation>Onbekende status</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="292"/>
         <source>Settings...</source>
-        <translation type="unfinished"/>
+        <translation>Instellingen...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="293"/>
@@ -289,12 +289,12 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="329"/>
         <source>None.</source>
-        <translation type="unfinished"/>
+        <translation>Geen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="333"/>
         <source>Recent Changes...</source>
-        <translation type="unfinished"/>
+        <translation>Recente wijzigingen...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="350"/>
@@ -795,7 +795,7 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="91"/>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="248"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>Bestand</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="200"/>
@@ -869,7 +869,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="183"/>
         <source>Enter the name of the new folder:</source>
-        <translation type="unfinished"/>
+        <translation>Voer de naam in van de nieuwe map:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="201"/>
@@ -912,7 +912,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="40"/>
         <source>Use Monochrome Icons</source>
-        <translation type="unfinished"/>
+        <translation>Gebruik monochrome iconen</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="50"/>
@@ -1007,7 +1007,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="53"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>Bestand</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="54"/>
@@ -1963,12 +1963,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="57"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using OCsync %5 and Qt %6.&lt;/small&gt;&lt;p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Gecompileerd van Git revisie &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; op %3, %4 m.b.v. OCsync %5 en Qt %6.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="65"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;written by Klaas Freitag, Daniel Molkentin, ownCloud Inc., based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;%7</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versie %2. Bezoek voor meer informatie &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;geschreven door Klaas Freitag, Daniel Molkentin, ownCloud Inc., gebaseerd op Mirall van Duncan Mac-Vicar.&lt;/small&gt;&lt;/p&gt;%7</translation>
     </message>
 </context>
 </TS>

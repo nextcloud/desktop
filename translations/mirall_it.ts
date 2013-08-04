@@ -274,7 +274,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="293"/>
         <source>Details...</source>
-        <translation type="unfinished"/>
+        <translation>Dettagli...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="298"/>
@@ -324,7 +324,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="520"/>
         <source>No items synced recently</source>
-        <translation type="unfinished"/>
+        <translation>Nessun elemento sincronizzato di recente</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="523"/>
@@ -872,7 +872,7 @@ Sei sicuro di voler eseguire questa operazione?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="183"/>
         <source>Enter the name of the new folder:</source>
-        <translation type="unfinished"/>
+        <translation>Digita il nome della nuova cartella:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="201"/>
@@ -971,7 +971,7 @@ Sei sicuro di voler eseguire questa operazione?</translation>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="121"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
-        <translation type="unfinished"/>
+        <translation>Questa voce è fornita dal sistema in &apos;%1&apos; e non può essere modificata in questa vista.</translation>
     </message>
 </context>
 <context>
@@ -984,7 +984,7 @@ Sei sicuro di voler eseguire questa operazione?</translation>
     <message>
         <location filename="../src/mirall/itemprogressdialog.ui" line="27"/>
         <source>Detailed Sync Protocol</source>
-        <translation type="unfinished"/>
+        <translation>Protocollo di sincronizzazione dettagliato</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.ui" line="60"/>
@@ -1005,7 +1005,7 @@ Sei sicuro di voler eseguire questa operazione?</translation>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="52"/>
         <source>Folder/Time</source>
-        <translation type="unfinished"/>
+        <translation>Cartella/Ora</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="53"/>
@@ -1015,7 +1015,7 @@ Sei sicuro di voler eseguire questa operazione?</translation>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="54"/>
         <source>Action</source>
-        <translation type="unfinished"/>
+        <translation>Azione</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="55"/>
@@ -1030,7 +1030,7 @@ Sei sicuro di voler eseguire questa operazione?</translation>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="66"/>
         <source>Sync Protocol</source>
-        <translation type="unfinished"/>
+        <translation>Protocollo di sincronizzazione</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="130"/>
@@ -1040,12 +1040,12 @@ Sei sicuro di voler eseguire questa operazione?</translation>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="130"/>
         <source>The sync protocol has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Il protocollo di sincronizzazione è stato copiato negli appunti.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="214"/>
         <source>Problem: %1</source>
-        <translation type="unfinished"/>
+        <translation>Problema: %1</translation>
     </message>
 </context>
 <context>
@@ -1132,7 +1132,7 @@ Sei sicuro di voler eseguire questa operazione?</translation>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="52"/>
         <source>Specify proxy manually as</source>
-        <translation type="unfinished"/>
+        <translation>Specifica manualmente il proxy come</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="80"/>
@@ -1855,14 +1855,14 @@ Sei sicuro di voler eseguire questa operazione?</translation>
         <location filename="../src/mirall/progressdispatcher.cpp" line="43"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="49"/>
         <source>downloading</source>
-        <translation type="unfinished"/>
+        <translation>scaricamento in corso</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="34"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="46"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="52"/>
         <source>uploading</source>
-        <translation type="unfinished"/>
+        <translation>caricamento in corso</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="37"/>
@@ -1877,12 +1877,12 @@ Sei sicuro di voler eseguire questa operazione?</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="55"/>
         <source>starting</source>
-        <translation type="unfinished"/>
+        <translation>avvio in corso</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="58"/>
         <source>finished</source>
-        <translation type="unfinished"/>
+        <translation>completato</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="48"/>
@@ -1908,7 +1908,7 @@ Sei sicuro di voler eseguire questa operazione?</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="60"/>
         <source>Sync Success, problems with individual files.</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizzazione avvenuta, problemi con singoli file.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>
@@ -1958,7 +1958,7 @@ Sei sicuro di voler eseguire questa operazione?</translation>
         <location filename="../src/mirall/owncloudtheme.cpp" line="99"/>
         <source>If you don&apos;t have an ownCloud server yet, see &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt; for more info.</source>
         <comment>Top text in setup wizard. Keep short!</comment>
-        <translation>Se non hai ancora un server ownCloud, visita &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt; per maggiori informazioni.</translation>
+        <translation>Se non hai ancora un server ownCloud, visita &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt; per ulteriori informazioni.</translation>
     </message>
 </context>
 <context>

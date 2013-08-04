@@ -274,7 +274,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="293"/>
         <source>Details...</source>
-        <translation type="unfinished"/>
+        <translation>Detalles...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="298"/>
@@ -1908,7 +1908,7 @@ Confirma que quere realizar esta operación?</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="60"/>
         <source>Sync Success, problems with individual files.</source>
-        <translation type="unfinished"/>
+        <translation>A sincronización foi correcta, houbo algún problema con algún ficheiro individual.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>

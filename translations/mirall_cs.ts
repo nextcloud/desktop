@@ -274,7 +274,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="293"/>
         <source>Details...</source>
-        <translation type="unfinished"/>
+        <translation>Podrobnosti...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="298"/>
@@ -867,12 +867,12 @@ Opravdu chcete provést tuto akci?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="182"/>
         <source>Add Remote Folder</source>
-        <translation type="unfinished"/>
+        <translation>Přidat vzdálený adresář</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="183"/>
         <source>Enter the name of the new folder:</source>
-        <translation type="unfinished"/>
+        <translation>Zadejte název nového adresáře</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="201"/>
@@ -984,17 +984,17 @@ Opravdu chcete provést tuto akci?</translation>
     <message>
         <location filename="../src/mirall/itemprogressdialog.ui" line="27"/>
         <source>Detailed Sync Protocol</source>
-        <translation type="unfinished"/>
+        <translation>Detailní protokol synchronizace</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.ui" line="60"/>
         <source>3</source>
-        <translation type="unfinished"/>
+        <translation>3</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.ui" line="65"/>
         <source>4</source>
-        <translation type="unfinished"/>
+        <translation>4</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.ui" line="73"/>
@@ -1005,17 +1005,17 @@ Opravdu chcete provést tuto akci?</translation>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="52"/>
         <source>Folder/Time</source>
-        <translation type="unfinished"/>
+        <translation>Adresář/čas</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="53"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>Soubor</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="54"/>
         <source>Action</source>
-        <translation type="unfinished"/>
+        <translation>Akce</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="55"/>
@@ -1025,27 +1025,27 @@ Opravdu chcete provést tuto akci?</translation>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="63"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>Kopie</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="66"/>
         <source>Sync Protocol</source>
-        <translation type="unfinished"/>
+        <translation>Protokol synchronizace</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="130"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Zkopírováno do schránky</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="130"/>
         <source>The sync protocol has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Protokol synchronizace byl zkopírován do schránky</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="214"/>
         <source>Problem: %1</source>
-        <translation type="unfinished"/>
+        <translation>Problém: %1</translation>
     </message>
 </context>
 <context>
@@ -1908,7 +1908,7 @@ Opravdu chcete provést tuto akci?</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="60"/>
         <source>Sync Success, problems with individual files.</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizce úspěšná, problémy s jednotlivýi soubory.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>
