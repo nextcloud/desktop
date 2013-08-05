@@ -42,13 +42,20 @@ public:
 
     QNetworkCookie cookie() const;
 
+public Q_SLOTS:
+    void invalidateAndFetch();
+
 private Q_SLOTS:
     void onShibbolethCookieReceived(const QNetworkCookie& cookie);
+    void onFetched();
 
 Q_SIGNALS:
     void newCookie(const QNetworkCookie& cookie);
+    void invalidatedAndFetched(const QByteArray& cookieData);
 
 private:
+    QByteArray prepareCookieData() const;
+
     QNetworkCookie _shibCookie;
     bool _ready;
     ShibbolethWebView* _browser;

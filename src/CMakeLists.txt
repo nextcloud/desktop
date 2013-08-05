@@ -89,6 +89,7 @@ set(libsync_SRCS
     creds/shibboleth/shibbolethaccessmanager.cpp
     creds/shibboleth/shibbolethcookiejar.cpp
     creds/shibboleth/shibbolethwebview.cpp
+    creds/shibboleth/shibbolethrefresher.cpp
 )
 
 set(libsync_HEADERS
@@ -113,6 +114,7 @@ set(libsync_HEADERS
     creds/shibboleth/shibbolethaccessmanager.h
     creds/shibboleth/shibbolethcookiejar.h
     creds/shibboleth/shibbolethwebview.h
+    creds/shibboleth/shibbolethrefresher.h
 )
 
 IF( INOTIFY_FOUND )

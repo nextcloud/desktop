@@ -15,11 +15,51 @@
 #include "creds/shibbolethcredentials.h"
 #include "creds/shibboleth/shibbolethaccessmanager.h"
 #include "creds/shibboleth/shibbolethwebview.h"
+#include "creds/shibboleth/shibbolethrefresher.h"
 #include "mirall/owncloudinfo.h"
 #include "mirall/mirallconfigfile.h"
+#include "mirall/csyncthread.h"
 
 namespace Mirall
 {
+
+namespace
+{
+
+int shibboleth_redirect_callback(CSYNC* csync_ctx,
+                                 const char* uri)
+{
+    if (!csync_ctx || !uri) {
+        return 1;
+    }
+
+    const QString qurl(QString::fromLatin1(uri));
+    QRegExp shibbolethyWords ("SAML|wayf");
+
+    shibbolethyWords.setCaseSensitivity (Qt::CaseInsensitive);
+    if (!qurl.contains(shibbolethyWords)) {
+        return 1;
+    }
+
+    QMutex mutex;
+    QMutexLocker locker(&mutex);
+    MirallConfigFile cfg;
+    ShibbolethCredentials* creds = dynamic_cast< ShibbolethCredentials* > (cfg.getCredentials());
+
+    if (!creds) {
+      qDebug() << "Not a Shibboleth creds instance!";
+      return 1;
+    }
+
+    ShibbolethRefresher refresher(creds, csync_ctx);
+
+    // blocks
+    refresher.refresh();
+
+    return 0;
+}
+
+} // ns
 
 ShibbolethCredentials::ShibbolethCredentials()
     : _shibCookie(),
@@ -33,29 +73,39 @@ ShibbolethCredentials::ShibbolethCredentials(const QNetworkCookie& cookie)
       _browser(0)
 {}
 
-void ShibbolethCredentials::syncContextPreInit (CSYNC*)
+void ShibbolethCredentials::syncContextPreInit(CSYNC*)
 {}
+
+QByteArray ShibbolethCredentials::prepareCookieData() const
+{
+    QString cookiesAsString;
+    // TODO: This should not be a part of this method, but we don't
+    // have any way to get "session_key" module property from
+    // csync. Had we have it, then we could just append shibboleth
+    // cookies to the "session_key" value and set it in csync module.
+    QList<QNetworkCookie> cookies(ownCloudInfo::instance()->getLastAuthCookies());
+
+    cookies << _shibCookie;
+    // Stuff cookies inside csync, then we can avoid the intermediate HTTP 401 reply
+    // when https://github.com/owncloud/core/pull/4042 is merged.
+    foreach(QNetworkCookie c, cookies) {
+        cookiesAsString += c.name();
+        cookiesAsString += '=';
+        cookiesAsString += c.value();
+        cookiesAsString += "; ";
+    }
+
+    return cookiesAsString.toLatin1();
+}
 
 void ShibbolethCredentials::syncContextPreStart (CSYNC* ctx)
 {
-  QString cookiesAsString;
-  // TODO: This should not be a part of this method, but we don't
-  // have any way to get "session_key" module property from
-  // csync. Had we have it, then we could just append shibboleth
-  // cookies to the "session_key" value and set it in csync module.
-  QList<QNetworkCookie> cookies(ownCloudInfo::instance()->getLastAuthCookies());
+    typedef int (*csync_owncloud_redirect_callback_t)(CSYNC* ctx, const char* uri);
 
-  cookies << _shibCookie;
-  // Stuff cookies inside csync, then we can avoid the intermediate HTTP 401 reply
-  // when https://github.com/owncloud/core/pull/4042 is merged.
-  foreach(QNetworkCookie c, cookies) {
-    cookiesAsString += c.name();
-    cookiesAsString += '=';
-    cookiesAsString += c.value();
-    cookiesAsString += "; ";
-  }
+    csync_owncloud_redirect_callback_t cb = shibboleth_redirect_callback;
 
-  csync_set_module_property(ctx, "session_key", cookiesAsString.toLatin1().data());
+    csync_set_module_property(ctx, "session_key", prepareCookieData().data());
+    csync_set_module_property(ctx, "redirect_callback", &cb);
 }
 
 bool ShibbolethCredentials::changed(AbstractCredentials* credentials) const
@@ -123,6 +173,22 @@ void ShibbolethCredentials::onShibbolethCookieReceived(const QNetworkCookie& coo
     _shibCookie = cookie;
     Q_EMIT newCookie(_shibCookie);
     Q_EMIT fetched();
+}
+
+void ShibbolethCredentials::invalidateAndFetch()
+{
+    _ready = false;
+    connect (this, SIGNAL(fetched()),
+             this, SLOT(onFetched()));
+    fetch();
+}
+
+void ShibbolethCredentials::onFetched()
+{
+    disconnect (this, SIGNAL(fetched()),
+                this, SLOT(onFetched()));
+
+    Q_EMIT invalidatedAndFetched(prepareCookieData());
 }
 
 } // ns Mirall
