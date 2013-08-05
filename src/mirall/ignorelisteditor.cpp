@@ -32,9 +32,9 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->descriptionLabel->setText(tr("Files or Directories matching a pattern will not be synchronized.\n\n"
-                                     "Checked items mark files that will be removed if a folder "
-                                     "is otherwise empty."));
+    ui->descriptionLabel->setText(tr("Files or directories matching a pattern will not be synchronized.\n\n"
+                                     "Checked items will also be deleted if they prevent a directory from "
+                                     "being removed. This is useful for meta data."));
 
     MirallConfigFile cfgFile;
     readIgnoreFile(cfgFile.excludeFile(MirallConfigFile::SystemScope), true);
