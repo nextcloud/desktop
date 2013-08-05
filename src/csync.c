@@ -555,13 +555,13 @@ int csync_propagate(CSYNC *ctx) {
       "Propagation for remote replica took %.2f seconds visiting %zu files.",
       c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
 
+  csync_finalize_progress(ctx);
+
   if (rc < 0) {
     if( ctx->error_code == CSYNC_ERR_NONE )
       ctx->error_code = csync_errno_to_csync_error( CSYNC_ERR_PROPAGATE);
     return -1;
   }
-
-  csync_finalize_progress(ctx);
 
   ctx->status |= CSYNC_STATUS_PROPAGATE;
 
