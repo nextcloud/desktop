@@ -60,7 +60,6 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
     : QObject(parent)
       , _path(path)
       , _secondPath(secondPath)
-      , _pollTimer(new QTimer(this))
       , _alias(alias)
       , _enabled(true)
       , _thread(0)
@@ -70,17 +69,8 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
       , _csync_ctx(0)
 {
     qsrand(QTime::currentTime().msec());
-    MirallConfigFile cfgFile;
 
-    _pollTimer->setSingleShot(true);
-    int polltime = cfgFile.remotePollInterval()- 2000 + (int)( 4000.0*qrand()/(RAND_MAX+1.0));
-    qDebug() << "setting remote poll timer interval to" << polltime << "msec for folder " << alias;
-    _pollTimer->setInterval( polltime );
-
-    QObject::connect(_pollTimer, SIGNAL(timeout()), this, SLOT(slotPollTimerTimeout()));
-    _pollTimer->start();
-
-    _watcher = new Mirall::FolderWatcher(path, this);
+    _watcher = new FolderWatcher(path, this);
 
     MirallConfigFile cfg;
     _watcher->addIgnoreListFile( cfg.excludeFile(MirallConfigFile::SystemScope) );
@@ -88,10 +78,6 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
 
     QObject::connect(_watcher, SIGNAL(folderChanged(const QStringList &)),
                      SLOT(slotChanged(const QStringList &)));
-    QObject::connect(this, SIGNAL(syncStarted()),
-                     SLOT(slotSyncStarted()));
-    QObject::connect(this, SIGNAL(syncFinished(const SyncResult &)),
-                     SLOT(slotSyncFinished(const SyncResult &)));
 
     _syncResult.setStatus( SyncResult::NotYetStarted );
 
@@ -218,9 +204,6 @@ void Folder::setSyncEnabled( bool doit )
 {
   _enabled = doit;
   _watcher->setEventsEnabled( doit );
-  if( doit && ! _pollTimer->isActive() ) {
-      _pollTimer->start();
-  }
 
   qDebug() << "setSyncEnabled - ############################ " << doit;
   if( doit ) {
@@ -233,19 +216,9 @@ void Folder::setSyncEnabled( bool doit )
   }
 }
 
-int Folder::pollInterval() const
-{
-    return _pollTimer->interval();
-}
-
 void Folder::setSyncState(SyncResult::Status state)
 {
     _syncResult.setStatus(state);
-}
-
-void Folder::setPollInterval(int milliseconds)
-{
-    _pollTimer->setInterval( milliseconds );
 }
 
 SyncResult Folder::syncResult() const
@@ -259,11 +232,6 @@ void Folder::evaluateSync(const QStringList &pathList)
     qDebug() << "*" << alias() << "sync skipped, disabled!";
     return;
   }
-
-  // stop the poll timer here. Its started again in the slot of
-  // sync finished.
-  qDebug() << "* " << alias() << "Poll timer disabled";
-  _pollTimer->stop();
 
   _syncResult.setStatus( SyncResult::NotYetStarted );
   emit scheduleToSync( alias() );
@@ -295,15 +263,6 @@ void Folder::slotSyncFinished(const SyncResult &result)
 
     qDebug() << "OO folder slotSyncFinished: result: " << int(result.status());
     emit syncStateChange();
-
-    // reenable the poll timer if folder is sync enabled
-    if( syncEnabled() ) {
-        qDebug() << "* " << alias() << "Poll timer enabled with " << _pollTimer->interval() << "milliseconds";
-        _pollTimer->start();
-    } else {
-        qDebug() << "* Not enabling poll timer for " << alias();
-        _pollTimer->stop();
-    }
 }
 
 void Folder::slotLocalPathChanged( const QString& dir )

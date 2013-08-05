@@ -116,6 +116,7 @@ public:
 
     qint64 lastQuotaUsedBytes() const { return _lastQuotaUsedBytes; }
     qint64 lastQuotaTotalBytes() const  { return _lastQuotaTotalBytes; }
+    QString lastEtag() const { return _lastEtag; }
 
     QList<QNetworkCookie> getLastAuthCookies();
 
@@ -169,6 +170,7 @@ private:
     int                            _redirectCount;
     qint64                         _lastQuotaUsedBytes;
     qint64                         _lastQuotaTotalBytes;
+    QString                        _lastEtag;
 };
 
 };

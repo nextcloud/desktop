@@ -170,6 +170,7 @@ QNetworkReply* ownCloudInfo::getQuotaRequest( const QString& dir )
                    "  <d:prop>\n"
                    "    <d:quota-available-bytes/>\n"
                    "    <d:quota-used-bytes/>\n"
+                   "    <d:getetag/>"
                    "  </d:prop>\n"
                    "</d:propfind>\n");
     QBuffer *buf = new QBuffer;
@@ -245,6 +246,7 @@ void ownCloudInfo::slotGetQuotaFinished()
 
         qint64 quotaUsedBytes = 0;
         qint64 quotaAvailableBytes = 0;
+        QString etag;
 
         while (!reader.atEnd()) {
             QXmlStreamReader::TokenType type = reader.readNext();
@@ -257,6 +259,8 @@ void ownCloudInfo::slotGetQuotaFinished()
                 } else if (name == QLatin1String("quota-available-bytes")) {
                     quotaAvailableBytes = reader.readElementText().toLongLong(&ok);
                     if (!ok) quotaAvailableBytes = 0;
+                } else if (name == QLatin1String("getetag")) {
+                    etag = reader.readElementText();
                 }
             }
         }
@@ -266,6 +270,7 @@ void ownCloudInfo::slotGetQuotaFinished()
         _lastQuotaTotalBytes = total;
         _lastQuotaUsedBytes = quotaUsedBytes;
         emit quotaUpdated(total, quotaUsedBytes);
+        _lastEtag = etag;
     } else {
         _lastQuotaTotalBytes = 0;
         _lastQuotaUsedBytes = 0;

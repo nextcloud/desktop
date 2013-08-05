@@ -37,7 +37,8 @@ FolderMan* FolderMan::_instance = 0;
 
 FolderMan::FolderMan(QObject *parent) :
     QObject(parent),
-    _syncEnabled( true )
+    _syncEnabled( true ),
+    _pollTimer(new QTimer(this))
 {
     // if QDir::mkpath would not be so stupid, I would not need to have this
     // duplication of folderConfigPath() here
@@ -49,6 +50,13 @@ FolderMan::FolderMan(QObject *parent) :
     _folderChangeSignalMapper = new QSignalMapper(this);
     connect(_folderChangeSignalMapper, SIGNAL(mapped(const QString &)),
             this, SIGNAL(folderSyncStateChange(const QString &)));
+
+    _pollTimer->setSingleShot(true);
+    int polltime = cfg.remotePollInterval();
+    qDebug() << "setting remote poll timer interval to" << polltime << "msec";
+    _pollTimer->setInterval( polltime );
+    QObject::connect(_pollTimer, SIGNAL(timeout()), this, SLOT(slotScheduleAllFolders()));
+    _pollTimer->start();
 }
 
 FolderMan *FolderMan::instance()
@@ -296,7 +304,7 @@ void FolderMan::terminateSyncProcess( const QString& alias )
             f->slotTerminateSync();
 
             if(_currentSyncFolder == folderAlias )
-                _currentSyncFolder = QString::null;
+                _currentSyncFolder.clear();
         }
     }
 }
@@ -325,7 +333,9 @@ SyncResult FolderMan::syncResult( Folder *f )
 void FolderMan::slotScheduleAllFolders()
 {
     foreach( Folder *f, _folderMap.values() ) {
-        slotScheduleSync( f->alias() );
+        if (f->syncEnabled()) {
+            slotScheduleSync( f->alias() );
+        }
     }
 }
 
@@ -344,13 +354,10 @@ void FolderMan::slotScheduleSync( const QString& alias )
     }
 
     if( ! _scheduleQueue.contains(alias )) {
-        _scheduleQueue.append(alias);
+        _scheduleQueue.enqueue(alias);
     } else {
         qDebug() << " II> Sync for folder " << alias << " already scheduled, do not enqueue!";
     }
-
-    slotScheduleFolderSync();
-
 }
 
 void FolderMan::setSyncEnabled( bool enabled )
@@ -377,12 +384,14 @@ void FolderMan::slotScheduleFolderSync()
 
     qDebug() << "XX slotScheduleFolderSync: folderQueue size: " << _scheduleQueue.count();
     if( ! _scheduleQueue.isEmpty() ) {
-        const QString alias = _scheduleQueue.takeFirst();
+        const QString alias = _scheduleQueue.dequeue();
         if( _folderMap.contains( alias ) ) {
             ownCloudInfo::instance()->getQuotaRequest("/");
             Folder *f = _folderMap[alias];
             _currentSyncFolder = alias;
-            f->startSync( QStringList() );
+            if (f->syncEnabled()) {
+                f->startSync( QStringList() );
+            }
         }
     }
 }
@@ -548,7 +557,7 @@ SyncResult FolderMan::accountStatus(const QList<Folder*> &folders)
     return overallResult;
 }
 
-QString FolderMan::statusToString( SyncResult syncStatus ) const
+QString FolderMan::statusToString( SyncResult syncStatus, bool enabled ) const
 {
     QString folderMessage;
     switch( syncStatus.status() ) {
@@ -578,11 +587,10 @@ QString FolderMan::statusToString( SyncResult syncStatus ) const
         break;
     // no default case on purpose, check compiler warnings
     }
-// FIXME!
-//    if( !folder->syncEnabled() ) {
-//        // sync is disabled.
-//        folderMessage = tr( "%1 (Sync is paused)" ).arg(folderMessage);
-//    }
+    if( !enabled ) {
+        // sync is disabled.
+        folderMessage = tr( "%1 (Sync is paused)" ).arg(folderMessage);
+    }
     return folderMessage;
 }
 

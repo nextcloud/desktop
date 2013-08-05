@@ -25,15 +25,13 @@
 #include <QHash>
 #include <QNetworkAccessManager>
 #include <QNetworkProxy>
-#include <QNetworkProxyFactory>
 #include <QObject>
 #include <QStringList>
-#include <QThread>
-#include <QTimer>
 
 #include <QDebug>
 
 class QFileSystemWatcher;
+class QThread;
 
 namespace Mirall {
 
@@ -135,8 +133,6 @@ public:
       */
      virtual void wipe();
 
-     QTimer   *_pollTimer;
-
 signals:
     void syncStateChange();
     void syncStarted();
@@ -155,12 +151,6 @@ public slots:
        * terminate the current sync run
        */
      void slotTerminateSync();
-
-     /**
-      * Sets minimum amounts of milliseconds that will separate
-      * poll intervals
-      */
-     void setPollInterval( int );
 
      void slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool*);
 
@@ -196,11 +186,6 @@ private slots:
 protected:
     bool init();
 
-    /**
-     * The minimum amounts of seconds to wait before
-     * doing a full sync to see if the remote changed
-     */
-    int pollInterval() const;
     void setSyncState(SyncResult::Status state);
 
     void setIgnoredFiles();

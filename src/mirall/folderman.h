@@ -25,6 +25,7 @@
 #include "mirall/syncfileitem.h"
 
 class QSignalMapper;
+class QTimer;
 
 class SyncResult;
 
@@ -78,7 +79,7 @@ public:
     /** Creates a new and empty local directory. */
     bool startFromScratch( const QString& );
 
-    QString statusToString( SyncResult ) const;
+    QString statusToString( SyncResult, bool enabled ) const;
 
     static SyncResult accountStatus( const QList<Folder*> &folders );
 
@@ -131,11 +132,12 @@ private:
     void removeFolder( const QString& );
 
     Folder::Map    _folderMap;
+    QTimer        *_pollTimer;
     QString        _folderConfigPath;
     QSignalMapper *_folderChangeSignalMapper;
     QString        _currentSyncFolder;
-    QStringList    _scheduleQueue;
     bool           _syncEnabled;
+    QQueue<QString> _scheduleQueue;
 
     explicit FolderMan(QObject *parent = 0);
     static FolderMan *_instance;

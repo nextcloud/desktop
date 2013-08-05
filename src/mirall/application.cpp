@@ -760,7 +760,7 @@ void Application::computeOverallSyncStatus()
         QStringList allStatusStrings;
         foreach(Folder* folder, map.values()) {
             qDebug() << "Folder in overallStatus Message: " << folder << " with name " << folder->alias();
-            QString folderMessage = folderMan->statusToString(folder->syncResult().status());
+            QString folderMessage = folderMan->statusToString(folder->syncResult().status(), folder->syncEnabled());
             allStatusStrings += tr("Folder %1: %2").arg(folder->alias(), folderMessage);
         }
 
