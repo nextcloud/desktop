@@ -226,7 +226,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="593"/>
         <source>Completely finished.</source>
-        <translation type="unfinished"/>
+        <translation>Terminata completamente.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="600"/>
@@ -236,7 +236,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="641"/>
         <source>You are using %1 of your available %2 storage.</source>
-        <translation type="unfinished"/>
+        <translation>Stai utilizzando %1 dell&apos;archiviazione disponibile di %2.</translation>
     </message>
 </context>
 <context>
@@ -249,7 +249,7 @@
     <message numerus="yes">
         <location filename="../src/mirall/application.cpp" line="216"/>
         <source>Sync started for %n configured sync folder(s).</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Sincronizzazione avviata per %n cartella configurata.</numerusform><numerusform>Sincronizzazione avviata per %n cartelle configurate.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="286"/>
@@ -960,13 +960,13 @@ Sei sicuro di voler eseguire questa operazione?</translation>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="97"/>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="109"/>
         <source>Add Ignore Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Aggiungi modello Ignora</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="97"/>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="110"/>
         <source>Add a new ignore pattern:</source>
-        <translation type="unfinished"/>
+        <translation>Aggiungi un nuovo modello di esclusione:</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="121"/>
@@ -1883,6 +1883,16 @@ Sei sicuro di voler eseguire questa operazione?</translation>
         <location filename="../src/mirall/progressdispatcher.cpp" line="58"/>
         <source>finished</source>
         <translation>completato</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="61"/>
+        <source>start delete</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="64"/>
+        <source>deleted</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="48"/>

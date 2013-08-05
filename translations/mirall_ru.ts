@@ -116,7 +116,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="108"/>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>Сброс</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="128"/>
@@ -1879,6 +1879,16 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="58"/>
         <source>finished</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="61"/>
+        <source>start delete</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="64"/>
+        <source>deleted</source>
         <translation type="unfinished"/>
     </message>
     <message>

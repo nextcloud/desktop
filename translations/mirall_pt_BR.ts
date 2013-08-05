@@ -1885,6 +1885,16 @@ Você tem certeza que quer executar esta operação?</translation>
         <translation>finalisando</translation>
     </message>
     <message>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="61"/>
+        <source>start delete</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="64"/>
+        <source>deleted</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/mirall/theme.cpp" line="48"/>
         <location filename="../src/mirall/theme.cpp" line="69"/>
         <source>Status undefined</source>

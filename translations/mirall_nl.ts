@@ -95,7 +95,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="62"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Verbonden met &lt;server&gt; als &lt;user&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="74"/>
@@ -728,12 +728,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folder.cpp" line="745"/>
         <source>Remove All Files?</source>
-        <translation type="unfinished"/>
+        <translation>Verwijder alle bestanden?</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="747"/>
         <source>Remove all files</source>
-        <translation type="unfinished"/>
+        <translation>Verwijder alle bestanden</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="748"/>
@@ -1879,6 +1879,16 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="58"/>
         <source>finished</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="61"/>
+        <source>start delete</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="64"/>
+        <source>deleted</source>
         <translation type="unfinished"/>
     </message>
     <message>
