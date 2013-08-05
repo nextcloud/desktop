@@ -37,8 +37,7 @@ FolderMan* FolderMan::_instance = 0;
 
 FolderMan::FolderMan(QObject *parent) :
     QObject(parent),
-    _syncEnabled( true ),
-    _pollTimer(new QTimer(this))
+    _syncEnabled( true )
 {
     // if QDir::mkpath would not be so stupid, I would not need to have this
     // duplication of folderConfigPath() here
@@ -50,14 +49,6 @@ FolderMan::FolderMan(QObject *parent) :
     _folderChangeSignalMapper = new QSignalMapper(this);
     connect(_folderChangeSignalMapper, SIGNAL(mapped(const QString &)),
             this, SIGNAL(folderSyncStateChange(const QString &)));
-
-    _pollTimer->setSingleShot(true);
-    int polltime = cfg.remotePollInterval();
-    qDebug() << "setting remote poll timer interval to" << polltime << "msec";
-    _pollTimer->setInterval( polltime );
-    QObject::connect(_pollTimer, SIGNAL(timeout()), this, SLOT(slotScheduleAllFolders()));
-    _pollTimer->setSingleShot(true);
-    _pollTimer->start();
 }
 
 FolderMan *FolderMan::instance()
@@ -393,7 +384,6 @@ void FolderMan::slotScheduleFolderSync()
             _currentSyncFolder = alias;
             if (f->syncEnabled()) {
                 f->startSync( QStringList() );
-                _pollTimer->stop();
             }
         }
     }
@@ -414,7 +404,6 @@ void FolderMan::slotFolderSyncFinished( const SyncResult& )
 
     _currentSyncFolder.clear();
     QTimer::singleShot(200, this, SLOT(slotScheduleFolderSync()));
-    _pollTimer->start();
 }
 
 void FolderMan::addFolderDefinition(const QString& alias, const QString& sourceFolder, const QString& targetPath )

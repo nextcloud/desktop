@@ -75,6 +75,15 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
 
     // check if the local path exists
     checkLocalPath();
+
+    _pollTimer.setSingleShot(true);
+    int polltime = cfg.remotePollInterval();
+    qDebug() << "setting remote poll timer interval to" << polltime << "msec";
+    _pollTimer.setInterval( polltime );
+    QObject::connect(&_pollTimer, SIGNAL(timeout()), this, SLOT(slotPollTimerTimeout()));
+    _pollTimer.setSingleShot(true);
+    _pollTimer.start();
+
 }
 
 bool Folder::init()
@@ -242,6 +251,7 @@ void Folder::slotChanged(const QStringList &pathList)
 void Folder::slotSyncFinished(const SyncResult &result)
 {
     _watcher->setEventsEnabledDelayed(2000);
+    _pollTimer.start();
 
     qDebug() << "OO folder slotSyncFinished: result: " << int(result.status());
     emit syncStateChange();
@@ -463,6 +473,7 @@ void Folder::startSync(const QStringList &pathList)
 
     // disable events until syncing is done
     _watcher->setEventsEnabled(false);
+    _pollTimer.stop();
     emit syncStarted();
 }
 

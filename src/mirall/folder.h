@@ -29,6 +29,7 @@
 #include <QStringList>
 
 #include <QDebug>
+#include <QTimer>
 
 class QFileSystemWatcher;
 class QThread;
@@ -210,8 +211,10 @@ protected:
     bool         _csyncUnavail;
     bool         _wipeDb;
     Progress::Kind _progressKind;
+    QTimer        _pollTimer;
 
     CSYNC *_csync_ctx;
+
 };
 
 }

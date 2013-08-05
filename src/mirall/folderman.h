@@ -25,7 +25,6 @@
 #include "mirall/syncfileitem.h"
 
 class QSignalMapper;
-class QTimer;
 
 class SyncResult;
 
@@ -132,7 +131,6 @@ private:
     void removeFolder( const QString& );
 
     Folder::Map    _folderMap;
-    QTimer        *_pollTimer;
     QString        _folderConfigPath;
     QSignalMapper *_folderChangeSignalMapper;
     QString        _currentSyncFolder;
