@@ -105,7 +105,6 @@ protected slots:
     void slotProgressSyncProblem(const QString& folder, const Progress::SyncProblem &problem);
     void slotDisplayIdle();
     void slotHelp();
-    void slotShowRecentChanges();
     void slotCredentialsFetched();
 private:
     void setHelp();

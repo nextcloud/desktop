@@ -21,6 +21,7 @@
 #include "mirall/syncresult.h"
 #include "mirall/logger.h"
 #include "mirall/owncloudinfo.h"
+#include "mirall/utility.h"
 #include "creds/abstractcredentials.h"
 
 #include <QDebug>
@@ -44,7 +45,6 @@ void csyncLogCatcher(CSYNC */*ctx*/,
 
 Folder::Folder(const QString &alias, const QString &path, const QString& secondPath, QObject *parent)
     : QObject(parent)
-      , _pollTimer(new QTimer(this))
       , _path(path)
       , _secondPath(secondPath)
       , _alias(alias)
