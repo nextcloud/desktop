@@ -133,6 +133,8 @@ struct transfer_context {
     int64_t get_size;
 };
 
+typedef int (*csync_owncloud_redirect_callback_t)(CSYNC* ctx, const char* uri);
+
 /* Struct with the WebDAV session */
 struct dav_session_s {
     ne_session *ctx;
@@ -164,6 +166,7 @@ struct dav_session_s {
     int bandwidth_limit_download;
 
     csync_overall_progress_t *overall_progress_data;
+    csync_owncloud_redirect_callback_t redir_callback;
 };
 extern struct dav_session_s dav_session;
 

@@ -374,7 +374,7 @@ static void post_request_hook(ne_request *req, void *userdata, const ne_status *
 
 /*
  * this hook is called just after a request has been created, before its sent.
- * Here it is used to set the session cookie if available.
+ * Here it is used to set the proxy connection header if available.
  */
 static void request_created_hook(ne_request *req, void *userdata,
                                  const char *method, const char *requri)
@@ -385,15 +385,49 @@ static void request_created_hook(ne_request *req, void *userdata,
 
     if( !req ) return;
 
-    if(dav_session.session_key) {
-        /* DEBUG_WEBDAV("Setting PHPSESSID to %s", dav_session.session_key); */
-        ne_add_request_header(req, "Cookie", dav_session.session_key);
-    }
-
     if(dav_session.proxy_type) {
         /* required for NTLM */
         ne_add_request_header(req, "Proxy-Connection", "Keep-Alive");
     }
+}
+
+/*
+ * this hook is called just before a request has been sent.
+ * Here it is used to set the session cookie if available.
+ */
+static void pre_send_hook(ne_request *req, void *userdata,
+                          ne_buffer *header)
+{
+    (void) userdata;
+
+    if( !req ) return;
+
+    if(dav_session.session_key) {
+        ne_buffer_concat(header, "Cookie: ", dav_session.session_key, "\r\n", NULL);
+    }
+}
+
+static int post_send_hook(ne_request *req, void *userdata,
+                          const ne_status *status)
+{
+    const char *location;
+
+    (void) userdata;
+    (void) status;
+
+    location = ne_get_response_header(req, "Location");
+
+    if( !location ) return NE_OK;
+
+    if( dav_session.redir_callback ) {
+        if( dav_session.redir_callback( dav_session.csync_ctx, location ) ) {
+            return NE_REDIRECT;
+        } else {
+            return NE_RETRY;
+        }
+    }
+
+    return NE_REDIRECT;
 }
 
 /* called from neon */
@@ -551,12 +585,15 @@ static int dav_connect(const char *base_url) {
         ne_ssl_trust_default_ca( dav_session.ctx );
         ne_ssl_set_verify( dav_session.ctx, verify_sslcert, 0 );
     }
-    ne_redirect_register( dav_session.ctx );
 
-    /* Hook to get the Session ID */
-    ne_hook_post_headers( dav_session.ctx, post_request_hook, NULL );
-    /* Hook called when a request is built. It sets the PHPSESSID header */
+    /* Hook called when a request is created. It sets the proxy connection header. */
     ne_hook_create_request( dav_session.ctx, request_created_hook, NULL );
+    /* Hook called after response headers are read. It gets the Session ID. */
+    ne_hook_post_headers( dav_session.ctx, post_request_hook, NULL );
+    /* Hook called before a request is sent. It sets the cookies. */
+    ne_hook_pre_send( dav_session.ctx, pre_send_hook, NULL );
+    /* Hook called after request is dispatched. Used for handling possible redirections. */
+    ne_hook_post_send( dav_session.ctx, post_send_hook, NULL );
 
     /* Proxy support */
     proxystate = configureProxy( dav_session.ctx );
@@ -762,17 +799,6 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
 
     if( hdl )
         ne_propfind_destroy(hdl);
-
-    if( ret == NE_REDIRECT ) {
-        const ne_uri *redir_ne_uri = NULL;
-        char *redir_uri = NULL;
-        redir_ne_uri = ne_redirect_location(dav_session.ctx);
-        if( redir_ne_uri ) {
-            redir_uri = ne_uri_unparse(redir_ne_uri);
-            DEBUG_WEBDAV("Permanently moved to %s", redir_uri);
-            SAFE_FREE(redir_uri);
-        }
-    }
 
     if( ret != NE_OK ) {
         free_fetchCtx(fetchCtx);
@@ -1815,6 +1841,15 @@ static int owncloud_set_property(const char *key, void *data) {
     }
     if( c_streq(key, "overall_progress_data")) {
       dav_session.overall_progress_data = (csync_overall_progress_t*)(data);
+    }
+    if( c_streq(key, "redirect_callback")) {
+        if (data) {
+            csync_owncloud_redirect_callback_t* cb_wrapper = data;
+
+            dav_session.redir_callback = *cb_wrapper;
+        } else {
+            dav_session.redir_callback = NULL;
+        }
     }
 
     return -1;
