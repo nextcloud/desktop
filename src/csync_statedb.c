@@ -327,6 +327,7 @@ int csync_statedb_close(CSYNC *ctx, const char *statedb, int jwritten) {
   if( rc == SQLITE_BUSY ) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "WARN: sqlite3_close got busy!");
   }
+  ctx->statedb.db = NULL;
 
 
   if (asprintf(&statedb_tmp, "%s.ctmp", statedb) < 0) {

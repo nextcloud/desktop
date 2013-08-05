@@ -240,22 +240,6 @@ int csync_init(CSYNC *ctx) {
               errbuf);
   }
 
-  /* create/load statedb */
-  if (! csync_is_statedb_disabled(ctx)) {
-    rc = asprintf(&ctx->statedb.file, "%s/.csync_journal.db",
-                  ctx->local.uri);
-    if (rc < 0) {
-        goto out;
-    }
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Journal: %s", ctx->statedb.file);
-
-    if (csync_statedb_load(ctx, ctx->statedb.file) < 0) {
-      ctx->error_code = CSYNC_ERR_STATEDB_LOAD;
-      rc = -1;
-      goto out;
-    }
-  }
-
   ctx->local.type = LOCAL_REPLICA;
 
   /* check for uri */
@@ -392,6 +376,23 @@ int csync_update(CSYNC *ctx) {
   }
 
   SAFE_FREE(lock);
+
+  /* create/load statedb */
+  if (! csync_is_statedb_disabled(ctx)) {
+    rc = asprintf(&ctx->statedb.file, "%s/.csync_journal.db",
+                  ctx->local.uri);
+    if (rc < 0) {
+        return rc;
+    }
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Journal: %s", ctx->statedb.file);
+
+    if (csync_statedb_load(ctx, ctx->statedb.file) < 0) {
+      ctx->error_code = CSYNC_ERR_STATEDB_LOAD;
+      rc = -1;
+      return rc;
+    }
+  }
+
   csync_memstat_check(ctx);
 
   /* update detection for local replica */
@@ -819,26 +820,6 @@ int csync_commit(CSYNC *ctx) {
   _csync_clean_ctx(ctx);
 
   ctx->remote.read_from_db = 0;
-
-  /* create/load statedb */
-  if (! csync_is_statedb_disabled(ctx)) {
-    if(!ctx->statedb.file) {
-      rc = asprintf(&ctx->statedb.file, "%s/.csync_journal.db",
-                    ctx->local.uri);
-      if (rc < 0) {
-        ctx->error_code = CSYNC_ERR_MEM;
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Failed to assemble statedb file name.");
-        goto out;
-      }
-    }
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Journal: %s", ctx->statedb.file);
-
-    if (csync_statedb_load(ctx, ctx->statedb.file) < 0) {
-      ctx->error_code = CSYNC_ERR_STATEDB_LOAD;
-      rc = -1;
-      goto out;
-    }
-  }
 
   /* Create new trees */
   if (c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp) < 0) {
