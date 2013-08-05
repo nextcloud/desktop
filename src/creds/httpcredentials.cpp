@@ -231,8 +231,6 @@ void HttpCredentials::slotAuthentication(QNetworkReply* reply, QAuthenticator* a
         qDebug() << "Too many attempts to authenticate. Stop request.";
         reply->close();
     } else {
-        reply->setProperty("mirall-user", _user);
-        reply->setProperty("mirall-password", _password);
         authenticator->setUser( _user );
         authenticator->setPassword( _password );
     }
