@@ -64,8 +64,6 @@ void OwncloudShibbolethCredsPage::initializePage()
     _browser->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     connect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie)),
             this, SLOT(onShibbolethCookieReceived(QNetworkCookie)));
-    connect(_browser, SIGNAL(hidden()),
-            this, SLOT(browserDestroyed()));
 
     //_ui.contentLayout->insertWidget(0, _browser);
     _browser->show();
@@ -77,23 +75,10 @@ void OwncloudShibbolethCredsPage::initializePage()
     _cookie = QNetworkCookie();
 }
 
-void OwncloudShibbolethCredsPage::browserDestroyed()
-{
-    _browser = 0;
-
-    QWizard* mainWizard(wizard());
-
-    mainWizard->show();
-    mainWizard->raise();
-    mainWizard->back();
-}
-
 void OwncloudShibbolethCredsPage::disposeBrowser(bool later)
 {
     if (_browser) {
         _browser->hide();
-        disconnect(_browser, SIGNAL(hidden()),
-                   this, SLOT(browserDestroyed()));
         disconnect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie)),
                    this, SLOT(onShibbolethCookieReceived(QNetworkCookie)));
         if (later) {

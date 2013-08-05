@@ -49,11 +49,4 @@ void ShibbolethWebView::onNewCookiesForUrl (const QList<QNetworkCookie>& cookieL
   }
 }
 
-void ShibbolethWebView::hideEvent(QHideEvent* event)
-{
-    QWebView::hideEvent(event);
-
-    Q_EMIT hidden();
-}
-
 } // ns Mirall
