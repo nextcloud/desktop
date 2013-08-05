@@ -46,6 +46,7 @@ AccountSettings::AccountSettings(QWidget *parent) :
     ui->setupUi(this);
 
     _model = new FolderStatusModel;
+    _model->setParent(this);
     FolderStatusDelegate *delegate = new FolderStatusDelegate;
 
     ui->_folderList->setItemDelegate( delegate );
