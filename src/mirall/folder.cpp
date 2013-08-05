@@ -76,12 +76,10 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
     // check if the local path exists
     checkLocalPath();
 
-    _pollTimer.setSingleShot(true);
     int polltime = cfg.remotePollInterval();
     qDebug() << "setting remote poll timer interval to" << polltime << "msec";
     _pollTimer.setInterval( polltime );
     QObject::connect(&_pollTimer, SIGNAL(timeout()), this, SLOT(slotPollTimerTimeout()));
-    _pollTimer.setSingleShot(true);
     _pollTimer.start();
 
 }
@@ -239,8 +237,20 @@ void Folder::slotPollTimerTimeout()
 {
     qDebug() << "* Polling" << alias() << "for changes. Ignoring all pending events until now";
     _watcher->clearPendingEvents();
-    evaluateSync(QStringList());
+
+    QObject::connect(new RequestEtagJob(secondPath(), this), SIGNAL(etagRetreived(QString)),
+                     this, SLOT(etagRetreived(QString)));
 }
+
+void Folder::etagRetreived(const QString& etag)
+{
+    qDebug() << "* Compare etag " << etag << " with previous etag " << _lastEtag;
+    if (_lastEtag != etag) {
+        _lastEtag = etag;
+        evaluateSync(QStringList());
+    }
+}
+
 
 void Folder::slotChanged(const QStringList &pathList)
 {

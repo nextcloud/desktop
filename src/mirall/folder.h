@@ -172,6 +172,7 @@ private slots:
     void slotTransmissionProgress(const Progress::Info& progress);
 
     void slotPollTimerTimeout();
+    void etagRetreived(const QString &);
 
     /**
      * Triggered by a file system watcher on the local sync dir
@@ -212,6 +213,7 @@ protected:
     bool         _wipeDb;
     Progress::Kind _progressKind;
     QTimer        _pollTimer;
+    QString       _lastEtag;
 
     CSYNC *_csync_ctx;
 
