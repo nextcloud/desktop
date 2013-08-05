@@ -68,6 +68,7 @@ protected:
     void setupContextMenu();
     void setupLogBrowser();
     void enterNextLogFile();
+    bool checkConfigExists(bool openSettings);
 
     //folders have to be disabled while making config changes
     void computeOverallSyncStatus();
@@ -83,7 +84,6 @@ signals:
 
 protected slots:
     void slotFoldersChanged();
-    void slotCheckConfig();
     void slotSettings();
     void slotItemProgressDialog();
     void slotParseOptions( const QString& );
@@ -105,10 +105,13 @@ protected slots:
     void slotProgressSyncProblem(const QString& folder, const Progress::SyncProblem &problem);
     void slotDisplayIdle();
     void slotHelp();
+    void slotShowRecentChanges();
+    void slotCredentialsFetched();
 private:
     void setHelp();
     void raiseDialog( QWidget* );
     void rebuildRecentMenus();
+    void runValidator();
 
     Systray *_tray;
     QAction *_actionOpenoC;

@@ -78,7 +78,7 @@ void FolderWatcherPrivate::slotAddFolderRecursive(const QString &path)
         qDebug() << "    `-> and" << subdirs << "subdirectories";
 }
 
-void FolderWatcherPrivate::slotINotifyEvent(int mask, int cookie, const QString &path)
+void FolderWatcherPrivate::slotINotifyEvent(int mask, int /*cookie*/, const QString &path)
 {
     int lastMask = _lastMask;
     QString lastPath = _lastPath;

@@ -26,9 +26,9 @@ FolderStatusModel::FolderStatusModel()
 
 }
 
-Qt::ItemFlags FolderStatusModel::flags ( const QModelIndex&  )
+Qt::ItemFlags FolderStatusModel::flags ( const QModelIndex&  ) const
 {
-    return Qt::ItemIsSelectable;
+    return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
 }
 
 QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
@@ -296,7 +296,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
   painter->restore();
 }
 
-bool FolderStatusDelegate::editorEvent ( QEvent * event, QAbstractItemModel * model, const QStyleOptionViewItem & option, const QModelIndex & index )
+bool FolderStatusDelegate::editorEvent ( QEvent * /*event*/, QAbstractItemModel * /*model*/, const QStyleOptionViewItem & /*option*/, const QModelIndex & /*index*/ )
 {
     return false;
 }

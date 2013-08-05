@@ -21,8 +21,7 @@
 #include "mirall/syncresult.h"
 #include "mirall/logger.h"
 #include "mirall/owncloudinfo.h"
-#include "mirall/credentialstore.h"
-#include "mirall/utility.h"
+#include "creds/abstractcredentials.h"
 
 #include <QDebug>
 #include <QTimer>
@@ -34,17 +33,18 @@
 
 namespace Mirall {
 
-void csyncLogCatcher(CSYNC *ctx,
-                     int verbosity,
-                     const char *function,
+void csyncLogCatcher(CSYNC */*ctx*/,
+                     int /*verbosity*/,
+                     const char */*function*/,
                      const char *buffer,
-                     void *userdata)
+                     void */*userdata*/)
 {
   Logger::instance()->csyncLog( QString::fromUtf8(buffer) );
 }
 
 Folder::Folder(const QString &alias, const QString &path, const QString& secondPath, QObject *parent)
     : QObject(parent)
+      , _pollTimer(new QTimer(this))
       , _path(path)
       , _secondPath(secondPath)
       , _alias(alias)
@@ -95,7 +95,7 @@ bool Folder::init()
 
         csync_enable_conflictcopys(_csync_ctx);
         setIgnoredFiles();
-        csync_set_auth_callback( _csync_ctx, getauth );
+        cfgFile.getCredentials()->syncContextPreInit(_csync_ctx);
 
         if( csync_init( _csync_ctx ) < 0 ) {
             qDebug() << "Could not initialize csync!" << csync_get_error(_csync_ctx) << csync_get_error_string(_csync_ctx);
@@ -214,7 +214,7 @@ SyncResult Folder::syncResult() const
   return _syncResult;
 }
 
-void Folder::evaluateSync(const QStringList &pathList)
+void Folder::evaluateSync(const QStringList &/*pathList*/)
 {
   if( !_enabled ) {
     qDebug() << "*" << alias() << "sync skipped, disabled!";
@@ -402,70 +402,6 @@ const char* Folder::proxyTypeToCStr(QNetworkProxy::ProxyType type)
     }
 }
 
-int Folder::getauth(const char *prompt,
-                         char *buf,
-                         size_t len,
-                         int echo,
-                         int verify,
-                         void *userdata
-                         )
-{
-    int re = 0;
-    QMutex mutex;
-
-    QString qPrompt = QString::fromLatin1( prompt ).trimmed();
-    QString user = CredentialStore::instance()->user();
-    QString pwd  = CredentialStore::instance()->password();
-
-    if( qPrompt == QLatin1String("Enter your username:") ) {
-        // qDebug() << "OOO Username requested!";
-        QMutexLocker locker( &mutex );
-        qstrncpy( buf, user.toUtf8().constData(), len );
-    } else if( qPrompt == QLatin1String("Enter your password:") ) {
-        QMutexLocker locker( &mutex );
-        // qDebug() << "OOO Password requested!";
-        qstrncpy( buf, pwd.toUtf8().constData(), len );
-    } else {
-        if( qPrompt.startsWith( QLatin1String("There are problems with the SSL certificate:"))) {
-            // SSL is requested. If the program came here, the SSL check was done by mirall
-            // It needs to be checked if the  chain is still equal to the one which
-            // was verified by the user.
-            QRegExp regexp("fingerprint: ([\\w\\d:]+)");
-            bool certOk = false;
-
-            int pos = 0;
-
-            // This is the set of certificates which QNAM accepted, so we should accept
-            // them as well
-            QList<QSslCertificate> certs = ownCloudInfo::instance()->certificateChain();
-
-            while (!certOk && (pos = regexp.indexIn(qPrompt, 1+pos)) != -1) {
-                QString neon_fingerprint = regexp.cap(1);
-
-                foreach( const QSslCertificate& c, certs ) {
-                    QString verified_shasum = Utility::formatFingerprint(c.digest(QCryptographicHash::Sha1).toHex());
-                    qDebug() << "SSL Fingerprint from neon: " << neon_fingerprint << " compared to verified: " << verified_shasum;
-                    if( verified_shasum == neon_fingerprint ) {
-                        certOk = true;
-                        break;
-                    }
-                }
-            }
-            // certOk = false;     DEBUG setting, keep disabled!
-            if( !certOk ) { // Problem!
-                qstrcpy( buf, "no" );
-                re = -1;
-            } else {
-                qstrcpy( buf, "yes" ); // Certificate is fine!
-            }
-        } else {
-            qDebug() << "Unknown prompt: <" << prompt << ">";
-            re = -1;
-        }
-    }
-    return re;
-}
-
 void Folder::startSync(const QStringList &pathList)
 {
     Q_UNUSED(pathList)
@@ -503,7 +439,6 @@ void Folder::startSync(const QStringList &pathList)
     _thread->setPriority(QThread::LowPriority);
     setIgnoredFiles();
     _csync = new CSyncThread( _csync_ctx );
-    _csync->setLastAuthCookies(ownCloudInfo::instance()->getLastAuthCookies());
     _csync->moveToThread(_thread);
 
 

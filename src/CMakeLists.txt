@@ -16,8 +16,6 @@ set(synclib_NAME ${APPLICATION_SHORTNAME}sync)
 set(mirall_UI
 mirall/folderwizardsourcepage.ui
 mirall/folderwizardtargetpage.ui
-mirall/owncloudsetuppage_ng.ui
-mirall/owncloudwizardresultpage.ui
 mirall/sslerrordialog.ui
 mirall/settingsdialog.ui
 mirall/generalsettings.ui
@@ -26,6 +24,11 @@ mirall/accountsettings.ui
 mirall/ignorelisteditor.ui
 mirall/fileitemdialog.ui
 mirall/itemprogressdialog.ui
+wizard/owncloudsetupnocredspage.ui
+wizard/owncloudhttpcredspage.ui
+wizard/owncloudwizardresultpage.ui
+wizard/owncloudshibbolethcredspage.ui
+wizard/owncloudadvancedsetuppage.ui
 )
 
 set(3rdparty_SRC
@@ -68,7 +71,6 @@ set(libsync_SRCS
     mirall/syncresult.cpp
     mirall/networklocation.cpp
     mirall/mirallconfigfile.cpp
-    mirall/credentialstore.cpp
     mirall/csyncthread.cpp
     mirall/fileutils.cpp
     mirall/theme.cpp
@@ -78,8 +80,20 @@ set(libsync_SRCS
     mirall/utility.cpp
     mirall/connectionvalidator.cpp
     mirall/progressdispatcher.cpp
+    mirall/mirallaccessmanager.cpp
+    creds/dummycredentials.cpp
+    creds/httpcredentials.cpp
+    creds/credentialsfactory.cpp
+    creds/http/credentialstore.cpp
+    creds/http/httpconfigfile.cpp
+    creds/shibbolethcredentials.cpp
+    creds/shibboleth/shibbolethaccessmanager.cpp
+    creds/shibboleth/shibbolethcookiejar.cpp
+    creds/shibboleth/shibbolethwebview.cpp
+    creds/shibboleth/shibbolethrefresher.cpp
 )
-set(libsync_HEADERS 
+
+set(libsync_HEADERS
     mirall/folderman.h
     mirall/folder.h
     mirall/folderwatcher.h
@@ -87,10 +101,21 @@ set(libsync_HEADERS
     mirall/theme.h
     mirall/owncloudtheme.h
     mirall/owncloudinfo.h
-    mirall/credentialstore.h
     mirall/logger.h
     mirall/connectionvalidator.h
     mirall/progressdispatcher.h
+    mirall/mirallaccessmanager.h
+    creds/abstractcredentials.h
+    creds/dummycredentials.h
+    creds/httpcredentials.h
+    creds/credentialsfactory.h
+    creds/http/credentialstore.h
+    creds/http/httpconfigfile.h
+    creds/shibbolethcredentials.h
+    creds/shibboleth/shibbolethaccessmanager.h
+    creds/shibboleth/shibbolethcookiejar.h
+    creds/shibboleth/shibbolethwebview.h
+    creds/shibboleth/shibbolethrefresher.h
 )
 
 IF( INOTIFY_FOUND )
@@ -153,7 +178,13 @@ set(mirall_SRCS
     mirall/systray.cpp
     mirall/folderwizard.cpp
     mirall/folderstatusmodel.cpp
-    mirall/owncloudwizard.cpp
+    wizard/owncloudwizard.cpp
+    wizard/owncloudsetuppage.cpp
+    wizard/owncloudhttpcredspage.cpp
+    wizard/owncloudwizardresultpage.cpp
+    wizard/owncloudwizardcommon.cpp
+    wizard/owncloudshibbolethcredspage.cpp
+    wizard/owncloudadvancedsetuppage.cpp
     mirall/owncloudsetupwizard.cpp
     mirall/updatedetector.cpp
     mirall/occinfo.cpp
@@ -173,7 +204,13 @@ set(mirall_HEADERS
     mirall/systray.h
     mirall/folderwizard.h
     mirall/owncloudsetupwizard.h
-    mirall/owncloudwizard.h
+    wizard/owncloudwizard.h
+    wizard/owncloudsetuppage.h
+    wizard/owncloudhttpcredspage.h
+    wizard/owncloudwizardresultpage.h
+    wizard/owncloudwizardcommon.h
+    wizard/owncloudshibbolethcredspage.h
+    wizard/owncloudadvancedsetuppage.h
     mirall/folderstatusmodel.h
     mirall/updatedetector.h
     mirall/sslerrordialog.h

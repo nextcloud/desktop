@@ -47,7 +47,7 @@ INotify::INotify(QObject *parent, int mask)
     _buffer = (char *) malloc(_buffer_size);
 }
 
-void INotify::slotActivated(int fd)
+void INotify::slotActivated(int /*fd*/)
 {
     int len;
     struct inotify_event* event;
@@ -82,7 +82,7 @@ void INotify::slotActivated(int fd)
     // reset counter
     i = 0;
     // while there are enough events in the buffer
-    while(i + sizeof(struct inotify_event) < len) {
+    while(i + sizeof(struct inotify_event) < static_cast<unsigned int>(len)) {
         // cast an inotify_event
         event = (struct inotify_event*)&_buffer[i];
         // with the help of watch descriptor, retrieve, corresponding INotify

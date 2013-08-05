@@ -17,7 +17,6 @@
 #include "mirall/owncloudinfo.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/theme.h"
-#include "mirall/credentialstore.h"
 
 namespace Mirall {
 
@@ -28,7 +27,8 @@ ConnectionValidator::ConnectionValidator(QObject *parent) :
 }
 
 ConnectionValidator::ConnectionValidator(const QString& connection, QObject *parent)
-    :_connection(connection)
+    : QObject(parent),
+      _connection(connection)
 {
     ownCloudInfo::instance()->setCustomConfigHandle(_connection);
 }
@@ -93,7 +93,7 @@ void ConnectionValidator::checkConnection()
     }
 }
 
-void ConnectionValidator::slotStatusFound( const QString& url, const QString& versionStr, const QString& version, const QString& edition)
+void ConnectionValidator::slotStatusFound( const QString& url, const QString& versionStr, const QString& version, const QString& /*edition*/)
 {
     // status.php was found.
     qDebug() << "** Application: ownCloud found: " << url << " with version " << versionStr << "(" << version << ")";
@@ -115,7 +115,7 @@ void ConnectionValidator::slotStatusFound( const QString& url, const QString& ve
         return;
     }
 
-    QTimer::singleShot( 0, this, SLOT( slotFetchCredentials() ));
+    QTimer::singleShot( 0, this, SLOT( slotCheckAuthentication() ));
 }
 
 // status.php could not be loaded.
@@ -133,50 +133,6 @@ void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 
 }
 
-void ConnectionValidator::slotFetchCredentials()
-{
-    if( _connection.isEmpty() ) {
-        connect( CredentialStore::instance(), SIGNAL(fetchCredentialsFinished(bool)),
-                 this, SLOT(slotCredentialsFetched(bool)) );
-        CredentialStore::instance()->fetchCredentials();
-    } else {
-        // Pull credentials from Mirall config.
-        slotCredentialsFetched( true );
-    }
-}
-
-void ConnectionValidator::slotCredentialsFetched( bool ok )
-{
-    qDebug() << "Credentials successfully fetched: " << ok;
-    disconnect( CredentialStore::instance(), SIGNAL(fetchCredentialsFinished(bool)) );
-
-    if( ! ok ) {
-        Status stat;
-        _errors << tr("Error: Could not retrieve the password!");
-        _errors << CredentialStore::instance()->errorMessage();
-        stat = CredentialError;
-
-        qDebug() << "Could not fetch credentials" << _errors;
-
-        emit connectionResult( stat );
-    } else {
-        QString user, pwd;
-        if( _connection.isEmpty() ) {
-            user = CredentialStore::instance()->user();
-            pwd  = CredentialStore::instance()->password();
-        } else {
-            // in case of reconfiguration, the _connection is set.
-            MirallConfigFile cfg(_connection);
-            user = cfg.ownCloudUser();
-            pwd  = cfg.ownCloudPasswd();
-        }
-        ownCloudInfo::instance()->setCredentials( user, pwd );
-
-        // Credential fetched ok.
-        QTimer::singleShot( 0, this, SLOT( slotCheckAuthentication() ));
-    }
-}
-
 void ConnectionValidator::slotCheckAuthentication()
 {
     connect( ownCloudInfo::instance(), SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
@@ -190,7 +146,6 @@ void ConnectionValidator::slotCheckAuthentication()
 
 void ConnectionValidator::slotAuthCheck( const QString& ,QNetworkReply *reply )
 {
-    bool ok = true;
     Status stat = Connected;
 
     if( reply->error() == QNetworkReply::AuthenticationRequiredError ||
@@ -198,7 +153,6 @@ void ConnectionValidator::slotAuthCheck( const QString& ,QNetworkReply *reply )
         qDebug() << "******** Password is wrong!";
         _errors << "The provided credentials are wrong.";
         stat = CredentialsWrong;
-        ok = false;
     }
 
     // disconnect from ownCloud Info signals
@@ -206,7 +160,6 @@ void ConnectionValidator::slotAuthCheck( const QString& ,QNetworkReply *reply )
              this,SLOT(slotAuthCheck(QString,QNetworkReply*)));
 
     emit connectionResult( stat );
-
 }
 
 

@@ -18,7 +18,6 @@
 #include "mirall/theme.h"
 #include "mirall/folderman.h"
 #include "mirall/owncloudinfo.h"
-#include "mirall/credentialstore.h"
 #include "mirall/folderwizard.h"
 #include "mirall/folderstatusmodel.h"
 #include "mirall/utility.h"
@@ -426,8 +425,7 @@ void AccountSettings::slotOCInfo( const QString& url, const QString& versionStr,
     qDebug() << "#-------# oC found on " << url;
     /* enable the open button */
     ui->connectLabel->setOpenExternalLinks(true);
-    ui->connectLabel->setText( tr("Connected to <a href=\"%1\">%1</a> as <i>%2</i>.")
-                          .arg(url).arg( CredentialStore::instance()->user()) );
+    ui->connectLabel->setText( tr("Connected to <a href=\"%1\">%1</a>.").arg(url) );
     ui->connectLabel->setToolTip( tr("Version: %1 (%2)").arg(versionStr).arg(version));
     ui->_ButtonAdd->setEnabled(true);
 
@@ -575,6 +573,12 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
             _hideProgressTimers.insert(item, timer);
         }
         timer->start(5000);
+        break;
+    case Progress::Invalid:
+    case Progress::Download:
+    case Progress::Upload:
+    case Progress::Inactive:
+    case Progress::Error:
         break;
     }
 
