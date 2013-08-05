@@ -312,6 +312,7 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "${QT_DLL_PATH}\QtGui4.dll"
    File "${QT_DLL_PATH}\QtNetwork4.dll"
    File "${QT_DLL_PATH}\QtXml4.dll"
+   File "${QT_DLL_PATH}\QtWebKit4.dll"
 
    ;QtKeyChain stuff
    File "${MING_BIN}\libqtkeychain.dll"
