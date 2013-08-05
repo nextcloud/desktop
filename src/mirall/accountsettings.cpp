@@ -493,10 +493,9 @@ QString AccountSettings::shortenFilename( const QString& folder, const QString& 
         // rip off the whole ownCloud URL.
         Folder *f = FolderMan::instance()->folder(folder);
         if( f ) {
-            QString regexp = QString("^owncloud[s]*://.*/remote.php/webdav/%1/").arg(f->secondPath());
-            QRegExp re( regexp );
-            re.setMinimal(true);
-            shortFile.remove(re);
+            QString remotePathUrl = ownCloudInfo::instance()->webdavUrl() + QLatin1Char('/') + f->secondPath();
+            shortFile.remove(Utility::toCSyncScheme(remotePathUrl));
+
         }
     }
     return shortFile;

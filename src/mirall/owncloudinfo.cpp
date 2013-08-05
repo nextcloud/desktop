@@ -608,6 +608,7 @@ QString ownCloudInfo::webdavUrl(const QString &connection)
         url = cfgFile.ownCloudUrl( connection );
     }
     url.append( QLatin1String( WEBDAV_PATH ) );
+    if (!url.endsWith('/')) url.append('/');
     return url;
 }
 

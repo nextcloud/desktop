@@ -43,19 +43,6 @@ void csyncLogCatcher(CSYNC *ctx,
   Logger::instance()->csyncLog( QString::fromUtf8(buffer) );
 }
 
-static QString replaceScheme(const QString &urlStr)
-{
-
-    QUrl url( urlStr );
-    if( url.scheme() == QLatin1String("http") ) {
-        url.setScheme( QLatin1String("owncloud") );
-    } else {
-        // connect SSL!
-        url.setScheme( QLatin1String("ownclouds") );
-    }
-    return url.toString();
-}
-
 Folder::Folder(const QString &alias, const QString &path, const QString& secondPath, QObject *parent)
     : QObject(parent)
       , _path(path)
@@ -92,7 +79,7 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
 
 bool Folder::init()
 {
-    QString url = replaceScheme(ownCloudInfo::instance()->webdavUrl() + secondPath());
+    QString url = Utility::toCSyncScheme(ownCloudInfo::instance()->webdavUrl() + secondPath());
     QString localpath = path();
 
     if( csync_create( &_csync_ctx, localpath.toUtf8().data(), url.toUtf8().data() ) < 0 ) {
@@ -596,10 +583,8 @@ void Folder::slotTransmissionProgress(const Progress::Info& progress)
     if(newInfo.current_file.startsWith(QLatin1String("ownclouds://")) ||
             newInfo.current_file.startsWith(QLatin1String("owncloud://")) ) {
         // rip off the whole ownCloud URL.
-        QString regexp = QString("^owncloud[s]*://.*/remote.php/webdav/%1/").arg(secondPath());
-        QRegExp re( regexp );
-        re.setMinimal(true);
-        newInfo.current_file.remove(re);
+        QString remotePathUrl = ownCloudInfo::instance()->webdavUrl() + secondPath();
+        newInfo.current_file.remove(Utility::toCSyncScheme(remotePathUrl));
     }
     QString localPath = path();
     if( newInfo.current_file.startsWith(localPath) ) {

@@ -111,6 +111,7 @@ public:
     /**
      * returns the owncloud webdav url.
      * It may be different from the one in the config if there was a HTTP redirection
+     * The returned URL is guaranteed to end in a forward slash ('/')
      */
     QString webdavUrl(const QString& connection = QString());
 
