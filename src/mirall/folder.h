@@ -172,11 +172,6 @@ private slots:
 
     void slotPollTimerTimeout();
 
-
-    /** called when the watcher detect a list of changed paths */
-
-    void slotSyncStarted();
-
     /**
      * Triggered by a file system watcher on the local sync dir
      */

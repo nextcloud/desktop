@@ -83,6 +83,7 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
 
     ServerActionNotifier *notifier = new ServerActionNotifier(this);
     connect(notifier, SIGNAL(guiLog(QString,QString)), Logger::instance(), SIGNAL(optionalGuiLog(QString,QString)));
+    connect(this, SIGNAL(syncFinished(SyncResult)), this, SLOT(slotSyncFinished(SyncResult)));
     connect(this, SIGNAL(syncFinished(SyncResult)), notifier, SLOT(slotSyncFinished(SyncResult)));
 
     // check if the local path exists
@@ -249,12 +250,6 @@ void Folder::slotChanged(const QStringList &pathList)
 {
     qDebug() << "** Changed was notified on " << pathList;
     evaluateSync(pathList);
-}
-
-void Folder::slotSyncStarted()
-{
-    // disable events until syncing is done
-    _watcher->setEventsEnabled(false);
 }
 
 void Folder::slotSyncFinished(const SyncResult &result)
@@ -543,6 +538,9 @@ void Folder::startSync(const QStringList &pathList)
 
     _thread->start();
     QMetaObject::invokeMethod(_csync, "startSync", Qt::QueuedConnection);
+
+    // disable events until syncing is done
+    _watcher->setEventsEnabled(false);
     emit syncStarted();
 }
 

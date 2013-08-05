@@ -56,6 +56,7 @@ FolderMan::FolderMan(QObject *parent) :
     qDebug() << "setting remote poll timer interval to" << polltime << "msec";
     _pollTimer->setInterval( polltime );
     QObject::connect(_pollTimer, SIGNAL(timeout()), this, SLOT(slotScheduleAllFolders()));
+    _pollTimer->setSingleShot(true);
     _pollTimer->start();
 }
 
@@ -358,6 +359,7 @@ void FolderMan::slotScheduleSync( const QString& alias )
     } else {
         qDebug() << " II> Sync for folder " << alias << " already scheduled, do not enqueue!";
     }
+    slotScheduleFolderSync();
 }
 
 void FolderMan::setSyncEnabled( bool enabled )
@@ -391,6 +393,7 @@ void FolderMan::slotScheduleFolderSync()
             _currentSyncFolder = alias;
             if (f->syncEnabled()) {
                 f->startSync( QStringList() );
+                _pollTimer->stop();
             }
         }
     }
@@ -411,6 +414,7 @@ void FolderMan::slotFolderSyncFinished( const SyncResult& )
 
     _currentSyncFolder.clear();
     QTimer::singleShot(200, this, SLOT(slotScheduleFolderSync()));
+    _pollTimer->start();
 }
 
 void FolderMan::addFolderDefinition(const QString& alias, const QString& sourceFolder, const QString& targetPath )
