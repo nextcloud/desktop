@@ -558,7 +558,14 @@ RequestEtagJob::RequestEtagJob(const QString& dir, QObject* parent)
 {
     QNetworkRequest req;
     req.setUrl( QUrl( ownCloudInfo::instance()->webdavUrl(ownCloudInfo::instance()->_connection) + dir ) );
-    req.setRawHeader("Depth", "0");
+    if (dir.isEmpty() || dir == "/") {
+        /* For the root directory, we need to query the etags of all the sub directories
+         * because, at the time I am writing this comment (Owncloud 5.0.9), the etag of the
+         * root directory is not updated when the sub directories changes */
+        req.setRawHeader("Depth", "1");
+    } else {
+        req.setRawHeader("Depth", "0");
+    }
     QByteArray xml("<?xml version=\"1.0\" ?>\n"
                    "<d:propfind xmlns:d=\"DAV:\">\n"
                    "  <d:prop>\n"
@@ -594,7 +601,7 @@ void RequestEtagJob::slotFinished()
                     reader.namespaceUri() == QLatin1String("DAV:")) {
                 QString name = reader.name().toString();
                 if (name == QLatin1String("getetag")) {
-                    etag = reader.readElementText();
+                    etag += reader.readElementText();
                 }
             }
         }
