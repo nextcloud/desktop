@@ -84,14 +84,25 @@ QByteArray ShibbolethCredentials::prepareCookieData() const
     // csync. Had we have it, then we could just append shibboleth
     // cookies to the "session_key" value and set it in csync module.
     QList<QNetworkCookie> cookies(ownCloudInfo::instance()->getLastAuthCookies());
+    QMap<QString, QString> uniqueCookies;
 
     cookies << _shibCookie;
     // Stuff cookies inside csync, then we can avoid the intermediate HTTP 401 reply
     // when https://github.com/owncloud/core/pull/4042 is merged.
     foreach(QNetworkCookie c, cookies) {
-        cookiesAsString += c.name();
+        const QString cookieName(c.name());
+
+        if (cookieName.startsWith("_shibsession_")) {
+            continue;
+        }
+        uniqueCookies.insert(cookieName, c.value());
+    }
+
+    uniqueCookies.insert(_shibCookie.name(), _shibCookie.value());
+    foreach(const QString& cookieName, uniqueCookies.keys()) {
+        cookiesAsString += cookieName;
         cookiesAsString += '=';
-        cookiesAsString += c.value();
+        cookiesAsString += uniqueCookies[cookieName];
         cookiesAsString += "; ";
     }
 
