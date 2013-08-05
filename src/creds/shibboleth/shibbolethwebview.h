@@ -30,8 +30,12 @@ class ShibbolethWebView : public QWebView
 public:
   ShibbolethWebView(const QUrl& url, QWidget* parent = 0);
 
+protected:
+  void hideEvent(QHideEvent* event);
+
 Q_SIGNALS:
   void shibbolethCookieReceived (const QNetworkCookie& cookie);
+  void hidden();
 
 private Q_SLOTS:
   void onNewCookiesForUrl (const QList<QNetworkCookie>& cookieList, const QUrl& url);

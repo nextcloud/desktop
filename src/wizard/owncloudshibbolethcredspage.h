@@ -45,6 +45,7 @@ Q_SIGNALS:
 
 private Q_SLOTS:
   void onShibbolethCookieReceived(const QNetworkCookie& cookie);
+  void browserDestroyed();
 
 private:
   enum Stage {
