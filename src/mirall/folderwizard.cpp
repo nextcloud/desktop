@@ -210,8 +210,10 @@ void FolderWizardTargetPage::slotUpdateDirectories(QStringList list)
     _ui.folderListWidget->clear();
     QFileIconProvider prov;
     QIcon folderIcon = prov.icon(QFileIconProvider::Folder);
+    QString webdavFolder = QUrl(ownCloudInfo::instance()->webdavUrl()).path();
     foreach (QString path, list) {
-        path.remove(QLatin1String("/remote.php/webdav"));
+        path.remove(webdavFolder);
+        if (!path.startsWith("/")) path.prepend('/');
         new QListWidgetItem(folderIcon, path, _ui.folderListWidget);
     }
 }
