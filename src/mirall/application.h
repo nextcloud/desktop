@@ -67,6 +67,7 @@ protected:
     void setupContextMenu();
     void setupLogBrowser();
     void enterNextLogFile();
+    bool checkConfigExists(bool openSettings);
 
     //folders have to be disabled while making config changes
     void computeOverallSyncStatus();
@@ -82,7 +83,6 @@ signals:
 
 protected slots:
     void slotFoldersChanged();
-    void slotCheckConfig();
     void slotSettings();
     void slotParseOptions( const QString& );
     void slotShowTrayMessage(const QString&, const QString&);

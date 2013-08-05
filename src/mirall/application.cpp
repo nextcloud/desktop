@@ -193,15 +193,20 @@ void Application::slotStartUpdateDetector()
 
 void Application::slotCheckConnection()
 {
-    MirallConfigFile cfg;
-    AbstractCredentials* credentials(cfg.getCredentials());
+    if( checkConfigExists(false) ) {
+        MirallConfigFile cfg;
+        AbstractCredentials* credentials(cfg.getCredentials());
 
-    if (! credentials->ready()) {
-        connect( credentials, SIGNAL(fetched()),
-                 this, SLOT(slotCredentialsFetched()));
-        credentials->fetch();
+        if (! credentials->ready()) {
+            connect( credentials, SIGNAL(fetched()),
+                     this, SLOT(slotCredentialsFetched()));
+            credentials->fetch();
+        } else {
+            runValidator();
+        }
     } else {
-        runValidator();
+        // the call to checkConfigExists opens the setup wizard
+        // if the config does not exist. Nothing to do here.
     }
 }
 
@@ -244,6 +249,8 @@ void Application::slotConnectionValidatorResult(ConnectionValidator::Status stat
         computeOverallSyncStatus();
 
         setupContextMenu();
+    } else if( status == ConnectionValidator::NotConfigured ) {
+        // this can not happen, it should be caught in first step of startup.
     } else {
         // What else?
     }
@@ -630,21 +637,25 @@ void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
     // Linux, not on Mac. They want a menu entry.
 #if defined Q_WS_WIN || defined Q_WS_X11
     if( reason == QSystemTrayIcon::Trigger ) {
-        slotCheckConfig();
+        checkConfigExists(true); // start settings if config is existing.
     }
 #endif
 }
 
-void Application::slotCheckConfig()
+bool Application::checkConfigExists(bool openSettings)
 {
     // if no config file is there, start the configuration wizard.
     MirallConfigFile cfgFile;
 
     if( cfgFile.exists() ) {
-        slotSettings();
+        if( openSettings ) {
+            slotSettings();
+        }
+        return true;
     } else {
         qDebug() << "No configured folders yet, starting setup wizard";
         OwncloudSetupWizard::runWizard(this, SLOT(slotownCloudWizardDone(int)));
+        return false;
     }
 }
 
