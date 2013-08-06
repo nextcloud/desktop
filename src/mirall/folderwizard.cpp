@@ -27,6 +27,7 @@
 #include <QUrl>
 #include <QValidator>
 #include <QWizardPage>
+#include <QTreeWidget>
 
 #include <stdlib.h>
 
@@ -171,16 +172,25 @@ FolderWizardTargetPage::FolderWizardTargetPage()
     _ui.warnFrame->hide();
 
     connect(_ui.addFolderButton, SIGNAL(clicked()), SLOT(slotAddRemoteFolder()));
-    connect(_ui.refreshButton, SIGNAL(clicked()), SLOT(slotRefreshFolders())),
-    connect(_ui.folderListWidget, SIGNAL(currentTextChanged(QString)),
-            SIGNAL(completeChanged()));
+    connect(_ui.refreshButton, SIGNAL(clicked()), SLOT(slotRefreshFolders()));
+    connect(_ui.folderTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem*,int)), SIGNAL(completeChanged()));
+    connect(_ui.folderTreeWidget, SIGNAL(itemActivated(QTreeWidgetItem*,int)), SIGNAL(completeChanged()));
 }
 
 void FolderWizardTargetPage::slotAddRemoteFolder()
 {
+    QTreeWidgetItem *current = _ui.folderTreeWidget->currentItem();
+
+    QString parent('/');
+    if (current) {
+        parent = current->data(0, Qt::UserRole).toString();
+    }
+
     QInputDialog *dlg = new QInputDialog(this);
+
     dlg->setWindowTitle(tr("Add Remote Folder"));
     dlg->setLabelText(tr("Enter the name of the new folder:"));
+    dlg->setTextValue(parent);
     dlg->open(this, SLOT(slotCreateRemoteFolder(QString)));
     dlg->setAttribute(Qt::WA_DeleteOnClose);
 }
@@ -205,22 +215,74 @@ void FolderWizardTargetPage::slotCreateRemoteFolderFinished( QNetworkReply::Netw
   }
 }
 
-void FolderWizardTargetPage::slotUpdateDirectories(QStringList list)
+static QTreeWidgetItem* findFirstChild(QTreeWidgetItem *parent, const QString& text)
 {
-    _ui.folderListWidget->clear();
+    for (int i = 0; i < parent->childCount(); ++i) {
+        QTreeWidgetItem *child = parent->child(i);
+        if (child->text(0) == text) {
+            return child;
+        }
+    }
+}
+
+static void recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path)
+{
     QFileIconProvider prov;
     QIcon folderIcon = prov.icon(QFileIconProvider::Folder);
+    if (pathTrail.size() == 0) {
+        if (path.endsWith('/')) {
+            path.chop(1);
+        }
+        parent->setToolTip(0, path);
+        parent->setData(0, Qt::UserRole, path);
+    } else {
+        QTreeWidgetItem *item = findFirstChild(parent, pathTrail.first());
+        if (!item) {
+            item = new QTreeWidgetItem(parent);
+            item->setIcon(0, folderIcon);
+            item->setText(0, pathTrail.first());
+            item->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
+        }
+
+        pathTrail.removeFirst();
+        recursiveInsert(item, pathTrail, path);
+    }
+}
+
+void FolderWizardTargetPage::slotUpdateDirectories(QStringList list)
+{
+    QFileIconProvider prov;
+    QIcon folderIcon = prov.icon(QFileIconProvider::Folder);
+
     QString webdavFolder = QUrl(ownCloudInfo::instance()->webdavUrl()).path();
+    connect(_ui.folderTreeWidget, SIGNAL(itemExpanded(QTreeWidgetItem*)), SLOT(slotItemExpanded(QTreeWidgetItem*)));
+
+    QTreeWidgetItem *root = _ui.folderTreeWidget->topLevelItem(0);
+    if (!root) {
+        root = new QTreeWidgetItem(_ui.folderTreeWidget);
+        root->setText(0, tr("Root (\"/\")", "root folder"));
+        root->setIcon(0, folderIcon);
+        root->setToolTip(0, tr("Choose this to sync the entire account"));
+        root->setData(0, Qt::UserRole, "/");
+    }
     foreach (QString path, list) {
         path.remove(webdavFolder);
-        if (!path.startsWith("/")) path.prepend('/');
-        new QListWidgetItem(folderIcon, path, _ui.folderListWidget);
+        QStringList paths = path.split('/');
+        if (paths.last().isEmpty()) paths.removeLast();
+        recursiveInsert(root, paths, path);
     }
+    root->setExpanded(true);
 }
 
 void FolderWizardTargetPage::slotRefreshFolders()
 {
     ownCloudInfo::instance()->getDirectoryListing("/");
+    _ui.folderTreeWidget->clear();
+}
+
+void FolderWizardTargetPage::slotItemExpanded(QTreeWidgetItem *item)
+{
+    ownCloudInfo::instance()->getDirectoryListing(item->text(0));
 }
 
 FolderWizardTargetPage::~FolderWizardTargetPage()
@@ -229,10 +291,10 @@ FolderWizardTargetPage::~FolderWizardTargetPage()
 
 bool FolderWizardTargetPage::isComplete() const
 {
-    if (!_ui.folderListWidget->currentItem())
+    if (!_ui.folderTreeWidget->currentItem())
         return false;
 
-    QString dir = _ui.folderListWidget->currentItem()->text();
+    QString dir = _ui.folderTreeWidget->currentItem()->data(0, Qt::UserRole).toString();
     wizard()->setProperty("targetPath", dir);
 
     if( dir == QLatin1String("/") ) {

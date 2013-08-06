@@ -77,7 +77,7 @@ protected slots:
     void slotCreateRemoteFolderFinished( QNetworkReply::NetworkError error );
     void slotUpdateDirectories(QStringList);
     void slotRefreshFolders();
-
+    void slotItemExpanded(QTreeWidgetItem*);
 private:
     Ui_FolderWizardTargetPage _ui;
     ownCloudInfo *_ownCloudDirCheck;
