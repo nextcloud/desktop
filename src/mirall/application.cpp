@@ -544,17 +544,16 @@ void Application::slotProgressSyncProblem(const QString& folder, const Progress:
 void Application::rebuildRecentMenus()
 {
     _recentActionsMenu->clear();
-    QList<Progress::Info> progressInfoList;
-    progressInfoList = ProgressDispatcher::instance()->recentChangedItems(5);
+    const QList<Progress::Info>& progressInfoList = ProgressDispatcher::instance()->recentChangedItems(5);
 
     if( progressInfoList.size() == 0 ) {
         _recentActionsMenu->addAction(tr("No items synced recently"));
     } else {
-        foreach( Progress::Info info, progressInfoList ) {
-            QString kindStr = tr("Upload");
-            if( info.kind == Progress::EndDownload ) {
-                kindStr = tr("Download");
-            }
+        QListIterator<Progress::Info> i(progressInfoList);
+        i.toBack();
+        while(i.hasPrevious()) {
+            Progress::Info info = i.previous();
+            QString kindStr = Progress::asResultString(info.kind);
             QString timeStr = info.timestamp.toString("hh:mm");
 
             QString actionText = tr("%1 (%2, %3)").arg(info.current_file).arg(kindStr).arg(timeStr);
