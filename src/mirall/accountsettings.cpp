@@ -533,7 +533,7 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
 
     // stay with the previous kind-string for Context.
     if( progress.kind != Progress::Context ) {
-        _kindContext = Progress::asString(progress.kind);
+        _kindContext = Progress::asActionString(progress.kind);
     }
     QString kindString = _kindContext;
 

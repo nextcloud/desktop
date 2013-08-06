@@ -69,7 +69,8 @@ public:
         QTime  timestamp;
     } SyncProblem;
 
-    static QString asString( Kind );
+    static QString asActionString( Kind );
+    static QString asResultString( Kind );
 };
 
 /**

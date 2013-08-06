@@ -21,8 +21,51 @@
 namespace Mirall {
 
 ProgressDispatcher* ProgressDispatcher::_instance = 0;
+QString Progress::asResultString( Kind kind )
+{
+    QString re;
 
-QString Progress::asString( Kind kind )
+    switch(kind) {
+    case Download:
+    case EndDownload:
+        re = QObject::tr("Download");
+        break;
+    case Upload:
+        re = QObject::tr("Upload");
+        break;
+    case Context:
+        re = QObject::tr("Context");
+        break;
+    case Inactive:
+        re = QObject::tr("Inactive");
+        break;
+    case StartDownload:
+        re = QObject::tr("Download");
+        break;
+    case StartUpload:
+    case EndUpload:
+        re = QObject::tr("Upload");
+        break;
+    case StartSync:
+        re = QObject::tr("Start");
+        break;
+    case EndSync:
+        re = QObject::tr("Finished");
+        break;
+    case StartDelete:
+        re = QObject::tr("For deletion");
+        break;
+    case EndDelete:
+        re = QObject::tr("deleted");
+        break;
+    default:
+        Q_ASSERT(false);
+    }
+    return re;
+
+}
+
+QString Progress::asActionString( Kind kind )
 {
     QString re;
 
