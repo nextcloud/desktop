@@ -37,6 +37,7 @@ public:
     ~ItemProgressDialog();
 
     void setupList();
+    void setSyncResult( const SyncResult& result );
 
 signals:
 
@@ -52,6 +53,7 @@ signals:
     void guiLog(const QString&, const QString&);
 
 private:
+    void setSyncResultStatus(const SyncResult& result );
     QTreeWidgetItem *createFolderItem(const QString& folder);
     QTreeWidgetItem *findFolderItem( const QString& folder );
     void cleanErrors( const QString& folder );

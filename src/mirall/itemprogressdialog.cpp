@@ -19,6 +19,7 @@
 #include "mirall/utility.h"
 #include "mirall/theme.h"
 #include "mirall/folderman.h"
+#include "mirall/syncfileitem.h"
 
 #include "ui_itemprogressdialog.h"
 
@@ -67,12 +68,114 @@ ItemProgressDialog::ItemProgressDialog(Application*, QWidget *parent) :
 
 }
 
+void ItemProgressDialog::setSyncResultStatus(const SyncResult& result )
+{
+    QString folderMessage;
+
+    SyncResult::Status syncStatus = result.status();
+    switch( syncStatus ) {
+    case SyncResult::Undefined:
+        folderMessage = tr( "Undefined Folder State" );
+        break;
+    case SyncResult::NotYetStarted:
+        folderMessage = tr( "The folder waits to start syncing." );
+        break;
+    case SyncResult::SyncPrepare:
+        folderMessage = tr( "Determining which files to sync." );
+        break;
+    case SyncResult::Unavailable:
+        folderMessage = tr( "Server is currently not available." );
+        break;
+    case SyncResult::SyncRunning:
+        folderMessage = tr("Sync is running.");
+        break;
+    case SyncResult::Success:
+        folderMessage = tr("Last Sync was successful.");
+        break;
+    case SyncResult::Error:
+        folderMessage = tr( "Syncing Error." );
+        break;
+    case SyncResult::SetupError:
+        folderMessage = tr( "Setup Error." );
+        break;
+    default:
+        folderMessage = tr( "Undefined Error State." );
+    }
+
+    _ui->_timelabel->setText(tr("%1").arg(folderMessage));
+
+    if( result.errorStrings().count() ) {
+        _ui->_errorLabel->setVisible(true);
+        _ui->_errorLabel->setTextFormat(Qt::RichText);
+        QString errStr;
+        foreach( QString err, result.errorStrings() ) {
+            errStr.append(QString("<p>%1</p>").arg(err));
+        }
+
+        _ui->_errorLabel->setText(errStr);
+    } else {
+        _ui->_errorLabel->setText(QString::null);
+        _ui->_errorLabel->setVisible(false);
+    }
+
+}
+
+void ItemProgressDialog::setSyncResult( const SyncResult& result )
+{
+    setSyncResultStatus(result);
+
+    if(result.status() != SyncResult::Success ) {
+        return;
+    }
+
+    const QString& folder = result.folder();
+    qDebug() << "Setting sync result for folder " << folder;
+
+    QTreeWidgetItem *folderItem = findFolderItem(folder);
+    if( ! folderItem ) return;
+
+    SyncFileItemVector::const_iterator i;
+    const SyncFileItemVector& items = result.syncFileItemVector();
+
+    for (i = items.begin(); i != items.end(); ++i) {
+         const SyncFileItem& item = *i;
+         if( item._instruction == CSYNC_INSTRUCTION_IGNORE ) {
+             QStringList columns;
+             QString timeStr = QTime::currentTime().toString("hh:mm");
+
+             columns << timeStr;
+             columns << item._file;
+             QString errMsg = tr("File ignored.");
+             columns << errMsg;
+
+             QTreeWidgetItem *item = new QTreeWidgetItem(folderItem, columns);
+             item->setData(0, ErrorIndicatorRole, QVariant(true) );
+             item->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Problem, true));
+
+             Q_UNUSED(item);
+         }
+    }
+}
+
 void ItemProgressDialog::setupList()
 {
   // get the folders to set up the top level list.
   Folder::Map map = FolderMan::instance()->map();
+  SyncResult lastResult;
+  QDateTime dt;
+  bool haveSyncResult = false;
+
   foreach( Folder *f, map.values() ) {
     findFolderItem(f->alias());
+    if( f->syncResult().syncTime() > dt ) {
+        dt = f->syncResult().syncTime();
+        lastResult = f->syncResult();
+        haveSyncResult = true;
+    }
+  }
+
+  if( haveSyncResult ) {
+      setSyncResult(lastResult);
   }
 
   QList<Progress::Info> progressList = ProgressDispatcher::instance()->recentChangedItems(0); // All.
@@ -247,7 +350,7 @@ void ItemProgressDialog::slotProgressInfo( const QString& folder, const Progress
 
     columns << timeStr;
     columns << progress.current_file;
-    columns << Progress::asString(progress.kind);
+    columns << Progress::asResultString(progress.kind);
     columns << Utility::octetsToString( progress.file_size );
 
     QTreeWidgetItem *item = new QTreeWidgetItem(folderItem, columns);
