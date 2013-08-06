@@ -43,8 +43,12 @@ public:
 Q_SIGNALS:
   void connectToOCUrl(const QString&);
 
+public Q_SLOTS:
+  void setVisible(bool visible);
+
 private Q_SLOTS:
-  void onShibbolethCookieReceived(const QNetworkCookie& cookie);
+  void slotShibbolethCookieReceived(const QNetworkCookie& cookie);
+  void slotViewHidden();
 
 private:
   enum Stage {
@@ -61,6 +65,7 @@ private:
   Stage _stage;
   ShibbolethWebView* _browser;
   QNetworkCookie _cookie;
+  bool _afterInitialSetup;
 };
 
 } // ns Mirall

@@ -25,7 +25,8 @@ OwncloudShibbolethCredsPage::OwncloudShibbolethCredsPage()
       _ui(),
       _stage(INITIAL_STEP),
       _browser(0),
-      _cookie()
+      _cookie(),
+      _afterInitialSetup(false)
 {
     _ui.setupUi(this);
 
@@ -56,19 +57,38 @@ bool OwncloudShibbolethCredsPage::isComplete() const
     return _stage == GOT_COOKIE;
 }
 
+void OwncloudShibbolethCredsPage::setVisible(bool visible)
+{
+    if (!_afterInitialSetup) {
+        QWizardPage::setVisible(visible);
+        return;
+    }
+
+    if (isVisible() == visible) {
+        return;
+    }
+    if (_browser) {
+        disposeBrowser(true);
+    }
+    if (visible) {
+        _browser = new ShibbolethWebView(QUrl(field("OCUrl").toString().simplified()));
+        connect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie)),
+                this, SLOT(slotShibbolethCookieReceived(QNetworkCookie)));
+        connect(_browser, SIGNAL(viewHidden()),
+                this, SLOT(slotViewHidden()));
+
+        _browser->show();
+        _browser->setFocus();
+        wizard()->hide();
+    } else {
+        wizard()->show();
+    }
+}
+
 void OwncloudShibbolethCredsPage::initializePage()
 {
     WizardCommon::initErrorLabel(_ui.errorLabel);
-    _browser = new ShibbolethWebView(QUrl(field("OCUrl").toString().simplified()));
-
-    _browser->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-    connect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie)),
-            this, SLOT(onShibbolethCookieReceived(QNetworkCookie)));
-
-    //_ui.contentLayout->insertWidget(0, _browser);
-    _browser->show();
-    _browser->setFocus();
-    wizard()->hide();
+    _afterInitialSetup = true;
     _ui.infoLabel->show();
     _ui.infoLabel->setText(tr("Please follow the steps on displayed page above"));
     _stage = INITIAL_STEP;
@@ -78,9 +98,11 @@ void OwncloudShibbolethCredsPage::initializePage()
 void OwncloudShibbolethCredsPage::disposeBrowser(bool later)
 {
     if (_browser) {
-        _browser->hide();
+        disconnect(_browser, SIGNAL(viewHidden()),
+                   this, SLOT(slotViewHidden()));
         disconnect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie)),
-                   this, SLOT(onShibbolethCookieReceived(QNetworkCookie)));
+                   this, SLOT(slotShibbolethCookieReceived(QNetworkCookie)));
+        _browser->hide();
         if (later) {
             _browser->deleteLater();
         } else {
@@ -151,7 +173,7 @@ AbstractCredentials* OwncloudShibbolethCredsPage::getCredentials() const
     return new ShibbolethCredentials(_cookie);
 }
 
-void OwncloudShibbolethCredsPage::onShibbolethCookieReceived(const QNetworkCookie& cookie)
+void OwncloudShibbolethCredsPage::slotShibbolethCookieReceived(const QNetworkCookie& cookie)
 {
     disposeBrowser(true);
     _stage = GOT_COOKIE;
@@ -159,6 +181,13 @@ void OwncloudShibbolethCredsPage::onShibbolethCookieReceived(const QNetworkCooki
     _ui.infoLabel->setText("Please click \"Connect\" to check received Shibboleth session.");
     emit completeChanged();
     validatePage();
+}
+
+void OwncloudShibbolethCredsPage::slotViewHidden()
+{
+    disposeBrowser(true);
+    wizard()->back();
+    wizard()->show();
 }
 
 } // ns Mirall
