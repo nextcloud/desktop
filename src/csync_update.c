@@ -536,8 +536,11 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
             fs->md5 = md5;
             fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
         }
-
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Uniq ID from Database: %s -> %s", path, fs->md5 ? fs->md5 : "<NULL>" );
+        if( c_streq(md5, "")) {
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Uniq ID from Database is EMPTY: %s", path);
+        } else {
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Uniq ID from Database: %s -> %s", path, fs->md5 ? fs->md5 : "<NULL>" );
+        }
     }
 
     previous_fs = ctx->current_fs;
