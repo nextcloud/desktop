@@ -16,9 +16,9 @@
 #include "creds/shibboleth/shibbolethaccessmanager.h"
 #include "creds/shibboleth/shibbolethwebview.h"
 #include "creds/shibboleth/shibbolethrefresher.h"
+#include "creds/credentialscommon.h"
 #include "mirall/owncloudinfo.h"
 #include "mirall/mirallconfigfile.h"
-#include "mirall/csyncthread.h"
 
 namespace Mirall
 {
@@ -73,8 +73,10 @@ ShibbolethCredentials::ShibbolethCredentials(const QNetworkCookie& cookie)
       _browser(0)
 {}
 
-void ShibbolethCredentials::syncContextPreInit(CSYNC*)
-{}
+void ShibbolethCredentials::syncContextPreInit(CSYNC* ctx)
+{
+    csync_set_auth_callback (ctx, handleNeonSSLProblems);
+}
 
 QByteArray ShibbolethCredentials::prepareCookieData() const
 {
