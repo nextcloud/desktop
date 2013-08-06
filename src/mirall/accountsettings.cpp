@@ -557,6 +557,7 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
         break;
     case Progress::EndDownload:
     case Progress::EndUpload:
+    case Progress::EndDelete:
         break;
     case Progress::EndSync:
         syncFileProgressString = tr("Completely");

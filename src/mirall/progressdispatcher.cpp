@@ -101,7 +101,7 @@ QString Progress::asActionString( Kind kind )
         re = QObject::tr("finished");
         break;
     case StartDelete:
-        re = QObject::tr("start delete");
+        re = QObject::tr("delete");
         break;
     case EndDelete:
         re = QObject::tr("deleted");
