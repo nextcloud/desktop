@@ -442,14 +442,12 @@ Progress::Kind CSyncThread::csyncToProgressKind( enum csync_notify_type_e kind )
     case CSYNC_NOTIFY_FINISHED_SYNC_SEQUENCE:
         pKind = Progress::EndSync;
         break;
-#if 0
     case CSYNC_NOTIFY_START_DELETE:
         pKind = Progress::StartDelete;
         break;
     case CSYNC_NOTIFY_END_DELETE:
         pKind = Progress::EndDelete;
         break;
-#endif
     case CSYNC_NOTIFY_ERROR:
         pKind = Progress::Error;
         break;
