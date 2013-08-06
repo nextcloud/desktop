@@ -82,6 +82,7 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
     QObject::connect(&_pollTimer, SIGNAL(timeout()), this, SLOT(slotPollTimerTimeout()));
     _pollTimer.start();
 
+    _syncResult.setFolder(alias);
 }
 
 bool Folder::init()

@@ -125,8 +125,19 @@ void SyncResult::clearErrors()
     _errors.clear();
 }
 
+void SyncResult::setFolder(const QString& folder)
+{
+    _folder = folder;
+}
+
+QString SyncResult::folder() const
+{
+    return _folder;
+}
+
 SyncResult::~SyncResult()
 {
+
 }
 
 } // ns mirall
