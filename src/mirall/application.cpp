@@ -719,7 +719,7 @@ void Application::slotShowOptionalTrayMessage(const QString &title, const QStrin
 void Application::slotSyncStateChange( const QString& alias )
 {
     FolderMan *folderMan = FolderMan::instance();
-    SyncResult result = folderMan->syncResult( alias );
+    const SyncResult& result = folderMan->syncResult( alias );
     emit folderStateChanged( folderMan->folder(alias) );
 
     computeOverallSyncStatus();
@@ -728,6 +728,9 @@ void Application::slotSyncStateChange( const QString& alias )
 
     if (result.status() == SyncResult::Success || result.status() == SyncResult::Error) {
         enterNextLogFile();
+    }
+    if( _progressDialog ) {
+        _progressDialog->setSyncResult(result);
     }
 }
 
