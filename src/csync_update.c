@@ -87,6 +87,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   const char *path = NULL;
   csync_file_stat_t *st = NULL;
   csync_file_stat_t *tmp = NULL;
+  int excluded;
 
   if ((file == NULL) || (fs == NULL)) {
     errno = EINVAL;
@@ -114,6 +115,24 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   }
 
   len = strlen(path);
+
+  /* Check if file is excluded */
+  excluded = csync_excluded(ctx, path);
+  if (excluded) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s excluded  (%d)", path, excluded);
+    if (excluded == 2) {
+      switch (ctx->current) {
+        case LOCAL_REPLICA:
+          ctx->local.ignored_cleanup = c_list_append(ctx->local.ignored_cleanup, c_strdup(path));
+          break;
+        case REMOTE_REPLICA:
+          ctx->remote.ignored_cleanup = c_list_append(ctx->remote.ignored_cleanup, c_strdup(path));
+          break;
+        default:
+          break;
+      }
+    }
+  }
 
   h = _hash_of_file(ctx, file );
   if( h == 0 ) {
@@ -161,6 +180,10 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   /* Ignore non statable files and other strange cases. */
   if (type == CSYNC_FTW_TYPE_SKIP) {
     st->instruction = CSYNC_INSTRUCTION_NONE;
+    goto out;
+  }
+  if (excluded > 0) {
+    st->instruction = CSYNC_INSTRUCTION_IGNORE;
     goto out;
   }
 
@@ -436,7 +459,6 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   while ((dirent = csync_vio_readdir(ctx, dh))) {
     const char *path = NULL;
     int flag;
-    int excluded;
 
     d_name = dirent->name;
     if (d_name == NULL) {
@@ -459,7 +481,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       goto error;
     }
 
-    /* Create relative path for checking the exclude list */
+    /* Create relative path */
     switch (ctx->current) {
       case LOCAL_REPLICA:
         path = filename + strlen(ctx->local.uri) + 1;
@@ -471,22 +493,8 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
         break;
     }
 
-    /* Check if file is excluded */
-    excluded = csync_excluded(ctx, path);
-    if (excluded) {
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s excluded  (%d)", path, excluded);
-      if (excluded == 2) {
-        switch (ctx->current) {
-          case LOCAL_REPLICA:
-            ctx->local.ignored_cleanup = c_list_append(ctx->local.ignored_cleanup, c_strdup(path));
-            break;
-          case REMOTE_REPLICA:
-            ctx->remote.ignored_cleanup = c_list_append(ctx->remote.ignored_cleanup, c_strdup(path));
-            break;
-          default:
-            break;
-        }
-      }
+    /* skip ".csync_journal.db" and ".csync_journal.db.ctmp" */
+    if (c_streq(path, ".csync_journal.db") || c_streq(path, ".csync_journal.db.ctmp")) {
       csync_vio_file_stat_destroy(dirent);
       dirent = NULL;
       SAFE_FREE(filename);
@@ -548,13 +556,15 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     /* Call walker function for each file */
     rc = fn(ctx, filename, fs, flag);
 
-    if (ctx->current_fs && previous_fs && ctx->current_fs->child_modified)
+    if (ctx->current_fs && previous_fs && ctx->current_fs->child_modified) {
         previous_fs->child_modified = ctx->current_fs->child_modified;
+    }
 
-    if( ! do_read_from_db )
+    if( ! do_read_from_db ) {
         csync_vio_file_stat_destroy(fs);
-    else
+    } else {
         SAFE_FREE(fs->md5);
+    }
 
     if (rc < 0) {
       csync_vio_closedir(ctx, dh);
