@@ -14,7 +14,10 @@
 #ifndef MIRALL_CREDS_SHIBBOLETH_CREDENTIALS_H
 #define MIRALL_CREDS_SHIBBOLETH_CREDENTIALS_H
 
+#include <QList>
+#include <QMap>
 #include <QNetworkCookie>
+#include <QUrl>
 
 #include "creds/abstractcredentials.h"
 
@@ -29,7 +32,7 @@ Q_OBJECT
 
 public:
     ShibbolethCredentials();
-    ShibbolethCredentials(const QNetworkCookie& cookie);
+    ShibbolethCredentials(const QNetworkCookie& cookie, const QMap<QUrl, QList<QNetworkCookie> >& otherCookies);
 
     void syncContextPreInit(CSYNC* ctx);
     void syncContextPreStart(CSYNC* ctx);
@@ -61,6 +64,7 @@ private:
     QNetworkCookie _shibCookie;
     bool _ready;
     ShibbolethWebView* _browser;
+    QMap<QUrl, QList<QNetworkCookie> > _otherCookies;
 };
 
 } // ns Mirall

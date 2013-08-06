@@ -14,7 +14,10 @@
 #ifndef MIRALL_OWNCLOUD_SHIBBOLETH_CREDS_PAGE_H
 #define MIRALL_OWNCLOUD_SHIBBOLETH_CREDS_PAGE_H
 
+#include <QList>
+#include <QMap>
 #include <QNetworkCookie>
+#include <QUrl>
 
 #include "wizard/abstractcredswizardpage.h"
 
@@ -42,6 +45,7 @@ public Q_SLOTS:
 
 private Q_SLOTS:
   void slotShibbolethCookieReceived(const QNetworkCookie& cookie);
+  void slotOtherCookiesReceived(const QList<QNetworkCookie>& cookieList, const QUrl& url);
   void slotViewHidden();
 
 private:
@@ -51,6 +55,7 @@ private:
   ShibbolethWebView* _browser;
   QNetworkCookie _cookie;
   bool _afterInitialSetup;
+  QMap<QUrl, QList<QNetworkCookie> > _cookiesForUrl;
 };
 
 } // ns Mirall

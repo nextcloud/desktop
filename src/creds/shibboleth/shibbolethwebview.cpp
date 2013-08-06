@@ -11,6 +11,7 @@
  * for more details.
  */
 
+#include <QDebug>
 #include <QNetworkCookie>
 #include <QWebFrame>
 #include <QWebPage>
@@ -22,30 +23,55 @@
 namespace Mirall
 {
 
+void ShibbolethWebView::setup(const QUrl& url, ShibbolethCookieJar* jar)
+{
+    MirallAccessManager* nm = new MirallAccessManager(this);
+    QWebPage* page = new QWebPage(this);
+
+    jar->setParent(this);
+    connect (jar, SIGNAL (newCookiesForUrl (QList<QNetworkCookie>, QUrl)),
+             this, SLOT (onNewCookiesForUrl (QList<QNetworkCookie>, QUrl)));
+
+    nm->setCookieJar(jar);
+    page->setNetworkAccessManager(nm);
+    page->mainFrame ()->load (url);
+    this->setPage (page);
+}
+
 ShibbolethWebView::ShibbolethWebView(const QUrl& url, QWidget* parent)
   : QWebView(parent)
 {
-  MirallAccessManager* nm = new MirallAccessManager(this);
-  ShibbolethCookieJar* jar = new ShibbolethCookieJar(this);
-  QWebPage* page = new QWebPage(this);
-
-  connect (jar, SIGNAL (newCookiesForUrl (QList<QNetworkCookie>, QUrl)),
-           this, SLOT (onNewCookiesForUrl (QList<QNetworkCookie>, QUrl)));
-
-  nm->setCookieJar(jar);
-  page->setNetworkAccessManager(nm);
-  page->mainFrame ()->load (url);
-  this->setPage (page);
+    setup(url, new ShibbolethCookieJar(this));
 }
 
-void ShibbolethWebView::onNewCookiesForUrl (const QList<QNetworkCookie>& cookieList, const QUrl& /*url*/)
+ShibbolethWebView::ShibbolethWebView(const QUrl& url, ShibbolethCookieJar* jar, QWidget* parent)
+  : QWebView(parent)
 {
+    setup(url, jar);
+}
+
+void ShibbolethWebView::onNewCookiesForUrl (const QList<QNetworkCookie>& cookieList, const QUrl& url)
+{
+  QList<QNetworkCookie> otherCookies;
+  QNetworkCookie shibCookie;
+
   Q_FOREACH (const QNetworkCookie& cookie, cookieList) {
     if (cookie.name().startsWith ("_shibsession_")) {
-      Q_EMIT shibbolethCookieReceived (cookie);
-
-      return;
+      if (shibCookie.name().isEmpty()) {
+        shibCookie = cookie;
+      } else {
+        qWarning() << "Too many Shibboleth session cookies at once!";
+      }
+    } else {
+      otherCookies << cookie;
     }
+  }
+
+  if (!otherCookies.isEmpty()) {
+    Q_EMIT otherCookiesReceived(otherCookies, url);
+  }
+  if (!shibCookie.name().isEmpty()) {
+    Q_EMIT shibbolethCookieReceived(shibCookie);
   }
 }
 

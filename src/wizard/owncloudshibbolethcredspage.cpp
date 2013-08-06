@@ -26,7 +26,8 @@ OwncloudShibbolethCredsPage::OwncloudShibbolethCredsPage()
     : AbstractCredentialsWizardPage(),
       _browser(0),
       _cookie(),
-      _afterInitialSetup(false)
+      _afterInitialSetup(false),
+      _cookiesForUrl()
 {}
 
 void OwncloudShibbolethCredsPage::setupBrowser()
@@ -39,6 +40,8 @@ void OwncloudShibbolethCredsPage::setupBrowser()
             this, SLOT(slotShibbolethCookieReceived(QNetworkCookie)));
     connect(_browser, SIGNAL(viewHidden()),
             this, SLOT(slotViewHidden()));
+    connect(_browser, SIGNAL(otherCookiesReceived(QList<QNetworkCookie>, QUrl)),
+            this, SLOT(slotOtherCookiesReceived(QList<QNetworkCookie>, QUrl)));
 
     _browser->show();
     _browser->setFocus();
@@ -69,11 +72,14 @@ void OwncloudShibbolethCredsPage::initializePage()
 {
     _afterInitialSetup = true;
     _cookie = QNetworkCookie();
+    _cookiesForUrl.clear();
 }
 
 void OwncloudShibbolethCredsPage::disposeBrowser()
 {
     if (_browser) {
+        disconnect(_browser, SIGNAL(otherCookiesReceived(QList<QNetworkCookie>, QUrl)),
+                   this, SLOT(slotOtherCookiesReceived(QList<QNetworkCookie>, QUrl)));
         disconnect(_browser, SIGNAL(viewHidden()),
                    this, SLOT(slotViewHidden()));
         disconnect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie)),
@@ -96,7 +102,7 @@ void OwncloudShibbolethCredsPage::setConnected()
 
 AbstractCredentials* OwncloudShibbolethCredsPage::getCredentials() const
 {
-    return new ShibbolethCredentials(_cookie);
+    return new ShibbolethCredentials(_cookie, _cookiesForUrl);
 }
 
 void OwncloudShibbolethCredsPage::slotShibbolethCookieReceived(const QNetworkCookie& cookie)
@@ -104,6 +110,25 @@ void OwncloudShibbolethCredsPage::slotShibbolethCookieReceived(const QNetworkCoo
     disposeBrowser();
     _cookie = cookie;
     emit connectToOCUrl(field("OCUrl").toString().simplified());
+}
+
+void OwncloudShibbolethCredsPage::slotOtherCookiesReceived(const QList<QNetworkCookie>& cookieList, const QUrl& url)
+{
+    QList<QNetworkCookie>& cookies(_cookiesForUrl[url]);
+    QMap<QByteArray, QByteArray> uniqueCookies;
+
+    Q_FOREACH (const QNetworkCookie& c, cookieList) {
+        if (!c.isSessionCookie()) {
+            cookies << c;
+        }
+    }
+    Q_FOREACH (const QNetworkCookie& c, cookies) {
+        uniqueCookies[c.name()] = c.value();
+    }
+    cookies.clear();
+    Q_FOREACH (const QByteArray& name, uniqueCookies.keys()) {
+        cookies << QNetworkCookie(name, uniqueCookies[name]);
+    }
 }
 
 void OwncloudShibbolethCredsPage::slotViewHidden()

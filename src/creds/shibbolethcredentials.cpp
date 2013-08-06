@@ -16,6 +16,7 @@
 #include "creds/shibboleth/shibbolethaccessmanager.h"
 #include "creds/shibboleth/shibbolethwebview.h"
 #include "creds/shibboleth/shibbolethrefresher.h"
+#include "creds/shibboleth/shibbolethconfigfile.h"
 #include "creds/credentialscommon.h"
 #include "mirall/owncloudinfo.h"
 #include "mirall/mirallconfigfile.h"
@@ -64,13 +65,15 @@ int shibboleth_redirect_callback(CSYNC* csync_ctx,
 ShibbolethCredentials::ShibbolethCredentials()
     : _shibCookie(),
       _ready(false),
-      _browser(0)
+      _browser(0),
+      _otherCookies()
 {}
 
-ShibbolethCredentials::ShibbolethCredentials(const QNetworkCookie& cookie)
+ShibbolethCredentials::ShibbolethCredentials(const QNetworkCookie& cookie, const QMap<QUrl, QList<QNetworkCookie> >& otherCookies)
     : _shibCookie(cookie),
       _ready(true),
-      _browser(0)
+      _browser(0),
+      _otherCookies(otherCookies)
 {}
 
 void ShibbolethCredentials::syncContextPreInit(CSYNC* ctx)
@@ -163,9 +166,9 @@ void ShibbolethCredentials::fetch()
     if (_ready) {
         Q_EMIT fetched();
     } else {
-        MirallConfigFile cfg;
+        ShibbolethConfigFile cfg;
 
-        _browser = new ShibbolethWebView(QUrl(cfg.ownCloudUrl()));
+        _browser = new ShibbolethWebView(QUrl(cfg.ownCloudUrl()), cfg.createCookieJar());
         connect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie)),
                 this, SLOT(onShibbolethCookieReceived(QNetworkCookie)));
         connect(_browser, SIGNAL(viewHidden()),
@@ -176,7 +179,9 @@ void ShibbolethCredentials::fetch()
 
 void ShibbolethCredentials::persistForUrl(const QString& /*url*/)
 {
-    // nothing to do here, we don't store session cookies.
+    ShibbolethConfigFile cfg;
+
+    cfg.storeCookies(_otherCookies);
 }
 
 void ShibbolethCredentials::disposeBrowser()
