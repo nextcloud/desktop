@@ -175,7 +175,8 @@ void ProgressDispatcher::setProgressInfo(const QString& folder, const Progress::
             newProgress.overall_current_bytes = newProgress.overall_transmission_size;
             newProgress.current_file_no = newProgress.overall_file_count;
         }
-        if( newProgress.kind == Progress::EndDownload || newProgress.kind == Progress::EndUpload ) {
+        if( newProgress.kind == Progress::EndDownload || newProgress.kind == Progress::EndUpload ||
+                newProgress.kind == Progress::EndDelete ) {
             _recentChanges.enqueue(newProgress);
         }
         emit progressInfo( folder, newProgress );
