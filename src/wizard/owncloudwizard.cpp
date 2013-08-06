@@ -112,7 +112,7 @@ void OwncloudWizard::successfulStep()
         break;
 
     case WizardCommon::Page_ShibbolethCreds:
-        _shibbolethCredsPage->setConnected(true);
+        _shibbolethCredsPage->setConnected();
         break;
 
     case WizardCommon::Page_AdvancedSetup:
@@ -164,10 +164,6 @@ void OwncloudWizard::displayError( const QString& msg )
 
     case WizardCommon::Page_HttpCreds:
         _httpCredsPage->setErrorString(msg);
-        break;
-
-    case WizardCommon::Page_ShibbolethCreds:
-        _shibbolethCredsPage->setErrorString(msg);
         break;
 
     case WizardCommon::Page_AdvancedSetup:

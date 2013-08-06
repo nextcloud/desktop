@@ -27,7 +27,6 @@ mirall/itemprogressdialog.ui
 wizard/owncloudsetupnocredspage.ui
 wizard/owncloudhttpcredspage.ui
 wizard/owncloudwizardresultpage.ui
-wizard/owncloudshibbolethcredspage.ui
 wizard/owncloudadvancedsetuppage.ui
 )
 

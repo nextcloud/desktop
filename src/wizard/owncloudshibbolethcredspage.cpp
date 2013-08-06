@@ -11,6 +11,8 @@
  * for more details.
  */
 
+#include <QVariant>
+
 #include "wizard/owncloudshibbolethcredspage.h"
 #include "mirall/theme.h"
 #include "wizard/owncloudwizardcommon.h"
@@ -22,39 +24,24 @@ namespace Mirall
 
 OwncloudShibbolethCredsPage::OwncloudShibbolethCredsPage()
     : AbstractCredentialsWizardPage(),
-      _ui(),
-      _stage(INITIAL_STEP),
       _browser(0),
       _cookie(),
       _afterInitialSetup(false)
+{}
+
+void OwncloudShibbolethCredsPage::setupBrowser()
 {
-    _ui.setupUi(this);
-
-    setTitle(WizardCommon::titleTemplate().arg(tr("Connect to %1").arg(Theme::instance()->appNameGUI())));
-    setSubTitle(WizardCommon::subTitleTemplate().arg(tr("Process through Shibboleth form")));
-
-    setupCustomization();
-}
-
-void OwncloudShibbolethCredsPage::setupCustomization()
-{
-    // set defaults for the customize labels.
-    _ui.topLabel->hide();
-    _ui.bottomLabel->hide();
-
-    Theme *theme = Theme::instance();
-    QVariant variant = theme->customMedia( Theme::oCSetupTop );
-    if( !variant.isNull() ) {
-        WizardCommon::setupCustomMedia( variant, _ui.topLabel );
+    if (_browser) {
+        return;
     }
+    _browser = new ShibbolethWebView(QUrl(field("OCUrl").toString().simplified()));
+    connect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie)),
+            this, SLOT(slotShibbolethCookieReceived(QNetworkCookie)));
+    connect(_browser, SIGNAL(viewHidden()),
+            this, SLOT(slotViewHidden()));
 
-    variant = theme->customMedia( Theme::oCSetupBottom );
-    WizardCommon::setupCustomMedia( variant, _ui.bottomLabel );
-}
-
-bool OwncloudShibbolethCredsPage::isComplete() const
-{
-    return _stage == GOT_COOKIE;
+    _browser->show();
+    _browser->setFocus();
 }
 
 void OwncloudShibbolethCredsPage::setVisible(bool visible)
@@ -68,17 +55,10 @@ void OwncloudShibbolethCredsPage::setVisible(bool visible)
         return;
     }
     if (_browser) {
-        disposeBrowser(true);
+        disposeBrowser();
     }
     if (visible) {
-        _browser = new ShibbolethWebView(QUrl(field("OCUrl").toString().simplified()));
-        connect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie)),
-                this, SLOT(slotShibbolethCookieReceived(QNetworkCookie)));
-        connect(_browser, SIGNAL(viewHidden()),
-                this, SLOT(slotViewHidden()));
-
-        _browser->show();
-        _browser->setFocus();
+        setupBrowser();
         wizard()->hide();
     } else {
         wizard()->show();
@@ -87,15 +67,11 @@ void OwncloudShibbolethCredsPage::setVisible(bool visible)
 
 void OwncloudShibbolethCredsPage::initializePage()
 {
-    WizardCommon::initErrorLabel(_ui.errorLabel);
     _afterInitialSetup = true;
-    _ui.infoLabel->show();
-    _ui.infoLabel->setText(tr("Please follow the steps on displayed page above"));
-    _stage = INITIAL_STEP;
     _cookie = QNetworkCookie();
 }
 
-void OwncloudShibbolethCredsPage::disposeBrowser(bool later)
+void OwncloudShibbolethCredsPage::disposeBrowser()
 {
     if (_browser) {
         disconnect(_browser, SIGNAL(viewHidden()),
@@ -103,40 +79,9 @@ void OwncloudShibbolethCredsPage::disposeBrowser(bool later)
         disconnect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie)),
                    this, SLOT(slotShibbolethCookieReceived(QNetworkCookie)));
         _browser->hide();
-        if (later) {
-            _browser->deleteLater();
-        } else {
-            delete _browser;
-        }
+        _browser->deleteLater();
         _browser = 0;
     }
-}
-
-void OwncloudShibbolethCredsPage::cleanupPage()
-{
-    disposeBrowser(false);
-}
-
-bool OwncloudShibbolethCredsPage::validatePage()
-{
-    switch (_stage) {
-    case INITIAL_STEP:
-        return false;
-
-    case GOT_COOKIE:
-        _stage = CHECKING;
-        emit completeChanged();
-        emit connectToOCUrl(field("OCUrl").toString().simplified());
-        return false;
-
-    case CHECKING:
-        return false;
-
-    case CONNECTED:
-        return true;
-    }
-
-    return false;
 }
 
 int OwncloudShibbolethCredsPage::nextId() const
@@ -144,28 +89,9 @@ int OwncloudShibbolethCredsPage::nextId() const
   return WizardCommon::Page_AdvancedSetup;
 }
 
-void OwncloudShibbolethCredsPage::setConnected( bool comp )
+void OwncloudShibbolethCredsPage::setConnected()
 {
-    if (comp) {
-        _stage = CONNECTED;
-    } else {
-        // sets stage to INITIAL
-        initializePage();
-    }
-    emit completeChanged();
     wizard()->show();
-}
-
-void OwncloudShibbolethCredsPage::setErrorString(const QString& err)
-{
-    if( err.isEmpty()) {
-        _ui.errorLabel->setVisible(false);
-    } else {
-        initializePage();
-        _ui.errorLabel->setVisible(true);
-        _ui.errorLabel->setText(err);
-    }
-    emit completeChanged();
 }
 
 AbstractCredentials* OwncloudShibbolethCredsPage::getCredentials() const
@@ -175,17 +101,14 @@ AbstractCredentials* OwncloudShibbolethCredsPage::getCredentials() const
 
 void OwncloudShibbolethCredsPage::slotShibbolethCookieReceived(const QNetworkCookie& cookie)
 {
-    disposeBrowser(true);
-    _stage = GOT_COOKIE;
+    disposeBrowser();
     _cookie = cookie;
-    _ui.infoLabel->setText("Please click \"Connect\" to check received Shibboleth session.");
-    emit completeChanged();
-    validatePage();
+    emit connectToOCUrl(field("OCUrl").toString().simplified());
 }
 
 void OwncloudShibbolethCredsPage::slotViewHidden()
 {
-    disposeBrowser(true);
+    disposeBrowser();
     wizard()->back();
     wizard()->show();
 }

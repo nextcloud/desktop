@@ -18,8 +18,6 @@
 
 #include "wizard/abstractcredswizardpage.h"
 
-#include "ui_owncloudshibbolethcredspage.h"
-
 namespace Mirall {
 
 class ShibbolethWebView;
@@ -32,13 +30,9 @@ public:
 
   AbstractCredentials* getCredentials() const;
 
-  bool isComplete() const;
   void initializePage();
-  void cleanupPage();
-  bool validatePage();
   int nextId() const;
-  void setConnected(bool connected);
-  void setErrorString(const QString& err);
+  void setConnected();
 
 Q_SIGNALS:
   void connectToOCUrl(const QString&);
@@ -51,18 +45,9 @@ private Q_SLOTS:
   void slotViewHidden();
 
 private:
-  enum Stage {
-    INITIAL_STEP,
-    GOT_COOKIE,
-    CHECKING,
-    CONNECTED
-  };
+  void setupBrowser();
+  void disposeBrowser();
 
-  void setupCustomization();
-  void disposeBrowser(bool later);
-
-  Ui_OwncloudShibbolethCredsPage _ui;
-  Stage _stage;
   ShibbolethWebView* _browser;
   QNetworkCookie _cookie;
   bool _afterInitialSetup;
