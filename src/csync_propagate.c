@@ -1728,18 +1728,13 @@ int csync_init_overall_progress(CSYNC *ctx) {
   /* Notify the progress */
   csync_set_module_property(ctx, "overall_progress_data", &(ctx->overall_progress));
 
-  if (ctx->overall_progress.file_count >0) {
-    _notify_progress(ctx, NULL, 0, CSYNC_NOTIFY_START_SYNC_SEQUENCE);
-  }
+  _notify_progress(ctx, NULL, 0, CSYNC_NOTIFY_START_SYNC_SEQUENCE);
 
   return 0;
 }
 
 void csync_finalize_progress(CSYNC *ctx) {
-  if (ctx->overall_progress.file_count >0) {
-
     _notify_progress(ctx, NULL, 0, CSYNC_NOTIFY_FINISHED_SYNC_SEQUENCE);
-  }
 
    csync_set_module_property(ctx, "overall_progress_data", NULL);
 }
