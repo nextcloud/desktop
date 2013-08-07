@@ -589,7 +589,6 @@ RequestEtagJob::RequestEtagJob(const QString& dir, QObject* parent)
 
 void RequestEtagJob::slotFinished()
 {
-    bool ok = false;
     if (_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) == 207) {
         // Parse DAV response
         QXmlStreamReader reader(_reply);

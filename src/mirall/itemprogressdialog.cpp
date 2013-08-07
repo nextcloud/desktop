@@ -37,8 +37,8 @@ namespace Mirall {
 
 ItemProgressDialog::ItemProgressDialog(Application*, QWidget *parent) :
     QDialog(parent),
-    _ui(new Ui::ItemProgressDialog),
-    ErrorIndicatorRole( Qt::UserRole +1 )
+    ErrorIndicatorRole( Qt::UserRole +1 ),
+    _ui(new Ui::ItemProgressDialog)
 {
     _ui->setupUi(this);
     connect(_ui->_dialogButtonBox->button(QDialogButtonBox::Close), SIGNAL(clicked()),
