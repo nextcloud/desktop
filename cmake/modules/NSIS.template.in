@@ -292,6 +292,10 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
 
         SetOutPath "$INSTDIR\accessible"
         File "${ACCESSIBLE_DLL_PATH}\qtaccessiblewidgets4.dll"
+        SetOutPath "$INSTDIR\imageformats"
+        File "${IMAGEFORMATS_DLL_PATH}\qgif4.dll"
+        File "${IMAGEFORMATS_DLL_PATH}\qjpeg4.dll"
+        File "${IMAGEFORMATS_DLL_PATH}\qico4.dll"
 
         SetOutPath "$INSTDIR\modules"
         ; FIXME: fix installation dir of module, currently needs manual copying to
