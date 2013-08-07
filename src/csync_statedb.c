@@ -580,7 +580,7 @@ static int _insert_metadata_visitor(void *obj, void *data) {
       sqlite3_bind_int(  stmt, 5, fs->uid);
       sqlite3_bind_int(  stmt, 6, fs->gid);
       sqlite3_bind_int(  stmt, 7, fs->mode);
-      sqlite3_bind_int64(stmt, 8, fs->modtime);
+      sqlite3_bind_int64(stmt, 8, (long long signed int) fs->modtime);
       sqlite3_bind_int(  stmt, 9, fs->type);
 
       /* The md5 sum might be zero for directories. They will be investigated in the next
