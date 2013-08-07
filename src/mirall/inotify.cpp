@@ -115,14 +115,17 @@ INotify::~INotify()
     delete _notifier;
 }
 
-void INotify::addPath(const QString &path)
+bool INotify::addPath(const QString &path)
 {
     // Add an inotify watch.
     int wd = inotify_add_watch(_fd, path.toUtf8().constData(), _mask);
-    if( wd > -1 )
+    if( wd > -1 ) {
         _wds[path] = wd;
-    else
+        return true;
+    } else {
         qDebug() << "WRN: Could not watch " << path << ':' << strerror(errno);
+        return false;
+    }
 }
 
 void INotify::removePath(const QString &path)

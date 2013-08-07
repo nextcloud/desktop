@@ -177,6 +177,7 @@ private slots:
      */
     void slotLocalPathChanged( const QString& );
     void slotThreadTreeWalkResult(const SyncFileItemVector& );
+    void slotCatchWatcherError( const QString& );
 
 protected:
     bool init();

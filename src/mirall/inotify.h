@@ -38,7 +38,7 @@ public:
     INotify(QObject *parent, int mask);
     ~INotify();
 
-    void addPath(const QString &name);
+    bool addPath(const QString &name);
     void removePath(const QString &name);
 
     QStringList directories() const;

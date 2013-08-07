@@ -43,7 +43,7 @@ class FolderWatcherPrivate;
  */
 class FolderWatcher : public QObject
 {
-Q_OBJECT
+    Q_OBJECT
 public:
     /**
      * @param root Path of the root of the folder
@@ -104,10 +104,10 @@ public slots:
     void setEventsEnabledDelayed( int );
 
 signals:
-    /**
-     * Emitted when one of the paths is changed
-     */
+    /** Emitted when one of the paths is changed */
     void folderChanged(const QStringList &pathList);
+    /** Emitted if an error occurs */
+    void error(const QString& error);
 
 protected:
     void setProcessTimer();
