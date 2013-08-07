@@ -2,6 +2,8 @@
 
 #include "csync_update.c"
 
+#define TESTDB "/tmp/check_csync/journal.db"
+
 static void setup(void **state)
 {
     CSYNC *csync;
@@ -19,6 +21,9 @@ static void setup(void **state)
     assert_int_equal(rc, 0);
     rc = csync_init(csync);
     assert_int_equal(rc, 0);
+    rc = csync_statedb_load(csync, TESTDB);
+    assert_int_equal(rc, 0);
+
 
     *state = csync;
 }
@@ -205,7 +210,7 @@ static void check_csync_detect_update_db_none(void **state)
 
     /* the instruction should be set to new  */
     st = c_rbtree_node_data(csync->local.tree->root);
-    assert_int_equal(st->instruction, CSYNC_INSTRUCTION_EVAL);
+    assert_int_equal(st->instruction, CSYNC_INSTRUCTION_NEW);
 
     /* set the instruction to UPDATED that it gets written to the statedb */
     st->instruction = CSYNC_INSTRUCTION_UPDATED;
@@ -234,7 +239,7 @@ static void check_csync_detect_update_db_eval(void **state)
 
     /* the instruction should be set to new  */
     st = c_rbtree_node_data(csync->local.tree->root);
-    assert_int_equal(st->instruction, CSYNC_INSTRUCTION_EVAL);
+    assert_int_equal(st->instruction, CSYNC_INSTRUCTION_NEW);
 
     /* set the instruction to UPDATED that it gets written to the statedb */
     st->instruction = CSYNC_INSTRUCTION_UPDATED;

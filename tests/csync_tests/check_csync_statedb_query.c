@@ -28,6 +28,9 @@ static void setup(void **state)
     rc = csync_init(csync);
     assert_int_equal(rc, 0);
 
+    rc = csync_statedb_load(csync, TESTDB);
+    assert_int_equal(rc, 0);
+
     *state = csync;
 }
 
