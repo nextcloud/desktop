@@ -139,20 +139,29 @@ void ItemProgressDialog::setSyncResult( const SyncResult& result )
 
     for (i = items.begin(); i != items.end(); ++i) {
          const SyncFileItem& item = *i;
+         QString errMsg;
          if( item._instruction == CSYNC_INSTRUCTION_IGNORE ) {
              QStringList columns;
              QString timeStr = QTime::currentTime().toString("hh:mm");
 
              columns << timeStr;
              columns << item._file;
-             QString errMsg = tr("File ignored.");
+             if( item._type == SyncFileItem::File ) {
+                 errMsg = tr("File ignored.");
+             } else if( item._type == SyncFileItem::Directory ){
+                 errMsg = tr("Directory ignored.");
+             } else if( item._type == SyncFileItem::SoftLink ) {
+                 errMsg = tr("Soft Link ignored.");
+             } else {
+                 errMsg = tr("Ignored.");
+             }
              columns << errMsg;
 
-             QTreeWidgetItem *item = new QTreeWidgetItem(folderItem, columns);
-             item->setData(0, ErrorIndicatorRole, QVariant(true) );
-             item->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Problem, true));
+             QTreeWidgetItem *twitem = new QTreeWidgetItem(folderItem, columns);
+             twitem->setData(0, ErrorIndicatorRole, QVariant(true) );
+             twitem->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Problem, true));
 
-             Q_UNUSED(item);
+             Q_UNUSED(twitem);
          }
     }
 }

@@ -11,9 +11,16 @@ namespace Mirall {
 class SyncFileItem {
 public:
     typedef enum {
-        None = 0,
-        Up,
-        Down } Direction;
+      None = 0,
+      Up,
+      Down } Direction;
+
+    typedef enum {
+      UnknownType,
+      File,
+      Directory,
+      SoftLink
+    } Type;
 
     SyncFileItem() {}
 
@@ -30,6 +37,7 @@ public:
     QString _renameTarget;
     csync_instructions_e _instruction;
     Direction _dir;
+    Type      _type;
 };
 
 typedef QVector<SyncFileItem> SyncFileItemVector;
