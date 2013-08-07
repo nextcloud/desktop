@@ -433,6 +433,7 @@ void Folder::startSync(const QStringList &pathList)
     if (!_csync_ctx) {
         // no _csync_ctx yet,  initialize it.
         init();
+        setProxy();
 
         if (!_csync_ctx) {
             qDebug() << Q_FUNC_INFO << "init failed.";
