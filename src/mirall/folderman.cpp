@@ -544,6 +544,10 @@ SyncResult FolderMan::accountStatus(const QList<Folder*> &folders)
             if ( overallResult.status() != SyncResult::Error )
                 overallResult.setStatus( SyncResult::SetupError );
             break;
+        case SyncResult::Problem:
+            if ( overallResult.status() != SyncResult::Problem )
+                overallResult.setStatus( SyncResult::Problem );
+            break;
         // no default case on purpose, check compiler warnings
         }
     }
@@ -574,8 +578,10 @@ QString FolderMan::statusToString( SyncResult syncStatus, bool enabled ) const
         break;
     case SyncResult::Error:
         break;
+    case SyncResult::Problem:
+        folderMessage = tr( "Last Sync was successful, but with problems on individual files.");
+        break;
     case SyncResult::SetupError:
-
         folderMessage = tr( "Setup Error." );
         break;
     // no default case on purpose, check compiler warnings

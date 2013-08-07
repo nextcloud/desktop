@@ -40,30 +40,33 @@ QString SyncResult::statusString() const
     Status stat = status();
 
     switch( stat ){
-        case Undefined:
-            re = QLatin1String("Undefined");
-            break;
-        case NotYetStarted:
-            re = QLatin1String("Not yet Started");
-            break;
-        case SyncRunning:
-            re = QLatin1String("Sync Running");
-            break;
-        case Success:
-            re = QLatin1String("Success");
-            break;
-        case Error:
-            re = QLatin1String("Error");
-            break;
-        case SetupError:
-            re = QLatin1String("SetupError");
-            break;
-        case SyncPrepare:
-            re = QLatin1String("SyncPrepare");
-            break;
-        case Unavailable:
-            re = QLatin1String("Not availabe");
-            break;
+    case Undefined:
+        re = QLatin1String("Undefined");
+        break;
+    case NotYetStarted:
+        re = QLatin1String("Not yet Started");
+        break;
+    case SyncRunning:
+        re = QLatin1String("Sync Running");
+        break;
+    case Success:
+        re = QLatin1String("Success");
+        break;
+    case Error:
+        re = QLatin1String("Error");
+        break;
+    case SetupError:
+        re = QLatin1String("SetupError");
+        break;
+    case SyncPrepare:
+        re = QLatin1String("SyncPrepare");
+        break;
+    case Problem:
+        re = QLatin1String("Success, but with problems");
+        break;
+    case Unavailable:
+        re = QLatin1String("Not availabe");
+        break;
     }
     return re;
 }
