@@ -11,6 +11,7 @@
  * for more details.
  */
 
+#include <QApplication>
 #include <QDebug>
 #include <QNetworkCookie>
 #include <QWebFrame>
@@ -29,8 +30,12 @@ void ShibbolethWebView::setup(const QUrl& url, ShibbolethCookieJar* jar)
     QWebPage* page = new QWebPage(this);
 
     jar->setParent(this);
-    connect (jar, SIGNAL (newCookiesForUrl (QList<QNetworkCookie>, QUrl)),
-             this, SLOT (onNewCookiesForUrl (QList<QNetworkCookie>, QUrl)));
+    connect(jar, SIGNAL (newCookiesForUrl (QList<QNetworkCookie>, QUrl)),
+            this, SLOT (onNewCookiesForUrl (QList<QNetworkCookie>, QUrl)));
+    connect(page, SIGNAL(loadStarted()),
+            this, SLOT(slotLoadStarted()));
+    connect(page, SIGNAL(loadFinished(bool)),
+            this, SLOT(slotLoadFinished()));
 
     nm->setCookieJar(jar);
     page->setNetworkAccessManager(nm);
@@ -42,6 +47,11 @@ ShibbolethWebView::ShibbolethWebView(const QUrl& url, QWidget* parent)
   : QWebView(parent)
 {
     setup(url, new ShibbolethCookieJar(this));
+}
+
+ShibbolethWebView::~ShibbolethWebView()
+{
+    slotLoadFinished();
 }
 
 ShibbolethWebView::ShibbolethWebView(const QUrl& url, ShibbolethCookieJar* jar, QWidget* parent)
@@ -79,6 +89,16 @@ void ShibbolethWebView::hideEvent(QHideEvent* event)
 {
     Q_EMIT viewHidden();
     QWebView::hideEvent(event);
+}
+
+void ShibbolethWebView::slotLoadStarted()
+{
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+}
+
+void ShibbolethWebView::slotLoadFinished()
+{
+    QApplication::restoreOverrideCursor();
 }
 
 } // ns Mirall
