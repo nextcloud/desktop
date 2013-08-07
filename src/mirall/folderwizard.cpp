@@ -223,6 +223,7 @@ static QTreeWidgetItem* findFirstChild(QTreeWidgetItem *parent, const QString& t
             return child;
         }
     }
+    return 0;
 }
 
 static void recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path)
