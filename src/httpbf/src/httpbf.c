@@ -463,6 +463,9 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
             ne_request *req = ne_request_create(session, verb, transfer_url);
 
             if( req ) {
+                char buf[21];
+                snprintf(buf, sizeof(buf), "%"PRId64, transfer->stat_size);
+                ne_add_request_header(req, "OC-Total-Length", buf);
                 if( transfer->block_cnt > 1 ) {
                   ne_add_request_header(req, "OC-Chunked", "1");
                 }
