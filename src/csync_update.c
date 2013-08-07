@@ -182,7 +182,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     st->instruction = CSYNC_INSTRUCTION_NONE;
     goto out;
   }
-  if (excluded > 0) {
+  if (excluded > 0 || type == CSYNC_FTW_TYPE_SLINK) {
     st->instruction = CSYNC_INSTRUCTION_IGNORE;
     goto out;
   }
@@ -335,6 +335,8 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
     break;
   case CSYNC_FTW_FLAG_SLINK:
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "symlink: %s - not supported", file);
+    type = CSYNC_FTW_TYPE_SLINK;
+    break;
   case CSYNC_FTW_FLAG_DNR:
   case CSYNC_FTW_FLAG_DP:
   case CSYNC_FTW_FLAG_SLN:
