@@ -89,6 +89,7 @@ protected slots:
     void slotParseOptions( const QString& );
     void slotShowTrayMessage(const QString&, const QString&);
     void slotShowOptionalTrayMessage(const QString&, const QString&);
+    void slotShowGuiMessage(const QString& title, const QString& message);
     void slotCheckConnection();
     void slotConnectionValidatorResult(ConnectionValidator::Status);
     void slotSyncStateChange( const QString& );

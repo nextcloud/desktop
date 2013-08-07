@@ -48,7 +48,6 @@ FileItemDialog::FileItemDialog(QWidget *parent) :
     _ui->_treeWidget->setColumnWidth(0, 480);
     _timer.setInterval(1000);
     connect(&_timer, SIGNAL(timeout()), this, SLOT(slotSetFolderMessage()));
-    connect(this, SIGNAL(guiLog(QString,QString)), Logger::instance(), SIGNAL(guiLog(QString,QString)));
 
     QPushButton *copyBtn = _ui->_dialogButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
     connect(copyBtn, SIGNAL(clicked()), SLOT(copyToClipboard()));
@@ -161,7 +160,7 @@ void FileItemDialog::copyToClipboard()
     }
 
     QApplication::clipboard()->setText(text);
-    emit guiLog(tr("Copied to clipboard"), tr("The sync protocol has been copied to the clipboard."));
+    Logger::instance()->postGuiLog(tr("Copied to clipboard"), tr("The sync protocol has been copied to the clipboard."));
 }
 
 void FileItemDialog::accept()

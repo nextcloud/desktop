@@ -46,9 +46,6 @@ protected slots:
     void slotSetFolderMessage();
     void copyToClipboard();
 
-signals:
-    void guiLog(const QString&, const QString&);
-
 private:
     void setSyncFileItems( const SyncFileItemVector& list );
     void formatHeaderItem( QTreeWidgetItem *, const QList<QTreeWidgetItem*>& );

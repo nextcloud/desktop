@@ -136,6 +136,9 @@ void OwncloudSetupWizard::slotDetermineAuthType(const QString& serverUrl)
 
     ownCloudInfo* info(ownCloudInfo::instance());
     // If there is already a config, take its proxy config.
+
+    // !!! REFACTOR ALL THIS STUFF INTO A COMMON METHOD CALLED BY slotDetermineAuthType and the finish method !!!
+
     if( info->isConfigured() ) {
         MirallConfigFile prevCfg;
         cfgFile.setProxyType( prevCfg.proxyType(), prevCfg.proxyHostName(), prevCfg.proxyPort(),

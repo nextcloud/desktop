@@ -46,9 +46,14 @@ public:
   static Logger* instance();
   static void destroy();
 
+  void postGuiLog(const QString& title, const QString& message);
+  void postOptionalGuiLog(const QString& title, const QString& message);
+  void postGuiMessage(const QString& title, const QString& message);
+
 signals:
   void newLog(const QString&);
   void guiLog(const QString&, const QString&);
+  void guiMessage(const QString&, const QString&);
   void optionalGuiLog(const QString&, const QString&);
 
 protected:

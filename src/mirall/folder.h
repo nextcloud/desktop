@@ -59,8 +59,6 @@ public:
     ServerActionNotifier(QObject *parent = 0);
 public slots:
     void slotSyncFinished(const SyncResult &result);
-signals:
-    void guiLog(const QString&, const QString&);
 
 private:
 };

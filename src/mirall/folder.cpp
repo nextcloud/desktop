@@ -69,7 +69,6 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
     _syncResult.setStatus( SyncResult::NotYetStarted );
 
     ServerActionNotifier *notifier = new ServerActionNotifier(this);
-    connect(notifier, SIGNAL(guiLog(QString,QString)), Logger::instance(), SIGNAL(optionalGuiLog(QString,QString)));
     connect(this, SIGNAL(syncFinished(SyncResult)), this, SLOT(slotSyncFinished(SyncResult)));
     connect(this, SIGNAL(syncFinished(SyncResult)), notifier, SLOT(slotSyncFinished(SyncResult)));
 
@@ -605,29 +604,31 @@ void ServerActionNotifier::slotSyncFinished(const SyncResult &result)
         }
     }
 
+    Logger *logger = Logger::instance();
+
     if (newItems > 0) {
         QString file = QDir::toNativeSeparators(firstItemNew._file);
         if (newItems == 1)
-            emit guiLog(tr("New file available"), tr("'%1' has been synced to this machine.").arg(file));
+            logger->postGuiLog(tr("New file available"), tr("'%1' has been synced to this machine.").arg(file));
         else
-            emit guiLog(tr("New files available"), tr("'%1' and %n other file(s) have been synced to this machine.",
-                                                      "", newItems-1).arg(file));
+            logger->postGuiLog(tr("New files available"), tr("'%1' and %n other file(s) have been synced to this machine.",
+                                                             "", newItems-1).arg(file));
     }
     if (removedItems > 0) {
         QString file = QDir::toNativeSeparators(firstItemDeleted._file);
         if (removedItems == 1)
-            emit guiLog(tr("File removed"), tr("'%1' has been removed.").arg(file));
+            logger->postGuiLog(tr("File removed"), tr("'%1' has been removed.").arg(file));
         else
-            emit guiLog(tr("Files removed"), tr("'%1' and %n other file(s) have been removed.",
-                                                      "", removedItems-1).arg(file));
+            logger->postGuiLog(tr("Files removed"), tr("'%1' and %n other file(s) have been removed.",
+                                                        "", removedItems-1).arg(file));
     }
     if (updatedItems > 0) {
         QString file = QDir::toNativeSeparators(firstItemUpdated._file);
         if (updatedItems == 1)
-            emit guiLog(tr("File updated"), tr("'%1' has been updated.").arg(file));
+            logger->postGuiLog(tr("File updated"), tr("'%1' has been updated.").arg(file));
         else
-            emit guiLog(tr("Files updated"), tr("'%1' and %n other file(s) have been updated.",
-                                                      "", updatedItems-1).arg(file));
+            logger->postGuiLog(tr("Files updated"), tr("'%1' and %n other file(s) have been updated.",
+                                                       "", updatedItems-1).arg(file));
     }
 }
 

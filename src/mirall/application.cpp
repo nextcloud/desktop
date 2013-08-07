@@ -123,11 +123,12 @@ Application::Application(int &argc, char **argv) :
              this, SLOT(slotShowTrayMessage(QString,QString)));
     connect( Logger::instance(), SIGNAL(optionalGuiLog(QString,QString)),
              this, SLOT(slotShowOptionalTrayMessage(QString,QString)));
-    ProgressDispatcher *pd = ProgressDispatcher::instance();
+    connect( Logger::instance(), SIGNAL(guiMessage(QString,QString)),
+             this, SLOT(slotShowGuiMessage(QString,QString)));
 
+    ProgressDispatcher *pd = ProgressDispatcher::instance();
     connect( pd, SIGNAL(progressInfo(QString,Progress::Info)), this,
              SLOT(slotUpdateProgress(QString,Progress::Info)) );
-
     connect( pd, SIGNAL(progressSyncProblem(QString,Progress::SyncProblem)),
              SLOT(slotProgressSyncProblem(QString,Progress::SyncProblem)));
 
@@ -715,6 +716,16 @@ void Application::slotShowOptionalTrayMessage(const QString &title, const QStrin
     MirallConfigFile cfg;
     if (cfg.optionalDesktopNotifications())
         slotShowTrayMessage(title, msg);
+}
+
+void Application::slotShowGuiMessage(const QString &title, const QString &message)
+{
+    QMessageBox *msgBox = new QMessageBox;
+    msgBox->setAttribute(Qt::WA_DeleteOnClose);
+    msgBox->setText(message);
+    msgBox->setWindowTitle(title);
+    msgBox->setIcon(QMessageBox::Information);
+    msgBox->open();
 }
 
 void Application::slotSyncStateChange( const QString& alias )

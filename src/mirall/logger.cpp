@@ -22,7 +22,6 @@ Logger::Logger( QObject* parent)
 : QObject(parent),
   _showTime(true)
 {
-
 }
 
 Logger *Logger::instance()
@@ -37,6 +36,21 @@ void Logger::destroy()
         delete Logger::_instance;
         Logger::_instance = 0;
     }
+}
+
+void Logger::postGuiLog(const QString &title, const QString &message)
+{
+    emit guiLog(title, message);
+}
+
+void Logger::postOptionalGuiLog(const QString &title, const QString &message)
+{
+    emit optionalGuiLog(title, message);
+}
+
+void Logger::postGuiMessage(const QString &title, const QString &message)
+{
+    emit postGuiMessage(title, message);
 }
 
 void Logger::log(Log log)
