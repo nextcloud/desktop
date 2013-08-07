@@ -265,15 +265,15 @@ static void check_csync_detect_update_db_rename(void **state)
     assert_int_equal(rc, 0);
     stmt = sqlite3_mprintf("INSERT INTO metadata"
                            "(phash, pathlen, path, inode, uid, gid, mode, modtime,type,md5) VALUES"
-                           "(%lu, %d, '%q', %d, %d, %d, %d, %lu, %d, '%q');",
-                           42,
+                           "(%lld, %d, '%q', %d, %d, %d, %d, %lld, %d, '%q');",
+                           (long long signed int)42,
                            42,
                            "I_was_wurst_before_I_became_wurstsalat",
                            619070,
                            42,
                            42,
                            42,
-                           42,
+                           (long long signed int)42,
                            0,
                            "4711");
 
