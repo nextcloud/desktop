@@ -47,6 +47,7 @@ public Q_SLOTS:
 
 private Q_SLOTS:
     void onShibbolethCookieReceived(const QNetworkCookie& cookie);
+    void slotBrowserHidden();
     void onFetched();
 
 Q_SIGNALS:
@@ -55,6 +56,7 @@ Q_SIGNALS:
 
 private:
     QByteArray prepareCookieData() const;
+    void disposeBrowser();
 
     QNetworkCookie _shibCookie;
     bool _ready;

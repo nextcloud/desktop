@@ -56,7 +56,7 @@ int shibboleth_redirect_callback(CSYNC* csync_ctx,
     // blocks
     refresher.refresh();
 
-    return 0;
+    return creds->ready() ? 0 : 1;
 }
 
 } // ns
@@ -100,7 +100,9 @@ QByteArray ShibbolethCredentials::prepareCookieData() const
         uniqueCookies.insert(cookieName, c.value());
     }
 
-    uniqueCookies.insert(_shibCookie.name(), _shibCookie.value());
+    if (!_shibCookie.name().isEmpty()) {
+        uniqueCookies.insert(_shibCookie.name(), _shibCookie.value());
+    }
     foreach(const QString& cookieName, uniqueCookies.keys()) {
         cookiesAsString += cookieName;
         cookiesAsString += '=';
@@ -166,6 +168,8 @@ void ShibbolethCredentials::fetch()
         _browser = new ShibbolethWebView(QUrl(cfg.ownCloudUrl()));
         connect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie)),
                 this, SLOT(onShibbolethCookieReceived(QNetworkCookie)));
+        connect(_browser, SIGNAL(viewHidden()),
+                this, SLOT(slotBrowserHidden()));
         _browser->show ();
     }
 }
@@ -175,16 +179,31 @@ void ShibbolethCredentials::persistForUrl(const QString& /*url*/)
     // nothing to do here, we don't store session cookies.
 }
 
-void ShibbolethCredentials::onShibbolethCookieReceived(const QNetworkCookie& cookie)
+void ShibbolethCredentials::disposeBrowser()
 {
-    _browser->hide();
+    disconnect(_browser, SIGNAL(viewHidden()),
+               this, SLOT(slotBrowserHidden()));
     disconnect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie)),
                this, SLOT(onShibbolethCookieReceived(QNetworkCookie)));
+    _browser->hide();
     _browser->deleteLater();
     _browser = 0;
+}
+
+void ShibbolethCredentials::onShibbolethCookieReceived(const QNetworkCookie& cookie)
+{
+    disposeBrowser();
     _ready = true;
     _shibCookie = cookie;
     Q_EMIT newCookie(_shibCookie);
+    Q_EMIT fetched();
+}
+
+void ShibbolethCredentials::slotBrowserHidden()
+{
+    disposeBrowser();
+    _ready = false;
+    _shibCookie = QNetworkCookie();
     Q_EMIT fetched();
 }
 
