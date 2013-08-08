@@ -98,6 +98,9 @@ void ItemProgressDialog::setSyncResultStatus(const SyncResult& result )
     case SyncResult::SetupError:
         folderMessage = tr( "Setup Error." );
         break;
+    case SyncResult::Problem:
+        folderMessage = tr( "Sync success, but warnings on individual files.");
+        break;
     default:
         folderMessage = tr( "Undefined Error State." );
     }
@@ -265,7 +268,7 @@ void ItemProgressDialog::decorateFolderItem( const QString& folder )
     folderItem->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Success));
   } else {
     // FIXME: Set a soft error icon here.
-    folderItem->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Error));
+    folderItem->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Problem));
   }
 }
 
@@ -275,6 +278,7 @@ QTreeWidgetItem *ItemProgressDialog::createFolderItem(const QString& folder)
     strings.append(folder);
     QTreeWidgetItem *item = new QTreeWidgetItem( _ui->_treeWidget, strings );
     item->setFirstColumnSpanned(true);
+    item->setExpanded(true);
     return item;
 }
 

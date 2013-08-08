@@ -579,7 +579,7 @@ QString FolderMan::statusToString( SyncResult syncStatus, bool enabled ) const
     case SyncResult::Error:
         break;
     case SyncResult::Problem:
-        folderMessage = tr( "Last Sync was successful, but with problems on individual files.");
+        folderMessage = tr( "Last Sync was successful, but with warnings on individual files.");
         break;
     case SyncResult::SetupError:
         folderMessage = tr( "Setup Error." );
