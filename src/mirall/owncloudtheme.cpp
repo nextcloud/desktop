@@ -65,8 +65,8 @@ QString ownCloudTheme::about() const
     return  QCoreApplication::translate("ownCloudTheme::about()",
                "<p>Version %2. "
                "For more information visit <a href=\"%3\">%4</a></p>"
-               "<p><small>written by Klaas Freitag, Daniel Molkentin, ownCloud Inc., "
-               "based on Mirall by Duncan Mac-Vicar P.</small></p>"
+               "<p><small>By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc. "
+               "Based on Mirall by Duncan Mac-Vicar P.</small></p>"
                "%7"
                )
             .arg(MIRALL_STRINGIFY(MIRALL_VERSION))
