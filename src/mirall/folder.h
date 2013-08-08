@@ -30,6 +30,7 @@
 
 #include <QDebug>
 #include <QTimer>
+#include <qelapsedtimer.h>
 
 class QFileSystemWatcher;
 class QThread;
@@ -213,6 +214,7 @@ protected:
     Progress::Kind _progressKind;
     QTimer        _pollTimer;
     QString       _lastEtag;
+    QElapsedTimer _timeSinceLastSync;
 
     CSYNC *_csync_ctx;
 

@@ -33,6 +33,7 @@ static const char authTypeC[] = "authType";
 
 static const char caCertsKeyC[] = "CaCertificates";
 static const char remotePollIntervalC[] = "remotePollInterval";
+static const char forceSyncIntervalC[] = "forceSyncInterval";
 static const char monoIconsC[] = "monoIcons";
 static const char optionalDesktopNoficationsC[] = "optionalDesktopNotifications";
 static const char skipUpdateCheckC[] = "skipUpdateCheck";
@@ -388,6 +389,24 @@ void MirallConfigFile::setRemotePollInterval(int interval, const QString &connec
     settings.beginGroup( con );
     settings.setValue(QLatin1String(remotePollIntervalC), interval );
     settings.sync();
+}
+
+quint64 MirallConfigFile::forceSyncInterval(const QString& connection) const
+{
+    uint pollInterval = remotePollInterval(connection);
+
+    QString con( connection );
+    if( connection.isEmpty() ) con = defaultConnection();
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setIniCodec("UTF-8");
+    settings.beginGroup( con );
+
+    quint64 interval = settings.value( QLatin1String(forceSyncIntervalC), 10 * pollInterval ).toULongLong();
+    if( interval < pollInterval) {
+        qDebug() << "Force sync interval is less than the remote poll inteval, reverting to" << pollInterval;
+        interval = pollInterval;
+    }
+    return interval;
 }
 
 QString MirallConfigFile::ownCloudVersion() const

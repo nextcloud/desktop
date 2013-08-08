@@ -56,6 +56,7 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
       , _csync_ctx(0)
 {
     qsrand(QTime::currentTime().msec());
+    _timeSinceLastSync.start();
 
     _watcher = new FolderWatcher(path, this);
 
@@ -235,11 +236,17 @@ void Folder::evaluateSync(const QStringList &/*pathList*/)
 
 void Folder::slotPollTimerTimeout()
 {
-    qDebug() << "* Polling" << alias() << "for changes. Ignoring all pending events until now";
+    qDebug() << "* Polling" << alias() << "for changes. Ignoring all pending events until now (time since next sync:" << (_timeSinceLastSync.elapsed() / 1000) << "s)";
     _watcher->clearPendingEvents();
 
-    QObject::connect(new RequestEtagJob(secondPath(), this), SIGNAL(etagRetreived(QString)),
-                     this, SLOT(etagRetreived(QString)));
+    if (_timeSinceLastSync.elapsed() > MirallConfigFile().forceSyncInterval()) {
+        qDebug() << "* Force Sync now";
+        evaluateSync(QStringList());
+    } else {
+        // check if the etag is different
+        QObject::connect(new RequestEtagJob(secondPath(), this), SIGNAL(etagRetreived(QString)),
+                        this, SLOT(etagRetreived(QString)));
+    }
 }
 
 void Folder::etagRetreived(const QString& etag)
@@ -262,6 +269,7 @@ void Folder::slotSyncFinished(const SyncResult &result)
 {
     _watcher->setEventsEnabledDelayed(2000);
     _pollTimer.start();
+    _timeSinceLastSync.restart();
 
     qDebug() << "OO folder slotSyncFinished: result: " << int(result.status());
     emit syncStateChange();

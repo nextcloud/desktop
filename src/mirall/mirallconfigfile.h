@@ -72,6 +72,9 @@ public:
     /* Set poll interval. Value in microseconds has to be larger than 5000 */
     void setRemotePollInterval(int interval, const QString& connection = QString() );
 
+    /* Force sync interval, in milliseconds */
+    quint64 forceSyncInterval(const QString &connection = QString()) const;
+
     // Custom Config: accept the custom config to become the main one.
     void acceptCustomConfig();
     // Custom Config: remove the custom config file.
