@@ -1,5 +1,24 @@
 ChangeLog
 ==========
+version 0.81.0  (released 2013-08-08, ownCloud Client 1.4beta1 )
+  * Added API to get progress information from csync.
+  * Added c_rename function to csync std.
+  * Fix: Do renames of files before any puts.
+  * Improved database integrity checks.
+  * Improvements of database writing efficiendy.
+  * Fix: stat file on win32 even if its opened by application.
+  * httpbf: configurable block size and threshold.
+  * Many fixes found by a Coverity check.
+  * Fix: use correct stat struct on all platforms
+  * Fix: download resuming.
+  * ownCloud module: Bandwith limitation added.
+  * Added ability to remove ignored files automatically.
+  * Fix: Use int64_t and friends
+  * Fix: Removed all compile warnings.
+  * Left excluded files and links in csync's tree to be able to show.
+    them to the user.
+  * Add OC-Total-Length header for better quota handling.
+
 version 0.80.0  (released 2013  *06  *25)
   * Big file chunking (e.g. up/download of big files should now be no
     problem anymore)
