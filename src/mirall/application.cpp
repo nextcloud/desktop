@@ -362,7 +362,7 @@ void Application::setupContextMenu()
         _recentActionsMenu->addAction(_actionRecent);
     } else {
         _contextMenu = new QMenu();
-        _recentActionsMenu = _contextMenu->addMenu(tr("Recent Changes..."));
+        _recentActionsMenu = _contextMenu->addMenu(tr("Recent Changes"));
         // this must be called only once after creating the context menu, or
         // it will trigger a bug in Ubuntu's SNI bridge patch (11.10, 12.04).
         _tray->setContextMenu(_contextMenu);
