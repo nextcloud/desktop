@@ -239,7 +239,7 @@ void Folder::slotPollTimerTimeout()
     qDebug() << "* Polling" << alias() << "for changes. Ignoring all pending events until now (time since next sync:" << (_timeSinceLastSync.elapsed() / 1000) << "s)";
     _watcher->clearPendingEvents();
 
-    if (_timeSinceLastSync.elapsed() > MirallConfigFile().forceSyncInterval()) {
+    if (quint64(_timeSinceLastSync.elapsed()) > MirallConfigFile().forceSyncInterval()) {
         qDebug() << "* Force Sync now";
         evaluateSync(QStringList());
     } else {
