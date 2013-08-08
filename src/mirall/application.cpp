@@ -680,7 +680,7 @@ void Application::slotSettings()
     if (_settingsDialog.isNull()) {
         _settingsDialog = new SettingsDialog(this);
         _settingsDialog->setAttribute( Qt::WA_DeleteOnClose, true );
-        _settingsDialog->open();
+        _settingsDialog->show();
     }
     Utility::raiseDialog(_settingsDialog);
 }
@@ -691,7 +691,7 @@ void Application::slotItemProgressDialog()
         _progressDialog = new ItemProgressDialog(this);
         _progressDialog->setAttribute( Qt::WA_DeleteOnClose, true );
         _progressDialog->setupList();
-        _progressDialog->open();
+        _progressDialog->show();
     }
     Utility::raiseDialog(_progressDialog);
 }
