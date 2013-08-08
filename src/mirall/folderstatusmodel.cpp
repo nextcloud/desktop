@@ -280,7 +280,9 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
       overallProgressRect.setLeft( pBRect.right()+margin);
       overallProgressRect.setWidth( progressTextWidth );
       painter->setFont(progressFont);
-      painter->drawText( overallProgressRect, Qt::AlignRight+Qt::AlignVCenter, overallString);
+
+      QString elidedText = progressFm.elidedText(overallString, Qt::ElideLeft, overallProgressRect.width());
+      painter->drawText( overallProgressRect, Qt::AlignRight+Qt::AlignVCenter, elidedText);
 
       // Individual File Progress
       QRect fileRect;
@@ -288,8 +290,9 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
       fileRect.setLeft( iconRect.left());
       fileRect.setWidth(overallWidth);
       fileRect.setHeight(fileNameTextHeight);
+      elidedText = progressFm.elidedText(itemString, Qt::ElideLeft, fileRect.width());
 
-      painter->drawText( fileRect, Qt::AlignLeft+Qt::AlignVCenter, itemString);
+      painter->drawText( fileRect, Qt::AlignLeft+Qt::AlignVCenter, elidedText);
 
       painter->restore();
   }
