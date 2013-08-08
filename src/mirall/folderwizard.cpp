@@ -359,9 +359,7 @@ FolderWizard::FolderWizard( QWidget *parent )
     }
 
     setWindowTitle( tr( "%1 Folder Wizard" ).arg( Theme::instance()->appNameGUI() ) );
-#ifdef Q_WS_MAC
-    setWizardStyle( QWizard::ModernStyle );
-#endif
+    setOptions(QWizard::CancelButtonOnLeft);
 }
 
 FolderWizard::~FolderWizard()
