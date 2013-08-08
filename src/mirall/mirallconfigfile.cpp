@@ -58,9 +58,18 @@ QString MirallConfigFile::_confDir = QString::null;
 bool    MirallConfigFile::_askedUser = false;
 QMap< QString, MirallConfigFile::SharedCreds > MirallConfigFile::credentialsPerConfig;
 
-MirallConfigFile::MirallConfigFile( const QString& appendix )
-    :_customHandle(appendix)
+MirallConfigFile::MirallConfigFile( const QString& appendix, bool useOldConfig )
 {
+
+    if (useOldConfig && !appendix.isEmpty()) {
+        QString oldConfigFile = configFile();
+        _customHandle = appendix;
+        QString newConfigFile = configFile();
+        QFile::copy(oldConfigFile, newConfigFile);
+    } else {
+        _customHandle = appendix;
+    }
+
     QSettings::setDefaultFormat(QSettings::IniFormat);
     if (! credentialsPerConfig.contains(_customHandle)) {
         QString con( _customHandle );
@@ -68,6 +77,7 @@ MirallConfigFile::MirallConfigFile( const QString& appendix )
 
         const QString config = configFile();
         qDebug() << "Loading config: " << config;
+
 
         QSettings settings(config, QSettings::IniFormat);
         settings.setIniCodec("UTF-8");

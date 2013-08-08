@@ -28,7 +28,7 @@ class AbstractCredentials;
 class MirallConfigFile
 {
 public:
-    MirallConfigFile( const QString& appendix = QString() );
+    MirallConfigFile( const QString& appendix = QString(), bool useOldConfig = false );
 
     enum Scope { UserScope, SystemScope };
 

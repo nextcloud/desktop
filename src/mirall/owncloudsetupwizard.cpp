@@ -122,7 +122,7 @@ void OwncloudSetupWizard::slotDetermineAuthType(const QString& serverUrl)
 
     _configHandle = now.toString(QLatin1String("MMddyyhhmmss"));
 
-    MirallConfigFile cfgFile( _configHandle );
+    MirallConfigFile cfgFile( _configHandle, true );
     if( url.isEmpty() ) return;
     if( !( url.startsWith(QLatin1String("https://")) || url.startsWith(QLatin1String("http://"))) ) {
         qDebug() << "url does not start with a valid protocol, assuming https.";
@@ -134,17 +134,7 @@ void OwncloudSetupWizard::slotDetermineAuthType(const QString& serverUrl)
                                  url,
                                  new DummyCredentials);
 
-    ownCloudInfo* info(ownCloudInfo::instance());
-    // If there is already a config, take its proxy config.
-
-    // !!! REFACTOR ALL THIS STUFF INTO A COMMON METHOD CALLED BY slotDetermineAuthType and the finish method !!!
-
-    if( info->isConfigured() ) {
-        MirallConfigFile prevCfg;
-        cfgFile.setProxyType( prevCfg.proxyType(), prevCfg.proxyHostName(), prevCfg.proxyPort(),
-                              prevCfg.proxyNeedsAuth(), prevCfg.proxyUser(), prevCfg.proxyPassword() );
-    }
-
+    ownCloudInfo* info = ownCloudInfo::instance();
     info->setCustomConfigHandle( _configHandle );
     if( info->isConfigured() ) {
         // reset the SSL Untrust flag to let the SSL dialog appear again.
@@ -260,7 +250,7 @@ void OwncloudSetupWizard::testOwnCloudConnect()
 
     _configHandle = now.toString(QLatin1String("MMddyyhhmmss"));
 
-    MirallConfigFile cfgFile( _configHandle );
+    MirallConfigFile cfgFile( _configHandle, true );
     QString url = _ocWizard->field(QLatin1String("OCUrl")).toString();
     if( url.isEmpty() ) return;
     if( !( url.startsWith(QLatin1String("https://")) || url.startsWith(QLatin1String("http://"))) ) {
