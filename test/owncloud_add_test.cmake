@@ -15,5 +15,5 @@ macro(owncloud_add_test test_class)
         ${QT_QTCORE_LIBRARY}
     )
 
-    add_test(NAME ${OWNCLOUD_TEST_CLASS}Test COMMAND ${OWNCLOUD_TEST_CLASS}Test -v2)
+    add_test(NAME ${OWNCLOUD_TEST_CLASS}Test COMMAND ${OWNCLOUD_TEST_CLASS}Test)
 endmacro()
