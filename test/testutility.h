@@ -50,7 +50,7 @@ private slots:
     {
 	QVERIFY(toCSyncScheme("http://example.com/owncloud/") ==
                               "owncloud://example.com/owncloud/");
-    	QVERIFY(toCSyncScheme("https://example.com/owncloud/") ==
+	QVERIFY(toCSyncScheme("https://example.com/owncloud/") ==
                               "ownclouds://example.com/owncloud/");
 }
 };

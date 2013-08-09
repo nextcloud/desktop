@@ -10,7 +10,7 @@ macro(owncloud_add_test test_class)
     add_executable(${OWNCLOUD_TEST_CLASS}Test test${OWNCLOUD_TEST_CLASS_LOWERCASE}.cpp ${${OWNCLOUD_TEST_CLASS}_MOCS})
 
     target_link_libraries(${OWNCLOUD_TEST_CLASS}Test
-
+        ${APPLICATION_SHORTNAME}sync
         ${QT_QTTEST_LIBRARY}
         ${QT_QTCORE_LIBRARY}
     )
