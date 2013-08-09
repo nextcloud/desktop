@@ -23,6 +23,7 @@ desktop.ini
 *.toc
 
 *_conflict-*
+]*.~*
 
 ].TemporaryItems
 ].Trashes
