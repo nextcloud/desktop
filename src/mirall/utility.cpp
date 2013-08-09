@@ -124,6 +124,8 @@ QString Utility::octetsToString( qint64 octets )
         return QString::number(qRound64(qreal(octets)/qreal(mb))) + QLatin1String(" MB");
     } else if (octets >= kb) {
         return QString::number(qRound64(qreal(octets)/qreal(kb))) + QLatin1String(" KB");
+    } else if (octets == 1){
+        return QLatin1String("1 byte");
     } else {
         return QString::number(octets) + QLatin1String(" bytes");
     }
