@@ -57,7 +57,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="97"/>
         <source>Folders</source>
-        <translation type="unfinished"/>
+        <translation>Mappar</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="195"/>
@@ -191,7 +191,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="428"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Ansluten till &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="429"/>
@@ -299,7 +299,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="365"/>
         <source>Recent Changes</source>
-        <translation type="unfinished"/>
+        <translation>Senaste ändringar</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="382"/>
@@ -698,24 +698,24 @@
         <translation>%1 är inte läsbar.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="315"/>
+        <location filename="../src/mirall/folder.cpp" line="314"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Fel</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="344"/>
+        <location filename="../src/mirall/folder.cpp" line="343"/>
         <source>The CSync thread terminated.</source>
         <translation>CSync-tråden avslutades.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="652"/>
+        <location filename="../src/mirall/folder.cpp" line="651"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Denna synk skulle radera alla filer i den lokala mappen &apos;%1&apos;.
 Om systemadministratören har återställt ditt konto på servern, välj &quot;Behåll filer&quot;. Om du vill att dina filer ska raderas, välj &quot;Radera alla filer&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="655"/>
+        <location filename="../src/mirall/folder.cpp" line="654"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -724,17 +724,17 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
 Är du säker på att du vill fortsätta?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="659"/>
+        <location filename="../src/mirall/folder.cpp" line="658"/>
         <source>Remove All Files?</source>
         <translation>Ta bort alla filer?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="661"/>
+        <location filename="../src/mirall/folder.cpp" line="660"/>
         <source>Remove all files</source>
         <translation>Ta bort alla filer</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="662"/>
+        <location filename="../src/mirall/folder.cpp" line="661"/>
         <source>Keep files</source>
         <translation>Behåll filer</translation>
     </message>
@@ -784,7 +784,7 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
     <message>
         <location filename="../src/mirall/folderman.cpp" line="582"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
-        <translation type="unfinished"/>
+        <translation>Senaste synkning lyckades, men det finns varningar för vissa filer!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="585"/>
@@ -794,7 +794,7 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
     <message>
         <location filename="../src/mirall/folderman.cpp" line="591"/>
         <source>%1 (Sync is paused)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (Synk är stoppad)</translation>
     </message>
 </context>
 <context>
@@ -823,7 +823,8 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
         <source>Could not monitor directories due to system limitations.
 The application will not work reliably. Please check the
 documentation for possible fixes.</source>
-        <translation type="unfinished"/>
+        <translation>Kunde inte övervaka mappar p.g.a. systembegränsningar.
+Applikationen kommer inte att fungera tillförlitligt. Kontrollera dokumentationen för möjliga åtgärder.</translation>
     </message>
 </context>
 <context>
@@ -903,12 +904,12 @@ documentation for possible fixes.</source>
         <location filename="../src/mirall/folderwizard.cpp" line="264"/>
         <source>Root (&quot;/&quot;)</source>
         <comment>root folder</comment>
-        <translation type="unfinished"/>
+        <translation>Rot (&quot;/&quot;)</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="266"/>
         <source>Choose this to sync the entire account</source>
-        <translation type="unfinished"/>
+        <translation>Välj detta för att synka allt</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="302"/>
@@ -972,7 +973,9 @@ documentation for possible fixes.</source>
         <source>Files or directories matching a pattern will not be synchronized.
 
 Checked items will also be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation type="unfinished"/>
+        <translation>Filer eller mappar som matchar ett mönster kommer inte att synkroniseras.
+
+Valda objekt kommer också att raderas om dom hindrar en mapp från att tas bort. Detta är användbart för meta-data.</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="97"/>
@@ -1073,12 +1076,12 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="84"/>
         <source>Determining which files to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Kontrollerar vilka filer som ska synkroniseras.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="87"/>
         <source>Server is currently not available.</source>
-        <translation type="unfinished"/>
+        <translation>Servern är för närvarande inte tillgänglig.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="90"/>
@@ -1103,7 +1106,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="102"/>
         <source>Sync success, but warnings on individual files.</source>
-        <translation type="unfinished"/>
+        <translation>Synkningen lyckades, men med varningar för vissa filer!</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="105"/>
@@ -1113,27 +1116,27 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="108"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="153"/>
         <source>File ignored.</source>
-        <translation type="unfinished"/>
+        <translation>Filen ignorerad.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="155"/>
         <source>Directory ignored.</source>
-        <translation type="unfinished"/>
+        <translation>Mappen ignorerad.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="157"/>
         <source>Soft Link ignored.</source>
-        <translation type="unfinished"/>
+        <translation>Länken ignorerad.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="159"/>
         <source>Ignored.</source>
-        <translation type="unfinished"/>
+        <translation>Ignorerade.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="245"/>
@@ -1316,42 +1319,42 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="47"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Ansluten till %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="48"/>
         <source>Setup local folder options</source>
-        <translation type="unfinished"/>
+        <translation>Inställningar för lokala mappar.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="106"/>
         <source>Your entire account will be synced to the local folder &apos;%1&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>Alla filer kommer att synkroniseras till den lokala mappen &apos;%1&apos;.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="109"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
-        <translation type="unfinished"/>
+        <translation>%1 mappen &apos;%2&apos; är synkroniserad mot den lokala mappen &apos;%3&apos;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="115"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; You currently have multiple folders configured. If you continue with the current settings, the folder configurations will be discarded and a single root folder sync will be created!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Varning:&lt;/strong&gt; Du har för närvarande flera mappar konfigurerade. Om du fortsätter med nuvarande inställningar så kommer inställningarna för synkronisering av mapparna att tas bort och ersättas med en enda synkronisering av själva rot-mappen!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="122"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local directory is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Varning:&lt;/strong&gt; Den lokala mappen är inte tom. Välj en lösning!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="232"/>
         <source>Local Sync Folder</source>
-        <translation type="unfinished"/>
+        <translation>Lokal mapp för synkning</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="245"/>
         <source>Update advanced setup</source>
-        <translation type="unfinished"/>
+        <translation>Uppdatera avancerade inställningar</translation>
     </message>
 </context>
 <context>
@@ -1359,17 +1362,17 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="41"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Anslut till %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="42"/>
         <source>Enter user credentials</source>
-        <translation type="unfinished"/>
+        <translation>Ange inloggningsuppgifter</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="158"/>
         <source>Update user credentials</source>
-        <translation type="unfinished"/>
+        <translation>Uppdatera inloggningsuppgifter</translation>
     </message>
 </context>
 <context>
@@ -1377,12 +1380,12 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="43"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Anslut till %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="44"/>
         <source>Setup ownCloud server</source>
-        <translation type="unfinished"/>
+        <translation>Konfigurera ownCloud-servern</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="100"/>
@@ -1397,7 +1400,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="230"/>
         <source>Update ownCloud server</source>
-        <translation type="unfinished"/>
+        <translation>Uppdatera ownCloud-servern</translation>
     </message>
 </context>
 <context>
@@ -1425,7 +1428,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="111"/>
         <source>Trying to connect to %1 at %2 to determine authentication type...</source>
-        <translation type="unfinished"/>
+        <translation>Försöker ansluta till  %1 på %2 för att avgöra autentiseringstyp...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="159"/>
@@ -1440,7 +1443,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="296"/>
         <source>Error: Wrong credentials.</source>
-        <translation type="unfinished"/>
+        <translation>Fel: Ogiltiga inloggningsuppgifter.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="311"/>
@@ -1558,7 +1561,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="39"/>
         <source>Everything set up!</source>
-        <translation type="unfinished"/>
+        <translation>Allt är konfigurerat!</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="78"/>
@@ -1574,62 +1577,62 @@ Checked items will also be deleted if they prevent a directory from being remove
 <context>
     <name>Mirall::ServerActionNotifier</name>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="626"/>
+        <location filename="../src/mirall/folder.cpp" line="625"/>
         <source>New file available</source>
         <translation>Ny fil tillgänglig</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="626"/>
+        <location filename="../src/mirall/folder.cpp" line="625"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
         <translation>&apos;%1&apos; har synkroniserats till denna dator.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="628"/>
+        <location filename="../src/mirall/folder.cpp" line="627"/>
         <source>New files available</source>
         <translation>Nya filer finns tillgängliga</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/folder.cpp" line="628"/>
+        <location filename="../src/mirall/folder.cpp" line="627"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
         <translation><numerusform>&apos;%1&apos; och %n andra fil(er) har synkroniserats till denna dator.</numerusform><numerusform>&apos;%1&apos; och %n andra fil(er) har synkroniserats till denna dator.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="634"/>
+        <location filename="../src/mirall/folder.cpp" line="633"/>
         <source>File removed</source>
         <translation>Filen raderad</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="634"/>
+        <location filename="../src/mirall/folder.cpp" line="633"/>
         <source>&apos;%1&apos; has been removed.</source>
         <translation>&apos;%1&apos; har tagits bort.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="636"/>
+        <location filename="../src/mirall/folder.cpp" line="635"/>
         <source>Files removed</source>
         <translation>Filerna är borttagna.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/folder.cpp" line="636"/>
+        <location filename="../src/mirall/folder.cpp" line="635"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
         <translation><numerusform>&apos;%1&apos; och %n andra fil(er) har tagits bort.</numerusform><numerusform>&apos;%1&apos; och %n andra fil(er) har tagits bort.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="642"/>
+        <location filename="../src/mirall/folder.cpp" line="641"/>
         <source>File updated</source>
         <translation>Filen är uppdaterad</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="642"/>
+        <location filename="../src/mirall/folder.cpp" line="641"/>
         <source>&apos;%1&apos; has been updated.</source>
         <translation>&apos;%1&apos; har uppdaterats.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="644"/>
+        <location filename="../src/mirall/folder.cpp" line="643"/>
         <source>Files updated</source>
         <translation>Filer uppdaterade</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/folder.cpp" line="644"/>
+        <location filename="../src/mirall/folder.cpp" line="643"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
         <translation><numerusform>&apos;%1&apos; och %n andra fil(er) har uppdaterats.</numerusform><numerusform>&apos;%1&apos; och %n andra fil(er) har uppdaterats.</numerusform></translation>
     </message>
@@ -1828,42 +1831,42 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="72"/>
         <source>&amp;Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Lokal mapp</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="88"/>
         <source>pbSelectLocalFolder</source>
-        <translation type="unfinished"/>
+        <translation>pbVäljLokalMapp</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="110"/>
         <source>&amp;Keep local data</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Behåll lokal data</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="142"/>
         <source>&lt;small&gt;Syncs your existing data to new location.&lt;/small&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;small&gt;Synkroniserar din existerande data till den nya platsen.&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="161"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local directory will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers directory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Om denna ruta är ikryssad så kommer existerande innehåll i den lokala mappen att raderas och en ny synkronisering sker från servern.&lt;/p&gt;&lt;p&gt;Kryssa inte i denna ruta om data från den lokala mappen ska laddas upp till servern.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="164"/>
         <source>&amp;Start a clean sync</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Starta en ren synkronisering</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="196"/>
         <source>&lt;small&gt;Erases the contents of the local folder before syncing using the new settings.&lt;/small&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;small&gt;Raderar innehållet i den lokala mappen innan synkronisering sker med de nya inställningarna.&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="243"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>Statusmeddelande</translation>
     </message>
 </context>
 <context>
@@ -1876,17 +1879,17 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="38"/>
         <source>&amp;Username</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Användarnamn</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="48"/>
         <source>&amp;Password</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Lösenord</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="58"/>
         <source>Error Label</source>
-        <translation type="unfinished"/>
+        <translation>Felmeddelande</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="109"/>
@@ -2109,22 +2112,22 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="40"/>
         <source>Inactive</source>
-        <translation type="unfinished"/>
+        <translation>Inaktiv</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="50"/>
         <source>Start</source>
-        <translation type="unfinished"/>
+        <translation>Start</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="53"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>Klar</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="56"/>
         <source>For deletion</source>
-        <translation type="unfinished"/>
+        <translation>För radering</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="83"/>
@@ -2239,7 +2242,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="65"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.&lt;br&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;%7</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Version %2. För mer information besök &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Skriven av Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.&lt;br&gt;Baserad på Mirall av Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;%7</translation>
     </message>
 </context>
 </TS>

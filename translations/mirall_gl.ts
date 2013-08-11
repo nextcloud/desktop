@@ -299,7 +299,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="365"/>
         <source>Recent Changes</source>
-        <translation type="unfinished"/>
+        <translation>Cambios recentes</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="382"/>
@@ -698,24 +698,24 @@
         <translation>%1 non é lexíbel.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="315"/>
+        <location filename="../src/mirall/folder.cpp" line="314"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Erro</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="344"/>
+        <location filename="../src/mirall/folder.cpp" line="343"/>
         <source>The CSync thread terminated.</source>
         <translation>Rematou o fío en CSync.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="652"/>
+        <location filename="../src/mirall/folder.cpp" line="651"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Esta sincronización retirará todos os ficheiros do cartafol local de  sincronización «%1».
 Se vostede, ou o administrador, restabeleceu a súa conta no servidor, escolla «Manter os ficheiros». Se quere que os seus datos sexan eliminados, escolla «Retirar todos os ficheiros».</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="655"/>
+        <location filename="../src/mirall/folder.cpp" line="654"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -724,17 +724,17 @@ Isto podería ser debido a que o cartafol foi reconfigurado en silencio, ou a qu
 Confirma que quere realizar esta operación?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="659"/>
+        <location filename="../src/mirall/folder.cpp" line="658"/>
         <source>Remove All Files?</source>
         <translation>Retirar todos os ficheiros?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="661"/>
+        <location filename="../src/mirall/folder.cpp" line="660"/>
         <source>Remove all files</source>
         <translation>Retirar todos os ficheiros</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="662"/>
+        <location filename="../src/mirall/folder.cpp" line="661"/>
         <source>Keep files</source>
         <translation>Manter os ficheiros</translation>
     </message>
@@ -784,7 +784,7 @@ Confirma que quere realizar esta operación?</translation>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="582"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
-        <translation type="unfinished"/>
+        <translation>A última sincronización fíxose correctamente, mais con algún aviso en ficheiros individuais.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="585"/>
@@ -823,7 +823,9 @@ Confirma que quere realizar esta operación?</translation>
         <source>Could not monitor directories due to system limitations.
 The application will not work reliably. Please check the
 documentation for possible fixes.</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel supervisar os directorios por mor de
+limitacións do sistema. O aplicativo non funciona de xeito
+fiábel. Revise a documentación para posíbeis arranxos.</translation>
     </message>
 </context>
 <context>
@@ -1105,7 +1107,7 @@ Os elementos marcados tamén se eliminarán se impiden retirar un directorio. Is
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="102"/>
         <source>Sync success, but warnings on individual files.</source>
-        <translation type="unfinished"/>
+        <translation>A sincronización foi correcta, mais con algún aviso en ficheiros individuais.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="105"/>
@@ -1576,62 +1578,62 @@ Os elementos marcados tamén se eliminarán se impiden retirar un directorio. Is
 <context>
     <name>Mirall::ServerActionNotifier</name>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="626"/>
+        <location filename="../src/mirall/folder.cpp" line="625"/>
         <source>New file available</source>
         <translation>Novo ficheiro dispoñíbel</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="626"/>
+        <location filename="../src/mirall/folder.cpp" line="625"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
         <translation>«%1» foi sincronizado con esta máquina.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="628"/>
+        <location filename="../src/mirall/folder.cpp" line="627"/>
         <source>New files available</source>
         <translation>Novos ficheiros dispoñíbeis</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/folder.cpp" line="628"/>
+        <location filename="../src/mirall/folder.cpp" line="627"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
         <translation><numerusform>«%1» e outro ficheiro foi sincronizado con esta máquina.</numerusform><numerusform>«%1» e outros %n ficheiros foron sincronizados con esta máquina.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="634"/>
+        <location filename="../src/mirall/folder.cpp" line="633"/>
         <source>File removed</source>
         <translation>Ficheiro retirado</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="634"/>
+        <location filename="../src/mirall/folder.cpp" line="633"/>
         <source>&apos;%1&apos; has been removed.</source>
         <translation>«%1» foi retirado.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="636"/>
+        <location filename="../src/mirall/folder.cpp" line="635"/>
         <source>Files removed</source>
         <translation>Ficheiros retirados</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/folder.cpp" line="636"/>
+        <location filename="../src/mirall/folder.cpp" line="635"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
         <translation><numerusform>«%1» e outro ficheiro foi retirado.</numerusform><numerusform>«%1» e outros %n ficheiros foron retirados.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="642"/>
+        <location filename="../src/mirall/folder.cpp" line="641"/>
         <source>File updated</source>
         <translation>Ficheiro actualizado</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="642"/>
+        <location filename="../src/mirall/folder.cpp" line="641"/>
         <source>&apos;%1&apos; has been updated.</source>
         <translation>«%1» foi actualizado.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="644"/>
+        <location filename="../src/mirall/folder.cpp" line="643"/>
         <source>Files updated</source>
         <translation>Ficheiros actualizados</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/folder.cpp" line="644"/>
+        <location filename="../src/mirall/folder.cpp" line="643"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
         <translation><numerusform>«%1» e outro ficheiro foi actualizado.</numerusform><numerusform>«%1» e outros %n ficheiros foron actualizados.</numerusform></translation>
     </message>
@@ -2241,7 +2243,7 @@ Os elementos marcados tamén se eliminarán se impiden retirar un directorio. Is
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="65"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.&lt;br&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;%7</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versión %2.Versión &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.&lt;br&gt;Baseado no Mirall por Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;%7</translation>
     </message>
 </context>
 </TS>

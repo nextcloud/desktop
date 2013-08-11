@@ -698,40 +698,40 @@
         <translation>%1 jest nie do odczytu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="315"/>
+        <location filename="../src/mirall/folder.cpp" line="314"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="344"/>
+        <location filename="../src/mirall/folder.cpp" line="343"/>
         <source>The CSync thread terminated.</source>
         <translation>Wątek CSync zakończony.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="652"/>
+        <location filename="../src/mirall/folder.cpp" line="651"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="655"/>
+        <location filename="../src/mirall/folder.cpp" line="654"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="659"/>
+        <location filename="../src/mirall/folder.cpp" line="658"/>
         <source>Remove All Files?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="661"/>
+        <location filename="../src/mirall/folder.cpp" line="660"/>
         <source>Remove all files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="662"/>
+        <location filename="../src/mirall/folder.cpp" line="661"/>
         <source>Keep files</source>
         <translation type="unfinished"/>
     </message>
@@ -1571,62 +1571,62 @@ Checked items will also be deleted if they prevent a directory from being remove
 <context>
     <name>Mirall::ServerActionNotifier</name>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="626"/>
+        <location filename="../src/mirall/folder.cpp" line="625"/>
         <source>New file available</source>
         <translation>Nowy plik dostępny</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="626"/>
+        <location filename="../src/mirall/folder.cpp" line="625"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
         <translation>Zsynchronizowano &apos;%1&apos; z tą maszyną.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="628"/>
+        <location filename="../src/mirall/folder.cpp" line="627"/>
         <source>New files available</source>
         <translation>Nowe pliki dostępne</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/folder.cpp" line="628"/>
+        <location filename="../src/mirall/folder.cpp" line="627"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
         <translation><numerusform>&apos;%1&apos; i %n inne pliki zostały zsynchronizowane z tą maszyną.</numerusform><numerusform>&apos;%1&apos; i %n inne pliki zostały zsynchronizowane z tą maszyną.</numerusform><numerusform>„%1” oraz %n inny(ch) plik(ów) zostało zsynchronizowanych z tą maszyną.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="634"/>
+        <location filename="../src/mirall/folder.cpp" line="633"/>
         <source>File removed</source>
         <translation>Usunięto plik</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="634"/>
+        <location filename="../src/mirall/folder.cpp" line="633"/>
         <source>&apos;%1&apos; has been removed.</source>
         <translation>Usunięto „%1”.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="636"/>
+        <location filename="../src/mirall/folder.cpp" line="635"/>
         <source>Files removed</source>
         <translation>Pliki usunięto</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/folder.cpp" line="636"/>
+        <location filename="../src/mirall/folder.cpp" line="635"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
         <translation><numerusform>%1&apos; i %n inne pliki zostały usunięte z tej maszyny.</numerusform><numerusform>%1&apos; i %n inne pliki zostały usunięte z tej maszyny.</numerusform><numerusform>Usunięto „%1” oraz %n inny(ch) plik(ów).</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="642"/>
+        <location filename="../src/mirall/folder.cpp" line="641"/>
         <source>File updated</source>
         <translation>Plik zaktualizowano</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="642"/>
+        <location filename="../src/mirall/folder.cpp" line="641"/>
         <source>&apos;%1&apos; has been updated.</source>
         <translation>„%1” został uaktualniony.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="644"/>
+        <location filename="../src/mirall/folder.cpp" line="643"/>
         <source>Files updated</source>
         <translation>Pliki zaktualizowano</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/folder.cpp" line="644"/>
+        <location filename="../src/mirall/folder.cpp" line="643"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
         <translation><numerusform>%1&apos; i %n inne pliki zostały uaktualnione na tej maszynie.</numerusform><numerusform>%1&apos; i %n inne pliki zostały uaktualnione na tej maszynie.</numerusform><numerusform>Uaktualniono „%1” oraz %n inny(ch) plik(ów).</numerusform></translation>
     </message>
