@@ -224,19 +224,25 @@ void ItemProgressDialog::copyToClipboard()
     int topLevelItems = _ui->_treeWidget->topLevelItemCount();
     for (int i = 0; i < topLevelItems; i++) {
         QTreeWidgetItem *item = _ui->_treeWidget->topLevelItem(i);
-        ts << left << qSetFieldWidth(50)
+        ts << left << qSetFieldWidth(0)
            << item->data(0, Qt::DisplayRole).toString()
-           << right << qSetFieldWidth(6)
-           << item->data(1, Qt::DisplayRole).toString()
            << endl;
         int childItems = item->childCount();
         for (int j = 0; j < childItems; j++) {
             QTreeWidgetItem *child =item->child(j);
-            ts << left << qSetFieldWidth(0) << QLatin1String("   ")
+                // time stamp
+            ts << left << qSetFieldWidth(10)
                << child->data(0,Qt::DisplayRole).toString()
-               << QString::fromLatin1(" (%1)").arg(
-                      child->data(1, Qt::DisplayRole).toString()
-                      )
+                  // file name
+               << qSetFieldWidth(50)
+               << child->data(1,Qt::DisplayRole).toString()
+                  // action
+               << qSetFieldWidth(15)
+               << child->data(2, Qt::DisplayRole).toString()
+                  // size
+               << qSetFieldWidth(10)
+               << child->data(3, Qt::DisplayRole).toString()
+               << qSetFieldWidth(0)
                << endl;
         }
     }
