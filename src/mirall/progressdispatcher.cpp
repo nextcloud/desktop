@@ -160,7 +160,7 @@ void ProgressDispatcher::setProgressInfo(const QString& folder, const Progress::
         err.current_file  = newProgress.current_file;
         err.error_message = QString::fromLocal8Bit( (const char*)newProgress.file_size );
         err.error_code    = newProgress.file_size;
-        err.timestamp     = QTime::currentTime();
+        err.timestamp     = QDateTime::currentDateTime();
 
         _recentProblems.enqueue( err );
         if( _recentProblems.size() > _problemQueueSize ) {

@@ -57,7 +57,7 @@ public:
         qint64  overall_transmission_size;
         qint64  overall_current_bytes;
 
-        QTime  timestamp;
+        QDateTime timestamp;
 
     } Info;
 
@@ -66,7 +66,7 @@ public:
         QString current_file;
         QString error_message;
         int     error_code;
-        QTime  timestamp;
+        QDateTime  timestamp;
     } SyncProblem;
 
     static QString asActionString( Kind );

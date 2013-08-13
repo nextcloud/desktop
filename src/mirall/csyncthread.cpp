@@ -494,7 +494,7 @@ void CSyncThread::cb_progress( CSYNC_PROGRESS *progress, void *userdata )
     pInfo.current_file_no       = progress->current_file_no;
     pInfo.overall_transmission_size = progress->overall_transmission_size;
     pInfo.overall_current_bytes = progress->current_overall_bytes;
-    pInfo.timestamp = QTime::currentTime();
+    pInfo.timestamp = QDateTime::currentDateTime();
 
     // Connect to something in folder!
     thread->transmissionProgress( pInfo );

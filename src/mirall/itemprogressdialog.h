@@ -16,6 +16,7 @@
 
 #include <QDialog>
 #include <QDateTime>
+#include <QLocale>
 
 #include "mirall/progressdispatcher.h"
 
@@ -58,6 +59,7 @@ private:
     QTreeWidgetItem *findFolderItem( const QString& folder );
     void cleanErrors( const QString& folder );
     void decorateFolderItem( const QString& folder );
+    QString timeString(QDateTime dt, QLocale::FormatType format = QLocale::NarrowFormat) const;
 
     QHash<QString, QTreeWidgetItem*> _folderItems;
     const int ErrorIndicatorRole;

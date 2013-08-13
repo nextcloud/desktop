@@ -139,13 +139,15 @@ void ItemProgressDialog::setSyncResult( const SyncResult& result )
 
     SyncFileItemVector::const_iterator i;
     const SyncFileItemVector& items = result.syncFileItemVector();
+    QDateTime dt = QDateTime::currentDateTime();
 
     for (i = items.begin(); i != items.end(); ++i) {
          const SyncFileItem& item = *i;
          QString errMsg;
          if( item._instruction == CSYNC_INSTRUCTION_IGNORE ) {
              QStringList columns;
-             QString timeStr = QTime::currentTime().toString("hh:mm");
+             QString timeStr = timeString(dt);
+             QString longTimeStr = timeString(dt, QLocale::LongFormat);
 
              columns << timeStr;
              columns << item._file;
@@ -162,6 +164,7 @@ void ItemProgressDialog::setSyncResult( const SyncResult& result )
 
              QTreeWidgetItem *twitem = new QTreeWidgetItem(folderItem, columns);
              twitem->setData(0, ErrorIndicatorRole, QVariant(true) );
+             twitem->setToolTip(0, longTimeStr);
              twitem->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Problem, true));
 
              Q_UNUSED(twitem);
@@ -321,6 +324,24 @@ void ItemProgressDialog::cleanErrors( const QString& folder )
   qDeleteAll(wipeList.begin(), wipeList.end());
 }
 
+QString ItemProgressDialog::timeString(QDateTime dt, QLocale::FormatType format) const
+{
+    QLocale loc = QLocale::system();
+    QString timeStr;
+    QDate today = QDate::currentDate();
+
+    if( format == QLocale::NarrowFormat ) {
+        if( dt.date().day() == today.day() ) {
+            timeStr = loc.toString(dt.time(), QLocale::NarrowFormat);
+        } else {
+            timeStr = loc.toString(dt, QLocale::NarrowFormat);
+        }
+    } else {
+        timeStr = loc.toString(dt, format);
+    }
+    return timeStr;
+}
+
 void ItemProgressDialog::slotProgressErrors( const QString& folder, const Progress::SyncProblem& problem )
 {
   QTreeWidgetItem *folderItem;
@@ -329,7 +350,8 @@ void ItemProgressDialog::slotProgressErrors( const QString& folder, const Progre
   if( !folderItem ) return;
 
   QStringList columns;
-  QString timeStr = problem.timestamp.toString("hh:mm");
+  QString timeStr = timeString(problem.timestamp);
+  QString longTimeStr = timeString(problem.timestamp, QLocale::LongFormat);
 
   columns << timeStr;
   columns << problem.current_file;
@@ -340,7 +362,7 @@ void ItemProgressDialog::slotProgressErrors( const QString& folder, const Progre
   QTreeWidgetItem *item = new QTreeWidgetItem(folderItem, columns);
   item->setData(0, ErrorIndicatorRole, QVariant(true) );
   item->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Problem, true));
-
+  item->setToolTip(0, longTimeStr);
   Q_UNUSED(item);
 }
 
@@ -365,7 +387,8 @@ void ItemProgressDialog::slotProgressInfo( const QString& folder, const Progress
     }
 
     QStringList columns;
-    QString timeStr = progress.timestamp.toString("hh:mm");
+    QString timeStr = timeString(progress.timestamp);
+    QString longTimeStr = timeString(progress.timestamp, QLocale::LongFormat);
 
     columns << timeStr;
     columns << progress.current_file;
@@ -373,6 +396,7 @@ void ItemProgressDialog::slotProgressInfo( const QString& folder, const Progress
     columns << Utility::octetsToString( progress.file_size );
 
     QTreeWidgetItem *item = new QTreeWidgetItem(folderItem, columns);
+    item->setToolTip(0, longTimeStr);
     Q_UNUSED(item);
 }
 
