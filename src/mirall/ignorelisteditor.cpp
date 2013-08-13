@@ -101,7 +101,14 @@ void IgnoreListEditor::slotUpdateLocalIgnoreList()
 
 void IgnoreListEditor::slotAddPattern()
 {
-    QString pattern = QInputDialog::getText(this, tr("Add Ignore Pattern"), tr("Add a new ignore pattern:"));
+    bool okClicked;
+    QString pattern = QInputDialog::getText(this, tr("Add Ignore Pattern"),
+                                            tr("Add a new ignore pattern:"),
+                                            QLineEdit::Normal, QString(), &okClicked);
+
+    if (!okClicked || pattern.isEmpty())
+        return;
+
     QListWidgetItem *item = new QListWidgetItem;
     setupItemFlags(item);
     if (pattern.startsWith("]")) {
