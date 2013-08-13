@@ -174,13 +174,28 @@ void ProgressDispatcher::setProgressInfo(const QString& folder, const Progress::
         if( newProgress.kind == Progress::EndSync ) {
             newProgress.overall_current_bytes = newProgress.overall_transmission_size;
             newProgress.current_file_no = newProgress.overall_file_count;
+            _currentAction.remove(newProgress.folder);
         }
         if( newProgress.kind == Progress::EndDownload || newProgress.kind == Progress::EndUpload ||
                 newProgress.kind == Progress::EndDelete ) {
             _recentChanges.enqueue(newProgress);
         }
+        // store the last real action to help clients that start during
+        // the Context-phase of an upload or download.
+        if( newProgress.kind != Progress::Context ) {
+            _currentAction[folder] = newProgress.kind;
+        }
+
         emit progressInfo( folder, newProgress );
     }
+}
+
+Progress::Kind ProgressDispatcher::currentFolderContext( const QString& folder )
+{
+    if( _currentAction.contains(folder)) {
+        return _currentAction[folder];
+    }
+    return Progress::Invalid;
 }
 
 }

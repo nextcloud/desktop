@@ -93,6 +93,8 @@ public:
 
     QList<Progress::Info> recentChangedItems(int count);
     QList<Progress::SyncProblem> recentProblems(int count);
+
+    Progress::Kind currentFolderContext( const QString& folder );
 signals:
     /**
       @brief Signals the progress of data transmission.
@@ -114,6 +116,7 @@ private:
     QQueue<Progress::Info> _recentChanges;
     QQueue<Progress::SyncProblem> _recentProblems;
 
+    QHash<QString, Progress::Kind> _currentAction;
     static ProgressDispatcher* _instance;
 };
 
