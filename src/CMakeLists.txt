@@ -22,7 +22,6 @@ mirall/generalsettings.ui
 mirall/networksettings.ui
 mirall/accountsettings.ui
 mirall/ignorelisteditor.ui
-mirall/fileitemdialog.ui
 mirall/itemprogressdialog.ui
 wizard/owncloudsetupnocredspage.ui
 wizard/owncloudhttpcredspage.ui
@@ -193,7 +192,6 @@ set(mirall_SRCS
     mirall/occinfo.cpp
     mirall/sslerrordialog.cpp
     mirall/logbrowser.cpp
-    mirall/fileitemdialog.cpp
     mirall/settingsdialog.cpp
     mirall/generalsettings.cpp
     mirall/networksettings.cpp
@@ -218,7 +216,6 @@ set(mirall_HEADERS
     mirall/updatedetector.h
     mirall/sslerrordialog.h
     mirall/logbrowser.h
-    mirall/fileitemdialog.h
     mirall/settingsdialog.h
     mirall/generalsettings.h
     mirall/networksettings.h

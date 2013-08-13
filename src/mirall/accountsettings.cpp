@@ -22,7 +22,6 @@
 #include "mirall/folderstatusmodel.h"
 #include "mirall/utility.h"
 #include "mirall/application.h"
-#include "mirall/fileitemdialog.h"
 #include "mirall/owncloudsetupwizard.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/ignorelisteditor.h"
