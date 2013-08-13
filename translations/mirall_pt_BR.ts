@@ -988,19 +988,19 @@ Itens marcados também serão excluídos se estiverem impedindo a remoção de u
         <translation>Não é possível gravar as alterações em &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="104"/>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="121"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="105"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="128"/>
         <source>Add Ignore Pattern</source>
         <translation>Adicionar Ignorar Padrão</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="104"/>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="122"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="106"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="129"/>
         <source>Add a new ignore pattern:</source>
         <translation>Adicionar um novo padrão ignorar:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="133"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="140"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
         <translation>Esta entrada é fornecida pelo sistema em &apos;%1&apos; e não pode ser modificado aqui.</translation>
     </message>

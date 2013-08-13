@@ -989,19 +989,19 @@ Aktivierte Elemente werden ebenfalls gelöscht, wenn diese das Löschen eines Ve
         <translation>Konnte Änderungen nicht in &apos;%1&apos; schreiben.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="104"/>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="121"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="105"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="128"/>
         <source>Add Ignore Pattern</source>
         <translation>Ignoriermuster hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="104"/>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="122"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="106"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="129"/>
         <source>Add a new ignore pattern:</source>
         <translation>Neues Ignoriermuster hinzufügen:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="133"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="140"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
         <translation>Dieser Eintrag wird vom System auf &apos;%1&apos; bereitgestellt und kann in dieser Ansicht nicht geändert werden.</translation>
     </message>

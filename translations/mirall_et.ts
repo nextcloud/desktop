@@ -57,7 +57,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="97"/>
         <source>Folders</source>
-        <translation type="unfinished"/>
+        <translation>Kataloogid</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="195"/>
@@ -75,32 +75,32 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="20"/>
         <source>Account Maintenance</source>
-        <translation type="unfinished"/>
+        <translation>Konto hooldus</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="29"/>
         <source>Edit Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Redigeeri ignoreeritud faile</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="39"/>
         <source>Remove Account</source>
-        <translation type="unfinished"/>
+        <translation>Kustuta konto</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="46"/>
         <source>Modify Account</source>
-        <translation type="unfinished"/>
+        <translation>Muuda kontot</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="56"/>
         <source>Sync Status</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseeringu staatus</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="62"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Ühendatud &lt;server&gt; kasutajana &lt;user&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="74"/>
@@ -121,7 +121,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="108"/>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>Algseaded</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="128"/>
@@ -131,17 +131,17 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="140"/>
         <source>Storage Usage</source>
-        <translation type="unfinished"/>
+        <translation>Mahu kasutus</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="159"/>
         <source>Retrieving usage information...</source>
-        <translation type="unfinished"/>
+        <translation>Otsin kasutuse informatsiooni...</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="166"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Märkus:&lt;/b&gt; Mõned kataloogid, sealhulgas võrgust ühendatud või jagatud kataloogid, võivad omada erinevaid limiite.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="100"/>
@@ -156,17 +156,17 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="241"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Kas tõesti soovid peatada kataloogi &lt;i&gt;%1&lt;/i&gt; sünkroniseerimist?.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Märkus:&lt;/b&gt; See ei eemalda faile sinu kliendist.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="261"/>
         <source>Confirm Folder Reset</source>
-        <translation type="unfinished"/>
+        <translation>Kinnita kataloogi algseadistus</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="262"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; While no files will be removed, this can cause significant data traffic and take several minutes to hours, depending on the size of the folder.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Kas soovid kindlasti algseadistada kataloogi &lt;i&gt;%1&lt;/i&gt; ning uuesti luua oma kliendi andmebaasi?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Märkus:&lt;/b&gt; Kuigi ühtegi faili ei kustutata, võib see põhjustada märkimisväärset andmeliiklust ning võtta aega mõnest minutist mõne tunnini sõltuvalt kataloogi suurusest.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="292"/>
@@ -191,7 +191,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="428"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Ühendatud &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="429"/>
@@ -206,42 +206,42 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="443"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Ei õnnestunud ühenduda %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="547"/>
         <source>Start</source>
-        <translation type="unfinished"/>
+        <translation>Start</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="556"/>
         <source>Currently</source>
-        <translation type="unfinished"/>
+        <translation>Hetkel</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="563"/>
         <source>Completely</source>
-        <translation type="unfinished"/>
+        <translation>Täielikult</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="595"/>
         <source>%1 %2 %3 (%4 of %5)</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2 %3 (%4 / %5)</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="598"/>
         <source>Completely finished.</source>
-        <translation type="unfinished"/>
+        <translation>Täielikult lõpetatud.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="605"/>
         <source>%1 of %2, file %3 of %4</source>
-        <translation type="unfinished"/>
+        <translation>%1 / %2, fail %3 / %4</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="646"/>
         <source>You are using %1 of your available %2 storage.</source>
-        <translation type="unfinished"/>
+        <translation>Kasutad %1 sulle eraldatud mahust %2 </translation>
     </message>
 </context>
 <context>
@@ -254,32 +254,32 @@
     <message numerus="yes">
         <location filename="../src/mirall/application.cpp" line="246"/>
         <source>Sync started for %n configured sync folder(s).</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Sünkroniseering alustatud %n seadistatud kataloogile.</numerusform><numerusform>Sünkroniseering alustatud %n seadistatud kataloogile.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="318"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>Ava %1 brauseris</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="320"/>
         <source>Calculating quota...</source>
-        <translation type="unfinished"/>
+        <translation>Arvutan mahupiiri...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="322"/>
         <source>Unknown status</source>
-        <translation type="unfinished"/>
+        <translation>Tundmatu staatus</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="324"/>
         <source>Settings...</source>
-        <translation type="unfinished"/>
+        <translation>Seaded...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="325"/>
         <source>Details...</source>
-        <translation type="unfinished"/>
+        <translation>Üksikasjad...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="330"/>
@@ -294,7 +294,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="361"/>
         <source>None.</source>
-        <translation type="unfinished"/>
+        <translation>Pole.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="365"/>
@@ -304,7 +304,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="382"/>
         <source>Open local folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Ava kohalik kataloog &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="392"/>
@@ -314,17 +314,17 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="395"/>
         <source>Open folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Ava kataloog &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="518"/>
         <source>Quota n/a</source>
-        <translation type="unfinished"/>
+        <translation>Mahupiir n/a</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="525"/>
         <source>%1% of %2 used</source>
-        <translation type="unfinished"/>
+        <translation>Kasutatud %1%  %2 </translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="551"/>
@@ -334,12 +334,12 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="560"/>
         <source>%1 (%2, %3)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2, %3)</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="575"/>
         <source>Syncing %1 of %2 (%3 of %4) </source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerin %1 / %2 (%3 / %4) </translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="597"/>
@@ -536,7 +536,7 @@
     <message>
         <location filename="../src/mirall/fileitemdialog.ui" line="27"/>
         <source>Detailed Sync Protocol</source>
-        <translation type="unfinished"/>
+        <translation>Detailne Sync protokoll</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.ui" line="63"/>
@@ -680,7 +680,7 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="95"/>
         <source>Unable to create csync-context</source>
-        <translation type="unfinished"/>
+        <translation>Ei suuda luua csync-konteksti</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="145"/>
@@ -705,35 +705,38 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="343"/>
         <source>The CSync thread terminated.</source>
-        <translation type="unfinished"/>
+        <translation>CSync lõim katkestati.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="651"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>See sünkroniseering kustutab kõik failid kohalikust kataloogist &apos;%1&apos;.⏎
+Kui sina või adminstraator on sinu konto serveris algseadistanud, siis vali &quot;Säilita failid&quot;. Kui soovid oma andmed kustutada, vali &quot;Kustuta kõik failid&quot;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="654"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
-        <translation type="unfinished"/>
+        <translation>See sünkroniseering kustutab kõik failid sünkroniseeritavast &apos;%1&apos; kataloogist.⏎
+See võib olla põhjustatud kataloogi ümberseadistusest või on toimunud kõikide failid käsitsi eemaldamine⏎
+Oled kindel, et soovid seda operatsiooni teostada?</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="658"/>
         <source>Remove All Files?</source>
-        <translation type="unfinished"/>
+        <translation>Kustutada kõik failid?</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="660"/>
         <source>Remove all files</source>
-        <translation type="unfinished"/>
+        <translation>Kustutada kõik failid</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="661"/>
         <source>Keep files</source>
-        <translation type="unfinished"/>
+        <translation>Säilita failid</translation>
     </message>
 </context>
 <context>
@@ -761,7 +764,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="568"/>
         <source>Preparing for sync.</source>
-        <translation type="unfinished"/>
+        <translation>Valmistun sünkroniseerima.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="571"/>
@@ -771,7 +774,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="574"/>
         <source>Server is currently not available.</source>
-        <translation type="unfinished"/>
+        <translation>Server pole hetkel saadaval.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="577"/>
@@ -791,7 +794,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="591"/>
         <source>%1 (Sync is paused)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (Sünkroniseerimine on peatatud)</translation>
     </message>
 </context>
 <context>
@@ -800,7 +803,7 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="91"/>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="248"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>Fail</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="200"/>
@@ -879,7 +882,7 @@ documentation for possible fixes.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="191"/>
         <source>Add Remote Folder</source>
-        <translation type="unfinished"/>
+        <translation>Lisa võrgukataloog</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="192"/>
@@ -900,7 +903,7 @@ documentation for possible fixes.</source>
         <location filename="../src/mirall/folderwizard.cpp" line="264"/>
         <source>Root (&quot;/&quot;)</source>
         <comment>root folder</comment>
-        <translation type="unfinished"/>
+        <translation>Juur (&quot;/&quot;)</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="266"/>
@@ -982,19 +985,19 @@ Checked items will also be deleted if they prevent a directory from being remove
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="104"/>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="121"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="105"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="128"/>
         <source>Add Ignore Pattern</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="104"/>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="122"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="106"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="129"/>
         <source>Add a new ignore pattern:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="133"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="140"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
         <translation type="unfinished"/>
     </message>
@@ -1009,17 +1012,17 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/itemprogressdialog.ui" line="27"/>
         <source>Detailed Sync Protocol</source>
-        <translation type="unfinished"/>
+        <translation>Detailne Sync protokoll</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.ui" line="60"/>
         <source>3</source>
-        <translation type="unfinished"/>
+        <translation>3</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.ui" line="65"/>
         <source>4</source>
-        <translation type="unfinished"/>
+        <translation>4</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.ui" line="73"/>
@@ -1030,17 +1033,17 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="53"/>
         <source>Folder/Time</source>
-        <translation type="unfinished"/>
+        <translation>Kataloog/Aeg</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="54"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>Fail</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="55"/>
         <source>Action</source>
-        <translation type="unfinished"/>
+        <translation>Tegevus</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="56"/>
@@ -1050,12 +1053,12 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="64"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>Kopeeri</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="67"/>
         <source>Sync Protocol</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerimisprotokoll</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="78"/>
@@ -1075,7 +1078,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="87"/>
         <source>Server is currently not available.</source>
-        <translation type="unfinished"/>
+        <translation>Server pole hetkel saadaval.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="90"/>
@@ -1110,17 +1113,17 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="108"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="153"/>
         <source>File ignored.</source>
-        <translation type="unfinished"/>
+        <translation>Faili ignoreeriti.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="155"/>
         <source>Directory ignored.</source>
-        <translation type="unfinished"/>
+        <translation>Kataloog ingnoreeriti.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="157"/>
@@ -1130,22 +1133,22 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="159"/>
         <source>Ignored.</source>
-        <translation type="unfinished"/>
+        <translation>Ignoreeritud.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="245"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kopeeritud lõikepuhvrisse</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="245"/>
         <source>The sync protocol has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Sync protokoll on kopeeritud lõikepuhvrisse.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="330"/>
         <source>Problem: %1</source>
-        <translation type="unfinished"/>
+        <translation>Probleem: %1</translation>
     </message>
 </context>
 <context>
@@ -1242,7 +1245,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.ui" line="100"/>
         <source>:</source>
-        <translation type="unfinished"/>
+        <translation>:</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="134"/>
@@ -1252,35 +1255,35 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.ui" line="182"/>
         <source>Download Bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Allalaadimise ülekandekiirus</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="188"/>
         <location filename="../src/mirall/networksettings.ui" line="281"/>
         <source>Limit to</source>
-        <translation type="unfinished"/>
+        <translation>Piira</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="210"/>
         <location filename="../src/mirall/networksettings.ui" line="306"/>
         <source>KBytes/s</source>
-        <translation type="unfinished"/>
+        <translation>KBaiti/s</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="232"/>
         <location filename="../src/mirall/networksettings.ui" line="264"/>
         <source>No Limit</source>
-        <translation type="unfinished"/>
+        <translation>Piiramatu</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="258"/>
         <source>Upload Bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Üleslaadimise ülekandekiirus</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="271"/>
         <source>Limit automatically</source>
-        <translation type="unfinished"/>
+        <translation>Piira automaatselt</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="33"/>
@@ -1300,12 +1303,12 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="37"/>
         <source>HTTP(S) proxy</source>
-        <translation type="unfinished"/>
+        <translation>HTTP(S) proksi</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="38"/>
         <source>SOCKS5 proxy</source>
-        <translation type="unfinished"/>
+        <translation>SOCKS5 proksi</translation>
     </message>
 </context>
 <context>
@@ -1313,7 +1316,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="47"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Ühendu %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="48"/>
@@ -1343,7 +1346,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="232"/>
         <source>Local Sync Folder</source>
-        <translation type="unfinished"/>
+        <translation>Kohalik Sync Kataloog</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="245"/>
@@ -1356,7 +1359,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="41"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Ühendu %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="42"/>
@@ -1374,7 +1377,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="43"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Ühendu %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="44"/>
@@ -1641,7 +1644,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="49"/>
         <source>%1 Settings</source>
-        <translation type="unfinished"/>
+        <translation>%1 Seaded</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="52"/>
@@ -1651,7 +1654,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="59"/>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>Võrk</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="70"/>
@@ -1825,7 +1828,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="72"/>
         <source>&amp;Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Kohalik kataloog</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="88"/>
@@ -1835,7 +1838,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="110"/>
         <source>&amp;Keep local data</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Säilita kohalikud andmed</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="142"/>
@@ -1873,17 +1876,17 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="38"/>
         <source>&amp;Username</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Kasutajatunnus</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="48"/>
         <source>&amp;Password</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Parool</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="58"/>
         <source>Error Label</source>
-        <translation type="unfinished"/>
+        <translation>Vea silt</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="109"/>
@@ -2076,20 +2079,20 @@ Checked items will also be deleted if they prevent a directory from being remove
         <location filename="../src/mirall/progressdispatcher.cpp" line="86"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="92"/>
         <source>downloading</source>
-        <translation type="unfinished"/>
+        <translation>allalaadimine</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="77"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="89"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="95"/>
         <source>uploading</source>
-        <translation type="unfinished"/>
+        <translation>üleslaadimine</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="37"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="80"/>
         <source>Context</source>
-        <translation type="unfinished"/>
+        <translation>Kontekst</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="31"/>
@@ -2106,17 +2109,17 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="40"/>
         <source>Inactive</source>
-        <translation type="unfinished"/>
+        <translation>Passiivne</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="50"/>
         <source>Start</source>
-        <translation type="unfinished"/>
+        <translation>Start</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="53"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>Lõpetatud</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="56"/>
@@ -2126,17 +2129,17 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="83"/>
         <source>inactive</source>
-        <translation type="unfinished"/>
+        <translation>passiivne</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="98"/>
         <source>starting</source>
-        <translation type="unfinished"/>
+        <translation>alustan</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="101"/>
         <source>finished</source>
-        <translation type="unfinished"/>
+        <translation>lõpetatud</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="104"/>
@@ -2231,7 +2234,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="57"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using OCsync %5 and Qt %6.&lt;/small&gt;&lt;p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Loodud Git versioonist &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;  %3, %4&lt;br&gt;kasutades OCsync %5 ja Qt %6.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="65"/>

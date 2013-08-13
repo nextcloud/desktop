@@ -121,7 +121,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="108"/>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>Reset</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="128"/>
@@ -141,7 +141,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="166"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation>&lt;b&gt;Opmerking:&lt;/b&gt; Sommige folders, waaronder netwerkfolders en gedeelde folders kunnen andere limieten hebben.</translation>
+        <translation>&lt;b&gt;Opmerking:&lt;/b&gt; Sommige folders, waaronder netwerkfolders en gedeelde folders, kunnen andere limieten hebben.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="100"/>
@@ -161,12 +161,12 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="261"/>
         <source>Confirm Folder Reset</source>
-        <translation type="unfinished"/>
+        <translation>Bevestig map reset</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="262"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; While no files will be removed, this can cause significant data traffic and take several minutes to hours, depending on the size of the folder.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Wilt u de map &lt;i&gt;%1&lt;/i&gt; echt resetten en de lokale database opnieuw opbouwen?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Let op:&lt;/b&gt; Hoewel er geen bestanden zullen worden verwijderd, kan dit een aanzienlijke hoeveelheid dataverkeer tot gevolg hebben en minuten tot zelfs uren duren, afhankelijk van de omvang van de map.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="292"/>
@@ -211,17 +211,17 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="547"/>
         <source>Start</source>
-        <translation type="unfinished"/>
+        <translation>Start</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="556"/>
         <source>Currently</source>
-        <translation type="unfinished"/>
+        <translation>Momenteel</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="563"/>
         <source>Completely</source>
-        <translation type="unfinished"/>
+        <translation>Volledig</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="595"/>
@@ -334,12 +334,12 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="560"/>
         <source>%1 (%2, %3)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2, %3)</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="575"/>
         <source>Syncing %1 of %2 (%3 of %4) </source>
-        <translation type="unfinished"/>
+        <translation>Synchroniseert %1 van %2 (%3 van %4) </translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="597"/>
@@ -627,7 +627,7 @@
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="163"/>
         <source>The sync protocol has been copied to the clipboard.</source>
-        <translation>Het synch protocol is gekopieerd naar het klembord.</translation>
+        <translation>De synchronisatiegeschiedenis is  naar het klembord gekopieerd.</translation>
     </message>
     <message>
         <location filename="../src/mirall/fileitemdialog.cpp" line="180"/>
@@ -680,7 +680,7 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="95"/>
         <source>Unable to create csync-context</source>
-        <translation type="unfinished"/>
+        <translation>Onmogelijk om een csync-context te maken</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="145"/>
@@ -784,7 +784,7 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="582"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
-        <translation type="unfinished"/>
+        <translation>Laatste synchronisatie geslaagd, maar met waarschuwingen over individuele bestanden.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="585"/>
@@ -823,7 +823,9 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
         <source>Could not monitor directories due to system limitations.
 The application will not work reliably. Please check the
 documentation for possible fixes.</source>
-        <translation type="unfinished"/>
+        <translation>Mappen konden niet in de gaten worden gehouden vanwege&lt;br&gt;
+systeembeperkingen. Het programma zal niet betrouwbaar&lt;br&gt;
+werken. Controleer de de documentatie voor mogelijke oplossingen.</translation>
     </message>
 </context>
 <context>
@@ -882,7 +884,7 @@ documentation for possible fixes.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="191"/>
         <source>Add Remote Folder</source>
-        <translation type="unfinished"/>
+        <translation>Voeg externe map toe</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="192"/>
@@ -903,7 +905,7 @@ documentation for possible fixes.</source>
         <location filename="../src/mirall/folderwizard.cpp" line="264"/>
         <source>Root (&quot;/&quot;)</source>
         <comment>root folder</comment>
-        <translation type="unfinished"/>
+        <translation>Hoofdmap(&quot;/&quot;)</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="266"/>
@@ -955,7 +957,7 @@ documentation for possible fixes.</source>
     <message>
         <location filename="../src/mirall/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation type="unfinished"/>
+        <translation>Genegeerde bestanden-editor</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.ui" line="53"/>
@@ -987,21 +989,21 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
         <translation>Er kunnen geen wijzigingen worden geschreven naar %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="104"/>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="121"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="105"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="128"/>
         <source>Add Ignore Pattern</source>
         <translation>Toevoegen negeerpatroon</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="104"/>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="122"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="106"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="129"/>
         <source>Add a new ignore pattern:</source>
         <translation>Voeg nieuw negeerpatroon toe:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="133"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="140"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
-        <translation type="unfinished"/>
+        <translation>Deze entry is door het systeem geleverd op &apos;%1&apos; en kan niet worden aangepast in deze sessie.</translation>
     </message>
 </context>
 <context>
@@ -1060,7 +1062,7 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="67"/>
         <source>Sync Protocol</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisatiegeschiedenis</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="78"/>
@@ -1105,7 +1107,7 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="102"/>
         <source>Sync success, but warnings on individual files.</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisatie geslaagd met waarschuwingen over individuele bestanden.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="105"/>
@@ -1145,7 +1147,7 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="245"/>
         <source>The sync protocol has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>De synchronisatiegeschiedenis is naar het klembord gekopieerd.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="330"/>
@@ -1333,7 +1335,7 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="109"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
-        <translation type="unfinished"/>
+        <translation>%1 map &apos;%2&apos; is gesynchroniseerd naar de lokale map &apos;%3&apos;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="115"/>
@@ -1353,7 +1355,7 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="245"/>
         <source>Update advanced setup</source>
-        <translation type="unfinished"/>
+        <translation>Update geavanceerde setup</translation>
     </message>
 </context>
 <context>
@@ -1384,7 +1386,7 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="44"/>
         <source>Setup ownCloud server</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud-server instellen</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="100"/>
@@ -1399,7 +1401,7 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="230"/>
         <source>Update ownCloud server</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud-server updaten</translation>
     </message>
 </context>
 <context>
@@ -1427,7 +1429,7 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="111"/>
         <source>Trying to connect to %1 at %2 to determine authentication type...</source>
-        <translation type="unfinished"/>
+        <translation>Probeer te verbinden met %1 op %2 om het type authenticatie te bepalen...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="159"/>
@@ -1835,7 +1837,7 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="88"/>
         <source>pbSelectLocalFolder</source>
-        <translation type="unfinished"/>
+        <translation>pbSelectLocalFolder</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="110"/>
@@ -1850,7 +1852,7 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="161"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local directory will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers directory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Als deze checkbox is aangevinkt zullen bestaande bestanden in de lokale map worden gewist om een schone synchronisatie vanaf de server te starten.&lt;/p&gt;&lt;p&gt;Vink dit niet aan als de lokale bestanden naar de map op de server zouden moeten worden geupload.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="164"/>
@@ -1888,7 +1890,7 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="58"/>
         <source>Error Label</source>
-        <translation type="unfinished"/>
+        <translation>Foutlabel</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="109"/>
@@ -2094,7 +2096,7 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
         <location filename="../src/mirall/progressdispatcher.cpp" line="37"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="80"/>
         <source>Context</source>
-        <translation type="unfinished"/>
+        <translation>Context</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="31"/>
@@ -2111,12 +2113,12 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="40"/>
         <source>Inactive</source>
-        <translation type="unfinished"/>
+        <translation>Inactief</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="50"/>
         <source>Start</source>
-        <translation type="unfinished"/>
+        <translation>Start</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="53"/>
@@ -2131,12 +2133,12 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="83"/>
         <source>inactive</source>
-        <translation type="unfinished"/>
+        <translation>inactief</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="98"/>
         <source>starting</source>
-        <translation type="unfinished"/>
+        <translation>beginnend</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="101"/>
@@ -2178,7 +2180,7 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
     <message>
         <location filename="../src/mirall/theme.cpp" line="60"/>
         <source>Sync Success, problems with individual files.</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisatie geslaagd met problemen met individuele bestanden.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>

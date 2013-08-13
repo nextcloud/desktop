@@ -989,19 +989,19 @@ Os elementos marcados tamén se eliminarán se impiden retirar un directorio. Is
         <translation>Non é posíbel escribir os cambios en «%1».</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="104"/>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="121"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="105"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="128"/>
         <source>Add Ignore Pattern</source>
         <translation>Engadir o patrón a ignorar</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="104"/>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="122"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="106"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="129"/>
         <source>Add a new ignore pattern:</source>
         <translation>Engadir un novo patrón a ignorar:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="133"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="140"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
         <translation>Esta entrada é fornecida polo sistema en «%1» e non pode ser modificado nesta vista.</translation>
     </message>
