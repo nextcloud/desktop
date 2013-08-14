@@ -94,12 +94,8 @@ QIcon Theme::trayFolderIcon( const QString& backend ) const
 QIcon Theme::themeIcon( const QString& name, bool sysTray ) const
 {
     QString flavor;
-    if (sysTray && _mono) {
-#ifdef Q_OS_MAC
-        flavor = QLatin1String("black");
-#else
-        flavor = QLatin1String("white");
-#endif
+    if (sysTray) {
+        flavor = systrayIconFlavor(_mono);
     } else {
         flavor = QLatin1String("colored");
     }
@@ -156,6 +152,21 @@ QString Theme::overrideServerUrl() const
 QString Theme::defaultClientFolder() const
 {
     return appName();
+}
+
+QString Theme::systrayIconFlavor(bool mono) const
+{
+    QString flavor;
+    if (mono) {
+#ifdef Q_OS_MAC
+        flavor = QLatin1String("black");
+#else
+        flavor = QLatin1String("white");
+#endif
+    } else {
+        flavor = QLatin1String("colored");
+    }
+    return flavor;
 }
 
 void Theme::setSystrayUseMonoIcons(bool mono)
