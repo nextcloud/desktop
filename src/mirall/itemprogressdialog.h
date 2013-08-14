@@ -20,7 +20,7 @@
 
 #include "mirall/progressdispatcher.h"
 
-#include "ui_fileitemdialog.h"
+#include "ui_itemprogressdialog.h"
 
 namespace Mirall {
 class SyncResult;
