@@ -41,7 +41,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'ownCloud Client Manual'
-copyright = u'2012, The ownCloud developers'
+copyright = u'2013, The ownCloud developers'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -215,8 +215,6 @@ latex_documents = [
 man_pages = [
     ('owncloud.1', 'owncloud', u'File synchronisation desktop utility.',
      [u'The ownCloud developers'], 1),
-    ('mirall.1', 'mirall', u'File synchronisation desktop utility.',
-     [u'The ownCloud developers'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -250,7 +248,7 @@ texinfo_documents = [
 epub_title = u'ownCloud Client Manual'
 epub_author = u'The ownCloud developers'
 epub_publisher = u'The ownCloud developers'
-epub_copyright = u'2012, The ownCloud developers'
+epub_copyright = u'2013, The ownCloud developers'
 
 # The language of the text. It defaults to the language option
 # or en if the language is not set.

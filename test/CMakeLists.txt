@@ -3,3 +3,4 @@ include_directories(${CSYNC_INCLUDE_DIR}/csync ${CSYNC_INCLUDE_DIR} ${CSYNC_INCL
 include(owncloud_add_test.cmake)
 
 owncloud_add_test(OwncloudPropagator)
+owncloud_add_test(Utility)

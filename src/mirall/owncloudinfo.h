@@ -18,20 +18,8 @@
 #include <QObject>
 #include <QtNetwork>
 
-#if QT_VERSION >= 0x040700
-#define QT46_IMPL 0
-#else
-#define QT46_IMPL 1
-#endif
-
 namespace Mirall
 {
-
-typedef struct {
-    QString user;
-    QString passwd;
-    QString connection;
-} oCICredentials;
 
 class ownCloudInfo : public QObject
 {
@@ -46,12 +34,6 @@ public:
       * call status.php
       */
     QNetworkReply* checkInstallation();
-
-    /**
-      * a general GET request to the ownCloud. If the second bool parameter is
-      * true, the WebDAV server is queried.
-      */
-    QNetworkReply* getRequest( const QString&, bool );
 
     /**
       * convenience: GET request to the WebDAV server.
@@ -88,6 +70,16 @@ public:
     QNetworkReply* mkdirRequest( const QString& );
 
     /**
+      * Retrieve quota for a path. Provide a relative path.
+      */
+    QNetworkReply* getQuotaRequest( const QString& );
+
+    /**
+      * provide collections in a directory via owncloud. Provide a relative path.
+      */
+    QNetworkReply* getDirectoryListing( const QString& dir );
+
+    /**
      * Use a custom ownCloud configuration file identified by handle
      */
     void setCustomConfigHandle( const QString& );
@@ -104,11 +96,17 @@ public:
     QList<QSslCertificate> certificateChain() const;
 
     /**
-     * Store credentials for a given connection. Empty connection parameter
-     * means "default connection".
+     * returns the owncloud webdav url.
+     * It may be different from the one in the config if there was a HTTP redirection
+     * The returned URL is guaranteed to end in a forward slash ('/')
      */
-    void setCredentials( const QString&, const QString&,
-                         const QString& configHandle = QString::null );
+    QString webdavUrl(const QString& connection = QString());
+
+    qint64 lastQuotaUsedBytes() const { return _lastQuotaUsedBytes; }
+    qint64 lastQuotaTotalBytes() const  { return _lastQuotaTotalBytes; }
+    QString lastEtag() const { return _lastEtag; }
+
+    QList<QNetworkCookie> getLastAuthCookies();
 
 signals:
     // result signal with url- and version string.
@@ -118,35 +116,30 @@ signals:
 
     void webdavColCreated( QNetworkReply::NetworkError );
     void sslFailed( QNetworkReply *reply, QList<QSslError> errors );
-
-public slots:
+    void guiLog( const QString& title, const QString& content );
+    void quotaUpdated( qint64 total, qint64 quotaUsedBytes );
+    void directoryListingUpdated(const QStringList &directories);
 
 protected slots:
     void slotReplyFinished( );
     void slotError( QNetworkReply::NetworkError );
-    // void slotAuthentication( QNetworkReply*, QAuthenticator *);
 
-#if QT46_IMPL
-    void qhttpRequestFinished(int id, bool success );
-    void qhttpRequestStarted(int id);
-    void qhttpResponseHeaderReceived(const QHttpResponseHeader& header);
-//    void qhttpAuthenticationRequired(const QString& hostname, quint16 port ,QAuthenticator* authenticator);
-#else
     void slotMkdirFinished();
-#endif
+    void slotGetQuotaFinished();
+    void slotGetDirectoryListingFinished();
 
 private:
     explicit ownCloudInfo();
 
-    QUrl redirectUrl(const QUrl&, const QUrl& ) const;
+    /**
+     * a general GET request to the ownCloud WebDAV.
+     */
+    QNetworkReply* getRequest( const QUrl &url);
+    QNetworkReply* davRequest(const QByteArray&, QNetworkRequest&, QIODevice* );
 
     ~ownCloudInfo();
 
     void setupHeaders(QNetworkRequest &req, quint64 size );
-#if QT46_IMPL
-#else
-    QNetworkReply* davRequest(const QString&, QNetworkRequest&, QByteArray* );
-#endif
 
     static ownCloudInfo           *_instance;
 
@@ -159,10 +152,35 @@ private:
     QList<QSslCertificate>         _certificateChain;
     bool                           _certsUntrusted;
     int                            _authAttempts;
-    QMap<QString, oCICredentials>  _credentials;
     QMutex                         _certChainMutex;
+    int                            _redirectCount;
+    qint64                         _lastQuotaUsedBytes;
+    qint64                         _lastQuotaTotalBytes;
+    QString                        _lastEtag;
+
+    friend class RequestEtagJob;
 };
 
+
+
+
+class RequestEtagJob : public QObject {
+    Q_OBJECT
+
+    QNetworkReply *_reply;
+
+public:
+    explicit RequestEtagJob(const QString &dir , QObject* parent = 0);
+
+private slots:
+    void slotFinished();
+    void slotError();
+
+signals:
+    void etagRetreived(const QString &etag);
+    void networkError();
 };
+
+} // ns Mirall
 
 #endif // OWNCLOUDINFO_H

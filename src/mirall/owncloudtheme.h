@@ -21,6 +21,7 @@ namespace Mirall {
 
 class ownCloudTheme : public Theme
 {
+    Q_OBJECT
 public:
     ownCloudTheme();
 
@@ -31,10 +32,15 @@ public:
 
     QIcon   folderIcon( const QString& ) const;
     QIcon   trayFolderIcon( const QString& ) const;
-    QIcon   syncStateIcon( SyncResult::Status, bool sysTray ) const;
     QIcon   folderDisabledIcon() const;
     QIcon   applicationIcon() const;
 
+    QVariant customMedia(CustomMediaType type);
+    QString helpUrl() const;
+
+    QColor  wizardHeaderBackgroundColor() const;
+    QColor  wizardHeaderTitleColor() const;
+    QPixmap wizardHeaderLogo() const;
 private:
 
 

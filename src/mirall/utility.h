@@ -17,15 +17,34 @@
 #include <QString>
 #include <QByteArray>
 
+class QWidget;
+
 namespace Mirall {
 
-
-class Utility
+namespace Utility
 {
-public:
-    static QString formatFingerprint( const QByteArray& );
-    static void setupFavLink( const QString &folder );
-};
+    QString formatFingerprint( const QByteArray& );
+    void setupFavLink( const QString &folder );
+    QString octetsToString( qint64 octets );
+    QString platform();
+    QByteArray userAgentString();
+    void raiseDialog(QWidget *);
+    bool hasLaunchOnStartup(const QString &appName);
+    void setLaunchOnStartup(const QString &appName, const QString& guiName, bool launch);
+    qint64 freeDiskSpace(const QString &path, bool *ok = 0);
+    QString toCSyncScheme(const QString &urlStr);
+    /** Like QLocale::toString(double, 'f', prec), but drops trailing zeros after the decimal point */
+
+    /**
+     * @brief compactFormatDouble - formats a double value human readable.
+     *
+     * @param value the value to format.
+     * @param prec the precision.
+     * @param unit an optional unit that is appended if present.
+     * @return the formatted string.
+     */
+    QString compactFormatDouble(double value, int prec, const QString& unit = QString::null);
+}
 
 }
 #endif // UTILITY_H

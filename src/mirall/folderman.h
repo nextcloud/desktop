@@ -18,6 +18,7 @@
 
 #include <QObject>
 #include <QQueue>
+#include <QList>
 
 #include "mirall/folder.h"
 #include "mirall/folderwatcher.h"
@@ -25,15 +26,15 @@
 
 class QSignalMapper;
 
-namespace Mirall {
-
 class SyncResult;
+
+namespace Mirall {
 
 class FolderMan : public QObject
 {
     Q_OBJECT
 public:
-    explicit FolderMan(QObject *parent = 0);
+    static FolderMan* instance();
     ~FolderMan();
 
     int setupFolders();
@@ -43,38 +44,43 @@ public:
     /**
       * Add a folder definition to the config
       * Params:
-      * QString backend
       * QString alias
       * QString sourceFolder on local machine
       * QString targetPath on remote
-      * bool    onlyThisLAN, currently unused.
       */
-    void addFolderDefinition( const QString&, const QString&, const QString&, const QString&, bool );
+    void addFolderDefinition(const QString&, const QString&, const QString& );
 
-    /**
-      * return the folder by alias or NULL if no folder with the alias exists.
-      */
+    /** Returns the folder by alias or NULL if no folder with the alias exists. */
     Folder *folder( const QString& );
 
-    /**
-      * return the last sync result by alias
-      */
+    /** Returns the last sync result by alias */
     SyncResult syncResult( const QString& );
 
-    /**
-      * creates a folder for a specific configuration, identified by alias.
-      */
+    /** Returns the last sync result by Folder */
+    SyncResult syncResult( Folder* );
+
+    /** Creates a folder for a specific configuration, identified by alias. */
     Folder* setupFolderFromConfigFile(const QString & );
 
-    /**
-     * wipes all folder defintions. No way back!
-     */
+    /** Wipes all folder defintions. No way back! */
     void removeAllFolderDefinitions();
 
-    /**
-     * Removes csync journals from all folders.
-     */
+    /** Removes csync journals from all folders. */
     void wipeAllJournals();
+
+    /**
+     * Ensures that a given directory does not contain a .csync_journal.
+     *
+     * @returns false if the journal could not be removed, true otherwise.
+     */
+    static bool ensureJournalGone(const QString &path);
+
+    /** Creates a new and empty local directory. */
+    bool startFromScratch( const QString& );
+
+    QString statusToString( SyncResult, bool enabled ) const;
+
+    static SyncResult accountStatus( const QList<Folder*> &folders );
 
 signals:
     /**
@@ -92,7 +98,10 @@ public slots:
 
     void slotReparseConfiguration();
 
-    void terminateSyncProcess( const QString& );
+    void terminateSyncProcess( const QString& alias = QString::null );
+
+    /* delete all folder objects */
+    int unloadAllFolders();
 
     // if enabled is set to false, no new folders will start to sync.
     // the current one will finish.
@@ -112,6 +121,7 @@ private:
     // and create the folders
     int setupKnownFolders();
     void terminateCurrentSync();
+    QString getBackupName( const QString& ) const;
 
     // Escaping of the alias which is used in QSettings AND the file
     // system, thus need to be escaped.
@@ -120,14 +130,17 @@ private:
 
     void removeFolder( const QString& );
 
-    FolderWatcher *_configFolderWatcher;
     Folder::Map    _folderMap;
     QString        _folderConfigPath;
     QSignalMapper *_folderChangeSignalMapper;
     QString        _currentSyncFolder;
-    QStringList    _scheduleQueue;
     bool           _syncEnabled;
+    QQueue<QString> _scheduleQueue;
+
+    explicit FolderMan(QObject *parent = 0);
+    static FolderMan *_instance;
+
 };
 
-}
+} // namespace Mirall
 #endif // FOLDERMAN_H

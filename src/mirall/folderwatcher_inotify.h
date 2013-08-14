@@ -26,6 +26,8 @@ class FolderWatcherPrivate : public QObject {
     Q_OBJECT
 public:
     FolderWatcherPrivate(FolderWatcher *p);
+signals:
+    void error(const QString& error);
 private slots:
     void slotAddFolderRecursive(const QString &path);
     void slotINotifyEvent(int mask, int cookie, const QString &path);

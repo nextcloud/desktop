@@ -23,14 +23,10 @@
 
 #include "ui_folderwizardsourcepage.h"
 #include "ui_folderwizardtargetpage.h"
-#include "ui_folderwizardnetworkpage.h"
-#include "ui_folderwizardowncloudpage.h"
-
 
 namespace Mirall {
 
 class ownCloudInfo;
-class ownCloudDirCheck;
 
 /**
  * page to ask for the local source folder
@@ -46,14 +42,14 @@ public:
     void initializePage();
     void cleanupPage();
 
-    void setFolderMap( Folder::Map *fm ) { _folderMap = fm; }
+    void setFolderMap( const Folder::Map &fm ) { _folderMap = fm; }
 protected slots:
     void on_localFolderChooseBtn_clicked();
     void on_localFolderLineEdit_textChanged();
 
 private:
     Ui_FolderWizardSourcePage _ui;
-    Folder::Map *_folderMap;
+    Folder::Map _folderMap;
 };
 
 
@@ -74,63 +70,19 @@ public:
     virtual void cleanupPage();
 
 protected slots:
-    void slotToggleItems();
-    void on_localFolder2ChooseBtn_clicked();
 
-    void on_localFolderRadioBtn_toggled();
-    void on_urlFolderRadioBtn_toggled();
-
-    void on_localFolder2LineEdit_textChanged();
-    void on_urlFolderLineEdit_textChanged();
-
-    void slotOwnCloudFound( const QString&, const QString&, const QString&, const QString& );
-    void slotNoOwnCloudFound(QNetworkReply*);
-
-    void slotFolderTextChanged( const QString& );
-    void slotTimerFires();
-    void slotDirCheckReply( const QString&, QNetworkReply* );
-    void showWarn( const QString& = QString(), bool showCreateButton = false ) const;
-    void slotCreateRemoteFolder();
+    void showWarn( const QString& = QString() ) const;
+    void slotAddRemoteFolder();
+    void slotCreateRemoteFolder(QString);
     void slotCreateRemoteFolderFinished( QNetworkReply::NetworkError error );
-
+    void slotUpdateDirectories(QStringList);
+    void slotRefreshFolders();
+    void slotItemExpanded(QTreeWidgetItem*);
 private:
     Ui_FolderWizardTargetPage _ui;
-    QTimer *_timer;
     ownCloudInfo *_ownCloudDirCheck;
     bool _dirChecked;
     bool _warnWasVisible;
-};
-
-class FolderWizardNetworkPage : public QWizardPage
-{
-    Q_OBJECT
-public:
-    FolderWizardNetworkPage();
-    ~FolderWizardNetworkPage();
-
-    virtual bool isComplete() const;
-
-protected slots:
-
-private:
-    Ui_FolderWizardNetworkPage _ui;
-};
-
-class FolderWizardOwncloudPage : public QWizardPage
-{
-    Q_OBJECT
-public:
-    FolderWizardOwncloudPage();
-    ~FolderWizardOwncloudPage();
-
-    virtual bool isComplete() const;
-    void initializePage();
-
-protected slots:
-
-private:
-    Ui_FolderWizardOwncloudPage _ui;
-
 };
 
 /**
@@ -143,14 +95,12 @@ public:
 
     enum {
         Page_Source,
-        Page_Target,
-        Page_Network,
-        Page_Owncloud
+        Page_Target
     };
 
     FolderWizard(QWidget *parent = 0);
     ~FolderWizard();
-    void setFolderMap( Folder::Map* );
+    void setFolderMap( const Folder::Map &map );
 
 private:
 

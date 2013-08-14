@@ -19,19 +19,21 @@
 #include <QtGui>
 #include <QtNetwork>
 
+#include "ui_sslerrordialog.h"
+
 namespace Mirall
 {
 SslErrorDialog::SslErrorDialog(QWidget *parent) :
-    QDialog(parent), _allTrusted(false)
+    QDialog(parent), _allTrusted(false), _ui(new Ui::SslErrorDialog)
 {
-    setupUi( this  );
+    _ui->setupUi( this );
     setWindowTitle( tr("SSL Connection") );
     QPushButton *okButton =
-            _dialogButtonBox->button( QDialogButtonBox::Ok );
+            _ui->_dialogButtonBox->button( QDialogButtonBox::Ok );
     QPushButton *cancelButton =
-            _dialogButtonBox->button( QDialogButtonBox::Cancel );
+           _ui->_dialogButtonBox->button( QDialogButtonBox::Cancel );
     okButton->setEnabled(false);
-    connect(_cbTrustConnect, SIGNAL(clicked(bool)),
+    connect(_ui->_cbTrustConnect, SIGNAL(clicked(bool)),
             okButton, SLOT(setEnabled(bool)));
 
     if( okButton ) {
@@ -39,6 +41,11 @@ SslErrorDialog::SslErrorDialog(QWidget *parent) :
         connect( okButton, SIGNAL(clicked()),SLOT(accept()));
         connect( cancelButton, SIGNAL(clicked()),SLOT(reject()));
     }
+}
+
+SslErrorDialog::~SslErrorDialog()
+{
+    delete _ui;
 }
 
 
@@ -120,8 +127,8 @@ bool SslErrorDialog::setErrorList( QList<QSslError> errors )
     doc->addResource( QTextDocument::StyleSheetResource, QUrl( QL("format.css") ), style);
     doc->setHtml( msg );
 
-    _tbErrors->setDocument( doc );
-    _tbErrors->show();
+    _ui->_tbErrors->setDocument( doc );
+    _ui->_tbErrors->show();
 
     return false;
 }
@@ -148,10 +155,8 @@ QString SslErrorDialog::certDiv( QSslCertificate cert ) const
 
     msg += QL("<p>");
 
-    Utility util;
-
-    QString md5sum = util.formatFingerprint(cert.digest(QCryptographicHash::Md5).toHex());
-    QString sha1sum =  util.formatFingerprint(cert.digest(QCryptographicHash::Sha1).toHex());
+    QString md5sum = Utility::formatFingerprint(cert.digest(QCryptographicHash::Md5).toHex());
+    QString sha1sum =  Utility::formatFingerprint(cert.digest(QCryptographicHash::Sha1).toHex());
     msg += tr("Fingerprint (MD5): <tt>%1</tt>").arg(md5sum) + QL("<br/>");
     msg += tr("Fingerprint (SHA1): <tt>%1</tt>").arg(sha1sum) + QL("<br/>");
     msg += QL("<br/>");
@@ -177,7 +182,7 @@ bool SslErrorDialog::trustConnection()
 {
     if( _allTrusted ) return true;
 
-    bool stat = ( _cbTrustConnect->checkState() == Qt::Checked );
+    bool stat = ( _ui->_cbTrustConnect->checkState() == Qt::Checked );
     qDebug() << "SSL-Connection is trusted: " << stat;
 
     return stat;

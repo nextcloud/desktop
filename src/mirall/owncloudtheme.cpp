@@ -15,11 +15,13 @@
 #include "owncloudtheme.h"
 
 #include <QString>
-#include <QDebug>
+#include <QVariant>
 #include <QPixmap>
 #include <QIcon>
 #include <QStyle>
 #include <QApplication>
+
+#include <QDebug>
 
 #include "mirall/version.h"
 #include "config.h"
@@ -50,91 +52,34 @@ QString ownCloudTheme::about() const
     QString devString;
 #ifdef GIT_SHA1
     const QString githubPrefix(QLatin1String(
-                                   "    https://github.com/owncloud/mirall/commit/"));
+                                   "https://github.com/owncloud/mirall/commit/"));
     const QString gitSha1(QLatin1String(GIT_SHA1));
     devString = QCoreApplication::translate("ownCloudTheme::about()",
                    "<p><small>Built from Git revision <a href=\"%1\">%2</a>"
-                   " on %3, %4<br>using OCsync %5 and Qt %6.</small><p>")
+                   " on %3, %4 using OCsync %5 and Qt %6.</small><p>")
             .arg(githubPrefix+gitSha1).arg(gitSha1.left(6))
             .arg(__DATE__).arg(__TIME__)
             .arg(MIRALL_STRINGIFY(LIBCSYNC_VERSION))
             .arg(QT_VERSION_STR);
 #endif
     return  QCoreApplication::translate("ownCloudTheme::about()",
-               "<p><b>%1 Client Version %2</b></p>"
-               "<p><b>Authors</b>"
-               "<br><a href=\"mailto:freitag@owncloud.com\">"
-               "Klaas Freitag</a>, ownCloud, Inc."
-               "<br><a href=\"mailto:danimo@owncloud.com\">"
-               "Daniel Molkentin</a>, ownCloud, Inc."
-               "<br><br>Based on Mirall by Duncan Mac-Vicar P.</p>"
-               "<p>For more information visit <a href=\"%3\">%4</a>.</p>"
+               "<p>Version %2. "
+               "For more information visit <a href=\"%3\">%4</a></p>"
+               "<p><small>By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.<br>"
+               "Based on Mirall by Duncan Mac-Vicar P.</small></p>"
                "%7"
                )
-            .arg(appName())
             .arg(MIRALL_STRINGIFY(MIRALL_VERSION))
             .arg("http://" MIRALL_STRINGIFY(APPLICATION_DOMAIN))
             .arg(MIRALL_STRINGIFY(APPLICATION_DOMAIN))
             .arg(devString);
-}
 
-QPixmap ownCloudTheme::splashScreen() const
-{
-    return QPixmap(QLatin1String(":/mirall/resources/owncloud_splash.png"));
-}
-
-QIcon ownCloudTheme::folderIcon( const QString& backend ) const
-{
-  QString name;
-
-  if( backend == QLatin1String("owncloud")) {
-      name = QLatin1String( "owncloud-framed" );
-  }
-  if( backend == QLatin1String("unison" )) {
-      name  = QLatin1String( "folder-sync" );
-  }
-  if( backend == QLatin1String("csync" )) {
-      name   = QLatin1String( "folder-remote" );
-  }
-  if( backend.isEmpty() || backend == QLatin1String("none") ) {
-      name = QLatin1String("folder-grey");
-  }
-
-  qDebug() << "==> load folder icon " << name;
-  return themeIcon( name );
 }
 
 QIcon ownCloudTheme::trayFolderIcon( const QString& ) const
 {
     QPixmap fallback = qApp->style()->standardPixmap(QStyle::SP_FileDialogNewFolder);
     return QIcon::fromTheme("folder", fallback);
-}
-
-QIcon ownCloudTheme::syncStateIcon( SyncResult::Status status, bool sysTray ) const
-{
-    // FIXME: Mind the size!
-    QString statusIcon;
-
-    switch( status ) {
-    case SyncResult::Undefined:
-    case SyncResult::NotYetStarted:
-    case SyncResult::Unavailable:
-        statusIcon = QLatin1String("state-offline");
-        break;
-    case SyncResult::SyncRunning:
-        statusIcon = QLatin1String("state-sync");
-        break;
-    case SyncResult::SyncPrepare:
-    case SyncResult::Success:
-        statusIcon = QLatin1String("state-ok");
-        break;
-    case SyncResult::Error:
-    case SyncResult::SetupError:
-    default:
-        statusIcon = QLatin1String("state-error");
-    }
-
-    return themeIcon( statusIcon, sysTray );
 }
 
 QIcon ownCloudTheme::folderDisabledIcon( ) const
@@ -145,8 +90,42 @@ QIcon ownCloudTheme::folderDisabledIcon( ) const
 
 QIcon ownCloudTheme::applicationIcon( ) const
 {
-    return themeIcon( QLatin1String("owncloud") );
+    return themeIcon( QLatin1String("owncloud-icon") );
 }
+
+QVariant ownCloudTheme::customMedia(Theme::CustomMediaType type)
+{
+    if (type == Theme::oCSetupTop) {
+        return QCoreApplication::translate("ownCloudTheme",
+                                           "If you don't have an ownCloud server yet, "
+                                           "see <a href=\"https://owncloud.com\">owncloud.com</a> for more info.",
+                                           "Top text in setup wizard. Keep short!");
+    } else {
+        return QVariant();
+    }
+}
+
+QString ownCloudTheme::helpUrl() const
+{
+    return QString::fromLatin1("http://doc.owncloud.org/desktop/%1.%2/").arg(MIRALL_VERSION_MAJOR).arg(MIRALL_VERSION_MINOR);
+}
+
+QColor ownCloudTheme::wizardHeaderBackgroundColor() const
+{
+    return QColor("#1d2d42");
+}
+
+QColor ownCloudTheme::wizardHeaderTitleColor() const
+{
+    return QColor("#ffffff");
+}
+
+QPixmap ownCloudTheme::wizardHeaderLogo() const
+{
+    return QPixmap(":/mirall/theme/colored/wizard_logo.png");
+}
+
+
 
 }
 

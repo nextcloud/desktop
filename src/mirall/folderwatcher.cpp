@@ -69,7 +69,7 @@ QString FolderWatcher::root() const
     return _root;
 }
 
-void FolderWatcher::setIgnoreListFile( const QString& file )
+void FolderWatcher::addIgnoreListFile( const QString& file )
 {
     if( file.isEmpty() ) return;
 
@@ -79,16 +79,10 @@ void FolderWatcher::setIgnoreListFile( const QString& file )
 
     while (!infile.atEnd()) {
         QString line = QString::fromLocal8Bit( infile.readLine() ).trimmed();
-        if( !line.startsWith( QLatin1Char('#') )) {
-            addIgnore(line);
+        if( !line.startsWith( QLatin1Char('#') ) && line.isEmpty() ) {
+            _ignores.append(line);
         }
     }
-}
-
-void FolderWatcher::addIgnore(const QString &pattern)
-{
-    if( pattern.isEmpty() ) return;
-    _ignores.append(pattern);
 }
 
 QStringList FolderWatcher::ignores() const

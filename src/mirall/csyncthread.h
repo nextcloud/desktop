@@ -23,11 +23,13 @@
 #include <QString>
 #include <qelapsedtimer.h>
 #include <QNetworkProxy>
+#include <QNetworkCookie>
 
 #include <csync.h>
 
 #include "mirall/syncfileitem.h"
 #include "progressdatabase.h"
+#include "mirall/progressdispatcher.h"
 
 class QProcess;
 
@@ -53,7 +55,7 @@ public:
     CSyncThread(CSYNC *, const QString &localPath, const QString &remotePath);
     ~CSyncThread();
 
-    QString csyncErrorToString(CSYNC_ERROR_CODE) const;
+    static QString csyncErrorToString( CSYNC_ERROR_CODE);
 
     Q_INVOKABLE void startSync();
 
@@ -65,11 +67,14 @@ signals:
     void csyncUnavailable();
     void treeWalkResult(const SyncFileItemVector&);
 
+    void transmissionProgress( const Progress::Info& progress );
     void csyncStateDbFile( const QString& );
     void wipeDb();
 
     void finished();
     void started();
+
+    void aboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *cancel);
 
 private slots:
     void transferCompleted(const SyncFileItem& item, CSYNC_ERROR_CODE error);
@@ -77,16 +82,15 @@ private slots:
 
 private:
     void handleSyncError(CSYNC *ctx, const char *state);
-    static void progress(const char *remote_url,
-                    enum csync_notify_type_e kind,
-                    long long o1, long long o2,
-                    void *userdata);
+
+    static void cb_progress( CSYNC_PROGRESS *progress, void *userdata );
 
     static int treewalkLocal( TREE_WALK_FILE*, void *);
     static int treewalkRemote( TREE_WALK_FILE*, void *);
     int treewalkFile( TREE_WALK_FILE*, bool );
     int treewalkFinalize( TREE_WALK_FILE* );
 
+    Progress::Kind csyncToProgressKind( enum csync_notify_type_e kind );
     static int walkFinalize(TREE_WALK_FILE*, void* );
 
 
@@ -111,7 +115,9 @@ private:
     QHash<QString, QString> _renamedFolders;
     QString adjustRenamedPath(const QString &original);
 
-    friend class CSyncRunScopeHelper;
+    bool _hasFiles; // true if there is at least one file that is not ignored or removed
+
+    friend struct CSyncRunScopeHelper;
 };
 }
 

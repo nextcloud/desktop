@@ -38,10 +38,10 @@ FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p)
 
 {
     _inotify = new INotify(this, standard_event_mask);
-    slotAddFolderRecursive(_parent->root());
     QObject::connect(_inotify, SIGNAL(notifyEvent(int, int, const QString &)),
                      this, SLOT(slotINotifyEvent(int, int, const QString &)));
 
+    QMetaObject::invokeMethod(this, "slotAddFolderRecursive", Q_ARG(QString, _parent->root()));
 }
 
 void FolderWatcherPrivate::slotAddFolderRecursive(const QString &path)
@@ -49,7 +49,12 @@ void FolderWatcherPrivate::slotAddFolderRecursive(const QString &path)
     int subdirs = 0;
     qDebug() << "(+) Watcher:" << path;
 
-    _inotify->addPath(path);
+    if (!_inotify->addPath(path)) {
+        FolderWatcher *fw = qobject_cast<FolderWatcher*>(parent());
+        emit fw->error(tr("Could not monitor directories due to system limitations.\n"
+                          "The application will not work reliably. Please check the\n"
+                          "documentation for possible fixes."));
+    }
     QStringList watchedFolders(_inotify->directories());
     // qDebug() << "currently watching " << watchedFolders;
     QStringListIterator subfoldersIt(FileUtils::subFoldersList(path, FileUtils::SubFolderRecursive));
@@ -78,7 +83,7 @@ void FolderWatcherPrivate::slotAddFolderRecursive(const QString &path)
         qDebug() << "    `-> and" << subdirs << "subdirectories";
 }
 
-void FolderWatcherPrivate::slotINotifyEvent(int mask, int cookie, const QString &path)
+void FolderWatcherPrivate::slotINotifyEvent(int mask, int /*cookie*/, const QString &path)
 {
     int lastMask = _lastMask;
     QString lastPath = _lastPath;

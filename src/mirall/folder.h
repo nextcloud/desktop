@@ -1,5 +1,7 @@
 /*
  * Copyright (C) by Duncan Mac-Vicar P. <duncan@kde.org>
+ * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,37 +17,71 @@
 #ifndef MIRALL_FOLDER_H
 #define MIRALL_FOLDER_H
 
-
-#include <QObject>
-#include <QString>
-#include <QStringList>
-#include <QHash>
-#include <QTimer>
-
-#if QT_VERSION >= 0x040700
-#include <QNetworkConfigurationManager>
-#endif
-
 #include "mirall/syncresult.h"
+#include "mirall/progressdispatcher.h"
+#include "mirall/csyncthread.h"
 
-class QAction;
-class QIcon;
+#include <QDir>
+#include <QHash>
+#include <QNetworkAccessManager>
+#include <QNetworkProxy>
+#include <QObject>
+#include <QStringList>
+
+#include <QDebug>
+#include <QTimer>
+#include <qelapsedtimer.h>
+
 class QFileSystemWatcher;
+class QThread;
 
 namespace Mirall {
 
 class FolderWatcher;
 
+typedef enum SyncFileStatus_s {
+    STATUS_NONE,
+    STATUS_EVAL,
+    STATUS_REMOVE,
+    STATUS_RENAME,
+    STATUS_NEW,
+    STATUS_CONFLICT,
+    STATUS_IGNORE,
+    STATUS_SYNC,
+    STATUS_STAT_ERROR,
+    STATUS_ERROR,
+    STATUS_UPDATED
+} SyncFileStatus;
+
+class ServerActionNotifier : public QObject
+{
+    Q_OBJECT
+public:
+    ServerActionNotifier(QObject *parent = 0);
+public slots:
+    void slotSyncFinished(const SyncResult &result);
+
+private:
+};
+
 class Folder : public QObject
 {
     Q_OBJECT
 
-public:
+protected:
+    friend class FolderMan;
     Folder(const QString&, const QString&, const QString& , QObject*parent = 0L);
-    virtual ~Folder();
+
+public:
+    ~Folder();
 
     typedef QHash<QString, Folder*> Map;
     typedef QHashIterator<QString, Folder*> MapIterator;
+
+    /**
+     * Get status about a single file.
+     */
+    SyncFileStatus fileStatus( const QString& );
 
     /**
      * alias or nickname
@@ -56,12 +92,16 @@ public:
      * local folder path
      */
     QString path() const;
-    virtual QString secondPath() const;
+    /**
+     * remote folder path
+     */
+    QString secondPath() const;
 
     /**
      * local folder path with native separators
      */
     QString nativePath() const;
+
     /**
      * switch sync on or off
      * If the sync is switched off, the startSync method is not going to
@@ -72,67 +112,15 @@ public:
      bool syncEnabled() const;
 
     /**
-     * Starts a sync operation
-     *
-     * If the list of changed files is known, it is passed.
-     *
-     * If the list of changed files is empty, the folder
-     * implementation should figure it by itself of
-     * perform a full scan of changes
-     */
-    virtual void startSync(const QStringList &pathList) = 0;
-
-    /**
      * True if the folder is busy and can't initiate
      * a synchronization
      */
-    virtual bool isBusy() const = 0;
-
-    /**
-     * only sync when online in the network
-     */
-    bool onlyOnlineEnabled() const;
-
-    /**
-     * @see onlyOnlineEnabled
-     */
-    void setOnlyOnlineEnabled(bool enabled);
-
-    /**
-     * only sync when online in the same LAN
-     * as the one used during setup
-     */
-    bool onlyThisLANEnabled() const;
-
-    /**
-     * @see onlyThisLANEnabled
-     */
-    void setOnlyThisLANEnabled(bool enabled);
-
-
-    /**
-      * error counter, stop syncing after the counter reaches a certain
-      * number.
-      */
-    int errorCount();
-
-    void resetErrorCount();
-
-    void incrementErrorCount();
+    virtual bool isBusy() const;
 
     /**
      * return the last sync result with error message and status
      */
      SyncResult syncResult() const;
-
-     /**
-     * set the backend description string.
-     */
-     void setBackend( const QString& );
-     /**
-     * get the backend description string.
-     */
-     QString backend() const;
 
      /**
       * set the config file name.
@@ -144,9 +132,6 @@ public:
       * This is called if the sync folder definition is removed. Do cleanups here.
       */
      virtual void wipe();
-
-     QIcon icon( int size ) const;
-     QTimer   *_pollTimer;
 
 signals:
     void syncStateChange();
@@ -165,43 +150,45 @@ public slots:
      /**
        * terminate the current sync run
        */
-     virtual void slotTerminateSync() = 0;
+     void slotTerminateSync();
+
+     void slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool*);
+
 
      /**
-      * Sets minimum amounts of milliseconds that will separate
-      * poll intervals
+      * Starts a sync operation
+      *
+      * If the list of changed files is known, it is passed.
       */
-     void setPollInterval( int );
+      void startSync(const QStringList &pathList = QStringList());
 
-protected:
-    /**
-     * The minimum amounts of seconds to wait before
-     * doing a full sync to see if the remote changed
-     */
-    int pollInterval() const;
-    void setSyncState(SyncResult::Status state);
+private slots:
+    void slotCSyncStarted();
+    void slotCSyncError(const QString& );
+    void slotCsyncUnavailable();
+    void slotCSyncFinished();
 
-    FolderWatcher *_watcher;
-    int _errorCount;
-    SyncResult _syncResult;
-
-protected slots:
-
-    void slotOnlineChanged(bool online);
+    void slotTransmissionProgress(const Progress::Info& progress);
 
     void slotPollTimerTimeout();
-
-    /* called when the watcher detect a list of changed
-       paths */
-
-    void slotSyncStarted();
+    void etagRetreived(const QString &);
+    void slotNetworkUnavailable();
 
     /**
      * Triggered by a file system watcher on the local sync dir
      */
-    virtual void slotLocalPathChanged( const QString& );
+    void slotLocalPathChanged( const QString& );
+    void slotThreadTreeWalkResult(const SyncFileItemVector& );
+    void slotCatchWatcherError( const QString& );
 
-private:
+protected:
+    bool init();
+
+    void setSyncState(SyncResult::Status state);
+
+    void setIgnoredFiles();
+    void setProxy();
+    const char* proxyTypeToCStr(QNetworkProxy::ProxyType type);
 
     /**
      * Starts a sync (calling startSync)
@@ -209,23 +196,28 @@ private:
      */
     void evaluateSync(const QStringList &pathList);
 
-    virtual void checkLocalPath();
+    void checkLocalPath();
 
     QString   _path;
     QString   _secondPath;
     QString   _alias;
-    bool      _onlyOnlineEnabled;
-    bool      _onlyThisLANEnabled;
     QString   _configFile;
-
     QFileSystemWatcher *_pathWatcher;
-
-#if QT_VERSION >= 0x040700
-    QNetworkConfigurationManager _networkMgr;
-#endif
-    bool       _online;
     bool       _enabled;
-    QString    _backend;
+    FolderWatcher *_watcher;
+    SyncResult _syncResult;
+    QThread     *_thread;
+    CSyncThread *_csync;
+    QStringList  _errors;
+    bool         _csyncError;
+    bool         _csyncUnavail;
+    bool         _wipeDb;
+    Progress::Kind _progressKind;
+    QTimer        _pollTimer;
+    QString       _lastEtag;
+    QElapsedTimer _timeSinceLastSync;
+
+    CSYNC *_csync_ctx;
 
 };
 

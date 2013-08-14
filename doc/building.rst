@@ -20,20 +20,24 @@ Linux
 Mac OS X
 --------
 
-Follow the `generic build instructions`_.
+Next to XCode (and the command line tools!), you will need some
+extra dependencies.
 
-You can install the missing dependencies via MacPorts_ or Homebrew_.
+You can install these dependencies via MacPorts_ or Homebrew_.
 This is only needed on the build machine, since non-standard libs
 will be deployed in the app bundle.
 
-The only exception to this rule is libiniparser_, which lacks a decent
-build system. If you are using Homebrew_, you can just add it::
+The tested and preferred way is to use HomeBrew_. The ownCloud team has
+its own repository which contains non-standard recipes.  Add it with::
 
-  brew tap dschmidt/owncloud
-  brew install iniparser
+  brew tap owncloud/owncloud
 
-Otherwise, you need to copy the header and lib files to
-``/usr/local/include`` and ``/usr/local/lib`` respectively.
+Next, install the missing dependencies::
+
+  brew install $(brew deps ocsync)
+  brew install $(brew deps mirall)
+
+To build mirall and csync, follow the `generic build instructions`_.
 
 .. note::
   You should not call ``make install`` at any time, since the product of the
@@ -151,7 +155,7 @@ directories. If this succeeds, call ``make``. The owncloud binary should appear
 in the ``bin`` directory. You can also run ``make install`` to install the client to
 ``/usr/local/bin``.
 
-To build in installer (requires the mingw32-cross-nsis packages)::
+To build an installer/app bundle (requires the mingw32-cross-nsis packages on Windows)::
 
   make package
 
@@ -165,4 +169,3 @@ Known cmake parameters:
 .. _Git: http://git-scm.com
 .. _MacPorts: http://www.macports.org
 .. _Homebrew: http://mxcl.github.com/homebrew/
-.. _libiniparser: http://ndevilla.free.fr/iniparser/

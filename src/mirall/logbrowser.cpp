@@ -28,6 +28,7 @@
 #include <QMessageBox>
 #include <QCoreApplication>
 #include <QDebug>
+#include <QSettings>
 
 #include "mirall/mirallconfigfile.h"
 #include "mirall/logger.h"
@@ -56,9 +57,10 @@ LogWidget::LogWidget(QWidget *parent)
 LogBrowser::LogBrowser(QWidget *parent) :
     QDialog(parent),
     _logWidget( new LogWidget(parent) ),
-    _logstream(0),
-    _doFileFlush(false)
+    _doFileFlush(false),
+    _logstream(0)
 {
+    setObjectName("LogBrowser"); // for save/restoreGeometry()
     setWindowTitle(tr("Log Output"));
     setMinimumWidth(600);
 
@@ -113,15 +115,15 @@ LogBrowser::LogBrowser(QWidget *parent) :
 
     setModal(false);
 
-    // needs to be a queued connection as logs from other threads come in
-    connect(Logger::instance(), SIGNAL(newLog(QString)),this,SLOT(slotNewLog(QString)), Qt::QueuedConnection);
+    // Direct connection for log comming from this thread, and queued for the one in a different thread
+    connect(Logger::instance(), SIGNAL(newLog(QString)),this,SLOT(slotNewLog(QString)), Qt::AutoConnection);
+
+    MirallConfigFile cfg;
+    cfg.restoreGeometry(this);
 }
 
 LogBrowser::~LogBrowser()
 {
-    if( _logstream ) {
-        _logFile.close();
-    }
 }
 
 void LogBrowser::slotNewLog( const QString& msg )
@@ -138,6 +140,9 @@ void LogBrowser::slotNewLog( const QString& msg )
 
 void LogBrowser::setLogFile( const QString & name, bool flush )
 {
+    if( _logstream ) {
+        _logFile.close();
+    }
     _logFile.setFileName( name );
 
     if(!_logFile.open(QIODevice::WriteOnly)) {
@@ -150,7 +155,7 @@ void LogBrowser::setLogFile( const QString & name, bool flush )
         return;
     }
     _doFileFlush = flush;
-    _logstream = new QTextStream( &_logFile );
+    _logstream.reset(new QTextStream( &_logFile ));
 }
 
 void LogBrowser::slotFind()
@@ -209,6 +214,13 @@ void LogBrowser::slotSave()
 void LogBrowser::slotClearLog()
 {
     _logWidget->clear();
+}
+
+void LogBrowser::closeEvent(QCloseEvent *event)
+{
+    MirallConfigFile cfg;
+    cfg.saveGeometry(this);
+    QWidget::closeEvent(event);
 }
 
 } // namespace

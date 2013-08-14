@@ -14,32 +14,19 @@
 
 #include "mirall/owncloudinfo.h"
 #include "mirall/mirallconfigfile.h"
-#include "mirall/version.h"
 #include "mirall/theme.h"
+#include "mirall/logger.h"
+#include "creds/abstractcredentials.h"
 
 #include <QtCore>
 #include <QtGui>
 #include <QAuthenticator>
 
-#if QT46_IMPL
-#include <QHttp>
-#endif
-
 #define DEFAULT_CONNECTION QLatin1String("default");
+static const char WEBDAV_PATH[] = "remote.php/webdav/";
 
 namespace Mirall
 {
-
-class oCCookieJar : public QNetworkCookieJar
-{
-public:
-    QList<QNetworkCookie> cookiesForUrl ( const QUrl & url ) const {
-        QList<QNetworkCookie> list;
-        return list;
-    }
-
-};
-
 
 ownCloudInfo *ownCloudInfo::_instance = 0;
 
@@ -61,12 +48,16 @@ ownCloudInfo* ownCloudInfo::instance()
 
 ownCloudInfo::ownCloudInfo() :
     QObject(0),
-    _manager(0)
+    _manager(0),
+    _authAttempts(0),
+    _lastQuotaUsedBytes(0),
+    _lastQuotaTotalBytes(0)
 {
     _connection = Theme::instance()->appName();
-
-    setNetworkAccessManager( new QNetworkAccessManager( this ) );
-
+    connect(this, SIGNAL(guiLog(QString,QString)),
+            Logger::instance(), SIGNAL(guiLog(QString,QString)));
+    // this will set credentials specific qnam
+    setCustomConfigHandle(QString());
 }
 
 void ownCloudInfo::setNetworkAccessManager( QNetworkAccessManager* qnam )
@@ -81,18 +72,7 @@ void ownCloudInfo::setNetworkAccessManager( QNetworkAccessManager* qnam )
     connect( _manager, SIGNAL( sslErrors(QNetworkReply*, QList<QSslError>)),
              this, SIGNAL(sslFailed(QNetworkReply*, QList<QSslError>)) );
 
-    // The authenticationRequired signal is not handled because the creds are set
-    // in the request header.
-#if 0
-    connect( _manager, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
-             this, SLOT(slotAuthentication(QNetworkReply*,QAuthenticator*)));
-#endif
-
-    // no cookie jar so far.
-    _manager->setCookieJar(new oCCookieJar);
-
     _certsUntrusted = false;
-
 }
 
 ownCloudInfo::~ownCloudInfo()
@@ -104,6 +84,8 @@ void ownCloudInfo::setCustomConfigHandle( const QString& handle )
     _configHandle = handle;
     _authAttempts = 0; // allow a couple of tries again.
     resetSSLUntrust();
+    MirallConfigFile cfg(_configHandle);
+    setNetworkAccessManager (cfg.getCredentials()->getQNAM());
 }
 
 bool ownCloudInfo::isConfigured()
@@ -114,28 +96,32 @@ bool ownCloudInfo::isConfigured()
 
 QNetworkReply *ownCloudInfo::checkInstallation()
 {
+    _redirectCount = 0;
+    MirallConfigFile cfgFile(  _configHandle );
+    QUrl url ( cfgFile.ownCloudUrl( _connection ) +  QLatin1String("status.php") );
     /* No authentication required for this. */
-    return getRequest( QLatin1String("status.php"), false );
+    return getRequest(url);
 }
 
 QNetworkReply* ownCloudInfo::getWebDAVPath( const QString& path )
 {
-    return getRequest( path, true );
+    _redirectCount = 0;
+    QUrl url ( webdavUrl( _connection ) +  path );
+    QNetworkReply *reply = getRequest(url);
+    _directories[reply] = path;
+    return reply;
 }
 
-QNetworkReply* ownCloudInfo::getRequest( const QString& path, bool webdav )
+QNetworkReply* ownCloudInfo::getRequest( const QUrl& url )
 {
-    qDebug() << "Get Request to " << path;
+    qDebug() << "Get Request to " << url;
 
-    MirallConfigFile cfgFile(  _configHandle );
-    QString url = cfgFile.ownCloudUrl( _connection, webdav ) + path;
     QNetworkRequest request;
-    request.setUrl( QUrl( url ) );
+    request.setUrl( url );
     setupHeaders( request, 0 );
 
     QNetworkReply *reply = _manager->get( request );
     connect( reply, SIGNAL(finished()), SLOT(slotReplyFinished()));
-    _directories[reply] = path;
 
     if( !_configHandle.isEmpty() ) {
         qDebug() << "Setting config handle " << _configHandle;
@@ -147,88 +133,13 @@ QNetworkReply* ownCloudInfo::getRequest( const QString& path, bool webdav )
     return reply;
 }
 
-#if QT46_IMPL
-QNetworkReply* ownCloudInfo::mkdirRequest( const QString& dir )
-{
-    qDebug() << "OCInfo Making dir " << dir;
-
-    MirallConfigFile cfgFile( _configHandle );
-    QUrl url = QUrl( cfgFile.ownCloudUrl( _connection, true ) + dir );
-    QHttp::ConnectionMode conMode = QHttp::ConnectionModeHttp;
-    if (url.scheme() == "https")
-        conMode = QHttp::ConnectionModeHttps;
-
-    QHttp* qhttp = new QHttp(QString(url.encodedHost()), conMode, 0, this);
-
-    connect(qhttp, SIGNAL(requestStarted(int)), this,SLOT(qhttpRequestStarted(int)));
-    connect(qhttp, SIGNAL(requestFinished(int, bool)), this,SLOT(qhttpRequestFinished(int,bool)));
-    connect(qhttp, SIGNAL(responseHeaderReceived(QHttpResponseHeader)), this, SLOT(qhttpResponseHeaderReceived(QHttpResponseHeader)));
-    //connect(qhttp, SIGNAL(authenticationRequired(QString,quint16,QAuthenticator*)), this, SLOT(qhttpAuthenticationRequired(QString,quint16,QAuthenticator*)));
-
-    QHttpRequestHeader header("MKCOL", QString(url.encodedPath()), 1,1);   /* header */
-    header.setValue("Host", QString(url.encodedHost()));
-    header.setValue("User-Agent", QString("mirall-%1").arg(MIRALL_STRINGIFY(MIRALL_VERSION)).toAscii() );
-    header.setValue("Accept-Charset", "ISO-8859-1,utf-8;q=0.7,*;q=0.7");
-    header.setValue("Accept-Language", "it,de-de;q=0.8,it-it;q=0.6,en-us;q=0.4,en;q=0.2");
-    header.setValue("Connection", "keep-alive");
-    header.setContentType("application/x-www-form-urlencoded"); //important
-    header.setContentLength(0);
-
-    QString con = _configHandle;
-    if( con.isEmpty() ) con = DEFAULT_CONNECTION;
-    if( _credentials.contains(con)) {
-        oCICredentials creds = _credentials.value(con);
-        QString concatenated = creds.user + QLatin1Char(':') + creds.passwd;
-        const QString b(QLatin1String("Basic "));
-        QByteArray data = b.toLocal8Bit() + concatenated.toLocal8Bit().toBase64();
-        header.setValue("Authorization", data);
-
-        qhttp->setUser( creds.user, creds.passwd );
-    }
-
-    int david = qhttp->request(header,0,0);
-    //////////////// connect(davinfo, SIGNAL(dataSendProgress(int,int)), this, SLOT(SendStatus(int, int)));
-    /////////////////connect(davinfo, SIGNAL(done(bool)), this,SLOT(DavWake(bool)));
-    //connect(_http, SIGNAL(requestFinished(int, bool)), this,SLOT(qhttpRequestFinished(int,bool)));
-    ///////////connect(davinfo, SIGNAL(responseHeaderReceived(constQHttpResponseHeader &)), this, SLOT(RegisterBackHeader(constQHttpResponseHeader &)));
-
-    return NULL;
-}
-
-void ownCloudInfo::qhttpResponseHeaderReceived(const QHttpResponseHeader& header)
-{
-    qDebug() << "Resp:" << header.toString();
-    if (header.statusCode() == 201)
-        emit webdavColCreated( QNetworkReply::NoError );
-    else
-        qDebug() << "http request failed" << header.toString();
-}
-
-void ownCloudInfo::qhttpRequestStarted(int id)
-{
-    qDebug() << "QHttp based request started " << id;
-}
-
-void ownCloudInfo::qhttpRequestFinished(int id, bool success )
-{
-     qDebug() << "HIT!";
-     QHttp* qhttp = qobject_cast<QHttp*>(sender());
-
-     if( success ) {
-         qDebug() << "QHttp based request successful";
-     } else {
-         qDebug() << "QHttp based request failed: " << qhttp->errorString();
-     }
-}
-#else
 QNetworkReply* ownCloudInfo::mkdirRequest( const QString& dir )
 {
     qDebug() << "OCInfo Making dir " << dir;
     _authAttempts = 0;
-    MirallConfigFile cfgFile( _configHandle );
     QNetworkRequest req;
-    req.setUrl( QUrl( cfgFile.ownCloudUrl( _connection, true ) + dir ) );
-    QNetworkReply *reply = davRequest(QLatin1String("MKCOL"), req, 0);
+    req.setUrl( QUrl( webdavUrl(_connection) + dir ) );
+    QNetworkReply *reply = davRequest("MKCOL", req, 0);
 
     // remember the confighandle used for this request
     if( ! _configHandle.isEmpty() )
@@ -244,6 +155,62 @@ QNetworkReply* ownCloudInfo::mkdirRequest( const QString& dir )
              this, SLOT(slotError(QNetworkReply::NetworkError )));
     return reply;
 }
+
+QNetworkReply* ownCloudInfo::getQuotaRequest( const QString& dir )
+{
+    QNetworkRequest req;
+    req.setUrl( QUrl( webdavUrl(_connection) + dir ) );
+    req.setRawHeader("Depth", "0");
+    QByteArray xml("<?xml version=\"1.0\" ?>\n"
+                   "<d:propfind xmlns:d=\"DAV:\">\n"
+                   "  <d:prop>\n"
+                   "    <d:quota-available-bytes/>\n"
+                   "    <d:quota-used-bytes/>\n"
+                   "    <d:getetag/>"
+                   "  </d:prop>\n"
+                   "</d:propfind>\n");
+    QBuffer *buf = new QBuffer;
+    buf->setData(xml);
+    buf->open(QIODevice::ReadOnly);
+    QNetworkReply *reply = davRequest("PROPFIND", req, buf);
+    buf->setParent(reply);
+
+    if( reply->error() != QNetworkReply::NoError ) {
+        qDebug() << "getting quota: request network error: " << reply->errorString();
+    }
+
+    connect( reply, SIGNAL( finished()), SLOT(slotGetQuotaFinished()) );
+    connect( reply, SIGNAL( error(QNetworkReply::NetworkError)),
+             this, SLOT( slotError(QNetworkReply::NetworkError)));
+    return reply;
+}
+QNetworkReply* ownCloudInfo::getDirectoryListing( const QString& dir )
+{
+    QNetworkRequest req;
+    req.setUrl( QUrl( webdavUrl(_connection) + dir ) );
+    req.setRawHeader("Depth", "1");
+    QByteArray xml("<?xml version=\"1.0\" ?>\n"
+                   "<d:propfind xmlns:d=\"DAV:\">\n"
+                   "  <d:prop>\n"
+                   "    <d:resourcetype/>\n"
+                   "  </d:prop>\n"
+                   "</d:propfind>\n");
+    QBuffer *buf = new QBuffer;
+    buf->setData(xml);
+    buf->open(QIODevice::ReadOnly);
+    QNetworkReply *reply = davRequest("PROPFIND", req, buf);
+    buf->setParent(reply);
+
+    if( reply->error() != QNetworkReply::NoError ) {
+        qDebug() << "getting quota: request network error: " << reply->errorString();
+    }
+
+    connect( reply, SIGNAL( finished()), SLOT(slotGetDirectoryListingFinished()) );
+    connect( reply, SIGNAL( error(QNetworkReply::NetworkError)),
+             this, SLOT( slotError(QNetworkReply::NetworkError)));
+    return reply;
+}
+
 
 void ownCloudInfo::slotMkdirFinished()
 {
@@ -262,47 +229,90 @@ void ownCloudInfo::slotMkdirFinished()
 
     reply->deleteLater();
 }
-#endif
 
-// FIXME: remove this later, once the new connection dialog has settled.
-#if 0
-void ownCloudInfo::slotAuthentication( QNetworkReply *reply, QAuthenticator *auth )
+void ownCloudInfo::slotGetQuotaFinished()
 {
-    if( !(auth && reply) ) return;
-    QString configHandle;
+    bool ok = false;
+    QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
 
-    // an empty config handle is ok for the default config.
-    if( _configHandleMap.contains(reply) ) {
-        configHandle = _configHandleMap[reply];
-        qDebug() << "Auth: Have a custom config handle: " << configHandle;
-    }
+    if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) == 207) {
+        // Parse DAV response
+        QXmlStreamReader reader(reply);
+        reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration("d", "DAV:"));
 
-    qDebug() << "Auth request to me and I am " << this;
-    _authAttempts++;
-    MirallConfigFile cfgFile( configHandle );
-    qDebug() << "Authenticating request for " << reply->url();
-    if( reply->url().toString().startsWith( cfgFile.ownCloudUrl( _connection, true )) ) {
+        qint64 quotaUsedBytes = 0;
+        qint64 quotaAvailableBytes = 0;
+        QString etag;
 
-        QString con = configHandle;
-        if( con.isEmpty() ) con = DEFAULT_CONNECTION;
-        if( _credentials.contains(con)) {
-            oCICredentials creds = _credentials.value(con);
-
-            auth->setUser( creds.user );
-            auth->setPassword( creds.passwd );
-        } else {
-            qDebug() << "Unable to get Credentials, not set!";
-            reply->close();
+        while (!reader.atEnd()) {
+            QXmlStreamReader::TokenType type = reader.readNext();
+            if (type == QXmlStreamReader::StartElement &&
+                    reader.namespaceUri() == QLatin1String("DAV:")) {
+                QString name = reader.name().toString();
+                if (name == QLatin1String("quota-used-bytes")) {
+                    quotaUsedBytes = reader.readElementText().toLongLong(&ok);
+                    if (!ok) quotaUsedBytes = 0;
+                } else if (name == QLatin1String("quota-available-bytes")) {
+                    quotaAvailableBytes = reader.readElementText().toLongLong(&ok);
+                    if (!ok) quotaAvailableBytes = 0;
+                } else if (name == QLatin1String("getetag")) {
+                    etag = reader.readElementText();
+                }
+            }
         }
+
+        qint64 total = quotaUsedBytes + quotaAvailableBytes;
+
+        _lastQuotaTotalBytes = total;
+        _lastQuotaUsedBytes = quotaUsedBytes;
+        emit quotaUpdated(total, quotaUsedBytes);
+        _lastEtag = etag;
     } else {
-        qDebug() << "WRN: attempt to authenticate to different url - attempt " <<_authAttempts;
+        _lastQuotaTotalBytes = 0;
+        _lastQuotaUsedBytes = 0;
     }
-    if( _authAttempts > 1) {
-        qDebug() << "Too many attempts to authenticate. Stop request.";
-        reply->close();
-    }
+
+    reply->deleteLater();
 }
-#endif
+
+void ownCloudInfo::slotGetDirectoryListingFinished()
+{
+    QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
+
+    if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) == 207) {
+        // Parse DAV response
+        QXmlStreamReader reader(reply);
+        reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration("d", "DAV:"));
+
+        QStringList folders;
+        QString currentItem;
+
+        while (!reader.atEnd()) {
+            QXmlStreamReader::TokenType type = reader.readNext();
+            if (type == QXmlStreamReader::StartElement &&
+                    reader.namespaceUri() == QLatin1String("DAV:")) {
+                QString name = reader.name().toString();
+                if (name == QLatin1String("href")) {
+                    currentItem = reader.readElementText();
+                } else if (name == QLatin1String("collection") &&
+                           !currentItem.isEmpty()) {
+                    folders.append(currentItem);
+                    currentItem.clear();
+                }
+            }
+        }
+        emit directoryListingUpdated(folders);
+    }
+
+    reply->deleteLater();
+}
+
+QList<QNetworkCookie> ownCloudInfo::getLastAuthCookies()
+{
+    QUrl url = QUrl( webdavUrl(_connection));
+    QList<QNetworkCookie> cookies = _manager->cookieJar()->cookiesForUrl(url);
+    return cookies;
+}
 
 QString ownCloudInfo::configHandle(QNetworkReply *reply)
 {
@@ -317,20 +327,6 @@ QList<QSslCertificate> ownCloudInfo::certificateChain() const
 {
     QMutexLocker lock(const_cast<QMutex*>(&_certChainMutex));
     return _certificateChain;
-}
-
-QUrl ownCloudInfo::redirectUrl(const QUrl& possibleRedirectUrl,
-                               const QUrl& oldRedirectUrl) const {
-    QUrl redirectUrl;
-    /*
-     * Check if the URL is empty and
-     * that we aren't being fooled into a infinite redirect loop.
-     */
-    if(!possibleRedirectUrl.isEmpty() &&
-       possibleRedirectUrl != oldRedirectUrl) {
-        redirectUrl = possibleRedirectUrl;
-    }
-    return redirectUrl;
 }
 
 //
@@ -353,12 +349,17 @@ void ownCloudInfo::slotReplyFinished()
     }
 
     // Detect redirect url
-    QVariant possibleRedirUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
+    QUrl possibleRedirUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
     /* We'll deduct if the redirection is valid in the redirectUrl function */
-    _urlRedirectedTo = redirectUrl( possibleRedirUrl.toUrl(),
-                                    _urlRedirectedTo );
 
-    if(!_urlRedirectedTo.isEmpty()) {
+
+    if (!possibleRedirUrl.isEmpty() && _redirectCount++  > 10) {
+        // Are we in a redirect loop
+        qDebug() << "Redirect loop while redirecting to" << possibleRedirUrl;
+        possibleRedirUrl.clear();
+    }
+
+    if(!possibleRedirUrl.isEmpty()) {
         QString configHandle;
 
         qDebug() << "Redirected to " << possibleRedirUrl;
@@ -371,24 +372,28 @@ void ownCloudInfo::slotReplyFinished()
         }
 
         QString path = _directories[reply];
+        if (path.isEmpty()) {
+            path = QLatin1String("status.php");
+        } else {
+            path.prepend( QLatin1String(WEBDAV_PATH) );
+        }
         qDebug() << "This path was redirected: " << path;
 
-        MirallConfigFile cfgFile( configHandle );
-        QString newUrl = _urlRedirectedTo.toString();
-        if( newUrl.endsWith( path )) {
+        QString newUrl = possibleRedirUrl.toString();
+        if( !path.isEmpty() && newUrl.endsWith( path )) {
             // cut off the trailing path
             newUrl.chop( path.length() );
-            cfgFile.setOwnCloudUrl( _connection, newUrl );
-
-            qDebug() << "Update the config file url to " << newUrl;
-            getRequest( path, false ); // FIXME: Redirect for webdav!
-            reply->deleteLater();
-            return;
+            _urlRedirectedTo = newUrl;
+            qDebug() << "Updated url to" << newUrl;
+            getRequest( possibleRedirUrl );
         } else {
             qDebug() << "WRN: Path is not part of the redirect URL. NO redirect.";
         }
+        reply->deleteLater();
+        _directories.remove(reply);
+        _configHandleMap.remove(reply);
+        return;
     }
-    _urlRedirectedTo.clear();
 
     // TODO: check if this is always the correct encoding
     const QString version = QString::fromUtf8( reply->readAll() );
@@ -438,8 +443,8 @@ void ownCloudInfo::slotReplyFinished()
                     // get version out
                     edition = val;
                 } else if(key == QLatin1String("installed")) {
-		    // Silently ignoring "installed = true" information
-		} else {
+                    // Silently ignoring "installed = true" information
+                } else {
                     qDebug() << "Unknown info from ownCloud status.php: "<< key << "=" << val;
                 }
             }
@@ -454,15 +459,13 @@ void ownCloudInfo::slotReplyFinished()
         QString dir(QLatin1String("unknown"));
         if( _directories.contains(reply) ) {
             dir = _directories[reply];
-            _directories.remove(reply);
         }
 
         emit ownCloudDirExists( dir, reply );
     }
-    if( _configHandleMap.contains(reply)) {
-        _configHandleMap.remove(reply);
-    }
     reply->deleteLater();
+    _directories.remove(reply);
+    _configHandleMap.remove(reply);
 }
 
 void ownCloudInfo::resetSSLUntrust()
@@ -482,47 +485,46 @@ bool ownCloudInfo::certsUntrusted()
 
 void ownCloudInfo::slotError( QNetworkReply::NetworkError err)
 {
-  qDebug() << "ownCloudInfo Network Error: " << err;
-}
+    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
 
-void ownCloudInfo::setCredentials( const QString& user, const QString& passwd,
-                                   const QString& configHandle )
-{
-    QString con( configHandle );
-    if( configHandle.isEmpty() )
-        con = DEFAULT_CONNECTION;
+    qDebug() << "ownCloudInfo Network Error"
+             << err << ":" << reply->errorString();
 
-    if( _credentials.contains(con) ) {
-        qDebug() << "Overwriting credentials for connection " << con;
+    switch (err) {
+    case QNetworkReply::ProxyConnectionRefusedError:
+        emit guiLog(tr("Proxy Refused Connection "),
+                    tr("The configured proxy has refused the connection. "
+                       "Please check the proxy settings."));
+        break;
+    case QNetworkReply::ProxyConnectionClosedError:
+        emit guiLog(tr("Proxy Closed Connection"),
+                    tr("The configured proxy has closed the connection. "
+                       "Please check the proxy settings."));
+        break;
+    case QNetworkReply::ProxyNotFoundError:
+        emit guiLog(tr("Proxy Not Found"),
+                    tr("The configured proxy could not be found. "
+                       "Please check the proxy settings."));
+        break;
+    case QNetworkReply::ProxyAuthenticationRequiredError:
+        emit guiLog(tr("Proxy Authentication Error"),
+                    tr("The configured proxy requires login but the proxy credentials "
+                       "are invalid. Please check the proxy settings."));
+        break;
+    case QNetworkReply::ProxyTimeoutError:
+        emit guiLog(tr("Proxy Connection Timed Out"),
+                    tr("The connection to the configured proxy has timed out."));
+        break;
+    default:
+        break;
     }
-
-    oCICredentials creds;
-    creds.user = user;
-    creds.passwd = passwd;
-    creds.connection = con;
-    _credentials[con] = creds;
 }
 
 // ============================================================================
 void ownCloudInfo::setupHeaders( QNetworkRequest & req, quint64 size )
 {
-    MirallConfigFile cfgFile(_configHandle );
-
-    QUrl url( cfgFile.ownCloudUrl( QString::null, false ) );
+    QUrl url( req.url() );
     qDebug() << "Setting up host header: " << url.host();
-    req.setRawHeader( QByteArray("Host"), url.host().toUtf8() );
-    req.setRawHeader( QByteArray("User-Agent"), QString::fromLatin1("mirall-%1")
-                      .arg(QLatin1String(MIRALL_STRINGIFY(MIRALL_VERSION))).toAscii());
-
-    QString con = _configHandle;
-    if( con.isEmpty() ) con = DEFAULT_CONNECTION;
-    if( _credentials.contains(con)) {
-        oCICredentials creds = _credentials.value(con);
-        QString concatenated = creds.user + QLatin1Char(':') + creds.passwd;
-        const QString b(QLatin1String("Basic "));
-        QByteArray data = b.toLocal8Bit() + concatenated.toLocal8Bit().toBase64();
-        req.setRawHeader( QByteArray("Authorization"), data );
-    }
 
     if (size) {
         req.setHeader( QNetworkRequest::ContentLengthHeader, size);
@@ -530,18 +532,92 @@ void ownCloudInfo::setupHeaders( QNetworkRequest & req, quint64 size )
     }
 }
 
-#if QT46_IMPL
-#else
-QNetworkReply* ownCloudInfo::davRequest(const QString& reqVerb,  QNetworkRequest& req, QByteArray *data)
+QNetworkReply* ownCloudInfo::davRequest(const QByteArray& reqVerb,  QNetworkRequest& req, QIODevice *data)
 {
     setupHeaders(req, quint64(data ? data->size() : 0));
-    if( data ) {
-        QBuffer iobuf( data );
-        return _manager->sendCustomRequest(req, reqVerb.toUtf8(), &iobuf );
-    } else {
-        return _manager->sendCustomRequest(req, reqVerb.toUtf8(), 0 );
-    }
-}
-#endif
+    return _manager->sendCustomRequest(req, reqVerb, data );
 }
 
+QString ownCloudInfo::webdavUrl(const QString &connection)
+{
+    QString url;
+
+    if (!_urlRedirectedTo.isEmpty()) {
+        url = _urlRedirectedTo.toString();
+    } else {
+        MirallConfigFile cfgFile(_configHandle );
+        url = cfgFile.ownCloudUrl( connection );
+    }
+    url.append( QLatin1String( WEBDAV_PATH ) );
+    if (!url.endsWith('/')) url.append('/');
+    return url;
+}
+
+RequestEtagJob::RequestEtagJob(const QString& dir, QObject* parent)
+    : QObject(parent)
+{
+    QNetworkRequest req;
+    req.setUrl( QUrl( ownCloudInfo::instance()->webdavUrl(ownCloudInfo::instance()->_connection) + dir ) );
+    if (dir.isEmpty() || dir == "/") {
+        /* For the root directory, we need to query the etags of all the sub directories
+         * because, at the time I am writing this comment (Owncloud 5.0.9), the etag of the
+         * root directory is not updated when the sub directories changes */
+        req.setRawHeader("Depth", "1");
+    } else {
+        req.setRawHeader("Depth", "0");
+    }
+    QByteArray xml("<?xml version=\"1.0\" ?>\n"
+                   "<d:propfind xmlns:d=\"DAV:\">\n"
+                   "  <d:prop>\n"
+                   "    <d:getetag/>"
+                   "  </d:prop>\n"
+                   "</d:propfind>\n");
+    QBuffer *buf = new QBuffer;
+    buf->setData(xml);
+    buf->open(QIODevice::ReadOnly);
+    _reply = ownCloudInfo::instance()->davRequest("PROPFIND", req, buf);
+    buf->setParent(_reply);
+
+    if( _reply->error() != QNetworkReply::NoError ) {
+        qDebug() << "getting etag: request network error: " << _reply->errorString();
+    }
+
+    connect( _reply, SIGNAL( finished()), SLOT(slotFinished()) );
+    connect( _reply, SIGNAL(error(QNetworkReply::NetworkError)),
+             this, SLOT(slotError()));
+    connect( _reply, SIGNAL(error(QNetworkReply::NetworkError)),
+             ownCloudInfo::instance(), SLOT(slotError(QNetworkReply::NetworkError)));
+}
+
+void RequestEtagJob::slotFinished()
+{
+    if (_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) == 207) {
+        // Parse DAV response
+        QXmlStreamReader reader(_reply);
+        reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration("d", "DAV:"));
+        QString etag;
+        while (!reader.atEnd()) {
+            QXmlStreamReader::TokenType type = reader.readNext();
+            if (type == QXmlStreamReader::StartElement &&
+                    reader.namespaceUri() == QLatin1String("DAV:")) {
+                QString name = reader.name().toString();
+                if (name == QLatin1String("getetag")) {
+                    etag += reader.readElementText();
+                }
+            }
+        }
+        emit etagRetreived(etag);
+    }
+    _reply->deleteLater();
+    deleteLater();
+}
+
+void RequestEtagJob::slotError()
+{
+    qDebug() << "RequestEtagJob Error: " << _reply->errorString();
+    _reply->deleteLater();
+    deleteLater();
+    emit networkError();
+}
+
+} // ns Mirall

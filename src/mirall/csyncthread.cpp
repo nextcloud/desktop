@@ -20,6 +20,7 @@
 #include "mirall/owncloudinfo.h"
 #include "owncloudpropagator.h"
 #include "progressdatabase.h"
+#include "creds/abstractcredentials.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -64,7 +65,9 @@ CSyncThread::~CSyncThread()
 
 }
 
-QString CSyncThread::csyncErrorToString( CSYNC_ERROR_CODE err ) const
+//Convert an error code from csync to a user readable string.
+// Keep that function thread safe as it can be called from the sync thread or the main thread
+QString CSyncThread::csyncErrorToString( CSYNC_ERROR_CODE err )
 {
     QString errStr;
 
@@ -112,8 +115,6 @@ QString CSyncThread::csyncErrorToString( CSYNC_ERROR_CODE err ) const
         break;
     case CSYNC_ERR_ACCESS_FAILED:
         errStr = tr("<p>The target directory does not exist.</p><p>Please check the sync setup.</p>");
-        // this is critical. The database has to be removed.
-        // emit wipeDb(); FIXME - what about this?
         break;
     case CSYNC_ERR_REMOTE_CREATE:
     case CSYNC_ERR_REMOTE_STAT:
@@ -198,6 +199,11 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
 
     int re = 0;
 
+    if (file->instruction != CSYNC_INSTRUCTION_IGNORE
+        && file->instruction != CSYNC_INSTRUCTION_REMOVE) {
+      _hasFiles = true;
+    }
+
     switch(file->instruction) {
     case CSYNC_INSTRUCTION_NONE:
     case CSYNC_INSTRUCTION_IGNORE:
@@ -236,6 +242,20 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
         break;
     }
 
+    switch( file->type ) {
+    case CSYNC_FTW_TYPE_DIR:
+        item._type = SyncFileItem::Directory;
+        break;
+    case CSYNC_FTW_TYPE_FILE:
+        item._type = SyncFileItem::File;
+        break;
+    case CSYNC_FTW_TYPE_SLINK:
+        item._type = SyncFileItem::SoftLink;
+        break;
+    default:
+        item._type = SyncFileItem::UnknownType;
+    }
+
     item._dir = dir;
     _syncedItems.append(item);
 
@@ -247,7 +267,17 @@ int CSyncThread::treewalkFinalize(TREE_WALK_FILE* file)
     if (file->instruction == CSYNC_INSTRUCTION_IGNORE)
         return 0;
 
+<<<<<<< HEAD
     // Update the instruction and etag in the csync rb_tree so it is saved on the database
+=======
+    if( file &&
+        (file->instruction == CSYNC_INSTRUCTION_STAT_ERROR ||
+         file->instruction == CSYNC_INSTRUCTION_ERROR) ) {
+        _mutex.lock();
+        _syncedItems[indx]._instruction = file->instruction;
+        _mutex.unlock();
+    }
+>>>>>>> master
 
     QHash<QByteArray, Action>::const_iterator action = _performedActions.constFind(file->path);
     if (action != _performedActions.constEnd()) {
@@ -303,10 +333,50 @@ void CSyncThread::startSync()
     _mutex.unlock();
 
 
+    // maybe move this somewhere else where it can influence a running sync?
+    MirallConfigFile cfg;
+
+    int downloadLimit = 0;
+    if (cfg.useDownloadLimit()) {
+         downloadLimit = cfg.downloadLimit() * 1000;
+    }
+    csync_set_module_property(_csync_ctx, "bandwidth_limit_download", &downloadLimit);
+
+    int uploadLimit = -75; // 75%
+    int useUpLimit = cfg.useUploadLimit();
+    if ( useUpLimit >= 1) {
+         uploadLimit = cfg.uploadLimit() * 1000;
+    } else if (useUpLimit == 0) {
+        uploadLimit = 0;
+    }
+    csync_set_module_property(_csync_ctx, "bandwidth_limit_upload", &uploadLimit);
+
+    csync_set_progress_callback( _csync_ctx, cb_progress );
+
+    csync_set_module_property(_csync_ctx, "csync_context", _csync_ctx);
     csync_set_userdata(_csync_ctx, this);
 
+    // TODO: This should be a part of this method, but we don't have
+    // any way to get "session_key" module property from csync. Had we
+    // have it, then we could keep this code and remove it from
+    // AbstractCredentials implementations.
+    cfg.getCredentials()->syncContextPreStart(_csync_ctx);
+    // if (_lastAuthCookies.length() > 0) {
+    //     // Stuff cookies inside csync, then we can avoid the intermediate HTTP 401 reply
+    //     // when https://github.com/owncloud/core/pull/4042 is merged.
+    //     QString cookiesAsString;
+    //     foreach(QNetworkCookie c, _lastAuthCookies) {
+    //         cookiesAsString += c.name();
+    //         cookiesAsString += '=';
+    //         cookiesAsString += c.value();
+    //         cookiesAsString += "; ";
+    //     }
+    //     csync_set_module_property(_csync_ctx, "session_key", cookiesAsString.to
+    // }
+
     // csync_set_auth_callback( _csync_ctx, getauth );
-    csync_set_progress_callback( _csync_ctx, progress );
+
+
 
     _syncTime.start();
 
@@ -320,10 +390,11 @@ void CSyncThread::startSync()
     qDebug() << "<<#### Update end #################################################### " << updateTime.elapsed();
 
     if( csync_reconcile(_csync_ctx) < 0 ) {
-        handleSyncError(_csync_ctx, "cysnc_reconcile");
+        handleSyncError(_csync_ctx, "csync_reconcile");
         return;
     }
 
+    _hasFiles = false;
     bool walkOk = true;
     if( csync_walk_local_tree(_csync_ctx, &treewalkLocal, 0) < 0 ) {
         qDebug() << "Error in local treewalk.";
@@ -340,6 +411,16 @@ void CSyncThread::startSync()
     }
 
     qSort(_syncedItems);
+
+    if (!_hasFiles && !_syncedItems.isEmpty()) {
+        qDebug() << Q_FUNC_INFO << "All the files are going to be removed, asking the user";
+        bool cancel = true;
+        emit aboutToRemoveAllFiles(_syncedItems.first()._dir, &cancel);
+        if (cancel) {
+            qDebug() << Q_FUNC_INFO << "Abort sync";
+            return;
+        }
+    }
 
     if (_needsUpdate)
         emit(started());
@@ -452,17 +533,77 @@ void CSyncThread::startNextTransfer()
     _syncMutex.unlock();
 }
 
-
-// TODO: remove:  this is no longer used with the new propagator
-void CSyncThread::progress(const char *remote_url, enum csync_notify_type_e kind,
-                                        long long o1, long long o2, void *userdata)
+Progress::Kind CSyncThread::csyncToProgressKind( enum csync_notify_type_e kind )
 {
-    (void) o1; (void) o2;
-    if (kind == CSYNC_NOTIFY_FINISHED_DOWNLOAD) {
-        QString path = QUrl::fromEncoded(remote_url).toString();
-        CSyncThread *thread = static_cast<CSyncThread*>(userdata);
-        thread->fileReceived(path);
+    Progress::Kind pKind = Progress::Invalid;
+
+    switch(kind) {
+    case CSYNC_NOTIFY_INVALID:
+        pKind = Progress::Invalid;
+        break;
+    case CSYNC_NOTIFY_START_SYNC_SEQUENCE:
+        pKind = Progress::StartSync;
+        break;
+    case CSYNC_NOTIFY_START_DOWNLOAD:
+        pKind = Progress::StartDownload;
+        break;
+    case CSYNC_NOTIFY_START_UPLOAD:
+        pKind = Progress::StartUpload;
+        break;
+    case CSYNC_NOTIFY_PROGRESS:
+        pKind = Progress::Context;
+        break;
+    case CSYNC_NOTIFY_FINISHED_DOWNLOAD:
+        pKind = Progress::EndDownload;
+        break;
+    case CSYNC_NOTIFY_FINISHED_UPLOAD:
+        pKind = Progress::EndUpload;
+        break;
+    case CSYNC_NOTIFY_FINISHED_SYNC_SEQUENCE:
+        pKind = Progress::EndSync;
+        break;
+    case CSYNC_NOTIFY_START_DELETE:
+        pKind = Progress::StartDelete;
+        break;
+    case CSYNC_NOTIFY_END_DELETE:
+        pKind = Progress::EndDelete;
+        break;
+    case CSYNC_NOTIFY_ERROR:
+        pKind = Progress::Error;
+        break;
+    default:
+        pKind = Progress::Invalid;
+        break;
     }
+    return pKind;
+}
+
+void CSyncThread::cb_progress( CSYNC_PROGRESS *progress, void *userdata )
+{
+    if( !progress ) {
+        qDebug() << "No progress block in progress callback found!";
+        return;
+    }
+    if( !userdata ) {
+        qDebug() << "No thread given in progress callback!";
+        return;
+    }
+    Progress::Info pInfo;
+    CSyncThread *thread = static_cast<CSyncThread*>(userdata);
+
+    pInfo.kind                  = thread->csyncToProgressKind( progress->kind );
+    pInfo.current_file          = QUrl::fromEncoded( progress->path ).toString();
+    pInfo.file_size             = progress->file_size;
+    pInfo.current_file_bytes    = progress->curr_bytes;
+
+    pInfo.overall_file_count    = progress->overall_file_count;
+    pInfo.current_file_no       = progress->current_file_no;
+    pInfo.overall_transmission_size = progress->overall_transmission_size;
+    pInfo.overall_current_bytes = progress->current_overall_bytes;
+    pInfo.timestamp = QDateTime::currentDateTime();
+
+    // Connect to something in folder!
+    thread->transmissionProgress( pInfo );
 }
 
 /* Given a path on the remote, give the path as it is when the rename is done */
@@ -477,6 +618,4 @@ QString CSyncThread::adjustRenamedPath(const QString& original)
     }
     return original;
 }
-
-
-}
+} // ns Mirall

@@ -17,6 +17,8 @@
 #include "mirall/version.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/occinfo.h"
+#include "mirall/utility.h"
+#include "mirall/mirallaccessmanager.h"
 
 #include <QtCore>
 #include <QtNetwork>
@@ -27,7 +29,7 @@ namespace Mirall {
 
 UpdateDetector::UpdateDetector(QObject *parent) :
     QObject(parent)
-  , _accessManager( new QNetworkAccessManager(this))
+  , _accessManager(new MirallAccessManager(this))
 {
 }
 
@@ -56,9 +58,12 @@ void UpdateDetector::versionCheck( Theme *theme )
     }
     url.addQueryItem( QLatin1String("version"), ver );
     url.addQueryItem( QLatin1String("platform"), platform );
-    url.addQueryItem( QLatin1String("oem"),  theme->appName());
+    url.addQueryItem( QLatin1String("oem"), theme->appName() );
 
-    _accessManager->get( QNetworkRequest( url ));
+    QNetworkRequest req( url );
+    req.setRawHeader( QByteArray("User-Agent"), Utility::userAgentString() );
+
+    _accessManager->get( req );
 }
 
 void UpdateDetector::slotOpenUpdateUrl()

@@ -3,7 +3,7 @@ include(${QT_USE_FILE})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
 QT4_ADD_RESOURCES ( MIRALL_RC_SRC ../mirall.qrc)
-if ( DEFINED OEM_THEME_DIR)
+if ( IS_DIRECTORY ${OEM_THEME_DIR} )
     QT4_ADD_RESOURCES ( MIRALL_RC_SRC ${OEM_THEME_DIR}/theme.qrc)
     set(theme_dir ${OEM_THEME_DIR}/theme)
 else()
@@ -11,21 +11,22 @@ else()
     set(theme_dir ${CMAKE_CURRENT_SOURCE_DIR}/../theme)
 endif()
 
+set(synclib_NAME ${APPLICATION_SHORTNAME}sync)
+
 set(mirall_UI
 mirall/folderwizardsourcepage.ui
 mirall/folderwizardtargetpage.ui
-mirall/folderwizardnetworkpage.ui
-mirall/folderwizardowncloudpage.ui
-mirall/statusdialog.ui
-mirall/owncloudwizardselecttypepage.ui
-mirall/owncloudsetuppage_ng.ui
-mirall/createanowncloudpage.ui
-mirall/owncloudftpaccesspage.ui
-mirall/owncloudwizardresultpage.ui
-mirall/owncloudcredentialspage.ui
 mirall/sslerrordialog.ui
-mirall/proxydialog.ui
-mirall/fileitemdialog.ui
+mirall/settingsdialog.ui
+mirall/generalsettings.ui
+mirall/networksettings.ui
+mirall/accountsettings.ui
+mirall/ignorelisteditor.ui
+mirall/itemprogressdialog.ui
+wizard/owncloudsetupnocredspage.ui
+wizard/owncloudhttpcredspage.ui
+wizard/owncloudwizardresultpage.ui
+wizard/owncloudadvancedsetuppage.ui
 )
 
 set(3rdparty_SRC
@@ -66,35 +67,60 @@ set(libsync_SRCS
     mirall/folder.cpp
     mirall/folderwatcher.cpp
     mirall/syncresult.cpp
-    mirall/unisonfolder.cpp
     mirall/networklocation.cpp
     mirall/mirallconfigfile.cpp
-    mirall/credentialstore.cpp
-    mirall/csyncfolder.cpp
-    mirall/owncloudfolder.cpp
     mirall/csyncthread.cpp
     mirall/owncloudpropagator.cpp
     mirall/progressdatabase.cpp
     mirall/fileutils.cpp
     mirall/theme.cpp
     mirall/owncloudtheme.cpp
-    mirall/miralltheme.cpp
     mirall/owncloudinfo.cpp
     mirall/logger.cpp
     mirall/utility.cpp
+    mirall/connectionvalidator.cpp
+    mirall/progressdispatcher.cpp
+    mirall/mirallaccessmanager.cpp
+    creds/dummycredentials.cpp
+    creds/httpcredentials.cpp
+    creds/credentialsfactory.cpp
+    creds/http/credentialstore.cpp
+    creds/http/httpconfigfile.cpp
+    creds/shibbolethcredentials.cpp
+    creds/shibboleth/shibbolethaccessmanager.cpp
+    creds/shibboleth/shibbolethcookiejar.cpp
+    creds/shibboleth/shibbolethwebview.cpp
+    creds/shibboleth/shibbolethrefresher.cpp
+    creds/shibboleth/shibbolethconfigfile.cpp
+    creds/credentialscommon.cpp
 )
+
 set(libsync_HEADERS
     mirall/folderman.h
     mirall/folder.h
     mirall/folderwatcher.h
-    mirall/unisonfolder.h
-    mirall/csyncfolder.h
-    mirall/owncloudfolder.h
     mirall/csyncthread.h
     mirall/owncloudpropagator.h
+    mirall/theme.h
+    mirall/owncloudtheme.h
     mirall/owncloudinfo.h
-    mirall/credentialstore.h
     mirall/logger.h
+    mirall/connectionvalidator.h
+    mirall/progressdispatcher.h
+    mirall/mirallaccessmanager.h
+    creds/abstractcredentials.h
+    creds/dummycredentials.h
+    creds/httpcredentials.h
+    creds/credentialsfactory.h
+    creds/http/credentialstore.h
+    creds/http/httpconfigfile.h
+    creds/shibbolethcredentials.h
+    creds/shibboleth/shibbolethaccessmanager.h
+    creds/shibboleth/shibbolethcookiejar.h
+    creds/shibboleth/shibbolethwebview.h
+    creds/shibboleth/shibbolethrefresher.h
+    creds/shibboleth/shibbolethconfigfile.h
+    creds/credentialscommon.h
 )
 
 IF( INOTIFY_FOUND )
@@ -140,23 +166,20 @@ if(QTKEYCHAIN_FOUND)
     include_directories(${QTKEYCHAIN_INCLUDE_DIR})
 endif()
 
-
-
-add_library(owncloudsync SHARED ${libsync_SRCS} ${syncMoc})
-set_target_properties( owncloudsync PROPERTIES COMPILE_DEFINITIONS OWNCLOUD_CLIENT)
-set_target_properties( owncloudsync  PROPERTIES
+add_library(${synclib_NAME} SHARED ${libsync_SRCS} ${syncMoc})
+set_target_properties( ${synclib_NAME}  PROPERTIES
 	VERSION ${VERSION}
 	SOVERSION ${SOVERSION}
 )
 
-target_link_libraries(owncloudsync ${libsync_LINK_TARGETS} )
+target_link_libraries(${synclib_NAME} ${libsync_LINK_TARGETS} )
 
 if ( APPLE )
-    target_link_libraries(owncloudsync /System/Library/Frameworks/CoreServices.framework)
+    target_link_libraries(${synclib_NAME} /System/Library/Frameworks/CoreServices.framework)
 endif()
 
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
-    install(TARGETS owncloudsync
+    install(TARGETS ${synclib_NAME}
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -167,34 +190,56 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
         install(FILES  ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_SHORTNAME}.desktop DESTINATION share/applications )
     endif()
 else()
-    install(TARGETS owncloudsync DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS)
+    install(TARGETS ${synclib_NAME} DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS)
 endif()
 
 set(mirall_SRCS
     mirall/application.cpp
+    mirall/systray.cpp
     mirall/folderwizard.cpp
-    mirall/statusdialog.cpp
-    mirall/owncloudwizard.cpp
+    mirall/folderstatusmodel.cpp
+    wizard/owncloudwizard.cpp
+    wizard/owncloudsetuppage.cpp
+    wizard/owncloudhttpcredspage.cpp
+    wizard/owncloudwizardresultpage.cpp
+    wizard/owncloudwizardcommon.cpp
+    wizard/owncloudshibbolethcredspage.cpp
+    wizard/owncloudadvancedsetuppage.cpp
     mirall/owncloudsetupwizard.cpp
     mirall/updatedetector.cpp
     mirall/occinfo.cpp
     mirall/sslerrordialog.cpp
     mirall/logbrowser.cpp
-    mirall/proxydialog.cpp
-    mirall/fileitemdialog.cpp
+    mirall/settingsdialog.cpp
+    mirall/generalsettings.cpp
+    mirall/networksettings.cpp
+    mirall/accountsettings.cpp
+    mirall/ignorelisteditor.cpp
+    mirall/itemprogressdialog.cpp
 )
 
 set(mirall_HEADERS
     mirall/application.h
+    mirall/systray.h
     mirall/folderwizard.h
     mirall/owncloudsetupwizard.h
-    mirall/owncloudwizard.h
-    mirall/statusdialog.h
+    wizard/owncloudwizard.h
+    wizard/owncloudsetuppage.h
+    wizard/owncloudhttpcredspage.h
+    wizard/owncloudwizardresultpage.h
+    wizard/owncloudwizardcommon.h
+    wizard/owncloudshibbolethcredspage.h
+    wizard/owncloudadvancedsetuppage.h
+    mirall/folderstatusmodel.h
     mirall/updatedetector.h
     mirall/sslerrordialog.h
     mirall/logbrowser.h
-    mirall/proxydialog.h
-    mirall/fileitemdialog.h
+    mirall/settingsdialog.h
+    mirall/generalsettings.h
+    mirall/networksettings.h
+    mirall/accountsettings.h
+    mirall/ignorelisteditor.h
+    mirall/itemprogressdialog.h
 )
 
 if( UNIX AND NOT APPLE)
@@ -235,36 +280,22 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 if(NOT WIN32)
-    install(FILES ${CMAKE_SOURCE_DIR}/resources/mirall-48.png 
-        DESTINATION share/icons/hicolor/48x48/apps/ RENAME mirall.png)
-    install(FILES
-        ${theme_dir}/colored/${APPLICATION_SHORTNAME}-icon-48.png 
-        DESTINATION share/icons/hicolor/48x48/apps/ RENAME ${APPLICATION_SHORTNAME}.png)
+    file( GLOB _icons "${theme_dir}/colored/${APPLICATION_SHORTNAME}-icon-*.png" )
+    foreach( _file ${_icons} )
+        string( REPLACE "${theme_dir}/colored/${APPLICATION_SHORTNAME}-icon-" "" _res ${_file} )
+        string( REPLACE ".png" "" _res ${_res} )
+        install( FILES ${_file} RENAME ${APPLICATION_SHORTNAME}.png DESTINATION
+${CMAKE_INSTALL_DATADIR}/icons/hicolor/${_res}x${_res}/apps )
+    endforeach( _file )
 endif(NOT WIN32)
 
-    install(FILES ${mirall_I18N} DESTINATION share/mirall/i18n)
+    install(FILES ${mirall_I18N} DESTINATION share/${APPLICATION_SHORTNAME}/i18n)
 
     # we may not add MACOSX_BUNDLE here, if not building one
 
     # add_executable( ${APPLICATION_EXECUTABLE} main.cpp ${final_src})
     add_executable( ${APPLICATION_EXECUTABLE} WIN32 main.cpp ${final_src})
-    set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES COMPILE_DEFINITIONS OWNCLOUD_CLIENT)
 
-    # mirall is not built for the bundle
-    add_executable( mirall WIN32 main.cpp ${final_src})
-
-    target_link_libraries(mirall ${QT_LIBRARIES} )
-    target_link_libraries(mirall owncloudsync)
-    target_link_libraries(mirall ${CSYNC_LIBRARY})
-    target_link_libraries(mirall ${NEON_LIBRARIES})
-
-    set_target_properties( mirall PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
-    install(TARGETS mirall
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    )
 else()
     set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
     include(DeployQt4)
@@ -274,7 +305,6 @@ else()
 
     # we must add MACOSX_BUNDLE only if building a bundle
     add_executable( ${APPLICATION_EXECUTABLE} WIN32 MACOSX_BUNDLE main.cpp ${final_src})
-    set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES COMPILE_DEFINITIONS OWNCLOUD_CLIENT)
 
     #FIXME: hardcoded path
     if ( EXISTS ${CSYNC_BINARY_DIR}/modules/ocsync_owncloud.so )
@@ -297,7 +327,7 @@ set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY}
 )
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${QT_LIBRARIES} )
-target_link_libraries( ${APPLICATION_EXECUTABLE} owncloudsync )
+target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${CSYNC_LIBRARY} )
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${NEON_LIBRARIES} )
 

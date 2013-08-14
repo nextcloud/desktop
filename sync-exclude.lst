@@ -6,13 +6,15 @@
 
 *.unison*
 *csync_timedif.ctmp*
+csync_journal.db
+csync_journal.db.ctmp
 .*.sw?
 .*.*sw?
 
-.DS_Store
-.ds_store
+].DS_Store
+].ds_store
+]Thumbs.db
 desktop.ini
-Thumbs.db
 
 *.kate-swp
 *.aux
@@ -21,16 +23,17 @@ Thumbs.db
 *.toc
 
 *_conflict-*
+]*.~*
 
-.Temporary Items
-.Trashes
-.Document Revisions-V100
+].TemporaryItems
+].Trashes
+].DocumentRevisions-V100
 .fseventd
 .apdisk
 
 .htaccess
 
-Icon\r*
+]Icon\r*
 
 ~$*
 .~lock.*

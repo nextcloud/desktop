@@ -43,7 +43,7 @@ class FolderWatcherPrivate;
  */
 class FolderWatcher : public QObject
 {
-Q_OBJECT
+    Q_OBJECT
 public:
     /**
      * @param root Path of the root of the folder
@@ -58,16 +58,11 @@ public:
 
     /**
       * Set a file name to load a file with ignore patterns.
+      *
+      * Valid entries do not start with a hash sign (#)
+      * and may contain wildcards
       */
-    void setIgnoreListFile( const QString& );
-
-    /**
-     * Add an ignore pattern that will not be
-     * notified
-     *
-     * You can use wildcards
-     */
-    void addIgnore(const QString &pattern);
+    void addIgnoreListFile( const QString& );
 
     /**
      * If true, folderChanged() events are sent
@@ -109,10 +104,10 @@ public slots:
     void setEventsEnabledDelayed( int );
 
 signals:
-    /**
-     * Emitted when one of the paths is changed
-     */
+    /** Emitted when one of the paths is changed */
     void folderChanged(const QStringList &pathList);
+    /** Emitted if an error occurs */
+    void error(const QString& error);
 
 protected:
     void setProcessTimer();

@@ -15,32 +15,26 @@
 #ifndef MIRALLCONFIGFILE_H
 #define MIRALLCONFIGFILE_H
 
+#include <QSharedPointer>
 #include <QString>
+#include <QVariant>
 
-class QVariant;
+class QWidget;
 
 namespace Mirall {
 
+class AbstractCredentials;
 
 class MirallConfigFile
 {
-    /* let only CredentialStore read the password from the file. All other classes
-     *  should work with CredentialStore to get the credentials.  */
-    friend class CredentialStore;
 public:
-    MirallConfigFile( const QString& appendix = QString() );
+    MirallConfigFile( const QString& appendix = QString(), bool useOldConfig = false );
 
-//    enum customMediaType {
-//        oCSetupTop,      // ownCloud connect page
-//        oCSetupSide,
-//        oCSetupBottom,
-//        oCSetupFixUrl,
-//        oCSetupResultTop // ownCloud connect result page
-//    };
+    enum Scope { UserScope, SystemScope };
 
     QString configPath() const;
     QString configFile() const;
-    QString excludeFile() const;
+    QString excludeFile(Scope scope) const;
 
     bool exists();
 
@@ -49,15 +43,13 @@ public:
 
     void writeOwncloudConfig( const QString& connection,
                               const QString& url,
-                              const QString& user,
-                              const QString& passwd );
+                              AbstractCredentials* credentials);
+
+    AbstractCredentials* getCredentials() const;
 
     void removeConnection( const QString& connection = QString() );
 
-    QString ownCloudUser( const QString& connection = QString() ) const;
-    QString ownCloudUrl( const QString& connection = QString(), bool webdav = false ) const;
-
-    void setOwnCloudUrl(const QString &connection, const QString& );
+    QString ownCloudUrl( const QString& connection = QString() ) const;
 
     // the certs do not depend on a connection.
     QByteArray caCerts();
@@ -80,44 +72,72 @@ public:
     /* Set poll interval. Value in microseconds has to be larger than 5000 */
     void setRemotePollInterval(int interval, const QString& connection = QString() );
 
+    /* Force sync interval, in milliseconds */
+    quint64 forceSyncInterval(const QString &connection = QString()) const;
+
     // Custom Config: accept the custom config to become the main one.
     void acceptCustomConfig();
     // Custom Config: remove the custom config file.
     void cleanupCustomConfig();
 
+    bool monoIcons() const;
+    void setMonoIcons(bool);
+
     // proxy settings
     void setProxyType(int proxyType,
                       const QString& host = QString(),
-                      int port = 0,
+                      int port = 0, bool needsAuth = false,
                       const QString& user = QString(),
                       const QString& pass = QString());
 
     int proxyType() const;
     QString proxyHostName() const;
     int proxyPort() const;
+    bool proxyNeedsAuth() const;
     QString proxyUser() const;
     QString proxyPassword() const;
     
+    /** 0: no limit, 1: manual, >0: automatic */
+    int useUploadLimit() const;
+    bool useDownloadLimit() const;
+    void setUseUploadLimit(int);
+    void setUseDownloadLimit(bool);
+    /** in kbyte/s */
+    int uploadLimit() const;
+    int downloadLimit() const;
+    void setUploadLimit(int kbytes);
+    void setDownloadLimit(int kbytes);
+
     static void setConfDir(const QString &value);
+
+    bool optionalDesktopNotifications() const;
+    void setOptionalDesktopNotifications(bool show);
 
     QString seenVersion() const;
     void setSeenVersion(const QString &version);
+
+    void saveGeometry(QWidget *w);
+    void restoreGeometry(QWidget *w);
+
 protected:
-    // these classes can only be access from CredentialStore as a friend class.
-    QString ownCloudPasswd( const QString& connection = QString() ) const;
-    void clearPasswordFromConfig( const QString& connect = QString() );
-    bool writePassword( const QString& passwd, const QString& connection = QString() );
+    void storeData(const QString& group, const QString& key, const QVariant& value);
+    QVariant retrieveData(const QString& group, const QString& key) const;
+    void removeData(const QString& group, const QString& key);
+    bool dataExists(const QString& group, const QString& key) const;
 
 private:
-    QVariant getValue(const QString& param, const QString& group) const;
-
+    QVariant getValue(const QString& param, const QString& group = QString::null,
+                      const QVariant& defaultValue = QVariant()) const;
+    void setValue(const QString& key, const QVariant &value);
 
 private:
+    typedef QSharedPointer< AbstractCredentials > SharedCreds;
+
     static bool    _askedUser;
     static QString _oCVersion;
     static QString _confDir;
+    static QMap< QString, SharedCreds > credentialsPerConfig;
     QString        _customHandle;
-
 };
 
 }
