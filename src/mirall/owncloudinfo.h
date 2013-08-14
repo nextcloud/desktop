@@ -178,6 +178,7 @@ private slots:
 
 signals:
     void etagRetreived(const QString &etag);
+    void networkError();
 };
 
 } // ns Mirall

@@ -242,9 +242,10 @@ void Folder::slotPollTimerTimeout()
         qDebug() << "* Force Sync now";
         evaluateSync(QStringList());
     } else {
+        RequestEtagJob* job = new RequestEtagJob(secondPath(), this);
         // check if the etag is different
-        QObject::connect(new RequestEtagJob(secondPath(), this), SIGNAL(etagRetreived(QString)),
-                        this, SLOT(etagRetreived(QString)));
+        QObject::connect(job, SIGNAL(etagRetreived(QString)), this, SLOT(etagRetreived(QString)));
+        QObject::connect(job, SIGNAL(networkError()), this, SLOT(slotNetworkUnavailable()));
     }
 }
 
@@ -257,6 +258,11 @@ void Folder::etagRetreived(const QString& etag)
     }
 }
 
+void Folder::slotNetworkUnavailable()
+{
+    _syncResult.setStatus(SyncResult::Unavailable);
+    emit syncStateChange();
+}
 
 void Folder::slotChanged(const QStringList &pathList)
 {

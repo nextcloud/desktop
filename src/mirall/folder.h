@@ -172,6 +172,7 @@ private slots:
 
     void slotPollTimerTimeout();
     void etagRetreived(const QString &);
+    void slotNetworkUnavailable();
 
     /**
      * Triggered by a file system watcher on the local sync dir

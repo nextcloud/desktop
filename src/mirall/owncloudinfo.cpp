@@ -585,6 +585,8 @@ RequestEtagJob::RequestEtagJob(const QString& dir, QObject* parent)
     connect( _reply, SIGNAL( finished()), SLOT(slotFinished()) );
     connect( _reply, SIGNAL(error(QNetworkReply::NetworkError)),
              this, SLOT(slotError()));
+    connect( _reply, SIGNAL(error(QNetworkReply::NetworkError)),
+             ownCloudInfo::instance(), SLOT(slotError(QNetworkReply::NetworkError)));
 }
 
 void RequestEtagJob::slotFinished()
@@ -615,6 +617,7 @@ void RequestEtagJob::slotError()
     qDebug() << "RequestEtagJob Error: " << _reply->errorString();
     _reply->deleteLater();
     deleteLater();
+    emit networkError();
 }
 
 } // ns Mirall
