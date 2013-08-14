@@ -250,7 +250,7 @@ void Folder::slotPollTimerTimeout()
 
 void Folder::etagRetreived(const QString& etag)
 {
-    qDebug() << "* Compare etag " << etag << " with previous etag " << _lastEtag;
+    qDebug() << "* Compare etag  with previous etag: " << (_lastEtag != etag);
     if (_lastEtag != etag) {
         _lastEtag = etag;
         evaluateSync(QStringList());
