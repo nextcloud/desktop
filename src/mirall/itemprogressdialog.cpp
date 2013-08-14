@@ -23,16 +23,6 @@
 
 #include "ui_itemprogressdialog.h"
 
-#define TYPE_SUCCESS  1
-#define TYPE_CONFLICT 2
-#define TYPE_NEW      3
-#define TYPE_DELETED  4
-#define TYPE_ERROR    5
-#define TYPE_RENAME   6
-#define TYPE_IGNORE   7
-
-#define FILE_TYPE    100
-
 namespace Mirall {
 
 ItemProgressDialog::ItemProgressDialog(Application*, QWidget *parent) :
