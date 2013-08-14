@@ -329,7 +329,7 @@ void Application::setupActions()
     QObject::connect(_actionSettings, SIGNAL(triggered(bool)), SLOT(slotSettings()));
     _actionHelp = new QAction(tr("Help"), this);
     QObject::connect(_actionHelp, SIGNAL(triggered(bool)), SLOT(slotHelp()));
-    _actionQuit = new QAction(tr("Quit"), this);
+    _actionQuit = new QAction(tr("Quit %1").arg(_theme->appNameGUI()), this);
     QObject::connect(_actionQuit, SIGNAL(triggered(bool)), SLOT(quit()));
 }
 
@@ -379,7 +379,7 @@ void Application::setupContextMenu()
             Folder *folder = folderMan->map().value(li.first());
             if( folder ) {
                 // if there is singleFolder mode, a generic open action is displayed.
-                QAction *action = new QAction( tr("Open local folder '%1'").arg(_theme->appNameGUI()), this);
+                QAction *action = new QAction( tr("Open %1 folder").arg(_theme->appNameGUI()), this);
                 connect( action, SIGNAL(triggered()),_folderOpenActionMapper,SLOT(map()));
                 _folderOpenActionMapper->setMapping( action, folder->alias() );
 
@@ -522,7 +522,7 @@ void Application::slotRefreshQuotaDisplay( qint64 total, qint64 used )
     double percent = used/(double)total*100;
     QString percentFormatted = Utility::compactFormatDouble(percent, 1);
     QString totalFormatted = Utility::octetsToString(total);
-    _actionQuota->setText(tr("%1% of %2 used").arg(percentFormatted).arg(totalFormatted));
+    _actionQuota->setText(tr("%1% of %2 in use").arg(percentFormatted).arg(totalFormatted));
 }
 
 void Application::slotUseMonoIconsChanged(bool)
@@ -594,7 +594,7 @@ void Application::slotUpdateProgress(const QString &folder, const Progress::Info
 
 void Application::slotDisplayIdle()
 {
-    _actionStatus->setText(tr("In Sync"));
+    _actionStatus->setText(tr("Up to date"));
 }
 
 void Application::slotHelp()
