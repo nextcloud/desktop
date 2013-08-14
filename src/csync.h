@@ -174,16 +174,11 @@ typedef struct csync_progress_s CSYNC_PROGRESS;
  *
  * This structure is passed to the visitor function for every file
  * which is seen.
- * Note: The file size is missing here because type int64_t is depending
- *       on the large file support in your build. Make sure to check
- *       that cmake and the callback app are compiled with the same
- *       setting for it, such as:
- *       -D_LARGEFILE64_SOURCE or -D_LARGEFILE_SOURCE
  *
  */
 struct csync_tree_walk_file_s {
     const char *path;
-    /* off_t       size; */
+    int64_t     size;
     time_t      modtime;
 #ifdef _WIN32
     uint32_t    uid;
