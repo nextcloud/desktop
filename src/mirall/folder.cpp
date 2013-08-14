@@ -22,6 +22,7 @@
 #include "mirall/logger.h"
 #include "mirall/owncloudinfo.h"
 #include "mirall/utility.h"
+#include "folderman.h"
 #include "creds/abstractcredentials.h"
 
 #include <QDebug>
@@ -252,6 +253,10 @@ void Folder::slotPollTimerTimeout()
 void Folder::etagRetreived(const QString& etag)
 {
     qDebug() << "* Compare etag  with previous etag: " << (_lastEtag != etag);
+
+    // re-enable sync if it was disabled because network was down
+    FolderMan::instance()->setSyncEnabled(true);
+
     if (_lastEtag != etag) {
         _lastEtag = etag;
         evaluateSync(QStringList());

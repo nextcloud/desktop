@@ -355,6 +355,10 @@ void FolderMan::slotScheduleSync( const QString& alias )
 
 void FolderMan::setSyncEnabled( bool enabled )
 {
+    if (!_syncEnabled && enabled && !_scheduleQueue.isEmpty()) {
+        // We have things in our queue that were waiting the the connection to go back on.
+        QTimer::singleShot(200, this, SLOT(slotScheduleFolderSync()));
+    }
     _syncEnabled = enabled;
 }
 
