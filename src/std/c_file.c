@@ -170,9 +170,9 @@ out:
 #endif // _WIN32
 
 int c_rename( const char *src, const char *dst ) {
-    _TCHAR *nuri;
-    _TCHAR *ouri;
-    int rc;
+    _TCHAR *nuri = NULL;
+    _TCHAR *ouri = NULL;
+    int rc = 0;
 
     nuri = c_multibyte(dst);
     if (nuri == NULL) {
@@ -195,6 +195,7 @@ int c_rename( const char *src, const char *dst ) {
                          MOVEFILE_WRITE_THROUGH);
         if (!ok) {
             /* error */
+            errno = GetLastError();
             rc = -1;
         }
     }
