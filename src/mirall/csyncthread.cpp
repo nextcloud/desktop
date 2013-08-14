@@ -403,7 +403,7 @@ void CSyncThread::startSync()
 
     if (!_hasFiles && !_syncedItems.isEmpty()) {
         qDebug() << Q_FUNC_INFO << "All the files are going to be removed, asking the user";
-        bool cancel = true;
+        bool cancel = false;
         emit aboutToRemoveAllFiles(_syncedItems.first()._dir, &cancel);
         if (cancel) {
             qDebug() << Q_FUNC_INFO << "Abort sync";
