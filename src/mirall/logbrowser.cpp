@@ -58,8 +58,7 @@ LogWidget::LogWidget(QWidget *parent)
 LogBrowser::LogBrowser(QWidget *parent) :
     QDialog(parent),
     _logWidget( new LogWidget(parent) ),
-    _doFileFlush(false),
-    _logstream(0)
+    _doFileFlush(false)
 {
     setObjectName("LogBrowser"); // for save/restoreGeometry()
     setWindowTitle(tr("Log Output"));
@@ -134,9 +133,7 @@ LogBrowser::~LogBrowser()
 
 void LogBrowser::slotNewLog( const QString& msg )
 {
-    if( _logWidget->isVisible() ) {
-        _logWidget->appendPlainText( msg );
-    }
+    _logWidget->appendPlainText( msg );
 
     if( _logstream ) {
         (*_logstream) << msg << endl;
