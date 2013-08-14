@@ -102,6 +102,7 @@ public:
     bool useDownloadLimit() const;
     void setUseUploadLimit(int);
     void setUseDownloadLimit(bool);
+    /** in kbyte/s */
     int uploadLimit() const;
     int downloadLimit() const;
     void setUploadLimit(int kbytes);

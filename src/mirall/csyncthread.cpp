@@ -335,14 +335,14 @@ void CSyncThread::startSync()
 
     int downloadLimit = 0;
     if (cfg.useDownloadLimit()) {
-         downloadLimit = cfg.downloadLimit();
+         downloadLimit = cfg.downloadLimit() * 1000;
     }
     csync_set_module_property(_csync_ctx, "bandwidth_limit_download", &downloadLimit);
 
     int uploadLimit = -75; // 75%
     int useUpLimit = cfg.useUploadLimit();
     if ( useUpLimit >= 1) {
-         uploadLimit = cfg.uploadLimit();
+         uploadLimit = cfg.uploadLimit() * 1000;
     } else if (useUpLimit == 0) {
         uploadLimit = 0;
     }
