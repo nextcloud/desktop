@@ -71,7 +71,7 @@
         <item>
          <widget class="QPushButton" name="_ButtonAdd">
           <property name="text">
-           <string>Add Sync...</string>
+           <string>Add Folder...</string>
           </property>
          </widget>
         </item>

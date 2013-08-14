@@ -358,8 +358,9 @@ FolderWizard::FolderWizard( QWidget *parent )
         setPage(Page_Target, _folderWizardTargetPage );
     }
 
-    setWindowTitle( tr( "%1 Folder Wizard" ).arg( Theme::instance()->appNameGUI() ) );
+    setWindowTitle( tr("Add Folder") );
     setOptions(QWizard::CancelButtonOnLeft);
+    setButtonText(QWizard::FinishButton, tr("Add Folder"));
 }
 
 FolderWizard::~FolderWizard()
