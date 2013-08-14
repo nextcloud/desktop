@@ -29,6 +29,7 @@
 #include <QCoreApplication>
 #include <QDebug>
 #include <QSettings>
+#include <QAction>
 
 #include "mirall/mirallconfigfile.h"
 #include "mirall/logger.h"
@@ -117,6 +118,11 @@ LogBrowser::LogBrowser(QWidget *parent) :
 
     // Direct connection for log comming from this thread, and queued for the one in a different thread
     connect(Logger::instance(), SIGNAL(newLog(QString)),this,SLOT(slotNewLog(QString)), Qt::AutoConnection);
+
+    QAction *showLogWindow = new QAction(this);
+    showLogWindow->setShortcut(QKeySequence("F12"));
+    connect(showLogWindow, SIGNAL(triggered()), SLOT(close()));
+    addAction(showLogWindow);
 
     MirallConfigFile cfg;
     cfg.restoreGeometry(this);

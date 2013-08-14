@@ -92,6 +92,11 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
     QPushButton *closeButton = _ui->buttonBox->button(QDialogButtonBox::Close);
     connect(closeButton, SIGNAL(pressed()), SLOT(accept()));
 
+    QAction *showLogWindow = new QAction(this);
+    showLogWindow->setShortcut(QKeySequence("F12"));
+    connect(showLogWindow, SIGNAL(triggered()), app, SLOT(slotOpenLogBrowser()));
+    addAction(showLogWindow);
+
     MirallConfigFile cfg;
     cfg.restoreGeometry(this);
 }
