@@ -651,7 +651,7 @@ void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
     ui->quotaProgressBar->setValue(round(used/(double)total * 100));
     QString usedStr = Utility::octetsToString(used);
     QString totalStr = Utility::octetsToString(total);
-    ui->quotaLabel->setText(tr("You are using %1 of your available %2 storage.").arg(usedStr, totalStr));
+    ui->quotaLabel->setText(tr("%1 of %2 in use.").arg(usedStr, totalStr));
 }
 
 void AccountSettings::slotIgnoreFilesEditor()
