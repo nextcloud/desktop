@@ -158,8 +158,9 @@ void ProgressDispatcher::setProgressInfo(const QString& folder, const Progress::
         Progress::SyncProblem err;
         err.folder        = folder;
         err.current_file  = newProgress.current_file;
+        // its really
         err.error_message = QString::fromLocal8Bit( (const char*)newProgress.file_size );
-        err.error_code    = newProgress.file_size;
+        err.error_code    = newProgress.current_file_bytes;
         err.timestamp     = QDateTime::currentDateTime();
 
         _recentProblems.enqueue( err );
@@ -176,7 +177,8 @@ void ProgressDispatcher::setProgressInfo(const QString& folder, const Progress::
             newProgress.current_file_no = newProgress.overall_file_count;
             _currentAction.remove(newProgress.folder);
         }
-        if( newProgress.kind == Progress::EndDownload || newProgress.kind == Progress::EndUpload ||
+        if( newProgress.kind == Progress::EndDownload ||
+                newProgress.kind == Progress::EndUpload ||
                 newProgress.kind == Progress::EndDelete ) {
             _recentChanges.enqueue(newProgress);
         }

@@ -55,13 +55,9 @@ signals:
 
 private:
     void setSyncResultStatus(const SyncResult& result );
-    QTreeWidgetItem *createFolderItem(const QString& folder);
-    QTreeWidgetItem *findFolderItem( const QString& folder );
     void cleanErrors( const QString& folder );
-    void decorateFolderItem( const QString& folder );
     QString timeString(QDateTime dt, QLocale::FormatType format = QLocale::NarrowFormat) const;
 
-    QHash<QString, QTreeWidgetItem*> _folderItems;
     const int ErrorIndicatorRole;
     Ui::ItemProgressDialog *_ui;
     int _problemCounter;
