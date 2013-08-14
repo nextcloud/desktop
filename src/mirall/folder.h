@@ -53,17 +53,6 @@ typedef enum SyncFileStatus_s {
     STATUS_UPDATED
 } SyncFileStatus;
 
-class ServerActionNotifier : public QObject
-{
-    Q_OBJECT
-public:
-    ServerActionNotifier(QObject *parent = 0);
-public slots:
-    void slotSyncFinished(const SyncResult &result);
-
-private:
-};
-
 class Folder : public QObject
 {
     Q_OBJECT
@@ -140,7 +129,6 @@ signals:
     void scheduleToSync( const QString& );
 
 public slots:
-     void slotSyncFinished(const SyncResult &);
 
      /**
        *
@@ -189,6 +177,8 @@ protected:
     void setIgnoredFiles();
     void setProxy();
     const char* proxyTypeToCStr(QNetworkProxy::ProxyType type);
+
+    void bubbleUpSyncResult();
 
     /**
      * Starts a sync (calling startSync)

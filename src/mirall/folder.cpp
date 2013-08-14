@@ -70,10 +70,6 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
 
     _syncResult.setStatus( SyncResult::NotYetStarted );
 
-    ServerActionNotifier *notifier = new ServerActionNotifier(this);
-    connect(this, SIGNAL(syncFinished(SyncResult)), this, SLOT(slotSyncFinished(SyncResult)));
-    connect(this, SIGNAL(syncFinished(SyncResult)), notifier, SLOT(slotSyncFinished(SyncResult)));
-
     // check if the local path exists
     checkLocalPath();
 
@@ -275,14 +271,78 @@ void Folder::slotChanged(const QStringList &pathList)
     evaluateSync(pathList);
 }
 
-void Folder::slotSyncFinished(const SyncResult &result)
+void Folder::bubbleUpSyncResult()
 {
-    _watcher->setEventsEnabledDelayed(2000);
-    _pollTimer.start();
-    _timeSinceLastSync.restart();
+    // count new, removed and updated items
+    int newItems = 0;
+    int removedItems = 0;
+    int updatedItems = 0;
+    int ignoredItems = 0;
 
-    qDebug() << "OO folder slotSyncFinished: result: " << int(result.status());
-    emit syncStateChange();
+    SyncFileItem firstItemNew;
+    SyncFileItem firstItemDeleted;
+    SyncFileItem firstItemUpdated;
+    foreach (const SyncFileItem &item, _syncResult.syncFileItemVector() ) {
+        if (item._dir == SyncFileItem::Down) {
+            switch (item._instruction) {
+            case CSYNC_INSTRUCTION_NEW:
+                newItems++;
+                if (firstItemNew.isEmpty())
+                    firstItemNew = item;
+                break;
+            case CSYNC_INSTRUCTION_REMOVE:
+                removedItems++;
+                if (firstItemDeleted.isEmpty())
+                    firstItemDeleted = item;
+                break;
+            case CSYNC_INSTRUCTION_UPDATED:
+                updatedItems++;
+                if (firstItemUpdated.isEmpty())
+                    firstItemUpdated = item;
+                break;
+            case CSYNC_INSTRUCTION_ERROR:
+                qDebug() << "Got Instruction ERROR. " << _syncResult.errorString();
+                break;
+            default:
+                // nothing.
+                break;
+            }
+        } else if( item._dir == SyncFileItem::None ) { // ignored files counting.
+            if( item._instruction == CSYNC_INSTRUCTION_IGNORE ) {
+                ignoredItems++;
+            }
+        }
+    }
+
+    _syncResult.setWarnCount(ignoredItems);
+
+    Logger *logger = Logger::instance();
+
+    qDebug() << "OO folder slotSyncFinished: result: " << int(_syncResult.status());
+    if (newItems > 0) {
+        QString file = QDir::toNativeSeparators(firstItemNew._file);
+        if (newItems == 1)
+            logger->postGuiLog(tr("New file available"), tr("'%1' has been synced to this machine.").arg(file));
+        else
+            logger->postGuiLog(tr("New files available"), tr("'%1' and %n other file(s) have been synced to this machine.",
+                                                             "", newItems-1).arg(file));
+    }
+    if (removedItems > 0) {
+        QString file = QDir::toNativeSeparators(firstItemDeleted._file);
+        if (removedItems == 1)
+            logger->postGuiLog(tr("File removed"), tr("'%1' has been removed.").arg(file));
+        else
+            logger->postGuiLog(tr("Files removed"), tr("'%1' and %n other file(s) have been removed.",
+                                                        "", removedItems-1).arg(file));
+    }
+    if (updatedItems > 0) {
+        QString file = QDir::toNativeSeparators(firstItemUpdated._file);
+        if (updatedItems == 1)
+            logger->postGuiLog(tr("File updated"), tr("'%1' has been updated.").arg(file));
+        else
+            logger->postGuiLog(tr("Files updated"), tr("'%1' and %n other file(s) have been updated.",
+                                                       "", updatedItems-1).arg(file));
+    }
 }
 
 void Folder::slotLocalPathChanged( const QString& dir )
@@ -532,6 +592,11 @@ void Folder::slotCsyncUnavailable()
 void Folder::slotCSyncFinished()
 {
     qDebug() << "-> CSync Finished slot with error " << _csyncError;
+    _watcher->setEventsEnabledDelayed(2000);
+    _pollTimer.start();
+    _timeSinceLastSync.restart();
+
+    bubbleUpSyncResult();
 
     if (_csyncError) {
         _syncResult.setStatus(SyncResult::Error);
@@ -551,6 +616,7 @@ void Folder::slotCSyncFinished()
     if( _thread && _thread->isRunning() ) {
         _thread->quit();
     }
+    emit syncStateChange();
     ownCloudInfo::instance()->getQuotaRequest("/");
     emit syncFinished( _syncResult );
 }
@@ -581,79 +647,6 @@ void Folder::slotTransmissionProgress(const Progress::Info& progress)
     }
 
     ProgressDispatcher::instance()->setProgressInfo(alias(), newInfo);
-}
-
-ServerActionNotifier::ServerActionNotifier(QObject *parent)
-    : QObject(parent)
-{
-}
-
-void ServerActionNotifier::slotSyncFinished(const SyncResult &result)
-{
-    SyncFileItemVector items = result.syncFileItemVector();
-    if (items.count() == 0)
-        return;
-
-    int newItems = 0;
-    int removedItems = 0;
-    int updatedItems = 0;
-    SyncFileItem firstItemNew;
-    SyncFileItem firstItemDeleted;
-    SyncFileItem firstItemUpdated;
-    foreach (const SyncFileItem &item, items) {
-        if (item._dir == SyncFileItem::Down) {
-            switch (item._instruction) {
-            case CSYNC_INSTRUCTION_NEW:
-                newItems++;
-                if (firstItemNew.isEmpty())
-                    firstItemNew = item;
-                break;
-            case CSYNC_INSTRUCTION_REMOVE:
-                removedItems++;
-                if (firstItemDeleted.isEmpty())
-                    firstItemDeleted = item;
-                break;
-            case CSYNC_INSTRUCTION_UPDATED:
-                updatedItems++;
-                if (firstItemUpdated.isEmpty())
-                    firstItemUpdated = item;
-                break;
-            case CSYNC_INSTRUCTION_ERROR:
-                qDebug() << "Got Instruction ERROR. " << result.errorString();
-                break;
-        default:
-        // nothing.
-        break;
-            }
-        }
-    }
-
-    Logger *logger = Logger::instance();
-
-    if (newItems > 0) {
-        QString file = QDir::toNativeSeparators(firstItemNew._file);
-        if (newItems == 1)
-            logger->postGuiLog(tr("New file available"), tr("'%1' has been synced to this machine.").arg(file));
-        else
-            logger->postGuiLog(tr("New files available"), tr("'%1' and %n other file(s) have been synced to this machine.",
-                                                             "", newItems-1).arg(file));
-    }
-    if (removedItems > 0) {
-        QString file = QDir::toNativeSeparators(firstItemDeleted._file);
-        if (removedItems == 1)
-            logger->postGuiLog(tr("File removed"), tr("'%1' has been removed.").arg(file));
-        else
-            logger->postGuiLog(tr("Files removed"), tr("'%1' and %n other file(s) have been removed.",
-                                                        "", removedItems-1).arg(file));
-    }
-    if (updatedItems > 0) {
-        QString file = QDir::toNativeSeparators(firstItemUpdated._file);
-        if (updatedItems == 1)
-            logger->postGuiLog(tr("File updated"), tr("'%1' has been updated.").arg(file));
-        else
-            logger->postGuiLog(tr("Files updated"), tr("'%1' and %n other file(s) have been updated.",
-                                                       "", updatedItems-1).arg(file));
-    }
 }
 
 void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *cancel)

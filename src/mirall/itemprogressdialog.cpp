@@ -127,10 +127,6 @@ void ItemProgressDialog::setSyncResult( const SyncResult& result )
 {
     setSyncResultStatus(result);
 
-    if(result.status() != SyncResult::Success ) {
-        return;
-    }
-
     const QString& folder = result.folder();
     qDebug() << "Setting sync result for folder " << folder;
 
