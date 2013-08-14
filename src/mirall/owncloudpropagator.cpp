@@ -257,7 +257,7 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
             }
 
             if( finished ) {
-                _errorString = hbf_error_string(state);
+                _errorString = hbf_error_string(trans.data(), state);
                 _httpStatusCode = hbf_fail_http_code(trans.data());
 
                 if (trans->start_id > 0) {
@@ -560,8 +560,6 @@ bool OwncloudPropagator::check_neon_session()
         isOk = false;
     } else {
         const char *p = ne_get_error( _session );
-        char *q;
-
         _errorString = QString::fromUtf8(p);
 
         if( !_errorString.isEmpty() ) {

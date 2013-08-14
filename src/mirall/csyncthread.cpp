@@ -267,18 +267,7 @@ int CSyncThread::treewalkFinalize(TREE_WALK_FILE* file)
     if (file->instruction == CSYNC_INSTRUCTION_IGNORE)
         return 0;
 
-<<<<<<< HEAD
     // Update the instruction and etag in the csync rb_tree so it is saved on the database
-=======
-    if( file &&
-        (file->instruction == CSYNC_INSTRUCTION_STAT_ERROR ||
-         file->instruction == CSYNC_INSTRUCTION_ERROR) ) {
-        _mutex.lock();
-        _syncedItems[indx]._instruction = file->instruction;
-        _mutex.unlock();
-    }
->>>>>>> master
-
     QHash<QByteArray, Action>::const_iterator action = _performedActions.constFind(file->path);
     if (action != _performedActions.constEnd()) {
         if (file->instruction != CSYNC_INSTRUCTION_NONE) {

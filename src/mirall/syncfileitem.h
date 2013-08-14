@@ -74,6 +74,6 @@ typedef QVector<SyncFileItem> SyncFileItemVector;
 
 }
 
-Q_DECLARE_METATYPE(Mirall::SyncFileItem);
+Q_DECLARE_METATYPE(Mirall::SyncFileItem)
 
 #endif // SYNCFILEITEM_H

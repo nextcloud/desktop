@@ -108,7 +108,13 @@ bool Folder::init()
 
         if( csync_init( _csync_ctx ) < 0 ) {
             qDebug() << "Could not initialize csync!" << csync_get_error(_csync_ctx) << csync_get_error_string(_csync_ctx);
-            slotCSyncError(CSyncThread::csyncErrorToString(csync_get_error(_csync_ctx), csync_get_error_string(_csync_ctx)));
+            QString errStr = CSyncThread::csyncErrorToString(csync_get_error(_csync_ctx));
+            const char *errMsg = csync_get_error_string(_csync_ctx);
+            if( errMsg ) {
+                errStr += QLatin1String("<br/>");
+                errStr += QString::fromUtf8(errMsg);
+            }
+            slotCSyncError(errStr);
             csync_destroy(_csync_ctx);
             _csync_ctx = 0;
         }

@@ -59,8 +59,4 @@ void ProgressDatabase::save(const QString& rootDirectory)
     stream << QByteArray("csyncpdb_1") << _down << _up;
 }
 
-
-
-
-
 }

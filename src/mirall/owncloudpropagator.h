@@ -31,9 +31,9 @@ class ProgressDatabase;
 class OwncloudPropagator : public QObject {
     Q_OBJECT
 
+    ne_session_s *_session;
     QString _localDir; // absolute path to the local directory. ends with '/'
     QString _remoteDir; // path to the root of the remote. ends with '/'
-    ne_session_s *_session;
     ProgressDatabase *_progressDb;
 
     QString          _errorString;
