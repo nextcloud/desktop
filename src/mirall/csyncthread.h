@@ -60,8 +60,6 @@ public:
     Q_INVOKABLE void startSync();
 
 signals:
-    void fileReceived( const QString& );
-    void fileRemoved( const QString& );
     void csyncError( const QString& );
     void csyncWarning( const QString& );
     void csyncUnavailable();
@@ -79,11 +77,10 @@ signals:
 private slots:
     void transferCompleted(const SyncFileItem& item, CSYNC_ERROR_CODE error);
     void startNextTransfer();
+    void slotProgress(Progress::Kind kind, const QString& file, quint64, quint64);
 
 private:
     void handleSyncError(CSYNC *ctx, const char *state);
-
-    static void cb_progress( CSYNC_PROGRESS *progress, void *userdata );
 
     static int treewalkLocal( TREE_WALK_FILE*, void *);
     static int treewalkRemote( TREE_WALK_FILE*, void *);
@@ -116,6 +113,9 @@ private:
     QString adjustRenamedPath(const QString &original);
 
     bool _hasFiles; // true if there is at least one file that is not ignored or removed
+    Progress::Info _progressInfo;
+    int _downloadLimit;
+    int _uploadLimit;
 
     friend struct CSyncRunScopeHelper;
 };

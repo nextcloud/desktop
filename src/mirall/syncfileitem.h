@@ -60,6 +60,7 @@ public:
     bool _isDirectory;
     time_t _modtime;
     QByteArray _etag;
+    quint64  _size;
 
     QString _errorString;
     QString _errorDetail;

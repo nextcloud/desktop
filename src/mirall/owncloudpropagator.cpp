@@ -235,11 +235,15 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
             _progressDb->remove(item._file);
         }
 
-        //TODO
-        //ne_set_notifier(dav_session.ctx, ne_notify_status_cb, write_ctx);
+        ne_set_notifier(_session, notify_status_cb, this);
+        _lastTime.restart();
+        _lastProgress = 0;
+        _chunked_done = 0;
+        _chunked_total_size = item._size;
+        _currentFile = item._file;
 
         if( state == HBF_SUCCESS ) {
-            //chunked_total_size = trans->stat_size;
+            _chunked_total_size = trans->stat_size;
             /* Transfer all the chunks through the HTTP session using PUT. */
             state = hbf_transfer( _session, trans.data(), "PUT" );
         }
@@ -272,14 +276,10 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
         }
     } while( !finished );
 
-//       if (_progresscb) {
-//         ne_set_notifier(dav_session.ctx, 0, 0);
-//         _progresscb(write_ctx->url, rc != 0 ? CSYNC_NOTIFY_ERROR :
-//                                               CSYNC_NOTIFY_FINISHED_UPLOAD, error_code,
-//                     (long long)(error_string), dav_session.userdata);
-//       }
+    ne_set_notifier(_session, 0, 0);
 
     updateMTimeAndETag(uri.data(), item._modtime);
+
     return CSYNC_INSTRUCTION_UPDATED;
 }
 
@@ -421,8 +421,6 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
     /* actually do the request */
     int retry = 0;
 
-//         ne_set_notifier(dav_session.ctx, ne_notify_status_cb, write_ctx);
-
     QScopedPointer<char, QScopedPointerPodDeleter> uri(ne_path_escape((_remoteDir + item._file).toUtf8()));
     DownloadContext writeCtx(&tmpFile);
 
@@ -444,6 +442,11 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
          * either the compressed- or uncompressed reader.
          */
         ne_hook_post_headers( _session, DownloadContext::install_content_reader, &writeCtx);
+        ne_set_notifier(_session, notify_status_cb, this);
+        _lastProgress = 0;
+        _lastTime.start();
+        _chunked_done = _chunked_total_size = 0;
+        _currentFile = item._file;
 
         int neon_stat = ne_request_dispatch(req.data());
 
@@ -453,7 +456,8 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
 
         /* delete the hook again, otherwise they get chained as they are with the session */
         ne_unhook_post_headers( _session, DownloadContext::install_content_reader, &writeCtx );
-//         ne_set_notifier(_session, 0, 0);
+        ne_set_notifier(_session, 0, 0);
+        _chunked_done = _chunked_total_size = 0;
 
         if( updateErrorFromSession(neon_stat, req.data() ) ) {
             qDebug("Error GET: Neon: %d", neon_stat);
@@ -648,6 +652,49 @@ bool OwncloudPropagator::updateErrorFromSession(int neon_code, ne_request *req)
     return re;
 }
 
+void OwncloudPropagator::notify_status_cb(void* userdata, ne_session_status status,
+                                          const ne_session_status_info* info)
+{
+    OwncloudPropagator* this_ = reinterpret_cast<OwncloudPropagator *>(userdata);
+
+    if ((status == ne_status_sending || status == ne_status_recving)) {
+        if (info->sr.total > 0) {
+            emit this_->progress(Progress::Context, this_->_currentFile,
+                                 this_->_chunked_done + info->sr.progress,
+                                 this_->_chunked_total_size ? this_->_chunked_total_size : info->sr.total );
+        }
+        if (this_->_chunked_total_size && info->sr.total > 0 && info->sr.total == info->sr.progress) {
+            this_->_chunked_done += info->sr.total;
+        }
+    }
+
+    /* throttle connection */
+    int bandwidth_limit = 0;
+    if (status == ne_status_sending) bandwidth_limit = this_->_uploadLimit;
+    if (status == ne_status_recving) bandwidth_limit = this_->_downloadLimit;
+    if (bandwidth_limit > 0) {
+        int64_t diff = this_->_lastTime.nsecsElapsed() / 1000;
+        int64_t len = info->sr.progress - this_->_lastProgress;
+        if (len > 0 && diff > 0 && (1000000 * len / diff) > (int64_t)bandwidth_limit) {
+            int64_t wait_time = (1000000 * len / bandwidth_limit) - diff;
+            if (wait_time > 0) {
+                usleep(wait_time);
+            }
+        }
+        this_->_lastProgress = info->sr.progress;
+        this_->_lastTime.start();
+    } else if (bandwidth_limit < 0 && bandwidth_limit > -100) {
+        int64_t diff = this_->_lastTime.nsecsElapsed() / 1000;
+        if (diff > 0) {
+            // -bandwidth_limit is the % of bandwidth
+            int64_t wait_time = -diff * (1 + 100.0 / bandwidth_limit);
+            if (wait_time > 0) {
+                usleep(wait_time);
+            }
+        }
+        this_->_lastTime.start();
+    }
+}
 
 
 }

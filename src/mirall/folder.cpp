@@ -488,7 +488,7 @@ void Folder::startSync(const QStringList &pathList)
     _thread = new QThread(this);
     _thread->setPriority(QThread::LowPriority);
     setIgnoredFiles();
-    _csync = new CSyncThread( _csync_ctx, path(), QUrl(Folder::secondPath()).path());
+    _csync = new CSyncThread( _csync_ctx, path(), QUrl(ownCloudInfo::instance()->webdavUrl() + secondPath()).path());
     _csync->moveToThread(_thread);
 
 

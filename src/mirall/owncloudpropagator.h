@@ -18,8 +18,10 @@
 #include <neon/ne_request.h>
 #include <QHash>
 #include <QObject>
+#include <qelapsedtimer.h>
 
 #include "syncfileitem.h"
+#include "progressdispatcher.h"
 
 struct ne_session_s;
 struct ne_decompress_s;
@@ -58,6 +60,15 @@ class OwncloudPropagator : public QObject {
     bool updateErrorFromSession(int neon_code = 0, ne_request *req = NULL);
 
 
+    QElapsedTimer _lastTime;
+    quint64 _lastProgress;
+    quint64 _chunked_total_size;
+    quint64 _chunked_done;
+    QString _currentFile;
+
+    static void notify_status_cb (void *userdata, ne_session_status status,
+                                  const ne_session_status_info *info);
+
 public:
     OwncloudPropagator(ne_session_s *session, const QString &localDir, const QString &remoteDir,
                        ProgressDatabase *progressDb)
@@ -76,8 +87,12 @@ public:
     QByteArray _etag;
     bool             _hasFatalError;
 
+    int _downloadLimit;
+    int _uploadLimit;
+
 signals:
     void completed(const SyncFileItem &, CSYNC_ERROR_CODE);
+    void progress(Progress::Kind, const QString &filename, quint64 bytes, quint64 total);
 
 };
 
