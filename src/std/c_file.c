@@ -213,6 +213,7 @@ int c_rename( const char *src, const char *dst ) {
         } while( 1 );
         if( err != 0 ) {
             errno = err;
+            rc = -1;
         }
     }
 #else
