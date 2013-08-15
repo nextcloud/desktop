@@ -146,9 +146,16 @@ void LogBrowser::setLogFile( const QString & name, bool flush )
     if( _logstream ) {
         _logFile.close();
     }
-    _logFile.setFileName( name );
 
-    if(!_logFile.open(QIODevice::WriteOnly)) {
+    bool openSucceeded = false;
+    if (name == QLatin1String("-")) {
+        openSucceeded = _logFile.open(1, QIODevice::WriteOnly);
+    } else {
+        _logFile.setFileName( name );
+        openSucceeded = _logFile.open(QIODevice::WriteOnly);
+    }
+
+    if(!openSucceeded) {
         QMessageBox::warning(
                     this,
                     tr("Error"),
