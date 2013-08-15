@@ -479,8 +479,6 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
             // first terminate sync jobs.
             folderMan->terminateSyncProcess();
 
-            folderMan->unloadAllFolders();
-
             bool startFromScratch = _ocWizard->field( "OCSyncFromScratch" ).toBool();
             if( startFromScratch ) {
                 // first try to rename (backup) the current local dir.
@@ -500,10 +498,6 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
                 }
             }
         }
-        // save the user credentials and afterwards clear the cred store.
-        if( acceptCfg ) {
-            cfg.acceptCustomConfig();
-        }
 
         // Now write the resulting folder definition if folder names are set.
         if( acceptCfg && urlHasChanged ) {
@@ -518,6 +512,11 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
             } else {
                 qDebug() << "User interrupted change of configuration.";
             }
+        }
+
+        // save the user credentials and afterwards clear the cred store.
+        if( acceptCfg ) {
+            cfg.acceptCustomConfig();
         }
     }
 
