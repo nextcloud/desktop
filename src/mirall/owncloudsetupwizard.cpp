@@ -241,14 +241,9 @@ void OwncloudSetupWizard::testOwnCloudConnect()
     // write a temporary config.
     QDateTime now = QDateTime::currentDateTime();
 
-    // remove a possibly existing custom config.
-    if( ! _configHandle.isEmpty() ) {
-        // remove the old config file.
-        MirallConfigFile oldConfig( _configHandle );
-        oldConfig.cleanupCustomConfig();
+    if( _configHandle.isEmpty() ) {
+        _configHandle = now.toString(QLatin1String("MMddyyhhmmss"));
     }
-
-    _configHandle = now.toString(QLatin1String("MMddyyhhmmss"));
 
     MirallConfigFile cfgFile( _configHandle, true );
     QString url = _ocWizard->field(QLatin1String("OCUrl")).toString();
