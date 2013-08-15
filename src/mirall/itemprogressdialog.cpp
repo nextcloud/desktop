@@ -62,51 +62,25 @@ ItemProgressDialog::ItemProgressDialog(Application*, QWidget *parent) :
 
 void ItemProgressDialog::setSyncResultStatus(const SyncResult& result )
 {
-    QString folderMessage;
-
-    SyncResult::Status syncStatus = result.status();
-    switch( syncStatus ) {
-    case SyncResult::Undefined:
-        folderMessage = tr( "Undefined Folder State" );
-        break;
-    case SyncResult::NotYetStarted:
-        folderMessage = tr( "The folder waits to start syncing." );
-        break;
-    case SyncResult::SyncPrepare:
-        folderMessage = tr( "Determining which files to sync." );
-        break;
-    case SyncResult::Unavailable:
-        folderMessage = tr( "Server is currently not available." );
-        break;
-    case SyncResult::SyncRunning:
-        folderMessage = tr("Sync is running.");
-        break;
-    case SyncResult::Success:
-        folderMessage = tr("Last Sync was successful.");
-        break;
-    case SyncResult::Error:
-        folderMessage = tr( "Syncing Error." );
-        break;
-    case SyncResult::SetupError:
-        folderMessage = tr( "Setup Error." );
-        break;
-    case SyncResult::Problem:
-        folderMessage = tr( "Sync success, but warnings on individual files.");
-        break;
-    default:
-        folderMessage = tr( "Undefined Error State." );
-    }
-
-    _ui->_timelabel->setText(tr("%1").arg(folderMessage));
-
-    if( result.errorStrings().count() ) {
+     if( result.errorStrings().count() ) {
         _ui->_errorLabel->setVisible(true);
         _ui->_errorLabel->setTextFormat(Qt::RichText);
+
         QString errStr;
-        foreach( QString err, result.errorStrings() ) {
-            errStr.append(QString("<p>%1</p>").arg(err));
+        QStringList errors = result.errorStrings();
+        int cnt = errors.size();
+        bool appendDots = false;
+        if( cnt > 3 ) {
+            cnt = 3;
+            appendDots = true;
         }
 
+        for( int i = 0; i < cnt; i++) {
+            errStr.append(QString("%1<br/>").arg(errors.at(i)));
+        }
+        if( appendDots ) {
+            errStr.append(QString("..."));
+        }
         _ui->_errorLabel->setText(errStr);
     } else {
         _ui->_errorLabel->setText(QString::null);

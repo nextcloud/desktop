@@ -285,7 +285,6 @@ void Folder::bubbleUpSyncResult()
 
     foreach (const SyncFileItem &item, _syncResult.syncFileItemVector() ) {
         if( item._instruction == CSYNC_INSTRUCTION_ERROR ) {
-            qDebug() << "Instruct error in the result list.";
             slotCSyncError( tr("File %1: %2").arg(item._file).arg(item._errorString) );
         } else {
             if (item._dir == SyncFileItem::Down) {
