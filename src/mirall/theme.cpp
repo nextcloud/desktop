@@ -237,7 +237,9 @@ QIcon Theme::syncStateIcon( SyncResult::Status status, bool sysTray ) const
     case SyncResult::Success:
         statusIcon = QLatin1String("state-ok");
         break;
-    case SyncResult::Problem: // Jan wants this.
+    case SyncResult::Problem:
+        statusIcon = QLatin1String("state-information");
+        break;
     case SyncResult::Error:
     case SyncResult::SetupError:
         statusIcon = QLatin1String("state-error");  // FIXME: Use state-problem once we have an icon.

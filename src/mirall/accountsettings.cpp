@@ -139,6 +139,7 @@ void AccountSettings::slotFolderWizardAccepted()
         folderMan->slotScheduleAllFolders();
         emit folderChanged();
     }
+    buttonsSetEnabled();
 }
 
 void AccountSettings::slotFolderWizardRejected()
@@ -306,9 +307,10 @@ void AccountSettings::setFolderList( const Folder::Map &folders )
         slotAddFolder( f );
     }
 
-   QModelIndex idx = _model->index(0, 0);
-   if (idx.isValid())
+    QModelIndex idx = _model->index(0, 0);
+    if (idx.isValid()) {
         ui->_folderList->setCurrentIndex(idx);
+    }
     buttonsSetEnabled();
 
 }
@@ -394,11 +396,6 @@ void AccountSettings::slotUpdateFolderState( Folder *folder )
         item = _model->item( ++row );
     }
 
-#if 0
-    if( !_fileItemDialog.isNull() && _fileItemDialog->isVisible() ) {
-        _fileItemDialog->setSyncResult( FolderMan::instance()->syncResult(folder) );
-    }
-#endif
     if( item ) {
         folderToModelItem( item, folder );
     } else {

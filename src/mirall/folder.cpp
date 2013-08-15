@@ -600,7 +600,6 @@ void Folder::slotCSyncFinished()
 
     if (_csyncError) {
         _syncResult.setStatus(SyncResult::Error);
-
         qDebug() << "  ** error Strings: " << _errors;
         _syncResult.setErrorStrings( _errors );
         qDebug() << "    * owncloud csync thread finished with error";
