@@ -139,7 +139,9 @@ static int _csync_statedb_check(CSYNC *ctx, const char *statedb) {
                     if (c_streq(buf, "SQLite format 3")) {
                         if (sqlite3_open(statedb, &ctx->statedb.db ) == SQLITE_OK) {
                             rc = _csync_check_db_integrity(ctx);
-                            sqlite3_close(ctx->statedb.db);
+                            if( sqlite3_close(ctx->statedb.db) != 0 ) {
+                                CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "WARN: sqlite3_close error!");
+                            }
                             ctx->statedb.db = 0;
 
                             if( rc >= 0 ) {
@@ -166,7 +168,9 @@ static int _csync_statedb_check(CSYNC *ctx, const char *statedb) {
 
     /* create database */
     rc = sqlite3_open(statedb, &ctx->statedb.db);
-    sqlite3_close(ctx->statedb.db);
+    if( sqlite3_close(ctx->statedb.db) != 0 ) {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "WARN: sqlite3_close error!");
+    }
     ctx->statedb.db = 0;
 
     if (rc == SQLITE_OK) {
@@ -283,7 +287,10 @@ int csync_statedb_write(CSYNC *ctx) {
       return -1;
     }
     /* close the temporary database */
-    sqlite3_close(ctx->statedb.db);
+    rc = sqlite3_close(ctx->statedb.db);
+    if( rc == SQLITE_BUSY ) {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "WARN: sqlite3_close got busy!");
+    }
 
     /*  remove a possible corrupted file if it exists */
     wstatedb_tmp = c_multibyte(statedb_tmp);
