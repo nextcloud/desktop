@@ -46,11 +46,6 @@ LogWidget::LogWidget(QWidget *parent)
     font.setFamily(QLatin1String("Courier New"));
     font.setFixedPitch(true);
     document()->setDefaultFont( font );
-
-    MirallConfigFile cfg;
-    int lines = cfg.maxLogLines();
-    // qDebug() << "#        ##  Have " << lines << " Loglines!";
-    document()->setMaximumBlockCount( lines );
 }
 
 // ==============================================================================
@@ -125,6 +120,10 @@ LogBrowser::LogBrowser(QWidget *parent) :
 
     MirallConfigFile cfg;
     cfg.restoreGeometry(this);
+    int lines = cfg.maxLogLines();
+    // qDebug() << "#        ##  Have " << lines << " Loglines!";
+    _logWidget->document()->setMaximumBlockCount( lines );
+
 }
 
 LogBrowser::~LogBrowser()
