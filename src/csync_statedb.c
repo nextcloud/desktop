@@ -30,6 +30,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <errno.h>
 
 #include "c_lib.h"
 #include "csync_private.h"
@@ -352,7 +353,7 @@ int csync_statedb_close(CSYNC *ctx, const char *statedb, int jwritten) {
           /* Move the tmp-db to the real one. */
           if (c_rename(statedb_tmp, statedb) < 0) {
               CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-                        "Renaming tmp db to original db failed.");
+                        "Renaming tmp db to original db failed. (errno=%d)", errno);
               rc = -1;
           } else {
               CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
