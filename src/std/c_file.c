@@ -187,16 +187,32 @@ int c_rename( const char *src, const char *dst ) {
 
 #ifdef _WIN32
     {
-        BOOL ok;
-        ok = MoveFileExW(ouri,
-                         nuri,
-                         MOVEFILE_COPY_ALLOWED +
-                         MOVEFILE_REPLACE_EXISTING +
-                         MOVEFILE_WRITE_THROUGH);
-        if (!ok) {
-            /* error */
-            errno = GetLastError();
-            rc = -1;
+#define MAX_TRIES_RENAME 3
+        int err = 0;
+        int cnt = 0;
+
+        do {
+            BOOL ok;
+            ok = MoveFileExW(ouri,
+                             nuri,
+                             MOVEFILE_COPY_ALLOWED +
+                             MOVEFILE_REPLACE_EXISTING +
+                             MOVEFILE_WRITE_THROUGH);
+            if (!ok) {
+                /* error */
+                err = GetLastError();
+                if( (err == ERROR_ACCESS_DENIED   ||
+                     err == ERROR_LOCK_VIOLATION  ||
+                     err == ERROR_SHARING_VIOLATION) && cnt < MAX_TRIES_RENAME ) {
+                    cnt++;
+                    Sleep(cnt*100);
+                    continue;
+                }
+            }
+            break;
+        } while( 1 );
+        if( err != 0 ) {
+            errno = err;
         }
     }
 #else
