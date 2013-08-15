@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>607</width>
-    <height>385</height>
+    <height>382</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -86,29 +86,9 @@
          </widget>
         </item>
         <item>
-         <spacer name="verticalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
          <widget class="QPushButton" name="_ButtonRemove">
           <property name="text">
            <string>Remove</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="_ButtonReset">
-          <property name="text">
-           <string>Reset</string>
           </property>
          </widget>
         </item>

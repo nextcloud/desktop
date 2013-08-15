@@ -33,6 +33,8 @@
 #include <QDesktopServices>
 #include <QListWidgetItem>
 #include <QMessageBox>
+#include <QAction>
+#include <QKeySequence>
 
 namespace Mirall {
 
@@ -53,13 +55,16 @@ AccountSettings::AccountSettings(QWidget *parent) :
     ui->_folderList->setEditTriggers( QAbstractItemView::NoEditTriggers );
 
     ui->_ButtonRemove->setEnabled(false);
-    ui->_ButtonReset->setEnabled(false);
     ui->_ButtonEnable->setEnabled(false);
     ui->_ButtonInfo->setEnabled(false);
     ui->_ButtonAdd->setEnabled(true);
 
+    QAction *resetFolderAction = new QAction(this);
+    resetFolderAction->setShortcut(QKeySequence(Qt::Key_F5));
+    connect(resetFolderAction, SIGNAL(triggered()), SLOT(slotResetCurrentFolder()));
+    addAction(resetFolderAction);
+
     connect(ui->_ButtonRemove, SIGNAL(clicked()), this, SLOT(slotRemoveCurrentFolder()));
-    connect(ui->_ButtonReset,  SIGNAL(clicked()), this, SLOT(slotResetCurrentFolder()));
     connect(ui->_ButtonEnable, SIGNAL(clicked()), this, SLOT(slotEnableCurrentFolder()));
     connect(ui->_ButtonInfo,   SIGNAL(clicked()), this, SLOT(slotInfoAboutCurrentFolder()));
     connect(ui->_ButtonAdd,    SIGNAL(clicked()), this, SLOT(slotAddFolder()));
@@ -85,8 +90,6 @@ void AccountSettings::slotFolderActivated( const QModelIndex& indx )
   bool state = indx.isValid();
 
   ui->_ButtonRemove->setEnabled( state );
-  ui->_ButtonReset->setEnabled( state );
-  ui->_ButtonReset->setEnabled( state );
   ui->_ButtonEnable->setEnabled( state );
   ui->_ButtonInfo->setEnabled( state );
 
@@ -185,7 +188,6 @@ void AccountSettings::buttonsSetEnabled()
     bool isSelected = selected.isValid();
 
     ui->_ButtonEnable->setEnabled(isSelected);
-    ui->_ButtonReset->setEnabled(isSelected);
     ui->_ButtonRemove->setEnabled(isSelected);
     ui->_ButtonInfo->setEnabled(isSelected);
 }
@@ -260,8 +262,10 @@ void AccountSettings::slotResetCurrentFolder()
         QString alias = _model->data( selected, FolderStatusDelegate::FolderAliasRole ).toString();
         int ret = QMessageBox::question( 0, tr("Confirm Folder Reset"),
                                          tr("<p>Do you really want to reset folder <i>%1</i> and rebuild your client database?</p>"
-                                            "<p><b>Note:</b> While no files will be removed, this can cause significant data "
-                                            "traffic and take several minutes to hours, depending on the size of the folder.</p>").arg(alias),
+                                            "<p><b>Note:</b> This function is designed for maintenance purposes only. "
+                                            "No files will be removed, but this can cause significant data traffic and "
+                                            "take several minutes or hours to complete, depending on the size of the folder. "
+                                            "Only use this option if advised by your administrator.</p>").arg(alias),
                                          QMessageBox::Yes|QMessageBox::No );
         if( ret == QMessageBox::Yes ) {
             FolderMan *folderMan = FolderMan::instance();
