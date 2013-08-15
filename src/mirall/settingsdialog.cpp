@@ -73,7 +73,6 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
     connect( app, SIGNAL(folderStateChanged(Folder*)), _accountSettings, SLOT(slotUpdateFolderState(Folder*)));
     connect( app, SIGNAL(folderStateChanged(Folder*)), SLOT(slotUpdateAccountState()));
 
-    connect( _accountSettings, SIGNAL(addASync()), app, SLOT(slotFolderAdded()) );
     connect( _accountSettings, SIGNAL(folderChanged()), app, SLOT(slotFoldersChanged()));
     connect( _accountSettings, SIGNAL(openFolderAlias(const QString&)),
              app, SLOT(slotFolderOpenAction(QString)));
