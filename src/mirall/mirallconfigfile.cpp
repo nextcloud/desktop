@@ -105,8 +105,9 @@ void MirallConfigFile::setConfDir(const QString &value)
         fi.setFile(dir.path());
     }
     if( fi.exists() && fi.isDir() ) {
-        qDebug() << "** Using custom config dir " << fi.absoluteFilePath();
-        _confDir=value;
+        dirPath = fi.absoluteFilePath();
+        qDebug() << "** Using custom config dir " << dirPath;
+        _confDir=dirPath;
     }
 }
 
