@@ -282,34 +282,40 @@ void Folder::bubbleUpSyncResult()
     SyncFileItem firstItemNew;
     SyncFileItem firstItemDeleted;
     SyncFileItem firstItemUpdated;
+
     foreach (const SyncFileItem &item, _syncResult.syncFileItemVector() ) {
-        if (item._dir == SyncFileItem::Down) {
-            switch (item._instruction) {
-            case CSYNC_INSTRUCTION_NEW:
-                newItems++;
-                if (firstItemNew.isEmpty())
-                    firstItemNew = item;
-                break;
-            case CSYNC_INSTRUCTION_REMOVE:
-                removedItems++;
-                if (firstItemDeleted.isEmpty())
-                    firstItemDeleted = item;
-                break;
-            case CSYNC_INSTRUCTION_UPDATED:
-                updatedItems++;
-                if (firstItemUpdated.isEmpty())
-                    firstItemUpdated = item;
-                break;
-            case CSYNC_INSTRUCTION_ERROR:
-                qDebug() << "Got Instruction ERROR. " << _syncResult.errorString();
-                break;
-            default:
-                // nothing.
-                break;
-            }
-        } else if( item._dir == SyncFileItem::None ) { // ignored files counting.
-            if( item._instruction == CSYNC_INSTRUCTION_IGNORE ) {
-                ignoredItems++;
+        if( item._instruction == CSYNC_INSTRUCTION_ERROR ) {
+            qDebug() << "Instruct error in the result list.";
+            slotCSyncError( tr("File %1: %2").arg(item._file).arg(item._errorString) );
+        } else {
+            if (item._dir == SyncFileItem::Down) {
+                switch (item._instruction) {
+                case CSYNC_INSTRUCTION_NEW:
+                    newItems++;
+                    if (firstItemNew.isEmpty())
+                        firstItemNew = item;
+                    break;
+                case CSYNC_INSTRUCTION_REMOVE:
+                    removedItems++;
+                    if (firstItemDeleted.isEmpty())
+                        firstItemDeleted = item;
+                    break;
+                case CSYNC_INSTRUCTION_UPDATED:
+                    updatedItems++;
+                    if (firstItemUpdated.isEmpty())
+                        firstItemUpdated = item;
+                    break;
+                case CSYNC_INSTRUCTION_ERROR:
+                    qDebug() << "Got Instruction ERROR. " << _syncResult.errorString();
+                    break;
+                default:
+                    // nothing.
+                    break;
+                }
+            } else if( item._dir == SyncFileItem::None ) { // ignored files counting.
+                if( item._instruction == CSYNC_INSTRUCTION_IGNORE ) {
+                    ignoredItems++;
+                }
             }
         }
     }

@@ -35,6 +35,7 @@ public:
     // variables
     QString _file;
     QString _renameTarget;
+    QString _errorString;
     csync_instructions_e _instruction;
     Direction _dir;
     Type      _type;

@@ -129,6 +129,7 @@ void ItemProgressDialog::setSyncResult( const SyncResult& result )
     for (i = items.begin(); i != items.end(); ++i) {
          const SyncFileItem& item = *i;
          QString errMsg;
+         // handle ignored files here.
          if( item._instruction == CSYNC_INSTRUCTION_IGNORE ) {
              QStringList columns;
              QString timeStr = timeString(dt);
@@ -284,15 +285,18 @@ void ItemProgressDialog::slotProgressErrors( const QString& folder, const Progre
   columns << problem.current_file;
   columns << folder;
   QString errMsg = tr("Problem: %1").arg(problem.error_message);
+#if 0
   if( problem.error_code == 507 ) {
       errMsg = tr("No more storage space available on server.");
   }
+#endif
   columns << errMsg;
-  // FIXME: Show the error code if available.
 
   QTreeWidgetItem *item = new QTreeWidgetItem(columns);
   item->setData(0, ErrorIndicatorRole, QVariant(true) );
-  item->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Problem, true));
+  // Maybe we should not set the error icon for all problems but distinguish
+  // by error_code. A quota problem is considered an error, others might not??
+  item->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Error, true));
   item->setToolTip(0, longTimeStr);
   _ui->_treeWidget->addTopLevelItem(item);
   Q_UNUSED(item);

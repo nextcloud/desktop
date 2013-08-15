@@ -257,7 +257,7 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
 
 int CSyncThread::treewalkError(TREE_WALK_FILE* file)
 {
-    SyncFileItem item;
+    SyncFileItem item; // only used for search.
     item._file= QString::fromUtf8(file->path);
     int indx = _syncedItems.indexOf(item);
 
@@ -269,6 +269,7 @@ int CSyncThread::treewalkError(TREE_WALK_FILE* file)
          file->instruction == CSYNC_INSTRUCTION_ERROR) ) {
         _mutex.lock();
         _syncedItems[indx]._instruction = file->instruction;
+        _syncedItems[indx]._errorString = QString::fromUtf8(file->error_string);
         _mutex.unlock();
     }
 
