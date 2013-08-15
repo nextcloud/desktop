@@ -27,7 +27,7 @@ if(SPHINX_FOUND)
         # apt-get install texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended
         add_custom_target(doc-latex  ${SPHINX_EXECUTABLE}
 		                     -q -c . -b latex
-				     -d ${SPHINX_CACHE_DIR}
+				     -d ${SPHINX_CACHE_DIR}/latex
 				     -D latex_logo=${LATEX_LOGO}
 				     ${CMAKE_CURRENT_SOURCE_DIR}
 				     ${SPHINX_PDF_DIR} )
@@ -41,7 +41,7 @@ if(SPHINX_FOUND)
     if (EXISTS ${QT_QCOLLECTIONGENERATOR_EXECUTABLE})
         add_custom_target( doc-qch-sphinx ${SPHINX_EXECUTABLE}
 		                          -q -c . -b qthelp
-				          -d ${SPHINX_CACHE_DIR}
+				          -d ${SPHINX_CACHE_DIR}/qthelp
 					  ${CMAKE_CURRENT_SOURCE_DIR}
 					  ${SPHINX_QCH_DIR} )
         add_custom_target( doc-qch ${QT_QCOLLECTIONGENERATOR_EXECUTABLE}
@@ -54,12 +54,12 @@ if(SPHINX_FOUND)
     endif()
     add_custom_target( doc-html ${SPHINX_EXECUTABLE}
 	                        -q -c . -b html
-				-d ${SPHINX_CACHE_DIR}
+				-d ${SPHINX_CACHE_DIR}/html
 				${CMAKE_CURRENT_SOURCE_DIR}
 				${SPHINX_HTML_DIR} )
     add_custom_target( doc-man  ${SPHINX_EXECUTABLE}
 	                        -q -c . -b man
-				-d ${SPHINX_CACHE_DIR}
+				-d ${SPHINX_CACHE_DIR}/man
 				${CMAKE_CURRENT_SOURCE_DIR}
 				${SPHINX_MAN_DIR} )
 
@@ -71,7 +71,7 @@ if(SPHINX_FOUND)
     add_custom_target( doc-chm-sphinx  ${SPHINX_EXECUTABLE}
 	                               -q -c . -b htmlhelp
 	                               -D html_theme=basic
-                                       -d ${SPHINX_CACHE_DIR}
+                                       -d ${SPHINX_CACHE_DIR}/htmlhelp
                                        ${CMAKE_CURRENT_SOURCE_DIR}
                                        ${SPHINX_HTMLHELP_DIR} )
     add_custom_target( doc-chm pushd ${SPHINX_HTMLHELP_DIR}; ${MSHTML_COMPILER} *.hhp; popd
