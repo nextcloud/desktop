@@ -46,7 +46,7 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
     _ui->setupUi(this);
     setObjectName("Settings"); // required as group for saveGeometry call
 
-    setWindowTitle(tr("%1 Settings").arg(Theme::instance()->appNameGUI()));
+    setWindowTitle(tr("%1").arg(Theme::instance()->appNameGUI()));
 
     QIcon generalIcon(QLatin1String(":/mirall/resources/settings.png"));
     QListWidgetItem *general = new QListWidgetItem(generalIcon, tr("General"), _ui->labelWidget);

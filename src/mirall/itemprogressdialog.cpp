@@ -40,7 +40,7 @@ ItemProgressDialog::ItemProgressDialog(Application*, QWidget *parent) :
             this, SLOT(slotProgressErrors(const QString&, const Progress::SyncProblem&)));
 
     QStringList header;
-    header << tr("Folder/Time");
+    header << tr("Time");
     header << tr("File");
     header << tr("Folder");
     header << tr("Action");

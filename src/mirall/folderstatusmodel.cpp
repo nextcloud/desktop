@@ -212,6 +212,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
   int h = iconRect.bottom();
   if( !errorText.isEmpty() ) {
+      h += aliasMargin;
       QRect errorRect = localPathRect;
       errorRect.setLeft( iconRect.left());
       errorRect.setTop( h );
@@ -221,10 +222,6 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
       painter->setBrush( QColor(0xbb, 0x4d, 0x4d) );
       painter->setPen( QColor(0xaa, 0xaa, 0xaa));
       painter->drawRoundedRect( errorRect, 4, 4 );
-
-      QIcon warnIcon(":/mirall/resources/warning-16");
-      QPoint warnPos(errorRect.left()+aliasMargin/2, errorRect.top()+aliasMargin/2);
-      painter->drawPixmap( warnPos, warnIcon.pixmap(QSize(16,16)));
 
       painter->setPen( Qt::white );
       painter->setFont(errorFont);
