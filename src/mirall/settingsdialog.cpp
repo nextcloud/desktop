@@ -48,6 +48,10 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
 
     setWindowTitle(tr("%1").arg(Theme::instance()->appNameGUI()));
 
+    _accountSettings = new AccountSettings(this);
+    addAccount(tr("Account"), _accountSettings);
+    slotUpdateAccountState();
+
     QIcon generalIcon(QLatin1String(":/mirall/resources/settings.png"));
     QListWidgetItem *general = new QListWidgetItem(generalIcon, tr("General"), _ui->labelWidget);
     general->setSizeHint(QSize(0, 32));
@@ -66,10 +70,6 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
 
     //connect(generalSettings, SIGNAL(resizeToSizeHint()), SLOT(resizeToSizeHint()));
 
-    _accountSettings = new AccountSettings(this);
-    addAccount(tr("Account"), _accountSettings);
-    slotUpdateAccountState();
-
     connect( app, SIGNAL(folderStateChanged(Folder*)), _accountSettings, SLOT(slotUpdateFolderState(Folder*)));
     connect( app, SIGNAL(folderStateChanged(Folder*)), SLOT(slotUpdateAccountState()));
 
@@ -83,7 +83,7 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
     connect( ProgressDispatcher::instance(), SIGNAL(progressSyncProblem(QString,Progress::SyncProblem)),
              _accountSettings, SLOT(slotProgressProblem(QString,Progress::SyncProblem)) );
 
-    _ui->labelWidget->setCurrentRow(_ui->labelWidget->row(general));
+    _ui->labelWidget->setCurrentRow(_ui->labelWidget->row(_accountItem));
 
     connect(_ui->labelWidget, SIGNAL(currentRowChanged(int)),
             _ui->stack, SLOT(setCurrentIndex(int)));
