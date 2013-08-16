@@ -5,3 +5,4 @@ Exec=@APPLICATION_EXECUTABLE@
 Name=@APPLICATION_NAME@ desktop sync client 
 GenericName=Folder Sync
 Icon=@APPLICATION_SHORTNAME@
+Keywords=@APPLICATION_NAME@;syncing;file;sharing
