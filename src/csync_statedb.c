@@ -131,6 +131,7 @@ static int _csync_statedb_check(CSYNC *ctx, const char *statedb) {
         if (rc == 0) {
             if (sb.st_size == 0) {
                 CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Database size is zero byte!");
+                close(fd);
             } else {
                 r = read(fd, (void *) buf, sizeof(buf) - 1);
                 close(fd);
