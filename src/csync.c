@@ -793,6 +793,8 @@ static void _csync_clean_ctx(CSYNC *ctx)
     ctx->local.list = 0;
     ctx->remote.ignored_cleanup = 0;
     ctx->local.ignored_cleanup = 0;
+
+    SAFE_FREE(ctx->statedb.file);
 }
 
 int csync_commit(CSYNC *ctx) {
@@ -889,7 +891,6 @@ int csync_destroy(CSYNC *ctx) {
   SAFE_FREE(ctx->local.uri);
   SAFE_FREE(ctx->remote.uri);
   SAFE_FREE(ctx->options.config_dir);
-  SAFE_FREE(ctx->statedb.file);
   SAFE_FREE(ctx->error_string);
 
 #ifdef WITH_ICONV
