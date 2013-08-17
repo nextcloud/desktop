@@ -16,7 +16,7 @@
 #include <QObject>
 #include <QMetaType>
 #include <QDebug>
-
+#include <QCoreApplication>
 
 namespace Mirall {
 
@@ -28,35 +28,38 @@ QString Progress::asResultString( Kind kind )
     switch(kind) {
     case Download:
     case EndDownload:
-        re = QObject::tr("Download");
+        re = QCoreApplication::translate( "progress", "Download");
         break;
     case Upload:
-        re = QObject::tr("Upload");
+        re = QCoreApplication::translate( "progress", "Upload");
         break;
     case Context:
-        re = QObject::tr("Context");
+        re = QCoreApplication::translate( "progress", "Context" );
         break;
     case Inactive:
-        re = QObject::tr("Inactive");
+        re = QCoreApplication::translate( "progress", "Inactive");
         break;
     case StartDownload:
-        re = QObject::tr("Download");
+        re = QCoreApplication::translate( "progress", "Download");
         break;
     case StartUpload:
     case EndUpload:
-        re = QObject::tr("Upload");
+        re = QCoreApplication::translate( "progress", "Upload");
         break;
     case StartSync:
-        re = QObject::tr("Start");
+        re = QCoreApplication::translate( "progress", "Start");
         break;
     case EndSync:
-        re = QObject::tr("Finished");
+        re = QCoreApplication::translate( "progress", "Finished");
         break;
     case StartDelete:
-        re = QObject::tr("For deletion");
+        re = QCoreApplication::translate( "progress", "For deletion");
+        break;
+    case  Conflict:
+        re = QCoreApplication::translate( "progress", "Conflict");
         break;
     case EndDelete:
-        re = QObject::tr("deleted");
+        re = QCoreApplication::translate( "progress", "deleted");
         break;
     default:
         Q_ASSERT(false);
@@ -71,40 +74,43 @@ QString Progress::asActionString( Kind kind )
 
     switch(kind) {
     case Download:
-        re = QObject::tr("downloading");
+        re = QCoreApplication::translate( "progress", "downloading");
         break;
     case Upload:
-        re = QObject::tr("uploading");
+        re = QCoreApplication::translate( "progress", "uploading");
         break;
     case Context:
-        re = QObject::tr("Context");
+        re = QCoreApplication::translate( "progress", "Context");
         break;
     case Inactive:
-        re = QObject::tr("inactive");
+        re = QCoreApplication::translate( "progress", "inactive");
         break;
     case StartDownload:
-        re = QObject::tr("downloading");
+        re = QCoreApplication::translate( "progress", "downloading");
         break;
     case StartUpload:
-        re = QObject::tr("uploading");
+        re = QCoreApplication::translate( "progress", "uploading");
         break;
     case EndDownload:
-        re = QObject::tr("downloading");
+        re = QCoreApplication::translate( "progress", "downloading");
         break;
     case EndUpload:
-        re = QObject::tr("uploading");
+        re = QCoreApplication::translate( "progress", "uploading");
         break;
     case StartSync:
-        re = QObject::tr("starting");
+        re = QCoreApplication::translate( "progress", "starting");
         break;
     case EndSync:
-        re = QObject::tr("finished");
+        re = QCoreApplication::translate( "progress", "finished");
         break;
     case StartDelete:
-        re = QObject::tr("delete");
+        re = QCoreApplication::translate( "progress", "delete");
         break;
     case EndDelete:
-        re = QObject::tr("deleted");
+        re = QCoreApplication::translate( "progress", "deleted");
+        break;
+    case Conflict:
+        re = QCoreApplication::translate( "progress", "conflict file");
         break;
     default:
         Q_ASSERT(false);
