@@ -283,9 +283,13 @@ void Folder::bubbleUpSyncResult()
     SyncFileItem firstItemDeleted;
     SyncFileItem firstItemUpdated;
 
+    Logger *logger = Logger::instance();
+
     foreach (const SyncFileItem &item, _syncResult.syncFileItemVector() ) {
         if( item._instruction == CSYNC_INSTRUCTION_ERROR ) {
             slotCSyncError( tr("File %1: %2").arg(item._file).arg(item._errorString) );
+            logger->postGuiLog(tr("File %1").arg(item._file), item._errorString);
+
         } else {
             if (item._dir == SyncFileItem::Down) {
                 switch (item._instruction) {
@@ -320,8 +324,6 @@ void Folder::bubbleUpSyncResult()
     }
 
     _syncResult.setWarnCount(ignoredItems);
-
-    Logger *logger = Logger::instance();
 
     qDebug() << "OO folder slotSyncFinished: result: " << int(_syncResult.status());
     if (newItems > 0) {
