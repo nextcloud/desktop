@@ -243,7 +243,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
   // Sync File Progress Bar: Show it if syncFile is not empty.
   if( !overallString.isEmpty()) {
       int fileNameTextHeight = subFm.boundingRect(tr("File")).height();
-      int barHeight = fileNameTextHeight;
+      int barHeight = qMax(fileNameTextHeight, aliasFm.height()+2); ;
       int overallWidth = option.rect.width()-2*aliasMargin;
 
       painter->save();
@@ -260,6 +260,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
       pBRect.setWidth( overallWidth - progressTextWidth - margin );
 
       QStyleOptionProgressBarV2 pBarOpt;
+
       pBarOpt.state    = option.state | QStyle::State_Horizontal;
       pBarOpt.minimum  = 0;
       pBarOpt.maximum  = 100;
@@ -280,6 +281,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
       QString elidedText = progressFm.elidedText(overallString, Qt::ElideLeft, overallProgressRect.width());
       painter->drawText( overallProgressRect, Qt::AlignRight+Qt::AlignVCenter, elidedText);
+    // painter->drawRect(overallProgressRect);
 
       // Individual File Progress
       QRect fileRect;
