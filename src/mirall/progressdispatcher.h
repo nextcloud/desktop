@@ -25,9 +25,8 @@ namespace Mirall {
 /**
  * @brief The FolderScheduler class schedules folders for sync
  */
-class Progress
+namespace Progress
 {
-public:
     typedef enum {
         Invalid,
         StartSync,
@@ -69,9 +68,9 @@ public:
         QDateTime  timestamp;
     } SyncProblem;
 
-    static QString asActionString( Kind );
-    static QString asResultString( Kind );
-};
+    QString asActionString( Kind );
+    QString asResultString( Kind );
+}
 
 /**
  * @file progressdispatcher.h
