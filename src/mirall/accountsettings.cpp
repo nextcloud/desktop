@@ -650,7 +650,9 @@ void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
     ui->quotaProgressBar->setEnabled(true);
     // workaround the label only accepting ints (which may be only 32 bit wide)
     ui->quotaProgressBar->setMaximum(100);
-    ui->quotaProgressBar->setValue(round(used/(double)total * 100));
+    int qVal = qRound(used/(double)total * 100);
+    if( qVal > 100 ) qVal = 100;
+    ui->quotaProgressBar->setValue(qVal);
     QString usedStr = Utility::octetsToString(used);
     QString totalStr = Utility::octetsToString(total);
     ui->quotaLabel->setText(tr("%1 of %2 in use.").arg(usedStr, totalStr));
