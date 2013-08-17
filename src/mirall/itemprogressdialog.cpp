@@ -103,8 +103,11 @@ void ItemProgressDialog::setSyncResult( const SyncResult& result )
     for (i = items.begin(); i != items.end(); ++i) {
          const SyncFileItem& item = *i;
          QString errMsg;
+         QString tooltip;
          // handle ignored files here.
-         if( item._instruction == CSYNC_INSTRUCTION_IGNORE ) {
+
+         if( item._instruction == CSYNC_INSTRUCTION_IGNORE
+                 || item._instruction == CSYNC_INSTRUCTION_CONFLICT ) {
              QStringList columns;
              QString timeStr = timeString(dt);
              QString longTimeStr = timeString(dt, QLocale::LongFormat);
@@ -112,20 +115,39 @@ void ItemProgressDialog::setSyncResult( const SyncResult& result )
              columns << timeStr;
              columns << item._file;
              columns << folder;
-             if( item._type == SyncFileItem::File ) {
-                 errMsg = tr("File ignored.");
-             } else if( item._type == SyncFileItem::Directory ){
-                 errMsg = tr("Directory ignored.");
-             } else if( item._type == SyncFileItem::SoftLink ) {
-                 errMsg = tr("Soft Link ignored.");
+             if( item._instruction == CSYNC_INSTRUCTION_IGNORE) {
+                 if( item._type == SyncFileItem::File ) {
+                     errMsg = tr("File ignored.");
+                     tooltip = tr("The file was ignored because it is listed in the clients ignore list\n"
+                                  "or the filename contains characters that are not syncable\nin a cross platform "
+                                  "environment.");
+                 } else if( item._type == SyncFileItem::Directory ){
+                     errMsg = tr("Directory ignored.");
+                     tooltip = tr("The directory was ignored because it is listed in the clients\nignore list "
+                                  "or the directory name contains\ncharacters that are not syncable in a cross  "
+                                  "platform environment.");
+                 } else if( item._type == SyncFileItem::SoftLink ) {
+                     errMsg = tr("Soft Link ignored.");
+                     tooltip = tr("Softlinks break the semantics of synchronization.\nPlease do not "
+                                  "use them in synced directories.");
+                 } else {
+                     errMsg = tr("Ignored.");
+                 }
+             } else if(  item._instruction == CSYNC_INSTRUCTION_CONFLICT ) {
+                 errMsg = tr("Conflict file.");
+                 tooltip = tr("The file was changed on server and local repository and as a result it\n"
+                              "created a so called conflict. The local change is copied to the conflict\n"
+                              "file while the file from the server side is available under the original\n"
+                              "name");
              } else {
-                 errMsg = tr("Ignored.");
+                 Q_ASSERT(!"unhandled instruction.");
              }
              columns << errMsg;
 
              QTreeWidgetItem *twitem = new QTreeWidgetItem(columns);
              twitem->setData(0, ErrorIndicatorRole, QVariant(true) );
              twitem->setToolTip(0, longTimeStr);
+             twitem->setToolTip(3, tooltip);
              twitem->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Problem, true));
              _ui->_treeWidget->addTopLevelItem(twitem);
 
