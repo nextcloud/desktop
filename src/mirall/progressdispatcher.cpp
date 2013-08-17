@@ -55,9 +55,6 @@ QString Progress::asResultString( Kind kind )
     case StartDelete:
         re = QCoreApplication::translate( "progress", "For deletion");
         break;
-    case  Conflict:
-        re = QCoreApplication::translate( "progress", "Conflict");
-        break;
     case EndDelete:
         re = QCoreApplication::translate( "progress", "deleted");
         break;
@@ -108,9 +105,6 @@ QString Progress::asActionString( Kind kind )
         break;
     case EndDelete:
         re = QCoreApplication::translate( "progress", "deleted");
-        break;
-    case Conflict:
-        re = QCoreApplication::translate( "progress", "conflict file");
         break;
     default:
         Q_ASSERT(false);
