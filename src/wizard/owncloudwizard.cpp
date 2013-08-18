@@ -46,11 +46,12 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
       _setupLog(),
       _configExists(false)
 {
-    setPage(WizardCommon::Page_ServerSetup, _setupPage  );
+    setPage(WizardCommon::Page_ServerSetup, _setupPage);
     setPage(WizardCommon::Page_HttpCreds, _httpCredsPage);
     setPage(WizardCommon::Page_ShibbolethCreds, _shibbolethCredsPage);
     setPage(WizardCommon::Page_AdvancedSetup, _advancedSetupPage);
-    setPage(WizardCommon::Page_Result, _resultPage );
+    setPage(WizardCommon::Page_Result, _resultPage);
+
     connect(this, SIGNAL(finished(int)), SIGNAL(basicSetupFinished(int)));
 
     // note: start Id is set by the calling class depending on if the
