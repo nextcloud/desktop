@@ -1,7 +1,5 @@
-#define _GNU_SOURCE /* asprintf */
 #include <string.h>
 
-#include "support.h"
 #include "torture.h"
 
 #define CSYNC_TEST 1

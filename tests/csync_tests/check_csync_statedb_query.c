@@ -28,7 +28,7 @@ static void setup(void **state)
     rc = csync_init(csync);
     assert_int_equal(rc, 0);
 
-    rc = csync_statedb_load(csync, TESTDB);
+    rc = csync_statedb_load(csync, TESTDB, &csync->statedb.db);
     assert_int_equal(rc, 0);
 
     *state = csync;
@@ -47,7 +47,7 @@ static void setup_db(void **state)
     rc = csync_statedb_create_tables(csync->statedb.db);
     assert_int_equal(rc, 0);
 
-    result = csync_statedb_query(csync,
+    result = csync_statedb_query(csync->statedb.db,
         "CREATE TABLE IF NOT EXISTS metadata ("
         "phash INTEGER(8),"
         "pathlen INTEGER,"

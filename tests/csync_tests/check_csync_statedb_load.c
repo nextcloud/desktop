@@ -42,7 +42,6 @@ static void teardown(void **state) {
 
 static void check_csync_statedb_check(void **state)
 {
-    CSYNC *csync = *state;
     int rc;
 
     (void) state; /* unused */

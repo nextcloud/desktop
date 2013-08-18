@@ -21,7 +21,7 @@ static void setup(void **state)
     assert_int_equal(rc, 0);
     rc = csync_init(csync);
     assert_int_equal(rc, 0);
-    rc = csync_statedb_load(csync, TESTDB);
+    rc = csync_statedb_load(csync, TESTDB, &csync->statedb.db);
     assert_int_equal(rc, 0);
 
 
@@ -45,7 +45,7 @@ static void setup_ftw(void **state)
     assert_int_equal(rc, 0);
     rc = csync_init(csync);
     assert_int_equal(rc, 0);
-    rc = csync_statedb_load(csync, TESTDB);
+    rc = csync_statedb_load(csync, TESTDB, &csync->statedb.db);
     assert_int_equal(rc, 0);
 
     *state = csync;
@@ -277,7 +277,7 @@ static void check_csync_detect_update_db_rename(void **state)
                            0,
                            "4711");
 
-    rc = csync_statedb_insert(csync, stmt);
+    rc = csync_statedb_insert(csync->statedb.db, stmt);
     sqlite3_free(stmt);
 
     fs = create_fstat("wurst.txt", 0, 1, 42);

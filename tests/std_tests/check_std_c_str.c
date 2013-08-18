@@ -191,9 +191,6 @@ int torture_run_tests(void)
         unit_test(check_c_uppercase),
         unit_test(check_c_uppercase_empty),
         unit_test(check_c_uppercase_null),
-        unit_test_setup_teardown(check_iconv_ascii, check_iconv_setup, check_iconv_teardown),
-        unit_test_setup_teardown(check_iconv_to_native_normalization, check_iconv_setup, check_iconv_teardown),
-        unit_test_setup_teardown(check_iconv_from_native_normalization, check_iconv_setup, check_iconv_teardown),
     };
 
     return run_tests(tests);

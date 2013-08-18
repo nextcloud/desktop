@@ -147,59 +147,6 @@ static void check_c_compare_file(void **state)
   assert_int_equal(rc, 1);
 }
 
-static void check_c_compare_file(void **state)
-{
-  int rc;
-  (void) state;
-
-  rc = c_copy(check_src_file, check_dst_file, 0644);
-  assert_int_equal(rc, 0);
-
-  rc = c_compare_file( check_src_file, check_dst_file );
-  assert_int_equal(rc, 1);
-
-  /* Check error conditions */
-  rc = c_compare_file( NULL, check_dst_file );
-  assert_int_equal(rc, -1);
-  rc = c_compare_file( check_dst_file, NULL );
-  assert_int_equal(rc, -1);
-  rc = c_compare_file( NULL, NULL );
-  assert_int_equal(rc, -1);
-
-  rc = c_compare_file( check_src_file, "/I_do_not_exist_in_the_filesystem.dummy");
-  assert_int_equal(rc, -1);
-  rc = c_compare_file( "/I_do_not_exist_in_the_filesystem.dummy", check_dst_file);
-  assert_int_equal(rc, -1);
-
-  rc = system("echo \"hallo42\" > /tmp/check/foo.txt");
-  assert_int_equal(rc, 0);
-  rc = system("echo \"hallo52\" > /tmp/check/bar.txt");
-  assert_int_equal(rc, 0);
-  rc = c_compare_file( check_src_file, check_dst_file );
-  assert_int_equal(rc, 0);
-
-  /* Create two 1MB random files */
-  rc = system("dd if=/dev/urandom of=/tmp/check/foo.txt bs=1024 count=1024");
-  assert_int_equal(rc, 0);
-  rc = system("dd if=/dev/urandom of=/tmp/check/bar.txt bs=1024 count=1024");
-  assert_int_equal(rc, 0);
-  rc = c_compare_file( check_src_file, check_dst_file );
-  assert_int_equal(rc, 0);
-
-  /* Create two 1MB random files with different size */
-  rc = system("dd if=/dev/urandom of=/tmp/check/foo.txt bs=1024 count=1024");
-  assert_int_equal(rc, 0);
-  rc = system("dd if=/dev/urandom of=/tmp/check/bar.txt bs=1024 count=1020");
-  assert_int_equal(rc, 0);
-  rc = c_compare_file( check_src_file, check_dst_file );
-  assert_int_equal(rc, 0);
-
-  /* compare two big files which are equal */
-  rc = c_copy(check_src_file, check_dst_file, 0644);
-  assert_int_equal(rc, 0);
-
-}
-
 int torture_run_tests(void)
 {
   const UnitTest tests[] = {

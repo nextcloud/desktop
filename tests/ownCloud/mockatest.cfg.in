@@ -1,6 +1,0 @@
-[global]
-
-user = 'joe'
-pwd  = 'secret'
-host = 'localhost/owncloud'
-
