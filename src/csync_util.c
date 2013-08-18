@@ -287,7 +287,7 @@ static int _fix_errors_visitor(void *obj, void *data) {
   }
 
   /* check if the file is new or has been synced */
-  tfs = csync_statedb_get_stat_by_hash(ctx, fs->phash);
+  tfs = csync_statedb_get_stat_by_hash(ctx->statedb.db, fs->phash);
   if (tfs == NULL) {
     rc = 0;
     goto out;

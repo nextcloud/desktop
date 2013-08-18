@@ -1033,7 +1033,7 @@ static char*_lastDir = NULL;
  *  int  unix_extensions     - oC supports unix extensions.
  *  bool propagate_on_fd     - oC supports the send_file method.
  */
-static csync_vio_capabilities_t _owncloud_capabilities = { true, false, false, 0, true };
+static csync_vio_capabilities_t _owncloud_capabilities = { true, false, false, 0, true, false, false };
 
 static csync_vio_capabilities_t *owncloud_capabilities(void)
 {
@@ -1215,7 +1215,7 @@ static int _user_want_abort()
 
 static void _log_callback(const char *func, const char *text)
 {
-    csync_log(dav_session.csync_ctx, CSYNC_LOG_PRIORITY_TRACE, func, "%s", text);
+    csync_log(CSYNC_LOG_PRIORITY_TRACE, func, "%s", text);
 }
 
 static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_handle_t *hdl ) {
@@ -1715,7 +1715,7 @@ static char *owncloud_error_string()
     return dav_session.error_string;
 }
 
-static void owncloud_commit() {
+static int owncloud_commit() {
 
   SAFE_FREE( _lastDir );
 
@@ -1730,6 +1730,7 @@ static void owncloud_commit() {
   ne_sock_exit();
   _connected = 0;  /* triggers dav_connect to go through the whole neon setup */
 
+  return 0;
 }
 
 

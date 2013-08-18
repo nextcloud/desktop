@@ -102,7 +102,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
             /* rename support only on the local replica because of inode needed. */
             if(ctx->current == LOCAL_REPLICA ) {
                 /* use the old name to find the "other" node */
-                tmp = csync_statedb_get_stat_by_inode(ctx, cur->inode);
+                tmp = csync_statedb_get_stat_by_inode(ctx->statedb.db, cur->inode);
                 /* Find the opposite node. */
                 if( tmp ) {
                     /* We need to calculate the phash again because of the phash being stored as int in db. */

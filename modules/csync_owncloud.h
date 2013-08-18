@@ -63,7 +63,7 @@
 #include "csync_log.h"
 
 
-#define DEBUG_WEBDAV(...) csync_log( dav_session.csync_ctx, 9, "oc_module", __VA_ARGS__);
+#define DEBUG_WEBDAV(...) csync_log( 9, "oc_module", __VA_ARGS__);
 
 enum resource_type {
     resr_normal = 0,

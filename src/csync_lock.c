@@ -201,7 +201,6 @@ int csync_lock(const char *lockfile) {
 
   return _csync_lock_create(lockfile);
 #else
-  (void) ctx;
   (void) lockfile;
   return 0;
 #endif
@@ -230,7 +229,6 @@ void csync_lock_remove(const char *lockfile) {
   }
 #endif
 #else
-  (void) ctx;
   (void) lockfile;
 #endif
 

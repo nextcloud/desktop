@@ -337,7 +337,7 @@ retry_vio_init:
 
   ctx->status = CSYNC_STATUS_INIT;
 
-  csync_lock_remove(ctx, lock);
+  csync_lock_remove(lock);
 
   csync_set_module_property(ctx, "csync_context", ctx);
 
@@ -371,7 +371,7 @@ int csync_update(CSYNC *ctx) {
     return rc;
   }
 
-  if (csync_lock(ctx, lock) < 0) {
+  if (csync_lock(lock) < 0) {
     ctx->status_code = CSYNC_STATUS_NO_LOCK;
     rc = -1;
     return rc;
@@ -389,7 +389,7 @@ int csync_update(CSYNC *ctx) {
     }
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Journal: %s", ctx->statedb.file);
 
-    if (csync_statedb_load(ctx, ctx->statedb.file) < 0) {
+    if (csync_statedb_load(ctx, ctx->statedb.file, &ctx->statedb.db) < 0) {
       ctx->status_code = CSYNC_STATUS_STATEDB_LOAD_ERROR;
       rc = -1;
       return rc;
@@ -447,7 +447,6 @@ int csync_update(CSYNC *ctx) {
     csync_memstat_check();
 
       return -1;
-    }
   }
   ctx->status |= CSYNC_STATUS_UPDATE;
 

@@ -104,6 +104,7 @@ typedef  wchar_t         mbchar_t;
 #define _tseekdir        _wseekdir
 #define _tcreat          _wcreat
 #define _tstat           _wstat
+#define _tfstat          _fstat64
 #define _tunlink         _wunlink
 #define _tmkdir(X,Y)     _wmkdir(X)
 #define _trmdir	         _rmdir
@@ -123,6 +124,7 @@ typedef char           mbchar_t;
 #define _tseekdir      seekdir
 #define _tcreat        creat
 #define _tstat         stat
+#define _tfstat        fstat
 #define _tunlink       unlink
 #define _tmkdir(X,Y)   mkdir(X,Y)
 #define _trmdir	       rmdir

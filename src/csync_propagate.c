@@ -106,7 +106,7 @@ static void _csync_report_parent_error(CSYNC *ctx, csync_file_stat_t *st) {
   */
 static void _csync_record_error(CSYNC *ctx, csync_file_stat_t *st, csync_progressinfo_t *pi)
 {
-  _csync_file_stat_set_error(st, csync_get_error_string(ctx));
+  _csync_file_stat_set_error(st, csync_get_status_string(ctx));
   _csync_report_parent_error(ctx, st);
   if (pi) {
     pi->error++;
@@ -527,13 +527,13 @@ start_fd_based:
               break;
             }
             /* fetch the error string from module. */
-            ctx->error_string = csync_vio_get_error_string(ctx);
+            ctx->error_string = csync_vio_get_status_string(ctx);
           }
 
           C_STRERROR(errno,  errbuf, sizeof(errbuf));
           CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
                     "file: %s, command: sendfile, error: %s from errno %d",
-                    suri, c_streq(errbuf, "") ? csync_vio_get_error_string(ctx): errbuf, errno);
+                    suri, c_streq(errbuf, "") ? csync_vio_get_status_string(ctx): errbuf, errno);
 
           if (_push_to_tmp_first(ctx)) {
             csync_vio_file_stat_t* sb = csync_vio_file_stat_new();
@@ -1104,7 +1104,7 @@ out:
 
   /* set instruction for the statedb merger */
   if (rc != 0) {
-    _csync_file_stat_set_error(st, csync_get_error_string(ctx));
+    _csync_file_stat_set_error(st, csync_get_status_string(ctx));
     if (other) {
 
       /* We set the instruction to UPDATED so next try we try to rename again */

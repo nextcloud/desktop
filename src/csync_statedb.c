@@ -48,6 +48,7 @@
 #include "csync_rename.h"
 
 #define BUF_SIZE 16
+#define HASH_QUERY "SELECT * FROM metadata WHERE phash=?1"
 
 static sqlite3_stmt* _by_hash_stmt = NULL;
 
@@ -106,6 +107,7 @@ static int _csync_statedb_check(const char *statedb) {
   ssize_t r;
   char buf[BUF_SIZE] = {0};
   sqlite3 *db = NULL;
+  struct stat sb;
 
   mbchar_t *wstatedb = c_utf8_to_locale(statedb);
 
@@ -176,7 +178,7 @@ static int _csync_statedb_check(const char *statedb) {
         _csync_win32_hide_file(statedb);
         return 1;
     }
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "sqlite3_open failed: %s %s", sqlite3_errmsg(ctx->statedb.db), statedb);
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "sqlite3_open failed: %s %s", sqlite3_errmsg(db), statedb);
     return -1;
 }
 
@@ -276,7 +278,7 @@ int csync_statedb_write(CSYNC *ctx, sqlite3 *db)
   csync_gettime(&start);
 
   /* drop tables */
-  if (csync_statedb_drop_tables(dv) < 0) {
+  if (csync_statedb_drop_tables(db) < 0) {
     recreate_db = true;
   }
   csync_gettime(&finish);
@@ -296,7 +298,6 @@ int csync_statedb_write(CSYNC *ctx, sqlite3 *db)
     char *statedb_tmp;
     mbchar_t *wstatedb_tmp = NULL;
 
-    int rc;
     if (asprintf(&statedb_tmp, "%s.ctmp", ctx->statedb.file) < 0) {
       return -1;
     }
@@ -347,6 +348,7 @@ int csync_statedb_write(CSYNC *ctx, sqlite3 *db)
 
 int csync_statedb_close(const char *statedb, sqlite3 *db, int jwritten) {
   char *statedb_tmp = NULL;
+  mbchar_t* wstatedb_tmp = NULL;
   int rc = 0;
 
   mbchar_t *mb_statedb = NULL;
@@ -466,7 +468,7 @@ int csync_statedb_create_tables(sqlite3 *db) {
   }
   c_strlist_destroy(result);
 
-  result = csync_statedb_query(ctx,
+  result = csync_statedb_query(db,
                                "CREATE TABLE IF NOT EXISTS version("
                                "major INTEGER(8),"
                                "minor INTEGER(8),"
@@ -477,7 +479,7 @@ int csync_statedb_create_tables(sqlite3 *db) {
   }
   c_strlist_destroy(result);
   
-  result = csync_statedb_query(ctx,
+  result = csync_statedb_query(db,
                                "CREATE TABLE IF NOT EXISTS progress("
                                "phash INTEGER(8),"
                                "modtime INTEGER(8),"
@@ -500,7 +502,7 @@ int csync_statedb_create_tables(sqlite3 *db) {
   stmt = sqlite3_mprintf( "INSERT INTO version (major, minor, patch) VALUES (%d, %d, %d);",
                           LIBCSYNC_VERSION_MAJOR, LIBCSYNC_VERSION_MINOR, LIBCSYNC_VERSION_MICRO );
 
-  rc = csync_statedb_insert(ctx, stmt);
+  rc = csync_statedb_insert(db, stmt);
 
   if( rc < 0 ) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Error: Failed to insert into version table.");
@@ -647,7 +649,6 @@ int csync_statedb_insert_metadata(CSYNC *ctx, sqlite3 *db) {
   char buffer[] = "INSERT INTO metadata_temp VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)";
   sqlite3_stmt* stmt;
   int rc;
-  int result;
 
   csync_gettime(&start);
 
@@ -713,7 +714,7 @@ int csync_statedb_insert_metadata(CSYNC *ctx, sqlite3 *db) {
   }
   c_strlist_destroy(result);
 
-  result = csync_statedb_query(ctx,
+  result = csync_statedb_query(db,
                                "CREATE INDEX IF NOT EXISTS metadata_inode ON metadata(inode);");
   if (result == NULL) {
       return -1;
@@ -749,7 +750,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(sqlite3 *db,
   int rc;
 
   if( _by_hash_stmt == NULL ) {
-    rc = sqlite3_prepare_v2(ctx->statedb.db, HASH_QUERY, strlen(HASH_QUERY), &_by_hash_stmt, NULL);
+    rc = sqlite3_prepare_v2(db, HASH_QUERY, strlen(HASH_QUERY), &_by_hash_stmt, NULL);
     if( rc != SQLITE_OK ) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Unable to create stmt for hash query.");
       return NULL;
@@ -806,7 +807,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(sqlite3 *db,
       }
     }
   } else {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "sqlite hash query fail: %s", sqlite3_errmsg(ctx->statedb.db));
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "sqlite hash query fail: %s", sqlite3_errmsg(db));
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "No result record found for phash = %llu",
               (long long unsigned int) phash);
     SAFE_FREE(st);
@@ -879,7 +880,7 @@ char *csync_statedb_get_uniqId( CSYNC *ctx, uint64_t jHash, csync_vio_file_stat_
 
     stmt = sqlite3_mprintf("SELECT md5 FROM metadata WHERE phash='%lld'", jHash);
 
-    result = csync_statedb_query(ctx, stmt);
+    result = csync_statedb_query(ctx->statedb.db, stmt);
     sqlite3_free(stmt);
     if (result == NULL) {
       return NULL;
@@ -907,7 +908,7 @@ c_strlist_t *csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
 
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "SQL: %s", stmt);
 
-    list = csync_statedb_query( ctx, stmt );
+    list = csync_statedb_query( ctx->statedb.db, stmt );
 
     sqlite3_free(stmt);
 
@@ -1121,7 +1122,7 @@ csync_progressinfo_t* csync_statedb_get_progressinfo(CSYNC *ctx, uint64_t phash,
                          (long long unsigned int) phash, (long long signed int) modtime, md5);
   if (!stmt) return ret;
 
-  result = csync_statedb_query(ctx, stmt);
+  result = csync_statedb_query(ctx->statedb.db, stmt);
   sqlite3_free(stmt);
   if (result == NULL) {
     return NULL;
@@ -1179,7 +1180,7 @@ int csync_statedb_write_progressinfo(CSYNC* ctx, csync_progressinfo_t* pi)
 
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s" , stmt);
 
-    rc = csync_statedb_insert(ctx, stmt);
+    rc = csync_statedb_insert(ctx->statedb.db, stmt);
     sqlite3_free(stmt);
     pi = pi->next;
   }

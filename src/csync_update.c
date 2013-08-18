@@ -165,7 +165,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     }
 
     if (fs->mtime == 0) {
-      tmp = csync_statedb_get_stat_by_hash(ctx, h);
+      tmp = csync_statedb_get_stat_by_hash(ctx->statedb.db, h);
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - mtime is zero!", path);
       if (tmp == NULL) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - not found in db, IGNORE!", path);
@@ -198,7 +198,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
    * does not change on rename.
    */
   if (csync_get_statedb_exists(ctx)) {
-    tmp = csync_statedb_get_stat_by_hash(ctx, h);
+    tmp = csync_statedb_get_stat_by_hash(ctx->statedb.db, h);
 #if 0
     /* this code could possibly replace the one in csync_vio.c stat and would be more efficient */
     if(tmp) {
@@ -229,7 +229,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     } else {
         /* check if it's a file and has been renamed */
         if (ctx->current == LOCAL_REPLICA) {
-            tmp = csync_statedb_get_stat_by_inode(ctx, fs->inode);
+            tmp = csync_statedb_get_stat_by_inode(ctx->statedb.db, fs->inode);
             if (tmp && tmp->inode == fs->inode && (tmp->modtime == fs->mtime || fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY)) {
                 CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "inodes: %" PRId64 " <-> %" PRId64, (int64_t) tmp->inode, (int64_t) fs->inode);
                 /* inode found so the file has been renamed */
@@ -331,7 +331,7 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
     if( h == 0 ) {
       return 0;
     }
-    st = csync_statedb_get_stat_by_hash(ctx, h);
+    st = csync_statedb_get_stat_by_hash(ctx->statedb.db, h);
     if( !st ) {
       return 0;
     }
@@ -392,7 +392,7 @@ static int _check_read_from_db(CSYNC *ctx, const char *uri) {
 
         /* search that folder in the db and check that the hash is the md5 (etag) is still the same */
         if( csync_get_statedb_exists(ctx) ) {
-          tmp = csync_statedb_get_stat_by_hash(ctx, h);
+          tmp = csync_statedb_get_stat_by_hash(ctx->statedb.db, h);
           if (tmp) {
             md5_local = tmp->md5;
             md5_remote = csync_vio_file_id(ctx, uri);

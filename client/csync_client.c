@@ -29,6 +29,7 @@
 #include <unistd.h>
 #include <getopt.h>
 #include <errno.h>
+#include <inttypes.h>
 
 #include <csync.h>
 
@@ -224,15 +225,14 @@ static int parse_args(struct argument_s *csync_args, int argc, char **argv)
     return optind;
 }
 
-static void _overall_callback(const char *file_name,
-                              int file_no,
-                              int file_cnt,
-                              long long o1,
-                              long long o2,
-                              void *userdata)
+static void _overall_callback(CSYNC_PROGRESS *progress, void *userdata)
 {
   (void) userdata;
-  printf("File #%2d/%2d: %s (%lld/%lld bytes)\n", file_no, file_cnt, file_name, o1, o2 );
+  if (progress->kind != CSYNC_NOTIFY_PROGRESS) {
+      printf("File #%2" PRId64 "/%2" PRId64 ": %s (%" PRId64 "/%" PRId64 " bytes)\n",
+            progress->current_file_no, progress->overall_file_count, progress->path,
+            progress->current_overall_bytes, progress->overall_transmission_size);
+  }
 }
 
 int main(int argc, char **argv) {
@@ -331,8 +331,8 @@ int main(int argc, char **argv) {
   }
 
   if (arguments.verbose > 0) {
-      csync_set_overall_progress_callback(csync, _overall_callback);
-
+      csync_set_progress_callback(csync, _overall_callback);
+  }
 
 
   if (arguments.exclude_file != NULL) {

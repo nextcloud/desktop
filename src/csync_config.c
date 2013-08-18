@@ -20,7 +20,7 @@
 
 #include "config.h"
 
-#define _GNU_SOURCE
+/* #define _GNU_SOURCE */
 #include <stdio.h>
 #include <ctype.h>
 
@@ -328,7 +328,7 @@ int csync_config_parse_file(CSYNC *ctx, const char *config)
         SAFE_FREE(home);
         /* Still install the default one if nothing is there. */
         if( ! c_isfile(config)) {
-            if (_csync_config_copy_default(ctx, config) < 0) {
+            if (_csync_config_copy_default(config) < 0) {
                 return -1;
             }
         }
