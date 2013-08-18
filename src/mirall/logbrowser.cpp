@@ -132,7 +132,9 @@ LogBrowser::~LogBrowser()
 
 void LogBrowser::slotNewLog( const QString& msg )
 {
-    _logWidget->appendPlainText( msg );
+    if( _logWidget->isVisible() ) {
+        _logWidget->appendPlainText( msg );
+    }
 
     if( _logstream ) {
         (*_logstream) << msg << endl;
