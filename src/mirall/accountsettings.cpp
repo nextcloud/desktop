@@ -238,6 +238,12 @@ void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f )
     item->setData( theme->statusHeaderText( status ),  FolderStatusDelegate::FolderStatus );
     item->setData( errors,                             FolderStatusDelegate::FolderErrorMsg );
 
+    if( errors.isEmpty() && (status == SyncResult::Error ||
+                             status == SyncResult::SetupError ||
+                             status == SyncResult::Unavailable )) {
+        item->setData( theme->statusHeaderText(status), FolderStatusDelegate::FolderErrorMsg);
+    }
+
     bool ongoing = false;
     item->setData( QVariant(res.warnCount()), FolderStatusDelegate::WarningCount );
     if( status == SyncResult::SyncRunning ) {
