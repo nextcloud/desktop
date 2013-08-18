@@ -156,10 +156,10 @@ static void teardown_toplevel_dir( void **state ) {
 
 static void stat_local_file( csync_stat_t *sb, const char *file )
 {
-    _TCHAR *mpath = NULL;
-    mpath = c_multibyte(file);
+    mbchar_t *mpath = NULL;
+    mpath = c_utf8_to_locale(file);
     assert_int_not_equal(_tstat(mpath, sb), -1);
-    c_free_multibyte(mpath);
+    c_free_locale_string(mpath);
     assert_null(mpath);
 }
 
@@ -225,7 +225,7 @@ static void download_a_file( const char* local, void **state, const char *durl)
     char path[256];
     char src_path[256];
     int  did;
-    _TCHAR tlocal[256];
+    mbchar_t tlocal[256];
 
     csync_vio_method_handle_t *handle;
     ssize_t count;

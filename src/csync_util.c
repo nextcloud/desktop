@@ -375,11 +375,11 @@ out:
 
 void csync_win32_set_file_hidden( const char *file, bool h ) {
 #ifdef _WIN32
-  const _TCHAR *fileName;
+  const mbchar_t *fileName;
   DWORD dwAttrs;
   if( !file ) return;
 
-  fileName = c_multibyte( file );
+  fileName = c_utf8_to_locale( file );
   dwAttrs = GetFileAttributesW(fileName);
 
   if (dwAttrs==INVALID_FILE_ATTRIBUTES) return;
@@ -390,7 +390,7 @@ void csync_win32_set_file_hidden( const char *file, bool h ) {
      SetFileAttributesW(fileName, dwAttrs & ~FILE_ATTRIBUTE_HIDDEN );
   }
 
-  c_free_multibyte(fileName);
+  c_free_locale_string(fileName);
 #else
     (void) h;
     (void) file;

@@ -378,7 +378,7 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
                    FILE_ATTRIBUTE_NORMAL+FILE_FLAG_BACKUP_SEMANTICS, NULL );
   if( h == INVALID_HANDLE_VALUE ) {
      errno = GetLastError();
-     c_free_multibyte(wuri);
+     c_free_locale_string(wuri);
      return -1;
 
   } else {

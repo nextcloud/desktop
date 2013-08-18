@@ -140,7 +140,7 @@ int c_utimes(const char *uri, const struct timeval *times) {
     }
 
     CloseHandle(hFile);
-    c_free_multibyte(wuri);
+    c_free_locale_string(wuri);
 
     return 0;
 }

@@ -71,7 +71,7 @@ static int _csync_config_copy_default (const char *config) {
     int rc;
 #ifdef _WIN32
     /* For win32, try to copy the conf file from the directory from where the app was started. */
-    _TCHAR tcharbuf[MAX_PATH+1];
+    mbchar_t tcharbuf[MAX_PATH+1];
     char *buf;
     int  len = 0;
 

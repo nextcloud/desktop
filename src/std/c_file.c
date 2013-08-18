@@ -64,17 +64,17 @@ int c_isfile(const char *path) {
 #ifdef _WIN32
 int c_copy(const char* src, const char *dst, mode_t mode) {
   int rc = -1;
-  _TCHAR *wsrc = 0;
-  _TCHAR *wdst = 0;
+  mbchar_t *wsrc = 0;
+  mbchar_t *wdst = 0;
   (void) mode; /* unused on win32 */
   if(src && dst) {
-    wsrc = c_multibyte(src);
-    wdst = c_multibyte(dst);
+    wsrc = c_utf8_to_locale(src);
+    wdst = c_utf8_to_locale(dst);
     if (CopyFileW(wsrc, wdst, FALSE)) {
       rc = 0;
     }
-    c_free_multibyte(wsrc);
-    c_free_multibyte(wdst);
+    c_free_locale_string(wsrc);
+    c_free_locale_string(wdst);
     if( rc < 0 ) {
       errno = GetLastError();
     }
@@ -193,8 +193,8 @@ out:
 }
 
 int c_rename( const char *src, const char *dst ) {
-    _TCHAR *nuri = NULL;
-    _TCHAR *ouri = NULL;
+    mbchar_t *nuri = NULL;
+    mbchar_t *ouri = NULL;
     int rc = 0;
 
     nuri = c_utf8_to_locale(dst);
@@ -250,7 +250,7 @@ int c_rename( const char *src, const char *dst ) {
 }
 
 int c_compare_file( const char *f1, const char *f2 ) {
-  _TCHAR *wf1, *wf2;
+  mbchar_t *wf1, *wf2;
   int fd1 = -1, fd2 = -1;
   size_t size1, size2;
   char buffer1[BUFFER_SIZE];
@@ -262,11 +262,11 @@ int c_compare_file( const char *f1, const char *f2 ) {
 
   if(f1 == NULL || f2 == NULL) return -1;
 
-  wf1 = c_multibyte(f1);
+  wf1 = c_utf8_to_locale(f1);
   if(wf1 == NULL) {
     return -1;
   }
-  wf2 = c_multibyte(f2);
+  wf2 = c_utf8_to_locale(f2);
   if(wf2 == NULL) {
     return -1;
   }
@@ -323,8 +323,8 @@ out:
   if(fd1 > -1) close(fd1);
   if(fd2 > -1) close(fd2);
 
-  c_free_multibyte(wf1);
-  c_free_multibyte(wf2);
+  c_free_locale_string(wf1);
+  c_free_locale_string(wf2);
   return rc;
 
 }

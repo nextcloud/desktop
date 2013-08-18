@@ -99,11 +99,11 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
           /* cut the trailing filename off */
           if ((last_bslash = strrchr(buf, '\\')) != NULL) {
               *last_bslash='\0';
-              pathBuf = c_multibyte(buf);
+              pathBuf = c_utf8_to_locale(buf);
 
               CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Win32: changing current working dir to %s", buf);
               _wchdir(pathBuf);
-              c_free_multibyte(pathBuf);
+              c_free_locale_string(pathBuf);
           }
           c_free_utf8(buf);
 
