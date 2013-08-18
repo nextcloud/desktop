@@ -147,7 +147,6 @@ void OwncloudWizard::slotCurrentPageChanged( int id )
     qDebug() << "Current Wizard page changed to " << id;
 
     if( id == WizardCommon::Page_ServerSetup ) {
-        setButtonText( QWizard::NextButton, tr("Connect...") );
         emit clearPendingRequests();
         _setupPage->initializePage();
     }
