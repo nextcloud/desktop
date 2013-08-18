@@ -26,6 +26,7 @@ if (UNIX)
     DESTINATION
         ${MAN_INSTALL_DIR}/man1
     )
+    set(DOC_INSTALL_PATH ${SHARE_INSTALL_PREFIX}/doc/ocsync)
 endif(UNIX)
 
 if (WIN32)

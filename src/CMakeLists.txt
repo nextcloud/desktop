@@ -3,16 +3,13 @@ project(libcsync)
 add_subdirectory(std)
 add_subdirectory(httpbf)
 
-# Statically include sqlite and iniparser
+# Statically include sqlite
 if (CSYNC_STATIC_COMPILE_DIR)
     set(SQLITE3_INCLUDE_DIRS "")
     set(SQLITE3_LIBRARIES "")
-    set(INIPARSER_LIBRARIES "")
-    set(INIPARSER_INCLUDE_DIRS "")
     include_directories(${CSYNC_STATIC_COMPILE_DIR})
 else (CSYNC_STATIC_COMPILE_DIR)
     find_package(SQLite3 3.3.9 REQUIRED)
-    find_package(Iniparser REQUIRED)
 endif()
 
 
@@ -89,9 +86,9 @@ set(csync_HDRS
   vio/csync_vio_module.h
 )
 
-# Statically include sqlite and iniparser
+# Statically include sqlite
 if (CSYNC_STATIC_COMPILE_DIR)
-    list(APPEND csync_SRCS ${CSYNC_STATIC_COMPILE_DIR}/dictionary.c ${CSYNC_STATIC_COMPILE_DIR}/iniparser.c ${CSYNC_STATIC_COMPILE_DIR}/sqlite3.c)
+    list(APPEND csync_SRCS ${CSYNC_STATIC_COMPILE_DIR}/dictionary.c  ${CSYNC_STATIC_COMPILE_DIR}/sqlite3.c)
 endif()
 
 include_directories(
