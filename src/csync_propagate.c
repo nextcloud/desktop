@@ -291,8 +291,10 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
           st->size    != vst->size) {
         /* The size or modtime has changed. Skip this file copy for now. */
         rc = 1; /* soft problem */
+        SAFE_FREE(st->error_string);
+        st->error_string = c_strdup("File was updated meantime, publish next time.");
         CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Source file has changed since update run, SKIP it for now.");
+            "Source file %s has changed since update run, SKIP it for now.", suri);
         goto out;
       }
       csync_vio_file_stat_destroy(vst);
