@@ -169,17 +169,12 @@ static int _csync_statedb_check(const char *statedb) {
   rc = sqlite3_open(statedb, &db);
   if (rc == SQLITE_OK) {
     sqlite3_close(db);
-    return 0;
+    _csync_win32_hide_file(statedb);
+    return 1;
   }
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "%s %s", sqlite3_errmsg(db), statedb);
   sqlite3_close(db);
-
-    if (rc == SQLITE_OK) {
-        _csync_win32_hide_file(statedb);
-        return 1;
-    }
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "sqlite3_open failed: %s %s", sqlite3_errmsg(db), statedb);
-    return -1;
+   CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "sqlite3_open failed: %s %s", sqlite3_errmsg(db), statedb);
+   return -1;
 }
 
 static int _csync_statedb_is_empty(sqlite3 *db) {
@@ -376,7 +371,7 @@ int csync_statedb_close(const char *statedb, sqlite3 *db, int jwritten) {
        * 1  : new database was set up
        * -1 : error.
        */
-      if (_csync_statedb_check(statedb_tmp) == 0) {
+      if (_csync_statedb_check(statedb_tmp) >= 0) {
           /* New statedb is valid. */
           mb_statedb = c_utf8_to_locale(statedb);
 

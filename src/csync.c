@@ -445,8 +445,6 @@ int csync_update(CSYNC *ctx) {
               "walking %zu files.",
               c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
     csync_memstat_check();
-
-      return -1;
   }
   ctx->status |= CSYNC_STATUS_UPDATE;
 
@@ -539,7 +537,7 @@ int csync_propagate(CSYNC *ctx) {
   ctx->status_code = CSYNC_STATUS_OK;
 
   /* Initialize the database for the overall progress callback. */
-  rc = csync_init_overall_progress(ctx);
+  rc = csync_init_progress(ctx);
   if (rc < 0) {
       if (ctx->status_code == CSYNC_STATUS_OK) {
           ctx->status_code = CSYNC_STATUS_PROPAGATE_ERROR;
