@@ -131,6 +131,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
         default:
           break;
       }
+      return 0;
     }
   }
 
