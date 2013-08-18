@@ -36,7 +36,9 @@ add_cmocka_test(check_std_c_time std_tests/check_std_c_time.c ${TEST_TARGET_LIBR
 
 add_cmocka_test(check_csync_create csync_tests/check_csync_create.c ${TEST_TARGET_LIBRARIES})
 # Disable lock testing for us.
+# if(NOT WIN32)
 # add_cmocka_test(check_csync_lock csync_tests/check_csync_lock.c ${TEST_TARGET_LIBRARIES})
+# endif()
 add_cmocka_test(check_csync_log csync_tests/check_csync_log.c ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_csync_config csync_tests/check_csync_config.c ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_csync_exclude csync_tests/check_csync_exclude.c ${TEST_TARGET_LIBRARIES})
@@ -47,6 +49,10 @@ add_cmocka_test(check_csync_util csync_tests/check_csync_util.c ${TEST_TARGET_LI
 # csync tests which require init
 add_cmocka_test(check_csync_init csync_tests/check_csync_init.c ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_csync_statedb_query csync_tests/check_csync_statedb_query.c ${TEST_TARGET_LIBRARIES})
+add_cmocka_test(check_csync_commit csync_tests/check_csync_commit.c ${TEST_TARGET_LIBRARIES})
+
+# treewalk
+add_cmocka_test(check_csync_treewalk csync_tests/check_csync_treewalk.c ${TEST_TARGET_LIBRARIES})
 
 # vio
 add_cmocka_test(check_vio_handle vio_tests/check_vio_handle.c ${TEST_TARGET_LIBRARIES})
@@ -55,6 +61,9 @@ add_cmocka_test(check_vio vio_tests/check_vio.c ${TEST_TARGET_LIBRARIES})
 
 # sync
 add_cmocka_test(check_csync_update csync_tests/check_csync_update.c ${TEST_TARGET_LIBRARIES})
+
+# encoding
+add_cmocka_test(check_encoding_functions encoding_tests/check_encoding.c ${TEST_TARGET_LIBRARIES})
 
 # httpbf
 set(TEST_HTTPBF_LIBRARIES ${TEST_TARGET_LIBRARIES} ${NEON_LIBRARIES})

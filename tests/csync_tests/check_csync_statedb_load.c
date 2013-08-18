@@ -52,20 +52,20 @@ static void check_csync_statedb_check(void **state)
     /* old db */
     rc = system("echo \"SQLite format 2\" > /tmp/check_csync1/test.db");
     assert_int_equal(rc, 0);
-    rc = _csync_statedb_check(csync, TESTDB);
+    rc = _csync_statedb_check(TESTDB);
     assert_int_equal(rc, 1);
 
     /* db already exists */
-    rc = _csync_statedb_check(csync, TESTDB);
+    rc = _csync_statedb_check(TESTDB);
     assert_int_equal(rc, 1);
 
     /* no db exists */
     rc = system("rm -f /tmp/check_csync1/test.db");
     assert_int_equal(rc, 0);
-    rc = _csync_statedb_check(csync, TESTDB);
+    rc = _csync_statedb_check(TESTDB);
     assert_int_equal(rc, 1);
 
-    rc = _csync_statedb_check(csync, "/tmp/check_csync1/");
+    rc = _csync_statedb_check("/tmp/check_csync1/");
     assert_int_equal(rc, -1);
 
     rc = system("rm -rf /tmp/check_csync1");
@@ -75,42 +75,46 @@ static void check_csync_statedb_check(void **state)
 static void check_csync_statedb_load(void **state)
 {
     CSYNC *csync = *state;
-    struct stat sb;
+    csync_stat_t sb;
     int rc;
+    mbchar_t *testdbtmp = c_utf8_to_locale(TESTDBTMP);
+    assert_non_null( testdbtmp );
 
-    rc = csync_statedb_load(csync, TESTDB);
+    rc = csync_statedb_load(csync, TESTDB, &csync->statedb.db);
     assert_int_equal(rc, 0);
 
-    rc = lstat(TESTDBTMP, &sb);
+    rc = _tstat(testdbtmp, &sb);
     assert_int_equal(rc, 0);
 
     sqlite3_close(csync->statedb.db);
+    c_free_locale_string(testdbtmp);
 }
 
 static void check_csync_statedb_close(void **state)
 {
     CSYNC *csync = *state;
-    struct stat sb;
+    csync_stat_t sb;
     time_t modtime;
+    mbchar_t *testdb = c_utf8_to_locale(TESTDB);
     int rc;
 
     /* statedb not written */
-    csync_statedb_load(csync, TESTDB);
+    csync_statedb_load(csync, TESTDB, &csync->statedb.db);
 
-    rc = lstat(TESTDB, &sb);
+    rc = _tstat(testdb, &sb);
     assert_int_equal(rc, 0);
     modtime = sb.st_mtime;
 
-    rc = csync_statedb_close(csync, TESTDB, 0);
+    rc = csync_statedb_close(TESTDB, csync->statedb.db, 0);
     assert_int_equal(rc, 0);
 
-    rc = lstat(TESTDB, &sb);
+    rc = _tstat(testdb, &sb);
     assert_int_equal(rc, 0);
     assert_int_equal(modtime, sb.st_mtime);
 
-    csync_statedb_load(csync, TESTDB);
+    csync_statedb_load(csync, TESTDB, &csync->statedb.db);
 
-    rc = lstat(TESTDB, &sb);
+    rc = _tstat(testdb, &sb);
     assert_int_equal(rc, 0);
     modtime = sb.st_mtime;
 
@@ -118,16 +122,14 @@ static void check_csync_statedb_close(void **state)
     sleep(1);
 
     /* statedb written */
-    rc = csync_statedb_close(csync, TESTDB, 1);
+    rc = csync_statedb_close(TESTDB, csync->statedb.db, 1);
     assert_int_equal(rc, 0);
 
-    rc = lstat(TESTDB, &sb);
+    rc = _tstat(testdb, &sb);
     assert_int_equal(rc, 0);
-    /* This test fails on debian, maybe because a copy of an empty
-     * file (which TESTDB is) does not change the mtime, because the
-     * file actually is not modified by the copy
-     * assert_true(modtime < sb.st_mtime);
-     */
+    assert_true(modtime < sb.st_mtime);
+
+    c_free_locale_string(testdb);
 }
 
 int torture_run_tests(void)

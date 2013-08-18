@@ -185,15 +185,15 @@ static void check_csync_detect_update(void **state)
     st = c_rbtree_node_data(csync->local.tree->root);
     assert_int_equal(st->instruction, CSYNC_INSTRUCTION_NEW);
 
-    /* set the instruction to UPDATED that it gets written to the statedb */
-    st->instruction = CSYNC_INSTRUCTION_UPDATED;
-
     /* create a statedb */
     csync_set_status(csync, 0xFFFF);
 
     csync_vio_file_stat_destroy(fs);
 }
 
+/* Test behaviour in case no db is there. For that its important that the
+ * test before this one uses teardown_rm.
+ */
 static void check_csync_detect_update_db_none(void **state)
 {
     CSYNC *csync = *state;
@@ -260,7 +260,7 @@ static void check_csync_detect_update_db_rename(void **state)
     int rc;
     char *stmt = NULL;
 
-    rc = csync_statedb_create_tables(csync);
+    rc = csync_statedb_create_tables(csync->statedb.db);
 
     assert_int_equal(rc, 0);
     stmt = sqlite3_mprintf("INSERT INTO metadata"
@@ -411,7 +411,7 @@ static void check_csync_ftw_failing_fn(void **state)
 int torture_run_tests(void)
 {
     const UnitTest tests[] = {
-        unit_test_setup_teardown(check_csync_detect_update, setup, teardown),
+        unit_test_setup_teardown(check_csync_detect_update, setup, teardown_rm),
         unit_test_setup_teardown(check_csync_detect_update_db_none, setup, teardown),
         unit_test_setup_teardown(check_csync_detect_update_db_eval, setup, teardown),
         unit_test_setup_teardown(check_csync_detect_update_db_rename, setup, teardown),
@@ -421,7 +421,7 @@ int torture_run_tests(void)
 
         unit_test_setup_teardown(check_csync_ftw, setup_ftw, teardown_rm),
         unit_test_setup_teardown(check_csync_ftw_empty_uri, setup_ftw, teardown_rm),
-        unit_test_setup_teardown(check_csync_ftw_failing_fn, setup, teardown_rm),
+        unit_test_setup_teardown(check_csync_ftw_failing_fn, setup_ftw, teardown_rm),
     };
 
     return run_tests(tests);

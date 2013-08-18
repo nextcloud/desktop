@@ -166,10 +166,26 @@ version 0.50.5 (released 2012-04-18)
   * MacOS porting efforts
   * more granular error reports, thread save
 
-version 0.50.0 (released 2012-xx-xx)
+version 0.50.0 (released 2013-08-01)
   * Added owncloud module.
-  * Added backup reconciler.
+  * Added support for more platforms: FreeBSD, Windows and MacOSX
+  * Added support for more compilers: CLang, MinGW and latest GCC
+  * Added a backup mode to the reconciler.
+  * Added new logging framework (removed log4c dependency).
+  * Added new config parser (removed iniparser dependency).
+  * Added cmocka tests.
+  * Added a way to exported file_tree_walk functions.
+  * Added capabilities for modules.
+  * Added possiblity to push information to the modules.
+  * Added iconv support to support various char sets.
+  * Added csync_commit() to rerun on the same context.
+  * Added content checking in conflict case.
+  * Added callbacks for progress information.
+  * Added get() and put() functions for modules.
+  * Improved database: more performance, more integrity checks
+  * Improved error reporting: status codes, custom errnos
   * Fixed serveral bugs.
+  * Relicensed libcsync to LGPLv2.1+.
 
 version 0.44.0 (released 2010-02-15)
   * Migrated sftp module to libssh 0.4.

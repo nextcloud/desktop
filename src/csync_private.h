@@ -1,21 +1,22 @@
 /*
- * libcsync -- a library to sync a directory with another
+ * cynapses libc functions
  *
- * Copyright (c) 2006-2012 by Andreas Schneider <asn@cryptomilk.org>
+ * Copyright (c) 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
+ * Copyright (c) 2012-2013 by Klaas Freitag <freitag@owncloud.com>
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 /**
@@ -43,6 +44,13 @@
 
 #ifdef WITH_ICONV
 #include <iconv.h>
+#endif
+
+#ifdef HAVE_ICONV_H
+#include <iconv.h>
+#endif
+#ifdef HAVE_SYS_ICONV_H
+#include <sys/iconv.h>
 #endif
 
 #include "vio/csync_vio_method.h"
@@ -88,7 +96,6 @@ typedef struct csync_file_stat_s csync_file_stat_t;
 struct csync_s {
   struct {
       csync_auth_callback auth_function;
-      csync_log_callback log_function;
       csync_progress_callback progress_cb;
       void *userdata;
   } callbacks;
@@ -133,10 +140,8 @@ struct csync_s {
     char *config_dir;
     bool with_conflict_copys;
     bool local_only_mode;
-    bool remote_push_atomar;
-    int log_verbosity;
     int timeout;
-#ifdef WITH_ICONV
+#if defined(HAVE_ICONV) && defined(WITH_ICONV)
     iconv_t iconv_cd;
 #endif
   } options;
@@ -160,10 +165,11 @@ struct csync_s {
      parent directories */
   csync_file_stat_t *current_fs;
 
-  /* error code of the last operation */
-  enum csync_error_codes_e error_code;
+  /* csync error code */
+  enum csync_status_codes_e status_code;
+
   char *error_string;
-  
+
   int status;
   volatile int abort;
   void *rename_info;

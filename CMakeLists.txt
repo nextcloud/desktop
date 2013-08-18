@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 2.6.0)
 set(APPLICATION_NAME ${PROJECT_NAME})
 
 set(APPLICATION_VERSION_MAJOR "0")
-set(APPLICATION_VERSION_MINOR "82")
+set(APPLICATION_VERSION_MINOR "90")
 set(APPLICATION_VERSION_PATCH "0")
 
 set(APPLICATION_VERSION "${APPLICATION_VERSION_MAJOR}.${APPLICATION_VERSION_MINOR}.${APPLICATION_VERSION_PATCH}")
@@ -28,8 +28,6 @@ include(DefineOptions.cmake)
 include(CPackConfig.cmake)
 
 include(DefineInstallationPaths)
-# install .dlls to bin/
-set(BIN_INSTALL_DIR "bin" CACHE PATH "-")
 
 # disallow in-source build
 include(MacroEnsureOutOfSourceBuild)
@@ -39,7 +37,9 @@ macro_ensure_out_of_source_build("${PROJECT_NAME} requires an out of source buil
 include(MacroAddPlugin)
 include(MacroCopyFile)
 
-find_package(Iconv)
+if (NOT WIN32)
+    find_package(Iconv)
+endif (NOT WIN32)
 find_package(CMocka)
 if (CMOCKA_FOUND AND UNIT_TESTING)
     include(AddCMockaTest)

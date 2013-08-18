@@ -2,81 +2,81 @@
 # Once done this will define
 #
 #  ICONV_FOUND - system has Iconv
-#  ICONV_INCLUDE_DIR - the Iconv include directory
+#  ICONV_INCLUDE_DIRS - the Iconv include directory
 #  ICONV_LIBRARIES - Link these to use Iconv
-#  ICONV_SECOND_ARGUMENT_IS_CONST - the second argument for iconv() is const
+#  ICONV_DEFINITIONS - Compiler switches required for using Iconv
 #
-include(CheckCCompilerFlag)
-include(CheckCSourceCompiles)
+#  Copyright (c) 2013 Andreas Schneider <asn@cryptomilk.org>
+#
+#  Redistribution and use is allowed according to the terms of the New
+#  BSD license.
+#  For details see the accompanying COPYING-CMAKE-SCRIPTS file.
+#
 
-IF (ICONV_INCLUDE_DIR AND ICONV_LIBRARIES)
-  # Already in cache, be silent
-  SET(ICONV_FIND_QUIETLY TRUE)
-ENDIF (ICONV_INCLUDE_DIR AND ICONV_LIBRARIES)
+include(CheckIncludeFile)
+include(CheckFunctionExists)
+include(CheckLibraryExists)
+include(CheckPrototypeDefinition)
 
-IF(APPLE)
-    FIND_PATH(ICONV_INCLUDE_DIR iconv.h
-             PATHS
-             /usr/include/
-             /opt/local/include/
-             NO_CMAKE_SYSTEM_PATH
-    )
-
-    FIND_LIBRARY(ICONV_LIBRARIES NAMES iconv libiconv c
-             PATHS
-             /usr/lib/
-             /opt/local/lib/
-             NO_CMAKE_SYSTEM_PATH
-    )
-ENDIF(APPLE)
-
-FIND_PATH(ICONV_INCLUDE_DIR iconv.h PATHS /opt/local/include /sw/include)
-
-string(REGEX REPLACE "(.*)/include/?" "\\1" ICONV_INCLUDE_BASE_DIR "${ICONV_INCLUDE_DIR}")
-
-FIND_LIBRARY(ICONV_LIBRARIES NAMES iconv libiconv c HINTS "${ICONV_INCLUDE_BASE_DIR}/lib" PATHS /opt/local/lib)
-
-IF(ICONV_INCLUDE_DIR AND ICONV_LIBRARIES)
-   SET(ICONV_FOUND TRUE)
-ENDIF(ICONV_INCLUDE_DIR AND ICONV_LIBRARIES)
+find_path(ICONV_INCLUDE_DIR
+    NAMES
+        iconv.h sys/iconv.h
+)
 
 set(CMAKE_REQUIRED_INCLUDES ${ICONV_INCLUDE_DIR})
-set(CMAKE_REQUIRED_LIBRARIES ${ICONV_LIBRARIES})
-IF(ICONV_FOUND)
-  check_c_compiler_flag("-Werror" ICONV_HAVE_WERROR)
-  set (CMAKE_C_FLAGS_BACKUP "${CMAKE_C_FLAGS}")
-  if(ICONV_HAVE_WERROR)
-    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror")
-  endif(ICONV_HAVE_WERROR)
-  check_c_source_compiles("
-  #include <iconv.h>
-  int main(){
-    iconv_t conv = 0;
-    const char* in = 0;
-    size_t ilen = 0;
-    char* out = 0;
-    size_t olen = 0;
-    iconv(conv, &in, &ilen, &out, &olen);
-    return 0;
-  }
-" ICONV_SECOND_ARGUMENT_IS_CONST )
-  set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS_BACKUP}")
-ENDIF(ICONV_FOUND)
+check_include_file(iconv.h HAVE_ICONV_H)
+check_include_file(sys/iconv.h HAVE_SYS_ICONV_H)
 set(CMAKE_REQUIRED_INCLUDES)
-set(CMAKE_REQUIRED_LIBRARIES)
 
-IF(ICONV_FOUND)
-  IF(NOT ICONV_FIND_QUIETLY)
-    MESSAGE(STATUS "Found Iconv: ${ICONV_LIBRARIES}")
-  ENDIF(NOT ICONV_FIND_QUIETLY)
-ELSE(ICONV_FOUND)
-  IF(Iconv_FIND_REQUIRED)
-    MESSAGE(FATAL_ERROR "Could not find Iconv")
-  ENDIF(Iconv_FIND_REQUIRED)
-ENDIF(ICONV_FOUND)
-
-MARK_AS_ADVANCED(
-  ICONV_INCLUDE_DIR
-  ICONV_LIBRARIES
-  ICONV_SECOND_ARGUMENT_IS_CONST
+find_library(ICONV_LIBRARY
+    NAMES
+        iconv
+        libiconv
+    PATHS
 )
+
+if (ICONV_LIBRARY)
+    get_filename_component(_ICONV_NAME ${ICONV_LIBRARY} NAME)
+    get_filename_component(_ICONV_PATH ${ICONV_LIBRARY} PATH)
+    check_library_exists(${_ICONV_NAME} iconv ${_ICONV_PATH} HAVE_ICONV)
+else()
+    check_function_exists(iconv HAVE_ICONV)
+endif()
+
+if (HAVE_ICONV_H OR HAVE_SYS_ICONV_H)
+    if (HAVE_ICONV_H)
+        set(_ICONV_PROTO_INCLUDE "iconv.h")
+    endif (HAVE_ICONV_H)
+    if (HAVE_SYS_ICONV_H)
+        set(_ICONV_PROTO_INCLUDE "sys/iconv.h")
+    endif (HAVE_SYS_ICONV_H)
+
+    set(CMAKE_REQUIRED_INCLUDES ${ICONV_INCLUDE_DIR})
+    check_prototype_definition(iconv
+        "size_t iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char **outbuf, size_t *outbytesleft)"
+        "-1"
+        ${_ICONV_PROTO_INCLUDE}
+        HAVE_ICONV_CONST)
+    set(CMAKE_REQUIRED_INCLUDES)
+endif (HAVE_ICONV_H OR HAVE_SYS_ICONV_H)
+
+set(ICONV_INCLUDE_DIRS
+    ${ICONV_INCLUDE_DIR}
+)
+
+if (ICONV_LIBRARY)
+    set(ICONV_LIBRARIES
+        ${ICONV_LIBRARIES}
+        ${ICONV_LIBRARY}
+    )
+endif (ICONV_LIBRARY)
+
+include(FindPackageHandleStandardArgs)
+if (ICONV_LIBRARIES)
+    find_package_handle_standard_args(Iconv DEFAULT_MSG ICONV_LIBRARIES ICONV_INCLUDE_DIRS)
+else()
+    find_package_handle_standard_args(Iconv DEFAULT_MSG ICONV_INCLUDE_DIRS)
+endif()
+
+# show the ICONV_INCLUDE_DIRS and ICONV_LIBRARIES variables only in the advanced view
+mark_as_advanced(ICONV_INCLUDE_DIRS ICONV_LIBRARIES)

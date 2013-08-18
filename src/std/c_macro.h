@@ -1,23 +1,21 @@
 /*
  * cynapses libc functions
  *
- * Copyright (c) 2008      by Andreas Schneider <mail@cynapses.org>
+ * Copyright (c) 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * vim: ts=2 sw=2 et cindent
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 /**
@@ -32,6 +30,9 @@
  */
 #ifndef _C_MACRO_H
 #define _C_MACRO_H
+
+#include <stdint.h>
+#include <string.h>
 
 #define INT_TO_POINTER(i) (void *) i
 #define POINTER_TO_INT(p) *((int *) (p))
@@ -56,6 +57,41 @@
 
 /** Macro to make strerror_r work with -Werror=unused-result */
 #define C_STRERROR(errno, buf, size) if(strerror_r(errno, buf, size)) {}
+
+/**
+ * This is a hack to fix warnings. The idea is to use this everywhere that we
+ * get the "discarding const" warning by the compiler. That doesn't actually
+ * fix the real issue, but marks the place and you can search the code for
+ * discard_const.
+ *
+ * Please use this macro only when there is no other way to fix the warning.
+ * We should use this function in only in a very few places.
+ *
+ * Also, please call this via the discard_const_p() macro interface, as that
+ * makes the return type safe.
+ */
+#define discard_const(ptr) ((void *)((uintptr_t)(ptr)))
+
+/**
+ * Type-safe version of discard_const
+ */
+#define discard_const_p(type, ptr) ((type *)discard_const(ptr))
+
+#if (__GNUC__ >= 3)
+# ifndef likely
+#  define likely(x)   __builtin_expect(!!(x), 1)
+# endif
+# ifndef unlikely
+#  define unlikely(x) __builtin_expect(!!(x), 0)
+# endif
+#else /* __GNUC__ */
+# ifndef likely
+#  define likely(x) (x)
+# endif
+# ifndef unlikely
+#  define unlikely(x) (x)
+# endif
+#endif /* __GNUC__ */
 
 /**
  * }@

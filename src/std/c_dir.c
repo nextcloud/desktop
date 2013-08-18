@@ -1,3 +1,23 @@
+/*
+ * cynapses libc functions
+ *
+ * Copyright (c) 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ */
+
 #include <dirent.h>
 #include <errno.h>
 #include <stdio.h>
@@ -15,9 +35,9 @@
 int c_mkdirs(const char *path, mode_t mode) {
   int tmp;
   csync_stat_t sb;
-  _TCHAR *wpath = c_multibyte(path);
-  _TCHAR *swpath = NULL;
-  
+  mbchar_t *wpath = c_utf8_to_locale(path);
+  mbchar_t *swpath = NULL;
+
   if (path == NULL) {
     errno = EINVAL;
     return -1;
@@ -26,7 +46,7 @@ int c_mkdirs(const char *path, mode_t mode) {
   if (_tstat(wpath, &sb) == 0) {
     if (! S_ISDIR(sb.st_mode)) {
       errno = ENOTDIR;
-      c_free_multibyte(wpath);
+      c_free_locale_string(wpath);
       return -1;
     }
   }
@@ -40,21 +60,21 @@ int c_mkdirs(const char *path, mode_t mode) {
     char subpath[tmp + 1];
     memcpy(subpath, path, tmp);
     subpath[tmp] = '\0';
-    swpath = c_multibyte(subpath);
+    swpath = c_utf8_to_locale(subpath);
     if (_tstat(swpath, &sb) == 0) {
       if (! S_ISDIR(sb.st_mode)) {
+        c_free_locale_string(swpath);
+        c_free_locale_string(wpath);
         errno = ENOTDIR;
-        c_free_multibyte(swpath);
-        c_free_multibyte(wpath);
         return -1;
       }
     } else if (errno != ENOENT) {
-      c_free_multibyte(swpath);
-      c_free_multibyte(wpath);
+      c_free_locale_string(wpath);
+      c_free_locale_string(swpath);
       return -1;
     } else if (c_mkdirs(subpath, mode) < 0) {
-      c_free_multibyte(swpath);
-      c_free_multibyte(wpath);
+      c_free_locale_string(swpath);
+      c_free_locale_string(wpath);
       return -1;
     }
   }
@@ -63,8 +83,8 @@ int c_mkdirs(const char *path, mode_t mode) {
 #else
   tmp = _tmkdir(wpath, mode);
 #endif
-  c_free_multibyte(swpath);
-  c_free_multibyte(wpath);
+  c_free_locale_string(swpath);
+  c_free_locale_string(wpath);
 
   if ((tmp < 0) && (errno == EEXIST)) {
     return 0;
@@ -77,8 +97,8 @@ int c_rmdirs(const char *path) {
   struct _tdirent *dp;
   csync_stat_t sb;
   char *fname = NULL;
-  _TCHAR *wfname = NULL;
-  _TCHAR *wpath = c_multibyte(path);
+  mbchar_t *wfname = NULL;
+  mbchar_t *wpath = c_utf8_to_locale(path);
   char *rd_name = NULL;
 
   if ((d = _topendir(wpath)) != NULL) {
@@ -93,31 +113,31 @@ int c_rmdirs(const char *path) {
         case EBADF:
           break; /* continue */
         default:
-          c_free_multibyte(wpath);
           _tclosedir(d);
+           c_free_locale_string(wpath);
           return 0;
       }
 
       while ((dp = _treaddir(d)) != NULL) {
         size_t len;
-        rd_name = c_utf8(dp->d_name);
-        /* skip '.' and '..' */
+        rd_name = c_utf8_from_locale(dp->d_name);
+            /* skip '.' and '..' */
         if( c_streq( rd_name, "." ) || c_streq( rd_name, ".." ) ) {
-            c_free_utf8(rd_name);
+            c_free_locale_string(rd_name);
             continue;
         }
 
         len = strlen(path) + strlen(rd_name) + 2;
         fname = c_malloc(len);
         if (fname == NULL) {
-            c_free_multibyte(wpath);
-            c_free_utf8(rd_name);
           _tclosedir(d);
+	  c_free_locale_string(rd_name);
+	  c_free_locale_string(wpath);
           return -1;
         }
         snprintf(fname, len, "%s/%s", path, rd_name);
-        wfname = c_multibyte(fname);
-	
+	wfname = c_utf8_to_locale(fname);
+
         /* stat the file */
         if (_tstat(wfname, &sb) != -1) {
 #ifdef __unix__
@@ -129,9 +149,9 @@ int c_rmdirs(const char *path) {
               if (errno == EACCES) {
                 _tclosedir(d);
                 SAFE_FREE(fname);
-                c_free_multibyte(wpath);
-                c_free_multibyte(wfname);
-                c_free_utf8(rd_name);
+		c_free_locale_string(wfname);
+		c_free_locale_string(rd_name);
+		c_free_locale_string(wpath);
                 return -1;
               }
               c_rmdirs(fname);
@@ -141,30 +161,32 @@ int c_rmdirs(const char *path) {
           }
         } /* lstat */
         SAFE_FREE(fname);
-        c_free_multibyte(wfname);
-        c_free_utf8(rd_name);
+	c_free_locale_string(wfname);
+	c_free_locale_string(rd_name);
       } /* readdir */
 
       _trewinddir(d);
     }
   } else {
+    c_free_locale_string(wpath);
     return -1;
   }
-  c_free_multibyte(wpath);
-
+  c_free_locale_string(wpath);
   _tclosedir(d);
   return 0;
 }
 
 int c_isdir(const char *path) {
   csync_stat_t sb;
-  _TCHAR *wpath = c_multibyte(path);
+  mbchar_t *wpath = c_utf8_to_locale(path);
+  int re = 0;
 
-  if (_tstat (wpath, &sb) == 0 && S_ISDIR(sb.st_mode)) {
-    c_free_multibyte(wpath);
-    return 1;
+  if (path != NULL) {
+      if (_tstat (wpath, &sb) == 0 && S_ISDIR(sb.st_mode)) {
+          re = 1;
+      }
   }
-  c_free_multibyte(wpath);
-  return 0;
+  c_free_locale_string(wpath);
+  return re;
 }
 

@@ -1,28 +1,25 @@
 /*
- * c_list -- a doubly-linked list
+ * csync list -- a doubly-linked list
  *
  * This code is based on glist.{h,c} from glib
  *   ftp://ftp.gtk.org/pub/gtk/
  * Copyright (c) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
- * Copyright (c) 2006-2008  Andreas Schneider <mail@csyncapses.org>
+ * Copyright (c) 2006-2013  Andreas Schneider <mail@csyncapses.org>
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * vim: ts=2 sw=2 et cindent
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-
 #ifndef _C_LIST_H
 #define _C_LIST_H
 

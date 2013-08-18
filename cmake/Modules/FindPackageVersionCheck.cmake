@@ -10,7 +10,7 @@
 #    find_package_version_check(LibSSH DEFAULT_MSG)
 #
 #
-# Copyright (c) 2009 Andreas Schneider <mail@cynapses.org>
+# Copyright (c) 2009 Andreas Schneider <asn@cryptomilk.org>
 #
 # Redistribution and use is allowed according to the terms of the New
 # BSD license.

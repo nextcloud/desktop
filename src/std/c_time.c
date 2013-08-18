@@ -1,26 +1,26 @@
 /*
  * c_time - time functions
  *
- * Copyright (c) 2008      by Andreas Schneider <mail@cynapses.org>
+ * Copyright (c) 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * vim: ts=2 sw=2 et cindent
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 #include "config.h"
+#include "c_private.h"
+#include "c_string.h"
 
 #include "c_string.h"
 #include "c_time.h"
@@ -69,9 +69,9 @@ double c_secdiff(struct timespec clock1, struct timespec clock0) {
 
 #ifdef HAVE_UTIMES
 int c_utimes(const char *uri, const struct timeval *times) {
-    _TCHAR *wuri = c_multibyte(uri);
+    mbchar_t *wuri = c_utf8_to_locale(uri);
     int ret = utimes(wuri, times);
-    c_free_multibyte(wuri);
+    c_free_locale_string(wuri);
     return ret;
 }
 #else // HAVE_UTIMES
@@ -96,7 +96,8 @@ int c_utimes(const char *uri, const struct timeval *times) {
     FILETIME LastAccessTime;
     FILETIME LastModificationTime;
     HANDLE hFile;
-    _TCHAR *wuri = c_multibyte( uri );
+
+    mbchar_t *wuri = c_utf8_to_locale( uri );
 
     if(times) {
         UnixTimevalToFileTime(times[0], &LastAccessTime);

@@ -1,23 +1,21 @@
 /*
  * cynapses libc functions
  *
- * Copyright (c) 2007-2008 by Andreas Schneider <mail@cynapses.org>
+ * Copyright (c) 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * vim: ft=c.doxygen ts=2 sw=2 et cindent
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 #ifndef _GNU_SOURCE
@@ -39,7 +37,7 @@
  * dirname - parse directory component.
  */
 char *c_dirname (const char *path) {
-  char *new = NULL;
+  char *newbuf = NULL;
   unsigned int len;
 
   if (path == NULL || *path == '\0') {
@@ -68,19 +66,19 @@ char *c_dirname (const char *path) {
   /* Remove slashes again */
   while(len > 0 && path[len - 1] == '/') --len;
 
-  new = c_malloc(len + 1);
-  if (new == NULL) {
+  newbuf = c_malloc(len + 1);
+  if (newbuf == NULL) {
     return NULL;
   }
 
-  strncpy(new, path, len);
-  new[len] = '\0';
+  strncpy(newbuf, path, len);
+  newbuf[len] = '\0';
 
-  return new;
+  return newbuf;
 }
 
 char *c_basename (const char *path) {
-  char *new = NULL;
+  char *newbuf = NULL;
   const char *s;
   unsigned int len;
 
@@ -108,15 +106,15 @@ char *c_basename (const char *path) {
     return c_strdup(path);
   }
 
-  new = c_malloc(len + 1);
-  if (new == NULL) {
+  newbuf = c_malloc(len + 1);
+  if (newbuf == NULL) {
     return NULL;
   }
 
-  strncpy(new, s, len);
-  new[len] = '\0';
+  strncpy(newbuf, s, len);
+  newbuf[len] = '\0';
 
-  return new;
+  return newbuf;
 }
 
 
@@ -227,8 +225,12 @@ int c_parse_uri(const char *uri,
   if (*p == ':') {
     if (scheme != NULL) {
       *scheme = c_strndup(z, p - z);
-    }
 
+      if (*scheme == NULL) {
+        errno = ENOMEM;
+        return -1;
+      }
+    }
     p++;
     z = p;
   }
@@ -281,15 +283,31 @@ int c_parse_uri(const char *uri,
       if (*q == ':') {
         if (user != NULL) {
           *user = c_strndup(z, q - z);
+          if (*user == NULL) {
+            errno = ENOMEM;
+            if (scheme != NULL) SAFE_FREE(*scheme);
+            return -1;
+          }
         }
 
         if (passwd != NULL) {
           *passwd = c_strndup(q + 1, p - (q + 1));
+          if (*passwd == NULL) {
+            if (scheme != NULL) SAFE_FREE(*scheme);
+            if (user   != NULL) SAFE_FREE(*user);
+            errno = ENOMEM;
+            return -1;
+          }
         }
       } else {
         /* user only */
         if (user != NULL) {
           *user = c_strndup(z, p - z);
+          if( *user == NULL) {
+            if (scheme != NULL) SAFE_FREE(*scheme);
+            errno = ENOMEM;
+            return -1;
+          }
         }
       }
 
@@ -334,6 +352,13 @@ int c_parse_uri(const char *uri,
 
         if (host != NULL) {
           *host = c_strndup(z, p - z);
+          if (*host == NULL) {
+            if (scheme != NULL) SAFE_FREE(*scheme);
+            if (user   != NULL) SAFE_FREE(*user);
+            if (passwd != NULL) SAFE_FREE(*passwd);
+            errno = ENOMEM;
+            return -1;
+          }
         }
 
         /*
@@ -357,6 +382,13 @@ int c_parse_uri(const char *uri,
 
         if (host != NULL) {
           *host = c_strndup(z, p - z);
+          if (*host == NULL) {
+            if (scheme != NULL) SAFE_FREE(*scheme);
+            if (user   != NULL) SAFE_FREE(*user);
+            if (passwd != NULL) SAFE_FREE(*passwd);
+            errno = ENOMEM;
+            return -1;
+          }
         }
       }
     } else {
@@ -372,6 +404,13 @@ int c_parse_uri(const char *uri,
 
       if (host != NULL) {
         *host = c_strndup(z, p - z);
+        if (*host == NULL) {
+          if (scheme != NULL) SAFE_FREE(*scheme);
+          if (user   != NULL) SAFE_FREE(*user);
+          if (passwd != NULL) SAFE_FREE(*passwd);
+          errno = ENOMEM;
+          return -1;
+        }
       }
     }
 
@@ -415,6 +454,14 @@ int c_parse_uri(const char *uri,
   if (*p == '/') {
     if (path != NULL) {
       *path = c_strdup(p);
+      if (*path == NULL) {
+        if (scheme != NULL) SAFE_FREE(*scheme);
+        if (user   != NULL) SAFE_FREE(*user);
+        if (passwd != NULL) SAFE_FREE(*passwd);
+        if (host   != NULL) SAFE_FREE(*host);
+        errno = ENOMEM;
+        return -1;
+      }
     }
 
     return 0;

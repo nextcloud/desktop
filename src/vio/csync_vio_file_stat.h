@@ -1,23 +1,21 @@
 /*
  * libcsync -- a library to sync a directory with another
  *
- * Copyright (c) 2008      by Andreas Schneider <mail@cynapses.org>
+ * Copyright (c) 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * vim: ft=c.doxygen ts=2 sw=2 et cindent
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 #ifndef _CSYNC_VIO_FILE_STAT_H
@@ -62,8 +60,8 @@ enum csync_vio_file_stat_fields_e {
   CSYNC_VIO_FILE_STAT_FIELDS_INODE = 1 << 4,
   CSYNC_VIO_FILE_STAT_FIELDS_LINK_COUNT = 1 << 5,
   CSYNC_VIO_FILE_STAT_FIELDS_SIZE = 1 << 6,
-  CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_COUNT = 1 << 7,
-  CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_SIZE = 1 << 8,
+  CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_COUNT = 1 << 7, /* will be removed */
+  CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_SIZE = 1 << 8,  /* will be removed */
   CSYNC_VIO_FILE_STAT_FIELDS_ATIME = 1 << 9,
   CSYNC_VIO_FILE_STAT_FIELDS_MTIME = 1 << 10,
   CSYNC_VIO_FILE_STAT_FIELDS_CTIME = 1 << 11,
@@ -94,8 +92,8 @@ struct csync_vio_file_stat_s {
   time_t ctime;
 
   int64_t size;
-  int64_t blksize;
-  unsigned long blkcount;
+  int64_t blksize;         /* will be removed in future, not used in csync */
+  unsigned long blkcount;  /* will be removed in future, not used in csync */
 
   mode_t mode;
 

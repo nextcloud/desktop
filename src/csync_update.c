@@ -1,21 +1,22 @@
 /*
  * libcsync -- a library to sync a directory with another
  *
- * Copyright (c) 2008      by Andreas Schneider <mail@cynapses.org>
+ * Copyright (c) 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
+ * Copyright (c) 2012-2013 by Klaas Freitag <freitag@owncloud.com>wie
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 #include "config.h"
@@ -91,27 +92,30 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
   if ((file == NULL) || (fs == NULL)) {
     errno = EINVAL;
+    ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
     return -1;
   }
 
   path = file;
   switch (ctx->current) {
-  case LOCAL_REPLICA:
-    if (strlen(path) <= strlen(ctx->local.uri)) {
+    case LOCAL_REPLICA:
+      if (strlen(path) <= strlen(ctx->local.uri)) {
+        ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
+        return -1;
+      }
+      path += strlen(ctx->local.uri) + 1;
+      break;
+    case REMOTE_REPLICA:
+      if (strlen(path) <= strlen(ctx->remote.uri)) {
+        ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
+        return -1;
+      }
+      path += strlen(ctx->remote.uri) + 1;
+      break;
+    default:
+      path = NULL;
+      ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
       return -1;
-    }
-    path += strlen(ctx->local.uri) + 1;
-    break;
-  case REMOTE_REPLICA:
-    if (strlen(path) <= strlen(ctx->remote.uri)) {
-      return -1;
-    }
-    path += strlen(ctx->remote.uri) + 1;
-    break;
-  default:
-    path = NULL;
-    return -1;
-    break;
   }
 
   len = strlen(path);
@@ -142,6 +146,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
   st = c_malloc(size);
   if (st == NULL) {
+    ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
     return -1;
   }
   CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "==> file: %s - hash %llu, mtime: %llu",
@@ -277,12 +282,14 @@ fastout:  /* target if the file information is read from database into st */
     case LOCAL_REPLICA:
       if (c_rbtree_insert(ctx->local.tree, (void *) st) < 0) {
         SAFE_FREE(st);
+        ctx->status_code = CSYNC_STATUS_TREE_ERROR;
         return -1;
       }
       break;
     case REMOTE_REPLICA:
       if (c_rbtree_insert(ctx->remote.tree, (void *) st) < 0) {
         SAFE_FREE(st);
+        ctx->status_code = CSYNC_STATUS_TREE_ERROR;
         return -1;
       }
       break;
@@ -424,6 +431,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
   if (uri[0] == '\0') {
     errno = ENOENT;
+    ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
     goto error;
   }
 
@@ -442,6 +450,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
   if ((dh = csync_vio_opendir(ctx, uri)) == NULL) {
     /* permission denied */
+    ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_OPENDIR_ERROR);
     if (errno == EACCES) {
        return 0;
     } else if(errno == EIO ) {
@@ -460,11 +469,13 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
   while ((dirent = csync_vio_readdir(ctx, dh))) {
     const char *path = NULL;
+    size_t ulen = 0;
+    int flen;
     int flag;
 
     d_name = dirent->name;
     if (d_name == NULL) {
-      ctx->error_code = CSYNC_ERR_PARAM;
+      ctx->status_code = CSYNC_STATUS_READDIR_ERROR;
       goto error;
     }
 
@@ -476,25 +487,34 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       continue;
     }
 
-    if (asprintf(&filename, "%s/%s", uri, d_name) < 0) {
+    flen = asprintf(&filename, "%s/%s", uri, d_name);
+    if (flen < 0) {
       csync_vio_file_stat_destroy(dirent);
       dirent = NULL;
-      ctx->error_code = CSYNC_ERR_PARAM;
+      ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
       goto error;
     }
 
     /* Create relative path */
     switch (ctx->current) {
       case LOCAL_REPLICA:
-        path = filename + strlen(ctx->local.uri) + 1;
+        ulen = strlen(ctx->local.uri) + 1;
         break;
       case REMOTE_REPLICA:
-        path = filename + strlen(ctx->remote.uri) + 1;
+        ulen = strlen(ctx->remote.uri) + 1;
         break;
       default:
         break;
     }
 
+    if (((size_t)flen) < ulen) {
+      csync_vio_file_stat_destroy(dirent);
+      dirent = NULL;
+      ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
+      goto error;
+    }
+
+    path = filename + ulen;
     /* skip ".csync_journal.db" and ".csync_journal.db.ctmp" */
     if (c_streq(path, ".csync_journal.db") || c_streq(path, ".csync_journal.db.ctmp")) {
       csync_vio_file_stat_destroy(dirent);
@@ -569,6 +589,10 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     }
 
     if (rc < 0) {
+      if (!CSYNC_STATUS_IS_OK(ctx->status_code)) {
+          ctx->status_code = CSYNC_STATUS_UPDATE_ERROR;
+      }
+
       csync_vio_closedir(ctx, dh);
       ctx->current_fs = previous_fs;
       goto done;

@@ -1,21 +1,21 @@
 /*
  * libcsync -- a library to sync a directory with another
  *
- * Copyright (c) 2008      by Andreas Schneider <mail@cynapses.org>
+ * Copyright (c) 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 #include "config.h"
@@ -62,18 +62,24 @@ int csync_exclude_load(CSYNC *ctx, const char *fname) {
   int64_t size;
   char *buf = NULL;
   char *entry = NULL;
-  const _TCHAR *wfname;
+  mbchar_t *w_fname;
 
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Loading exclude file: %s", fname);
+  if (ctx == NULL || fname == NULL) {
+      return -1;
+  }
 
 #ifdef _WIN32
-  _fmode = _O_BINARY;  
+  _fmode = _O_BINARY;
 #endif
-  wfname = c_multibyte(fname);
 
-  fd = _topen(wfname, O_RDONLY);
-  c_free_multibyte(wfname);
-  if ( fd < 0 ) {
+  w_fname = c_utf8_to_locale(fname);
+  if (w_fname == NULL) {
+      return -1;
+  }
+
+  fd = _topen(w_fname, O_RDONLY);
+  c_free_locale_string(w_fname);
+  if (fd < 0) {
     return -1;
   }
 
@@ -87,15 +93,19 @@ int csync_exclude_load(CSYNC *ctx, const char *fname) {
     rc = 0;
     goto out;
   }
-  buf = c_malloc(size);
-  memset(buf, 0, size);
+  buf = c_malloc(size + 1);
+  if (buf == NULL) {
+      rc = -1;
+      goto out;
+  }
 
   if (read(fd, buf, size) != size) {
     rc = -1;
     goto out;
   }
+  buf[size] = '\0';
 
-  /* FIXME: Don't add duplicates */
+  /* FIXME: Use fgets and don't add duplicates */
   entry = buf;
   for (i = 0; i < size; i++) {
     if (buf[i] == '\n' || buf[i] == '\r') {
@@ -112,7 +122,6 @@ int csync_exclude_load(CSYNC *ctx, const char *fname) {
       entry = buf + i + 1;
     }
   }
-  SAFE_FREE(buf);
 
   rc = 0;
 out:

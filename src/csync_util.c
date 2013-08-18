@@ -1,21 +1,22 @@
 /*
  * libcsync -- a library to sync a directory with another
  *
- * Copyright (c) 2006 by Andreas Schneider <mail@cynapses.org>
+ * Copyright (c) 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
+ * Copyright (c) 2012-2013 by Klaas Freitag <freitag@owncloud.com>wie
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 #include "config.h"
@@ -83,7 +84,7 @@ const char *csync_instruction_str(enum csync_instructions_e instr)
 }
 
 
-void csync_memstat_check(CSYNC *ctx) {
+void csync_memstat_check(void) {
   int s = 0;
   struct csync_memstat_s m;
   FILE* fp;
@@ -372,7 +373,6 @@ out:
   return rc;
 }
 
-
 void csync_win32_set_file_hidden( const char *file, bool h ) {
 #ifdef _WIN32
   const _TCHAR *fileName;
@@ -395,4 +395,57 @@ void csync_win32_set_file_hidden( const char *file, bool h ) {
     (void) h;
     (void) file;
 #endif
+}
+
+csync_vio_file_stat_t *csync_vio_convert_file_stat(csync_file_stat_t *st) {
+  csync_vio_file_stat_t *vfs = NULL;
+
+  if (st == NULL) {
+    return NULL;
+  }
+
+  vfs = csync_vio_file_stat_new();
+  if (vfs == NULL) {
+    return NULL;
+  }
+  vfs->acl = NULL;
+  if (st->pathlen > 0) {
+    vfs->name = c_strdup(st->path);
+  }
+  vfs->uid   = st->uid;
+  vfs->gid   = st->gid;
+
+  vfs->atime = 0;
+  vfs->mtime = st->modtime;
+  vfs->ctime = 0;
+
+  vfs->size  = st->size;
+  vfs->blksize  = 0;  /* Depricated. */
+  vfs->blkcount = 0;
+
+  vfs->mode  = st->mode;
+  vfs->device = 0;
+  vfs->inode = st->inode;
+  vfs->nlink = st->nlink;
+
+  /* fields. */
+  vfs->fields = CSYNC_VIO_FILE_STAT_FIELDS_TYPE
+      + CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS
+      + CSYNC_VIO_FILE_STAT_FIELDS_INODE
+      + CSYNC_VIO_FILE_STAT_FIELDS_LINK_COUNT
+      + CSYNC_VIO_FILE_STAT_FIELDS_SIZE
+      + CSYNC_VIO_FILE_STAT_FIELDS_MTIME
+      + CSYNC_VIO_FILE_STAT_FIELDS_UID
+      + CSYNC_VIO_FILE_STAT_FIELDS_GID;
+
+  if (st->type == CSYNC_FTW_TYPE_DIR)
+    vfs->type = CSYNC_VIO_FILE_TYPE_DIRECTORY;
+  else if (st->type == CSYNC_FTW_TYPE_FILE)
+    vfs->type = CSYNC_VIO_FILE_TYPE_REGULAR;
+  else if (st->type == CSYNC_FTW_TYPE_SLINK)
+    vfs->type = CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK;
+  else
+    vfs->type = CSYNC_VIO_FILE_TYPE_UNKNOWN;
+
+  return vfs;
 }

@@ -1,21 +1,21 @@
 /*
  * libcsync -- a library to sync a directory with another
  *
- * Copyright (c) 2008      by Andreas Schneider <mail@cynapses.org>
+ * Copyright (c) 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
  *
- * This program is free software = NULL, you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation = NULL, either version 2
- * of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY = NULL, without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program = NULL, if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 #include <errno.h>
@@ -41,16 +41,17 @@ void *_userdata;
 /*
  * Authentication callback for libsmbclient
  */
-static void get_auth_data_with_context_fn(SMBCCTX *c,
+static void get_auth_data_with_context_fn(SMBCCTX *smb_ctx,
     const char *srv,
     const char *shr,
     char *wg, int wglen,
     char *un, int unlen,
-    char *pw, int pwlen) {
-
+    char *pw, int pwlen)
+{
   static int try_krb5 = 1;
+  char *h;
 
-  (void) c;
+  (void) smb_ctx;
   (void) shr;
   (void) wg;
   (void) wglen;
@@ -71,11 +72,25 @@ static void get_auth_data_with_context_fn(SMBCCTX *c,
     return;
   }
 
-  /* Call the passwort prompt */
+  /* check for an existing user */
+  h = smbc_getUser(smb_ctx);
+  if (h != NULL) {
+    /* The username is known from the url. */
+    DEBUG_SMB(("csync_smb - have username from url: %s\n", h));
+    if (snprintf(un, unlen, "%s", h) < 0) {
+      /* Even if that fials, go on. */
+    }
+  } else {
+    if (_authcb != NULL) {
+      DEBUG_SMB(("csync_smb - execute authentication callback\n"));
+      (*_authcb) ("Username:", un, unlen, 1, 0, smbc_getOptionUserData(smb_ctx));
+    }
+  }
+
+  /* Always ask for the password */
   if (_authcb != NULL) {
-    DEBUG_SMB(("csync_smb - execute authentication callback\n"));
-    (*_authcb) ("Username:", un, unlen, 1, 0, smbc_getOptionUserData(c));
-    (*_authcb) ("Password:", pw, pwlen, 0, 0, smbc_getOptionUserData(c));
+    /* Call the passwort prompt */
+    (*_authcb) ("Password:", pw, pwlen, 0, 0, smbc_getOptionUserData(smb_ctx));
   }
 
   DEBUG_SMB(("csync_smb - user=%s, workgroup=%s, server=%s, share=%s\n",
@@ -322,6 +337,7 @@ static int _stat(const char *uri, csync_vio_file_stat_t *buf) {
       break;
     case S_IFSOCK:
       buf->type = CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK;
+      break;
     default:
       buf->type = CSYNC_VIO_FILE_TYPE_UNKNOWN;
       break;
@@ -401,8 +417,18 @@ static int _utimes(const char *uri, const struct timeval *times) {
   return smbc_utimes(uri, (struct timeval *) times);
 }
 
+static struct csync_vio_capabilities_s _smb_capabilities = {
+    .atomar_copy_support = false
+};
+
+static struct csync_vio_capabilities_s *_smb_get_capabilities(void)
+{
+    return &_smb_capabilities;
+}
+
 csync_vio_method_t _method = {
   .method_table_size = sizeof(csync_vio_method_t),
+  .get_capabilities = _smb_get_capabilities,
   .open = _open,
   .creat = _creat,
   .close = _close,

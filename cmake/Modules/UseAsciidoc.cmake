@@ -3,7 +3,7 @@
 #  Create a manpage with asciidoc.
 #  Example: macro_asciidoc2man(foo.txt foo.1)
 #
-# Copyright (c) 2006, Andreas Schneider, <mail@cynapses.org>
+# Copyright (c) 2006, Andreas Schneider, <asn@cryptomilk.org>
 #
 # Redistribution and use is allowed according to the terms of the BSD license.
 # For details see the accompanying COPYING-CMAKE-SCRIPTS file.

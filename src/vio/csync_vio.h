@@ -1,23 +1,21 @@
 /*
  * libcsync -- a library to sync a directory with another
  *
- * Copyright (c) 2008      by Andreas Schneider <mail@cynapses.org>
+ * Copyright (c) 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * vim: ft=c.doxygen ts=2 sw=2 et cindent
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 #ifndef _CSYNC_VIO_H
@@ -36,7 +34,6 @@ typedef struct fhandle_s {
 
 int csync_vio_init(CSYNC *ctx, const char *module, const char *args);
 void csync_vio_shutdown(CSYNC *ctx);
-
 csync_vio_handle_t *csync_vio_open(CSYNC *ctx, const char *uri, int flags, mode_t mode);
 csync_vio_handle_t *csync_vio_creat(CSYNC *ctx, const char *uri, mode_t mode);
 int csync_vio_close(CSYNC *ctx, csync_vio_handle_t *handle);
@@ -44,6 +41,9 @@ ssize_t csync_vio_read(CSYNC *ctx, csync_vio_handle_t *fhandle, void *buf, size_
 ssize_t csync_vio_write(CSYNC *ctx, csync_vio_handle_t *fhandle, const void *buf, size_t count);
 int csync_vio_sendfile(CSYNC *ctx,  csync_vio_handle_t *sfp, csync_vio_handle_t *dst);
 int64_t csync_vio_lseek(CSYNC *ctx, csync_vio_handle_t *fhandle, int64_t offset, int whence);
+
+int csync_vio_put(CSYNC *ctx, csync_vio_handle_t *flocal, csync_vio_handle_t *fremote, csync_file_stat_t *st);
+int csync_vio_get(CSYNC *ctx, csync_vio_handle_t *flocal, csync_vio_handle_t *fremote, csync_file_stat_t *st);
 
 csync_vio_handle_t *csync_vio_opendir(CSYNC *ctx, const char *name);
 int csync_vio_closedir(CSYNC *ctx, csync_vio_handle_t *dhandle);
@@ -65,8 +65,10 @@ int csync_vio_utimes(CSYNC *ctx, const char *uri, const struct timeval *times);
 
 int csync_vio_set_property(CSYNC *ctx, const char *key, void *data);
 
-char *csync_vio_get_error_string(CSYNC *ctx);
+char *csync_vio_get_status_string(CSYNC *ctx);
 
-void csync_vio_commit(CSYNC *ctx);
+int csync_vio_commit(CSYNC *ctx);
+
+int csync_vio_getfd(csync_vio_handle_t *fhandle);
 
 #endif /* _CSYNC_VIO_H */

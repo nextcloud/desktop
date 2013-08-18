@@ -6,6 +6,7 @@
 
 #include "csync.h"
 #include "csync_log.c"
+#include "c_private.h"
 
 static void setup(void **state) {
     CSYNC *csync;
@@ -44,15 +45,13 @@ static void teardown(void **state) {
     *state = NULL;
 }
 
-static void check_log_callback(CSYNC *ctx,
-                               int verbosity,
+static void check_log_callback(int verbosity,
                                const char *function,
                                const char *buffer,
                                void *userdata)
 {
     int rc;
 
-    assert_non_null(ctx);
     assert_true(verbosity >= 0);
     assert_non_null(function);
     assert_false(function[0] == '\0');
@@ -65,64 +64,71 @@ static void check_log_callback(CSYNC *ctx,
     assert_int_equal(rc, 0);
 }
 
-static void check_set_log_verbosity(void **state)
+static void check_set_log_level(void **state)
 {
-    CSYNC *csync = *state;
     int rc;
 
-    rc = csync_set_log_verbosity(NULL, 1);
+    (void) state;
+
+    rc = csync_set_log_level(-5);
     assert_int_equal(rc, -1);
 
-    rc = csync_set_log_verbosity(csync, -5);
-    assert_int_equal(rc, -1);
-
-    rc = csync_set_log_verbosity(csync, 5);
+    rc = csync_set_log_level(5);
     assert_int_equal(rc, 0);
 
-    rc = csync_get_log_verbosity(csync);
+    rc = csync_get_log_level();
     assert_int_equal(rc, 5);
 }
 
 static void check_set_auth_callback(void **state)
 {
     csync_log_callback log_fn;
-    CSYNC *csync = *state;
     int rc;
 
-    rc = csync_set_log_callback(csync, NULL);
+    (void) state;
+
+    rc = csync_set_log_callback(NULL);
     assert_int_equal(rc, -1);
 
-    rc = csync_set_log_callback(csync, check_log_callback);
+    rc = csync_set_log_callback(check_log_callback);
     assert_int_equal(rc, 0);
 
-    log_fn = csync_get_log_callback(csync);
+    log_fn = csync_get_log_callback();
     assert_non_null(log_fn);
     assert_true(log_fn == &check_log_callback);
 }
 
 static void check_logging(void **state)
 {
-    CSYNC *csync = *state;
     int rc;
-    struct stat sb;
+    csync_stat_t sb;
+    mbchar_t *path;
+    path = c_utf8_to_locale("/tmp/check_csync1/cb_called");
 
-    rc = csync_set_log_verbosity(csync, 1);
+    (void) state; /* unused */
+
+    assert_non_null(path);
+
+    rc = csync_set_log_level(1);
     assert_int_equal(rc, 0);
 
-    rc = csync_set_log_callback(csync, check_log_callback);
+    rc = csync_set_log_callback(check_log_callback);
     assert_int_equal(rc, 0);
 
-    csync_log(csync, 1, __FUNCTION__, "rc = %d", rc);
+    csync_log(1, __FUNCTION__, "rc = %d", rc);
 
-    rc = lstat("/tmp/check_csync1/cb_called", &sb);
+    rc = _tstat(path, &sb);
+
+    c_free_locale_string(path);
+
     assert_int_equal(rc, 0);
 }
 
 int torture_run_tests(void)
 {
     const UnitTest tests[] = {
-        unit_test_setup_teardown(check_set_log_verbosity, setup, teardown),
-        unit_test_setup_teardown(check_set_auth_callback, setup, teardown),
+        unit_test(check_set_log_level),
+        unit_test(check_set_auth_callback),
         unit_test_setup_teardown(check_logging, setup, teardown),
     };
 

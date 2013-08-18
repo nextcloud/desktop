@@ -1,23 +1,21 @@
 /*
  * libcsync -- a library to sync a directory with another
  *
- * Copyright (c) 2008      by Andreas Schneider <mail@cynapses.org>
+ * Copyright (c) 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * vim: ts=2 sw=2 et cindent
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 #ifndef _GNU_SOURCE
@@ -30,11 +28,16 @@
 
 #include "csync_private.h"
 #include "csync_dbtree.h"
+#include "csync_util.h"
 #include "vio/csync_vio.h"
 #include "vio/csync_vio_handle_private.h"
 #include "vio/csync_vio_local.h"
 #include "csync_statedb.h"
 #include "std/c_jhash.h"
+
+#ifdef __APPLE__
+#include <mach-o/dyld.h>
+#endif
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.vio.main"
 
@@ -53,55 +56,63 @@
 
 int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
   csync_stat_t sb;
+#ifdef WITH_UNIT_TESTING
+  mbchar_t *mpath = NULL;
+#endif
   char *path = NULL;
   char *err = NULL;
   csync_vio_method_t *m = NULL;
   csync_vio_method_init_fn init_fn;
-  _TCHAR *mpath = NULL;
+
 #ifdef _WIN32
-  _TCHAR tbuf[MAX_PATH];
-  _TCHAR *pathBuf = NULL;
+  mbchar_t tbuf[MAX_PATH];
+  mbchar_t *pathBuf = NULL;
   char *buf = NULL;
   char *last_bslash = NULL;
 #endif
-  
-  if (asprintf(&path, "%s/ocsync_%s.%s", PLUGINDIR, module, MODULE_EXTENSION) < 0) {
-    return -1;
-  }
 
-  mpath = c_multibyte(path);
-  if (_tstat(mpath, &sb) < 0) {
-    SAFE_FREE(path);
+#ifdef WITH_UNIT_TESTING
     if (asprintf(&path, "%s/modules/ocsync_%s.%s", BINARYDIR, module, MODULE_EXTENSION) < 0) {
-      return -1;
-    }
-  }
-  c_free_multibyte(mpath);
-      
-#ifdef _WIN32
-  mpath = c_multibyte(path);
-  if (_tstat(mpath, &sb) < 0) {
-    SAFE_FREE(path);
-    /* Change the current working directory to read the module from a relative path. */
-    if( GetModuleFileNameW(NULL, tbuf, MAX_PATH) > 0 ) {
-      buf = c_utf8(tbuf);
-      /* cut the trailing filename off */
-      if ((last_bslash = strrchr(buf, '\\')) != NULL) {
-        *last_bslash='\0';
-        pathBuf = c_multibyte(buf);
-
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Win32: changing current working dir to %s", buf);
-        _wchdir(pathBuf);
-        c_free_multibyte(pathBuf);
-      }
-      c_free_utf8(buf);
-
-      if (asprintf(&path, "modules/ocsync_%s.%s", module, MODULE_EXTENSION) < 0) {
         return -1;
-      }
     }
+
+    mpath = c_utf8_to_locale(path);
+    if (_tstat(mpath, &sb) < 0) {
+        SAFE_FREE(path);
+    }
+    c_free_locale_string(mpath);
+#endif
+
+  if (path == NULL) {
+      if (asprintf(&path, "%s/ocsync_%s.%s", PLUGINDIR, module, MODULE_EXTENSION) < 0) {
+          return -1;
+      }
   }
-  c_free_multibyte(mpath);
+
+#ifdef _WIN32
+  mpath = c_utf8_to_locale(path);
+  if (_tstat(mpath, &sb) < 0) {
+      SAFE_FREE(path);
+      /* Change the current working directory to read the module from a relative path. */
+      if( GetModuleFileNameW(NULL, tbuf, MAX_PATH) > 0 ) {
+          buf = c_utf8(tbuf);
+          /* cut the trailing filename off */
+          if ((last_bslash = strrchr(buf, '\\')) != NULL) {
+              *last_bslash='\0';
+              pathBuf = c_multibyte(buf);
+
+              CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Win32: changing current working dir to %s", buf);
+              _wchdir(pathBuf);
+              c_free_multibyte(pathBuf);
+          }
+          c_free_utf8(buf);
+
+          if (asprintf(&path, "modules/ocsync_%s.%s", module, MODULE_EXTENSION) < 0) {
+              return -1;
+          }
+      }
+  }
+  c_free_locale_string(mpath);
 #endif
 
 #ifdef __APPLE__
@@ -192,7 +203,15 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
     return -1;
   }
 
-  if(! VIO_METHOD_HAS_FUNC(m, get_capabilities)) {
+  /* Useful defaults to the module capabilities */
+  ctx->module.capabilities.atomar_copy_support = false;
+  ctx->module.capabilities.put_support         = false;
+  ctx->module.capabilities.get_support         = false;
+
+  /* Load the module capabilities from the module if it implements the it. */
+  if( VIO_METHOD_HAS_FUNC(m, get_capabilities)) {
+    ctx->module.capabilities = *(m->get_capabilities());
+  } else {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "module %s has no capabilities fn", module);
   }
 
@@ -204,7 +223,6 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
   if (! VIO_METHOD_HAS_FUNC(m, get_file_id)) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "module %s has no get_file_id fn", module);
   }
-
 
   ctx->module.method = m;
 
@@ -299,6 +317,66 @@ int csync_vio_close(CSYNC *ctx, csync_vio_handle_t *fhandle) {
   SAFE_FREE(fhandle->uri);
   SAFE_FREE(fhandle);
 
+  return rc;
+}
+
+int csync_vio_getfd(csync_vio_handle_t *fhandle) {
+  int fd = -1;
+
+  if (fhandle == NULL) {
+    errno = EBADF;
+    return -1;
+  }
+
+  fd = csync_vio_local_getfd( fhandle );
+  // Return the correct handle here.
+  return fd;
+
+}
+
+int csync_vio_put(CSYNC *ctx,
+                  csync_vio_handle_t *flocal,
+                  csync_vio_handle_t *fremote,
+                  csync_file_stat_t *st) {
+  int rc = 0;
+  csync_vio_file_stat_t *vfs = csync_vio_convert_file_stat(st);
+
+  if (flocal == NULL) {
+    rc = -1;
+  }
+  if (vfs ==  NULL) {
+    rc = -1;
+  }
+
+  if (rc == 0) {
+    rc = ctx->module.method->put(flocal->method_handle,
+                                 fremote->method_handle,
+                                 vfs);
+  }
+  csync_vio_file_stat_destroy(vfs);
+  return rc;
+}
+
+int csync_vio_get(CSYNC *ctx,
+                  csync_vio_handle_t *flocal,
+                  csync_vio_handle_t *fremote,
+                  csync_file_stat_t *st) {
+  int rc = 0;
+  csync_vio_file_stat_t *vfs = csync_vio_convert_file_stat(st);
+
+  if (flocal == NULL) {
+    rc = -1;
+  }
+  if (vfs ==  NULL) {
+    rc = -1;
+  }
+
+  if (rc == 0) {
+    rc = ctx->module.method->get(flocal->method_handle,
+                                 fremote->method_handle,
+                                 vfs);
+  }
+  csync_vio_file_stat_destroy(vfs);
   return rc;
 }
 
@@ -675,6 +753,16 @@ int csync_vio_utimes(CSYNC *ctx, const char *uri, const struct timeval *times) {
   return rc;
 }
 
+char *csync_vio_get_status_string(CSYNC *ctx) {
+    if(ctx->error_string) {
+        return ctx->error_string;
+    }
+    if(VIO_METHOD_HAS_FUNC(ctx->module.method, get_error_string)) {
+        return ctx->module.method->get_error_string();
+    }
+    return NULL;
+}
+
 int csync_vio_set_property(CSYNC* ctx, const char* key, void* data) {
   int rc = -1;
   if(VIO_METHOD_HAS_FUNC(ctx->module.method, set_property))
@@ -682,19 +770,12 @@ int csync_vio_set_property(CSYNC* ctx, const char* key, void* data) {
   return rc;
 }
 
-char *csync_vio_get_error_string(CSYNC *ctx) {
-    if( ! ctx ) return 0;
-    if(ctx->error_string) {
-        return ctx->error_string;
-    }
-    if(ctx && ctx->module.method &&
-       VIO_METHOD_HAS_FUNC(ctx->module.method, get_error_string)) {
-        return ctx->module.method->get_error_string();
-    }
-    return NULL;
-}
+int csync_vio_commit(CSYNC *ctx) {
+  int rc = 0;
 
-void csync_vio_commit(CSYNC *ctx) {
-  if(VIO_METHOD_HAS_FUNC(ctx->module.method, commit))
-    ctx->module.method->commit();
+  if (VIO_METHOD_HAS_FUNC(ctx->module.method, commit)) {
+      rc = ctx->module.method->commit();
+  }
+
+  return rc;
 }

@@ -1,7 +1,7 @@
 /*
  * libcsync -- a library to sync a replica with another
  *
- * Copyright (c) 2006-2007 by Andreas Schneider <mail@cynapses.org>
+ * Copyright (c) 2006-2007 by Andreas Schneider <asn@cryptomilk.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -63,6 +63,7 @@ at LOCAL with the ones at REMOTE.\n\
     --test-update          Test the update detection\n\
 -?, --help                 Give this help list\n\
     --usage                Give a short usage message\n\
+-v, --verbose              Print progress information about up- and download.\n\
 -V, --version              Print program version\n\
 ";
 
@@ -79,6 +80,7 @@ static const struct option long_options[] =
     {"test-statedb",    no_argument,       0,  0  },
     {"conflict-copies", no_argument,       0, 'c' },
     {"test-update",     no_argument,       0,  0  },
+    {"verbose",         no_argument,       0, 'v' },
     {"version",         no_argument,       0, 'V' },
     {"usage",           no_argument,       0, 'h' },
     {"proxy",           required_argument, 0, 'p' },
@@ -96,6 +98,7 @@ struct argument_s {
   int update;
   int reconcile;
   int propagate;
+  int verbose;
   bool with_conflict_copys;
   char *http_proxy;
 };
@@ -112,12 +115,33 @@ static void print_help()
     exit(0);
 }
 
+static int c_atoi(const char *string, int *result)
+{
+    char *end = NULL;
+    int i;
+
+    if (string == NULL) {
+        return -1;
+    }
+
+    i = strtol(string, &end, 10);
+    if (!(end != NULL && end[0] == '\0')) {
+        /* error case, the input string had an error. */
+        return -1;
+    }
+
+    *result = i;
+
+    return 0;
+}
+
 static int parse_args(struct argument_s *csync_args, int argc, char **argv)
 {
     while(optind < argc) {
         int c = -1;
+        int rc;
         struct option *opt = NULL;
-        int result = getopt_long( argc, argv, "d:cVhp:", long_options, &c );
+        int result = getopt_long( argc, argv, "d:cvVhp:", long_options, &c );
 
         if( result == -1 ) {
             break;
@@ -125,13 +149,17 @@ static int parse_args(struct argument_s *csync_args, int argc, char **argv)
 
         switch(result) {
         case 'd':
-            if (optarg != NULL) {
-              csync_args->debug_level = atoi(optarg);
+            rc = c_atoi(optarg, &csync_args->debug_level);
+            if (rc < 0) {
+                fprintf(stderr, "Can't parse debug level argument");
             }
             break;
         case 'c':
             csync_args->with_conflict_copys = true;
             /* printf("Argument: With conflict copies\n"); */
+            break;
+        case 'v':
+            csync_args->verbose = 1;
             break;
         case 'V':
             print_version();
@@ -147,8 +175,15 @@ static int parse_args(struct argument_s *csync_args, int argc, char **argv)
         case 0:
             opt = (struct option*)&(long_options[c]);
             if(c_streq(opt->name, "exclude-file")) {
+              if (optarg != NULL) {
                 csync_args->exclude_file = c_strdup(optarg);
                 /* printf("Argument: exclude-file: %s\n", csync_args->exclude_file); */
+              }
+            } else if(c_streq(opt->name, "debug-level")) {
+                rc = c_atoi(optarg, &csync_args->debug_level);
+                if (rc < 0) {
+                    fprintf(stderr, "Can't parse debug level argument");
+                }
             } else if(c_streq(opt->name, "disable-statedb")) {
                 csync_args->disable_statedb = 1;
             } else if(c_streq(opt->name, "test-update")) {
@@ -157,7 +192,6 @@ static int parse_args(struct argument_s *csync_args, int argc, char **argv)
                 csync_args->reconcile = 0;
                 csync_args->propagate = 0;
                 /* printf("Argument: test-update\n"); */
-
             } else if(c_streq(opt->name, "dry-run")) {
                 csync_args->create_statedb = 0;
                 csync_args->update = 1;
@@ -165,10 +199,14 @@ static int parse_args(struct argument_s *csync_args, int argc, char **argv)
                 csync_args->propagate = 0;
                 /* printf("Argument: dry-run\n" ); */
             } else if(c_streq(opt->name, "iconv")) {
+              if (optarg != NULL) {
                 csync_args->iconv = c_strdup(optarg);
                 /* printf("Argument: iconv\n" ); */
+              }
             } else if(c_streq(opt->name, "http-proxy")) {
+              if (optarg != NULL) {
                 csync_args->http_proxy = c_strdup(optarg);
+              }
             } else if(c_streq(opt->name, "test-statedb")) {
                 csync_args->create_statedb = 1;
                 csync_args->update = 1;
@@ -186,6 +224,16 @@ static int parse_args(struct argument_s *csync_args, int argc, char **argv)
     return optind;
 }
 
+static void _overall_callback(const char *file_name,
+                              int file_no,
+                              int file_cnt,
+                              long long o1,
+                              long long o2,
+                              void *userdata)
+{
+  (void) userdata;
+  printf("File #%2d/%2d: %s (%lld/%lld bytes)\n", file_no, file_cnt, file_name, o1, o2 );
+}
 
 int main(int argc, char **argv) {
   int rc = 0;
@@ -207,12 +255,17 @@ int main(int argc, char **argv) {
   arguments.propagate = 1;
   arguments.with_conflict_copys = false;
   arguments.http_proxy = NULL;
+  arguments.verbose = 0;
 
   parse_args(&arguments, argc, argv);
   /* two options must remain as source and target       */
   /* printf("ARGC: %d -> optind: %d\n", argc, optind ); */
   if( argc - optind < 2 ) {
       print_help();
+  }
+
+  if (arguments.debug_level) {
+    csync_set_log_level(arguments.debug_level);
   }
 
   if (csync_create(&csync, argv[optind], argv[optind+1]) < 0) {
@@ -238,10 +291,6 @@ int main(int argc, char **argv) {
   }
 
   csync_set_auth_callback(csync, csync_getpass);
-
-  if (arguments.debug_level) {
-    csync_set_log_verbosity(csync, arguments.debug_level);
-  }
 
   if (arguments.disable_statedb) {
     csync_disable_statedb(csync);
@@ -280,6 +329,11 @@ int main(int argc, char **argv) {
     if( port )
         csync_set_module_property(csync, "proxy_port", (void*) &port);
   }
+
+  if (arguments.verbose > 0) {
+      csync_set_overall_progress_callback(csync, _overall_callback);
+
+
 
   if (arguments.exclude_file != NULL) {
     if (csync_add_exclude_list(csync, arguments.exclude_file) < 0) {
@@ -324,5 +378,3 @@ out:
 
   return rc;
 }
-
-/* vim: set ts=8 sw=2 et cindent: */

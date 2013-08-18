@@ -1,24 +1,25 @@
 /*
  * cynapses libc functions
  *
- * Copyright (c) 2008 by Andreas Schneider <mail@cynapses.org>
+ * Copyright (c) 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
+ * Copyright (c) 2012-2013 by Klaas Freitag <freitag@owncloud.com>
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * vim: ts=2 sw=2 et cindent
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
+
+#include "config.h"
 
 #include <assert.h>
 #include <errno.h>
@@ -30,8 +31,6 @@
 #include <sys/types.h>
 #include <wchar.h>
 
-#include "config.h"
-
 #include "c_string.h"
 #include "c_alloc.h"
 #include "c_macro.h"
@@ -40,15 +39,20 @@
 #include <windows.h>
 #endif
 
-#ifdef WITH_ICONV
-#include <iconv.h>
+#if defined(HAVE_ICONV) && defined(WITH_ICONV)
+# ifdef HAVE_ICONV_H
+#  include <iconv.h>
+# endif
+# ifdef HAVE_SYS_ICONV_H
+#  include <sys/iconv.h>
+# endif
 
 typedef struct {
   iconv_t to;
   iconv_t from;
 } iconv_conversions;
 
-static iconv_conversions _iconvs = { NULL, NULL };
+CSYNC_THREAD iconv_conversions _iconvs = { NULL, NULL };
 
 int c_setup_iconv(const char* to) {
   _iconvs.to = iconv_open(to, "UTF-8");
@@ -83,15 +87,19 @@ enum iconv_direction { iconv_from_native, iconv_to_native };
 
 static char *c_iconv(const char* str, enum iconv_direction dir)
 {
-  char *in = (char*)str;
+#ifdef HAVE_ICONV_CONST
+    const char *in = str;
+#else
+    char *in = discard_const(str);
+#endif
   size_t size;
   size_t outsize;
   char *out;
-  char *out_in;
   size_t ret;
 
-  if (str == NULL)
+  if (str == NULL) {
     return NULL;
+  }
 
   if(_iconvs.from == NULL && _iconvs.to == NULL) {
 #ifdef __APPLE__
@@ -104,7 +112,9 @@ static char *c_iconv(const char* str, enum iconv_direction dir)
   size = strlen(in);
   outsize = size*2;
   out = c_malloc(outsize);
-  out_in = out;
+  if (out == NULL) {
+      return NULL;
+  }
 
   if (dir == iconv_to_native) {
       ret = iconv(_iconvs.to, &in, &size, &out, &outsize);
@@ -112,12 +122,14 @@ static char *c_iconv(const char* str, enum iconv_direction dir)
       ret = iconv(_iconvs.from, &in, &size, &out, &outsize);
   }
 
-  assert(ret != (size_t)-1);
-  (void) ret; // silence Werror=unused-but-set-variable
+  if (ret == (size_t)-1) {
+      SAFE_FREE(out);
+      return NULL;
+  }
 
-  return out_in;
+  return out;
 }
-#endif
+#endif /* defined(HAVE_ICONV) && defined(WITH_ICONV) */
 
 int c_streq(const char *a, const char *b) {
   register const char *s1 = a;
@@ -288,20 +300,33 @@ char *c_lowercase(const char* str) {
 }
 
 /* Convert a wide multibyte String to UTF8 */
-char* c_utf8(const _TCHAR *wstr)
+char* c_utf8_from_locale(const mbchar_t *wstr)
 {
-  char *dst = NULL;  
+  char *dst = NULL;
 #ifdef _WIN32
-  size_t len;
+  char *mdst = NULL;
   int size_needed;
-  if(!wstr) return NULL;
-  len = wcslen( wstr );
+  size_t len;
+#endif
+
+  if (wstr == NULL) {
+    return NULL;
+  }
+
+#ifdef _WIN32
+  len = wcslen(wstr);
   /* Call once to get the required size. */
   size_needed = WideCharToMultiByte(CP_UTF8, 0, wstr, len, NULL, 0, NULL, NULL);
-  if( size_needed > 0 ) {
-    dst = c_malloc(1+size_needed);
-    memset(dst, 0, 1+size_needed);
-    WideCharToMultiByte(CP_UTF8, 0, wstr, len, dst, size_needed, NULL, NULL);
+  if (size_needed > 0) {
+    mdst = c_malloc(size_needed + 1);
+    if (mdst == NULL) {
+      errno = ENOMEM;
+      return NULL;
+    }
+
+    memset(mdst, 0, size_needed + 1);
+    WideCharToMultiByte(CP_UTF8, 0, wstr, len, mdst, size_needed, NULL, NULL);
+    dst = mdst;
   }
 #else
 #ifdef WITH_ICONV
@@ -314,20 +339,30 @@ char* c_utf8(const _TCHAR *wstr)
 }
 
 /* Convert a an UTF8 string to multibyte */
-_TCHAR* c_multibyte(const char *str)
+mbchar_t* c_utf8_to_locale(const char *str)
 {
-  _TCHAR *dst = NULL;
+  mbchar_t *dst = NULL;
 #ifdef _WIN32
-  int size_needed = 0;
-  int size_char = 0;
   size_t len;
-  if(!str) return NULL;
-  len = strlen( str );
+  int size_needed;
+#endif
+
+  if (str == NULL ) {
+    return NULL;
+  }
+
+#ifdef _WIN32
+  len = strlen(str);
   size_needed = MultiByteToWideChar(CP_UTF8, 0, str, len, NULL, 0);
-  if(size_needed > 0) {
-    size_char = (size_needed+1)*sizeof(_TCHAR);
+  if (size_needed > 0) {
+    int size_char = (size_needed + 1) * sizeof(mbchar_t);
     dst = c_malloc(size_char);
-    memset(dst, 0, size_char);
+    if (dst == NULL) {
+      errno = ENOMEM;
+      return NULL;
+    }
+
+    memset((void*)dst, 0, size_char);
     MultiByteToWideChar(CP_UTF8, 0, str, -1, dst, size_needed);
   }
 #else

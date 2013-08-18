@@ -1,21 +1,22 @@
 /*
  * libcsync -- a library to sync a directory with another
  *
- * Copyright (c) 2006-2012 by Andreas Schneider <asn@cryptomilk.org>
+ * Copyright (c) 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
+ * Copyright (c) 2012-2013 by Klaas Freitag <freitag@owncloud.com>
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 /**
@@ -35,12 +36,33 @@
 #include <stdint.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <config.h>
 
 #include "csync_version.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#define CSYNC_STRINGIFY(s) CSYNC_TOSTRING(s)
+#define CSYNC_TOSTRING(s) #s
+
+/* csync version macros */
+#define CSYNC_VERSION_INT(a, b, c) ((a) << 16 | (b) << 8 | (c))
+#define CSYNC_VERSION_DOT(a, b, c) a ##.## b ##.## c
+#define CSYNC_VERSION(a, b, c) CSYNC_VERSION_DOT(a, b, c)
+
+/* csync version */
+#define LIBCSYNC_VERSION_MAJOR  0
+#define LIBCSYNC_VERSION_MINOR  50
+#define LIBCSYNC_VERSION_MICRO  0
+
+#define LIBCSYNC_VERSION_INT CSYNC_VERSION_INT(LIBCSYNC_VERSION_MAJOR, \
+                                           LIBCSYNC_VERSION_MINOR, \
+                                           LIBCSYNC_VERSION_MICRO)
+#define LIBCSYNC_VERSION     CSYNC_VERSION(LIBCSYNC_VERSION_MAJOR, \
+                                           LIBCSYNC_VERSION_MINOR, \
+                                           LIBCSYNC_VERSION_MICRO)
 
 /*
  * csync file declarations
@@ -50,50 +72,68 @@ extern "C" {
 #define CSYNC_EXCLUDE_FILE "ocsync_exclude.conf"
 #define CSYNC_LOCK_FILE ".csync.lock"
 
-enum csync_error_codes_e {
-  CSYNC_ERR_NONE          = 0,
-  CSYNC_ERR_LOG,
-  CSYNC_ERR_LOCK,
-  CSYNC_ERR_STATEDB_LOAD,
-  CSYNC_ERR_STATEDB_WRITE,
-  CSYNC_ERR_MODULE,
-  CSYNC_ERR_TIMESKEW,
-  CSYNC_ERR_FILESYSTEM,
-  CSYNC_ERR_TREE,
-  CSYNC_ERR_MEM,
-  CSYNC_ERR_PARAM,
-  CSYNC_ERR_UPDATE,
-  CSYNC_ERR_RECONCILE,
-  CSYNC_ERR_PROPAGATE,
-  CSYNC_ERR_ACCESS_FAILED,
-  CSYNC_ERR_REMOTE_CREATE,
-  CSYNC_ERR_REMOTE_STAT,
-  CSYNC_ERR_LOCAL_CREATE,
-  CSYNC_ERR_LOCAL_STAT,
-  CSYNC_ERR_PROXY,
-  CSYNC_ERR_LOOKUP,
-  CSYNC_ERR_AUTH_SERVER,
-  CSYNC_ERR_AUTH_PROXY,
-  CSYNC_ERR_CONNECT,
-  CSYNC_ERR_TIMEOUT,
-  CSYNC_ERR_HTTP,
-  CSYNC_ERR_PERM,
-  CSYNC_ERR_NOT_FOUND,
-  CSYNC_ERR_EXISTS,
-  CSYNC_ERR_NOSPC,
-  CSYNC_ERR_QUOTA,
-  CSYNC_ERR_SERVICE_UNAVAILABLE,
-  CSYNC_ERR_FILE_TOO_BIG,
-  CSYNC_ERR_ABORTED,
-
-  CSYNC_ERR_UNSPEC
-};
-typedef enum csync_error_codes_e CSYNC_ERROR_CODE;
-
 /**
   * Instruction enum. In the file traversal structure, it describes
   * the csync state of a file.
   */
+enum csync_status_codes_e {
+  CSYNC_STATUS_OK         = 0,
+
+  CSYNC_STATUS_ERROR      = 1024, /* don't use this code,
+                                     just use in csync_status_ok */
+  CSYNC_STATUS_UNSUCCESSFUL,
+  CSYNC_STATUS_NO_LOCK,
+  CSYNC_STATUS_STATEDB_LOAD_ERROR,
+  CSYNC_STATUS_STATEDB_WRITE_ERROR,
+  CSYNC_STATUS_NO_MODULE,
+  CSYNC_STATUS_TIMESKEW,
+  CSYNC_STATUS_FILESYSTEM_UNKNOWN,
+  CSYNC_STATUS_TREE_ERROR,
+  CSYNC_STATUS_MEMORY_ERROR,
+  CSYNC_STATUS_PARAM_ERROR,
+  CSYNC_STATUS_UPDATE_ERROR,
+  CSYNC_STATUS_RECONCILE_ERROR,
+  CSYNC_STATUS_PROPAGATE_ERROR,
+  CSYNC_STATUS_REMOTE_ACCESS_ERROR,
+  CSYNC_STATUS_REMOTE_CREATE_ERROR,
+  CSYNC_STATUS_REMOTE_STAT_ERROR,
+  CSYNC_STATUS_LOCAL_CREATE_ERROR,
+  CSYNC_STATUS_LOCAL_STAT_ERROR,
+  CSYNC_STATUS_PROXY_ERROR,
+  CSYNC_STATUS_LOOKUP_ERROR,
+  CSYNC_STATUS_SERVER_AUTH_ERROR,
+  CSYNC_STATUS_PROXY_AUTH_ERROR,
+  CSYNC_STATUS_CONNECT_ERROR,
+  CSYNC_STATUS_TIMEOUT,
+  CSYNC_STATUS_HTTP_ERROR,
+  CSYNC_STATUS_PERMISSION_DENIED,
+  CSYNC_STATUS_NOT_FOUND,
+  CSYNC_STATUS_FILE_EXISTS,
+  CSYNC_STATUS_OUT_OF_SPACE,
+  CSYNC_STATUS_QUOTA_EXCEEDED,
+  CSYNC_STATUS_SERVICE_UNAVAILABLE,
+  CSYNC_STATUS_FILE_SIZE_ERROR,
+  CSYNC_STATUS_CONTEXT_LOST,
+  CSYNC_STATUS_MERGE_FILETREE_ERROR,
+  CSYNC_STATUS_CSYNC_STATUS_ERROR,
+  CSYNC_STATUS_OPENDIR_ERROR,
+  CSYNC_STATUS_READDIR_ERROR,
+  CSYNC_STATUS_OPEN_ERROR,
+};
+
+typedef enum csync_status_codes_e CSYNC_STATUS;
+
+#ifndef likely
+# define likely(x) (x)
+#endif
+#ifndef unlikely
+# define unlikely(x) (x)
+#endif
+
+#define CSYNC_STATUS_IS_OK(x) (likely((x) == CSYNC_STATUS_OK))
+#define CSYNC_STATUS_IS_ERR(x) (unlikely((x) >= CSYNC_STATUS_ERROR))
+#define CSYNC_STATUS_IS_EQUAL(x, y) ((x) == (y))
+
 enum csync_instructions_e {
   CSYNC_INSTRUCTION_NONE       = 0x00000000,
   CSYNC_INSTRUCTION_EVAL       = 0x00000001,
@@ -189,11 +229,19 @@ typedef struct csync_s CSYNC;
 typedef int (*csync_auth_callback) (const char *prompt, char *buf, size_t len,
     int echo, int verify, void *userdata);
 
-typedef void (*csync_log_callback) (CSYNC *ctx,
-                                    int verbosity,
+typedef void (*csync_log_callback) (int verbosity,
                                     const char *function,
                                     const char *buffer,
                                     void *userdata);
+
+/**
+ * @brief Check internal csync status.
+ *
+ * @param csync  The context to check.
+ *
+ * @return  true if status is error free, false for error states.
+ */
+bool csync_status_ok(CSYNC *ctx);
 
 /**
  * @brief Allocate a csync context.
@@ -405,45 +453,53 @@ csync_auth_callback csync_get_auth_callback(CSYNC *ctx);
 int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb);
 
 /**
- * @brief Set the log verbosity.
+ * @brief Set the log level.
  *
- * @param ctx           The csync context.
- *
- * @param[in]  verbosity  The log verbosity.
+ * @param[in]  level  The log verbosity.
  *
  * @return 0 on success, < 0 if an error occured.
  */
-int csync_set_log_verbosity(CSYNC *ctx, int verbosity);
+int csync_set_log_level(int level);
 
 /**
  * @brief Get the log verbosity
  *
- * @param[in]  ctx    The csync context to ask for the log verbosity.
- *
  * @return            The log verbosity, -1 on error.
  */
-int csync_get_log_verbosity(CSYNC *ctx);
+int csync_get_log_level(void);
 
 /**
  * @brief Get the logging callback set.
  *
- * @param ctx           The csync context.
- *
  * @return              The logging callback set or NULL if an error
  *                      occured.
  */
-csync_log_callback csync_get_log_callback(CSYNC *ctx);
+csync_log_callback csync_get_log_callback(void);
 
 /**
  * @brief Set the logging callback.
- *
- * @param ctx           The csync context.
  *
  * @param cb            The logging callback.
  *
  * @return              0 on success, less than 0 if an error occured.
  */
-int csync_set_log_callback(CSYNC *ctx, csync_log_callback cb);
+int csync_set_log_callback(csync_log_callback cb);
+
+/**
+ * @brief get the userdata set for the logging callback.
+ *
+ * @return              The userdata or NULL.
+ */
+void *csync_get_log_userdata(void);
+
+/**
+ * @brief Set the userdata passed to the logging callback.
+ *
+ * @param[in]  data     The userdata to set.
+ *
+ * @return              0 on success, less than 0 if an error occured.
+ */
+int csync_set_log_userdata(void *data);
 
 /**
  * @brief Get the path of the statedb file used.
@@ -510,6 +566,16 @@ int csync_walk_local_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int fi
 int csync_walk_remote_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int filter);
 
 /**
+ * @brief Get the csync status string.
+ *
+ * @param ctx            The csync context.
+ *
+ * @return               A const pointer to a string with more precise status info.
+ */
+const char *csync_get_status_string(CSYNC *ctx);
+
+#ifdef WITH_ICONV
+/**
  * @brief Set iconv source codec for filenames.
  *
  * @param from          Source codec.
@@ -517,20 +583,7 @@ int csync_walk_remote_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int f
  * @return              0 on success, or an iconv error number.
  */
 int csync_set_iconv_codec(const char *from);
-
-/**
- * @brief Get the error code from the last operation.
- * 
- * @return              An error code defined by structure CSYNC_ERROR_CODE
- */
-CSYNC_ERROR_CODE csync_get_error(CSYNC *ctx);
-
-/**
- * @brief csync_get_error_string - return a string with error information
- * @param ctx
- * @return A pointer to an error string or NULL.
- */
-const char *csync_get_error_string(CSYNC *ctx);
+#endif
 
 /**
  * @brief Set a property to module

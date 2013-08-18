@@ -1,21 +1,22 @@
 /*
  * libcsync -- a library to sync a directory with another
  *
- * Copyright (c) 2008      by Andreas Schneider <mail@cynapses.org>
+ * Copyright (c) 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
+ * Copyright (c) 2012-2013 by Klaas Freitag <freitag@owncloud.com>wie
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 /**
@@ -51,15 +52,15 @@ int csync_get_statedb_exists(CSYNC *ctx);
  *
  * @return 0 on success, less than 0 if an error occured with errno set.
  */
-int csync_statedb_load(CSYNC *ctx, const char *statedb);
+int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **pdb);
 
-int csync_statedb_write(CSYNC *ctx);
+int csync_statedb_write(CSYNC *ctx, sqlite3 *db);
 
-int csync_statedb_close(CSYNC *ctx, const char *statedb, int jwritten);
+int csync_statedb_close(const char *statedb, sqlite3 *db, int jwritten);
 
-csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash);
+csync_file_stat_t *csync_statedb_get_stat_by_hash(sqlite3 *db, uint64_t phash);
 
-csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx, uint64_t inode);
+csync_file_stat_t *csync_statedb_get_stat_by_inode(sqlite3 *db, ino_t inode);
 
 char *csync_statedb_get_uniqId(CSYNC *ctx, uint64_t jHash, csync_vio_file_stat_t *buf);
 
@@ -91,7 +92,7 @@ c_strlist_t *csync_statedb_get_below_path(CSYNC *ctx, const char *path);
  * @return   A stringlist of the entries of a column. An emtpy stringlist if
  *           nothing has been found. NULL on error.
  */
-c_strlist_t *csync_statedb_query(CSYNC *ctx, const char *statement);
+c_strlist_t *csync_statedb_query(sqlite3 *db, const char *statement);
 
 /**
  * @brief Insert function for the statedb.
@@ -102,13 +103,13 @@ c_strlist_t *csync_statedb_query(CSYNC *ctx, const char *statement);
  * @return  The rowid of the most recent INSERT on success, 0 if the query
  *          wasn't successful.
  */
-int csync_statedb_insert(CSYNC *ctx, const char *statement);
+int csync_statedb_insert(sqlite3 *db, const char *statement);
 
-int csync_statedb_create_tables(CSYNC *ctx);
+int csync_statedb_create_tables(sqlite3 *db);
 
-int csync_statedb_drop_tables(CSYNC *ctx);
+int csync_statedb_drop_tables(sqlite3 *db);
 
-int csync_statedb_insert_metadata(CSYNC *ctx);
+int csync_statedb_insert_metadata(CSYNC *ctx, sqlite3 *db);
 
 typedef struct csync_progressinfo_s {
   struct csync_progressinfo_s *next;

@@ -1,21 +1,21 @@
 /*
  * libcsync -- a library to sync a directory with another
  *
- * Copyright (c) 2006      by Andreas Schneider <mail@cynapses.org>
+ * Copyright (c) 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 #include "config.h"
@@ -42,7 +42,7 @@
 #include "csync_log.h"
 
 #ifdef _DO_CREATE_A_LOCK_FILE
-static int _csync_lock_create(CSYNC *ctx, const char *lockfile) {
+static int _csync_lock_create(const char *lockfile) {
   int fd = -1;
   pid_t pid = 0;
   int rc = -1;
@@ -122,22 +122,29 @@ out:
   return rc;
 }
 
-static pid_t _csync_lock_read(CSYNC *ctx, const char *lockfile) {
+static pid_t _csync_lock_read(const char *lockfile) {
   char errbuf[256] = {0};
   char buf[8] = {0};
   long int tmp;
   ssize_t rc;
   int  fd;
   pid_t pid;
-  const _TCHAR *wlockfile;
+  mbchar_t *wlockfile;
 
   /* Read PID from existing lock */
-  wlockfile = c_multibyte(lockfile);
-  fd = _topen(wlockfile, O_RDONLY);
-  c_free_multibyte(wlockfile);
+#ifdef _WIN32
+  _fmode = _O_BINARY;
+#endif
 
-  if( !fd ) {
+  wlockfile = c_utf8_to_locale(lockfile);
+  if (wlockfile == NULL) {
       return -1;
+  }
+
+  fd = _topen(wlockfile, O_RDONLY);
+  c_free_locale_string(wlockfile);
+  if (fd < 0) {
+     return -1;
   }
 
   rc = read(fd, buf, sizeof(buf));
@@ -164,32 +171,35 @@ static pid_t _csync_lock_read(CSYNC *ctx, const char *lockfile) {
 
   /* Check if process is still alive */
   if (kill(pid, 0) < 0 && errno == ESRCH) {
-     /* Process is dead. Remove stale lock. */
-     if (unlink(lockfile) < 0) {
-       strerror_r(errno, errbuf, sizeof(errbuf));
-       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
-           "Unable to remove stale lock %s - %s",
-           lockfile,
-           errbuf);
-     }
-     return -1;
+    /* Process is dead. Remove stale lock. */
+    wlockfile = c_utf8_to_locale(lockfile);
+
+    if (_tunlink(wlockfile) < 0) {
+      strerror_r(errno, errbuf, sizeof(errbuf));
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+                "Unable to remove stale lock %s - %s",
+                lockfile,
+                errbuf);
+    }
+    c_free_locale_string(wlockfile);
+    return -1;
   }
 
   return pid;
 }
 #endif
 
-int csync_lock(CSYNC *ctx, const char *lockfile) {
+int csync_lock(const char *lockfile) {
 #ifdef _DO_CREATE_A_LOCK_FILE /* disable lock file for ownCloud client, not only _WIN32 */
   /* Check if lock already exists. */
-  if (_csync_lock_read(ctx, lockfile) > 0) {
+  if (_csync_lock_read(lockfile) > 0) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Aborting, another synchronization process is running.");
     return -1;
   }
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Creating lock file: %s", lockfile);
 
-  return _csync_lock_create(ctx, lockfile);
+  return _csync_lock_create(lockfile);
 #else
   (void) ctx;
   (void) lockfile;
@@ -198,20 +208,25 @@ int csync_lock(CSYNC *ctx, const char *lockfile) {
 
 }
 
-void csync_lock_remove(CSYNC *ctx, const char *lockfile) {
+void csync_lock_remove(const char *lockfile) {
 #ifdef _DO_CREATE_A_LOCK_FILE
 #ifndef _WIN32
   char errbuf[256] = {0};
+  mbchar_t *wlockfile;
+
   /* You can't remove the lock if it is from another process */
-  if (_csync_lock_read(ctx, lockfile) == getpid()) {
+  if (_csync_lock_read(lockfile) == getpid()) {
+    wlockfile = c_utf8_to_locale(lockfile);
+
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Removing lock file: %s", lockfile);
-    if (unlink(lockfile) < 0) {
+    if (_tunlink(wlockfile) < 0) {
       strerror_r(errno, errbuf, sizeof(errbuf));
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
           "Unable to remove lock %s - %s",
           lockfile,
           errbuf);
     }
+    c_free_locale_string(wlockfile);
   }
 #endif
 #else

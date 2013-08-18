@@ -44,7 +44,7 @@ static void setup_db(void **state)
     setup(state);
     csync = *state;
 
-    rc = csync_statedb_create_tables(csync);
+    rc = csync_statedb_create_tables(csync->statedb.db);
     assert_int_equal(rc, 0);
 
     result = csync_statedb_query(csync,
@@ -81,7 +81,7 @@ static void setup_db(void **state)
                            2,
                            43);
 
-    rc = csync_statedb_insert(csync, stmt);
+    rc = csync_statedb_insert(csync->statedb.db, stmt);
     sqlite3_free(stmt);
 }
 
@@ -107,11 +107,17 @@ static void check_csync_statedb_query_statement(void **state)
     CSYNC *csync = *state;
     c_strlist_t *result;
 
-    result = csync_statedb_query(csync, "");
+    result = csync_statedb_query(csync->statedb.db, "");
     assert_null(result);
+    if (result != NULL) {
+      c_strlist_destroy(result);
+    }
 
-    result = csync_statedb_query(csync, "SELECT;");
+    result = csync_statedb_query(csync->statedb.db, "SELECT;");
     assert_null(result);
+    if (result != NULL) {
+      c_strlist_destroy(result);
+    }
 }
 
 static void check_csync_statedb_create_error(void **state)
@@ -119,12 +125,14 @@ static void check_csync_statedb_create_error(void **state)
     CSYNC *csync = *state;
     c_strlist_t *result;
 
-    result = csync_statedb_query(csync, "CREATE TABLE test(phash INTEGER, text VARCHAR(10));");
+    result = csync_statedb_query(csync->statedb.db, "CREATE TABLE test(phash INTEGER, text VARCHAR(10));");
     assert_non_null(result);
     c_strlist_destroy(result);
 
-    result = csync_statedb_query(csync, "CREATE TABLE test(phash INTEGER, text VARCHAR(10));");
+    result = csync_statedb_query(csync->statedb.db, "CREATE TABLE test(phash INTEGER, text VARCHAR(10));");
     assert_null(result);
+
+    c_strlist_destroy(result);
 }
 
 static void check_csync_statedb_insert_statement(void **state)
@@ -133,15 +141,15 @@ static void check_csync_statedb_insert_statement(void **state)
     c_strlist_t *result;
     int rc;
 
-    result = csync_statedb_query(csync, "CREATE TABLE test(phash INTEGER, text VARCHAR(10));");
+    result = csync_statedb_query(csync->statedb.db, "CREATE TABLE test(phash INTEGER, text VARCHAR(10));");
     assert_non_null(result);
     c_strlist_destroy(result);
 
-    rc = csync_statedb_insert(csync, "INSERT;");
+    rc = csync_statedb_insert(csync->statedb.db, "INSERT;");
     assert_int_equal(rc, 0);
-    rc = csync_statedb_insert(csync, "INSERT");
+    rc = csync_statedb_insert(csync->statedb.db, "INSERT");
     assert_int_equal(rc, 0);
-    rc = csync_statedb_insert(csync, "");
+    rc = csync_statedb_insert(csync->statedb.db, "");
     assert_int_equal(rc, 0);
 }
 
@@ -151,12 +159,12 @@ static void check_csync_statedb_query_create_and_insert_table(void **state)
     c_strlist_t *result;
     int rc;
 
-    result = csync_statedb_query(csync, "CREATE TABLE test(phash INTEGER, text VARCHAR(10));");
+    result = csync_statedb_query(csync->statedb.db, "CREATE TABLE test(phash INTEGER, text VARCHAR(10));");
     c_strlist_destroy(result);
-    rc = csync_statedb_insert(csync, "INSERT INTO test (phash, text) VALUES (42, 'hello');");
+    rc = csync_statedb_insert(csync->statedb.db, "INSERT INTO test (phash, text) VALUES (42, 'hello');");
     assert_true(rc > 0);
 
-    result = csync_statedb_query(csync, "SELECT * FROM test;");
+    result = csync_statedb_query(csync->statedb.db, "SELECT * FROM test;");
     assert_non_null(result);
     assert_int_equal(result->count, 2);
 
@@ -172,15 +180,15 @@ static void check_csync_statedb_is_empty(void **state)
     int rc;
 
     /* we have an empty db */
-    assert_true(_csync_statedb_is_empty(csync));
+    assert_true(_csync_statedb_is_empty(csync->statedb.db));
 
     /* add a table and an entry */
-    result = csync_statedb_query(csync, "CREATE TABLE metadata(phash INTEGER, text VARCHAR(10));");
+    result = csync_statedb_query(csync->statedb.db, "CREATE TABLE metadata(phash INTEGER, text VARCHAR(10));");
     c_strlist_destroy(result);
-    rc = csync_statedb_insert(csync, "INSERT INTO metadata (phash, text) VALUES (42, 'hello');");
+    rc = csync_statedb_insert(csync->statedb.db, "INSERT INTO metadata (phash, text) VALUES (42, 'hello');");
     assert_true(rc > 0);
 
-    assert_false(_csync_statedb_is_empty(csync));
+    assert_false(_csync_statedb_is_empty(csync->statedb.db));
 }
 
 static void check_csync_statedb_create_tables(void **state)
@@ -189,7 +197,7 @@ static void check_csync_statedb_create_tables(void **state)
     char *stmt = NULL;
     int rc;
 
-    rc = csync_statedb_create_tables(csync);
+    rc = csync_statedb_create_tables(csync->statedb.db);
     assert_int_equal(rc, 0);
 
     stmt = sqlite3_mprintf("INSERT INTO metadata_temp"
@@ -205,7 +213,7 @@ static void check_csync_statedb_create_tables(void **state)
            (long)42,
             2, "xsyxcmfkdsjaf");
 
-    rc = csync_statedb_insert(csync, stmt);
+    rc = csync_statedb_insert(csync->statedb.db, stmt);
     assert_true(rc > 0);
 
     sqlite3_free(stmt);
@@ -216,11 +224,11 @@ static void check_csync_statedb_drop_tables(void **state)
     CSYNC *csync = *state;
     int rc;
 
-    rc = csync_statedb_drop_tables(csync);
+    rc = csync_statedb_drop_tables(csync->statedb.db);
     assert_int_equal(rc, 0);
-    rc = csync_statedb_create_tables(csync);
+    rc = csync_statedb_create_tables(csync->statedb.db);
     assert_int_equal(rc, 0);
-    rc = csync_statedb_drop_tables(csync);
+    rc = csync_statedb_drop_tables(csync->statedb.db);
     assert_int_equal(rc, 0);
 }
 
@@ -230,7 +238,7 @@ static void check_csync_statedb_insert_metadata(void **state)
     csync_file_stat_t *st;
     int i, rc;
 
-    rc = csync_statedb_create_tables(csync);
+    rc = csync_statedb_create_tables(csync->statedb.db);
     assert_int_equal(rc, 0);
 
     for (i = 0; i < 100; i++) {
@@ -242,7 +250,7 @@ static void check_csync_statedb_insert_metadata(void **state)
         assert_int_equal(rc, 0);
     }
 
-    rc = csync_statedb_insert_metadata(csync);
+    rc = csync_statedb_insert_metadata(csync, csync->statedb.db);
     assert_int_equal(rc, 0);
 }
 
@@ -261,7 +269,7 @@ static void check_csync_statedb_write(void **state)
         assert_int_equal(rc, 0);
     }
 
-    rc = csync_statedb_write(csync);
+    rc = csync_statedb_write(csync, csync->statedb.db);
     assert_int_equal(rc, 0);
 }
 
@@ -270,7 +278,7 @@ static void check_csync_statedb_get_stat_by_hash(void **state)
     CSYNC *csync = *state;
     csync_file_stat_t *tmp;
 
-    tmp = csync_statedb_get_stat_by_hash(csync, (uint64_t) 42);
+    tmp = csync_statedb_get_stat_by_hash(csync->statedb.db, (uint64_t) 42);
     assert_non_null(tmp);
 
     assert_int_equal(tmp->phash, 42);
@@ -284,8 +292,10 @@ static void check_csync_statedb_get_stat_by_hash_not_found(void **state)
     CSYNC *csync = *state;
     csync_file_stat_t *tmp;
 
-    tmp = csync_statedb_get_stat_by_hash(csync, (uint64_t) 666);
+    tmp = csync_statedb_get_stat_by_hash(csync->statedb.db, (uint64_t) 666);
     assert_null(tmp);
+
+    free(tmp);
 }
 
 static void check_csync_statedb_get_stat_by_inode(void **state)
@@ -293,7 +303,7 @@ static void check_csync_statedb_get_stat_by_inode(void **state)
     CSYNC *csync = *state;
     csync_file_stat_t *tmp;
 
-    tmp = csync_statedb_get_stat_by_inode(csync, (ino_t) 23);
+    tmp = csync_statedb_get_stat_by_inode(csync->statedb.db, (ino_t) 23);
     assert_non_null(tmp);
 
     assert_int_equal(tmp->phash, 42);
@@ -307,7 +317,7 @@ static void check_csync_statedb_get_stat_by_inode_not_found(void **state)
     CSYNC *csync = *state;
     csync_file_stat_t *tmp;
 
-    tmp = csync_statedb_get_stat_by_inode(csync, (ino_t) 666);
+    tmp = csync_statedb_get_stat_by_inode(csync->statedb.db, (ino_t) 666);
     assert_null(tmp);
 }
 

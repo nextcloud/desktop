@@ -6,7 +6,9 @@
 
 #include "torture.h"
 
+#include "std/c_private.h"
 #include "std/c_dir.h"
+#include "std/c_string.h"
 
 const char *check_dir = "/tmp/check/c_mkdirs//with/check//";
 const char *check_file = "/tmp/check/c_mkdirs/with/check/foobar.txt";
@@ -32,7 +34,7 @@ static void teardown(void **state) {
 }
 
 static int test_dir(const char *path, mode_t mode) {
-  struct stat sb;
+  csync_stat_t sb;
   if (lstat(path, &sb) < 0) {
     return -1;
   }
@@ -51,8 +53,9 @@ static int test_dir(const char *path, mode_t mode) {
 
 static void check_c_mkdirs_rmdirs(void **state)
 {
-    struct stat sb;
+    csync_stat_t sb;
     int rc;
+    mbchar_t *wcheck_dir;
 
     (void) state; /* unused */
 
@@ -62,25 +65,29 @@ static void check_c_mkdirs_rmdirs(void **state)
     assert_int_equal(rc, 0);
     rc = c_rmdirs(check_dir);
     assert_int_equal(rc, 0);
-    rc = lstat(check_dir, &sb);
+    wcheck_dir = c_utf8_to_locale(check_dir);
+    rc = _tstat(wcheck_dir, &sb);
+    c_free_locale_string(wcheck_dir);
     assert_int_equal(rc, -1);
 }
 
 static void check_c_mkdirs_mode(void **state)
 {
-    struct stat sb;
+    csync_stat_t sb;
     int rc;
+    mbchar_t *wcheck_dir;
 
     (void) state; /* unused */
-
     rc = c_mkdirs(check_dir, 0700);
     assert_int_equal(rc, 0);
     rc = test_dir(check_dir, 0700);
     assert_int_equal(rc, 0);
     rc = c_rmdirs(check_dir);
     assert_int_equal(rc, 0);
-    rc = lstat(check_dir, &sb);
+    wcheck_dir = c_utf8_to_locale(check_dir);
+    rc = _tstat(wcheck_dir, &sb);
     assert_int_equal(rc, -1);
+    c_free_locale_string(wcheck_dir);
 }
 
 static void check_c_mkdirs_existing_path(void **state)
@@ -115,14 +122,14 @@ static void check_c_isdir(void **state)
 {
     (void) state; /* unused */
 
-    assert_int_equal(c_isdir(NULL), 0);
+    assert_int_equal(c_isdir(check_dir), 1);
 }
 
 static void check_c_isdir_on_file(void **state)
 {
     (void) state; /* unused */
 
-    assert_int_equal(c_isdir(NULL), 0);
+    assert_int_equal(c_isdir(check_file), 0);
 }
 
 static void check_c_isdir_null(void **state)

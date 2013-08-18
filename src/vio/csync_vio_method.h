@@ -1,23 +1,21 @@
 /*
- * libcsync -- a library to sync a directory with another
+ * cynapses libc functions
  *
- * Copyright (c) 2008      by Andreas Schneider <mail@cynapses.org>
+ * Copyright (c) 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * vim: ft=c.doxygen ts=2 sw=2 et cindent
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 #ifndef _CSYNC_VIO_METHOD_H
@@ -44,6 +42,8 @@ struct csync_vio_capabilities_s {
  int  unix_extensions;     /* -1: do csync detection, 0: no unix extensions,
                                1: extensions available */
  bool use_send_file_to_propagate; /* if set, the module rather copies files using send_file than read and write */
+ bool get_support;
+ bool put_support;
 };
 
 typedef struct csync_vio_capabilities_s csync_vio_capabilities_t;
@@ -81,33 +81,43 @@ typedef int (*csync_method_utimes_fn)(const char *uri, const struct timeval time
 typedef int (*csync_method_set_property_fn)(const char *key, void *data);
 
 typedef char* (*csync_method_get_error_string_fn)();
-typedef void (*csync_method_commit_fn)();
+
+typedef int (*csync_method_commit_fn)();
+
+typedef int (*csync_method_get_fn)(csync_vio_method_handle_t *flocal,
+                                   csync_vio_method_handle_t *fremote,
+                                   csync_vio_file_stat_t *st);
+typedef int (*csync_method_put_fn)(csync_vio_method_handle_t *flocal,
+                                   csync_vio_method_handle_t *fremote,
+                                   csync_vio_file_stat_t *st);
 
 struct csync_vio_method_s {
-        size_t method_table_size;           /* Used for versioning */
-        csync_method_get_capabilities_fn get_capabilities;
-        csync_method_get_file_id_fn get_file_id;
-        csync_method_open_fn open;
-        csync_method_creat_fn creat;
-        csync_method_close_fn close;
-        csync_method_read_fn read;
-        csync_method_write_fn write;
-        csync_method_lseek_fn lseek;
-        csync_method_opendir_fn opendir;
-        csync_method_closedir_fn closedir;
-        csync_method_readdir_fn readdir;
-        csync_method_mkdir_fn mkdir;
-        csync_method_rmdir_fn rmdir;
-        csync_method_stat_fn stat;
-        csync_method_rename_fn rename;
-        csync_method_unlink_fn unlink;
-        csync_method_chmod_fn chmod;
-        csync_method_chown_fn chown;
-        csync_method_utimes_fn utimes;
-        csync_method_sendfile_fn sendfile;
-        csync_method_set_property_fn set_property;
-        csync_method_get_error_string_fn get_error_string;
-        csync_method_commit_fn commit;
+  size_t method_table_size;           /* Used for versioning */
+  csync_method_get_capabilities_fn get_capabilities;
+  csync_method_open_fn open;
+  csync_method_creat_fn creat;
+  csync_method_close_fn close;
+  csync_method_read_fn read;
+  csync_method_write_fn write;
+  csync_method_lseek_fn lseek;
+  csync_method_opendir_fn opendir;
+  csync_method_closedir_fn closedir;
+  csync_method_readdir_fn readdir;
+  csync_method_mkdir_fn mkdir;
+  csync_method_rmdir_fn rmdir;
+  csync_method_stat_fn stat;
+  csync_method_rename_fn rename;
+  csync_method_unlink_fn unlink;
+  csync_method_chmod_fn chmod;
+  csync_method_chown_fn chown;
+  csync_method_utimes_fn utimes;
+  csync_method_set_property_fn set_property;
+  csync_method_get_error_string_fn get_error_string;
+  csync_method_commit_fn commit;
+  csync_method_put_fn put;
+  csync_method_get_fn get;
+  csync_method_get_file_id_fn get_file_id;
+  csync_method_sendfile_fn sendfile;
 };
 
 #endif /* _CSYNC_VIO_H */

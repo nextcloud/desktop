@@ -1,21 +1,22 @@
 /*
  * libcsync -- a library to sync a directory with another
  *
- * Copyright (c) 2012      by Andreas Schneider <asn@cryptomilk.org>
+ * Copyright (c) 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
+ * Copyright (c) 2012-2013 by Klaas Freitag <freitag@owncloud.com>wie
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 #include "config.h"
@@ -154,7 +155,7 @@ int csync_fnmatch(__const char *__pattern, __const char *__name, int __flags) {
 }
 #endif /* HAVE_FNMATCH */
 
-CSYNC_ERROR_CODE csync_errno_to_csync_error(CSYNC_ERROR_CODE default_err)
+CSYNC_STATUS csync_errno_to_status(int error, CSYNC_STATUS default_status)
 {
 
   /*
@@ -196,68 +197,68 @@ CSYNC_ERROR_CODE csync_errno_to_csync_error(CSYNC_ERROR_CODE default_err)
   CSYNC_ERR_UNSPEC
 */
 
-  CSYNC_ERROR_CODE csync_err = CSYNC_ERR_NONE;
+  CSYNC_STATUS status = CSYNC_STATUS_OK;
 
-  switch( errno ) {
+  switch (error) {
   case 0:
-    csync_err = CSYNC_ERR_NONE;
+    status = CSYNC_STATUS_OK;
     break;
     /* The custom errnos first. */
   case ERRNO_GENERAL_ERROR:
-    csync_err = CSYNC_ERR_UNSPEC;
+    status = CSYNC_STATUS_UNSUCCESSFUL;
     break;
   case ERRNO_LOOKUP_ERROR: /* In Neon: Server or proxy hostname lookup failed */
-    csync_err = CSYNC_ERR_LOOKUP;
+    status = CSYNC_STATUS_LOOKUP_ERROR;
     break;
   case ERRNO_USER_UNKNOWN_ON_SERVER: /* Neon: User authentication on server failed. */
-    csync_err = CSYNC_ERR_AUTH_SERVER;
+    status = CSYNC_STATUS_SERVER_AUTH_ERROR;
     break;
   case ERRNO_PROXY_AUTH:
-    csync_err = CSYNC_ERR_AUTH_PROXY; /* Neon: User authentication on proxy failed */
+    status = CSYNC_STATUS_PROXY_AUTH_ERROR; /* Neon: User authentication on proxy failed */
     break;
   case ERRNO_CONNECT:
-    csync_err = CSYNC_ERR_CONNECT; /* Network: Connection error */
+    status = CSYNC_STATUS_CONNECT_ERROR; /* Network: Connection error */
     break;
   case ERRNO_TIMEOUT:
-    csync_err = CSYNC_ERR_TIMEOUT; /* Network: Timeout error */
+    status = CSYNC_STATUS_TIMEOUT; /* Network: Timeout error */
     break;
   case ERRNO_QUOTA_EXCEEDED:
-    csync_err = CSYNC_ERR_QUOTA;   /* Quota exceeded */
+    status = CSYNC_STATUS_QUOTA_EXCEEDED;   /* Quota exceeded */
     break;
   case ERRNO_SERVICE_UNAVAILABLE:
-    csync_err = CSYNC_ERR_SERVICE_UNAVAILABLE;  /* Service temporarily down */
+    status = CSYNC_STATUS_SERVICE_UNAVAILABLE;  /* Service temporarily down */
     break;
   case EFBIG:
-    csync_err = CSYNC_ERR_FILE_TOO_BIG;          /* File larger than 2MB */
+    status = CSYNC_STATUS_FILE_SIZE_ERROR;          /* File larger than 2MB */
     break;
   case ERRNO_PRECONDITION:
   case ERRNO_RETRY:
   case ERRNO_REDIRECT:
   case ERRNO_WRONG_CONTENT:
-    csync_err = CSYNC_ERR_HTTP;
+    status = CSYNC_STATUS_HTTP_ERROR;
     break;
 
   case ERRNO_TIMEDELTA:
-    csync_err = CSYNC_ERR_TIMESKEW;
+    status = CSYNC_STATUS_TIMESKEW;
     break;
   case EPERM:                  /* Operation not permitted */
   case EACCES:                /* Permission denied */
-    csync_err = CSYNC_ERR_PERM;
+    status = CSYNC_STATUS_PERMISSION_DENIED;
     break;
   case ENOENT:                 /* No such file or directory */
-    csync_err = CSYNC_ERR_NOT_FOUND;
+    status = CSYNC_STATUS_NOT_FOUND;
     break;
   case EAGAIN:                /* Try again */
-    csync_err = CSYNC_ERR_TIMEOUT;
+    status = CSYNC_STATUS_TIMEOUT;
     break;
   case EEXIST:                /* File exists */
-    csync_err = CSYNC_ERR_EXISTS;
+    status = CSYNC_STATUS_FILE_EXISTS;
     break;
   case EINVAL:
-    csync_err = CSYNC_ERR_PARAM;
+    status = CSYNC_STATUS_PARAM_ERROR;
     break;
   case ENOSPC:
-    csync_err = CSYNC_ERR_NOSPC;
+    status = CSYNC_STATUS_OUT_OF_SPACE;
     break;
 
     /* All the remaining basic errnos: */
@@ -292,12 +293,8 @@ CSYNC_ERROR_CODE csync_errno_to_csync_error(CSYNC_ERROR_CODE default_err)
 
   case ERRNO_ERROR_STRING:
   default:
-    csync_err = default_err;
+    status = default_status;
   }
 
-  return csync_err;
+  return status;
 }
-
-
-
-
