@@ -215,7 +215,6 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
   enum csync_notify_type_e notify_start_kind = CSYNC_NOTIFY_START_UPLOAD;
   enum csync_notify_type_e notify_end_kind = CSYNC_NOTIFY_FINISHED_UPLOAD;
 
-
   /* Check if there is progress info stored in the database for this file */
   progress_info = csync_statedb_get_progressinfo(ctx, st->phash, st->modtime, st->md5);
   rep_bak = ctx->replica;
@@ -769,7 +768,7 @@ static int _backup_path(CSYNC *ctx, char** duri, const char* uri, const char* pa
 	CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"filename : %s",info->filename);
 	CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"extension: %s",info->extension);
 
-	if (asprintf(duri, "%s/%s%s_conflict-%s%s", uri,info->directory ,info->filename,timestring,info->extension) < 0) {
+    if (asprintf(duri, "%s/%s%s_conflict-%s%s", uri, info->directory , info->filename, timestring, info->extension) < 0) {
 		rc = -1;
 	}
 
@@ -821,10 +820,7 @@ static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st, char **duri) {
 		default:
 		break;
 	}
-  }
-
-  else
-  {
+  } else {
 	  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"instruction not allowed: %i %s",st->instruction,csync_instruction_str(st->instruction));
 	  rc = -1;
       goto out;
@@ -1041,8 +1037,7 @@ static int _csync_conflict_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   rc = _csync_backup_file(ctx, st, &conflict_file_name);
   
-  if(rc>=0)
-  {
+  if(rc >= 0 ) {
 	 rc = _csync_push_file(ctx, st);
   }
 
@@ -1055,12 +1050,12 @@ static int _csync_conflict_file(CSYNC *ctx, csync_file_stat_t *st) {
 
       if( c_compare_file(uri, conflict_file_name) == 1 ) {
         /* the files are byte wise equal. The conflict can be erased. */
-        if (csync_vio_local_unlink(conflict_file_name) < 0) {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "REMOVE of csync conflict file %s failed.", conflict_file_name );
-        } else {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "REMOVED csync conflict file %s as files are equal.",
-                    conflict_file_name );
-        }
+          if (csync_vio_local_unlink(conflict_file_name) < 0) {
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "REMOVE of csync conflict file %s failed.", conflict_file_name );
+          } else {
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "REMOVED csync conflict file %s as files are equal.",
+                      conflict_file_name );
+          }
       }
     }
   }
