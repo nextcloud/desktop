@@ -47,8 +47,8 @@ OwncloudSetupWizard::OwncloudSetupWizard(QObject* parent) :
              this, SLOT(slotConnectToOCUrl( const QString& )));
     connect( _ocWizard, SIGNAL(createLocalAndRemoteFolders(QString, QString)),
              this, SLOT(slotCreateLocalAndRemoteFolders(QString, QString)));
-    connect( _ocWizard, SIGNAL(finished(int)),this,SLOT(slotAssistantFinished(int)));
-
+    connect( _ocWizard, SIGNAL(basicSetupFinished(int)),
+             this, SLOT(slotAssistantFinished(int)));
     connect( _ocWizard, SIGNAL(clearPendingRequests()),
              this, SLOT(slotClearPendingRequests()));
 }

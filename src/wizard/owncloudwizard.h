@@ -69,6 +69,8 @@ signals:
     void determineAuthType(const QString&);
     void connectToOCUrl( const QString& );
     void createLocalAndRemoteFolders(const QString&, const QString&);
+    // make sure to connect to this, rather than finished(int)!!
+    void basicSetupFinished( int );
 
 private:
     OwncloudSetupPage* _setupPage;
