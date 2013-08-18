@@ -222,7 +222,11 @@ void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f )
     SyncResult res = f->syncResult();
     SyncResult::Status status = res.status();
 
-    QString errors = res.errorStrings().join(QLatin1String("<br/>"));
+    QStringList errorList = res.errorStrings();
+    QString errors;
+    if( ! errorList.isEmpty() ) {
+        errors = res.errorStrings().join(QLatin1String("<br/>"));
+    }
 
     Theme *theme = Theme::instance();
     item->setData( theme->statusHeaderText( status ),  Qt::ToolTipRole );
