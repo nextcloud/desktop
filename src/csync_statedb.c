@@ -253,9 +253,7 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb) {
   }
 
   /* optimization for speeding up SQLite */
-  result = csync_statedb_query(ctx, "PRAGMA synchronous = OFF;");
-  c_strlist_destroy(result);
-  result = csync_statedb_query(ctx, "PRAGMA journal_mode = MEMORY;");
+  result = csync_statedb_query(ctx, "PRAGMA synchronous = FULL;");
   c_strlist_destroy(result);
   result = csync_statedb_query(ctx, "PRAGMA case_sensitive_like = ON;");
   c_strlist_destroy(result);
