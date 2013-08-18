@@ -38,6 +38,16 @@
 
 namespace Mirall {
 
+static const char progressBarStyleC[] =
+        "QProgressBar {"
+        "border: 2px solid grey;"
+        "border-radius: 5px;"
+        "text-align: center;"
+        "}"
+        "QProgressBar::chunk {"
+        "background-color: %1; width: 1px;"
+        "}";
+
 AccountSettings::AccountSettings(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::AccountSettings),
@@ -75,7 +85,8 @@ AccountSettings::AccountSettings(QWidget *parent) :
     connect(ui->_folderList, SIGNAL(clicked(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
     connect(ui->_folderList, SIGNAL(doubleClicked(QModelIndex)),SLOT(slotDoubleClicked(QModelIndex)));
 
-    ui->quotaProgressBar->setStyleSheet(" QProgressBar { border: 2px solid grey; border-radius: 5px; text-align: center; } QProgressBar::chunk {background-color: #05B8CC; width: 1px;}");
+    QColor color = palette().highlight().color();
+    ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));
     ownCloudInfo *ocInfo = ownCloudInfo::instance();
     slotUpdateQuota(ocInfo->lastQuotaTotalBytes(), ocInfo->lastQuotaUsedBytes());
     connect(ocInfo, SIGNAL(quotaUpdated(qint64,qint64)), SLOT(slotUpdateQuota(qint64,qint64)));
