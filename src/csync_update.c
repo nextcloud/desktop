@@ -311,7 +311,7 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
 
   if (ctx->abort) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Aborted!");
-    ctx->error_code = CSYNC_ERR_ABORTED;
+    ctx->status_code = CSYNC_STATUS_ABORTED;
     return -1;
   }
 
@@ -455,14 +455,13 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
        return 0;
     } else if(errno == EIO ) {
       /* Proxy problems (ownCloud) */
-      ctx->error_code = CSYNC_ERR_PROXY;
+      ctx->status_code = CSYNC_STATUS_PROXY_ERROR;
       goto error;
     } else {
       C_STRERROR(errno, errbuf, sizeof(errbuf));
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
           "opendir failed for %s - %s (errno %d)",
           uri, errbuf, errno);
-      ctx->error_code = csync_errno_to_csync_error( CSYNC_ERR_UPDATE );
       goto error;
     }
   }

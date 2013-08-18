@@ -119,6 +119,7 @@ enum csync_status_codes_e {
   CSYNC_STATUS_OPENDIR_ERROR,
   CSYNC_STATUS_READDIR_ERROR,
   CSYNC_STATUS_OPEN_ERROR,
+  CSYNC_STATUS_ABORTED,
 };
 
 typedef enum csync_status_codes_e CSYNC_STATUS;

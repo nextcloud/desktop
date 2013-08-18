@@ -85,7 +85,7 @@ time_t csync_timediff(CSYNC *ctx) {
         "Access dienied to remote uri: %s - %s",
         ctx->remote.uri,
         errbuf);
-    ctx->error_code = CSYNC_ERR_ACCESS_FAILED;
+    ctx->status_code = CSYNC_STATUS_REMOTE_ACCESS_ERROR;
     return -1;
   }
   csync_vio_closedir(ctx, dp);
@@ -107,7 +107,7 @@ time_t csync_timediff(CSYNC *ctx) {
         "Unable to create temporary file: %s - %s",
         luri,
         errbuf);
-    ctx->error_code = CSYNC_ERR_LOCAL_CREATE;
+    ctx->status_code = CSYNC_STATUS_LOCAL_CREATE_ERROR;
     goto out;
   }
   csync_vio_close(ctx, fp);
@@ -120,7 +120,7 @@ time_t csync_timediff(CSYNC *ctx) {
         "Synchronisation is not possible! %s - %s",
         luri,
         errbuf);
-    ctx->error_code = CSYNC_ERR_LOCAL_STAT;
+    ctx->status_code = CSYNC_STATUS_LOCAL_STAT_ERROR;
     goto out;
   }
   timediff = st->mtime;
@@ -137,7 +137,7 @@ time_t csync_timediff(CSYNC *ctx) {
         "Unable to create temporary file: %s - %s",
         ruri,
         errbuf);
-    ctx->error_code = CSYNC_ERR_REMOTE_CREATE;
+    ctx->status_code = CSYNC_STATUS_REMOTE_CREATE_ERROR;
     goto out;
   }
   csync_vio_close(ctx, fp);
@@ -150,7 +150,7 @@ time_t csync_timediff(CSYNC *ctx) {
         "Synchronisation is not possible! %s - %s",
         ruri,
         errbuf);
-    ctx->error_code = CSYNC_ERR_REMOTE_STAT;
+    ctx->status_code = CSYNC_STATUS_REMOTE_STAT_ERROR;
     goto out;
   }
 

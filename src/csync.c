@@ -102,7 +102,7 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
     return -1;
   }
 
-  ctx->error_code = CSYNC_ERR_NONE;
+  ctx->status_code = CSYNC_STATUS_OK;
 
   /* remove trailing slashes */
   len = strlen(local);
@@ -110,7 +110,7 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
 
   ctx->local.uri = c_strndup(local, len);
   if (ctx->local.uri == NULL) {
-    ctx->error_code = CSYNC_ERR_MEM;
+    ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
     free(ctx);
     return -1;
   }
@@ -121,7 +121,7 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
 
   ctx->remote.uri = c_strndup(remote, len);
   if (ctx->remote.uri == NULL) {
-    ctx->error_code = CSYNC_ERR_MEM;
+    ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
     free(ctx);
     return -1;
   }
@@ -179,7 +179,7 @@ int csync_init(CSYNC *ctx) {
     errno = EBADF;
     return -1;
   }
-  ctx->error_code = CSYNC_ERR_NONE;
+  ctx->status_code = CSYNC_STATUS_OK;
 
   ctx->status_code = CSYNC_STATUS_OK;
 
@@ -259,7 +259,6 @@ int csync_init(CSYNC *ctx) {
       /* module name */
       module = c_strndup(ctx->remote.uri, len);
       if (module == NULL) {
-        ctx->error_code = CSYNC_ERR_MODULE;
         rc = -1;
         ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
         goto out;
@@ -275,7 +274,6 @@ retry_vio_init:
           goto retry_vio_init;
         }
         /* Now vio init finally failed which means a module could not be found. */
-        ctx->error_code = CSYNC_ERR_MODULE;
 	CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL,
 		  "The csync module %s could not be loaded.", module);
         SAFE_FREE(module);
@@ -364,17 +362,17 @@ int csync_update(CSYNC *ctx) {
     errno = EBADF;
     return -1;
   }
-  ctx->error_code = CSYNC_ERR_NONE;
+  ctx->status_code = CSYNC_STATUS_OK;
 
   /* try to create lock file */
   if (asprintf(&lock, "%s/%s", ctx->local.uri, CSYNC_LOCK_FILE) < 0) {
-    ctx->error_code = CSYNC_ERR_MEM;
+    ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
     rc = -1;
     return rc;
   }
 
   if (csync_lock(ctx, lock) < 0) {
-    ctx->error_code = CSYNC_ERR_LOCK;
+    ctx->status_code = CSYNC_STATUS_NO_LOCK;
     rc = -1;
     return rc;
   }
@@ -410,7 +408,7 @@ int csync_update(CSYNC *ctx) {
   rc = csync_ftw(ctx, ctx->local.uri, csync_walker, MAX_DEPTH);
   if (rc < 0) {
     if(ctx->status_code == CSYNC_STATUS_OK)
-        ctx->status_code = csync_errno_to_csync_error(CSYNC_STATUS_UPDATE_ERROR);
+        ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_UPDATE_ERROR);
     return -1;
   }
 
@@ -435,7 +433,7 @@ int csync_update(CSYNC *ctx) {
     rc = csync_ftw(ctx, ctx->remote.uri, csync_walker, MAX_DEPTH);
     if (rc < 0) {
         if(ctx->status_code == CSYNC_STATUS_OK)
-            ctx->status_code = csync_errno_to_csync_error(CSYNC_STATUS_UPDATE_ERROR);
+            ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_UPDATE_ERROR);
         return -1;
     }
 
@@ -482,7 +480,7 @@ int csync_reconcile(CSYNC *ctx) {
 
   if (rc < 0) {
       if (!CSYNC_STATUS_IS_OK(ctx->status_code)) {
-          ctx->status_code = csync_errno_to_csync_error( CSYNC_STATUS_RECONCILE_ERROR );
+          ctx->status_code = csync_errno_to_status( errno, CSYNC_STATUS_RECONCILE_ERROR );
       }
       return -1;
   }
@@ -503,7 +501,7 @@ int csync_reconcile(CSYNC *ctx) {
 
   if (rc < 0) {
       if (!CSYNC_STATUS_IS_OK(ctx->status_code)) {
-          ctx->status_code = csync_errno_to_csync_error( CSYNC_STATUS_RECONCILE_ERROR );
+          ctx->status_code = csync_errno_to_status(errno,  CSYNC_STATUS_RECONCILE_ERROR );
       }
       return -1;
   }
@@ -521,12 +519,12 @@ int csync_propagate(CSYNC *ctx) {
     errno = EBADF;
     return -1;
   }
-  ctx->error_code = CSYNC_ERR_NONE;
+  ctx->status_code = CSYNC_STATUS_OK;
 
   rc = csync_init_progress(ctx);
   if (rc < 0) {
-    if( ctx->error_code == CSYNC_ERR_NONE )
-        ctx->error_code = csync_errno_to_csync_error( CSYNC_ERR_PROPAGATE);
+    if( ctx->status_code == CSYNC_STATUS_OK )
+        ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_PROPAGATE_ERROR);
     return -1;
   }
 
@@ -534,8 +532,8 @@ int csync_propagate(CSYNC *ctx) {
   ctx->replica = ctx->remote.type;
   rc = csync_propagate_renames(ctx);
   if (rc < 0) {
-      if( ctx->error_code == CSYNC_ERR_NONE )
-          ctx->error_code = csync_errno_to_csync_error( CSYNC_ERR_PROPAGATE);
+      if( ctx->status_code == CSYNC_STATUS_OK )
+          ctx->status_code = csync_errno_to_status(errno,  CSYNC_STATUS_PROPAGATE_ERROR);
       return -1;
   }
 
@@ -566,7 +564,7 @@ int csync_propagate(CSYNC *ctx) {
 
   if (rc < 0) {
       if (!CSYNC_STATUS_IS_OK(ctx->status_code)) {
-          ctx->status_code = csync_errno_to_csync_error( CSYNC_STATUS_PROPAGATE_ERROR );
+          ctx->status_code = csync_errno_to_status(errno,  CSYNC_STATUS_PROPAGATE_ERROR );
       }
       return -1;
   }
@@ -589,7 +587,7 @@ int csync_propagate(CSYNC *ctx) {
 
   if (rc < 0) {
       if (!CSYNC_STATUS_IS_OK(ctx->status_code)) {
-          ctx->status_code = csync_errno_to_csync_error( CSYNC_STATUS_PROPAGATE_ERROR );
+          ctx->status_code = csync_errno_to_status(errno,  CSYNC_STATUS_PROPAGATE_ERROR );
       }
       return -1;
   }
@@ -618,10 +616,10 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
     }
 
     if (obj == NULL || data == NULL) {
-      ctx->error_code = CSYNC_ERR_PARAM;
+      ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
       return -1;
     }
-    ctx->error_code = CSYNC_ERR_NONE;
+    ctx->status_code = CSYNC_STATUS_OK;
 
     twctx = (_csync_treewalk_context*) ctx->callbacks.userdata;
     if (twctx == NULL) {
@@ -691,7 +689,7 @@ static int _csync_walk_tree(CSYNC *ctx, c_rbtree_t *tree, csync_treewalk_visit_f
     rc = c_rbtree_walk(tree, (void*) ctx, _csync_treewalk_visitor);
     if( rc < 0 ) {
       if( ctx->status_code == CSYNC_STATUS_OK )
-        ctx->status_code = csync_errno_to_csync_error(CSYNC_STATUS_TREE_ERROR);
+          ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_TREE_ERROR);
     }
     ctx->callbacks.userdata = tw_ctx.userdata;
 

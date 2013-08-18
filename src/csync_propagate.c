@@ -516,14 +516,14 @@ start_fd_based:
             /* Severe error */
             switch(errno) {
             case EINVAL:
-              ctx->error_code = CSYNC_ERR_PARAM;
+              ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
               break;
             case ERRNO_USER_ABORT:
-              ctx->error_code = CSYNC_ERR_ABORTED;
+              ctx->status_code = CSYNC_STATUS_ABORTED;
               break;
             case ERRNO_GENERAL_ERROR:
             default:
-              ctx->error_code = CSYNC_ERR_PROPAGATE;
+              ctx->status_code = CSYNC_STATUS_PROPAGATE_ERROR;
               break;
             }
             /* fetch the error string from module. */
@@ -577,7 +577,7 @@ start_fd_based:
           }
 
           if( errno == ERRNO_USER_ABORT ) {
-            ctx->error_code = CSYNC_ERR_ABORTED;
+            ctx->status_code = CSYNC_STATUS_ABORTED;
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Csync file transmission was ABORTED by user!");
           }
           goto out;
@@ -1702,7 +1702,7 @@ static int _csync_propagation_file_visitor(void *obj, void *data) {
 
   if (ctx->abort) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Aborted!");
-    ctx->error_code = CSYNC_ERR_ABORTED;
+    ctx->status_code = CSYNC_STATUS_ABORTED;
     return -1;
   }
 
@@ -1764,7 +1764,7 @@ static int _csync_propagation_dir_visitor(void *obj, void *data) {
 
   if (ctx->abort) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Aborted!");
-    ctx->error_code = CSYNC_ERR_ABORTED;
+    ctx->status_code = CSYNC_STATUS_ABORTED;
     return -1;
   }
 
@@ -1832,14 +1832,14 @@ int csync_init_progress(CSYNC *ctx) {
   ctx->replica = ctx->remote.type;
 
   if (c_rbtree_walk(ctx->remote.tree, (void *) ctx, _csync_propagation_file_count_visitor) < 0) {
-    ctx->error_code = CSYNC_ERR_TREE;
+    ctx->status_code = CSYNC_STATUS_TREE_ERROR;
     return -1;
   }
   ctx->current = LOCAL_REPLICA;
   ctx->replica = ctx->local.type;
 
   if (c_rbtree_walk(ctx->local.tree, (void *) ctx, _csync_propagation_file_count_visitor) < 0) {
-    ctx->error_code = CSYNC_ERR_TREE;
+    ctx->status_code = CSYNC_STATUS_TREE_ERROR;
     return -1;
   }
 
