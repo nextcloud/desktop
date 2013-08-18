@@ -397,31 +397,6 @@ int csync_statedb_create_tables(CSYNC *ctx) {
   char *stmt;
 
   /*
-   * Create temorary table to work on, this speeds up the
-   * creation of the statedb.
-   */
-  result = csync_statedb_query(ctx,
-      "CREATE TABLE IF NOT EXISTS metadata_temp("
-      "phash INTEGER(8),"
-      "pathlen INTEGER,"
-      "path VARCHAR(4096),"
-      "inode INTEGER,"
-      "uid INTEGER,"
-      "gid INTEGER,"
-      "mode INTEGER,"
-      "modtime INTEGER(8),"
-      "type INTEGER,"
-      "md5 VARCHAR(32),"
-      "PRIMARY KEY(phash)"
-      ");"
-      );
-
-  if (result == NULL) {
-    return -1;
-  }
-  c_strlist_destroy(result);
-
-  /*
    * Create 'real' table if not existing. That is only important at the
    * first sync so that other functions do not complain about missing
    * tables.
@@ -497,7 +472,7 @@ int csync_statedb_drop_tables(CSYNC *ctx) {
   c_strlist_t *result = NULL;
 
   result = csync_statedb_query(ctx,
-      "DROP TABLE IF EXISTS metadata_temp;"
+      "DROP TABLE IF EXISTS metadata;"
       );
   if (result == NULL) {
     return -1;
@@ -567,7 +542,7 @@ static int _insert_metadata_visitor(void *obj, void *data) {
 
 
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
-                "SQL statement: INSERT INTO metadata_temp \n"
+                "SQL statement: INSERT INTO metadata \n"
                 "\t\t\t(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5) VALUES \n"
                 "\t\t\t(%lld, %lu, %s, %lld, %u, %u, %u, %lu, %d, %s);",
                 (long long signed int) phash,
@@ -624,7 +599,7 @@ static int _insert_metadata_visitor(void *obj, void *data) {
 
 int csync_statedb_insert_metadata(CSYNC *ctx) {
   c_strlist_t *result = NULL;
-  char buffer[] = "INSERT INTO metadata_temp VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)";
+  char buffer[] = "INSERT INTO metadata VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)";
   sqlite3_stmt* stmt;
   int rc;
 
@@ -652,21 +627,11 @@ int csync_statedb_insert_metadata(CSYNC *ctx) {
   /* FIXME: How do we deal with an error in rbtree_walk? No rollback needed actually */
   if (rc < 0) {
     /* We stay with metadata and remove the tmp database */
-    result = csync_statedb_query(ctx, "DROP TABLE metadata_temp;");
+    result = csync_statedb_query(ctx, "DELETE FROM metadata;");
     c_strlist_destroy(result);
 
     return -1;
   }
-
-  /* If all goes well, drop metadata and rename metadata_temp */
-  result = csync_statedb_query(ctx, "BEGIN TRANSACTION;");
-  c_strlist_destroy(result);
-
-  result = csync_statedb_query(ctx, "DROP TABLE IF EXISTS metadata;");
-  c_strlist_destroy(result);
-
-  result = csync_statedb_query(ctx, "ALTER TABLE metadata_temp RENAME TO metadata;");
-  c_strlist_destroy(result);
 
   result = csync_statedb_query(ctx,
                                "CREATE INDEX IF NOT EXISTS metadata_phash ON metadata(phash);");
@@ -680,10 +645,6 @@ int csync_statedb_insert_metadata(CSYNC *ctx) {
   if (result == NULL) {
       return -1;
   }
-  c_strlist_destroy(result);
-
-
-  result = csync_statedb_query(ctx, "COMMIT TRANSACTION;");
   c_strlist_destroy(result);
 
   return 0;

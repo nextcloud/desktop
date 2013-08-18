@@ -192,7 +192,7 @@ static void check_csync_statedb_create_tables(void **state)
     rc = csync_statedb_create_tables(csync);
     assert_int_equal(rc, 0);
 
-    stmt = sqlite3_mprintf("INSERT INTO metadata_temp"
+    stmt = sqlite3_mprintf("INSERT INTO metadata"
            "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5) VALUES"
                            "(%lu, %d, '%q', %d, %d, %d, %d, %ld, %d, '%q');",
            (unsigned long)42,
