@@ -31,6 +31,9 @@ public:
     FolderWatcherPrivate(FolderWatcher *p);
     ~FolderWatcherPrivate();
 
+    void addPath(const QString &) {}
+    void removePath(const QString &) {}
+
     void startWatching();
     void doNotifyParent();
 

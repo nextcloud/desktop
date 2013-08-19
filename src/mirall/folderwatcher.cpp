@@ -172,5 +172,16 @@ void FolderWatcher::changeDetected(const QString& f)
     setProcessTimer();
 }
 
+void FolderWatcher::addPath(const QString &path )
+{
+    _d->addPath(path);
+}
+
+void FolderWatcher::removePath(const QString &path )
+{
+    _d->removePath(path);
+}
+
+
 } // namespace Mirall
 

@@ -297,11 +297,21 @@ void Folder::bubbleUpSyncResult()
                     newItems++;
                     if (firstItemNew.isEmpty())
                         firstItemNew = item;
+
+                    if (item._type == SyncFileItem::Directory) {
+                        _watcher->addPath(path() + item._file);
+                    }
+
                     break;
                 case CSYNC_INSTRUCTION_REMOVE:
                     removedItems++;
                     if (firstItemDeleted.isEmpty())
                         firstItemDeleted = item;
+
+                    if (item._type == SyncFileItem::Directory) {
+                        _watcher->removePath(path() + item._file);
+                    }
+
                     break;
                 case CSYNC_INSTRUCTION_UPDATED:
                     updatedItems++;

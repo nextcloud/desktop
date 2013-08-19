@@ -119,9 +119,8 @@ void FolderWatcherPrivate::slotINotifyEvent(int mask, int /*cookie*/, const QStr
     }
     else if (mask & IN_DELETE) {
         //qDebug() << cookie << " DELETE: " << path;
-        if ( QFileInfo(path).isDir() && _inotify->directories().contains(path) ) {
-            qDebug() << "(-) Watcher:" << path;
-            _inotify->removePath(path);
+        if ( QFileInfo(path).isDir() ) {
+            removePath(path);
         }
     }
     else if (mask & IN_CLOSE_WRITE) {
@@ -159,5 +158,14 @@ void FolderWatcherPrivate::slotINotifyEvent(int mask, int /*cookie*/, const QStr
     _parent->_pendingPathes[path] = _parent->_pendingPathes[path]+mask;
     _parent->setProcessTimer();
 }
+
+void FolderWatcherPrivate::removePath(const QString &path )
+{
+    if (_inotify->directories().contains(path) ) {
+        qDebug() << "(-) Watcher:" << path;
+        _inotify->removePath(path);
+    }
+}
+
 
 } // namespace Mirall

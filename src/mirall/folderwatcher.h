@@ -88,6 +88,15 @@ public:
     void setEventInterval(int seconds);
 
     QStringList ignores() const;
+
+    /**
+     * Not all backends are recursive by default.
+     * Those need to be notified when a directory is added or removed while the watcher is disabled.
+     * This is a no-op for backend that are recursive
+     */
+    void addPath(const QString&);
+    void removePath(const QString&);
+
 public slots:
     /**
      * Enabled or disables folderChanged() events.
