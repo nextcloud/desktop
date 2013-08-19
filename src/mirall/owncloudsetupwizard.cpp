@@ -47,8 +47,11 @@ OwncloudSetupWizard::OwncloudSetupWizard(QObject* parent) :
              this, SLOT(slotConnectToOCUrl( const QString& )));
     connect( _ocWizard, SIGNAL(createLocalAndRemoteFolders(QString, QString)),
              this, SLOT(slotCreateLocalAndRemoteFolders(QString, QString)));
+    /* basicSetupFinished might be called from a reply from the network.
+       slotAssistantFinished might destroy the temporary QNetworkAccessManager.
+       Therefore Qt::QueuedConnection is required */
     connect( _ocWizard, SIGNAL(basicSetupFinished(int)),
-             this, SLOT(slotAssistantFinished(int)));
+             this, SLOT(slotAssistantFinished(int)), Qt::QueuedConnection);
     connect( _ocWizard, SIGNAL(clearPendingRequests()),
              this, SLOT(slotClearPendingRequests()));
 }
