@@ -179,7 +179,6 @@ int csync_init(CSYNC *ctx) {
     errno = EBADF;
     return -1;
   }
-  ctx->status_code = CSYNC_STATUS_OK;
 
   ctx->status_code = CSYNC_STATUS_OK;
 

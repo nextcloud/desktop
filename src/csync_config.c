@@ -67,8 +67,8 @@ static enum csync_config_opcode_e csync_config_get_opcode(char *keyword) {
 }
 
 static int _csync_config_copy_default (const char *config) {
-    int re = 0;
-    int rc;
+    int rc = 0;
+
 #ifdef _WIN32
     /* For win32, try to copy the conf file from the directory from where the app was started. */
     mbchar_t tcharbuf[MAX_PATH+1];
@@ -106,11 +106,11 @@ static int _csync_config_copy_default (const char *config) {
 # endif
     if (c_copy(SYSCONFDIR "/ocsync/" CSYNC_CONF_FILE, config, 0644) < 0) {
       if (c_copy(BINARYDIR "/config/" CSYNC_CONF_FILE, config, 0644) < 0) {
-        re = -1;
+        rc = -1;
       }
     }
 #endif
-    return re;
+    return rc;
 }
 
 static char *csync_config_get_cmd(char **str) {
