@@ -187,6 +187,10 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
             ctx->module.capabilities.unix_extensions );
   CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "capabilities: use send_file: %s",
             ctx->module.capabilities.use_send_file_to_propagate ? "yes" : "no" );
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "capabilities: get support: %s",
+            ctx->module.capabilities.get_support ? "yes" : "no" );
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "capabilities: put support: %s",
+            ctx->module.capabilities.put_support? "yes" : "no" );
 
   /* Some basic checks */
   if (m->method_table_size == 0) {
