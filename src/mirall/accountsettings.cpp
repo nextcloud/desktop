@@ -448,7 +448,9 @@ void AccountSettings::slotOCInfo( const QString& url, const QString& versionStr,
     qDebug() << "#-------# oC found on " << url;
     /* enable the open button */
     ui->connectLabel->setOpenExternalLinks(true);
-    ui->connectLabel->setText( tr("Connected to <a href=\"%1\">%1</a>.").arg(url) );
+    QUrl safeUrl(url);
+    safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
+    ui->connectLabel->setText( tr("Connected to <a href=\"%1\">%2</a>.").arg(url, safeUrl.toString()) );
     ui->connectLabel->setToolTip( tr("Version: %1 (%2)").arg(versionStr).arg(version));
     ui->_ButtonAdd->setEnabled(true);
 
