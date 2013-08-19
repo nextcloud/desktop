@@ -61,97 +61,100 @@ CSyncThread::~CSyncThread()
 
 //Convert an error code from csync to a user readable string.
 // Keep that function thread safe as it can be called from the sync thread or the main thread
-QString CSyncThread::csyncErrorToString( CSYNC_ERROR_CODE err, const char *errString )
+QString CSyncThread::csyncErrorToString(CSYNC_STATUS err, const char *errString )
 {
     QString errStr;
 
     switch( err ) {
-    case CSYNC_ERR_NONE:
+    case CSYNC_STATUS_OK:
         errStr = tr("Success.");
         break;
-    case CSYNC_ERR_LOG:
-        errStr = tr("CSync Logging setup failed.");
-        break;
-    case CSYNC_ERR_LOCK:
+    case CSYNC_STATUS_NO_LOCK:
         errStr = tr("CSync failed to create a lock file.");
         break;
-    case CSYNC_ERR_STATEDB_LOAD:
+    case CSYNC_STATUS_STATEDB_LOAD_ERROR:
         errStr = tr("CSync failed to load the state db.");
         break;
-    case CSYNC_ERR_MODULE:
+    case CSYNC_STATUS_STATEDB_WRITE_ERROR:
+        errStr = tr("CSync failed to write the state db.");
+        break;
+    case CSYNC_STATUS_NO_MODULE:
         errStr = tr("<p>The %1 plugin for csync could not be loaded.<br/>Please verify the installation!</p>").arg(Theme::instance()->appNameGUI());
         break;
-    case CSYNC_ERR_TIMESKEW:
+    case CSYNC_STATUS_TIMESKEW:
         errStr = tr("The system time on this client is different than the system time on the server. "
                     "Please use a time synchronization service (NTP) on the server and client machines "
                     "so that the times remain the same.");
         break;
-    case CSYNC_ERR_FILESYSTEM:
+    case CSYNC_STATUS_FILESYSTEM_UNKNOWN:
         errStr = tr("CSync could not detect the filesystem type.");
         break;
-    case CSYNC_ERR_TREE:
+    case CSYNC_STATUS_TREE_ERROR:
         errStr = tr("CSync got an error while processing internal trees.");
         break;
-    case CSYNC_ERR_MEM:
+    case CSYNC_STATUS_MEMORY_ERROR:
         errStr = tr("CSync failed to reserve memory.");
         break;
-    case CSYNC_ERR_PARAM:
+    case CSYNC_STATUS_PARAM_ERROR:
         errStr = tr("CSync fatal parameter error.");
         break;
-    case CSYNC_ERR_UPDATE:
+    case CSYNC_STATUS_UPDATE_ERROR:
         errStr = tr("CSync processing step update failed.");
         break;
-    case CSYNC_ERR_RECONCILE:
+    case CSYNC_STATUS_RECONCILE_ERROR:
         errStr = tr("CSync processing step reconcile failed.");
         break;
-    case CSYNC_ERR_PROPAGATE:
+    case CSYNC_STATUS_PROPAGATE_ERROR:
         errStr = tr("CSync processing step propagate failed.");
         break;
-    case CSYNC_ERR_ACCESS_FAILED:
+    case CSYNC_STATUS_REMOTE_ACCESS_ERROR:
         errStr = tr("<p>The target directory does not exist.</p><p>Please check the sync setup.</p>");
         break;
-    case CSYNC_ERR_REMOTE_CREATE:
-    case CSYNC_ERR_REMOTE_STAT:
+    case CSYNC_STATUS_REMOTE_CREATE_ERROR:
+    case CSYNC_STATUS_REMOTE_STAT_ERROR:
         errStr = tr("A remote file can not be written. Please check the remote access.");
         break;
-    case CSYNC_ERR_LOCAL_CREATE:
-    case CSYNC_ERR_LOCAL_STAT:
+    case CSYNC_STATUS_LOCAL_CREATE_ERROR:
+    case CSYNC_STATUS_LOCAL_STAT_ERROR:
         errStr = tr("The local filesystem can not be written. Please check permissions.");
         break;
-    case CSYNC_ERR_PROXY:
+    case CSYNC_STATUS_PROXY_ERROR:
         errStr = tr("CSync failed to connect through a proxy.");
         break;
-    case CSYNC_ERR_LOOKUP:
+    case CSYNC_STATUS_PROXY_AUTH_ERROR:
+        errStr = tr("CSync could not authenticate at the proxy.");
+        break;
+    case CSYNC_STATUS_LOOKUP_ERROR:
         errStr = tr("CSync failed to lookup proxy or server.");
         break;
-    case CSYNC_ERR_AUTH_SERVER:
+    case CSYNC_STATUS_SERVER_AUTH_ERROR:
         errStr = tr("CSync failed to authenticate at the %1 server.").arg(Theme::instance()->appNameGUI());
         break;
-    case CSYNC_ERR_AUTH_PROXY:
-        errStr = tr("CSync failed to authenticate at the proxy.");
-        break;
-    case CSYNC_ERR_CONNECT:
+    case CSYNC_STATUS_CONNECT_ERROR:
         errStr = tr("CSync failed to connect to the network.");
         break;
-    case CSYNC_ERR_TIMEOUT:
+    case CSYNC_STATUS_TIMEOUT:
         errStr = tr("A network connection timeout happend.");
         break;
-    case CSYNC_ERR_HTTP:
+    case CSYNC_STATUS_HTTP_ERROR:
         errStr = tr("A HTTP transmission error happened.");
         break;
-    case CSYNC_ERR_PERM:
+    case CSYNC_STATUS_PERMISSION_DENIED:
         errStr = tr("CSync failed due to not handled permission deniend.");
         break;
-    case CSYNC_ERR_NOT_FOUND:
+    case CSYNC_STATUS_NOT_FOUND:
         errStr = tr("CSync failed to find a specific file.");
         break;
-    case CSYNC_ERR_EXISTS:
+    case CSYNC_STATUS_FILE_EXISTS:
         errStr = tr("CSync tried to create a directory that already exists.");
         break;
-    case CSYNC_ERR_NOSPC:
+    case CSYNC_STATUS_OUT_OF_SPACE:
         errStr = tr("CSync: No space on %1 server available.").arg(Theme::instance()->appNameGUI());
         break;
-    case CSYNC_ERR_UNSPEC:
+    case CSYNC_STATUS_QUOTA_EXCEEDED:
+        errStr = tr("CSync: No space on %1 server available.").arg(Theme::instance()->appNameGUI());
+        break;
+    case CSYNC_STATUS_UNSUCCESSFUL:
         errStr = tr("CSync unspecified error.");
 
     default:
@@ -295,16 +298,15 @@ struct CSyncRunScopeHelper {
 };
 
 void CSyncThread::handleSyncError(CSYNC *ctx, const char *state) {
-    CSYNC_ERROR_CODE err = csync_get_error( ctx );
-    const char *errMsg = csync_get_error_string( ctx );
-    QString errStr = csyncErrorToString(err, errMsg);
+    int err = csync_get_status( ctx );
+    const char *errMsg = csync_get_status_string( ctx );
+    QString errStr = csyncErrorToString( (CSYNC_STATUS)err, errMsg);
     qDebug() << " #### ERROR during "<< state << ": " << errStr;
-    switch (err) {
-    case CSYNC_ERR_SERVICE_UNAVAILABLE:
-    case CSYNC_ERR_CONNECT:
+
+    if( CSYNC_STATUS_IS_EQUAL( err, CSYNC_STATUS_SERVICE_UNAVAILABLE ) ||
+            CSYNC_STATUS_IS_EQUAL( err, CSYNC_STATUS_CONNECT_ERROR )) {
         emit csyncUnavailable();
-        break;
-    default:
+    } else {
         emit csyncError(errStr);
     }
 }
