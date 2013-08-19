@@ -552,9 +552,9 @@ void Application::rebuildRecentMenus()
         _recentActionsMenu->addAction(tr("No items synced recently"));
     } else {
         QListIterator<Progress::Info> i(progressInfoList);
-        i.toBack();
-        while(i.hasPrevious()) {
-            Progress::Info info = i.previous();
+
+        while(i.hasNext()) {
+            Progress::Info info = i.next();
             QString kindStr = Progress::asResultString(info.kind);
             QString timeStr = info.timestamp.toString("hh:mm");
 

@@ -111,9 +111,9 @@ protected:
 
 private:
     ProgressDispatcher(QObject* parent = 0);
-    const int _problemQueueSize;
-    QQueue<Progress::Info> _recentChanges;
-    QQueue<Progress::SyncProblem> _recentProblems;
+    const int _QueueSize;
+    QList<Progress::Info> _recentChanges;
+    QList<Progress::SyncProblem> _recentProblems;
 
     QHash<QString, Progress::Kind> _currentAction;
     static ProgressDispatcher* _instance;

@@ -121,7 +121,7 @@ ProgressDispatcher* ProgressDispatcher::instance() {
 
 ProgressDispatcher::ProgressDispatcher(QObject *parent) :
     QObject(parent),
-    _problemQueueSize(50)
+    _QueueSize(50)
 {
 
 }
@@ -163,9 +163,9 @@ void ProgressDispatcher::setProgressInfo(const QString& folder, const Progress::
         err.error_code    = newProgress.current_file_bytes;
         err.timestamp     = QDateTime::currentDateTime();
 
-        _recentProblems.enqueue( err );
-        if( _recentProblems.size() > _problemQueueSize ) {
-            _recentProblems.dequeue();
+        _recentProblems.prepend( err );
+        if( _recentProblems.size() > _QueueSize ) {
+            _recentProblems.removeLast();
         }
         emit progressSyncProblem( folder, err );
     } else {
@@ -180,7 +180,10 @@ void ProgressDispatcher::setProgressInfo(const QString& folder, const Progress::
         if( newProgress.kind == Progress::EndDownload ||
                 newProgress.kind == Progress::EndUpload ||
                 newProgress.kind == Progress::EndDelete ) {
-            _recentChanges.enqueue(newProgress);
+            _recentChanges.prepend(newProgress);
+            if( _recentChanges.size() > _QueueSize ) {
+                _recentChanges.removeLast();
+            }
         }
         // store the last real action to help clients that start during
         // the Context-phase of an upload or download.
