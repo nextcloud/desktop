@@ -57,7 +57,7 @@ CSyncThread::CSyncThread(CSYNC *csync, const QString &localPath, const QString &
     _csync_ctx = csync;
     _mutex.unlock();
     qRegisterMetaType<SyncFileItem>("SyncFileItem");
-    qRegisterMetaType<CSYNC_ERROR_CODE>("CSYNC_ERROR_CODE");
+    qRegisterMetaType<CSYNC_STATUS>("CSYNC_STATUS");
 }
 
 CSyncThread::~CSyncThread()
@@ -67,7 +67,7 @@ CSyncThread::~CSyncThread()
 
 //Convert an error code from csync to a user readable string.
 // Keep that function thread safe as it can be called from the sync thread or the main thread
-QString CSyncThread::csyncErrorToString(CSYNC_STATUS )
+QString CSyncThread::csyncErrorToString(CSYNC_STATUS err)
 {
     QString errStr;
 
@@ -297,9 +297,9 @@ int CSyncThread::treewalkFinalize(TREE_WALK_FILE* file)
 }
 
 void CSyncThread::handleSyncError(CSYNC *ctx, const char *state) {
-    err = csync_get_status( ctx );
+    CSYNC_STATUS err = CSYNC_STATUS(csync_get_status( ctx ));
     const char *errMsg = csync_get_status_string( ctx );
-    QString errStr = csyncErrorToString(CSYNC_STATUS(err));
+    QString errStr = csyncErrorToString(err);
     if( errMsg ) {
         errStr += QLatin1String("<br/>");
         errStr += QString::fromUtf8(errMsg);
@@ -419,8 +419,8 @@ void CSyncThread::startSync()
 
     _progressDataBase.load(_localPath);
     _propagator.reset(new OwncloudPropagator (session, _localPath, _remotePath, &_progressDataBase));
-    connect(_propagator.data(), SIGNAL(completed(SyncFileItem, CSYNC_ERROR_CODE)),
-            this, SLOT(transferCompleted(SyncFileItem, CSYNC_ERROR_CODE)), Qt::QueuedConnection);
+    connect(_propagator.data(), SIGNAL(completed(SyncFileItem, CSYNC_STATUS)),
+            this, SLOT(transferCompleted(SyncFileItem, CSYNC_STATUS)), Qt::QueuedConnection);
     connect(_propagator.data(), SIGNAL(progress(Progress::Kind,QString,quint64,quint64)),
             this, SLOT(slotProgress(Progress::Kind,QString,quint64,quint64)));
     _iterator = 0;
@@ -445,13 +445,13 @@ void CSyncThread::startSync()
     startNextTransfer();
 }
 
-void CSyncThread::transferCompleted(const SyncFileItem &item, CSYNC_ERROR_CODE error)
+void CSyncThread::transferCompleted(const SyncFileItem &item, CSYNC_STATUS error)
 {
     Action a;
     a.instruction = item._instruction;
 
     // if the propagator had an error for a file, put the error string into the synced item
-    if( error != CSYNC_ERR_NONE
+    if( error != CSYNC_STATUS_OK
             || a.instruction == CSYNC_INSTRUCTION_ERROR) {
 
         // Search for the item in the starting from _iterator because it should be a bit before it.

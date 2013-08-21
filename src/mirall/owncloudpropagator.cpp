@@ -51,7 +51,7 @@ struct ScopedPointerHelpers {
 
 void OwncloudPropagator::propagate(const SyncFileItem &item)
 {
-    _errorCode = CSYNC_ERR_NONE;
+    _errorCode = CSYNC_STATUS_OK;
     _errorString.clear();
     _httpStatusCode = 0;
     switch(item._instruction) {
@@ -404,7 +404,7 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
     QFile tmpFile(_localDir + tmpFileName);
     if (!tmpFile.open(QIODevice::Append)) {
         _errorString = tmpFile.errorString();
-        _errorCode = CSYNC_ERR_FILESYSTEM;
+        _errorCode = CSYNC_STATUS_LOCAL_CREATE_ERROR;
         return CSYNC_INSTRUCTION_ERROR;
     }
 
@@ -560,7 +560,7 @@ bool OwncloudPropagator::check_neon_session()
 {
     bool isOk = true;
     if( !_session ) {
-        _errorCode = CSYNC_ERR_PARAM;
+        _errorCode = CSYNC_STATUS_PARAM_ERROR;
         isOk = false;
     } else {
         const char *p = ne_get_error( _session );
@@ -600,7 +600,7 @@ bool OwncloudPropagator::updateErrorFromSession(int neon_code, ne_request *req)
             if( status ) {
                 if( status->klass != 2 ) {
                     _httpStatusCode = status->code;
-                    _errorCode = CSYNC_ERR_HTTP;
+                    _errorCode = CSYNC_STATUS_HTTP_ERROR;
                     _errorString = QString::fromUtf8( status->reason_phrase );
                     re = true;
                 }
@@ -614,31 +614,31 @@ bool OwncloudPropagator::updateErrorFromSession(int neon_code, ne_request *req)
         break;
     case NE_ERROR:  /* Generic error; use ne_get_error(session) for message */
         _errorString = QString::fromUtf8( ne_get_error(_session) );
-        _errorCode = CSYNC_ERR_HTTP;
+        _errorCode = CSYNC_STATUS_HTTP_ERROR;
         break;
     case NE_LOOKUP:  /* Server or proxy hostname lookup failed */
         _errorString = QString::fromUtf8( ne_get_error(_session) );
-        _errorCode = CSYNC_ERR_LOOKUP;
+        _errorCode = CSYNC_STATUS_LOOKUP_ERROR;
         _hasFatalError = true;
         break;
     case NE_AUTH:     /* User authentication failed on server */
         _errorString = QString::fromUtf8( ne_get_error(_session) );
-        _errorCode = CSYNC_ERR_AUTH_SERVER;
+        _errorCode = CSYNC_STATUS_REMOTE_ACCESS_ERROR;
         _hasFatalError = true;
         break;
     case NE_PROXYAUTH:  /* User authentication failed on proxy */
         _errorString = QString::fromUtf8( ne_get_error(_session) );
-        _errorCode = CSYNC_ERR_AUTH_PROXY;
+        _errorCode = CSYNC_STATUS_PROXY_AUTH_ERROR;
         _hasFatalError = true;
         break;
     case NE_CONNECT:  /* Could not connect to server */
         _errorString = QString::fromUtf8( ne_get_error(_session) );
-        _errorCode = CSYNC_ERR_CONNECT;
+        _errorCode = CSYNC_STATUS_CONNECT_ERROR;
         _hasFatalError = true;
         break;
     case NE_TIMEOUT:  /* Connection timed out */
         _errorString = QString::fromUtf8( ne_get_error(_session) );
-        _errorCode = CSYNC_ERR_TIMEOUT;
+        _errorCode = CSYNC_STATUS_TIMEOUT;
         _hasFatalError = true;
         break;
     case NE_FAILED:   /* The precondition failed */
@@ -646,7 +646,7 @@ bool OwncloudPropagator::updateErrorFromSession(int neon_code, ne_request *req)
     case NE_REDIRECT: /* See ne_redirect.h */
     default:
         _errorString = QString::fromUtf8( ne_get_error(_session) );
-        _errorCode = CSYNC_ERR_HTTP;
+        _errorCode = CSYNC_STATUS_HTTP_ERROR;
         break;
     }
     return re;

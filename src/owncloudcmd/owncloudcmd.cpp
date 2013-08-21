@@ -62,7 +62,6 @@ int main(int argc, char **argv) {
     const char *source_dir = 0;
     const char *target_url = 0;
     const char *config_directory = 0;
-    int verbosity = 0;
 
     ProxyInfo proxyInfo;
 
@@ -95,7 +94,7 @@ int main(int argc, char **argv) {
     }
 
     //csync_set_log_callback(   _csync_ctx, csyncLogCatcher );
-    csync_set_log_verbosity(_csync_ctx, 11);
+    csync_set_log_level(11);
     csync_enable_conflictcopys(_csync_ctx);
 
 

@@ -39,7 +39,7 @@ class OwncloudPropagator : public QObject {
     ProgressDatabase *_progressDb;
 
     QString          _errorString;
-    CSYNC_ERROR_CODE _errorCode;
+    CSYNC_STATUS _errorCode;
     int              _httpStatusCode;
     csync_instructions_e _instruction;
 
@@ -76,7 +76,7 @@ public:
             , _localDir(localDir)
             , _remoteDir(remoteDir)
             , _progressDb(progressDb)
-            , _errorCode(CSYNC_ERR_NONE)
+            , _errorCode(CSYNC_STATUS_OK)
             , _httpStatusCode(0)
             , _hasFatalError(false)
     {
@@ -91,7 +91,7 @@ public:
     int _uploadLimit;
 
 signals:
-    void completed(const SyncFileItem &, CSYNC_ERROR_CODE);
+    void completed(const SyncFileItem &, CSYNC_STATUS);
     void progress(Progress::Kind, const QString &filename, quint64 bytes, quint64 total);
 
 };
