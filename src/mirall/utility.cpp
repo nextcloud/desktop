@@ -300,6 +300,7 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString& guiName,
            << QLatin1String("Terminal=") << "false" << endl
            << QLatin1String("Icon=") << appName << endl
            << QLatin1String("Categories=") << QLatin1String("Network") << endl
+           << QLatin1String("Type=") << QLatin1String("Application") << endl
            << QLatin1String("StartupNotify=") << "false" << endl
            << QLatin1String("X-GNOME-Autostart-enabled=") << "true" << endl
             ;
