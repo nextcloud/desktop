@@ -832,6 +832,10 @@ int csync_commit(CSYNC *ctx) {
     return -1;
   }
 
+  /* We need to save the database even if another propagator was run  */
+  if (ctx->status_code == CSYNC_STATUS_OK && ctx->status & CSYNC_STATUS_RECONCILE)
+      ctx->status = CSYNC_STATUS_DONE;
+
   ctx->status_code = CSYNC_STATUS_OK;
 
   rc = _merge_and_write_statedb(ctx);
