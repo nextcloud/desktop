@@ -16,7 +16,7 @@
 #include "mirall/version.h"
 
 #include <QCoreApplication>
-#include <QSettings>
+#include <QTextStream>
 #include <QDir>
 #include <QFile>
 #include <QUrl>
@@ -286,16 +286,23 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString& guiName,
             qDebug() << "Could not create autostart directory";
             return;
         }
-        QSettings desktopFile(desktopFileLocation, QSettings::IniFormat);
-        desktopFile.beginGroup("Desktop Entry");
-        desktopFile.setValue(QLatin1String("Name"), guiName);
-        desktopFile.setValue(QLatin1String("GenericName"), QLatin1String("File Synchronizer"));
-        desktopFile.setValue(QLatin1String("Exec"), QCoreApplication::applicationFilePath());
-        desktopFile.setValue(QLatin1String("Terminal"), false);
-        desktopFile.setValue(QLatin1String("Icon"), appName);
-        desktopFile.setValue(QLatin1String("Categories"), QLatin1String("Network"));
-        desktopFile.setValue(QLatin1String("StartupNotify"), false);
-        desktopFile.endGroup();
+        QFile iniFile(desktopFileLocation);
+        if (!iniFile.open(QIODevice::WriteOnly)) {
+            qDebug() << "Could not write auto start entry" << desktopFileLocation;
+            return;
+        }
+        QTextStream ts(&iniFile);
+        ts.setCodec("UTF-8");
+        ts << QLatin1String("[Desktop Entry]") << endl
+           << QLatin1String("Name=") << guiName << endl
+           << QLatin1String("GenericName=") << QLatin1String("File Synchronizer") << endl
+           << QLatin1String("Exec=") << QCoreApplication::applicationFilePath() << endl
+           << QLatin1String("Terminal=") << "false" << endl
+           << QLatin1String("Icon=") << appName << endl
+           << QLatin1String("Categories=") << QLatin1String("Network") << endl
+           << QLatin1String("StartupNotify=") << "false" << endl
+           << QLatin1String("X-GNOME-Autostart-enabled=") << "true" << endl
+            ;
     } else {
         if (!QFile::remove(desktopFileLocation)) {
             qDebug() << "Could not remove autostart desktop file";
