@@ -40,7 +40,7 @@ namespace Mirall {
 
 static const char progressBarStyleC[] =
         "QProgressBar {"
-        "border: 2px solid grey;"
+        "border: 1px solid grey;"
         "border-radius: 5px;"
         "text-align: center;"
         "}"
