@@ -539,84 +539,84 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="332"/>
+        <location filename="../src/mirall/folder.cpp" line="342"/>
         <source>New file available</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="332"/>
+        <location filename="../src/mirall/folder.cpp" line="342"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="334"/>
+        <location filename="../src/mirall/folder.cpp" line="344"/>
         <source>New files available</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/folder.cpp" line="334"/>
+        <location filename="../src/mirall/folder.cpp" line="344"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="340"/>
+        <location filename="../src/mirall/folder.cpp" line="350"/>
         <source>File removed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="340"/>
+        <location filename="../src/mirall/folder.cpp" line="350"/>
         <source>&apos;%1&apos; has been removed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="342"/>
+        <location filename="../src/mirall/folder.cpp" line="352"/>
         <source>Files removed</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/folder.cpp" line="342"/>
+        <location filename="../src/mirall/folder.cpp" line="352"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="348"/>
+        <location filename="../src/mirall/folder.cpp" line="358"/>
         <source>File updated</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="348"/>
+        <location filename="../src/mirall/folder.cpp" line="358"/>
         <source>&apos;%1&apos; has been updated.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="350"/>
+        <location filename="../src/mirall/folder.cpp" line="360"/>
         <source>Files updated</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/folder.cpp" line="350"/>
+        <location filename="../src/mirall/folder.cpp" line="360"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="392"/>
+        <location filename="../src/mirall/folder.cpp" line="402"/>
         <source>Error</source>
         <translation>Errore</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="421"/>
+        <location filename="../src/mirall/folder.cpp" line="431"/>
         <source>The CSync thread terminated.</source>
         <translation>Il thread di CSync è stato terminato.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="661"/>
+        <location filename="../src/mirall/folder.cpp" line="671"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Questa sincronizzazione rimuoverà tutti i file nella cartella di sincronizzazione locale &apos;%1&apos;.
 Se tu o il tuo amministratore avete ripristinato il tuo account sul server, scegli &quot;Mantieni i file&quot;. Se desideri che i dati siano rimossi, scegli &quot;Rimuovi tutti i file&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="664"/>
+        <location filename="../src/mirall/folder.cpp" line="674"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -625,17 +625,17 @@ Ciò potrebbe accadere in caso di riconfigurazione della cartella o di rimozione
 Sei sicuro di voler eseguire questa operazione?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="668"/>
+        <location filename="../src/mirall/folder.cpp" line="678"/>
         <source>Remove All Files?</source>
         <translation>Vuoi rimuovere tutti i file?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="670"/>
+        <location filename="../src/mirall/folder.cpp" line="680"/>
         <source>Remove all files</source>
         <translation>Rimuovi tutti i file</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="671"/>
+        <location filename="../src/mirall/folder.cpp" line="681"/>
         <source>Keep files</source>
         <translation>Mantieni i file</translation>
     </message>
@@ -1959,13 +1959,13 @@ name</source>
         <location filename="../src/mirall/progressdispatcher.cpp" line="31"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="43"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>Scarica</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="34"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="47"/>
         <source>Upload</source>
-        <translation type="unfinished"/>
+        <translation>Carica</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="37"/>
@@ -1997,7 +1997,7 @@ name</source>
         <location filename="../src/mirall/progressdispatcher.cpp" line="59"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="107"/>
         <source>deleted</source>
-        <translation type="unfinished"/>
+        <translation>eliminati</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="74"/>
@@ -2031,7 +2031,7 @@ name</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="104"/>
         <source>delete</source>
-        <translation type="unfinished"/>
+        <translation>elimina</translation>
     </message>
 </context>
 <context>
@@ -2039,22 +2039,22 @@ name</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="48"/>
         <source>Status undefined</source>
-        <translation type="unfinished"/>
+        <translation>Stato non definito</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="51"/>
         <source>Waiting to start sync</source>
-        <translation type="unfinished"/>
+        <translation>In attesa di sincronizzazione</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="54"/>
         <source>Sync is running</source>
-        <translation type="unfinished"/>
+        <translation>La sincronizzazione è in corso</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="57"/>
         <source>Sync Success</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizzazione completata</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="60"/>
@@ -2064,12 +2064,12 @@ name</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>
         <source>Sync Error - Click info button for details.</source>
-        <translation type="unfinished"/>
+        <translation>Errore di sincronizzazione - Clic sul pulsante informazioni per i dettagli.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="66"/>
         <source>Setup Error</source>
-        <translation type="unfinished"/>
+        <translation>Errore di configurazione</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="69"/>

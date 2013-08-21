@@ -171,7 +171,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="453"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Muodosta yhteys - &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="454"/>
@@ -279,7 +279,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="526"/>
         <source>%1% of %2 in use</source>
-        <translation type="unfinished"/>
+        <translation>%1%/%2 käytössä</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="598"/>
@@ -536,103 +536,103 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="291"/>
         <source>File %1</source>
-        <translation type="unfinished"/>
+        <translation>Tiedosto %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="332"/>
+        <location filename="../src/mirall/folder.cpp" line="342"/>
         <source>New file available</source>
         <translation>Uusi tiedosto saatavilla</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="332"/>
+        <location filename="../src/mirall/folder.cpp" line="342"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
         <translation>&apos;%1&apos; on synkronoitu tälle koneelle.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="334"/>
+        <location filename="../src/mirall/folder.cpp" line="344"/>
         <source>New files available</source>
         <translation>Uusia tiedostoja saatavilla</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/folder.cpp" line="334"/>
+        <location filename="../src/mirall/folder.cpp" line="344"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="340"/>
+        <location filename="../src/mirall/folder.cpp" line="350"/>
         <source>File removed</source>
         <translation>Tiedosto poistettu</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="340"/>
+        <location filename="../src/mirall/folder.cpp" line="350"/>
         <source>&apos;%1&apos; has been removed.</source>
         <translation>&apos;%1&apos; poistettiin.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="342"/>
+        <location filename="../src/mirall/folder.cpp" line="352"/>
         <source>Files removed</source>
         <translation>Tiedostoja poistettu</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/folder.cpp" line="342"/>
+        <location filename="../src/mirall/folder.cpp" line="352"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="348"/>
+        <location filename="../src/mirall/folder.cpp" line="358"/>
         <source>File updated</source>
         <translation>Tiedosto päivitetty</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="348"/>
+        <location filename="../src/mirall/folder.cpp" line="358"/>
         <source>&apos;%1&apos; has been updated.</source>
         <translation>&apos;%1&apos; on päivitetty.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="350"/>
+        <location filename="../src/mirall/folder.cpp" line="360"/>
         <source>Files updated</source>
         <translation>Tiedostoja päivitetty</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/folder.cpp" line="350"/>
+        <location filename="../src/mirall/folder.cpp" line="360"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="392"/>
+        <location filename="../src/mirall/folder.cpp" line="402"/>
         <source>Error</source>
         <translation>Virhe</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="421"/>
+        <location filename="../src/mirall/folder.cpp" line="431"/>
         <source>The CSync thread terminated.</source>
         <translation>Csyncin säikeen suoritus päättyi.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="661"/>
+        <location filename="../src/mirall/folder.cpp" line="671"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="664"/>
+        <location filename="../src/mirall/folder.cpp" line="674"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="668"/>
+        <location filename="../src/mirall/folder.cpp" line="678"/>
         <source>Remove All Files?</source>
         <translation>Poistetaanko kaikki tiedostot?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="670"/>
+        <location filename="../src/mirall/folder.cpp" line="680"/>
         <source>Remove all files</source>
         <translation>Poista kaikki tiedostot</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="671"/>
+        <location filename="../src/mirall/folder.cpp" line="681"/>
         <source>Keep files</source>
         <translation>Säilytä tiedostot</translation>
     </message>
@@ -781,7 +781,7 @@ documentation for possible fixes.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="191"/>
         <source>Add Remote Folder</source>
-        <translation type="unfinished"/>
+        <translation>Lisää etäkansio</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="192"/>
@@ -1202,7 +1202,7 @@ name</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="47"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Muodosta yhteys - %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="48"/>
@@ -1212,7 +1212,7 @@ name</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="57"/>
         <source>Connect...</source>
-        <translation type="unfinished"/>
+        <translation>Yhdistä...</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="107"/>
@@ -1250,12 +1250,12 @@ name</source>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="41"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Muodosta yhteys - %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="42"/>
         <source>Enter user credentials</source>
-        <translation type="unfinished"/>
+        <translation>Anna käyttäjätunnus</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="158"/>
@@ -1268,12 +1268,12 @@ name</source>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="43"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Muodosta yhteys - %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="44"/>
         <source>Setup ownCloud server</source>
-        <translation type="unfinished"/>
+        <translation>Määritä ownCloud-palvelimen asetukset</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="100"/>
@@ -1444,7 +1444,7 @@ name</source>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="39"/>
         <source>Everything set up!</source>
-        <translation type="unfinished"/>
+        <translation>Kaikki valmiina!</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="78"/>
@@ -1954,13 +1954,13 @@ name</source>
         <location filename="../src/mirall/progressdispatcher.cpp" line="31"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="43"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>Lataa</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="34"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="47"/>
         <source>Upload</source>
-        <translation type="unfinished"/>
+        <translation>Lähetä</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="37"/>
@@ -1992,7 +1992,7 @@ name</source>
         <location filename="../src/mirall/progressdispatcher.cpp" line="59"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="107"/>
         <source>deleted</source>
-        <translation type="unfinished"/>
+        <translation>poistettu</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="74"/>
@@ -2026,7 +2026,7 @@ name</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="104"/>
         <source>delete</source>
-        <translation type="unfinished"/>
+        <translation>poista</translation>
     </message>
 </context>
 <context>
@@ -2034,22 +2034,22 @@ name</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="48"/>
         <source>Status undefined</source>
-        <translation type="unfinished"/>
+        <translation>Tila on määrittelemätön.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="51"/>
         <source>Waiting to start sync</source>
-        <translation type="unfinished"/>
+        <translation>Odotetaan synkronoinnin käynnistymistä</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="54"/>
         <source>Sync is running</source>
-        <translation type="unfinished"/>
+        <translation>Synkronointi meneillään</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="57"/>
         <source>Sync Success</source>
-        <translation type="unfinished"/>
+        <translation>Synkronointi valmistui</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="60"/>
@@ -2059,22 +2059,22 @@ name</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>
         <source>Sync Error - Click info button for details.</source>
-        <translation type="unfinished"/>
+        <translation>Synkronointivirhe – Napsauta Tietoja.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="66"/>
         <source>Setup Error</source>
-        <translation type="unfinished"/>
+        <translation>Asetusvirhe.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="69"/>
         <source>The server is currently unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Palvelin ei ole juuri nyt tavoitettavissa</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="72"/>
         <source>Preparing to sync</source>
-        <translation type="unfinished"/>
+        <translation>Valmistaudutaan synkronointiin</translation>
     </message>
 </context>
 </TS>

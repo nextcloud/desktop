@@ -171,7 +171,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="453"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; へ接続しました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="454"/>
@@ -536,87 +536,87 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="291"/>
         <source>File %1</source>
-        <translation type="unfinished"/>
+        <translation>ファイル %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="332"/>
+        <location filename="../src/mirall/folder.cpp" line="342"/>
         <source>New file available</source>
         <translation>新しいファイルがあります</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="332"/>
+        <location filename="../src/mirall/folder.cpp" line="342"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
         <translation>&apos;%1&apos; はこのマシンに同期しています。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="334"/>
+        <location filename="../src/mirall/folder.cpp" line="344"/>
         <source>New files available</source>
         <translation>新しいファイルがあります</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/folder.cpp" line="334"/>
+        <location filename="../src/mirall/folder.cpp" line="344"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
         <translation><numerusform>&apos;%1&apos; とその他 %n 個のファイルがこのマシンに同期しています。</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="340"/>
+        <location filename="../src/mirall/folder.cpp" line="350"/>
         <source>File removed</source>
         <translation>ファイルは削除済みです</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="340"/>
+        <location filename="../src/mirall/folder.cpp" line="350"/>
         <source>&apos;%1&apos; has been removed.</source>
         <translation>&apos;%1&apos; は削除済みです。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="342"/>
+        <location filename="../src/mirall/folder.cpp" line="352"/>
         <source>Files removed</source>
         <translation>ファイルは削除済みです</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/folder.cpp" line="342"/>
+        <location filename="../src/mirall/folder.cpp" line="352"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
         <translation><numerusform>&apos;%1&apos; とその他 %n 個のファイルは削除済みです。</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="348"/>
+        <location filename="../src/mirall/folder.cpp" line="358"/>
         <source>File updated</source>
         <translation>ファイルはアップロード済みです</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="348"/>
+        <location filename="../src/mirall/folder.cpp" line="358"/>
         <source>&apos;%1&apos; has been updated.</source>
         <translation>&apos;%1&apos; は更新されています</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="350"/>
+        <location filename="../src/mirall/folder.cpp" line="360"/>
         <source>Files updated</source>
         <translation>ファイルは更新されています</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/folder.cpp" line="350"/>
+        <location filename="../src/mirall/folder.cpp" line="360"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
         <translation><numerusform>&apos;%1&apos; とその他 %n 個のファイルは更新済みです。</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="392"/>
+        <location filename="../src/mirall/folder.cpp" line="402"/>
         <source>Error</source>
         <translation>エラー</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="421"/>
+        <location filename="../src/mirall/folder.cpp" line="431"/>
         <source>The CSync thread terminated.</source>
         <translation>CSyncのスレッドが終了しました。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="661"/>
+        <location filename="../src/mirall/folder.cpp" line="671"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>この同期により、ローカルの同期フォルダ &apos;%1&apos;にある全ファイルが削除されます。
 あなた、またはあなたの管理者がサーバー上のあなたのアカウントをリセットした場合、「ファイルを残す」を選んでください。データを削除したい場合は、「すべてのファイルを削除」を選んでください。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="664"/>
+        <location filename="../src/mirall/folder.cpp" line="674"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -625,17 +625,17 @@ Are you sure you want to perform this operation?</source>
 本当にこの操作を実行しますか？</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="668"/>
+        <location filename="../src/mirall/folder.cpp" line="678"/>
         <source>Remove All Files?</source>
         <translation>すべてのファイルを削除しますか？</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="670"/>
+        <location filename="../src/mirall/folder.cpp" line="680"/>
         <source>Remove all files</source>
         <translation>すべてのファイルを削除</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="671"/>
+        <location filename="../src/mirall/folder.cpp" line="681"/>
         <source>Keep files</source>
         <translation>ファイルを残す</translation>
     </message>
@@ -1219,7 +1219,7 @@ name</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="57"/>
         <source>Connect...</source>
-        <translation type="unfinished"/>
+        <translation>接続...</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="107"/>
@@ -1961,34 +1961,34 @@ name</source>
         <location filename="../src/mirall/progressdispatcher.cpp" line="31"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="43"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>ダウンロード</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="34"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="47"/>
         <source>Upload</source>
-        <translation type="unfinished"/>
+        <translation>アップロード</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="37"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="80"/>
         <source>Context</source>
-        <translation type="unfinished"/>
+        <translation>コンテキスト</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="40"/>
         <source>Inactive</source>
-        <translation type="unfinished"/>
+        <translation>無効</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="50"/>
         <source>Start</source>
-        <translation type="unfinished"/>
+        <translation>開始</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="53"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>終了</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="56"/>
@@ -1999,41 +1999,41 @@ name</source>
         <location filename="../src/mirall/progressdispatcher.cpp" line="59"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="107"/>
         <source>deleted</source>
-        <translation type="unfinished"/>
+        <translation>削除</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="74"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="86"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="92"/>
         <source>downloading</source>
-        <translation type="unfinished"/>
+        <translation>ダウンロード中</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="77"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="89"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="95"/>
         <source>uploading</source>
-        <translation type="unfinished"/>
+        <translation>アップロード中</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="83"/>
         <source>inactive</source>
-        <translation type="unfinished"/>
+        <translation>無効</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="98"/>
         <source>starting</source>
-        <translation type="unfinished"/>
+        <translation>開始</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="101"/>
         <source>finished</source>
-        <translation type="unfinished"/>
+        <translation>終了</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="104"/>
         <source>delete</source>
-        <translation type="unfinished"/>
+        <translation>削除</translation>
     </message>
 </context>
 <context>
@@ -2041,22 +2041,22 @@ name</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="48"/>
         <source>Status undefined</source>
-        <translation type="unfinished"/>
+        <translation>未定義の状態</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="51"/>
         <source>Waiting to start sync</source>
-        <translation type="unfinished"/>
+        <translation>同期開始を待っています</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="54"/>
         <source>Sync is running</source>
-        <translation type="unfinished"/>
+        <translation>同期を実行中</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="57"/>
         <source>Sync Success</source>
-        <translation type="unfinished"/>
+        <translation>同期成功</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="60"/>
@@ -2066,22 +2066,22 @@ name</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>
         <source>Sync Error - Click info button for details.</source>
-        <translation type="unfinished"/>
+        <translation>同期エラー: ボタンを押して詳細を確認してください。</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="66"/>
         <source>Setup Error</source>
-        <translation type="unfinished"/>
+        <translation>設定エラー</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="69"/>
         <source>The server is currently unavailable</source>
-        <translation type="unfinished"/>
+        <translation>サーバは現在利用できません</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="72"/>
         <source>Preparing to sync</source>
-        <translation type="unfinished"/>
+        <translation>同期の準備中</translation>
     </message>
 </context>
 </TS>

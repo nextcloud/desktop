@@ -172,7 +172,7 @@ Diese Funktion ist nur für Wartungszwecke gedacht. Es werden keine Dateien entf
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="453"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Verbunden mit &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="454"/>
@@ -537,87 +537,87 @@ Diese Funktion ist nur für Wartungszwecke gedacht. Es werden keine Dateien entf
     <message>
         <location filename="../src/mirall/folder.cpp" line="291"/>
         <source>File %1</source>
-        <translation type="unfinished"/>
+        <translation>Datei %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="332"/>
+        <location filename="../src/mirall/folder.cpp" line="342"/>
         <source>New file available</source>
         <translation>Neue Datei verfügbar</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="332"/>
+        <location filename="../src/mirall/folder.cpp" line="342"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
         <translation>&apos;%1&apos; wurde mit diesem Gerät synchronisiert.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="334"/>
+        <location filename="../src/mirall/folder.cpp" line="344"/>
         <source>New files available</source>
         <translation>Neue Dateien sind verfügbar</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/folder.cpp" line="334"/>
+        <location filename="../src/mirall/folder.cpp" line="344"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
         <translation><numerusform>&apos;%1&apos; und %n andere Datei(en) wurde(n) mit diesem Gerät synchronisiert.</numerusform><numerusform>&apos;%1&apos; und %n andere Datei(en) wurde(n) mit diesem Gerät synchronisiert.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="340"/>
+        <location filename="../src/mirall/folder.cpp" line="350"/>
         <source>File removed</source>
         <translation>Datei gelöscht</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="340"/>
+        <location filename="../src/mirall/folder.cpp" line="350"/>
         <source>&apos;%1&apos; has been removed.</source>
         <translation>&apos;%1&apos; wurde gelöscht.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="342"/>
+        <location filename="../src/mirall/folder.cpp" line="352"/>
         <source>Files removed</source>
         <translation>Dateien gelöscht</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/folder.cpp" line="342"/>
+        <location filename="../src/mirall/folder.cpp" line="352"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
         <translation><numerusform>%1&apos; und %n andere Datei(en) wurden entfernt.</numerusform><numerusform>%1&apos; und %n andere Datei(en) wurden entfernt.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="348"/>
+        <location filename="../src/mirall/folder.cpp" line="358"/>
         <source>File updated</source>
         <translation>Datei aktualisiert</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="348"/>
+        <location filename="../src/mirall/folder.cpp" line="358"/>
         <source>&apos;%1&apos; has been updated.</source>
         <translation>&apos;%1&apos; wurde aktualisiert.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="350"/>
+        <location filename="../src/mirall/folder.cpp" line="360"/>
         <source>Files updated</source>
         <translation>Dateien aktualisiert</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/folder.cpp" line="350"/>
+        <location filename="../src/mirall/folder.cpp" line="360"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
         <translation><numerusform>%1&apos; und %n andere Datei(en) wurden aktualisiert.</numerusform><numerusform>%1&apos; und %n andere Datei(en) wurden aktualisiert.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="392"/>
+        <location filename="../src/mirall/folder.cpp" line="402"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="421"/>
+        <location filename="../src/mirall/folder.cpp" line="431"/>
         <source>The CSync thread terminated.</source>
         <translation>Der CSync-Thread wurde beendet.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="661"/>
+        <location filename="../src/mirall/folder.cpp" line="671"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Dieser Synchronisationsvorgang würde alle Dateien in dem lokalen Ordner &apos;%1&apos; entfernen.
 Wenn Sie oder Ihr Administrator Ihr Konto auf dem Server zurückgesetzt haben, wählen Sie &quot;Dateien behalten&quot;. Wenn Sie ihre Daten löschen wollen, wählen Sie &quot;Alle Dateien entfernen&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="664"/>
+        <location filename="../src/mirall/folder.cpp" line="674"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -626,17 +626,17 @@ Vielleicht wurde der Ordner neu konfiguriert, oder alle Dateien wurden händisch
 Sind Sie sicher, dass sie diese Operation durchführen wollen?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="668"/>
+        <location filename="../src/mirall/folder.cpp" line="678"/>
         <source>Remove All Files?</source>
         <translation>Alle Dateien löschen?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="670"/>
+        <location filename="../src/mirall/folder.cpp" line="680"/>
         <source>Remove all files</source>
         <translation>Lösche alle Dateien</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="671"/>
+        <location filename="../src/mirall/folder.cpp" line="681"/>
         <source>Keep files</source>
         <translation>Dateien behalten</translation>
     </message>
@@ -981,7 +981,7 @@ Aktivierte Elemente werden ebenfalls gelöscht, wenn diese das Löschen eines Ve
         <source>The file was ignored because it is listed in the clients ignore list
 or the filename contains characters that are not syncable
 in a cross platform environment.</source>
-        <translation type="unfinished"/>
+        <translation>Die Datei wurde ignoriert, da sie entweder auf der Ignore-Liste des Klienten steht oder der Dateiname Zeichen enthält, welche nicht über verschiedene Plattformen synchronisiert werden können.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="125"/>
@@ -993,7 +993,7 @@ in a cross platform environment.</source>
         <source>The directory was ignored because it is listed in the clients
 ignore list or the directory name contains
 characters that are not syncable in a cross  platform environment.</source>
-        <translation type="unfinished"/>
+        <translation>Das Verzeichnis wurde ignoriert, da es entweder auf der Ignore-Liste des Klienten steht oder der Verzeichnisname Zeichen enthält, welche nicht über verschiedene Plattformen synchronisiert werden können.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="130"/>
@@ -1004,7 +1004,7 @@ characters that are not syncable in a cross  platform environment.</source>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="131"/>
         <source>Softlinks break the semantics of synchronization.
 Please do not use them in synced directories.</source>
-        <translation type="unfinished"/>
+        <translation>Softlinks zerstören die Semantik beim synchronisieren. Verwenden Sie daher keine Softlinks in ihren zu synchronisierenden Ordnern.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="134"/>
@@ -1014,7 +1014,7 @@ Please do not use them in synced directories.</source>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="137"/>
         <source>Conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Konfliktdatei.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="138"/>
@@ -1022,7 +1022,7 @@ Please do not use them in synced directories.</source>
 created a so called conflict. The local change is copied to the conflict
 file while the file from the server side is available under the original
 name</source>
-        <translation type="unfinished"/>
+        <translation>Die Datei wurde sowohl auf dem Server als auch im lokalen Repository geändert und verursacht somit einen Konflikt. Die lokalen Änderungen wurden in die Konflikt-Datei kopiert während die Änderungen vom Server in der Datei mit dem Original-Namen zu finden sind.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="231"/>
@@ -1220,7 +1220,7 @@ name</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="57"/>
         <source>Connect...</source>
-        <translation type="unfinished"/>
+        <translation>Verbinde...</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="107"/>
@@ -1962,79 +1962,79 @@ name</source>
         <location filename="../src/mirall/progressdispatcher.cpp" line="31"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="43"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>Herunterladen</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="34"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="47"/>
         <source>Upload</source>
-        <translation type="unfinished"/>
+        <translation>Hochladen</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="37"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="80"/>
         <source>Context</source>
-        <translation type="unfinished"/>
+        <translation>Kontext</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="40"/>
         <source>Inactive</source>
-        <translation type="unfinished"/>
+        <translation>Inaktiv</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="50"/>
         <source>Start</source>
-        <translation type="unfinished"/>
+        <translation>Start</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="53"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>Abgeschlossen</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="56"/>
         <source>For deletion</source>
-        <translation type="unfinished"/>
+        <translation>Zu löschen</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="59"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="107"/>
         <source>deleted</source>
-        <translation type="unfinished"/>
+        <translation>gelöscht</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="74"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="86"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="92"/>
         <source>downloading</source>
-        <translation type="unfinished"/>
+        <translation>Herunterladen</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="77"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="89"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="95"/>
         <source>uploading</source>
-        <translation type="unfinished"/>
+        <translation>Lade hoch</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="83"/>
         <source>inactive</source>
-        <translation type="unfinished"/>
+        <translation>Inaktiv</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="98"/>
         <source>starting</source>
-        <translation type="unfinished"/>
+        <translation>Starte</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="101"/>
         <source>finished</source>
-        <translation type="unfinished"/>
+        <translation>abgeschlossen</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="104"/>
         <source>delete</source>
-        <translation type="unfinished"/>
+        <translation>löschen</translation>
     </message>
 </context>
 <context>
@@ -2042,47 +2042,47 @@ name</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="48"/>
         <source>Status undefined</source>
-        <translation type="unfinished"/>
+        <translation>Status undefiniert</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="51"/>
         <source>Waiting to start sync</source>
-        <translation type="unfinished"/>
+        <translation>Warte, um mit der Synchronistation zu beginnen</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="54"/>
         <source>Sync is running</source>
-        <translation type="unfinished"/>
+        <translation>Sync läuft</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="57"/>
         <source>Sync Success</source>
-        <translation type="unfinished"/>
+        <translation>Sync erfolgreich</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="60"/>
         <source>Sync Success, problems with individual files.</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisierung abgeschlossen, Probleme mit einzelnen Dateien.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>
         <source>Sync Error - Click info button for details.</source>
-        <translation type="unfinished"/>
+        <translation>Sync-Fehler - Klicken Sie auf den Info-Knopf für weitere Informationen</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="66"/>
         <source>Setup Error</source>
-        <translation type="unfinished"/>
+        <translation>Setup-Fehler</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="69"/>
         <source>The server is currently unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Der Server ist vorübergehend nicht erreichbar.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="72"/>
         <source>Preparing to sync</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisation wird vorbereitet</translation>
     </message>
 </context>
 </TS>
