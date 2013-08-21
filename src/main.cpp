@@ -23,7 +23,12 @@ int main(int argc, char **argv)
 
     Mirall::Application app(argc, argv);
     app.initialize();
-   
+
+    if( app.giveHelp() ) {
+        app.showHelp();
+        return 0;
+    }
+
     // if the application is already running, notify it.
     if( app.isRunning() ) {
         QStringList args = app.arguments();
@@ -43,11 +48,6 @@ int main(int argc, char **argv)
                     .arg(Mirall::Theme::instance()->appNameGUI()));
         }
     }
-    // if help requested, show on command line and exit.
-    if( ! app.giveHelp() ) {
-        return app.exec();
-    } else {
-        app.showHelp();
-    }
+    return app.exec();
 }
 

@@ -138,7 +138,10 @@ QNetworkReply* ownCloudInfo::mkdirRequest( const QString& dir )
     qDebug() << "OCInfo Making dir " << dir;
     _authAttempts = 0;
     QNetworkRequest req;
-    req.setUrl( QUrl( webdavUrl(_connection) + dir ) );
+    QUrl url = QUrl(webdavUrl(_connection));
+    url.setEncodedPath(url.encodedPath()+QUrl::toPercentEncoding(dir, "/"));
+
+    req.setUrl( url );
     QNetworkReply *reply = davRequest("MKCOL", req, 0);
 
     // remember the confighandle used for this request
@@ -296,7 +299,7 @@ void ownCloudInfo::slotGetDirectoryListingFinished()
                     currentItem = reader.readElementText();
                 } else if (name == QLatin1String("collection") &&
                            !currentItem.isEmpty()) {
-                    folders.append(currentItem);
+                    folders.append(QUrl::fromEncoded(currentItem.toLatin1()).path());
                     currentItem.clear();
                 }
             }

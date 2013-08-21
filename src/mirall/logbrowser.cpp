@@ -29,6 +29,7 @@
 #include <QCoreApplication>
 #include <QDebug>
 #include <QSettings>
+#include <QAction>
 
 #include "mirall/mirallconfigfile.h"
 #include "mirall/logger.h"
@@ -45,11 +46,6 @@ LogWidget::LogWidget(QWidget *parent)
     font.setFamily(QLatin1String("Courier New"));
     font.setFixedPitch(true);
     document()->setDefaultFont( font );
-
-    MirallConfigFile cfg;
-    int lines = cfg.maxLogLines();
-    // qDebug() << "#        ##  Have " << lines << " Loglines!";
-    document()->setMaximumBlockCount( lines );
 }
 
 // ==============================================================================
@@ -57,8 +53,7 @@ LogWidget::LogWidget(QWidget *parent)
 LogBrowser::LogBrowser(QWidget *parent) :
     QDialog(parent),
     _logWidget( new LogWidget(parent) ),
-    _doFileFlush(false),
-    _logstream(0)
+    _doFileFlush(false)
 {
     setObjectName("LogBrowser"); // for save/restoreGeometry()
     setWindowTitle(tr("Log Output"));
@@ -118,8 +113,17 @@ LogBrowser::LogBrowser(QWidget *parent) :
     // Direct connection for log comming from this thread, and queued for the one in a different thread
     connect(Logger::instance(), SIGNAL(newLog(QString)),this,SLOT(slotNewLog(QString)), Qt::AutoConnection);
 
+    QAction *showLogWindow = new QAction(this);
+    showLogWindow->setShortcut(QKeySequence("F12"));
+    connect(showLogWindow, SIGNAL(triggered()), SLOT(close()));
+    addAction(showLogWindow);
+
     MirallConfigFile cfg;
     cfg.restoreGeometry(this);
+    int lines = cfg.maxLogLines();
+    // qDebug() << "#        ##  Have " << lines << " Loglines!";
+    _logWidget->document()->setMaximumBlockCount( lines );
+
 }
 
 LogBrowser::~LogBrowser()
@@ -143,9 +147,16 @@ void LogBrowser::setLogFile( const QString & name, bool flush )
     if( _logstream ) {
         _logFile.close();
     }
-    _logFile.setFileName( name );
 
-    if(!_logFile.open(QIODevice::WriteOnly)) {
+    bool openSucceeded = false;
+    if (name == QLatin1String("-")) {
+        openSucceeded = _logFile.open(1, QIODevice::WriteOnly);
+    } else {
+        _logFile.setFileName( name );
+        openSucceeded = _logFile.open(QIODevice::WriteOnly);
+    }
+
+    if(!openSucceeded) {
         QMessageBox::warning(
                     this,
                     tr("Error"),

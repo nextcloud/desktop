@@ -212,6 +212,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
   int h = iconRect.bottom();
   if( !errorText.isEmpty() ) {
+      h += aliasMargin;
       QRect errorRect = localPathRect;
       errorRect.setLeft( iconRect.left());
       errorRect.setTop( h );
@@ -221,10 +222,6 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
       painter->setBrush( QColor(0xbb, 0x4d, 0x4d) );
       painter->setPen( QColor(0xaa, 0xaa, 0xaa));
       painter->drawRoundedRect( errorRect, 4, 4 );
-
-      QIcon warnIcon(":/mirall/resources/warning-16");
-      QPoint warnPos(errorRect.left()+aliasMargin/2, errorRect.top()+aliasMargin/2);
-      painter->drawPixmap( warnPos, warnIcon.pixmap(QSize(16,16)));
 
       painter->setPen( Qt::white );
       painter->setFont(errorFont);
@@ -246,7 +243,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
   // Sync File Progress Bar: Show it if syncFile is not empty.
   if( !overallString.isEmpty()) {
       int fileNameTextHeight = subFm.boundingRect(tr("File")).height();
-      int barHeight = fileNameTextHeight;
+      int barHeight = qMax(fileNameTextHeight, aliasFm.height()+2); ;
       int overallWidth = option.rect.width()-2*aliasMargin;
 
       painter->save();
@@ -263,6 +260,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
       pBRect.setWidth( overallWidth - progressTextWidth - margin );
 
       QStyleOptionProgressBarV2 pBarOpt;
+
       pBarOpt.state    = option.state | QStyle::State_Horizontal;
       pBarOpt.minimum  = 0;
       pBarOpt.maximum  = 100;
@@ -283,6 +281,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
       QString elidedText = progressFm.elidedText(overallString, Qt::ElideLeft, overallProgressRect.width());
       painter->drawText( overallProgressRect, Qt::AlignRight+Qt::AlignVCenter, elidedText);
+    // painter->drawRect(overallProgressRect);
 
       // Individual File Progress
       QRect fileRect;

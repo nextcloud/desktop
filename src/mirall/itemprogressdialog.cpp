@@ -23,16 +23,6 @@
 
 #include "ui_itemprogressdialog.h"
 
-#define TYPE_SUCCESS  1
-#define TYPE_CONFLICT 2
-#define TYPE_NEW      3
-#define TYPE_DELETED  4
-#define TYPE_ERROR    5
-#define TYPE_RENAME   6
-#define TYPE_IGNORE   7
-
-#define FILE_TYPE    100
-
 namespace Mirall {
 
 ItemProgressDialog::ItemProgressDialog(Application*, QWidget *parent) :
@@ -50,14 +40,16 @@ ItemProgressDialog::ItemProgressDialog(Application*, QWidget *parent) :
             this, SLOT(slotProgressErrors(const QString&, const Progress::SyncProblem&)));
 
     QStringList header;
-    header << tr("Folder/Time");
+    header << tr("Time");
     header << tr("File");
+    header << tr("Folder");
     header << tr("Action");
     header << tr("Size");
 
     _ui->_treeWidget->setHeaderLabels( header );
-
     _ui->_treeWidget->setColumnWidth(1, 180);
+    _ui->_treeWidget->setColumnCount(5);
+    _ui->_treeWidget->setRootIsDecorated(false);
 
     connect(this, SIGNAL(guiLog(QString,QString)), Logger::instance(), SIGNAL(guiLog(QString,QString)));
 
@@ -70,51 +62,25 @@ ItemProgressDialog::ItemProgressDialog(Application*, QWidget *parent) :
 
 void ItemProgressDialog::setSyncResultStatus(const SyncResult& result )
 {
-    QString folderMessage;
-
-    SyncResult::Status syncStatus = result.status();
-    switch( syncStatus ) {
-    case SyncResult::Undefined:
-        folderMessage = tr( "Undefined Folder State" );
-        break;
-    case SyncResult::NotYetStarted:
-        folderMessage = tr( "The folder waits to start syncing." );
-        break;
-    case SyncResult::SyncPrepare:
-        folderMessage = tr( "Determining which files to sync." );
-        break;
-    case SyncResult::Unavailable:
-        folderMessage = tr( "Server is currently not available." );
-        break;
-    case SyncResult::SyncRunning:
-        folderMessage = tr("Sync is running.");
-        break;
-    case SyncResult::Success:
-        folderMessage = tr("Last Sync was successful.");
-        break;
-    case SyncResult::Error:
-        folderMessage = tr( "Syncing Error." );
-        break;
-    case SyncResult::SetupError:
-        folderMessage = tr( "Setup Error." );
-        break;
-    case SyncResult::Problem:
-        folderMessage = tr( "Sync success, but warnings on individual files.");
-        break;
-    default:
-        folderMessage = tr( "Undefined Error State." );
-    }
-
-    _ui->_timelabel->setText(tr("%1").arg(folderMessage));
-
-    if( result.errorStrings().count() ) {
+     if( result.errorStrings().count() ) {
         _ui->_errorLabel->setVisible(true);
         _ui->_errorLabel->setTextFormat(Qt::RichText);
+
         QString errStr;
-        foreach( QString err, result.errorStrings() ) {
-            errStr.append(QString("<p>%1</p>").arg(err));
+        QStringList errors = result.errorStrings();
+        int cnt = errors.size();
+        bool appendDots = false;
+        if( cnt > 3 ) {
+            cnt = 3;
+            appendDots = true;
         }
 
+        for( int i = 0; i < cnt; i++) {
+            errStr.append(QString("%1<br/>").arg(errors.at(i)));
+        }
+        if( appendDots ) {
+            errStr.append(QString("..."));
+        }
         _ui->_errorLabel->setText(errStr);
     } else {
         _ui->_errorLabel->setText(QString::null);
@@ -127,15 +93,8 @@ void ItemProgressDialog::setSyncResult( const SyncResult& result )
 {
     setSyncResultStatus(result);
 
-    if(result.status() != SyncResult::Success ) {
-        return;
-    }
-
     const QString& folder = result.folder();
     qDebug() << "Setting sync result for folder " << folder;
-
-    QTreeWidgetItem *folderItem = findFolderItem(folder);
-    if( ! folderItem ) return;
 
     SyncFileItemVector::const_iterator i;
     const SyncFileItemVector& items = result.syncFileItemVector();
@@ -144,30 +103,54 @@ void ItemProgressDialog::setSyncResult( const SyncResult& result )
     for (i = items.begin(); i != items.end(); ++i) {
          const SyncFileItem& item = *i;
          QString errMsg;
-         if( item._instruction == CSYNC_INSTRUCTION_IGNORE ) {
+         QString tooltip;
+         // handle ignored files here.
+
+         if( item._instruction == CSYNC_INSTRUCTION_IGNORE
+                 || item._instruction == CSYNC_INSTRUCTION_CONFLICT ) {
              QStringList columns;
              QString timeStr = timeString(dt);
              QString longTimeStr = timeString(dt, QLocale::LongFormat);
 
              columns << timeStr;
              columns << item._file;
-             if( item._type == SyncFileItem::File ) {
-                 errMsg = tr("File ignored.");
-             } else if( item._type == SyncFileItem::Directory ){
-                 errMsg = tr("Directory ignored.");
-             } else if( item._type == SyncFileItem::SoftLink ) {
-                 errMsg = tr("Soft Link ignored.");
+             columns << folder;
+             if( item._instruction == CSYNC_INSTRUCTION_IGNORE) {
+                 if( item._type == SyncFileItem::File ) {
+                     errMsg = tr("File ignored.");
+                     tooltip = tr("The file was ignored because it is listed in the clients ignore list\n"
+                                  "or the filename contains characters that are not syncable\nin a cross platform "
+                                  "environment.");
+                 } else if( item._type == SyncFileItem::Directory ){
+                     errMsg = tr("Directory ignored.");
+                     tooltip = tr("The directory was ignored because it is listed in the clients\nignore list "
+                                  "or the directory name contains\ncharacters that are not syncable in a cross  "
+                                  "platform environment.");
+                 } else if( item._type == SyncFileItem::SoftLink ) {
+                     errMsg = tr("Soft Link ignored.");
+                     tooltip = tr("Softlinks break the semantics of synchronization.\nPlease do not "
+                                  "use them in synced directories.");
+                 } else {
+                     errMsg = tr("Ignored.");
+                 }
+             } else if(  item._instruction == CSYNC_INSTRUCTION_CONFLICT ) {
+                 errMsg = tr("Conflict file.");
+                 tooltip = tr("The file was changed on server and local repository and as a result it\n"
+                              "created a so called conflict. The local change is copied to the conflict\n"
+                              "file while the file from the server side is available under the original\n"
+                              "name");
              } else {
-                 errMsg = tr("Ignored.");
+                 Q_ASSERT(!"unhandled instruction.");
              }
              columns << errMsg;
 
-             QTreeWidgetItem *twitem = new QTreeWidgetItem(folderItem, columns);
+             QTreeWidgetItem *twitem = new QTreeWidgetItem(columns);
              twitem->setData(0, ErrorIndicatorRole, QVariant(true) );
              twitem->setToolTip(0, longTimeStr);
+             twitem->setToolTip(3, tooltip);
              twitem->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Problem, true));
+             _ui->_treeWidget->addTopLevelItem(twitem);
 
-             Q_UNUSED(twitem);
          }
     }
 }
@@ -181,7 +164,6 @@ void ItemProgressDialog::setupList()
   bool haveSyncResult = false;
 
   foreach( Folder *f, map.values() ) {
-    findFolderItem(f->alias());
     if( f->syncResult().syncTime() > dt ) {
         dt = f->syncResult().syncTime();
         lastResult = f->syncResult();
@@ -207,11 +189,6 @@ void ItemProgressDialog::setupList()
     slotProgressErrors(prob.folder, prob);
     folderHash[prob.folder] = 1;
   }
-
-  foreach( const QString& folder, folderHash.keys() ) {
-    decorateFolderItem(folder);
-  }
-
 }
 
 ItemProgressDialog::~ItemProgressDialog()
@@ -259,69 +236,21 @@ void ItemProgressDialog::accept()
     QDialog::accept();
 }
 
-void ItemProgressDialog::decorateFolderItem( const QString& folder )
+void ItemProgressDialog::cleanErrors( const QString& /* folder */ ) // FIXME: Use the folder to detect which errors can be deleted.
 {
-  QTreeWidgetItem *folderItem = findFolderItem(folder);
-  if( ! folderItem ) return;
-  int errorCnt = 0;
+    _problemCounter = 0;
+    QList<QTreeWidgetItem*> wipeList;
 
-  int childCnt = folderItem->childCount();
-  for( int cnt = 0; cnt < childCnt; cnt++ ) {
-    bool isErrorItem = folderItem->child(cnt)->data(0, ErrorIndicatorRole).toBool();
-    if( isErrorItem ) {
-      errorCnt++;
+    int itemCnt = _ui->_treeWidget->topLevelItemCount();
+
+    for( int cnt = 0; cnt < itemCnt; cnt++ ) {
+        QTreeWidgetItem *item = _ui->_treeWidget->topLevelItem(cnt);
+        bool isErrorItem = item->data(0, ErrorIndicatorRole).toBool();
+        if( isErrorItem ) {
+            wipeList.append(item);
+        }
     }
-  }
-
-  if( errorCnt == 0 ) {
-    folderItem->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Success));
-  } else {
-    // FIXME: Set a soft error icon here.
-    folderItem->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Problem));
-  }
-}
-
-QTreeWidgetItem *ItemProgressDialog::createFolderItem(const QString& folder)
-{
-    QStringList strings;
-    strings.append(folder);
-    QTreeWidgetItem *item = new QTreeWidgetItem( _ui->_treeWidget, strings );
-    item->setFirstColumnSpanned(true);
-    item->setExpanded(true);
-    return item;
-}
-
-QTreeWidgetItem *ItemProgressDialog::findFolderItem( const QString& folder )
-{
-  QTreeWidgetItem *folderItem;
-
-  if( folder.isEmpty() ) return NULL;
-
-  if( !_folderItems.contains(folder)) {
-      _folderItems[folder] = createFolderItem(folder);
-      _ui->_treeWidget->addTopLevelItem(_folderItems[folder]);
-  }
-  folderItem = _folderItems[folder];
-
-  return folderItem;
-}
-
-void ItemProgressDialog::cleanErrors( const QString& folder )
-{
-  _problemCounter = 0;
-  QList<QTreeWidgetItem*> wipeList;
-
-  QTreeWidgetItem *folderItem = findFolderItem(folder);
-  if( ! folderItem ) return;
-
-  int childCnt = folderItem->childCount();
-  for( int cnt = 0; cnt < childCnt; cnt++ ) {
-    bool isErrorItem = folderItem->child(cnt)->data(0, ErrorIndicatorRole).toBool();
-    if( isErrorItem ) {
-      wipeList.append(folderItem->child(cnt));
-    }
-  }
-  qDeleteAll(wipeList.begin(), wipeList.end());
+    qDeleteAll(wipeList.begin(), wipeList.end());
 }
 
 QString ItemProgressDialog::timeString(QDateTime dt, QLocale::FormatType format) const
@@ -344,41 +273,39 @@ QString ItemProgressDialog::timeString(QDateTime dt, QLocale::FormatType format)
 
 void ItemProgressDialog::slotProgressErrors( const QString& folder, const Progress::SyncProblem& problem )
 {
-  QTreeWidgetItem *folderItem;
-
-  folderItem = findFolderItem(folder);
-  if( !folderItem ) return;
-
   QStringList columns;
   QString timeStr = timeString(problem.timestamp);
   QString longTimeStr = timeString(problem.timestamp, QLocale::LongFormat);
 
   columns << timeStr;
   columns << problem.current_file;
+  columns << folder;
   QString errMsg = tr("Problem: %1").arg(problem.error_message);
+#if 0
+  if( problem.error_code == 507 ) {
+      errMsg = tr("No more storage space available on server.");
+  }
+#endif
   columns << errMsg;
-  // FIXME: Show the error code if available.
 
-  QTreeWidgetItem *item = new QTreeWidgetItem(folderItem, columns);
+  QTreeWidgetItem *item = new QTreeWidgetItem(columns);
   item->setData(0, ErrorIndicatorRole, QVariant(true) );
-  item->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Problem, true));
+  // Maybe we should not set the error icon for all problems but distinguish
+  // by error_code. A quota problem is considered an error, others might not??
+  item->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Error, true));
   item->setToolTip(0, longTimeStr);
+  _ui->_treeWidget->addTopLevelItem(item);
   Q_UNUSED(item);
 }
 
 void ItemProgressDialog::slotProgressInfo( const QString& folder, const Progress::Info& progress )
 {
-    QTreeWidgetItem *folderItem;
-    folderItem = findFolderItem(folder);
-    if( !folderItem ) return;
-
     if( progress.kind == Progress::StartSync ) {
       cleanErrors( folder );
-      folderItem->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::SyncRunning));
     }
 
     if( progress.kind == Progress::EndSync ) {
-      decorateFolderItem( folder );
+      // decorateFolderItem( folder );
     }
 
     // Ingore other events than finishing an individual up- or download.
@@ -392,11 +319,13 @@ void ItemProgressDialog::slotProgressInfo( const QString& folder, const Progress
 
     columns << timeStr;
     columns << progress.current_file;
+    columns << progress.folder;
     columns << Progress::asResultString(progress.kind);
     columns << Utility::octetsToString( progress.file_size );
 
-    QTreeWidgetItem *item = new QTreeWidgetItem(folderItem, columns);
+    QTreeWidgetItem *item = new QTreeWidgetItem(columns);
     item->setToolTip(0, longTimeStr);
+    _ui->_treeWidget->addTopLevelItem(item);
     Q_UNUSED(item);
 }
 

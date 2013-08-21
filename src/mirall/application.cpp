@@ -113,10 +113,11 @@ Application::Application(int &argc, char **argv) :
     setWindowIcon( _theme->applicationIcon() );
 
     parseOptions(arguments());
-    setupTranslations();
-    setupLogBrowser();
     //no need to waste time;
     if ( _helpOnly ) return;
+
+    setupLogBrowser();
+    setupTranslations();
 
     connect( this, SIGNAL(messageReceived(QString)), SLOT(slotParseOptions(QString)));
     connect( Logger::instance(), SIGNAL(guiLog(QString,QString)),
@@ -418,8 +419,8 @@ void Application::setupLogBrowser()
     // might be called from second instance
     if (!_logBrowser) {
         // init the log browser.
-        _logBrowser = new LogBrowser;
         qInstallMsgHandler( mirallLogCatcher );
+        _logBrowser = new LogBrowser;
         // ## TODO: allow new log name maybe?
         if (!_logDirectory.isEmpty()) {
             enterNextLogFile();
@@ -551,9 +552,9 @@ void Application::rebuildRecentMenus()
         _recentActionsMenu->addAction(tr("No items synced recently"));
     } else {
         QListIterator<Progress::Info> i(progressInfoList);
-        i.toBack();
-        while(i.hasPrevious()) {
-            Progress::Info info = i.previous();
+
+        while(i.hasNext()) {
+            Progress::Info info = i.next();
             QString kindStr = Progress::asResultString(info.kind);
             QString timeStr = info.timestamp.toString("hh:mm");
 

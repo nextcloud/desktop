@@ -113,7 +113,7 @@ void NetworkSettings::loadBWLimitSettings()
     if ( uploadLimit >= 1 ) {
         _ui->uploadLimitRadioButton->setChecked(true);
     } else if (uploadLimit == 0){
-        _ui->noDownloadLimitRadioButton->setChecked(true);
+        _ui->noUploadLimitRadioButton->setChecked(true);
     } else {
         _ui->autoUploadLimitRadioButton->setChecked(true);
     }

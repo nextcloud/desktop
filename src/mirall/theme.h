@@ -119,6 +119,8 @@ public:
      */
     virtual QString enforcedLocale() const { return QString::null; }
 
+    /** colored, white or black */
+    QString systrayIconFlavor(bool mono) const;
 
     /**
      * Override to use a string or a custom image name.

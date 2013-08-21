@@ -47,8 +47,11 @@ OwncloudSetupWizard::OwncloudSetupWizard(QObject* parent) :
              this, SLOT(slotConnectToOCUrl( const QString& )));
     connect( _ocWizard, SIGNAL(createLocalAndRemoteFolders(QString, QString)),
              this, SLOT(slotCreateLocalAndRemoteFolders(QString, QString)));
-    connect( _ocWizard, SIGNAL(finished(int)),this,SLOT(slotAssistantFinished(int)));
-
+    /* basicSetupFinished might be called from a reply from the network.
+       slotAssistantFinished might destroy the temporary QNetworkAccessManager.
+       Therefore Qt::QueuedConnection is required */
+    connect( _ocWizard, SIGNAL(basicSetupFinished(int)),
+             this, SLOT(slotAssistantFinished(int)), Qt::QueuedConnection);
     connect( _ocWizard, SIGNAL(clearPendingRequests()),
              this, SLOT(slotClearPendingRequests()));
 }
@@ -241,14 +244,9 @@ void OwncloudSetupWizard::testOwnCloudConnect()
     // write a temporary config.
     QDateTime now = QDateTime::currentDateTime();
 
-    // remove a possibly existing custom config.
-    if( ! _configHandle.isEmpty() ) {
-        // remove the old config file.
-        MirallConfigFile oldConfig( _configHandle );
-        oldConfig.cleanupCustomConfig();
+    if( _configHandle.isEmpty() ) {
+        _configHandle = now.toString(QLatin1String("MMddyyhhmmss"));
     }
-
-    _configHandle = now.toString(QLatin1String("MMddyyhhmmss"));
 
     MirallConfigFile cfgFile( _configHandle, true );
     QString url = _ocWizard->field(QLatin1String("OCUrl")).toString();
@@ -484,8 +482,6 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
             // first terminate sync jobs.
             folderMan->terminateSyncProcess();
 
-            folderMan->unloadAllFolders();
-
             bool startFromScratch = _ocWizard->field( "OCSyncFromScratch" ).toBool();
             if( startFromScratch ) {
                 // first try to rename (backup) the current local dir.
@@ -505,10 +501,6 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
                 }
             }
         }
-        // save the user credentials and afterwards clear the cred store.
-        if( acceptCfg ) {
-            cfg.acceptCustomConfig();
-        }
 
         // Now write the resulting folder definition if folder names are set.
         if( acceptCfg && urlHasChanged ) {
@@ -523,6 +515,11 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
             } else {
                 qDebug() << "User interrupted change of configuration.";
             }
+        }
+
+        // save the user credentials and afterwards clear the cred store.
+        if( acceptCfg ) {
+            cfg.acceptCustomConfig();
         }
     }
 

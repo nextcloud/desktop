@@ -25,9 +25,8 @@ namespace Mirall {
 /**
  * @brief The FolderScheduler class schedules folders for sync
  */
-class Progress
+namespace Progress
 {
-public:
     enum Kind {
         Invalid,
         StartSync,
@@ -72,9 +71,9 @@ public:
         QDateTime  timestamp;
     };
 
-    static QString asActionString( Kind );
-    static QString asResultString( Kind );
-};
+    QString asActionString( Kind );
+    QString asResultString( Kind );
+}
 
 /**
  * @file progressdispatcher.h
@@ -115,9 +114,9 @@ protected:
 
 private:
     ProgressDispatcher(QObject* parent = 0);
-    const int _problemQueueSize;
-    QQueue<Progress::Info> _recentChanges;
-    QQueue<Progress::SyncProblem> _recentProblems;
+    const int _QueueSize;
+    QList<Progress::Info> _recentChanges;
+    QList<Progress::SyncProblem> _recentProblems;
 
     QHash<QString, Progress::Kind> _currentAction;
     static ProgressDispatcher* _instance;

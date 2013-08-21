@@ -46,11 +46,13 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
       _setupLog(),
       _configExists(false)
 {
-    setPage(WizardCommon::Page_ServerSetup, _setupPage  );
+    setPage(WizardCommon::Page_ServerSetup, _setupPage);
     setPage(WizardCommon::Page_HttpCreds, _httpCredsPage);
     setPage(WizardCommon::Page_ShibbolethCreds, _shibbolethCredsPage);
     setPage(WizardCommon::Page_AdvancedSetup, _advancedSetupPage);
-    setPage(WizardCommon::Page_Result, _resultPage );
+    setPage(WizardCommon::Page_Result, _resultPage);
+
+    connect(this, SIGNAL(finished(int)), SIGNAL(basicSetupFinished(int)));
 
     // note: start Id is set by the calling class depending on if the
     // welcome text is to be shown or not.
@@ -145,12 +147,13 @@ void OwncloudWizard::slotCurrentPageChanged( int id )
     qDebug() << "Current Wizard page changed to " << id;
 
     if( id == WizardCommon::Page_ServerSetup ) {
-        setButtonText( QWizard::NextButton, tr("Connect...") );
         emit clearPendingRequests();
         _setupPage->initializePage();
     }
 
     if( id == WizardCommon::Page_Result ) {
+        disconnect(this, SIGNAL(finished(int)), this, SIGNAL(basicSetupFinished(int)));
+        emit basicSetupFinished(QDialog::Accepted);
         appendToConfigurationLog( QString::null );
     }
 }

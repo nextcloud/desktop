@@ -21,6 +21,7 @@
 #include "mirall/mirallconfigfile.h"
 
 #include <QNetworkProxy>
+#include <QDir>
 
 namespace Mirall {
 
@@ -49,6 +50,16 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
 
     // misc
     connect(_ui->monoIconsCheckBox, SIGNAL(toggled(bool)), SLOT(saveMiscSettings()));
+
+    // OEM themes are not obliged to ship mono icons, so there
+    // is no point in offering an option
+    QString themeDir = QString::fromLatin1(":/mirall/theme/1%1/")
+            .arg(Theme::instance()->systrayIconFlavor(true));
+    if (QDir(themeDir).exists())
+    {
+        _ui->monoIconsCheckBox->setVisible(false);
+    }
+
 }
 
 GeneralSettings::~GeneralSettings()

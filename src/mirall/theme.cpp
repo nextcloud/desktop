@@ -45,28 +45,33 @@ QString Theme::statusHeaderText( SyncResult::Status status ) const
 
     switch( status ) {
     case SyncResult::Undefined:
-        resultStr = QObject::tr("Status undefined");
+        resultStr = QCoreApplication::translate("theme", "Status undefined");
         break;
     case SyncResult::NotYetStarted:
-        resultStr = QObject::tr("Waiting to start sync");
+        resultStr = QCoreApplication::translate("theme", "Waiting to start sync");
         break;
     case SyncResult::SyncRunning:
-        resultStr = QObject::tr("Sync is running");
+        resultStr = QCoreApplication::translate("theme", "Sync is running");
         break;
     case SyncResult::Success:
-        resultStr = QObject::tr("Sync Success");
+        resultStr = QCoreApplication::translate("theme", "Sync Success");
         break;
     case SyncResult::Problem:
-        resultStr = QObject::tr("Sync Success, problems with individual files.");
+        resultStr = QCoreApplication::translate("theme", "Sync Success, problems with individual files.");
         break;
     case SyncResult::Error:
-        resultStr = QObject::tr("Sync Error - Click info button for details.");
+        resultStr = QCoreApplication::translate("theme", "Sync Error - Click info button for details.");
         break;
     case SyncResult::SetupError:
-        resultStr = QObject::tr( "Setup Error" );
+        resultStr = QCoreApplication::translate("theme", "Setup Error" );
         break;
-    default:
-        resultStr = QObject::tr("Status undefined");
+    case SyncResult::Unavailable:
+        resultStr = QCoreApplication::translate("theme", "The server is currently unavailable" );
+        break;
+    case SyncResult::SyncPrepare:
+        resultStr = QCoreApplication::translate("theme", "Preparing to sync" );
+        break;
+
     }
     return resultStr;
 }
@@ -94,12 +99,8 @@ QIcon Theme::trayFolderIcon( const QString& backend ) const
 QIcon Theme::themeIcon( const QString& name, bool sysTray ) const
 {
     QString flavor;
-    if (sysTray && _mono) {
-#ifdef Q_OS_MAC
-        flavor = QLatin1String("black");
-#else
-        flavor = QLatin1String("white");
-#endif
+    if (sysTray) {
+        flavor = systrayIconFlavor(_mono);
     } else {
         flavor = QLatin1String("colored");
     }
@@ -156,6 +157,21 @@ QString Theme::overrideServerUrl() const
 QString Theme::defaultClientFolder() const
 {
     return appName();
+}
+
+QString Theme::systrayIconFlavor(bool mono) const
+{
+    QString flavor;
+    if (mono) {
+#ifdef Q_OS_MAC
+        flavor = QLatin1String("black");
+#else
+        flavor = QLatin1String("white");
+#endif
+    } else {
+        flavor = QLatin1String("colored");
+    }
+    return flavor;
 }
 
 void Theme::setSystrayUseMonoIcons(bool mono)

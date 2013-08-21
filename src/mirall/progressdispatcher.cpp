@@ -16,7 +16,7 @@
 #include <QObject>
 #include <QMetaType>
 #include <QDebug>
-
+#include <QCoreApplication>
 
 namespace Mirall {
 
@@ -28,35 +28,35 @@ QString Progress::asResultString( Kind kind )
     switch(kind) {
     case Download:
     case EndDownload:
-        re = QObject::tr("Download");
+        re = QCoreApplication::translate( "progress", "Download");
         break;
     case Upload:
-        re = QObject::tr("Upload");
+        re = QCoreApplication::translate( "progress", "Upload");
         break;
     case Context:
-        re = QObject::tr("Context");
+        re = QCoreApplication::translate( "progress", "Context" );
         break;
     case Inactive:
-        re = QObject::tr("Inactive");
+        re = QCoreApplication::translate( "progress", "Inactive");
         break;
     case StartDownload:
-        re = QObject::tr("Download");
+        re = QCoreApplication::translate( "progress", "Download");
         break;
     case StartUpload:
     case EndUpload:
-        re = QObject::tr("Upload");
+        re = QCoreApplication::translate( "progress", "Upload");
         break;
     case StartSync:
-        re = QObject::tr("Start");
+        re = QCoreApplication::translate( "progress", "Start");
         break;
     case EndSync:
-        re = QObject::tr("Finished");
+        re = QCoreApplication::translate( "progress", "Finished");
         break;
     case StartDelete:
-        re = QObject::tr("For deletion");
+        re = QCoreApplication::translate( "progress", "For deletion");
         break;
     case EndDelete:
-        re = QObject::tr("deleted");
+        re = QCoreApplication::translate( "progress", "deleted");
         break;
     default:
         Q_ASSERT(false);
@@ -71,40 +71,40 @@ QString Progress::asActionString( Kind kind )
 
     switch(kind) {
     case Download:
-        re = QObject::tr("downloading");
+        re = QCoreApplication::translate( "progress", "downloading");
         break;
     case Upload:
-        re = QObject::tr("uploading");
+        re = QCoreApplication::translate( "progress", "uploading");
         break;
     case Context:
-        re = QObject::tr("Context");
+        re = QCoreApplication::translate( "progress", "Context");
         break;
     case Inactive:
-        re = QObject::tr("inactive");
+        re = QCoreApplication::translate( "progress", "inactive");
         break;
     case StartDownload:
-        re = QObject::tr("downloading");
+        re = QCoreApplication::translate( "progress", "downloading");
         break;
     case StartUpload:
-        re = QObject::tr("uploading");
+        re = QCoreApplication::translate( "progress", "uploading");
         break;
     case EndDownload:
-        re = QObject::tr("downloading");
+        re = QCoreApplication::translate( "progress", "downloading");
         break;
     case EndUpload:
-        re = QObject::tr("uploading");
+        re = QCoreApplication::translate( "progress", "uploading");
         break;
     case StartSync:
-        re = QObject::tr("starting");
+        re = QCoreApplication::translate( "progress", "starting");
         break;
     case EndSync:
-        re = QObject::tr("finished");
+        re = QCoreApplication::translate( "progress", "finished");
         break;
     case StartDelete:
-        re = QObject::tr("delete");
+        re = QCoreApplication::translate( "progress", "delete");
         break;
     case EndDelete:
-        re = QObject::tr("deleted");
+        re = QCoreApplication::translate( "progress", "deleted");
         break;
     default:
         Q_ASSERT(false);
@@ -121,7 +121,7 @@ ProgressDispatcher* ProgressDispatcher::instance() {
 
 ProgressDispatcher::ProgressDispatcher(QObject *parent) :
     QObject(parent),
-    _problemQueueSize(50)
+    _QueueSize(50)
 {
 
 }
@@ -158,13 +158,14 @@ void ProgressDispatcher::setProgressInfo(const QString& folder, const Progress::
         Progress::SyncProblem err;
         err.folder        = folder;
         err.current_file  = newProgress.current_file;
+        // its really
         err.error_message = QString::fromLocal8Bit( (const char*)newProgress.file_size );
-        err.error_code    = newProgress.file_size;
+        err.error_code    = newProgress.current_file_bytes;
         err.timestamp     = QDateTime::currentDateTime();
 
-        _recentProblems.enqueue( err );
-        if( _recentProblems.size() > _problemQueueSize ) {
-            _recentProblems.dequeue();
+        _recentProblems.prepend( err );
+        if( _recentProblems.size() > _QueueSize ) {
+            _recentProblems.removeLast();
         }
         emit progressSyncProblem( folder, err );
     } else {
@@ -176,9 +177,13 @@ void ProgressDispatcher::setProgressInfo(const QString& folder, const Progress::
             newProgress.current_file_no = newProgress.overall_file_count;
             _currentAction.remove(newProgress.folder);
         }
-        if( newProgress.kind == Progress::EndDownload || newProgress.kind == Progress::EndUpload ||
+        if( newProgress.kind == Progress::EndDownload ||
+                newProgress.kind == Progress::EndUpload ||
                 newProgress.kind == Progress::EndDelete ) {
-            _recentChanges.enqueue(newProgress);
+            _recentChanges.prepend(newProgress);
+            if( _recentChanges.size() > _QueueSize ) {
+                _recentChanges.removeLast();
+            }
         }
         // store the last real action to help clients that start during
         // the Context-phase of an upload or download.

@@ -94,12 +94,20 @@ MirallConfigFile::MirallConfigFile( const QString& appendix, bool useOldConfig )
 
 void MirallConfigFile::setConfDir(const QString &value)
 {
-    if( value.isEmpty() ) return;
+    QString dirPath = value;
+    if( dirPath.isEmpty() ) return;
 
-    QFileInfo fi(value);
+    QFileInfo fi(dirPath);
+    if ( !fi.exists() && !fi.isAbsolute() ) {
+        QDir::current().mkdir(dirPath);
+        QDir dir = QDir::current();
+        dir.cd(dirPath);
+        fi.setFile(dir.path());
+    }
     if( fi.exists() && fi.isDir() ) {
-        qDebug() << "** Using custom config dir " << value;
-        _confDir=value;
+        dirPath = fi.absoluteFilePath();
+        qDebug() << "** Using custom config dir " << dirPath;
+        _confDir=dirPath;
     }
 }
 

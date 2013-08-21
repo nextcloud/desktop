@@ -33,8 +33,20 @@
 #include <QDesktopServices>
 #include <QListWidgetItem>
 #include <QMessageBox>
+#include <QAction>
+#include <QKeySequence>
 
 namespace Mirall {
+
+static const char progressBarStyleC[] =
+        "QProgressBar {"
+        "border: 2px solid grey;"
+        "border-radius: 5px;"
+        "text-align: center;"
+        "}"
+        "QProgressBar::chunk {"
+        "background-color: %1; width: 1px;"
+        "}";
 
 AccountSettings::AccountSettings(QWidget *parent) :
     QWidget(parent),
@@ -46,6 +58,7 @@ AccountSettings::AccountSettings(QWidget *parent) :
     _model = new FolderStatusModel;
     _model->setParent(this);
     FolderStatusDelegate *delegate = new FolderStatusDelegate;
+    delegate->setParent(this);
 
     ui->_folderList->setItemDelegate( delegate );
     ui->_folderList->setModel( _model );
@@ -53,13 +66,16 @@ AccountSettings::AccountSettings(QWidget *parent) :
     ui->_folderList->setEditTriggers( QAbstractItemView::NoEditTriggers );
 
     ui->_ButtonRemove->setEnabled(false);
-    ui->_ButtonReset->setEnabled(false);
     ui->_ButtonEnable->setEnabled(false);
     ui->_ButtonInfo->setEnabled(false);
     ui->_ButtonAdd->setEnabled(true);
 
+    QAction *resetFolderAction = new QAction(this);
+    resetFolderAction->setShortcut(QKeySequence(Qt::Key_F5));
+    connect(resetFolderAction, SIGNAL(triggered()), SLOT(slotResetCurrentFolder()));
+    addAction(resetFolderAction);
+
     connect(ui->_ButtonRemove, SIGNAL(clicked()), this, SLOT(slotRemoveCurrentFolder()));
-    connect(ui->_ButtonReset,  SIGNAL(clicked()), this, SLOT(slotResetCurrentFolder()));
     connect(ui->_ButtonEnable, SIGNAL(clicked()), this, SLOT(slotEnableCurrentFolder()));
     connect(ui->_ButtonInfo,   SIGNAL(clicked()), this, SLOT(slotInfoAboutCurrentFolder()));
     connect(ui->_ButtonAdd,    SIGNAL(clicked()), this, SLOT(slotAddFolder()));
@@ -69,6 +85,8 @@ AccountSettings::AccountSettings(QWidget *parent) :
     connect(ui->_folderList, SIGNAL(clicked(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
     connect(ui->_folderList, SIGNAL(doubleClicked(QModelIndex)),SLOT(slotDoubleClicked(QModelIndex)));
 
+    QColor color = palette().highlight().color();
+    ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));
     ownCloudInfo *ocInfo = ownCloudInfo::instance();
     slotUpdateQuota(ocInfo->lastQuotaTotalBytes(), ocInfo->lastQuotaUsedBytes());
     connect(ocInfo, SIGNAL(quotaUpdated(qint64,qint64)), SLOT(slotUpdateQuota(qint64,qint64)));
@@ -85,8 +103,6 @@ void AccountSettings::slotFolderActivated( const QModelIndex& indx )
   bool state = indx.isValid();
 
   ui->_ButtonRemove->setEnabled( state );
-  ui->_ButtonReset->setEnabled( state );
-  ui->_ButtonReset->setEnabled( state );
   ui->_ButtonEnable->setEnabled( state );
   ui->_ButtonInfo->setEnabled( state );
 
@@ -139,6 +155,7 @@ void AccountSettings::slotFolderWizardAccepted()
         folderMan->slotScheduleAllFolders();
         emit folderChanged();
     }
+    buttonsSetEnabled();
 }
 
 void AccountSettings::slotFolderWizardRejected()
@@ -184,7 +201,6 @@ void AccountSettings::buttonsSetEnabled()
     bool isSelected = selected.isValid();
 
     ui->_ButtonEnable->setEnabled(isSelected);
-    ui->_ButtonReset->setEnabled(isSelected);
     ui->_ButtonRemove->setEnabled(isSelected);
     ui->_ButtonInfo->setEnabled(isSelected);
 }
@@ -206,7 +222,11 @@ void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f )
     SyncResult res = f->syncResult();
     SyncResult::Status status = res.status();
 
-    QString errors = res.errorStrings().join(QLatin1String("<br/>"));
+    QStringList errorList = res.errorStrings();
+    QString errors;
+    if( ! errorList.isEmpty() ) {
+        errors = res.errorStrings().join(QLatin1String("<br/>"));
+    }
 
     Theme *theme = Theme::instance();
     item->setData( theme->statusHeaderText( status ),  Qt::ToolTipRole );
@@ -217,6 +237,12 @@ void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f )
     }
     item->setData( theme->statusHeaderText( status ),  FolderStatusDelegate::FolderStatus );
     item->setData( errors,                             FolderStatusDelegate::FolderErrorMsg );
+
+    if( errors.isEmpty() && (status == SyncResult::Error ||
+                             status == SyncResult::SetupError ||
+                             status == SyncResult::Unavailable )) {
+        item->setData( theme->statusHeaderText(status), FolderStatusDelegate::FolderErrorMsg);
+    }
 
     bool ongoing = false;
     item->setData( QVariant(res.warnCount()), FolderStatusDelegate::WarningCount );
@@ -259,8 +285,10 @@ void AccountSettings::slotResetCurrentFolder()
         QString alias = _model->data( selected, FolderStatusDelegate::FolderAliasRole ).toString();
         int ret = QMessageBox::question( 0, tr("Confirm Folder Reset"),
                                          tr("<p>Do you really want to reset folder <i>%1</i> and rebuild your client database?</p>"
-                                            "<p><b>Note:</b> While no files will be removed, this can cause significant data "
-                                            "traffic and take several minutes to hours, depending on the size of the folder.</p>").arg(alias),
+                                            "<p><b>Note:</b> This function is designed for maintenance purposes only. "
+                                            "No files will be removed, but this can cause significant data traffic and "
+                                            "take several minutes or hours to complete, depending on the size of the folder. "
+                                            "Only use this option if advised by your administrator.</p>").arg(alias),
                                          QMessageBox::Yes|QMessageBox::No );
         if( ret == QMessageBox::Yes ) {
             FolderMan *folderMan = FolderMan::instance();
@@ -306,9 +334,10 @@ void AccountSettings::setFolderList( const Folder::Map &folders )
         slotAddFolder( f );
     }
 
-   QModelIndex idx = _model->index(0, 0);
-   if (idx.isValid())
+    QModelIndex idx = _model->index(0, 0);
+    if (idx.isValid()) {
         ui->_folderList->setCurrentIndex(idx);
+    }
     buttonsSetEnabled();
 
 }
@@ -394,11 +423,6 @@ void AccountSettings::slotUpdateFolderState( Folder *folder )
         item = _model->item( ++row );
     }
 
-#if 0
-    if( !_fileItemDialog.isNull() && _fileItemDialog->isVisible() ) {
-        _fileItemDialog->setSyncResult( FolderMan::instance()->syncResult(folder) );
-    }
-#endif
     if( item ) {
         folderToModelItem( item, folder );
     } else {
@@ -424,7 +448,9 @@ void AccountSettings::slotOCInfo( const QString& url, const QString& versionStr,
     qDebug() << "#-------# oC found on " << url;
     /* enable the open button */
     ui->connectLabel->setOpenExternalLinks(true);
-    ui->connectLabel->setText( tr("Connected to <a href=\"%1\">%1</a>.").arg(url) );
+    QUrl safeUrl(url);
+    safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
+    ui->connectLabel->setText( tr("Connected to <a href=\"%1\">%2</a>.").arg(url, safeUrl.toString()) );
     ui->connectLabel->setToolTip( tr("Version: %1 (%2)").arg(versionStr).arg(version));
     ui->_ButtonAdd->setEnabled(true);
 
@@ -648,10 +674,12 @@ void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
     ui->quotaProgressBar->setEnabled(true);
     // workaround the label only accepting ints (which may be only 32 bit wide)
     ui->quotaProgressBar->setMaximum(100);
-    ui->quotaProgressBar->setValue(round(used/(double)total * 100));
+    int qVal = qRound(used/(double)total * 100);
+    if( qVal > 100 ) qVal = 100;
+    ui->quotaProgressBar->setValue(qVal);
     QString usedStr = Utility::octetsToString(used);
     QString totalStr = Utility::octetsToString(total);
-    ui->quotaLabel->setText(tr("You are using %1 of your available %2 storage.").arg(usedStr, totalStr));
+    ui->quotaLabel->setText(tr("%1 of %2 in use.").arg(usedStr, totalStr));
 }
 
 void AccountSettings::slotIgnoreFilesEditor()

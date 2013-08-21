@@ -46,7 +46,11 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
     _ui->setupUi(this);
     setObjectName("Settings"); // required as group for saveGeometry call
 
-    setWindowTitle(tr("%1 Settings").arg(Theme::instance()->appNameGUI()));
+    setWindowTitle(tr("%1").arg(Theme::instance()->appNameGUI()));
+
+    _accountSettings = new AccountSettings(this);
+    addAccount(tr("Account"), _accountSettings);
+    slotUpdateAccountState();
 
     QIcon generalIcon(QLatin1String(":/mirall/resources/settings.png"));
     QListWidgetItem *general = new QListWidgetItem(generalIcon, tr("General"), _ui->labelWidget);
@@ -66,14 +70,9 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
 
     //connect(generalSettings, SIGNAL(resizeToSizeHint()), SLOT(resizeToSizeHint()));
 
-    _accountSettings = new AccountSettings(this);
-    addAccount(tr("Account"), _accountSettings);
-    slotUpdateAccountState();
-
     connect( app, SIGNAL(folderStateChanged(Folder*)), _accountSettings, SLOT(slotUpdateFolderState(Folder*)));
     connect( app, SIGNAL(folderStateChanged(Folder*)), SLOT(slotUpdateAccountState()));
 
-    connect( _accountSettings, SIGNAL(addASync()), app, SLOT(slotFolderAdded()) );
     connect( _accountSettings, SIGNAL(folderChanged()), app, SLOT(slotFoldersChanged()));
     connect( _accountSettings, SIGNAL(openFolderAlias(const QString&)),
              app, SLOT(slotFolderOpenAction(QString)));
@@ -84,13 +83,18 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
     connect( ProgressDispatcher::instance(), SIGNAL(progressSyncProblem(QString,Progress::SyncProblem)),
              _accountSettings, SLOT(slotProgressProblem(QString,Progress::SyncProblem)) );
 
-    _ui->labelWidget->setCurrentRow(_ui->labelWidget->row(general));
+    _ui->labelWidget->setCurrentRow(_ui->labelWidget->row(_accountItem));
 
     connect(_ui->labelWidget, SIGNAL(currentRowChanged(int)),
             _ui->stack, SLOT(setCurrentIndex(int)));
 
     QPushButton *closeButton = _ui->buttonBox->button(QDialogButtonBox::Close);
     connect(closeButton, SIGNAL(pressed()), SLOT(accept()));
+
+    QAction *showLogWindow = new QAction(this);
+    showLogWindow->setShortcut(QKeySequence("F12"));
+    connect(showLogWindow, SIGNAL(triggered()), app, SLOT(slotOpenLogBrowser()));
+    addAction(showLogWindow);
 
     MirallConfigFile cfg;
     cfg.restoreGeometry(this);

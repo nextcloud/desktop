@@ -68,13 +68,6 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="_timelabel">
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QLabel" name="_errorLabel">
        <property name="text">
         <string>TextLabel</string>
