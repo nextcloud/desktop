@@ -25,7 +25,6 @@ include(DefineCMakeDefaults)
 include(DefinePlatformDefaults)
 include(DefineCompilerFlags)
 include(DefineOptions.cmake)
-include(CPackConfig.cmake)
 
 include(DefineInstallationPaths)
 
