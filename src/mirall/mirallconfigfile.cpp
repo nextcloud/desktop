@@ -595,7 +595,7 @@ QString MirallConfigFile::proxyPassword() const
 
 int MirallConfigFile::useUploadLimit() const
 {
-    return getValue(useUploadLimitC, QString::null, -1).toInt();
+    return getValue(useUploadLimitC, QString::null, 0).toInt();
 }
 
 bool MirallConfigFile::useDownloadLimit() const
