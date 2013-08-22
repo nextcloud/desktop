@@ -205,7 +205,7 @@ void Folder::setSyncEnabled( bool doit )
       _syncResult.clearErrors();
       evaluateSync( QStringList() );
   } else {
-      // disable folder. Done through the _enabled-flag set above
+      _pollTimer.stop();
   }
 }
 
