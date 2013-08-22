@@ -227,112 +227,112 @@
 <context>
     <name>Mirall::Application</name>
     <message>
-        <location filename="../src/mirall/application.cpp" line="246"/>
+        <location filename="../src/mirall/application.cpp" line="247"/>
         <source>%1 Sync Started</source>
         <translation>%1 同期開始</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/application.cpp" line="247"/>
+        <location filename="../src/mirall/application.cpp" line="248"/>
         <source>Sync started for %n configured sync folder(s).</source>
         <translation><numerusform>設定された %n フォルダの同期を開始しました。</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="319"/>
+        <location filename="../src/mirall/application.cpp" line="320"/>
         <source>Open %1 in browser</source>
         <translation>%1 をブラウザーで開く</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="321"/>
+        <location filename="../src/mirall/application.cpp" line="322"/>
         <source>Calculating quota...</source>
         <translation>制限容量を計算中...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="323"/>
+        <location filename="../src/mirall/application.cpp" line="324"/>
         <source>Unknown status</source>
         <translation>不明な状態</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="325"/>
+        <location filename="../src/mirall/application.cpp" line="326"/>
         <source>Settings...</source>
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="326"/>
+        <location filename="../src/mirall/application.cpp" line="327"/>
         <source>Details...</source>
         <translation>詳細...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="331"/>
+        <location filename="../src/mirall/application.cpp" line="332"/>
         <source>Help</source>
         <translation>ヘルプ</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="333"/>
+        <location filename="../src/mirall/application.cpp" line="334"/>
         <source>Quit %1</source>
         <translation>%1 を終了</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="383"/>
+        <location filename="../src/mirall/application.cpp" line="384"/>
         <source>Open %1 folder</source>
         <translation>%1 フォルダを開く</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="526"/>
+        <location filename="../src/mirall/application.cpp" line="527"/>
         <source>%1% of %2 in use</source>
         <translation>%2 のうち %1% を使用中</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="598"/>
+        <location filename="../src/mirall/application.cpp" line="599"/>
         <source>Up to date</source>
         <translation>最近です</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="362"/>
+        <location filename="../src/mirall/application.cpp" line="363"/>
         <source>None.</source>
         <translation>なし</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="366"/>
+        <location filename="../src/mirall/application.cpp" line="367"/>
         <source>Recent Changes</source>
         <translation>最近変更されたファイル</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="393"/>
+        <location filename="../src/mirall/application.cpp" line="394"/>
         <source>Managed Folders:</source>
         <translation>管理フォルダ:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="396"/>
+        <location filename="../src/mirall/application.cpp" line="397"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>フォルダ ’%1’ を開く</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="519"/>
+        <location filename="../src/mirall/application.cpp" line="520"/>
         <source>Quota n/a</source>
         <translation>クオータ n/a</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="552"/>
+        <location filename="../src/mirall/application.cpp" line="553"/>
         <source>No items synced recently</source>
         <translation>最近同期されたアイテムはありません。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="561"/>
+        <location filename="../src/mirall/application.cpp" line="562"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="576"/>
+        <location filename="../src/mirall/application.cpp" line="577"/>
         <source>Syncing %1 of %2 (%3 of %4) </source>
         <translation>%2 の %1 (%4 分の %3) を同期中</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="814"/>
+        <location filename="../src/mirall/application.cpp" line="815"/>
         <source>Folder %1: %2</source>
         <translation>フォルダ %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="820"/>
+        <location filename="../src/mirall/application.cpp" line="821"/>
         <source>No sync folders configured.</source>
         <translation>同期フォルダが設定されていません。</translation>
     </message>
@@ -1024,22 +1024,22 @@ name</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="231"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="225"/>
         <source>Copied to clipboard</source>
         <translation>クリップボードにコピー</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="231"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="225"/>
         <source>The sync protocol has been copied to the clipboard.</source>
         <translation>同期状況をクリップボードにコピーしました</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="283"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="277"/>
         <source>Problem: %1</source>
         <translation>不具合: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="286"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="280"/>
         <source>No more storage space available on server.</source>
         <translation>サーバー上で利用可能なストレージ容量が足りません。</translation>
     </message>

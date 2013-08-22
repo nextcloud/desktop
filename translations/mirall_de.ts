@@ -228,112 +228,112 @@ Diese Funktion ist nur für Wartungszwecke gedacht. Es werden keine Dateien entf
 <context>
     <name>Mirall::Application</name>
     <message>
-        <location filename="../src/mirall/application.cpp" line="246"/>
+        <location filename="../src/mirall/application.cpp" line="247"/>
         <source>%1 Sync Started</source>
         <translation>%1 Sync gestartet</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/application.cpp" line="247"/>
+        <location filename="../src/mirall/application.cpp" line="248"/>
         <source>Sync started for %n configured sync folder(s).</source>
         <translation><numerusform>Synchronisation wurde für %n konfigurierten Sync-Ordner gestartet.</numerusform><numerusform>Synchronisation wurde für %n konfigurierte Sync-Ordner gestartet.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="319"/>
+        <location filename="../src/mirall/application.cpp" line="320"/>
         <source>Open %1 in browser</source>
         <translation>%1 im Browser öffnen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="321"/>
+        <location filename="../src/mirall/application.cpp" line="322"/>
         <source>Calculating quota...</source>
         <translation>Berechne Quote...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="323"/>
+        <location filename="../src/mirall/application.cpp" line="324"/>
         <source>Unknown status</source>
         <translation>Unbekannter Status</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="325"/>
+        <location filename="../src/mirall/application.cpp" line="326"/>
         <source>Settings...</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="326"/>
+        <location filename="../src/mirall/application.cpp" line="327"/>
         <source>Details...</source>
         <translation>Details...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="331"/>
+        <location filename="../src/mirall/application.cpp" line="332"/>
         <source>Help</source>
         <translation>Hilfe</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="333"/>
+        <location filename="../src/mirall/application.cpp" line="334"/>
         <source>Quit %1</source>
         <translation>Beenden %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="383"/>
+        <location filename="../src/mirall/application.cpp" line="384"/>
         <source>Open %1 folder</source>
         <translation>Ordner %1 öffnen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="526"/>
+        <location filename="../src/mirall/application.cpp" line="527"/>
         <source>%1% of %2 in use</source>
         <translation>%1% von %2 benutzt</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="598"/>
+        <location filename="../src/mirall/application.cpp" line="599"/>
         <source>Up to date</source>
         <translation>Aktuell</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="362"/>
+        <location filename="../src/mirall/application.cpp" line="363"/>
         <source>None.</source>
         <translation>Keine.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="366"/>
+        <location filename="../src/mirall/application.cpp" line="367"/>
         <source>Recent Changes</source>
         <translation>Letzte Änderungen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="393"/>
+        <location filename="../src/mirall/application.cpp" line="394"/>
         <source>Managed Folders:</source>
         <translation>Verwaltete Ordner:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="396"/>
+        <location filename="../src/mirall/application.cpp" line="397"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>Ordner &apos;%1&apos; öffnen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="519"/>
+        <location filename="../src/mirall/application.cpp" line="520"/>
         <source>Quota n/a</source>
         <translation>Quote unbekannt</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="552"/>
+        <location filename="../src/mirall/application.cpp" line="553"/>
         <source>No items synced recently</source>
         <translation>Keine kürzlich synchronisierten Elemente</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="561"/>
+        <location filename="../src/mirall/application.cpp" line="562"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="576"/>
+        <location filename="../src/mirall/application.cpp" line="577"/>
         <source>Syncing %1 of %2 (%3 of %4) </source>
         <translation>Synchronisiere %1 von %2 (%3 von %4) </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="814"/>
+        <location filename="../src/mirall/application.cpp" line="815"/>
         <source>Folder %1: %2</source>
         <translation>Ordner %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="820"/>
+        <location filename="../src/mirall/application.cpp" line="821"/>
         <source>No sync folders configured.</source>
         <translation>Keine Sync-Ordner konfiguriert.</translation>
     </message>
@@ -1025,22 +1025,22 @@ name</source>
         <translation>Die Datei wurde sowohl auf dem Server als auch im lokalen Repository geändert und verursacht somit einen Konflikt. Die lokalen Änderungen wurden in die Konflikt-Datei kopiert während die Änderungen vom Server in der Datei mit dem Original-Namen zu finden sind.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="231"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="225"/>
         <source>Copied to clipboard</source>
         <translation>In die Zwischenablage kopiert</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="231"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="225"/>
         <source>The sync protocol has been copied to the clipboard.</source>
         <translation>Das Synchronisierungs-Protokoll wurde in die Zwischenablage kopiert.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="283"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="277"/>
         <source>Problem: %1</source>
         <translation>Problem: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="286"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="280"/>
         <source>No more storage space available on server.</source>
         <translation>Auf dem Server ist kein Speicherplatz mehr vorhanden.</translation>
     </message>
