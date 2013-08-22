@@ -16,6 +16,7 @@
 #include "mirall/version.h"
 
 #include <QCoreApplication>
+#include <QSettings>
 #include <QTextStream>
 #include <QDir>
 #include <QFile>
