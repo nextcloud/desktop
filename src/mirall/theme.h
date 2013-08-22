@@ -63,7 +63,7 @@ public:
      *
      * @return QString with app name.
      */
-    virtual QString appName() const = 0;
+    virtual QString appName() const;
 
     /**
      * @brief configFileName

@@ -18,7 +18,7 @@ configure_file( ${CMAKE_SOURCE_DIR}/src/mirall/version.h.in "${CMAKE_CURRENT_BIN
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR} "${CMAKE_CURRENT_BINARY_DIR}/src/mirall/")
 
 include(GNUInstallDirs)
-
+include(DefineInstallationPaths)
 include(GetGitRevisionDescription)
 get_git_head_revision(GIT_REFSPEC GIT_SHA1)
 
@@ -34,10 +34,8 @@ if (${GIT_SHA1} STREQUAL "GITDIR-NOTFOUND")
     endif()
 endif()
 
-## stupid, we should upstream this
-if("${CMAKE_INSTALL_PREFIX}" STREQUAL "/usr" AND NOT CMAKE_INSTALL_SYSCONFDIR)
-    set(CMAKE_INSTALL_SYSCONFDIR "/etc")
-endif()
+set(SYSCONFDIR ${SYSCONF_INSTALL_DIR})
+set(DATADIR ${DATA_INSTALL_DIR})
 
 #####
 ## handle BUILD_OWNCLOUD_OSX_BUNDLE
@@ -83,25 +81,6 @@ set(USE_INOTIFY ${INOTIFY_FOUND})
 
 configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
-set(CPACK_SOURCE_IGNORE_FILES
-  # hidden files
-  "/\\\\..+$"
-  # temporary files
-  "\\\\.swp$"
-  # backup files
-  "~$"
-  # others
-  "\\\\.#"
-  "/#"
-  "/build/"
-  "/_build/"
-  # used before
-  "\\\\.o$"
-  "\\\\.lo$"
-  "\\\\.la$"
-  "Makefile\\\\.in$"
-)
-
 include(OwnCloudCPack.cmake)
 
 add_definitions(-DUNICODE)
@@ -123,5 +102,5 @@ endif(UNIT_TESTING)
 if(BUILD_OWNCLOUD_OSX_BUNDLE)
     configure_file(sync-exclude.lst ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/sync-exclude.lst COPYONLY)
 else()
-    install( FILES sync-exclude.lst DESTINATION ${CMAKE_INSTALL_SYSCONFDIR} )
+    install( FILES sync-exclude.lst DESTINATION ${SYSCONFDIR} )
 endif()

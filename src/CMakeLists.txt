@@ -266,8 +266,7 @@ if(NOT WIN32)
     foreach( _file ${_icons} )
         string( REPLACE "${theme_dir}/colored/${APPLICATION_SHORTNAME}-icon-" "" _res ${_file} )
         string( REPLACE ".png" "" _res ${_res} )
-        install( FILES ${_file} RENAME ${APPLICATION_SHORTNAME}.png DESTINATION
-${CMAKE_INSTALL_DATADIR}/icons/hicolor/${_res}x${_res}/apps )
+        install( FILES ${_file} RENAME ${APPLICATION_SHORTNAME}.png DESTINATION ${DATADIR}/icons/hicolor/${_res}x${_res}/apps )
     endforeach( _file )
 endif(NOT WIN32)
 

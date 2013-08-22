@@ -16,6 +16,8 @@
 
 #include <iostream>
 
+#include "config.h"
+
 #include "mirall/application.h"
 #include "mirall/systray.h"
 #include "mirall/folder.h"
@@ -81,8 +83,7 @@ static const char optionsC[] =
 QString applicationTrPath()
 {
 #ifdef Q_OS_LINUX
-    // FIXME - proper path!
-    return QString::fromLatin1("/usr/share/%1/i18n/").arg(Theme::instance()->appName());
+    return QString::fromLatin1(DATADIR"/i18n/");
 #endif
 #ifdef Q_OS_MAC
     return QApplication::applicationDirPath()+QLatin1String("/../Resources/Translations"); // path defaults to app dir.

@@ -193,7 +193,7 @@ QString MirallConfigFile::excludeFile(Scope scope) const
             fi.setFile( QApplication::applicationDirPath(), exclFile );
 #endif
 #ifdef Q_OS_UNIX
-            fi.setFile( QString("/etc/%1").arg(Theme::instance()->appName()), exclFile );
+            fi.setFile( QString( SYSCONFDIR "/%1").arg(Theme::instance()->appName()), exclFile );
 #endif
 #ifdef Q_OS_MAC
             // exec path is inside the bundle
