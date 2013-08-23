@@ -48,7 +48,8 @@ public:
      * Use and redefine this if the human readable name contains spaces,
      * special chars and such.
      *
-     * By default, appName() is returned.
+     * By default, the name is derived from the APPLICATION_NAME
+     * cmake variable.
      *
      * @return QString with human readable app name.
      */
@@ -60,6 +61,13 @@ public:
      * Use and redefine this as an application name. Keep it straight as
      * it is used for config files etc. If you need a more sophisticated
      * name in the GUI, redefine appNameGUI.
+     *
+     * By default, the name is derived from the APPLICATION_SHORTNAME
+     * cmake variable, and should be the same. This method is only
+     * reimplementable for legacy reasons.
+     *
+     * Warning: Do not modify this value, as many things, e.g. settings
+     * depend on it! You most likely want to modify \ref appNameGUI().
      *
      * @return QString with app name.
      */
