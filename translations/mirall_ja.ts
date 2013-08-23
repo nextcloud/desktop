@@ -227,112 +227,112 @@
 <context>
     <name>Mirall::Application</name>
     <message>
-        <location filename="../src/mirall/application.cpp" line="247"/>
+        <location filename="../src/mirall/application.cpp" line="252"/>
         <source>%1 Sync Started</source>
         <translation>%1 同期開始</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/application.cpp" line="248"/>
+        <location filename="../src/mirall/application.cpp" line="253"/>
         <source>Sync started for %n configured sync folder(s).</source>
         <translation><numerusform>設定された %n フォルダの同期を開始しました。</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="320"/>
+        <location filename="../src/mirall/application.cpp" line="325"/>
         <source>Open %1 in browser</source>
         <translation>%1 をブラウザーで開く</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="322"/>
+        <location filename="../src/mirall/application.cpp" line="327"/>
         <source>Calculating quota...</source>
         <translation>制限容量を計算中...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="324"/>
+        <location filename="../src/mirall/application.cpp" line="329"/>
         <source>Unknown status</source>
         <translation>不明な状態</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="326"/>
+        <location filename="../src/mirall/application.cpp" line="331"/>
         <source>Settings...</source>
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="327"/>
+        <location filename="../src/mirall/application.cpp" line="332"/>
         <source>Details...</source>
         <translation>詳細...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="332"/>
+        <location filename="../src/mirall/application.cpp" line="337"/>
         <source>Help</source>
         <translation>ヘルプ</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="334"/>
+        <location filename="../src/mirall/application.cpp" line="339"/>
         <source>Quit %1</source>
         <translation>%1 を終了</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="384"/>
+        <location filename="../src/mirall/application.cpp" line="389"/>
         <source>Open %1 folder</source>
         <translation>%1 フォルダを開く</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="527"/>
+        <location filename="../src/mirall/application.cpp" line="532"/>
         <source>%1% of %2 in use</source>
         <translation>%2 のうち %1% を使用中</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="599"/>
+        <location filename="../src/mirall/application.cpp" line="604"/>
         <source>Up to date</source>
         <translation>最近です</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="363"/>
+        <location filename="../src/mirall/application.cpp" line="368"/>
         <source>None.</source>
         <translation>なし</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="367"/>
+        <location filename="../src/mirall/application.cpp" line="372"/>
         <source>Recent Changes</source>
         <translation>最近変更されたファイル</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="394"/>
+        <location filename="../src/mirall/application.cpp" line="399"/>
         <source>Managed Folders:</source>
         <translation>管理フォルダ:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="397"/>
+        <location filename="../src/mirall/application.cpp" line="402"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>フォルダ ’%1’ を開く</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="520"/>
+        <location filename="../src/mirall/application.cpp" line="525"/>
         <source>Quota n/a</source>
         <translation>クオータ n/a</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="553"/>
+        <location filename="../src/mirall/application.cpp" line="558"/>
         <source>No items synced recently</source>
         <translation>最近同期されたアイテムはありません。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="562"/>
+        <location filename="../src/mirall/application.cpp" line="567"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="577"/>
+        <location filename="../src/mirall/application.cpp" line="582"/>
         <source>Syncing %1 of %2 (%3 of %4) </source>
         <translation>%2 の %1 (%4 分の %3) を同期中</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="815"/>
+        <location filename="../src/mirall/application.cpp" line="820"/>
         <source>Folder %1: %2</source>
         <translation>フォルダ %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="821"/>
+        <location filename="../src/mirall/application.cpp" line="826"/>
         <source>No sync folders configured.</source>
         <translation>同期フォルダが設定されていません。</translation>
     </message>
@@ -1082,23 +1082,23 @@ name</source>
         <translation>デバッグ目的でディスクにログファイルを保存する</translation>
     </message>
     <message>
-        <location filename="../src/mirall/logbrowser.cpp" line="162"/>
-        <location filename="../src/mirall/logbrowser.cpp" line="218"/>
+        <location filename="../src/mirall/logbrowser.cpp" line="164"/>
+        <location filename="../src/mirall/logbrowser.cpp" line="220"/>
         <source>Error</source>
         <translation>エラー</translation>
     </message>
     <message>
-        <location filename="../src/mirall/logbrowser.cpp" line="163"/>
+        <location filename="../src/mirall/logbrowser.cpp" line="165"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;ファイル &apos;%1&apos;&lt;br/&gt;を書き込み用で開けませんでした。&lt;br/&gt;&lt;br/&gt;ログ出力を&lt;b&gt;保存できません&lt;/b&gt;でした！&lt;/nobr&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/logbrowser.cpp" line="208"/>
+        <location filename="../src/mirall/logbrowser.cpp" line="210"/>
         <source>Save log file</source>
         <translation>ログファイルを保存</translation>
     </message>
     <message>
-        <location filename="../src/mirall/logbrowser.cpp" line="218"/>
+        <location filename="../src/mirall/logbrowser.cpp" line="220"/>
         <source>Could not write to log file </source>
         <translation>ログファイルに書き込めませんでした</translation>
     </message>
@@ -1936,7 +1936,7 @@ name</source>
 <context>
     <name>ownCloudTheme</name>
     <message>
-        <location filename="../src/mirall/owncloudtheme.cpp" line="99"/>
+        <location filename="../src/mirall/owncloudtheme.cpp" line="90"/>
         <source>If you don&apos;t have an ownCloud server yet, see &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt; for more info.</source>
         <comment>Top text in setup wizard. Keep short!</comment>
         <translation>ownCloudサーバーをまだ持っていないなら、&lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt;で詳細を見ましょう。</translation>
@@ -1945,12 +1945,12 @@ name</source>
 <context>
     <name>ownCloudTheme::about()</name>
     <message>
-        <location filename="../src/mirall/owncloudtheme.cpp" line="57"/>
+        <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using OCsync %5 and Qt %6.&lt;/small&gt;&lt;p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;%3, %4 のGitリビジョン&lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;からのビルド OCsync %5 と Qt %6 を利用&lt;/small&gt;&lt;p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudtheme.cpp" line="65"/>
+        <location filename="../src/mirall/owncloudtheme.cpp" line="56"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.&lt;br&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;%7</source>
         <translation>&lt;p&gt;Version %2. 詳細な情報は、&lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;を見てください。&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.&lt;br&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;%7</translation>
     </message>
