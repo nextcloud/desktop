@@ -1,6 +1,5 @@
 *.filepart
 *~
-*.bak
 *.part
 *.crdownload
 
@@ -17,10 +16,6 @@ csync_journal.db.ctmp
 desktop.ini
 
 *.kate-swp
-*.aux
-*.nav
-*.out
-*.toc
 
 *_conflict-*
 ]*.~*
