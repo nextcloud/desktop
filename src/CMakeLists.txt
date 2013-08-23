@@ -11,7 +11,7 @@ else()
     set(theme_dir ${CMAKE_CURRENT_SOURCE_DIR}/../theme)
 endif()
 
-set(synclib_NAME ${APPLICATION_SHORTNAME}sync)
+set(synclib_NAME ${APPLICATION_EXECUTABLE}sync)
 
 set(mirall_UI
 mirall/folderwizardsourcepage.ui

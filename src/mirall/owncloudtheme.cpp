@@ -33,15 +33,6 @@ ownCloudTheme::ownCloudTheme()
     // qDebug() << " ** running ownCloud theme!";
 }
 
-QString ownCloudTheme::appName() const
-{
-    /* If this is changed, existing configs are not found any more
-     * because the value is used by QDesktopServices to find the config
-     * file. Be aware.
-     */
-    return QLatin1String("ownCloud");
-}
-
 QString ownCloudTheme::configFileName() const
 {
     return QLatin1String("owncloud.cfg");

@@ -25,7 +25,6 @@ class ownCloudTheme : public Theme
 public:
     ownCloudTheme();
 
-    virtual QString appName() const;
     QString configFileName() const;
     QString about() const;
     QPixmap splashScreen() const;
