@@ -184,6 +184,10 @@ Application::Application(int &argc, char **argv) :
 
 Application::~Application()
 {
+    if (_settingsDialog) {
+        delete _settingsDialog.data();
+    }
+
     delete _tray; // needed, see ctor
 
     qDebug() << "* Mirall shutdown";

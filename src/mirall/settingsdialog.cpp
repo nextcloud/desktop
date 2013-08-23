@@ -102,6 +102,9 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
 
 SettingsDialog::~SettingsDialog()
 {
+    MirallConfigFile cfg;
+    cfg.saveGeometry(this);
+
     delete _ui;
 }
 
@@ -112,13 +115,6 @@ void SettingsDialog::addAccount(const QString &title, QWidget *widget)
     _ui->labelWidget->addItem(_accountItem);
     _ui->stack->addWidget(widget);
 
-}
-
-void SettingsDialog::closeEvent(QCloseEvent *event)
-{
-    MirallConfigFile cfg;
-    cfg.saveGeometry(this);
-    QWidget::closeEvent(event);
 }
 
 void SettingsDialog::slotUpdateAccountState()

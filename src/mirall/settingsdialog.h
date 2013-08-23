@@ -41,9 +41,6 @@ public:
 
     void addAccount(const QString &title, QWidget *widget);
 
-protected:
-    void closeEvent(QCloseEvent *event);
-
 protected slots:
     void slotUpdateAccountState();
 
