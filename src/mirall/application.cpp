@@ -188,6 +188,7 @@ Application::~Application()
         delete _settingsDialog.data();
     }
 
+    delete _logBrowser;
     delete _tray; // needed, see ctor
 
     qDebug() << "* Mirall shutdown";
