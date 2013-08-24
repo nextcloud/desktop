@@ -23,6 +23,7 @@ include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR} "${CMAKE_CURRENT_BINARY_D
 
 include(GNUInstallDirs)
 include(DefineInstallationPaths)
+include(QtVersionAbstraction)
 include(GetGitRevisionDescription)
 get_git_head_revision(GIT_REFSPEC GIT_SHA1)
 
@@ -66,10 +67,10 @@ endif()
 ####
 
 #### find libs
-find_package(Qt4 4.7.0 COMPONENTS QtCore QtGui QtXml QtNetwork QtTest QtWebkit REQUIRED )
-if( UNIX AND NOT APPLE ) # Fdo notifications
-    find_package(Qt4 4.7.0 COMPONENTS QtDBus REQUIRED )
-endif()
+#find_package(Qt4 4.7.0 COMPONENTS QtCore QtGui QtXml QtNetwork QtTest QtWebkit REQUIRED )
+#if( UNIX AND NOT APPLE ) # Fdo notifications
+#    find_package(Qt4 4.7.0 COMPONENTS QtDBus REQUIRED )
+#endif()
 find_package(Csync REQUIRED)
 if(UNIX)
 find_package(INotify REQUIRED)

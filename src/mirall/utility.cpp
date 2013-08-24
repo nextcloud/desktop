@@ -24,6 +24,12 @@
 #include <QWidget>
 #include <QDebug>
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+#include <QDesktopServices>
+#else
+#include <QStandardPaths>
+#endif
+
 #ifdef Q_OS_UNIX
 #include <sys/statvfs.h>
 #include <sys/types.h>
@@ -51,7 +57,7 @@ QString Utility::formatFingerprint( const QByteArray& fmhash )
         hash.append(' ');
     }
 
-    QString fp = QString::fromAscii( hash.trimmed() );
+    QString fp = QString::fromLatin1( hash.trimmed() );
     fp.replace(QChar(' '), QChar(':'));
 
     return fp;
@@ -367,6 +373,24 @@ QString Utility::toCSyncScheme(const QString &urlStr)
         url.setScheme( QLatin1String("ownclouds") );
     }
     return url.toString();
+}
+
+QString Utility::escape(const QString &in)
+{
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+    return Qt::escape(in);
+#else
+    return in.toHtmlEscaped();
+#endif
+}
+
+QString Utility::dataLocation()
+{
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+    return QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+#else
+    return QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
+#endif
 }
 
 } // namespace Mirall

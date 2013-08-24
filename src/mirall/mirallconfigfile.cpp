@@ -18,10 +18,12 @@
 #include "mirall/owncloudinfo.h"
 #include "mirall/owncloudtheme.h"
 #include "mirall/theme.h"
+#include "mirall/utility.h"
+
 #include "creds/abstractcredentials.h"
 #include "creds/credentialsfactory.h"
-#include <QtCore>
-#include <QtGui>
+
+#include <QWidget>
 
 #define DEFAULT_REMOTE_POLL_INTERVAL 30000 // default remote poll time in milliseconds
 #define DEFAULT_MAX_LOG_LINES 20000
@@ -159,7 +161,7 @@ void MirallConfigFile::restoreGeometry(QWidget *w)
 QString MirallConfigFile::configPath() const
 {
     if( _confDir.isEmpty() ) {
-      _confDir = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+        _confDir = Utility::dataLocation();
     }
     QString dir = _confDir;
 

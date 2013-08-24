@@ -1,33 +1,15 @@
-include(${QT_USE_FILE})
-
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
-QT4_ADD_RESOURCES ( MIRALL_RC_SRC ../mirall.qrc)
+qt_add_resources(MIRALL_RC_SRC ../mirall.qrc)
 if ( IS_DIRECTORY ${OEM_THEME_DIR} )
-    QT4_ADD_RESOURCES ( MIRALL_RC_SRC ${OEM_THEME_DIR}/theme.qrc)
+    qt_add_resources(MIRALL_RC_SRC ${OEM_THEME_DIR}/theme.qrc)
     set(theme_dir ${OEM_THEME_DIR}/theme)
 else()
-    QT4_ADD_RESOURCES ( MIRALL_RC_SRC ../theme.qrc)
+    qt_add_resources(MIRALL_RC_SRC ../theme.qrc)
     set(theme_dir ${CMAKE_CURRENT_SOURCE_DIR}/../theme)
 endif()
 
 set(synclib_NAME ${APPLICATION_EXECUTABLE}sync)
-
-set(mirall_UI
-mirall/folderwizardsourcepage.ui
-mirall/folderwizardtargetpage.ui
-mirall/sslerrordialog.ui
-mirall/settingsdialog.ui
-mirall/generalsettings.ui
-mirall/networksettings.ui
-mirall/accountsettings.ui
-mirall/ignorelisteditor.ui
-mirall/itemprogressdialog.ui
-wizard/owncloudsetupnocredspage.ui
-wizard/owncloudhttpcredspage.ui
-wizard/owncloudwizardresultpage.ui
-wizard/owncloudadvancedsetuppage.ui
-)
 
 set(3rdparty_SRC
 3rdparty/qtsingleapplication/qtsingleapplication.cpp
@@ -45,7 +27,7 @@ set(3rdparty_HEADER
 3rdparty/fancylineedit/fancylineedit.h
 3rdparty/QProgressIndicator/QProgressIndicator.h
 )
-qt4_wrap_cpp(3rdparty_MOC ${3rdparty_HEADER})
+qt_wrap_cpp(3rdparty_MOC ${3rdparty_HEADER})
 
 if(NOT WIN32) 
 	list(APPEND 3rdparty_SRC 3rdparty/qtlockedfile/qtlockedfile_unix.cpp)
@@ -59,8 +41,6 @@ set(3rdparty_INC
     ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/QProgressIndicator
     ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/fancylineedit
     )
-
-qt4_wrap_ui(mirall_UI_SRCS ${mirall_UI})
 
 set(libsync_SRCS
     mirall/folderman.cpp
@@ -135,7 +115,7 @@ IF( APPLE )
 ENDIF()
 
 
-qt4_wrap_cpp(syncMoc ${libsync_HEADERS})
+qt_wrap_cpp(syncMoc ${libsync_HEADERS})
 
 list(APPEND libsync_LINK_TARGETS
     ${QT_LIBRARIES}
@@ -149,6 +129,9 @@ if(QTKEYCHAIN_FOUND)
 endif()
 
 add_library(${synclib_NAME} SHARED ${libsync_SRCS} ${syncMoc})
+
+qt5_use_modules(${synclib_NAME} Widgets Network Xml Quick WebKitWidgets)
+
 set_target_properties( ${synclib_NAME}  PROPERTIES
 	VERSION ${VERSION}
 	SOVERSION ${SOVERSION}
@@ -174,6 +157,24 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
 else()
     install(TARGETS ${synclib_NAME} DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS)
 endif()
+
+set(mirall_UI
+mirall/folderwizardsourcepage.ui
+mirall/folderwizardtargetpage.ui
+mirall/sslerrordialog.ui
+mirall/settingsdialog.ui
+mirall/generalsettings.ui
+mirall/networksettings.ui
+mirall/accountsettings.ui
+mirall/ignorelisteditor.ui
+mirall/itemprogressdialog.ui
+wizard/owncloudsetupnocredspage.ui
+wizard/owncloudhttpcredspage.ui
+wizard/owncloudwizardresultpage.ui
+wizard/owncloudadvancedsetuppage.ui
+)
+
+qt_wrap_ui(mirall_UI_SRCS ${mirall_UI})
 
 set(mirall_SRCS
     mirall/application.cpp
@@ -234,9 +235,9 @@ endif()
 include_directories(${CSYNC_INCLUDE_DIR}/csync ${CSYNC_INCLUDE_DIR} ${CSYNC_BUILD_PATH}/src)
 include_directories(${3rdparty_INC})
 
-qt4_wrap_cpp(mirallMoc ${mirall_HEADERS})
+qt_wrap_cpp(mirallMoc ${mirall_HEADERS})
 
-qt4_add_translation(mirall_I18N ${TRANSLATIONS})
+qt_add_translation(mirall_I18N ${TRANSLATIONS})
 
 set( final_src
     ${mirall_HEADERS}
@@ -276,7 +277,7 @@ endif(NOT WIN32)
 
     # add_executable( ${APPLICATION_EXECUTABLE} main.cpp ${final_src})
     add_executable( ${APPLICATION_EXECUTABLE} WIN32 main.cpp ${final_src})
-
+    qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml)
 else()
     set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
     include(DeployQt4)
@@ -286,6 +287,7 @@ else()
 
     # we must add MACOSX_BUNDLE only if building a bundle
     add_executable( ${APPLICATION_EXECUTABLE} WIN32 MACOSX_BUNDLE main.cpp ${final_src})
+    qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml)
 
     #FIXME: hardcoded path
     if ( EXISTS ${CSYNC_BINARY_DIR}/modules/ocsync_owncloud.so )

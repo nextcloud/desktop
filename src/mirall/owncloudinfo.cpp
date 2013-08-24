@@ -138,9 +138,13 @@ QNetworkReply* ownCloudInfo::mkdirRequest( const QString& dir )
     qDebug() << "OCInfo Making dir " << dir;
     _authAttempts = 0;
     QNetworkRequest req;
-    QUrl url = QUrl(webdavUrl(_connection));
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+    QUrl url(webdavUrl(_connection));
     url.setEncodedPath(url.encodedPath()+QUrl::toPercentEncoding(dir, "/"));
-
+#else
+    QUrl url(webdavUrl(_connection));
+    url.setPath(url.path(QUrl::FullyEncoded)+QUrl::toPercentEncoding(dir, "/"));
+#endif
     req.setUrl( url );
     QNetworkReply *reply = davRequest("MKCOL", req, 0);
 

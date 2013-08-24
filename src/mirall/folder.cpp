@@ -481,7 +481,7 @@ void Folder::setProxy()
     if( _csync_ctx ) {
         /* Store proxy */
         QUrl proxyUrl(ownCloudInfo::instance()->webdavUrl());
-        QList<QNetworkProxy> proxies = QNetworkProxyFactory::proxyForQuery(proxyUrl);
+        QList<QNetworkProxy> proxies = QNetworkProxyFactory::proxyForQuery(QNetworkProxyQuery(proxyUrl));
         // We set at least one in Application
         Q_ASSERT(proxies.count() > 0);
         QNetworkProxy proxy = proxies.first();

@@ -142,9 +142,9 @@ QString SslErrorDialog::certDiv( QSslCertificate cert ) const
     msg += QL("<div id=\"ccert\">");
     QStringList li;
 
-    QString org = Qt::escape(cert.subjectInfo( QSslCertificate::Organization));
-    QString unit = Qt::escape(cert.subjectInfo( QSslCertificate::OrganizationalUnitName));
-    QString country = Qt::escape(cert.subjectInfo( QSslCertificate::CountryName));
+    QString org = Utility::escape(cert.subjectInfo( QSslCertificate::Organization));
+    QString unit = Utility::escape(cert.subjectInfo( QSslCertificate::OrganizationalUnitName));
+    QString country = Utility::escape(cert.subjectInfo( QSslCertificate::CountryName));
     if (unit.isEmpty()) unit = tr("&lt;not specified&gt;");
     if (org.isEmpty()) org = tr("&lt;not specified&gt;");
     if (country.isEmpty()) country = tr("&lt;not specified&gt;");
