@@ -229,7 +229,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="252"/>
         <source>%1 Sync Started</source>
-        <translation>%1 Sync Gestart</translation>
+        <translation>%1 Synchronisatie gestart</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/application.cpp" line="253"/>
@@ -796,12 +796,12 @@ werken. Controleer de de documentatie voor mogelijke oplossingen.</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="211"/>
         <source>Folder was successfully created on %1.</source>
-        <translation>Map was succesvol gecreërd op %1.</translation>
+        <translation>Map is succesvol aangemaakt op %1.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="214"/>
         <source>Failed to create the folder on %1.&lt;br/&gt;Please check manually.</source>
-        <translation>Creëren van de map op %1 mislukt.&lt;br/&gt;Controleer handmatig.</translation>
+        <translation>Aanmaken van de map op %1 mislukt.&lt;br/&gt;Controleer handmatig.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="264"/>
@@ -1357,7 +1357,7 @@ op de server staat beschikbaar blijft met de originele naam.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="311"/>
         <source>Creating local sync folder %1... </source>
-        <translation>Creër lokale sync map %1...</translation>
+        <translation>Maak lokale synchronisatiemap %1...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="315"/>
@@ -1516,7 +1516,7 @@ op de server staat beschikbaar blijft met de originele naam.</translation>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="140"/>
         <source>with Certificate %1</source>
-        <translation>met Certificaat %1</translation>
+        <translation>met certificaat %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="148"/>
@@ -1556,7 +1556,7 @@ op de server staat beschikbaar blijft met de originele naam.</translation>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="163"/>
         <source>Effective Date: %1</source>
-        <translation>Effectieve Datum: %1</translation>
+        <translation>Ingangsdatum: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="164"/>
@@ -1757,7 +1757,7 @@ op de server staat beschikbaar blijft met de originele naam.</translation>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="32"/>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="140"/>
         <source>TextLabel</source>
-        <translation>TekstLabel</translation>
+        <translation>Tekstlabel</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="47"/>
@@ -1767,23 +1767,23 @@ op de server staat beschikbaar blijft met de originele naam.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="60"/>
         <source>CheckBox</source>
-        <translation>CheckBox</translation>
+        <translation>Checkbox</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="75"/>
         <source>&amp;Username:</source>
-        <translation>Gebruikersnaam:</translation>
+        <translation>&amp;Gebruikersnaam</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="85"/>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="296"/>
         <source>Enter the ownCloud username.</source>
-        <translation>Voer de ownCloud username in.</translation>
+        <translation>Voer de ownCloud gebruikersnaam in.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="92"/>
         <source>&amp;Password:</source>
-        <translation>Wachtwoord:</translation>
+        <translation>&amp;Wachtwoord</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="102"/>

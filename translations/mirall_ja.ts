@@ -980,7 +980,7 @@ Checked items will also be deleted if they prevent a directory from being remove
         <source>The file was ignored because it is listed in the clients ignore list
 or the filename contains characters that are not syncable
 in a cross platform environment.</source>
-        <translation type="unfinished"/>
+        <translation>そのファイルは、クライアント側の対象外リストに入っているか、クロスプラットフォーム環境では同期できない文字がファイル名に含まれている為、同期されませんでした。</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="125"/>
@@ -992,7 +992,7 @@ in a cross platform environment.</source>
         <source>The directory was ignored because it is listed in the clients
 ignore list or the directory name contains
 characters that are not syncable in a cross  platform environment.</source>
-        <translation type="unfinished"/>
+        <translation>そのディレクトリは、クライアント側の対象外リストに入っているか、クロスプラットフォーム環境では同期できない文字がファイル名に含まれている為、同期されませんでした。</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="130"/>
@@ -1003,7 +1003,8 @@ characters that are not syncable in a cross  platform environment.</source>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="131"/>
         <source>Softlinks break the semantics of synchronization.
 Please do not use them in synced directories.</source>
-        <translation type="unfinished"/>
+        <translation>ソフトリンクは、同期の動作環境に不具合をもたらします。
+同期対象ディレクトリにソフトリンクは使用しないようにお願いいたします。</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="134"/>
@@ -1013,7 +1014,7 @@ Please do not use them in synced directories.</source>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="137"/>
         <source>Conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>競合ファイル</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="138"/>
@@ -1021,7 +1022,7 @@ Please do not use them in synced directories.</source>
 created a so called conflict. The local change is copied to the conflict
 file while the file from the server side is available under the original
 name</source>
-        <translation type="unfinished"/>
+        <translation>サーバー側とローカル側のファイルが変更された為、競合ファイルが作成されました。ローカル側の変更は、競合Conflictファイルへコピーされ、サーバー側のファイルは、元々のファイル名で利用できます。</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="225"/>
@@ -1993,7 +1994,7 @@ name</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="56"/>
         <source>For deletion</source>
-        <translation type="unfinished"/>
+        <translation>削除対象</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="59"/>
@@ -2061,7 +2062,7 @@ name</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="60"/>
         <source>Sync Success, problems with individual files.</source>
-        <translation type="unfinished"/>
+        <translation>同期成功、いくつかのファイルで問題があります。</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>
