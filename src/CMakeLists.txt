@@ -169,7 +169,7 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     if(NOT WIN32)
         configure_file(${CMAKE_SOURCE_DIR}/mirall.desktop.in
 		${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.desktop)
-        install(FILES  ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_SHORTNAME}.desktop DESTINATION share/applications )
+        install(FILES  ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.desktop DESTINATION share/applications )
     endif()
 else()
     install(TARGETS ${synclib_NAME} DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS)
