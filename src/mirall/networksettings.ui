@@ -229,7 +229,7 @@
       <item row="0" column="0" colspan="2">
        <widget class="QRadioButton" name="noDownloadLimitRadioButton">
         <property name="text">
-         <string>No Limit</string>
+         <string>No limit</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -254,6 +254,12 @@
    </item>
    <item row="1" column="1">
     <widget class="QGroupBox" name="groupBox_2">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="title">
       <string>Upload Bandwidth</string>
      </property>
@@ -261,7 +267,7 @@
       <item row="0" column="0" colspan="2">
        <widget class="QRadioButton" name="noUploadLimitRadioButton">
         <property name="text">
-         <string>No Limit</string>
+         <string>No limit</string>
         </property>
        </widget>
       </item>
