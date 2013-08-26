@@ -149,7 +149,7 @@ void ItemProgressDialog::setSyncResult( const SyncResult& result )
              twitem->setToolTip(0, longTimeStr);
              twitem->setToolTip(3, tooltip);
              twitem->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Problem, true));
-             _ui->_treeWidget->addTopLevelItem(twitem);
+             _ui->_treeWidget->insertTopLevelItem(0, twitem);
 
          }
     }
@@ -288,7 +288,7 @@ void ItemProgressDialog::slotProgressErrors( const QString& folder, const Progre
   // by error_code. A quota problem is considered an error, others might not??
   item->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Error, true));
   item->setToolTip(0, longTimeStr);
-  _ui->_treeWidget->addTopLevelItem(item);
+  _ui->_treeWidget->insertTopLevelItem(0, item);
   Q_UNUSED(item);
 }
 
@@ -319,7 +319,7 @@ void ItemProgressDialog::slotProgressInfo( const QString& folder, const Progress
 
     QTreeWidgetItem *item = new QTreeWidgetItem(columns);
     item->setToolTip(0, longTimeStr);
-    _ui->_treeWidget->addTopLevelItem(item);
+    _ui->_treeWidget->insertTopLevelItem(0, item);
     Q_UNUSED(item);
 }
 
