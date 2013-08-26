@@ -414,7 +414,9 @@ void Application::setupContextMenu()
     _contextMenu->addMenu(_recentActionsMenu);
     _contextMenu->addSeparator();
     _contextMenu->addAction(_actionSettings);
-    _contextMenu->addAction(_actionHelp);
+    if (!_theme->helpUrl().isEmpty()) {
+        _contextMenu->addAction(_actionHelp);
+    }
     _contextMenu->addSeparator();
 
     _contextMenu->addAction(_actionQuit);
