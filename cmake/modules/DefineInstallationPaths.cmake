@@ -73,8 +73,12 @@ if (UNIX)
     CACHE PATH "The XDG directory"
   )
 
+  IF("${EXEC_INSTALL_PREFIX}" STREQUAL "/usr")
+    SET(SYSCONFDIR_INSTALL_PREFIX "${EXEC_INSTALL_PREFIX}")
+  endif()
+
   SET(SYSCONF_INSTALL_DIR
-    "${EXEC_INSTALL_PREFIX}/etc"
+    "${SYSCONFDIR_INSTALL_PREFIX}/etc"
     CACHE PATH "The ${APPLICATION_SHORT_NAME} sysconfig install dir (default prefix/etc)"
   )
   SET(MAN_INSTALL_DIR
