@@ -140,19 +140,19 @@ QString CSyncThread::csyncErrorToString( CSYNC_ERROR_CODE err, const char *errSt
         errStr = tr("A HTTP transmission error happened.");
         break;
     case CSYNC_ERR_PERM:
-        errStr = tr("CSync failed due to not handled permission deniend.");
+        errStr = tr("CSync: Permission deniend.");
         break;
     case CSYNC_ERR_NOT_FOUND:
-        errStr = tr("CSync failed to find a specific file.");
+        errStr = tr("CSync: File not found.");
         break;
     case CSYNC_ERR_EXISTS:
-        errStr = tr("CSync tried to create a directory that already exists.");
+        errStr = tr("CSync: Directory already exists.");
         break;
     case CSYNC_ERR_NOSPC:
-        errStr = tr("CSync: No space on %1 server available.").arg(Theme::instance()->appNameGUI());
+        errStr = tr("CSync: No space left on %1 server.").arg(Theme::instance()->appNameGUI());
         break;
     case CSYNC_ERR_UNSPEC:
-        errStr = tr("CSync unspecified error.");
+        errStr = tr("CSync: unspecified error.");
 
     default:
         errStr = tr("An internal error number %1 happend.").arg( (int) err );
