@@ -277,12 +277,12 @@
         <translation>Открыть %1 папку</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="532"/>
+        <location filename="../src/mirall/application.cpp" line="537"/>
         <source>%1% of %2 in use</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="604"/>
+        <location filename="../src/mirall/application.cpp" line="609"/>
         <source>Up to date</source>
         <translation>Актуальная версия</translation>
     </message>
@@ -307,32 +307,32 @@
         <translation>Открыть папку &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="525"/>
+        <location filename="../src/mirall/application.cpp" line="530"/>
         <source>Quota n/a</source>
         <translation>Квота недоступна</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="558"/>
+        <location filename="../src/mirall/application.cpp" line="563"/>
         <source>No items synced recently</source>
         <translation>Недавно ничего не синхронизировалсь</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="567"/>
+        <location filename="../src/mirall/application.cpp" line="572"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="582"/>
+        <location filename="../src/mirall/application.cpp" line="587"/>
         <source>Syncing %1 of %2 (%3 of %4) </source>
         <translation>Синхронизируются  %1 из %2 (%3 из %4) </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="820"/>
+        <location filename="../src/mirall/application.cpp" line="825"/>
         <source>Folder %1: %2</source>
         <translation>Папка %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="826"/>
+        <location filename="../src/mirall/application.cpp" line="831"/>
         <source>No sync folders configured.</source>
         <translation>Нет папок для синхронизации.</translation>
     </message>
@@ -456,28 +456,28 @@
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="143"/>
-        <source>CSync failed due to not handled permission deniend.</source>
-        <translation>CSync упал в связи с отутствием обработки из-за отказа в доступе.</translation>
+        <source>CSync: Permission deniend.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="146"/>
-        <source>CSync failed to find a specific file.</source>
-        <translation>CSync не смог найти заданный файл.</translation>
+        <source>CSync: File not found.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="149"/>
-        <source>CSync tried to create a directory that already exists.</source>
-        <translation>CSync пытался создать директорию, которая уже существует.</translation>
+        <source>CSync: Directory already exists.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="152"/>
-        <source>CSync: No space on %1 server available.</source>
-        <translation>CSync: Нет доступного пространства на сервере %1 server.</translation>
+        <source>CSync: No space left on %1 server.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="155"/>
-        <source>CSync unspecified error.</source>
-        <translation>Неизвестная ошибка CSync.</translation>
+        <source>CSync: unspecified error.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="158"/>
@@ -609,14 +609,14 @@
         <translation>CSync поток закрыт.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="671"/>
+        <location filename="../src/mirall/folder.cpp" line="675"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Это действие может удалить все файлы в локальной папке &apos;%1&apos;.
 Если вы или ваш администратор заново создали вашу учётную запись на сервере, выберите &quot;Сохранить файлы&quot;. Если вы хотите стереть всё - выберите &quot;Удалить все файлы&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="674"/>
+        <location filename="../src/mirall/folder.cpp" line="678"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -625,17 +625,17 @@ Are you sure you want to perform this operation?</source>
 Вы уверены, что хотите выполнить операцию?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="678"/>
+        <location filename="../src/mirall/folder.cpp" line="682"/>
         <source>Remove All Files?</source>
         <translation>Удалить все файлы?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="680"/>
+        <location filename="../src/mirall/folder.cpp" line="684"/>
         <source>Remove all files</source>
         <translation>Удалить все файлы</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="681"/>
+        <location filename="../src/mirall/folder.cpp" line="685"/>
         <source>Keep files</source>
         <translation>Сохранить файлы</translation>
     </message>
@@ -643,57 +643,57 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::FolderMan</name>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="133"/>
+        <location filename="../src/mirall/folderman.cpp" line="134"/>
         <source>Could not reset folder state</source>
         <translation>Невозможно сбросить состояние папки</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="134"/>
+        <location filename="../src/mirall/folderman.cpp" line="135"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Найден старый журнал синхронизации &apos;%1&apos;, и он не может быть удалён. Пожалуйста убедитесь что он не открыт в каком-либо приложении.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="566"/>
+        <location filename="../src/mirall/folderman.cpp" line="567"/>
         <source>Undefined State.</source>
         <translation>Неопределенное состояние.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="569"/>
+        <location filename="../src/mirall/folderman.cpp" line="570"/>
         <source>Waits to start syncing.</source>
         <translation>Ожидает, чтобы начать синхронизацию.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="572"/>
+        <location filename="../src/mirall/folderman.cpp" line="573"/>
         <source>Preparing for sync.</source>
         <translation>Подготовка к синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="575"/>
+        <location filename="../src/mirall/folderman.cpp" line="576"/>
         <source>Sync is running.</source>
         <translation>Идет синхронизация.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="578"/>
+        <location filename="../src/mirall/folderman.cpp" line="579"/>
         <source>Server is currently not available.</source>
         <translation>Сервер недоступен.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="581"/>
+        <location filename="../src/mirall/folderman.cpp" line="582"/>
         <source>Last Sync was successful.</source>
         <translation>Последняя синхронизация прошла успешно.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="586"/>
+        <location filename="../src/mirall/folderman.cpp" line="587"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Последняя синхронизация прошла успешно, но были предупреждения о нескольких файлах.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="589"/>
+        <location filename="../src/mirall/folderman.cpp" line="590"/>
         <source>Setup Error.</source>
         <translation>Ошибка установки.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="595"/>
+        <location filename="../src/mirall/folderman.cpp" line="596"/>
         <source>%1 (Sync is paused)</source>
         <translation>%! (синхронизация приостановлена)</translation>
     </message>
@@ -919,17 +919,17 @@ Checked items will also be deleted if they prevent a directory from being remove
         <translation>Подробная информация о протоколе</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.ui" line="60"/>
+        <location filename="../src/mirall/itemprogressdialog.ui" line="57"/>
         <source>3</source>
         <translation>3</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.ui" line="65"/>
+        <location filename="../src/mirall/itemprogressdialog.ui" line="62"/>
         <source>4</source>
         <translation>4</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.ui" line="73"/>
+        <location filename="../src/mirall/itemprogressdialog.ui" line="70"/>
         <source>TextLabel</source>
         <translation>TextLabel</translation>
     </message>
@@ -1150,29 +1150,29 @@ name</source>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="188"/>
-        <location filename="../src/mirall/networksettings.ui" line="281"/>
+        <location filename="../src/mirall/networksettings.ui" line="287"/>
         <source>Limit to</source>
         <translation>Ограничить до</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="210"/>
-        <location filename="../src/mirall/networksettings.ui" line="306"/>
+        <location filename="../src/mirall/networksettings.ui" line="312"/>
         <source>KBytes/s</source>
         <translation>Кбайт/сек</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="232"/>
-        <location filename="../src/mirall/networksettings.ui" line="264"/>
-        <source>No Limit</source>
-        <translation>Без ограничений</translation>
+        <location filename="../src/mirall/networksettings.ui" line="270"/>
+        <source>No limit</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="258"/>
+        <location filename="../src/mirall/networksettings.ui" line="264"/>
         <source>Upload Bandwidth</source>
         <translation>Пропускная способность закачки</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="271"/>
+        <location filename="../src/mirall/networksettings.ui" line="277"/>
         <source>Limit automatically</source>
         <translation>Ограничивать автоматически</translation>
     </message>

@@ -277,12 +277,12 @@
         <translation>Abrir o cartafol %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="532"/>
+        <location filename="../src/mirall/application.cpp" line="537"/>
         <source>%1% of %2 in use</source>
         <translation>Usado %1% de %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="604"/>
+        <location filename="../src/mirall/application.cpp" line="609"/>
         <source>Up to date</source>
         <translation>Actualizado</translation>
     </message>
@@ -307,32 +307,32 @@
         <translation>Abrir o cartafol «%1»</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="525"/>
+        <location filename="../src/mirall/application.cpp" line="530"/>
         <source>Quota n/a</source>
         <translation>Cota n/d</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="558"/>
+        <location filename="../src/mirall/application.cpp" line="563"/>
         <source>No items synced recently</source>
         <translation>Non hai elementos sincronizados recentemente</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="567"/>
+        <location filename="../src/mirall/application.cpp" line="572"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="582"/>
+        <location filename="../src/mirall/application.cpp" line="587"/>
         <source>Syncing %1 of %2 (%3 of %4) </source>
         <translation>Sincronizando %1 de %2 (%3 de %4) </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="820"/>
+        <location filename="../src/mirall/application.cpp" line="825"/>
         <source>Folder %1: %2</source>
         <translation>Cartafol %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="826"/>
+        <location filename="../src/mirall/application.cpp" line="831"/>
         <source>No sync folders configured.</source>
         <translation>Non se configuraron cartafoles de sincronización.</translation>
     </message>
@@ -456,28 +456,28 @@
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="143"/>
-        <source>CSync failed due to not handled permission deniend.</source>
-        <translation>Produciuse un fallo en CSync por mor dun permiso denegado.</translation>
+        <source>CSync: Permission deniend.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="146"/>
-        <source>CSync failed to find a specific file.</source>
-        <translation>CSync non puido atopar o ficheiro especificado.</translation>
+        <source>CSync: File not found.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="149"/>
-        <source>CSync tried to create a directory that already exists.</source>
-        <translation>CSYNC tenta crear un directorio que xa existe.</translation>
+        <source>CSync: Directory already exists.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="152"/>
-        <source>CSync: No space on %1 server available.</source>
-        <translation>CSync: Non hai espazo dispoñíbel no servidor %1.</translation>
+        <source>CSync: No space left on %1 server.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="155"/>
-        <source>CSync unspecified error.</source>
-        <translation>Produciuse un erro non especificado de CSync</translation>
+        <source>CSync: unspecified error.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="158"/>
@@ -609,14 +609,14 @@
         <translation>Rematou o fío en CSync.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="671"/>
+        <location filename="../src/mirall/folder.cpp" line="675"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Esta sincronización retirará todos os ficheiros do cartafol local de  sincronización «%1».
 Se vostede, ou o administrador, restabeleceu a súa conta no servidor, escolla «Manter os ficheiros». Se quere que os seus datos sexan eliminados, escolla «Retirar todos os ficheiros».</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="674"/>
+        <location filename="../src/mirall/folder.cpp" line="678"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -625,17 +625,17 @@ Isto podería ser debido a que o cartafol foi reconfigurado en silencio, ou a qu
 Confirma que quere realizar esta operación?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="678"/>
+        <location filename="../src/mirall/folder.cpp" line="682"/>
         <source>Remove All Files?</source>
         <translation>Retirar todos os ficheiros?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="680"/>
+        <location filename="../src/mirall/folder.cpp" line="684"/>
         <source>Remove all files</source>
         <translation>Retirar todos os ficheiros</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="681"/>
+        <location filename="../src/mirall/folder.cpp" line="685"/>
         <source>Keep files</source>
         <translation>Manter os ficheiros</translation>
     </message>
@@ -643,57 +643,57 @@ Confirma que quere realizar esta operación?</translation>
 <context>
     <name>Mirall::FolderMan</name>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="133"/>
+        <location filename="../src/mirall/folderman.cpp" line="134"/>
         <source>Could not reset folder state</source>
         <translation>Non foi posíbel restabelecer o estado do cartafol</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="134"/>
+        <location filename="../src/mirall/folderman.cpp" line="135"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Atopouse un diario de sincronización antigo en «%1» máis non pode ser retirado. Asegúrese de que non o está a usar ningún aplicativo.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="566"/>
+        <location filename="../src/mirall/folderman.cpp" line="567"/>
         <source>Undefined State.</source>
         <translation>Estado sen definir.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="569"/>
+        <location filename="../src/mirall/folderman.cpp" line="570"/>
         <source>Waits to start syncing.</source>
         <translation>Agardando polo comezo da sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="572"/>
+        <location filename="../src/mirall/folderman.cpp" line="573"/>
         <source>Preparing for sync.</source>
         <translation>Preparando para sincronizar.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="575"/>
+        <location filename="../src/mirall/folderman.cpp" line="576"/>
         <source>Sync is running.</source>
         <translation>Estase sincronizando.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="578"/>
+        <location filename="../src/mirall/folderman.cpp" line="579"/>
         <source>Server is currently not available.</source>
         <translation>O servidor non está dispoñíbel actualmente.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="581"/>
+        <location filename="../src/mirall/folderman.cpp" line="582"/>
         <source>Last Sync was successful.</source>
         <translation>A última sincronización fíxose correctamente.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="586"/>
+        <location filename="../src/mirall/folderman.cpp" line="587"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>A última sincronización fíxose correctamente, mais con algún aviso en ficheiros individuais.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="589"/>
+        <location filename="../src/mirall/folderman.cpp" line="590"/>
         <source>Setup Error.</source>
         <translation>Erro de configuración.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="595"/>
+        <location filename="../src/mirall/folderman.cpp" line="596"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (sincronización en pausa)</translation>
     </message>
@@ -921,17 +921,17 @@ Os elementos marcados tamén se eliminarán se impiden retirar un directorio. Is
         <translation>Protocolo de sincronización detallado</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.ui" line="60"/>
+        <location filename="../src/mirall/itemprogressdialog.ui" line="57"/>
         <source>3</source>
         <translation>3</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.ui" line="65"/>
+        <location filename="../src/mirall/itemprogressdialog.ui" line="62"/>
         <source>4</source>
         <translation>4</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.ui" line="73"/>
+        <location filename="../src/mirall/itemprogressdialog.ui" line="70"/>
         <source>TextLabel</source>
         <translation>Etiqueta de texto</translation>
     </message>
@@ -1160,29 +1160,29 @@ o nome orixinal</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="188"/>
-        <location filename="../src/mirall/networksettings.ui" line="281"/>
+        <location filename="../src/mirall/networksettings.ui" line="287"/>
         <source>Limit to</source>
         <translation>Limitar a</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="210"/>
-        <location filename="../src/mirall/networksettings.ui" line="306"/>
+        <location filename="../src/mirall/networksettings.ui" line="312"/>
         <source>KBytes/s</source>
         <translation>KBytes/s</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="232"/>
-        <location filename="../src/mirall/networksettings.ui" line="264"/>
-        <source>No Limit</source>
-        <translation>Sen límite</translation>
+        <location filename="../src/mirall/networksettings.ui" line="270"/>
+        <source>No limit</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="258"/>
+        <location filename="../src/mirall/networksettings.ui" line="264"/>
         <source>Upload Bandwidth</source>
         <translation>Largo de banda de envíos</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="271"/>
+        <location filename="../src/mirall/networksettings.ui" line="277"/>
         <source>Limit automatically</source>
         <translation>Limitar automáticamente</translation>
     </message>

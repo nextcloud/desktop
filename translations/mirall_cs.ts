@@ -277,12 +277,12 @@
         <translation>Otevřít složku %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="532"/>
+        <location filename="../src/mirall/application.cpp" line="537"/>
         <source>%1% of %2 in use</source>
         <translation>%1% z %2 v používání</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="604"/>
+        <location filename="../src/mirall/application.cpp" line="609"/>
         <source>Up to date</source>
         <translation>Aktuální</translation>
     </message>
@@ -307,32 +307,32 @@
         <translation>Otevřít složku &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="525"/>
+        <location filename="../src/mirall/application.cpp" line="530"/>
         <source>Quota n/a</source>
         <translation>Kvóta nedostupná</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="558"/>
+        <location filename="../src/mirall/application.cpp" line="563"/>
         <source>No items synced recently</source>
         <translation>Žádné položky nebyly nedávno synchronizovány</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="567"/>
+        <location filename="../src/mirall/application.cpp" line="572"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="582"/>
+        <location filename="../src/mirall/application.cpp" line="587"/>
         <source>Syncing %1 of %2 (%3 of %4) </source>
         <translation>Synchronizuji %1 z %2 (%3 z %4)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="820"/>
+        <location filename="../src/mirall/application.cpp" line="825"/>
         <source>Folder %1: %2</source>
         <translation>Složka %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="826"/>
+        <location filename="../src/mirall/application.cpp" line="831"/>
         <source>No sync folders configured.</source>
         <translation>Nejsou nastaveny žádné synchronizované složky.</translation>
     </message>
@@ -456,28 +456,28 @@
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="143"/>
-        <source>CSync failed due to not handled permission deniend.</source>
-        <translation>CSync selhalo z důvodu nezpracovaného odmítnutí práv.</translation>
+        <source>CSync: Permission deniend.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="146"/>
-        <source>CSync failed to find a specific file.</source>
-        <translation>CSync se nezdařilo najít požadovaný soubor.</translation>
+        <source>CSync: File not found.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="149"/>
-        <source>CSync tried to create a directory that already exists.</source>
-        <translation>CSync se pokusilo vytvořit adresář, který již existuje.</translation>
+        <source>CSync: Directory already exists.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="152"/>
-        <source>CSync: No space on %1 server available.</source>
-        <translation>CSync: Nedostatek volného místa na serveru %1.</translation>
+        <source>CSync: No space left on %1 server.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="155"/>
-        <source>CSync unspecified error.</source>
-        <translation>Nespecifikovaná chyba CSync.</translation>
+        <source>CSync: unspecified error.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="158"/>
@@ -609,14 +609,14 @@
         <translation>Vlákno CSync ukončeno.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="671"/>
+        <location filename="../src/mirall/folder.cpp" line="675"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Tato synchronizace by smazala všechny soubory v místní složce &apos;%1&apos;
 Pokud jste vy nebo váš správce zresetovali účet na serveru, zvolte &quot;Ponechat soubory&quot;. Pokud chcete místní data odstranit, zvolte &quot;Odstranit všechny soubory&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="674"/>
+        <location filename="../src/mirall/folder.cpp" line="678"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -625,17 +625,17 @@ Toto může být způsobeno změnou v nastavení synchronizace složky nebo tím
 Opravdu chcete provést tuto akci?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="678"/>
+        <location filename="../src/mirall/folder.cpp" line="682"/>
         <source>Remove All Files?</source>
         <translation>Odstranit všechny soubory?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="680"/>
+        <location filename="../src/mirall/folder.cpp" line="684"/>
         <source>Remove all files</source>
         <translation>Odstranit všechny soubory</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="681"/>
+        <location filename="../src/mirall/folder.cpp" line="685"/>
         <source>Keep files</source>
         <translation>Ponechat soubory</translation>
     </message>
@@ -643,57 +643,57 @@ Opravdu chcete provést tuto akci?</translation>
 <context>
     <name>Mirall::FolderMan</name>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="133"/>
+        <location filename="../src/mirall/folderman.cpp" line="134"/>
         <source>Could not reset folder state</source>
         <translation>Nelze obnovit stav složky</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="134"/>
+        <location filename="../src/mirall/folderman.cpp" line="135"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Byl nalezen starý záznam synchronizace &apos;%1&apos;, ale nebylo možné jej odebrat. Ujistěte se, že není aktuálně používán jinou aplikací.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="566"/>
+        <location filename="../src/mirall/folderman.cpp" line="567"/>
         <source>Undefined State.</source>
         <translation>Nedefinovaný stav.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="569"/>
+        <location filename="../src/mirall/folderman.cpp" line="570"/>
         <source>Waits to start syncing.</source>
         <translation>Vyčkává na spuštění synchronizace.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="572"/>
+        <location filename="../src/mirall/folderman.cpp" line="573"/>
         <source>Preparing for sync.</source>
         <translation>Příprava na synchronizaci.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="575"/>
+        <location filename="../src/mirall/folderman.cpp" line="576"/>
         <source>Sync is running.</source>
         <translation>Synchronizace probíhá.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="578"/>
+        <location filename="../src/mirall/folderman.cpp" line="579"/>
         <source>Server is currently not available.</source>
         <translation>Server je nyní nedostupný.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="581"/>
+        <location filename="../src/mirall/folderman.cpp" line="582"/>
         <source>Last Sync was successful.</source>
         <translation>Poslední synchronizace byla úspěšná.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="586"/>
+        <location filename="../src/mirall/folderman.cpp" line="587"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Poslední synchronizace byla úspěšná, ale s varováním u některých souborů</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="589"/>
+        <location filename="../src/mirall/folderman.cpp" line="590"/>
         <source>Setup Error.</source>
         <translation>Chyba nastavení.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="595"/>
+        <location filename="../src/mirall/folderman.cpp" line="596"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Synchronizace je pozastavena)</translation>
     </message>
@@ -921,17 +921,17 @@ Zvolené položky budou smazány také v případě, že brání smazání adres
         <translation>Detailní protokol synchronizace</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.ui" line="60"/>
+        <location filename="../src/mirall/itemprogressdialog.ui" line="57"/>
         <source>3</source>
         <translation>3</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.ui" line="65"/>
+        <location filename="../src/mirall/itemprogressdialog.ui" line="62"/>
         <source>4</source>
         <translation>4</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.ui" line="73"/>
+        <location filename="../src/mirall/itemprogressdialog.ui" line="70"/>
         <source>TextLabel</source>
         <translation>Textový štítek</translation>
     </message>
@@ -1160,29 +1160,29 @@ dostupný pod původním názvem</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="188"/>
-        <location filename="../src/mirall/networksettings.ui" line="281"/>
+        <location filename="../src/mirall/networksettings.ui" line="287"/>
         <source>Limit to</source>
         <translation>Omezit na</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="210"/>
-        <location filename="../src/mirall/networksettings.ui" line="306"/>
+        <location filename="../src/mirall/networksettings.ui" line="312"/>
         <source>KBytes/s</source>
         <translation>KBytů/s</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="232"/>
-        <location filename="../src/mirall/networksettings.ui" line="264"/>
-        <source>No Limit</source>
-        <translation>Bez limitu</translation>
+        <location filename="../src/mirall/networksettings.ui" line="270"/>
+        <source>No limit</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="258"/>
+        <location filename="../src/mirall/networksettings.ui" line="264"/>
         <source>Upload Bandwidth</source>
         <translation>Rychlost odesílání</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="271"/>
+        <location filename="../src/mirall/networksettings.ui" line="277"/>
         <source>Limit automatically</source>
         <translation>Omezovat automaticky</translation>
     </message>
