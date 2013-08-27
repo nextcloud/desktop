@@ -66,7 +66,6 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
     NetworkSettings *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
     connect(networkSettings, SIGNAL(proxySettingsChanged()), app, SLOT(slotSetupProxy()));
-    connect(networkSettings, SIGNAL(proxySettingsChanged()), FolderMan::instance(), SLOT(slotScheduleAllFolders()));
 
     //connect(generalSettings, SIGNAL(resizeToSizeHint()), SLOT(resizeToSizeHint()));
 

@@ -498,6 +498,8 @@ void Folder::setProxy()
         csync_set_module_property(_csync_ctx, "proxy_port", &proxyPort );
         csync_set_module_property(_csync_ctx, "proxy_user", proxy.user().toUtf8().data()     );
         csync_set_module_property(_csync_ctx, "proxy_pwd" , proxy.password().toUtf8().data() );
+
+        FolderMan::instance()->setDirtyProxy(false);
     }
 }
 
@@ -536,6 +538,8 @@ void Folder::startSync(const QStringList &pathList)
             QMetaObject::invokeMethod(this, "slotCSyncFinished", Qt::QueuedConnection);
             return;
         }
+    } else if (FolderMan::instance()->isDirtyProxy()) {
+        setProxy();
     }
 
     if (_thread && _thread->isRunning()) {

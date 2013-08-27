@@ -109,6 +109,9 @@ public slots:
 
     void slotScheduleAllFolders();
 
+    bool isDirtyProxy() { return _dirtyProxy; }
+    void setDirtyProxy(bool value = true) { _dirtyProxy = value; }
+
 private slots:
     // slot to add a folder to the syncing queue
     void slotScheduleSync( const QString & );
@@ -136,6 +139,7 @@ private:
     QString        _currentSyncFolder;
     bool           _syncEnabled;
     QQueue<QString> _scheduleQueue;
+    bool            _dirtyProxy; // If the proxy need to be re-configured
 
     explicit FolderMan(QObject *parent = 0);
     static FolderMan *_instance;

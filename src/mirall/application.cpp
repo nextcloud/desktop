@@ -519,6 +519,9 @@ void Application::slotSetupProxy()
     default:
         break;
     }
+
+    FolderMan::instance()->setDirtyProxy(true);
+    FolderMan::instance()->slotScheduleAllFolders();
 }
 
 void Application::slotRefreshQuotaDisplay( qint64 total, qint64 used )

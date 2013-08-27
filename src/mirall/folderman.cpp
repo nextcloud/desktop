@@ -37,7 +37,8 @@ FolderMan* FolderMan::_instance = 0;
 
 FolderMan::FolderMan(QObject *parent) :
     QObject(parent),
-    _syncEnabled( true )
+    _syncEnabled( true ),
+    _dirtyProxy( true )
 {
     // if QDir::mkpath would not be so stupid, I would not need to have this
     // duplication of folderConfigPath() here
