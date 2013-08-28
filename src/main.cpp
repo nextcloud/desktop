@@ -39,7 +39,7 @@ int main(int argc, char **argv)
         }
         return 0;
     } else {
-        if (!QSystemTrayIcon::isSystemTrayAvailable()) {
+        if (!QSystemTrayIcon::isSystemTrayAvailable() && qgetenv("DESKTOP_SESSION") != "ubuntu") {
             QMessageBox::critical(0, qApp->translate("main.cpp", "System Tray not available"),
                                   qApp->translate("main.cpp", "%1 requires on a working system tray. "
                                   "If you are running XFCE, please follow "
