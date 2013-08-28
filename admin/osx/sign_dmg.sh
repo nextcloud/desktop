@@ -10,8 +10,7 @@ mount="/Volumes/$(basename $src_dmg|cut -d"-" -f1)"
 
 test -e $tmp_dmg && rm -rf $tmp_dmg
 hdiutil convert $src_dmg -format UDRW -o $tmp_dmg
-open $tmp_dmg
-sleep 12s
+hdiutil attach $tmp_dmg
 pushd $mount
 codesign -s "$identity" $mount/*.app
 popd
