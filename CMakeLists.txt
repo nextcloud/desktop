@@ -24,6 +24,9 @@ include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR} "${CMAKE_CURRENT_BINARY_D
 include(GNUInstallDirs)
 include(DefineInstallationPaths)
 include(QtVersionAbstraction)
+
+setup_qt()
+
 include(GetGitRevisionDescription)
 get_git_head_revision(GIT_REFSPEC GIT_SHA1)
 

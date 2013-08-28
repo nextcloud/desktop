@@ -47,6 +47,10 @@ if( NOT BUILD_WITH_QT4 )
             qt5_add_dbus_adaptor(${ARGN})
         endmacro()
 
+        macro(qt_wrap_cpp)
+        endmacro()
+
+
         macro(setup_qt)
         endmacro()
 
@@ -60,8 +64,6 @@ if( NOT Qt5Core_DIR )
     if( BUILD_TESTS )
         list(APPEND NEEDED_QT4_COMPONENTS "QtTest")
     endif()
-
-    include(${QT_USE_FILE})
 
     macro_optional_find_package(Qt4 4.7.0 COMPONENTS ${NEEDED_QT4_COMPONENTS} )
     macro_log_feature(QT4_FOUND "Qt" "A cross-platform application and UI framework" "http://qt.nokia.com" TRUE "" "If you see this, although libqt4-devel is installed, check whether the \n     qtwebkit-devel package and whatever contains QtUiTools is installed too")
@@ -89,12 +91,17 @@ if( NOT Qt5Core_DIR )
         qt4_add_dbus_adaptor(${ARGN})
     endmacro()
 
+    macro(qt_wrap_cpp)
+        qt4_wrap_cpp(${ARGN})
+    endmacro()
+
     macro(setup_qt)
-        set(QT_DONT_USE_QTGUI TRUE)
+        set(QT_USE_QTGUI TRUE)
         set(QT_USE_QTSQL TRUE)
         set(QT_USE_QTNETWORK TRUE)
         set(QT_USE_QTXML TRUE)
         set(QT_USE_QTWEBKIT TRUE)
+        set(QT_USE_QTDBUS TRUE)
 
         include( ${QT_USE_FILE} )
     endmacro()
