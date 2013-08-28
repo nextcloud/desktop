@@ -5,7 +5,7 @@
 
 #include <QString>
 #include <QDomElement>
-#include <QtXml/QXmlStreamWriter>
+#include <QXmlStreamWriter>
 
 namespace Mirall {
 

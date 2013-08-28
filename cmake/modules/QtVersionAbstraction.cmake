@@ -14,17 +14,18 @@ if( NOT BUILD_WITH_QT4 )
         find_package(Qt5Location QUIET)
         find_package(Qt5Network QUIET)
         find_package(Qt5Sensors QUIET)
+        find_package(Qt5Xml QUIET)
 #        find_package(Qt5WebKitWidgets QUIET)
 
         message(STATUS "Using Qt 5!")
 
-        include_directories(${Qt5Widgets_INCLUDES})
-        add_definitions(${Qt5Widgets_DEFINITIONS})
-        set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
-
-
        # We need this to find the paths to qdbusxml2cpp and co
         find_package(Qt5DBus REQUIRED)
+
+        include_directories("${Qt5Widgets_INCLUDES} ${Qt5DBus_INCLUDES}")
+        add_definitions(${Qt5Widgets_DEFINITIONS} ${Qt5DBus_DEFINITIONS})
+        set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
+
 
         macro(qt_wrap_ui)
             qt5_wrap_ui(${ARGN})
@@ -48,6 +49,7 @@ if( NOT BUILD_WITH_QT4 )
         endmacro()
 
         macro(qt_wrap_cpp)
+            qt5_wrap_cpp(${ARGN})
         endmacro()
 
 
@@ -55,6 +57,9 @@ if( NOT BUILD_WITH_QT4 )
         endmacro()
 
         set(QT_RCC_EXECUTABLE "${Qt5Core_RCC_EXECUTABLE}")
+
+        #Enable deprecated symbols
+        add_definitions("-DQT_DISABLE_DEPRECATED_BEFORE=0")
     endif()
 endif()
 if( NOT Qt5Core_DIR )

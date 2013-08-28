@@ -45,8 +45,6 @@
 #include <windows.h>
 #endif
 
-#include <QtCore>
-#include <QtGui>
 #include <QHash>
 #include <QHashIterator>
 #include <QUrl>
@@ -54,6 +52,8 @@
 #include <QTranslator>
 #include <QNetworkProxy>
 #include <QNetworkProxyFactory>
+#include <QMenu>
+#include <QMessageBox>
 
 namespace Mirall {
 

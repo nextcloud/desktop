@@ -61,11 +61,13 @@ QtSingleApplication::QtSingleApplication(const QString &appId, int &argc, char *
 }
 
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 QtSingleApplication::QtSingleApplication(int &argc, char **argv, Type type)
     : QApplication(argc, argv, type)
 {
     sysInit();
 }
+#endif
 
 
 #if defined(Q_WS_X11)
