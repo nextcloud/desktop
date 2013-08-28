@@ -211,7 +211,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="632"/>
         <source>Completely finished.</source>
-        <translation type="unfinished"/>
+        <translation>Kokonaan valmis.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="639"/>
@@ -274,7 +274,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="389"/>
         <source>Open %1 folder</source>
-        <translation type="unfinished"/>
+        <translation>Avaa %1-kansio</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="537"/>
@@ -314,7 +314,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="563"/>
         <source>No items synced recently</source>
-        <translation type="unfinished"/>
+        <translation>Kohteita ei ole synkronoitu äskettäin</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="572"/>
@@ -462,22 +462,22 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="146"/>
         <source>CSync: File not found.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: Tiedostoa ei löydy.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="149"/>
         <source>CSync: Directory already exists.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: Kansio on jo olemassa.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="152"/>
         <source>CSync: No space left on %1 server.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: %1-palvelimella ei ole tilaa jäljellä.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="155"/>
         <source>CSync: unspecified error.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: määrittämätön virhe.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="158"/>
@@ -887,13 +887,13 @@ Checked items will also be deleted if they prevent a directory from being remove
         <location filename="../src/mirall/ignorelisteditor.cpp" line="105"/>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="128"/>
         <source>Add Ignore Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Lisää ohituskaava</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="106"/>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="129"/>
         <source>Add a new ignore pattern:</source>
-        <translation type="unfinished"/>
+        <translation>Lisää uusi ohituskaava:</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="140"/>
@@ -966,7 +966,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="120"/>
         <source>File ignored.</source>
-        <translation type="unfinished"/>
+        <translation>Tiedosto ohitettu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="121"/>
@@ -978,7 +978,7 @@ in a cross platform environment.</source>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="125"/>
         <source>Directory ignored.</source>
-        <translation type="unfinished"/>
+        <translation>Kansio ohitettu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="126"/>
@@ -1001,7 +1001,7 @@ Please do not use them in synced directories.</source>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="134"/>
         <source>Ignored.</source>
-        <translation type="unfinished"/>
+        <translation>Jätetty huomiotta.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="137"/>
@@ -1159,7 +1159,7 @@ name</source>
         <location filename="../src/mirall/networksettings.ui" line="232"/>
         <location filename="../src/mirall/networksettings.ui" line="270"/>
         <source>No limit</source>
-        <translation type="unfinished"/>
+        <translation>Ei rajoitusta</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="264"/>
@@ -1217,12 +1217,12 @@ name</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="107"/>
         <source>Your entire account will be synced to the local folder &apos;%1&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>Koko tilisi synkronoidaan paikalliseen kansioon &apos;%1&apos;.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="110"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
-        <translation type="unfinished"/>
+        <translation>%1-kansio &apos;%2&apos; on synkronoitu paikalliseen kansioon &apos;%3&apos;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="116"/>
@@ -1237,7 +1237,7 @@ name</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="233"/>
         <source>Local Sync Folder</source>
-        <translation type="unfinished"/>
+        <translation>Paikallinen synkronointikansio</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="246"/>
@@ -1986,7 +1986,7 @@ name</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="56"/>
         <source>For deletion</source>
-        <translation type="unfinished"/>
+        <translation>Poistettavaksi</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="59"/>
@@ -1999,14 +1999,14 @@ name</source>
         <location filename="../src/mirall/progressdispatcher.cpp" line="86"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="92"/>
         <source>downloading</source>
-        <translation type="unfinished"/>
+        <translation>ladataan</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="77"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="89"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="95"/>
         <source>uploading</source>
-        <translation type="unfinished"/>
+        <translation>lähetetään</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="83"/>

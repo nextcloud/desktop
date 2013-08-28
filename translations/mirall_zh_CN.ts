@@ -47,7 +47,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="177"/>
         <source>Folders</source>
-        <translation type="unfinished"/>
+        <translation>文件夹</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="107"/>
@@ -80,7 +80,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="46"/>
         <source>Sync Status</source>
-        <translation type="unfinished"/>
+        <translation>同步状态</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="52"/>
@@ -111,7 +111,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="110"/>
         <source>Storage Usage</source>
-        <translation type="unfinished"/>
+        <translation>存储使用情况</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="129"/>
@@ -191,7 +191,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="581"/>
         <source>Start</source>
-        <translation type="unfinished"/>
+        <translation>开始</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="590"/>
@@ -234,12 +234,12 @@
     <message numerus="yes">
         <location filename="../src/mirall/application.cpp" line="253"/>
         <source>Sync started for %n configured sync folder(s).</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>开始同步 %n 个已配置的同步文件夹。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="325"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>在浏览器中打开%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="327"/>
@@ -701,7 +701,7 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="91"/>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="245"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>文件</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="200"/>
@@ -738,7 +738,7 @@ documentation for possible fixes.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="74"/>
         <source>No local folder selected!</source>
-        <translation type="unfinished"/>
+        <translation>未选择本地文件夹！</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="79"/>
@@ -931,7 +931,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="44"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>文件</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="46"/>
@@ -946,12 +946,12 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="56"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>复制</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="59"/>
         <source>Sync Protocol</source>
-        <translation type="unfinished"/>
+        <translation>同步协议</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="43"/>
@@ -1019,7 +1019,7 @@ name</source>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="225"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>复制到剪贴板</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="225"/>
@@ -1976,7 +1976,7 @@ name</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="50"/>
         <source>Start</source>
-        <translation type="unfinished"/>
+        <translation>开始</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="53"/>

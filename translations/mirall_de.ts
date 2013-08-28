@@ -458,27 +458,27 @@ Diese Funktion ist nur für Wartungszwecke gedacht. Es werden keine Dateien entf
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="143"/>
         <source>CSync: Permission deniend.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: Berechtigung verweigert.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="146"/>
         <source>CSync: File not found.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: Datei nicht gefunden.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="149"/>
         <source>CSync: Directory already exists.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: Verzeichnis existiert bereits.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="152"/>
         <source>CSync: No space left on %1 server.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: Nicht genügend Speicherplatz auf %1 Server verfügbar.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="155"/>
         <source>CSync: unspecified error.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: unbekannter Fehler.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="158"/>
@@ -1167,7 +1167,7 @@ name</source>
         <location filename="../src/mirall/networksettings.ui" line="232"/>
         <location filename="../src/mirall/networksettings.ui" line="270"/>
         <source>No limit</source>
-        <translation type="unfinished"/>
+        <translation>Keine Begrenzung</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="264"/>

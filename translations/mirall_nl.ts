@@ -457,27 +457,27 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="143"/>
         <source>CSync: Permission deniend.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: toestemming geweigerd.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="146"/>
         <source>CSync: File not found.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: bestand niet gevonden.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="149"/>
         <source>CSync: Directory already exists.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: map bestaat al.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="152"/>
         <source>CSync: No space left on %1 server.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: geen ruimte over op %1-server.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="155"/>
         <source>CSync: unspecified error.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: ongedefinieerde fout.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="158"/>
@@ -1175,7 +1175,7 @@ op de server staat beschikbaar blijft met de originele naam.</translation>
         <location filename="../src/mirall/networksettings.ui" line="232"/>
         <location filename="../src/mirall/networksettings.ui" line="270"/>
         <source>No limit</source>
-        <translation type="unfinished"/>
+        <translation>Geen beperking</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="264"/>
