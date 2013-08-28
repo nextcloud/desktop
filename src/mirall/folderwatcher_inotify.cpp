@@ -50,8 +50,7 @@ void FolderWatcherPrivate::slotAddFolderRecursive(const QString &path)
     qDebug() << "(+) Watcher:" << path;
 
     if (!_inotify->addPath(path)) {
-        FolderWatcher *fw = qobject_cast<FolderWatcher*>(parent());
-        emit fw->error(tr("Could not monitor directories due to system limitations.\n"
+        emit _parent->error(tr("Could not monitor directories due to system limitations.\n"
                           "The application will not work reliably. Please check the\n"
                           "documentation for possible fixes."));
     }
