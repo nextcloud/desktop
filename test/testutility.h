@@ -51,10 +51,10 @@ private slots:
 
     void testLaunchOnStartup()
     {
- 	const QString appName = "testLaunchOnStartup";
- 	const QString guiName = "LaunchOnStartup GUI Name";
+        qsrand(QDateTime::currentDateTime().toTime_t());
+        QString postfix = QString::number(qrand());
 
-        const QString appName = "testLaunchOnStartup";
+        const QString appName = QString::fromLatin1("testLaunchOnStartup.%1").arg(postfix);
         const QString guiName = "LaunchOnStartup GUI Name";
 
         QVERIFY(hasLaunchOnStartup(appName) == false);
