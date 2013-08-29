@@ -54,20 +54,23 @@ private slots:
  	const QString appName = "testLaunchOnStartup";
  	const QString guiName = "LaunchOnStartup GUI Name";
 
-	QVERIFY(hasLaunchOnStartup(appName) == false);
-	setLaunchOnStartup(appName, guiName, true);
-	QVERIFY(hasLaunchOnStartup(appName) == true);
-	setLaunchOnStartup(appName, guiName, false);
-	QVERIFY(hasLaunchOnStartup(appName) == false);
+        const QString appName = "testLaunchOnStartup";
+        const QString guiName = "LaunchOnStartup GUI Name";
+
+        QVERIFY(hasLaunchOnStartup(appName) == false);
+        setLaunchOnStartup(appName, guiName, true);
+        QVERIFY(hasLaunchOnStartup(appName) == true);
+        setLaunchOnStartup(appName, guiName, false);
+        QVERIFY(hasLaunchOnStartup(appName) == false);
     }
 
     void testToCSyncScheme()
     {
-	QVERIFY(toCSyncScheme("http://example.com/owncloud/") ==
+        QVERIFY(toCSyncScheme("http://example.com/owncloud/") ==
                               "owncloud://example.com/owncloud/");
-	QVERIFY(toCSyncScheme("https://example.com/owncloud/") ==
+        QVERIFY(toCSyncScheme("https://example.com/owncloud/") ==
                               "ownclouds://example.com/owncloud/");
-}
+    }
 };
 
 #endif
