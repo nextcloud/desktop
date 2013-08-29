@@ -41,12 +41,12 @@ private slots:
         QCOMPARE(octetsToString(123456789) , QString("123 MB"));
         QCOMPARE(octetsToString(1000LL*1000*1000 * 5) , QString("5 GB"));
 
-        QVERIFY(octetsToString(1) == "1 B");
-        QVERIFY(octetsToString(2) == "2 B");
-        QVERIFY(octetsToString(1024) == "1 kB");
-        QVERIFY(octetsToString(1024*1024) == "1 MB");
-        QVERIFY(octetsToString(1024LL*1024*1024) == "1.1 GB");
-        QVERIFY(octetsToString(1024LL*1024*1024*1024) == "1.1 TB");
+        QCOMPARE(octetsToString(1), QString("1 B"));
+        QCOMPARE(octetsToString(2), QString("2 B"));
+        QCOMPARE(octetsToString(1024), QString("1 kB"));
+        QCOMPARE(octetsToString(1024*1024), QString("1 MB"));
+        QCOMPARE(octetsToString(1024LL*1024*1024), QString("1.1 GB"));
+        QCOMPARE(octetsToString(1024LL*1024*1024*1024), QString("1.1 TB"));
     }
 
     void testLaunchOnStartup()
