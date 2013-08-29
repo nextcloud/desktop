@@ -103,33 +103,30 @@ void Utility::setupFavLink(const QString &folder)
 
 QString Utility::octetsToString( qint64 octets )
 {
-    static const qint64 kb = 1024;
-    static const qint64 mb = 1024 * kb;
-    static const qint64 gb = 1024 * mb;
-    static const qint64 tb = 1024 * gb;
+    static const qint64 kb = 1000;
+    static const qint64 mb = 1000 * kb;
+    static const qint64 gb = 1000 * mb;
+    static const qint64 tb = 1000 * gb;
 
+    QString s;
+    qreal value = octets;
     if (octets >= tb) {
-        if (octets < 10*tb) {
-            return compactFormatDouble(qreal(octets)/qreal(tb), 1, QLatin1String("TB"));
-        }
-        return QString::number(qRound64(qreal(octets)/qreal(tb))) + QLatin1String(" TB");
+        s = QCoreApplication::translate("Utility", "%L1 TB");
+        value /= tb;
     } else if (octets >= gb) {
-        if (octets < 10*gb) {
-            return compactFormatDouble(qreal(octets)/qreal(gb), 1, QLatin1String("GB"));
-        }
-        return QString::number(qRound64(qreal(octets)/qreal(gb))) + QLatin1String(" GB");
+        s = QCoreApplication::translate("Utility", "%L1 GB");
+        value /= gb;
     } else if (octets >= mb) {
-        if (octets < 10*mb) {
-            return compactFormatDouble(qreal(octets)/qreal(mb), 1, QLatin1String("MB"));
-        }
-        return QString::number(qRound64(qreal(octets)/qreal(mb))) + QLatin1String(" MB");
+        s = QCoreApplication::translate("Utility", "%L1 MB");
+        value /= mb;
     } else if (octets >= kb) {
-        return QString::number(qRound64(qreal(octets)/qreal(kb))) + QLatin1String(" KB");
-    } else if (octets == 1){
-        return QLatin1String("1 byte");
-    } else {
-        return QString::number(octets) + QLatin1String(" bytes");
+        s = QCoreApplication::translate("Utility", "%L1 kB");
+        value /= kb;
+    } else  {
+        s = QCoreApplication::translate("Utility", "%L1 B");
     }
+
+    return (value > 9.95)  ? s.arg(qRound(value)) : s.arg(value, 0, 'g', 2);
 }
 
 // Qtified version of get_platforms() in csync_owncloud.c

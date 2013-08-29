@@ -26,12 +26,27 @@ private slots:
     }
     void testOctetsToString()
     {
-        QVERIFY(octetsToString(1) == "1 byte");
-        QVERIFY(octetsToString(2) == "2 bytes");
-        QVERIFY(octetsToString(1024) == "1 KB");
+        QCOMPARE(octetsToString(999) , QString("999 B"));
+        QCOMPARE(octetsToString(1000) , QString("1 kB"));
+        QCOMPARE(octetsToString(1010) , QString("1 kB"));
+        QCOMPARE(octetsToString(1110) , QString("1.1 kB"));
+
+        QCOMPARE(octetsToString(9110) , QString("9.1 kB"));
+        QCOMPARE(octetsToString(9910) , QString("9.9 kB"));
+        QCOMPARE(octetsToString(9999) , QString("10 kB"));
+
+        QCOMPARE(octetsToString(123456) , QString("123 kB"));
+        QCOMPARE(octetsToString(1234567) , QString("1.2 MB"));
+        QCOMPARE(octetsToString(12345678) , QString("12 MB"));
+        QCOMPARE(octetsToString(123456789) , QString("123 MB"));
+        QCOMPARE(octetsToString(1000LL*1000*1000 * 5) , QString("5 GB"));
+
+        QVERIFY(octetsToString(1) == "1 B");
+        QVERIFY(octetsToString(2) == "2 B");
+        QVERIFY(octetsToString(1024) == "1 kB");
         QVERIFY(octetsToString(1024*1024) == "1 MB");
-        QVERIFY(octetsToString(1024LL*1024*1024) == "1 GB");
-        QVERIFY(octetsToString(1024LL*1024*1024*1024) == "1 TB");
+        QVERIFY(octetsToString(1024LL*1024*1024) == "1.1 GB");
+        QVERIFY(octetsToString(1024LL*1024*1024*1024) == "1.1 TB");
     }
 
     void testLaunchOnStartup()
