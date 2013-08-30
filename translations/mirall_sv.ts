@@ -171,7 +171,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="453"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Ansluten till &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="454"/>
@@ -457,27 +457,27 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="143"/>
         <source>CSync: Permission deniend.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: Åtkomst nekad.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="146"/>
         <source>CSync: File not found.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: Fil kunde inte hittas.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="149"/>
         <source>CSync: Directory already exists.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: Mappen finns redan.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="152"/>
         <source>CSync: No space left on %1 server.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: Inget utrymme kvar på %1 servern.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="155"/>
         <source>CSync: unspecified error.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: okänt fel.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="158"/>
@@ -576,7 +576,7 @@
     <message numerus="yes">
         <location filename="../src/mirall/folder.cpp" line="352"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; och %n andra fil(er) har tagits bort.</numerusform><numerusform>&apos;%1&apos; och %n andra fil(er) har tagits bort.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="358"/>
@@ -596,7 +596,7 @@
     <message numerus="yes">
         <location filename="../src/mirall/folder.cpp" line="360"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; och %n andra fil(er) har uppdaterats.</numerusform><numerusform>&apos;%1&apos; och %n andra fil(er) har uppdaterats.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="402"/>
@@ -720,7 +720,7 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
 <context>
     <name>Mirall::FolderWatcherPrivate</name>
     <message>
-        <location filename="../src/mirall/folderwatcher_inotify.cpp" line="54"/>
+        <location filename="../src/mirall/folderwatcher_inotify.cpp" line="53"/>
         <source>Could not monitor directories due to system limitations.
 The application will not work reliably. Please check the
 documentation for possible fixes.</source>
@@ -979,7 +979,9 @@ Valda objekt kommer också att raderas om dom hindrar en mapp från att tas bort
         <source>The file was ignored because it is listed in the clients ignore list
 or the filename contains characters that are not syncable
 in a cross platform environment.</source>
-        <translation type="unfinished"/>
+        <translation>Filen ignorerades eftersom den finns med på spärrlistan
+eller så innehåller filnamnet tecken som inte är godkända
+i en plattformsoberoende miljö.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="125"/>
@@ -991,7 +993,9 @@ in a cross platform environment.</source>
         <source>The directory was ignored because it is listed in the clients
 ignore list or the directory name contains
 characters that are not syncable in a cross  platform environment.</source>
-        <translation type="unfinished"/>
+        <translation>Mappen ignorerades eftersom den finns med på spärrlistan
+eller så innehåller mappnamnet tecken som inte är godkända
+i en plattformsoberoende miljö.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="130"/>
@@ -1002,7 +1006,8 @@ characters that are not syncable in a cross  platform environment.</source>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="131"/>
         <source>Softlinks break the semantics of synchronization.
 Please do not use them in synced directories.</source>
-        <translation type="unfinished"/>
+        <translation>Mjuka länkar kan inte synkroniseras.
+Använd ej dessa i synkroniserade mappar.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="134"/>
@@ -1020,7 +1025,9 @@ Please do not use them in synced directories.</source>
 created a so called conflict. The local change is copied to the conflict
 file while the file from the server side is available under the original
 name</source>
-        <translation type="unfinished"/>
+        <translation>Filen ändrades både på servern och lokalt vilket har skapat en
+så kallad konflikt. Den lokala förändringen kopieras till konfliktfilen
+medan filen från serversidan är tillgänglig under originalnamnet</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="225"/>
@@ -1165,7 +1172,7 @@ name</source>
         <location filename="../src/mirall/networksettings.ui" line="232"/>
         <location filename="../src/mirall/networksettings.ui" line="270"/>
         <source>No limit</source>
-        <translation type="unfinished"/>
+        <translation>Ingen gräns</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="264"/>
@@ -1917,6 +1924,34 @@ name</source>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>
         <source>SSL Connection</source>
         <translation>SSL-anslutning</translation>
+    </message>
+</context>
+<context>
+    <name>Utility</name>
+    <message>
+        <location filename="../src/mirall/utility.cpp" line="114"/>
+        <source>%L1 TB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/utility.cpp" line="117"/>
+        <source>%L1 GB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/utility.cpp" line="120"/>
+        <source>%L1 MB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/utility.cpp" line="123"/>
+        <source>%L1 kB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/utility.cpp" line="126"/>
+        <source>%L1 B</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

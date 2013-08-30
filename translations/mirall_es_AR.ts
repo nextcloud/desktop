@@ -65,22 +65,22 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="20"/>
         <source>Account Maintenance</source>
-        <translation type="unfinished"/>
+        <translation>Mantenimiento de cuenta</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="29"/>
         <source>Edit Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Editar Archivos ignorados</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="36"/>
         <source>Modify Account</source>
-        <translation type="unfinished"/>
+        <translation>Modificar Cuenta</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="46"/>
         <source>Sync Status</source>
-        <translation type="unfinished"/>
+        <translation>Estado de la sincronización</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="52"/>
@@ -191,7 +191,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="581"/>
         <source>Start</source>
-        <translation type="unfinished"/>
+        <translation>Inicio</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="590"/>
@@ -201,7 +201,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="597"/>
         <source>Completely</source>
-        <translation type="unfinished"/>
+        <translation>Completamente</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="629"/>
@@ -211,7 +211,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="632"/>
         <source>Completely finished.</source>
-        <translation type="unfinished"/>
+        <translation>Completamente terminado.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="639"/>
@@ -662,7 +662,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="573"/>
         <source>Preparing for sync.</source>
-        <translation type="unfinished"/>
+        <translation>Preparando la sincronización.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="576"/>
@@ -672,7 +672,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="579"/>
         <source>Server is currently not available.</source>
-        <translation type="unfinished"/>
+        <translation>El servidor actualmente no está disponible.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="582"/>
@@ -701,7 +701,7 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="91"/>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="245"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>Archivo</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="200"/>
@@ -717,7 +717,7 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::FolderWatcherPrivate</name>
     <message>
-        <location filename="../src/mirall/folderwatcher_inotify.cpp" line="54"/>
+        <location filename="../src/mirall/folderwatcher_inotify.cpp" line="53"/>
         <source>Could not monitor directories due to system limitations.
 The application will not work reliably. Please check the
 documentation for possible fixes.</source>
@@ -931,7 +931,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="44"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>Archivo</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="46"/>
@@ -1915,6 +1915,34 @@ name</source>
     </message>
 </context>
 <context>
+    <name>Utility</name>
+    <message>
+        <location filename="../src/mirall/utility.cpp" line="114"/>
+        <source>%L1 TB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/utility.cpp" line="117"/>
+        <source>%L1 GB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/utility.cpp" line="120"/>
+        <source>%L1 MB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/utility.cpp" line="123"/>
+        <source>%L1 kB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/utility.cpp" line="126"/>
+        <source>%L1 B</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>main.cpp</name>
     <message>
         <location filename="../src/main.cpp" line="43"/>
@@ -1977,7 +2005,7 @@ name</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="50"/>
         <source>Start</source>
-        <translation type="unfinished"/>
+        <translation>Inicio</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="53"/>

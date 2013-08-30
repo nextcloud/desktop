@@ -717,7 +717,7 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::FolderWatcherPrivate</name>
     <message>
-        <location filename="../src/mirall/folderwatcher_inotify.cpp" line="54"/>
+        <location filename="../src/mirall/folderwatcher_inotify.cpp" line="53"/>
         <source>Could not monitor directories due to system limitations.
 The application will not work reliably. Please check the
 documentation for possible fixes.</source>
@@ -1912,6 +1912,34 @@ Kliknij</translation>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>
         <source>SSL Connection</source>
         <translation>Połączenie szyfrowane</translation>
+    </message>
+</context>
+<context>
+    <name>Utility</name>
+    <message>
+        <location filename="../src/mirall/utility.cpp" line="114"/>
+        <source>%L1 TB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/utility.cpp" line="117"/>
+        <source>%L1 GB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/utility.cpp" line="120"/>
+        <source>%L1 MB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/utility.cpp" line="123"/>
+        <source>%L1 kB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/utility.cpp" line="126"/>
+        <source>%L1 B</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

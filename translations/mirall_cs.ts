@@ -457,27 +457,27 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="143"/>
         <source>CSync: Permission deniend.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: Přístup zamítnut.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="146"/>
         <source>CSync: File not found.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: Soubor nenalezen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="149"/>
         <source>CSync: Directory already exists.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: Adresář již existuje.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="152"/>
         <source>CSync: No space left on %1 server.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: Nedostatek místa na serveru %1.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="155"/>
         <source>CSync: unspecified error.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: neznámá chyba.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="158"/>
@@ -541,7 +541,7 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="342"/>
         <source>New file available</source>
-        <translation>je k dispozici nový soubor</translation>
+        <translation>Je k dispozici nový soubor</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="342"/>
@@ -720,13 +720,13 @@ Opravdu chcete provést tuto akci?</translation>
 <context>
     <name>Mirall::FolderWatcherPrivate</name>
     <message>
-        <location filename="../src/mirall/folderwatcher_inotify.cpp" line="54"/>
+        <location filename="../src/mirall/folderwatcher_inotify.cpp" line="53"/>
         <source>Could not monitor directories due to system limitations.
 The application will not work reliably. Please check the
 documentation for possible fixes.</source>
         <translation>Nelze sledovat složky kvůli systémovým omezením.
-Aplikace nebude pracovat spolehlivě. Zkontrolujte prosím
-dokumentaci pro možnost opravy.</translation>
+Aplikace nebude pracovat správně. Řiďte se prosím
+dokumentací pro možnost opravy.</translation>
     </message>
 </context>
 <context>
@@ -1007,7 +1007,7 @@ znaky, které nelze synchronizovat mezi prostředími.</translation>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="131"/>
         <source>Softlinks break the semantics of synchronization.
 Please do not use them in synced directories.</source>
-        <translation>Odkazy poškozují sémantiku synchronizace.
+        <translation>Symbolické odkazy poškozují sémantiku synchronizace.
 Nepoužívejte je v synchronizovaných adresářích.</translation>
     </message>
     <message>
@@ -1174,7 +1174,7 @@ dostupný pod původním názvem</translation>
         <location filename="../src/mirall/networksettings.ui" line="232"/>
         <location filename="../src/mirall/networksettings.ui" line="270"/>
         <source>No limit</source>
-        <translation type="unfinished"/>
+        <translation>Bez limitu</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="264"/>
@@ -1242,7 +1242,7 @@ dostupný pod původním názvem</translation>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="116"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; You currently have multiple folders configured. If you continue with the current settings, the folder configurations will be discarded and a single root folder sync will be created!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Varování:&lt;/strong&gt; Aktuálně máte nastavenu synchronizaci více složek. Pokud budete pokračovat v tomto nastavení, nastavení složek bude zapomenuto a bude vytvořena synchronizace jedné kořenové složky!&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Varování:&lt;/strong&gt; Aktuálně máte nastavenu synchronizaci více složek. Pokud budete pokračovat s tímto nastavení, nastavení složek bude zapomenuto a bude vytvořena synchronizace jedné kořenové složky!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="123"/>
@@ -1331,7 +1331,7 @@ dostupný pod původním názvem</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="114"/>
         <source>Trying to connect to %1 at %2 to determine authentication type...</source>
-        <translation>Pokouším se připojit k %1 na %2 pro zjištění typ ověření...</translation>
+        <translation>Pokouším se připojit k %1 na %2 pro zjištění typu ověření...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="162"/>
@@ -1929,6 +1929,34 @@ dostupný pod původním názvem</translation>
     </message>
 </context>
 <context>
+    <name>Utility</name>
+    <message>
+        <location filename="../src/mirall/utility.cpp" line="114"/>
+        <source>%L1 TB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/utility.cpp" line="117"/>
+        <source>%L1 GB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/utility.cpp" line="120"/>
+        <source>%L1 MB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/utility.cpp" line="123"/>
+        <source>%L1 kB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/utility.cpp" line="126"/>
+        <source>%L1 B</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>main.cpp</name>
     <message>
         <location filename="../src/main.cpp" line="43"/>
@@ -2001,7 +2029,7 @@ dostupný pod původním názvem</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="56"/>
         <source>For deletion</source>
-        <translation>Pro smazání</translation>
+        <translation>Ke smazání</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="59"/>
@@ -2054,7 +2082,7 @@ dostupný pod původním názvem</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="51"/>
         <source>Waiting to start sync</source>
-        <translation>Čekám, až začne synchronizace</translation>
+        <translation>Čekám na zahájení synchronizace</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="54"/>
@@ -2069,7 +2097,7 @@ dostupný pod původním názvem</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="60"/>
         <source>Sync Success, problems with individual files.</source>
-        <translation>Synchronizace byla provedena, problémy u jednotlivých souborů.</translation>
+        <translation>Synchronizace úspěšná, problémy u jednotlivých souborů.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>
@@ -2084,7 +2112,7 @@ dostupný pod původním názvem</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="69"/>
         <source>The server is currently unavailable</source>
-        <translation>Server je momentálně nedostupný.</translation>
+        <translation>Server je momentálně nedostupný</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="72"/>
