@@ -1918,27 +1918,27 @@ name</source>
     <message>
         <location filename="../src/mirall/utility.cpp" line="114"/>
         <source>%L1 TB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 Tt</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="117"/>
         <source>%L1 GB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 Gt</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="120"/>
         <source>%L1 MB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 Mt</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="123"/>
         <source>%L1 kB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 kt</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="126"/>
         <source>%L1 B</source>
-        <translation type="unfinished"/>
+        <translation>%L1 t</translation>
     </message>
 </context>
 <context>

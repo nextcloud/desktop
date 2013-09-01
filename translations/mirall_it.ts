@@ -457,7 +457,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="143"/>
         <source>CSync: Permission deniend.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: Permesso negato.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="146"/>
@@ -1007,7 +1007,8 @@ in un ambiente multipiattaforma.</translation>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="131"/>
         <source>Softlinks break the semantics of synchronization.
 Please do not use them in synced directories.</source>
-        <translation type="unfinished"/>
+        <translation>I collegamenti simbolici creano problemi con la semantica di sincronizzazione.
+Non usarli nelle cartelle sincronizzate.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="134"/>
@@ -1025,7 +1026,9 @@ Please do not use them in synced directories.</source>
 created a so called conflict. The local change is copied to the conflict
 file while the file from the server side is available under the original
 name</source>
-        <translation type="unfinished"/>
+        <translation>Il file è stato modificato sul server e sul deposito locale e ciò genera
+un cosiddetto conflitto. La modifica locale viene copiata sul file in
+conflitto, mentre il file sul server è disponibile con il nome originale</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="225"/>
@@ -1929,27 +1932,27 @@ name</source>
     <message>
         <location filename="../src/mirall/utility.cpp" line="114"/>
         <source>%L1 TB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 TB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="117"/>
         <source>%L1 GB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 GB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="120"/>
         <source>%L1 MB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 MB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="123"/>
         <source>%L1 kB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 kB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="126"/>
         <source>%L1 B</source>
-        <translation type="unfinished"/>
+        <translation>%L1 B</translation>
     </message>
 </context>
 <context>
