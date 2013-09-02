@@ -21,6 +21,14 @@
 #ifndef _CSYNC_EXCLUDE_H
 #define _CSYNC_EXCLUDE_H
 
+enum csync_exclude_type_e {
+  CSYNC_NOT_EXCLUDED   = 0,
+  CSYNC_FILE_SILENTLY_EXCLUDED,
+  CSYNC_FILE_EXCLUDE_AND_REMOVE,
+  CSYNC_FILE_EXCLUDE_LIST,
+  CSYNC_FILE_EXCLUDE_INVALID_CHAR
+};
+typedef enum csync_exclude_type_e CSYNC_EXCLUDE_TYPE;
 /**
  * @brief Load exclude list
  *
@@ -55,7 +63,7 @@ void csync_exclude_destroy(CSYNC *ctx);
  *
  * @return  2 if excluded and needs cleanup, 1 if excluded, 0 if not.
  */
-int csync_excluded(CSYNC *ctx, const char *path);
+CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path);
 
 #endif /* _CSYNC_EXCLUDE_H */
 
