@@ -7,6 +7,7 @@ Contents
    :maxdepth: 2
 
    install
+   userinterface
    usage 
    building 
    architecture
