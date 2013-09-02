@@ -117,9 +117,9 @@ void ItemProgressDialog::setSyncResult( const SyncResult& result )
              columns << folder;
              if( item._instruction == CSYNC_INSTRUCTION_IGNORE) {
                  if( item._type == SyncFileItem::SoftLink ) {
-                     errMsg = tr("Soft Link ignored.");
+                     errMsg = tr("Soft Link ignored");
                      tooltip = tr("Softlinks break the semantics of synchronization.\nPlease do not "
-                                  "use them in synced directories.");
+                                  "use them in synced directories");
                  } else {
                      QString obj = tr("file");
                      if( item._type == SyncFileItem::Directory ) {
@@ -127,16 +127,16 @@ void ItemProgressDialog::setSyncResult( const SyncResult& result )
                      }
                      tooltip = tr("The %1 was ignored because it is listed in the clients ignore list\n"
                                   "or the %1 name contains characters that are not syncable\nin a cross platform "
-                                  "environment.").arg(obj);
-                     errMsg = tr("Item ignored.");
+                                  "environment").arg(obj);
+                     errMsg = tr("Item ignored");
                      if( item._errorString == QLatin1String("File listed on ignore list.") ) {
-                         errMsg = tr("%1 on ignore list.").arg(obj);
-                         tooltip = tr("The %1 was skipped because it is listed on the clients list of names\n"
-                                      "to ignore.").arg(obj);
+                         errMsg = tr("%1 on ignore list").arg(obj);
+                         tooltip = tr("The %1 was skipped because it is listed on the clients\n"
+                                      "list of names to ignore").arg(obj);
                      } else if( item._errorString == QLatin1String("File contains invalid characters.") ) {
-                         errMsg = tr("Invalid characters.");
+                         errMsg = tr("Invalid characters");
                          tooltip = tr("The %1 name contains one or more invalid characters which break\n"
-                                      "syncing in a cross platform environment.").arg(obj);
+                                      "syncing in a cross platform environment").arg(obj);
                      }
                  }
              } else if(  item._instruction == CSYNC_INSTRUCTION_CONFLICT ) {
