@@ -1,3 +1,4 @@
+.gitmodules
 *build*/
 *flymake*
 CMakeLists.txt.user*

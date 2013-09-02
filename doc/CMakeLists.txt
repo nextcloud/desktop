@@ -22,6 +22,11 @@ if(SPHINX_FOUND)
        add_custom_target(doc DEPENDS doc-html doc-man COMMENT "Building documentation...")
     endif(WITH_DOC)
 
+    if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/ocdoc")
+       add_dependencies(doc doc-html-org)
+       add_dependencies(doc doc-html-com)
+    endif()
+
     if(PDFLATEX_FOUND)
         # if this still fails on Debian/Ubuntu, run
         # apt-get install texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended
@@ -55,8 +60,21 @@ if(SPHINX_FOUND)
     add_custom_target( doc-html ${SPHINX_EXECUTABLE}
 	                        -q -c . -b html
 				-d ${SPHINX_CACHE_DIR}/html
+                                -D html_theme=owncloud_org
 				${CMAKE_CURRENT_SOURCE_DIR}
-				${SPHINX_HTML_DIR} )
+				${SPHINX_HTML_DIR}/unthemed )
+    add_custom_target( doc-html-org ${SPHINX_EXECUTABLE}
+	                        -q -c . -b html
+				-d ${SPHINX_CACHE_DIR}/html
+                                -D html_theme=owncloud_org
+				${CMAKE_CURRENT_SOURCE_DIR}
+				${SPHINX_HTML_DIR}/org )
+    add_custom_target( doc-html-com ${SPHINX_EXECUTABLE}
+	                        -q -c . -b html
+				-d ${SPHINX_CACHE_DIR}/html
+                                -D html_theme=owncloud_com
+				${CMAKE_CURRENT_SOURCE_DIR}
+				${SPHINX_HTML_DIR}/com )
     add_custom_target( doc-man  ${SPHINX_EXECUTABLE}
 	                        -q -c . -b man
 				-d ${SPHINX_CACHE_DIR}/man
