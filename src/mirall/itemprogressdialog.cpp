@@ -116,22 +116,28 @@ void ItemProgressDialog::setSyncResult( const SyncResult& result )
              columns << item._file;
              columns << folder;
              if( item._instruction == CSYNC_INSTRUCTION_IGNORE) {
-                 if( item._type == SyncFileItem::File ) {
-                     errMsg = tr("File ignored.");
-                     tooltip = tr("The file was ignored because it is listed in the clients ignore list\n"
-                                  "or the filename contains characters that are not syncable\nin a cross platform "
-                                  "environment.");
-                 } else if( item._type == SyncFileItem::Directory ){
-                     errMsg = tr("Directory ignored.");
-                     tooltip = tr("The directory was ignored because it is listed in the clients\nignore list "
-                                  "or the directory name contains\ncharacters that are not syncable in a cross  "
-                                  "platform environment.");
-                 } else if( item._type == SyncFileItem::SoftLink ) {
+                 if( item._type == SyncFileItem::SoftLink ) {
                      errMsg = tr("Soft Link ignored.");
                      tooltip = tr("Softlinks break the semantics of synchronization.\nPlease do not "
                                   "use them in synced directories.");
                  } else {
-                     errMsg = tr("Ignored.");
+                     QString obj = tr("file");
+                     if( item._type == SyncFileItem::Directory ) {
+                         obj = tr("directory");
+                     }
+                     tooltip = tr("The %1 was ignored because it is listed in the clients ignore list\n"
+                                  "or the %1 name contains characters that are not syncable\nin a cross platform "
+                                  "environment.").arg(obj);
+                     errMsg = tr("Item ignored.");
+                     if( item._errorString == QLatin1String("File listed on ignore list.") ) {
+                         errMsg = tr("%1 on ignore list.").arg(obj);
+                         tooltip = tr("The %1 was skipped because it is listed on the clients list of names\n"
+                                      "to ignore.").arg(obj);
+                     } else if( item._errorString == QLatin1String("File contains invalid characters.") ) {
+                         errMsg = tr("Invalid characters.");
+                         tooltip = tr("The %1 name contains one or more invalid characters which break\n"
+                                      "syncing in a cross platform environment.").arg(obj);
+                     }
                  }
              } else if(  item._instruction == CSYNC_INSTRUCTION_CONFLICT ) {
                  errMsg = tr("Conflict file.");
