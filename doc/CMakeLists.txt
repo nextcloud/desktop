@@ -60,7 +60,6 @@ if(SPHINX_FOUND)
     add_custom_target( doc-html ${SPHINX_EXECUTABLE}
 	                        -q -c . -b html
 				-d ${SPHINX_CACHE_DIR}/html
-                                -D html_theme=owncloud_org
 				${CMAKE_CURRENT_SOURCE_DIR}
 				${SPHINX_HTML_DIR}/unthemed )
     add_custom_target( doc-html-org ${SPHINX_EXECUTABLE}
