@@ -1,6 +1,6 @@
 ChangeLog
 =========
-version 1.4.0beta1 (release 2013-08-08 ), csync 0.81.0 required
+version 1.4.0 (release 2013-09-04 ), csync 0.90.0 required
 
   * New Scheduler: Only sync when there are actual changes in the server
   * Add a Settings Dialog, move Proxy Settings there
@@ -19,6 +19,9 @@ version 1.4.0beta1 (release 2013-08-08 ), csync 0.81.0 required
   * Add an editor for ingore patterns
   * ALlow to flag certain ignore patterns as discardable
   * Ensure to ship with all valid translations
+  * Progress Dialog now preserves the last syncned items across sync runs
+  * Split Setup Wizard into multiple pages again
+  * Implement "--logfile -" to log to stdout
   * Add preliminary support for Shibboleth authentication
   * Linux: Provide more icon sizes
   * Linux: Do not trigger notifier on ignored files
