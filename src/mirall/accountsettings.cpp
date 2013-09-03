@@ -671,15 +671,23 @@ void AccountSettings::slotHideProgress()
 
 void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
 {
-    ui->quotaProgressBar->setEnabled(true);
-    // workaround the label only accepting ints (which may be only 32 bit wide)
-    ui->quotaProgressBar->setMaximum(100);
-    int qVal = qRound(used/(double)total * 100);
-    if( qVal > 100 ) qVal = 100;
-    ui->quotaProgressBar->setValue(qVal);
-    QString usedStr = Utility::octetsToString(used);
-    QString totalStr = Utility::octetsToString(total);
-    ui->quotaLabel->setText(tr("%1 of %2 in use.").arg(usedStr, totalStr));
+    if( total > 0 ) {
+        ui->quotaProgressBar->setVisible(true);
+        ui->quotaInfoLabel->setVisible(true);
+        ui->quotaProgressBar->setEnabled(true);
+        // workaround the label only accepting ints (which may be only 32 bit wide)
+        ui->quotaProgressBar->setMaximum(100);
+        int qVal = qRound(used/(double)total * 100);
+        if( qVal > 100 ) qVal = 100;
+        ui->quotaProgressBar->setValue(qVal);
+        QString usedStr = Utility::octetsToString(used);
+        QString totalStr = Utility::octetsToString(total);
+        ui->quotaLabel->setText(tr("%1 of %2 in use.").arg(usedStr, totalStr));
+    } else {
+        ui->quotaProgressBar->setVisible(false);
+        ui->quotaInfoLabel->setVisible(false);
+        ui->quotaLabel->setText(tr("Currently there is no storage usage information available."));
+    }
 }
 
 void AccountSettings::slotIgnoreFilesEditor()
