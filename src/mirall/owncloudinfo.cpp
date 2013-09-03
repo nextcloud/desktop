@@ -237,8 +237,9 @@ void ownCloudInfo::slotGetQuotaFinished()
 {
     bool ok = false;
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
+    int http_result_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
-    if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) == 207) {
+    if (http_result_code == 207) {
         // Parse DAV response
         QXmlStreamReader reader(reply);
         reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration("d", "DAV:"));
@@ -271,6 +272,7 @@ void ownCloudInfo::slotGetQuotaFinished()
         emit quotaUpdated(total, quotaUsedBytes);
         _lastEtag = etag;
     } else {
+        qDebug() << "Quota request *not* successful, http result code is " << http_result_code;
         _lastQuotaTotalBytes = 0;
         _lastQuotaUsedBytes = 0;
     }
