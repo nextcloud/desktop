@@ -752,7 +752,10 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
       }
     }
   } else {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "sqlite hash query fail: %s", sqlite3_errmsg(ctx->statedb.db));
+    /* SQLITE_DONE says there is no further row. That's not an error. */
+    if (rc != SQLITE_DONE) {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "sqlite hash query fail: %s", sqlite3_errmsg(ctx->statedb.db));
+    }
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "No result record found for phash = %llu",
               (long long unsigned int) phash);
     SAFE_FREE(st);
