@@ -972,56 +972,66 @@ Gli elementi marcati saranno inoltre eliminati se impediscono la rimozione di un
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="120"/>
-        <source>File ignored.</source>
-        <translation>File ignorato.</translation>
+        <source>Soft Link ignored</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="121"/>
-        <source>The file was ignored because it is listed in the clients ignore list
-or the filename contains characters that are not syncable
-in a cross platform environment.</source>
-        <translation>Il file è stato ignorato perché è presente nell&apos;elenco di esclusione
-del client o il nome del file contiene caratteri non sincronizzabili
-in un ambiente multipiattaforma.</translation>
+        <source>Softlinks break the semantics of synchronization.
+Please do not use them in synced directories</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="125"/>
-        <source>Directory ignored.</source>
-        <translation>Cartella ignorata.</translation>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="124"/>
+        <source>file</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="126"/>
-        <source>The directory was ignored because it is listed in the clients
-ignore list or the directory name contains
-characters that are not syncable in a cross  platform environment.</source>
-        <translation>La cartella è stata ignorata perché è presente nell&apos;elenco di esclusione
-del client o il nome della cartella contiene caratteri non sincronizzabili
-in un ambiente multipiattaforma.</translation>
+        <source>directory</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="130"/>
-        <source>Soft Link ignored.</source>
-        <translation>Collegamento ignorato.</translation>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="128"/>
+        <source>The %1 was ignored because it is listed in the clients ignore list
+or the %1 name contains characters that are not syncable
+in a cross platform environment</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="131"/>
-        <source>Softlinks break the semantics of synchronization.
-Please do not use them in synced directories.</source>
-        <translation>I collegamenti simbolici creano problemi con la semantica di sincronizzazione.
-Non usarli nelle cartelle sincronizzate.</translation>
+        <source>Item ignored</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="133"/>
+        <source>%1 on ignore list</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="134"/>
-        <source>Ignored.</source>
-        <translation>Ignorato.</translation>
+        <source>The %1 was skipped because it is listed on the clients
+list of names to ignore</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="137"/>
+        <source>Invalid characters</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="138"/>
+        <source>The %1 name contains one or more invalid characters which break
+syncing in a cross platform environment</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="143"/>
         <source>Conflict file.</source>
         <translation>File in conflitto.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="138"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="144"/>
         <source>The file was changed on server and local repository and as a result it
 created a so called conflict. The local change is copied to the conflict
 file while the file from the server side is available under the original
@@ -1031,22 +1041,22 @@ un cosiddetto conflitto. La modifica locale viene copiata sul file in
 conflitto, mentre il file sul server è disponibile con il nome originale</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="225"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="231"/>
         <source>Copied to clipboard</source>
         <translation>Copiato negli appunti</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="225"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="231"/>
         <source>The sync protocol has been copied to the clipboard.</source>
         <translation>Il protocollo di sincronizzazione è stato copiato negli appunti.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="277"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="283"/>
         <source>Problem: %1</source>
         <translation>Problema: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="280"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="286"/>
         <source>No more storage space available on server.</source>
         <translation>Spazio di archiviazione insufficiente sul server.</translation>
     </message>

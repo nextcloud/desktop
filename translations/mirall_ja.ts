@@ -972,52 +972,66 @@ Checked items will also be deleted if they prevent a directory from being remove
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="120"/>
-        <source>File ignored.</source>
-        <translation>対象外ファイル</translation>
+        <source>Soft Link ignored</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="121"/>
-        <source>The file was ignored because it is listed in the clients ignore list
-or the filename contains characters that are not syncable
-in a cross platform environment.</source>
-        <translation>そのファイルは、クライアント側の対象外リストに入っているか、クロスプラットフォーム環境では同期できない文字がファイル名に含まれている為、同期されませんでした。</translation>
+        <source>Softlinks break the semantics of synchronization.
+Please do not use them in synced directories</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="125"/>
-        <source>Directory ignored.</source>
-        <translation>対象外ディレクトリ</translation>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="124"/>
+        <source>file</source>
+        <translation>ファイル</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="126"/>
-        <source>The directory was ignored because it is listed in the clients
-ignore list or the directory name contains
-characters that are not syncable in a cross  platform environment.</source>
-        <translation>そのディレクトリは、クライアント側の対象外リストに入っているか、クロスプラットフォーム環境では同期できない文字がファイル名に含まれている為、同期されませんでした。</translation>
+        <source>directory</source>
+        <translation>ディレクトリ</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="130"/>
-        <source>Soft Link ignored.</source>
-        <translation>対象外ソフトリンク</translation>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="128"/>
+        <source>The %1 was ignored because it is listed in the clients ignore list
+or the %1 name contains characters that are not syncable
+in a cross platform environment</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="131"/>
-        <source>Softlinks break the semantics of synchronization.
-Please do not use them in synced directories.</source>
-        <translation>ソフトリンクは、同期の動作環境に不具合をもたらします。
-同期対象ディレクトリにソフトリンクは使用しないようにお願いいたします。</translation>
+        <source>Item ignored</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="133"/>
+        <source>%1 on ignore list</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="134"/>
-        <source>Ignored.</source>
-        <translation>無視されました。</translation>
+        <source>The %1 was skipped because it is listed on the clients
+list of names to ignore</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="137"/>
+        <source>Invalid characters</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="138"/>
+        <source>The %1 name contains one or more invalid characters which break
+syncing in a cross platform environment</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="143"/>
         <source>Conflict file.</source>
         <translation>競合ファイル</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="138"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="144"/>
         <source>The file was changed on server and local repository and as a result it
 created a so called conflict. The local change is copied to the conflict
 file while the file from the server side is available under the original
@@ -1025,22 +1039,22 @@ name</source>
         <translation>サーバー側とローカル側のファイルが変更された為、競合ファイルが作成されました。ローカル側の変更は、競合Conflictファイルへコピーされ、サーバー側のファイルは、元々のファイル名で利用できます。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="225"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="231"/>
         <source>Copied to clipboard</source>
         <translation>クリップボードにコピー</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="225"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="231"/>
         <source>The sync protocol has been copied to the clipboard.</source>
         <translation>同期状況をクリップボードにコピーしました</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="277"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="283"/>
         <source>Problem: %1</source>
         <translation>不具合: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="280"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="286"/>
         <source>No more storage space available on server.</source>
         <translation>サーバー上で利用可能なストレージ容量が足りません。</translation>
     </message>

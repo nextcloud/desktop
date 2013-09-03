@@ -972,56 +972,66 @@ Zvolené položky budou smazány také v případě, že brání smazání adres
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="120"/>
-        <source>File ignored.</source>
-        <translation>Soubor ignorován.</translation>
+        <source>Soft Link ignored</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="121"/>
-        <source>The file was ignored because it is listed in the clients ignore list
-or the filename contains characters that are not syncable
-in a cross platform environment.</source>
-        <translation>Soubor byl ignorován, protože se nachází v klientově seznamu
-ignorovaných souborů, nebo protože jeho název obsahuje
-znaky, které nelze synchronizovat mezi prostředími.</translation>
+        <source>Softlinks break the semantics of synchronization.
+Please do not use them in synced directories</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="125"/>
-        <source>Directory ignored.</source>
-        <translation>Adresář ignorován.</translation>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="124"/>
+        <source>file</source>
+        <translation>soubor</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="126"/>
-        <source>The directory was ignored because it is listed in the clients
-ignore list or the directory name contains
-characters that are not syncable in a cross  platform environment.</source>
-        <translation>Adresář byl ignorován, protože se nachází v klientově seznamu
-ignorovaných adresářů, nebo protože jeho název obsahuje
-znaky, které nelze synchronizovat mezi prostředími.</translation>
+        <source>directory</source>
+        <translation>adresář</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="130"/>
-        <source>Soft Link ignored.</source>
-        <translation>Symbolický odkaz ignorován.</translation>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="128"/>
+        <source>The %1 was ignored because it is listed in the clients ignore list
+or the %1 name contains characters that are not syncable
+in a cross platform environment</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="131"/>
-        <source>Softlinks break the semantics of synchronization.
-Please do not use them in synced directories.</source>
-        <translation>Symbolické odkazy poškozují sémantiku synchronizace.
-Nepoužívejte je v synchronizovaných adresářích.</translation>
+        <source>Item ignored</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="133"/>
+        <source>%1 on ignore list</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="134"/>
-        <source>Ignored.</source>
-        <translation>Ignorováno.</translation>
+        <source>The %1 was skipped because it is listed on the clients
+list of names to ignore</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="137"/>
+        <source>Invalid characters</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="138"/>
+        <source>The %1 name contains one or more invalid characters which break
+syncing in a cross platform environment</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="143"/>
         <source>Conflict file.</source>
         <translation>Soubor s konfliktem.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="138"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="144"/>
         <source>The file was changed on server and local repository and as a result it
 created a so called conflict. The local change is copied to the conflict
 file while the file from the server side is available under the original
@@ -1032,22 +1042,22 @@ zkopírovány do souboru s konfliktem, přičemž soubor ze serveru bude
 dostupný pod původním názvem</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="225"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="231"/>
         <source>Copied to clipboard</source>
         <translation>Zkopírováno do schránky</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="225"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="231"/>
         <source>The sync protocol has been copied to the clipboard.</source>
         <translation>Protokol synchronizace byl zkopírován do schránky.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="277"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="283"/>
         <source>Problem: %1</source>
         <translation>Problém: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="280"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="286"/>
         <source>No more storage space available on server.</source>
         <translation>Na serveru již není k dispozici volné místo.</translation>
     </message>

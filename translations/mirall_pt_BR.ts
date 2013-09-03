@@ -472,12 +472,12 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="152"/>
         <source>CSync: No space left on %1 server.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: sem espaço disponível no servidor %1.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="155"/>
         <source>CSync: unspecified error.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: Erro não especificado.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="158"/>
@@ -971,56 +971,66 @@ Itens marcados também serão excluídos se estiverem impedindo a remoção de u
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="120"/>
-        <source>File ignored.</source>
-        <translation>Arquivo ignorado.</translation>
+        <source>Soft Link ignored</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="121"/>
-        <source>The file was ignored because it is listed in the clients ignore list
-or the filename contains characters that are not syncable
-in a cross platform environment.</source>
-        <translation>O arquivo foi ignorado porque ele é listado nos clientes ignorar lista
-ou o nome do arquivo contém caracteres que não são sincronisáveis
-em um ambiente multi-plataforma.</translation>
+        <source>Softlinks break the semantics of synchronization.
+Please do not use them in synced directories</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="125"/>
-        <source>Directory ignored.</source>
-        <translation>Diretório ignorado.</translation>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="124"/>
+        <source>file</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="126"/>
-        <source>The directory was ignored because it is listed in the clients
-ignore list or the directory name contains
-characters that are not syncable in a cross  platform environment.</source>
-        <translation>O diretório foi ignorado porque ele está listado nos clientes
-ignorar a lista ou o nome do diretório contém
-caracteres que não são syncable em um ambiente multi-plataforma.</translation>
+        <source>directory</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="130"/>
-        <source>Soft Link ignored.</source>
-        <translation>Soft Link ignorado.</translation>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="128"/>
+        <source>The %1 was ignored because it is listed in the clients ignore list
+or the %1 name contains characters that are not syncable
+in a cross platform environment</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="131"/>
-        <source>Softlinks break the semantics of synchronization.
-Please do not use them in synced directories.</source>
-        <translation>Softlinks quebra a semântica de sincronização.
-Por favor, não usá-los em diretórios sincronizados.</translation>
+        <source>Item ignored</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="133"/>
+        <source>%1 on ignore list</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="134"/>
-        <source>Ignored.</source>
-        <translation>Ignorado.</translation>
+        <source>The %1 was skipped because it is listed on the clients
+list of names to ignore</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="137"/>
+        <source>Invalid characters</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="138"/>
+        <source>The %1 name contains one or more invalid characters which break
+syncing in a cross platform environment</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="143"/>
         <source>Conflict file.</source>
         <translation>Arquivo de conflito.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="138"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="144"/>
         <source>The file was changed on server and local repository and as a result it
 created a so called conflict. The local change is copied to the conflict
 file while the file from the server side is available under the original
@@ -1030,22 +1040,22 @@ foi criado um chamado conflito. A mudança de local foi copiado para o arquivo d
 enquanto o arquivo do lado do servidor está disponível sob o nome original</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="225"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="231"/>
         <source>Copied to clipboard</source>
         <translation>Copiado para área de transferência</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="225"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="231"/>
         <source>The sync protocol has been copied to the clipboard.</source>
         <translation>O protocolo de sincronização foi copiado para a área de transferência.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="277"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="283"/>
         <source>Problem: %1</source>
         <translation>Problema: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="280"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="286"/>
         <source>No more storage space available on server.</source>
         <translation>Não existe mais espaço disponível para armazenamento no servidor.</translation>
     </message>
@@ -1172,7 +1182,7 @@ enquanto o arquivo do lado do servidor está disponível sob o nome original</tr
         <location filename="../src/mirall/networksettings.ui" line="232"/>
         <location filename="../src/mirall/networksettings.ui" line="270"/>
         <source>No limit</source>
-        <translation type="unfinished"/>
+        <translation>Sem Limite</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="264"/>
@@ -1931,27 +1941,27 @@ enquanto o arquivo do lado do servidor está disponível sob o nome original</tr
     <message>
         <location filename="../src/mirall/utility.cpp" line="114"/>
         <source>%L1 TB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 TB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="117"/>
         <source>%L1 GB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 GB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="120"/>
         <source>%L1 MB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 MB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="123"/>
         <source>%L1 kB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 kB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="126"/>
         <source>%L1 B</source>
-        <translation type="unfinished"/>
+        <translation>%L1 B</translation>
     </message>
 </context>
 <context>
@@ -2110,7 +2120,7 @@ enquanto o arquivo do lado do servidor está disponível sob o nome original</tr
     <message>
         <location filename="../src/mirall/theme.cpp" line="69"/>
         <source>The server is currently unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Servidor indisponível no momento.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="72"/>
