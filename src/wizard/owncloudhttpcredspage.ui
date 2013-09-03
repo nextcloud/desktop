@@ -108,6 +108,12 @@
      <property name="text">
       <string>TextLabel</string>
      </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item row="4" column="0" colspan="3">
@@ -121,7 +127,6 @@
   <zorder>horizontalSpacer</zorder>
   <zorder>verticalSpacer</zorder>
   <zorder>horizontalSpacer_2</zorder>
-  <zorder>horizontalLayoutWidget</zorder>
   <zorder>topLabel</zorder>
   <zorder>bottomLabel</zorder>
  </widget>
