@@ -1,43 +1,7 @@
-The User Interface
-==================
+Visual Tour
+===========
 
-Setting up an Account
----------------------
-
-If no account has been conimaged, ownCloud Client will assist you in connecting
-to your ownCloud Server. As a first step, specify the URL to your Server, just
-like you would when you open your ownCloud instance inside a browser.
-
-.. image:: images/wizard_url.png
-   :scale: 50 %
-
-.. note:: Make sure to use ``https://`` if the server supports it. Otherwise,
-   your password and all data will be transferred to the server unencrypted.
-   This makes it easy for third parties to intercept your communication, and
-   getting hold of your password!
-
-Next, you are prompted for your username and password. Again, use the same
-credentials that you would use to log on via the web interface.
-
-.. image:: images/wizard_user.png
-   :scale: 50 %
-
-Finally, choose the folder that ownCloud Client is supposed to sync the
-contents of your ownCloud account with. By default, this is a folder
-called `ownCloud`, which will reside in your home directory.
-
-.. image:: images/wizard_targetfolder.png
-   :scale: 50 %
-
-After pressing `Connect`, ownCloud Client will commence with the syncing
-process. The next screen will give you the opportunity to review your
-settings:
-
-.. image:: images/wizard_overview.png
-   :scale: 50 %
-
-Overview of the ownCloud Client Interface
------------------------------------------
+.. index:: visual tour, usage
 
 ownCloud Client stays in the background, and is visible as an
 icon in your system tray (Windows, KDE), status bar (Mac OS X)
@@ -73,20 +37,22 @@ The settings dialog is split up in three categories: ``Account Settings``,
 Account Settings
 ~~~~~~~~~~~~~~~~
 
+.. index:: account settings, user, password, Server URL
+
 The ``Account Settings`` tab provides an executive summary about the synced
 folders in your account and allows to modify them. It also provides a more
 detailed report about the storage usage. Finally, it allows to change
 the files that ownCloud Client should ignore (for details, see the
 ``Ignored Files Editor`` section below), and to modify various aspects
-of the current account settings.
-
+of the current account settings, such as user name, password and server URL.
 
 .. image:: images/settings_account.png
    :scale: 50 %
 
-
 General Settings
 ~~~~~~~~~~~~~~~~
+
+.. index:: general settings, auto start, startup, desktop notifications
 
 The tab provides several useful options:
 
@@ -107,6 +73,8 @@ when filing a bug report.
 
 Network Settings
 ~~~~~~~~~~~~~~~~
+
+.. index:: proxy settings, SOCKS, bandwith, throttling, limiting
 
 This tab consollidates ``Proxy Settings`` and ``Bandwith Limiting``:
 
@@ -155,6 +123,8 @@ will finish using the old settings.
 The Sync Protocol
 ~~~~~~~~~~~~~~~~~
 
+.. index:: sync protocol
+
 The ``Sync Protocol`` window, which can be invoked from either from the main
 menu (``Recent Changes`` -> ``Details...``) or the ``Account Settings``
 (``Info`` button), will provide you with an in-depth summary of the recent
@@ -167,8 +137,12 @@ characters that cannot be stored on certain file systems.
 .. image:: images/sync_protocol.png
    :scale: 50 %
 
+.. _ignoredFilesEditor-label:
+
 The Ignored Files Editor
 ~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. index:: ignored files, exclude files, pattern
 
 The ignored files editor allows adding patterns for files or directories
 that should be excluded from the sync process. Next to normal characters,
@@ -176,9 +150,13 @@ wildcards can be used to match an arbitrary number of characters, designated
 by an asterisk (``*``) or a single character, designated by a question mark
 (``?``).
 
-Global defaults cannot be directlly modified within the editor. Hovering
+Global defaults cannot be directly modified within the editor. Hovering
 with the mouse will reveal the location of the global exclude definition
 file.
+
+In addition to this list, ownCloud Client always excludes files with
+characters that cannot be synched down to other file systems,
+see :ref:`ignored-files-label`.
 
 .. note:: Modifying the global exclude definition file might render the
    client unusable or cause undesired behavior.

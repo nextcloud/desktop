@@ -6,9 +6,11 @@ Contents
 .. toctree::
    :maxdepth: 2
 
-   install
-   userinterface
-   usage 
+   introduction
+   accountsetup
+   visualtour
+   advancedusage
+
    building 
    architecture
    troubleshooting

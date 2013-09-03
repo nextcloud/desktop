@@ -1,5 +1,7 @@
-Building the Client
-===================
+.. _building-label:
+
+Appendix A: Building the Client
+===============================
 
 This section explains how to build the ownCloud Client from source
 for all major platforms. You should read this section if you want

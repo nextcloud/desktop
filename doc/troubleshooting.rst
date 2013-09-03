@@ -1,5 +1,5 @@
-Troubleshooting
-===============
+Appendix C: Troubleshooting
+===========================
 
 If the client fails to start syncing it basically can have two
 basic reasons: Either the server setup has a problem or the client
@@ -55,6 +55,12 @@ ownCloud is not shared with other syncing apps.
           not be attempted. In the worst case, doing so can result in data
           loss.
 
+If some files do not get take a look at the sync protocol. Some files are
+automatically automatically being ignored because they are system files,
+others get ignored because their file name contains characters that cannot
+be represented on certain file systems. See :ref:`_ignored-files-label` for
+details.
+
 If you are operating your own server and use the local storage backend (the
 default), make sure that ownCloud has exclusive access to the directory.
 
@@ -65,13 +71,15 @@ If you are using a different backend, you can try to exclude a bug in the
 backend by reverting to the local backend.
 
 Logfiles
-========
+--------
 
 Doing effective debugging requires to provide as much as relevant logs as
 possible. The log output can help you with tracking down problem, and if you 
 report a bug, you're advised to include the output.
 
-:Client Logfile:
+Client Logfile
+~~~~~~~~~~~~~~
+
 Start the client with ``--logwindow``. That opens a window providing a view
 on the current log. It provides a Save button to let you save the log to a 
 file.
@@ -97,11 +105,14 @@ given expiry period.
 
 For example, for a long running test where you intend to keep the log data of the
 last two days, this would be the command line:
+
 ```
 owncloud --logdir /tmp/owncloud_logs --logexpire 48
 ```
 
-:ownCloud server Logfile:
+ownCloud server Logfile
+~~~~~~~~~~~~~~~~~~~~~~~
+
 The ownCloud server maintains an ownCloud specific logfile as well. It can and
 must be enabled through the ownCloud Administration page. There you can adjust
 the loglevel. It is advisable to set it to a verbose level like ``Debug`` or
@@ -110,7 +121,9 @@ the loglevel. It is advisable to set it to a verbose level like ``Debug`` or
 The logfile can be viewed either in the web interface or can be found in the
 filesystem in the ownCloud server data dir.
 
-:Webserver Logfiles:
+Webserver Logfiles
+~~~~~~~~~~~~~~~~~~
+
 Also, please take a look at your webservers error log file to check if there
 are problems. For Apache on Linux, the error logs usually can be found at
 ``/var/log/apache2``. A file called ``error_log`` shows errors like PHP code

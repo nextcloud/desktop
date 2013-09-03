@@ -15,9 +15,6 @@ ownCloud Client supports the following command line switches:
 ``--logflush``
         flush the log file after every write.
 
-``--monoicons``
-        Use black/white pictograms for systray.
-
 ``--confdir`` `<dirname>`
         Use the given configuration directory.
 
