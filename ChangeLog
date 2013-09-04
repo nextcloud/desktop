@@ -1,6 +1,6 @@
 ChangeLog
 ==========
-version 0.81.0  (released 2013-08-08, ownCloud Client 1.4beta1 )
+version 0.90.0  (released 2013-09-04, ownCloud Client 1.4)
   * Added API to get progress information from csync.
   * Added c_rename function to csync std.
   * Fix: Do renames of files before any puts.
@@ -18,8 +18,9 @@ version 0.81.0  (released 2013-08-08, ownCloud Client 1.4beta1 )
   * Left excluded files and links in csync's tree to be able to show.
     them to the user.
   * Add OC-Total-Length header for better quota handling.
+  * Report inbetween progress
 
-version 0.80.0  (released 2013  *06  *25)
+version 0.80.0  (released 2013-06-25)
   * Big file chunking (e.g. up/download of big files should now be no
     problem anymore)
   * Resuming (download of big files will resume)

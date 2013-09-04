@@ -311,8 +311,10 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
           st->size    != vst->size) {
         /* The size or modtime has changed. Skip this file copy for now. */
         rc = 1; /* soft problem */
+        SAFE_FREE(st->error_string);
+        st->error_string = c_strdup("File was updated meantime, publish next time.");
         CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Source file has changed since update run, SKIP it for now.");
+            "Source file %s has changed since update run, SKIP it for now.", suri);
         goto out;
       }
       csync_vio_file_stat_destroy(vst);
@@ -854,7 +856,7 @@ static int _backup_path(char** duri, const char* uri, const char* path)
 	CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"extension: %s",info->extension);
 
     if (asprintf(duri, "%s/%s%s_conflict-%s%s", uri,info->directory ,
-                 info->filename,timestring,info->extension) < 0) {
+                 info->filename, timestring, info->extension) < 0) {
 		rc = -1;
 	}
 
@@ -877,47 +879,38 @@ static int _csync_backup_file(CSYNC *ctx, csync_file_stat_t *st, char **duri) {
   
   if(st->instruction==CSYNC_INSTRUCTION_CONFLICT)
   {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"CSYNC_INSTRUCTION_CONFLICT");
-    switch (ctx->current) {
-    case LOCAL_REPLICA:
-      drep = ctx->remote.type;
-      if (asprintf(&suri, "%s/%s", ctx->remote.uri, st->path) < 0) {
-        ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
-        rc = -1;
-        goto out;
-      }
+	CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"CSYNC_INSTRUCTION_CONFLICT");
+	switch (ctx->current) {
+		case LOCAL_REPLICA:
+		drep = ctx->remote.type;
+		if (asprintf(&suri, "%s/%s", ctx->remote.uri, st->path) < 0) {
+			rc = -1;
+			goto out;
+		}
 
-      if (_backup_path(duri, ctx->remote.uri,st->path) < 0) {
-        ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
-        rc = -1;
-        goto out;
-      }
-      break;
-    case REMOTE_REPLICA:
-      drep = ctx->local.type;
-      if (asprintf(&suri, "%s/%s", ctx->local.uri, st->path) < 0) {
-        ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
-        rc = -1;
-        goto out;
-      }
+        if (_backup_path(duri, ctx->remote.uri,st->path) < 0) {
+			rc = -1;
+			goto out;
+		}
+		break;
+		case REMOTE_REPLICA:
+		drep = ctx->local.type;
+		if (asprintf(&suri, "%s/%s", ctx->local.uri, st->path) < 0) {
+			rc = -1;
+			goto out;
+		}
 
-      if ( _backup_path(duri, ctx->local.uri, st->path) < 0) {
-        ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
-        rc = -1;
-        goto out;
-      }
-      break;
-    default:
-      break;
-    }
-  }
-
-  else
-  {
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"instruction not allowed: %i %s",
-                st->instruction, csync_instruction_str(st->instruction));
-      ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
-      rc = -1;
+        if ( _backup_path(duri, ctx->local.uri, st->path) < 0) {
+			rc = -1;
+			goto out;
+		}
+		break;
+		default:
+		break;
+	}
+  } else {
+	  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,"instruction not allowed: %i %s",st->instruction,csync_instruction_str(st->instruction));
+	  rc = -1;
       goto out;
   }
 	
@@ -1134,8 +1127,7 @@ static int _csync_conflict_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   rc = _csync_backup_file(ctx, st, &conflict_file_name);
   
-  if(rc>=0)
-  {
+  if(rc >= 0 ) {
 	 rc = _csync_push_file(ctx, st);
   }
 
@@ -1148,12 +1140,12 @@ static int _csync_conflict_file(CSYNC *ctx, csync_file_stat_t *st) {
 
       if( c_compare_file(uri, conflict_file_name) == 1 ) {
         /* the files are byte wise equal. The conflict can be erased. */
-        if (csync_vio_local_unlink(conflict_file_name) < 0) {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "REMOVE of csync conflict file %s failed.", conflict_file_name );
-        } else {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "REMOVED csync conflict file %s as files are equal.",
-                    conflict_file_name );
-        }
+          if (csync_vio_local_unlink(conflict_file_name) < 0) {
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "REMOVE of csync conflict file %s failed.", conflict_file_name );
+          } else {
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "REMOVED csync conflict file %s as files are equal.",
+                      conflict_file_name );
+          }
       }
     }
   }

@@ -88,7 +88,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   const char *path = NULL;
   csync_file_stat_t *st = NULL;
   csync_file_stat_t *tmp = NULL;
-  int excluded;
+  CSYNC_EXCLUDE_TYPE excluded;
 
   if ((file == NULL) || (fs == NULL)) {
     errno = EINVAL;
@@ -122,9 +122,9 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
   /* Check if file is excluded */
   excluded = csync_excluded(ctx, path);
-  if (excluded) {
+  if (excluded != CSYNC_NOT_EXCLUDED) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s excluded  (%d)", path, excluded);
-    if (excluded == 2) {
+    if (excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE) {
       switch (ctx->current) {
         case LOCAL_REPLICA:
           ctx->local.ignored_cleanup = c_list_append(ctx->local.ignored_cleanup, c_strdup(path));
@@ -135,6 +135,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
         default:
           break;
       }
+      return 0;
     }
   }
 
@@ -187,7 +188,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     st->instruction = CSYNC_INSTRUCTION_NONE;
     goto out;
   }
-  if (excluded > 0 || type == CSYNC_FTW_TYPE_SLINK) {
+  if (excluded > CSYNC_NOT_EXCLUDED || type == CSYNC_FTW_TYPE_SLINK) {
     st->instruction = CSYNC_INSTRUCTION_IGNORE;
     goto out;
   }
@@ -253,6 +254,14 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
 out:
 
+  /* Set the ignored error string. */
+  if (st->instruction == CSYNC_INSTRUCTION_IGNORE) {
+    if (excluded == CSYNC_FILE_EXCLUDE_LIST) {
+      st->error_string = c_strdup("File listed on ignore list.");
+    } else if (excluded == CSYNC_FILE_EXCLUDE_INVALID_CHAR) {
+      st->error_string = c_strdup("File contains invalid characters.");
+    }
+  }
   if (st->instruction != CSYNC_INSTRUCTION_NONE && st->instruction != CSYNC_INSTRUCTION_IGNORE
       && type != CSYNC_FTW_TYPE_DIR) {
     st->child_modified = 1;
