@@ -76,29 +76,32 @@ static void check_csync_excluded(void **state)
     int rc;
 
     rc = csync_excluded(csync, ".kde/share/config/kwin.eventsrc");
-    assert_int_equal(rc, 0);
+    assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
     rc = csync_excluded(csync, ".kde4/cache-maximegalon/cache1.txt");
-    assert_int_equal(rc, 1);
+    assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
     rc = csync_excluded(csync, ".mozilla/plugins");
-    assert_int_equal(rc, 1);
+    assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
 
     /*
      * Test for patterns in subdirs. '.beagle' is defined as a pattern and has
      * to be found in top dir as well as in directories underneath.
      */
     rc = csync_excluded(csync, ".beagle");
-    assert_int_equal(rc, 1);
+    assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
     rc = csync_excluded(csync, "foo/.beagle");
-    assert_int_equal(rc, 1);
+    assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
     rc = csync_excluded(csync, "foo/bar/.beagle");
-    assert_int_equal(rc, 1);
+    assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
 
     rc = csync_excluded(csync, ".csync_journal.db");
-    assert_int_equal(rc, 1);
+    assert_int_equal(rc, CSYNC_FILE_SILENTLY_EXCLUDED);
     rc = csync_excluded(csync, ".csync_journal.db.ctmp");
-    assert_int_equal(rc, 1);
+    assert_int_equal(rc, CSYNC_FILE_SILENTLY_EXCLUDED);
     rc = csync_excluded(csync, "subdir/.csync_journal.db");
-    assert_int_equal(rc, 1);
+    assert_int_equal(rc, CSYNC_FILE_SILENTLY_EXCLUDED);
+
+    rc = csync_excluded(csync, "my.directory");
+    assert_int_equal(rc, CSYNC_FILE_EXCLUDE_AND_REMOVE);
 }
 
 int torture_run_tests(void)

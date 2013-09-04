@@ -138,18 +138,18 @@ void csync_exclude_destroy(CSYNC *ctx) {
   c_strlist_destroy(ctx->excludes);
 }
 
-int csync_excluded(CSYNC *ctx, const char *path) {
+CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path) {
   size_t i;
   const char *p;
   char *bname;
   int rc;
-  int match = 0;
+  CSYNC_EXCLUDE_TYPE match = CSYNC_NOT_EXCLUDED;
+  CSYNC_EXCLUDE_TYPE type  = CSYNC_NOT_EXCLUDED;
   const char *it;
-  int type = 0;
 
   /* exclude the lock file */
   if (c_streq( path, CSYNC_LOCK_FILE )) {
-      return 1;
+      return CSYNC_FILE_SILENTLY_EXCLUDED;
   }
 
   if (! ctx->options.unix_extensions) {
@@ -163,26 +163,21 @@ int csync_excluded(CSYNC *ctx, const char *path) {
         case '>':
         case '<':
         case '|':
-          return 1;
+          return CSYNC_FILE_EXCLUDE_INVALID_CHAR;
         default:
           break;
       }
     }
   }
 
-  rc = csync_fnmatch(".csync_journal.db*", path, 0);
-  if (rc == 0) {
-      return 1;
-  }
-
   bname = c_basename(path);
   if (bname == NULL) {
-      return 0;
+      return CSYNC_NOT_EXCLUDED;
   }
 
   rc = csync_fnmatch(".csync_journal.db*", bname, 0);
   if (rc == 0) {
-      match = 1;
+      match = CSYNC_FILE_SILENTLY_EXCLUDED;
       goto out;
   }
 
@@ -190,13 +185,13 @@ int csync_excluded(CSYNC *ctx, const char *path) {
       goto out;
   }
 
-  for (i = 0; match == 0 && i < ctx->excludes->count; i++) {
+  for (i = 0; match == CSYNC_NOT_EXCLUDED && i < ctx->excludes->count; i++) {
       it = ctx->excludes->vector[i];
-      type = 1;
+      type = CSYNC_FILE_EXCLUDE_LIST;
       /* Ecludes starting with ']' means it can be cleanup */
       if (it[0] == ']') {
         ++it;
-        type = 2;
+        type = CSYNC_FILE_EXCLUDE_AND_REMOVE;
       }
 
       rc = csync_fnmatch(it, path, 0);
