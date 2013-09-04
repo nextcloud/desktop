@@ -10,6 +10,7 @@
 #include <QtTest>
 
 #include "mirall/owncloudpropagator.h"
+#include "mirall/progressdatabase.h"
 
 using namespace Mirall;
 
@@ -20,7 +21,7 @@ class TestOwncloudPropagator : public QObject
 private slots:
     void testUpdateErrorFromSession()
     {
-	OwncloudPropagator propagator( NULL, QLatin1String("test1"), QLatin1String("test2"));
+        OwncloudPropagator propagator( NULL, QLatin1String("test1"), QLatin1String("test2"), new ProgressDatabase);
         QVERIFY( true );
     }
 };
