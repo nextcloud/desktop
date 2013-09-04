@@ -18,6 +18,8 @@
 #include "mirall/theme.h"
 #include "mirall/logger.h"
 #include "mirall/owncloudinfo.h"
+#include "owncloudpropagator.h"
+#include "progressdatabase.h"
 #include "creds/abstractcredentials.h"
 
 #ifdef Q_OS_WIN
@@ -47,11 +49,15 @@ namespace Mirall {
 QMutex CSyncThread::_mutex;
 QMutex CSyncThread::_syncMutex;
 
-CSyncThread::CSyncThread(CSYNC *csync)
+CSyncThread::CSyncThread(CSYNC *csync, const QString &localPath, const QString &remotePath)
 {
     _mutex.lock();
+    _localPath = localPath;
+    _remotePath = remotePath;
     _csync_ctx = csync;
     _mutex.unlock();
+    qRegisterMetaType<SyncFileItem>("SyncFileItem");
+    qRegisterMetaType<CSYNC_STATUS>("CSYNC_STATUS");
 }
 
 CSyncThread::~CSyncThread()
@@ -61,106 +67,106 @@ CSyncThread::~CSyncThread()
 
 //Convert an error code from csync to a user readable string.
 // Keep that function thread safe as it can be called from the sync thread or the main thread
-QString CSyncThread::csyncErrorToString( CSYNC_ERROR_CODE err, const char *errString )
+QString CSyncThread::csyncErrorToString(CSYNC_STATUS err)
 {
     QString errStr;
 
     switch( err ) {
-    case CSYNC_ERR_NONE:
+    case CSYNC_STATUS_OK:
         errStr = tr("Success.");
         break;
-    case CSYNC_ERR_LOG:
-        errStr = tr("CSync Logging setup failed.");
-        break;
-    case CSYNC_ERR_LOCK:
+    case CSYNC_STATUS_NO_LOCK:
         errStr = tr("CSync failed to create a lock file.");
         break;
-    case CSYNC_ERR_STATEDB_LOAD:
+    case CSYNC_STATUS_STATEDB_LOAD_ERROR:
         errStr = tr("CSync failed to load the state db.");
         break;
-    case CSYNC_ERR_MODULE:
+    case CSYNC_STATUS_STATEDB_WRITE_ERROR:
+        errStr = tr("CSync failed to write the state db.");
+        break;
+    case CSYNC_STATUS_NO_MODULE:
         errStr = tr("<p>The %1 plugin for csync could not be loaded.<br/>Please verify the installation!</p>").arg(Theme::instance()->appNameGUI());
         break;
-    case CSYNC_ERR_TIMESKEW:
+    case CSYNC_STATUS_TIMESKEW:
         errStr = tr("The system time on this client is different than the system time on the server. "
                     "Please use a time synchronization service (NTP) on the server and client machines "
                     "so that the times remain the same.");
         break;
-    case CSYNC_ERR_FILESYSTEM:
+    case CSYNC_STATUS_FILESYSTEM_UNKNOWN:
         errStr = tr("CSync could not detect the filesystem type.");
         break;
-    case CSYNC_ERR_TREE:
+    case CSYNC_STATUS_TREE_ERROR:
         errStr = tr("CSync got an error while processing internal trees.");
         break;
-    case CSYNC_ERR_MEM:
+    case CSYNC_STATUS_MEMORY_ERROR:
         errStr = tr("CSync failed to reserve memory.");
         break;
-    case CSYNC_ERR_PARAM:
+    case CSYNC_STATUS_PARAM_ERROR:
         errStr = tr("CSync fatal parameter error.");
         break;
-    case CSYNC_ERR_UPDATE:
+    case CSYNC_STATUS_UPDATE_ERROR:
         errStr = tr("CSync processing step update failed.");
         break;
-    case CSYNC_ERR_RECONCILE:
+    case CSYNC_STATUS_RECONCILE_ERROR:
         errStr = tr("CSync processing step reconcile failed.");
         break;
-    case CSYNC_ERR_PROPAGATE:
+    case CSYNC_STATUS_PROPAGATE_ERROR:
         errStr = tr("CSync processing step propagate failed.");
         break;
-    case CSYNC_ERR_ACCESS_FAILED:
+    case CSYNC_STATUS_REMOTE_ACCESS_ERROR:
         errStr = tr("<p>The target directory does not exist.</p><p>Please check the sync setup.</p>");
         break;
-    case CSYNC_ERR_REMOTE_CREATE:
-    case CSYNC_ERR_REMOTE_STAT:
+    case CSYNC_STATUS_REMOTE_CREATE_ERROR:
+    case CSYNC_STATUS_REMOTE_STAT_ERROR:
         errStr = tr("A remote file can not be written. Please check the remote access.");
         break;
-    case CSYNC_ERR_LOCAL_CREATE:
-    case CSYNC_ERR_LOCAL_STAT:
+    case CSYNC_STATUS_LOCAL_CREATE_ERROR:
+    case CSYNC_STATUS_LOCAL_STAT_ERROR:
         errStr = tr("The local filesystem can not be written. Please check permissions.");
         break;
-    case CSYNC_ERR_PROXY:
+    case CSYNC_STATUS_PROXY_ERROR:
         errStr = tr("CSync failed to connect through a proxy.");
         break;
-    case CSYNC_ERR_LOOKUP:
+    case CSYNC_STATUS_PROXY_AUTH_ERROR:
+        errStr = tr("CSync could not authenticate at the proxy.");
+        break;
+    case CSYNC_STATUS_LOOKUP_ERROR:
         errStr = tr("CSync failed to lookup proxy or server.");
         break;
-    case CSYNC_ERR_AUTH_SERVER:
+    case CSYNC_STATUS_SERVER_AUTH_ERROR:
         errStr = tr("CSync failed to authenticate at the %1 server.").arg(Theme::instance()->appNameGUI());
         break;
-    case CSYNC_ERR_AUTH_PROXY:
-        errStr = tr("CSync failed to authenticate at the proxy.");
-        break;
-    case CSYNC_ERR_CONNECT:
+    case CSYNC_STATUS_CONNECT_ERROR:
         errStr = tr("CSync failed to connect to the network.");
         break;
-    case CSYNC_ERR_TIMEOUT:
+    case CSYNC_STATUS_TIMEOUT:
         errStr = tr("A network connection timeout happend.");
         break;
-    case CSYNC_ERR_HTTP:
+    case CSYNC_STATUS_HTTP_ERROR:
         errStr = tr("A HTTP transmission error happened.");
         break;
-    case CSYNC_ERR_PERM:
-        errStr = tr("CSync: Permission deniend.");
+    case CSYNC_STATUS_PERMISSION_DENIED:
+        errStr = tr("CSync failed due to not handled permission deniend.");
         break;
-    case CSYNC_ERR_NOT_FOUND:
-        errStr = tr("CSync: File not found.");
+    case CSYNC_STATUS_NOT_FOUND:
+        errStr = tr("CSync failed to find a specific file.");
         break;
-    case CSYNC_ERR_EXISTS:
-        errStr = tr("CSync: Directory already exists.");
+    case CSYNC_STATUS_FILE_EXISTS:
+        errStr = tr("CSync tried to create a directory that already exists.");
         break;
-    case CSYNC_ERR_NOSPC:
-        errStr = tr("CSync: No space left on %1 server.").arg(Theme::instance()->appNameGUI());
+    case CSYNC_STATUS_OUT_OF_SPACE:
+        errStr = tr("CSync: No space on %1 server available.").arg(Theme::instance()->appNameGUI());
         break;
-    case CSYNC_ERR_UNSPEC:
-        errStr = tr("CSync: unspecified error.");
+    case CSYNC_STATUS_QUOTA_EXCEEDED:
+        errStr = tr("CSync: No space on %1 server available.").arg(Theme::instance()->appNameGUI());
+        break;
+    case CSYNC_STATUS_UNSUCCESSFUL:
+        errStr = tr("CSync unspecified error.");
 
     default:
         errStr = tr("An internal error number %1 happend.").arg( (int) err );
     }
 
-    if( errString ) {
-        errStr += tr("<br/>Backend Message: ")+QString::fromUtf8(errString);
-    }
     return errStr;
 
 }
@@ -177,7 +183,7 @@ int CSyncThread::treewalkRemote( TREE_WALK_FILE* file, void *data )
 
 int CSyncThread::walkFinalize(TREE_WALK_FILE* file, void *data )
 {
-    return static_cast<CSyncThread*>(data)->treewalkError( file);
+    return static_cast<CSyncThread*>(data)->treewalkFinalize( file);
 }
 
 int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
@@ -185,11 +191,19 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     if( ! file ) return -1;
     SyncFileItem item;
     item._file = QString::fromUtf8( file->path );
+    item._originalFile = file->path;
     item._instruction = file->instruction;
     item._dir = SyncFileItem::None;
+
     if(file->error_string) {
         item._errorString = QString::fromUtf8(file->error_string);
     }
+
+    item._isDirectory = file->type == CSYNC_FTW_TYPE_DIR;
+    item._modtime = file->modtime;
+    item._etag = file->md5;
+    // item._size = file->size;
+
     SyncFileItem::Direction dir;
 
     int re = 0;
@@ -215,6 +229,8 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     case CSYNC_INSTRUCTION_RENAME:
         dir = !remote ? SyncFileItem::Down : SyncFileItem::Up;
         item._renameTarget = QString::fromUtf8( file->rename_path );
+        if (item._isDirectory)
+            _renamedFolders.insert(item._file, item._renameTarget);
         break;
     case CSYNC_INSTRUCTION_REMOVE:
         dir = !remote ? SyncFileItem::Down : SyncFileItem::Up;
@@ -250,63 +266,49 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     }
 
     item._dir = dir;
-    _mutex.lock();
     _syncedItems.append(item);
-    _mutex.unlock();
 
     return re;
 }
 
-int CSyncThread::treewalkError(TREE_WALK_FILE* file)
+int CSyncThread::treewalkFinalize(TREE_WALK_FILE* file)
 {
-    SyncFileItem item; // only used for search.
-    item._file= QString::fromUtf8(file->path);
-    int indx = _syncedItems.indexOf(item);
-
-    if ( indx == -1 )
+    if (file->instruction == CSYNC_INSTRUCTION_IGNORE)
         return 0;
 
-    if( file &&
-        (file->instruction == CSYNC_INSTRUCTION_STAT_ERROR ||
-         file->instruction == CSYNC_INSTRUCTION_ERROR) ) {
-        _mutex.lock();
-        _syncedItems[indx]._instruction = file->instruction;
-        _syncedItems[indx]._errorString = QString::fromUtf8(file->error_string);
-        _mutex.unlock();
-    }
+    // Update the instruction and etag in the csync rb_tree so it is saved on the database
+    QHash<QByteArray, Action>::const_iterator action = _performedActions.constFind(file->path);
+    if (action != _performedActions.constEnd()) {
+        if (file->instruction != CSYNC_INSTRUCTION_NONE) {
+            // it is NONE if we are in the wrong tree (remote vs. local)
 
+            qDebug() << "UPDATING " << file->path << action->instruction;
+
+            file->instruction = action->instruction;
+        }
+
+        if (!action->etag.isNull()) {
+            // Update the etag even for INSTRUCTION_NONE (eg. renames)
+            file->md5 = action->etag.constData();
+        }
+    }
     return 0;
 }
 
-struct CSyncRunScopeHelper {
-    CSyncRunScopeHelper(CSYNC *ctx, CSyncThread *parent)
-        : _ctx(ctx), _parent(parent)
-    {
-        _t.start();
-    }
-    ~CSyncRunScopeHelper() {
-        csync_commit(_ctx);
-
-        qDebug() << "CSync run took " << _t.elapsed() << " Milliseconds";
-        emit(_parent->finished());
-        _parent->_syncMutex.unlock();
-    }
-    CSYNC *_ctx;
-    QTime _t;
-    CSyncThread *_parent;
-};
-
 void CSyncThread::handleSyncError(CSYNC *ctx, const char *state) {
-    CSYNC_ERROR_CODE err = csync_get_error( ctx );
-    const char *errMsg = csync_get_error_string( ctx );
-    QString errStr = csyncErrorToString(err, errMsg);
+    CSYNC_STATUS err = CSYNC_STATUS(csync_get_status( ctx ));
+    const char *errMsg = csync_get_status_string( ctx );
+    QString errStr = csyncErrorToString(err);
+    if( errMsg ) {
+        errStr += QLatin1String("<br/>");
+        errStr += QString::fromUtf8(errMsg);
+    }
     qDebug() << " #### ERROR during "<< state << ": " << errStr;
-    switch (err) {
-    case CSYNC_ERR_SERVICE_UNAVAILABLE:
-    case CSYNC_ERR_CONNECT:
+
+    if( CSYNC_STATUS_IS_EQUAL( err, CSYNC_STATUS_SERVICE_UNAVAILABLE ) ||
+            CSYNC_STATUS_IS_EQUAL( err, CSYNC_STATUS_CONNECT_ERROR )) {
         emit csyncUnavailable();
-        break;
-    default:
+    } else {
         emit csyncError(errStr);
     }
 }
@@ -324,34 +326,16 @@ void CSyncThread::startSync()
     qDebug() << Q_FUNC_INFO << "Sync started";
 
     qDebug() << "starting to sync " << qApp->thread() << QThread::currentThread();
+    _syncedItems.clear();
 
     _mutex.lock();
-    _syncedItems.clear();
     _needsUpdate = false;
     _mutex.unlock();
 
-    // cleans up behind us and emits finished() to ease error handling
-    CSyncRunScopeHelper helper(_csync_ctx, this);
 
     // maybe move this somewhere else where it can influence a running sync?
     MirallConfigFile cfg;
 
-    int downloadLimit = 0;
-    if (cfg.useDownloadLimit()) {
-         downloadLimit = cfg.downloadLimit() * 1000;
-    }
-    csync_set_module_property(_csync_ctx, "bandwidth_limit_download", &downloadLimit);
-
-    int uploadLimit = -75; // 75%
-    int useUpLimit = cfg.useUploadLimit();
-    if ( useUpLimit >= 1) {
-         uploadLimit = cfg.uploadLimit() * 1000;
-    } else if (useUpLimit == 0) {
-        uploadLimit = 0;
-    }
-    csync_set_module_property(_csync_ctx, "bandwidth_limit_upload", &uploadLimit);
-
-    csync_set_progress_callback( _csync_ctx, cb_progress );
 
     csync_set_module_property(_csync_ctx, "csync_context", _csync_ctx);
     csync_set_userdata(_csync_ctx, this);
@@ -378,17 +362,23 @@ void CSyncThread::startSync()
 
 
 
+    _syncTime.start();
+
+    QElapsedTimer updateTime;
+    updateTime.start();
     qDebug() << "#### Update start #################################################### >>";
     if( csync_update(_csync_ctx) < 0 ) {
         handleSyncError(_csync_ctx, "csync_update");
         return;
     }
-    qDebug() << "<<#### Update end ###########################################################";
+    qDebug() << "<<#### Update end #################################################### " << updateTime.elapsed();
 
     if( csync_reconcile(_csync_ctx) < 0 ) {
         handleSyncError(_csync_ctx, "csync_reconcile");
         return;
     }
+
+    _progressInfo = Progress::Info();
 
     _hasFiles = false;
     bool walkOk = true;
@@ -400,9 +390,17 @@ void CSyncThread::startSync()
         qDebug() << "Error in remote treewalk.";
     }
 
+    // Adjust the paths for the renames.
+    for (SyncFileItemVector::iterator it = _syncedItems.begin();
+            it != _syncedItems.end(); ++it) {
+        it->_file = adjustRenamedPath(it->_file);
+    }
+
+    qSort(_syncedItems);
+
     if (!_hasFiles && !_syncedItems.isEmpty()) {
         qDebug() << Q_FUNC_INFO << "All the files are going to be removed, asking the user";
-        bool cancel = true;
+        bool cancel = false;
         emit aboutToRemoveAllFiles(_syncedItems.first()._dir, &cancel);
         if (cancel) {
             qDebug() << Q_FUNC_INFO << "Abort sync";
@@ -413,21 +411,135 @@ void CSyncThread::startSync()
     if (_needsUpdate)
         emit(started());
 
-    if( csync_propagate(_csync_ctx) < 0 ) {
-        handleSyncError(_csync_ctx, "cysnc_reconcile");
-        return;
-    }
+    ne_session_s *session = 0;
+    // that call to set property actually is a get which will return the session
+    csync_set_module_property(_csync_ctx, "get_dav_session", &session);
+    Q_ASSERT(session);
 
-    if( walkOk ) {
-        if( csync_walk_local_tree(_csync_ctx, &walkFinalize, 0) < 0 ||
-            csync_walk_remote_tree(_csync_ctx, &walkFinalize, 0 ) < 0 ) {
-            qDebug() << "Error in finalize treewalk.";
+    _progressDataBase.load(_localPath);
+    _propagator.reset(new OwncloudPropagator (session, _localPath, _remotePath, &_progressDataBase));
+    connect(_propagator.data(), SIGNAL(completed(SyncFileItem, CSYNC_STATUS)),
+            this, SLOT(transferCompleted(SyncFileItem, CSYNC_STATUS)), Qt::QueuedConnection);
+    connect(_propagator.data(), SIGNAL(progress(Progress::Kind,QString,quint64,quint64)),
+            this, SLOT(slotProgress(Progress::Kind,QString,quint64,quint64)));
+    _iterator = 0;
+
+    int downloadLimit = 0;
+    if (cfg.useDownloadLimit()) {
+        downloadLimit = cfg.downloadLimit() * 1000;
+    }
+    _propagator->_downloadLimit = downloadLimit;
+
+    int uploadLimit = -75; // 75%
+    int useUpLimit = cfg.useUploadLimit();
+    if ( useUpLimit >= 1) {
+        uploadLimit = cfg.uploadLimit() * 1000;
+    } else if (useUpLimit == 0) {
+        uploadLimit = 0;
+    }
+    _propagator->_uploadLimit = uploadLimit;
+
+    slotProgress(Progress::StartSync, QString(), 0, 0);
+
+    startNextTransfer();
+}
+
+void CSyncThread::transferCompleted(const SyncFileItem &item, CSYNC_STATUS error)
+{
+    Action a;
+    a.instruction = item._instruction;
+
+    // if the propagator had an error for a file, put the error string into the synced item
+    if( error != CSYNC_STATUS_OK
+            || a.instruction == CSYNC_INSTRUCTION_ERROR) {
+
+        // Search for the item in the starting from _iterator because it should be a bit before it.
+        // This works because SyncFileItem::operator== only compare the file name;
+        int idx = _syncedItems.lastIndexOf(item, _iterator);
+        if (idx >= 0) {
+            _syncedItems[idx]._instruction = CSYNC_INSTRUCTION_ERROR;
+            _syncedItems[idx]._errorString = csyncErrorToString( error );
+            _syncedItems[idx]._errorDetail = item._errorDetail;
+            _syncedItems[idx]._httpCode    = item._httpCode;
+            qDebug() << "File " << item._file << " propagator error " << _syncedItems[idx]._errorString
+                     << "(" << item._errorString << ")";
+        }
+
+        if (item._isDirectory && item._instruction == CSYNC_INSTRUCTION_REMOVE
+                && a.instruction == CSYNC_INSTRUCTION_DELETED) {
+            _lastDeleted = item._file;
         } else {
-        // emit the treewalk results.
-            emit treeWalkResult(_syncedItems);
+            _lastDeleted.clear();
         }
     }
-    qDebug() << Q_FUNC_INFO << "Sync finished";
+
+    a.etag = item._etag;
+    _performedActions.insert(item._originalFile, a);
+
+    if (item._instruction == CSYNC_INSTRUCTION_RENAME) {
+        if (a.instruction == CSYNC_INSTRUCTION_DELETED) {
+            // we should update the etag on the destination as well
+            a.instruction = CSYNC_INSTRUCTION_NONE;
+        } else { // ERROR
+            a.instruction = CSYNC_INSTRUCTION_ERROR;
+        }
+        _performedActions.insert(item._renameTarget.toUtf8(), a);
+    }
+
+    if (!item._isDirectory && a.instruction == CSYNC_INSTRUCTION_UPDATED) {
+        slotProgress((item._dir != SyncFileItem::Up) ? Progress::EndDownload : Progress::EndUpload,
+                     item._file, item._size, item._size);
+        _progressInfo.current_file_no++;
+        _progressInfo.overall_current_bytes += item._size;
+    }
+
+    startNextTransfer();
+}
+
+void CSyncThread::startNextTransfer()
+{
+    while (_iterator < _syncedItems.size() && !_propagator->_hasFatalError) {
+        const SyncFileItem &item = _syncedItems.at(_iterator);
+        ++_iterator;
+        if (!_lastDeleted.isEmpty() && item._file.startsWith(_lastDeleted)
+                && item._instruction == CSYNC_INSTRUCTION_REMOVE) {
+            // If the item's name starts with the name of the previously deleted directory, we
+            // can assume this file was already destroyed by the previous recursive call.
+            Action a;
+            a.instruction = CSYNC_INSTRUCTION_DELETED;
+            _performedActions.insert(item._originalFile, a);
+            continue;
+        }
+        _propagator->_etag.clear(); // FIXME : set to the right one
+
+        if (item._instruction == CSYNC_INSTRUCTION_SYNC || item._instruction == CSYNC_INSTRUCTION_NEW
+                || item._instruction == CSYNC_INSTRUCTION_CONFLICT) {
+            slotProgress((item._dir != SyncFileItem::Up) ? Progress::StartDownload : Progress::StartUpload,
+                         item._file, 0, item._size);
+        }
+
+        _propagator->propagate(item);
+        return; //propagate is async.
+    }
+
+    // Everything is finished.
+    _progressDataBase.save(_localPath);
+
+    if( csync_walk_local_tree(_csync_ctx, &walkFinalize, 0) < 0 ||
+        csync_walk_remote_tree( _csync_ctx, &walkFinalize, 0 ) < 0 ) {
+        qDebug() << "Error in finalize treewalk.";
+    } else {
+    // emit the treewalk results.
+        emit treeWalkResult(_syncedItems);
+    }
+
+    csync_commit(_csync_ctx);
+
+    qDebug() << "CSync run took " << _syncTime.elapsed() << " Milliseconds";
+    slotProgress(Progress::EndSync,QString(), 0 , 0);
+    emit finished();
+    _propagator.reset(0);
+    _syncMutex.unlock();
 }
 
 Progress::Kind CSyncThread::csyncToProgressKind( enum csync_notify_type_e kind )
@@ -475,33 +587,32 @@ Progress::Kind CSyncThread::csyncToProgressKind( enum csync_notify_type_e kind )
     return pKind;
 }
 
-void CSyncThread::cb_progress( CSYNC_PROGRESS *progress, void *userdata )
+void CSyncThread::slotProgress(Progress::Kind kind, const QString &file, quint64 curr, quint64 total)
 {
-    if( !progress ) {
-        qDebug() << "No progress block in progress callback found!";
-        return;
-    }
-    if( !userdata ) {
-        qDebug() << "No thread given in progress callback!";
-        return;
-    }
-    Progress::Info pInfo;
-    CSyncThread *thread = static_cast<CSyncThread*>(userdata);
+    Progress::Info pInfo = _progressInfo;
 
-    pInfo.kind                  = thread->csyncToProgressKind( progress->kind );
-    pInfo.current_file          = QUrl::fromEncoded( progress->path ).toString();
-    pInfo.file_size             = progress->file_size;
-    pInfo.current_file_bytes    = progress->curr_bytes;
+    pInfo.kind                  = kind;
+    pInfo.current_file          = file;
+    pInfo.file_size             = total;
+    pInfo.current_file_bytes    = curr;
 
-    pInfo.overall_file_count    = progress->overall_file_count;
-    pInfo.current_file_no       = progress->current_file_no;
-    pInfo.overall_transmission_size = progress->overall_transmission_size;
-    pInfo.overall_current_bytes = progress->current_overall_bytes;
+    pInfo.overall_current_bytes += curr;
     pInfo.timestamp = QDateTime::currentDateTime();
 
     // Connect to something in folder!
-    thread->transmissionProgress( pInfo );
-
+    transmissionProgress( pInfo );
 }
 
+/* Given a path on the remote, give the path as it is when the rename is done */
+QString CSyncThread::adjustRenamedPath(const QString& original)
+{
+    int slashPos = original.size();
+    while ((slashPos = original.lastIndexOf('/' , slashPos - 1)) > 0) {
+        QHash< QString, QString >::const_iterator it = _renamedFolders.constFind(original.left(slashPos));
+        if (it != _renamedFolders.constEnd()) {
+            return *it + original.mid(slashPos);
+        }
+    }
+    return original;
+}
 } // ns Mirall

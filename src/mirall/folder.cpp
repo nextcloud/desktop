@@ -35,8 +35,7 @@
 
 namespace Mirall {
 
-void csyncLogCatcher(CSYNC */*ctx*/,
-                     int /*verbosity*/,
+void csyncLogCatcher(int /*verbosity*/,
                      const char */*function*/,
                      const char *buffer,
                      void */*userdata*/)
@@ -92,8 +91,8 @@ bool Folder::init()
         slotCSyncError(tr("Unable to create csync-context"));
         _csync_ctx = 0;
     } else {
-        csync_set_log_callback(   _csync_ctx, csyncLogCatcher );
-        csync_set_log_verbosity(_csync_ctx, 11);
+        csync_set_log_callback( csyncLogCatcher );
+        csync_set_log_level( 11 );
 
         MirallConfigFile cfgFile;
         csync_set_config_dir( _csync_ctx, cfgFile.configPath().toUtf8() );
@@ -103,8 +102,14 @@ bool Folder::init()
         cfgFile.getCredentials()->syncContextPreInit(_csync_ctx);
 
         if( csync_init( _csync_ctx ) < 0 ) {
-            qDebug() << "Could not initialize csync!" << csync_get_error(_csync_ctx) << csync_get_error_string(_csync_ctx);
-            slotCSyncError(CSyncThread::csyncErrorToString(csync_get_error(_csync_ctx), csync_get_error_string(_csync_ctx)));
+            qDebug() << "Could not initialize csync!" << csync_get_status(_csync_ctx) << csync_get_status_string(_csync_ctx);
+            QString errStr = CSyncThread::csyncErrorToString(CSYNC_STATUS(csync_get_status(_csync_ctx)));
+            const char *errMsg = csync_get_status_string(_csync_ctx);
+            if( errMsg ) {
+                errStr += QLatin1String("<br/>");
+                errStr += QString::fromUtf8(errMsg);
+            }
+            slotCSyncError(errStr);
             csync_destroy(_csync_ctx);
             _csync_ctx = 0;
         }
@@ -563,7 +568,7 @@ void Folder::startSync(const QStringList &pathList)
     _thread = new QThread(this);
     _thread->setPriority(QThread::LowPriority);
     setIgnoredFiles();
-    _csync = new CSyncThread( _csync_ctx );
+    _csync = new CSyncThread( _csync_ctx, path(), QUrl(ownCloudInfo::instance()->webdavUrl() + secondPath()).path());
     _csync->moveToThread(_thread);
 
 

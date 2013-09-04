@@ -29,7 +29,7 @@ set(3rdparty_HEADER
 )
 qt_wrap_cpp(3rdparty_MOC ${3rdparty_HEADER})
 
-if(NOT WIN32) 
+if(NOT WIN32)
 	list(APPEND 3rdparty_SRC 3rdparty/qtlockedfile/qtlockedfile_unix.cpp)
 else()
 	list(APPEND 3rdparty_SRC 3rdparty/qtlockedfile/qtlockedfile_win.cpp )
@@ -50,6 +50,8 @@ set(libsync_SRCS
     mirall/networklocation.cpp
     mirall/mirallconfigfile.cpp
     mirall/csyncthread.cpp
+    mirall/owncloudpropagator.cpp
+    mirall/progressdatabase.cpp
     mirall/fileutils.cpp
     mirall/theme.cpp
     mirall/owncloudtheme.cpp
@@ -78,6 +80,7 @@ set(libsync_HEADERS
     mirall/folder.h
     mirall/folderwatcher.h
     mirall/csyncthread.h
+    mirall/owncloudpropagator.h
     mirall/theme.h
     mirall/owncloudtheme.h
     mirall/owncloudinfo.h
@@ -106,7 +109,7 @@ IF( INOTIFY_FOUND )
     set(libsync_HEADERS ${libsync_HEADERS} mirall/inotify.h)
     set(libsync_HEADERS ${libsync_HEADERS} mirall/folderwatcher_inotify.h)
 ENDIF()
-IF( WIN32 ) 
+IF( WIN32 )
     set(libsync_SRCS ${libsync_SRCS} mirall/folderwatcher_win.cpp)
     set(libsync_HEADERS ${libsync_HEADERS} mirall/folderwatcher_win.h)
 ENDIF()
@@ -117,10 +120,25 @@ ENDIF()
 
 qt_wrap_cpp(syncMoc ${libsync_HEADERS})
 
+
+IF( DEFINED CSYNC_BUILD_PATH )
+IF(WIN32)
+SET(HTTPBF_LIBRARY ${CSYNC_BUILD_PATH}/src/httpbf/libhttpbflib.dll)
+ELSEIF( APPLE )
+SET(HTTPBF_LIBRARY ${CSYNC_BUILD_PATH}/src/httpbf/libhttpbflib.a)
+ELSE()
+SET(HTTPBF_LIBRARY ${CSYNC_BUILD_PATH}/src/httpbf/libhttpbflib.a)
+ENDIF()
+ELSE()
+FIND_LIBRARY(HTTPBF_LIBRARY NAMES httpbflib HINTS $ENV{CSYNC_DIR})
+ENDIF()
+
+
 list(APPEND libsync_LINK_TARGETS
     ${QT_LIBRARIES}
     ${CSYNC_LIBRARY}
-    dl
+    ${NEON_LIBRARIES}
+    ${HTTPBF_LIBRARY}
 )
 
 if(QTKEYCHAIN_FOUND)
@@ -232,7 +250,7 @@ if( UNIX AND NOT APPLE)
 endif()
 
 # csync is required.
-include_directories(${CSYNC_INCLUDE_DIR}/csync ${CSYNC_INCLUDE_DIR} ${CSYNC_BUILD_PATH}/src)
+include_directories(${CSYNC_INCLUDE_DIR}/csync ${CSYNC_INCLUDE_DIR} ${CSYNC_INCLUDE_DIR}/httpbf/src ${CSYNC_BUILD_PATH}/src)
 include_directories(${3rdparty_INC})
 
 qt_wrap_cpp(mirallMoc ${mirall_HEADERS})
@@ -312,6 +330,7 @@ set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${QT_LIBRARIES} )
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${CSYNC_LIBRARY} )
+target_link_libraries( ${APPLICATION_EXECUTABLE} ${NEON_LIBRARIES} )
 
 install(TARGETS ${APPLICATION_EXECUTABLE}
         RUNTIME DESTINATION bin
@@ -337,3 +356,15 @@ if(KRAZY2_EXECUTABLE)
 )
 endif()
 
+set(OWNCLOUDCMD_SRC owncloudcmd/owncloudcmd.cpp)
+add_executable(owncloudcmd ${OWNCLOUDCMD_SRC})
+set_target_properties( owncloudcmd PROPERTIES
+	        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
+target_link_libraries(owncloudcmd owncloudsync)
+target_link_libraries(owncloudcmd ${CSYNC_LIBRARY})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/mirall)
+install(TARGETS owncloudcmd
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+)

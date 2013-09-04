@@ -27,7 +27,7 @@ namespace Mirall {
  */
 namespace Progress
 {
-    typedef enum {
+    enum Kind {
         Invalid,
         StartSync,
         Download,
@@ -42,9 +42,9 @@ namespace Progress
         StartDelete,
         EndDelete,
         Error
-    } Kind;
+    };
 
-    typedef struct {
+    struct Info {
         Kind    kind;
         QString folder;
         QString current_file;
@@ -58,15 +58,18 @@ namespace Progress
 
         QDateTime timestamp;
 
-    } Info;
+        Info() : kind(Invalid), file_size(0), current_file_bytes(0),
+                 overall_file_count(0), current_file_no(0),
+                 overall_transmission_size(0), overall_current_bytes(0)  { }
+    };
 
-    typedef struct {
+    struct SyncProblem {
         QString folder;
         QString current_file;
         QString error_message;
         int     error_code;
         QDateTime  timestamp;
-    } SyncProblem;
+    };
 
     QString asActionString( Kind );
     QString asResultString( Kind );

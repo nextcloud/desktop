@@ -83,6 +83,7 @@ endif()
 find_package(Sphinx)
 find_package(PdfLatex)
 find_package(QtKeychain)
+find_package(Neon)
 
 set(WITH_QTKEYCHAIN ${QTKEYCHAIN_FOUND})
 set(USE_INOTIFY ${INOTIFY_FOUND})
