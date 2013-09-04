@@ -167,6 +167,17 @@ see :ref:`ignored-files-label`.
 .. image:: images/ignored_files_editor.png
    :scale: 50%
 
+Pattern Matching
+^^^^^^^^^^^^^^^^
+
+To match file names against the exclude patterns, the unix standard C
+library function fnmatch is used. It checks the filename against the pattern
+using standard shell wildcard pattern matching. Check `The opengroup website
+<http://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html#tag_02_13_01>`
+for the gory details.
+
+The path that is checked is the relative path unter the sync root directory.
+
 Examples:
 ^^^^^^^^^
 +-----------+------------------------------+
