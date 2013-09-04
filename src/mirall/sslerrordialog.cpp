@@ -18,11 +18,24 @@
 
 #include <QtGui>
 #include <QtNetwork>
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#include <QtWidgets>
+#endif
+
 
 #include "ui_sslerrordialog.h"
 
 namespace Mirall
 {
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+namespace Utility {
+    //  Used for QSSLCertificate::subjectInfo which returns a QStringList in Qt5, but a QString in Qt4
+    QString escape(const QStringList &l) { return escape(l.join(';')); }
+}
+#endif
+
+
 SslErrorDialog::SslErrorDialog(QWidget *parent) :
     QDialog(parent), _allTrusted(false), _ui(new Ui::SslErrorDialog)
 {
@@ -137,14 +150,14 @@ QString SslErrorDialog::certDiv( QSslCertificate cert ) const
 {
     QString msg;
     msg += QL("<div id=\"cert\">");
-    msg += QL("<h3>") + tr("with Certificate %1").arg( cert.subjectInfo( QSslCertificate::CommonName )) + QL("</h3>");
+    msg += QL("<h3>") + tr("with Certificate %1").arg( Utility::escape(cert.subjectInfo( QSslCertificate::CommonName ))) + QL("</h3>");
 
     msg += QL("<div id=\"ccert\">");
     QStringList li;
 
-    QString org = Qt::escape(cert.subjectInfo( QSslCertificate::Organization));
-    QString unit = Qt::escape(cert.subjectInfo( QSslCertificate::OrganizationalUnitName));
-    QString country = Qt::escape(cert.subjectInfo( QSslCertificate::CountryName));
+    QString org = Utility::escape(cert.subjectInfo( QSslCertificate::Organization));
+    QString unit = Utility::escape(cert.subjectInfo( QSslCertificate::OrganizationalUnitName));
+    QString country = Utility::escape(cert.subjectInfo( QSslCertificate::CountryName));
     if (unit.isEmpty()) unit = tr("&lt;not specified&gt;");
     if (org.isEmpty()) org = tr("&lt;not specified&gt;");
     if (country.isEmpty()) country = tr("&lt;not specified&gt;");
@@ -165,12 +178,12 @@ QString SslErrorDialog::certDiv( QSslCertificate cert ) const
 
     msg += QL("</div>" );
 
-    msg += QL("<h3>") + tr("Issuer: %1").arg(Qt::escape(cert.issuerInfo( QSslCertificate::CommonName))) + QL("</h3>");
+    msg += QL("<h3>") + tr("Issuer: %1").arg(Utility::escape(cert.issuerInfo( QSslCertificate::CommonName))) + QL("</h3>");
     msg += QL("<div id=\"issuer\">");
     li.clear();
-    li << tr("Organization: %1").arg(Qt::escape(cert.issuerInfo( QSslCertificate::Organization)));
-    li << tr("Unit: %1").arg(Qt::escape(cert.issuerInfo( QSslCertificate::OrganizationalUnitName)));
-    li << tr("Country: %1").arg(Qt::escape(cert.issuerInfo( QSslCertificate::CountryName)));
+    li << tr("Organization: %1").arg(Utility::escape(cert.issuerInfo( QSslCertificate::Organization)));
+    li << tr("Unit: %1").arg(Utility::escape(cert.issuerInfo( QSslCertificate::OrganizationalUnitName)));
+    li << tr("Country: %1").arg(Utility::escape(cert.issuerInfo( QSslCertificate::CountryName)));
     msg += QL("<p>") + li.join(QL("<br/>")) + QL("</p>");
     msg += QL("</div>" );
     msg += QL("</div>" );

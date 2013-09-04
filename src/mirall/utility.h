@@ -44,6 +44,11 @@ namespace Utility
      * @return the formatted string.
      */
     QString compactFormatDouble(double value, int prec, const QString& unit = QString::null);
+
+    // porting methods
+    QString escape(const QString&);
+    QString dataLocation();
+
 }
 
 }

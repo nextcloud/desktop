@@ -20,7 +20,6 @@
 #include <QDir>
 #include <QListWidget>
 #include <QListWidgetItem>
-#include <QColorGroup>
 #include <QMessageBox>
 #include <QInputDialog>
 

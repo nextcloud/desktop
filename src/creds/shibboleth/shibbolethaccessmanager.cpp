@@ -13,6 +13,7 @@
 
 #include <QDebug>
 #include <QNetworkRequest>
+#include <QNetworkCookieJar>
 
 #include "creds/shibboleth/shibbolethaccessmanager.h"
 
