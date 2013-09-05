@@ -24,6 +24,7 @@
 #include "creds/credentialsfactory.h"
 
 #include <QWidget>
+#include <QCoreApplication>
 
 #define DEFAULT_REMOTE_POLL_INTERVAL 30000 // default remote poll time in milliseconds
 #define DEFAULT_MAX_LOG_LINES 20000
@@ -192,14 +193,14 @@ QString MirallConfigFile::excludeFile(Scope scope) const
         // Check alternative places...
         if( ! fi.isReadable() ) {
 #ifdef Q_OS_WIN
-            fi.setFile( QApplication::applicationDirPath(), exclFile );
+            fi.setFile( QCoreApplication::applicationDirPath(), exclFile );
 #endif
 #ifdef Q_OS_UNIX
             fi.setFile( QString( SYSCONFDIR "/%1").arg(Theme::instance()->appName()), exclFile );
 #endif
 #ifdef Q_OS_MAC
             // exec path is inside the bundle
-            fi.setFile( QApplication::applicationDirPath(),
+            fi.setFile( QCoreApplication::applicationDirPath(),
                         QLatin1String("../Resources/") + exclFile );
 #endif
         }
