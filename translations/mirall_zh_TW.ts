@@ -219,8 +219,13 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="682"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="685"/>
         <source>%1 of %2 in use.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/accountsettings.cpp" line="689"/>
+        <source>Currently there is no storage usage information available.</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -334,160 +339,156 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="831"/>
         <source>No sync folders configured.</source>
-        <translation>無已配置的同步資料夾</translation>
+        <translation>尚未指定同步資料夾</translation>
     </message>
 </context>
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="70"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="76"/>
         <source>Success.</source>
         <translation>成功。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="73"/>
-        <source>CSync Logging setup failed.</source>
-        <translation>CSync Logging 設定失敗。</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="76"/>
-        <source>CSync failed to create a lock file.</source>
-        <translation>CSync 無法建立一個文件鎖</translation>
-    </message>
-    <message>
         <location filename="../src/mirall/csyncthread.cpp" line="79"/>
+        <source>CSync failed to create a lock file.</source>
+        <translation>CSync 無法建立文件鎖</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/csyncthread.cpp" line="82"/>
         <source>CSync failed to load the state db.</source>
         <translation>CSync 無法讀取狀態資料庫</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="82"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="85"/>
+        <source>CSync failed to write the state db.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/csyncthread.cpp" line="88"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;用於csync的套件%1&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="85"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="91"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>本客戶端的系統時間和伺服器系統時間不一致,請在伺服器與客戶端上使用時間同步服務(NTP)讓時間保持一致</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="90"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="96"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSync 無法偵測檔案系統的類型</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="93"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="99"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSync 處理內部資料樹時發生錯誤</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="96"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="102"/>
         <source>CSync failed to reserve memory.</source>
         <translation>CSync 無法取得記憶體空間。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="99"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="105"/>
         <source>CSync fatal parameter error.</source>
         <translation>CSync 參數錯誤。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="102"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="108"/>
         <source>CSync processing step update failed.</source>
         <translation>CSync 處理步驟 &quot;update&quot; 失敗。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="105"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="111"/>
         <source>CSync processing step reconcile failed.</source>
         <translation>CSync 處理步驟 &quot;reconcile&quot; 失敗。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="108"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="114"/>
         <source>CSync processing step propagate failed.</source>
         <translation>CSync 處理步驟 &quot;propagate&quot; 失敗。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="111"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="117"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;目標資料夾不存在&lt;/p&gt;&lt;p&gt;請檢查同步設定&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="115"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="121"/>
         <source>A remote file can not be written. Please check the remote access.</source>
-        <translation>遠端檔案無法寫入, 請確認遠端存取權限。</translation>
+        <translation>遠端檔案無法寫入，請確認遠端存取權限。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="119"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="125"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
-        <translation>本地檔案系統無法寫入, 請確認權限。</translation>
+        <translation>本地檔案系統無法寫入，請確認權限。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="122"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="128"/>
         <source>CSync failed to connect through a proxy.</source>
         <translation>CSync 透過代理伺服器連線失敗。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="125"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="131"/>
+        <source>CSync could not authenticate at the proxy.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/csyncthread.cpp" line="134"/>
         <source>CSync failed to lookup proxy or server.</source>
         <translation>CSync 查詢代理伺服器或伺服器失敗。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="128"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="137"/>
         <source>CSync failed to authenticate at the %1 server.</source>
         <translation>CSync 於伺服器 %1 認證失敗。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="131"/>
-        <source>CSync failed to authenticate at the proxy.</source>
-        <translation>CSync 於代理伺服器認證失敗。</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="134"/>
-        <source>CSync failed to connect to the network.</source>
-        <translation>CSync 無法連接到網路。</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="137"/>
-        <source>A network connection timeout happend.</source>
-        <translation>網路連線逾時。</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="140"/>
-        <source>A HTTP transmission error happened.</source>
-        <translation>HTTP 傳輸錯誤。</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="143"/>
-        <source>CSync: Permission deniend.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="146"/>
-        <source>CSync: File not found.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/mirall/csyncthread.cpp" line="149"/>
-        <source>CSync: Directory already exists.</source>
+        <source>CSync failed due to not handled permission deniend.</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="152"/>
-        <source>CSync: No space left on %1 server.</source>
+        <source>CSync failed to find a specific file.</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="155"/>
-        <source>CSync: unspecified error.</source>
+        <source>CSync tried to create a directory that already exists.</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="158"/>
-        <source>An internal error number %1 happend.</source>
-        <translation>發生內部錯誤, 錯誤編號 %1</translation>
+        <location filename="../src/mirall/csyncthread.cpp" line="161"/>
+        <source>CSync: No space on %1 server available.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="162"/>
-        <source>&lt;br/&gt;Backend Message: </source>
-        <translation>&lt;br/&gt;後端訊息：</translation>
+        <location filename="../src/mirall/csyncthread.cpp" line="164"/>
+        <source>CSync unspecified error.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/csyncthread.cpp" line="140"/>
+        <source>CSync failed to connect to the network.</source>
+        <translation>CSync 無法連接到網路。</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/csyncthread.cpp" line="143"/>
+        <source>A network connection timeout happend.</source>
+        <translation>網路連線逾時。</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/csyncthread.cpp" line="146"/>
+        <source>A HTTP transmission error happened.</source>
+        <translation>HTTP 傳輸錯誤。</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/csyncthread.cpp" line="167"/>
+        <source>An internal error number %1 happend.</source>
+        <translation>發生內部錯誤，錯誤編號 %1</translation>
     </message>
 </context>
 <context>
@@ -509,130 +510,130 @@
 <context>
     <name>Mirall::Folder</name>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="92"/>
+        <location filename="../src/mirall/folder.cpp" line="91"/>
         <source>Unable to create csync-context</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="142"/>
+        <location filename="../src/mirall/folder.cpp" line="147"/>
         <source>Local folder %1 does not exist.</source>
         <translation>本地資料夾 %1 不存在</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="145"/>
+        <location filename="../src/mirall/folder.cpp" line="150"/>
         <source>%1 should be a directory but is not.</source>
         <translation>資料夾不存在, %1 必須是資料夾</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="148"/>
+        <location filename="../src/mirall/folder.cpp" line="153"/>
         <source>%1 is not readable.</source>
         <translation>%1 是不可讀的</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="290"/>
+        <location filename="../src/mirall/folder.cpp" line="295"/>
         <source>File %1: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="291"/>
+        <location filename="../src/mirall/folder.cpp" line="296"/>
         <source>File %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="342"/>
+        <location filename="../src/mirall/folder.cpp" line="347"/>
         <source>New file available</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="342"/>
+        <location filename="../src/mirall/folder.cpp" line="347"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="344"/>
+        <location filename="../src/mirall/folder.cpp" line="349"/>
         <source>New files available</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/folder.cpp" line="344"/>
+        <location filename="../src/mirall/folder.cpp" line="349"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
         <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="350"/>
+        <location filename="../src/mirall/folder.cpp" line="355"/>
         <source>File removed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="350"/>
+        <location filename="../src/mirall/folder.cpp" line="355"/>
         <source>&apos;%1&apos; has been removed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="352"/>
+        <location filename="../src/mirall/folder.cpp" line="357"/>
         <source>Files removed</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/folder.cpp" line="352"/>
+        <location filename="../src/mirall/folder.cpp" line="357"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
         <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="358"/>
+        <location filename="../src/mirall/folder.cpp" line="363"/>
         <source>File updated</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="358"/>
+        <location filename="../src/mirall/folder.cpp" line="363"/>
         <source>&apos;%1&apos; has been updated.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="360"/>
+        <location filename="../src/mirall/folder.cpp" line="365"/>
         <source>Files updated</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/folder.cpp" line="360"/>
+        <location filename="../src/mirall/folder.cpp" line="365"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
         <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="402"/>
+        <location filename="../src/mirall/folder.cpp" line="407"/>
         <source>Error</source>
         <translation>錯誤</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="431"/>
+        <location filename="../src/mirall/folder.cpp" line="436"/>
         <source>The CSync thread terminated.</source>
         <translation>CSync 執行緒終止</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="675"/>
+        <location filename="../src/mirall/folder.cpp" line="680"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="678"/>
+        <location filename="../src/mirall/folder.cpp" line="683"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="682"/>
+        <location filename="../src/mirall/folder.cpp" line="687"/>
         <source>Remove All Files?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="684"/>
+        <location filename="../src/mirall/folder.cpp" line="689"/>
         <source>Remove all files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="685"/>
+        <location filename="../src/mirall/folder.cpp" line="690"/>
         <source>Keep files</source>
         <translation type="unfinished"/>
     </message>
@@ -698,18 +699,18 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::FolderStatusDelegate</name>
     <message>
-        <location filename="../src/mirall/folderstatusmodel.cpp" line="91"/>
-        <location filename="../src/mirall/folderstatusmodel.cpp" line="245"/>
+        <location filename="../src/mirall/folderstatusmodel.cpp" line="94"/>
+        <location filename="../src/mirall/folderstatusmodel.cpp" line="248"/>
         <source>File</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderstatusmodel.cpp" line="200"/>
+        <location filename="../src/mirall/folderstatusmodel.cpp" line="203"/>
         <source>Syncing all files in your account with</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderstatusmodel.cpp" line="203"/>
+        <location filename="../src/mirall/folderstatusmodel.cpp" line="206"/>
         <source>Remote path: %1</source>
         <translation>遠端路徑: %1</translation>
     </message>
@@ -748,12 +749,12 @@ documentation for possible fixes.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="102"/>
         <source>The local path %1 is already an upload folder.&lt;br/&gt;Please pick another one!</source>
-        <translation>本地路徑 %1 已是上傳資料夾.&lt;br/&gt;請選擇其他資料夾！</translation>
+        <translation>本地路徑 %1 已是上傳資料夾，&lt;br/&gt;請選擇其他資料夾！</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="107"/>
         <source>An already configured folder is contained in the current entry.</source>
-        <translation>目前紀錄中已經有一個已配置的資料夾</translation>
+        <translation>此項目中包含了已經設定同步的資料夾</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="112"/>
@@ -867,36 +868,36 @@ documentation for possible fixes.</source>
         <translation>移除</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="35"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="34"/>
         <source>Files or directories matching a pattern will not be synchronized.
 
 Checked items will also be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="97"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="96"/>
         <source>Could not open file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="98"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="97"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="104"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="127"/>
+        <source>Add Ignore Pattern</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="105"/>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="128"/>
-        <source>Add Ignore Pattern</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="106"/>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="129"/>
         <source>Add a new ignore pattern:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="140"/>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="139"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
         <translation type="unfinished"/>
     </message>
@@ -929,102 +930,102 @@ Checked items will also be deleted if they prevent a directory from being remove
         <translation>文字標籤</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="44"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="47"/>
         <source>File</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="46"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="49"/>
         <source>Action</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="47"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="50"/>
         <source>Size</source>
         <translation>大小</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="56"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="59"/>
         <source>Copy</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="59"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="62"/>
         <source>Sync Protocol</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="43"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="46"/>
         <source>Time</source>
         <translation>時間</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="45"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="48"/>
         <source>Folder</source>
         <translation>資料夾</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="120"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="123"/>
         <source>Soft Link ignored</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="121"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="124"/>
         <source>Softlinks break the semantics of synchronization.
 Please do not use them in synced directories</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="124"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="127"/>
         <source>file</source>
-        <translation type="unfinished"/>
+        <translation>檔案</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="126"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="129"/>
         <source>directory</source>
-        <translation type="unfinished"/>
+        <translation>目錄</translation>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="128"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="131"/>
         <source>The %1 was ignored because it is listed in the clients ignore list
 or the %1 name contains characters that are not syncable
 in a cross platform environment</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="131"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="134"/>
         <source>Item ignored</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="133"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="136"/>
         <source>%1 on ignore list</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="134"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="137"/>
         <source>The %1 was skipped because it is listed on the clients
 list of names to ignore</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="137"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="140"/>
         <source>Invalid characters</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="138"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="141"/>
         <source>The %1 name contains one or more invalid characters which break
 syncing in a cross platform environment</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="143"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="146"/>
         <source>Conflict file.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="144"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="147"/>
         <source>The file was changed on server and local repository and as a result it
 created a so called conflict. The local change is copied to the conflict
 file while the file from the server side is available under the original
@@ -1032,22 +1033,22 @@ name</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="231"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="234"/>
         <source>Copied to clipboard</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="231"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="234"/>
         <source>The sync protocol has been copied to the clipboard.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="283"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="286"/>
         <source>Problem: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/itemprogressdialog.cpp" line="286"/>
+        <location filename="../src/mirall/itemprogressdialog.cpp" line="289"/>
         <source>No more storage space available on server.</source>
         <translation type="unfinished"/>
     </message>
@@ -1503,67 +1504,67 @@ name</source>
 <context>
     <name>Mirall::SslErrorDialog</name>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="30"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="43"/>
         <source>SSL Connection</source>
         <translation>SSL連線</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="104"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="117"/>
         <source>Warnings about current SSL Connection:</source>
         <translation>目前的SSL連線的警告</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="140"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="153"/>
         <source>with Certificate %1</source>
         <translation>使用認證%1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="148"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="149"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="150"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="161"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="162"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="163"/>
         <source>&amp;lt;not specified&amp;gt;</source>
         <translation>&amp;lt;未指定&amp;gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="151"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="171"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="164"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="184"/>
         <source>Organization: %1</source>
         <translation>組織:%1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="152"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="172"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="165"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="185"/>
         <source>Unit: %1</source>
         <translation>單位:%1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="153"/>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="173"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="166"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="186"/>
         <source>Country: %1</source>
         <translation>國家:%1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="160"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="173"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>指紋 (MD5): &amp;lt;tt&amp;gt;%1&amp;lt;/tt&amp;gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="161"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="174"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>指紋 (SHA1): &amp;lt;tt&amp;gt;%1&amp;lt;/tt&amp;gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="163"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="176"/>
         <source>Effective Date: %1</source>
         <translation>有效日期:%1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="164"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="177"/>
         <source>Expiry Date: %1</source>
         <translation>失效日期:%1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslerrordialog.cpp" line="168"/>
+        <location filename="../src/mirall/sslerrordialog.cpp" line="181"/>
         <source>Issuer: %1</source>
         <translation>發行者:%1</translation>
     </message>
@@ -1571,27 +1572,27 @@ name</source>
 <context>
     <name>Mirall::UpdateDetector</name>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="112"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="116"/>
         <source>New Version Available</source>
         <translation>有新版本</translation>
     </message>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="118"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="122"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
         <translation>&lt;p&gt;%1 客戶端有新版本了。&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; 可供下載，目前安裝的版本是 %3 。&lt;p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="130"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="134"/>
         <source>Skip update</source>
         <translation>略過更新</translation>
     </message>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="131"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="135"/>
         <source>Skip this time</source>
         <translation>跳過這次更新</translation>
     </message>
     <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="132"/>
+        <location filename="../src/mirall/updatedetector.cpp" line="136"/>
         <source>Get update</source>
         <translation>取得更新</translation>
     </message>
@@ -1599,52 +1600,52 @@ name</source>
 <context>
     <name>Mirall::ownCloudInfo</name>
     <message>
-        <location filename="../src/mirall/owncloudinfo.cpp" line="498"/>
+        <location filename="../src/mirall/owncloudinfo.cpp" line="504"/>
         <source>Proxy Refused Connection </source>
         <translation>代理伺服器拒絕連線</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudinfo.cpp" line="499"/>
+        <location filename="../src/mirall/owncloudinfo.cpp" line="505"/>
         <source>The configured proxy has refused the connection. Please check the proxy settings.</source>
         <translation>所設定的代理伺服器拒絕連線，請檢查代理伺服器設定。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudinfo.cpp" line="503"/>
+        <location filename="../src/mirall/owncloudinfo.cpp" line="509"/>
         <source>Proxy Closed Connection</source>
         <translation>代理伺服器關閉了連線</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudinfo.cpp" line="504"/>
+        <location filename="../src/mirall/owncloudinfo.cpp" line="510"/>
         <source>The configured proxy has closed the connection. Please check the proxy settings.</source>
         <translation>所設定的代理伺服器關閉了連線，請檢查代理伺服器設定。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudinfo.cpp" line="508"/>
+        <location filename="../src/mirall/owncloudinfo.cpp" line="514"/>
         <source>Proxy Not Found</source>
         <translation>找不到代理伺服器</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudinfo.cpp" line="509"/>
+        <location filename="../src/mirall/owncloudinfo.cpp" line="515"/>
         <source>The configured proxy could not be found. Please check the proxy settings.</source>
         <translation>找不到所設定的代理伺服器，請檢查代理伺服器設定。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudinfo.cpp" line="513"/>
+        <location filename="../src/mirall/owncloudinfo.cpp" line="519"/>
         <source>Proxy Authentication Error</source>
         <translation>代理伺服器認證錯誤</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudinfo.cpp" line="514"/>
+        <location filename="../src/mirall/owncloudinfo.cpp" line="520"/>
         <source>The configured proxy requires login but the proxy credentials are invalid. Please check the proxy settings.</source>
         <translation>所設定的代理伺服器帳密無法登入，請檢查代理伺服器設定。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudinfo.cpp" line="518"/>
+        <location filename="../src/mirall/owncloudinfo.cpp" line="524"/>
         <source>Proxy Connection Timed Out</source>
         <translation>代理伺服器連線逾時</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudinfo.cpp" line="519"/>
+        <location filename="../src/mirall/owncloudinfo.cpp" line="525"/>
         <source>The connection to the configured proxy has timed out.</source>
         <translation>代理伺服器的連線已經逾時。</translation>
     </message>
@@ -1658,48 +1659,48 @@ name</source>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="32"/>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="220"/>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="259"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="223"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="262"/>
         <source>TextLabel</source>
         <translation>文字標籤</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="72"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="75"/>
         <source>&amp;Local Folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="88"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="91"/>
         <source>pbSelectLocalFolder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="110"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="113"/>
         <source>&amp;Keep local data</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="142"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="145"/>
         <source>&lt;small&gt;Syncs your existing data to new location.&lt;/small&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="161"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="164"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local directory will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers directory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="164"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="167"/>
         <source>&amp;Start a clean sync</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="196"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="199"/>
         <source>&lt;small&gt;Erases the contents of the local folder before syncing using the new settings.&lt;/small&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="243"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="246"/>
         <source>Status message</source>
         <translation type="unfinished"/>
     </message>
@@ -1728,7 +1729,7 @@ name</source>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="109"/>
-        <location filename="../src/wizard/owncloudhttpcredspage.ui" line="116"/>
+        <location filename="../src/wizard/owncloudhttpcredspage.ui" line="122"/>
         <source>TextLabel</source>
         <translation>文字標籤</translation>
     </message>
@@ -1899,13 +1900,13 @@ name</source>
         <translation>文字標籤</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudwizardresultpage.ui" line="66"/>
+        <location filename="../src/wizard/owncloudwizardresultpage.ui" line="69"/>
         <source>Your entire account is synced to the local folder </source>
         <translation>您整個帳號的資料會與本地資料夾同步</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudwizardresultpage.ui" line="100"/>
-        <location filename="../src/wizard/owncloudwizardresultpage.ui" line="116"/>
+        <location filename="../src/wizard/owncloudwizardresultpage.ui" line="103"/>
+        <location filename="../src/wizard/owncloudwizardresultpage.ui" line="119"/>
         <source>PushButton</source>
         <translation>按鈕</translation>
     </message>
@@ -1931,27 +1932,27 @@ name</source>
 <context>
     <name>Utility</name>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="114"/>
+        <location filename="../src/mirall/utility.cpp" line="121"/>
         <source>%L1 TB</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="117"/>
+        <location filename="../src/mirall/utility.cpp" line="124"/>
         <source>%L1 GB</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="120"/>
+        <location filename="../src/mirall/utility.cpp" line="127"/>
         <source>%L1 MB</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="123"/>
+        <location filename="../src/mirall/utility.cpp" line="130"/>
         <source>%L1 kB</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="126"/>
+        <location filename="../src/mirall/utility.cpp" line="133"/>
         <source>%L1 B</source>
         <translation type="unfinished"/>
     </message>
