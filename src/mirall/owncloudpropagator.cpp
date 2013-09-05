@@ -25,7 +25,7 @@
 #else
 #include <qsavefile.h>
 #endif
-#include <qdebug.h>
+#include <QDebug>
 #include <QDateTime>
 
 #include <neon/ne_basic.h>
@@ -343,7 +343,7 @@ public:
         if(buf) {
             written = writeCtx->_file->write(buf, len);
             if( len != written ) {
-                qDebug("WRN: content_reader wrote wrong num of bytes: %zu, %zu", len, written);
+                qDebug() << "WRN: content_reader wrote wrong num of bytes:" << len << "," << written;
             }
             return NE_OK;
         }
