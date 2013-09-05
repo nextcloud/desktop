@@ -83,7 +83,7 @@ static const char optionsC[] =
 QString applicationTrPath()
 {
 #ifdef Q_OS_LINUX
-    return QString::fromLatin1(DATADIR"/i18n/");
+    return QString::fromLatin1(DATADIR"/"APPLICATION_EXECUTABLE"/i18n/");
 #endif
 #ifdef Q_OS_MAC
     return QApplication::applicationDirPath()+QLatin1String("/../Resources/Translations"); // path defaults to app dir.
