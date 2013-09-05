@@ -24,7 +24,8 @@ if( NOT BUILD_WITH_QT4 )
 
         include_directories("${Qt5Widgets_INCLUDES} ${Qt5DBus_INCLUDES}")
         add_definitions(${Qt5Widgets_DEFINITIONS} ${Qt5DBus_DEFINITIONS})
-        set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+#        set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 
 
         macro(qt_wrap_ui)

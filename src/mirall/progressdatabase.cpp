@@ -14,6 +14,7 @@
 
 #include "progressdatabase.h"
 #include <QFile>
+#include <QDataStream>
 
 namespace Mirall {
 

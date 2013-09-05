@@ -20,7 +20,11 @@
 #include <qdir.h>
 #include <qdiriterator.h>
 #include <qtemporaryfile.h>
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 #include <qabstractfileengine.h>
+#else
+#include <qsavefile.h>
+#endif
 #include <qdebug.h>
 #include <QDateTime>
 
@@ -326,10 +330,10 @@ void OwncloudPropagator::updateMTimeAndETag(const char* uri, time_t mtime)
 class DownloadContext {
 
 public:
-    QFile *_file;
+    QIODevice *_file;
     QScopedPointer<ne_decompress, ScopedPointerHelpers> _decompress;
 
-    explicit DownloadContext(QFile *file) : _file(file) {}
+    explicit DownloadContext(QIODevice *file) : _file(file) {}
 
     static int content_reader(void *userdata, const char *buf, size_t len)
     {
@@ -506,10 +510,20 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
 
     csync_win32_set_file_hidden(tmpFileName.toUtf8().constData(), false);
 
-    // We want a rename that also overwite.  QFile::rename does not overwite.
-    // Qt 5.1 has QFile::renameOverwrite we cold use.  (Or even better: QSaveFile)
 #ifndef QT_OS_WIN
-    if (!tmpFile.fileEngine()->rename(_localDir + item._file)) {
+    bool success;
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+    success = tmpFile.fileEngine()->rename(_localDir + item._file);
+#else
+    // We want a rename that also overwite.  QFile::rename does not overwite.
+    // Qt 5.1 has QSaveFile::renameOverwrite we cold use.
+    // ### FIXME
+    QString newName(_localDir + item._file);
+    QFile::remove(newName);
+    success = tmpFile.rename(newName);
+#endif
+    if (!success) {
+
         _errorString = tmpFile.errorString();
         return CSYNC_INSTRUCTION_ERROR;
     }

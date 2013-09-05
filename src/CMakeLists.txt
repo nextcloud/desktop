@@ -148,7 +148,7 @@ endif()
 
 add_library(${synclib_NAME} SHARED ${libsync_SRCS} ${syncMoc})
 
-qt5_use_modules(${synclib_NAME} Widgets Network Xml Quick WebKitWidgets)
+qt5_use_modules(${synclib_NAME} Widgets Network Xml WebKitWidgets)
 
 set_target_properties( ${synclib_NAME}  PROPERTIES
 	VERSION ${VERSION}
@@ -295,7 +295,7 @@ endif(NOT WIN32)
 
     # add_executable( ${APPLICATION_EXECUTABLE} main.cpp ${final_src})
     add_executable( ${APPLICATION_EXECUTABLE} WIN32 main.cpp ${final_src})
-    qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml DBus)
+    qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml DBus WebKitWidgets)
 else()
     set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
     include(DeployQt4)
@@ -305,7 +305,7 @@ else()
 
     # we must add MACOSX_BUNDLE only if building a bundle
     add_executable( ${APPLICATION_EXECUTABLE} WIN32 MACOSX_BUNDLE main.cpp ${final_src})
-    qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml DBus)
+    qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml DBus WebKitWidgets)
 
     #FIXME: hardcoded path
     if ( EXISTS ${CSYNC_BINARY_DIR}/modules/ocsync_owncloud.so )
@@ -358,6 +358,7 @@ endif()
 
 set(OWNCLOUDCMD_SRC owncloudcmd/owncloudcmd.cpp)
 add_executable(owncloudcmd ${OWNCLOUDCMD_SRC})
+qt5_use_modules(owncloudcmd Network)
 set_target_properties( owncloudcmd PROPERTIES
 	        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
 target_link_libraries(owncloudcmd owncloudsync)
