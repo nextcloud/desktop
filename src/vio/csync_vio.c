@@ -56,8 +56,10 @@
 
 int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
 
-#ifdef WITH_UNIT_TESTING
+#if defined(_WIN32) || defined(__APPLE__) || defined(WITH_UNIT_TESTING)
   csync_stat_t sb;
+#endif
+#if defined(_WIN32) || defined(WITH_UNIT_TESTING)
   mbchar_t *mpath = NULL;
 #endif
   char *path = NULL;
