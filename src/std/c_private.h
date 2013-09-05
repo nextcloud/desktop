@@ -140,7 +140,8 @@ int c_setup_iconv(const char* to);
 int c_close_iconv(void);
 #endif
 
-#if defined(__GNUC__)
+/* FIXME: Implement TLS for OS X */
+#if defined(__GNUC__) && !defined(__APPLE__)
 # define CSYNC_THREAD __thread
 #elif defined(_MSC_VER)
 # define CSYNC_THREAD __declspec(thread)
