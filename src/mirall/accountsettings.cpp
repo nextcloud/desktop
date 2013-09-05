@@ -223,10 +223,6 @@ void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f )
     SyncResult::Status status = res.status();
 
     QStringList errorList = res.errorStrings();
-    QString errors;
-    if( ! errorList.isEmpty() ) {
-        errors = res.errorStrings().join(QLatin1String("<br/>"));
-    }
 
     Theme *theme = Theme::instance();
     item->setData( theme->statusHeaderText( status ),  Qt::ToolTipRole );
@@ -236,13 +232,16 @@ void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f )
         item->setData( theme->folderDisabledIcon( ),   FolderStatusDelegate::FolderStatusIconRole ); // size 48 before
     }
     item->setData( theme->statusHeaderText( status ),  FolderStatusDelegate::FolderStatus );
-    item->setData( errors,                             FolderStatusDelegate::FolderErrorMsg );
 
-    if( errors.isEmpty() && (status == SyncResult::Error ||
-                             status == SyncResult::SetupError ||
-                             status == SyncResult::Unavailable )) {
-        item->setData( theme->statusHeaderText(status), FolderStatusDelegate::FolderErrorMsg);
+    if( errorList.isEmpty() ) {
+        if( (status == SyncResult::Error ||
+             status == SyncResult::SetupError ||
+             status == SyncResult::Unavailable )) {
+            errorList <<  theme->statusHeaderText(status);
+        }
     }
+
+    item->setData( errorList, FolderStatusDelegate::FolderErrorMsg);
 
     bool ongoing = false;
     item->setData( QVariant(res.warnCount()), FolderStatusDelegate::WarningCount );

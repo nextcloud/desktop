@@ -81,8 +81,9 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem & option ,
   h += aliasMargin;            // bottom margin
 
   // add some space to show an error condition.
-  if( ! qvariant_cast<QString>(index.data(FolderErrorMsg)).isEmpty() ) {
-      h += aliasMargin*2+fm.height();
+  if( ! qvariant_cast<QStringList>(index.data(FolderErrorMsg)).isEmpty() ) {
+      QStringList errMsgs = qvariant_cast<QStringList>(index.data(FolderErrorMsg));
+      h += aliasMargin*2 + errMsgs.count()*fm.height();
   }
 
   if( qvariant_cast<bool>(index.data(AddProgressSpace)) ) {
@@ -122,7 +123,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
   QString aliasText     = qvariant_cast<QString>(index.data(FolderAliasRole));
   QString pathText      = qvariant_cast<QString>(index.data(FolderPathRole));
   QString remotePath    = qvariant_cast<QString>(index.data(FolderSecondPathRole));
-  QString errorText     = qvariant_cast<QString>(index.data(FolderErrorMsg));
+  QStringList errorTexts= qvariant_cast<QStringList>(index.data(FolderErrorMsg));
 
   int overallPercent    = qvariant_cast<int>(index.data(SyncProgressOverallPercent));
   QString overallString = qvariant_cast<QString>(index.data(SyncProgressOverallString));
@@ -211,12 +212,12 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
   // paint an error overlay if there is an error string
 
   int h = iconRect.bottom();
-  if( !errorText.isEmpty() ) {
+  if( !errorTexts.isEmpty() ) {
       h += aliasMargin;
       QRect errorRect = localPathRect;
       errorRect.setLeft( iconRect.left());
       errorRect.setTop( h );
-      errorRect.setHeight(subFm.height()+aliasMargin);
+      errorRect.setHeight(errorTexts.count() * subFm.height()+aliasMargin);
       errorRect.setRight( option.rect.right()-aliasMargin );
 
       painter->setBrush( QColor(0xbb, 0x4d, 0x4d) );
@@ -226,15 +227,16 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
       painter->setPen( Qt::white );
       painter->setFont(errorFont);
       QRect errorTextRect = errorRect;
-      errorTextRect.setLeft( errorTextRect.left()+aliasMargin +16);
+      errorTextRect.setLeft( errorTextRect.left()+aliasMargin );
       errorTextRect.setTop( errorTextRect.top()+aliasMargin/2 );
 
-      int linebreak = errorText.indexOf(QLatin1String("<br"));
-      QString eText = errorText;
-      if(linebreak) {
-          eText = errorText.left(linebreak);
+      int x = errorTextRect.left();
+      int y = errorTextRect.top()+aliasMargin/2 + subFm.height()/2;
+
+      foreach( QString eText, errorTexts ) {
+          painter->drawText(x, y, subFm.elidedText( eText, Qt::ElideLeft, errorTextRect.width()-2*aliasMargin));
+          y += subFm.height();
       }
-      painter->drawText(errorTextRect, eText);
 
       h = errorRect.bottom();
   }
