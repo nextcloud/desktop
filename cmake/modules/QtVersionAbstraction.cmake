@@ -20,10 +20,14 @@ if( NOT BUILD_WITH_QT4 )
         message(STATUS "Using Qt 5!")
 
        # We need this to find the paths to qdbusxml2cpp and co
-        find_package(Qt5DBus REQUIRED)
+        if (WITH_DBUS)
+            find_package(Qt5DBus REQUIRED)
+            include_directories(${Qt5DBus_INCLUDES})
+            add_definitions(${Qt5DBus_DEFINITIONS})
+        endif (WITH_DBUS)
 
-        include_directories("${Qt5Widgets_INCLUDES} ${Qt5DBus_INCLUDES}")
-        add_definitions(${Qt5Widgets_DEFINITIONS} ${Qt5DBus_DEFINITIONS})
+        include_directories(${Qt5Widgets_INCLUDES})
+        add_definitions(${Qt5Widgets_DEFINITIONS})
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 #        set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 

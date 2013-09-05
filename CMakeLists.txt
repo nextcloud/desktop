@@ -21,6 +21,14 @@ include(${CMAKE_SOURCE_DIR}/VERSION.cmake)
 configure_file( ${CMAKE_SOURCE_DIR}/src/mirall/version.h.in "${CMAKE_CURRENT_BINARY_DIR}/src/mirall/version.h" )
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR} "${CMAKE_CURRENT_BINARY_DIR}/src/mirall/")
 
+#####
+## handle DBUS for Fdo notifications
+if( UNIX AND NOT APPLE )
+    add_definitions( -DUSE_FDO_NOTIFICATIONS)
+    set(WITH_DBUS ON)
+endif()
+####
+
 include(GNUInstallDirs)
 include(DefineInstallationPaths)
 include(QtVersionAbstraction)
@@ -61,13 +69,6 @@ else()
     set(BUILD_OWNCLOUD_OSX_BUNDLE OFF)
 endif()
 #####
-
-#####
-## handle DBUS for Fdo notifications
-if( UNIX AND NOT APPLE )
-    add_definitions( -DUSE_FDO_NOTIFICATIONS)
-endif()
-####
 
 #### find libs
 #find_package(Qt4 4.7.0 COMPONENTS QtCore QtGui QtXml QtNetwork QtTest QtWebkit REQUIRED )

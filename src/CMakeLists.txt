@@ -277,6 +277,10 @@ kde4_add_app_icon( ownCloud "${theme_dir}/colored/${APPLICATION_EXECUTABLE}-icon
 list(APPEND final_src ${ownCloud})
 set(ownCloud ${ownCloud_old})
 
+if (WITH_DBUS)
+    set(ADDITIONAL_APP_MODULES DBus)
+endif(WITH_DBUS)
+
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
@@ -295,7 +299,7 @@ endif(NOT WIN32)
 
     # add_executable( ${APPLICATION_EXECUTABLE} main.cpp ${final_src})
     add_executable( ${APPLICATION_EXECUTABLE} WIN32 main.cpp ${final_src})
-    qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml DBus WebKitWidgets)
+    qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml WebKitWidgets ${ADDITIONAL_APP_MODULES})
 else()
     set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
     include(DeployQt4)
@@ -305,7 +309,7 @@ else()
 
     # we must add MACOSX_BUNDLE only if building a bundle
     add_executable( ${APPLICATION_EXECUTABLE} WIN32 MACOSX_BUNDLE main.cpp ${final_src})
-    qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml DBus WebKitWidgets)
+    qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml WebKitWidgets ${ADDITIONAL_APP_MODULES})
 
     #FIXME: hardcoded path
     if ( EXISTS ${CSYNC_BINARY_DIR}/modules/ocsync_owncloud.so )
