@@ -57,11 +57,9 @@ class Folder : public QObject
 {
     Q_OBJECT
 
-protected:
-    friend class FolderMan;
+public:
     Folder(const QString&, const QString&, const QString& , QObject*parent = 0L);
 
-public:
     ~Folder();
 
     typedef QHash<QString, Folder*> Map;
