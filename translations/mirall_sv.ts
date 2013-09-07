@@ -129,102 +129,102 @@
         <translation>Återuppta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="265"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="264"/>
         <source>Confirm Folder Remove</source>
         <translation>Bekräfta radering av mapp</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="266"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="265"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Vill du verkligen stoppa synkroniseringen av mappen &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Notera:&lt;/b&gt; Detta kommer inte att radera filerna från din klient.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="286"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="285"/>
         <source>Confirm Folder Reset</source>
         <translation>Bekräfta återställning av mapp</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="287"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="286"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Vill du verkligen nollställa mappen &lt;i&gt;%1&lt;/i&gt; och återställa din databas?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Notera:&lt;/b&gt; Denna funktion är endast designad för underhållsuppgifter. Inga filer raderas, men kan skapa mycket datatrafik och ta allt från några minuter till flera timmar att slutföra, beroende på storleken på mappen. Använd endast detta alternativ om du har blivit uppmanad av din systemadministratör.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="319"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="318"/>
         <source>Checking %1 connection...</source>
         <translation>Kontrollerar %1 anslutning...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="324"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="323"/>
         <source>No %1 connection configured.</source>
         <translation>Ingen %1 anslutning konfigurerad.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="386"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="385"/>
         <source>Sync Running</source>
         <translation>Synkronisering pågår</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="387"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="386"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>En synkronisering pågår.&lt;br/&gt;Vill du avbryta den?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="453"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="452"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
         <translation>Ansluten till &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="454"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="453"/>
         <source>Version: %1 (%2)</source>
         <translation>Version: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="465"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="464"/>
         <source>unknown problem.</source>
         <translation>okänt fel.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="468"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="467"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Misslyckades ansluta till %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="581"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="580"/>
         <source>Start</source>
         <translation>Start</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="590"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="589"/>
         <source>Currently</source>
         <translation>För närvarande:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="597"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="596"/>
         <source>Completely</source>
         <translation>Fullständigt</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="629"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="628"/>
         <source>%1 %2 %3 (%4 of %5)</source>
         <translation>%1 %2 %3 (%4 av %5)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="632"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="631"/>
         <source>Completely finished.</source>
         <translation>Helt klar.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="639"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="638"/>
         <source>%1 of %2, file %3 of %4</source>
         <translation>%1 av %2, fil %3 av %4</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="685"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="684"/>
         <source>%1 of %2 in use.</source>
         <translation>%1 av %2 används.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="689"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="688"/>
         <source>Currently there is no storage usage information available.</source>
         <translation type="unfinished"/>
     </message>
@@ -447,28 +447,28 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="149"/>
         <source>CSync failed due to not handled permission deniend.</source>
-        <translation type="unfinished"/>
+        <translation>CSYNC misslyckades på grund av att nekad åtkomst inte hanterades.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="152"/>
         <source>CSync failed to find a specific file.</source>
-        <translation type="unfinished"/>
+        <translation>CSync misslyckades hitta en specifik fil.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="155"/>
         <source>CSync tried to create a directory that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>CSync försökte skapa en mapp som redan finns.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="158"/>
         <location filename="../src/mirall/csyncthread.cpp" line="161"/>
         <source>CSync: No space on %1 server available.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: Ingen plats på %1 server tillgänglig.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="164"/>
         <source>CSync unspecified error.</source>
-        <translation type="unfinished"/>
+        <translation>CSync ospecificerat fel.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="140"/>
@@ -702,18 +702,18 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
 <context>
     <name>Mirall::FolderStatusDelegate</name>
     <message>
-        <location filename="../src/mirall/folderstatusmodel.cpp" line="94"/>
-        <location filename="../src/mirall/folderstatusmodel.cpp" line="248"/>
+        <location filename="../src/mirall/folderstatusmodel.cpp" line="95"/>
+        <location filename="../src/mirall/folderstatusmodel.cpp" line="250"/>
         <source>File</source>
         <translation>Fil</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderstatusmodel.cpp" line="203"/>
+        <location filename="../src/mirall/folderstatusmodel.cpp" line="204"/>
         <source>Syncing all files in your account with</source>
         <translation>Synkroniserar alla filer i ditt konto med</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderstatusmodel.cpp" line="206"/>
+        <location filename="../src/mirall/folderstatusmodel.cpp" line="207"/>
         <source>Remote path: %1</source>
         <translation>Fjärrsökväg: %1</translation>
     </message>

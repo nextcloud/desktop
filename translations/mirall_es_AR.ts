@@ -85,7 +85,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="52"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Conectado con &lt;server&gt; como &lt;user&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="71"/>
@@ -111,17 +111,17 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="110"/>
         <source>Storage Usage</source>
-        <translation type="unfinished"/>
+        <translation>Uso del Almacenamiento</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="129"/>
         <source>Retrieving usage information...</source>
-        <translation type="unfinished"/>
+        <translation>Obteniendo información del uso...</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="136"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Nota:&lt;/b&gt; Algunas carpetas, incluidas las montadas en red o las carpetas compartidas, pueden tener diferentes límites.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="115"/>
@@ -129,102 +129,102 @@
         <translation>Continuar</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="265"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="264"/>
         <source>Confirm Folder Remove</source>
         <translation>Confirmá la eliminación del directorio</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="266"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="265"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;¿Realmente deseas detener la sincronización de la carpeta &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt;Estp no removerá los archivos desde tu cliente.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/accountsettings.cpp" line="285"/>
+        <source>Confirm Folder Reset</source>
+        <translation>Confirme el reseteo de la carpeta</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="286"/>
-        <source>Confirm Folder Reset</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="287"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="319"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="318"/>
         <source>Checking %1 connection...</source>
         <translation>Comprobando conexión de %1...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="324"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="323"/>
         <source>No %1 connection configured.</source>
         <translation>No hay ninguna conexión de %1 configurada.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="386"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="385"/>
         <source>Sync Running</source>
         <translation>Sincronización en curso</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="387"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="386"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>La sincronización está en curso.&lt;br/&gt;¿Querés interrumpirla?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="453"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="452"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="454"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="453"/>
         <source>Version: %1 (%2)</source>
         <translation>Versión: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="465"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="464"/>
         <source>unknown problem.</source>
         <translation>Error desconocido</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="468"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="467"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;No fue posible conectar a %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="581"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="580"/>
         <source>Start</source>
         <translation>Inicio</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="590"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="589"/>
         <source>Currently</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="597"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="596"/>
         <source>Completely</source>
         <translation>Completamente</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="629"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="628"/>
         <source>%1 %2 %3 (%4 of %5)</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2 %3 (%4 de %5)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="632"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="631"/>
         <source>Completely finished.</source>
         <translation>Completamente terminado.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="639"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="638"/>
         <source>%1 of %2, file %3 of %4</source>
-        <translation type="unfinished"/>
+        <translation>%1 de %2, archivo %3 de %4</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="685"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="684"/>
         <source>%1 of %2 in use.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="689"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="688"/>
         <source>Currently there is no storage usage information available.</source>
         <translation type="unfinished"/>
     </message>
@@ -239,12 +239,12 @@
     <message numerus="yes">
         <location filename="../src/mirall/application.cpp" line="253"/>
         <source>Sync started for %n configured sync folder(s).</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Comenzando con la sincronización para %n directorio(s) configurado para sincronizar.</numerusform><numerusform>Comenzando con la sincronización para %n directorio(s) configurados para sincronizar.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="325"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>Abrir %1 en el navegador...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="327"/>
@@ -254,12 +254,12 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="329"/>
         <source>Unknown status</source>
-        <translation type="unfinished"/>
+        <translation>Estado desconocido</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="331"/>
         <source>Settings...</source>
-        <translation type="unfinished"/>
+        <translation>Configuraciones...</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="332"/>
@@ -309,7 +309,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="402"/>
         <source>Open folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Abrir carpeta &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="530"/>
@@ -447,28 +447,28 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="149"/>
         <source>CSync failed due to not handled permission deniend.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: Falló debido a un permiso denegado.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="152"/>
         <source>CSync failed to find a specific file.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: Falló en encontrar un archivo especifico.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="155"/>
         <source>CSync tried to create a directory that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>Csync trató de crear un directorio que ya existía.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="158"/>
         <location filename="../src/mirall/csyncthread.cpp" line="161"/>
         <source>CSync: No space on %1 server available.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: No hay más espacio disponible en el servidor %1.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="164"/>
         <source>CSync unspecified error.</source>
-        <translation type="unfinished"/>
+        <translation>Error no especificado de CSync</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="140"/>
@@ -699,18 +699,18 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::FolderStatusDelegate</name>
     <message>
-        <location filename="../src/mirall/folderstatusmodel.cpp" line="94"/>
-        <location filename="../src/mirall/folderstatusmodel.cpp" line="248"/>
+        <location filename="../src/mirall/folderstatusmodel.cpp" line="95"/>
+        <location filename="../src/mirall/folderstatusmodel.cpp" line="250"/>
         <source>File</source>
         <translation>Archivo</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderstatusmodel.cpp" line="203"/>
+        <location filename="../src/mirall/folderstatusmodel.cpp" line="204"/>
         <source>Syncing all files in your account with</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderstatusmodel.cpp" line="206"/>
+        <location filename="../src/mirall/folderstatusmodel.cpp" line="207"/>
         <source>Remote path: %1</source>
         <translation>Ruta Remota: %1</translation>
     </message>

@@ -129,104 +129,104 @@
         <translation>再開</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="265"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="264"/>
         <source>Confirm Folder Remove</source>
         <translation>フォルダの削除を確認</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="266"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="265"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
         <translation>&lt;p&gt;フォルダー&lt;i&gt;%1&lt;/i&gt;の同期を本当に止めますか？&lt;/p&gt;&lt;p&gt;&lt;b&gt;注:&lt;/b&gt; これによりクライアントからファイルが削除されることはありません。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="286"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="285"/>
         <source>Confirm Folder Reset</source>
         <translation>フォルダのリセットを確認</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="287"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="286"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
         <translation>&lt;p&gt;本当にフォルダ &lt;i&gt;%1&lt;/i&gt; をリセットしてクライアントのデータベースを再構築しますか?&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意:&lt;/b&gt;この機能は保守目的のためだけにデザインされています。ファイルは削除されませんが、完了するまでにデータ通信が明らかに増大し、数分、あるいはフォルダのサイズによっては数時間かかります。このオプションは管理者に指示された場合にのみ使用して下さい。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="319"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="318"/>
         <source>Checking %1 connection...</source>
         <translation>%1 の接続を確認中...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="324"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="323"/>
         <source>No %1 connection configured.</source>
         <translation>%1 の接続は設定されていません。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="386"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="385"/>
         <source>Sync Running</source>
         <translation>同期実行中</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="387"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="386"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>同期操作が実行中です。&lt;br/&gt;終了してもよろしいですか？</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="453"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="452"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; へ接続しました。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="454"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="453"/>
         <source>Version: %1 (%2)</source>
         <translation>バージョン: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="465"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="464"/>
         <source>unknown problem.</source>
         <translation>未知の問題。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="468"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="467"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;%1 への接続に失敗: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="581"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="580"/>
         <source>Start</source>
         <translation>開始</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="590"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="589"/>
         <source>Currently</source>
         <translation>現在</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="597"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="596"/>
         <source>Completely</source>
         <translation>完全に</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="629"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="628"/>
         <source>%1 %2 %3 (%4 of %5)</source>
         <translation>%1 %2 %3 (%4 of %5)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="632"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="631"/>
         <source>Completely finished.</source>
         <translation>完全に終了しました。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="639"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="638"/>
         <source>%1 of %2, file %3 of %4</source>
         <translation>%1 of %2, ファイル数 %3 of %4</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="685"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="684"/>
         <source>%1 of %2 in use.</source>
         <translation>%2 のうち %1 を使用中</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="689"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="688"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation type="unfinished"/>
+        <translation>現在、利用できるストレージ使用情報はありません。</translation>
     </message>
 </context>
 <context>
@@ -362,7 +362,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="85"/>
         <source>CSync failed to write the state db.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncはstate dbに書き込めませんでした。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="88"/>
@@ -432,7 +432,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="131"/>
         <source>CSync could not authenticate at the proxy.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncはそのプロクシで認証できませんでした。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="134"/>
@@ -447,28 +447,28 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="149"/>
         <source>CSync failed due to not handled permission deniend.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncは対応できないパーミッション拒否が原因で失敗しました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="152"/>
         <source>CSync failed to find a specific file.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncは特定のファイルを見つけることができませんでした。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="155"/>
         <source>CSync tried to create a directory that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncはすでに存在するディレクトリを作成しようとしました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="158"/>
         <location filename="../src/mirall/csyncthread.cpp" line="161"/>
         <source>CSync: No space on %1 server available.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: %1 サーバには利用可能な空きがありません。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="164"/>
         <source>CSync unspecified error.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncの未指定のエラーです。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="140"/>
@@ -702,18 +702,18 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::FolderStatusDelegate</name>
     <message>
-        <location filename="../src/mirall/folderstatusmodel.cpp" line="94"/>
-        <location filename="../src/mirall/folderstatusmodel.cpp" line="248"/>
+        <location filename="../src/mirall/folderstatusmodel.cpp" line="95"/>
+        <location filename="../src/mirall/folderstatusmodel.cpp" line="250"/>
         <source>File</source>
         <translation>ファイル</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderstatusmodel.cpp" line="203"/>
+        <location filename="../src/mirall/folderstatusmodel.cpp" line="204"/>
         <source>Syncing all files in your account with</source>
         <translation>あなたのアカウントで全てのファイルを同期中</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderstatusmodel.cpp" line="206"/>
+        <location filename="../src/mirall/folderstatusmodel.cpp" line="207"/>
         <source>Remote path: %1</source>
         <translation>リモートパス: %1</translation>
     </message>
@@ -974,13 +974,14 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="123"/>
         <source>Soft Link ignored</source>
-        <translation type="unfinished"/>
+        <translation>ソフトリンクは無視されました</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="124"/>
         <source>Softlinks break the semantics of synchronization.
 Please do not use them in synced directories</source>
-        <translation type="unfinished"/>
+        <translation>ソフトリンクは同期の意味を破壊します。
+同期するディレクトリではそれらを使用しないでください。</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="127"/>
@@ -997,34 +998,35 @@ Please do not use them in synced directories</source>
         <source>The %1 was ignored because it is listed in the clients ignore list
 or the %1 name contains characters that are not syncable
 in a cross platform environment</source>
-        <translation type="unfinished"/>
+        <translation>クライアントの無視リストに記載されているか、%1の名前にクロスプラットフォーム環境で同期できない文字が含まれているために、%1は無視されました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="134"/>
         <source>Item ignored</source>
-        <translation type="unfinished"/>
+        <translation>アイテムは無視されました</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="136"/>
         <source>%1 on ignore list</source>
-        <translation type="unfinished"/>
+        <translation>無視リスト上の%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="137"/>
         <source>The %1 was skipped because it is listed on the clients
 list of names to ignore</source>
-        <translation type="unfinished"/>
+        <translation>無視するクライアントの名前リストに記載されているために、%1はスキップされました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="140"/>
         <source>Invalid characters</source>
-        <translation type="unfinished"/>
+        <translation>無効な文字</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="141"/>
         <source>The %1 name contains one or more invalid characters which break
 syncing in a cross platform environment</source>
-        <translation type="unfinished"/>
+        <translation>%1の名前に、クロスプラットフォーム環境での同期を破壊する
+無効な文字が1つ以上含まれています。</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="146"/>
