@@ -973,7 +973,7 @@ Valda objekt kommer också att raderas om dom hindrar en mapp från att tas bort
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="123"/>
         <source>Soft Link ignored</source>
-        <translation type="unfinished"/>
+        <translation>Mjuk länk ignorerad</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="124"/>
@@ -1017,7 +1017,7 @@ list of names to ignore</source>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="140"/>
         <source>Invalid characters</source>
-        <translation type="unfinished"/>
+        <translation>Ogiltiga tecken</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="141"/>
