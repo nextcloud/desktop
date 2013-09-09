@@ -9,6 +9,7 @@ csync_journal.db
 csync_journal.db.ctmp
 .*.sw?
 .*.*sw?
+].csync-progressdatabase
 
 ].DS_Store
 ].ds_store
