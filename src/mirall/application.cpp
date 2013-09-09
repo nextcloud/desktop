@@ -650,7 +650,7 @@ void Application::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
 {
     // A click on the tray icon should only open the status window on Win and
     // Linux, not on Mac. They want a menu entry.
-#if defined Q_WS_WIN || defined Q_WS_X11
+#if !defined Q_OS_MAC
     if( reason == QSystemTrayIcon::Trigger ) {
         checkConfigExists(true); // start settings if config is existing.
     }

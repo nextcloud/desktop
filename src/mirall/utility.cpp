@@ -172,7 +172,7 @@ void Utility::raiseDialog( QWidget *raiseWidget )
 {
     // viel hilft viel ;-)
     if( raiseWidget ) {
-#if defined(Q_WS_WIN) || defined (Q_OS_MAC)
+#if defined(Q_OS_WIN) || defined (Q_OS_MAC)
         Qt::WindowFlags eFlags = raiseWidget->windowFlags();
         eFlags |= Qt::WindowStaysOnTopHint;
         raiseWidget->setWindowFlags(eFlags);
