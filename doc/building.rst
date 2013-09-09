@@ -36,9 +36,14 @@ its own repository which contains non-standard recipes.  Add it with::
 
 Next, install the missing dependencies::
 
-  brew install $(brew deps ocsync)
+  brew install $(brew deps ocsync) 
   brew install $(brew deps mirall)
 
+  bug: 
+  iniparser is not provideed by $(brew deps ocsync)
+  fix with brew install iniparser
+  
+  
 To build mirall and csync, follow the `generic build instructions`_.
 
 .. note::
