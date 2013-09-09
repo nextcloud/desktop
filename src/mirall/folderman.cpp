@@ -239,7 +239,7 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
 
     settings.beginGroup( escapedAlias ); // read the group with the same name as the file which is the folder alias
 
-    QString path = settings.value(QLatin1String("localpath")).toString();
+    QString path = settings.value(QLatin1String("localPath")).toString();
     QString backend = settings.value(QLatin1String("backend")).toString();
     QString targetPath = settings.value( QLatin1String("targetPath") ).toString();
     // QString connection = settings.value( QLatin1String("connection") ).toString();
