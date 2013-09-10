@@ -13,6 +13,7 @@
  */
 
 #include "mirall/folderwizard.h"
+#include "mirall/folderman.h"
 #include "mirall/owncloudinfo.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/theme.h"
@@ -298,6 +299,22 @@ bool FolderWizardTargetPage::isComplete() const
     QString dir = _ui.folderTreeWidget->currentItem()->data(0, Qt::UserRole).toString();
     wizard()->setProperty("targetPath", dir);
 
+    Folder::Map map = _folderMap;
+    Folder::Map::const_iterator i = map.constBegin();
+    for(i = map.constBegin();i != map.constEnd(); i++ ) {
+        Folder *f = static_cast<Folder*>(i.value());
+        QString curDir = f->secondPath();
+        if (dir == curDir) {
+            showWarn( tr("This directory is already being synced.") );
+            return false;
+        } else if (dir.startsWith(curDir)) {
+            if (dir.isEmpty()) dir = QLatin1Char('/');
+            if (curDir.isEmpty()) curDir = QLatin1Char('/');
+            showWarn( tr("You are already syncing <i>%1</i>, which is a parent folder of <i>%2</i>.").arg(dir).arg(curDir) );
+            return false;
+        }
+    }
+
     if( dir == QLatin1String("/") ) {
         showWarn( tr("If you sync the root folder, you can <b>not</b> configure another sync directory."));
         return true;
@@ -370,6 +387,7 @@ FolderWizard::~FolderWizard()
 void FolderWizard::setFolderMap( const Folder::Map& fm)
 {
     _folderWizardSourcePage->setFolderMap( fm );
+    _folderWizardTargetPage->setFolderMap( fm );
 }
 
 } // end namespace
