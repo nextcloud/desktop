@@ -122,13 +122,7 @@ qt_wrap_cpp(syncMoc ${libsync_HEADERS})
 
 
 IF( DEFINED CSYNC_BUILD_PATH )
-IF(WIN32)
-SET(HTTPBF_LIBRARY ${CSYNC_BUILD_PATH}/src/httpbf/libhttpbf.dll)
-ELSEIF( APPLE )
-SET(HTTPBF_LIBRARY ${CSYNC_BUILD_PATH}/src/httpbf/libhttpbf.dylib)
-ELSE()
-SET(HTTPBF_LIBRARY ${CSYNC_BUILD_PATH}/src/httpbf/libhttpbf.so)
-ENDIF()
+SET(HTTPBF_LIBRARY ${CSYNC_BUILD_PATH}/src/httpbf/libhttpbf.a)
 ELSE()
 FIND_LIBRARY(HTTPBF_LIBRARY NAMES httpbflib HINTS $ENV{CSYNC_DIR})
 ENDIF()
@@ -137,13 +131,17 @@ ENDIF()
 list(APPEND libsync_LINK_TARGETS
     ${QT_LIBRARIES}
     ${CSYNC_LIBRARY}
-    ${NEON_LIBRARIES}
     ${HTTPBF_LIBRARY}
 )
 
 if(QTKEYCHAIN_FOUND)
     list(APPEND libsync_LINK_TARGETS ${QTKEYCHAIN_LIBRARY})
     include_directories(${QTKEYCHAIN_INCLUDE_DIR})
+endif()
+
+if(NEON_FOUND)
+    list(APPEND libsync_LINK_TARGETS ${NEON_LIBRARIES})
+    include_directories(${NEON_INCLUDE_DIRS})
 endif()
 
 add_library(${synclib_NAME} SHARED ${libsync_SRCS} ${syncMoc})
@@ -334,7 +332,6 @@ set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${QT_LIBRARIES} )
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${CSYNC_LIBRARY} )
-target_link_libraries( ${APPLICATION_EXECUTABLE} ${NEON_LIBRARIES} )
 
 install(TARGETS ${APPLICATION_EXECUTABLE}
         RUNTIME DESTINATION bin
