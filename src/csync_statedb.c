@@ -107,7 +107,7 @@ static int _csync_statedb_check(const char *statedb) {
   ssize_t r;
   char buf[BUF_SIZE] = {0};
   sqlite3 *db = NULL;
-  struct stat sb;
+  csync_stat_t sb;
 
   mbchar_t *wstatedb = c_utf8_to_locale(statedb);
 

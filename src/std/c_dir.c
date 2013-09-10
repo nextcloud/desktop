@@ -78,11 +78,8 @@ int c_mkdirs(const char *path, mode_t mode) {
       return -1;
     }
   }
-#ifdef _WIN32
-  tmp = _tmkdir(wpath);
-#else
   tmp = _tmkdir(wpath, mode);
-#endif
+
   c_free_locale_string(swpath);
   c_free_locale_string(wpath);
 

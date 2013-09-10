@@ -98,7 +98,7 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
       SAFE_FREE(path);
       /* Change the current working directory to read the module from a relative path. */
       if( GetModuleFileNameW(NULL, tbuf, MAX_PATH) > 0 ) {
-          buf = c_utf8(tbuf);
+          buf = c_utf8_from_locale(tbuf);
           /* cut the trailing filename off */
           if ((last_bslash = strrchr(buf, '\\')) != NULL) {
               *last_bslash='\0';
@@ -108,7 +108,7 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
               _wchdir(pathBuf);
               c_free_locale_string(pathBuf);
           }
-          c_free_utf8(buf);
+          c_free_locale_string(buf);
 
           if (asprintf(&path, "modules/ocsync_%s.%s", module, MODULE_EXTENSION) < 0) {
               return -1;

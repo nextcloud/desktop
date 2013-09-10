@@ -79,11 +79,11 @@ static int _csync_config_copy_default (const char *config) {
     /* Get the path from where the application was started */
     len = GetModuleFileNameW(NULL, tcharbuf, MAX_PATH);
     if(len== 0) {
-        re = -1;
+        rc = -1;
     } else {
         char *last_bslash;
 
-        buf = c_utf8(tcharbuf);
+        buf = c_utf8_from_locale(tcharbuf);
         /* cut the trailing filename off */
         if ((last_bslash = strrchr(buf, '\\')) != NULL) {
           *last_bslash='\0';
@@ -92,9 +92,9 @@ static int _csync_config_copy_default (const char *config) {
         strncat(buf, "\\" CSYNC_CONF_FILE, MAX_PATH);
         if(c_copy(buf, config, 0644) < 0) {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Could not copy /%s to %s", buf, config );
-            re = -1;
+            rc = -1;
         }
-        c_free_utf8(buf);
+        c_free_locale_string(buf);
     }
 #else
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Copy %s/config/%s to %s", SYSCONFDIR,

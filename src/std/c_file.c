@@ -99,7 +99,7 @@ int c_copy(const char* src, const char *dst, mode_t mode) {
       goto out;
   }
 
-  rc = fstat(srcfd, &sb);
+  rc = _tfstat(srcfd, &sb);
   if (rc < 0) {
       goto out;
   }
@@ -120,7 +120,7 @@ int c_copy(const char* src, const char *dst, mode_t mode) {
       goto out;
   }
 
-  rc = fstat(dstfd, &sb);
+  rc = _tfstat(dstfd, &sb);
   if (rc == 0) {
       if (S_ISDIR(sb.st_mode)) {
           errno = EISDIR;
@@ -271,12 +271,12 @@ int c_compare_file( const char *f1, const char *f2 ) {
   }
 
   /* compare size first. */
-  rc = fstat(fd1, &stat1);
+  rc = _tfstat(fd1, &stat1);
   if (rc < 0) {
     goto out;
   }
 
-  rc = fstat(fd2, &stat2);
+  rc = _tfstat(fd2, &stat2);
   if (rc < 0) {
     goto out;
   }

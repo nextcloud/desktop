@@ -472,6 +472,11 @@ int csync_vio_local_chmod(const char *uri, mode_t mode) {
 }
 
 int csync_vio_local_chown(const char *uri, uid_t owner, gid_t group) {
+#if defined _WIN32
+    (void)uri;
+    (void)owner;
+    (void)group;
+#endif
   return _tchown(uri, owner, group);
 }
 

@@ -56,7 +56,7 @@ char *csync_get_user_home_dir(void) {
                           NULL,
                           0,
                           tmp) == S_OK ) {
-        szPath = c_utf8( tmp );
+        szPath = c_utf8_from_locale(tmp);
         return szPath;
     }
 
