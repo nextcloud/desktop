@@ -69,6 +69,8 @@ public:
     virtual void initializePage();
     virtual void cleanupPage();
 
+    void setFolderMap( const Folder::Map &fm ) { _folderMap = fm; }
+
 protected slots:
 
     void showWarn( const QString& = QString() ) const;
@@ -83,6 +85,7 @@ private:
     ownCloudInfo *_ownCloudDirCheck;
     bool _dirChecked;
     bool _warnWasVisible;
+    Folder::Map _folderMap;
 };
 
 /**
