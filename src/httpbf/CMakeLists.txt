@@ -26,7 +26,7 @@ include_directories(
   ${HTTPBF_PUBLIC_INCLUDE_DIRS}
 )
 
-add_library(${HTTPBF_LIBRARY} SHARED ${httpbf_SRCS})
+add_library(${HTTPBF_LIBRARY} STATIC ${httpbf_SRCS})
 target_link_libraries(${HTTPBF_LIBRARY} ${NEON_LIBRARIES})
 
 if(NOT WIN32)
