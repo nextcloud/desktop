@@ -56,7 +56,6 @@ private:
   QString _user;
   QString _password;
   bool _ready;
-  QMap<QNetworkReply*, int> _attempts;
 };
 
 } // ns Mirall
