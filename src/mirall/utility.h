@@ -23,6 +23,7 @@ namespace Mirall {
 
 namespace Utility
 {
+    void sleep(int sec);
     QString formatFingerprint( const QByteArray& );
     void setupFavLink( const QString &folder );
     QString octetsToString( qint64 octets );
