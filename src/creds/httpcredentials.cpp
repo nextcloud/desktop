@@ -67,11 +67,25 @@ int getauth(const char *prompt,
 
 } // ns
 
+class HttpCredentialsAccessManager : public MirallAccessManager {
+public:
+    HttpCredentialsAccessManager(const HttpCredentials *cred, QObject* parent = 0)
+        : MirallAccessManager(parent), _cred(cred) {}
+protected:
+    QNetworkReply *createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData) {
+        QByteArray credHash = QByteArray(_cred->user().toUtf8()+":"+_cred->password().toUtf8()).toBase64();
+        QNetworkRequest req(request);
+        req.setRawHeader(QByteArray("Authorization"), QByteArray("Basic ") + credHash);
+        return MirallAccessManager::createRequest(op, req, outgoingData);\
+    }
+private:
+    const HttpCredentials *_cred;
+};
+
 HttpCredentials::HttpCredentials()
     : _user(),
       _password(),
-      _ready(false),
-      _attempts()
+      _ready(false)
 {}
 
 HttpCredentials::HttpCredentials(const QString& user, const QString& password)
@@ -134,7 +148,7 @@ QString HttpCredentials::password() const
 
 QNetworkAccessManager* HttpCredentials::getQNAM() const
 {
-    MirallAccessManager* qnam = new MirallAccessManager;
+    MirallAccessManager* qnam = new HttpCredentialsAccessManager(this);
 
     connect( qnam, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
              this, SLOT(slotAuthentication(QNetworkReply*,QAuthenticator*)));
@@ -180,30 +194,12 @@ void HttpCredentials::slotCredentialsFetched(bool ok)
 
 void HttpCredentials::slotAuthentication(QNetworkReply* reply, QAuthenticator* authenticator)
 {
-    if( !(authenticator && reply) ) return;
-
-    qDebug() << "Authenticating request for " << reply->url();
-
-    if (_attempts.contains(reply)) {
-        ++_attempts[reply];
-    } else {
-        connect(reply, SIGNAL(finished()),
-                this, SLOT(slotReplyFinished()));
-        _attempts[reply] = 1;
-    }
-    // TODO: Replace it with something meaningful...
-    //if( reply->url().toString().startsWith( webdavUrl( _connection ) ) ) {
-    if (_attempts[reply] > 1) {
-        qDebug() << "Too many attempts to authenticate. Stop request.";
-        reply->close();
-    } else {
-        authenticator->setUser( _user );
-        authenticator->setPassword( _password );
-    }
-    //} else {
-    //    qDebug() << "WRN: attempt to authenticate to different url - closing.";
-    // reply->close();
-    //}
+    Q_UNUSED(authenticator)
+    // we cannot use QAuthenticator, because it sends username and passwords with latin1
+    // instead of utf8 encoding. Instead, we send it manually. Thus, if we reach this signal,
+    // those credentials were invalid and we terminate.
+    qDebug() << "Credentials invalid. Stop request.";
+    reply->close();
 }
 
 void HttpCredentials::slotReplyFinished()
@@ -212,7 +208,6 @@ void HttpCredentials::slotReplyFinished()
 
     disconnect(reply, SIGNAL(finished()),
                this, SLOT(slotReplyFinished()));
-    _attempts.remove (reply);
 }
 
 } // ns Mirall
