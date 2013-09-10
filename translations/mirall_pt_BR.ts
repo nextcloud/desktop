@@ -226,7 +226,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="688"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation type="unfinished"/>
+        <translation>Atualmente, não há informações de uso de armazenamento disponível.</translation>
     </message>
 </context>
 <context>
@@ -362,7 +362,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="85"/>
         <source>CSync failed to write the state db.</source>
-        <translation type="unfinished"/>
+        <translation>Csync não conseguiu escrever o estado no bd.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="88"/>
@@ -432,7 +432,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="131"/>
         <source>CSync could not authenticate at the proxy.</source>
-        <translation type="unfinished"/>
+        <translation>Csync não conseguiu autenticação no proxy.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="134"/>
@@ -557,7 +557,7 @@
     <message numerus="yes">
         <location filename="../src/mirall/folder.cpp" line="349"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; e %n outros arquivo(s) foram sincronizados com essa máquina.</numerusform><numerusform>&apos;%1&apos; e %n outros arquivo(s) foram sincronizados com essa máquina.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="355"/>
@@ -577,7 +577,7 @@
     <message numerus="yes">
         <location filename="../src/mirall/folder.cpp" line="357"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; e %n outros arquivo(s) foram removidos.</numerusform><numerusform>&apos;%1&apos; e %n outros arquivo(s) foram removidos.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="363"/>
@@ -597,7 +597,7 @@
     <message numerus="yes">
         <location filename="../src/mirall/folder.cpp" line="365"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; e %n outros arquivo(s) foram atualizados.</numerusform><numerusform>&apos;%1&apos; e %n outros arquivo(s) foram atualizados.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="407"/>
@@ -973,13 +973,14 @@ Itens marcados também serão excluídos se estiverem impedindo a remoção de u
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="123"/>
         <source>Soft Link ignored</source>
-        <translation type="unfinished"/>
+        <translation>Soft Link ignorado.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="124"/>
         <source>Softlinks break the semantics of synchronization.
 Please do not use them in synced directories</source>
-        <translation type="unfinished"/>
+        <translation>Softlinks quebra a semântica de sincronização.
+Por favor, não usá-los em diretórios sincronizados.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="127"/>
@@ -996,34 +997,38 @@ Please do not use them in synced directories</source>
         <source>The %1 was ignored because it is listed in the clients ignore list
 or the %1 name contains characters that are not syncable
 in a cross platform environment</source>
-        <translation type="unfinished"/>
+        <translation>O %1 foi ignorado porque ele está listado nos clientes
+ignorar a lista ou o nome do %1 contém
+caracteres que não são sincronizáveis em um ambiente multi-plataforma.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="134"/>
         <source>Item ignored</source>
-        <translation type="unfinished"/>
+        <translation>Ítem ignorado</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="136"/>
         <source>%1 on ignore list</source>
-        <translation type="unfinished"/>
+        <translation>%1 na lista ignorar</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="137"/>
         <source>The %1 was skipped because it is listed on the clients
 list of names to ignore</source>
-        <translation type="unfinished"/>
+        <translation>O %1 foi ignorado porque ele está listada na lista de clientes
+lista de nomes para ignorar</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="140"/>
         <source>Invalid characters</source>
-        <translation type="unfinished"/>
+        <translation>Caracteres inválidos</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="141"/>
         <source>The %1 name contains one or more invalid characters which break
 syncing in a cross platform environment</source>
-        <translation type="unfinished"/>
+        <translation>O nome %1 contém um ou mais caracteres inválidos que quebram
+a sincronização em um ambiente muiti-plataforma</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="146"/>
@@ -1940,27 +1945,27 @@ enquanto o arquivo do lado do servidor está disponível sob o nome original</tr
 <context>
     <name>Utility</name>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="121"/>
+        <location filename="../src/mirall/utility.cpp" line="123"/>
         <source>%L1 TB</source>
         <translation>%L1 TB</translation>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="124"/>
+        <location filename="../src/mirall/utility.cpp" line="126"/>
         <source>%L1 GB</source>
         <translation>%L1 GB</translation>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="127"/>
+        <location filename="../src/mirall/utility.cpp" line="129"/>
         <source>%L1 MB</source>
         <translation>%L1 MB</translation>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="130"/>
+        <location filename="../src/mirall/utility.cpp" line="132"/>
         <source>%L1 kB</source>
         <translation>%L1 kB</translation>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="133"/>
+        <location filename="../src/mirall/utility.cpp" line="135"/>
         <source>%L1 B</source>
         <translation>%L1 B</translation>
     </message>
@@ -1968,12 +1973,12 @@ enquanto o arquivo do lado do servidor está disponível sob o nome original</tr
 <context>
     <name>main.cpp</name>
     <message>
-        <location filename="../src/main.cpp" line="43"/>
+        <location filename="../src/main.cpp" line="24"/>
         <source>System Tray not available</source>
         <translation>Bandeja do Sistema não disponível</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="44"/>
+        <location filename="../src/main.cpp" line="25"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
         <translation>%1 requer em uma bandeja do sistema de trabalho. Se você estiver executando o XFCE, siga &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt; estas instruções &lt;/a&gt;. Caso contrário, instale uma aplicação da bandeja do sistema, como &apos;trayer&apos; e tente novamente.</translation>
     </message>

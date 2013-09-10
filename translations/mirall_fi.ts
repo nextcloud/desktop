@@ -1932,27 +1932,27 @@ name</source>
 <context>
     <name>Utility</name>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="121"/>
+        <location filename="../src/mirall/utility.cpp" line="123"/>
         <source>%L1 TB</source>
         <translation>%L1 Tt</translation>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="124"/>
+        <location filename="../src/mirall/utility.cpp" line="126"/>
         <source>%L1 GB</source>
         <translation>%L1 Gt</translation>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="127"/>
+        <location filename="../src/mirall/utility.cpp" line="129"/>
         <source>%L1 MB</source>
         <translation>%L1 Mt</translation>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="130"/>
+        <location filename="../src/mirall/utility.cpp" line="132"/>
         <source>%L1 kB</source>
         <translation>%L1 kt</translation>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="133"/>
+        <location filename="../src/mirall/utility.cpp" line="135"/>
         <source>%L1 B</source>
         <translation>%L1 t</translation>
     </message>
@@ -1960,12 +1960,12 @@ name</source>
 <context>
     <name>main.cpp</name>
     <message>
-        <location filename="../src/main.cpp" line="43"/>
+        <location filename="../src/main.cpp" line="24"/>
         <source>System Tray not available</source>
         <translation>Ilmoitusaluetta ei ole saatavilla</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="44"/>
+        <location filename="../src/main.cpp" line="25"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
         <translation>%1 vaatii toimivan ilmoitusalueen. Jos käytät XFCE:tä, seuraa &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;näitä ohjeita&lt;/a&gt;. Muussa tapauksessa asenna jokin ilmoitusalueen tarjoava sovellus, kuten &quot;trayer&quot; ja yritä uudelleen.</translation>
     </message>

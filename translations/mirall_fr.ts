@@ -1946,27 +1946,27 @@ conflits et le fichier côté serveur est disponible sous son nom original.</tra
 <context>
     <name>Utility</name>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="121"/>
+        <location filename="../src/mirall/utility.cpp" line="123"/>
         <source>%L1 TB</source>
         <translation>%L1 TO</translation>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="124"/>
+        <location filename="../src/mirall/utility.cpp" line="126"/>
         <source>%L1 GB</source>
         <translation>%L1 GO</translation>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="127"/>
+        <location filename="../src/mirall/utility.cpp" line="129"/>
         <source>%L1 MB</source>
         <translation>%L1 MO</translation>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="130"/>
+        <location filename="../src/mirall/utility.cpp" line="132"/>
         <source>%L1 kB</source>
         <translation>%L1 kO</translation>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="133"/>
+        <location filename="../src/mirall/utility.cpp" line="135"/>
         <source>%L1 B</source>
         <translation>%L1 Octets</translation>
     </message>
@@ -1974,12 +1974,12 @@ conflits et le fichier côté serveur est disponible sous son nom original.</tra
 <context>
     <name>main.cpp</name>
     <message>
-        <location filename="../src/main.cpp" line="43"/>
+        <location filename="../src/main.cpp" line="24"/>
         <source>System Tray not available</source>
         <translation>Zone de notification non disponible</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="44"/>
+        <location filename="../src/main.cpp" line="25"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
         <translation>%1 nécessite la présence d&apos;une barre des tâches (system tray). Si vous utilisez XFCE, veuillez suivre &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;ces instructions&lt;/a&gt;. Sinon, installez une application mettant en place une barre des tâches, telle que &apos;trayer&apos; et essayer à nouveau.</translation>
     </message>
