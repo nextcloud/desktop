@@ -34,6 +34,7 @@
 #ifdef Q_OS_UNIX
 #include <sys/statvfs.h>
 #include <sys/types.h>
+#include <unistd.h>
 #endif
 
 #include <stdarg.h>
@@ -44,6 +45,7 @@
 #elif defined(Q_OS_WIN)
 #include <shlobj.h>
 #include <winbase.h>
+#include <windows.h>
 #endif
 
 namespace Mirall {
@@ -388,6 +390,16 @@ QString Utility::dataLocation()
     return QDesktopServices::storageLocation(QDesktopServices::DataLocation);
 #else
     return QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
+#endif
+}
+
+
+void Utility::sleep(int sec)
+{
+#ifdef Q_OS_WIN
+    ::Sleep(sec*1000);
+#else
+    ::sleep(sec);
 #endif
 }
 
