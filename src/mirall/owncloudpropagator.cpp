@@ -37,6 +37,8 @@
 #include <neon/ne_compress.h>
 #include <neon/ne_redirect.h>
 
+#include <time.h>
+
 // We use some internals of csync:
 extern "C" int c_utimes(const char *, const struct timeval *);
 extern "C" void csync_win32_set_file_hidden( const char *file, bool h );
