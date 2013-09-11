@@ -181,6 +181,12 @@ CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path) {
       goto out;
   }
 
+  rc = csync_fnmatch(".csync-progressdatabase*", bname, 0);
+  if (rc == 0) {
+      match = CSYNC_FILE_SILENTLY_EXCLUDED;
+      goto out;
+  }
+
   if (ctx->excludes == NULL) {
       goto out;
   }
