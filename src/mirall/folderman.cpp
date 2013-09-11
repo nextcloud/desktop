@@ -361,6 +361,10 @@ void FolderMan::setSyncEnabled( bool enabled )
         QTimer::singleShot(200, this, SLOT(slotScheduleFolderSync()));
     }
     _syncEnabled = enabled;
+
+    foreach( Folder *f, _folderMap.values() ) {
+        f->setSyncEnabled(enabled);
+    }
 }
 
 /*
