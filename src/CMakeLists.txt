@@ -122,7 +122,7 @@ qt_wrap_cpp(syncMoc ${libsync_HEADERS})
 
 
 IF( DEFINED CSYNC_BUILD_PATH )
-SET(HTTPBF_LIBRARY ${CSYNC_BUILD_PATH}/src/httpbf/libhttpbf.a)
+SET(HTTPBF_LIBRARY ${CSYNC_BUILD_PATH}/src/httpbf/libhttpbflib.a)
 ELSE()
 FIND_LIBRARY(HTTPBF_LIBRARY NAMES httpbflib HINTS $ENV{CSYNC_DIR})
 ENDIF()
