@@ -561,7 +561,6 @@ void Folder::startSync(const QStringList &pathList)
 
     qDebug() << "*** Start syncing";
     _thread = new QThread(this);
-    _thread->setPriority(QThread::LowPriority);
     setIgnoredFiles();
     _csync = new CSyncThread( _csync_ctx );
     _csync->moveToThread(_thread);
@@ -584,6 +583,7 @@ void Folder::startSync(const QStringList &pathList)
     connect(_csync, SIGNAL(transmissionProgress(Progress::Info)), this, SLOT(slotTransmissionProgress(Progress::Info)));
 
     _thread->start();
+    _thread->setPriority(QThread::LowPriority);
     QMetaObject::invokeMethod(_csync, "startSync", Qt::QueuedConnection);
 
     // disable events until syncing is done
