@@ -198,7 +198,7 @@ void HttpCredentials::slotAuthentication(QNetworkReply* reply, QAuthenticator* a
     // we cannot use QAuthenticator, because it sends username and passwords with latin1
     // instead of utf8 encoding. Instead, we send it manually. Thus, if we reach this signal,
     // those credentials were invalid and we terminate.
-    qDebug() << "Credentials invalid. Stop request.";
+    qDebug() << "Stop request: Authentication failed for " << reply->url().toString();
     reply->close();
 }
 
