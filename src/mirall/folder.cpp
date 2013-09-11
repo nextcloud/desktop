@@ -201,15 +201,14 @@ bool Folder::syncEnabled() const
 void Folder::setSyncEnabled( bool doit )
 {
   _enabled = doit;
-  _watcher->setEventsEnabled( doit );
 
   qDebug() << "setSyncEnabled - ############################ " << doit;
   if( doit ) {
-      // undefined until next sync
-      _syncResult.setStatus( SyncResult::NotYetStarted);
-      _syncResult.clearErrors();
       evaluateSync( QStringList() );
   } else {
+      // do not stop or start the watcher here, that is done internally by
+      // folder class. Even if the watcher fires, the folder does not
+      // schedule itself because it checks the var. _enabled before.
       _pollTimer.stop();
   }
 }
@@ -232,6 +231,7 @@ void Folder::evaluateSync(const QStringList &/*pathList*/)
   }
 
   _syncResult.setStatus( SyncResult::NotYetStarted );
+  _syncResult.clearErrors();
   emit scheduleToSync( alias() );
 
 }
