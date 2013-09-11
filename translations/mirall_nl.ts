@@ -129,102 +129,102 @@
         <translation>Hervatten</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="264"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="269"/>
         <source>Confirm Folder Remove</source>
         <translation>Bevestig het verwijderen van de map</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="265"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="270"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Weet u zeker dat u de synchronisatie van de folder &lt;i&gt;%1&lt;/i&gt; wilt stoppen?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Opmerking:&lt;/b&gt; Dit zal de bestanden niet van uw computer verwijderen.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="285"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="290"/>
         <source>Confirm Folder Reset</source>
         <translation>Bevestig map reset</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="286"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="291"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Wilt u de map &lt;i&gt;%1&lt;/i&gt; echt resetten en de database opnieuw opbouwen?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Let op:&lt;/b&gt; Deze functie is alleen ontworpen voor onderhoudsdoeleinden. Hoewel er geen bestanden worden verwijderd, kan dit een aanzienlijke hoeveelheid dataverkeer tot gevolg hebben en minuten tot zelfs uren duren, afhankelijk van de omvang van de map. Gebruik deze functie alleen als dit wordt geadviseerd door uw applicatiebeheerder.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="318"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="339"/>
         <source>Checking %1 connection...</source>
         <translation>Controleren van %1 connectie...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="323"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="344"/>
         <source>No %1 connection configured.</source>
         <translation>Geen %1 connectie geconfigureerd.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="385"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="406"/>
         <source>Sync Running</source>
         <translation>Bezig met synchroniseren</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="386"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="407"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Bezig met synchroniseren.&lt;br/&gt;Wil je stoppen met synchroniseren?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="452"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="473"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
         <translation>Verbonden met &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="453"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="474"/>
         <source>Version: %1 (%2)</source>
         <translation>Versie: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="464"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="485"/>
         <source>unknown problem.</source>
         <translation>onbekend probleem.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="467"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="488"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Verbinding met %1 mislukt: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="580"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="601"/>
         <source>Start</source>
         <translation>Start</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="589"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="610"/>
         <source>Currently</source>
         <translation>Momenteel</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="596"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="617"/>
         <source>Completely</source>
         <translation>Volledig</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="628"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="649"/>
         <source>%1 %2 %3 (%4 of %5)</source>
         <translation>%1 %2 %3 (%4 van %5)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="631"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="652"/>
         <source>Completely finished.</source>
         <translation>Helemaal klaar</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="638"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="659"/>
         <source>%1 of %2, file %3 of %4</source>
         <translation>%1 van %2, bestand %3 van %4</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="684"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="705"/>
         <source>%1 of %2 in use.</source>
         <translation>%1 van %2 gebruikt.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="688"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="709"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Er is nu geen informatie over het gebruik van de opslagruimte beschikbaar.</translation>
     </message>
@@ -232,112 +232,112 @@
 <context>
     <name>Mirall::Application</name>
     <message>
-        <location filename="../src/mirall/application.cpp" line="252"/>
+        <location filename="../src/mirall/application.cpp" line="254"/>
         <source>%1 Sync Started</source>
         <translation>%1 Synchronisatie gestart</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/application.cpp" line="253"/>
+        <location filename="../src/mirall/application.cpp" line="255"/>
         <source>Sync started for %n configured sync folder(s).</source>
         <translation><numerusform>Synchronisatie begonnen voor %n geconfigureerde synchronisatie map(pen).</numerusform><numerusform>Synchronisatie begonnen voor %n geconfigureerde synchronisatie map(pen).</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="325"/>
+        <location filename="../src/mirall/application.cpp" line="328"/>
         <source>Open %1 in browser</source>
         <translation>Open %1 in browser</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="327"/>
+        <location filename="../src/mirall/application.cpp" line="330"/>
         <source>Calculating quota...</source>
         <translation>Quota worden berekend ...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="329"/>
+        <location filename="../src/mirall/application.cpp" line="332"/>
         <source>Unknown status</source>
         <translation>Onbekende status</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="331"/>
+        <location filename="../src/mirall/application.cpp" line="334"/>
         <source>Settings...</source>
         <translation>Instellingen...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="332"/>
+        <location filename="../src/mirall/application.cpp" line="335"/>
         <source>Details...</source>
         <translation>Details ...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="337"/>
+        <location filename="../src/mirall/application.cpp" line="340"/>
         <source>Help</source>
         <translation>Help</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="339"/>
+        <location filename="../src/mirall/application.cpp" line="342"/>
         <source>Quit %1</source>
         <translation>%1 afsluiten</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="389"/>
+        <location filename="../src/mirall/application.cpp" line="392"/>
         <source>Open %1 folder</source>
         <translation>Open %1 map</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="537"/>
+        <location filename="../src/mirall/application.cpp" line="540"/>
         <source>%1% of %2 in use</source>
         <translation>%1% van %2 gebruikt</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="609"/>
+        <location filename="../src/mirall/application.cpp" line="612"/>
         <source>Up to date</source>
         <translation>Bijgewerkt</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="368"/>
+        <location filename="../src/mirall/application.cpp" line="371"/>
         <source>None.</source>
         <translation>Geen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="372"/>
+        <location filename="../src/mirall/application.cpp" line="375"/>
         <source>Recent Changes</source>
         <translation>Recente wijzigingen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="399"/>
+        <location filename="../src/mirall/application.cpp" line="402"/>
         <source>Managed Folders:</source>
         <translation>Beheerde mappen:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="402"/>
+        <location filename="../src/mirall/application.cpp" line="405"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>Open map &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="530"/>
+        <location filename="../src/mirall/application.cpp" line="533"/>
         <source>Quota n/a</source>
         <translation>Quota niet beschikbaar</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="563"/>
+        <location filename="../src/mirall/application.cpp" line="566"/>
         <source>No items synced recently</source>
         <translation>Recent niets gesynchroniseerd</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="572"/>
+        <location filename="../src/mirall/application.cpp" line="575"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="587"/>
+        <location filename="../src/mirall/application.cpp" line="590"/>
         <source>Syncing %1 of %2 (%3 of %4) </source>
         <translation>Synchroniseert %1 van %2 (%3 van %4) </translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="825"/>
+        <location filename="../src/mirall/application.cpp" line="837"/>
         <source>Folder %1: %2</source>
         <translation>Map %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/application.cpp" line="831"/>
+        <location filename="../src/mirall/application.cpp" line="843"/>
         <source>No sync folders configured.</source>
         <translation>Geen synchronisatie-mappen geconfigureerd.</translation>
     </message>
@@ -494,9 +494,24 @@
 <context>
     <name>Mirall::ConnectionValidator</name>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="112"/>
-        <source>&lt;p&gt;The configured server for this client is too old.&lt;/p&gt;&lt;p&gt;Please update to the latest server and restart the client.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;De voor deze client geconfigureerde server is te oud.&lt;/p&gt;&lt;p&gt;Werk de server bij tot de nieuwste versie en herstart de client.&lt;/p&gt;</translation>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="92"/>
+        <source>No ownCloud connection configured</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="113"/>
+        <source>The configured server for this client is too old</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="114"/>
+        <source>Please update to the latest server and restart the client.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="155"/>
+        <source>The provided credentials are not correct</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -654,47 +669,47 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
         <translation>Een oud synchronisatieverslag  &apos;%1&apos; is gevonden maar kan niet worden verwijderd. Zorg ervoor dat geen applicatie dit bestand gebruikt.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="567"/>
+        <location filename="../src/mirall/folderman.cpp" line="571"/>
         <source>Undefined State.</source>
         <translation>Ongedefiniëerde staat</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="570"/>
+        <location filename="../src/mirall/folderman.cpp" line="574"/>
         <source>Waits to start syncing.</source>
         <translation>In afwachting van synchronisatie.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="573"/>
+        <location filename="../src/mirall/folderman.cpp" line="577"/>
         <source>Preparing for sync.</source>
         <translation>Synchronisatie wordt voorbereid</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="576"/>
+        <location filename="../src/mirall/folderman.cpp" line="580"/>
         <source>Sync is running.</source>
         <translation>Bezig met synchroniseren.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="579"/>
+        <location filename="../src/mirall/folderman.cpp" line="583"/>
         <source>Server is currently not available.</source>
         <translation>De server is nu niet beschikbaar.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="582"/>
+        <location filename="../src/mirall/folderman.cpp" line="586"/>
         <source>Last Sync was successful.</source>
         <translation>Laatste synchronisatie was succesvol.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="587"/>
+        <location filename="../src/mirall/folderman.cpp" line="591"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Laatste synchronisatie geslaagd, maar met waarschuwingen over individuele bestanden.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="590"/>
+        <location filename="../src/mirall/folderman.cpp" line="594"/>
         <source>Setup Error.</source>
         <translation>Installatiefout.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="596"/>
+        <location filename="../src/mirall/folderman.cpp" line="600"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Synchronisatie onderbroken)</translation>
     </message>
@@ -733,8 +748,8 @@ werken. Controleer de de documentatie voor mogelijke oplossingen.</translation>
 <context>
     <name>Mirall::FolderWizard</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="361"/>
-        <location filename="../src/mirall/folderwizard.cpp" line="363"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="378"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="380"/>
         <source>Add Folder</source>
         <translation>Voeg Map Toe</translation>
     </message>
@@ -742,42 +757,42 @@ werken. Controleer de de documentatie voor mogelijke oplossingen.</translation>
 <context>
     <name>Mirall::FolderWizardSourcePage</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="74"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="75"/>
         <source>No local folder selected!</source>
         <translation>Geen lokale map geselecteerd!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="79"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="80"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>U heeft geen permissie om te schrijven naar de geselecteerde map!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="102"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="103"/>
         <source>The local path %1 is already an upload folder.&lt;br/&gt;Please pick another one!</source>
         <translation>Het lokale pad %1 is al een upload map.&lt;br/&gt;Kies een andere map!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="107"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="108"/>
         <source>An already configured folder is contained in the current entry.</source>
         <translation>Er bestaat een al geconfigureerde map in de huidige opdracht.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="112"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="113"/>
         <source>An already configured folder contains the currently entered directory.</source>
         <translation>Een reeds geconfigureerde map bevat de zojuist opgegeven map.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="122"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="123"/>
         <source>The alias can not be empty. Please provide a descriptive alias word.</source>
         <translation>De alias kan niet leeg zijn. Voer een beschrijvende alias in.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="133"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="134"/>
         <source>&lt;br/&gt;The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
         <translation>&lt;br/&gt;De alias &lt;i&gt;%1&lt;/i&gt; is al in gebruik. Kies een andere alias.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="154"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="155"/>
         <source>Select the source folder</source>
         <translation>Selecteer de bron map</translation>
     </message>
@@ -785,38 +800,48 @@ werken. Controleer de de documentatie voor mogelijke oplossingen.</translation>
 <context>
     <name>Mirall::FolderWizardTargetPage</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="191"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="192"/>
         <source>Add Remote Folder</source>
         <translation>Voeg externe map toe</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="192"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="193"/>
         <source>Enter the name of the new folder:</source>
         <translation>Voer de naam in van de nieuwe map:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="211"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="212"/>
         <source>Folder was successfully created on %1.</source>
         <translation>Map is succesvol aangemaakt op %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="214"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="215"/>
         <source>Failed to create the folder on %1.&lt;br/&gt;Please check manually.</source>
         <translation>Aanmaken van de map op %1 mislukt.&lt;br/&gt;Controleer handmatig.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="264"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="265"/>
         <source>Root (&quot;/&quot;)</source>
         <comment>root folder</comment>
         <translation>Hoofdmap(&quot;/&quot;)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="266"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="267"/>
         <source>Choose this to sync the entire account</source>
         <translation>Kies dit om uw volledige account te synchroniseren</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="302"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="308"/>
+        <source>This directory is already being synced.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="313"/>
+        <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="319"/>
         <source>If you sync the root folder, you can &lt;b&gt;not&lt;/b&gt; configure another sync directory.</source>
         <translation>Als u de hoofdmap synchroniseert, kan u &lt;b&gt;niet&lt;/b&gt; een andere synch map configureren.</translation>
     </message>
