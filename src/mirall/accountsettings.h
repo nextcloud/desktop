@@ -74,6 +74,8 @@ public slots:
     void slotUpdateQuota( qint64,qint64 );
     void slotIgnoreFilesEditor();
 
+    void setGeneralErrors( const QStringList& errors );
+
 protected slots:
     void slotAddFolder();
     void slotAddFolder( Folder* );
@@ -90,6 +92,7 @@ private:
     QString shortenFilename( const QString& folder, const QString& file ) const;
     void folderToModelItem( QStandardItem *, Folder * );
     QStandardItem* itemForFolder(const QString& );
+    void showConnectionLabel( const QString& message, const QString& tooltip = QString() );
 
     Ui::AccountSettings *ui;
     QPointer<ItemProgressDialog> _fileItemDialog;
@@ -99,6 +102,7 @@ private:
     QUrl   _OCUrl;
     QHash<QStandardItem*, QTimer*> _hideProgressTimers;
     QString _kindContext;
+    QStringList _generalErrors;
 
 };
 

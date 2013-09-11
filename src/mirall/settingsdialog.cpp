@@ -123,4 +123,9 @@ void SettingsDialog::slotUpdateAccountState()
     _accountItem->setIcon(Theme::instance()->syncStateIcon(state.status()));
 }
 
+void SettingsDialog::setGeneralErrors(const QStringList &errors)
+{
+    _accountSettings->setGeneralErrors(errors);
+}
+
 } // namespace Mirall

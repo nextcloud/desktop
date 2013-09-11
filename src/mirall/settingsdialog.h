@@ -40,6 +40,7 @@ public:
     ~SettingsDialog();
 
     void addAccount(const QString &title, QWidget *widget);
+    void setGeneralErrors( const QStringList& errors );
 
 protected slots:
     void slotUpdateAccountState();
@@ -48,7 +49,6 @@ private:
     Ui::SettingsDialog *_ui;
     AccountSettings *_accountSettings;
     QListWidgetItem *_accountItem;
-
 };
 
 }
