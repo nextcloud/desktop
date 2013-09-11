@@ -93,7 +93,6 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
-    //csync_set_log_callback(   _csync_ctx, csyncLogCatcher );
     csync_set_log_level(11);
     csync_enable_conflictcopys(_csync_ctx);
 
