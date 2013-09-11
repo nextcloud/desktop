@@ -231,6 +231,8 @@ void Application::slotCredentialsFetched()
 
 void Application::runValidator()
 {
+    _startupFail.clear();
+
     _conValidator = new ConnectionValidator();
     connect( _conValidator, SIGNAL(connectionResult(ConnectionValidator::Status)),
              this, SLOT(slotConnectionValidatorResult(ConnectionValidator::Status)) );
@@ -255,14 +257,15 @@ void Application::slotConnectionValidatorResult(ConnectionValidator::Status stat
         // queue up the sync for all folders.
         folderMan->slotScheduleAllFolders();
 
-        computeOverallSyncStatus();
-
-        setupContextMenu();
-    } else if( status == ConnectionValidator::NotConfigured ) {
-        // this can not happen, it should be caught in first step of startup.
     } else {
-        // What else?
+        // if we have problems here, it's unlikely that syncing will work.
+        FolderMan::instance()->setSyncEnabled(false);
+
+        _startupFail = _conValidator->errors();
     }
+    computeOverallSyncStatus();
+    setupContextMenu();
+
     _conValidator->deleteLater();
 }
 
@@ -694,6 +697,8 @@ void Application::slotSettings()
         _settingsDialog->setAttribute( Qt::WA_DeleteOnClose, true );
         _settingsDialog->show();
     }
+
+    _settingsDialog->setGeneralErrors( _startupFail );
     Utility::raiseDialog(_settingsDialog);
 }
 
@@ -816,23 +821,31 @@ void Application::computeOverallSyncStatus()
     Folder::Map map = folderMan->map();
     SyncResult overallResult = FolderMan::accountStatus(map.values());
 
-    // create the tray blob message, check if we have an defined state
-    if( overallResult.status() != SyncResult::Undefined ) {
-        QStringList allStatusStrings;
-        foreach(Folder* folder, map.values()) {
-            qDebug() << "Folder in overallStatus Message: " << folder << " with name " << folder->alias();
-            QString folderMessage = folderMan->statusToString(folder->syncResult().status(), folder->syncEnabled());
-            allStatusStrings += tr("Folder %1: %2").arg(folder->alias(), folderMessage);
-        }
-
-        if( ! allStatusStrings.isEmpty() )
-            trayMessage = allStatusStrings.join(QLatin1String("\n"));
-        else
-            trayMessage = tr("No sync folders configured.");
-
-        QIcon statusIcon = _theme->syncStateIcon( overallResult.status(), true);
+    // if there have been startup problems, show an error message.
+    if( !_startupFail.isEmpty() ) {
+        trayMessage = _startupFail.join(QLatin1String("\n"));
+        QIcon statusIcon = _theme->syncStateIcon( SyncResult::Error, true );
         _tray->setIcon( statusIcon );
         _tray->setToolTip(trayMessage);
+    } else {
+        // create the tray blob message, check if we have an defined state
+        if( overallResult.status() != SyncResult::Undefined ) {
+            QStringList allStatusStrings;
+            foreach(Folder* folder, map.values()) {
+                qDebug() << "Folder in overallStatus Message: " << folder << " with name " << folder->alias();
+                QString folderMessage = folderMan->statusToString(folder->syncResult().status(), folder->syncEnabled());
+                allStatusStrings += tr("Folder %1: %2").arg(folder->alias(), folderMessage);
+            }
+
+            if( ! allStatusStrings.isEmpty() )
+                trayMessage = allStatusStrings.join(QLatin1String("\n"));
+            else
+                trayMessage = tr("No sync folders configured.");
+
+            QIcon statusIcon = _theme->syncStateIcon( overallResult.status(), true);
+            _tray->setIcon( statusIcon );
+            _tray->setToolTip(trayMessage);
+        }
     }
 }
 

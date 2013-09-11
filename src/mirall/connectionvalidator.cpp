@@ -89,6 +89,7 @@ void ConnectionValidator::checkConnection()
         // checks for status.php
         ownCloudInfo::instance()->checkInstallation();
     } else {
+        _errors << tr("No ownCloud connection configured");
         emit connectionResult( NotConfigured );
     }
 }
@@ -109,8 +110,8 @@ void ConnectionValidator::slotStatusFound( const QString& url, const QString& ve
                 this, SLOT(slotNoStatusFound(QNetworkReply*)));
 
     if( version.startsWith("4.0") ) {
-        _errors.append( tr("<p>The configured server for this client is too old.</p>"
-                           "<p>Please update to the latest server and restart the client.</p>"));
+        _errors.append( tr("The configured server for this client is too old") );
+        _errors.append( tr("Please update to the latest server and restart the client.") );
         emit connectionResult( ServerVersionMismatch );
         return;
     }
@@ -144,15 +145,17 @@ void ConnectionValidator::slotCheckAuthentication()
     // continue in slotAuthCheck here :-)
 }
 
-void ConnectionValidator::slotAuthCheck( const QString& ,QNetworkReply *reply )
+void ConnectionValidator::slotAuthCheck( const QString&, QNetworkReply *reply )
 {
     Status stat = Connected;
 
     if( reply->error() == QNetworkReply::AuthenticationRequiredError ||
             reply->error() == QNetworkReply::OperationCanceledError ) { // returned if the user is wrong.
         qDebug() << "******** Password is wrong!";
-        _errors << "The provided credentials are wrong.";
+        _errors << tr("The provided credentials are not correct");
         stat = CredentialsWrong;
+    } else if( reply->error() != QNetworkReply::NoError ) {
+        _errors << reply->errorString();
     }
 
     // disconnect from ownCloud Info signals

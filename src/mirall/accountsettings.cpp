@@ -210,6 +210,11 @@ void AccountSettings::setListWidgetItem( QListWidgetItem *item )
     _item = item;
 }
 
+void AccountSettings::setGeneralErrors( const QStringList& errors )
+{
+    _generalErrors = errors;
+}
+
 void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f )
 {
     if( ! item || !f ) return;
@@ -307,6 +312,22 @@ void AccountSettings::slotDoubleClicked( const QModelIndex& indx )
     emit openFolderAlias( alias );
 }
 
+void AccountSettings::showConnectionLabel( const QString& message, const QString& tooltip )
+{
+    const QString errStyle = QLatin1String("color:#ffffff; background-color:#bb4d4d;padding:5px;"
+                                           "border-width: 1px; border-style: solid; border-color: #aaaaaa;"
+                                           "border-radius:5px;");
+    if( _generalErrors.isEmpty() ) {
+        ui->connectLabel->setText( message );
+        ui->connectLabel->setToolTip(tooltip);
+    } else {
+        const QString msg = _generalErrors.join(QLatin1String("\n"));
+        ui->connectLabel->setText( msg );
+        ui->connectLabel->setToolTip(QString());
+        ui->connectLabel->setStyleSheet(errStyle);
+    }
+}
+
 void AccountSettings::slotCheckConnection()
 {
     if( ownCloudInfo::instance()->isConfigured() ) {
@@ -315,12 +336,12 @@ void AccountSettings::slotCheckConnection()
         connect(ownCloudInfo::instance(), SIGNAL(noOwncloudFound(QNetworkReply*)),
                 this, SLOT(slotOCInfoFail(QNetworkReply*)));
 
-        ui->connectLabel->setText( tr("Checking %1 connection...").arg(Theme::instance()->appNameGUI()));
+        showConnectionLabel( tr("Checking %1 connection...").arg(Theme::instance()->appNameGUI()));
         qDebug() << "Check status.php from statusdialog.";
         ownCloudInfo::instance()->checkInstallation();
     } else {
         // ownCloud is not yet configured.
-        ui->connectLabel->setText( tr("No %1 connection configured.").arg(Theme::instance()->appNameGUI()));
+        showConnectionLabel( tr("No %1 connection configured.").arg(Theme::instance()->appNameGUI()) );
         ui->_ButtonAdd->setEnabled( false);
     }
 }
@@ -449,8 +470,8 @@ void AccountSettings::slotOCInfo( const QString& url, const QString& versionStr,
     ui->connectLabel->setOpenExternalLinks(true);
     QUrl safeUrl(url);
     safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
-    ui->connectLabel->setText( tr("Connected to <a href=\"%1\">%2</a>.").arg(url, safeUrl.toString()) );
-    ui->connectLabel->setToolTip( tr("Version: %1 (%2)").arg(versionStr).arg(version));
+    showConnectionLabel( tr("Connected to <a href=\"%1\">%2</a>.").arg(url, safeUrl.toString()),
+                         tr("Version: %1 (%2)").arg(versionStr).arg(version) );
     ui->_ButtonAdd->setEnabled(true);
 
     disconnect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(const QString&, const QString&, const QString&, const QString&)),
@@ -464,7 +485,7 @@ void AccountSettings::slotOCInfoFail( QNetworkReply *reply)
     QString errStr = tr("unknown problem.");
     if( reply ) errStr = reply->errorString();
 
-    ui->connectLabel->setText( tr("<p>Failed to connect to %1: <tt>%2</tt></p>").arg(Theme::instance()->appNameGUI()).arg(errStr) );
+    showConnectionLabel( tr("<p>Failed to connect to %1: <tt>%2</tt></p>").arg(Theme::instance()->appNameGUI()).arg(errStr) );
     ui->_ButtonAdd->setEnabled( false);
 
     disconnect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(const QString&, const QString&, const QString&, const QString&)),
