@@ -22,7 +22,7 @@ if(SPHINX_FOUND)
        add_custom_target(doc DEPENDS doc-html doc-man COMMENT "Building documentation...")
     endif(WITH_DOC)
 
-    if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/ocdoc")
+    if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/ocdoc/_shared_assets")
        add_dependencies(doc doc-html-org)
        add_dependencies(doc doc-html-com)
     endif()
