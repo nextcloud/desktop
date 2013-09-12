@@ -537,7 +537,7 @@ const char *hbf_error_string(hbf_transfer_t *transfer, Hbf_State state)
         re = "Block was not yet tried to transfer.";
         break;
     case HBF_TRANSFER:         /* transfer currently running  */
-        re = "Block is currently transfered.";
+        re = "Block is currently transferred.";
         break;
     case HBF_TRANSFER_FAILED:  /* transfer tried but failed   */
         re = "Block transfer failed.";
