@@ -1,27 +1,27 @@
-csync(1)
+ocsync(1)
 ========
 
 NAME
 ----
 
-csync - A commandline frontent for csync a user level bidirectional file
+ocsync - A commandline frontent for csync a user level bidirectional file
 synchronizer.
 
 
 SYNOPSIS
 --------
 
-*csync* ['OPTION'...] 'SOURCE' 'DESTINATION'
+*ocsync* ['OPTION'...] 'SOURCE' 'DESTINATION'
 
 
 DESCRIPTION
 -----------
 
-csync is a client only bidirectional file synchronizer. It synchronizes the
+ocsync is a client only bidirectional file synchronizer. It synchronizes the
 content of 'SOURCE' with 'DESTINATION' and vice versa. The 'DESTINATION' can
 be a local directory or a remote file server.
 
-You can use csync for different things. The intention is to provide Roaming
+You can use ocsync for different things. The intention is to provide Roaming
 Home Directories for Linux but you can use it to synchronize your music
 collection or create a backup of a directory.
 
@@ -66,15 +66,15 @@ EXIT STATUS
 EXAMPLES
 --------
 
-* csync /home/user /backup/home/user
+* ocsync /home/user /backup/home/user
 
   Synchronizer two local directories.
 
-* csync /home/user smb://server/share/user
+* ocsync /home/user smb://server/share/user
 
   Synchronize a home directory with a SMB share.
 
-* csync /home/user smb://user:password@server/share/user
+* ocsync /home/user smb://user:password@server/share/user
 
   Synchronize a home directory with a SMB share and provide username and
   password directly.
@@ -88,14 +88,14 @@ Please report bugs at https://dev.csync.org/.
 SEE ALSO
 --------
 
-*libcsync*(7)
+*libocsync*(7)
 
 
 AUTHORS
 -------
 
-Andreas Schneider <asn@cryptomilk.org>
-
+* Andreas Schneider <mail@cynapses.org>
+* Klaas Freitag <freitag@owncloud.com>
 
 COPYING
 -------
