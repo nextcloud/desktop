@@ -35,7 +35,7 @@
  *
  * In the first phase we copy the file to a temporary file on the opposite
  * replica. This has the advantage that we can check if file which has been
- * copied to the opposite replica has been transfered successfully. If the
+ * copied to the opposite replica has been transferred successfully. If the
  * connection gets interrupted during the transfer we still have the original
  * states of the file. This means no data will be lost.
  *
