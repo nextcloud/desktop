@@ -68,7 +68,7 @@ static void _csync_file_stat_set_error(csync_file_stat_t *st, const char *error)
     st->error_string = c_strdup(error);
 }
 
-/* Recursively mark the parent flder as an error */
+/* Recursively mark the parent folder as an error */
 static void _csync_report_parent_error(CSYNC *ctx, csync_file_stat_t *st) {
     const char *dir = NULL;
     uint64_t h;
