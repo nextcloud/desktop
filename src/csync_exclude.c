@@ -190,14 +190,16 @@ CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype) {
       SAFE_FREE(dname);
       goto out;
   }
-  SAFE_FREE(bname);
-  SAFE_FREE(dname);
-
   rc = csync_fnmatch(".csync-progressdatabase*", bname, 0);
   if (rc == 0) {
       match = CSYNC_FILE_SILENTLY_EXCLUDED;
+      SAFE_FREE(bname);
+      SAFE_FREE(dname);
       goto out;
   }
+
+  SAFE_FREE(bname);
+  SAFE_FREE(dname);
 
   if (ctx->excludes == NULL) {
       goto out;
