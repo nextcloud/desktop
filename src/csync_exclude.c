@@ -24,6 +24,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <fnmatch.h>
 
 #include "c_lib.h"
 
@@ -129,14 +130,15 @@ void csync_exclude_destroy(CSYNC *ctx) {
   c_strlist_destroy(ctx->excludes);
 }
 
-CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path) {
-  size_t i;
-  const char *p;
-  char *bname;
-  int rc;
+CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype) {
+  size_t i = 0;
+  const char *p = NULL;
+  char *bname = NULL;
+  char *dname = NULL;
+  char *prev_dname = NULL;
+  int rc = -1;
   CSYNC_EXCLUDE_TYPE match = CSYNC_NOT_EXCLUDED;
   CSYNC_EXCLUDE_TYPE type  = CSYNC_NOT_EXCLUDED;
-  const char *it;
 
   /* exclude the lock file */
   if (c_streq( path, CSYNC_LOCK_FILE )) {
@@ -161,43 +163,112 @@ CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path) {
     }
   }
 
+  /* split up the path */
+  dname = c_dirname(path);
   bname = c_basename(path);
-  if (bname == NULL) {
-      return CSYNC_NOT_EXCLUDED;
+
+  if (bname == NULL || dname == NULL) {
+      match = CSYNC_NOT_EXCLUDED;
+      SAFE_FREE(bname);
+      SAFE_FREE(dname);
+      goto out;
   }
 
   rc = csync_fnmatch(".csync_journal.db*", bname, 0);
   if (rc == 0) {
       match = CSYNC_FILE_SILENTLY_EXCLUDED;
+      SAFE_FREE(bname);
+      SAFE_FREE(dname);
       goto out;
   }
+  SAFE_FREE(bname);
+  SAFE_FREE(dname);
 
   if (ctx->excludes == NULL) {
       goto out;
   }
 
+  /* Loop over all exclude patterns and evaluate the given path */
   for (i = 0; match == CSYNC_NOT_EXCLUDED && i < ctx->excludes->count; i++) {
-      it = ctx->excludes->vector[i];
+      bool match_dirs_only = false;
+      char *pattern_stored = c_strdup(ctx->excludes->vector[i]);
+      char* pattern = pattern_stored;
+
       type = CSYNC_FILE_EXCLUDE_LIST;
+      if (strlen(pattern) < 1) {
+          continue;
+      }
       /* Ecludes starting with ']' means it can be cleanup */
-      if (it[0] == ']') {
-        ++it;
-        type = CSYNC_FILE_EXCLUDE_AND_REMOVE;
+      if (pattern[0] == ']') {
+          ++pattern;
+          if (filetype == CSYNC_FTW_TYPE_FILE) {
+              type = CSYNC_FILE_EXCLUDE_AND_REMOVE;
+          }
+      }
+      /* Check if the pattern applies to pathes only. */
+      if (pattern[strlen(pattern)-1] == '/') {
+          match_dirs_only = true;
+          pattern[strlen(pattern)-1] = '\0'; /* Cut off the slash */
       }
 
-      rc = csync_fnmatch(it, path, 0);
-      if (rc == 0) {
-          match = type;
+      /* check if the pattern contains a / and if, compare to the whole path */
+      if (strchr(pattern, '/')) {
+          rc = csync_fnmatch(pattern, path, FNM_PATHNAME);
+          if( rc == 0 ) {
+              match = type;
+          }
+          /* if the pattern requires a dir, but path is not, its still not excluded. */
+          if (match_dirs_only && filetype != CSYNC_FTW_TYPE_DIR) {
+              match = CSYNC_NOT_EXCLUDED;
+          }
       }
 
-      rc = csync_fnmatch(it, bname, 0);
-      if (rc == 0) {
-          match = type;
+      /* if still not excluded, check each component of the path */
+      if (match == CSYNC_NOT_EXCLUDED) {
+          int trailing_component = 1;
+          dname = c_dirname(path);
+          bname = c_basename(path);
+
+          if (bname == NULL || dname == NULL) {
+              match = CSYNC_NOT_EXCLUDED;
+              goto out;
+          }
+
+          /* Check each component of the path */
+          do {
+              /* Do not check the bname if its a file and the pattern matches dirs only. */
+              if ( !(trailing_component == 1 /* it is the trailing component */
+                     && match_dirs_only      /* but only directories are matched by the pattern */
+                     && filetype == CSYNC_FTW_TYPE_FILE) ) {
+                  /* Check the name component against the pattern */
+                  rc = csync_fnmatch(pattern, bname, 0);
+                  if (rc == 0) {
+                      match = type;
+                  }
+              }
+              if (!(c_streq(dname, ".") || c_streq(dname, "/"))) {
+                  rc = csync_fnmatch(pattern, dname, 0);
+                  if (rc == 0) {
+                      match = type;
+                  }
+              }
+              trailing_component = 0;
+              prev_dname = dname;
+              SAFE_FREE(bname);
+              bname = c_basename(prev_dname);
+              dname = c_dirname(prev_dname);
+              SAFE_FREE(prev_dname);
+
+          } while( match == CSYNC_NOT_EXCLUDED && !c_streq(dname, ".")
+                     && !c_streq(dname, "/") );
       }
+      SAFE_FREE(pattern_stored);
+      SAFE_FREE(bname);
+      SAFE_FREE(dname);
   }
 
 out:
-  free(bname);
+
   return match;
 }
 

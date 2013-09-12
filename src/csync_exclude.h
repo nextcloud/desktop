@@ -63,7 +63,7 @@ void csync_exclude_destroy(CSYNC *ctx);
  *
  * @return  2 if excluded and needs cleanup, 1 if excluded, 0 if not.
  */
-CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path);
+CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype);
 
 #endif /* _CSYNC_EXCLUDE_H */
 
