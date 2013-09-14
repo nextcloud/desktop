@@ -42,7 +42,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="163"/>
         <source>Refresh</source>
-        <translation>rafraichir</translation>
+        <translation>Rafraîchir</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="177"/>
@@ -186,7 +186,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="488"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Echec de connexion à %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Échec de connexion à %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="601"/>
@@ -352,12 +352,12 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="79"/>
         <source>CSync failed to create a lock file.</source>
-        <translation>Csync n&apos;a pu créer le fichier de verrouillage.</translation>
+        <translation>CSync n&apos;a pu créer le fichier de verrouillage.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="82"/>
         <source>CSync failed to load the state db.</source>
-        <translation>Csync n&apos;a pas pu charger l&apos;état de la base de données.</translation>
+        <translation>CSync n&apos;a pas pu charger l&apos;état de la base de données.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="85"/>
@@ -496,22 +496,22 @@
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="92"/>
         <source>No ownCloud connection configured</source>
-        <translation type="unfinished"/>
+        <translation>Pas de connexion ownCloud configuré</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="113"/>
         <source>The configured server for this client is too old</source>
-        <translation type="unfinished"/>
+        <translation>Le serveur configuré pour ce client est trop vieux</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="114"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation type="unfinished"/>
+        <translation>Veuillez mettre à jour avec la dernière version du serveur et redémarrer le client.</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="155"/>
         <source>The provided credentials are not correct</source>
-        <translation type="unfinished"/>
+        <translation>Les informations d&apos;identification fournies ne sont pas correctes</translation>
     </message>
 </context>
 <context>
@@ -676,7 +676,7 @@ Voulez-vous réellement effectuer cette opération ?</translation>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="574"/>
         <source>Waits to start syncing.</source>
-        <translation>En attente de synchronisation .</translation>
+        <translation>En attente de synchronisation.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="577"/>
@@ -833,12 +833,12 @@ documentation pour des corrections éventuelles.</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="308"/>
         <source>This directory is already being synced.</source>
-        <translation type="unfinished"/>
+        <translation>Le dossier est déja synchronisé.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="313"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Vous synchronisez déja &lt;i&gt;%1&lt;/i&gt;, qui est un dossier parent de &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="319"/>
@@ -1595,7 +1595,7 @@ conflits et le fichier côté serveur est disponible sous son nom original.</tra
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="176"/>
         <source>Effective Date: %1</source>
-        <translation>Emis le : %1</translation>
+        <translation>Émis le : %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="177"/>
@@ -1605,7 +1605,7 @@ conflits et le fichier côté serveur est disponible sous son nom original.</tra
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="181"/>
         <source>Issuer: %1</source>
-        <translation>Emetteur : %1</translation>
+        <translation>Émetteur : %1</translation>
     </message>
 </context>
 <context>

@@ -1320,7 +1320,7 @@ name</source>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="100"/>
         <source>This url is secure. You can use it.</source>
-        <translation type="unfinished"/>
+        <translation>Este endereço é seguro. Pode usar</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="105"/>
@@ -1368,7 +1368,7 @@ name</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="225"/>
         <source>Failed to connect to %1:&lt;br/&gt;%2</source>
-        <translation type="unfinished"/>
+        <translation>Erro na ligação a %1:&lt;br/&gt;%2</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="294"/>
@@ -1398,7 +1398,7 @@ name</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="320"/>
         <source>Could not create local folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível criar a pasta local %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="358"/>
@@ -1408,12 +1408,12 @@ name</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="362"/>
         <source>Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Erro: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="377"/>
         <source>creating folder on ownCloud: %1</source>
-        <translation type="unfinished"/>
+        <translation>a criar a pasta na ownCloud: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="396"/>
@@ -1476,12 +1476,12 @@ name</source>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="51"/>
         <source>Open %1</source>
-        <translation type="unfinished"/>
+        <translation>Abrir %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="43"/>
         <source>Open Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>Abrir a pasta local</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="39"/>
@@ -1746,7 +1746,7 @@ name</source>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="48"/>
         <source>&amp;Password</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Password</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="58"/>
@@ -1894,7 +1894,7 @@ name</source>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="309"/>
         <source>&amp;Password</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Password</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="347"/>

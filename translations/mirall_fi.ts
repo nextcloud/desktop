@@ -496,17 +496,17 @@
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="92"/>
         <source>No ownCloud connection configured</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud-yhteyttä ei ole määritelty</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="113"/>
         <source>The configured server for this client is too old</source>
-        <translation type="unfinished"/>
+        <translation>Määritelty palvelin on ohjelmistoversioltaan liian vanha tälle asiakasohjelmistolle</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="114"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation type="unfinished"/>
+        <translation>Päivitä uusimpaan palvelinversioon ja käynnistä asiakasohjelmisto uudelleen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="155"/>
@@ -828,12 +828,12 @@ documentation for possible fixes.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="308"/>
         <source>This directory is already being synced.</source>
-        <translation type="unfinished"/>
+        <translation>Kansio on jo synkronoinnin alaisena.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="313"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Synkronoit jo kansiota &lt;i&gt;%1&lt;/i&gt;, ja se on kansion &lt;i&gt;%2&lt;/i&gt; yläkansio.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="319"/>

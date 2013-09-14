@@ -497,22 +497,22 @@ Diese Funktion ist nur für Wartungszwecke gedacht. Es werden keine Dateien entf
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="92"/>
         <source>No ownCloud connection configured</source>
-        <translation type="unfinished"/>
+        <translation>Keine ownCloud-Verbindung konfiguriert</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="113"/>
         <source>The configured server for this client is too old</source>
-        <translation type="unfinished"/>
+        <translation>Der konfigurierte Server ist für diesen Klient zu alt</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="114"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation type="unfinished"/>
+        <translation>Aktualisieren Sie auf die letzte Server-Version und starten Sie den Klient neu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="155"/>
         <source>The provided credentials are not correct</source>
-        <translation type="unfinished"/>
+        <translation>Die zur Verfügung gestellten Anmeldeinformationen sind nicht korrekt</translation>
     </message>
 </context>
 <context>
@@ -834,12 +834,12 @@ Dokumentation für mögliche Lösungen.</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="308"/>
         <source>This directory is already being synced.</source>
-        <translation type="unfinished"/>
+        <translation>Dieses Verzeichnis ist bereits synchronisiert.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="313"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Sie synchronisieren bereits &lt;i&gt;%1&lt;/i&gt;, das ein übergeordneten Ordner von &lt;i&gt;%2&lt;/i&gt; ist.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="319"/>

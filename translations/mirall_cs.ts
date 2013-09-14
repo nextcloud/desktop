@@ -226,7 +226,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="709"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation type="unfinished"/>
+        <translation>Momentálně nejsou k dispozici žádné informace o využití úložiště</translation>
     </message>
 </context>
 <context>
@@ -362,7 +362,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="85"/>
         <source>CSync failed to write the state db.</source>
-        <translation type="unfinished"/>
+        <translation>CSync selhal při zápisu do databáze stavu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="88"/>
@@ -432,7 +432,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="131"/>
         <source>CSync could not authenticate at the proxy.</source>
-        <translation type="unfinished"/>
+        <translation>CSync se nemohlo přihlásit k proxy.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="134"/>
@@ -496,22 +496,22 @@
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="92"/>
         <source>No ownCloud connection configured</source>
-        <translation type="unfinished"/>
+        <translation>Nebylo nastaveno žádné připojení k ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="113"/>
         <source>The configured server for this client is too old</source>
-        <translation type="unfinished"/>
+        <translation>Server nastavený pro tohoto klienta je příliš starý</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="114"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation type="unfinished"/>
+        <translation>Prosím, aktualizujte na poslední verzi serveru a restartujte klienta.</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="155"/>
         <source>The provided credentials are not correct</source>
-        <translation type="unfinished"/>
+        <translation>Poskytnuté přihlašovací údaje nejsou správné</translation>
     </message>
 </context>
 <context>
@@ -833,12 +833,12 @@ dokumentací pro možnost opravy.</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="308"/>
         <source>This directory is already being synced.</source>
-        <translation type="unfinished"/>
+        <translation>Tento adresář je již synchronizován.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="313"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Již synchronizujete složku &lt;i&gt;%1&lt;/i&gt;, která je složce &lt;i&gt;%2&lt;/i&gt; nadřazená.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="319"/>
@@ -999,13 +999,14 @@ Zvolené položky budou smazány také v případě, že brání smazání adres
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="123"/>
         <source>Soft Link ignored</source>
-        <translation type="unfinished"/>
+        <translation>Symbolický odkaz ignorován</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="124"/>
         <source>Softlinks break the semantics of synchronization.
 Please do not use them in synced directories</source>
-        <translation type="unfinished"/>
+        <translation>Symbolické odkazy narušují sémantiku synchronizace.
+Prosím, nepoužívejte je v synchronizovaných adresářích</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="127"/>
@@ -1022,34 +1023,38 @@ Please do not use them in synced directories</source>
         <source>The %1 was ignored because it is listed in the clients ignore list
 or the %1 name contains characters that are not syncable
 in a cross platform environment</source>
-        <translation type="unfinished"/>
+        <translation>Položka %1 byla ignorována, jelikož je na klientském seznamu ignorovaných
+nebo název %1 obsahuje znaky nesynchronizovatelné
+v prostředí více platforem</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="134"/>
         <source>Item ignored</source>
-        <translation type="unfinished"/>
+        <translation>Položka ignorována</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="136"/>
         <source>%1 on ignore list</source>
-        <translation type="unfinished"/>
+        <translation>%1 na seznamu ignorovaných</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="137"/>
         <source>The %1 was skipped because it is listed on the clients
 list of names to ignore</source>
-        <translation type="unfinished"/>
+        <translation>Položka %1 byla přeskočena, protože je na seznamu
+ignorovaných jmen klienta</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="140"/>
         <source>Invalid characters</source>
-        <translation type="unfinished"/>
+        <translation>Neplatné znaky</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="141"/>
         <source>The %1 name contains one or more invalid characters which break
 syncing in a cross platform environment</source>
-        <translation type="unfinished"/>
+        <translation>Název %1 obsahuje alespoň jeden neplatný znak, který narušuje
+synchronizaci v prostředí více platforem</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="146"/>

@@ -496,22 +496,22 @@
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="92"/>
         <source>No ownCloud connection configured</source>
-        <translation type="unfinished"/>
+        <translation>Non hai configurada ningunha conexión ao </translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="113"/>
         <source>The configured server for this client is too old</source>
-        <translation type="unfinished"/>
+        <translation>O servidor configurado para este cliente é moi antigo</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="114"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation type="unfinished"/>
+        <translation>Actualice ao último servidor e reinicie o cliente.</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="155"/>
         <source>The provided credentials are not correct</source>
-        <translation type="unfinished"/>
+        <translation>As credenciais fornecidas non son correctas</translation>
     </message>
 </context>
 <context>
@@ -833,12 +833,12 @@ fiábel. Revise a documentación para posíbeis arranxos.</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="308"/>
         <source>This directory is already being synced.</source>
-        <translation type="unfinished"/>
+        <translation>Este directorio xa está sincronizado.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="313"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Xa está a sincronizar &lt;i&gt;%1&lt;/i&gt;, é o cartafol pai de &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="319"/>

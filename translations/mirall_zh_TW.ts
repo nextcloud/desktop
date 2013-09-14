@@ -65,27 +65,27 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="20"/>
         <source>Account Maintenance</source>
-        <translation type="unfinished"/>
+        <translation>帳號維護</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="29"/>
         <source>Edit Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>編輯忽略的檔案</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="36"/>
         <source>Modify Account</source>
-        <translation type="unfinished"/>
+        <translation>修改帳號</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="46"/>
         <source>Sync Status</source>
-        <translation type="unfinished"/>
+        <translation>同步處理狀態</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="52"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
-        <translation type="unfinished"/>
+        <translation>以&lt;user&gt;的身分連接&lt;server&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="71"/>
@@ -111,12 +111,12 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="110"/>
         <source>Storage Usage</source>
-        <translation type="unfinished"/>
+        <translation>空間用途</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="129"/>
         <source>Retrieving usage information...</source>
-        <translation type="unfinished"/>
+        <translation>取得用途資訊...</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="136"/>
@@ -334,7 +334,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="837"/>
         <source>Folder %1: %2</source>
-        <translation type="unfinished"/>
+        <translation>資料夾 %1: %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="843"/>
@@ -658,12 +658,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="134"/>
         <source>Could not reset folder state</source>
-        <translation type="unfinished"/>
+        <translation>無法重置資料夾狀態</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="135"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation type="unfinished"/>
+        <translation>發現較舊的同步處理日誌&apos;%1&apos;，但無法移除。請確認沒有應用程式正在使用它。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="571"/>
@@ -754,12 +754,12 @@ documentation for possible fixes.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="75"/>
         <source>No local folder selected!</source>
-        <translation type="unfinished"/>
+        <translation>沒有選擇本地資料夾!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="80"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation type="unfinished"/>
+        <translation>您沒有權限來寫入被選取的資料夾!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="103"/>
@@ -1342,7 +1342,7 @@ name</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="494"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program.Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished"/>
+        <translation>無法移除與備份此資料夾，因為有其他的程式正在使用其中的資料夾或者檔案。請關閉使用中的資料夾或檔案並重式或者取消設定。</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="510"/>
@@ -1987,12 +1987,12 @@ name</source>
     <message>
         <location filename="../src/main.cpp" line="24"/>
         <source>System Tray not available</source>
-        <translation type="unfinished"/>
+        <translation>系統常駐程式無法使用</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="25"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
-        <translation type="unfinished"/>
+        <translation>%1需要可運作的系統常駐程式區。若您正在執行XFCE，請參考 &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;這份教學&lt;/a&gt;。若非如此則請安裝一個系統常駐的應用程式，如&apos;trayer&apos;，並再度嘗試。</translation>
     </message>
 </context>
 <context>
@@ -2001,7 +2001,7 @@ name</source>
         <location filename="../src/mirall/owncloudtheme.cpp" line="90"/>
         <source>If you don&apos;t have an ownCloud server yet, see &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt; for more info.</source>
         <comment>Top text in setup wizard. Keep short!</comment>
-        <translation type="unfinished"/>
+        <translation>若您尚未擁有ownCloud伺服器，可參閱&lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt; 來獲得更多資訊。</translation>
     </message>
 </context>
 <context>
