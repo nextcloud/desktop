@@ -138,7 +138,8 @@ QNetworkReply* ownCloudInfo::mkdirRequest( const QString& dir )
     qDebug() << "OCInfo Making dir " << dir;
     _authAttempts = 0;
     QNetworkRequest req;
-    QUrl url = QUrl(webdavUrl(_connection));
+    QUrl url( webdavUrl(_connection) );
+    // ensure #, ? and co are interpreted as part of the path and nothing else
     url.setEncodedPath(url.encodedPath()+QUrl::toPercentEncoding(dir, "/"));
 
     req.setUrl( url );
@@ -162,7 +163,7 @@ QNetworkReply* ownCloudInfo::mkdirRequest( const QString& dir )
 QNetworkReply* ownCloudInfo::getQuotaRequest( const QString& dir )
 {
     QNetworkRequest req;
-    req.setUrl( QUrl( webdavUrl(_connection) + dir ) );
+    req.setUrl( QUrl( webdavUrl(_connection) + QUrl::toPercentEncoding(dir, "/") ) );
     req.setRawHeader("Depth", "0");
     QByteArray xml("<?xml version=\"1.0\" ?>\n"
                    "<d:propfind xmlns:d=\"DAV:\">\n"
@@ -190,7 +191,10 @@ QNetworkReply* ownCloudInfo::getQuotaRequest( const QString& dir )
 QNetworkReply* ownCloudInfo::getDirectoryListing( const QString& dir )
 {
     QNetworkRequest req;
-    req.setUrl( QUrl( webdavUrl(_connection) + dir ) );
+    QUrl url( webdavUrl(_connection) );
+    // ensure #, ? and co are interpreted as part of the path and nothing else
+    url.setPath(url.path() + dir );
+    req.setUrl( url );
     req.setRawHeader("Depth", "1");
     QByteArray xml("<?xml version=\"1.0\" ?>\n"
                    "<d:propfind xmlns:d=\"DAV:\">\n"
