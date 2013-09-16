@@ -1099,6 +1099,13 @@ static const char* owncloud_file_id( const char *path )
             cbuf = c_strdup(header);
         }
     }
+
+    /* fix server problem: If we end up with an empty string, set something strange... */
+    if( c_streq(cbuf, "") || c_streq(cbuf, "\"\"") ) {
+        SAFE_FREE(cbuf);
+        cbuf = c_strdup("empty_etag");
+    }
+
     DEBUG_WEBDAV("Get file ID for %s: %s", path, cbuf ? cbuf:"<null>");
     if( fs ) csync_vio_file_stat_destroy(fs);
     if( req ) ne_request_destroy(req);
