@@ -197,9 +197,8 @@ void Folder::setSyncEnabled( bool doit )
 {
   _enabled = doit;
 
-  qDebug() << "setSyncEnabled - ############################ " << doit;
   if( doit ) {
-      evaluateSync( QStringList() );
+      // qDebug() << "Syncing enabled on folder " << name();
   } else {
       // do not stop or start the watcher here, that is done internally by
       // folder class. Even if the watcher fires, the folder does not

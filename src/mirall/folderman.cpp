@@ -280,6 +280,7 @@ void FolderMan::slotEnableFolder( const QString& alias, bool enable )
     Folder *f = _folderMap[alias];
     if( f ) {
         f->setSyncEnabled(enable);
+        f->evaluateSync(QStringList());
     }
 }
 
