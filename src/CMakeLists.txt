@@ -74,7 +74,7 @@ set(csync_SRCS
   vio/csync_vio_local.c
 )
 
-configure_file(csync_version.h.in csync_version.h)
+configure_file(csync_version.h.in ${CMAKE_CURRENT_BINARY_DIR}/csync_version.h)
 
 set(csync_HDRS
   ${CMAKE_CURRENT_BINARY_DIR}/csync_version.h
