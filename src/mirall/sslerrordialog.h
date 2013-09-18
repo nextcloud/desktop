@@ -22,12 +22,12 @@
 class QSslError;
 class QSslCertificate;
 
+namespace Mirall
+{
+
 namespace Ui {
 class SslErrorDialog;
 }
-
-namespace Mirall
-{
 
 class SslErrorDialog : public QDialog
 {
@@ -57,7 +57,7 @@ private:
 
     QList<QSslCertificate> _unknownCerts;
     QString                _customConfigHandle;
-    ::Ui::SslErrorDialog     *_ui;
+    Ui::SslErrorDialog     *_ui;
 };
 } // end namespace
 
