@@ -50,8 +50,7 @@ static const char progressBarStyleC[] =
 
 AccountSettings::AccountSettings(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::AccountSettings),
-    _item(0)
+    ui(new Ui::AccountSettings)
 {
     ui->setupUi(this);
 
@@ -203,11 +202,6 @@ void AccountSettings::buttonsSetEnabled()
     ui->_ButtonEnable->setEnabled(isSelected);
     ui->_ButtonRemove->setEnabled(isSelected);
     ui->_ButtonInfo->setEnabled(isSelected);
-}
-
-void AccountSettings::setListWidgetItem( QListWidgetItem *item )
-{
-    _item = item;
 }
 
 void AccountSettings::setGeneralErrors( const QStringList& errors )
