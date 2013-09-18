@@ -353,7 +353,7 @@ void Application::setupSystemTray()
 {
     // Setting a parent heres will crash on X11 since by the time qapp runs
     // its childrens dtors, the X11->screen variable queried for is gone -> crash
-    _tray.reset(new Systray());
+    _tray = new Systray();
     _tray->setIcon( _theme->syncStateIcon( SyncResult::NotYetStarted, true ) );
 
     connect(_tray.data(), SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
