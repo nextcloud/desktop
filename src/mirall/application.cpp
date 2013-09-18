@@ -179,18 +179,13 @@ Application::Application(int &argc, char **argv) :
     connect( ownCloudInfo::instance(), SIGNAL(quotaUpdated(qint64,qint64)),
              SLOT(slotRefreshQuotaDisplay(qint64, qint64)));
 
+    connect (this, SIGNAL(aboutToQuit()), SLOT(slotCleanup()));
+
     qDebug() << "Network Location: " << NetworkLocation::currentLocation().encoded();
 }
 
 Application::~Application()
 {
-    if (_settingsDialog) {
-        delete _settingsDialog.data();
-    }
-
-    delete _logBrowser;
-    delete _tray; // needed, see ctor
-
     qDebug() << "* Mirall shutdown";
 }
 
@@ -227,6 +222,17 @@ void Application::slotCredentialsFetched()
     disconnect(credentials, SIGNAL(fetched()),
                this, SLOT(slotCredentialsFetched()));
     runValidator();
+}
+
+void Application::slotCleanup()
+{
+    // explicitly close windows. This is somewhat of a hack to ensure
+    // that saving the geometries happens ASAP during a OS shutdown
+    if (!_logBrowser.isNull()) _logBrowser->close();
+    if (!_settingsDialog.isNull()) _settingsDialog->close();
+    if (!_progressDialog.isNull()) _progressDialog->close();
+    if (!_folderWizard.isNull()) _folderWizard->close();
+    if (!_tray.isNull()) _tray->deleteLater();
 }
 
 void Application::runValidator()
@@ -347,10 +353,10 @@ void Application::setupSystemTray()
 {
     // Setting a parent heres will crash on X11 since by the time qapp runs
     // its childrens dtors, the X11->screen variable queried for is gone -> crash
-    _tray = new Systray();
+    _tray.reset(new Systray());
     _tray->setIcon( _theme->syncStateIcon( SyncResult::NotYetStarted, true ) );
 
-    connect(_tray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+    connect(_tray.data(), SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             SLOT(slotTrayClicked(QSystemTrayIcon::ActivationReason)));
 
     setupContextMenu();
@@ -428,7 +434,7 @@ void Application::setupContextMenu()
 void Application::setupLogBrowser()
 {
     // might be called from second instance
-    if (!_logBrowser) {
+    if (_logBrowser.isNull()) {
         // init the log browser.
         qInstallMsgHandler( mirallLogCatcher );
         _logBrowser = new LogBrowser;
@@ -699,7 +705,7 @@ void Application::slotSettings()
     }
 
     _settingsDialog->setGeneralErrors( _startupFail );
-    Utility::raiseDialog(_settingsDialog);
+    Utility::raiseDialog(_settingsDialog.data());
 }
 
 void Application::slotItemProgressDialog()
@@ -710,7 +716,7 @@ void Application::slotItemProgressDialog()
         _progressDialog->setupList();
         _progressDialog->show();
     }
-    Utility::raiseDialog(_progressDialog);
+    Utility::raiseDialog(_progressDialog.data());
 }
 
 void Application::slotParseOptions(const QString &opts)

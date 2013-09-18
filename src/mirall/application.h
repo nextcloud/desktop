@@ -107,13 +107,14 @@ protected slots:
     void slotDisplayIdle();
     void slotHelp();
     void slotCredentialsFetched();
+    void slotCleanup();
 private:
     void setHelp();
     void raiseDialog( QWidget* );
     void rebuildRecentMenus();
     void runValidator();
 
-    Systray *_tray;
+    QPointer<Systray> _tray;
     QAction *_actionOpenoC;
     QAction *_actionSettings;
     QAction *_actionQuota;
@@ -124,7 +125,6 @@ private:
 
     QNetworkConfigurationManager *_networkMgr;
 
-    QPointer<FolderWizard> _folderWizard;
     SslErrorDialog *_sslErrorDialog;
     ConnectionValidator *_conValidator;
 
@@ -134,7 +134,8 @@ private:
 
     Theme *_theme;
     QSignalMapper *_folderOpenActionMapper;
-    LogBrowser *_logBrowser;
+    QPointer<FolderWizard> _folderWizard;
+    QPointer<LogBrowser>_logBrowser;
     QPointer<SettingsDialog> _settingsDialog;
     QPointer<ItemProgressDialog> _progressDialog;
 
