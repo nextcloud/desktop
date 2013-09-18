@@ -1392,40 +1392,6 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
         ne_hook_post_headers( dav_session.ctx, install_content_reader, write_ctx );
 
         neon_stat = ne_request_dispatch(write_ctx->req );
-        /* possible return codes are:
-         *  NE_OK, NE_AUTH, NE_CONNECT, NE_TIMEOUT, NE_ERROR (from ne_request.h)
-         */
-
-        if( neon_stat != NE_OK ) {
-            if (neon_stat == NE_TIMEOUT && (++retry) < 3)
-                continue;
-
-            set_errno_from_neon_errcode(neon_stat);
-            DEBUG_WEBDAV("Error GET: Neon: %d, errno %d", neon_stat, errno);
-            error_code = errno;
-            rc = 1;
-        } else {
-            status = ne_get_status( write_ctx->req );
-            DEBUG_WEBDAV("GET http result %d (%s)", status->code, status->reason_phrase ? status->reason_phrase : "<empty");
-            if( status->klass != 2 ) {
-                DEBUG_WEBDAV("sendfile request failed with http status %d!", status->code);
-                set_errno_from_http_errcode( status->code );
-                /* decide if soft error or hard error that stops the whole sync. */
-                /* Currently all problems concerning one file are soft errors */
-                if( status->klass == 4 /* Forbidden and stuff, soft error */ ) {
-                    rc = 1;
-                } else if( status->klass == 5 /* Server errors and such */ ) {
-                    rc = 1; /* No Abort on individual file errors. */
-                } else {
-                    rc = 1;
-                }
-                error_code = status->code;
-                SAFE_FREE(dav_session.error_string);
-                dav_session.error_string = c_strdup(status->reason_phrase);
-            } else {
-                DEBUG_WEBDAV("http request all cool, result code %d", status->code);
-            }
-        }
 
         /* delete the hook again, otherwise they get chained as they are with the session */
         ne_unhook_post_headers( dav_session.ctx, install_content_reader, write_ctx );
@@ -1434,6 +1400,55 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
         if( write_ctx->decompress ) {
             ne_decompress_destroy( write_ctx->decompress );
         }
+        /* possible return codes are:
+         *  NE_OK, NE_AUTH, NE_CONNECT, NE_TIMEOUT, NE_ERROR (from ne_request.h)
+         */
+
+        status = ne_get_status( write_ctx->req );
+
+        if( neon_stat != NE_OK ) {
+            /* If a timeout happened try again for three times */
+            if (neon_stat == NE_TIMEOUT && (++retry) < 3) {
+                continue;
+            }
+
+            set_errno_from_neon_errcode(neon_stat);
+            DEBUG_WEBDAV("Error GET: Neon: %d, errno %d", neon_stat, errno);
+            error_code = errno;
+            if( status != NULL ) {
+                SAFE_FREE(dav_session.error_string);
+                dav_session.error_string = c_strdup(status->reason_phrase);
+            }
+            rc = 1;
+        } else {
+            if( status != NULL ) {
+                DEBUG_WEBDAV("GET http result %d (%s)", status->code, status->reason_phrase ? status->reason_phrase : "<empty");
+                if( status->klass != 2 ) {
+                    DEBUG_WEBDAV("sendfile request failed with http status %d!", status->code);
+                    set_errno_from_http_errcode( status->code );
+                    /* decide if soft error or hard error that stops the whole sync. */
+                    /* Currently all problems concerning one file are soft errors */
+                    if( status->klass == 4 /* Forbidden and stuff, soft error */ ) {
+                        rc = 1;
+                    } else if( status->klass == 5 /* Server errors and such */ ) {
+                        rc = 1; /* No Abort on individual file errors. */
+                    } else {
+                        rc = 1;
+                    }
+                    error_code = status->code;
+                    SAFE_FREE(dav_session.error_string);
+                    dav_session.error_string = c_strdup(status->reason_phrase);
+                } else {
+                    DEBUG_WEBDAV("http request all cool, result code %d", status->code);
+                }
+            } else {
+                /* No status but still a problem */
+                DEBUG_WEBDAV("GET failed, but no neon status available.");
+                error_code = 400;
+                rc = 1;
+            }
+        }
+
         break;
       } while (1);
 
