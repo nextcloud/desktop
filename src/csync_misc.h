@@ -21,7 +21,19 @@
 #ifndef _CSYNC_MISC_H
 #define _CSYNC_MISC_H
 
+#include "config.h"
 #include "csync.h"
+
+#ifdef HAVE_FNMATCH
+#include <fnmatch.h>
+#else
+#define
+/* Steal this define to make csync_exclude compile. Note that if fnmatch
+ * is not defined it's probably Win32 which uses a different implementation
+ * than fmmatch anyway, which does not care for flags.
+ **/
+#define FNM_PATHNAME    (1 << 0) /* No wildcard can ever match `/'.  */
+#endif
 
 char *csync_get_user_home_dir(void);
 char *csync_get_local_username(void);
