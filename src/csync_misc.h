@@ -27,7 +27,6 @@
 #ifdef HAVE_FNMATCH
 #include <fnmatch.h>
 #else
-#define
 /* Steal this define to make csync_exclude compile. Note that if fnmatch
  * is not defined it's probably Win32 which uses a different implementation
  * than fmmatch anyway, which does not care for flags.
