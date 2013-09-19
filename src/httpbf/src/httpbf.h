@@ -50,6 +50,7 @@ enum hbf_state_e {
     HBF_STAT_FAIL,
     HBF_SOURCE_FILE_CHANGE,
     HBF_USER_ABORTED,
+    HBF_TRANSFER_NOT_ACKED,
     HBF_FAIL
 };
 

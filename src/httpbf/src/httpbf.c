@@ -505,6 +505,10 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
     /* do the source file validation finally (again). */
     if( state == HBF_SUCCESS ) {
         state = validate_source_file(transfer);
+    } else if( state == HBF_TRANSFER_SUCCESS ) {
+        /* This means that no etag was returned on one of the chunks to indicate
+         * that the upload was finished. */
+        state = HBF_TRANSFER_NOT_ACKED;
     }
 
     return state;
@@ -574,10 +578,18 @@ const char *hbf_error_string(hbf_transfer_t *transfer, Hbf_State state)
     case HBF_MEMORY_FAIL:
         re = "Out of memory.";
         break;
+    case HBF_STAT_FAIL:
+        re = "Filesystem stat on file failed.";
+        break;
     case HBF_SOURCE_FILE_CHANGE:
       re = "Source file changed too often during upload.";
       break;
-
+    case HBF_USER_ABORTED:
+        re = "Transmission aborted by user.";
+        break;
+    case HBF_TRANSFER_NOT_ACKED:
+        re = "The server did not provide an Etag.";
+        break;
     case HBF_FAIL:
     default:
         for( cnt = 0; cnt < transfer->block_cnt; cnt++ ) {
