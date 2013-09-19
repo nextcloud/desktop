@@ -184,7 +184,7 @@ Hbf_State hbf_splitlist(hbf_transfer_t *transfer, int fd ) {
           /* store the block data into the result array in the transfer */
           *((transfer->block_arr)+cnt) = block;
 
-          DEBUG_HBF("hbf_splitlist: created block %d   (start: %" PRId64 "  size: %" PRId64 ")\n", cnt, block->start, block->size );
+          DEBUG_HBF("hbf_splitlist: created block %d   (start: %" PRId64 "  size: %" PRId64 ")", cnt, block->start, block->size );
       }
 
 #ifndef NDEBUG
@@ -285,7 +285,7 @@ static int _hbf_dav_request(hbf_transfer_t *transfer, ne_request *req, int fd, h
     if( ! (blk && req) ) return HBF_PARAM_FAIL;
 
     ne_set_request_body_fd(req, fd, blk->start, blk->size);
-    DEBUG_HBF("HBF: Block: %d , Start: %" PRId64 " and Size: %" PRId64 "\n", blk->seq_number, blk->start, blk->size );
+    DEBUG_HBF("HBF: Block: %d , Start: %" PRId64 " and Size: %" PRId64 "", blk->seq_number, blk->start, blk->size );
     res = ne_request_dispatch(req);
 
     req_status = ne_get_status( req );
@@ -311,6 +311,8 @@ static int _hbf_dav_request(hbf_transfer_t *transfer, ne_request *req, int fd, h
                 } else {
                     blk->etag = strdup( etag );
                 }
+            } else {
+                /* DEBUG_HBF("OOOOOOOO No etag returned!"); */
             }
         }
         break;
