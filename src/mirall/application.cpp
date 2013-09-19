@@ -671,7 +671,7 @@ bool Application::checkConfigExists(bool openSettings)
     // if no config file is there, start the configuration wizard.
     MirallConfigFile cfgFile;
 
-    if( cfgFile.exists() ) {
+    if( cfgFile.exists() && !cfgFile.ownCloudUrl().isEmpty() ) {
         if( openSettings ) {
             slotSettings();
         }
