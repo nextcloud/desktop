@@ -588,7 +588,7 @@ const char *hbf_error_string(hbf_transfer_t *transfer, Hbf_State state)
         re = "Transmission aborted by user.";
         break;
     case HBF_TRANSFER_NOT_ACKED:
-        re = "The server did not acknoledge the upload.";
+        re = "The server did not provide an Etag.";
         break;
     case HBF_FAIL:
     default:
