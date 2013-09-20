@@ -128,9 +128,14 @@ LogBrowser::LogBrowser(QWidget *parent) :
 
 LogBrowser::~LogBrowser()
 {
+}
+
+void LogBrowser::closeEvent(QCloseEvent *)
+{
     MirallConfigFile cfg;
     cfg.saveGeometry(this);
 }
+
 
 void LogBrowser::slotNewLog( const QString& msg )
 {

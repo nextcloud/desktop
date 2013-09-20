@@ -47,6 +47,9 @@ public:
 
     void setLogFile(const QString& , bool );
 
+protected:
+    void closeEvent(QCloseEvent *);
+
 protected slots:
     void slotNewLog( const QString &msg );
     void slotFind();

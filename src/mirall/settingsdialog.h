@@ -42,6 +42,10 @@ public:
     void addAccount(const QString &title, QWidget *widget);
     void setGeneralErrors( const QStringList& errors );
 
+protected:
+    void reject();
+    void accept();
+
 protected slots:
     void slotUpdateAccountState();
 

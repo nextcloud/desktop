@@ -40,7 +40,6 @@ namespace Mirall {
 class Theme;
 class Folder;
 class FolderWatcher;
-class FolderWizard;
 class ownCloudInfo;
 class SslErrorDialog;
 class SettingsDialog;
@@ -134,7 +133,6 @@ private:
 
     Theme *_theme;
     QSignalMapper *_folderOpenActionMapper;
-    QPointer<FolderWizard> _folderWizard;
     QPointer<LogBrowser>_logBrowser;
     QPointer<SettingsDialog> _settingsDialog;
     QPointer<ItemProgressDialog> _progressDialog;

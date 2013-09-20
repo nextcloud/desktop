@@ -118,9 +118,6 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
 
 SettingsDialog::~SettingsDialog()
 {
-    MirallConfigFile cfg;
-    cfg.saveGeometry(this);
-
     delete _ui;
 }
 
@@ -143,6 +140,20 @@ void SettingsDialog::slotUpdateAccountState()
 void SettingsDialog::setGeneralErrors(const QStringList &errors)
 {
     _accountSettings->setGeneralErrors(errors);
+}
+
+
+// close event is not being called here
+void SettingsDialog::reject() {
+    MirallConfigFile cfg;
+    cfg.saveGeometry(this);
+    QDialog::reject();
+}
+
+void SettingsDialog::accept() {
+    MirallConfigFile cfg;
+    cfg.saveGeometry(this);
+    QDialog::accept();
 }
 
 } // namespace Mirall

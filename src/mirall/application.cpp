@@ -23,7 +23,6 @@
 #include "mirall/folder.h"
 #include "mirall/folderman.h"
 #include "mirall/folderwatcher.h"
-#include "mirall/folderwizard.h"
 #include "mirall/networklocation.h"
 #include "mirall/folder.h"
 #include "mirall/owncloudsetupwizard.h"
@@ -228,11 +227,14 @@ void Application::slotCleanup()
 {
     // explicitly close windows. This is somewhat of a hack to ensure
     // that saving the geometries happens ASAP during a OS shutdown
-    if (!_logBrowser.isNull()) _logBrowser->close();
+
+    // those do delete on close
     if (!_settingsDialog.isNull()) _settingsDialog->close();
     if (!_progressDialog.isNull()) _progressDialog->close();
-    if (!_folderWizard.isNull()) _folderWizard->close();
+
+    // those need an extra invitation
     if (!_tray.isNull()) _tray->deleteLater();
+    if (!_logBrowser.isNull()) _logBrowser->deleteLater();
 }
 
 void Application::runValidator()
