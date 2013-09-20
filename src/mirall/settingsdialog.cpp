@@ -95,6 +95,23 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
     connect(showLogWindow, SIGNAL(triggered()), app, SLOT(slotOpenLogBrowser()));
     addAction(showLogWindow);
 
+    int iconSize = 32;
+    QListWidget *listWidget = _ui->labelWidget;
+    int spacing = 20;
+    // reverse at least ~8 characters
+    int effectiveWidth = fontMetrics().averageCharWidth() * 8 + iconSize + spacing;
+    // less than ~16 characters, elide otherwise
+    int maxWidth = fontMetrics().averageCharWidth() * 16 + iconSize + spacing;
+    for (int i = 0; i < listWidget->count(); i++) {
+        QListWidgetItem *item = listWidget->item(i);
+        QFontMetrics fm(item->font());
+        int curWidth = fm.width(item->text()) + iconSize + spacing;
+        effectiveWidth = qMax(curWidth, effectiveWidth);
+        if (curWidth > maxWidth) item->setToolTip(item->text());
+    }
+    effectiveWidth = qMin(effectiveWidth, maxWidth);
+    listWidget->setFixedWidth(effectiveWidth);
+
     MirallConfigFile cfg;
     cfg.restoreGeometry(this);
 }
