@@ -9,7 +9,7 @@
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="33"/>
         <source>Pick a local folder on your computer to sync</source>
-        <translation type="unfinished"/>
+        <translation>Выберите локальную папку на вашем компьютере для синхронизации</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="44"/>
@@ -101,7 +101,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="64"/>
         <source>Add Folder...</source>
-        <translation type="unfinished"/>
+        <translation>Добавить папку...</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="98"/>
@@ -146,7 +146,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="291"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Вы действительно хотите сбросить папку &lt;i&gt;%1&lt;/i&gt; и перестроить клиентскую базу данных?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Важно:&lt;/b&gt; Данный функционал предназначен только для технического обслуживания. Файлы не будут удалены, но, в зависимости от размера папки, операция может занять от нескольких минут до нескольких часов и может быть передан большой объем данных. Используйте данную операцию только по рекомендации администратора.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="339"/>
@@ -171,7 +171,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="473"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Соединились с &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="474"/>
@@ -221,7 +221,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="705"/>
         <source>%1 of %2 in use.</source>
-        <translation type="unfinished"/>
+        <translation>Используется %1 из %2.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="709"/>
@@ -284,7 +284,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="540"/>
         <source>%1% of %2 in use</source>
-        <translation type="unfinished"/>
+        <translation>Используется %1% из %2.</translation>
     </message>
     <message>
         <location filename="../src/mirall/application.cpp" line="612"/>
@@ -547,17 +547,17 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="295"/>
         <source>File %1: %2</source>
-        <translation type="unfinished"/>
+        <translation>Файл %1: %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="296"/>
         <source>File %1</source>
-        <translation type="unfinished"/>
+        <translation>Файл %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="347"/>
         <source>New file available</source>
-        <translation type="unfinished"/>
+        <translation>Доступен новый файл</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="347"/>
@@ -577,17 +577,17 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="355"/>
         <source>File removed</source>
-        <translation type="unfinished"/>
+        <translation>Файл удален</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="355"/>
         <source>&apos;%1&apos; has been removed.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; был удален.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="357"/>
         <source>Files removed</source>
-        <translation type="unfinished"/>
+        <translation>Файлы удалены</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/folder.cpp" line="357"/>
@@ -597,17 +597,17 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="363"/>
         <source>File updated</source>
-        <translation type="unfinished"/>
+        <translation>Файл обновлен</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="363"/>
         <source>&apos;%1&apos; has been updated.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; был обновлен.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="365"/>
         <source>Files updated</source>
-        <translation type="unfinished"/>
+        <translation>Файлы обновлены</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/folder.cpp" line="365"/>
@@ -740,7 +740,9 @@ Are you sure you want to perform this operation?</source>
         <source>Could not monitor directories due to system limitations.
 The application will not work reliably. Please check the
 documentation for possible fixes.</source>
-        <translation type="unfinished"/>
+        <translation>Не могу отслеживать директории из-за ограничений системы.⏎
+Приложение не будет надежно функционировать. Пожалуйста,⏎
+обратитесь к документации для возможных решений.</translation>
     </message>
 </context>
 <context>
@@ -1052,7 +1054,7 @@ syncing in a cross platform environment</source>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="146"/>
         <source>Conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Конфликт файлов.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="147"/>
@@ -1080,7 +1082,7 @@ name</source>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="289"/>
         <source>No more storage space available on server.</source>
-        <translation type="unfinished"/>
+        <translation>На сервере нет места для хранения информации.</translation>
     </message>
 </context>
 <context>
@@ -1702,7 +1704,7 @@ name</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="91"/>
         <source>pbSelectLocalFolder</source>
-        <translation type="unfinished"/>
+        <translation>pbSelectLocalFolder</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="113"/>
@@ -2019,7 +2021,9 @@ name</source>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="56"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.&lt;br&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;%7</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Версия %2. Дополнительная информация:  &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Создано Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.&lt;br&gt;За основу взато ПО Mirall. Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;%7
+
+</translation>
     </message>
 </context>
 <context>
@@ -2040,27 +2044,27 @@ name</source>
         <location filename="../src/mirall/progressdispatcher.cpp" line="37"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="80"/>
         <source>Context</source>
-        <translation type="unfinished"/>
+        <translation>Контекст</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="40"/>
         <source>Inactive</source>
-        <translation type="unfinished"/>
+        <translation>Неактивно</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="50"/>
         <source>Start</source>
-        <translation type="unfinished"/>
+        <translation>Начало</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="53"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>Завершено</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="56"/>
         <source>For deletion</source>
-        <translation type="unfinished"/>
+        <translation>Для удаления</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="59"/>
@@ -2073,14 +2077,14 @@ name</source>
         <location filename="../src/mirall/progressdispatcher.cpp" line="86"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="92"/>
         <source>downloading</source>
-        <translation type="unfinished"/>
+        <translation>скачиваю</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="77"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="89"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="95"/>
         <source>uploading</source>
-        <translation type="unfinished"/>
+        <translation>загружаю на сервер</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="83"/>
