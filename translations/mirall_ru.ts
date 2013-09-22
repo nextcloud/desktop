@@ -226,7 +226,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="709"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation type="unfinished"/>
+        <translation>В данный момент информация о заполненности хранилища недоступна.</translation>
     </message>
 </context>
 <context>
@@ -362,7 +362,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="85"/>
         <source>CSync failed to write the state db.</source>
-        <translation type="unfinished"/>
+        <translation>CSync не удалось записать состояние базы данных.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="88"/>
@@ -432,7 +432,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="131"/>
         <source>CSync could not authenticate at the proxy.</source>
-        <translation type="unfinished"/>
+        <translation>CSync не удалось авторизоваться на прокси сервере.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="134"/>
@@ -496,22 +496,22 @@
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="92"/>
         <source>No ownCloud connection configured</source>
-        <translation type="unfinished"/>
+        <translation>Не настроено подключение к ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="113"/>
         <source>The configured server for this client is too old</source>
-        <translation type="unfinished"/>
+        <translation>Настроенный сервер слишком стар для этого клиента</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="114"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation type="unfinished"/>
+        <translation>Пожалуйста, обновите сервер до последней версии и перезапустите клиент.</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="155"/>
         <source>The provided credentials are not correct</source>
-        <translation type="unfinished"/>
+        <translation>Введённые учётные данные не верны</translation>
     </message>
 </context>
 <context>
@@ -562,17 +562,17 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="347"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; было синхронизировано с этой машиной.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="349"/>
         <source>New files available</source>
-        <translation type="unfinished"/>
+        <translation>Доступны новые файлы</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/folder.cpp" line="349"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; и ещё %n файл были синхронизированы с этой машиной.</numerusform><numerusform>&apos;%1&apos; и ещё %n файла были синхронизированы с этой машиной.</numerusform><numerusform>&apos;%1&apos; и ещё %n файлов были синхронизированы с этой машиной.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="355"/>
@@ -592,7 +592,7 @@
     <message numerus="yes">
         <location filename="../src/mirall/folder.cpp" line="357"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; и ещё %n другой файл были удалены.</numerusform><numerusform>&apos;%1&apos; и ещё %n других файла были удалены.</numerusform><numerusform>&apos;%1&apos; и ещё %n других файлов были удалены.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="363"/>
@@ -612,7 +612,7 @@
     <message numerus="yes">
         <location filename="../src/mirall/folder.cpp" line="365"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; и ещё %n другой файл были обновлены.</numerusform><numerusform>&apos;%1&apos; и ещё %n других файла были обновлены.</numerusform><numerusform>&apos;%1&apos; и ещё %n других файлов были обновлены.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="407"/>
@@ -833,12 +833,12 @@ documentation for possible fixes.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="308"/>
         <source>This directory is already being synced.</source>
-        <translation type="unfinished"/>
+        <translation>Директория уже синхронизируется.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="313"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Директория &lt;i&gt;%1&lt;/i&gt; уже настроена для синхронизации, и она является родительской для директории &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="319"/>
@@ -999,13 +999,14 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="123"/>
         <source>Soft Link ignored</source>
-        <translation type="unfinished"/>
+        <translation>Символическая ссылка проигнорирована</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="124"/>
         <source>Softlinks break the semantics of synchronization.
 Please do not use them in synced directories</source>
-        <translation type="unfinished"/>
+        <translation>Символические ссылки могут нарушить процесс синхронизации. 
+Пожалуйста не используйте их в синхронизируемых директориях</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="127"/>
@@ -1022,34 +1023,39 @@ Please do not use them in synced directories</source>
         <source>The %1 was ignored because it is listed in the clients ignore list
 or the %1 name contains characters that are not syncable
 in a cross platform environment</source>
-        <translation type="unfinished"/>
+        <translation>Пропускаем %1 так как он присутствует в списке
+игнорируемых имён на клиенте или название %1
+содержит символы, нарушающие процесс 
+синхронизации между платформами</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="134"/>
         <source>Item ignored</source>
-        <translation type="unfinished"/>
+        <translation>Объект проигнорирован</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="136"/>
         <source>%1 on ignore list</source>
-        <translation type="unfinished"/>
+        <translation>%1 в списке игнорируемых</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="137"/>
         <source>The %1 was skipped because it is listed on the clients
 list of names to ignore</source>
-        <translation type="unfinished"/>
+        <translation>Пропускаем %1 так как он присутствует в списке
+игнорируемых имён на клиенте</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="140"/>
         <source>Invalid characters</source>
-        <translation type="unfinished"/>
+        <translation>Недопустимые символы</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="141"/>
         <source>The %1 name contains one or more invalid characters which break
 syncing in a cross platform environment</source>
-        <translation type="unfinished"/>
+        <translation>Название %1 содержит один или более недопустимых символов
+которые нарушают процесс синхронизации между платформами</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="146"/>
@@ -1062,7 +1068,10 @@ syncing in a cross platform environment</source>
 created a so called conflict. The local change is copied to the conflict
 file while the file from the server side is available under the original
 name</source>
-        <translation type="unfinished"/>
+        <translation>Файл был изменён на сервере и в локальном репозитории и в результате
+был создан так называемый конфликт. Локальные изменения сохранены
+в конфликтный файл, в то время как файл с сервера доступен под
+оригинальным названием</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="234"/>
@@ -1207,7 +1216,7 @@ name</source>
         <location filename="../src/mirall/networksettings.ui" line="232"/>
         <location filename="../src/mirall/networksettings.ui" line="270"/>
         <source>No limit</source>
-        <translation type="unfinished"/>
+        <translation>Без ограничений</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="264"/>
@@ -1260,7 +1269,7 @@ name</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="57"/>
         <source>Connect...</source>
-        <translation type="unfinished"/>
+        <translation>Соединение...</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="107"/>
@@ -1515,7 +1524,7 @@ name</source>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="49"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="56"/>
@@ -1966,27 +1975,27 @@ name</source>
     <message>
         <location filename="../src/mirall/utility.cpp" line="123"/>
         <source>%L1 TB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 ТБ</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="126"/>
         <source>%L1 GB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 ГБ</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="129"/>
         <source>%L1 MB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 МБ</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="132"/>
         <source>%L1 kB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 кБ</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="135"/>
         <source>%L1 B</source>
-        <translation type="unfinished"/>
+        <translation>%L1 Б</translation>
     </message>
 </context>
 <context>
@@ -2089,17 +2098,17 @@ name</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="83"/>
         <source>inactive</source>
-        <translation type="unfinished"/>
+        <translation>неактивно</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="98"/>
         <source>starting</source>
-        <translation type="unfinished"/>
+        <translation>начинается</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="101"/>
         <source>finished</source>
-        <translation type="unfinished"/>
+        <translation>завершено</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="104"/>
@@ -2132,7 +2141,7 @@ name</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="60"/>
         <source>Sync Success, problems with individual files.</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация успешна, проблемы с отдельными файлами.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>
@@ -2147,12 +2156,12 @@ name</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="69"/>
         <source>The server is currently unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Сервер временно недоступен</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="72"/>
         <source>Preparing to sync</source>
-        <translation type="unfinished"/>
+        <translation>Подготовка к синхронизации</translation>
     </message>
 </context>
 </TS>
