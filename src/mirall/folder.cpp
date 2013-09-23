@@ -111,6 +111,7 @@ bool Folder::init()
     }
     return _csync_ctx;
 }
+
 Folder::~Folder()
 {
     if( _thread ) {
@@ -234,8 +235,9 @@ void Folder::slotPollTimerTimeout()
 {
     qDebug() << "* Polling" << alias() << "for changes. (time since next sync:" << (_timeSinceLastSync.elapsed() / 1000) << "s)";
 
-    if (quint64(_timeSinceLastSync.elapsed()) > MirallConfigFile().forceSyncInterval()) {
-        qDebug() << "* Force Sync now";
+    if (quint64(_timeSinceLastSync.elapsed()) > MirallConfigFile().forceSyncInterval() ||
+            _syncResult.status() != SyncResult::Success ) {
+        qDebug() << "** Force Sync now";
         evaluateSync(QStringList());
     } else {
         RequestEtagJob* job = new RequestEtagJob(secondPath(), this);
