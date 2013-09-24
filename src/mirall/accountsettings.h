@@ -51,7 +51,6 @@ public:
 
     void setFolderList( const Folder::Map& );
     void buttonsSetEnabled();
-    void setListWidgetItem(QListWidgetItem* item);
 
 signals:
     void folderChanged();
@@ -98,7 +97,6 @@ private:
     QPointer<ItemProgressDialog> _fileItemDialog;
     QPointer<IgnoreListEditor> _ignoreEditor;
     QStandardItemModel *_model;
-    QListWidgetItem *_item;
     QUrl   _OCUrl;
     QHash<QStandardItem*, QTimer*> _hideProgressTimers;
     QString _kindContext;

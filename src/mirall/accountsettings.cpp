@@ -50,8 +50,7 @@ static const char progressBarStyleC[] =
 
 AccountSettings::AccountSettings(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::AccountSettings),
-    _item(0)
+    ui(new Ui::AccountSettings)
 {
     ui->setupUi(this);
 
@@ -205,11 +204,6 @@ void AccountSettings::buttonsSetEnabled()
     ui->_ButtonInfo->setEnabled(isSelected);
 }
 
-void AccountSettings::setListWidgetItem( QListWidgetItem *item )
-{
-    _item = item;
-}
-
 void AccountSettings::setGeneralErrors( const QStringList& errors )
 {
     _generalErrors = errors;
@@ -261,6 +255,8 @@ void AccountSettings::slotRemoveCurrentFolder()
 {
     QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
     if( selected.isValid() ) {
+        int row = selected.row();
+
         QString alias = _model->data( selected, FolderStatusDelegate::FolderAliasRole ).toString();
         qDebug() << "Remove Folder alias " << alias;
         if( !alias.isEmpty() ) {
@@ -274,9 +270,22 @@ void AccountSettings::slotRemoveCurrentFolder()
             if( ret == QMessageBox::No ) {
                 return;
             }
+            /* Remove the selected item from the timer hash. */
+            QStandardItem *item = NULL;
+            if( selected.isValid() )
+                item = _model->itemFromIndex(selected);
+
+            if( selected.isValid() && item && _hideProgressTimers.contains(item) ) {
+                QTimer *t = _hideProgressTimers[item];
+                t->stop();
+                _hideProgressTimers.remove(item);
+                delete(t);
+            }
+
             FolderMan *folderMan = FolderMan::instance();
             folderMan->slotRemoveFolder( alias );
-            setFolderList(folderMan->map());
+            _model->removeRow(row);
+
             emit folderChanged();
             slotCheckConnection();
         }
@@ -349,8 +358,14 @@ void AccountSettings::slotCheckConnection()
 void AccountSettings::setFolderList( const Folder::Map &folders )
 {
     _model->clear();
+
+    foreach(QTimer *t, _hideProgressTimers) {
+        t->stop();
+        delete t;
+    }
+    _hideProgressTimers.clear();
+
     foreach( Folder *f, folders ) {
-        qDebug() << "Folder: " << f;
         slotAddFolder( f );
     }
 
@@ -674,12 +689,21 @@ void AccountSettings::slotHideProgress()
     while (i != _hideProgressTimers.constEnd()) {
         if( i.value() == send_timer ) {
             QStandardItem *item = i.key();
-            item->setData( QVariant(false),  FolderStatusDelegate::AddProgressSpace );
-            item->setData( QVariant(QString::null), FolderStatusDelegate::SyncProgressOverallString );
-            item->setData( QVariant(QString::null), FolderStatusDelegate::SyncProgressItemString );
-            item->setData( 0,                       FolderStatusDelegate::SyncProgressOverallPercent );
 
-            ui->_folderList->repaint();
+            /* Check if this item is still existing */
+            bool ok = false;
+            for( int r = 0; !ok && r < _model->rowCount(); r++) {
+                if( item == _model->item(r,0) ) {
+                    ok = true;
+                }
+            }
+
+            if( ok ) {
+                item->setData( QVariant(false),  FolderStatusDelegate::AddProgressSpace );
+                item->setData( QVariant(QString::null), FolderStatusDelegate::SyncProgressOverallString );
+                item->setData( QVariant(QString::null), FolderStatusDelegate::SyncProgressItemString );
+                item->setData( 0,                       FolderStatusDelegate::SyncProgressOverallPercent );
+            }
             _hideProgressTimers.remove(item);
             break;
         }

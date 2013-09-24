@@ -1,5 +1,27 @@
 ChangeLog
 =========
+version 1.4.1 (release 2013-09-24 ), csync 0.90.1 required
+
+  * Translation and documentation fixes.
+  * Fixed error display in settings/status dialog, displays multi 
+    line error messages now correctly.
+  * Wait up to 30 secs before complaining about missing systray
+    Fixes bug #949
+  * Fixed utf8 issues with basic auth authentication, fixes bug #941
+  * Fixed remote folder selector, avoid recursive syncing, fixes bug #962
+  * Handle and display network problems at startup correctly.
+  * Enable and disable the folder watcher during syncs correctly.
+  * Fix setting of thread priority.
+  * Fixed file size display.
+  * Fixed various folder wizard issues, bug #992
+  * Made "Sync started" message optional, fixes bug #934
+  * Fixed shutdown, avoid crashed config on win32, fixes bug #945
+  * Pop up config wizard if no server url is configured, fixes bug #1018
+  * Settings: calculate sidebar width dynamically, fixes bug #1020
+  * Fixed a crash if sync folders were removed, fixes bug #713
+  * Do proper resync after network disconnect, fixes bug #1007
+  * Various minor code fixes
+
 version 1.4.0 (release 2013-09-04 ), csync 0.90.0 required
 
   * New Scheduler: Only sync when there are actual changes in the server

@@ -393,7 +393,6 @@ QString Utility::dataLocation()
 #endif
 }
 
-
 void Utility::sleep(int sec)
 {
 #ifdef Q_OS_WIN

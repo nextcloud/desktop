@@ -23,7 +23,6 @@
 #include "mirall/folder.h"
 #include "mirall/folderman.h"
 #include "mirall/folderwatcher.h"
-#include "mirall/folderwizard.h"
 #include "mirall/networklocation.h"
 #include "mirall/folder.h"
 #include "mirall/owncloudsetupwizard.h"
@@ -179,18 +178,13 @@ Application::Application(int &argc, char **argv) :
     connect( ownCloudInfo::instance(), SIGNAL(quotaUpdated(qint64,qint64)),
              SLOT(slotRefreshQuotaDisplay(qint64, qint64)));
 
+    connect (this, SIGNAL(aboutToQuit()), SLOT(slotCleanup()));
+
     qDebug() << "Network Location: " << NetworkLocation::currentLocation().encoded();
 }
 
 Application::~Application()
 {
-    if (_settingsDialog) {
-        delete _settingsDialog.data();
-    }
-
-    delete _logBrowser;
-    delete _tray; // needed, see ctor
-
     qDebug() << "* Mirall shutdown";
 }
 
@@ -229,6 +223,20 @@ void Application::slotCredentialsFetched()
     runValidator();
 }
 
+void Application::slotCleanup()
+{
+    // explicitly close windows. This is somewhat of a hack to ensure
+    // that saving the geometries happens ASAP during a OS shutdown
+
+    // those do delete on close
+    if (!_settingsDialog.isNull()) _settingsDialog->close();
+    if (!_progressDialog.isNull()) _progressDialog->close();
+
+    // those need an extra invitation
+    if (!_tray.isNull()) _tray->deleteLater();
+    if (!_logBrowser.isNull()) _logBrowser->deleteLater();
+}
+
 void Application::runValidator()
 {
     _startupFail.clear();
@@ -251,7 +259,7 @@ void Application::slotConnectionValidatorResult(ConnectionValidator::Status stat
         _tray->show();
 
         int cnt = folderMan->map().size();
-        slotShowTrayMessage(tr("%1 Sync Started").arg(_theme->appNameGUI()),
+        slotShowOptionalTrayMessage(tr("%1 Sync Started").arg(_theme->appNameGUI()),
                             tr("Sync started for %n configured sync folder(s).","", cnt));
 
         // queue up the sync for all folders.
@@ -350,7 +358,7 @@ void Application::setupSystemTray()
     _tray = new Systray();
     _tray->setIcon( _theme->syncStateIcon( SyncResult::NotYetStarted, true ) );
 
-    connect(_tray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+    connect(_tray.data(), SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             SLOT(slotTrayClicked(QSystemTrayIcon::ActivationReason)));
 
     setupContextMenu();
@@ -428,7 +436,7 @@ void Application::setupContextMenu()
 void Application::setupLogBrowser()
 {
     // might be called from second instance
-    if (!_logBrowser) {
+    if (_logBrowser.isNull()) {
         // init the log browser.
         qInstallMsgHandler( mirallLogCatcher );
         _logBrowser = new LogBrowser;
@@ -665,7 +673,7 @@ bool Application::checkConfigExists(bool openSettings)
     // if no config file is there, start the configuration wizard.
     MirallConfigFile cfgFile;
 
-    if( cfgFile.exists() ) {
+    if( cfgFile.exists() && !cfgFile.ownCloudUrl().isEmpty() ) {
         if( openSettings ) {
             slotSettings();
         }
@@ -699,7 +707,7 @@ void Application::slotSettings()
     }
 
     _settingsDialog->setGeneralErrors( _startupFail );
-    Utility::raiseDialog(_settingsDialog);
+    Utility::raiseDialog(_settingsDialog.data());
 }
 
 void Application::slotItemProgressDialog()
@@ -710,7 +718,7 @@ void Application::slotItemProgressDialog()
         _progressDialog->setupList();
         _progressDialog->show();
     }
-    Utility::raiseDialog(_progressDialog);
+    Utility::raiseDialog(_progressDialog.data());
 }
 
 void Application::slotParseOptions(const QString &opts)

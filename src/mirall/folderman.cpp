@@ -280,6 +280,7 @@ void FolderMan::slotEnableFolder( const QString& alias, bool enable )
     Folder *f = _folderMap[alias];
     if( f ) {
         f->setSyncEnabled(enable);
+        f->evaluateSync(QStringList());
     }
 }
 
@@ -471,7 +472,10 @@ void FolderMan::removeFolder( const QString& alias )
             qDebug() << "Remove folder config file " << file.fileName();
             file.remove();
         }
-        f->deleteLater();
+        // FIXME: this is a temporar dirty fix against a crash happening because
+        // the csync owncloud module still has static components. Activate the
+        // delete once the module is fixed.
+        // f->deleteLater();
     }
 }
 

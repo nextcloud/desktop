@@ -271,7 +271,15 @@ set( final_src
 include( AddAppIconMacro )
 set(ownCloud_old ${ownCloud})
 
-kde4_add_app_icon( ownCloud "${theme_dir}/colored/${APPLICATION_EXECUTABLE}-icon*.png")
+# set an icon_app_name. For historical reasons we can not use the 
+# application_shortname for ownCloud but must rather set it manually.
+if ( EXISTS ${OEM_THEME_DIR}/OEM.cmake )
+    set(ICON_APP_NAME ${APPLICATION_SHORTNAME})
+else()
+    set(ICON_APP_NAME "owncloud")
+endif()
+
+kde4_add_app_icon( ownCloud "${theme_dir}/colored/${ICON_APP_NAME}-icon*.png")
 list(APPEND final_src ${ownCloud})
 set(ownCloud ${ownCloud_old})
 
@@ -283,11 +291,11 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 if(NOT WIN32)
-    file( GLOB _icons "${theme_dir}/colored/${APPLICATION_EXECUTABLE}-icon-*.png" )
+	file( GLOB _icons "${theme_dir}/colored/${ICON_APP_NAME}-icon-*.png" )
     foreach( _file ${_icons} )
-        string( REPLACE "${theme_dir}/colored/${APPLICATION_EXECUTABLE}-icon-" "" _res ${_file} )
+	    string( REPLACE "${theme_dir}/colored/${ICON_APP_NAME}-icon-" "" _res ${_file} )
         string( REPLACE ".png" "" _res ${_res} )
-        install( FILES ${_file} RENAME ${APPLICATION_EXECUTABLE}.png DESTINATION ${DATADIR}/icons/hicolor/${_res}x${_res}/apps )
+	install( FILES ${_file} RENAME ${ICON_APP_NAME}.png DESTINATION ${DATADIR}/icons/hicolor/${_res}x${_res}/apps )
     endforeach( _file )
 endif(NOT WIN32)
 

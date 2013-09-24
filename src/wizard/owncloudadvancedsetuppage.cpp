@@ -17,6 +17,7 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QUrl>
+#include <QTimer>
 
 #include "QProgressIndicator.h"
 
@@ -26,7 +27,6 @@
 #include "mirall/theme.h"
 #include "mirall/mirallconfigfile.h"
 #include "creds/abstractcredentials.h"
-
 namespace Mirall
 {
 
@@ -89,8 +89,8 @@ void OwncloudAdvancedSetupPage::initializePage()
     // call to init label
     updateStatus();
 
-    // TODO: focus
-    _ui.pbSelectLocalFolder->setFocus();
+    // ensure "next" gets the focus, not obSelectLocalFolder
+    QTimer::singleShot(0, wizard()->button(QWizard::NextButton), SLOT(setFocus()));
 }
 
 // Called if the user changes the user- or url field. Adjust the texts and

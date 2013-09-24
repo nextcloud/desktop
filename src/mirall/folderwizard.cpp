@@ -243,6 +243,7 @@ static void recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QStr
             item = new QTreeWidgetItem(parent);
             item->setIcon(0, folderIcon);
             item->setText(0, pathTrail.first());
+            item->setData(0, Qt::UserRole, pathTrail.first());
             item->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
         }
 
@@ -253,17 +254,13 @@ static void recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QStr
 
 void FolderWizardTargetPage::slotUpdateDirectories(QStringList list)
 {
-    QFileIconProvider prov;
-    QIcon folderIcon = prov.icon(QFileIconProvider::Folder);
-
     QString webdavFolder = QUrl(ownCloudInfo::instance()->webdavUrl()).path();
-    connect(_ui.folderTreeWidget, SIGNAL(itemExpanded(QTreeWidgetItem*)), SLOT(slotItemExpanded(QTreeWidgetItem*)));
 
     QTreeWidgetItem *root = _ui.folderTreeWidget->topLevelItem(0);
     if (!root) {
         root = new QTreeWidgetItem(_ui.folderTreeWidget);
-        root->setText(0, tr("Root (\"/\")", "root folder"));
-        root->setIcon(0, folderIcon);
+        root->setText(0, Theme::instance()->appNameGUI());
+        root->setIcon(0, Theme::instance()->applicationIcon());
         root->setToolTip(0, tr("Choose this to sync the entire account"));
         root->setData(0, Qt::UserRole, "/");
     }
@@ -284,7 +281,7 @@ void FolderWizardTargetPage::slotRefreshFolders()
 
 void FolderWizardTargetPage::slotItemExpanded(QTreeWidgetItem *item)
 {
-    ownCloudInfo::instance()->getDirectoryListing(item->text(0));
+    ownCloudInfo::instance()->getDirectoryListing(item->data(0, Qt::UserRole).toString());
 }
 
 FolderWizardTargetPage::~FolderWizardTargetPage()
@@ -342,6 +339,8 @@ void FolderWizardTargetPage::initializePage()
                  SLOT(slotCreateRemoteFolderFinished( QNetworkReply::NetworkError )));
         connect( ocInfo, SIGNAL(directoryListingUpdated(QStringList)),
                  SLOT(slotUpdateDirectories(QStringList)));
+        connect(_ui.folderTreeWidget, SIGNAL(itemExpanded(QTreeWidgetItem*)),
+                SLOT(slotItemExpanded(QTreeWidgetItem*)));
 
         slotRefreshFolders();
     }
