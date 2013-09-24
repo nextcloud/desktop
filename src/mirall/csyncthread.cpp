@@ -44,8 +44,15 @@
 
 namespace Mirall {
 
-/* static variables to hold the credentials */
+void csyncLogCatcher(int /*verbosity*/,
+                     const char */*function*/,
+                     const char *buffer,
+                     void */*userdata*/)
+{
+  Logger::instance()->csyncLog( QString::fromUtf8(buffer) );
+}
 
+/* static variables to hold the credentials */
 QMutex CSyncThread::_mutex;
 QMutex CSyncThread::_syncMutex;
 
@@ -344,7 +351,6 @@ void CSyncThread::startSync()
 
     csync_set_module_property(_csync_ctx, "csync_context", _csync_ctx);
     csync_set_userdata(_csync_ctx, this);
-
     // TODO: This should be a part of this method, but we don't have
     // any way to get "session_key" module property from csync. Had we
     // have it, then we could keep this code and remove it from
@@ -364,14 +370,15 @@ void CSyncThread::startSync()
     // }
 
     // csync_set_auth_callback( _csync_ctx, getauth );
-
-
+    csync_set_log_callback( csyncLogCatcher );
+    csync_set_log_level( 11 );
 
     _syncTime.start();
 
     QElapsedTimer updateTime;
     updateTime.start();
     qDebug() << "#### Update start #################################################### >>";
+
     if( csync_update(_csync_ctx) < 0 ) {
         handleSyncError(_csync_ctx, "csync_update");
         return;

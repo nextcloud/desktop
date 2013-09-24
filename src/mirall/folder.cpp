@@ -35,14 +35,6 @@
 
 namespace Mirall {
 
-void csyncLogCatcher(int /*verbosity*/,
-                     const char */*function*/,
-                     const char *buffer,
-                     void */*userdata*/)
-{
-  Logger::instance()->csyncLog( QString::fromUtf8(buffer) );
-}
-
 Folder::Folder(const QString &alias, const QString &path, const QString& secondPath, QObject *parent)
     : QObject(parent)
       , _path(path)
@@ -571,7 +563,6 @@ void Folder::startSync(const QStringList &pathList)
     _csync = new CSyncThread( _csync_ctx, path(), QUrl(ownCloudInfo::instance()->webdavUrl() + secondPath()).path());
     _csync->moveToThread(_thread);
 
-
     qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
     qRegisterMetaType<SyncFileItem::Direction>("SyncFileItem::Direction");
 
@@ -590,6 +581,7 @@ void Folder::startSync(const QStringList &pathList)
 
     _thread->start();
     _thread->setPriority(QThread::LowPriority);
+
     QMetaObject::invokeMethod(_csync, "startSync", Qt::QueuedConnection);
 
     // disable events until syncing is done

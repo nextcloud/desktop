@@ -39,6 +39,10 @@ namespace Mirall {
 
 class OwncloudPropagator;
 
+void csyncLogCatcher(int /*verbosity*/,
+                     const char */*function*/,
+                     const char *buffer,
+                     void */*userdata*/);
 
 class CSyncThread : public QObject
 {
