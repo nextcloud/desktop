@@ -94,6 +94,7 @@ hbf_transfer_t *hbf_init_transfer( const char *dest_uri ) {
     transfer->start_id = 0;
     transfer->block_size = DEFAULT_BLOCK_SIZE;
     transfer->threshold = transfer->block_size;
+    transfer->modtime_accepted = 0;
 
     return transfer;
 }
@@ -314,6 +315,13 @@ static int _hbf_dav_request(hbf_transfer_t *transfer, ne_request *req, int fd, h
             } else {
                 /* DEBUG_HBF("OOOOOOOO No etag returned!"); */
             }
+
+            /* check if the server was able to set the mtime already. */
+            etag = ne_get_response_header(req, "X-OC-MTime");
+            if( etag && strcmp(etag, "accepted") == 0 ) {
+                /* the server acknowledged that the mtime was set. */
+                transfer->modtime_accepted = 1;
+            }
         }
         break;
     case NE_AUTH:
@@ -466,8 +474,14 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
 
             if( req ) {
                 char buf[21];
+
                 snprintf(buf, sizeof(buf), "%"PRId64, transfer->stat_size);
                 ne_add_request_header(req, "OC-Total-Length", buf);
+                if( transfer->modtime > 0 ) {
+                    snprintf(buf, sizeof(buf), "%"PRId64, transfer->modtime);
+                    ne_add_request_header(req, "X_OC_Mtime", buf);
+                }
+
                 if( transfer->block_cnt > 1 ) {
                   ne_add_request_header(req, "OC-Chunked", "1");
                 }
@@ -529,6 +543,28 @@ int hbf_fail_http_code( hbf_transfer_t *transfer )
     }
   }
   return 200;
+}
+
+const char *hbf_transfer_etag( hbf_transfer_t *transfer )
+{
+    int cnt;
+    const char *etag = NULL;
+
+    if( ! transfer ) return 0;
+
+    /* Loop over all parts and do a assertion that there is only one etag. */
+    for( cnt = 0; cnt < transfer->block_cnt; cnt++ ) {
+        int block_id = (cnt + transfer->start_id) % transfer->block_cnt;
+        hbf_block_t *block = transfer->block_arr[block_id];
+        if( block->etag ) {
+            if( etag && strcmp(etag, block->etag) != 0 ) {
+                /* multiple etags in the transfer, not equal. */
+                DEBUG_HBF( "WARN: etags are not equal in blocks of one single transfer." );
+            }
+            etag = block->etag;
+        }
+    }
+    return etag;
 }
 
 const char *hbf_error_string(hbf_transfer_t *transfer, Hbf_State state)

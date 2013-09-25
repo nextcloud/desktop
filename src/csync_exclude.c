@@ -196,6 +196,8 @@ CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype) {
       SAFE_FREE(dname);
       goto out;
   }
+  SAFE_FREE(bname);
+  SAFE_FREE(dname);
 
   SAFE_FREE(bname);
   SAFE_FREE(dname);
