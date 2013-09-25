@@ -195,18 +195,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
    */
   if (csync_get_statedb_exists(ctx)) {
     tmp = csync_statedb_get_stat_by_hash(ctx, h);
-#if 0
-    /* this code could possibly replace the one in csync_vio.c stat and would be more efficient */
-    if(tmp) {
-        if( ctx->current == LOCAL_REPLICA ) {
-            if(fs->mtime == tmp->modtime && fs->size == tmp->size) {
-                /* filesystem modtime is still the same as the db mtime
-                 * thus the md5 sum is still valid. */
-                fs->md5 = c_strdup( tmp->md5 );
-            }
-        }
-    }
-#endif
+
     if(tmp && tmp->phash == h ) { /* there is an entry in the database */
         /* we have an update! */
         CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Database entry found, compare: %" PRId64 " <-> %" PRId64 ", md5: %s <-> %s, inode: %" PRId64 " <-> %" PRId64,
