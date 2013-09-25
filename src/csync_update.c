@@ -205,8 +205,22 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             goto out;
         }
         if((ctx->current == REMOTE_REPLICA && !c_streq(fs->md5, tmp->md5 ))
-            || (ctx->current == LOCAL_REPLICA && (fs->mtime != tmp->modtime || fs->inode != tmp->inode))) {
-            // if (!fs->mtime > tmp->modtime) {
+            || (ctx->current == LOCAL_REPLICA && (fs->mtime != tmp->modtime
+#ifndef _WIN32
+                                                  || fs->inode != tmp->inode
+#endif
+                                                  ))) {
+            /* Comparison of the local inode is disabled because people reported problems
+             * on windows with flacky inode values, see github bug #779
+             *
+             * The inode needs to be observed because:
+             * $>  echo a > a.txt ; echo b > b.txt
+             * both files have the same mtime
+             * sync them.
+             * $> rm a.txt && mv b.txt a.txt
+             * makes b.txt appearing as a.txt yet a sync is not performed because
+             * both have the same modtime as mv does not change that.
+             */
             st->instruction = CSYNC_INSTRUCTION_EVAL;
             goto out;
         }
