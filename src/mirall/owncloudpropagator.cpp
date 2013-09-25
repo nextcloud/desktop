@@ -221,6 +221,8 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
 
     bool finished = true;
     int  attempts = 0;
+
+    _etag.clear(); // dangerous?
     /*
      * do ten tries to upload the file chunked. Check the file size and mtime
      * before submitting a chunk and after having submitted the last one.
@@ -254,6 +256,10 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
             state = hbf_transfer( _session, trans.data(), "PUT" );
         }
 
+        if( trans->modtime_accepted ) {
+            _etag =  QByteArray(hbf_transfer_etag( trans.data() ));
+        }
+
         /* Handle errors. */
         if ( state != HBF_SUCCESS ) {
 
@@ -283,8 +289,9 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
     } while( !finished );
 
     ne_set_notifier(_session, 0, 0);
-
-    updateMTimeAndETag(uri.data(), item._modtime);
+    if( _etag.isEmpty() ) {
+        updateMTimeAndETag(uri.data(), item._modtime);
+    }
 
     return CSYNC_INSTRUCTION_UPDATED;
 }
