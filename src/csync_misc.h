@@ -29,16 +29,6 @@
 #include <fnmatch.h>
 #else
 /* Steal this define to make csync_exclude compile. Note that if fnmatch
- *  * is not defined it's probably Win32 which uses a different implementation
- *   * than fmmatch anyway, which does not care for flags.
- *    **/
-#define FNM_PATHNAME    (1 << 0) /* No wildcard can ever match `/'.  */
-#endif
-
-#ifdef HAVE_FNMATCH
-#include <fnmatch.h>
-#else
-/* Steal this define to make csync_exclude compile. Note that if fnmatch
  * is not defined it's probably Win32 which uses a different implementation
  * than fmmatch anyway, which does not care for flags.
  **/
