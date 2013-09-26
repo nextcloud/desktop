@@ -479,7 +479,7 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
                 ne_add_request_header(req, "OC-Total-Length", buf);
                 if( transfer->modtime > 0 ) {
                     snprintf(buf, sizeof(buf), "%"PRId64, transfer->modtime);
-                    ne_add_request_header(req, "X_OC_Mtime", buf);
+                    ne_add_request_header(req, "X-OC-Mtime", buf);
                 }
 
                 if( transfer->block_cnt > 1 ) {
