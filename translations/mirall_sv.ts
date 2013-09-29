@@ -998,7 +998,8 @@ Valda objekt kommer också att raderas om dom hindrar en mapp från att tas bort
         <location filename="../src/mirall/itemprogressdialog.cpp" line="124"/>
         <source>Softlinks break the semantics of synchronization.
 Please do not use them in synced directories</source>
-        <translation type="unfinished"/>
+        <translation>Mjuka länkar bryter semantiken för synkronisering.⏎
+Använd dem inte i synkade mappar.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="127"/>
@@ -1015,7 +1016,9 @@ Please do not use them in synced directories</source>
         <source>The %1 was ignored because it is listed in the clients ignore list
 or the %1 name contains characters that are not syncable
 in a cross platform environment</source>
-        <translation type="unfinished"/>
+        <translation>%1 har ignorerats eftersom det finns i klientens ignoreringslista⏎
+eller att namnet %1 innehåller bokstäver som inte är synkbara⏎
+i en plattformsoberoende miljö.</translation>
     </message>
     <message>
         <location filename="../src/mirall/itemprogressdialog.cpp" line="134"/>

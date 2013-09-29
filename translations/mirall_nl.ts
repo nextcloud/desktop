@@ -1625,7 +1625,7 @@ op de server staat beschikbaar blijft met de originele naam.</translation>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="122"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
-        <translation>&lt;p&gt;Er is een nieuwe versie van de %1 client beschikbaar.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is beschikbaar voor download. De geïnstalleerde versie is %3.&lt;p&gt;</translation>
+        <translation>&lt;p&gt;Er is een nieuwe versie van de %1-client beschikbaar.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; kan gedownload worden. De geïnstalleerde versie is %3.&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="134"/>
