@@ -39,6 +39,7 @@ ItemProgressDialog::ItemProgressDialog(Application*, QWidget *parent) :
     connect(ProgressDispatcher::instance(), SIGNAL(progressSyncProblem(const QString&,const Progress::SyncProblem&)),
             this, SLOT(slotProgressErrors(const QString&, const Progress::SyncProblem&)));
 
+    // Adjust copyToClipboard() when making changes here!
     QStringList header;
     header << tr("Time");
     header << tr("File");
@@ -210,13 +211,16 @@ void ItemProgressDialog::copyToClipboard()
     int topLevelItems = _ui->_treeWidget->topLevelItemCount();
     for (int i = 0; i < topLevelItems; i++) {
         QTreeWidgetItem *child = _ui->_treeWidget->topLevelItem(i);
-        // time stamp
-        ts << left << qSetFieldWidth(10)
+        ts << left
+                // time stamp
+            << qSetFieldWidth(10)
             << child->data(0,Qt::DisplayRole).toString()
                 // file name
             << qSetFieldWidth(64)
             << child->data(1,Qt::DisplayRole).toString()
-            << qSetFieldWidth(0) << ' '
+                // folder
+            << qSetFieldWidth(15)
+            << child->data(2, Qt::DisplayRole).toString()
                 // action
             << qSetFieldWidth(15)
             << child->data(3, Qt::DisplayRole).toString()
