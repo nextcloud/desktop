@@ -88,6 +88,7 @@ void INotify::slotActivated(int /*fd*/)
         // with the help of watch descriptor, retrieve, corresponding INotify
         if (event == NULL) {
             qDebug() << "NULL event";
+            i += sizeof(struct inotify_event);
             continue;
         }
 
