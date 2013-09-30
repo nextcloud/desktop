@@ -496,12 +496,12 @@
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="92"/>
         <source>No ownCloud connection configured</source>
-        <translation type="unfinished"/>
+        <translation>Nie skonfigurowano połączenia z ownCloud</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="113"/>
         <source>The configured server for this client is too old</source>
-        <translation type="unfinished"/>
+        <translation>Konfigurowany serwer dla tego klienta jest za stary</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="114"/>
