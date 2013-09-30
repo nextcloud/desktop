@@ -129,6 +129,7 @@ void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
     disconnect( ownCloudInfo::instance(),SIGNAL(noOwncloudFound(QNetworkReply*)),
                 this, SLOT(slotNoStatusFound(QNetworkReply*)));
 
+    _errors.append(tr("Unable to connect to %1").arg(reply->url().toString()));
     _errors.append( reply->errorString() );
     emit connectionResult( StatusNotFound );
 
