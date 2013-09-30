@@ -148,6 +148,12 @@ public slots:
       */
       void startSync(const QStringList &pathList = QStringList());
 
+      /**
+       * Starts a sync (calling startSync)
+       * if the policies allow for it
+       */
+      void evaluateSync(const QStringList &pathList);
+
 private slots:
     void slotCSyncStarted();
     void slotCSyncError(const QString& );
@@ -177,12 +183,6 @@ protected:
     const char* proxyTypeToCStr(QNetworkProxy::ProxyType type);
 
     void bubbleUpSyncResult();
-
-    /**
-     * Starts a sync (calling startSync)
-     * if the policies allow for it
-     */
-    void evaluateSync(const QStringList &pathList);
 
     void checkLocalPath();
 
