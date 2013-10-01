@@ -74,7 +74,6 @@ struct { char *uri; char *id;  } _id_cache = { NULL, NULL };
 
 static void clean_caches() {
     clear_propfind_recursive_cache();
-    is_first_propfind = true;
 
     free_fetchCtx(propfind_cache);
     propfind_cache = NULL;
@@ -603,9 +602,6 @@ static int dav_connect(const char *base_url) {
         ne_set_proxy_auth( dav_session.ctx, ne_proxy_auth, 0 );
     }
 
-    /* Disable, it is broken right now */
-    dav_session.no_recursive_propfind = true;
-
     _connected = 1;
     rc = 0;
 out:
@@ -710,27 +706,16 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
 
     curi = _cleanPath( uri );
 
+    /* The old legacy one-level PROPFIND cache. Also gets filled
+       by the recursive cache if 'infinity' did not suceed. */
     if (propfind_cache) {
         if (c_streq(curi, propfind_cache->target)) {
+            DEBUG_WEBDAV("fetch_resource_list Using simple PROPFIND cache %s", curi);
             propfind_cache->ref++;
             SAFE_FREE(curi);
             return propfind_cache;
         }
     }
-
-    if (propfind_recursive_cache && !dav_session.no_recursive_propfind) {
-        fetchCtx = get_listdir_context_from_cache(curi);
-        if (fetchCtx) {
-            return fetchCtx;
-        } else {
-            /* Not found in the recursive cache, fetch some */
-            return fetch_resource_list_recursive(uri, curi);
-        }
-    } else if (!is_first_propfind && !dav_session.no_recursive_propfind) {
-        /* 2nd propfind */
-        return fetch_resource_list_recursive(uri, curi);
-    }
-    is_first_propfind = false;
 
     fetchCtx = c_malloc( sizeof( struct listdir_context ));
     if (!fetchCtx) {
@@ -891,6 +876,7 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
         }
         return 0;
     }
+    DEBUG_WEBDAV("owncloud_stat => Could not find in stat cache %s", uri);
 
     /* fetch data via a propfind call. */
     /* fetchCtx = fetch_resource_list( uri, NE_DEPTH_ONE); */
@@ -1262,6 +1248,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
      */
 
     if( c_streq( write_ctx->method, "PUT") ) {
+      clear_propfind_recursive_cache();
 
       bool finished = true;
       int  attempts = 0;
@@ -1522,10 +1509,27 @@ static int64_t owncloud_lseek(csync_vio_method_handle_t *fhandle, int64_t offset
  */
 static csync_vio_method_handle_t *owncloud_opendir(const char *uri) {
     struct listdir_context *fetchCtx = NULL;
+    char *curi = NULL;
 
     DEBUG_WEBDAV("opendir method called on %s", uri );
 
     dav_connect( uri );
+
+    curi = _cleanPath( uri );
+    if (is_first_propfind && !dav_session.no_recursive_propfind) {
+        is_first_propfind = false;
+        // Try to fill it
+        fill_recursive_propfind_cache(uri, curi);
+    }
+    if (propfind_recursive_cache) {
+        // Try to fetch from recursive cache (if we have one)
+        fetchCtx = get_listdir_context_from_recursive_cache(curi);
+    }
+    SAFE_FREE(curi);
+    is_first_propfind = false;
+    if (fetchCtx) {
+        return fetchCtx;
+    }
 
     /* fetchCtx = fetch_resource_list( uri, NE_DEPTH_ONE ); */
     fetchCtx = fetch_resource_list_attempts( uri, NE_DEPTH_ONE);
@@ -1535,7 +1539,7 @@ static csync_vio_method_handle_t *owncloud_opendir(const char *uri) {
         return NULL;
     } else {
         fetchCtx->currResource = fetchCtx->list;
-        DEBUG_WEBDAV("opendir returning handle %p", (void*) fetchCtx );
+        DEBUG_WEBDAV("opendir returning handle %p (count=%d)", (void*) fetchCtx, fetchCtx->result_count );
         return fetchCtx;
     }
     /* no freeing of curi because its part of the fetchCtx and gets freed later */
@@ -1594,6 +1598,8 @@ static int owncloud_mkdir(const char *uri, mode_t mode) {
 
     char *path = _cleanPath( uri );
     (void) mode; /* unused */
+
+    clear_propfind_recursive_cache();
 
     if( ! path ) {
         errno = EINVAL;
@@ -1663,6 +1669,7 @@ static int owncloud_rename(const char *olduri, const char *newuri) {
     char *target = NULL;
     int rc = NE_OK;
 
+    clear_propfind_recursive_cache();
 
     rc = dav_connect(olduri);
     if (rc < 0) {
@@ -1697,6 +1704,8 @@ static int owncloud_rename(const char *olduri, const char *newuri) {
 static int owncloud_unlink(const char *uri) {
     int rc = NE_OK;
     char *path = _cleanPath( uri );
+
+    clear_propfind_recursive_cache();
 
     if( ! path ) {
         rc = NE_ERROR;
@@ -1916,6 +1925,9 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
     _connected = 0;  /* triggers dav_connect to go through the whole neon setup */
 
     memset(&dav_session, 0, sizeof(dav_session));
+
+    /* Disable it, Mirall can enable it for the first sync (= no DB)*/
+    dav_session.no_recursive_propfind = true;
 
     return &_method;
 }
