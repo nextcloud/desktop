@@ -28,6 +28,9 @@
 **
 **************************************************************************/
 
+#ifndef _SHAREDTOOLS_SINGLEAPPLICATION
+#define _SHAREDTOOLS_SINGLEAPPLICATION
+
 #include <QApplication>
 
 namespace SharedTools {
@@ -85,3 +88,4 @@ private:
 };
 
 } // namespace SharedTools
+#endif // _SHAREDTOOLS_SINGLEAPPLICATION
