@@ -527,12 +527,16 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     }
 
     path = filename + ulen;
+
     /* skip ".csync_journal.db" and ".csync_journal.db.ctmp" */
-    if (c_streq(path, ".csync_journal.db") || c_streq(path, ".csync_journal.db.ctmp")) {
-      csync_vio_file_stat_destroy(dirent);
-      dirent = NULL;
-      SAFE_FREE(filename);
-      continue;
+    if (c_streq(path, ".csync_journal.db")
+            || c_streq(path, ".csync_journal.db.ctmp")
+            || c_streq(path, ".csync_journal.db.ctmp-journal")
+            || c_streq(path, ".csync-progressdatabase")) {
+        csync_vio_file_stat_destroy(dirent);
+        dirent = NULL;
+        SAFE_FREE(filename);
+        continue;
     }
 
     /* == see if really stat has to be called. */
