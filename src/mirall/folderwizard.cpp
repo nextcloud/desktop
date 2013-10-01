@@ -307,7 +307,7 @@ bool FolderWizardTargetPage::isComplete() const
         } else if (dir.startsWith(curDir)) {
             if (dir.isEmpty()) dir = QLatin1Char('/');
             if (curDir.isEmpty()) curDir = QLatin1Char('/');
-            showWarn( tr("You are already syncing <i>%1</i>, which is a parent folder of <i>%2</i>.").arg(dir).arg(curDir) );
+            showWarn( tr("You are already syncing <i>%1</i>, which is a parent folder of <i>%2</i>.").arg(curDir).arg(dir) );
             return false;
         }
     }
