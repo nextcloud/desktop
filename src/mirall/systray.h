@@ -19,11 +19,16 @@
 
 class QIcon;
 
+namespace Mirall {
+
 class Systray : public QSystemTrayIcon
 {
     Q_OBJECT
 public:
     void showMessage(const QString & title, const QString & message, MessageIcon icon = Information, int millisecondsTimeoutHint = 10000);
+
 };
+
+} // namespace Mirall
 
 #endif //SYSTRAY_H

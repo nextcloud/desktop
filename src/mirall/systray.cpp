@@ -24,6 +24,8 @@
 #define NOTIFICATIONS_IFACE "org.freedesktop.Notifications"
 #endif
 
+namespace Mirall {
+
 void Systray::showMessage(const QString & title, const QString & message, MessageIcon icon, int millisecondsTimeoutHint)
 {
 
@@ -40,3 +42,5 @@ void Systray::showMessage(const QString & title, const QString & message, Messag
         QSystemTrayIcon::showMessage(title, message, icon, millisecondsTimeoutHint);
     }
 }
+
+} // namespace Mirall
