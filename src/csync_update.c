@@ -122,6 +122,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
   /* Check if file is excluded */
   excluded = csync_excluded(ctx, path,type);
+
   if (excluded != CSYNC_NOT_EXCLUDED) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s excluded  (%d)", path, excluded);
     if (excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE) {
@@ -136,6 +137,9 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
           break;
       }
       return 0;
+    }
+    if (excluded == CSYNC_FILE_SILENTLY_EXCLUDED) {
+        return 0;
     }
   }
 
