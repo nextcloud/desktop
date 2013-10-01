@@ -30,24 +30,25 @@ class SettingsDialog;
 class AccountSettings;
 class Application;
 class FolderMan;
+class ownCloudGui;
 
 class SettingsDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit SettingsDialog(Application *app, QWidget *parent = 0);
+    explicit SettingsDialog(ownCloudGui *gui, QWidget *parent = 0);
     ~SettingsDialog();
 
     void addAccount(const QString &title, QWidget *widget);
     void setGeneralErrors( const QStringList& errors );
 
+public slots:
+    void slotSyncStateChange(const QString& alias);
+
 protected:
     void reject();
     void accept();
-
-protected slots:
-    void slotUpdateAccountState();
 
 private:
     Ui::SettingsDialog *_ui;

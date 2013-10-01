@@ -215,6 +215,7 @@ set(mirall_SRCS
     mirall/accountsettings.cpp
     mirall/ignorelisteditor.cpp
     mirall/itemprogressdialog.cpp
+    mirall/owncloudgui.cpp
 )
 
 set(mirall_HEADERS
@@ -239,6 +240,7 @@ set(mirall_HEADERS
     mirall/accountsettings.h
     mirall/ignorelisteditor.h
     mirall/itemprogressdialog.h
+    mirall/owncloudgui.h
 )
 
 if( UNIX AND NOT APPLE)

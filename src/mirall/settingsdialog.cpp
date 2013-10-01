@@ -19,9 +19,9 @@
 #include "mirall/generalsettings.h"
 #include "mirall/networksettings.h"
 #include "mirall/accountsettings.h"
-#include "mirall/application.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/progressdispatcher.h"
+#include "mirall/owncloudgui.h"
 
 #include <QLabel>
 #include <QStandardItemModel>
@@ -39,7 +39,7 @@ QIcon createDummy() {
     return icon;
 }
 
-SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
+SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     QDialog(parent),
     _ui(new Ui::SettingsDialog)
 {
@@ -50,7 +50,7 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
 
     _accountSettings = new AccountSettings(this);
     addAccount(tr("Account"), _accountSettings);
-    slotUpdateAccountState();
+    // slotUpdateAccountState(); REFACTOR: Do we still need this? Now in slotSyncStateChange
 
     QIcon generalIcon(QLatin1String(":/mirall/resources/settings.png"));
     QListWidgetItem *general = new QListWidgetItem(generalIcon, tr("General"), _ui->labelWidget);
@@ -65,17 +65,17 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
     _ui->labelWidget->addItem(network);
     NetworkSettings *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
-    connect(networkSettings, SIGNAL(proxySettingsChanged()), app, SLOT(slotSetupProxy()));
+    // REFACTOR check: connect(networkSettings, SIGNAL(proxySettingsChanged()), app, SLOT(slotSetupProxy()));
 
     //connect(generalSettings, SIGNAL(resizeToSizeHint()), SLOT(resizeToSizeHint()));
+    FolderMan *folderMan = FolderMan::instance();
+    connect( folderMan, SIGNAL(folderSyncStateChange(QString)),
+             this, SLOT(slotSyncStateChange(QString)));
 
-    connect( app, SIGNAL(folderStateChanged(Folder*)), _accountSettings, SLOT(slotUpdateFolderState(Folder*)));
-    connect( app, SIGNAL(folderStateChanged(Folder*)), SLOT(slotUpdateAccountState()));
-
-    connect( _accountSettings, SIGNAL(folderChanged()), app, SLOT(slotFoldersChanged()));
+    connect( _accountSettings, SIGNAL(folderChanged()), gui, SLOT(slotFoldersChanged()));
     connect( _accountSettings, SIGNAL(openFolderAlias(const QString&)),
-             app, SLOT(slotFolderOpenAction(QString)));
-    connect( _accountSettings, SIGNAL(openProgressDialog()), app, SLOT(slotItemProgressDialog()));
+             gui, SLOT(slotFolderOpenAction(QString)));
+    connect( _accountSettings, SIGNAL(openProgressDialog()), gui, SLOT(slotItemProgressDialog()));
 
     connect( ProgressDispatcher::instance(), SIGNAL(progressInfo(QString, Progress::Info)),
              _accountSettings, SLOT(slotSetProgress(QString, Progress::Info)) );
@@ -92,7 +92,7 @@ SettingsDialog::SettingsDialog(Application *app, QWidget *parent) :
 
     QAction *showLogWindow = new QAction(this);
     showLogWindow->setShortcut(QKeySequence("F12"));
-    connect(showLogWindow, SIGNAL(triggered()), app, SLOT(slotOpenLogBrowser()));
+    connect(showLogWindow, SIGNAL(triggered()), gui, SLOT(slotOpenLogBrowser()));
     addAction(showLogWindow);
 
     int iconSize = 32;
@@ -130,11 +130,16 @@ void SettingsDialog::addAccount(const QString &title, QWidget *widget)
 
 }
 
-void SettingsDialog::slotUpdateAccountState()
+void SettingsDialog::slotSyncStateChange(const QString& alias)
 {
     FolderMan *folderMan = FolderMan::instance();
     SyncResult state = folderMan->accountStatus(folderMan->map().values());
     _accountItem->setIcon(Theme::instance()->syncStateIcon(state.status()));
+
+    Folder *folder = folderMan->folder(alias);
+    if( folder ) {
+        _accountSettings->slotUpdateFolderState(folder);
+    }
 }
 
 void SettingsDialog::setGeneralErrors(const QStringList &errors)

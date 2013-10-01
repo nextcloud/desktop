@@ -25,7 +25,7 @@
 
 #include "mirall/syncresult.h"
 #include "mirall/logbrowser.h"
-#include "mirall/systray.h"
+#include "mirall/owncloudgui.h"
 #include "mirall/connectionvalidator.h"
 #include "mirall/progressdispatcher.h"
 
@@ -62,15 +62,10 @@ public slots:
 protected:
     void parseOptions(const QStringList& );
     void setupTranslations();
-    void setupActions();
-    void setupSystemTray();
     void setupContextMenu();
     void setupLogBrowser();
     void enterNextLogFile();
     bool checkConfigExists(bool openSettings);
-
-    //folders have to be disabled while making config changes
-    void computeOverallSyncStatus();
 
     // reimplemented
 #if defined(Q_WS_WIN)
@@ -82,29 +77,15 @@ signals:
     void folderStateChanged(Folder*);
 
 protected slots:
-    void slotFoldersChanged();
-    void slotSettings();
-    void slotItemProgressDialog();
     void slotParseOptions( const QString& );
-    void slotShowTrayMessage(const QString&, const QString&);
-    void slotShowOptionalTrayMessage(const QString&, const QString&);
-    void slotShowGuiMessage(const QString& title, const QString& message);
     void slotCheckConnection();
     void slotConnectionValidatorResult(ConnectionValidator::Status);
     void slotSyncStateChange( const QString& );
-    void slotTrayClicked( QSystemTrayIcon::ActivationReason );
-    void slotFolderOpenAction(const QString & );
-    void slotOpenOwnCloud();
     void slotOpenLogBrowser();
     void slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors );
     void slotStartUpdateDetector();
     void slotSetupProxy();
-    void slotRefreshQuotaDisplay( qint64 total, qint64 used );
     void slotUseMonoIconsChanged( bool );
-    void slotUpdateProgress(const QString&, const Progress::Info&);
-    void slotProgressSyncProblem(const QString& folder, const Progress::SyncProblem &problem);
-    void slotDisplayIdle();
-    void slotHelp();
     void slotCredentialsFetched();
     void slotCleanup();
 private:
@@ -113,29 +94,14 @@ private:
     void rebuildRecentMenus();
     void runValidator();
 
-    QPointer<Systray> _tray;
-    QAction *_actionOpenoC;
-    QAction *_actionSettings;
-    QAction *_actionQuota;
-    QAction *_actionStatus;
-    QAction *_actionRecent;
-    QAction *_actionHelp;
-    QAction *_actionQuit;
-
+    QPointer<ownCloudGui> _gui;
     QNetworkConfigurationManager *_networkMgr;
 
     SslErrorDialog *_sslErrorDialog;
     ConnectionValidator *_conValidator;
 
-    // tray's menu
-    QMenu *_contextMenu;
-    QMenu *_recentActionsMenu;
-
     Theme *_theme;
-    QSignalMapper *_folderOpenActionMapper;
     QPointer<LogBrowser>_logBrowser;
-    QPointer<SettingsDialog> _settingsDialog;
-    QPointer<ItemProgressDialog> _progressDialog;
 
     QString _logFile;
     QString _logDirectory;
