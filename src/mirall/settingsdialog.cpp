@@ -144,7 +144,9 @@ void SettingsDialog::slotSyncStateChange(const QString& alias)
 
 void SettingsDialog::setGeneralErrors(const QStringList &errors)
 {
-    _accountSettings->setGeneralErrors(errors);
+    if( _accountSettings ) {
+        _accountSettings->setGeneralErrors(errors);
+    }
 }
 
 // close event is not being called here

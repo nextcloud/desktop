@@ -105,7 +105,6 @@ private:
 
     QString _logFile;
     QString _logDirectory;
-    QStringList _startupFail;
 
     int _logExpire;
     bool _showLogWindow;

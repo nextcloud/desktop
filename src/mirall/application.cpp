@@ -219,8 +219,6 @@ void Application::slotCredentialsFetched()
 
 void Application::runValidator()
 {
-    _startupFail.clear();
-
     _conValidator = new ConnectionValidator();
     connect( _conValidator, SIGNAL(connectionResult(ConnectionValidator::Status)),
              this, SLOT(slotConnectionValidatorResult(ConnectionValidator::Status)) );
@@ -230,24 +228,21 @@ void Application::runValidator()
 void Application::slotConnectionValidatorResult(ConnectionValidator::Status status)
 {
     qDebug() << "Connection Validator Result: " << _conValidator->statusString(status);
-
-    _gui->startupConnected(status);
+    QStringList startupFails;
 
     if( status == ConnectionValidator::Connected ) {
-
         FolderMan *folderMan = FolderMan::instance();
         qDebug() << "######## Connection and Credentials are ok!";
         folderMan->setSyncEnabled(true);
         // queue up the sync for all folders.
         folderMan->slotScheduleAllFolders();
-
     } else {
         // if we have problems here, it's unlikely that syncing will work.
         FolderMan::instance()->setSyncEnabled(false);
 
-        _startupFail = _conValidator->errors();
+        startupFails = _conValidator->errors();
     }
-    _gui->computeOverallSyncStatus(_startupFail);
+    _gui->startupConnected( (status == ConnectionValidator::Connected), startupFails);
 
     _conValidator->deleteLater();
 }
@@ -410,7 +405,7 @@ void Application::slotSetupProxy()
 
 void Application::slotUseMonoIconsChanged(bool)
 {
-    _gui->computeOverallSyncStatus(_startupFail);
+    _gui->computeOverallSyncStatus();
 }
 
 void Application::slotOpenLogBrowser()

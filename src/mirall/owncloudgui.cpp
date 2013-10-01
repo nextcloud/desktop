@@ -30,6 +30,7 @@ namespace Mirall {
 
 ownCloudGui::ownCloudGui(Application *parent) :
     QObject(parent),
+    _settingsDialog(0),
     _contextMenu(0),
     _recentActionsMenu(0),
     _app(parent)
@@ -96,7 +97,7 @@ void ownCloudGui::slotSyncStateChange( const QString& alias )
     FolderMan *folderMan = FolderMan::instance();
     const SyncResult& result = folderMan->syncResult( alias );
 
-    computeOverallSyncStatus(_startupFail);
+    computeOverallSyncStatus();
 
     qDebug() << "Sync state changed for folder " << alias << ": "  << result.statusString();
 
@@ -105,10 +106,9 @@ void ownCloudGui::slotSyncStateChange( const QString& alias )
     }
 }
 
-// c
 void ownCloudGui::slotFoldersChanged()
 {
-    computeOverallSyncStatus(_startupFail);
+    computeOverallSyncStatus();
     setupContextMenu();
 }
 
@@ -117,24 +117,27 @@ void ownCloudGui::slotOpenLogBrowser()
     // REFACTOR: do somehting useful.
 }
 
-void ownCloudGui::startupConnected( ConnectionValidator::Status /* status */ )
+void ownCloudGui::startupConnected( bool connected, const QStringList& fails )
 {
     FolderMan *folderMan = FolderMan::instance();
-    qDebug() << "######## Connection and Credentials are ok!";
-    folderMan->setSyncEnabled(true);
-    _tray->setIcon( Theme::instance()->syncStateIcon( SyncResult::NotYetStarted, true ) );
-    _tray->show();
 
-    int cnt = folderMan->map().size();
-    slotShowOptionalTrayMessage(tr("%1 Sync Started").arg(Theme::instance()->appNameGUI()),
-                        tr("Sync started for %n configured sync folder(s).","", cnt));
+    if( connected ) {
+        qDebug() << "######## connected to ownCloud Server!";
+        folderMan->setSyncEnabled(true);
+        _tray->setIcon( Theme::instance()->syncStateIcon( SyncResult::NotYetStarted, true ) );
+        _tray->show();
+    } else {
+        int cnt = folderMan->map().size();
+        slotShowOptionalTrayMessage(tr("%1 Sync Started").arg(Theme::instance()->appNameGUI()),
+                                    tr("Sync started for %n configured sync folder(s).","", cnt));
+    }
 
+    _startupFails = fails; // store that for the settings dialog once it appears.
 
 }
 
-void ownCloudGui::computeOverallSyncStatus( const QStringList& startupFails )
+void ownCloudGui::computeOverallSyncStatus()
 {
-
     // display the info of the least successful sync (eg. not just display the result of the latest sync
     QString trayMessage;
     FolderMan *folderMan = FolderMan::instance();
@@ -142,8 +145,11 @@ void ownCloudGui::computeOverallSyncStatus( const QStringList& startupFails )
     SyncResult overallResult = FolderMan::accountStatus(map.values());
 
     // if there have been startup problems, show an error message.
-    if( !startupFails.isEmpty() ) {
-        trayMessage = startupFails.join(QLatin1String("\n"));
+    if( !_settingsDialog.isNull() )
+        _settingsDialog->setGeneralErrors( _startupFails );
+
+    if( !_startupFails.isEmpty() ) {
+        trayMessage = _startupFails.join(QLatin1String("\n"));
         QIcon statusIcon = Theme::instance()->syncStateIcon( SyncResult::Error, true );
         _tray->setIcon( statusIcon );
         _tray->setToolTip(trayMessage);
@@ -399,7 +405,7 @@ void ownCloudGui::slotSettings()
         _settingsDialog->show();
     }
 
-    _settingsDialog->setGeneralErrors( _startupFail );
+    _settingsDialog->setGeneralErrors( _startupFails );
     Utility::raiseDialog(_settingsDialog.data());
 }
 

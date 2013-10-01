@@ -37,14 +37,14 @@ public:
     explicit ownCloudGui(Application *parent = 0);
 
     void setupContextMenu();
-    void startupConnected( ConnectionValidator::Status status );
+    void startupConnected(bool connected , const QStringList &fails);
 
     bool checkConfigExists(bool openSettings);
 
 signals:
 
 public slots:
-    void computeOverallSyncStatus( const QStringList& startupFails );
+    void computeOverallSyncStatus();
     void slotShowTrayMessage(const QString &title, const QString &msg);
     void slotShowOptionalTrayMessage(const QString &title, const QString &msg);
     void slotFolderOpenAction( const QString& alias );
@@ -87,7 +87,7 @@ private:
 
     QSignalMapper *_folderOpenActionMapper;
 
-    QStringList _startupFail;
+    QStringList _startupFails;
 };
 
 } // namespace Mirall
